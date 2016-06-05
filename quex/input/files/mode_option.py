@@ -2,6 +2,8 @@ import quex.input.files.counter             as     counter
 import quex.input.regular_expression.core   as     regular_expression
 from   quex.input.code.base                 import SourceRef
 from   quex.input.files.counter             import LineColumnCount_Default
+from   quex.engine.counter                  import LineColumnCount, \
+                                                   IndentationCount
 from   quex.engine.misc.tools               import all_isinstance
 from   quex.engine.misc.tools               import typed, \
                                                    flatten_list_of_lists
@@ -260,11 +262,11 @@ def parse(fh, new_mode):
         value = __parse_range_skipper_option(fh, identifier, new_mode)
         
     elif identifier == "indentation":
-        value = IndentationCount.from_FileHandle(fh)
+        value = ReceiverIndentationCount(fh).parse()
         blackboard.required_support_indentation_count_set()
 
     elif identifier == "counter":
-        value = LineColumnCount.from_FileHandle(fh)
+        value = ReceiverLineColumnCount(fh).parse()
 
     elif identifier in ("entry", "exit"):
         value = read_option_value(fh, ListF=True) # A 'list' of strings

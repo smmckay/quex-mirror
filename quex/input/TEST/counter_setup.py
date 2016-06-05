@@ -35,7 +35,7 @@ def test(Text):
 
     descr = None
     try:    
-        descr = LineColumnCount.from_FileHandle(sh)
+        descr = ReceiverLineColumnCount(sh).parse()
 
     except EndOfStreamException:
         error.log("End of file reached while parsing 'counter' section.", sh, DontExitF=True)

@@ -71,12 +71,14 @@ class ReceiverLineColumnCount(Receiver):
     ____________________________________________________________________________
     """
     @typed(sr=SourceRef)
-    def __init__(self, sr, result):
+    def __init__(self, fh):
+        sr          = SourceRef.from_FileHandle(fh)
+        self.__fh   = fh
+        self.result = LineColumnCount(sr)
         Receiver.__init__(self, sr, "Line/column counter", ("space", "grid", "newline"), TheCountOpMap)
-        self.result = LineColumnCount()
 
-    def parse(self, fh, IndentationSetupF=False):
-        return self._base_parse(fh, IndentationSetupF=False)
+    def parse(self):
+        return self._base_parse(self.__fh, IndentationSetupF=False)
 
     def requires_count(self):
         return True
@@ -123,14 +125,16 @@ class ReceiverIndentationCount(Receiver):
     ____________________________________________________________________________
     """
     @typed(sr=SourceRef)
-    def __init__(self, sr, result):
+    def __init__(self, fh):
+        sr          = SourceRef.from_FileHandle(fh)
+        self.__fh   = fh
         self.result = IndentationCount()
 
         Receiver.__init__(self, sr, "Indentation counter", 
                           ("whitespace", "comment", "newline", "suppressor", "bad"))
 
     def parse(self, fh, IndentationSetupF=False):
-        return self._base_parse(fh, IndentationSetupF=True)
+        return self._base_parse(self.__fh, IndentationSetupF=True)
 
     def requires_count(self):
         return False

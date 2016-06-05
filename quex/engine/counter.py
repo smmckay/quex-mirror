@@ -256,11 +256,6 @@ class LineColumnCount(CountBase):
         # During Parsing: The 'count_command_map' is specified later.
         self.count_command_map = CountActionMap
 
-    @staticmethod
-    def from_FileHandle(fh):
-        container = LineColumnCount(SourceRef.from_FileHandle(fh))
-        return ReceiverLineColumnCount(container).parse(fh)
-
     def get_state_machines(self):
         return []
 
@@ -277,17 +272,12 @@ class LineColumnCount(CountBase):
 class IndentationCount(LineColumnCount):
     @typed(sr=SourceRef)
     def __init__(self, SourceReference):
-        LineColumnCount.__init__(SourceReference, None)
+        LineColumnCount.__init__(self, SourceReference, None)
         self.whitespace_character_set = SourceRefObject("whitespace", None)
         self.bad_character_set        = SourceRefObject("bad", None)
         self.sm_newline               = SourceRefObject("newline", None)
         self.sm_newline_suppressor    = SourceRefObject("suppressor", None)
         self.sm_comment               = SourceRefObject("comment", None)
-
-    @staticmethod
-    def from_FileHandle(fh):
-        container = IndentationCount(SourceRef.from_FileHandle(fh))
-        return ReceiverIndentationCount(container).parse(fh)
 
     def get_state_machines(self):
         return [ 

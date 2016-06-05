@@ -152,9 +152,9 @@ class LoopEventHandlers:
         .on_after_reload:   after buffer reload is performed.
         .on_loop_reentry:   upon every iteration of loop entry.
     """
-    @typed(LexemeEndCheckF=bool, MaintainLexemeF=bool)
+    @typed(LexemeEndCheckF=bool, MaintainLexemeF=bool, UserOnLoopExitDoorId=DoorID)
     def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, MaintainLexemeF, 
-                 EngineType, ReloadStateExtern, UserOnLoopExit): 
+                 EngineType, ReloadStateExtern, UserOnLoopExitDoorId): 
         """ColumnNPerCodeUnit is None => no constant relationship between 
                                          column number and code unit.
         """
@@ -179,16 +179,19 @@ class LoopEventHandlers:
 
         # _____________________________________________________________________
         #
-        self.on_loop_entry    = OpList.concatinate(on_loop_reentry_pos, 
-                                                   on_loop_entry_count)
-        self.on_loop_reentry  = OpList.from_iterable(on_loop_reentry_pos)
-        self.on_loop_exit     = OpList.concatinate(on_loop_exit_pos, 
-                                                   on_loop_exit_count, 
-                                                   UserOnLoopExit)
-        self.on_before_reload = OpList.concatinate(on_before_reload_pos, 
-                                                   on_before_reload_count)
-        self.on_after_reload  = OpList.concatinate(on_after_reload_pos, 
-                                                   on_after_reload_count)
+        self.Op_goto_on_loop_exit_user_door_id = Op.GotoDoorId(UserOnLoopExitDoorId)
+
+        self.on_loop_entry      = OpList.concatinate(on_loop_reentry_pos, 
+                                                     on_loop_entry_count)
+        self.on_loop_reentry    = OpList.from_iterable(on_loop_reentry_pos)
+        self.on_loop_exit       = OpList.concatinate(on_loop_exit_pos, 
+                                                     on_loop_exit_count, 
+                                                     [self.Op_goto_on_loop_exit_user_door_id])
+                                                     
+        self.on_before_reload   = OpList.concatinate(on_before_reload_pos, 
+                                                     on_before_reload_count)
+        self.on_after_reload    = OpList.concatinate(on_after_reload_pos, 
+                                                     on_after_reload_count)
 
     @staticmethod
     def __prepare_count_actions(ColumnNPerCodeUnit):
@@ -208,8 +211,8 @@ class LoopEventHandlers:
     @staticmethod
     def __prepare_positioning_at_loop_begin_and_exit():
         """With codecs of dynamic character sizes (UTF8), the pointer to the 
-        first letter is stored in 'lexatom_begin_p'. To reset the input 
-        pointer 'input_p = lexatom_begin_p' is applied.  
+        first letter is stored in 'character_begin_p'. To reset the input 
+        pointer 'input_p = character_begin_p' is applied.  
         """
         if not Setup.buffer_codec.variable_character_sizes_f():
             # 1 character == 1 code unit
@@ -255,8 +258,8 @@ class LoopEventHandlers:
 
         return on_before_reload, on_after_reload
 
-    @typed(TheLoopMapEntry=LoopMapEntry)
-    def get_loop_terminal_code(self, TheLoopMapEntry, DoorIdLoop, DoorIdLoopExit): 
+    @typed(LEI=LoopMapEntry)
+    def get_loop_terminal_code(self, LEI, DoorIdLoop, DoorIdLoopExit): 
         """RETURNS: A loop terminal. 
 
         A terminal: (i)    Counts,
@@ -264,16 +267,16 @@ class LoopEventHandlers:
                     (iii)a either re-enters the loop, or
                     (iii)b transits to an appendix state machine (couple terminal).
         """
-        IncidenceId    = TheLoopMapEntry.incidence_id
-        AppendixSmId   = TheLoopMapEntry.appendix_sm_id
-        TheCountAction = TheLoopMapEntry.count_action
+        IncidenceId    = LEI.incidence_id
+        AppendixSmId   = LEI.appendix_sm_id
+        TheCountAction = LEI.count_action
 
         code = []
         if TheCountAction is not None:
             code.extend(TheCountAction.get_OpList(self.column_number_per_code_unit))
 
         if AppendixSmId is not None:
-            if not lei.appendix_sm_has_transitions_f:
+            if not LEI.appendix_sm_has_transitions_f:
                 # If there is no appendix, directly goto to the terminal.
                 code.extend([
                     Op.GotoDoorId(DoorID.incidence_id(AppendixSmId)) 
@@ -306,7 +309,7 @@ class LoopEventHandlers:
                                                      False)
                 )
             code.append(
-                Op.GotoDoorId(DoorIdLoopExit) 
+                self.Op_goto_on_loop_exit_user_door_id 
             )
 
         return Terminal(CodeTerminal(Lng.COMMAND_LIST(code)), 
@@ -324,7 +327,7 @@ class LoopEventHandlers:
         return Lng.COMMAND_LIST(self.on_loop_exit)
 
 @typed(TheCountMap=CountInfoMap, ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list)
-def do(TheCountMap, OnLoopExit, LexemeEndCheckF=False, EngineType=None, 
+def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None, 
        ReloadStateExtern=None, LexemeMaintainedF=False,
        ParallelSmTerminalPairList=None):
     """Generates a structure that 'loops' quickly over incoming characters.
@@ -372,7 +375,7 @@ def do(TheCountMap, OnLoopExit, LexemeEndCheckF=False, EngineType=None,
     event_handler = LoopEventHandlers(TheCountMap.column_number_per_code_unit(), 
                                       LexemeEndCheckF, LexemeMaintainedF, 
                                       EngineType, ReloadStateExtern, 
-                                      UserOnLoopExit=OnLoopExit) 
+                                      UserOnLoopExitDoorId=OnLoopExitDoorId) 
 
     # LoopMap: Associate characters with the reactions on their occurrence ____
     #
@@ -552,15 +555,15 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList):
             result.append(sm)
         return result
 
-    def combined(appendix_sm_db, SmList):
-        sm_ulist = unique(SmList)
-        id_key   = tuple(sorted(list(set(sm.get_id() for sm in sm_ulist))))
-        entry = appendix_sm_db.get(id_key)
-        if entry is None:
-            entry = get_combined_state_machine(sm_ulist,
-                                               AlllowInitStateAcceptF=True)
-            appendix_sm_db[id_key] = entry
-        return entry.get_id()
+    def append_sm_db_get_combined(appendix_sm_db, SmList):
+        sm_ulist    = unique(SmList)
+        id_key      = tuple(sorted(list(set(sm.get_id() for sm in sm_ulist))))
+        combined_sm = appendix_sm_db.get(id_key)
+        if combined_sm is None:
+            combined_sm = get_combined_state_machine(sm_ulist,
+                                                     AlllowInitStateAcceptF=True)
+            appendix_sm_db[id_key] = combined_sm
+        return combined_sm
 
     # The tuples reported by 'iterable()' may contain overlapping character
     # sets. That is, their may be multiple parallel state machines that trigger
@@ -592,19 +595,15 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList):
             )
 
     def _determine_LoopMapEntry(sm_db, CharacterSet, CA, AppendixSmList):
-        appendix_sm_id    = combined(sm_db, appendix_sm_list)
-        has_transitions_f = sm_db[appendix_sm_id].get_init_state().has_transitions()
-        if has_transitions_f:
-            # There is an appendix after the first transition.
-            # => goto the appendix state machine
-            return LoopMapEntry(CharacterSet, CA, dial_db.new_incidence_id(), 
-                                appendix_sm_id, True)
-        else:
+        appendix_sm       = append_sm_db_get_combined(sm_db, appendix_sm_list)
+        has_transitions_f = appendix_sm.get_init_state().has_transitions()
+        if not has_transitions_f:
             # There is NO appendix after the first transition.
             # => directly goto to terminal of the matched state machine.
             appendix_sm_id = min(sm.get_id() for sm in AppendixSmList)
-            return LoopMapEntry(CharacterSet, CA, dial_db.new_incidence_id(),
-                                appendix_sm_id, False)
+
+        return LoopMapEntry(CharacterSet, CA, dial_db.new_incidence_id(),
+                            appendix_sm.get_id(), has_transitions_f)
 
     # Combine the appendix state machine lists which are related to character
     # sets into a single combined appendix state machine.
@@ -793,7 +792,7 @@ def _get_source_code(analyzer_list, terminal_list, ColumnNPerChunk,
         variable_db.require("reference_p", 
                             Condition="QUEX_OPTION_COLUMN_NUMBER_COUNTING")
     if Setup.buffer_codec.variable_character_sizes_f():
-        variable_db.require("lexatom_begin_p")
+        variable_db.require("character_begin_p")
 
     return txt
 

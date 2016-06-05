@@ -208,7 +208,7 @@ def counter_db_wo_reference_p():
     """
     fh = StringIO(spec_txt)
     fh.name        = "<string>"
-    return LineColumnCount.from_FileHandle(fh)
+    return ReceiverLineColumnCount(fh).parse()
 
 fields  = sys.argv[1].split("-")
 codec   = fields[0]
