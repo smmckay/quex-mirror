@@ -239,7 +239,7 @@ class ReloadState(Processor):
         before_cl = OpList(Op.PrepareAfterReload(OnSuccessDoorId, OnFailureDoorId))
         if BeforeReload is not None:
             # May be, add additional commands
-            before_cl = before_cl.concatinate(BeforeReload)
+            before_cl = OpList.concatinate(before_cl, BeforeReload)
 
         # No two transitions into the reload state have the same OpList!
         # No two transitions can have the same DoorID!

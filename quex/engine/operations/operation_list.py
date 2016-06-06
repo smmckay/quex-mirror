@@ -533,6 +533,7 @@ class OpList(list):
         """Generate a mew OpList with .cloned() elements out of self and
         the Other OpList.
         """ 
+        assert all(isinstance(x, (OpList, list)) for x in ListOfOpLists)
         return OpList.from_iterable(x.clone() 
                                     for sub_list in ListOfOpLists
                                     for x in sub_list)

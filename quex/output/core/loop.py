@@ -217,7 +217,7 @@ class LoopEventHandlers:
         if not Setup.buffer_codec.variable_character_sizes_f():
             # 1 character == 1 code unit
             # => reset to last character: 'input_p = input_p - 1'
-            on_loop_exit    = [ ] # Op.Decrement(E_R.InputP) ]
+            on_loop_exit    = [ Op.Decrement(E_R.InputP) ]
             on_loop_reentry = []
         else:
             # 1 character == variable number of code units
@@ -254,7 +254,7 @@ class LoopEventHandlers:
                 on_after_reload  = [ ]
         else:
             on_before_reload = [ Op.Assign(E_R.LexemeStartP, E_R.InputP) ] 
-            on_after_reload  = [ ] # Op.Assign(E_R.InputP, E_R.LexemeStartP) ]
+            on_after_reload  = [ Op.Assign(E_R.InputP, E_R.LexemeStartP) ]
 
         return on_before_reload, on_after_reload
 
