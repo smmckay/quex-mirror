@@ -102,8 +102,9 @@ from   quex.engine.operations.operation_list              import Op, \
                                                                  OpList
 import quex.engine.state_machine.index                    as     index
 import quex.engine.state_machine.algorithm.beautifier     as     beautifier
-from   quex.engine.counter                                import CountAction
-from   quex.engine.loop_counter                           import CountInfoMap
+from   quex.engine.counter                                import CountAction, \
+                                                                 CountBase, \
+                                                                 CountActionMap
 from   quex.engine.counter                                import count_operation_db_with_reference, \
                                                                  count_operation_db_without_reference
 from   quex.engine.analyzer.door_id_address_label         import DoorID
@@ -113,6 +114,7 @@ from   quex.engine.misc.tools                             import typed, \
 from   quex.engine.analyzer.terminal.core                 import Terminal
 from   quex.engine.state_machine.core                     import StateMachine  
 from   quex.engine.analyzer.door_id_address_label         import dial_db
+from   quex.output.cpp.counter_for_pattern                import do_CountInfo_from_StateMachine
 from   quex.output.core.variable_db                       import variable_db
 import quex.output.core.base                              as     generator
 
@@ -124,6 +126,8 @@ from   quex.blackboard import E_StateIndices, \
 
 from   collections import namedtuple
 from   itertools   import chain
+
+MiniTerminal = namedtuple("MiniTerminal", ("code", "name", "incidence_id"))
 
 class LoopMapEntry:
     def __init__(self, CharacterSet, TheCountAction, CoupleIncidenceId, AppendixSmId, 
@@ -279,7 +283,7 @@ class LoopEventHandlers:
             if not LEI.appendix_sm_has_transitions_f:
                 # If there is no appendix, directly goto to the terminal.
                 code.extend([
-                    Op.GotoDoorId(DoorID.incidence_id(AppendixSmId)) 
+                    Op.GotoDoorId(DoorID.incidence(AppendixSmId)) 
                 ])
             else:
                 assert not self.lexeme_end_check_f 
@@ -326,7 +330,7 @@ class LoopEventHandlers:
     def on_loop_exit_text(self):
         return Lng.COMMAND_LIST(self.on_loop_exit)
 
-@typed(TheCountMap=CountInfoMap, ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list)
+@typed(TheCountMap=CountBase, ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list)
 def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None, 
        ReloadStateExtern=None, LexemeMaintainedF=False,
        ParallelSmTerminalPairList=None):
@@ -367,12 +371,13 @@ def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     """
     parallel_terminal_list, \
     parallel_sm_list        = _extract_state_machines_and_terminals(ParallelSmTerminalPairList)
+    assert all(isinstance(t, MiniTerminal) for t in parallel_terminal_list)
 
     iid_loop_exit                    = dial_db.new_incidence_id()
     iid_loop_after_appendix_drop_out = dial_db.new_incidence_id() 
 
     assert EngineType is not None
-    event_handler = LoopEventHandlers(TheCountMap.column_number_per_code_unit(), 
+    event_handler = LoopEventHandlers(TheCountMap.get_column_number_per_code_unit(), 
                                       LexemeEndCheckF, LexemeMaintainedF, 
                                       EngineType, ReloadStateExtern, 
                                       UserOnLoopExitDoorId=OnLoopExitDoorId) 
@@ -388,12 +393,13 @@ def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     analyzer_list,      \
     door_id_loop,       \
     appendix_sm_exist_f = _get_analyzer_list(loop_map, event_handler, appendix_sm_list,
-                                        iid_loop_after_appendix_drop_out)
+                                             iid_loop_after_appendix_drop_out)
 
     if not appendix_sm_exist_f:
         iid_loop_after_appendix_drop_out = None
 
-    terminal_list  = _get_terminal_list(loop_map, event_handler, parallel_terminal_list,
+    terminal_list  = _get_terminal_list(loop_map, event_handler, 
+                                        TheCountMap, appendix_sm_list, parallel_terminal_list,
                                         door_id_loop,
                                         iid_loop_exit, 
                                         iid_loop_after_appendix_drop_out)
@@ -401,7 +407,7 @@ def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     # Generate Code ___________________________________________________________
     #
     txt = _get_source_code(analyzer_list, terminal_list,
-                           TheCountMap.column_number_per_code_unit(),
+                           TheCountMap.get_column_number_per_code_unit(),
                            appendix_sm_exist_f) 
     
     return txt, DoorID.incidence(iid_loop_exit)
@@ -437,16 +443,21 @@ def _get_analyzer_list(LoopMap, EventHandler, AppendixSmList,
            door_id_loop, \
            any(lei.appendix_sm_has_transitions_f for lei in LoopMap)
 
-def _get_terminal_list(LoopMap, EventHandler, ParallelTerminalList, 
+def _get_terminal_list(LoopMap, EventHandler, 
+                       CounterDb, AppendixSmList, ParallelMiniTerminalList, 
                        DoorIdLoop,
                        IidLoopExit, IidLoopAfterAppendixDropOut):
     """RETURNS: list of all Terminal-s.
     """
-    loop_terminal_list = _get_loop_terminal_list(LoopMap, EventHandler,
-                                                 IidLoopAfterAppendixDropOut, 
-                                                 DoorIdLoop, IidLoopExit) 
+    loop_terminal_list     = _get_loop_terminal_list(LoopMap, EventHandler,
+                                                     IidLoopAfterAppendixDropOut, 
+                                                     DoorIdLoop, IidLoopExit) 
 
-    return loop_terminal_list + ParallelTerminalList 
+    default_counter_f, \
+    parallel_terminal_list = _get_parallel_terminal_list(CounterDb, AppendixSmList, 
+                                                         ParallelMiniTerminalList)
+
+    return loop_terminal_list + parallel_terminal_list 
 
 def _get_loop_map(TheCountMap, SmList, IidLoopExit):
     """A loop map tells about the behavior of the core loop. It tells what
@@ -469,12 +480,12 @@ def _get_loop_map(TheCountMap, SmList, IidLoopExit):
                        -- combined appendix state machines, or
                        -- None, indicating that there is none.
     """
-    L = TheCountMap.loop_character_set()
+    L = TheCountMap.count_command_map.union_of_all()
 
     # 'couple_list': Transitions to 'couple terminals' 
     #                => connect to appendix state machines
     couple_list,     \
-    appendix_sm_list = _get_LoopMapEntry_list_parallel_state_machines(TheCountMap, 
+    appendix_sm_list = _get_LoopMapEntry_list_parallel_state_machines(TheCountMap.count_command_map, 
                                                                       SmList)
 
     L_couple = NumberSet.from_union_of_iterable(
@@ -484,7 +495,7 @@ def _get_loop_map(TheCountMap, SmList, IidLoopExit):
     # 'plain_list': Transitions to 'normal terminals' 
     #               => perform count action and loop.
     L_plain    = L.difference(L_couple)
-    plain_list = _get_LoopMapEntry_list_plain(TheCountMap, L_plain)
+    plain_list = _get_LoopMapEntry_list_plain(TheCountMap.count_command_map, L_plain)
 
     # 'L_exit': Transition to exit
     #           => remaining characters cause exit.
@@ -502,6 +513,7 @@ def _get_loop_map(TheCountMap, SmList, IidLoopExit):
     assert not any(lei.incidence_id is None for lei in result)
     return result, appendix_sm_list
 
+@typed(TheCountBase=CountActionMap)
 def _get_LoopMapEntry_list_plain(TheCountBase, L_pure):
     """RETURNS: list of LoopMapEntry-s.
 
@@ -520,6 +532,7 @@ def _get_LoopMapEntry_list_plain(TheCountBase, L_pure):
         for character_set, ca in TheCountBase.iterable_in_sub_set(L_pure)
     ]
 
+@typed(TheCountBase=CountActionMap)
 def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList):
     """Perform separation:
     
@@ -601,9 +614,11 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList):
             # There is NO appendix after the first transition.
             # => directly goto to terminal of the matched state machine.
             appendix_sm_id = min(sm.get_id() for sm in AppendixSmList)
+        else:
+            appendix_sm_id = appendix_sm.get_id()
 
         return LoopMapEntry(CharacterSet, CA, dial_db.new_incidence_id(),
-                            appendix_sm.get_id(), has_transitions_f)
+                            appendix_sm_id, has_transitions_f)
 
     # Combine the appendix state machine lists which are related to character
     # sets into a single combined appendix state machine.
@@ -702,6 +717,43 @@ def _get_loop_terminal_list(LoopMap, EventHandler, IidLoopAfterAppendixDropOut,
     )
 
     return result
+
+@typed(ParallelMiniTerminalList=[MiniTerminal])
+def _get_parallel_terminal_list(CounterDb, AppendixSmList, ParallelMiniTerminalList):
+    """RETURNS: [0] true, default counter is required.
+                    false, else.
+                [1] list of terminals of the appendix state machines.
+    """
+    def get_appendix_sm(AppendixSmList, IncidenceId):
+        for appendix_sm in AppendixSmList:
+            if appendix_sm.get_id() == IncidenceId: return appendix_sm
+        return appendix_sm
+
+    def iterable(AppendixSmList, ParallelMiniTerminalList):
+        for mini_terminal in ParallelMiniTerminalList:
+            appendix_sm = get_appendix_sm(AppendixSmList, mini_terminal.incidence_id)
+            yield appendix_sm, mini_terminal
+
+    def get_terminal(appendix_sm, mini_terminal):
+        default_counter_f = False
+        if appendix_sm is not None:
+            default_counter_f, \
+            counter_code       = do_CountInfo_from_StateMachine(appendix_sm, CounterDb)
+
+        code = counter_code + mini_terminal.code
+        return default_counter_f, \
+               Terminal(CodeTerminal(counter_code + mini_terminal.code), 
+                        mini_terminal.name, 
+                        mini_terminal.incidence_id)
+
+    require_default_counter_f = False
+    terminal_list = []
+    for appendix_sm, mini_terminal in iterable(AppendixSmList, ParallelMiniTerminalList):
+        dc_f, terminal = get_terminal(appendix_sm, mini_terminal)
+        require_default_counter_f |= dc_f
+        terminal_list.append(terminal)
+    return require_default_counter_f, terminal_list
+
 
 @typed(LoopMap=[LoopMapEntry])
 def _get_appendix_analyzers(LoopMap, EventHandler, AppendixSmList, 

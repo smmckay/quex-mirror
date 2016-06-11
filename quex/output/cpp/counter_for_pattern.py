@@ -80,9 +80,7 @@ def do_CountInfo_from_StateMachine(SM, CounterDb, BeginOfLinePreContextF=False):
     count_info = character_counter.LineColumnCount.from_StateMachine(SM, CounterDb, 
                                                                BeginOfLinePreContextF, 
                                                                Setup.buffer_codec)
-    default_counting_f, \
-    counter_code        = do_CountInfo(count_info, ShiftF=True)
-    return counter_code
+    return do_CountInfo(count_info, ShiftF=True)
 
 @typed(counter=character_counter.LineColumnCount)
 def do_CountInfo(counter, ShiftF=True):

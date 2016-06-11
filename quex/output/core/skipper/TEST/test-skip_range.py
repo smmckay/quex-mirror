@@ -28,6 +28,7 @@ def test(TestStr):
                     StrangeStream_str=StrangeStream_str)
 
 test("abcdefg*/hijklmnop*/qrstuvw*/xyz*/ok")
+print "#quexit:"; exit(1)
 test("*/hijklmnop*/qrstuvw*/xyz*/")
 test("a*/h*/*/*/")
 

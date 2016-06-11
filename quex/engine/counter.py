@@ -25,7 +25,7 @@ from   quex.input.code.base                       import SourceRefObject, \
 from   quex.engine.analyzer.door_id_address_label import dial_db
 from   quex.engine.operations.operation_list      import Op
 from   quex.engine.misc.tools                     import typed
-from   quex.engine.misc.interval_handling         import NumberSet
+from   quex.engine.misc.interval_handling         import NumberSet, NumberSet_All
 import quex.engine.misc.error                     as     error
 
 from   quex.blackboard import setup as Setup, \
@@ -195,8 +195,8 @@ class CountActionMap(list):
                 if info.cc_type not in considered_set: continue
                 yield character_set.intersection(CharacterSet), info
 
-    @typed(CharacterSet=NumberSet)
-    def get_column_number_per_code_unit(self, CharacterSet):
+    @typed(CharacterSet=(NumberSet, None))
+    def get_column_number_per_code_unit(self, CharacterSet=None):
         """Considers the counter database which tells what character causes
         what increment in line and column numbers. However, only those characters
         are considered which appear in the CharacterSet. 
@@ -205,6 +205,8 @@ class CountActionMap(list):
                  >= 0 -- The increment of column number for every character
                          from CharacterSet.
         """
+        # MOST LIKELEY: CharacterSet is None always
+        if CharacterSet is None: CharacterSet = NumberSet_All()
         column_incr_per_character = None
         number_set                = None
         for character_set, info in self.column_grid_line_iterable_pruned(CharacterSet):
@@ -235,6 +237,12 @@ class CountActionMap(list):
         else:
             return float(column_incr_per_character) / chunk_n_per_character
 
+    def union_of_all(self):
+        return NumberSet.from_union_of_iterable(
+            number_set for number_set, ca in self
+        )
+
+
     def iterable_in_sub_set(self, SubSet):
         """Searches for CountInfo objects where the character set intersects
         with the 'SubSet' given as arguments. 
@@ -259,7 +267,7 @@ class LineColumnCount(CountBase):
     def get_state_machines(self):
         return []
 
-    def get_column_number_per_code_unit(self, CharacterSet):
+    def get_column_number_per_code_unit(self, CharacterSet=None):
         return self.count_command_map.get_column_number_per_code_unit(CharacterSet)
 
     def consistency_check(self):

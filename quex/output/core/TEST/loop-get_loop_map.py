@@ -26,8 +26,6 @@ from   quex.engine.state_machine.core             import StateMachine
 from   quex.engine.misc.interval_handling         import NumberSet, \
                                                          NumberSet_All
 from   quex.engine.analyzer.door_id_address_label import dial_db
-from   quex.engine.loop_counter                   import CountInfoMap, \
-                                                         CountInfo
 import quex.output.core.loop                      as     loop
 from   quex.blackboard                            import E_CharacterCountType, \
                                                          setup as Setup
@@ -42,7 +40,7 @@ if "--hwut-info" in sys.argv:
 
 def test(ci_list, SM_list=[]):
     Setup.buffer_codec.source_set = NumberSet_All()
-    ci_map                     = CountInfoMap(ci_list, NumberSet.from_range(0, 100))
+    ci_map                     = LineColumnCount(ci_list, NumberSet.from_range(0, 100))
     iid_loop_exit              = dial_db.new_incidence_id()
     loop_map, appendix_sm_list = loop._get_loop_map(ci_map, SM_list, iid_loop_exit) 
 

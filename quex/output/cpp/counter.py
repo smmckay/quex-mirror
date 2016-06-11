@@ -8,26 +8,26 @@ from   quex.output.core.variable_db  import variable_db
 import quex.engine.analyzer.engine_supply_factory   as     engine
 from   quex.engine.analyzer.door_id_address_label   import dial_db, \
                                                            DoorID
-from   quex.engine.operations.operation_list               import Op
-from   quex.engine.loop_counter                import CountInfoMap
+from   quex.engine.operations.operation_list        import Op
 from   quex.engine.misc.tools                  import typed
+from   quex.engine.counter                     import CountBase
 
 from   quex.blackboard import Lng, \
                               DefaultCounterFunctionDB, \
                               E_IncidenceIDs
 
-@typed(CCFactory=CountInfoMap)
-def get(CCFactory, Name):
+@typed(CaMap=CountBase)
+def get(CaMap, Name):
     """Implement the default counter for a given Counter Database. 
 
     In case the line and column number increment cannot be determined before-
     hand, a something must be there that can count according to the rules given
-    in 'CCFactory'. This function generates the code for a general counter
+    in 'CaMap'. This function generates the code for a general counter
     function which counts line and column number increments starting from the
     begin of a lexeme to its end.
 
     The implementation of the default counter is a direct function of the
-    'CCFactory', i.e. the database telling how characters influence the
+    'CaMap', i.e. the database telling how characters influence the
     line and column number counting. 
     
     Multiple modes may have the same character counting behavior. If so, 
@@ -43,7 +43,7 @@ def get(CCFactory, Name):
                                        by the 'function name'.
     ---------------------------------------------------------------------------
     """
-    function_name = DefaultCounterFunctionDB.get_function_name(CCFactory)
+    function_name = DefaultCounterFunctionDB.get_function_name(CaMap)
     if function_name is not None:
         return function_name, None # Implementation has been done before.
 
@@ -51,7 +51,7 @@ def get(CCFactory, Name):
 
     door_id_return = dial_db.new_door_id()
     code,          \
-    door_id_beyond = loop.do(CCFactory, 
+    door_id_beyond = loop.do(CaMap, 
                              OnLoopExitDoorId = door_id_return,
                              LexemeEndCheckF  = True,
                              EngineType       = engine.CHARACTER_COUNTER)
@@ -59,7 +59,7 @@ def get(CCFactory, Name):
     implementation = __frame(function_name, Lng.INPUT_P(), code, door_id_return, 
                              door_id_beyond) 
 
-    DefaultCounterFunctionDB.enter(CCFactory, function_name)
+    DefaultCounterFunctionDB.enter(CaMap, function_name)
 
     return function_name, implementation
 

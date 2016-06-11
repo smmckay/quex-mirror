@@ -37,8 +37,6 @@ from   quex.engine.state_machine.core             import StateMachine
 from   quex.engine.misc.interval_handling         import NumberSet, \
                                                          NumberSet_All
 from   quex.engine.analyzer.door_id_address_label import dial_db
-from   quex.engine.loop_counter                   import CountInfoMap, \
-                                                         CountInfo
 import quex.engine.state_machine.transformation.core as  bc_factory
 import quex.engine.analyzer.engine_supply_factory as     engine
 import quex.output.core.loop                      as     loop

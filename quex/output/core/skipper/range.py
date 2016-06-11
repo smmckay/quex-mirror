@@ -1,18 +1,12 @@
-from   quex.input.code.core                        import CodeTerminal
-from   quex.engine.loop_counter                    import CountInfoMap
 from   quex.engine.analyzer.door_id_address_label  import __nice, dial_db
 import quex.engine.analyzer.engine_supply_factory  as     engine
 from   quex.engine.operations.operation_list       import Op
 from   quex.engine.analyzer.door_id_address_label  import DoorID
 import quex.output.core.loop                       as     loop
+from   quex.engine.counter                         import CountBase
 import quex.engine.state_machine.index             as     sm_index
-from   quex.engine.analyzer.terminal.core          import Terminal
 from   quex.engine.state_machine.core              import StateMachine
-from   quex.engine.misc.interval_handling          import NumberSet_All
-from   quex.engine.misc.string_handling            import blue_print
-from   quex.engine.misc.tools                      import r_enumerate, \
-                                                          typed, \
-                                                          flatten_list_of_lists
+from   quex.engine.misc.tools                      import typed
 
 from   quex.output.core.variable_db                import variable_db
 from   quex.output.core.skipper.common             import line_counter_in_loop, \
@@ -36,6 +30,7 @@ def do(Data, TheAnalyzer):
 
     return get_skipper(TheAnalyzer, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, DoorIdAfter, CounterDb) 
 
+@typed(CounterDb=CountBase)
 def get_skipper(TheAnalyzer, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, DoorIdAfter, CounterDb):
     """
                                         .---<---+----------<------+
@@ -67,12 +62,9 @@ def get_skipper(TheAnalyzer, CloserSequence, CloserPattern, ModeName, OnSkipRang
     """
     psml             = _get_state_machine_vs_terminal_list(CloserSequence, 
                                                            CounterDb)
-    count_op_factory = CountInfoMap.from_LineColumnCount(CounterDb, 
-                                                         NumberSet_All(), 
-                                                         Lng.INPUT_P()) 
     result,          \
-    door_id_beyond   = loop.do(count_op_factory,
-                               OnLoopExit        = [ Op.GotoDoorId(DoorID.continue_without_on_after_match()) ],
+    door_id_beyond   = loop.do(CounterDb,
+                               OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
                                LexemeEndCheckF   = False,
                                LexemeMaintainedF = False,
                                EngineType        = engine.FORWARD,
@@ -92,9 +84,9 @@ def _get_state_machine_vs_terminal_list(CloserSequence, CounterDb):
     sm = StateMachine.from_sequence(CloserSequence)
     sm.set_id(dial_db.new_incidence_id())
 
-    code = [ Lng.GOTO(DoorID.continue_without_on_after_match()) ]
-    terminal = Terminal(CodeTerminal(code), "<SKIP RANGE TERMINATED>", sm.get_id())
-    return [ (sm, terminal) ]
+    code          = [ Lng.GOTO(DoorID.continue_without_on_after_match()) ]
+    mini_terminal = loop.MiniTerminal(code, "<SKIP RANGE TERMINATED>", sm.get_id())
+    return [ (sm, mini_terminal) ]
 
 
 

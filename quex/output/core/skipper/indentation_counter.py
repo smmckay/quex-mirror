@@ -1,9 +1,7 @@
-from   quex.input.code.core                         import CodeTerminal
 from   quex.engine.analyzer.door_id_address_label   import DoorID
 from   quex.engine.operations.operation_list        import Op
 from   quex.engine.analyzer.door_id_address_label   import dial_db
 from   quex.engine.analyzer.terminal.core           import Terminal
-from   quex.engine.loop_counter                     import CountInfoMap
 import quex.output.core.loop                        as     loop
 from   quex.blackboard                              import Lng, \
                                                            E_IncidenceIDs, \
@@ -79,6 +77,7 @@ def do(Data, TheAnalyzer):
     assert sm_suppressed_newline  is None or sm_suppressed_newline.is_DFA_compliant()
     assert sm_newline is None             or sm_newline.is_DFA_compliant()
     assert sm_comment is None             or sm_comment.is_DFA_compliant()
+    assert isinstance(counter_db, CountBase)
 
     # -- 'on_indentation' == 'on_beyond': 
     #     A handler is called as soon as an indentation has been detected.
@@ -101,14 +100,10 @@ def do(Data, TheAnalyzer):
     # 'whitespace' --> normal counting
     # 'bad'        --> goto bad character indentation handler
     # else         --> non-whitespace detected => handle indentation
-    ccfactory = CountInfoMap.from_ParserDataIndentation(isetup, 
-                                                              counter_db, 
-                                                              Lng.INPUT_P(), 
-                                                              DoorID.incidence(bad_indentation_iid))
 
     # (*) Generate Code
     code,          \
-    door_id_beyond = loop.do(ccfactory, 
+    door_id_beyond = loop.do(counter_db, 
                              OnLoopExit        = on_loop_exit,
                              EngineType        = TheAnalyzer.engine_type,
                              ReloadStateExtern = reload_state,
@@ -157,7 +152,7 @@ def _add_pair(psml, SmOriginal, Name):
         Lng.GOTO(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER)) 
     ]
 
-    terminal = Terminal(CodeTerminal(code), Name, incidence_id)
+    terminal = loop.MiniTerminal(code, Name, incidence_id)
     # TRY:     terminal.set_requires_goto_loop_entry_f()
     # INSTEAD: GOTO 'INDENTATION_HANDLER'
 

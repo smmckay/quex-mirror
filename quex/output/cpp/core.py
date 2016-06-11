@@ -6,7 +6,7 @@ from   quex.engine.analyzer.terminal.core                 import Terminal
 from   quex.output.core.variable_db                       import variable_db
 import quex.output.core.base                              as     generator
 from   quex.engine.state_machine.engine_state_machine_set import EngineStateMachineSet
-from   quex.engine.loop_counter                           import CountInfoMap
+from   quex.engine.counter                                import CountBase
 from   quex.engine.misc.tools                             import all_isinstance, \
                                                                  typed
 import quex.output.cpp.counter                            as     counter
@@ -117,17 +117,14 @@ def do_default_counter(Mode):
         return []
 
     dial_db.clear()
-    ci_map = CountInfoMap.from_LineColumnCount(Mode.counter_db, 
-                                               Setup.buffer_codec.source_set, 
-                                               Lng.INPUT_P())
-
     variable_db.init()
 
     # May be, the default counter is the same as for another mode. In that
     # case call the default counter of the other mode with the same one and
     # only macro.
+    assert isinstance(Mode.counter_db, CountBase)
     default_character_counter_function_name,   \
-    default_character_counter_function_code  = counter.get(ci_map, Mode.name)
+    default_character_counter_function_code  = counter.get(Mode.counter_db, Mode.name)
 
     txt = [ Lng.DEFAULT_COUNTER_PROLOG(default_character_counter_function_name) ]
 

@@ -1,4 +1,3 @@
-from   quex.engine.loop_counter                   import CountInfoMap
 from   quex.engine.operations.operation_list      import Op
 
 import quex.output.core.loop                      as     loop
@@ -66,13 +65,13 @@ def do(Data, TheAnalyzer):
     """
     counter_db    = Data["counter_db"]
     character_set = Data["character_set"]
+    assert isinstance(counter_db, CountBase)
+    assert isinstance(character_set, NumberSet)
 
     reload_state = TheAnalyzer.reload_state
-
-    ccfactory    = CountInfoMap.from_LineColumnCount(counter_db, character_set, Lng.INPUT_P()) 
         
     result,        \
-    door_id_beyond = loop.do(ccfactory,
+    door_id_beyond = loop.do(counter_db,
                              OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
                              LexemeEndCheckF   = False,
                              LexemeMaintainedF = False,

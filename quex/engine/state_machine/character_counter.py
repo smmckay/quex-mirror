@@ -1,5 +1,8 @@
 # (C) 2012 Frank-Rene Schaefer
+from   quex.engine.counter          import CountActionMap, \
+                                           CountBase
 from   quex.engine.misc.tree_walker import TreeWalker
+from   quex.engine.misc.tools       import typed
 from   quex.blackboard              import E_Count
 
 class LineColumnCount:
@@ -57,6 +60,7 @@ class LineColumnCount:
             self._consider_variable_character_sizes(SM, CodecTrafoInfo)
 
     @staticmethod
+    @typed(CounterDB=CountBase)
     def from_StateMachine(SM, CounterDB, BeginOfLineF=False, CodecTrafoInfo=None):
         """LINE AND COLUMN NUMBER ANALYSIS ________________________________________
         
@@ -115,7 +119,7 @@ class LineColumnCount:
             for target_state_index, character_set in init_state.target_map.get_map().iteritems() 
         ]
 
-        Count.init(CounterDB)
+        Count.init(CounterDB.count_command_map)
         tracer.do(initial)
 
         # If there was an acceptance state, the result cannot be None
@@ -419,12 +423,13 @@ class Count(object):
     count_map                           = None
 
     @staticmethod
-    def init(CounterDB):
+    @typed(CountMap=CountActionMap)
+    def init(CountMap):
         """Initialize global objects in namespace 'Count'."""
         Count.column_n_increment_by_lexeme_length = UniqueValue()
         Count.line_n_increment_by_lexeme_length   = UniqueValue()
         Count.grid_step_size_by_lexeme_length     = UniqueValue()
-        Count.count_map                           = CounterDB.count_command_map
+        Count.count_map                           = CountMap
 
     def __init__(self, ColumnN, LineN, ColumnIndex, GridStepN=0):
         self.line_n_increment   = UniqueValue(LineN)
@@ -433,7 +438,10 @@ class Count(object):
         self.grid_step_n        = UniqueValue(GridStepN)
 
     def clone(self):
-        return Count(self.column_n_increment, self.line_n_increment, self.column_index, self.grid_step_n)
+        return Count(self.column_n_increment, 
+                     self.line_n_increment, 
+                     self.column_index, 
+                     self.grid_step_n)
 
     def compute(self, CharacterSet):
         """CharacterSet -- If a given input character lies in the CharacterSet,
