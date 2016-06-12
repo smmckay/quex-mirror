@@ -3,6 +3,8 @@ from   quex.engine.operations.operation_list      import Op
 import quex.output.core.loop                      as     loop
 import quex.engine.analyzer.engine_supply_factory as     engine
 from   quex.engine.analyzer.door_id_address_label import DoorID
+from   quex.engine.counter                        import CountBase
+from   quex.engine.misc.interval_handling         import NumberSet
 from   quex.blackboard                            import Lng
 
 def do(Data, TheAnalyzer):

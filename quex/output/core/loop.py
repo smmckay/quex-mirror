@@ -385,7 +385,8 @@ def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     # LoopMap: Associate characters with the reactions on their occurrence ____
     #
     loop_map,        \
-    appendix_sm_list = _get_loop_map(TheCountMap, parallel_sm_list, 
+    appendix_sm_list = _get_loop_map(TheCountMap.count_command_map, 
+                                     parallel_sm_list, 
                                      iid_loop_exit)
 
     # Loop represented by Analyzer-s and Terminal-s ___________________________
@@ -459,7 +460,8 @@ def _get_terminal_list(LoopMap, EventHandler,
 
     return loop_terminal_list + parallel_terminal_list 
 
-def _get_loop_map(TheCountMap, SmList, IidLoopExit):
+@typed(CaMap=CountActionMap)
+def _get_loop_map(CaMap, SmList, IidLoopExit):
     """A loop map tells about the behavior of the core loop. It tells what
     needs to happen as a consequence to an incoming character. Two options:
 
@@ -480,13 +482,12 @@ def _get_loop_map(TheCountMap, SmList, IidLoopExit):
                        -- combined appendix state machines, or
                        -- None, indicating that there is none.
     """
-    L = TheCountMap.count_command_map.union_of_all()
+    L = CaMap.union_of_all()
 
     # 'couple_list': Transitions to 'couple terminals' 
     #                => connect to appendix state machines
     couple_list,     \
-    appendix_sm_list = _get_LoopMapEntry_list_parallel_state_machines(TheCountMap.count_command_map, 
-                                                                      SmList)
+    appendix_sm_list = _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList)
 
     L_couple = NumberSet.from_union_of_iterable(
         lei.character_set for lei in couple_list
@@ -495,7 +496,7 @@ def _get_loop_map(TheCountMap, SmList, IidLoopExit):
     # 'plain_list': Transitions to 'normal terminals' 
     #               => perform count action and loop.
     L_plain    = L.difference(L_couple)
-    plain_list = _get_LoopMapEntry_list_plain(TheCountMap.count_command_map, L_plain)
+    plain_list = _get_LoopMapEntry_list_plain(CaMap, L_plain)
 
     # 'L_exit': Transition to exit
     #           => remaining characters cause exit.
@@ -573,8 +574,12 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList):
         id_key      = tuple(sorted(list(set(sm.get_id() for sm in sm_ulist))))
         combined_sm = appendix_sm_db.get(id_key)
         if combined_sm is None:
-            combined_sm = get_combined_state_machine(sm_ulist,
-                                                     AlllowInitStateAcceptF=True)
+            if len(sm_ulist) == 1:
+                combined_sm = sm_ulist[0]
+            else:
+                # TODO: May be, this is never required!
+                combined_sm = get_combined_state_machine(sm_ulist,
+                                                         AlllowInitStateAcceptF=True)
             appendix_sm_db[id_key] = combined_sm
         return combined_sm
 

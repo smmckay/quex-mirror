@@ -148,6 +148,13 @@ class CountAction(namedtuple("CountAction", ("cc_type", "value", "sr"))):
 class CountActionMap(list):
     """Map: NumberSet --> CountAction
     """
+    @staticmethod
+    def from_list(NsCaList):
+        result = CountActionMap()
+        for entry in NsCaList:
+            result.append(entry)
+        return result
+
     def get_count_commands(self, CharacterSet):
         """Finds the count command for column, grid, and newline. This does NOT
         consider 'chunk number per character'. The consideration is on pure 
@@ -242,7 +249,6 @@ class CountActionMap(list):
             number_set for number_set, ca in self
         )
 
-
     def iterable_in_sub_set(self, SubSet):
         """Searches for CountInfo objects where the character set intersects
         with the 'SubSet' given as arguments. 
@@ -251,8 +257,9 @@ class CountActionMap(list):
                 [1] Related 'CountAction' object.
         """
         for character_set, count_action in self:
-            if not SubSet.has_intersection(character_set): continue
-            yield character_set, count_action
+            intersection = SubSet.intersection(character_set)
+            if intersection.is_empty(): continue
+            yield intersection, count_action
 
 class CountBase:
     def get_state_machines(self): 

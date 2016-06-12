@@ -21,7 +21,8 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from   quex.engine.counter                        import LineColumnCount, \
-                                                         CountAction
+                                                         CountAction, \
+                                                         CountActionMap
 from   quex.engine.state_machine.core             import StateMachine  
 from   quex.engine.misc.interval_handling         import NumberSet, \
                                                          NumberSet_All
@@ -38,11 +39,15 @@ if "--hwut-info" in sys.argv:
     print "Loop: Get Loop Map."
     print "CHOICES: Plain, AppendixNoI, AppendixI, Split;"
 
-def test(ci_list, SM_list=[]):
+def test(NsCaList, SM_list=[]):
     Setup.buffer_codec.source_set = NumberSet_All()
-    ci_map                     = LineColumnCount(ci_list, NumberSet.from_range(0, 100))
+    ca_map                     = CountActionMap.from_list(NsCaList)
     iid_loop_exit              = dial_db.new_incidence_id()
-    loop_map, appendix_sm_list = loop._get_loop_map(ci_map, SM_list, iid_loop_exit) 
+
+    loop_map, \
+    appendix_sm_list = loop._get_loop_map(ca_map, 
+                                          SM_list, 
+                                          iid_loop_exit) 
 
     print
     print
@@ -78,6 +83,7 @@ def general_checks(loop_map, appendix_sm_list):
             count_action_couple_set.add(lei.incidence_id)
             appendix_sm_id_set.add(lei.appendix_sm_id)
     print "[ok]"
+
     list_id_set = set(sm.get_id() for sm in appendix_sm_list)
     assert appendix_sm_id_set == list_id_set
     print "appendix sm-ids are the same in loop map and sm list: [ok]"
@@ -103,16 +109,11 @@ def print_this(loop_map, appendix_sm_list):
         print sm
         print
 
-def get_setup(L0, L1, FSM0, FSM1, FSM2):
+def get_sm_list(FSM0, FSM1, FSM2):
     # SPECIALITIES: -- sm0 and sm1 have an intersection between their second 
     #                  transition.
     #               -- sm1 transits further upon acceptance.
     #               -- sm2 has only one transition.
-    ci_list = [
-        CountInfo(dial_db.new_incidence_id(), NumberSet.from_range(L0, L1), 
-                  CountAction(E_CharacterCountType.COLUMN, 0)),
-    ]
-
     # Generate State Machine that does not have any intersection with 
     # the loop transitions.
     sm0 = StateMachine()
@@ -132,15 +133,24 @@ def get_setup(L0, L1, FSM0, FSM1, FSM2):
     si = sm2.add_transition(sm2.init_state_index, FSM2, AcceptanceF=True)
     sm2.states[si].mark_acceptance_id(dial_db.new_incidence_id())
 
-    return ci_list, [sm0, sm1, sm2]
+    return [sm0, sm1, sm2]
+
+def get_ca_list(L0, L1):
+    ns_0         = NumberSet.from_range(L0, L1)
+    ns_remainder = NumberSet_All().difference(ns_0)
+    return [
+        (ns_0,         CountAction(E_CharacterCountType.COLUMN, 0)),
+        # (ns_remainder, None),
+        (ns_remainder, CountAction(E_CharacterCountType.COLUMN, 4711)),
+    ]
 
 if "Plain" in sys.argv:
     # No parallel state machines
     test([
-        CountInfo(0, NumberSet.from_range(0,    0x10), CountAction(E_CharacterCountType.COLUMN,     0)),
-        CountInfo(1, NumberSet.from_range(0x20, 0x30), CountAction(E_CharacterCountType.LINE,       1)),
-        CountInfo(2, NumberSet.from_range(0x40, 0x50), CountAction(E_CharacterCountType.GRID,       2)),
-        CountInfo(3, NumberSet.from_range(0x60, 0x70), CountAction(E_CharacterCountType.WHITESPACE, 3)),
+        (NumberSet.from_range(0,    0x10), CountAction(E_CharacterCountType.COLUMN,     0)),
+        (NumberSet.from_range(0x20, 0x30), CountAction(E_CharacterCountType.LINE,       1)),
+        (NumberSet.from_range(0x40, 0x50), CountAction(E_CharacterCountType.GRID,       2)),
+        (NumberSet.from_range(0x60, 0x70), CountAction(E_CharacterCountType.WHITESPACE, 3)),
     ])
 
 elif "AppendixNoI" in sys.argv:
@@ -150,14 +160,14 @@ elif "AppendixNoI" in sys.argv:
     # First Trans. sm1:                   0x20-0x2F
     # First Trans. sm2:                             0x30-0x3F
     #
-    ci_list, sm_list = get_setup(0x10, 0x40, 
-                                 NumberSet.from_range(0x10, 0x20), 
-                                 NumberSet.from_range(0x20, 0x30), 
-                                 NumberSet.from_range(0x30, 0x40))
+    ca_list = get_ca_list(0x10, 0x40)
+    sm_list = get_sm_list(NumberSet.from_range(0x10, 0x20), 
+                          NumberSet.from_range(0x20, 0x30), 
+                          NumberSet.from_range(0x30, 0x40))
 
     for sm in sm_list:
-        test(ci_list, [sm])
-    test(ci_list, sm_list)
+        test(ca_list, [sm])
+    test(ca_list, sm_list)
 
 elif "AppendixI" in sys.argv:
     # Three state machines (no one intersects):
@@ -167,14 +177,14 @@ elif "AppendixI" in sys.argv:
     # First Trans. sm2:                       0x30 -            0x5F
     #                           |  1  | 1&2  |   1&2&3   | 2&3 | 3  |  
     #
-    ci_list, sm_list = get_setup(0x10, 0x60, 
-                                 NumberSet.from_range(0x10, 0x40), 
-                                 NumberSet.from_range(0x20, 0x50), 
-                                 NumberSet.from_range(0x30, 0x60))
+    ca_list = get_ca_list(0x10, 0x60)
+    sm_list = get_sm_list(NumberSet.from_range(0x10, 0x40), 
+                          NumberSet.from_range(0x20, 0x50), 
+                          NumberSet.from_range(0x30, 0x60))
 
     # Test for each 'sm' in 'sm_list' is superfluous. 
     # It is done in 'AppendixNoI'.
-    test(ci_list, sm_list)
+    test([], sm_list)
 
 elif "Split" in sys.argv:
     # A first transition of a state machine is separated into two, because
@@ -183,11 +193,11 @@ elif "Split" in sys.argv:
     NS2 = NumberSet.from_range(0x20, 0x30)
     NS3 = NumberSet.from_range(0x30, 0x40)
     NS4 = NumberSet.from_range(0x40, 0x50)
-    ci_list = [
-        CountInfo(dial_db.new_incidence_id(), NS1, CountAction(E_CharacterCountType.COLUMN, 1)),
-        CountInfo(dial_db.new_incidence_id(), NS2, CountAction(E_CharacterCountType.COLUMN, 2)),
-        CountInfo(dial_db.new_incidence_id(), NS3, CountAction(E_CharacterCountType.COLUMN, 3)),
-        CountInfo(dial_db.new_incidence_id(), NS4, CountAction(E_CharacterCountType.COLUMN, 4))
+    ca_list = [
+        (NS1, CountAction(E_CharacterCountType.COLUMN, 1)),
+        (NS2, CountAction(E_CharacterCountType.COLUMN, 2)),
+        (NS3, CountAction(E_CharacterCountType.COLUMN, 3)),
+        (NS4, CountAction(E_CharacterCountType.COLUMN, 4)),
     ]
 
     sm  = StateMachine()
@@ -196,4 +206,4 @@ elif "Split" in sys.argv:
     ti0 = sm.add_transition(si, NumberSet.from_range(0x1A, 0x4B))
     ac0 = sm.add_transition(ti0, NS_A, AcceptanceF=True)
 
-    test(ci_list, [sm])
+    test(ca_list, [sm])

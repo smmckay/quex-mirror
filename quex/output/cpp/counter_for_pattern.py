@@ -78,11 +78,11 @@ def get(ThePattern, ShiftF=True):
 
 def do_CountInfo_from_StateMachine(SM, CounterDb, BeginOfLinePreContextF=False):
     count_info = character_counter.LineColumnCount.from_StateMachine(SM, CounterDb, 
-                                                               BeginOfLinePreContextF, 
-                                                               Setup.buffer_codec)
+                                                                     BeginOfLinePreContextF, 
+                                                                     Setup.buffer_codec)
     return do_CountInfo(count_info, ShiftF=True)
 
-@typed(counter=character_counter.LineColumnCount)
+@typed(counter=character_counter.LineColumnCountInfo)
 def do_CountInfo(counter, ShiftF=True):
     """RETURN: [0] Verdict
                [1] CounterCode
