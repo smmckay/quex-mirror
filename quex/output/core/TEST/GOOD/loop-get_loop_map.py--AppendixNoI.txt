@@ -10,13 +10,13 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  4 None
-[0010, 001F]  5 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 7>
-[0020, 003F]  6 CountAction(cc_type=COLUMN, value=0, sr=None)
+[-oo, 000F] [0040, oo]  3 None
+[0010, 001F]  4 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 0>
+[0020, 003F]  5 CountAction(cc_type=COLUMN, value=0, sr=None)
 
 #_[ Appendix State Machines ]________________________________
 
-IncidenceId: 7
+IncidenceId: 0
 init-state = 0L
 00000 
      == 'A' ==> 00001
@@ -37,13 +37,13 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  7 None
-[0010, 001F] [0030, 003F]  6 CountAction(cc_type=COLUMN, value=0, sr=None)
-[0020, 002F]  8 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 12>
+[-oo, 000F] [0040, oo]  6 None
+[0010, 001F] [0030, 003F]  8 CountAction(cc_type=COLUMN, value=0, sr=None)
+[0020, 002F]  7 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 1>
 
 #_[ Appendix State Machines ]________________________________
 
-IncidenceId: 12
+IncidenceId: 1
 init-state = 0L
 00000 
      == 'A' ==> 00001
@@ -66,12 +66,12 @@ exit character set exits: [True]
 #_[ Print ]___________________________________________________
 
 [-oo, 000F] [0040, oo]  9 None
-[0010, 002F]  6 CountAction(cc_type=COLUMN, value=0, sr=None)
-[0030, 003F]  10 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 15>
+[0010, 002F]  11 CountAction(cc_type=COLUMN, value=0, sr=None)
+[0030, 003F]  10 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 2>
 
 #_[ Appendix State Machines ]________________________________
 
-IncidenceId: 15
+IncidenceId: 2
 init-state = 0L
 00000 A(2)
     
@@ -89,14 +89,14 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0040, oo]  11 None
-[0010, 001F]  12 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 22>
-[0020, 002F]  13 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 26>
-[0030, 003F]  14 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 28>
+[-oo, 000F] [0040, oo]  12 None
+[0010, 001F]  13 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 0>
+[0020, 002F]  14 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 1>
+[0030, 003F]  15 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 2>
 
 #_[ Appendix State Machines ]________________________________
 
-IncidenceId: 22
+IncidenceId: 0
 init-state = 0L
 00000 
      == 'A' ==> 00001
@@ -105,7 +105,7 @@ init-state = 0L
     
 
 
-IncidenceId: 26
+IncidenceId: 1
 init-state = 0L
 00000 
      == 'A' ==> 00001
@@ -115,7 +115,7 @@ init-state = 0L
     
 
 
-IncidenceId: 28
+IncidenceId: 2
 init-state = 0L
 00000 A(2)
     

@@ -33,6 +33,7 @@ from   quex.blackboard import setup as Setup, \
                               E_R
 from   collections     import namedtuple, defaultdict
 from   operator        import itemgetter
+from   itertools       import izip
 
 cc_type_db = {
     "space":                     E_CharacterCountType.COLUMN,
@@ -144,6 +145,14 @@ class CountAction(namedtuple("CountAction", ("cc_type", "value", "sr"))):
         else:
             return count_operation_db_with_reference[self.cc_type](self.value, 
                                                                    ColumnCountPerChunk)
+
+    def is_equal(self, Other):
+        """Two Count Actions are equal, if the CC-Type and the Parameter are
+        the same. The source reference (.sr) does not have to be the equal.
+        """
+        if   self.cc_type != Other.cc_type: return False
+        elif self.value != Other.value:     return False
+        else:                               return True
 
 class CountActionMap(list):
     """Map: NumberSet --> CountAction
@@ -260,6 +269,18 @@ class CountActionMap(list):
             intersection = SubSet.intersection(character_set)
             if intersection.is_empty(): continue
             yield intersection, count_action
+
+    def is_equal(self, Other):
+        if len(self) != len(Other):
+            return False
+        for x, y in izip(self, Other):
+            x_number_set, x_count_action = x
+            y_number_set, y_count_action = y
+            if not x_number_set.is_equal(y_number_set):
+                return False
+            elif not x_count_action.is_equal(y_count_action):
+                return False
+        return True
 
 class CountBase:
     def get_state_machines(self): 

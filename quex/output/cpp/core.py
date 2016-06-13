@@ -124,7 +124,8 @@ def do_default_counter(Mode):
     # only macro.
     assert isinstance(Mode.counter_db, CountBase)
     default_character_counter_function_name,   \
-    default_character_counter_function_code  = counter.get(Mode.counter_db, Mode.name)
+    default_character_counter_function_code  = counter.get(Mode.counter_db.count_command_map, 
+                                                           Mode.name)
 
     txt = [ Lng.DEFAULT_COUNTER_PROLOG(default_character_counter_function_name) ]
 

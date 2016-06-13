@@ -41,8 +41,8 @@ if "--hwut-info" in sys.argv:
 
 def test(NsCaList, SM_list=[]):
     Setup.buffer_codec.source_set = NumberSet_All()
-    ca_map                     = CountActionMap.from_list(NsCaList)
-    iid_loop_exit              = dial_db.new_incidence_id()
+    ca_map        = CountActionMap.from_list(NsCaList)
+    iid_loop_exit = dial_db.new_incidence_id()
 
     loop_map, \
     appendix_sm_list = loop._get_loop_map(ca_map, 
@@ -137,11 +137,10 @@ def get_sm_list(FSM0, FSM1, FSM2):
 
 def get_ca_list(L0, L1):
     ns_0         = NumberSet.from_range(L0, L1)
-    ns_remainder = NumberSet_All().difference(ns_0)
     return [
         (ns_0,         CountAction(E_CharacterCountType.COLUMN, 0)),
         # (ns_remainder, None),
-        (ns_remainder, CountAction(E_CharacterCountType.COLUMN, 4711)),
+        # (ns_remainder, CountAction(E_CharacterCountType.COLUMN, 4711)),
     ]
 
 if "Plain" in sys.argv:
@@ -184,7 +183,7 @@ elif "AppendixI" in sys.argv:
 
     # Test for each 'sm' in 'sm_list' is superfluous. 
     # It is done in 'AppendixNoI'.
-    test([], sm_list)
+    test(ca_list, sm_list)
 
 elif "Split" in sys.argv:
     # A first transition of a state machine is separated into two, because

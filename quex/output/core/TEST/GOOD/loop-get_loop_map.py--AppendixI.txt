@@ -10,16 +10,16 @@ exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0060, oo]  4 None
-[0010, 001F]  5 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 9>
-[0020, 002F]  6 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 17>
-[0030, 003F]  8 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 29>
-[0040, 004F]  7 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 21>
-[0050, 005F]  9 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 31>
+[-oo, 000F] [0060, oo]  3 None
+[0010, 001F]  4 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 0>
+[0020, 002F]  5 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 13>
+[0030, 003F]  7 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 25>
+[0040, 004F]  6 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 17>
+[0050, 005F]  8 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 2>
 
 #_[ Appendix State Machines ]________________________________
 
-IncidenceId: 9
+IncidenceId: 0
 init-state = 0L
 00000 
      == 'A' ==> 00001
@@ -28,7 +28,13 @@ init-state = 0L
     
 
 
-IncidenceId: 17
+IncidenceId: 2
+init-state = 0L
+00000 A(2)
+    
+
+
+IncidenceId: 13
 init-state = 0L
 00000 
      == 'A' ==> 00001
@@ -44,7 +50,7 @@ init-state = 0L
     
 
 
-IncidenceId: 21
+IncidenceId: 17
 init-state = 0L
 00000 A(2)
      == 'A' ==> 00001
@@ -54,7 +60,7 @@ init-state = 0L
     
 
 
-IncidenceId: 29
+IncidenceId: 25
 init-state = 0L
 00000 A(2)
      == 'A' ==> 00001
@@ -67,12 +73,6 @@ init-state = 0L
     
 00003 A(1)
      == 'B' ==> 00002
-    
-
-
-IncidenceId: 31
-init-state = 0L
-00000 A(2)
     
 
 

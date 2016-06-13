@@ -330,8 +330,8 @@ class LoopEventHandlers:
     def on_loop_exit_text(self):
         return Lng.COMMAND_LIST(self.on_loop_exit)
 
-@typed(TheCountMap=CountBase, ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list)
-def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None, 
+@typed(CaMap=CountActionMap, ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list)
+def do(CaMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None, 
        ReloadStateExtern=None, LexemeMaintainedF=False,
        ParallelSmTerminalPairList=None):
     """Generates a structure that 'loops' quickly over incoming characters.
@@ -377,7 +377,7 @@ def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     iid_loop_after_appendix_drop_out = dial_db.new_incidence_id() 
 
     assert EngineType is not None
-    event_handler = LoopEventHandlers(TheCountMap.get_column_number_per_code_unit(), 
+    event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
                                       LexemeEndCheckF, LexemeMaintainedF, 
                                       EngineType, ReloadStateExtern, 
                                       UserOnLoopExitDoorId=OnLoopExitDoorId) 
@@ -385,9 +385,7 @@ def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     # LoopMap: Associate characters with the reactions on their occurrence ____
     #
     loop_map,        \
-    appendix_sm_list = _get_loop_map(TheCountMap.count_command_map, 
-                                     parallel_sm_list, 
-                                     iid_loop_exit)
+    appendix_sm_list = _get_loop_map(CaMap, parallel_sm_list, iid_loop_exit)
 
     # Loop represented by Analyzer-s and Terminal-s ___________________________
     #
@@ -400,7 +398,7 @@ def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
         iid_loop_after_appendix_drop_out = None
 
     terminal_list  = _get_terminal_list(loop_map, event_handler, 
-                                        TheCountMap, appendix_sm_list, parallel_terminal_list,
+                                        CaMap, appendix_sm_list, parallel_terminal_list,
                                         door_id_loop,
                                         iid_loop_exit, 
                                         iid_loop_after_appendix_drop_out)
@@ -408,7 +406,7 @@ def do(TheCountMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     # Generate Code ___________________________________________________________
     #
     txt = _get_source_code(analyzer_list, terminal_list,
-                           TheCountMap.get_column_number_per_code_unit(),
+                           CaMap.get_column_number_per_code_unit(),
                            appendix_sm_exist_f) 
     
     return txt, DoorID.incidence(iid_loop_exit)
@@ -505,13 +503,18 @@ def _get_loop_map(CaMap, SmList, IidLoopExit):
     )
     universal_set = Setup.buffer_codec.source_set
     L_exit        = L_loop.get_complement(universal_set)
-    exit_list     = [ LoopMapEntry(L_exit, None, IidLoopExit, None) ]
+    if not L_exit.is_empty():
+        exit_list = [ LoopMapEntry(L_exit, None, IidLoopExit, None) ]
+    else:
+        exit_list = []
 
     result = couple_list + plain_list + exit_list
 
     assert not any(lei is None for lei in result)
     assert not any(lei.character_set is None for lei in result)
     assert not any(lei.incidence_id is None for lei in result)
+
+    result = [ x for x in result if not x.character_set.is_empty() ]
     return result, appendix_sm_list
 
 @typed(TheCountBase=CountActionMap)
@@ -576,6 +579,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList):
         if combined_sm is None:
             if len(sm_ulist) == 1:
                 combined_sm = sm_ulist[0]
+                combined_sm.mark_state_origins()
             else:
                 # TODO: May be, this is never required!
                 combined_sm = get_combined_state_machine(sm_ulist,
