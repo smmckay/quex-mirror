@@ -1,5 +1,4 @@
 from   quex.engine.analyzer.door_id_address_label  import __nice, dial_db
-import quex.engine.analyzer.engine_supply_factory  as     engine
 from   quex.engine.operations.operation_list       import Op
 from   quex.engine.analyzer.door_id_address_label  import DoorID
 import quex.output.core.loop                       as     loop
@@ -18,7 +17,7 @@ from   quex.blackboard                             import setup as Setup, Lng
 from   copy                                        import copy
 
 
-def do(Data, TheAnalyzer):
+def do(Data, ReloadState):
     """Functioning see 'get_skipper()'
     """
     CounterDb       = Data["counter_db"]
@@ -28,10 +27,10 @@ def do(Data, TheAnalyzer):
     OnSkipRangeOpen = Data["on_skip_range_open"]
     DoorIdAfter     = Data["door_id_after"]
 
-    return get_skipper(TheAnalyzer, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, DoorIdAfter, CounterDb) 
+    return get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, DoorIdAfter, CounterDb) 
 
 @typed(CounterDb=CountBase)
-def get_skipper(TheAnalyzer, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, DoorIdAfter, CounterDb):
+def get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, DoorIdAfter, CounterDb):
     """
                                         .---<---+----------<------+
                                         |       |                 |        
@@ -67,8 +66,8 @@ def get_skipper(TheAnalyzer, CloserSequence, CloserPattern, ModeName, OnSkipRang
                                OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
                                LexemeEndCheckF   = False,
                                LexemeMaintainedF = False,
-                               EngineType        = engine.FORWARD,
-                               ReloadStateExtern = TheAnalyzer.reload_state,
+                               EngineType        = ReloadState.engine_type,
+                               ReloadStateExtern = ReloadState,
                                ParallelSmTerminalPairList = psml) 
     return result
 

@@ -409,7 +409,9 @@ def do(CaMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
                            CaMap.get_column_number_per_code_unit(),
                            appendix_sm_exist_f) 
     
-    return txt, DoorID.incidence(iid_loop_exit)
+    # Clean the loop map from the 'exit transition'.
+    clean_loop_map = [lei for lei in loop_map if lei.incidence_id != iid_loop_exit]
+    return txt, clean_loop_map, DoorID.incidence(iid_loop_exit)
 
 def _extract_state_machines_and_terminals(ParallelSmTerminalPairList):
     if ParallelSmTerminalPairList is None:

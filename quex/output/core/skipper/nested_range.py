@@ -17,7 +17,7 @@ import quex.output.core.loop                        as     loop
 from   quex.engine.misc.tools                       import typed
 from   quex.blackboard                              import Lng, E_R
 
-def do(Data, TheAnalyzer):
+def do(Data, ReloadState):
 
     CounterDb       = Data["counter_db"]
     OpenerSequence  = Data["opener_sequence"]
@@ -25,10 +25,10 @@ def do(Data, TheAnalyzer):
     OnSkipRangeOpen = Data["on_skip_range_open"]
     DoorIdAfter     = Data["door_id_after"]
 
-    return get_skipper(TheAnalyzer, OpenerSequence, CloserSequence, OnSkipRangeOpen, DoorIdAfter, CounterDb) 
+    return get_skipper(ReloadState, OpenerSequence, CloserSequence, OnSkipRangeOpen, DoorIdAfter, CounterDb) 
 
 @typed(CounterDb=CountBase)
-def get_skipper(TheAnalyzer, OpenerSequence, CloserSequence, OnSkipRangeOpen, DoorIdAfter, CounterDb):
+def get_skipper(ReloadState, OpenerSequence, CloserSequence, OnSkipRangeOpen, DoorIdAfter, CounterDb):
     """
                                     .---<---+----------<------+------------------.
                                     |       |                 |                  |
@@ -70,8 +70,8 @@ def get_skipper(TheAnalyzer, OpenerSequence, CloserSequence, OnSkipRangeOpen, Do
                                OnLoopExitDoorId  = DoorIdAfter,
                                LexemeEndCheckF   = False,
                                LexemeMaintainedF = False,
-                               EngineType        = engine.FORWARD,
-                               ReloadStateExtern = TheAnalyzer.reload_state,
+                               EngineType        = ReloadState.engine_type,
+                               ReloadStateExtern = ReloadState,
                                ParallelSmTerminalPairList = psml) 
 
     counter_variable = Lng.REGISTER_NAME(E_R.Counter)

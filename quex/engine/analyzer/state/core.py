@@ -216,6 +216,7 @@ class ReloadState(Processor):
         if EngineType.is_FORWARD(): index = E_StateIndices.RELOAD_FORWARD
         else:                       index = E_StateIndices.RELOAD_BACKWARD
         Processor.__init__(self, index, Entry())
+        self.engine_type = EngineType
 
     def remove_states(self, StateIndexSet):
         self.entry.remove_transition_from_states(StateIndexSet)

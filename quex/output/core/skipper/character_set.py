@@ -7,7 +7,7 @@ from   quex.engine.counter                        import CountBase
 from   quex.engine.misc.interval_handling         import NumberSet
 from   quex.blackboard                            import Lng
 
-def do(Data, TheAnalyzer):
+def do(Data, ReloadState):
     """Fast implementation of character set skipping machine.
     ________________________________________________________________________
     As long as characters of a given character set appears it iterates: 
@@ -70,15 +70,17 @@ def do(Data, TheAnalyzer):
     assert isinstance(counter_db, CountBase)
     assert isinstance(character_set, NumberSet)
 
-    reload_state = TheAnalyzer.reload_state
-        
+    ca_map = counter_db.count_command_map
+    ca_map = ca_map.pruned_clone(character_set)
+
     result,        \
-    door_id_beyond = loop.do(counter_db,
+    loop_map,      \
+    door_id_beyond = loop.do(ca_map,
                              OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
                              LexemeEndCheckF   = False,
                              LexemeMaintainedF = False,
-                             EngineType        = engine.FORWARD,
-                             ReloadStateExtern = reload_state) 
+                             EngineType        = ReloadState.engine_type,
+                             ReloadStateExtern = ReloadState) 
 
     assert isinstance(result, list)
-    return result
+    return result, loop_map

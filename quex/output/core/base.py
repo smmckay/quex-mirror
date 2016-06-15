@@ -39,7 +39,7 @@ from   quex.blackboard        import E_IncidenceIDs, \
 #
 # INDENTATION_DETECTOR_SM:
 
-def do_main(SM):
+def do_main(SM, ReloadStateForward):
     """Main pattern matching state machine (forward).
     ---------------------------------------------------------------------------
     Micro actions are: line/column number counting, position set/reset,
@@ -54,11 +54,13 @@ def do_main(SM):
 
             position, PositionRegisterN, last_acceptance, input.
     """
-    txt, analyzer = do_state_machine(SM, engine.Class_FORWARD())
+    txt, analyzer = __do_state_machine(SM, engine.Class_FORWARD(), ReloadStateForward)
 
     if analyzer.last_acceptance_variable_required():
         variable_db.require("last_acceptance")
 
+    if analyzer.reload_state is None:
+        analyzer.reload_state = ReloadStateForward
     return txt, analyzer
 
 def do_pre_context(SM, PreContextSmIdList):
@@ -81,7 +83,7 @@ def do_pre_context(SM, PreContextSmIdList):
     if SM is None: 
         return [], None
 
-    txt, analyzer = do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT) 
+    txt, analyzer = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT) 
 
     txt.append("\n%s:" % dial_db.get_label_by_door_id(DoorID.global_end_of_pre_context_check()))
     # -- set the input stream back to the real current position.
@@ -103,8 +105,8 @@ def do_backward_read_position_detectors(BipdDb):
     """
     result = []
     for incidence_id, bipd_sm in BipdDb.iteritems():
-        txt, analyzer = do_state_machine(bipd_sm, 
-                                         engine.Class_BACKWARD_INPUT_POSITION(incidence_id)) 
+        txt, analyzer = __do_state_machine(bipd_sm, 
+                                           engine.Class_BACKWARD_INPUT_POSITION(incidence_id)) 
         result.extend(txt)
     return result
 
@@ -173,7 +175,7 @@ def do_variable_definitions():
     # Following function refers to the global 'variable_db'
     return Lng.VARIABLE_DEFINITIONS(variable_db)
 
-def do_state_machine(sm, EngineType): 
+def __do_state_machine(sm, EngineType, ReloadStateForward=None): 
     """Generates code for state machine 'sm' and the 'EngineType'.
 
     RETURNS: list of strings
@@ -186,7 +188,7 @@ def do_state_machine(sm, EngineType):
         Lng.COMMENT_STATE_MACHINE(txt, sm)
 
     # -- Analyze state machine --> optimized version
-    analyzer = analyzer_generator.do(sm, EngineType)
+    analyzer = analyzer_generator.do(sm, EngineType, ReloadStateExtern=ReloadStateForward)
 
     # -- Generate code for analyzer
     txt.extend(

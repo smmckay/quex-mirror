@@ -24,6 +24,7 @@ def do(Mode, ModeNameList):
     function_body,       \
     variable_definitions = do_core(Mode.pattern_list, 
                                    Mode.terminal_db,
+                                   Mode.reload_state_forward,
                                    Mode.on_after_match_code)
 
     function_txt = wrap_up(Mode.name, function_body, variable_definitions, 
@@ -32,7 +33,7 @@ def do(Mode, ModeNameList):
     return function_txt
 
 @typed(PatternList=[Pattern], TerminalDb={(E_IncidenceIDs, long): Terminal})
-def do_core(PatternList, TerminalDb, OnAfterMatchCode=None):
+def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None):
     """Produces main code for an analyzer function which can detect patterns given in
     the 'PatternList' and has things to be done mentioned in 'TerminalDb'. 
 
@@ -59,7 +60,7 @@ def do_core(PatternList, TerminalDb, OnAfterMatchCode=None):
     # (*) Main State Machine -- try to match core patterns
     #     Post-context handling is webbed into the main state machine.
     main, \
-    main_analyzer        = generator.do_main(esms.sm)
+    main_analyzer        = generator.do_main(esms.sm, ReloadStateForward)
     # assert all_isinstance(main, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Terminals

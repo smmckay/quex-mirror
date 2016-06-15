@@ -10,10 +10,12 @@ import quex.input.files.parser_data.patterns_and_terminals as patterns_and_termi
 from   quex.input.code.core                            import CodeUser
 from   quex.input.code.base                            import SourceRef
 
+from   quex.engine.analyzer.state.core                 import ReloadState
 import quex.engine.state_machine.check.same            as     same_check
 import quex.engine.state_machine.check.outrun          as     outrun_checker
 import quex.engine.state_machine.check.superset        as     superset_check
 import quex.engine.misc.error                          as     error
+import quex.engine.analyzer.engine_supply_factory      as     engine
 from   quex.engine.misc.file_in                        import EndOfStreamException, \
                                                               check, \
                                                               check_or_die, \
@@ -227,6 +229,7 @@ class Mode:
         #
         # The list is developed so that patterns can be sorted and code 
         # fragments are prepared.
+        self.reload_state_forward = ReloadState(EngineType=engine.FORWARD)
         self.__pattern_list, \
         self.__terminal_db,  \
         self.__default_character_counter_required_f, \
@@ -235,7 +238,8 @@ class Mode:
                                       patterns_and_terminals.get(base_mode_sequence, 
                                                                  options_db, 
                                                                  counter_db, 
-                                                                 incidence_db)
+                                                                 incidence_db, 
+                                                                 self.reload_state_forward)
         
         # (*) Misc
         self.__abstract_f           = self.__is_abstract(Origin.incidence_db, 

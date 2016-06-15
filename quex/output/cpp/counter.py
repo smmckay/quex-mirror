@@ -51,6 +51,7 @@ def get(CaMap, Name):
 
     door_id_return = dial_db.new_door_id()
     code,          \
+    loop_map,      \
     door_id_beyond = loop.do(CaMap, 
                              OnLoopExitDoorId = door_id_return,
                              LexemeEndCheckF  = True,

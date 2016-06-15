@@ -164,6 +164,9 @@ class CountActionMap(list):
             result.append(entry)
         return result
 
+    def pruned_clone(self, SubSet):
+        return CountActionMap.from_list(self.iterable_in_sub_set(SubSet))
+
     def get_count_commands(self, CharacterSet):
         """Finds the count command for column, grid, and newline. This does NOT
         consider 'chunk number per character'. The consideration is on pure 

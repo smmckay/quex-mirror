@@ -90,8 +90,6 @@ def do(Data, TheAnalyzer):
     #    explicitly disallowed to be used as indentation.
     bad_indentation_iid = dial_db.new_incidence_id() 
 
-    reload_state        = TheAnalyzer.reload_state
-
     sm_terminal_list    = _get_state_machine_vs_terminal_list(sm_suppressed_newline, 
                                                               isetup.sm_newline.get(),
                                                               isetup.sm_comment.get(), 
@@ -105,8 +103,8 @@ def do(Data, TheAnalyzer):
     code,          \
     door_id_beyond = loop.do(counter_db, 
                              OnLoopExit        = on_loop_exit,
-                             EngineType        = TheAnalyzer.engine_type,
-                             ReloadStateExtern = reload_state,
+                             EngineType        = ReloadState.engine_type,
+                             ReloadStateExtern = ReloadState,
                              LexemeMaintainedF = True,
                              ParallelSmTerminalPairList = sm_terminal_list)
 
