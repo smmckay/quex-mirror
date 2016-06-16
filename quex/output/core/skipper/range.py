@@ -61,12 +61,15 @@ def get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRang
     """
     psml             = _get_state_machine_vs_terminal_list(CloserSequence, 
                                                            CounterDb)
+    engine_type = None # Default
+    if ReloadState: engine_type = ReloadState.engine_type
+
     result,          \
     door_id_beyond   = loop.do(CounterDb,
                                OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
                                LexemeEndCheckF   = False,
                                LexemeMaintainedF = False,
-                               EngineType        = ReloadState.engine_type,
+                               EngineType        = engine_type,
                                ReloadStateExtern = ReloadState,
                                ParallelSmTerminalPairList = psml) 
     return result

@@ -99,11 +99,14 @@ def do(Data, TheAnalyzer):
     # 'bad'        --> goto bad character indentation handler
     # else         --> non-whitespace detected => handle indentation
 
+    engine_type = None # Default
+    if ReloadState: engine_type = ReloadState.engine_type
+
     # (*) Generate Code
     code,          \
     door_id_beyond = loop.do(counter_db, 
                              OnLoopExit        = on_loop_exit,
-                             EngineType        = ReloadState.engine_type,
+                             EngineType        = engine_type,
                              ReloadStateExtern = ReloadState,
                              LexemeMaintainedF = True,
                              ParallelSmTerminalPairList = sm_terminal_list)

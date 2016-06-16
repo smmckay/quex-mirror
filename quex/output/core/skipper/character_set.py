@@ -73,13 +73,16 @@ def do(Data, ReloadState):
     ca_map = counter_db.count_command_map
     ca_map = ca_map.pruned_clone(character_set)
 
+    engine_type = None # Default
+    if ReloadState: engine_type = ReloadState.engine_type
+
     result,        \
     loop_map,      \
     door_id_beyond = loop.do(ca_map,
                              OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
                              LexemeEndCheckF   = False,
                              LexemeMaintainedF = False,
-                             EngineType        = ReloadState.engine_type,
+                             EngineType        = engine_type,
                              ReloadStateExtern = ReloadState) 
 
     assert isinstance(result, list)

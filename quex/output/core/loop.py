@@ -98,6 +98,7 @@ PROCEDURE:
 from   quex.input.code.core                               import CodeTerminal
 import quex.engine.analyzer.core                          as     analyzer_generator
 from   quex.engine.state_machine.engine_state_machine_set import get_combined_state_machine
+import quex.engine.analyzer.engine_supply_factory         as     engine
 from   quex.engine.operations.operation_list              import Op, \
                                                                  OpList
 import quex.engine.state_machine.index                    as     index
@@ -369,6 +370,9 @@ def do(CaMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
             
     During the 'loop' possible line/column count commands may be applied. 
     """
+    if EngineType is None:
+        EngineType = engine.FORWARD
+
     parallel_terminal_list, \
     parallel_sm_list        = _extract_state_machines_and_terminals(ParallelSmTerminalPairList)
     assert all(isinstance(t, MiniTerminal) for t in parallel_terminal_list)
@@ -376,7 +380,6 @@ def do(CaMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     iid_loop_exit                    = dial_db.new_incidence_id()
     iid_loop_after_appendix_drop_out = dial_db.new_incidence_id() 
 
-    assert EngineType is not None
     event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
                                       LexemeEndCheckF, LexemeMaintainedF, 
                                       EngineType, ReloadStateExtern, 

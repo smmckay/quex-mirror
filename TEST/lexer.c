@@ -6,6 +6,11 @@
 #ifndef    PRINT_TOKEN_FIRST_NUMBER 
 #   define PRINT_TOKEN_FIRST_NUMBER 0
 #endif
+#ifndef    TEST_PROLOG
+#   define TEST_PROLOG \
+    printf(",------------------------------------------------------------------------------------\n"); \
+    printf("| [START]\n");
+#endif
 #ifndef    TEST_EPILOG
 #   define TEST_EPILOG \
     printf("| [END] number of token = %li\n", token_n); \
@@ -16,8 +21,8 @@ int
 main(int argc, char** argv) 
 {        
 #   ifdef PRINT_TOKEN
-    const size_t BufferSize = 1024;
-    char         buffer[1024];
+    const size_t  BufferSize = 1024;
+    char          buffer[1024];
 #   endif
     quex_Token*   token_p = 0x0;
     long          token_n = 0;
@@ -25,11 +30,11 @@ main(int argc, char** argv)
 #   ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE
     QUEX_TYPE_TOKEN_ID token_id = (QUEX_TYPE_TOKEN_ID)0x0;
 #   endif
-    const char*        file_name = argc > 1 ? argv[1] : "example.txt";
+    const char*   file_name = argc > 1 ? argv[1] : "example.txt";
+
     QUEX_NAME(from_file_name)(&qlex, file_name, CHARACTER_ENCODING_NAME);
 
-    printf(",------------------------------------------------------------------------------------\n");
-    printf("| [START]\n");
+    TEST_PROLOG
     fflush(stdout);
     fflush(stderr);
 
@@ -74,5 +79,6 @@ main(int argc, char** argv)
 
     TEST_EPILOG
 
+    QUEX_NAME(destruct)(&qlex);
     return 0;
 }

@@ -65,12 +65,15 @@ def get_skipper(ReloadState, OpenerSequence, CloserSequence, OnSkipRangeOpen, Do
     psml             = _get_state_machine_vs_terminal_list(CloserSequence, 
                                                            OpenerSequence,
                                                            CounterDb, DoorIdAfter)
+    engine_type = None # Default
+    if ReloadState: engine_type = ReloadState.engine_type
+
     result,          \
     door_id_beyond   = loop.do(CounterDb,
                                OnLoopExitDoorId  = DoorIdAfter,
                                LexemeEndCheckF   = False,
                                LexemeMaintainedF = False,
-                               EngineType        = ReloadState.engine_type,
+                               EngineType        = engine_type,
                                ReloadStateExtern = ReloadState,
                                ParallelSmTerminalPairList = psml) 
 

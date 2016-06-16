@@ -59,7 +59,8 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
         "counter_db":           LineColumnCount_Default(),
         "require_label_SKIP_f": False, 
     }
-    skipper_code = character_set_skipper.do(data, Analyzer)
+    skipper_code, \
+    loop_map      = character_set_skipper.do(data, Analyzer.reload_state)
 
     if InitialSkipF: marker_char_list = TriggerSet.get_number_list()
     else:            marker_char_list = []
@@ -92,7 +93,7 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
         "counter_db":         LineColumnCount_Default(),
     }
 
-    skipper_code = range_skipper.do(data, Analyzer)
+    skipper_code = range_skipper.do(data, Analyzer.reload_state)
     __require_variables()
 
     return create_customized_analyzer_function(Language, TestStr, skipper_code,
@@ -119,7 +120,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
         "counter_db":         LineColumnCount_Default(),
     }
 
-    skipper_code = nested_range_skipper.do(data, Analyzer)
+    skipper_code = nested_range_skipper.do(data, Analyzer.reload_state)
     __require_variables()
 
     return create_customized_analyzer_function(Language, TestStr, skipper_code,
@@ -141,7 +142,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
     }
 
     code = [ "%s\n" % Lng.LABEL(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER)) ]
-    code.extend(indentation_counter.do(data, Analyzer))
+    code.extend(indentation_counter.do(data, Analyzer.reload_state))
 
     return create_customized_analyzer_function(Language, TestStr, code, 
                                                QuexBufferSize=BufferSize, 

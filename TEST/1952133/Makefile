@@ -14,12 +14,14 @@ endif
 #     
 #     Buffer sizes:   28 --> buffer overflow
 #                     29 --> OK
-COMPILER = @g++
+COMPILER = @gcc
 CC = $(COMPILER) -c -fPIC -Wno-deprecated -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 	 -I./ -I$(QUEX_PATH) $(NDEBUG_F) \
      -DQUEX_SETTING_BUFFER_SIZE=$(BUFFER_SIZE) \
 	 -DQUEX_OPTION_ACTIVATE_ASSERTS \
-	 -DTEST_EPILOG='std::printf("Buffer Size = %i\n", QUEX_SETTING_BUFFER_SIZE);'
+	 -DPRINT_TOKEN \
+	 -DTEST_PROLOG='' \
+	 -DTEST_EPILOG='printf("Buffer Size = %i\n", QUEX_SETTING_BUFFER_SIZE);'
 	 # -D__QUEX_OPTION_UNIT_TEST \
      # -DQUEX_OPTION_DEBUG_SHOW \
      # -D__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS \
@@ -34,14 +36,14 @@ lexer: lexer.o Simple.o
 	$(LD) lexer.o Simple.o -o $@
 
 # -- engine and object files
-lexer.o: ../lexer.cpp Simple.cpp
+lexer.o: ../lexer.c Simple.c
 	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED $< -ggdb -o $@
 
-%.o: %.cpp Simple.cpp
+%.o: %.c Simple.c
 	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED $< -ggdb -o $@
 
-Simple.cpp: simple.qx
-	@quex -i simple.qx -o Simple --debug-exception > tmp.txt 2>&1
+Simple.c: simple.qx
+	@quex -i simple.qx -o Simple --language C --debug-exception > tmp.txt 2>&1
 
 # (*) HELPERS __________________________________________________________________
 mostlyclean:

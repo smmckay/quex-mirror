@@ -59,8 +59,10 @@ def do_main(SM, ReloadStateForward):
     if analyzer.last_acceptance_variable_required():
         variable_db.require("last_acceptance")
 
-    if analyzer.reload_state is None:
-        analyzer.reload_state = ReloadStateForward
+    # Treat the external reload state the same way as if it was generated
+    # along the process.
+    analyzer.reload_state_extern_f = False
+
     return txt, analyzer
 
 def do_pre_context(SM, PreContextSmIdList):
