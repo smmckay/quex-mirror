@@ -22,7 +22,7 @@ analyzer. This includes the following:
 (C) 2005-2012 Frank-Rene Schaefer
 """
 from   quex.engine.generator.action_info           import CodeFragment, \
-                                                          PatternActionInfo
+                                                          PatternActionPair
 from   quex.engine.analyzer.door_id_address_label  import Label
 from   quex.blackboard                             import setup as Setup, E_IncidenceIDs
 import quex.output.cpp.counter_for_pattern         as     counter_for_pattern

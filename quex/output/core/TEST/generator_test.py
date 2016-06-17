@@ -6,7 +6,7 @@ from StringIO import StringIO
 from tempfile import mkstemp
 sys.path.insert(0, os.environ["QUEX_PATH"])
 #
-from   quex.input.files.mode                       import PatternActionInfo, IncidenceDB
+from   quex.input.files.mode                       import PatternActionPair, IncidenceDB
 from   quex.input.regular_expression.auxiliary     import PatternShorthand
 import quex.input.regular_expression.engine        as     regex
 from   quex.input.regular_expression.exception     import RegularExpressionException
