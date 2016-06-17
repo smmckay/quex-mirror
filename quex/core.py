@@ -129,7 +129,7 @@ def analyzer_functions_get(ModeDB):
     for name, mode_descr in ModeDB.iteritems():        
         dial_db.clear()
 
-        # -- Generate 'Mode' from 'ModeDescriptions'
+        # -- Generate 'Mode' from 'Specifier_Modes'
         mode = Mode(mode_descr)
         blackboard.mode_db[name] = mode
 
@@ -209,13 +209,13 @@ def do_comment_pattern_action_pairs(ModeIterable):
     return comment 
 
 def blackboard_mode_db_setup(ModeDescrDb):
-    """Takes all ModeDescription-s from ModeDescrDb and generates Mode objects
+    """Takes all Specifier_Mode-s from ModeDescrDb and generates Mode objects
     out of them. 
 
     RESULT: blackboard.mode_db containing appropriate Mode objects.
     """
     def enter(Name, ModeDescr):
-        mode = Mode(mode_descr)  # -- Generate 'Mode' from 'ModeDescriptions'
+        mode = Mode(mode_descr)  # -- Generate 'Mode' from 'Specifier_Modes'
         blackboard.mode_db[name] = mode
         return mode
 

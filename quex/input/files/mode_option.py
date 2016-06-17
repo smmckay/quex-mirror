@@ -1,7 +1,7 @@
-import quex.input.files.counter             as     counter
+import quex.input.files.specifier.counter   as     counter
+from   quex.input.files.specifier           import LineColumnCount_Default
 import quex.input.regular_expression.core   as     regular_expression
 from   quex.input.code.base                 import SourceRef
-from   quex.input.files.counter             import LineColumnCount_Default
 from   quex.engine.counter                  import LineColumnCount, \
                                                    IndentationCount
 from   quex.engine.misc.tools               import all_isinstance
@@ -138,7 +138,7 @@ class OptionDB(dict):
     def enter(self, Name, Value, SourceReference, ModeName):
         """Enters a new definition of a mode option as it comes from the parser.
         At this point, it is assumed that the OptionDB belongs to one single
-        ModeDescription and not to a base-mode accumulated Mode. Thus, one
+        Specifier_Mode and not to a base-mode accumulated Mode. Thus, one
         option can only be set once, otherwise an error is notified.
         """
         global mode_option_info_db
@@ -157,7 +157,7 @@ class OptionDB(dict):
 
     @typed(Setting=(None, OptionSetting))
     def __enter_setting(self, Name, Setting):
-        """During building of a ModeDescription. Enters a OptionSetting safely into the 
+        """During building of a Specifier_Mode. Enters a OptionSetting safely into the 
         OptionDB. It checks whether it is already present.
         """
         info = mode_option_info_db[Name]
@@ -262,11 +262,11 @@ def parse(fh, new_mode):
         value = __parse_range_skipper_option(fh, identifier, new_mode)
         
     elif identifier == "indentation":
-        value = ReceiverIndentationCount(fh).parse()
+        value = counter.Specifier_IndentationCount(fh).parse()
         blackboard.required_support_indentation_count_set()
 
     elif identifier == "counter":
-        value = ReceiverLineColumnCount(fh).parse()
+        value = counter.Specifier_LineColumnCount(fh).parse()
 
     elif identifier in ("entry", "exit"):
         value = read_option_value(fh, ListF=True) # A 'list' of strings

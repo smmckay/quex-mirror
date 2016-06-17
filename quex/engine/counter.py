@@ -294,6 +294,7 @@ class LineColumnCount(CountBase):
         self.sr = SourceReference
         # During Parsing: The 'count_command_map' is specified later.
         self.count_command_map = CountActionMap
+        self.__consistency_check()
 
     def get_state_machines(self):
         return []
@@ -301,7 +302,7 @@ class LineColumnCount(CountBase):
     def get_column_number_per_code_unit(self, CharacterSet=None):
         return self.count_command_map.get_column_number_per_code_unit(CharacterSet)
 
-    def consistency_check(self):
+    def __consistency_check(self):
         self.count_command_map.check_grid_values_integer_multiples()
         # The following is nonsense: We detect that we did not choose an alternative 
         # which is worse?!

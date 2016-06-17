@@ -49,7 +49,7 @@ def get(ThePattern, ShiftF=True):
 
     It is called inside the 'prepare_count_info()' member function of the
     pattern at the time when it is communicated to the 'Mode' object from the
-    'ModeDescription' object in:
+    'Specifier_Mode' object in:
 
               quex.input.files.mode.Mode.__init__(...)
 

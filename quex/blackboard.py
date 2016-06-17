@@ -304,9 +304,9 @@ def standard_incidence_db_get_terminal_type(IncidenceId):
 #-----------------------------------------------------------------------------------------
 # mode_description_db: storing the mode information into a dictionary:
 #            key  = mode name
-#            item = ModeDescription object
+#            item = Specifier_Mode object
 #
-# ModeDescription-s are the direct product of parsing. They are later translated into
+# Specifier_Mode-s are the direct product of parsing. They are later translated into
 # Mode-s.
 #-----------------------------------------------------------------------------------------
 mode_description_db = {}
@@ -316,7 +316,7 @@ mode_description_db = {}
 #            item = Mode object
 #
 # A Mode is a more 'fermented' container of information about a mode. It is based on
-# a ModeDescription.
+# a Specifier_Mode.
 #-----------------------------------------------------------------------------------------
 mode_db = {}
 

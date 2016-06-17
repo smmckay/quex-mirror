@@ -1,29 +1,29 @@
 
-from   quex.input.setup                                import NotificationDB
-import quex.input.regular_expression.core              as     regular_expression
-from   quex.input.regular_expression.construct         import Pattern           
-import quex.input.files.mode_option                    as     mode_option
-from   quex.input.files.mode_option                    import OptionDB
-import quex.input.files.code_fragment                  as     code_fragment
-from   quex.input.files.consistency_check              import __error_message as c_error_message
-import quex.input.files.parser_data.patterns_and_terminals as patterns_and_terminals
-from   quex.input.code.core                            import CodeUser
-from   quex.input.code.base                            import SourceRef
-
-from   quex.engine.analyzer.state.core                 import ReloadState
-import quex.engine.state_machine.check.same            as     same_check
-import quex.engine.state_machine.check.outrun          as     outrun_checker
-import quex.engine.state_machine.check.superset        as     superset_check
-import quex.engine.misc.error                          as     error
-import quex.engine.analyzer.engine_supply_factory      as     engine
-from   quex.engine.misc.file_in                        import EndOfStreamException, \
-                                                              check, \
-                                                              check_or_die, \
-                                                              read_identifier, \
-                                                              read_until_letter, \
-                                                              read_until_whitespace, \
-                                                              skip_whitespace
-from   quex.engine.incidence_db                        import IncidenceDB
+from   quex.input.setup                                  import NotificationDB
+import quex.input.regular_expression.core                as     regular_expression
+from   quex.input.regular_expression.construct           import Pattern           
+import quex.input.files.mode_option                      as     mode_option
+from   quex.input.files.mode_option                      import OptionDB
+import quex.input.files.code_fragment                    as     code_fragment
+from   quex.input.files.consistency_check                import __error_message as c_error_message
+import quex.input.files.specifier.patterns_and_terminals as    patterns_and_terminals
+from   quex.input.code.core                              import CodeUser
+from   quex.input.code.base                              import SourceRef
+                                                         
+from   quex.engine.analyzer.state.core                   import ReloadState
+import quex.engine.state_machine.check.same              as     same_check
+import quex.engine.state_machine.check.outrun            as     outrun_checker
+import quex.engine.state_machine.check.superset          as     superset_check
+import quex.engine.misc.error                            as     error
+import quex.engine.analyzer.engine_supply_factory        as     engine
+from   quex.engine.misc.file_in                          import EndOfStreamException, \
+                                                                check, \
+                                                                check_or_die, \
+                                                                read_identifier, \
+                                                                read_until_letter, \
+                                                                read_until_whitespace, \
+                                                                skip_whitespace
+from   quex.engine.incidence_db                          import IncidenceDB
 from   quex.engine.misc.tools import typed, all_isinstance
 import quex.blackboard as blackboard
 from   quex.blackboard import setup as Setup, \
@@ -35,9 +35,9 @@ from   collections import namedtuple
 from   itertools   import islice
 
 #-----------------------------------------------------------------------------------------
-# ModeDescription/Mode Objects:
+# Specifier_Mode/Mode Objects:
 #
-# During parsing 'ModeDescription' objects are generated. Once parsing is over, 
+# During parsing 'Specifier_Mode' objects are generated. Once parsing is over, 
 # the descriptions are translated into 'real' mode objects where code can be generated
 # from. All matters of inheritance and pattern resolution are handled in the
 # transition from description to real mode.
@@ -73,7 +73,7 @@ class PatternActionInfo(object):
         txt += "self.incidence_id = %s\n" % repr(self.pattern().incidence_id()) 
         return txt
 
-class ModeDescription:
+class Specifier_Mode:
     """Mode description delivered directly from the parser.
     ______________________________________________________________________________
     MAIN MEMBERS:
@@ -128,7 +128,7 @@ class ModeDescription:
                  "deletion_info_list")
 
     def __init__(self, Name, SourceReference):
-        # Register ModeDescription at the mode database
+        # Register Specifier_Mode at the mode database
         blackboard.mode_description_db[Name] = self
         self.name  = Name
         self.sr    = SourceReference
@@ -191,7 +191,7 @@ class Mode:
                         NOTE: The incidences mentioned in 'incidence_db' are
                         all 'terminals' and NOT things which appear 'by the side'.
 
-     A Mode is built upon a ModeDescription object. A mode description contains
+     A Mode is built upon a Specifier_Mode object. A mode description contains
      further 'option_db' such as a column-line-count specification and a
      indentation setup.
     ____________________________________________________________________________
@@ -199,10 +199,10 @@ class Mode:
     focus = ("<skip>", "<skip_range>", "<skip_nested_range>", "<indentation newline>")
 
     def __init__(self, Origin):
-        """Translate a ModeDescription into a real Mode. Here is the place were 
+        """Translate a Specifier_Mode into a real Mode. Here is the place were 
         all rules of inheritance mechanisms and pattern precedence are applied.
         """
-        assert isinstance(Origin, ModeDescription)
+        assert isinstance(Origin, Specifier_Mode)
         self.name = Origin.name
         self.sr   = Origin.sr   # 'SourceRef' -- is immutable
 
@@ -505,7 +505,7 @@ def parse(fh):
     mode_name = read_identifier(fh, OnMissingStr="Missing identifier at beginning of mode definition.")
 
     # NOTE: constructor does register this mode in the mode_db
-    new_mode  = ModeDescription(mode_name, SourceRef.from_FileHandle(fh))
+    new_mode  = Specifier_Mode(mode_name, SourceRef.from_FileHandle(fh))
 
     # (*) inherited modes / option_db
     skip_whitespace(fh)

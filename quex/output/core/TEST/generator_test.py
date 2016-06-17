@@ -11,7 +11,7 @@ from   quex.input.regular_expression.auxiliary     import PatternShorthand
 import quex.input.regular_expression.engine        as     regex
 from   quex.input.regular_expression.exception     import RegularExpressionException
 from   quex.input.code.core                        import CodeTerminal
-from   quex.input.files.counter                    import LineColumnCount_Default
+from   quex.input.files.specifier.counter          import LineColumnCount_Default
 from   quex.engine.misc.string_handling            import safe_string
 import quex.engine.state_machine.transformation.core  as     bc_factory
 from   quex.engine.analyzer.door_id_address_label  import DoorID, \

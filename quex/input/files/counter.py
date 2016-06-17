@@ -20,12 +20,13 @@ from   quex.engine.misc.file_in                       import check, \
 from   quex.blackboard import E_CharacterCountType, \
                               setup as Setup
 
-class Receiver:
+class Specifier_CountBase:
     @typed(sr=SourceRef)
     def __init__(self, sr, Name, IdentifierList):
-        self.sr = sr
-        self.name = Name
-        self.identifier_list = IdentifierList
+        self.sr                = sr
+        self.name              = Name
+        self.identifier_list   = IdentifierList
+        self._ca_map_specifier = Specifier_CountActionMap()
 
     def _base_parse(self, fh, IndentationSetupF=False):
         """Parses pattern definitions of the form:
@@ -61,24 +62,31 @@ class Receiver:
             if not check(fh, ";"):
                 error.log("Missing ';' after '%s' specification." % identifier, fh)
 
-        return self.finalize()
+        return # Must be followed by 'finalization'
 
-class ReceiverLineColumnCount(Receiver):
+class Specifier_LineColumnCount(Specifier_CountBase):
     """Line/column number count specification.
     ___________________________________________________________________________
     The main result of the parsing the the Base's .count_command_map which is 
-    an instance of SpecifierCountActionMap.
+    an instance of Specifier_CountActionMap.
     ____________________________________________________________________________
     """
     @typed(sr=SourceRef)
     def __init__(self, fh):
-        sr          = SourceRef.from_FileHandle(fh)
-        self.__fh   = fh
-        self.result = LineColumnCount(sr)
-        Receiver.__init__(self, sr, "Line/column counter", ("space", "grid", "newline"), TheCountOpMap)
+        sr        = SourceRef.from_FileHandle(fh)
+        self.__fh = fh
+        Specifier_CountBase.__init__(self, sr, "Line/column counter", ("space", "grid", "newline"), TheCountOpMap)
 
     def parse(self):
-        return self._base_parse(self.__fh, IndentationSetupF=False)
+        self._base_parse(self.__fh, IndentationSetupF=False)
+
+        # Finalize / Produce 'LineColumnCount' object.
+        # 
+        ca_map = self._ca_map_specifier.finalize(
+                              Setup.buffer_codec.source_set.minimum(), 
+                              Setup.buffer_codec.source_set.supremum(), 
+                              self._sr)
+        return LineColumnCount(sr, ca_map)
 
     def requires_count(self):
         return True
@@ -91,16 +99,7 @@ class ReceiverLineColumnCount(Receiver):
             trigger_set = extract_trigger_set(sr, Identifier, Pattern) 
             self.count_command_map.add(trigger_set, Identifier, Count, sr)
 
-    def finalize(self):
-        # Assign the 'else' command to all the remaining places in the character map.
-        self.result.count_command_map = self.specifier_count_op_map.finalize(
-                     Setup.buffer_codec.source_set.minimum(), 
-                     Setup.buffer_codec.source_set.supremum(), 
-                     self.sr)
-        self.result.consistency_check()
-        return self.result 
-
-class ReceiverIndentationCount(Receiver):
+class Specifier_IndentationCount(Specifier_CountBase):
     """Indentation counter specification.
     ____________________________________________________________________________
     The base's .count_command_map contains information about how to count the 
@@ -126,15 +125,35 @@ class ReceiverIndentationCount(Receiver):
     """
     @typed(sr=SourceRef)
     def __init__(self, fh):
-        sr          = SourceRef.from_FileHandle(fh)
-        self.__fh   = fh
-        self.result = IndentationCount()
+        sr        = SourceRef.from_FileHandle(fh)
+        self.__fh = fh
+        self._sm_newline            = None
+        self._sm_newline_suppressor = None
+        self._sm_comment            = None
 
-        Receiver.__init__(self, sr, "Indentation counter", 
-                          ("whitespace", "comment", "newline", "suppressor", "bad"))
+        Specifier_CountBase.__init__(self, sr, "Indentation counter", 
+                                     ("whitespace", "comment", "newline", "suppressor", "bad"))
 
-    def parse(self, fh, IndentationSetupF=False):
-        return self._base_parse(self.__fh, IndentationSetupF=True)
+    def parse(self):
+        self._base_parse(self.__fh, IndentationSetupF=True)
+
+        # Finalize / Produce 'IndentationCount' object.
+        # 
+        if self.whitespace_character_set.get() is None:
+            whitespace = self.__whitespace_default()
+            self.__specify_character_set(result.whitespace_character_set, 
+                                         "whitespace", whitespace, 
+                                         sr=SourceRef_DEFAULT)
+        if self.sm_newline.get() is None:
+            sm_newline = self.__sm_newline_default()
+            if sm_newline is not None: 
+                self.__specify_newline(sm_newline, SourceRef_DEFAULT)
+
+        ca_map = self._ca_map_specifier.finalize(
+                              Setup.buffer_codec.source_set.minimum(), 
+                              Setup.buffer_codec.source_set.supremum(), 
+                              self._sr)
+        return IndentationCount(sr, ca_map)
 
     def requires_count(self):
         return False
@@ -156,24 +175,10 @@ class ReceiverIndentationCount(Receiver):
             return False
         return True
 
-    def finalize(self):
-        if self.result.whitespace_character_set.get() is None:
-            whitespace = self.__whitespace_default()
-            self.__specify_character_set(self.result.whitespace_character_set, 
-                                         "whitespace", whitespace, 
-                                         sr=SourceRef_DEFAULT)
-        if self.result.sm_newline.get() is None:
-            sm_newline = self.__sm_newline_default()
-            if sm_newline is not None: 
-                self.__specify_newline(sm_newline, SourceRef_DEFAULT)
-
-        self.result.consistency_check()
-        return self.result
-
     @typed(sr=SourceRef)
     def __specify_character_set(self, ref, Name, PatternOrNumberSet, sr):
         cset = extract_trigger_set(sr, Name, PatternOrNumberSet)
-        self.specifier_count_op_map.add(cset, Name, None, sr)
+        self._ca_map_specifier.add(cset, Name, None, sr)
         prev_cset = ref.get()
         if prev_cset is None: ref.set(cset, sr)
         else:                 prev_cset.unite_with(cset)
@@ -185,12 +190,12 @@ class ReceiverIndentationCount(Receiver):
         beginning_char_set = Sm.get_beginning_character_set()
         ending_char_set    = Sm.get_ending_character_set()
 
-        self.specifier_count_op_map.add(beginning_char_set, "begin(newline)", None, sr)
+        self._ca_map_specifier.add(beginning_char_set, "begin(newline)", None, sr)
 
         # Do not consider a character from newline twice
         ending_char_set.subtract(beginning_char_set)
         if not ending_char_set.is_empty():
-            self.specifier_count_op_map.add(ending_char_set, "end(newline)", None, sr)
+            self._ca_map_specifier.add(ending_char_set, "end(newline)", None, sr)
 
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
         self.result.sm_newline.set(Sm, sr)
@@ -199,7 +204,7 @@ class ReceiverIndentationCount(Receiver):
     def __specify_suppressor(self, Sm, sr):
         _error_if_defined_before(self.result.sm_newline_suppressor, sr)
 
-        self.specifier_count_op_map.add(Sm.get_beginning_character_set(), 
+        self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
                                    "begin(newline suppressor)", None, sr)
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
         self.result.sm_newline_suppressor.set(Sm, sr)
@@ -208,7 +213,7 @@ class ReceiverIndentationCount(Receiver):
     def __specify_comment(self, Sm, sr):
         _error_if_defined_before(self.result.sm_comment, sr)
 
-        self.specifier_count_op_map.add(Sm.get_beginning_character_set(), 
+        self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
                                    "begin(comment to newline)", None, sr)
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
         self.result.sm_comment.set(Sm, sr)
@@ -221,7 +226,7 @@ class ReceiverIndentationCount(Receiver):
         newline_set = NumberSet(ord('\n'))
         retour_set  = NumberSet(ord('\r'))
 
-        before = self.specifier_count_op_map.find_occupier(newline_set, set())
+        before = self._ca_map_specifier.find_occupier(newline_set, set())
         if before is not None:
             error.warning("Trying to implement default newline: '\\n' or '\\r\\n'.\n" 
                           "The '\\n' option is not possible, since it has been occupied by '%s'.\n" \
@@ -234,7 +239,7 @@ class ReceiverIndentationCount(Receiver):
         sm = StateMachine.from_character_set(newline_set)
 
         if Setup.dos_carriage_return_newline_f:
-            before = self.specifier_count_op_map.find_occupier(retour_set, set())
+            before = self._ca_map_specifier.find_occupier(retour_set, set())
             if before is not None:
                 error.warning("Trying to implement default newline: '\\n' or '\\r\\n'.\n" 
                           "The '\\r\\n' option is not possible, since '\\r' has been occupied by '%s'." \
@@ -253,9 +258,9 @@ class ReceiverIndentationCount(Receiver):
         cs0 = NumberSet(ord(" "))
         cs1 = NumberSet(ord("\t"))
         result = NumberSet()
-        if not self.specifier_count_op_map.find_occupier(cs0, set()):
+        if not self._ca_map_specifier.find_occupier(cs0, set()):
             result.unite_with(cs0)
-        if not self.specifier_count_op_map.find_occupier(cs1, set()):
+        if not self._ca_map_specifier.find_occupier(cs1, set()):
             result.unite_with(cs1)
 
         if result.is_empty():
@@ -263,8 +268,7 @@ class ReceiverIndentationCount(Receiver):
                       "Characters are occupied by other elements.", self.sr)
         return result
 
-
-class SpecifierCountActionMap(object):
+class Specifier_CountActionMap(object):
     """Association of character sets with triggered count commands.
     ___________________________________________________________________________
 
@@ -530,7 +534,7 @@ def LineColumnCount_Default():
     global _LineColumnCount_Default
 
     if _LineColumnCount_Default is None:
-        specifier = SpecifierCountActionMap()
+        specifier = Specifier_CountActionMap()
         specifier.add(NumberSet(ord('\n')), "newline", 1, SourceRef_DEFAULT)
         specifier.add(NumberSet(ord('\t')), "grid",    4, SourceRef_DEFAULT)
         specifier.define_else("space",   1, SourceRef_DEFAULT)    # Define: "\else"

@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine as     core
-import quex.input.files.counter             as     counter
+import quex.input.files.specifier.counter   as     counter
 from   StringIO                             import StringIO
 
 if "--hwut-info" in sys.argv:

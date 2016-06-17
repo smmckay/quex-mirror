@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine          as     core
-import quex.input.files.counter                      as     counter
+import quex.input.files.specifier.counter            as     counter
 import quex.engine.state_machine.transformation.core as     bc_factory
 from   quex.blackboard                               import setup as Setup
 from   StringIO                                      import StringIO
