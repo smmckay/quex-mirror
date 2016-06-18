@@ -2,13 +2,15 @@ from   quex.engine.analyzer.door_id_address_label   import DoorID
 from   quex.engine.operations.operation_list        import Op
 from   quex.engine.analyzer.door_id_address_label   import dial_db
 from   quex.engine.analyzer.terminal.core           import Terminal
+from   quex.engine.counter                          import IndentationCount, \
+                                                           LineColumnCount
 import quex.output.core.loop                        as     loop
 from   quex.blackboard                              import Lng, \
                                                            E_IncidenceIDs, \
                                                            E_R, \
                                                            setup as Setup
 
-def do(Data, TheAnalyzer):
+def do(Data, ReloadState):
     """________________________________________________________________________
     Counting whitespace at the beginning of a line.
 
@@ -74,10 +76,11 @@ def do(Data, TheAnalyzer):
     sm_newline            = isetup.sm_newline.get()
     sm_comment            = isetup.sm_comment.get()
 
+    assert isinstance(counter_db, LineColumnCount)
+    assert isinstance(isetup, IndentationCount)
     assert sm_suppressed_newline  is None or sm_suppressed_newline.is_DFA_compliant()
     assert sm_newline is None             or sm_newline.is_DFA_compliant()
     assert sm_comment is None             or sm_comment.is_DFA_compliant()
-    assert isinstance(counter_db, CountBase)
 
     # -- 'on_indentation' == 'on_beyond': 
     #     A handler is called as soon as an indentation has been detected.
@@ -134,7 +137,8 @@ def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline, SmCommen
     _add_pair(result, SmComment, "<INDENTATION COMMENT>")
 
     for sm, terminal in result:
-        assert sm.get_id() == terminal.incidence_id()
+        assert isinstance(terminal, loop.MiniTerminal)
+        assert sm.get_id() == terminal.incidence_id
     return result
 
 def _add_pair(psml, SmOriginal, Name):

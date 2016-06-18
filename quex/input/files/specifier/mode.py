@@ -1,3 +1,19 @@
+from   quex.input.regular_expression.construct    import Pattern           
+from   quex.input.files.mode_option               import OptionDB
+from   quex.input.code.core                       import CodeUser
+from   quex.input.code.base                       import SourceRef
+                                                         
+import quex.engine.analyzer.engine_supply_factory as     engine
+from   quex.engine.incidence_db                   import IncidenceDB
+import quex.engine.misc.error                     as     error
+from   quex.engine.misc.tools                     import typed, all_isinstance
+
+import quex.blackboard as     blackboard
+from   quex.blackboard import setup as Setup, \
+                              E_IncidenceIDs
+
+from   copy        import deepcopy
+from   collections import namedtuple
 
 #-----------------------------------------------------------------------------------------
 # Specifier_Mode/Mode Objects:
@@ -169,8 +185,8 @@ class Specifier_Mode:
 
             # -- grab the mode description
             mode_descr = blackboard.mode_description_db[name]
-            self.determine_base_mode_sequence(InheritancePath + [self.name], 
-                                              base_mode_sequence)
+            mode_descr.determine_base_mode_sequence(InheritancePath + [self.name], 
+                                                    base_mode_sequence)
 
         base_mode_sequence.append(self)
 

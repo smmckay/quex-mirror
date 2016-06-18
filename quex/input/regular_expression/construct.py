@@ -118,7 +118,8 @@ class Pattern(object):
         # If the pre-context is 'trivial begin of line', then the column number
         # starts counting at '1' and the column number may actually be set
         # instead of being added.
-        self.__count_info = LineColumnCountInfo.from_StateMachine(self.__sm, CounterDb, 
+        self.__count_info = LineColumnCountInfo.from_StateMachine(self.__sm, 
+                                                                  CounterDb.count_command_map, 
                                                                   self.pre_context_trivial_begin_of_line_f, 
                                                                   CodecTrafoInfo)
         return self.__count_info

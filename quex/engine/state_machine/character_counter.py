@@ -60,7 +60,7 @@ class LineColumnCountInfo:
             self._consider_variable_character_sizes(SM, CodecTrafoInfo)
 
     @staticmethod
-    @typed(CounterDB=CountBase)
+    @typed(CounterDB=CountActionMap)
     def from_StateMachine(SM, CounterDB, BeginOfLineF=False, CodecTrafoInfo=None):
         """LINE AND COLUMN NUMBER ANALYSIS ________________________________________
         
@@ -119,7 +119,7 @@ class LineColumnCountInfo:
             for target_state_index, character_set in init_state.target_map.get_map().iteritems() 
         ]
 
-        Count.init(CounterDB.count_command_map)
+        Count.init(CounterDB)
         tracer.do(initial)
 
         # If there was an acceptance state, the result cannot be None

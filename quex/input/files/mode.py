@@ -103,7 +103,7 @@ class Mode:
                                                                  self.reload_state_forward)
         
         # (*) Misc
-        self.__abstract_f           = self.is_abstract(self.__pattern_list)
+        self.__abstract_f           = Specifier.is_abstract(self.__pattern_list)
         self.__base_mode_sequence   = base_mode_sequence
         self.__entry_mode_name_list = options_db.value_list("entry") # Those can enter this mode.
         self.__exit_mode_name_list  = options_db.value_list("exit")  # This mode can exit to those.

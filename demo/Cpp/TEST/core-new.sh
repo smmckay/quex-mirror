@@ -34,7 +34,8 @@ fi
 if [[ $lexer_name == "" ]]; then
     lexer_name="./lexer"
 fi
-valgrind $lexer_name $args_to_lexer > tmp-stdout0.txt 2> tmp-stderr0.txt
+valgrind --leak-check=full --show-leak-kinds=all $lexer_name $args_to_lexer \
+         > tmp-stdout0.txt 2> tmp-stderr0.txt
 
 
 # Filter important lines ______________________________________________________
@@ -67,7 +68,7 @@ else
 fi
 
 rm -f tmp-stdout.txt tmp-stdout0.txt
-rm -f tmp-stderr.txt tmp-stderr0.txt
+#rm -f tmp-stderr.txt tmp-stderr0.txt
 rm -f tmp-make.txt   tmp-make0.txt
 
 # Clean up ____________________________________________________________________

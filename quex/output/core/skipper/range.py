@@ -65,7 +65,8 @@ def get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRang
     if ReloadState: engine_type = ReloadState.engine_type
 
     result,          \
-    door_id_beyond   = loop.do(CounterDb,
+    loop_map,        \
+    door_id_beyond   = loop.do(CounterDb.count_command_map,
                                OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
                                LexemeEndCheckF   = False,
                                LexemeMaintainedF = False,

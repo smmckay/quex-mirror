@@ -1,8 +1,10 @@
-from   quex.engine.state_machine.core                 import StateMachine  
-import quex.engine.state_machine.algorithm.beautifier as     beautifier    
+from   quex.input.setup                           import NotificationDB
 import quex.input.regular_expression.core             as     regular_expression
 from   quex.input.code.base                           import SourceRef, \
-                                                             SourceRef_DEFAULT
+                                                             SourceRef_DEFAULT, \
+                                                             SourceRefObject
+from   quex.engine.state_machine.core                 import StateMachine  
+import quex.engine.state_machine.algorithm.beautifier as     beautifier    
 from   quex.engine.misc.tools                         import typed
 from   quex.engine.misc.interval_handling             import NumberSet
 from   quex.engine.counter                            import LineColumnCount, \
@@ -64,6 +66,13 @@ class Specifier_CountBase:
 
         return # Must be followed by 'finalization'
 
+    def _consistency_check(self):
+        self._ca_map_specifier.check_grid_values_integer_multiples()
+        # The following is nonsense: We detect that we did not choose an alternative 
+        # which is worse?!
+        # self.count_command_map.check_homogenous_space_counts()
+        self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.LINE)
+
 class Specifier_LineColumnCount(Specifier_CountBase):
     """Line/column number count specification.
     ___________________________________________________________________________
@@ -82,10 +91,11 @@ class Specifier_LineColumnCount(Specifier_CountBase):
 
         # Finalize / Produce 'LineColumnCount' object.
         # 
+        self._consistency_check()
         ca_map = self._ca_map_specifier.finalize(
                               Setup.buffer_codec.source_set.minimum(), 
                               Setup.buffer_codec.source_set.supremum(), 
-                              self._sr)
+                              self.sr)
         return LineColumnCount(sr, ca_map)
 
     def requires_count(self):
@@ -127,9 +137,11 @@ class Specifier_IndentationCount(Specifier_CountBase):
     def __init__(self, fh):
         sr        = SourceRef.from_FileHandle(fh)
         self.__fh = fh
-        self._sm_newline            = None
-        self._sm_newline_suppressor = None
-        self._sm_comment            = None
+        self.whitespace_character_set = SourceRefObject("whitespace", None)
+        self.bad_character_set        = SourceRefObject("bad", None)
+        self.sm_newline               = SourceRefObject("newline", None)
+        self.sm_newline_suppressor    = SourceRefObject("suppressor", None)
+        self.sm_comment               = SourceRefObject("comment", None)
 
         Specifier_CountBase.__init__(self, sr, "Indentation counter", 
                                      ("whitespace", "comment", "newline", "suppressor", "bad"))
@@ -141,7 +153,7 @@ class Specifier_IndentationCount(Specifier_CountBase):
         # 
         if self.whitespace_character_set.get() is None:
             whitespace = self.__whitespace_default()
-            self.__specify_character_set(result.whitespace_character_set, 
+            self.__specify_character_set(self.whitespace_character_set, 
                                          "whitespace", whitespace, 
                                          sr=SourceRef_DEFAULT)
         if self.sm_newline.get() is None:
@@ -149,11 +161,16 @@ class Specifier_IndentationCount(Specifier_CountBase):
             if sm_newline is not None: 
                 self.__specify_newline(sm_newline, SourceRef_DEFAULT)
 
+        self._consistency_check()
         ca_map = self._ca_map_specifier.finalize(
                               Setup.buffer_codec.source_set.minimum(), 
                               Setup.buffer_codec.source_set.supremum(), 
-                              self._sr)
-        return IndentationCount(sr, ca_map)
+                              self.sr)
+
+        return IndentationCount(self.sr, ca_map, 
+                                self.sm_newline,
+                                self.sm_newline_suppressor,
+                                self.sm_comment)
 
     def requires_count(self):
         return False
@@ -185,7 +202,7 @@ class Specifier_IndentationCount(Specifier_CountBase):
 
     @typed(sr=SourceRef)
     def __specify_newline(self, Sm, sr):
-        _error_if_defined_before(self.result.sm_newline, sr)
+        _error_if_defined_before(self.sm_newline, sr)
 
         beginning_char_set = Sm.get_beginning_character_set()
         ending_char_set    = Sm.get_ending_character_set()
@@ -198,16 +215,16 @@ class Specifier_IndentationCount(Specifier_CountBase):
             self._ca_map_specifier.add(ending_char_set, "end(newline)", None, sr)
 
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
-        self.result.sm_newline.set(Sm, sr)
+        self.sm_newline.set(Sm, sr)
 
     @typed(sr=SourceRef)
     def __specify_suppressor(self, Sm, sr):
-        _error_if_defined_before(self.result.sm_newline_suppressor, sr)
+        _error_if_defined_before(self.sm_newline_suppressor, sr)
 
         self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
                                    "begin(newline suppressor)", None, sr)
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
-        self.result.sm_newline_suppressor.set(Sm, sr)
+        self.sm_newline_suppressor.set(Sm, sr)
 
     @typed(sr=SourceRef)
     def __specify_comment(self, Sm, sr):
@@ -268,6 +285,19 @@ class Specifier_IndentationCount(Specifier_CountBase):
                       "Characters are occupied by other elements.", self.sr)
         return result
 
+    def _consistency_check(self):
+        Specifier_CountBase._consistency_check(self)
+
+        self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.WHITESPACE)
+        self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.BEGIN_NEWLINE)
+
+        if     self.sm_newline_suppressor.get() is not None \
+           and self.sm_newline.get() is None:
+            error.log("A newline 'suppressor' has been defined.\n"
+                      "But there is no 'newline' in indentation defintion.", 
+                      self.sm_newline_suppressor.sr)
+
+
 class Specifier_CountActionMap(object):
     """Association of character sets with triggered count commands.
     ___________________________________________________________________________
@@ -291,7 +321,7 @@ class Specifier_CountActionMap(object):
         self.__map  = CountActionMap()
         self.__else = None
 
-    def finalize(self, GlobalMin, GlobalMax, SourceReference):
+    def finalize(self, GlobalMin, GlobalMax, SourceReference, ForLineColumnCountF=False):
         """After all count commands have been assigned to characters, the 
         remaining character set can be associated with the 'else-CountAction'.
         """
@@ -547,4 +577,44 @@ def LineColumnCount_Default():
                                                    count_command_map)
 
     return _LineColumnCount_Default
+
+def _error_if_defined_before(Before, sr):
+    if not Before.set_f(): return
+
+    error.log("'%s' has been defined before;" % Before.name, sr, 
+              DontExitF=True)
+    error.log("at this place.", Before.sr)
+
+def extract_trigger_set(sr, Keyword, Pattern):
+    if Pattern is None:
+        return None
+    elif isinstance(Pattern, NumberSet):
+        return Pattern
+
+    def check_can_be_matched_by_single_character(SM):
+        bad_f      = False
+        init_state = SM.get_init_state()
+        if SM.get_init_state().is_acceptance(): 
+            bad_f = True
+        elif len(SM.states) != 2:
+            bad_f = True
+        # Init state MUST transit to second state. Second state MUST not have any transitions
+        elif len(init_state.target_map.get_target_state_index_list()) != 1:
+            bad_f = True
+        else:
+            tmp = set(SM.states.keys())
+            tmp.remove(SM.init_state_index)
+            other_state_index = tmp.__iter__().next()
+            if len(SM.states[other_state_index].target_map.get_target_state_index_list()) != 0:
+                bad_f = True
+
+        if bad_f:
+            error.log("For '%s' only patterns are addmissible which\n" % Keyword + \
+                      "can be matched by a single character, e.g. \" \" or [a-z].", sr)
+
+    check_can_be_matched_by_single_character(Pattern.sm)
+
+    transition_map = Pattern.sm.get_init_state().target_map.get_map()
+    assert len(transition_map) == 1
+    return transition_map.values()[0]
 

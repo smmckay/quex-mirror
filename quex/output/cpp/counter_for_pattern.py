@@ -77,9 +77,9 @@ def get(ThePattern, ShiftF=True):
     return do_CountInfo(ThePattern.count_info(), ShiftF)
 
 def do_CountInfo_from_StateMachine(SM, CounterDb, BeginOfLinePreContextF=False):
-    count_info = character_counter.LineColumnCount.from_StateMachine(SM, CounterDb, 
-                                                                     BeginOfLinePreContextF, 
-                                                                     Setup.buffer_codec)
+    count_info = character_counter.LineColumnCountInfo.from_StateMachine(SM, CounterDb, 
+                                                                         BeginOfLinePreContextF, 
+                                                                         Setup.buffer_codec)
     return do_CountInfo(count_info, ShiftF=True)
 
 @typed(counter=character_counter.LineColumnCountInfo)

@@ -1,5 +1,5 @@
 import quex.input.files.specifier.counter   as     counter
-from   quex.input.files.specifier           import LineColumnCount_Default
+from   quex.input.files.specifier.counter   import LineColumnCount_Default
 import quex.input.regular_expression.core   as     regular_expression
 from   quex.input.code.base                 import SourceRef
 from   quex.engine.counter                  import LineColumnCount, \

@@ -380,7 +380,7 @@ def _prepare_indentation_counter(ModeName, OptionsDb, CounterDb, IncidenceDb, MH
 
     ppt_list = [
         # 'newline' triggers --> indentation counter
-        PPT_indentation_handler_newline(MHI, data, ISetup, CounterDb)
+        PPT_indentation_handler_newline(MHI, data, ISetup, CounterDb, ReloadState)
     ]
 
     if sm_suppressed_newline is not None:
@@ -511,8 +511,6 @@ def PPT_range_skipper(NestedF, MHI, i, data, ModeName, OptionsDb, CounterDb, Inc
     my_data["door_id_after"]      = door_id_after
     my_data["counter_db"]         = CounterDb
 
-    code = generator_func(data, ReloadState)
-
     # -- terminal and code generator
     priority = PatternPriority(MHI, i)
     pattern  = deepcopy(my_data["opener_pattern"])
@@ -526,10 +524,10 @@ def PPT_range_skipper(NestedF, MHI, i, data, ModeName, OptionsDb, CounterDb, Inc
         name = "SKIP RANGE"
         code = skip_range.do(my_data, ReloadState)
 
-    terminal = Terminal(CodeTerminal(code, name, pattern.incidence_id()))
+    terminal = Terminal(CodeTerminal(code), name, pattern.incidence_id())
     return PPT(priority, pattern, terminal)
 
-def PPT_indentation_handler_newline(MHI, data, ISetup, CounterDb):
+def PPT_indentation_handler_newline(MHI, data, ISetup, CounterDb, ReloadState):
     """Generate a PPT for newline, that is:
 
         -- its PatternPriority.
