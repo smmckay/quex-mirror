@@ -127,8 +127,11 @@ class TreeWalker:
         self.abort_f = False
 
     def do(self, InitNode_OrInitList):
-        if type(InitNode_OrInitList) == list: init_node_list = InitNode_OrInitList 
-        else:                                 init_node_list = [ InitNode_OrInitList ]
+        if type(InitNode_OrInitList) == list: 
+            assert InitNode_OrInitList
+            init_node_list = InitNode_OrInitList 
+        else:                                 
+            init_node_list = [ InitNode_OrInitList ]
 
         frame = TreeWalkerFrame(None, init_node_list, -1)
         self.work_stack = []
@@ -138,7 +141,7 @@ class TreeWalker:
             sub_node_list = self.on_enter(node)
             if self.abort_f: return
 
-            if (sub_node_list is not None) and len(sub_node_list) != 0:
+            if (sub_node_list is not None) and sub_node_list:
                 self.work_stack.append(frame)                      # branch node
                 frame = TreeWalkerFrame(node, sub_node_list, -1) 
             else:

@@ -440,7 +440,9 @@ def _prepare_skip_character_set(ModeName, OptionsDb, CounterDb, IncidenceDb, MHI
     # The terminal is not related to a pattern, because it is entered
     # from the sub_terminals. Each sub_terminal relates to a sub character
     # set.
-    code, loop_map = skip_character_set.do(data, ReloadState)
+    code, \
+    loop_map, \
+    required_register_set = skip_character_set.do(data, ReloadState)
 
     # Counting actions are added to the terminal automatically by the
     # terminal_factory. The only thing that remains for each sub-terminal:
@@ -451,7 +453,10 @@ def _prepare_skip_character_set(ModeName, OptionsDb, CounterDb, IncidenceDb, MHI
         for lei in loop_map
     ]
 
-    return [Terminal(CodeTerminal(code), "<skip>", E_IncidenceIDs.SKIP) ], new_ppt_list
+    terminal = Terminal(CodeTerminal(code), "<skip>", E_IncidenceIDs.SKIP, 
+                        RequiredRegisterSet=required_register_set) 
+
+    return [ terminal ], new_ppt_list
 
 def _prepare_skip_range(ModeName, OptionsDb, CounterDb, IncidenceDb, MHI, ReloadState):
     """MHI = Mode hierarchie index.
@@ -519,12 +524,15 @@ def PPT_range_skipper(NestedF, MHI, i, data, ModeName, OptionsDb, CounterDb, Inc
 
     if NestedF:
         name = "SKIP NESTED RANGE"
-        code = skip_nested_range.do(my_data, ReloadState)
+        code, \
+        required_register_set = skip_nested_range.do(my_data, ReloadState)
     else:
         name = "SKIP RANGE"
-        code = skip_range.do(my_data, ReloadState)
+        code, \
+        required_register_set = skip_range.do(my_data, ReloadState)
 
-    terminal = Terminal(CodeTerminal(code), name, pattern.incidence_id())
+    terminal = Terminal(CodeTerminal(code), name, pattern.incidence_id(),
+                        RequiredRegisterSet=required_register_set)
     return PPT(priority, pattern, terminal)
 
 def PPT_indentation_handler_newline(MHI, data, ISetup, CounterDb, ReloadState):
@@ -544,10 +552,13 @@ def PPT_indentation_handler_newline(MHI, data, ISetup, CounterDb, ReloadState):
                             
     pattern.set_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
 
-    code     = CodeTerminal(indentation_counter.do(data, ReloadState))
-    terminal = Terminal(code, "INDENTATION COUNTER: NEWLINE", pattern.incidence_id())
+    code, \
+    required_register_set = indentation_counter.do(data, ReloadState)
 
-    return PPT(PatternPriority(MHI, 0), pattern, code)
+    terminal = Terminal(CodeTerminal(code), "INDENTATION COUNTER: NEWLINE", pattern.incidence_id(),
+                        RequiredRegisterSet=required_register_set)
+
+    return PPT(PatternPriority(MHI, 0), pattern, terminal)
 
 def PPT_indentation_handler_suppressed_newline(MHI, SmSuppressedNewline):
     """Generate a PPT for suppressed newline, that is:

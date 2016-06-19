@@ -45,6 +45,8 @@ def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None):
     # Prepare the combined state machines and terminals 
     esms = EngineStateMachineSet(PatternList)
 
+    require_registers_of_terminals(TerminalDb.itervalues())
+
     # (*) Pre Context State Machine
     #     (If present: All pre-context combined in single backward analyzer.)
     pre_context, \
@@ -138,4 +140,12 @@ def do_default_counter(Mode):
 def frame_this(Code):
     return Lng["$frame"](Code, Setup)
 
+def require_registers_of_terminals(TerminalIterable):
+    for terminal in TerminalIterable:
+        for register_info in terminal.required_register_set():
+            if type(register_info) == tuple:
+                register, condition = register_info
+                variable_db.require(Lng.REGISTER_NAME(register), Condition=condition)
+            else:
+                variable_db.require(Lng.REGISTER_NAME(register_info))
 

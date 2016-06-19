@@ -106,18 +106,20 @@ def do(Data, ReloadState):
     if ReloadState: engine_type = ReloadState.engine_type
 
     # (*) Generate Code
-    code,          \
-    door_id_beyond = loop.do(counter_db, 
-                             OnLoopExit        = on_loop_exit,
-                             EngineType        = engine_type,
-                             ReloadStateExtern = ReloadState,
-                             LexemeMaintainedF = True,
-                             ParallelSmTerminalPairList = sm_terminal_list)
+    code,                 \
+    loop_map,             \
+    door_id_beyond,       \
+    required_register_set = loop.do(counter_db, 
+                                    OnLoopExit        = on_loop_exit,
+                                    EngineType        = engine_type,
+                                    ReloadStateExtern = ReloadState,
+                                    LexemeMaintainedF = True,
+                                    ParallelSmTerminalPairList = sm_terminal_list)
 
     _code_terminal_on_bad_indentation_character(code, isetup, mode_name, incidence_db, 
                                                 bad_indentation_iid)
 
-    return code
+    return code, required_register_set
 
 def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline, SmComment, CounterDb): 
     """Get a list of pairs (state machine, terminal) for the newline, suppressed

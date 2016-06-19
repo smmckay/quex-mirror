@@ -46,18 +46,31 @@ class LineColumnCountInfo:
          E_Count.VOID => if there is no relation between lexeme length and
                          column number increment.
     """
-    def __init__(self, Result, CodecTrafoInfo, SM):
-        self.column_n_increment                  = LineColumnCountInfo.get_real(Result.column_n_increment)
-        self.line_n_increment                    = LineColumnCountInfo.get_real(Result.line_n_increment)
-        self.column_index                        = LineColumnCountInfo.get_real(Result.column_index, 
-                                                                      ValueOfVirginity=E_Count.VOID)
-        self.grid_step_n                         = LineColumnCountInfo.get_real(Result.grid_step_n)
-        self.column_n_increment_by_lexeme_length = LineColumnCountInfo.get_real(Count.column_n_increment_by_lexeme_length)
-        self.line_n_increment_by_lexeme_length   = LineColumnCountInfo.get_real(Count.line_n_increment_by_lexeme_length)
-        self.grid_step_size_by_lexeme_length     = LineColumnCountInfo.get_real(Count.grid_step_size_by_lexeme_length)
+    def __init__(self, Result=None, CodecTrafoInfo=None, SM=None):
+        if Result is None: 
+            self.column_n_increment                  = 0
+            self.line_n_increment                    = 0
+            self.column_index                        = 0
+            self.grid_step_n                         = 0
+            self.column_n_increment_by_lexeme_length = 0
+            self.line_n_increment_by_lexeme_length   = 0
+            self.grid_step_size_by_lexeme_length     = 0
+        else:
+            self.column_n_increment                  = LineColumnCountInfo.get_real(Result.column_n_increment)
+            self.line_n_increment                    = LineColumnCountInfo.get_real(Result.line_n_increment)
+            self.column_index                        = LineColumnCountInfo.get_real(Result.column_index, 
+                                                                          ValueOfVirginity=E_Count.VOID)
+            self.grid_step_n                         = LineColumnCountInfo.get_real(Result.grid_step_n)
+            self.column_n_increment_by_lexeme_length = LineColumnCountInfo.get_real(Count.column_n_increment_by_lexeme_length)
+            self.line_n_increment_by_lexeme_length   = LineColumnCountInfo.get_real(Count.line_n_increment_by_lexeme_length)
+            self.grid_step_size_by_lexeme_length     = LineColumnCountInfo.get_real(Count.grid_step_size_by_lexeme_length)
 
-        if CodecTrafoInfo is not None and CodecTrafoInfo.variable_character_sizes_f():
-            self._consider_variable_character_sizes(SM, CodecTrafoInfo)
+            if CodecTrafoInfo is not None and CodecTrafoInfo.variable_character_sizes_f():
+                self._consider_variable_character_sizes(SM, CodecTrafoInfo)
+
+    @staticmethod
+    def from_Empty():
+        return LineColumnCountInfo(Result=None)
 
     @staticmethod
     @typed(CounterDB=CountActionMap)
@@ -105,18 +118,23 @@ class LineColumnCountInfo:
 
         ___________________________________________________________________________
         """
-        tracer       = CharacterCountTracer(SM)
-        init_state   = SM.get_init_state()
+        tracer     = CharacterCountTracer(SM)
+        init_state = SM.get_init_state()
 
-        column_index = E_Count.VOID
+        init_state_target_map = init_state.target_map.get_map()
+        if not init_state_target_map:
+            assert False
+            return LineColumnCountInfo.from_Empty()
+
         if BeginOfLineF: column_index = 0
-        count   = Count(0, 0, ColumnIndex=column_index, GridStepN=E_Count.VIRGIN)
+        else:            column_index = E_Count.VOID
+        count = Count(0, 0, ColumnIndex=column_index, GridStepN=E_Count.VIRGIN)
         # Next Node: [0] state index of target state
         #            [1] character set that triggers to it
         #            [2] count information (initialized to 'virgin')
         initial = [ 
             (target_state_index, character_set, count.clone()) \
-            for target_state_index, character_set in init_state.target_map.get_map().iteritems() 
+            for target_state_index, character_set in init_state_target_map.iteritems() 
         ]
 
         Count.init(CounterDB)

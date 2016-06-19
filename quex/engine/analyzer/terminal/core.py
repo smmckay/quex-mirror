@@ -31,12 +31,16 @@ from   copy  import copy
 #__________________________________________________________________________
 class Terminal(Processor):
     @typed(Name=(str,unicode), Code=CodeTerminal)
-    def __init__(self, Code, Name, IncidenceId=None):
+    def __init__(self, Code, Name, IncidenceId=None, RequiredRegisterSet=None):
         Processor.__init__(self, index.get(), Entry())
         self.__incidence_id = IncidenceId
         self.__code         = Code
         self.__name         = Name
         self.__requires_goto_loop_entry_f = False
+        if RequiredRegisterSet is not None
+            self.__required_register_set = RequiredRegisterSet
+        else:
+            self.__required_register_set = set()
 
     def incidence_id(self):
         return self.__incidence_id
@@ -69,6 +73,9 @@ class Terminal(Processor):
 
     def set_requires_goto_loop_entry_f(self):
         self.__requires_goto_loop_entry_f = True
+
+    def required_register_set(self):
+        return self.__required_register_set
 
 class TerminalGenerated(Terminal):
     @typed(Name=(str,unicode), GeneratorFunction=FunctionType, Data=dict, Code=list)

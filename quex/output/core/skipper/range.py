@@ -64,16 +64,17 @@ def get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRang
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
-    result,          \
-    loop_map,        \
-    door_id_beyond   = loop.do(CounterDb.count_command_map,
-                               OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
-                               LexemeEndCheckF   = False,
-                               LexemeMaintainedF = False,
-                               EngineType        = engine_type,
-                               ReloadStateExtern = ReloadState,
-                               ParallelSmTerminalPairList = psml) 
-    return result
+    result,               \
+    loop_map,             \
+    door_id_beyond,       \
+    required_register_set = loop.do(CounterDb.count_command_map,
+                                    OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
+                                    LexemeEndCheckF   = False,
+                                    LexemeMaintainedF = False,
+                                    EngineType        = engine_type,
+                                    ReloadStateExtern = ReloadState,
+                                    ParallelSmTerminalPairList = psml) 
+    return result, required_register_set
 
 def _get_state_machine_vs_terminal_list(CloserSequence, CounterDb): 
     """Additionally to all characters, the loop shall walk along the 'closer'.

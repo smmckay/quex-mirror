@@ -331,6 +331,16 @@ class LoopEventHandlers:
     def on_loop_exit_text(self):
         return Lng.COMMAND_LIST(self.on_loop_exit)
 
+    def get_required_register_set(self):
+        result = set()
+        if AppendixSmExistF or ColumnNPerCodeUnit is not None:
+            result.add((E_R.ReferenceP, "QUEX_OPTION_COLUMN_NUMBER_COUNTING"))
+        if Setup.buffer_codec.variable_character_sizes_f():
+            result.add(E_R.CharacterBeginP)
+
+        return result
+
+
 @typed(CaMap=CountActionMap, ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list)
 def do(CaMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None, 
        ReloadStateExtern=None, LexemeMaintainedF=False,
@@ -411,10 +421,14 @@ def do(CaMap, OnLoopExitDoorId, LexemeEndCheckF=False, EngineType=None,
     txt = _get_source_code(analyzer_list, terminal_list,
                            CaMap.get_column_number_per_code_unit(),
                            appendix_sm_exist_f) 
+
+
+    # Required Registers? _____________________________________________________
+    required_register_set = event_handler.get_required_register_set()
     
     # Clean the loop map from the 'exit transition'.
     clean_loop_map = [lei for lei in loop_map if lei.incidence_id != iid_loop_exit]
-    return txt, clean_loop_map, DoorID.incidence(iid_loop_exit)
+    return txt, clean_loop_map, DoorID.incidence(iid_loop_exit), required_register_set
 
 def _extract_state_machines_and_terminals(ParallelSmTerminalPairList):
     if ParallelSmTerminalPairList is None:
@@ -562,6 +576,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList):
         """
         for sm in SmList:
             for trigger_set, appendix_sm in sm.cut_first_transition(CloneStateMachineId=True):
+                # id of 'appendix_sm' == id of original parallel state machine!
                 for character_set, ca in TheCountBase.iterable_in_sub_set(trigger_set):
                     yield character_set, ca, appendix_sm
 
@@ -636,12 +651,16 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList):
 
     # Combine the appendix state machine lists which are related to character
     # sets into a single combined appendix state machine.
-    appendix_sm_db = {}
-    loop_map       = [
+    appendix_sm_db   = {}
+    loop_map         = [
         _determine_LoopMapEntry(appendix_sm_db, character_set, ca, appendix_sm_list)
         for character_set, ca, appendix_sm_list in distinct
     ]
-    return loop_map, appendix_sm_db.values()
+    appendix_sm_list = [
+        appendix_sm for appendix_sm in appendix_sm_db.itervalues()
+                    if appendix_sm.get_init_state().has_transitions()
+    ]
+    return loop_map, appendix_sm_list
 
 @typed(LoopMap=[LoopMapEntry])
 def _get_loop_analyzer(LoopMap, EventHandler):
@@ -740,13 +759,15 @@ def _get_parallel_terminal_list(CounterDb, AppendixSmList, ParallelMiniTerminalL
     """
     def get_appendix_sm(AppendixSmList, IncidenceId):
         for appendix_sm in AppendixSmList:
-            if appendix_sm.get_id() == IncidenceId: return appendix_sm
-        return appendix_sm
+            if appendix_sm.get_id() == IncidenceId: 
+                return appendix_sm
+        return None
 
     def iterable(AppendixSmList, ParallelMiniTerminalList):
         for mini_terminal in ParallelMiniTerminalList:
             appendix_sm = get_appendix_sm(AppendixSmList, mini_terminal.incidence_id)
-            yield appendix_sm, mini_terminal
+            if appendix_sm is not None:
+                yield appendix_sm, mini_terminal
 
     def get_terminal(appendix_sm, mini_terminal):
         default_counter_f = False
@@ -833,7 +854,7 @@ def _prepare_entry_and_reentry(analyzer, OnLoopEntry, OnLoopReEntry):
 
     # OnReEntry
 
-def _get_source_code(analyzer_list, terminal_list, ColumnNPerChunk, 
+def _get_source_code(analyzer_list, terminal_list, ColumnNPerCodeUnit, 
                      AppendixSmExistF):
     """RETURNS: String containing source code for the 'loop'. 
 
@@ -854,11 +875,6 @@ def _get_source_code(analyzer_list, terminal_list, ColumnNPerChunk,
             generator.do_reload_procedure(loop_analyzer)
         )
 
-    if AppendixSmExistF or ColumnNPerChunk is not None:
-        variable_db.require("reference_p", 
-                            Condition="QUEX_OPTION_COLUMN_NUMBER_COUNTING")
-    if Setup.buffer_codec.variable_character_sizes_f():
-        variable_db.require("character_begin_p")
-
     return txt
+
 

@@ -76,14 +76,15 @@ def do(Data, ReloadState):
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
-    result,        \
-    loop_map,      \
-    door_id_beyond = loop.do(ca_map,
-                             OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
-                             LexemeEndCheckF   = False,
-                             LexemeMaintainedF = False,
-                             EngineType        = engine_type,
-                             ReloadStateExtern = ReloadState) 
+    result,               \
+    loop_map,             \
+    door_id_beyond,       \
+    required_register_set = loop.do(ca_map,
+                                    OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
+                                    LexemeEndCheckF   = False,
+                                    LexemeMaintainedF = False,
+                                    EngineType        = engine_type,
+                                    ReloadStateExtern = ReloadState) 
 
     assert isinstance(result, list)
-    return result, loop_map
+    return result, loop_map, required_register_set
