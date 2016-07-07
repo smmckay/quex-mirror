@@ -22,6 +22,8 @@
 from   quex.input.code.base   import CodeFragment_NULL
 from   quex.input.setup       import QuexSetup, SETUP_INFO
 from   quex.engine.misc.enum  import Enum
+import quex.engine.misc.error as     error
+
 import quex.engine.state_machine.transformation.core      as     bc_factory
 
 #------------------------------------------------------------------------------
@@ -302,21 +304,74 @@ def standard_incidence_db_get_terminal_type(IncidenceId):
     }.get(IncidenceId)
 
 #-----------------------------------------------------------------------------------------
-# mode_description_db: storing the mode information into a dictionary:
+# mode_prep_prep_db: storing the mode information into a dictionary:
 #            key  = mode name
-#            item = Specifier_Mode object
+#            item = Mode_PrepPrep object
 #
-# Specifier_Mode-s are the direct product of parsing. They are later translated into
+# Mode_PrepPrep-s are the direct product of parsing. They are later translated into
 # Mode-s.
 #-----------------------------------------------------------------------------------------
-mode_description_db = {}
+mode_prep_prep_db = {}
+
+def determine_base_mode_name_sequence(mode, InheritancePath, base_mode_sequence):
+    """Determine the sequence of base modes. The type of sequencing determines
+       also the pattern precedence. The 'deep first' scheme is chosen here. For
+       example a mode hierarchie of
+
+                                   A
+                                 /   \ 
+                                B     C
+                               / \   / \
+                              D  E  F   G
+
+       results in a sequence: (A, B, D, E, C, F, G).reverse()
+
+       => That is the mode itself is base_mode_sequence[-1]
+
+       => Patterns and event handlers of 'E' have precedence over
+          'C' because they are the childs of a preceding base mode.
+
+       This function detects circular inheritance.
+
+    __dive -- inserted this keyword for the sole purpose to signal 
+              that here is a case of recursion, which may be solved
+              later on by a TreeWalker.
+    """
+    global mode_prep_prep_db
+    if mode.name in InheritancePath:
+        msg = "mode '%s'\n" % InheritancePath[0]
+        for mode_name in InheritancePath[InheritancePath.index(mode.name) + 1:]:
+            msg += "   inherits mode '%s'\n" % mode_name
+        msg += "   inherits mode '%s'" % mode.name
+
+        error.log("circular inheritance detected:\n" + msg, mode.sr)
+
+    base_mode_name_list_reversed = deepcopy(mode.direct_base_mode_name_list)
+    for name in base_mode_name_list_reversed:
+        # -- does mode exist?
+        error.verify_word_in_list(name, mode_prep_prep_db.keys(),
+                                  "Mode '%s' inherits mode '%s' which does not exist." % (mode.name, name),
+                                  mode.sr)
+
+        if name in map(lambda m: m.name, result): continue
+
+        # -- grab the mode description
+        mode_descr = mode_prep_prep_db[name]
+        determine_base_mode_name_sequence(InheritancePath + [mode.name], 
+                                          result)
+
+    result.append(mode.name)
+
+    return result
+
+
 #-----------------------------------------------------------------------------------------
 # mode_db: storing the mode information into a dictionary:
 #            key  = mode name
 #            item = Mode object
 #
 # A Mode is a more 'fermented' container of information about a mode. It is based on
-# a Specifier_Mode.
+# a Mode_PrepPrep.
 #-----------------------------------------------------------------------------------------
 mode_db = {}
 

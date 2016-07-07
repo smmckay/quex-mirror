@@ -1,12 +1,12 @@
 from   quex.blackboard                          import setup as Setup, \
                                                        Lng
-import quex.output.cpp.source_package           as source_package
+import quex.output.cpp.source_package           as     source_package
 #
-import quex.input.files.core                    as quex_file_parser
-from   quex.input.files.mode                    import determine_start_mode, Mode
+import quex.input.files.core                    as     quex_file_parser
+from   quex.input.files.mode                    import determine_start_mode
 import quex.input.files.consistency_check       as     consistency_check
 #
-from   quex.engine.analyzer.door_id_address_label  import dial_db
+from   quex.engine.misc.tools                      import flatten_list_of_lists
 from   quex.engine.misc.file_operations            import write_safely_and_close
 #
 import quex.output.cpp.core                     as cpp_generator
@@ -30,7 +30,7 @@ def do():
     if Setup.language == "DOT": 
         return do_plot()
 
-    mode_description_db = quex_file_parser.do(Setup.input_mode_files)
+    mode_db = quex_file_parser.do(Setup.input_mode_files)
 
     # (*) Generate the token ids
     #     (This needs to happen after the parsing of mode_db, since during that
@@ -60,9 +60,8 @@ def do():
         return
 
     # (*) implement the lexer mode-specific analyser functions
-    #     During this process: mode_description_db --> mode_db
-    function_analyzers_implementation, \
-    mode_db                            = analyzer_functions_get(mode_description_db)
+    function_analyzers_implementation \
+                            = analyzer_functions_get(mode_db)
 
     # (*) Implement the 'quex' core class from a template
     # -- do the coding of the class framework
@@ -119,48 +118,35 @@ def do():
         source_package.do()
 
 def analyzer_functions_get(ModeDB):
-    code = []
-
     # (*) Get list of modes that are actually implemented
     #     (abstract modes only serve as common base)
     mode_name_list = ModeDB.keys()  
 
-    mode_id = 0
-    for name, mode_descr in ModeDB.iteritems():        
-        dial_db.clear()
+    def code_for_mode(mode):
+        if mode.run_time_counter_db is not None:
+            txt = cpp_generator.do_run_time_counter(mode) 
+        else:
+            txt = []
 
-        # -- Generate 'Mode' from 'Specifier_Modes'
-        mode = Mode(mode_descr)
-        blackboard.mode_db[name] = mode
+        txt.extend(cpp_generator.do(mode, mode_name_list))
+        return txt
 
-        if not mode.is_implemented(): 
-            mode.mode_id = None
-            continue
-        mode.mode_id  = mode_id
-        mode_id      += 1
+    code = flatten_list_of_lists( 
+        code_for_mode(mode) for mode in ModeDB.itervalues() 
+    )
 
-        txt_analyzer = cpp_generator.do(mode, mode_name_list)
-        txt_counter  = cpp_generator.do_default_counter(mode)
-
-        code.extend(txt_counter)
-        code.extend(txt_analyzer)
-
-    code.append(do_comment_pattern_action_pairs(blackboard.mode_db.itervalues()))
-
-    if not Setup.token_class_only_f:
-        determine_start_mode(blackboard.mode_db)
-
-    # (*) perform consistency check on newly generated mode_db
-    consistency_check.do(blackboard.mode_db)
+    code.append(
+        do_comment_pattern_action_pairs(ModeDB.itervalues())
+    )
 
     # generate frame for analyser code
-    return cpp_generator.frame_this("".join(code)), blackboard.mode_db
+    return cpp_generator.frame_this("".join(code))
 
 def do_plot():
-    mode_description_db = quex_file_parser.do(Setup.input_mode_files)
+    mode_prep_prep_db = quex_file_parser.do(Setup.input_mode_files)
 
-    for mode_descr in mode_description_db.itervalues():        
-        mode = Mode(mode_descr)
+    for specifier in mode_prep_prep_db.itervalues():        
+        mode = specifier.finalize()
         # -- some modes only define event handlers that are inherited
         if len(mode.pattern_list) == 0: continue
 
@@ -208,23 +194,3 @@ def do_comment_pattern_action_pairs(ModeIterable):
                              "\nEND: MODE PATTERNS")
     return comment 
 
-def blackboard_mode_db_setup(ModeDescrDb):
-    """Takes all Specifier_Mode-s from ModeDescrDb and generates Mode objects
-    out of them. 
-
-    RESULT: blackboard.mode_db containing appropriate Mode objects.
-    """
-    def enter(Name, ModeDescr):
-        mode = Mode(mode_descr)  # -- Generate 'Mode' from 'Specifier_Modes'
-        blackboard.mode_db[name] = mode
-        return mode
-
-    for name, mode_descr in ModeDescrDb.iteritems():
-        enter(name, mode_descr)
-
-    if not Setup.token_class_only_f:
-        determine_start_mode(blackboard.mode_db)
-
-    # (*) perform consistency check on newly generated mode_db
-    consistency_check.do(blackboard.mode_db)
-    return 

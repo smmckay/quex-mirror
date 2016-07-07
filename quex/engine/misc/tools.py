@@ -251,8 +251,8 @@ def typed(**_parameters_):
        parameter=[(Type0, Type1, ...)]  --> (1) isinstance(parameter, list)
                                             (2) all_isinstance(parameter, (Type0, Type1, ...))
        parameter={Type0: Type1}         --> (1) isinstance(parameter, dict)
-                                            (2) all_isinstance(parameter.keys(), Type0)
-                                            (3) all_isinstance(parameter.keys(), Type1)
+                                            (2) all_isinstance(parameter.keys(),   Type0)
+                                            (3) all_isinstance(parameter.values(), Type1)
                                         (Here, Type0 or Type1 may be a tuple (TypeA, TypeB, ...)
                                          indicating alternative types.)
     """

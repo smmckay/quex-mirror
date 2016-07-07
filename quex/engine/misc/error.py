@@ -66,6 +66,20 @@ def log(ErrMsg, Fh_or_Sr=-1, DontExitF=False, Prefix="", WarningF=False, NoteF=F
 def error_eof(title, fh):
     log("End of file reached while parsing '%s' section." % title, fh)
 
+def log_consistency_issue(This, That, ThisComment, ThatComment="", EndComment="", ExitF=True, SuppressCode=None):
+    log("The pattern '%s' %s" % (This.pattern_string(), ThisComment), 
+              This.sr, DontExitF=True, WarningF=not ExitF)
+
+    msg = "pattern '%s'." % That.pattern_string()
+
+    if len(EndComment) == 0:
+        log(msg, That.sr, DontExitF=not ExitF, WarningF=not ExitF, 
+                  SuppressCode=SuppressCode)
+    else:
+        log(msg,        That.sr, DontExitF=True,      WarningF=not ExitF)
+        log(EndComment, That.sr, DontExitF=not ExitF, WarningF=not ExitF, 
+            SuppressCode=SuppressCode)
+
 def log_file_not_found(FileName, Comment="", FH=-1):
     """FH and LineN follow format of 'log(...)'"""
     directory = os.path.dirname(FileName)

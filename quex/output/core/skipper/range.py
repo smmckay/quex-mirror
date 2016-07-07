@@ -1,6 +1,6 @@
-from   quex.engine.analyzer.door_id_address_label  import __nice, dial_db
 from   quex.engine.operations.operation_list       import Op
-from   quex.engine.analyzer.door_id_address_label  import DoorID
+from   quex.engine.analyzer.door_id_address_label  import DoorID, DialDB
+import quex.engine.analyzer.door_id_address_label  as     dial
 import quex.output.core.loop                       as     loop
 from   quex.engine.counter                         import CountBase
 import quex.engine.state_machine.index             as     sm_index
@@ -12,7 +12,6 @@ from   quex.output.core.skipper.common             import line_counter_in_loop, 
                                                           get_character_sequence, \
                                                           get_on_skip_range_open, \
                                                           line_column_counter_in_loop
-import quex.output.cpp.counter                     as     counter
 from   quex.blackboard                             import setup as Setup, Lng
 from   copy                                        import copy
 
@@ -20,17 +19,20 @@ from   copy                                        import copy
 def do(Data, ReloadState):
     """Functioning see 'get_skipper()'
     """
-    CounterDb       = Data["counter_db"]
-    CloserSequence  = Data["closer_sequence"]
-    CloserPattern   = Data["closer_pattern"]
-    ModeName        = Data["mode_name"]
-    OnSkipRangeOpen = Data["on_skip_range_open"]
-    DoorIdAfter     = Data["door_id_after"]
+    CounterDb        = Data["counter_db"]
+    CloserSequence   = Data["closer_sequence"]
+    CloserPattern    = Data["closer_pattern"]
+    ModeName         = Data["mode_name"]
+    OnSkipRangeOpen  = Data["on_skip_range_open"]
+    DoorIdAfter      = Data["door_id_after"]
+    dial_db          = Data["dial_db"]
 
-    return get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, DoorIdAfter, CounterDb) 
+    return get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, 
+                       DoorIdAfter, CounterDb, dial_db) 
 
 @typed(CounterDb=CountBase)
-def get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, DoorIdAfter, CounterDb):
+def get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRangeOpen, 
+                DoorIdAfter, CounterDb, dial_db):
     """
                                         .---<---+----------<------+
                                         |       |                 |        
@@ -60,7 +62,7 @@ def get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRang
 
     """
     psml             = _get_state_machine_vs_terminal_list(CloserSequence, 
-                                                           CounterDb)
+                                                           CounterDb, dial_db)
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
@@ -68,15 +70,16 @@ def get_skipper(ReloadState, CloserSequence, CloserPattern, ModeName, OnSkipRang
     loop_map,             \
     door_id_beyond,       \
     required_register_set = loop.do(CounterDb.count_command_map,
-                                    OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
+                                    OnLoopExitDoorId  = DoorID.continue_without_on_after_match(dial_db),
                                     LexemeEndCheckF   = False,
                                     LexemeMaintainedF = False,
                                     EngineType        = engine_type,
                                     ReloadStateExtern = ReloadState,
-                                    ParallelSmTerminalPairList = psml) 
+                                    ParallelSmTerminalPairList = psml, 
+                                    dial_db           = dial_db) 
     return result, required_register_set
 
-def _get_state_machine_vs_terminal_list(CloserSequence, CounterDb): 
+def _get_state_machine_vs_terminal_list(CloserSequence, CounterDb, dial_db): 
     """Additionally to all characters, the loop shall walk along the 'closer'.
     If the closer matches, the range skipping exits. Characters need to be 
     counted properly.
@@ -86,9 +89,9 @@ def _get_state_machine_vs_terminal_list(CloserSequence, CounterDb):
     The list contains only one single element.
     """
     sm = StateMachine.from_sequence(CloserSequence)
-    sm.set_id(dial_db.new_incidence_id())
+    sm.set_id(dial.new_incidence_id())
 
-    code          = [ Lng.GOTO(DoorID.continue_without_on_after_match()) ]
+    code          = [ Lng.GOTO(DoorID.continue_without_on_after_match(dial_db), dial_db) ]
     mini_terminal = loop.MiniTerminal(code, "<SKIP RANGE TERMINATED>", sm.get_id())
     return [ (sm, mini_terminal) ]
 

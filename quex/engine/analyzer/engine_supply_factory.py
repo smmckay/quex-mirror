@@ -74,8 +74,8 @@ class Class_BACKWARD_PRE_CONTEXT(Base):
     def input_action(self, InitStateF):
         return E_InputActions.DECREMENT_THEN_DEREF
 
-    def create_DropOut(self, SM_State):                        
-        return OpList(Op.GotoDoorId(DoorID.global_end_of_pre_context_check()))
+    def create_DropOut(self, SM_State, dial_db):                        
+        return OpList(Op.GotoDoorId(DoorID.global_end_of_pre_context_check(dial_db)))
 
 class Class_BACKWARD_INPUT_POSITION(Base):
     def __init__(self, IncidenceIdOnBehalfOfWhichBipdOperates):
@@ -99,13 +99,13 @@ class Class_BACKWARD_INPUT_POSITION(Base):
     def input_action(self, InitStateF):
         return E_InputActions.DECREMENT_THEN_DEREF
 
-    def create_DropOut(self, SM_State):                          
+    def create_DropOut(self, SM_State, dial_db):                          
         if SM_State.is_acceptance():
             incidence_id = self.__incidence_id_of_bipd
             return OpList(
                 Op.QuexDebug('pattern %i: backward input position detected\\n' % incidence_id),
                 Op.Increment(E_R.InputP), 
-                Op.GotoDoorId(DoorID.bipd_return(incidence_id))
+                Op.GotoDoorId(DoorID.bipd_return(incidence_id, dial_db))
             )
         else:
             return OpList(

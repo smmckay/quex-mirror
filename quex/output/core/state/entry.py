@@ -132,14 +132,15 @@ def __code(Node, TheState, done_set, GlobalEntryF):
     RETURNS: list of strings = code for node.
     """
     done_set.add(Node.door_id)
+    dial_db = TheState.entry.dial_db
 
     txt = []
-    __label_node(txt, Node)
+    __label_node(txt, Node, dial_db)
     __comment(txt, Node, TheState, GlobalEntryF)
 
     # (*) The code of commands of the node
     txt.extend(
-        Lng.COMMAND_LIST(Node.command_list)
+        Lng.COMMAND_LIST(Node.command_list, dial_db)
     )
 
     # (*) The 'goto parent'.
@@ -159,7 +160,7 @@ def __code(Node, TheState, done_set, GlobalEntryF):
         return txt
 
     # Append the 'goto parent'
-    txt.append("    %s\n" % Lng.GOTO(Node.parent.door_id))
+    txt.append("    %s\n" % Lng.GOTO(Node.parent.door_id, dial_db))
     return txt
 
 def __comment(txt, Node, TheState, GlobalEntryF):
@@ -184,7 +185,7 @@ def __comment(txt, Node, TheState, GlobalEntryF):
     )
     txt.append("    %s\n" % Lng.COMMENT(msg)[:-1])
 
-def __label_node(txt, Node):
+def __label_node(txt, Node, dial_db):
     """The 'label' of a node in the command tree. Note, that depending on child 
     number:
 
@@ -206,7 +207,7 @@ def __label_node(txt, Node):
          CONDITIONAL.
     """
     if not Node.child_set:                   # leaf node (entered from outside!)
-        txt.append(IfDoorIdReferencedLabel(Node.door_id))
+        txt.append(IfDoorIdReferencedLabel(Node.door_id, dial_db=dial_db))
     elif len(Node.child_set) >= 2:           # inner node (gotoed by child)
-        txt.append(IfDoorIdReferencedLabel(Node.door_id))
+        txt.append(IfDoorIdReferencedLabel(Node.door_id, dial_db=dial_db))
     txt.append("\n")

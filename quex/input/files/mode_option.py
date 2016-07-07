@@ -12,7 +12,7 @@ from   quex.engine.misc.file_in             import skip_whitespace, \
                                                    read_identifier, \
                                                    EndOfStreamException
 
-from   quex.blackboard import mode_description_db
+from   quex.blackboard import mode_prep_prep_db
 import quex.blackboard as     blackboard
 
 from   collections import namedtuple
@@ -20,7 +20,7 @@ import types
 from   copy import copy
 
 def __get_mode_name_list():
-    return mode_description_db.keys()
+    return mode_prep_prep_db.keys()
 
 class SkipRangeData(dict): 
     def __init__(self, OpenerPattern, OpenerSequence,
@@ -135,10 +135,29 @@ class OptionDB(dict):
 
         return result
 
+    def finalize(self):
+        """RETURNS: [0] "inheritable" --> "no", "yes", "only"
+                    [1] "exit"    --> list of exit mode names
+                    [2] "entry"   --> list of entry mode names
+                    [3] loopers   --> description of 'loops' that need to be webbed
+                                      into the state machine.
+                    [4] "counter" --> character counter information
+        """
+        loopers = Loopers(self.value("skip"), 
+                          self.value("skip_range"),
+                          self.value("skip_nested_range"),
+                          self.value("indentation"))
+        return self.value("inheritable"), \
+               self.value_list("exit"),   \
+               self.value_list("entry"),  \
+               self.loopers,              \
+               self.value("counter")
+
+
     def enter(self, Name, Value, SourceReference, ModeName):
         """Enters a new definition of a mode option as it comes from the parser.
         At this point, it is assumed that the OptionDB belongs to one single
-        Specifier_Mode and not to a base-mode accumulated Mode. Thus, one
+        Mode_PrepPrep and not to a base-mode accumulated Mode. Thus, one
         option can only be set once, otherwise an error is notified.
         """
         global mode_option_info_db
@@ -157,7 +176,7 @@ class OptionDB(dict):
 
     @typed(Setting=(None, OptionSetting))
     def __enter_setting(self, Name, Setting):
-        """During building of a Specifier_Mode. Enters a OptionSetting safely into the 
+        """During building of a Mode_PrepPrep. Enters a OptionSetting safely into the 
         OptionDB. It checks whether it is already present.
         """
         info = mode_option_info_db[Name]
@@ -262,11 +281,11 @@ def parse(fh, new_mode):
         value = __parse_range_skipper_option(fh, identifier, new_mode)
         
     elif identifier == "indentation":
-        value = counter.Specifier_IndentationCount(fh).parse()
+        value = counter.IndentationCount_Prep(fh).parse()
         blackboard.required_support_indentation_count_set()
 
     elif identifier == "counter":
-        value = counter.Specifier_LineColumnCount(fh).parse()
+        value = counter.LineColumnCount_Prep(fh).parse()
 
     elif identifier in ("entry", "exit"):
         value = read_option_value(fh, ListF=True) # A 'list' of strings

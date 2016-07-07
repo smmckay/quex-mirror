@@ -8,11 +8,9 @@ import quex.blackboard  as blackboard
 from   quex.DEFINITIONS import QUEX_PATH, QUEX_VERSION
 import time
 
-def do(Specifier_ModeDB):
+def do(Mode_PrepPrepDB):
     IndentationSupportF = blackboard.required_support_indentation_count()
     BeginOfLineSupportF = blackboard.required_support_begin_of_line()
-
-    
 
     LexerClassName = Setup.analyzer_class_name
 
@@ -25,7 +23,7 @@ def do(Specifier_ModeDB):
     # -- check if exit/entry handlers have to be active
     entry_handler_active_f = False
     exit_handler_active_f = False
-    for mode in Specifier_ModeDB.values():
+    for mode in Mode_PrepPrepDB.values():
         entry_handler_active_f |= mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY)
         exit_handler_active_f  |= mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT)
 
@@ -106,7 +104,7 @@ def do(Specifier_ModeDB):
              ["$$LEXER_CLASS_NAME$$",           LexerClassName],
              ["$$LEXER_CLASS_NAME_SAFE$$",      Setup.analyzer_name_safe],
              ["$$LEXER_DERIVED_CLASS_NAME$$",   analyzer_derived_class_name],
-             ["$$MAX_MODE_CLASS_N$$",           repr(len(Specifier_ModeDB))],
+             ["$$MAX_MODE_CLASS_N$$",           repr(len(Mode_PrepPrepDB))],
              ["$$NAMESPACE_MAIN$$",             namespace(Setup.analyzer_name_space)],
              ["$$NAMESPACE_MAIN_CLOSE$$",       Lng.NAMESPACE_CLOSE(Setup.analyzer_name_space).replace("\n", "\\\n")],
              ["$$NAMESPACE_MAIN_OPEN$$",        Lng.NAMESPACE_OPEN(Setup.analyzer_name_space).replace("\n", "\\\n")],

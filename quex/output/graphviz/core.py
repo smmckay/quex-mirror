@@ -1,7 +1,7 @@
 from quex.engine.misc.file_operations                   import write_safely_and_close
 from quex.engine.state_machine.engine_state_machine_set import EngineStateMachineSet
 from quex.engine.misc.tools                             import typed
-from quex.input.regular_expression.construct            import Pattern           
+from quex.engine.pattern                                import Pattern           
 
 from quex.blackboard                         import setup as Setup
 

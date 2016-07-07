@@ -67,6 +67,7 @@ def do(Data, ReloadState):
     """
     counter_db    = Data["counter_db"]
     character_set = Data["character_set"]
+    dial_db       = Data["dial_db"]
     assert isinstance(counter_db, CountBase)
     assert isinstance(character_set, NumberSet)
 
@@ -76,15 +77,18 @@ def do(Data, ReloadState):
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
+    on_loop_exit_door_id = DoorID.continue_without_on_after_match(dial_db)
+
     result,               \
     loop_map,             \
     door_id_beyond,       \
     required_register_set = loop.do(ca_map,
-                                    OnLoopExitDoorId  = DoorID.continue_without_on_after_match(),
+                                    OnLoopExitDoorId  = on_loop_exit_door_id,
                                     LexemeEndCheckF   = False,
                                     LexemeMaintainedF = False,
                                     EngineType        = engine_type,
-                                    ReloadStateExtern = ReloadState) 
+                                    ReloadStateExtern = ReloadState, 
+                                    dial_db           = dial_db)
 
     assert isinstance(result, list)
     return result, loop_map, required_register_set

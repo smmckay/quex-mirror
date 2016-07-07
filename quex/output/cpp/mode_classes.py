@@ -35,7 +35,6 @@ def write_member_functions(Modes):
     txt += "#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)\n"
     txt += "#define __self_result_token_id    QUEX_NAME_TOKEN(DumpedTokenIdObject)\n"
     for mode in Modes:        
-        if mode.abstract_f(): continue
         txt += get_implementation_of_mode_functions(mode, Modes)
 
     txt += "#undef self\n"
@@ -89,26 +88,14 @@ $$HAS_EXIT_TO$$
 #endif    
 """                         
 
-def  get_implementation_of_mode_functions(mode, Modes):
+def get_implementation_of_mode_functions(mode, Modes):
     """Writes constructors and mode transition functions.
 
-                  void quex::lexer::enter_EXAMPLE_MODE() { ... }
+                void quex::lexer::enter_EXAMPLE_MODE() { ... }
 
-       where EXAMPLE_MODE is a lexer mode from the given lexer-modes, and
-       'quex::lexer' is the lexical analysis class.
+    where EXAMPLE_MODE is a lexer mode from the given lexer-modes, and
+    'quex::lexer' is the lexical analysis class.
     """
-    def __filter_out_abstract_modes(ModeNameList):
-        """Return only those names from ModeNameList where the mode is not
-        abstract. That is, it can be implemented.
-        """
-        result = []
-        for name in ModeNameList:
-            for mode in Modes:
-                if mode.name == name:
-                    if not mode.abstract_f(): result.append(name)
-                    break
-        return result
-
     # (*) on enter 
     on_entry_str  = "#   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n"
     on_entry_str += "    QUEX_NAME(%s).has_entry_from(FromMode);\n" % mode.name
@@ -131,21 +118,23 @@ def  get_implementation_of_mode_functions(mode, Modes):
     on_indentation_str = get_on_indentation_handler(mode)
 
     # (*) has base mode
-    if mode.has_base_mode():
-        base_mode_list    = __filter_out_abstract_modes(mode.get_base_mode_name_list())
-        has_base_mode_str = get_IsOneOfThoseCode(base_mode_list, CheckBaseModeF=True)
+    base_mode_sequence = mode.implemented_base_mode_name_sequence() 
+    if len(base_mode_sequence) == 1:
+        assert base_mode_sequence[-1] == mode.name
+        has_base_mode_str = "    return false;" # mode has no base mode!
     else:
-        has_base_mode_str = "    return false;"
+        base_mode_list    = base_mode_sequence
+        has_base_mode_str = get_IsOneOfThoseCode(base_mode_list, CheckBaseModeF=True)
         
     # (*) has entry from
     #     check whether the source mode is a permissible 'entry' mode
-    entry_list         = __filter_out_abstract_modes(mode.entry_mode_name_list)
+    entry_list         = mode.entry_mode_name_list # (only implemented ones are listed)
     has_entry_from_str = get_IsOneOfThoseCode(entry_list,
                                               ConsiderDerivedClassesF=True)
 
     # (*) has exit to
     #     check whether the target mode is a permissible 'exit' mode
-    exit_list       = __filter_out_abstract_modes(mode.exit_mode_name_list)
+    exit_list       = mode.exit_mode_name_list # (only implemented ones are listed)
     has_exit_to_str = get_IsOneOfThoseCode(exit_list,
                                            ConsiderDerivedClassesF=True)
     
@@ -339,7 +328,6 @@ def get_related_code_fragments(ModeDb):
     Modes = ModeDb.values()
     members_txt = ""    
     for mode in Modes:
-        if mode.abstract_f(): continue
         members_txt += "        extern QUEX_NAME(Mode)  QUEX_NAME(%s);\n" % mode.name
 
     mode_functions_txt = __get_function_declaration(Modes, FriendF=False)
@@ -366,8 +354,6 @@ def __get_function_declaration(Modes, FriendF=False):
     txt = ""
     on_indentation_txt = ""
     for mode in Modes:
-        if mode.abstract_f(): continue
-
         txt += functions(prolog, "__QUEX_TYPE_ANALYZER_RETURN_VALUE", 
                                 ["analyzer_function"],
                                 "QUEX_TYPE_ANALYZER*")
@@ -401,7 +387,6 @@ def mode_id_definition(ModeDb):
     result = "".join(
         "    QUEX_NAME(ModeID_%s) = %i,\n" % (mode.name, mode.mode_id)
         for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id"))
-            if not mode.abstract_f()
     )
 
     return result[:-2]
@@ -409,14 +394,14 @@ def mode_id_definition(ModeDb):
 def __setup(ModeDb):
     txt = [
         initialization(mode)
-        for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id")) if not mode.abstract_f()
+        for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id"))
     ]
     txt.append("\n")
     txt.append("QUEX_NAME(Mode)* (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {\n")
 
     content_txt = [
         "    &QUEX_NAME(%s),\n" % mode.name
-        for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id")) if not mode.abstract_f()
+        for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id"))
     ]
     # delete trailing comma
     if content_txt: 
@@ -428,8 +413,6 @@ def __setup(ModeDb):
     return "".join(txt)
 
 def initialization(mode):
-    assert not mode.abstract_f()
-    
     analyzer_function = "QUEX_NAME(%s_analyzer_function)" % mode.name
     on_indentation    = "QUEX_NAME(%s_on_indentation)"    % mode.name
     on_entry          = "QUEX_NAME(%s_on_entry)"          % mode.name
@@ -437,9 +420,6 @@ def initialization(mode):
     has_base          = "QUEX_NAME(%s_has_base)"          % mode.name
     has_entry_from    = "QUEX_NAME(%s_has_entry_from)"    % mode.name
     has_exit_to       = "QUEX_NAME(%s_has_exit_to)"       % mode.name
-
-    #if mode.abstract_f(): 
-    #    analyzer_function = "QUEX_NAME(Mode_uncallable_analyzer_function)"
 
     if not mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY):
         on_entry = "QUEX_NAME(Mode_on_entry_exit_null_function)"

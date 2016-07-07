@@ -3,18 +3,18 @@ import quex.output.core.state.transition_map.core  as     transition_block
 import quex.output.core.state.entry                as     entry
 from   quex.engine.analyzer.core                   import Analyzer
 from   quex.engine.analyzer.state.core             import AnalyzerState
-from   quex.engine.misc.tools                      import none_isinstance, \
+from   quex.engine.misc.tools                      import typed, \
+                                                          none_isinstance, \
                                                           none_is_None
 
+@typed(TheState=AnalyzerState, TheAnalyzer=Analyzer)
 def do(code, TheState, TheAnalyzer):
-    assert isinstance(TheState, AnalyzerState)
-    assert isinstance(TheAnalyzer, Analyzer)
 
     # (*) Entry _______________________________________________________________
     txt, post_txt = entry.do(TheState)
 
     # (*) Transition Map ______________________________________________________
-    tm = relate_to_TransitionCode(TheState.transition_map)
+    tm = relate_to_TransitionCode(TheState.transition_map, TheState.entry.dial_db)
     transition_block.do(txt, tm)
 
     # (*) Post-state entry to init state (if necessary)

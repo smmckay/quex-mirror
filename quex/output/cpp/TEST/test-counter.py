@@ -43,7 +43,7 @@ from   quex.engine.misc.interval_handling                         import NumberS
 import quex.engine.state_machine.transformation.core              as     bc_factory
 import quex.engine.state_machine.transformation.utf16_state_split as     utf16_state_split
 import quex.output.core.dictionary                                as     languages
-import quex.output.cpp.counter                                    as     counter
+import quex.output.cpp.run_time_counter                           as     run_time_counter
 
 from   quex.blackboard                         import setup as Setup, Lng
 from   itertools                               import chain
@@ -149,7 +149,7 @@ def get_test_application(counter_db, ReferenceP, CT):
 
     # (*) Generate Code 
     counter_function_name, \
-    counter_str            = counter.get(counter_db, "TEST_MODE")
+    counter_str            = run_time_counter.get(counter_db, "TEST_MODE")
     counter_str = counter_str.replace("static void", "void")
 
     # Make sure that the counter is implemented using reference pointer
@@ -204,7 +204,7 @@ def counter_db_wo_reference_p():
     """
     fh = StringIO(spec_txt)
     fh.name        = "<string>"
-    return Specifier_LineColumnCount(fh).parse()
+    return LineColumnCount_Prep(fh).parse()
 
 fields  = sys.argv[1].split("-")
 codec   = fields[0]

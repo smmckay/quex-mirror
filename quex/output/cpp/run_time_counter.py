@@ -5,8 +5,7 @@ _______________________________________________________________________________
 import quex.output.core.base                        as     generator
 import quex.output.core.loop                        as     loop
 from   quex.output.core.variable_db                 import variable_db
-from   quex.engine.analyzer.door_id_address_label   import dial_db, \
-                                                           DoorID
+from   quex.engine.analyzer.door_id_address_label   import DoorID, DialDB
 import quex.engine.analyzer.engine_supply_factory   as     engine
 from   quex.engine.operations.operation_list        import Op
 from   quex.engine.misc.tools                       import typed
@@ -43,6 +42,8 @@ def get(CaMap, Name):
                                        by the 'function name'.
     ---------------------------------------------------------------------------
     """
+    dial_db = DialDB()
+
     function_name = DefaultCounterFunctionDB.get_function_name(CaMap)
     if function_name is not None:
         return function_name, None # Implementation has been done before.
@@ -50,22 +51,27 @@ def get(CaMap, Name):
     function_name  = Lng.DEFAULT_COUNTER_FUNCTION_NAME(Name) 
 
     door_id_return = dial_db.new_door_id()
-    code,          \
-    loop_map,      \
-    door_id_beyond = loop.do(CaMap, 
-                             OnLoopExitDoorId = door_id_return,
-                             LexemeEndCheckF  = True,
-                             EngineType       = engine.CHARACTER_COUNTER)
+    code,                 \
+    loop_map,             \
+    door_id_beyond,       \
+    required_register_set = loop.do(CaMap, 
+                                    OnLoopExitDoorId = door_id_return,
+                                    LexemeEndCheckF  = True,
+                                    EngineType       = engine.CHARACTER_COUNTER, 
+                                    dial_db          = dial_db)
 
+    variable_db.require_registers(required_register_set)
     implementation = __frame(function_name, Lng.INPUT_P(), code, door_id_return, 
-                             door_id_beyond) 
+                             door_id_beyond, dial_db) 
 
     DefaultCounterFunctionDB.enter(CaMap, function_name)
 
     return function_name, implementation
 
-def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, DoorIdBeyond):
+def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, DoorIdBeyond, dial_db):
     
+    state_router_adr   = DoorID.global_state_router(dial_db).related_address
+    state_router_label = Lng.LABEL_STR_BY_ADR(state_router_adr)
     txt = [  \
           "#ifdef __QUEX_OPTION_COUNTER\n" \
         + "static void\n" \
@@ -74,53 +80,56 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, DoorIdBeyond):
         + "{\n" \
         + "#   define self (*me)\n" \
         + "/*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */\n"
-        + "#   define QUEX_LABEL_STATE_ROUTER %s\n" % dial_db.get_label_by_door_id(DoorID.global_state_router())
+        + "#   define QUEX_LABEL_STATE_ROUTER %s\n" % state_router_label
     ]
 
     # Following function refers to the global 'variable_db'
     txt.append(Lng.VARIABLE_DEFINITIONS(variable_db))
-    txt.append(
-        "    (void)me;\n"
-        "    __QUEX_IF_COUNT_SHIFT_VALUES();\n"
-        "    /* Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
-        "     * => Caller does not need to check\n"
-        "     * BUT, if so quit immediately after 'shift values'. */\n"
-        "    __quex_assert(LexemeBegin <= LexemeEnd);\n"
-        "    if(LexemeBegin == LexemeEnd) return;\n"
+    txt.extend([
+        "    (void)me;\n",
+        "    __QUEX_IF_COUNT_SHIFT_VALUES();\n",
+        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
+                              "=> Caller does not need to check\n"
+                              "BUT, if so quit immediately after 'shift values'."),
+        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
+        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
+        "        %s\n" % "return;", # TODO: Replace with Lng.PURE_RETURN
+        "    %s\n" % Lng.END_IF(),
         "    %s = LexemeBegin;\n" % IteratorName
-    )
+    ])
 
     txt.extend(CodeTxt)
 
-    door_id_failure     = DoorID.incidence(E_IncidenceIDs.MATCH_FAILURE)
-    door_id_bad_lexatom = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM)
+    door_id_failure     = DoorID.incidence(E_IncidenceIDs.MATCH_FAILURE, dial_db)
+    door_id_bad_lexatom = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db)
+
     txt.append(
           "%s /* TERMINAL: BAD_LEXATOM */\n;\n" % Lng.LABEL(door_id_bad_lexatom)
-        + "%s /* TERMINAL: FAILURE     */\n%s\n" % (Lng.LABEL(door_id_failure), Lng.GOTO(DoorIdBeyond))
+        + "%s /* TERMINAL: FAILURE     */\n%s\n" % (Lng.LABEL(door_id_failure), Lng.GOTO(DoorIdBeyond, dial_db))
     )
     txt.append(
-         "%s:\n" % dial_db.get_label_by_door_id(DoorIdReturn) \
-       + "     /* Assert: lexeme in codec's character boundaries. */\n" \
+         "%s\n" % Lng.LABEL(DoorIdReturn)
+       + "%s\n" % Lng.COMMENT("Assert: lexeme in codec's character boundaries.") \
        + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
        + "    return;\n" \
-       + "".join(generator.do_state_router()) \
-       + "#   undef self\n" \
-       + "#   undef QUEX_LABEL_STATE_ROUTER\n" 
+       + "".join(generator.do_state_router(dial_db)) \
+       + "%s\n" % Lng.UNDEFINE("self")
+       + "%s\n" % Lng.UNDEFINE("QUEX_LABEL_STATE_ROUTER")
        # If there is no MATCH_FAILURE, then DoorIdBeyond is still referenced as 'gotoed',
        # but MATCH_FAILURE is never implemented, later on, because its DoorId is not 
        # referenced.
        + "#    if ! defined(QUEX_OPTION_COMPUTED_GOTOS)\n"
-       + "     %s /* in QUEX_GOTO_STATE       */\n" % Lng.GOTO(DoorID.global_state_router())
-       + "     %s /* to BAD_LEXATOM           */\n" % Lng.GOTO(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM))
+       + "     %s /* in QUEX_GOTO_STATE       */\n" % Lng.GOTO(DoorID.global_state_router(dial_db), dial_db)
+       + "     %s /* to BAD_LEXATOM           */\n" % Lng.GOTO(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db), dial_db)
        + "#    endif\n"
-       + "    /* Avoid compiler warning: Unused label for 'TERMINAL <BEYOND>' */\n" \
-       + "    %s\n" % Lng.GOTO(DoorIdBeyond) \
-       + "    %s\n" % Lng.GOTO(door_id_failure) \
+       + "    %s\n" % Lng.COMMENT("Avoid compiler warning: 'Unused labels'") \
+       + "    %s\n" % Lng.GOTO(DoorIdBeyond, dial_db) \
+       + "    %s\n" % Lng.GOTO(door_id_failure, dial_db) \
        + "    (void)target_state_index;\n"
        + "    (void)target_state_else_index;\n"
        + "}\n" \
        + "#endif /* __QUEX_OPTION_COUNTER */\n" 
     )
 
-    return "".join(Lng.GET_PLAIN_STRINGS(txt))
+    return "".join(Lng.GET_PLAIN_STRINGS(txt, dial_db))
 

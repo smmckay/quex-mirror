@@ -1,20 +1,18 @@
 import quex.engine.state_machine.index  as     sm_index
-from   quex.engine.misc.tools                import print_callstack, TypedDict, TypedSet
-from   quex.blackboard                  import E_IncidenceIDs, E_StateIndices, E_DoorIdIndex
+from   quex.engine.misc.tools           import print_callstack, TypedDict, TypedSet
+from   quex.blackboard                  import E_IncidenceIDs, \
+                                               E_StateIndices, \
+                                               E_DoorIdIndex, \
+                                               Lng
 
 from   collections import namedtuple
-#______________________________________________________________________________
-# Label:
-#
-# Identifier in the generated source code which can be 'gotoed'. A label is
-# distinctly linked with a DoorID and an Address, i.e.
 #______________________________________________________________________________
 #
 # Address:
 #
-# Numeric representation of a label. Using an address a variable may contain
-# the information of what label to go, and the goto is then executed by a
-# code fragment as
+# Numeric representation of a 'goto target'. Using an address a variable may 
+# contain the information of what target to go, and the goto is then executed 
+# by a code fragment as
 #
 #      switch( address_variable ) {
 #         ...
@@ -49,14 +47,18 @@ from   collections import namedtuple
 # are the same except that their DoorID is the same.
 #            
 #______________________________________________________________________________
-class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index"))):
-    def __new__(self, StateIndex, DoorIndex, PlainF=False):
+class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index", "related_address"))):
+    def __new__(self, StateIndex, DoorIndex, PlainF=False, dial_db=None):
         assert isinstance(StateIndex, (int, long)) or StateIndex in E_StateIndices or StateIndex == E_IncidenceIDs.MATCH_FAILURE
+        assert isinstance(dial_db, DialDB)
         # 'DoorIndex is None' --> right after the entry commands (targetted after reload).
         assert isinstance(DoorIndex, (int, long))  or DoorIndex is None or DoorIndex in E_DoorIdIndex, "%s" % DoorIndex
 
         if PlainF:
-            return super(DoorID, self).__new__(self, StateIndex, DoorIndex)
+            address = dial_db.new_address()
+            result  = super(DoorID, self).__new__(self, StateIndex, DoorIndex, address)
+            dial_db.register_door_id(result)
+            return result
 
         # If the DoorID object already exists, than do not generate a second one.
         result = dial_db.access_door_id(StateIndex, DoorIndex)
@@ -64,34 +66,35 @@ class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index"))):
             return result
 
         # Any created DoorID must be properly registered.
-        result = super(DoorID, self).__new__(self, StateIndex, DoorIndex)
+        address = dial_db.new_address()
+        result  = super(DoorID, self).__new__(self, StateIndex, DoorIndex, address)
         dial_db.register_door_id(result)
 
         return result
 
     @staticmethod
-    def drop_out(StateIndex):              return DoorID(E_StateIndices.DROP_OUT, StateIndex)
+    def drop_out(StateIndex, dial_db):              return DoorID(E_StateIndices.DROP_OUT, StateIndex, dial_db=dial_db)
     @staticmethod                        
-    def transition_block(StateIndex):      return DoorID(StateIndex, E_DoorIdIndex.TRANSITION_BLOCK)
+    def transition_block(StateIndex, dial_db):      return DoorID(StateIndex, E_DoorIdIndex.TRANSITION_BLOCK, dial_db=dial_db)
     @staticmethod                        
-    def incidence(IncidenceId):            return DoorID(dial_db.map_incidence_id_to_state_index(IncidenceId), 
-                                                         E_DoorIdIndex.ACCEPTANCE)
+    def incidence(IncidenceId, dial_db):            return DoorID(dial_db.map_incidence_id_to_state_index(IncidenceId), 
+                                                                   E_DoorIdIndex.ACCEPTANCE, dial_db=dial_db)
     @staticmethod                        
-    def bipd_return(IncidenceId):     return DoorID(dial_db.map_incidence_id_to_state_index(IncidenceId), E_DoorIdIndex.BIPD_RETURN)
+    def bipd_return(IncidenceId, dial_db):     return DoorID(dial_db.map_incidence_id_to_state_index(IncidenceId), E_DoorIdIndex.BIPD_RETURN, dial_db=dial_db)
     @staticmethod                        
-    def state_machine_entry(SM_Id):        return DoorID(SM_Id,      E_DoorIdIndex.STATE_MACHINE_ENTRY)
+    def state_machine_entry(SM_Id, dial_db):        return DoorID(SM_Id,      E_DoorIdIndex.STATE_MACHINE_ENTRY, dial_db=dial_db)
     @staticmethod                        
-    def global_state_router():             return DoorID(0L,         E_DoorIdIndex.GLOBAL_STATE_ROUTER)
+    def global_state_router(dial_db):             return DoorID(0L,         E_DoorIdIndex.GLOBAL_STATE_ROUTER, dial_db=dial_db)
     @staticmethod                         
-    def global_end_of_pre_context_check(): return DoorID(0L,         E_DoorIdIndex.GLOBAL_END_OF_PRE_CONTEXT_CHECK)
+    def global_end_of_pre_context_check(dial_db): return DoorID(0L,         E_DoorIdIndex.GLOBAL_END_OF_PRE_CONTEXT_CHECK, dial_db=dial_db)
     @staticmethod
-    def global_reentry():                  return DoorID(0L,         E_DoorIdIndex.GLOBAL_REENTRY)
+    def global_reentry(dial_db):                  return DoorID(0L,         E_DoorIdIndex.GLOBAL_REENTRY, dial_db=dial_db)
     @staticmethod
-    def return_with_on_after_match():      return DoorID(0L,         E_DoorIdIndex.RETURN_WITH_ON_AFTER_MATCH)
+    def return_with_on_after_match(dial_db):      return DoorID(0L,         E_DoorIdIndex.RETURN_WITH_ON_AFTER_MATCH, dial_db=dial_db)
     @staticmethod
-    def continue_with_on_after_match():    return DoorID(0L,         E_DoorIdIndex.CONTINUE_WITH_ON_AFTER_MATCH)
+    def continue_with_on_after_match(dial_db):    return DoorID(0L,         E_DoorIdIndex.CONTINUE_WITH_ON_AFTER_MATCH, dial_db=dial_db)
     @staticmethod
-    def continue_without_on_after_match(): return DoorID(0L,         E_DoorIdIndex.CONTINUE_WITHOUT_ON_AFTER_MATCH)
+    def continue_without_on_after_match(dial_db): return DoorID(0L,         E_DoorIdIndex.CONTINUE_WITHOUT_ON_AFTER_MATCH, dial_db=dial_db)
 
     def drop_out_f(self):                  return self.state_index == E_StateIndices.DROP_OUT
     def last_acceptance_f(self):           return     self.door_index  == E_DoorIdIndex.ACCEPTANCE \
@@ -101,30 +104,59 @@ class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index"))):
         return "DoorID(s=%s, d=%s)" % (self.state_index, self.door_index)
 
 #______________________________________________________________________________
-# DialDB: DoorID, Address, Label - Database
+# DialDB: DoorID, Address - Database
 #
-# For a given Label, a given Address, or a given DoorID, there the remaining
-# two a distinctly defined. That is,
+# A DoorID of a state entry is distincly linked to an 'address', i.e something
+# a 'goto' can go to. The language's dictionary later relates an 'address' to
+# a 'label' (i.e. something that the language uses as target of 'goto').
 #
-#                           1     n         
-#               StateIndex <-------> DoorID 
-#                                   1 /   \ 1
-#                                    /     \
-#                                   /       \
-#                                1 /         \ 1
-#                           Address <-------> Label
-#                                    1     1
-# 
-# The DialDB maintains the injective relationships and finds equivalents
-# for one given element. All addresses/labels/door-ids relate to a state
-# with a given StateIndex. 
+#                           1     n          1       1
+#               StateIndex <-------> DoorID <---------> Address
+#
+#              '---------------------._.-----------------------'
+#                                     '
+#                                   DialDB
+#
+# The DialDB maps from DoorID to Address and vice versa. Additionally, it 
+# keeps track of 'goto-ed' addresses. Thus, addresses that are never goto-ed,
+# may not have to be instantiated.
 #______________________________________________________________________________
-AddressLabelPair = namedtuple("AddressLabelPair_tuple", ("address", "label"))
+
+
+# Globally Unique Incidence Id ________________________________________________
+#
+# (For ease: make it globally unique, not only mode-unique)
+#
+__incidence_id_i = long(-1)
+
+def new_incidence_id():
+    global __incidence_id_i 
+    __incidence_id_i += 1
+    return __incidence_id_i
+
 
 class DialDB(object):
-    __slots__ = ( "__d2la", "__door_id_db", "__gotoed_address_set", "__routed_address_set", "__address_i", "__incidence_id_i", "__map_incidence_id_to_state_index" )
+    __slots__ = ("__door_id_db", "__gotoed_address_set", "__routed_address_set", "__address_i", "__map_incidence_id_to_state_index" )
     def __init__(self):
-        self.clear()
+        # Track all generated DoorID objects with 2d-dictionary that maps:
+        #
+        #          StateIndex --> ( DoorSubIndex --> DoorID )
+        #
+        # Where the DoorID has the 'state_index' and 'door_index' equal to
+        # 'StateIndex' and 'DoorSubIndex'.
+        #
+        self.__door_id_db = {} # TypedDict(long, dict)
+       
+        # Track addresses which are subject to 'goto' and those which need to
+        # be routed.
+        self.__gotoed_address_set = TypedSet(long)
+        self.__routed_address_set = TypedSet(long)
+
+        # Address counter to generate unique addresses
+        self.__address_i = long(-1)
+
+        # Mapping from incidence_id to terminal state index
+        self.__map_incidence_id_to_state_index = {}
 
     def __debug_address_generation(self, DoorId, Address, *SuspectAdrList):
         """Prints the callstack if an address of SuspectAdrList is generated.
@@ -152,66 +184,29 @@ class DialDB(object):
         print "#Gotoed Address: %s" % Address
         print_callstack()
 
-    def clear(self):
-        # Database: [DoorID] [Address] [Label] 
-        # 
-        # The database is represented by a dictionary that maps:
-        #
-        #               DoorID --> tuple(Address, Label)
-        #
-        self.__d2la = TypedDict(DoorID, AddressLabelPair)
-
-        # Track all generated DoorID objects with 2d-dictionary that maps:
-        #
-        #          StateIndex --> ( DoorSubIndex --> DoorID )
-        #
-        # Where the DoorID has the 'state_index' and 'door_index' equal to
-        # 'StateIndex' and 'DoorSubIndex'.
-        #
-        self.__door_id_db = {} # TypedDict(long, dict)
-       
-        # Track addresses which are subject to 'goto' and those which need to
-        # be routed.
-        self.__gotoed_address_set = TypedSet(long)
-        self.__routed_address_set = TypedSet(long)
-
-        # Address counter to generate unique addresses
-        self.__address_i = long(-1)
-
-        # Unique incidence id inside a mode
-        self.__incidence_id_i = long(-1)
-
-        # Mapping from incidence_id to terminal state index
-        self.__map_incidence_id_to_state_index = {}
-
     def routed_address_set(self):
         return self.__routed_address_set
 
     def gotoed_address_set(self):
         return self.__gotoed_address_set
 
-    def label_is_gotoed(self, Label):
-        address = self.get_address_by_label(Label)
-        return address in self.__gotoed_address_set
+    def address_is_gotoed(self, Adr):
+        return Adr in self.__gotoed_address_set
 
-    def __new_entry(self, StateIndex=None, DoorSubIndex=None):
+    def new_door_id(self, StateIndex=None, DoorSubIndex=None):
         """Create a new entry in the database. First, a DoorID is generated.
-        Then a new set of address and label is linked to it. The link between
-        DoorID and AddressLabelPair is stored in '.__d2la'. A list of existing
+        Then a new address is linked to it. A list of existing
         DoorID-s is maintained in '.__door_id_db'.
+
+        RETURNS: [0] New DoorID
+                 [1] New Address
         """
-        def specify(StateIndex, DoorSubIndex):
-            if StateIndex is None:   state_index = sm_index.get() # generate a new StateIndex
-            else:                    state_index = StateIndex
-            if DoorSubIndex is None: door_sub_index = self.max_door_sub_index(state_index) + 1
-            else:                    door_sub_index = DoorSubIndex
-            return state_index, door_sub_index
+        state_index    = StateIndex if StateIndex is not None \
+                                    else sm_index.get()
+        door_sub_index = DoorSubIndex if DoorSubIndex is not None \
+                                      else self.max_door_sub_index(state_index) + 1
 
-        state_index, door_sub_index = specify(StateIndex, DoorSubIndex)
-        door_id                     = DoorID(state_index, door_sub_index, PlainF=True)
-        address_label_pair          = self.register_door_id(door_id)
-
-        return door_id, address_label_pair
+        return DoorID(state_index, door_sub_index, PlainF=True, dial_db=self)
 
     def max_door_sub_index(self, StateIndex):
         """RETURN: The greatest door sub index for a given StateIndex. 
@@ -225,14 +220,13 @@ class DialDB(object):
             if dsi > result: result = dsi
         return result
 
-    def register_door_id(self, DoorId):
+    def new_address(self):
         self.__address_i += 1
-        address_label_pair   = AddressLabelPair(self.__address_i, "_%i" % self.__address_i)
+        return self.__address_i
 
-        if False: # True/False activates debug messages
-            self.__debug_address_generation(DoorId, self.__address_i, 18)
-
-        self.__d2la[DoorId] = address_label_pair
+    def register_door_id(self, DoorId):
+        if True: # True/False activates debug messages
+            self.__debug_address_generation(DoorId, DoorId.related_address, 21)
 
         sub_db = self.__door_id_db.get(DoorId.state_index)
         if sub_db is None:
@@ -240,8 +234,6 @@ class DialDB(object):
         else:
             assert DoorId.door_index not in sub_db # Otherwise, it would not be new
             sub_db[DoorId.door_index] = DoorId
-
-        return address_label_pair
 
     def access_door_id(self, StateIndex, DoorSubIndex):
         """Try to get a DoorID from the set of existing DoorID-s. If a DoorID
@@ -258,79 +250,16 @@ class DialDB(object):
                 result = door_id
         return result
 
-    def new_incidence_id(self):
-        self.__incidence_id_i += 1
-        return self.__incidence_id_i
-
-    def new_door_id(self, StateIndex=None, DoorSubIndex=None):
-        door_id, alp = self.__new_entry(StateIndex, DoorSubIndex)
-        return door_id
-
-    def new_address(self, StateIndex=None):
-        door_id, alp = self.__new_entry(StateIndex)
-        return alp.address
-
-    def new_label(self, StateIndex=None):
-        door_id, alp = self.__new_entry(StateIndex)
-        return alp.label
-
-    def get_label_by_door_id(self, DoorId, GotoedF=False):
-        assert DoorId in self.__d2la, "%s" % str(DoorId)
-        address, label = self.__d2la[DoorId]
-        if GotoedF:
-            self.mark_address_as_gotoed(address)
-        return label 
-
-    def get_address_by_door_id(self, DoorId, RoutedF=False):
-        address = self.__d2la[DoorId][0]
-        if RoutedF:
-            self.mark_address_as_routed(address)
-        return address
-
-    def get_door_id_by_address(self, Address):
-        for door_id, info in self.__d2la.iteritems():
-            if info[0] == Address: return door_id
-        return None
-
-    def get_label_by_address(self, Address, GotoedF=False):
-        for address, label in self.__d2la.itervalues():
-            if address == Address: 
-                self.mark_address_as_gotoed(address)
-                return label
-        return None
-
-    def get_door_id_by_label(self, Label):
-        for door_id, info in self.__d2la.iteritems():
-            if info[1] == Label: return door_id
-        return None
-
-    def get_address_by_label(self, Label):
-        for door_id, info in self.__d2la.iteritems():
-            if info[1] == Label: return info[0]
-        return None
-
     def mark_address_as_gotoed(self, Address):
         if False:
             self.__debug_gotoed_address(Address, 39)
         self.__gotoed_address_set.add(Address)
-
-    def mark_label_as_gotoed(self, Label):
-        self.mark_address_as_gotoed(self.get_address_by_label(Label))
-
-    def mark_door_id_as_gotoed(self, DoorId):
-        self.mark_address_as_gotoed(self.get_address_by_door_id(DoorId))
 
     def mark_address_as_routed(self, Address):
         self.__routed_address_set.add(Address)
         # Any address which is subject to routing is 'gotoed', at least inside
         # the router (e.g. "switch( ... ) ... case AdrX: goto LabelX; ...").
         self.mark_address_as_gotoed(Address)
-
-    def mark_label_as_routed(self, Label):
-        self.mark_address_as_routed(self.get_address_by_label(Label))
-
-    def mark_door_id_as_routed(self, DoorId):
-        self.mark_address_as_routed(self.get_address_by_door_id(DoorId))
 
     def map_incidence_id_to_state_index(self, IncidenceId):
         assert isinstance(IncidenceId, (int, long)) or IncidenceId in E_IncidenceIDs, \
@@ -345,8 +274,6 @@ class DialDB(object):
             self.__debug_incidence_generation(IncidenceId, index)
         return index
     
-dial_db = DialDB()
-
 class DoorID_Scheme(tuple):
     """A TargetByStateKey maps from a index, i.e. a state_key to a particular
        target (e.g. a DoorID). It is implemented as a tuple which can be 
@@ -364,24 +291,25 @@ class DoorID_Scheme(tuple):
 __routed_address_set = set([])
 
 class IfDoorIdReferencedCode:
-    def __init__(self, DoorId, Code=None):
+    def __init__(self, DoorId, Code=None, dial_db=None):
         """LabelType, LabelTypeArg --> used to access __address_db.
 
            Code  = Code that is to be generated, supposed that the 
-                   label is actually referred.
-                   (May be empty, so that that only the label is not printed.)
+                   address is actually referred (by goto).
+                   (May be empty, so that that only the address is not printed.)
         """
         assert isinstance(Code, list) or Code is None
 
-        self.label = dial_db.get_label_by_door_id(DoorId)
-        if Code is None: self.code = [ self.label, ":" ]
+        self.address = DoorId.related_address
+        self.door_id = DoorId
+        if Code is None: self.code = [ Lng.LABEL(self.door_id) ]
         else:            self.code = Code
 
 class IfDoorIdReferencedLabel(IfDoorIdReferencedCode):
-    def __init__(self, DoorId):
-        IfDoorIdReferencedCode.__init__(self, DoorId)
+    def __init__(self, DoorId, dial_db):
+        IfDoorIdReferencedCode.__init__(self, DoorId, dial_db=dial_db)
 
-def get_plain_strings(txt_list):
+def get_plain_strings(txt_list, dial_db):
     """-- Replaces unreferenced 'CodeIfLabelReferenced' objects by empty strings.
        -- Replaces integers by indentation, i.e. '1' = 4 spaces.
     """
@@ -401,7 +329,7 @@ def get_plain_strings(txt_list):
             # Text is left as it is
             pass
 
-        elif dial_db.label_is_gotoed(elm.label): 
+        elif dial_db.address_is_gotoed(elm.address): 
             # If an address is referenced, the correspondent code is inserted.
             txt_list[i:i+1] = elm.code
             # print "#elm.code:", elm.code
@@ -418,29 +346,3 @@ def __nice(SM_ID):
     assert isinstance(SM_ID, (long, int))
     return repr(SM_ID).replace("L", "").replace("'", "")
     
-#__label_db = {
-#    # Let's make one thing clear: addresses of labels are aligned with state indices:
-#    "$entry":                 lambda DoorId:      __address_db.get_entry(DoorId),
-#    # 
-#    "$terminal":              lambda TerminalIdx: __address_db.get("TERMINAL_%s"        % __nice(TerminalIdx)),
-#    "$terminal-router":       lambda NoThing:     __address_db.get("__TERMINAL_ROUTER"),
-#    "$terminal-direct":       lambda TerminalIdx: __address_db.get("TERMINAL_%s_DIRECT" % __nice(TerminalIdx)),
-#    "$terminal-general-bw":   lambda NoThing:     __address_db.get("TERMINAL_GENERAL_BACKWARD"),
-#    "$terminal-EOF":          lambda NoThing:     __address_db.get("TERMINAL_END_OF_STREAM"),
-#    "$terminal-FAILURE":      lambda SM_Id:       __address_db.get("TERMINAL_FAILURE_%s" % SM_Id),
-#    #
-#    "$state-router":          lambda NoThing:     __address_db.get("__STATE_ROUTER"),
-#    #
-#    "$reload":                lambda StateIdx:    __address_db.get("STATE_%s_RELOAD"    % __nice(StateIdx)),
-#    "$reload-FORWARD":        lambda StateIdx:    __address_db.get("__RELOAD_FORWARD"),
-#    "$reload-BACKWARD":       lambda StateIdx:    __address_db.get("__RELOAD_BACKWARD"),
-#    "$drop-out":              lambda StateIdx:    __address_db.get("STATE_%s_DROP_OUT" % __nice(StateIdx)),
-#    "$re-start":              lambda NoThing:     __address_db.get("__REENTRY_PREPARATION"),
-#    "$re-start-2":            lambda NoThing:     __address_db.get("__REENTRY_PREPARATION_2"),
-#    "$start":                 lambda NoThing:     __address_db.get("__REENTRY"),
-#    "$skipper-reload":        lambda StateIdx:    __address_db.get("__SKIPPER_RELOAD_TERMINATED_%s" % __nice(StateIdx)),
-#    "$bipd-return":           lambda DetectorID:  __address_db.get("BIPD_%i_RETURN" % DetectorID),
-#    "$bipd-terminal":         lambda DetectorID:  __address_db.get("BIPD_%i_TERMINAL" % DetectorID),
-#    # There may be more than one ... in skipp for example ...
-#    "$init_state_transition_block": lambda StateIndex:   __address_db.get("INIT_STATE_%i_TRANSITION_BLOCK" % StateIndex),
-#}

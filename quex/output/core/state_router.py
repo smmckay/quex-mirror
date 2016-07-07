@@ -1,10 +1,11 @@
-from   quex.engine.analyzer.door_id_address_label  import DoorID, \
-                                                          dial_db
+from   quex.engine.analyzer.door_id_address_label  import DoorID, DialDB
+
+from   quex.engine.misc.tools                      import typed
 from   quex.blackboard import Lng
 
 from   operator import itemgetter
 
-def do(StateRouterInfoList):
+def do(StateRouterInfoList, dial_db):
     """Create code that allows to jump to a state based on an integer value.
     """
 
@@ -12,7 +13,7 @@ def do(StateRouterInfoList):
     #       possibly not be tagged as 'gotoed', event if it is used.
     prolog = "#   ifndef QUEX_OPTION_COMPUTED_GOTOS\n" \
              "    __quex_assert_no_passage();\n"       \
-             "%s\n" % Lng.LABEL(DoorID.global_state_router()) 
+             "%s\n" % Lng.LABEL(DoorID.global_state_router(dial_db), dial_db) 
     epilog = "#   endif /* QUEX_OPTION_COMPUTED_GOTOS */\n"
     
     if len(StateRouterInfoList) == 0: code = []
@@ -50,7 +51,8 @@ def __get_code(StateRouterInfoList):
 
     return txt
 
-def get_info(StateIndexList):
+@typed(dial_db=DialDB)
+def get_info(StateIndexList, dial_db):
     """
     NOTE: At least a 'dummy' state router is always equired so that 'goto
     QUEX_STATE_ROUTER;' does not reference a non-existing label. Then, we
@@ -66,14 +68,12 @@ def get_info(StateIndexList):
         assert type(index) != str
         if index >= 0:
             # Transition to state entry
-            label      = dial_db.get_label_by_address(index)
+            adr = index
         else:
             assert False, "Is this still an issue?"
             # Transition to a templates 'drop-out'
-            door_id    = DoorID.drop_out(- index)
-            label      = dial_db.get_label_by_door_id(door_id)
+            adr = DoorID.drop_out(- index, dial_db).related_address
 
-        result[i] = (index, "goto %s; " % label)
-        dial_db.mark_label_as_gotoed(label)
+        result[i] = (index, Lng.GOTO_ADDRESS(adr, dial_db))
 
     return result

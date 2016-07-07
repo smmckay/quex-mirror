@@ -107,6 +107,6 @@ def get_constructor_code(ModeDb):
     return "".join(
         "    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_%s)] %s== &QUEX_NAME(%s));\n" % \
         (mode.name, " " * (L-len(mode.name)), mode.name)
-        for mode in ModeDb.values() if not mode.abstract_f()
+        for mode in ModeDb.itervalues() 
     )
 

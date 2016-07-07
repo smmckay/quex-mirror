@@ -61,7 +61,7 @@ def do(file_list):
     if blackboard.token_type_definition is None:
         parse_default_token_definition()
 
-    return blackboard.mode_description_db
+    return mode.finalize_modes(blackboard.mode_prep_prep_db)
 
 default_token_type_definition_triggered_by_mode_definition_f = False
 

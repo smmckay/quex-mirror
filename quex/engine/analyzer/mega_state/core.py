@@ -58,7 +58,7 @@ _______________________________________________________________________________
 """
 from quex.engine.operations.operation_list                  import Op, \
                                                        OpList
-from quex.engine.analyzer.door_id_address_label import dial_db
+from quex.engine.analyzer.door_id_address_label import DialDB
 from quex.engine.analyzer.state.core            import AnalyzerState
 from quex.engine.analyzer.state.entry           import Entry
 from quex.engine.analyzer.transition_map        import TransitionMap
@@ -85,8 +85,9 @@ class MegaState_Entry(Entry):
 
     ___________________________________________________________________________
     """
-    def __init__(self):
-        Entry.__init__(self)
+    @typed(dial_db=DialDB)
+    def __init__(self, dial_db):
+        Entry.__init__(self, dial_db)
 
         # Some transitions into a MegaState_Entry do not require a
         # 'SetStateKey' command. This is true, for example, for the recursive
@@ -203,7 +204,7 @@ class MegaState_Entry(Entry):
             same_address_db[original_door_id].append(transition_action.door_id)
 
         for door_id, door_id_list in same_address_db:
-            dial_db.assign_same_address(door_id, door_id_list)
+            self._dial_db.assign_same_address(door_id, door_id_list)
 
 class StateKeyIndexDB(dict):
     """Maintenance of relationships between 'state_keys' of a MegaState and the

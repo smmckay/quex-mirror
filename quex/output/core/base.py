@@ -3,7 +3,7 @@ import quex.output.core.state_machine_coder       as     state_machine_coder
 import quex.output.core.state_router              as     state_router_generator
 from   quex.output.core.variable_db               import variable_db
 from   quex.engine.analyzer.door_id_address_label import DoorID, \
-                                                         dial_db
+                                                         DialDB
 import quex.output.core.reload_state              as     reload_state_coder
 import quex.engine.analyzer.engine_supply_factory as     engine
 from   quex.engine.analyzer.terminal.core         import Terminal
@@ -39,7 +39,7 @@ from   quex.blackboard        import E_IncidenceIDs, \
 #
 # INDENTATION_DETECTOR_SM:
 
-def do_main(SM, ReloadStateForward):
+def do_main(SM, ReloadStateForward, dial_db):
     """Main pattern matching state machine (forward).
     ---------------------------------------------------------------------------
     Micro actions are: line/column number counting, position set/reset,
@@ -54,7 +54,8 @@ def do_main(SM, ReloadStateForward):
 
             position, PositionRegisterN, last_acceptance, input.
     """
-    txt, analyzer = __do_state_machine(SM, engine.Class_FORWARD(), ReloadStateForward)
+    txt, analyzer = __do_state_machine(SM, engine.Class_FORWARD(), ReloadStateForward, 
+                                       dial_db)
 
     if analyzer.last_acceptance_variable_required():
         variable_db.require("last_acceptance")
@@ -65,7 +66,7 @@ def do_main(SM, ReloadStateForward):
 
     return txt, analyzer
 
-def do_pre_context(SM, PreContextSmIdList):
+def do_pre_context(SM, PreContextSmIdList, dial_db):
     """Pre-context detecting state machine (backward).
     ---------------------------------------------------------------------------
     Micro actions are: pre-context fullfilled_f
@@ -87,7 +88,7 @@ def do_pre_context(SM, PreContextSmIdList):
 
     txt, analyzer = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT) 
 
-    txt.append("\n%s:" % dial_db.get_label_by_door_id(DoorID.global_end_of_pre_context_check()))
+    txt.append("\n%s" % Lng.LABEL(DoorID.global_end_of_pre_context_check(dial_db)))
     # -- set the input stream back to the real current position.
     #    during backward lexing the analyzer went backwards, so it needs to be reset.
     txt.append("    %s\n" % Lng.INPUT_P_TO_LEXEME_START())
@@ -155,7 +156,8 @@ def require_position_registers(TheAnalyzer):
     variable_db.require("PositionRegisterN", 
                         Initial = "(size_t)%i" % position_register_n)
 
-def do_state_router():
+@typed(dial_db=DialDB)
+def do_state_router(dial_db):
     routed_address_set = dial_db.routed_address_set()
     # If there is only one address subject to state routing, then the
     # state router needs to be implemented.
@@ -166,18 +168,18 @@ def do_state_router():
     # (It should not be there, if we are working on a fixed chunk, as in 'counting'.
     #  When counting is webbed into analysis:: assert address_eof in routed_address_set)
     if False:
-        address_eof        = dial_db.get_address_by_door_id(DoorID.incidence(E_IncidenceIDs.END_OF_STREAM)) 
+        address_eof = DoorID.incidence(E_IncidenceIDs.END_OF_STREAM, dial_db).related_address 
         routed_address_set.add(address_eof)
-        dial_db.mark_label_as_gotoed(dial_db.get_label_by_address(address_eof))
+        dial_db.mark_address_as_gotoed(address_eof)
 
-    routed_state_info_list = state_router_generator.get_info(routed_address_set)
-    return state_router_generator.do(routed_state_info_list) 
+    routed_state_info_list = state_router_generator.get_info(routed_address_set, dial_db)
+    return state_router_generator.do(routed_state_info_list, dial_db) 
 
 def do_variable_definitions():
     # Following function refers to the global 'variable_db'
     return Lng.VARIABLE_DEFINITIONS(variable_db)
 
-def __do_state_machine(sm, EngineType, ReloadStateForward=None): 
+def __do_state_machine(sm, EngineType, ReloadStateForward=None, dial_db=None): 
     """Generates code for state machine 'sm' and the 'EngineType'.
 
     RETURNS: list of strings
@@ -190,7 +192,9 @@ def __do_state_machine(sm, EngineType, ReloadStateForward=None):
         Lng.COMMENT_STATE_MACHINE(txt, sm)
 
     # -- Analyze state machine --> optimized version
-    analyzer = analyzer_generator.do(sm, EngineType, ReloadStateExtern=ReloadStateForward)
+    analyzer = analyzer_generator.do(sm, EngineType, 
+                                     ReloadStateExtern = ReloadStateForward, 
+                                     dial_db           = dial_db)
 
     # -- Generate code for analyzer
     txt.extend(
@@ -207,11 +211,11 @@ def do_analyzer(analyzer):
     return state_machine_code
 
 @typed(TerminalList=[Terminal])
-def do_terminals(TerminalList, TheAnalyzer):
-    return Lng.TERMINAL_CODE(TerminalList, TheAnalyzer)
+def do_terminals(TerminalList, TheAnalyzer, dial_db):
+    return Lng.TERMINAL_CODE(TerminalList, TheAnalyzer, dial_db)
 
-def do_reentry_preparation(PreContextSmIdList, OnAfterMatchCode):
-    return Lng.REENTRY_PREPARATION(PreContextSmIdList, OnAfterMatchCode)
+def do_reentry_preparation(PreContextSmIdList, OnAfterMatchCode, dial_db):
+    return Lng.REENTRY_PREPARATION(PreContextSmIdList, OnAfterMatchCode, dial_db)
 
 _increment_actions_for_utf8 = [
      1, "if     ( ((*iterator) & 0x80) == 0 ) { iterator += 1; } /* 1byte character */\n",

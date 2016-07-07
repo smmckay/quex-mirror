@@ -1,6 +1,7 @@
-from   quex.engine.analyzer.door_id_address_label import DoorID, \
-                                                         dial_db
-from   quex.engine.misc.interval_handling              import NumberSet
+from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
+from   quex.engine.misc.interval_handling         import NumberSet
+from   quex.engine.misc.tools                     import typed
+
 from   operator import itemgetter
 #
 
@@ -152,8 +153,9 @@ comment_on_post_context_position_init_str = """
      *       to reset the input position.                                              */
 """
 
+@typed(dial_db=DialDB)
 def _analyzer_function(StateMachineName, Setup, variable_definitions, 
-                       function_body, ModeNameList=[]):
+                       function_body, dial_db, ModeNameList):
     """EngineClassName = name of the structure that contains the engine state.
                          if a mode of a complete quex environment is created, this
                          is the mode name. otherwise, any name can be chosen. 
@@ -179,6 +181,8 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
 
     function_signature_str = __function_signature.replace("$$STATE_MACHINE_NAME$$", 
                                                           StateMachineName)
+
+    state_router_adr = DoorID.global_state_router(dial_db).related_address
     txt = [
         function_signature_str,
         # 
@@ -189,7 +193,7 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         "#   endif\n",
         "#   define self (*((QUEX_TYPE_ANALYZER*)me))\n",
         "/*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */\n",
-        "#   define QUEX_LABEL_STATE_ROUTER %s\n" % dial_db.get_label_by_door_id(DoorID.global_state_router()),
+        "#   define QUEX_LABEL_STATE_ROUTER %s\n" % Lng.LABEL_STR_BY_ADR(state_router_adr),
         mode_definition_str,
         Lng.LEXEME_MACRO_SETUP(),
         #
@@ -203,7 +207,7 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         #
         # Entry to the actual function body
         #
-        "%s\n" % Lng.LABEL(DoorID.global_reentry()),
+        "%s\n" % Lng.LABEL(DoorID.global_reentry(dial_db)),
         "    %s\n" % Lng.LEXEME_START_SET(),
         "    QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);\n",
     ]
@@ -218,11 +222,11 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         "    /* Following labels are referenced in macros. It cannot be detected\n"
         "     * whether the macros are applied in user code or not. To avoid compiler.\n"
         "     * warnings of unused labels, they are referenced in unreachable code.   */\n"
-        "    %s /* in RETURN                */\n" % Lng.GOTO(DoorID.return_with_on_after_match()),
-        "    %s /* in CONTINUE              */\n" % Lng.GOTO(DoorID.continue_with_on_after_match()),
-        "    %s /* in CONTINUE and skippers */\n" % Lng.GOTO(DoorID.continue_without_on_after_match()),
+        "    %s /* in RETURN                */\n" % Lng.GOTO(DoorID.return_with_on_after_match(dial_db), dial_db),
+        "    %s /* in CONTINUE              */\n" % Lng.GOTO(DoorID.continue_with_on_after_match(dial_db), dial_db),
+        "    %s /* in CONTINUE and skippers */\n" % Lng.GOTO(DoorID.continue_without_on_after_match(dial_db), dial_db),
         "#   if ! defined(QUEX_OPTION_COMPUTED_GOTOS)\n",
-        "    %s /* in QUEX_GOTO_STATE       */\n" % Lng.GOTO(DoorID.global_state_router()),
+        "    %s /* in QUEX_GOTO_STATE       */\n" % Lng.GOTO(DoorID.global_state_router(dial_db), dial_db),
         "#   endif\n",
         "\n",
         "    /* Prevent compiler warning 'unused variable'.                           */\n",
@@ -310,30 +314,29 @@ __return_if_mode_changed = """
     }
 """
 
-def reentry_preparation(Lng, PreConditionIDList, OnAfterMatchCode):
+def reentry_preparation(Lng, PreConditionIDList, OnAfterMatchCode, dial_db):
     """Reentry preperation (without returning from the function."""
     # (*) Unset all pre-context flags which may have possibly been set
     unset_pre_context_flags_str = Lng.PRE_CONTEXT_RESET(PreConditionIDList)
     on_after_match_str          = Lng.SOURCE_REFERENCED(OnAfterMatchCode)
-
     return [ 
-        "\n%s\n"  % Lng.LABEL(DoorID.return_with_on_after_match()), 
+        "\n%s\n"  % Lng.LABEL(DoorID.return_with_on_after_match(dial_db)), 
         Lng.COMMENT("RETURN -- after executing 'on_after_match' code."),
         on_after_match_str,
         "    %s\n\n" % Lng.PURE_RETURN,
         #
-        "\n%s\n" % Lng.LABEL(DoorID.continue_with_on_after_match()), 
+        "\n%s\n" % Lng.LABEL(DoorID.continue_with_on_after_match(dial_db)), 
         Lng.COMMENT("CONTINUE -- after executing 'on_after_match' code."),
         on_after_match_str,
         #
-        "\n%s\n" % Lng.LABEL(DoorID.continue_without_on_after_match()),
+        "\n%s\n" % Lng.LABEL(DoorID.continue_without_on_after_match(dial_db)),
         Lng.COMMENT("CONTINUE -- without executing 'on_after_match' (e.g. on FAILURE)."), "\n",
         #
         __return_if_queue_full_or_simple_analyzer, "\n",
         __return_if_mode_changed, "\n",
         #
         unset_pre_context_flags_str,
-        "\n%s\n" % Lng.GOTO(DoorID.global_reentry()), 
+        "\n%s\n" % Lng.GOTO(DoorID.global_reentry(dial_db), dial_db), 
     ]
 
 def __frame_of_all(Code, Setup):

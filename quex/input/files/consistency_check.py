@@ -1,10 +1,13 @@
-import quex.engine.misc.error                      as     error
-from   quex.input.setup                            import NotificationDB
-import quex.blackboard                             as     blackboard
-from   quex.blackboard                             import setup as Setup
-from   quex.blackboard import E_IncidenceIDs
+from   quex.input.files.specifier.mode import Mode_Prep
+from   quex.input.setup                import NotificationDB
+import quex.engine.misc.error          as     error
+from   quex.engine.misc.tools          import typed
+import quex.blackboard                 as     blackboard
+from   quex.blackboard                 import setup as Setup
+from   quex.blackboard                 import E_IncidenceIDs
 
-def do(ModeDB):
+@typed(ModePrepList=[Mode_Prep])
+def do(ModePrepList):
     """Consistency check of mode database
 
        -- Are there applicable modes?
@@ -15,30 +18,31 @@ def do(ModeDB):
        -- Entry/Exit transitions are allows?
     """
     if Setup.token_class_only_f:
-        if len(ModeDB) != 0:
+        if ModePrepList:
             error.log("Modes found in input files. However, only a token class is generated.", 
                       DontExitF=True)
         return
 
-    if len(ModeDB) == 0:
+    if not ModePrepList:
         error.log("No single mode defined - bailing out", Prefix="consistency check")
 
-    mode_name_list             = sorted([mode.name for mode in ModeDB.itervalues()]) 
+    mode_name_list             = sorted([mode.name for mode in ModePrepList]) 
     # Applicable modes can only be determined after possible addition of "inheritable: only"
-    implemented_mode_name_list = sorted([mode.name for mode in ModeDB.itervalues() if not mode.abstract_f()]) 
+    implemented_mode_name_list = sorted([mode.name for mode in ModePrepList 
+                                         if mode.implemented_f]) 
 
     if len(implemented_mode_name_list) == 0:
         error.log("There is no mode that can be implemented---all existing modes are 'inheritable only'.\n" + \
-                  "modes are = " + repr(ModeDB.keys())[1:-1],
+                  "modes are = " + repr(mode_name_list)[1:-1],
                   Prefix="consistency check")
 
-    for mode in ModeDB.values():
+    for mode in ModePrepList:
         mode.check_consistency()
 
     # (*) If a conversion or a codec engine is specified, then the 
     #     'on_bad_lexatom' handler must be specified in every mode.
     if False and (Setup.buffer_codec.name != "unicode" or Setup.converter_f):
-        for mode in ModeDB.values():
+        for mode in ModePrepList:
             # Later ... 
             if False and E_IncidenceIDs.BAD_LEXATOM not in mode.incidence_db:
                 error.warning("Missing 'on_bad_lexatom' handler in mode '%s' (or its base modes).\n" % mode.name + \
@@ -51,12 +55,12 @@ def do(ModeDB):
     __start_mode(implemented_mode_name_list, mode_name_list)
 
     # (*) Entry/Exit Transitions
-    for mode in ModeDB.values():
-        if mode.abstract_f(): continue
-        __entry_transitions(mode, mode_name_list)
-        __exit_transitions(mode, mode_name_list)
+    for mode in ModePrepList:
+        if not mode.implemented_f: continue
+        __entry_transitions(mode, ModePrepList, mode_name_list)
+        __exit_transitions(mode, ModePrepList, mode_name_list)
 
-    for mode in ModeDB.values():
+    for mode in ModePrepList:
         # (*) [Optional] Warnings on Outrun
         if Setup.warning_on_outrun_f:
              mode.check_low_priority_outruns_high_priority_pattern()
@@ -79,21 +83,6 @@ def do(ModeDB):
         if NotificationDB.error_on_dominated_pattern not in Setup.suppressed_notification_list:
             mode.check_dominated_pattern(NotificationDB.error_on_dominated_pattern)
 
-def __error_message(This, That, ThisComment, ThatComment="", EndComment="", ExitF=True, SuppressCode=None):
-    
-    error.log("The pattern '%s' %s" % (This.pattern_string(), ThisComment), 
-              This.sr, DontExitF=True, WarningF=not ExitF)
-
-    msg = "pattern '%s'." % That.pattern_string()
-
-    if len(EndComment) == 0:
-        error.log(msg, That.sr, DontExitF=not ExitF, WarningF=not ExitF, 
-                  SuppressCode=SuppressCode)
-    else:
-        error.log(msg,        That.sr, DontExitF=True,      WarningF=not ExitF)
-        error.log(EndComment, That.sr, DontExitF=not ExitF, WarningF=not ExitF, 
-                  SuppressCode=SuppressCode)
-
 def __start_mode(implemented_mode_name_list, mode_name_list):
     """If more then one mode is defined, then that requires an explicit 
        definition 'start = mode'.
@@ -112,15 +101,17 @@ def __start_mode(implemented_mode_name_list, mode_name_list):
                         "Start mode '%s' is inheritable only and cannot be instantiated." % start_mode,
                         blackboard.initial_mode.sr)
 
-def __access_mode(Mode, OtherModeName, ModeNameList, EntryF):
+def __access_mode(Mode, ModePrepList, OtherModeName, ModeNameList, EntryF):
     type_str = { True: "entry from", False: "exit to" }[EntryF]
 
     error.verify_word_in_list(OtherModeName, ModeNameList,
               "Mode '%s' permits the %s mode '%s'\nbut no such mode exists." % \
               (Mode.name, type_str, OtherModeName), Mode.sr)
-    result = blackboard.mode_db[OtherModeName]
-    assert result is not None
-    return result
+
+    for mode in ModePrepList:
+        if mode.name == OtherModeName: return mode
+    # OtherModeName MUST be in ModePrepList, at this point in time.
+    assert False
 
 def __error_transition(Mode, OtherMode, EntryF):
     type_str  = { True: "entry",      False: "exit" }[EntryF]
@@ -134,22 +125,22 @@ def __error_transition(Mode, OtherMode, EntryF):
     error.log("May be, use explicitly mode tag '<%s: ...>' for restriction." % type_str, 
               Mode.sr)
 
-def __exit_transitions(mode, mode_name_list):
+def __exit_transitions(mode, ModePrepList, mode_name_list):
     for exit_mode_name in mode.exit_mode_name_list:
-        exit_mode = __access_mode(mode, exit_mode_name, mode_name_list, EntryF=False)
+        exit_mode = __access_mode(mode, ModePrepList, exit_mode_name, mode_name_list, EntryF=False)
 
         # Check if this mode or one of the base modes can enter
-        for base_mode in mode.get_base_mode_sequence():
+        for base_mode in mode.base_mode_sequence:
             if base_mode.name in exit_mode.entry_mode_name_list: break
         else:
             __error_transition(mode, exit_mode, EntryF=False)
 
-def __entry_transitions(mode, mode_name_list):
+def __entry_transitions(mode, ModePrepList, mode_name_list):
     for entry_mode_name in mode.entry_mode_name_list:
-        entry_mode = __access_mode(mode, entry_mode_name, mode_name_list, EntryF=True)
+        entry_mode = __access_mode(mode, ModePrepList, entry_mode_name, mode_name_list, EntryF=True)
 
         # Check if this mode or one of the base modes can be reached
-        for base_mode in mode.get_base_mode_sequence():
+        for base_mode in mode.base_mode_sequence:
             if base_mode.name in entry_mode.exit_mode_name_list: break
         else:
             __error_transition(mode, entry_mode, EntryF=True)

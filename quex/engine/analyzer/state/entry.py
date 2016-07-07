@@ -1,6 +1,6 @@
 from   quex.engine.operations.operation_list                  import Op, OpList
 from   quex.engine.analyzer.state.entry_action    import TransitionID, TransitionAction
-from   quex.engine.analyzer.door_id_address_label import dial_db, \
+from   quex.engine.analyzer.door_id_address_label import DialDB, \
                                                          DoorID
 from   quex.engine.misc.tools                     import typed, \
                                                          TypedDict
@@ -60,12 +60,13 @@ class Entry(object):
               '---------------------------------------------------'
     """
 
-    __slots__ = ("__db", "__largest_used_door_sub_index", "__trigger_id_db")
+    __slots__ = ("__db", "__largest_used_door_sub_index", "__trigger_id_db", "dial_db")
 
-    def __init__(self):
+    def __init__(self, dial_db):
         self.__db                          = TypedDict(TransitionID, TransitionAction)
         self.__largest_used_door_sub_index = 0    # '0' is used for 'Door 0', i.e. reload entry
         self.__trigger_id_db               = {}   # (ToState, FromState) --> max. used trigger_id
+        self.dial_db                     = dial_db
 
     def get(self, TheTransitionID):
         return self.__db.get(TheTransitionID)
@@ -137,7 +138,7 @@ class Entry(object):
 
     @typed(ta=TransitionAction)
     def enter_state_machine_entry(self, SM_id, ToStateIndex, ta):
-        ta.door_id = DoorID.state_machine_entry(SM_id)
+        ta.door_id = DoorID.state_machine_entry(SM_id, self.dial_db)
         return self.enter(ToStateIndex, E_StateIndices.BEFORE_ENTRY, ta)
 
     def append_OpList(self, ToStateIndex, FromStateIndex, TheOpList):
@@ -303,7 +304,7 @@ class Entry(object):
 
             if new_door_id is not None: return new_door_id
 
-            return dial_db.new_door_id(StateIndex)
+            return self.dial_db.new_door_id(StateIndex)
 
         def sort_key(X):
             return (X[0].target_state_index, X[0].source_state_index, X[0].trigger_id)

@@ -5,7 +5,7 @@ from   quex.engine.misc.tree_walker import TreeWalker
 from   quex.engine.misc.tools       import typed
 from   quex.blackboard              import E_Count
 
-class LineColumnCountInfo:
+class SmLineColumnCountInfo:
     """Information on character counting characteristics of lexeme that match a 
     given state machine.
     
@@ -56,37 +56,51 @@ class LineColumnCountInfo:
             self.line_n_increment_by_lexeme_length   = 0
             self.grid_step_size_by_lexeme_length     = 0
         else:
-            self.column_n_increment                  = LineColumnCountInfo.get_real(Result.column_n_increment)
-            self.line_n_increment                    = LineColumnCountInfo.get_real(Result.line_n_increment)
-            self.column_index                        = LineColumnCountInfo.get_real(Result.column_index, 
+            self.column_n_increment                  = SmLineColumnCountInfo.get_real(Result.column_n_increment)
+            self.line_n_increment                    = SmLineColumnCountInfo.get_real(Result.line_n_increment)
+            self.column_index                        = SmLineColumnCountInfo.get_real(Result.column_index, 
                                                                           ValueOfVirginity=E_Count.VOID)
-            self.grid_step_n                         = LineColumnCountInfo.get_real(Result.grid_step_n)
-            self.column_n_increment_by_lexeme_length = LineColumnCountInfo.get_real(Count.column_n_increment_by_lexeme_length)
-            self.line_n_increment_by_lexeme_length   = LineColumnCountInfo.get_real(Count.line_n_increment_by_lexeme_length)
-            self.grid_step_size_by_lexeme_length     = LineColumnCountInfo.get_real(Count.grid_step_size_by_lexeme_length)
+            self.grid_step_n                         = SmLineColumnCountInfo.get_real(Result.grid_step_n)
+            self.column_n_increment_by_lexeme_length = SmLineColumnCountInfo.get_real(Count.column_n_increment_by_lexeme_length)
+            self.line_n_increment_by_lexeme_length   = SmLineColumnCountInfo.get_real(Count.line_n_increment_by_lexeme_length)
+            self.grid_step_size_by_lexeme_length     = SmLineColumnCountInfo.get_real(Count.grid_step_size_by_lexeme_length)
 
             if CodecTrafoInfo is not None and CodecTrafoInfo.variable_character_sizes_f():
                 self._consider_variable_character_sizes(SM, CodecTrafoInfo)
 
-    @staticmethod
-    def from_Empty():
-        return LineColumnCountInfo(Result=None)
+        self.run_time_counter_required_f = self.__run_time_counter_required_f()
+
+    def __run_time_counter_required_f(self):
+        if (    self.line_n_increment_by_lexeme_length     == E_Count.VOID \
+            and self.line_n_increment                      == E_Count.VOID):
+            return True
+        elif (    self.column_n_increment_by_lexeme_length == E_Count.VOID \
+              and self.column_n_increment                  == E_Count.VOID \
+              and self.column_index                        == E_Count.VOID \
+              and self.grid_step_size_by_lexeme_length     == E_Count.VOID):
+            return True
+        else:
+            return False
 
     @staticmethod
-    @typed(CounterDB=CountActionMap)
-    def from_StateMachine(SM, CounterDB, BeginOfLineF=False, CodecTrafoInfo=None):
+    def from_Empty():
+        return SmLineColumnCountInfo(Result=None)
+
+    @staticmethod
+    @typed(CaMap=CountActionMap)
+    def from_StateMachine(CaMap, SM, BeginOfLineF=False, CodecTrafoInfo=None):
         """LINE AND COLUMN NUMBER ANALYSIS ________________________________________
         
         Given a pattern as a state machine 'SM' this function analyses the 
         increments of line and column numbers. Depending on whether those 
         values can be determined from the state machine or only during run-
-        time, a LineColumnCountInfo object is provided.
+        time, a SmLineColumnCountInfo object is provided.
         
         NOTES _____________________________________________________________________
 
         State machine shall not contain pre- or post-contexts.
         
-        DEPENDS ON: CounterDB providing three databases:
+        DEPENDS ON: CaMap providing three databases:
 
                     .newline
                     .grid
@@ -124,7 +138,7 @@ class LineColumnCountInfo:
         init_state_target_map = init_state.target_map.get_map()
         if not init_state_target_map:
             assert False
-            return LineColumnCountInfo.from_Empty()
+            return SmLineColumnCountInfo.from_Empty()
 
         if BeginOfLineF: column_index = 0
         else:            column_index = E_Count.VOID
@@ -137,7 +151,7 @@ class LineColumnCountInfo:
             for target_state_index, character_set in init_state_target_map.iteritems() 
         ]
 
-        Count.init(CounterDB)
+        Count.init(CaMap)
         tracer.do(initial)
 
         # If there was an acceptance state, the result cannot be None
@@ -149,9 +163,9 @@ class LineColumnCountInfo:
             # transitions have been investigated. So the value for 'grid' must
             # determined now, independently of the 'tracer.do()'.
             Count.grid_step_size_by_lexeme_length <<= \
-                    _get_grid_step_size_by_lexeme_length(SM, CounterDB)
+                    _get_grid_step_size_by_lexeme_length(SM, CaMap)
 
-        return LineColumnCountInfo(tracer.result, CodecTrafoInfo, SM)
+        return SmLineColumnCountInfo(tracer.result, CodecTrafoInfo, SM)
 
     @staticmethod
     def get_real(Object, ValueOfVirginity=0):
@@ -383,7 +397,7 @@ class CharacterCountTracer(TreeWalker):
     def on_finished(self, node):   
         pass
 
-def _get_grid_step_size_by_lexeme_length(SM, CounterDB):
+def _get_grid_step_size_by_lexeme_length(SM, CaMap):
     """The CharacterCountTracer has been aborted (which is a good thing). Now,
     the grid information has to be determined extra. As mentioned in the calling
     function 'grid' can have the following three values:
@@ -395,10 +409,12 @@ def _get_grid_step_size_by_lexeme_length(SM, CounterDB):
       E_Count.VOID,   if some grid characters are involved, but increase of 
                       column_n_increment must be determined at run-time.
     """
+    assert False, "Supposed to trigger to show that this function is still used!"
+
     prototype = E_Count.VIRGIN
     for state in SM.states.itervalues():
         for character_set in state.target_map.get_map().itervalues():
-            for grid_size, grid_character_set in CounterDB.grid.iteritems():
+            for grid_size, grid_character_set in CaMap.grid.iteritems():
                 if grid_character_set.is_superset(character_set):
                     # All characters of the transition are in 'grid_character_set'
                     if   prototype == E_Count.VIRGIN: prototype = grid_size

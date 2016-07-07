@@ -104,8 +104,8 @@ class TargetByStateKey(object):
         return result
 
     @staticmethod
-    def from_StateIndex_for_DropOut(X):
-        return TargetByStateKey.from_transition(TransitionID(X,X,0), DoorID(X,0))
+    def from_StateIndex_for_DropOut(X, dial_db):
+        return TargetByStateKey.from_transition(TransitionID(X,X,0), DoorID(X,0, dial_db=dial_db))
 
     def clone_adapted_self(self, MapTransitionIdToNewDoorId):
         """Replaces DoorIDs based on 'MapOldToNewDoorIDs', if necessary. 
@@ -216,6 +216,4 @@ class TargetByStateKey(object):
         else:
             return self.__scheme == Other.__scheme
 
-# Globally unique object to stand up for all 'drop-outs'.
-TargetByStateKey_DROP_OUT = TargetByStateKey.from_StateIndex_for_DropOut(E_StateIndices.DROP_OUT)
 

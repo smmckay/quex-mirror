@@ -121,13 +121,7 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
             # Use 'real' constructor
             content = content_type() 
         else:
-            # A tuple that describes the usage of the 'namedtuple' constructor.
-            L = len(ParameterList)
-            assert L != 0
-            if   L == 1: content = content_type(ParameterList[0])
-            elif L == 2: content = content_type(ParameterList[0], ParameterList[1])
-            elif L == 3: content = content_type(ParameterList[0], ParameterList[1], ParameterList[2])
-            elif L == 4: content = content_type(ParameterList[0], ParameterList[1], ParameterList[2], ParameterList[3])
+            content = self._instantiate_parameter_list(content_type, ParameterList)
 
         hash_value = hash(Id) ^ hash(content)
         
@@ -142,10 +136,26 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
 
     def clone(self):         
         # If the fly weight object exists, it must be in the database.
-        if self.id in self.fly_weight_db:    return self
-        elif hasattr(self.content, "clone"): content = self.content.clone()
-        else:                                content = deepcopy(self.content)
+        if self.id in self.fly_weight_db:    
+            return self
+        elif hasattr(self.content, "clone"): 
+            content = self.content.clone()
+        else:                                
+            # Clone the namedtuple object
+            content = self._instantiate_parameter_list(self.content.__class__, 
+                                                       [p for p in self.content])
         return super(Op, self).__new__(self.__class__, self.id, content, self.my_hash, self.branch_f)
+
+    @staticmethod
+    def _instantiate_parameter_list(ContentType, ValueIterable):
+        # A tuple that describes the usage of the 'namedtuple' constructor.
+        L = len(ValueIterable)
+        assert L != 0
+        if   L == 1: return ContentType(ValueIterable[0])
+        elif L == 2: return ContentType(ValueIterable[0], ValueIterable[1])
+        elif L == 3: return ContentType(ValueIterable[0], ValueIterable[1], ValueIterable[2])
+        elif L == 4: return ContentType(ValueIterable[0], ValueIterable[1], ValueIterable[2], ValueIterable[3])
+        else:        assert False
 
     @staticmethod
     def StoreInputPosition(PreContextID, PositionRegister, Offset):
@@ -432,9 +442,15 @@ def __configure():
         access_db[OpId] = RegisterAccessDB(RegisterAccessInfoList)
 
         # -- parameters that specify the command
-        if type(ParameterList) != tuple: content_db[OpId] = ParameterList # Constructor
-        elif len(ParameterList) == 0:    content_db[OpId] = None
-        else:                            content_db[OpId] = namedtuple("%s_content" % OpId, ParameterList)
+        if type(ParameterList) != tuple: 
+            content_db[OpId] = ParameterList # Constructor
+        elif len(ParameterList) == 0:    
+            content_db[OpId] = None
+        else:                            
+            content_type       = namedtuple("%s_content" % OpId, ParameterList)
+            #mapping            = dict((name, "copy(self.%s)" % name) for name in ParameterList)
+            #content_type.clone = lambda self: self.__class__(**mapping)
+            content_db[OpId]   = content_type
         
         # -- computational cost of the command
         cost_db[OpId] = 1
@@ -444,7 +460,7 @@ def __configure():
             if register_id == E_R.ThreadOfControl: brancher_set.add(OpId)
 
     c(E_Op.Accepter,                         AccepterContent, 
-                                              (E_R.PreContextFlags,r), (E_R.AcceptanceRegister,w))
+                                             (E_R.PreContextFlags,r), (E_R.AcceptanceRegister,w))
     c(E_Op.Assign,                           ("target", "source"), 
                                               (0,w),     (1,r))
     c(E_Op.AssignConstant,                   ("register", "value"), 

@@ -73,6 +73,10 @@ class CodeFragment(object):
     def sr(self):                   
         return self.__source_reference
 
+    @property
+    def mode_name(self):
+        return self.sr.mode_name
+
     def set_source_reference(self, SourceReference): 
         self.__source_reference = SourceReference
 
@@ -111,6 +115,17 @@ class CodeFragment(object):
         """
         assert all_isinstance(self.__code, (str, unicode))
         return "".join(self.__code)
+
+    def requires_lexeme_begin_f(self, Lng):            
+        # NOT: if self.__requires_lexeme_begin_f is None: ...
+        #      The construction is too dynamic.
+        return    self.requires_lexeme_terminating_zero_f(Lng) \
+               or self.contains_string(Lng.Match_LexemeBegin)
+
+    def requires_lexeme_terminating_zero_f(self, Lng): 
+        # NOT: if self.__requires_lexeme_terminating_zero_f is None: ...
+        #      The construction is too dynamic.
+        return self.contains_string(Lng.Match_Lexeme) 
 
 CodeFragment_NULL = CodeFragment([])
 

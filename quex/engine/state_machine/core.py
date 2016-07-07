@@ -98,9 +98,10 @@ class StateMachine(object):
         return result
 
     @staticmethod
-    def from_character_set(CharacterSet):
+    def from_character_set(CharacterSet, StateMachineId=None):
         result = StateMachine()
         result.add_transition(result.init_state_index, CharacterSet, AcceptanceF=True)
+        if StateMachineId is not None: result.__id = StateMachineId
         return result
 
     @staticmethod
@@ -210,7 +211,8 @@ class StateMachine(object):
         for state in result.states.itervalues():
             state.target_map.replace_target_indices(replacement_db)
 
-        result.__id = StateMachineId
+        if StateMachineId is not None: result.__id = StateMachineId
+
         return result
 
     def access_state_by_incidence_id(self, IncidenceId):

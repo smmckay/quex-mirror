@@ -1,5 +1,5 @@
 from   quex.engine.state_machine.state.core        import State
-from   quex.engine.analyzer.door_id_address_label  import dial_db
+from   quex.engine.analyzer.door_id_address_label  import DialDB
 from   quex.engine.analyzer.transition_map         import TransitionMap
 from   quex.engine.analyzer.state.entry            import Entry
 from   quex.engine.analyzer.state.entry_action     import TransitionAction
@@ -18,6 +18,7 @@ class Processor(object):
     
     @property
     def index(self):            return self._index
+
     def set_index(self, Value): assert isinstance(Value, long); self._index = Value
 
 #__________________________________________________________________________
@@ -49,10 +50,10 @@ class AnalyzerState(Processor):
     __slots__ = ("map_target_index_to_character_set", 
                  "transition_map") 
 
-    @typed(StateIndex=(int,long), TheTransitionMap=TransitionMap)
-    def __init__(self, StateIndex, TheTransitionMap):
+    @typed(StateIndex=(int,long), TheTransitionMap=TransitionMap, dial_db=DialDB)
+    def __init__(self, StateIndex, TheTransitionMap, dial_db):
         # Empty transition maps are reported as 'None'
-        Processor.__init__(self, StateIndex, Entry())
+        Processor.__init__(self, StateIndex, Entry(dial_db))
         self.map_target_index_to_character_set = None
         self.transition_map                    = TheTransitionMap
 
@@ -73,12 +74,12 @@ class AnalyzerState(Processor):
         #self.on_drop_out = S.recipe.get_drop_out_OpList()
 
     @staticmethod
-    def from_State(SM_State, StateIndex, EngineType):
+    def from_State(SM_State, StateIndex, EngineType, dial_db):
         assert isinstance(SM_State, State)
         assert SM_State.target_map.is_DFA_compliant()
         assert isinstance(StateIndex, (int, long))
 
-        x = AnalyzerState(StateIndex, TransitionMap.from_TargetMap(SM_State.target_map))
+        x = AnalyzerState(StateIndex, TransitionMap.from_TargetMap(SM_State.target_map), dial_db)
 
         # (*) Transition
         # Currently, the following is only used for path compression. If the alternative
@@ -152,11 +153,13 @@ class AnalyzerState(Processor):
         # (2) Determine Door for RELOAD FAILURE
         #
         if TheAnalyzer.is_init_state_forward(self.index):
-            on_failure_door_id = DoorID.incidence(E_IncidenceIDs.END_OF_STREAM)
+            on_failure_door_id = DoorID.incidence(E_IncidenceIDs.END_OF_STREAM, 
+                                                  self.entry.dial_db)
         else:
             on_failure_door_id = TheAnalyzer.drop_out_DoorID(self.index)
             if on_failure_door_id is None:
-                on_failure_door_id = DoorID.incidence(E_IncidenceIDs.END_OF_STREAM)
+                on_failure_door_id = DoorID.incidence(E_IncidenceIDs.END_OF_STREAM, 
+                                                      self.entry.dial_db)
 
         # (3) Create 'Door from X' in Reloader
         assert on_failure_door_id != on_success_door_id
@@ -212,11 +215,13 @@ class AnalyzerState(Processor):
 # the reload fails. 
 #__________________________________________________________________________
 class ReloadState(Processor):
-    def __init__(self, EngineType):
+    @typed(dial_db=DialDB)
+    def __init__(self, EngineType, dial_db):
         if EngineType.is_FORWARD(): index = E_StateIndices.RELOAD_FORWARD
         else:                       index = E_StateIndices.RELOAD_BACKWARD
-        Processor.__init__(self, index, Entry())
+        Processor.__init__(self, index, Entry(dial_db))
         self.engine_type = EngineType
+        self.dial_db     = dial_db
 
     def remove_states(self, StateIndexSet):
         self.entry.remove_transition_from_states(StateIndexSet)
@@ -248,7 +253,7 @@ class ReloadState(Processor):
         ta         = TransitionAction(before_cl)
         # Assign a DoorID (without categorization) knowing that no such entry
         # into this state existed before.
-        ta.door_id = dial_db.new_door_id(self.index)
+        ta.door_id = self.dial_db.new_door_id(self.index)
 
         assert not self.entry.has_transition(self.index, StateIndex) # Cannot be in there twice!
         self.entry.enter(self.index, StateIndex, ta)
@@ -289,7 +294,7 @@ class ReloadState(Processor):
         ta         = TransitionAction(OpList(cmd))
         # Assign a DoorID (without categorization) knowing that no such entry
         # into this state existed before.
-        ta.door_id = dial_db.new_door_id(self.index)
+        ta.door_id = self.dial_db.new_door_id(self.index)
 
         assert not self.entry.has_transition(self.index, MegaStateIndex) # Cannot be in there twice!
         self.entry.enter(self.index, MegaStateIndex, ta)

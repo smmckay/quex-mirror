@@ -9,8 +9,7 @@ from   quex.engine.operations.operation_list        import Op
 import quex.engine.state_machine.index              as     sm_index
 from   quex.engine.state_machine.core               import StateMachine
 from   quex.engine.misc.interval_handling           import NumberSet_All
-from   quex.engine.analyzer.door_id_address_label   import __nice, \
-                                                           dial_db
+import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.misc.string_handling             import blue_print
 import quex.output.core.loop                        as     loop
@@ -24,11 +23,12 @@ def do(Data, ReloadState):
     CloserSequence  = Data["closer_sequence"]
     OnSkipRangeOpen = Data["on_skip_range_open"]
     DoorIdAfter     = Data["door_id_after"]
+    dial_db         = Data["dial_db"]
 
-    return get_skipper(ReloadState, OpenerSequence, CloserSequence, OnSkipRangeOpen, DoorIdAfter, CounterDb) 
+    return get_skipper(ReloadState, OpenerSequence, CloserSequence, OnSkipRangeOpen, DoorIdAfter, CounterDb, dial_db) 
 
 @typed(CounterDb=CountBase)
-def get_skipper(ReloadState, OpenerSequence, CloserSequence, OnSkipRangeOpen, DoorIdAfter, CounterDb):
+def get_skipper(ReloadState, OpenerSequence, CloserSequence, OnSkipRangeOpen, DoorIdAfter, CounterDb, dial_db):
     """
                                     .---<---+----------<------+------------------.
                                     |       |                 |                  |
@@ -77,7 +77,8 @@ def get_skipper(ReloadState, OpenerSequence, CloserSequence, OnSkipRangeOpen, Do
                                     LexemeMaintainedF = False,
                                     EngineType        = engine_type,
                                     ReloadStateExtern = ReloadState,
-                                    ParallelSmTerminalPairList = psml) 
+                                    ParallelSmTerminalPairList = psml,
+                                    dial_db           = dial_db) 
 
     result[0:0] = "%s = 0;\n" % Lng.REGISTER_NAME(E_R.Counter)
     required_register_set.add(E_R.Counter)
@@ -114,14 +115,14 @@ def _get_state_machine_vs_terminal_list(CloserSequence, OpenerSequence, CounterD
                                         closer_op_list)
     ]
 
-def _get_state_machine_and_terminal(Sequence, Name, OpList):
+def _get_state_machine_and_terminal(Sequence, Name, OpList, dial_db):
     """Create state machine that detects the 'Sequence', names the terminal
     with 'Name', and implements the 'CmdList' in the terminal.
 
     RETURNS: (state machine, terminal)
     """
     sm = StateMachine.from_sequence(Sequence)
-    sm.set_id(dial_db.new_incidence_id())
+    sm.set_id(dial.new_incidence_id())
     terminal = loop.MiniTerminal(Lng.COMMAND_LIST(OpList), Name, sm.get_id())
     terminal.set_requires_goto_loop_entry_f()  # --> Goto Loop Entry
 

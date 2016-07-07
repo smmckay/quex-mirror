@@ -1,11 +1,11 @@
 from   quex.engine.analyzer.transition_map          import TransitionMap
 from   quex.engine.analyzer.mega_state.target       import TargetByStateKey
-from   quex.output.core.variable_db  import variable_db
-from   quex.engine.analyzer.door_id_address_label   import dial_db, DoorID 
-from   quex.engine.misc.tools                            import all_isinstance
+from   quex.output.core.variable_db                 import variable_db
+from   quex.engine.analyzer.door_id_address_label   import DialDB, DoorID 
+from   quex.engine.misc.tools                       import all_isinstance, typed
 from   quex.blackboard import Lng, setup as Setup
 
-def relate_to_TransitionCode(tm):
+def relate_to_TransitionCode(tm, dial_db):
     assert tm is not None
     tm.assert_continuity()
     tm.assert_adjacency()
@@ -19,12 +19,13 @@ def relate_to_TransitionCode(tm):
 
     return TransitionMap.from_iterable(
         (interval, make_str(x))
-        for interval, x in TransitionMap.from_iterable(tm, TransitionCodeFactory.do)
+        for interval, x in TransitionMap.from_iterable(tm, TransitionCodeFactory.do, dial_db)
     )
 
 def MegaState_relate_to_transition_code(TheState, TheAnalyzer, StateKeyStr):
     TransitionCodeFactory.init_MegaState_handling(TheState, TheAnalyzer, StateKeyStr)
-    result = relate_to_TransitionCode(TheState.transition_map)
+    result = relate_to_TransitionCode(TheState.transition_map, 
+                                      TheState.entry.dial_db)
     TransitionCodeFactory.deinit_MegaState_handling()
     return result
 
@@ -42,23 +43,25 @@ class TransitionCodeFactory:
         cls.state_key_str = None
 
     @classmethod
-    def do(cls, Target):
+    @typed(dial_db=DialDB)
+    def do(cls, Target, dial_db):
 
         if   isinstance(Target, TransitionCode): 
             return Target
         elif isinstance(Target, (str, unicode)) or isinstance(Target, list):
             return TransitionCode(Target)
         elif isinstance(Target, DoorID):
-            return TransitionCodeByDoorId(Target)
+            return TransitionCodeByDoorId(Target, dial_db)
         elif isinstance(Target, TargetByStateKey):
             if Target.uniform_door_id is not None:
-                return TransitionCodeByDoorId(Target.uniform_door_id)
+                return TransitionCodeByDoorId(Target.uniform_door_id, dial_db)
 
             assert Target.scheme_id is not None
             variable_name = require_scheme_variable(Target.scheme_id,
                                                     Target.iterable_door_id_scheme(), 
                                                     cls.state, 
-                                                    cls.state_db)
+                                                    cls.state_db, 
+                                                    dial_db)
             return TransitionCode(Lng.GOTO_BY_VARIABLE("%s[%s]" % (variable_name, cls.state_key_str)))
         else:
             assert False
@@ -87,17 +90,18 @@ class TransitionCodeByDoorId(TransitionCode):
     switch case). In that case, the label is not used. A definition of an unused 
     label would cause a compiler warning.
     """
-    def __init__(self, DoorId):
+    def __init__(self, DoorId, dial_db):
         self.__door_id = DoorId
+        self.dial_db   = dial_db
     def code(self):       
-        return Lng.GOTO(self.__door_id)
+        return Lng.GOTO(self.__door_id, self.dial_db)
     def drop_out_f(self): 
         return self.__door_id.drop_out_f()
     def __eq__(self, Other):
         if not isinstance(Other, TransitionCodeByDoorId): return False
         return self.__door_id == Other.__door_id
 
-def require_scheme_variable(SchemeID, SchemeIterable, TState, StateDB):
+def require_scheme_variable(SchemeID, SchemeIterable, TState, StateDB, dial_db):
     """Defines the transition targets for each involved state. Note, that
     recursion is handled as part of the general case, where all involved states
     target a common door of the template state.
@@ -105,9 +109,9 @@ def require_scheme_variable(SchemeID, SchemeIterable, TState, StateDB):
     door_id_list = list(SchemeIterable)
     
     def quex_label(DoorId, LastF):
-        address = dial_db.get_address_by_door_id(DoorId, RoutedF=True)
-        if not LastF: return "QUEX_LABEL(%s), " % address
-        else:         return "QUEX_LABEL(%s) "  % address
+        dial_db.mark_address_as_routed(DoorId.related_address)
+        if not LastF: return "QUEX_LABEL(%s), " % DoorId.related_address
+        else:         return "QUEX_LABEL(%s) "  % DoorId.related_address
 
     txt = ["{ "]
     LastI = len(door_id_list) - 1

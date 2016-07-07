@@ -145,6 +145,11 @@ class IncidenceDB(dict):
         return result
 
     def get_CodeTerminal(self, IncidenceId):
+        """TODO: RETURN [0] code
+                        [1] LexemeBeginF required
+                        [2] LexemeTerminatingZeroF required
+        """
+
         if IncidenceId not in self: return CodeTerminal([""])
 
         return CodeTerminal.from_CodeFragment(self[IncidenceId], 

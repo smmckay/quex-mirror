@@ -77,9 +77,10 @@
             ...
             }
 """
-from quex.engine.analyzer.door_id_address_label        import dial_db
-##from quex.output.core.state.core                import input_do
-from quex.output.core.variable_db       import variable_db
+from   quex.engine.analyzer.door_id_address_label import DialDB
+
+from   quex.engine.misc.tools                     import typed
+from   quex.output.core.variable_db               import variable_db
 
 from quex.blackboard import Lng
 
@@ -174,7 +175,8 @@ def framework(txt, PWState, TheAnalyzer):
     txt.extend(path_walker_head)
     return
 
-def require_data(PWState, TheAnalyzer):
+@typed(dial_db=DialDB)
+def require_data(PWState, TheAnalyzer, dial_db):
     """Defines the transition targets for each involved state.
     """
     
@@ -196,7 +198,8 @@ def require_data(PWState, TheAnalyzer):
             ## print "#DoorID, Adr:", [(door_id, Lng.ADDRESS_BY_DOOR_ID(door_id)) for door_id in door_id_sequence]
             result.append("        ")
             result.append("/* Padding */0x0, ")
-            result.extend("QUEX_LABEL(%i), " % dial_db.get_address_by_door_id(door_id, RoutedF=True)
+            dial_db.mark_address_as_routed(door_id.related_address)
+            result.extend("QUEX_LABEL(%i), " % door_id.related_address
                           for door_id in door_id_sequence)
             result.append("\n")
 

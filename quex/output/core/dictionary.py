@@ -20,7 +20,7 @@ from   quex.engine.operations.operation_list             import E_R
 from   quex.engine.analyzer.mega_state.template.state    import TemplateState
 from   quex.engine.analyzer.mega_state.path_walker.state import PathWalkerState
 from   quex.engine.analyzer.door_id_address_label        import DoorID, \
-                                                                dial_db, \
+                                                                DialDB, \
                                                                 get_plain_strings
 from   quex.engine.misc.string_handling                  import blue_print, \
                                                                 pretty_code
@@ -227,7 +227,7 @@ class Lng_Cpp(dict):
     def DEFAULT_COUNTER_CALL(self):
         return "__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);\n"
 
-    def DEFAULT_COUNTER_PROLOG(self, FunctionName):
+    def RUN_TIME_COUNTER_PROLOG(self, FunctionName):
         return "#ifdef      __QUEX_COUNT_VOID\n"                             \
                "#   undef   __QUEX_COUNT_VOID\n"                             \
                "#endif\n"                                                    \
@@ -258,12 +258,13 @@ class Lng_Cpp(dict):
             E_R.Counter:         "counter",
         }[Register]
 
-    def COMMAND_LIST(self, OpList):
+    def COMMAND_LIST(self, OpList, dial_db=None):
         return [ 
-            "%s\n" % self.COMMAND(cmd) for cmd in OpList
+            "%s\n" % self.COMMAND(cmd, dial_db) for cmd in OpList
         ]
 
-    def COMMAND(self, Op):
+    @typed(dial_db=DialDB)
+    def COMMAND(self, Op, dial_db=None):
         if Op.id == E_Op.Accepter:
             else_str = ""
             txt      = []
@@ -282,11 +283,11 @@ class Lng_Cpp(dict):
         elif Op.id == E_Op.RouterByLastAcceptance:
             case_list = [
                 (self.ACCEPTANCE(element.acceptance_id), 
-                 self.position_and_goto(element))
+                 self.position_and_goto(element, dial_db))
                 for element in Op.content
             ]
             txt = self.BRANCH_TABLE_ON_STRING("last_acceptance", case_list)
-            result = "".join(self.GET_PLAIN_STRINGS(txt))
+            result = "".join(self.GET_PLAIN_STRINGS(txt, dial_db))
             return result
 
         #        elif Op.id == E_Op.AccepterAndRouter:
@@ -300,7 +301,7 @@ class Lng_Cpp(dict):
 
         elif Op.id == E_Op.RouterOnStateKey:
             case_list = [
-                (state_key, self.GOTO(door_id)) for state_key, door_id in Op.content
+                (state_key, self.GOTO(door_id, dial_db)) for state_key, door_id in Op.content
             ]
             if Op.content.register == E_R.PathIterator:
                 key_txt = "path_iterator - path_walker_%i_path_base" % Op.content.mega_state_index 
@@ -310,12 +311,12 @@ class Lng_Cpp(dict):
                 assert False
 
             txt = self.BRANCH_TABLE(key_txt, case_list)
-            result = "".join(self.GET_PLAIN_STRINGS(txt))
+            result = "".join(self.GET_PLAIN_STRINGS(txt, dial_db))
             return result
 
         elif Op.id == E_Op.IfPreContextSetPositionAndGoto:
             pre_context_id = Op.content.pre_context_id
-            block = self.position_and_goto(Op.content.router_element)
+            block = self.position_and_goto(Op.content.router_element, dial_db)
             txt = []
             self.IF_PRE_CONTEXT(txt, True, pre_context_id, block)
             return "".join(txt)
@@ -327,16 +328,16 @@ class Lng_Cpp(dict):
             return self.UNREACHABLE
 
         elif Op.id == E_Op.GotoDoorId:
-            return self.GOTO(Op.content.door_id)
+            return self.GOTO(Op.content.door_id, dial_db)
 
         elif Op.id == E_Op.GotoDoorIdIfCounterEqualZero:
             return "if( %s == 0 ) %s\n" % (self.REGISTER_NAME(E_R.Counter), 
-                                           self.GOTO(Op.content.door_id))
+                                           self.GOTO(Op.content.door_id, dial_db))
 
         elif Op.id == E_Op.GotoDoorIdIfInputPNotEqualPointer:
             return "if( %s != %s ) %s\n" % (self.INPUT_P(), 
                                             self.REGISTER_NAME(Op.content.pointer), 
-                                            self.GOTO(Op.content.door_id))
+                                            self.GOTO(Op.content.door_id, dial_db))
 
         elif Op.id == E_Op.IndentationHandlerCall:
             # If mode_specific is None => General default indentation handler.
@@ -419,11 +420,11 @@ class Lng_Cpp(dict):
             return txt
 
         elif Op.id == E_Op.PrepareAfterReload:
-            on_success_door_id = Op.content.on_success_door_id 
-            on_failure_door_id = Op.content.on_failure_door_id 
+            on_success_adr = Op.content.on_success_door_id.related_address
+            on_failure_adr = Op.content.on_failure_door_id.related_address
 
-            on_success_adr = dial_db.get_address_by_door_id(on_success_door_id, RoutedF=True)
-            on_failure_adr = dial_db.get_address_by_door_id(on_failure_door_id, RoutedF=True)
+            dial_db.mark_address_as_routed(on_success_adr)
+            dial_db.mark_address_as_routed(on_failure_adr)
 
             return   "    target_state_index = QUEX_LABEL(%i); target_state_else_index = QUEX_LABEL(%i);\n"  \
                    % (on_success_adr, on_failure_adr)                                                        
@@ -443,63 +444,71 @@ class Lng_Cpp(dict):
         else:
             assert False, "Unknown command '%s'" % Op.id
 
-    def TERMINAL_CODE(self, TerminalStateList, TheAnalyzer): 
+    def TERMINAL_CODE(self, TerminalStateList, TheAnalyzer, dial_db): 
         text = [
             cpp._terminal_state_prolog
         ]
         terminal_door_id_list = []
         for terminal in sorted(TerminalStateList, key=lambda x: x.incidence_id()):
-            door_id = DoorID.incidence(terminal.incidence_id())
-            terminal_door_id_list.append(door_id)
+            terminal_door_id_list.append(terminal.door_id)
+            print "#TERMINAL: %s %s" % (terminal.incidence_id(), terminal.door_id)
 
             t_txt = ["%s\n    __quex_debug(\"* TERMINAL %s\\n\");\n" % \
-                     (self.LABEL(door_id), terminal.name())]
+                     (self.LABEL(terminal.door_id), terminal.name())]
             code  = terminal.code(TheAnalyzer)
             assert none_isinstance(code, list)
             t_txt.extend(code)
             t_txt.append("\n")
 
             text.extend(t_txt)
+
         text.append(
             "if(0) {\n"
             "    /* Avoid unreferenced labels. */\n"
         )
         text.extend(
-            "    %s\n" % self.GOTO(door_id)
+            "    %s\n" % self.GOTO(door_id, dial_db)
             for door_id in terminal_door_id_list
         )
         text.append("}\n")
         return text
 
+    @typed(dial_db=DialDB)
     def ANALYZER_FUNCTION(self, ModeName, Setup, VariableDefs, 
-                          FunctionBody, ModeNameList):
+                          FunctionBody, dial_db, ModeNameList):
         return cpp._analyzer_function(ModeName, Setup, VariableDefs, 
-                                      FunctionBody, ModeNameList)
+                                      FunctionBody, dial_db, ModeNameList)
 
-    def REENTRY_PREPARATION(self, PreConditionIDList, OnAfterMatchCode):
-        return cpp.reentry_preparation(self, PreConditionIDList, OnAfterMatchCode)
+    def REENTRY_PREPARATION(self, PreConditionIDList, OnAfterMatchCode, dial_db):
+        return cpp.reentry_preparation(self, PreConditionIDList, OnAfterMatchCode, dial_db)
 
-    def HEADER_DEFINITIONS(self):
+    @typed(dial_db=DialDB)
+    def HEADER_DEFINITIONS(self, dial_db):
         return blue_print(cpp_header_definition_str, [
-            ("$$CONTINUE_WITH_ON_AFTER_MATCH$$", dial_db.get_label_by_door_id(DoorID.continue_with_on_after_match())),
-            ("$$RETURN_WITH_ON_AFTER_MATCH$$",   dial_db.get_label_by_door_id(DoorID.return_with_on_after_match())),
+            ("$$CONTINUE_WITH_ON_AFTER_MATCH$$", self.LABEL_STR_BY_ADR(DoorID.continue_with_on_after_match(dial_db).related_address)),
+            ("$$RETURN_WITH_ON_AFTER_MATCH$$",   self.LABEL_STR_BY_ADR(DoorID.return_with_on_after_match(dial_db).related_address)),
         ])
 
     @typed(DoorId=DoorID)
     def LABEL(self, DoorId):
-        return "%s:" % dial_db.get_label_by_door_id(DoorId)
+        return "%s:" % self.LABEL_STR_BY_ADR(DoorId.related_address)
+
+    def LABEL_STR_BY_ADR(self, Adr):
+        return "_%s" % Adr
 
     @typed(DoorId=DoorID)
-    def GOTO(self, DoorId):
+    def GOTO(self, DoorId, dial_db):
         if DoorId.last_acceptance_f():
             return "QUEX_GOTO_TERMINAL(last_acceptance);"
-        return "goto %s;" % dial_db.get_label_by_door_id(DoorId, GotoedF=True)
+        return self.GOTO_ADDRESS(DoorId.related_address, dial_db)
 
     def GOTO_BY_VARIABLE(self, VariableName):
         return "QUEX_GOTO_STATE(%s);" % VariableName 
 
-    def GOTO_ADDRESS(self, Address):
-        return "goto %s;" % dial_db.get_label_by_address(Address, GotoedF=True)
+    @typed(dial_db=DialDB)
+    def GOTO_ADDRESS(self, Address, dial_db):
+        dial_db.mark_address_as_gotoed(Address)
+        return "goto %s;" % self.LABEL_STR_BY_ADR(Address)
 
     def GRID_STEP(self, VariableName, TypeName, GridWidth, StepN=1, IfMacro=None):
         """A grid step is an addition which depends on the current value 
@@ -617,19 +626,19 @@ class Lng_Cpp(dict):
         else:                                              return "%i" % AcceptanceID
 
     def IF(self, LValue, Operator, RValue, FirstF=True, SimpleF=False, SpaceF=False):
-        if isinstance(RValue, (str,unicode)): decision = "%s %s %s"   % (LValue, Operator, RValue)
-        else:                                 decision = "%s %s 0x%X" % (LValue, Operator, RValue)
+        if isinstance(RValue, (str,unicode)): condition = "%s %s %s"   % (LValue, Operator, RValue)
+        else:                                 condition = "%s %s 0x%X" % (LValue, Operator, RValue)
         if not SimpleF:
-            if FirstF: return "if( %s ) {\n"          % decision
-            else:      return "\n} else if( %s ) {\n" % decision
+            if FirstF: return "if( %s ) {\n"          % condition
+            else:      return "\n} else if( %s ) {\n" % condition
         else:
             if FirstF: 
-                if SpaceF: return "if     ( %s ) " % decision
-                else:      return "if( %s ) "      % decision
-            else:          return "else if( %s ) " % decision
+                if SpaceF: return "if     ( %s ) " % condition
+                else:      return "if( %s ) "      % condition
+            else:          return "else if( %s ) " % condition
 
     def IF_GOTO(self, LValue, Condition, RValue, DoorId, FirstF=True):
-        return "%s %s\n" % (self.IF(LValue, Condition, RValue, FirstF, True), self.GOTO(DoorId))
+        return "%s %s\n" % (self.IF(LValue, Condition, RValue, FirstF, True), self.GOTO(DoorId, dial_db))
 
     def IF_INPUT(self, Condition, Value, FirstF=True, NewlineF=True):
         return self.IF("input", Condition, Value, FirstF, SimpleF=not NewlineF)
@@ -864,9 +873,9 @@ class Lng_Cpp(dict):
         for i, x in enumerate(islice(txt_list, Start, None), Start):
             if isinstance(x, int): txt_list[i] += Add
 
-    def GET_PLAIN_STRINGS(self, txt_list):
+    def GET_PLAIN_STRINGS(self, txt_list, dial_db):
         self.REPLACE_INDENT(txt_list)
-        return get_plain_strings(txt_list)
+        return get_plain_strings(txt_list, dial_db)
 
     def VARIABLE_DEFINITIONS(self, VariableDB):
         # ROBUSTNESS: Require 'target_state_index' and 'target_state_else_index'
@@ -880,26 +889,27 @@ class Lng_Cpp(dict):
         assert type(VariableDB) != dict
         return cpp._local_variable_definitions(VariableDB.get()) 
 
-    def RELOAD_PROCEDURE(self, ForwardF):
+    @typed(dial_db=DialDB)
+    def RELOAD_PROCEDURE(self, ForwardF, dial_db):
         assert self.__code_generation_reload_label is None
 
         if ForwardF:
             txt = cpp_reload_forward_str
-            txt = txt.replace("$$ON_BAD_LEXATOM$$", 
-                              dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM)))
-            txt = txt.replace("$$ON_LOAD_FAILURE$$", 
-                              dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE)))
-            txt = txt.replace("$$ON_NO_SPACE_FOR_LOAD$$", 
-                              dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.OVERFLOW)))
-
         else:
             txt = cpp_reload_backward_str
-            txt = txt.replace("$$ON_BAD_LEXATOM$$", 
-                              dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM)))
-            txt = txt.replace("$$ON_LOAD_FAILURE$$", 
-                              dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE)))
-            txt = txt.replace("$$ON_NO_SPACE_FOR_LOAD$$", 
-                              dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.OVERFLOW)))
+
+        adr_bad_lexatom  = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db).related_address
+        adr_load_failure = DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE, dial_db).related_address
+        adr_overflow     = DoorID.incidence(E_IncidenceIDs.OVERFLOW, dial_db).related_address
+
+        txt = txt.replace("$$ON_BAD_LEXATOM$$",       self.LABEL_STR_BY_ADR(adr_bad_lexatom))
+        txt = txt.replace("$$ON_LOAD_FAILURE$$",      self.LABEL_STR_BY_ADR(adr_load_failure))
+        txt = txt.replace("$$ON_NO_SPACE_FOR_LOAD$$", self.LABEL_STR_BY_ADR(adr_overflow))
+
+        dial_db.mark_address_as_gotoed(adr_bad_lexatom)
+        dial_db.mark_address_as_gotoed(adr_load_failure)
+        dial_db.mark_address_as_gotoed(adr_overflow)
+
         return txt 
 
     def straighten_open_line_pragmas(self, FileName):
@@ -922,12 +932,17 @@ class Lng_Cpp(dict):
         fh.close()
         write_safely_and_close(FileName, "".join(new_content))
 
-    @typed(X=RouterContentElement)
-    def position_and_goto(self, X):
-        # Position the input pointer and jump to terminal.
+    @typed(X=RouterContentElement, dial_db=DialDB)
+    def position_and_goto(self, X, dial_db):
+        """Generate code to (i) position the input pointer and
+                            (ii) jump to terminal.
+        """
+        door_id = DoorID.incidence(X.acceptance_id, dial_db)
+        print "#accept:", X.acceptance_id
+        dial_db.mark_address_as_gotoed(door_id.related_address)
         return [
            self.POSITIONING(X),
-           self.GOTO(DoorID.incidence(X.acceptance_id))
+           self.GOTO(door_id, dial_db)
         ]
 
     def if_pre_context(self, PreContextId, ElseStr):

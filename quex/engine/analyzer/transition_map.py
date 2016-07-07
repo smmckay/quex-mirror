@@ -48,13 +48,16 @@ class TransitionMap(list):
         return result
 
     @classmethod
-    def from_iterable(cls, Iterable, TheTargetFactory=None):
+    def from_iterable(cls, Iterable, TargetGeneratorFunc=None, dial_db=None):
         result = cls()
-        if TheTargetFactory is None:
+        if TargetGeneratorFunc is None:
             result.extend((interval.clone(), target) 
                           for interval, target in Iterable)
+        elif dial_db is None:
+            result.extend((interval.clone(), TargetGeneratorFunc(target)) 
+                          for interval, target in Iterable)
         else:
-            result.extend((interval.clone(), TheTargetFactory(target)) 
+            result.extend((interval.clone(), TargetGeneratorFunc(target, dial_db)) 
                           for interval, target in Iterable)
         return result
 

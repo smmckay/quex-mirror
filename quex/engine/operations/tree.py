@@ -82,7 +82,7 @@ FUNCTIONS:
 (C) Frank-Rene Schaefer
 _______________________________________________________________________________
 """
-from   quex.engine.analyzer.door_id_address_label import DoorID, dial_db
+from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 import quex.engine.operations.shared_tail  as     shared_tail
 from   quex.engine.misc.tools                          import flatten_list_of_lists
 
@@ -91,7 +91,7 @@ from quex.engine.misc.tools import typed, TypedDict
 from operator         import attrgetter
 
 class CommandTree:
-    def __init__(self, StateIndex, DoorId_OpList_Iterable):
+    def __init__(self, StateIndex, DoorId_OpList_Iterable, dial_db):
         """StateIndex -- Index of state for which one operates.
                          (needed for new DoorID generation)
            
@@ -102,7 +102,7 @@ class CommandTree:
         NOTE: The command lists are MODIFIED during the process of finding
               a command tree!
         """
-        shared_tail_db = SharedTailDB(StateIndex, DoorId_OpList_Iterable)
+        shared_tail_db = SharedTailDB(StateIndex, DoorId_OpList_Iterable, dial_db)
 
         while shared_tail_db.pop_best():
             pass
@@ -117,7 +117,7 @@ class CommandTree:
             (ta.door_id, ta.command_list) 
             for ta in TheState.entry.itervalues()
         ]
-        return CommandTree(TheState.index, door_id_command_list)
+        return CommandTree(TheState.index, door_id_command_list, TheState.entry.dial_db)
 
     def iterable_to_root(self, DoorId, done_set=None):
         """Iterate from a node, parent by parent, to the root of the tree.
@@ -259,13 +259,14 @@ class SharedTailDB:
     __slots__ = ("state_index", "door_id_set", "db")
 
     @typed(DoorId_OpList=[tuple])
-    def __init__(self, StateIndex, DoorId_OpList):
+    def __init__(self, StateIndex, DoorId_OpList, dial_db):
+        self.dial_db     = dial_db
         self.state_index = StateIndex
         root_child_set   = set(door_id for door_id, cl in DoorId_OpList) 
-        self.root        = Door(dial_db.new_door_id(StateIndex), [], None,
+        self.root        = Door(self.dial_db.new_door_id(StateIndex), [], None,
                                 root_child_set)
         self.door_db     = TypedDict(DoorID, Door) # {}   # map: DoorID --> Door 
-        #                       #  ... with ALL Door-s related to the 'problem'
+        #                                          #  ... with ALL Door-s related to the 'problem'
 
         # map: Shared Tail --> SharedTailCandidateInfo
         self._tail_db      = {} # map: command list tail --> those who share it
@@ -378,7 +379,7 @@ class SharedTailDB:
             .parent       = root (which is ALWAYS the parent of nodes subject 
                             to investigation).
         """
-        new_door_id = dial_db.new_door_id(self.state_index)
+        new_door_id = self.dial_db.new_door_id(self.state_index)
         child_set   = set(Candidate.door_id_iterable())
         new_door    = Door(new_door_id, list(Candidate.shared_tail), self.root, child_set)
 

@@ -2,7 +2,7 @@
 from   quex.input.code.base                                      import SourceRef_VOID, \
                                                                         SourceRef
 from   quex.engine.state_machine.core                            import StateMachine
-from   quex.engine.state_machine.character_counter               import LineColumnCountInfo
+from   quex.engine.state_machine.character_counter               import SmLineColumnCountInfo
 import quex.engine.state_machine.construction.setup_post_context as     setup_post_context
 import quex.engine.state_machine.construction.setup_pre_context  as     setup_pre_context
 import quex.engine.state_machine.algorithm.beautifier            as     beautifier
@@ -10,31 +10,33 @@ import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.misc.error                                    as     error
 from   quex.engine.misc.tools                                    import typed
 
-from   quex.blackboard  import setup as Setup
+from   quex.engine.pattern import Pattern
 
-class Pattern(object):
+from   quex.blackboard  import setup as Setup
+import quex.blackboard  as blackboard
+
+class Pattern_Prep(object):
     __slots__ = ("__sr", # Source Reference (filename, line_n)
                  "__sm", 
                  "__post_context_f", 
                  "__post_context_sm",
-                 "__bipd_sm_to_be_inverted",        "__bipd_sm", 
                  "__pre_context_sm_to_be_inverted", "__pre_context_sm", 
                  "__pre_context_begin_of_line_f", 
                  "__post_context_end_of_line_f", 
                  "__pattern_string",
-                 "__count_info", 
-                 "__alarm_transformed_f")
-    @typed(CoreSM=StateMachine, BeginOfLineF=bool, EndOfLineF=bool, AllowNothingIsNecessaryF=bool, Sr=SourceRef)
+                 "__count_info")
+    @typed(CoreSM=StateMachine, BeginOfLineF=bool, EndOfLineF=bool, 
+           AllowNothingIsNecessaryF=bool, Sr=SourceRef)
     def __init__(self, CoreSM, PreContextSM=None, PostContextSM=None, 
                  BeginOfLineF=False, EndOfLineF=False, Sr=SourceRef_VOID, 
                  PatternString="",
                  AllowNothingIsNecessaryF=False):
         assert PreContextSM is None or isinstance(PreContextSM, StateMachine)
-        Pattern.check_initial(CoreSM, 
-                              BeginOfLineF, PreContextSM, 
-                              EndOfLineF, PostContextSM, 
-                              Sr,
-                              AllowNothingIsNecessaryF)
+        self.check_initial(CoreSM, 
+                           BeginOfLineF, PreContextSM, 
+                           EndOfLineF, PostContextSM, 
+                           Sr,
+                           AllowNothingIsNecessaryF)
 
         self.__pattern_string = PatternString
         self.__sr             = Sr
@@ -47,13 +49,6 @@ class Pattern(object):
 
         # -- [optional] post contexts
         self.__post_context_f = (PostContextSM is not None)
-
-        #    Backward input position detection requires an inversion of the 
-        #    state machine. This can only be done after the (optional) codec
-        #    transformation. Thus, a non-inverted version of the state machine
-        #    is maintained until the transformation is done.
-        self.__bipd_sm_to_be_inverted = None
-        self.__bipd_sm                = None
 
         # -- [optional] pre contexts
         #
@@ -76,15 +71,12 @@ class Pattern(object):
         # line/column count database is present. Thus, it is delayed.
         self.__count_info = None
 
-        # Ensure, that the pattern is never transformed twice
-        self.__alarm_transformed_f = False
-
         self.__validate(Sr)
-    
+
     @staticmethod
-    def from_character_set(CharacterSet):
-        return Pattern(StateMachine.from_character_set(CharacterSet), 
-                       PatternString="<character set>")
+    def from_character_set(CharacterSet, StateMachineId=None):
+        return Pattern_Prep(StateMachine.from_character_set(CharacterSet, StateMachineId), 
+                                 PatternString="<character set>")
 
     @property
     def sr(self):             return self.__sr
@@ -102,37 +94,6 @@ class Pattern(object):
     def set_incidence_id(self, Id):
         self.__sm.set_id(Id)
 
-    def prepare_count_info(self, CounterDb, CodecTrafoInfo):                
-        """Perform line/column counting on the core pattern, i.e. the pattern
-        which is not concerned with the post context. The counting happens 
-        on a UNICODE state machine--not on a possibly transformed codec state
-        machine.
-
-        IDEA: It is done in here, so that it may be done once, even for derived 
-              modes--whenever the pattern's count needs to be determined. 
-        """
-        # Make sure that a pattern is NOT transformed before!
-        assert self.__alarm_transformed_f == False
-        assert self.__count_info is None           
-
-        # If the pre-context is 'trivial begin of line', then the column number
-        # starts counting at '1' and the column number may actually be set
-        # instead of being added.
-        self.__count_info = LineColumnCountInfo.from_StateMachine(self.__sm, 
-                                                                  CounterDb.count_command_map, 
-                                                                  self.pre_context_trivial_begin_of_line_f, 
-                                                                  CodecTrafoInfo)
-        return self.__count_info
-
-    def count_info(self):                          
-        """RETURN information for line and column number counting. 
-
-        The information needs to be prepared before the codec-specific transformation
-        -- relying on function 'prepare_count_info()'.
-        """
-        #assert self.__count_info is not None
-        return self.__count_info
-
     @property
     def sm(self):                                  return self.__sm
     @property
@@ -149,81 +110,36 @@ class Pattern(object):
 
     def has_pre_context(self): 
         return    self.__pre_context_begin_of_line_f \
-               or self.__pre_context_sm_to_be_inverted is not None \
-               or self.__pre_context_sm                is not None
+               or self.__pre_context_sm_to_be_inverted is not None
     def has_post_context(self):   
         return self.__post_context_f
     def has_pre_or_post_context(self):
         return self.has_pre_context() or self.has_post_context()
 
-    def mount_pre_context_sm(self):
-        if    self.__pre_context_sm_to_be_inverted is None \
-          and self.__pre_context_begin_of_line_f == False:
-            return
+    def __finalize_mount_pre_context_sm(self, Sm, SmPreContextToBeInverted, BeginOfLineF):
+        if SmPreContextToBeInverted is None and BeginOfLineF == False:
+            return None
 
-        self.__pre_context_sm = setup_pre_context.do(self.__sm, 
-                                                     self.__pre_context_sm_to_be_inverted, 
-                                                     self.__pre_context_begin_of_line_f)
+        return setup_pre_context.do(Sm, SmPreContextToBeInverted, BeginOfLineF)
+                                    
 
-    def mount_post_context_sm(self):
-        self.__sm,     \
-        self.__bipd_sm_to_be_inverted = setup_post_context.do(self.__sm, 
-                                                              self.__post_context_sm, 
-                                                              self.__post_context_end_of_line_f, 
-                                                              self.__sr)
+    def __finalize_mount_post_context_sm(self, Sm, SmPostContext, EndOfLineF):
+        # In case of a 'trailing post context' a 'bipd_sm' may be provided
+        # to detect the input position after match in backward direction.
+        # BIPD = backward input position detection.
+        sm,     \
+        bipd_sm_to_be_inverted = setup_post_context.do(Sm, SmPostContext, EndOfLineF,
+                                                       self.__sr)
 
-        if self.__bipd_sm_to_be_inverted is None: 
-            return
+        if bipd_sm_to_be_inverted is None: 
+            return sm, None
 
-        if         self.__bipd_sm_to_be_inverted is not None \
-           and not self.__bipd_sm_to_be_inverted.is_DFA_compliant(): 
-            self.__bipd_sm_to_be_inverted = beautifier.do(self.__bipd_sm_to_be_inverted)
+        elif not bipd_sm_to_be_inverted.is_DFA_compliant(): 
+            bipd_sm_to_be_inverted = beautifier.do(bipd_sm_to_be_inverted)
 
-        self.__bipd_sm = beautifier.do(reverse.do(self.__bipd_sm_to_be_inverted))
+        bipd_sm = beautifier.do(reverse.do(bipd_sm_to_be_inverted))
 
-    def cut_character_list(self, CharacterList):
-        """Characters can only be cut, if transformation is done and 
-        pre- and bipd are mounted.
-        """
-        def my_error(Name, Pattern):
-            error.log("Pattern becomes empty after deleting signal character '%s'." % Name,
-                      Pattern.sr)
-
-        for character, name in CharacterList:
-            for sm in [self.__sm, self.__pre_context_sm, self.__post_context_sm]:
-                if sm is None: continue
-                sm.delete_transitions_on_number(character)
-                sm.clean_up()
-                if sm.is_empty(): 
-                    my_error(name, self)
-
-    def transform(self, TrafoInfo):
-        """Transform state machine if necessary."""
-        # Make sure that a pattern is never transformed twice
-        assert self.__alarm_transformed_f == False
-        self.__alarm_transformed_f = True
-
-        # Transformation MUST be called before any pre-context or bipd
-        # is mounted.
-        assert self.__pre_context_sm is None
-        assert self.__bipd_sm        is None
-
-        # Currently, the incidence_id is equivalent to the state machine id. The
-        # transformation may generate a new state machine, but the incidence id
-        # must remain the same! This will not be necessary, if state machines 
-        # do not carray ids any longer.
-        backup_incidence_id = self.incidence_id()
-        c0, self.__sm                            = Setup.buffer_codec.do_state_machine(self.__sm, 
-                                                                                       beautifier)
-        c1, self.__pre_context_sm_to_be_inverted = Setup.buffer_codec.do_state_machine(self.__pre_context_sm_to_be_inverted, 
-                                                                                       beautifier)
-        c2, self.__post_context_sm               = Setup.buffer_codec.do_state_machine(self.__post_context_sm, 
-                                                                                       beautifier)
-        self.set_incidence_id(backup_incidence_id)
-
-        # Only if all transformations have been complete, then the transformation
-        # can be considered complete.
-        return c0 and c1 and c2
+        return sm, bipd_sm
 
     def __validate(self, Sr):
         # (*) It is essential that state machines defined as patterns do not 
@@ -305,7 +221,7 @@ class Pattern(object):
             elif not AllowNothingIsNecessaryF:
                 # 'Nothing is necessary' cannot be accepted. 
                 # See the discussion in the module "quex.output.cpp.core".
-                Pattern.detect_path_of_nothing_is_necessary(Sm,  Name.strip(),  post_context_f, Sr)
+                Pattern_Prep.detect_path_of_nothing_is_necessary(Sm,  Name.strip(),  post_context_f, Sr)
 
         post_context_f = (post_context is not None)
         for name, sm in [("pre-context ", pre_context), ("", core_sm), ("post-context ", post_context)]:
@@ -344,4 +260,88 @@ class Pattern(object):
                    "Note: A post context does not change anything to that fact." 
 
         error.log(msg, fh)
+
+    def finalize(self, CaMap):
+        """NOTE: The finalization leaves the 'Specifer_Pattern' in a dysfunctional
+        state. It is no longer to be used--the generated 'Pattern' object takes
+        its place.
+        """
+        # Count information must be determined BEFORE transformation!
+        lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, self.sm, 
+                                                       self.pre_context_trivial_begin_of_line_f, 
+                                                       Setup.buffer_codec)
+
+        # (*) Transform all state machines into buffer codec
+        #     => may change state machine id 
+        #     => backup the original id and restore later
+        original_incidence_id = self.incidence_id()
+
+        verdict_f,      \
+        sm_main,                       \
+        sm_pre_context_to_be_inverted, \
+        sm_post_context                = self.__finalize_transform(Setup.buffer_codec)
+        if not verdict_f:
+            error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_codec.name \
+                          + "(Buffer element size is %s [byte])" % Setup.buffer_lexatom_size_in_byte,
+                          self.sr)
+
+        sm_main.set_id(original_incidence_id)
+
+        # (*) Cut the signalling characters from any state machine
+        self.__finalize_cut_signal_character_list([sm_main, 
+                                                   sm_pre_context_to_be_inverted, 
+                                                   sm_post_context])
+
+        # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
+        sm_main, sm_bipd = self.__finalize_mount_post_context_sm(sm_main, 
+                                                                 sm_post_context,
+                                                                 self.__post_context_end_of_line_f)
+        sm_pre_context = self.__finalize_mount_pre_context_sm(sm_main, 
+                                                              sm_pre_context_to_be_inverted,
+                                                              self.__pre_context_begin_of_line_f)
+
+        result = Pattern(original_incidence_id, sm_main, sm_pre_context, sm_bipd,
+                         lcci, self.__pattern_string, self.__sr)
+
+        # Set this object into a dysfunctional state. 
+        self.__sm                            = None
+        self.__pre_context_sm_to_be_inverted = None
+        return result
+
+    def __finalize_cut_signal_character_list(self, sm_list):
+        """Characters can only be cut, if transformation is done and 
+        pre- and bipd are mounted.
+        """
+        def my_error(Name, Pattern):
+            error.log("Pattern becomes empty after deleting signal character '%s'." % Name,
+                      Pattern.sr)
+
+        for character, name in blackboard.signal_character_list(Setup):
+            for sm in sm_list:
+                if sm is None: continue
+                sm.delete_transitions_on_number(character)
+                sm.clean_up()
+                if sm.is_empty(): 
+                    my_error(name, self)
+
+    def __finalize_transform(self, TrafoInfo):
+        """Transform state machine if necessary."""
+        # Make sure that a pattern is never transformed twice
+        # Transformation MUST be called before any pre-context or bipd
+        # is mounted.
+        assert self.__pre_context_sm is None
+
+        # IncidenceId == StateMachine's id. 
+        # However: Transformation may generate a new state machine.
+        # => To maintain incidence id, store the original one and restore it
+        #    after transformation. 
+        c0, sm                            = Setup.buffer_codec.do_state_machine(self.__sm, 
+                                                                                beautifier)
+        c1, pre_context_sm_to_be_inverted = Setup.buffer_codec.do_state_machine(self.__pre_context_sm_to_be_inverted, 
+                                                                                beautifier)
+        c2, post_context_sm               = Setup.buffer_codec.do_state_machine(self.__post_context_sm, 
+                                                                                beautifier)
+        # Only if all transformations have been complete, then the transformation
+        # can be considered complete.
+        return c0 and c1 and c2, sm, pre_context_sm_to_be_inverted, post_context_sm
 

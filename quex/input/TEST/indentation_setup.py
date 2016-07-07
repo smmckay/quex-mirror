@@ -30,7 +30,7 @@ def test(Text):
 
     descr = None
     try:    
-        descr = Specifier_IndentationCount(fh).parse()
+        descr = IndentationCount_Prep(fh).parse()
     except EndOfStreamException:
         error.log("End of file reached while parsing 'indentation' section.", sh, DontExitF=True)
 

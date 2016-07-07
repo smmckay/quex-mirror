@@ -37,6 +37,7 @@ ABSOLUTELY NO WARRANTY
 _______________________________________________________________________________
 """
 
+from   quex.engine.analyzer.door_id_address_label   import DialDB
 import quex.engine.analyzer.track_analysis          as     track_analysis
 from   quex.engine.analyzer.paths_to_state          import PathsToState
 import quex.engine.analyzer.optimizer               as     optimizer
@@ -68,13 +69,17 @@ from   collections      import defaultdict
 from   itertools        import imap
 from   operator         import attrgetter
 
+@typed(dial_db=DialDB)
 def do(SM, EngineType=engine.FORWARD, 
        ReloadStateExtern=None, OnBeforeReload=None, OnAfterReload=None, 
-       OnBeforeEntry=None):
+       OnBeforeEntry=None, 
+       dial_db=None):
+    assert dial_db is not None
 
     # Generate Analyzer from StateMachine
     analyzer = Analyzer.from_StateMachine(SM, EngineType, ReloadStateExtern, 
-                                          OnBeforeEntry)
+                                          OnBeforeEntry, 
+                                          dial_db=dial_db)
     # Optimize the Analyzer
     analyzer = optimizer.do(analyzer)
 
@@ -110,22 +115,23 @@ class Analyzer:
     """A representation of a pattern analyzing StateMachine suitable for
        effective code generation.
     """
-    def __init__(self, EngineType, InitStateIndex):
+    def __init__(self, EngineType, InitStateIndex, dial_db):
         self.__engine_type      = EngineType
         self.__init_state_index = InitStateIndex
         self.__state_db         = {}
-        self.drop_out           = Processor(E_StateIndices.DROP_OUT, Entry())
+        self.dial_db            = dial_db
+        self.drop_out           = Processor(E_StateIndices.DROP_OUT, Entry(self.dial_db))
         self.__state_machine_id = None
 
     @classmethod
     @typed(SM=StateMachine, EngineType=engine.Base, OnBeforeEntry=(OpList, None))
-    def from_StateMachine(cls, SM, EngineType, ReloadStateExtern=None, OnBeforeEntry=None):
+    def from_StateMachine(cls, SM, EngineType, ReloadStateExtern=None, OnBeforeEntry=None, dial_db=None):
         """ReloadStateExtern is only to be specified if the analyzer needs
         to be embedded in another one.
         """
         if OnBeforeEntry is None: OnBeforeEntry = OpList()
 
-        result = cls(EngineType, SM.init_state_index)
+        result = cls(EngineType, SM.init_state_index, dial_db)
         result._prepare_state_information(SM, OnBeforeEntry)
         result._prepare_reload_state(ReloadStateExtern, EngineType)
         result._prepare_entries_and_drop_out(EngineType, SM)
@@ -155,7 +161,7 @@ class Analyzer:
 
     def _prepare_reload_state(self, ReloadStateExtern, EngineType):
         if ReloadStateExtern is None:
-            self.reload_state          = ReloadState(EngineType=EngineType)
+            self.reload_state          = ReloadState(EngineType=EngineType, dial_db=self.dial_db)
             self.reload_state_extern_f = False
         else:
             self.reload_state          = ReloadStateExtern
@@ -251,7 +257,8 @@ class Analyzer:
     def prepare_state(self, OldState, StateIndex, OnBeforeEntry):
         """REQUIRES: 'self.init_state_forward_f', 'self.engine_type', 'self.__from_db'.
         """
-        state = AnalyzerState.from_State(OldState, StateIndex, self.engine_type)
+        state = AnalyzerState.from_State(OldState, StateIndex, self.engine_type, 
+                                         self.dial_db)
 
         cmd_list = []
         if self.engine_type.is_BACKWARD_PRE_CONTEXT():

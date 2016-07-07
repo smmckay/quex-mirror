@@ -18,15 +18,15 @@
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________                      
 
-from   quex.input.setup                           import NotificationDB
-from   quex.input.code.base                       import SourceRefObject, \
-                                                         SourceRef, \
-                                                         SourceRef_DEFAULT
-from   quex.engine.analyzer.door_id_address_label import dial_db
-from   quex.engine.operations.operation_list      import Op
-from   quex.engine.misc.tools                     import typed
-from   quex.engine.misc.interval_handling         import NumberSet, NumberSet_All
-import quex.engine.misc.error                     as     error
+from   quex.input.setup                            import NotificationDB
+from   quex.input.code.base                        import SourceRefObject, \
+                                                          SourceRef, \
+                                                          SourceRef_DEFAULT
+import quex.engine.analyzer.door_id_address_label  as     dial
+from   quex.engine.operations.operation_list       import Op
+from   quex.engine.misc.tools                      import typed
+from   quex.engine.misc.interval_handling          import NumberSet, NumberSet_All
+import quex.engine.misc.error                      as     error
 
 from   quex.blackboard import setup as Setup, \
                               E_CharacterCountType, \
@@ -135,7 +135,7 @@ class CountAction(namedtuple("CountAction", ("cc_type", "value", "sr"))):
         key = (CA.cc_type, CA.value)
         incidence_id = CA.incidence_id_db.get(key)
         if incidence_id is None:
-            incidence_id = dial_db.new_incidence_id()
+            incidence_id = dial.new_incidence_id()
             CA.incidence_id_db[key] = incidence_id
         return incidence_id
 

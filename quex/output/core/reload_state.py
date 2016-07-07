@@ -7,9 +7,11 @@ def do(TheReloadState):
                                     E_StateIndices.RELOAD_BACKWARD)
     assert TheReloadState.entry.size() != 0
 
+    forward_f = (TheReloadState.index == E_StateIndices.RELOAD_FORWARD)
+
     txt, post_txt = entry.do(TheReloadState)
     txt.extend(
-        Lng.RELOAD_PROCEDURE(ForwardF=(TheReloadState.index == E_StateIndices.RELOAD_FORWARD))
+        Lng.RELOAD_PROCEDURE(forward_f, TheReloadState.entry.dial_db)
     )
     txt.extend(post_txt)
     return txt

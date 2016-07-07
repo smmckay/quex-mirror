@@ -1,3 +1,4 @@
+from quex.blackboard import Lng
 from copy import copy
 
 class Variable:
@@ -128,6 +129,14 @@ class VariableDB:
         self.__enter(Name, Type, None, Initial, condition, condition_negated_f, x[2])
 
         return Name
+
+    def require_registers(self, RegisterIterable):
+        for register_info in RegisterIterable:
+            if type(register_info) == tuple:
+                register, condition = register_info
+                variable_db.require(Lng.REGISTER_NAME(register), Condition=condition)
+            else:
+                variable_db.require(Lng.REGISTER_NAME(register_info))
 
     def require_array(self, Name, ElementN, Initial, Index=None, Condition_ComputedGoto=None):
         global candidate_db

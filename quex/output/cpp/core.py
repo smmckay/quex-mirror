@@ -1,16 +1,16 @@
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________
-from   quex.engine.analyzer.door_id_address_label         import get_plain_strings, \
-                                                                 dial_db
+from   quex.engine.analyzer.door_id_address_label         import get_plain_strings
 from   quex.engine.analyzer.terminal.core                 import Terminal
 from   quex.output.core.variable_db                       import variable_db
 import quex.output.core.base                              as     generator
 from   quex.engine.state_machine.engine_state_machine_set import EngineStateMachineSet
-from   quex.engine.counter                                import CountBase
+from   quex.engine.counter                                import CountActionMap
+from   quex.engine.pattern                                import Pattern
 from   quex.engine.misc.tools                             import all_isinstance, \
-                                                                 typed
-import quex.output.cpp.counter                            as     counter
-from   quex.input.regular_expression.construct            import Pattern
+                                                                 typed, \
+                                                                 flatten_list_of_lists
+import quex.output.cpp.run_time_counter                   as     run_time_counter
 from   quex.blackboard                                    import setup as Setup, \
                                                                  E_IncidenceIDs, \
                                                                  Lng
@@ -21,19 +21,22 @@ def do(Mode, ModeNameList):
     """
     variable_db.init() 
 
+    on_after_match_code = Mode.incidence_db.get_CodeTerminal(E_IncidenceIDs.AFTER_MATCH)
+
     function_body,       \
     variable_definitions = do_core(Mode.pattern_list, 
                                    Mode.terminal_db,
                                    Mode.reload_state_forward,
-                                   Mode.on_after_match_code)
+                                   on_after_match_code, 
+                                   Mode.dial_db)
 
     function_txt = wrap_up(Mode.name, function_body, variable_definitions, 
-                           ModeNameList)
+                           ModeNameList, Mode.dial_db)
 
     return function_txt
 
 @typed(PatternList=[Pattern], TerminalDb={(E_IncidenceIDs, long): Terminal})
-def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None):
+def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None, dial_db=None):
     """Produces main code for an analyzer function which can detect patterns given in
     the 'PatternList' and has things to be done mentioned in 'TerminalDb'. 
 
@@ -45,13 +48,17 @@ def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None):
     # Prepare the combined state machines and terminals 
     esms = EngineStateMachineSet(PatternList)
 
-    require_registers_of_terminals(TerminalDb.itervalues())
+    variable_db.require_registers(flatten_list_of_lists(
+        terminal.required_register_set()
+        for terminal in TerminalDb.itervalues()
+    ))
 
     # (*) Pre Context State Machine
     #     (If present: All pre-context combined in single backward analyzer.)
     pre_context, \
     pre_analyzer         = generator.do_pre_context(esms.pre_context_sm,
-                                                    esms.pre_context_sm_id_list)
+                                                    esms.pre_context_sm_id_list,
+                                                    dial_db)
     # assert all_isinstance(pre_context, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Backward input position detection
@@ -62,14 +69,16 @@ def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None):
     # (*) Main State Machine -- try to match core patterns
     #     Post-context handling is webbed into the main state machine.
     main, \
-    main_analyzer        = generator.do_main(esms.sm, ReloadStateForward)
+    main_analyzer        = generator.do_main(esms.sm, ReloadStateForward, 
+                                             dial_db)
     # assert all_isinstance(main, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Terminals
     #     (BEFORE 'Reload procedures' because some terminals may add entries
     #      to the reloader.)
     terminals            = generator.do_terminals(TerminalDb.values(), 
-                                                  main_analyzer)
+                                                  main_analyzer, 
+                                                  dial_db)
 
     # (*) Reload procedures
     reload_procedure_fw  = generator.do_reload_procedure(main_analyzer)
@@ -79,11 +88,12 @@ def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None):
 
     # (*) Re-entry preparation
     reentry_preparation  = generator.do_reentry_preparation(esms.pre_context_sm_id_list,
-                                                             OnAfterMatchCode)
+                                                            OnAfterMatchCode, 
+                                                            dial_db)
 
     # (*) State Router
     #     (Something that can goto a state address by an given integer value)
-    state_router         = generator.do_state_router()
+    state_router         = generator.do_state_router(dial_db)
     # assert all_isinstance(state_router, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Variable Definitions
@@ -104,48 +114,37 @@ def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None):
 
     return function_body, variable_definitions
 
-def wrap_up(ModeName, FunctionBody, VariableDefs, ModeNameList):
+def wrap_up(ModeName, FunctionBody, VariableDefs, ModeNameList, dial_db):
     txt_function = Lng.ANALYZER_FUNCTION(ModeName, Setup, VariableDefs, 
-                                         FunctionBody, ModeNameList) 
-    txt_header   = Lng.HEADER_DEFINITIONS() 
+                                         FunctionBody, dial_db, ModeNameList) 
+    txt_header   = Lng.HEADER_DEFINITIONS(dial_db) 
     assert isinstance(txt_header, (str, unicode))
 
-    txt_analyzer = get_plain_strings(txt_function)
+    txt_analyzer = get_plain_strings(txt_function, dial_db)
     assert all_isinstance(txt_analyzer, (str, unicode))
 
     return [ txt_header ] + txt_analyzer
 
-def do_default_counter(Mode):
-    if not Mode.default_character_counter_required_f:
-        return []
+def do_run_time_counter(Mode):
+    assert Mode.run_time_counter_db is not None
+    assert isinstance(Mode.run_time_counter_db, CountActionMap)
 
-    dial_db.clear()
     variable_db.init()
 
     # May be, the default counter is the same as for another mode. In that
     # case call the default counter of the other mode with the same one and
     # only macro.
-    assert isinstance(Mode.counter_db, CountBase)
-    default_character_counter_function_name,   \
-    default_character_counter_function_code  = counter.get(Mode.counter_db.count_command_map, 
-                                                           Mode.name)
+    function_name, \
+    code           = run_time_counter.get(Mode.run_time_counter_db, 
+                                          Mode.name)
 
-    txt = [ Lng.DEFAULT_COUNTER_PROLOG(default_character_counter_function_name) ]
+    txt = [ Lng.RUN_TIME_COUNTER_PROLOG(function_name) ]
 
-    if default_character_counter_function_code is not None:
-        txt.append(default_character_counter_function_code)
+    if code is not None:
+        txt.append(code)
 
     return txt
 
 def frame_this(Code):
     return Lng["$frame"](Code, Setup)
-
-def require_registers_of_terminals(TerminalIterable):
-    for terminal in TerminalIterable:
-        for register_info in terminal.required_register_set():
-            if type(register_info) == tuple:
-                register, condition = register_info
-                variable_db.require(Lng.REGISTER_NAME(register), Condition=condition)
-            else:
-                variable_db.require(Lng.REGISTER_NAME(register_info))
 

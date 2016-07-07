@@ -1,20 +1,18 @@
 
 from   quex.input.setup                                  import NotificationDB
 import quex.input.regular_expression.core                as     regular_expression
-from   quex.input.regular_expression.construct           import Pattern           
 import quex.input.files.mode_option                      as     mode_option
+import quex.input.files.consistency_check                as     consistency_check
 from   quex.input.files.mode_option                      import OptionDB
 import quex.input.files.code_fragment                    as     code_fragment
-from   quex.input.files.consistency_check                import __error_message as c_error_message
-import quex.input.files.specifier.patterns_and_terminals as     patterns_and_terminals
-from   quex.input.files.specifier.mode                   import Specifier_Mode     
+from   quex.input.files.specifier.mode                   import Mode_PrepPrep     
 from   quex.input.code.core                              import CodeUser
 from   quex.input.code.base                              import SourceRef
                                                          
-from   quex.engine.analyzer.state.core                   import ReloadState
 import quex.engine.state_machine.check.same              as     same_check
 import quex.engine.state_machine.check.outrun            as     outrun_checker
 import quex.engine.state_machine.check.superset          as     superset_check
+from   quex.engine.pattern                               import Pattern           
 import quex.engine.misc.error                            as     error
 import quex.engine.analyzer.engine_supply_factory        as     engine
 from   quex.engine.misc.file_in                          import EndOfStreamException, \
@@ -35,262 +33,10 @@ from   copy        import deepcopy
 from   collections import namedtuple
 from   itertools   import islice
 
-class Mode:
-    """Finalized 'Mode' as it results from combination of base modes.
-    ____________________________________________________________________________
-
-     A pattern detection mode. It is identified by
-
-       .pattern_list -- A list of patterns which can potentially be detected.
-                        A pattern match is a special kind of an incidence.
-                        Pattern matches are associated with pattern match
-                        actions (i.e. CodeFragment-s).
-
-       .incidence_db -- A mapping from incidence ids to CodeFragments to be
-                        executed upon the occurrence of the incidence.
-     
-                        NOTE: The incidences mentioned in 'incidence_db' are
-                        all 'terminals' and NOT things which appear 'by the side'.
-
-     A Mode is built upon a Specifier_Mode object. A mode description contains
-     further 'option_db' such as a column-line-count specification and a
-     indentation setup.
-    ____________________________________________________________________________
-    """
-    focus = ("<skip>", "<skip_range>", "<skip_nested_range>", "<indentation newline>")
-
-    @typed(Specifier=Specifier_Mode)
-    def __init__(self, Specifier):
-        """Translate a Specifier_Mode into a real Mode. Here is the place were 
-        all rules of inheritance mechanisms and pattern precedence are applied.
-        """
-        self.name = Specifier.name
-        self.sr   = Specifier.sr   # 'SourceRef' -- is immutable
-
-        base_mode_sequence = Specifier.determine_base_mode_sequence([], [])
-        # At least the mode itself must be there
-        # The mode itself is base_mode_sequence[-1]
-        assert len(base_mode_sequence) >= 1 \
-               and base_mode_sequence[-1].name == self.name
-
-        # Collect Options
-        # (A finalized Mode does not contain an option_db anymore).
-        options_db   = OptionDB.from_BaseModeSequence(base_mode_sequence)
-        incidence_db = IncidenceDB.from_BaseModeSequence(base_mode_sequence)
-
-        if (    E_IncidenceIDs.INDENTATION_DEDENT   in incidence_db \
-            and E_IncidenceIDs.INDENTATION_N_DEDENT in incidence_db):
-             error.log("After deriving from base mode, mode '%s' contains 'on_dedent'\n" % self.name
-                       + "and 'on_n_dedent' handler. Both are mutually exclusive.", self.sr)
-
-        # Determine Line/Column Counter Database
-        counter_db   = options_db.value("counter")
-
-        # Intermediate Step: Priority-Pattern-Terminal List (PPT list)
-        #
-        # The list is developed so that patterns can be sorted and code 
-        # fragments are prepared.
-        self.reload_state_forward = ReloadState(EngineType=engine.FORWARD)
-        self.__pattern_list, \
-        self.__terminal_db,  \
-        self.__default_character_counter_required_f, \
-        self.__doc_history_deletion, \
-        self.__doc_history_reprioritization = \
-                                      patterns_and_terminals.get(base_mode_sequence, 
-                                                                 options_db, 
-                                                                 counter_db, 
-                                                                 incidence_db, 
-                                                                 self.reload_state_forward)
-        
-        # (*) Misc
-        self.__abstract_f           = Specifier.is_abstract(self.__pattern_list)
-        self.__base_mode_sequence   = base_mode_sequence
-        self.__entry_mode_name_list = options_db.value_list("entry") # Those can enter this mode.
-        self.__exit_mode_name_list  = options_db.value_list("exit")  # This mode can exit to those.
-        self.__incidence_db         = incidence_db
-        self.__counter_db           = counter_db
-        self.__on_after_match_code  = incidence_db.get(E_IncidenceIDs.AFTER_MATCH)
-        self.__indentation_setup    = options_db.value("indentation")
-
-    def abstract_f(self):           return self.__abstract_f
-
-    @property
-    def counter_db(self):           return self.__counter_db
-
-    @property
-    def exit_mode_name_list(self):  return self.__exit_mode_name_list
-
-    @property
-    def entry_mode_name_list(self): return self.__entry_mode_name_list
-
-    @property
-    def incidence_db(self): return self.__incidence_db
-
-    @property
-    def pattern_list(self):        return self.__pattern_list
-    @property
-    def on_after_match_code(self): return self.__on_after_match_code
-    @property
-    def terminal_db(self):         return self.__terminal_db
-
-    @property
-    def default_character_counter_required_f(self): return self.__default_character_counter_required_f
-
-    def has_base_mode(self):
-        return len(self.__base_mode_sequence) != 1
-
-    def get_base_mode_sequence(self):
-        assert len(self.__base_mode_sequence) >= 1 # At least the mode itself is in there
-        return self.__base_mode_sequence
-
-    def get_base_mode_name_list(self):
-        assert len(self.__base_mode_sequence) >= 1 # At least the mode itself is in there
-        return [ mode.name for mode in self.__base_mode_sequence ]
-
-    def is_implemented(self):
-        return not(self.abstract_f() or len(self.pattern_list) == 0)
-
-    def check_consistency(self):
-        # (*) Modes that are inherited must allow to be inherited
-        #     __base_mode_sequence[-1] == the mode itself.
-        for base_mode in self.__base_mode_sequence[:-1]:
-            if base_mode.option_db.value("inheritable") == "no":
-                error.log("mode '%s' inherits mode '%s' which is not inheritable." % \
-                          (self.name, base_mode.name), self.sr)
-
-        # (*) Empty modes which are not inheritable only?
-        # (*) A mode that is instantiable (to be implemented) needs finally contain matches!
-        if (not self.__abstract_f)  and len(self.__pattern_list) == 0:
-            error.log("Mode '%s' was defined without the option <inheritable: only>.\n" % self.name + \
-                      "However, it contains no matches--only event handlers. Without pattern\n"     + \
-                      "matches it cannot act as a pattern detecting state machine, and thus\n"      + \
-                      "cannot be an independent lexical analyzer mode. Define the option\n"         + \
-                      "<inheritable: only>.", \
-                      self.sr)
-
-    def unique_pattern_pair_iterable(self):
-        """Iterates over pairs of patterns:
-
-            (high precedence pattern, low precedence pattern)
-
-           where 'pattern_i' as precedence over 'pattern_k'
-        """
-        for i, high in enumerate(self.__pattern_list):
-            for low in islice(self.__pattern_list, i+1, None):
-                yield high, low
-
-    def check_special_incidence_outrun(self, ErrorCode):
-        for high, low in self.unique_pattern_pair_iterable():
-            if     high.pattern_string() not in Mode.focus \
-               and low.pattern_string()  not in Mode.focus: continue
-            
-            elif not outrun_checker.do(high.sm, low.sm):                  
-                continue
-            c_error_message(high, low, ExitF=True, 
-                            ThisComment  = "has lower priority but",
-                            ThatComment  = "may outrun",
-                            SuppressCode = ErrorCode)
-                                 
-    def check_higher_priority_matches_subset(self, ErrorCode):
-        """Checks whether a higher prioritized pattern matches a common subset
-           of the ReferenceSM. For special patterns of skipper, etc. this would
-           be highly confusing.
-        """
-        global special_pattern_list
-        for high, low in self.unique_pattern_pair_iterable():
-            if     high.pattern_string() not in Mode.focus \
-               and low.pattern_string() not in Mode.focus: continue
-
-            if not superset_check.do(high.sm, low.sm):             
-                continue
-
-            c_error_message(high, low, ExitF=True, 
-                            ThisComment  = "has higher priority and",
-                            ThatComment  = "matches a subset of",
-                            SuppressCode = ErrorCode)
-
-    def check_dominated_pattern(self, ErrorCode):
-        for high, low in self.unique_pattern_pair_iterable():
-            # 'low' comes after 'high' => 'i' has precedence
-            # Check for domination.
-            if superset_check.do(high, low):
-                c_error_message(high, low, 
-                                ThisComment  = "matches a superset of what is matched by",
-                                EndComment   = "The former has precedence and the latter can never match.",
-                                ExitF        = True, 
-                                SuppressCode = ErrorCode)
-
-    def check_match_same(self, ErrorCode):
-        """Special patterns shall never match on some common lexemes."""
-        for high, low in self.unique_pattern_pair_iterable():
-            if     high.pattern_string() not in Mode.focus \
-               and low.pattern_string() not in Mode.focus: continue
-
-            # A superset of B, or B superset of A => there are common matches.
-            if not same_check.do(high.sm, low.sm): continue
-
-            # The 'match what remains' is exempted from check.
-            if high.pattern_string() == "." or low.pattern_string() == ".":
-                continue
-
-            c_error_message(high, low, 
-                            ThisComment  = "matches on some common lexemes as",
-                            ThatComment  = "",
-                            ExitF        = True,
-                            SuppressCode = ErrorCode)
-
-    def check_low_priority_outruns_high_priority_pattern(self):
-        """Warn when low priority patterns may outrun high priority patterns.
-        Assume that the pattern list is sorted by priority!
-        """
-        for high, low in self.unique_pattern_pair_iterable():
-            if outrun_checker.do(high.sm, low.sm):
-                c_error_message(low, high, ExitF=False, ThisComment="may outrun")
-
-    def get_documentation(self):
-        L = max(map(lambda mode: len(mode.name), self.__base_mode_sequence))
-        txt  = "\nMODE: %s\n" % self.name
-
-        txt += "\n"
-        if len(self.__base_mode_sequence) != 1:
-            txt += "    BASE MODE SEQUENCE:\n"
-            base_mode_name_list = map(lambda mode: mode.name, self.__base_mode_sequence[:-1])
-            base_mode_name_list.reverse()
-            for name in base_mode_name_list:
-                txt += "      %s\n" % name
-            txt += "\n"
-
-        if len(self.__doc_history_deletion) != 0:
-            txt += "    DELETION ACTIONS:\n"
-            for entry in self.__doc_history_deletion:
-                txt += "      %s:  %s%s  (from mode %s)\n" % \
-                       (entry[0], " " * (L - len(self.name)), entry[1], entry[2])
-            txt += "\n"
-
-        if len(self.__doc_history_reprioritization) != 0:
-            txt += "    PRIORITY-MARK ACTIONS:\n"
-            self.__doc_history_reprioritization.sort(lambda x, y: cmp(x[4], y[4]))
-            for entry in self.__doc_history_reprioritization:
-                txt += "      %s: %s%s  (from mode %s)  (%i) --> (%i)\n" % \
-                       (entry[0], " " * (L - len(self.name)), entry[1], entry[2], entry[3], entry[4])
-            txt += "\n"
-
-        assert all_isinstance(self.__pattern_list, Pattern)
-        if len(self.__pattern_list) != 0:
-            txt += "    PATTERN LIST:\n"
-            for x in self.__pattern_list:
-                space  = " " * (L - len(x.sr.mode_name)) 
-                txt   += "      (%3i) %s: %s%s\n" % \
-                         (x.incidence_id(), x.sr.mode_name, space, x.pattern_string())
-            txt += "\n"
-
-        return txt
-
 def parse(fh):
     """This function parses a mode description and enters it into the 
-       'blackboard.mode_description_db'. Once all modes are parsed
-       they can be translated into 'real' modes and are located in
-       'blackboard.mode_db'. 
+    'blackboard.mode_prep_prep_db'. Modes are represented by Mode_PrepPrep
+    objects.
     """
 
     # NOTE: Catching of EOF happens in caller: parse_section(...)
@@ -298,7 +44,7 @@ def parse(fh):
     mode_name = read_identifier(fh, OnMissingStr="Missing identifier at beginning of mode definition.")
 
     # NOTE: constructor does register this mode in the mode_db
-    new_mode  = Specifier_Mode(mode_name, SourceRef.from_FileHandle(fh))
+    new_mode  = Mode_PrepPrep(mode_name, SourceRef.from_FileHandle(fh))
 
     # (*) inherited modes / option_db
     skip_whitespace(fh)
@@ -313,14 +59,39 @@ def parse(fh):
     while __parse_element(new_mode, fh): 
         pass
 
-def determine_start_mode(mode_db):
+def finalize_modes(ModePrepPrepDb):
+    assert all(isinstance(x, Mode_PrepPrep) for x in ModePrepPrepDb.itervalues())
+
+    # (i) Parsing --> Mode_PrepPrep
+
+    # (ii) Collect Inheritance Information: Mode_PrepPrep --> Mode_Prep
+    #
+    mode_prep_db = dict(
+        (mode_prep_prep.name, mode_prep_prep.finalize())
+        for mode_prep_prep in ModePrepPrepDb.itervalues()
+    )
+    for mode_prep in mode_prep_db.itervalues():
+        mode_prep.second_init(mode_prep_db)
+
+    if not Setup.token_class_only_f:
+        determine_start_mode(mode_prep_db)
+
+    consistency_check.do(mode_prep_db.values())
+
+    # (iii) Finalize: Mode_Prep --> Mode
+    #
+    return dict((name, mode_prep.finalize(mode_prep_db)) 
+                for name, mode_prep in mode_prep_db.iteritems() 
+                if mode_prep.implemented_f)
+
+def determine_start_mode(ModePrepDb):
     if not blackboard.initial_mode.sr.is_void():
         return
 
     # Choose an applicable mode as start mode
     first_candidate = None
-    for name, mode in mode_db.iteritems():
-        if mode.abstract_f(): 
+    for name, mode in ModePrepDb.iteritems():
+        if mode.abstract_f: 
             continue
         elif first_candidate is not None:
             error.log("No initial mode defined via 'start' while more than one applicable mode exists.\n" + \
@@ -350,7 +121,7 @@ def __parse_option_list(new_mode, fh):
         error.error_eof("mode '%s'." % new_mode.name, fh)
 
 def __parse_base_mode_list(fh, new_mode):
-    new_mode.derived_from_list = []
+    new_mode.direct_base_mode_name_list = []
     trailing_comma_f    = False
     while 1 + 1 == 2:
         if   check(fh, "{"): fh.seek(-1, 1); break
@@ -360,23 +131,23 @@ def __parse_base_mode_list(fh, new_mode):
         identifier = read_identifier(fh)
         if identifier == "": break
 
-        new_mode.derived_from_list.append(identifier)
+        new_mode.direct_base_mode_name_list.append(identifier)
         trailing_comma_f = False
         if not check(fh, ","): break
         trailing_comma_f = True
 
 
     if trailing_comma_f:
-        error.warning("Trailing ',' after base mode '%s'." % new_mode.derived_from_list[-1], fh) 
+        error.warning("Trailing ',' after base mode '%s'." % new_mode.direct_base_mode_name_list[-1], fh) 
         
-    elif len(new_mode.derived_from_list) != 0:
+    elif len(new_mode.direct_base_mode_name_list) != 0:
         # This check is a 'service' -- for those who follow the old convention
         pos = fh.tell()
         skip_whitespace(fh)
         dummy_identifier = read_identifier(fh)
         if dummy_identifier != "":
             error.log("Missing separating ',' between base modes '%s' and '%s'.\n" \
-                      % (new_mode.derived_from_list[-1], dummy_identifier) + \
+                      % (new_mode.direct_base_mode_name_list[-1], dummy_identifier) + \
                       "(The comma separator is mandatory since quex 0.53.1)", fh)
         fh.seek(pos)
 

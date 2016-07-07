@@ -40,22 +40,22 @@ import quex.engine.state_machine.algebra.complement_end       as complement_end
 import quex.engine.state_machine.algebra.complement_in        as complement_in   
 import quex.engine.state_machine.algebra.union                as union
 from   quex.engine.state_machine.check.special                import get_any, get_none
-from   quex.input.code.base                        import SourceRef
+from   quex.input.code.base                                   import SourceRef
 
-import quex.input.regular_expression.traditional_character_set as traditional_character_set
-import quex.input.regular_expression.property                  as property
+import quex.input.regular_expression.traditional_character_set  as traditional_character_set
+import quex.input.regular_expression.property                   as property
+from   quex.input.regular_expression.pattern                    import Pattern_Prep
 import quex.input.regular_expression.snap_backslashed_character as snap_backslashed_character
 import quex.input.regular_expression.snap_character_string      as snap_character_string
-from   quex.input.regular_expression.construct                  import Pattern
 from   quex.input.regular_expression.auxiliary                  import __snap_until, \
                                                                        __debug_entry, \
                                                                        __debug_exit, \
                                                                        __debug_print, \
                                                                        snap_replacement
 
-import quex.engine.state_machine.construction.sequentialize           as sequentialize
-import quex.engine.state_machine.construction.parallelize             as parallelize
-import quex.engine.state_machine.construction.repeat                  as repeat
+import quex.engine.state_machine.construction.sequentialize    as sequentialize
+import quex.engine.state_machine.construction.parallelize      as parallelize
+import quex.engine.state_machine.construction.repeat           as repeat
 import quex.engine.codec_db.unicode.case_fold_parser           as ucs_case_fold
 
 from   quex.engine.misc.interval_handling  import Interval, NumberSet
@@ -124,14 +124,14 @@ def do(UTF8_String_or_Stream, PatternDict,
 
     __ensure_whitespace_follows(initial_position, stream)
     
-    pattern = Pattern(CoreSM        = core, 
-                      BeginOfLineF  = begin_of_line_f,
-                      PreContextSM  = pre,
-                      EndOfLineF    = end_of_line_f,
-                      PostContextSM = post,
-                      Sr            = SourceRef.from_FileHandle(stream),
-                      PatternString = read_pattern_string(stream, initial_position),
-                      AllowNothingIsNecessaryF = AllowNothingIsNecessaryF)
+    pattern = Pattern_Prep(CoreSM        = core, 
+                           BeginOfLineF  = begin_of_line_f,
+                           PreContextSM  = pre,
+                           EndOfLineF    = end_of_line_f,
+                           PostContextSM = post,
+                           Sr            = SourceRef.from_FileHandle(stream),
+                           PatternString = read_pattern_string(stream, initial_position),
+                           AllowNothingIsNecessaryF = AllowNothingIsNecessaryF)
     
     return pattern
 

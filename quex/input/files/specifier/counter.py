@@ -22,13 +22,13 @@ from   quex.engine.misc.file_in                       import check, \
 from   quex.blackboard import E_CharacterCountType, \
                               setup as Setup
 
-class Specifier_CountBase:
+class CountBase_Prep:
     @typed(sr=SourceRef)
     def __init__(self, sr, Name, IdentifierList):
         self.sr                = sr
         self.name              = Name
         self.identifier_list   = IdentifierList
-        self._ca_map_specifier = Specifier_CountActionMap()
+        self._ca_map_specifier = CountActionMap_Prep()
 
     def _base_parse(self, fh, IndentationSetupF=False):
         """Parses pattern definitions of the form:
@@ -73,18 +73,18 @@ class Specifier_CountBase:
         # self.count_command_map.check_homogenous_space_counts()
         self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.LINE)
 
-class Specifier_LineColumnCount(Specifier_CountBase):
+class LineColumnCount_Prep(CountBase_Prep):
     """Line/column number count specification.
     ___________________________________________________________________________
     The main result of the parsing the the Base's .count_command_map which is 
-    an instance of Specifier_CountActionMap.
+    an instance of CountActionMap_Prep.
     ____________________________________________________________________________
     """
     @typed(sr=SourceRef)
     def __init__(self, fh):
         sr        = SourceRef.from_FileHandle(fh)
         self.__fh = fh
-        Specifier_CountBase.__init__(self, sr, "Line/column counter", ("space", "grid", "newline"), TheCountOpMap)
+        CountBase_Prep.__init__(self, sr, "Line/column counter", ("space", "grid", "newline"), TheCountOpMap)
 
     def parse(self):
         self._base_parse(self.__fh, IndentationSetupF=False)
@@ -109,7 +109,7 @@ class Specifier_LineColumnCount(Specifier_CountBase):
             trigger_set = extract_trigger_set(sr, Identifier, Pattern) 
             self.count_command_map.add(trigger_set, Identifier, Count, sr)
 
-class Specifier_IndentationCount(Specifier_CountBase):
+class IndentationCount_Prep(CountBase_Prep):
     """Indentation counter specification.
     ____________________________________________________________________________
     The base's .count_command_map contains information about how to count the 
@@ -143,7 +143,7 @@ class Specifier_IndentationCount(Specifier_CountBase):
         self.sm_newline_suppressor    = SourceRefObject("suppressor", None)
         self.sm_comment               = SourceRefObject("comment", None)
 
-        Specifier_CountBase.__init__(self, sr, "Indentation counter", 
+        CountBase_Prep.__init__(self, sr, "Indentation counter", 
                                      ("whitespace", "comment", "newline", "suppressor", "bad"))
 
     def parse(self):
@@ -286,7 +286,7 @@ class Specifier_IndentationCount(Specifier_CountBase):
         return result
 
     def _consistency_check(self):
-        Specifier_CountBase._consistency_check(self)
+        CountBase_Prep._consistency_check(self)
 
         self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.WHITESPACE)
         self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.BEGIN_NEWLINE)
@@ -298,7 +298,7 @@ class Specifier_IndentationCount(Specifier_CountBase):
                       self.sm_newline_suppressor.sr)
 
 
-class Specifier_CountActionMap(object):
+class CountActionMap_Prep(object):
     """Association of character sets with triggered count commands.
     ___________________________________________________________________________
 
@@ -564,7 +564,7 @@ def LineColumnCount_Default():
     global _LineColumnCount_Default
 
     if _LineColumnCount_Default is None:
-        specifier = Specifier_CountActionMap()
+        specifier = CountActionMap_Prep()
         specifier.add(NumberSet(ord('\n')), "newline", 1, SourceRef_DEFAULT)
         specifier.add(NumberSet(ord('\t')), "grid",    4, SourceRef_DEFAULT)
         specifier.define_else("space",   1, SourceRef_DEFAULT)    # Define: "\else"

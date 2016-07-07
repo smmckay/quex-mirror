@@ -1,8 +1,7 @@
-from   quex.input.regular_expression.construct         import Pattern
+from   quex.input.regular_expression.pattern           import Pattern
 import quex.engine.state_machine.algorithm.beautifier  as     beautifier
 from   quex.engine.state_machine.core                  import StateMachine
 import quex.engine.state_machine.construction.parallelize as     parallelize
-from   quex.engine.analyzer.door_id_address_label      import dial_db
 from   quex.engine.operations.operation_list           import Op
 import quex.engine.misc.error                          as     error
 from   quex.engine.misc.tools                          import all_isinstance, \
@@ -18,7 +17,7 @@ class EngineStateMachineSet:
         assert isinstance(PatternList, list)
         assert len(PatternList) > 0
         assert all_isinstance(PatternList, Pattern)
-        assert all_true(PatternList, lambda p: p.incidence_id() is not None)
+        assert all_true(PatternList, lambda p: p.incidence_id is not None)
 
         # (*) Core SM, Pre-Context SM, ...
         #     ... and sometimes backward input position SMs.
@@ -43,20 +42,20 @@ class EngineStateMachineSet:
 
     def __prepare_sm_lists(self, PatternList):
         # -- Core state machines of patterns
-        state_machine_list = [ pattern.sm for pattern in PatternList ]
+        sm_list = [ pattern.sm for pattern in PatternList ]
 
         # -- Pre-Contexts
         pre_context_sm_list = [    
-            pattern.pre_context_sm for pattern in PatternList \
-            if pattern.pre_context_sm is not None 
+            pattern.sm_pre_context for pattern in PatternList 
+            if pattern.sm_pre_context is not None 
         ]
 
         # -- Backward input position detection (BIPD)
         bipd_sm_list = [
-            (pattern.incidence_id(), pattern.bipd_sm) for pattern in PatternList \
-            if pattern.bipd_sm is not None 
+            (pattern.incidence_id(), pattern.sm_bipd) for pattern in PatternList 
+            if pattern.sm_bipd is not None 
         ]
-        return state_machine_list, pre_context_sm_list, bipd_sm_list
+        return sm_list, pre_context_sm_list, bipd_sm_list
 
 def get_combined_state_machine(StateMachine_List, FilterDominatedOriginsF=True,
                                MarkNotSet=set(), AlllowInitStateAcceptF=False):

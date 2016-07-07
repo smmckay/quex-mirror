@@ -1,6 +1,6 @@
 from   quex.engine.analyzer.door_id_address_label   import DoorID
 from   quex.engine.operations.operation_list        import Op
-from   quex.engine.analyzer.door_id_address_label   import dial_db
+import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.counter                          import IndentationCount, \
                                                            LineColumnCount
@@ -10,7 +10,7 @@ from   quex.blackboard                              import Lng, \
                                                            E_R, \
                                                            setup as Setup
 
-def do(Data, ReloadState):
+def do(Data, ReloadState, dial_db):
     """________________________________________________________________________
     Counting whitespace at the beginning of a line.
 
@@ -73,6 +73,7 @@ def do(Data, ReloadState):
     default_ih_f          = Data["default_indentation_handler_f"]
     mode_name             = Data["mode_name"]
     sm_suppressed_newline = Data["sm_suppressed_newline"]
+    dial_db               = Data["dial_db"]
     sm_newline            = isetup.sm_newline.get()
     sm_comment            = isetup.sm_comment.get()
 
@@ -86,17 +87,17 @@ def do(Data, ReloadState):
     #     A handler is called as soon as an indentation has been detected.
     on_loop_exit = [
         Op.IndentationHandlerCall(default_ih_f, mode_name),
-        Op.GotoDoorId(DoorID.continue_without_on_after_match())
+        Op.GotoDoorId(DoorID.continue_without_on_after_match(dial_db))
     ]
 
     # -- 'on_bad_indentation' is invoked if a character appeared that has been
     #    explicitly disallowed to be used as indentation.
-    bad_indentation_iid = dial_db.new_incidence_id() 
+    bad_indentation_iid = dial.new_incidence_id() 
 
     sm_terminal_list    = _get_state_machine_vs_terminal_list(sm_suppressed_newline, 
                                                               isetup.sm_newline.get(),
                                                               isetup.sm_comment.get(), 
-                                                              counter_db)
+                                                              counter_db) 
 
     # 'whitespace' --> normal counting
     # 'bad'        --> goto bad character indentation handler
@@ -114,7 +115,8 @@ def do(Data, ReloadState):
                                     EngineType        = engine_type,
                                     ReloadStateExtern = ReloadState,
                                     LexemeMaintainedF = True,
-                                    ParallelSmTerminalPairList = sm_terminal_list)
+                                    ParallelSmTerminalPairList = sm_terminal_list, 
+                                    dial_db           = dial_db) 
 
     _code_terminal_on_bad_indentation_character(code, isetup, mode_name, incidence_db, 
                                                 bad_indentation_iid)
@@ -150,13 +152,13 @@ def _add_pair(psml, SmOriginal, Name):
     """
     if SmOriginal is None: return
 
-    incidence_id = dial_db.new_incidence_id()
+    incidence_id = dial.new_incidence_id()
 
     # Disconnect from machines being used elsewhere.
     sm = SmOriginal.clone(StateMachineId=incidence_id)
 
     code = [ 
-        Lng.GOTO(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER)) 
+        Lng.GOTO(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)) 
     ]
 
     terminal = loop.MiniTerminal(code, Name, incidence_id)
@@ -171,10 +173,10 @@ def _code_terminal_on_bad_indentation_character(code, ISetup, ModeName,
         return
     on_bad_indentation_txt = Lng.SOURCE_REFERENCED(incidence_db[E_IncidenceIDs.INDENTATION_BAD])
     code.extend([
-        "%s\n" % Lng.LABEL(DoorID.incidence(BadIndentationIid)),
+        "%s\n" % Lng.LABEL(DoorID.incidence(BadIndentationIid, dial_db)),
         "#define BadCharacter (me->buffer._read_p[-1])\n",
         "%s\n" % on_bad_indentation_txt,
         "#undef  BadCharacter\n",
-        "%s\n" % Lng.GOTO(DoorID.global_reentry())
+        "%s\n" % Lng.GOTO(DoorID.global_reentry(dial_db))
     ])
 
