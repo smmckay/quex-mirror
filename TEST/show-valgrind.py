@@ -20,19 +20,19 @@ for line in fh.readlines():
         tail = line[8:]
         n    = tail.split()
         if   line.find("All heap blocks were freed") != -1: 
-            text.append( "VALGRIND: " % tail.replace("=", "").replace(".", "")) 
+            text.append( "VALGRIND: %s" % tail.replace("=", "").replace(".", "")) 
             error_f |= (n[3] != "0" or n[6] != "0")
         elif line.find(" definitely lost:") != -1:          
-            text.append( "VALGRIND: " % tail.replace("=", ""))
+            text.append( "VALGRIND: %s" % tail.replace("=", ""))
             error_f |= (n[3] != "0" or n[6] != "0")
         elif line.find(" indirectly lost:") != -1:          
-            text.append( "VALGRIND: " % tail.replace("=", ""))
+            text.append( "VALGRIND: %s" % tail.replace("=", ""))
             error_f |= (n[3] != "0" or n[6] != "0")
         elif line.find(" possibly lost:") != -1:            
-            text.append( "VALGRIND: " % tail.replace("=", ""))
+            text.append( "VALGRIND: %s" % tail.replace("=", ""))
             error_f |= (n[3] != "0" or n[6] != "0")
         elif line.find(" suppressed:") != -1:               
-            text.append( "VALGRIND: " % tail.replace("=", "")) 
+            text.append( "VALGRIND: %s" % tail.replace("=", "")) 
             error_f |= (n[3] != "0" or n[6] != "0")
         elif line.find(" by 0x") != -1:
             # If last 'by ..' line contains 'ld' it is a leak in the std_lib
@@ -40,7 +40,7 @@ for line in fh.readlines():
             else:                       leak_in_std_lib = False
         elif     line.find(" still reachable:") != -1 \
              and not leak_in_std_lib:          
-                text.append("VALGRIND: " % tail.replace("=", ""))
+                text.append("VALGRIND: %s" % tail.replace("=", ""))
                 error_f |= (n[3] != "0" or n[6] != "0")
                             
         continue
