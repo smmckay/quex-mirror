@@ -62,27 +62,36 @@ def parse(fh):
 def finalize_modes(ModePrepPrepDb):
     assert all(isinstance(x, Mode_PrepPrep) for x in ModePrepPrepDb.itervalues())
 
-    # (i) Parsing --> Mode_PrepPrep
+    # (*) Parsing --> Mode_PrepPrep
 
-    # (ii) Collect Inheritance Information: Mode_PrepPrep --> Mode_Prep
-    #
+    # (*) Mode_PrepPrep --> Mode_Prep
+    #     * collection of options_db from base modes
+    #     * collection of incidence_db from base modes
+    #     * finalize all mentioned patterns in a mode
+    #       (patterns are not yet collected from base modes)
     mode_prep_db = dict(
-        (mode_prep_prep.name, mode_prep_prep.finalize())
+        (mode_prep_prep.name, mode_prep_prep.finalize(ModePrepPrepDb))
         for mode_prep_prep in ModePrepPrepDb.itervalues()
     )
+    # (*) Mode_Prep (pre finalize)
+    #     All patterns of all modes have been finalized
+    #     => collect all patterns and loopers from base modes 
+    #     => generate pattern list / terminal configuration
     for mode_prep in mode_prep_db.itervalues():
-        mode_prep.second_init(mode_prep_db)
+        mode_prep.pre_finalize(mode_prep_db)
 
     if not Setup.token_class_only_f:
         determine_start_mode(mode_prep_db)
 
     consistency_check.do(mode_prep_db.values())
 
-    # (iii) Finalize: Mode_Prep --> Mode
-    #
+    # (*) Mode_Prep --> Mode
+    #     Pattern lists are determined for each mode
+    #     => Each mode is determined whether mode is implemented or not.
+    #     => Determine the concerned mode names for mode handlers
     return dict((name, mode_prep.finalize(mode_prep_db)) 
                 for name, mode_prep in mode_prep_db.iteritems() 
-                if mode_prep.implemented_f)
+                if mode_prep.implemented_f())
 
 def determine_start_mode(ModePrepDb):
     if not blackboard.initial_mode.sr.is_void():
@@ -91,7 +100,7 @@ def determine_start_mode(ModePrepDb):
     # Choose an applicable mode as start mode
     first_candidate = None
     for name, mode in ModePrepDb.iteritems():
-        if mode.abstract_f: 
+        if not mode.implemented_f(): 
             continue
         elif first_candidate is not None:
             error.log("No initial mode defined via 'start' while more than one applicable mode exists.\n" + \

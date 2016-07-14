@@ -14,7 +14,6 @@ import quex.engine.misc.error                  as     error
 from   quex.engine.misc.file_operations        import open_file_or_die
 from   quex.engine.misc.file_in                import get_integer_parameter_value
                                                  
-
 def do(argv):
     """RETURNS: True,  if CODE GENERATION needs to happen.
                 False, if NOTHING remains to be done.
@@ -23,6 +22,10 @@ def do(argv):
     location_list = __extra_option_extend_argv(argv)
 
     query_f, command_line = argv_interpret(argv)
+
+    # Debug: restrict call stack size
+    if setup._debug_limit_recursion:
+        sys.setrecursionlimit(setup._debug_limit_recursion)
 
     if command_line is None: return False
     elif not query_f:        code_generation.prepare(command_line, argv)

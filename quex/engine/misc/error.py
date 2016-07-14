@@ -68,7 +68,7 @@ def error_eof(title, fh):
 
 def log_consistency_issue(This, That, ThisComment, ThatComment="", EndComment="", ExitF=True, SuppressCode=None):
     log("The pattern '%s' %s" % (This.pattern_string(), ThisComment), 
-              This.sr, DontExitF=True, WarningF=not ExitF)
+        This.sr, DontExitF=True, WarningF=not ExitF)
 
     msg = "pattern '%s'." % That.pattern_string()
 

@@ -1,6 +1,7 @@
-from   quex.engine.pattern    import Pattern           
-from   quex.engine.misc.tools import typed, all_isinstance
-from   quex.input.code.base   import SourceRef
+from   quex.input.code.base                               import SourceRef
+from   quex.engine.pattern                                import Pattern           
+from   quex.engine.misc.tools                             import typed, all_isinstance
+import quex.engine.state_machine.construction.combination as     combination
 
 import quex.blackboard as     blackboard
 from   quex.blackboard import setup as Setup
@@ -48,9 +49,9 @@ class Mode:
            RunTimeCounterDb: If not 'None' contains information to generate a 
                              run-time character counter.
 
-        Data passed on from previous code generation stages. That code 
-        generation relied on the same
-        objects for later constructions:
+        Data passed on from previous code generation stages. That code
+        generation relied on object that are supposed to be common with later
+        code generation.
             
            ReloadStateForward: The reload state in forward direction.
            dial_db:            Related DoorID-s to Addresses for state machine 
@@ -75,6 +76,44 @@ class Mode:
 
         self.documentation = Documentation
 
+        # (*) Core SM, Pre-Context SM, ...
+        #     ... and sometimes backward input position SMs.
+        self.sm,                    \
+        self.pre_context_sm,        \
+        self.bipd_sm_db,            \
+        self.pre_context_sm_id_list = self.__prepare(PatternList)
+
+    def __prepare(self, PatternList):
+        # -- setup of state machine lists and id lists
+        core_sm_list,                 \
+        pre_context_sm_list,          \
+        incidence_id_and_bipd_sm_list = self.__prepare_sm_lists(PatternList)
+
+        # (*) Create (combined) state machines
+        #     Backward input position detection (bipd) remains separate engines.
+        return combination.do(core_sm_list),                  \
+               combination.do(pre_context_sm_list,            \
+                              FilterDominatedOriginsF=False), \
+               dict((incidence_id, sm) for incidence_id, sm in incidence_id_and_bipd_sm_list), \
+               [ sm.get_id() for sm in pre_context_sm_list ]
+
+    def __prepare_sm_lists(self, PatternList):
+        # -- Core state machines of patterns
+        sm_list = [ pattern.sm for pattern in PatternList ]
+
+        # -- Pre-Contexts
+        pre_context_sm_list = [    
+            pattern.sm_pre_context for pattern in PatternList 
+            if pattern.sm_pre_context is not None 
+        ]
+
+        # -- Backward input position detection (BIPD)
+        bipd_sm_list = [
+            (pattern.incidence_id(), pattern.sm_bipd) for pattern in PatternList 
+            if pattern.sm_bipd is not None 
+        ]
+        return sm_list, pre_context_sm_list, bipd_sm_list
+
     def entry_mode_name_list(self):
         return self.documentation.entry_mode_name_list
 
@@ -84,8 +123,8 @@ class Mode:
     def implemented_base_mode_name_sequence(self):
         """RETURNS: List of names of base modes which are actually implemented.
         """
-        assert self.documentation.implemented_base_mode_name_sequence[-1] == self.name
-        return self.documentation.implemented_base_mode_name_sequence
+        assert self.documentation.base_mode_name_sequence[-1] == self.name
+        return self.documentation.base_mode_name_sequence
 
     def get_documentation(self):
         L = max(map(lambda mode: len(mode.name), self.__base_mode_sequence))

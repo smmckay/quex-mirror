@@ -26,6 +26,8 @@ import quex.engine.misc.error as     error
 
 import quex.engine.state_machine.transformation.core      as     bc_factory
 
+from   copy import deepcopy
+
 #------------------------------------------------------------------------------
 # setup: All information of the user's desired setup.
 #------------------------------------------------------------------------------
@@ -312,8 +314,40 @@ def standard_incidence_db_get_terminal_type(IncidenceId):
 # Mode-s.
 #-----------------------------------------------------------------------------------------
 mode_prep_prep_db = {}
+def OLD_determine_base_mode_name_sequence(mode, ModePrepPrepDb, 
+                                      InheritancePath=None, 
+                                      base_mode_sequence=None):
+    if InheritancePath is None: InheritancePath = []
+    if base_mode_sequence is None: base_mode_sequence = []
 
-def determine_base_mode_name_sequence(mode, InheritancePath, base_mode_sequence):
+    if mode.name in InheritancePath[:-1]:
+        msg = "mode '%s'\n" % InheritancePath[0]
+        for mode_name in InheritancePath[InheritancePath.index(mode.name) + 1:]:
+            msg += "   inherits mode '%s'\n" % mode_name
+        msg += "   inherits mode '%s'" % mode.name
+
+        error.log("circular inheritance detected:\n" + msg, mode.sr)
+
+    base_mode_name_list_reversed = deepcopy(mode.direct_base_mode_name_list)
+    #base_mode_name_list_reversed.reverse()
+    for name in base_mode_name_list_reversed:
+        # -- does mode exist?
+        error.verify_word_in_list(name, ModePrepPrepDb.keys(),
+                            "Mode '%s' inherits mode '%s' which does not exist." % (mode.name, name),
+                            mode.sr)
+
+        if name in map(lambda m: m.name, base_mode_sequence): continue
+
+        # -- grab the mode description
+        base_mode = ModePrepPrepDb[name]
+        determine_base_mode_name_sequence(base_mode, ModePrepPrepDb, 
+                                          InheritancePath + [mode.name], base_mode_sequence)
+
+    base_mode_sequence.append(mode)
+
+    return [mode.name for m in base_mode_sequence]
+
+def determine_base_mode_name_sequence(mode, ModePrepPrepDb):
     """Determine the sequence of base modes. The type of sequencing determines
        also the pattern precedence. The 'deep first' scheme is chosen here. For
        example a mode hierarchie of
@@ -326,44 +360,45 @@ def determine_base_mode_name_sequence(mode, InheritancePath, base_mode_sequence)
 
        results in a sequence: (A, B, D, E, C, F, G).reverse()
 
-       => That is the mode itself is base_mode_sequence[-1]
+       => That is the mode itself is result[-1]
 
        => Patterns and event handlers of 'E' have precedence over
           'C' because they are the childs of a preceding base mode.
 
        This function detects circular inheritance.
-
-    __dive -- inserted this keyword for the sole purpose to signal 
-              that here is a case of recursion, which may be solved
-              later on by a TreeWalker.
     """
-    global mode_prep_prep_db
-    if mode.name in InheritancePath:
-        msg = "mode '%s'\n" % InheritancePath[0]
-        for mode_name in InheritancePath[InheritancePath.index(mode.name) + 1:]:
-            msg += "   inherits mode '%s'\n" % mode_name
-        msg += "   inherits mode '%s'" % mode.name
-
-        error.log("circular inheritance detected:\n" + msg, mode.sr)
-
-    base_mode_name_list_reversed = deepcopy(mode.direct_base_mode_name_list)
-    for name in base_mode_name_list_reversed:
-        # -- does mode exist?
-        error.verify_word_in_list(name, mode_prep_prep_db.keys(),
+    global base_name_list_db
+    result   = []
+    worklist = [ mode.name ]
+    while worklist:
+        name = worklist.pop()
+        
+        error.verify_word_in_list(name, ModePrepPrepDb.keys(),
                                   "Mode '%s' inherits mode '%s' which does not exist." % (mode.name, name),
                                   mode.sr)
+        mode = ModePrepPrepDb[name]
 
-        if name in map(lambda m: m.name, result): continue
+        detect_circular_inheritance(mode, result)
 
-        # -- grab the mode description
-        mode_descr = mode_prep_prep_db[name]
-        determine_base_mode_name_sequence(InheritancePath + [mode.name], 
-                                          result)
+        result.append(name)
+        worklist.extend(
+            reversed([ name for name in mode.direct_base_mode_name_list ])
+        )
 
-    result.append(mode.name)
+    return list(reversed(result))
 
-    return result
-
+def detect_circular_inheritance(mode, InheritancePath):
+    if mode.name not in InheritancePath: return
+    msg = [ 
+        "circular inheritance detected:\n"
+        "mode '%s'\n" % InheritancePath[0] 
+    ]
+    msg.extend(
+        "   inherits mode '%s'\n" % name
+        for name in InheritancePath[InheritancePath.index(mode.name) + 1:]
+    )
+    msg.append("   inherits mode '%s'" % mode.name)
+    error.log("".join(msg), mode.sr)
 
 #-----------------------------------------------------------------------------------------
 # mode_db: storing the mode information into a dictionary:

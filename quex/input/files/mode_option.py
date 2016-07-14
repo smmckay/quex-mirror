@@ -30,6 +30,46 @@ class SkipRangeData(dict):
         self["closer_pattern"]  = CloserPattern
         self["closer_sequence"] = CloserSequence
 
+class Loopers:
+    """Loopers -- loops that are integrated into the pattern state machine.
+    """
+    def __init__(self, Skip, SkipRange, SkipNestedRange, IndentationHandler):
+        self.skip                = Skip
+        self.skip_range          = SkipRange
+        self.skip_nested_range   = SkipNestedRange
+        self.indentation_handler = IndentationHandler
+
+    def finalize(self, CaMap):
+        if self.skip is not None:
+            self.skip = [
+                (pattern.finalize(CaMap), total_set)
+                for pattern, total_set in self.skip
+            ]
+
+        if self.skip_range is not None:
+            def finalize_skip_range_data(data, CaMap):
+                data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
+
+            self.skip_range = [
+                finalize_skip_range_data(data)
+                for data in self.skip_range
+            ]
+
+        if self.skip_nested_range is not None:
+            def finalize_skip_nested_range_data(data, CaMap):
+                data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
+                data["closer_pattern"] = data["closer_pattern"].finalize(CaMap)
+
+            self.skip_nested_range = [
+                finalize_skip_nested_range_data(data)
+                for data in self.skip_nested_range
+            ]
+
+        if self.indentation_handler is not None:
+            self.indentation_handler.finalize(CaMap)
+
+        return self
+
 #-----------------------------------------------------------------------------------------
 # mode_option_info_db: Information about properties of mode options.
 #-----------------------------------------------------------------------------------------
@@ -150,7 +190,7 @@ class OptionDB(dict):
         return self.value("inheritable"), \
                self.value_list("exit"),   \
                self.value_list("entry"),  \
-               self.loopers,              \
+               loopers,                   \
                self.value("counter")
 
 
@@ -282,6 +322,7 @@ def parse(fh, new_mode):
         
     elif identifier == "indentation":
         value = counter.IndentationCount_Prep(fh).parse()
+        value = value.finalize()
         blackboard.required_support_indentation_count_set()
 
     elif identifier == "counter":

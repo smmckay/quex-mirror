@@ -134,6 +134,12 @@ class StateMachine(object):
 
         return sm
 
+    @staticmethod
+    def from_StateMachine_list(StateMachine_List, FilterDominatedOriginsF=True,
+                               MarkNotSet=set(), AlllowInitStateAcceptF=False):
+        return combination.do(StateMachine_List, FilterDominatedOriginsF, 
+                              MarkNotSet, AlllowInitStateAcceptF)
+
     def clone(self, ReplDbStateIndex=None, ReplDbPreContext=None, ReplDbAcceptance=None, 
               StateMachineId=None):
         """Clone state machine, i.e. create a new one with the same behavior,

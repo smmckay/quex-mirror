@@ -286,8 +286,7 @@ class CountActionMap(list):
         return True
 
 class CountBase:
-    def get_state_machines(self): 
-        assert False
+    pass
          
 class LineColumnCount(CountBase):
     def __init__(self, SourceReference, CountActionMap=None):
@@ -295,29 +294,24 @@ class LineColumnCount(CountBase):
         # During Parsing: The 'count_command_map' is specified later.
         self.count_command_map = CountActionMap
 
-    def get_state_machines(self):
-        return []
-
     def get_column_number_per_code_unit(self, CharacterSet=None):
         return self.count_command_map.get_column_number_per_code_unit(CharacterSet)
 
 class IndentationCount(LineColumnCount):
     @typed(sr=SourceRef)
     def __init__(self, SourceReference, CountActionMap, 
-                 SmNewline, SmNewlineSuppressor, SmComment):
+                 PatternNewline, PatternSuppressedNewline, PatternComment):
         LineColumnCount.__init__(self, SourceReference, None)
         # self.whitespace_character_set = SourceRefObject("whitespace", None)
         # self.bad_character_set        = SourceRefObject("bad", None)
-        self.sm_newline               = SmNewline
-        self.sm_newline_suppressor    = SmNewlineSuppressor
-        self.sm_comment               = SmComment
+        self.pattern_newline            = PatternNewline
+        self.pattern_suppressed_newline = PatternSuppressedNewline
+        self.pattern_comment            = PatternComment
 
-    def get_state_machines(self):
-        return [ 
-            self.sm_newline.get(),
-            self.sm_newline_suppressor.get(),
-            self.sm_comment.get()
-        ]
+    def finalize(self, CaMap):
+        self.pattern_newline.finalize(CaMap)
+        self.pattern_suppressed_newline.finalize(CaMap)
+        self.pattern_comment.finalize(CaMap)
 
     def __str__(self):
         def cs_str(Name, Cs):

@@ -161,16 +161,34 @@ class IndentationCount_Prep(CountBase_Prep):
             if sm_newline is not None: 
                 self.__specify_newline(sm_newline, SourceRef_DEFAULT)
 
+        # -- consistency
         self._consistency_check()
+
+        # -- post procedure
         ca_map = self._ca_map_specifier.finalize(
                               Setup.buffer_codec.source_set.minimum(), 
                               Setup.buffer_codec.source_set.supremum(), 
                               self.sr)
 
+        if ISetup.sm_newline_suppressor.set_f():
+            sm_suppressed_newline = sequentialize.do([self.sm_newline_suppressor.get(),
+                                                      self.sm_newline.get()])
+            sm_suppressed_newline = beautifier.do(sm_suppressed_newline)
+        else:
+            sm_suppressed_newline = None
+
+        def get_pattern(X, PS):
+            if X.set_f(): return Pattern_Prep(X.get(), PatternString=PS, SR=X.sr)
+            else:         return None
+
         return IndentationCount(self.sr, ca_map, 
-                                self.sm_newline,
-                                self.sm_newline_suppressor,
-                                self.sm_comment)
+                                get_pattern(self.sm_newline, 
+                                            "<indentation newline>"),
+                                Pattern_Prep(sm_suppressed_newline, 
+                                             PatternString="<indentation suppressed newline>", 
+                                             SR=self.sm_newline_suppressor.sr),
+                                get_pattern(self.sm_comment, 
+                                            "<indentation comment>"))
 
     def requires_count(self):
         return False

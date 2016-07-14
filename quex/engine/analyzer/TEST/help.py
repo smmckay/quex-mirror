@@ -4,8 +4,8 @@ import quex.engine.analyzer.optimizer              as     optimizer
 import quex.engine.analyzer.track_analysis         as     track_analysis
 from   quex.engine.analyzer.position_register_map  import print_this
 import quex.engine.analyzer.engine_supply_factory  as     engine
-from   quex.engine.state_machine.engine_state_machine_set                  import get_combined_state_machine
-from   quex.blackboard                             import E_InputActions, setup as Setup, E_StateIndices, E_PreContextIDs, E_Op
+import quex.engine.state_machine.construction.combination  as     combination
+from   quex.blackboard                                     import E_InputActions, setup as Setup, E_StateIndices, E_PreContextIDs, E_Op
 
 import sys
 import os
@@ -37,7 +37,7 @@ def prepare(PatternStringList, GetPreContextSM_F=False):
     else:
         state_machine_list = [ pattern.sm for pattern in pattern_list ]
 
-    sm = get_combined_state_machine(state_machine_list, False) # May be 'True' later.
+    sm = combination.do(state_machine_list, False) # May be 'True' later.
     return sm.normalized_clone()
 
 def test_track_analysis(SM, EngineType = engine.FORWARD, PrintPRM_F = False):

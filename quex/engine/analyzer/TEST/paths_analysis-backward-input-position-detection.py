@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine  as regex
-from   quex.engine.state_machine.engine_state_machine_set            import get_combined_state_machine
+import quex.engine.state_machine.construction.combination             as     combination
 import quex.engine.analyzer.engine_supply_factory      as     engine
 from   quex.blackboard                       import E_InputActions
 import help
@@ -22,7 +22,7 @@ pattern_list = [
 ]
 
 state_machine_list = map(lambda x: regex.do(x, {}).sm, pattern_list)
-sm                 = get_combined_state_machine(state_machine_list, False) # May be 'True' later.
+sm                 = combination.do(state_machine_list, False) # May be 'True' later.
 sm                 = sm.normalized_clone()
 
 # For DEBUG purposes: specify 'DRAW' on command line (in sys.argv)

@@ -103,7 +103,7 @@ from   quex.engine.analyzer.door_id_address_label         import DialDB, DoorID
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.analyzer.engine_supply_factory         as     engine
 from   quex.engine.state_machine.core                     import StateMachine  
-from   quex.engine.state_machine.engine_state_machine_set import get_combined_state_machine
+import quex.engine.state_machine.construction.combination as     combination
 from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
 import quex.engine.state_machine.index                    as     index
 import quex.engine.state_machine.algorithm.beautifier     as     beautifier
@@ -610,8 +610,8 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList, dial_db
                 combined_sm.mark_state_origins()
             else:
                 # TODO: May be, this is never required!
-                combined_sm = get_combined_state_machine(sm_ulist,
-                                                         AlllowInitStateAcceptF=True)
+                combined_sm = combination.do(sm_ulist, 
+                                             AlllowInitStateAcceptF=True)
             appendix_sm_db[id_key] = combined_sm
         return combined_sm
 

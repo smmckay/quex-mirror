@@ -36,9 +36,6 @@ def do(ModePrepList):
                   "modes are = " + repr(mode_name_list)[1:-1],
                   Prefix="consistency check")
 
-    for mode in ModePrepList:
-        mode.check_consistency()
-
     # (*) If a conversion or a codec engine is specified, then the 
     #     'on_bad_lexatom' handler must be specified in every mode.
     if False and (Setup.buffer_codec.name != "unicode" or Setup.converter_f):

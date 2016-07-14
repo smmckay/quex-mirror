@@ -1,7 +1,7 @@
 import quex.input.regular_expression.engine                       as     regex
 from   quex.engine.misc.interval_handling                         import NumberSet, Interval
 from   quex.engine.state_machine.state.single_entry               import SeAccept     
-from   quex.engine.state_machine.engine_state_machine_set         import get_combined_state_machine
+import quex.engine.state_machine.construction.combination         as     combination
 import quex.engine.state_machine.algorithm.beautifier             as     beautifier
 from   quex.engine.state_machine.core                             import StateMachine
 from   quex.engine.state_machine.state.core                       import State
@@ -93,7 +93,7 @@ def test_on_UCS_sample_sets(Trafo, unicode_to_transformed_sequence):
     ]
     sets = [ X(name) for name in script_list ]
 
-    orig = get_combined_state_machine(map(lambda x: x.sm, sets))
+    orig = combination.do(map(lambda x: x.sm, sets))
     state_n_before, result = transform(Trafo, orig)
 
     # print result.get_graphviz_string(Option="hex")

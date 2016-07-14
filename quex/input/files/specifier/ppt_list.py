@@ -113,7 +113,7 @@ class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "code_fragment"))):
         """
         sm = ISetup.sm_newline.get()
 
-        pattern = Pattern_Prep(sm, PatternString="<indentation newline>", 
+        pattern = Pattern_Prep(sm, 
                                Sr = ISetup.sm_newline.sr)
                                 
         pattern.set_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
@@ -169,16 +169,17 @@ class PPT_List(list):
             for mhi, pattern, code in pap_iterator(ModePrepDb, BaseModeSequence)
         )
 
-    def collect_loopers(self, Loopers, OptionsDb, CounterDb, ReloadState):
+    def collect_loopers(self, Loopers, CounterDb, ReloadState):
         """Collect patterns and terminals which are required to implement
         skippers and indentation counters.
         """
-        for i, info in enumerate(
+        for i, info in enumerate([
                 (self._prepare_skip_character_set,  Loopers.skip),
                 (self._prepare_skip_range,          Loopers.skip_range),
                 (self._prepare_skip_nested_range,   Loopers.skip_nested_range), 
-                (self._prepare_indentation_counter, Loopers.indentation_handler)):
+                (self._prepare_indentation_counter, Loopers.indentation_handler)]):
             func, looper = info
+            if looper is None: continue
             # Mode hierarchie index = before all: -4 to -1
             # => skippers and indentation handlers have precendence over all others.
             mode_hierarchy_index = -4 + i
@@ -309,9 +310,9 @@ class PPT_List(list):
             return True
         return any(p.lcci.run_time_counter_required_f for prio, p, t in self)
 
-    def _prepare_skip_character_set(self, MHI, OptionsDb, CounterDb, ReloadState):
+    def _prepare_skip_character_set(self, MHI, Loopers, CounterDb, ReloadState):
         """MHI = Mode hierarchie index."""
-        SkipSetupList = OptionsDb.value_sequence("skip")
+        SkipSetupList = Loopers.skip
         if SkipSetupList is None or len(SkipSetupList) == 0:
             return [], []
 
@@ -376,13 +377,13 @@ class PPT_List(list):
 
         return [ terminal ], new_ppt_list
 
-    def _prepare_skip_range(self, MHI, OptionsDb, CounterDb, ReloadState):
+    def _prepare_skip_range(self, MHI, Loopers, CounterDb, ReloadState):
         """MHI = Mode hierarchie index.
         
         RETURNS: new ppt_list to be added to the existing one.
         """
 
-        SrSetup = OptionsDb.value_sequence("skip_range")
+        SrSetup = Loopers.skip_range
         if SrSetup is None or len(SrSetup) == 0: return [], []
 
         return [], [
@@ -393,9 +394,9 @@ class PPT_List(list):
             for i, data in enumerate(SrSetup)
         ]
 
-    def _prepare_skip_nested_range(self, MHI, OptionsDb, CounterDb, ReloadState):
+    def _prepare_skip_nested_range(self, MHI, Loopers, CounterDb, ReloadState):
 
-        SrSetup = OptionsDb.value_sequence("skip_nested_range")
+        SrSetup = Loopers.skip_nested_range
         if SrSetup is None or len(SrSetup) == 0: return [], []
 
         return [], [
@@ -434,7 +435,7 @@ class PPT_List(list):
         if sm_newline is None: return False
         return sm_newline.match_sequence(Sequence)
 
-    def _prepare_indentation_counter(self, MHI, OptionsDb, CounterDb, ReloadState):
+    def _prepare_indentation_counter(self, MHI, Loopers, CounterDb, ReloadState):
         """Prepare indentation counter. An indentation counter is implemented by 
         the following:
 
@@ -456,17 +457,10 @@ class PPT_List(list):
 
         MHI = Mode hierarchie index defining the priority of the current mode.
         """
-        ISetup = OptionsDb.value("indentation")
+        ISetup = Loopers.indentation_handler
         if ISetup is None: return [], []
 
         check_indentation_setup(ISetup)
-
-        if ISetup.sm_newline_suppressor.get() is not None:
-            sm_suppressed_newline = sequentialize.do([ISetup.sm_newline_suppressor.get(),
-                                                      ISetup.sm_newline.get()])
-            sm_suppressed_newline = beautifier.do(sm_suppressed_newline)
-        else:
-            sm_suppressed_newline = None
 
         data = { 
             "counter_db":                    CounterDb,
@@ -474,7 +468,7 @@ class PPT_List(list):
             "incidence_db":                  IncidenceDb,
             "default_indentation_handler_f": IncidenceDb.default_indentation_handler_f(),
             "mode_name":                     ModeName,
-            "sm_suppressed_newline":         sm_suppressed_newline,
+            "sm_suppressed_newline":         ISetup.pattern_suppressed_newline,
         }
 
         ppt_list = [

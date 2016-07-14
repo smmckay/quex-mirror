@@ -124,6 +124,7 @@ SetupParTypes = Enum("LIST", "INT_LIST", "FLAG", "NEGATED_FLAG", "STRING", "OPTI
 SETUP_INFO = {         
     # [Name in Setup]                 [ Flags ]                                [Default / Type]
     "_debug_exception_f":             [["--debug-exception"],                  SetupParTypes.FLAG], 
+    "_debug_limit_recursion":         [["--debug-limit-recursion"],            0], 
     "analyzer_class":                 [["-o", "--analyzer-class"],             "Lexer"],    
     "analyzer_derived_class_file":    [["--derived-class-file"],               ""],
     "analyzer_derived_class_name":    [["--derived-class", "--dc"],            ""],

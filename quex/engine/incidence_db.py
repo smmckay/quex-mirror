@@ -84,6 +84,11 @@ class IncidenceDB(dict):
 
             result[incidence_id] = code
 
+        if (    E_IncidenceIDs.INDENTATION_DEDENT   in result \
+            and E_IncidenceIDs.INDENTATION_N_DEDENT in result):
+             error.log("After deriving from base mode, mode '%s' contains 'on_dedent'\n" % self.name
+                       + "and 'on_n_dedent' handler. Both are mutually exclusive.", self.sr)
+
         return result
 
     def __setitem__(self, Key, Value):

@@ -1,4 +1,3 @@
-import quex.input.files.specifier.patterns_and_terminals as     patterns_and_terminals
 from   quex.input.files.specifier.ppt_list               import PPT_List
 from   quex.input.regular_expression.pattern             import Pattern_Prep
 from   quex.input.files.mode_option                      import OptionDB
@@ -100,7 +99,7 @@ class Mode_PrepPrep:
         self.name  = Name
         self.sr    = SourceReference
 
-        self.direct_base_mode_name_list          = []
+        self.direct_base_mode_name_list = []
 
         self.pattern_action_pair_list   = []  
         self.option_db                  = OptionDB()    # map: option_name    --> OptionSetting
@@ -141,51 +140,67 @@ class Mode_PrepPrep:
                             SourceRef.from_FileHandle(fh, self.name))
         )
 
-    def finalize(self):
-        base_mode_name_sequence = blackboard.determine_base_mode_name_sequence([], [])
-        # At least the mode itself must be there
-        # The mode itself is base_mode_sequence[-1]
-        assert len(base_mode_sequence) >= 1 \
-               and base_mode_sequence[-1].name == self.name
+    def finalize(self, ModePrepPrepDb):
+        self._check_inheritance_relationships(ModePrepPrepDb)
+        base_mode_name_sequence = \
+                blackboard.determine_base_mode_name_sequence(self, ModePrepPrepDb) 
+
+        assert len(base_mode_name_sequence) >= 1 
+        assert base_mode_name_sequence[-1] == self.name
+        base_mode_sequence = [ ModePrepPrepDb[name] for name in base_mode_name_sequence]
 
         # Collect Options
         # (A finalized Mode does not contain an option_db anymore).
-        collected_options_db = OptionDB.from_BaseModeSequence(base_mode_sequence)
-        inheritable,          \
-        exit_mode_name_list,  \
-        entry_mode_name_list, \
-        loopers,              \
-        counter_db            = collected_options_db.finalize()
-        ca_map                = counter_db.count_command_map
+        collected_options_db   = OptionDB.from_BaseModeSequence(base_mode_sequence)
+        inheritable,           \
+        exit_mode_name_list,   \
+        entry_mode_name_list,  \
+        loopers,               \
+        counter_db             = collected_options_db.finalize()
+        ca_map                 = counter_db.count_command_map
+        abstract_f = (inheritable == "only")
 
         collected_incidence_db = IncidenceDB.from_BaseModeSequence(base_mode_sequence)
 
-        if (    E_IncidenceIDs.INDENTATION_DEDENT   in collected_incidence_db \
-            and E_IncidenceIDs.INDENTATION_N_DEDENT in collected_incidence_db):
-             error.log("After deriving from base mode, mode '%s' contains 'on_dedent'\n" % self.name
-                       + "and 'on_n_dedent' handler. Both are mutually exclusive.", self.sr)
-
         pap_list = [
-            PatternActionPair(pap.pattern().finalize(CaMap), pap.action())
+            PatternActionPair(pap.pattern().finalize(ca_map), pap.action())
             for pap in self.pattern_action_pair_list
         ]
-        loopers.finalize(CaMap)
+        loopers.finalize(ca_map)
 
         # At this stage, no information is aggregated from base types.
-        return Mode_Prep(self.name, self.sr, base_mode_sequence, 
-                         pap_list, loopers,
+        return Mode_Prep(self.name, self.sr, base_mode_name_sequence, 
+                         pap_list, loopers, abstract_f,
                          collected_incidence_db, counter_db, 
+                         entry_mode_name_list, exit_mode_name_list,
                          self.deletion_info_list, 
                          self.reprioritization_info_list)
+
+    def _check_inheritance_relationships(self, ModePrepPrepDb):
+        mode_name_set = set(ModePrepPrepDb.iterkeys())
+        for mode_name in self.direct_base_mode_name_list:
+            if mode_name not in mode_name_set:
+                error.verify_word_in_list(mode_name, mode_name_set,
+                          "mode '%s' inherits from a mode '%s'\nbut no such mode exists." % \
+                          (self.name, mode_name), self.sr)
+            if ModePrepPrepDb[mode_name].option_db.value("inheritable") == "no":
+                error.log("mode '%s' inherits mode '%s' which is not inheritable." % \
+                          (self.name, base_mode.name), self.sr)
 
 class Mode_Prep:
     focus = ("<skip>", "<skip_range>", "<skip_nested_range>", "<indentation newline>")
 
-    def __init__(self, Name, Sr, BaseModeSequence, PapList, Loopers, IncidenceDb, CounterDb,
+    @typed(AbstractF=bool)
+    def __init__(self, Name, Sr, BaseModeNameSequence, 
+                 PapList, Loopers, AbstractF, 
+                 IncidenceDb, CounterDb,
+                 EntryModeNameList, ExitModeNameList,
                  DeletionInfoList, RepriorizationInfoList):
         self.name                    = Name
         self.sr                      = Sr
-        self.base_mode_name_sequence = [m.name for m in BaseModeSequence]
+        self.base_mode_name_sequence = BaseModeNameSequence
+
+        self.abstract_f              = AbstractF
 
         # PapList = list with 'finalized' Pattern objects
         # BUT: Only local patterns!
@@ -194,7 +209,7 @@ class Mode_Prep:
         self.pattern_action_pair_list = PapList
         # Loopers = Containing all 'looping' objects for skipping and 
         #           indentation handling. (patterns are finalized)
-        self.loopers      = Loopers
+        self.loopers = Loopers
 
         # OptionsDb, IncidenceDb, and CounterDb contain aggregated content
         # from base modes.
@@ -207,19 +222,42 @@ class Mode_Prep:
         self.entry_mode_name_list = EntryModeNameList # This mode can be entered from those.
         self.exit_mode_name_list  = ExitModeNameList  # This mode can exit to those.
 
-    def second_init(self, ModePrepDb):
+    def pre_finalize(self, ModePrepDb):
         """When all Mode_Prep-s are defined, the patterns can be collected from
         the base modes.
         """
-        self.dial_db              = DialDB()
-        self.base_mode_sequence   = [ ModePrepDb[name] for name in self.base_mode_name_sequence ]
+        self.dial_db            = DialDB()
+        self.base_mode_sequence = [ ModePrepDb[name] for name in self.base_mode_name_sequence ]
 
         self.pattern_list, \
         self.terminal_db, \
         self.run_time_counter_required_f, \
         self.reload_state_forward         = self.__setup_matching_configuration(ModePrepDb)
 
-        self.implemented_f = self.__determine_implemented_f()
+    def finalize(self, ModePrepDb):
+        assert self.implemented_f()
+
+        def filter_implemented(L):
+            return [m for m in L if ModePrepDb[m].implemented_f()]
+
+        self.doc = ModeDocumentation(self.doc_history_deletion,
+                                     self.doc_history_reprioritization,
+                                     filter_implemented(self.entry_mode_name_list),
+                                     filter_implemented(self.exit_mode_name_list),
+                                     filter_implemented(self.base_mode_name_sequence))
+
+        if not self.run_time_counter_required_f:
+            run_time_counter_db = None
+        else:
+            run_time_counter_db = self.counter_db.count_command_map
+
+        return Mode(self.name, self.sr, 
+                    self.pattern_list, self.terminal_db, self.incidence_db,
+                    RunTimeCounterDb   = run_time_counter_db,
+                    ReloadStateForward = self.reload_state_forward,
+                    Documentation      = self.doc, 
+                    dial_db            = self.dial_db)
+
 
     def __setup_matching_configuration(self, ModePrepDb):
         """Collect all pattern-action pairs and 'loopers' and align it in a list
@@ -246,7 +284,8 @@ class Mode_Prep:
         #
         reload_state_forward = ReloadState(EngineType=engine.FORWARD, 
                                            dial_db=self.dial_db)
-        ppt_list.collect_loopers(self.loopers, self.counter_db, 
+        ppt_list.collect_loopers(self.loopers, 
+                                 self.counter_db, 
                                  reload_state_forward)
 
         self.doc_history_deletion,        \
@@ -258,54 +297,19 @@ class Mode_Prep:
                ppt_list.finalize_run_time_counter_required_f(), \
                reload_state_forward
 
-    def finalize(self, ModePrepDb):
-        assert self.implemented_f
-
-        def filter_implemented(L):
-            return [m for m in L if ModePrepDb[m].implemented_f]
-
-        self.doc = ModeDocumentation(self.doc_history_deletion,
-                                     self.doc_history_reprioritization,
-                                     filter_implemented(self.entry_mode_name_list),
-                                     filter_implemented(self.exit_mode_name_list),
-                                     filter_implemented(self.base_mode_name_sequence))
-
-        if not self.run_time_counter_required_f:
-            run_time_counter_db = None
-        else:
-            run_time_counter_db = self.counter_db.count_command_map
-
-        return Mode(self.name, self.sr, 
-                    self.pattern_list, self.terminal_db, self.incidence_db,
-                    RunTimeCounterDb   = run_time_counter_db,
-                    ReloadStateForward = self.reload_state_forward,
-                    Documentation      = self.doc, 
-                    dial_db            = self.dial_db)
-
-    def __determine_implemented_f(self):
+    def implemented_f(self):
         """If the mode has incidences and/or patterns defined it is free to be 
         abstract or not. If neither one is defined, it cannot be implemented and 
         therefore MUST be abstract.
         """
-        abstract_f = (self.options_db.value("inheritable") == "only")
-
-        if self.incidence_db or self.pattern_list:
-            return abstract_f
-
-        elif not abstract_f:
+        if self.abstract_f:  
+            return False
+        elif not self.pattern_list:
             error.warning("Mode without pattern and event handlers needs to be 'inheritable only'.\n" + \
                           "<inheritable: only> has been set automatically.", self.sr)
-            abstract_f = True # Change to 'inheritable: only', i.e. abstract_f == True.
-
-        return abstract_f
-
-    def check_consistency(self):
-        # (*) Modes that are inherited must allow to be inherited
-        #     __base_mode_sequence[-1] == the mode itself.
-        for base_mode in self.base_mode_sequence[:-1]:
-            if base_mode.option_db.value("inheritable") == "no":
-                error.log("mode '%s' inherits mode '%s' which is not inheritable." % \
-                          (self.name, base_mode.name), self.sr)
+            return False
+        else:
+            return True
 
     def unique_pattern_pair_iterable(self):
         """Iterates over pairs of patterns:
@@ -415,44 +419,6 @@ class PatternActionPair(object):
         if hasattr(self.action(), "sr"):
             txt += "self.file_name  = %s\n" % repr(self.action().sr.file_name) 
             txt += "self.line_n     = %s\n" % repr(self.action().sr.line_n) 
-        txt += "self.incidence_id = %s\n" % repr(self.pattern().incidence_id()) 
+        txt += "self.incidence_id = %s\n" % repr(self.pattern().incidence_id) 
         return txt
-
-class Loopers:
-    """Loopers -- loops that are integrated into the pattern state machine.
-    """
-    def __init__(self, Skip, SkipRange, SkipNestedRange, IndentationHandler):
-        self.skip                = Skip
-        self.skip_range          = SkipRange
-        self.skip_nested_range   = SkipNestedRange
-        self.indentation_handler = IndentationHandler
-
-    def finalize(self, CaMap):
-        self.skip = [
-            (pattern.finalize(CaMap), total_set)
-            for pattern, total_set in self.skip
-        ]
-
-        def finalize_skip_range_data(data, CaMap):
-            data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
-
-        self.skip_range = [
-            finalize_skip_range_data(data)
-            for data in self.skip_range
-        ]
-
-        def finalize_skip_nested_range_data(data, CaMap):
-            data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
-            data["closer_pattern"] = data["closer_pattern"].finalize(CaMap)
-
-        self.skip_nested_range = [
-            finalize_skip_nested_range_data(data)
-            for data in self.skip_nested_range
-        ]
-
-        self.indentation_handler.pattern_newline.finalize(CaMap)
-        self.indentation_handler.pattern_newline_supressor.finalize(CaMap)
-        self.indentation_handler.pattern_newline_comment.finalize(CaMap)
-        self.indentation_handler.pattern_whitespace.finalize(CaMap)
-
 

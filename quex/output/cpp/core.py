@@ -4,7 +4,6 @@ from   quex.engine.analyzer.door_id_address_label         import get_plain_strin
 from   quex.engine.analyzer.terminal.core                 import Terminal
 from   quex.output.core.variable_db                       import variable_db
 import quex.output.core.base                              as     generator
-from   quex.engine.state_machine.engine_state_machine_set import EngineStateMachineSet
 from   quex.engine.counter                                import CountActionMap
 from   quex.engine.pattern                                import Pattern
 from   quex.engine.misc.tools                             import all_isinstance, \
@@ -21,22 +20,15 @@ def do(Mode, ModeNameList):
     """
     variable_db.init() 
 
-    on_after_match_code = Mode.incidence_db.get_CodeTerminal(E_IncidenceIDs.AFTER_MATCH)
-
     function_body,       \
-    variable_definitions = do_core(Mode.pattern_list, 
-                                   Mode.terminal_db,
-                                   Mode.reload_state_forward,
-                                   on_after_match_code, 
-                                   Mode.dial_db)
+    variable_definitions = do_core(Mode) 
 
     function_txt = wrap_up(Mode.name, function_body, variable_definitions, 
                            ModeNameList, Mode.dial_db)
 
     return function_txt
 
-@typed(PatternList=[Pattern], TerminalDb={(E_IncidenceIDs, long): Terminal})
-def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None, dial_db=None):
+def do_core(Mode):
     """Produces main code for an analyzer function which can detect patterns given in
     the 'PatternList' and has things to be done mentioned in 'TerminalDb'. 
 
@@ -46,7 +38,11 @@ def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None, 
     This happens through function 'wrap_up()'.
     """
     # Prepare the combined state machines and terminals 
-    esms = EngineStateMachineSet(PatternList)
+    esms = Mode
+    TerminalDb         = Mode.terminal_db
+    ReloadStateForward = Mode.reload_state_forward
+    OnAfterMatchCode   = Mode.incidence_db.get_CodeTerminal(E_IncidenceIDs.AFTER_MATCH)
+    dial_db            = Mode.dial_db
 
     variable_db.require_registers(flatten_list_of_lists(
         terminal.required_register_set()
@@ -56,9 +52,9 @@ def do_core(PatternList, TerminalDb, ReloadStateForward, OnAfterMatchCode=None, 
     # (*) Pre Context State Machine
     #     (If present: All pre-context combined in single backward analyzer.)
     pre_context, \
-    pre_analyzer         = generator.do_pre_context(esms.pre_context_sm,
-                                                    esms.pre_context_sm_id_list,
-                                                    dial_db)
+    pre_analyzer = generator.do_pre_context(esms.pre_context_sm,
+                                            esms.pre_context_sm_id_list,
+                                            dial_db)
     # assert all_isinstance(pre_context, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Backward input position detection

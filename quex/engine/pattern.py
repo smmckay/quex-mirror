@@ -26,7 +26,7 @@ class Pattern:
             Tells how to determine the change of line and column 
             number upon match of this pattern.
     """
-    @typed(LCCI=SmLineColumnCountInfo)
+    @typed(LCCI=SmLineColumnCountInfo, PatternString=(str,unicode))
     def __init__(self, IncidenceId, Sm, PreContextSm, BipdSm, LCCI, PatternString, Sr):
         assert IncidenceId == Sm.get_id()
         self.incidence_id           = IncidenceId
@@ -42,6 +42,9 @@ class Pattern:
     def pattern_string(self):
         return self.__pattern_string # May be, later generate it on demand
 
+    def has_pre_context(self): 
+        return self.sm_pre_context is not None
+
     def clone(self, NewIncidenceId=None):
         new_sm = self.sm.clone()
 
@@ -54,4 +57,4 @@ class Pattern:
             new_sm.set_id(NewIncidenceId)
 
         return Pattern(new_sm.get_id(), new_sm, new_sm_pre_context, new_sm_bipd,
-                       self.lcci, self.pattern_string, self.sr)
+                       self.lcci, self.__pattern_string, self.sr)
