@@ -1,4 +1,5 @@
-from   quex.input.setup                           import NotificationDB
+from   quex.input.setup                               import NotificationDB
+from   quex.input.regular_expression.pattern          import Pattern_Prep
 import quex.input.regular_expression.core             as     regular_expression
 from   quex.input.code.base                           import SourceRef, \
                                                              SourceRef_DEFAULT, \
@@ -170,25 +171,27 @@ class IndentationCount_Prep(CountBase_Prep):
                               Setup.buffer_codec.source_set.supremum(), 
                               self.sr)
 
-        if ISetup.sm_newline_suppressor.set_f():
+        if self.sm_newline_suppressor.set_f():
             sm_suppressed_newline = sequentialize.do([self.sm_newline_suppressor.get(),
                                                       self.sm_newline.get()])
             sm_suppressed_newline = beautifier.do(sm_suppressed_newline)
         else:
             sm_suppressed_newline = None
 
-        def get_pattern(X, PS):
-            if X.set_f(): return Pattern_Prep(X.get(), PatternString=PS, SR=X.sr)
-            else:         return None
+        def get_pattern(SM, PS, SR):
+            if SM is None: return None
+            return Pattern_Prep(SM, PatternString=PS, Sr=SR)
 
         return IndentationCount(self.sr, ca_map, 
-                                get_pattern(self.sm_newline, 
-                                            "<indentation newline>"),
-                                Pattern_Prep(sm_suppressed_newline, 
-                                             PatternString="<indentation suppressed newline>", 
-                                             SR=self.sm_newline_suppressor.sr),
-                                get_pattern(self.sm_comment, 
-                                            "<indentation comment>"))
+                                get_pattern(self.sm_newline.get(), 
+                                            "<indentation newline>",
+                                            self.sm_newline.sr),
+                                get_pattern(sm_suppressed_newline, 
+                                            "<indentation suppressed newline>", 
+                                            self.sm_newline_suppressor.sr),
+                                get_pattern(self.sm_comment.get(), 
+                                            "<indentation comment>",
+                                            self.sm_comment.sr))
 
     def requires_count(self):
         return False

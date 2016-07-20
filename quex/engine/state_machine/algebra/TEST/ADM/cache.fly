@@ -3,9 +3,9 @@ title: Algebraic Relations;
 file_name: test-algebraic-relations.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ unary; OK; 5.059572; 0; ]
-  [ binary; OK; 9.578734; 0; ]
-  [ derived_binary; OK; 10.845496; 0; ]
+  [ unary; OK; 6.030467; 0; ]
+  [ binary; OK; 12.024625; 0; ]
+  [ derived_binary; OK; 12.982605; 0; ]
 ]
 }
 {
@@ -13,11 +13,11 @@ title: Complementary State Machines;
 file_name: test-complement.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ Sequence; OK; 0.149770; 0; ]
-  [ Branches; OK; 0.305189; 0; ]
-  [ Loops; OK; 0.185466; 0; ]
-  [ BranchesLoops; OK; 0.419852; 0; ]
-  [ Misc; OK; 0.884526; 0; ]
+  [ Sequence; OK; 0.174597; 0; ]
+  [ Branches; OK; 0.387971; 0; ]
+  [ Loops; OK; 0.247382; 0; ]
+  [ BranchesLoops; OK; 0.540994; 0; ]
+  [ Misc; OK; 1.092729; 0; ]
 ]
 }
 {
@@ -25,12 +25,12 @@ title: Difference Operation;
 file_name: test-difference.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ Easy; OK; 0.256335; 0; ]
-  [ FalseCases; OK; 0.312941; 0; ]
-  [ GoodCases; OK; 0.280476; 0; ]
-  [ FalseCasesII; OK; 0.292406; 0; ]
-  [ GoodCasesII; OK; 0.720096; 0; ]
-  [ Misc; OK; 0.595004; 0; ]
+  [ Easy; OK; 0.280453; 0; ]
+  [ FalseCases; OK; 0.333197; 0; ]
+  [ GoodCases; OK; 0.309784; 0; ]
+  [ FalseCasesII; OK; 0.320986; 0; ]
+  [ GoodCasesII; OK; 0.742478; 0; ]
+  [ Misc; OK; 0.619367; 0; ]
 ]
 }
 {
@@ -38,12 +38,12 @@ title: Intersection;
 file_name: test-intersection.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.183896; 0; ]
-  [ 1; OK; 0.243365; 0; ]
-  [ 2; OK; 0.181417; 0; ]
-  [ 3; OK; 0.313935; 0; ]
-  [ 4; OK; 0.780549; 0; ]
-  [ 5; OK; 1.440942; 0; ]
+  [ 0; OK; 0.204154; 0; ]
+  [ 1; OK; 0.270123; 0; ]
+  [ 2; OK; 0.228079; 0; ]
+  [ 3; OK; 0.411312; 0; ]
+  [ 4; OK; 0.802871; 0; ]
+  [ 5; OK; 1.369119; 0; ]
 ]
 }
 {
@@ -51,7 +51,7 @@ title: Unique State Indices;
 file_name: test-unique-state-indices.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.818157; 0; ]
+  [ ; OK; 0.820650; 0; ]
 ]
 }
 {
@@ -60,12 +60,12 @@ title_group: Complement Begin;
 file_name: test-complement_begin.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.559757; 0; ]
-  [ 1; OK; 0.333538; 0; ]
-  [ 2; OK; 0.244962; 0; ]
-  [ 3; OK; 0.478502; 0; ]
-  [ 4; OK; 1.144387; 0; ]
-  [ 5; OK; 0.834290; 0; ]
+  [ 0; OK; 0.569287; 0; ]
+  [ 1; OK; 0.359102; 0; ]
+  [ 2; OK; 0.266384; 0; ]
+  [ 3; OK; 0.498114; 0; ]
+  [ 4; OK; 1.418109; 0; ]
+  [ 5; OK; 1.029577; 0; ]
 ]
 }
 {
@@ -74,12 +74,12 @@ title_group: Complement Begin;
 file_name: test-complement_in.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.444487; 0; ]
-  [ 1; OK; 0.299597; 0; ]
-  [ 2; OK; 0.199924; 0; ]
-  [ 3; OK; 0.274769; 0; ]
-  [ 4; OK; 0.547146; 0; ]
-  [ 5; OK; 0.756994; 0; ]
+  [ 0; OK; 0.456917; 0; ]
+  [ 1; OK; 0.323281; 0; ]
+  [ 2; OK; 0.225642; 0; ]
+  [ 3; OK; 0.301300; 0; ]
+  [ 4; OK; 0.681921; 0; ]
+  [ 5; OK; 0.753567; 0; ]
 ]
 }
 {
@@ -88,12 +88,12 @@ title_group: Complement End;
 file_name: test-complement_end.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.341198; 0; ]
-  [ 1; OK; 0.432346; 0; ]
-  [ 2; OK; 0.253577; 0; ]
-  [ 3; OK; 0.376891; 0; ]
-  [ 4; OK; 0.701070; 0; ]
-  [ 5; OK; 0.959440; 0; ]
+  [ 0; OK; 0.358076; 0; ]
+  [ 1; OK; 0.524285; 0; ]
+  [ 2; OK; 0.328564; 0; ]
+  [ 3; OK; 0.390773; 0; ]
+  [ 4; OK; 0.706930; 0; ]
+  [ 5; OK; 0.931018; 0; ]
 ]
 }
 {
@@ -102,12 +102,12 @@ title_group: Cut Begin;
 file_name: test-cut_begin.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.371484; 0; ]
-  [ 1; OK; 0.234506; 0; ]
-  [ 2; OK; 0.155248; 0; ]
-  [ 3; OK; 0.254043; 0; ]
-  [ 4; OK; 0.459627; 0; ]
-  [ 5; OK; 0.254007; 0; ]
+  [ 0; OK; 0.392379; 0; ]
+  [ 1; OK; 0.253744; 0; ]
+  [ 2; OK; 0.200017; 0; ]
+  [ 3; OK; 0.286148; 0; ]
+  [ 4; OK; 0.588712; 0; ]
+  [ 5; OK; 0.324307; 0; ]
 ]
 }
 {
@@ -116,11 +116,11 @@ title_group: Cut End;
 file_name: test-cut_end.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.471904; 0; ]
-  [ 1; OK; 0.302405; 0; ]
-  [ 2; OK; 0.187699; 0; ]
-  [ 3; OK; 0.284645; 0; ]
-  [ 4; OK; 0.554613; 0; ]
-  [ 5; OK; 0.270833; 0; ]
+  [ 0; OK; 0.613189; 0; ]
+  [ 1; OK; 0.405874; 0; ]
+  [ 2; OK; 0.217683; 0; ]
+  [ 3; OK; 0.312488; 0; ]
+  [ 4; OK; 0.575148; 0; ]
+  [ 5; OK; 0.351318; 0; ]
 ]
 }

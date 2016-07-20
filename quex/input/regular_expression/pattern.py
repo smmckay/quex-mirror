@@ -20,17 +20,18 @@ class Pattern_Prep(object):
                  "__sm", 
                  "__post_context_f", 
                  "__post_context_sm",
-                 "__pre_context_sm_to_be_inverted", "__pre_context_sm", 
+                 "__pre_context_sm_to_be_inverted", 
                  "__pre_context_begin_of_line_f", 
                  "__post_context_end_of_line_f", 
                  "__pattern_string",
-                 "__count_info")
+                 "__finalized_self")
     @typed(CoreSM=StateMachine, BeginOfLineF=bool, EndOfLineF=bool, 
            AllowNothingIsNecessaryF=bool, Sr=SourceRef)
     def __init__(self, CoreSM, PreContextSM=None, PostContextSM=None, 
                  BeginOfLineF=False, EndOfLineF=False, Sr=SourceRef_VOID, 
                  PatternString="",
                  AllowNothingIsNecessaryF=False):
+        assert CoreSM is not None
         assert PreContextSM is None or isinstance(PreContextSM, StateMachine)
         self.check_initial(CoreSM, 
                            BeginOfLineF, PreContextSM, 
@@ -45,16 +46,11 @@ class Pattern_Prep(object):
         self.__sm                         = CoreSM
         self.__post_context_sm            = PostContextSM
         self.__post_context_end_of_line_f = EndOfLineF
-        assert self.__sm is not None
-
-        # -- [optional] post contexts
-        self.__post_context_f = (PostContextSM is not None)
 
         # -- [optional] pre contexts
         #
         #    Same as for backward input position detection holds for pre-contexts.
         self.__pre_context_sm_to_be_inverted = PreContextSM
-        self.__pre_context_sm                = None
 
         # All state machines must be DFAs
         if not self.__sm.is_DFA_compliant(): 
@@ -67,16 +63,13 @@ class Pattern_Prep(object):
         # Detect the trivial pre-context
         self.__pre_context_begin_of_line_f = BeginOfLineF
         
-        # The line/column count information can only be determined when the 
-        # line/column count database is present. Thus, it is delayed.
-        self.__count_info = None
-
         self.__validate(Sr)
+        self.__finalized_self = None
 
     @staticmethod
     def from_character_set(CharacterSet, StateMachineId=None):
         return Pattern_Prep(StateMachine.from_character_set(CharacterSet, StateMachineId), 
-                                 PatternString="<character set>")
+                            PatternString="<character set>")
 
     @property
     def sr(self):             return self.__sr
@@ -97,11 +90,7 @@ class Pattern_Prep(object):
     @property
     def sm(self):                                  return self.__sm
     @property
-    def pre_context_sm_to_be_inverted(self):       return self.__pre_context_sm
-    @property
-    def pre_context_sm(self):                      return self.__pre_context_sm
-    @property
-    def bipd_sm(self):                             return self.__bipd_sm
+    def pre_context_sm_to_be_inverted(self):       return self.__pre_context_sm_to_be_inverted
     @property
     def pre_context_trivial_begin_of_line_f(self): 
         if self.__pre_context_sm_to_be_inverted is not None:
@@ -112,34 +101,10 @@ class Pattern_Prep(object):
         return    self.__pre_context_begin_of_line_f \
                or self.__pre_context_sm_to_be_inverted is not None
     def has_post_context(self):   
-        return self.__post_context_f
+        return    self.__post_context_sm is not None \
+               or self.__post_context_end_of_line_f
     def has_pre_or_post_context(self):
         return self.has_pre_context() or self.has_post_context()
-
-    def __finalize_mount_pre_context_sm(self, Sm, SmPreContextToBeInverted, BeginOfLineF):
-        if SmPreContextToBeInverted is None and BeginOfLineF == False:
-            return None
-
-        return setup_pre_context.do(Sm, SmPreContextToBeInverted, BeginOfLineF)
-                                    
-
-    def __finalize_mount_post_context_sm(self, Sm, SmPostContext, EndOfLineF):
-        # In case of a 'trailing post context' a 'bipd_sm' may be provided
-        # to detect the input position after match in backward direction.
-        # BIPD = backward input position detection.
-        sm,     \
-        bipd_sm_to_be_inverted = setup_post_context.do(Sm, SmPostContext, EndOfLineF,
-                                                       self.__sr)
-
-        if bipd_sm_to_be_inverted is None: 
-            return sm, None
-
-        elif not bipd_sm_to_be_inverted.is_DFA_compliant(): 
-            bipd_sm_to_be_inverted = beautifier.do(bipd_sm_to_be_inverted)
-
-        bipd_sm = beautifier.do(reverse.do(bipd_sm_to_be_inverted))
-
-        return sm, bipd_sm
 
     def __validate(self, Sr):
         # (*) It is essential that state machines defined as patterns do not 
@@ -165,7 +130,7 @@ class Pattern_Prep(object):
             error.log("Pattern has no acceptance state and can never match.\n" + \
                       "Aborting generation process.", Sr)
 
-        self.check_consistency()
+        self.assert_consistency()
 
     def __repr__(self):
         return self.get_string(self)
@@ -175,29 +140,18 @@ class Pattern_Prep(object):
 
         msg = self.__sm.get_string(NormalizeF, Option)
             
-        if   self.__pre_context_sm is not None:
-            msg += "pre-context = "
-            msg += self.__pre_context_sm.get_string(NormalizeF, Option)           
-
-        elif self.__pre_context_sm_to_be_inverted is not None:
+        if self.__pre_context_sm_to_be_inverted is not None:
             msg += "pre-context to be inverted = "
             msg += self.__pre_context_sm_to_be_inverted.get_string(NormalizeF, Option)           
 
-        if self.__bipd_sm is not None:
-            msg += "post-context backward input position detector = "
-            msg += self.__bipd_sm.get_string(NormalizeF, Option)           
-
-        elif self.__bipd_sm_to_be_inverted is not None:
-            msg += "post-context backward input position detector to be inverted = "
-            msg += self.__bipd_sm_to_be_inverted.get_string(NormalizeF, Option)           
-
         return msg
 
-    def check_consistency(self):
-        return     self.sm.is_DFA_compliant() \
-               and (self.pre_context_sm is None or self.pre_context_sm.is_DFA_compliant()) \
-               and (self.pre_context_sm is None or not self.pre_context_sm.has_orphaned_states()) \
-               and (not self.sm.has_orphaned_states())
+    def assert_consistency(self):
+        assert self.sm.is_DFA_compliant()
+        assert not self.sm.has_orphaned_states()
+        if self.pre_context_sm_to_be_inverted is not None:
+            assert self.pre_context_sm_to_be_inverted.is_DFA_compliant() 
+            assert not self.pre_context_sm_to_be_inverted.has_orphaned_states()
 
     @staticmethod
     def check_initial(core_sm, 
@@ -266,6 +220,9 @@ class Pattern_Prep(object):
         state. It is no longer to be used--the generated 'Pattern' object takes
         its place.
         """
+        if self.__finalized_self is not None:
+            return self.__finalized_self
+
         # Count information must be determined BEFORE transformation!
         lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, self.sm, 
                                                        self.pre_context_trivial_begin_of_line_f, 
@@ -300,13 +257,50 @@ class Pattern_Prep(object):
                                                               sm_pre_context_to_be_inverted,
                                                               self.__pre_context_begin_of_line_f)
 
-        result = Pattern(original_incidence_id, sm_main, sm_pre_context, sm_bipd,
-                         lcci, self.__pattern_string, self.__sr)
+        # Store finalized self
+        if self.__pattern_string is not None: pattern_string = self.__pattern_string
+        else:                                 pattern_string = ""
+        if self.__sr is None: sr = SourceRef_VOID
+        else:                 sr = self.__sr
 
-        # Set this object into a dysfunctional state. 
+        self.__finalized_self = Pattern(original_incidence_id, sm_main, sm_pre_context, sm_bipd,
+                                        lcci, pattern_string, sr)
+
+        # Set: self = Dysfunctional! (after storing finalized 'self')
         self.__sm                            = None
+        self.__pattern_string                = None
+        self.__sr                            = None
+        self.__post_context_sm               = None
+        self.__post_context_end_of_line_f    = None
+        self.__post_context_f                = None
         self.__pre_context_sm_to_be_inverted = None
-        return result
+        self.__pre_context_begin_of_line_f   = None
+
+        return self.__finalized_self
+
+    def __finalize_mount_pre_context_sm(self, Sm, SmPreContextToBeInverted, BeginOfLineF):
+        if SmPreContextToBeInverted is None and BeginOfLineF == False:
+            return None
+
+        return setup_pre_context.do(Sm, SmPreContextToBeInverted, BeginOfLineF)
+
+    def __finalize_mount_post_context_sm(self, Sm, SmPostContext, EndOfLineF):
+        # In case of a 'trailing post context' a 'bipd_sm' may be provided
+        # to detect the input position after match in backward direction.
+        # BIPD = backward input position detection.
+        sm,     \
+        bipd_sm_to_be_inverted = setup_post_context.do(Sm, SmPostContext, EndOfLineF,
+                                                       self.__sr)
+
+        if bipd_sm_to_be_inverted is None: 
+            return sm, None
+
+        elif not bipd_sm_to_be_inverted.is_DFA_compliant(): 
+            bipd_sm_to_be_inverted = beautifier.do(bipd_sm_to_be_inverted)
+
+        bipd_sm = beautifier.do(reverse.do(bipd_sm_to_be_inverted))
+
+        return sm, bipd_sm
 
     def __finalize_cut_signal_character_list(self, sm_list):
         """Characters can only be cut, if transformation is done and 
@@ -329,7 +323,6 @@ class Pattern_Prep(object):
         # Make sure that a pattern is never transformed twice
         # Transformation MUST be called before any pre-context or bipd
         # is mounted.
-        assert self.__pre_context_sm is None
 
         # IncidenceId == StateMachine's id. 
         # However: Transformation may generate a new state machine.

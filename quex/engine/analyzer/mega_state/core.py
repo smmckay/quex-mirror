@@ -326,11 +326,11 @@ class MegaState(AnalyzerState):
     ___________________________________________________________________________
     """ 
     @typed(TheTransitionMap=TransitionMap)
-    def __init__(self, StateIndex, TheTransitionMap, SkiDb):
+    def __init__(self, StateIndex, TheTransitionMap, SkiDb, dial_db):
         # A 'PseudoTemplateState' does not implement a 'MegaState_Entry'.
         assert isinstance(StateIndex, long)
 
-        self.__entry    = MegaState_Entry()
+        self.__entry    = MegaState_Entry(dial_db)
         AnalyzerState.set_index(self, StateIndex)
         # AnalyzerState.__init__(StateIndex, InitStateF, EngineType, TheTransitionMap):
 

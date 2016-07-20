@@ -35,10 +35,6 @@
 (1, 91)  	IDENTIFIER 'sechs' 
 (1, 96)  	WHITESPACE '' 
 (1, 97)  	COMMENT '' 
-Simple.cpp:683:	terminate called after throwing an instance of 'std::runtime_error'
-  what():  
-    Match failure in mode 'ALL'.
-    No 'on_failure' section provided for this mode.
-    Proposal: Define 'on_failure' and analyze 'Lexeme'.
-
+(1, 115)  	WHITESPACE '' 
+(2, 1)  	<TERMINATION>
 clean

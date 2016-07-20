@@ -42,10 +42,12 @@ class Terminal(Processor):
                or IncidenceId is None \
                or IncidenceId in E_IncidenceIDs
         Processor.__init__(self, index.get(), Entry(dial_db))
-        if IncidenceId is not None: door_id = DoorID.incidence(IncidenceId, dial_db)
-        else:                       door_id = None
-        self.__incidence_id = IncidenceId
-        self.__door_id      = door_id
+        if IncidenceId is not None: 
+            self.__incidence_id = IncidenceId
+            self.__door_id      = door_id = DoorID.incidence(IncidenceId, dial_db)
+        else:                       
+            self.__incidence_id = None
+            self.__door_id      = None
         self.__code         = Code
         self.__name         = Name
         self.__requires_goto_loop_entry_f = False
@@ -59,9 +61,7 @@ class Terminal(Processor):
     @property
     def door_id(self):
         assert self.__incidence_id is not None
-        if self.__door_id is None: 
-            self.__door_id = DoorID.incidence(self.__incidence_id, 
-                                              self.entry.dial_db)
+        assert self.__door_id is not None
         return self.__door_id
 
     def clone(self, NewIncidenceId=None):
@@ -86,6 +86,7 @@ class Terminal(Processor):
     def set_incidence_id(self, IncidenceId, ForceF=False):
         assert ForceF or self.__incidence_id is None
         self.__incidence_id = IncidenceId
+        self.__door_id      = door_id = DoorID.incidence(IncidenceId, self.entry.dial_db)
 
     @typed(Name=(str,unicode))
     def set_name(self, Name):

@@ -54,8 +54,8 @@ def do_main(SM, ReloadStateForward, dial_db):
 
             position, PositionRegisterN, last_acceptance, input.
     """
-    txt, analyzer = __do_state_machine(SM, engine.Class_FORWARD(), ReloadStateForward, 
-                                       dial_db)
+    txt, analyzer = __do_state_machine(SM, engine.Class_FORWARD(), dial_db, 
+                                       ReloadStateForward) 
 
     if analyzer.last_acceptance_variable_required():
         variable_db.require("last_acceptance")
@@ -86,7 +86,7 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
     if SM is None: 
         return [], None
 
-    txt, analyzer = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT) 
+    txt, analyzer = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT, dial_db) 
 
     txt.append("\n%s" % Lng.LABEL(DoorID.global_end_of_pre_context_check(dial_db)))
     # -- set the input stream back to the real current position.
@@ -100,7 +100,7 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
 
     return txt, analyzer
 
-def do_backward_read_position_detectors(BipdDb):
+def do_backward_read_position_detectors(BipdDb, dial_db):
     """RETURNS: [0] Code for BIPD analyzer
                 [1] map: acceptance_id --> DoorID of entry into BIPD
 
@@ -109,7 +109,8 @@ def do_backward_read_position_detectors(BipdDb):
     result = []
     for incidence_id, bipd_sm in BipdDb.iteritems():
         txt, analyzer = __do_state_machine(bipd_sm, 
-                                           engine.Class_BACKWARD_INPUT_POSITION(incidence_id)) 
+                                           engine.Class_BACKWARD_INPUT_POSITION(incidence_id), 
+                                           dial_db) 
         result.extend(txt)
     return result
 
@@ -179,7 +180,7 @@ def do_variable_definitions():
     # Following function refers to the global 'variable_db'
     return Lng.VARIABLE_DEFINITIONS(variable_db)
 
-def __do_state_machine(sm, EngineType, ReloadStateForward=None, dial_db=None): 
+def __do_state_machine(sm, EngineType, dial_db, ReloadStateForward=None): 
     """Generates code for state machine 'sm' and the 'EngineType'.
 
     RETURNS: list of strings

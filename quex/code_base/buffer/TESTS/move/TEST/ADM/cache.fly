@@ -1,7 +1,7 @@
 {
 title: (BPC=1, FB=0);
 title_group: move_away_passed_content;
-build_time: 0.42724084854125977;
+build_time: 0.4127960205078125;
 file_name: move_away_passed_content-fb0.exe;
 hwut_info_time: 1458631477L;
 make_dependent_f: True;
@@ -13,7 +13,7 @@ result_list: [
 {
 title: (BPC=1, FB=1);
 title_group: move_away_passed_content;
-build_time: 0.5032360553741455;
+build_time: 0.4109020233154297;
 file_name: move_away_passed_content-fb1.exe;
 hwut_info_time: 1458631479L;
 make_dependent_f: True;
@@ -25,7 +25,7 @@ result_list: [
 {
 title: (BPC=1, FB=2);
 title_group: move_away_passed_content;
-build_time: 0.41531991958618164;
+build_time: 0.41251087188720703;
 file_name: move_away_passed_content-fb2.exe;
 hwut_info_time: 1458631475L;
 make_dependent_f: True;
@@ -37,7 +37,7 @@ result_list: [
 {
 title: (BPC=4, FB=2);
 title_group: move_away_passed_content;
-build_time: 0.4138610363006592;
+build_time: 0.5001440048217773;
 file_name: move_away_passed_content-fb2-32.exe;
 hwut_info_time: 1458631480L;
 make_dependent_f: True;
@@ -49,7 +49,7 @@ result_list: [
 {
 title: (BPC=1);
 title_group: move_away_upfront_content;
-build_time: 0.4155569076538086;
+build_time: 0.40999412536621094;
 file_name: move_away_upfront_content-8.exe;
 hwut_info_time: 1458631474L;
 make_dependent_f: True;
@@ -65,7 +65,7 @@ result_list: [
 {
 title: (BPC=2);
 title_group: move_away_upfront_content;
-build_time: 0.6275970935821533;
+build_time: 0.40873193740844727;
 file_name: move_away_upfront_content-16.exe;
 hwut_info_time: 1458631478L;
 make_dependent_f: True;
@@ -81,7 +81,7 @@ result_list: [
 {
 title: (BPC=4);
 title_group: move_away_upfront_content;
-build_time: 0.4115889072418213;
+build_time: 0.41160011291503906;
 file_name: move_away_upfront_content-32.exe;
 hwut_info_time: 1458631476L;
 make_dependent_f: True;

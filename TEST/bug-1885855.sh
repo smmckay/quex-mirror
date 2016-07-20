@@ -7,6 +7,9 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
+echo "||||"
 quex -i error.qx --debug-exception
+echo "||||"
 rm Lexer*
 cd $tmp
+echo "<terminated>"

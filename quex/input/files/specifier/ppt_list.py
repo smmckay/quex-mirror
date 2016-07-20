@@ -10,16 +10,17 @@ and incidence handlers. Based on the PPT list optional pattern deletion and
 repriorization is implemented. Finaly, a mode's pattern list and terminal
 database is extracted.
 """
+from   quex.input.code.core                         import CodeTerminal
+from   quex.input.regular_expression.pattern        import Pattern_Prep
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.analyzer.door_id_address_label   import DoorID, \
                                                            DialDB
 import quex.engine.analyzer.door_id_address_label   as     dial
+from   quex.engine.misc.tools import typed
 import quex.output.core.skipper.character_set       as     skip_character_set
 import quex.output.core.skipper.range               as     skip_range
 import quex.output.core.skipper.nested_range        as     skip_nested_range
 import quex.output.core.skipper.indentation_counter as     indentation_counter
-from   quex.input.code.core                         import CodeTerminal
-from   quex.engine.misc.tools import typed
 
 from   quex.blackboard import standard_incidence_db_is_immutable, \
                                      E_IncidenceIDs
@@ -48,7 +49,7 @@ class PatternPriority(object):
         elif self.pattern_index < Other.pattern_index:               return -1
         else:                                                        return 0
 
-class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "code_fragment"))):
+class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "terminal"))):
     """PPT -- (Priority, Pattern, Terminal) 
     ______________________________________________________________________________
 
@@ -60,21 +61,6 @@ class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "code_fragment"))):
     @typed(ThePatternPriority=PatternPriority, TheTerminal=(Terminal, None))
     def __new__(self, ThePatternPriority, ThePattern, TheTerminal):
         return super(PPT, self).__new__(self, ThePatternPriority, ThePattern, TheTerminal)
-
-    @staticmethod
-    def for_character_set_skipper(Priority, CharacterSet, Sr):
-        """Generate a PPT for a character set skipper. That is, 
-            -- A PatternPriority based on a given MHI and the specified incidence id.
-            -- A Pattern to be webbed into the lexical analyzer state machine.
-            -- A Terminal implementing the character set skipper.
-        """
-        pattern  = Pattern_Prep.from_character_set(CharacterSet, IncidenceId)
-        pattern.set_pattern_string("<skip>")
-        pattern.set_source_reference(Sr)
-        pattern  = pattern.finalize()
-
-        # Terminal for 'IncidenceId' is already coded in the character skipper
-        return PPT(Priority, pattern, None)
 
     @staticmethod
     @typed(dial_db=DialDB)
@@ -173,17 +159,14 @@ class PPT_List(list):
         """Collect patterns and terminals which are required to implement
         skippers and indentation counters.
         """
-        for i, info in enumerate([
-                (self._prepare_skip_character_set,  Loopers.skip),
-                (self._prepare_skip_range,          Loopers.skip_range),
-                (self._prepare_skip_nested_range,   Loopers.skip_nested_range), 
-                (self._prepare_indentation_counter, Loopers.indentation_handler)]):
-            func, looper = info
-            if looper is None: continue
+        for i, func in enumerate([self._prepare_skip_character_set, 
+                                  self._prepare_skip_range,         
+                                  self._prepare_skip_nested_range,  
+                                  self._prepare_indentation_counter]):
             # Mode hierarchie index = before all: -4 to -1
             # => skippers and indentation handlers have precendence over all others.
             mode_hierarchy_index = -4 + i
-            terminals, ppts = func(mode_hierarchy_index, looper, CounterDb, 
+            terminals, ppts = func(mode_hierarchy_index, Loopers, CounterDb, 
                                    ReloadState = ReloadState)
             self.__extra_terminal_list.extend(terminals)
             self.extend(ppts)
@@ -193,25 +176,32 @@ class PPT_List(list):
         commands in the mode. This may change the order and the incidence ids of the 
         mode's patterns. Thus, the ppt_list needs to be resorted and new incidence_id-s
         need to be assigned.
+
+        RETURNS: [0] history of deletions
+                 [1] history of reprioritizations
         """
-        # -- Delete and reprioritize
+        if not self: return [], []
+
+        # Delete and reprioritize
         history_deletion         = self._pattern_deletion(BaseModeSequence) 
         history_reprioritization = self._pattern_reprioritization(BaseModeSequence) 
 
-        # -- Re-sort and re-assign new incidence id which reflect the new order. 
+        # Make sure that the incidence-id of each pattern fits the position
+        # in the priorization sequence. That is, early entries in the list MUST
+        # have a lower incidence id thant later entries.
+        prev_incidence_id = self[0].pattern.incidence_id - 1
         self.sort(key=attrgetter("priority"))
         for i, ppt in enumerate(list(self)): 
             priority, pattern, terminal = ppt
-            if standard_incidence_db_is_immutable(pattern.incidence_id):
-                continue
-            # Generate a new, cloned pattern. So that other related modes are not effected.
-            new_incidence_id = dial.new_incidence_id() # new id > any older id.
-            new_pattern      = pattern.clone(new_incidence_id)
-            if terminal is not None: new_terminal = terminal.clone(new_incidence_id)
-            else:                    new_terminal = None
-
-            new_ppt = PPT(priority, new_pattern, new_terminal)
-            self[i] = new_ppt
+            if pattern.incidence_id <= prev_incidence_id:
+                # Generate a new, cloned pattern. So that other related modes are not effected.
+                new_incidence_id = dial.new_incidence_id() # new id > any older id.
+                new_pattern      = pattern.clone_with_new_incidence_id(new_incidence_id)
+                if terminal is not None: new_terminal = terminal.clone(new_incidence_id)
+                else:                    new_terminal = None
+                new_ppt = PPT(priority, new_pattern, new_terminal)
+                self[i] = new_ppt
+            prev_incidence_id = pattern.incidence_id
 
         return history_deletion, history_reprioritization
 
@@ -244,8 +234,8 @@ class PPT_List(list):
 
         history = []
         mode_name = BaseModeSequence[-1].name
-        for mode_hierarchy_index, mode_descr in enumerate(BaseModeSequence):
-            for info in mode_descr.reprioritization_info_list:
+        for mode_hierarchy_index, mode in enumerate(BaseModeSequence):
+            for info in mode.reprioritization_info_list:
                 repriorize(mode_hierarchy_index, info, self, mode_name, history)
 
         return history
@@ -354,6 +344,7 @@ class PPT_List(list):
         data = { 
             "counter_db":    CounterDb, 
             "character_set": total_set,
+            "dial_db":       self.terminal_factory.dial_db
         }
         # The terminal is not related to a pattern, because it is entered
         # from the sub_terminals. Each sub_terminal relates to a sub character
@@ -362,18 +353,32 @@ class PPT_List(list):
         loop_map, \
         required_register_set = skip_character_set.do(data, ReloadState)
 
+        def get_pattern(CharacterSet, IncidenceId, CaMap, Sr):
+            """Generate a PPT for a character set skipper. That is, 
+                -- A PatternPriority based on a given MHI and the specified incidence id.
+                -- A Pattern to be webbed into the lexical analyzer state machine.
+                -- A Terminal implementing the character set skipper.
+            """
+            pattern  = Pattern_Prep.from_character_set(CharacterSet, IncidenceId)
+            pattern.set_pattern_string("<skip>")
+            pattern.set_source_reference(Sr)
+            return pattern.finalize(CaMap)
+
         # Counting actions are added to the terminal automatically by the
         # terminal_factory. The only thing that remains for each sub-terminal:
         # 'goto skipper'.
+        # Terminal for 'IncidenceId' is already coded in the character skipper
+        ca_map = CounterDb.count_command_map
         new_ppt_list = [
-            PPT.for_character_set_skipper(PatternPriority(MHI, lei.incidence_id), 
-                                          lei.character_set, 
-                                          source_reference)
+            PPT(PatternPriority(MHI, lei.incidence_id), 
+                get_pattern(lei.character_set, lei.incidence_id, ca_map, source_reference),
+                None)
             for lei in loop_map
         ]
 
         terminal = Terminal(CodeTerminal(code), "<skip>", E_IncidenceIDs.SKIP, 
-                            RequiredRegisterSet=required_register_set) 
+                            RequiredRegisterSet=required_register_set, 
+                            dial_db=self.terminal_factory.dial_db) 
 
         return [ terminal ], new_ppt_list
 

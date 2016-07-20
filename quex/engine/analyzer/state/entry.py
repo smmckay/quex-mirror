@@ -331,9 +331,6 @@ class Entry(object):
             if cmp_command_list is None: 
                 check_db[action.door_id] = action.command_list
             elif cmp_command_list != action.command_list:
-                print "#door_id:", action.door_id
-                print "#cmp0:", cmp_command_list
-                print "#cmp1:", action.command_list
                 return False
 
         # Some commands shall never occur more than once in a command list:

@@ -171,7 +171,7 @@ class Analyzer:
         if not EngineType.requires_detailed_track_analysis():
             for state_index, state in SM.states.iteritems():
                 if not self.state_db[state_index].transition_map.has_drop_out(): continue
-                cl = EngineType.create_DropOut(state)
+                cl = EngineType.create_DropOut(state, self.dial_db)
                 self.drop_out.entry.enter_OpList(E_StateIndices.DROP_OUT, 
                                                  state_index, cl)
                                                       

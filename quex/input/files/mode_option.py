@@ -39,7 +39,12 @@ class Loopers:
         self.skip_nested_range   = SkipNestedRange
         self.indentation_handler = IndentationHandler
 
+        self.__finalized_f       = False
+
     def finalize(self, CaMap):
+        if self.__finalized_f: 
+            return self
+
         if self.skip is not None:
             self.skip = [
                 (pattern.finalize(CaMap), total_set)
@@ -68,6 +73,7 @@ class Loopers:
         if self.indentation_handler is not None:
             self.indentation_handler.finalize(CaMap)
 
+        self.__finalized_f = True
         return self
 
 #-----------------------------------------------------------------------------------------
@@ -75,7 +81,7 @@ class Loopers:
 #-----------------------------------------------------------------------------------------
 class ModeOptionInfo:
     """A ModeOptionInfo is an element of mode_option_info_db."""
-    def __init__(self, MultiDefinitionF, OverwriteF, Domain=None, Default=None, ListF=False):
+    def __init__(self, MultiDefinitionF, OverwriteF, Domain=None, Default=None, ListF=False, InheritedF=True):
         assert type(MultiDefinitionF) == bool
         assert type(OverwriteF) == bool
         assert type(ListF) == bool
@@ -85,6 +91,7 @@ class ModeOptionInfo:
         self.domain                = Domain
         self.__content_list_f      = ListF
         self.__default_value       = Default
+        self.inherited_f           = InheritedF
 
     def single_setting_f(self):
         """If the option can be defined multiple times and is not overwritten, 
@@ -111,7 +118,7 @@ mode_option_info_db = {
    # -- a mode can be inheritable or not or only inheritable. if a mode
    #    is only inheritable it is not printed on its on, only as a base
    #    mode for another mode. default is 'yes'
-   "inheritable":       ModeOptionInfo(False, True, ["no", "yes", "only"], Default="yes"),
+   "inheritable":       ModeOptionInfo(False, True, ["no", "yes", "only"], Default="yes", InheritedF=False),
    # -- a mode can restrict the possible modes to exit to. this for the
    #    sake of clarity. if no exit is explicitly mentioned all modes are
    #    possible. if it is tried to transit to a mode which is not in
@@ -154,9 +161,11 @@ class OptionDB(dict):
         mode_name = BaseModeSequence[-1].name
 
         def setting_list_iterable(BaseModeSequence):
-            for mode_descr in BaseModeSequence:
-                option_db = mode_descr.option_db
+            for i, mode_pp in enumerate(BaseModeSequence):
+                option_db = mode_pp.option_db
                 for name, info in mode_option_info_db.iteritems():
+                    if not info.inherited_f and mode_pp.name != mode_name:
+                        continue
                     setting_list = option_db.__get_setting_list(name)
                     if setting_list is None: continue
                     assert    (not mode_option_info_db[name].single_setting_f()) \
@@ -183,9 +192,9 @@ class OptionDB(dict):
                                       into the state machine.
                     [4] "counter" --> character counter information
         """
-        loopers = Loopers(self.value("skip"), 
-                          self.value("skip_range"),
-                          self.value("skip_nested_range"),
+        loopers = Loopers(self.value_list("skip"), 
+                          self.value_list("skip_range"),
+                          self.value_list("skip_nested_range"),
                           self.value("indentation"))
         return self.value("inheritable"), \
                self.value_list("exit"),   \

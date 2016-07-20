@@ -81,7 +81,7 @@ class TerminalFactory:
         #            coding negligence.
         text = []
         if ThePattern.sm_bipd is not None:
-            TerminalFactory.do_bipd_entry_and_return(text, ThePattern)
+            self.do_bipd_entry_and_return(text, ThePattern)
 
         text.extend([
             self.__counter_code(ThePattern.lcci),
@@ -183,8 +183,7 @@ class TerminalFactory:
                              or self.on_after_match.requires_lexeme_terminating_zero_f (Lng)
         return lexeme_begin_f, terminating_zero_f
 
-    @staticmethod
-    def do_bipd_entry_and_return(txt, ThePattern):
+    def do_bipd_entry_and_return(self, txt, ThePattern):
         """(This is a very seldom case) After the pattern has matched, one needs 
         to determine the end of the lexeme by 'backward input position detection' 
         (bipd). Thus,
@@ -201,10 +200,10 @@ class TerminalFactory:
               The actions on 
               pattern match.
         """
-        door_id_entry  = DoorID.state_machine_entry(ThePattern.bipd_sm.get_id(), self.dial_db)
+        door_id_entry  = DoorID.state_machine_entry(ThePattern.sm_bipd.get_id(), self.dial_db)
         door_id_return = DoorID.bipd_return(ThePattern.incidence_id, self.dial_db)
         txt.append("    %s\n%s\n" 
-           % (Lng.GOTO(door_id_entry),   # Enter BIPD
+           % (Lng.GOTO(door_id_entry, self.dial_db),   # Enter BIPD
               Lng.LABEL(door_id_return)) # Return from BIPD
         )
 

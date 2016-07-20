@@ -19,7 +19,7 @@ class Base:
 
     def input_action(self, InitStateF):    assert False
 
-    def create_DropOut(self, SM_State):                assert False
+    def create_DropOut(self, SM_State, dial_db):                assert False
 
 class Class_FORWARD(Base):
     def __init__(self):
@@ -47,7 +47,7 @@ class Class_FORWARD(Base):
     def direction_str(self): 
         return "FORWARD"
 
-    def create_DropOut(self, SM_State):                          
+    def create_DropOut(self, SM_State, dial_db):                          
         # DropOut and Entry interact and require sophisticated analysis
         # => See "Analyzer.get_drop_out_object(...)"
         return None 
@@ -61,7 +61,7 @@ class Class_CHARACTER_COUNTER(Class_FORWARD):
         """
         return False
 
-    def create_DropOut(self, SM_State):                          
+    def create_DropOut(self, SM_State, dial_db):                          
         return None
 
 class Class_BACKWARD_PRE_CONTEXT(Base):

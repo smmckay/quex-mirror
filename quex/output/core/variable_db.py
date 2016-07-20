@@ -73,7 +73,6 @@ def enter(local_variable_db, Name, InitialValue=None, ElementN=None, Condition=N
     local_variable_db[Name] = Variable(Name, Type, ElementN, InitialValue, Condition, ConditionNegatedF, PriorityF)
 
 class VariableDB:
-
     def __init__(self, InitialDB=None):
         self.__db = {}
         self.init(InitialDB)

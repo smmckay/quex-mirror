@@ -3,7 +3,9 @@ from   quex.input.regular_expression.pattern             import Pattern_Prep
 from   quex.input.files.mode_option                      import OptionDB
 from   quex.input.code.core                              import CodeUser
 from   quex.input.code.base                              import SourceRef
-                                                                
+import quex.engine.state_machine.check.same              as     same_check
+import quex.engine.state_machine.check.outrun            as     outrun_checker
+import quex.engine.state_machine.check.superset          as     superset_check
 from   quex.engine.state_machine.character_counter       import SmLineColumnCountInfo
 import quex.engine.state_machine.check.superset          as     superset_check
 from   quex.engine.analyzer.door_id_address_label        import DialDB
@@ -25,11 +27,60 @@ from   copy        import deepcopy
 from   collections import namedtuple
 from   itertools   import islice
 
-ModeDocumentation = namedtuple("ModeDocumentation", ("history_deletion", 
-                                                     "history_reprioritization", 
-                                                     "entry_mode_name_list",
-                                                     "exit_mode_name_list",
-                                                     "base_mode_name_sequence"))
+class ModeDocumentation:
+    def __init__(self, HistDel, HistRepr, EntryMnl, ExitMnl, BMNS):
+        self.history_deletion         = HistDel 
+        self.history_reprioritization = HistRepr
+        self.entry_mode_name_list     = EntryMnl
+        self.exit_mode_name_list      = ExitMnl
+        self.base_mode_name_sequence  = BMNS
+        self.pattern_info_list        = None
+
+    def absorb_pattern_list(self, PatternList):
+        self.pattern_info_list = [
+            (p.incidence_id, p.sr.mode_name, p.pattern_string())
+            for p in PatternList]
+
+    def get_string(self):
+        ModeName = self.base_mode_name_sequence[-1]
+        L = max(len(name) for name in self.base_mode_name_sequence)
+        txt  = ["\nMODE: %s\n\n" % ModeName]
+
+        base_mode_name_list = self.base_mode_name_sequence[:-1] 
+        if base_mode_name_list:
+            base_mode_name_list.reverse()
+            txt.append("    BASE MODE SEQUENCE:\n")
+            txt.extend("      %s\n" % name 
+                       for name in base_mode_name_list)
+            txt.append("\n")
+
+        if self.history_deletion:
+            txt.append("    DELETION ACTIONS:\n")
+            txt.extend("      %s:  %s%s  (from mode %s)\n" % \
+                (entry[0], " " * (L - len(ModeName)), entry[1], entry[2])
+                for entry in self.history_deletion
+            )
+            txt.append("\n")
+
+        if self.history_reprioritization:
+            txt.append("    PRIORITY-MARK ACTIONS:\n")
+            self.history_reprioritization.sort(lambda x, y: cmp(x[4], y[4]))
+            txt.extend("      %s: %s%s  (from mode %s)  (%i) --> (%i)\n" % \
+                (entry[0], " " * (L - len(ModeName)), entry[1], entry[2], entry[3], entry[4])
+                for entry in self.history_reprioritization
+            )
+            txt.append("\n")
+
+        if self.pattern_info_list:
+            txt.append("    PATTERN LIST:\n")
+            txt.extend("      (%3i) %s: %s%s\n" % \
+                (iid, mode_name, " " * (L - len(mode_name)), pattern_string)
+                for iid, mode_name, pattern_string in self.pattern_info_list
+            )
+            txt.append("\n")
+
+        return "".join(txt)
+
 
 #-----------------------------------------------------------------------------------------
 # Mode_PrepPrep/Mode Objects:
@@ -110,7 +161,7 @@ class Mode_PrepPrep:
 
     @typed(ThePattern=Pattern_Prep, Action=CodeUser)
     def add_pattern_action_pair(self, ThePattern, TheAction, fh):
-        assert ThePattern.check_consistency()
+        ThePattern.assert_consistency()
 
         if ThePattern.pre_context_trivial_begin_of_line_f:
             blackboard.required_support_begin_of_line_set()
@@ -258,7 +309,6 @@ class Mode_Prep:
                     Documentation      = self.doc, 
                     dial_db            = self.dial_db)
 
-
     def __setup_matching_configuration(self, ModePrepDb):
         """Collect all pattern-action pairs and 'loopers' and align it in a list
         of 'priority-pattern-terminal' objects, i.e. a 'ppt_list'. That list associates
@@ -292,6 +342,7 @@ class Mode_Prep:
         self.doc_history_reprioritization = \
                        ppt_list.delete_and_reprioritize(self.base_mode_sequence)
 
+        verdict = ppt_list.finalize_run_time_counter_required_f()
         return ppt_list.finalize_pattern_list(), \
                ppt_list.finalize_terminal_db(self.incidence_db), \
                ppt_list.finalize_run_time_counter_required_f(), \

@@ -27,6 +27,7 @@ import quex.engine.misc.error as     error
 import quex.engine.state_machine.transformation.core      as     bc_factory
 
 from   copy import deepcopy
+from   collections import namedtuple
 
 #------------------------------------------------------------------------------
 # setup: All information of the user's desired setup.
@@ -367,22 +368,29 @@ def determine_base_mode_name_sequence(mode, ModePrepPrepDb):
 
        This function detects circular inheritance.
     """
+    Node = namedtuple("Node", ("mode_name", "inheritance_path"))
     global base_name_list_db
     result   = []
-    worklist = [ mode.name ]
+    worklist = [ Node(mode.name, []) ]
     while worklist:
-        name = worklist.pop()
+        node = worklist.pop()
+        new_inheritance_path = node.inheritance_path + [node.mode_name]
         
-        error.verify_word_in_list(name, ModePrepPrepDb.keys(),
-                                  "Mode '%s' inherits mode '%s' which does not exist." % (mode.name, name),
-                                  mode.sr)
-        mode = ModePrepPrepDb[name]
+        error.verify_word_in_list(node.mode_name, 
+                                  ModePrepPrepDb.keys(),
+                                  "Mode '%s' inherits mode '%s' which does not exist." \
+                                  % (new_inheritance_path[-1], node.mode_name),
+                                  ModePrepPrepDb[new_inheritance_path[-1]].sr)
+        mode = ModePrepPrepDb[node.mode_name]
 
-        detect_circular_inheritance(mode, result)
+        detect_circular_inheritance(mode, node.inheritance_path)
 
-        result.append(name)
+        result.append(node.mode_name)
         worklist.extend(
-            reversed([ name for name in mode.direct_base_mode_name_list ])
+            reversed([ 
+                Node(name, new_inheritance_path) 
+                for name in mode.direct_base_mode_name_list 
+            ])
         )
 
     return list(reversed(result))

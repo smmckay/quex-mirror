@@ -9,9 +9,6 @@ from   quex.input.files.specifier.mode                   import Mode_PrepPrep
 from   quex.input.code.core                              import CodeUser
 from   quex.input.code.base                              import SourceRef
                                                          
-import quex.engine.state_machine.check.same              as     same_check
-import quex.engine.state_machine.check.outrun            as     outrun_checker
-import quex.engine.state_machine.check.superset          as     superset_check
 from   quex.engine.pattern                               import Pattern           
 import quex.engine.misc.error                            as     error
 import quex.engine.analyzer.engine_supply_factory        as     engine

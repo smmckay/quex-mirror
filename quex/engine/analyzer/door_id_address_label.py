@@ -48,22 +48,15 @@ from   collections import namedtuple
 #            
 #______________________________________________________________________________
 class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index", "related_address"))):
-    def __new__(self, StateIndex, DoorIndex, PlainF=False, dial_db=None):
+    def __new__(self, StateIndex, DoorIndex, dial_db=None):
         assert isinstance(StateIndex, (int, long)) or StateIndex in E_StateIndices or StateIndex == E_IncidenceIDs.MATCH_FAILURE
         assert isinstance(dial_db, DialDB)
         # 'DoorIndex is None' --> right after the entry commands (targetted after reload).
         assert isinstance(DoorIndex, (int, long))  or DoorIndex is None or DoorIndex in E_DoorIdIndex, "%s" % DoorIndex
 
-        if PlainF:
-            address = dial_db.new_address()
-            result  = super(DoorID, self).__new__(self, StateIndex, DoorIndex, address)
-            dial_db.register_door_id(result)
-            return result
-
         # If the DoorID object already exists, than do not generate a second one.
-        result = dial_db.access_door_id(StateIndex, DoorIndex)
-        if result is not None:
-            return result
+        result = dial_db.find_door_id(StateIndex, DoorIndex)
+        if result is not None: return result
 
         # Any created DoorID must be properly registered.
         address = dial_db.new_address()
@@ -78,7 +71,7 @@ class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index", "related_a
     def transition_block(StateIndex, dial_db):      return DoorID(StateIndex, E_DoorIdIndex.TRANSITION_BLOCK, dial_db=dial_db)
     @staticmethod                        
     def incidence(IncidenceId, dial_db):            return DoorID(dial_db.map_incidence_id_to_state_index(IncidenceId), 
-                                                                   E_DoorIdIndex.ACCEPTANCE, dial_db=dial_db)
+                                                                  E_DoorIdIndex.ACCEPTANCE, dial_db=dial_db)
     @staticmethod                        
     def bipd_return(IncidenceId, dial_db):     return DoorID(dial_db.map_incidence_id_to_state_index(IncidenceId), E_DoorIdIndex.BIPD_RETURN, dial_db=dial_db)
     @staticmethod                        
@@ -166,14 +159,6 @@ class DialDB(object):
         print "#DoorID %s <-> Address %s" % (DoorId, Address)
         print_callstack()
 
-    def __debug_address_usage(self, Address, *SuspectAdrList):
-        """Prints the callstack if an address of SuspectAdrList is generated.
-        """
-        if Address not in SuspectAdrList:
-            return
-        print "#Used %s" % Address
-        print_callstack()
-
     def __debug_incidence_generation(self, IncidenceId, StateIndex):
         print "#Generated: %s -> state: %s" % (IncidenceId, StateIndex)
         print_callstack()
@@ -193,20 +178,23 @@ class DialDB(object):
     def address_is_gotoed(self, Adr):
         return Adr in self.__gotoed_address_set
 
-    def new_door_id(self, StateIndex=None, DoorSubIndex=None):
+    def new_door_id(self, StateIndex=None):
         """Create a new entry in the database. First, a DoorID is generated.
         Then a new address is linked to it. A list of existing
         DoorID-s is maintained in '.__door_id_db'.
 
-        RETURNS: [0] New DoorID
-                 [1] New Address
+        RETURNS: New DoorID
         """
         state_index    = StateIndex if StateIndex is not None \
                                     else sm_index.get()
-        door_sub_index = DoorSubIndex if DoorSubIndex is not None \
-                                      else self.max_door_sub_index(state_index) + 1
+        door_sub_index = self.max_door_sub_index(state_index) + 1
 
-        return DoorID(state_index, door_sub_index, PlainF=True, dial_db=self)
+        assert self.find_door_id(state_index, door_sub_index) is None
+        return DoorID(state_index, door_sub_index, dial_db=self)
+
+    def new_address(self):
+        self.__address_i += 1
+        return self.__address_i
 
     def max_door_sub_index(self, StateIndex):
         """RETURN: The greatest door sub index for a given StateIndex. 
@@ -220,39 +208,31 @@ class DialDB(object):
             if dsi > result: result = dsi
         return result
 
-    def new_address(self):
-        self.__address_i += 1
-        return self.__address_i
-
     def register_door_id(self, DoorId):
-        if True: # True/False activates debug messages
-            self.__debug_address_generation(DoorId, DoorId.related_address, 21)
+        if False: # True/False activates debug messages
+            self.__debug_address_generation(DoorId, DoorId.related_address, 17)
 
         sub_db = self.__door_id_db.get(DoorId.state_index)
         if sub_db is None:
-            self.__door_id_db[DoorId.state_index] = { DoorId.door_index: DoorId }
-        else:
-            assert DoorId.door_index not in sub_db # Otherwise, it would not be new
-            sub_db[DoorId.door_index] = DoorId
+            sub_db = {}
+            self.__door_id_db[DoorId.state_index] = sub_db
 
-    def access_door_id(self, StateIndex, DoorSubIndex):
+        assert DoorId.door_index not in sub_db # Otherwise, it would not be new
+        sub_db[DoorId.door_index] = DoorId
+
+    def find_door_id(self, StateIndex, DoorSubIndex):
         """Try to get a DoorID from the set of existing DoorID-s. If a DoorID
         with 'StateIndex' and 'DoorSubIndex' does not exist yet, then create it.
         """
         sub_db = self.__door_id_db.get(StateIndex)
-        if sub_db is None:
-            result = self.new_door_id(StateIndex, DoorSubIndex)
-        else:
-            door_id = sub_db.get(DoorSubIndex)
-            if door_id is None:
-                result = self.new_door_id(StateIndex, DoorSubIndex)
-            else:
-                result = door_id
-        return result
+        if sub_db is None: return None
+        door_id = sub_db.get(DoorSubIndex)
+        if door_id is None: return None
+        return door_id
 
     def mark_address_as_gotoed(self, Address):
         if False:
-            self.__debug_gotoed_address(Address, 39)
+            self.__debug_gotoed_address(Address, 17)
         self.__gotoed_address_set.add(Address)
 
     def mark_address_as_routed(self, Address):

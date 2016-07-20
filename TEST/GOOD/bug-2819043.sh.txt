@@ -1,1 +1,2 @@
 No output is just fine
+<terminated>

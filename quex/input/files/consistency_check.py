@@ -29,7 +29,7 @@ def do(ModePrepList):
     mode_name_list             = sorted([mode.name for mode in ModePrepList]) 
     # Applicable modes can only be determined after possible addition of "inheritable: only"
     implemented_mode_name_list = sorted([mode.name for mode in ModePrepList 
-                                         if mode.implemented_f]) 
+                                         if mode.implemented_f()]) 
 
     if len(implemented_mode_name_list) == 0:
         error.log("There is no mode that can be implemented---all existing modes are 'inheritable only'.\n" + \
@@ -53,7 +53,7 @@ def do(ModePrepList):
 
     # (*) Entry/Exit Transitions
     for mode in ModePrepList:
-        if not mode.implemented_f: continue
+        if not mode.implemented_f(): continue
         __entry_transitions(mode, ModePrepList, mode_name_list)
         __exit_transitions(mode, ModePrepList, mode_name_list)
 

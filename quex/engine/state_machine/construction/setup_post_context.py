@@ -12,7 +12,8 @@ from   quex.blackboard import E_PreContextIDs, \
 
 def do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReference):
     acceptance_id = the_state_machine.get_id()
-    result, bipd_sm = _do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReference)
+    result, bipd_sm = _do(the_state_machine, post_context_sm, 
+                          EndOfLinePostContextF, SourceReference)
 
     # Make sure that the resulting state machine has the same state machine index
     # as 'the_state_machine'. This is important, since otherwise the precedence get

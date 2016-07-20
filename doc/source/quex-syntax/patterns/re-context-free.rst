@@ -102,6 +102,15 @@ pattern matching are explained in the subsequent section.
             ﬃ   (FB03) --> f(0066)f(0066)i(0069)
             ﬗ   (FB17) --> մ(0574)խ(056D)
 
+     .. note::
+
+        Some case mappings may be supprising and trigger unexpected
+        notifications. For example the case mapping for '\C{s}' consists not
+        only of the letters 's' (0x53) and 'S' (0x73) but also of 'ſ' (0x17F).
+        So if '\C{s}' is used in a single-byte buffer setup, Quex will 
+        warn about the pattern containing elements that are incompatible with
+        the buffer specification.
+
      As a speciality of the Turkish language, the 'i' with and without the dot
      are not the same. That is, a dot-less lowercase 'i' is folded to a dot-less 
      uppercase 'I' and a dotted 'i' is mapped to a dotted uppercase 'I'. This 

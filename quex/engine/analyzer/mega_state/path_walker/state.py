@@ -50,7 +50,7 @@ class PathWalkerState(MegaState):
         my_index       = index.get()
         ski_db         = StateKeyIndexDB([x.state_index for x in FirstPath.step_list],
                                          IgnoredListIndex=len(FirstPath.step_list)-1)
-        MegaState.__init__(self, my_index, FirstPath.transition_map, ski_db)
+        MegaState.__init__(self, my_index, FirstPath.transition_map, ski_db, TheAnalyzer.dial_db)
 
         # Uniform OpList along entries on the path (optional)
         self.uniform_entry_OpList = FirstPath.uniform_entry_OpList.clone()

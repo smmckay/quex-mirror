@@ -19,17 +19,14 @@ CC = @g++ -I./ -I$(QUEX_PATH) $(EXT_CFLAGS) -ggdb
 all: error good
 
 # -- application
-error: ../lexer-simply.cpp ERROR
-	$(CC) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
-
-ERROR:
+error: ../lexer-simply.cpp 
 	@quex -i error.qx -o Simple --token-policy single > tmp.txt 2>&1
-
-good: ../lexer-simply.cpp GOOD
 	$(CC) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
 
-GOOD:
+good: ../lexer-simply.cpp 
 	@quex -i good.qx -o Simple --token-policy single --debug-exception > tmp.txt 2>&1
+	$(CC) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
+
 
 
 # (*) HELPERS __________________________________________________________________

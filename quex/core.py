@@ -186,7 +186,7 @@ def do_comment_pattern_action_pairs(ModeIterable):
         return ""
 
     txt = "".join(
-        mode.get_documentation()
+        mode.documentation.get_string()
         for mode in sorted(ModeIterable, key=attrgetter("name"))
     )
     comment = Lng.ML_COMMENT("BEGIN: MODE PATTERNS\n" + \

@@ -451,7 +451,6 @@ class Lng_Cpp(dict):
         terminal_door_id_list = []
         for terminal in sorted(TerminalStateList, key=lambda x: x.incidence_id()):
             terminal_door_id_list.append(terminal.door_id)
-            print "#TERMINAL: %s %s" % (terminal.incidence_id(), terminal.door_id)
 
             t_txt = ["%s\n    __quex_debug(\"* TERMINAL %s\\n\");\n" % \
                      (self.LABEL(terminal.door_id), terminal.name())]
@@ -938,7 +937,6 @@ class Lng_Cpp(dict):
                             (ii) jump to terminal.
         """
         door_id = DoorID.incidence(X.acceptance_id, dial_db)
-        print "#accept:", X.acceptance_id
         dial_db.mark_address_as_gotoed(door_id.related_address)
         return [
            self.POSITIONING(X),

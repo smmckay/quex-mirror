@@ -102,6 +102,7 @@ def framework(txt, PWState, TheAnalyzer):
              implemented states had in common. Now, transitions to 
              states outside the path may happen.
     """
+    dial_db = PWState.entry.dial_db
     # Three Versions of PathWalker Heads:
     if PWState.uniform_door_id is not None:
         # UNIFORM PATHS: Along the path, always the same (or no) commands are executed.
@@ -114,12 +115,12 @@ def framework(txt, PWState, TheAnalyzer):
         #           else:                                 goto TerminalDoor
         #
         # -- "goto CommonPathWalkerDoor"
-        goto_next_door = "            %s\n" % Lng.GOTO(PWState.uniform_door_id)
+        goto_next_door = "            %s\n" % Lng.GOTO(PWState.uniform_door_id, dial_db)
 
         # -- "goto TerminalDoor"
         if PWState.uniform_terminal_door_id is not None:
             # All path have same terminal state and enter it at the same door
-            goto_terminal_door   = "            %s\n" % Lng.GOTO(PWState.uniform_terminal_door_id)
+            goto_terminal_door   = "            %s\n" % Lng.GOTO(PWState.uniform_terminal_door_id, dial_db)
         else:
             # The terminals of the paths are different
             # 
@@ -136,7 +137,7 @@ def framework(txt, PWState, TheAnalyzer):
                 offset += len(door_id_sequence) + 1
                 tmp +=  "            %s"  % Lng.IF("path_iterator", "==", "&path_walker_%i_path_base[%s]" %  \
                                                           (PWState.index, offset - 1), FirstF=(path_id == 0))                                  \
-                      + "                %s\n" % Lng.GOTO(door_id_sequence[-1]) 
+                      + "                %s\n" % Lng.GOTO(door_id_sequence[-1], dial_db) 
             tmp += "            %s"       % Lng.ELSE                                  
             tmp += "                %s\n" % Lng.UNREACHABLE
             tmp += "            %s\n"     % Lng.END_IF()                                  
@@ -175,8 +176,7 @@ def framework(txt, PWState, TheAnalyzer):
     txt.extend(path_walker_head)
     return
 
-@typed(dial_db=DialDB)
-def require_data(PWState, TheAnalyzer, dial_db):
+def require_data(PWState, TheAnalyzer):
     """Defines the transition targets for each involved state.
     """
     
@@ -198,7 +198,7 @@ def require_data(PWState, TheAnalyzer, dial_db):
             ## print "#DoorID, Adr:", [(door_id, Lng.ADDRESS_BY_DOOR_ID(door_id)) for door_id in door_id_sequence]
             result.append("        ")
             result.append("/* Padding */0x0, ")
-            dial_db.mark_address_as_routed(door_id.related_address)
+            PWState.entry.dial_db.mark_address_as_routed(door_id.related_address)
             result.extend("QUEX_LABEL(%i), " % door_id.related_address
                           for door_id in door_id_sequence)
             result.append("\n")
