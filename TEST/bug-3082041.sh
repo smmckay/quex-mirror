@@ -14,7 +14,8 @@ g++ -I$QUEX_PATH -I. test.cpp EasyLexer.cpp -o test \
     -DQUEX_SETTING_BUFFER_SIZE=512 \
     -Wall -Werror >& tmp.txt
 
-valgrind ./test > tmp.txt 2>&1
+valgrind --log-file=tmp-valgrind.log --leak-check=full --show-leak-kinds=all \
+         ./test > tmp.txt 2>&1
 python ../show-valgrind.py tmp.txt
 
 

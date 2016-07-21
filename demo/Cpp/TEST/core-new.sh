@@ -34,7 +34,8 @@ fi
 if [[ "$lexer_name" == "" ]]; then
     lexer_name="./lexer"
 fi
-valgrind --log-file=tmp-valgrind.log --leak-check=full --show-leak-kinds=all $lexer_name $args_to_lexer \
+valgrind --log-file=tmp-valgrind.log --leak-check=full --show-leak-kinds=all \
+         $lexer_name $args_to_lexer \
          > tmp-stdout0.txt 2> tmp-stderr0.txt
 
 

@@ -394,7 +394,8 @@ class PPT_List(list):
         return [], [
             PPT.for_range_skipper(self.terminal_factory, CounterDb.count_command_map, False, 
                                   PatternPriority(MHI, i), 
-                                  self._range_skipper_data(data, CounterDb, OptionsDb), 
+                                  self._range_skipper_data(data, CounterDb, 
+                                                           Loopers.indentation_handler), 
                                   ReloadState)
             for i, data in enumerate(SrSetup)
         ]
@@ -407,19 +408,20 @@ class PPT_List(list):
         return [], [
             PPT.for_range_skipper(terminal_factory, True, 
                                   PatternPriority(MHI, i), 
-                                  self._range_skipper_data(data, CounterDb, OptionsDb), 
+                                  self._range_skipper_data(data, CounterDb, 
+                                                           Loopers.indentation_handler.sm_newline), 
                                   ReloadState)
             for i, data in enumerate(SrSetup)
         ]
 
-    def _range_skipper_data(self, data, CounterDb, OptionsDb):
+    def _range_skipper_data(self, data, CounterDb, IndentationHandler):
         dial_db     = self.terminal_factory.dial_db
         IncidenceDb = self.terminal_factory.incidence_db
         # -- door_id_after: Where to go after the closing character sequence matched:
         #     + Normally: To the begin of the analyzer. Start again.
         #     + End(Sequence) == newline of indentation counter.
         #       => goto indentation counter.
-        if self._match_indentation_counter_newline_pattern(OptionsDb.value("indentation"), 
+        if self._match_indentation_counter_newline_pattern(IndentationHandler,
                                                            data["closer_sequence"]):
             door_id_after = DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)
         else:
@@ -434,11 +436,11 @@ class PPT_List(list):
         my_data["dial_db"]            = dial_db
         return my_data
 
-    def _match_indentation_counter_newline_pattern(self, IndentationSetup, Sequence):
-        if IndentationSetup is None: return False
-        sm_newline = IndentationSetup.sm_newline.get()
-        if sm_newline is None: return False
-        return sm_newline.match_sequence(Sequence)
+    def _match_indentation_counter_newline_pattern(self, indentation_handler, Sequence):
+        if indentation_handler is None: return False
+        indentation_sm_newline = indentation_sm_newline.get()
+        if indentation_sm_newline is None: return False
+        return indentation_sm_newline.match_sequence(Sequence)
 
     def _prepare_indentation_counter(self, MHI, Loopers, CounterDb, ReloadState):
         """Prepare indentation counter. An indentation counter is implemented by 

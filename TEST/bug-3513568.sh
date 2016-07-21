@@ -13,7 +13,8 @@ rm tmp.txt
 ../quex_pathify.sh tmp.log
 
 echo "Only output shall be: No memory leaks!"
-valgrind ./lexer >& tmp.txt
+valgrind --log-file=tmp-valgrind.log --leak-check=full --show-leak-kinds=all \
+         ./lexer >& tmp.txt
 python ../show-valgrind.py tmp.txt
 
 rm tmp.txt

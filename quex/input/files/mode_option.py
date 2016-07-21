@@ -56,7 +56,7 @@ class Loopers:
                 data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
 
             self.skip_range = [
-                finalize_skip_range_data(data)
+                finalize_skip_range_data(data,CaMap)
                 for data in self.skip_range
             ]
 
