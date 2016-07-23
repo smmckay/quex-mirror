@@ -172,7 +172,8 @@ class TerminalFactory:
         else:                  name = ThePattern.pattern_string()
         name = "%s%s" % (NamePrefix, name)
 
-        return self.__terminal(text, Code, name, RequiredRegisterSet=RequiredRegisterSet)
+        return self.__terminal(text, Code, name, IncidenceId=ThePattern.incidence_id, 
+                               RequiredRegisterSet=RequiredRegisterSet)
 
     def __lexeme_flags(self, Code):
         lexeme_begin_f     =    self.on_match.requires_lexeme_begin_f(Lng)      \

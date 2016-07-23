@@ -63,30 +63,6 @@ class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "terminal"))):
         return super(PPT, self).__new__(self, ThePatternPriority, ThePattern, TheTerminal)
 
     @staticmethod
-    @typed(dial_db=DialDB)
-    def for_range_skipper(terminal_factory, CaMap, NestedF, Priority, data, ReloadState):
-        """Generate a PPT for a range skipper.
-        """
-        # -- terminal and code generator
-        pattern = deepcopy(data["opener_pattern"])
-        pattern.set_incidence_id(dial.new_incidence_id())
-        pattern.set_pattern_string("<skip_range>")
-        pattern = pattern.finalize(CaMap)
-
-        if NestedF:
-            name_prefix = "SKIP NESTED RANGE: "
-            code, \
-            required_register_set = skip_nested_range.do(data, ReloadState)
-        else:
-            name_prefix = "SKIP RANGE: "
-            code, \
-            required_register_set = skip_range.do(data, ReloadState)
-
-        terminal = terminal_factory.do_plain(CodeTerminal(code), pattern, name_prefix, 
-                                             RequiredRegisterSet=required_register_set)
-        return PPT(Priority, pattern, terminal)
-
-    @staticmethod
     def for_indentation_handler_newline(MHI, data, ISetup, CounterDb, ReloadState):
         """Generate a PPT for newline, that is:
 
@@ -391,12 +367,20 @@ class PPT_List(list):
         SrSetup = Loopers.skip_range
         if SrSetup is None or len(SrSetup) == 0: return [], []
 
+        def get_terminal(data, ReloadState):
+            code, \
+            required_register_set = skip_range.do(data, ReloadState)
+
+            return self.terminal_factory.do_plain(CodeTerminal(code), 
+                                             data["opener_pattern"], "SKIP RANGE: ", 
+                                             RequiredRegisterSet=required_register_set)
+
         return [], [
-            PPT.for_range_skipper(self.terminal_factory, CounterDb.count_command_map, False, 
-                                  PatternPriority(MHI, i), 
-                                  self._range_skipper_data(data, CounterDb, 
-                                                           Loopers.indentation_handler), 
-                                  ReloadState)
+            PPT(PatternPriority(MHI, i), 
+                data["opener_pattern"],
+                get_terminal(self._range_skipper_data(data, CounterDb, 
+                                                      Loopers.indentation_handler), 
+                             ReloadState)) 
             for i, data in enumerate(SrSetup)
         ]
 
@@ -405,12 +389,20 @@ class PPT_List(list):
         SrSetup = Loopers.skip_nested_range
         if SrSetup is None or len(SrSetup) == 0: return [], []
 
+        def get_terminal(data, ReloadState):
+            code, \
+            required_register_set = skip_nested_range.do(data, ReloadState)
+
+            return self.terminal_factory.do_plain(CodeTerminal(code), 
+                                             data["opener_pattern"], "SKIP NESTED RANGE: ", 
+                                             RequiredRegisterSet=required_register_set)
+
         return [], [
-            PPT.for_range_skipper(terminal_factory, True, 
-                                  PatternPriority(MHI, i), 
-                                  self._range_skipper_data(data, CounterDb, 
-                                                           Loopers.indentation_handler.sm_newline), 
-                                  ReloadState)
+            PPT(PatternPriority(MHI, i), 
+                data["opener_pattern"],
+                get_terminal(self._range_skipper_data(data, CounterDb, 
+                                                      Loopers.indentation_handler), 
+                             ReloadState)) 
             for i, data in enumerate(SrSetup)
         ]
 

@@ -54,6 +54,7 @@ class Loopers:
         if self.skip_range is not None:
             def finalize_skip_range_data(data, CaMap):
                 data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
+                return data
 
             self.skip_range = [
                 finalize_skip_range_data(data,CaMap)
@@ -64,6 +65,7 @@ class Loopers:
             def finalize_skip_nested_range_data(data, CaMap):
                 data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
                 data["closer_pattern"] = data["closer_pattern"].finalize(CaMap)
+                return data
 
             self.skip_nested_range = [
                 finalize_skip_nested_range_data(data)

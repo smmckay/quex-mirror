@@ -46,7 +46,7 @@ class Pattern:
     def has_pre_context(self): 
         return self.sm_pre_context is not None
 
-    def clone_with_new_incidence_id(self, NewIncidenceId=None):
+    def clone_with_new_incidence_id(self, NewIncidenceId=None, PatternString=None):
         """Nothing needs to be done, except the main pattern must be associated
         with the NewIncidenceId.
 
@@ -56,6 +56,7 @@ class Pattern:
         # Once, the incidence id is taken out of the state machine, the main
         # state machine may not have to be cloned either.
         new_sm = self.sm.clone(StateMachineId=NewIncidenceId)
-
+        if PatternString is None: pattern_string = self.__pattern_string
+        else:                     pattern_string = PatternString
         return Pattern(new_sm.get_id(), new_sm, self.sm_pre_context, self.sm_bipd,
-                       self.lcci, self.__pattern_string, self.sr)
+                       self.lcci, pattern_string, self.sr)
