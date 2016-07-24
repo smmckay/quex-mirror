@@ -1,5 +1,4 @@
 import quex.engine.misc.utf8             as     utf8
-from   quex.engine.misc.string_handling  import safe_string
 import quex.engine.misc.error            as     error
 from   quex.blackboard                   import setup as Setup, \
                                                 Lng
@@ -52,7 +51,7 @@ def get_on_skip_range_open(OnSkipRangeOpen, CloserPattern, NestedF=False):
         return "%s\n" % Lng.PURE_RETURN
 
     txt_entry = Lng.DEFINE("Delimiter", 
-                           '"%s"' % safe_string(CloserPattern.pattern_string()))
+                           '"%s"' % Lng.SAFE_STRING(CloserPattern.pattern_string()))
     txt_exit  = Lng.UNDEFINE("Delimiter")
     if NestedF:
         txt_entry += Lng.DEFINE("Counter", 'counter')

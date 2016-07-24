@@ -65,7 +65,7 @@ basic_functionality(QUEX_NAME(Buffer)* me, const char* ReferenceFileName)
                "##  => redirect to file, e.g. 'tmp.dat'\n"
                "##  => gnuplot\n"
                "##     > hist(x,width)=width*floor(x/width)\n"
-               "##     > set boxwith 1\n"
+               "##     > set boxwitdh 1\n"
                "##     > plot \"tmp.dat\" u (hist($2,1)):(1.0) smooth freq w boxes\n"
                "##     use: $1: histogram of position; \n"
                "##     use: $2: historgram of differences.\n");
@@ -109,8 +109,8 @@ basic_functionality(QUEX_NAME(Buffer)* me, const char* ReferenceFileName)
         if( ! verify_content(me, position, position_limit) ) return false;
     }
 
-    printf("# <terminated: reference-file: %s; sub-tests: %i; checksum: %i; position_limit: %i>\n",
-           ReferenceFileName, (int)i, (int)position, (int)position_limit);
+    printf("# <terminated: reference-file: %s; sub-tests: %i; position_limit: %i>\n",
+           ReferenceFileName, (int)i, (int)position_limit);
     return true;
 }
 

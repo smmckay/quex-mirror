@@ -24,7 +24,7 @@ from   quex.engine.state_machine.core                     import StateMachine
 from   quex.engine.analyzer.door_id_address_label         import DoorID
 import quex.engine.analyzer.core                          as     analyzer_generator
 import quex.engine.state_machine.algorithm.beautifier     as     beautifier
-from   quex.engine.analyzer.door_id_address_label         import dial_db
+from   quex.engine.analyzer.door_id_address_label         import DialDB
 from   quex.engine.analyzer.transition_map                import TransitionMap  
 import quex.engine.state_machine.transformation.core      as     bc_factory
 from   quex.blackboard                                    import setup as Setup, \
@@ -33,11 +33,12 @@ from   quex.blackboard                                    import setup as Setup,
                                                                  Lng
 from   collections import defaultdict
 
+dial_db = DialDB()
+
 Setup.language_db = languages.db["C++"]
 Setup.buffer_lexatom_type = "uint32_t"
 Setup.buffer_codec_set(bc_factory.do("unicode", None), -1)
 
-dial_db.clear()
 
 if "--hwut-info" in sys.argv:
     print "Single State: Transition Code Generation;"
@@ -125,20 +126,21 @@ def prepare(tm):
     return iid_map
 
 def get_transition_function(iid_map, Codec):
+    global dial_db
     if Codec == "UTF8": Setup.buffer_codec_set(bc_factory.do("utf8"), 1)
     else:               Setup.buffer_codec_set(bc_factory.do("unicode"), -1)
 
     sm        = StateMachine.from_IncidenceIdMap(iid_map)
     dummy, sm = Setup.buffer_codec.do_state_machine(sm, beautifier)
-    analyzer  = analyzer_generator.do(sm, engine.CHARACTER_COUNTER)
+    analyzer  = analyzer_generator.do(sm, engine.CHARACTER_COUNTER, dial_db=dial_db)
     tm_txt    = do_analyzer(analyzer)
-    tm_txt    = Lng.GET_PLAIN_STRINGS(tm_txt)
+    tm_txt    = Lng.GET_PLAIN_STRINGS(tm_txt, dial_db=dial_db)
     tm_txt.append("\n")
     #label   = dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.MATCH_FAILURE))
 
     for character_set, iid in iid_map:
-        tm_txt.append("%s return (int)%s;\n" % (Lng.LABEL(DoorID.incidence(iid)), iid))
-    tm_txt.append("%s return (int)-1;\n" % Lng.LABEL(DoorID.drop_out(-1)))
+        tm_txt.append("%s return (int)%s;\n" % (Lng.LABEL(DoorID.incidence(iid, dial_db)), iid))
+    tm_txt.append("%s return (int)-1;\n" % Lng.LABEL(DoorID.drop_out(-1, dial_db)))
 
     return "".join(tm_txt)
 
@@ -250,8 +252,8 @@ def get_main_function(tm0, TranstionTxt, Codec):
     txt = txt.replace("$$TRANSITION$$",    indent(TranstionTxt, 4))
     txt = txt.replace("$$PREPARE_INPUT$$", input_preperation)
 
-    door_id = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM)
-    txt = txt.replace("$$ON_BAD_LEXATOM$$", dial_db.get_label_by_door_id(door_id))
+    door_id = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db)
+    txt = txt.replace("$$ON_BAD_LEXATOM$$", Lng.LABEL_STR(door_id, dial_db))
 
     txt = txt.replace("MATCH_FAILURE", "((int)-1)")
     return txt

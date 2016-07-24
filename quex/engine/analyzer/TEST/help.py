@@ -1,4 +1,5 @@
 import quex.engine.analyzer.core                   as     core
+from   quex.engine.analyzer.door_id_address_label  import DialDB
 import quex.input.regular_expression.engine        as     regex
 import quex.engine.analyzer.optimizer              as     optimizer
 import quex.engine.analyzer.track_analysis         as     track_analysis
@@ -27,13 +28,10 @@ def if_DRAW_in_sys_argv(sm):
     sys.exit()
 
 def prepare(PatternStringList, GetPreContextSM_F=False):
-    pattern_list = map(lambda x: regex.do(x, {}), PatternStringList)
-    for pattern in pattern_list:
-        pattern.mount_post_context_sm()
-        pattern.mount_pre_context_sm()
+    pattern_list = map(lambda x: regex.do(x, {}).finalize(None), PatternStringList)
 
     if GetPreContextSM_F:
-        state_machine_list = [ pattern.pre_context_sm for pattern in pattern_list ]
+        state_machine_list = [ pattern.sm_pre_context for pattern in pattern_list ]
     else:
         state_machine_list = [ pattern.sm for pattern in pattern_list ]
 
@@ -91,7 +89,7 @@ def test(SM, EngineType = engine.FORWARD, PrintPRM_F = False):
     
     print SM.get_string(NormalizeF=True, OriginalStatesF=False)
 
-    plain = core.Analyzer.from_StateMachine(SM, EngineType)
+    plain = core.Analyzer.from_StateMachine(SM, EngineType, dial_db=DialDB())
 
     # Print plain analyzer, note down what changed during optimization
     states_txt_db = print_analyzer(plain)

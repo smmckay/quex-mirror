@@ -28,7 +28,7 @@ class Pattern:
             Tells how to determine the change of line and column 
             number upon match of this pattern.
     """
-    @typed(LCCI=SmLineColumnCountInfo, PatternString=(str,unicode), Sr=SourceRef)
+    @typed(LCCI=(None, SmLineColumnCountInfo), PatternString=(str,unicode), Sr=SourceRef)
     def __init__(self, IncidenceId, Sm, PreContextSm, BipdSm, LCCI, PatternString, Sr):
         assert IncidenceId == Sm.get_id()
         self.incidence_id           = IncidenceId

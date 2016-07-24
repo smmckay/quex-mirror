@@ -5,7 +5,6 @@ from   quex.engine.pattern                         import Pattern
 from   quex.engine.analyzer.terminal.core          import Terminal
 from   quex.engine.analyzer.door_id_address_label  import DoorID
 from   quex.engine.misc.tools                      import typed
-from   quex.engine.misc.string_handling            import safe_string
 
 from   quex.output.cpp.counter_for_pattern         import map_SmLineColumnCountInfo_to_code
 
@@ -91,7 +90,7 @@ class TerminalFactory:
             Lng.GOTO(DoorID.continue_with_on_after_match(self.dial_db), self.dial_db)
         ])
         t = self.__terminal(text, Code, 
-                            safe_string(ThePattern.pattern_string()),
+                            ThePattern.pattern_string(),
                             IncidenceId            = ThePattern.incidence_id,
                             LexemeBeginF           = lexeme_begin_f,
                             LexemeTerminatingZeroF = terminating_zero_f)
@@ -169,7 +168,7 @@ class TerminalFactory:
         )
 
         if ThePattern is None: name = "<no name>"
-        else:                  name = ThePattern.pattern_string()
+        else:                  name = ThePattern.pattern_string() 
         name = "%s%s" % (NamePrefix, name)
 
         return self.__terminal(text, Code, name, IncidenceId=ThePattern.incidence_id, 

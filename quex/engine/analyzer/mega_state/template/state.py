@@ -27,7 +27,8 @@ class TemplateState(MegaState):
         transition_map, target_scheme_n = combine_maps(StateA.transition_map, StateB.transition_map)
 
         ski_db = StateKeyIndexDB(StateA.state_index_sequence() + StateB.state_index_sequence())
-        MegaState.__init__(self, index.get(), transition_map, ski_db)
+        MegaState.__init__(self, index.get(), transition_map, ski_db, 
+                           dial_db=StateA.entry.dial_db)
 
         self.uniform_entry_OpList = UniformObject.from_iterable((
                                                        StateA.uniform_entry_OpList,
@@ -103,7 +104,8 @@ class PseudoTemplateState(MegaState):
         adapted_transition_map = transition_map.relate_to_TargetByStateKeys(state_index, 
                                                                             DropOutCatcher)
         ski_db                 = StateKeyIndexDB([state_index])
-        MegaState.__init__(self, state_index, adapted_transition_map, ski_db)
+        MegaState.__init__(self, state_index, adapted_transition_map, ski_db, 
+                           dial_db=Represented_AnalyzerState.entry.dial_db)
 
         # Uniform Entry: In contrast to path compression, here we consider 
         #                all entries into the MegaState. 

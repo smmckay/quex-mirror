@@ -6,20 +6,22 @@ from StringIO import StringIO
 from tempfile import mkstemp
 sys.path.insert(0, os.environ["QUEX_PATH"])
 #
-from   quex.input.files.mode                       import PatternActionPair, IncidenceDB
+from   quex.input.code.base                        import SourceRef_VOID
+from   quex.input.files.mode                       import IncidenceDB
+from   quex.input.files.specifier.mode             import ModeDocumentation
 from   quex.input.regular_expression.auxiliary     import PatternShorthand
 import quex.input.regular_expression.engine        as     regex
 from   quex.input.regular_expression.exception     import RegularExpressionException
 from   quex.input.code.core                        import CodeTerminal
 from   quex.input.files.specifier.counter          import LineColumnCount_Default
-from   quex.engine.misc.string_handling            import safe_string
-import quex.engine.state_machine.transformation.core  as     bc_factory
-from   quex.engine.analyzer.door_id_address_label  import DoorID, \
-                                                          dial_db
+import quex.engine.state_machine.transformation.core  as  bc_factory
+from   quex.engine.analyzer.door_id_address_label  import DoorID, DialDB
 from   quex.engine.analyzer.terminal.core          import Terminal
 from   quex.engine.analyzer.terminal.factory       import TerminalFactory
 from   quex.engine.misc.string_handling            import blue_print
 from   quex.engine.misc.tools                      import all_isinstance
+from   quex.engine.mode                            import Mode
+from   quex.engine.incidence_db                    import IncidenceDB
 import quex.output.core.variable_db                as     variable_db
 from   quex.output.core.variable_db                import VariableDB
 from   quex.output.core.dictionary                 import db
@@ -34,6 +36,9 @@ from   quex.blackboard import E_Compression, \
                               Lng
 
 from   copy import deepcopy
+
+dial_db = DialDB()
+
 # Switch: Removal of source and executable file
 #         'False' --> No removal.
 if False: REMOVE_FILES = True
@@ -354,16 +359,29 @@ def create_common_declarations(Language, QuexBufferSize, TestStr,
 
 def create_state_machine_function(PatternActionPairList, PatternDictionary, 
                                   BufferLimitCode, SecondModeF=False):
+    global dial_db
+    incidence_db = IncidenceDB()
+
+    if not SecondModeF:  sm_name = "Mr"
+    else:                sm_name = "Mrs"
+
+    Setup.analyzer_class_name = sm_name
 
     # (*) Initialize address handling
-    dial_db.clear()     # BEFORE constructor of generator; 
+    dial_db = DialDB()     # BEFORE constructor of generator; 
     variable_db.variable_db.init()  # because constructor creates some addresses.
     blackboard.required_support_begin_of_line_set()
+    terminal_factory = TerminalFactory(sm_name, incidence_db, dial_db)
+
+    # -- Display Setup: Patterns and the related Actions
+    print "(*) Lexical Analyser Patterns:"
+    for pair in PatternActionPairList:
+        print "%20s --> %s" % (pair[0], pair[1])
 
     def action(ThePattern, PatternName): 
         txt = []
-        if ThePattern.bipd_sm is not None:
-            TerminalFactory.do_bipd_entry_and_return(txt, pattern)
+        if ThePattern.sm_bipd is not None:
+            terminal_factory.do_bipd_entry_and_return(txt, pattern)
 
         txt.append("%s\n" % Lng.STORE_LAST_CHARACTER(blackboard.required_support_begin_of_line()))
         txt.append("%s\n" % Lng.LEXEME_TERMINATING_ZERO_SET(True))
@@ -377,75 +395,62 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
         else:                         txt.append("return true;\n")
 
 
-        txt.append("%s\n" % Lng.GOTO(DoorID.continue_with_on_after_match()))
+        txt.append("%s\n" % Lng.GOTO(DoorID.continue_with_on_after_match(dial_db), dial_db))
         ## print "#", txt
         return CodeTerminal(txt)
-    
-    # -- Display Setup: Patterns and the related Actions
-    print "(*) Lexical Analyser Patterns:"
-    for pair in PatternActionPairList:
-        print "%20s --> %s" % (pair[0], pair[1])
-
-    if not SecondModeF:  sm_name = "Mr"
-    else:                sm_name = "Mrs"
-
-    Setup.analyzer_class_name = sm_name
     
     pattern_action_list = [
         (regex.do(pattern_str, PatternDictionary), action_str)
         for pattern_str, action_str in PatternActionPairList
     ]
     
-    support_begin_of_line_f = False
+    ca_map       = LineColumnCount_Default().count_command_map
+    pattern_list = []
+    terminal_db  = {}
     for pattern, action_str in pattern_action_list:
-        support_begin_of_line_f |= pattern.pre_context_trivial_begin_of_line_f
+        pattern  = pattern.finalize(ca_map)
+        name     = Lng.SAFE_STRING(pattern.pattern_string())
+        terminal = Terminal(action(pattern, action_str), name, dial_db=dial_db)
+        terminal.set_incidence_id(pattern.incidence_id)
 
-    for pattern, action_str in pattern_action_list:
-        pattern.prepare_count_info(LineColumnCount_Default(), CodecTrafoInfo=None)
-        pattern.mount_post_context_sm()
-        pattern.mount_pre_context_sm()
-        pattern.cut_character_list(signal_character_list(Setup))
+        pattern_list.append(pattern)
+        terminal_db[pattern.incidence_id] = terminal
 
     # -- PatternList/TerminalDb
     #    (Terminals can only be generated after the 'mount procedure', because, 
     #     the bipd_sm is generated through mounting.)
-    on_failure              = CodeTerminal(["return false;\n"])
-    support_begin_of_line_f = False
-    terminal_db             = {
+    on_failure = CodeTerminal(["return false;\n"])
+    terminal_db.update({
         E_IncidenceIDs.MATCH_FAILURE: Terminal(on_failure, "FAILURE", 
-                                               E_IncidenceIDs.MATCH_FAILURE),
+                                               E_IncidenceIDs.MATCH_FAILURE,
+                                               dial_db=dial_db),
         E_IncidenceIDs.END_OF_STREAM: Terminal(on_failure, "END_OF_STREAM", 
-                                               E_IncidenceIDs.END_OF_STREAM),
+                                               E_IncidenceIDs.END_OF_STREAM,
+                                               dial_db=dial_db),
         E_IncidenceIDs.BAD_LEXATOM:   Terminal(on_failure, "BAD_LEXATOM", 
-                                               E_IncidenceIDs.BAD_LEXATOM),
+                                               E_IncidenceIDs.BAD_LEXATOM,
+                                               dial_db=dial_db),
         E_IncidenceIDs.OVERFLOW:      Terminal(on_failure, "NO_SPACE_TO_LOAD", 
-                                               E_IncidenceIDs.OVERFLOW),
+                                               E_IncidenceIDs.OVERFLOW,
+                                               dial_db=dial_db),
         E_IncidenceIDs.LOAD_FAILURE:  Terminal(on_failure, "LOAD_FAILURE", 
-                                               E_IncidenceIDs.LOAD_FAILURE),
-    }
-    for pattern, action_str in pattern_action_list:
-        name     = safe_string(pattern.pattern_string())
-        terminal = Terminal(action(pattern, action_str), name)
-        terminal.set_incidence_id(pattern.incidence_id())
-        terminal_db[pattern.incidence_id()] = terminal
+                                               E_IncidenceIDs.LOAD_FAILURE,
+                                               dial_db=dial_db),
+    })
 
-    # -- create default action that prints the name and the content of the token
-    #    store_last_character_str = ""
-    #    if support_begin_of_line_f:
-    #        store_last_character_str  = "    %s = %s;\n" % \
-    #                                    ("me->buffer._lexatom_before_lexeme_start", 
-    #                                     "*(me->buffer._read_p - 1)")
-    #    set_terminating_zero_str  = "    QUEX_LEXEME_TERMINATING_ZERO_SET(&me->buffer);\n"
-    #    prefix = store_last_character_str + set_terminating_zero_str
+    mode = Mode(sm_name, SourceRef_VOID, pattern_list, terminal_db, incidence_db,
+                dial_db=dial_db,
+                RunTimeCounterDb=None, ReloadStateForward=None, 
+                Documentation=ModeDocumentation([],[],[],[],[]))
 
     print "## (1) code generation"    
 
-    pattern_list = [ pattern for pattern, action_str in pattern_action_list ]
-    function_body, variable_definitions = cpp_generator.do_core(pattern_list, terminal_db)
+    function_body, \
+    variable_definitions = cpp_generator.do_core(mode)
     function_body += "if(0) { __QUEX_COUNT_VOID((QUEX_TYPE_ANALYZER*)0, (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0); }\n"
-    function_txt                        = cpp_generator.wrap_up(sm_name, function_body, 
-                                                                variable_definitions, 
-                                                                ModeNameList=[])
+    function_txt  = cpp_generator.wrap_up(sm_name, function_body, 
+                                          variable_definitions, 
+                                          ModeNameList=[], dial_db=dial_db)
 
     assert all_isinstance(function_txt, str)
 

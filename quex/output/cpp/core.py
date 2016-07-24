@@ -38,7 +38,6 @@ def do_core(Mode):
     This happens through function 'wrap_up()'.
     """
     # Prepare the combined state machines and terminals 
-    esms = Mode
     TerminalDb         = Mode.terminal_db
     ReloadStateForward = Mode.reload_state_forward
     OnAfterMatchCode   = Mode.incidence_db.get_CodeTerminal(E_IncidenceIDs.AFTER_MATCH)
@@ -52,21 +51,21 @@ def do_core(Mode):
     # (*) Pre Context State Machine
     #     (If present: All pre-context combined in single backward analyzer.)
     pre_context, \
-    pre_analyzer = generator.do_pre_context(esms.pre_context_sm,
-                                            esms.pre_context_sm_id_list,
+    pre_analyzer = generator.do_pre_context(Mode.pre_context_sm,
+                                            Mode.pre_context_sm_id_list,
                                             dial_db)
     # assert all_isinstance(pre_context, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Backward input position detection
     #     (Seldomly present -- only for Pseudo-Ambiguous Post Contexts)
-    bipd                 = generator.do_backward_read_position_detectors(esms.bipd_sm_db,
+    bipd                 = generator.do_backward_read_position_detectors(Mode.bipd_sm_db,
                                                                          dial_db)
     # assert all_isinstance(bipd, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Main State Machine -- try to match core patterns
     #     Post-context handling is webbed into the main state machine.
     main, \
-    main_analyzer        = generator.do_main(esms.sm, ReloadStateForward, 
+    main_analyzer        = generator.do_main(Mode.sm, ReloadStateForward, 
                                              dial_db)
     # assert all_isinstance(main, (IfDoorIdReferencedCode, int, str, unicode))
 
@@ -84,7 +83,7 @@ def do_core(Mode):
     # assert all_isinstance(reload_procedures, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Re-entry preparation
-    reentry_preparation  = generator.do_reentry_preparation(esms.pre_context_sm_id_list,
+    reentry_preparation  = generator.do_reentry_preparation(Mode.pre_context_sm_id_list,
                                                             OnAfterMatchCode, 
                                                             dial_db)
 

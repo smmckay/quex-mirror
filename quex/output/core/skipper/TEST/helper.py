@@ -13,7 +13,7 @@ from   quex.output.core.base                         import do_state_router
 from   quex.engine.state_machine.core                import StateMachine
 from   quex.engine.analyzer.door_id_address_label    import get_plain_strings
 from   quex.input.files.specifier.counter            import LineColumnCount_Default
-from   quex.input.regular_expression.construct       import Pattern
+from   quex.engine.pattern                           import Pattern
 import quex.engine.analyzer.engine_supply_factory    as     engine
 import quex.engine.state_machine.transformation.core as     bc_factory
 
@@ -38,7 +38,7 @@ def __prepare(Language, TokenQueueF=False):
         end_str += "#   undef self\n"
 
     __Setup_init_language_database(Language)
-    dial_db.clear()
+    dial_db = DialDB()
     variable_db.init()
 
     return end_str
@@ -58,9 +58,11 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
         "character_set":        TriggerSet, 
         "counter_db":           LineColumnCount_Default(),
         "require_label_SKIP_f": False, 
+        "dial_db":              dial_db
     }
     skipper_code, \
-    loop_map      = character_set_skipper.do(data, Analyzer.reload_state)
+    loop_map,     \
+    required_register_set = character_set_skipper.do(data, Analyzer.reload_state)
 
     if InitialSkipF: marker_char_list = TriggerSet.get_number_list()
     else:            marker_char_list = []
@@ -91,6 +93,7 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
         "on_skip_range_open": CodeFragment([end_str]),
         "door_id_after":      DoorID.continue_without_on_after_match(),
         "counter_db":         LineColumnCount_Default(),
+        "dial_db":            dial_db,
     }
 
     skipper_code = range_skipper.do(data, Analyzer.reload_state)
@@ -118,6 +121,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
         "on_skip_range_open": CodeFragment([end_str]),
         "door_id_after":      DoorID.continue_without_on_after_match(),
         "counter_db":         LineColumnCount_Default(),
+        "dial_db":            dial_db,
     }
 
     skipper_code = nested_range_skipper.do(data, Analyzer.reload_state)
@@ -139,6 +143,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
         "default_indentation_handler_f": True,
         "mode_name":                     "Test",
         "sm_suppressed_newline":         None,
+        "dial_db":                       dial_db,
     }
 
     code = [ "%s\n" % Lng.LABEL(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER)) ]
@@ -167,7 +172,7 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
                                       TokenQueueF         = TokenQueueF,  
                                       QuexBufferFallbackN = 0)
 
-    state_router_txt = do_state_router()
+    state_router_txt = do_state_router(dial_db)
     EngineSourceCode.extend(state_router_txt)
     txt += my_own_mr_unit_test_function(EngineSourceCode, EndStr, LocalVariableDB, 
                                         ReloadF, OnePassOnlyF, DoorIdOnSkipRangeOpen, 
@@ -187,19 +192,19 @@ def my_own_mr_unit_test_function(SourceCode, EndStr,
                                  LocalVariableDB={}, ReloadF=False, OnePassOnlyF=True, DoorIdOnSkipRangeOpen=None, CounterPrintF=True):
     
     if type(SourceCode) == list:
-        plain_code = "".join(Lng.GET_PLAIN_STRINGS(SourceCode))
+        plain_code = "".join(Lng.GET_PLAIN_STRINGS(SourceCode, dial_db))
 
-    label_failure      = dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.MATCH_FAILURE))
-    label_bad_lexatom  = dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM))
-    label_load_failure = dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE))
-    label_overflow     = dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.OVERFLOW))
-    label_eos          = dial_db.get_label_by_door_id(DoorID.incidence(E_IncidenceIDs.END_OF_STREAM))
-    label_reentry      = dial_db.get_label_by_door_id(DoorID.global_reentry())
-    label_reentry2     = dial_db.get_label_by_door_id(DoorID.continue_without_on_after_match())
+    label_failure      = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.MATCH_FAILURE, dial_db))
+    label_bad_lexatom  = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db))
+    label_load_failure = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE, dial_db))
+    label_overflow     = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.OVERFLOW, dial_db))
+    label_eos          = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.END_OF_STREAM, dial_db))
+    label_reentry      = Lng.LABEL_STR(DoorID.global_reentry(dial_db))
+    label_reentry2     = Lng.LABEL_STR(DoorID.continue_without_on_after_match(dial_db))
     if DoorIdOnSkipRangeOpen is not None:
-        label_sro = dial_db.get_label_by_door_id(DoorIdOnSkipRangeOpen)
+        label_sro = Lng.LABEL_STR(DoorIdOnSkipRangeOpen)
     else:
-        label_sro = dial_db.get_label_by_door_id(dial_db.new_door_id())
+        label_sro = Lng.LABEL_STR(dial_db.new_door_id())
 
     if CounterPrintF:
         counter_print_str = "QUEX_NAME(Counter_print_this)(&self.counter);"
@@ -214,16 +219,16 @@ def my_own_mr_unit_test_function(SourceCode, EndStr,
                        ("$$COUNTER_PRINT$$",          counter_print_str),
                        ("$$TERMINAL_END_OF_STREAM$$", label_eos),
                        ("$$TERMINAL_FAILURE$$",       label_failure),
-                       ("$$ON_BAD_LEXATOM$$",            label_bad_lexatom),
-                       ("$$ON_LOAD_FAILURE$$",           label_load_failure),
-                       ("$$NO_MORE_SPACE$$",               label_overflow),
+                       ("$$ON_BAD_LEXATOM$$",         label_bad_lexatom),
+                       ("$$ON_LOAD_FAILURE$$",        label_load_failure),
+                       ("$$NO_MORE_SPACE$$",          label_overflow),
                        ("$$REENTRY$$",                label_reentry),
                        ("$$LEXEME_MACRO_SETUP$$",     Lng.LEXEME_MACRO_SETUP()),
                        ("$$LEXEME_MACRO_CLEAN_UP$$",  Lng.LEXEME_MACRO_CLEAN_UP()),
                        ("$$REENTRY2$$",               label_reentry2),
                        ("$$SKIP_RANGE_OPEN$$",        label_sro),
                        ("$$ONE_PASS_ONLY$$",          "true" if OnePassOnlyF else "false"),
-                       ("$$QUEX_LABEL_STATE_ROUTER$$", dial_db.get_label_by_door_id(DoorID.global_state_router())),
+                       ("$$QUEX_LABEL_STATE_ROUTER$$", Lng.LABEL_STR(DoorID.global_state_router(dial_db))),
                        ("$$END_STR$$",                EndStr)])
 
 def skip_irrelevant_character_function(MarkerCharList):

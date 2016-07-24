@@ -3,8 +3,8 @@
 ##  => redirect to file, e.g. 'tmp.dat'
 ##  => gnuplot
 ##     > hist(x,width)=width*floor(x/width)
-##     > set boxwith 1
+##     > set boxwitdh 1
 ##     > plot "tmp.dat" u (hist($2,1)):(1.0) smooth freq w boxes
 ##     use: $1: histogram of position; 
 ##     use: $2: historgram of differences.
-# <terminated: reference-file: examples/festgemauert.dat; sub-tests: 65536; checksum: 2; position_limit: 27>
+# <terminated: reference-file: examples/festgemauert.dat; sub-tests: 65536; position_limit: 27>

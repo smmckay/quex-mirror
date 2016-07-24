@@ -4,6 +4,7 @@ import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
+from   quex.engine.analyzer.door_id_address_label  import DialDB
 import quex.input.regular_expression.engine       as regex
 import quex.engine.analyzer.core                  as core
 import quex.engine.analyzer.position_register_map as position_register_map
@@ -82,7 +83,7 @@ print sm.get_string(OriginalStatesF=False)
 # For DEBUG purposes: specify 'DRAW' on command line (in sys.argv)
 help.if_DRAW_in_sys_argv(sm)
 
-analyzer = core.Analyzer.from_StateMachine(sm, engine.FORWARD)
+analyzer = core.Analyzer.from_StateMachine(sm, engine.FORWARD, dial_db=DialDB())
 
 print "Positioning Info __________________________________"
 position_register_map.print_this(analyzer)

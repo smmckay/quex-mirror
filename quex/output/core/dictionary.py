@@ -444,6 +444,13 @@ class Lng_Cpp(dict):
         else:
             assert False, "Unknown command '%s'" % Op.id
 
+    def SAFE_STRING(self, String):
+        def get(Letter):
+            if Letter in ['\\', '"', '\n', '\t', '\r', '\a', '\v']: return "\\" + Letter
+            else:                                                   return Letter 
+
+        return "".join(get(letter) for letter in String)
+
     def TERMINAL_CODE(self, TerminalStateList, TheAnalyzer, dial_db): 
         text = [
             cpp._terminal_state_prolog
@@ -453,7 +460,7 @@ class Lng_Cpp(dict):
             terminal_door_id_list.append(terminal.door_id)
 
             t_txt = ["%s\n    __quex_debug(\"* TERMINAL %s\\n\");\n" % \
-                     (self.LABEL(terminal.door_id), terminal.name())]
+                     (self.LABEL(terminal.door_id), self.SAFE_STRING(terminal.name()))]
             code  = terminal.code(TheAnalyzer)
             assert none_isinstance(code, list)
             t_txt.extend(code)
@@ -491,6 +498,10 @@ class Lng_Cpp(dict):
     @typed(DoorId=DoorID)
     def LABEL(self, DoorId):
         return "%s:" % self.LABEL_STR_BY_ADR(DoorId.related_address)
+
+    @typed(DoorId=DoorID)
+    def LABEL_STR(self, DoorId):
+        return "%s" % self.LABEL_STR_BY_ADR(DoorId.related_address)
 
     def LABEL_STR_BY_ADR(self, Adr):
         return "_%s" % Adr

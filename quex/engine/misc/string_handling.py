@@ -78,13 +78,6 @@ def tex_safe(Str):
 
     return Str
 
-def safe_string(String):
-    def get(Letter):
-        if Letter in ['\\', '"', '\n', '\t', '\r', '\a', '\v']: return "\\" + Letter
-        else:                                                   return Letter 
-
-    return "".join(get(letter) for letter in String)
-
 def pretty_code(Code, Base=4):
     """-- Delete empty lines at the beginning
        -- Delete empty lines at the end

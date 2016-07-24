@@ -224,9 +224,12 @@ class Pattern_Prep(object):
             return self.__finalized_self
 
         # Count information must be determined BEFORE transformation!
-        lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, self.sm, 
-                                                       self.pre_context_trivial_begin_of_line_f, 
-                                                       Setup.buffer_codec)
+        if CaMap is not None:
+            lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, self.sm, 
+                                                           self.pre_context_trivial_begin_of_line_f, 
+                                                           Setup.buffer_codec)
+        else: 
+            lcci = None
 
         # (*) Transform all state machines into buffer codec
         #     => may change state machine id 

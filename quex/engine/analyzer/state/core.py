@@ -184,7 +184,7 @@ class AnalyzerState(Processor):
                 for number_set, target_door_id in self.transition_map
             )
         else:
-            txt.append("  .transition_map:\n")
+            pass # txt.append("  .transition_map:\n")
         txt.append("\n")
         return txt
 
