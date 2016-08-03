@@ -56,6 +56,7 @@ class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index", "related_a
 
         # If the DoorID object already exists, than do not generate a second one.
         result = dial_db.find_door_id(StateIndex, DoorIndex)
+
         if result is not None: return result
 
         # Any created DoorID must be properly registered.
@@ -120,12 +121,12 @@ class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index", "related_a
 #
 # (For ease: make it globally unique, not only mode-unique)
 #
-__incidence_id_i = long(-1)
-
 def new_incidence_id():
-    global __incidence_id_i 
-    __incidence_id_i += 1
-    return __incidence_id_i
+    """Incidence ids are used as StateMachine-ids => they MUST be aligned.
+    TODO: They are actually the same. 
+          Replace 'state_machine_id' by 'incidence_id'.
+    """
+    return sm_index.get_state_machine_id()
 
 
 class DialDB(object):
@@ -210,7 +211,7 @@ class DialDB(object):
 
     def register_door_id(self, DoorId):
         if False: # True/False activates debug messages
-            self.__debug_address_generation(DoorId, DoorId.related_address, 17)
+            self.__debug_address_generation(DoorId, DoorId.related_address, 16)
 
         sub_db = self.__door_id_db.get(DoorId.state_index)
         if sub_db is None:
@@ -232,7 +233,7 @@ class DialDB(object):
 
     def mark_address_as_gotoed(self, Address):
         if False:
-            self.__debug_gotoed_address(Address, 17)
+            self.__debug_gotoed_address(Address, 39)
         self.__gotoed_address_set.add(Address)
 
     def mark_address_as_routed(self, Address):
@@ -242,7 +243,8 @@ class DialDB(object):
         self.mark_address_as_gotoed(Address)
 
     def map_incidence_id_to_state_index(self, IncidenceId):
-        assert isinstance(IncidenceId, (int, long)) or IncidenceId in E_IncidenceIDs, \
+        assert    isinstance(IncidenceId, (int, long)) \
+               or IncidenceId in E_IncidenceIDs, \
                "Found <%s>" % IncidenceId
 
         index = self.__map_incidence_id_to_state_index.get(IncidenceId)
@@ -252,6 +254,7 @@ class DialDB(object):
 
         if False:
             self.__debug_incidence_generation(IncidenceId, index)
+
         return index
     
 class DoorID_Scheme(tuple):

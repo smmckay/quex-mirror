@@ -27,9 +27,11 @@ def test(TestStr):
     compile_and_run(Language, code_str,
                     StrangeStream_str=StrangeStream_str)
 
-test("abcdefg*/hijklmnop*/qrstuvw*/xyz*/ok")
-print "#quexit:"; exit(1)
-test("*/hijklmnop*/qrstuvw*/xyz*/")
-test("a*/h*/*/*/")
+if True:
+    test("abcdefg*/hijklmnop*/qrstuvw*/xyz*/ok")
+if True:
+    test("*/hijklmnop*/qrstuvw*/xyz*/")
+if True:
+    test("a*/h*/*/*/")
 
 

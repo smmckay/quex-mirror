@@ -1,7 +1,5 @@
 ## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
+g++ -Wall -Werror -Wno-error=unused-function   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
 ## (*) running the test
 (*) test string: 
 'abcdefg*/hijklmnop*/qrstuvw*/xyz*/ok'
@@ -9,34 +7,31 @@ g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 9;
    _column_number_at_end   = 10;
 next letter: <h>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 11;
    _column_number_at_end   = 12;
 next letter: <q>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 9;
    _column_number_at_end   = 10;
 next letter: <x>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 5;
    _column_number_at_end   = 6;
 next letter: <o>
 end
   ''
-
 ## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
+g++ -Wall -Werror -Wno-error=unused-function   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
 ## (*) running the test
 (*) test string: 
 '*/hijklmnop*/qrstuvw*/xyz*/'
@@ -44,33 +39,30 @@ g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 2;
    _column_number_at_end   = 3;
 next letter: <h>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 11;
    _column_number_at_end   = 12;
 next letter: <q>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 9;
    _column_number_at_end   = 10;
 next letter: <x>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 5;
    _column_number_at_end   = 6;
 end
   ''
-
 ## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
+g++ -Wall -Werror -Wno-error=unused-function   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
 ## (*) running the test
 (*) test string: 
 'a*/h*/*/*/'
@@ -78,26 +70,25 @@ g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 3;
    _column_number_at_end   = 4;
 next letter: <h>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 3;
    _column_number_at_end   = 4;
 next letter: <*>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 2;
    _column_number_at_end   = 3;
 next letter: <*>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 2;
    _column_number_at_end   = 3;
 end
   ''
-

@@ -25,10 +25,12 @@ def do(High, Low):
     #         along paths of 'High' that are also inside 'Low'.
     collector = Step1_Walker(High, Low)
     collector.do([(High.init_state_index, Low.init_state_index)])
-    # Result: List of pairs (HighIndex, LowIndex) 
-    #         HighIndex = index of acceptance state in 'High' that has been reached.
-    #         LowIndex  = index of state in 'Low' that was reached when walking
-    #                     along the path to 'HighIndex'.
+    # collector.result: List of pairs (HighIndex, LowIndex) 
+    #
+    #  HighIndex = index of acceptance state in 'High' that has been reached.
+    #  LowIndex  = index of state in 'Low' that was reached when walking
+    #              along the path to 'HighIndex'.
+    #
     if len(collector.result) == 0:
         return False
 
@@ -39,9 +41,9 @@ def do(High, Low):
     # Start searching for diversion from the critical acceptance states in High.
     detector.do(collector.result)
 
-    # Result: True  -- if there are paths in Low that divert
-    #         False -- if all paths from acceptance states in High are 
-    #                  also in Low.
+    # detector.result: True  -- if there are paths in Low that divert
+    #                  False -- if all paths from acceptance states in High are 
+    #                           also in Low.
 
     # RETURNS: 
     #

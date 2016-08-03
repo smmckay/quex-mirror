@@ -701,6 +701,16 @@ class Lng_Cpp(dict):
             for pre_context_id in PreConditionIDList
         ])
 
+    def ON_BAD_INDENTATION(self, OnBadIndentationTxt, BadIndentationIid, dial_db):
+        return [
+            "%s\n" % self.LABEL(DoorID.incidence(BadIndentationIid, dial_db)),
+            "#define BadCharacter (me->buffer._read_p[-1])\n",
+            "%s\n" % OnBadIndentationTxt,
+            "#undef  BadCharacter\n",
+            "%s\n" % self.GOTO(DoorID.global_reentry(dial_db), dial_db)
+        ]
+
+
     def ASSIGN(self, X, Y):
         return "%s = %s;" % (X, Y)
 

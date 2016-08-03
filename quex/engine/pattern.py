@@ -1,6 +1,7 @@
+from   quex.input.code.base                        import SourceRef
+from   quex.engine.state_machine.core              import StateMachine
 from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
-from   quex.input.code.base   import SourceRef
-from   quex.engine.misc.tools import typed, print_callstack
+from   quex.engine.misc.tools                      import typed, print_callstack
 
 
 
@@ -39,6 +40,16 @@ class Pattern:
         self.lcci                   = LCCI
         self.sr                     = Sr
         self.__pattern_string       = PatternString
+
+    @staticmethod
+    def from_character_set(CharacterSet, StateMachineId, Sr, LCCI=None, PatternString="<character set>"):
+        return Pattern(StateMachineId, 
+                       StateMachine.from_character_set(CharacterSet, StateMachineId), 
+                       PreContextSm  = None,
+                       BipdSm        = None, 
+                       LCCI          = LCCI,
+                       PatternString = PatternString,
+                       Sr            = Sr)
 
     def pattern_string(self):
         return self.__pattern_string # May be, later generate it on demand

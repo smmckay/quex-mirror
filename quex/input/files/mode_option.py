@@ -1,16 +1,17 @@
-import quex.input.files.specifier.counter   as     counter
-from   quex.input.files.specifier.counter   import LineColumnCount_Default
-import quex.input.regular_expression.core   as     regular_expression
-from   quex.input.code.base                 import SourceRef
-from   quex.engine.counter                  import LineColumnCount, \
-                                                   IndentationCount
-from   quex.engine.misc.tools               import all_isinstance
-from   quex.engine.misc.tools               import typed, \
-                                                   flatten_list_of_lists
-import quex.engine.misc.error               as     error
-from   quex.engine.misc.file_in             import skip_whitespace, \
-                                                   read_identifier, \
-                                                   EndOfStreamException
+import quex.input.files.specifier.counter    as     counter
+from   quex.input.files.specifier.counter    import LineColumnCount_Default
+import quex.input.regular_expression.core    as     regular_expression
+import quex.input.regular_expression.pattern as     Pattern_Prep
+from   quex.input.code.base                  import SourceRef
+from   quex.engine.counter                   import LineColumnCount, \
+                                                    IndentationCount
+from   quex.engine.misc.tools                import all_isinstance
+from   quex.engine.misc.tools                import typed, \
+                                                    flatten_list_of_lists
+import quex.engine.misc.error                as     error
+from   quex.engine.misc.file_in              import skip_whitespace, \
+                                                    read_identifier, \
+                                                    EndOfStreamException
 
 from   quex.blackboard import mode_prep_prep_db
 import quex.blackboard as     blackboard
@@ -23,16 +24,17 @@ def __get_mode_name_list():
     return mode_prep_prep_db.keys()
 
 class SkipRangeData(dict): 
-    def __init__(self, OpenerPattern, OpenerSequence,
-                 CloserPattern, CloserSequence):
-        self["opener_pattern"]  = OpenerPattern
-        self["opener_sequence"] = OpenerSequence
-        self["closer_pattern"]  = CloserPattern
-        self["closer_sequence"] = CloserSequence
+    def __init__(self, OpenerPattern, CloserPattern):
+        self["opener_pattern"] = OpenerPattern
+        self["closer_pattern"] = CloserPattern
 
 class Loopers:
     """Loopers -- loops that are integrated into the pattern state machine.
     """
+    #@typed(Skip               = (None, [Pattern_Prep]), 
+    #       SkipRange          = (None, [dict]),
+    #       SkipNestedRange    = (None, [dict]),
+    #       IndentationHandler = (None, IndentationCount))
     def __init__(self, Skip, SkipRange, SkipNestedRange, IndentationHandler):
         self.skip                = Skip
         self.skip_range          = SkipRange
@@ -40,6 +42,31 @@ class Loopers:
         self.indentation_handler = IndentationHandler
 
         self.__finalized_f       = False
+
+    def combined_skip(self):
+        """Character Set Skipper: Multiple skippers from different modes are 
+        combined into one pattern.
+
+        RETURNS: [0] Total set of skipped characters
+                 [1] Pattern string for total set of skipped characters
+                 [2] Auxiliary source reference.
+
+        Not all source references can be maintained (only one). It must be 
+        assumed that the necessary checks to report errors have been done at
+        this point in time. The given source reference is 'auxiliary' to 
+        be able to point at least to some position.
+        """
+        assert self.__finalized_f
+
+        iterable           = self.skip.__iter__()
+        pattern, total_set = iterable.next()
+        pattern_str        = pattern.pattern_string()
+        source_reference   = pattern.sr
+        for ipattern, icharacter_set in iterable:
+            total_set.unite_with(icharacter_set)
+            pattern_str += "|" + ipattern.pattern_string()
+
+        return total_set, pattern_str, source_reference
 
     def finalize(self, CaMap):
         if self.__finalized_f: 
@@ -73,7 +100,7 @@ class Loopers:
             ]
 
         if self.indentation_handler is not None:
-            self.indentation_handler.finalize(CaMap)
+            self.indentation_handler = self.indentation_handler.finalize(CaMap)
 
         self.__finalized_f = True
         return self
@@ -333,7 +360,6 @@ def parse(fh, new_mode):
         
     elif identifier == "indentation":
         value = counter.IndentationCount_Prep(fh).parse()
-        value = value.finalize()
         blackboard.required_support_indentation_count_set()
 
     elif identifier == "counter":
@@ -352,9 +378,10 @@ def __parse_skip_option(fh, new_mode, identifier):
     """A skipper 'eats' characters at the beginning of a pattern that belong to
     a specified set of characters. A useful application is most probably the
     whitespace skipper '[ \t\n]'. The skipper definition allows quex to
-    implement a very effective way to skip these regions."""
-
-    pattern, trigger_set = regular_expression.parse_character_set(fh, ">")
+    implement a very effective way to skip these regions.
+    """
+    pattern, \
+    trigger_set = regular_expression.parse_character_set(fh, ">")
 
     skip_whitespace(fh)
 
@@ -386,8 +413,7 @@ def __parse_range_skipper_option(fh, identifier, new_mode):
     elif len(closer_sequence) == 0:
         error.log("Empty sequence for closing delimiter.", fh)
 
-    return SkipRangeData(opener_pattern, opener_sequence, \
-                         closer_pattern, closer_sequence)
+    return SkipRangeData(opener_pattern, closer_pattern)
 
 def read_option_start(fh):
     skip_whitespace(fh)

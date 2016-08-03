@@ -111,7 +111,6 @@ class WalkAlong(TreeWalker):
                 state.add_transition(remainder, index.map_state_combination_to_index(combi))
                 self.result.mount_cloned_subsequent_states(self.original, a_ti, self.operation_index)
 
-        ## print "#1-sub_node_list:", sub_node_list
         return sub_node_list
 
     def on_finished(self, Node):

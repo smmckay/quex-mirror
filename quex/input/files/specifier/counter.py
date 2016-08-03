@@ -105,10 +105,10 @@ class LineColumnCount_Prep(CountBase_Prep):
     @typed(sr=SourceRef, Identifier=(str,unicode))
     def specify(self, Identifier, Pattern, Count, sr):
         if Pattern is None:
-            self.count_command_map.define_else(Identifier, Count, sr)
+            self.count_command_map.define_else(cc_type_db[Identifier], Count, sr)
         else:
             trigger_set = extract_trigger_set(sr, Identifier, Pattern) 
-            self.count_command_map.add(trigger_set, Identifier, Count, sr)
+            self.count_command_map.add(trigger_set, cc_type_db[Identifier], Count, sr)
 
 class IndentationCount_Prep(CountBase_Prep):
     """Indentation counter specification.
@@ -139,7 +139,7 @@ class IndentationCount_Prep(CountBase_Prep):
         sr        = SourceRef.from_FileHandle(fh)
         self.__fh = fh
         self.whitespace_character_set = SourceRefObject("whitespace", None)
-        self.bad_character_set        = SourceRefObject("bad", None)
+        self.bad_space_character_set  = SourceRefObject("bad", None)
         self.sm_newline               = SourceRefObject("newline", None)
         self.sm_newline_suppressor    = SourceRefObject("suppressor", None)
         self.sm_comment               = SourceRefObject("comment", None)
@@ -162,14 +162,22 @@ class IndentationCount_Prep(CountBase_Prep):
             if sm_newline is not None: 
                 self.__specify_newline(sm_newline, SourceRef_DEFAULT)
 
-        # -- consistency
-        self._consistency_check()
+        # Remove elements which are only there to detect interference
+        ignore_set = set([
+            E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR,
+            E_CharacterCountType.X_BEGIN_NEWLINE,
+            E_CharacterCountType.X_END_NEWLINE,
+            E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE
+        ])
 
         # -- post procedure
         ca_map = self._ca_map_specifier.finalize(
                               Setup.buffer_codec.source_set.minimum(), 
                               Setup.buffer_codec.source_set.supremum(), 
                               self.sr)
+
+        # -- consistency
+        self._consistency_check()
 
         if self.sm_newline_suppressor.set_f():
             sm_suppressed_newline = sequentialize.do([self.sm_newline_suppressor.get(),
@@ -182,7 +190,9 @@ class IndentationCount_Prep(CountBase_Prep):
             if SM is None: return None
             return Pattern_Prep(SM, PatternString=PS, Sr=SR)
 
-        return IndentationCount(self.sr, ca_map, 
+        return IndentationCount(self.sr, 
+                                self.whitespace_character_set.get(), 
+                                self.bad_space_character_set.get(), 
                                 get_pattern(self.sm_newline.get(), 
                                             "<indentation newline>",
                                             self.sm_newline.sr),
@@ -201,7 +211,7 @@ class IndentationCount_Prep(CountBase_Prep):
             self.__specify_character_set(self.whitespace_character_set, 
                                          "whitespace", pattern, sr)
         elif identifier == "bad":        
-            self.__specify_character_set(self.bad_character_set, 
+            self.__specify_character_set(self.bad_space_character_set, 
                                          "bad", pattern, sr)
         elif identifier == "newline":    
             self.__specify_newline(pattern.sm, sr)
@@ -216,7 +226,7 @@ class IndentationCount_Prep(CountBase_Prep):
     @typed(sr=SourceRef)
     def __specify_character_set(self, ref, Name, PatternOrNumberSet, sr):
         cset = extract_trigger_set(sr, Name, PatternOrNumberSet)
-        self._ca_map_specifier.add(cset, Name, None, sr)
+        self._ca_map_specifier.add(cset, cc_type_db[Name], None, sr)
         prev_cset = ref.get()
         if prev_cset is None: ref.set(cset, sr)
         else:                 prev_cset.unite_with(cset)
@@ -228,12 +238,16 @@ class IndentationCount_Prep(CountBase_Prep):
         beginning_char_set = Sm.get_beginning_character_set()
         ending_char_set    = Sm.get_ending_character_set()
 
-        self._ca_map_specifier.add(beginning_char_set, "begin(newline)", None, sr)
+        self._ca_map_specifier.add(beginning_char_set, 
+                                   E_CharacterCountType.X_BEGIN_NEWLINE, 
+                                   None, sr)
 
         # Do not consider a character from newline twice
         ending_char_set.subtract(beginning_char_set)
         if not ending_char_set.is_empty():
-            self._ca_map_specifier.add(ending_char_set, "end(newline)", None, sr)
+            self._ca_map_specifier.add(ending_char_set, 
+                                       E_CharacterCountType.X_END_NEWLINE, 
+                                       None, sr)
 
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
         self.sm_newline.set(Sm, sr)
@@ -243,7 +257,8 @@ class IndentationCount_Prep(CountBase_Prep):
         _error_if_defined_before(self.sm_newline_suppressor, sr)
 
         self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
-                                   "begin(newline suppressor)", None, sr)
+                                   E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR,
+                                   None, sr)
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
         self.sm_newline_suppressor.set(Sm, sr)
 
@@ -252,7 +267,8 @@ class IndentationCount_Prep(CountBase_Prep):
         _error_if_defined_before(self.result.sm_comment, sr)
 
         self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
-                                   "begin(comment to newline)", None, sr)
+                                   E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE,
+                                   None, sr)
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
         self.result.sm_comment.set(Sm, sr)
 
@@ -307,11 +323,6 @@ class IndentationCount_Prep(CountBase_Prep):
         return result
 
     def _consistency_check(self):
-        CountBase_Prep._consistency_check(self)
-
-        self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.WHITESPACE)
-        self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.BEGIN_NEWLINE)
-
         if     self.sm_newline_suppressor.get() is not None \
            and self.sm_newline.get() is None:
             error.log("A newline 'suppressor' has been defined.\n"
@@ -359,8 +370,8 @@ class CountActionMap_Prep(object):
 
         return self.__map
 
-    @typed(sr=SourceRef, Identifier=(str,unicode))
-    def define_else(self, Identifier, Value, sr):
+    @typed(sr=SourceRef, Identifier=E_CharacterCountType)
+    def define_else(self, CC_Type, Value, sr):
         """Define the '\else' character set which is resolved AFTER everything has been 
         defined.
         """
@@ -370,17 +381,16 @@ class CountActionMap_Prep(object):
             error.log("'\\else has been defined more than once.", sr, 
                       DontExitF=True)
             error.log("Previously, defined here.", self.__else.sr)
-        self.__else = CountAction(cc_type_db[Identifier], Value, sr)
+        self.__else = CountAction(CC_Type, Value, sr)
 
-    def add(self, CharSet, Identifier, Value, sr):
+    def add(self, CharSet, CC_Type, Value, sr):
         global cc_type_db
         if CharSet.is_empty(): 
             error.log("Empty character set found for '%s'." % Identifier, sr)
-        elif Identifier == "grid":
+        elif CC_Type == E_CharacterCountType.GRID:
             self.check_grid_specification(Value, sr)
-        cc_type = cc_type_db[Identifier]
-        self.check_intersection(cc_type, CharSet, sr)
-        self.__map.append((CharSet, CountAction(cc_type, Value, sr)))
+        self.check_intersection(CC_Type, CharSet, sr)
+        self.__map.append((CharSet, CountAction(CC_Type, Value, sr)))
 
     def check_intersection(self, CcType, CharSet, sr):
         """Check whether the given character set 'CharSet' intersects with 
@@ -392,12 +402,13 @@ class CountActionMap_Prep(object):
             E_CharacterCountType.COLUMN:                   (),
             E_CharacterCountType.GRID:                     (),
             E_CharacterCountType.LINE:                     (),
-            E_CharacterCountType.BEGIN_NEWLINE_SUPPRESSOR: (),
-            E_CharacterCountType.BEGIN_NEWLINE:            (E_CharacterCountType.END_NEWLINE,),
-            E_CharacterCountType.END_NEWLINE:              (E_CharacterCountType.BEGIN_NEWLINE,),
-            E_CharacterCountType.BEGIN_COMMENT_TO_NEWLINE: (), 
             E_CharacterCountType.WHITESPACE:               (),
             E_CharacterCountType.BAD:                      (), 
+            # Only to detect interference
+            E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR: (),
+            E_CharacterCountType.X_BEGIN_NEWLINE:            (E_CharacterCountType.X_END_NEWLINE,),
+            E_CharacterCountType.X_END_NEWLINE:              (E_CharacterCountType.X_BEGIN_NEWLINE,),
+            E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE: (), 
         }[CcType]
 
         interferer = self.find_occupier(CharSet, Tolerated=intersection_tolerated)
@@ -437,9 +448,9 @@ class CountActionMap_Prep(object):
 
     def __get_remaining_set(self):
         ignored = (E_CharacterCountType.BAD, 
-                   E_CharacterCountType.BEGIN_NEWLINE_SUPPRESSOR, 
-                   E_CharacterCountType.BEGIN_NEWLINE, 
-                   E_CharacterCountType.END_NEWLINE) 
+                   E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR, 
+                   E_CharacterCountType.X_BEGIN_NEWLINE, 
+                   E_CharacterCountType.X_END_NEWLINE) 
         result  = NumberSet()
         for character_set, info in self.__map:
             if info.cc_type in ignored: continue
@@ -586,9 +597,9 @@ def LineColumnCount_Default():
 
     if _LineColumnCount_Default is None:
         specifier = CountActionMap_Prep()
-        specifier.add(NumberSet(ord('\n')), "newline", 1, SourceRef_DEFAULT)
-        specifier.add(NumberSet(ord('\t')), "grid",    4, SourceRef_DEFAULT)
-        specifier.define_else("space",   1, SourceRef_DEFAULT)    # Define: "\else"
+        specifier.add(NumberSet(ord('\n')), E_CharacterCountType.LINE, 1, SourceRef_DEFAULT)
+        specifier.add(NumberSet(ord('\t')), E_CharacterCountType.GRID, 4, SourceRef_DEFAULT)
+        specifier.define_else(E_CharacterCountType.COLUMN,   1, SourceRef_DEFAULT)    # Define: "\else"
         count_command_map = specifier.finalize(
             Setup.buffer_codec.source_set.minimum(), 
             Setup.buffer_codec.source_set.supremum(),             # Apply:  "\else"

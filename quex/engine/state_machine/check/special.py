@@ -37,7 +37,6 @@ def get_any():
 
     return result
 
-
 def get_none():
     return StateMachine()
 

@@ -52,6 +52,7 @@ def get(CaMap, Name):
 
     door_id_return = dial_db.new_door_id()
     code,                 \
+    terminal_list,        \
     loop_map,             \
     door_id_beyond,       \
     required_register_set = loop.do(CaMap, 
@@ -60,6 +61,9 @@ def get(CaMap, Name):
                                     EngineType       = engine.CHARACTER_COUNTER, 
                                     dial_db          = dial_db)
 
+    code.extend(
+        generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
+    )
     variable_db.require_registers(required_register_set)
     implementation = __frame(function_name, Lng.INPUT_P(), code, door_id_return, 
                              door_id_beyond, dial_db) 

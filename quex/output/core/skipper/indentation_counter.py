@@ -1,8 +1,10 @@
+from   quex.input.code.core                         import CodeTerminal
 from   quex.engine.analyzer.door_id_address_label   import DoorID
 from   quex.engine.operations.operation_list        import Op
 import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.counter                          import IndentationCount, \
+                                                           CountActionMap, \
                                                            LineColumnCount
 import quex.output.core.loop                        as     loop
 from   quex.blackboard                              import Lng, \
@@ -10,7 +12,7 @@ from   quex.blackboard                              import Lng, \
                                                            E_R, \
                                                            setup as Setup
 
-def do(Data, ReloadState, dial_db):
+def do(Data, ReloadState):
     """________________________________________________________________________
     Counting whitespace at the beginning of a line.
 
@@ -67,17 +69,20 @@ def do(Data, ReloadState, dial_db):
     the analyzer will immediately be back to the indentation counter state.
     ___________________________________________________________________________
     """
-    counter_db            = Data["counter_db"]
+    ca_map                = Data["ca_map"]
     isetup                = Data["indentation_setup"]
     incidence_db          = Data["incidence_db"]
-    default_ih_f          = Data["default_indentation_handler_f"]
     mode_name             = Data["mode_name"]
-    sm_suppressed_newline = Data["sm_suppressed_newline"]
     dial_db               = Data["dial_db"]
-    sm_newline            = isetup.sm_newline.get()
-    sm_comment            = isetup.sm_comment.get()
 
-    assert isinstance(counter_db, LineColumnCount)
+    whitespace_set        = isetup.whitespace_character_set
+    bad_space_set         = isetup.bad_space_character_set
+    sm_newline            = isetup.get_sm_newline()
+    sm_comment            = isetup.get_sm_comment()
+    sm_suppressed_newline = isetup.get_sm_suppressed_newline()
+    default_ih_f          = incidence_db.default_indentation_handler_f()
+
+    assert isinstance(ca_map, CountActionMap)
     assert isinstance(isetup, IndentationCount)
     assert sm_suppressed_newline  is None or sm_suppressed_newline.is_DFA_compliant()
     assert sm_newline is None             or sm_newline.is_DFA_compliant()
@@ -85,19 +90,18 @@ def do(Data, ReloadState, dial_db):
 
     # -- 'on_indentation' == 'on_beyond': 
     #     A handler is called as soon as an indentation has been detected.
-    on_loop_exit = [
-        Op.IndentationHandlerCall(default_ih_f, mode_name),
-        Op.GotoDoorId(DoorID.continue_without_on_after_match(dial_db))
-    ]
-
-    # -- 'on_bad_indentation' is invoked if a character appeared that has been
-    #    explicitly disallowed to be used as indentation.
-    bad_indentation_iid = dial.new_incidence_id() 
-
+    loop_exit_door_id, \
+    ih_call_terminal   = _get_indentation_handler_terminal(default_ih_f, 
+                                                           mode_name,
+                                                           dial_db)
     sm_terminal_list    = _get_state_machine_vs_terminal_list(sm_suppressed_newline, 
-                                                              isetup.sm_newline.get(),
-                                                              isetup.sm_comment.get(), 
-                                                              counter_db) 
+                                                              sm_newline,
+                                                              sm_comment) 
+    if bad_space_set is not None:
+        sm_terminal_list.append(
+            _get_state_machine_vs_terminal_bad_indentation(bad_space_set,
+                                                           incidence_db, dial_db)
+        )
 
     # 'whitespace' --> normal counting
     # 'bad'        --> goto bad character indentation handler
@@ -108,22 +112,36 @@ def do(Data, ReloadState, dial_db):
 
     # (*) Generate Code
     code,                 \
+    terminal_list,        \
     loop_map,             \
     door_id_beyond,       \
-    required_register_set = loop.do(counter_db, 
-                                    OnLoopExit        = on_loop_exit,
+    required_register_set = loop.do(ca_map, 
+                                    OnLoopExitDoorId  = loop_exit_door_id,
                                     EngineType        = engine_type,
                                     ReloadStateExtern = ReloadState,
                                     LexemeMaintainedF = True,
                                     ParallelSmTerminalPairList = sm_terminal_list, 
-                                    dial_db           = dial_db) 
+                                    dial_db           = dial_db,
+                                    LoopCharacterSet  = whitespace_set) 
 
-    _code_terminal_on_bad_indentation_character(code, isetup, mode_name, incidence_db, 
-                                                bad_indentation_iid)
+    return code, terminal_list, required_register_set
 
-    return code, required_register_set
+def _get_indentation_handler_terminal(DefaultIndentationHanderF,
+                                      ModeName, dial_db):
+    code = [
+        Op.IndentationHandlerCall(DefaultIndentationHanderF, ModeName),
+        Op.GotoDoorId(DoorID.continue_without_on_after_match(dial_db))
+    ]
+    incidence_id = dial.new_incidence_id()
+    terminal = Terminal(CodeTerminal(code),
+                                     "CALL INDENTATION HANDLER", 
+                                     incidence_id,
+                                     dial_db=dial_db)
 
-def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline, SmComment, CounterDb): 
+    return DoorID.incidence(incidence_id, dial_db), terminal
+
+def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline, 
+                                        SmComment): 
     """Get a list of pairs (state machine, terminal) for the newline, suppressed
     newline and comment:
 
@@ -133,6 +151,9 @@ def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline, SmCommen
                      then CONTNIUE with column count of whitespace.
     comment --> 'eat' anything until the next newline, then RESTART
                  counting columns of whitespace.
+
+    RETURNS: list of pairs: [0] state machine
+                            [1] terminal
     """
     result = []
     # If nothing is to be done, nothing is appended
@@ -144,6 +165,33 @@ def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline, SmCommen
         assert isinstance(terminal, loop.MiniTerminal)
         assert sm.get_id() == terminal.incidence_id
     return result
+
+def _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
+                                                   incidence_db, dial_db):
+    """Generate state machine that detects the 'bad indentation character'.
+    Generate terminal that emboddies the defined 'bad indentation character
+    handler' from the incidence_dab.
+
+    RETURNS: [0] state machine
+             [1] terminal
+    """
+
+    sm = StateMachine.from_character_set(BadSpaceCharacterSet,
+                                         E_IncidenceIDs.INDENTATION_BAD)
+
+    on_bad_indentation_txt = Lng.SOURCE_REFERENCED(
+        incidence_db[E_IncidenceIDs.INDENTATION_BAD]
+    )
+    code = [
+        Lng.ON_BAD_INDENTATION(on_bad_indentation_txt, 
+                               dial.new_incidence_id(),
+                               dial_db)
+    ]
+    terminal = loop.MiniTerminal(code, "<INDENTATION BAD INDENTATION CHARACTER>", 
+                                 E_IncidenceIDs.INDENTATION_BAD)
+
+    return sm, terminal
+
 
 def _add_pair(psml, SmOriginal, Name):
     """Add a state machine-terminal pair to 'psml'. A terminal is generated
@@ -166,17 +214,4 @@ def _add_pair(psml, SmOriginal, Name):
     # INSTEAD: GOTO 'INDENTATION_HANDLER'
 
     psml.append((sm, terminal))
-
-def _code_terminal_on_bad_indentation_character(code, ISetup, ModeName, 
-                                                incidence_db, BadIndentationIid):
-    if ISetup.bad_character_set.get() is None:
-        return
-    on_bad_indentation_txt = Lng.SOURCE_REFERENCED(incidence_db[E_IncidenceIDs.INDENTATION_BAD])
-    code.extend([
-        "%s\n" % Lng.LABEL(DoorID.incidence(BadIndentationIid, dial_db)),
-        "#define BadCharacter (me->buffer._read_p[-1])\n",
-        "%s\n" % on_bad_indentation_txt,
-        "#undef  BadCharacter\n",
-        "%s\n" % Lng.GOTO(DoorID.global_reentry(dial_db))
-    ])
 

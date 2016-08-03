@@ -103,12 +103,9 @@ E_Count = Enum("VIRGIN",
                "_DEBUG_Count")
 
 E_CharacterCountType = Enum("COLUMN", 
+                            "COLUMN_BEFORE_APPENDIX_SM",
                             "LINE", 
                             "GRID", 
-                            "BEGIN_NEWLINE_SUPPRESSOR",
-                            "BEGIN_NEWLINE",
-                            "BEGIN_COMMENT_TO_NEWLINE",
-                            "END_NEWLINE",
                             "BAD", 
                             "WHITESPACE", 
                             #
@@ -116,6 +113,11 @@ E_CharacterCountType = Enum("COLUMN",
                             "LOOP_EXIT",
                             "BEFORE_RELOAD",
                             "AFTER_RELOAD",
+                            # Only for interference detection
+                            "X_BEGIN_NEWLINE_SUPPRESSOR",
+                            "X_BEGIN_NEWLINE",
+                            "X_BEGIN_COMMENT_TO_NEWLINE",
+                            "X_END_NEWLINE",
                             #
                             "_DEBUG_CharacterCountType")
 

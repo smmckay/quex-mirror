@@ -94,6 +94,7 @@ def do_core(Mode):
 
     # (*) Variable Definitions
     #     (Code that defines all required variables for the analyzer)
+    variable_db.require_registers(Mode.required_register_set)
     variable_definitions = generator.do_variable_definitions()
     # assert all_isinstance(variable_definitions, (IfDoorIdReferencedCode, int, str, unicode))
 

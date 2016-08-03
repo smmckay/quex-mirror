@@ -3,7 +3,7 @@ from   quex.engine.operations.operation_list      import Op
 import quex.output.core.loop                      as     loop
 import quex.engine.analyzer.engine_supply_factory as     engine
 from   quex.engine.analyzer.door_id_address_label import DoorID
-from   quex.engine.counter                        import CountBase
+from   quex.engine.counter                        import CountActionMap
 from   quex.engine.misc.interval_handling         import NumberSet
 from   quex.blackboard                            import Lng
 
@@ -65,13 +65,12 @@ def do(Data, ReloadState):
           then the single state may actually be split into a real state machine of
           states.
     """
-    counter_db    = Data["counter_db"]
+    ca_map        = Data["ca_map"]
     character_set = Data["character_set"]
     dial_db       = Data["dial_db"]
-    assert isinstance(counter_db, CountBase)
+    assert isinstance(ca_map, CountActionMap)
     assert isinstance(character_set, NumberSet)
 
-    ca_map = counter_db.count_command_map
     ca_map = ca_map.pruned_clone(character_set)
 
     engine_type = None # Default
@@ -80,6 +79,7 @@ def do(Data, ReloadState):
     on_loop_exit_door_id = DoorID.continue_without_on_after_match(dial_db)
 
     result,               \
+    terminal_list,        \
     loop_map,             \
     door_id_beyond,       \
     required_register_set = loop.do(ca_map,
@@ -91,4 +91,4 @@ def do(Data, ReloadState):
                                     dial_db           = dial_db)
 
     assert isinstance(result, list)
-    return result, loop_map, required_register_set
+    return result, terminal_list, loop_map, required_register_set

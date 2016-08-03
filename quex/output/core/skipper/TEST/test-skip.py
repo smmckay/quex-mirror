@@ -26,23 +26,25 @@ if Language.find("StrangeStream") != -1:
 trigger_set = NumberSet([Interval(ord('a'), ord('z') + 1), 
                          Interval(ord('A'), ord('Z') + 1)])
 
-TestStr  = "abcdefg_HIJKLMNOP-qrstuvw'XYZ12ok3"
+if True:
+    TestStr  = "abcdefg_HIJKLMNOP-qrstuvw'XYZ12ok3"
 
-compile_and_run(Language, 
-                create_character_set_skipper_code(Language, TestStr, trigger_set),
-                StrangeStream_str=StrangeStream_str)
-# x = 1 / 0
+    compile_and_run(Language, 
+                    create_character_set_skipper_code(Language, TestStr, trigger_set),
+                    StrangeStream_str=StrangeStream_str)
 
-TestStr  = "-hijklmnop_qrstuvw#xyz9"
+if True:
+    TestStr  = "-hijklmnop_qrstuvw#xyz9"
 
-compile_and_run(Language, 
-                create_character_set_skipper_code(Language, TestStr, trigger_set),
-                StrangeStream_str=StrangeStream_str)
+    compile_and_run(Language, 
+                    create_character_set_skipper_code(Language, TestStr, trigger_set),
+                    StrangeStream_str=StrangeStream_str)
 
-TestStr  = "aBcD8"
+if True:
+    TestStr  = "aBcD8"
 
-compile_and_run(Language, 
-                create_character_set_skipper_code(Language, TestStr, trigger_set),
-                StrangeStream_str=StrangeStream_str)
+    compile_and_run(Language, 
+                    create_character_set_skipper_code(Language, TestStr, trigger_set),
+                    StrangeStream_str=StrangeStream_str)
 
 

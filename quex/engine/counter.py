@@ -9,7 +9,7 @@
 #        .--( IndentationCount ---> LineColumnCount )----------.
 #        |                                                     |
 #        | + whitespace_character_set                          |
-#        | + bad_character_set                                 |
+#        | + bad_space_character_set                           |
 #        | + sm_newline                                        |
 #        | + sm_newline_suppressor                             |
 #        | + sm_comment                                        |
@@ -39,12 +39,13 @@ cc_type_db = {
     "space":                     E_CharacterCountType.COLUMN,
     "grid":                      E_CharacterCountType.GRID,
     "newline":                   E_CharacterCountType.LINE,
-    "begin(newline suppressor)": E_CharacterCountType.BEGIN_NEWLINE_SUPPRESSOR,
-    "begin(newline)":            E_CharacterCountType.BEGIN_NEWLINE,
-    "begin(comment to newline)": E_CharacterCountType.BEGIN_COMMENT_TO_NEWLINE,
-    "end(newline)":              E_CharacterCountType.END_NEWLINE,
     "bad":                       E_CharacterCountType.BAD,
     "whitespace":                E_CharacterCountType.WHITESPACE,
+    # Following are only webbed into the 'CA_Map' to detect overlaps:
+    "begin(newline suppressor)": E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR,
+    "begin(newline)":            E_CharacterCountType.X_BEGIN_NEWLINE,
+    "begin(comment to newline)": E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE,
+    "end(newline)":              E_CharacterCountType.X_END_NEWLINE,
 }
 
 cc_type_name_db = dict((value, key) for key, value in cc_type_db.iteritems())
@@ -66,6 +67,9 @@ count_operation_db_without_reference = {
     E_CharacterCountType.LOOP_ENTRY: lambda Parameter, Dummy=None: [ 
     ],
     E_CharacterCountType.LOOP_EXIT: lambda Parameter, Dummy=None: [ 
+    ],
+    E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM: lambda Parameter, ColumnNPerCodeUnit: [
+        Op.ColumnCountAdd(Parameter)
     ],
     E_CharacterCountType.BEFORE_RELOAD: lambda Parameter, Dummy=None: [ 
     ],
@@ -95,6 +99,9 @@ count_operation_db_with_reference = {
         Op.ColumnCountReferencePSet(Parameter) 
     ],
     E_CharacterCountType.LOOP_EXIT: lambda Parameter, ColumnNPerCodeUnit: [ 
+        Op.ColumnCountReferencePDeltaAdd(Parameter, ColumnNPerCodeUnit, False) 
+    ],
+    E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM: lambda Parameter, ColumnNPerCodeUnit: [
         Op.ColumnCountReferencePDeltaAdd(Parameter, ColumnNPerCodeUnit, False) 
     ],
     # BEFORE RELOAD:                                            input_p
@@ -299,19 +306,38 @@ class LineColumnCount(CountBase):
 
 class IndentationCount(LineColumnCount):
     @typed(sr=SourceRef)
-    def __init__(self, SourceReference, CountActionMap, 
+    def __init__(self, SourceReference,  
+                 WhiteSpaceCharacterSet, BadSpaceCharacterSet,
                  PatternNewline, PatternSuppressedNewline, PatternComment):
+        """BadSpaceCharacterSet = None, if there is no definition of bad space.
+        """
         LineColumnCount.__init__(self, SourceReference, None)
-        # self.whitespace_character_set = SourceRefObject("whitespace", None)
-        # self.bad_character_set        = SourceRefObject("bad", None)
+        self.whitespace_character_set   = WhiteSpaceCharacterSet
+        self.bad_space_character_set    = BadSpaceCharacterSet
         self.pattern_newline            = PatternNewline
         self.pattern_suppressed_newline = PatternSuppressedNewline
         self.pattern_comment            = PatternComment
 
     def finalize(self, CaMap):
-        self.pattern_newline.finalize(CaMap)
-        self.pattern_suppressed_newline.finalize(CaMap)
-        self.pattern_comment.finalize(CaMap)
+        self.__finalize(self.pattern_newline, CaMap)
+        self.__finalize(self.pattern_suppressed_newline, CaMap) 
+        self.__finalize(self.pattern_comment, CaMap) 
+
+    def get_sm_newline(self):
+        return self.__get_sm(self.pattern_newline)
+
+    def get_sm_suppressed_newline(self):
+        return self.__get_sm(self.pattern_suppressed_newline)
+
+    def get_sm_comment(self):
+        return self.__get_sm(self.pattern_comment)
+
+    def __finalize(self, P, CaMap):
+        if P: P.finalize(CaMap)
+
+    def __get_sm(self, P):
+        if P: return P.sm
+        else: return None
 
     def __str__(self):
         def cs_str(Name, Cs):
@@ -330,7 +356,7 @@ class IndentationCount(LineColumnCount):
 
         return "".join([
             cs_str("Whitespace", self.whitespace_character_set.get()),
-            cs_str("Bad",        self.bad_character_set.get()),
+            cs_str("Bad",        self.bad_space_character_set.get()),
             sm_str("Newline",    self.sm_newline.get()),
             sm_str("Suppressor", self.sm_newline_suppressor.get()),
             sm_str("Comment",    self.sm_comment.get()),
@@ -340,20 +366,21 @@ def _error_set_intersection(CcType, Before, sr):
     global cc_type_name_db
 
     note_f = False
-    if    CcType         == E_CharacterCountType.END_NEWLINE \
-       or Before.cc_type == E_CharacterCountType.END_NEWLINE:
+    if    CcType         == E_CharacterCountType.X_END_NEWLINE \
+       or Before.cc_type == E_CharacterCountType.X_END_NEWLINE:
         note_f = True
 
     prefix = {
         E_CharacterCountType.COLUMN:                   "",
         E_CharacterCountType.GRID:                     "",
         E_CharacterCountType.LINE:                     "",
-        E_CharacterCountType.BEGIN_NEWLINE_SUPPRESSOR: "beginning ",
-        E_CharacterCountType.BEGIN_NEWLINE:            "beginning ",
-        E_CharacterCountType.END_NEWLINE:              "ending ",
         E_CharacterCountType.BAD:                      "",
         E_CharacterCountType.WHITESPACE:               "",
-        E_CharacterCountType.BEGIN_COMMENT_TO_NEWLINE: "beginning ",
+        # Interference detection only
+        E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR: "beginning ",
+        E_CharacterCountType.X_BEGIN_NEWLINE:            "beginning ",
+        E_CharacterCountType.X_END_NEWLINE:              "ending ",
+        E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE: "beginning ",
     }[CcType]
 
     error.log("The %scharacter set defined in '%s' intersects" % (prefix, cc_type_name_db[CcType]),

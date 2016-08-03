@@ -8,11 +8,12 @@ import quex.output.core.skipper.indentation_counter  as     indentation_counter
 from   quex.output.core.TEST.generator_test          import *
 from   quex.output.core.variable_db                  import variable_db
 from   quex.output.core.TEST.generator_test          import __Setup_init_language_database
-from   quex.input.code.base                          import CodeFragment
+from   quex.input.code.base                          import CodeFragment, SourceRef_VOID
+from   quex.input.files.specifier.counter            import LineColumnCount_Default
+import quex.output.core.base                         as     generator
 from   quex.output.core.base                         import do_state_router
 from   quex.engine.state_machine.core                import StateMachine
 from   quex.engine.analyzer.door_id_address_label    import get_plain_strings
-from   quex.input.files.specifier.counter            import LineColumnCount_Default
 from   quex.engine.pattern                           import Pattern
 import quex.engine.analyzer.engine_supply_factory    as     engine
 import quex.engine.state_machine.transformation.core as     bc_factory
@@ -28,6 +29,7 @@ class MiniAnalyzer:
 Analyzer = MiniAnalyzer()
 
 def __prepare(Language, TokenQueueF=False):
+    global dial_db
     end_str  = '    printf("end\\n");\n'
     if not TokenQueueF:
         end_str += '    return false;\n'
@@ -43,26 +45,36 @@ def __prepare(Language, TokenQueueF=False):
 
     return end_str
 
-def __require_variables():
+def __require_variables(RequiredRegisterSet):
     variable_db.require("input")  
     variable_db.require("target_state_else_index")  # upon reload failure
     variable_db.require("target_state_index")       # upon reload success
     variable_db.require_array("position", ElementN = 0, Initial = "(void*)0")
     variable_db.require("PositionRegisterN", Initial = "(size_t)0")
 
+    variable_db.require_registers(RequiredRegisterSet)
+
 def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferSize=1024, InitialSkipF=True, OnePassOnlyF=False):
+    global dial_db
 
     end_str = __prepare(Language)
 
     data = { 
         "character_set":        TriggerSet, 
-        "counter_db":           LineColumnCount_Default(),
+        "ca_map":           LineColumnCount_Default().count_command_map,
         "require_label_SKIP_f": False, 
         "dial_db":              dial_db
     }
-    skipper_code, \
-    loop_map,     \
+    skipper_code,  \
+    terminal_list, \
+    loop_map,      \
     required_register_set = character_set_skipper.do(data, Analyzer.reload_state)
+
+    variable_db.require_registers(required_register_set)
+
+    skipper_code.extend(
+        generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
+    )
 
     if InitialSkipF: marker_char_list = TriggerSet.get_number_list()
     else:            marker_char_list = []
@@ -85,19 +97,26 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
 
     door_id_on_skip_range_open = dial_db.new_door_id()
 
+    sm_close = StateMachine.from_sequence(CloserSequence)  
     data = { 
-        "closer_sequence":    CloserSequence, 
-        "closer_pattern":     Pattern(StateMachine.from_sequence(CloserSequence), 
-                                      PatternString="<skip range closer>"),
+        "closer_pattern":     Pattern(sm_close.get_id(), sm_close,
+                                      None, None, None,
+                                      PatternString="<skip range closer>",
+                                      Sr=SourceRef_VOID),
         "mode_name":          "MrUnitTest",
         "on_skip_range_open": CodeFragment([end_str]),
-        "door_id_after":      DoorID.continue_without_on_after_match(),
-        "counter_db":         LineColumnCount_Default(),
+        "door_id_after":      DoorID.continue_without_on_after_match(dial_db),
+        "ca_map":             LineColumnCount_Default().count_command_map,
         "dial_db":            dial_db,
     }
 
-    skipper_code = range_skipper.do(data, Analyzer.reload_state)
-    __require_variables()
+    skipper_code, \
+    terminal_list, \
+    required_register_set = range_skipper.do(data, Analyzer.reload_state)
+    __require_variables(required_register_set)
+    skipper_code.extend(
+        generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
+    )
 
     return create_customized_analyzer_function(Language, TestStr, skipper_code,
                                                QuexBufferSize, CommentTestStrF, ShowPositionF, end_str,
@@ -113,19 +132,23 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
 
     door_id_on_skip_range_open = dial_db.new_door_id()
     data = { 
-        "opener_sequence":    OpenerSequence, 
-        "closer_sequence":    CloserSequence, 
         "closer_pattern":     Pattern(StateMachine.from_sequence(CloserSequence),
                                       PatternString="<nested skip range closer>"),
         "mode_name":          "MrUnitTest",
         "on_skip_range_open": CodeFragment([end_str]),
         "door_id_after":      DoorID.continue_without_on_after_match(),
-        "counter_db":         LineColumnCount_Default(),
+        "ca_map":             LineColumnCount_Default().count_command_map,
         "dial_db":            dial_db,
     }
 
-    skipper_code = nested_range_skipper.do(data, Analyzer.reload_state)
-    __require_variables()
+    skipper_code, \
+    terminal_list, \
+    required_register_set = nested_range_skipper.do(data, Analyzer.reload_state)
+    __require_variables(required_register_set)
+    skipper_code.extend(
+        generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
+    )
+
 
     return create_customized_analyzer_function(Language, TestStr, skipper_code,
                                                QuexBufferSize, CommentTestStrF, ShowPositionF, end_str,
@@ -138,7 +161,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
 
     data = {
         "indentation_setup":             ISetup,
-        "counter_db":                    LineColumnCount_Default(),
+        "ca_map":                        LineColumnCount_Default().count_command_map,
         "incidence_db":                  {E_IncidenceIDs.INDENTATION_BAD: ""},
         "default_indentation_handler_f": True,
         "mode_name":                     "Test",

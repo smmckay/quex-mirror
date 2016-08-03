@@ -192,6 +192,11 @@ class Mode_PrepPrep:
         )
 
     def finalize(self, ModePrepPrepDb):
+        """REQUIRES: All Mode_PrepPrep-s have been defined.
+           TASK:     Collect loopers, options, and incidence_db from base
+                     mode list.
+                     Finalize all patterns and loopers!
+        """
         self._check_inheritance_relationships(ModePrepPrepDb)
         base_mode_name_sequence = \
                 blackboard.determine_base_mode_name_sequence(self, ModePrepPrepDb) 
@@ -247,6 +252,11 @@ class Mode_Prep:
                  IncidenceDb, CounterDb,
                  EntryModeNameList, ExitModeNameList,
                  DeletionInfoList, RepriorizationInfoList):
+        """REQUIRES: Loopers, options, and incidence_db has been collected 
+                     from base modes.
+           TASK:     Provide bases for iteration over modes to collect 
+                     finalized pattern lists from base modes.
+        """
         self.name                    = Name
         self.sr                      = Sr
         self.base_mode_name_sequence = BaseModeNameSequence
@@ -274,8 +284,8 @@ class Mode_Prep:
         self.exit_mode_name_list  = ExitModeNameList  # This mode can exit to those.
 
     def pre_finalize(self, ModePrepDb):
-        """When all Mode_Prep-s are defined, the patterns can be collected from
-        the base modes.
+        """REQUIRES: All Mode_Prep must be defined.
+           TASK:     Collect patterns from base modes.
         """
         self.dial_db            = DialDB()
         self.base_mode_sequence = [ ModePrepDb[name] for name in self.base_mode_name_sequence ]
@@ -283,9 +293,12 @@ class Mode_Prep:
         self.pattern_list, \
         self.terminal_db, \
         self.run_time_counter_required_f, \
-        self.reload_state_forward         = self.__setup_matching_configuration(ModePrepDb)
+        self.reload_state_forward,        \
+        self.required_register_set        = self.__setup_matching_configuration(ModePrepDb)
 
     def finalize(self, ModePrepDb):
+        """REQUIRES: Patterns from base modes have been collected.
+        """
         assert self.implemented_f()
 
         def filter_implemented(L):
@@ -304,10 +317,11 @@ class Mode_Prep:
 
         return Mode(self.name, self.sr, 
                     self.pattern_list, self.terminal_db, self.incidence_db,
-                    RunTimeCounterDb   = run_time_counter_db,
-                    ReloadStateForward = self.reload_state_forward,
-                    Documentation      = self.doc, 
-                    dial_db            = self.dial_db)
+                    RunTimeCounterDb    = run_time_counter_db,
+                    ReloadStateForward  = self.reload_state_forward,
+                    RequiredRegisterSet = self.required_register_set,
+                    Documentation       = self.doc, 
+                    dial_db             = self.dial_db)
 
     def __setup_matching_configuration(self, ModePrepDb):
         """Collect all pattern-action pairs and 'loopers' and align it in a list
@@ -346,7 +360,8 @@ class Mode_Prep:
         return ppt_list.finalize_pattern_list(), \
                ppt_list.finalize_terminal_db(self.incidence_db), \
                ppt_list.finalize_run_time_counter_required_f(), \
-               reload_state_forward
+               reload_state_forward, \
+               ppt_list.required_register_set
 
     def implemented_f(self):
         """If the mode has incidences and/or patterns defined it is free to be 
@@ -447,7 +462,7 @@ PatternDeletion       = namedtuple("PatternDeletion",       ("pattern", "pattern
 
 class PatternActionPair(object):
     __slots__ = ("__pattern", "__action")
-    @typed(ThePattern=(Pattern_Prep, Pattern))
+    @typed(ThePattern=(Pattern_Prep, Pattern), TheAction=CodeUser)
     def __init__(self, ThePattern, TheAction):
         self.__pattern = ThePattern
         self.__action  = TheAction

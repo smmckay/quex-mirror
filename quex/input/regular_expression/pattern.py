@@ -66,11 +66,6 @@ class Pattern_Prep(object):
         self.__validate(Sr)
         self.__finalized_self = None
 
-    @staticmethod
-    def from_character_set(CharacterSet, StateMachineId=None):
-        return Pattern_Prep(StateMachine.from_character_set(CharacterSet, StateMachineId), 
-                            PatternString="<character set>")
-
     @property
     def sr(self):             return self.__sr
 

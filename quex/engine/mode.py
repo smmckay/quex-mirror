@@ -28,7 +28,9 @@ class Mode:
     def __init__(self, Name, Sr, 
                  PatternList, TerminalDb, IncidenceDb,
                  RunTimeCounterDb, 
-                 ReloadStateForward, dial_db, 
+                 ReloadStateForward, 
+                 RequiredRegisterSet,
+                 dial_db, 
                  Documentation):
         """Information about a lexical analyzer mode:
         
@@ -60,6 +62,7 @@ class Mode:
 
         Documentation: Contains information about entry, exit, and base mode names.
         """
+        assert all(p.incidence_id in TerminalDb for p in PatternList)
         self.name    = Name
         self.sr      = Sr
         self.mode_id = Mode.__mode_id_counter 
@@ -70,8 +73,9 @@ class Mode:
 
         self.run_time_counter_db  = RunTimeCounterDb # None, if not counter required.
 
-        self.reload_state_forward = ReloadStateForward
-        self.dial_db              = dial_db
+        self.reload_state_forward  = ReloadStateForward
+        self.required_register_set = RequiredRegisterSet
+        self.dial_db               = dial_db
 
         self.documentation = Documentation
         self.documentation.absorb_pattern_list(PatternList)
