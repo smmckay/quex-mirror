@@ -43,7 +43,7 @@ from   quex.engine.misc.interval_handling                         import NumberS
 import quex.engine.state_machine.transformation.core              as     bc_factory
 import quex.engine.state_machine.transformation.utf16_state_split as     utf16_state_split
 import quex.output.core.dictionary                                as     languages
-import quex.output.cpp.run_time_counter                           as     run_time_counter
+import quex.output.core.loop.run_time_counter                     as     run_time_counter
 
 from   quex.blackboard                         import setup as Setup, Lng
 from   itertools                               import chain

@@ -9,7 +9,7 @@ from   quex.engine.pattern                                import Pattern
 from   quex.engine.misc.tools                             import all_isinstance, \
                                                                  typed, \
                                                                  flatten_list_of_lists
-import quex.output.cpp.run_time_counter                   as     run_time_counter
+import quex.output.core.loop.run_time_counter             as     run_time_counter
 from   quex.blackboard                                    import setup as Setup, \
                                                                  E_IncidenceIDs, \
                                                                  Lng
