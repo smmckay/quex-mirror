@@ -15,12 +15,13 @@ else
 endif
 
 # (*) COMPILER SETTINGS ________________________________________________________
-COMPILER := gcc -Wall -Werror -Wconversion -pedantic # -ggdb 
+COMPILER := gcc -Wall -Werror -Wconversion -pedantic -ggdb 
 
 CC := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
       -DPRINT_LINE_COLUMN_NUMBER                        \
       -DPRINT_TOKEN                                     \
       -DQUEX_SETTING_TOKEN_QUEUE_SIZE=10                \
+	  -DQUEX_OPTION_DEBUG_SHOW \
       -DQUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER=4      
 
 # Useful Debugging Options:

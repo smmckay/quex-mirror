@@ -5,6 +5,7 @@ from   quex.input.code.base                           import SourceRef, \
                                                              SourceRef_DEFAULT, \
                                                              SourceRefObject
 from   quex.engine.state_machine.core                 import StateMachine  
+import quex.engine.state_machine.construction.sequentialize as sequentialize
 import quex.engine.state_machine.algorithm.beautifier as     beautifier    
 from   quex.engine.misc.tools                         import typed
 from   quex.engine.misc.interval_handling             import NumberSet
@@ -144,6 +145,8 @@ class IndentationCount_Prep(CountBase_Prep):
         self.sm_newline_suppressor    = SourceRefObject("suppressor", None)
         self.sm_comment               = SourceRefObject("comment", None)
 
+        # The base class defines the '._ca_map_specifier'.
+        # However, in this class it is only used for error checking.
         CountBase_Prep.__init__(self, sr, "Indentation counter", 
                                      ("whitespace", "comment", "newline", "suppressor", "bad"))
 
@@ -169,12 +172,6 @@ class IndentationCount_Prep(CountBase_Prep):
             E_CharacterCountType.X_END_NEWLINE,
             E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE
         ])
-
-        # -- post procedure
-        ca_map = self._ca_map_specifier.finalize(
-                              Setup.buffer_codec.source_set.minimum(), 
-                              Setup.buffer_codec.source_set.supremum(), 
-                              self.sr)
 
         # -- consistency
         self._consistency_check()
@@ -264,13 +261,13 @@ class IndentationCount_Prep(CountBase_Prep):
 
     @typed(sr=SourceRef)
     def __specify_comment(self, Sm, sr):
-        _error_if_defined_before(self.result.sm_comment, sr)
+        _error_if_defined_before(self.sm_comment, sr)
 
         self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
                                    E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE,
                                    None, sr)
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
-        self.result.sm_comment.set(Sm, sr)
+        self.sm_comment.set(Sm, sr)
 
     def __sm_newline_default(self):
         """Default newline: '(\n)|(\r\n)'
