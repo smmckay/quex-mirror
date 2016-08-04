@@ -27,7 +27,7 @@ from   quex.engine.state_machine.core             import StateMachine
 from   quex.engine.misc.interval_handling         import NumberSet, \
                                                          NumberSet_All
 from   quex.engine.analyzer.door_id_address_label import dial_db
-import quex.output.core.loop                      as     loop
+import quex.output.core.loop.core                 as     loop
 from   quex.blackboard                            import E_CharacterCountType, \
                                                          setup as Setup
 NS_A = NumberSet.from_range(ord('A'), ord('A') + 1)

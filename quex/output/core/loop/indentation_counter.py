@@ -6,7 +6,7 @@ from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.counter                          import IndentationCount, \
                                                            CountActionMap, \
                                                            LineColumnCount
-import quex.output.core.loop                        as     loop
+import quex.output.core.loop.core                   as     loop
 from   quex.blackboard                              import Lng, \
                                                            E_IncidenceIDs, \
                                                            E_R, \

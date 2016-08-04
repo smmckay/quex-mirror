@@ -1,6 +1,7 @@
 from   quex.input.code.core                         import CodeTerminal
 from   quex.output.core.variable_db                 import variable_db
-from   quex.output.core.skipper.common              import get_character_sequence, \
+import quex.output.core.loop.core                   as     loop
+from   quex.output.core.loop.common                 import get_character_sequence, \
                                                            get_on_skip_range_open, \
                                                            line_column_counter_in_loop
 from   quex.engine.counter                          import CountActionMap
@@ -12,7 +13,6 @@ from   quex.engine.misc.interval_handling           import NumberSet_All
 import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.misc.string_handling             import blue_print
-import quex.output.core.loop                        as     loop
 from   quex.engine.misc.tools                       import typed
 from   quex.blackboard                              import Lng, E_R
 

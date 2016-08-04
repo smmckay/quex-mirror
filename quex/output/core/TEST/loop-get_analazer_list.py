@@ -39,8 +39,8 @@ from   quex.engine.misc.interval_handling         import NumberSet, \
 from   quex.engine.analyzer.door_id_address_label import dial_db
 import quex.engine.state_machine.transformation.core as  bc_factory
 import quex.engine.analyzer.engine_supply_factory as     engine
-import quex.output.core.loop                      as     loop
-from   quex.output.core.loop                      import LoopMapEntry, \
+import quex.output.core.loop.core                 as     loop
+from   quex.output.core.loop.core                 import LoopMapEntry, \
                                                          LoopEventHandlers
 from   quex.blackboard                            import E_CharacterCountType, \
                                                          setup as Setup

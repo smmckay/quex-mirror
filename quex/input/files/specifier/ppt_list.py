@@ -21,10 +21,10 @@ from   quex.engine.analyzer.door_id_address_label   import DoorID, \
                                                            DialDB
 import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.misc.tools import typed
-import quex.output.core.skipper.character_set       as     skip_character_set
-import quex.output.core.skipper.range               as     skip_range
-import quex.output.core.skipper.nested_range        as     skip_nested_range
-import quex.output.core.skipper.indentation_counter as     indentation_counter
+import quex.output.core.loop.character_set          as     skip_character_set
+import quex.output.core.loop.range                  as     skip_range
+import quex.output.core.loop.nested_range           as     skip_nested_range
+import quex.output.core.loop.indentation_counter    as     indentation_counter
 
 from   quex.blackboard import E_IncidenceIDs
 
