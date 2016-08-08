@@ -1,0 +1,86 @@
+
+--( CLOSE )------------
+
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+(*) test string: 
+'a-))'
+(*) result:
+end
+  ''
+
+--( OPEN-CLOSE )------------
+
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+(*) test string: 
+'a((--))X'
+(*) result:
+column_number_at_end(real): 8;
+next letter: <X>
+end
+  ''
+column_number_at_end(expected): 8;
+
+
+--( OPEN-OPEN-CLOSE-CLOSE )------------
+
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+(*) test string: 
+'a((-((--))-))X'
+(*) result:
+column_number_at_end(real): 14;
+next letter: <X>
+end
+  ''
+column_number_at_end(expected): 14;
+
+
+--( OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE )------------
+
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+(*) test string: 
+'a((-((--))((--))-))X'
+(*) result:
+column_number_at_end(real): 20;
+next letter: <X>
+end
+  ''
+column_number_at_end(expected): 20;
+
+
+--( OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE )------------
+
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+(*) test string: 
+'a((-((-((--))((--))-))-))X'
+(*) result:
+column_number_at_end(real): 26;
+next letter: <X>
+end
+  ''
+column_number_at_end(expected): 26;
+
+
+--( WILD )------------
+
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+(*) test string: 
+'((-((-((--))((--))-))((--))((-((--))((--))((--))-))((--))((-((--))((--))((--))((-((--))((--))-))-))((--))((-((--))((-((-((--))-)...'
+(*) result:
+column_number_at_end(real): 120013;
+next letter: <X>
+end
+  ''
+column_number_at_end(expected): 120013;
+
