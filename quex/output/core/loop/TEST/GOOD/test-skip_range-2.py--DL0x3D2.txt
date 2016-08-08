@@ -1,174 +1,161 @@
 ## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## buffer_size: { required: 4; real: 65536; }
 (*) test string: 
 'abcdefg*/hijklmnop*/qrstuvw*/xyz*/ok'##
 (*) result:
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 9;
    _column_number_at_end   = 10;
 next letter: <h>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 11;
    _column_number_at_end   = 12;
 next letter: <q>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 9;
    _column_number_at_end   = 10;
 next letter: <x>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 5;
    _column_number_at_end   = 6;
 next letter: <o>
 end
   ''
-
+## buffer_size: { required: 4; real: 65536; }
 (*) test string: 
 '*/hijklmnop*/qrstuvw*/xyz*/'##
 (*) result:
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 2;
    _column_number_at_end   = 3;
 next letter: <h>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 11;
    _column_number_at_end   = 12;
 next letter: <q>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 9;
    _column_number_at_end   = 10;
 next letter: <x>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 5;
    _column_number_at_end   = 6;
 end
   ''
-
+## buffer_size: { required: 4; real: 65536; }
 (*) test string: 
 'a*/h*/*/*/'##
 (*) result:
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 3;
    _column_number_at_end   = 4;
 next letter: <h>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 3;
    _column_number_at_end   = 4;
 next letter: <*>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 2;
    _column_number_at_end   = 3;
 next letter: <*>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 2;
    _column_number_at_end   = 3;
 end
   ''
-
+## buffer_size: { required: 7; real: 65536; }
 (*) test string: 
 'abcdefgo*o*/hijklmnopo*o*/qrstuvwo*o*/xyzo*o*/ab'##
 (*) result:
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 12;
    _column_number_at_end   = 13;
 next letter: <h>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 14;
    _column_number_at_end   = 15;
 next letter: <q>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 12;
    _column_number_at_end   = 13;
 next letter: <x>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 8;
    _column_number_at_end   = 9;
 next letter: <a>
 end
   ''
-
-## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
+## buffer_size: { required: 7; real: 65536; }
 (*) test string: 
 'o*o*/hijklmnopo*o*/qrstuvwo*o*/xyzo*o*/'##
 (*) result:
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 5;
    _column_number_at_end   = 6;
 next letter: <h>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 14;
    _column_number_at_end   = 15;
 next letter: <q>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 12;
    _column_number_at_end   = 13;
 next letter: <x>
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 8;
    _column_number_at_end   = 9;
 end
   ''
-
-## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
+## buffer_size: { required: 7; real: 65536; }
 (*) test string: 
 'ao*o*/h'##
 (*) result:
    Counter:
    _line_number_at_begin = 1;
    _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
+   _column_number_at_begin = 6;
    _column_number_at_end   = 7;
 next letter: <h>
 end
   ''
-

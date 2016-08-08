@@ -134,7 +134,10 @@ class Analyzer:
         result = cls(EngineType, SM.init_state_index, dial_db)
         result._prepare_state_information(SM, OnBeforeEntry)
         result._prepare_reload_state(ReloadStateExtern, EngineType)
-        result._prepare_entries_and_drop_out(EngineType, SM)
+        if EngineType.requires_detailed_track_analysis():
+            result._prepare_entries_and_drop_out(EngineType, SM)
+        else:
+            result._prepare_entries_and_drop_out_withou_analysis(EngineType, SM)
         return result
 
     @typed(SM=StateMachine, OnBeforeEntry=OpList)
@@ -167,38 +170,36 @@ class Analyzer:
             self.reload_state          = ReloadStateExtern
             self.reload_state_extern_f = True
 
+    def _prepare_entries_and_drop_out_withou_analysis(self, EngineType, SM):
+        for state_index, state in SM.states.iteritems():
+            if not self.state_db[state_index].transition_map.has_drop_out(): continue
+            cl = EngineType.create_DropOut(state, self.dial_db)
+            self.drop_out.entry.enter_OpList(E_StateIndices.DROP_OUT, 
+                                             state_index, cl)
+                                                  
+        self.__position_register_map = None
+
     def _prepare_entries_and_drop_out(self, EngineType, SM):
-        if not EngineType.requires_detailed_track_analysis():
-            for state_index, state in SM.states.iteritems():
-                if not self.state_db[state_index].transition_map.has_drop_out(): continue
-                cl = EngineType.create_DropOut(state, self.dial_db)
-                self.drop_out.entry.enter_OpList(E_StateIndices.DROP_OUT, 
-                                                 state_index, cl)
-                                                      
-            self.__position_register_map = None
+        # (*) PathTrace database, Successor database
+        self.__trace_db, \
+        path_element_db    = track_analysis.do(SM, self.__to_db)
 
+        # (*) Drop Out Behavior
+        #     The PathTrace objects tell what to do at drop_out. From this, the
+        #     required entry actions of states can be derived.
+        acceptance_storage_db, \
+        position_storage_db    = self.configure_all_drop_outs()
+
+        # (*) Entry Behavior
+        #     Implement the required entry actions.
+        self.configure_all_entries(acceptance_storage_db, position_storage_db,
+                                   path_element_db)
+
+        if EngineType.requires_position_register_map():
+            # (*) Position Register Map (Used in 'optimizer.py')
+            self.__position_register_map = position_register_map.do(self)
         else:
-            # (*) PathTrace database, Successor database
-            self.__trace_db, \
-            path_element_db    = track_analysis.do(SM, self.__to_db)
-
-            # (*) Drop Out Behavior
-            #     The PathTrace objects tell what to do at drop_out. From this, the
-            #     required entry actions of states can be derived.
-            acceptance_storage_db, \
-            position_storage_db    = self.configure_all_drop_outs()
-
-            # (*) Entry Behavior
-            #     Implement the required entry actions.
-            self.configure_all_entries(acceptance_storage_db, position_storage_db,
-                                       path_element_db)
-
-            if EngineType.requires_position_register_map():
-                # (*) Position Register Map (Used in 'optimizer.py')
-                self.__position_register_map = position_register_map.do(self)
-            else:
-                self.__position_register_map = None
-        return 
+            self.__position_register_map = None
 
     def add_mega_states(self, MegaStateList):
         """Add MegaState-s into the analyzer and remove the states which are 

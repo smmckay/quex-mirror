@@ -54,7 +54,7 @@ def get(CaMap, Name):
     code,                 \
     terminal_list,        \
     loop_map,             \
-    door_id_beyond,       \
+    door_id_loop,         \
     required_register_set = loop.do(CaMap, 
                                     OnLoopExitDoorId = door_id_return,
                                     LexemeEndCheckF  = True,
@@ -66,13 +66,13 @@ def get(CaMap, Name):
     )
     variable_db.require_registers(required_register_set)
     implementation = __frame(function_name, Lng.INPUT_P(), code, door_id_return, 
-                             door_id_beyond, dial_db) 
+                             dial_db) 
 
     DefaultCounterFunctionDB.enter(CaMap, function_name)
 
     return function_name, implementation
 
-def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, DoorIdBeyond, dial_db):
+def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, dial_db):
     
     state_router_adr   = DoorID.global_state_router(dial_db).related_address
     state_router_label = Lng.LABEL_STR_BY_ADR(state_router_adr)
@@ -108,8 +108,12 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, DoorIdBeyond, dia
     door_id_bad_lexatom = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db)
 
     txt.append(
-          "%s /* TERMINAL: BAD_LEXATOM */\n;\n" % Lng.LABEL(door_id_bad_lexatom)
-        + "%s /* TERMINAL: FAILURE     */\n%s\n" % (Lng.LABEL(door_id_failure), Lng.GOTO(DoorIdBeyond, dial_db))
+          "%s /* TERMINAL: BAD_LEXATOM */\n;\n"  % Lng.LABEL(door_id_bad_lexatom)
+        # BETTER: A lexeme that is 'counted' has already matched!
+        #         => FAILURE is impossible!
+        # "%s /* TERMINAL: FAILURE     */\n%s\n" % Lng.UNREACHABLE
+        + "%s /* TERMINAL: FAILURE     */\n%s\n" % (Lng.LABEL(door_id_failure), 
+                                                    Lng.GOTO(DoorIdReturn, dial_db))
     )
     txt.append(
          "%s\n" % Lng.LABEL(DoorIdReturn)
@@ -127,7 +131,6 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, DoorIdBeyond, dia
        + "     %s /* to BAD_LEXATOM           */\n" % Lng.GOTO(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db), dial_db)
        + "#    endif\n"
        + "    %s\n" % Lng.COMMENT("Avoid compiler warning: 'Unused labels'") \
-       + "    %s\n" % Lng.GOTO(DoorIdBeyond, dial_db) \
        + "    %s\n" % Lng.GOTO(door_id_failure, dial_db) \
        + "    (void)target_state_index;\n"
        + "    (void)target_state_else_index;\n"

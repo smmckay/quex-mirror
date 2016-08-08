@@ -105,7 +105,7 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
                                       Sr=SourceRef_VOID),
         "mode_name":          "MrUnitTest",
         "on_skip_range_open": CodeFragment([end_str]),
-        "door_id_after":      DoorID.continue_without_on_after_match(dial_db),
+        "door_id_exit":       DoorID.continue_without_on_after_match(dial_db),
         "ca_map":             LineColumnCount_Default().count_command_map,
         "dial_db":            dial_db,
     }
@@ -131,12 +131,20 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
     end_str = __prepare(Language)
 
     door_id_on_skip_range_open = dial_db.new_door_id()
+    sm_close = StateMachine.from_sequence(CloserSequence)  
+    sm_open  = StateMachine.from_sequence(OpenerSequence)  
     data = { 
-        "closer_pattern":     Pattern(StateMachine.from_sequence(CloserSequence),
-                                      PatternString="<nested skip range closer>"),
+        "closer_pattern":     Pattern(sm_close.get_id(), sm_close,
+                                      None, None, None,
+                                      PatternString="<skip range closer>",
+                                      Sr=SourceRef_VOID),
+        "opener_pattern":     Pattern(sm_open.get_id(), sm_open,
+                                      None, None, None,
+                                      PatternString="<skip range opener>",
+                                      Sr=SourceRef_VOID),
         "mode_name":          "MrUnitTest",
         "on_skip_range_open": CodeFragment([end_str]),
-        "door_id_after":      DoorID.continue_without_on_after_match(),
+        "door_id_exit":       DoorID.continue_without_on_after_match(dial_db),
         "ca_map":             LineColumnCount_Default().count_command_map,
         "dial_db":            dial_db,
     }
@@ -149,11 +157,13 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
     )
 
-
     return create_customized_analyzer_function(Language, TestStr, skipper_code,
-                                               QuexBufferSize, CommentTestStrF, ShowPositionF, end_str,
-                                               MarkerCharList=[], LocalVariableDB=deepcopy(variable_db.get()), 
-                                               DoorIdOnSkipRangeOpen=door_id_on_skip_range_open) 
+                                               QuexBufferSize, CommentTestStrF, 
+                                               ShowPositionF, end_str,
+                                               MarkerCharList=[], 
+                                               LocalVariableDB=deepcopy(variable_db.get()), 
+                                               DoorIdOnSkipRangeOpen=door_id_on_skip_range_open, 
+                                               CounterPrintF="short") 
 
 def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, TokenQueueF):
 
@@ -212,7 +222,9 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
     return txt
 
 def my_own_mr_unit_test_function(SourceCode, EndStr, 
-                                 LocalVariableDB={}, ReloadF=False, OnePassOnlyF=True, DoorIdOnSkipRangeOpen=None, CounterPrintF=True):
+                                 LocalVariableDB={}, ReloadF=False, 
+                                 OnePassOnlyF=True, DoorIdOnSkipRangeOpen=None, 
+                                 CounterPrintF=True):
     
     if type(SourceCode) == list:
         plain_code = "".join(Lng.GET_PLAIN_STRINGS(SourceCode, dial_db))
@@ -229,7 +241,9 @@ def my_own_mr_unit_test_function(SourceCode, EndStr,
     else:
         label_sro = Lng.LABEL_STR(dial_db.new_door_id())
 
-    if CounterPrintF:
+    if CounterPrintF == "short":
+        counter_print_str = 'printf("column_number_at_end(real): %i;\\n", (int)self.counter._column_number_at_end);\n'
+    elif CounterPrintF:
         counter_print_str = "QUEX_NAME(Counter_print_this)(&self.counter);"
     else:
         counter_print_str = ""

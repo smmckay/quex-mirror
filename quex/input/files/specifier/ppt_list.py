@@ -458,21 +458,21 @@ class PPT_List(list):
     def _range_skipper_data(self, data, CaMap, IndentationHandler):
         dial_db     = self.terminal_factory.dial_db
         IncidenceDb = self.terminal_factory.incidence_db
-        # -- door_id_after: Where to go after the closing character sequence matched:
+        # -- door_id_exit: Where to go after the closing character sequence matched:
         #     + Normally: To the begin of the analyzer. Start again.
         #     + End(Sequence) == newline of indentation counter.
         #       => goto indentation counter.
         if self._match_indentation_counter_newline_pattern(IndentationHandler,
                                                            data["closer_pattern"]):
-            door_id_after = DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)
+            door_id_exit = DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)
         else:
-            door_id_after = DoorID.continue_without_on_after_match(dial_db)
+            door_id_exit = DoorID.continue_without_on_after_match(dial_db)
 
         # -- data for code generation
         my_data = deepcopy(data)
         my_data["mode_name"]          = self.terminal_factory.mode_name
         my_data["on_skip_range_open"] = IncidenceDb[E_IncidenceIDs.SKIP_RANGE_OPEN]
-        my_data["door_id_after"]      = door_id_after
+        my_data["door_id_exit"]       = door_id_exit
         my_data["ca_map"]             = CaMap
         my_data["dial_db"]            = dial_db
         return my_data

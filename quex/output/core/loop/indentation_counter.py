@@ -114,15 +114,15 @@ def do(Data, ReloadState):
     code,                 \
     terminal_list,        \
     loop_map,             \
-    door_id_beyond,       \
+    door_id_loop,         \
     required_register_set = loop.do(ca_map, 
-                                    OnLoopExitDoorId  = loop_exit_door_id,
-                                    EngineType        = engine_type,
-                                    ReloadStateExtern = ReloadState,
-                                    LexemeMaintainedF = True,
+                                    OnLoopExitDoorId           = loop_exit_door_id,
+                                    EngineType                 = engine_type,
+                                    ReloadStateExtern          = ReloadState,
+                                    LexemeMaintainedF          = True,
                                     ParallelSmTerminalPairList = sm_terminal_list, 
-                                    dial_db           = dial_db,
-                                    LoopCharacterSet  = whitespace_set) 
+                                    dial_db                    = dial_db,
+                                    LoopCharacterSet           = whitespace_set) 
 
     return code, terminal_list, required_register_set
 
@@ -191,7 +191,6 @@ def _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
                                  E_IncidenceIDs.INDENTATION_BAD)
 
     return sm, terminal
-
 
 def _add_pair(psml, SmOriginal, Name):
     """Add a state machine-terminal pair to 'psml'. A terminal is generated

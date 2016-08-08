@@ -102,7 +102,8 @@ count_operation_db_with_reference = {
         Op.ColumnCountReferencePDeltaAdd(Parameter, ColumnNPerCodeUnit, False) 
     ],
     E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM: lambda Parameter, ColumnNPerCodeUnit: [
-        Op.ColumnCountReferencePDeltaAdd(Parameter, ColumnNPerCodeUnit, False) 
+        Op.ColumnCountReferencePDeltaAdd(Parameter, ColumnNPerCodeUnit, False),
+        Op.ColumnCountReferencePSet(E_R.InputP)
     ],
     # BEFORE RELOAD:                                            input_p
     #                                                           |

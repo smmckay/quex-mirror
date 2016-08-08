@@ -81,11 +81,9 @@ def do(Data, ReloadState):
     result,               \
     terminal_list,        \
     loop_map,             \
-    door_id_beyond,       \
+    door_id_loop,         \
     required_register_set = loop.do(ca_map,
                                     OnLoopExitDoorId  = on_loop_exit_door_id,
-                                    LexemeEndCheckF   = False,
-                                    LexemeMaintainedF = False,
                                     EngineType        = engine_type,
                                     ReloadStateExtern = ReloadState, 
                                     dial_db           = dial_db)

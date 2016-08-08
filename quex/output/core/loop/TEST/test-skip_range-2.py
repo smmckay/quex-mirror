@@ -40,8 +40,18 @@ def core(Executable, BufferSize, TestStr):
 
 exe_name, tmp_file = make("ANSI-C-from-file", map(ord, SEP), BS)
 
+if False:
+    # COPY HERE THE CASE TO DEBUG
+    Q = ""
+    for i in xrange(1, len(SEP)+1):
+        Q += SEP[:i]
+    BS = len(Q) + 2
+    core(exe_name, BS, Q + "h")
+    sys.exit()
+
 core(exe_name, BS, 
      "abcdefg" + SEP + "hijklmnop" + SEP + "qrstuvw" + SEP + "xyz" + SEP + "ok")
+
 core(exe_name, BS, 
      SEP + "hijklmnop" + SEP + "qrstuvw" + SEP + "xyz" + SEP)
 

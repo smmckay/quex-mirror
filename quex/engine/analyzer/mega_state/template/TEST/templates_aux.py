@@ -5,7 +5,7 @@ from   quex.engine.analyzer.state.core                      import AnalyzerState
 from   quex.engine.analyzer.state.entry                     import Entry
 from   quex.engine.analyzer.state.entry_action              import TransitionAction, \
                                                                    TransitionID
-from   quex.engine.analyzer.door_id_address_label           import DoorID
+from   quex.engine.analyzer.door_id_address_label           import DoorID, DialDB
 import quex.engine.analyzer.engine_supply_factory           as     engine
 from   quex.engine.analyzer.mega_state.core                 import MegaState
 import quex.engine.analyzer.mega_state.template.core        as     templates 
@@ -27,8 +27,11 @@ from   quex.blackboard import E_StateIndices, E_Compression, setup as Setup
 
 import sys
 
+dial_db = DialDB()
+
 def get_AnalyzerState(StateIndex, TM):
-    return AnalyzerState(StateIndex, TM)
+    global dial_db
+    return AnalyzerState(StateIndex, TM, dial_db=dial_db)
 
 def get_AnalyzerState_Init(InitStateIndex, StateIndexList):
     init_tm = TransitionMap.from_iterable( 
@@ -58,10 +61,11 @@ def get_Analyzer(StatesDescription):
 
            (interval, target state index)
     """
+    global dial_db
     # Use 'BACKWARD_PRE_CONTEXT' so that the drop-out objects are created
     # without larger analysis.
     init_state_index = 7777L
-    analyzer = Analyzer(engine.BACKWARD_PRE_CONTEXT, init_state_index)
+    analyzer = Analyzer(engine.BACKWARD_PRE_CONTEXT, init_state_index, dial_db=dial_db)
     all_state_index_set = set()
     for state_index, transition_map in StatesDescription:
         assert isinstance(state_index, long)
@@ -104,8 +108,9 @@ def get_Analyzer(StatesDescription):
     return analyzer
 
 def get_TargetByStateKey_Element(TargetStateIndex):
+    global dial_db
     transition_id = TransitionID(TargetStateIndex, 0, 0)
-    door_id       = DoorID(TargetStateIndex, 0)
+    door_id       = DoorID(TargetStateIndex, 0, dial_db)
     return TargetByStateKey_Element(transition_id, door_id)
 
 def get_TargetByStateKey(TargetStateIndexList):

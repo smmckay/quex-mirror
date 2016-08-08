@@ -85,6 +85,13 @@ class State:
         return not any(cmd.acceptance_id() == E_IncidenceIDs.BAD_LEXATOM
                        for cmd in self.single_entry)
 
+    def get_highest_precedence_acceptance_id(self):
+        """RETURNS: incidence_id of the highest non-E_IncidenceIDs pattern
+                                 that matches in this state.
+                    None, else.
+        """
+        return self.single_entry.get_highest_precedence_acceptance_id()
+
     def input_position_store_f(self):
         return self.single_entry.find(SeStoreInputPosition) is not None
 

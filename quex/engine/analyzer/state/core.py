@@ -142,9 +142,9 @@ class AnalyzerState(Processor):
         after_cl = []
         if TheAnalyzer.engine_type.is_FORWARD(): pass # after_cl.append(Op.Increment(E_R.InputP))
         else:                                    pass # after_cl.append(Op.Decrement(E_R.InputP))
-        after_cl.append(Op.InputPDereference())
         if AfterReloadOpList is not None:
             after_cl.extend(AfterReloadOpList)
+        after_cl.append(Op.InputPDereference())
 
         self.entry.enter_OpList(self.index, reload_state.index, OpList.from_iterable(after_cl))
         self.entry.categorize(self.index) # Categorize => DoorID is available.

@@ -246,6 +246,14 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.Assign, TargetRegister, SourceRegister)
     
     @staticmethod
+    def AssignPointerDifference(RegisterResult, RegisterBig, RegisterSmall):
+        return Op(E_Op.AssignPointerDifference, RegisterResult, RegisterBig, RegisterSmall)
+    
+    @staticmethod
+    def PointerAdd(RegisterResult, RegisterDelta):
+        return Op(E_Op.PointerAdd, RegisterResult, RegisterDelta)
+    
+    @staticmethod
     def AssignConstant(Register, Value):
         return Op(E_Op.AssignConstant, Register, Value)
     
@@ -465,6 +473,10 @@ def __configure():
                                               (0,w),     (1,r))
     c(E_Op.AssignConstant,                   ("register", "value"), 
                                               (0,w))
+    c(E_Op.AssignPointerDifference,          ("result", "big",  "small"), 
+                                              (0,w),    (1, r), (2, r))
+    c(E_Op.PointerAdd,                       ("pointer", "offset"),
+                                              (0, w+r), (1, r))
     c(E_Op.PreContextOK,                     ("pre_context_id",), 
                                               (E_R.PreContextFlags,w))
     #

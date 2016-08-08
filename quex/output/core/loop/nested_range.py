@@ -6,7 +6,7 @@ from   quex.output.core.loop.common                 import get_character_sequenc
                                                            line_column_counter_in_loop
 from   quex.engine.counter                          import CountActionMap
 import quex.engine.analyzer.engine_supply_factory   as     engine
-from   quex.engine.operations.operation_list        import Op
+from   quex.engine.operations.operation_list        import Op, OpList
 import quex.engine.state_machine.index              as     sm_index
 from   quex.engine.state_machine.core               import StateMachine
 from   quex.engine.misc.interval_handling           import NumberSet_All
@@ -22,15 +22,15 @@ def do(Data, ReloadState):
     OpenerPattern   = Data["opener_pattern"]
     CloserPattern   = Data["closer_pattern"]
     OnSkipRangeOpen = Data["on_skip_range_open"]
-    DoorIdAfter     = Data["door_id_after"]
+    DoorIdExit      = Data["door_id_exit"]
     dial_db         = Data["dial_db"]
 
     return get_skipper(ReloadState, OpenerPattern, CloserPattern, OnSkipRangeOpen, 
-                       DoorIdAfter, CaMap, dial_db) 
+                       DoorIdExit, CaMap, dial_db) 
 
 @typed(CaMap=CountActionMap)
 def get_skipper(ReloadState, OpenerPattern, CloserPattern, 
-                OnSkipRangeOpen, DoorIdAfter, CaMap, dial_db):
+                OnSkipRangeOpen, DoorIdExit, CaMap, dial_db):
     """
                                     .---<---+----------<------+------------------.
                                     |       |                 |                  |
@@ -64,68 +64,82 @@ def get_skipper(ReloadState, OpenerPattern, CloserPattern,
                                                               '---------------'                                                                   
 
     """
-    psml        = _get_state_machine_vs_terminal_list(CloserPattern, 
-                                                      OpenerPattern,
-                                                      DoorIdAfter)
+    psml, \
+    iid_aux_reentry = _get_state_machine_vs_terminal_list(CloserPattern, OpenerPattern,
+                                                          DoorIdExit, dial_db)
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
+
+    entry_op_list = OpList(Op.AssignConstant(E_R.Counter, 0))
 
     result,               \
     terminal_list,        \
     loop_map,             \
-    door_id_beyond,       \
+    door_id_loop,         \
     required_register_set = loop.do(CaMap,
-                                    OnLoopExitDoorId  = DoorIdAfter,
-                                    LexemeEndCheckF   = False,
-                                    LexemeMaintainedF = False,
-                                    EngineType        = engine_type,
+                                    BeforeEntryOpList          = entry_op_list,
+                                    OnLoopExitDoorId           = DoorIdExit,
+                                    EngineType                 = engine_type,
                                     ReloadStateExtern          = ReloadState,
                                     ParallelSmTerminalPairList = psml,
                                     dial_db                    = dial_db) 
 
-    result[0:0] = "%s = 0;\n" % Lng.REGISTER_NAME(E_R.Counter)
+    reentry_op_list = [
+        Op.GotoDoorId(door_id_loop)
+    ]
+    terminal_list.append(
+        Terminal(CodeTerminal(Lng.COMMAND_LIST(reentry_op_list, dial_db)),
+                 Name = "<SKIP NESTED RANGE REENTRY>",
+                 IncidenceId = iid_aux_reentry, 
+                 dial_db=dial_db)
+    )
+
     required_register_set.add(E_R.Counter)
     return result, terminal_list, required_register_set 
 
-def _get_state_machine_vs_terminal_list(CloserPattern, OpenerPattern, DoorIdAfter): 
+def _get_state_machine_vs_terminal_list(CloserPattern, OpenerPattern, DoorIdExit,
+                                        dial_db): 
     """Additionally to all characters, the loop shall walk along the 'closer'.
     If the closer matches, the range skipping exits. Characters need to be 
     counted properly.
 
-    RETURNS: list(state machine, terminal)
+    RETURNS: [0] list(state machine, terminal)
+             [1] incidence id of auxiliary terminal that goto-s to the
+                 loop entry.
 
-    The list contains only one single element.
+    The auxiliary terminal is necessary since the DoorID of the loop entry
+    cannot be known beforehand.
     """
+    # DoorID of loop entry cannot be known beforehand.
+    # => generate an intermediate door_id from where the loop is entered.
+    iid_aux_reentry     = dial.new_incidence_id()
+    door_id_aux_reentry = dial.DoorID.incidence(iid_aux_reentry, dial_db)
+
     # Opener Pattern Reaction
     opener_op_list = [
-        Op.Increment(E_R.Counter)  
+        Op.Increment(E_R.Counter),
+        Op.GotoDoorId(door_id_aux_reentry)
     ]
-    # 'Goto loop entry' is added later (loop id unknown, yet).
 
     # Closer Pattern Reaction
     closer_op_list = [
         Op.Decrement(E_R.Counter),
-        Op.GotoDoorIdIfCounterEqualZero(DoorIdAfter)
-    ]
-    # 'Goto loop entry' is added later (loop id unknown, yet).
-
-    return [ 
-        _get_state_machine_and_terminal(OpenerPattern, 
-                                        "<SKIP NESTED RANGE OPENER>",
-                                        opener_op_list),
-        _get_state_machine_and_terminal(CloserPattern, 
-                                        "<SKIP NESTED RANGE OPENER>",
-                                        closer_op_list)
+        Op.GotoDoorIdIfCounterEqualZero(DoorIdExit),
+        Op.GotoDoorId(door_id_aux_reentry)
     ]
 
-def _get_state_machine_and_terminal(Pattern, Name, OpList, dial_db):
-    """Create state machine that detects the 'Pattern', names the terminal
-    with 'Name', and implements the 'CmdList' in the terminal.
+    def sm_terminal_pair(Pattern, Name, OpList, dial_db):
+        sm       = Pattern.sm.clone(StateMachineId=dial.new_incidence_id())
+        terminal = loop.MiniTerminal(Lng.COMMAND_LIST(OpList, dial_db), 
+                                     Name, sm.get_id())
+        return sm, terminal
 
-    RETURNS: (state machine, terminal)
-    """
-    sm = Pattern.sm.clone(StateMachineId=dial.new_incidence_id())
-    terminal = loop.MiniTerminal(Lng.COMMAND_LIST(OpList), Name, sm.get_id())
-    terminal.set_requires_goto_loop_entry_f()  # --> Goto Loop Entry
+    smt_list = [ 
+        sm_terminal_pair(OpenerPattern, "<SKIP NESTED RANGE OPENER>",
+                         opener_op_list, dial_db),
+        sm_terminal_pair(CloserPattern, "<SKIP NESTED RANGE CLOSER>",
+                         closer_op_list, dial_db)
+    ]
 
-    return sm, terminal
+    return smt_list, iid_aux_reentry
+

@@ -140,14 +140,23 @@ def do(SM, ToDB):
                                must be different or the recursion terminates.
         """
         def __init__(self, state_machine, ToDB):
-            self.sm              = state_machine
-            self.empty_list      = []
-            self.to_db           = ToDB
-            self.result          = dict((i, []) for i in self.sm.states.iterkeys())
-            self.path            = []
+            self.sm         = state_machine
+            self.empty_list = []
+            self.to_db      = ToDB
+            self.result     = dict((i, []) for i in self.sm.states.iterkeys())
+            self.path       = []
+
             # Each state is a 'on the path to itself', i.e. it holds
             # 'i in path_element_db[i]'.
             self.path_element_db = dict((i,set([i])) for i in self.sm.states.iterkeys())
+
+            # Under some circumstances, the init state may accept!
+            # (E.g. the appendix state machines of the 'loopers')
+            init_state = state_machine.get_init_state()
+            self.initial_acceptance_id = init_state.get_highest_precedence_acceptance_id()
+            if self.initial_acceptance_id is None:
+                self.initial_acceptance_id = E_IncidenceIDs.MATCH_FAILURE
+
             TreeWalker.__init__(self)
 
         def on_enter(self, Args):
@@ -159,7 +168,8 @@ def do(SM, ToDB):
             # (*) Update the information about the 'trace of acceptances'
             State = self.sm.states[StateIndex]
 
-            if len(self.path) == 0: trace = _Trace(self.sm.init_state_index)
+            if len(self.path) == 0: trace = _Trace(self.sm.init_state_index,
+                                                   InitAcceptanceId=self.initial_acceptance_id)
             else:                   trace = PreviousTrace.next_step(StateIndex, State) 
 
             target_index_list = self.to_db[StateIndex]
@@ -307,13 +317,14 @@ class _Trace(object):
                  "__acceptance_trace_len",
                  "__storage_db_len")
 
-    def __init__(self, InitStateIndex=None, HashF=True):
-        if InitStateIndex is None: # 'None' --> call from '.clone()'
+    def __init__(self, InitStateIndex=None, HashF=True, 
+                 InitAcceptanceId=E_IncidenceIDs.MATCH_FAILURE):
+        if InitStateIndex is None: # 'None' --> call from '.reproduce()'
             self.__acceptance_trace = [] 
         else:
             self.__acceptance_trace = [ 
                   _AcceptInfo(PreContextID         = E_PreContextIDs.NONE, 
-                              AcceptanceID         = E_IncidenceIDs.MATCH_FAILURE, 
+                              AcceptanceID         = InitAcceptanceId,
                               AcceptingStateIndex  = InitStateIndex, 
                               PathSincePositioning = [InitStateIndex], 
                               TransitionNSincePositioning = 0)              

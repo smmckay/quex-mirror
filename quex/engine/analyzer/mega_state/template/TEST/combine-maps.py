@@ -5,6 +5,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.engine.state_machine.index                             as     sm_index
 from   quex.engine.analyzer.state.core                             import AnalyzerState
+import quex.engine.analyzer.door_id_address_label                  as     DialDB
 from   quex.engine.analyzer.transition_map                         import TransitionMap
 import quex.engine.analyzer.mega_state.template.core               as     templates
 from   quex.engine.analyzer.mega_state.template.state              import combine_maps, TemplateState
@@ -12,6 +13,8 @@ from   quex.engine.analyzer.mega_state.template.TEST.templates_aux import *
 import quex.engine.operations.tree                 as     entry_door_tree
 
 from   quex.engine.misc.interval_handling import *
+
+dial_db = DialDB()
 
 if "--hwut-info" in sys.argv:
     print "Combination of Two Transition Maps"
@@ -43,11 +46,12 @@ def test(TMa, TMb, InvolvedStateListA=[10L], InvolvedStateListB=[20L], DrawF=Fal
     test_combination(StateB, StateA, analyzer, "A", "B", DrawF)
 
 def get_transition_map(TM, StateIndex, DropOutCatcher=None):
+    global dial_db
     if DropOutCatcher is None:
-        DropOutCatcher = AnalyzerState(sm_index.get(), TransitionMap())
+        DropOutCatcher = AnalyzerState(sm_index.get(), TransitionMap(), dial_db=dial_db)
 
     def get_door_id(Target):
-        return DoorID(Target, 0)
+        return DoorID(Target, 0, dial_db)
     tm = TransitionMap.from_iterable(TM, get_door_id)
     return tm.relate_to_TargetByStateKeys(StateIndex, DropOutCatcher)
 

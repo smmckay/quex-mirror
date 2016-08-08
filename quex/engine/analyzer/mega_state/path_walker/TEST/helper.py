@@ -1,4 +1,5 @@
 import quex.engine.analyzer.mega_state.path_walker.core  as     paths 
+from   quex.engine.analyzer.door_id_address_label        import DialDB
 import quex.engine.analyzer.mega_state.path_walker.find  as     find
 import quex.engine.analyzer.engine_supply_factory        as     engine
 from   quex.engine.analyzer.core                         import Analyzer
@@ -8,7 +9,7 @@ from   quex.blackboard                                   import E_Compression, \
 def find_core(sm, SelectF=False):
     print sm.get_graphviz_string(NormalizeF=False)
     print
-    analyzer = Analyzer.from_StateMachine(sm, engine.FORWARD)
+    analyzer = Analyzer.from_StateMachine(sm, engine.FORWARD, dial_db=DialDB())
     for state in analyzer.state_db.itervalues():
         state.entry.categorize(state.index)
     analyzer.drop_out.entry.categorize(E_StateIndices.DROP_OUT)

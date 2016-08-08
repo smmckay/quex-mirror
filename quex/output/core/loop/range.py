@@ -23,15 +23,15 @@ def do(Data, ReloadState):
     CloserPattern    = Data["closer_pattern"]
     ModeName         = Data["mode_name"]
     OnSkipRangeOpen  = Data["on_skip_range_open"]
-    DoorIdAfter      = Data["door_id_after"]
+    DoorIdExit       = Data["door_id_exit"]
     dial_db          = Data["dial_db"]
 
     return get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen, 
-                       DoorIdAfter, CaMap, dial_db) 
+                       DoorIdExit, CaMap, dial_db) 
 
 @typed(CaMap=CountActionMap)
 def get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen, 
-                DoorIdAfter, CaMap, dial_db):
+                DoorIdExit, CaMap, dial_db):
     """
                                         .---<---+----------<------+
                                         |       |                 |        
@@ -61,25 +61,23 @@ def get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen,
 
     """
     psml        = _get_state_machine_vs_terminal_list(CloserPattern, dial_db, 
-                                                      DoorIdAfter)
+                                                      DoorIdExit)
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
     result,               \
     terminal_list,        \
     loop_map,             \
-    door_id_beyond,       \
+    door_id_loop,         \
     required_register_set = loop.do(CaMap,
-                                    OnLoopExitDoorId  = DoorIdAfter,
-                                    LexemeEndCheckF   = False,
-                                    LexemeMaintainedF = False,
-                                    EngineType        = engine_type,
-                                    ReloadStateExtern = ReloadState,
+                                    OnLoopExitDoorId           = DoorIdExit,
+                                    EngineType                 = engine_type,
+                                    ReloadStateExtern          = ReloadState,
                                     ParallelSmTerminalPairList = psml, 
-                                    dial_db           = dial_db) 
+                                    dial_db                    = dial_db) 
     return result, terminal_list, required_register_set
 
-def _get_state_machine_vs_terminal_list(CloserPattern, dial_db, DoorIdAfter): 
+def _get_state_machine_vs_terminal_list(CloserPattern, dial_db, DoorIdExit): 
     """Additionally to all characters, the loop shall walk along the 'closer'.
     If the closer matches, the range skipping exits. Characters need to be 
     counted properly.
@@ -89,7 +87,7 @@ def _get_state_machine_vs_terminal_list(CloserPattern, dial_db, DoorIdAfter):
     The list contains only one single element.
     """
     sm            = CloserPattern.sm.clone(StateMachineId=dial.new_incidence_id())
-    code          = [ Lng.GOTO(DoorIdAfter, dial_db) ]
+    code          = [ Lng.GOTO(DoorIdExit, dial_db) ]
     mini_terminal = loop.MiniTerminal(code, "<SKIP RANGE TERMINATED>", sm.get_id())
     return [ (sm, mini_terminal) ]
 

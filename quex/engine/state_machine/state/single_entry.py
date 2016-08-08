@@ -57,6 +57,19 @@ class SingleEntry(object):
         for origin_iterable in OpIterableIterable:
             self.merge(origin_iterable)
 
+    def get_highest_precedence_acceptance_id(self):
+        """RETURNS: incidence_id of the highest non-E_IncidenceIDs pattern
+                                 that matches in this state.
+                    None, else.
+        """
+        dominating_iid = None
+        for cmd in self.get_iterable(SeAccept):
+            if   cmd.acceptance_id() in E_IncidenceIDs: 
+                continue
+            elif dominating_iid is None or dominating_iid > cmd.acceptance_id():
+                dominating_iid = cmd.acceptance_id()
+        return dominating_iid
+
     def set(self, OpList):
         self.clear()
         self.__list.extend(

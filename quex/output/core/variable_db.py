@@ -46,7 +46,10 @@ candidate_db = {
 "template_%i_map_state_key_to_recursive_entry": ["const QUEX_TYPE_GOTO_LABEL",    None,                     False],
 #
 # (*) Skipper etc.
+"position_delta":                 ["ptrdiff_t",          "(ptrdiff_t)0",            False],
 "reference_p":                    ["QUEX_TYPE_LEXATOM*", "(QUEX_TYPE_LEXATOM*)0x0", False],
+"read_p_before_reload":           ["QUEX_TYPE_LEXATOM*", "(QUEX_TYPE_LEXATOM*)0x0", False],
+"appendix_begin_p":               ["QUEX_TYPE_LEXATOM*", "(QUEX_TYPE_LEXATOM*)0x0", False],
 "character_begin_p":              ["QUEX_TYPE_LEXATOM*", "(QUEX_TYPE_LEXATOM*)0x0", False],
 "text_end":                       ["QUEX_TYPE_LEXATOM*",         "(QUEX_TYPE_LEXATOM*)0x0",         False],
 #     Character Set Skipper:

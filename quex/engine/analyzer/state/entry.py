@@ -141,6 +141,13 @@ class Entry(object):
         ta.door_id = DoorID.state_machine_entry(SM_id, self.dial_db)
         return self.enter(ToStateIndex, E_StateIndices.BEFORE_ENTRY, ta)
 
+    def prepend_OpList(self, ToStateIndex, FromStateIndex, TheOpList):
+        transition_id = TransitionID(ToStateIndex, FromStateIndex, TriggerId=0)
+        ta = self.__db.get(transition_id)
+        # A transition_action cannot be changed, once it has a DoorID assigned to it.
+        assert ta.door_id is None
+        ta.command_list = TheOpList.command_list.concatinate(ta.command_list)
+
     def append_OpList(self, ToStateIndex, FromStateIndex, TheOpList):
         transition_id = TransitionID(ToStateIndex, FromStateIndex, TriggerId=0)
         ta = self.__db.get(transition_id)

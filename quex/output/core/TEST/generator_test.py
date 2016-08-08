@@ -1,4 +1,32 @@
 #! /usr/bin/env python
+
+# Switch: Removal of source and executable file
+#         'False' --> No removal.
+if True: 
+    REMOVE_FILES = True; 
+else:     
+    print ":> Do not remove files!"
+    REMOVE_FILES = False
+
+# Switch: Verbose debug output: 
+#         'False' --> Verbose debug output
+if True: # False: # True:
+    SHOW_TRANSITIONS_STR  = ""
+    SHOW_BUFFER_LOADS_STR = ""
+else:
+    REMOVE_FILES = False
+    print "NOTE:> Print transitions!"
+    print "       and: Do not remove files!"
+    SHOW_TRANSITIONS_STR  = "-DQUEX_OPTION_DEBUG_SHOW "  
+    SHOW_BUFFER_LOADS_STR = "-DQUEX_OPTION_DEBUG_SHOW_LOADS -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE"
+
+# Switch: Turn off some warnings
+#         'False' --> show (almost) all compiler warnings
+if True:
+    IGNORE_WARNING_F = True
+else:
+    IGNORE_WARNING_F = False
+
 import sys
 import os
 import subprocess
@@ -38,27 +66,6 @@ from   quex.blackboard import E_Compression, \
 from   copy import deepcopy
 
 dial_db = DialDB()
-
-# Switch: Removal of source and executable file
-#         'False' --> No removal.
-if False: REMOVE_FILES = True
-else:     REMOVE_FILES = False
-
-# Switch: Verbose debug output: 
-#         'False' --> Verbose debug output
-if True: # False: # True:
-    SHOW_TRANSITIONS_STR  = ""
-    SHOW_BUFFER_LOADS_STR = ""
-else:
-    SHOW_TRANSITIONS_STR  = "-DQUEX_OPTION_DEBUG_SHOW "  
-    SHOW_BUFFER_LOADS_STR = "-DQUEX_OPTION_DEBUG_SHOW_LOADS -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE"
-
-# Switch: Turn off some warnings
-#         'False' --> show (almost) all compiler warnings
-if True:
-    IGNORE_WARNING_F = True
-else:
-    IGNORE_WARNING_F = False
 
 choices_list = ["ANSI-C-PlainMemory", "ANSI-C", "ANSI-C-CG", 
                 "Cpp", "Cpp_StrangeStream", "Cpp-Template", "Cpp-Template-CG", 
@@ -582,7 +589,12 @@ run_test(const char* TestString, const char* Comment)
 {
     (void)QUEX_NAME_TOKEN(DumpedTokenIdObject);
             
-    printf("(*) test string: \\n'%s'%s\\n", TestString, Comment);
+    if( strlen(TestString) > 128 ) {
+        printf("(*) test string: \\n'%.128s...'%s\\n", TestString, Comment);
+    } 
+    else {
+        printf("(*) test string: \\n'%s'%s\\n", TestString, Comment);
+    }
     printf("(*) result:\\n");
 
 #   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)

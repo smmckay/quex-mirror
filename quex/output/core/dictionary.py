@@ -249,6 +249,8 @@ class Lng_Cpp(dict):
     def REGISTER_NAME(self, Register):
         return {
             E_R.InputP:          "(me->buffer._read_p)",
+            E_R.InputPBeforeReload: "read_p_before_reload",
+            E_R.PositionDelta:      "position_delta",
             E_R.Column:          "(me->counter._column_number_at_end)",
             E_R.Line:            "(me->counter._line_number_at_end)",
             E_R.LexemeStartP:    "(me->buffer._lexeme_start_p)",
@@ -256,6 +258,7 @@ class Lng_Cpp(dict):
             E_R.ReferenceP:      "reference_p",
             E_R.LexemeEnd:       "LexemeEnd",
             E_R.Counter:         "counter",
+            E_R.AppendixBeginP:  "appendix_begin_p",
         }[Register]
 
     def COMMAND_LIST(self, OpList, dial_db=None):
@@ -360,6 +363,16 @@ class Lng_Cpp(dict):
             else:
                 assignment = "%s = %s" % (self.REGISTER_NAME(register), value)
                 return "    %s;\n" % assignment
+
+        elif Op.id == E_Op.AssignPointerDifference:
+            return "    %s = %s - %s;\n" % (self.REGISTER_NAME(Op.content.result), 
+                                            self.REGISTER_NAME(Op.content.big),
+                                            self.REGISTER_NAME(Op.content.small))
+
+        elif Op.id == E_Op.PointerAdd:
+            return "    %s = &%s[%s];\n" % (self.REGISTER_NAME(Op.content.pointer), 
+                                            self.REGISTER_NAME(Op.content.pointer),
+                                            self.REGISTER_NAME(Op.content.offset))
 
         elif Op.id == E_Op.ColumnCountAdd:
             return "__QUEX_IF_COUNT_COLUMNS_ADD((size_t)%s);\n" % self.VALUE_STRING(Op.content.value) 
