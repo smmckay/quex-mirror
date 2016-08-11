@@ -5,7 +5,7 @@
 if True: 
     REMOVE_FILES = True; 
 else:     
-    print ":> Do not remove files!"
+    print "NOTE:> Do not remove files!;"
     REMOVE_FILES = False
 
 # Switch: Verbose debug output: 
@@ -15,8 +15,7 @@ if True: # False: # True:
     SHOW_BUFFER_LOADS_STR = ""
 else:
     REMOVE_FILES = False
-    print "NOTE:> Print transitions!"
-    print "       and: Do not remove files!"
+    print "NOTE:> Print transitions and do not remove files!;"
     SHOW_TRANSITIONS_STR  = "-DQUEX_OPTION_DEBUG_SHOW "  
     SHOW_BUFFER_LOADS_STR = "-DQUEX_OPTION_DEBUG_SHOW_LOADS -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE"
 
@@ -201,7 +200,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
                              "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER\n"       + \
                              state_machine_code
 
-    source_code =   create_common_declarations(Language, QuexBufferSize, TestStr, QuexBufferFallbackN, BufferLimitCode, ComputedGotoF=computed_goto_f) \
+    source_code =   create_common_declarations(Language, QuexBufferSize, QuexBufferFallbackN, BufferLimitCode, ComputedGotoF=computed_goto_f) \
                   + state_machine_code \
                   + test_program
 
@@ -321,23 +320,28 @@ def create_main_function(Language, TestStr, QuexBufferSize, CommentTestStrF=Fals
 
     return txt
 
-def create_common_declarations(Language, QuexBufferSize, TestStr, 
+def create_common_declarations(Language, QuexBufferSize, 
                                QuexBufferFallbackN=-1, BufferLimitCode=0, 
                                IndentationSupportF=False, TokenQueueF=False,
                                ComputedGotoF=False):
+
     # Determine the 'fallback' region size in the buffer
-    if QuexBufferFallbackN == -1: 
-        QuexBufferFallbackN = QuexBufferSize - 3
-    if Language == "ANSI-C-PlainMemory": 
-        QuexBufferFallbackN = max(0, len(TestStr) - 3) 
+    #if QuexBufferFallbackN == -1: 
+    #    QuexBufferFallbackN = QuexBufferSize - 3
+    #if Language == "ANSI-C-PlainMemory": 
+    #    QuexBufferFallbackN = max(0, len(TestStr) - 3) 
+
+    txt  = ""
+    txt += "#    define QUEX_SETTING_BUFFER_SIZE  %s\n" % QuexBufferSize
 
     # Parameterize the common declarations
-    txt  = "#define   __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n"
+    txt += "#define   __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n"
     txt += "#define QUEX_TYPE_LEXATOM unsigned char\n" 
     txt += "#define __QUEX_OPTION_UNIT_TEST\n" 
 
     txt += test_program_common_declarations.replace("$$BUFFER_FALLBACK_N$$", 
                                                     repr(QuexBufferFallbackN))
+    txt  =  txt.replace("$$BUFFER_SIZE$$", "%s" % QuexBufferSize)
 
     if ComputedGotoF:   
         txt = txt.replace("$$COMPUTED_GOTOS$$",    "/* Correct */")
@@ -587,6 +591,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 static int
 run_test(const char* TestString, const char* Comment)
 {
+    ptrdiff_t  real_buffer_size;
     (void)QUEX_NAME_TOKEN(DumpedTokenIdObject);
             
     if( strlen(TestString) > 128 ) {
@@ -596,6 +601,14 @@ run_test(const char* TestString, const char* Comment)
         printf("(*) test string: \\n'%s'%s\\n", TestString, Comment);
     }
     printf("(*) result:\\n");
+
+    real_buffer_size =   lexer_state.buffer._memory._back 
+                       - lexer_state.buffer._memory._front + 1;
+    if( real_buffer_size != $$BUFFER_SIZE$$ ) {
+        printf("ERROR: buffer_size: { required: $$BUFFER_SIZE$$; real: %i; }\\n",
+               (int)real_buffer_size);
+        return -1;
+    }
 
 #   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
 
@@ -650,11 +663,24 @@ test_program_db = {
 
     int main(int argc, char** argv)
     {
-        const char*       test_string = "$$TEST_STRING$$";
-        FILE*             fh          = tmpfile();
-
-        /* Write test string into temporary file */
-        fwrite(test_string, strlen(test_string), 1, fh);
+        char*  test_string = "$$TEST_STRING$$";
+        char   buffer[65536*16];
+        FILE*  fh;
+        int    n;
+    
+        if( argc > 1 ) {
+            fh = fopen(argv[1], "rb");
+            n  = fread(&buffer[0], 1, sizeof(buffer), fh); 
+    #       if 0
+            printf("%s: %i\\n", argv[1], n);
+    #       endif
+            test_string    = &buffer[0];
+            test_string[n] = '\\0';
+        } else {
+            fh = tmpfile();
+            /* Write test string into temporary file */
+            fwrite(test_string, strlen(test_string), 1, fh);
+        }
         fseek(fh, 0, SEEK_SET); /* start reading from the beginning */
 
         DEAL_WITH_COMPUTED_GOTOS();
@@ -710,22 +736,14 @@ test_program_db = {
 
     int main(int argc, char** argv)
     {
-        char        test_string[65536];
-        FILE*       fh               = fopen(argv[1], "rb");
-        size_t      buffer_size      = atoi(argv[2]);
-        size_t      real_buffer_size = 0;
+        char   test_string[65536];
+        FILE*  fh = fopen(argv[1], "rb");
 
         (void)fread(test_string, 1, 65536, fh);
         fseek(fh, 0, SEEK_SET); /* start reading from the beginning */
 
         DEAL_WITH_COMPUTED_GOTOS();
         QUEX_NAME(from_FILE)(&lexer_state, fh, 0x0, true);
-
-        /* Double check, that buffer size has been set. */
-        real_buffer_size = lexer_state.buffer._memory._back - lexer_state.buffer._memory._front + 1;
-        printf("## buffer_size: { required: %i; real: %i; }\\n",
-               (int)(buffer_size), (int)real_buffer_size);
-        __quex_assert( real_buffer_size != buffer_size );
 
         (void)run_test(test_string, "$$COMMENT$$");
 

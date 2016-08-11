@@ -194,7 +194,8 @@ class LoopEventHandlers:
         self.dial_db                     = dial_db
 
         # Determine required register set before (required for reload actions)
-        self.required_register_set = self.__get_required_register_set(AppendixSmExistF)
+        self.required_register_set = self.__get_required_register_set(AppendixSmExistF, 
+                                                                      MaintainLexemeF)
 
         # Counting Actions upon: loop entry/exit; before/after reload
         #
@@ -205,6 +206,7 @@ class LoopEventHandlers:
 
         # Input pointer positioning: loop entry/exit; before/after reload
         #
+        on_loop_entry,        \
         on_loop_reentry_pos,  \
         on_loop_exit_pos      = self.__prepare_positioning_at_loop_begin_and_exit()
         on_before_reload_pos, \
@@ -215,7 +217,8 @@ class LoopEventHandlers:
         self.Op_goto_on_loop_exit_user_door_id = Op.GotoDoorId(UserOnLoopExitDoorId)
 
         if UserBeforeEntryOpList is None: UserBeforeEntryOpList = [] 
-        self.on_loop_entry      = OpList.concatinate(on_loop_reentry_pos, 
+        self.on_loop_entry      = OpList.concatinate(on_loop_entry, 
+                                                     on_loop_reentry_pos, 
                                                      on_loop_entry_count,
                                                      UserBeforeEntryOpList)
         self.on_loop_reentry    = OpList.from_iterable(on_loop_reentry_pos)
@@ -230,8 +233,12 @@ class LoopEventHandlers:
 
     @staticmethod
     def __prepare_count_actions(ColumnNPerCodeUnit):
-        if Setup.buffer_codec.variable_character_sizes_f(): pointer = E_R.CharacterBeginP
-        else:                                               pointer = E_R.InputP
+        # Variable character sizes: store the begin of character in 
+        # 'LoopRestartP'. Loop start and character start are the same position.
+        if Setup.buffer_codec.variable_character_sizes_f():
+            pointer = E_R.LoopRestartP
+        else:                                            
+            pointer = E_R.InputP
 
         if ColumnNPerCodeUnit is None: db = count_operation_db_without_reference 
         else:                          db = count_operation_db_with_reference 
@@ -243,25 +250,31 @@ class LoopEventHandlers:
                db[E_CharacterCountType.BEFORE_RELOAD](pointer, ColumnNPerCodeUnit), \
                db[E_CharacterCountType.AFTER_RELOAD](pointer, ColumnNPerCodeUnit)
 
-    @staticmethod
-    def __prepare_positioning_at_loop_begin_and_exit():
+    def __prepare_positioning_at_loop_begin_and_exit(self):
         """With codecs of dynamic character sizes (UTF8), the pointer to the 
         first letter is stored in 'character_begin_p'. To reset the input 
         pointer 'input_p = character_begin_p' is applied.  
         """
-        if not Setup.buffer_codec.variable_character_sizes_f():
+        if Setup.buffer_codec.variable_character_sizes_f():
+            # 1 character == variable number of code units
+            # => Begin of character must be stored upon entry 
+            #    and restored upon exit.
+            entry   = [ Op.Assign(E_R.LoopRestartP, E_R.InputP) ]
+            reentry = [ Op.Assign(E_R.LoopRestartP, E_R.InputP) ]
+            exit    = [ Op.Assign(E_R.InputP, E_R.LoopRestartP) ]
+        else:
             # 1 character == 1 code unit
             # => reset to last character: 'input_p = input_p - 1'
-            on_loop_exit    = [ Op.Decrement(E_R.InputP) ]
-            on_loop_reentry = []
-        else:
-            # 1 character == variable number of code units
-            # => store begin of character in 'lexeme_start_p'
-            # => reset to last character: 'input_p = lexeme_start_p'
-            on_loop_exit    = [ Op.Assign(E_R.InputP, E_R.CharacterBeginP) ]
-            on_loop_reentry = [ Op.Assign(E_R.CharacterBeginP, E_R.InputP) ]
+            entry   = []
+            reentry = []
+            exit    = [ Op.Decrement(E_R.InputP) ]
 
-        return on_loop_reentry, on_loop_exit
+        if self.column_number_per_code_unit is not None:
+            entry.append( 
+                Op.Assign(E_R.CountReferenceP, E_R.InputP ) 
+            )
+
+        return entry, reentry, exit
 
     def __prepare_positioning_before_and_after_reload(self, MaintainLexemeF):
         """The 'lexeme_start_p' restricts the amount of data which is loaded 
@@ -281,32 +294,85 @@ class LoopEventHandlers:
         before = []
         after  = []
 
-        # TODO: All position pointer adaption shall be handled in the buffer
-        #       reload function that iterates of the position pointer array!
-        if    E_R.ReferenceP     in self.required_register_set \
-           or E_R.AppendixBeginP in self.required_register_set:
+        # Besides the current 'read_p', the buffer reload must maintain the
+        # following pointers. I.e. after reload their position must lie INSIDE
+        # the buffer.
+        # 
+        # CountReferenceP --> required for character counting
+        #                     (only if column_number_per_code_unit is specified)
+        # LoopRestartP    --> Position where to restart loop:
+        #                       * if the appendix state machine drops-out.
+        #                       * if current multi byte character is incomplete.
+        # LexemeStartP    --> Position where the current lexeme begins
+        #                     (only if explicitly required by 'MaintainLexemeF')
+        #
+        # The (current) reload function only maintains the 'read_p' and 
+        # 'lexeme_start_p'. Trick:
+        #      BEFORE: 
+        #              read_p_before_reload         = read_p
+        #              lexeme_start_before_reload_p = LexemeStartP
+        #              lexeme_start_p   = min(LoopRestartP, 
+        #                                     CountReferenceP,
+        #                                     LexemeStartP)
+        #      AFTER:  
+        #              position_delta   = read_p - read_p_before_reload
+        #              LoopRestartP    -= position_delta
+        #              CountReferenceP -= position_delta
+        #              LexemeStartP     = lexeme_start_backup_p - position_delta
+        #
+        # Once, the reload function can handle this, the aforementioned may be
+        # simplified significantly (TODO).
+
+        # Flag indicating whether there are other pointers beyond 'lexeme_start_p'
+        # which need to be maintained.
+        maintain_count_ref_p    = E_R.CountReferenceP in self.required_register_set 
+        maintain_loop_restart_p = E_R.LoopRestartP in self.required_register_set
+
+        # Before Reload:
+        pointer_list = []
+        if MaintainLexemeF:         pointer_list.append(E_R.LexemeStartP)    # MUST BE FIRST!
+        if maintain_count_ref_p:    pointer_list.append(E_R.CountReferenceP)
+        if maintain_loop_restart_p: pointer_list.append(E_R.LoopRestartP)
+
+        if maintain_count_ref_p or maintain_loop_restart_p:
+            if MaintainLexemeF:
+                before.append(
+                    Op.Assign(E_R.LexemeStartBeforeReload, E_R.LexemeStartP),
+                )
             before.append(
-                Op.Assign(E_R.InputPBeforeReload, E_R.InputP) 
+                Op.Assign(E_R.InputPBeforeReload, E_R.InputP),
             )
-            after.append(
+            for i, pointer in pointer_list[1:]:
+                # Avoid Nonsense: lexeme_p = min(lexeme_p, lexeme_p) 
+                if E_R.LexemeStartP == pointer: 
+                    continue
+                elif i == 0:
+                    op = Op.Assign(E_R.LexemeStartP, pointer)
+                else:
+                    op = Op.PointerAssignMin(E_R.LexemeStartP, E_R.LexemeStartP, pointer)
+                before.append(op)
+
+        if not MaintainLexemeF:
+            # Just get the 'lexeme_start_p' out of the way, so that anything
+            # is filled from 'read_p'.
+            before.append(
+                Op.Assign(E_R.LexemeStartP, E_R.InputP)
+            )
+
+        # After Reload:
+        if maintain_count_ref_p or maintain_loop_restart_p:
+            if MaintainLexemeF:
+                before.append(
+                    Op.Assign(E_R.LexemeStartP, E_R.LexemeStartBeforeReload),
+                )
+            after.extend([
                 Op.AssignPointerDifference(E_R.PositionDelta, 
                                            E_R.InputP, E_R.InputPBeforeReload),
-            )
-            if E_R.AppendixBeginP in self.required_register_set:
-                after.append(Op.PointerAdd(E_R.AppendixBeginP, E_R.PositionDelta))
-            if E_R.ReferenceP in self.required_register_set:
-                after.append(Op.PointerAdd(E_R.ReferenceP, E_R.PositionDelta))
-
-        if Setup.buffer_codec.variable_character_sizes_f():
-            if MaintainLexemeF:
-                before.extend([ Op.Assign(E_R.LexemeStartP, E_R.CharacterBeginP) ])
-                after.extend([ Op.Assign(E_R.CharacterBeginP, E_R.LexemeStartP) ])
-            else:
-                # Here, the character begin p needs to be adapted to what has been reloaded.
-                pass # Begin of lexeme is enough
-        else:
-            before.append(Op.Assign(E_R.LexemeStartP, E_R.InputP))
-            after.append(Op.Assign(E_R.InputP, E_R.LexemeStartP))
+            ])
+            for p in pointer_list:
+                after.append(
+                    Op.PointerAdd(p, E_R.PositionDelta)
+                )
 
         return before, after
 
@@ -395,7 +461,7 @@ class LoopEventHandlers:
                 # If the reference counting is applied, the reference pointer
                 # must be set right behind the last counted character.
                 count_code.append(
-                    Lng.COMMAND(Op.Assign(E_R.ReferenceP, E_R.InputP), self.dial_db)
+                    Lng.COMMAND(Op.Assign(E_R.CountReferenceP, E_R.InputP), self.dial_db)
                 )
         else:
             run_time_counter_required_f = False
@@ -410,32 +476,37 @@ class LoopEventHandlers:
 
     def on_couple_terminal_to_appendix_sm(self, AppendixSmId):
         return [
-            Op.Assign(E_R.AppendixBeginP, E_R.InputP),
+            # When the appendix drops out, the loop must continue where the
+            # appendix has began => Set 'LoopRestartP' to current position.
+            Op.Assign(E_R.LoopRestartP, E_R.InputP),
             Op.GotoDoorId(DoorID.state_machine_entry(AppendixSmId, self.dial_db)) 
         ]
 
     def on_loop_after_appendix_drop_out(self, DoorIdLoop):
-        # 'CharacterBeginP' has been assigned in the 'Couple Terminal'.
-        # (see ".get_loop_terminal_code()").
-        return Lng.COMMAND_LIST([
-            Op.Assign(E_R.InputP, E_R.AppendixBeginP),
+        return [
+            # Upon drop-out, the input position is set to where the apendix 
+            # started. Then, the loop is re-entered.
+            Op.Assign(E_R.InputP, E_R.LoopRestartP),
             Op.GotoDoorId(DoorIdLoop)
-        ], self.dial_db)
+        ]
 
     def on_loop_exit_text(self):
         return Lng.COMMAND_LIST(self.on_loop_exit, self.dial_db)
 
-    def __get_required_register_set(self, AppendixSmExistF):
+    def __get_required_register_set(self, AppendixSmExistF, MaintainLexemeF):
         result = set()
-        if AppendixSmExistF or self.column_number_per_code_unit is not None:
-            result.add((E_R.ReferenceP, "QUEX_OPTION_COLUMN_NUMBER_COUNTING"))
+        if self.column_number_per_code_unit is not None:
+            result.add((E_R.CountReferenceP, "QUEX_OPTION_COLUMN_NUMBER_COUNTING"))
         if AppendixSmExistF:
-            result.add(E_R.AppendixBeginP)
+            result.add(E_R.LoopRestartP)
         if Setup.buffer_codec.variable_character_sizes_f():
-            result.add(E_R.CharacterBeginP)
-        if E_R.ReferenceP in result or E_R.AppendixBeginP in result:
+            result.add(E_R.LoopRestartP)
+        if    E_R.CountReferenceP in result \
+           or E_R.LoopRestartP in result:
             result.add(E_R.InputPBeforeReload)
             result.add(E_R.PositionDelta)
+            if MaintainLexemeF:
+                result.add(E_R.LexemeStartBeforeReload)
 
         return result
 
@@ -763,7 +834,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList, dial_db
             appendix_sm_id = appendix_sm.get_id()
 
         if CA.cc_type == E_CharacterCountType.COLUMN:
-            if Setup.buffer_codec.variable_character_sizes_f(): pointer = E_R.CharacterBeginP
+            if Setup.buffer_codec.variable_character_sizes_f(): pointer = E_R.LoopRestartP
             else:                                               pointer = E_R.InputP
             ca = CountAction(E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM,
                              pointer, CA.sr)
@@ -863,8 +934,10 @@ def _get_loop_terminal_list(loop_map, EventHandler, IidLoopAfterAppendixDropOut,
 
     # Terminal: Re-enter Loop
     if IidLoopAfterAppendixDropOut is not None:
+        txt = Lng.COMMAND_LIST(EventHandler.on_loop_after_appendix_drop_out(DoorIdLoop),
+                               EventHandler.dial_db)
         result.append(
-            Terminal(CodeTerminal(EventHandler.on_loop_after_appendix_drop_out(DoorIdLoop)),
+            Terminal(CodeTerminal(txt),
                      "<LOOP>", IidLoopAfterAppendixDropOut,
                      dial_db=EventHandler.dial_db)
         )
@@ -925,7 +998,7 @@ def _get_appendix_analyzers(loop_map, EventHandler, AppendixSmList,
         appendix_sm_list.append(sm)
 
     # Appendix Sm Drop Out => Restore position of last loop character.
-    # (i)  Couple terminal stored input position in 'AppendixBeginP'.
+    # (i)  Couple terminal stored input position in 'LoopRestartP'.
     # (ii) Terminal 'LoopAfterAppendixDropOut' restores that position.
     # Accepting on the initial state of an appendix state machine ensures
     # that any drop-out ends in this restore terminal.

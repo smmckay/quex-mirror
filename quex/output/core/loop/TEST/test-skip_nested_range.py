@@ -18,28 +18,50 @@ if sys.argv[1].find("StrangeStream") != -1:
     Language = "Cpp"
 
 
-def test(Name, TestStr, Opener="/*", Closer="*/"):
+def build(Opener, Closer):
+    open_sequence  = map(ord, Opener)
+    close_sequence = map(ord, Closer)
+    code_str = create_nested_range_skipper_code(Language, "<by command line>", 
+                                                open_sequence, 
+                                                close_sequence, 
+                                                QuexBufferSize=len(close_sequence)+3)
+    executable_name, \
+    source           = compile(Language, code_str, 
+                               AssertsActionvation_str = "", 
+                               StrangeStream_str       = StrangeStream_str)
+    return executable_name, source
+
+def run(executable, Name, TestStr):
     print
     print "--( %s )------------" % Name
     print
-    open_sequence  = map(ord, Opener)
-    close_sequence = map(ord, Closer)
-    code_str = create_nested_range_skipper_code(Language, TestStr, 
-                                                open_sequence, 
-                                                close_sequence, 
-                                                QuexBufferSize=len(close_sequence)+2)
-    compile_and_run(Language, code_str,
-                    StrangeStream_str=StrangeStream_str)
+    sys.stdout.flush()
+
+    fh_test = open("test.txt", "wb")
+    fh_test.write(TestStr)
+    fh_test.close()
+    os.system("./%s %s %s" % (executable, "test.txt", len(TestStr)))
+
+    if REMOVE_FILES:
+        os.remove("test.txt")
+
+    sys.stdout.flush()
     if "X" in TestStr: 
         print "column_number_at_end(expected): %i;\n" % (TestStr.find("X")+1)
+    sys.stdout.flush()
 
-def wild_str_core(N, Seed=17):
+def clean(executable, source):
+    if REMOVE_FILES:
+        os.remove(executable)
+        os.remove(source)
+
+def wild_str_core(N):
     """Generate a random configuration of opener/closers.
     IDEA: At any position between the outest brackets a '()' may be inserted
           resulting in a well defines nested expression. Repeating this process
           results in large tree of valid nested expressions.
     """
-    seed = Seed # seed of 'pseudo randomness'
+    seed = 17 # seed of 'pseudo randomness'
     pos  = 0
     txt  = "()"
     for i in range(N):
@@ -61,65 +83,42 @@ def wild_str(N, Opener, Closer):
 #       The tests are already setup for that, but it requires some 
 #       slight adaptions.
 if choice == "one":
-    test("CLOSE",                            
-         "a)",         "(", ")")
-    test("OPEN-CLOSE",                       
-         "a()X",       "(", ")")
-    test("OPEN-OPEN-CLOSE-CLOSE",            
-         "a(())X",     "(", ")")
-    test("OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", 
-         "a(()())X",   "(", ")")
-    test("OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", 
-         "a((()()))X", "(", ")")
-    test("WILD", 
-         wild_str(20000, "(", ")"), "(", ")")
+    exe, source = build("(", ")")
+    run(exe, "CLOSE", "a)")
+    run(exe, "OPEN-CLOSE", "a()X")
+    run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a(())X")
+    run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a(()())X")
+    run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((()()))X")
+    run(exe, "WILD", wild_str(10000, "(", ")"))
+    clean(exe, source)
 
 elif choice == "two":
-    test("CLOSE",                            
-         "a-)",                "(-", "-)")
-    test("OPEN-CLOSE",                       
-         "a(--)X",             "(-", "-)")
-    test("OPEN-OPEN-CLOSE-CLOSE",            
-         "a(-(--)-)X",         "(-", "-)")
-    test("OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", 
-         "a(-(--)(--)-)X",     "(-", "-)")
-    test("OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", 
-         "a(-(-(--)(--)-)-)X", "(-", "-)")
-    test("WILD", 
-         wild_str(50000, "(-", "-)"), "(-", "-)")
-
+    exe, source = build("(-", "-)")
+    run(exe, "CLOSE", "a-)")
+    run(exe, "OPEN-CLOSE", "a(--)X")
+    run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a(-(--)-)X")
+    run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a(-(--)(--)-)X")
+    run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a(-(-(--)(--)-)-)X")
+    run(exe, "WILD", wild_str(50000, "(-", "-)"))
+    clean(exe, source)
 
 elif choice == "three":
-    if False:
-        test("CLOSE",                            
-             "a-))",                        "((-", "-))")
-        test("OPEN-CLOSE",                       
-             "a((--))X",                    "((-", "-))")
-        test("OPEN-OPEN-CLOSE-CLOSE",            
-             "a((-((--))-))X",              "((-", "-))")
-        test("OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", 
-             "a((-((--))((--))-))X",        "((-", "-))")
-        test("OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", 
-             "a((-((-((--))((--))-))-))X",  "((-", "-))")
-
-    for seed in range(1, 1023, 3):
-        txt = wild_str_core(10, Seed=seed)
-        txt = txt.replace("(", "OPENER").replace("OPENER", "((-")
-        txt = txt.replace(")", "CLOSER").replace("CLOSER", "-))")
-        test("WILD", 
-             txt, "((-", "-))")
+    exe, source = build("((-", "-))")
+    run(exe, "CLOSE", "a-))")
+    run(exe, "OPEN-CLOSE", "a((--))X")
+    run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a((-((--))-))X")
+    run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a((-((--))((--))-))X")
+    run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((-((-((--))((--))-))-))X")
+    run(exe, "WILD", wild_str(50000, "((-", "-))"))
+    clean(exe, source)
 
 elif choice == "same-head":
-    test("CLOSE",                            
-         "asame)",                                     "same(", "same)")
-    test("OPEN-CLOSE",                       
-         "asame(same)X",                               "same(", "same)")
-    test("OPEN-OPEN-CLOSE-CLOSE",            
-         "asame(same(same)same)X",                     "same(", "same)")
-    test("OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", 
-         "asame(same(same)same(same)same)X",           "same(", "same)")
-    test("OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", 
-         "asame(same(same(same)same(same)same)same)X", "same(", "same)")
-    test("WILD", 
-         wild_str(20000, "same(", "same)"),            "same(", "same)")
+    exe, source = build("same(", "same)")
+    run(exe, "CLOSE", "asame)")
+    run(exe, "OPEN-CLOSE", "asame(same)X")
+    run(exe, "OPEN-OPEN-CLOSE-CLOSE", "asame(same(same)same)X")
+    run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "asame(same(same)same(same)same)X")
+    run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "asame(same(same(same)same(same)same)same)X")
+    run(exe, "WILD", wild_str(50000, "same(", "same)"))
+    clean(exe, source)
 

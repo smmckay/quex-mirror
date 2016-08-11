@@ -45,9 +45,9 @@ A = Op.Assign(E_R.AcceptanceRegister, E_R.Buffer)
 B = Op.Assign(E_R.Indentation, E_R.Column)
 C = Op.Assign(E_R.Input, E_R.InputP)
 D = Op.Assign(E_R.LexemeStartP, E_R.LexemeEnd)
-E = Op.Assign(E_R.CharacterBeginP, E_R.Line)
+E = Op.Assign(E_R.LoopRestartP, E_R.Line)
 F = Op.Assign(E_R.PathIterator, E_R.PreContextFlags)
-G = Op.Assign(E_R.ReferenceP, E_R.PositionRegister)
+G = Op.Assign(E_R.CountReferenceP, E_R.PositionRegister)
 
 alias_db = { A: "A", B: "B", C: "C", D: "D", E: "E", F: "F", G: "G", }
 

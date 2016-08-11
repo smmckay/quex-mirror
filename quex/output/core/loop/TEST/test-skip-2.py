@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.getcwd())
 from helper import *
 from quex.engine.misc.interval_handling import NumberSet, Interval
-from quex.output.core.TEST.generator_test   import __Setup_init_language_database
+from quex.output.core.TEST.generator_test   import __Setup_init_language_database, REMOVE_FILES
 
 if "--hwut-info" in sys.argv:
     print "Skip-Characters: Varrying Buffer Size"
@@ -33,7 +33,7 @@ trigger_set = NumberSet([Interval(ord('a'), ord('z') + 1),
 
 def make(TriggerSet, BufferSize):
     Language = "ANSI-C-from-file"
-    code = create_character_set_skipper_code(Language, "", TriggerSet, QuexBufferSize=BufferSize)
+    code = create_character_set_skipper_code(Language, "", TriggerSet, QuexBufferSize=BufferSize+2)
     exe_name, tmp_file_name = compile(Language, code)
     return exe_name, tmp_file_name
 
@@ -42,13 +42,14 @@ def core(Executable, BufferSize, TestStr):
     fh.write(TestStr)
     fh.close()
     run_this("./%s test.txt %i" % (Executable, BufferSize))
-    # sys.exit()
-    os.remove("test.txt")
+    if REMOVE_FILES:
+        os.remove("test.txt")
 
 exe_name, tmp_file = make(trigger_set, BS)
 
 core(exe_name, BS, "abcdefg_HIJKLMNOP-qrstuvw'XYZ12ok3")
-core(exe_name, BS, "-hijklmnop_qrstuvw#xyz9")
-core(exe_name, BS, "aBcD8")
+if True:
+    core(exe_name, BS, "-hijklmnop_qrstuvw#xyz9")
+    core(exe_name, BS, "aBcD8")
 
 

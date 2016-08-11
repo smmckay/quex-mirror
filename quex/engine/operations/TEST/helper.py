@@ -33,8 +33,8 @@ example_db = {
     E_Op.Decrement:                        [ Op.Decrement(E_R.InputP) ],
     E_Op.InputPDereference:                [ Op.InputPDereference() ],
     E_Op.LexemeResetTerminatingZero:       [ Op.LexemeResetTerminatingZero() ],
-    E_Op.ColumnCountReferencePSet:         [ Op.ColumnCountReferencePSet(E_R.CharacterBeginP, 1000) ],
-    E_Op.ColumnCountReferencePDeltaAdd:    [ Op.ColumnCountReferencePDeltaAdd(E_R.CharacterBeginP, 5555, False) ],
+    E_Op.ColumnCountReferencePSet:         [ Op.ColumnCountReferencePSet(E_R.LoopRestartP, 1000) ],
+    E_Op.ColumnCountReferencePDeltaAdd:    [ Op.ColumnCountReferencePDeltaAdd(E_R.LoopRestartP, 5555, False) ],
     E_Op.ColumnCountAdd:                   [ Op.ColumnCountAdd(1) ],
     E_Op.ColumnCountGridAdd: [ 
         Op.ColumnCountGridAdd(1),
@@ -47,11 +47,11 @@ example_db = {
     ## The column number is set to 1 at the newline.
     ## So, no the delta add 'column += (p - reference_p) * c' is not necessary.
     E_Op.GotoDoorId:                        [ Op.GotoDoorId(DoorID(33,44)) ],
-    E_Op.GotoDoorIdIfInputPNotEqualPointer: [ Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(33,44), E_R.CharacterBeginP) ],
+    E_Op.GotoDoorIdIfInputPNotEqualPointer: [ Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(33,44), E_R.LoopRestartP) ],
     E_Op.Assign:                            [ Op.Assign(E_R.InputP, E_R.LexemeStartP) ],
     E_Op.AssignConstant: [ 
         Op.AssignConstant(E_R.InputP, 0), 
-        Op.AssignConstant(E_R.ReferenceP, 1), 
+        Op.AssignConstant(E_R.CountReferenceP, 1), 
         Op.AssignConstant(E_R.Column, 2), 
     ],
     E_Op.IfPreContextSetPositionAndGoto: [
@@ -128,7 +128,7 @@ def rw_generator(N):
 def rw_get(Flag):
     if   Flag == "R": return Op.Assign(E_R.InputP,       E_R.LexemeStartP)
     elif Flag == "W": return Op.Assign(E_R.LexemeStartP, E_R.InputP)
-    else:             return Op.Assign(E_R.Column,       E_R.CharacterBeginP)
+    else:             return Op.Assign(E_R.Column,       E_R.LoopRestartP)
 
 def string_cl(Name, Cl):
     if len(Cl) == 0:

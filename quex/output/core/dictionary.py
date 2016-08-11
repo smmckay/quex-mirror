@@ -254,11 +254,10 @@ class Lng_Cpp(dict):
             E_R.Column:          "(me->counter._column_number_at_end)",
             E_R.Line:            "(me->counter._line_number_at_end)",
             E_R.LexemeStartP:    "(me->buffer._lexeme_start_p)",
-            E_R.CharacterBeginP: "character_begin_p",
-            E_R.ReferenceP:      "reference_p",
+            E_R.CountReferenceP: "count_reference_p",
             E_R.LexemeEnd:       "LexemeEnd",
             E_R.Counter:         "counter",
-            E_R.AppendixBeginP:  "appendix_begin_p",
+            E_R.LoopRestartP:    "loop_restart_p",
         }[Register]
 
     def COMMAND_LIST(self, OpList, dial_db=None):
@@ -368,6 +367,13 @@ class Lng_Cpp(dict):
             return "    %s = %s - %s;\n" % (self.REGISTER_NAME(Op.content.result), 
                                             self.REGISTER_NAME(Op.content.big),
                                             self.REGISTER_NAME(Op.content.small))
+
+        elif Op.id == E_Op.PointerAssignMin:
+            return "    %s = %s < %s ? %s : %s;\n" % (self.REGISTER_NAME(Op.content.result), 
+                                                      self.REGISTER_NAME(Op.content.a),
+                                                      self.REGISTER_NAME(Op.content.b),
+                                                      self.REGISTER_NAME(Op.content.a),
+                                                      self.REGISTER_NAME(Op.content.b))
 
         elif Op.id == E_Op.PointerAdd:
             return "    %s = &%s[%s];\n" % (self.REGISTER_NAME(Op.content.pointer), 
@@ -615,17 +621,18 @@ class Lng_Cpp(dict):
            next position.
         """
         minus_one = { True: " - 1", False: "" }[SubtractOneF]
-        delta_str = "(%s - reference_p%s)" % (IteratorName, minus_one)
+        delta_str = "(%s - %s%s)" % (IteratorName, self.REGISTER_NAME(E_R.CountReferenceP), minus_one)
         return "__QUEX_IF_COUNT_COLUMNS_ADD((size_t)(%s));\n" \
                % self.MULTIPLY_WITH(delta_str, ColumnCountPerChunk)
 
     def REFERENCE_P_RESET(self, IteratorName, Offset=0):
+        name = self.REGISTER_NAME(E_R.CountReferenceP)
         if   Offset > 0:
-            return "__QUEX_IF_COUNT_COLUMNS(reference_p = %s + %i);\n" % (IteratorName, Offset) 
+            return "__QUEX_IF_COUNT_COLUMNS(%s = %s + %i);\n" % (name, IteratorName, Offset) 
         elif Offset < 0:
-            return "__QUEX_IF_COUNT_COLUMNS(reference_p = %s - %i);\n" % (IteratorName, - Offset) 
+            return "__QUEX_IF_COUNT_COLUMNS(%s = %s - %i);\n" % (name, IteratorName, - Offset) 
         else:
-            return "__QUEX_IF_COUNT_COLUMNS(reference_p = %s);\n" % IteratorName 
+            return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (name, IteratorName)
 
     def ENGINE_TEXT_EPILOG(self):
         if Setup.analyzer_derived_class_file: 

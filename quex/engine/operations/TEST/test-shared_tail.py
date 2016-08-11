@@ -37,9 +37,9 @@ if "--hwut-info" in sys.argv:
     print "CHOICES: one-or-none, two, two-bad, multiple;"
     sys.exit()
 
-A = Op.Assign(E_R.CharacterBeginP,  E_R.Input)
-B = Op.Assign(E_R.CharacterBeginP,  E_R.LexemeEnd)
-C = Op.Assign(E_R.CharacterBeginP,  E_R.Line)
+A = Op.Assign(E_R.LoopRestartP,  E_R.Input)
+B = Op.Assign(E_R.LoopRestartP,  E_R.LexemeEnd)
+C = Op.Assign(E_R.LoopRestartP,  E_R.Line)
 D = Op.Assign(E_R.TemplateStateKey, E_R.Line)
 
 x = [ remaining for i, remaining in generator() if remaining not in (A, B, C) ]
@@ -114,7 +114,7 @@ elif "two-bad" in sys.argv:
 elif "multiple" in sys.argv:
     A = Op.Assign(E_R.Line,            E_R.Input)
     B = Op.Assign(E_R.Column,          E_R.LexemeEnd)
-    C = Op.Assign(E_R.CharacterBeginP, E_R.CharacterBeginP)
+    C = Op.Assign(E_R.LoopRestartP, E_R.LoopRestartP)
 
     test([ A, A, B ],    [ A ])
     test([ A, A, B ],    [ A, B ])

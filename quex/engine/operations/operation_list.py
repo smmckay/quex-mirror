@@ -250,6 +250,10 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.AssignPointerDifference, RegisterResult, RegisterBig, RegisterSmall)
     
     @staticmethod
+    def PointerAssignMin(RegisterResult, PointerA, PointerB):
+        return Op(E_Op.PointerAssignMin, RegisterResult, PointerA, PointerB)
+    
+    @staticmethod
     def PointerAdd(RegisterResult, RegisterDelta):
         return Op(E_Op.PointerAdd, RegisterResult, RegisterDelta)
     
@@ -475,6 +479,8 @@ def __configure():
                                               (0,w))
     c(E_Op.AssignPointerDifference,          ("result", "big",  "small"), 
                                               (0,w),    (1, r), (2, r))
+    c(E_Op.PointerAssignMin,                 ("result", "a",  "b"), 
+                                              (0,w),    (1, r), (2, r))
     c(E_Op.PointerAdd,                       ("pointer", "offset"),
                                               (0, w+r), (1, r))
     c(E_Op.PreContextOK,                     ("pre_context_id",), 
@@ -501,16 +507,16 @@ def __configure():
     c(E_Op.LexemeResetTerminatingZero,       None, (E_R.LexemeStartP,r), (E_R.Buffer,w), (E_R.InputP,r), (E_R.Input,w))
     #
     c(E_Op.IndentationHandlerCall,           ("default_f", "mode_name"),
-                                              (E_R.Column,r), (E_R.Indentation,r+w), (E_R.ReferenceP,r))
+                                              (E_R.Column,r), (E_R.Indentation,r+w), (E_R.CountReferenceP,r))
     #
     c(E_Op.ColumnCountAdd,                   ("value",),
                                               (E_R.Column,r+w))
     c(E_Op.ColumnCountGridAdd,               ("grid_size",),
                                               (E_R.Column,r+w))
     c(E_Op.ColumnCountReferencePSet,         ("pointer", "offset"),
-                                              (0,r), (E_R.ReferenceP,w))
+                                              (0,r), (E_R.CountReferenceP,w))
     c(E_Op.ColumnCountReferencePDeltaAdd,    ("pointer", "column_n_per_chunk", "subtract_one_f"),
-                                              (E_R.Column,r+w), (0,r), (E_R.ReferenceP,r))
+                                              (E_R.Column,r+w), (0,r), (E_R.CountReferenceP,r))
     c(E_Op.LineCountAdd,                     ("value",),
                                               (E_R.Line,r+w))
     #

@@ -158,9 +158,11 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
     )
 
     return create_customized_analyzer_function(Language, TestStr, skipper_code,
-                                               QuexBufferSize, CommentTestStrF, 
-                                               ShowPositionF, end_str,
-                                               MarkerCharList=[], 
+                                               QuexBufferSize=QuexBufferSize, 
+                                               CommentTestStrF=CommentTestStrF, 
+                                               ShowPositionF=ShowPositionF, 
+                                               EndStr=end_str,
+                                               MarkerCharList=[], SkipIrrelevantF=False,
                                                LocalVariableDB=deepcopy(variable_db.get()), 
                                                DoorIdOnSkipRangeOpen=door_id_on_skip_range_open, 
                                                CounterPrintF="short") 
@@ -198,9 +200,9 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
                                         LocalVariableDB, IndentationSupportF=False, 
                                         TokenQueueF=False, ReloadF=False, OnePassOnlyF=False, 
                                         DoorIdOnSkipRangeOpen=None, 
-                                        CounterPrintF=True):
+                                        CounterPrintF=True, SkipIrrelevantF=True):
 
-    txt  = create_common_declarations(Language, QuexBufferSize, TestStr, 
+    txt  = create_common_declarations(Language, QuexBufferSize,
                                       IndentationSupportF = IndentationSupportF, 
                                       TokenQueueF         = TokenQueueF,  
                                       QuexBufferFallbackN = 0)
@@ -211,7 +213,10 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
                                         ReloadF, OnePassOnlyF, DoorIdOnSkipRangeOpen, 
                                         CounterPrintF)
 
-    txt += skip_irrelevant_character_function(MarkerCharList)
+    if SkipIrrelevantF:
+        txt += skip_irrelevant_character_function(MarkerCharList)
+    else:
+        txt += "static bool skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me) { return true; }\n"
 
     txt += show_next_character_function(ShowPositionF)
 
@@ -304,7 +309,7 @@ ENTRY:
     }
     /* QUEX_NAME(Counter_reset)(&me->counter); */
     me->counter._column_number_at_end = 1;
-    reference_p = me->buffer._read_p;
+    count_reference_p = me->buffer._read_p;
 
 /*__BEGIN_________________________________________________________________________________*/
 $$SOURCE_CODE$$
@@ -396,8 +401,16 @@ $$MARKER_LIST$$
                 return false;
             }
             QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)0x0, 0);
+            assert(me->buffer._read_p >= me->buffer._memory._front);
+            assert(me->buffer._read_p <= me->buffer._memory._back);
+
+            if( me->buffer._read_p == me->buffer._memory._back ) {
+                return false;
+            }
         }
         ++(me->buffer._read_p);
+        assert(me->buffer._read_p >= me->buffer._memory._front);
+        assert(me->buffer._read_p <= me->buffer._memory._back);
     }
     return true;
 }

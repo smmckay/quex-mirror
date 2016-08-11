@@ -22,7 +22,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={},
                                                        pattern_db, 
                                                        BufferLimitCode)
 
-    source_code =   create_common_declarations(Language, QuexBufferSize, TestStr, QuexBufferFallbackN, BufferLimitCode) \
+    source_code =   create_common_declarations(Language, QuexBufferFallbackN, BufferLimitCode) \
                   + state_machine_code \
                   + test_program
 
@@ -89,14 +89,15 @@ def setup_pattern_db(PatternDictionary):
 
     return adapted_dict
 
-def create_common_declarations(Language, QuexBufferSize, TestStr, 
+def create_common_declarations(Language, 
                                QuexBufferFallbackN=-1, BufferLimitCode=0, 
                                IndentationSupportF=False, TokenQueueF=False):
+    QuexBufferFallbackN = 0
     # Determine the 'fallback' region size in the buffer
-    if QuexBufferFallbackN == -1: 
-        QuexBufferFallbackN = QuexBufferSize - 3
-    if Language == "ANSI-C-PlainMemory": 
-        QuexBufferFallbackN = max(0, len(TestStr) - 3) 
+    #if QuexBufferFallbackN == -1: 
+    #    QuexBufferFallbackN = max(0, QuexBufferSize - 3)
+    #if Language == "ANSI-C-PlainMemory": 
+    #    QuexBufferFallbackN = max(0, len(TestStr) - 3) 
 
 
     def activate(txt, Option, Value):

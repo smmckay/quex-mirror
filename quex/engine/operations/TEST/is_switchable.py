@@ -44,40 +44,40 @@ print "(1.1) Commands with no interferring access to registers _________________
 print
 test(Op.StoreInputPosition(0, 0, 0), 
      Op.StoreInputPosition(0, 1, 0))
-test(Op.Assign(E_R.InputP, E_R.CharacterBeginP), 
-     Op.Assign(E_R.LexemeStartP, E_R.ReferenceP))
+test(Op.Assign(E_R.InputP, E_R.LoopRestartP), 
+     Op.Assign(E_R.LexemeStartP, E_R.CountReferenceP))
 test(Op.ColumnCountAdd(2), 
      Op.LineCountAdd(3))
 print "(1.2) Commands with interferring access to registers, solely read ____________"
 print
 test(Op.InputPDereference(), 
      Op.StoreInputPosition(0, 1, 0))
-test(Op.Assign(E_R.InputP,       E_R.ReferenceP), 
-     Op.Assign(E_R.LexemeStartP, E_R.ReferenceP))
+test(Op.Assign(E_R.InputP,       E_R.CountReferenceP), 
+     Op.Assign(E_R.LexemeStartP, E_R.CountReferenceP))
 test(Op.ColumnCountReferencePDeltaAdd(E_R.InputP, 5, False), 
-     Op.Assign(E_R.CharacterBeginP, E_R.ReferenceP))
+     Op.Assign(E_R.LoopRestartP, E_R.CountReferenceP))
 print "(1.3) Commands with interferring access to registers, one read other write ___"
 print
-test(Op.Assign(E_R.InputP, E_R.CharacterBeginP),    
+test(Op.Assign(E_R.InputP, E_R.LoopRestartP),    
      Op.StoreInputPosition(0, 1, 0))                
-test(Op.Assign(E_R.InputP,       E_R.ReferenceP), 
+test(Op.Assign(E_R.InputP,       E_R.CountReferenceP), 
      Op.Assign(E_R.LexemeStartP, E_R.InputP))
-test(Op.ColumnCountReferencePDeltaAdd(E_R.ReferenceP, 5, False), 
-     Op.Assign(E_R.ReferenceP, E_R.InputP))
+test(Op.ColumnCountReferencePDeltaAdd(E_R.CountReferenceP, 5, False), 
+     Op.Assign(E_R.CountReferenceP, E_R.InputP))
 print "(1.4) Commands with interferring access to registers, both write _____________"
 print
 test(Op.StoreInputPosition(0, 1, 0),
      Op.StoreInputPosition(0, 1, 0))                
-test(Op.Assign(E_R.InputP, E_R.ReferenceP), 
+test(Op.Assign(E_R.InputP, E_R.CountReferenceP), 
      Op.Assign(E_R.InputP, E_R.InputP))
-test(Op.ColumnCountReferencePDeltaAdd(E_R.ReferenceP, 5, False), 
+test(Op.ColumnCountReferencePDeltaAdd(E_R.CountReferenceP, 5, False), 
      Op.ColumnCountAdd(2))
 print "(2) Branchers: _______________________________________________________________"
 print
 test(Op.GotoDoorId(DoorID(2,2)),
-     Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(1,1), E_R.ReferenceP))                
+     Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(1,1), E_R.CountReferenceP))                
 test(Op.GotoDoorId(DoorID(2,2)),
      Op.GotoDoorId(DoorID(1,1)))                
-test(Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(2,2), E_R.ReferenceP),               
-     Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(1,1), E_R.ReferenceP))                
+test(Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(2,2), E_R.CountReferenceP),               
+     Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(1,1), E_R.CountReferenceP))                
 

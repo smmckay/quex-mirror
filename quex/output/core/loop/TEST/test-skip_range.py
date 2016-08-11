@@ -23,7 +23,7 @@ if Language.find("StrangeStream") != -1:
 
 def test(TestStr):
     end_sequence = map(ord, "*/")
-    code_str = create_range_skipper_code(Language, TestStr, end_sequence, QuexBufferSize=5)
+    code_str = create_range_skipper_code(Language, TestStr, end_sequence, QuexBufferSize=9)
     compile_and_run(Language, code_str,
                     StrangeStream_str=StrangeStream_str)
 
