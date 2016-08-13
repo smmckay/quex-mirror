@@ -176,9 +176,11 @@ class LoopEventHandlers:
 
         .on_loop_entry:     upon entry into loop
         .on_loop_exit:      upon exit from loop
-        .on_before_reload:  before buffer reload is performed.
-        .on_after_reload:   after buffer reload is performed.
         .on_loop_reentry:   upon every iteration of loop entry.
+        .on_before_reload:             before buffer reload is performed.
+        .on_before_reload_in_appendix: as above ... in appendix state machine.
+        .on_after_reload:              after buffer reload is performed.
+        .on_after_reload_in_appendix:  as above ... in appendix state machine.
     """
     @typed(LexemeEndCheckF=bool, MaintainLexemeF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB)
     def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, MaintainLexemeF, 
@@ -206,11 +208,14 @@ class LoopEventHandlers:
 
         # Input pointer positioning: loop entry/exit; before/after reload
         #
-        on_loop_entry,        \
-        on_loop_reentry_pos,  \
-        on_loop_exit_pos      = self.__prepare_positioning_at_loop_begin_and_exit()
-        on_before_reload_pos, \
-        on_after_reload_pos   = self.__prepare_positioning_before_and_after_reload(MaintainLexemeF) 
+        on_loop_entry,            \
+        on_loop_reentry_pos,      \
+        on_loop_exit_pos          = self.__prepare_positioning_at_loop_begin_and_exit()
+        on_before_reload_pos,     \
+        on_after_reload_pos       = self.__prepare_positioning_before_and_after_reload(MaintainLexemeF) 
+        on_before_reload_pos_apx, \
+        on_after_reload_pos_apx   = self.__prepare_positioning_before_and_after_reload(MaintainLexemeF, 
+                                                                                       AppendixSmF=True) 
 
         # _____________________________________________________________________
         #
@@ -226,10 +231,13 @@ class LoopEventHandlers:
                                                      on_loop_exit_count, 
                                                      [self.Op_goto_on_loop_exit_user_door_id])
                                                      
-        self.on_before_reload   = OpList.concatinate(on_before_reload_pos, 
-                                                     on_before_reload_count)
-        self.on_after_reload    = OpList.concatinate(on_after_reload_pos, 
-                                                     on_after_reload_count)
+        self.on_before_reload             = OpList.concatinate(on_before_reload_pos, 
+                                                               on_before_reload_count)
+        self.on_before_reload_in_appendix = OpList.from_iterable(on_before_reload_pos_apx)
+
+        self.on_after_reload              = OpList.concatinate(on_after_reload_pos, 
+                                                              on_after_reload_count)
+        self.on_after_reload_in_appendix  = OpList.from_iterable(on_after_reload_pos_apx)
 
     @staticmethod
     def __prepare_count_actions(ColumnNPerCodeUnit):
@@ -271,108 +279,93 @@ class LoopEventHandlers:
 
         if self.column_number_per_code_unit is not None:
             entry.append( 
-                Op.Assign(E_R.CountReferenceP, E_R.InputP ) 
+                Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN") 
             )
 
         return entry, reentry, exit
 
-    def __prepare_positioning_before_and_after_reload(self, MaintainLexemeF):
-        """The 'lexeme_start_p' restricts the amount of data which is loaded 
-        into the buffer upon reload--if the lexeme needs to be maintained. If 
-        the lexeme does not need to be maintained, then the whole buffer can 
-        be refilled.
+    def __prepare_positioning_before_and_after_reload(self, MaintainLexemeF, 
+                                                      AppendixSmF=False):
+        """When new content is loaded into the buffer, the positions of the
+        pointers must be adapted, so that they point to the same byte as
+        before the reload. This function determines the pointer adaptions for 
+        all required pointers depending on the 'circumstances'.
         
-        For this, the 'lexeme_start_p' is set to the input pointer. 
+            AppendixSmF: True  --> generate for appendix state machines
+                         False --> generate for main loop
         
-        EXCEPTION: Variable character sizes. There, the 'lexeme_start_p' is used
-        to mark the begin of the current letter. However, letters are short, so 
-        the drawback is tiny.
+        The considered pointers are:
+
+            CountReferenceP --> required for counting with 'delta reference'.
+            LoopRestartP    --> Position where to restart loop or 'character':
+                                  * if the appendix state machine drops-out.
+                                  * if current multi byte character is incomplete.
+            LexemeStartP    --> Position where the current lexeme begins
+                                if explicitly required by MaintainLexemeF.
+        
+        If the lexeme is not to be maintained, the amount of data to be reloaded
+        is maximized by setting the lexeme start pointer to the read pointer.
+
+        ! TODO: The 'Buffer_reload()' function should simply take an array of 
+        !       position pointers. Then this function would be (almost) superfluous.
 
         RETURNS: [0] on_before_reload
                  [1] on_after_reload
         """
+        if Setup.buffer_codec.variable_character_sizes_f():
+            maintain_loop_restart_p = True
+        elif AppendixSmF:
+            maintain_loop_restart_p = True
+        else:
+            maintain_loop_restart_p = False
+
+        # NOTE: The 'CountReferenceP' is not subject to reload, since a 
+        #       'delta addition' is done right before reload. After reload,
+        #       the pointer is set to the input pointer.
+
         before = []
         after  = []
 
-        # Besides the current 'read_p', the buffer reload must maintain the
-        # following pointers. I.e. after reload their position must lie INSIDE
-        # the buffer.
-        # 
-        # CountReferenceP --> required for character counting
-        #                     (only if column_number_per_code_unit is specified)
-        # LoopRestartP    --> Position where to restart loop:
-        #                       * if the appendix state machine drops-out.
-        #                       * if current multi byte character is incomplete.
-        # LexemeStartP    --> Position where the current lexeme begins
-        #                     (only if explicitly required by 'MaintainLexemeF')
-        #
-        # The (current) reload function only maintains the 'read_p' and 
-        # 'lexeme_start_p'. Trick:
-        #      BEFORE: 
-        #              read_p_before_reload         = read_p
-        #              lexeme_start_before_reload_p = LexemeStartP
-        #              lexeme_start_p   = min(LoopRestartP, 
-        #                                     CountReferenceP,
-        #                                     LexemeStartP)
-        #      AFTER:  
-        #              position_delta   = read_p - read_p_before_reload
-        #              LoopRestartP    -= position_delta
-        #              CountReferenceP -= position_delta
-        #              LexemeStartP     = lexeme_start_backup_p - position_delta
-        #
-        # Once, the reload function can handle this, the aforementioned may be
-        # simplified significantly (TODO).
-
-        # Flag indicating whether there are other pointers beyond 'lexeme_start_p'
-        # which need to be maintained.
-        maintain_count_ref_p    = E_R.CountReferenceP in self.required_register_set 
-        maintain_loop_restart_p = E_R.LoopRestartP in self.required_register_set
-
         # Before Reload:
-        pointer_list = []
-        if MaintainLexemeF:         pointer_list.append(E_R.LexemeStartP)    # MUST BE FIRST!
-        if maintain_count_ref_p:    pointer_list.append(E_R.CountReferenceP)
-        if maintain_loop_restart_p: pointer_list.append(E_R.LoopRestartP)
-
-        if maintain_count_ref_p or maintain_loop_restart_p:
-            if MaintainLexemeF:
-                before.append(
-                    Op.Assign(E_R.LexemeStartBeforeReload, E_R.LexemeStartP),
-                )
-            before.append(
-                Op.Assign(E_R.InputPBeforeReload, E_R.InputP),
-            )
-            for i, pointer in pointer_list[1:]:
-                # Avoid Nonsense: lexeme_p = min(lexeme_p, lexeme_p) 
-                if E_R.LexemeStartP == pointer: 
-                    continue
-                elif i == 0:
-                    op = Op.Assign(E_R.LexemeStartP, pointer)
-                else:
-                    op = Op.PointerAssignMin(E_R.LexemeStartP, E_R.LexemeStartP, pointer)
-                before.append(op)
-
         if not MaintainLexemeF:
             # Just get the 'lexeme_start_p' out of the way, so that anything
             # is filled from 'read_p'.
             before.append(
                 Op.Assign(E_R.LexemeStartP, E_R.InputP)
             )
+        else:
+            before.append(
+                Op.Assign(E_R.LexemeStartBeforeReload, E_R.LexemeStartP),
+            )
+        if maintain_loop_restart_p:
+            before.append(
+                Op.Assign(E_R.InputPBeforeReload, E_R.InputP)
+            )
+            before.append(
+                Op.PointerAssignMin(E_R.LexemeStartP, E_R.LexemeStartP, E_R.LoopRestartP)
+            )
 
         # After Reload:
-        if maintain_count_ref_p or maintain_loop_restart_p:
-            if MaintainLexemeF:
-                before.append(
-                    Op.Assign(E_R.LexemeStartP, E_R.LexemeStartBeforeReload),
-                )
-            after.extend([
+        if maintain_loop_restart_p:
+            after.append(
                 Op.AssignPointerDifference(E_R.PositionDelta, 
                                            E_R.InputP, E_R.InputPBeforeReload),
-            ])
-            for p in pointer_list:
-                after.append(
-                    Op.PointerAdd(p, E_R.PositionDelta)
-                )
+            )
+            if MaintainLexemeF:
+                after.extend([
+                    Op.Assign(E_R.LexemeStartP, E_R.LexemeStartBeforeReload),
+                    Op.PointerAdd(E_R.LexemeStartP, E_R.PositionDelta)
+                ])
+            after.append(
+                Op.PointerAdd(E_R.LoopRestartP, E_R.PositionDelta)
+            )
+
+        if not MaintainLexemeF:
+            # Make sure, that the lexeme start pointer makes sense:
+            # => begin of input
+            after.append(
+                Op.Assign(E_R.LexemeStartP, E_R.InputP)
+            )
 
         return before, after
 
@@ -449,13 +442,10 @@ class LoopEventHandlers:
                         name, IncidenceId=IncidenceId,
                         dial_db=self.dial_db)
 
-    def get_Terminal_from_mini_terminal(self, CaMap, appendix_sm, mini_terminal):
-        if appendix_sm is not None:
-            lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, appendix_sm, 
-                                                           False,
-                                                           Setup.buffer_codec)
+    def get_Terminal_from_mini_terminal(self, LCCI, mini_terminal):
+        if LCCI is not None:
             run_time_counter_required_f, \
-            count_code                   = map_SmLineColumnCountInfo_to_code(lcci) 
+            count_code                   = map_SmLineColumnCountInfo_to_code(LCCI) 
 
             if self.column_number_per_code_unit is not None:
                 # If the reference counting is applied, the reference pointer
@@ -472,7 +462,6 @@ class LoopEventHandlers:
                         mini_terminal.name, 
                         mini_terminal.incidence_id, 
                         dial_db=self.dial_db)
-
 
     def on_couple_terminal_to_appendix_sm(self, AppendixSmId):
         return [
@@ -501,8 +490,7 @@ class LoopEventHandlers:
             result.add(E_R.LoopRestartP)
         if Setup.buffer_codec.variable_character_sizes_f():
             result.add(E_R.LoopRestartP)
-        if    E_R.CountReferenceP in result \
-           or E_R.LoopRestartP in result:
+        if E_R.LoopRestartP in result:
             result.add(E_R.InputPBeforeReload)
             result.add(E_R.PositionDelta)
             if MaintainLexemeF:
@@ -567,19 +555,20 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
     iid_loop_exit                    = dial.new_incidence_id()
     iid_loop_after_appendix_drop_out = dial.new_incidence_id() 
 
+    # LoopMap: Associate characters with the reactions on their occurrence ____
+    #
+    loop_map,         \
+    appendix_sm_list, \
+    appendix_lcci_db  = _get_loop_map(CaMap, parallel_sm_list, iid_loop_exit, 
+                                      dial_db, LoopCharacterSet)
+
     event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
                                       LexemeEndCheckF, LexemeMaintainedF, 
                                       EngineType, ReloadStateExtern, 
                                       UserOnLoopExitDoorId=OnLoopExitDoorId,
                                       UserBeforeEntryOpList=BeforeEntryOpList,
-                                      AppendixSmExistF=len(parallel_terminal_list) != 0,
+                                      AppendixSmExistF=len(appendix_sm_list) != 0,
                                       dial_db=dial_db) 
-
-    # LoopMap: Associate characters with the reactions on their occurrence ____
-    #
-    loop_map,        \
-    appendix_sm_list = _get_loop_map(CaMap, parallel_sm_list, iid_loop_exit, 
-                                     dial_db, LoopCharacterSet)
 
     # Loop represented by Analyzer-s and Terminal-s ___________________________
     #
@@ -592,7 +581,7 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
         iid_loop_after_appendix_drop_out = None
 
     terminal_list = _get_terminal_list(loop_map, event_handler, 
-                                       CaMap, appendix_sm_list, parallel_terminal_list,
+                                       appendix_lcci_db, parallel_terminal_list,
                                        door_id_loop,
                                        iid_loop_exit, 
                                        iid_loop_after_appendix_drop_out)
@@ -646,7 +635,7 @@ def _get_analyzer_list(loop_map, EventHandler, AppendixSmList,
            any(lei.appendix_sm_has_transitions_f for lei in loop_map)
 
 def _get_terminal_list(loop_map, EventHandler, 
-                       CounterDb, AppendixSmList, ParallelMiniTerminalList, 
+                       appendix_lcci_db, ParallelMiniTerminalList, 
                        DoorIdLoop,
                        IidLoopExit, IidLoopAfterAppendixDropOut):
     """RETURNS: list of all Terminal-s.
@@ -657,7 +646,7 @@ def _get_terminal_list(loop_map, EventHandler,
 
     default_counter_f, \
     parallel_terminal_list = _get_parallel_terminal_list(EventHandler, 
-                                                         CounterDb, AppendixSmList, 
+                                                         appendix_lcci_db,
                                                          ParallelMiniTerminalList)
 
     return loop_terminal_list + parallel_terminal_list 
@@ -691,10 +680,11 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
 
     # 'couple_list': Transitions to 'couple terminals' 
     #                => connect to appendix state machines
-    couple_list,     \
-    appendix_sm_list = _get_LoopMapEntry_list_parallel_state_machines(CaMap, 
-                                                                      SmList, 
-                                                                      dial_db)
+    couple_list,      \
+    appendix_sm_list, \
+    appendix_lcci_db  = _get_LoopMapEntry_list_parallel_state_machines(CaMap, 
+                                                                       SmList, 
+                                                                       dial_db)
 
     L_couple = NumberSet.from_union_of_iterable(
         lei.character_set for lei in couple_list
@@ -720,10 +710,10 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
 
     result = LoopMap(couple_list, plain_list, exit_list)
 
-    return result, appendix_sm_list
+    return result, appendix_sm_list, appendix_lcci_db
 
-@typed(TheCountBase=CountActionMap)
-def _get_LoopMapEntry_list_plain(TheCountBase, L_pure):
+@typed(CaMap=CountActionMap)
+def _get_LoopMapEntry_list_plain(CaMap, L_pure):
     """RETURNS: list of LoopMapEntry-s.
 
     The list defines the loop behavior for characters which are not transits
@@ -738,11 +728,11 @@ def _get_LoopMapEntry_list_plain(TheCountBase, L_pure):
     CountAction.incidence_id_db.clear()
     return [
         LoopMapEntry(character_set, ca, CountAction.incidence_id_db_get(ca), None)
-        for character_set, ca in TheCountBase.iterable_in_sub_set(L_pure)
+        for character_set, ca in CaMap.iterable_in_sub_set(L_pure)
     ]
 
-@typed(TheCountBase=CountActionMap)
-def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList, dial_db):
+@typed(CaMap=CountActionMap)
+def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
     """Perform separation:
     
          Parallel state machine  ---->    first transition  
@@ -753,7 +743,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList, dial_db
 
     RETURNS: list of LoopMapEntry-s 
     """
-    def iterable(SmList):
+    def iterable(FirstVsAppendixSmList):
         """YIELDS: [0] Character Set
                    [1] CountAction related to that character set.
                    [2] Appendix state machine related to that character set.
@@ -761,11 +751,10 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList, dial_db
         The iterable reports character sets for which their is a distinct count
         action and appendix state machine.
         """
-        for sm in SmList:
-            for trigger_set, appendix_sm in sm.cut_first_transition(CloneStateMachineId=True):
-                # id of 'appendix_sm' == id of original parallel state machine!
-                for character_set, ca in TheCountBase.iterable_in_sub_set(trigger_set):
-                    yield character_set, ca, appendix_sm
+        for trigger_set, appendix_sm in FirstVsAppendixSmList:
+            # id of 'appendix_sm' == id of original parallel state machine!
+            for character_set, ca in CaMap.iterable_in_sub_set(trigger_set):
+                yield character_set, ca, appendix_sm
 
     def unique(SmList):
         """RETURNS: list of state machines, where no state machine appears
@@ -794,15 +783,28 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList, dial_db
             appendix_sm_db[id_key] = combined_sm
         return combined_sm
 
+    first_vs_appendix_sm = [ 
+        (first_set, appendix_sm)
+        for sm in SmList
+        for first_set, appendix_sm in sm.cut_first_transition(CloneStateMachineId=True)
+    ]
     # The tuples reported by 'iterable()' may contain overlapping character
     # sets. That is, their may be multiple parallel state machines that trigger
     # on the same characters in a first transition. 
     #
+    appendix_lcci_db = {} # map: appendix state machine id --> LCCI
+    for character_set, appendix_sm in first_vs_appendix_sm:
+        if not appendix_sm.get_init_state().has_transitions(): continue
+        lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, appendix_sm, 
+                                                       False,
+                                                       Setup.buffer_codec)
+        appendix_lcci_db[appendix_sm.get_id()] = lcci
+
     distinct = [] # list of [0] Character Set
     #                       [1] Count Action related to [0]
     #                       [2] List of appendix state machines related [0]
     # All character sets [0] in the distinct list are NON-OVERLAPPING.
-    for character_set, ca, appendix_sm in iterable(SmList):
+    for character_set, ca, appendix_sm in iterable(first_vs_appendix_sm):
         remainder = character_set
         for prev_character_set, prev_ca, prev_appendix_sm_list in distinct:
             intersection = character_set.intersection(prev_character_set)
@@ -855,7 +857,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(TheCountBase, SmList, dial_db
         appendix_sm for appendix_sm in appendix_sm_db.itervalues()
                     if appendix_sm.get_init_state().has_transitions()
     ]
-    return loop_map, appendix_sm_list
+    return loop_map, appendix_sm_list, appendix_lcci_db
 
 @typed(loop_map=LoopMap)
 def _get_loop_analyzer(loop_map, EventHandler):
@@ -952,28 +954,19 @@ def _get_loop_terminal_list(loop_map, EventHandler, IidLoopAfterAppendixDropOut,
     return result
 
 @typed(ParallelMiniTerminalList=[MiniTerminal])
-def _get_parallel_terminal_list(EventHandler, CaMap, 
-                                AppendixSmList, ParallelMiniTerminalList):
+def _get_parallel_terminal_list(EventHandler, appendix_lcci_db, 
+                                ParallelMiniTerminalList):
     """RETURNS: [0] true, default counter is required.
                     false, else.
                 [1] list of terminals of the appendix state machines.
     """
-    def get_appendix_sm(AppendixSmList, IncidenceId):
-        for appendix_sm in AppendixSmList:
-            if appendix_sm.get_id() == IncidenceId: 
-                return appendix_sm
-        return None
-
-    def iterable(AppendixSmList, ParallelMiniTerminalList):
-        for mini_terminal in ParallelMiniTerminalList:
-            appendix_sm = get_appendix_sm(AppendixSmList, mini_terminal.incidence_id)
-            yield appendix_sm, mini_terminal
-
     run_time_counter_required_f = False
     terminal_list = []
-    for appendix_sm, mini_terminal in iterable(AppendixSmList, ParallelMiniTerminalList):
+    for mini_terminal in ParallelMiniTerminalList:
+        # lcci may be 'None' due to the appendix_sm being empty.
+        lcci     = appendix_lcci_db.get(mini_terminal.incidence_id)
         rtcr_f, \
-        terminal = EventHandler.get_Terminal_from_mini_terminal(CaMap, appendix_sm, 
+        terminal = EventHandler.get_Terminal_from_mini_terminal(lcci, 
                                                                 mini_terminal) 
         terminal_list.append(terminal)
         run_time_counter_required_f |= rtcr_f
@@ -1011,8 +1004,8 @@ def _get_appendix_analyzers(loop_map, EventHandler, AppendixSmList,
         analyzer_generator.do(sm, 
                               EventHandler.engine_type, 
                               EventHandler.reload_state_extern, 
-                              OnBeforeReload = EventHandler.on_before_reload, 
-                              OnAfterReload  = EventHandler.on_after_reload, 
+                              OnBeforeReload = EventHandler.on_before_reload_in_appendix, 
+                              OnAfterReload  = EventHandler.on_after_reload_in_appendix, 
                               dial_db        = EventHandler.dial_db)
         for sm in appendix_sm_list
     ]

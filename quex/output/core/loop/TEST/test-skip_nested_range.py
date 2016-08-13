@@ -84,12 +84,15 @@ def wild_str(N, Opener, Closer):
 #       slight adaptions.
 if choice == "one":
     exe, source = build("(", ")")
-    run(exe, "CLOSE", "a)")
-    run(exe, "OPEN-CLOSE", "a()X")
-    run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a(())X")
-    run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a(()())X")
-    run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((()()))X")
-    run(exe, "WILD", wild_str(10000, "(", ")"))
+    if True:
+        run(exe, "CLOSE", "a)")
+    if True:
+        run(exe, "OPEN-CLOSE", "a()X")
+    if True:
+        run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a(())X")
+        run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a(()())X")
+        run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((()()))X")
+        run(exe, "WILD", wild_str(10000, "(", ")"))
     clean(exe, source)
 
 elif choice == "two":
@@ -104,21 +107,27 @@ elif choice == "two":
 
 elif choice == "three":
     exe, source = build("((-", "-))")
-    run(exe, "CLOSE", "a-))")
-    run(exe, "OPEN-CLOSE", "a((--))X")
-    run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a((-((--))-))X")
-    run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a((-((--))((--))-))X")
-    run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((-((-((--))((--))-))-))X")
-    run(exe, "WILD", wild_str(50000, "((-", "-))"))
+    if True:
+        run(exe, "CLOSE", "a-))")
+        run(exe, "OPEN-CLOSE", "a((--))X")
+    if True:
+        run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a((-((--))-))X")
+    if True:
+        run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a((-((--))((--))-))X")
+        run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((-((-((--))((--))-))-))X")
+        run(exe, "WILD", wild_str(50000, "((-", "-))"))
     clean(exe, source)
 
 elif choice == "same-head":
     exe, source = build("same(", "same)")
-    run(exe, "CLOSE", "asame)")
-    run(exe, "OPEN-CLOSE", "asame(same)X")
-    run(exe, "OPEN-OPEN-CLOSE-CLOSE", "asame(same(same)same)X")
-    run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "asame(same(same)same(same)same)X")
-    run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "asame(same(same(same)same(same)same)same)X")
-    run(exe, "WILD", wild_str(50000, "same(", "same)"))
+    if True:
+        run(exe, "CLOSE", "asame)")
+    if True:
+        run(exe, "OPEN-CLOSE", "same(same)X")
+    if True:
+        run(exe, "OPEN-OPEN-CLOSE-CLOSE", "asame(same(same)same)X")
+        run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "asame(same(same)same(same)same)X")
+        run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "asame(same(same(same)same(same)same)same)X")
+        run(exe, "WILD", wild_str(50000, "same(", "same)"))
     clean(exe, source)
 

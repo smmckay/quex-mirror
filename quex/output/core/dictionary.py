@@ -347,7 +347,10 @@ class Lng_Cpp(dict):
             return self.INDENTATION_HANDLER_CALL(Op.content.default_f, Op.content.mode_name)
 
         elif Op.id == E_Op.Assign:
-            return "    %s = %s;\n" % (self.REGISTER_NAME(Op.content[0]), self.REGISTER_NAME(Op.content[1]))
+            txt = "%s = %s" % (self.REGISTER_NAME(Op.content[0]), self.REGISTER_NAME(Op.content[1]))
+            if Op.content.condition == "COLUMN":
+                txt = "__QUEX_IF_COUNT_COLUMNS(%s)" % txt
+            return "    %s;\n" % txt
 
         elif Op.id == E_Op.AssignConstant:
             register = Op.content.register
@@ -369,16 +372,22 @@ class Lng_Cpp(dict):
                                             self.REGISTER_NAME(Op.content.small))
 
         elif Op.id == E_Op.PointerAssignMin:
-            return "    %s = %s < %s ? %s : %s;\n" % (self.REGISTER_NAME(Op.content.result), 
-                                                      self.REGISTER_NAME(Op.content.a),
-                                                      self.REGISTER_NAME(Op.content.b),
-                                                      self.REGISTER_NAME(Op.content.a),
-                                                      self.REGISTER_NAME(Op.content.b))
+            txt = "%s = %s < %s ? %s : %s" % (self.REGISTER_NAME(Op.content.result), 
+                                              self.REGISTER_NAME(Op.content.a),
+                                              self.REGISTER_NAME(Op.content.b),
+                                              self.REGISTER_NAME(Op.content.a),
+                                              self.REGISTER_NAME(Op.content.b))
+            if Op.content.condition == "COLUMN":
+                txt = "__QUEX_IF_COUNT_COLUMNS(%s)" % txt
+            return "    %s;\n" % txt
 
         elif Op.id == E_Op.PointerAdd:
-            return "    %s = &%s[%s];\n" % (self.REGISTER_NAME(Op.content.pointer), 
-                                            self.REGISTER_NAME(Op.content.pointer),
-                                            self.REGISTER_NAME(Op.content.offset))
+            txt = "%s = &%s[%s]" % (self.REGISTER_NAME(Op.content.pointer), 
+                                    self.REGISTER_NAME(Op.content.pointer),
+                                    self.REGISTER_NAME(Op.content.offset))
+            if Op.content.condition == "COLUMN":
+                txt = "__QUEX_IF_COUNT_COLUMNS(%s)" % txt
+            return "    %s;\n" % txt
 
         elif Op.id == E_Op.ColumnCountAdd:
             return "__QUEX_IF_COUNT_COLUMNS_ADD((size_t)%s);\n" % self.VALUE_STRING(Op.content.value) 
@@ -391,6 +400,9 @@ class Lng_Cpp(dict):
             pointer_name = self.REGISTER_NAME(Op.content.pointer)
             offset       = Op.content.offset
             return self.REFERENCE_P_RESET(pointer_name, offset)
+
+        elif Op.id == E_Op.ColumnCountReferencePGet:
+            return self.REFERENCE_P_GET(Op.content.pointer)
 
         elif Op.id == E_Op.ColumnCountReferencePDeltaAdd:
             return self.REFERENCE_P_COLUMN_ADD(self.REGISTER_NAME(Op.content.pointer), 
@@ -633,6 +645,11 @@ class Lng_Cpp(dict):
             return "__QUEX_IF_COUNT_COLUMNS(%s = %s - %i);\n" % (name, IteratorName, - Offset) 
         else:
             return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (name, IteratorName)
+
+    def REFERENCE_P_GET(self, Register):
+        rvalue = self.REGISTER_NAME(E_R.CountReferenceP)
+        lvalue = self.REGISTER_NAME(E_R.CountReferenceP)
+        return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (lvalue, rvalue)
 
     def ENGINE_TEXT_EPILOG(self):
         if Setup.analyzer_derived_class_file: 

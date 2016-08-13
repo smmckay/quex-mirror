@@ -202,6 +202,10 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.ColumnCountReferencePSet, Pointer, Offset)
     
     @staticmethod
+    def ColumnCountReferencePGet(Pointer):
+        return Op(E_Op.ColumnCountReferencePGet, Pointer)
+    
+    @staticmethod
     def ColumnCountReferencePDeltaAdd(Pointer, ColumnNPerChunk, SubtractOneF):
         return Op(E_Op.ColumnCountReferencePDeltaAdd, Pointer, ColumnNPerChunk, SubtractOneF)
     
@@ -242,20 +246,20 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.GotoDoorIdIfInputPNotEqualPointer, DoorId, Pointer)
     
     @staticmethod
-    def Assign(TargetRegister, SourceRegister):
-        return Op(E_Op.Assign, TargetRegister, SourceRegister)
+    def Assign(TargetRegister, SourceRegister, Condition=None):
+        return Op(E_Op.Assign, TargetRegister, SourceRegister, Condition)
     
     @staticmethod
     def AssignPointerDifference(RegisterResult, RegisterBig, RegisterSmall):
         return Op(E_Op.AssignPointerDifference, RegisterResult, RegisterBig, RegisterSmall)
     
     @staticmethod
-    def PointerAssignMin(RegisterResult, PointerA, PointerB):
-        return Op(E_Op.PointerAssignMin, RegisterResult, PointerA, PointerB)
+    def PointerAssignMin(RegisterResult, PointerA, PointerB, Condition=None):
+        return Op(E_Op.PointerAssignMin, RegisterResult, PointerA, PointerB, Condition)
     
     @staticmethod
-    def PointerAdd(RegisterResult, RegisterDelta):
-        return Op(E_Op.PointerAdd, RegisterResult, RegisterDelta)
+    def PointerAdd(RegisterResult, RegisterDelta, Condition=None):
+        return Op(E_Op.PointerAdd, RegisterResult, RegisterDelta, Condition)
     
     @staticmethod
     def AssignConstant(Register, Value):
@@ -473,15 +477,15 @@ def __configure():
 
     c(E_Op.Accepter,                         AccepterContent, 
                                              (E_R.PreContextFlags,r), (E_R.AcceptanceRegister,w))
-    c(E_Op.Assign,                           ("target", "source"), 
+    c(E_Op.Assign,                           ("target", "source", "condition"), 
                                               (0,w),     (1,r))
     c(E_Op.AssignConstant,                   ("register", "value"), 
                                               (0,w))
     c(E_Op.AssignPointerDifference,          ("result", "big",  "small"), 
                                               (0,w),    (1, r), (2, r))
-    c(E_Op.PointerAssignMin,                 ("result", "a",  "b"), 
+    c(E_Op.PointerAssignMin,                 ("result", "a",  "b", "condition"), 
                                               (0,w),    (1, r), (2, r))
-    c(E_Op.PointerAdd,                       ("pointer", "offset"),
+    c(E_Op.PointerAdd,                       ("pointer", "offset", "condition"),
                                               (0, w+r), (1, r))
     c(E_Op.PreContextOK,                     ("pre_context_id",), 
                                               (E_R.PreContextFlags,w))
@@ -514,6 +518,8 @@ def __configure():
     c(E_Op.ColumnCountGridAdd,               ("grid_size",),
                                               (E_R.Column,r+w))
     c(E_Op.ColumnCountReferencePSet,         ("pointer", "offset"),
+                                              (0,r), (E_R.CountReferenceP,w))
+    c(E_Op.ColumnCountReferencePGet,         ("pointer"),
                                               (0,r), (E_R.CountReferenceP,w))
     c(E_Op.ColumnCountReferencePDeltaAdd,    ("pointer", "column_n_per_chunk", "subtract_one_f"),
                                               (E_R.Column,r+w), (0,r), (E_R.CountReferenceP,r))

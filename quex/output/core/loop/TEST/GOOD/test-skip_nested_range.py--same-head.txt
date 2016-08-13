@@ -1,9 +1,8 @@
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
 
 --( CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
 (*) test string: 
 'asame)'
 (*) result:
@@ -12,24 +11,18 @@ end
 
 --( OPEN-CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
 (*) test string: 
-'asame(same)X'
+'same(same)X'
 (*) result:
-column_number_at_end(real): 12;
+column_number_at_end(real): 11;
 next letter: <X>
 end
   ''
-column_number_at_end(expected): 12;
+column_number_at_end(expected): 11;
 
 
 --( OPEN-OPEN-CLOSE-CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
 (*) test string: 
 'asame(same(same)same)X'
 (*) result:
@@ -42,9 +35,6 @@ column_number_at_end(expected): 22;
 
 --( OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
 (*) test string: 
 'asame(same(same)same(same)same)X'
 (*) result:
@@ -57,9 +47,6 @@ column_number_at_end(expected): 32;
 
 --( OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
 (*) test string: 
 'asame(same(same(same)same(same)same)same)X'
 (*) result:
@@ -72,15 +59,12 @@ column_number_at_end(expected): 42;
 
 --( WILD )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
 (*) test string: 
-'same(same(same(same)same(same)same)same(same)same(same(same)same(same)same(same)same)same(same)same(same(same)same(same)same(sam...'
+'same(same(same(same)same(same)same(same)same(same)same(same(same(same)same)same)same(same(same)same(same)same)same(same)same(sam...'
 (*) result:
-column_number_at_end(real): 200021;
+column_number_at_end(real): 500021;
 next letter: <X>
 end
   ''
-column_number_at_end(expected): 200021;
+column_number_at_end(expected): 500021;
 
