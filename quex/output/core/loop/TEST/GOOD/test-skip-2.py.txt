@@ -1,87 +1,189 @@
 ## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
 (*) test string: 
-'abcdefg_HIJKLMNOP-qrstuvw'XYZ12ok3'
+'_X'
 (*) result:
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 8;
+end
+  ''
+(*) test string: 
+'a_X'
+(*) result:
+column_number_at_end(real): 2;
 next letter: <_>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 10;
-next letter: <->
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 8;
-next letter: <'>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 4;
-next letter: <1>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 3;
-next letter: <3>
 end
   ''
-
-## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
 (*) test string: 
-'-hijklmnop_qrstuvw#xyz9'
+'ab_X'
 (*) result:
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 10;
+column_number_at_end(real): 3;
 next letter: <_>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 8;
-next letter: <#>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 4;
-next letter: <9>
 end
   ''
-
-## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
 (*) test string: 
-'aBcD8'
+'abc_X'
 (*) result:
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 5;
-next letter: <8>
+column_number_at_end(real): 4;
+next letter: <_>
 end
   ''
-
+(*) test string: 
+'abcd_X'
+(*) result:
+column_number_at_end(real): 5;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcde_X'
+(*) result:
+column_number_at_end(real): 6;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdef_X'
+(*) result:
+column_number_at_end(real): 7;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefg_X'
+(*) result:
+column_number_at_end(real): 8;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefgh_X'
+(*) result:
+column_number_at_end(real): 9;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghi_X'
+(*) result:
+column_number_at_end(real): 10;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghij_X'
+(*) result:
+column_number_at_end(real): 11;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijk_X'
+(*) result:
+column_number_at_end(real): 12;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijkl_X'
+(*) result:
+column_number_at_end(real): 13;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklm_X'
+(*) result:
+column_number_at_end(real): 14;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmn_X'
+(*) result:
+column_number_at_end(real): 15;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmno_X'
+(*) result:
+column_number_at_end(real): 16;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnop_X'
+(*) result:
+column_number_at_end(real): 17;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopq_X'
+(*) result:
+column_number_at_end(real): 18;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqr_X'
+(*) result:
+column_number_at_end(real): 19;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqrs_X'
+(*) result:
+column_number_at_end(real): 20;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqrst_X'
+(*) result:
+column_number_at_end(real): 21;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqrstu_X'
+(*) result:
+column_number_at_end(real): 22;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqrstuv_X'
+(*) result:
+column_number_at_end(real): 23;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqrstuvw_X'
+(*) result:
+column_number_at_end(real): 24;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqrstuvwx_X'
+(*) result:
+column_number_at_end(real): 25;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqrstuvwxy_X'
+(*) result:
+column_number_at_end(real): 26;
+next letter: <_>
+end
+  ''
+(*) test string: 
+'abcdefghijklmnopqrstuvwxyz_X'
+(*) result:
+column_number_at_end(real): 27;
+next letter: <_>
+end
+  ''

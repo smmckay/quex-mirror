@@ -54,7 +54,7 @@ def __require_variables(RequiredRegisterSet):
 
     variable_db.require_registers(RequiredRegisterSet)
 
-def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferSize=1024, InitialSkipF=True, OnePassOnlyF=False):
+def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferSize=1024, InitialSkipF=True, OnePassOnlyF=False, CounterPrintF=True):
     global dial_db
 
     end_str = __prepare(Language)
@@ -87,7 +87,8 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
                                                MarkerCharList  = marker_char_list, 
                                                LocalVariableDB = deepcopy(variable_db.get()), 
                                                ReloadF         = True, 
-                                               OnePassOnlyF    = OnePassOnlyF)
+                                               OnePassOnlyF    = OnePassOnlyF,
+                                               CounterPrintF   = CounterPrintF)
 
 def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=1024, 
                               CommentTestStrF=False, ShowPositionF=False):

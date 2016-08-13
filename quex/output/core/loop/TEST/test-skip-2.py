@@ -16,9 +16,9 @@ if len(sys.argv) < 2:
     print "Argument not acceptable, use --hwut-info"
     sys.exit(0)
 
-BS = int(sys.argv[1])
+buffer_size = int(sys.argv[1])
 
-if BS not in [3, 4, 5, 6, 7, 8]:
+if buffer_size not in [3, 4, 5, 6, 7, 8]:
     print "Argument not acceptable, use --hwut-info"
     sys.exit(0)
 
@@ -31,25 +31,57 @@ __Setup_init_language_database(Language)
 trigger_set = NumberSet([Interval(ord('a'), ord('z') + 1), 
                          Interval(ord('A'), ord('Z') + 1)])
 
-def make(TriggerSet, BufferSize):
-    Language = "ANSI-C-from-file"
-    code = create_character_set_skipper_code(Language, "", TriggerSet, QuexBufferSize=BufferSize+2)
+def build(TriggerSet, BufferSize):
+    Language = "ANSI-C"
+    code = create_character_set_skipper_code(Language, "", TriggerSet, QuexBufferSize=BufferSize+2,
+                                             CounterPrintF="short")
     exe_name, tmp_file_name = compile(Language, code)
     return exe_name, tmp_file_name
 
-def core(Executable, BufferSize, TestStr):
+def run(Executable, TestStr):
     fh = open("test.txt", "wb")
     fh.write(TestStr)
     fh.close()
-    run_this("./%s test.txt %i" % (Executable, BufferSize))
+    run_this("./%s test.txt" % Executable)
     if REMOVE_FILES:
         os.remove("test.txt")
 
-exe_name, tmp_file = make(trigger_set, BS)
+if "FIRST" in sys.argv:
+    exe, tmp_file = build(trigger_set, buffer_size)
+else:
+    exe = "tmp.c.exe"
 
-core(exe_name, BS, "abcdefg_HIJKLMNOP-qrstuvw'XYZ12ok3")
-if True:
-    core(exe_name, BS, "-hijklmnop_qrstuvw#xyz9")
-    core(exe_name, BS, "aBcD8")
+run(exe, "_X")
+run(exe, "a_X")
+run(exe, "ab_X")
+run(exe, "abc_X")
+run(exe, "abcd_X")
+run(exe, "abcde_X")
+run(exe, "abcdef_X")
+run(exe, "abcdefg_X")
+run(exe, "abcdefgh_X")
+run(exe, "abcdefghi_X")
+run(exe, "abcdefghij_X")
+run(exe, "abcdefghijk_X")
+run(exe, "abcdefghijkl_X")
+run(exe, "abcdefghijklm_X")
+run(exe, "abcdefghijklmn_X")
+run(exe, "abcdefghijklmno_X")
+run(exe, "abcdefghijklmnop_X")
+run(exe, "abcdefghijklmnopq_X")
+run(exe, "abcdefghijklmnopqr_X")
+run(exe, "abcdefghijklmnopqrs_X")
+run(exe, "abcdefghijklmnopqrst_X")
+run(exe, "abcdefghijklmnopqrstu_X")
+run(exe, "abcdefghijklmnopqrstuv_X")
+run(exe, "abcdefghijklmnopqrstuvw_X")
+run(exe, "abcdefghijklmnopqrstuvwx_X")
+run(exe, "abcdefghijklmnopqrstuvwxy_X")
+run(exe, "abcdefghijklmnopqrstuvwxyz_X")
 
+if "LAST" in sys.argv:
+    try: os.remove(exe)
+    except: pass
+    try: os.remove(tmp_file)
+    except: pass
 
