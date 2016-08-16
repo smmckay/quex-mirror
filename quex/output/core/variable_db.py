@@ -51,6 +51,7 @@ candidate_db = {
 "read_p_before_reload":           ["QUEX_TYPE_LEXATOM*", "(QUEX_TYPE_LEXATOM*)0x0", False],
 "loop_restart_p":                 ["QUEX_TYPE_LEXATOM*", "(QUEX_TYPE_LEXATOM*)0x0", False],
 "character_begin_p":              ["QUEX_TYPE_LEXATOM*", "(QUEX_TYPE_LEXATOM*)0x0", False],
+"lexeme_start_before_reload_p":   ["QUEX_TYPE_LEXATOM*",         "(QUEX_TYPE_LEXATOM*)0x0",         False],
 "text_end":                       ["QUEX_TYPE_LEXATOM*",         "(QUEX_TYPE_LEXATOM*)0x0",         False],
 #     Character Set Skipper:
 "Skipper%i":                      ["const QUEX_TYPE_LEXATOM",    None,                                False],

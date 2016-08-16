@@ -1,70 +1,27 @@
 ## (2) compiling generated engine code and test
 gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
 
---( CLOSE )------------
-
-(*) test string: 
-'asame)'
-(*) result:
-end
-  ''
-
 --( OPEN-CLOSE )------------
 
-(*) test string: 
-'same(same)X'
-(*) result:
-column_number_at_end(real): 11;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 11;
-
+'same)X' => real: { column_n: 6; next_letter: <X>; }
+         => real: { column_n: 6; next_letter: <X>; }
 
 --( OPEN-OPEN-CLOSE-CLOSE )------------
 
-(*) test string: 
-'asame(same(same)same)X'
-(*) result:
-column_number_at_end(real): 22;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 22;
-
+'asame(same)same)X' => real: { column_n: 17; next_letter: <X>; }
+                    => real: { column_n: 17; next_letter: <X>; }
 
 --( OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE )------------
 
-(*) test string: 
-'asame(same(same)same(same)same)X'
-(*) result:
-column_number_at_end(real): 32;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 32;
-
+'asame(same)same(same)same)X' => real: { column_n: 27; next_letter: <X>; }
+                              => real: { column_n: 27; next_letter: <X>; }
 
 --( OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE )------------
 
-(*) test string: 
-'asame(same(same(same)same(same)same)same)X'
-(*) result:
-column_number_at_end(real): 42;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 42;
-
+'asame(same(same)same(same)same)same)X' => real: { column_n: 37; next_letter: <X>; }
+                                        => real: { column_n: 37; next_letter: <X>; }
 
 --( WILD )------------
 
-(*) test string: 
-'same(same(same(same)same(same)same(same)same(same)same(same(same(same)same)same)same(same(same)same(same)same)same(same)same(sam...'
-(*) result:
-column_number_at_end(real): 500021;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 500021;
-
+'same(same(same)same(same)same(same)same(same)same(same(same(same)same)same)same(same(same)same(same)same)same(same)same(same(sam...' => real: { column_n: 500016; next_letter: <X>; }
+                                                                                                                                      => real: { column_n: 500016; next_letter: <X>; }

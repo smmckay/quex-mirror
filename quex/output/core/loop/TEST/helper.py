@@ -12,6 +12,7 @@ from   quex.input.code.base                          import CodeFragment, Source
 from   quex.input.files.specifier.counter            import LineColumnCount_Default
 import quex.output.core.base                         as     generator
 from   quex.output.core.base                         import do_state_router
+from   quex.engine.misc.interval_handling            import NumberSet
 from   quex.engine.state_machine.core                import StateMachine
 from   quex.engine.analyzer.door_id_address_label    import get_plain_strings
 from   quex.engine.pattern                           import Pattern
@@ -20,6 +21,37 @@ import quex.engine.state_machine.transformation.core as     bc_factory
 
 # Setup.buffer_element_specification_prepare()
 Setup.buffer_codec_set(bc_factory.do("unicode", None), 1)
+
+def run(Executable, TestStr, FilterF=False, NextLetter="X"):
+    if FilterF:
+        def filter(db, Line):
+            if Line.find("column_number_at_end") != -1:
+                db["column_n"] = Line.split()[1]
+            elif Line.find("next letter:") != -1:
+                db["next_letter"] = Line.split()[2]
+            elif Line.find("'") == 0:
+                db["test_string"] = Line.strip()
+        db = {}
+    else:
+        filter = None
+        db     = None
+
+    fh = open("test.txt", "wb")
+    fh.write(TestStr)
+    fh.close()
+    run_this("./%s test.txt" % Executable, db, filter)
+
+    if FilterF:
+        test_string = "%s" % db.get("test_string")
+        column_n    = "%s" % db.get("column_n")
+        next_letter = "%s" % db.get("next_letter")
+        print "%s => real: { column_n: %s next_letter: %s; }" \
+              % (test_string, column_n, next_letter)
+        print "%s => real: { column_n: %s; next_letter: <%s>; }" \
+              % (" " * len(test_string), TestStr.find(NextLetter) + 1, NextLetter)
+
+    if REMOVE_FILES:
+        os.remove("test.txt")
 
 class MiniAnalyzer:
     def __init__(self):
@@ -84,14 +116,14 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
                                                CommentTestStrF = False, 
                                                ShowPositionF   = False, 
                                                EndStr          = end_str,
-                                               MarkerCharList  = marker_char_list, 
+                                               SkipUntilMarkerSet = marker_char_list, 
                                                LocalVariableDB = deepcopy(variable_db.get()), 
                                                ReloadF         = True, 
                                                OnePassOnlyF    = OnePassOnlyF,
                                                CounterPrintF   = CounterPrintF)
 
 def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=1024, 
-                              CommentTestStrF=False, ShowPositionF=False):
+                              CommentTestStrF=False, ShowPositionF=False, CounterPrintF=True):
     assert QuexBufferSize >= len(CloserSequence) + 2
 
     end_str = __prepare(Language)
@@ -121,9 +153,10 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
 
     return create_customized_analyzer_function(Language, TestStr, skipper_code,
                                                QuexBufferSize, CommentTestStrF, ShowPositionF, end_str,
-                                               MarkerCharList  = [], 
+                                               SkipUntilMarkerSet = [], 
                                                LocalVariableDB = deepcopy(variable_db.get()),
-                                               DoorIdOnSkipRangeOpen=door_id_on_skip_range_open) 
+                                               DoorIdOnSkipRangeOpen=door_id_on_skip_range_open, 
+                                               CounterPrintF=CounterPrintF) 
 
 def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSequence, 
                                      QuexBufferSize=1024, CommentTestStrF=False, ShowPositionF=False):
@@ -163,7 +196,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
                                                CommentTestStrF=CommentTestStrF, 
                                                ShowPositionF=ShowPositionF, 
                                                EndStr=end_str,
-                                               MarkerCharList=[], SkipIrrelevantF=False,
+                                               SkipUntilMarkerSet=[], 
                                                LocalVariableDB=deepcopy(variable_db.get()), 
                                                DoorIdOnSkipRangeOpen=door_id_on_skip_range_open, 
                                                CounterPrintF="short") 
@@ -172,23 +205,41 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
 
     end_str = __prepare(Language, TokenQueueF)
 
+    class MiniIncidenceDb(dict):
+        def __init__(self):
+            self[E_IncidenceIDs.INDENTATION_BAD] = ""
+        def default_indentation_handler_f(self):
+            return True
+    mini_incidence_db = MiniIncidenceDb()
+
     data = {
         "indentation_setup":             ISetup,
         "ca_map":                        LineColumnCount_Default().count_command_map,
-        "incidence_db":                  {E_IncidenceIDs.INDENTATION_BAD: ""},
+        "incidence_db":                  mini_incidence_db,
         "default_indentation_handler_f": True,
         "mode_name":                     "Test",
         "sm_suppressed_newline":         None,
         "dial_db":                       dial_db,
     }
 
-    code = [ "%s\n" % Lng.LABEL(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER)) ]
-    code.extend(indentation_counter.do(data, Analyzer.reload_state))
+    code = [ "%s\n" % Lng.LABEL(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)) ]
+
+    ind_code, \
+    terminal_list, \
+    required_register_set = indentation_counter.do(data, Analyzer.reload_state)
+    code.extend(ind_code)
+
+    variable_db.require_registers(required_register_set)
+
+    code.extend(
+        generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
+    )
 
     return create_customized_analyzer_function(Language, TestStr, code, 
                                                QuexBufferSize=BufferSize, 
                                                CommentTestStrF="", ShowPositionF=True, 
-                                               EndStr=end_str, MarkerCharList=map(ord, " :\t"),
+                                               EndStr=end_str, 
+                                               SkipUntilMarkerSet="behind newline",
                                                LocalVariableDB=deepcopy(variable_db.get()), 
                                                IndentationSupportF=True,
                                                TokenQueueF=TokenQueueF, 
@@ -197,11 +248,11 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
 
 def create_customized_analyzer_function(Language, TestStr, EngineSourceCode, 
                                         QuexBufferSize, CommentTestStrF, ShowPositionF, 
-                                        EndStr, MarkerCharList,
+                                        EndStr, SkipUntilMarkerSet,
                                         LocalVariableDB, IndentationSupportF=False, 
                                         TokenQueueF=False, ReloadF=False, OnePassOnlyF=False, 
                                         DoorIdOnSkipRangeOpen=None, 
-                                        CounterPrintF=True, SkipIrrelevantF=True):
+                                        CounterPrintF=True):
 
     txt  = create_common_declarations(Language, QuexBufferSize,
                                       IndentationSupportF = IndentationSupportF, 
@@ -214,8 +265,10 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
                                         ReloadF, OnePassOnlyF, DoorIdOnSkipRangeOpen, 
                                         CounterPrintF)
 
-    if SkipIrrelevantF:
-        txt += skip_irrelevant_character_function(MarkerCharList)
+    if SkipUntilMarkerSet == "behind newline":
+        txt += skip_behind_newline()
+    elif SkipUntilMarkerSet:
+        txt += skip_irrelevant_character_function(SkipUntilMarkerSet)
     else:
         txt += "static bool skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me) { return true; }\n"
 
@@ -274,15 +327,22 @@ def my_own_mr_unit_test_function(SourceCode, EndStr,
                        ("$$QUEX_LABEL_STATE_ROUTER$$", Lng.LABEL_STR(DoorID.global_state_router(dial_db))),
                        ("$$END_STR$$",                EndStr)])
 
-def skip_irrelevant_character_function(MarkerCharList):
+def skip_irrelevant_character_function(SkipUntilMarkerSet):
     ml_txt = ""
-    if len(MarkerCharList) != 0:
-        for character in MarkerCharList:
+    if len(SkipUntilMarkerSet) != 0:
+        for character in SkipUntilMarkerSet:
             ml_txt += "        if( input == %i ) break;\n" % character
     else:
         ml_txt += "    break;\n"
 
-    return skip_irrelevant_characters_function_txt.replace("$$MARKER_LIST$$", ml_txt)
+    return skip_irrelevant_characters_function_txt.replace("$$MARKER_LIST$$", ml_txt).replace("$$FOUND$$", "")
+
+def skip_behind_newline():
+    ml_txt  = "if     ( found_f ) break;"
+    ml_txt += "else if( input == '\\n' ) found_f = true;\n"
+
+    return skip_irrelevant_characters_function_txt.replace("$$MARKER_LIST$$", ml_txt).replace("$$FOUND$$", "bool found_f = false;")
+
 
 def show_next_character_function(ShowPositionF):
     if ShowPositionF: show_position_str = "1"
@@ -392,6 +452,7 @@ skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me)
 {
     QUEX_TYPE_LEXATOM   input;
     (void)input;
+    $$FOUND$$
 
     while(1 + 1 == 2) { 
         input = *(me->buffer._read_p);
@@ -409,7 +470,9 @@ $$MARKER_LIST$$
                 return false;
             }
         }
-        ++(me->buffer._read_p);
+        else {
+            ++(me->buffer._read_p);
+        }
         assert(me->buffer._read_p >= me->buffer._memory._front);
         assert(me->buffer._read_p <= me->buffer._memory._back);
     }

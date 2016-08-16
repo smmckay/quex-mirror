@@ -4,34 +4,44 @@ import os
 sys.path.insert(0, os.getcwd())
 from helper import *
 
-
 if "--hwut-info" in sys.argv:
-    print "Skip-Range: DelimiterLength=2, BufferSize=5"
-    print "CHOICES: ANSI-C-PlainMemory, ANSI-C, Cpp, Cpp_StrangeStream;"
-    print "SAME;"
+    print "Skip-Range: Varrying DelimiterLength (Buffer=length+3)"
+    print "CHOICES: 1, 2, 3, 4;"
     sys.exit(0)
 
-if len(sys.argv) < 2 or not (sys.argv[1] in ["ANSI-C-PlainMemory", "ANSI-C", "Cpp", "Cpp_StrangeStream"]): 
-    print "Language argument not acceptable, use --hwut-info"
+DL = sys.argv[1]
+if   DL == "1": SEP = "."
+elif DL == "2": SEP = ".-"
+elif DL == "3": SEP = ".-="
+elif DL == "4": SEP = ".-=>"
+else:
+    print "Delimiter length argument '%s' not acceptable, use --hwut-info" % DL
     sys.exit(0)
 
-Language          = sys.argv[1]
-StrangeStream_str = ""
-if Language.find("StrangeStream") != -1:
-    StrangeStream_str = " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION "
+buffer_size = len(SEP) + 2
+
+def build(Language, CloserStr, BufferSize):
+    code = create_range_skipper_code(Language, "", CloserStr, BufferSize, CounterPrintF="short")
+    exe, tmp_file_name = compile(Language, code)
+    return exe, tmp_file_name
+
+exe, tmp_file = build("ANSI-C", map(ord, SEP), buffer_size)
+
+# List of strings that are almost the complete seperator, but miss something
+SEP_with_missing_tail = [ SEP[:i] for i in range(len(SEP)) if i != 0 ]
 
 
-def test(TestStr):
-    end_sequence = map(ord, "*/")
-    code_str = create_range_skipper_code(Language, TestStr, end_sequence, QuexBufferSize=9)
-    compile_and_run(Language, code_str,
-                    StrangeStream_str=StrangeStream_str)
+for i in range(26):
+    print "--( %i )---------------------------------------------------" % i
+    head = "".join(chr(ord('a') + k) for k in range(i))
+    run(exe, head + SEP + "X", FilterF=True)
+    for NOT_SEP in SEP_with_missing_tail:
+        run(exe, head + NOT_SEP + SEP + "X", FilterF=True)
+    if len(SEP_with_missing_tail) > 1: 
+        run(exe, head + "".join(SEP_with_missing_tail) + SEP + "X", FilterF=True)
 
-if True:
-    test("abcdefg*/hijklmnop*/qrstuvw*/xyz*/ok")
-if True:
-    test("*/hijklmnop*/qrstuvw*/xyz*/")
-if True:
-    test("a*/h*/*/*/")
+try: os.remove(exe)
+except: pass
+
 
 

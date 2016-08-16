@@ -31,23 +31,16 @@ def build(Opener, Closer):
                                StrangeStream_str       = StrangeStream_str)
     return executable_name, source
 
-def run(executable, Name, TestStr):
+def my_run(executable, Name, TestStr):
     print
     print "--( %s )------------" % Name
     print
     sys.stdout.flush()
 
-    fh_test = open("test.txt", "wb")
-    fh_test.write(TestStr)
-    fh_test.close()
-    os.system("./%s %s %s" % (executable, "test.txt", len(TestStr)))
+    # The TestStr needs one more 'closer' since 'nesting counter = 1'
+    # upon entry. The main loop detects the first 'opener'.
+    run(executable, TestStr, FilterF=True)
 
-    if REMOVE_FILES:
-        os.remove("test.txt")
-
-    sys.stdout.flush()
-    if "X" in TestStr: 
-        print "column_number_at_end(expected): %i;\n" % (TestStr.find("X")+1)
     sys.stdout.flush()
 
 def clean(executable, source):
@@ -75,6 +68,9 @@ def wild_str_core(N):
 def wild_str(N, Opener, Closer):
     # Avoid 'dangerous' cases where opener and closer patterns intersect.
     txt = wild_str_core(N)
+    # The first opener is omitted, since the first opener is detected by 
+    # main analyzer
+    txt = txt[1:]
     txt = txt.replace("(", "OPENER").replace("OPENER", Opener)
     txt = txt.replace(")", "CLOSER").replace("CLOSER", Closer)
     return txt
@@ -84,50 +80,37 @@ def wild_str(N, Opener, Closer):
 #       slight adaptions.
 if choice == "one":
     exe, source = build("(", ")")
-    if True:
-        run(exe, "CLOSE", "a)")
-    if True:
-        run(exe, "OPEN-CLOSE", "a()X")
-    if True:
-        run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a(())X")
-        run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a(()())X")
-        run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((()()))X")
-        run(exe, "WILD", wild_str(10000, "(", ")"))
+    my_run(exe, "OPEN-CLOSE", "a)X")
+    my_run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a())X")
+    my_run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a()())X")
+    my_run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a(()()))X")
+    my_run(exe, "WILD", wild_str(10000, "(", ")"))
     clean(exe, source)
 
 elif choice == "two":
     exe, source = build("(-", "-)")
-    run(exe, "CLOSE", "a-)")
-    run(exe, "OPEN-CLOSE", "a(--)X")
-    run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a(-(--)-)X")
-    run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a(-(--)(--)-)X")
-    run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a(-(-(--)(--)-)-)X")
-    run(exe, "WILD", wild_str(50000, "(-", "-)"))
+    my_run(exe, "OPEN-CLOSE", "a-)X")
+    my_run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a(--)-)X")
+    my_run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a(--)(--)-)X")
+    my_run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a(-(--)(--)-)-)X")
+    my_run(exe, "WILD", wild_str(50000, "(-", "-)"))
     clean(exe, source)
 
 elif choice == "three":
     exe, source = build("((-", "-))")
-    if True:
-        run(exe, "CLOSE", "a-))")
-        run(exe, "OPEN-CLOSE", "a((--))X")
-    if True:
-        run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a((-((--))-))X")
-    if True:
-        run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a((-((--))((--))-))X")
-        run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((-((-((--))((--))-))-))X")
-        run(exe, "WILD", wild_str(50000, "((-", "-))"))
+    my_run(exe, "OPEN-CLOSE", "a-))X")
+    my_run(exe, "OPEN-OPEN-CLOSE-CLOSE", "a((--))-))X")
+    my_run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "a((--))((--))-))X")
+    my_run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "a((-((--))((--))-))-))X")
+    my_run(exe, "WILD", wild_str(50000, "((-", "-))"))
     clean(exe, source)
 
 elif choice == "same-head":
     exe, source = build("same(", "same)")
-    if True:
-        run(exe, "CLOSE", "asame)")
-    if True:
-        run(exe, "OPEN-CLOSE", "same(same)X")
-    if True:
-        run(exe, "OPEN-OPEN-CLOSE-CLOSE", "asame(same(same)same)X")
-        run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "asame(same(same)same(same)same)X")
-        run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "asame(same(same(same)same(same)same)same)X")
-        run(exe, "WILD", wild_str(50000, "same(", "same)"))
+    my_run(exe, "OPEN-CLOSE", "same)X")
+    my_run(exe, "OPEN-OPEN-CLOSE-CLOSE", "asame(same)same)X")
+    my_run(exe, "OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE", "asame(same)same(same)same)X")
+    my_run(exe, "OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE", "asame(same(same)same(same)same)same)X")
+    my_run(exe, "WILD", wild_str(50000, "same(", "same)"))
     clean(exe, source)
 

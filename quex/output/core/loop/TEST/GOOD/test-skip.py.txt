@@ -1,99 +1,54 @@
-## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp: In function ‘uint32_t TestAnalyzer_Mr_analyzer_function(quex::TestAnalyzer*)’:
-## IGNORED: ./tmp.cpp:239:1: warning: label ‘_20’ defined but not used [-Wunused-label]
-## IGNORED: ./tmp.cpp:229:1: warning: label ‘_21’ defined but not used [-Wunused-label]
-## IGNORED: ./tmp.cpp: At global scope:
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
-(*) test string: 
-'abcdefg_HIJKLMNOP-qrstuvw'XYZ12ok3'
-(*) result:
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 8;
-next letter: <_>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 10;
-next letter: <->
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 8;
-next letter: <'>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 4;
-next letter: <1>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 3;
-next letter: <3>
-end
-  ''
-
-## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp: In function ‘uint32_t TestAnalyzer_Mr_analyzer_function(quex::TestAnalyzer*)’:
-## IGNORED: ./tmp.cpp:239:1: warning: label ‘_20’ defined but not used [-Wunused-label]
-## IGNORED: ./tmp.cpp:229:1: warning: label ‘_21’ defined but not used [-Wunused-label]
-## IGNORED: ./tmp.cpp: At global scope:
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
-(*) test string: 
-'-hijklmnop_qrstuvw#xyz9'
-(*) result:
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 10;
-next letter: <_>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 8;
-next letter: <#>
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 4;
-next letter: <9>
-end
-  ''
-
-## (2) compiling generated engine code and test
-g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
-
-## IGNORED: ./tmp.cpp: In function ‘uint32_t TestAnalyzer_Mr_analyzer_function(quex::TestAnalyzer*)’:
-## IGNORED: ./tmp.cpp:239:1: warning: label ‘_20’ defined but not used [-Wunused-label]
-## IGNORED: ./tmp.cpp:229:1: warning: label ‘_21’ defined but not used [-Wunused-label]
-## IGNORED: ./tmp.cpp: At global scope:
-## IGNORED: ./tmp.cpp:34:1: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used [-Wunused-variable]
-## (*) running the test
-(*) test string: 
-'aBcD8'
-(*) result:
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 5;
-next letter: <8>
-end
-  ''
-
+'_X' => real: { column_n: None next_letter: None; }
+     => real: { column_n: 1; next_letter: <_>; }
+'a_X' => real: { column_n: 2; next_letter: <_>; }
+      => real: { column_n: 2; next_letter: <_>; }
+'ab_X' => real: { column_n: 3; next_letter: <_>; }
+       => real: { column_n: 3; next_letter: <_>; }
+'abc_X' => real: { column_n: 4; next_letter: <_>; }
+        => real: { column_n: 4; next_letter: <_>; }
+'abcd_X' => real: { column_n: 5; next_letter: <_>; }
+         => real: { column_n: 5; next_letter: <_>; }
+'abcde_X' => real: { column_n: 6; next_letter: <_>; }
+          => real: { column_n: 6; next_letter: <_>; }
+'abcdef_X' => real: { column_n: 7; next_letter: <_>; }
+           => real: { column_n: 7; next_letter: <_>; }
+'abcdefg_X' => real: { column_n: 8; next_letter: <_>; }
+            => real: { column_n: 8; next_letter: <_>; }
+'abcdefgh_X' => real: { column_n: 9; next_letter: <_>; }
+             => real: { column_n: 9; next_letter: <_>; }
+'abcdefghi_X' => real: { column_n: 10; next_letter: <_>; }
+              => real: { column_n: 10; next_letter: <_>; }
+'abcdefghij_X' => real: { column_n: 11; next_letter: <_>; }
+               => real: { column_n: 11; next_letter: <_>; }
+'abcdefghijk_X' => real: { column_n: 12; next_letter: <_>; }
+                => real: { column_n: 12; next_letter: <_>; }
+'abcdefghijkl_X' => real: { column_n: 13; next_letter: <_>; }
+                 => real: { column_n: 13; next_letter: <_>; }
+'abcdefghijklm_X' => real: { column_n: 14; next_letter: <_>; }
+                  => real: { column_n: 14; next_letter: <_>; }
+'abcdefghijklmn_X' => real: { column_n: 15; next_letter: <_>; }
+                   => real: { column_n: 15; next_letter: <_>; }
+'abcdefghijklmno_X' => real: { column_n: 16; next_letter: <_>; }
+                    => real: { column_n: 16; next_letter: <_>; }
+'abcdefghijklmnop_X' => real: { column_n: 17; next_letter: <_>; }
+                     => real: { column_n: 17; next_letter: <_>; }
+'abcdefghijklmnopq_X' => real: { column_n: 18; next_letter: <_>; }
+                      => real: { column_n: 18; next_letter: <_>; }
+'abcdefghijklmnopqr_X' => real: { column_n: 19; next_letter: <_>; }
+                       => real: { column_n: 19; next_letter: <_>; }
+'abcdefghijklmnopqrs_X' => real: { column_n: 20; next_letter: <_>; }
+                        => real: { column_n: 20; next_letter: <_>; }
+'abcdefghijklmnopqrst_X' => real: { column_n: 21; next_letter: <_>; }
+                         => real: { column_n: 21; next_letter: <_>; }
+'abcdefghijklmnopqrstu_X' => real: { column_n: 22; next_letter: <_>; }
+                          => real: { column_n: 22; next_letter: <_>; }
+'abcdefghijklmnopqrstuv_X' => real: { column_n: 23; next_letter: <_>; }
+                           => real: { column_n: 23; next_letter: <_>; }
+'abcdefghijklmnopqrstuvw_X' => real: { column_n: 24; next_letter: <_>; }
+                            => real: { column_n: 24; next_letter: <_>; }
+'abcdefghijklmnopqrstuvwx_X' => real: { column_n: 25; next_letter: <_>; }
+                             => real: { column_n: 25; next_letter: <_>; }
+'abcdefghijklmnopqrstuvwxy_X' => real: { column_n: 26; next_letter: <_>; }
+                              => real: { column_n: 26; next_letter: <_>; }
+'abcdefghijklmnopqrstuvwxyz_X' => real: { column_n: 27; next_letter: <_>; }
+                               => real: { column_n: 27; next_letter: <_>; }

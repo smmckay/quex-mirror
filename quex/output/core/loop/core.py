@@ -333,14 +333,15 @@ class LoopEventHandlers:
             before.append(
                 Op.Assign(E_R.LexemeStartP, E_R.InputP)
             )
-        else:
-            before.append(
-                Op.Assign(E_R.LexemeStartBeforeReload, E_R.LexemeStartP),
-            )
+
         if maintain_loop_restart_p:
             before.append(
                 Op.Assign(E_R.InputPBeforeReload, E_R.InputP)
             )
+            if MaintainLexemeF:
+                before.append(
+                    Op.Assign(E_R.LexemeStartBeforeReload, E_R.LexemeStartP),
+                )
             before.append(
                 Op.PointerAssignMin(E_R.LexemeStartP, E_R.LexemeStartP, E_R.LoopRestartP)
             )
@@ -472,12 +473,22 @@ class LoopEventHandlers:
         ]
 
     def on_loop_after_appendix_drop_out(self, DoorIdLoop):
-        return [
-            # Upon drop-out, the input position is set to where the apendix 
-            # started. Then, the loop is re-entered.
+        # Upon drop-out, the input position is set to where the apendix 
+        # started. Then, the loop is re-entered.
+        op_list = []
+
+        if self.column_number_per_code_unit is not None:
+            op_list.append(
+                Op.Assign(E_R.CountReferenceP, E_R.LoopRestartP, Condition="COLUMN")
+            )
+
+        op_list.extend([
             Op.Assign(E_R.InputP, E_R.LoopRestartP),
             Op.GotoDoorId(DoorIdLoop)
-        ]
+        ])
+
+        return op_list
+        
 
     def on_loop_exit_text(self):
         return Lng.COMMAND_LIST(self.on_loop_exit, self.dial_db)
@@ -549,8 +560,7 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
         EngineType = engine.FORWARD
 
     parallel_terminal_list, \
-    parallel_sm_list        = _extract_state_machines_and_terminals(ParallelSmTerminalPairList)
-    assert all(isinstance(t, MiniTerminal) for t in parallel_terminal_list)
+    parallel_sm_list        = _sm_terminal_pair_list_extract(ParallelSmTerminalPairList)
 
     iid_loop_exit                    = dial.new_incidence_id()
     iid_loop_after_appendix_drop_out = dial.new_incidence_id() 
@@ -598,15 +608,24 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
            door_id_loop, \
            event_handler.required_register_set
 
-def _extract_state_machines_and_terminals(ParallelSmTerminalPairList):
+def _sm_terminal_pair_list_extract(ParallelSmTerminalPairList):
     if ParallelSmTerminalPairList is None:
         ParallelSmTerminalPairList = []
+    _sm_terminal_pair_list_assert(ParallelSmTerminalPairList)
+
     parallel_terminal_list = []
     parallel_sm_list       = []
     for sm, terminal in ParallelSmTerminalPairList:
         parallel_terminal_list.append(terminal)
         parallel_sm_list.append(sm)
+
+    assert all(isinstance(t, MiniTerminal) for t in parallel_terminal_list)
     return parallel_terminal_list, parallel_sm_list
+
+def _sm_terminal_pair_list_assert(SmTerminalList):
+    for sm, terminal in SmTerminalList:
+        assert isinstance(terminal, MiniTerminal)
+        assert sm.get_id() == terminal.incidence_id
 
 @typed(loop_map=LoopMap)
 def _get_analyzer_list(loop_map, EventHandler, AppendixSmList, 
@@ -618,12 +637,12 @@ def _get_analyzer_list(loop_map, EventHandler, AppendixSmList,
     """
     # Core Loop Analyzer 
     loop_analyzer, \
-    door_id_loop   = _get_loop_analyzer(loop_map, EventHandler)
+    door_id_loop   = _get_analyzer_for_loop(loop_map, EventHandler)
 
     # Appendix Analyzers 
-    appendix_analyzer_list = _get_appendix_analyzers(loop_map, EventHandler, 
-                                                     AppendixSmList,
-                                                     IidLoopAfterAppendixDropOut) 
+    appendix_analyzer_list = _get_analyzer_list_for_appendices(loop_map, EventHandler, 
+                                                               AppendixSmList,
+                                                               IidLoopAfterAppendixDropOut) 
     
     analyzer_list = [ loop_analyzer ] + appendix_analyzer_list
 
@@ -640,14 +659,14 @@ def _get_terminal_list(loop_map, EventHandler,
                        IidLoopExit, IidLoopAfterAppendixDropOut):
     """RETURNS: list of all Terminal-s.
     """
-    loop_terminal_list     = _get_loop_terminal_list(loop_map, EventHandler,
-                                                     IidLoopAfterAppendixDropOut, 
-                                                     DoorIdLoop, IidLoopExit) 
+    loop_terminal_list     = _get_terminal_list_for_loop(loop_map, EventHandler,
+                                                         IidLoopAfterAppendixDropOut, 
+                                                         DoorIdLoop, IidLoopExit) 
 
     default_counter_f, \
-    parallel_terminal_list = _get_parallel_terminal_list(EventHandler, 
-                                                         appendix_lcci_db,
-                                                         ParallelMiniTerminalList)
+    parallel_terminal_list = _get_terminal_list_for_appendices(EventHandler, 
+                                                               appendix_lcci_db,
+                                                               ParallelMiniTerminalList)
 
     return loop_terminal_list + parallel_terminal_list 
 
@@ -860,7 +879,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
     return loop_map, appendix_sm_list, appendix_lcci_db
 
 @typed(loop_map=LoopMap)
-def _get_loop_analyzer(loop_map, EventHandler):
+def _get_analyzer_for_loop(loop_map, EventHandler):
     """Construct a state machine that triggers only on one character. Actions
     according the the triggered character are implemented using terminals which
     are entered upon acceptance.
@@ -912,8 +931,8 @@ def _get_loop_analyzer(loop_map, EventHandler):
     return analyzer, entry.get(tid_reentry).door_id
 
 @typed(loop_map=LoopMap)
-def _get_loop_terminal_list(loop_map, EventHandler, IidLoopAfterAppendixDropOut, 
-                            DoorIdLoop, IidLoopExit):
+def _get_terminal_list_for_loop(loop_map, EventHandler, IidLoopAfterAppendixDropOut, 
+                                DoorIdLoop, IidLoopExit):
     """RETURNS: List of terminals of the loop state:
 
         (i)   Counting terminals: Count and return to loop entry.
@@ -954,8 +973,8 @@ def _get_loop_terminal_list(loop_map, EventHandler, IidLoopAfterAppendixDropOut,
     return result
 
 @typed(ParallelMiniTerminalList=[MiniTerminal])
-def _get_parallel_terminal_list(EventHandler, appendix_lcci_db, 
-                                ParallelMiniTerminalList):
+def _get_terminal_list_for_appendices(EventHandler, appendix_lcci_db, 
+                                      ParallelMiniTerminalList):
     """RETURNS: [0] true, default counter is required.
                     false, else.
                 [1] list of terminals of the appendix state machines.
@@ -974,8 +993,8 @@ def _get_parallel_terminal_list(EventHandler, appendix_lcci_db,
     return run_time_counter_required_f, terminal_list
 
 @typed(loop_map=LoopMap)
-def _get_appendix_analyzers(loop_map, EventHandler, AppendixSmList, 
-                            IidLoopAfterAppendixDropOut): 
+def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList, 
+                                      IidLoopAfterAppendixDropOut): 
     """Parallel state machines are mounted to the loop by cutting the first
     transition and implementing it in the loop. Upon acceptance of the first
     character the according tail (appendix) of the state machine is entered.

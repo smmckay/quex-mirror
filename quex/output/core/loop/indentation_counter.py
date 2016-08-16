@@ -96,12 +96,10 @@ def do(Data, ReloadState):
                                                            dial_db)
     sm_terminal_list    = _get_state_machine_vs_terminal_list(sm_suppressed_newline, 
                                                               sm_newline,
-                                                              sm_comment) 
-    if bad_space_set is not None:
-        sm_terminal_list.append(
-            _get_state_machine_vs_terminal_bad_indentation(bad_space_set,
-                                                           incidence_db, dial_db)
-        )
+                                                              sm_comment, 
+                                                              bad_space_set,
+                                                              incidence_db, 
+                                                              dial_db) 
 
     # 'whitespace' --> normal counting
     # 'bad'        --> goto bad character indentation handler
@@ -119,29 +117,31 @@ def do(Data, ReloadState):
                                     OnLoopExitDoorId           = loop_exit_door_id,
                                     EngineType                 = engine_type,
                                     ReloadStateExtern          = ReloadState,
-                                    LexemeMaintainedF          = True,
+                                    LexemeMaintainedF          = False,
                                     ParallelSmTerminalPairList = sm_terminal_list, 
                                     dial_db                    = dial_db,
                                     LoopCharacterSet           = whitespace_set) 
+
+    terminal_list.append(ih_call_terminal)
 
     return code, terminal_list, required_register_set
 
 def _get_indentation_handler_terminal(DefaultIndentationHanderF,
                                       ModeName, dial_db):
-    code = [
+    code = Lng.COMMAND_LIST([
         Op.IndentationHandlerCall(DefaultIndentationHanderF, ModeName),
         Op.GotoDoorId(DoorID.continue_without_on_after_match(dial_db))
-    ]
+    ], dial_db)
     incidence_id = dial.new_incidence_id()
-    terminal = Terminal(CodeTerminal(code),
-                                     "CALL INDENTATION HANDLER", 
-                                     incidence_id,
-                                     dial_db=dial_db)
+    terminal = Terminal(CodeTerminal(code), "<CALL INDENTATION HANDLER>", 
+                        incidence_id,
+                        dial_db=dial_db)
 
     return DoorID.incidence(incidence_id, dial_db), terminal
 
 def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline, 
-                                        SmComment): 
+                                        SmComment, BadSpaceCharacterSet, 
+                                        incidence_db, dial_db): 
     """Get a list of pairs (state machine, terminal) for the newline, suppressed
     newline and comment:
 
@@ -157,13 +157,16 @@ def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline,
     """
     result = []
     # If nothing is to be done, nothing is appended
-    _add_pair(result, SmSuppressedNewline, "<INDENTATION SUPPRESSED NEWLINE>")
-    _add_pair(result, SmNewline, "<INDENTATION NEWLINE>")
-    _add_pair(result, SmComment, "<INDENTATION COMMENT>")
+    _add_pair(result, SmSuppressedNewline, "<INDENTATION SUPPRESSED NEWLINE>", dial_db)
+    _add_pair(result, SmNewline, "<INDENTATION NEWLINE>", dial_db)
+    _add_pair(result, SmComment, "<INDENTATION COMMENT>", dial_db)
 
-    for sm, terminal in result:
-        assert isinstance(terminal, loop.MiniTerminal)
-        assert sm.get_id() == terminal.incidence_id
+    if BadSpaceCharacterSet is not None:
+        result.append(
+            _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
+                                                           incidence_db, dial_db)
+        )
+
     return result
 
 def _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
@@ -184,31 +187,30 @@ def _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
     )
     code = [
         Lng.ON_BAD_INDENTATION(on_bad_indentation_txt, 
-                               dial.new_incidence_id(),
+                               E_IncidenceIDs.INDENTATION_BAD,
                                dial_db)
     ]
-    terminal = loop.MiniTerminal(code, "<INDENTATION BAD INDENTATION CHARACTER>", 
+    terminal = loop.MiniTerminal(code, 
+                                 "<INDENTATION BAD INDENTATION CHARACTER>", 
                                  E_IncidenceIDs.INDENTATION_BAD)
 
     return sm, terminal
 
-def _add_pair(psml, SmOriginal, Name):
+def _add_pair(psml, SmOriginal, Name, dial_db):
     """Add a state machine-terminal pair to 'psml'. A terminal is generated
     which transits to 'INDENTATION_HANDLER'. The state machine is cloned
     for safety.
     """
     if SmOriginal is None: return
 
-    incidence_id = dial.new_incidence_id()
-
     # Disconnect from machines being used elsewhere.
-    sm = SmOriginal.clone(StateMachineId=incidence_id)
+    sm = SmOriginal.clone(StateMachineId=dial.new_incidence_id())
 
     code = [ 
-        Lng.GOTO(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)) 
+        Lng.GOTO(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db), dial_db) 
     ]
 
-    terminal = loop.MiniTerminal(code, Name, incidence_id)
+    terminal = loop.MiniTerminal(code, Name, sm.get_id())
     # TRY:     terminal.set_requires_goto_loop_entry_f()
     # INSTEAD: GOTO 'INDENTATION_HANDLER'
 

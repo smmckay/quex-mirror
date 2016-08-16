@@ -1,70 +1,27 @@
 ## (2) compiling generated engine code and test
 gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
 
---( CLOSE )------------
-
-(*) test string: 
-'a)'
-(*) result:
-end
-  ''
-
 --( OPEN-CLOSE )------------
 
-(*) test string: 
-'a()X'
-(*) result:
-column_number_at_end(real): 4;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 4;
-
+'a)X' => real: { column_n: 3; next_letter: <X>; }
+      => real: { column_n: 3; next_letter: <X>; }
 
 --( OPEN-OPEN-CLOSE-CLOSE )------------
 
-(*) test string: 
-'a(())X'
-(*) result:
-column_number_at_end(real): 6;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 6;
-
+'a())X' => real: { column_n: 5; next_letter: <X>; }
+        => real: { column_n: 5; next_letter: <X>; }
 
 --( OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE )------------
 
-(*) test string: 
-'a(()())X'
-(*) result:
-column_number_at_end(real): 8;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 8;
-
+'a()())X' => real: { column_n: 7; next_letter: <X>; }
+          => real: { column_n: 7; next_letter: <X>; }
 
 --( OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE )------------
 
-(*) test string: 
-'a((()()))X'
-(*) result:
-column_number_at_end(real): 10;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 10;
-
+'a(()()))X' => real: { column_n: 9; next_letter: <X>; }
+            => real: { column_n: 9; next_letter: <X>; }
 
 --( WILD )------------
 
-(*) test string: 
-'(()()()(()(()()())()()(())()(())()()()()()())()(()())()(()())()(()(()(())())())()(())(()((())()()()()()()(())(((()))())()()(((()...'
-(*) result:
-column_number_at_end(real): 20005;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 20005;
-
+'()()()(()(()()())()()(())()(())()()()()()())()(()())()(()())()(()(()(())())())()(())(()((())()()()()()()(())(((()))())()()(((()(...' => real: { column_n: 20004; next_letter: <X>; }
+                                                                                                                                      => real: { column_n: 20004; next_letter: <X>; }

@@ -209,7 +209,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr)
 
-def run_this(Str):
+def run_this(Str, filter_result_db=None, FilterFunc=None):
     try:
         fh_out = open("tmp.out", "w")
         fh_err = open("tmp.err", "w")
@@ -238,9 +238,18 @@ def run_this(Str):
                     if IGNORE_WARNING_F: 
                         postponed_list.append("## IGNORED: " + line.replace(os.environ["QUEX_PATH"] + "/quex/", ""))
                         continue
-            print line
-        for line in postponed_list:
-            print line
+            if FilterFunc is None:
+                print line
+            else:
+                FilterFunc(filter_result_db, line)
+
+        if FilterFunc is None:
+            for line in postponed_list:
+                print line
+        else:
+            for line in postponed_list:
+                FilterFunc(filter_result_db, line)
+
         os.remove("tmp.out")
         os.remove("tmp.err")
     except:

@@ -70,7 +70,8 @@ def get_skipper(ReloadState, OpenerPattern, CloserPattern,
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
-    entry_op_list = OpList(Op.AssignConstant(E_R.Counter, 0))
+    # The first opening pattern must have matched --> counter = 1
+    entry_op_list = OpList(Op.AssignConstant(E_R.Counter, 1))
 
     result,               \
     terminal_list,        \

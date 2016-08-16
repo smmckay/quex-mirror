@@ -1,0 +1,132 @@
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+--( 0 )---------------------------------------------------
+'.-X' => real: { column_n: 3; next_letter: <X>; }
+      => real: { column_n: 3; next_letter: <X>; }
+'..-X' => real: { column_n: 4; next_letter: <X>; }
+       => real: { column_n: 4; next_letter: <X>; }
+--( 1 )---------------------------------------------------
+'a.-X' => real: { column_n: 4; next_letter: <X>; }
+       => real: { column_n: 4; next_letter: <X>; }
+'a..-X' => real: { column_n: 5; next_letter: <X>; }
+        => real: { column_n: 5; next_letter: <X>; }
+--( 2 )---------------------------------------------------
+'ab.-X' => real: { column_n: 5; next_letter: <X>; }
+        => real: { column_n: 5; next_letter: <X>; }
+'ab..-X' => real: { column_n: 6; next_letter: <X>; }
+         => real: { column_n: 6; next_letter: <X>; }
+--( 3 )---------------------------------------------------
+'abc.-X' => real: { column_n: 6; next_letter: <X>; }
+         => real: { column_n: 6; next_letter: <X>; }
+'abc..-X' => real: { column_n: 7; next_letter: <X>; }
+          => real: { column_n: 7; next_letter: <X>; }
+--( 4 )---------------------------------------------------
+'abcd.-X' => real: { column_n: 7; next_letter: <X>; }
+          => real: { column_n: 7; next_letter: <X>; }
+'abcd..-X' => real: { column_n: 8; next_letter: <X>; }
+           => real: { column_n: 8; next_letter: <X>; }
+--( 5 )---------------------------------------------------
+'abcde.-X' => real: { column_n: 8; next_letter: <X>; }
+           => real: { column_n: 8; next_letter: <X>; }
+'abcde..-X' => real: { column_n: 9; next_letter: <X>; }
+            => real: { column_n: 9; next_letter: <X>; }
+--( 6 )---------------------------------------------------
+'abcdef.-X' => real: { column_n: 9; next_letter: <X>; }
+            => real: { column_n: 9; next_letter: <X>; }
+'abcdef..-X' => real: { column_n: 10; next_letter: <X>; }
+             => real: { column_n: 10; next_letter: <X>; }
+--( 7 )---------------------------------------------------
+'abcdefg.-X' => real: { column_n: 10; next_letter: <X>; }
+             => real: { column_n: 10; next_letter: <X>; }
+'abcdefg..-X' => real: { column_n: 11; next_letter: <X>; }
+              => real: { column_n: 11; next_letter: <X>; }
+--( 8 )---------------------------------------------------
+'abcdefgh.-X' => real: { column_n: 11; next_letter: <X>; }
+              => real: { column_n: 11; next_letter: <X>; }
+'abcdefgh..-X' => real: { column_n: 12; next_letter: <X>; }
+               => real: { column_n: 12; next_letter: <X>; }
+--( 9 )---------------------------------------------------
+'abcdefghi.-X' => real: { column_n: 12; next_letter: <X>; }
+               => real: { column_n: 12; next_letter: <X>; }
+'abcdefghi..-X' => real: { column_n: 13; next_letter: <X>; }
+                => real: { column_n: 13; next_letter: <X>; }
+--( 10 )---------------------------------------------------
+'abcdefghij.-X' => real: { column_n: 13; next_letter: <X>; }
+                => real: { column_n: 13; next_letter: <X>; }
+'abcdefghij..-X' => real: { column_n: 14; next_letter: <X>; }
+                 => real: { column_n: 14; next_letter: <X>; }
+--( 11 )---------------------------------------------------
+'abcdefghijk.-X' => real: { column_n: 14; next_letter: <X>; }
+                 => real: { column_n: 14; next_letter: <X>; }
+'abcdefghijk..-X' => real: { column_n: 15; next_letter: <X>; }
+                  => real: { column_n: 15; next_letter: <X>; }
+--( 12 )---------------------------------------------------
+'abcdefghijkl.-X' => real: { column_n: 15; next_letter: <X>; }
+                  => real: { column_n: 15; next_letter: <X>; }
+'abcdefghijkl..-X' => real: { column_n: 16; next_letter: <X>; }
+                   => real: { column_n: 16; next_letter: <X>; }
+--( 13 )---------------------------------------------------
+'abcdefghijklm.-X' => real: { column_n: 16; next_letter: <X>; }
+                   => real: { column_n: 16; next_letter: <X>; }
+'abcdefghijklm..-X' => real: { column_n: 17; next_letter: <X>; }
+                    => real: { column_n: 17; next_letter: <X>; }
+--( 14 )---------------------------------------------------
+'abcdefghijklmn.-X' => real: { column_n: 17; next_letter: <X>; }
+                    => real: { column_n: 17; next_letter: <X>; }
+'abcdefghijklmn..-X' => real: { column_n: 18; next_letter: <X>; }
+                     => real: { column_n: 18; next_letter: <X>; }
+--( 15 )---------------------------------------------------
+'abcdefghijklmno.-X' => real: { column_n: 18; next_letter: <X>; }
+                     => real: { column_n: 18; next_letter: <X>; }
+'abcdefghijklmno..-X' => real: { column_n: 19; next_letter: <X>; }
+                      => real: { column_n: 19; next_letter: <X>; }
+--( 16 )---------------------------------------------------
+'abcdefghijklmnop.-X' => real: { column_n: 19; next_letter: <X>; }
+                      => real: { column_n: 19; next_letter: <X>; }
+'abcdefghijklmnop..-X' => real: { column_n: 20; next_letter: <X>; }
+                       => real: { column_n: 20; next_letter: <X>; }
+--( 17 )---------------------------------------------------
+'abcdefghijklmnopq.-X' => real: { column_n: 20; next_letter: <X>; }
+                       => real: { column_n: 20; next_letter: <X>; }
+'abcdefghijklmnopq..-X' => real: { column_n: 21; next_letter: <X>; }
+                        => real: { column_n: 21; next_letter: <X>; }
+--( 18 )---------------------------------------------------
+'abcdefghijklmnopqr.-X' => real: { column_n: 21; next_letter: <X>; }
+                        => real: { column_n: 21; next_letter: <X>; }
+'abcdefghijklmnopqr..-X' => real: { column_n: 22; next_letter: <X>; }
+                         => real: { column_n: 22; next_letter: <X>; }
+--( 19 )---------------------------------------------------
+'abcdefghijklmnopqrs.-X' => real: { column_n: 22; next_letter: <X>; }
+                         => real: { column_n: 22; next_letter: <X>; }
+'abcdefghijklmnopqrs..-X' => real: { column_n: 23; next_letter: <X>; }
+                          => real: { column_n: 23; next_letter: <X>; }
+--( 20 )---------------------------------------------------
+'abcdefghijklmnopqrst.-X' => real: { column_n: 23; next_letter: <X>; }
+                          => real: { column_n: 23; next_letter: <X>; }
+'abcdefghijklmnopqrst..-X' => real: { column_n: 24; next_letter: <X>; }
+                           => real: { column_n: 24; next_letter: <X>; }
+--( 21 )---------------------------------------------------
+'abcdefghijklmnopqrstu.-X' => real: { column_n: 24; next_letter: <X>; }
+                           => real: { column_n: 24; next_letter: <X>; }
+'abcdefghijklmnopqrstu..-X' => real: { column_n: 25; next_letter: <X>; }
+                            => real: { column_n: 25; next_letter: <X>; }
+--( 22 )---------------------------------------------------
+'abcdefghijklmnopqrstuv.-X' => real: { column_n: 25; next_letter: <X>; }
+                            => real: { column_n: 25; next_letter: <X>; }
+'abcdefghijklmnopqrstuv..-X' => real: { column_n: 26; next_letter: <X>; }
+                             => real: { column_n: 26; next_letter: <X>; }
+--( 23 )---------------------------------------------------
+'abcdefghijklmnopqrstuvw.-X' => real: { column_n: 26; next_letter: <X>; }
+                             => real: { column_n: 26; next_letter: <X>; }
+'abcdefghijklmnopqrstuvw..-X' => real: { column_n: 27; next_letter: <X>; }
+                              => real: { column_n: 27; next_letter: <X>; }
+--( 24 )---------------------------------------------------
+'abcdefghijklmnopqrstuvwx.-X' => real: { column_n: 27; next_letter: <X>; }
+                              => real: { column_n: 27; next_letter: <X>; }
+'abcdefghijklmnopqrstuvwx..-X' => real: { column_n: 28; next_letter: <X>; }
+                               => real: { column_n: 28; next_letter: <X>; }
+--( 25 )---------------------------------------------------
+'abcdefghijklmnopqrstuvwxy.-X' => real: { column_n: 28; next_letter: <X>; }
+                               => real: { column_n: 28; next_letter: <X>; }
+'abcdefghijklmnopqrstuvwxy..-X' => real: { column_n: 29; next_letter: <X>; }
+                                => real: { column_n: 29; next_letter: <X>; }

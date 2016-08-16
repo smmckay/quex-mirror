@@ -1,86 +1,27 @@
-
---( CLOSE )------------
-
 ## (2) compiling generated engine code and test
 gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
-(*) test string: 
-'a-)'
-(*) result:
-end
-  ''
 
 --( OPEN-CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
-(*) test string: 
-'a(--)X'
-(*) result:
-column_number_at_end(real): 6;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 6;
-
+'a-)X' => real: { column_n: 4; next_letter: <X>; }
+       => real: { column_n: 4; next_letter: <X>; }
 
 --( OPEN-OPEN-CLOSE-CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
-(*) test string: 
-'a(-(--)-)X'
-(*) result:
-column_number_at_end(real): 10;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 10;
-
+'a(--)-)X' => real: { column_n: 8; next_letter: <X>; }
+           => real: { column_n: 8; next_letter: <X>; }
 
 --( OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
-(*) test string: 
-'a(-(--)(--)-)X'
-(*) result:
-column_number_at_end(real): 14;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 14;
-
+'a(--)(--)-)X' => real: { column_n: 12; next_letter: <X>; }
+               => real: { column_n: 12; next_letter: <X>; }
 
 --( OPEN-OPEN-OPEN-CLOSE-OPEN-CLOSE-CLOSE-CLOSE )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
-(*) test string: 
-'a(-(-(--)(--)-)-)X'
-(*) result:
-column_number_at_end(real): 18;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 18;
-
+'a(-(--)(--)-)-)X' => real: { column_n: 16; next_letter: <X>; }
+                   => real: { column_n: 16; next_letter: <X>; }
 
 --( WILD )------------
 
-## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
-## (*) running the test
-(*) test string: 
-'(-(-(--)(--)(--)(--)(-(-(--)-)-)(-(--)(--)-)(--)(-(--)-)(--)(--)(--)-)(--)(--)(--)(-(--)(--)-)(--)(--)(--)(-(--)(-(--)(--)-)(-(-...'
-(*) result:
-column_number_at_end(real): 200009;
-next letter: <X>
-end
-  ''
-column_number_at_end(expected): 200009;
-
+'(-(--)(--)(--)(--)(-(-(--)-)-)(-(--)(--)-)(--)(-(--)-)(--)(--)(--)-)(--)(--)(--)(-(--)(--)-)(--)(--)(--)(-(--)(-(--)(--)-)(-(-(-...' => real: { column_n: 200007; next_letter: <X>; }
+                                                                                                                                      => real: { column_n: 200007; next_letter: <X>; }
