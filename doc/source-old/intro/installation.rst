@@ -88,6 +88,10 @@ of a Quex installation are the following:
       > chmod a+rx $QUEX_PATH/quex-exe.py
       > chmod a+rx /usr/local/bin/quex
 
+   Alternatively, the two-liner ``quex.sh`` might be copied into the directory
+   ``/usr/local/bin``. This file specifies the python interpreter along with
+   the call to python.
+
    On Windows, the file ``quex.bat`` should be copied into ``C:\WINDOWS\SYSTEM``
    where most probably executable files can be found.
 
