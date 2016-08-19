@@ -78,7 +78,7 @@ def do(Data, ReloadState):
     whitespace_set        = isetup.whitespace_character_set
     bad_space_set         = isetup.bad_space_character_set
     sm_newline            = isetup.get_sm_newline()
-    sm_comment            = isetup.get_sm_comment()
+    sm_comment_list       = isetup.get_sm_comment_list()
     sm_suppressed_newline = isetup.get_sm_suppressed_newline()
     default_ih_f          = incidence_db.default_indentation_handler_f()
 
@@ -86,7 +86,7 @@ def do(Data, ReloadState):
     assert isinstance(isetup, IndentationCount)
     assert sm_suppressed_newline  is None or sm_suppressed_newline.is_DFA_compliant()
     assert sm_newline is None             or sm_newline.is_DFA_compliant()
-    assert sm_comment is None             or sm_comment.is_DFA_compliant()
+    assert all(sm_comment.is_DFA_compliant() for sm_comment in sm_comment_list)
 
     # -- 'on_indentation' == 'on_beyond': 
     #     A handler is called as soon as an indentation has been detected.
@@ -96,7 +96,7 @@ def do(Data, ReloadState):
                                                            dial_db)
     sm_terminal_list    = _get_state_machine_vs_terminal_list(sm_suppressed_newline, 
                                                               sm_newline,
-                                                              sm_comment, 
+                                                              sm_comment_list, 
                                                               bad_space_set,
                                                               incidence_db, 
                                                               dial_db) 
@@ -140,7 +140,7 @@ def _get_indentation_handler_terminal(DefaultIndentationHanderF,
     return DoorID.incidence(incidence_id, dial_db), terminal
 
 def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline, 
-                                        SmComment, BadSpaceCharacterSet, 
+                                        SmCommentList, BadSpaceCharacterSet, 
                                         incidence_db, dial_db): 
     """Get a list of pairs (state machine, terminal) for the newline, suppressed
     newline and comment:
@@ -159,7 +159,8 @@ def _get_state_machine_vs_terminal_list(SmSuppressedNewline, SmNewline,
     # If nothing is to be done, nothing is appended
     _add_pair(result, SmSuppressedNewline, "<INDENTATION SUPPRESSED NEWLINE>", dial_db)
     _add_pair(result, SmNewline, "<INDENTATION NEWLINE>", dial_db)
-    _add_pair(result, SmComment, "<INDENTATION COMMENT>", dial_db)
+    for sm_comment in SmCommentList:
+        _add_pair(result, sm_comment, "<INDENTATION COMMENT>", dial_db)
 
     if BadSpaceCharacterSet is not None:
         result.append(
@@ -207,6 +208,8 @@ def _add_pair(psml, SmOriginal, Name, dial_db):
     sm = SmOriginal.clone(StateMachineId=dial.new_incidence_id())
 
     code = [ 
+        # E_IncidenceIDs.INDENTATION_HANDLER = Entry to indentation handler
+        # NOT: entry to function call for handling indentation!
         Lng.GOTO(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db), dial_db) 
     ]
 

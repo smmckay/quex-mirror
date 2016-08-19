@@ -29,6 +29,8 @@ tags.
    suppressors, bad indentation characters, etc. Indentation based scopes
    are handled in a dedicated section (see :ref:`sec:indentation-scopes`).
 
+   TODO: mention, that 'comment' may be defined more than once.
+
 .. data::   <inheritable: arg> 
 
    The tag ``inheritable`` has been discussed in section :ref:`sec:inheritance`.

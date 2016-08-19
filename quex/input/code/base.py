@@ -1,6 +1,6 @@
 from   quex.engine.misc.tools   import typed, \
-                                       all_isinstance
-from   quex.engine.misc.tools   import none_isinstance
+                                       all_isinstance, \
+                                       none_isinstance
 
 from   collections import namedtuple
 

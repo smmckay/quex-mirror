@@ -20,6 +20,7 @@ from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.analyzer.door_id_address_label   import DoorID, \
                                                            DialDB
 import quex.engine.analyzer.door_id_address_label   as     dial
+import quex.engine.misc.error_check                 as     error_check
 from   quex.engine.misc.tools import typed
 import quex.output.core.loop.character_set          as     skip_character_set
 import quex.output.core.loop.range                  as     skip_range
@@ -453,7 +454,6 @@ class PPT_List(list):
 
         return new_ppt_list, extra_terminal_list
 
-
     @typed(CaMap=CountActionMap, IndentationHandler=(None, IndentationCount))
     def _range_skipper_data(self, data, CaMap, IndentationHandler):
         dial_db     = self.terminal_factory.dial_db
@@ -485,13 +485,9 @@ class PPT_List(list):
         only_common_f, \
         common_f       = tail.do(indentation_sm_newline, CloserPattern.sm)
 
-        if not only_common_f and common_f:
-            error.log("Indentation handler's newline definition matches partly the\n",
-                      indentation_handler.sm_newline.sr, DontExitF=True)
-            error.log("tail of a range skipper, but not completely.\n"
-                      "(An indentation handler's newline MUST either match all possible\n"
-                      " tails of a closer pattern, or None)\n",
-                      CloserPattern.sr)
+        error_check.tail(only_common_f, common_f, 
+                        "indentation handler's newline", indentation_sm_newline.sr, 
+                        "range skipper", CloserPattern.sm.sr)
 
         return only_common_f
 

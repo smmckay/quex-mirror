@@ -16,6 +16,7 @@ from   quex.engine.counter                            import LineColumnCount, \
                                                              cc_type_name_db, \
                                                              cc_type_db
 import quex.engine.misc.error                         as     error
+import quex.engine.misc.error_check                   as     error_check
 from   quex.engine.misc.file_in                       import check, \
                                                              check_or_die, \
                                                              skip_whitespace, \
@@ -143,7 +144,7 @@ class IndentationCount_Prep(CountBase_Prep):
         self.bad_space_character_set  = SourceRefObject("bad", None)
         self.sm_newline               = SourceRefObject("newline", None)
         self.sm_newline_suppressor    = SourceRefObject("suppressor", None)
-        self.sm_comment               = SourceRefObject("comment", None)
+        self.sm_comment_list             = []
 
         # The base class defines the '._ca_map_specifier'.
         # However, in this class it is only used for error checking.
@@ -187,6 +188,17 @@ class IndentationCount_Prep(CountBase_Prep):
             if SM is None: return None
             return Pattern_Prep(SM, PatternString=PS, Sr=SR)
 
+        pattern_comment_list = []
+        for sm_comment in self.sm_comment_list:
+            only_common_f, \
+            common_f       = tail.do(sm_newline.get(), sm_comment.get())
+
+            error_check.tail(only_common_f, common_f, 
+                             "indentation handler's newline", indentation_sm_newline.sr, 
+                             "comment", sm_comment.sr)
+            pattern = get_pattern(sm_coment, "<indentation comment>", sm_comment.sr)
+            pattern_comment_list.append(pattern)
+
         return IndentationCount(self.sr, 
                                 self.whitespace_character_set.get(), 
                                 self.bad_space_character_set.get(), 
@@ -196,9 +208,7 @@ class IndentationCount_Prep(CountBase_Prep):
                                 get_pattern(sm_suppressed_newline, 
                                             "<indentation suppressed newline>", 
                                             self.sm_newline_suppressor.sr),
-                                get_pattern(self.sm_comment.get(), 
-                                            "<indentation comment>",
-                                            self.sm_comment.sr))
+                                pattern_comment_list)
 
     def requires_count(self):
         return False
@@ -261,13 +271,17 @@ class IndentationCount_Prep(CountBase_Prep):
 
     @typed(sr=SourceRef)
     def __specify_comment(self, Sm, sr):
-        _error_if_defined_before(self.sm_comment, sr)
+        for sm_comment in self.sm_comment_list:
+            _error_if_defined_before(sm_comment, sr)
 
         self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
                                    E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE,
                                    None, sr)
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
-        self.sm_comment.set(Sm, sr)
+
+        sm_comment = SourceRefObject("comment", None)
+        sm_comment.set(Sm, sr)
+        self.sm_comment_list.append(sm_comment)
 
     def __sm_newline_default(self):
         """Default newline: '(\n)|(\r\n)'

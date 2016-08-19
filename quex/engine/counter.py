@@ -309,7 +309,8 @@ class IndentationCount(LineColumnCount):
     @typed(sr=SourceRef)
     def __init__(self, SourceReference,  
                  WhiteSpaceCharacterSet, BadSpaceCharacterSet,
-                 PatternNewline, PatternSuppressedNewline, PatternComment):
+                 PatternNewline, PatternSuppressedNewline, 
+                 PatternListComment):
         """BadSpaceCharacterSet = None, if there is no definition of bad space.
         """
         LineColumnCount.__init__(self, SourceReference, None)
@@ -317,7 +318,7 @@ class IndentationCount(LineColumnCount):
         self.bad_space_character_set    = BadSpaceCharacterSet
         self.pattern_newline            = PatternNewline
         self.pattern_suppressed_newline = PatternSuppressedNewline
-        self.pattern_comment            = PatternComment
+        self.pattern_comment_list       = PatternListComment
 
     def finalize(self, CaMap):
         self.__finalize(self.pattern_newline, CaMap)
@@ -330,8 +331,8 @@ class IndentationCount(LineColumnCount):
     def get_sm_suppressed_newline(self):
         return self.__get_sm(self.pattern_suppressed_newline)
 
-    def get_sm_comment(self):
-        return self.__get_sm(self.pattern_comment)
+    def get_sm_comment_list(self):
+        return [ x.sm for x in self.pattern_comment_list if x.sm is not None ]
 
     def __finalize(self, P, CaMap):
         if P: P.finalize(CaMap)
