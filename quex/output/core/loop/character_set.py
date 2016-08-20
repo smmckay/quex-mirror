@@ -78,15 +78,20 @@ def do(Data, ReloadState):
 
     on_loop_exit_door_id = DoorID.continue_without_on_after_match(dial_db)
 
-    result,               \
-    terminal_list,        \
-    loop_map,             \
-    door_id_loop,         \
-    required_register_set = loop.do(ca_map,
+    result,                \
+    terminal_list,         \
+    loop_map,              \
+    door_id_loop,          \
+    required_register_set, \
+    run_time_counter_f     = loop.do(ca_map,
                                     OnLoopExitDoorId  = on_loop_exit_door_id,
                                     EngineType        = engine_type,
                                     ReloadStateExtern = ReloadState, 
                                     dial_db           = dial_db)
+    assert not run_time_counter_f
 
     assert isinstance(result, list)
-    return result, terminal_list, loop_map, required_register_set
+    return result, \
+           terminal_list, \
+           loop_map, \
+           required_register_set

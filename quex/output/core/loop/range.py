@@ -65,17 +65,20 @@ def get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen,
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
-    result,               \
-    terminal_list,        \
-    loop_map,             \
-    door_id_loop,         \
-    required_register_set = loop.do(CaMap,
+    result,                \
+    terminal_list,         \
+    loop_map,              \
+    door_id_loop,          \
+    required_register_set, \
+    run_time_counter_f     = loop.do(CaMap,
                                     OnLoopExitDoorId           = DoorIdExit,
                                     EngineType                 = engine_type,
                                     ReloadStateExtern          = ReloadState,
                                     ParallelSmTerminalPairList = psml, 
                                     dial_db                    = dial_db) 
-    return result, terminal_list, required_register_set
+    return result, terminal_list, \
+           required_register_set, \
+           run_time_counter_f
 
 def _get_state_machine_vs_terminal_list(CloserPattern, dial_db, DoorIdExit): 
     """Additionally to all characters, the loop shall walk along the 'closer'.

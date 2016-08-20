@@ -406,9 +406,9 @@ QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)*        me,
 }
    
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*    me,
+QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*  me,
                                            QUEX_TYPE_LEXATOM** position_register,
-                                           const size_t          PositionRegisterN)
+                                           const size_t        PositionRegisterN)
 /* Free some space AHEAD so that new content can be loaded. Content that 
  * is still used, or expected to be used shall remain inside the buffer.
  * Following things need to be respected:
@@ -425,11 +425,11 @@ QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*    me,
 { 
     QUEX_TYPE_LEXATOM*        BeginP = &me->_memory._front[1];
     const QUEX_TYPE_LEXATOM*  EndP   = me->_memory._back;
-    const ptrdiff_t             ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
+    const ptrdiff_t           ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
     QUEX_TYPE_LEXATOM*        move_begin_p;
-    ptrdiff_t                   move_size;
-    ptrdiff_t                   move_distance;
-    const ptrdiff_t             FallBackN = (ptrdiff_t)QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
+    ptrdiff_t                 move_size;
+    ptrdiff_t                 move_distance;
+    const ptrdiff_t           FallBackN = (ptrdiff_t)QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
     QUEX_TYPE_LEXATOM**       pr_it     = 0x0;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -448,13 +448,15 @@ QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*    me,
     /* Determine from where the region-to-be-moved BEGINS, what its size is
      * and how far it is to be moved.                                        */
     move_begin_p  = me->_read_p;
-    move_begin_p  = me->_lexeme_start_p ? QUEX_MIN(move_begin_p, me->_lexeme_start_p)
-                                        : move_begin_p;
+    if( me->_lexeme_start_p ) {
+        move_begin_p = QUEX_MIN(move_begin_p, me->_lexeme_start_p);
+    }
+    if( move_begin_p - BeginP > FallBackN ) {
+        move_begin_p = QUEX_MIN(move_begin_p, &move_begin_p[- FallBackN]);
+    }
     /* Plain math: move_begin_p = max(BeginP, move_begin_p - FallBackN); 
      * BUT: Consider case where 'move_begin_p - FallBackN < 0'! CAREFUL!     */
-    move_begin_p  = move_begin_p - BeginP < FallBackN ? BeginP 
-                                                      : &move_begin_p[- FallBackN];
-    move_distance = move_begin_p    - BeginP;
+    move_distance = move_begin_p - BeginP;
 
     if( ! move_distance ) {
         return 0;
@@ -464,7 +466,7 @@ QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*    me,
 
     /* Pointer Adaption: _read_p, _lexeme_start_p, position registers.
      *                   input.end_p, input.end_lexatom_index              */
-    me->_read_p -= move_distance;
+    me->_read_p                                   -= move_distance;
     if( me->_lexeme_start_p ) me->_lexeme_start_p -= move_distance;
    
     if( position_register ) {

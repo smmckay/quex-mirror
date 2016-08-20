@@ -30,6 +30,15 @@ tags.
    are handled in a dedicated section (see :ref:`sec:indentation-scopes`).
 
    TODO: mention, that 'comment' may be defined more than once.
+   TODO: mention, that comments mentioned in 'indentation' are considered
+         'indenting whitespace'. Comments outside (skippers, mode patterns)
+         trigger an indentation at the moment they occur.
+   TODO: comments that are indentating whitespace are subject to buffer 
+         handling, i.e. the buffer must be large enough to hold them.
+         (normal indentation is not subject, it is completely skipped).
+
+   TODO: skippers, indentation, etc. can now use arbitrary REs
+
 
 .. data::   <inheritable: arg> 
 

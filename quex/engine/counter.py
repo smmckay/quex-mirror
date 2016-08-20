@@ -306,7 +306,7 @@ class LineColumnCount(CountBase):
         return self.count_command_map.get_column_number_per_code_unit(CharacterSet)
 
 class IndentationCount(LineColumnCount):
-    @typed(sr=SourceRef,PatternListComment=[])
+    @typed(sr=SourceRef,PatternListComment=list)
     def __init__(self, SourceReference,  
                  WhiteSpaceCharacterSet, BadSpaceCharacterSet,
                  PatternNewline, PatternSuppressedNewline, 

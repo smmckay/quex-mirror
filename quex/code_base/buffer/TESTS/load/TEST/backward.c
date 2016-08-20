@@ -161,7 +161,7 @@ test_load_backward(QUEX_NAME(Buffer)* buffer)
          * been adapted during the 'move-away' of passed content.            */
     }
     else {
-        hwut_verify(! verdict_f);  
+        hwut_verify(verdict_f != E_LoadResult_DONE);  
     }
 
     hwut_verify(before.lexatom_index_begin >= buffer->input.lexatom_index_begin);

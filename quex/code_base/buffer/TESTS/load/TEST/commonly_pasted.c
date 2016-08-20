@@ -22,7 +22,7 @@ verify_content(QUEX_NAME(Buffer)* me)
 {
     QUEX_TYPE_LEXATOM  expected;
     QUEX_TYPE_LEXATOM* p;
-    ptrdiff_t            count = 0;
+    ptrdiff_t          count = 0;
 
     /* If end_p does not stand on buffer boarder, then it must stand according
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/

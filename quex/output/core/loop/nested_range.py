@@ -73,11 +73,12 @@ def get_skipper(ReloadState, OpenerPattern, CloserPattern,
     # The first opening pattern must have matched --> counter = 1
     entry_op_list = OpList(Op.AssignConstant(E_R.Counter, 1))
 
-    result,               \
-    terminal_list,        \
-    loop_map,             \
-    door_id_loop,         \
-    required_register_set = loop.do(CaMap,
+    result,                \
+    terminal_list,         \
+    loop_map,              \
+    door_id_loop,          \
+    required_register_set, \
+    run_time_counter_f     = loop.do(CaMap,
                                     BeforeEntryOpList          = entry_op_list,
                                     OnLoopExitDoorId           = DoorIdExit,
                                     EngineType                 = engine_type,
@@ -96,7 +97,10 @@ def get_skipper(ReloadState, OpenerPattern, CloserPattern,
     )
 
     required_register_set.add(E_R.Counter)
-    return result, terminal_list, required_register_set 
+    return result, \
+           terminal_list, \
+           required_register_set, \
+           run_time_counter_f
 
 def _get_state_machine_vs_terminal_list(CloserPattern, OpenerPattern, DoorIdExit,
                                         dial_db): 

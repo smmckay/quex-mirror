@@ -34,9 +34,9 @@
 #include <forward-gen.h>
 
 
-static ptrdiff_t            test_load_forward(QUEX_NAME(Buffer)* buffer);
+static ptrdiff_t          test_load_forward(QUEX_NAME(Buffer)* buffer);
 static QUEX_TYPE_LEXATOM* random_between(QUEX_TYPE_LEXATOM* A, QUEX_TYPE_LEXATOM* B);
-static ptrdiff_t            walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta);
+static ptrdiff_t          walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta);
 
 int
 main(int argc, char**argv)
@@ -144,7 +144,7 @@ test_load_forward(QUEX_NAME(Buffer)* buffer)
          * been adapted during the 'move-away' of passed content.            */
     }
     else {
-        hwut_verify(! verdict_f);  
+        hwut_verify(verdict_f != E_LoadResult_DONE);  
     }
 
     hwut_verify(buffer->input.lexatom_index_begin >= before.lexatom_index_begin);

@@ -36,27 +36,25 @@ assumption is made:
              | SM's first transition lexatoms are all IN 'L' |
              '-----------------------------------------------'
 
-=> There is a subset 'La' in 'L' which is associated with a terminal 'Terminal
-a'.  If SM fails to match, the first lexatom is still a loop lexatom, and
-therefore, the loop CONTINUES after the first lexatom. 
+The characters of the first transition 'La' in 'SM' are plugged into the loop
+state machine causing a transit to a '*couple* terminal'. This couple terminal
+enters the remaining state machine, the '*appendix* state machine'.
 
-      .---<-----------( next i )<-----------------------------.
-      |                                                       |
-      |                              [ i = ir ]--------->[ Terminal a ]
-      |   .------.                       |     
-    --+-->: ...  :                       | drop-out 
-          +------+                       |          
-          |  La  |--->[ ir = i ]--->( Pruned SM )------->[ Terminal SM ]
-          +------+                                match
+The position of the entry into the appendix is stored in the loop restart
+pointer (here 'ir'). If the appendix fails to match, the loop continues
+from there.
+
+      .---<-----------( next i )<----------. 
+      |                                    | 
+      |                                [ i = ir ]
+      |   .------.                         |     
+    --+-->: ...  :    Couple               | drop-out 
+          +------+    Terminal             |          
+          |  La  |--->[ ir = i ]--->( Appendix SM )------->[ Terminal SM ]
+          +------+                                  match
           : ...  :
           '------'
 
-The position of the first input must be stored in 'ir' so that upon drop-out it
-may be restored into 'i'. After the appriate 'Terminal a' is executed, the loop
-continues. The 'Pruned SM' is the SM without the transition on the first
-lexatom.
-
-___________
 DEFINITION: 'SML':  Set of state machines where the first lexatom belongs to
                     'L'. Upon drop-out, it LOOPS back.
 __________
@@ -447,6 +445,13 @@ class LoopEventHandlers:
         if LCCI is not None:
             run_time_counter_required_f, \
             count_code                   = map_SmLineColumnCountInfo_to_code(LCCI) 
+            if run_time_counter_required_f:
+                # The content to be counted starts where the appendix started.
+                # * Begin of counting at 'loop restart pointer'.
+                # * Run-time counting can ONLY work, if the lexeme start pointer 
+                #   is at position of appendix begin.
+                count_code[:0] = Lng.COMMAND(Op.Assign(E_R.LexemeStartP, E_R.LoopRestartP), 
+                                             self.dial_db)
 
             if self.column_number_per_code_unit is not None:
                 # If the reference counting is applied, the reference pointer
@@ -590,11 +595,14 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
     if not appendix_sm_exist_f:
         iid_loop_after_appendix_drop_out = None
 
-    terminal_list = _get_terminal_list(loop_map, event_handler, 
-                                       appendix_lcci_db, parallel_terminal_list,
-                                       door_id_loop,
-                                       iid_loop_exit, 
-                                       iid_loop_after_appendix_drop_out)
+    terminal_list, \
+    run_time_counter_required_f = _get_terminal_list(loop_map, 
+                                                     event_handler, 
+                                                     appendix_lcci_db, 
+                                                     parallel_terminal_list,
+                                                     door_id_loop,
+                                                     iid_loop_exit, 
+                                                     iid_loop_after_appendix_drop_out)
 
     # Generate Code ___________________________________________________________
     #
@@ -606,7 +614,8 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
            terminal_list, \
            clean_loop_map, \
            door_id_loop, \
-           event_handler.required_register_set
+           event_handler.required_register_set , \
+           run_time_counter_required_f
 
 def _sm_terminal_pair_list_extract(ParallelSmTerminalPairList):
     if ParallelSmTerminalPairList is None:
@@ -663,12 +672,13 @@ def _get_terminal_list(loop_map, EventHandler,
                                                          IidLoopAfterAppendixDropOut, 
                                                          DoorIdLoop, IidLoopExit) 
 
-    default_counter_f, \
-    parallel_terminal_list = _get_terminal_list_for_appendices(EventHandler, 
-                                                               appendix_lcci_db,
-                                                               ParallelMiniTerminalList)
+    run_time_counter_required_f, \
+    parallel_terminal_list       = _get_terminal_list_for_appendices(EventHandler, 
+                                                                     appendix_lcci_db,
+                                                                     ParallelMiniTerminalList)
 
-    return loop_terminal_list + parallel_terminal_list 
+    return loop_terminal_list + parallel_terminal_list, \
+           run_time_counter_required_f
 
 @typed(CaMap=CountActionMap, L_subset=(None, NumberSet))
 def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):

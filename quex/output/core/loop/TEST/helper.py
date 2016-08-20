@@ -1,6 +1,7 @@
 import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
+import quex.output.core.loop.run_time_counter        as run_time_counter
 import quex.output.core.loop.character_set           as character_set_skipper
 import quex.output.core.loop.range                   as range_skipper
 import quex.output.core.loop.nested_range            as nested_range_skipper
@@ -97,21 +98,21 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
         "require_label_SKIP_f": False, 
         "dial_db":              dial_db
     }
-    skipper_code,  \
+    loop_code,  \
     terminal_list, \
     loop_map,      \
     required_register_set = character_set_skipper.do(data, Analyzer.reload_state)
 
     variable_db.require_registers(required_register_set)
 
-    skipper_code.extend(
+    loop_code.extend(
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
     )
 
     if InitialSkipF: marker_char_list = TriggerSet.get_number_list()
     else:            marker_char_list = []
 
-    return create_customized_analyzer_function(Language, TestStr, skipper_code,
+    return create_customized_analyzer_function(Language, TestStr, loop_code,
                                                QuexBufferSize, 
                                                CommentTestStrF = False, 
                                                ShowPositionF   = False, 
@@ -143,15 +144,18 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
         "dial_db":            dial_db,
     }
 
-    skipper_code, \
-    terminal_list, \
-    required_register_set = range_skipper.do(data, Analyzer.reload_state)
+    loop_code,          \
+    terminal_list,         \
+    required_register_set, \
+    run_time_counter_f     = range_skipper.do(data, Analyzer.reload_state)
+    assert not run_time_counter_f
+
     __require_variables(required_register_set)
-    skipper_code.extend(
+    loop_code.extend(
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
     )
 
-    return create_customized_analyzer_function(Language, TestStr, skipper_code,
+    return create_customized_analyzer_function(Language, TestStr, loop_code,
                                                QuexBufferSize, CommentTestStrF, ShowPositionF, end_str,
                                                SkipUntilMarkerSet = [], 
                                                LocalVariableDB = deepcopy(variable_db.get()),
@@ -167,6 +171,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
     door_id_on_skip_range_open = dial_db.new_door_id()
     sm_close = StateMachine.from_sequence(CloserSequence)  
     sm_open  = StateMachine.from_sequence(OpenerSequence)  
+    ca_map   = LineColumnCount_Default().count_command_map
     data = { 
         "closer_pattern":     Pattern(sm_close.get_id(), sm_close,
                                       None, None, None,
@@ -179,19 +184,33 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
         "mode_name":          "MrUnitTest",
         "on_skip_range_open": CodeFragment([end_str]),
         "door_id_exit":       DoorID.continue_without_on_after_match(dial_db),
-        "ca_map":             LineColumnCount_Default().count_command_map,
+        "ca_map":             ca_map,
         "dial_db":            dial_db,
     }
 
-    skipper_code, \
-    terminal_list, \
-    required_register_set = nested_range_skipper.do(data, Analyzer.reload_state)
+    loop_code,             \
+    terminal_list,         \
+    required_register_set, \
+    run_time_counter_f     = nested_range_skipper.do(data, Analyzer.reload_state)
+    assert not run_time_counter_f
     __require_variables(required_register_set)
-    skipper_code.extend(
+    loop_code.extend(
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
     )
 
-    return create_customized_analyzer_function(Language, TestStr, skipper_code,
+    code = []
+    if run_time_counter_f:
+        function_name, \
+        counter_code   = run_time_counter.get(ca_map, "UNIT_TEST")
+        code.append("#define __QUEX_COUNT_VOID %s\n" % function_name)
+        code.extend(counter_code)                       
+
+    code.extend(
+        loop_code
+    )
+
+    return create_customized_analyzer_function(Language, TestStr, 
+                                               loop_code,
                                                QuexBufferSize=QuexBufferSize, 
                                                CommentTestStrF=CommentTestStrF, 
                                                ShowPositionF=ShowPositionF, 
@@ -201,41 +220,56 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
                                                DoorIdOnSkipRangeOpen=door_id_on_skip_range_open, 
                                                CounterPrintF="short") 
 
+                                
 def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, TokenQueueF):
-
+                                
     end_str = __prepare(Language, TokenQueueF)
-
-    class MiniIncidenceDb(dict):
+                                
+    class MiniIncidenceDb(dict) :
         def __init__(self):
             self[E_IncidenceIDs.INDENTATION_BAD] = ""
         def default_indentation_handler_f(self):
             return True
     mini_incidence_db = MiniIncidenceDb()
 
+    ca_map = LineColumnCount_Default().count_command_map
     data = {
         "indentation_setup":             ISetup,
-        "ca_map":                        LineColumnCount_Default().count_command_map,
+        "ca_map":                        ca_map,
         "incidence_db":                  mini_incidence_db,
         "default_indentation_handler_f": True,
         "mode_name":                     "Test",
         "sm_suppressed_newline":         None,
         "dial_db":                       dial_db,
     }
+    
+    function_name, \
+    counter_code   = run_time_counter.get(ca_map, "UNIT_TEST")
+    counter_code   = "#define __QUEX_COUNT_VOID %s\n" % function_name \
+                     + counter_code
 
     code = [ "%s\n" % Lng.LABEL(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)) ]
 
-    ind_code, \
+    variable_db.init()
+    loop_code, \
     terminal_list, \
-    required_register_set = indentation_counter.do(data, Analyzer.reload_state)
-    code.extend(ind_code)
+    required_register_set, \
+    run_time_counter_f     = indentation_counter.do(data, Analyzer.reload_state)
 
-    variable_db.require_registers(required_register_set)
-
-    code.extend(
+    loop_code.extend(
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
     )
 
-    return create_customized_analyzer_function(Language, TestStr, code, 
+    if not run_time_counter_f:
+        counter_code = None
+
+    code.extend(
+        loop_code
+    )
+
+    __require_variables(required_register_set)
+    return create_customized_analyzer_function(Language, TestStr, 
+                                               code, 
                                                QuexBufferSize=BufferSize, 
                                                CommentTestStrF="", ShowPositionF=True, 
                                                EndStr=end_str, 
@@ -244,7 +278,8 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
                                                IndentationSupportF=True,
                                                TokenQueueF=TokenQueueF, 
                                                ReloadF=True, 
-                                               CounterPrintF=False)
+                                               CounterPrintF=False,
+                                               BeforeCode=counter_code)
 
 def create_customized_analyzer_function(Language, TestStr, EngineSourceCode, 
                                         QuexBufferSize, CommentTestStrF, ShowPositionF, 
@@ -252,12 +287,16 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
                                         LocalVariableDB, IndentationSupportF=False, 
                                         TokenQueueF=False, ReloadF=False, OnePassOnlyF=False, 
                                         DoorIdOnSkipRangeOpen=None, 
-                                        CounterPrintF=True):
+                                        CounterPrintF=True,
+                                        BeforeCode=None):
 
     txt  = create_common_declarations(Language, QuexBufferSize,
                                       IndentationSupportF = IndentationSupportF, 
                                       TokenQueueF         = TokenQueueF,  
                                       QuexBufferFallbackN = 0)
+
+    if BeforeCode is not None:
+        txt += BeforeCode
 
     state_router_txt = do_state_router(dial_db)
     EngineSourceCode.extend(state_router_txt)

@@ -313,9 +313,11 @@ class PPT_List(list):
             "dial_db":                       self.terminal_factory.dial_db,
         }
 
-        code,                 \
-        new_terminal_list,    \
-        required_register_set = indentation_counter.do(data, ReloadState)
+        code,                  \
+        new_terminal_list,     \
+        required_register_set, \
+        run_time_counter_f     = indentation_counter.do(data, ReloadState)
+        self.terminal_factory.run_time_counter_required_f = run_time_counter_f
 
         self.required_register_set.update(required_register_set)
 
@@ -411,9 +413,11 @@ class PPT_List(list):
         for i, data in enumerate(Loopers.skip_range):
             data = self._range_skipper_data(data, CaMap, Loopers.indentation_handler)
 
-            code,                 \
-            new_terminal_list,    \
-            required_register_set = skip_range.do(data, ReloadState)
+            code,                  \
+            new_terminal_list,     \
+            required_register_set, \
+            run_time_counter_f     = skip_range.do(data, ReloadState)
+            self.terminal_factory.run_time_counter_required_f = run_time_counter_f
 
             self.required_register_set.update(required_register_set)
 
@@ -437,9 +441,11 @@ class PPT_List(list):
         for i, data in enumerate(Loopers.skip_nested_range):
             data = self._range_skipper_data(data, CaMap, Loopers.indentation_handler)
 
-            code,                 \
-            new_terminal_list,    \
-            required_register_set = skip_nested_range.do(data, ReloadState)
+            code,                  \
+            new_terminal_list,     \
+            required_register_set, \
+            run_time_counter_f     = skip_nested_range.do(data, ReloadState)
+            self.terminal_factory.run_time_counter_required_f = run_time_counter_f
 
             self.required_register_set.update(required_register_set)
 

@@ -45,8 +45,10 @@ def my_run(executable, Name, TestStr):
 
 def clean(executable, source):
     if REMOVE_FILES:
-        os.remove(executable)
-        os.remove(source)
+        try: os.remove(executable)
+        except: pass
+        try: os.remove(source)
+        except: pass
 
 def wild_str_core(N):
     """Generate a random configuration of opener/closers.

@@ -2,7 +2,7 @@
 
 # Switch: Removal of source and executable file
 #         'False' --> No removal.
-if True: 
+if False: 
     REMOVE_FILES = True; 
 else:     
     print "NOTE:> Do not remove files!;"
@@ -458,9 +458,12 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
                                                dial_db=dial_db),
     })
 
-    mode = Mode(sm_name, SourceRef_VOID, pattern_list, terminal_db, incidence_db,
+    mode = Mode(sm_name, SourceRef_VOID, 
+                pattern_list, terminal_db, incidence_db,
+                RunTimeCounterDb=None, 
+                ReloadStateForward=None, 
+                RequiredRegisterSet=set(),
                 dial_db=dial_db,
-                RunTimeCounterDb=None, ReloadStateForward=None, 
                 Documentation=ModeDocumentation([],[],[],[],[]))
 
     print "## (1) code generation"    
@@ -603,8 +606,8 @@ run_test(const char* TestString, const char* Comment)
     ptrdiff_t  real_buffer_size;
     (void)QUEX_NAME_TOKEN(DumpedTokenIdObject);
             
-    if( strlen(TestString) > 128 ) {
-        printf("(*) test string: \\n'%.128s...'%s\\n", TestString, Comment);
+    if( strlen(TestString) > 256 ) {
+        printf("(*) test string: \\n'%.256s...'%s\\n", TestString, Comment);
     } 
     else {
         printf("(*) test string: \\n'%s'%s\\n", TestString, Comment);

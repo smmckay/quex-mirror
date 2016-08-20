@@ -109,11 +109,12 @@ def do(Data, ReloadState):
     if ReloadState: engine_type = ReloadState.engine_type
 
     # (*) Generate Code
-    code,                 \
-    terminal_list,        \
-    loop_map,             \
-    door_id_loop,         \
-    required_register_set = loop.do(ca_map, 
+    code,                  \
+    terminal_list,         \
+    loop_map,              \
+    door_id_loop,          \
+    required_register_set, \
+    run_time_counter_f     = loop.do(ca_map, 
                                     OnLoopExitDoorId           = loop_exit_door_id,
                                     EngineType                 = engine_type,
                                     ReloadStateExtern          = ReloadState,
@@ -124,7 +125,10 @@ def do(Data, ReloadState):
 
     terminal_list.append(ih_call_terminal)
 
-    return code, terminal_list, required_register_set
+    return code, \
+           terminal_list, \
+           required_register_set, \
+           run_time_counter_f
 
 def _get_indentation_handler_terminal(DefaultIndentationHanderF,
                                       ModeName, dial_db):
