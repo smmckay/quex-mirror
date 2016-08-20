@@ -2,7 +2,7 @@
 
 # Switch: Removal of source and executable file
 #         'False' --> No removal.
-if False: 
+if True: 
     REMOVE_FILES = True; 
 else:     
     print "NOTE:> Do not remove files!;"

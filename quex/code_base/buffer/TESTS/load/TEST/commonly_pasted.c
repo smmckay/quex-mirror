@@ -15,7 +15,10 @@ static const QUEX_TYPE_LEXATOM  PseudoFile[] = {
    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 };
 
-#define PSEUDO_FILE_SIZE  sizeof(PseudoFile)
+#define PSEUDO_FILE_SIZE \
+        sizeof(PseudoFile)
+#define PSEUDO_FILE_LEXATOM_INDEX_AT_END \
+        (&PseudoFile[PSEUDO_FILE_SIZE] - &PseudoFile[0])
 
 static ptrdiff_t
 verify_content(QUEX_NAME(Buffer)* me)
@@ -23,12 +26,14 @@ verify_content(QUEX_NAME(Buffer)* me)
     QUEX_TYPE_LEXATOM  expected;
     QUEX_TYPE_LEXATOM* p;
     ptrdiff_t          count = 0;
+    ptrdiff_t          lexatom_index_at_end_p;
 
     /* If end_p does not stand on buffer boarder, then it must stand according
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
     if( me->input.end_p != me->_memory._back ) {
-        hwut_verify(me->input.end_p - &me->_memory._front[1] + me->input.lexatom_index_begin
-                    == sizeof(PseudoFile)/sizeof(PseudoFile[0]));
+        lexatom_index_at_end_p = me->input.end_p - &me->_memory._front[1];
+        hwut_verify(lexatom_index_at_end_p + me->input.lexatom_index_begin
+                    == PSEUDO_FILE_LEXATOM_INDEX_AT_END);
     }
     /* Make sure that the content has been loaded properly. From the 
      * variable 'pseudo_file' it can be previewed what the content is 
