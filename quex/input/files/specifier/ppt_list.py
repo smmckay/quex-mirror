@@ -386,7 +386,8 @@ class PPT_List(list):
             pattern    = Pattern.from_character_set(lei.character_set, 
                                                     new_incidence_id, 
                                                     Sr=SourceRef_VOID)
-            count_code = lei.count_action.get_OpList(CaMap.get_column_number_per_code_unit())
+            # There is no reference pointer => Add directly
+            count_code = lei.count_action.get_OpList(None)
             code       = Lng.COMMAND_LIST(count_code + goto_code, 
                                           self.terminal_factory.dial_db)
             terminal   = Terminal(CodeTerminal(code), "ENTER SKIP:", 

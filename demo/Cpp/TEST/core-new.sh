@@ -34,9 +34,10 @@ fi
 if [[ "$lexer_name" == "" ]]; then
     lexer_name="./lexer"
 fi
-valgrind --log-file=tmp-valgrind.log --leak-check=full --show-leak-kinds=all \
-         $lexer_name $args_to_lexer \
-         > tmp-stdout0.txt 2> tmp-stderr0.txt
+
+valgrind --log-file=tmp-valgrind.log \
+         --leak-check=full --show-leak-kinds=all \
+         $lexer_name $args_to_lexer > tmp-stdout.txt
 
 
 # Filter important lines ______________________________________________________
@@ -58,6 +59,7 @@ python $QUEX_PATH/TEST/show-valgrind.py tmp-valgrind.log > tmp-valgrind.log2
 if [[ -f $current_dir/side-kick.sh ]]; then
     source $current_dir/side-kick.sh tmp-make.txt  
     source $current_dir/side-kick.sh tmp-stdout.txt 
+    source $current_dir/side-kick.sh tmp-valgrind.log2 
     # No side-kick.sh of another application shall interfer
     rm -f  $current_dir/side-kick.sh
 else
