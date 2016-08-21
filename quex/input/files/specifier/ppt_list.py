@@ -10,12 +10,14 @@ and incidence handlers. Based on the PPT list optional pattern deletion and
 repriorization is implemented. Finaly, a mode's pattern list and terminal
 database is extracted.
 """
-from   quex.input.code.core                         import CodeTerminal
+from   quex.input.code.core                         import CodeTerminal, \
+                                                           SourceRef_VOID
 from   quex.input.regular_expression.pattern        import Pattern_Prep
 from   quex.engine.counter                          import CountActionMap, \
                                                            IndentationCount
 from   quex.engine.pattern                          import Pattern
 import quex.engine.state_machine.check.tail         as     tail
+from   quex.engine.operations.operation_list        import Op
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.analyzer.door_id_address_label   import DoorID, \
                                                            DialDB
@@ -27,7 +29,8 @@ import quex.output.core.loop.range                  as     skip_range
 import quex.output.core.loop.nested_range           as     skip_nested_range
 import quex.output.core.loop.indentation_counter    as     indentation_counter
 
-from   quex.blackboard import E_IncidenceIDs
+from   quex.blackboard import E_IncidenceIDs, \
+                              Lng
 
 
 from   collections  import namedtuple
@@ -363,41 +366,36 @@ class PPT_List(list):
         new_terminal_list,    \
         loop_map,             \
         required_register_set = skip_character_set.do(data, ReloadState)
-
         self.required_register_set.update(required_register_set)
-
-        # Transitions from 'initial state' based on loop map:
-        #
-        #     Chacter set --> Terminal as defined by 'skip_character_set.do()'.
-        #
-        def terminal_by_incidence_id(IncidenceId, TerminalList):
-            for terminal in TerminalList:
-                if terminal.incidence_id() == IncidenceId: return terminal
-            assert False
-
-        # NOTE: Terminals for 'lei.incidence_id' are already 'new_terminal_list'.
-        new_ppt_list = [
-            PPT(PatternPriority(MHI, lei.incidence_id), 
-                Pattern.from_character_set(lei.character_set, 
-                                           lei.incidence_id, 
-                                           aux_source_reference, 
-                                           PatternString="<skip>"),
-                terminal_by_incidence_id(lei.incidence_id, new_terminal_list))
-            for lei in loop_map
-        ]
-        loop_map_incidence_id_set = set(lei.incidence_id for lei in loop_map)
 
         extra_terminal_list = [ 
             Terminal(CodeTerminal(code), "<skip>", E_IncidenceIDs.SKIP, 
                      RequiredRegisterSet=required_register_set, 
                      dial_db=self.terminal_factory.dial_db) 
         ]
-
-        # Only add those terminals which are not yet mentioned in the ppt list.
         extra_terminal_list.extend(
             t for t in new_terminal_list
-            if t.incidence_id() not in loop_map_incidence_id_set
         )
+
+        # Any skipped character must enter the skipper entry.
+        goto_code = [ Op.GotoDoorId(DoorID.incidence(E_IncidenceIDs.SKIP, 
+                                                     self.terminal_factory.dial_db)) ] 
+        new_ppt_list = []
+        for lei in loop_map:
+            new_incidence_id = dial.new_incidence_id()
+            pattern    = Pattern.from_character_set(lei.character_set, 
+                                                    new_incidence_id, 
+                                                    Sr=SourceRef_VOID)
+            count_code = lei.count_action.get_OpList(CaMap.get_column_number_per_code_unit())
+            code       = Lng.COMMAND_LIST(count_code + goto_code, 
+                                          self.terminal_factory.dial_db)
+            terminal   = Terminal(CodeTerminal(code), "ENTER SKIP:", 
+                                  new_incidence_id, 
+                                  dial_db=self.terminal_factory.dial_db) 
+
+            new_ppt_list.append(
+                PPT(PatternPriority(MHI, new_incidence_id), pattern, terminal)
+            )
 
         return new_ppt_list, extra_terminal_list
 

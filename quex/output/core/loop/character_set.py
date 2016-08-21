@@ -84,10 +84,10 @@ def do(Data, ReloadState):
     door_id_loop,          \
     required_register_set, \
     run_time_counter_f     = loop.do(ca_map,
-                                    OnLoopExitDoorId  = on_loop_exit_door_id,
-                                    EngineType        = engine_type,
-                                    ReloadStateExtern = ReloadState, 
-                                    dial_db           = dial_db)
+                                     OnLoopExitDoorId  = on_loop_exit_door_id,
+                                     EngineType        = engine_type,
+                                     ReloadStateExtern = ReloadState, 
+                                     dial_db           = dial_db)
     assert not run_time_counter_f
 
     assert isinstance(result, list)

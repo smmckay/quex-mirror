@@ -386,7 +386,7 @@ class LoopEventHandlers:
             code.extend(TheCountAction.get_OpList(self.column_number_per_code_unit))
 
         if AppendixSmId is not None: name = "<COUPLE %s>" % IncidenceId
-        else:                        name = "<LOOP %s>" % IncidenceId
+        else:                        name = "<LOOP %s>"   % IncidenceId
 
         if AppendixSmId is not None:
             #
