@@ -179,6 +179,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     except RegularExpressionException, x:
         print "Dictionary Creation:\n" + repr(x)
 
+    if FullLanguage.find("PlainMemory") != -1:
+        QuexBufferSize = len(TestStr) + 2
     test_program = create_main_function(Language, TestStr, QuexBufferSize, 
                                         ComputedGotoF=computed_goto_f)
 

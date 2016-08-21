@@ -27,8 +27,8 @@
             [ \t\n]+ --> WHITESPACE
 ## (1) code generation
 ## (2) compiling generated engine code and test
-g++  ./tmp.cpp -I./. -I$QUEX_PATH -o ./tmp.cpp.exe -D__QUEX_OPTION_UNIT_TEST_ISOLATED_CODE_GENERATION -ggdb ##
-## (3) running the test
+g++ -Wall -Werror -Wno-error=unused-function  -DQUEX_OPTION_ASSERTS ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
+## (*) running the test
 (*) test string: 
 '
 struct MyType<T> {
@@ -40,12 +40,7 @@ struct MyType<T> {
    def sin_cos(x) = sin(x) * cos(x)
 
    main()
-      for(x = 0.12; x < 12 ; x++)
-         print x * sin_cos(x)
-      while( no_user_abort() ) sleep()
-
-   fun   
-'
+      for(x = ...'
 (*) result:
          WHITESPACE  '
 '
@@ -80,7 +75,7 @@ struct MyType<T> {
          WHITESPACE  '
    '
                ELSE  'else'
-         WHITESPACE  '           '
+         WHITESPACE  ' '
             TYPEDEF  'typedef'
          WHITESPACE  ' '
          IDENTIFIER  'my_vars_type'
@@ -122,11 +117,11 @@ struct MyType<T> {
             OP_MULT  '*'
          WHITESPACE  ' '
          IDENTIFIER  'cos'
+
        BRACKET_OPEN  '('
          IDENTIFIER  'x'
       BRACKET_CLOSE  ')'
          WHITESPACE  '
-
    '
          IDENTIFIER  'main'
        BRACKET_OPEN  '('
@@ -176,11 +171,11 @@ struct MyType<T> {
          WHITESPACE  ' '
       BRACKET_CLOSE  ')'
          WHITESPACE  ' '
+
          IDENTIFIER  'sleep'
        BRACKET_OPEN  '('
       BRACKET_CLOSE  ')'
          WHITESPACE  '
-
    '
                 FUN  'fun'
          WHITESPACE  '   
