@@ -56,6 +56,9 @@ class PatternPriority(object):
         elif self.pattern_index < Other.pattern_index:               return -1
         else:                                                        return 0
 
+    def __repr__(self):
+        return "{ mhi: %s; pattern_i: %s; }" % (self.mode_hierarchy_index, self.pattern_index)
+
 class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "terminal"))):
     """PPT -- (Priority, Pattern, Terminal) 
     ______________________________________________________________________________
@@ -68,6 +71,10 @@ class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "terminal"))):
     @typed(ThePatternPriority=PatternPriority, TheTerminal=(Terminal, None))
     def __new__(self, ThePatternPriority, ThePattern, TheTerminal):
         return super(PPT, self).__new__(self, ThePatternPriority, ThePattern, TheTerminal)
+
+    def __repr__(self):
+        return "{ priority: %s; pattern: %s; terminal_iid: %s; }" \
+                % (self.priority, self.pattern.pattern_string(), self.terminal.incidence_id)
 
 class PPT_List(list):
     def __init__(self, terminal_factory):
@@ -120,7 +127,7 @@ class PPT_List(list):
         #
         assert all(priority.mode_hierarchy_index < 0 
                    for priority, dummy, dummy in new_ppt_list)
-        new_ppt_list.sort(key=attrgetter("priority"))
+        self._adapt_pattern_id_to_priority(new_ppt_list, SortOnlyPossitiveMhiF=False)
         self[:0] = new_ppt_list
 
     def delete_and_reprioritize(self, BaseModeSequence):
@@ -143,28 +150,7 @@ class PPT_List(list):
         history_deletion         = self._pattern_deletion(BaseModeSequence) 
         history_reprioritization = self._pattern_reprioritization(BaseModeSequence) 
 
-        # Make sure that the incidence-id of each pattern fits the position
-        # in the priorization sequence. That is, early entries in the list MUST
-        # have a lower incidence id thant later entries.
-        prev_incidence_id = self[0].pattern.incidence_id - 1
-        self.sort(key=attrgetter("priority"))
-        for i, ppt in enumerate(list(self)): 
-            priority, pattern, terminal = ppt
-            if pattern.incidence_id <= prev_incidence_id:
-                # IMPORTANT: Any match with 'mode_hierarchy_index < 0' stems
-                #            from generated code! Terminals that relate to such
-                #            code are NOT supposed to change their incidence_id!
-                assert priority.mode_hierarchy_index >= 0
-
-                # Generate a new, cloned pattern. So that other related modes are not effected.
-                new_incidence_id = dial.new_incidence_id() # new id > any older id.
-                new_pattern      = pattern.clone_with_new_incidence_id(new_incidence_id)
-                if terminal is not None: new_terminal = terminal.clone(new_incidence_id)
-                else:                    new_terminal = None
-                new_ppt = PPT(priority, new_pattern, new_terminal)
-                self[i] = new_ppt
-
-            prev_incidence_id = pattern.incidence_id
+        self._adapt_pattern_id_to_priority(self)
 
         #________________
         assert all(p.incidence_id == t.incidence_id() for dummy, p, t in self)
@@ -172,6 +158,37 @@ class PPT_List(list):
         #________________
 
         return history_deletion, history_reprioritization
+
+    @staticmethod
+    def _adapt_pattern_id_to_priority(ppt_list, SortOnlyPossitiveMhiF=True):
+        """Ensure that the incidence-id of each pattern fits the position in 
+        priorization sequence. That is, early entries in the list MUST have 
+        lower incidence id than later entries.
+        """
+        if len(ppt_list) < 1: return
+
+        prev_incidence_id = ppt_list[0].pattern.incidence_id - 1
+        ppt_list.sort(key=attrgetter("priority"))
+        for i, ppt in enumerate(list(ppt_list[1:]), start=1): 
+            priority, pattern, terminal = ppt
+            if pattern.incidence_id > prev_incidence_id:
+                prev_incidence_id = pattern.incidence_id
+                continue
+
+            # IMPORTANT: Any match with 'mode_hierarchy_index < 0' stems
+            #            from generated code! Terminals that relate to such
+            #            code are NOT supposed to change their incidence_id!
+            assert not SortOnlyPossitiveMhiF or priority.mode_hierarchy_index >= 0
+
+            # Generate a new, cloned pattern. So that other related modes are not effected.
+            new_incidence_id = dial.new_incidence_id() # new id > any older id.
+            new_pattern      = pattern.clone_with_new_incidence_id(new_incidence_id)
+            if terminal is not None: new_terminal = terminal.clone(new_incidence_id)
+            else:                    new_terminal = None
+            new_ppt = PPT(priority, new_pattern, new_terminal)
+            ppt_list[i] = new_ppt
+
+            prev_incidence_id = new_incidence_id
 
     def _pattern_reprioritization(self, BaseModeSequence):
         """Repriority patterns. The 'reprioritization_info_list' consists of a list of
