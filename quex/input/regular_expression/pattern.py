@@ -296,7 +296,7 @@ class Pattern_Prep(object):
         elif not bipd_sm_to_be_inverted.is_DFA_compliant(): 
             bipd_sm_to_be_inverted = beautifier.do(bipd_sm_to_be_inverted)
 
-        bipd_sm = beautifier.do(reverse.do(bipd_sm_to_be_inverted))
+        bipd_sm = reverse.do(bipd_sm_to_be_inverted)
 
         return sm, bipd_sm
 

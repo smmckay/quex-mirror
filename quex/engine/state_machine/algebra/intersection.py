@@ -139,4 +139,4 @@ def do(SM_List):
     if not result.has_acceptance_states():
         return StateMachine()
     else:
-        return beautifier.do(reverse.do(result))
+        return reverse.do(result)

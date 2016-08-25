@@ -83,10 +83,10 @@ def detect_backward(CoreStateMachine, PostConditionStateMachine):
     #   state.set_acceptance(False)
     # -- set the initial state as acceptance state
     # my_post_context_sm.get_init_state().set_acceptance(True)
-    my_core_sm = beautifier.do(reverse.do(CoreStateMachine))
+    my_core_sm = reverse.do(CoreStateMachine)
 
     tmp = deepcopy(PostConditionStateMachine) # no deeepcopy needed here, I guess <fschaef 11y11m01d>
-    my_post_context_sm = beautifier.do(reverse.do(tmp))
+    my_post_context_sm = reverse.do(tmp)
 
     return detect_forward(my_post_context_sm, my_core_sm)
 

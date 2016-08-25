@@ -7,6 +7,7 @@ from   quex.input.code.base                           import SourceRef, \
 from   quex.engine.state_machine.core                 import StateMachine  
 import quex.engine.state_machine.construction.sequentialize as sequentialize
 import quex.engine.state_machine.algorithm.beautifier as     beautifier    
+import quex.engine.state_machine.check.tail           as     tail
 from   quex.engine.misc.tools                         import typed
 from   quex.engine.misc.interval_handling             import NumberSet
 from   quex.engine.counter                            import LineColumnCount, \
@@ -191,7 +192,7 @@ class IndentationCount_Prep(CountBase_Prep):
         pattern_comment_list = []
         for sm_comment in self.sm_comment_list:
             only_common_f, \
-            common_f       = tail.do(sm_newline.get(), sm_comment.get())
+            common_f       = tail.do(sm_newline, sm_comment.get())
 
             error_check.tail(only_common_f, common_f, 
                              "indentation handler's newline", indentation_sm_newline.sr, 

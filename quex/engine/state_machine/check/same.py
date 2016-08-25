@@ -12,17 +12,12 @@ def do(A, B):
     return detector.result
 
 class SameDetector(TreeWalker):
-    """Find acceptance states of 'A' which are reachable
-       by walking along possible paths in 'B'. 
+    """Find acceptance states of 'A' which are reachable by walking along 
+    possible paths in 'B'. 
        
-       Use the algorithm provided by 'Base_TunnelWalker' where
-       "A = A" and "B = B".
+    -- If an acceptance state in A ('A') is reached, then a pair
+       (B_StateIndex, A_StateIndex) is appended to 'self.result'. 
 
-       -- If an acceptance state in A ('A') is reached, then a pair
-          (B_StateIndex, A_StateIndex) is appended to 'self.result'. 
-
-       Later, Step2_Walker will walk along paths of 'B' starting 
-       from these detected states to see whether it diverts.
     """
     def __init__(self, A, B):
         self.sm_a     = A # State Machine of the higher priority pattern

@@ -511,7 +511,7 @@ def snap_none(stream, PatternDict):
 
 def snap_reverse(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "reverse operator", "R")[0]
-    return reverse.do(result)
+    return reverse.do(result, EnsureDFA_f=False)
 
 def snap_anti_pattern(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "anti-pattern operator", "A")[0]

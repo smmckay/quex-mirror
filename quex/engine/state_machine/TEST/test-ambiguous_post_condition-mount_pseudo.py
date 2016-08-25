@@ -41,7 +41,7 @@ def test(RE_Core, RE_PostCondition):
     print "post condition pattern  =", RE_PostCondition
 
     backward_search_sm = ambiguous_post_context.mount(core_sm, post_context_sm)
-    backward_search_sm = beautifier.do(reverse.do(backward_search_sm))
+    backward_search_sm = reverse.do(backward_search_sm)
     # .mount() does not transformation from NFA to DFA
     core_sm = beautifier.do(core_sm)
 

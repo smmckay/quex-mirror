@@ -927,6 +927,10 @@ class StateMachine(object):
             if state_index not in unique and state_index != self.init_state_index: return True
         return False
 
+    def has_pre_context_begin_of_line_f(self):
+        return any(state.pre_context_id() == E_PreContextIDs.BEGIN_OF_LINE
+                   for state in self.states.itervalues())
+
     def has_acceptance_states(self):
         for state in self.states.itervalues():
             if state.is_acceptance(): return True

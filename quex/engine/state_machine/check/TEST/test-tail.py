@@ -3,21 +3,21 @@ import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-import quex.input.regular_expression.engine   as regex
-import quex.engine.state_machine.check.outrun as outrun_check
+import quex.input.regular_expression.engine as regex
+import quex.engine.state_machine.check.tail as tail
 
 if "--hwut-info" in sys.argv:
-    print "Outrun - Matching Same and More"
-    # print "CHOICES: True, False, Pre-Post-Contexts-True, Pre-Post-Contexts-False;"
+    print "Tail Checker"
     sys.exit(0)
     
 def test(A, B):
-    def __core(Pattern0, Pattern1):
-        print ("Pattern A = " + Pattern0).replace("\n", "\\n").replace("\t", "\\t")
-        print ("Pattern B = " + Pattern1).replace("\n", "\\n").replace("\t", "\\t")
-        sm0 = regex.do(Pattern0, {}).sm
-        sm1 = regex.do(Pattern1, {}).sm
-        print "claim     = ", outrun_check.do(sm0, sm1)
+    def __core(A, TailCandidate):
+        print ("Pattern = " + A).replace("\n", "\\n").replace("\t", "\\t")
+        print ("Tail    = " + TailCandidate).replace("\n", "\\n").replace("\t", "\\t")
+        sm0 = regex.do(A, {}).sm
+        sm1 = regex.do(TailCandidate, {}).sm
+        only_common_f, common_f = tail.do(sm0, sm1)
+        print "commonality: %s; exclusive: %s; " % (common_f, only_common_f)
     print "---------------------------"
     __core(A, B)
     print

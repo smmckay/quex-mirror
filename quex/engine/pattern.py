@@ -1,6 +1,7 @@
 from   quex.input.code.base                        import SourceRef
 from   quex.engine.state_machine.core              import StateMachine
 from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
+import quex.engine.state_machine.algebra.reverse   as     reverse
 from   quex.engine.misc.tools                      import typed, print_callstack
 
 
@@ -55,7 +56,16 @@ class Pattern:
         return self.__pattern_string # May be, later generate it on demand
 
     def has_pre_context(self): 
-        return self.sm_pre_context is not None
+        return    self.sm_pre_context is not None \
+               or self.sm.has_pre_context_begin_of_line_f()
+
+    def get_pre_context_generalized(self):
+        if self.sm_pre_context is not None: 
+            return self.sm_pre_context
+        elif self.sm.has_pre_context_begin_of_line_f():
+            return reverse.do(StateMachine.from_sequence([ord("\n")]), EnsureDFA_f=False)
+        else:
+            return None
 
     def clone_with_new_incidence_id(self, NewIncidenceId=None, PatternString=None):
         """Nothing needs to be done, except the main pattern must be associated

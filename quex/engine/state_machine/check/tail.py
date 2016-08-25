@@ -3,8 +3,10 @@
       Given two state machines A and T, determine whether A ends with T.
 
 """
-import quex.engine.state_machine.check.outrun    as outrun
-import quex.engine.state_machine.algebra.reverse as reverse
+import quex.engine.state_machine.check.outrun         as outrun
+import quex.engine.state_machine.algebra.reverse      as reverse
+import quex.engine.state_machine.algorithm.beautifier as beautifier
+from   quex.engine.misc.tree_walker                   import TreeWalker
 
 def do(A, T):
     """Checks: (1) whether there are sequence that match 'T' and the end of 'A'.
@@ -19,59 +21,88 @@ def do(A, T):
     Ar = reverse.do(A)
     Tr = reverse.do(T)
     
-    common_tail_exists_f   = __common_exists(Ar, Tr)
-    uncommon_tail_exists_f = __uncommon_exists(Ar, Tr)
+    # Does 'T' match AT LEAST ONE tail of 'A'?
+    # == Are there paths in 'Tr' to their acceptance states that are
+    #    also present in 'Ar'?
+    common_tail_exists_f   = len(outrun.commonality(Tr, Ar)) != 0
+    # Are there tails in 'A' which are not covered by 'T'?
+    # == Are there paths in 'Ar' which are not covered by paths in 'Tr'?
+    uncommon_tail_exists_f = diversion(Ar, Tr)
 
     return common_tail_exists_f and not uncommon_tail_exists_f, \
            common_tail_exists_f
 
-def common_exists(A, T):
-    """RETURNS: True, if there are sequence that match 'T' and may appear
-                      as ending sequences of 'A'.
-                False, else.
+def diversion(High, Low):
+    """Detect paths in Low that divert from High starting from the state-pairs 
+    mentioned in 'StartStatePairList'. The 'StartStatePairList' is a list
+    of pairs (state index of High, state index of Low) where to start the 
+    searches.
+    
+    RETURNS: True  -- if there are paths in Low that divert
+             False -- if all paths from acceptance states in High are 
+                      also in Low.
     """
-    Ar = reverse.do(A)
-    Tr = reverse.do(T)
-    return __common_exists(Ar, Tr)
-
-def uncommon_exists(A, T): 
-    """RETURNS: True, if there are sequence that do NOT match 'T' but may appear
-                      as ending sequences of 'A'.
-                False, else.
-    """
-    Ar = reverse.do(A)
-    Tr = reverse.do(T)
-    return __uncommon_exists(Ar, Tr)
-
-def __common_exists(Ar, Tr):
-    """RETURNS: True, if there are sequence that match 'T' and may appear
-                      as ending sequences of 'A'.
-                False, else.
-    """
-    collector = outrun.Step1_Walker(Tr, Ar)
-    collector.do([(Ar.init_state_index, Tr.init_state_index)])
-
-    # collector.result: List of pairs (Ti_si, Ai_si) 
-    # 
-    #   Ti_si = index of acceptance state in 'Tr' that has been reached.
-    #   Ai_si = index of state in 'Ar' that was reached when walking
-    #           along the path to 'Ti_si'.
-    # 
-    # => If there is a result, then a sequence that matches 'T' exists which
-    #    is a terminating sequence of 'A'
-    return len(collector.result) != 0
-
-def __uncommon_exists(Ar, Tr): 
-    """Detect paths in Ar that divert from Tr starting from
-       the acceptance states collected in step 1.
-    """
-    detector = outrun.Step2_Walker(Tr, Ar)
-
-    # Start searching for diversion from the critical acceptance states in Tr.
-    detector.do([(Ar.init_state_index, Tr.init_state_index)])
-
-    # detector.result: True  -- if there are paths in Ar that divert
-    #                  False -- if all paths from acceptance states in Tr are 
-    #                           also in Ar.
+    detector = DiversionWalker(High, Low)
+    detector.do([(High.init_state_index, Low.init_state_index)])
     return detector.result
+
+class DiversionWalker(TreeWalker):
+    """Checks whether 'Low' can walk paths which are not covered by 'High'. 
+
+    This is NOT THE SAME as the DiversionWalker of 'outrun'. The DiversionWalker
+    of 'outrun' marks 'True' upon acceptance of Low.
+
+
+       -- If a step in Low is detected which is not feasible in High, 
+          then Low has outrun High after match.
+
+          Set 'result = True' and abort.
+    """
+    def __init__(self, High, Low):
+        self.high     = High  # State Machine of the higher priority pattern
+        self.low      = Low   # State Machine of the lower priority pattern
+        self.result   = False # Low cannot outrun High
+        self.done_set = set()
+        TreeWalker.__init__(self)
+
+    def on_enter(self, Args):
+        # (*) Update the information about the 'trace of acceptances'
+        High_StateIndex, Low_StateIndex = Args
+        if Low_StateIndex in self.done_set: return None
+        else:                               self.done_set.add(Low_StateIndex)
+
+        Low_State  = self.low.states[Low_StateIndex]
+        High_State = self.high.states[High_StateIndex]
+
+        # Low reaches acceptance state before High.
+        # => No further investigation. 
+        # Note, that here we are in states *after* a matching high-prio pattern 
+        # (after the high-prio acceptance states).
+        if Low_State.is_acceptance() and not High_State.is_acceptance():
+            # At 'outrun's DiversionWalker: self.result  = True 
+            #                               self.abort_f = True
+            return None
+
+        sub_node_list = []
+        for b_target, b_trigger_set in Low_State.target_map.get_map().iteritems():
+            b_remaining_triggers = b_trigger_set.clone()
+            for a_target, a_trigger_set in High_State.target_map.get_map().iteritems():
+                if b_trigger_set.has_intersection(a_trigger_set): 
+                    # The transition in 'A' is covered by a transition in 'B'.
+                    sub_node_list.append( (a_target, b_target) )
+                    b_remaining_triggers.subtract(a_trigger_set)
+
+            if not b_remaining_triggers.is_empty():
+                # Low contains triggers not present in High. 
+                # => Low 'diverts' from High.
+                self.result  = True 
+                self.abort_f = True
+                return None
+
+        # (*) Recurse to all sub nodes
+        return sub_node_list
+
+    def on_finished(self, Args):
+        pass
+
 

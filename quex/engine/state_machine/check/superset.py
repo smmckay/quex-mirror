@@ -115,59 +115,23 @@ def do(A, B):
 
     # NOW: For the core state machines it holds: 
     #
-    #                      'core(A)' matches a super set of 'core(B)'.
+    #               'core(A)' matches a super set of 'core(B)'.
     #
 
     # (*) Pre-Condition _______________________________________________________
     #
-    if not A.has_pre_context(): 
-        # core(A) is a superset of core(B). 
-        # A is not restricted. B may be (who cares).
-        # => A can match more than B.
-        return True
+    A_pre_context = A.get_pre_context_generalized()
+    B_pre_context = B.get_pre_context_generalized()
 
-    # NOW: Acceptance of A is restricted by a pre-context.
-    #
-    if not B.has_pre_context(): 
-        # A is restricted by pre-context, B is not.
-        # => B can match things that A cannot. 
-        return False
+    # ANYWAY (see before): core(A) is a superset of core(B). 
+    if A_pre_context is None:   # A is not restricted. B may be (who cares).
+        return True             # => A can match more than B.
 
-    # NOW: A is restricted by pre-context. 
-    #      B is restricted by pre-context. 
-    #
-    #      For A to be a superset of B, A must be less or equally restricted than B.
-    #
-    #                 pre(B) is a superset of pre(A) 
-    # 
-    if B.pre_context_trivial_begin_of_line_f:
-        if not A.pre_context_trivial_begin_of_line_f:
-            # pre(A) can never be a subset of pre(B)
-            return False
-        else:
-            # pre(A) = pre(B) which fulfills the condition
-            return True
-
-    # IMPORTANT: The pre-contexts must be mounted at this point!
-    #            Call to '.mount_pre_context_sm()' must preceed this function.
-    assert A.pre_context_sm is not None
-    assert B.pre_context_sm is not None
-
-    # NOW: B is a 'real' pre-context not only a 'begin-of-line'
-    #
-    # Decision about "pre(A) is subset of pre(B)" done by Checker
-    if not A.pre_context_trivial_begin_of_line_f:
-        A_pre_sm = A.pre_context_sm
+    elif B_pre_context is None: # A is restricted by pre-context, B is not.
+        return False            # => B can match things that A cannot. 
     else:
-        # A contains only 'begin-of-line'. Note, however, that 
-        # -- newline definition may include '\r\n' so inversion is 
-        #    required. 
-        A_pre_sm = reverse.do(StateMachine.from_sequence("\n"))
-        ## NOT: -- at this point in time we are dealing with transformed 
-        ##         machines. So this has also to be transformed.
-        ## complete_f, A_pre_sm = Setup.buffer_codec.do_state_machine(A_pre_sm)
-
-    return Checker(B.pre_context_sm, A_pre_sm).do()
+        # 'B.sm_pre_context' matches super set of 'A.sm_pre_context'? 
+        return Checker(B_pre_context, A_pre_context).do()
 
 def do_list(SuperPattern_List, AllegedSubPattern):
     for super_sm in SuperPattern_List:

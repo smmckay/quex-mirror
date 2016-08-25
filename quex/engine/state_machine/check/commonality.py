@@ -2,20 +2,20 @@ from quex.engine.state_machine.core import StateMachine
 from quex.blackboard                import E_Commonality
 
 class Checker:
+    """Checks whether one state machine may match a lexeme that is the START of
+    a lexeme that is matched by the other state machine. For example:
+
+          A:  [a-z]{5}
+          B:  otto
+
+    B matches 'otto', A does not. However, A would match 'ottoy' would which
+    contains the pattern that B can match.
+
+    A is not a superset, since it does not match everything that B matches. It
+    happens only that A and B have a commonality.  
+    """
+
     def __init__(self, A, B):
-        """Checks whether one state machine may match a lexeme that 
-           is the START of a lexeme that is matched by the other 
-           state machine. For example:
-
-              A:  [a-z]{5}
-              B:  otto
-
-           B matches 'otto', A does not. However, A would match 'ottoy' 
-           would which contains the pattern that B can match.
-
-           A is not a superset, since it does not match everything that 
-           B matches. It happens only that A and B have a commonality.
-        """
         assert isinstance(A, StateMachine)
         assert isinstance(B, StateMachine)
 

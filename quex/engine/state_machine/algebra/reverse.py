@@ -7,11 +7,17 @@
        reverse(union(P, Q))        == union(reverse(P), reverse(Q))
        reverse(intersection(P, Q)) == intersection(reverse(P), reverse(Q))
 """
-from   quex.engine.state_machine.state.single_entry import SeAccept
-from   quex.engine.state_machine.core               import StateMachine
-import quex.engine.state_machine.check.special      as special
+from   quex.engine.state_machine.state.single_entry   import SeAccept
+from   quex.engine.state_machine.core                 import StateMachine
+import quex.engine.state_machine.algorithm.beautifier as beautifier
+import quex.engine.state_machine.check.special        as special
 
-def do(SM):
+def do(SM, EnsureDFA_f=True):
+    result = __do(SM)
+    if EnsureDFA_f: return beautifier.do(result)
+    else:           return result
+
+def __do(SM):
     """Creates a state machine that matches the reverse of what 'SM' matches.
     """
     result                               = StateMachine(InitStateIndex=SM.init_state_index)

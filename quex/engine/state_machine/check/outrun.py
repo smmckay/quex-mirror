@@ -23,7 +23,26 @@ def do(High, Low):
     """
     # Step 1: Find acceptance states which are reached while walking
     #         along paths of 'High' that are also inside 'Low'.
-    collector = Step1_Walker(High, Low)
+    result = commonality(High, Low)
+    if len(result) == 0:
+        return False
+
+    # Step 2: Detect paths in Low that divert from High starting from
+    #         the acceptance states collected in step 1.
+    verdict_f = diversion(High, Low, result)
+
+    # RETURNS (explained): 
+    # True    There are acceptance states in High can be reached by paths that
+    #         are also are feasible in Low; Low then diverts from those 
+    #         paths, i.e. there are paths in Low which are not in High.
+    # False   Else.
+    return verdict_f
+
+def commonality(High, Low):
+    """Find acceptance states which are reached while walking along paths 
+    of 'High' that are also inside 'Low'.
+    """
+    collector = CommonalityWalker(High, Low)
     collector.do([(High.init_state_index, Low.init_state_index)])
     # collector.result: List of pairs (HighIndex, LowIndex) 
     #
@@ -31,43 +50,35 @@ def do(High, Low):
     #  LowIndex  = index of state in 'Low' that was reached when walking
     #              along the path to 'HighIndex'.
     #
-    if len(collector.result) == 0:
-        return False
+    return collector.result
 
-    # Step 2: Detect paths in Low that divert from High starting from
-    #         the acceptance states collected in step 1.
-    detector = Step2_Walker(High, Low)
+def diversion(High, Low, StartStatePairList=None):
+    """Detect paths in Low that divert from High starting from the state-pairs 
+    mentioned in 'StartStatePairList'. The 'StartStatePairList' is a list
+    of pairs (state index of High, state index of Low) where to start the 
+    searches.
+    
+    RETURNS: True  -- if there are paths in Low that divert
+             False -- if all paths from acceptance states in High are 
+                      also in Low.
+    """
+    if StartStatePairList is None:
+        StartStatePairList = [(High.init_state_index, Low.init_state_index)]
 
     # Start searching for diversion from the critical acceptance states in High.
-    detector.do(collector.result)
-
-    # detector.result: True  -- if there are paths in Low that divert
-    #                  False -- if all paths from acceptance states in High are 
-    #                           also in Low.
-
-    # RETURNS: 
-    #
-    # True    If there were acceptance states in High that would be reached
-    #         by paths that also are feasible in Low; And if Low then 
-    #         diverts from those paths, i.e. there are paths in Low which
-    #         are not in High.
-    #
-    # False   Else.
-    #
+    detector = DiversionWalker(High, Low)
+    detector.do(StartStatePairList)
     return detector.result
 
-class Step1_Walker(TreeWalker):
-    """Find acceptance states of 'High' which are reachable
-       by walking along possible paths in 'Low'. 
+class CommonalityWalker(TreeWalker):
+    """Find acceptance states of 'High' which are reachable by walking along 
+    possible paths in 'Low'. 
        
-       Use the algorithm provided by 'Base_TunnelWalker' where
-       "A = High" and "B = Low".
-
        -- If an acceptance state in High ('A') is reached, then a pair
           (Low_StateIndex, High_StateIndex) is appended to 'self.result'. 
 
-       Later, Step2_Walker will walk along paths of 'Low' starting 
-       from these detected states to see whether it diverts.
+    Later, DiversionWalker will walk along paths of 'Low' starting from these 
+    detected states to see whether it diverts.
     """
     def __init__(self, High, Low):
         self.high     = High # State Machine of the higher priority pattern
@@ -105,10 +116,11 @@ class Step1_Walker(TreeWalker):
     def on_finished(self, Args):
         pass
 
-class Step2_Walker(TreeWalker):
-    """Starts at the acceptance states of 'High' that can be walked
-       along in 'Low'. It then checks whether 'Low' can walk paths from
-       there which are not covered by 'High'.
+class DiversionWalker(TreeWalker):
+    """Checks whether 'Low' can walk paths which are not covered by 'High'. 
+
+    Start states can be specified (For 'outrun' start at the acceptance states 
+    of 'High' and their counterpart in 'Low').
 
        -- If an acceptance state in Low is reached while High does
           not accept, then Low has outrun High after match. 
@@ -136,12 +148,12 @@ class Step2_Walker(TreeWalker):
         Low_State  = self.low.states[Low_StateIndex]
         High_State = self.high.states[High_StateIndex]
 
-        # When the low prio pattern reaches an acceptance state where the high
-        # does not, then it outrun the high pattern. Note, that here we are in
-        # states *after* a matching high-prio pattern (after the high-prio 
-        # acceptance states).
+        # Low reaches acceptance state before High.
+        # => No further investigation. 
+        # Note, that here we are in states *after* a matching high-prio pattern 
+        # (after the high-prio acceptance states).
         if Low_State.is_acceptance() and not High_State.is_acceptance():
-            self.result  = True # Low outruns High
+            self.result  = True 
             self.abort_f = True
             return None
 
@@ -155,10 +167,9 @@ class Step2_Walker(TreeWalker):
                     b_remaining_triggers.subtract(a_trigger_set)
 
             if not b_remaining_triggers.is_empty():
-                # Not all triggers in the state of the low-prio pattern where 
-                # present in the high-prio state. Thus, the low-prio pattern 
-                # has already outrun the high-prio pattern.
-                self.result  = True # Low outruns High
+                # Low contains triggers not present in High. 
+                # => Low 'diverts' from High.
+                self.result  = True 
                 self.abort_f = True
                 return None
 

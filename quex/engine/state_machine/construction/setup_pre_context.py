@@ -42,11 +42,11 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF):
         return None
 
     # (*) Reverse the state machine of the pre-condition 
-    reverse_pre_context = reverse.do(pre_context_sm)
+    reverse_pre_context = reverse.do(pre_context_sm, EnsureDFA_f=False)
         
     if BeginOfLinePreContextF:
         # Extend the existing pre-context with a preceeding 'begin-of-line'.
-        reverse_newline_sm  = reverse.do(StateMachine_Newline())
+        reverse_newline_sm  = reverse.do(StateMachine_Newline(), EnsureDFA_f=False)
         reverse_pre_context = sequentialize.do([reverse_pre_context, 
                                                 reverse_newline_sm])
 
