@@ -4,7 +4,7 @@ if [[ $1 == "--hwut-info" ]]; then
     echo "CHOICES:  syntactic-fill, syntactic-copy, arbitrary-fill, arbitrary-copy;"
     exit
 fi
-cd $QUEX_PATH/demo/C/010
+cd $QUEX_PATH/demo/Cpp/010
 
 if [[ "$2" == "FIRST" ]]; then
 make clean >& /dev/null

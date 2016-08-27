@@ -10,7 +10,7 @@ if [[ "$2" == "FIRST" ]]; then
 make clean >& /dev/null
 fi
 
-make  $1.exe ASSERTS_ENABLED_F=YES >& tmp.txt
+make  lexer.exe ASSERTS_ENABLED_F=YES >& tmp.txt
 
 cat tmp.txt | awk ' ! /gcc/' | awk '/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/ { print; }' | awk ' !/out of range/ && ! /getline/'
 rm tmp.txt

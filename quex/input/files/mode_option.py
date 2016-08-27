@@ -95,7 +95,7 @@ class Loopers:
                 return data
 
             self.skip_nested_range = [
-                finalize_skip_nested_range_data(data)
+                finalize_skip_nested_range_data(data, CaMap)
                 for data in self.skip_nested_range
             ]
 

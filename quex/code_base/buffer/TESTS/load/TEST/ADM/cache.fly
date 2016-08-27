@@ -39,7 +39,7 @@ file_name: backward-fb2-32.exe;
 hwut_info_time: 1472074779L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.004605; 0; ]
+  [ ; MAKE FAILED; 0.004605; 0; ]
 ]
 }
 {

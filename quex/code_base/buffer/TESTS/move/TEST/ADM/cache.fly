@@ -19,7 +19,7 @@ hwut_info_time: 1472074794L;
 make_dependent_f: True;
 result_list: [
   [ EoS; OK; 0.008016; 0; ]
-  [ NoEoS; FAIL; 0.006942; 0; ]
+  [ NoEoS; MAKE FAILED; 0.006942; 0; ]
 ]
 }
 {
@@ -31,7 +31,7 @@ hwut_info_time: 1472074790L;
 make_dependent_f: True;
 result_list: [
   [ EoS; OK; 0.006637; 0; ]
-  [ NoEoS; FAIL; 0.008111; 0; ]
+  [ NoEoS; MAKE FAILED; 0.008111; 0; ]
 ]
 }
 {
@@ -43,7 +43,7 @@ hwut_info_time: 1472074795L;
 make_dependent_f: True;
 result_list: [
   [ EoS; OK; 0.006133; 0; ]
-  [ NoEoS; FAIL; 0.011642; 0; ]
+  [ NoEoS; MAKE FAILED; 0.011642; 0; ]
 ]
 }
 {

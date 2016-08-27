@@ -157,8 +157,7 @@ class IncidenceDB(dict):
 
         if IncidenceId not in self: return CodeTerminal([""])
 
-        return CodeTerminal.from_CodeFragment(self[IncidenceId], 
-                                              LexemeRelevanceF=True)
+        return CodeTerminal.from_CodeFragment(self[IncidenceId]) 
 
     def get_text(self, IncidenceId):
         code_fragment = self.get(IncidenceId)

@@ -1,1 +1,100 @@
-valgrind: ./lexer.exe: No such file or directory
+g++ -ggdb -Wall -Werror -pedantic  -I./ -I/home/fschaef/prj/quex/trunk        -c lexer.cpp -o lexer.o  
+g++ -ggdb -Wall -Werror -pedantic  -I./ -I/home/fschaef/prj/quex/trunk        -c lexPlain.cpp -o lexPlain.o  
+g++ -ggdb -Wall -Werror -pedantic  -I./ -I/home/fschaef/prj/quex/trunk        -c receiver.cpp -o receiver.o  
+g++ -ggdb -Wall -Werror -pedantic  -I./ -I/home/fschaef/prj/quex/trunk   -o lexer.exe lexer.o lexPlain.o receiver.o 
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: HELLO 'hello'
+called: content_copy;
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
+called: loop_syntactic_chunks;
+   Token: NUMBER '4711'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: HELLO 'bonjour'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: NUMBER '0815'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: WORLD 'world'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: NUMBER '7777'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: IDENTIFIER 'le'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: NUMBER '31451'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: IDENTIFIER 'monde'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: IDENTIFIER 'le'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: IDENTIFIER 'monde'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: NUMBER '00'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: WORLD 'welt'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: NUMBER '1234567890'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: HELLO 'hallo'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: NUMBER '1212'
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: HELLO 'hello'
+called: content_copy;
+called: loop_syntactic_chunks;
+VALGRIND:   All heap blocks were freed -- no leaks are possible
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

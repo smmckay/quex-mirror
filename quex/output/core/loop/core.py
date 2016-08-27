@@ -494,7 +494,6 @@ class LoopEventHandlers:
 
         return op_list
         
-
     def on_loop_exit_text(self):
         return Lng.COMMAND_LIST(self.on_loop_exit, self.dial_db)
 
@@ -506,7 +505,8 @@ class LoopEventHandlers:
             result.add(E_R.LoopRestartP)
         if Setup.buffer_codec.variable_character_sizes_f():
             result.add(E_R.LoopRestartP)
-        if E_R.LoopRestartP in result:
+        if     E_R.LoopRestartP in result \
+           and self.engine_type.subject_to_reload():
             result.add(E_R.InputPBeforeReload)
             result.add(E_R.PositionDelta)
             if MaintainLexemeF:
