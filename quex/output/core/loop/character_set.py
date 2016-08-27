@@ -21,11 +21,6 @@ def do(Data, ReloadState):
                                             not in Set
 
     ___________________________________________________________________________
-    NOTE: The 'TerminalSkipRange' takes care that it transits immediately to 
-    the indentation handler, if it ends on 'newline'. This is not necessary
-    for 'TerminalSkipCharacterSet'. Quex refuses to work on 'skip sets' when 
-    they match common lexemes with the indentation handler.
-    ___________________________________________________________________________
 
     Precisely, i.e. including counter and reload actions:
 

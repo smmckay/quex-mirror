@@ -26,7 +26,7 @@ QUEX_NAMESPACE_MAIN_OPEN
         QUEX_TYPE_TOKEN* memory_end = &Memory[N];
 
         __quex_assert(Memory != 0x0);
-        __quex_assert(N != 0);
+        __quex_assert(N > (size_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);
 
 #       if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
         /* Call placement new (plain constructor) for all tokens in chunk. */
@@ -42,6 +42,11 @@ QUEX_NAMESPACE_MAIN_OPEN
     {                                                    
         me->read_iterator  = (QUEX_TYPE_TOKEN*)me->begin; 
         me->write_iterator = (QUEX_TYPE_TOKEN*)me->begin; 
+
+        __quex_assert(  me->end - me->begin 
+                      > (ptrdiff_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);
+        __quex_assert(   me->end_minus_safety_border 
+                      == me->end - (ptrdiff_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);         
     }
 
     QUEX_INLINE void
@@ -49,6 +54,8 @@ QUEX_NAMESPACE_MAIN_OPEN
                                QUEX_TYPE_TOKEN* Memory, 
                                QUEX_TYPE_TOKEN* MemoryEnd) 
     {
+        __quex_assert(  MemoryEnd - Memory 
+                      > (ptrdiff_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);
         me->begin                   = Memory;                           
         me->end                     = MemoryEnd;                        
         me->end_minus_safety_border = MemoryEnd - QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER;         

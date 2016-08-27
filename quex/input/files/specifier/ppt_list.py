@@ -117,17 +117,12 @@ class PPT_List(list):
             new_ppt_list.extend(pl)
             self.__extra_terminal_list.extend(tl)
 
-        # IMPORTANT: Terminals generated from 'loopers' are NOT to change their
-        #            incidence_id. They are already 'gotoed' and cannot change!
+        # IMPORTANT: Incidence Ids of Looper terminals CANNOT CHANGE!
+        #            They are already 'gotoed'!
         #            They cannot be subject to reprioritization!
-        #
-        # => All of them are sorted BEFORE any other matching, i.e. with 
-        # 
-        #                      'mode_hierarchy_index < 0'.
-        #
+        #            Mode Hierarchy Index < 0!
         assert all(priority.mode_hierarchy_index < 0 
-                   for priority, dummy, dummy in new_ppt_list)
-        self._adapt_pattern_id_to_priority(new_ppt_list, SortOnlyPossitiveMhiF=False)
+                   for priority, x, x in new_ppt_list)
         self[:0] = new_ppt_list
 
     def delete_and_reprioritize(self, BaseModeSequence):
@@ -160,10 +155,14 @@ class PPT_List(list):
         return history_deletion, history_reprioritization
 
     @staticmethod
-    def _adapt_pattern_id_to_priority(ppt_list, SortOnlyPossitiveMhiF=True):
+    def _adapt_pattern_id_to_priority(ppt_list):
         """Ensure that the incidence-id of each pattern fits the position in 
         priorization sequence. That is, early entries in the list MUST have 
         lower incidence id than later entries.
+
+        NOTE: For MHI-s < 0, i.e. loopers, this functions basically asserts
+              that the incidence ids of all patterns are aligned with their 
+              position in the list.
         """
         if len(ppt_list) < 1: return
 
@@ -171,14 +170,16 @@ class PPT_List(list):
         ppt_list.sort(key=attrgetter("priority"))
         for i, ppt in enumerate(list(ppt_list[1:]), start=1): 
             priority, pattern, terminal = ppt
+
+            # NOT: Mode Hierarchy Index < 0 == 'Entry into Looper'
+            #      Those patterns are NOT SUPPOSED to match common lexemes
+            #      with each other or other lexemes in the mode!
+            # => They are not subject to repriorization!
+            if priority.mode_hierarchy_index < 0: continue
+
             if pattern.incidence_id > prev_incidence_id:
                 prev_incidence_id = pattern.incidence_id
                 continue
-
-            # IMPORTANT: Any match with 'mode_hierarchy_index < 0' stems
-            #            from generated code! Terminals that relate to such
-            #            code are NOT supposed to change their incidence_id!
-            assert not SortOnlyPossitiveMhiF or priority.mode_hierarchy_index >= 0
 
             # Generate a new, cloned pattern. So that other related modes are not effected.
             new_incidence_id = dial.new_incidence_id() # new id > any older id.
@@ -326,11 +327,11 @@ class PPT_List(list):
 
         incidence_db = self.terminal_factory.incidence_db
         data = { 
-            "ca_map":                        CaMap,
-            "indentation_setup":             ISetup,
-            "incidence_db":                  incidence_db,
-            "mode_name":                     self.terminal_factory.mode_name,
-            "dial_db":                       self.terminal_factory.dial_db,
+            "ca_map":            CaMap,
+            "indentation_setup": ISetup,
+            "incidence_db":      incidence_db,
+            "mode_name":         self.terminal_factory.mode_name,
+            "dial_db":           self.terminal_factory.dial_db,
         }
 
         code,                  \
@@ -343,23 +344,23 @@ class PPT_List(list):
 
         # 'newline' triggers --> indentation counter
         pattern  = ISetup.pattern_newline.clone_with_new_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
-        terminal = terminal_factory.do_plain(CodeTerminal(code), 
-                                             "INDENTATION COUNTER NEWLINE: ", 
-                                             pattern, lcci,
-                                             RequiredRegisterSet=required_register_set)
+        terminal = self.terminal_factory.do_plain(CodeTerminal(code), 
+                                                  pattern, 
+                                                  "INDENTATION COUNTER NEWLINE: ", 
+                                                  RequiredRegisterSet=required_register_set)
         new_ppt_list = [
             PPT(PatternPriority(MHI, 0), pattern, terminal)
         ]
 
-        if sm_suppressed_newline is not None:
+        if ISetup.pattern_suppressed_newline is not None:
             # 'newline-suppressor' causes following 'newline' to be ignored.
             # => next line not subject to new indentation counting.
-            pattern = Pattern_Prep(SmSuppressedNewline) 
+            new_incidence_id = dial.new_incidence_id()
+            pattern = ISetup.pattern_suppressed_newline.clone_with_new_incidence_id(new_incidence_id)
             code    = CodeTerminal([Lng.GOTO(DoorID.global_reentry())])
             new_ppt_list.append(
-                PPT(PatternPriority(MHI, 1), 
-                    Pattern_Prep(sm_suppressed_newline),
-                    terminal_factory.do_plain(code, pattern, lcci,
+                PPT(PatternPriority(MHI, 1), pattern,
+                    terminal_factory.do_plain(code, pattern, 
                                               "INDENTATION COUNTER SUPPRESSED_NEWLINE: "))
             )
 
@@ -522,8 +523,10 @@ def check_indentation_setup(isetup):
     candidates = [
         isetup.get_sm_newline(),
         isetup.get_sm_suppressed_newline(),
-        isetup.get_sm_comment()
     ]
+    candidates.extend(
+        isetup.get_sm_comment_list()
+    )
     candidates = tuple(x for x in candidates if x is not None)
 
     def mutually_subset(Sm1, Sm2):

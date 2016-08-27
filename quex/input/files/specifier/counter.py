@@ -195,9 +195,11 @@ class IndentationCount_Prep(CountBase_Prep):
             common_f       = tail.do(sm_newline, sm_comment.get())
 
             error_check.tail(only_common_f, common_f, 
-                             "indentation handler's newline", indentation_sm_newline.sr, 
+                             "indentation handler's newline", self.sm_newline.sr, 
                              "comment", sm_comment.sr)
-            pattern = get_pattern(sm_coment, "<indentation comment>", sm_comment.sr)
+            pattern = get_pattern(sm_comment.get(), 
+                                  "<indentation comment>", 
+                                  sm_comment.sr)
             pattern_comment_list.append(pattern)
 
         return IndentationCount(self.sr, 

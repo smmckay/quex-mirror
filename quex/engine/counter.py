@@ -321,10 +321,18 @@ class IndentationCount(LineColumnCount):
         self.pattern_comment_list       = PatternListComment
 
     def finalize(self, CaMap):
-        self.__finalize(self.pattern_newline, CaMap)
-        self.__finalize(self.pattern_suppressed_newline, CaMap) 
+        def _finalize(P, CaMap):
+            if P: return P.finalize(CaMap)
+            else: return None
+
+        self.pattern_newline            = _finalize(self.pattern_newline, 
+                                                    CaMap)
+        self.pattern_suppressed_newline = _finalize(self.pattern_suppressed_newline, 
+                                                    CaMap) 
         for pattern_comment in self.pattern_comment_list:
-            self.__finalize(pattern_comment, CaMap) 
+            self.pattern_comment = self._finalize(pattern_comment, 
+                                                  CaMap) 
+        return self
 
     def get_sm_newline(self):
         return self.__get_sm(self.pattern_newline)
@@ -335,8 +343,6 @@ class IndentationCount(LineColumnCount):
     def get_sm_comment_list(self):
         return [ x.sm for x in self.pattern_comment_list if x.sm is not None ]
 
-    def __finalize(self, P, CaMap):
-        if P: P.finalize(CaMap)
 
     def __get_sm(self, P):
         if P: return P.sm
@@ -357,13 +363,22 @@ class IndentationCount(LineColumnCount):
                 msg += "    %s\n" % Sm.get_string(NormalizeF=True, Option="utf8").replace("\n", "\n    ").strip()
             return msg
 
-        return "".join([
-            cs_str("Whitespace", self.whitespace_character_set.get()),
-            cs_str("Bad",        self.bad_space_character_set.get()),
-            sm_str("Newline",    self.sm_newline.get()),
-            sm_str("Suppressor", self.sm_newline_suppressor.get()),
-            sm_str("Comment",    self.sm_comment.get()),
-        ])
+        txt = [ 
+            cs_str("Whitespace", self.whitespace_character_set),
+            cs_str("Bad",        self.bad_space_character_set),
+            sm_str("Newline",    self.pattern_newline.sm)
+        ]
+        if self.pattern_suppressed_newline is not None:
+            txt.append(
+                sm_str("Suppressor", self.pattern_suppressed_newline.sm)
+            )
+        if self.pattern_comment_list is not None:
+            for p in self.pattern_comment_list:
+                txt.append(
+                    sm_str("Comment", p.sm)
+                )
+
+        return "".join(txt)
 
 def _error_set_intersection(CcType, Before, sr):
     global cc_type_name_db
