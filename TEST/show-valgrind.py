@@ -16,11 +16,12 @@ pos1 = 5
 text    = []
 error_f = False
 for line in fh.readlines():
+    print "#line", line
     if line.find("--") == 0 and line.find("-----") == -1:
         continue
     if line.find("==") == 0:
         # 'valgrind' line
-        tail = line[8:]
+        tail = line.split("==")[2].strip()
         n    = tail.split()
         if   line.find("All heap blocks were freed") != -1: 
             text.append( "VALGRIND: %s" % tail.replace("=", "").replace(".", "")) 

@@ -457,7 +457,7 @@ class LoopEventHandlers:
                 # If the reference counting is applied, the reference pointer
                 # must be set right behind the last counted character.
                 count_code.append(
-                    Lng.COMMAND(Op.Assign(E_R.CountReferenceP, E_R.InputP), self.dial_db)
+                    Lng.COMMAND(Op.Assign(E_R.CountReferenceP, E_R.InputP, Condition="COLUMN"), self.dial_db)
                 )
         else:
             run_time_counter_required_f = False

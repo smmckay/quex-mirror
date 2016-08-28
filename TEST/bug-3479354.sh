@@ -1,7 +1,8 @@
 #! /usr/bin/env bash
 bug=3479354
 if [[ $1 == "--hwut-info" ]]; then
-    echo "clemwang: $bug Reversed (right to left) Pattern Definition"
+    echo "clemwang: $bug Reversed (right to left) Pattern Definition;"
+    echo "HAPPY: [0-9]+;"
     exit
 fi
 

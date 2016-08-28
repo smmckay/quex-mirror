@@ -4,14 +4,14 @@ if [[ $1 == "--hwut-info" ]]; then
     echo "CHOICES:  stdin, stdin-utf8, socket, socket-utf8, command-line, command-line-utf8;"
     exit
 fi
-cd $QUEX_PATH/demo/C/009
+cd $QUEX_PATH/demo/Cpp/009
 
 function make_silent() {
     make $1 $2 >& /dev/null
 }
 
 function observe() {
-    valgrind --leak-check=full -v $1 >& tmp.txt
+    $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$1 
 }
 
 if [[ "$2" == "FIRST" ]]; then
@@ -63,6 +63,6 @@ case $1 in
     ;;
 esac
 
-python $QUEX_PATH/TEST/show-valgrind.py 
+cat tmp.txt
 
 make_silent clean 

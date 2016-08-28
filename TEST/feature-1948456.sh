@@ -2,6 +2,7 @@
 bug=1948456
 if [[ $1 == "--hwut-info" ]]; then
     echo "fschaef: $bug (feature) Inheritance Info"
+    echo "HAPPY: [ 0-9]+;"
     exit
 fi
 

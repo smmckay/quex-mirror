@@ -11,7 +11,7 @@ function make_silent() {
 }
 
 function observe() {
-    valgrind --leak-check=full -v $1 >& tmp.txt
+    $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$1 
 }
 
 if [[ "$2" == "FIRST" ]]; then
@@ -63,6 +63,6 @@ case $1 in
     ;;
 esac
 
-python $QUEX_PATH/TEST/show-valgrind.py 
+cat tmp.txt
 
 make_silent clean 

@@ -20,6 +20,5 @@ make clean >& /dev/null
 make $choice-lexer 2> tmp.txt 1> /dev/null
 cat tmp.txt | awk ' !/g\+\+/ && !/codec/ && !/-Werror/ && !/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ && !/[Ee][Rr][Rr][Oo][Rr]/ { print; }'
 rm tmp.txt
-valgrind --leak-check=full ./$choice-lexer $special >& tmp.txt
-python $QUEX_PATH/TEST/show-valgrind.py
-rm -f tmp.txt
+$QUEX_PATH/TEST/valgrindi.sh./$choice-lexer $special >& tmp.txt
+cat tmp.txt; rm -f tmp.txt

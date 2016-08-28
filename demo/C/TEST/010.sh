@@ -16,20 +16,19 @@ cat tmp.txt | awk ' ! /gcc/' | awk '/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][
 rm tmp.txt
 
 case $1 in
-    syntactic-fill) valgrind --leak-check=full ./lexer.exe syntactic fill >& tmp.txt
+    syntactic-fill) $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./lexer.exe syntactic fill 
     ;;
-    syntactic-copy) valgrind --leak-check=full ./lexer.exe syntactic copy >& tmp.txt
+    syntactic-copy) $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./lexer.exe syntactic copy 
     ;;
-    arbitrary-fill) valgrind --leak-check=full ./lexer.exe arbitrary fill >& tmp.txt
+    arbitrary-fill) $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./lexer.exe arbitrary fill 
     ;;
-    arbitrary-copy) valgrind --leak-check=full ./lexer.exe arbitrary copy >& tmp.txt
+    arbitrary-copy) $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./lexer.exe arbitrary copy 
     ;;
 esac
 
-python $QUEX_PATH/TEST/show-valgrind.py
-rm -f tmp.txt
+cat tmp.txt; rm -f tmp.txt
 
-if [[ $3 == "LAST" ]]; then
+if [[ "$3" == "LAST" ]]; then
     make clean >& /dev/null
 fi
 

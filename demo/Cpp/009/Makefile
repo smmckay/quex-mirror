@@ -14,10 +14,10 @@ ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)
 endif
 
-ifdef ASSERTS_ENABLED_F
-	ASSERTS :=# By default asserts are enabled
-else 
+ifdef ASSERTS_DISABLED_F
 	ASSERTS :=-DQUEX_OPTION_ASSERTS_DISABLED
+else 
+	ASSERTS :=# By default asserts are enabled
 endif
 
 COMPILER := g++ -ggdb -Wall -Werror -pedantic 

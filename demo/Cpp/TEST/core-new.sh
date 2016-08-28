@@ -35,10 +35,7 @@ if [[ "$lexer_name" == "" ]]; then
     lexer_name="./lexer"
 fi
 
-valgrind --log-file=tmp-valgrind.log \
-         --leak-check=full --show-leak-kinds=all \
-         $lexer_name $args_to_lexer > tmp-stdout.txt
-
+$QUEX_PATH/TEST/valgrindi.sh tmp-valgrind.log $lexer_name $args_to_lexer
 
 # Filter important lines ______________________________________________________
 # -- filter make results
@@ -50,22 +47,19 @@ cat tmp-make0.txt | awk '(  /[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ \
                           && ! /QUEX_ERROR_EXIT/            \
                           && ! /QUEX_ERROR_DEPRECATED/' > tmp-make.txt
 
-# -- filter experiment results
-python $QUEX_PATH/TEST/show-valgrind.py tmp-valgrind.log > tmp-valgrind.log2
-
 # -- use a 'side-kick' to filter additional lines
 #    (caller may copy his side-kick over this one, but
 #     note: this file deletes the side-kick.sh!)
 if [[ -f $current_dir/side-kick.sh ]]; then
     source $current_dir/side-kick.sh tmp-make.txt  
     source $current_dir/side-kick.sh tmp-stdout.txt 
-    source $current_dir/side-kick.sh tmp-valgrind.log2 
+    source $current_dir/side-kick.sh tmp-valgrind.log 
     # No side-kick.sh of another application shall interfer
     rm -f  $current_dir/side-kick.sh
 else
     cat tmp-make.txt  
     cat tmp-stdout.txt 
-    cat tmp-valgrind.log2
+    cat tmp-valgrind.log
 fi
 
 rm -f tmp-stdout.txt tmp-stdout0.txt

@@ -10,6 +10,5 @@ make clean >& /dev/null
 make utf16-lexer-other >& tmp.txt
 cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ && ! /-Werror/'
 rm tmp.txt
-valgrind --leak-check=full ./utf16-lexer-other $1 >& tmp.txt
-python $QUEX_PATH/TEST/show-valgrind.py
-rm -f tmp.txt
+$QUEX_PATH/TEST/valgrindi.sh tmp.txt ./utf16-lexer-other $1 
+cat tmp.txt; rm -f tmp.txt
