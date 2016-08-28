@@ -124,7 +124,14 @@ QUEX_NAME(ByteLoader_is_equivalent)(const QUEX_NAME(ByteLoader)* A,
      * two loaders implementing stdandard libraries 'fread()' interface.     
      *
      * Further, it is always safe to return 'false'.                         */
-    if( A->load != B->load ) {
+    if( A == NULL ) {
+        if( B != NULL ) return false; 
+        else            return true;
+    }
+    else if( B == NULL ) {
+        return false;
+    }
+    else if( A->load != B->load ) {
         return false;
     }
 

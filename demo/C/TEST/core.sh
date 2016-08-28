@@ -19,9 +19,8 @@ echo "makefile =" Makefile
 echo "cleaning ..."
 make clean   >& /dev/null
 echo "make $arg1 $3 ##"
-make  $arg1 $3 >& tmp.txt
-cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ && ! /deprecated since quex/ && ! /QUEX_ERROR_EXIT/ && ! /QUEX_ERROR_DEPRECATED/'
-rm tmp.txt
+$QUEX_PATH/TEST/call-make.sh $arg1 $3 
+
 echo "executing ..."
 if [[ -z $application ]]; then
     if [[ $no_valgrind != "YES" ]]; then

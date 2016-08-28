@@ -7,7 +7,7 @@ fi
 cd $QUEX_PATH/demo/C/009
 
 function make_silent() {
-    make $1 $2 >& /dev/null
+    $QUEX_PATH/TEST/call-make.sh $1 $2 >& /dev/null
 }
 
 function observe() {

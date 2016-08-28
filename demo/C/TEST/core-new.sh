@@ -24,9 +24,9 @@ rm -f *.o *.exe
 # Make the test program _______________________________________________________
 echo "## make lexer $4 $5 $6 $7"
 if [[ "$args_to_make" != "" ]]; then
-    make $args_to_make >& tmp-make0.txt
+    $QUEX_PATH/TEST/call-make.sh $args_to_make >& tmp-make.txt
 else
-    make lexer $4 $5 $6 $7 >& tmp-make0.txt
+    $QUEX_PATH/TEST/call-make.sh lexer $4 $5 $6 $7 >& tmp-make.txt
 fi
 
 # Run the test ________________________________________________________________
@@ -36,19 +36,7 @@ if [[ "$lexer_name" == "" ]]; then
 fi
 
 $QUEX_PATH/TEST/valgrindi.sh tmp-valgrind.log $lexer_name $args_to_lexer
-
-# Filter important lines ______________________________________________________
-# -- filter make results
-cat tmp-make0.txt | awk '(  /[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ \
-                          || /[Ee][Rr][Rr][Oo][Rr]/)        \
-                          && ! /-Werror/                    \
-                          && ! /ASSERTS/                    \
-                          && ! /deprecated since quex/      \
-                          && ! /QUEX_ERROR_EXIT/            \
-                          && ! /QUEX_ERROR_DEPRECATED/' > tmp-make.txt
-
-# -- filter experiment results
-python $QUEX_PATH/TEST/show-valgrind.py tmp-valgrind.log > tmp-valgrind.log2
+cat tmp-valgrind.log; rm -f tmp-valgrind.log
 
 # -- use a 'side-kick' to filter additional lines
 #    (caller may copy his side-kick over this one, but
@@ -56,18 +44,15 @@ python $QUEX_PATH/TEST/show-valgrind.py tmp-valgrind.log > tmp-valgrind.log2
 if [[ -f $current_dir/side-kick.sh ]]; then
     source $current_dir/side-kick.sh tmp-make.txt  
     source $current_dir/side-kick.sh tmp-stdout.txt 
-    source $current_dir/side-kick.sh tmp-valgrind.log 
     # No side-kick.sh of another application shall interfer
     rm -f  $current_dir/side-kick.sh
 else
     cat tmp-make.txt  
     cat tmp-stdout.txt 
-    cat tmp-valgrind.log
 fi
 
 rm -f tmp-stdout.txt tmp-stdout0.txt
 rm -f tmp-make.txt   tmp-make0.txt
-rm -f tmp-valgrind.*
 
 # Clean up ____________________________________________________________________
 if [[ $last_f == "LAST" ]]; then

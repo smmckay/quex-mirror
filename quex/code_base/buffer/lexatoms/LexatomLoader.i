@@ -28,8 +28,8 @@ QUEX_INLINE void       QUEX_NAME(LexatomLoader_delete_self)(QUEX_NAME(LexatomLoa
                        
 QUEX_INLINE QUEX_NAME(LexatomLoader)*
 QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader, 
-                            QUEX_NAME(Converter)*   converter,
-                            const size_t            TranslationBufferMemorySize)
+                             QUEX_NAME(Converter)*   converter,
+                             const size_t            TranslationBufferMemorySize)
 {
     QUEX_NAME(LexatomLoader)* filler;
     (void)TranslationBufferMemorySize;
@@ -37,7 +37,7 @@ QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader,
     /* byte_loader = 0; possible if memory is filled manually.               */
     if( converter ) {
         filler = QUEX_NAME(LexatomLoader_Converter_new)(byte_loader, converter, 
-                                                       TranslationBufferMemorySize);
+                                                        TranslationBufferMemorySize);
     }
     else {
         filler = QUEX_NAME(LexatomLoader_Plain_new)(byte_loader); 
@@ -48,7 +48,7 @@ QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader,
 
 QUEX_INLINE QUEX_NAME(LexatomLoader)* 
 QUEX_NAME(LexatomLoader_new_DEFAULT)(QUEX_NAME(ByteLoader)*   byte_loader, 
-                                    const char*              InputCodecName) 
+                                     const char*              InputCodecName) 
 {
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
     QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)(InputCodecName, 0);
@@ -75,7 +75,7 @@ QUEX_NAME(LexatomLoader_new_DEFAULT)(QUEX_NAME(ByteLoader)*   byte_loader,
     } 
 
     return QUEX_NAME(LexatomLoader_new)(byte_loader, converter,
-                                       QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
+                                        QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
 }
 
 QUEX_INLINE void       
@@ -148,8 +148,6 @@ QUEX_INLINE void
 QUEX_NAME(LexatomLoader_reset)(QUEX_NAME(LexatomLoader)* me, QUEX_NAME(ByteLoader)* new_byte_loader)
 /* Resets the LexatomLoader with a new QUEX_NAME(ByteLoader).                            */
 {
-    __quex_assert(new_byte_loader);
-
     if( new_byte_loader != me->byte_loader ) {
         if( QUEX_NAME(ByteLoader_is_equivalent)(new_byte_loader, me->byte_loader) ) {
             __QUEX_STD_printf("Upon 'reset': current and new QUEX_NAME(ByteLoader )objects contain same input handle.\n"); 

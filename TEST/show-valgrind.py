@@ -16,7 +16,6 @@ pos1 = 5
 text    = []
 error_f = False
 for line in fh.readlines():
-    print "#line", line
     if line.find("--") == 0 and line.find("-----") == -1:
         continue
     if line.find("==") == 0:
