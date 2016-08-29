@@ -266,13 +266,16 @@ QUEX_NAME(LexatomLoader_Converter_load_lexatoms)(QUEX_NAME(LexatomLoader)* alter
         case E_LoadResult_COMPLETE:
             break;
         case E_LoadResult_INCOMPLETE:
-            /* Converter could not fill the drain. This can only happen, if the
-             * raw buffer could not be loaded with sufficient data to be 
-             * converted. This is exactly the 'end of stream' condition      */
-            __quex_assert(raw_end_of_stream_f);   /* Else, converter failed. */
-            __quex_assert(raw->next_to_convert_p == raw->fill_end_p);
+            /* Some ByteLoader-s (socket based ones, for example) may not be
+             * able to fill the whole raw buffer, but still the end of stream
+             * is not reached. Only, if the raw buffer detected end of stream
+             * the end of stream can be claimed.                             */
+            if( raw_end_of_stream_f ) {
+                *end_of_stream_f = true;
+            }
+            //__quex_assert(raw->next_to_convert_p == raw->fill_end_p);
             /* Nothing can be loaded; Everything is converted.               */
-            *end_of_stream_f = true;
+
             break;
         case E_LoadResult_BAD_LEXATOM:
             *encoding_error_f = true;

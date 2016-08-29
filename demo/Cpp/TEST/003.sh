@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 if [[ $1 == "--hwut-info" ]]; then
     cat << EOF
-        demo/003: Unicode Based Lexical Analyzis (Using GNU's Lib IConv);
+        demo/003: Unicode Based Lexical Analyzis (Using GNU's Lib IConv)
         CHOICES:  BPC=2, BPC=2_NDEBUG, BPC=4, BPC=4_NDEBUG, BPC=wchar_t;
         SAME;
 EOF

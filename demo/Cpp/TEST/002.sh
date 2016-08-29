@@ -10,8 +10,8 @@ fi
 case $1 in 
     NDEBUG-customized)
         cd ../002
-        make clean lexer2 >& /dev/null
-        $QUEX_PATH/TEST/valgrindi.sh ./lexer2 example2.txt 
+        $QUEX_PATH/TEST/call-make.sh clean lexer2 >& /dev/null
+        $QUEX_PATH/TEST/valgrindi.sh valgrind.log ./lexer2 example2.txt 
         cat valgrind.log; rm -f valgrind.log
         rm -f tmp.txt
         ;;

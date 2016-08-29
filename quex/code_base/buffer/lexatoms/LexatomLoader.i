@@ -170,7 +170,7 @@ QUEX_NAME(LexatomLoader_load)(QUEX_NAME(LexatomLoader)*  me,
  *
  * RETURNS: Number of loaded lexatoms.                                     */
 {
-    ptrdiff_t   loaded_n;
+    ptrdiff_t                loaded_n;
 
     /* (1) Seek to the position where loading shall start.                       
      *                                                                       */
@@ -183,6 +183,16 @@ QUEX_NAME(LexatomLoader_load)(QUEX_NAME(LexatomLoader)*  me,
      *                                                                       */
     loaded_n = (ptrdiff_t)me->derived.load_lexatoms(me, LoadP, (size_t)LoadN,
                                                     end_of_stream_f, encoding_error_f);
+#   ifdef QUEX_OPTION_DEBUG_LOAD
+    {
+        const QUEX_TYPE_LEXATOM* p;
+        /* The buffer limit code is not to appear inside the loaded content. */
+        for(p=LoadP; p != &LoadP[loaded_n]; ++p) {
+            __quex_assert(*p != QUEX_SETTING_BUFFER_LIMIT_CODE);
+        }
+    }
+#   endif
+
     __quex_assert(loaded_n <= LoadN);
     me->lexatom_index_next_to_fill += loaded_n;
 

@@ -71,7 +71,21 @@ QUEX_NAME(RawBuffer_load)(QUEX_NAME(RawBuffer)*  me,
                           bool*                  end_of_stream_f)  
 /* Try to fill the me buffer to its limits with data from the file.  The
  * filling starts from its current position, thus the remaining bytes to be
- * translated are exactly the number of bytes in the buffer.                 */
+ * translated are exactly the number of bytes in the buffer.                 
+ *
+ * '*end_of_stream_f' = true, if the ByteLoader reported 'END OF STREAM',
+ *                            or if it returned ZERO BYTES.
+ *                      false, else.
+ * 
+ * NOTE: Some ByteLoaders (such as the POSIX ByteLoader) are not capable of 
+ *       telling whether the end of stream occurred. 
+ *       
+ *           END OF STREAM             NOT => 'end_of_stream_f = true'
+ *
+ *       But, 
+ *
+ *           'end_of_stream_f == true'     => END OF STREAM 
+ *                                                                           */
 {
     uint8_t*  fill_begin_p;
     size_t    load_request_n;

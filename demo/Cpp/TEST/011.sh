@@ -16,9 +16,6 @@ esac
 
 
 cd $QUEX_PATH/demo/Cpp/011
-make clean >& /dev/null
-make $choice-lexer 2> tmp.txt 1> /dev/null
-cat tmp.txt | awk ' !/g\+\+/ && !/codec/ && !/-Werror/ && !/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ && !/[Ee][Rr][Rr][Oo][Rr]/ { print; }'
-rm tmp.txt
-$QUEX_PATH/TEST/valgrindi.sh./$choice-lexer $special >& tmp.txt
+$QUEX_PATH/TEST/call-make.sh clean $choice-lexer
+$QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$choice-lexer $special 
 cat tmp.txt; rm -f tmp.txt

@@ -17,5 +17,5 @@ esac
 
 cd $QUEX_PATH/demo/C/011
 $QUEX_PATH/TEST/call-make.sh clean $choice-lexer
-$QUEX_PATH/TEST/valgrindi.sh ./$choice-lexer $special >& tmp.txt
+$QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$choice-lexer $special 
 cat tmp.txt; rm -f tmp.txt

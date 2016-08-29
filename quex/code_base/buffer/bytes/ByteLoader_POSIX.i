@@ -99,6 +99,11 @@ QUEX_NAME(ByteLoader_POSIX_load)(QUEX_NAME(ByteLoader)* me,
  * The caller will realize end of stream by a return of zero bytes.          */
 { 
     int n = read(((QUEX_NAME(ByteLoader_POSIX)*)me)->fd, buffer, ByteN); 
+    /* Theoretically, a last 'terminating zero' might be send over socket 
+     * connections. Make sure, that this does not appear in the stream.      */
+    if( n && ((uint8_t*)buffer)[n-1] == 0x0 ) {
+        --n;
+    }
     *end_of_stream_f = false;
     return n;
 }

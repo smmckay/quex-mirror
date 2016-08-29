@@ -6,9 +6,7 @@ if [[ $1 == "--hwut-info" ]]; then
     exit
 fi
 cd $QUEX_PATH/demo/Cpp/011
-make clean >& /dev/null
-make utf16-lexer-other >& tmp.txt
-cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ && ! /-Werror/'
-rm tmp.txt
+
+$QUEX_PATH/TEST/call-make.sh clean    utf16-lexer-other 
 $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./utf16-lexer-other $1 
 cat tmp.txt; rm -f tmp.txt

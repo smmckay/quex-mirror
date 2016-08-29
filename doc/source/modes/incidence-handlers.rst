@@ -229,17 +229,21 @@ the three handlers shown below.
    The bad lexatom detection can be disabled by the command line options
    ``--no-bad-lexatom-detection`` or ``--nbld``.
    
-The ``on_bad_lexatom`` has always precedence over ``on_failure``. That is,
-if '--codec ASCII' is specified as engine encoding and a value greater than
-0x7F appears, and encoding error is issued even if at the same time no pattern
-matches.
+The ``on_bad_lexatom`` has always precedence over ``on_failure``. That is, if
+'--codec ASCII' is specified as engine encoding and a value greater than 0x7F
+appears, and encoding error is issued even if at the same time no pattern
+matches. ``on_bad_lexatom`` also detects non-complient buffer loads--a little
+late, hower. If a load procuder loads the buffer with data that contains the
+buffer limit code, this this is detected upon the next attempt to reload[#f2]_.
+When ``QUEX_OPTION_DEBUG_LOAD`` is defined, such situations are detected
+directly after reload.
 
 
 Skippers
 ^^^^^^^^
 
-In the case of range skipping, it is conceivable that the closing delimiter never
-appear in the stream. In that case the following handler is executed.
+In the case of range skipping, it is conceivable that the closing delimiters
+never appear in the stream. In that case the following handler is executed.
 
 .. data:: on_skip_range_open
 
@@ -325,3 +329,8 @@ following incidence handlers may be used.
 .. [#f1] Lexical analysis is closely tied with the theory of state machines. 
          For that reason, the term 'incidence' has been chosen instead of 'event'
          which has a established meaning in the context of state machines.
+
+.. [#f2] Buffer fillers and byte loaders must take care that this does not happen.
+         POSIX conform byte loaders over sockets, for example, detect a terminating
+         zero as part of the transmitted data and adapt the loaded number accordingly.
+
