@@ -293,31 +293,37 @@ loop_arbitrary_chunks(CLexer* lexer, CToken** prev_token_p)
  * RETURNS: true, if analysis may continue; BYE has not been received.
  *          false, if analysis may NOT continue; BYE has been received.      */
 {
-    QUEX_TYPE_TOKEN_ID    token_id;
+    QUEX_TYPE_TOKEN_ID  token_id;
     QUEX_TYPE_LEXATOM*  prev_lexeme_start_p;
     PRINT_FUNCTION();
 
     /* Loop until 'TERMINATION' or 'BYE' is received.                   
-     *   TERMINATION => possible reload                               
+     *   TERMINATION => possible reload/refill
      *   BYE         => end of game                                          */
     token_id = (QUEX_TYPE_TOKEN_ID)-1;
     while( 1 + 1 == 2 ) {
-        prev_lexeme_start_p = lexer->lexeme_start_pointer_get();
-
         /* Current token becomes previous token of next run.                 */
         *prev_token_p = QUEX_NAME(token_p_swap)(lexer, *prev_token_p);
 
-        token_id = lexer->receive();
-        if( token_id == QUEX_TKN_TERMINATION || token_id == QUEX_TKN_BYE )
+        /* Store lexeme start, in case that buffer contains incomplete token.*/
+        prev_lexeme_start_p = lexer->lexeme_start_pointer_get();
+        token_id            = lexer->receive();
+        if( token_id == QUEX_TKN_TERMINATION || token_id == QUEX_TKN_BYE ) {
             break;
-        if( (*prev_token_p)->_id != QUEX_TKN_TERMINATION ) 
+        }
+        else if( (*prev_token_p)->_id != QUEX_TKN_TERMINATION ) {
+            /* Token can be considered.                                      */
             printf("   Token: %s\n", lexer->token->get_string().c_str());
+        }
     }
 
-    if( token_id == QUEX_TKN_BYE ) return false;
-
-    /* Reset the 'read_p' to restart the interrupted match cycle.            */
-    lexer->input_pointer_set(prev_lexeme_start_p);
-    return true;
+    if( token_id == QUEX_TKN_BYE ) {
+        return false;                                       /* Done!        */
+    } 
+    else {
+        /* Next analysis must start over from interrupted lexeme.            */
+        lexer->input_pointer_set(prev_lexeme_start_p);
+        return true;                                        /* There's more! */
+    }
 }
 

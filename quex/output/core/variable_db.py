@@ -26,9 +26,10 @@ candidate_db = {
 "target_state_else_index":        ["QUEX_TYPE_GOTO_LABEL",          "QUEX_GOTO_LABEL_VOID",        False],
 "last_acceptance":                ["QUEX_TYPE_ACCEPTANCE_ID",       None,                          False],
 "PositionRegisterN":              ["const size_t",                  None,                          False],
-"position":                       ["QUEX_TYPE_LEXATOM*",  None,                          False],
+"position":                       ["QUEX_TYPE_LEXATOM*",  None,                                    False],
 "pre_context_%i_fulfilled_f":     ["int",                           "0",                           False], 
 "counter":                        ["size_t",                        "0",                           False],
+"load_result":                    ["E_LoadResult",                  "E_LoadResult_VOID",           False],
 "end_of_core_pattern_position":   ["QUEX_TYPE_LEXATOM*",  "((QUEX_TYPE_LEXATOM*)0x0)", False],
 #                                 
 # (*) Path Compression

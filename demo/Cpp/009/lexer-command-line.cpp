@@ -66,8 +66,8 @@ main(int argc, char** argv)
     while( 1 + 1 == 2 ) {
         printf("type here: ");
 
-		cin.getline((std::basic_istream<char>::char_type*)&buffer[0], 4096);
-        received_n = cin.gcount();
+		cin.getline((std::basic_istream<char>::char_type*)&buffer[0], sizeof(buffer)-1);
+        if( (received_n = cin.gcount()) == 0 ) break;
 
         /* Last received byte is the terminating zero! => -1 !               
          *                                                                   */
@@ -81,10 +81,10 @@ main(int argc, char** argv)
          * terminating zero (which is not needed by the engine) by the line's
          * newline, i.e:                                
          *
-         *            buffer[received_n-1] = '\n';      
+         *            buffer[received_n-1] = '\n';      // not with 'getline()'
          *            qlex->buffer.fill( ... &buffer[received_n]);                 
          *                                                                   */
-        qlex->buffer.fill(&qlex->buffer, &buffer[0], &buffer[received_n - 1]);
+        qlex->buffer.fill(&qlex->buffer, &buffer[0], &buffer[received_n-1]);
 
         token = qlex->token;
         do {

@@ -22,7 +22,7 @@ endif
 
 COMPILER := g++ -ggdb -Wall -Werror -pedantic 
 CC       := $(COMPILER) -I./ -I$(QUEX_PATH) $(ASSERTS) \
-            -DQUEX_OPTION_POSIX 
+            -DQUEX_OPTION_POSIX # -DQUEX_OPTION_DEBUG_SHOW
 LD       := $(COMPILER) 
 
 # Debugging Options:  -DQUEX_OPTION_DEBUG_SHOW

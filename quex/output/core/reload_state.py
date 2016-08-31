@@ -1,6 +1,7 @@
-import quex.output.core.state.entry as entry
-from   quex.blackboard import Lng, \
-                              E_StateIndices
+import quex.output.core.state.entry as     entry
+from   quex.output.core.variable_db import variable_db
+from   quex.blackboard              import Lng, \
+                                           E_StateIndices
 
 def do(TheReloadState):
     assert TheReloadState.index in (E_StateIndices.RELOAD_FORWARD, \
@@ -11,7 +12,7 @@ def do(TheReloadState):
 
     txt, post_txt = entry.do(TheReloadState)
     txt.extend(
-        Lng.RELOAD_PROCEDURE(forward_f, TheReloadState.entry.dial_db)
+        Lng.RELOAD_PROCEDURE(forward_f, TheReloadState.entry.dial_db, variable_db)
     )
     txt.extend(post_txt)
     return txt

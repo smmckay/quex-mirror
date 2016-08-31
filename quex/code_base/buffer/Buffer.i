@@ -543,7 +543,13 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
-    if( ! me->filler || ! me->filler->byte_loader ) {
+    if( me->_read_p != me->input.end_p) {
+        /* If the read pointer does not stand on the end of input pointer, then
+         * the 'buffer limit code' at the read pointer is a bad lexatom.    
+         * Buffer limit codes cannot be possibly be part of buffer content.  */
+        return E_LoadResult_BAD_LEXATOM;
+    }
+    else if( ! me->filler || ! me->filler->byte_loader ) {
         QUEX_NAME(Buffer_register_eos)(me, ci_begin + (me->input.end_p - BeginP));
         return E_LoadResult_NO_MORE_DATA;  /* No filler/loader => no load!   */
     }
@@ -692,6 +698,12 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
     __quex_debug_buffer_load(me, "BACKWARD(entry)\n");
+    if( me->_read_p != me->_memory._front ) {
+        /* If the read pointer does not stand on 'front', then the buffer limit
+         * code is a bad character, Buffer limit codes are not supposed to     
+         * appear in buffer content.                                         */
+        return E_LoadResult_BAD_LEXATOM;
+    }
 
     /* REFUSE CASES:                                                         */
     if( ! me->filler || ! me->filler->byte_loader ) {

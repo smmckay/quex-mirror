@@ -259,6 +259,7 @@ class Lng_Cpp(dict):
             E_R.LexemeEnd:       "LexemeEnd",
             E_R.Counter:         "counter",
             E_R.LoopRestartP:    "loop_restart_p",
+            E_R.LoadResult:      "load_result",
         }[Register]
 
     def COMMAND_LIST(self, OpList, dial_db=None):
@@ -948,13 +949,15 @@ class Lng_Cpp(dict):
         return cpp._local_variable_definitions(VariableDB.get()) 
 
     @typed(dial_db=DialDB)
-    def RELOAD_PROCEDURE(self, ForwardF, dial_db):
+    def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):
         assert self.__code_generation_reload_label is None
 
         if ForwardF:
             txt = cpp_reload_forward_str
         else:
             txt = cpp_reload_backward_str
+
+        variable_db.require_registers([E_R.LoadResult])
 
         adr_bad_lexatom  = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db).related_address
         adr_load_failure = DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE, dial_db).related_address
@@ -963,6 +966,7 @@ class Lng_Cpp(dict):
         txt = txt.replace("$$ON_BAD_LEXATOM$$",       self.LABEL_STR_BY_ADR(adr_bad_lexatom))
         txt = txt.replace("$$ON_LOAD_FAILURE$$",      self.LABEL_STR_BY_ADR(adr_load_failure))
         txt = txt.replace("$$ON_NO_SPACE_FOR_LOAD$$", self.LABEL_STR_BY_ADR(adr_overflow))
+        txt = txt.replace("$$LOAD_RESULT$$",          self.REGISTER_NAME(E_R.LoadResult))
 
         dial_db.mark_address_as_gotoed(adr_bad_lexatom)
         dial_db.mark_address_as_gotoed(adr_load_failure)
@@ -1021,56 +1025,40 @@ cpp_include_Multi_i_str = """
 """
 
 cpp_reload_forward_str = """
-    __quex_debug3("RELOAD_FORWARD: success->%i; failure->%i", (int)target_state_index, (int)target_state_else_index);
+    __quex_debug3("RELOAD_FORWARD: success->%i; failure->%i", 
+                  (int)target_state_index, (int)target_state_else_index);
     __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    if( me->buffer._read_p != me->buffer.input.end_p) {
-        /* Before, loading or filling provided content with a buffer limit
-         * code. This is not allowed.                                        */
-        goto $$ON_BAD_LEXATOM$$;
-    }
     
-    __quex_debug_reload_before();                 /* Report source position. */
-    switch( QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN) ) {
-    case E_LoadResult_DONE:
-        __quex_debug_reload_after();
-        QUEX_GOTO_STATE(target_state_index);      /* may use 'computed goto' */
-    case E_LoadResult_NO_MORE_DATA:
-        __quex_debug("reload impossible\\n");
-        QUEX_GOTO_STATE(target_state_else_index); /* may use 'computed goto' */
-    case E_LoadResult_BAD_LEXATOM:
-        goto $$ON_BAD_LEXATOM$$;
-    case E_LoadResult_FAILURE:
-        goto $$ON_LOAD_FAILURE$$;
-    case E_LoadResult_NO_SPACE_FOR_LOAD:
-        goto $$ON_NO_SPACE_FOR_LOAD$$;
-    default:
-        __quex_assert(false);
+    __quex_debug_reload_before();                 
+    $$LOAD_RESULT$$ = QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
+    __quex_debug_reload_after($$LOAD_RESULT$$);
+
+    switch( $$LOAD_RESULT$$ ) {
+    case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
+    case E_LoadResult_BAD_LEXATOM:       goto $$ON_BAD_LEXATOM$$;
+    case E_LoadResult_FAILURE:           goto $$ON_LOAD_FAILURE$$;
+    case E_LoadResult_NO_SPACE_FOR_LOAD: goto $$ON_NO_SPACE_FOR_LOAD$$;
+    case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
+    default:                             __quex_assert(false);
     }
 """
 
 cpp_reload_backward_str = """
-    __quex_debug3("RELOAD_BACKWARD: success->%i; failure->%i", (int)target_state_index, (int)target_state_else_index);
+    __quex_debug3("RELOAD_BACKWARD: success->%i; failure->%i", 
+                  (int)target_state_index, (int)target_state_else_index);
     __quex_assert(input == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    if( me->buffer._read_p != me->buffer._memory._front ) {
-        /* Before, loading or filling provided content with a buffer limit
-         * code. This is not allowed.                                        */
-        goto $$ON_BAD_LEXATOM$$;
-    }
-    __quex_debug_reload_before();                 /* Report source position. */
-    switch( QUEX_NAME(Buffer_load_backward)(&me->buffer) ) {
-    case E_LoadResult_DONE:
-        __quex_debug_reload_after();
-        QUEX_GOTO_STATE(target_state_index);      /* may use 'computed goto' */
-    case E_LoadResult_BAD_LEXATOM:
-        goto $$ON_BAD_LEXATOM$$;
-    case E_LoadResult_FAILURE:
-        goto $$ON_LOAD_FAILURE$$;
-    case E_LoadResult_NO_SPACE_FOR_LOAD:
-    case E_LoadResult_NO_MORE_DATA:
-        __quex_debug("reload impossible\\n");
-        QUEX_GOTO_STATE(target_state_else_index); /* may use 'computed goto' */
-    default:
-        __quex_assert(false);
+
+    __quex_debug_reload_before();                 
+    $$LOAD_RESULT$$ = QUEX_NAME(Buffer_load_backward)(&me->buffer);
+    __quex_debug_reload_after($$LOAD_RESULT$$);
+
+    switch( $$LOAD_RESULT$$ ) {
+    case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
+    case E_LoadResult_BAD_LEXATOM:       goto $$ON_BAD_LEXATOM$$;
+    case E_LoadResult_FAILURE:           goto $$ON_LOAD_FAILURE$$;
+    case E_LoadResult_NO_SPACE_FOR_LOAD: goto $$ON_NO_SPACE_FOR_LOAD$$;
+    case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
+    default:                             __quex_assert(false);
     }
 """
 

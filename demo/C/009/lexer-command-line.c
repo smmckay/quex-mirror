@@ -70,6 +70,10 @@ main(int argc, char** argv)
         size = 4096;
         if( (received_n = getline(&p, &size, stdin)) == -1 ) break;
 
+        printf("#buffer: [");
+        for(int i=0; i<received_n; ++i) printf("%02X.", (int)buffer[i]);
+        printf("]\n");
+        
         printf("    read: %i [byte]\n", received_n);
         QUEX_NAME(reset)(&qlex);
         qlex.buffer.fill(&qlex.buffer, &p[0], &p[received_n]);

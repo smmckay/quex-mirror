@@ -25,7 +25,7 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-COMPILER := g++ -ggdb -Wall -Werror -pedantic 
+COMPILER := g++ -ggdb -Wall -Werror -pedantic -DQUEX_OPTION_DEBUG_SHOW    
 
 CC       := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) 
             # -DQUEX_OPTION_DEBUG_SHOW    
@@ -44,9 +44,9 @@ lexer.exe:           lexer.o $(OBJS)
 lexer_utf8.exe:      lexer_utf8.o $(UTF8_OBJS)  
 	$(CC_UTF8) -o $@ $< $(UTF8_OBJS) 
 
-point.exe:           point.cpp $(OBJS)  
-	## All related files must be compiled with fallback_n = 0 
-	$(CC)      -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $< $(OBJS) 
+#point.exe:           point.cpp $(OBJS)  
+#	## All related files must be compiled with fallback_n = 0 
+#	$(CC)      -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $< $(OBJS) 
           
 %.o:                 %.cpp  lexPlain
 	$(CC)      -c $< -o $@  
