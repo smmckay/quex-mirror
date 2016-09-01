@@ -294,36 +294,33 @@ loop_arbitrary_chunks(CLexer* lexer, CToken** prev_token_p)
  *          false, if analysis may NOT continue; BYE has been received.      */
 {
     QUEX_TYPE_TOKEN_ID  token_id;
-    QUEX_TYPE_LEXATOM*  prev_lexeme_start_p;
+    QUEX_TYPE_LEXATOM*  last_incomplete_lexeme_p;
     PRINT_FUNCTION();
 
     /* Loop until 'TERMINATION' or 'BYE' is received.                   
      *   TERMINATION => possible reload/refill
      *   BYE         => end of game                                          */
-    token_id = (QUEX_TYPE_TOKEN_ID)-1;
+    token_id                 = (QUEX_TYPE_TOKEN_ID)-1;
+    last_incomplete_lexeme_p = lexer->input_pointer_get();
     while( 1 + 1 == 2 ) {
         /* Current token becomes previous token of next run.                 */
         *prev_token_p = QUEX_NAME(token_p_swap)(lexer, *prev_token_p);
 
-        /* Store lexeme start, in case that buffer contains incomplete token.*/
-        prev_lexeme_start_p = lexer->lexeme_start_pointer_get();
-        token_id            = lexer->receive();
-        if( token_id == QUEX_TKN_TERMINATION || token_id == QUEX_TKN_BYE ) {
-            break;
+        token_id      = lexer->receive();
+        if( token_id == QUEX_TKN_BYE ) {
+            return false;                                   /* Done!         */
         }
-        else if( (*prev_token_p)->_id != QUEX_TKN_TERMINATION ) {
-            /* Token can be considered.                                      */
-            printf("   Token: %s\n", lexer->token->get_string().c_str());
+        else if( token_id == QUEX_TKN_TERMINATION ) {
+            /* Next analysis must start over from interrupted lexeme.        
+             * Storing it in 'read_p' ensures maintenance upon reload.       */
+            lexer->input_pointer_set(last_incomplete_lexeme_p);
+            return true;                                    /* There's more! */
         }
-    }
-
-    if( token_id == QUEX_TKN_BYE ) {
-        return false;                                       /* Done!        */
-    } 
-    else {
-        /* Next analysis must start over from interrupted lexeme.            */
-        lexer->input_pointer_set(prev_lexeme_start_p);
-        return true;                                        /* There's more! */
+        /* Previous token not followed by 'BYE' or 'TERMINATION'.
+         * => The matching was not interrupted by end of content.
+         * => Lexeme is complete. Previous token can be considered.          */
+        printf("   Token: %s\n", (*prev_token_p)->get_string().c_str());
+        last_incomplete_lexeme_p = lexer->input_pointer_get();
     }
 }
 

@@ -5,6 +5,7 @@
 #else
 #   include "lexPlain.h"
 #endif
+
 typedef QUEX_TYPE_ANALYZER CLexer;
 typedef QUEX_TYPE_TOKEN    CToken;
 #include "receiver.h"
@@ -298,23 +299,30 @@ loop_arbitrary_chunks(CLexer* lexer, CToken** prev_token_p)
      *   BYE         => end of game                                          */
     token_id = (QUEX_TYPE_TOKEN_ID)-1;
     while( 1 + 1 == 2 ) {
+        /* Store lexeme start, in case that buffer contains incomplete token.*/
         prev_lexeme_start_p = QUEX_NAME(lexeme_start_pointer_get)(lexer);
 
         /* Current token becomes previous token of next run.                 */
         *prev_token_p = QUEX_NAME(token_p_swap)(lexer, *prev_token_p);
 
         token_id = QUEX_NAME(receive)(lexer);
-        if( token_id == QUEX_TKN_TERMINATION || token_id == QUEX_TKN_BYE )
+        if( token_id == QUEX_TKN_TERMINATION || token_id == QUEX_TKN_BYE ) {
             break;
-        if( (*prev_token_p)->_id != QUEX_TKN_TERMINATION ) 
+        }
+        else if( (*prev_token_p)->_id != QUEX_TKN_TERMINATION ) {
+            /* Token can be considered.                                      */
             print_token(*prev_token_p);
+        }
     }
 
-    if( token_id == QUEX_TKN_BYE ) return false;
-
-    /* Reset the 'read_p' to restart the interrupted match cycle.            */
-    QUEX_NAME(input_pointer_set)(lexer, prev_lexeme_start_p);
-    return true;
+    if( token_id == QUEX_TKN_BYE ) {
+        return false;                                       /* Done!        */
+    }
+    else {
+        /* Next analysis must start over from interrupted lexeme.            */
+        QUEX_NAME(input_pointer_set)(lexer, prev_lexeme_start_p);
+        return true;                                        /* There's more! */
+    }
 }
 
 static void
