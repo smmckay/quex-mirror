@@ -25,7 +25,7 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-COMPILER := g++ -ggdb -Wall -Werror -pedantic # -DQUEX_OPTION_DEBUG_SHOW    
+COMPILER := g++ -ggdb -Wall -Werror -pedantic -DQUEX_OPTION_DEBUG_SHOW    
 
 CC       := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) 
             # -DQUEX_OPTION_DEBUG_SHOW    

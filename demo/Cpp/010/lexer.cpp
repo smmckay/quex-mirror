@@ -316,11 +316,16 @@ loop_arbitrary_chunks(CLexer* lexer, CToken** prev_token_p)
             lexer->input_pointer_set(last_incomplete_lexeme_p);
             return true;                                    /* There's more! */
         }
-        /* Previous token not followed by 'BYE' or 'TERMINATION'.
-         * => The matching was not interrupted by end of content.
-         * => Lexeme is complete. Previous token can be considered.          */
-        printf("   Token: %s\n", (*prev_token_p)->get_string().c_str());
-        last_incomplete_lexeme_p = lexer->input_pointer_get();
+        else if( (*prev_token_p)->_id != QUEX_TKN_TERMINATION ) {
+            /* Previous token not followed by 'BYE' or 'TERMINATION'.
+             * => The matching was not interrupted by end of content.
+             * => Lexeme is complete. Previous token can be considered.      */
+            printf("   Token: %s\n", (*prev_token_p)->get_string().c_str());
+            last_incomplete_lexeme_p = lexer->input_pointer_get();
+        }
+        else {
+            last_incomplete_lexeme_p = lexer->lexeme_start_pointer_get();
+        }
     }
 }
 

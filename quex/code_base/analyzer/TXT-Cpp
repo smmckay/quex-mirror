@@ -265,7 +265,7 @@ public:
 #   endif
 
     QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get();
-    void                  input_pointer_get();
+    QUEX_TYPE_LEXATOM*    input_pointer_get();
     void                  input_pointer_set(QUEX_TYPE_LEXATOM*);
 
     /* -- activate/deactivate byte order reversion (big-/little-endian)      */
