@@ -10,24 +10,15 @@ typedef QUEX_TYPE_ANALYZER CLexer;
 typedef QUEX_TYPE_TOKEN    CToken;
 #include "receiver.h"
 
-/* Input chunks: at syntactic boarders.
+/* Input chunks: at syntactic/arbitrary boarders.
  *                                                                           */
-static CToken*     construct_with_single_token(CLexer** lexer, CToken* token, 
-                                               const char* CodecName);
-static void        destruct_with_single_token(CLexer* lexer, CToken* token);
-static bool        loop_syntactic_chunks(CLexer* lexer, CToken** prev_token);
-
-/* Input chunks: arbitrary.
- *                                                                           */
-static CToken*     construct_with_token_bank(CLexer**  lexer, CToken* token_bank, 
-                                             const char* CodecName);
-static void        destruct_with_token_bank(CLexer* lexer, CToken* token_bank);
-static bool        loop_arbitrary_chunks(CLexer* lexer, CToken** prev_token_p);
+static bool  loop_syntactic_chunks(CLexer* lexer);
+static bool  loop_arbitrary_chunks(CLexer* lexer);
 
 /* Content by 'copying' or 'filling'.
  *                                                                           */
-static void        content_copy(CLexer* lexer, MemoryChunk* chunk);
-static void        content_fill(CLexer* lexer, MemoryChunk* chunk);
+static void  content_copy(CLexer* lexer, MemoryChunk* chunk);
+static void  content_fill(CLexer* lexer, MemoryChunk* chunk);
 
 
 typedef struct {
@@ -38,10 +29,7 @@ typedef struct {
  * way how content is filled into the engine's buffer. If a codec name is
  * given, a converter is used for filling.                                   
  *                                                                           */
-    CToken*     (*construct)(CLexer** lexer, CToken* token_bank, 
-                             const char* CodecName);
-    void        (*destruct)(CLexer* lexer, CToken* token_bank);
-    bool        (*loop)(CLexer* lexer, CToken** prev_token_p);
+    bool        (*loop)(CLexer* lexer);
     void        (*provide_content)(CLexer* lexer, MemoryChunk* chunk);
     size_t      (*receiver_copy)(ELEMENT_TYPE* BufferBegin, 
                                  size_t        BufferSize);
@@ -69,31 +57,29 @@ main(int argc, char** argv)
  *     "copy"      --> user provides content to be copied into its 'place'.
  *                                                                           */
 {        
-    CLexer*       qlex;
-    MemoryChunk   chunk = { 0, 0 };
-    CToken        token[2];       /* For 'syntactic', the second token
-    *                                  * is redundant.                       */
-    CToken*       prev_token;     /* For 'syntactic', the previous token
-    *                                  * is meaningless.                     */
+    using namespace quex;
+
+    static CToken   token;  
+    CLexer*         qlex;
+    MemoryChunk     chunk = { 0, 0 };
 
     if( ! Configuration_from_command_line(&cfg, argc, argv) ) {
         printf("Error, not enough command line arguments.\n");
         return -1;
     }
 
-    {
-        prev_token = cfg.construct(&qlex, &token[0], cfg.codec_name);
+    QUEX_NAME_TOKEN(construct)(&token);
+    qlex = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, cfg.codec_name);
+    (void)QUEX_NAME(token_p_swap)(qlex, &token);
 
-        while( 1 + 1 == 2 ) {
-            cfg.provide_content(qlex, &chunk);
+    while( 1 + 1 == 2 ) {
+        cfg.provide_content(qlex, &chunk);
 
-            if( ! cfg.loop(qlex, &prev_token) ) break;
-        }
-
-        cfg.destruct(qlex, &token[0]);
+        if( ! cfg.loop(qlex) ) break;
     }
 
-    return 0;
+    delete qlex;
+    QUEX_NAME_TOKEN(destruct)(&token);
 }
 
 static bool
@@ -112,14 +98,10 @@ Configuration_from_command_line(Configuration* p, int argc, char** argv)
     }
 
     if( strcmp(argv[1], "syntactic") == 0 ) {
-        p->construct     = construct_with_single_token;
-        p->destruct      = destruct_with_single_token;
         p->loop          = loop_syntactic_chunks;
         p->receiver_copy = receiver_copy_syntax_chunk;
         p->receiver_fill = receiver_fill_syntax_chunk;
     } else {
-        p->construct     = construct_with_token_bank;
-        p->destruct      = destruct_with_token_bank;
         p->loop          = loop_arbitrary_chunks;
         p->receiver_copy = receiver_copy;
         p->receiver_fill = receiver_fill;
@@ -133,65 +115,6 @@ Configuration_from_command_line(Configuration* p, int argc, char** argv)
 #   endif
 
     return true;
-}
-
-static CToken*
-construct_with_single_token(CLexer** lexer, CToken* token, const char* CodecName)
-/* Construct the lexical analyzer with one token object to chew on. With the
- * CodecName != 0, a converter is activated. 
- *
- * RETURNS: A meaningless 0.                                                 */
-{
-    using namespace quex;
-
-    QUEX_NAME_TOKEN(construct)(token);
-    *lexer = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, CodecName);
-
-    /* -- LOOP until 'bye' token arrives */
-    (void)QUEX_NAME(token_p_swap)(*lexer, token);
-
-    return (CToken*)0;
-}
-
-static void
-destruct_with_single_token(CLexer* lexer, CToken* token)
-{
-    delete lexer;
-    QUEX_NAME_TOKEN(destruct)(token);
-}
-
-static CToken*
-construct_with_token_bank(CLexer**  lexer, CToken* token_bank, const char* CodecName)
-/* Construct the lexical analyzer to chew on two swapping tokens from a token
- * bank. CodecName != 0, a converter is activated. 
- *
- * RETURNS: A pointer to the 'previous token'.                               */
-{
-    using namespace quex;
-
-    CToken*           prev_token;
-
-    /* Initialize analyzer.                                                  */
-    *lexer = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, CodecName);
-
-    /* initialize token objects.                                             */
-    QUEX_NAME_TOKEN(construct)(&token_bank[0]);
-    QUEX_NAME_TOKEN(construct)(&token_bank[1]);
-    token_bank[0]._id = QUEX_TKN_TERMINATION;
-
-    /* Give the analyzer a token to prepare.                                 */
-    prev_token = &(token_bank[1]);
-    QUEX_NAME(token_p_swap)(*lexer, &token_bank[0]);
-
-    return prev_token;
-}
-
-static void
-destruct_with_token_bank(CLexer* lexer, CToken* token_bank)
-{
-    delete lexer;
-    QUEX_NAME_TOKEN(destruct)(&token_bank[0]);
-    QUEX_NAME_TOKEN(destruct)(&token_bank[1]);
 }
 
 static void
@@ -258,7 +181,7 @@ content_fill(CLexer* lexer, MemoryChunk* chunk)
 }
 
 static bool
-loop_syntactic_chunks(CLexer* lexer, CToken** prev_token)
+loop_syntactic_chunks(CLexer* lexer)
 /* Loop until the 'TERMINATION' token arrives. Here, considering input which 
  * is 'chunked' at syntax boarders, the 'prev_token' is not considered.
  *                                                                      
@@ -266,7 +189,6 @@ loop_syntactic_chunks(CLexer* lexer, CToken** prev_token)
  *          false, if analysis may NOT continue; BYE has been received.      */
 {
     QUEX_TYPE_TOKEN_ID    token_id;
-    (void)prev_token; 
     PRINT_FUNCTION();
 
     while( 1 + 1 == 2 ) {
@@ -284,7 +206,7 @@ loop_syntactic_chunks(CLexer* lexer, CToken** prev_token)
 }
 
 static bool
-loop_arbitrary_chunks(CLexer* lexer, CToken** prev_token_p)
+loop_arbitrary_chunks(CLexer* lexer)
 /* Loop over received tokens until 'TERMINATION' or 'BYE' occurs. The previous
  * token must be tracked to identify a 'BYE, TERMINATION' sequence. The 
  * start of the lexeme must be tracked, so that after re-filling the inter-
@@ -293,38 +215,59 @@ loop_arbitrary_chunks(CLexer* lexer, CToken** prev_token_p)
  * RETURNS: true, if analysis may continue; BYE has not been received.
  *          false, if analysis may NOT continue; BYE has been received.      */
 {
+    CToken              prev_token;
+    CToken*             orig_token   = lexer->token;
+    CToken*             prev_token_p = &prev_token;
     QUEX_TYPE_TOKEN_ID  token_id;
     QUEX_TYPE_LEXATOM*  last_incomplete_lexeme_p;
+
+    QUEX_NAME_TOKEN(construct)(&prev_token);
+
     PRINT_FUNCTION();
+
+    last_incomplete_lexeme_p = lexer->input_pointer_get();
 
     /* Loop until 'TERMINATION' or 'BYE' is received.                   
      *   TERMINATION => possible reload/refill
      *   BYE         => end of game                                          */
-    token_id                 = (QUEX_TYPE_TOKEN_ID)-1;
-    last_incomplete_lexeme_p = lexer->input_pointer_get();
+    printf("   (ENTRY: lex-start: [%-10s]\n", last_incomplete_lexeme_p);
+    token_id = lexer->receive();
+    if( token_id == QUEX_TKN_BYE ) {
+        return false;                                       /* Done!         */
+    }
+    else if( token_id == QUEX_TKN_TERMINATION ) {
+        /* Next analysis must start over from interrupted lexeme. Storing it
+         * in 'read_p' ensures maintenance upon reload.                      */
+        lexer->input_pointer_set(last_incomplete_lexeme_p);
+        printf("   (TERM0: lex-start: [%-10s]\n", last_incomplete_lexeme_p);
+        return true;                                        /* There's more! */
+    }
+
     while( 1 + 1 == 2 ) {
         /* Current token becomes previous token of next run.                 */
-        *prev_token_p = QUEX_NAME(token_p_swap)(lexer, *prev_token_p);
+        printf("   0 Prev.Token: %p %s\n", (void*)prev_token_p, prev_token_p->get_string().c_str());
+        prev_token_p = QUEX_NAME(token_p_swap)(lexer, prev_token_p);
 
-        token_id      = lexer->receive();
+        printf("   (SEC: lex-start: [%-10s]\n", last_incomplete_lexeme_p);
+        printf("   1 Prev.Token: %p %s\n", (void*)prev_token_p, prev_token_p->get_string().c_str());
+        token_id     = lexer->receive();
+        printf("   2 Prev.Token: %p %s\n", (void*)prev_token_p, prev_token_p->get_string().c_str());
         if( token_id == QUEX_TKN_BYE ) {
             return false;                                   /* Done!         */
         }
         else if( token_id == QUEX_TKN_TERMINATION ) {
-            /* Next analysis must start over from interrupted lexeme.        
-             * Storing it in 'read_p' ensures maintenance upon reload.       */
             lexer->input_pointer_set(last_incomplete_lexeme_p);
+            printf("   (TERM1: lex-start: [%-10s]\n", last_incomplete_lexeme_p);
+            lexer->token_p_swap(orig_token);
             return true;                                    /* There's more! */
         }
-        else if( (*prev_token_p)->_id != QUEX_TKN_TERMINATION ) {
+        else {
             /* Previous token not followed by 'BYE' or 'TERMINATION'.
              * => The matching was not interrupted by end of content.
              * => Lexeme is complete. Previous token can be considered.      */
-            printf("   Token: %s\n", (*prev_token_p)->get_string().c_str());
-            last_incomplete_lexeme_p = lexer->input_pointer_get();
-        }
-        else {
+            printf("   Token: %s\n", prev_token_p->get_string().c_str());
             last_incomplete_lexeme_p = lexer->lexeme_start_pointer_get();
+            printf("   (WL: lex-start: [%-10s]\n", last_incomplete_lexeme_p);
         }
     }
 }
