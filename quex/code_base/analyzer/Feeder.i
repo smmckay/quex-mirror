@@ -14,30 +14,25 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER_I
 
-#ifndef QUEX_TYPE_ANALYZER
-#   error "This header must be included after the lexical analyzer definition."
-#endif
-#ifndef QUEX_TYPE_TOKEN
-#   error "This header must be included after the token class definition."
-#endif
+#include "quex/code_base/analyzer/Feeder"
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#ifndef __QUEX_OPTION_PLAIN_C
+#if ! defined( __QUEX_OPTION_PLAIN_C)
 
 QUEX_NAME(Feeder)::QUEX_NAME(Feeder)(QUEX_TYPE_ANALYZER* lexer)
 { QUEX_NAME(Feeder_construct)(this, lexer); }
 
-QUEX_NAME(Feeder)::~QUEX_NAME();
+QUEX_NAME(Feeder)::~QUEX_NAME(Feeder)()
 { QUEX_NAME(Feeder_destruct)(this); }
 
-QUEX_NAME(Feeder)::deliver()
+QUEX_TYPE_TOKEN* QUEX_NAME(Feeder)::deliver()
 { return QUEX_NAME(Feeder_deliver)(this); }
 
 #endif
 
 void
-QUEX_NAME(Feeder_construct)(QUEX_NAME(Feeder)*  me, 
+QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me, 
                             QUEX_TYPE_ANALYZER* lexer)
 {
     /* Initialization */
@@ -54,7 +49,7 @@ QUEX_NAME(Feeder_construct)(QUEX_NAME(Feeder)*  me,
 }
 
 QUEX_TYPE_TOKEN*
-QUEX_NAME(Feeder_deliver)(QUEX_NAME(Feeder)* me)
+QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
 /* RETURNS: NULL, requires refill.
  *          Pointer to token, that has been identified 
  *          (This may be the 'BYE' token).                                   */
@@ -90,7 +85,7 @@ QUEX_NAME(Feeder_deliver)(QUEX_NAME(Feeder)* me)
 }
 
 void
-QUEX_NAME(Feeder_destruct)(QUEX_NAME(Feeder)* me)
+QUEX_NAME(Feeder_destruct)(QUEX_TYPE_FEEDER* me)
 {
     QUEX_NAME_TOKEN(destruct)(&me->second_token);
 }
