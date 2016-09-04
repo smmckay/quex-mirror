@@ -1,0 +1,57 @@
+/* -*- C++ -*-   vim:set syntax=cpp:
+/* 
+ * PURPOSE: A 'feeder' coordinates the lexical analysis based on input that
+ *          is *NOT* delivered through a byte loader in the background. 
+ *
+ * In cases where the user wishes to fill the lexical analyzer buffer manually,
+ * caution has to be applied to avoid consuming invalid tokens and to setup
+ * the stream appropriately. This coordination is safely implemented in the
+ * small, but well thought-through function 'deliver' below. Examples of how
+ * to use it can be found in the 'demo/010' directory.
+ *
+ * (C) 2016 Frank-Rene Schaefer.                                             */
+#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER
+#define __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER
+#
+#ifndef QUEX_TYPE_ANALYZER
+#   error "This header must be included after the lexical analyzer definition."
+#endif
+#ifndef QUEX_TYPE_TOKEN
+#   error "This header must be included after the token class definition."
+#endif
+
+QUEX_NAMESPACE_MAIN_OPEN
+
+#ifdef __QUEX_OPTION_PLAIN_C
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Feeder_tag) {
+#else
+class  QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Feeder) {
+#endif
+
+    QUEX_TYPE_ANALYZER* lexer;
+    QUEX_TYPE_TOKEN     second_token;
+    QUEX_TYPE_TOKEN*    prev_token_p;
+    QUEX_TYPE_TOKEN*    first_token_p;
+    QUEX_TYPE_LEXATOM*  last_incomplete_lexeme_p;
+
+#   ifndef __QUEX_OPTION_PLAIN_C
+public:
+    QUEX_NAME(Feeder)(QUEX_TYPE_ANALYZER*);
+    ~QUEX_NAME(Feeder);
+    QUEX_TYPE_TOKEN*   deliver();
+}
+#   else
+    void               (*destruct)(struct QUEX_NAME(Feeder_tag)*);
+    QUEX_TYPE_TOKEN*   (*deliver)(struct QUEX_NAME(Feeder_tag)*);
+} QUEX_NAME(Feeder);
+#   endif
+
+
+extern void             QUEX_NAME(Feeder_construct)(QUEX_NAME(Feeder)*  me, 
+                                                    QUEX_TYPE_ANALYZER* lexer);
+extern void             QUEX_NAME(Feeder_destruct)(QUEX_NAME(Feeder)* me);
+extern QUEX_TYPE_TOKEN* QUEX_NAME(Feeder_deliver)(QUEX_NAME(Feeder)* me);
+
+QUEX_NAMESPACE_MAIN_CLOSE
+
+#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__POSTCATEGORIZER */

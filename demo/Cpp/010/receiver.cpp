@@ -15,7 +15,7 @@ static size_t                receiver_data_size()
 { 
     ELEMENT_TYPE* iterator = receiver_data;
     for(; *iterator != 0; ++iterator);
-    return (iterator - receiver_data + 1) * sizeof(ELEMENT_TYPE);
+    return (iterator - &receiver_data[1]) * sizeof(ELEMENT_TYPE);
 }
 
 size_t 

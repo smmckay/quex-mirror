@@ -1,11 +1,3 @@
-g++ -ggdb -Wall -Werror -pedantic  -I./ -I/home/fschaef/prj/quex/trunk        -c lexer.cpp -o lexer.o  
-g++ -ggdb -Wall -Werror -pedantic  -I./ -I/home/fschaef/prj/quex/trunk        -c lexPlain.cpp -o lexPlain.o  
-g++ -ggdb -Wall -Werror -pedantic  -I./ -I/home/fschaef/prj/quex/trunk        -c receiver.cpp -o receiver.o  
-g++ -ggdb -Wall -Werror -pedantic  -I./ -I/home/fschaef/prj/quex/trunk   -o lexer.exe lexer.o lexPlain.o receiver.o 
-called: content_copy;
-called: loop_syntactic_chunks;
-   Token: HELLO 'hello'
-called: content_copy;
 ## Disable this message by compile option
 ##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
 ##
@@ -19,6 +11,10 @@ called: content_copy;
 ##
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
+called: content_copy;
+called: loop_syntactic_chunks;
+   Token: HELLO 'hello'
+called: content_copy;
 called: loop_syntactic_chunks;
    Token: NUMBER '4711'
 called: content_copy;

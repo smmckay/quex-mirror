@@ -38,15 +38,18 @@ CC_UTF8  := $(CC) -DQUEX_TYPE_LEXATOM=wchar_t \
 # (*) RULES ____________________________________________________________________
 all: $(FILES)
 
+feeder.exe:          feeder.o $(OBJS)  
+	$(CC) -o $@ $< $(OBJS) 
+          
 lexer.exe:           lexer.o $(OBJS)  
 	$(CC) -o $@ $< $(OBJS) 
           
 lexer_utf8.exe:      lexer_utf8.o $(UTF8_OBJS)  
 	$(CC_UTF8) -o $@ $< $(UTF8_OBJS) 
 
-#point.exe:           point.cpp $(OBJS)  
-#	## All related files must be compiled with fallback_n = 0 
-#	$(CC)      -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $< $(OBJS) 
+point.exe:           point.cpp $(OBJS)  
+	## All related files must be compiled with fallback_n = 0 
+	$(CC)      -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $< $(OBJS) 
           
 %.o:                 %.cpp  lexPlain
 	$(CC)      -c $< -o $@  

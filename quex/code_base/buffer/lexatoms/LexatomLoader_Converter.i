@@ -273,7 +273,7 @@ QUEX_NAME(LexatomLoader_Converter_load_lexatoms)(QUEX_NAME(LexatomLoader)* alter
             if( raw_end_of_stream_f ) {
                 *end_of_stream_f = true;
             }
-            //__quex_assert(raw->next_to_convert_p == raw->fill_end_p);
+            /* __quex_assert(raw->next_to_convert_p == raw->fill_end_p);     */
             /* Nothing can be loaded; Everything is converted.               */
 
             break;

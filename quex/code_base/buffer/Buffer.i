@@ -704,9 +704,10 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
          * appear in buffer content.                                         */
         return E_LoadResult_BAD_LEXATOM;
     }
-
-    /* REFUSE CASES:                                                         */
-    if( ! me->filler || ! me->filler->byte_loader ) {
+    else if( me->input.lexatom_index_begin == 0 ) {
+        return E_LoadResult_NO_MORE_DATA; /* Begin of stream.                */
+    }
+    else if( ! me->filler || ! me->filler->byte_loader ) {
         return E_LoadResult_NO_MORE_DATA; /* No filler/loader => no loading! */
     }
     else if( ! QUEX_NAME(ByteLoader_seek_is_enabled)(me->filler->byte_loader) ) {
