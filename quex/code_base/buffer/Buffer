@@ -142,8 +142,8 @@ QUEX_INLINE void       QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
 QUEX_INLINE void       QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
                                                      const void*        FilledEndP);
 
-                      
 QUEX_INLINE void       QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)*);
+QUEX_INLINE void       QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)*);
 
 /* Member attributes. */
 QUEX_INLINE bool       QUEX_NAME(Buffer_is_empty)(QUEX_NAME(Buffer)* me);

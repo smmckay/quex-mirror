@@ -289,6 +289,29 @@ QUEX_NAMESPACE_MAIN_OPEN
         }
     }
 
+    QUEX_INLINE void  
+    QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)* me)
+    {
+        QUEX_TYPE_LEXATOM* it;
+        __QUEX_STD_printf("[");
+        for(it=&me->_memory._front[0]; it < &me->_memory._back[1]; ++it) {
+            if( me->_read_p == it )            __QUEX_STD_printf(">");
+            if( it < me->input.end_p ) {
+                switch( sizeof(QUEX_TYPE_LEXATOM) ) {
+                case 1:  __QUEX_STD_printf("%02X", *it); break;
+                case 2:  __QUEX_STD_printf("%04X", *it); break;
+                case 4: 
+                default: __QUEX_STD_printf("%08X", *it); break;
+                }
+            }
+            else {
+                __QUEX_STD_printf("--");
+            }
+            if( me->_memory._back != it && &me->_read_p[-1] != it ) __QUEX_STD_printf(".");
+        }
+        __QUEX_STD_printf("]");
+    }
+
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
