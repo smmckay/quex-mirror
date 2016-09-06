@@ -14,35 +14,28 @@ typedef QUEX_TYPE_TOKEN    CToken;
 
 /* Content by 'copying' or 'filling'.
  *                                                                           */
-static bool content_copy(CLexer* lexer, MemoryChunk* chunk);
-static bool content_fill(CLexer* lexer, MemoryChunk* chunk);
+static bool   content_copy(CLexer* lexer, MemoryChunk* chunk);
+static bool   content_fill(CLexer* lexer, MemoryChunk* chunk);
 static bool (*get_content)(CLexer* lexer, MemoryChunk* chunk);
+static void   show_buffer(CLexer* lexer);
 
 int 
 main(int argc, char** argv) 
 {        
     using namespace quex;
-    CToken             my_token;
+    CLexer*            lexer;
     CToken*            token;
-    CLexer*            qlex;
     QUEX_NAME(Feeder)* feeder;
     MemoryChunk        chunk = { 0, 0 };
 
     if( strcmp(argv[1], "fill") == 0 ) get_content = content_fill;
     else                               get_content = content_copy;
 
-    qlex    = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, /* CodecName */NULL);
-    feeder  = new QUEX_NAME(Feeder)(qlex);
+    lexer    = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, /* CodecName */NULL);
+    feeder  = new QUEX_NAME(Feeder)(lexer);
 
-    /* Only if 'user managed token' */
-    QUEX_NAME_TOKEN(construct)(&my_token);
-    (void)qlex->token_p_swap(&my_token);
-
-    while ( get_content(qlex, &chunk) ) {
-        /* content_fill(qlex, &chunk); */
-        printf("          ");
-        QUEX_NAME(Buffer_print_content)(&qlex->buffer);
-        printf("\n");
+    while ( get_content(lexer, &chunk) ) {
+        show_buffer(lexer);
 
         while( (token = feeder->deliver()) != 0 ) {
             /* token == NULL, if the feeder only requires more content.
@@ -56,7 +49,7 @@ main(int argc, char** argv)
     }
 
     delete feeder;
-    delete qlex;
+    delete lexer;
 }
 
 static bool
@@ -81,7 +74,7 @@ content_copy(CLexer* lexer, MemoryChunk* chunk)
     if( chunk->begin_p == chunk->end_p ) {                                   
         /* If the receive buffer has been read, it can be released.          */
         /* Receive and set 'begin' and 'end' of incoming chunk.              */
-        received_n = receiver_fill(&rx_buffer);
+        received_n = receiver_get_pointer_to_received(&rx_buffer);
         if( ! received_n ) {
             return false;
         }
@@ -119,7 +112,7 @@ content_fill(CLexer* lexer, MemoryChunk* chunk)
                                (const void**)&chunk->end_p);
 
     /* Call the low level driver to fill the fill region                     */
-    received_n = receiver_copy(chunk->begin_p, 
+    received_n = receiver_fill(chunk->begin_p, 
                                chunk->end_p - chunk->begin_p); 
     if( ! received_n ) {
         return false;
@@ -129,4 +122,12 @@ content_fill(CLexer* lexer, MemoryChunk* chunk)
     lexer->buffer.fill_finish(&lexer->buffer, 
                               &chunk->begin_p[received_n]);
     return true;
+}
+
+static void
+show_buffer(CLexer* lexer)
+{
+    printf("          ");
+    QUEX_NAME(Buffer_print_content)(&lexer->buffer);
+    printf("\n");
 }

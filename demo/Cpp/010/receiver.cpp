@@ -19,7 +19,7 @@ static size_t                receiver_data_size()
 }
 
 size_t 
-receiver_fill(ELEMENT_TYPE** rx_buffer)
+receiver_get_pointer_to_received(ELEMENT_TYPE** rx_buffer)
 /* Simulate the reception into a place that is defined by the low level driver.
  * The low level driver reports the address of that place and the size.
  *                                                                           */
@@ -44,7 +44,7 @@ receiver_fill(ELEMENT_TYPE** rx_buffer)
 }
 
 size_t 
-receiver_fill_whole_characters(ELEMENT_TYPE** rx_buffer)
+receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer)
     /* Simulate the reception into a place that is defined by the low 
      * level driver. The low level driver reports the address of that place
      * and the size.                                                         */
@@ -79,7 +79,7 @@ receiver_fill_whole_characters(ELEMENT_TYPE** rx_buffer)
 }
 
 size_t 
-receiver_fill_syntax_chunk(ELEMENT_TYPE** rx_buffer)
+receiver_get_pointer_to_received_syntax_chunk(ELEMENT_TYPE** rx_buffer)
 /* Simulate the reception into a place that is defined by the low level driver.
  * The low level driver reports the address of that place and the size.
  *                                                                           */
@@ -97,7 +97,7 @@ receiver_fill_syntax_chunk(ELEMENT_TYPE** rx_buffer)
 }
 
 size_t 
-receiver_copy(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
+receiver_fill(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
 /* Simulate a low lever driver that is able to fill a specified position in 
  * memory.                                                                   */
 {
@@ -117,7 +117,7 @@ receiver_copy(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
 }
 
 size_t 
-receiver_copy_syntax_chunk(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
+receiver_fill_syntax_chunk(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
 /* Simulate a low lever driver that is able to fill a specified position in 
  * memory.                                                                   */
 {
@@ -139,7 +139,7 @@ receiver_copy_syntax_chunk(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
 ELEMENT_TYPE   MESSAGING_FRAMEWORK_BUFFER[MESSAGING_FRAMEWORK_BUFFER_SIZE];
 
 size_t
-receiver_copy_here(QUEX_TYPE_LEXATOM* place, size_t MaxN)
+receiver_fill_here(QUEX_TYPE_LEXATOM* place, size_t MaxN)
 /* Simulate a low level driver that iself has a hardware fixed position in
  * memory which it fills on demand.
  *                                                                           */

@@ -19,13 +19,13 @@ typedef struct {
 #define  MESSAGING_FRAMEWORK_BUFFER_SIZE  ((size_t)(512))
 extern ELEMENT_TYPE   MESSAGING_FRAMEWORK_BUFFER[MESSAGING_FRAMEWORK_BUFFER_SIZE];
 
-extern size_t receiver_fill(ELEMENT_TYPE** buffer);
-extern size_t receiver_fill_syntax_chunk(ELEMENT_TYPE** buffer);
-extern size_t receiver_fill_whole_characters(ELEMENT_TYPE** rx_buffer);
-extern size_t receiver_fill_to_internal_buffer();
-extern size_t receiver_copy_here(QUEX_TYPE_LEXATOM* place, size_t MaxN);
-extern size_t receiver_copy(ELEMENT_TYPE*, size_t);
-extern size_t receiver_copy_syntax_chunk(ELEMENT_TYPE* BufferBegin, 
+extern size_t receiver_get_pointer_to_received(ELEMENT_TYPE** buffer);
+extern size_t receiver_get_pointer_to_received_syntax_chunk(ELEMENT_TYPE** buffer);
+extern size_t receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer);
+extern size_t receiver_get_pointer_to_received_to_internal_buffer();
+extern size_t receiver_fill_here(QUEX_TYPE_LEXATOM* place, size_t MaxN);
+extern size_t receiver_fill(ELEMENT_TYPE*, size_t);
+extern size_t receiver_fill_syntax_chunk(ELEMENT_TYPE* BufferBegin, 
                                          size_t        BufferSize);
 
 #endif /*_INCLUDE_GUARD__MESSAGING_FRAMEWORK_*/

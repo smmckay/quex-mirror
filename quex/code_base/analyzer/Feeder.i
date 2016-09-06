@@ -70,7 +70,7 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
 
         if( me->lexer->receive() == QUEX_TKN_TERMINATION ) {
             me->lexer->input_pointer_set(me->last_incomplete_lexeme_p);
-            (void)me->lexer->token_p_swap(me->first_token_p);
+            (void)QUEX_NAME(token_p_swap)(me->lexer, me->first_token_p);
             me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
             return (QUEX_TYPE_TOKEN*)0;                     /* There's more! */
         }

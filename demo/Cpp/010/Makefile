@@ -4,8 +4,10 @@
 #_______________________________________________________________________________
 .PHONY: clean UTF8 NON_UTF8
 
-FILES := lexer.exe \
-         lexer_utf8.exe \
+FILES := lexer-syntactic-plain.exe \
+	     lexer-arbitrary-plain.exe \
+         lexer-syntactic-utf8.exe \
+         lexer-arbitrary-utf8.exe \
          point.exe
 
 ifndef QUEX_PATH
@@ -13,8 +15,8 @@ ifndef QUEX_PATH
 endif
 
 # (*) SETUP ____________________________________________________________________
-OBJS      := lexPlain.o receiver.o
-UTF8_OBJS := lexUTF8.o  receiver_utf8.o
+OBJS      := lexPlain.o receiver-plain.o
+UTF8_OBJS := lexUTF8.o  receiver-utf8.o
 
 # (*) COMPILER SETTINGS ________________________________________________________
 #     (change COMPILER to whatever you use as compiler on the command line,
@@ -38,33 +40,35 @@ CC_UTF8  := $(CC) -DQUEX_TYPE_LEXATOM=wchar_t \
 # (*) RULES ____________________________________________________________________
 all: $(FILES)
 
-feeder.exe:          feeder.o $(OBJS)  
+lexer-%-plain.exe:   lexer-%-plain.o $(OBJS)  
 	$(CC) -o $@ $< $(OBJS) 
           
-lexer.exe:           lexer.o $(OBJS)  
-	$(CC) -o $@ $< $(OBJS) 
-          
-lexer_utf8.exe:      lexer_utf8.o $(UTF8_OBJS)  
+lexer-%-utf8.exe:    lexer-%-utf8.o $(UTF8_OBJS)  
 	$(CC_UTF8) -o $@ $< $(UTF8_OBJS) 
 
 point.exe:           point.cpp $(OBJS)  
 	## All related files must be compiled with fallback_n = 0 
 	$(CC)      -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $< $(OBJS) 
           
-%.o:                 %.cpp  lexPlain
-	$(CC)      -c $< -o $@  
+%-plain.o: %.cpp  lexPlain.cpp
+	$(CC)      -c $< -o $@ 
           
-%_utf8.o:            %.cpp  lexUTF8
+%-utf8.o:  %.cpp  lexUTF8.cpp
 	$(CC_UTF8) -c $< -o $@ 
           
-%.E:                 %.cpp  
+lexPlain.o: lexPlain.cpp  
+	$(CC)   -c $< -o $@  
+          
+lexUTF8.o:  lexUTF8.cpp  
+	$(CC)   -c $< -o $@  
+          
+%.E:            %.cpp  
 	$(CC)      -E $< -o $@  
           
 lexPlain lexPlain.cpp: lexPlain.qx 
 	quex -i             lexPlain.qx  \
 		 -o             lexPlain     \
 		 --token-policy single       \
-		 --token-memory-management-by-user 
 
 lexUTF8 lexUTF8.cpp: lexUTF8.qx 
 	quex -i                    lexUTF8.qx   \
@@ -72,7 +76,6 @@ lexUTF8 lexUTF8.cpp: lexUTF8.qx
 		 --iconv                            \
 		 --token-policy        single       \
 		 --buffer-element-type wchar_t      \
-		 --token-memory-management-by-user
 
 # (*) HELPERS __________________________________________________________________
 clean:	
