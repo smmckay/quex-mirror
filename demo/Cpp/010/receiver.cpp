@@ -8,10 +8,10 @@
        "Ελληνικά • Euskara • فارسی • Frysk • Galego • 한국어 • हिन्दी bye";
 #else
     static QUEX_TYPE_LEXATOM   receiver_data[] = 
-       "hello 4711 bonjour 0815 world 7777 le 31451 monde le monde 00 welt 1234567890 hallo 1212 hello bye";
+       "A little nonsense now and then Is cherished by the wisest men bye";
 #endif
 
-static size_t                receiver_data_size()
+static ptrdiff_t receiver_data_size()
 { 
     ELEMENT_TYPE* iterator = receiver_data;
     for(; *iterator != 0; ++iterator);
@@ -79,19 +79,25 @@ receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer)
 }
 
 size_t 
-receiver_get_pointer_to_received_syntax_chunk(ELEMENT_TYPE** rx_buffer)
+receiver_get_pointer_to_received_syntax_chunk(ELEMENT_TYPE** rx_buffer,
+                                              ptrdiff_t      MaxSize)
 /* Simulate the reception into a place that is defined by the low level driver.
  * The low level driver reports the address of that place and the size.
  *                                                                           */
 {
     static ptrdiff_t  cursor = 0;
     ptrdiff_t         cursor_before = cursor;
+    ELEMENT_TYPE*     end_p;
+    ptrdiff_t         max_size = QUEX_MIN(MaxSize, receiver_data_size() - cursor);
 
     *rx_buffer = &receiver_data[cursor]; 
 
+    end_p = &receiver_data[max_size];
     do {
-        ++cursor;
-    } while( receiver_data[cursor] && receiver_data[cursor] != ' ' );
+        --end_p;
+    } while( end_p != &receiver_data[0] && *end_p != ' ' );
+
+    cursor = end_p - &receiver_data[0];
 
     return cursor - cursor_before;
 }

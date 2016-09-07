@@ -22,39 +22,32 @@ main(int argc, char** argv)
 /* Running a lexical analysis process. It works with an examplary 'receiver
  * framework'. The precise analysis process is configured by the command line.
  *
- * [1] "syntactic" --> receive loop handles chunks which are expected not to 
- *                     cut in between matching lexemes.
- *     "arbitrary" --> chunks may be cut in between lexemes.
- *
- * [2] "fill"      --> content is provided by user filling as dedicated region.
- *     "copy"      --> user provides content to be copied into its 'place'.
+ * [1] "fill" --> content is provided by user filling as dedicated region.
+ *     "copy" --> user provides content to be copied into its 'place'.
  *                                                                           */
 {        
     using namespace quex;
 
-    CLexer*            lexer;
-    MemoryChunk        chunk = { 0, 0 };
+    CLexer             lexer((QUEX_NAME(ByteLoader)*)0, "UTF-8");
     QUEX_TYPE_TOKEN_ID token_id;
+    MemoryChunk        chunk = { 0, 0 };
 
     if( strcmp(argv[1], "fill") == 0 ) get_content = content_fill;
     else                               get_content = content_copy;
 
-    lexer = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, "UTF-8");
+    while( get_content(&lexer, &chunk) ) {
+        show_buffer(&lexer);
 
-    while( get_content(lexer, &chunk) ) {
-        show_buffer(lexer);
-
-        token_id = lexer->receive();
+        token_id = lexer.receive();
 
         /* TERMINATION => possible reload 
          * BYE         => end of game                                        */
         if     ( token_id == QUEX_TKN_TERMINATION ) continue;
         else if( token_id == QUEX_TKN_BYE )         break; 
 
-        printf("   Token: %s\n", lexer->token->get_string().c_str());
+        printf("   Token: %s\n", lexer.token->get_string().c_str());
     }
-
-    delete lexer;
+    return 0;
 }
 
 static bool
@@ -70,7 +63,7 @@ content_copy(CLexer* lexer, MemoryChunk* chunk)
 {
     uint8_t*   rx_buffer = 0x0;             /* A pointer to the receive buffer 
     *                                        * of the messaging framework.   */
-    size_t     received_n = (size_t)-1;
+    ptrdiff_t  received_n = (size_t)-1;
 
     /* NOTE: 'chunk' is initialized to '{ 0, 0 }'.
      *       => safe to assume that 'begin_p == end_p' upon first run.       */
@@ -79,8 +72,14 @@ content_copy(CLexer* lexer, MemoryChunk* chunk)
     if( chunk->begin_p == chunk->end_p ) {                                   
         /* If the receive buffer has been read, it can be released.          */
         /* Receive and set 'begin' and 'end' of incoming chunk.              */
-        received_n     = receiver_get_pointer_to_received_syntax_chunk(&rx_buffer);               
-        if( ! received_n ) return false;
+        received_n = receiver_get_pointer_to_received_syntax_chunk(&rx_buffer,
+                                                                   chunk->end_p - chunk->begin_p);               
+        if( ! received_n ) {
+            return false;
+        }
+        else if( received_n > (chunk->end_p - chunk->begin_p) ) {
+            printf("Error: syntactic chunk does not fit buffer");
+        }
         chunk->begin_p = rx_buffer;                                      
         chunk->end_p   = chunk->begin_p + received_n;                    
     } else {                                                                 

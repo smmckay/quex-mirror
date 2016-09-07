@@ -21,6 +21,8 @@ extern ELEMENT_TYPE   MESSAGING_FRAMEWORK_BUFFER[MESSAGING_FRAMEWORK_BUFFER_SIZE
 
 extern size_t receiver_get_pointer_to_received(ELEMENT_TYPE** buffer);
 extern size_t receiver_get_pointer_to_received_syntax_chunk(ELEMENT_TYPE** buffer);
+extern size_t receiver_get_pointer_to_received_syntax_chunk(ELEMENT_TYPE** rx_buffer,
+                                                            ptrdiff_t      MaxSize);
 extern size_t receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer);
 extern size_t receiver_get_pointer_to_received_to_internal_buffer();
 extern size_t receiver_fill_here(QUEX_TYPE_LEXATOM* place, size_t MaxN);
