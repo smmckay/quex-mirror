@@ -1,13 +1,10 @@
 #ifndef __INCLUDE_GUARD__MESSAGING_FRAMEWORK__
 #define __INCLUDE_GUARD__MESSAGING_FRAMEWORK__
 
-#ifdef QUEX_EXAMPLE_WITH_CONVERTER 
-#   define ELEMENT_TYPE uint8_t
-#   include "lexUTF8"
-#else
-#   define ELEMENT_TYPE QUEX_TYPE_LEXATOM
-#   include "lexPlain"
-#endif
+#include <inttypes.h>
+#include <stddef.h>
+
+#define ELEMENT_TYPE uint8_t
 
 typedef struct {
     ELEMENT_TYPE* begin_p;
@@ -25,7 +22,7 @@ extern size_t receiver_get_pointer_to_received_syntax_chunk(ELEMENT_TYPE** rx_bu
                                                             ptrdiff_t      MaxSize);
 extern size_t receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer);
 extern size_t receiver_get_pointer_to_received_to_internal_buffer();
-extern size_t receiver_fill_here(QUEX_TYPE_LEXATOM* place, size_t MaxN);
+/* extern size_t receiver_fill_here(QUEX_TYPE_LEXATOM* place, size_t MaxN); */
 extern size_t receiver_fill(ELEMENT_TYPE*, size_t);
 extern size_t receiver_fill_syntax_chunk(ELEMENT_TYPE* BufferBegin, 
                                          size_t        BufferSize);

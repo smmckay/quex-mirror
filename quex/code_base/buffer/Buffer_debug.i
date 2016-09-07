@@ -294,8 +294,7 @@ QUEX_NAMESPACE_MAIN_OPEN
     {
         QUEX_TYPE_LEXATOM* it;
         __QUEX_STD_printf("[");
-        for(it=&me->_memory._front[0]; it < &me->_memory._back[1]; ++it) {
-            if( me->_read_p == it )            __QUEX_STD_printf(">");
+        for(it=&me->_memory._front[0]; it <= me->_memory._back; ++it) {
             if( it < me->input.end_p ) {
                 switch( sizeof(QUEX_TYPE_LEXATOM) ) {
                 case 1:  __QUEX_STD_printf("%02X", *it); break;
@@ -307,7 +306,16 @@ QUEX_NAMESPACE_MAIN_OPEN
             else {
                 __QUEX_STD_printf("--");
             }
-            if( me->_memory._back != it && &me->_read_p[-1] != it ) __QUEX_STD_printf(".");
+
+            if( &it[1] == me->_read_p ) {
+                __QUEX_STD_printf(">");
+            }
+            else if( it == &me->_memory._front[0] || &it[1] == me->_memory._back ) {
+                __QUEX_STD_printf("|");
+            }
+            else if( me->_memory._back != it && &me->_read_p[-1] != it ) {
+                __QUEX_STD_printf(".");
+            }
         }
         __QUEX_STD_printf("]");
     }

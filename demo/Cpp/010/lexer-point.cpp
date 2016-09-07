@@ -24,7 +24,7 @@ main(int argc, char** argv)
     size_t           received_n;
 
     /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.           */
-    received_n = receiver_fill_here(&memory_a[1], MEMORY_SIZE-1);
+    /* received_n = receiver_fill_here(&memory_a[1], MEMORY_SIZE-1); */
     __quex_assert(received_n < MEMORY_SIZE-2);
 
     qlex = new quex::lexPlain(&memory_a[0], MEMORY_SIZE, &memory_a[received_n+1]);
@@ -46,10 +46,12 @@ test(quex::lexPlain* qlex, QUEX_TYPE_LEXATOM* memory)
 
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */
-        received_n = receiver_fill_here(&memory[1], MEMORY_SIZE-1);
+        /* received_n = receiver_fill_here(&memory[1], MEMORY_SIZE-1); */
         __quex_assert(received_n < MEMORY_SIZE-2);
 
+        /*
         qlex->reset(&memory[0], MEMORY_SIZE, &memory[received_n+1]);
+         */
     }
 
     /* Loop until the 'termination' token arrives                            */

@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #ifdef QUEX_EXAMPLE_WITH_CONVERTER
-#   include "lexUTF8"
+#   include "lexConverter"
 #else
 #   include "lexPlain"
 #endif

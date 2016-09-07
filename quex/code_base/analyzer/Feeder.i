@@ -81,6 +81,17 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
             me->last_incomplete_lexeme_p = me->lexer->lexeme_start_pointer_get();
             return me->prev_token_p;
         }
+#if 1
+        else if( me->lexer->input_pointer_get() < me->lexer->buffer.input.end_p ) {
+            /* Lexeme is completely inside the boundaries of the content.
+             * => The token can be passed, even it there is no previous.     */
+            me->last_incomplete_lexeme_p = me->lexer->input_pointer_get();
+            /* The token inside the lexer, again will be 'TERMINATION' which
+             * indicates that there is no previous token yet.                */
+            /* me->prev_token_p = QUEX_NAME(token_p_swap)(me->lexer, me->prev_token_p); */
+            return me->lexer->token;
+        }
+#endif
     }
 }
 
