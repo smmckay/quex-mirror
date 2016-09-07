@@ -110,7 +110,7 @@ receiver_fill(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
  * memory.                                                                   */
 {
     static ELEMENT_TYPE*  iterator = receiver_data;
-    size_t                size = (size_t)((float)(rand()) / (float)(RAND_MAX) * 5.0) + 1;
+    size_t                size = (size_t)((float)(rand()) / (float)(RAND_MAX) * 10.0) + 1;
 
     assert(iterator < receiver_data + receiver_data_size());
     if( iterator + size >= receiver_data + receiver_data_size() - 1 ) 

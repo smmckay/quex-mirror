@@ -1,8 +1,10 @@
 #include <stdio.h>
 
 #ifdef QUEX_EXAMPLE_WITH_CONVERTER
+#   define  CODEC_NAME "UTF-8"
 #   include "lexConverter"
 #else
+#   define  CODEC_NAME ((const char*)0)
 #   include "lexPlain"
 #endif
 #include "quex/code_base/analyzer/Feeder.i"
@@ -31,8 +33,8 @@ main(int argc, char** argv)
     if( strcmp(argv[1], "fill") == 0 ) get_content = content_fill;
     else                               get_content = content_copy;
 
-    lexer    = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, /* CodecName */NULL);
-    feeder  = new QUEX_NAME(Feeder)(lexer);
+    lexer  = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
+    feeder = new QUEX_NAME(Feeder)(lexer);
 
     while ( get_content(lexer, &chunk) ) {
         show_buffer(lexer);

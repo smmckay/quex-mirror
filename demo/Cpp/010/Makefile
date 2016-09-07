@@ -2,7 +2,7 @@
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
 
-FILES := feeder-plain.exe   # feeder-converter.exe    \
+FILES := feeder-plain.exe   feeder-converter.exe    \
          # point-plain.exe  point-converter.exe
 
 ifndef QUEX_PATH
@@ -24,7 +24,7 @@ CC_PLAIN     := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
 	              -DQUEX_SETTING_BUFFER_SIZE=12 
 
 CC_CONVERTER := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
-	              -DQUEX_SETTING_BUFFER_SIZE=16                   \
+	              -DQUEX_SETTING_BUFFER_SIZE=14                   \
 			      -DQUEX_TYPE_LEXATOM=wchar_t                     \
 			      -DQUEX_EXAMPLE_WITH_CONVERTER
 			  

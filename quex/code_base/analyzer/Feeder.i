@@ -56,42 +56,23 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
 {
     if( ! me->last_incomplete_lexeme_p ) {
         me->last_incomplete_lexeme_p = me->lexer->input_pointer_get();
-        me->first_token_p            = me->lexer->token;
-        me->first_token_p->_id       = QUEX_TKN_TERMINATION;
-        me->prev_token_p             = &me->second_token;
     }
 
-    /* Loop until 'TERMINATION' or 'BYE' is received.                   
-     *   TERMINATION => possible reload/refill
-     *   BYE         => end of game                                          */
-    while( 1 + 1 == 2 ) {
-        /* Current token becomes previous token of next run.                 */
-        me->prev_token_p = QUEX_NAME(token_p_swap)(me->lexer, me->prev_token_p);
+    (void)me->lexer->receive();
 
-        if( me->lexer->receive() == QUEX_TKN_TERMINATION ) {
-            me->lexer->input_pointer_set(me->last_incomplete_lexeme_p);
-            (void)QUEX_NAME(token_p_swap)(me->lexer, me->first_token_p);
-            me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
-            return (QUEX_TYPE_TOKEN*)0;                     /* There's more! */
-        }
-        else if( me->prev_token_p->_id != QUEX_TKN_TERMINATION ) {
-            /* Previous token not followed by 'BYE' or 'TERMINATION'.
-             * => The matching was not interrupted by end of content.
-             * => Lexeme is complete. Previous token can be considered.      */
-            me->last_incomplete_lexeme_p = me->lexer->lexeme_start_pointer_get();
-            return me->prev_token_p;
-        }
-#if 1
-        else if( me->lexer->input_pointer_get() < me->lexer->buffer.input.end_p ) {
-            /* Lexeme is completely inside the boundaries of the content.
-             * => The token can be passed, even it there is no previous.     */
-            me->last_incomplete_lexeme_p = me->lexer->input_pointer_get();
-            /* The token inside the lexer, again will be 'TERMINATION' which
-             * indicates that there is no previous token yet.                */
-            /* me->prev_token_p = QUEX_NAME(token_p_swap)(me->lexer, me->prev_token_p); */
-            return me->lexer->token;
-        }
-#endif
+    if( me->lexer->input_pointer_get() < me->lexer->buffer.input.end_p ) {
+        /* Lexeme is completely inside the boundaries of the content.
+         * => Return it, there is no previous (see entry of function).       */
+        me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
+        return me->lexer->token;
+    }
+    else {
+        /* Detected 'Termination'
+         * => Previous token may be incomplete.
+         * => 'last_incomplete_lexeme_p' at position of last token.      */
+        me->lexer->input_pointer_set(me->lexer->lexeme_start_pointer_get());
+        me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
+        return (QUEX_TYPE_TOKEN*)0;                     /* There's more! */
     }
 }
 
