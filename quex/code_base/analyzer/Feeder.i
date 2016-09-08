@@ -24,8 +24,9 @@ QUEX_NAME(Feeder_deliver_core)(QUEX_TYPE_FEEDER* me);
 #if ! defined( __QUEX_OPTION_PLAIN_C)
 
 QUEX_INLINE
-QUEX_NAME(Feeder)::QUEX_NAME(Feeder)(QUEX_TYPE_ANALYZER* lexer)
-{ QUEX_NAME(Feeder_construct)(this, lexer); }
+QUEX_NAME(Feeder)::QUEX_NAME(Feeder)(QUEX_TYPE_ANALYZER* lexer,
+                                     QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId)
+{ QUEX_NAME(Feeder_construct)(this, lexer, StreamTerminatingTokenId); }
 
 QUEX_INLINE void
 QUEX_NAME(Feeder)::feed(const void* BeginP, const void* EndP)
@@ -39,7 +40,8 @@ QUEX_NAME(Feeder)::deliver()
 
 QUEX_INLINE void
 QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me, 
-                            QUEX_TYPE_ANALYZER* lexer)
+                            QUEX_TYPE_ANALYZER* lexer,
+                            QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId)
 {
     /* Initialization                                                        */
     me->lexer                    = lexer;
@@ -47,6 +49,8 @@ QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me,
 
     me->external_chunk.begin_p   = (void*)0;
     me->external_chunk.end_p     = (void*)0;
+
+    me->stream_terminating_token_id = StreamTerminatingTokenId;
 
 #   ifdef __QUEX_OPTION_PLAIN_C
     me->deliver = Feeder_deliver;
@@ -88,9 +92,12 @@ QUEX_NAME(Feeder_deliver_core)(QUEX_TYPE_FEEDER* me)
         me->last_incomplete_lexeme_p = me->lexer->input_pointer_get();
     }
 
-    (void)me->lexer->receive();
-
-    if( me->lexer->input_pointer_get() < me->lexer->buffer.input.end_p ) {
+    if( me->stream_terminating_token_id == me->lexer->receive() ) {
+        /* This was the very last token to be received.                      */
+        me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
+        return me->lexer->token;
+    }
+    else if( me->lexer->input_pointer_get() < me->lexer->buffer.input.end_p ) {
         /* Lexeme is completely inside the boundaries of the content.
          * => Return it, there is no previous (see entry of function).       */
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;

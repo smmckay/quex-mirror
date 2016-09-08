@@ -23,15 +23,17 @@ main(int argc, char** argv)
 {        
     using namespace quex;
     CLexer*            lexer;
-    CToken*            token;
+    CToken*            token = (CToken*)0;
     QUEX_NAME(Feeder)* feeder;
     size_t             received_n;
     uint8_t*           rx_content_p;
 
     lexer  = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
-    feeder = new QUEX_NAME(Feeder)(lexer);
+    feeder = new QUEX_NAME(Feeder)(lexer, QUEX_TKN_BYE);
 
-    while( (received_n = receiver_get_pointer_to_received(&rx_content_p)) != 0 ) {
+    while( ! token || token->_id != QUEX_TKN_BYE ) {
+
+        received_n = receiver_get_pointer_to_received(&rx_content_p);
 
         feeder->feed(&rx_content_p[0], &rx_content_p[received_n]);
 

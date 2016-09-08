@@ -40,9 +40,11 @@ struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER {
         const void* end_p;
     } external_chunk;
 
+    QUEX_TYPE_TOKEN_ID  stream_terminating_token_id;
+
 #   ifndef __QUEX_OPTION_PLAIN_C
 public:
-    QUEX_TYPE_FEEDER(QUEX_TYPE_ANALYZER*);
+    QUEX_TYPE_FEEDER(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
     void               feed(const void* BeginP, const void* EndP);
     QUEX_TYPE_TOKEN*   deliver();
 };
@@ -54,8 +56,9 @@ public:
 #endif
 
 
-extern void             QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*  me, 
-                                                    QUEX_TYPE_ANALYZER* lexer);
+extern void             QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me, 
+                                                    QUEX_TYPE_ANALYZER* lexer,
+                                                    QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId);
 extern QUEX_TYPE_TOKEN* QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me);
 extern void             QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me,
                                                const void* BeginP, 
