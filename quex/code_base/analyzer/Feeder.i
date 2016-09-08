@@ -38,8 +38,6 @@ QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me,
     /* Initialization */
     QUEX_NAME_TOKEN(construct)(&me->second_token);
     me->lexer                    = lexer;
-    me->prev_token_p             = &me->second_token;
-    me->first_token_p            = lexer->token;
     me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
 
 #   ifdef __QUEX_OPTION_PLAIN_C
@@ -66,13 +64,17 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
         return me->lexer->token;
     }
+    else if( me->lexer->lexeme_start_pointer_get() == &me->lexer->buffer._memory._front[1] )  {
+        me->lexer->buffer.on_overflow(&me->lexer->buffer, /* ForwardF */true);
+        return (QUEX_TYPE_TOKEN*)0;                         /* There's more! */
+    }
     else {
         /* Detected 'Termination'
          * => Previous token may be incomplete.
-         * => 'last_incomplete_lexeme_p' at position of last token.      */
+         * => 'last_incomplete_lexeme_p' at position of last token.          */
         me->lexer->input_pointer_set(me->lexer->lexeme_start_pointer_get());
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
-        return (QUEX_TYPE_TOKEN*)0;                     /* There's more! */
+        return (QUEX_TYPE_TOKEN*)0;                         /* There's more! */
     }
 }
 
