@@ -292,28 +292,49 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE void  
     QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)* me)
     {
-        QUEX_TYPE_LEXATOM* it;
+        QUEX_NAME(Buffer_print_content_core)(sizeof(QUEX_TYPE_LEXATOM),
+                                             me->_memory._front,
+                                             me->_memory._back, 
+                                             me->_read_p, 
+                                             me->input.end_p,
+                                             /* BordersF */ true);
+
+    }
+
+    QUEX_INLINE void  
+    QUEX_NAME(Buffer_print_content_core)(const size_t   ElementSize, 
+                                         const uint8_t* Front,
+                                         const uint8_t* Back,
+                                         const uint8_t* ReadP,
+                                         const uint8_t* InputEndP,
+                                         bool           BordersF)
+    {
+        const uint8_t* it;
         __QUEX_STD_printf("[");
-        for(it=&me->_memory._front[0]; it <= me->_memory._back; ++it) {
-            if( it < me->input.end_p ) {
-                switch( sizeof(QUEX_TYPE_LEXATOM) ) {
-                case 1:  __QUEX_STD_printf("%02X", *it); break;
-                case 2:  __QUEX_STD_printf("%04X", *it); break;
+        for(it=Front; it <= Back; it += ElementSize) {
+            if( it < InputEndP ) {
+                switch( ElementSize ) {
+                case 1:  __QUEX_STD_printf("%02X", it[0]); break;
+                case 2:  __QUEX_STD_printf("%02X", it[0]); 
+                         __QUEX_STD_printf("%02X", it[1]); break;
                 case 4: 
-                default: __QUEX_STD_printf("%08X", *it); break;
+                default: __QUEX_STD_printf("%02X", it[0]); 
+                         __QUEX_STD_printf("%02X", it[1]); 
+                         __QUEX_STD_printf("%02X", it[2]);
+                         __QUEX_STD_printf("%02X", it[3]); break;
                 }
             }
             else {
                 __QUEX_STD_printf("--");
             }
 
-            if( &it[1] == me->_read_p ) {
+            if( &it[1] == ReadP ) {
                 __QUEX_STD_printf(">");
             }
-            else if( it == &me->_memory._front[0] || &it[1] == me->_memory._back ) {
+            else if( BordersF && (it == Front || &it[1] == Back ) ) {
                 __QUEX_STD_printf("|");
             }
-            else if( me->_memory._back != it && &me->_read_p[-1] != it ) {
+            else if( it != Back && &it[1] != ReadP ) {
                 __QUEX_STD_printf(".");
             }
         }

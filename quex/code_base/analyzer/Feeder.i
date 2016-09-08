@@ -18,36 +18,68 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+QUEX_INLINE QUEX_TYPE_TOKEN*
+QUEX_NAME(Feeder_deliver_core)(QUEX_TYPE_FEEDER* me);
+
 #if ! defined( __QUEX_OPTION_PLAIN_C)
 
+QUEX_INLINE
 QUEX_NAME(Feeder)::QUEX_NAME(Feeder)(QUEX_TYPE_ANALYZER* lexer)
 { QUEX_NAME(Feeder_construct)(this, lexer); }
 
-QUEX_NAME(Feeder)::~QUEX_NAME(Feeder)()
-{ QUEX_NAME(Feeder_destruct)(this); }
+QUEX_INLINE void
+QUEX_NAME(Feeder)::feed(const void* BeginP, const void* EndP)
+{ QUEX_NAME(Feeder_feed)(this, BeginP, EndP); }
 
-QUEX_TYPE_TOKEN* QUEX_NAME(Feeder)::deliver()
+QUEX_INLINE QUEX_TYPE_TOKEN* 
+QUEX_NAME(Feeder)::deliver()
 { return QUEX_NAME(Feeder_deliver)(this); }
 
 #endif
 
-void
+QUEX_INLINE void
 QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me, 
                             QUEX_TYPE_ANALYZER* lexer)
 {
-    /* Initialization */
-    QUEX_NAME_TOKEN(construct)(&me->second_token);
+    /* Initialization                                                        */
     me->lexer                    = lexer;
     me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
 
+    me->external_chunk.begin_p   = (void*)0;
+    me->external_chunk.end_p     = (void*)0;
+
 #   ifdef __QUEX_OPTION_PLAIN_C
-    me->destruct         = Feeder_destruct;
-    me->deliver          = Feeder_deliver;
+    me->deliver = Feeder_deliver;
 #   endif
 }
 
-QUEX_TYPE_TOKEN*
+QUEX_INLINE void
+QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me, const void* BeginP, const void* EndP)
+{
+    /* Copy buffer content into the analyzer's buffer-as much as possible.
+     * 'fill()' returns a pointer to the first not-eaten byte.               */
+    me->external_chunk.end_p   = EndP;
+    me->external_chunk.begin_p = me->lexer->buffer.fill(&me->lexer->buffer, BeginP, EndP);
+}
+
+QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
+{
+    QUEX_TYPE_TOKEN* token = QUEX_NAME(Feeder_deliver_core)(me);
+
+    while( ! token && me->external_chunk.begin_p != me->external_chunk.end_p ) {
+        /* Refill required.
+         * => Try to get more out of the remainder of the external chunk.    */
+        me->external_chunk.begin_p = me->lexer->buffer.fill(&me->lexer->buffer, 
+                                                            me->external_chunk.begin_p, 
+                                                            me->external_chunk.end_p);
+        token = QUEX_NAME(Feeder_deliver_core)(me);
+    }
+    return token;
+}
+
+QUEX_INLINE QUEX_TYPE_TOKEN*
+QUEX_NAME(Feeder_deliver_core)(QUEX_TYPE_FEEDER* me)
 /* RETURNS: NULL, requires refill.
  *          Pointer to token, that has been identified 
  *          (This may be the 'BYE' token).                                   */
@@ -64,7 +96,8 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
         return me->lexer->token;
     }
-    else if( me->lexer->lexeme_start_pointer_get() == &me->lexer->buffer._memory._front[1] )  {
+    else if(    me->lexer->lexeme_start_pointer_get() == &me->lexer->buffer._memory._front[1] 
+             && me->lexer->input_pointer_get()        == &me->lexer->buffer._memory._back[0] )  {
         me->lexer->buffer.on_overflow(&me->lexer->buffer, /* ForwardF */true);
         return (QUEX_TYPE_TOKEN*)0;                         /* There's more! */
     }
@@ -78,11 +111,6 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
     }
 }
 
-void
-QUEX_NAME(Feeder_destruct)(QUEX_TYPE_FEEDER* me)
-{
-    QUEX_NAME_TOKEN(destruct)(&me->second_token);
-}
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

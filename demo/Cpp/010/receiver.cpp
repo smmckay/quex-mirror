@@ -10,15 +10,11 @@
 #else
 #   include "lexPlain"
     static QUEX_TYPE_LEXATOM   receiver_data[] = 
-       "A little nonsense now and then Is cherished by the wisest men bye";
+       "A little nonsense now and then is cherished by the wisest men bye";
 #endif
 
-static ptrdiff_t receiver_data_size()
-{ 
-    ELEMENT_TYPE* iterator = receiver_data;
-    for(; *iterator != 0; ++iterator);
-    return (iterator - &receiver_data[1]) * sizeof(ELEMENT_TYPE);
-}
+/* Content size without the implicit terminating zero. */
+#define CONTENT_SIZE   ((sizeof(receiver_data)/sizeof(receiver_data[0])) - 1)
 
 size_t 
 receiver_get_pointer_to_received(ELEMENT_TYPE** rx_buffer)
@@ -26,9 +22,9 @@ receiver_get_pointer_to_received(ELEMENT_TYPE** rx_buffer)
  * The low level driver reports the address of that place and the size.
  *                                                                           */
 {
-    static ELEMENT_TYPE*  iterator = receiver_data;
-    const size_t          remainder_size =   receiver_data_size() - 1 
-                                           - (iterator - receiver_data);
+    static ELEMENT_TYPE*  iterator       = &receiver_data[0];
+    const size_t          remainder_size =   CONTENT_SIZE  
+                                           - (iterator - &receiver_data[0]);
     size_t                size = (size_t)((float)(rand()) / (float)(RAND_MAX) * 10.0) + 1;
 
     if( size >= remainder_size ) size = remainder_size; 
@@ -37,9 +33,9 @@ receiver_get_pointer_to_received(ELEMENT_TYPE** rx_buffer)
     iterator += size;
 
     if( size != 0 ) {
-        __quex_assert(iterator < receiver_data + receiver_data_size());
+        __quex_assert(iterator < receiver_data + CONTENT_SIZE);
     } else {
-        __quex_assert(iterator == receiver_data + receiver_data_size());
+        __quex_assert(iterator == receiver_data + CONTENT_SIZE);
     }
 
     return size;
@@ -52,7 +48,7 @@ receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer)
      * and the size.                                                         */
 {
     static ELEMENT_TYPE*  iterator = receiver_data;
-    const size_t          remainder_size =   receiver_data_size() - 1 
+    const size_t          remainder_size =   CONTENT_SIZE - 1 
                                            - (iterator - receiver_data);
     size_t                size = (size_t)((float)(rand()) / (float)(RAND_MAX) * 5.0) + 1;
 
@@ -72,36 +68,12 @@ receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer)
     size = iterator - *rx_buffer;
 
     if( size != 0 ) {
-        __quex_assert(iterator < receiver_data + receiver_data_size());
+        __quex_assert(iterator < receiver_data + CONTENT_SIZE);
     } else {
-        __quex_assert(iterator == receiver_data + receiver_data_size());
+        __quex_assert(iterator == receiver_data + CONTENT_SIZE);
     }
 
     return size;
-}
-
-size_t 
-receiver_get_pointer_to_received_syntax_chunk(ELEMENT_TYPE** rx_buffer,
-                                              ptrdiff_t      MaxSize)
-/* Simulate the reception into a place that is defined by the low level driver.
- * The low level driver reports the address of that place and the size.
- *                                                                           */
-{
-    static ptrdiff_t  cursor = 0;
-    ptrdiff_t         cursor_before = cursor;
-    ELEMENT_TYPE*     end_p;
-    ptrdiff_t         max_size = QUEX_MIN(MaxSize, receiver_data_size() - cursor);
-
-    *rx_buffer = &receiver_data[cursor]; 
-
-    end_p = &receiver_data[max_size];
-    do {
-        --end_p;
-    } while( end_p != &receiver_data[0] && *end_p != ' ' );
-
-    cursor = end_p - &receiver_data[0];
-
-    return cursor - cursor_before;
 }
 
 size_t 
@@ -112,9 +84,9 @@ receiver_fill(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
     static ELEMENT_TYPE*  iterator = receiver_data;
     size_t                size = (size_t)((float)(rand()) / (float)(RAND_MAX) * 10.0) + 1;
 
-    assert(iterator < receiver_data + receiver_data_size());
-    if( iterator + size >= receiver_data + receiver_data_size() - 1 ) 
-        size = receiver_data_size() - (iterator - receiver_data) - 1; 
+    assert(iterator < receiver_data + CONTENT_SIZE);
+    if( iterator + size >= receiver_data + CONTENT_SIZE - 1 ) 
+        size = CONTENT_SIZE - (iterator - receiver_data) - 1; 
     if( size > BufferSize )    
         size = BufferSize;
 
@@ -122,26 +94,6 @@ receiver_fill(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
     iterator += size;
 
     return size;
-}
-
-size_t 
-receiver_fill_syntax_chunk(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
-/* Simulate a low lever driver that is able to fill a specified position in 
- * memory.                                                                   */
-{
-    static ptrdiff_t  cursor = 0;
-    ptrdiff_t         cursor_before = cursor;
-
-    do {
-        ++cursor;
-    } while( receiver_data[cursor] && receiver_data[cursor] != ' ' );
-
-    /* If the target buffer cannot carry it, we drop it.                     */
-    memcpy(BufferBegin, 
-           &receiver_data[cursor_before],
-           cursor - cursor_before); 
-
-    return cursor - cursor_before;
 }
 
 ELEMENT_TYPE   MESSAGING_FRAMEWORK_BUFFER[MESSAGING_FRAMEWORK_BUFFER_SIZE];

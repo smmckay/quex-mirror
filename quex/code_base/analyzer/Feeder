@@ -27,26 +27,28 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 #ifdef __QUEX_OPTION_PLAIN_
 #   define QUEX_TYPE_FEEDER_TAG QUEX_NAME(Feeder_tag)
-    typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER_TAG {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER_TAG {
 #else
-    struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER {
+struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER {
 #endif
 
-
     QUEX_TYPE_ANALYZER* lexer;
-    QUEX_TYPE_TOKEN     second_token;
-    QUEX_TYPE_TOKEN*    prev_token_p;
-    QUEX_TYPE_TOKEN*    first_token_p;
     QUEX_TYPE_LEXATOM*  last_incomplete_lexeme_p;
+
+    struct {
+        const void* begin_p;
+        const void* end_p;
+    } external_chunk;
 
 #   ifndef __QUEX_OPTION_PLAIN_C
 public:
     QUEX_TYPE_FEEDER(QUEX_TYPE_ANALYZER*);
-    ~QUEX_TYPE_FEEDER();
+    void               feed(const void* BeginP, const void* EndP);
     QUEX_TYPE_TOKEN*   deliver();
 };
 #else
-    void               (*destruct)(struct QUEX_TYPE_FEEDER_TAG*);
+    void               (*feed)(struct QUEX_TYPE_FEEDER_TAG*, 
+                               const void* BeginP, const void* EndP);
     QUEX_TYPE_TOKEN*   (*deliver)(struct QUEX_TYPE_FEEDER_TAG*);
 } QUEX_TYPE_FEEDER;
 #endif
@@ -54,8 +56,10 @@ public:
 
 extern void             QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*  me, 
                                                     QUEX_TYPE_ANALYZER* lexer);
-extern void             QUEX_NAME(Feeder_destruct)(QUEX_TYPE_FEEDER* me);
 extern QUEX_TYPE_TOKEN* QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me);
+extern void             QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me,
+                                               const void* BeginP, 
+                                               const void* EndP);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
