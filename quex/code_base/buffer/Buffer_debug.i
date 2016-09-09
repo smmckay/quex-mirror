@@ -293,10 +293,10 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)* me)
     {
         QUEX_NAME(Buffer_print_content_core)(sizeof(QUEX_TYPE_LEXATOM),
-                                             me->_memory._front,
-                                             me->_memory._back, 
-                                             me->_read_p, 
-                                             me->input.end_p,
+                                             (const uint8_t*)me->_memory._front,
+                                             (const uint8_t*)me->_memory._back, 
+                                             (const uint8_t*)me->_read_p, 
+                                             (const uint8_t*)me->input.end_p,
                                              /* BordersF */ true);
 
     }
@@ -315,26 +315,22 @@ QUEX_NAMESPACE_MAIN_OPEN
             if( it < InputEndP ) {
                 switch( ElementSize ) {
                 case 1:  __QUEX_STD_printf("%02X", it[0]); break;
-                case 2:  __QUEX_STD_printf("%02X", it[0]); 
-                         __QUEX_STD_printf("%02X", it[1]); break;
+                case 2:  __QUEX_STD_printf("%04X", ((uint16_t*)it)[0]); break;
                 case 4: 
-                default: __QUEX_STD_printf("%02X", it[0]); 
-                         __QUEX_STD_printf("%02X", it[1]); 
-                         __QUEX_STD_printf("%02X", it[2]);
-                         __QUEX_STD_printf("%02X", it[3]); break;
+                default: __QUEX_STD_printf("%08X", ((uint32_t*)it)[0]); break;
                 }
             }
             else {
                 __QUEX_STD_printf("--");
             }
 
-            if( &it[1] == ReadP ) {
+            if( &it[ElementSize] == ReadP ) {
                 __QUEX_STD_printf(">");
             }
             else if( BordersF && (it == Front || &it[1] == Back ) ) {
                 __QUEX_STD_printf("|");
             }
-            else if( it != Back && &it[1] != ReadP ) {
+            else if( it != Back && &it[ElementSize] != ReadP ) {
                 __QUEX_STD_printf(".");
             }
         }

@@ -19,7 +19,7 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(Feeder_deliver_core)(QUEX_TYPE_FEEDER* me);
+QUEX_NAME(Feeder_deliver_core)(QUEX_NAME(FeederBase)* me);
 
 #if ! defined( __QUEX_OPTION_PLAIN_C)
 
@@ -36,6 +36,25 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Feeder)::deliver()
 { return QUEX_NAME(Feeder_deliver)(this); }
 
+
+
+QUEX_INLINE
+QUEX_NAME(Infiltrator)::QUEX_NAME(Infiltrator)(QUEX_TYPE_ANALYZER* lexer,
+                                               QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId)
+{ QUEX_NAME(Infiltrator_construct)(this, lexer, StreamTerminatingTokenId); }
+
+QUEX_INLINE void
+QUEX_NAME(Infiltrator)::access(void** begin_p, const void** end_p)
+{ QUEX_NAME(Infiltrator_access)(this, begin_p, end_p); }
+
+QUEX_INLINE bool
+QUEX_NAME(Infiltrator)::gavage(ptrdiff_t ReceivedN)
+{ return QUEX_NAME(Infiltrator_gavage)(this, ReceivedN); }
+
+QUEX_INLINE QUEX_TYPE_TOKEN* 
+QUEX_NAME(Infiltrator)::deliver()
+{ return QUEX_NAME(Infiltrator_deliver)(this); }
+
 #endif
 
 QUEX_INLINE void
@@ -44,13 +63,12 @@ QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me,
                             QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId)
 {
     /* Initialization                                                        */
-    me->lexer                    = lexer;
-    me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
+    me->base.lexer                       = lexer;
+    me->base.last_incomplete_lexeme_p    = (QUEX_TYPE_LEXATOM*)0;
+    me->base.stream_terminating_token_id = StreamTerminatingTokenId;
 
     me->external_chunk.begin_p   = (void*)0;
     me->external_chunk.end_p     = (void*)0;
-
-    me->stream_terminating_token_id = StreamTerminatingTokenId;
 
 #   ifdef __QUEX_OPTION_PLAIN_C
     me->deliver = Feeder_deliver;
@@ -63,27 +81,27 @@ QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me, const void* BeginP, const void* End
     /* Copy buffer content into the analyzer's buffer-as much as possible.
      * 'fill()' returns a pointer to the first not-eaten byte.               */
     me->external_chunk.end_p   = EndP;
-    me->external_chunk.begin_p = me->lexer->buffer.fill(&me->lexer->buffer, BeginP, EndP);
+    me->external_chunk.begin_p = me->base.lexer->buffer.fill(&me->base.lexer->buffer, BeginP, EndP);
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
 {
-    QUEX_TYPE_TOKEN* token = QUEX_NAME(Feeder_deliver_core)(me);
+    QUEX_TYPE_TOKEN* token = QUEX_NAME(Feeder_deliver_core)(&me->base);
 
     while( ! token && me->external_chunk.begin_p != me->external_chunk.end_p ) {
         /* Refill required.
          * => Try to get more out of the remainder of the external chunk.    */
-        me->external_chunk.begin_p = me->lexer->buffer.fill(&me->lexer->buffer, 
+        me->external_chunk.begin_p = me->base.lexer->buffer.fill(&me->base.lexer->buffer, 
                                                             me->external_chunk.begin_p, 
                                                             me->external_chunk.end_p);
-        token = QUEX_NAME(Feeder_deliver_core)(me);
+        token = QUEX_NAME(Feeder_deliver_core)(&me->base);
     }
     return token;
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(Feeder_deliver_core)(QUEX_TYPE_FEEDER* me)
+QUEX_NAME(Feeder_deliver_core)(QUEX_NAME(FeederBase)* me)
 /* RETURNS: NULL, requires refill.
  *          Pointer to token, that has been identified 
  *          (This may be the 'BYE' token).                                   */
@@ -116,6 +134,60 @@ QUEX_NAME(Feeder_deliver_core)(QUEX_TYPE_FEEDER* me)
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
         return (QUEX_TYPE_TOKEN*)0;                         /* There's more! */
     }
+}
+
+QUEX_INLINE void
+QUEX_NAME(Infiltrator_construct)(QUEX_TYPE_INFILTRATOR*  me, 
+                                 QUEX_TYPE_ANALYZER*     lexer,
+                                 QUEX_TYPE_TOKEN_ID      StreamTerminatingTokenId)
+{
+    /* Initialization                                                        */
+    me->base.lexer                       = lexer;
+    me->base.last_incomplete_lexeme_p    = (QUEX_TYPE_LEXATOM*)0;
+    me->base.stream_terminating_token_id = StreamTerminatingTokenId;
+
+#   ifdef __QUEX_OPTION_PLAIN_C
+    me->access  = QUEX_NAME(Infiltrator_access);
+    me->gavage  = QUEX_NAME(Infiltrator_gavage);
+    me->deliver = QUEX_NAME(Infiltrator_deliver);
+#   endif
+}
+/*___________________________________________________________________________*/
+
+QUEX_INLINE void
+QUEX_NAME(Infiltrator_access)(QUEX_TYPE_INFILTRATOR* me,
+                              void** begin_p, const void** end_p)
+/* Provides access to internal buffer to be filled. 
+ *
+ * MODIFIES: [0] 'begin_p' pointing to the beginning of the buffer region that
+ *                can be filled with data.
+ *           [1] 'end_p' pointing to the end of the buffer's region, i.e. to
+ *                the first element behind it.                               */
+{
+    me->base.lexer->buffer.fill_prepare(&me->base.lexer->buffer, begin_p, end_p);
+}
+
+QUEX_INLINE bool
+QUEX_NAME(Infiltrator_gavage)(QUEX_TYPE_INFILTRATOR* me, ptrdiff_t ReceivedN)
+{
+    void*       begin_p;
+    const void* end_p;
+
+    me->base.lexer->buffer.filler->derived.get_fill_boundaries(me->base.lexer->buffer.filler,
+                                                               &me->base.lexer->buffer, 
+                                                               &begin_p, &end_p);
+    if( ReceivedN > (const uint8_t*)end_p - (uint8_t*)begin_p ) {
+        return false;
+    }
+    me->base.lexer->buffer.fill_finish(&me->base.lexer->buffer, 
+                                       &((uint8_t*)begin_p)[ReceivedN]);
+    return true;
+}
+
+QUEX_INLINE QUEX_TYPE_TOKEN*
+QUEX_NAME(Infiltrator_deliver)(QUEX_TYPE_INFILTRATOR* me)
+{
+    return QUEX_NAME(Feeder_deliver_core)(&me->base);
 }
 
 

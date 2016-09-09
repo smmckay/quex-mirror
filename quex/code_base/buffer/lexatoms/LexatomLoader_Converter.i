@@ -34,10 +34,15 @@ QUEX_NAME(LexatomLoader_Converter_load_lexatoms)(QUEX_NAME(LexatomLoader)*  alte
                                                  bool*                      encoding_error_f);
 QUEX_INLINE void 
 QUEX_NAME(LexatomLoader_Converter_fill_prepare)(QUEX_NAME(LexatomLoader)*  alter_ego,
-                                               QUEX_TYPE_LEXATOM*          RegionBeginP,
-                                               QUEX_TYPE_LEXATOM*          RegionEndP,
-                                               void**                      begin_p,
-                                               const void**                end_p);
+                                                QUEX_NAME(Buffer)*         buffer,
+                                                void**                     begin_p,
+                                                const void**               end_p);
+
+QUEX_INLINE void 
+QUEX_NAME(LexatomLoader_Converter_get_fill_boundaries)(QUEX_NAME(LexatomLoader)*  alter_ego,
+                                                       QUEX_NAME(Buffer)*         buffer,
+                                                       void**       begin_p, 
+                                                       const void** end_p);
 
 QUEX_INLINE ptrdiff_t 
 QUEX_NAME(LexatomLoader_Converter_fill_finish)(QUEX_NAME(LexatomLoader)*   alter_ego,
@@ -124,6 +129,7 @@ QUEX_NAME(LexatomLoader_Converter_construct)(QUEX_NAME(LexatomLoader_Converter)*
                                   QUEX_NAME(LexatomLoader_Converter_destruct_self),
                                   QUEX_NAME(LexatomLoader_Converter_fill_prepare),
                                   QUEX_NAME(LexatomLoader_Converter_fill_finish),
+                                  QUEX_NAME(LexatomLoader_Converter_get_fill_boundaries),
                                   byte_loader,
                                   byte_n_per_lexatom);
 
@@ -294,20 +300,29 @@ QUEX_NAME(LexatomLoader_Converter_load_lexatoms)(QUEX_NAME(LexatomLoader)* alter
 }
 
 QUEX_INLINE void 
-QUEX_NAME(LexatomLoader_Converter_fill_prepare)(QUEX_NAME(LexatomLoader)*   alter_ego,
-                                               QUEX_TYPE_LEXATOM*       RegionBeginP,
-                                               QUEX_TYPE_LEXATOM*       RegionEndP,
-                                               void**                     begin_p,
-                                               const void**               end_p)
+QUEX_NAME(LexatomLoader_Converter_fill_prepare)(QUEX_NAME(LexatomLoader)*  alter_ego,
+                                                QUEX_NAME(Buffer)*         buffer,
+                                                void**                     begin_p,
+                                                const void**               end_p)
 {
+    (void)buffer;
     QUEX_NAME(LexatomLoader_Converter)* me = (QUEX_NAME(LexatomLoader_Converter)*)alter_ego;
-    QUEX_NAME(RawBuffer)*              raw = &me->raw_buffer;
-    (void)RegionBeginP; (void)RegionEndP;
 
     QUEX_NAME(RawBuffer_move_away_passed_content)(&me->raw_buffer);
 
-    *begin_p = (void*)raw->fill_end_p; 
-    *end_p   = (void*)raw->memory_end;
+    alter_ego->derived.get_fill_boundaries(alter_ego, buffer, begin_p, end_p);
+}
+
+QUEX_INLINE void 
+QUEX_NAME(LexatomLoader_Converter_get_fill_boundaries)(QUEX_NAME(LexatomLoader)*  alter_ego,
+                                                       QUEX_NAME(Buffer)*         buffer,
+                                                       void**                     begin_p, 
+                                                       const void**               end_p)
+{
+    QUEX_NAME(LexatomLoader_Converter)* me = (QUEX_NAME(LexatomLoader_Converter)*)alter_ego;
+
+    *begin_p = (void*)me->raw_buffer.fill_end_p; 
+    *end_p   = (void*)me->raw_buffer.memory_end;
 }
 
 QUEX_INLINE ptrdiff_t 

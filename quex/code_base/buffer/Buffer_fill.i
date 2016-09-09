@@ -49,9 +49,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
     (void)QUEX_NAME(Buffer_move_away_passed_content)(me, (QUEX_TYPE_LEXATOM**)0, 0);
 
     /* Get the pointers for the border where to fill content.               */
-    me->filler->derived.fill_prepare(me->filler, 
-                                     me->input.end_p, me->_memory._back, 
-                                     begin_p, end_p);
+    me->filler->derived.fill_prepare(me->filler, me, begin_p, end_p);
 
     __quex_assert(*end_p >= *begin_p);
 }

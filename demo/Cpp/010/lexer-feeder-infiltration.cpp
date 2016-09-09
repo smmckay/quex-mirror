@@ -36,7 +36,9 @@ main(int argc, char** argv)
     while( ! token || token->_id != QUEX_TKN_BYE ) {
 
         if( ! token ) {
-            received_n = receiver_get_pointer_to_received(&rx_content_p);
+            received_n = feeder->infiltrate_access(&begin_p, &end_p); 
+            
+            receiver_get_pointer_to_received(&rx_content_p);
 
             feeder->feed(&rx_content_p[0], &rx_content_p[received_n]);
 

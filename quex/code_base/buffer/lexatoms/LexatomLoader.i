@@ -106,14 +106,17 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
                                void         (*stomach_clear)(QUEX_NAME(LexatomLoader)*),
                                void         (*derived_destruct_self)(QUEX_NAME(LexatomLoader)*),
                                void         (*derived_fill_prepare)(QUEX_NAME(LexatomLoader)*  me,
-                                                                    QUEX_TYPE_LEXATOM*      RegionBeginP,
-                                                                    QUEX_TYPE_LEXATOM*      RegionEndP,
-                                                                    void**                    begin_p,
-                                                                    const void**              end_p),
-                               ptrdiff_t    (*derived_fill_finish)(QUEX_NAME(LexatomLoader)*   me,
-                                                                   QUEX_TYPE_LEXATOM*       BeginP,
-                                                                   const QUEX_TYPE_LEXATOM* EndP,
-                                                                   const void*                FilledEndP),
+                                                                    QUEX_NAME(Buffer)*         buffer,
+                                                                    void**                     begin_p,
+                                                                    const void**               end_p),
+                               ptrdiff_t    (*derived_fill_finish)(QUEX_NAME(LexatomLoader)* me,
+                                                                   QUEX_TYPE_LEXATOM*        BeginP,
+                                                                   const QUEX_TYPE_LEXATOM*  EndP,
+                                                                   const void*               FilledEndP),
+                               void         (*derived_get_fill_boundaries)(QUEX_NAME(LexatomLoader_tag)*  alter_ego,
+                                                                           QUEX_NAME(Buffer)*             buffer,
+                                                                           void**                         begin_p, 
+                                                                           const void**                   end_p),
                                QUEX_NAME(ByteLoader)*  byte_loader,
                                ptrdiff_t    ByteNPerCharacter)
 {
@@ -131,8 +134,9 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
     me->delete_self           = QUEX_NAME(LexatomLoader_delete_self);
 
     /* Support for manual buffer filling.                                    */
-    me->derived.fill_prepare    = derived_fill_prepare;
-    me->derived.fill_finish     = derived_fill_finish;
+    me->derived.fill_prepare        = derived_fill_prepare;
+    me->derived.fill_finish         = derived_fill_finish;
+    me->derived.get_fill_boundaries = derived_get_fill_boundaries;
 
     me->byte_loader                    = byte_loader;
 

@@ -22,8 +22,14 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#define QUEX_TYPE_FEEDER QUEX_NAME(Feeder) 
+#define QUEX_TYPE_FEEDER      QUEX_NAME(Feeder) 
+#define QUEX_TYPE_INFILTRATOR QUEX_NAME(Infiltrator) 
 
+typedef struct {
+    QUEX_TYPE_ANALYZER* lexer;
+    QUEX_TYPE_LEXATOM*  last_incomplete_lexeme_p;
+    QUEX_TYPE_TOKEN_ID  stream_terminating_token_id;
+} QUEX_NAME(FeederBase);
 
 #ifdef __QUEX_OPTION_PLAIN_
 #   define QUEX_TYPE_FEEDER_TAG QUEX_NAME(Feeder_tag)
@@ -31,9 +37,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER_TAG {
 #else
 struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER {
 #endif
-
-    QUEX_TYPE_ANALYZER* lexer;
-    QUEX_TYPE_LEXATOM*  last_incomplete_lexeme_p;
+    QUEX_NAME(FeederBase)  base;
 
     struct {
         const void* begin_p;
@@ -42,27 +46,66 @@ struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER {
 
     QUEX_TYPE_TOKEN_ID  stream_terminating_token_id;
 
-#   ifndef __QUEX_OPTION_PLAIN_C
+#ifndef __QUEX_OPTION_PLAIN_C
 public:
     QUEX_TYPE_FEEDER(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
-    void               feed(const void* BeginP, const void* EndP);
-    QUEX_TYPE_TOKEN*   deliver();
+    void             feed(const void* BeginP, const void* EndP);
+    QUEX_TYPE_TOKEN* deliver();
 };
 #else
-    void               (*feed)(struct QUEX_TYPE_FEEDER_TAG*, 
-                               const void* BeginP, const void* EndP);
-    QUEX_TYPE_TOKEN*   (*deliver)(struct QUEX_TYPE_FEEDER_TAG*);
+    void             (*feed)(struct QUEX_TYPE_FEEDER_TAG*, 
+                             const void* BeginP, const void* EndP);
+    QUEX_TYPE_TOKEN* (*deliver)(struct QUEX_TYPE_FEEDER_TAG*);
+};
 } QUEX_TYPE_FEEDER;
 #endif
 
 
-extern void             QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me, 
-                                                    QUEX_TYPE_ANALYZER* lexer,
-                                                    QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId);
-extern QUEX_TYPE_TOKEN* QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me);
-extern void             QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me,
-                                               const void* BeginP, 
-                                               const void* EndP);
+QUEX_INLINE void             QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me, 
+                                                         QUEX_TYPE_ANALYZER* lexer,
+                                                         QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId);
+QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me);
+QUEX_INLINE void             QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me,
+                                                    const void* BeginP, 
+                                                    const void* EndP);
+
+
+#ifdef __QUEX_OPTION_PLAIN_
+#   define QUEX_TYPE_INFILTRATOR_TAG QUEX_NAME(Feeder_tag)
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_INFILTRATOR_TAG {
+#else
+struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_INFILTRATOR {
+#endif
+
+    QUEX_NAME(FeederBase)  base;
+
+#ifndef __QUEX_OPTION_PLAIN_C
+public:
+    QUEX_TYPE_INFILTRATOR(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
+    void              access(void**       begin_p, 
+                             const void** end_p);
+    bool              gavage(ptrdiff_t    ReceivedN);
+    QUEX_TYPE_TOKEN*  deliver();
+};
+#else
+    void              (*access)(QUEX_TYPE_INFILTRATOR* me,
+                                void**       begin_p, 
+                                const void** end_p);
+    bool              (*gavage)(QUEX_TYPE_INFILTRATOR* me, 
+                                ptrdiff_t              ReceivedN);
+    QUEX_TYPE_TOKEN*  (*deliver)(QUEX_TYPE_INFILTRATOR* me);
+} QUEX_TYPE_INFILTRATOR;
+#endif
+
+QUEX_INLINE void  QUEX_NAME(Infiltrator_construct)(QUEX_TYPE_INFILTRATOR* me, 
+                                                   QUEX_TYPE_ANALYZER*    lexer,
+                                                   QUEX_TYPE_TOKEN_ID     StreamTerminatingTokenId);
+QUEX_INLINE void  QUEX_NAME(Infiltrator_access)(QUEX_TYPE_INFILTRATOR* me,
+                                                void**                 begin_p, 
+                                                const void**           end_p);
+QUEX_INLINE bool  QUEX_NAME(Infiltrator_gavage)(QUEX_TYPE_INFILTRATOR* me, 
+                                                ptrdiff_t              ReceivedN);
+QUEX_INLINE QUEX_TYPE_TOKEN*  QUEX_NAME(Infiltrator_deliver)(QUEX_TYPE_INFILTRATOR* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
