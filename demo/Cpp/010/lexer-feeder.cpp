@@ -16,7 +16,8 @@ typedef QUEX_TYPE_TOKEN    CToken;
 
 /* Content by 'copying' or 'filling'.
  *                                                                           */
-static void show_buffer(CLexer* lexer);
+static void show_buffer(CLexer* lexer, 
+                        const uint8_t* RawBeginP, const uint8_t* RawEndP);
 
 int 
 main(int argc, char** argv) 
@@ -37,7 +38,7 @@ main(int argc, char** argv)
 
         feeder->feed(&rx_content_p[0], &rx_content_p[received_n]);
 
-        show_buffer(lexer);
+        show_buffer(lexer, &rx_content_p[0], &rx_content_p[received_n]);
 
         while( (token = feeder->deliver()) != 0 ) {
             /* token == NULL, if the feeder only requires more content.
@@ -54,25 +55,24 @@ main(int argc, char** argv)
          * => 'rx_content_p' can be freed.                                   */
     }
 
-    show_buffer(lexer);
+    show_buffer(lexer, &rx_content_p[0], &rx_content_p[received_n]);
 
     delete feeder;
     delete lexer;
 }
 
 static void
-show_buffer(CLexer* lexer)
+show_buffer(CLexer* lexer, const uint8_t* RawBeginP, const uint8_t* RawEndP)
 {
+    using namespace quex;
 #   ifdef QUEX_EXAMPLE_WITH_CONVERTER
     printf("     raw: ");
-    QUEX_NAME(Buffer_print_content_core)(1, 
-                                         lexer->filler->raw_buffer.begin_p,
-                                         &lexer->filler->raw_buffer.memory_end_p[-1],
-                                         (const uint8_t*)0, 
-                                         lexer->filler->raw_buffer.end_p,
+    QUEX_NAME(Buffer_print_content_core)(1, RawBeginP, &RawEndP[-1], 
+                                         (const uint8_t*)0, RawEndP,
                                          /* BordersF */ false);
     printf("\n");
 #   endif
+    (void)RawBeginP; (void)RawEndP;
     printf("        : ");
     QUEX_NAME(Buffer_print_content)(&lexer->buffer);
     printf("\n");
