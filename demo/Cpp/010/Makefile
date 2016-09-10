@@ -2,7 +2,8 @@
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
 
-FILES := feeder-plain.exe   feeder-converter.exe    \
+FILES := feeder-plain.exe  feeder-converter.exe    \
+	     gavager-plain.exe gavager-converter.exe    
          # point-plain.exe  point-converter.exe
 
 ifndef QUEX_PATH
@@ -36,16 +37,22 @@ CC_CONVERTER := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
 # (*) RULES ____________________________________________________________________
 all: $(FILES)
 
-feeder-plain.exe:      lexer-feeder.cpp receiver.cpp lexPlain.cpp
+feeder-plain.exe:       lexer-feeder.cpp receiver.cpp lexPlain.cpp
 	$(CC_PLAIN)     -o $@ $^ 
           
-feeder-converter.exe:  lexer-feeder.cpp receiver.cpp lexConverter.cpp
+feeder-converter.exe:   lexer-feeder.cpp receiver.cpp lexConverter.cpp
 	$(CC_CONVERTER) -o $@ $^ 
 
-point-plain.exe:     lexer-point.cpp receiver.cpp lexPlain.cpp
+gavager-plain.exe:      lexer-gavager.cpp receiver.cpp lexPlain.cpp
+	$(CC_PLAIN)     -o $@ $^ 
+          
+gavager-converter.exe:  lexer-gavager.cpp receiver.cpp lexConverter.cpp
+	$(CC_CONVERTER) -o $@ $^ 
+
+point-plain.exe:        lexer-point.cpp receiver.cpp lexPlain.cpp
 	$(CC_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^
 
-point-converter.exe: lexer-point.cpp receiver.cpp lexPlain.cpp
+point-converter.exe:    lexer-point.cpp receiver.cpp lexPlain.cpp
 	$(CC_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^ 
           
 %.E: %.cpp  

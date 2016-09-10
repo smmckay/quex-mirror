@@ -7,7 +7,7 @@
 #   define  CODEC_NAME ((const char*)0)
 #   include "lexPlain"
 #endif
-#include "quex/code_base/analyzer/Feeder.i"
+#include "quex/code_base/analyzer/adaptors/Feeder.i"
 
 #include "receiver.h"
 

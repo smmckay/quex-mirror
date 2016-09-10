@@ -7,7 +7,7 @@
 #   define  CODEC_NAME ((const char*)0)
 #   include "lexPlain"
 #endif
-#include "quex/code_base/analyzer/Feeder.i"
+#include "quex/code_base/analyzer/adaptors/Gavager.i"
 
 #include "receiver.h"
 
@@ -23,29 +23,31 @@ int
 main(int argc, char** argv) 
 {        
     using namespace quex;
-    CLexer*            lexer;
-    CToken*            token;
-    QUEX_NAME(Feeder)* feeder;
-    size_t             received_n;
-    uint8_t*           rx_content_p;
 
-    lexer  = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
-    feeder = new QUEX_NAME(Feeder)(lexer, QUEX_TKN_BYE);
+    CLexer*             lexer;
+    CToken*             token;
+    QUEX_NAME(Gavager)* gavager;
+    size_t              received_n;
+    uint8_t*            begin_p;
+    const uint8_t*      end_p;
+
+    lexer   = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
+    gavager = new QUEX_NAME(Gavager)(lexer, QUEX_TKN_BYE);
 
     token = (CToken*)0;
     while( ! token || token->_id != QUEX_TKN_BYE ) {
 
         if( ! token ) {
-            received_n = feeder->infiltrate_access(&begin_p, &end_p); 
+            gavager->access((void**)&begin_p, (const void**)&end_p); 
             
-            receiver_get_pointer_to_received(&rx_content_p);
+            received_n = receiver_receive_in_this_place(begin_p, end_p);
 
-            feeder->feed(&rx_content_p[0], &rx_content_p[received_n]);
+            gavager->gavage(received_n);
 
-            show_buffer(lexer, &rx_content_p[0], &rx_content_p[received_n]);
+            show_buffer(lexer, &begin_p[0], &begin_p[received_n]);
         }
 
-        token = feeder->deliver();
+        token = gavager->deliver();
         /* token == NULL, if the feeder only requires more content.
          * else,          if a valid token that has been returned.       */
 
@@ -54,9 +56,9 @@ main(int argc, char** argv)
         }
     }
 
-    show_buffer(lexer, &rx_content_p[0], &rx_content_p[received_n]);
+    show_buffer(lexer, &begin_p[0], &begin_p[received_n]);
 
-    delete feeder;
+    delete gavager;
     delete lexer;
 }
 

@@ -77,20 +77,20 @@ receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer)
 }
 
 size_t 
-receiver_fill(ELEMENT_TYPE* BufferBegin, size_t BufferSize)
+receiver_receive_in_this_place(ELEMENT_TYPE* BeginP, const ELEMENT_TYPE* EndP)
 /* Simulate a low lever driver that is able to fill a specified position in 
  * memory.                                                                   */
 {
-    static ELEMENT_TYPE*  iterator = receiver_data;
+    static ELEMENT_TYPE*  iterator   = receiver_data;
+    const size_t          BufferSize = EndP - BeginP;
     size_t                size = (size_t)((float)(rand()) / (float)(RAND_MAX) * 10.0) + 1;
 
-    assert(iterator < receiver_data + CONTENT_SIZE);
-    if( iterator + size >= receiver_data + CONTENT_SIZE - 1 ) 
-        size = CONTENT_SIZE - (iterator - receiver_data) - 1; 
-    if( size > BufferSize )    
-        size = BufferSize;
+    assert(iterator <= receiver_data + CONTENT_SIZE);
+    if( iterator + size >= receiver_data + CONTENT_SIZE ) 
+        size = CONTENT_SIZE - (iterator - receiver_data); 
+    if( size > BufferSize ) size = BufferSize;
 
-    memcpy(BufferBegin, iterator, size);
+    memcpy(BeginP, iterator, size);
     iterator += size;
 
     return size;

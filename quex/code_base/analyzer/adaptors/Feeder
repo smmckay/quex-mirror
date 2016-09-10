@@ -3,11 +3,7 @@
  * PURPOSE: A 'feeder' coordinates the lexical analysis based on input that
  *          is *NOT* delivered through a byte loader in the background. 
  *
- * In cases where the user wishes to fill the lexical analyzer buffer manually,
- * caution has to be applied to avoid consuming invalid tokens and to setup
- * the stream appropriately. This coordination is safely implemented in the
- * small, but well thought-through function 'deliver' below. Examples of how
- * to use it can be found in the 'demo/010' directory.
+ * See file 'Feeder.i' for detailed descriptions.
  *
  * (C) 2016 Frank-Rene Schaefer.                                             */
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER
@@ -30,6 +26,9 @@ typedef struct {
     QUEX_TYPE_LEXATOM*  last_incomplete_lexeme_p;
     QUEX_TYPE_TOKEN_ID  stream_terminating_token_id;
 } QUEX_NAME(FeederBase);
+
+QUEX_INLINE QUEX_TYPE_TOKEN*
+QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me);
 
 #ifdef __QUEX_OPTION_PLAIN_
 #   define QUEX_TYPE_FEEDER_TAG QUEX_NAME(Feeder_tag)

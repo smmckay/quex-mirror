@@ -1,25 +1,46 @@
-/* -*- C++ -*- vim: set syntax=cpp: */
-/* 
- * PURPOSE: A 'feeder' coordinates the lexical analysis based on input that
- *          is *NOT* delivered through a byte loader in the background. 
+/* -*- C++ -*- vim: set syntax=cpp: 
+ * 
+ * PURPOSE: Feeder -- coordinates the lexical analysis based on input that
+ *                    is fed manually by the caller of the lexical analyser.
  *
- * In cases where the user wishes to fill the lexical analyzer buffer manually,
- * caution has to be applied to avoid consuming invalid tokens and to setup
- * the stream appropriately. This coordination is safely implemented in the
- * small, but well thought-through function 'deliver' below. Examples of how
- * to use it can be found in the 'demo/010' directory.
+ * This file implements an adaptor to a lexical analyzer's class in order to
+ * specify a specific 'data feeding scenario'. Where 'normal' lexical analysis
+ * relies on filling in the background from some stream or socket, feeding
+ * and gavaging implies manual interaction of the consumer of the caller.
+ *
+ * Feeding can be applied if data chunks arrive in arbitrary sizes. During
+ * feeding those chunks are presented to the 'Feeder'. The feeder feeds sub-
+ * chunks of those-as big as possible-into the lexical analyzers buffer. The
+ * process involves a 'copying' operation. Once a Feeder deliver's a Null
+ * token, it can be assumed that all content has been copied or consumed. The
+ * memory pointed to can then be freed and new content can be presented to
+ * the feeder.
+ *
+ * PROCEDURE:
+ *
+ * Data that comes from a framework must be fed using the 'feed()' function.
+ * Then, the 'deliver()' function needs to be called. It delivers tokens found
+ * until it returns Null. This indicates that all data has been consumed and
+ * new data is required to continue analysis. The user must then call 'feed()'
+ * again.
+ *
+ * The constructor of a feeder receives a 'StreamTerminatingTokenId' that 
+ * tells when the stream is absolutely terminated. The caller must check
+ * the received token against this id and terminate in case that it arrived.
+ *
+ * EXAMPLES: See the demo's '010' directory.
  *
  * (C) 2016 Frank-Rene Schaefer.                                             */
 
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER_I
 
-#include "quex/code_base/analyzer/Feeder"
+#include "quex/code_base/analyzer/adaptors/Feeder"
 
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(Feeder_deliver_core)(QUEX_NAME(FeederBase)* me);
+QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me);
 
 #if ! defined( __QUEX_OPTION_PLAIN_C)
 
@@ -35,25 +56,6 @@ QUEX_NAME(Feeder)::feed(const void* BeginP, const void* EndP)
 QUEX_INLINE QUEX_TYPE_TOKEN* 
 QUEX_NAME(Feeder)::deliver()
 { return QUEX_NAME(Feeder_deliver)(this); }
-
-
-
-QUEX_INLINE
-QUEX_NAME(Infiltrator)::QUEX_NAME(Infiltrator)(QUEX_TYPE_ANALYZER* lexer,
-                                               QUEX_TYPE_TOKEN_ID  StreamTerminatingTokenId)
-{ QUEX_NAME(Infiltrator_construct)(this, lexer, StreamTerminatingTokenId); }
-
-QUEX_INLINE void
-QUEX_NAME(Infiltrator)::access(void** begin_p, const void** end_p)
-{ QUEX_NAME(Infiltrator_access)(this, begin_p, end_p); }
-
-QUEX_INLINE bool
-QUEX_NAME(Infiltrator)::gavage(ptrdiff_t ReceivedN)
-{ return QUEX_NAME(Infiltrator_gavage)(this, ReceivedN); }
-
-QUEX_INLINE QUEX_TYPE_TOKEN* 
-QUEX_NAME(Infiltrator)::deliver()
-{ return QUEX_NAME(Infiltrator_deliver)(this); }
 
 #endif
 
@@ -87,7 +89,7 @@ QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me, const void* BeginP, const void* End
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
 {
-    QUEX_TYPE_TOKEN* token = QUEX_NAME(Feeder_deliver_core)(&me->base);
+    QUEX_TYPE_TOKEN* token = QUEX_NAME(FeederBase_deliver)(&me->base);
 
     while( ! token && me->external_chunk.begin_p != me->external_chunk.end_p ) {
         /* Refill required.
@@ -95,13 +97,13 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
         me->external_chunk.begin_p = me->base.lexer->buffer.fill(&me->base.lexer->buffer, 
                                                             me->external_chunk.begin_p, 
                                                             me->external_chunk.end_p);
-        token = QUEX_NAME(Feeder_deliver_core)(&me->base);
+        token = QUEX_NAME(FeederBase_deliver)(&me->base);
     }
     return token;
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(Feeder_deliver_core)(QUEX_NAME(FeederBase)* me)
+QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
 /* RETURNS: NULL, requires refill.
  *          Pointer to token, that has been identified 
  *          (This may be the 'BYE' token).                                   */
@@ -136,61 +138,7 @@ QUEX_NAME(Feeder_deliver_core)(QUEX_NAME(FeederBase)* me)
     }
 }
 
-QUEX_INLINE void
-QUEX_NAME(Infiltrator_construct)(QUEX_TYPE_INFILTRATOR*  me, 
-                                 QUEX_TYPE_ANALYZER*     lexer,
-                                 QUEX_TYPE_TOKEN_ID      StreamTerminatingTokenId)
-{
-    /* Initialization                                                        */
-    me->base.lexer                       = lexer;
-    me->base.last_incomplete_lexeme_p    = (QUEX_TYPE_LEXATOM*)0;
-    me->base.stream_terminating_token_id = StreamTerminatingTokenId;
-
-#   ifdef __QUEX_OPTION_PLAIN_C
-    me->access  = QUEX_NAME(Infiltrator_access);
-    me->gavage  = QUEX_NAME(Infiltrator_gavage);
-    me->deliver = QUEX_NAME(Infiltrator_deliver);
-#   endif
-}
-/*___________________________________________________________________________*/
-
-QUEX_INLINE void
-QUEX_NAME(Infiltrator_access)(QUEX_TYPE_INFILTRATOR* me,
-                              void** begin_p, const void** end_p)
-/* Provides access to internal buffer to be filled. 
- *
- * MODIFIES: [0] 'begin_p' pointing to the beginning of the buffer region that
- *                can be filled with data.
- *           [1] 'end_p' pointing to the end of the buffer's region, i.e. to
- *                the first element behind it.                               */
-{
-    me->base.lexer->buffer.fill_prepare(&me->base.lexer->buffer, begin_p, end_p);
-}
-
-QUEX_INLINE bool
-QUEX_NAME(Infiltrator_gavage)(QUEX_TYPE_INFILTRATOR* me, ptrdiff_t ReceivedN)
-{
-    void*       begin_p;
-    const void* end_p;
-
-    me->base.lexer->buffer.filler->derived.get_fill_boundaries(me->base.lexer->buffer.filler,
-                                                               &me->base.lexer->buffer, 
-                                                               &begin_p, &end_p);
-    if( ReceivedN > (const uint8_t*)end_p - (uint8_t*)begin_p ) {
-        return false;
-    }
-    me->base.lexer->buffer.fill_finish(&me->base.lexer->buffer, 
-                                       &((uint8_t*)begin_p)[ReceivedN]);
-    return true;
-}
-
-QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(Infiltrator_deliver)(QUEX_TYPE_INFILTRATOR* me)
-{
-    return QUEX_NAME(Feeder_deliver_core)(&me->base);
-}
-
-
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER_I */
+
