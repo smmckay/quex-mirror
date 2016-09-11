@@ -176,9 +176,9 @@ QUEX_MEMBER_FUNCTION1(from, LexatomLoader,
  *                                                                           */
 QUEX_INLINE void
 QUEX_MEMBER_FUNCTION3(from, memory,
-                      QUEX_TYPE_LEXATOM*    Memory,
-                      const size_t            MemorySize,
-                      QUEX_TYPE_LEXATOM*    EndOfFileP)
+                      QUEX_TYPE_LEXATOM* Memory,
+                      const size_t       MemorySize,
+                      QUEX_TYPE_LEXATOM* EndOfFileP)
 
 /* When memory is provided from extern, the 'external entity' is responsible
  * for filling it. There is no 'file/stream handle', no 'byte loader', and 'no
@@ -187,6 +187,10 @@ QUEX_MEMBER_FUNCTION3(from, memory,
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     __quex_assert((! Memory) || (EndOfFileP > Memory && EndOfFileP <= &Memory[MemorySize]));
     __quex_assert((  Memory) || (MemorySize == 0     && EndOfFileP == (QUEX_TYPE_LEXATOM*)0)); 
+    /* Memory MUST contain the limitting elements set to BUFFER LIMIT CODE   */
+    __quex_assert(Memory[0]          == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    __quex_assert(Memory[MemorySize] == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    __quex_assert(EndOfFileP[0]      == QUEX_SETTING_BUFFER_LIMIT_CODE);
 
     QUEX_NAME(Buffer_construct)(&me->buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,

@@ -2,9 +2,9 @@
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
 
-FILES := feeder-plain.exe  feeder-converter.exe    \
-	     gavager-plain.exe gavager-converter.exe    
-         # point-plain.exe  point-converter.exe
+FILES := feeder-plain.exe  feeder-converter.exe  \
+	     gavager-plain.exe gavager-converter.exe \
+         point-plain.exe
 
 ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)
@@ -49,10 +49,10 @@ gavager-plain.exe:      lexer-gavager.cpp receiver.cpp lexPlain.cpp
 gavager-converter.exe:  lexer-gavager.cpp receiver.cpp lexConverter.cpp
 	$(CC_CONVERTER) -o $@ $^ 
 
-point-plain.exe:        lexer-point.cpp receiver.cpp lexPlain.cpp
+point-plain.exe:        lexer-point.cpp lexPlain.cpp
 	$(CC_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^
 
-point-converter.exe:    lexer-point.cpp receiver.cpp lexPlain.cpp
+point-converter.exe:    lexer-point.cpp lexConverter.cpp
 	$(CC_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^ 
           
 %.E: %.cpp  

@@ -39,10 +39,10 @@ QUEX_INLINE void      QUEX_NAME(Buffer_on_content_change_DEFAULT)(const QUEX_TYP
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me, 
-                            QUEX_NAME(LexatomLoader)*  filler,
-                            QUEX_TYPE_LEXATOM*      memory,
+                            QUEX_NAME(LexatomLoader)* filler,
+                            QUEX_TYPE_LEXATOM*        memory,
                             const size_t              MemorySize,
-                            QUEX_TYPE_LEXATOM*      EndOfFileP,
+                            QUEX_TYPE_LEXATOM*        EndOfFileP,
                             E_Ownership               Ownership)
 {
     /* Ownership of InputMemory is passed to 'me->_memory'.                  */

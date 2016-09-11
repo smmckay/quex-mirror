@@ -1,67 +1,65 @@
+/* Pointing -- Running a lexical analyzer directly on a chunk of memory.
+ *
+ * This is the very fastest, but least flexible method of feeding a lexical
+ * analyzer. The lexical analyzer receives begin and end pointer of content
+ * on which it has to work. Since lexical analyzer buffers are framed with
+ * limit codes, the buffer content also, must contain a buffer limit code at
+ * the beginning and the end. 
+ *
+ * The default buffer limit code is '0' which fits the C-language strings.
+ * Nevertheless, in this example a zero is inserted at the beginning of the
+ * strings to fit the lower border requirement. 
+ *                                                                           */
 #include<stdio.h>    
 #include<string.h> 
 
 #include "lexPlain"
-#include "receiver.h"
 
-static void  test(quex::lexPlain* qlex, QUEX_TYPE_LEXATOM* memory);
+/* Terminating zero is implicitly added by the C-Language.                   */
+static uint8_t Memory0[] = 
+"\0A little nonsense now and then is cherished by the wisest men";
+static uint8_t Memory1[] = 
+"\0One advantage of talking to yourself is that you know at least somebody is listening";
 
-/* Memory size = much bigger than required to hold the complete content.     */
-#define  MEMORY_SIZE  (MESSAGING_FRAMEWORK_BUFFER_SIZE*2)
+#define Memory0Size (sizeof(Memory0)/sizeof(Memory0[0]))
+#define Memory1Size (sizeof(Memory1)/sizeof(Memory1[1]))
+       
+static void  test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size);
 
-QUEX_TYPE_LEXATOM   memory_a[MEMORY_SIZE];
-QUEX_TYPE_LEXATOM   memory_b[MEMORY_SIZE];
-QUEX_TYPE_LEXATOM   memory_c[MEMORY_SIZE];
 
 int 
 main(int argc, char** argv) 
-/* In this example, the lexical analyzer's buffer is given from an external
- * source. The first memory chunk 'memory_a' is passed upon construction of the
- * lexical analyzer. The next two runs with 'memory_b' and 'memory'b' are
- * initiated by passing the memory with the 'reset' function.                */
 {        
-    quex::lexPlain*  qlex; 
-    size_t           received_n;
+    QUEX_TYPE_ANALYZER*  lexer; 
 
-    /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.           */
-    /* received_n = receiver_fill_here(&memory_a[1], MEMORY_SIZE-1); */
-    __quex_assert(received_n < MEMORY_SIZE-2);
+    lexer = new QUEX_TYPE_ANALYZER((QUEX_TYPE_LEXATOM*)&Memory0[0], 
+                                   Memory0Size,
+                                   (QUEX_TYPE_LEXATOM*)&Memory0[Memory0Size-1]);
 
-    qlex = new quex::lexPlain(&memory_a[0], MEMORY_SIZE, &memory_a[received_n+1]);
+    test(lexer, NULL, 0);                  /* memory given during construct.  */
+    test(lexer, &Memory1[0], Memory1Size); /* memory given upon reset.        */
 
-    test(qlex, NULL);            /* treat memory given during construction. */
-    test(qlex, memory_b);        /* pass 'memory_b' upon reset, then run.   */
-    test(qlex, memory_c);        /* pass 'memory_c' upon reset, then run.   */
-
-    delete qlex;
+    delete lexer;
 
     return 0;
 }
 
-static void 
-test(quex::lexPlain* qlex, QUEX_TYPE_LEXATOM* memory)
+static void  
+test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
 {
-    QUEX_TYPE_TOKEN       token;           
-    size_t                received_n;
-
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */
-        /* received_n = receiver_fill_here(&memory[1], MEMORY_SIZE-1); */
-        __quex_assert(received_n < MEMORY_SIZE-2);
-
-        /*
-        qlex->reset(&memory[0], MEMORY_SIZE, &memory[received_n+1]);
-         */
+        lexer->reset((QUEX_TYPE_LEXATOM*)&memory[0], Size, 
+                     (QUEX_TYPE_LEXATOM*)&memory[Size-1]);
     }
 
     /* Loop until the 'termination' token arrives                            */
-    QUEX_NAME(token_p_swap)(qlex, &token);
     do {
-        QUEX_NAME(receive)(qlex);
+        QUEX_NAME(receive)(lexer);
 
-        printf("   Token: %s\n", qlex->token->get_string().c_str());
+        printf("   Token: %s\n", lexer->token->get_string().c_str());
         
-    } while( token._id != QUEX_TKN_TERMINATION );
+    } while( lexer->token->_id != QUEX_TKN_TERMINATION );
 
     printf("<terminated>\n");
 }

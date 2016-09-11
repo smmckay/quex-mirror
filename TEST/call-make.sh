@@ -1,6 +1,6 @@
 tmpfile=$(mktemp --suffix $(basename $1))
 
-make "$@" ASSERTS_ENABLED_F=YES >& $tmpfile
+make "$@" ASSERTS_ENABLED_F=YES -j 8 >& $tmpfile
 
 cat $tmpfile \
     | awk '   /[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ \

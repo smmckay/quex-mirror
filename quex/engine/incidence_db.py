@@ -121,8 +121,13 @@ class IncidenceDB(dict):
                 'Lexeme exceeds buffer size.',
         }[IncidenceId]
             
-        txt =   'QUEX_ERROR_EXIT("\\nMode \'%s\': %s\\n"\n' % (ModeName, msg) \
-              + '                "%s\\n");' % note_txt
+        txt = [
+            '__QUEX_STD_printf("\\n");\n',
+            'QUEX_NAME(Buffer_show_debug_content)(&me->buffer);\n',
+            '__QUEX_STD_printf("\\n");\n',
+            'QUEX_ERROR_EXIT("\\nMode \'%s\': %s\\n"\n' % (ModeName, msg),
+            '                "%s\\n");' % note_txt
+        ]
 
         return CodeFragment(txt, SourceRef_DEFAULT)
 
@@ -138,7 +143,7 @@ class IncidenceDB(dict):
             terminal_type = standard_incidence_db_get_terminal_type(incidence_id)
             if terminal_type is None:
                 continue
-            elif   incidence_id == E_IncidenceIDs.END_OF_STREAM \
+            elif incidence_id == E_IncidenceIDs.END_OF_STREAM \
                and not ReloadRequiredF:
                 continue
             code_terminal = CodeTerminal.from_CodeFragment(code_fragment)

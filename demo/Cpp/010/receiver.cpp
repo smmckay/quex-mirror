@@ -33,9 +33,9 @@ receiver_get_pointer_to_received(ELEMENT_TYPE** rx_buffer)
     iterator += size;
 
     if( size != 0 ) {
-        __quex_assert(iterator < receiver_data + CONTENT_SIZE);
+        __quex_assert(iterator <= receiver_data + CONTENT_SIZE);
     } else {
-        __quex_assert(iterator == receiver_data + CONTENT_SIZE);
+        __quex_assert(iterator == receiver_data + CONTENT_SIZE + 1);
     }
 
     return size;
@@ -68,9 +68,9 @@ receiver_get_pointer_to_received_whole_characters(ELEMENT_TYPE** rx_buffer)
     size = iterator - *rx_buffer;
 
     if( size != 0 ) {
-        __quex_assert(iterator < receiver_data + CONTENT_SIZE);
+        __quex_assert(iterator <= receiver_data + CONTENT_SIZE);
     } else {
-        __quex_assert(iterator == receiver_data + CONTENT_SIZE);
+        __quex_assert(iterator == receiver_data + CONTENT_SIZE + 1);
     }
 
     return size;
@@ -95,8 +95,6 @@ receiver_receive_in_this_place(ELEMENT_TYPE* BeginP, const ELEMENT_TYPE* EndP)
 
     return size;
 }
-
-ELEMENT_TYPE   MESSAGING_FRAMEWORK_BUFFER[MESSAGING_FRAMEWORK_BUFFER_SIZE];
 
 size_t
 receiver_fill_here(QUEX_TYPE_LEXATOM* place, size_t MaxN)

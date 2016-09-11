@@ -8,7 +8,7 @@ ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)
 endif
 ifdef ASSERTS_ENABLED_F
-	CCFLAG_ASSERTS=# By default asserts are enabled
+	CCFLAG_ASSERTS=# By default asserts are disabled
 else 
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
