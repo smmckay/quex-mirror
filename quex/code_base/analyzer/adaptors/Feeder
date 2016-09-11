@@ -6,8 +6,8 @@
  * See file 'Feeder.i' for detailed descriptions.
  *
  * (C) 2016 Frank-Rene Schaefer.                                             */
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER
-#define __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER
+#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__FEEDER
+#define __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__FEEDER
 #
 #ifndef QUEX_TYPE_ANALYZER
 #   error "This header must be included after the lexical analyzer definition."
@@ -18,9 +18,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#define QUEX_TYPE_FEEDER      QUEX_NAME(Feeder) 
-#define QUEX_TYPE_INFILTRATOR QUEX_NAME(Infiltrator) 
-
 typedef struct {
     QUEX_TYPE_ANALYZER* lexer;
     QUEX_TYPE_LEXATOM*  last_incomplete_lexeme_p;
@@ -30,11 +27,12 @@ typedef struct {
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me);
 
-#ifdef __QUEX_OPTION_PLAIN_
-#   define QUEX_TYPE_FEEDER_TAG QUEX_NAME(Feeder_tag)
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER_TAG {
-#else
+#define QUEX_TYPE_FEEDER      QUEX_NAME(Feeder) 
+
+#ifndef __QUEX_OPTION_PLAIN_C
 struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_FEEDER {
+#else
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Feeder_tag) {
 #endif
     QUEX_NAME(FeederBase)  base;
 
@@ -52,10 +50,9 @@ public:
     QUEX_TYPE_TOKEN* deliver();
 };
 #else
-    void             (*feed)(struct QUEX_TYPE_FEEDER_TAG*, 
+    void             (*feed)(struct QUEX_NAME(Feeder_tag)*, 
                              const void* BeginP, const void* EndP);
-    QUEX_TYPE_TOKEN* (*deliver)(struct QUEX_TYPE_FEEDER_TAG*);
-};
+    QUEX_TYPE_TOKEN* (*deliver)(struct QUEX_NAME(Feeder_tag)*);
 } QUEX_TYPE_FEEDER;
 #endif
 
@@ -68,44 +65,6 @@ QUEX_INLINE void             QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me,
                                                     const void* BeginP, 
                                                     const void* EndP);
 
-
-#ifdef __QUEX_OPTION_PLAIN_
-#   define QUEX_TYPE_INFILTRATOR_TAG QUEX_NAME(Feeder_tag)
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_INFILTRATOR_TAG {
-#else
-struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_INFILTRATOR {
-#endif
-
-    QUEX_NAME(FeederBase)  base;
-
-#ifndef __QUEX_OPTION_PLAIN_C
-public:
-    QUEX_TYPE_INFILTRATOR(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
-    void              access(void**       begin_p, 
-                             const void** end_p);
-    bool              gavage(ptrdiff_t    ReceivedN);
-    QUEX_TYPE_TOKEN*  deliver();
-};
-#else
-    void              (*access)(QUEX_TYPE_INFILTRATOR* me,
-                                void**       begin_p, 
-                                const void** end_p);
-    bool              (*gavage)(QUEX_TYPE_INFILTRATOR* me, 
-                                ptrdiff_t              ReceivedN);
-    QUEX_TYPE_TOKEN*  (*deliver)(QUEX_TYPE_INFILTRATOR* me);
-} QUEX_TYPE_INFILTRATOR;
-#endif
-
-QUEX_INLINE void  QUEX_NAME(Infiltrator_construct)(QUEX_TYPE_INFILTRATOR* me, 
-                                                   QUEX_TYPE_ANALYZER*    lexer,
-                                                   QUEX_TYPE_TOKEN_ID     StreamTerminatingTokenId);
-QUEX_INLINE void  QUEX_NAME(Infiltrator_access)(QUEX_TYPE_INFILTRATOR* me,
-                                                void**                 begin_p, 
-                                                const void**           end_p);
-QUEX_INLINE bool  QUEX_NAME(Infiltrator_gavage)(QUEX_TYPE_INFILTRATOR* me, 
-                                                ptrdiff_t              ReceivedN);
-QUEX_INLINE QUEX_TYPE_TOKEN*  QUEX_NAME(Infiltrator_deliver)(QUEX_TYPE_INFILTRATOR* me);
-
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__POSTCATEGORIZER */
+#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__FEEDER */

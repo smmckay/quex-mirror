@@ -73,7 +73,8 @@ QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me,
     me->external_chunk.end_p     = (void*)0;
 
 #   ifdef __QUEX_OPTION_PLAIN_C
-    me->deliver = Feeder_deliver;
+    me->feed    = QUEX_NAME(Feeder_feed);
+    me->deliver = QUEX_NAME(Feeder_deliver);
 #   endif
 }
 
@@ -109,22 +110,22 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
  *          (This may be the 'BYE' token).                                   */
 {
     if( ! me->last_incomplete_lexeme_p ) {
-        me->last_incomplete_lexeme_p = me->lexer->input_pointer_get();
+        me->last_incomplete_lexeme_p = me->lexer->buffer._read_p;
     }
 
-    if( me->stream_terminating_token_id == me->lexer->receive() ) {
+    if( me->stream_terminating_token_id == QUEX_NAME(receive)(me->lexer) ) {
         /* This was the very last token to be received.                      */
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
         return me->lexer->token;
     }
-    else if( me->lexer->input_pointer_get() < me->lexer->buffer.input.end_p ) {
+    else if( me->lexer->buffer._read_p < me->lexer->buffer.input.end_p ) {
         /* Lexeme is completely inside the boundaries of the content.
          * => Return it, there is no previous (see entry of function).       */
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
         return me->lexer->token;
     }
-    else if(    me->lexer->lexeme_start_pointer_get() == &me->lexer->buffer._memory._front[1] 
-             && me->lexer->input_pointer_get()        == &me->lexer->buffer._memory._back[0] )  {
+    else if(    me->lexer->buffer._lexeme_start_p == &me->lexer->buffer._memory._front[1] 
+             && me->lexer->buffer._read_p         == &me->lexer->buffer._memory._back[0] )  {
         me->lexer->buffer.on_overflow(&me->lexer->buffer, /* ForwardF */true);
         return (QUEX_TYPE_TOKEN*)0;                         /* There's more! */
     }
@@ -132,7 +133,7 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
         /* Detected 'Termination'
          * => Previous token may be incomplete.
          * => 'last_incomplete_lexeme_p' at position of last token.          */
-        me->lexer->input_pointer_set(me->lexer->lexeme_start_pointer_get());
+        me->lexer->buffer._read_p = me->lexer->buffer._lexeme_start_p; 
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
         return (QUEX_TYPE_TOKEN*)0;                         /* There's more! */
     }

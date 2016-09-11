@@ -8,59 +8,60 @@ end has been reached. In some circumstances, there is not even a file system
 where the analyzer runs, so the buffer must be filled manually. The examples
 in this directory demonstrate how this is done. 
 
-The example program can be controlled by the command line arguments:
+There are three types of doing so: feeding, gavaging and pointing. The first
+two are implemented by lexical analyzer adaptors. Pointing can be done by 
+specifying a place for the lexer's buffer.
 
-  [1] "syntactic" --> receive loop handles chunks which are expected not to 
-                      cut in between matching lexemes.
-      "arbitrary" --> chunks may be cut in between lexemes.
+  Feeding: Here the lexical analyzer's buffer is filled with chunks
+           of arbitrary size. In case converters are used, the chunks
+           are dropped into the intermediate buffer, i.e. the one before
+           conversion takes place.
+
+           This is the most easy to use method and the most flexible. Under
+           normal circumstances there is no need, whatsoever, to apply any
+           other manual filling method.
+
+           EXAMPLE: lexer-feeder.cpp
+
+  Gavaging: This method is more intrusive. For gavaging the user gains direct
+            access to the lexical analyzer's buffer. When conversion is used
+            access to the intermediate buffer is granted. The user can then
+            fill content at the buffer directly.
+
+            Pros/Cons:  + spares a copy operation per byte.
+                        + receivers do not need to allocate extra space for
+                          content to be received.
+                        - the content to be received can never exceed the
+                          buffer's free space.
+                        - only makes sense if the data source can stream into
+                          a dedicated place in memory.
+
+           EXAMPLE: lexer-gavager.cpp
+
+  Pointing: In case of pointing, the lexical analyzer uses a user-specified 
+            region in memory in order to run lexical analysis. This is simply
+            controlled by the lexer's constructors and reset functions.
+
+            Pointing is only available for setups without converters.
+
+           EXAMPLE: lexer-point.cpp
  
-  [2] "fill"      --> content is provided by user filling as dedicated region.
-      "copy"      --> user provides content to be copied into its 'place'.
- 
-The examples for without and with LexatomLoader_Converter are 'compile-time'
-controlled by the macro '-DQUEX_EXAMPLE_WITH_CONVERTER'. If it is present
-a converter-based buffer filler is compiled, otherwise, a plain buffer filler
-is compiled.
+The examples for without and with converter are 'compile-time' controlled by
+the macro 
 
-         .---- without -DQUEX_EXAMPLE_WITH_CONVERTER ----> lexer.exe
-        /
-   lexer.c  
-        \
-         '---- with -DQUEX_EXAMPLE_WITH_CONVERTER -------> lexer_utf8.exe
+                  -DQUEX_EXAMPLE_WITH_CONVERTER 
+                  
+If it is present a converter-based analyzer is compiled, otherwise, a plain 
+buffer filler is compiled.
 
-Files required for the converter end with '_utf8' in their filestem, others
-do not.
-
-There is another example, which falls appart: Pointing. Here the user points
-to place in memory where the lexer has to analyze. The corresponding file
-is 'point.c' which compiles to 'point.exe'.
-
-Syntactic Chunks vs. Arbitrary Chunks
 =====================================
 
-When parsing a command line, for example, it can be expected that each command
-line is received completely terminated with a newline character. The content of
-this line is either syntactically complete or it is wrong. In such cases the
-receive cycle is simple. No history between receive cycles needs to be
-maintained.  However, when receiving chunks through a socket interface, for
-example, no assumption can be made about the borders and lexemes may be cut in
-the middle.  In this case, the beginning of the analyzer step needs to be
-remembered. When new content is loaded the analysis must start from the
-beginning of the lexeme.
+COMMENT: Syntactic Chunks vs. Arbitrary Chunks
 
-Filling vs. Copying
-===================
+Earlier versions of this example directory distinguised between syntactic
+chunks and arbitrary chunks. The adaptors for feeding and gavaging, though,
+provide a high-performance easy-to-use API so that differentiation between
+these two concepts is no longer considered advantegeous.
 
-Content for the engine's buffer can either be 'filled' by the user, or
-'copied'. The former involves less copying, better cache-locality, but is a
-little more complicated (2 function calls instead of 1).
-
-Converters
-==========
-
-The analyser's interface is homogeneous over buffer filling policies. That,
-is, in bother cases 'filling' and 'copying', the user applies the exact same
-API for converted input and non-converted input. The data conversion happens
-completely behind the scenes.
 
 

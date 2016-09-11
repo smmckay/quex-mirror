@@ -22,11 +22,10 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 #define QUEX_TYPE_GAVAGER QUEX_NAME(Gavager) 
 
-#ifdef __QUEX_OPTION_PLAIN_
-#   define QUEX_TYPE_GAVAGER_TAG QUEX_NAME(Feeder_tag)
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_GAVAGER_TAG {
-#else
+#ifndef __QUEX_OPTION_PLAIN_C
 struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_TYPE_GAVAGER {
+#else
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Gavager_tag) {
 #endif
 
     QUEX_NAME(FeederBase)  base;
@@ -40,12 +39,12 @@ public:
     QUEX_TYPE_TOKEN*  deliver();
 };
 #else
-    void              (*access)(QUEX_TYPE_GAVAGER* me,
-                                void**       begin_p, 
-                                const void** end_p);
-    bool              (*gavage)(QUEX_TYPE_GAVAGER* me, 
-                                ptrdiff_t              ReceivedN);
-    QUEX_TYPE_TOKEN*  (*deliver)(QUEX_TYPE_GAVAGER* me);
+    void              (*access)(struct QUEX_NAME(Gavager_tag)* me,
+                                void**                         begin_p, 
+                                const void**                   end_p);
+    bool              (*gavage)(struct QUEX_NAME(Gavager_tag)* me, 
+                                ptrdiff_t                      ReceivedN);
+    QUEX_TYPE_TOKEN*  (*deliver)(struct QUEX_NAME(Gavager_tag)* me);
 } QUEX_TYPE_GAVAGER;
 #endif
 

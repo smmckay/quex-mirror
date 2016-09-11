@@ -94,10 +94,10 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(LexatomLoade
                                    QUEX_TYPE_LEXATOM*                   BeginP,
                                    const QUEX_TYPE_LEXATOM*             EndP,
                                    const void*                         FilledEndP);
-        void        (*get_fill_boundaries)(QUEX_NAME(LexatomLoader_tag)*  alter_ego,
-                                           QUEX_NAME(Buffer)*             buffer,
-                                           void**                         begin_p, 
-                                           const void**                   end_p);
+        void        (*get_fill_boundaries)(struct QUEX_NAME(LexatomLoader_tag)*  alter_ego,
+                                           QUEX_NAME(Buffer)*                    buffer,
+                                           void**                                begin_p, 
+                                           const void**                          end_p);
 
         /* destruct_self: Free resources occupied by 'me' BUT NOT 'myself'.
          * delete_self:   Free resources occupied by 'me' AND 'myself'.      */
@@ -130,10 +130,10 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
                                                                    QUEX_TYPE_LEXATOM*       BeginP,
                                                                    const QUEX_TYPE_LEXATOM* EndP,
                                                                    const void*                FilledEndP),
-                               void         (*derived_get_fill_boundaries)(QUEX_NAME(LexatomLoader_tag)* alter_ego,
-                                                                           QUEX_NAME(Buffer)*            buffer,
-                                                                           void**                        begin_p, 
-                                                                           const void**                  end_p),
+                               void         (*derived_get_fill_boundaries)(QUEX_NAME(LexatomLoader)* alter_ego,
+                                                                           QUEX_NAME(Buffer)*        buffer,
+                                                                           void**                    begin_p, 
+                                                                           const void**              end_p),
                                QUEX_NAME(ByteLoader)*  byte_loader, 
                                ptrdiff_t               ByteNPerCharacter);
 
