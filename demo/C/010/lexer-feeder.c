@@ -16,8 +16,6 @@ typedef QUEX_TYPE_ANALYZER CLexer;
 typedef QUEX_TYPE_TOKEN    CToken;
 typedef QUEX_TYPE_FEEDER   CFeeder;
 
-/* Content by 'copying' or 'filling'.
- *                                                                           */
 static void show_buffer(CLexer* lexer, 
                         const uint8_t* RawBeginP, const uint8_t* RawEndP);
 

@@ -11,26 +11,23 @@
 
 #include "receiver.h"
 
+using namespace quex;
+
 typedef QUEX_TYPE_ANALYZER CLexer;
 typedef QUEX_TYPE_TOKEN    CToken;
+typedef QUEX_TYPE_FEEDER   CFeeder;
 
-/* Content by 'copying' or 'filling'.
- *                                                                           */
 static void show_buffer(CLexer* lexer, 
                         const uint8_t* RawBeginP, const uint8_t* RawEndP);
 
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
-    CLexer*            lexer;
-    CToken*            token;
-    QUEX_NAME(Feeder)* feeder;
-    size_t             received_n;
-    uint8_t*           rx_content_p;
-
-    lexer  = new QUEX_TYPE_ANALYZER((QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
-    feeder = new QUEX_NAME(Feeder)(lexer, QUEX_TKN_BYE);
+    CToken*   token;
+    CLexer    lexer((QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
+    CFeeder   feeder(&lexer, QUEX_TKN_BYE);
+    size_t    received_n;
+    uint8_t*  rx_content_p;
 
     token = (CToken*)0;
     while( ! token || token->_id != QUEX_TKN_BYE ) {
@@ -38,12 +35,12 @@ main(int argc, char** argv)
         if( ! token ) {
             received_n = receiver_get_pointer_to_received(&rx_content_p);
 
-            feeder->feed(&rx_content_p[0], &rx_content_p[received_n]);
+            feeder.feed(&rx_content_p[0], &rx_content_p[received_n]);
 
-            show_buffer(lexer, &rx_content_p[0], &rx_content_p[received_n]);
+            show_buffer(&lexer, &rx_content_p[0], &rx_content_p[received_n]);
         }
 
-        token = feeder->deliver();
+        token = feeder.deliver();
         /* token == NULL, if the feeder only requires more content.
          * else,          if a valid token that has been returned.       */
 
@@ -52,10 +49,7 @@ main(int argc, char** argv)
         }
     }
 
-    show_buffer(lexer, &rx_content_p[0], &rx_content_p[received_n]);
-
-    delete feeder;
-    delete lexer;
+    show_buffer(&lexer, &rx_content_p[0], &rx_content_p[received_n]);
 }
 
 static void

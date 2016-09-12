@@ -511,6 +511,7 @@ $$__QUEX_OPTION_TOKEN_QUEUE$$
 #include <quex/code_base/analyzer/asserts.i>
 #include <quex/code_base/analyzer/struct/constructor.i>
 #include <quex/code_base/analyzer/member/mode-handling.i>
+#include <quex/code_base/buffer/asserts.i>
 #ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
 #   include <quex/code_base/token/TokenQueue.i>
 #endif

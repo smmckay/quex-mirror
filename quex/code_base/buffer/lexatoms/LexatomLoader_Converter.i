@@ -320,6 +320,7 @@ QUEX_NAME(LexatomLoader_Converter_get_fill_boundaries)(QUEX_NAME(LexatomLoader)*
                                                        const void**               end_p)
 {
     QUEX_NAME(LexatomLoader_Converter)* me = (QUEX_NAME(LexatomLoader_Converter)*)alter_ego;
+    (void)buffer;
 
     *begin_p = (void*)me->raw_buffer.fill_end_p; 
     *end_p   = (void*)me->raw_buffer.memory_end;
