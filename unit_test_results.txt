@@ -1415,60 +1415,35 @@ quex/TESTS/source-package/TEST                                       <no date>
  * Source Packager:
 
     C
-        test-c.sh codec ............................................[FAIL]
-                  codec-utf16 ......................................[FAIL]
-                  codec-utf8 .......................................[FAIL]
-                  customized-token-class ...........................[FAIL]
-                  iconv ............................................[FAIL]
-                  icu ..............................................[FAIL]
-                  manual-token-class ...............................[FAIL]
-                  no-counter .......................................[FAIL]
-                  no-include-stack .................................[FAIL]
-                  no-string-accumulator ............................[FAIL]
-                  plain ............................................[FAIL]
-                  post-categorizer .................................[FAIL]
+        test-c.sh codec ..............................................[OK]
+                  codec-utf16 ........................................[OK]
+                  codec-utf8 .........................................[OK]
+                  customized-token-class .............................[OK]
+                  iconv ..............................................[OK]
+                  icu ................................................[OK]
+                  manual-token-class .................................[OK]
+                  no-counter .........................................[OK]
+                  no-include-stack ...................................[OK]
+                  no-string-accumulator ..............................[OK]
+                  plain ..............................................[OK]
+                  post-categorizer ...................................[OK]
     C++
-        test-cpp.sh codec ..........................................[FAIL]
-                    codec-utf16 ....................................[FAIL]
-                    codec-utf8 .....................................[FAIL]
-                    customized-token-class .........................[FAIL]
-                    iconv ..........................................[FAIL]
-                    icu ............................................[FAIL]
-                    manual-token-class .............................[FAIL]
-                    no-counter .....................................[FAIL]
-                    no-include-stack ...............................[FAIL]
-                    no-string-accumulator ..........................[FAIL]
-                    plain ..........................................[FAIL]
-                    post-categorizer ...............................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-c.sh _ codec
-                   \__ codec-utf16
-                   \__ codec-utf8
-                   \__ customized-token-class
-                   \__ iconv
-                   \__ icu
-                   \__ manual-token-class
-                   \__ no-counter
-                   \__ no-include-stack
-                   \__ no-string-accumulator
-                   \__ plain
-                   \__ post-categorizer
-    [FAIL] test-cpp.sh _ codec
-                     \__ codec-utf16
-                     \__ codec-utf8
-                     \__ customized-token-class
-                     \__ iconv
-                     \__ icu
-                     \__ manual-token-class
-                     \__ no-counter
-                     \__ no-include-stack
-                     \__ no-string-accumulator
-                     \__ plain
-                     \__ post-categorizer
+        test-cpp.sh codec ............................................[OK]
+                    codec-utf16 ......................................[OK]
+                    codec-utf8 .......................................[OK]
+                    customized-token-class ...........................[OK]
+                    iconv ............................................[OK]
+                    icu ..............................................[OK]
+                    manual-token-class ...............................[OK]
+                    no-counter .......................................[OK]
+                    no-include-stack .................................[OK]
+                    no-string-accumulator ............................[OK]
+                    plain ............................................[OK]
+                    post-categorizer .................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Token Class                                  
@@ -2709,72 +2684,49 @@ quex/code_base/buffer/TESTS/move/TEST                                <no date>
  * move_away_passed_content:
 
     (BPC=1, FB=0)
-        move_away_passed_content-fb0.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb0.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=1, FB=1)
-        move_away_passed_content-fb1.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb1.exe EoS .........................[OK]
+                                         NoEoS .....................[FAIL]
     (BPC=1, FB=2)
-        move_away_passed_content-fb2.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb2.exe EoS .........................[OK]
+                                         NoEoS .....................[FAIL]
     (BPC=4, FB=2)
-        move_away_passed_content-fb2-32.exe EoS .............[MAKE FAILED]
-                                            NoEoS ...........[MAKE FAILED]
+        move_away_passed_content-fb2-32.exe EoS ......................[OK]
+                                            NoEoS ..................[FAIL]
 
  * move_away_upfront_content:
 
     (BPC=1)
-        move_away_upfront_content-8.exe cib=0 ...............[MAKE FAILED]
-                                        cib=0:EOS ...........[MAKE FAILED]
-                                        cib=1 ...............[MAKE FAILED]
-                                        cib=1:EOS ...........[MAKE FAILED]
-                                        cib=2 ...............[MAKE FAILED]
-                                        cib=2:EOS ...........[MAKE FAILED]
+        move_away_upfront_content-8.exe cib=0 ........................[OK]
+                                        cib=0:EOS ....................[OK]
+                                        cib=1 ........................[OK]
+                                        cib=1:EOS ....................[OK]
+                                        cib=2 ........................[OK]
+                                        cib=2:EOS ....................[OK]
     (BPC=2)
-        move_away_upfront_content-16.exe cib=0 ..............[MAKE FAILED]
-                                         cib=0:EOS ..........[MAKE FAILED]
-                                         cib=1 ..............[MAKE FAILED]
-                                         cib=1:EOS ..........[MAKE FAILED]
-                                         cib=2 ..............[MAKE FAILED]
-                                         cib=2:EOS ..........[MAKE FAILED]
+        move_away_upfront_content-16.exe cib=0 .......................[OK]
+                                         cib=0:EOS ...................[OK]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
     (BPC=4)
-        move_away_upfront_content-32.exe cib=0 ..............[MAKE FAILED]
-                                         cib=0:EOS ..........[MAKE FAILED]
-                                         cib=1 ..............[MAKE FAILED]
-                                         cib=1:EOS ..........[MAKE FAILED]
-                                         cib=2 ..............[MAKE FAILED]
-                                         cib=2:EOS ..........[MAKE FAILED]
+        move_away_upfront_content-32.exe cib=0 .......................[OK]
+                                         cib=0:EOS ...................[OK]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] move_away_passed_content-fb0.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb1.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb2.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb2-32.exe _ EoS
-                                             \__ NoEoS
-    [FAIL] move_away_upfront_content-8.exe _ cib=0
-                                         \__ cib=0:EOS
-                                         \__ cib=1
-                                         \__ cib=1:EOS
-                                         \__ cib=2
-                                         \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-16.exe _ cib=0
-                                          \__ cib=0:EOS
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-32.exe _ cib=0
-                                          \__ cib=0:EOS
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
+    [FAIL] move_away_passed_content-fb1.exe _ NoEoS
+    [FAIL] move_away_passed_content-fb2.exe _ NoEoS
+    [FAIL] move_away_passed_content-fb2-32.exe _ NoEoS
 ===============================================================================
                                                                                
                       Extensive Tests on Buffer Seek&Tell                      
@@ -3150,13 +3102,13 @@ SUMMARY:
         7  9     [FAIL] ........../match-precedence/TEST                    
        10  11    [FAIL] ........../misc/TEST                                
            55      [OK] ........../reset/TEST                               
-       24  24    [FAIL] ........../source-package/TEST                      
+           24      [OK] ........../source-package/TEST                      
            2       [OK] ........../token-class/TEST                         
            4       [OK] ........../token-policies/TEST                      
            10      [OK] ..../code_base/TEST                                 
            42      [OK] ............../analyzer/TEST                        
         8  8     [FAIL] ............../buffer/TESTS/load/TEST               
-       26  26    [FAIL] .........................../move/TEST               
+        3  26    [FAIL] .........................../move/TEST               
         6  78    [FAIL] .........................../navigation/TEST         
            12      [OK] ...................../bytes/TEST                    
            12      [OK] ...................../lexatoms/converter/iconv/TEST 
@@ -3181,11 +3133,11 @@ SUMMARY:
         1  13    [FAIL] .........../cpp/TEST                                
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____   _  _   ____             
-    |  ___|_ _(_) |___     |___ \ | || | | ___|      __  __
-    | |_ / _` | | / __|      __) || || |_|___ \      \ \/ /
-    |  _| (_| | | \__ \     / __/ |__   _ ___) |      >  < 
-    |_|  \__,_|_|_|___/    |_____|   |_| |____/      /_/\_\
+     _____     _ _          _   ___    ___            
+    |  ___|_ _(_) |___     / | / _ \  ( _ )     __  __
+    | |_ / _` | | / __|    | || (_) | / _ \     \ \/ /
+    |  _| (_| | | \__ \    | | \__, || (_) |     >  < 
+    |_|  \__,_|_|_|___/    |_|   /_/  \___/     /_/\_\
                                                                    (1481 tests)
 
 ===============================================================================

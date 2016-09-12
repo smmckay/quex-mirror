@@ -45,6 +45,7 @@ base_compatibility = """
 
 base_buffer = """
 /buffer/asserts
+/buffer/asserts.i
 /buffer/Buffer
 /buffer/Buffer_debug
 /buffer/Buffer_debug.i

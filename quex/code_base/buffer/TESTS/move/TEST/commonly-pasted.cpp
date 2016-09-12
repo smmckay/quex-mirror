@@ -5,6 +5,7 @@
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include <quex/code_base/buffer/Buffer_debug.i>
 #include <quex/code_base/buffer/Buffer.i>
+#include <quex/code_base/buffer/asserts.i>
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
 #include <quex/code_base/single.i>
 #include <cstring>
