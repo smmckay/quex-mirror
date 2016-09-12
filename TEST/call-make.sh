@@ -15,5 +15,7 @@ cat $tmpfile \
             && ! /QUEX_ERROR_EXIT/           \
             && ! /QUEX_ERROR_DEPRECATED/'   
 
-cat $tmpfile
+# echo "BEGIN: CAT TEMPFILE DURING MAKE PROCESS __________________"
+# cat $tmpfile
+# echo "END: _____________________________________________________"
 rm $tmpfile
