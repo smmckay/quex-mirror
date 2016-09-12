@@ -4,7 +4,7 @@ if [[ $1 == "--hwut-info" ]]; then
     echo "CHOICES:  feeder-plain, feeder-converter, gavager-plain, gavager-converter, point-plain;"
     exit
 fi
-cd $QUEX_PATH/demo/Cpp/010
+cd $QUEX_PATH/demo/C/010
 
 if [[ "$2" == "FIRST" ]]; then
     make clean >& /dev/null

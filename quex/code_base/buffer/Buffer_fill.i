@@ -64,7 +64,7 @@ QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
  *                                                                           */
 {
     QUEX_TYPE_LEXATOM*   BeginP = &me->_memory._front[1];
-    __quex_assert(FilledEndP <= me->_memory._back);
+    __quex_assert((QUEX_TYPE_LEXATOM*)FilledEndP <= me->_memory._back);
 
     /* Place new content in the engine's buffer.                             */
     ptrdiff_t inserted_lexatom_n = me->filler->derived.fill_finish(me->filler, 

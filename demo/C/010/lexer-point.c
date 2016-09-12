@@ -13,7 +13,7 @@
 #include<stdio.h>    
 #include<string.h> 
 
-#include "lexPlain"
+#include "lexPlain.h"
 
 /* Terminating zero is implicitly added by the C-Language.                   */
 static uint8_t Memory0[] = 
@@ -30,34 +30,36 @@ static void  test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size);
 int 
 main(int argc, char** argv) 
 {        
-    QUEX_TYPE_ANALYZER*  lexer; 
+    QUEX_TYPE_ANALYZER  lexer; 
 
-    lexer = new QUEX_TYPE_ANALYZER((QUEX_TYPE_LEXATOM*)&Memory0[0], 
-                                   Memory0Size,
-                                   (QUEX_TYPE_LEXATOM*)&Memory0[Memory0Size-1]);
+    QUEX_NAME(from_memory)(&lexer, (QUEX_TYPE_LEXATOM*)&Memory0[0], 
+                           Memory0Size,
+                           (QUEX_TYPE_LEXATOM*)&Memory0[Memory0Size-1]);
 
-    test(lexer, NULL, 0);                  /* memory given during construct.  */
-    test(lexer, &Memory1[0], Memory1Size); /* memory given upon reset.        */
+    test(&lexer, NULL, 0);                  /* memory given during construct.  */
+    test(&lexer, &Memory1[0], Memory1Size); /* memory given upon reset.        */
 
-    delete lexer;
-
+    QUEX_NAME(destruct)(&lexer);
     return 0;
 }
 
 static void  
 test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
 {
+    char      buffer[256];
+
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */
-        lexer->reset((QUEX_TYPE_LEXATOM*)&memory[0], Size, 
-                     (QUEX_TYPE_LEXATOM*)&memory[Size-1]);
+        QUEX_NAME(reset_memory)(lexer, (QUEX_TYPE_LEXATOM*)&memory[0], Size, 
+                                (QUEX_TYPE_LEXATOM*)&memory[Size-1]);
     }
 
     /* Loop until the 'termination' token arrives                            */
     do {
         QUEX_NAME(receive)(lexer);
 
-        printf("   Token: %s\n", lexer->token->get_string().c_str());
+        printf("   Token: %s\n", QUEX_NAME_TOKEN(get_string)(lexer->token, 
+                                                             &buffer[0], sizeof(buffer)));
         
     } while( lexer->token->_id != QUEX_TKN_TERMINATION );
 

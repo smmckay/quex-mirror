@@ -69,7 +69,7 @@ lexConverter.c: lexConverter.qx
 		 -o                    lexConverter      \
 		 --iconv                                 \
 		 --token-policy        single            \
-		 --buffer-element-type wchar_t           
+		 --buffer-element-type wchar_t           \
 		 --language            C            
 
 # (*) HELPERS __________________________________________________________________

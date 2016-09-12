@@ -8,11 +8,13 @@
 #   include "lexPlain.h"
 #endif
 #include "quex/code_base/analyzer/adaptors/Feeder.i"
+#include "quex/code_base/buffer/Buffer_debug"
 
 #include "receiver.h"
 
 typedef QUEX_TYPE_ANALYZER CLexer;
 typedef QUEX_TYPE_TOKEN    CToken;
+typedef QUEX_TYPE_FEEDER   CFeeder;
 
 /* Content by 'copying' or 'filling'.
  *                                                                           */
@@ -22,15 +24,15 @@ static void show_buffer(CLexer* lexer,
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
-    CLexer             lexer;
-    CToken*            token;
-    QUEX_NAME(Feeder)  feeder;
-    size_t             received_n;
-    uint8_t*           rx_content_p;
+    CLexer    lexer;
+    CToken*   token;
+    CFeeder   feeder;
+    size_t    received_n;
+    uint8_t*  rx_content_p;
+    char      buffer[256];
 
-    QUEX_NAME(construct_from_memory)(&lexer, (QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
-    QUEX_NAME(Feeder_construct)(&feeder, lexer, QUEX_TKN_BYE);
+    QUEX_NAME(from_ByteLoader)(&lexer, (QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
+    QUEX_NAME(Feeder_construct)(&feeder, &lexer, QUEX_TKN_BYE);
 
     token = (CToken*)0;
     while( ! token || token->_id != QUEX_TKN_BYE ) {
@@ -38,30 +40,29 @@ main(int argc, char** argv)
         if( ! token ) {
             received_n = receiver_get_pointer_to_received(&rx_content_p);
 
-            feeder->feed(feeder, &rx_content_p[0], &rx_content_p[received_n]);
+            feeder.feed(&feeder, &rx_content_p[0], &rx_content_p[received_n]);
 
-            show_buffer(lexer, &rx_content_p[0], &rx_content_p[received_n]);
+            show_buffer(&lexer, &rx_content_p[0], &rx_content_p[received_n]);
         }
 
-        token = feeder->deliver(feeder);
+        token = feeder.deliver(&feeder);
         /* token == NULL, if the feeder only requires more content.
          * else,          if a valid token that has been returned.       */
 
         if( token ) {
-            printf("   TOKEN: %s\n", token->get_string().c_str());
+            printf("   TOKEN: %s\n", QUEX_NAME_TOKEN(get_string)(token, &buffer[0], sizeof(buffer)));
         }
     }
 
-    show_buffer(lexer, &rx_content_p[0], &rx_content_p[received_n]);
+    show_buffer(&lexer, &rx_content_p[0], &rx_content_p[received_n]);
 
     QUEX_NAME(destruct)(&lexer);
-    feeder->destruct(feeder);
+    /* Feeders do not need destruction. */
 }
 
 static void
 show_buffer(CLexer* lexer, const uint8_t* RawBeginP, const uint8_t* RawEndP)
 {
-    using namespace quex;
 #   ifdef QUEX_EXAMPLE_WITH_CONVERTER
     printf("     raw: ");
     QUEX_NAME(Buffer_print_content_core)(1, RawBeginP, &RawEndP[-1], 

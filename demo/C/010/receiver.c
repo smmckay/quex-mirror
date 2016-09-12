@@ -4,11 +4,11 @@
 #include "receiver.h"
 
 #ifdef QUEX_EXAMPLE_WITH_CONVERTER
-#   include "lexConverter"
+#   include "lexConverter.h"
     static ELEMENT_TYPE receiver_data[] = 
        "Ελληνικά • Euskara • فارسی • Frysk • Galego • 한국어 • हिन्दी bye";
 #else
-#   include "lexPlain"
+#   include "lexPlain.h"
     static QUEX_TYPE_LEXATOM   receiver_data[] = 
        "A little nonsense now and then is cherished by the wisest men bye";
 #endif

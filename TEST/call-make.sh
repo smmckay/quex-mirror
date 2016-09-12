@@ -15,4 +15,5 @@ cat $tmpfile \
             && ! /QUEX_ERROR_EXIT/           \
             && ! /QUEX_ERROR_DEPRECATED/'   
 
+cat $tmpfile
 rm $tmpfile
