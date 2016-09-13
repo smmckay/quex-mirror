@@ -1,15 +1,14 @@
+#! /usr/bin/env bash
 test_dir=../$1
 first_f=$2
 last_f=$3
 
-if [[ "$2" != "FIRST" && "$2" != "NOT-FIRST" ]]; then
-    echo "Warning: \$2 is not FIRST or NOT-FIRST as HWUT would ask"
+if [[ "$first_f" != "FIRST" && "$first_f" != "NOT-FIRST" ]]; then
+    echo "## Warning: \$2 is not FIRST or NOT-FIRST as HWUT would ask"
 fi
-if [[ "$3" != "LAST" && "$3" != "NOT-LAST" ]]; then
-    echo "Warning: \$3 is not FIRST or NOT-FIRST as HWUT would ask"
+if [[ "$second_f" != "LAST" && "$second_f" != "NOT-LAST" ]]; then
+    echo "## Warning: \$3 is not FIRST or NOT-FIRST as HWUT would ask"
 fi
-
-echo $1 $2 $3 >> tmp.txt
 
 current_dir=`pwd`
 
@@ -29,6 +28,10 @@ else
     $QUEX_PATH/TEST/call-make.sh lexer $4 $5 $6 $7 >& tmp-make.txt
 fi
 
+# echo "DEBUG: BEGIN"
+# cat tmp-make.txt
+# echo "DEBUG: END"
+
 # Run the test ________________________________________________________________
 # (including the check for memory leaks)
 if [[ "$lexer_name" == "" ]]; then
@@ -46,9 +49,6 @@ if [[ -f $current_dir/side-kick.sh ]]; then
     source $current_dir/side-kick.sh tmp-stdout.txt 
     # No side-kick.sh of another application shall interfer
     rm -f  $current_dir/side-kick.sh
-else
-    cat tmp-make.txt  
-    cat tmp-stdout.txt 
 fi
 
 rm -f tmp-stdout.txt tmp-stdout0.txt

@@ -9,7 +9,7 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE void
-QUEX_BUFFER_ASSERT_pointers_in_range(QUEX_NAME(Buffer)* B)                                      
+QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)(QUEX_NAME(Buffer)* B)                                      
 /* Check whether _read_p and _lexeme_start_p are in ther appropriate range. */
 {                                                                                    
     __quex_assert( (B) != 0x0 );                                                     
@@ -29,7 +29,7 @@ QUEX_BUFFER_ASSERT_pointers_in_range(QUEX_NAME(Buffer)* B)
 }
 
 QUEX_INLINE void
-QUEX_BUFFER_ASSERT_limit_codes_in_place(QUEX_NAME(Buffer)* B)                                            
+QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)(QUEX_NAME(Buffer)* B)                                            
 {
     if( ! (*B)._memory._front && ! (*B)._memory._back ) {                    
         return;
@@ -40,20 +40,20 @@ QUEX_BUFFER_ASSERT_limit_codes_in_place(QUEX_NAME(Buffer)* B)
 }
 
 QUEX_INLINE void
-QUEX_BUFFER_ASSERT_CONSISTENCY(QUEX_NAME(Buffer)* B)                                            
+QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)(QUEX_NAME(Buffer)* B)                                            
 {                                                                                    
     if( ! B ) return;
     __quex_assert(   B->input.lexatom_index_begin == -1
                   || B->input.lexatom_index_begin >= 0);
     __quex_assert(   B->input.lexatom_index_end_of_stream == -1 
                   || B->input.lexatom_index_end_of_stream >= B->input.lexatom_index_begin);
-    QUEX_BUFFER_ASSERT_pointers_in_range(B);                                              
-    QUEX_BUFFER_ASSERT_limit_codes_in_place(B);
+    QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)(B);                                              
+    QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)(B);
 }
 
 QUEX_INLINE void
-QUEX_BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE(const QUEX_TYPE_LEXATOM* Begin, 
-                                        const QUEX_TYPE_LEXATOM* End)
+QUEX_NAME(BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE_core)(const QUEX_TYPE_LEXATOM* Begin, 
+                                                   const QUEX_TYPE_LEXATOM* End)
 {
     const QUEX_TYPE_LEXATOM* iterator = 0x0;
     __quex_assert(Begin <= End);
