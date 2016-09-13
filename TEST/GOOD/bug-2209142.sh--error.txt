@@ -12,21 +12,49 @@
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 ## An Assert-Abortion might be an intended element of the experiment.
-(1, 1)  	IDENTIFIER 'eins' 
-(1, 5)  	WHITESPACE '' 
-(1, 6)  	COMMENT '' 
-(1, 17)  	WHITESPACE '' 
-(1, 18)  	IDENTIFIER 'zwei' 
-(1, 22)  	WHITESPACE '' 
-(1, 23)  	COMMENT '' 
-(1, 34)  	WHITESPACE '' 
-(1, 35)  	IDENTIFIER 'drei' 
-(1, 39)  	WHITESPACE '' 
-(1, 40)  	COMMENT '' 
-(1, 90)  	WHITESPACE '' 
-(1, 91)  	IDENTIFIER 'sechs' 
-(1, 96)  	WHITESPACE '' 
-Simple.cpp:721:	terminate called after throwing an instance of 'std::runtime_error'
+(1, 1)  	IDENTIFIER 'eins'
+(1, 5)  	WHITESPACE ''
+(1, 6)  	COMMENT ''
+(1, 17)  	WHITESPACE ''
+(1, 18)  	IDENTIFIER 'zwei'
+(1, 22)  	WHITESPACE ''
+(1, 23)  	COMMENT ''
+(1, 34)  	WHITESPACE ''
+(1, 35)  	IDENTIFIER 'drei'
+(1, 39)  	WHITESPACE ''
+(1, 40)  	COMMENT ''
+(1, 90)  	WHITESPACE ''
+(1, 91)  	IDENTIFIER 'sechs'
+(1, 96)  	WHITESPACE ''
+
+
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x0065
+                                           [0002] 0x0069
+                                           [0003] 0x006E
+                                           [0004] 0x0073
+                                           ...
+                                           [005F] 0x0073
+                                           [0060] 0x0020
+   lexeme start--------------------------->[0061] 0x002F
+   input---------------------------------->[0062] 0x002A
+                                           [0063] 0x0020
+                                           [0064] 0x0066
+                                           ...
+                                           [0070] 0x002A
+                                           [0071] 0x002A
+                                           [0072] 0x002F
+                                           [0073] 0x000A
+   end of file---------------------------->[0074] 0x0000
+                                           ...
+                                           [FFFB] 0x00FF
+                                           [FFFC] 0x00FF
+                                           [FFFD] 0x00FF
+                                           [FFFE] 0x00FF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________
+Simple.cpp:735:	terminate called after throwing an instance of 'std::runtime_error'
   what():  
 Mode 'ALL': Match failure, no pattern matched!
 The 'on_failure' handler has not been specified.

@@ -1,0 +1,37 @@
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+(*) test string: 
+'0
+	 	
+	  2
+	   	\
+	    4
+	     #	
+	      6
+	(	)	(	)	(	)	(	)	(	)
+	        8
+	(	)	(	)	(	)	(	)	(	)
+	      6
+	     #	
+	    4
+	   	\
+...'
+(*) result:
+next letter: <2> column_n: 7
+next letter: <4> column_n: 9
+next letter: <6> column_n: 11
+next letter: <8> column_n: 13
+next letter: <6> column_n: 11
+next letter: <4> column_n: 9
+next letter: <2> column_n: 7
+next letter: <0> column_n: 1
+end
+---
+INDENT
+INDENT
+INDENT
+INDENT
+DEDENT
+DEDENT
+DEDENT
+DEDENT
