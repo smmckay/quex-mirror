@@ -957,11 +957,16 @@ def _get_terminal_list_for_loop(loop_map, EventHandler, IidLoopAfterAppendixDrop
 
     # Terminal: Normal Loop Characters
     # (LOOP EXIT terminal is generated later, see below).
-    result = [
-        EventHandler.get_loop_terminal_code(lei, DoorIdLoop, door_id_loop_exit) 
-        for lei in loop_map
-        if lei.incidence_id != IidLoopExit
-    ]
+    result = []
+    done   = set()
+    for lei in loop_map:
+        if   lei.incidence_id in done:        continue
+        elif lei.incidence_id == IidLoopExit: continue
+        done.add(lei.incidence_id)
+        result.append(
+            EventHandler.get_loop_terminal_code(lei, DoorIdLoop, 
+                                                door_id_loop_exit) 
+        )
 
     # Terminal: Re-enter Loop
     if IidLoopAfterAppendixDropOut is not None:

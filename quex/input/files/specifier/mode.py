@@ -177,7 +177,7 @@ class Mode_PrepPrep:
         """
         PatternIdx = ThePattern.incidence_id() 
         self.reprioritization_info_list.append(
-            PatternRepriorization(ThePattern, PatternIdx, 
+            PatternRepriorization(ThePattern.finalize(None), PatternIdx, 
                                   SourceRef.from_FileHandle(fh, self.name))
         )
 
@@ -187,7 +187,7 @@ class Mode_PrepPrep:
         """
         PatternIdx = ThePattern.incidence_id() 
         self.deletion_info_list.append(
-            PatternDeletion(ThePattern, PatternIdx, 
+            PatternDeletion(ThePattern.finalize(None), PatternIdx, 
                             SourceRef.from_FileHandle(fh, self.name))
         )
 

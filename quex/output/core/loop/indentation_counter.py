@@ -1,4 +1,5 @@
 from   quex.input.code.core                         import CodeTerminal
+from   quex.engine.state_machine.core               import StateMachine
 from   quex.engine.analyzer.door_id_address_label   import DoorID
 from   quex.engine.operations.operation_list        import Op
 import quex.engine.analyzer.door_id_address_label   as     dial
@@ -115,18 +116,18 @@ def do(Data, ReloadState):
     door_id_loop,          \
     required_register_set, \
     run_time_counter_f     = loop.do(ca_map, 
-                                    OnLoopExitDoorId           = loop_exit_door_id,
-                                    EngineType                 = engine_type,
-                                    ReloadStateExtern          = ReloadState,
-                                    LexemeMaintainedF          = False,
-                                    ParallelSmTerminalPairList = sm_terminal_list, 
-                                    dial_db                    = dial_db,
-                                    LoopCharacterSet           = whitespace_set) 
+                                     OnLoopExitDoorId           = loop_exit_door_id,
+                                     EngineType                 = engine_type,
+                                     ReloadStateExtern          = ReloadState,
+                                     LexemeMaintainedF          = False,
+                                     ParallelSmTerminalPairList = sm_terminal_list, 
+                                     dial_db                    = dial_db,
+                                     LoopCharacterSet           = whitespace_set) 
 
     terminal_list.append(ih_call_terminal)
 
-    return code, \
-           terminal_list, \
+    return code,                  \
+           terminal_list,         \
            required_register_set, \
            run_time_counter_f
 
@@ -137,7 +138,8 @@ def _get_indentation_handler_terminal(DefaultIndentationHanderF,
         Op.GotoDoorId(DoorID.continue_without_on_after_match(dial_db))
     ], dial_db)
     incidence_id = dial.new_incidence_id()
-    terminal = Terminal(CodeTerminal(code), "<CALL INDENTATION HANDLER>", 
+    terminal = Terminal(CodeTerminal(code), 
+                        "<CALL INDENTATION HANDLER>", 
                         incidence_id,
                         dial_db=dial_db)
 
@@ -190,11 +192,10 @@ def _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
     on_bad_indentation_txt = Lng.SOURCE_REFERENCED(
         incidence_db[E_IncidenceIDs.INDENTATION_BAD]
     )
-    code = [
-        Lng.ON_BAD_INDENTATION(on_bad_indentation_txt, 
-                               E_IncidenceIDs.INDENTATION_BAD,
-                               dial_db)
-    ]
+    code = Lng.ON_BAD_INDENTATION(on_bad_indentation_txt, 
+                                  E_IncidenceIDs.INDENTATION_BAD,
+                                  dial_db)
+    
     terminal = loop.MiniTerminal(code, 
                                  "<INDENTATION BAD INDENTATION CHARACTER>", 
                                  E_IncidenceIDs.INDENTATION_BAD)

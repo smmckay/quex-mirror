@@ -293,6 +293,27 @@ class CountActionMap(list):
                 return False
         return True
 
+    def __str__(self):
+        def _db_to_text(title, CountCmdInfoList):
+            txt = "%s:\n" % title
+            for character_set, info in sorted(CountCmdInfoList, key=lambda x: x[0].minimum()):
+                if type(info.value) in [str, unicode]:
+                    txt += "    %s by %s\n" % (info.value, character_set.get_utf8_string())
+                else:
+                    txt += "    %3i by %s\n" % (info.value, character_set.get_utf8_string())
+            return txt
+
+        db_by_name = defaultdict(list)
+        for character_set, info in self:
+            name = cc_type_name_db[info.cc_type]
+            db_by_name[name].append((character_set, info))
+
+        txt = [
+            _db_to_text(cname, count_command_info_list)
+            for cname, count_command_info_list in sorted(db_by_name.iteritems(), key=itemgetter(0))
+        ]
+        return "".join(txt)
+
 class CountBase:
     pass
          

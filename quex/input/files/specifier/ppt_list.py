@@ -17,6 +17,8 @@ from   quex.engine.counter                          import CountActionMap, \
                                                            IndentationCount
 from   quex.engine.pattern                          import Pattern
 import quex.engine.state_machine.check.tail         as     tail
+import quex.engine.state_machine.check.superset     as     superset_check
+import quex.engine.state_machine.check.identity     as     identity_checker
 from   quex.engine.operations.operation_list        import Op
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.analyzer.door_id_address_label   import DoorID, \
@@ -68,7 +70,7 @@ class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "terminal"))):
     they are not visible outside class 'Mode'.
     ______________________________________________________________________________
     """
-    @typed(ThePatternPriority=PatternPriority, TheTerminal=(Terminal, None))
+    @typed(ThePatternPriority=PatternPriority, ThePattern=Pattern, TheTerminal=(Terminal, None))
     def __new__(self, ThePatternPriority, ThePattern, TheTerminal):
         return super(PPT, self).__new__(self, ThePatternPriority, ThePattern, TheTerminal)
 
@@ -166,9 +168,9 @@ class PPT_List(list):
         """
         if len(ppt_list) < 1: return
 
-        prev_incidence_id = ppt_list[0].pattern.incidence_id - 1
         ppt_list.sort(key=attrgetter("priority"))
-        for i, ppt in enumerate(list(ppt_list[1:]), start=1): 
+        prev_incidence_id = ppt_list[0].pattern.incidence_id 
+        for i, ppt in enumerate(ppt_list[1:], start=1): 
             priority, pattern, terminal = ppt
 
             # NOT: Mode Hierarchy Index < 0 == 'Entry into Looper'
@@ -210,7 +212,7 @@ class PPT_List(list):
                 done_f = True
                 history.append([ModeName, 
                                 pattern.pattern_string(), pattern.sr.mode_name,
-                                pattern.incidence_id(), Info.new_pattern_index])
+                                pattern.incidence_id, Info.new_pattern_index])
                 priority.mode_hierarchy_index = MHI
                 priority.pattern_index        = Info.new_pattern_index
 
@@ -502,15 +504,15 @@ class PPT_List(list):
 
     def _match_indentation_counter_newline_pattern(self, indentation_handler, CloserPattern):
         if indentation_handler is None: return False
-        indentation_sm_newline = indentation_handler.sm_newline.get()
+        indentation_sm_newline = indentation_handler.pattern_newline.sm
         if indentation_sm_newline is None: return False
 
         only_common_f, \
         common_f       = tail.do(indentation_sm_newline, CloserPattern.sm)
 
         error_check.tail(only_common_f, common_f, 
-                        "indentation handler's newline", indentation_sm_newline.sr, 
-                        "range skipper", CloserPattern.sm.sr)
+                        "indentation handler's newline", indentation_handler.pattern_newline.sr, 
+                        "range skipper", CloserPattern.sr)
 
         return only_common_f
 

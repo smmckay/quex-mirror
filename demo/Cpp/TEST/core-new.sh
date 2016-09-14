@@ -48,7 +48,7 @@ if [[ -f $current_dir/side-kick.sh ]]; then
     rm -f  $current_dir/side-kick.sh
 else
     cat tmp-make.txt  
-    cat tmp-stdout.txt 
+    #cat tmp-stdout.txt 
 fi
 
 rm -f tmp-stdout.txt tmp-stdout0.txt

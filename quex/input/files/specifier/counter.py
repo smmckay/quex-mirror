@@ -88,7 +88,9 @@ class LineColumnCount_Prep(CountBase_Prep):
     def __init__(self, fh):
         sr        = SourceRef.from_FileHandle(fh)
         self.__fh = fh
-        CountBase_Prep.__init__(self, sr, "Line/column counter", ("space", "grid", "newline"), TheCountOpMap)
+        CountBase_Prep.__init__(self, sr, 
+                                "Line/column counter", 
+                                ("space", "grid", "newline")) 
 
     def parse(self):
         self._base_parse(self.__fh, IndentationSetupF=False)
@@ -100,7 +102,7 @@ class LineColumnCount_Prep(CountBase_Prep):
                               Setup.buffer_codec.source_set.minimum(), 
                               Setup.buffer_codec.source_set.supremum(), 
                               self.sr)
-        return LineColumnCount(sr, ca_map)
+        return LineColumnCount(self.sr, ca_map)
 
     def requires_count(self):
         return True
@@ -108,10 +110,10 @@ class LineColumnCount_Prep(CountBase_Prep):
     @typed(sr=SourceRef, Identifier=(str,unicode))
     def specify(self, Identifier, Pattern, Count, sr):
         if Pattern is None:
-            self.count_command_map.define_else(cc_type_db[Identifier], Count, sr)
+            self._ca_map_specifier.define_else(cc_type_db[Identifier], Count, sr)
         else:
             trigger_set = extract_trigger_set(sr, Identifier, Pattern) 
-            self.count_command_map.add(trigger_set, cc_type_db[Identifier], Count, sr)
+            self._ca_map_specifier.add(trigger_set, cc_type_db[Identifier], Count, sr)
 
 class IndentationCount_Prep(CountBase_Prep):
     """Indentation counter specification.
@@ -478,9 +480,9 @@ class CountActionMap_Prep(object):
         grid_value_list = []
         min_info        = None
         for character_set, info in self.__map:
-            if info.cc_type != E_CharacterCountType.GRID: 
-                if info.cc_type == E_CharacterCountType.COLUMN: 
-                    return
+            if info.cc_type == E_CharacterCountType.COLUMN: 
+                return
+            elif info.cc_type != E_CharacterCountType.GRID: 
                 continue
             elif type(info.value) in (str, unicode): 
                 # If there is one single 'variable' grid value, 
@@ -494,16 +496,14 @@ class CountActionMap_Prep(object):
             return
 
         # Are all grid values a multiple of the minimum?
-        if len(filter(lambda x: x % min_info.value == 0, grid_value_list)) != len(grid_value_list):
-            return
-
-        error.warning("Setup does not contain spaces, only grids (tabulators). All grid\n" \
-                      "widths are multiples of %i. The grid setup %s\n" \
-                      % (min_info.value, repr(sorted(grid_value_list))[1:-1]) + \
-                      "is equivalent to a setup with space counts %s.\n" \
-                      % repr(map(lambda x: x / min_info.value, sorted(grid_value_list)))[1:-1] + \
-                      "Space counts are faster to compute.", 
-                      min_info.sr)
+        if all(x % min_info.value == 0 for x in grid_value_list):
+            error.warning("Setup does not contain spaces, only grids (tabulators). All grid\n" \
+                          "widths are multiples of %i. The grid setup %s is equivalent to\n" \
+                          % (min_info.value, repr(sorted(grid_value_list))[1:-1]) + \
+                          "a setup with space counts %s. Space counts are faster to compute.\n" \
+                          % repr(map(lambda x: x / min_info.value, sorted(grid_value_list)))[1:-1],
+                          min_info.sr)
+        return
 
     def check_homogenous_space_counts(self):
         common = None
@@ -550,7 +550,7 @@ class CountActionMap_Prep(object):
         elif Value == 1:
             error.warning("Indentation grid counts of '1' are equivalent of to a space\n" + \
                           "count of '1'. The latter is faster to compute.",
-                              sr)
+                          sr)
 
     def __str__(self):
         def _db_to_text(title, CountOpInfoList):

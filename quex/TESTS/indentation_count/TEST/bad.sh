@@ -29,7 +29,7 @@ fi
 
 cat out.txt err.txt
 
-
+# echo "DEBUG: no deletion"
 rm -f ./EasyLexer*
 rm -f ./lexer
 rm -f out.txt err.txt

@@ -246,7 +246,7 @@ class StateMachine(object):
         return self.access_state_by_incidence_id(E_IncidenceIDs.BAD_LEXATOM)
 
     def get_id(self):
-        assert isinstance(self.__id, long) or self.__id == E_IncidenceIDs.INDENTATION_HANDLER
+        assert isinstance(self.__id, long) or self.__id in E_IncidenceIDs
         return self.__id  # core.id()
 
     def set_id(self, Value):

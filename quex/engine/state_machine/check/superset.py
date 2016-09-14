@@ -1,5 +1,7 @@
 from   quex.engine.state_machine.core            import StateMachine
 import quex.engine.state_machine.algebra.reverse as reverse
+from   quex.engine.pattern                       import Pattern
+from   quex.engine.misc.tools                    import typed
 
 class Checker:
     def __init__(self, SuperSM, CandidateSM):
@@ -92,6 +94,7 @@ class Checker:
         # sub set state machine of 'super sm'.
         return True
 
+@typed(A=(StateMachine, Pattern), B=(StateMachine, Pattern))
 def do(A, B):
     """RETURNS: True  - if A == SUPERSET of B
                 False - if not
