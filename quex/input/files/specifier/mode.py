@@ -17,7 +17,8 @@ from   quex.engine.counter                               import CountActionMap
 from   quex.engine.pattern                               import Pattern           
 from   quex.engine.mode                                  import Mode           
 import quex.engine.misc.error                            as     error
-from   quex.engine.misc.tools                            import typed, all_isinstance
+from   quex.engine.misc.tools                            import typed, \
+                                                                all_isinstance
 
 import quex.blackboard as     blackboard
 from   quex.blackboard import setup as Setup, \
@@ -368,14 +369,9 @@ class Mode_Prep:
         abstract or not. If neither one is defined, it cannot be implemented and 
         therefore MUST be abstract.
         """
-        if self.abstract_f:  
-            return False
-        elif not self.pattern_list:
-            error.warning("Mode without pattern and event handlers needs to be 'inheritable only'.\n" + \
-                          "<inheritable: only> has been set automatically.", self.sr)
-            return False
-        else:
-            return True
+        if self.abstract_f:         return False
+        elif not self.pattern_list: return False
+        else:                       return True
 
     def unique_pattern_pair_iterable(self):
         """Iterates over pairs of patterns:

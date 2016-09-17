@@ -31,6 +31,9 @@ def do(ModePrepList):
     implemented_mode_name_list = sorted([mode.name for mode in ModePrepList 
                                          if mode.implemented_f()]) 
 
+    for mode in ModePrepList:
+        __empty_mode_detection(mode, implemented_mode_name_list)
+
     if len(implemented_mode_name_list) == 0:
         error.log("There is no mode that can be implemented---all existing modes are 'inheritable only'.\n" + \
                   "modes are = " + repr(mode_name_list)[1:-1],
@@ -142,3 +145,10 @@ def __entry_transitions(mode, ModePrepList, mode_name_list):
         else:
             __error_transition(mode, entry_mode, EntryF=True)
            
+
+def __empty_mode_detection(mode, implemented_mode_name_list):
+    if   mode.implemented_f():                     return
+    elif mode.name in  implemented_mode_name_list: return
+
+    error.warning("Mode without pattern and event handlers needs to be 'inheritable only'.\n" + \
+                  "<inheritable: only> has been set automatically.", mode.sr)

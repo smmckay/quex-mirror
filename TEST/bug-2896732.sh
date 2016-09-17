@@ -9,9 +9,9 @@ tmp=`pwd`
 cd $bug/ 
 ./compile.sh >& tmp.txt
 cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ '
-valgrind -v --leak-check=full ./uXa example.txt >& tmp.txt
-python ./show.py 
-rm tmp.txt
+$QUEX_PATH/TEST/valgrindi.sh valgrint-out.txt ./uXa example.txt >& /dev/null
+cat valgrint-out.txt
+rm -f valgrint-out.txt
 
 # cleansening
 ./clean.sh

@@ -15,8 +15,7 @@ if "--hwut-info" in sys.argv:
 def test(TestString):
     print "-------------------------------------------------------------------"
     print "expression    = \"" + TestString + "\""
-    pattern = core.do(TestString, {})
-    pattern.mount_post_context_sm()
+    pattern = core.do(TestString, {}).finalize(None)
     sm = pattern.sm
     print "state machine\n", sm 
 

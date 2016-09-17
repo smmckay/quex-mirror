@@ -21,7 +21,7 @@ if "--hwut-info" in sys.argv:
 def test(TestString):
     print "-------------------------------------------------------------------"
     print "expression    = \"" + TestString + "\""
-    pattern = core.do(TestString, {})
+    pattern = core.do(TestString, {}).finalize(None)
 
     pattern.transform(Setup.buffer_codec)
     pattern.mount_post_context_sm()

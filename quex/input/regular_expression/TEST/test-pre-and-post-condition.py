@@ -15,10 +15,10 @@ if "--hwut-info" in sys.argv:
 def test(TestString):
     print "-------------------------------------------------------------------"
     print "expression    = \"" + TestString + "\""
-    pattern = core.do(TestString, {})
-    pattern.mount_post_context_sm()
-    pattern.mount_pre_context_sm()
-    print "pattern\n", pattern 
+    pattern = core.do(TestString, {}).finalize(None)
+    print "pattern\n"
+    print pattern.sm
+    print "pre-context = ", pattern.sm_pre_context
 
 test('"a"/";"/"b"')
 

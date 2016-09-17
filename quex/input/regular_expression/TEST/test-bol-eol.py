@@ -24,13 +24,13 @@ def test(TestString):
 def test_core(TestString):
     print "___________________________________________________________________________"
     print "expression    = \"" + TestString + "\""
-    pattern = core.do(TestString, {}, AllowNothingIsNecessaryF=True)
-    pattern.mount_post_context_sm()
-    pattern.mount_pre_context_sm()
+    pattern = core.do(TestString, {}, AllowNothingIsNecessaryF=True).finalize(None)
     if pattern is None: 
         print "pattern syntax error"
     else:
-        print "pattern\n", pattern
+        print "pattern\n", 
+        print pattern.sm
+        print "pre-context = ", pattern.sm_pre_context
         print "begin of line = ", pattern.pre_context_trivial_begin_of_line_f
 
 test('[a-z]+')

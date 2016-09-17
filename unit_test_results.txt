@@ -329,7 +329,7 @@ TEST                                                                 <no date>
     1889089 Single state mode causes quex to crash
         bug-1889089.sh ...............................................[OK]
     1889321 Quex does not handle actions including quote literal
-        bug-1889321.sh .............................................[FAIL]
+        bug-1889321.sh ...............................................[OK]
     1889692 0.19.4 does not gracefully handle unbalanced quotations
         bug-1889692.sh ...............................................[OK]
     1889702 0.19.4 forbids derived modes that only add event handlers
@@ -486,7 +486,6 @@ TEST                                                                 <no date>
                             \__ utf8
     [FAIL] bug-3476232.sh
     [FAIL] bug-3295781.sh
-    [FAIL] bug-1889321.sh
     [FAIL] bug-1935701.exe _ FILE
                          \__ fstream
     [FAIL] bug-3021502.sh
@@ -1918,11 +1917,11 @@ quex/input/regular_expression/TEST                                   <no date>
     End of Line '$' (with DOS/Windows '\r\n')
         test-eol-carriage-return-newline.py ........................[FAIL]
     post conditions
-        test-post-condition.py .....................................[FAIL]
+        test-post-condition.py .......................................[OK]
     pre conditions
-        test-pre-condition.py ......................................[FAIL]
+        test-pre-condition.py ........................................[OK]
     pre- and post-conditions
-        test-pre-and-post-condition.py .............................[FAIL]
+        test-pre-and-post-condition.py ...............................[OK]
 
  * Replacement:
 
@@ -1945,9 +1944,6 @@ quex/input/regular_expression/TEST                                   <no date>
     [FAIL] test-transformation.py
     [FAIL] test-bol-eol.py
     [FAIL] test-eol-carriage-return-newline.py
-    [FAIL] test-post-condition.py
-    [FAIL] test-pre-condition.py
-    [FAIL] test-pre-and-post-condition.py
 ===============================================================================
                                                                                
                              Output Core Generator                             
@@ -3005,7 +3001,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                          
 
-       13  235   [FAIL] TEST                                                
+       12  235   [FAIL] TEST                                                
         6  54    [FAIL] demo/C/TEST                                         
        10  54    [FAIL] ..../Cpp/TEST                                       
         4  13    [FAIL] ..../TEST                                           
@@ -3045,18 +3041,18 @@ SUMMARY:
            14      [OK] ........................./check/TEST                
            53      [OK] ........................./transformation/TEST       
            58      [OK] ..../input/TEST                                     
-        6  27    [FAIL] ........../regular_expression/TEST                  
+        3  27    [FAIL] ........../regular_expression/TEST                  
         5  198   [FAIL] ..../output/core/TEST                               
         2  30    [FAIL] ................/loop/TEST                          
         4  4     [FAIL] ................/state/transition_map/TEST          
         1  13    [FAIL] .........../cpp/TEST                                
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _   ___            
-    |  ___|_ _(_) |___     / |/ | / _ \     __  __
-    | |_ / _` | | / __|    | || || (_) |    \ \/ /
-    |  _| (_| | | \__ \    | || | \__, |     >  < 
-    |_|  \__,_|_|_|___/    |_||_|   /_/     /_/\_\
+     _____     _ _          _  _  ____             
+    |  ___|_ _(_) |___     / |/ || ___|      __  __
+    | |_ / _` | | / __|    | || ||___ \      \ \/ /
+    |  _| (_| | | \__ \    | || | ___) |      >  < 
+    |_|  \__,_|_|_|___/    |_||_||____/      /_/\_\
                                                                    (1481 tests)
 
 ===============================================================================
