@@ -22,26 +22,18 @@ Exception!
 
 Whitespace:
     '\t', ' '
-Bad:
-    <none>
 Newline:
     init-state = 0L
     00000 
          == '\a', '\v' ==> 00001
         
     00001 A
-Suppressor:
-    <none>
-Comment:
-    <none>
 
 
 (6) |[\v\a] => suppressor;>|
 
 Whitespace:
     '\t', ' '
-Bad:
-    <none>
 Newline:
     init-state = 0L
     00000 
@@ -54,14 +46,19 @@ Newline:
          == '\n' ==> 00003
         
     00003 A
-Suppressor:
+Suppressed Nl:
     init-state = 0L
     00000 
          == '\a', '\v' ==> 00001
         
-    00001 A
-Comment:
-    <none>
+    00001 
+         == '\n' ==> 00002
+         == '\r' ==> 00003
+        
+    00002 A
+        
+    00003 
+         == '\n' ==> 00002
 
 
 (7) |[\v\a] => bad;>|
@@ -82,18 +79,12 @@ Newline:
          == '\n' ==> 00003
         
     00003 A
-Suppressor:
-    <none>
-Comment:
-    <none>
 
 
 (8) |[\v\a] => comment;>|
 
 Whitespace:
     '\t', ' '
-Bad:
-    <none>
 Newline:
     init-state = 0L
     00000 
@@ -106,8 +97,6 @@ Newline:
          == '\n' ==> 00003
         
     00003 A
-Suppressor:
-    <none>
 Comment:
     init-state = 0L
     00000 
@@ -120,8 +109,6 @@ Comment:
 
 Whitespace:
     '\t', ' '
-Bad:
-    <none>
 Newline:
     init-state = 0L
     00000 
@@ -134,10 +121,6 @@ Newline:
          == '\n' ==> 00003
         
     00003 A
-Suppressor:
-    <none>
-Comment:
-    <none>
 
 
 (10) |[\v\a] =>|
@@ -146,6 +129,6 @@ test_string:1:error: End of file reached while parsing 'indentation' section.
 
 (11) |[\v\a] =>>|
 
-test_string:1:error: Missing identifier for indentation element definition.
+test_string:1:error: Missing identifier following '=>'.
 Exception!
 

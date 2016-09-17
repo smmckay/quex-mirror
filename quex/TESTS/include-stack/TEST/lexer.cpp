@@ -57,7 +57,7 @@ self_test(const char* CharFilename)
 #   endif
 
 
-    qlex.input_name = (Directory + Filename + ".txt").c_str();
+    qlex.input_name_set((Directory + Filename + ".txt").c_str());
     cout << "[START]\n";
 
     do {

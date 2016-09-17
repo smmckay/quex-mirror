@@ -3,8 +3,6 @@ from   quex.input.files.specifier.counter    import LineColumnCount_Default
 import quex.input.regular_expression.core    as     regular_expression
 import quex.input.regular_expression.pattern as     Pattern_Prep
 from   quex.input.code.base                  import SourceRef
-from   quex.engine.counter                   import LineColumnCount, \
-                                                    IndentationCount
 from   quex.engine.misc.tools                import all_isinstance
 from   quex.engine.misc.tools                import typed, \
                                                     flatten_list_of_lists

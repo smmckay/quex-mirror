@@ -169,7 +169,7 @@ QUEX_MEMBER_FUNCTION1(from, LexatomLoader,
                                 memory, QUEX_SETTING_BUFFER_SIZE, 
                                 (QUEX_TYPE_LEXATOM*)0,
                                 E_Ownership_LEXICAL_ANALYZER);
-    QUEX_MEMBER_FUNCTION_CALLO(basic_constructor);
+    QUEX_MEMBER_FUNCTION_CALLO1(basic_constructor, (const char*)"<unknown>");
 }
 
 /* Level (5) __________________________________________________________________
@@ -196,11 +196,11 @@ QUEX_MEMBER_FUNCTION3(from, memory,
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
                                 E_Ownership_EXTERNAL);
-    QUEX_MEMBER_FUNCTION_CALLO(basic_constructor);
+    QUEX_MEMBER_FUNCTION_CALLO1(basic_constructor, (const char*)"<memory>");
 }
 
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTIONO(basic_constructor)
+QUEX_MEMBER_FUNCTIONO1(basic_constructor, const char* InputNameP)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_NAME(Tokens_construct)(me);
@@ -215,6 +215,9 @@ QUEX_MEMBER_FUNCTIONO(basic_constructor)
      * so that the user may detect whether this is the first mode transition.*/
     me->__current_mode_p = (QUEX_NAME(Mode)*)0;
     QUEX_NAME(set_mode_brutally_by_id)(me, __QUEX_SETTING_INITIAL_LEXER_MODE_ID);
+
+    me->__input_name = (char*)0;
+    (void)QUEX_MEMBER_FUNCTION_CALLO1(input_name_set, InputNameP);
 
     QUEX_MEMBER_FUNCTION_CALLO(user_constructor);
 }
@@ -233,6 +236,10 @@ QUEX_DESTRUCTOR()
     __QUEX_IF_POST_CATEGORIZER(   QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
 
     QUEX_NAME(Buffer_destruct)(&me->buffer);
+
+    if( me->__input_name ) {
+        QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
+    }
 }
 
 QUEX_INLINE void
@@ -369,6 +376,28 @@ QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me)
 {
     me->_mode_stack.end        = me->_mode_stack.begin;
     me->_mode_stack.memory_end = &me->_mode_stack.begin[QUEX_SETTING_MODE_STACK_SIZE];
+}
+
+QUEX_INLINE const char*
+QUEX_MEMBER_FUNCTIONO(input_name)
+{ QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) return me->__input_name; }
+
+QUEX_INLINE bool
+QUEX_MEMBER_FUNCTIONO1(input_name_set, const char* InputNameP)
+{ 
+    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
+
+    if( me->__input_name ) {
+        QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
+    }
+    me->__input_name = (char*)QUEXED(MemoryManager_allocate)(
+                                    sizeof(char)*(__QUEX_STD_strlen(InputNameP)+1),
+                                    E_MemoryObjectType_BUFFER_MEMORY);
+    if( me->__input_name ) {
+        __QUEX_STD_strcpy(me->__input_name, InputNameP);
+        return true;
+    }
+    return false;
 }
 
 

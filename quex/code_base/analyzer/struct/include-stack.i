@@ -52,12 +52,14 @@ QUEX_MEMBER_FUNCTION4(include_push, FILE,
     QUEX_NAME(ByteLoader)*   byte_loader;
     __quex_assert( fh );
 
-    /* At the time of this writing 'stdin' as located in the C++ global namespace. 
-     * This seemed suspicous to the author. To avoid compilation errors in the future
-     * the test for the standard input is only active in 'C'. It is only about
-     * user information anyway. So better no risks taken.      <fschaef 2010y02m06d> */
+    /* At the time of this writing 'stdin' as located in the C++ global
+     * namespace.  This seemed suspicous to the author. To avoid compilation
+     * errors in the future the test for the standard input is only active in
+     * 'C'. It is only about user information anyway. So better no risks taken.
+     * <fschaef 2010y02m06d>                                                 */
+
     setbuf(fh, 0);   /* turn off system based buffering! 
-    **               ** this is essential to profit from the quex buffer! */
+    **               ** this is essential to profit from the quex buffer!    */
     byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, BinaryModeF);
     /* NOT: Abort/return if byte_loader == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
@@ -65,7 +67,8 @@ QUEX_MEMBER_FUNCTION4(include_push, FILE,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, byte_loader, CodecName); 
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, 
+                                           byte_loader, CodecName); 
     if( ! verdict_f ) {
         QUEX_NAME(ByteLoader_delete)(&byte_loader);
     }
@@ -77,7 +80,7 @@ QUEX_INLINE bool
 QUEX_MEMBER_FUNCTION3(include_push, istream,
                       const char*    InputName,
                       std::istream*  istream_p, 
-                      const char*    CodecName /* = 0x0   */)
+                      const char*    CodecName /* = 0x0 */)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     bool          verdict_f;
@@ -91,7 +94,8 @@ QUEX_MEMBER_FUNCTION3(include_push, istream,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, byte_loader, CodecName); 
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, 
+                                           byte_loader, CodecName); 
     if( ! verdict_f ) {
         QUEX_NAME(ByteLoader_delete)(&byte_loader);
     }
@@ -119,7 +123,8 @@ QUEX_MEMBER_FUNCTION3(include_push, wistream,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, byte_loader, CodecName); 
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, 
+                                           byte_loader, CodecName); 
     if( ! verdict_f ) {
         QUEX_NAME(ByteLoader_delete)(&byte_loader);
     }
@@ -147,7 +152,8 @@ QUEX_MEMBER_FUNCTION3(include_push, strange_stream,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, byte_loader, CodecName); 
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, 
+                                           byte_loader, CodecName); 
     if( ! verdict_f ) {
         QUEX_NAME(ByteLoader_delete)(&byte_loader);
     }
@@ -175,7 +181,8 @@ QUEX_MEMBER_FUNCTION3(include_push, ByteLoader,
     if( filler ) {
         filler->ownership = E_Ownership_LEXICAL_ANALYZER;
     }
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL2(include_push, LexatomLoader, InputName, filler);
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL2(include_push, LexatomLoader, InputName, 
+                                           filler);
     if( ! verdict_f && filler->ownership == E_Ownership_LEXICAL_ANALYZER ) {
         me->buffer.filler->delete_self(me->buffer.filler); 
         me->buffer.filler = (QUEX_NAME(LexatomLoader)*)0;
@@ -208,7 +215,8 @@ QUEX_MEMBER_FUNCTION2(include_push, LexatomLoader,
 
     /* The 'new_buffer_setup' is only copied including the reference to the
      * new memory. However, the box object 'new_buffer_setup' is left alone. */
-    verdict_f = QUEX_MEMBER_FUNCTION_CALLO2(basic_include_push, InputName, &new_buffer_setup);
+    verdict_f = QUEX_MEMBER_FUNCTION_CALLO2(basic_include_push, InputName, 
+                                            &new_buffer_setup);
     if( ! verdict_f ) {
         QUEXED(MemoryManager_free)(memory, E_MemoryObjectType_BUFFER_MEMORY);
     }
@@ -219,10 +227,10 @@ QUEX_MEMBER_FUNCTION2(include_push, LexatomLoader,
  *                                                                           */
 QUEX_INLINE bool
 QUEX_MEMBER_FUNCTION4(include_push, memory,
-                      const char*             InputName,
-                      QUEX_TYPE_LEXATOM*    Memory,
-                      const size_t            MemorySize,
-                      QUEX_TYPE_LEXATOM*    EndOfFileP)
+                      const char*         InputName,
+                      QUEX_TYPE_LEXATOM*  Memory,
+                      const size_t        MemorySize,
+                      QUEX_TYPE_LEXATOM*  EndOfFileP)
 /* When memory is provided from extern, the 'external entity' is
  * responsible for filling it. There is no 'file/stream handle', no 'byte
  * loader', and 'no buffer filler'.                                          */
@@ -238,17 +246,21 @@ QUEX_MEMBER_FUNCTION4(include_push, memory,
 
     /* The 'new_buffer_setup' is only copied including the reference to the
      * new memory. However, the box object 'new_buffer_setup' is left alone. */
-    return QUEX_MEMBER_FUNCTION_CALLO2(basic_include_push, InputName, &new_buffer_setup);
+    return QUEX_MEMBER_FUNCTION_CALLO2(basic_include_push, InputName, 
+                                       &new_buffer_setup);
 }
 
 QUEX_INLINE bool
 QUEX_MEMBER_FUNCTIONO2(basic_include_push, 
-                       const char*        InputName,
+                       const char*        InputNameP,
                        QUEX_NAME(Buffer)* new_buffer_setup)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(Memento)* memento = (QUEX_NAME(Memento)*)QUEXED(MemoryManager_allocate)(
-                                     sizeof(QUEX_NAME(Memento)), E_MemoryObjectType_MEMENTO);
+    QUEX_NAME(Memento)* memento;
+   
+    memento = (QUEX_NAME(Memento)*)QUEXED(MemoryManager_allocate)(
+                                          sizeof(QUEX_NAME(Memento)), 
+                                          E_MemoryObjectType_MEMENTO);
     if( ! memento ) {
         return false;
     }
@@ -257,6 +269,7 @@ QUEX_MEMBER_FUNCTIONO2(basic_include_push,
      * Necessary in C++: Call to constructor for user defined members.       */
     new ((void*)memento) QUEX_NAME(Memento);
 #   endif
+
     if( me->buffer.filler )
     {
         /* By default overtake the byte order reversion behavior of the 
@@ -265,7 +278,9 @@ QUEX_MEMBER_FUNCTIONO2(basic_include_push,
                           me->buffer.filler->_byte_order_reversion_active_f;
     }
 
-    memento->input_name                       = me->input_name;
+    /* 'memento->__input_name' points to previously allocated memory.        */
+    memento->__input_name  = me->__input_name;
+    me->__input_name       = (char*)0;                 /* Release ownership. */
     memento->_parent_memento                  = me->_parent_memento;
     memento->buffer                           = me->buffer;
     memento->__current_mode_p                 = me->__current_mode_p; 
@@ -283,12 +298,15 @@ QUEX_MEMBER_FUNCTIONO2(basic_include_push,
      *    -- Mode stack.
      *    -- Token and token queues.
      *    -- Post categorizer.                                               */
-    if( ! QUEX_MEMBER_FUNCTION_CALLO2(user_memento_pack, InputName, memento) ) {
+    if( ! QUEX_MEMBER_FUNCTION_CALLO2(user_memento_pack, InputNameP, memento) ) {
         QUEXED(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
         return false;
     }
 
-    me->input_name      = InputName;
+    if( ! QUEX_MEMBER_FUNCTION_CALLO1(input_name_set, InputNameP) ) {
+        QUEXED(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
+        return false;
+    }
 
     /* Put memento on stack AFTER user has done to it its duties.            */
     me->_parent_memento = memento;
@@ -328,7 +346,12 @@ QUEX_MEMBER_FUNCTIONO(include_pop)
                                                                             
     /* Copy Back of content that was stored upon inclusion.                  */
 
-    me->input_name                       = memento->input_name;
+    if( me->__input_name ) {
+        QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
+    }
+    /* 'memento->__input_name' points to previously allocated memory.        
+     * 'me->__input_name' takes ownership again over allocated memory.       */
+    me->__input_name                     = memento->__input_name;
     me->buffer                           = memento->buffer;
     me->__current_mode_p                 = memento->__current_mode_p; 
     me->current_analyzer_function        = memento->current_analyzer_function;
@@ -367,7 +390,7 @@ QUEX_MEMBER_FUNCTIONO1(include_detect_recursion,
     QUEX_NAME(Memento)* iterator;
     for(iterator = me->_parent_memento; iterator ; 
         iterator = iterator->_parent_memento ) {
-        if( __QUEX_STD_strcmp(iterator->input_name, InputName) == 0 ) {
+        if( __QUEX_STD_strcmp(iterator->__input_name, InputName) == 0 ) {
             return true;
         }
     }

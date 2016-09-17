@@ -29,8 +29,16 @@ def test(Text):
     sh.name = "test_string"
 
     descr = None
+    if "debug" in sys.argv:
+        if "%s" % count_n == sys.argv[3]:
+            # Try beyond an exception catcher
+            descr = counter.IndentationCount_Prep(sh).parse()
+        else:
+            return
+
     try:    
-        descr = IndentationCount_Prep(fh).parse()
+        descr = counter.IndentationCount_Prep(sh).parse()
+
     except EndOfStreamException:
         error.log("End of file reached while parsing 'indentation' section.", sh, DontExitF=True)
 

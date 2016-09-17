@@ -15,6 +15,7 @@ from   helper import find_core
 if "--hwut-info" in sys.argv:
     print "Paths: Plugging Wild Cards;"
     print "CHOICES: 1, 2, 3, 4;"
+    print "HAPPY:   DROP_OUT, d=[0-9]+;"
     sys.exit(0)
 
 if len(sys.argv) < 2:

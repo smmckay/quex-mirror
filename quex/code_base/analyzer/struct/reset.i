@@ -176,7 +176,7 @@ QUEX_MEMBER_FUNCTION1(reset, LexatomLoader,
     }
     QUEX_NAME(Buffer_init_content)(&me->buffer, (QUEX_TYPE_LEXATOM*)0);
     QUEX_NAME(Buffer_init_analyzis)(&me->buffer); 
-    QUEX_MEMBER_FUNCTION_CALLO(basic_reset);
+    QUEX_MEMBER_FUNCTION_CALLO1(basic_reset, (const char*)"<unknown>");
 }
 
 /* Level (5) __________________________________________________________________
@@ -212,13 +212,13 @@ QUEX_MEMBER_FUNCTION3(reset, memory,
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
                                 E_Ownership_EXTERNAL);
-    QUEX_MEMBER_FUNCTION_CALLO(basic_reset);
+    QUEX_MEMBER_FUNCTION_CALLO1(basic_reset, (const char*)"<memory>");
 
     return previous_buffer_memory;
 }
 
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTIONO(basic_reset)
+QUEX_MEMBER_FUNCTIONO1(basic_reset, const char* InputNameP)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     bool  byte_order_reversion_f = me->buffer.filler ? 
@@ -245,6 +245,9 @@ QUEX_MEMBER_FUNCTIONO(basic_reset)
     {
         me->buffer.filler->_byte_order_reversion_active_f = true;
     }
+
+    (void)QUEX_MEMBER_FUNCTION_CALLO1(input_name_set, InputNameP);
+
     QUEX_MEMBER_FUNCTION_CALLO(user_reset);
 }
 

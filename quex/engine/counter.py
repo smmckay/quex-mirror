@@ -371,12 +371,15 @@ class IndentationCount(LineColumnCount):
 
     def __str__(self):
         def cs_str(Name, Cs):
+            if Cs is None: return ""
             msg  = "%s:\n" % Name
             if Cs is None: msg += "    <none>\n" 
             else:          msg += "    %s\n" % Cs.get_utf8_string()
             return msg
 
-        def sm_str(Name, Sm):
+        def sm_str(Name, Pattern):
+            if Pattern is None or Pattern.sm is None: return ""
+            Sm = Pattern.sm
             msg = "%s:\n" % Name
             if Sm is None: 
                 msg += "    <none>\n"
@@ -385,19 +388,17 @@ class IndentationCount(LineColumnCount):
             return msg
 
         txt = [ 
-            cs_str("Whitespace", self.whitespace_character_set),
-            cs_str("Bad",        self.bad_space_character_set),
-            sm_str("Newline",    self.pattern_newline.sm)
+            cs_str("Whitespace",    self.whitespace_character_set),
+            cs_str("Bad",           self.bad_space_character_set),
+            sm_str("Newline",       self.pattern_newline),
+            sm_str("Suppressed Nl", self.pattern_suppressed_newline)
         ]
-        if self.pattern_suppressed_newline is not None:
-            txt.append(
-                sm_str("Suppressor", self.pattern_suppressed_newline.sm)
-            )
+
         if self.pattern_comment_list is not None:
-            for p in self.pattern_comment_list:
-                txt.append(
-                    sm_str("Comment", p.sm)
-                )
+            txt.extend(
+                sm_str("Comment", p)
+                for p in self.pattern_comment_list
+            )
 
         return "".join(txt)
 

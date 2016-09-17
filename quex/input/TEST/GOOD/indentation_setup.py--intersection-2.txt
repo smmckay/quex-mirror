@@ -42,21 +42,18 @@ ac*b  => newline;
 
 Whitespace:
     'c', 'e'
-Bad:
-    <none>
 Newline:
     init-state = 0L
+        
     00000 
          == 'a' ==> 00001
-        
     00001 
+        
          == 'b' ==> 00002
+
+
          == 'c' ==> 00001
         
     00002 A
-Suppressor:
-    <none>
-Comment:
-    <none>
 
 

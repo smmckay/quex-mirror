@@ -34,6 +34,10 @@ def test(Text):
     sh.name = "test_string"
 
     descr = None
+    if "debug" in sys.argv and "%s" % count_n == sys.argv[3]:
+        # Try beyond an exception catcher
+        descr = counter.LineColumnCount_Prep(sh).parse()
+
     try:    
         descr = counter.LineColumnCount_Prep(sh).parse()
 

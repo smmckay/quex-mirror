@@ -70,13 +70,6 @@ class CountBase_Prep:
 
         return # Must be followed by 'finalization'
 
-    def _consistency_check(self):
-        self._ca_map_specifier.check_grid_values_integer_multiples()
-        # The following is nonsense: We detect that we did not choose an alternative 
-        # which is worse?!
-        # self.count_command_map.check_homogenous_space_counts()
-        self._ca_map_specifier.check_defined(self.sr, E_CharacterCountType.LINE)
-
 class LineColumnCount_Prep(CountBase_Prep):
     """Line/column number count specification.
     ___________________________________________________________________________
@@ -97,11 +90,12 @@ class LineColumnCount_Prep(CountBase_Prep):
 
         # Finalize / Produce 'LineColumnCount' object.
         # 
-        self._consistency_check()
         ca_map = self._ca_map_specifier.finalize(
                               Setup.buffer_codec.source_set.minimum(), 
                               Setup.buffer_codec.source_set.supremum(), 
                               self.sr)
+        check_grid_values_integer_multiples(ca_map)
+        check_defined(ca_map, self.sr, E_CharacterCountType.LINE)
         return LineColumnCount(self.sr, ca_map)
 
     def requires_count(self):
@@ -165,9 +159,7 @@ class IndentationCount_Prep(CountBase_Prep):
                                          "whitespace", whitespace, 
                                          sr=SourceRef_DEFAULT)
         if self.sm_newline.get() is None:
-            sm_newline = self.__sm_newline_default()
-            if sm_newline is not None: 
-                self.__specify_newline(sm_newline, SourceRef_DEFAULT)
+            self.__specify_newline(self.__sm_newline_default(), SourceRef_DEFAULT)
 
         # Remove elements which are only there to detect interference
         ignore_set = set([
@@ -194,7 +186,7 @@ class IndentationCount_Prep(CountBase_Prep):
         pattern_comment_list = []
         for sm_comment in self.sm_comment_list:
             only_common_f, \
-            common_f       = tail.do(sm_newline, sm_comment.get())
+            common_f       = tail.do(self.sm_newline.get(), sm_comment.get())
 
             error_check.tail(only_common_f, common_f, 
                              "indentation handler's newline", self.sm_newline.sr, 
@@ -245,7 +237,10 @@ class IndentationCount_Prep(CountBase_Prep):
 
     @typed(sr=SourceRef)
     def __specify_newline(self, Sm, sr):
+        assert Sm is not None 
         _error_if_defined_before(self.sm_newline, sr)
+
+        if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
 
         beginning_char_set = Sm.get_beginning_character_set()
         ending_char_set    = Sm.get_ending_character_set()
@@ -261,17 +256,17 @@ class IndentationCount_Prep(CountBase_Prep):
                                        E_CharacterCountType.X_END_NEWLINE, 
                                        None, sr)
 
-        if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
         self.sm_newline.set(Sm, sr)
 
     @typed(sr=SourceRef)
     def __specify_suppressor(self, Sm, sr):
         _error_if_defined_before(self.sm_newline_suppressor, sr)
 
+        if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
+
         self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
                                    E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR,
                                    None, sr)
-        if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
         self.sm_newline_suppressor.set(Sm, sr)
 
     @typed(sr=SourceRef)
@@ -279,10 +274,11 @@ class IndentationCount_Prep(CountBase_Prep):
         for sm_comment in self.sm_comment_list:
             _error_if_defined_before(sm_comment, sr)
 
+        if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
+
         self._ca_map_specifier.add(Sm.get_beginning_character_set(), 
                                    E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE,
                                    None, sr)
-        if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
 
         sm_comment = SourceRefObject("comment", None)
         sm_comment.set(Sm, sr)
@@ -298,13 +294,11 @@ class IndentationCount_Prep(CountBase_Prep):
 
         before = self._ca_map_specifier.find_occupier(newline_set, set())
         if before is not None:
-            error.warning("Trying to implement default newline: '\\n' or '\\r\\n'.\n" 
-                          "The '\\n' option is not possible, since it has been occupied by '%s'.\n" \
-                          "No newline can be defined by default."
-                          % cc_type_name_db[before.cc_type], before.sr, 
-                          SuppressCode=NotificationDB.warning_default_newline_0A_impossible)
-            # In this case, no newline can be defined!
-            return
+            error.log("Trying to implement default newline: '\\n' or '\\r\\n'.\n" 
+                      "The '\\n' option is not possible, since it has been occupied by '%s'.\n" \
+                      "No newline can be defined by default." \
+                      "Indentation handlers without newline are unfeasible."
+                      % cc_type_name_db[before.cc_type], before.sr) 
 
         sm = StateMachine.from_character_set(newline_set)
 
@@ -312,10 +306,10 @@ class IndentationCount_Prep(CountBase_Prep):
             before = self._ca_map_specifier.find_occupier(retour_set, set())
             if before is not None:
                 error.warning("Trying to implement default newline: '\\n' or '\\r\\n'.\n" 
-                          "The '\\r\\n' option is not possible, since '\\r' has been occupied by '%s'." \
-                          % cc_type_name_db[before.cc_type],
-                          before.sr, 
-                          SuppressCode=NotificationDB.warning_default_newline_0D_impossible)
+                              "The '\\r\\n' option is not possible, since '\\r' has been occupied by '%s'." \
+                              % cc_type_name_db[before.cc_type],
+                              before.sr, 
+                              SuppressCode=NotificationDB.warning_default_newline_0D_impossible)
             else:
                 sm.add_transition_sequence(sm.init_state_index, [retour_set, newline_set])
 
@@ -415,11 +409,11 @@ class CountActionMap_Prep(object):
         their intersection is not considered.
         """
         intersection_tolerated = {
-            E_CharacterCountType.COLUMN:                   (),
-            E_CharacterCountType.GRID:                     (),
-            E_CharacterCountType.LINE:                     (),
-            E_CharacterCountType.WHITESPACE:               (),
-            E_CharacterCountType.BAD:                      (), 
+            E_CharacterCountType.COLUMN:                     (),
+            E_CharacterCountType.GRID:                       (),
+            E_CharacterCountType.LINE:                       (),
+            E_CharacterCountType.WHITESPACE:                 (),
+            E_CharacterCountType.BAD:                        (), 
             # Only to detect interference
             E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR: (),
             E_CharacterCountType.X_BEGIN_NEWLINE:            (E_CharacterCountType.X_END_NEWLINE,),
@@ -473,38 +467,6 @@ class CountActionMap_Prep(object):
             result.unite_with(character_set)
         return result.get_complement(Setup.buffer_codec.source_set)
 
-    def check_grid_values_integer_multiples(self):
-        """If there are no spaces and the grid is on a homogeneous scale,
-           => then the grid can be transformed into 'easy-to-compute' spaces.
-        """
-        grid_value_list = []
-        min_info        = None
-        for character_set, info in self.__map:
-            if info.cc_type == E_CharacterCountType.COLUMN: 
-                return
-            elif info.cc_type != E_CharacterCountType.GRID: 
-                continue
-            elif type(info.value) in (str, unicode): 
-                # If there is one single 'variable' grid value, 
-                # then no assumptions can be made.
-                return
-            grid_value_list.append(info.value)
-            if min_info is None or info.value < min_info.value:
-                min_info = info
-
-        if min_info is None:
-            return
-
-        # Are all grid values a multiple of the minimum?
-        if all(x % min_info.value == 0 for x in grid_value_list):
-            error.warning("Setup does not contain spaces, only grids (tabulators). All grid\n" \
-                          "widths are multiples of %i. The grid setup %s is equivalent to\n" \
-                          % (min_info.value, repr(sorted(grid_value_list))[1:-1]) + \
-                          "a setup with space counts %s. Space counts are faster to compute.\n" \
-                          % repr(map(lambda x: x / min_info.value, sorted(grid_value_list)))[1:-1],
-                          min_info.sr)
-        return
-
     def check_homogenous_space_counts(self):
         common = None
         for character_set, info in self.__map:
@@ -530,19 +492,6 @@ class CountActionMap_Prep(object):
                   "This setup is equivalent to a setup with space counts of 1. Space counts\n" + \
                   "of 1 are the fastest to compute.", 
                   common.sr)
-
-    def check_defined(self, SourceReference, CCT):
-        """Checks whether the character counter type has been defined in the 
-        map.
-        
-        THROWS: Error in case that is has not been defined.
-        """
-        for character_set, info in self.__map:
-            if info.cc_type == CCT: 
-                return
-
-        error.warning("Setup does not define '%s'." % cc_type_name_db[CCT], SourceReference, 
-                      SuppressCode=NotificationDB.warning_counter_setup_without_newline)
 
     def check_grid_specification(self, Value, sr):
         if   Value == 0: 
@@ -624,6 +573,36 @@ def LineColumnCount_Default():
 
     return _LineColumnCount_Default
 
+
+def _error_set_intersection(CcType, Before, sr):
+    global cc_type_name_db
+
+    note_f = False
+    if    CcType         == E_CharacterCountType.X_END_NEWLINE \
+       or Before.cc_type == E_CharacterCountType.X_END_NEWLINE:
+        note_f = True
+
+    prefix = {
+        E_CharacterCountType.COLUMN:                     "",
+        E_CharacterCountType.GRID:                       "",
+        E_CharacterCountType.LINE:                       "",
+        E_CharacterCountType.BAD:                        "",
+        E_CharacterCountType.WHITESPACE:                 "",
+        E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR: "beginning ",
+        E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE: "beginning ",
+        E_CharacterCountType.X_BEGIN_NEWLINE:            "beginning ",
+        E_CharacterCountType.X_END_NEWLINE:              "ending ",
+    }[CcType]
+
+    error.log("The %scharacter set defined in '%s' intersects" % (prefix, cc_type_name_db[CcType]),
+              sr, DontExitF=True, WarningF=False)
+    error.log("with '%s' at this place." % cc_type_name_db[Before.cc_type], 
+              Before.sr, DontExitF=note_f, WarningF=False)
+
+    if note_f:
+        error.log("Note, for example, 'newline' cannot end with a character which is subject\n"
+                  "to indentation counting (i.e. 'space' or 'grid').", sr)
+
 def _error_if_defined_before(Before, sr):
     if not Before.set_f(): return
 
@@ -663,4 +642,51 @@ def extract_trigger_set(sr, Keyword, Pattern):
     transition_map = Pattern.sm.get_init_state().target_map.get_map()
     assert len(transition_map) == 1
     return transition_map.values()[0]
+
+def check_grid_values_integer_multiples(CaMap):
+    """If there are no spaces and the grid is on a homogeneous scale,
+       => then the grid can be transformed into 'easy-to-compute' spaces.
+    """
+    grid_value_list = []
+    min_info        = None
+    for character_set, info in CaMap:
+        if info.cc_type == E_CharacterCountType.COLUMN: 
+            return
+        elif info.cc_type != E_CharacterCountType.GRID: 
+            continue
+        elif type(info.value) in (str, unicode): 
+            # If there is one single 'variable' grid value, 
+            # then no assumptions can be made.
+            return
+        grid_value_list.append(info.value)
+        if min_info is None or info.value < min_info.value:
+            min_info = info
+
+    if min_info is None:
+        return
+
+    # Are all grid values a multiple of the minimum?
+    if all(x % min_info.value == 0 for x in grid_value_list):
+        error.warning("Setup does not contain spaces, only grids (tabulators). All grid\n" \
+                      "widths are multiples of %i. The grid setup %s is equivalent to\n" \
+                      % (min_info.value, repr(sorted(grid_value_list))[1:-1]) + \
+                      "a setup with space counts %s. Space counts are faster to compute.\n" \
+                      % repr(map(lambda x: x / min_info.value, sorted(grid_value_list)))[1:-1],
+                      min_info.sr)
+    return
+
+def check_defined(CaMap, SourceReference, CCT):
+    """Checks whether the character counter type has been defined in the 
+    map.
+    
+    THROWS: Error in case that is has not been defined.
+    """
+    for character_set, info in CaMap:
+        if info.cc_type == CCT: 
+            return
+
+    error.warning("Setup does not define '%s'." % cc_type_name_db[CCT], SourceReference, 
+                  SuppressCode=NotificationDB.warning_counter_setup_without_newline)
+
+
 

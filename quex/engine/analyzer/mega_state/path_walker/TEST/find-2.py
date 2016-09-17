@@ -15,6 +15,7 @@ from   helper import find_core
 if "--hwut-info" in sys.argv:
     print "Paths: find_path (mean tests);"
     print "CHOICES: 1, 2, 3, 4a, 4b;"
+    print "HAPPY:   DROP_OUT, d=[0-9]+;"
     sys.exit(0)
 
 if len(sys.argv) < 2:

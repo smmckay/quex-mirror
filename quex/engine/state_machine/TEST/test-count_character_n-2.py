@@ -37,7 +37,7 @@ spec_txt += ">"
     
 fh = StringIO(spec_txt)
 fh.name = "<string>"
-counter_db = counter.parse_line_column_counter(fh)
+ca_map  = counter.LineColumnCount_Prep(fh).parse().count_command_map
 
 def test(TestString):
     global choice
@@ -45,8 +45,8 @@ def test(TestString):
     if choice == "Grid-BOL": TestString = "^%s" % TestString
     print ("expr. = " + TestString).replace("\n", "\\n").replace("\t", "\\t")
     pattern = core.do(TestString, {})
-    pattern.prepare_count_info(counter_db, None)
-    print ("info  = {\n    %s\n}\n" % str(pattern.count_info()).replace("\n", "\n    "))
+    pattern = pattern.finalize(ca_map)
+    print ("info  = {\n    %s\n}\n" % str(pattern.lcci).replace("\n", "\n    "))
 
 
 

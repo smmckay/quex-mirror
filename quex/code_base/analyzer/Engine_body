@@ -24,7 +24,7 @@
 #           endif
 #       endif
 
-        const char*        input_name;
+        char*              __input_name;
         QUEX_NAME(Buffer)  buffer;
 
 #if     defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \

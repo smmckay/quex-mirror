@@ -95,7 +95,7 @@ QUEX_NAMESPACE_MAIN_OPEN
                    size_t               BufferMemorySize,
                    QUEX_TYPE_LEXATOM* BufferEndOfContentP = 0x0);
       // (*) Common for constructor, reset, and include push ___________________________
-      void    basic_constructor();
+      void    basic_constructor(const char*);
       void    basic_include_push(); 
       void    basic_reset();
       
@@ -103,6 +103,10 @@ QUEX_NAMESPACE_MAIN_OPEN
       void    user_memento_pack(QUEX_NAME(Memento)*); 
       void    user_memento_unpack(QUEX_NAME(Memento)*);
       void    user_reset();
+
+      const char* input_name();
+      bool        input_name_set(const char* InputName);
+
       // (*) Mode handling (copied from TXT-Cpp)
       //     -- modes: read access
       QUEX_NAME(Mode)&      mode();

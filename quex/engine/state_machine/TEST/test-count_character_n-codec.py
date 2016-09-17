@@ -21,8 +21,8 @@ spec_txt = """
 >"""
 
 fh = StringIO(spec_txt)
-fh.name    = "<string>"
-counter_db = counter.parse_line_column_counter(fh)
+fh.name = "<string>"
+ca_map  = counter.LineColumnCount_Prep(fh).parse().count_command_map
 
 def test(TestString):
     TestString = TestString.replace("\n", "\\n").replace("\t", "\\t")
@@ -39,8 +39,8 @@ def test(TestString):
         Setup.buffer_codec_set(bc_factory.do("utf16"), 2)
 
     # Count
-    pattern.prepare_count_info(counter_db, Setup.buffer_codec)
-    print ("info  = {\n    %s\n}\n" % str(pattern.count_info()).replace("\n", "\n    "))
+    pattern = pattern.finalize(ca_map)
+    print ("info  = {\n    %s\n}\n" % str(pattern.lcci).replace("\n", "\n    "))
 
 if "UTF8" in sys.argv:
     test("[\U000004-\U00007F]+")

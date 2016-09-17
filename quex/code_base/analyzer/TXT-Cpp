@@ -102,7 +102,7 @@ public:
 public:
     typedef QUEX_TYPE_TOKEN      token_type;
     typedef QUEX_TYPE_TOKEN_ID   token_id_type;
-    typedef QUEX_TYPE_LEXATOM  char_type;
+    typedef QUEX_TYPE_LEXATOM    char_type;
 
     /*_________________________________________________________________________
      * Constructor:
@@ -118,7 +118,7 @@ public:
     void    from(QUEX_NAME(ByteLoader)* byte_loader, const char*  CodecName = 0x0);
     void    from(QUEX_NAME(LexatomLoader)* filler);
     void    from(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                 size_t               BufferMemorySize,
+                 size_t             BufferMemorySize,
                  QUEX_TYPE_LEXATOM* BufferEndOfContentP = 0x0);
 #   if defined(__QUEX_OPTION_UNIT_TEST)
     template <class UnderlyingStreamT> 
@@ -168,6 +168,9 @@ public:
     $$___SPACE___$${ from(BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
     virtual ~$$LEXER_CLASS_NAME$$();
+
+    const char* input_name();
+    bool        input_name_set(const char* InputName);
 
     /*_________________________________________________________________________
      * Reset:
@@ -254,16 +257,15 @@ public:
 
     /* Level (5) ______________________________________________________________
      *                                                                       */
-    bool    include_push(const char*          InputName, 
+    bool    include_push(const char*        InputName, 
                          QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                         size_t               BufferMemorySize,
+                         size_t             BufferMemorySize,
                          QUEX_TYPE_LEXATOM* BufferEndOfContentP);  
 
     bool    include_pop();
     void    include_stack_delete();
     bool    include_detect_recursion(const char* InputName);
 #   endif
-
     QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get();
     QUEX_TYPE_LEXATOM*    input_pointer_get();
     void                  input_pointer_set(QUEX_TYPE_LEXATOM*);
@@ -389,9 +391,9 @@ public:
 
 private:
     // (*) Common for constructor, reset, and include push ___________________________
-    void    basic_constructor();
+    void    basic_constructor(const char* InputName);
     bool    basic_include_push(const char* InputName, QUEX_NAME(Buffer)* new_buffer_setup); 
-    void    basic_reset();
+    void    basic_reset(const char* InputName);
 
     void    user_constructor();
     bool    user_memento_pack(const char* InputName, QUEX_NAME(Memento)*); 
