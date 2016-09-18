@@ -67,9 +67,9 @@ walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta)
 {
     QUEX_NAME(Buffer)             buffer;
     QUEX_NAME(ByteLoader_Memory)  loader;
-    QUEX_NAME(LexatomLoader)*      filler;
+    QUEX_NAME(LexatomLoader)*     filler;
     int                           count = 0;
-    QUEX_TYPE_LEXATOM           memory[5];
+    QUEX_TYPE_LEXATOM             memory[5];
     const int                     MemorySize = 5;
 
     QUEX_NAME(ByteLoader_Memory_construct)(&loader, 

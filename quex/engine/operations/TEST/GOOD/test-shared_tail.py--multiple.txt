@@ -1,11 +1,11 @@
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-   <0> Assign: { target=Line, source=Input,  }
-       Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=Input, target=Line,  }
+   <0> Assign: { source=Input, target=Line,  }
+       Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
 }
 tail(B, A): {
     1 x same
@@ -13,12 +13,12 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-   <0> Assign: { target=Line, source=Input,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=Input, target=Line,  }
+   <0> Assign: { source=Input, target=Line,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+   <0> Assign: { source=Input, target=Line,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     2 x same
@@ -26,13 +26,13 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-   <0> Assign: { target=Line, source=Input,  }
-       Assign: { target=Column, source=LexemeEnd,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=Input, target=Line,  }
+   <0> Assign: { source=Input, target=Line,  }
+       Assign: { source=LexemeEnd, target=Column,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+   <0> Assign: { source=Input, target=Line,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     2 x same
@@ -40,14 +40,14 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-   <0> Assign: { target=Line, source=Input,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
-   <2> Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=Input, target=Line,  }
+   <0> Assign: { source=Input, target=Line,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
+   <2> Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
-   <2> Assign: { target=Column, source=LexemeEnd,  }
+   <0> Assign: { source=Input, target=Line,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
+   <2> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     3 x same
@@ -55,11 +55,11 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-   <0> Assign: { target=Line, source=Input,  }
-       Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=Input, target=Line,  }
+   <0> Assign: { source=Input, target=Line,  }
+       Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
        if PreContext_55:  last_acceptance = Pattern66
 }
 tail(B, A): {
@@ -68,13 +68,13 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-   <0> Assign: { target=Line, source=Input,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=Input, target=Line,  }
+   <0> Assign: { source=Input, target=Line,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
        if PreContext_55:  last_acceptance = Pattern66
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     2 x same
@@ -82,14 +82,14 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-   <0> Assign: { target=Line, source=Input,  }
-       Assign: { target=Column, source=LexemeEnd,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=Input, target=Line,  }
+   <0> Assign: { source=Input, target=Line,  }
+       Assign: { source=LexemeEnd, target=Column,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
        if PreContext_55:  last_acceptance = Pattern66
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     2 x same
@@ -97,15 +97,15 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-   <0> Assign: { target=Line, source=Input,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
-   <2> Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=Input, target=Line,  }
+   <0> Assign: { source=Input, target=Line,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
+   <2> Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
        if PreContext_55:  last_acceptance = Pattern66
-   <1> Assign: { target=Column, source=LexemeEnd,  }
-   <2> Assign: { target=Column, source=LexemeEnd,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
+   <2> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     3 x same
@@ -113,14 +113,14 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
-   <0> Assign: { target=Line, source=Input,  }
+       Assign: { source=Input, target=Line,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
+   <0> Assign: { source=Input, target=Line,  }
        ColumnCountAdd: { value=1,  }
-       Assign: { target=Column, source=LexemeEnd,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
+       Assign: { source=LexemeEnd, target=Column,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
        if PreContext_55:  last_acceptance = Pattern66
 }
 tail(B, A): {
@@ -129,16 +129,16 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
-   <0> Assign: { target=Line, source=Input,  }
+       Assign: { source=Input, target=Line,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
+   <0> Assign: { source=Input, target=Line,  }
        ColumnCountAdd: { value=1,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
        if PreContext_55:  last_acceptance = Pattern66
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     2 x same
@@ -146,17 +146,17 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
-   <0> Assign: { target=Line, source=Input,  }
+       Assign: { source=Input, target=Line,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
+   <0> Assign: { source=Input, target=Line,  }
        ColumnCountAdd: { value=1,  }
-       Assign: { target=Column, source=LexemeEnd,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+       Assign: { source=LexemeEnd, target=Column,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
        if PreContext_55:  last_acceptance = Pattern66
-   <1> Assign: { target=Column, source=LexemeEnd,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     2 x same
@@ -164,18 +164,18 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=Line, source=Input,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
-   <0> Assign: { target=Line, source=Input,  }
+       Assign: { source=Input, target=Line,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
+   <0> Assign: { source=Input, target=Line,  }
        ColumnCountAdd: { value=1,  }
-   <1> Assign: { target=Column, source=LexemeEnd,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
-   <2> Assign: { target=Column, source=LexemeEnd,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
+   <2> Assign: { source=LexemeEnd, target=Column,  }
    - - - - - - 
-   <0> Assign: { target=Line, source=Input,  }
+   <0> Assign: { source=Input, target=Line,  }
        if PreContext_55:  last_acceptance = Pattern66
-   <1> Assign: { target=Column, source=LexemeEnd,  }
-   <2> Assign: { target=Column, source=LexemeEnd,  }
+   <1> Assign: { source=LexemeEnd, target=Column,  }
+   <2> Assign: { source=LexemeEnd, target=Column,  }
 }
 tail(B, A): {
     3 x same

@@ -1,10 +1,10 @@
-from   quex.engine.operations.content_terminal_router         import *
-from   quex.engine.operations.operation_list         import *
-from   quex.engine.operations.operation_list         import _cost_db
-from   quex.engine.analyzer.door_id_address_label import DoorID
-import quex.engine.operations.shared_tail  as command_list_shared_tail
-import quex.engine.analyzer.engine_supply_factory as     engine
-from   quex.output.core.dictionary       import db
+from   quex.engine.operations.content_terminal_router import *
+from   quex.engine.operations.operation_list          import *
+from   quex.engine.operations.operation_list          import _cost_db
+from   quex.engine.analyzer.door_id_address_label     import DoorID, DialDB
+import quex.engine.operations.shared_tail             as     command_list_shared_tail
+import quex.engine.analyzer.engine_supply_factory     as     engine
+from   quex.output.core.dictionary                    import db
 
 from   quex.blackboard import E_Op, \
                               E_R, \
@@ -18,6 +18,7 @@ from   copy        import deepcopy
 from   random      import shuffle
 
 
+dial_db           = DialDB()
 Setup.language_db = db[Setup.language]
 
 example_db = {
@@ -28,7 +29,8 @@ example_db = {
     E_Op.PreContextOK:                     [ Op.PreContextOK(4711) ],
     E_Op.TemplateStateKeySet:              [ Op.TemplateStateKeySet(66) ],
     E_Op.PathIteratorSet:                  [ Op.PathIteratorSet(11, 22, 1000) ],
-    E_Op.PrepareAfterReload:               [ Op.PrepareAfterReload(DoorID(33, 44), DoorID(55, 66)) ],
+    E_Op.PrepareAfterReload:               [ Op.PrepareAfterReload(DoorID(33, 44, dial_db), 
+                                                                   DoorID(55, 66, dial_db)) ],
     E_Op.Increment:                        [ Op.Increment(E_R.InputP) ],
     E_Op.Decrement:                        [ Op.Decrement(E_R.InputP) ],
     E_Op.InputPDereference:                [ Op.InputPDereference() ],
@@ -46,8 +48,9 @@ example_db = {
     E_Op.LineCountAdd: [ Op.LineCountAdd(1) ],
     ## The column number is set to 1 at the newline.
     ## So, no the delta add 'column += (p - reference_p) * c' is not necessary.
-    E_Op.GotoDoorId:                        [ Op.GotoDoorId(DoorID(33,44)) ],
-    E_Op.GotoDoorIdIfInputPNotEqualPointer: [ Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(33,44), E_R.LoopRestartP) ],
+    E_Op.GotoDoorId:                        [ Op.GotoDoorId(DoorID(33, 44, dial_db)) ],
+    E_Op.GotoDoorIdIfInputPNotEqualPointer: [ Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(33,44, dial_db), 
+                                                                                   E_R.LoopRestartP) ],
     E_Op.Assign:                            [ Op.Assign(E_R.InputP, E_R.LexemeStartP) ],
     E_Op.AssignConstant: [ 
         Op.AssignConstant(E_R.InputP, 0), 
@@ -70,7 +73,7 @@ example_db = {
     E_Op.RouterOnStateKey: [
         Op.RouterOnStateKey(E_Compression.PATH, 0x4711L, 
                          [(1L, 100L), (2L, 200L), (3L, 300L)], 
-                         lambda x: DoorID(x,1)),
+                         lambda x: DoorID(x,1,dial_db)),
     ],
 }
 

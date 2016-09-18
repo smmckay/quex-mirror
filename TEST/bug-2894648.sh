@@ -2,6 +2,7 @@
 bug=2894648
 if [[ $1 == "--hwut-info" ]]; then
     echo "nobody: $bug 0.46.2 Backslashed . is unknown to quex"
+    echo "HAPPY: [ 0-9]+;"
     exit
 fi
 

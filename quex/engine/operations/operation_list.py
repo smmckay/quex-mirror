@@ -382,7 +382,10 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
             return "pre-context-fulfilled = %s;" % self.content.pre_context_id
 
         else:
-            content_str = "".join("%s=%s, " % (member, value) for member, value in self.content._asdict().iteritems())
+            def get_string(member, value):
+                if value is None: return ""
+                else:             return "%s=%s, " % (member, value) 
+            content_str = "".join(get_string(member, value) for member, value in sorted(self.content._asdict().iteritems()))
             return "%s: { %s }" % (name_str, content_str)   
 
 def is_switchable(A, B):

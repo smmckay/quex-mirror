@@ -62,6 +62,27 @@ QUEX_NAMESPACE_MAIN_OPEN
         QUEX_NAME(TokenQueue_reset)(me);                                
     }
 
+#   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+    QUEX_INLINE void
+    QUEX_NAME(TokenQueue_disfunctionality_set)(QUEX_NAME(TokenQueue)* me) 
+    {
+        me->begin                   = (QUEX_TYPE_TOKEN*)0;                           
+        me->end                     = (QUEX_TYPE_TOKEN*)0;
+        me->read_iterator           = (QUEX_TYPE_TOKEN*)0; 
+        me->write_iterator          = (QUEX_TYPE_TOKEN*)0; 
+        me->end_minus_safety_border = (QUEX_TYPE_TOKEN*)0;
+    }
+
+    QUEX_INLINE bool
+    QUEX_NAME(TokenQueue_disfunctionality_check)(QUEX_NAME(TokenQueue)* me) 
+    {
+        return    me->begin                   == (QUEX_TYPE_TOKEN*)0                           
+               && me->end                     == (QUEX_TYPE_TOKEN*)0
+               && me->read_iterator           == (QUEX_TYPE_TOKEN*)0 
+               && me->write_iterator          == (QUEX_TYPE_TOKEN*)0
+               && me->end_minus_safety_border == (QUEX_TYPE_TOKEN*)0;
+    }
+#   endif
 
     QUEX_INLINE void
     QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me)
@@ -96,6 +117,22 @@ QUEX_NAMESPACE_MAIN_OPEN
     {
         *memory = me->begin;
         *n      = (size_t)(me->end - me->begin);
+    }
+
+    QUEX_INLINE QUEX_TYPE_TOKEN* 
+    QUEX_NAME(TokenQueue_access_write_p)(QUEX_NAME(TokenQueue)* me) 
+    { 
+#       if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+        __quex_assert( ! QUEX_NAME(TokenQueue_disfunctionality_check)(me) );
+        __quex_assert( me->write_iterator < me->end_minus_safety_border );
+        if( QUEX_NAME(TokenQueue_disfunctionality_check)(me) ) {
+            return (QUEX_TYPE_TOKEN*)0;
+        }
+        else if( me->write_iterator < me->end_minus_safety_border ) {
+            return (QUEX_TYPE_TOKEN*)0;
+        }
+#       endif
+        return me->write_iterator; 
     }
 
     QUEX_INLINE bool QUEX_NAME(TokenQueue_is_full)(QUEX_NAME(TokenQueue)* me) 

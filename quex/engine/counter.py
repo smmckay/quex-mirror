@@ -351,8 +351,7 @@ class IndentationCount(LineColumnCount):
         self.pattern_suppressed_newline = _finalize(self.pattern_suppressed_newline, 
                                                     CaMap) 
         for pattern_comment in self.pattern_comment_list:
-            self.pattern_comment = self._finalize(pattern_comment, 
-                                                  CaMap) 
+            self.pattern_comment = _finalize(pattern_comment, CaMap) 
         return self
 
     def get_sm_newline(self):

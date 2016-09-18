@@ -22,12 +22,12 @@ import os
 import sys 
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from   quex.blackboard                   import E_Op
-from   quex.engine.operations.operation_list         import *
-import quex.engine.operations.shared_tail  as     shared_tail
-from   quex.engine.operations.tree         import SharedTailDB
-from   quex.engine.operations.TEST.helper  import *
-from   quex.engine.analyzer.door_id_address_label import DoorID, dial_db
+from   quex.blackboard                            import E_Op
+from   quex.engine.operations.operation_list      import *
+import quex.engine.operations.shared_tail         as     shared_tail
+from   quex.engine.operations.tree                import SharedTailDB
+from   quex.engine.operations.TEST.helper         import *
+from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 
 from   collections import defaultdict
 from   itertools   import izip, permutations
@@ -37,6 +37,12 @@ if "--hwut-info" in sys.argv:
     print "SharedTailDB;"
     print "CHOICES: init, pop_best;"
     sys.exit()
+
+dial_db = DialDB()
+
+def get_DoorID(X, Y): 
+    global dial_db
+    return DoorID(X, Y, dial_db)
 
 # Generate a set of totally independent commands
 # Here, they are assigned manually, to avoid that changes to E_R might
@@ -52,8 +58,8 @@ G = Op.Assign(E_R.CountReferenceP, E_R.PositionRegister)
 alias_db = { A: "A", B: "B", C: "C", D: "D", E: "E", F: "F", G: "G", }
 
 def test_init(Index, DidCl_Iterable):
-    dial_db.clear()
-    stdb = SharedTailDB(4711L, DidCl_Iterable)
+    global dial_db
+    stdb = SharedTailDB(4711L, DidCl_Iterable, dial_db)
 
     print "_" * 80
     print "##", Index
@@ -67,8 +73,8 @@ def test_init(Index, DidCl_Iterable):
     print "    " + stdb.get_string(alias_db).replace("\n", "\n    ")
 
 def test_pop(Index, DidCl_Iterable):
-    dial_db.clear()
-    stdb = SharedTailDB(4711L, DidCl_Iterable)
+    global dial_db
+    stdb = SharedTailDB(4711L, DidCl_Iterable, dial_db)
 
     print "_" * 80
     print "##", Index
@@ -93,53 +99,53 @@ def test_pop(Index, DidCl_Iterable):
 setup_list = [
     [],
     [
-        (DoorID(0, 1), [A]),
+        (get_DoorID(0, 1), [A]),
     ],
     [
-        (DoorID(0, 1), [A]), 
-        (DoorID(0, 2), [A]),
+        (get_DoorID(0, 1), [A]), 
+        (get_DoorID(0, 2), [A]),
     ],
     [
-        (DoorID(0, 1), [A]), 
-        (DoorID(0, 2), [B]),
+        (get_DoorID(0, 1), [A]), 
+        (get_DoorID(0, 2), [B]),
     ],
     [
-        (DoorID(0, 1), [A, C]), 
-        (DoorID(0, 2), [A, C]),
+        (get_DoorID(0, 1), [A, C]), 
+        (get_DoorID(0, 2), [A, C]),
     ],
     [
-        (DoorID(0, 1), [A, C]), 
-        (DoorID(0, 2), [B, C]),
+        (get_DoorID(0, 1), [A, C]), 
+        (get_DoorID(0, 2), [B, C]),
     ],
     [
-        (DoorID(0, 1), [C, A]), 
-        (DoorID(0, 2), [C, B]),
+        (get_DoorID(0, 1), [C, A]), 
+        (get_DoorID(0, 2), [C, B]),
     ],
     [
-        (DoorID(0, 1), [A, C]), 
-        (DoorID(0, 2), [C, B]),
+        (get_DoorID(0, 1), [A, C]), 
+        (get_DoorID(0, 2), [C, B]),
     ],
     [
-        (DoorID(0, 1), [A, C]), 
-        (DoorID(0, 2), [C, A]),
+        (get_DoorID(0, 1), [A, C]), 
+        (get_DoorID(0, 2), [C, A]),
     ],
     [
-        (DoorID(0, 1), [A, C]), 
-        (DoorID(0, 2), [B, C]),
-        (DoorID(0, 3), [D, C]), 
-        (DoorID(0, 4), [E, C]),
+        (get_DoorID(0, 1), [A, C]), 
+        (get_DoorID(0, 2), [B, C]),
+        (get_DoorID(0, 3), [D, C]), 
+        (get_DoorID(0, 4), [E, C]),
     ],
     [
-        (DoorID(0, 1), [A, C, F]), 
-        (DoorID(0, 2), [B, C, F]),
-        (DoorID(0, 3), [D, G, F]), 
-        (DoorID(0, 4), [E, G, F]),
+        (get_DoorID(0, 1), [A, C, F]), 
+        (get_DoorID(0, 2), [B, C, F]),
+        (get_DoorID(0, 3), [D, G, F]), 
+        (get_DoorID(0, 4), [E, G, F]),
     ],
     [
-        (DoorID(0, 1), [A, C, F]), 
-        (DoorID(0, 2), [B, F, C]),
-        (DoorID(0, 3), [F, D, G]), 
-        (DoorID(0, 4), [G, F, E]),
+        (get_DoorID(0, 1), [A, C, F]), 
+        (get_DoorID(0, 2), [B, F, C]),
+        (get_DoorID(0, 3), [F, D, G]), 
+        (get_DoorID(0, 4), [G, F, E]),
     ],
 ]
 
@@ -157,7 +163,7 @@ elif "pop_best" in sys.argv:
 elif "large_init" in sys.argv:
     door_id_command_list = []
     for i in xrange(200):
-        door_id      = DoorID(0, i)
+        door_id      = get_DoorID(0, i)
         command_list = random_command_list(5, Seed=0)
         door_id_command_list.append((door_id, command_list))
     test_init(door_id_command_list)

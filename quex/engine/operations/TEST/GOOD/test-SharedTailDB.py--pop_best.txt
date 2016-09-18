@@ -1,4 +1,5 @@
 ________________________________________________________________________________
+## 0
 
 Setup:
 
@@ -7,6 +8,7 @@ ___ Initial ___
     .--DoorID(s=4711, d=0) []
 
 ________________________________________________________________________________
+## 1
 
 Setup:
     DoorID(s=0, d=1): [A]
@@ -14,9 +16,10 @@ Setup:
 ___ Initial ___
 
         .--DoorID(s=0, d=1) [A]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=1) []
 
 ________________________________________________________________________________
+## 2
 
 Setup:
     DoorID(s=0, d=1): [A]
@@ -26,16 +29,17 @@ ___ Initial ___
 
         .--DoorID(s=0, d=1) [A]
         .--DoorID(s=0, d=2) [A]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=2) []
 
 ___ Step 1 ____
 
             .--DoorID(s=0, d=1) []
             .--DoorID(s=0, d=2) []
-        .--DoorID(s=4711, d=1) [A]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=3) [A]
+    .--DoorID(s=4711, d=2) []
 
 ________________________________________________________________________________
+## 3
 
 Setup:
     DoorID(s=0, d=1): [A]
@@ -45,9 +49,10 @@ ___ Initial ___
 
         .--DoorID(s=0, d=1) [A]
         .--DoorID(s=0, d=2) [B]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=4) []
 
 ________________________________________________________________________________
+## 4
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -57,16 +62,17 @@ ___ Initial ___
 
         .--DoorID(s=0, d=1) [A C]
         .--DoorID(s=0, d=2) [A C]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=5) []
 
 ___ Step 1 ____
 
             .--DoorID(s=0, d=1) []
             .--DoorID(s=0, d=2) []
-        .--DoorID(s=4711, d=1) [A C]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=6) [A C]
+    .--DoorID(s=4711, d=5) []
 
 ________________________________________________________________________________
+## 5
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -76,16 +82,17 @@ ___ Initial ___
 
         .--DoorID(s=0, d=1) [A C]
         .--DoorID(s=0, d=2) [B C]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=7) []
 
 ___ Step 1 ____
 
             .--DoorID(s=0, d=1) [A]
             .--DoorID(s=0, d=2) [B]
-        .--DoorID(s=4711, d=1) [C]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=8) [C]
+    .--DoorID(s=4711, d=7) []
 
 ________________________________________________________________________________
+## 6
 
 Setup:
     DoorID(s=0, d=1): [C A]
@@ -95,16 +102,17 @@ ___ Initial ___
 
         .--DoorID(s=0, d=1) [C A]
         .--DoorID(s=0, d=2) [C B]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=9) []
 
 ___ Step 1 ____
 
             .--DoorID(s=0, d=1) [A]
             .--DoorID(s=0, d=2) [B]
-        .--DoorID(s=4711, d=1) [C]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=10) [C]
+    .--DoorID(s=4711, d=9) []
 
 ________________________________________________________________________________
+## 7
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -114,16 +122,17 @@ ___ Initial ___
 
         .--DoorID(s=0, d=1) [A C]
         .--DoorID(s=0, d=2) [C B]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=11) []
 
 ___ Step 1 ____
 
             .--DoorID(s=0, d=1) [A]
             .--DoorID(s=0, d=2) [B]
-        .--DoorID(s=4711, d=1) [C]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=12) [C]
+    .--DoorID(s=4711, d=11) []
 
 ________________________________________________________________________________
+## 8
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -133,16 +142,17 @@ ___ Initial ___
 
         .--DoorID(s=0, d=1) [A C]
         .--DoorID(s=0, d=2) [C A]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=13) []
 
 ___ Step 1 ____
 
             .--DoorID(s=0, d=1) []
             .--DoorID(s=0, d=2) []
-        .--DoorID(s=4711, d=1) [C A]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=14) [C A]
+    .--DoorID(s=4711, d=13) []
 
 ________________________________________________________________________________
+## 9
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -156,7 +166,7 @@ ___ Initial ___
         .--DoorID(s=0, d=2) [B C]
         .--DoorID(s=0, d=3) [D C]
         .--DoorID(s=0, d=4) [E C]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=15) []
 
 ___ Step 1 ____
 
@@ -164,10 +174,11 @@ ___ Step 1 ____
             .--DoorID(s=0, d=2) [B]
             .--DoorID(s=0, d=3) [D]
             .--DoorID(s=0, d=4) [E]
-        .--DoorID(s=4711, d=1) [C]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=16) [C]
+    .--DoorID(s=4711, d=15) []
 
 ________________________________________________________________________________
+## 10
 
 Setup:
     DoorID(s=0, d=1): [A C F]
@@ -181,7 +192,7 @@ ___ Initial ___
         .--DoorID(s=0, d=2) [B C F]
         .--DoorID(s=0, d=3) [D G F]
         .--DoorID(s=0, d=4) [E G F]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=17) []
 
 ___ Step 1 ____
 
@@ -189,31 +200,32 @@ ___ Step 1 ____
         .--DoorID(s=0, d=2) [B C F]
             .--DoorID(s=0, d=3) [D]
             .--DoorID(s=0, d=4) [E]
-        .--DoorID(s=4711, d=1) [G F]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=18) [G F]
+    .--DoorID(s=4711, d=17) []
 
 ___ Step 2 ____
 
             .--DoorID(s=0, d=3) [D]
             .--DoorID(s=0, d=4) [E]
-        .--DoorID(s=4711, d=1) [G F]
+        .--DoorID(s=4711, d=18) [G F]
             .--DoorID(s=0, d=1) [A]
             .--DoorID(s=0, d=2) [B]
-        .--DoorID(s=4711, d=2) [C F]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=19) [C F]
+    .--DoorID(s=4711, d=17) []
 
 ___ Step 3 ____
 
                 .--DoorID(s=0, d=3) [D]
                 .--DoorID(s=0, d=4) [E]
-            .--DoorID(s=4711, d=1) [G]
+            .--DoorID(s=4711, d=18) [G]
                 .--DoorID(s=0, d=1) [A]
                 .--DoorID(s=0, d=2) [B]
-            .--DoorID(s=4711, d=2) [C]
-        .--DoorID(s=4711, d=3) [F]
-    .--DoorID(s=4711, d=0) []
+            .--DoorID(s=4711, d=19) [C]
+        .--DoorID(s=4711, d=20) [F]
+    .--DoorID(s=4711, d=17) []
 
 ________________________________________________________________________________
+## 11
 
 Setup:
     DoorID(s=0, d=1): [A C F]
@@ -227,7 +239,7 @@ ___ Initial ___
         .--DoorID(s=0, d=2) [B F C]
         .--DoorID(s=0, d=3) [F D G]
         .--DoorID(s=0, d=4) [G F E]
-    .--DoorID(s=4711, d=0) []
+    .--DoorID(s=4711, d=21) []
 
 ___ Step 1 ____
 
@@ -235,27 +247,27 @@ ___ Step 1 ____
         .--DoorID(s=0, d=4) [G F E]
             .--DoorID(s=0, d=1) [A]
             .--DoorID(s=0, d=2) [B]
-        .--DoorID(s=4711, d=1) [F C]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=22) [F C]
+    .--DoorID(s=4711, d=21) []
 
 ___ Step 2 ____
 
             .--DoorID(s=0, d=1) [A]
             .--DoorID(s=0, d=2) [B]
-        .--DoorID(s=4711, d=1) [F C]
+        .--DoorID(s=4711, d=22) [F C]
             .--DoorID(s=0, d=3) [D]
             .--DoorID(s=0, d=4) [E]
-        .--DoorID(s=4711, d=2) [G F]
-    .--DoorID(s=4711, d=0) []
+        .--DoorID(s=4711, d=23) [G F]
+    .--DoorID(s=4711, d=21) []
 
 ___ Step 3 ____
 
                 .--DoorID(s=0, d=1) [A]
                 .--DoorID(s=0, d=2) [B]
-            .--DoorID(s=4711, d=1) [C]
+            .--DoorID(s=4711, d=22) [C]
                 .--DoorID(s=0, d=3) [D]
                 .--DoorID(s=0, d=4) [E]
-            .--DoorID(s=4711, d=2) [G]
-        .--DoorID(s=4711, d=3) [F]
-    .--DoorID(s=4711, d=0) []
+            .--DoorID(s=4711, d=23) [G]
+        .--DoorID(s=4711, d=24) [F]
+    .--DoorID(s=4711, d=21) []
 

@@ -1,4 +1,5 @@
 ________________________________________________________________________________
+## 0
 
 Setup:
 
@@ -11,6 +12,7 @@ SharedTailDB:
       }
     
 ________________________________________________________________________________
+## 1
 
 Setup:
     DoorID(s=0, d=1): [A]
@@ -18,12 +20,13 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 1
+    .root:           door_id: DoorID(s=4711, d=1); child_n: 1
     .candidate_db.keys(): ;
     .shared_tails: {
       }
     
 ________________________________________________________________________________
+## 2
 
 Setup:
     DoorID(s=0, d=1): [A]
@@ -32,7 +35,7 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 2
+    .root:           door_id: DoorID(s=4711, d=2); child_n: 2
     .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), ;
     .shared_tails: {
       (A) -> {
@@ -44,6 +47,7 @@ SharedTailDB:
       }
     
 ________________________________________________________________________________
+## 3
 
 Setup:
     DoorID(s=0, d=1): [A]
@@ -52,12 +56,13 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 2
+    .root:           door_id: DoorID(s=4711, d=3); child_n: 2
     .candidate_db.keys(): ;
     .shared_tails: {
       }
     
 ________________________________________________________________________________
+## 4
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -66,7 +71,7 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 2
+    .root:           door_id: DoorID(s=4711, d=4); child_n: 2
     .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), ;
     .shared_tails: {
       (A C) -> {
@@ -78,6 +83,7 @@ SharedTailDB:
       }
     
 ________________________________________________________________________________
+## 5
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -86,7 +92,7 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 2
+    .root:           door_id: DoorID(s=4711, d=5); child_n: 2
     .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), ;
     .shared_tails: {
       (C) -> {
@@ -98,6 +104,7 @@ SharedTailDB:
       }
     
 ________________________________________________________________________________
+## 6
 
 Setup:
     DoorID(s=0, d=1): [C A]
@@ -106,7 +113,7 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 2
+    .root:           door_id: DoorID(s=4711, d=6); child_n: 2
     .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), ;
     .shared_tails: {
       (C) -> {
@@ -118,6 +125,7 @@ SharedTailDB:
       }
     
 ________________________________________________________________________________
+## 7
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -126,7 +134,7 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 2
+    .root:           door_id: DoorID(s=4711, d=7); child_n: 2
     .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), ;
     .shared_tails: {
       (C) -> {
@@ -138,6 +146,7 @@ SharedTailDB:
       }
     
 ________________________________________________________________________________
+## 8
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -146,7 +155,7 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 2
+    .root:           door_id: DoorID(s=4711, d=8); child_n: 2
     .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), ;
     .shared_tails: {
       (C A) -> {
@@ -158,6 +167,7 @@ SharedTailDB:
       }
     
 ________________________________________________________________________________
+## 9
 
 Setup:
     DoorID(s=0, d=1): [A C]
@@ -168,20 +178,21 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 4
-    .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=3), DoorID(s=0, d=2), DoorID(s=0, d=4), ;
+    .root:           door_id: DoorID(s=4711, d=9); child_n: 4
+    .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), DoorID(s=0, d=3), DoorID(s=0, d=4), ;
     .shared_tails: {
       (C) -> {
         .tail_length: 1;
         .cut_db: {
             DoorID(s=0, d=1) -> { 1,  }
-            DoorID(s=0, d=3) -> { 1,  }
             DoorID(s=0, d=2) -> { 1,  }
+            DoorID(s=0, d=3) -> { 1,  }
             DoorID(s=0, d=4) -> { 1,  }
         }
       }
     
 ________________________________________________________________________________
+## 10
 
 Setup:
     DoorID(s=0, d=1): [A C F]
@@ -192,8 +203,8 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 4
-    .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=3), DoorID(s=0, d=2), DoorID(s=0, d=4), ;
+    .root:           door_id: DoorID(s=4711, d=10); child_n: 4
+    .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), DoorID(s=0, d=3), DoorID(s=0, d=4), ;
     .shared_tails: {
       (C F) -> {
         .tail_length: 2;
@@ -205,8 +216,8 @@ SharedTailDB:
         .tail_length: 1;
         .cut_db: {
             DoorID(s=0, d=1) -> { 2,  }
-            DoorID(s=0, d=3) -> { 2,  }
             DoorID(s=0, d=2) -> { 2,  }
+            DoorID(s=0, d=3) -> { 2,  }
             DoorID(s=0, d=4) -> { 2,  }
         }
       (G F) -> {
@@ -218,6 +229,7 @@ SharedTailDB:
       }
     
 ________________________________________________________________________________
+## 11
 
 Setup:
     DoorID(s=0, d=1): [A C F]
@@ -228,15 +240,15 @@ Setup:
 SharedTailDB:
 
     .state_index:    4711;
-    .root:           door_id: DoorID(s=4711, d=0); child_n: 4
-    .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=3), DoorID(s=0, d=2), DoorID(s=0, d=4), ;
+    .root:           door_id: DoorID(s=4711, d=11); child_n: 4
+    .candidate_db.keys(): DoorID(s=0, d=1), DoorID(s=0, d=2), DoorID(s=0, d=3), DoorID(s=0, d=4), ;
     .shared_tails: {
       (F) -> {
         .tail_length: 1;
         .cut_db: {
             DoorID(s=0, d=1) -> { 2,  }
-            DoorID(s=0, d=3) -> { 0,  }
             DoorID(s=0, d=2) -> { 1,  }
+            DoorID(s=0, d=3) -> { 0,  }
             DoorID(s=0, d=4) -> { 1,  }
         }
       (F C) -> {

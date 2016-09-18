@@ -18,6 +18,7 @@ main(int argc, char** argv)
            (int)(qlex.buffer._memory._back - qlex.buffer._memory._front + 1)); 
 
     QUEX_NAME(destruct)(&qlex);
+    printf("<terminated>\n");
     return 0;
 }
 

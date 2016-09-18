@@ -328,7 +328,7 @@ QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
 #if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
 #   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     /* Assume that the user will pass us a constructed token queue */
-    QUEX_NAME(TokenQueue_init)(&me->_token_queue, 0, 0x0);
+    QUEX_NAME(TokenQueue_disfunctionality_set)(&me->_token_queue);
 #   else
     QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
                                     (QUEX_TYPE_TOKEN*)&me->__memory_token_queue,

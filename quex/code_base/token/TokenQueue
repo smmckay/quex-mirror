@@ -35,6 +35,10 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE void             QUEX_NAME(TokenQueue_construct)(QUEX_NAME(TokenQueue)* me, 
                                                                  QUEX_TYPE_TOKEN*       Memory,
                                                                  const size_t           N);
+#   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+    QUEX_INLINE void             QUEX_NAME(TokenQueue_disfunctionality_set)(QUEX_NAME(TokenQueue)* me);
+    QUEX_INLINE bool             QUEX_NAME(TokenQueue_disfunctionality_check)(QUEX_NAME(TokenQueue)* me);
+#   endif
     QUEX_INLINE void             QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE void             QUEX_NAME(TokenQueue_remainder_get)(QUEX_NAME(TokenQueue)* me,
                                                                      QUEX_TYPE_TOKEN**      begin,
@@ -44,22 +48,23 @@ QUEX_NAMESPACE_MAIN_OPEN
                                                                   size_t*                n);
     QUEX_INLINE bool             QUEX_NAME(TokenQueue_is_full)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE bool             QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me);
+    QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_access_write_p)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_begin)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_back)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE size_t           QUEX_NAME(TokenQueue_available_n)(QUEX_NAME(TokenQueue)* me); 
 
 
-#ifdef QUEX_OPTION_ASSERTS
+#   ifdef QUEX_OPTION_ASSERTS
     QUEX_INLINE void  
     QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(QUEX_NAME(TokenQueue)* me);
 
     QUEX_INLINE void  
     QUEX_TOKEN_QUEUE_ASSERT(QUEX_NAME(TokenQueue)* me);
-#else
+#   else
 #   define QUEX_TOKEN_QUEUE_ASSERT(me)             /* empty */
 #   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me) /* empty */
-#endif
+#   endif
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
     QUEX_TYPE_TOKEN*   token_list;

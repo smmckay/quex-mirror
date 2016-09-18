@@ -359,11 +359,12 @@ class PPT_List(list):
             # => next line not subject to new indentation counting.
             new_incidence_id = dial.new_incidence_id()
             pattern = ISetup.pattern_suppressed_newline.clone_with_new_incidence_id(new_incidence_id)
-            code    = CodeTerminal([Lng.GOTO(DoorID.global_reentry())])
+            door_id = DoorID.global_reentry(self.terminal_factory.dial_db)
+            code    = CodeTerminal([Lng.GOTO(door_id, self.terminal_factory.dial_db)])
             new_ppt_list.append(
                 PPT(PatternPriority(MHI, 1), pattern,
-                    terminal_factory.do_plain(code, pattern, 
-                                              "INDENTATION COUNTER SUPPRESSED_NEWLINE: "))
+                    self.terminal_factory.do_plain(code, pattern, 
+                                                   "INDENTATION COUNTER SUPPRESSED_NEWLINE: "))
             )
 
         return new_ppt_list, new_terminal_list

@@ -4,8 +4,6 @@ from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
 import quex.engine.state_machine.algebra.reverse   as     reverse
 from   quex.engine.misc.tools                      import typed, print_callstack
 
-
-
 class Pattern:
     """ALL STATE MACHINES ARE GIVEN IN THE CODEC OF 'Setup.buffer_codec'!
 

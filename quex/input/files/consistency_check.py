@@ -147,8 +147,8 @@ def __entry_transitions(mode, ModePrepList, mode_name_list):
            
 
 def __empty_mode_detection(mode, implemented_mode_name_list):
-    if   mode.implemented_f():                     return
-    elif mode.name in  implemented_mode_name_list: return
+    if   mode.implemented_f():                        return
+    elif mode.name not in implemented_mode_name_list: return
 
     error.warning("Mode without pattern and event handlers needs to be 'inheritable only'.\n" + \
                   "<inheritable: only> has been set automatically.", mode.sr)

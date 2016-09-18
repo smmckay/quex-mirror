@@ -1,11 +1,11 @@
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
-       Assign: { target=CharacterBeginP, source=Input,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
+       Assign: { source=Input, target=LoopRestartP,  }
    - - - - - - 
-       Assign: { target=CharacterBeginP, source=Input,  }
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
+       Assign: { source=Input, target=LoopRestartP,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
 }
 tail(B, A): {
     0 x same
@@ -13,11 +13,11 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
-       Assign: { target=CharacterBeginP, source=Input,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
+       Assign: { source=Input, target=LoopRestartP,  }
    - - - - - - 
-       Assign: { target=CharacterBeginP, source=Input,  }
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
+       Assign: { source=Input, target=LoopRestartP,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
        if PreContext_55:  last_acceptance = Pattern66
 }
 tail(B, A): {
@@ -26,12 +26,12 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
-       Assign: { target=CharacterBeginP, source=Input,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
+       Assign: { source=Input, target=LoopRestartP,  }
    - - - - - - 
-       Assign: { target=CharacterBeginP, source=Input,  }
+       Assign: { source=Input, target=LoopRestartP,  }
        if PreContext_55:  last_acceptance = Pattern66
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
 }
 tail(B, A): {
     0 x same
@@ -39,12 +39,12 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
-       Assign: { target=CharacterBeginP, source=Input,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
+       Assign: { source=Input, target=LoopRestartP,  }
    - - - - - - 
        if PreContext_55:  last_acceptance = Pattern66
-       Assign: { target=CharacterBeginP, source=Input,  }
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
+       Assign: { source=Input, target=LoopRestartP,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
 }
 tail(B, A): {
     0 x same
@@ -52,13 +52,13 @@ tail(B, A): {
 
 ________________________________________________________________________________
 tail(A, B): {
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
-       Assign: { target=CharacterBeginP, source=Input,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
+       Assign: { source=Input, target=LoopRestartP,  }
    - - - - - - 
        if PreContext_55:  last_acceptance = Pattern66
-       Assign: { target=CharacterBeginP, source=Input,  }
-       Assign: { target=InputP, source=LexemeStartP,  }
-       Assign: { target=CharacterBeginP, source=LexemeEnd,  }
+       Assign: { source=Input, target=LoopRestartP,  }
+       Assign: { source=LexemeStartP, target=InputP,  }
+       Assign: { source=LexemeEnd, target=LoopRestartP,  }
        ColumnCountAdd: { value=1,  }
 }
 tail(B, A): {

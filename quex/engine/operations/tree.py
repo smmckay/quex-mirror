@@ -216,7 +216,7 @@ class SharedTailCandidateInfo(object):
             "    .tail_length: %i;\n" % self.tail_length,
             "    .cut_db: {\n",
         ]
-        for door_id, cut_indices in self.cut_db.iteritems():
+        for door_id, cut_indices in sorted(self.cut_db.iteritems()):
             txt.append("        %s -> { %s }\n" % (str(door_id), "".join("%i, " % i for i in cut_indices)))
         txt.append("    }\n")
         return "".join(txt)
@@ -460,7 +460,7 @@ class SharedTailDB:
         txt = [
             ".state_index:    %i;\n" % self.state_index,
             ".root:           door_id: %s; child_n: %i\n" % (str(self.root.door_id), len(self.root.child_set)),
-            ".candidate_db.keys(): %s;\n" % "".join("%s, " % str(door_id) for door_id in self._candidate_db.iterkeys()),
+            ".candidate_db.keys(): %s;\n" % "".join("%s, " % str(door_id) for door_id in sorted(self._candidate_db.iterkeys())),
             ".shared_tails: {\n"
         ]
         

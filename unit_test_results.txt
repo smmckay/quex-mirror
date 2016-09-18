@@ -146,7 +146,7 @@ TEST                                                                 <no date>
     3038088 token_id = numeric value
         feature-3038088.sh ...........................................[OK]
     3039173 On Mismatch: abort()
-        feature-3039173.sh .........................................[FAIL]
+        feature-3039173.sh ...........................................[OK]
     3082041 0.52.4 Buffer Memory Size not Accepted
         bug-3082041.sh .............................................[FAIL]
     3102035 0.55.1 Weird Setup causes Duplicate State Label
@@ -230,7 +230,7 @@ TEST                                                                 <no date>
  * nazim-can-bedir:
 
     2896732 0.46.2 - Memory leak
-        bug-2896732.sh .............................................[FAIL]
+        bug-2896732.sh ...............................................[OK]
 
  * nobody:
 
@@ -241,7 +241,7 @@ TEST                                                                 <no date>
     2891125 0.45.1 bug in -- version
         bug-2891125.sh ...............................................[OK]
     2894648 0.46.2 Backslashed . is unknown to quex
-        bug-2894648.sh .............................................[FAIL]
+        bug-2894648.sh ...............................................[OK]
 
  * ollydbg:
 
@@ -380,8 +380,8 @@ TEST                                                                 <no date>
     1908436 0.23.6 rule precedence reversed for identical patterns
         bug-1908436.sh ...............................................[OK]
     1935701 - 0.24.7 buffer handling size mismatch
-        bug-1935701.exe FILE ................................[MAKE FAILED]
-                        fstream .............................[MAKE FAILED]
+        bug-1935701.exe FILE .........................................[OK]
+                        fstream ......................................[OK]
     1936707 0.24.10 --plot flag doesnt seem to work
         bug-1936707.sh ...............................................[OK]
     1969629 0.25.4 token list with just TERMINATION treated empty
@@ -416,7 +416,7 @@ TEST                                                                 <no date>
  * the-user-k:
 
     3021502 0.49.2 Buffer-size gets ignored
-        bug-3021502.sh .............................................[FAIL]
+        bug-3021502.sh ...............................................[OK]
 
  * timdawborn:
 
@@ -478,16 +478,10 @@ TEST                                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] bug-3474524.sh
-    [FAIL] feature-3039173.sh
     [FAIL] bug-3082041.sh
-    [FAIL] bug-2896732.sh
-    [FAIL] bug-2894648.sh
     [FAIL] feature-3402386.sh _ hex
                             \__ utf8
     [FAIL] bug-3295781.sh
-    [FAIL] bug-1935701.exe _ FILE
-                         \__ fstream
-    [FAIL] bug-3021502.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1705,29 +1699,45 @@ quex/engine/misc/TEST                                                <no date>
                                                                                
 quex/engine/operations/TEST                                          <no date>
 -------------------------------------------------------------------------------
- * 
-        basic.py ..............................................[NO OUTPUT]
- * 
-        can_be_moved_to_tail.py ............................[NO GOOD FILE]
- * 
-        find_last_common.py ................................[NO GOOD FILE]
- * 
-        is_switchable.py ......................................[NO OUTPUT]
- * 
-        test-SharedTailDB.py ...............................[NO GOOD FILE]
- * 
-        test-shared_tail.py ................................[NO GOOD FILE]
+ * SharedTailDB
+        test-SharedTailDB.py init ....................................[OK]
+                             pop_best ................................[OK]
+
+ * Command:
+
+    Basic
+        basic.py ...................................................[FAIL]
+
+ * Op:
+
+    is_switchable
+        is_switchable.py ...........................................[FAIL]
+
+ * Op.shared_tail:
+
+    can_be_moved_to_tail
+        can_be_moved_to_tail.py no-exceptions ........................[OK]
+                                with-exceptions ......................[OK]
+    find_last_common
+        find_last_common.py 1-common .................................[OK]
+                            2-common .................................[OK]
+                            3-common ...............................[FAIL]
+                            EqualOp ..................................[OK]
+                            no-common ................................[OK]
+                            start-indices ............................[OK]
+    find_last_common
+        test-shared_tail.py multiple .................................[OK]
+                            one-or-none ..............................[OK]
+                            two ......................................[OK]
+                            two-bad ..................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] basic.py
-    [FAIL] can_be_moved_to_tail.py
-    [FAIL] find_last_common.py
     [FAIL] is_switchable.py
-    [FAIL] test-SharedTailDB.py
-    [FAIL] test-shared_tail.py
+    [FAIL] find_last_common.py _ 3-common
 ===============================================================================
                                                                                
                               State Machine Tests                              
@@ -2565,24 +2575,24 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * Buffer_load_backward:
 
     (BPC=1, FB=0)
-        backward-fb0.exe ....................................[MAKE FAILED]
+        backward-fb0.exe ...........................................[FAIL]
     (BPC=1, FB=1)
-        backward-fb1.exe ....................................[MAKE FAILED]
+        backward-fb1.exe ...........................................[FAIL]
     (BPC=1, FB=2)
-        backward-fb2.exe ....................................[MAKE FAILED]
+        backward-fb2.exe ...........................................[FAIL]
     (BPC=4, FB=2)
-        backward-fb2-32.exe .................................[MAKE FAILED]
+        backward-fb2-32.exe ........................................[FAIL]
 
  * Buffer_load_forward:
 
     (BPC=1, FB=0)
-        forward-fb0.exe .....................................[MAKE FAILED]
+        forward-fb0.exe ............................................[FAIL]
     (BPC=1, FB=1)
-        forward-fb1.exe .....................................[MAKE FAILED]
+        forward-fb1.exe ............................................[FAIL]
     (BPC=1, FB=2)
-        forward-fb2.exe .....................................[MAKE FAILED]
+        forward-fb2.exe ............................................[FAIL]
     (BPC=4, FB=2)
-        forward-fb2-32.exe ..................................[MAKE FAILED]
+        forward-fb2-32.exe .........................................[FAIL]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
@@ -2743,31 +2753,24 @@ quex/code_base/buffer/TESTS/navigation/TEST                          <no date>
         test-Plain-4-0.exe linear ....................................[OK]
                            stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=0)
-        test-Plain-wiostream-2-0.exe linear .................[MAKE FAILED]
-                                     stepping ...............[MAKE FAILED]
+        test-Plain-wiostream-2-0.exe linear ..........................[OK]
+                                     stepping ........................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=1)
         test-Plain-4-1.exe linear ....................................[OK]
                            stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=1)
-        test-Plain-wiostream-2-1.exe linear .................[MAKE FAILED]
-                                     stepping ...............[MAKE FAILED]
+        test-Plain-wiostream-2-1.exe linear ..........................[OK]
+                                     stepping ........................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=2)
         test-Plain-4-2.exe linear ....................................[OK]
                            stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=2)
-        test-Plain-wiostream-2-2.exe linear .................[MAKE FAILED]
-                                     stepping ...............[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-Plain-wiostream-2-0.exe _ linear
-                                      \__ stepping
-    [FAIL] test-Plain-wiostream-2-1.exe _ linear
-                                      \__ stepping
-    [FAIL] test-Plain-wiostream-2-2.exe _ linear
-                                      \__ stepping
+        test-Plain-wiostream-2-2.exe linear ..........................[OK]
+                                     stepping ........................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Pathwalker State Construction                         
@@ -2978,10 +2981,6 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
     [NO GOOD FILE] loop-get_analazer_list.py
     [NO GOOD FILE] loop-get_loop_map.py
     [NO GOOD FILE] indentation-w-tabs.py _ Front
-    [NO GOOD FILE] can_be_moved_to_tail.py
-    [NO GOOD FILE] find_last_common.py
-    [NO GOOD FILE] test-SharedTailDB.py
-    [NO GOOD FILE] test-shared_tail.py
     [NO GOOD FILE] function-check-unused-function-for-double-check.py
     [NO GOOD FILE] function-check.sh
     [NO GOOD FILE] deletion.py
@@ -2992,7 +2991,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                          
 
-       11  235   [FAIL] TEST                                                
+        5  235   [FAIL] TEST                                                
         6  54    [FAIL] demo/C/TEST                                         
        10  54    [FAIL] ..../Cpp/TEST                                       
         4  13    [FAIL] ..../TEST                                           
@@ -3015,7 +3014,7 @@ SUMMARY:
            42      [OK] ............../analyzer/TEST                        
         8  8     [FAIL] ............../buffer/TESTS/load/TEST               
         3  26    [FAIL] .........................../move/TEST               
-        6  78    [FAIL] .........................../navigation/TEST         
+           78      [OK] .........................../navigation/TEST         
            12      [OK] ...................../bytes/TEST                    
            12      [OK] ...................../lexatoms/converter/iconv/TEST 
            12      [OK] ......................................../icu/TEST   
@@ -3025,7 +3024,7 @@ SUMMARY:
            29      [OK] ..................../mega_state/path_walker/TEST    
         2  27    [FAIL] .............................../template/TEST       
            12      [OK] .........../misc/TEST                               
-        6  6     [FAIL] .........../operations/TEST                         
+        3  16    [FAIL] .........../operations/TEST                         
         1  58    [FAIL] .........../state_machine/TEST                      
            51      [OK] ........................./algebra/TEST              
            9       [OK] ........................./algorithm/TEST            
@@ -3039,11 +3038,11 @@ SUMMARY:
         1  13    [FAIL] .........../cpp/TEST                                
 
 -------------------------------------------------------------------------------
-     _____     _ _          _   ___    __             
-    |  ___|_ _(_) |___     / | / _ \  / /_      __  __
-    | |_ / _` | | / __|    | || | | || '_ \     \ \/ /
-    |  _| (_| | | \__ \    | || |_| || (_) |     >  < 
-    |_|  \__,_|_|_|___/    |_| \___/  \___/     /_/\_\
-                                                                   (1481 tests)
+     _____     _ _           ___   _           
+    |  ___|_ _(_) |___      / _ \ / |    __  __
+    | |_ / _` | | / __|    | (_) || |    \ \/ /
+    |  _| (_| | | \__ \     \__, || |     >  < 
+    |_|  \__,_|_|_|___/       /_/ |_|    /_/\_\
+                                                                   (1491 tests)
 
 ===============================================================================
