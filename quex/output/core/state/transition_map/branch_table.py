@@ -1,5 +1,6 @@
 import quex.output.core.state.transition_map.transition as transition
 from   quex.blackboard import Lng
+
 class BranchTable(object):
     __slots__ = ("sub_map", "moat")
     def __init__(self, SubMap, Moat):

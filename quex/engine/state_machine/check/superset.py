@@ -1,5 +1,4 @@
 from   quex.engine.state_machine.core            import StateMachine
-import quex.engine.state_machine.algebra.reverse as reverse
 from   quex.engine.pattern                       import Pattern
 from   quex.engine.misc.tools                    import typed
 

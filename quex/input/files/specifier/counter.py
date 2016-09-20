@@ -26,6 +26,9 @@ from   quex.engine.misc.file_in                       import check, \
 from   quex.blackboard import E_CharacterCountType, \
                               setup as Setup
 
+from   collections import defaultdict
+from   operator    import itemgetter
+
 class CountBase_Prep:
     @typed(sr=SourceRef)
     def __init__(self, sr, Name, IdentifierList):

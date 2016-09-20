@@ -8,9 +8,7 @@ from   quex.blackboard import standard_incidence_db, \
                               standard_incidence_db_get_name, \
                               standard_incidence_db_is_mandatory, \
                               standard_incidence_db_get_terminal_type, \
-                              standard_incidence_db_is_immutable, \
-                              E_IncidenceIDs, \
-                              E_TerminalType
+                              E_IncidenceIDs
 
 
 class IncidenceDB(dict):
@@ -66,6 +64,7 @@ class IncidenceDB(dict):
             return IncidenceDB.__default_code_fragment(incidence_id, ModeName)
 
         assert len(BaseModeSequence) > 0
+        mode_sr   = BaseModeSequence[-1].sr
         mode_name = BaseModeSequence[-1].name
         result    = IncidenceDB()
 
@@ -86,8 +85,8 @@ class IncidenceDB(dict):
 
         if (    E_IncidenceIDs.INDENTATION_DEDENT   in result \
             and E_IncidenceIDs.INDENTATION_N_DEDENT in result):
-             error.log("After deriving from base mode, mode '%s' contains 'on_dedent'\n" % self.name
-                       + "and 'on_n_dedent' handler. Both are mutually exclusive.", self.sr)
+             error.log("After deriving from base mode, mode '%s' contains 'on_dedent'\n" % mode_name
+                       + "and 'on_n_dedent' handler. Both are mutually exclusive.", mode_sr)
 
         return result
 

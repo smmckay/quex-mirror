@@ -35,6 +35,8 @@
 #   define QUEX_MAP_THIS_TO_ME(CLASS)   /* 'me' already plays the role of 'this'.   */
 #endif
 
+#define QUEX_SETTING_DEBUG_OUTPUT_CHANNEL __QUEX_STD_STDERR
+
 #if defined(_MSC_VER) && _MSC_VER >= 1600
     /* Microsoft VisualStudio(tm) 2010, i.e. Version 1600:
      * Forget about the 'CRT security enhancements' for sprintf, fopen, and setbuf. */
@@ -48,7 +50,8 @@
 #   include <cstdlib>
 #   include <stdexcept>
 #   define __QUEX_STD_FILE     std::FILE
-#   define __QUEX_STD_STDIN    std::stdin
+#   define __QUEX_STD_STDIN    stdin
+#   define __QUEX_STD_STDERR   stderr
 #   define __QUEX_STD_fopen    std::fopen
 #   define __QUEX_STD_fclose   std::fclose
 #   define __QUEX_STD_fprintf  std::fprintf
@@ -76,6 +79,7 @@
 #   include <stdlib.h>
 #   define __QUEX_STD_FILE     FILE
 #   define __QUEX_STD_STDIN    stdin
+#   define __QUEX_STD_STDERR   stderr
 #   define __QUEX_STD_fopen    fopen
 #   define __QUEX_STD_fclose   fclose
 #   define __QUEX_STD_fprintf  fprintf
@@ -183,13 +187,13 @@ typedef enum {
 /* DELETE QUEX_GOTO_RELOAD' when safe */
 #define QUEX_GOTO_RELOAD(RELOAD_LABEL, ON_SUCCESS, ON_FAIL)  \
            do { \
-           __QUEX_STD_fprintf(stderr, "%s:%i:\tUSE of QUEX_GOTO_RELOAD -- SUPPOSED TO BE SUPERFLUOUS", __FILE__, __LINE__); \
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s:%i:\tUSE of QUEX_GOTO_RELOAD -- SUPPOSED TO BE SUPERFLUOUS", __FILE__, __LINE__); \
            target_state_index      = QUEX_LABEL(ON_SUCCESS); \
            target_state_else_index = QUEX_LABEL(ON_FAIL);    \
            goto RELOAD_LABEL; } while (0)
 
 #define __QUEX_PRINT_SOURCE_POSITION()                             \
-        __QUEX_STD_fprintf(stderr, "%s:%i:\t", __FILE__, (int)__LINE__) 
+        __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s:%i:\t", __FILE__, (int)__LINE__) 
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)
 #   define QUEX_ERROR_EXIT(Msg) \
@@ -201,7 +205,7 @@ typedef enum {
 #   define QUEX_ERROR_EXIT(Msg) \
            do { \
                __QUEX_PRINT_SOURCE_POSITION(); \
-               __QUEX_STD_fprintf(stderr, "%s", Msg); exit(-1); \
+               __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s", Msg); exit(-1); \
            } while(0)
 #endif
 
@@ -209,27 +213,27 @@ typedef enum {
 
 #   define __quex_debug(Str)                                        \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(stderr, "%s", (Str)) 
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s", (Str)) 
 #   define __quex_debug1(Str)                                       \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(stderr, "%s\n", (Str)) 
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s\n", (Str)) 
 #   define __quex_debug2(FormatStr, Arg)                            \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(stderr, FormatStr "\n", Arg)
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, FormatStr "\n", Arg)
 #   define __quex_debug3(FormatStr, Arg0, Arg1)                     \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(stderr, FormatStr "\n", Arg0, Arg1)
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, FormatStr "\n", Arg0, Arg1)
 #   define __quex_debug4(FormatStr, Arg0, Arg1, Arg2)               \
            __QUEX_PRINT_SOURCE_POSITION();                          \
-           __QUEX_STD_fprintf(stderr, FormatStr "\n", Arg0, Arg1, Arg2)
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, FormatStr "\n", Arg0, Arg1, Arg2)
 
 #   define __QUEX_PRINT_CHAR(C)                             \
-             (C) == '\n' ? __QUEX_STD_fprintf(stderr, "%02X '\\n'\n", (int)(C)) \
-           : (C) == '\t' ? __QUEX_STD_fprintf(stderr, "%02X '\\t'\n", (int)(C)) \
-           : (C) == '\r' ? __QUEX_STD_fprintf(stderr, "%02X '\\r'\n", (int)(C)) \
-           : (C) == '\a' ? __QUEX_STD_fprintf(stderr, "%02X '\\a'\n", (int)(C)) \
-           : (C) == '\v' ? __QUEX_STD_fprintf(stderr, "%02X '\\v'\n", (int)(C)) \
-           :               __QUEX_STD_fprintf(stderr, "%02X '%c'\n",  (int)(C), (C) < 0xFF ? (char)(C) : '?')
+             (C) == '\n' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\n'\n", (int)(C)) \
+           : (C) == '\t' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\t'\n", (int)(C)) \
+           : (C) == '\r' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\r'\n", (int)(C)) \
+           : (C) == '\a' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\a'\n", (int)(C)) \
+           : (C) == '\v' ? __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '\\v'\n", (int)(C)) \
+           :               __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%02X '%c'\n",  (int)(C), (C) < 0xFF ? (char)(C) : '?')
 
 #   define __quex_debug_core(StateIdx, Message)                \
            __quex_debug3("state %i ____%s", (int)(StateIdx), (Message)) 
@@ -328,17 +332,17 @@ typedef enum {
 
 #   include <quex/code_base/buffer/Buffer_debug>
 #   define __quex_debug_buffer_load(BUFFER, Msg)         \
-           __QUEX_STD_fprintf(stderr, Msg);              \
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);              \
            QUEX_NAME(Buffer_show_debug_content)(BUFFER); \
-           __QUEX_STD_fprintf(stderr, "\n");
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
 
 #elif  defined(__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS) 
 
 #   include <quex/code_base/buffer/Buffer_debug>
 #   define __quex_debug_buffer_load(BUFFER, Msg)         \
-           __QUEX_STD_fprintf(stdout, Msg);              \
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);              \
            QUEX_NAME(Buffer_show_content)(BUFFER);       \
-           __QUEX_STD_fprintf(stdout, "\n");
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
 #else
 
 #   define __quex_debug_buffer_load(BUFFER, Msg) /* empty */

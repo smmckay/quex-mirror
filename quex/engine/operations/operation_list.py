@@ -79,8 +79,6 @@ from   quex.engine.operations.content_terminal_router     import RouterContent, 
 from   quex.engine.misc.tools import delete_if
 
 from   collections import namedtuple
-from   copy        import deepcopy
-from   itertools   import chain
 import types
 import numbers
 

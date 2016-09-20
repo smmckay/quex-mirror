@@ -1,5 +1,4 @@
-from quex.blackboard import setup as Setup, \
-                            Lng
+from quex.blackboard import setup as Setup
 
 def do(Interval, Target, IndentF=False):
     global Setup

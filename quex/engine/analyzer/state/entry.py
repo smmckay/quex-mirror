@@ -1,7 +1,6 @@
 from   quex.engine.operations.operation_list                  import Op, OpList
 from   quex.engine.analyzer.state.entry_action    import TransitionID, TransitionAction
-from   quex.engine.analyzer.door_id_address_label import DialDB, \
-                                                         DoorID
+from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.misc.tools                     import typed, \
                                                          TypedDict
 from   quex.blackboard                            import E_Op, \

@@ -4,10 +4,13 @@ import os
 
 sys.path.append(os.environ["QUEX_PATH"])
 
-import quex.output.graphviz.core            as plotter
-import quex.input.regular_expression.engine as regex
+from   quex.engine.mode                     import BasicMode
+import quex.output.graphviz.core            as     plotter
+import quex.input.regular_expression.engine as     regex
 from   quex.input.files.mode                import PatternActionPair
+
 from   quex.blackboard import setup as Setup
+
 Setup.normalize_f = True
 
 if "--hwut-info" in sys.argv:
@@ -22,7 +25,7 @@ pattern_list = [
     pattern
 ]
 
-my_plotter = plotter.Generator(pattern_list, "test-plot")
+my_plotter = plotter.Generator(BasicMode("test-plot", pattern_list))
 
 my_plotter.do()
 

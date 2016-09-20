@@ -1,4 +1,3 @@
-import quex.engine.state_machine.algorithm.beautifier     as beautifier
 import quex.engine.state_machine.algebra.reverse          as reverse
 import quex.engine.state_machine.algebra.complement_begin as complement_begin
 

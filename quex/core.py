@@ -3,11 +3,9 @@ from   quex.blackboard                          import setup as Setup, \
 import quex.output.cpp.source_package           as     source_package
 #
 import quex.input.files.core                    as     quex_file_parser
-from   quex.input.files.mode                    import determine_start_mode
-import quex.input.files.consistency_check       as     consistency_check
 #
-from   quex.engine.misc.tools                      import flatten_list_of_lists
-from   quex.engine.misc.file_operations            import write_safely_and_close
+from   quex.engine.misc.tools                   import flatten_list_of_lists
+from   quex.engine.misc.file_operations         import write_safely_and_close
 #
 import quex.output.cpp.core                     as cpp_generator
 import quex.output.cpp.token_id_maker           as token_id_maker
@@ -143,15 +141,10 @@ def analyzer_functions_get(ModeDB):
     return cpp_generator.frame_this("".join(code))
 
 def do_plot():
-    mode_prep_prep_db = quex_file_parser.do(Setup.input_mode_files)
+    mode_db = quex_file_parser.do(Setup.input_mode_files)
 
-    for specifier in mode_prep_prep_db.itervalues():        
-        mode = specifier.finalize()
-        # -- some modes only define event handlers that are inherited
-        if len(mode.pattern_list) == 0: continue
-
-        plotter = grapviz_generator.Generator(mode.pattern_list,
-                                              StateMachineName = mode.name)
+    for mode in mode_db.itervalues():        
+        plotter = grapviz_generator.Generator(mode)
         plotter.do(Option=Setup.character_display)
 
 def do_token_class_info():

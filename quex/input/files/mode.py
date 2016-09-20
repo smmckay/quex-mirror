@@ -3,15 +3,12 @@ from   quex.input.setup                                  import NotificationDB
 import quex.input.regular_expression.core                as     regular_expression
 import quex.input.files.mode_option                      as     mode_option
 import quex.input.files.consistency_check                as     consistency_check
-from   quex.input.files.mode_option                      import OptionDB
 import quex.input.files.code_fragment                    as     code_fragment
 from   quex.input.files.specifier.mode                   import Mode_PrepPrep     
 from   quex.input.code.core                              import CodeUser
 from   quex.input.code.base                              import SourceRef
                                                          
-from   quex.engine.pattern                               import Pattern           
 import quex.engine.misc.error                            as     error
-import quex.engine.analyzer.engine_supply_factory        as     engine
 from   quex.engine.misc.file_in                          import EndOfStreamException, \
                                                                 check, \
                                                                 check_or_die, \
@@ -19,16 +16,9 @@ from   quex.engine.misc.file_in                          import EndOfStreamExcep
                                                                 read_until_letter, \
                                                                 read_until_whitespace, \
                                                                 skip_whitespace
-from   quex.engine.incidence_db                          import IncidenceDB
-from   quex.engine.misc.tools import typed, all_isinstance
 import quex.blackboard as blackboard
 from   quex.blackboard import setup as Setup, \
-                              standard_incidence_db, \
-                              E_IncidenceIDs
-
-from   copy        import deepcopy
-from   collections import namedtuple
-from   itertools   import islice
+                              standard_incidence_db
 
 def parse(fh):
     """This function parses a mode description and enters it into the 

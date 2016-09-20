@@ -5,7 +5,6 @@
 """
 import quex.engine.state_machine.check.outrun         as outrun
 import quex.engine.state_machine.algebra.reverse      as reverse
-import quex.engine.state_machine.algorithm.beautifier as beautifier
 from   quex.engine.misc.tree_walker                   import TreeWalker
 
 def do(A, T):

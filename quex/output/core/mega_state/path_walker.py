@@ -77,10 +77,7 @@
             ...
             }
 """
-from   quex.engine.analyzer.door_id_address_label import DialDB
-
-from   quex.engine.misc.tools                     import typed
-from   quex.output.core.variable_db               import variable_db
+from   quex.output.core.variable_db import variable_db
 
 from quex.blackboard import Lng
 

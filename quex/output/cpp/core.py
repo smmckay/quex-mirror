@@ -4,7 +4,6 @@ from   quex.engine.analyzer.door_id_address_label         import get_plain_strin
 from   quex.output.core.variable_db                       import variable_db
 import quex.output.core.base                              as     generator
 from   quex.engine.counter                                import CountActionMap
-from   quex.engine.pattern                                import Pattern
 from   quex.engine.misc.tools                             import all_isinstance, \
                                                                  typed, \
                                                                  flatten_list_of_lists

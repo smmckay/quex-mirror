@@ -23,10 +23,13 @@ def test(TestString):
     print "expression    = \"" + TestString + "\""
     pattern = core.do(TestString, {}).finalize(None)
 
-    pattern.transform(Setup.buffer_codec)
-    pattern.mount_post_context_sm()
-    pattern.mount_pre_context_sm()
-    print "pattern\n", pattern.get_string(NormalizeF=True, Option="hex") 
+    # During 'finalize()': pattern.transform(Setup.buffer_codec)
+    # During 'finalize()': pattern.mount_post_context_sm()
+    # During 'finalize()': pattern.mount_pre_context_sm()
+    print "pattern\n" 
+    print pattern.sm.get_string(NormalizeF=True, Option="hex") 
+    if pattern.sm_pre_context:
+        print "pre-context = ", pattern.sm_pre_context.get_string(NormalizeF=True, Option="hex") 
 
 test('µ/µ+/µ')
 test('[aµ]+/[aµ]')

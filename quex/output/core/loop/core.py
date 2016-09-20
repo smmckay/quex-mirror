@@ -96,7 +96,6 @@ PROCEDURE:
 from   quex.input.code.core                               import CodeTerminal
 import quex.engine.analyzer.core                          as     analyzer_generator
 from   quex.engine.analyzer.terminal.core                 import Terminal
-from   quex.engine.analyzer.terminal.factory              import TerminalFactory
 from   quex.engine.analyzer.door_id_address_label         import DialDB, DoorID
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.analyzer.engine_supply_factory         as     engine
@@ -108,16 +107,13 @@ import quex.engine.state_machine.algorithm.beautifier     as     beautifier
 from   quex.engine.operations.operation_list              import Op, \
                                                                  OpList
 from   quex.engine.counter                                import CountAction, \
-                                                                 CountBase, \
                                                                  CountActionMap, \
                                                                  count_operation_db_with_reference, \
                                                                  count_operation_db_without_reference
 from   quex.engine.misc.interval_handling                 import NumberSet
 from   quex.engine.misc.tools                             import typed, \
-                                                                 print_callstack, \
                                                                  flatten_list_of_lists
 from   quex.output.cpp.counter_for_pattern                import map_SmLineColumnCountInfo_to_code
-from   quex.output.core.variable_db                       import variable_db
 import quex.output.core.base                              as     generator
 
 from   quex.blackboard import E_StateIndices, \
@@ -126,10 +122,20 @@ from   quex.blackboard import E_StateIndices, \
                               setup as Setup, \
                               Lng
 
-from   collections import namedtuple
 from   itertools   import chain
 
-MiniTerminal = namedtuple("MiniTerminal", ("code", "name", "incidence_id"))
+class MiniTerminal(object):
+    __slots__ = ("__code", "name", "incidence_id")
+    def __init__(self, Code, Name, IncidenceId):
+        self.__code       = Code
+        self.name         = Name
+        self.incidence_id = IncidenceId
+
+    def get_code(self, LoopStateMachineId):
+        """This function may be overwritten, so that LoopStateMachineId
+        is used to determine a 'goto' command.
+        """
+        return self.__code
 
 class LoopMapEntry:
     def __init__(self, CharacterSet, TheCountAction, CoupleIncidenceId, AppendixSmId, 
@@ -236,6 +242,12 @@ class LoopEventHandlers:
         self.on_after_reload              = OpList.concatinate(on_after_reload_pos, 
                                                               on_after_reload_count)
         self.on_after_reload_in_appendix  = OpList.from_iterable(on_after_reload_pos_apx)
+
+        self.__loop_state_machine_id = None
+
+    def loop_state_machine_id_set(self, SmId):
+        assert SmId is not None
+        self.__loop_state_machine_id = SmId
 
     @staticmethod
     def __prepare_count_actions(ColumnNPerCodeUnit):
@@ -463,8 +475,9 @@ class LoopEventHandlers:
             run_time_counter_required_f = False
             count_code = []
         
+        assert self.__loop_state_machine_id is not None
         return run_time_counter_required_f, \
-               Terminal(CodeTerminal(count_code + mini_terminal.code), 
+               Terminal(CodeTerminal(count_code + mini_terminal.get_code(self.__loop_state_machine_id)), 
                         mini_terminal.name, 
                         mini_terminal.incidence_id, 
                         dial_db=self.dial_db)
@@ -591,6 +604,7 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
     door_id_loop,       \
     appendix_sm_exist_f = _get_analyzer_list(loop_map, event_handler, appendix_sm_list,
                                              iid_loop_after_appendix_drop_out)
+    event_handler.loop_state_machine_id_set(analyzer_list[0].state_machine_id)
 
     if not appendix_sm_exist_f:
         iid_loop_after_appendix_drop_out = None
@@ -1021,8 +1035,9 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
     appendix_sm_list = []
     for sm in AppendixSmList:
         if not sm.get_init_state().has_transitions(): continue
-        verdict_f, sm = Setup.buffer_codec.do_state_machine(sm, beautifier) 
-        appendix_sm_list.append(sm)
+        verdict_f, \
+        sm_transformed = Setup.buffer_codec.do_state_machine(sm, beautifier) 
+        appendix_sm_list.append(sm_transformed)
 
     # Appendix Sm Drop Out => Restore position of last loop character.
     # (i)  Couple terminal stored input position in 'LoopRestartP'.

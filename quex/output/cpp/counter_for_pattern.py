@@ -3,13 +3,9 @@
 _______________________________________________________________________________
 """
 import quex.engine.state_machine.character_counter as character_counter
-from   quex.engine.operations.operation_list       import Op
 from   quex.engine.misc.tools import typed
 from   quex.blackboard        import E_Count, \
-                                     E_R, \
-                                     E_IncidenceIDs, \
-                                     Lng, \
-                                     setup as Setup
+                                     Lng
 
 @typed(lcci=(None, character_counter.SmLineColumnCountInfo))
 def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):

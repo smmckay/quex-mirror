@@ -4,11 +4,12 @@ import os
 
 sys.path.append(os.environ["QUEX_PATH"])
 
-import quex.output.graphviz.core               as plotter
-import quex.input.regular_expression.engine    as regex
+from   quex.engine.mode                        import BasicMode
+import quex.output.graphviz.core               as     plotter
+import quex.input.regular_expression.engine    as     regex
 from   quex.input.regular_expression.construct import Pattern 
 from   quex.input.files.mode                   import PatternActionPair
-from   quex.input.code.base         import CodeFragment
+from   quex.input.code.base                    import CodeFragment
 
 from   quex.blackboard import setup as Setup
 Setup.normalize_f = True
@@ -24,7 +25,8 @@ pattern_list = [
     pattern
 ]
 
-my_plotter = plotter.Generator(pattern_list, "test-plot")
+mode       = BasicMode("test-plot", pattern_list)
+my_plotter = plotter.Generator(mode)
 
 my_plotter.do()
 

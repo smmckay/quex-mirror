@@ -7,7 +7,6 @@ import quex.output.core.loop.core                   as     loop
 from   quex.output.core.variable_db                 import variable_db
 from   quex.engine.analyzer.door_id_address_label   import DoorID, DialDB
 import quex.engine.analyzer.engine_supply_factory   as     engine
-from   quex.engine.operations.operation_list        import Op
 from   quex.engine.misc.tools                       import typed
 from   quex.engine.counter                          import CountActionMap
 

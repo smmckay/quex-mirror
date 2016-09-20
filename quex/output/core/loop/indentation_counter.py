@@ -5,13 +5,10 @@ from   quex.engine.operations.operation_list        import Op
 import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.counter                          import IndentationCount, \
-                                                           CountActionMap, \
-                                                           LineColumnCount
+                                                           CountActionMap
 import quex.output.core.loop.core                   as     loop
 from   quex.blackboard                              import Lng, \
-                                                           E_IncidenceIDs, \
-                                                           E_R, \
-                                                           setup as Setup
+                                                           E_IncidenceIDs
 
 def do(Data, ReloadState):
     """________________________________________________________________________
@@ -207,18 +204,18 @@ def _add_pair(psml, SmOriginal, Name, dial_db):
     which transits to 'INDENTATION_HANDLER'. The state machine is cloned
     for safety.
     """
+    class IC_MiniTerminal(loop.MiniTerminal):
+        def __init__(self, Name, IncidenceId):
+            loop.MiniTerminal.__init__(self, None, Name, IncidenceId)
+        def get_code(self, LoopStateMachineId):
+            return [ Lng.GOTO(DoorID.state_machine_entry(LoopStateMachineId, dial_db), dial_db) ]
+
     if SmOriginal is None: return
 
     # Disconnect from machines being used elsewhere.
     sm = SmOriginal.clone(StateMachineId=dial.new_incidence_id())
 
-    code = [ 
-        # E_IncidenceIDs.INDENTATION_HANDLER = Entry to indentation handler
-        # NOT: entry to function call for handling indentation!
-        Lng.GOTO(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db), dial_db) 
-    ]
-
-    terminal = loop.MiniTerminal(code, Name, sm.get_id())
+    terminal = IC_MiniTerminal(Name, sm.get_id())
     # TRY:     terminal.set_requires_goto_loop_entry_f()
     # INSTEAD: GOTO 'INDENTATION_HANDLER'
 

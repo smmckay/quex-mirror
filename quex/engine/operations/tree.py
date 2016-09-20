@@ -82,9 +82,9 @@ FUNCTIONS:
 (C) Frank-Rene Schaefer
 _______________________________________________________________________________
 """
-from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
-import quex.engine.operations.shared_tail  as     shared_tail
-from   quex.engine.misc.tools                          import flatten_list_of_lists
+from   quex.engine.analyzer.door_id_address_label import DoorID
+import quex.engine.operations.shared_tail         as     shared_tail
+from   quex.engine.misc.tools                     import flatten_list_of_lists
 
 from quex.engine.misc.tools import typed, TypedDict
 

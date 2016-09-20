@@ -1,19 +1,8 @@
-from   quex.engine.operations.operation_list       import Op
-from   quex.engine.analyzer.door_id_address_label  import DoorID, DialDB
 import quex.engine.analyzer.door_id_address_label  as     dial
 from   quex.engine.counter                         import CountActionMap
-import quex.engine.state_machine.index             as     sm_index
-from   quex.engine.state_machine.core              import StateMachine
 from   quex.engine.misc.tools                      import typed
-
-from   quex.output.core.variable_db                import variable_db
 import quex.output.core.loop.core                  as     loop
-from   quex.output.core.loop.common                import line_counter_in_loop, \
-                                                          get_character_sequence, \
-                                                          get_on_skip_range_open, \
-                                                          line_column_counter_in_loop
-from   quex.blackboard                             import setup as Setup, Lng
-from   copy                                        import copy
+from   quex.blackboard                             import Lng
 
 
 def do(Data, ReloadState):

@@ -12,7 +12,6 @@ database is extracted.
 """
 from   quex.input.code.core                         import CodeTerminal, \
                                                            SourceRef_VOID
-from   quex.input.regular_expression.pattern        import Pattern_Prep
 from   quex.engine.counter                          import CountActionMap, \
                                                            IndentationCount
 from   quex.engine.pattern                          import Pattern
@@ -21,11 +20,11 @@ import quex.engine.state_machine.check.superset     as     superset_check
 import quex.engine.state_machine.check.identity     as     identity_checker
 from   quex.engine.operations.operation_list        import Op
 from   quex.engine.analyzer.terminal.core           import Terminal
-from   quex.engine.analyzer.door_id_address_label   import DoorID, \
-                                                           DialDB
+from   quex.engine.analyzer.door_id_address_label   import DoorID
 import quex.engine.analyzer.door_id_address_label   as     dial
 import quex.engine.misc.error_check                 as     error_check
-from   quex.engine.misc.tools import typed
+from   quex.engine.misc.tools                       import typed
+import quex.engine.misc.error                       as     error
 import quex.output.core.loop.character_set          as     skip_character_set
 import quex.output.core.loop.range                  as     skip_range
 import quex.output.core.loop.nested_range           as     skip_nested_range

@@ -15,7 +15,7 @@ import random
 sys.path.insert(0, os.environ["QUEX_PATH"])
 from   copy import copy
                                                    
-from   quex.engine.analyzer.door_id_address_label import dial_db
+from   quex.engine.analyzer.door_id_address_label import DialDB
 from   quex.output.core.state.transition_map.solution import get_Bisection   
 from   quex.output.core.dictionary import db
 from   quex.engine.misc.interval_handling        import Interval
@@ -27,6 +27,8 @@ from   collections import defaultdict
 if "--hwut-info" in sys.argv:
     print "Code generation: Bisection;"
     sys.exit()
+
+dial_db = DialDB()
 
 #if len(sys.argv) < 2: 
 #    print "Not enough arguments"
@@ -55,7 +57,7 @@ def test(TM_plain):
 
     print "#" + "-" * 79
     tm = TransitionMap.from_iterable(
-        (interval, long(target)) for interval, target in TM_plain
+        (interval, long(target.related_address)) for interval, target in TM_plain
     )
     print_tm(tm)
     most_often_appearing_target, target_n = TransitionMap.get_target_statistics(tm)
@@ -66,29 +68,30 @@ def test(TM_plain):
 
     interval_begin = 0
 
-adr0 = dial_db.new_address()
-adr1 = dial_db.new_address()
-adr2 = dial_db.new_address()
+dial_db.new_address() # adapt numbers for compliance with previous unit tests
+door_id_0 = dial_db.new_door_id()
+door_id_1 = dial_db.new_door_id()
+door_id_2 = dial_db.new_door_id()
 
 test([
-    (interval(N), adr0),
-    (interval(N), adr1),
+    (interval(N), door_id_0),
+    (interval(N), door_id_1),
 ])
 test([
-    (interval(N), adr0),
-    (interval(N), adr1),
-    (interval(N), adr2),
+    (interval(N), door_id_0),
+    (interval(N), door_id_1),
+    (interval(N), door_id_2),
 ])
 test([
-    (interval(N), adr0),
-    (interval(N), adr1),
-    (interval(N), adr2),
-    (interval(N), adr0),
+    (interval(N), door_id_0),
+    (interval(N), door_id_1),
+    (interval(N), door_id_2),
+    (interval(N), door_id_0),
 ])
 test([
-    (interval(N), adr0),
-    (interval(N), adr1),
-    (interval(N), adr2),
-    (interval(N), adr0),
-    (interval(N), adr1),
+    (interval(N), door_id_0),
+    (interval(N), door_id_1),
+    (interval(N), door_id_2),
+    (interval(N), door_id_0),
+    (interval(N), door_id_1),
 ])

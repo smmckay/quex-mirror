@@ -1,5 +1,4 @@
-from   quex.input.code.core             import CodeFragment, \
-                                               CodeTerminal_NULL
+from   quex.input.code.core             import CodeFragment
 from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.analyzer.state.core  import Processor
 from   quex.engine.analyzer.state.entry import Entry
@@ -8,8 +7,7 @@ from   quex.engine.misc.tools           import typed
 
 from   quex.blackboard import E_IncidenceIDs
 
-from   types import FunctionType
-from   copy  import copy, deepcopy
+from   copy  import copy
 
 #__________________________________________________________________________
 #
@@ -44,7 +42,7 @@ class Terminal(Processor):
         Processor.__init__(self, index.get(), Entry(dial_db))
         if IncidenceId is not None: 
             self.__incidence_id = IncidenceId
-            self.__door_id      = door_id = DoorID.incidence(IncidenceId, dial_db)
+            self.__door_id      = DoorID.incidence(IncidenceId, dial_db)
         else:                       
             self.__incidence_id = None
             self.__door_id      = None
@@ -86,7 +84,7 @@ class Terminal(Processor):
     def set_incidence_id(self, IncidenceId, ForceF=False):
         assert ForceF or self.__incidence_id is None
         self.__incidence_id = IncidenceId
-        self.__door_id      = door_id = DoorID.incidence(IncidenceId, self.entry.dial_db)
+        self.__door_id      = DoorID.incidence(IncidenceId, self.entry.dial_db)
 
     @typed(Name=(str,unicode))
     def set_name(self, Name):

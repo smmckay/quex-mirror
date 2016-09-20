@@ -1,6 +1,6 @@
 import quex.engine.state_machine.construction.parallelize as parallelize
 import quex.engine.state_machine.algorithm.beautifier     as beautifier
-from   quex.engine.state_machine.core                     import StateMachine 
+import quex.engine.misc.error                             as     error
 
 def do(StateMachine_List, FilterDominatedOriginsF=True,
        MarkNotSet=set(), AlllowInitStateAcceptF=False):

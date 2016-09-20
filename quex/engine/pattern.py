@@ -2,7 +2,7 @@ from   quex.input.code.base                        import SourceRef
 from   quex.engine.state_machine.core              import StateMachine
 from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
 import quex.engine.state_machine.algebra.reverse   as     reverse
-from   quex.engine.misc.tools                      import typed, print_callstack
+from   quex.engine.misc.tools                      import typed
 
 class Pattern:
     """ALL STATE MACHINES ARE GIVEN IN THE CODEC OF 'Setup.buffer_codec'!

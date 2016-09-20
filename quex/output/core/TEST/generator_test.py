@@ -34,7 +34,6 @@ from tempfile import mkstemp
 sys.path.insert(0, os.environ["QUEX_PATH"])
 #
 from   quex.input.code.base                        import SourceRef_VOID
-from   quex.input.files.mode                       import IncidenceDB
 from   quex.input.files.specifier.mode             import ModeDocumentation
 from   quex.input.regular_expression.auxiliary     import PatternShorthand
 import quex.input.regular_expression.engine        as     regex

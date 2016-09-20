@@ -686,7 +686,7 @@ class Lng_Cpp(dict):
                 else:      return "if( %s ) "      % condition
             else:          return "else if( %s ) " % condition
 
-    def IF_GOTO(self, LValue, Condition, RValue, DoorId, FirstF=True):
+    def IF_GOTO(self, LValue, Condition, RValue, DoorId, FirstF=True, dial_db=None):
         return "%s %s\n" % (self.IF(LValue, Condition, RValue, FirstF, True), self.GOTO(DoorId, dial_db))
 
     def IF_INPUT(self, Condition, Value, FirstF=True, NewlineF=True):

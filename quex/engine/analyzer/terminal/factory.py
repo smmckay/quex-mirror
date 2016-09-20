@@ -13,8 +13,6 @@ from   quex.blackboard import Lng, \
                               E_IncidenceIDs, \
                               E_TerminalType
 
-import types
-
 class TerminalFactory:
     """Factory for Terminal-s
     ___________________________________________________________________________

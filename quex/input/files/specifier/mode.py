@@ -6,8 +6,6 @@ from   quex.input.code.base                              import SourceRef
 import quex.engine.state_machine.check.same              as     same_check
 import quex.engine.state_machine.check.outrun            as     outrun_checker
 import quex.engine.state_machine.check.superset          as     superset_check
-from   quex.engine.state_machine.character_counter       import SmLineColumnCountInfo
-import quex.engine.state_machine.check.superset          as     superset_check
 from   quex.engine.analyzer.door_id_address_label        import DialDB
 from   quex.engine.analyzer.terminal.factory             import TerminalFactory
 import quex.engine.analyzer.engine_supply_factory        as     engine
@@ -17,14 +15,10 @@ from   quex.engine.counter                               import CountActionMap
 from   quex.engine.pattern                               import Pattern           
 from   quex.engine.mode                                  import Mode           
 import quex.engine.misc.error                            as     error
-from   quex.engine.misc.tools                            import typed, \
-                                                                all_isinstance
+from   quex.engine.misc.tools                            import typed
 
 import quex.blackboard as     blackboard
-from   quex.blackboard import setup as Setup, \
-                              E_IncidenceIDs
 
-from   copy        import deepcopy
 from   collections import namedtuple
 from   itertools   import islice
 
@@ -242,7 +236,7 @@ class Mode_PrepPrep:
                           (self.name, mode_name), self.sr)
             if ModePrepPrepDb[mode_name].option_db.value("inheritable") == "no":
                 error.log("mode '%s' inherits mode '%s' which is not inheritable." % \
-                          (self.name, base_mode.name), self.sr)
+                          (self.name, mode_name), self.sr)
 
 class Mode_Prep:
     focus = ("<skip>", "<skip_range>", "<skip_nested_range>", "<indentation newline>")
@@ -357,7 +351,6 @@ class Mode_Prep:
         self.doc_history_reprioritization = \
                        ppt_list.delete_and_reprioritize(self.base_mode_sequence)
 
-        verdict = ppt_list.finalize_run_time_counter_required_f()
         return ppt_list.finalize_pattern_list(), \
                ppt_list.finalize_terminal_db(self.incidence_db), \
                ppt_list.finalize_run_time_counter_required_f(), \

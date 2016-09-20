@@ -1,8 +1,8 @@
 digraph state_machine_8 {
 rankdir=LR;
 size="8,5"
-node [shape = doublecircle]; 27;
+node [shape = doublecircle]; 33;
 node [shape = circle];
-26 -> 27 [label ="['\\t', '\\n'], '\\r', ' '"];
-27 -> 27 [label ="['\\t', '\\n'], '\\r', ' '"];
+32 -> 33 [label ="['\\t', '\\n'], '\\r', ' '"];
+33 -> 33 [label ="['\\t', '\\n'], '\\r', ' '"];
 }
