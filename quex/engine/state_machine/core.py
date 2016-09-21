@@ -4,7 +4,6 @@ from   quex.engine.misc.interval_handling           import NumberSet, Interval
 import quex.engine.state_machine.index              as     state_machine_index
 from   quex.engine.state_machine.state.core         import State
 from   quex.engine.state_machine.state.single_entry import SeAccept
-import quex.engine.misc.error                       as     error
 
 from   quex.engine.misc.tools  import flatten_list_of_lists, typed
 from   quex.blackboard         import E_IncidenceIDs, \
@@ -133,12 +132,6 @@ class StateMachine(object):
                 add(sm, sm.init_state_index, character_set, incidence_id)
 
         return sm
-
-    @staticmethod
-    def from_StateMachine_list(StateMachine_List, FilterDominatedOriginsF=True,
-                               MarkNotSet=set(), AlllowInitStateAcceptF=False):
-        return combination.do(StateMachine_List, FilterDominatedOriginsF, 
-                              MarkNotSet, AlllowInitStateAcceptF)
 
     def clone(self, ReplDbStateIndex=None, ReplDbPreContext=None, ReplDbAcceptance=None, 
               StateMachineId=None):

@@ -7,6 +7,11 @@ from   quex.blackboard                 import setup as Setup
 from   quex.blackboard                 import E_IncidenceIDs
 
 @typed(ModePrepList=[Mode_Prep])
+def do_pre(ModePrepList):
+    for mode_pp in ModePrepList:
+        __detect_empty_non_abstract_mode(mode_pp)
+
+@typed(ModePrepList=[Mode_Prep])
 def do(ModePrepList):
     """Consistency check of mode database
 
@@ -30,9 +35,6 @@ def do(ModePrepList):
     # Applicable modes can only be determined after possible addition of "inheritable: only"
     implemented_mode_name_list = sorted([mode.name for mode in ModePrepList 
                                          if mode.implemented_f()]) 
-
-    for mode in ModePrepList:
-        __empty_mode_detection(mode, implemented_mode_name_list)
 
     if len(implemented_mode_name_list) == 0:
         error.log("There is no mode that can be implemented---all existing modes are 'inheritable only'.\n" + \
@@ -145,10 +147,18 @@ def __entry_transitions(mode, ModePrepList, mode_name_list):
         else:
             __error_transition(mode, entry_mode, EntryF=True)
            
+def __detect_empty_non_abstract_mode(mode):
+    """Detects whether there is a mode that is not abstract while it is 
+    completely void of patterns/event handlers.
 
-def __empty_mode_detection(mode, implemented_mode_name_list):
-    if   mode.implemented_f():                        return
-    elif mode.name not in implemented_mode_name_list: return
+    THROWS: Error in case.
+    
+    At this point in time, the matching configuration has been expressed
+    in the 'pattern_list'. That is, if there are event handler's then the
+    'pattern_list' is not empty.
+    """
+    if   mode.abstract_f:   return
+    elif mode.pattern_list: return
 
-    error.warning("Mode without pattern and event handlers needs to be 'inheritable only'.\n" + \
-                  "<inheritable: only> has been set automatically.", mode.sr)
+    error.warning("Mode without pattern or pattern-related event handlers.\n" + \
+                  "Option <inheritable: only> has been added automatically.", mode.sr)

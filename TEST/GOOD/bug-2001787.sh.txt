@@ -18,7 +18,7 @@
 URL 'http://www.dog.com/get?q=food'
 
 
-Simple.cpp:762:	_________________________________________________________________
+_________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
                                            [0001] 0x0068
                                            [0002] 0x0074
@@ -43,7 +43,7 @@ Simple.cpp:762:	________________________________________________________________
                                            [FFFE] 0xFFFFFFFF
    buffer back---------------------------->[FFFF] 0x0000
 _________________________________________________________________
-terminate called after throwing an instance of 'std::runtime_error'
+Simple.cpp:762:	terminate called after throwing an instance of 'std::runtime_error'
   what():  
 Mode 'ONE_AND_ONLY': Match failure, no pattern matched!
 The 'on_failure' handler has not been specified.

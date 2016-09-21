@@ -1,9 +1,6 @@
-from quex.blackboard import setup as Setup
+from quex.blackboard import setup as Setup, Lng
 
 def do(Interval, Target, IndentF=False):
-    global Setup
-    global Lng
-
     if   hasattr(Target, "code"): txt = Target.code()
     elif type(Target) == long:    txt = [ Lng.GOTO_ADDRESS(Target) ]
     else:                         txt = [ Target ]

@@ -31,8 +31,6 @@ class BranchTable(object):
         a transition for themselves based on the character range that they 
         cover.
         """
-        global Lng
-
         case_code_list = [
             (interval, transition.do(interval, target))
             for interval, target in self.sub_map

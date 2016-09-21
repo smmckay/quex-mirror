@@ -12,7 +12,6 @@ class Bisection(object):
         self.high            = High
 
     def implement(self):
-        global Lng
         txt = [
             Lng.IF_INPUT("<", self.bisection_value)
         ]

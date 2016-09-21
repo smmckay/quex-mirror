@@ -11,7 +11,6 @@ from   quex.engine.analyzer.terminal.factory             import TerminalFactory
 import quex.engine.analyzer.engine_supply_factory        as     engine
 from   quex.engine.analyzer.state.core                   import ReloadState
 from   quex.engine.incidence_db                          import IncidenceDB
-from   quex.engine.counter                               import CountActionMap           
 from   quex.engine.pattern                               import Pattern           
 from   quex.engine.mode                                  import Mode           
 import quex.engine.misc.error                            as     error
@@ -448,7 +447,6 @@ class Mode_Prep:
 PatternRepriorization = namedtuple("PatternRepriorization", ("pattern", "new_pattern_index", "sr"))
 PatternDeletion       = namedtuple("PatternDeletion",       ("pattern", "pattern_index",     "sr"))
 
-
 class PatternActionPair(object):
     __slots__ = ("__pattern", "__action")
     @typed(ThePattern=(Pattern_Prep, Pattern), TheAction=CodeUser)
@@ -467,7 +465,7 @@ class PatternActionPair(object):
 
     def __repr__(self):         
         txt  = ""
-        if self.pattern() not in E_IncidenceIDs:
+        if self.pattern().incidence_id not in blackboard.E_IncidenceIDs:
             txt += "self.pattern_string = %s\n" % repr(self.pattern().pattern_string())
         txt += "self.pattern        = %s\n" % repr(self.pattern()).replace("\n", "\n      ")
         txt += "self.action         = %s\n" % self.action().get_text()

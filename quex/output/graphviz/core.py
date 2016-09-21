@@ -1,8 +1,5 @@
-from quex.engine.misc.file_operations        import write_safely_and_close
-from quex.engine.misc.tools                  import typed
-from quex.engine.pattern                     import Pattern           
-
-from quex.blackboard                         import setup as Setup
+from quex.engine.misc.file_operations import write_safely_and_close
+from quex.blackboard                  import setup as Setup
 
 class Generator:
     def __init__(self, Mode):

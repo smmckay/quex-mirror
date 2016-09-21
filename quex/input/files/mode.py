@@ -49,7 +49,7 @@ def parse(fh):
 def finalize_modes(ModePrepPrepDb):
     assert all(isinstance(x, Mode_PrepPrep) for x in ModePrepPrepDb.itervalues())
 
-    # (*) Parsing --> Mode_PrepPrep
+    # (BEFORE) Parsing --> Mode_PrepPrep
 
     # (*) Mode_PrepPrep --> Mode_Prep
     #     * collection of options_db from base modes
@@ -60,27 +60,30 @@ def finalize_modes(ModePrepPrepDb):
         (mode_prep_prep.name, mode_prep_prep.finalize(ModePrepPrepDb))
         for mode_prep_prep in ModePrepPrepDb.itervalues()
     )
-    # (*) Mode_Prep (pre finalize)
+
+    # (*) Mode_Prep: pre finalize
     #     All patterns of all modes have been finalized
     #     => collect all patterns and loopers from base modes 
     #     => generate pattern list / terminal configuration
     for mode_prep in mode_prep_db.itervalues():
         mode_prep.pre_finalize(mode_prep_db)
 
-    if not Setup.token_class_only_f:
-        determine_start_mode(mode_prep_db)
+    consistency_check.do_pre(mode_prep_db.values())
 
-    consistency_check.do(mode_prep_db.values())
+    if not Setup.token_class_only_f:
+        __determine_initial_mode(mode_prep_db)
 
     # (*) Mode_Prep --> Mode
     #     Pattern lists are determined for each mode
     #     => Each mode is determined whether mode is implemented or not.
     #     => Determine the concerned mode names for mode handlers
+    consistency_check.do(mode_prep_db.values())
+
     return dict((name, mode_prep.finalize(mode_prep_db)) 
                 for name, mode_prep in mode_prep_db.iteritems() 
                 if mode_prep.implemented_f())
 
-def determine_start_mode(ModePrepDb):
+def __determine_initial_mode(ModePrepDb):
     if not blackboard.initial_mode.sr.is_void():
         return
 

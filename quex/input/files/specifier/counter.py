@@ -164,14 +164,6 @@ class IndentationCount_Prep(CountBase_Prep):
         if self.sm_newline.get() is None:
             self.__specify_newline(self.__sm_newline_default(), SourceRef_DEFAULT)
 
-        # Remove elements which are only there to detect interference
-        ignore_set = set([
-            E_CharacterCountType.X_BEGIN_NEWLINE_SUPPRESSOR,
-            E_CharacterCountType.X_BEGIN_NEWLINE,
-            E_CharacterCountType.X_END_NEWLINE,
-            E_CharacterCountType.X_BEGIN_COMMENT_TO_NEWLINE
-        ])
-
         # -- consistency
         self._consistency_check()
 
@@ -388,8 +380,6 @@ class CountActionMap_Prep(object):
         """Define the '\else' character set which is resolved AFTER everything has been 
         defined.
         """
-        global cc_type_db
-
         if self.__else is not None:
             error.log("'\\else has been defined more than once.", sr, 
                       DontExitF=True)
@@ -397,9 +387,8 @@ class CountActionMap_Prep(object):
         self.__else = CountAction(CC_Type, Value, sr)
 
     def add(self, CharSet, CC_Type, Value, sr):
-        global cc_type_db
         if CharSet.is_empty(): 
-            error.log("Empty character set found for '%s'." % Identifier, sr)
+            error.log("Empty character set found for '%s'." % cc_type_name_db[CC_Type], sr)
         elif CC_Type == E_CharacterCountType.GRID:
             self.check_grid_specification(Value, sr)
         self.check_intersection(CC_Type, CharSet, sr)
