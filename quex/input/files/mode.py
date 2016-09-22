@@ -1,21 +1,21 @@
 
-from   quex.input.setup                                  import NotificationDB
-import quex.input.regular_expression.core                as     regular_expression
-import quex.input.files.mode_option                      as     mode_option
-import quex.input.files.consistency_check                as     consistency_check
-import quex.input.files.code_fragment                    as     code_fragment
-from   quex.input.files.specifier.mode                   import Mode_PrepPrep     
-from   quex.input.code.core                              import CodeUser
-from   quex.input.code.base                              import SourceRef
-                                                         
-import quex.engine.misc.error                            as     error
-from   quex.engine.misc.file_in                          import EndOfStreamException, \
-                                                                check, \
-                                                                check_or_die, \
-                                                                read_identifier, \
-                                                                read_until_letter, \
-                                                                read_until_whitespace, \
-                                                                skip_whitespace
+from   quex.input.setup                   import NotificationDB
+import quex.input.regular_expression.core as     regular_expression
+import quex.input.files.mode_option       as     mode_option
+import quex.input.files.consistency_check as     consistency_check
+import quex.input.files.code_fragment     as     code_fragment
+from   quex.input.files.specifier.mode    import Mode_PrepPrep     
+from   quex.input.code.core               import CodeUser
+from   quex.input.code.base               import SourceRef
+                                          
+import quex.engine.misc.error             as     error
+from   quex.engine.misc.file_in           import EndOfStreamException, \
+                                                 check, \
+                                                 check_or_die, \
+                                                 read_identifier, \
+                                                 read_until_letter, \
+                                                 read_until_whitespace, \
+                                                 skip_whitespace
 import quex.blackboard as blackboard
 from   quex.blackboard import setup as Setup, \
                               standard_incidence_db

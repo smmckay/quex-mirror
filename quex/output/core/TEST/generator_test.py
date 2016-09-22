@@ -188,7 +188,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
                                                        BufferLimitCode)
 
     if len(SecondPatternActionPairList) != 0:
-        dial_db.clear()
+        dial_db = DialDB()
         CompileOptionStr += "-DQUEX_UNIT_TEST_SECOND_MODE"
         state_machine_code += create_state_machine_function(SecondPatternActionPairList, 
                                                             PatternDictionary, 

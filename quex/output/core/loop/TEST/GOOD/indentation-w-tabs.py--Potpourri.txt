@@ -15,7 +15,10 @@ gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -
 	     #	
 	    4
 	   	\
-...'
+	  2
+	 	
+0
+'
 (*) result:
 next letter: <2> column_n: 7
 next letter: <4> column_n: 9
@@ -35,3 +38,5 @@ DEDENT
 DEDENT
 DEDENT
 DEDENT
+
+

@@ -1,6 +1,7 @@
 Loop Generation and Applications
 --------------------------------------
-indentation*.py
-skip*.py
+python indentation*.py
+python skip*.py
+python loop*.py
 --not tmp*.exe
 --------------------------------------

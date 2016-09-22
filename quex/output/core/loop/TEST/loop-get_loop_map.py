@@ -26,7 +26,8 @@ from   quex.engine.counter                        import LineColumnCount, \
 from   quex.engine.state_machine.core             import StateMachine  
 from   quex.engine.misc.interval_handling         import NumberSet, \
                                                          NumberSet_All
-from   quex.engine.analyzer.door_id_address_label import dial_db
+import quex.engine.analyzer.door_id_address_label as     dial
+from   quex.engine.analyzer.door_id_address_label import DialDB
 import quex.output.core.loop.core                 as     loop
 from   quex.blackboard                            import E_CharacterCountType, \
                                                          setup as Setup
@@ -35,6 +36,8 @@ NS_B = NumberSet.from_range(ord('B'), ord('B') + 1)
 NS_C = NumberSet.from_range(ord('C'), ord('C') + 1)
 NS_D = NumberSet.from_range(ord('D'), ord('D') + 1)
 
+dial_db = DialDB()
+
 if "--hwut-info" in sys.argv:
     print "Loop: Get Loop Map."
     print "CHOICES: Plain, AppendixNoI, AppendixI, Split;"
@@ -42,12 +45,15 @@ if "--hwut-info" in sys.argv:
 def test(NsCaList, SM_list=[]):
     Setup.buffer_codec.source_set = NumberSet_All()
     ca_map        = CountActionMap.from_list(NsCaList)
-    iid_loop_exit = dial_db.new_incidence_id()
+    iid_loop_exit = dial.new_incidence_id()
 
-    loop_map, \
-    appendix_sm_list = loop._get_loop_map(ca_map, 
-                                          SM_list, 
-                                          iid_loop_exit) 
+    loop_map,         \
+    appendix_sm_list, \
+    lcci_db           = loop._get_loop_map(ca_map, 
+                                           SM_list, 
+                                           iid_loop_exit, 
+                                           dial_db, 
+                                           NumberSet_All())
 
     print
     print
@@ -56,6 +62,7 @@ def test(NsCaList, SM_list=[]):
     print_this(loop_map, appendix_sm_list)
 
 def general_checks(loop_map, appendix_sm_list):
+
     print "#_[ Checks ]__________________________________________________"
     print
     print "character sets do not intersect",
@@ -84,9 +91,10 @@ def general_checks(loop_map, appendix_sm_list):
             appendix_sm_id_set.add(lei.appendix_sm_id)
     print "[ok]"
 
-    list_id_set = set(sm.get_id() for sm in appendix_sm_list)
-    assert appendix_sm_id_set == list_id_set
-    print "appendix sm-ids are the same in loop map and sm list: [ok]"
+    if "Split" in sys.argv or "Plain" in sys.argv:
+        list_id_set = set(sm.get_id() for sm in appendix_sm_list)
+        assert appendix_sm_id_set == list_id_set
+        print "appendix sm-ids are the same in loop map and sm list: [ok]"
     print "exit character set exits: [%s]" % exit_exists_f
 
     print
@@ -119,19 +127,19 @@ def get_sm_list(FSM0, FSM1, FSM2):
     sm0 = StateMachine()
     si = sm0.add_transition(sm0.init_state_index, FSM0)
     si = sm0.add_transition(si, NS_A, AcceptanceF=True)
-    sm0.states[si].mark_acceptance_id(dial_db.new_incidence_id())
+    sm0.states[si].mark_acceptance_id(dial.new_incidence_id())
 
     sm1 = StateMachine()
     si0 = sm1.add_transition(sm1.init_state_index, FSM1)
     si  = sm1.add_transition(si0, NS_A, AcceptanceF=True)
-    iid1 = dial_db.new_incidence_id()
+    iid1 = dial.new_incidence_id()
     sm1.states[si].mark_acceptance_id(iid1)
     si  = sm1.add_transition(si, NS_B, si0)
     sm1.states[si].mark_acceptance_id(iid1)
 
     sm2 = StateMachine()
     si = sm2.add_transition(sm2.init_state_index, FSM2, AcceptanceF=True)
-    sm2.states[si].mark_acceptance_id(dial_db.new_incidence_id())
+    sm2.states[si].mark_acceptance_id(dial.new_incidence_id())
 
     return [sm0, sm1, sm2]
 
@@ -201,7 +209,7 @@ elif "Split" in sys.argv:
 
     sm  = StateMachine()
     si  = sm.init_state_index
-    iid = dial_db.new_incidence_id()
+    iid = dial.new_incidence_id()
     ti0 = sm.add_transition(si, NumberSet.from_range(0x1A, 0x4B))
     ac0 = sm.add_transition(ti0, NS_A, AcceptanceF=True)
 

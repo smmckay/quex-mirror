@@ -5,17 +5,16 @@
 
 character sets do not intersect [ok]
 count actions do not appear more than once [ok]
-appendix sm-ids are the same in loop map and sm list: [ok]
 exit character set exits: [True]
 
 #_[ Print ]___________________________________________________
 
-[-oo, 000F] [0060, oo]  3 None
-[0010, 001F]  4 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 0>
-[0020, 002F]  5 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 13>
-[0030, 003F]  7 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 25>
-[0040, 004F]  6 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 17>
-[0050, 005F]  8 CountAction(cc_type=COLUMN, value=0, sr=None) <appendix: 2>
+[-oo, 000F] [0060, oo]  6 None
+[0010, 001F]  10 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 0>
+[0020, 002F]  19 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 18>
+[0030, 003F]  33 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 32>
+[0040, 004F]  24 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 23>
+[0050, 005F]  34 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 4>
 
 #_[ Appendix State Machines ]________________________________
 
@@ -28,50 +27,44 @@ init-state = 0L
     
 
 
-IncidenceId: 2
-init-state = 0L
-00000 A(2)
-    
-
-
-IncidenceId: 13
+IncidenceId: 18
 init-state = 0L
 00000 
      == 'A' ==> 00001
     
-00001 A(0), A(1)
+00001 A(0), A(2)
      == 'B' ==> 00002
     
 00002 
      == 'A' ==> 00003
     
-00003 A(1)
+00003 A(2)
      == 'B' ==> 00002
     
 
 
-IncidenceId: 17
+IncidenceId: 23
 init-state = 0L
-00000 A(2)
+00000 A(4)
      == 'A' ==> 00001
     
-00001 A(1)
+00001 A(2)
      == 'B' ==> 00000
     
 
 
-IncidenceId: 25
+IncidenceId: 32
 init-state = 0L
-00000 A(2)
+00000 A(4)
      == 'A' ==> 00001
     
-00001 A(0), A(1)
+00001 A(0), A(2)
      == 'B' ==> 00002
     
 00002 
      == 'A' ==> 00003
     
-00003 A(1)
+00003 A(2)
      == 'B' ==> 00002
     
 

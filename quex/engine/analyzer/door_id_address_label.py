@@ -1,10 +1,10 @@
 import quex.engine.state_machine.index  as     sm_index
-from   quex.engine.misc.tools           import print_callstack, TypedSet
+from   quex.engine.misc.tools           import print_callstack, \
+                                               TypedSet
 from   quex.blackboard                  import E_IncidenceIDs, \
                                                E_StateIndices, \
                                                E_DoorIdIndex, \
                                                Lng
-
 from   collections import namedtuple
 #______________________________________________________________________________
 #
@@ -211,7 +211,7 @@ class DialDB(object):
 
     def register_door_id(self, DoorId):
         if False: # True/False activates debug messages
-            self.__debug_address_generation(DoorId, DoorId.related_address, 10)
+            self.__debug_address_generation(DoorId, DoorId.related_address, 0)
 
         sub_db = self.__door_id_db.get(DoorId.state_index)
         if sub_db is None:
