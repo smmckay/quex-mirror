@@ -3,5 +3,6 @@ Test Collection on Source Code
 bash *.sh
 *.py
 --not compilation-independence.sh
+--not function-check-side-kick.py
 ---------------------------------------
 

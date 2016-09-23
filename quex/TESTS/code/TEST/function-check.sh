@@ -1,87 +1,65 @@
+# PURPOSE: This script searches for definitions of functions that are never
+#          used at all.
+#
+# The result of this script is not necessarily correct. Before deleting
+# functions, make sure everything is checked in. Then delete, then unit test to
+# double check.
+#
+# NOTE: Pipe the output of this script to 'function-check-side-kick.py' in order
+#       to get compile line for the editor to jump.
+#
+# (C) Frank-Rene Schaefer
+#______________________________________________________________________________
+
+if [[ "$1" = "--hwut-info" ]]; then
+    echo "Checking for defined but unused functions."
+    exit
+fi
+
 # Find all function definitions 
-function_list=tmp0.txt # $(mktemp)
-function_mentioned=tmp1.txt # $(mktemp)
-# | awk '{ print "\"\\b" $2 "\""; }' \
+functions_defined=$(mktemp)
+functions_called=$(mktemp)
+functions_unused=$(mktemp)
+grep_expression=$(mktemp)
+tmp_file=$(mktemp)
 
-grep -sHoe "^ *def *[a-zA-Z_0-9]*(" $QUEX_PATH -r --include "*.py" \
-| awk '{ print $2; }' \
-| sort -u \
-| tr -d "(" \
-> $function_list
+file_list=$(find $QUEX_PATH . -name "*.py")
 
-wc -w $function_list
+for file in $file_list; do
+    sed -e 's/#.*$//' $file > $tmp_file
+    grep -soe "^ *def *[a-zA-Z_0-9]\+(" $tmp_file \
+         | tr -d "(" \
+         | awk '{ print $2; }' \
+    >> pre-$functions_defined
 
-grep -she "\\b[a-zA-Z_0-9]*(" $QUEX_PATH -r --include "*.py" \
-| grep -ve  "^ *def *" \
-| sort -u \
-> $function_mentioned
-# | tr -d "(" \
-# | awk '{ print "^" $0 "\\b"; }' \
+    grep -se "\\b[a-zA-Z_0-9]\+(" $tmp_file \
+         | awk '! /^ *def *[a-zA-Z_0-9]+\(/ { print; }' \
+         | grep -soe "\\b[a-zA-Z_0-9]\+(" \
+         | tr -d "(" \
+    >> pre-$functions_called
+done
 
-wc -w $function_mentioned
+wc pre-$functions_defined
+wc pre-$functions_called
 
-function_unused=$(mktemp)
-# grep -v -f $function_mentioned $function_list 
-# > $function_unused
-# | sort -u \
-# | awk '{ print "^ *def *" $0 " *("; }' 
+sort -u pre-$functions_defined           > $functions_defined
+sort -u pre-$functions_called > $functions_called
 
-wc -w $function_unused
-cat $function_unused
+wc $functions_defined
+wc $functions_called
 
-echo "Functions defined but never used (no output is good output): {"
-grep -sHIne -f $function_unused   
-echo "}"
+echo "Functions that are defined, but never used (?) <no output is good output>"
+diff --new-line-format="" --unchanged-line-format="" \
+     $functions_defined $functions_called \
+> $functions_unused
 
-# rm $function_unused
-# rm $function_mentioned
-# rm $function_list
+# python ./function-check-side-kick.py $functions_unused > $grep_expressions
+# bash $grep_expressions
 
-function unused {
-# 1: Print function names which only appear once (in their definition)
-#    --> 'U function name'
-# 2: Print function names which are only used in the file itself.
-#    --> 'N function name'
-issues=$(mktemp)
-gawk 'BEGIN {                                                         \
-          while( getline $function_list ) { db[$0] = ""; }            \
-      } {                                                             \
-          split($0, fields, ":");                                     \
-          file     = fields[0];                                       \
-          line     = fields[1];                                       \
-          function = fields[2];                                       \
-          if( function in db ) {                                      \
-              db[function] = db[function] + ":" file;                 \
-          }                                                           \
-      }                                                               \
-      END {                                                           \
-          for(function in db) {                                       \
-              split(db[function], file_list, ":");                    \
-              if( length(file_list) == 0 ) {                          \
-                  continue;                                           \
-              }                                                       \
-              else if( length(file_list) == 1 ) {                     \
-                  print "U " function;                                \
-              }                                                       \
-              else if( function[0] != "_" ) {                         \
-                  for( file in file_list ) { count_db[file] += 1; }   \
-                  if( length(count_db) == 1 ) {                       \
-                      print "N " function;                            \
-                  }                                                   \
-              }                                                       \
-          }                                                           \
-      }' > $issues
+rm -f $functions_defined
+rm -f $functions_called
+rm -f $functions_unused
+rm -f $grep_expression
+rm -f $tmp_file
 
-while read array; do
-    if [[ "${array[0]}" = "U" ]]; then
-        grep -shoe ${array[1]} $QUEX_PATH -r --include "*.py" \
-        | awk '{ print $0 " function defined but not used."; }'
-    else
-        grep -shoe ${array[1]} $QUEX_PATH -r --include "*.py" \
-        | awk '{ print $0 " solely locally used function does not begin with '_'"; }'
-    fi
-
-done < $issue
-}
-
-
+echo "<terminated>"

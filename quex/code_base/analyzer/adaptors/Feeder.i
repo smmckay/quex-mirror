@@ -32,8 +32,8 @@
  *
  * (C) 2016 Frank-Rene Schaefer.                                             */
 
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER_I
-#define __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER_I
+#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__FEEDER_I
+#define __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__FEEDER_I
 
 #include "quex/code_base/analyzer/adaptors/Feeder"
 
@@ -141,5 +141,5 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__FEEDER_I */
+#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__FEEDER_I */
 
