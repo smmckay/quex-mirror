@@ -83,7 +83,8 @@ walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta)
                                 (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL); 
 
     for(buffer._read_p = &buffer._memory._front[1]; 
-        buffer._read_p < buffer._memory._back; 
+           buffer._read_p < buffer._memory._back 
+        && buffer.input.lexatom_index_end_of_stream == -1;
         buffer._read_p += ReadPDelta) {
 
         buffer._lexeme_start_p = buffer._read_p + LexemeStartPDelta;  
@@ -95,6 +96,25 @@ walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta)
         }
 
         count += test_load_forward(&buffer);
+
+    }
+
+    /* Ensure that everything has been loaded (if loading is possible)       */
+    {
+        const size_t FreeSize = (size_t)(buffer._memory._back - &buffer._memory._front[1] 
+                                         - QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
+#       if 0
+        printf("## FS: %i; D: %i; last: %i; eosi: %i;\n",
+               (int)FreeSize, (int)ReadPDelta, (int)buffer.input.end_p[-1],
+               (int)buffer.input.lexatom_index_end_of_stream);
+#       endif
+        if( ReadPDelta < FreeSize ) {
+            hwut_verify((int)buffer.input.end_p[-1] == 0x20);
+            hwut_verify((int)buffer.input.lexatom_index_end_of_stream == 32);
+        }
+        else {
+            hwut_verify((int)buffer.input.lexatom_index_end_of_stream == -1);
+        }
     }
     return count;
 }
@@ -135,6 +155,7 @@ test_load_forward(QUEX_NAME(Buffer)* buffer)
     /* User registers [1] until including [3], borders are poisoned. */
     verdict_f = QUEX_NAME(Buffer_load_forward)(buffer, &position_register[1], 
                                                PositionRegisterN);
+
     delta = before.read_p - buffer->_read_p;
     if( delta ) { 
         hwut_verify(delta > 0);
