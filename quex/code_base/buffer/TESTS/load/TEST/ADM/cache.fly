@@ -1,88 +1,88 @@
 {
 title: (BPC=1, FB=0);
 title_group: Buffer_load_backward;
-build_time: 0.006651163101196289;
+build_time: 0.13918113708496094;
 file_name: backward-fb0.exe;
 hwut_info_time: 1474786498L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.004435; -369565884; ]
+  [ ; MAKE FAILED; 0.004435; -369565884; ]
 ]
 }
 {
 title: (BPC=1, FB=1);
 title_group: Buffer_load_backward;
-build_time: 0.005975008010864258;
+build_time: 0.13812708854675293;
 file_name: backward-fb1.exe;
 hwut_info_time: 1474786499L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.004338; -369565884; ]
+  [ ; MAKE FAILED; 0.004338; -369565884; ]
 ]
 }
 {
 title: (BPC=1, FB=2);
 title_group: Buffer_load_backward;
-build_time: 0.005886077880859375;
+build_time: 0.1387040615081787;
 file_name: backward-fb2.exe;
 hwut_info_time: 1474786500L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.005323; -369565884; ]
+  [ ; MAKE FAILED; 0.005323; -369565884; ]
 ]
 }
 {
 title: (BPC=4, FB=2);
 title_group: Buffer_load_backward;
-build_time: 0.006117820739746094;
+build_time: 0.13950014114379883;
 file_name: backward-fb2-32.exe;
 hwut_info_time: 1474786500L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.004456; 0; ]
+  [ ; MAKE FAILED; 0.004456; 0; ]
 ]
 }
 {
 title: (BPC=1, FB=0);
 title_group: Buffer_load_forward;
-build_time: 0.8057029247283936;
+build_time: 0.6532518863677979;
 file_name: forward-fb0.exe;
-hwut_info_time: 1474801936L;
+hwut_info_time: 1475044862L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.004045; 164389670; ]
+  [ ; FAIL; 0.005666; 164389670; ]
 ]
 }
 {
 title: (BPC=1, FB=1);
 title_group: Buffer_load_forward;
-build_time: 0.8265118598937988;
+build_time: 0.6466019153594971;
 file_name: forward-fb1.exe;
-hwut_info_time: 1474801936L;
+hwut_info_time: 1475044861L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.005306; 164389670; ]
+  [ ; FAIL; 0.004805; 164389670; ]
 ]
 }
 {
 title: (BPC=1, FB=2);
 title_group: Buffer_load_forward;
-build_time: 0.8120779991149902;
+build_time: 0.6496729850769043;
 file_name: forward-fb2.exe;
-hwut_info_time: 1474801938L;
+hwut_info_time: 1475044863L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.004504; 164389670; ]
+  [ ; FAIL; 0.004383; 164389670; ]
 ]
 }
 {
 title: (BPC=4, FB=2);
 title_group: Buffer_load_forward;
-build_time: 0.8159449100494385;
+build_time: 0.00666499137878418;
 file_name: forward-fb2-32.exe;
-hwut_info_time: 1474801937L;
+hwut_info_time: 1475044476L;
 make_dependent_f: True;
 result_list: [
-  [ ; FAIL; 0.003777; 164389670; ]
+  [ ; FAIL; 0.004669; 164389670; ]
 ]
 }

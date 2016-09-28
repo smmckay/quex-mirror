@@ -20,29 +20,17 @@
  * before the load procedure. That is, they need
  */
 
-/* 
-<<hwut-iterator: G>> 
-------------------------------------------------------------------------
-#include <stdint.h>
-------------------------------------------------------------------------
-    ptrdiff_t read_p_delta;      ptrdiff_t lexeme_start_p_delta;               
-    [ 1, 2, 3 ];                 |0:6|; 
-------------------------------------------------------------------------
-*/
-
 #include "commonly_pasted.c"
-#include <forward-gen.h>
 
-
-static ptrdiff_t          test_load_forward(QUEX_NAME(Buffer)* buffer);
-static QUEX_TYPE_LEXATOM* random_between(QUEX_TYPE_LEXATOM* A, QUEX_TYPE_LEXATOM* B);
-static ptrdiff_t          walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta);
+static ptrdiff_t   test_load_forward(QUEX_NAME(Buffer)* buffer);
+static ptrdiff_t   walk_forward(ptrdiff_t LexemeStartPDelta);
 
 int
 main(int argc, char**argv)
 {
-    G_t    it;
-    int    count = 0;
+    int       load_n = 0;
+    int       iteration_n = 0;
+    ptrdiff_t lexeme_start_p_delta;
 
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer_load_forward: (BPC=%i, FB=%i);\n", 
@@ -51,16 +39,26 @@ main(int argc, char**argv)
         return 0;
     }
 
-    G_init(&it);
-    while( G_next(&it) ) {
-        count += walk_forward(it.read_p_delta, it.lexeme_start_p_delta);
+    common_on_overflow_count = 0;
+    common_on_content_change_count = 0;
+
+
+    for(lexeme_start_p_delta = 0, iteration_n = 0; 
+        lexeme_start_p_delta < 5; 
+        ++lexeme_start_p_delta, ++iteration_n) {
+
+        load_n += walk_forward(lexeme_start_p_delta);
     }
-    printf("<terminated %i>\n", (int)count);
+    printf("<terminated %i; load_n: %i; content_change_n: %i; overflow_n: %i>\n", 
+           (int)iteration_n, 
+           (int)load_n, 
+           (int)common_on_content_change_count,
+           (int)common_on_overflow_count);
     return 0;
 }
 
 static ptrdiff_t
-walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta)
+walk_forward(ptrdiff_t LexemeStartPDelta)
 /* Walk through file by incrementing the 'read_p' by 'ReadPDelta' until the 
  * end of file is reached. The 'lexeme_start_p' remains in a constant distance 
  * to 'read_p' given by 'LexemeStartPDelta'.                                 */
@@ -73,23 +71,24 @@ walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta)
     const int                     MemorySize = 5;
 
     QUEX_NAME(ByteLoader_Memory_construct)(&loader, 
-                                           (uint8_t*)&PseudoFile[0], 
-                                           (const uint8_t*)&PseudoFile[PSEUDO_FILE_SIZE]);
+                                           (const uint8_t*)&PseudoFile[0], 
+                                           (const uint8_t*)&PseudoFile[PSEUDO_FILE_ELEMENT_N]);
     filler = QUEX_NAME(LexatomLoader_new)(&loader.base, 
                                          (QUEX_NAME(Converter)*)0, 0);
 
     QUEX_NAME(Buffer_construct)(&buffer, filler,
                                 &memory[0], MemorySize,
                                 (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL); 
+    buffer.on_overflow       = common_on_overflow;
+    buffer.on_content_change = common_on_content_change;
 
-    for(buffer._read_p = &buffer._memory._front[1]; 
-           buffer._read_p < buffer._memory._back 
-        && buffer.input.lexatom_index_end_of_stream == -1;
-        buffer._read_p += ReadPDelta) {
+    while( buffer.input.lexatom_index_end_of_stream == -1 ) {
+        buffer._read_p = buffer._memory._back;
 
-        buffer._lexeme_start_p = buffer._read_p + LexemeStartPDelta;  
-        if( buffer._lexeme_start_p >= buffer._memory._back ) {
-            buffer._lexeme_start_p = &buffer._memory._back[-1];
+        buffer._lexeme_start_p = buffer._read_p - LexemeStartPDelta;  
+
+        if( buffer._lexeme_start_p > buffer._memory._back ) {
+            buffer._lexeme_start_p = buffer._memory._back;
         }
         if( buffer._lexeme_start_p <= buffer._memory._front ) {
             buffer._lexeme_start_p = &buffer._memory._front[1];
@@ -97,113 +96,44 @@ walk_forward(ptrdiff_t ReadPDelta, ptrdiff_t LexemeStartPDelta)
 
         count += test_load_forward(&buffer);
 
-    }
+        if(    LexemeStartPDelta 
+            >= (ptrdiff_t)(MemorySize - QUEX_SETTING_BUFFER_MIN_FALLBACK_N - 2) ) {
+            /* In case the setup implies 'overflow', do not try again.       */
+            return 0;
+        }
+    } 
+    /* Reached end => verify that last content has been loaded.              */
+    hwut_verify((int)buffer.input.end_p[-1] == 0x20);
+    hwut_verify((int)buffer.input.lexatom_index_end_of_stream == 32);
 
-    /* Ensure that everything has been loaded (if loading is possible)       */
-    {
-        const size_t FreeSize = (size_t)(buffer._memory._back - &buffer._memory._front[1] 
-                                         - QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
-#       if 0
-        printf("## FS: %i; D: %i; last: %i; eosi: %i;\n",
-               (int)FreeSize, (int)ReadPDelta, (int)buffer.input.end_p[-1],
-               (int)buffer.input.lexatom_index_end_of_stream);
-#       endif
-        if( ReadPDelta < FreeSize ) {
-            hwut_verify((int)buffer.input.end_p[-1] == 0x20);
-            hwut_verify((int)buffer.input.lexatom_index_end_of_stream == 32);
-        }
-        else {
-            hwut_verify((int)buffer.input.lexatom_index_end_of_stream == -1);
-        }
-    }
+    /* Try to reload twice while it is impossible.                           */
+    buffer._read_p = buffer.input.end_p;
+    hwut_verify(test_load_forward(&buffer) == 0);
+    buffer._read_p = buffer.input.end_p;
+    hwut_verify(test_load_forward(&buffer) == 0);
+
+    /* Reached end => verify that last content has been loaded.              */
+    hwut_verify((int)buffer.input.end_p[-1] == 0x20);
+    hwut_verify((int)buffer.input.lexatom_index_end_of_stream == 32);
     return count;
 }
 
 static ptrdiff_t
 test_load_forward(QUEX_NAME(Buffer)* buffer) 
 {
-    struct {
-        QUEX_TYPE_LEXATOM*      read_p;
-        QUEX_TYPE_LEXATOM*      lexeme_start_p;
-        QUEX_TYPE_LEXATOM       read;
-        QUEX_TYPE_LEXATOM       lexeme_start;
-        QUEX_TYPE_LEXATOM*      position_register_1;
-        QUEX_TYPE_LEXATOM*      position_register_3;
-        QUEX_TYPE_STREAM_POSITION lexatom_index_begin;
-    } before;
-    bool               verdict_f;
-    ptrdiff_t          delta;
-    QUEX_TYPE_LEXATOM* PoisonP = (QUEX_TYPE_LEXATOM*)0x5A5A5A5A; 
-    QUEX_TYPE_LEXATOM* NullP   = (QUEX_TYPE_LEXATOM*)0; 
-    size_t             PositionRegisterN = 3;
+    size_t             PositionRegisterN = 5;
     QUEX_TYPE_LEXATOM* (position_register[5]);
-    ptrdiff_t          count = 0;
+    BufferBefore_t     before;
+    E_LoadResult       verdict;
+    ptrdiff_t          delta;
 
-    position_register[0]       = PoisonP; 
-    before.position_register_1 = position_register[1] = random_between(buffer->_lexeme_start_p, buffer->_read_p);
-    position_register[2]       = NullP;   
-    before.position_register_3 = position_register[3] = random_between(buffer->_lexeme_start_p, buffer->_read_p);
-    position_register[4]       = PoisonP; 
+    before_setup(&before, buffer, position_register);
 
-    before.read_p         = buffer->_read_p;
-    before.read           = *buffer->_read_p;
-    before.lexeme_start_p = buffer->_lexeme_start_p;
-    before.lexeme_start   = *buffer->_lexeme_start_p;
+    verdict = QUEX_NAME(Buffer_load_forward)(buffer, &position_register[0], 
+                                             PositionRegisterN);
+    delta   = before.read_p - buffer->_read_p;
 
-    before.lexatom_index_begin = buffer->input.lexatom_index_begin;
-
-    /* User registers [1] until including [3], borders are poisoned. */
-    verdict_f = QUEX_NAME(Buffer_load_forward)(buffer, &position_register[1], 
-                                               PositionRegisterN);
-
-    delta = before.read_p - buffer->_read_p;
-    if( delta ) { 
-        hwut_verify(delta > 0);
-        hwut_verify(delta <= buffer->_memory._back - &buffer->_memory._front[1]);
-        /* NOT: hwut_verify(verdict_f);  
-         * Because, even if no content has been loaded, the pointers may have
-         * been adapted during the 'move-away' of passed content.            */
-    }
-    else {
-        hwut_verify(verdict_f != E_LoadResult_DONE);  
-    }
-
-    hwut_verify(buffer->input.lexatom_index_begin >= before.lexatom_index_begin);
-    hwut_verify(buffer->input.lexatom_index_begin - before.lexatom_index_begin == delta);
-
-    hwut_verify(before.lexeme_start_p      -  buffer->_lexeme_start_p   == delta);
-    hwut_verify(position_register[0]       == PoisonP);
-    hwut_verify(before.position_register_1 -  position_register[1] == delta);
-    hwut_verify(position_register[2]       == NullP);
-    hwut_verify(before.position_register_3 -  position_register[3] == delta);
-    hwut_verify(position_register[4]       == PoisonP);
-
-    hwut_verify(*buffer->_read_p         == before.read);
-    hwut_verify(*buffer->_lexeme_start_p == before.lexeme_start);
-
-    /* Make sure that the content has been loaded properly. From the 
-     * variable 'pseudo_file' it can be previewed what the content is 
-     * supposed to be.                                                   */
-    count += verify_content(buffer);
-
-    hwut_verify(count == buffer->input.end_p - &buffer->_memory._front[1]);
-    hwut_verify(buffer->input.end_p[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
-
-    return count + 1;
-}
-
-static QUEX_TYPE_LEXATOM*
-random_between(QUEX_TYPE_LEXATOM* A, QUEX_TYPE_LEXATOM* B)
-{
-    QUEX_TYPE_LEXATOM* min   = A > B ? B : A;
-    QUEX_TYPE_LEXATOM* max   = A > B ? A : B;
-    ptrdiff_t            delta = max - min;
-    static uint32_t      seed  = 971;
-
-    if( ! delta ) return min;
-
-    seed = (seed << 16) % 537;
-        
-    return &min[seed % delta];
+    before_check_consistency(&before, delta, verdict, buffer, position_register);
+    return delta;
 }
 

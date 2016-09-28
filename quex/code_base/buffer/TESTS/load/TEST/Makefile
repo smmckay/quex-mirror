@@ -10,6 +10,7 @@ FALLBACK_2 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=2
 DEFS = \
 	   -D__QUEX_OPTION_PLAIN_C \
 	   -DQUEX_OPTION_ASSERTS 
+#      -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE
 
 CC_PURE := gcc \
 		  -Wall -Werror -ggdb \
@@ -29,13 +30,13 @@ hwut-info:
 hwut-end: clean
 	@echo Bye
 
-%-fb0.exe: %.c %-gen.c hwut_cursor.o # basic_functionality.c
+%-fb0.exe: %.c hwut_cursor.o # basic_functionality.c
 	$(CC) $(FALLBACK_0) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@ 
-%-fb1.exe: %.c %-gen.c hwut_cursor.o # basic_functionality.c
+%-fb1.exe: %.c hwut_cursor.o # basic_functionality.c
 	$(CC) $(FALLBACK_1) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
-%-fb2.exe: %.c %-gen.c hwut_cursor.o # basic_functionality.c
+%-fb2.exe: %.c hwut_cursor.o # basic_functionality.c
 	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
-%-fb2-32.exe: %.c %-gen.c hwut_cursor.o # basic_functionality.c
+%-fb2-32.exe: %.c hwut_cursor.o # basic_functionality.c
 	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $^ -o $@
 
 %-gen.h %-gen.c: %.c
