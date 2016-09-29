@@ -49,6 +49,10 @@ verify_content(QUEX_NAME(Buffer)* me)
     ptrdiff_t          count = 0;
     ptrdiff_t          lexatom_index_at_end_p;
 
+    hwut_verify(me->_memory._front[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->_memory._back[0]  == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->input.end_p[0]    == QUEX_SETTING_BUFFER_LIMIT_CODE);
+
     /* If end_p does not stand on buffer boarder, then it must stand according
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
     if( me->input.end_p != me->_memory._back ) {
@@ -73,11 +77,16 @@ static void
 before_setup(BufferBefore_t* me, QUEX_NAME(Buffer)* buffer, 
              QUEX_TYPE_LEXATOM* (position_register[5]))
 {
-    position_register[0] = PoisonP; 
-    position_register[1] = random_between(buffer->_lexeme_start_p, buffer->_read_p);
-    position_register[2] = NullP;   
-    position_register[3] = random_between(buffer->_lexeme_start_p, buffer->_read_p);
-    position_register[4] = PoisonP; 
+    if( position_register ) {
+        position_register[0] = PoisonP; 
+        position_register[1] = random_between(buffer->_lexeme_start_p, buffer->_read_p);
+        position_register[2] = NullP;   
+        position_register[3] = random_between(buffer->_lexeme_start_p, buffer->_read_p);
+        position_register[4] = PoisonP; 
+
+        me->position_register_1 = position_register[1];
+        me->position_register_3 = position_register[3];
+    }
 
     me->read_p              = buffer->_read_p;
     me->read_m1             = buffer->_read_p[-1];
@@ -86,8 +95,6 @@ before_setup(BufferBefore_t* me, QUEX_NAME(Buffer)* buffer,
 
     me->lexatom_index_begin = buffer->input.lexatom_index_begin;
 
-    me->position_register_1 = position_register[1];
-    me->position_register_3 = position_register[3];
 }
 
 static void
@@ -100,7 +107,6 @@ before_check_consistency(BufferBefore_t*    me,
     int count; 
 
     if( Delta ) { 
-        hwut_verify(Delta > 0);
         hwut_verify(Delta <= buffer->_memory._back - &buffer->_memory._front[1]);
         /* NOT: hwut_verify(Verdict);  
          * Because, even if no content has been loaded, the pointers may have
@@ -110,7 +116,6 @@ before_check_consistency(BufferBefore_t*    me,
         hwut_verify(Verdict != E_LoadResult_DONE);  
     }
 
-    hwut_verify(buffer->input.lexatom_index_begin >= me->lexatom_index_begin);
     hwut_verify(buffer->input.lexatom_index_begin - me->lexatom_index_begin == Delta);
 
     if( Verdict == E_LoadResult_NO_SPACE_FOR_LOAD ) {
@@ -123,11 +128,14 @@ before_check_consistency(BufferBefore_t*    me,
             hwut_verify(buffer->_lexeme_start_p[-1] == me->lexeme_start_m1);
         }
     }
-    //hwut_verify(position_register[0] == PoisonP);
-    hwut_verify(me->position_register_1 -  position_register[1]    == Delta);
-    //hwut_verify(position_register[2] == NullP);
-    hwut_verify(me->position_register_3 -  position_register[3]    == Delta);
-    //hwut_verify(position_register[4] == PoisonP);
+
+    if( position_register ) {
+        //hwut_verify(position_register[0] == PoisonP);
+        hwut_verify(me->position_register_1 -  position_register[1]    == Delta);
+        //hwut_verify(position_register[2] == NullP);
+        hwut_verify(me->position_register_3 -  position_register[3]    == Delta);
+        //hwut_verify(position_register[4] == PoisonP);
+    }
 
     if( buffer->_read_p > &buffer->_memory._front[1] ) {
         hwut_verify(buffer->_read_p[-1]         == me->read_m1);

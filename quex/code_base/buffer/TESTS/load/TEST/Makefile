@@ -30,26 +30,14 @@ hwut-info:
 hwut-end: clean
 	@echo Bye
 
-%-fb0.exe: %.c hwut_cursor.o # basic_functionality.c
+%-fb0.exe: %.c 
 	$(CC) $(FALLBACK_0) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@ 
-%-fb1.exe: %.c hwut_cursor.o # basic_functionality.c
+%-fb1.exe: %.c 
 	$(CC) $(FALLBACK_1) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
-%-fb2.exe: %.c hwut_cursor.o # basic_functionality.c
+%-fb2.exe: %.c 
 	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
-%-fb2-32.exe: %.c hwut_cursor.o # basic_functionality.c
+%-fb2-32.exe: %.c 
 	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $^ -o $@
-
-%-gen.h %-gen.c: %.c
-	hwut gen $< -o $(@:.c=)
-
-%.o: %.c %-gen.h
-	$(CC) -c $< -o $@
-
-%.o: $(HWUT_PATH)/support/C/%.c 
-	$(CC) -c $< -o $@
-
-hwut_cursor.o: $(HWUT_PATH)/support/C/hwut_cursor.c 
-	$(CC) -c $< -o $@
 
 clean: 
 	rm -rf $(TEST_FILES)
