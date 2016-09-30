@@ -89,9 +89,11 @@ before_setup(BufferBefore_t* me, QUEX_NAME(Buffer)* buffer,
     }
 
     me->read_p              = buffer->_read_p;
-    me->read_m1             = buffer->_read_p[-1];
+    me->read_m1             = buffer->_read_p == buffer->_memory._front ? 
+                              QUEX_SETTING_BUFFER_LIMIT_CODE : buffer->_read_p[-1];
     me->lexeme_start_p      = buffer->_lexeme_start_p;
-    me->lexeme_start_m1     = buffer->_lexeme_start_p[-1];
+    me->lexeme_start_m1     = buffer->_lexeme_start_p == buffer->_memory._front ? 
+                              QUEX_SETTING_BUFFER_LIMIT_CODE : buffer->_lexeme_start_p[-1];
 
     me->lexatom_index_begin = buffer->input.lexatom_index_begin;
 

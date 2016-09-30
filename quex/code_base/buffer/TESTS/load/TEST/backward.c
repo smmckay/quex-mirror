@@ -104,8 +104,8 @@ walk_backward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
         buffer._read_p         = buffer._memory._front;
         buffer._lexeme_start_p = buffer._read_p + LexemeStartPDelta;  
 
-        if( buffer._lexeme_start_p > buffer._memory._back ) {
-            buffer._lexeme_start_p = buffer._memory._back;
+        if( buffer._lexeme_start_p < &buffer._memory._front[1] ) {
+            buffer._lexeme_start_p = &buffer._memory._front[1];
         }
         if( buffer._lexeme_start_p > &buffer.input.end_p[-1] ) {
             buffer._lexeme_start_p = &buffer.input.end_p[-1];
