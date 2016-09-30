@@ -108,7 +108,7 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
 
         count += test_load_forward(&buffer);
 
-        if(    LexemeStartPDelta 
+        if(    LexemeStartPDelta
             >= (ptrdiff_t)(BufferElementN - QUEX_SETTING_BUFFER_MIN_FALLBACK_N - 2) ) {
             /* In case the setup implies 'overflow', do not try again.       */
             return 0;

@@ -102,16 +102,22 @@ walk_backward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
 
     while( buffer.input.lexatom_index_begin != 0 ) {
         buffer._read_p         = buffer._memory._front;
-        buffer._lexeme_start_p = buffer._read_p - LexemeStartPDelta;  
+        buffer._lexeme_start_p = buffer._read_p + LexemeStartPDelta;  
 
         if( buffer._lexeme_start_p > buffer._memory._back ) {
             buffer._lexeme_start_p = buffer._memory._back;
         }
-        if( buffer._lexeme_start_p < buffer._memory._front ) {
-            buffer._lexeme_start_p = buffer._memory._front;
+        if( buffer._lexeme_start_p > &buffer.input.end_p[-1] ) {
+            buffer._lexeme_start_p = &buffer.input.end_p[-1];
         }
 
         count += test_load_backward(&buffer);
+
+        if(    buffer._lexeme_start_p - buffer._read_p 
+            >= (ptrdiff_t)(BufferElementN - QUEX_SETTING_BUFFER_MIN_FALLBACK_N - 2) ) {
+            /* In case the setup implies 'overflow', do not try again.       */
+            return 0;
+        }
     }
 
     /* Reached begin => verify that last content has been loaded.            */

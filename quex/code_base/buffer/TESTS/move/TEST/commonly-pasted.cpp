@@ -70,7 +70,7 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
 {
     QUEX_TYPE_LEXATOM*   BeginP;
     QUEX_TYPE_LEXATOM*   end_p;
-    ptrdiff_t              memory_size = EndOfStreamInBufferF ? MemorySize : ContentSize + 2;
+    ptrdiff_t            memory_size = EndOfStreamInBufferF ? MemorySize : ContentSize + 2;
 
     end_p  = &memory[ContentSize + 1];
     *end_p = QUEX_SETTING_BUFFER_LIMIT_CODE;

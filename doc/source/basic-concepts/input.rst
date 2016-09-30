@@ -7,7 +7,8 @@ scenarios.  Also, different incoming encodings must be treated seamlessly. To
 achieve that a two-step loading process is implemented as shown in Figure
 :ref:`fig:byte-lexatom-buffer`. The two steps are
 
-    #. Loading raw bytes from whatsoever source. 
+    #. Loading raw bytes from whatsoever source.  TODO: Mention the 'ByteLoader_Memory'
+           that can load sequentially from memory.
 
     #. Filling the engine's buffer with lexatoms.
 

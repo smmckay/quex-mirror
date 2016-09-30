@@ -123,22 +123,24 @@ before_check_consistency(BufferBefore_t*    me,
          * => in that case it is excused.                                    */
     }
     else {
-        hwut_verify(me->lexeme_start_p      -  buffer->_lexeme_start_p == Delta);
-        if( buffer->_lexeme_start_p > &buffer->_memory._front[1] ) {
+        hwut_verify(me->lexeme_start_p - buffer->_lexeme_start_p == Delta);
+        if(    buffer->_lexeme_start_p > &buffer->_memory._front[1] 
+            && me->lexeme_start_m1 != QUEX_SETTING_BUFFER_LIMIT_CODE ) {
             hwut_verify(buffer->_lexeme_start_p[-1] == me->lexeme_start_m1);
         }
     }
 
     if( position_register ) {
         //hwut_verify(position_register[0] == PoisonP);
-        hwut_verify(me->position_register_1 -  position_register[1]    == Delta);
+        hwut_verify(me->position_register_1 -  position_register[1] == Delta);
         //hwut_verify(position_register[2] == NullP);
-        hwut_verify(me->position_register_3 -  position_register[3]    == Delta);
+        hwut_verify(me->position_register_3 -  position_register[3] == Delta);
         //hwut_verify(position_register[4] == PoisonP);
     }
 
-    if( buffer->_read_p > &buffer->_memory._front[1] ) {
-        hwut_verify(buffer->_read_p[-1]         == me->read_m1);
+    if(    buffer->_read_p > &buffer->_memory._front[1] 
+        && me->read_m1 != QUEX_SETTING_BUFFER_LIMIT_CODE ) {
+        hwut_verify(buffer->_read_p[-1] == me->read_m1);
     }
 
     /* Make sure that the content has been loaded properly. From the 

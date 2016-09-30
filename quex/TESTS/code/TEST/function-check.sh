@@ -5,8 +5,8 @@
 # functions, make sure everything is checked in. Then delete, then unit test to
 # double check.
 #
-# NOTE: Pipe the output of this script to 'function-check-side-kick.py' in order
-#       to get compile line for the editor to jump.
+# $1 --> generate output in 'gcc compile' format to be handled by an editor
+#        to jump to the correct position
 #
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________
@@ -30,20 +30,20 @@ for file in $file_list; do
     grep -soe "^ *def *[a-zA-Z_0-9]\+(" $tmp_file \
          | tr -d "(" \
          | awk '{ print $2; }' \
-    >> pre-$functions_defined
+    >> $functions_defined
 
     grep -se "\\b[a-zA-Z_0-9]\+(" $tmp_file \
          | awk '! /^ *def *[a-zA-Z_0-9]+\(/ { print; }' \
          | grep -soe "\\b[a-zA-Z_0-9]\+(" \
          | tr -d "(" \
-    >> pre-$functions_called
+    >> $functions_called
 done
 
-wc pre-$functions_defined
-wc pre-$functions_called
+wc $functions_defined
+wc $functions_called
 
-sort -u pre-$functions_defined           > $functions_defined
-sort -u pre-$functions_called > $functions_called
+sort -u $functions_defined > $tmp_file; mv $tmp_file $functions_defined
+sort -u $functions_called  > $tmp_file; mv $tmp_file $functions_called
 
 wc $functions_defined
 wc $functions_called
@@ -52,6 +52,13 @@ echo "Functions that are defined, but never used (?) <no output is good output>"
 diff --new-line-format="" --unchanged-line-format="" \
      $functions_defined $functions_called \
 > $functions_unused
+
+if [[ "$1" = "compile" ]]; then
+    cat $functions_unused | awk '{ print "def *" $1 "("; }' > $tmp_file
+    grep -f $tmp_file $QUEX_PATH -r --include "*.py"
+else
+    cat $functions_unused
+fi
 
 # python ./function-check-side-kick.py $functions_unused > $grep_expressions
 # bash $grep_expressions
