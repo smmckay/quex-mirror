@@ -35,7 +35,9 @@
 #   define QUEX_MAP_THIS_TO_ME(CLASS)   /* 'me' already plays the role of 'this'.   */
 #endif
 
-#define QUEX_SETTING_DEBUG_OUTPUT_CHANNEL __QUEX_STD_STDERR
+#ifndef    QUEX_SETTING_DEBUG_OUTPUT_CHANNEL
+#   define QUEX_SETTING_DEBUG_OUTPUT_CHANNEL __QUEX_STD_STDERR
+#endif
 
 #if defined(_MSC_VER) && _MSC_VER >= 1600
     /* Microsoft VisualStudio(tm) 2010, i.e. Version 1600:

@@ -112,6 +112,7 @@ def create_common_declarations(Language,
     # Parameterize the common declarations
     txt += test_program_common_declarations.replace("$$BUFFER_FALLBACK_N$$", 
                                                     repr(QuexBufferFallbackN))
+    print "#Falback: %i" % QuexBufferFallbackN
 
     txt = txt.replace("$$BUFFER_LIMIT_CODE$$", repr(BufferLimitCode))
 

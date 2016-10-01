@@ -433,6 +433,7 @@ QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*  me,
     QUEX_TYPE_LEXATOM**       pr_it     = 0x0;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    __quex_assert(FallBackN >= 0);
 
     if( me->_read_p - me->_lexeme_start_p >= ContentSize - FallBackN ) { 
         /* OVERFLOW: If stretch from _read_p to _lexeme_start_p 
@@ -628,7 +629,7 @@ QUEX_NAME(Buffer_move_away_upfront_content)(QUEX_NAME(Buffer)* me)
      * land on last position in the buffer.                                  */
     move_distance_max = LastP - QUEX_MAX(me->_read_p, me->_lexeme_start_p);
     /* Also, move before lexatom index '0' is impossible.                    */
-    move_distance_max = QUEX_MIN(move_distance_max, me->input.lexatom_index_begin);
+    move_distance_max = QUEX_MIN(move_distance_max, (ptrdiff_t)me->input.lexatom_index_begin);
 
     /* Desired move distance: ContentSize / 3                                */
     move_distance_nominal = ContentSize > 3 ?  ContentSize / 3 : ContentSize;

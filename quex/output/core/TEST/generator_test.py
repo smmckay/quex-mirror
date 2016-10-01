@@ -17,7 +17,9 @@ else:
     REMOVE_FILES = False
     print "NOTE:> Print transitions and do not remove files!;"
     SHOW_TRANSITIONS_STR  = "-DQUEX_OPTION_DEBUG_SHOW "  
-    SHOW_BUFFER_LOADS_STR = "-DQUEX_OPTION_DEBUG_SHOW_LOADS -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE"
+    SHOW_BUFFER_LOADS_STR = "-DQUEX_OPTION_DEBUG_SHOW_LOADS " \
+                            "-DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE " \
+                            "-DQUEX_SETTING_DEBUG_OUTPUT_CHANNEL=stdout"
 
 # Switch: Turn off some warnings
 #         'False' --> show (almost) all compiler warnings
@@ -123,8 +125,10 @@ def __Setup_init_language_database(Language):
 
 def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
-       SecondPatternActionPairList=[], QuexBufferFallbackN=-1, ShowBufferLoadsF=False,
+       SecondPatternActionPairList=[], QuexBufferFallbackN=0, ShowBufferLoadsF=False,
        AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
+
+    assert QuexBufferFallbackN >= 0
 
     BufferLimitCode = 0
     Setup.buffer_limit_code = BufferLimitCode
@@ -201,7 +205,9 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
                              "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER\n"       + \
                              state_machine_code
 
-    source_code =   create_common_declarations(Language, QuexBufferSize, QuexBufferFallbackN, BufferLimitCode, ComputedGotoF=computed_goto_f) \
+    source_code =   create_common_declarations(Language, QuexBufferSize, 
+                                               QuexBufferFallbackN, BufferLimitCode, 
+                                               ComputedGotoF=computed_goto_f) \
                   + state_machine_code \
                   + test_program
 
@@ -331,9 +337,10 @@ def create_main_function(Language, TestStr, QuexBufferSize, CommentTestStrF=Fals
     return txt
 
 def create_common_declarations(Language, QuexBufferSize, 
-                               QuexBufferFallbackN=-1, BufferLimitCode=0, 
+                               QuexBufferFallbackN=0, BufferLimitCode=0, 
                                IndentationSupportF=False, TokenQueueF=False,
                                ComputedGotoF=False):
+    assert QuexBufferFallbackN >= 0
 
     # Determine the 'fallback' region size in the buffer
     #if QuexBufferFallbackN == -1: 
