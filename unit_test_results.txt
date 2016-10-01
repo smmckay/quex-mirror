@@ -55,7 +55,7 @@ TEST                                                                 <no date>
  * clemwang:
 
     3474524 0.62.3 Escape characters in --language dot plot of [:space:]
-        bug-3474524.sh .............................................[FAIL]
+        bug-3474524.sh ...............................................[OK]
     3478018 0.62.3 errmsg about missing { when missing }
         bug-3478018.sh ...............................................[OK]
     3479354 Reversed (right to left) Pattern Definition
@@ -248,8 +248,8 @@ TEST                                                                 <no date>
     3142578 Output token identifier definition
         feature-3142578.sh ...........................................[OK]
     3402386 Option --language dot
-        feature-3402386.sh hex .....................................[FAIL]
-                           utf8 ....................................[FAIL]
+        feature-3402386.sh hex .......................................[OK]
+                           utf8 ......................................[OK]
     3403249 0.61.2 Non UTF8 encoding for *.qx files not detected.
         bug-3403249.sh GBK ...........................................[OK]
                        utf16 .........................................[OK]
@@ -327,9 +327,9 @@ TEST                                                                 <no date>
     1889086 Single state mode causes quex to crash
         bug-1889086.sh ...............................................[OK]
     1889089 Single state mode causes quex to crash
-        bug-1889089.sh ...............................................[OK]
+        bug-1889089.sh .............................................[FAIL]
     1889321 Quex does not handle actions including quote literal
-        bug-1889321.sh ...............................................[OK]
+        bug-1889321.sh .............................................[FAIL]
     1889692 0.19.4 does not gracefully handle unbalanced quotations
         bug-1889692.sh ...............................................[OK]
     1889702 0.19.4 forbids derived modes that only add event handlers
@@ -339,7 +339,7 @@ TEST                                                                 <no date>
     1889877 '*' or '+' without prececing expression crashes 0.19.4
         bug-1889877.sh ...............................................[OK]
     1889892 x, X or followed by a non-hex digit crashes 0.19.4
-        bug-1889892.sh ...............................................[OK]
+        bug-1889892.sh .............................................[FAIL]
     1890828 0.19.9 crashes trying to call error handler in several cases
         bug-1890828.sh ...............................................[OK]
     1890876 {} handled oddly in define blocks in 0.19.9
@@ -477,11 +477,11 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-3474524.sh
     [FAIL] bug-3082041.sh
-    [FAIL] feature-3402386.sh _ hex
-                            \__ utf8
     [FAIL] bug-3295781.sh
+    [FAIL] bug-1889089.sh
+    [FAIL] bug-1889321.sh
+    [FAIL] bug-1889892.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -669,9 +669,9 @@ demo/Cpp/TEST                                                        <no date>
  * demo/002:
 
     Indentation Based Scopes
-        002.sh DEBUG ...............................................[FAIL]
-               NDEBUG ..............................................[FAIL]
-               customized ..........................................[FAIL]
+        002.sh DEBUG .................................................[OK]
+               NDEBUG ................................................[OK]
+               customized ............................................[OK]
 
  * demo/003:
 
@@ -760,29 +760,22 @@ demo/Cpp/TEST                                                        <no date>
  * demo/012:
 
     Single Application/Multiple Lexical Analyzers
-        012.sh DEBUG ...............................................[FAIL]
-               NDEBUG ..............................................[FAIL]
+        012.sh DEBUG .................................................[OK]
+               NDEBUG ................................................[OK]
 
  * demo/012b:
 
     Multiple Lexical Analyzers -- shared token
-        012b.sh DEBUG ..............................................[FAIL]
-                NDEBUG .............................................[FAIL]
+        012b.sh DEBUG ................................................[OK]
+                NDEBUG ...............................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] no-references-to-c.sh
-    [FAIL] 002.sh _ DEBUG
-                \__ NDEBUG
-                \__ customized
     [FAIL] 010.sh _ point-plain
     [FAIL] 011.sh _ iso8859-7
-    [FAIL] 012.sh _ DEBUG
-                \__ NDEBUG
-    [FAIL] 012b.sh _ DEBUG
-                 \__ NDEBUG
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -983,24 +976,22 @@ quex/input/TEST                                                      <no date>
                                                                                
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * 
-        function-check-unused-function-for-double-check.py .[NO GOOD FILE]
- * 666 tmp0.txt
-        function-check.sh ..................................[NO GOOD FILE]
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
+ * Checking for defined but unused functions.
+        function-check.sh ..................................[NO GOOD FILE]
  * Code Check with pyflakes
-        pyflakes-check.sh ......................................[TIME_OUT]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .....................[FAIL]
-                                           sphinx ..................[FAIL]
+        command_line_options-verify-doc.py man .......................[OK]
+                                           sphinx ....................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ................................[FAIL]
-                         undefinition ..............................[FAIL]
+        include_guard.py convention ..................................[OK]
+                         undefinition ................................[OK]
  * Propper undefinition of configuration parameters.
         macro-check.py ...............................................[OK]
 
@@ -1013,14 +1004,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] function-check-unused-function-for-double-check.py
     [FAIL] function-check.sh
-    [FAIL] no-use-of-lexeme-macro.sh
-    [FAIL] pyflakes-check.sh
-    [FAIL] command_line_options-verify-doc.py _ man
-                                            \__ sphinx
-    [FAIL] include_guard.py _ convention
-                          \__ undefinition
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1056,23 +1040,16 @@ quex/TESTS/did-you-mean/TEST                                         <no date>
 quex/TESTS/drop-outs/TEST                                            <no date>
 -------------------------------------------------------------------------------
  * Testing states with no hole in transition map
-        lexer BEGIN-1 .......................................[MAKE FAILED]
-              BEGIN-many ....................................[MAKE FAILED]
-              END-1 .........................................[MAKE FAILED]
-              END-many ......................................[MAKE FAILED]
-              MIDDLE-1 ......................................[MAKE FAILED]
-              MIDDLE-many ...................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] lexer _ BEGIN-1
-               \__ BEGIN-many
-               \__ END-1
-               \__ END-many
-               \__ MIDDLE-1
-               \__ MIDDLE-many
+        lexer BEGIN-1 ................................................[OK]
+              BEGIN-many .............................................[OK]
+              END-1 ..................................................[OK]
+              END-many ...............................................[OK]
+              MIDDLE-1 ...............................................[OK]
+              MIDDLE-many ............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                 Mode Transition Permissions 'entry' and 'exit'                 
@@ -1172,7 +1149,7 @@ quex/TESTS/indentation_count/TEST                                    <no date>
         commonalities.sh 1 ...........................................[OK]
                          2 ...........................................[OK]
                          3 .........................................[FAIL]
-                         4 .........................................[FAIL]
+                         4 ...........................................[OK]
                          5 .........................................[FAIL]
                          5b ..........................................[OK]
                          6 ...........................................[OK]
@@ -1193,7 +1170,6 @@ quex/TESTS/indentation_count/TEST                                    <no date>
 -------------------------------------------------------------------------------
     [FAIL] bad.sh _ default
     [FAIL] commonalities.sh _ 3
-                          \__ 4
                           \__ 5
 ===============================================================================
                                                                                
@@ -1953,12 +1929,10 @@ quex/output/core/TEST                                                <no date>
 -------------------------------------------------------------------------------
  * 
         loop-get_analazer_list.py ..........................[NO GOOD FILE]
- * 
-        loop-get_loop_map.py ...............................[NO GOOD FILE]
  * Mode Changes
-        test-mode-changes.py ANSI-C ................................[FAIL]
-                             ANSI-C-CG .............................[FAIL]
-                             Cpp ...................................[FAIL]
+        test-mode-changes.py ANSI-C ..................................[OK]
+                             ANSI-C-CG ...............................[OK]
+                             Cpp .....................................[OK]
 
  * Buffer Reload:
 
@@ -2207,10 +2181,6 @@ quex/output/core/TEST                                                <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] loop-get_analazer_list.py
-    [FAIL] loop-get_loop_map.py
-    [FAIL] test-mode-changes.py _ ANSI-C
-                              \__ ANSI-C-CG
-                              \__ Cpp
 ===============================================================================
                                                                                
                                   Output Cpp                                   
@@ -2244,6 +2214,25 @@ quex/output/cpp/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] test-counter.py
+===============================================================================
+                                                                               
+                       Code Generation for Graphviz/Dot                        
+                                                                               
+quex/output/graphviz/TEST                                            <no date>
+-------------------------------------------------------------------------------
+
+ * Plot:
+
+    Backward Detector (for pseudo-ambiguous post context).
+        plot-papc.py .................................................[OK]
+    Core state machine.
+        plot-core.py .................................................[OK]
+    Pre-Context.
+        plot-pre-context.py ..........................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   ByteLoaders                                  
@@ -2518,15 +2507,23 @@ quex/output/core/loop/TEST                                           <no date>
                                   NotNewlineTerminated ...............[OK]
     With Tabulators
         indentation-w-tabs.py Back ...................................[OK]
-                              Front ........................[NO GOOD FILE]
+                              Front ..................................[OK]
                               InComment ..............................[OK]
-                              Potpourri ............................[FAIL]
+                              Potpourri ..............................[OK]
     Without Tabulators
         indentation.py CloseMultiple .................................[OK]
                        EmptyLines ....................................[OK]
                        InAndOut ......................................[OK]
                        NoDents .......................................[OK]
                        SuppressedNewline .............................[OK]
+
+ * Loop:
+
+    Get Loop Map.
+        loop-get_loop_map.py AppendixI ...............................[OK]
+                             AppendixNoI .............................[OK]
+                             Plain ...................................[OK]
+                             Split ...................................[OK]
 
  * Skip-Characters:
 
@@ -2558,13 +2555,10 @@ quex/output/core/loop/TEST                                           <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       4 ..............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] indentation-w-tabs.py _ Front
-                               \__ Potpourri
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Forward and Backward Loading                          
@@ -2575,37 +2569,34 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * Buffer_load_backward:
 
     (BPC=1, FB=0)
-        backward-fb0.exe ...........................................[FAIL]
+        backward-fb0.exe BufferSize-3 ................................[OK]
+                         BufferSize-4 ................................[OK]
+                         BufferSize-5 ................................[OK]
     (BPC=1, FB=1)
-        backward-fb1.exe ...........................................[FAIL]
+        backward-fb1.exe BufferSize-4 ................................[OK]
+                         BufferSize-5 ................................[OK]
     (BPC=1, FB=2)
-        backward-fb2.exe ...........................................[FAIL]
+        backward-fb2.exe BufferSize-5 ................................[OK]
     (BPC=4, FB=2)
-        backward-fb2-32.exe ........................................[FAIL]
+        backward-fb2-32.exe BufferSize-5 .............................[OK]
 
  * Buffer_load_forward:
 
     (BPC=1, FB=0)
-        forward-fb0.exe ............................................[FAIL]
+        forward-fb0.exe BufferSize-3 .................................[OK]
+                        BufferSize-4 .................................[OK]
+                        BufferSize-5 .................................[OK]
     (BPC=1, FB=1)
-        forward-fb1.exe ............................................[FAIL]
+        forward-fb1.exe BufferSize-4 .................................[OK]
+                        BufferSize-5 .................................[OK]
     (BPC=1, FB=2)
-        forward-fb2.exe ............................................[FAIL]
+        forward-fb2.exe BufferSize-5 .................................[OK]
     (BPC=4, FB=2)
-        forward-fb2-32.exe .........................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] backward-fb0.exe
-    [FAIL] backward-fb1.exe
-    [FAIL] backward-fb2.exe
-    [FAIL] backward-fb2-32.exe
-    [FAIL] forward-fb0.exe
-    [FAIL] forward-fb1.exe
-    [FAIL] forward-fb2.exe
-    [FAIL] forward-fb2-32.exe
+        forward-fb2-32.exe BufferSize-5 ..............................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Buffer Moving/Copying Content                         
@@ -2620,45 +2611,51 @@ quex/code_base/buffer/TESTS/move/TEST                                <no date>
                                          NoEoS .......................[OK]
     (BPC=1, FB=1)
         move_away_passed_content-fb1.exe EoS .........................[OK]
-                                         NoEoS ..............[MAKE FAILED]
+                                         NoEoS .......................[OK]
     (BPC=1, FB=2)
         move_away_passed_content-fb2.exe EoS .........................[OK]
-                                         NoEoS ..............[MAKE FAILED]
+                                         NoEoS .......................[OK]
     (BPC=4, FB=2)
         move_away_passed_content-fb2-32.exe EoS ......................[OK]
-                                            NoEoS ...........[MAKE FAILED]
+                                            NoEoS ....................[OK]
 
  * move_away_upfront_content:
 
     (BPC=1)
-        move_away_upfront_content-8.exe cib=0 ........................[OK]
+        move_away_upfront_content-8.exe cib=0 ...............[MAKE FAILED]
                                         cib=0:EOS ....................[OK]
-                                        cib=1 ........................[OK]
+                                        cib=1 ...............[MAKE FAILED]
                                         cib=1:EOS ....................[OK]
-                                        cib=2 ........................[OK]
+                                        cib=2 ...............[MAKE FAILED]
                                         cib=2:EOS ....................[OK]
     (BPC=2)
-        move_away_upfront_content-16.exe cib=0 .......................[OK]
+        move_away_upfront_content-16.exe cib=0 ..............[MAKE FAILED]
                                          cib=0:EOS ...................[OK]
-                                         cib=1 .......................[OK]
+                                         cib=1 ..............[MAKE FAILED]
                                          cib=1:EOS ...................[OK]
-                                         cib=2 .......................[OK]
+                                         cib=2 ..............[MAKE FAILED]
                                          cib=2:EOS ...................[OK]
     (BPC=4)
-        move_away_upfront_content-32.exe cib=0 .......................[OK]
+        move_away_upfront_content-32.exe cib=0 ..............[MAKE FAILED]
                                          cib=0:EOS ...................[OK]
-                                         cib=1 .......................[OK]
+                                         cib=1 ..............[MAKE FAILED]
                                          cib=1:EOS ...................[OK]
-                                         cib=2 .......................[OK]
+                                         cib=2 ..............[MAKE FAILED]
                                          cib=2:EOS ...................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] move_away_passed_content-fb1.exe _ NoEoS
-    [FAIL] move_away_passed_content-fb2.exe _ NoEoS
-    [FAIL] move_away_passed_content-fb2-32.exe _ NoEoS
+    [FAIL] move_away_upfront_content-8.exe _ cib=0
+                                         \__ cib=1
+                                         \__ cib=2
+    [FAIL] move_away_upfront_content-16.exe _ cib=0
+                                          \__ cib=1
+                                          \__ cib=2
+    [FAIL] move_away_upfront_content-32.exe _ cib=0
+                                          \__ cib=1
+                                          \__ cib=2
 ===============================================================================
                                                                                
                       Extensive Tests on Buffer Seek&Tell                      
@@ -2873,22 +2870,25 @@ quex/engine/analyzer/mega_state/template/TEST                        <no date>
 quex/output/core/state/transition_map/TEST                           <no date>
 -------------------------------------------------------------------------------
  * 
-        test-bisection.py .....................................[NO OUTPUT]
- * 
         test-branch_table-2.py .............................[NO GOOD FILE]
  * 
         test-branch_table.py ...............................[NO GOOD FILE]
  * 
         test-comparison_sequence.py ........................[NO GOOD FILE]
+
+ * Code generation:
+
+    Bisection
+        test-bisection.py ..........................................[FAIL]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-bisection.py
     [FAIL] test-branch_table-2.py
     [FAIL] test-branch_table.py
     [FAIL] test-comparison_sequence.py
+    [FAIL] test-bisection.py
 ===============================================================================
                                                                                
                            IConv Converter Interface                           
@@ -2979,9 +2979,6 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
     [NO GOOD FILE] test-branch_table.py
     [NO GOOD FILE] test-comparison_sequence.py
     [NO GOOD FILE] loop-get_analazer_list.py
-    [NO GOOD FILE] loop-get_loop_map.py
-    [NO GOOD FILE] indentation-w-tabs.py _ Front
-    [NO GOOD FILE] function-check-unused-function-for-double-check.py
     [NO GOOD FILE] function-check.sh
     [NO GOOD FILE] deletion.py
     [NO GOOD FILE] priority.py
@@ -2993,17 +2990,17 @@ SUMMARY:
 
         5  235   [FAIL] TEST                                                
         6  54    [FAIL] demo/C/TEST                                         
-       10  54    [FAIL] ..../Cpp/TEST                                       
+        3  54    [FAIL] ..../Cpp/TEST                                       
         4  13    [FAIL] ..../TEST                                           
-        8  12    [FAIL] quex/TESTS/code/TEST                                
+        1  11    [FAIL] quex/TESTS/code/TEST                                
            2       [OK] ........../command-line/TEST                        
            2       [OK] ........../did-you-mean/TEST                        
-        6  6     [FAIL] ........../drop-outs/TEST                           
+           6       [OK] ........../drop-outs/TEST                           
            2       [OK] ........../entry-exit/TEST                          
            1       [OK] ........../errors-warnings/TEST                     
         2  10    [FAIL] ........../event-handling/TEST                      
            14      [OK] ........../include-stack/TEST                       
-        4  18    [FAIL] ........../indentation_count/TEST                   
+        3  18    [FAIL] ........../indentation_count/TEST                   
         5  9     [FAIL] ........../match-precedence/TEST                    
         8  11    [FAIL] ........../misc/TEST                                
            55      [OK] ........../reset/TEST                               
@@ -3012,8 +3009,8 @@ SUMMARY:
            4       [OK] ........../token-policies/TEST                      
            10      [OK] ..../code_base/TEST                                 
            42      [OK] ............../analyzer/TEST                        
-        8  8     [FAIL] ............../buffer/TESTS/load/TEST               
-        3  26    [FAIL] .........................../move/TEST               
+           14      [OK] ............../buffer/TESTS/load/TEST               
+        9  26    [FAIL] .........................../move/TEST               
            78      [OK] .........................../navigation/TEST         
            12      [OK] ...................../bytes/TEST                    
            12      [OK] ...................../lexatoms/converter/iconv/TEST 
@@ -3032,17 +3029,18 @@ SUMMARY:
            53      [OK] ........................./transformation/TEST       
            58      [OK] ..../input/TEST                                     
         3  27    [FAIL] ........../regular_expression/TEST                  
-        5  198   [FAIL] ..../output/core/TEST                               
-        2  30    [FAIL] ................/loop/TEST                          
+        1  197   [FAIL] ..../output/core/TEST                               
+           34      [OK] ................/loop/TEST                          
         4  4     [FAIL] ................/state/transition_map/TEST          
         1  13    [FAIL] .........../cpp/TEST                                
+           3       [OK] .........../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           ___   _           
-    |  ___|_ _(_) |___      / _ \ / |    __  __
-    | |_ / _` | | / __|    | (_) || |    \ \/ /
-    |  _| (_| | | \__ \     \__, || |     >  < 
-    |_|  \__,_|_|_|___/       /_/ |_|    /_/\_\
-                                                                   (1491 tests)
+     _____     _ _           __    ____            
+    |  ___|_ _(_) |___      / /_  |___ \     __  __
+    | |_ / _` | | / __|    | '_ \   __) |    \ \/ /
+    |  _| (_| | | \__ \    | (_) | / __/      >  < 
+    |_|  \__,_|_|_|___/     \___/ |_____|    /_/\_\
+                                                                   (1502 tests)
 
 ===============================================================================
