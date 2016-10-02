@@ -619,7 +619,7 @@ QUEX_NAME(Buffer_move_away_upfront_content)(QUEX_NAME(Buffer)* me)
     if( me->input.lexatom_index_begin == 0 && BeginP == me->_read_p ) {
         return 0;                        /* Begin of stream.                 */
     }
-    else if( me->_lexeme_start_p > LastP ) { 
+    else if( me->_lexeme_start_p >= LastP ) { 
         /* If _lexeme_start_p at back, then no new content can be loaded.    */
         me->on_overflow(me, /* Forward */ false);
         return 0;

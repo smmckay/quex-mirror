@@ -2622,40 +2622,30 @@ quex/code_base/buffer/TESTS/move/TEST                                <no date>
  * move_away_upfront_content:
 
     (BPC=1)
-        move_away_upfront_content-8.exe cib=0 ...............[MAKE FAILED]
+        move_away_upfront_content-8.exe cib=0 ........................[OK]
                                         cib=0:EOS ....................[OK]
-                                        cib=1 ...............[MAKE FAILED]
+                                        cib=1 ........................[OK]
                                         cib=1:EOS ....................[OK]
-                                        cib=2 ...............[MAKE FAILED]
+                                        cib=2 ........................[OK]
                                         cib=2:EOS ....................[OK]
     (BPC=2)
-        move_away_upfront_content-16.exe cib=0 ..............[MAKE FAILED]
+        move_away_upfront_content-16.exe cib=0 .......................[OK]
                                          cib=0:EOS ...................[OK]
-                                         cib=1 ..............[MAKE FAILED]
+                                         cib=1 .......................[OK]
                                          cib=1:EOS ...................[OK]
-                                         cib=2 ..............[MAKE FAILED]
+                                         cib=2 .......................[OK]
                                          cib=2:EOS ...................[OK]
     (BPC=4)
-        move_away_upfront_content-32.exe cib=0 ..............[MAKE FAILED]
+        move_away_upfront_content-32.exe cib=0 .......................[OK]
                                          cib=0:EOS ...................[OK]
-                                         cib=1 ..............[MAKE FAILED]
+                                         cib=1 .......................[OK]
                                          cib=1:EOS ...................[OK]
-                                         cib=2 ..............[MAKE FAILED]
+                                         cib=2 .......................[OK]
                                          cib=2:EOS ...................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] move_away_upfront_content-8.exe _ cib=0
-                                         \__ cib=1
-                                         \__ cib=2
-    [FAIL] move_away_upfront_content-16.exe _ cib=0
-                                          \__ cib=1
-                                          \__ cib=2
-    [FAIL] move_away_upfront_content-32.exe _ cib=0
-                                          \__ cib=1
-                                          \__ cib=2
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       Extensive Tests on Buffer Seek&Tell                      
@@ -3010,7 +3000,7 @@ SUMMARY:
            10      [OK] ..../code_base/TEST                                 
            42      [OK] ............../analyzer/TEST                        
            14      [OK] ............../buffer/TESTS/load/TEST               
-        9  26    [FAIL] .........................../move/TEST               
+           26      [OK] .........................../move/TEST               
            78      [OK] .........................../navigation/TEST         
            12      [OK] ...................../bytes/TEST                    
            12      [OK] ...................../lexatoms/converter/iconv/TEST 
@@ -3036,11 +3026,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           __    ____            
-    |  ___|_ _(_) |___      / /_  |___ \     __  __
-    | |_ / _` | | / __|    | '_ \   __) |    \ \/ /
-    |  _| (_| | | \__ \    | (_) | / __/      >  < 
-    |_|  \__,_|_|_|___/     \___/ |_____|    /_/\_\
+     _____     _ _          ____    _____           
+    |  ___|_ _(_) |___     | ___|  |___ /     __  __
+    | |_ / _` | | / __|    |___ \    |_ \     \ \/ /
+    |  _| (_| | | \__ \     ___) |  ___) |     >  < 
+    |_|  \__,_|_|_|___/    |____/  |____/     /_/\_\
                                                                    (1502 tests)
 
 ===============================================================================

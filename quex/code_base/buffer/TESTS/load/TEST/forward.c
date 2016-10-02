@@ -81,6 +81,7 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
     QUEX_NAME(LexatomLoader)*     filler;
     int                           count  = 0;
     QUEX_TYPE_LEXATOM             memory[32]; /* > anything ever needed.     */
+    int                           on_overflow_count_before;
 
     QUEX_NAME(ByteLoader_Memory_construct)(&loader, 
                                            (const uint8_t*)&PseudoFile[0], 
@@ -94,6 +95,7 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
     buffer.on_overflow       = common_on_overflow;
     buffer.on_content_change = common_on_content_change;
 
+    on_overflow_count_before = common_on_overflow_count;
     while( buffer.input.lexatom_index_end_of_stream == -1 ) {
         buffer._read_p = buffer._memory._back;
 
@@ -108,9 +110,10 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
 
         count += test_load_forward(&buffer);
 
-        if(    LexemeStartPDelta
-            >= (ptrdiff_t)(BufferElementN - QUEX_SETTING_BUFFER_MIN_FALLBACK_N - 2) ) {
+        if( on_overflow_count_before != common_on_overflow_count ) {
             /* In case the setup implies 'overflow', do not try again.       */
+            hwut_verify(   LexemeStartPDelta
+                        >= (ptrdiff_t)(BufferElementN - QUEX_SETTING_BUFFER_MIN_FALLBACK_N - 2) );
             return 0;
         }
     } 
