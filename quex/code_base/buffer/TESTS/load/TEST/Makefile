@@ -1,7 +1,8 @@
 TESTS := $(foreach DIRECTION, backward forward,             \
 			 $(foreach FB, 0 1 2, $(DIRECTION)-fb$(FB).exe) \
 			 $(DIRECTION)-fb2-32.exe                        \
-	     )
+	     ) \
+		 forward-api.exe
 
 FALLBACK_0 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 
 FALLBACK_1 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1 
@@ -38,6 +39,8 @@ hwut-end: clean
 	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
 %-fb2-32.exe: %.c 
 	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $^ -o $@
+%-api.exe: %-api.c 
+	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
 
 clean: 
 	rm -rf $(TEST_FILES)

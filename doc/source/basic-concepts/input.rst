@@ -8,6 +8,7 @@ achieve that a two-step loading process is implemented as shown in Figure
 :ref:`fig:byte-lexatom-buffer`. The two steps are
 
     #. Loading raw bytes from whatsoever source.  TODO: Mention the 'ByteLoader_Memory'
+           TODO: callbacks 'on_overflow', 'on_content_change'
            that can load sequentially from memory.
 
     #. Filling the engine's buffer with lexatoms.
