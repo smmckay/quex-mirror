@@ -8,6 +8,8 @@ FALLBACK_0 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0
 FALLBACK_1 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1 
 FALLBACK_2 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=2
 
+ICU_LIBS   := $(shell icu-config --ldflags) 
+
 DEFS = \
 	   -D__QUEX_OPTION_PLAIN_C \
 	   -DQUEX_OPTION_ASSERTS 
@@ -40,7 +42,8 @@ hwut-end: clean
 %-fb2-32.exe: %.c 
 	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $^ -o $@
 %-api.exe: %-api.c 
-	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
+	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $^ -o $@ $(ICU_LIBS) \
+		-DHWUT_OPTION_NO_ASSUMPTION_ON_LEXATOM_INDEX_AT_END
 
 clean: 
 	rm -rf $(TEST_FILES)

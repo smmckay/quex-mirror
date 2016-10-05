@@ -15,7 +15,7 @@ typedef struct {
     QUEX_TYPE_LEXATOM*        lexeme_start_p;
     /* '_read_p' must point after the last treated letter. 
      * for reload => to a buffer limit code. 
-     * => Interesting is the letter before the '_read_p'.                */
+     * => Interesting is the letter before the '_read_p'.                    */
     QUEX_TYPE_LEXATOM         read_m1;         
     QUEX_TYPE_LEXATOM         lexeme_start_m1;
     QUEX_TYPE_LEXATOM*        position_register_1;
@@ -35,6 +35,28 @@ static const QUEX_TYPE_LEXATOM  PseudoFile[] = {
 #define PSEUDO_FILE_LEXATOM_INDEX_AT_END \
         PSEUDO_FILE_ELEMENT_N 
 
+static const uint8_t  PseudoFileUTF8[] = {       /* Maxwell Equations ...    */
+    0xe2, 0x81, 0x85, 0xe2, 0x88, 0x87, 0xc3, 0x97, 0xf0, 0x9d, 0x90, 0x81, 0xe2, 0x83, 0x97, 0x20,  
+    0x2d, 0xe2, 0x80, 0x89, 0x20, 0x31, 0xe2, 0x88, 0x95, 0x63, 0xe2, 0x80, 0x89, 0x20, 0x28, 0xe2,  
+    0x88, 0x82, 0xf0, 0x9d, 0x90, 0x84, 0xe2, 0x83, 0x97, 0x29, 0xe2, 0x88, 0x95, 0x28, 0xe2, 0x88,  
+    0x82, 0x74, 0x29, 0x20, 0x26, 0x20, 0x3d, 0x20, 0x28, 0x34, 0xcf, 0x80, 0x29, 0xe2, 0x88, 0x95,  
+    0x63, 0x20, 0xf0, 0x9d, 0x90, 0xa3, 0xe2, 0x83, 0x97, 0x20, 0x0a, 0xe2, 0x88, 0x87, 0xe2, 0x8b,  
+    0x85, 0xf0, 0x9d, 0x90, 0x84, 0xe2, 0x83, 0x97, 0x20, 0x26, 0x20, 0x3d, 0x20, 0x34, 0x20, 0xcf,  
+    0x80, 0xcf, 0x81, 0x20, 0x0a, 0xe2, 0x88, 0x87, 0xc3, 0x97, 0xf0, 0x9d, 0x90, 0x84, 0xe2, 0x83,  
+    0x97, 0xe2, 0x80, 0x89, 0x20, 0x2b, 0xe2, 0x80, 0x89, 0x20, 0x31, 0xe2, 0x88, 0x95, 0x63, 0xe2,  
+    0x80, 0x89, 0x20, 0x28, 0xe2, 0x88, 0x82, 0xf0, 0x9d, 0x90, 0x81, 0xe2, 0x83, 0x97, 0x29, 0xe2,  
+    0x88, 0x95, 0x28, 0xe2, 0x88, 0x82, 0x74, 0x29, 0x20, 0x26, 0x20, 0x3d, 0x20, 0xf0, 0x9d, 0x9f,  
+    0x8e, 0xe2, 0x83, 0x97, 0x20, 0x0a, 0xe2, 0x88, 0x87, 0xe2, 0x8b, 0x85, 0xf0, 0x9d, 0x90, 0x81,  
+    0xe2, 0x83, 0x97, 0x20, 0x26, 0x20, 0x3d, 0x20, 0x30, 0x0a                    
+};
+
+#define PSEUDO_FILE_UTF8_SIZE \
+        sizeof(PseudoFileUTF8)
+#define PSEUDO_FILE_UTF8_ELEMENT_N \
+        (sizeof(PseudoFileUTF8)/sizeof(PseudoFileUTF8[0]))
+#define PSEUDO_FILE_UTF8_LEXATOM_INDEX_AT_END \
+        PSEUDO_FILE_UTF8_ELEMENT_N 
+
 static QUEX_TYPE_LEXATOM* PoisonP = (QUEX_TYPE_LEXATOM*)0x5A5A5A5A; 
 static QUEX_TYPE_LEXATOM* NullP   = (QUEX_TYPE_LEXATOM*)0; 
 
@@ -48,6 +70,8 @@ verify_content(QUEX_NAME(Buffer)* me)
     QUEX_TYPE_LEXATOM* p;
     ptrdiff_t          count = 0;
     ptrdiff_t          lexatom_index_at_end_p;
+    (void)lexatom_index_at_end_p;
+    (void)expected;
 
     hwut_verify(me->_memory._front[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
     hwut_verify(me->_memory._back[0]  == QUEX_SETTING_BUFFER_LIMIT_CODE);
@@ -57,15 +81,19 @@ verify_content(QUEX_NAME(Buffer)* me)
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
     if( me->input.end_p != me->_memory._back ) {
         lexatom_index_at_end_p = me->input.end_p - &me->_memory._front[1];
+#       ifndef HWUT_OPTION_NO_ASSUMPTION_ON_LEXATOM_INDEX_AT_END
         hwut_verify(lexatom_index_at_end_p + me->input.lexatom_index_begin
                     == PSEUDO_FILE_LEXATOM_INDEX_AT_END);
+#       endif
     }
     /* Make sure that the content has been loaded properly. From the 
      * variable 'pseudo_file' it can be previewed what the content is 
      * supposed to be.                                                       */
     for(p=&me->_memory._front[1]; p != me->input.end_p ; ++p) {
         expected = PseudoFile[me->input.lexatom_index_begin + p - &me->_memory._front[1]];
+#       ifndef HWUT_OPTION_NO_ASSUMPTION_ON_LEXATOM_INDEX_AT_END
         hwut_verify(*p == expected);
+#       endif
         ++count;
     }
     hwut_verify(count == me->input.end_p - &me->_memory._front[1]);
