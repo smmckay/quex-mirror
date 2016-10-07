@@ -153,7 +153,8 @@ test_load_forward(QUEX_NAME(Buffer)* buffer)
     delta   = before.read_p - buffer->_read_p;
 
     hwut_verify(delta >= 0);
-    before_check_consistency(&before, delta, verdict, buffer, position_register);
+    before_check_consistency(&before, delta, verdict, buffer, position_register, false);
+
     return delta;
 }
 

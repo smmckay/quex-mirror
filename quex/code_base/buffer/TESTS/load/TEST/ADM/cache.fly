@@ -1,15 +1,15 @@
 {
 title: load_forward;
 title_group: API;
-build_time: 0.015023946762084961;
+build_time: 0.01512598991394043;
 file_name: forward-api.exe;
-hwut_info_time: 1475697595L;
+hwut_info_time: 1475705683L;
 make_dependent_f: True;
 result_list: [
-  [ DONE; OK; 0.006758; 1577524616; ]
-  [ NO_SPACE_FOR_LOAD; OK; 0.006200; -310453899; ]
-  [ NO_MORE_DATA; OK; 0.007446; -661426394; ]
-  [ BAD_LEXATOM; NO GOOD FILE; 0.005685; 0; ]
+  [ DONE; OK; 0.007924; 1577524616; ]
+  [ NO_SPACE_FOR_LOAD; OK; 0.005686; -310453899; ]
+  [ NO_MORE_DATA; FAIL; 0.006029; -661426394; ]
+  [ BAD_LEXATOM; NO GOOD FILE; 0.010040; 0; ]
 ]
 }
 {

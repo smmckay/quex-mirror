@@ -90,7 +90,7 @@ QUEX_NAMESPACE_MAIN_OPEN
       template <class UnderlyingStreamT> void
               from_StrangeStream(quex::StrangeStream<UnderlyingStreamT>*  istream_p, const char* CodecName = 0x0);
       void    from(QUEX_NAME(ByteLoader)* byte_loader, const char*  CodecName = 0x0);
-      void    from(QUEX_NAME(LexatomLoader)* filler);
+      void    from(QUEX_NAME(LexatomLoader)* lexatom_loader);
       void    from(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
                    size_t               BufferMemorySize,
                    QUEX_TYPE_LEXATOM* BufferEndOfContentP = 0x0);

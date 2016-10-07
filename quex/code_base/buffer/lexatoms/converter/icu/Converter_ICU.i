@@ -70,13 +70,13 @@ QUEX_NAME(Converter_ICU_open)(QUEX_NAME(Converter)* alter_ego,
                               const char*           ToCoding)
 {
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
-#       if   defined(__QUEX_OPTION_LITTLE_ENDIAN)
+#   if   defined(__QUEX_OPTION_LITTLE_ENDIAN)
     const bool little_endian_f = true;
-#       elif defined(__QUEX_OPTION_BIG_ENDIAN)
+#   elif defined(__QUEX_OPTION_BIG_ENDIAN)
     const bool little_endian_f = false;
-#       elif defined(__QUEX_OPTION_SYSTEM_ENDIAN) 
+#   elif defined(__QUEX_OPTION_SYSTEM_ENDIAN) 
     const bool little_endian_f = QUEXED(system_is_little_endian)();
-#       endif
+#   endif
 
     __quex_assert(me);
 

@@ -83,26 +83,26 @@ QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me)
  *              _lexatom_at_lexeme_start     
  *              _lexatom_before_lexeme_start                                 */
 {
-    QUEX_TYPE_LEXATOM*      BeginP           = &me->_memory._front[1];
+    QUEX_TYPE_LEXATOM*  BeginP = &me->_memory._front[1];
 
     if( ! me->_memory._front ) {
         /* No memory => Analyzer is put into a non-functional state.         */
-        me->_read_p                             = (QUEX_TYPE_LEXATOM*)0;
-        me->_lexeme_start_p                     = (QUEX_TYPE_LEXATOM*)0;
-        me->_lexatom_at_lexeme_start          = (QUEX_TYPE_LEXATOM)0;                                   
+        me->_read_p                      = (QUEX_TYPE_LEXATOM*)0;
+        me->_lexeme_start_p              = (QUEX_TYPE_LEXATOM*)0;
+        me->_lexatom_at_lexeme_start     = (QUEX_TYPE_LEXATOM)0;                                   
 #       ifdef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
-        me->_lexatom_before_lexeme_start      = (QUEX_TYPE_LEXATOM)0;
+        me->_lexatom_before_lexeme_start = (QUEX_TYPE_LEXATOM)0;
 #       endif
     }
     else {
         /* The first state in the state machine does not increment. 
          * => input pointer is set to the first position, not before.        */
-        me->_read_p                             = BeginP;                                
-        me->_lexeme_start_p                     = BeginP;                                
-        me->_lexatom_at_lexeme_start            = '\0';  /* Nothing covered. */
+        me->_read_p                      = BeginP;                                
+        me->_lexeme_start_p              = BeginP;                                
+        me->_lexatom_at_lexeme_start     = '\0';  /* Nothing covered. */
 #       ifdef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                     
         /* When the buffer is initialized, a line begins. Set 'newline'.     */
-        me->_lexatom_before_lexeme_start      = QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC;
+        me->_lexatom_before_lexeme_start = QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC;
 #       endif
     }
 }
@@ -115,10 +115,6 @@ QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFi
 {
     QUEX_TYPE_LEXATOM*        BeginP           = &me->_memory._front[1];
     QUEX_TYPE_LEXATOM*        EndP             = me->_memory._back;
-    const ptrdiff_t           ContentSize      = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
-    ptrdiff_t                 loaded_n;
-    bool                      end_of_stream_f  = false;
-    bool                      encoding_error_f = false;
     QUEX_TYPE_STREAM_POSITION ci_begin         = (QUEX_TYPE_STREAM_POSITION)0;
     QUEX_TYPE_STREAM_POSITION ci_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
     QUEX_TYPE_LEXATOM*        end_p            = (QUEX_TYPE_LEXATOM*)0;
@@ -132,11 +128,18 @@ QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFi
     else if( me->filler && me->filler->byte_loader ) {
         __quex_assert(! EndOfFileP);
 
+#       if 0
         loaded_n         = QUEX_NAME(LexatomLoader_load)(me->filler, BeginP, ContentSize,
                                                          0, &end_of_stream_f, &encoding_error_f);
         ci_end_of_stream = ((! loaded_n) || end_of_stream_f) ? loaded_n 
                                                              : (QUEX_TYPE_STREAM_POSITION)-1;
         end_p            = &BeginP[loaded_n];
+#       endif
+        /* Setup condition to initiate immediate load when the state machine
+         * is entered: 'read pointer hits buffer limit code'.                */
+        ci_begin         = (QUEX_TYPE_STREAM_POSITION)0;
+        ci_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
+        end_p            = &BeginP[0];
     } 
     else {
         __quex_assert(me->_memory._front);           /* See first condition. */
@@ -153,9 +156,9 @@ QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFi
     }
     me->input.lexatom_index_begin         = ci_begin;
     me->input.lexatom_index_end_of_stream = ci_end_of_stream;
-    me->input.end_p                         = end_p;
+    me->input.end_p                       = end_p;
     if( me->input.end_p ) {
-        *(me->input.end_p)                  = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        *(me->input.end_p)                = QUEX_SETTING_BUFFER_LIMIT_CODE;
     }
 
     QUEX_IF_ASSERTS_poison(&me->input.end_p[1], me->_memory._back);

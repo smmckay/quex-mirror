@@ -35,7 +35,7 @@ static const QUEX_TYPE_LEXATOM  PseudoFile[] = {
 #define PSEUDO_FILE_LEXATOM_INDEX_AT_END \
         PSEUDO_FILE_ELEMENT_N 
 
-static const uint8_t  PseudoFileUTF8[] = {       /* Maxwell Equations ...    */
+uint8_t  PseudoFileUTF8[] = { /* Maxwell Equations ...    */
     0xe2, 0x81, 0x85, 0xe2, 0x88, 0x87, 0xc3, 0x97, 0xf0, 0x9d, 0x90, 0x81, 0xe2, 0x83, 0x97, 0x20,  
     0x2d, 0xe2, 0x80, 0x89, 0x20, 0x31, 0xe2, 0x88, 0x95, 0x63, 0xe2, 0x80, 0x89, 0x20, 0x28, 0xe2,  
     0x88, 0x82, 0xf0, 0x9d, 0x90, 0x84, 0xe2, 0x83, 0x97, 0x29, 0xe2, 0x88, 0x95, 0x28, 0xe2, 0x88,  
@@ -56,6 +56,41 @@ static const uint8_t  PseudoFileUTF8[] = {       /* Maxwell Equations ...    */
         (sizeof(PseudoFileUTF8)/sizeof(PseudoFileUTF8[0]))
 #define PSEUDO_FILE_UTF8_LEXATOM_INDEX_AT_END \
         PSEUDO_FILE_UTF8_ELEMENT_N 
+
+static const uint32_t PseudoFileUCS4[] = { /* Maxwell Equations ...    */
+    0x00002045, 0x00002207, 0x000000d7, 0x0001d401,  
+    0x000020d7, 0x00000020, 0x0000002d, 0x00002009,  
+    0x00000020, 0x00000031, 0x00002215, 0x00000063,  
+    0x00002009, 0x00000020, 0x00000028, 0x00002202,  
+    0x0001d404, 0x000020d7, 0x00000029, 0x00002215,  
+    0x00000028, 0x00002202, 0x00000074, 0x00000029,  
+    0x00000020, 0x00000026, 0x00000020, 0x0000003d,  
+    0x00000020, 0x00000028, 0x00000034, 0x000003c0,  
+    0x00000029, 0x00002215, 0x00000063, 0x00000020,  
+    0x0001d423, 0x000020d7, 0x00000020, 0x0000000a,  
+    0x00002207, 0x000022c5, 0x0001d404, 0x000020d7,  
+    0x00000020, 0x00000026, 0x00000020, 0x0000003d,  
+    0x00000020, 0x00000034, 0x00000020, 0x000003c0,  
+    0x000003c1, 0x00000020, 0x0000000a, 0x00002207,  
+    0x000000d7, 0x0001d404, 0x000020d7, 0x00002009,  
+    0x00000020, 0x0000002b, 0x00002009, 0x00000020,  
+    0x00000031, 0x00002215, 0x00000063, 0x00002009,  
+    0x00000020, 0x00000028, 0x00002202, 0x0001d401,  
+    0x000020d7, 0x00000029, 0x00002215, 0x00000028,  
+    0x00002202, 0x00000074, 0x00000029, 0x00000020,  
+    0x00000026, 0x00000020, 0x0000003d, 0x00000020,  
+    0x0001d7ce, 0x000020d7, 0x00000020, 0x0000000a,  
+    0x00002207, 0x000022c5, 0x0001d401, 0x000020d7,  
+    0x00000020, 0x00000026, 0x00000020, 0x0000003d,  
+    0x00000020, 0x00000030, 0x0000000a,
+};
+
+#define PSEUDO_FILE_UCS4_SIZE \
+        sizeof(PseudoFileUCS4)
+#define PSEUDO_FILE_UCS4_ELEMENT_N \
+        (sizeof(PseudoFileUCS4)/sizeof(PseudoFileUCS4[0]))
+#define PSEUDO_FILE_UCS4_LEXATOM_INDEX_AT_END \
+        PSEUDO_FILE_UCS4_ELEMENT_N 
 
 static QUEX_TYPE_LEXATOM* PoisonP = (QUEX_TYPE_LEXATOM*)0x5A5A5A5A; 
 static QUEX_TYPE_LEXATOM* NullP   = (QUEX_TYPE_LEXATOM*)0; 
@@ -91,9 +126,41 @@ verify_content(QUEX_NAME(Buffer)* me)
      * supposed to be.                                                       */
     for(p=&me->_memory._front[1]; p != me->input.end_p ; ++p) {
         expected = PseudoFile[me->input.lexatom_index_begin + p - &me->_memory._front[1]];
-#       ifndef HWUT_OPTION_NO_ASSUMPTION_ON_LEXATOM_INDEX_AT_END
         hwut_verify(*p == expected);
-#       endif
+        ++count;
+    }
+    hwut_verify(count == me->input.end_p - &me->_memory._front[1]);
+
+    return count;
+}
+
+static ptrdiff_t
+verify_ucs4_content(QUEX_NAME(Buffer)* me)
+{
+    QUEX_TYPE_LEXATOM  expected;
+    QUEX_TYPE_LEXATOM* p;
+    ptrdiff_t          count = 0;
+    ptrdiff_t          lexatom_index_at_end_p;
+    (void)lexatom_index_at_end_p;
+    (void)expected;
+
+    hwut_verify(me->_memory._front[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->_memory._back[0]  == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->input.end_p[0]    == QUEX_SETTING_BUFFER_LIMIT_CODE);
+
+    /* If end_p does not stand on buffer boarder, then it must stand according
+     * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
+    if( me->input.end_p != me->_memory._back ) {
+        lexatom_index_at_end_p = me->input.end_p - &me->_memory._front[1];
+        hwut_verify(lexatom_index_at_end_p + me->input.lexatom_index_begin
+                    == PSEUDO_FILE_UCS4_LEXATOM_INDEX_AT_END);
+    }
+    /* Make sure that the content has been loaded properly. From the 
+     * variable 'pseudo_file' it can be previewed what the content is 
+     * supposed to be.                                                       */
+    for(p=&me->_memory._front[1]; p != me->input.end_p ; ++p) {
+        expected = PseudoFileUCS4[me->input.lexatom_index_begin + p - &me->_memory._front[1]];
+        hwut_verify(*p == expected);
         ++count;
     }
     hwut_verify(count == me->input.end_p - &me->_memory._front[1]);
@@ -132,7 +199,8 @@ before_check_consistency(BufferBefore_t*    me,
                          ptrdiff_t          Delta, 
                          E_LoadResult       Verdict,
                          QUEX_NAME(Buffer)* buffer, 
-                         QUEX_TYPE_LEXATOM* (position_register[5]))
+                         QUEX_TYPE_LEXATOM* (position_register[5]), 
+                         bool               ConverterF)
 {
     int count; 
 
@@ -176,7 +244,8 @@ before_check_consistency(BufferBefore_t*    me,
     /* Make sure that the content has been loaded properly. From the 
      * variable 'pseudo_file' it can be previewed what the content is 
      * supposed to be.                                                   */
-    count = verify_content(buffer);
+    if( ! ConverterF ) count = verify_content(buffer);
+    else               count = verify_ucs4_content(buffer);
 
     hwut_verify(count == buffer->input.end_p - &buffer->_memory._front[1]);
     hwut_verify(buffer->input.end_p[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
