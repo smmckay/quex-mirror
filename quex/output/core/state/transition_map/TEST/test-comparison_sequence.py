@@ -20,7 +20,7 @@ import random
 sys.path.insert(0, os.environ["QUEX_PATH"])
 from   copy import copy
                                                    
-from   quex.engine.analyzer.door_id_address_label import dial_db
+from   quex.engine.analyzer.door_id_address_label import DialDB
 from   quex.output.core.state.transition_map.comparison_sequence import ComparisonSequence   
 from   quex.output.core.dictionary import db
 from   quex.engine.misc.interval_handling        import Interval
@@ -42,7 +42,7 @@ Lang, N, Direction = sys.argv[1].split("-")
 
 Setup.language_db = db[Lang]
 N = int(N)
-
+dial_db = DialDB()
 interval_begin = 0
 def interval(Size):
     # NOTE: 'interval_begin=0' is reset at the end of test()

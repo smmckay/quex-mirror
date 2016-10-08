@@ -204,7 +204,7 @@ before_check_consistency(BufferBefore_t*    me,
 {
     int count; 
 
-    if( Delta ) { 
+    if( Delta || buffer->input.lexatom_index_begin == 0 ) { 
         hwut_verify(Delta <= buffer->_memory._back - &buffer->_memory._front[1]);
         /* NOT: hwut_verify(Verdict);  
          * Because, even if no content has been loaded, the pointers may have

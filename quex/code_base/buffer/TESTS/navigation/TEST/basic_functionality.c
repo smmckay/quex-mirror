@@ -72,7 +72,8 @@ basic_functionality(QUEX_NAME(Buffer)* me, const char* ReferenceFileName)
                "##     use: $2: historgram of differences.\n");
     }
 
-    __quex_assert( ! QUEX_NAME(Buffer_is_empty)(me));
+    /* The constructor is NOT supposed to load anything.                     */
+    __quex_assert(QUEX_NAME(Buffer_is_empty)(me));
 
     /* position_limit = number of characters in the file, i.e. the number of
      * raw unicode characters in the reference file.                         */
@@ -130,7 +131,8 @@ verify_content(QUEX_NAME(Buffer)* me,
     QUEX_TYPE_STREAM_POSITION  begin_lexatom_index = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
 
     if( Position < PositionLimit ) {
-        if( *me->_read_p != reference[Position] ) {
+        if(     me->_read_p != me->input.end_p 
+            && *me->_read_p != reference[Position] ) {
             printf("ERROR: read_p: %p; begin: %p; end: %p;\n"
                    "ERROR: position: %i; position_limit: %i;\n"
                    "ERROR: *_read_p: %04X; *reference[Position]: %04X;\n",
@@ -148,7 +150,7 @@ verify_content(QUEX_NAME(Buffer)* me,
 
     /* Make sure that the content corresponds to the reference data.     */
     if( memcmp((void*)&reference[begin_lexatom_index], (void*)BeginP, 
-               (size_t)ContentSize) != 0) {
+               (size_t)ContentSize) != 0 ) {
         print_difference(me);
         return false;
     }
@@ -188,7 +190,7 @@ print_difference(QUEX_NAME(Buffer)* me)
     printf("ci_begin: %i; ci_end: %i; ci_diff: %i;\n",
            (int)ci_begin, (int)ci_end, (int)ci_diff);
     if( ci_diff == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-        printf("memcmp reported difference but not difference was found.\n");
+        printf("memcmp reported difference but no difference was found.\n");
         hwut_verify(false);
     }
 
