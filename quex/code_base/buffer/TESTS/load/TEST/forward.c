@@ -97,15 +97,15 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
 
     on_overflow_count_before = common_on_overflow_count;
     while( buffer.input.lexatom_index_end_of_stream == -1 ) {
-        buffer._read_p = buffer._memory._back;
+        buffer._read_p = QUEX_MIN(buffer.input.end_p, buffer._memory._back);
 
         buffer._lexeme_start_p = buffer._read_p - LexemeStartPDelta;  
 
         if( buffer._lexeme_start_p > buffer._memory._back ) {
             buffer._lexeme_start_p = buffer._memory._back;
         }
-        if( buffer._lexeme_start_p < buffer._memory._front ) {
-            buffer._lexeme_start_p = buffer._memory._front;
+        if( buffer._lexeme_start_p < &buffer._memory._front[1] ) {
+            buffer._lexeme_start_p = &buffer._memory._front[1];
         }
 
         count += test_load_forward(&buffer);

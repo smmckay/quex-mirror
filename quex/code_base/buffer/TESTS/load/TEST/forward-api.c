@@ -79,8 +79,10 @@ main(int argc, char**argv)
     hwut_if_choice("NO_MORE_DATA")      self_NO_MORE_DATA();
     hwut_if_choice("BAD_LEXATOM")       self_BAD_LEXATOM();
 
-    printf("<terminated: { overflow: %i; content_change: %i; }>\n",
-           (int)common_on_overflow_count, (int)common_on_content_change_count);
+    printf("<terminated: { verified: %i; overflow: %i; content_change: %i; }>\n",
+           (int)common_verification_count, 
+           (int)common_on_overflow_count, 
+           (int)common_on_content_change_count);
     return 0;
 }
 
@@ -153,6 +155,10 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
     self.buffer.on_overflow       = common_on_overflow;
     self.buffer.on_content_change = common_on_content_change;
 
+    /* Initial load ___________________________________________________________
+     *                                                                       */
+    self_load(   LexatomLoaderType == E_LexatomLoader_IConv 
+              || LexatomLoaderType == E_LexatomLoader_ICU );
 
     /* Initialize: 'read_p' and 'lexeme_start_p' _______________________________
      *                                                                        */
@@ -162,6 +168,9 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
                                                          : self.buffer._read_p;
     self.buffer._lexeme_start_p = QUEX_MIN(self.buffer._lexeme_start_p, 
                                            &self.buffer.input.end_p[-1]);
+    self.buffer._lexeme_start_p = QUEX_MAX(self.buffer._lexeme_start_p, 
+                                           &self.buffer._memory._front[1]);
+
 }
 
 static E_LoadResult
@@ -175,7 +184,8 @@ self_load(bool ConverterF)
 
     before_setup(&before, &self.buffer, position_register);
 
-    verdict = QUEX_NAME(Buffer_load_forward)(&self.buffer, &position_register[0], 
+    verdict = QUEX_NAME(Buffer_load_forward)(&self.buffer, 
+                                             &position_register[0], 
                                              PositionRegisterN);
     delta   = before.read_p - self.buffer._read_p;
 
@@ -199,6 +209,8 @@ self_DONE()
                /* EmptyFile         */ false,
                /* LexatomLoaderType */ E_LexatomLoader_Plain,
                /* ErrorCodePosition */ -1);
+    hwut_verify(self_load(false) == E_LoadResult_DONE);
+
     for(lexeme_p_offset  = QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 1;
         lexeme_p_offset <= BufferElementN - 2;
         ++lexeme_p_offset) 
@@ -211,6 +223,31 @@ self_DONE()
         hwut_verify(self_load(false) == E_LoadResult_DONE);
     }
 
+#   if 0
+    for(lexeme_p_offset  = QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 1;
+        lexeme_p_offset <= BufferElementN - 2;
+        ++lexeme_p_offset) 
+    {
+        self_setup(/* LexemePOffset     */ lexeme_p_offset,
+                   /* ReadPOffset       */ 0,
+                   /* EmptyFile         */ false,
+                   /* LexatomLoaderType */ E_LexatomLoader_ICU,
+                   /* ErrorCodePosition */ -1);
+        hwut_verify(self_load(false) == E_LoadResult_DONE);
+    }
+
+    for(lexeme_p_offset  = QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 1;
+        lexeme_p_offset <= BufferElementN - 2;
+        ++lexeme_p_offset) 
+    {
+        self_setup(/* LexemePOffset     */ lexeme_p_offset,
+                   /* ReadPOffset       */ 0,
+                   /* EmptyFile         */ false,
+                   /* LexatomLoaderType */ E_LexatomLoader_IConv,
+                   /* ErrorCodePosition */ -1);
+        hwut_verify(self_load(false) == E_LoadResult_DONE);
+    }
+#   endif
 }
 
 static void
@@ -284,7 +321,7 @@ self_BAD_LEXATOM()
     }
 
     /* (2.c) Encoding Error from lexatom_loader/converter
-     *     1) ICU
+     *     1) ICU (does not work!)
      *     2) IConv
      *     => E_LoadResult_BAD_LEXATOM */
     for(position = 0; position < PSEUDO_FILE_UTF8_ELEMENT_N; ++position) 
@@ -295,32 +332,40 @@ self_BAD_LEXATOM()
         self_setup(/* LexemePOffset     */ -1, 
                    /* ReadPOffset       */ 0,
                    /* EmptyFile         */ false,
-                   /* LexatomLoaderType */ E_LexatomLoader_ICU,
-                   /* ErrorCodePosition */ position);
-
-        while( self.buffer.input.lexatom_index_end_of_stream == -1 ) {
-            self.buffer._read_p         = self.buffer._memory._back;
-            self.buffer._lexeme_start_p = &self.buffer._memory._back[-1];
-            if( self_load(true) == E_LoadResult_BAD_LEXATOM) break;
-        }
-        /* Loop must have been left due to 'bad lexatom', not end of file. */
-        hwut_verify( self.buffer.input.lexatom_index_end_of_stream == -1);
-
-        self_setup(/* LexemePOffset     */ -1, 
-                   /* ReadPOffset       */ 0,
-                   /* EmptyFile         */ false,
                    /* LexatomLoaderType */ E_LexatomLoader_IConv,
                    /* ErrorCodePosition */ position);
 
         while( self.buffer.input.lexatom_index_end_of_stream == -1 ) {
-            self.buffer._read_p         = self.buffer._memory._back;
-            self.buffer._lexeme_start_p = &self.buffer._memory._back[-1];
+            self.buffer._read_p         = QUEX_MIN(self.buffer._memory._back,
+                                                   self.buffer.input.end_p);
+            self.buffer._lexeme_start_p = &self.buffer._read_p[-1];
+ 
             if( self_load(true) == E_LoadResult_BAD_LEXATOM) break;
         }
-        /* Loop must have been left due to 'bad lexatom', not end of file. */
-        hwut_verify( self.buffer.input.lexatom_index_end_of_stream == -1);
 
         PseudoFileUTF8[position] = backup_byte;
     }
+
+#   if 0
+    for(position = 0; position < PSEUDO_FILE_UTF8_ELEMENT_N; ++position) 
+    {
+        backup_byte = PseudoFileUTF8[position]; 
+        PseudoFileUTF8[position] = 0xFF; /* Is never ok in UTF8 */
+        self_setup(/* LexemePOffset     */ -1, 
+                   /* ReadPOffset       */ 0,
+                   /* EmptyFile         */ false,
+                   /* LexatomLoaderType */ E_LexatomLoader_ICU,
+                   /* ErrorCodePosition */ position);
+
+        while( self.buffer.input.lexatom_index_end_of_stream == -1 ) {
+            self.buffer._read_p         = QUEX_MIN(self.buffer._memory._back,
+                                                   self.buffer.input.end_p);
+            self.buffer._lexeme_start_p = &self.buffer._read_p[-1];
+            if( self_load(true) == E_LoadResult_BAD_LEXATOM) break;
+        }
+
+        PseudoFileUTF8[position] = backup_byte;
+    }
+#   endif
 }
 

@@ -2571,10 +2571,10 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * API:
 
     load_forward
-        forward-api.exe BAD_LEXATOM ........................[NO GOOD FILE]
-                        DONE .......................................[FAIL]
+        forward-api.exe BAD_LEXATOM ..................................[OK]
+                        DONE .........................................[OK]
                         NO_MORE_DATA .................................[OK]
-                        NO_SPACE_FOR_LOAD ..........................[FAIL]
+                        NO_SPACE_FOR_LOAD ............................[OK]
 
  * Buffer_load_backward:
 
@@ -2593,31 +2593,20 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * Buffer_load_forward:
 
     (BPC=1, FB=0)
-        forward-fb0.exe BufferSize-3 ..........................[NO OUTPUT]
-                        BufferSize-4 ..........................[NO OUTPUT]
-                        BufferSize-5 ..........................[NO OUTPUT]
+        forward-fb0.exe BufferSize-3 .................................[OK]
+                        BufferSize-4 .................................[OK]
+                        BufferSize-5 .................................[OK]
     (BPC=1, FB=1)
-        forward-fb1.exe BufferSize-4 ..........................[NO OUTPUT]
-                        BufferSize-5 ..........................[NO OUTPUT]
+        forward-fb1.exe BufferSize-4 .................................[OK]
+                        BufferSize-5 .................................[OK]
     (BPC=1, FB=2)
-        forward-fb2.exe BufferSize-5 ..........................[NO OUTPUT]
+        forward-fb2.exe BufferSize-5 .................................[OK]
     (BPC=4, FB=2)
-        forward-fb2-32.exe BufferSize-5 .......................[NO OUTPUT]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] forward-api.exe _ BAD_LEXATOM
-                         \__ DONE
-                         \__ NO_SPACE_FOR_LOAD
-    [FAIL] forward-fb0.exe _ BufferSize-3
-                         \__ BufferSize-4
-                         \__ BufferSize-5
-    [FAIL] forward-fb1.exe _ BufferSize-4
-                         \__ BufferSize-5
-    [FAIL] forward-fb2.exe _ BufferSize-5
-    [FAIL] forward-fb2-32.exe _ BufferSize-5
+        forward-fb2-32.exe BufferSize-5 ..............................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Buffer Moving/Copying Content                         
@@ -2720,22 +2709,22 @@ quex/code_base/buffer/TESTS/navigation/TEST                          <no date>
                                IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter_IConv (BPC=4, FALLBACK=0)
         test-Converter-4-0.exe ICU-linear ............................[OK]
-                               ICU-stepping ....................[TIME_OUT]
-                               ICU-stepping-cls ................[TIME_OUT]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
                                IConv-linear ..........................[OK]
-                               IConv-stepping ..................[TIME_OUT]
-                               IConv-stepping-cls ..............[TIME_OUT]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter_IConv (BPC=4, FALLBACK=1)
         test-Converter-4-1.exe ICU-linear ............................[OK]
-                               ICU-stepping ....................[TIME_OUT]
-                               ICU-stepping-cls ................[TIME_OUT]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
                                IConv-linear ..........................[OK]
-                               IConv-stepping ..................[TIME_OUT]
-                               IConv-stepping-cls ..............[TIME_OUT]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter_IConv (BPC=4, FALLBACK=2)
         test-Converter-4-2.exe ICU-linear ............................[OK]
-                               ICU-stepping ....................[TIME_OUT]
-                               ICU-stepping-cls ................[TIME_OUT]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
                                IConv-linear ..........................[OK]
                                IConv-stepping ........................[OK]
                                IConv-stepping-cls ....................[OK]
@@ -2775,21 +2764,10 @@ quex/code_base/buffer/TESTS/navigation/TEST                          <no date>
     LexatomLoader_Plain (BPC=4, FALLBACK=2)
         test-Plain-wiostream-2-2.exe linear ..........................[OK]
                                      stepping ........................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-Converter-4-0.exe _ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-4-1.exe _ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-4-2.exe _ ICU-stepping
-                                \__ ICU-stepping-cls
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Pathwalker State Construction                         
@@ -3007,7 +2985,6 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
     [NO GOOD FILE] test-comparison_sequence.py
     [NO GOOD FILE] loop-get_analazer_list.py
     [NO GOOD FILE] function-check.sh
-    [NO GOOD FILE] forward-api.exe _ BAD_LEXATOM
     [NO GOOD FILE] deletion.py
     [NO GOOD FILE] priority.py
 ===============================================================================
@@ -3037,9 +3014,9 @@ SUMMARY:
            4       [OK] ........../token-policies/TEST                      
            10      [OK] ..../code_base/TEST                                 
            42      [OK] ............../analyzer/TEST                        
-       10  18    [FAIL] ............../buffer/TESTS/load/TEST               
+           18      [OK] ............../buffer/TESTS/load/TEST               
            26      [OK] .........................../move/TEST               
-       10  78    [FAIL] .........................../navigation/TEST         
+           78      [OK] .........................../navigation/TEST         
            12      [OK] ...................../bytes/TEST                    
            12      [OK] ...................../lexatoms/converter/iconv/TEST 
            12      [OK] ......................................../icu/TEST   
@@ -3064,11 +3041,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  _____           
-    |  ___|_ _(_) |___     |___  ||___  |    __  __
-    | |_ / _` | | / __|       / /    / /     \ \/ /
-    |  _| (_| | | \__ \      / /    / /       >  < 
-    |_|  \__,_|_|_|___/     /_/    /_/       /_/\_\
+     _____     _ _          ____    _____           
+    |  ___|_ _(_) |___     | ___|  |___  |    __  __
+    | |_ / _` | | / __|    |___ \     / /     \ \/ /
+    |  _| (_| | | \__ \     ___) |   / /       >  < 
+    |_|  \__,_|_|_|___/    |____/   /_/       /_/\_\
                                                                    (1509 tests)
 
 ===============================================================================

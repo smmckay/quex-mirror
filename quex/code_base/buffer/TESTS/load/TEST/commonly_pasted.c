@@ -98,6 +98,10 @@ static QUEX_TYPE_LEXATOM* NullP   = (QUEX_TYPE_LEXATOM*)0;
 static QUEX_TYPE_LEXATOM* random_between(QUEX_TYPE_LEXATOM* A, 
                                          QUEX_TYPE_LEXATOM* B);
 
+static int common_on_overflow_count = 0;
+static int common_on_content_change_count = 0;
+static int common_verification_count = 0;
+
 static ptrdiff_t
 verify_content(QUEX_NAME(Buffer)* me)
 {
@@ -131,6 +135,7 @@ verify_content(QUEX_NAME(Buffer)* me)
     }
     hwut_verify(count == me->input.end_p - &me->_memory._front[1]);
 
+    common_verification_count += count;
     return count;
 }
 
@@ -267,9 +272,6 @@ random_between(QUEX_TYPE_LEXATOM* A, QUEX_TYPE_LEXATOM* B)
         
     return &min[seed % delta];
 }
-
-static int common_on_overflow_count = 0;
-static int common_on_content_change_count = 0;
 
 static void      
 common_on_content_change(const QUEX_TYPE_LEXATOM* BeginP, 
