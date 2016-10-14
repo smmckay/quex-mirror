@@ -1,0 +1,58 @@
+{
+title: Bisection;
+title_group: Code generation;
+file_name: test-bisection.py;
+hwut_info_time: 1474307491L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; FAIL; 0.098104; 0; ]
+]
+}
+{
+title: Branch Table (switch-case);
+title_group: Code generation;
+file_name: test-branch_table.py;
+hwut_info_time: 1475902588L;
+interpreter_list: [ python; ]
+result_list: [
+  [ C-2; FAIL; 0.101165; 0; ]
+  [ C-3; FAIL; 0.127922; 0; ]
+  [ C-4; FAIL; 0.131842; 0; ]
+  [ C-5; FAIL; 0.093980; 0; ]
+]
+}
+{
+title: Branch Table (switch-case) II;
+title_group: Code generation;
+file_name: test-branch_table-2.py;
+hwut_info_time: 1475902712L;
+interpreter_list: [ python; ]
+result_list: [
+  [ C-7; FAIL; 0.097033; 0; ]
+  [ C-8; FAIL; 0.098573; 0; ]
+  [ C-9; FAIL; 0.091784; 0; ]
+  [ C-15; FAIL; 0.104976; 0; ]
+  [ C-16; FAIL; 0.094251; 0; ]
+  [ C-17; FAIL; 0.102551; 0; ]
+  [ C-31; FAIL; 0.093662; 0; ]
+  [ C-32; FAIL; 0.098973; 0; ]
+  [ C-33; FAIL; 0.093420; 0; ]
+]
+}
+{
+title: Comparison Sequence;
+title_group: Code generation;
+file_name: test-comparison_sequence.py;
+hwut_info_time: 1475902735L;
+interpreter_list: [ python; ]
+result_list: [
+  [ C-2-fw; FAIL; 0.096891; 0; ]
+  [ C-2-bw; FAIL; 0.094257; 0; ]
+  [ C-3-fw; FAIL; 0.094877; 0; ]
+  [ C-3-bw; FAIL; 0.100073; 0; ]
+  [ C-4-fw; FAIL; 0.099563; 0; ]
+  [ C-4-bw; FAIL; 0.094301; 0; ]
+  [ C-5-fw; FAIL; 0.092959; 0; ]
+  [ C-5-bw; FAIL; 0.094428; 0; ]
+]
+}

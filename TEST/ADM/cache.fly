@@ -1,0 +1,1287 @@
+{
+title: 3022603 0.49.2 Using external buffer with Quex lexer;
+title_group: alexeevm;
+file_name: bug-3022603.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 3.964662; 0; ]
+]
+}
+{
+title: 3025173 0.49.2 Custom Token struct for quex;
+title_group: alexeevm;
+file_name: bug-3025173.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 2.389587; 0; ]
+]
+}
+{
+title: 3032877 -b, --buffer-element-size enhancement;
+title_group: alexeevm;
+file_name: feature-3032877.sh;
+hwut_info_time: 1455357780L;
+result_list: [
+  [ normal; OK; 2.300560; 0; ]
+  [ icu; OK; 2.158427; 0; ]
+  [ codec; OK; 2.324872; 0; ]
+]
+}
+{
+title: 2001602 RE matching UTF8 l quote uno;
+title_group: attardi;
+file_name: bug-2001602.sh;
+hwut_info_time: 1454022453L;
+same_f: True;
+result_list: [
+  [ iconv; OK; 4.598153; 0; ]
+  [ icu; OK; 4.911922; 0; ]
+  [ codec; OK; 5.300210; 0; ]
+]
+}
+{
+title: 2001787 RE Problem with inverted whitespace;
+title_group: attardi;
+file_name: bug-2001787.sh;
+hwut_info_time: 1454022450L;
+same_f: True;
+happy_pattern_list: [ cpp:\[0-9]+:; ]
+result_list: [
+  [ iconv; OK; 2.790014; -1843333867; ]
+  [ icu; OK; 3.535603; -635423806; ]
+]
+}
+{
+title: 2002070 Output buffer overflow;
+title_group: attardi;
+file_name: bug-2002070.sh;
+hwut_info_time: 1454022453L;
+same_f: True;
+result_list: [
+  [ iconv; OK; 2.506855; 0; ]
+  [ icu; OK; 2.111514; 0; ]
+]
+}
+{
+title: 2002474 Segmentation Fault while UTF-8 Decoding;
+title_group: attardi;
+file_name: bug-2002474.sh;
+hwut_info_time: 1454022453L;
+same_f: True;
+result_list: [
+  [ iconv; OK; 4.309012; 0; ]
+  [ icu; OK; 3.014308; 0; ]
+  [ codec; OK; 3.288163; 0; ]
+  [ iconv_c; OK; 3.530539; 0; ]
+  [ icu_c; OK; 1.979828; 0; ]
+  [ codec_c; OK; 1.696828; 0; ]
+]
+}
+{
+title: 2004927 UTF-8 RE Extra Comma Matched;
+title_group: attardi;
+file_name: bug-2004927.sh;
+hwut_info_time: 1454022450L;
+same_f: True;
+result_list: [
+  [ iconv; OK; 2.347645; 0; ]
+  [ icu; OK; 2.525997; 0; ]
+  [ codec; OK; 2.524220; 0; ]
+]
+}
+{
+title: 2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined;
+title_group: attardi;
+file_name: bug-2619679.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 2.389026; 0; ]
+]
+}
+{
+title: 286 Maintaining character index during manual buffer filling.;
+title_group: attardi;
+file_name: bug-286.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 4.932286; 0; ]
+]
+}
+{
+title: 2937342 0.47.3 Regular expression parsing -- closing bracket.;
+title_group: attardi;
+file_name: bug-2937342.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ 1; OK; 0.148740; 0; ]
+  [ 2; OK; 0.319028; 0; ]
+  [ 3; OK; 0.152250; 0; ]
+  [ 4; OK; 0.243424; 0; ]
+  [ 5; OK; 0.377864; 0; ]
+]
+}
+{
+title: 3025852 0.49.2 Instatiation of inheritable-only-modes;
+title_group: attardi;
+file_name: bug-3025852.sh;
+hwut_info_time: 1454022452L;
+result_list: [
+  [ ; OK; 0.973862; 0; ]
+]
+}
+{
+title: 3474524 0.62.3 Escape characters in --language dot plot of \[:space:];
+title_group: clemwang;
+file_name: bug-3474524.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.204676; -1252807616; ]
+]
+}
+{
+title: 3478018 0.62.3 errmsg about missing { when missing };
+title_group: clemwang;
+file_name: bug-3478018.sh;
+hwut_info_time: 1454022451L;
+result_list: [
+  [ ; OK; 0.512948; 0; ]
+]
+}
+{
+title: 3479354 Reversed (right to left) Pattern Definition;
+title_group: clemwang;
+file_name: bug-3479354.sh;
+hwut_info_time: 1472310960L;
+happy_pattern_list: [ \[0-9]+; ]
+result_list: [
+  [ ; OK; 0.416685; 0; ]
+]
+}
+{
+title: 3485516 0.60.1 0.60.1 Exception Handling Disorder;
+title_group: clemwang;
+file_name: bug-3485516.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.190843; -1821012224; ]
+]
+}
+{
+title: 3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once;
+title_group: clemwang;
+file_name: bug-3486388.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.596478; 0; ]
+]
+}
+{
+title: 3495127 Event Handler on_after_match;
+title_group: clemwang;
+file_name: feature-3495127.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ single; OK; 1.347598; 0; ]
+  [ queue; OK; 1.356452; 0; ]
+]
+}
+{
+title: 3503831 0.61.2 Missleading error message in anti-pattern A{foo$};
+title_group: clemwang;
+file_name: bug-3503831.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.211499; 0; ]
+]
+}
+{
+title: 3504730 0.61.2 Post condition with OR causes crash;
+title_group: clemwang;
+file_name: bug-3504730.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ simple; OK; 1.593009; 0; ]
+  [ more; OK; 1.661954; 0; ]
+]
+}
+{
+title: 3354250 Issue in Hopcroft-Minimization;
+title_group: denkfix;
+file_name: bug-3354250.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.865614; 0; ]
+]
+}
+{
+title: 3357694 Matches too long when using certain post condition;
+title_group: denkfix;
+file_name: bug-3357694.sh;
+hwut_info_time: 1454022449L;
+same_f: True;
+result_list: [
+  [ Normal; OK; 1.849396; 0; ]
+  [ TemplateCompression; OK; 2.669636; 0; ]
+  [ PathCompression; OK; 1.984348; 0; ]
+  [ PathTemplateCompression; OK; 2.443672; 0; ]
+]
+}
+{
+title: 3392478 UTF-8 Backward Input Position Detection Error;
+title_group: denkfix;
+file_name: bug-3392478.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 1.846124; 0; ]
+]
+}
+{
+title: 261 Track Analysis--dangerous paths.;
+title_group: dlazesz;
+file_name: bug-261.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ 1; OK; 1.631574; 0; ]
+  [ 2; OK; 1.740602; 0; ]
+]
+}
+{
+title: 3510261 0.61.2 Failed ydd (0xFF) and begin of line pattern;
+title_group: dlazesz;
+file_name: bug-3510261.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 1.475637; 0; ]
+]
+}
+{
+title: patch-16 Compile error when indentation based without token queue;
+title_group: eabrams;
+file_name: patch-16.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 1.334546; 0; ]
+]
+}
+{
+title: 257 Hang-up on recursive --foreign-token-id-file;
+title_group: enmarabrams;
+file_name: bug-257.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ ^include_me.h:\[0-9]+:; ]
+result_list: [
+  [ ; OK; 0.275696; 0; ]
+]
+}
+{
+title: 1948456 (feature) Inheritance Info;
+title_group: fschaef;
+file_name: feature-1948456.sh;
+hwut_info_time: 1472336476L;
+happy_pattern_list: [ \[ 0-9]+; ]
+result_list: [
+  [ ; OK; 1.086194; 0; ]
+]
+}
+{
+title: 1952133 0.24.11 Crash in Buffer Handling with tiny buffer size;
+title_group: fschaef;
+file_name: bug-1952133.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ 29; OK; 3.233650; 0; ]
+  [ 30; OK; 3.312927; 0; ]
+  [ 127; OK; 5.411287; 0; ]
+  [ 128; OK; 3.223908; 0; ]
+  [ 129; OK; 3.126765; 0; ]
+  [ 2499; OK; 3.055127; 0; ]
+  [ 2500; OK; 3.181009; 0; ]
+  [ 2501; OK; 3.042251; 0; ]
+  [ 2502; OK; 3.085278; 0; ]
+]
+}
+{
+title: 1952747 TKN_TERMINATION;
+title_group: fschaef;
+file_name: bug-1952747.sh;
+hwut_info_time: 1454022451L;
+result_list: [
+  [ ; OK; 0.289739; 0; ]
+]
+}
+{
+title: 2078087 (feature) Mode transition shortcuts GOTO, GOSUB, GOUP;
+title_group: fschaef;
+file_name: feature-2078087.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ :\[0-9]+:; ]
+result_list: [
+  [ GOTO; OK; 1.919081; 0; ]
+  [ GOTO-2; OK; 1.971850; 0; ]
+  [ GOSUB; OK; 2.233465; 0; ]
+  [ GOSUB-2; OK; 2.186473; 0; ]
+]
+}
+{
+title: 2161098 0.32.1 Nested-Range Skipper Line Number Counter;
+title_group: fschaef;
+file_name: bug-2161098-x.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ c_comments; OK; 2.654406; 0; ]
+  [ shell_comments; OK; 2.584829; 0; ]
+  [ funny_comments; OK; 2.635572; 0; ]
+]
+}
+{
+title: 2161098 0.32.1 Range Skipper Line Number Counter;
+title_group: fschaef;
+file_name: bug-2161098.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ c_comments; OK; 2.448112; 0; ]
+  [ shell_comments; OK; 2.326534; 0; ]
+  [ funny_comments; OK; 2.558223; 0; ]
+]
+}
+{
+title: 2209142 0.33.1-pre-release: RE not suited for comment elimination;
+title_group: fschaef;
+file_name: bug-2209142.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ Simple.cpp:\[0-9]+:; ]
+result_list: [
+  [ error; OK; 2.672446; 2011290814; ]
+  [ good; OK; 2.518831; 0; ]
+]
+}
+{
+title: 2277660 character count pre-determination;
+title_group: fschaef;
+file_name: bug-2277660.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 4.315614; 0; ]
+]
+}
+{
+title: 2349109 0.33.5 Line and Column number counts with Set skippers;
+title_group: fschaef;
+file_name: bug-2349109.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ newline-skipper; OK; 2.617647; 0; ]
+  [ newline-skipper-utf8; OK; 2.467940; 0; ]
+  [ non-newline-skipper; OK; 2.465877; 0; ]
+]
+}
+{
+title: 2635012 0.36.4 Include Stack Disablement;
+title_group: fschaef;
+file_name: bug-2635012.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 3.901883; 0; ]
+]
+}
+{
+title: 3038088 token_id = numeric value;
+title_group: fschaef;
+file_name: feature-3038088.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.246726; 0; ]
+]
+}
+{
+title: 3039173 On Mismatch: abort();
+title_group: fschaef;
+file_name: feature-3039173.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ Simple.c:\[0-9]+:; ]
+result_list: [
+  [ ; OK; 1.274423; -168531269; ]
+]
+}
+{
+title: 3082041 0.52.4 Buffer Memory Size not Accepted;
+title_group: fschaef;
+file_name: bug-3082041.sh;
+hwut_info_time: 1469083616L;
+result_list: [
+  [ ; FAIL; 7.411074; 0; ]
+]
+}
+{
+title: 3102035 0.55.1 Weird Setup causes Duplicate State Label;
+title_group: fschaef;
+file_name: bug-3102035.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ 1; OK; 1.534579; 0; ]
+  [ 2; OK; 0.345513; 658054683; ]
+  [ 3; OK; 1.308741; 0; ]
+  [ 4; OK; 1.180574; 0; ]
+  [ 5; OK; 1.169801; 0; ]
+]
+}
+{
+title: 3157923 Memory Leak by Components;
+title_group: fschaef;
+file_name: bug-3157923.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ ; OK; 3.209221; 0; ]
+]
+}
+{
+title: 3513568 0.62.2 Memory Leak when using ICU;
+title_group: fschaef;
+file_name: bug-3513568.sh;
+hwut_info_time: 1469083699L;
+result_list: [
+  [ ; OK; 5.517961; 0; ]
+]
+}
+{
+title: 3164355 C with whitespace character gives bad exception;
+title_group: inhenriksen;
+file_name: bug-3164355.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.351672; 0; ]
+]
+}
+{
+title: 264 0.64.6 Incorrect column numbering with post conditions;
+title_group: jdavidberger;
+file_name: bug-264.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.421578; 0; ]
+]
+}
+{
+title: 0.58.2 history effect in UCS database interface: 3235790;
+title_group: jmarsik;
+file_name: bug-3235790.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 1.274541; 0; ]
+]
+}
+{
+title: 3115741 0.55.4 move_backward triggers assert;
+title_group: jmarsik;
+file_name: bug-3115741.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ general; OK; 1.608211; 0; ]
+  [ undo-line-colum-count; OK; 1.758137; 0; ]
+]
+}
+{
+title: 3307919 Support for more general Unicode categories;
+title_group: jmarsik;
+file_name: feature-3307919.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ C; OK; 0.909114; 0; ]
+  [ Other; OK; 1.137362; 0; ]
+  [ L; OK; 1.748040; 0; ]
+  [ LC; OK; 1.280341; 0; ]
+  [ M; OK; 1.258276; 0; ]
+  [ N; OK; 1.194032; 0; ]
+  [ Number; OK; 0.968824; 0; ]
+  [ P; OK; 0.968746; 0; ]
+  [ S; OK; 1.058103; 0; ]
+  [ Z; OK; 0.926154; 0; ]
+]
+}
+{
+title: 2971198 0.48.1 Parsing long REs;
+title_group: kromaks;
+file_name: bug-2971198.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 74.855447; 0; ]
+]
+}
+{
+title: 3515838 0.62.5 Namespace specifications cause errors;
+title_group: liancheng;
+file_name: bug-3515838.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ Cpp; OK; 1.628869; 0; ]
+  [ C; OK; 1.914103; 0; ]
+]
+}
+{
+title: 3526210 0.62.4 Accumulator misbehaviour when no text is to be flushed;
+title_group: liancheng;
+file_name: bug-3526210.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 1.505350; 0; ]
+]
+}
+{
+title: 3109479 0.55.2 Error Transition to Forward Init State;
+title_group: mabraham;
+file_name: bug-3109479.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ 1; OK; 0.338851; 0; ]
+  [ 2; OK; 0.354365; 0; ]
+  [ 3; OK; 1.257352; 0; ]
+  [ 4; OK; 1.291443; 0; ]
+]
+}
+{
+title: 2219383 Parse foreign token id file;
+title_group: marcoantonelli;
+file_name: feature-2219383.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.345379; 0; ]
+]
+}
+{
+title: 2251359 (feature) Single-character token without name;
+title_group: marcoantonelli;
+file_name: feature-2251359.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ good; OK; 1.553447; 0; ]
+  [ 1; OK; 0.257984; 0; ]
+  [ 2; OK; 0.194129; 0; ]
+  [ 3; OK; 0.205046; 0; ]
+  [ 4; OK; 0.277798; 0; ]
+  [ 5; OK; 0.288181; 0; ]
+  [ 6; OK; 0.264517; 0; ]
+]
+}
+{
+title: 2257908 Quex does not terminate lexer generation;
+title_group: marcoantonelli;
+file_name: bug-2257908.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 2.095581; 0; ]
+]
+}
+{
+title: 2262537 (feature) Allow Nothing is fine in define section;
+title_group: marcoantonelli;
+file_name: feature-2262537.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.569689; 0; ]
+]
+}
+{
+title: 2896732 0.46.2 - Memory leak;
+title_group: nazim-can-bedir;
+file_name: bug-2896732.sh;
+hwut_info_time: 1474143291L;
+result_list: [
+  [ ; OK; 10.760168; 1284789366; ]
+]
+}
+{
+title: 2395200 assert  in QuexLexatomLoader_load_forward (The StrangeStream Issue);
+title_group: nobody;
+file_name: bug-2395200.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ lexer; OK; 3.056722; 0; ]
+]
+}
+{
+title: 2841726 0.44.2 Unknown exception on unicode properties;
+title_group: nobody;
+file_name: bug-2841726.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.243124; 0; ]
+]
+}
+{
+title: 2891125 0.45.1 bug in -- version;
+title_group: nobody;
+file_name: bug-2891125.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.023620; 0; ]
+]
+}
+{
+title: 2894648 0.46.2 Backslashed . is unknown to quex;
+title_group: nobody;
+file_name: bug-2894648.sh;
+hwut_info_time: 1474182162L;
+happy_pattern_list: [ \[ 0-9]+; ]
+result_list: [
+  [ ; OK; 0.397308; 0; ]
+]
+}
+{
+title: 3142578 Output token identifier definition;
+title_group: ollydbg;
+file_name: feature-3142578.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.908020; 0; ]
+]
+}
+{
+title: 3402386 Option --language dot;
+title_group: ollydbg;
+file_name: feature-3402386.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ hex; OK; 0.320173; 0; ]
+  [ utf8; OK; 0.333273; 0; ]
+]
+}
+{
+title: 3403249 0.61.2 Non UTF8 encoding for *.qx files not detected.;
+title_group: ollydbg;
+file_name: bug-3403249.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ GBK; OK; 0.197176; 0; ]
+  [ utf16; OK; 0.208709; 0; ]
+  [ utf16-with-bom; OK; 0.184572; 0; ]
+  [ utf8-error; OK; 0.202480; 0; ]
+  [ utf8; OK; 0.391485; 0; ]
+  [ utf8-with-bom; OK; 0.251864; 0; ]
+]
+}
+{
+title: 3512806 0.62.2 build error;
+title_group: ollydbg;
+file_name: bug-3512806.sh;
+hwut_info_time: 1454022450L;
+same_f: True;
+result_list: [
+  [ C; OK; 1.111015; 0; ]
+  [ Cpp; OK; 1.353717; 0; ]
+]
+}
+{
+title: 3075601 0.52.1 Pre-Context with Codec utf8;
+title_group: otsakiridis;
+file_name: bug-3075601.sh;
+hwut_info_time: 1456815731L;
+result_list: [
+  [ utf8; OK; 1.193580; 0; ]
+  [ utf16; OK; 2.281293; 0; ]
+]
+}
+{
+title: 3178600 0.58.1 Last appeared char not stored when switching modes;
+title_group: petulda;
+file_name: bug-3178600.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 1.881715; 0; ]
+]
+}
+{
+title: 2914877 0.47.3 RE Exception on \[10000-10FFFF];
+title_group: prade2p;
+file_name: bug-2914877.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.332961; 0; ]
+]
+}
+{
+title: 3476232 0.62.1 Slow C code generation (unicode);
+title_group: rami-al-rafou;
+file_name: bug-3476232.sh;
+hwut_info_time: 1456816213L;
+result_list: [
+  [ ; FAIL; 21.099837; 0; ]
+]
+}
+{
+title: 284 Assert on '--version' (also check for '--help');
+title_group: rayhayes;
+file_name: bug-284.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ Version \[^\\n]+; ]
+result_list: [
+  [ ; OK; 0.273769; 0; ]
+]
+}
+{
+title: 3295781 Duplicate label with Template and Path Compression;
+title_group: remcobloemen1;
+file_name: bug-3295781.sh;
+hwut_info_time: 1454022449L;
+happy_pattern_list: [ \[0-9]+; ]
+result_list: [
+  [ ; FAIL; 1.096232; 0; ]
+]
+}
+{
+title: 3079986 Allow namespace delimiter in --token-id-prefix for C++;
+title_group: rmanoj-oss;
+file_name: feature-3079986.sh;
+hwut_info_time: 1454022452L;
+same_f: True;
+result_list: [
+  [ nnn; OK; 1.303620; 0; ]
+  [ nnc; OK; 1.221661; 0; ]
+  [ ncc; OK; 1.526704; 0; ]
+  [ ccc; OK; 1.422983; 0; ]
+]
+}
+{
+title: 3009642 0.48.3 Begin of Line Precondition flag;
+title_group: rofr3;
+file_name: bug-3009642.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.849441; 0; ]
+]
+}
+{
+title: 265 Modification time change on input file.;
+title_group: sbellon;
+file_name: bug-265.sh;
+hwut_info_time: 1456557814L;
+result_list: [
+  [ ; OK; 0.242311; 0; ]
+]
+}
+{
+title: 3524729 0.62.4 token_type distinct members cause overloading error;
+title_group: sbellon;
+file_name: bug-3524729.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.627822; 0; ]
+]
+}
+{
+title: 3538026 Handling of spurious transition in PathWalkerState;
+title_group: sbellon;
+file_name: bug-3538026.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.544902; 0; ]
+]
+}
+{
+title: 1885304 Problems with files with DOS CR/LF line endings;
+title_group: sphericalcow;
+file_name: bug-1885304.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 1.335878; 0; ]
+]
+}
+{
+title: 1885846 Empty RE in define section;
+title_group: sphericalcow;
+file_name: bug-1885846.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.155468; 0; ]
+]
+}
+{
+title: 1885855 P{ ...} syntax does not work outside of \[:...:];
+title_group: sphericalcow;
+file_name: bug-1885855.sh;
+hwut_info_time: 1468900834L;
+result_list: [
+  [ ; OK; 0.282621; 0; ]
+]
+}
+{
+title: 1887163 Single state mode causes quex to crash;
+title_group: sphericalcow;
+file_name: bug-1887163.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.642053; 0; ]
+]
+}
+{
+title: 1889086 Single state mode causes quex to crash;
+title_group: sphericalcow;
+file_name: bug-1889086.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.962983; 0; ]
+]
+}
+{
+title: 1889089 Single state mode causes quex to crash;
+title_group: sphericalcow;
+file_name: bug-1889089.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; FAIL; 0.346274; 0; ]
+]
+}
+{
+title: 1889321 Quex does not handle actions including quote literal;
+title_group: sphericalcow;
+file_name: bug-1889321.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; FAIL; 0.497009; 0; ]
+]
+}
+{
+title: 1889692 0.19.4 does not gracefully handle unbalanced quotations;
+title_group: sphericalcow;
+file_name: bug-1889692.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.515324; 0; ]
+]
+}
+{
+title: 1889702 0.19.4 forbids derived modes that only add event handlers;
+title_group: sphericalcow;
+file_name: bug-1889702.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ ^error-3.qx:\[0-9]+:; ]
+result_list: [
+  [ ; OK; 0.603396; -1224701929; ]
+]
+}
+{
+title: 1889871 0.19.4 crashes if \[] expression contains unescaped -;
+title_group: sphericalcow;
+file_name: bug-1889871.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.145000; 0; ]
+]
+}
+{
+title: 1889877 '*' or '+' without prececing expression crashes 0.19.4;
+title_group: sphericalcow;
+file_name: bug-1889877.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.144800; 0; ]
+]
+}
+{
+title: 1889892 x, X or followed by a non-hex digit crashes 0.19.4;
+title_group: sphericalcow;
+file_name: bug-1889892.sh;
+hwut_info_time: 1454022453L;
+happy_pattern_list: [ qx:\[0-9]+:; ]
+result_list: [
+  [ ; FAIL; 1.132592; 0; ]
+]
+}
+{
+title: 1890828 0.19.9 crashes trying to call error handler in several cases;
+title_group: sphericalcow;
+file_name: bug-1890828.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.533007; 0; ]
+]
+}
+{
+title: 1890876 {} handled oddly in define blocks in 0.19.9;
+title_group: sphericalcow;
+file_name: bug-1890876.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ ; OK; 0.288102; 0; ]
+]
+}
+{
+title: 1891254 Lone ? as regex does not give an error in 0.19.9;
+title_group: sphericalcow;
+file_name: bug-1891254.sh;
+hwut_info_time: 1454022451L;
+result_list: [
+  [ ; OK; 0.564638; 0; ]
+]
+}
+{
+title: 1892227 accepted as identifiers in def;
+title_group: sphericalcow;
+file_name: bug-1892227.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.143911; 0; ]
+]
+}
+{
+title: 1892809 0.20.4 \\x, \\X, \\U accept too many digits;
+title_group: sphericalcow;
+file_name: bug-1892809.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ Simple.c:\[0-9]+:; ]
+result_list: [
+  [ ; OK; 1.131327; 326283809; ]
+]
+}
+{
+title: 1893849 0.20.5 allows engine names that are not valid identifiers;
+title_group: sphericalcow;
+file_name: bug-1893849.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ ; OK; 0.142192; 0; ]
+]
+}
+{
+title: 1893874 Missing colon in mode definition crashes 0.20.5;
+title_group: sphericalcow;
+file_name: bug-1893874.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.186102; 0; ]
+]
+}
+{
+title: 1893880 0.20.5 allows inheritable: only start mode;
+title_group: sphericalcow;
+file_name: bug-1893880.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.220175; 0; ]
+]
+}
+{
+title: 1894130 0.20.6 can list wrong mode as circuluar inheritance;
+title_group: sphericalcow;
+file_name: bug-1894130.sh;
+hwut_info_time: 1468559925L;
+result_list: [
+  [ ; OK; 0.191169; 0; ]
+]
+}
+{
+title: 1894185 Unbalanced quote and double quote in header/init/body blocks in 0.20.6;
+title_group: sphericalcow;
+file_name: bug-1894185.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.281516; 0; ]
+]
+}
+{
+title: 1894578 header block not added to -core-engine.cpp file in 0.20.6;
+title_group: sphericalcow;
+file_name: bug-1894578.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ ; OK; 2.073114; 0; ]
+]
+}
+{
+title: 1895066 0.20.8 #line directive after header contents missing;
+title_group: sphericalcow;
+file_name: bug-1895066.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ line \[0-9]+; ]
+result_list: [
+  [ ; OK; 0.404929; 0; ]
+]
+}
+{
+title: 1895500 assertion error running generated 0.20.8 lexer with Unicode;
+title_group: sphericalcow;
+file_name: bug-1895500.sh;
+hwut_info_time: 1454022450L;
+same_f: True;
+result_list: [
+  [ iconv; OK; 3.397590; 0; ]
+  [ icu; OK; 2.281559; 0; ]
+]
+}
+{
+title: 1898125 invalid argument for --token-id-offset can crash 0.21.4;
+title_group: sphericalcow;
+file_name: bug-1898125.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.804809; 0; ]
+]
+}
+{
+title: 1900391 malformed --set-by-expression can crash 0.21.8;
+title_group: sphericalcow;
+file_name: bug-1900391.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.404308; 0; ]
+]
+}
+{
+title: 1902175 invalid escape in character set expression crashes 0.21.12;
+title_group: sphericalcow;
+file_name: bug-1902175.sh;
+hwut_info_time: 1454022454L;
+result_list: [
+  [ ; OK; 0.148311; 0; ]
+]
+}
+{
+title: 1905768 0.22.9 doesn't create analyzer function for event only modes;
+title_group: sphericalcow;
+file_name: bug-1905768.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.300162; 0; ]
+]
+}
+{
+title: 1908092 0.23.5 uses --token-class without --token-class-file;
+title_group: sphericalcow;
+file_name: bug-1908092.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.571169; 0; ]
+]
+}
+{
+title: 1908436 0.23.6 rule precedence reversed for identical patterns;
+title_group: sphericalcow;
+file_name: bug-1908436.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.205652; 0; ]
+]
+}
+{
+title: 1935701 - 0.24.7 buffer handling size mismatch;
+title_group: sphericalcow;
+build_time: 0.9783070087432861;
+file_name: bug-1935701.exe;
+hwut_info_time: 1476422300L;
+make_dependent_f: True;
+result_list: [
+  [ FILE; OK; 0.005573; 0; ]
+  [ fstream; OK; 0.007533; 0; ]
+]
+}
+{
+title: 1936707 0.24.10 --plot flag doesnt seem to work;
+title_group: sphericalcow;
+file_name: bug-1936707.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.410722; 0; ]
+]
+}
+{
+title: 1969629 0.25.4 token list with just TERMINATION treated empty;
+title_group: sphericalcow;
+file_name: bug-1969629.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.199999; 0; ]
+]
+}
+{
+title: 2087087 0.31.1 --set-by switches suppress command error diagnostics;
+title_group: sphericalcow;
+file_name: bug-2087087.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 0.143263; 0; ]
+]
+}
+{
+title: 2095970 0.31.3 Mode change w/o immediate return. w/o token queue;
+title_group: sphericalcow;
+file_name: bug-2095970-ntq.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ Simple.cpp:\[0-9]+:; ]
+result_list: [
+  [ Normal; OK; 2.316457; 0; ]
+  [ NormalNoAsserts; OK; 2.106746; 0; ]
+  [ NoModeDetection; OK; 2.551074; 0; ]
+  [ NoModeDetectionNoAsserts; OK; 2.213300; 0; ]
+  [ NoModeDetection_ErrorCase; OK; 2.682757; 0; ]
+]
+}
+{
+title: 2095970 0.31.3 Mode change without immediate return;
+title_group: sphericalcow;
+file_name: bug-2095970.sh;
+hwut_info_time: 1454022451L;
+happy_pattern_list: [ Simple.cpp:\[0-9]+:; ]
+result_list: [
+  [ Normal; OK; 2.361942; 0; ]
+  [ NormalNoAsserts; OK; 2.254066; 0; ]
+  [ NoModeDetection; OK; 2.477059; 0; ]
+  [ NoModeDetectionNoAsserts; OK; 2.229123; 0; ]
+  [ NoModeDetection_ErrorCase; OK; 2.692896; 0; ]
+]
+}
+{
+title: 2796383 0.39.3 does not handle token_type without distinct section;
+title_group: sphericalcow;
+file_name: bug-2796383.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ case-1; OK; 0.212098; 0; ]
+  [ case-2; OK; 0.198744; 0; ]
+  [ case-3; OK; 0.198024; 0; ]
+  [ case-4; OK; 0.208904; 0; ]
+  [ case-5; OK; 0.216474; 0; ]
+]
+}
+{
+title: 2798423 0.39.4 token_type default __copy function does not compile;
+title_group: sphericalcow;
+file_name: bug-2798423.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ ; OK; 0.948087; 0; ]
+]
+}
+{
+title: 2799244 0.39.5 attempts to call unimplemented token set() function;
+title_group: sphericalcow;
+file_name: bug-2799244.sh;
+hwut_info_time: 1454022450L;
+happy_pattern_list: [ :\[0-9]+; ]
+result_list: [
+  [ error; OK; 0.378308; 0; ]
+  [ good-1; OK; 0.882361; 0; ]
+  [ good-2; OK; 0.951555; 0; ]
+]
+}
+{
+title: 3021502 0.49.2 Buffer-size gets ignored;
+title_group: the-user-k;
+file_name: bug-3021502.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ ; OK; 1.175979; 1106289097; ]
+]
+}
+{
+title: 3106424 0.55.2 --set-by-expression with inverse fails;
+title_group: timdawborn;
+file_name: bug-3106424.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.973450; 0; ]
+]
+}
+{
+title: 2819022 0.41.2 Pre-condition match causes issues;
+title_group: wryun;
+file_name: bug-2819022.sh;
+hwut_info_time: 1454022454L;
+result_list: [
+  [ 0; OK; 2.318651; 0; ]
+  [ 1; OK; 2.235268; 0; ]
+  [ 2; OK; 2.332118; 0; ]
+  [ 3; OK; 2.190302; 0; ]
+]
+}
+{
+title: 2819023 0.41.2 Valid pattern definition fails;
+title_group: wryun;
+file_name: bug-2819023.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 0.164781; 0; ]
+]
+}
+{
+title: 2819043 0.41.2 Infinite recursion error;
+title_group: wryun;
+file_name: bug-2819043.sh;
+hwut_info_time: 1468821107L;
+result_list: [
+  [ ; OK; 0.753199; 0; ]
+]
+}
+{
+title: 2819045 0.41.2 Some internal assertion fails on...;
+title_group: wryun;
+file_name: bug-2819045.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ 0; OK; 0.302797; 0; ]
+  [ 1; OK; 0.283608; 0; ]
+  [ 2; OK; 0.162251; 0; ]
+  [ 3; OK; 0.161414; 0; ]
+]
+}
+{
+title: 2146712 (feature) output directory parameter for the command line;
+title_group: yaroslav_xp;
+file_name: feature-2146712.sh;
+hwut_info_time: 1454022449L;
+result_list: [
+  [ Normal; OK; 0.427763; 0; ]
+  [ NotExist; OK; 0.147645; 0; ]
+  [ NoWrite; OK; 0.147870; 0; ]
+]
+}
+{
+title: 2163753 0.32.1 Incorrect on_failure behavior;
+title_group: yaroslav_xp;
+file_name: bug-2163753.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 1.318875; 0; ]
+]
+}
+{
+title: 3097431 0.54.1 Line-Column numbers;
+title_group: yaroslavkrv;
+file_name: bug-3097431.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ ; OK; 2.571568; 0; ]
+]
+}
+{
+title: 3030640 0.50.1 Adding .hpp extension to generated headers;
+title_group: ymarkovitch;
+file_name: feature-3030640.sh;
+hwut_info_time: 1454022450L;
+result_list: [
+  [ pp; OK; 0.290269; 0; ]
+  [ ++; OK; 0.248085; 0; ]
+  [ xx; OK; 0.239054; 0; ]
+  [ cc; OK; 0.237762; 0; ]
+  [ PlainC; OK; 0.271714; 0; ]
+  [ PlainCpp; OK; 0.237925; 0; ]
+  [ ErrorC; OK; 0.146750; 0; ]
+  [ ErrorCpp; OK; 0.153044; 0; ]
+]
+}
+{
+title: 3077292 0.52.3 Compilation Error With DEBUG_MODE_TRANSITIONS;
+title_group: ymarkovitch;
+file_name: bug-3077292.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 1.295639; 0; ]
+]
+}
+{
+title: 2974074 0.48.1 union modifies its arguments;
+title_group: yoavg;
+file_name: bug-2974074.sh;
+hwut_info_time: 1454022453L;
+result_list: [
+  [ ; OK; 2.261073; 0; ]
+]
+}

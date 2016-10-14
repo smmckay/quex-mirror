@@ -1,0 +1,30 @@
+{
+title: Backward Detector (for pseudo-ambiguous post context).;
+title_group: Plot;
+file_name: plot-papc.py;
+hwut_info_time: 1474521119L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.236314; 0; ]
+]
+}
+{
+title: Core state machine.;
+title_group: Plot;
+file_name: plot-core.py;
+hwut_info_time: 1474353016L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.133940; 0; ]
+]
+}
+{
+title: Pre-Context.;
+title_group: Plot;
+file_name: plot-pre-context.py;
+hwut_info_time: 1474521196L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.139542; 0; ]
+]
+}

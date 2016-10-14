@@ -1,0 +1,50 @@
+{
+file_name: test-counter.py;
+result_list: [
+  [ ; NO OUTPUT; 0.088805; 0; ]
+]
+}
+{
+title: Token Class Template;
+file_name: test-token_class.py;
+hwut_info_time: 1461220443L;
+happy_pattern_list: [ line \[0-9]+; ]
+result_list: [
+  [ ; OK; 0.106713; 0; ]
+]
+}
+{
+title: Determine UTF-8 Range Map for Codec;
+title_group: Converter;
+file_name: test-converter-x.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ 1; OK; 0.089937; 0; ]
+  [ 2; OK; 0.087743; 0; ]
+  [ 3; OK; 0.097561; 0; ]
+]
+}
+{
+title: Determine UTF-8 Range Map for Codec;
+title_group: Converter;
+file_name: test-converter-C.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ cp037; OK; 0.507504; 0; ]
+  [ cp737; OK; 0.458229; 0; ]
+  [ cp866; OK; 0.456004; 0; ]
+  [ cp1256; OK; 0.454461; 0; ]
+]
+}
+{
+title: Determine UTF-8 Range Map for Codec;
+title_group: Converter;
+file_name: test-converter.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ 1; OK; 0.086645; 0; ]
+  [ 2; OK; 0.100916; 0; ]
+  [ 3; OK; 0.087730; 0; ]
+  [ 4; OK; 0.088094; 0; ]
+]
+}

@@ -1,0 +1,65 @@
+{
+title: Enums -- Functionality Test;
+file_name: enum.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.030861; 0; ]
+]
+}
+{
+title: Function delete_comment(...);
+title_group: File Input;
+file_name: test-delete_comment.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.035538; 0; ]
+]
+}
+{
+title: Function extract_identifiers_with_specific_prefix(...);
+title_group: File Input;
+file_name: test-extract_identifiers_with_specific_prefix.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.033741; 0; ]
+]
+}
+{
+title: Function read_until_closing_bracket(...);
+title_group: File Input;
+file_name: test-read_until_closing_bracket.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.035026; 0; ]
+]
+}
+{
+title: read_integer(...);
+title_group: Integer conversion;
+file_name: test-read_integer.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ hex; OK; 0.034524; 0; ]
+  [ octal; OK; 0.035099; 0; ]
+  [ decimal; OK; 0.034909; 0; ]
+  [ binary; OK; 0.035384; 0; ]
+  [ roman; OK; 0.036029; 0; ]
+  [ misc; OK; 0.035397; 0; ]
+  [ Napier; OK; 0.036965; 0; ]
+]
+}
+{
+title: Trim (replaced by string.strip(..));
+title_group: String Handling;
+file_name: test-trim.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.027886; 0; ]
+]
+}
