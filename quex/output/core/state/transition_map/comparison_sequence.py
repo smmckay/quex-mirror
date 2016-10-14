@@ -1,5 +1,6 @@
-import quex.output.core.state.transition_map.transition as transition
-from   quex.engine.analyzer.transition_map import TransitionMap
+import quex.output.core.state.transition_map.transition as     transition
+from   quex.engine.analyzer.transition_map              import TransitionMap
+
 from   quex.blackboard import setup as Setup, \
                               Lng
 

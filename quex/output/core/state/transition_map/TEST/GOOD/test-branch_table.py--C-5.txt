@@ -6,9 +6,9 @@
     [4]     -> 1
     ---
     switch( input ) {
-    case 0x1: 
-    case 0x3: goto _2;
-    default: goto _1;
+    case 0x1:      
+    case 0x3:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0, 1]  -> 1
@@ -18,9 +18,9 @@
     [5]     -> 1
     ---
     switch( input ) {
-    case 0x2: 
-    case 0x4: goto _2;
-    default: goto _1;
+    case 0x2:      
+    case 0x4:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0]     -> 1
@@ -30,9 +30,9 @@
     [5]     -> 1
     ---
     switch( input ) {
-    case 0x1: case 0x2: 
-    case 0x4: goto _2;
-    default: goto _1;
+    case 0x1: case 0x2:      
+    case 0x4:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0]     -> 1
@@ -42,9 +42,9 @@
     [5]     -> 1
     ---
     switch( input ) {
-    case 0x1: 
-    case 0x4: goto _2;
-    default: goto _1;
+    case 0x1:      
+    case 0x4:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0]     -> 1
@@ -54,9 +54,9 @@
     [5]     -> 1
     ---
     switch( input ) {
-    case 0x1: 
-    case 0x3: case 0x4: goto _2;
-    default: goto _1;
+    case 0x1:      
+    case 0x3: case 0x4:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0]     -> 1
@@ -66,9 +66,9 @@
     [7, 8]  -> 1
     ---
     switch( input ) {
-    case 0x1: case 0x2: 
-    case 0x5: case 0x6: goto _2;
-    default: goto _1;
+    case 0x1: case 0x2:      
+    case 0x5: case 0x6:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0, 1]  -> 1
@@ -78,9 +78,9 @@
     [7, 8]  -> 1
     ---
     switch( input ) {
-    case 0x2: 
-    case 0x5: case 0x6: goto _2;
-    default: goto _1;
+    case 0x2:      
+    case 0x5: case 0x6:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0, 1]  -> 1
@@ -90,9 +90,9 @@
     [7, 8]  -> 1
     ---
     switch( input ) {
-    case 0x2: case 0x3: 
-    case 0x5: case 0x6: goto _2;
-    default: goto _1;
+    case 0x2: case 0x3:      
+    case 0x5: case 0x6:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0, 1]  -> 1
@@ -102,9 +102,9 @@
     [7, 8]  -> 1
     ---
     switch( input ) {
-    case 0x2: case 0x3: 
-    case 0x6: goto _2;
-    default: goto _1;
+    case 0x2: case 0x3:      
+    case 0x6:      2
+    default: 1
     }
 #-------------------------------------------------------------------------------
     [0, 1]  -> 1
@@ -114,7 +114,7 @@
     [8, 9]  -> 1
     ---
     switch( input ) {
-    case 0x2: case 0x3: 
-    case 0x6: case 0x7: goto _2;
-    default: goto _1;
+    case 0x2: case 0x3:      
+    case 0x6: case 0x7:      2
+    default: 1
     }

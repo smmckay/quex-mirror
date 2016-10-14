@@ -57,7 +57,7 @@ def test(TM_plain):
 
     print "#" + "-" * 79
     tm = TransitionMap.from_iterable(
-        (interval, long(target)) for interval, target in TM_plain
+        (interval, "%s" % target) for interval, target in TM_plain
     )
     print_tm(tm)
     most_often_appearing_target, target_n = TransitionMap.get_target_statistics(tm)
@@ -68,6 +68,7 @@ def test(TM_plain):
 
     interval_begin = 0
 
+dial_db.new_address() # drop address 0
 adr0 = dial_db.new_address()
 adr1 = dial_db.new_address()
 

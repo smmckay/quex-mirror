@@ -60,7 +60,7 @@ def test(TM_plain):
 
     print "#" + "-" * 79
     tm = TransitionMap.from_iterable(
-        (interval, long(target))
+        (interval, "%s" % target)
         for interval, target in TM_plain
     )
     print_tm(tm)
@@ -75,6 +75,7 @@ def test(TM_plain):
 
     interval_begin = 0
 
+dial_db.new_address() # dump address 0
 adr0 = dial_db.new_address()
 adr1 = dial_db.new_address()
 
