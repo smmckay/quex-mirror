@@ -186,7 +186,7 @@ title_group: StateMachine Operations;
 file_name: test-StateMachine-inverse.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; FAIL; 0.061160; 0; ]
+  [ ; FAIL; 0.106295; 0; ]
 ]
 }
 {

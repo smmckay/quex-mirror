@@ -197,12 +197,7 @@ QUEX_MEMBER_FUNCTION3(reset, memory,
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_TYPE_LEXATOM*       previous_buffer_memory;
-    __quex_assert((! Memory) || (EndOfFileP > Memory && EndOfFileP <= &Memory[MemorySize]));
-    __quex_assert((  Memory) || (MemorySize == 0     && EndOfFileP == (QUEX_TYPE_LEXATOM*)0)); 
-    /* Memory MUST contain the limitting elements set to BUFFER LIMIT CODE   */
-    __quex_assert(Memory[0]          == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    __quex_assert(Memory[MemorySize] == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    __quex_assert(EndOfFileP[0]      == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
 
     QUEX_NAME(Buffer_destruct)(&me->buffer); 
     /* In case, that the memory was owned by the analyzer, the destructor did

@@ -40,7 +40,7 @@ title: Transformations;
 file_name: test-transformation.py;
 hwut_info_time: 1474307886L;
 result_list: [
-  [ ; FAIL; 0.186687; 1005104571; ]
+  [ ; FAIL; 0.266399; 1005104571; ]
 ]
 }
 {
@@ -121,7 +121,7 @@ title_group: Conditional Analysis;
 file_name: test-bol-eol.py;
 hwut_info_time: 1474142637L;
 result_list: [
-  [ ; FAIL; 0.091878; 0; ]
+  [ ; FAIL; 0.118706; 0; ]
 ]
 }
 {
@@ -130,7 +130,7 @@ title_group: Conditional Analysis;
 file_name: test-eol-carriage-return-newline.py;
 hwut_info_time: 1474142785L;
 result_list: [
-  [ ; FAIL; 0.092537; 0; ]
+  [ ; FAIL; 0.117186; 0; ]
 ]
 }
 {

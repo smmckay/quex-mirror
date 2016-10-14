@@ -22,27 +22,41 @@ main(int argc, char** argv)
     return 0;
 }
 
-void test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
+void 
+test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
 {
     using namespace std;
     QUEX_TYPE_LEXATOM*  end_of_content_p;
-    QUEX_TYPE_LEXATOM*  buffer_0 = (Size0 == 0) ? 0x0 : new QUEX_TYPE_LEXATOM[Size0];
-    QUEX_TYPE_LEXATOM*  buffer_1 = (Size1 == 0) ? 0x0 : new QUEX_TYPE_LEXATOM[Size1];
+    QUEX_TYPE_LEXATOM*  buffer_0 = (Size0 == 0) ? 0x0 : new QUEX_TYPE_LEXATOM[Size0+2];
+    QUEX_TYPE_LEXATOM*  buffer_1 = (Size1 == 0) ? 0x0 : new QUEX_TYPE_LEXATOM[Size1+2];
 
-    memset(buffer_0, 'a', Size0);
-    memset(buffer_1, 'b', Size1);
-
-    if( buffer_0 ) end_of_content_p = &buffer_0[ContentSize0+1];
-    else           end_of_content_p = (QUEX_TYPE_LEXATOM*)0;
-
+    if( Size0 ) {
+        buffer_0[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        buffer_0[Size0-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        end_of_content_p  = &buffer_0[ContentSize0+1];
+        *end_of_content_p = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        memset(&buffer_0[1], 'a', ContentSize0); 
+    }
+    else {
+        end_of_content_p = (QUEX_TYPE_LEXATOM*)0;
+    }
     quex::EasyLexer qlex(&buffer_0[0], Size0, end_of_content_p); 
 
     cout << "--------------------------------------------------------------------------\n";
     cout << "Constructor:\n";
     print_this(&qlex, 0, Size0, ContentSize0);
 
-    if( buffer_1 ) end_of_content_p = &buffer_1[ContentSize1+1];
-    else           end_of_content_p = (QUEX_TYPE_LEXATOM*)0;
+    if( Size1 ) {
+        buffer_1[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        buffer_1[Size1-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        memset(&buffer_1[1], 'b', ContentSize1);
+        end_of_content_p  = &buffer_1[ContentSize1+1];
+        *end_of_content_p = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    }
+    else {
+        end_of_content_p = (QUEX_TYPE_LEXATOM*)0;
+    }
+
     QUEX_TYPE_LEXATOM*  prev = qlex.reset(buffer_1, Size1, end_of_content_p);
     if( prev ) delete [] prev;
 

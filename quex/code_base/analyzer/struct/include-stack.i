@@ -237,7 +237,7 @@ QUEX_MEMBER_FUNCTION4(include_push, memory,
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_NAME(Buffer) new_buffer_setup;
-    __quex_assert(EndOfFileP > Memory && EndOfFileP <= &Memory[MemorySize]);
+    QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
 
     QUEX_NAME(Buffer_construct)(&new_buffer_setup, 
                                 (QUEX_NAME(LexatomLoader)*)0,

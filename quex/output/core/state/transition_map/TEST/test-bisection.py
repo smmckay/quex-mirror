@@ -15,13 +15,13 @@ import random
 sys.path.insert(0, os.environ["QUEX_PATH"])
 from   copy import copy
                                                    
-from   quex.engine.analyzer.door_id_address_label import DialDB
+from   quex.engine.analyzer.door_id_address_label     import DialDB
 from   quex.output.core.state.transition_map.solution import get_Bisection   
-from   quex.output.core.dictionary import db
-from   quex.engine.misc.interval_handling        import Interval
-from   quex.engine.analyzer.transition_map  import TransitionMap   
-from   quex.blackboard                      import setup as Setup, \
-                                                   Lng
+from   quex.output.core.dictionary                    import db
+from   quex.engine.misc.interval_handling             import Interval
+from   quex.engine.analyzer.transition_map            import TransitionMap   
+from   quex.blackboard                                import setup as Setup, \
+                                                             Lng
 from   collections import defaultdict
 
 if "--hwut-info" in sys.argv:
