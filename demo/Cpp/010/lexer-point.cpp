@@ -51,7 +51,7 @@ test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
 
     /* Loop until the 'termination' token arrives                            */
     do {
-        lexer.receive();
+        lexer->receive();
 
         printf("   Token: %s\n", lexer->token->get_string().c_str());
         

@@ -1,4 +1,3 @@
-import quex.output.core.state.transition_map.transition as transition
 from   quex.blackboard import Lng
 
 class BranchTable(object):
@@ -32,12 +31,12 @@ class BranchTable(object):
         cover.
         """
         case_code_list = [
-            (interval, transition.do(interval, target))
+            (interval, Lng.TRANSITION_MAP_TARGET(interval, target))
             for interval, target in self.sub_map
             if target != self.moat
         ]
 
         return Lng.BRANCH_TABLE_ON_INTERVALS("input", case_code_list,
-                   DefaultConsequence="".join(transition.do(None, self.moat)))
+                   DefaultConsequence=Lng.TRANSITION_MAP_TARGET(None, self.moat))
 
 

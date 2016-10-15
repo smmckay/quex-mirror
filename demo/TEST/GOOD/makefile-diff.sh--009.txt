@@ -15,7 +15,3 @@
 ---
 > LexAscii.h LexAscii.c: ascii.qx 
 > 	     --language     C        \
-< %.E: %.cpp
-< 	$(CC) -E $< -o $@ 
-< 
-< 	rm -f *.E

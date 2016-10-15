@@ -748,6 +748,12 @@ class Lng_Cpp(dict):
             "%s\n" % self.GOTO(DoorID.global_reentry(dial_db), dial_db)
         ]
 
+    def TRANSITION_MAP_TARGET(self, Interval, Target):
+        assert isinstance(Target, str)
+        if not Setup.comment_transitions_f:
+            return Target
+        else:
+            return "%s %s" % (Target, self.COMMENT(Interval.get_utf8_string()))
 
     def ASSIGN(self, X, Y):
         return "%s = %s;" % (X, Y)

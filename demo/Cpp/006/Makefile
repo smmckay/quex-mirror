@@ -18,17 +18,12 @@ endif
 # (*) COMPILER SETTINGS ________________________________________________________
 #     (change COMPILER to whatever you use as compiler on the command line,
 #      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-ifdef ASSERTS_ENABLED_F
-	CCFLAG_ASSERTS=# By default asserts are enabled
-else 
-	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
-endif
 
 COMPILER = g++ -ggdb 
 
 CC = $(COMPILER) -c \
 	 -I./ -I$(QUEX_PATH)                             \
-	 -Wall -Werror -Wconversion -pedantic                    \
+	 -Wall -Werror -Wconversion -pedantic            \
 	 $(CCFLAG_ASSERTS)                               \
 	 -DPRINT_TOKEN                                   \
 	 -DPRINT_LINE_COLUMN_NUMBER

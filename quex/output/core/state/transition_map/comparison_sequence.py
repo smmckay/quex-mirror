@@ -1,5 +1,4 @@
-import quex.output.core.state.transition_map.transition as     transition
-from   quex.engine.analyzer.transition_map              import TransitionMap
+from   quex.engine.analyzer.transition_map import TransitionMap
 
 from   quex.blackboard import setup as Setup, \
                               Lng
@@ -14,7 +13,7 @@ class ComparisonSequence(object):
         assert L != 0
 
         tm = [
-            (interval, "".join(transition.do(interval, target)))
+            (interval, Lng.TRANSITION_MAP_TARGET(interval, target))
             for interval, target in self.sub_map
         ]
 

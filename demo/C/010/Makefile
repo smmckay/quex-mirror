@@ -74,10 +74,8 @@ lexConverter.c: lexConverter.qx
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f lexPlain.c         lexPlain-configuration     lexPlain-token     \
-	      lexPlain-token_ids lexPlain
-	rm -f lexConverter.c     lexConverter-configuration lexConverter-token \
-		  lexConverter-token_ids lexConverter
+	rm -f lexPlain-*         lexPlain.[ch]
+	rm -f lexConverter-*     lexConverter.[ch]
 	rm -f $(FILES)
 	rm -f *.exe
 	rm -f *.o
