@@ -3,6 +3,7 @@
 case $1 in
     --hwut-info)
         echo "Test code comments;"
+        echo "HAPPY: [0-9]+;"
         ;;
 
     *)

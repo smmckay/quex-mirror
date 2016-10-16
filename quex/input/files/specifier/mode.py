@@ -75,7 +75,6 @@ class ModeDocumentation:
 
         return "".join(txt)
 
-
 #-----------------------------------------------------------------------------------------
 # Mode_PrepPrep/Mode Objects:
 #

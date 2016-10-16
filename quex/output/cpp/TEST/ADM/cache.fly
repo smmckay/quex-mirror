@@ -1,16 +1,37 @@
 {
-file_name: test-counter.py;
-result_list: [
-  [ ; NO OUTPUT; 0.089871; 0; ]
-]
-}
-{
 title: Token Class Template;
 file_name: test-token_class.py;
 hwut_info_time: 1461220443L;
 happy_pattern_list: [ line \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.109774; 0; ]
+  [ ; OK; 0.108926; 0; ]
+]
+}
+{
+title: Default Implementation;
+title_group: Character Counter;
+file_name: test-counter.py;
+hwut_info_time: 1476531491L;
+same_f: True;
+result_list: [
+  [ ascii-1; OK; 0.412659; 0; ]
+  [ ascii-1-wo-ReferenceP; OK; 0.520208; 0; ]
+  [ utf_16_le-1; OK; 0.519477; 0; ]
+  [ utf_16_le-1-wo-ReferenceP; OK; 0.516727; 0; ]
+  [ utf_16_le-2; OK; 0.531033; 0; ]
+  [ utf_16_le-2-wo-ReferenceP; OK; 0.518549; 0; ]
+  [ utf_32_le-1; OK; 0.463181; 0; ]
+  [ utf_32_le-1-wo-ReferenceP; OK; 0.532309; 0; ]
+  [ cp737-1; OK; 0.566263; 0; ]
+  [ cp737-1-wo-ReferenceP; OK; 0.573922; 0; ]
+  [ utf_8-1; OK; 0.650121; 0; ]
+  [ utf_8-1-wo-ReferenceP; OK; 0.721828; 0; ]
+  [ utf_8-2; OK; 0.907839; 0; ]
+  [ utf_8-2-wo-ReferenceP; OK; 0.879152; 0; ]
+  [ utf_8-3; OK; 0.828198; 0; ]
+  [ utf_8-3-wo-ReferenceP; OK; 0.639547; 0; ]
+  [ utf_8-4; FAIL; 7.016574; 0; ]
+  [ utf_8-4-wo-ReferenceP; FAIL; 7.008628; 0; ]
 ]
 }
 {
@@ -19,9 +40,9 @@ title_group: Converter;
 file_name: test-converter-x.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 1; OK; 0.087412; 0; ]
-  [ 2; OK; 0.095923; 0; ]
-  [ 3; OK; 0.086084; 0; ]
+  [ 1; OK; 0.116805; 0; ]
+  [ 2; OK; 0.105175; 0; ]
+  [ 3; OK; 0.113177; 0; ]
 ]
 }
 {
@@ -30,10 +51,10 @@ title_group: Converter;
 file_name: test-converter-C.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ cp037; OK; 0.567995; 0; ]
-  [ cp737; OK; 0.458896; 0; ]
-  [ cp866; OK; 0.469091; 0; ]
-  [ cp1256; OK; 0.460070; 0; ]
+  [ cp037; OK; 0.565167; 0; ]
+  [ cp737; OK; 0.604665; 0; ]
+  [ cp866; OK; 0.544814; 0; ]
+  [ cp1256; OK; 0.493614; 0; ]
 ]
 }
 {
@@ -42,9 +63,9 @@ title_group: Converter;
 file_name: test-converter.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 1; OK; 0.086535; 0; ]
-  [ 2; OK; 0.088802; 0; ]
-  [ 3; OK; 0.084849; 0; ]
-  [ 4; OK; 0.093133; 0; ]
+  [ 1; OK; 0.118444; 0; ]
+  [ 2; OK; 0.107108; 0; ]
+  [ 3; OK; 0.118737; 0; ]
+  [ 4; OK; 0.107373; 0; ]
 ]
 }

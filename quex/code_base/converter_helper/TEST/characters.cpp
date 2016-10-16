@@ -45,7 +45,7 @@ struct UnicodeTester {
             size_t    out_bytes_left = UTF8_STRING_SIZE;
 
             utf32_source = utf32_memory;
-            memset((void*)utf8_source, 0x0, sizeof(utf8_source));
+            memset((void*)utf8_source, 0x0, sizeof(utf8_source[0])*5);
 
             report = iconv(to_utf8, (char**)&utf32_source, &in_bytes_left, (char**)&utf8_source, &out_bytes_left);
 
@@ -59,7 +59,7 @@ struct UnicodeTester {
             size_t    out_bytes_left = UTF16_STRING_SIZE;
 
             utf32_source = utf32_memory;
-            memset((void*)utf16_source, 0x0, sizeof(utf16_source));
+            memset((void*)utf16_source, 0x0, sizeof(utf16_source[0])*2);
 
             report = iconv(to_utf16, (char**)&utf32_source, &in_bytes_left, (char**)&utf16_source, &out_bytes_left);
 

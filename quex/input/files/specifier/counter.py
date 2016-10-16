@@ -291,7 +291,7 @@ class IndentationCount_Prep(CountBase_Prep):
         if before is not None:
             error.log("Trying to implement default newline: '\\n' or '\\r\\n'.\n" 
                       "The '\\n' option is not possible, since it has been occupied by '%s'.\n" \
-                      "No newline can be defined by default." \
+                      "No newline can be defined by default. " \
                       "Indentation handlers without newline are unfeasible."
                       % cc_type_name_db[before.cc_type], before.sr) 
 

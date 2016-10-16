@@ -228,7 +228,6 @@ class OptionDB(dict):
                loopers,                   \
                self.value("counter")
 
-
     def enter(self, Name, Value, SourceReference, ModeName):
         """Enters a new definition of a mode option as it comes from the parser.
         At this point, it is assumed that the OptionDB belongs to one single
@@ -387,6 +386,7 @@ def __parse_skip_option(fh, new_mode, identifier):
     elif trigger_set.is_empty():
         error.log("Empty trigger set for skipper." % identifier, fh)
 
+    pattern.set_pattern_string("<skip>")
     return pattern, trigger_set
 
 def __parse_range_skipper_option(fh, identifier, new_mode):
@@ -398,8 +398,10 @@ def __parse_range_skipper_option(fh, identifier, new_mode):
     # Pattern: opener 'white space' closer 'white space' '>'
     skip_whitespace(fh)
     opener_pattern, opener_sequence = regular_expression.parse_character_string(fh, ">")
+    opener_pattern.set_pattern_string("<%s open>" % identifier)
     skip_whitespace(fh)
     closer_pattern, closer_sequence = regular_expression.parse_character_string(fh, ">")
+    closer_pattern.set_pattern_string("<%s open>" % identifier)
 
     # -- closer
     skip_whitespace(fh)

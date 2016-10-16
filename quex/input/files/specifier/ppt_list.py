@@ -405,7 +405,8 @@ class PPT_List(list):
             new_incidence_id = dial.new_incidence_id()
             pattern    = Pattern.from_character_set(lei.character_set, 
                                                     new_incidence_id, 
-                                                    Sr=SourceRef_VOID)
+                                                    PatternString="<skip>",
+                                                    Sr=aux_source_reference)
             # There is no reference pointer => Add directly
             count_code = lei.count_action.get_OpList(None)
             code       = Lng.COMMAND_LIST(count_code + goto_code, 

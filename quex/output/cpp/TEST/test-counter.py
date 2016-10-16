@@ -35,8 +35,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine                       as     core
-import quex.input.files.specifier.counter                         as     specifier
-from   quex.engine.loop_counter                                   import CountInfoMap
+import quex.input.files.specifier.counter                         as     counter
 from   quex.engine.misc.interval_handling                         import NumberSet, \
                                                                          Interval, \
                                                                          NumberSet_All
@@ -204,7 +203,7 @@ def counter_db_wo_reference_p():
     """
     fh = StringIO(spec_txt)
     fh.name        = "<string>"
-    return LineColumnCount_Prep(fh).parse()
+    return counter.LineColumnCount_Prep(fh).parse()
 
 fields  = sys.argv[1].split("-")
 codec   = fields[0]
@@ -215,7 +214,7 @@ if without_reference_p_f:
     counter_db  = counter_db_wo_reference_p()
     reference_p = False
 else:
-    counter_db = specifier.LineColumnCount_Default()
+    counter_db = counter.LineColumnCount_Default()
     # UTF16 and UTF8 are dynamic length codecs. reference pointer based 
     # is impossible.
     if codec in ("utf_8", "utf_16_le"): reference_p = False
@@ -229,7 +228,7 @@ character_type = {
     "cp737":      "uint8_t",
 }[codec]
 
-get_test_application(counter_db, reference_p, character_type)
+get_test_application(counter_db.count_command_map, reference_p, character_type)
 run(codec, chunk_n)
     
 os.remove("data/input.txt")

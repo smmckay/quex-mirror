@@ -239,7 +239,6 @@ class Analyzer:
     @property
     def engine_type(self):                 return self.__engine_type
     @property
-    def acceptance_state_index_list(self): return self.__acceptance_state_index_list
     @property
     def to_db(self):
         """Map: state_index --> list of states which can be reached starting from state_index."""

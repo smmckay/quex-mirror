@@ -2,6 +2,7 @@
 case $1 in
     --hwut-info)
         echo "Analyzer State Tracer;"
+        echo "HAPPY: [0-9]+;"
         ;;
 
     *)

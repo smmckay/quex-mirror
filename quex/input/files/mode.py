@@ -47,6 +47,13 @@ def parse(fh):
         pass
 
 def finalize_modes(ModePrepPrepDb):
+    mode_prep_db = __finalize_modes_prep(ModePrepPrepDb)
+
+    return dict((name, mode_prep.finalize(mode_prep_db)) 
+                for name, mode_prep in mode_prep_db.iteritems() 
+                if mode_prep.implemented_f())
+
+def __finalize_modes_prep(ModePrepPrepDb):
     assert all(isinstance(x, Mode_PrepPrep) for x in ModePrepPrepDb.itervalues())
 
     # (BEFORE) Parsing --> Mode_PrepPrep
@@ -79,9 +86,7 @@ def finalize_modes(ModePrepPrepDb):
     #     => Determine the concerned mode names for mode handlers
     consistency_check.do(mode_prep_db.values())
 
-    return dict((name, mode_prep.finalize(mode_prep_db)) 
-                for name, mode_prep in mode_prep_db.iteritems() 
-                if mode_prep.implemented_f())
+    return mode_prep_db
 
 def __determine_initial_mode(ModePrepDb):
     if not blackboard.initial_mode.sr.is_void():

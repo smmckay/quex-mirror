@@ -261,8 +261,11 @@ class Pattern_Prep(object):
         if self.__sr is None: sr = SourceRef_VOID
         else:                 sr = self.__sr
 
-        self.__finalized_self = Pattern(original_incidence_id, sm_main, sm_pre_context, sm_bipd,
-                                        lcci, pattern_string, sr)
+        self.__finalized_self = Pattern(original_incidence_id, 
+                                        sm_main, sm_pre_context, sm_bipd,
+                                        lcci, 
+                                        PatternString = pattern_string, 
+                                        Sr            = sr)
 
         # Set: self = Dysfunctional! (after storing finalized 'self')
         self.__sm                            = None
