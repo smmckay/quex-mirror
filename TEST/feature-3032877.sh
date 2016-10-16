@@ -30,6 +30,7 @@ function perform_test() {
         echo "File EasyLexer-configuration does not exits."
     fi
     rm -f EasyLexer*
+    rm -f Lexer*
     echo
 }
 

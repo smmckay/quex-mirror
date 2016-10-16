@@ -1,0 +1,32 @@
+
+Good Sequences: ________________________________________________________
+
+Accept: 80
+Accept: D7FF
+Accept: E000
+Accept: FFFF
+Accept: D800.DC00
+Accept: DBFF.DFFF
+
+Bad Sequences: _________________________________________________________
+
+Bad Lexatom: DC00
+Bad Lexatom: DFFF
+Bad Lexatom: DC00
+Bad Lexatom: DFFF
+Bad Lexatom: DC00
+Bad Lexatom: DFFF
+Bad Lexatom: DC00
+Bad Lexatom: DFFF
+Bad Lexatom: DC00.DC00
+Bad Lexatom: DFFF.DC00
+Bad Lexatom: D800.00
+Bad Lexatom: D800.DBFF
+Bad Lexatom: D800.E000
+Bad Lexatom: D800.110000
+Bad Lexatom: DC00.DFFF
+Bad Lexatom: DFFF.DFFF
+Bad Lexatom: DBFF.00
+Bad Lexatom: DBFF.DBFF
+Bad Lexatom: DBFF.E000
+Bad Lexatom: DBFF.110000

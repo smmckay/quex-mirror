@@ -1,0 +1,64 @@
+{
+title: Plugging Wild Cards;
+title_group: Paths;
+file_name: find-3.py;
+hwut_info_time: 1473976629L;
+happy_pattern_list: [ DROP_OUT, d=\[0-9]+; ]
+result_list: [
+  [ 1; OK; 0.149505; 0; ]
+  [ 2; OK; 0.143025; 0; ]
+  [ 3; OK; 0.132236; 0; ]
+  [ 4; OK; 0.139362; 0; ]
+]
+}
+{
+title: collect;
+title_group: Paths;
+file_name: find.py;
+hwut_info_time: 1473976585L;
+happy_pattern_list: [ DROP_OUT, d=\[0-9]+; ]
+result_list: [
+  [ 1; OK; 0.114721; 0; ]
+  [ 2; OK; 0.106770; 0; ]
+  [ 3; OK; 0.109997; 0; ]
+  [ 4; OK; 0.141639; 0; ]
+  [ 5; OK; 0.123026; 0; ]
+  [ 6; OK; 0.122092; 0; ]
+]
+}
+{
+title: find_path (mean tests);
+title_group: Paths;
+file_name: find-2.py;
+hwut_info_time: 1473976624L;
+happy_pattern_list: [ DROP_OUT, d=\[0-9]+; ]
+result_list: [
+  [ 1; OK; 0.127298; 0; ]
+  [ 2; OK; 0.152523; 0; ]
+  [ 3; OK; 0.132061; 0; ]
+  [ 4a; OK; 0.146244; 0; ]
+  [ 4b; OK; 0.207874; 0; ]
+]
+}
+{
+title: select;
+title_group: Paths;
+file_name: select_longest_paths.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ 0; OK; 0.109488; 0; ]
+  [ 1; OK; 0.100159; 0; ]
+  [ 2; OK; 0.091822; 0; ]
+  [ 3; OK; 0.092923; 0; ]
+  [ 4; OK; 0.091865; 0; ]
+  [ 5; OK; 0.092767; 0; ]
+  [ 6; OK; 0.090895; 0; ]
+  [ 7; OK; 0.118794; 0; ]
+  [ 8; OK; 0.099938; 0; ]
+  [ 9; OK; 0.107567; 0; ]
+  [ 10; OK; 0.101285; 0; ]
+  [ 11a; OK; 0.124597; 0; ]
+  [ 11b; OK; 0.102474; 0; ]
+  [ 12; OK; 0.095873; 0; ]
+]
+}

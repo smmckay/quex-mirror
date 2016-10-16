@@ -1,0 +1,109 @@
+{
+title: Normal Reset;
+build_time: 3.1960840225219727;
+file_name: lexer-x;
+hwut_info_time: 1476612030L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ 0; OK; 0.007390; -1625830934; ]
+  [ 1; OK; 0.006928; 0; ]
+  [ 2; OK; 0.007354; 0; ]
+  [ 3; OK; 0.005998; 0; ]
+  [ 20; OK; 0.007004; 0; ]
+  [ 30; OK; 0.007551; 0; ]
+  [ 50; OK; 0.008483; 0; ]
+  [ 134; OK; 0.008202; 0; ]
+  [ 135; OK; 0.011006; 0; ]
+  [ 136; OK; 0.020030; 0; ]
+  [ 1000; OK; 0.008730; 0; ]
+]
+}
+{
+title: Plain;
+title_group: Reset w/ QuexLexatomLoader;
+build_time: 3.5565099716186523;
+file_name: lexer;
+hwut_info_time: 1476612034L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ 0; OK; 0.007361; 0; ]
+  [ 1; OK; 0.009366; 0; ]
+  [ 2; OK; 0.013474; 0; ]
+  [ 3; OK; 0.015242; 0; ]
+  [ 20; OK; 0.007088; 0; ]
+  [ 30; OK; 0.011428; 0; ]
+  [ 50; OK; 0.007193; 0; ]
+  [ 134; OK; 0.006889; 0; ]
+  [ 135; OK; 0.010440; 0; ]
+  [ 136; OK; 0.006544; 0; ]
+  [ 1000; OK; 0.029510; 0; ]
+]
+}
+{
+title: Plain w/ Engine Codec;
+title_group: Reset w/ QuexLexatomLoader;
+build_time: 3.169703960418701;
+file_name: codec-lexer;
+hwut_info_time: 1476612023L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ 0; OK; 0.012813; 0; ]
+  [ 1; OK; 0.006395; 0; ]
+  [ 2; OK; 0.008658; 0; ]
+  [ 3; OK; 0.016463; 0; ]
+  [ 20; OK; 0.011478; 0; ]
+  [ 30; OK; 0.006599; 0; ]
+  [ 50; OK; 0.016432; 0; ]
+  [ 134; OK; 0.011180; 0; ]
+  [ 135; OK; 0.014051; 0; ]
+  [ 136; OK; 0.007804; 0; ]
+  [ 1000; OK; 0.015379; 0; ]
+]
+}
+{
+title: Plain w/ Engine Codec;
+title_group: Reset w/ QuexLexatomLoader;
+build_time: 3.3176379203796387;
+file_name: icu-lexer;
+hwut_info_time: 1476612027L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ 0; OK; 0.007792; 0; ]
+  [ 1; OK; 0.006891; 0; ]
+  [ 2; OK; 0.007708; 0; ]
+  [ 3; OK; 0.007886; 0; ]
+  [ 20; OK; 0.007368; 0; ]
+  [ 30; OK; 0.007133; 0; ]
+  [ 50; OK; 0.013168; 0; ]
+  [ 134; OK; 0.007413; 0; ]
+  [ 135; OK; 0.007207; 0; ]
+  [ 136; OK; 0.012008; 0; ]
+  [ 1000; OK; 0.014941; 0; ]
+]
+}
+{
+title: Plain w/ Engine Codec;
+title_group: Reset w/ QuexLexatomLoader;
+build_time: 2.858304977416992;
+file_name: iconv-lexer;
+hwut_info_time: 1476612036L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ 0; OK; 0.014404; 0; ]
+  [ 1; OK; 0.005943; 0; ]
+  [ 2; OK; 0.009865; 0; ]
+  [ 3; OK; 0.009927; 0; ]
+  [ 20; OK; 0.008335; 0; ]
+  [ 30; OK; 0.015909; 0; ]
+  [ 50; OK; 0.008138; 0; ]
+  [ 134; OK; 0.007013; 0; ]
+  [ 135; OK; 0.007261; 0; ]
+  [ 136; OK; 0.009294; 0; ]
+  [ 1000; OK; 0.010894; 0; ]
+]
+}

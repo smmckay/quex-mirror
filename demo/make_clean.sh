@@ -8,3 +8,10 @@ for x in `find -maxdepth 3 -mindepth 1 -type f -or -path "*.svn*" -prune -or -pr
     fi
     popd
 done
+
+for tmp_file in $(find -name "tmp*.txt"); do
+    rm $tmp_file
+done
+for tmp_file in $(find -name "tmp*.log"); do
+    rm $tmp_file
+done

@@ -1,0 +1,72 @@
+{
+title: Combination of Two Transition Maps;
+file_name: combine-maps.py;
+hwut_info_time: 1470521545L;
+result_list: [
+  [ 1; OK; 0.128712; 0; ]
+  [ 2; OK; 0.128104; 0; ]
+  [ 2b; OK; 0.120596; 0; ]
+  [ 3; OK; 0.099898; 0; ]
+  [ 4; OK; 0.100918; 0; ]
+]
+}
+{
+title: Combine Simple;
+file_name: combine-simple.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ plain; OK; 0.109152; 0; ]
+  [ recursive; OK; 0.137991; 0; ]
+  [ distinguished; OK; 0.108555; 0; ]
+]
+}
+{
+title: Template states handling recursion;
+file_name: recursion.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ 0; OK; 0.111384; 0; ]
+  [ 0b; FAIL; 0.141671; 0; ]
+  [ 1; OK; 0.111078; 0; ]
+  [ 1b; OK; 0.125826; 0; ]
+  [ 1c; FAIL; 0.124569; 0; ]
+]
+}
+{
+title: Combine Combined Trigger Maps;
+title_group: Transition Map Templates;
+file_name: combine-maps-2.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ 1; OK; 0.109256; 0; ]
+  [ 2; OK; 0.107956; 0; ]
+]
+}
+{
+title: Get Best Matching Pair;
+title_group: Transition Map Templates;
+file_name: best_matching_pair.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ 0; OK; 0.133162; 0; ]
+  [ 1; OK; 0.104273; 0; ]
+  [ 2; OK; 0.107916; 0; ]
+  [ 3; OK; 0.141950; 0; ]
+  [ recursive; OK; 0.109949; 0; ]
+]
+}
+{
+title: Target Idx Combination Metric;
+title_group: Transition Map Templates;
+file_name: metric.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ 1; OK; 0.104394; 0; ]
+  [ 2; OK; 0.107747; 0; ]
+  [ 2b; OK; 0.107997; 0; ]
+  [ 3; OK; 0.135819; 0; ]
+  [ 3b; OK; 0.110121; 0; ]
+  [ 4; OK; 0.118226; 0; ]
+  [ recursive; OK; 0.135898; 0; ]
+]
+}

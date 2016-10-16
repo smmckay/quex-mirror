@@ -1,0 +1,255 @@
+{
+title: Position Register vs. Post-Context and Last Acceptance;
+file_name: test-position_register_map.py;
+hwut_info_time: 1469313413L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 0; OK; 0.125237; 0; ]
+  [ 1; OK; 0.138924; 0; ]
+  [ 2; OK; 0.212173; 0; ]
+  [ 3; OK; 0.173445; 0; ]
+  [ 4; OK; 0.207281; 0; ]
+  [ 5; OK; 0.365647; 0; ]
+]
+}
+{
+title: Single Pattern;
+title_group: Paths Analysis;
+file_name: paths_analysis-single-pattern.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 0; OK; 0.173992; 0; ]
+  [ 1; OK; 0.162561; 0; ]
+  [ 2; OK; 0.155186; 0; ]
+  [ 3; OK; 0.155864; 0; ]
+  [ 4; OK; 0.150304; 0; ]
+  [ 5; OK; 0.171065; 0; ]
+  [ 6; OK; 0.119206; 0; ]
+  [ 7; OK; 0.146227; 0; ]
+  [ 8; OK; 0.139631; 0; ]
+  [ 9; OK; 0.167603; 0; ]
+  [ 10; OK; 0.148476; 802429091; ]
+]
+}
+{
+title: Without Pre- and Post-Contexts;
+title_group: Paths Analyzis;
+file_name: paths_analysis.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 0; OK; 0.159094; 0; ]
+  [ 1; OK; 0.156681; 0; ]
+  [ 2; OK; 0.129280; 0; ]
+  [ 3; OK; 0.155724; 0; ]
+  [ 4; OK; 0.169252; 0; ]
+  [ 5; OK; 0.182637; 0; ]
+  [ 6; OK; 0.171867; 0; ]
+  [ 7; OK; 0.201763; 0; ]
+  [ 8; OK; 0.149959; 0; ]
+  [ 9; OK; 0.125678; 0; ]
+  [ 10; OK; 0.192717; -154651687; ]
+]
+}
+{
+title: Single Pattern Checks;
+title_group: Track Analysis;
+file_name: track_analysis_single_pattern.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 0; OK; 0.156790; 0; ]
+  [ 1; OK; 0.148161; 0; ]
+  [ 2; OK; 0.122500; 0; ]
+  [ 3; OK; 0.156610; 0; ]
+  [ 4; OK; 0.157131; 0; ]
+  [ 5; OK; 0.149852; 0; ]
+  [ 6; OK; 0.152855; 0; ]
+  [ 7; OK; 0.116172; 0; ]
+  [ 8; OK; 0.144823; 0; ]
+  [ 9; OK; 0.156843; 0; ]
+  [ 10; OK; 0.163533; 0; ]
+]
+}
+{
+title: Backward Input Position Detection;
+title_group: Track Analyzis;
+file_name: paths_analysis-backward-input-position-detection.py;
+hwut_info_time: 1468480976L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.148283; 456651317; ]
+]
+}
+{
+title: Backwards - For Pre-Context;
+title_group: Track Analyzis;
+file_name: paths_analysis-backwards.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 0; OK; 0.150341; 0; ]
+  [ 1; OK; 0.127535; 0; ]
+]
+}
+{
+title: Special Loops and Forks;
+title_group: Track Analyzis;
+file_name: paths_analysis-loops.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 0; OK; 0.249573; 0; ]
+  [ 1; OK; 0.362979; 1109824465; ]
+  [ 2; OK; 0.165897; 0; ]
+  [ 3; OK; 0.215282; 0; ]
+  [ 4; OK; 0.217915; 0; ]
+  [ 5; OK; 0.251985; 0; ]
+  [ 6; OK; 0.245579; 0; ]
+  [ 7; OK; 0.177891; 0; ]
+]
+}
+{
+title: With Post-Contexts;
+title_group: Track Analyzis;
+file_name: paths_analysis-post.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 3; OK; 0.176187; 0; ]
+  [ 4; OK; 0.203984; 0; ]
+  [ 5; OK; 0.174587; 0; ]
+  [ 6; OK; 0.168968; 0; ]
+  [ 7; OK; 0.137367; 0; ]
+  [ 8; OK; 0.216472; 0; ]
+  [ 9; OK; 0.162846; 0; ]
+  [ 10; OK; 0.161259; 0; ]
+]
+}
+{
+title: With Pre- and Post-Contexts;
+title_group: Track Analyzis;
+file_name: paths_analysis-pre-post.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 1; OK; 0.143542; 0; ]
+  [ 2; OK; 0.151051; 0; ]
+  [ 3; OK; 0.155996; 0; ]
+  [ 4; OK; 0.205530; 0; ]
+  [ 5; OK; 0.165273; 0; ]
+  [ 6; OK; 0.153977; 0; ]
+  [ 7; OK; 0.243742; 0; ]
+  [ 8; OK; 0.212258; 0; ]
+  [ 9; OK; 0.236340; -1920001786; ]
+]
+}
+{
+title: With Pre-Contexts;
+title_group: Track Analyzis;
+file_name: paths_analysis-pre.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 0; OK; 0.150276; 0; ]
+  [ 1; OK; 0.132814; 0; ]
+  [ 2; OK; 0.134226; 0; ]
+  [ 3; OK; 0.132949; 0; ]
+  [ 4; OK; 0.130543; 0; ]
+  [ 5; OK; 0.175263; 0; ]
+  [ 6; OK; 0.199212; 0; ]
+  [ 7; OK; 0.148343; 0; ]
+  [ 8; OK; 0.141334; 0; ]
+  [ 9; OK; 0.140960; 0; ]
+  [ 10; OK; 0.226966; 0; ]
+  [ 11; OK; 0.257037; 0; ]
+  [ 12; OK; 0.293505; 0; ]
+  [ 13; OK; 0.152667; 1172841946; ]
+  [ 14; OK; 0.197048; 847765031; ]
+]
+}
+{
+title: Without Pre- and Post-Contexts;
+title_group: Track Analyzis;
+file_name: track_analysis.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 0; OK; 0.118134; 0; ]
+  [ 1; OK; 0.139574; 0; ]
+  [ 2; OK; 0.141932; 0; ]
+  [ 3; OK; 0.160356; 0; ]
+  [ 4; OK; 0.165950; 0; ]
+  [ 5; OK; 0.159318; 0; ]
+  [ 6; OK; 0.137783; 0; ]
+  [ 7; OK; 0.194545; 0; ]
+  [ 8; OK; 0.179929; 0; ]
+  [ 9; OK; 0.130620; 0; ]
+  [ 10; OK; 0.186692; 0; ]
+]
+}
+{
+title: TransitionMap.izip;
+title_group: Transition Map Tools;
+file_name: transition_map_tools-zipped_iterable.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 0.098029; 0; ]
+]
+}
+{
+title: combine_adjacent;
+title_group: Transition Map Tools;
+file_name: transition_map_tools-combine_adjacent.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 1; OK; 0.105960; 0; ]
+  [ 2-same; OK; 0.104489; 0; ]
+  [ 2-diff; OK; 0.121558; 0; ]
+  [ 3-same; OK; 0.115235; 0; ]
+  [ 3-diff; OK; 0.111125; 0; ]
+]
+}
+{
+title: fill_gaps;
+title_group: Transition Map Tools;
+file_name: transition_map_tools-fill_gaps.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 1; OK; 0.088844; 0; ]
+  [ 2-same; OK; 0.105160; 0; ]
+  [ 2-diff; OK; 0.092596; 0; ]
+  [ 3-same; OK; 0.125465; 0; ]
+  [ 3-diff; OK; 0.112534; 0; ]
+]
+}
+{
+title: prune;
+title_group: Transition Map Tools;
+file_name: transition_map_tools-prune.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ 1; OK; 0.161352; 0; ]
+  [ 2; OK; 0.484011; 0; ]
+  [ 3; OK; 0.184577; 0; ]
+]
+}
+{
+title: set;
+title_group: Transition Map Tools;
+file_name: transition_map_tools.py;
+hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
+result_list: [
+  [ Normal; OK; 0.091028; 0; ]
+  [ Apart; OK; 0.119938; 0; ]
+  [ AbsorbA; OK; 0.106153; 0; ]
+  [ AbsorbB; OK; 0.106356; 0; ]
+  [ AbsorbC; OK; 0.102394; 0; ]
+]
+}

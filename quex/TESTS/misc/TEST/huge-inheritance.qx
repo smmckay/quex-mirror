@@ -1,0 +1,71 @@
+// This file is supposed to be parsed with '--debug-limit-recursion 64'
+// Thus provoking a exceedence of max. stack size in case of bad recursive
+// implementation mode mode determination.
+
+start = A0;
+token { A; }
+mode A0                             { A => QUEX_TKN_A; }
+mode A1  : A0 <inheritable: only>   { }
+mode A2  : A1 <inheritable: only>   { }
+mode A3  : A2 <inheritable: only>   { }
+mode A4  : A3 <inheritable: only>   { }
+mode A5  : A4 <inheritable: only>   { }
+mode A6  : A5 <inheritable: only>   { }
+mode A7  : A6 <inheritable: only>   { }
+mode A8  : A7 <inheritable: only>   { }
+mode A9  : A8 <inheritable: only>   { }
+mode A10 : A9 <inheritable: only>   { }
+mode A11 : A10 <inheritable: only>  { }
+mode A12 : A11 <inheritable: only>  { }
+mode A13 : A12 <inheritable: only>  { }
+mode A14 : A13 <inheritable: only>  { }
+mode A15 : A14 <inheritable: only>  { }
+mode A16 : A15 <inheritable: only>  { }
+mode A17 : A16 <inheritable: only>  { }
+mode A18 : A17 <inheritable: only>  { }
+mode A19 : A18 <inheritable: only>  { }
+mode A20 : A19 <inheritable: only>  { }
+mode A21 : A20 <inheritable: only>  { }
+mode A22 : A21 <inheritable: only>  { }
+mode A23 : A22 <inheritable: only>  { }
+mode A24 : A23 <inheritable: only>  { }
+mode A25 : A24 <inheritable: only>  { }
+mode A26 : A25 <inheritable: only>  { }
+mode A27 : A26 <inheritable: only>  { }
+mode A28 : A27 <inheritable: only>  { }
+mode A29 : A28 <inheritable: only>  { }
+mode A30 : A29 <inheritable: only>  { }
+mode A31 : A30 <inheritable: only>  { }
+mode A32 : A31 <inheritable: only>  { }
+mode A33 : A32 <inheritable: only>  { }
+mode A34 : A33 <inheritable: only>  { }
+mode A35 : A34 <inheritable: only>  { }
+mode A36 : A35 <inheritable: only>  { }
+mode A37 : A36 <inheritable: only>  { }
+mode A38 : A37 <inheritable: only>  { }
+mode A39 : A38 <inheritable: only>  { }
+mode A40 : A39 <inheritable: only>  { }
+mode A41 : A40 <inheritable: only>  { }
+mode A42 : A41 <inheritable: only>  { }
+mode A43 : A42 <inheritable: only>  { }
+mode A44 : A43 <inheritable: only>  { }
+mode A45 : A44 <inheritable: only>  { }
+mode A46 : A45 <inheritable: only>  { }
+mode A47 : A46 <inheritable: only>  { }
+mode A48 : A47 <inheritable: only>  { }
+mode A49 : A48 <inheritable: only>  { }
+mode A50 : A49 <inheritable: only>  { }
+mode A51 : A50 <inheritable: only>  { }
+mode A52 : A51 <inheritable: only>  { }
+mode A53 : A52 <inheritable: only>  { }
+mode A54 : A53 <inheritable: only>  { }
+mode A55 : A54 <inheritable: only>  { }
+mode A56 : A55 <inheritable: only>  { }
+mode A57 : A56 <inheritable: only>  { }
+mode A58 : A57 <inheritable: only>  { }
+mode A59 : A58 <inheritable: only>  { }
+mode A60 : A59 <inheritable: only>  { }
+mode A61 : A60 <inheritable: only>  { }
+mode A62 : A61 <inheritable: only>  { }
+mode A63 : A62 <inheritable: only>  { }
+mode A64 : A63 <inheritable: only>  { }

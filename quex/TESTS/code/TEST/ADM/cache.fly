@@ -1,0 +1,89 @@
+{
+file_name: function-check-example.py;
+result_list: [
+  [ ; NO GOOD FILE; 0.005993; 0; ]
+]
+}
+{
+title: Check if the default configuration has been updated.;
+file_name: check-default-configuration.sh;
+hwut_info_time: 1454022470L;
+interpreter_list: [ bash; ]
+result_list: [
+  [ ; OK; 0.021675; -1256193323; ]
+]
+}
+{
+title: Check that 'Lexeme' macro is not used.;
+file_name: no-use-of-lexeme-macro.sh;
+hwut_info_time: 1454022470L;
+interpreter_list: [ bash; ]
+happy_pattern_list: [ py:\[0-9]+:; ]
+result_list: [
+  [ ; OK; 0.072516; 525806180; ]
+]
+}
+{
+title: Checking for defined but unused functions.;
+file_name: function-check.sh;
+hwut_info_time: 1476602439L;
+interpreter_list: [ bash; ]
+result_list: [
+  [ ; NO GOOD FILE; 12.756374; 0; ]
+]
+}
+{
+title: Code Check with pyflakes;
+file_name: pyflakes-check.sh;
+hwut_info_time: 1454022470L;
+interpreter_list: [ bash; ]
+result_list: [
+  [ ; FAIL; 89.518275; 0; ]
+]
+}
+{
+title: Command Line Option Documentation;
+file_name: command_line_options-verify-doc.py;
+hwut_info_time: 1461220443L;
+same_f: True;
+result_list: [
+  [ man; OK; 0.083154; -1113552213; ]
+  [ sphinx; OK; 0.072235; 0; ]
+]
+}
+{
+title: Double Check that Exception Handlers are in place;
+file_name: test-exceptions-in-place.sh;
+hwut_info_time: 1454022470L;
+interpreter_list: [ bash; ]
+result_list: [
+  [ ; OK; 0.635266; 0; ]
+]
+}
+{
+title: Include Guards for C/C++;
+file_name: include_guard.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ convention; OK; 0.168129; 0; ]
+  [ undefinition; OK; 0.218494; 0; ]
+]
+}
+{
+title: Propper undefinition of configuration parameters.;
+file_name: macro-check.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ ; OK; 0.053175; 0; ]
+]
+}
+{
+title: __parse_token_id_file;
+title_group: User defined token id file;
+file_name: test-token_id_file-find_ids.py;
+hwut_info_time: 1461220443L;
+happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
+result_list: [
+  [ ; OK; 0.217141; 0; ]
+]
+}

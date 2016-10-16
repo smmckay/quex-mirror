@@ -1,0 +1,211 @@
+{
+title: No references to Cpp demos;
+file_name: no-references-to-cpp.sh;
+hwut_info_time: 1472366359L;
+result_list: [
+  [ ; FAIL; 0.030024; 961688329; ]
+]
+}
+{
+title: Single Mode Example;
+title_group: demo/000;
+file_name: 000.sh;
+hwut_info_time: 1454022477L;
+same_f: True;
+result_list: [
+  [ NDEBUG; OK; 3.275338; 0; ]
+  [ DEBUG; OK; 3.570817; 0; ]
+]
+}
+{
+title: Multiple Modes, Mode Transitions;
+title_group: demo/001;
+file_name: 001.sh;
+hwut_info_time: 1454022477L;
+same_f: True;
+result_list: [
+  [ NDEBUG; OK; 3.166457; 0; ]
+  [ DEBUG; OK; 3.878133; 0; ]
+]
+}
+{
+title: Indentation Based Scopes;
+title_group: demo/002;
+file_name: 002.sh;
+hwut_info_time: 1472391659L;
+same_f: True;
+happy_pattern_list: [ \[0-9]+; ]
+result_list: [
+  [ NDEBUG; OK; 1.667995; 0; ]
+  [ DEBUG; OK; 3.744670; 0; ]
+  [ customized; OK; 1.972168; 0; ]
+]
+}
+{
+title: Byte Order Mark (BOM) Cutting;
+title_group: demo/003;
+file_name: 003-bom.sh;
+hwut_info_time: 1454022476L;
+result_list: [
+  [ Without; OK; 3.735281; 0; ]
+  [ UTF8-BOM; OK; 2.942807; 0; ]
+  [ UTF16BE-BOM; OK; 5.263013; 0; ]
+]
+}
+{
+title: Unicode Based Lexical Analyzis (Using GNU's Lib IConv);
+title_group: demo/003;
+file_name: 003.sh;
+hwut_info_time: 1454022477L;
+same_f: True;
+result_list: [
+  [ BPC=2; OK; 6.046493; 0; ]
+  [ BPC=2_NDEBUG; OK; 3.300062; 0; ]
+  [ BPC=4; OK; 3.431793; 0; ]
+  [ BPC=4_NDEBUG; OK; 2.842353; 0; ]
+  [ BPC=wchar_t; OK; 3.515526; 0; ]
+]
+}
+{
+title: Unicode Based Lexical Analyzis (Using IBM's ICU Library);
+title_group: demo/003;
+file_name: 003-icu.sh;
+hwut_info_time: 1454022476L;
+same_f: True;
+result_list: [
+  [ BPC=2; OK; 5.097430; 0; ]
+  [ BPC=2_NDEBUG; OK; 3.304275; 0; ]
+  [ BPC=4; OK; 3.055028; 0; ]
+  [ BPC=4_NDEBUG; OK; 3.138529; 0; ]
+  [ BPC=wchar_t; OK; 3.494383; 0; ]
+]
+}
+{
+title: A C-Lexical Analyser;
+title_group: demo/004;
+file_name: 004.sh;
+hwut_info_time: 1454022477L;
+same_f: True;
+result_list: [
+  [ NDEBUG; OK; 3.552481; 0; ]
+  [ DEBUG; OK; 7.188480; 0; ]
+]
+}
+{
+title: Including Files;
+title_group: demo/005;
+file_name: 005.sh;
+hwut_info_time: 1454022477L;
+result_list: [
+  [ 1; OK; 3.338721; 0; ]
+  [ 1_NDEBUG; OK; 3.321509; 0; ]
+  [ 2; OK; 3.836923; 0; ]
+  [ 2_NDEBUG; OK; 3.673070; 0; ]
+]
+}
+{
+title: Pseudo Ambiguous Post Conditions;
+title_group: demo/006;
+file_name: 006.sh;
+hwut_info_time: 1454022477L;
+same_f: True;
+result_list: [
+  [ NDEBUG; OK; 3.271906; 0; ]
+  [ DEBUG; OK; 3.958618; 0; ]
+]
+}
+{
+title: Miscellaneous Features;
+title_group: demo/007;
+file_name: 007.sh;
+hwut_info_time: 1454022476L;
+same_f: True;
+result_list: [
+  [ NDEBUG; OK; 3.233911; 0; ]
+  [ DEBUG; OK; 3.762559; 0; ]
+]
+}
+{
+title: Interface to Bison/Yacc (Contributed by Marco Antonelli);
+title_group: demo/008;
+file_name: 008.sh;
+hwut_info_time: 1454022476L;
+same_f: True;
+result_list: [
+  [ NDEBUG; OK; 3.962807; 0; ]
+  [ DEBUG; OK; 4.014027; 0; ]
+]
+}
+{
+title: Lexers on pipes, sockets, and the command line.;
+title_group: demo/009;
+file_name: 009.sh;
+hwut_info_time: 1472392934L;
+result_list: [
+  [ stdin; OK; 3.548493; 0; ]
+  [ stdin-utf8; OK; 7.405312; 0; ]
+  [ socket; OK; 6.203948; 0; ]
+  [ socket-utf8; OK; 9.129661; 0; ]
+  [ command-line; OK; 3.803433; 0; ]
+  [ command-line-utf8; OK; 6.728768; 0; ]
+]
+}
+{
+title: Manual Buffer Filling (w/o Converter);
+title_group: demo/010;
+file_name: 010.sh;
+hwut_info_time: 1473657550L;
+result_list: [
+  [ feeder-plain; OK; 3.456691; 0; ]
+  [ feeder-converter; OK; 15.669296; 0; ]
+  [ gavager-plain; OK; 2.988057; 0; ]
+  [ gavager-converter; OK; 6.915871; 0; ]
+  [ point-plain; OK; 3.166397; 0; ]
+]
+}
+{
+title: Engine Encoding (Example ISO8859-7);
+title_group: demo/011;
+file_name: 011.sh;
+hwut_info_time: 1472451535L;
+same_f: True;
+result_list: [
+  [ iso8859-7; OK; 3.494597; 1082773074; ]
+  [ utf8; FAIL; 3.895068; 0; ]
+  [ utf16-be; FAIL; 3.460223; 0; ]
+  [ utf16-le; FAIL; 3.586456; 0; ]
+]
+}
+{
+title: Engine Encoding UTF16;
+title_group: demo/011b;
+file_name: 011b.sh;
+hwut_info_time: 1472393281L;
+same_f: True;
+result_list: [
+  [ LE; OK; 3.187641; 0; ]
+  [ BE; OK; 3.466922; 0; ]
+]
+}
+{
+title: Single Application/Multiple Lexical Analyzers;
+title_group: demo/012;
+file_name: 012.sh;
+hwut_info_time: 1454022477L;
+same_f: True;
+result_list: [
+  [ NDEBUG; OK; 6.304799; 0; ]
+  [ DEBUG; OK; 9.589293; 0; ]
+]
+}
+{
+title: Multiple Lexical Analyzers -- shared token;
+title_group: demo/012b;
+file_name: 012b.sh;
+hwut_info_time: 1454022477L;
+same_f: True;
+result_list: [
+  [ NDEBUG; OK; 6.125057; 0; ]
+  [ DEBUG; OK; 10.679591; 0; ]
+]
+}

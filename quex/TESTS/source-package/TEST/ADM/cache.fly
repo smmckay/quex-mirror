@@ -1,0 +1,42 @@
+{
+title: C;
+title_group: Source Packager;
+file_name: test-c.sh;
+hwut_info_time: 1454022470L;
+same_f: True;
+result_list: [
+  [ plain; OK; 1.416217; 0; ]
+  [ iconv; OK; 1.263173; 0; ]
+  [ icu; OK; 1.480816; 0; ]
+  [ codec; OK; 1.143697; -396965334; ]
+  [ codec-utf8; OK; 1.273692; 0; ]
+  [ codec-utf16; OK; 1.168920; 0; ]
+  [ post-categorizer; OK; 1.625014; 0; ]
+  [ no-string-accumulator; OK; 1.404831; 0; ]
+  [ no-include-stack; OK; 1.264715; 0; ]
+  [ no-counter; OK; 1.330261; 0; ]
+  [ manual-token-class; OK; 1.084381; 0; ]
+  [ customized-token-class; OK; 1.390729; 0; ]
+]
+}
+{
+title: C++;
+title_group: Source Packager;
+file_name: test-cpp.sh;
+hwut_info_time: 1454022470L;
+same_f: True;
+result_list: [
+  [ plain; OK; 1.338517; 0; ]
+  [ iconv; OK; 1.305766; 0; ]
+  [ icu; OK; 1.415234; 0; ]
+  [ codec; OK; 1.427285; -1161511198; ]
+  [ codec-utf8; OK; 1.287689; 0; ]
+  [ codec-utf16; OK; 1.304770; 0; ]
+  [ post-categorizer; OK; 1.480334; 0; ]
+  [ no-string-accumulator; OK; 1.235812; 0; ]
+  [ no-include-stack; OK; 1.360527; 0; ]
+  [ no-counter; OK; 1.294788; 0; ]
+  [ manual-token-class; OK; 1.012119; 0; ]
+  [ customized-token-class; OK; 1.102538; 0; ]
+]
+}

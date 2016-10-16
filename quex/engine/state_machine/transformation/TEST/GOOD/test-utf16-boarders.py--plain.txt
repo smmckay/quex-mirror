@@ -1,0 +1,32 @@
+
+Good Sequences: ________________________________________________________
+
+Accept: 80
+Accept: D7FF
+Accept: E000
+Accept: FFFF
+Accept: D800.DC00
+Accept: DBFF.DFFF
+
+Bad Sequences: _________________________________________________________
+
+None: DC00
+None: DFFF
+None: DC00
+None: DFFF
+None: DC00
+None: DFFF
+None: DC00
+None: DFFF
+None: DC00.DC00
+None: DFFF.DC00
+None: D800.00
+None: D800.DBFF
+None: D800.E000
+None: D800.110000
+None: DC00.DFFF
+None: DFFF.DFFF
+None: DBFF.00
+None: DBFF.DBFF
+None: DBFF.E000
+None: DBFF.110000

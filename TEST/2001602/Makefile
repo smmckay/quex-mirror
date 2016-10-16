@@ -52,8 +52,10 @@ lex_codec:
 #-DQUEX_OPTION_DEBUG_SHOW 
 
 clean:
+	rm -rf EasyLexer*
 	rm -rf $(X)-*
 	rm -rf $(X).cpp
 	rm -rf $(X)
 	rm -rf a.out
 	rm -rf lex_icu lex_iconv lex_codec
+	rm -rf stats.log

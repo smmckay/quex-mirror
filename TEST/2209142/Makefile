@@ -33,6 +33,7 @@ good: ../lexer-simply.cpp
 clean:	
 	@rm -f $(ENGINE_SOURCES)
 	@rm -f Simple*
+	@rm -f Good*
 	@rm -f lexer.o
 	@rm -f lexer
 	@rm -f *.bak

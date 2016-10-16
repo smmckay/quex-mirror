@@ -108,6 +108,7 @@ clean:
 	rm -rf $(X)-*
 	rm -rf $(X).cpp
 	rm -rf $(X).c
+	rm -rf $(X).h
 	rm -rf $(X)
 	rm -rf lex_iconv   lex_icu   lex_codec
 	rm -rf lex_iconv_c lex_icu_c lex_codec_c
