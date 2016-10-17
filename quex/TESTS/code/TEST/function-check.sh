@@ -26,11 +26,9 @@ if [[ "$1" = "--hwut-info" ]]; then
 fi
 
 # Find all function definitions 
-functions_defined=$(mktemp)
-functions_called=$(mktemp)
-functions_unused=$(mktemp)
-grep_expression=$(mktemp)
 tmp_file=$(mktemp)
+#debug=true
+#show=true
 
 if [[ "$1" = "example" ]]; then
     file_list=function-check-example.py
@@ -38,62 +36,46 @@ else
     file_list=$(find $QUEX_PATH . -name "*.py")
 fi
 
-for file in $file_list; do
-    sed -e 's/#.*$//' $file > $tmp_file
+all_content=$(mktemp)
+cat $file_list > $all_content
 
-    grep -soe "^ *def *[a-zA-Z_0-9]\+(" $tmp_file \
-         | tr -d "(" \
-         | awk '{ print $2; }' \
-    >> $functions_defined
+sed -e 's/#.*$//' $all_content > $tmp_file
+mv $tmp_file $all_content
 
-    grep -se "\\b[a-zA-Z_0-9]\+(" $tmp_file \
-          | awk '! /^ *def +[a-zA-Z_0-9]+\(/ { print; }' \
-          | grep -soe "\\b[a-zA-Z_0-9]\+(" \
-          | tr -d "(" \
-    >> $functions_called
+functions_defined=$(grep -soe "^ *def *[a-zA-Z_0-9]\+(" $all_content \
+                    | tr -d "(" \
+                    | awk '{ print $2; }')
+
+functions_unused=()
+for name in $(echo $functions_defined); do
+    count=$(grep -c "$name" $all_content)
+    if [ "$count" -lt "2" ]; then
+        functions_unused+=($name)
+    fi
 done
 
-#echo "-( defined )----------"
-#cat $functions_defined
-#echo "----------------------"
-#echo "-( called )-----------"
-#cat $functions_called
-#echo "----------------------"
-
-if [[ "$debug" = "true" ]]; then
-    wc $functions_defined
-    wc $functions_called
+if [[ "$show" = "true" ]]; then
+    echo "-( defined )----------"
+    echo $functions_defined
+    echo "----------------------"
+    echo "-( called )-----------"
+    echo ${functions_unused[@]}
+    echo "----------------------"
 fi
-
-sort -u $functions_defined > $tmp_file; mv $tmp_file $functions_defined
-sort -u $functions_called  > $tmp_file; mv $tmp_file $functions_called
-
-if [[ "$debug" = "true" ]]; then
-    wc $functions_defined
-    wc $functions_called
-fi
-
-echo "Functions that are defined, but never used (?) <no output is good output>"
-diff --new-line-format="" --unchanged-line-format="" \
-     $functions_defined $functions_called \
-> $functions_unused
 
 if [[ "$1" = "compile" ]] || [[ "$2" = "compile" ]]; then
-    cat $functions_unused | awk '{ print "\\\\bdef *" $1 "("; }' > $tmp_file
+    echo ${functions_unused[@]} | tr " " "\n" | awk '{ print "\\\\bdef *" $1 "("; }' > $tmp_file
     while read fdef; do
         grep -sHIne "$fdef" $QUEX_PATH -r --include "*.py"
     done < $tmp_file
 else
-    cat $functions_unused
+    echo ${functions_unused[@]} | tr " " "\n" 
 fi
 
 # python ./function-check-side-kick.py $functions_unused > $grep_expressions
 # bash $grep_expressions
 
-rm -f $functions_defined
-rm -f $functions_called
-rm -f $functions_unused
-rm -f $grep_expression
 rm -f $tmp_file
+rm -f $all_content
 
 echo "<terminated>"

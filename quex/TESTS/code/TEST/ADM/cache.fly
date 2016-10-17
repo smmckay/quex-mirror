@@ -1,7 +1,7 @@
 {
 file_name: function-check-example.py;
 result_list: [
-  [ ; NO GOOD FILE; 0.005993; 0; ]
+  [ ; NO GOOD FILE; 0.005863; 0; ]
 ]
 }
 {
@@ -10,7 +10,7 @@ file_name: check-default-configuration.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.021675; -1256193323; ]
+  [ ; OK; 0.009584; -1256193323; ]
 ]
 }
 {
@@ -20,7 +20,7 @@ hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ py:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.072516; 525806180; ]
+  [ ; OK; 0.041964; 525806180; ]
 ]
 }
 {
@@ -29,7 +29,7 @@ file_name: function-check.sh;
 hwut_info_time: 1476602439L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; NO GOOD FILE; 12.756374; 0; ]
+  [ ; NO GOOD FILE; 9.338159; 0; ]
 ]
 }
 {
@@ -38,7 +38,7 @@ file_name: pyflakes-check.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 89.518275; 0; ]
+  [ ; FAIL; 78.836793; 0; ]
 ]
 }
 {
@@ -47,8 +47,8 @@ file_name: command_line_options-verify-doc.py;
 hwut_info_time: 1461220443L;
 same_f: True;
 result_list: [
-  [ man; OK; 0.083154; -1113552213; ]
-  [ sphinx; OK; 0.072235; 0; ]
+  [ man; OK; 0.047947; -1113552213; ]
+  [ sphinx; OK; 0.048442; 0; ]
 ]
 }
 {
@@ -57,7 +57,7 @@ file_name: test-exceptions-in-place.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.635266; 0; ]
+  [ ; OK; 0.516525; 0; ]
 ]
 }
 {
@@ -65,8 +65,8 @@ title: Include Guards for C/C++;
 file_name: include_guard.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ convention; OK; 0.168129; 0; ]
-  [ undefinition; OK; 0.218494; 0; ]
+  [ convention; OK; 0.162609; 0; ]
+  [ undefinition; OK; 0.160305; 0; ]
 ]
 }
 {
@@ -74,7 +74,7 @@ title: Propper undefinition of configuration parameters.;
 file_name: macro-check.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.053175; 0; ]
+  [ ; OK; 0.036726; 0; ]
 ]
 }
 {
@@ -84,6 +84,6 @@ file_name: test-token_id_file-find_ids.py;
 hwut_info_time: 1461220443L;
 happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.217141; 0; ]
+  [ ; OK; 0.155337; 0; ]
 ]
 }
