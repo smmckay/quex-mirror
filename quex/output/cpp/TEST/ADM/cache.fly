@@ -4,7 +4,7 @@ file_name: test-token_class.py;
 hwut_info_time: 1461220443L;
 happy_pattern_list: [ line \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.123809; 0; ]
+  [ ; OK; 0.107076; 0; ]
 ]
 }
 {
@@ -14,24 +14,24 @@ file_name: test-counter.py;
 hwut_info_time: 1476531491L;
 same_f: True;
 result_list: [
-  [ ascii-1; OK; 0.418279; 0; ]
-  [ ascii-1-wo-ReferenceP; OK; 0.428678; 0; ]
-  [ utf_16_le-1; OK; 0.478760; 0; ]
-  [ utf_16_le-1-wo-ReferenceP; OK; 0.497054; 0; ]
-  [ utf_16_le-2; OK; 0.489886; 0; ]
-  [ utf_16_le-2-wo-ReferenceP; OK; 0.481247; 0; ]
-  [ utf_32_le-1; OK; 0.425331; 0; ]
-  [ utf_32_le-1-wo-ReferenceP; OK; 0.427392; 0; ]
-  [ cp737-1; OK; 0.486032; 0; ]
-  [ cp737-1-wo-ReferenceP; OK; 0.483424; 0; ]
-  [ utf_8-1; OK; 0.505648; 0; ]
-  [ utf_8-1-wo-ReferenceP; OK; 0.511784; 0; ]
-  [ utf_8-2; OK; 0.498110; 0; ]
-  [ utf_8-2-wo-ReferenceP; OK; 0.596419; 0; ]
-  [ utf_8-3; OK; 0.554862; 0; ]
-  [ utf_8-3-wo-ReferenceP; OK; 0.504871; 0; ]
-  [ utf_8-4; FAIL; 6.789710; 0; ]
-  [ utf_8-4-wo-ReferenceP; FAIL; 7.113720; 0; ]
+  [ ascii-1; OK; 0.386772; 0; ]
+  [ ascii-1-wo-ReferenceP; OK; 0.391856; 0; ]
+  [ utf_16_le-1; OK; 0.463347; 0; ]
+  [ utf_16_le-1-wo-ReferenceP; OK; 0.416154; 0; ]
+  [ utf_16_le-2; OK; 0.398095; 0; ]
+  [ utf_16_le-2-wo-ReferenceP; OK; 0.415158; 0; ]
+  [ utf_32_le-1; OK; 0.394338; 0; ]
+  [ utf_32_le-1-wo-ReferenceP; OK; 0.391830; 0; ]
+  [ cp737-1; OK; 0.398647; 0; ]
+  [ cp737-1-wo-ReferenceP; OK; 0.408501; 0; ]
+  [ utf_8-1; OK; 0.493835; 0; ]
+  [ utf_8-1-wo-ReferenceP; OK; 0.507255; 0; ]
+  [ utf_8-2; OK; 0.477913; 0; ]
+  [ utf_8-2-wo-ReferenceP; OK; 0.481809; 0; ]
+  [ utf_8-3; OK; 0.477383; 0; ]
+  [ utf_8-3-wo-ReferenceP; OK; 0.499607; 0; ]
+  [ utf_8-4; FAIL; 6.573620; 0; ]
+  [ utf_8-4-wo-ReferenceP; FAIL; 6.491234; 0; ]
 ]
 }
 {
@@ -40,9 +40,9 @@ title_group: Converter;
 file_name: test-converter-x.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 1; OK; 0.120671; 0; ]
-  [ 2; OK; 0.128053; 0; ]
-  [ 3; OK; 0.102000; 0; ]
+  [ 1; OK; 0.092141; 0; ]
+  [ 2; OK; 0.093405; 0; ]
+  [ 3; OK; 0.093040; 0; ]
 ]
 }
 {
@@ -51,10 +51,10 @@ title_group: Converter;
 file_name: test-converter-C.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ cp037; OK; 0.577513; 0; ]
-  [ cp737; OK; 0.512947; 0; ]
-  [ cp866; OK; 0.608931; 0; ]
-  [ cp1256; OK; 0.584920; 0; ]
+  [ cp037; OK; 0.557377; 0; ]
+  [ cp737; OK; 0.504901; 0; ]
+  [ cp866; OK; 0.492245; 0; ]
+  [ cp1256; OK; 0.520277; 0; ]
 ]
 }
 {
@@ -63,9 +63,9 @@ title_group: Converter;
 file_name: test-converter.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 1; OK; 0.115666; 0; ]
-  [ 2; OK; 0.121967; 0; ]
-  [ 3; OK; 0.106539; 0; ]
-  [ 4; OK; 0.132776; 0; ]
+  [ 1; OK; 0.092559; 0; ]
+  [ 2; OK; 0.092340; 0; ]
+  [ 3; OK; 0.093738; 0; ]
+  [ 4; OK; 0.091378; 0; ]
 ]
 }

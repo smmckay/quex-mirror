@@ -288,6 +288,8 @@ os.system("gcc -I$QUEX_PATH test.c -o test")
 os.system("./test")
 try:    os.remove("./test.c")
 except: pass
+try:    os.remove("./test")
+except: pass
 
 
 

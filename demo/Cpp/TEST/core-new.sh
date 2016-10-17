@@ -35,6 +35,7 @@ if [[ "$lexer_name" == "" ]]; then
     lexer_name="./lexer"
 fi
 
+chmod a+rx $QUEX_PATH/TEST/valgrindi.sh
 $QUEX_PATH/TEST/valgrindi.sh tmp-valgrind.log $lexer_name $args_to_lexer
 cat tmp-valgrind.log; rm -f tmp-valgrind.log
 

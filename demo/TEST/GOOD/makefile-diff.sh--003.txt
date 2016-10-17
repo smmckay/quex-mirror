@@ -17,7 +17,3 @@
 ---
 > EasyLexer.c: definitions.qx end_of_file.qx program.qx 
 > 		 --language        C                      \
-< 	rm -f lexer
-< 	rm -f bom-lexer
----
-> 	rm -f lexer lexer-with-bom

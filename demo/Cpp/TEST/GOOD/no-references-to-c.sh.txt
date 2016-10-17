@@ -4,8 +4,6 @@
 
 -- Check for references to 'Cpp demos' --
 009.sh:7:cd $QUEX_PATH/demo/Cpp/009
-010b.sh:7:cd $QUEX_PATH/demo/Cpp/010
-010c.sh:6:cd $QUEX_PATH/demo/Cpp/010
 010.sh:7:cd $QUEX_PATH/demo/Cpp/010
 011b.sh:8:cd $QUEX_PATH/demo/Cpp/011
 011.sh:18:cd $QUEX_PATH/demo/Cpp/011

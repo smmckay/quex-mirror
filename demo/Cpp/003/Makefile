@@ -106,5 +106,4 @@ clean:
 	rm -f *.o
 	rm -f *.bak
 	rm -f *.E
-	rm -f lexer
-	rm -f bom-lexer
+	rm -f lexer lexer-with-bom
