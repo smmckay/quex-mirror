@@ -122,9 +122,6 @@ class Lng_Cpp(dict):
         return cpp.lexeme_macro_clean_up
 
     def INPUT_P(self):                             return "me->buffer._read_p"
-    def INPUT_P_INCREMENT(self):                   return "++(me->buffer._read_p);"
-    def INPUT_P_DECREMENT(self):                   return "--(me->buffer._read_p);"
-    def INPUT_P_ADD(self, Offset):                 return "QUEX_NAME(Buffer_read_p_add_offset)(&me->buffer, %i);" % Offset
     def INPUT_P_TO_LEXEME_START(self):             return "me->buffer._read_p = me->buffer._lexeme_start_p;"
     def INPUT_P_DEREFERENCE(self, Offset=0): 
         if Offset == 0:  return "*(me->buffer._read_p)"
@@ -146,9 +143,6 @@ class Lng_Cpp(dict):
         # content is loaded. Not so easy; must be carefully approached.
         return "    %s\n" % self.ASSIGN("me->buffer._lexatom_before_lexeme_start", 
                                         self.INPUT_P_DEREFERENCE(-1))
-
-    def DEFINE(self, NAME, VALUE):
-        return "#define %s %s\n" % (NAME, VALUE)
 
     def UNDEFINE(self, NAME):
         return "\n#undef %s\n" % NAME
@@ -686,9 +680,6 @@ class Lng_Cpp(dict):
                 else:      return "if( %s ) "      % condition
             else:          return "else if( %s ) " % condition
 
-    def IF_GOTO(self, LValue, Condition, RValue, DoorId, FirstF=True, dial_db=None):
-        return "%s %s\n" % (self.IF(LValue, Condition, RValue, FirstF, True), self.GOTO(DoorId, dial_db))
-
     def IF_INPUT(self, Condition, Value, FirstF=True, NewlineF=True):
         return self.IF("input", Condition, Value, FirstF, SimpleF=not NewlineF)
 
@@ -757,25 +748,6 @@ class Lng_Cpp(dict):
 
     def ASSIGN(self, X, Y):
         return "%s = %s;" % (X, Y)
-
-    def ACCESS_INPUT(self, txt=None, InputAction=E_InputActions.DEREF, Indent=0):
-        code = {
-            E_InputActions.DEREF:                ["%s\n" % self.ASSIGN("input", self.INPUT_P_DEREFERENCE())],
-
-            E_InputActions.INCREMENT:            ["%s\n" % self.INPUT_P_INCREMENT()],
-            
-            E_InputActions.INCREMENT_THEN_DEREF: [        "%s\n" % self.INPUT_P_INCREMENT(),
-                                                  Indent, "%s\n" % self.ASSIGN("input", self.INPUT_P_DEREFERENCE())], 
-            
-            E_InputActions.DECREMENT:            ["%s\n" % self.INPUT_P_DECREMENT()], 
-            
-            E_InputActions.DECREMENT_THEN_DEREF: [        "%s\n" % self.INPUT_P_DECREMENT(),
-                                                  Indent, "%s\n" % self.ASSIGN("input", self.INPUT_P_DEREFERENCE())], 
-        }[InputAction]
-
-        if txt is None: return "".join(code)
-
-        txt.extend(code)
 
     def STATE_DEBUG_INFO(self, TheState, GlobalEntryF):
         assert isinstance(TheState, Processor)
@@ -1010,14 +982,6 @@ class Lng_Cpp(dict):
            self.POSITIONING(X),
            self.GOTO(door_id, dial_db)
         ]
-
-    def if_pre_context(self, PreContextId, ElseStr):
-        if   PreContextId == E_PreContextIDs.BEGIN_OF_LINE:
-            return "    %sif( me->buffer._lexatom_before_lexeme_start == '\\n' ) {" % ElseStr
-        elif PreContextId != E_PreContextIDs.NONE:
-            return "    %sif( pre_context_%i_fulfilled_f ) {" % (ElseStr, PreContextId)
-        else:
-            return "    %s {\n" % ElseStr
 
 cpp_include_Multi_i_str = """
 #include $$HEADER$$

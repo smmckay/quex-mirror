@@ -65,22 +65,6 @@ class EncodingTrafo:
         else:                         
             return complete_f, sm
 
-    def do_sequence(self, Sequence, fh=-1):
-        return flatten_list_of_lists(
-            self.do_Number(x) for x in Sequence
-        )
-
-    def do_Number(self, number):
-        """RETURNS: A interval sequence that implements the given number.
-        """
-        result = self.do_NumberSet(NumberSet(number))
-        # result: list of interval sequences that implement number set.
-        # number set contains only one element.
-        # => one interval sequence and 
-        #    the interval size must be one.
-        if result is None: return None
-        else:              return result[0]
-
     def do_NumberSet(self, number_set):              
         assert False, "Must be implemented by derived class"
 

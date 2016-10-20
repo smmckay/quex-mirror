@@ -128,7 +128,6 @@ def new_incidence_id():
     """
     return sm_index.get_state_machine_id()
 
-
 class DialDB(object):
     __slots__ = ("__door_id_db", "__gotoed_address_set", "__routed_address_set", "__address_i", "__map_incidence_id_to_state_index" )
     def __init__(self):
@@ -172,9 +171,6 @@ class DialDB(object):
 
     def routed_address_set(self):
         return self.__routed_address_set
-
-    def gotoed_address_set(self):
-        return self.__gotoed_address_set
 
     def address_is_gotoed(self, Adr):
         return Adr in self.__gotoed_address_set

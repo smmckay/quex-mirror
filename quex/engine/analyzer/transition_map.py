@@ -161,12 +161,6 @@ class TransitionMap(list):
             if new_target is None: continue
             self[i] = (interval, new_target)
 
-    def contains_DoorIDs(self, DoorIdSet):
-        for i, info in self:
-            assert isinstance(info, DoorID), "%s%s" % (info.__class__, info)
-            if info in DoorIdSet: return True
-        return False
-
     def has_drop_out(self):
         for interval, target in self:
             if   target == E_StateIndices.DROP_OUT: return True
@@ -524,11 +518,6 @@ class TransitionMap(list):
 
         return
 
-    def assert_no_empty_action(self):
-        for interval, action in self:
-            assert action is not None
-            assert not isinstance(action, list) or len(action) != 0
-
     def assert_continuity(self, StrictF=True):
         """StrictF => Assume that adjacent intervals have been combined. 
 
@@ -597,11 +586,6 @@ class TransitionMap(list):
                "begin: %s != %s" % (self[0][0].begin, Begin)
         assert self[-1][0].end  == End, \
                "end:   %s != %s" % (self[-1][0].end, End)
-
-    def replace_target(self, Original, Replacement):
-        for i, info in enumerate(self):
-            if info[1] == Original:
-                self[i] = (info[0], Replacement)
 
     def get_string(self, Option="utf8", IntervalF=True):
         assert Option in ("hex", "dec", "utf8")

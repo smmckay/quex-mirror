@@ -4,7 +4,7 @@ file_name: outrun.sh;
 hwut_info_time: 1454022469L;
 happy_pattern_list: [ outrun.qx:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 1.347200; 0; ]
+  [ ; OK; 1.323836; 0; ]
 ]
 }
 {
@@ -12,6 +12,6 @@ title: Disable several error messages.;
 file_name: no-error-flags.sh;
 hwut_info_time: 1454022469L;
 result_list: [
-  [ ; OK; 0.432233; 0; ]
+  [ ; OK; 0.412904; 0; ]
 ]
 }

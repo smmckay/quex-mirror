@@ -15,9 +15,6 @@ utf8d = codecs.getdecoder("utf-8")
 def reference_utf8_encoder(UnicodeValue):
     return map(ord, utf8c(eval("u'\\U%08X'" % UnicodeValue))[0])
 
-def reference_utf8_decoder(ByteSequence):
-    return ord(utf8d("".join(map(chr, ByteSequence)))[0])
-
 error_n = 0
 def test(UC):
     global error_n

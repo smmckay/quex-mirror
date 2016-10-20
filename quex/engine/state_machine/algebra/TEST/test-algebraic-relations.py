@@ -42,10 +42,10 @@ def cut_begin(A, B): return module_cut_begin.do(A, B)
 def cut_end(A, B):   return module_cut_end.do(A, B)
 def cut_in(A, B):    return module_cut_in.do(A, B)
 
-def exec_print(ExprStr):
-    exec("sme = %s" % ExprStr.replace("All", "All_sm").replace("None", "None_sm"))
-    print "%s: -->" % ExprStr
-    print beautifier.do(sme)
+#def exec_print(ExprStr):
+#    exec("sme = %s" % ExprStr.replace("All", "All_sm").replace("None", "None_sm"))
+#    print "%s: -->" % ExprStr
+#    print beautifier.do(sme)
 
 protocol = []
 X        = None

@@ -98,11 +98,6 @@ def create_common_declarations(Language,
     #    QuexBufferFallbackN = max(0, QuexBufferSize - 3)
     #if Language == "ANSI-C-PlainMemory": 
     #    QuexBufferFallbackN = max(0, len(TestStr) - 3) 
-
-
-    def activate(txt, Option, Value):
-        return txt.replace("$$#define %s$$" % Option, Option)
-
     txt = ""
     if ShowBufferLoadsF:
         txt += "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS\n" \

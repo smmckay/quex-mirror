@@ -172,16 +172,6 @@ class SmLineColumnCountInfo:
         elif Object.value == E_Count.NONE:   return 0
         return Object.value
 
-    def is_partly_determined(self):
-        # Note, that 'grid' only tells about grid sizes being homogeneous.
-        if   self.line_n_increment                    != E_Count.VOID: return True
-        elif self.column_n_increment                  != E_Count.VOID: return True
-        elif self.grid_step_n                         != E_Count.VOID: return True
-        elif self.line_n_increment_by_lexeme_length   != E_Count.VOID: return True
-        elif self.column_n_increment_by_lexeme_length != E_Count.VOID: return True
-        elif self.grid_step_size_by_lexeme_length     != E_Count.VOID: return True
-        return False
-
     def _consider_variable_character_sizes(self, SM, CodecTrafoInfo):
         """UTF8 and UTF16 counters may have different numbers of chunks that
         represent a single character. In such cases, it cannot be concluded from
@@ -239,16 +229,6 @@ class SmLineColumnCountInfo:
                 self.line_n_increment_by_lexeme_length  = E_Count.VOID
             elif self.line_n_increment_by_lexeme_length != E_Count.VOID:
                 self.line_n_increment_by_lexeme_length  = float(self.line_n_increment_by_lexeme_length) / lexatom_n_per_char
-
-    def counting_required_f(self):
-        """Determine whether the line and column number increment needs to be
-        counted according to the content of a matching lexeme. If it is
-        constant or can be derived from the lexeme length, than it does not
-        need to be counted.  
-        """
-        return    (    self.line_n_increment_by_lexeme_length   == E_Count.VOID) \
-               or (    self.column_n_increment_by_lexeme_length == E_Count.VOID  \
-                   and self.grid_step_size_by_lexeme_length     == E_Count.VOID)
 
     def __str__(self):
         return \
@@ -320,9 +300,6 @@ class UniqueValue(object):
 
     def __ne__(self, Other):
         return not (self == Other)
-
-    def voidify_if_deviant(self, A, B):
-        if A.value != B.value: self.value = E_Count.VOID
 
     def __str__(self):
         return str(self.value)
@@ -577,20 +554,6 @@ class Count(object):
                and self.column_n_increment                   == E_Count.VOID \
                and self.line_n_increment                     == E_Count.VOID \
                and self.grid_step_n                          == E_Count.VOID 
-
-    def voidify_column_n(self):
-        """Set all parameters related to column number counting to 'VOID'.
-           
-           RETURNS: 'True'  if line_n_increment is not VOID and search can continue.
-                    'False' if line_n_increment is also VOID.
-        """
-
-        Count.column_n_increment_by_lexeme_length <<= E_Count.VOID
-
-        self.column_n_increment <<= E_Count.VOID  
-        self.column_index       <<= E_Count.VOID  
-
-        return self.line_n_increment != E_Count.VOID # Abort, if all VOID
 
     def register_result(self, Result):
         """Register the counted numbers for one path to an acceptance state.

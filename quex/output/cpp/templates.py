@@ -367,25 +367,6 @@ def __frame_of_all(Code, Setup):
                     Code,
                     "QUEX_NAMESPACE_MAIN_CLOSE\n"])                     
 
-def __get_if_in_character_set(ValueList):
-    assert type(ValueList) == list
-    assert len(ValueList) > 0
-    txt = "if( "
-    for value in ValueList:
-        txt += "input == %i || " % value
-
-    txt = txt[:-3] + ") {\n"
-    return txt
-
-def __get_if_in_interval(TriggerSet):
-    assert TriggerSet.__class__.__name__ == "Interval"
-    assert TriggerSet.size() >= 2
-
-    if TriggerSet.size() == 2:
-        return "if( input == %i || input == %i ) {\n" % (TriggerSet.begin, TriggerSet.end - 1)
-    else:
-        return "if( input >= %i && input < %i ) {\n" % (TriggerSet.begin, TriggerSet.end)
-
 def __condition(txt, CharSet):
     first_f = True
     for interval in CharSet.get_intervals(PromiseToTreatWellF=True):
@@ -398,73 +379,4 @@ def __condition(txt, CharSet):
             txt.append("(C) == 0x%X || (C) == 0x%X" % (interval.begin, interval.end - 1))
         else:
             txt.append("(C) <= 0x%X && (C) < 0x%X" % (interval.begin, interval.end))
-
-def __indentation_add(Info):
-    # (0) If all involved counts are single spaces, the 'counting' can be done
-    #     easily by subtracting 'end - begin', no adaption.
-    indent_txt = " " * 16
-    if Info.homogeneous_spaces():
-        return ""
-
-    def __do(txt, CharSet, Content):
-        txt.append(indent_txt + "if( ")
-        __condition(txt, CharSet)
-        txt.append(" ) { ")
-        txt.append(Content)
-        txt.append(" }\\\n")
-
-    txt       = []
-    spaces_db = {} # Sort same space counts together
-    grid_db   = {} # Sort same grid counts together
-    for name, count_parameter in Info.count_db.items():
-        count         = count_parameter.get()
-        character_set = Info.character_set_db[name].get()
-        if count == "bad": continue
-        # grid counts are indicated by negative integer for count.
-        if count >= 0:
-            spaces_db.setdefault(count, NumberSet()).unite_with(character_set)
-        else:
-            grid_db.setdefault(count, NumberSet()).unite_with(character_set)
-
-    for count, character_set in spaces_db.items():
-        __do(txt, character_set, "(I) += %i;" % count)
-
-    for count, character_set in grid_db.items():
-        __do(txt, character_set, "(I) += (%i - ((I) %% %i));" % (abs(count), abs(count)))
-
-    return "".join(txt)
-
-def __indentation_check_whitespace(Info):
-    all_character_list = map(lambda x: x.get(), Info.character_set_db.values())
-    assert len(all_character_list) != 0
-
-    number_set = all_character_list[0]
-    for character_set in all_character_list[1:]:
-        number_set.unite_with(character_set)
-
-    txt = []
-    __condition(txt, number_set)
-    return "".join(txt)
-
-def __get_switch_block(VariableName, CaseCodePairList):
-    txt = [0, "switch( %s ) {\n" % VariableName]
-    next_i = 0
-    L = len(CaseCodePairList)
-    CaseCodePairList.sort(key=itemgetter(0))
-    for case, code in CaseCodePairList: 
-        next_i += 1
-        txt.append(1)
-        case_label = "0x%X" % case
-        if next_i != L and CaseCodePairList[next_i][1] == code:
-            txt.append("case %s: %s\n" % (case_label, " " * (7 - len(case_label))))
-        else:
-            txt.append("case %s: %s" % (case_label, " " * (7 - len(case_label))))
-            if type(code) == list: txt.extend(code)
-            else:                  txt.append(code)
-            txt.append("\n")
-            
-    txt.append(0)
-    txt.append("}\n")
-    return txt
-
 

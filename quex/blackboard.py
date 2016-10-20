@@ -298,13 +298,6 @@ def standard_incidence_db_is_mandatory(IncidenceId):
         E_IncidenceIDs.INDENTATION_BAD,
     ]
 
-def standard_incidence_db_is_immutable(IncidenceId):
-    # Some pattern ids cannot be adapted. If their Incidence Id is listed
-    # below it will always remain the same.
-    return IncidenceId in [
-        E_IncidenceIDs.INDENTATION_HANDLER
-    ]
-
 def standard_incidence_db_get_terminal_type(IncidenceId):
     return {
         E_IncidenceIDs.MATCH_FAILURE:   E_TerminalType.MATCH_FAILURE,
@@ -325,39 +318,6 @@ def standard_incidence_db_get_terminal_type(IncidenceId):
 # Mode-s.
 #-----------------------------------------------------------------------------------------
 mode_prep_prep_db = {}
-def OLD_determine_base_mode_name_sequence(mode, ModePrepPrepDb, 
-                                      InheritancePath=None, 
-                                      base_mode_sequence=None):
-    if InheritancePath is None: InheritancePath = []
-    if base_mode_sequence is None: base_mode_sequence = []
-
-    if mode.name in InheritancePath[:-1]:
-        msg = "mode '%s'\n" % InheritancePath[0]
-        for mode_name in InheritancePath[InheritancePath.index(mode.name) + 1:]:
-            msg += "   inherits mode '%s'\n" % mode_name
-        msg += "   inherits mode '%s'" % mode.name
-
-        error.log("circular inheritance detected:\n" + msg, mode.sr)
-
-    base_mode_name_list_reversed = deepcopy(mode.direct_base_mode_name_list)
-    #base_mode_name_list_reversed.reverse()
-    for name in base_mode_name_list_reversed:
-        # -- does mode exist?
-        error.verify_word_in_list(name, ModePrepPrepDb.keys(),
-                            "Mode '%s' inherits mode '%s' which does not exist." % (mode.name, name),
-                            mode.sr)
-
-        if name in map(lambda m: m.name, base_mode_sequence): continue
-
-        # -- grab the mode description
-        base_mode = ModePrepPrepDb[name]
-        determine_base_mode_name_sequence(base_mode, ModePrepPrepDb, 
-                                          InheritancePath + [mode.name], base_mode_sequence)
-
-    base_mode_sequence.append(mode)
-
-    return [mode.name for m in base_mode_sequence]
-
 def determine_base_mode_name_sequence(mode, ModePrepPrepDb):
     """Determine the sequence of base modes. The type of sequencing determines
        also the pattern precedence. The 'deep first' scheme is chosen here. For
@@ -380,10 +340,14 @@ def determine_base_mode_name_sequence(mode, ModePrepPrepDb):
     """
     Node = namedtuple("Node", ("mode_name", "inheritance_path"))
     global base_name_list_db
-    result   = []
+    result   = [ mode.name ]
+    done     = set()
     worklist = [ Node(mode.name, []) ]
     while worklist:
-        node = worklist.pop()
+        node = worklist.pop(0)
+        if node.mode_name in done: continue
+        done.add(node.mode_name)
+
         new_inheritance_path = node.inheritance_path + [node.mode_name]
         
         error.verify_word_in_list(node.mode_name, 
@@ -391,19 +355,18 @@ def determine_base_mode_name_sequence(mode, ModePrepPrepDb):
                                   "Mode '%s' inherits mode '%s' which does not exist." \
                                   % (new_inheritance_path[-1], node.mode_name),
                                   ModePrepPrepDb[new_inheritance_path[-1]].sr)
+
         mode = ModePrepPrepDb[node.mode_name]
 
         detect_circular_inheritance(mode, node.inheritance_path)
 
-        result.append(node.mode_name)
-        worklist.extend(
-            reversed([ 
-                Node(name, new_inheritance_path) 
-                for name in mode.direct_base_mode_name_list 
-            ])
-        )
+        i = result.index(node.mode_name)
+        for name in reversed(mode.direct_base_mode_name_list):
+            if name not in result:
+                result.insert(i, name)
+        worklist.extend(Node(name, new_inheritance_path) for name in mode.direct_base_mode_name_list)
 
-    return list(reversed(result))
+    return result
 
 def detect_circular_inheritance(mode, InheritancePath):
     if mode.name not in InheritancePath: return

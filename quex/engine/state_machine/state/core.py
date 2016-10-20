@@ -72,10 +72,6 @@ class State:
     def target_map(self):
         return self.__target_map
 
-    @typed(TM=TargetMap)
-    def set_target_map(self, TM):
-        self.__target_map = TM
-
     def has_transitions(self):
         return not self.target_map.is_empty()
 

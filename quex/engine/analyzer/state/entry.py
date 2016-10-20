@@ -70,19 +70,10 @@ class Entry(object):
     def get(self, TheTransitionID):
         return self.__db.get(TheTransitionID)
 
-    def get_action(self, StateIndex, FromStateIndex, TriggerId=0):
-        return self.__db.get(TransitionID(StateIndex, FromStateIndex, TriggerId))
-
     def get_command_list(self, StateIndex, FromStateIndex, TriggerId=0):
         action = self.__db.get(TransitionID(StateIndex, FromStateIndex, TriggerId))
         if action is None: return None
         else:              return action.command_list
-
-    def get_command_list_by_door_id(self, DoorId):
-        for action in self.__db.itervalues():
-            if action.door_id == DoorId:
-                return action.command_list
-        return None
 
     def get_door_id(self, StateIndex, FromStateIndex, TriggerId=0):
         """RETURN: DoorID of the door which implements the transition 
@@ -99,15 +90,6 @@ class Entry(object):
            transition_id for transition_id, action in self.__db.iteritems()
                          if action.door_id == DoorId 
         ]
-
-    def get_door_id_by_command_list(self, TheOpList):
-        """Finds the DoorID of the door that implements TheOpList.
-           RETURNS: None if no such door exists that implements TheOpList.
-        """
-        for action in self.__db.itervalues():
-            if action.command_list == TheOpList:
-                return action.door_id
-        return None
 
     def absorb(self, Other):
         """Absorbs all, but the 'reload transitions'.
@@ -140,20 +122,6 @@ class Entry(object):
         ta.door_id = DoorID.state_machine_entry(SM_id, self.dial_db)
         return self.enter(ToStateIndex, E_StateIndices.BEFORE_ENTRY, ta)
 
-    def prepend_OpList(self, ToStateIndex, FromStateIndex, TheOpList):
-        transition_id = TransitionID(ToStateIndex, FromStateIndex, TriggerId=0)
-        ta = self.__db.get(transition_id)
-        # A transition_action cannot be changed, once it has a DoorID assigned to it.
-        assert ta.door_id is None
-        ta.command_list = TheOpList.command_list.concatinate(ta.command_list)
-
-    def append_OpList(self, ToStateIndex, FromStateIndex, TheOpList):
-        transition_id = TransitionID(ToStateIndex, FromStateIndex, TriggerId=0)
-        ta = self.__db.get(transition_id)
-        # A transition_action cannot be changed, once it has a DoorID assigned to it.
-        assert ta.door_id is None
-        ta.command_list = ta.command_list.concatinate(TheOpList)
-
     def __get_trigger_id(self, ToStateIndex, FromStateIndex):
         ft = (ToStateIndex, FromStateIndex)
         tmp = self.__trigger_id_db.get(ft)
@@ -165,12 +133,6 @@ class Entry(object):
         if tmp is None: self.__trigger_id_db[ft]  = 0; tmp = 0;
         else:           self.__trigger_id_db[ft] += 1
         return tmp
-
-    def remove_transition_from_states(self, StateIndexSet):
-        assert isinstance(StateIndexSet, set)
-        for transition_id in self.__db.keys():
-            if transition_id.source_state_index in StateIndexSet:
-                del self.__db[transition_id]
 
     def size(self):
         return len(self.__db)
@@ -209,12 +171,6 @@ class Entry(object):
         assert OpId in E_Op
         for action in self.__db.itervalues():
             if action.command_list.has_command_id(OpId): 
-                return True
-        return False
-
-    def has_transitions_to_door_id(self, DoorId):
-        for action in self.__db.itervalues():
-            if action.door_id == DoorId:
                 return True
         return False
 
@@ -320,10 +276,6 @@ class Entry(object):
             command_list_db[action.command_list] = action.door_id
 
         assert self.check_consistency()
-
-    @property 
-    def largest_used_door_sub_index(self):
-        return self.__largest_used_door_sub_index
 
     def check_consistency(self):
         """Any two entries with the same DoorID must have the same command list

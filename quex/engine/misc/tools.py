@@ -135,9 +135,6 @@ class UniformObject(object):
         
         return self._equal(self._content, NewContent)
 
-    def plain_content(self):
-        return self._content
-
     @property
     def content(self):
         if   E_Values.UNASSIGNED == self._content: return None
@@ -210,21 +207,6 @@ def _get_value_check_function(Type):
                 return False
             return is_ok
     return None
-
-def one_true(Iterable, Condition):
-    for x in Iterable:
-        if Condition(x) == True: return True
-    return False
-
-def all_true(Iterable, Condition):
-    for x in Iterable:
-        if Condition(x) != True: return False
-    return True
-
-def none_true(List, Condition):
-    for x in List:
-        if Condition(x) == True: return False
-    return True
 
 def all_isinstance(List, Type):
     if Type is None: return True
@@ -311,10 +293,6 @@ def typed(**_parameters_):
         return modified
     return check_types
 
-def error_abstract_member():
-    x = sys._getframe(1).f_code
-    assert False, "Call to '%s'. Implementation in derived class." % x.co_name
-
 class TypedSet(set):
     def __init__(self, Cls):
         self.__element_class = Cls
@@ -377,10 +355,3 @@ class TypedDict(dict):
         return "%s as value. Found '%s'" % \
                 (self._error(self.__value_class), Value.__class__.__name__)
 
-def return_None(*Any):
-    """A function that returns None independent of the number of arguments."""
-    return None
-
-def return_empty_list(*Any):
-    """A function that returns None independent of the number of arguments."""
-    return []

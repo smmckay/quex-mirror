@@ -337,10 +337,6 @@ class Analyzer:
     def init_state(self):
         return self.state_db[self.init_state_index]
 
-    def get_action_at_state_machine_entry(self):
-        return self.init_state().entry.get_action(self.init_state_index, 
-                                                  E_StateIndices.BEFORE_ENTRY)
-
     def get_depth_db(self):
         """Determine a database which tells about the minimum distance to the initial state.
 
@@ -553,12 +549,6 @@ class Analyzer:
                     continue
                 entry.add_Accepter_on_all(x.pre_context_id, x.acceptance_id)
 
-    def acceptance_storage_post_pone_do(self, StateIndex, PatternId):
-        pass 
-
-    def acceptance_storage_post_pone_can_be_delegate(self, StateIndex, PatternId, MotherAcceptSequence):
-        pass
-            
     def implement_required_position_storage(self, position_storage_db, PathElementDb):
         """
         Store Input Position / Postpone as much as possible.

@@ -446,10 +446,6 @@ class _Trace(object):
     def acceptance_trace(self):
         return self.__acceptance_trace
 
-    @property
-    def storage_db(self):
-        return self.__storage_db
-
     def get(self, PreContextID):
         """RETURNS: _AcceptInfo object for a given PreContextID."""
         for entry in self.__acceptance_trace:
@@ -727,10 +723,6 @@ class _AcceptInfo(_StoreInfo):
                             path_since_positioning, 
                             transition_n_since_positioning) 
         return result
-
-    def index_of_last_acceptance_on_path_since_positioning(self):
-        L = len(self.path_since_positioning)
-        return L - 1 - self.path_since_positioning[::-1].index(self.accepting_state_index)
 
     @property
     def positioning_state_index(self):

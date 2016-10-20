@@ -111,14 +111,6 @@ class MouthStateInfo(StateInfo):
             if recipe is None: return False
         return True
 
-    def entry_recipes_one_determined(self):
-        """ ETURNS: True  -- if at least one entry recipe is determined.
-                    False -- else.
-        """
-        for recipe in self.entry_recipe_db.itervalues():
-            if recipe is not None: return True
-        return False
-    
     def mouth_f(self):
         return True
 

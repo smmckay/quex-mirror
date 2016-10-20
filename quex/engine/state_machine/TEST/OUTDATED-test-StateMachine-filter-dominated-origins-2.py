@@ -28,23 +28,6 @@ def add_priority(A, B):
     print "priority: %s > %s" % (repr(A), repr(B))    
     state_machine_ranking_db_register(A, B)
 
-def register_random_priviledges():    
-    """ -- register some more state priviledges for some of the states before
-           to see if it confuses the algo. The additional states lie beyond
-           1000 so that they do not interfer with the original ones    
-    """
-    for i in range(10):
-        X0 = long(random() * 10) + 1000    
-        X1 = long(random() * 10) + 1000    
-        try:    state_machine_ranking_db_register(X0, X1)
-        except: pass
-        try:    state_machine_ranking_db_register(A, X0)
-        except: pass
-        try:    state_machine_ranking_db_register(C, X1)
-        except: pass
-        try:    state_machine_ranking_db_register(E, X0)
-        except: pass
-
 def print_this(Title):    
     print "---------------------------------------------------------------------"
     print "(*) " + Title    

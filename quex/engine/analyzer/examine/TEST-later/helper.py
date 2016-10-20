@@ -70,9 +70,6 @@ def get_inhomogeneous_array_ip_offset(EntryN, IpOffsetScheme):
         for i in xrange(EntryN) 
     ]
 
-def get_inhomogeneous_array_snapshot_map(EntryN, IpOffsetScheme):
-    pass
-
 def get_required_variable_set(RecipeArray):
     result = set()
     for recipe in RecipeArray:

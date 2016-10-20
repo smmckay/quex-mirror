@@ -1,50 +1,50 @@
 {
 title: FILE;
 title_group: BOM Snap;
-build_time: 0.12821102142333984;
+build_time: 0.18933796882629395;
 file_name: bom.exe;
-hwut_info_time: 1476683061L;
+hwut_info_time: 1476773528L;
 make_dependent_f: True;
 result_list: [
-  [ ; OK; 0.008949; 0; ]
+  [ ; OK; 0.097845; 0; ]
 ]
 }
 {
 title: ifstream;
 title_group: BOM Snap;
-build_time: 0.5532958507537842;
+build_time: 0.6250989437103271;
 file_name: bom-istream.exe;
-hwut_info_time: 1476683060L;
+hwut_info_time: 1476773527L;
 make_dependent_f: True;
 result_list: [
-  [ ; OK; 0.006506; 0; ]
+  [ ; OK; 0.005565; 0; ]
 ]
 }
 {
 title: char stream based.;
 title_group: StrangeStream;
-build_time: 0.528374195098877;
+build_time: 0.5096001625061035;
 file_name: strange_stream.exe;
-hwut_info_time: 1476683061L;
+hwut_info_time: 1476773528L;
 make_dependent_f: True;
 result_list: [
-  [ 2; OK; 0.006141; 0; ]
-  [ 3; OK; 0.005923; 0; ]
-  [ 4; OK; 0.006513; 0; ]
-  [ 5; OK; 0.005420; 0; ]
+  [ 2; OK; 0.005484; 0; ]
+  [ 3; OK; 0.005926; 0; ]
+  [ 4; OK; 0.005641; 0; ]
+  [ 5; OK; 0.005535; 0; ]
 ]
 }
 {
 title: wchar_t stream based.;
 title_group: StrangeStream;
-build_time: 0.5384440422058105;
+build_time: 0.5504119396209717;
 file_name: strange_wstream.exe;
-hwut_info_time: 1476683061L;
+hwut_info_time: 1476773527L;
 make_dependent_f: True;
 result_list: [
-  [ 2; OK; 0.006604; 0; ]
-  [ 3; OK; 0.007257; 0; ]
-  [ 4; OK; 0.006048; 0; ]
-  [ 5; OK; 0.007682; 0; ]
+  [ 2; OK; 0.005577; 0; ]
+  [ 3; OK; 0.005624; 0; ]
+  [ 4; OK; 0.005617; 0; ]
+  [ 5; OK; 0.005600; 0; ]
 ]
 }

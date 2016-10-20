@@ -223,9 +223,6 @@ class ReloadState(Processor):
         self.engine_type = EngineType
         self.dial_db     = dial_db
 
-    def remove_states(self, StateIndexSet):
-        self.entry.remove_transition_from_states(StateIndexSet)
-
     def absorb(self, OtherReloadState):
         # Do not absorb RELOAD_FORWARD into RELOAD_BACKWARD, and vice versa.
         assert self.index == OtherReloadState.index

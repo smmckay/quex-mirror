@@ -86,10 +86,6 @@ class Terminal(Processor):
         self.__incidence_id = IncidenceId
         self.__door_id      = DoorID.incidence(IncidenceId, self.entry.dial_db)
 
-    @typed(Name=(str,unicode))
-    def set_name(self, Name):
-        self.__name = Name
-
     def name(self):
         return self.__name
 
@@ -104,12 +100,6 @@ class Terminal(Processor):
 
     def requires_lexeme_begin_f(self):
         return self.__requires_lexeme_begin_f
-
-    def requires_goto_loop_entry_f(self):
-        return self.__requires_goto_loop_entry_f
-
-    def set_requires_goto_loop_entry_f(self):
-        self.__requires_goto_loop_entry_f = True
 
     def required_register_set(self):
         return self.__required_register_set

@@ -84,9 +84,6 @@ class Class_BACKWARD_INPUT_POSITION(Base):
     def is_BACKWARD_INPUT_POSITION(self):  
         return True
 
-    def incidence_id_of_bipd(self):
-        return self.__incidence_id_of_bipd
-
     def subject_to_reload(self): 
         """When going backwards, this happens only along a lexeme which must
         be entirely in the buffer. Thus, no reload is involved.

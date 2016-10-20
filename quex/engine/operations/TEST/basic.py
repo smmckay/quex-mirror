@@ -23,7 +23,7 @@ from   quex.engine.operations.operation_list         import *
 from   quex.engine.operations.operation_list         import _cost_db, \
                                                 _brancher_set
 from   quex.engine.operations.TEST.helper  import example_db
-from   quex.engine.analyzer.door_id_address_label import DoorID
+from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 import quex.engine.operations.shared_tail  as     command_list_shared_tail
 from   quex.output.core.dictionary       import db
 
@@ -40,6 +40,7 @@ if "--hwut-info" in sys.argv:
     print "Command: Basic;"
     sys.exit()
 
+dial_db = DialDB()
 
 missing_set = set(cmd_id for cmd_id in E_Op if cmd_id != E_Op._DEBUG_Commands)
 def test(Op):
@@ -59,16 +60,23 @@ def test(Op):
         print "   IsBranching: True"
     print "   Cost:        ", _cost_db[Op.id]
     print "   C-code: {"
-    for line in Lng.COMMAND(Op).splitlines():
+    for line in Lng.COMMAND(Op, dial_db).splitlines():
         print "       %s" % line
     print "   }\n"
 
 
+no_example_list = []
 for cmd_id in sorted(E_Op, key=lambda x: "%s" % x):
     if cmd_id == E_Op._DEBUG_Commands: 
         continue
     elif cmd_id not in example_db:
-        sys.exit()
+        no_example_list.append(cmd_id)
+        continue
     for cmd in example_db[cmd_id]:
         test(cmd)
 
+if no_example_list:
+    print "NO EXAMPLES FOR: {"
+    for cmd_id in no_example_list:
+        print "    ", cmd_id
+    print "}"

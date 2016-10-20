@@ -82,19 +82,8 @@ class SingleEntry(object):
             cmd = self.__list[i]
             if cmd.__class__ == OpClass: del self.__list[i]
 
-    def remove_acceptance_id(self, AcceptanceID):
-        L = len(self.__list)
-        for i in xrange(L-1, -1, -1):
-            cmd = self.__list[i]
-            if cmd.acceptance_id() == AcceptanceID: del self.__list[i]
-
     def has_acceptance_id(self, AcceptanceID):
         return any(cmd.acceptance_id() == AcceptanceID
-                   for cmd in self.get_iterable(SeAccept))
-
-    def has_other_acceptance_id(self, AcceptanceID):
-        return any(    cmd.acceptance_id() != E_IncidenceIDs.MATCH_FAILURE
-                   and cmd.acceptance_id() != AcceptanceID
                    for cmd in self.get_iterable(SeAccept))
 
     def has_begin_of_line_pre_context(self):

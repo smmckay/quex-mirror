@@ -67,16 +67,6 @@ def get_supported_command_line_option_description():
         txt += "\n"
     return txt
 
-def search_and_validate(CL, Option):
-    if CL.search(Option) == False: return False
-
-    # Validate command line
-    ufos = CL.unidentified_options(OPTION_DB.keys())
-    if len(ufos) != 0:
-        error.log("Unidentified option(s) = " +  repr(ufos) + "\n" + \
-                  get_supported_command_line_option_description())
-    return True
-
 def __handle_codec(cl):
     codec_name = Setup.query_codec
 

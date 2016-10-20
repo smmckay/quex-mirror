@@ -135,7 +135,3 @@ def do(A, B):
         # 'B.sm_pre_context' matches super set of 'A.sm_pre_context'? 
         return Checker(B_pre_context, A_pre_context).do()
 
-def do_list(SuperPattern_List, AllegedSubPattern):
-    for super_sm in SuperPattern_List:
-        if do(super_sm, AllegedSubPattern) == True: return True
-    return False

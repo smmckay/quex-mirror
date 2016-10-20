@@ -156,11 +156,6 @@ if "unary" in sys.argv:
 
 elif "binary" in sys.argv:
     correct_n = 0
-    def interval_n_iterable():
-        for i in xrange(4):
-            for j in xrange(i, 4):
-                yield (i, j)
-
     def get_border_list(IntervalN):
         border_n   = IntervalN * 2  # 1 begin +  1 end
         field_n    = IntervalN * 3

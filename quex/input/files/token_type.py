@@ -199,9 +199,6 @@ class TokenTypeDescriptor(TokenTypeDescriptorCore):
     def get_file_name(self):
         return self._file_name
 
-    def get_file_name_implementation(self):
-        return self._file_name_implementation
-
     def type_name_length_max(self):
         return self.__type_name_length_max
 
@@ -211,17 +208,8 @@ class TokenTypeDescriptor(TokenTypeDescriptorCore):
     def distinct_members_type_name_length_max(self):
         return self.__distinct_members_type_name_length_max
 
-    def distinct_members_variable_name_length_max(self):
-        return self.__distinct_members_variable_name_length_max
-
     def union_members_type_name_length_max(self):
         return self.__union_members_type_name_length_max
-
-    def union_members_variable_name_length_max(self):
-        return self.__union_members_variable_name_length_max
-
-    def has_member(self, MemberName):
-        return self.__member_db.has_key(MemberName)
 
     def get_member_db(self):
         return self.__member_db

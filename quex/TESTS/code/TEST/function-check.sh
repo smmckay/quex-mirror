@@ -17,11 +17,15 @@
 #     in vim:   ":set makeprg=cat"
 #               ":make tmp.log"
 #
+# CHOICS: 'example' --> self test of this bash script
+#         'real'    --> run on the total code base
+#
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________
 
 if [[ "$1" = "--hwut-info" ]]; then
     echo "Checking for defined but unused functions."
+    echo "CHOICES: example, real;"
     exit
 fi
 
@@ -33,14 +37,12 @@ tmp_file=$(mktemp)
 if [[ "$1" = "example" ]]; then
     file_list=function-check-example.py
 else
-    file_list=$(find $QUEX_PATH . -name "*.py")
+    file_list=$(find $QUEX_PATH . \( -iname "*.py" ! -iname "GetPot.py" ! -iname "interval_handling.py" \) )
 fi
 
 all_content=$(mktemp)
-cat $file_list > $all_content
 
-sed -e 's/#.*$//' $all_content > $tmp_file
-mv $tmp_file $all_content
+sed -e 's/#.*$//' $file_list > $all_content
 
 functions_defined=$(grep -soe "^ *def *[a-zA-Z_0-9]\+(" $all_content \
                     | tr -d "(" \
@@ -48,7 +50,7 @@ functions_defined=$(grep -soe "^ *def *[a-zA-Z_0-9]\+(" $all_content \
 
 functions_unused=()
 for name in $(echo $functions_defined); do
-    count=$(grep -c "$name" $all_content)
+    count=$(grep -c "\b$name\b" $all_content)
     if [ "$count" -lt "2" ]; then
         functions_unused+=($name)
     fi
@@ -69,7 +71,7 @@ if [[ "$1" = "compile" ]] || [[ "$2" = "compile" ]]; then
         grep -sHIne "$fdef" $QUEX_PATH -r --include "*.py"
     done < $tmp_file
 else
-    echo ${functions_unused[@]} | tr " " "\n" 
+    echo ${functions_unused[@]} | tr " " "\n" | sort
 fi
 
 # python ./function-check-side-kick.py $functions_unused > $grep_expressions

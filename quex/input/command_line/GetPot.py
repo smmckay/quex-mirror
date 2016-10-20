@@ -482,7 +482,7 @@ class GetPot:
             
         return 0
 
-    def  argument_contains(self, Idx, FlagList):
+    def argument_contains(self, Idx, FlagList):
         """Check if an argument that is associated with a certain index contains
         a certain flag. If a prefix is specified, the index indicates the number
         inside the list."""

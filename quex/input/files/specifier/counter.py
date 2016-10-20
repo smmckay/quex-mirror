@@ -427,17 +427,6 @@ class CountActionMap_Prep(object):
         result.cut_greater_or_equal(GlobalMax)
         return result
 
-    def column_grid_bad_iterable(self):
-        """Iterate over count command map. Only 'COLUMN' and 'GRID' are reported. 
-        This is for indentation counting.
-        """
-        considered_set = (E_CharacterCountType.COLUMN, 
-                          E_CharacterCountType.GRID, 
-                          E_CharacterCountType.BAD)
-        for character_set, info in self.__map:
-            if info.cc_type in considered_set:
-                yield character_set, info
-
     def find_occupier(self, CharSet, Tolerated):
         """Find a command that occupies the given CharSet, at least partly.
            RETURN: None, if no such occupier exists.
@@ -458,32 +447,6 @@ class CountActionMap_Prep(object):
             if info.cc_type in ignored: continue
             result.unite_with(character_set)
         return result.get_complement(Setup.buffer_codec.source_set)
-
-    def check_homogenous_space_counts(self):
-        common = None
-        for character_set, info in self.__map:
-            if info.cc_type != E_CharacterCountType.COLUMN: 
-                if info.cc_type == E_CharacterCountType.GRID: 
-                    return
-                continue
-            elif type(info.value) in (str, unicode): 
-                # If there is one single 'variable' grid value, 
-                # then no assumptions can be made.
-                return
-            elif common is None:
-                common = info
-            elif common.value != info.value:
-                # space counts are not homogeneous
-                return
-
-        if common is None:
-            return
-            
-        error.warning("Setup does not contain a grid but only homogeneous space counts of %i.\n" \
-                  % common.value + \
-                  "This setup is equivalent to a setup with space counts of 1. Space counts\n" + \
-                  "of 1 are the fastest to compute.", 
-                  common.sr)
 
     def check_grid_specification(self, Value, sr):
         if   Value == 0: 

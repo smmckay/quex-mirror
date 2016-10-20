@@ -36,7 +36,7 @@ class AccepterContentElement(namedtuple("AccepterContentElement_tuple", ("pre_co
     def __new__(self, PreContextId, AcceptanceID):
         return super(AccepterContentElement, self).__new__(self, PreContextId, AcceptanceID)
 
-    def __str_(self):
+    def __str__(self):
         txt = []
         txt.append("%s: accept = %s" % (repr_pre_context_id(self.pre_context_id),
                                         repr_acceptance_id(self.acceptance_id)))

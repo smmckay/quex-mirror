@@ -87,8 +87,12 @@ class PPT_List(list):
         """Collect patterns of all inherited modes. Patterns are like virtual functions
         in C++ or other object oriented programming languages. Also, the patterns of the
         uppest mode has the highest priority, i.e. comes first.
+
+        'pap' = pattern action pair.
         """
         def pap_iterator(ModePrepDb, BaseModeSequence):
+            assert len(BaseModeSequence) == len(set(m.name for m in BaseModeSequence)), \
+                   "Base mode sequences MUST mention each mode only once."
             for mode_hierarchy_index, mode_prep in enumerate(BaseModeSequence):
                 for pap in mode_prep.pattern_action_pair_list:
                     yield mode_hierarchy_index, pap.pattern(), pap.action()

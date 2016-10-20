@@ -117,9 +117,6 @@ class TargetMap:
             result.unite_with(trigger_set)
         return result
 
-    def get_trigger_set_union_complement(self, UniversalSet):
-        return self.get_trigger_set_union().get_complement(UniversalSet)
-
     def get_drop_out_trigger_set_union(self):
         """This function returns the union of all trigger sets that do not
            transit to any target.
@@ -128,9 +125,6 @@ class TargetMap:
 
     def get_epsilon_target_state_index_list(self):
         return self.__epsilon_target_index_list
-
-    def get_non_epsilon_target_state_index_list(self):
-        return self.__db.keys()
 
     def iterable_target_state_indices(self):
         for state_index in self.__db.iterkeys():
@@ -270,15 +264,6 @@ class TargetMap:
         assert type(CharCode) == int
         if self.get_resulting_target_state_index(CharCode) is None: return False
         else:                                                       return True
-
-    def target_of_exact_interval(self, Intvl):
-        """RETURNS: Target State Index, if there is a target that triggers 
-                                        exactly on the given interval.
-                    None, else.
-        """
-        for target, number_set in self.__db.iteritems():
-            if number_set.get_the_only_interval() == Intvl: return target
-        return None
 
     def has_target(self, TargetState):
         if self.__db.has_key(TargetState):                    return True

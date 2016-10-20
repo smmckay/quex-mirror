@@ -185,27 +185,6 @@ class MegaState_Entry(Entry):
         #print "#transition_reassignment_db:", self.__transition_reassignment_db
         return
 
-    def prepare_relation_DoorID_to_Address(self, MegaStateIndex):
-        """In MegaState-s it is conceivable, that the entries of multiple states
-        are implemented in a single entry, thus, there might be the SAME address
-        for multiple DoorID-s. This assignment is performed here.
-        """
-        original_door_id_db = {}
-        for transition_id, transition_action in self.iteritems():
-            original_door_id_db[transition_id] = transition_id.door_id
-            # Setting the DoorID to None ensures that 'categorize()' will
-            # start all over again.
-            transition_action.door_id = None
-
-        self.categorize(MegaStateIndex)
-        same_address_db = {}
-        for transition_id, transition_action in self.iteritems():
-            original_door_id = original_door_id_db[transition_id]
-            same_address_db[original_door_id].append(transition_action.door_id)
-
-        for door_id, door_id_list in same_address_db:
-            self._dial_db.assign_same_address(door_id, door_id_list)
-
 class StateKeyIndexDB(dict):
     """Maintenance of relationships between 'state_keys' of a MegaState and the
        'state_index' of the state which they represent.

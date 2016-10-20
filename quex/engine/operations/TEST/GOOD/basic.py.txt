@@ -7,7 +7,7 @@ Accepter
    }
 
 Assign
-   <Assign: { target=InputP, source=LexemeStartP,  }>
+   <Assign: { source=LexemeStartP, target=InputP,  }>
    Registers:    InputP(w),  LexemeStartP(r), 
    Cost:         1
    C-code: {
@@ -23,8 +23,8 @@ AssignConstant
    }
 
 AssignConstant
-   <AssignConstant: { register=ReferenceP, value=1,  }>
-   Registers:    ReferenceP(w), 
+   <AssignConstant: { register=CountReferenceP, value=1,  }>
+   Registers:    CountReferenceP(w), 
    Cost:         1
    C-code: {
            reference_p = 1;
@@ -118,8 +118,8 @@ GotoDoorId
    Cost:         1
    C-code: {
        goto _1;
-   }
 
+   }
 GotoDoorIdIfInputPNotEqualPointer
    <GotoDoorIdIfInputPNotEqualPointer: { door_id=DoorID(s=33, d=44), pointer=CharacterBeginP,  }>
    Registers:    InputP(r),  CharacterBeginP(r),  ThreadOfControl(w), 
@@ -127,8 +127,8 @@ GotoDoorIdIfInputPNotEqualPointer
    Cost:         1
    C-code: {
        if( me->buffer._read_p != lexatom_begin_p ) goto _1;
-   }
 
+   }
 IfPreContextSetPositionAndGoto
    <IfPreContextSetPositionAndGoto: { pre_context_id=24, router_element=case 66: pos -= 1;  goto Pattern66;,  }>
    Registers:    InputP(wr),  PreContextFlags(r),  PositionRegister(r),  ThreadOfControl(w), 
@@ -136,10 +136,10 @@ IfPreContextSetPositionAndGoto
    Cost:         1
    C-code: {
        if( pre_context_24_fulfilled_f ) {
+
                me->buffer._read_p -= 1;
        goto _6;}
    }
-
 IndentationHandlerCall
    <IndentationHandlerCall: { default_f=True, mode_name=SLEEPY,  }>
    Registers:    Column(r),  Indentation(wr),  ReferenceP(r), 
@@ -197,7 +197,7 @@ LineCountAdd
    }
 
 PathIteratorSet
-   <PathIteratorSet: { path_walker_id=11, path_id=22, offset=1000,  }>
+   <PathIteratorSet: { offset=1000, path_id=22, path_walker_id=11,  }>
    Registers:    PathIterator(w), 
    Cost:         1
    C-code: {
@@ -215,7 +215,7 @@ PreContextOK
    }
 
 PrepareAfterReload
-   <PrepareAfterReload: { on_success_door_id=DoorID(s=33, d=44), on_failure_door_id=DoorID(s=55, d=66),  }>
+   <PrepareAfterReload: { on_failure_door_id=DoorID(s=55, d=66), on_success_door_id=DoorID(s=33, d=44),  }>
    Registers:    TargetStateElseIndex(w),  TargetStateIndex(w), 
    Cost:         1
    C-code: {
@@ -288,4 +288,13 @@ TemplateStateKeySet
            state_key = 66;
            __quex_debug("state_key = 66\n");
    }
+
+
+
+
+
+
+
+
+
 

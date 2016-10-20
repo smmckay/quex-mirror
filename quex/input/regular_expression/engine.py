@@ -829,13 +829,6 @@ def snap_set_term(stream, PatternDict):
 
     return __debug_exit(result, stream)
 
-def __snap_word(stream):
-    try:    the_word = read_until_letter(stream, ["("]) 
-    except: 
-        raise RegularExpressionException("Missing opening bracket.")
-    stream.seek(-1,1)
-    return the_word.strip()
-
 def snap_set_list(stream, set_operation_name, PatternDict):
     __debug_entry("set_list", stream)
 

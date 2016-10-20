@@ -63,8 +63,4 @@ class EncodingTrafoByTable(EncodingTrafo, list):
             for interval in transformed.get_intervals(PromiseToTreatWellF=True) 
         ]
 
-    def __set_invalid(self):
-        list.clear(self)                  
-        self.source_set = None
-        self.drain_set  = None
 

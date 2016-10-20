@@ -295,14 +295,6 @@ class OptionDB(dict):
         assert not isinstance(scalar_value, list)
         return scalar_value
 
-    def value_sequence(self, Name):
-        setting_list = self.__get_setting_list(Name)
-        if setting_list is None: return None
-
-        assert not mode_option_info_db[Name].single_setting_f(), \
-               "'%s' is not supposed to be a value sequence." % Name
-        return [ x.value for x in setting_list ]
-
     def value_list(self, Name):
         """The content of a value is a sequence, and the return value of this
         function is a concantinated list of all listed option setting values.

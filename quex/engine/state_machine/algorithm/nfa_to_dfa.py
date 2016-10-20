@@ -84,10 +84,4 @@ def do(SM, Class_StateMachine=StateMachine, Class_State=State):
 
     return result 
 
-def DEBUG_print(start_state_combination, elementary_trigger_list):
-    print "----"
-    print "StartStateCombination:", start_state_combination
-    for ti, trigger_set in elementary_trigger_list:
-        print "trigger set =", trigger_set.get_utf8_string(), "target =", ti 
-    print "----"
 

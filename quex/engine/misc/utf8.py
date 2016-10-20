@@ -202,40 +202,4 @@ def __read_one_utf8_code_from_stream(char_stream):
     
     return utf8_to_unicode(bytes)
 
-def __bit_string_to_int(BitStr):
-    """Transforms a string of the form '01001001' into an integer
-    which represents this byte.
-
-    TESTED <frs>
-    """
-
-    BitStr = BitStr.replace(".", "")
-    BitArray = map(lambda x: x, BitStr)
-    BitArray.reverse()
-
-    n = 0
-    sum = 0
-    for bit in BitArray:
-        if bit == "1": sum += 2**n
-        n += 1
-
-    return sum
-
-def __int_to_bit_string(IntN, BitN):
-    """Receives an integer and constructs a string containing 0s and 1s that 
-       represent the integer binarily.
-    """
-    int_n = copy(IntN)
-
-    sum = ""
-    while int_n:
-        if int_n & 0x1: sum = "1" + sum
-        else:           sum = "0" + sum
-        int_n = int_n >> 1
-    
-    # NOTE: this should not occur in our case (head character > 0xC0)
-    if len(sum) < BitN: sum = "0" * (BitN - len(sum)) + sum
-    
-    return sum
-
 

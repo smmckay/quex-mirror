@@ -146,11 +146,6 @@ class LoopMapEntry:
         self.appendix_sm_id = AppendixSmId
         self.appendix_sm_has_transitions_f = HasTransitionsF
 
-    def add_appendix_sm(self, SM):
-        if any(sm.get_id() == SM.get_id() for sm in self.appendix_sm_list):
-            return
-        self.appendix_sm_list.append(SM)
-
     def __repr__(self):
         return "(%s, %s, %s, %s, %s)" % \
                (self.character_set, self.count_action, self.incidence_id, 
@@ -1058,34 +1053,6 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
                               dial_db        = EventHandler.dial_db)
         for sm in appendix_sm_list
     ]
-
-def _prepare_entry_and_reentry(analyzer, OnLoopEntry, OnLoopReEntry):
-    """Prepare the entry and re-entry doors into the initial state
-    of the loop-implementing initial state.
-
-                   .----------.
-                   | on_entry |
-                   '----------'
-                        |         .------------.
-                        |<--------| on_reentry |<-----.
-                        |         '------------'      |
-                .----------------.                    |
-                |                +-----> Terminal ----+----> Exit
-                |      ...       |
-                |                +-----> Terminal - - 
-                '----------------'
-
-    RETURNS: DoorID of the re-entry door which is used to iterate in the loop.
-    """
-    # Entry into state machine
-    entry            = analyzer.init_state().entry
-    init_state_index = analyzer.init_state_index
-        
-    # OnEntry
-    entry.append_OpList(init_state_index, E_StateIndices.BEFORE_ENTRY,
-                        OnLoopEntry)
-
-    # OnReEntry
 
 def _get_source_code(analyzer_list):
     """RETURNS: String containing source code for the 'loop'. 

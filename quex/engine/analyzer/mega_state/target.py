@@ -103,10 +103,6 @@ class TargetByStateKey(object):
         assert isinstance(result.__uniform_door_id, (types.NoneType, DoorID))
         return result
 
-    @staticmethod
-    def from_StateIndex_for_DropOut(X, dial_db):
-        return TargetByStateKey.from_transition(TransitionID(X,X,0), DoorID(X,0, dial_db=dial_db))
-
     def clone_adapted_self(self, MapTransitionIdToNewDoorId):
         """Replaces DoorIDs based on 'MapOldToNewDoorIDs', if necessary. 
 
@@ -164,31 +160,6 @@ class TargetByStateKey(object):
             assert isinstance(target, TargetByStateKey)
             if target.uniform_door_id is not None: continue
             target.__scheme_id = scheme_db.get_id(target.__scheme)
-
-    @staticmethod
-    def rejoin_uniform_schemes(transition_map):
-        """If all DoorIDs in a scheme are the same, the target becomes
-        a 'DoorID' target instead a scheme target. That is, the target
-        is no longer dependent on the state to be implemented.
-        """
-        assert False
-        def rejoin(scheme):
-            prototype  = None
-            for door_id in target.__door_id_scheme:
-                if   door_id == prototype: continue
-                elif prototype is None:    prototype = door_id  # first door_id --> protype
-                else:                      return None          # scheme not uniform
-            # All door_ids uniform:
-            return TargetByStateKey.create(prototype)
-
-        for i, info in enumerate(transition_map):
-            interval, target = info
-            if target.__door_id_scheme is None: continue
-            new_target = rejoin(target.__door_id_scheme)
-            if new_target is None: continue
-            transition_map[i] = (interval, new_target)
-
-        return
 
     def __repr__(self):
         if   self.drop_out_f():        

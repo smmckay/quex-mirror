@@ -589,18 +589,6 @@ class StateMachine(object):
                 successor_db[predecessor_si].add(si)
         return successor_db
 
-    def collect_trigger_set_union(self):
-        """RETURNS: Union of all character sets that are triggering. This
-                    EXCLUDES transitions to drop-out or encoding error.
-        """
-        result = NumberSet()
-        for state in self.states.itervalues():
-            for ti, trigger_set in state.target_map.get_map().iteritems():
-                if self.states[ti].has_acceptance_id(E_IncidenceIDs.BAD_LEXATOM):
-                    continue
-                result.unite_with(trigger_set)
-        return result
-
     def get_number_sequence(self):
         """Returns a number sequence that represents the state machine.
         If the state machine cannot be represented by a plain chain of 
@@ -656,17 +644,6 @@ class StateMachine(object):
             for state in self.states.itervalues():
                 if state.target_map.has_target(end_state_index) == False: continue
                 result.unite_with(state.target_map.get_trigger_set_to_target(end_state_index))
-        return result
-
-    def get_only_entry_to_state(self, TargetStateIndex):
-        """Checks if the given state has only one entry from another state 
-           and if so it returns the state index. Otherwise, it returns None.
-        """
-        result = None
-        for state_index, state in self.states.items():
-            if state.target_map.has_target(TargetStateIndex):
-                if result is None: result = state_index
-                else:              return None           # More than one state trigger to target
         return result
 
     def get_state_index_normalization(self, NormalizeF=True):
@@ -928,14 +905,6 @@ class StateMachine(object):
         for state in self.states.itervalues():
             if state.is_acceptance(): return True
         return False
-
-    def iterable_acceptance_states(self):
-        for state in self.states.itervalues():
-            if state.is_acceptance(): yield state
-
-    def iterable_non_acceptance_states(self):
-        for state in self.states.itervalues():
-            if not state.is_acceptance(): yield state
 
     def has_origins(self):
         for state in self.states.values():
@@ -1200,30 +1169,6 @@ class StateMachine(object):
             elif self.states[si].has_acceptance_id(E_IncidenceIDs.BAD_LEXATOM):
                 break
         return self.states[si]
-
-    @typed(Sequence=list)
-    def match_sequence(self, Sequence):
-        """RETURNS: True, if the sequences ends in an acceptance state.
-                    False, if not.
-
-        Works for NFA and DFA.
-
-        '__dive' --> consider implementing with TreeWalker to avoid stack allocation
-        trouble.
-        """
-        def dive(StateIndex, Sequence):
-            if len(Sequence) == 0:
-                return self.states[StateIndex].is_acceptance()
-
-            idx_list = self.states[StateIndex].target_map.get_resulting_target_state_index_list(Sequence[0])
-            for candidate in idx_list:
-                # One follow-up state could match the sequence
-                if dive(candidate, Sequence[1:]): return True
-            # No possible follow-up state could match the sequence
-            return False
-
-        # Walk with the sequence the state machine
-        return dive(self.init_state_index, Sequence)
 
     def iterable_target_state_indices(self, StateIndex):
         return self.state_db[StateIndex].iterable_target_state_indices(StateIndex)

@@ -230,7 +230,7 @@ TEST                                                                 <no date>
  * nazim-can-bedir:
 
     2896732 0.46.2 - Memory leak
-        bug-2896732.sh ...............................................[OK]
+        bug-2896732.sh .........................................[TIME_OUT]
 
  * nobody:
 
@@ -477,6 +477,7 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] bug-2896732.sh
     [FAIL] bug-3295781.sh
     [FAIL] bug-3021502.sh
 ===============================================================================
@@ -642,7 +643,7 @@ demo/C/TEST                                                          <no date>
 demo/Cpp/TEST                                                        <no date>
 -------------------------------------------------------------------------------
  * No references to C demos
-        no-references-to-c.sh ......................................[FAIL]
+        no-references-to-c.sh ........................................[OK]
 
  * demo/000:
 
@@ -731,7 +732,7 @@ demo/Cpp/TEST                                                        <no date>
                feeder-plain ..........................................[OK]
                gavager-converter .....................................[OK]
                gavager-plain .........................................[OK]
-               point-plain .........................................[FAIL]
+               point-plain ...........................................[OK]
 
  * demo/011:
 
@@ -763,8 +764,6 @@ demo/Cpp/TEST                                                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] no-references-to-c.sh
-    [FAIL] 010.sh _ point-plain
     [FAIL] 011.sh _ iso8859-7
 ===============================================================================
                                                                                
@@ -966,14 +965,17 @@ quex/input/TEST                                                      <no date>
                                                                                
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
+ * 
+        function-check-example.py ..........................[NO GOOD FILE]
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
  * Checking for defined but unused functions.
-        function-check.sh ..................................[NO GOOD FILE]
+        function-check.sh example ....................................[OK]
+                          real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................................[OK]
+        pyflakes-check.sh ..........................................[FAIL]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -994,7 +996,9 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] function-check.sh
+    [FAIL] function-check-example.py
+    [FAIL] function-check.sh _ real
+    [FAIL] pyflakes-check.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1473,7 +1477,7 @@ quex/code_base/analyzer/TEST                                         <no date>
 quex/code_base/converter_helper/TEST                                 <no date>
 -------------------------------------------------------------------------------
  * Test of complete character set on base converters (utf8, utf16, utf32)
-        characters ..........................................[MAKE FAILED]
+        characters ...................................................[OK]
  * utf16 to utf8, utf16, and utf32
         from-utf16 Drain_ToSmall .....................................[OK]
                    Source_Empty ......................................[OK]
@@ -1486,12 +1490,10 @@ quex/code_base/converter_helper/TEST                                 <no date>
         from-utf8 Drain_ToSmall ......................................[OK]
                   Source_Empty .......................................[OK]
                   Source_TestFile ....................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] characters
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                 Track Analysis                                 
@@ -3021,18 +3023,18 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
     [NO GOOD FILE] loop-get_analazer_list.py
-    [NO GOOD FILE] function-check.sh
+    [NO GOOD FILE] function-check-example.py
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                          
 
-        2  235   [FAIL] TEST                                                
+        3  235   [FAIL] TEST                                                
         4  54    [FAIL] demo/C/TEST                                         
-        3  54    [FAIL] ..../Cpp/TEST                                       
+        1  54    [FAIL] ..../Cpp/TEST                                       
            13      [OK] ..../TEST                                           
-        1  11    [FAIL] quex/TESTS/code/TEST                                
+        3  13    [FAIL] quex/TESTS/code/TEST                                
            2       [OK] ........../command-line/TEST                        
            2       [OK] ........../did-you-mean/TEST                        
            6       [OK] ........../drop-outs/TEST                           
@@ -3055,7 +3057,7 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                    
            12      [OK] ...................../lexatoms/converter/iconv/TEST 
            12      [OK] ......................................../icu/TEST   
-        1  10    [FAIL] ............../converter_helper/TEST                
+           10      [OK] ............../converter_helper/TEST                
            42      [OK] ..../engine/TEST                                    
            112     [OK] .........../analyzer/TEST                           
            29      [OK] ..................../mega_state/path_walker/TEST    
@@ -3081,6 +3083,6 @@ SUMMARY:
     | |_ / _` | | / __|      __) || (_) |    \ \/ /
     |  _| (_| | | \__ \     / __/  \__, |     >  < 
     |_|  \__,_|_|_|___/    |_____|   /_/     /_/\_\
-                                                                   (1577 tests)
+                                                                   (1579 tests)
 
 ===============================================================================

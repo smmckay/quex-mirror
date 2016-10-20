@@ -1,12 +1,16 @@
-H 'a' 
-D 'no' 
-I 'not' 
-E 'mean' 
-B 'thing' 
-F 'beyond' 
-G 'rabbits' 
-C 'backyard' 
-A 'elsewhere' 
-<TERMINATION> '' 
+,------------------------------------------------------------------------------------
+| [START]
+(1, 1)  	H 'a'
+(2, 1)  	D 'no'
+(3, 1)  	I 'not'
+(4, 1)  	E 'mean'
+(5, 1)  	B 'thing'
+(6, 1)  	F 'beyond'
+(7, 1)  	G 'rabbits'
+(8, 1)  	C 'backyard'
+(9, 1)  	A 'elsewhere'
+(10, 1)  	<TERMINATION> ''
 | [END] number of token = 10
 `------------------------------------------------------------------------------------
+
+

@@ -1,7 +1,6 @@
 from   quex.engine.analyzer.examine.recursive_recipe_accumulator  import RecursiveRecipeAccumulator
 from   quex.engine.analyzer.examine.state_info                    import LinearStateInfo, \
                                                                          MouthStateInfo
-from   quex.engine.misc.tools                                     import all_true
 from   quex.blackboard                                            import E_StateIndices
 
 from   itertools import chain
@@ -354,7 +353,7 @@ class Examiner:
     def assert_consistency(self):
         """After termination, every state must have a recipe assigned to it.
         """
-        assert all_true(chain(self.linear_db.itervalues(), 
+        assert all(chain(self.linear_db.itervalues(), 
                               self.mouth_db.itervalues()), 
                         lambda x: x.is_determined()), \
                repr([x.recipe for x in chain(self.linear_db.itervalues(), self.mouth_db.itervalues()) \

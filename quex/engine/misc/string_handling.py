@@ -71,13 +71,6 @@ def blue_print(BluePrintStr, Replacements, CommonStart="$"):
             prev_end  = i + 1
             pass
 
-def tex_safe(Str):
-
-    for letter in "_%&^#$":
-        Str.replace(letter, "\\" + letter)
-
-    return Str
-
 def pretty_code(Code, Base=4):
     """-- Delete empty lines at the beginning
        -- Delete empty lines at the end
