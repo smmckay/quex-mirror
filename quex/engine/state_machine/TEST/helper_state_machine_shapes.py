@@ -223,7 +223,6 @@ def get_tree(sm):
     line(sm, 5, 7)
     return sm, 8, pic
 
-
 def get_sm_shape_names():
     return "linear, butterfly, long_loop, nested_loop, mini_loop, fork, fork2, fork3, fork4, tree, mini_bubble, bubble, bubble2, bubble2b, bubble3, bubble4;"
 

@@ -3,7 +3,7 @@ title: Anti-Patterns;
 file_name: anti-pattern.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.194861; 0; ]
+  [ ; OK; 0.110226; 0; ]
 ]
 }
 {
@@ -11,8 +11,8 @@ title: Case Folding;
 file_name: test-case_fold.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ set; OK; 0.192944; 0; ]
-  [ pattern; OK; 0.218049; 0; ]
+  [ set; OK; 0.140906; 0; ]
+  [ pattern; OK; 0.147665; 0; ]
 ]
 }
 {
@@ -20,11 +20,11 @@ title: Operations;
 file_name: test-operations.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ special; OK; 0.156274; 0; ]
-  [ 0; OK; 0.137593; 0; ]
-  [ 1; OK; 0.225040; 0; ]
-  [ 2; OK; 0.359442; 0; ]
-  [ 3; OK; 0.323452; 0; ]
+  [ special; OK; 0.102076; 0; ]
+  [ 0; OK; 0.095125; 0; ]
+  [ 1; OK; 0.157196; 0; ]
+  [ 2; OK; 0.187908; 0; ]
+  [ 3; OK; 0.180443; 0; ]
 ]
 }
 {
@@ -32,7 +32,7 @@ title: State Machine Pattern Matching;
 file_name: test-pattern-matching.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.167431; 0; ]
+  [ ; OK; 0.113005; 0; ]
 ]
 }
 {
@@ -40,7 +40,7 @@ title: Transformations;
 file_name: test-transformation.py;
 hwut_info_time: 1474307886L;
 result_list: [
-  [ ; FAIL; 0.333050; 1005104571; ]
+  [ ; FAIL; 0.202237; 1005104571; ]
 ]
 }
 {
@@ -49,7 +49,7 @@ title_group: Backslashed Characters;
 file_name: test-snap_backslashed_character.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.071349; 0; ]
+  [ ; OK; 0.033627; 0; ]
 ]
 }
 {
@@ -58,7 +58,7 @@ title_group: Basics;
 file_name: test-lonely-characters.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.260776; 0; ]
+  [ ; OK; 0.180844; 0; ]
 ]
 }
 {
@@ -67,7 +67,7 @@ title_group: Basics;
 file_name: test-set.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.062700; 0; ]
+  [ ; OK; 0.054010; 0; ]
 ]
 }
 {
@@ -76,7 +76,7 @@ title_group: Basics;
 file_name: test-string.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.088503; 0; ]
+  [ ; OK; 0.061258; 0; ]
 ]
 }
 {
@@ -85,7 +85,7 @@ title_group: Basics;
 file_name: test-snap_until.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.127780; 0; ]
+  [ ; OK; 0.093136; 0; ]
 ]
 }
 {
@@ -94,7 +94,7 @@ title_group: Combination;
 file_name: test-alternatives.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.278001; 0; ]
+  [ ; OK; 0.176839; 0; ]
 ]
 }
 {
@@ -103,7 +103,7 @@ title_group: Combination;
 file_name: test-set-expressions.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.143687; 0; ]
+  [ ; OK; 0.097243; 0; ]
 ]
 }
 {
@@ -112,7 +112,7 @@ title_group: Combination;
 file_name: test-repeated-expressions.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.294527; 0; ]
+  [ ; OK; 0.157837; 0; ]
 ]
 }
 {
@@ -121,7 +121,7 @@ title_group: Conditional Analysis;
 file_name: test-bol-eol.py;
 hwut_info_time: 1474142637L;
 result_list: [
-  [ ; FAIL; 0.213295; 0; ]
+  [ ; FAIL; 0.096597; 0; ]
 ]
 }
 {
@@ -130,7 +130,7 @@ title_group: Conditional Analysis;
 file_name: test-eol-carriage-return-newline.py;
 hwut_info_time: 1474142785L;
 result_list: [
-  [ ; FAIL; 0.180340; 0; ]
+  [ ; FAIL; 0.101308; 0; ]
 ]
 }
 {
@@ -139,7 +139,7 @@ title_group: Conditional Analysis;
 file_name: test-post-condition.py;
 hwut_info_time: 1474142435L;
 result_list: [
-  [ ; OK; 0.229448; 0; ]
+  [ ; OK; 0.135547; 0; ]
 ]
 }
 {
@@ -148,7 +148,7 @@ title_group: Conditional Analysis;
 file_name: test-pre-condition.py;
 hwut_info_time: 1474142407L;
 result_list: [
-  [ ; OK; 0.196340; 0; ]
+  [ ; OK; 0.126014; 0; ]
 ]
 }
 {
@@ -157,7 +157,7 @@ title_group: Conditional Analysis;
 file_name: test-pre-and-post-condition.py;
 hwut_info_time: 1474142715L;
 result_list: [
-  [ ; OK; 0.202901; 0; ]
+  [ ; OK; 0.135208; 0; ]
 ]
 }
 {
@@ -166,7 +166,7 @@ title_group: Replacement;
 file_name: test-replacement-2.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.433506; 0; ]
+  [ ; OK; 0.168307; 0; ]
 ]
 }
 {
@@ -175,7 +175,7 @@ title_group: Replacement;
 file_name: test-replacement.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.227804; 0; ]
+  [ ; OK; 0.144832; 0; ]
 ]
 }
 {
@@ -184,7 +184,7 @@ title_group: Unicode properties;
 file_name: test-properties-2.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 1.525716; 0; ]
+  [ ; OK; 0.965401; 0; ]
 ]
 }
 {
@@ -193,6 +193,6 @@ title_group: Unicode properties;
 file_name: test-properties.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 1.591313; 0; ]
+  [ ; OK; 0.927892; 0; ]
 ]
 }

@@ -43,14 +43,14 @@ def unicode_to_utf8(UnicodeValue):
                  0x80 | ((UnicodeValue      ) & 0x3F)]
     elif UnicodeValue < 0x04000000L:
         # Bits: 2 + 6 + 6 + 6 + 6
-        return [ 0xF0 | ((UnicodeValue >> 24) & 0x03),
+        return [ 0xF8 | ((UnicodeValue >> 24) & 0x03),
                  0x80 | ((UnicodeValue >> 18) & 0x3F),
                  0x80 | ((UnicodeValue >> 12) & 0x3F),
                  0x80 | ((UnicodeValue >>  6) & 0x3F),
                  0x80 | ((UnicodeValue      ) & 0x3F)]
     elif UnicodeValue < 0x80000000L:
         # Bits: 1 + 6 + 6 + 6 + 6 + 6
-        return [ 0xF0 | ((UnicodeValue >> 30) & 0x01),
+        return [ 0xFC | ((UnicodeValue >> 30) & 0x01),
                  0x80 | ((UnicodeValue >> 24) & 0x3F),
                  0x80 | ((UnicodeValue >> 18) & 0x3F),
                  0x80 | ((UnicodeValue >> 12) & 0x3F),
@@ -82,7 +82,7 @@ def utf8_to_unicode(ByteSequence):
               utf8d = codecs.getdecoder("utf-8")
               return ord(utf8d("".join(map(chr, ByteSequence)))[0])
 
-       would be unsafe. That's why we do it by hand here
+       would be unsafe. That's why we do it manually.
     """
     # Assume that the byte sequence is valid, thus a byte sequence of length 'N'
     # has a N - 1 leading ones in the header plus a zero. Remaining bits in the
@@ -90,7 +90,7 @@ def utf8_to_unicode(ByteSequence):
     # and contain 6 bits of useful payload.
     header_bit_n = 8 - len(ByteSequence)
     mask         = (1 << header_bit_n) - 1
-    value = ByteSequence[0] & mask
+    value        = ByteSequence[0] & mask
     for byte in ByteSequence[1:]:
         value <<= 6
         value |=  (byte & 0x3F)   # blend off the highest two bits

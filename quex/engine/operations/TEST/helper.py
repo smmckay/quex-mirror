@@ -22,6 +22,13 @@ dial_db           = DialDB()
 Setup.language_db = db[Setup.language]
 
 example_db = {
+#    E_Op.AssignPointerDifference: = [ E_Op.AssignPointerDifference ]
+#    E_Op.ColumnCountReferencePGet: = [ E_Op.ColumnCountReferencePGet ]
+#    E_Op.GotoDoorIdIfCounterEqualZero: = [ E_Op.GotoDoorIdIfCounterEqualZero ]
+#    E_Op.PointerAdd: = [ E_Op.PointerAdd ]
+#    E_Op.PointerAssignMin: = [ E_Op.PointerAssignMin ]
+#    E_Op.RestoreInputPosition: = [ E_Op.RestoreInputPosition ]
+
     E_Op.StoreInputPosition: [ 
         Op.StoreInputPosition(4711, 7777, 0),
         Op.StoreInputPosition(4711, 7777, 1000) 

@@ -1,108 +1,108 @@
 {
 title: load_forward;
 title_group: API;
-build_time: 1.001906156539917;
+build_time: 0.9761438369750977;
 file_name: forward-api.exe;
-hwut_info_time: 1476683923L;
+hwut_info_time: 1477208068L;
 make_dependent_f: True;
 result_list: [
-  [ DONE; OK; 0.007367; -1803535576; ]
-  [ NO_SPACE_FOR_LOAD; OK; 0.007614; 137558899; ]
-  [ NO_MORE_DATA; OK; 0.006050; -1548747694; ]
-  [ BAD_LEXATOM; OK; 0.016658; -180191311; ]
+  [ DONE; OK; 0.005643; -1803535576; ]
+  [ NO_SPACE_FOR_LOAD; OK; 0.007078; 137558899; ]
+  [ NO_MORE_DATA; OK; 0.005769; -1548747694; ]
+  [ BAD_LEXATOM; OK; 0.017257; -180191311; ]
 ]
 }
 {
 title: (BPC=1, FB=0);
 title_group: Buffer_load_backward;
-build_time: 0.7726218700408936;
+build_time: 0.7695550918579102;
 file_name: backward-fb0.exe;
-hwut_info_time: 1476683923L;
+hwut_info_time: 1477208069L;
 make_dependent_f: True;
 result_list: [
-  [ BufferSize-3; OK; 0.004650; -521664967; ]
-  [ BufferSize-4; OK; 0.005364; -1017101347; ]
-  [ BufferSize-5; OK; 0.004419; 1320373662; ]
+  [ BufferSize-3; OK; 0.005086; -521664967; ]
+  [ BufferSize-4; OK; 0.005172; -1017101347; ]
+  [ BufferSize-5; OK; 0.004571; 1320373662; ]
 ]
 }
 {
 title: (BPC=1, FB=1);
 title_group: Buffer_load_backward;
-build_time: 0.7827250957489014;
+build_time: 0.7617111206054688;
 file_name: backward-fb1.exe;
-hwut_info_time: 1476683925L;
+hwut_info_time: 1477208070L;
 make_dependent_f: True;
 result_list: [
-  [ BufferSize-4; OK; 0.005317; 914849884; ]
-  [ BufferSize-5; OK; 0.004848; 153070288; ]
+  [ BufferSize-4; OK; 0.004862; 914849884; ]
+  [ BufferSize-5; OK; 0.007040; 153070288; ]
 ]
 }
 {
 title: (BPC=1, FB=2);
 title_group: Buffer_load_backward;
-build_time: 0.7768690586090088;
+build_time: 0.7689990997314453;
 file_name: backward-fb2.exe;
-hwut_info_time: 1476683919L;
+hwut_info_time: 1477208064L;
 make_dependent_f: True;
 result_list: [
-  [ BufferSize-5; OK; 0.005945; -518389676; ]
+  [ BufferSize-5; OK; 0.004489; -518389676; ]
 ]
 }
 {
 title: (BPC=4, FB=2);
 title_group: Buffer_load_backward;
-build_time: 0.7280888557434082;
+build_time: 0.7745249271392822;
 file_name: backward-fb2-32.exe;
-hwut_info_time: 1476683921L;
+hwut_info_time: 1477208066L;
 make_dependent_f: True;
 result_list: [
-  [ BufferSize-5; OK; 0.004778; -518389676; ]
+  [ BufferSize-5; OK; 0.004779; -518389676; ]
 ]
 }
 {
 title: (BPC=1, FB=0);
 title_group: Buffer_load_forward;
-build_time: 0.9642741680145264;
+build_time: 0.7543888092041016;
 file_name: forward-fb0.exe;
-hwut_info_time: 1476683920L;
+hwut_info_time: 1477208065L;
 make_dependent_f: True;
 result_list: [
-  [ BufferSize-3; OK; 0.004326; -1399358872; ]
-  [ BufferSize-4; OK; 0.004013; 1458817697; ]
-  [ BufferSize-5; OK; 0.005298; 2000068205; ]
+  [ BufferSize-3; OK; 0.003950; -1399358872; ]
+  [ BufferSize-4; OK; 0.003961; 1458817697; ]
+  [ BufferSize-5; OK; 0.004007; 2000068205; ]
 ]
 }
 {
 title: (BPC=1, FB=1);
 title_group: Buffer_load_forward;
-build_time: 0.7625181674957275;
+build_time: 0.7539041042327881;
 file_name: forward-fb1.exe;
-hwut_info_time: 1476683918L;
+hwut_info_time: 1477208064L;
 make_dependent_f: True;
 result_list: [
-  [ BufferSize-4; OK; 0.004128; 1823283074; ]
-  [ BufferSize-5; OK; 0.005548; 2040205738; ]
+  [ BufferSize-4; OK; 0.008015; 1823283074; ]
+  [ BufferSize-5; OK; 0.005344; 2040205738; ]
 ]
 }
 {
 title: (BPC=1, FB=2);
 title_group: Buffer_load_forward;
-build_time: 0.7786600589752197;
+build_time: 0.771064043045044;
 file_name: forward-fb2.exe;
-hwut_info_time: 1476683924L;
+hwut_info_time: 1477208069L;
 make_dependent_f: True;
 result_list: [
-  [ BufferSize-5; OK; 0.004903; 750465828; ]
+  [ BufferSize-5; OK; 0.004422; 750465828; ]
 ]
 }
 {
 title: (BPC=4, FB=2);
 title_group: Buffer_load_forward;
-build_time: 0.7800350189208984;
+build_time: 0.7638928890228271;
 file_name: forward-fb2-32.exe;
-hwut_info_time: 1476683922L;
+hwut_info_time: 1477208067L;
 make_dependent_f: True;
 result_list: [
-  [ BufferSize-5; OK; 0.004593; 750465828; ]
+  [ BufferSize-5; OK; 0.005716; 750465828; ]
 ]
 }

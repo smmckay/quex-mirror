@@ -192,7 +192,7 @@ class Mode_PrepPrep:
         """
         self._check_inheritance_relationships(ModePrepPrepDb)
         base_mode_name_sequence = \
-                blackboard.determine_base_mode_name_sequence(self, ModePrepPrepDb) 
+                self._determine_base_mode_name_sequence(ModePrepPrepDb) 
 
         assert len(base_mode_name_sequence) >= 1 
         assert base_mode_name_sequence[-1] == self.name
@@ -224,6 +224,53 @@ class Mode_PrepPrep:
                          entry_mode_name_list, exit_mode_name_list,
                          self.deletion_info_list, 
                          self.reprioritization_info_list)
+
+    def _determine_base_mode_name_sequence(self, ModePrepPrepDb):
+        """Determine the sequence of base modes. The type of sequencing determines
+           also the pattern precedence. The 'deep first' scheme is chosen here. For
+           example a mode hierarchie of
+
+                                       A
+                                     /   \ 
+                                    B     C
+                                   / \   / \
+                                  D  E  F   G
+
+           results in a sequence: (A, B, D, E, C, F, G).reverse()
+
+           => That is the mode itself is result[-1]
+
+           => Patterns and event handlers of 'E' have precedence over
+              'C' because they are the childs of a preceding base mode.
+
+           This function detects circular inheritance.
+        """
+        Node = namedtuple("Node", ("mode_name", "inheritance_path"))
+        global base_name_list_db
+        result   = [ self.name ]
+        done     = set()
+        worklist = [ Node(self.name, []) ]
+        while worklist:
+            node = worklist.pop(0)
+            if node.mode_name in done: continue
+            done.add(node.mode_name)
+
+            inheritance_path = node.inheritance_path + [node.mode_name]
+            
+            mode = ModePrepPrepDb[node.mode_name]
+            i    = result.index(node.mode_name)
+            for name in reversed(mode.direct_base_mode_name_list):
+                error.verify_word_in_list(name, ModePrepPrepDb.keys(),
+                                          "Mode '%s' inherits mode '%s' which does not exist." \
+                                          % (mode.name, name), mode.sr)
+                if name in inheritance_path: 
+                    _error_circular_inheritance(inheritance_path, ModePrepPrepDb)
+                elif name not in result:
+                    result.insert(i, name)
+            worklist.extend(Node(name, inheritance_path) 
+                            for name in mode.direct_base_mode_name_list)
+
+        return result
 
     def _check_inheritance_relationships(self, ModePrepPrepDb):
         mode_name_set = set(ModePrepPrepDb.iterkeys())
@@ -442,6 +489,18 @@ class Mode_Prep:
         for high, low in self.unique_pattern_pair_iterable():
             if outrun_checker.do(high.sm, low.sm):
                 error.log_consistency_issue(low, high, ExitF=False, ThisComment="may outrun")
+
+def _error_circular_inheritance(InheritancePath, ModePrepPrepDb):
+    def sr(ModeName): return ModePrepPrepDb[ModeName].sr
+    name0     = InheritancePath[-1]
+    msg       = "circular inheritance detected:\n"
+    msg      += "mode '%s'\n" % name0
+    prev_name = name0
+    error.log(msg, sr(name0), DontExitF=True)
+    for name in InheritancePath[:-1]:
+        error.log("   inherits mode '%s'\n" % name, sr(prev_name), DontExitF=True)
+        prev_name = name
+    error.log("   inherits mode '%s'\n" % name0, sr(prev_name))
 
 PatternRepriorization = namedtuple("PatternRepriorization", ("pattern", "new_pattern_index", "sr"))
 PatternDeletion       = namedtuple("PatternDeletion",       ("pattern", "pattern_index",     "sr"))

@@ -227,9 +227,15 @@ def _get_contiguous_interval_sequences(X, L):
 
     def max_byte_value(L, ByteIndex):
         assert L <= 6
-        if ByteIndex != 0: return 0xBF
+        if ByteIndex != 0: 
+            return 0b10111111
         # Only first byte's range depends on length
-        return { 0: 0x7F, 1: 0xDF, 2: 0xEF, 3: 0xF7, 4: 0xFB, 5: 0xFD }[L]
+        return { 0: 0b01111111, 
+                 1: 0b11011111, 
+                 2: 0b11101111, 
+                 3: 0b11110111,
+                 4: 0b11111011,
+                 5: 0b11111101 }[L]
        
     def find_first_diff_byte(front_sequence, back_sequence):
         # Find the first byte that is different in the front and back sequence 
@@ -244,24 +250,26 @@ def _get_contiguous_interval_sequences(X, L):
     # Interval's size = 1 character      --> no split
     if X.size() == 1: return [ X ]
     # Resulting utf8 sequence length = 1 --> no split 
-    elif L == 1: return [ X ]
+    elif L == 1:      return [ X ]
 
     # Utf8 Sequences representing first and last element in interval 'X'.
     front_sequence = unicode_to_utf8(X.begin)
     back_sequence  = unicode_to_utf8(X.end - 1)
+    assert len(front_sequence) == len(back_sequence) 
+    assert L == len(front_sequence)
 
     p      = find_first_diff_byte(front_sequence, back_sequence)
     result = []
     current_begin = X.begin
     byte_sequence = copy(front_sequence)
-    byte_indeces  = range(p + 1, L)
-    byte_indeces.reverse()
-    for q in byte_indeces:
+    byte_indices  = range(p + 1, L)
+    for q in reversed(byte_indices):
         # There **must** be at least one overrun, even for 'q=p+1', since 'p+1' 
-        # indexes the first byte after the first byte that was different. If 'p' 
+        # points to the first byte after the first byte that was different. If 'p' 
         # indexed that last byte this block is never entered.
         byte_sequence[q] = max_byte_value(L, q)
         current_end      = utf8_to_unicode(byte_sequence) + 1
+        assert current_end <= X.end
         result.append(Interval(current_begin, current_end))
         current_begin    = current_end
 
@@ -269,17 +277,19 @@ def _get_contiguous_interval_sequences(X, L):
         if p == L - 1: byte_sequence[p] = back_sequence[p]
         else:          byte_sequence[p] = back_sequence[p] - 1 
         current_end      = utf8_to_unicode(byte_sequence) + 1
+        assert current_end <= X.end
         result.append(Interval(current_begin, current_end))
         current_begin    = current_end
 
     byte_sequence[p] = back_sequence[p]
-    for q in range(p + 1, L):
+    for q in byte_indices:
         if back_sequence[q] == min_byte_value(L, q):
             byte_sequence[q] = back_sequence[q]
         else:
             if q == L - 1: byte_sequence[q] = back_sequence[q] 
             else:          byte_sequence[q] = back_sequence[q] - 1
             current_end      = utf8_to_unicode(byte_sequence) + 1
+            assert current_end <= X.end
             result.append(Interval(current_begin, current_end))
             if current_begin == X.end: break
             current_begin    = current_end

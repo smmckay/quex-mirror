@@ -16,6 +16,8 @@ esac
 
 
 cd $QUEX_PATH/demo/Cpp/011
-$QUEX_PATH/TEST/call-make.sh clean $choice-lexer
+
+$QUEX_PATH/TEST/call-make.sh clean $choice-lexer | grep -v greek.qx 
 $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$choice-lexer $special 
+
 cat tmp.txt; rm -f tmp.txt

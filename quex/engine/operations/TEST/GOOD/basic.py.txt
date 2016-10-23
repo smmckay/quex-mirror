@@ -27,7 +27,7 @@ AssignConstant
    Registers:    CountReferenceP(w), 
    Cost:         1
    C-code: {
-           reference_p = 1;
+           count_reference_p = 1;
    }
 
 AssignConstant
@@ -96,19 +96,27 @@ ColumnCountGridAdd
    }
 
 ColumnCountReferencePDeltaAdd
-   <ColumnCountReferencePDeltaAdd: { pointer=CharacterBeginP, column_n_per_chunk=5555, subtract_one_f=False,  }>
-   Registers:    Column(wr),  CharacterBeginP(r),  ReferenceP(r), 
+   <ColumnCountReferencePDeltaAdd: { column_n_per_chunk=5555, pointer=LoopRestartP, subtract_one_f=False,  }>
+   Registers:    Column(wr),  LoopRestartP(r),  CountReferenceP(r), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS_ADD((size_t)((lexatom_begin_p - reference_p) * 5555));
+       __QUEX_IF_COUNT_COLUMNS_ADD((size_t)((loop_restart_p - count_reference_p) * 5555));
    }
 
 ColumnCountReferencePSet
-   <ColumnCountReferencePSet: { pointer=CharacterBeginP, offset=1000,  }>
-   Registers:    CharacterBeginP(r),  ReferenceP(w), 
+   <ColumnCountReferencePSet: { offset=1000, pointer=LoopRestartP,  }>
+   Registers:    LoopRestartP(r),  CountReferenceP(w), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS(reference_p = lexatom_begin_p + 1000);
+       __QUEX_IF_COUNT_COLUMNS(count_reference_p = loop_restart_p + 1000);
+   }
+
+Decrement
+   <Decrement: { register=InputP,  }>
+   Registers:    InputP(wr), 
+   Cost:         1
+   C-code: {
+           --(me->buffer._read_p);
    }
 
 GotoDoorId
@@ -117,16 +125,16 @@ GotoDoorId
    IsBranching: True
    Cost:         1
    C-code: {
-       goto _1;
+       goto _0;
 
    }
 GotoDoorIdIfInputPNotEqualPointer
-   <GotoDoorIdIfInputPNotEqualPointer: { door_id=DoorID(s=33, d=44), pointer=CharacterBeginP,  }>
-   Registers:    InputP(r),  CharacterBeginP(r),  ThreadOfControl(w), 
+   <GotoDoorIdIfInputPNotEqualPointer: { door_id=DoorID(s=33, d=44), pointer=LoopRestartP,  }>
+   Registers:    InputP(r),  LoopRestartP(r),  ThreadOfControl(w), 
    IsBranching: True
    Cost:         1
    C-code: {
-       if( me->buffer._read_p != lexatom_begin_p ) goto _1;
+       if( me->buffer._read_p != loop_restart_p ) goto _0;
 
    }
 IfPreContextSetPositionAndGoto
@@ -138,11 +146,20 @@ IfPreContextSetPositionAndGoto
        if( pre_context_24_fulfilled_f ) {
 
                me->buffer._read_p -= 1;
-       goto _6;}
+       goto _0;}
    }
+
+Increment
+   <Increment: { register=InputP,  }>
+   Registers:    InputP(wr), 
+   Cost:         1
+   C-code: {
+           ++(me->buffer._read_p);
+   }
+
 IndentationHandlerCall
    <IndentationHandlerCall: { default_f=True, mode_name=SLEEPY,  }>
-   Registers:    Column(r),  Indentation(wr),  ReferenceP(r), 
+   Registers:    Column(r),  Indentation(wr),  CountReferenceP(r), 
    Cost:         1
    C-code: {
            QUEX_NAME(on_indentation)(me, me->counter._column_number_at_end, LexemeNull);
@@ -150,18 +167,10 @@ IndentationHandlerCall
 
 IndentationHandlerCall
    <IndentationHandlerCall: { default_f=False, mode_name=EXITED,  }>
-   Registers:    Column(r),  Indentation(wr),  ReferenceP(r), 
+   Registers:    Column(r),  Indentation(wr),  CountReferenceP(r), 
    Cost:         1
    C-code: {
            QUEX_NAME(EXITED_on_indentation)(me, me->counter._column_number_at_end, LexemeNull);
-   }
-
-InputPDecrement
-   <InputPDecrement>
-   Registers:    InputP(wr), 
-   Cost:         1
-   C-code: {
-           --(me->buffer._read_p);
    }
 
 InputPDereference
@@ -170,14 +179,6 @@ InputPDereference
    Cost:         1
    C-code: {
            input = *(me->buffer._read_p);
-   }
-
-InputPIncrement
-   <InputPIncrement>
-   Registers:    InputP(wr), 
-   Cost:         1
-   C-code: {
-           ++(me->buffer._read_p);
    }
 
 LexemeResetTerminatingZero
@@ -219,7 +220,7 @@ PrepareAfterReload
    Registers:    TargetStateElseIndex(w),  TargetStateIndex(w), 
    Cost:         1
    C-code: {
-           target_state_index = QUEX_LABEL(1); target_state_else_index = QUEX_LABEL(2);
+           target_state_index = QUEX_LABEL(0); target_state_else_index = QUEX_LABEL(1);
    }
 
 QuexAssertNoPassage
@@ -247,7 +248,7 @@ RouterByLastAcceptance
    C-code: {
        switch( last_acceptance ) {
        case 66:     me->buffer._read_p -= 1;
-       goto _6;
+       goto _0;
        }
    }
 
@@ -258,9 +259,9 @@ RouterOnStateKey
    Cost:         1
    C-code: {
        switch( path_iterator - path_walker_18193_path_base ) {
-       case 0x1:  goto _3;
-       case 0x2:  goto _4;
-       case 0x3:  goto _5;
+       case 0x1:  goto _2;
+       case 0x2:  goto _3;
+       case 0x3:  goto _4;
        }
    }
 

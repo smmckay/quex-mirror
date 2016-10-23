@@ -4,29 +4,10 @@ A;
 
 start = MODE;
 
-mode MODE : XXX, A
-{
-<<EOF>> => QUEX_TKN_TERMINATION;
-}
-
-mode A : B
-{
-<<EOF>> => QUEX_TKN_TERMINATION;
-}
-
-mode B : C {
-<<EOF>> => QUEX_TKN_TERMINATION;
-}
-
-mode C : D {
-<<EOF>> => QUEX_TKN_TERMINATION;
-}
-
-mode D : MODE {
-<<EOF>> => QUEX_TKN_TERMINATION;
-}
-
-mode XXX {
-<<EOF>> => QUEX_TKN_TERMINATION;
-}
+mode MODE : XXX, A { <<EOF>> => QUEX_TKN_TERMINATION; }
+mode A : B         { <<EOF>> => QUEX_TKN_TERMINATION; }
+mode B : C         { <<EOF>> => QUEX_TKN_TERMINATION; } 
+mode C : D         { <<EOF>> => QUEX_TKN_TERMINATION; }
+mode D : MODE      { <<EOF>> => QUEX_TKN_TERMINATION; }
+mode XXX           { <<EOF>> => QUEX_TKN_TERMINATION; }
 

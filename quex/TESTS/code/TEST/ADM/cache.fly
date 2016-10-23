@@ -1,7 +1,7 @@
 {
 file_name: function-check-example.py;
 result_list: [
-  [ ; NO GOOD FILE; 0.005144; 0; ]
+  [ ; NO GOOD FILE; 0.005981; 0; ]
 ]
 }
 {
@@ -10,7 +10,7 @@ file_name: check-default-configuration.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.011956; -1256193323; ]
+  [ ; OK; 0.012340; -1256193323; ]
 ]
 }
 {
@@ -20,7 +20,16 @@ hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ py:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.053252; 525806180; ]
+  [ ; OK; 0.076745; 525806180; ]
+]
+}
+{
+title: Checking SVN status;
+file_name: svn-status.sh;
+hwut_info_time: 1476773812L;
+interpreter_list: [ bash; ]
+result_list: [
+  [ ; NO GOOD FILE; 0.386893; 0; ]
 ]
 }
 {
@@ -29,8 +38,8 @@ file_name: function-check.sh;
 hwut_info_time: 1476773426L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ example; OK; 0.047087; 1854110009; ]
-  [ real; FAIL; 18.821153; 0; ]
+  [ example; OK; 0.087958; 1854110009; ]
+  [ real; FAIL; 21.855845; 0; ]
 ]
 }
 {
@@ -39,7 +48,7 @@ file_name: pyflakes-check.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 73.916015; 0; ]
+  [ ; FAIL; 79.502180; 0; ]
 ]
 }
 {
@@ -48,8 +57,8 @@ file_name: command_line_options-verify-doc.py;
 hwut_info_time: 1461220443L;
 same_f: True;
 result_list: [
-  [ man; OK; 0.045131; -1113552213; ]
-  [ sphinx; OK; 0.045064; 0; ]
+  [ man; OK; 0.057355; -1113552213; ]
+  [ sphinx; OK; 0.064821; 0; ]
 ]
 }
 {
@@ -58,7 +67,7 @@ file_name: test-exceptions-in-place.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.473079; 0; ]
+  [ ; OK; 0.530951; 0; ]
 ]
 }
 {
@@ -66,8 +75,8 @@ title: Include Guards for C/C++;
 file_name: include_guard.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ convention; OK; 0.157304; 0; ]
-  [ undefinition; OK; 0.155639; 0; ]
+  [ convention; OK; 0.166891; 0; ]
+  [ undefinition; OK; 0.161575; 0; ]
 ]
 }
 {
@@ -75,7 +84,7 @@ title: Propper undefinition of configuration parameters.;
 file_name: macro-check.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.035023; 0; ]
+  [ ; OK; 0.039211; 0; ]
 ]
 }
 {
@@ -85,6 +94,6 @@ file_name: test-token_id_file-find_ids.py;
 hwut_info_time: 1461220443L;
 happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.146799; 0; ]
+  [ ; OK; 0.168159; 0; ]
 ]
 }

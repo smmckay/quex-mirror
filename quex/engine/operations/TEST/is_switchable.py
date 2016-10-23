@@ -17,9 +17,9 @@ import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from   quex.blackboard                            import E_Op
-from   quex.engine.operations.operation_list         import *
-from   quex.engine.operations.TEST.helper  import example_db
-from   quex.engine.analyzer.door_id_address_label import DoorID
+from   quex.engine.operations.operation_list      import *
+from   quex.engine.operations.TEST.helper         import example_db
+from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 
 from   collections import defaultdict
 from   itertools   import islice
@@ -29,6 +29,8 @@ if "--hwut-info" in sys.argv:
     print "Op: is_switchable;"
     sys.exit()
 
+
+dial_db = DialDB()
 
 def test(A, B):
     print "   A: %s" % str(A).replace("\n", "")
@@ -74,10 +76,10 @@ test(Op.ColumnCountReferencePDeltaAdd(E_R.CountReferenceP, 5, False),
      Op.ColumnCountAdd(2))
 print "(2) Branchers: _______________________________________________________________"
 print
-test(Op.GotoDoorId(DoorID(2,2)),
-     Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(1,1), E_R.CountReferenceP))                
-test(Op.GotoDoorId(DoorID(2,2)),
-     Op.GotoDoorId(DoorID(1,1)))                
-test(Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(2,2), E_R.CountReferenceP),               
-     Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(1,1), E_R.CountReferenceP))                
+test(Op.GotoDoorId(DoorID(2,2, dial_db)),
+     Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(1,1, dial_db), E_R.CountReferenceP))                
+test(Op.GotoDoorId(DoorID(2,2, dial_db)),
+     Op.GotoDoorId(DoorID(1,1, dial_db)))                
+test(Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(2,2, dial_db), E_R.CountReferenceP),               
+     Op.GotoDoorIdIfInputPNotEqualPointer(DoorID(1,1, dial_db), E_R.CountReferenceP))                
 

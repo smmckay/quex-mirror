@@ -22,7 +22,6 @@
 from   quex.input.code.base   import CodeFragment_NULL
 from   quex.input.setup       import QuexSetup, SETUP_INFO
 from   quex.engine.misc.enum  import Enum
-import quex.engine.misc.error as     error
 
 import quex.engine.state_machine.transformation.core      as     bc_factory
 
@@ -200,7 +199,6 @@ E_Op  = Enum("Accepter",
              "AssignPointerDifference",
              "PointerAdd",
              "PointerAssignMin",
-             "CounterAdd",
              "ColumnCountAdd",
              "ColumnCountGridAdd",
              "ColumnCountReferencePDeltaAdd",
@@ -318,68 +316,6 @@ def standard_incidence_db_get_terminal_type(IncidenceId):
 # Mode-s.
 #-----------------------------------------------------------------------------------------
 mode_prep_prep_db = {}
-def determine_base_mode_name_sequence(mode, ModePrepPrepDb):
-    """Determine the sequence of base modes. The type of sequencing determines
-       also the pattern precedence. The 'deep first' scheme is chosen here. For
-       example a mode hierarchie of
-
-                                   A
-                                 /   \ 
-                                B     C
-                               / \   / \
-                              D  E  F   G
-
-       results in a sequence: (A, B, D, E, C, F, G).reverse()
-
-       => That is the mode itself is result[-1]
-
-       => Patterns and event handlers of 'E' have precedence over
-          'C' because they are the childs of a preceding base mode.
-
-       This function detects circular inheritance.
-    """
-    Node = namedtuple("Node", ("mode_name", "inheritance_path"))
-    global base_name_list_db
-    result   = [ mode.name ]
-    done     = set()
-    worklist = [ Node(mode.name, []) ]
-    while worklist:
-        node = worklist.pop(0)
-        if node.mode_name in done: continue
-        done.add(node.mode_name)
-
-        new_inheritance_path = node.inheritance_path + [node.mode_name]
-        
-        error.verify_word_in_list(node.mode_name, 
-                                  ModePrepPrepDb.keys(),
-                                  "Mode '%s' inherits mode '%s' which does not exist." \
-                                  % (new_inheritance_path[-1], node.mode_name),
-                                  ModePrepPrepDb[new_inheritance_path[-1]].sr)
-
-        mode = ModePrepPrepDb[node.mode_name]
-
-        detect_circular_inheritance(mode, node.inheritance_path)
-
-        i = result.index(node.mode_name)
-        for name in reversed(mode.direct_base_mode_name_list):
-            if name not in result:
-                result.insert(i, name)
-        worklist.extend(Node(name, new_inheritance_path) for name in mode.direct_base_mode_name_list)
-
-    return result
-
-def detect_circular_inheritance(mode, InheritancePath):
-    if mode.name not in InheritancePath: return
-    msg = [ 
-        "circular inheritance detected:\n"
-        "mode '%s'\n" % InheritancePath[0] 
-    ]
-    msg.extend(
-        "   inherits mode '%s'\n" % name
-        for name in InheritancePath[InheritancePath.index(mode.name) + 1:]
-    )
-    msg.append("   inherits mode '%s'" % mode.name)
-    error.log("".join(msg), mode.sr)
 
 #-----------------------------------------------------------------------------------------
 # mode_db: storing the mode information into a dictionary:

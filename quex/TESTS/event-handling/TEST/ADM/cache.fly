@@ -1,56 +1,56 @@
 {
 title: Customized on_skip_range_open event.;
-build_time: 1.1727650165557861;
+build_time: 0.008886098861694336;
 file_name: on_skip_range_open-customized.sh;
-hwut_info_time: 1476773720L;
+hwut_info_time: 1477116956L;
 make_dependent_f: True;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ :\[0-9]+:; ]
 result_list: [
-  [ customized; FAIL; 0.015627; 0; ]
+  [ customized; FAIL; 0.015211; 0; ]
 ]
 }
 {
 title: Default on_skip_range_open event.;
-build_time: 1.1534008979797363;
+build_time: 0.006508827209472656;
 file_name: on_skip_range_open.sh;
-hwut_info_time: 1476773723L;
+hwut_info_time: 1477116959L;
 make_dependent_f: True;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ :\[0-9]+:; ]
 result_list: [
-  [ default; FAIL; 0.015527; 0; ]
+  [ default; FAIL; 0.029058; 0; ]
 ]
 }
 {
 title: transition-x.qx;
 title_group: Mode Transitions;
-build_time: 1.7002170085906982;
+build_time: 0.009241819381713867;
 file_name: transition-x.sh;
-hwut_info_time: 1476773722L;
+hwut_info_time: 1477116958L;
 make_dependent_f: True;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ :\[0-9]+:; ]
 result_list: [
-  [ 1; OK; 0.015483; 0; ]
-  [ 2; OK; 0.015618; 0; ]
-  [ 3; OK; 0.014516; 0; ]
-  [ error; OK; 0.387387; 0; ]
+  [ 1; OK; 0.030928; 0; ]
+  [ 2; OK; 0.023394; 0; ]
+  [ 3; OK; 0.017746; 0; ]
+  [ error; OK; 0.354749; 0; ]
 ]
 }
 {
 title: transition.qx;
 title_group: Mode Transitions;
-build_time: 1.6334881782531738;
+build_time: 0.01213216781616211;
 file_name: transition.sh;
-hwut_info_time: 1476773724L;
+hwut_info_time: 1477116961L;
 make_dependent_f: True;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ :\[0-9]+:; ]
 result_list: [
-  [ 1; OK; 0.015752; 0; ]
-  [ 2; OK; 0.014633; 0; ]
-  [ 3; OK; 0.014150; 0; ]
-  [ error; OK; 0.322162; 0; ]
+  [ 1; OK; 0.015564; 0; ]
+  [ 2; OK; 0.019185; 0; ]
+  [ 3; OK; 0.028572; 0; ]
+  [ error; OK; 0.337171; 0; ]
 ]
 }

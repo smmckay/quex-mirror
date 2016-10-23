@@ -1,7 +1,7 @@
-error.qx:12:error: circular inheritance detected:
-error.qx:12:error: mode 'A'
-error.qx:12:error:    inherits mode 'B'
-error.qx:12:error:    inherits mode 'C'
-error.qx:12:error:    inherits mode 'D'
-error.qx:12:error:    inherits mode 'MODE'
-error.qx:12:error:    inherits mode 'A'
+error.qx:7:error: circular inheritance detected:
+error.qx:7:error: mode 'MODE'
+error.qx:7:error:    inherits mode 'A'
+error.qx:8:error:    inherits mode 'B'
+error.qx:9:error:    inherits mode 'C'
+error.qx:10:error:    inherits mode 'D'
+error.qx:11:error:    inherits mode 'MODE'

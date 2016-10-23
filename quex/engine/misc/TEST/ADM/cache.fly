@@ -4,7 +4,7 @@ file_name: enum.py;
 hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.054482; 0; ]
+  [ ; OK; 0.031611; 0; ]
 ]
 }
 {
@@ -14,7 +14,7 @@ file_name: test-delete_comment.py;
 hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.069796; 0; ]
+  [ ; OK; 0.043216; 0; ]
 ]
 }
 {
@@ -24,7 +24,7 @@ file_name: test-extract_identifiers_with_specific_prefix.py;
 hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.065265; 0; ]
+  [ ; OK; 0.040758; 0; ]
 ]
 }
 {
@@ -34,7 +34,7 @@ file_name: test-read_until_closing_bracket.py;
 hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.069036; 0; ]
+  [ ; OK; 0.036050; 0; ]
 ]
 }
 {
@@ -44,13 +44,13 @@ file_name: test-read_integer.py;
 hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 result_list: [
-  [ hex; OK; 0.082917; 0; ]
-  [ octal; OK; 0.096946; 0; ]
-  [ decimal; OK; 0.062843; 0; ]
-  [ binary; OK; 0.066444; 0; ]
-  [ roman; OK; 0.050510; 0; ]
-  [ misc; OK; 0.087606; 0; ]
-  [ Napier; OK; 0.068373; 0; ]
+  [ hex; OK; 0.046368; 0; ]
+  [ octal; OK; 0.035881; 0; ]
+  [ decimal; OK; 0.037714; 0; ]
+  [ binary; OK; 0.040282; 0; ]
+  [ roman; OK; 0.043540; 0; ]
+  [ misc; OK; 0.036576; 0; ]
+  [ Napier; OK; 0.040163; 0; ]
 ]
 }
 {
@@ -60,6 +60,6 @@ file_name: test-trim.py;
 hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.042813; 0; ]
+  [ ; OK; 0.033297; 0; ]
 ]
 }
