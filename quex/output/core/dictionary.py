@@ -397,9 +397,6 @@ class Lng_Cpp(dict):
             offset       = Op.content.offset
             return self.REFERENCE_P_RESET(pointer_name, offset)
 
-        elif Op.id == E_Op.ColumnCountReferencePGet:
-            return self.REFERENCE_P_GET(Op.content.pointer)
-
         elif Op.id == E_Op.ColumnCountReferencePDeltaAdd:
             return self.REFERENCE_P_COLUMN_ADD(self.REGISTER_NAME(Op.content.pointer), 
                                                Op.content.column_n_per_chunk, 
@@ -420,10 +417,6 @@ class Lng_Cpp(dict):
             else:
                 return "    position[%i] = me->buffer._read_p - %i; __quex_debug(\"position[%i] = input_p - %i;\\n\");\n" \
                        % (Op.content.position_register, Op.content.offset, Op.content.position_register, Op.content.offset)
-
-        elif Op.id == E_Op.RestoreInputPosition:
-            return "    me->buffer._read_p = position[%i]; __quex_debug(\"input_p = position[%i];\\n\");\n" \
-                   % (Op.content.position_register, Op.content.position_register)
 
         elif Op.id == E_Op.PreContextOK:
             return   "    pre_context_%i_fulfilled_f = 1;\n"                         \

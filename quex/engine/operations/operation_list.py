@@ -160,10 +160,6 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.StoreInputPosition, PreContextID, PositionRegister, Offset)
     
     @staticmethod
-    def RestoreInputPosition(PositionRegister):
-        return Op(E_Op.RestoreInputPosition, PositionRegister)
-    
-    @staticmethod
     def PreContextOK(PreContextID):
         return Op(E_Op.PreContextOK, PreContextID)
     
@@ -198,10 +194,6 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
     @staticmethod
     def ColumnCountReferencePSet(Pointer, Offset=0):
         return Op(E_Op.ColumnCountReferencePSet, Pointer, Offset)
-    
-    @staticmethod
-    def ColumnCountReferencePGet(Pointer):
-        return Op(E_Op.ColumnCountReferencePGet, Pointer)
     
     @staticmethod
     def ColumnCountReferencePDeltaAdd(Pointer, ColumnNPerChunk, SubtractOneF):
@@ -500,8 +492,6 @@ def __configure():
     #
     c(E_Op.StoreInputPosition,               (               "pre_context_id",        "position_register",       "offset"),
                                               (E_R.InputP,r), (E_R.PreContextFlags,r), (E_R.PositionRegister,w,1)) # Argument '1' --> sub_id_reference
-    c(E_Op.RestoreInputPosition,             (               "position_register"),
-                                              (E_R.InputP,w), (E_R.PositionRegister,r,1)) # Argument '1' --> sub_id_reference
     c(E_Op.IfPreContextSetPositionAndGoto,   ("pre_context_id", "router_element"),
                                               (E_R.PreContextFlags, r), (E_R.PositionRegister, r), (E_R.ThreadOfControl, w), 
                                               (E_R.InputP, r+w))
@@ -519,8 +509,6 @@ def __configure():
     c(E_Op.ColumnCountGridAdd,               ("grid_size",),
                                               (E_R.Column,r+w))
     c(E_Op.ColumnCountReferencePSet,         ("pointer", "offset"),
-                                              (0,r), (E_R.CountReferenceP,w))
-    c(E_Op.ColumnCountReferencePGet,         ("pointer"),
                                               (0,r), (E_R.CountReferenceP,w))
     c(E_Op.ColumnCountReferencePDeltaAdd,    ("pointer", "column_n_per_chunk", "subtract_one_f"),
                                               (E_R.Column,r+w), (0,r), (E_R.CountReferenceP,r))

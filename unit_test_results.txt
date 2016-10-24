@@ -230,7 +230,7 @@ TEST                                                                 <no date>
  * nazim-can-bedir:
 
     2896732 0.46.2 - Memory leak
-        bug-2896732.sh .........................................[TIME_OUT]
+        bug-2896732.sh ...............................................[OK]
 
  * nobody:
 
@@ -416,7 +416,7 @@ TEST                                                                 <no date>
  * the-user-k:
 
     3021502 0.49.2 Buffer-size gets ignored
-        bug-3021502.sh .............................................[FAIL]
+        bug-3021502.sh ...............................................[OK]
 
  * timdawborn:
 
@@ -477,9 +477,7 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-2896732.sh
     [FAIL] bug-3295781.sh
-    [FAIL] bug-3021502.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -511,7 +509,7 @@ demo/TEST                                                            <no date>
 demo/C/TEST                                                          <no date>
 -------------------------------------------------------------------------------
  * No references to Cpp demos
-        no-references-to-cpp.sh ....................................[FAIL]
+        no-references-to-cpp.sh ......................................[OK]
 
  * demo/000:
 
@@ -606,9 +604,9 @@ demo/C/TEST                                                          <no date>
 
     Engine Encoding (Example ISO8859-7)
         011.sh iso8859-7 .............................................[OK]
-               utf16-be ............................................[FAIL]
-               utf16-le ............................................[FAIL]
-               utf8 ................................................[FAIL]
+               utf16-be ..............................................[OK]
+               utf16-le ..............................................[OK]
+               utf8 ..................................................[OK]
 
  * demo/011b:
 
@@ -627,15 +625,10 @@ demo/C/TEST                                                          <no date>
     Multiple Lexical Analyzers -- shared token
         012b.sh DEBUG ................................................[OK]
                 NDEBUG ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] no-references-to-cpp.sh
-    [FAIL] 011.sh _ utf16-be
-                \__ utf16-le
-                \__ utf8
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Demos for Cpp                                 
@@ -737,7 +730,7 @@ demo/Cpp/TEST                                                        <no date>
  * demo/011:
 
     Engine Encoding (Example ISO8859-7)
-        011.sh iso8859-7 ...........................................[FAIL]
+        011.sh iso8859-7 .............................................[OK]
                utf16-be ..............................................[OK]
                utf16-le ..............................................[OK]
                utf8 ..................................................[OK]
@@ -759,12 +752,10 @@ demo/Cpp/TEST                                                        <no date>
     Multiple Lexical Analyzers -- shared token
         012b.sh DEBUG ................................................[OK]
                 NDEBUG ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] 011.sh _ iso8859-7
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -971,6 +962,8 @@ quex/TESTS/code/TEST                                                 <no date>
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
+ * Checking SVN status
+        svn-status.sh ......................................[NO GOOD FILE]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
@@ -997,6 +990,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] function-check-example.py
+    [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
     [FAIL] pyflakes-check.sh
 ===============================================================================
@@ -1220,13 +1214,11 @@ quex/TESTS/match-precedence/TEST                                     <no date>
     Derived before Base
         derived-before-base.sh .......................................[OK]
     Larger Inheritance Tree
-        large-tree.sh ..............................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] large-tree.sh
+        large-tree.sh ................................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Misc                                      
@@ -1690,6 +1682,8 @@ quex/engine/misc/TEST                                                <no date>
                                                                                
 quex/engine/operations/TEST                                          <no date>
 -------------------------------------------------------------------------------
+ * Check that there are no trailing unused Ops
+        no-unused-ops.py .............................................[OK]
  * SharedTailDB
         test-SharedTailDB.py init ....................................[OK]
                              pop_best ................................[OK]
@@ -1697,12 +1691,12 @@ quex/engine/operations/TEST                                          <no date>
  * Command:
 
     Basic
-        basic.py ...................................................[FAIL]
+        basic.py .....................................................[OK]
 
  * Op:
 
     is_switchable
-        is_switchable.py ...........................................[FAIL]
+        is_switchable.py .............................................[OK]
 
  * Op.shared_tail:
 
@@ -1712,7 +1706,7 @@ quex/engine/operations/TEST                                          <no date>
     find_last_common
         find_last_common.py 1-common .................................[OK]
                             2-common .................................[OK]
-                            3-common ...............................[FAIL]
+                            3-common .................................[OK]
                             EqualOp ..................................[OK]
                             no-common ................................[OK]
                             start-indices ............................[OK]
@@ -1721,14 +1715,10 @@ quex/engine/operations/TEST                                          <no date>
                             one-or-none ..............................[OK]
                             two ......................................[OK]
                             two-bad ..................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] basic.py
-    [FAIL] is_switchable.py
-    [FAIL] find_last_common.py _ 3-common
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               State Machine Tests                              
@@ -1820,7 +1810,7 @@ quex/engine/state_machine/TEST                                       <no date>
     Append Post Condition
         test-setup_post_condition.py .................................[OK]
     Inverse
-        test-StateMachine-inverse.py ...............................[FAIL]
+        test-StateMachine-inverse.py .................................[OK]
     Paralell
         test-parallelize.py ..........................................[OK]
     Repetition with min and max repetition numbers
@@ -1849,12 +1839,10 @@ quex/engine/state_machine/TEST                                       <no date>
 
     Has Trigger
         test-StateInfo-has_trigger.py ................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-StateMachine-inverse.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                           Regular Expression Parsing                           
@@ -1875,7 +1863,7 @@ quex/input/regular_expression/TEST                                   <no date>
  * State Machine Pattern Matching
         test-pattern-matching.py .....................................[OK]
  * Transformations
-        test-transformation.py .....................................[FAIL]
+        test-transformation.py .......................................[OK]
 
  * Backslashed Characters:
 
@@ -1905,9 +1893,9 @@ quex/input/regular_expression/TEST                                   <no date>
  * Conditional Analysis:
 
     Begin of Line '^', End of Line '$'
-        test-bol-eol.py ............................................[FAIL]
+        test-bol-eol.py ..............................................[OK]
     End of Line '$' (with DOS/Windows '\r\n')
-        test-eol-carriage-return-newline.py ........................[FAIL]
+        test-eol-carriage-return-newline.py ..........................[OK]
     post conditions
         test-post-condition.py .......................................[OK]
     pre conditions
@@ -1928,14 +1916,10 @@ quex/input/regular_expression/TEST                                   <no date>
         test-properties-2.py .........................................[OK]
     Simple
         test-properties.py ...........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-transformation.py
-    [FAIL] test-bol-eol.py
-    [FAIL] test-eol-carriage-return-newline.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                              Output Core Generator                             
@@ -2224,8 +2208,8 @@ quex/output/cpp/TEST                                                 <no date>
                         utf_8-2-wo-ReferenceP ........................[OK]
                         utf_8-3 ......................................[OK]
                         utf_8-3-wo-ReferenceP ........................[OK]
-                        utf_8-4 ....................................[FAIL]
-                        utf_8-4-wo-ReferenceP ......................[FAIL]
+                        utf_8-4 ......................................[OK]
+                        utf_8-4-wo-ReferenceP ........................[OK]
 
  * Converter:
 
@@ -2243,13 +2227,10 @@ quex/output/cpp/TEST                                                 <no date>
                           2 ..........................................[OK]
                           3 ..........................................[OK]
                           4 ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-counter.py _ utf_8-4
-                         \__ utf_8-4-wo-ReferenceP
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3024,17 +3005,18 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
                                                                    \___/|_|\_) 
     [NO GOOD FILE] loop-get_analazer_list.py
     [NO GOOD FILE] function-check-example.py
+    [NO GOOD FILE] svn-status.sh
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                          
 
-        3  235   [FAIL] TEST                                                
-        4  54    [FAIL] demo/C/TEST                                         
-        1  54    [FAIL] ..../Cpp/TEST                                       
+        1  235   [FAIL] TEST                                                
+           54      [OK] demo/C/TEST                                         
+           54      [OK] ..../Cpp/TEST                                       
            13      [OK] ..../TEST                                           
-        3  13    [FAIL] quex/TESTS/code/TEST                                
+        4  14    [FAIL] quex/TESTS/code/TEST                                
            2       [OK] ........../command-line/TEST                        
            2       [OK] ........../did-you-mean/TEST                        
            6       [OK] ........../drop-outs/TEST                           
@@ -3043,7 +3025,7 @@ SUMMARY:
         2  10    [FAIL] ........../event-handling/TEST                      
            14      [OK] ........../include-stack/TEST                       
            18      [OK] ........../indentation_count/TEST                   
-        1  45    [FAIL] ........../match-precedence/TEST                    
+           45      [OK] ........../match-precedence/TEST                    
         3  11    [FAIL] ........../misc/TEST                                
            55      [OK] ........../reset/TEST                               
            24      [OK] ........../source-package/TEST                      
@@ -3063,26 +3045,26 @@ SUMMARY:
            29      [OK] ..................../mega_state/path_walker/TEST    
         2  27    [FAIL] .............................../template/TEST       
            12      [OK] .........../misc/TEST                               
-        3  16    [FAIL] .........../operations/TEST                         
-        1  58    [FAIL] .........../state_machine/TEST                      
+           17      [OK] .........../operations/TEST                         
+           58      [OK] .........../state_machine/TEST                      
            51      [OK] ........................./algebra/TEST              
            9       [OK] ........................./algorithm/TEST            
            14      [OK] ........................./check/TEST                
            53      [OK] ........................./transformation/TEST       
            58      [OK] ..../input/TEST                                     
-        3  27    [FAIL] ........../regular_expression/TEST                  
+           27      [OK] ........../regular_expression/TEST                  
         1  197   [FAIL] ..../output/core/TEST                               
            34      [OK] ................/loop/TEST                          
            22      [OK] ................/state/transition_map/TEST          
-        2  30    [FAIL] .........../cpp/TEST                                
+           30      [OK] .........../cpp/TEST                                
            3       [OK] .........../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____    ___            
-    |  ___|_ _(_) |___     |___ \  / _ \     __  __
-    | |_ / _` | | / __|      __) || (_) |    \ \/ /
-    |  _| (_| | | \__ \     / __/  \__, |     >  < 
-    |_|  \__,_|_|_|___/    |_____|   /_/     /_/\_\
-                                                                   (1579 tests)
+     _____     _ _          _  _____           
+    |  ___|_ _(_) |___     / ||___ /     __  __
+    | |_ / _` | | / __|    | |  |_ \     \ \/ /
+    |  _| (_| | | \__ \    | | ___) |     >  < 
+    |_|  \__,_|_|_|___/    |_||____/     /_/\_\
+                                                                   (1581 tests)
 
 ===============================================================================

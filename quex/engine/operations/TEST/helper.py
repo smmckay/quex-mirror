@@ -22,13 +22,9 @@ dial_db           = DialDB()
 Setup.language_db = db[Setup.language]
 
 example_db = {
-#    E_Op.AssignPointerDifference: = [ E_Op.AssignPointerDifference ]
-#    E_Op.ColumnCountReferencePGet: = [ E_Op.ColumnCountReferencePGet ]
-#    E_Op.GotoDoorIdIfCounterEqualZero: = [ E_Op.GotoDoorIdIfCounterEqualZero ]
-#    E_Op.PointerAdd: = [ E_Op.PointerAdd ]
-#    E_Op.PointerAssignMin: = [ E_Op.PointerAssignMin ]
-#    E_Op.RestoreInputPosition: = [ E_Op.RestoreInputPosition ]
-
+    #
+    # ANY NEW ENTRY MUST BE STORED IN 'NEW_ENTRIES'
+    #  
     E_Op.StoreInputPosition: [ 
         Op.StoreInputPosition(4711, 7777, 0),
         Op.StoreInputPosition(4711, 7777, 1000) 
@@ -82,7 +78,27 @@ example_db = {
                          [(1L, 100L), (2L, 200L), (3L, 300L)], 
                          lambda x: DoorID(x,1,dial_db)),
     ],
+    # ANY NEW ENTRY MUST BE STORED IN 'NEW_ENTRIES'
+    E_Op.AssignPointerDifference: [ 
+        Op.AssignPointerDifference(E_R.InputP, E_R.LoopRestartP, E_R.LexemeStartP) 
+    ],
+    E_Op.PointerAdd: [ 
+        Op.PointerAdd(E_R.InputP, E_R.Counter, "MY_CONDITION") 
+    ],
+    E_Op.PointerAssignMin:  [ 
+        Op.PointerAssignMin(E_R.InputP, E_R.LoopRestartP, E_R.LexemeStartP)  
+    ],
+    E_Op.GotoDoorIdIfCounterEqualZero: [ 
+        Op.GotoDoorIdIfCounterEqualZero(DoorID(1, 1, dial_db))
+    ],
 }
+
+NEW_ENTRIES = set([
+    E_Op.AssignPointerDifference, 
+    E_Op.PointerAdd, 
+    E_Op.PointerAssignMin, 
+    E_Op.GotoDoorIdIfCounterEqualZero 
+])
 
 accepter = Op.Accepter()
 accepter.content.add(55L, 66L)
@@ -96,7 +112,8 @@ def generator():
     """Iterable over all commands from the example_db.
     """
     index = 0
-    for example_list in example_db.itervalues():
+    for op_id, example_list in example_db.iteritems():
+        if op_id in NEW_ENTRIES: continue
         for example in example_list:
             index += 1
             yield index, example

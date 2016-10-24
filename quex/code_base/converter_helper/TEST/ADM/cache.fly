@@ -1,46 +1,46 @@
 {
 title: Test of complete character set on base converters (utf8, utf16, utf32);
-build_time: 0.006185054779052734;
+build_time: 0.01244497299194336;
 file_name: characters;
 hwut_info_time: 1477117097L;
 make_dependent_f: True;
 result_list: [
-  [ ; OK; 1.320481; 0; ]
+  [ ; OK; 1.322877; 0; ]
 ]
 }
 {
 title: utf16 to utf8, utf16, and utf32;
-build_time: 0.0060651302337646484;
+build_time: 0.009407997131347656;
 file_name: from-utf16;
 hwut_info_time: 1477117098L;
 make_dependent_f: True;
 result_list: [
-  [ Source_Empty; OK; 0.006187; 0; ]
-  [ Source_TestFile; OK; 0.007264; 0; ]
-  [ Drain_ToSmall; OK; 0.005699; 0; ]
+  [ Source_Empty; OK; 0.005684; 0; ]
+  [ Source_TestFile; OK; 0.007532; 0; ]
+  [ Drain_ToSmall; OK; 0.005667; 0; ]
 ]
 }
 {
 title: utf32 to utf8, utf16, and utf32;
-build_time: 0.007157087326049805;
+build_time: 0.006494998931884766;
 file_name: from-utf32;
 hwut_info_time: 1477117096L;
 make_dependent_f: True;
 result_list: [
-  [ Source_Empty; OK; 0.006729; 0; ]
-  [ Source_TestFile; OK; 0.006214; 0; ]
-  [ Drain_ToSmall; OK; 0.006255; 0; ]
+  [ Source_Empty; OK; 0.006405; 0; ]
+  [ Source_TestFile; OK; 0.007036; 0; ]
+  [ Drain_ToSmall; OK; 0.006440; 0; ]
 ]
 }
 {
 title: utf8 to utf8, utf16, and utf32;
-build_time: 0.00630497932434082;
+build_time: 0.006899118423461914;
 file_name: from-utf8;
 hwut_info_time: 1477117095L;
 make_dependent_f: True;
 result_list: [
-  [ Source_Empty; OK; 0.010068; 0; ]
-  [ Source_TestFile; OK; 0.011342; 0; ]
-  [ Drain_ToSmall; OK; 0.005845; 0; ]
+  [ Source_Empty; OK; 0.006269; 0; ]
+  [ Source_TestFile; OK; 0.006255; 0; ]
+  [ Drain_ToSmall; OK; 0.006294; 0; ]
 ]
 }

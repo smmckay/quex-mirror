@@ -27,8 +27,9 @@ def test_core(TestString):
     else:
         print "pattern\n", 
         print pattern.sm
-        print "pre-context =", pattern.sm_pre_context
-        print "begin of line = ", pattern.pre_context_trivial_begin_of_line_f
+        if pattern.sm_pre_context:
+            print "pre-context =", pattern.sm_pre_context
+        print "begin of line = ", pattern.has_pre_context_begin_of_line_f()
 
 test('[a-z]+')
 # test('[a-z]*')

@@ -57,6 +57,9 @@ class Pattern:
         return    self.sm_pre_context is not None \
                or self.sm.has_pre_context_begin_of_line_f()
 
+    def has_pre_context_begin_of_line_f(self):
+        return self.sm.has_pre_context_begin_of_line_f()
+
     def get_pre_context_generalized(self):
         """RETURNS: StateMachine implementing the pre-context. If the pre-
                     context is 'begin-of-line', an according state machine 
