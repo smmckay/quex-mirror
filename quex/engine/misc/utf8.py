@@ -1,5 +1,4 @@
 import sys
-from   copy import copy
 import quex.engine.misc.error as error
 
 import StringIO

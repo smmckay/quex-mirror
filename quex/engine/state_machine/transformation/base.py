@@ -1,6 +1,6 @@
 import quex.engine.misc.error             as     error
 from   quex.engine.misc.interval_handling import NumberSet, Interval_All, Interval
-from   quex.engine.misc.tools             import flatten_list_of_lists, typed
+from   quex.engine.misc.tools             import typed
 
 import sys
 

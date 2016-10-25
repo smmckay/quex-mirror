@@ -1,8 +1,6 @@
 from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
-from   quex.engine.misc.interval_handling         import NumberSet
 from   quex.engine.misc.tools                     import typed
 
-from   operator import itemgetter
 #
 
 def __nice(SM_ID): 

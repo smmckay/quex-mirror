@@ -116,8 +116,7 @@ from   quex.engine.misc.tools                             import typed, \
 from   quex.output.cpp.counter_for_pattern                import map_SmLineColumnCountInfo_to_code
 import quex.output.core.base                              as     generator
 
-from   quex.blackboard import E_StateIndices, \
-                              E_CharacterCountType, \
+from   quex.blackboard import E_CharacterCountType, \
                               E_R, \
                               setup as Setup, \
                               Lng

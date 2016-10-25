@@ -34,7 +34,6 @@ import quex.output.cpp.templates                         as     cpp
 from   quex.blackboard   import setup as Setup, \
                                 E_StateIndices,  \
                                 E_IncidenceIDs, \
-                                E_InputActions,  \
                                 E_TransitionN,   \
                                 E_PreContextIDs, \
                                 E_Op
@@ -634,11 +633,6 @@ class Lng_Cpp(dict):
             return "__QUEX_IF_COUNT_COLUMNS(%s = %s - %i);\n" % (name, IteratorName, - Offset) 
         else:
             return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (name, IteratorName)
-
-    def REFERENCE_P_GET(self, Register):
-        rvalue = self.REGISTER_NAME(E_R.CountReferenceP)
-        lvalue = self.REGISTER_NAME(E_R.CountReferenceP)
-        return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (lvalue, rvalue)
 
     def ENGINE_TEXT_EPILOG(self):
         if Setup.analyzer_derived_class_file: 

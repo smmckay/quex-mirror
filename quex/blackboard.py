@@ -25,9 +25,6 @@ from   quex.engine.misc.enum  import Enum
 
 import quex.engine.state_machine.transformation.core      as     bc_factory
 
-from   copy import deepcopy
-from   collections import namedtuple
-
 #------------------------------------------------------------------------------
 # setup: All information of the user's desired setup.
 #------------------------------------------------------------------------------

@@ -1,10 +1,7 @@
 from quex.engine.analyzer.examine.recipe_base import Recipe
 from quex.engine.operations.se_operations     import SeAccept, \
                                                      SeStoreInputPosition
-from quex.engine.misc.tools                   import flatten_it_list_of_lists, \
-                                                     UniformObject, \
-                                                     E_Values, \
-                                                     none_is_None
+from quex.engine.misc.tools                   import E_Values
 
 from quex.blackboard import E_PreContextIDs, \
                             E_IncidenceIDs, \

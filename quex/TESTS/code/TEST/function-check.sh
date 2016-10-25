@@ -48,6 +48,10 @@ functions_defined=$(grep -soe "^ *def *[a-zA-Z_0-9]\+(" $all_content \
                     | tr -d "(" \
                     | awk '{ print $2; }')
 
+
+# 'interval handling.py' must be considered for the search of used functions.
+sed -e 's/#.*$//' $(find $QUEX_PATH -name interval_handling.py) >> $all_content
+
 functions_unused=()
 for name in $(echo $functions_defined); do
     count=$(grep -c "\b$name\b" $all_content)

@@ -10,8 +10,7 @@ and incidence handlers. Based on the PPT list optional pattern deletion and
 repriorization is implemented. Finaly, a mode's pattern list and terminal
 database is extracted.
 """
-from   quex.input.code.core                         import CodeTerminal, \
-                                                           SourceRef_VOID
+from   quex.input.code.core                         import CodeTerminal
 from   quex.engine.counter                          import CountActionMap, \
                                                            IndentationCount
 from   quex.engine.pattern                          import Pattern

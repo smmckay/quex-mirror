@@ -64,8 +64,7 @@ from   quex.engine.misc.file_in            import check, \
                                                   check_whitespace, \
                                                   skip_whitespace, \
                                                   read_identifier, \
-                                                  read_until_character, \
-                                                  read_until_letter
+                                                  read_until_character
 import quex.engine.misc.utf8               as utf8
 from   quex.blackboard                     import setup as Setup
 from   quex.input.regular_expression.exception                 import RegularExpressionException

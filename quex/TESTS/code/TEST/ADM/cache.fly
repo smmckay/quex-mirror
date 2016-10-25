@@ -1,16 +1,10 @@
 {
-file_name: function-check-example.py;
-result_list: [
-  [ ; NO GOOD FILE; 0.006390; 0; ]
-]
-}
-{
 title: Check if the default configuration has been updated.;
 file_name: check-default-configuration.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.013018; -1256193323; ]
+  [ ; OK; 0.011596; -1256193323; ]
 ]
 }
 {
@@ -20,7 +14,7 @@ hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ py:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.062843; 525806180; ]
+  [ ; OK; 0.060818; 525806180; ]
 ]
 }
 {
@@ -29,17 +23,17 @@ file_name: svn-status.sh;
 hwut_info_time: 1476773812L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; NO GOOD FILE; 0.173684; 0; ]
+  [ ; NO GOOD FILE; 0.162143; 0; ]
 ]
 }
 {
 title: Checking for defined but unused functions.;
 file_name: function-check.sh;
-hwut_info_time: 1476773426L;
+hwut_info_time: 1477349881L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ example; OK; 0.060187; 1854110009; ]
-  [ real; FAIL; 21.868040; 0; ]
+  [ example; OK; 0.106458; 1854110009; ]
+  [ real; OK; 0.000000; -1820712433; ]
 ]
 }
 {
@@ -48,7 +42,7 @@ file_name: pyflakes-check.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 79.061398; 0; ]
+  [ ; OK; 81.333691; 0; ]
 ]
 }
 {
@@ -57,8 +51,8 @@ file_name: command_line_options-verify-doc.py;
 hwut_info_time: 1461220443L;
 same_f: True;
 result_list: [
-  [ man; OK; 0.050518; -1113552213; ]
-  [ sphinx; OK; 0.048731; 0; ]
+  [ man; OK; 0.051197; -1113552213; ]
+  [ sphinx; OK; 0.051448; 0; ]
 ]
 }
 {
@@ -67,7 +61,7 @@ file_name: test-exceptions-in-place.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.506316; 0; ]
+  [ ; OK; 0.523843; 0; ]
 ]
 }
 {
@@ -75,8 +69,8 @@ title: Include Guards for C/C++;
 file_name: include_guard.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ convention; OK; 0.165734; 0; ]
-  [ undefinition; OK; 0.164053; 0; ]
+  [ convention; OK; 0.165702; 0; ]
+  [ undefinition; OK; 0.163360; 0; ]
 ]
 }
 {
@@ -84,7 +78,7 @@ title: Propper undefinition of configuration parameters.;
 file_name: macro-check.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.035904; 0; ]
+  [ ; OK; 0.036088; 0; ]
 ]
 }
 {
@@ -94,6 +88,6 @@ file_name: test-token_id_file-find_ids.py;
 hwut_info_time: 1461220443L;
 happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.161435; 0; ]
+  [ ; OK; 0.169893; 0; ]
 ]
 }
