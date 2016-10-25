@@ -956,19 +956,19 @@ quex/input/TEST                                                      <no date>
                                                                                
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * 
-        function-check-example.py ..........................[NO GOOD FILE]
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
+ * Check that there are no trailing unused Enum Values
+        no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
         svn-status.sh ......................................[NO GOOD FILE]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .....................................[FAIL]
+                          real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -989,10 +989,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] function-check-example.py
     [FAIL] svn-status.sh
-    [FAIL] function-check.sh _ real
-    [FAIL] pyflakes-check.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -3004,7 +3001,6 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
     [NO GOOD FILE] loop-get_analazer_list.py
-    [NO GOOD FILE] function-check-example.py
     [NO GOOD FILE] svn-status.sh
 ===============================================================================
 
@@ -3016,7 +3012,7 @@ SUMMARY:
            54      [OK] demo/C/TEST                                         
            54      [OK] ..../Cpp/TEST                                       
            13      [OK] ..../TEST                                           
-        4  14    [FAIL] quex/TESTS/code/TEST                                
+        1  14    [FAIL] quex/TESTS/code/TEST                                
            2       [OK] ........../command-line/TEST                        
            2       [OK] ........../did-you-mean/TEST                        
            6       [OK] ........../drop-outs/TEST                           
@@ -3060,11 +3056,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _____           
-    |  ___|_ _(_) |___     / ||___ /     __  __
-    | |_ / _` | | / __|    | |  |_ \     \ \/ /
-    |  _| (_| | | \__ \    | | ___) |     >  < 
-    |_|  \__,_|_|_|___/    |_||____/     /_/\_\
+     _____     _ _          _   ___            
+    |  ___|_ _(_) |___     / | / _ \     __  __
+    | |_ / _` | | / __|    | || | | |    \ \/ /
+    |  _| (_| | | \__ \    | || |_| |     >  < 
+    |_|  \__,_|_|_|___/    |_| \___/     /_/\_\
                                                                    (1581 tests)
 
 ===============================================================================

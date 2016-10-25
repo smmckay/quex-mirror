@@ -1,8 +1,9 @@
 Test Collection on Source Code
 ---------------------------------------
 bash *.sh
-*.py
+python *.py
 --not compilation-independence.sh
 --not function-check-example.py
+--not no-unused-enum-values-helper.sh
 ---------------------------------------
 

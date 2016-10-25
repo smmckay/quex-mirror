@@ -4,7 +4,7 @@ file_name: check-default-configuration.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.011596; -1256193323; ]
+  [ ; OK; 0.010781; -1256193323; ]
 ]
 }
 {
@@ -14,7 +14,16 @@ hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ py:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.060818; 525806180; ]
+  [ ; OK; 0.036290; 525806180; ]
+]
+}
+{
+title: Check that there are no trailing unused Enum Values;
+file_name: no-unused-enum-values.py;
+hwut_info_time: 1477351544L;
+interpreter_list: [ python; ]
+result_list: [
+  [ ; OK; 3.819457; -235166342; ]
 ]
 }
 {
@@ -23,7 +32,7 @@ file_name: svn-status.sh;
 hwut_info_time: 1476773812L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; NO GOOD FILE; 0.162143; 0; ]
+  [ ; NO GOOD FILE; 0.196527; 0; ]
 ]
 }
 {
@@ -32,8 +41,8 @@ file_name: function-check.sh;
 hwut_info_time: 1477349881L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ example; OK; 0.106458; 1854110009; ]
-  [ real; OK; 0.000000; -1820712433; ]
+  [ example; OK; 0.120045; 1854110009; ]
+  [ real; OK; 21.792578; -1820712433; ]
 ]
 }
 {
@@ -42,17 +51,18 @@ file_name: pyflakes-check.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 81.333691; 0; ]
+  [ ; OK; 79.531243; 0; ]
 ]
 }
 {
 title: Command Line Option Documentation;
 file_name: command_line_options-verify-doc.py;
 hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ man; OK; 0.051197; -1113552213; ]
-  [ sphinx; OK; 0.051448; 0; ]
+  [ man; OK; 0.048478; -1113552213; ]
+  [ sphinx; OK; 0.047896; 0; ]
 ]
 }
 {
@@ -61,24 +71,36 @@ file_name: test-exceptions-in-place.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.523843; 0; ]
+  [ ; OK; 0.483158; 0; ]
 ]
 }
 {
 title: Include Guards for C/C++;
 file_name: include_guard.py;
 hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
 result_list: [
-  [ convention; OK; 0.165702; 0; ]
-  [ undefinition; OK; 0.163360; 0; ]
+  [ convention; OK; 0.165023; 0; ]
+  [ undefinition; OK; 0.163766; 0; ]
 ]
 }
 {
 title: Propper undefinition of configuration parameters.;
 file_name: macro-check.py;
 hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.036088; 0; ]
+  [ ; OK; 0.037507; 0; ]
+]
+}
+{
+title: No output is good output --;
+title_group: --;
+file_name: no-unused-enum-values-helper.sh;
+hwut_info_time: 1477377659L;
+interpreter_list: [ bash; ]
+result_list: [
+  [ ; NO GOOD FILE; 0.233856; 0; ]
 ]
 }
 {
@@ -86,8 +108,9 @@ title: __parse_token_id_file;
 title_group: User defined token id file;
 file_name: test-token_id_file-find_ids.py;
 hwut_info_time: 1461220443L;
+interpreter_list: [ python; ]
 happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.169893; 0; ]
+  [ ; OK; 0.152085; 0; ]
 ]
 }

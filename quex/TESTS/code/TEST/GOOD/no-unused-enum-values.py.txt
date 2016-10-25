@@ -1,0 +1,17 @@
+-- E_R.AcceptanceRegister: No output is good output --
+-- E_Border.BEGIN: No output is good output --
+-- E_IncidenceIDs.AFTER_MATCH: No output is good output --
+-- E_Op.Accepter: No output is good output --
+-- E_PostContextIDs.IRRELEVANT: No output is good output --
+-- E_TransitionN.IRRELEVANT: No output is good output --
+-- E_PreContextIDs.BEGIN_OF_LINE: No output is good output --
+-- E_Count.NONE: No output is good output --
+-- E_Compression.PATH: No output is good output --
+-- E_Commonality.A_IN_B: No output is good output --
+-- E_CharacterCountType.AFTER_RELOAD: No output is good output --
+-- E_StateIndices.ALL: No output is good output --
+-- E_InputActions.DECREMENT: No output is good output --
+-- E_DoorIdIndex.ACCEPTANCE: No output is good output --
+-- E_TerminalType.BAD_LEXATOM: No output is good output --
+-- E_TriggerIDs.NONE: No output is good output --
+<terminated>

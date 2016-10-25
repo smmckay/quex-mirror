@@ -28,7 +28,6 @@ from   quex.engine.analyzer.door_id_address_label         import DialDB
 from   quex.engine.analyzer.transition_map                import TransitionMap  
 import quex.engine.state_machine.transformation.core      as     bc_factory
 from   quex.blackboard                                    import setup as Setup, \
-                                                                 E_MapImplementationType, \
                                                                  E_IncidenceIDs, \
                                                                  Lng
 from   collections import defaultdict
