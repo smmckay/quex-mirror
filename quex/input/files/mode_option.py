@@ -21,9 +21,16 @@ def __get_mode_name_list():
     return mode_prep_prep_db.keys()
 
 class SkipRangeData(dict): 
-    def __init__(self, OpenerPattern, CloserPattern):
+    def __init__(self, OpenerPattern, CloserPattern, CoreDict=None):
+        if CoreDict:
+            dict.update(self, CoreDict)
         self["opener_pattern"] = OpenerPattern
         self["closer_pattern"] = CloserPattern
+
+    def finalize(self, CaMap):
+        return SkipRangeData(self["opener_pattern"].finalize(CaMap),
+                             self["closer_pattern"].finalize(CaMap),
+                             self)
 
 class Loopers:
     """Loopers -- loops that are integrated into the pattern state machine.
@@ -76,23 +83,13 @@ class Loopers:
             ]
 
         if self.skip_range is not None:
-            def finalize_skip_range_data(data, CaMap):
-                data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
-                return data
-
             self.skip_range = [
-                finalize_skip_range_data(data,CaMap)
-                for data in self.skip_range
+                data.finalize(CaMap) for data in self.skip_range
             ]
 
         if self.skip_nested_range is not None:
-            def finalize_skip_nested_range_data(data, CaMap):
-                data["opener_pattern"] = data["opener_pattern"].finalize(CaMap)
-                data["closer_pattern"] = data["closer_pattern"].finalize(CaMap)
-                return data
-
             self.skip_nested_range = [
-                finalize_skip_nested_range_data(data, CaMap)
+                data.finalize(CaMap) for data in self.skip_nested_range
                 for data in self.skip_nested_range
             ]
 
@@ -222,11 +219,12 @@ class OptionDB(dict):
                           self.value_list("skip_range"),
                           self.value_list("skip_nested_range"),
                           self.value("indentation"))
+        ca_map  = self.value("counter").count_command_map
         return self.value("inheritable"), \
                self.value_list("exit"),   \
                self.value_list("entry"),  \
                loopers,                   \
-               self.value("counter")
+               ca_map
 
     def enter(self, Name, Value, SourceReference, ModeName):
         """Enters a new definition of a mode option as it comes from the parser.

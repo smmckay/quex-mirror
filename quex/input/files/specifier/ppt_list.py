@@ -103,11 +103,10 @@ class PPT_List(list):
             for mhi, pattern, code in pap_iterator(ModePrepDb, BaseModeSequence)
         )
 
-    def collect_loopers(self, Loopers, CounterDb, ReloadState):
+    def collect_loopers(self, Loopers, CaMap, ReloadState):
         """Collect patterns and terminals which are required to implement
         skippers and indentation counters.
         """
-        CaMap        = CounterDb.count_command_map
         new_ppt_list = []
         for i, func in enumerate([self._prepare_skip_character_set, 
                                   self._prepare_skip_range,         

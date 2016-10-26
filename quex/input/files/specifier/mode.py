@@ -205,8 +205,7 @@ class Mode_PrepPrep:
         exit_mode_name_list,   \
         entry_mode_name_list,  \
         loopers,               \
-        counter_db             = collected_options_db.finalize()
-        ca_map                 = counter_db.count_command_map
+        ca_map                 = collected_options_db.finalize()
         abstract_f = (inheritable == "only")
 
         collected_incidence_db = IncidenceDB.from_BaseModeSequence(base_mode_sequence)
@@ -220,7 +219,7 @@ class Mode_PrepPrep:
         # At this stage, no information is aggregated from base types.
         return Mode_Prep(self.name, self.sr, base_mode_name_sequence, 
                          pap_list, loopers, abstract_f,
-                         collected_incidence_db, counter_db, 
+                         collected_incidence_db, ca_map, 
                          entry_mode_name_list, exit_mode_name_list,
                          self.deletion_info_list, 
                          self.reprioritization_info_list)
@@ -289,7 +288,7 @@ class Mode_Prep:
     @typed(AbstractF=bool)
     def __init__(self, Name, Sr, BaseModeNameSequence, 
                  PapList, Loopers, AbstractF, 
-                 IncidenceDb, CounterDb,
+                 IncidenceDb, CaMap,
                  EntryModeNameList, ExitModeNameList,
                  DeletionInfoList, RepriorizationInfoList):
         """REQUIRES: Loopers, options, and incidence_db has been collected 
@@ -315,7 +314,7 @@ class Mode_Prep:
         # OptionsDb, IncidenceDb, and CounterDb contain aggregated content
         # from base modes.
         self.incidence_db = IncidenceDb
-        self.counter_db   = CounterDb
+        self.ca_map       = CaMap
 
         self.deletion_info_list         = DeletionInfoList
         self.reprioritization_info_list = RepriorizationInfoList
@@ -353,7 +352,7 @@ class Mode_Prep:
         if not self.run_time_counter_required_f:
             run_time_counter_db = None
         else:
-            run_time_counter_db = self.counter_db.count_command_map
+            run_time_counter_db = self.ca_map
 
         return Mode(self.name, self.sr, 
                     self.pattern_list, self.terminal_db, self.incidence_db,
@@ -388,8 +387,7 @@ class Mode_Prep:
         #
         reload_state_forward = ReloadState(EngineType=engine.FORWARD, 
                                            dial_db=self.dial_db)
-        ppt_list.collect_loopers(self.loopers, 
-                                 self.counter_db, 
+        ppt_list.collect_loopers(self.loopers, self.ca_map, 
                                  reload_state_forward)
 
         self.doc_history_deletion,        \

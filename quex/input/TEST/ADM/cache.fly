@@ -3,12 +3,12 @@ title: Case Folding based on Unicode Database;
 file_name: case_fold.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ s_simple; OK; 0.062203; 0; ]
-  [ m_multi; OK; 0.064027; 0; ]
-  [ sm; OK; 0.061085; 0; ]
-  [ s_simple_turkish; OK; 0.060084; 0; ]
-  [ m_multi_turkish; OK; 0.064511; 0; ]
-  [ smt; OK; 0.064997; 0; ]
+  [ s_simple; OK; 0.070589; 0; ]
+  [ m_multi; OK; 0.202695; 0; ]
+  [ sm; OK; 0.091040; 0; ]
+  [ s_simple_turkish; OK; 0.077654; 0; ]
+  [ m_multi_turkish; OK; 0.102823; 0; ]
+  [ smt; OK; 0.080324; 0; ]
 ]
 }
 {
@@ -16,11 +16,11 @@ title: Parse Counter Setup;
 file_name: counter_setup.py;
 hwut_info_time: 1473919934L;
 result_list: [
-  [ basic; OK; 0.113605; -1361466163; ]
-  [ twice; OK; 0.100978; 0; ]
-  [ intersection; OK; 0.109771; 0; ]
-  [ intersection-2; OK; 0.102121; 0; ]
-  [ non-numeric; OK; 0.098446; 0; ]
+  [ basic; OK; 0.125757; -1361466163; ]
+  [ twice; OK; 0.119289; 0; ]
+  [ intersection; OK; 0.155341; 0; ]
+  [ intersection-2; OK; 0.107506; 0; ]
+  [ non-numeric; OK; 0.126502; 0; ]
 ]
 }
 {
@@ -28,11 +28,11 @@ title: Parse Indentation Setup;
 file_name: indentation_setup.py;
 hwut_info_time: 1473975876L;
 result_list: [
-  [ basic; OK; 0.115093; 540734966; ]
-  [ twice; OK; 0.101619; 1772867985; ]
-  [ intersection; OK; 0.141037; 0; ]
-  [ intersection-2; OK; 0.114681; 1867995700; ]
-  [ non-numeric; OK; 0.091719; -1537386547; ]
+  [ basic; OK; 0.128765; 540734966; ]
+  [ twice; OK; 0.114212; 1772867985; ]
+  [ intersection; OK; 0.178399; 0; ]
+  [ intersection-2; OK; 0.124384; 1867995700; ]
+  [ non-numeric; OK; 0.113054; -1537386547; ]
 ]
 }
 {
@@ -41,7 +41,7 @@ title_group: Quex Queries;
 file_name: test-query-character-set.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 5.029036; 0; ]
+  [ ; OK; 5.168943; 0; ]
 ]
 }
 {
@@ -50,7 +50,7 @@ title_group: Quex Queries;
 file_name: test-query-character-set-by-expression.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 1.409280; 0; ]
+  [ ; OK; 1.403322; 0; ]
 ]
 }
 {
@@ -59,10 +59,10 @@ title_group: Quex Queries;
 file_name: test-query.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ PropertyList; OK; 8.223365; 0; ]
-  [ PropertyInfo; OK; 0.970573; 0; ]
-  [ CodecList; OK; 0.111207; 1287702049; ]
-  [ CodecInfo; OK; 0.141633; -1630634309; ]
+  [ PropertyList; OK; 9.228257; 0; ]
+  [ PropertyInfo; OK; 1.025981; 0; ]
+  [ CodecList; OK; 0.176967; 1287702049; ]
+  [ CodecInfo; OK; 0.141161; -1630634309; ]
 ]
 }
 {
@@ -71,7 +71,7 @@ title_group: Quex Queries;
 file_name: test-query-property-wildcard-values.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.907552; 0; ]
+  [ ; OK; 1.027980; 0; ]
 ]
 }
 {
@@ -80,14 +80,14 @@ title_group: token_type;
 file_name: token_type-1.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ None; OK; 0.089481; 0; ]
-  [ One; OK; 0.094099; 0; ]
-  [ All; OK; 0.090303; 0; ]
-  [ Forbidden; OK; 0.090766; 0; ]
-  [ Forbidden-2; OK; 0.090539; 0; ]
-  [ Error; OK; 0.092409; 0; ]
-  [ Error-2; OK; 0.091355; 0; ]
-  [ Twice; OK; 0.091595; 0; ]
+  [ None; OK; 0.095716; 0; ]
+  [ One; OK; 0.097820; 0; ]
+  [ All; OK; 0.097625; 0; ]
+  [ Forbidden; OK; 0.092187; 0; ]
+  [ Forbidden-2; OK; 0.092307; 0; ]
+  [ Error; OK; 0.099272; 0; ]
+  [ Error-2; OK; 0.097639; 0; ]
+  [ Twice; OK; 0.126809; 0; ]
 ]
 }
 {
@@ -96,13 +96,13 @@ title_group: token_type;
 file_name: token_type-5.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.088898; 0; ]
-  [ 1; OK; 0.092351; 0; ]
-  [ 2; OK; 0.092214; 0; ]
-  [ 3; OK; 0.091337; 0; ]
-  [ 4; OK; 0.089354; 0; ]
-  [ 5; OK; 0.090219; 0; ]
-  [ 6; OK; 0.092319; 0; ]
+  [ 0; OK; 0.113909; 0; ]
+  [ 1; OK; 0.132595; 0; ]
+  [ 2; OK; 0.096164; 0; ]
+  [ 3; OK; 0.089644; 0; ]
+  [ 4; OK; 0.090222; 0; ]
+  [ 5; OK; 0.093594; 0; ]
+  [ 6; OK; 0.093146; 0; ]
 ]
 }
 {
@@ -111,11 +111,11 @@ title_group: token_type;
 file_name: token_type-4.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ Constructor; OK; 0.091615; 0; ]
-  [ Constructor-1; OK; 0.090240; 0; ]
-  [ Constructor-2; OK; 0.089814; 0; ]
-  [ Destructor; OK; 0.090886; 0; ]
-  [ Copy; OK; 0.091428; 0; ]
+  [ Constructor; OK; 0.092800; 0; ]
+  [ Constructor-1; OK; 0.091483; 0; ]
+  [ Constructor-2; OK; 0.094746; 0; ]
+  [ Destructor; OK; 0.090637; 0; ]
+  [ Copy; OK; 0.094120; 0; ]
 ]
 }
 {
@@ -124,12 +124,12 @@ title_group: token_type;
 file_name: token_type-2.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ None; OK; 0.092493; 0; ]
-  [ One; OK; 0.090896; 0; ]
-  [ Some; OK; 0.091199; 0; ]
-  [ Forbidden; OK; 0.090810; 0; ]
-  [ Error; OK; 0.090709; 0; ]
-  [ Twice; OK; 0.087865; 0; ]
+  [ None; OK; 0.093598; 0; ]
+  [ One; OK; 0.090369; 0; ]
+  [ Some; OK; 0.092141; 0; ]
+  [ Forbidden; OK; 0.093628; 0; ]
+  [ Error; OK; 0.089692; 0; ]
+  [ Twice; OK; 0.091824; 0; ]
 ]
 }
 {
@@ -138,14 +138,14 @@ title_group: token_type;
 file_name: token_type-3.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ None; OK; 0.088723; 0; ]
-  [ One; OK; 0.093718; 0; ]
-  [ One-2; OK; 0.091700; 0; ]
-  [ Some; OK; 0.090735; 0; ]
-  [ Some-2; OK; 0.091897; 0; ]
-  [ Forbidden; OK; 0.088064; 0; ]
-  [ Error; OK; 0.090386; 0; ]
-  [ Twice; OK; 0.091176; 0; ]
-  [ Twice-2; OK; 0.088698; 0; ]
+  [ None; OK; 0.090958; 0; ]
+  [ One; OK; 0.092506; 0; ]
+  [ One-2; OK; 0.090628; 0; ]
+  [ Some; OK; 0.091640; 0; ]
+  [ Some-2; OK; 0.092511; 0; ]
+  [ Forbidden; OK; 0.093571; 0; ]
+  [ Error; OK; 0.092104; 0; ]
+  [ Twice; OK; 0.090168; 0; ]
+  [ Twice-2; OK; 0.114768; 0; ]
 ]
 }
