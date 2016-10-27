@@ -1,0 +1,14 @@
+__________________________________________________________________
+Pragmas to set-back the file internal line numbers.
+
+LineNumberPragma
+   <no output is good output/print only errors>
+   count: 7
+LineNumberPragma-token
+   <no output is good output/print only errors>
+   count: 11
+LineNumberPragma.cpp
+   <no output is good output/print only errors>
+   count: 38
+__________________________________________________________________
+<terminated>

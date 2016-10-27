@@ -48,9 +48,10 @@ result_list: [
 {
 title: Testing the implementation of line number pragmas;
 file_name: line-number-pragma.sh;
-hwut_info_time: 1454022470L;
-happy_pattern_list: [ \[0-9]+; ]
+hwut_info_time: 1477550798L;
+happy_pattern_list: [ :\[0-9]+:; ]
 result_list: [
-  [ ; FAIL; 0.377517; -359932226; ]
+  [ qx; ; 0.381825; -432170934; ]
+  [ source; OK; 0.047225; 717338841; ]
 ]
 }
