@@ -8,16 +8,6 @@ result_list: [
 ]
 }
 {
-title: Assertion error -- please report a bug under;
-file_name: line-number-pragma.sh;
-hwut_info_time: 1477550798L;
-happy_pattern_list: [ :\[0-9]+:; ]
-result_list: [
-  [ qx; FAIL; 0.219936; -432170934; ]
-  [ source; OK; 0.069240; 717338841; ]
-]
-}
-{
 title: Customized codec files (option --codec-file);
 file_name: customized_codec.sh;
 hwut_info_time: 1455575223L;
@@ -53,5 +43,15 @@ hwut_info_time: 1476509448L;
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
   [ ; OK; 0.497801; 1363358452; ]
+]
+}
+{
+title: Testing the implementation of line number pragmas;
+file_name: line-number-pragma.sh;
+hwut_info_time: 1477550798L;
+happy_pattern_list: [ :\[0-9]+:; ]
+result_list: [
+  [ qx; OK; 0.463409; -432170934; ]
+  [ source; OK; 0.069240; 717338841; ]
 ]
 }

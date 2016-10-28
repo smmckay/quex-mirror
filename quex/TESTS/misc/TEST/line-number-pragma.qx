@@ -41,7 +41,7 @@ token_type {
 }
 
 mode BASE 
-: <skip_range:"/*" "*/"> <indentation:> {
+: <skip_range:"/*" "*/"> <indentation: [\t] => bad; > {
     on_entry             { printf("((A)) 45"); }
     on_exit              { printf("((A)) 46"); }
     on_indent            { printf("((A)) 47"); }
