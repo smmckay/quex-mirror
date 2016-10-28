@@ -219,7 +219,7 @@ class OptionDB(dict):
                           self.value_list("skip_range"),
                           self.value_list("skip_nested_range"),
                           self.value("indentation"))
-        ca_map  = self.value("counter").count_command_map
+        ca_map  = self.value("counter")
         return self.value("inheritable"), \
                self.value_list("exit"),   \
                self.value_list("entry"),  \
@@ -252,8 +252,8 @@ class OptionDB(dict):
         OptionDB. It checks whether it is already present.
         """
         info = mode_option_info_db[Name]
-        assert (not info.content_is_list()) or     isinstance(Setting.value, list)
-        assert (    info.content_is_list()) or not isinstance(Setting.value, list)
+        assert (not info.content_is_list()) or     type(Setting.value) == list
+        assert (    info.content_is_list()) or not type(Setting.value) == list
 
         if Name not in self:             dict.__setitem__(self, Name, [ Setting ])
         elif info.multiple_definition_f: dict.__getitem__(self, Name).append(Setting)
@@ -290,7 +290,7 @@ class OptionDB(dict):
         assert mode_option_info_db[Name].single_setting_f()
 
         scalar_value = setting_list[0].value
-        assert not isinstance(scalar_value, list)
+        assert not type(scalar_value) == list
         return scalar_value
 
     def value_list(self, Name):

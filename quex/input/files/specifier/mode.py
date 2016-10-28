@@ -159,8 +159,6 @@ class Mode_PrepPrep:
         if ThePattern.pre_context_trivial_begin_of_line_f:
             blackboard.required_support_begin_of_line_set()
 
-        TheAction.set_source_reference(SourceRef.from_FileHandle(fh, self.name))
-
         self.pattern_action_pair_list.append(PatternActionPair(ThePattern, TheAction))
 
     def add_match_priority(self, ThePattern, fh):

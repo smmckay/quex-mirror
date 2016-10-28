@@ -432,7 +432,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
         for pattern_str, action_str in PatternActionPairList
     ]
     
-    ca_map       = LineColumnCount_Default().count_command_map
+    ca_map       = LineColumnCount_Default()
     pattern_list = []
     terminal_db  = {}
     for pattern, action_str in pattern_action_list:

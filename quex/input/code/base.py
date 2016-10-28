@@ -1,6 +1,7 @@
 from   quex.engine.misc.tools   import typed, \
                                        all_isinstance, \
-                                       none_isinstance
+                                       none_isinstance, \
+                                       print_callstack
 
 from   collections import namedtuple
 
@@ -16,16 +17,21 @@ class SourceRef(namedtuple("SourceRef_tuple", ("file_name", "line_n", "mode_name
     _______________________________________________________________________________
     """
     def __new__(self, FileName="<default>", LineN=0, ModeName=""):
+        if LineN == 61 and ModeName == "BASE":
+            print "#FLN", FileName, LineN, ModeName
+            print_callstack()
         assert isinstance(FileName, (str, unicode))
         assert isinstance(LineN, (int, long))
         return super(SourceRef, self).__new__(self, FileName, LineN, ModeName)
 
     @staticmethod
-    def from_FileHandle(Fh, ModeName=""):
+    def from_FileHandle(Fh, ModeName="", BeginPos=None):
         if Fh != -1:
+            if BeginPos is not None: pos = Fh.tell(); Fh.seek(BeginPos)
             if not hasattr(Fh, "name"): file_name = "command line"
             else:                       file_name = Fh.name
             line_n = get_current_line_info_number(Fh) 
+            if BeginPos is not None: Fh.seek(pos)
         else:
             file_name = "<command line>"
             line_n    = -1

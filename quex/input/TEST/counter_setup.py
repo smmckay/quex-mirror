@@ -47,7 +47,7 @@ def test(Text):
     except:
         print "Exception!"
 
-    if descr is not None: print descr.count_command_map
+    if descr is not None: print descr
     print
 
 if "basic" in sys.argv:

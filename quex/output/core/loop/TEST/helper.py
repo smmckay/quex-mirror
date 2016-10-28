@@ -94,7 +94,7 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
 
     data = { 
         "character_set":        TriggerSet, 
-        "ca_map":           LineColumnCount_Default().count_command_map,
+        "ca_map":           LineColumnCount_Default(),
         "require_label_SKIP_f": False, 
         "dial_db":              dial_db
     }
@@ -140,7 +140,7 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
         "mode_name":          "MrUnitTest",
         "on_skip_range_open": CodeFragment([end_str]),
         "door_id_exit":       DoorID.continue_without_on_after_match(dial_db),
-        "ca_map":             LineColumnCount_Default().count_command_map,
+        "ca_map":             LineColumnCount_Default(),
         "dial_db":            dial_db,
     }
 
@@ -171,7 +171,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
     door_id_on_skip_range_open = dial_db.new_door_id()
     sm_close = StateMachine.from_sequence(CloserSequence)  
     sm_open  = StateMachine.from_sequence(OpenerSequence)  
-    ca_map   = LineColumnCount_Default().count_command_map
+    ca_map   = LineColumnCount_Default()
     data = { 
         "closer_pattern":     Pattern(sm_close.get_id(), sm_close,
                                       None, None, None,
@@ -231,7 +231,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
             return True
     mini_incidence_db = MiniIncidenceDb()
 
-    ca_map = LineColumnCount_Default().count_command_map
+    ca_map = LineColumnCount_Default()
     data = {
         "indentation_setup":             ISetup,
         "ca_map":                        ca_map,

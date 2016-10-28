@@ -15,6 +15,7 @@ class CodeUser(CodeFragment):
         CodeFragment.__init__(self, Code, SourceReference)
 
     def clone(self):
+        assert False, "UNUSED"
         result = CodeUser(deepcopy(self.get_code()), self.sr)
         return result
 

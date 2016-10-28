@@ -505,11 +505,12 @@ def parse_variable_definition(fh, GroupF=False, already_defined_list=[]):
             error.log("Missing whitespace after ':' after identifier '%s'.\n" % name_str \
                     + "The notation has to be: variable-name ':' type ';'.", fh)
 
+        position = fh.tell()
         type_str, i = read_until_letter(fh, ";", Verbose=True)
         if i == -1: error.log("missing ';'", fh)
         type_str = type_str.strip()
 
-        return [ CodeUser(type_str, SourceRef.from_FileHandle(fh)), name_str ]
+        return [ CodeUser(type_str, SourceRef.from_FileHandle(fh, BeginPos=position)), name_str ]
 
 def __validate_definition(TheCodeFragment, NameStr, 
                           AlreadyMentionedList, StandardMembersF):

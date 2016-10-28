@@ -10,8 +10,7 @@ import quex.engine.state_machine.algorithm.beautifier as     beautifier
 import quex.engine.state_machine.check.tail           as     tail
 from   quex.engine.misc.tools                         import typed
 from   quex.engine.misc.interval_handling             import NumberSet
-from   quex.engine.counter                            import LineColumnCount, \
-                                                             IndentationCount, \
+from   quex.engine.counter                            import IndentationCount_Pre, \
                                                              CountAction, \
                                                              CountActionMap, \
                                                              cc_type_name_db, \
@@ -99,7 +98,7 @@ class LineColumnCount_Prep(CountBase_Prep):
                               self.sr)
         check_grid_values_integer_multiples(ca_map)
         check_defined(ca_map, self.sr, E_CharacterCountType.LINE)
-        return LineColumnCount(self.sr, ca_map)
+        return ca_map 
 
     def requires_count(self):
         return True
@@ -191,16 +190,16 @@ class IndentationCount_Prep(CountBase_Prep):
                                   sm_comment.sr)
             pattern_comment_list.append(pattern)
 
-        return IndentationCount(self.sr, 
-                                self.whitespace_character_set.get(), 
-                                self.bad_space_character_set.get(), 
-                                get_pattern(self.sm_newline.get(), 
-                                            "<indentation newline>",
-                                            self.sm_newline.sr),
-                                get_pattern(sm_suppressed_newline, 
-                                            "<indentation suppressed newline>", 
-                                            self.sm_newline_suppressor.sr),
-                                pattern_comment_list)
+        return IndentationCount_Pre(self.sr, 
+                                    self.whitespace_character_set.get(), 
+                                    self.bad_space_character_set.get(), 
+                                    get_pattern(self.sm_newline.get(), 
+                                                "<indentation newline>",
+                                                self.sm_newline.sr),
+                                    get_pattern(sm_suppressed_newline, 
+                                                "<indentation suppressed newline>", 
+                                                self.sm_newline_suppressor.sr),
+                                    pattern_comment_list)
 
     def requires_count(self):
         return False
@@ -509,24 +508,19 @@ def _read_value_specifier(fh, Keyword, Default=None):
 
     error.log("Missing integer or variable name after keyword '%s'." % Keyword, fh) 
 
-_LineColumnCount_Default = None
+_ca_map_default = None
 def LineColumnCount_Default():
-    global _LineColumnCount_Default
+    global _ca_map_default
 
-    if _LineColumnCount_Default is None:
+    if _ca_map_default is None:
         specifier = CountActionMap_Prep()
         specifier.add(NumberSet(ord('\n')), E_CharacterCountType.LINE, 1, SourceRef_DEFAULT)
         specifier.add(NumberSet(ord('\t')), E_CharacterCountType.GRID, 4, SourceRef_DEFAULT)
-        specifier.define_else(E_CharacterCountType.COLUMN,   1, SourceRef_DEFAULT)    # Define: "\else"
-        count_command_map = specifier.finalize(
-            Setup.buffer_codec.source_set.minimum(), 
-            Setup.buffer_codec.source_set.supremum(),             # Apply:  "\else"
-            SourceRef_DEFAULT) 
-
-        _LineColumnCount_Default = LineColumnCount(SourceRef_DEFAULT, 
-                                                   count_command_map)
-
-    return _LineColumnCount_Default
+        specifier.define_else(E_CharacterCountType.COLUMN,   1, SourceRef_DEFAULT)     # Define: "\else"
+        _ca_map_default = specifier.finalize(Setup.buffer_codec.source_set.minimum(), 
+                                             Setup.buffer_codec.source_set.supremum(), # Apply:  "\else"
+                                             SourceRef_DEFAULT) 
+    return _ca_map_default
 
 
 def _error_set_intersection(CcType, Before, sr):

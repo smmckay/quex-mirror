@@ -311,19 +311,7 @@ class CountActionMap(list):
         ]
         return "".join(txt)
 
-class CountBase:
-    pass
-         
-class LineColumnCount(CountBase):
-    def __init__(self, SourceReference, CountActionMap=None):
-        self.sr = SourceReference
-        # During Parsing: The 'count_command_map' is specified later.
-        self.count_command_map = CountActionMap
-
-    def get_column_number_per_code_unit(self, CharacterSet=None):
-        return self.count_command_map.get_column_number_per_code_unit(CharacterSet)
-
-class IndentationCount(LineColumnCount):
+class IndentationCount_Pre:
     @typed(sr=SourceRef,PatternListComment=list)
     def __init__(self, SourceReference,  
                  WhiteSpaceCharacterSet, BadSpaceCharacterSet,
@@ -331,7 +319,7 @@ class IndentationCount(LineColumnCount):
                  PatternListComment):
         """BadSpaceCharacterSet = None, if there is no definition of bad space.
         """
-        LineColumnCount.__init__(self, SourceReference, None)
+        self.sr                         = SourceReference
         self.whitespace_character_set   = WhiteSpaceCharacterSet
         self.bad_space_character_set    = BadSpaceCharacterSet
         self.pattern_newline            = PatternNewline
@@ -343,27 +331,20 @@ class IndentationCount(LineColumnCount):
             if P: return P.finalize(CaMap)
             else: return None
 
-        self.pattern_newline            = _finalize(self.pattern_newline, 
-                                                    CaMap)
-        self.pattern_suppressed_newline = _finalize(self.pattern_suppressed_newline, 
-                                                    CaMap) 
-        for pattern_comment in self.pattern_comment_list:
-            self.pattern_comment = _finalize(pattern_comment, CaMap) 
-        return self
-
-    def get_sm_newline(self):
-        return self.__get_sm(self.pattern_newline)
-
-    def get_sm_suppressed_newline(self):
-        return self.__get_sm(self.pattern_suppressed_newline)
-
-    def get_sm_comment_list(self):
-        return [ x.sm for x in self.pattern_comment_list if x.sm is not None ]
-
-
-    def __get_sm(self, P):
-        if P: return P.sm
-        else: return None
+        pattern_newline            = _finalize(self.pattern_newline, 
+                                               CaMap)
+        pattern_suppressed_newline = _finalize(self.pattern_suppressed_newline, 
+                                               CaMap) 
+        pattern_comment_list = [
+            _finalize(pattern_comment, CaMap) 
+            for pattern_comment in self.pattern_comment_list
+        ]
+        return IndentationCount(self.sr, 
+                                self.whitespace_character_set, 
+                                self.bad_space_character_set,
+                                pattern_newline,
+                                pattern_suppressed_newline,
+                                pattern_comment_list)
 
     def __str__(self):
         def cs_str(Name, Cs):
@@ -397,6 +378,33 @@ class IndentationCount(LineColumnCount):
             )
 
         return "".join(txt)
+
+class IndentationCount:
+    def __init__(self, SourceReference,  
+                 WhiteSpaceCharacterSet, BadSpaceCharacterSet,
+                 PatternNewline, PatternSuppressedNewline, 
+                 PatternListComment):
+        """BadSpaceCharacterSet = None, if there is no definition of bad space.
+        """
+        self.sr                         = SourceReference
+        self.whitespace_character_set   = WhiteSpaceCharacterSet
+        self.bad_space_character_set    = BadSpaceCharacterSet
+        self.pattern_newline            = PatternNewline
+        self.pattern_suppressed_newline = PatternSuppressedNewline
+        self.pattern_comment_list       = PatternListComment
+
+    def get_sm_newline(self):
+        return self.__get_sm(self.pattern_newline)
+
+    def get_sm_suppressed_newline(self):
+        return self.__get_sm(self.pattern_suppressed_newline)
+
+    def get_sm_comment_list(self):
+        return [ x.sm for x in self.pattern_comment_list if x.sm is not None ]
+
+    def __get_sm(self, P):
+        if P: return P.sm
+        else: return None
 
 def _error_set_intersection(CcType, Before, sr):
     global cc_type_name_db

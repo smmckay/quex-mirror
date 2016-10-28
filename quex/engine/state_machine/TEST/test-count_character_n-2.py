@@ -37,7 +37,7 @@ spec_txt += ">"
     
 fh = StringIO(spec_txt)
 fh.name = "<string>"
-ca_map  = counter.LineColumnCount_Prep(fh).parse().count_command_map
+ca_map  = counter.LineColumnCount_Prep(fh).parse()
 
 def test(TestString):
     global choice

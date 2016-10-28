@@ -46,8 +46,9 @@ def parse(fh, CodeFragmentName,
                   fh)
 
 def __parse_normal(fh, code_fragment_name):
-    code   = read_until_closing_bracket(fh, "{", "}")
-    return CodeUser(code, SourceRef.from_FileHandle(fh))
+    position = fh.tell()
+    code     = read_until_closing_bracket(fh, "{", "}")
+    return CodeUser(code, SourceRef.from_FileHandle(fh, BeginPos=position))
 
 def __read_token_identifier(fh):
     """Parses a token identifier that may contain a namespace specification.
@@ -83,7 +84,7 @@ def __parse_brief_token_sender(fh, ContinueF):
 
         if len(code) != 0: 
             if ContinueF: code += "QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();\n"
-            return CodeUser(code, SourceRef.from_FileHandle(fh))
+            return CodeUser(code, SourceRef.from_FileHandle(fh, BeginPos=position))
         else:
             return None
 

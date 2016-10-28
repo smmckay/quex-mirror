@@ -132,7 +132,7 @@ def prepare_test_input_file(TestStr, Codec, ChunkN):
     assert len(content) == chunk_n * chunk_size, "%s <-> %s" % (len(content), chunk_n * chunk_size)
     fh.close()
 
-def get_test_application(counter_db, ReferenceP, CT):
+def get_test_application(ca_map, ReferenceP, CT):
     # Setup.buffer_element_specification_prepare()
     if   codec == "utf_32_le" or codec == "ascii":  
         Setup.buffer_codec_set(bc_factory.do("unicode"), LexatomSizeInBytes=4)
@@ -145,7 +145,7 @@ def get_test_application(counter_db, ReferenceP, CT):
 
     # (*) Generate Code 
     counter_function_name, \
-    counter_str            = run_time_counter.get(counter_db, "TEST_MODE")
+    counter_str            = run_time_counter.get(ca_map, "TEST_MODE")
     counter_str = counter_str.replace("static void", "void")
 
     # Make sure that the counter is implemented using reference pointer
@@ -189,7 +189,7 @@ def run(Codec, ChunkN):
         subprocess.call("./test")
 
 def counter_db_wo_reference_p():
-    """RETURNS: A counter_db that makes it impossible to use a reference pointer.
+    """RETURNS: A ca_map that makes it impossible to use a reference pointer.
     """
     # Reference counter is not possible, since we have two space types
     spec_txt = """
@@ -208,10 +208,10 @@ chunk_n = int(fields[1])
 without_reference_p_f = (sys.argv[1].find("wo-ReferenceP") != -1)
 
 if without_reference_p_f:
-    counter_db  = counter_db_wo_reference_p()
+    ca_map      = counter_db_wo_reference_p()
     reference_p = False
 else:
-    counter_db = counter.LineColumnCount_Default()
+    ca_map      = counter.LineColumnCount_Default()
     # UTF16 and UTF8 are dynamic length codecs. reference pointer based 
     # is impossible.
     if codec in ("utf_8", "utf_16_le"): reference_p = False
@@ -225,7 +225,7 @@ character_type = {
     "cp737":      "uint8_t",
 }[codec]
 
-get_test_application(counter_db.count_command_map, reference_p, character_type)
+get_test_application(ca_map, reference_p, character_type)
 run(codec, chunk_n)
     
 os.remove("data/input.txt")
