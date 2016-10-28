@@ -281,7 +281,7 @@ class Mode_PrepPrep:
                           (self.name, mode_name), self.sr)
 
 class Mode_Prep:
-    focus = ("<skip>", "<skip_range>", "<skip_nested_range>", "<indentation newline>")
+    focus = ("<skip>", "<skip_range open>", "<skip_nested_range open>", "<indentation newline>")
 
     @typed(AbstractF=bool)
     def __init__(self, Name, Sr, BaseModeNameSequence, 
@@ -425,9 +425,10 @@ class Mode_Prep:
             
             elif not outrun_checker.do(high.sm, low.sm):                  
                 continue
+
             error.log_consistency_issue(high, low, ExitF=True, 
                             ThisComment  = "has lower priority but",
-                            ThatComment  = "may outrun",
+                            ThatComment  = "may outrun it",
                             SuppressCode = ErrorCode)
                                  
     def check_higher_priority_matches_subset(self, ErrorCode):

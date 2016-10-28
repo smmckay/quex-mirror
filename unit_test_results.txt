@@ -1224,9 +1224,6 @@ quex/TESTS/misc/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Analyzer State Tracer
         debug_show.sh ................................................[OK]
- * Assertion error -- please report a bug under
-        line-number-pragma.sh qx ...................................[FAIL]
-                              source .................................[OK]
  * Customized codec files (option --codec-file)
         customized_codec.sh ..........................................[OK]
  * Inadmissible commonalities
@@ -1234,20 +1231,19 @@ quex/TESTS/misc/TEST                                                 <no date>
                        mix ...........................................[OK]
                        mix2 ..........................................[OK]
                        skip ..........................................[OK]
-                       skip_nested_range ......................[NO OUTPUT]
-                       skip_range .............................[NO OUTPUT]
+                       skip_nested_range .............................[OK]
+                       skip_range ....................................[OK]
  * Respect max. recursion depth upon base mode inclusion.
         huge-inheritance.sh ..........................................[OK]
  * Test code comments
         comment.sh ...................................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] line-number-pragma.sh _ qx
-    [FAIL] commonality.sh _ skip_nested_range
-                        \__ skip_range
+ * Testing the implementation of line number pragmas
+        line-number-pragma.sh qx .....................................[OK]
+                              source .................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -3023,7 +3019,7 @@ SUMMARY:
            14      [OK] ........../include-stack/TEST                       
            18      [OK] ........../indentation_count/TEST                   
            45      [OK] ........../match-precedence/TEST                    
-        3  12    [FAIL] ........../misc/TEST                                
+           12      [OK] ........../misc/TEST                                
            55      [OK] ........../reset/TEST                               
            24      [OK] ........../source-package/TEST                      
            2       [OK] ........../token-class/TEST                         
@@ -3057,11 +3053,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _   ___            
-    |  ___|_ _(_) |___     / | / _ \     __  __
-    | |_ / _` | | / __|    | || | | |    \ \/ /
-    |  _| (_| | | \__ \    | || |_| |     >  < 
-    |_|  \__,_|_|_|___/    |_| \___/     /_/\_\
+     _____     _ _          _____           
+    |  ___|_ _(_) |___     |___  |    __  __
+    | |_ / _` | | / __|       / /     \ \/ /
+    |  _| (_| | | \__ \      / /       >  < 
+    |_|  \__,_|_|_|___/     /_/       /_/\_\
                                                                    (1582 tests)
 
 ===============================================================================

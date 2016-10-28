@@ -70,11 +70,13 @@ def log_consistency_issue(This, That, ThisComment, ThatComment="", EndComment=""
     log("The pattern '%s' %s" % (This.pattern_string(), ThisComment), 
         This.sr, DontExitF=True, WarningF=not ExitF)
 
-    msg = "pattern '%s'." % That.pattern_string()
+    if ThatComment: space = " "
+    else:           space = ""
+    msg = "pattern '%s'%s%s." % (That.pattern_string(), space, ThatComment)
 
-    if len(EndComment) == 0:
+    if not EndComment:
         log(msg, That.sr, DontExitF=not ExitF, WarningF=not ExitF, 
-                  SuppressCode=SuppressCode)
+            SuppressCode=SuppressCode)
     else:
         log(msg,        That.sr, DontExitF=True,      WarningF=not ExitF)
         log(EndComment, That.sr, DontExitF=not ExitF, WarningF=not ExitF, 
