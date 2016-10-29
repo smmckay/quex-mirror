@@ -50,21 +50,23 @@ def get(CaMap, Name):
     function_name  = Lng.DEFAULT_COUNTER_FUNCTION_NAME(Name) 
 
     door_id_return = dial_db.new_door_id()
-    code,                  \
+    analyzer_list,         \
     terminal_list,         \
     loop_map,              \
     door_id_loop,          \
     required_register_set, \
     run_time_counter_f     = loop.do(CaMap, 
-                                    OnLoopExitDoorId = door_id_return,
-                                    LexemeEndCheckF  = True,
-                                    EngineType       = engine.CHARACTER_COUNTER, 
-                                    dial_db          = dial_db)
+                                     OnLoopExitDoorId = door_id_return,
+                                     LexemeEndCheckF  = True,
+                                     EngineType       = engine.CHARACTER_COUNTER, 
+                                     dial_db          = dial_db)
+    code = generator.do_analyzer_list(analyzer_list)
     assert not run_time_counter_f
 
     code.extend(
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
     )
+
     variable_db.require_registers(required_register_set)
     implementation = __frame(function_name, Lng.INPUT_P(), code, door_id_return, 
                              dial_db) 

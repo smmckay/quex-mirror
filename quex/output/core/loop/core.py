@@ -111,10 +111,8 @@ from   quex.engine.counter                                import CountAction, \
                                                                  count_operation_db_with_reference, \
                                                                  count_operation_db_without_reference
 from   quex.engine.misc.interval_handling                 import NumberSet
-from   quex.engine.misc.tools                             import typed, \
-                                                                 flatten_list_of_lists
+from   quex.engine.misc.tools                             import typed
 from   quex.output.cpp.counter_for_pattern                import map_SmLineColumnCountInfo_to_code
-import quex.output.core.base                              as     generator
 
 from   quex.blackboard import E_CharacterCountType, \
                               E_R, \
@@ -612,13 +610,9 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
                                                      iid_loop_exit, 
                                                      iid_loop_after_appendix_drop_out)
 
-    # Generate Code ___________________________________________________________
-    #
-    txt = _get_source_code(analyzer_list)
-    
     # Clean the loop map from the 'exit transition'.
     clean_loop_map = [lei for lei in loop_map if lei.incidence_id != iid_loop_exit]
-    return txt, \
+    return analyzer_list, \
            terminal_list, \
            clean_loop_map, \
            door_id_loop, \
@@ -1052,28 +1046,4 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
                               dial_db        = EventHandler.dial_db)
         for sm in appendix_sm_list
     ]
-
-def _get_source_code(analyzer_list):
-    """RETURNS: String containing source code for the 'loop'. 
-
-       -- The source code for the (looping) state machine.
-       -- The terminals which contain counting actions.
-
-    Also, it requests variable definitions as they are required.
-    """
-    # Analyzer Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
-    assert len(set(a.state_machine_id for a in analyzer_list)) == len(analyzer_list)
-
-    loop_analyzer = analyzer_list[0]
-
-    txt = flatten_list_of_lists(
-        generator.do_analyzer(analyzer) for analyzer in analyzer_list
-    )
-    if loop_analyzer.engine_type.subject_to_reload():
-        txt.extend(
-            generator.do_reload_procedure(loop_analyzer)
-        )
-
-    return txt
-
 

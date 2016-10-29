@@ -69,7 +69,7 @@ def do(Data, ReloadState):
 
     on_loop_exit_door_id = DoorID.continue_without_on_after_match(dial_db)
 
-    result,                \
+    analyzer_list,         \
     terminal_list,         \
     loop_map,              \
     door_id_loop,          \
@@ -81,8 +81,7 @@ def do(Data, ReloadState):
                                      dial_db           = dial_db)
     assert not run_time_counter_f
 
-    assert isinstance(result, list)
-    return result, \
+    return analyzer_list, \
            terminal_list, \
            loop_map, \
            required_register_set

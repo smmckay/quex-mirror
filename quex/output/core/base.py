@@ -204,6 +204,33 @@ def __do_state_machine(sm, EngineType, dial_db, ReloadStateForward=None):
 
     return txt, analyzer
 
+def do_analyzer_list(analyzer_list):
+    """RETURNS: String containing source code for the 'loop'. 
+
+       -- The source code for the (looping) state machine.
+       -- The terminals which contain counting actions.
+
+    Also, it requests variable definitions as they are required.
+    """
+    # Analyzer Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
+    assert len(set(a.state_machine_id for a in analyzer_list)) == len(analyzer_list)
+    if not analyzer_list: return []
+
+    txt = []
+    subject_to_reload_f = False
+    for analyzer in analyzer_list:
+        txt.extend(
+            do_analyzer(analyzer)
+        )
+        subject_to_reload_f |= analyzer.engine_type.subject_to_reload()
+
+    if subject_to_reload_f:
+        txt.extend(
+            do_reload_procedure(analyzer_list[0])
+        )
+
+    return txt
+
 def do_analyzer(analyzer): 
     state_machine_code = state_machine_coder.do(analyzer)
     Lng.REPLACE_INDENT(state_machine_code)

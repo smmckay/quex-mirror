@@ -107,7 +107,7 @@ def do(Data, ReloadState):
     if ReloadState: engine_type = ReloadState.engine_type
 
     # (*) Generate Code
-    code,                  \
+    analyzer_list,         \
     terminal_list,         \
     loop_map,              \
     door_id_loop,          \
@@ -123,7 +123,7 @@ def do(Data, ReloadState):
 
     terminal_list.append(ih_call_terminal)
 
-    return code,                  \
+    return analyzer_list,         \
            terminal_list,         \
            required_register_set, \
            run_time_counter_f

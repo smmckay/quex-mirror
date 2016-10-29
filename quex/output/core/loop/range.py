@@ -54,7 +54,7 @@ def get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen,
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
-    result,                \
+    analyzer_list,         \
     terminal_list,         \
     loop_map,              \
     door_id_loop,          \
@@ -65,7 +65,8 @@ def get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen,
                                     ReloadStateExtern          = ReloadState,
                                     ParallelSmTerminalPairList = psml, 
                                     dial_db                    = dial_db) 
-    return result, terminal_list, \
+
+    return analyzer_list, terminal_list, \
            required_register_set, \
            run_time_counter_f
 

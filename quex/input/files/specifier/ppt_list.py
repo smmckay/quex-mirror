@@ -28,6 +28,7 @@ import quex.output.core.loop.character_set          as     skip_character_set
 import quex.output.core.loop.range                  as     skip_range
 import quex.output.core.loop.nested_range           as     skip_nested_range
 import quex.output.core.loop.indentation_counter    as     indentation_counter
+import quex.output.core.base                        as     generator
 
 from   quex.blackboard import E_IncidenceIDs, \
                               Lng
@@ -337,11 +338,12 @@ class PPT_List(list):
             "dial_db":           self.terminal_factory.dial_db,
         }
 
-        code,                  \
+        analyzer_list,         \
         new_terminal_list,     \
         required_register_set, \
         run_time_counter_f     = indentation_counter.do(data, ReloadState)
-        self.terminal_factory.run_time_counter_required_f = run_time_counter_f
+        code = generator.do_analyzer_list(analyzer_list)
+        self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
         self.required_register_set.update(required_register_set)
 
@@ -384,10 +386,11 @@ class PPT_List(list):
             "dial_db":       self.terminal_factory.dial_db
         }
 
-        code,                 \
+        analyzer_list,        \
         new_terminal_list,    \
         loop_map,             \
         required_register_set = skip_character_set.do(data, ReloadState)
+        code = generator.do_analyzer_list(analyzer_list)
         self.required_register_set.update(required_register_set)
 
         extra_terminal_list = [ 
@@ -435,11 +438,12 @@ class PPT_List(list):
         for i, data in enumerate(Loopers.skip_range):
             data = self._range_skipper_data(data, CaMap, Loopers.indentation_handler)
 
-            code,                  \
+            analyzer_list,         \
             new_terminal_list,     \
             required_register_set, \
             run_time_counter_f     = skip_range.do(data, ReloadState)
-            self.terminal_factory.run_time_counter_required_f = run_time_counter_f
+            code = generator.do_analyzer_list(analyzer_list)
+            self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
             self.required_register_set.update(required_register_set)
 
@@ -450,7 +454,6 @@ class PPT_List(list):
                                              RequiredRegisterSet=required_register_set)
             new_ppt_list.append(
                 PPT(PatternPriority(MHI, i), data["opener_pattern"], terminal)
-
             )
 
         return new_ppt_list, extra_terminal_list
@@ -463,11 +466,13 @@ class PPT_List(list):
         for i, data in enumerate(Loopers.skip_nested_range):
             data = self._range_skipper_data(data, CaMap, Loopers.indentation_handler)
 
-            code,                  \
+            analyzer_list,         \
             new_terminal_list,     \
             required_register_set, \
             run_time_counter_f     = skip_nested_range.do(data, ReloadState)
-            self.terminal_factory.run_time_counter_required_f = run_time_counter_f
+            code = generator.do_analyzer_list(analyzer_list)
+    
+            self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
             self.required_register_set.update(required_register_set)
 

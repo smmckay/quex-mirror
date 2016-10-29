@@ -64,31 +64,31 @@ def get_skipper(ReloadState, OpenerPattern, CloserPattern,
     # The first opening pattern must have matched --> counter = 1
     entry_op_list = OpList(Op.AssignConstant(E_R.Counter, 1))
 
-    result,                \
+    analyzer_list,         \
     terminal_list,         \
     loop_map,              \
     door_id_loop,          \
     required_register_set, \
     run_time_counter_f     = loop.do(CaMap,
-                                    BeforeEntryOpList          = entry_op_list,
-                                    OnLoopExitDoorId           = DoorIdExit,
-                                    EngineType                 = engine_type,
-                                    ReloadStateExtern          = ReloadState,
-                                    ParallelSmTerminalPairList = psml,
-                                    dial_db                    = dial_db) 
+                                     BeforeEntryOpList          = entry_op_list,
+                                     OnLoopExitDoorId           = DoorIdExit,
+                                     EngineType                 = engine_type,
+                                     ReloadStateExtern          = ReloadState,
+                                     ParallelSmTerminalPairList = psml,
+                                     dial_db                    = dial_db) 
 
     reentry_op_list = [
         Op.GotoDoorId(door_id_loop)
     ]
     terminal_list.append(
         Terminal(CodeTerminal(Lng.COMMAND_LIST(reentry_op_list, dial_db)),
-                 Name = "<SKIP NESTED RANGE REENTRY>",
+                 Name        = "<SKIP NESTED RANGE REENTRY>",
                  IncidenceId = iid_aux_reentry, 
-                 dial_db=dial_db)
+                 dial_db     = dial_db)
     )
 
     required_register_set.add(E_R.Counter)
-    return result, \
+    return analyzer_list, \
            terminal_list, \
            required_register_set, \
            run_time_counter_f

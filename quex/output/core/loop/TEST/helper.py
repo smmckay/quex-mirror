@@ -1,10 +1,10 @@
 import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
-import quex.output.core.loop.run_time_counter        as run_time_counter
-import quex.output.core.loop.character_set           as character_set_skipper
-import quex.output.core.loop.range                   as range_skipper
-import quex.output.core.loop.nested_range            as nested_range_skipper
+import quex.output.core.loop.run_time_counter        as     run_time_counter
+import quex.output.core.loop.character_set           as     character_set_skipper
+import quex.output.core.loop.range                   as     range_skipper
+import quex.output.core.loop.nested_range            as     nested_range_skipper
 import quex.output.core.loop.indentation_counter     as     indentation_counter
 from   quex.output.core.TEST.generator_test          import *
 from   quex.output.core.variable_db                  import variable_db
@@ -98,10 +98,11 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
         "require_label_SKIP_f": False, 
         "dial_db":              dial_db
     }
-    loop_code,  \
+    analyzer_list,  \
     terminal_list, \
     loop_map,      \
     required_register_set = character_set_skipper.do(data, Analyzer.reload_state)
+    loop_code = generator.do_analyzer_list(analyzer_list)
 
     variable_db.require_registers(required_register_set)
 
@@ -144,10 +145,11 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
         "dial_db":            dial_db,
     }
 
-    loop_code,          \
+    analyzer_list,         \
     terminal_list,         \
     required_register_set, \
     run_time_counter_f     = range_skipper.do(data, Analyzer.reload_state)
+    loop_code = generator.do_analyzer_list(analyzer_list)
     assert not run_time_counter_f
 
     __require_variables(required_register_set)
@@ -188,10 +190,11 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
         "dial_db":            dial_db,
     }
 
-    loop_code,             \
+    analyzer_list,         \
     terminal_list,         \
     required_register_set, \
     run_time_counter_f     = nested_range_skipper.do(data, Analyzer.reload_state)
+    loop_code = generator.do_analyzer_list(analyzer_list)
     assert not run_time_counter_f
     __require_variables(required_register_set)
     loop_code.extend(
@@ -250,10 +253,11 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
     code = [] # [ "%s\n" % Lng.LABEL(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)) ]
 
     variable_db.init()
-    loop_code, \
-    terminal_list, \
+    analyzer_list,         \
+    terminal_list,         \
     required_register_set, \
     run_time_counter_f     = indentation_counter.do(data, Analyzer.reload_state)
+    loop_code = generator.do_analyzer_list(analyzer_list)
 
     loop_code.extend(
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)

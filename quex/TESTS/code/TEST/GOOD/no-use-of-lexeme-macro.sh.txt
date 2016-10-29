@@ -6,27 +6,27 @@ that referes to the Lexeme macros.
 Following lines are suppossed to be accepted:
 
 ~/prj/quex/trunk/quex ~/prj/quex/trunk/quex/TESTS/code/TEST
-./blackboard.py:130:                      "OVERFLOW",        # Lexeme too long, reload impossible
-./blackboard.py:241:           "LexemeEnd",
+./blackboard.py:122:                      "OVERFLOW",        # Lexeme too long, reload impossible
+./blackboard.py:213:           "LexemeEnd",
 ./engine/analyzer/terminal/factory.py:151:        """Overflow: Lexeme size exceeds buffer size.
 ./engine/analyzer/terminal/factory.py:155:        comment_txt = "Lexeme size exceeds buffer size. No further buffer load possible."
-./input/files/code_fragment.py:257:            if argument_list[0] == "Lexeme":
-./input/files/code_fragment.py:264:                error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
-./input/files/code_fragment.py:267:                          "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
-./input/files/code_fragment.py:277:                      "     one argument:   'Lexeme'   =>  token.take_text(..., LexemeBegin, LexemeEnd);\n"
-./input/files/code_fragment.py:299:            idx = value.find("Lexeme")
-./input/files/code_fragment.py:304:                    error.log("Assignment of token member '%s' with 'Lexeme' directly being involved. The\n" % member_name + 
-./input/files/code_fragment.py:305:                              "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
-./input/files/code_fragment.py:308:                              "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"
-./input/files/code_fragment.py:311:                              "       is not directly dependent anymore on 'Lexeme'. This is particularly\n"
-./input/files/code_fragment.py:315:                              "          \"%s(Lexeme+1, LexemeEnd-2)\"\n" % TokenName + 
-./input/files/code_fragment.py:316:                              "          \"%s(Lexeme)\"\n" % TokenName + 
-./output/core/dictionary.py:228:        return "__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);\n"
-./output/core/loop/run_time_counter.py:100:        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
-./output/core/loop/run_time_counter.py:103:        "    %s = LexemeBegin;\n" % IteratorName
-./output/core/loop/run_time_counter.py:122:       + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
-./output/core/loop/run_time_counter.py:83:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" \
-./output/core/loop/run_time_counter.py:96:        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
-./output/core/loop/run_time_counter.py:99:        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
-./output/cpp/templates.py:251:    /* Lexeme setup: 
+./input/files/code_fragment.py:258:            if argument_list[0] == "Lexeme":
+./input/files/code_fragment.py:265:                error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
+./input/files/code_fragment.py:268:                          "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
+./input/files/code_fragment.py:278:                      "     one argument:   'Lexeme'   =>  token.take_text(..., LexemeBegin, LexemeEnd);\n"
+./input/files/code_fragment.py:300:            idx = value.find("Lexeme")
+./input/files/code_fragment.py:305:                    error.log("Assignment of token member '%s' with 'Lexeme' directly being involved. The\n" % member_name + 
+./input/files/code_fragment.py:306:                              "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
+./input/files/code_fragment.py:309:                              "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"
+./input/files/code_fragment.py:312:                              "       is not directly dependent anymore on 'Lexeme'. This is particularly\n"
+./input/files/code_fragment.py:316:                              "          \"%s(Lexeme+1, LexemeEnd-2)\"\n" % TokenName + 
+./input/files/code_fragment.py:317:                              "          \"%s(Lexeme)\"\n" % TokenName + 
+./output/core/dictionary.py:221:        return "__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);\n"
+./output/core/loop/run_time_counter.py:100:        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
+./output/core/loop/run_time_counter.py:101:        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
+./output/core/loop/run_time_counter.py:104:        "    %s = LexemeBegin;\n" % IteratorName
+./output/core/loop/run_time_counter.py:123:       + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
+./output/core/loop/run_time_counter.py:84:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" \
+./output/core/loop/run_time_counter.py:97:        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
+./output/cpp/templates.py:249:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST
