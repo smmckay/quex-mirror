@@ -116,7 +116,6 @@ def do(Data, ReloadState):
                                      OnLoopExitDoorId           = loop_exit_door_id,
                                      EngineType                 = engine_type,
                                      ReloadStateExtern          = ReloadState,
-                                     LexemeMaintainedF          = False,
                                      ParallelSmTerminalPairList = sm_terminal_list, 
                                      dial_db                    = dial_db,
                                      LoopCharacterSet           = whitespace_set) 

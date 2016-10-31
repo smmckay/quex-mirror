@@ -31,17 +31,16 @@ import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from   quex.engine.counter                        import LineColumnCount, \
-                                                         CountAction
+from   quex.engine.counter                        import CountAction, \
+                                                         CountActionMap
 from   quex.engine.state_machine.core             import StateMachine  
 from   quex.engine.misc.interval_handling         import NumberSet, \
                                                          NumberSet_All
-from   quex.engine.analyzer.door_id_address_label import dial_db
+import quex.engine.analyzer.door_id_address_label as     dial
+from   quex.engine.analyzer.door_id_address_label import DialDB
 import quex.engine.state_machine.transformation.core as  bc_factory
-import quex.engine.analyzer.engine_supply_factory as     engine
 import quex.output.core.loop.core                 as     loop
-from   quex.output.core.loop.core                 import LoopMapEntry, \
-                                                         LoopEventHandlers
+import quex.engine.analyzer.engine_supply_factory as     engine
 from   quex.blackboard                            import E_CharacterCountType, \
                                                          setup as Setup
 if "--hwut-info" in sys.argv:
@@ -128,12 +127,11 @@ appendix_sm_id_2 = 33L
 #
 Setup.buffer_codec_set(bc_factory.do(encoding), LexatomSizeInBytes=1)
 
-event_handler = LoopEventHandlers(column_n_per_code_unit, 
-                                  MaintainLexemeF   = False, 
-                                  LexemeEndCheckF   = False, 
-                                  EngineType        = engine.FORWARD, 
-                                  ReloadStateExtern = None, 
-                                  UserOnLoopExit    = [])
+event_handler = loop.LoopEventHandlers(column_n_per_code_unit, 
+                                       MaintainLexemeF   = False, 
+                                       LexemeEndCheckF   = False, 
+                                       EngineType        = engine.FORWARD, 
+                                       ReloadStateExtern = None) 
 
 loop_map = [
     LoopMapEntry(NS_A, CA_0, CA_0.get_incidence_id(), None),

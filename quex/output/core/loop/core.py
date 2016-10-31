@@ -178,9 +178,9 @@ class LoopEventHandlers:
         .on_after_reload:              after buffer reload is performed.
         .on_after_reload_in_appendix:  as above ... in appendix state machine.
     """
-    @typed(LexemeEndCheckF=bool, MaintainLexemeF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB, 
+    @typed(LexemeEndCheckF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB, 
            OnReloadFailureDoorId=(None, DoorID))
-    def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, MaintainLexemeF, 
+    def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, 
                  EngineType, ReloadStateExtern, UserBeforeEntryOpList, 
                  UserOnLoopExitDoorId, AppendixSmExistF, dial_db, OnReloadFailureDoorId): 
         """ColumnNPerCodeUnit is None => no constant relationship between 
@@ -194,8 +194,7 @@ class LoopEventHandlers:
         self.door_id_on_reload_failure   = OnReloadFailureDoorId
 
         # Determine required register set before (required for reload actions)
-        self.required_register_set = self.__get_required_register_set(AppendixSmExistF, 
-                                                                      MaintainLexemeF)
+        self.required_register_set = self.__get_required_register_set(AppendixSmExistF) 
 
         # Counting Actions upon: loop entry/exit; before/after reload
         #
@@ -210,10 +209,9 @@ class LoopEventHandlers:
         on_loop_reentry_pos,      \
         on_loop_exit_pos          = self.__prepare_positioning_at_loop_begin_and_exit()
         on_before_reload_pos,     \
-        on_after_reload_pos       = self.__prepare_positioning_before_and_after_reload(MaintainLexemeF) 
+        on_after_reload_pos       = self.__prepare_positioning_before_and_after_reload() 
         on_before_reload_pos_apx, \
-        on_after_reload_pos_apx   = self.__prepare_positioning_before_and_after_reload(MaintainLexemeF, 
-                                                                                       AppendixSmF=True) 
+        on_after_reload_pos_apx   = self.__prepare_positioning_before_and_after_reload(AppendixSmF=True) 
 
         # _____________________________________________________________________
         #
@@ -288,8 +286,7 @@ class LoopEventHandlers:
 
         return entry, reentry, exit
 
-    def __prepare_positioning_before_and_after_reload(self, MaintainLexemeF, 
-                                                      AppendixSmF=False):
+    def __prepare_positioning_before_and_after_reload(self, AppendixSmF=False):
         """When new content is loaded into the buffer, the positions of the
         pointers must be adapted, so that they point to the same byte as
         before the reload. This function determines the pointer adaptions for 
@@ -304,8 +301,6 @@ class LoopEventHandlers:
             LoopRestartP    --> Position where to restart loop or 'character':
                                   * if the appendix state machine drops-out.
                                   * if current multi byte character is incomplete.
-            LexemeStartP    --> Position where the current lexeme begins
-                                if explicitly required by MaintainLexemeF.
         
         If the lexeme is not to be maintained, the amount of data to be reloaded
         is maximized by setting the lexeme start pointer to the read pointer.
@@ -331,21 +326,16 @@ class LoopEventHandlers:
         after  = []
 
         # Before Reload:
-        if not MaintainLexemeF:
-            # Just get the 'lexeme_start_p' out of the way, so that anything
-            # is filled from 'read_p'.
-            before.append(
-                Op.Assign(E_R.LexemeStartP, E_R.InputP)
-            )
+        # Just get the 'lexeme_start_p' out of the way, so that anything
+        # is filled from 'read_p'.
+        before.append(
+            Op.Assign(E_R.LexemeStartP, E_R.InputP)
+        )
 
         if maintain_loop_restart_p:
             before.append(
                 Op.Assign(E_R.InputPBeforeReload, E_R.InputP)
             )
-            if MaintainLexemeF:
-                before.append(
-                    Op.Assign(E_R.LexemeStartBeforeReload, E_R.LexemeStartP),
-                )
             before.append(
                 Op.PointerAssignMin(E_R.LexemeStartP, E_R.LexemeStartP, E_R.LoopRestartP)
             )
@@ -356,21 +346,15 @@ class LoopEventHandlers:
                 Op.AssignPointerDifference(E_R.PositionDelta, 
                                            E_R.InputP, E_R.InputPBeforeReload),
             )
-            if MaintainLexemeF:
-                after.extend([
-                    Op.Assign(E_R.LexemeStartP, E_R.LexemeStartBeforeReload),
-                    Op.PointerAdd(E_R.LexemeStartP, E_R.PositionDelta)
-                ])
             after.append(
                 Op.PointerAdd(E_R.LoopRestartP, E_R.PositionDelta)
             )
 
-        if not MaintainLexemeF:
-            # Make sure, that the lexeme start pointer makes sense:
-            # => begin of input
-            after.append(
-                Op.Assign(E_R.LexemeStartP, E_R.InputP)
-            )
+        # Make sure, that the lexeme start pointer makes sense:
+        # => begin of input
+        after.append(
+            Op.Assign(E_R.LexemeStartP, E_R.InputP)
+        )
 
         return before, after
 
@@ -504,7 +488,7 @@ class LoopEventHandlers:
     def on_loop_exit_text(self):
         return Lng.COMMAND_LIST(self.on_loop_exit, self.dial_db)
 
-    def __get_required_register_set(self, AppendixSmExistF, MaintainLexemeF):
+    def __get_required_register_set(self, AppendixSmExistF):
         result = set()
         if self.column_number_per_code_unit is not None:
             result.add((E_R.CountReferenceP, "QUEX_OPTION_COLUMN_NUMBER_COUNTING"))
@@ -516,8 +500,6 @@ class LoopEventHandlers:
            and self.engine_type.subject_to_reload():
             result.add(E_R.InputPBeforeReload)
             result.add(E_R.PositionDelta)
-            if MaintainLexemeF:
-                result.add(E_R.LexemeStartBeforeReload)
 
         return result
 
@@ -525,10 +507,8 @@ class LoopEventHandlers:
        ReloadF=bool, LexemeEndCheckF=bool, OnLoopExit=list,
        LoopCharacterSet=(None, NumberSet))
 def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, EngineType=None, 
-       ReloadStateExtern=None, LexemeMaintainedF=False,
-       ParallelSmTerminalPairList=None, dial_db=None,
-       LoopCharacterSet=None, 
-       OnReloadFailureDoorId=None):
+       ReloadStateExtern=None, ParallelSmTerminalPairList=None, dial_db=None,
+       LoopCharacterSet=None, OnReloadFailureDoorId=None):
     """Generates a structure that 'loops' quickly over incoming characters.
 
                                                              Loop continues           
@@ -586,7 +566,7 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
                                       dial_db, LoopCharacterSet)
 
     event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
-                                      LexemeEndCheckF, LexemeMaintainedF, 
+                                      LexemeEndCheckF, 
                                       EngineType, ReloadStateExtern, 
                                       UserOnLoopExitDoorId=OnLoopExitDoorId,
                                       UserBeforeEntryOpList=BeforeEntryOpList,
