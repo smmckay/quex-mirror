@@ -61,12 +61,9 @@ class Mode(BasicMode):
 
     @typed(Name=(str,unicode), Sr=SourceRef)
     def __init__(self, Name, Sr, 
-                 PatternList, TerminalDb, IncidenceDb,
-                 RunTimeCounterDb, 
-                 ReloadStateForward, 
-                 RequiredRegisterSet,
-                 dial_db, 
-                 Documentation):
+                 PatternList, TerminalDb, ExtraAnalyzerList, IncidenceDb,
+                 RunTimeCounterDb, ReloadStateForward, RequiredRegisterSet,
+                 dial_db, Documentation):
         """Information about a lexical analyzer mode:
         
            Name:        Name of the mode.
@@ -103,8 +100,9 @@ class Mode(BasicMode):
         self.mode_id = Mode.__mode_id_counter 
         Mode.__mode_id_counter += 1
 
-        self.terminal_db  = TerminalDb
-        self.incidence_db = IncidenceDb
+        self.terminal_db         = TerminalDb
+        self.extra_analyzer_list = ExtraAnalyzerList
+        self.incidence_db        = IncidenceDb
 
         self.run_time_counter_db  = RunTimeCounterDb # None, if not counter required.
 

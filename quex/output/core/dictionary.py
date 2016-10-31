@@ -255,6 +255,9 @@ class Lng_Cpp(dict):
             E_R.LoadResult:      "load_result",
         }[Register]
 
+    def DEFINE_NESTED_RANGE_COUNTER(self):
+        return "#define Counter %s" % self.REGISTER_NAME(E_R.Counter)
+
     def COMMAND_LIST(self, OpList, dial_db=None):
         return [ 
             "%s\n" % self.COMMAND(cmd, dial_db) for cmd in OpList

@@ -178,10 +178,11 @@ class LoopEventHandlers:
         .on_after_reload:              after buffer reload is performed.
         .on_after_reload_in_appendix:  as above ... in appendix state machine.
     """
-    @typed(LexemeEndCheckF=bool, MaintainLexemeF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB)
+    @typed(LexemeEndCheckF=bool, MaintainLexemeF=bool, UserOnLoopExitDoorId=DoorID, dial_db=DialDB, 
+           OnReloadFailureDoorId=(None, DoorID))
     def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, MaintainLexemeF, 
                  EngineType, ReloadStateExtern, UserBeforeEntryOpList, 
-                 UserOnLoopExitDoorId, AppendixSmExistF, dial_db): 
+                 UserOnLoopExitDoorId, AppendixSmExistF, dial_db, OnReloadFailureDoorId): 
         """ColumnNPerCodeUnit is None => no constant relationship between 
                                          column number and code unit.
         """
@@ -190,6 +191,7 @@ class LoopEventHandlers:
         self.reload_state_extern         = ReloadStateExtern
         self.engine_type                 = EngineType
         self.dial_db                     = dial_db
+        self.door_id_on_reload_failure   = OnReloadFailureDoorId
 
         # Determine required register set before (required for reload actions)
         self.required_register_set = self.__get_required_register_set(AppendixSmExistF, 
@@ -525,7 +527,8 @@ class LoopEventHandlers:
 def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, EngineType=None, 
        ReloadStateExtern=None, LexemeMaintainedF=False,
        ParallelSmTerminalPairList=None, dial_db=None,
-       LoopCharacterSet=None):
+       LoopCharacterSet=None, 
+       OnReloadFailureDoorId=None):
     """Generates a structure that 'loops' quickly over incoming characters.
 
                                                              Loop continues           
@@ -588,7 +591,8 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
                                       UserOnLoopExitDoorId=OnLoopExitDoorId,
                                       UserBeforeEntryOpList=BeforeEntryOpList,
                                       AppendixSmExistF=len(appendix_sm_list) != 0,
-                                      dial_db=dial_db) 
+                                      dial_db=dial_db,
+                                      OnReloadFailureDoorId=OnReloadFailureDoorId) 
 
     # Loop represented by Analyzer-s and Terminal-s ___________________________
     #
@@ -927,7 +931,8 @@ def _get_analyzer_for_loop(loop_map, EventHandler):
                                      OnBeforeReload = EventHandler.on_before_reload, 
                                      OnAfterReload  = EventHandler.on_after_reload,
                                      OnBeforeEntry  = EventHandler.on_loop_entry, 
-                                     dial_db        = EventHandler.dial_db)
+                                     dial_db        = EventHandler.dial_db,
+                                     OnReloadFailureDoorId = EventHandler.door_id_on_reload_failure)
 
     # If reload state is generated 
     # => All other analyzers MUST use the same generated reload state.

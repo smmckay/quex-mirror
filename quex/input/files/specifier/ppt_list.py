@@ -28,7 +28,6 @@ import quex.output.core.loop.character_set          as     skip_character_set
 import quex.output.core.loop.range                  as     skip_range
 import quex.output.core.loop.nested_range           as     skip_nested_range
 import quex.output.core.loop.indentation_counter    as     indentation_counter
-import quex.output.core.base                        as     generator
 
 from   quex.blackboard import E_IncidenceIDs, \
                               Lng
@@ -80,6 +79,7 @@ class PPT(namedtuple("PPT_tuple", ("priority", "pattern", "terminal"))):
 class PPT_List(list):
     def __init__(self, terminal_factory):
         self.__extra_terminal_list = [] 
+        self.__extra_analyzer_list = [] 
         self.terminal_factory      = terminal_factory
         self.required_register_set = set()
 
@@ -104,6 +104,9 @@ class PPT_List(list):
             for mhi, pattern, code in pap_iterator(ModePrepDb, BaseModeSequence)
         )
 
+    def extra_analyzer_list(self):
+        return self.__extra_analyzer_list
+
     def collect_loopers(self, Loopers, CaMap, ReloadState):
         """Collect patterns and terminals which are required to implement
         skippers and indentation counters.
@@ -116,10 +119,11 @@ class PPT_List(list):
             # Mode hierarchie index = before all: -4 to -1
             # => skippers and indentation handlers have precendence over all others.
             mode_hierarchy_index = -4 + i
-            pl, tl = func(mode_hierarchy_index, Loopers, CaMap, ReloadState)
+            pl, al, tl = func(mode_hierarchy_index, Loopers, CaMap, ReloadState)
 
             new_ppt_list.extend(pl)
             self.__extra_terminal_list.extend(tl)
+            self.__extra_analyzer_list.extend(al)
 
         # IMPORTANT: Incidence Ids of Looper terminals CANNOT CHANGE!
         #            They are already 'gotoed'!
@@ -325,7 +329,7 @@ class PPT_List(list):
         MHI = Mode hierarchie index defining the priority of the current mode.
         """
         ISetup = Loopers.indentation_handler
-        if ISetup is None: return [], []
+        if ISetup is None: return [], [], []
 
         check_indentation_setup(ISetup)
 
@@ -338,21 +342,19 @@ class PPT_List(list):
             "dial_db":           self.terminal_factory.dial_db,
         }
 
-        analyzer_list,         \
+        new_analyzer_list,     \
         new_terminal_list,     \
         required_register_set, \
         run_time_counter_f     = indentation_counter.do(data, ReloadState)
-        code = generator.do_analyzer_list(analyzer_list)
+
         self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
         self.required_register_set.update(required_register_set)
 
         # 'newline' triggers --> indentation counter
         pattern  = ISetup.pattern_newline.clone_with_new_incidence_id(E_IncidenceIDs.INDENTATION_HANDLER)
-        terminal = self.terminal_factory.do_plain(CodeTerminal(code), 
-                                                  pattern, 
-                                                  "INDENTATION COUNTER NEWLINE: ", 
-                                                  RequiredRegisterSet=required_register_set)
+        terminal = self._terminal_goto_to_looper(new_analyzer_list, None, "<indentation handler>", 
+                                                 required_register_set, Pattern=pattern)
         new_ppt_list = [
             PPT(PatternPriority(MHI, 0), pattern, terminal)
         ]
@@ -370,11 +372,11 @@ class PPT_List(list):
                                                    "INDENTATION COUNTER SUPPRESSED_NEWLINE: "))
             )
 
-        return new_ppt_list, new_terminal_list
+        return new_ppt_list, new_analyzer_list, new_terminal_list
 
     def _prepare_skip_character_set(self, MHI, Loopers, CaMap, ReloadState):
         """MHI = Mode hierarchie index."""
-        if Loopers.skip is None: return [], []
+        if Loopers.skip is None: return [], [], []
 
         skipped_character_set, \
         pattern_str,           \
@@ -386,17 +388,16 @@ class PPT_List(list):
             "dial_db":       self.terminal_factory.dial_db
         }
 
-        analyzer_list,        \
+        new_analyzer_list,        \
         new_terminal_list,    \
         loop_map,             \
         required_register_set = skip_character_set.do(data, ReloadState)
-        code = generator.do_analyzer_list(analyzer_list)
-        self.required_register_set.update(required_register_set)
 
+        self.required_register_set.update(required_register_set)
+        
         extra_terminal_list = [ 
-            Terminal(CodeTerminal(code), "<skip>", E_IncidenceIDs.SKIP, 
-                     RequiredRegisterSet=required_register_set, 
-                     dial_db=self.terminal_factory.dial_db) 
+            self._terminal_goto_to_looper(new_analyzer_list, E_IncidenceIDs.SKIP, "<skip>", 
+                                          required_register_set)
         ]
         extra_terminal_list.extend(
             t for t in new_terminal_list
@@ -424,73 +425,76 @@ class PPT_List(list):
                 PPT(PatternPriority(MHI, new_incidence_id), pattern, terminal)
             )
 
-        return new_ppt_list, extra_terminal_list
+        return new_ppt_list, new_analyzer_list, extra_terminal_list
 
     def _prepare_skip_range(self, MHI, Loopers, CaMap, ReloadState):
         """MHI = Mode hierarchie index.
         
         RETURNS: new ppt_list to be added to the existing one.
         """
-        if not Loopers.skip_range: return [], []
+        if not Loopers.skip_range: return [], [], []
 
-        extra_terminal_list = []
         new_ppt_list        = []
+        extra_terminal_list = []
+        extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_range):
             data = self._range_skipper_data(data, CaMap, Loopers.indentation_handler)
 
-            analyzer_list,         \
+            new_analyzer_list,         \
             new_terminal_list,     \
             required_register_set, \
             run_time_counter_f     = skip_range.do(data, ReloadState)
-            code = generator.do_analyzer_list(analyzer_list)
+
             self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
             self.required_register_set.update(required_register_set)
 
+            extra_analyzer_list.extend(new_analyzer_list)
             extra_terminal_list.extend(new_terminal_list)
 
-            terminal = self.terminal_factory.do_plain(CodeTerminal(code), 
-                                             data["opener_pattern"], "SKIP RANGE: ", 
-                                             RequiredRegisterSet=required_register_set)
+            terminal = self._terminal_goto_to_looper(new_analyzer_list, None, 
+                                                     "<skip range>", required_register_set, 
+                                                     Pattern=data["opener_pattern"])
+
             new_ppt_list.append(
                 PPT(PatternPriority(MHI, i), data["opener_pattern"], terminal)
             )
 
-        return new_ppt_list, extra_terminal_list
+        return new_ppt_list, extra_analyzer_list, extra_terminal_list
 
     def _prepare_skip_nested_range(self, MHI, Loopers, CaMap, ReloadState):
-        if not Loopers.skip_nested_range: return [], []
+        if not Loopers.skip_nested_range: return [], [], []
 
-        extra_terminal_list = []
         new_ppt_list        = []
+        extra_terminal_list = []
+        extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
             data = self._range_skipper_data(data, CaMap, Loopers.indentation_handler)
 
-            analyzer_list,         \
+            new_analyzer_list,     \
             new_terminal_list,     \
             required_register_set, \
             run_time_counter_f     = skip_nested_range.do(data, ReloadState)
-            code = generator.do_analyzer_list(analyzer_list)
     
             self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
             self.required_register_set.update(required_register_set)
 
+            extra_analyzer_list.extend(new_analyzer_list)
             extra_terminal_list.extend(new_terminal_list)
 
-            terminal = self.terminal_factory.do_plain(CodeTerminal(code), 
-                                             data["opener_pattern"], "SKIP NESTED RANGE: ", 
-                                             RequiredRegisterSet=required_register_set)
+            terminal = self._terminal_goto_to_looper(new_analyzer_list, None, "<skip nested range>", 
+                                                     required_register_set, Pattern=data["opener_pattern"])
+
             new_ppt_list.append(
                 PPT(PatternPriority(MHI, i), data["opener_pattern"], terminal)
             )
 
-        return new_ppt_list, extra_terminal_list
+        return new_ppt_list, extra_analyzer_list, extra_terminal_list
 
     @typed(CaMap=CountActionMap, IndentationHandler=(None, IndentationCount))
     def _range_skipper_data(self, data, CaMap, IndentationHandler):
-        dial_db     = self.terminal_factory.dial_db
-        IncidenceDb = self.terminal_factory.incidence_db
+        dial_db = self.terminal_factory.dial_db
         # -- door_id_exit: Where to go after the closing character sequence matched:
         #     + Normally: To the begin of the analyzer. Start again.
         #     + End(Sequence) == newline of indentation counter.
@@ -503,11 +507,10 @@ class PPT_List(list):
 
         # -- data for code generation
         my_data = deepcopy(data)
-        my_data["mode_name"]          = self.terminal_factory.mode_name
-        my_data["on_skip_range_open"] = IncidenceDb[E_IncidenceIDs.SKIP_RANGE_OPEN]
-        my_data["door_id_exit"]       = door_id_exit
-        my_data["ca_map"]             = CaMap
-        my_data["dial_db"]            = dial_db
+        my_data["mode_name"]    = self.terminal_factory.mode_name
+        my_data["door_id_exit"] = door_id_exit
+        my_data["ca_map"]       = CaMap
+        my_data["dial_db"]      = dial_db
         return my_data
 
     def _match_indentation_counter_newline_pattern(self, indentation_handler, CloserPattern):
@@ -523,6 +526,23 @@ class PPT_List(list):
                         "range skipper", CloserPattern.sr)
 
         return only_common_f
+
+    def _terminal_goto_to_looper(self, analyzer_list, IncidenceId, Name, required_register_set, 
+                                 Pattern=None):
+        """Generate terminal that jumps to a 'looper'.
+        """
+        door_id = DoorID.state_machine_entry(analyzer_list[0].state_machine_id, 
+                                             self.terminal_factory.dial_db)
+        goto_op   = Op.GotoDoorId(door_id) 
+        goto_code = [ Lng.COMMAND(goto_op, self.terminal_factory.dial_db) ]
+
+        if Pattern is None:
+            return Terminal(CodeTerminal(goto_code), Name, IncidenceId,
+                            RequiredRegisterSet=required_register_set, 
+                            dial_db=self.terminal_factory.dial_db) 
+        else:
+            return self.terminal_factory.do_plain(CodeTerminal(goto_code), Pattern, Name,
+                                                  RequiredRegisterSet=required_register_set)
 
 
 def check_indentation_setup(isetup):

@@ -27,9 +27,11 @@ Pragmas from within .qx file
 52 "line-number-pragma.qx"
 53 "line-number-pragma.qx"
 54 "line-number-pragma.qx"
+55 "line-number-pragma.qx"
 56 "line-number-pragma.qx"
 58 "line-number-pragma.qx"
 62 "line-number-pragma.qx"
 94 "line-number-pragma.qx"
 __________________________________________________________________
 <terminated>
+

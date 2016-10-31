@@ -130,8 +130,6 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
 
     end_str = __prepare(Language)
 
-    door_id_on_skip_range_open = dial_db.new_door_id()
-
     sm_close = StateMachine.from_sequence(CloserSequence)  
     data = { 
         "closer_pattern":     Pattern(sm_close.get_id(), sm_close,
@@ -161,7 +159,7 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
                                                QuexBufferSize, CommentTestStrF, ShowPositionF, end_str,
                                                SkipUntilMarkerSet = [], 
                                                LocalVariableDB = deepcopy(variable_db.get()),
-                                               DoorIdOnSkipRangeOpen=door_id_on_skip_range_open, 
+                                               DoorIdOnSkipRangeOpenF=True, 
                                                CounterPrintF=CounterPrintF) 
 
 def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSequence, 
@@ -170,7 +168,6 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
 
     end_str = __prepare(Language)
 
-    door_id_on_skip_range_open = dial_db.new_door_id()
     sm_close = StateMachine.from_sequence(CloserSequence)  
     sm_open  = StateMachine.from_sequence(OpenerSequence)  
     ca_map   = LineColumnCount_Default()
@@ -220,7 +217,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
                                                EndStr=end_str,
                                                SkipUntilMarkerSet=[], 
                                                LocalVariableDB=deepcopy(variable_db.get()), 
-                                               DoorIdOnSkipRangeOpen=door_id_on_skip_range_open, 
+                                               DoorIdOnSkipRangeOpenF=True, 
                                                CounterPrintF="short") 
 
 def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, TokenQueueF):
@@ -289,7 +286,7 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
                                         EndStr, SkipUntilMarkerSet,
                                         LocalVariableDB, IndentationSupportF=False, 
                                         TokenQueueF=False, ReloadF=False, OnePassOnlyF=False, 
-                                        DoorIdOnSkipRangeOpen=None, 
+                                        DoorIdOnSkipRangeOpenF=False, 
                                         CounterPrintF=True,
                                         BeforeCode=None):
 
@@ -304,7 +301,7 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
     state_router_txt = do_state_router(dial_db)
     EngineSourceCode.extend(state_router_txt)
     txt += my_own_mr_unit_test_function(EngineSourceCode, EndStr, LocalVariableDB, 
-                                        ReloadF, OnePassOnlyF, DoorIdOnSkipRangeOpen, 
+                                        ReloadF, OnePassOnlyF, DoorIdOnSkipRangeOpenF, 
                                         CounterPrintF)
 
     if SkipUntilMarkerSet == "behind newline":
@@ -324,7 +321,7 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
 
 def my_own_mr_unit_test_function(SourceCode, EndStr, 
                                  LocalVariableDB={}, ReloadF=False, 
-                                 OnePassOnlyF=True, DoorIdOnSkipRangeOpen=None, 
+                                 OnePassOnlyF=True, DoorIdOnSkipRangeOpenF=False, 
                                  CounterPrintF=True):
     
     if type(SourceCode) == list:
@@ -337,8 +334,9 @@ def my_own_mr_unit_test_function(SourceCode, EndStr,
     label_eos          = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.END_OF_STREAM, dial_db))
     label_reentry      = Lng.LABEL_STR(DoorID.global_reentry(dial_db))
     label_reentry2     = Lng.LABEL_STR(DoorID.continue_without_on_after_match(dial_db))
-    if DoorIdOnSkipRangeOpen is not None:
-        label_sro = Lng.LABEL_STR(DoorIdOnSkipRangeOpen)
+
+    if DoorIdOnSkipRangeOpenF:
+        label_sro = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.SKIP_RANGE_OPEN, dial_db))
     else:
         label_sro = Lng.LABEL_STR(dial_db.new_door_id())
 
@@ -384,7 +382,6 @@ def skip_behind_newline():
     ml_txt += "else if( input == '\\n' ) found_f = true;\n"
 
     return skip_irrelevant_characters_function_txt.replace("$$MARKER_LIST$$", ml_txt).replace("$$FOUND$$", "bool found_f = false;")
-
 
 def show_next_character_function(ShowPositionF):
     if ShowPositionF: show_position_str = "1"
@@ -433,7 +430,7 @@ $$ON_BAD_LEXATOM$$:
 $$ON_LOAD_FAILURE$$:
 $$NO_MORE_SPACE$$:
 $$TERMINAL_END_OF_STREAM$$:
-$$SKIP_RANGE_OPEN$$:
+$$SKIP_RANGE_OPEN$$: /* <skip range open> */
 $$END_STR$$
 #undef engine
 

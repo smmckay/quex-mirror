@@ -142,8 +142,8 @@ class IncidenceDB(dict):
             terminal_type = standard_incidence_db_get_terminal_type(incidence_id)
             if terminal_type is None:
                 continue
-            elif incidence_id == E_IncidenceIDs.END_OF_STREAM \
-               and not ReloadRequiredF:
+            elif     incidence_id == E_IncidenceIDs.END_OF_STREAM \
+                 and not ReloadRequiredF:
                 continue
             code_terminal = CodeTerminal.from_CodeFragment(code_fragment)
             assert terminal_type not in result

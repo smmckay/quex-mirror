@@ -5,23 +5,22 @@ from   quex.engine.operations.operation_list        import Op, OpList
 import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.misc.tools                       import typed
-from   quex.blackboard                              import Lng, E_R
+from   quex.blackboard                              import Lng, E_R, E_IncidenceIDs
 
 def do(Data, ReloadState):
 
     CaMap           = Data["ca_map"]
     OpenerPattern   = Data["opener_pattern"]
     CloserPattern   = Data["closer_pattern"]
-    OnSkipRangeOpen = Data["on_skip_range_open"]
     DoorIdExit      = Data["door_id_exit"]
     dial_db         = Data["dial_db"]
 
-    return get_skipper(ReloadState, OpenerPattern, CloserPattern, OnSkipRangeOpen, 
+    return get_skipper(ReloadState, OpenerPattern, CloserPattern, 
                        DoorIdExit, CaMap, dial_db) 
 
 @typed(CaMap=CountActionMap)
 def get_skipper(ReloadState, OpenerPattern, CloserPattern, 
-                OnSkipRangeOpen, DoorIdExit, CaMap, dial_db):
+                DoorIdExit, CaMap, dial_db):
     """
                                     .---<---+----------<------+------------------.
                                     |       |                 |                  |

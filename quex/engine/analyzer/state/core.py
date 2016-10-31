@@ -89,7 +89,8 @@ class AnalyzerState(Processor):
         return x
 
     def prepare_for_reload(self, TheAnalyzer, BeforeReloadOpList=None, 
-                           AfterReloadOpList=None):
+                           AfterReloadOpList=None, 
+                           OnFailureDoorId=None):
         """Prepares state for reload. Reload procedure
 
             .- State 'X' ---.               
@@ -152,7 +153,9 @@ class AnalyzerState(Processor):
 
         # (2) Determine Door for RELOAD FAILURE
         #
-        if TheAnalyzer.is_init_state_forward(self.index):
+        if OnFailureDoorId:
+            on_failure_door_id = OnFailureDoorId
+        elif TheAnalyzer.is_init_state_forward(self.index):
             on_failure_door_id = DoorID.incidence(E_IncidenceIDs.END_OF_STREAM, 
                                                   self.entry.dial_db)
         else:

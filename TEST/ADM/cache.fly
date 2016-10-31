@@ -4,7 +4,7 @@ title_group: alexeevm;
 file_name: bug-3022603.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 2.847093; 0; ]
+  [ ; OK; 2.811523; 0; ]
 ]
 }
 {
@@ -13,7 +13,7 @@ title_group: alexeevm;
 file_name: bug-3025173.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 3.249648; 0; ]
+  [ ; OK; 3.186981; 0; ]
 ]
 }
 {
@@ -22,9 +22,9 @@ title_group: alexeevm;
 file_name: feature-3032877.sh;
 hwut_info_time: 1476610138L;
 result_list: [
-  [ normal; OK; 2.355932; 0; ]
-  [ icu; OK; 2.449905; 0; ]
-  [ codec; OK; 2.202222; 0; ]
+  [ normal; OK; 2.531635; 0; ]
+  [ icu; OK; 2.311795; 0; ]
+  [ codec; OK; 2.181264; 0; ]
 ]
 }
 {
@@ -34,9 +34,9 @@ file_name: bug-2001602.sh;
 hwut_info_time: 1454022453L;
 same_f: True;
 result_list: [
-  [ iconv; OK; 5.682136; 0; ]
-  [ icu; OK; 6.132938; 0; ]
-  [ codec; OK; 6.408610; 0; ]
+  [ iconv; OK; 6.056290; 0; ]
+  [ icu; OK; 6.139432; 0; ]
+  [ codec; OK; 8.484890; 0; ]
 ]
 }
 {
@@ -47,8 +47,8 @@ hwut_info_time: 1454022450L;
 same_f: True;
 happy_pattern_list: [ cpp:\[0-9]+:; ]
 result_list: [
-  [ iconv; OK; 3.563823; -1843333867; ]
-  [ icu; OK; 3.363293; -635423806; ]
+  [ iconv; OK; 3.741609; -1843333867; ]
+  [ icu; OK; 3.328060; -635423806; ]
 ]
 }
 {
@@ -58,8 +58,8 @@ file_name: bug-2002070.sh;
 hwut_info_time: 1454022453L;
 same_f: True;
 result_list: [
-  [ iconv; OK; 3.423287; 0; ]
-  [ icu; OK; 3.158359; 0; ]
+  [ iconv; OK; 3.635101; 0; ]
+  [ icu; OK; 3.534064; 0; ]
 ]
 }
 {
@@ -69,12 +69,12 @@ file_name: bug-2002474.sh;
 hwut_info_time: 1454022453L;
 same_f: True;
 result_list: [
-  [ iconv; OK; 4.834344; 0; ]
-  [ icu; OK; 4.073070; 0; ]
-  [ codec; OK; 3.852636; 0; ]
-  [ iconv_c; OK; 3.106699; 0; ]
-  [ icu_c; OK; 2.233496; 0; ]
-  [ codec_c; OK; 1.876426; 0; ]
+  [ iconv; OK; 5.647238; 0; ]
+  [ icu; OK; 4.378874; 0; ]
+  [ codec; OK; 4.908812; 0; ]
+  [ iconv_c; OK; 3.358129; 0; ]
+  [ icu_c; OK; 2.301106; 0; ]
+  [ codec_c; OK; 2.669037; 0; ]
 ]
 }
 {
@@ -84,9 +84,9 @@ file_name: bug-2004927.sh;
 hwut_info_time: 1454022450L;
 same_f: True;
 result_list: [
-  [ iconv; OK; 3.617469; 0; ]
-  [ icu; OK; 3.795708; 0; ]
-  [ codec; OK; 3.667244; 0; ]
+  [ iconv; OK; 3.506813; 0; ]
+  [ icu; OK; 3.702356; 0; ]
+  [ codec; OK; 3.788022; 0; ]
 ]
 }
 {
@@ -95,7 +95,7 @@ title_group: attardi;
 file_name: bug-2619679.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 3.837521; 0; ]
+  [ ; OK; 4.395945; 0; ]
 ]
 }
 {
@@ -104,7 +104,7 @@ title_group: attardi;
 file_name: bug-286.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 6.365850; 0; ]
+  [ ; OK; 6.129748; 0; ]
 ]
 }
 {
@@ -113,11 +113,11 @@ title_group: attardi;
 file_name: bug-2937342.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ 1; OK; 0.202566; 0; ]
-  [ 2; OK; 0.323258; 0; ]
-  [ 3; OK; 0.180519; 0; ]
-  [ 4; OK; 0.344429; 0; ]
-  [ 5; OK; 0.304573; 0; ]
+  [ 1; OK; 0.159492; 0; ]
+  [ 2; OK; 0.254289; 0; ]
+  [ 3; OK; 0.162152; 0; ]
+  [ 4; OK; 0.251746; 0; ]
+  [ 5; OK; 0.244201; 0; ]
 ]
 }
 {
@@ -126,7 +126,7 @@ title_group: attardi;
 file_name: bug-3025852.sh;
 hwut_info_time: 1454022452L;
 result_list: [
-  [ ; OK; 1.701973; 0; ]
+  [ ; OK; 1.634377; 0; ]
 ]
 }
 {
@@ -135,7 +135,7 @@ title_group: clemwang;
 file_name: bug-3474524.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.207093; -1252807616; ]
+  [ ; OK; 0.214976; -2137538444; ]
 ]
 }
 {
@@ -144,7 +144,7 @@ title_group: clemwang;
 file_name: bug-3478018.sh;
 hwut_info_time: 1454022451L;
 result_list: [
-  [ ; OK; 0.189802; 0; ]
+  [ ; OK; 0.189604; 0; ]
 ]
 }
 {
@@ -154,7 +154,7 @@ file_name: bug-3479354.sh;
 hwut_info_time: 1472310960L;
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.414101; 0; ]
+  [ ; OK; 0.504526; 0; ]
 ]
 }
 {
@@ -163,7 +163,7 @@ title_group: clemwang;
 file_name: bug-3485516.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.204519; -1821012224; ]
+  [ ; OK; 0.198061; -1821012224; ]
 ]
 }
 {
@@ -172,7 +172,7 @@ title_group: clemwang;
 file_name: bug-3486388.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.634997; 0; ]
+  [ ; OK; 0.685191; 0; ]
 ]
 }
 {
@@ -181,8 +181,8 @@ title_group: clemwang;
 file_name: feature-3495127.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ single; OK; 1.505685; 0; ]
-  [ queue; OK; 1.591543; 0; ]
+  [ single; OK; 1.405144; 0; ]
+  [ queue; OK; 1.528929; 0; ]
 ]
 }
 {
@@ -191,7 +191,7 @@ title_group: clemwang;
 file_name: bug-3503831.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.279524; 0; ]
+  [ ; OK; 0.194947; 0; ]
 ]
 }
 {
@@ -200,8 +200,8 @@ title_group: clemwang;
 file_name: bug-3504730.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ simple; OK; 1.495876; 0; ]
-  [ more; OK; 1.709231; 0; ]
+  [ simple; OK; 1.513878; 0; ]
+  [ more; OK; 1.479131; 0; ]
 ]
 }
 {
@@ -210,7 +210,7 @@ title_group: denkfix;
 file_name: bug-3354250.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.519782; 0; ]
+  [ ; OK; 0.585768; 0; ]
 ]
 }
 {
@@ -220,10 +220,10 @@ file_name: bug-3357694.sh;
 hwut_info_time: 1454022449L;
 same_f: True;
 result_list: [
-  [ Normal; OK; 1.626012; 0; ]
-  [ TemplateCompression; OK; 2.975104; 0; ]
-  [ PathCompression; OK; 1.712612; 0; ]
-  [ PathTemplateCompression; OK; 1.859677; 0; ]
+  [ Normal; OK; 1.689422; 0; ]
+  [ TemplateCompression; OK; 1.812946; 0; ]
+  [ PathCompression; OK; 1.829210; 0; ]
+  [ PathTemplateCompression; OK; 1.990087; 0; ]
 ]
 }
 {
@@ -232,7 +232,7 @@ title_group: denkfix;
 file_name: bug-3392478.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 1.660466; 0; ]
+  [ ; OK; 1.581495; 0; ]
 ]
 }
 {
@@ -241,8 +241,8 @@ title_group: dlazesz;
 file_name: bug-261.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ 1; OK; 1.704478; 0; ]
-  [ 2; OK; 1.480652; 0; ]
+  [ 1; OK; 1.780846; 0; ]
+  [ 2; OK; 1.496940; 0; ]
 ]
 }
 {
@@ -251,7 +251,7 @@ title_group: dlazesz;
 file_name: bug-3510261.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 1.263154; 0; ]
+  [ ; OK; 1.382039; 0; ]
 ]
 }
 {
@@ -260,7 +260,7 @@ title_group: eabrams;
 file_name: patch-16.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 1.123707; 0; ]
+  [ ; OK; 1.130092; 0; ]
 ]
 }
 {
@@ -270,7 +270,7 @@ file_name: bug-257.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ ^include_me.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.251165; 0; ]
+  [ ; OK; 0.384152; 0; ]
 ]
 }
 {
@@ -280,7 +280,7 @@ file_name: feature-1948456.sh;
 hwut_info_time: 1472336476L;
 happy_pattern_list: [ \[ 0-9]+; ]
 result_list: [
-  [ ; OK; 0.714944; 0; ]
+  [ ; OK; 0.736679; 0; ]
 ]
 }
 {
@@ -289,15 +289,15 @@ title_group: fschaef;
 file_name: bug-1952133.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ 29; OK; 3.938247; 0; ]
-  [ 30; OK; 3.617452; 0; ]
-  [ 127; OK; 6.708321; 0; ]
-  [ 128; OK; 3.724954; 0; ]
-  [ 129; OK; 4.023357; 0; ]
-  [ 2499; OK; 3.674294; 0; ]
-  [ 2500; OK; 3.607685; 0; ]
-  [ 2501; OK; 3.703742; 0; ]
-  [ 2502; OK; 3.985105; 0; ]
+  [ 29; OK; 3.572225; 0; ]
+  [ 30; OK; 3.554555; 0; ]
+  [ 127; OK; 5.732813; 0; ]
+  [ 128; OK; 3.678582; 0; ]
+  [ 129; OK; 3.725872; 0; ]
+  [ 2499; OK; 3.541726; 0; ]
+  [ 2500; OK; 3.717758; 0; ]
+  [ 2501; OK; 3.681056; 0; ]
+  [ 2502; OK; 3.536570; 0; ]
 ]
 }
 {
@@ -306,7 +306,7 @@ title_group: fschaef;
 file_name: bug-1952747.sh;
 hwut_info_time: 1454022451L;
 result_list: [
-  [ ; OK; 0.280278; 0; ]
+  [ ; OK; 0.289254; 0; ]
 ]
 }
 {
@@ -316,10 +316,10 @@ file_name: feature-2078087.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ :\[0-9]+:; ]
 result_list: [
-  [ GOTO; OK; 1.914234; 0; ]
-  [ GOTO-2; OK; 2.117404; 0; ]
-  [ GOSUB; OK; 2.322697; 0; ]
-  [ GOSUB-2; OK; 2.127342; 0; ]
+  [ GOTO; OK; 2.059689; 0; ]
+  [ GOTO-2; OK; 2.197176; 0; ]
+  [ GOSUB; OK; 2.656783; 0; ]
+  [ GOSUB-2; OK; 2.172763; 0; ]
 ]
 }
 {
@@ -328,9 +328,9 @@ title_group: fschaef;
 file_name: bug-2161098-x.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ c_comments; OK; 3.384109; 0; ]
-  [ shell_comments; OK; 3.315887; 0; ]
-  [ funny_comments; OK; 3.478301; 0; ]
+  [ c_comments; OK; 3.477564; 0; ]
+  [ shell_comments; OK; 3.401256; 0; ]
+  [ funny_comments; OK; 3.577918; 0; ]
 ]
 }
 {
@@ -339,9 +339,9 @@ title_group: fschaef;
 file_name: bug-2161098.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ c_comments; OK; 3.342415; 0; ]
-  [ shell_comments; OK; 3.306931; 0; ]
-  [ funny_comments; OK; 3.444513; 0; ]
+  [ c_comments; OK; 3.455420; 0; ]
+  [ shell_comments; OK; 3.468841; 0; ]
+  [ funny_comments; OK; 3.558481; 0; ]
 ]
 }
 {
@@ -351,8 +351,8 @@ file_name: bug-2209142.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ Simple.cpp:\[0-9]+:; ]
 result_list: [
-  [ error; OK; 3.651577; 2011290814; ]
-  [ good; OK; 3.570544; 0; ]
+  [ error; OK; 3.836440; 2011290814; ]
+  [ good; OK; 3.701598; 0; ]
 ]
 }
 {
@@ -361,7 +361,7 @@ title_group: fschaef;
 file_name: bug-2277660.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 4.266014; 0; ]
+  [ ; OK; 4.340342; 0; ]
 ]
 }
 {
@@ -370,9 +370,9 @@ title_group: fschaef;
 file_name: bug-2349109.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ newline-skipper; OK; 3.394790; 0; ]
-  [ newline-skipper-utf8; OK; 3.495798; 0; ]
-  [ non-newline-skipper; OK; 3.301465; 0; ]
+  [ newline-skipper; OK; 3.500389; 0; ]
+  [ newline-skipper-utf8; OK; 3.527689; 0; ]
+  [ non-newline-skipper; OK; 3.361033; 0; ]
 ]
 }
 {
@@ -381,7 +381,7 @@ title_group: fschaef;
 file_name: bug-2635012.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 5.755077; 0; ]
+  [ ; OK; 5.695526; 0; ]
 ]
 }
 {
@@ -390,7 +390,7 @@ title_group: fschaef;
 file_name: feature-3038088.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.249042; 0; ]
+  [ ; OK; 0.251555; 0; ]
 ]
 }
 {
@@ -400,7 +400,7 @@ file_name: feature-3039173.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ Simple.c:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 1.490005; -168531269; ]
+  [ ; OK; 1.234057; -168531269; ]
 ]
 }
 {
@@ -409,7 +409,7 @@ title_group: fschaef;
 file_name: bug-3082041.sh;
 hwut_info_time: 1476654848L;
 result_list: [
-  [ ; OK; 4.825945; 0; ]
+  [ ; OK; 4.761563; 0; ]
 ]
 }
 {
@@ -418,11 +418,11 @@ title_group: fschaef;
 file_name: bug-3102035.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ 1; OK; 1.130324; 0; ]
-  [ 2; OK; 0.260463; 658054683; ]
-  [ 3; OK; 1.261522; 0; ]
-  [ 4; OK; 1.283032; 0; ]
-  [ 5; OK; 1.322973; 0; ]
+  [ 1; OK; 1.155616; 0; ]
+  [ 2; OK; 0.264465; 658054683; ]
+  [ 3; OK; 1.161293; 0; ]
+  [ 4; OK; 1.305835; 0; ]
+  [ 5; OK; 1.310816; 0; ]
 ]
 }
 {
@@ -431,7 +431,7 @@ title_group: fschaef;
 file_name: bug-3157923.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ ; OK; 3.046717; 0; ]
+  [ ; OK; 2.973210; 0; ]
 ]
 }
 {
@@ -440,7 +440,7 @@ title_group: fschaef;
 file_name: bug-3513568.sh;
 hwut_info_time: 1476654848L;
 result_list: [
-  [ ; OK; 5.515447; 0; ]
+  [ ; OK; 6.815006; 0; ]
 ]
 }
 {
@@ -449,7 +449,7 @@ title_group: inhenriksen;
 file_name: bug-3164355.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.272025; 0; ]
+  [ ; OK; 0.415865; 0; ]
 ]
 }
 {
@@ -458,7 +458,7 @@ title_group: jdavidberger;
 file_name: bug-264.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.279421; 0; ]
+  [ ; OK; 0.289046; 0; ]
 ]
 }
 {
@@ -467,7 +467,7 @@ title_group: jmarsik;
 file_name: bug-3235790.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 2.122929; 0; ]
+  [ ; OK; 1.639021; 0; ]
 ]
 }
 {
@@ -476,8 +476,8 @@ title_group: jmarsik;
 file_name: bug-3115741.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ general; OK; 1.590697; 0; ]
-  [ undo-line-colum-count; OK; 1.498588; 0; ]
+  [ general; OK; 1.716016; 0; ]
+  [ undo-line-colum-count; OK; 1.916065; 0; ]
 ]
 }
 {
@@ -486,16 +486,16 @@ title_group: jmarsik;
 file_name: feature-3307919.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ C; OK; 0.900485; 0; ]
-  [ Other; OK; 0.884389; 0; ]
-  [ L; OK; 1.334723; 0; ]
-  [ LC; OK; 1.034496; 0; ]
-  [ M; OK; 1.022029; 0; ]
-  [ N; OK; 1.012109; 0; ]
-  [ Number; OK; 1.028084; 0; ]
-  [ P; OK; 0.904011; 0; ]
-  [ S; OK; 0.987128; 0; ]
-  [ Z; OK; 0.871711; 0; ]
+  [ C; OK; 0.885597; 0; ]
+  [ Other; OK; 0.886024; 0; ]
+  [ L; OK; 1.322861; 0; ]
+  [ LC; OK; 0.963218; 0; ]
+  [ M; OK; 0.968254; 0; ]
+  [ N; OK; 0.926298; 0; ]
+  [ Number; OK; 0.916743; 0; ]
+  [ P; OK; 0.916439; 0; ]
+  [ S; OK; 1.004121; 0; ]
+  [ Z; OK; 0.874663; 0; ]
 ]
 }
 {
@@ -504,7 +504,7 @@ title_group: kromaks;
 file_name: bug-2971198.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 54.179753; 0; ]
+  [ ; OK; 54.520963; 0; ]
 ]
 }
 {
@@ -513,8 +513,8 @@ title_group: liancheng;
 file_name: bug-3515838.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ Cpp; OK; 1.424812; 0; ]
-  [ C; OK; 1.605214; 0; ]
+  [ Cpp; OK; 1.447709; 0; ]
+  [ C; OK; 1.629619; 0; ]
 ]
 }
 {
@@ -523,7 +523,7 @@ title_group: liancheng;
 file_name: bug-3526210.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 1.418841; 0; ]
+  [ ; OK; 1.433581; 0; ]
 ]
 }
 {
@@ -532,10 +532,10 @@ title_group: mabraham;
 file_name: bug-3109479.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ 1; OK; 0.263869; 0; ]
-  [ 2; OK; 0.259127; 0; ]
-  [ 3; OK; 1.299209; 0; ]
-  [ 4; OK; 1.297751; 0; ]
+  [ 1; OK; 0.266538; 0; ]
+  [ 2; OK; 0.271539; 0; ]
+  [ 3; OK; 1.337268; 0; ]
+  [ 4; OK; 1.314903; 0; ]
 ]
 }
 {
@@ -544,7 +544,7 @@ title_group: marcoantonelli;
 file_name: feature-2219383.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.245623; 0; ]
+  [ ; OK; 0.252451; 0; ]
 ]
 }
 {
@@ -553,13 +553,13 @@ title_group: marcoantonelli;
 file_name: feature-2251359.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ good; OK; 1.084757; 0; ]
-  [ 1; OK; 0.187799; 0; ]
-  [ 2; OK; 0.194708; 0; ]
-  [ 3; OK; 0.191959; 0; ]
-  [ 4; OK; 0.201978; 0; ]
-  [ 5; OK; 0.211602; 0; ]
-  [ 6; OK; 0.195964; 0; ]
+  [ good; OK; 1.087247; 0; ]
+  [ 1; OK; 0.199796; 0; ]
+  [ 2; OK; 0.200227; 0; ]
+  [ 3; OK; 0.198328; 0; ]
+  [ 4; OK; 0.212732; 0; ]
+  [ 5; OK; 0.220344; 0; ]
+  [ 6; OK; 0.201129; 0; ]
 ]
 }
 {
@@ -568,7 +568,7 @@ title_group: marcoantonelli;
 file_name: bug-2257908.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 1.067919; 0; ]
+  [ ; OK; 1.059481; 0; ]
 ]
 }
 {
@@ -577,7 +577,7 @@ title_group: marcoantonelli;
 file_name: feature-2262537.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.635741; 0; ]
+  [ ; OK; 0.461141; 0; ]
 ]
 }
 {
@@ -586,7 +586,7 @@ title_group: nazim-can-bedir;
 file_name: bug-2896732.sh;
 hwut_info_time: 1474143291L;
 result_list: [
-  [ ; OK; 10.271446; 1284789366; ]
+  [ ; OK; 10.328790; 1284789366; ]
 ]
 }
 {
@@ -595,7 +595,7 @@ title_group: nobody;
 file_name: bug-2395200.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ lexer; OK; 3.564742; 0; ]
+  [ lexer; OK; 3.633911; 0; ]
 ]
 }
 {
@@ -604,7 +604,7 @@ title_group: nobody;
 file_name: bug-2841726.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.096756; 0; ]
+  [ ; OK; 0.162841; 0; ]
 ]
 }
 {
@@ -613,7 +613,7 @@ title_group: nobody;
 file_name: bug-2891125.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.021385; 0; ]
+  [ ; OK; 0.022962; 0; ]
 ]
 }
 {
@@ -623,7 +623,7 @@ file_name: bug-2894648.sh;
 hwut_info_time: 1474182162L;
 happy_pattern_list: [ \[ 0-9]+; ]
 result_list: [
-  [ ; OK; 0.300880; 0; ]
+  [ ; OK; 0.308506; 0; ]
 ]
 }
 {
@@ -632,7 +632,7 @@ title_group: ollydbg;
 file_name: feature-3142578.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.717597; 0; ]
+  [ ; OK; 0.738666; 0; ]
 ]
 }
 {
@@ -641,8 +641,8 @@ title_group: ollydbg;
 file_name: feature-3402386.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ hex; OK; 0.242175; 0; ]
-  [ utf8; OK; 0.250680; 0; ]
+  [ hex; OK; 0.244277; 0; ]
+  [ utf8; OK; 0.242766; 0; ]
 ]
 }
 {
@@ -651,12 +651,12 @@ title_group: ollydbg;
 file_name: bug-3403249.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ GBK; OK; 0.161381; 0; ]
-  [ utf16; OK; 0.154008; 0; ]
-  [ utf16-with-bom; OK; 0.149904; 0; ]
-  [ utf8-error; OK; 0.151840; 0; ]
-  [ utf8; OK; 0.296888; 0; ]
-  [ utf8-with-bom; OK; 0.253861; 0; ]
+  [ GBK; OK; 0.158601; 0; ]
+  [ utf16; OK; 0.159149; 0; ]
+  [ utf16-with-bom; OK; 0.161373; 0; ]
+  [ utf8-error; OK; 0.155469; 0; ]
+  [ utf8; OK; 0.287479; 0; ]
+  [ utf8-with-bom; OK; 0.261194; 0; ]
 ]
 }
 {
@@ -666,8 +666,8 @@ file_name: bug-3512806.sh;
 hwut_info_time: 1454022450L;
 same_f: True;
 result_list: [
-  [ C; OK; 1.019785; 0; ]
-  [ Cpp; OK; 1.521922; 0; ]
+  [ C; OK; 1.056912; 0; ]
+  [ Cpp; OK; 1.573002; 0; ]
 ]
 }
 {
@@ -676,8 +676,8 @@ title_group: otsakiridis;
 file_name: bug-3075601.sh;
 hwut_info_time: 1456815731L;
 result_list: [
-  [ utf8; OK; 1.136440; 0; ]
-  [ utf16; OK; 1.090008; 0; ]
+  [ utf8; OK; 1.152296; 0; ]
+  [ utf16; OK; 1.131307; 0; ]
 ]
 }
 {
@@ -686,7 +686,7 @@ title_group: petulda;
 file_name: bug-3178600.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 1.447746; 0; ]
+  [ ; OK; 1.472081; 0; ]
 ]
 }
 {
@@ -695,7 +695,7 @@ title_group: prade2p;
 file_name: bug-2914877.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.247306; 0; ]
+  [ ; OK; 0.256506; 0; ]
 ]
 }
 {
@@ -704,7 +704,7 @@ title_group: rami-al-rafou;
 file_name: bug-3476232.sh;
 hwut_info_time: 1456816213L;
 result_list: [
-  [ ; OK; 18.863009; 0; ]
+  [ ; OK; 18.876547; 0; ]
 ]
 }
 {
@@ -714,7 +714,7 @@ file_name: bug-284.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ Version \[^\\n]+; ]
 result_list: [
-  [ ; OK; 0.272060; 0; ]
+  [ ; OK; 0.268879; 0; ]
 ]
 }
 {
@@ -724,7 +724,7 @@ file_name: bug-3295781.sh;
 hwut_info_time: 1454022449L;
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; FAIL; 0.966501; 0; ]
+  [ ; OK; 0.000000; -2136890443; ]
 ]
 }
 {
@@ -734,10 +734,10 @@ file_name: feature-3079986.sh;
 hwut_info_time: 1454022452L;
 same_f: True;
 result_list: [
-  [ nnn; OK; 1.886161; 0; ]
-  [ nnc; OK; 1.732012; 0; ]
-  [ ncc; OK; 1.677055; 0; ]
-  [ ccc; OK; 1.702387; 0; ]
+  [ nnn; OK; 1.795004; 0; ]
+  [ nnc; OK; 1.630474; 0; ]
+  [ ncc; OK; 1.811972; 0; ]
+  [ ccc; OK; 1.638437; 0; ]
 ]
 }
 {
@@ -746,7 +746,7 @@ title_group: rofr3;
 file_name: bug-3009642.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.822369; 0; ]
+  [ ; OK; 0.790321; 0; ]
 ]
 }
 {
@@ -755,7 +755,7 @@ title_group: sbellon;
 file_name: bug-265.sh;
 hwut_info_time: 1456557814L;
 result_list: [
-  [ ; OK; 0.236171; 0; ]
+  [ ; OK; 0.242625; 0; ]
 ]
 }
 {
@@ -764,7 +764,7 @@ title_group: sbellon;
 file_name: bug-3524729.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.779969; 0; ]
+  [ ; OK; 0.902623; 0; ]
 ]
 }
 {
@@ -773,7 +773,7 @@ title_group: sbellon;
 file_name: bug-3538026.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.361472; 0; ]
+  [ ; OK; 0.351757; 0; ]
 ]
 }
 {
@@ -782,7 +782,7 @@ title_group: sphericalcow;
 file_name: bug-1885304.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 1.130499; 0; ]
+  [ ; OK; 1.374282; 0; ]
 ]
 }
 {
@@ -791,7 +791,7 @@ title_group: sphericalcow;
 file_name: bug-1885846.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.146392; 0; ]
+  [ ; OK; 0.149510; 0; ]
 ]
 }
 {
@@ -800,7 +800,7 @@ title_group: sphericalcow;
 file_name: bug-1885855.sh;
 hwut_info_time: 1468900834L;
 result_list: [
-  [ ; OK; 0.277592; 0; ]
+  [ ; OK; 0.283902; 0; ]
 ]
 }
 {
@@ -809,7 +809,7 @@ title_group: sphericalcow;
 file_name: bug-1887163.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.532335; 0; ]
+  [ ; OK; 0.660996; 0; ]
 ]
 }
 {
@@ -818,7 +818,7 @@ title_group: sphericalcow;
 file_name: bug-1889086.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.734079; 0; ]
+  [ ; OK; 0.946185; 0; ]
 ]
 }
 {
@@ -827,7 +827,7 @@ title_group: sphericalcow;
 file_name: bug-1889089.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.190349; 115417880; ]
+  [ ; OK; 0.354970; 115417880; ]
 ]
 }
 {
@@ -836,7 +836,7 @@ title_group: sphericalcow;
 file_name: bug-1889321.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.487249; 2134730364; ]
+  [ ; OK; 0.480134; 2134730364; ]
 ]
 }
 {
@@ -845,7 +845,7 @@ title_group: sphericalcow;
 file_name: bug-1889692.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.339112; 0; ]
+  [ ; OK; 0.342207; 0; ]
 ]
 }
 {
@@ -855,7 +855,7 @@ file_name: bug-1889702.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ ^error-3.qx:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.617597; -1224701929; ]
+  [ ; OK; 0.593811; -1224701929; ]
 ]
 }
 {
@@ -864,7 +864,7 @@ title_group: sphericalcow;
 file_name: bug-1889871.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.149411; 0; ]
+  [ ; OK; 0.144266; 0; ]
 ]
 }
 {
@@ -873,7 +873,7 @@ title_group: sphericalcow;
 file_name: bug-1889877.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.142477; 0; ]
+  [ ; OK; 0.146785; 0; ]
 ]
 }
 {
@@ -883,7 +883,7 @@ file_name: bug-1889892.sh;
 hwut_info_time: 1454022453L;
 happy_pattern_list: [ qx:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.945111; 1142375836; ]
+  [ ; OK; 1.271074; 1142375836; ]
 ]
 }
 {
@@ -892,7 +892,7 @@ title_group: sphericalcow;
 file_name: bug-1890828.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.363475; 0; ]
+  [ ; OK; 0.363158; 0; ]
 ]
 }
 {
@@ -901,7 +901,7 @@ title_group: sphericalcow;
 file_name: bug-1890876.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ ; OK; 0.286646; 0; ]
+  [ ; OK; 0.450425; 0; ]
 ]
 }
 {
@@ -910,7 +910,7 @@ title_group: sphericalcow;
 file_name: bug-1891254.sh;
 hwut_info_time: 1454022451L;
 result_list: [
-  [ ; OK; 0.330832; 0; ]
+  [ ; OK; 0.326215; 0; ]
 ]
 }
 {
@@ -919,7 +919,7 @@ title_group: sphericalcow;
 file_name: bug-1892227.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.162263; 0; ]
+  [ ; OK; 0.148667; 0; ]
 ]
 }
 {
@@ -929,7 +929,7 @@ file_name: bug-1892809.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ Simple.c:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 1.275698; 326283809; ]
+  [ ; OK; 1.261852; 326283809; ]
 ]
 }
 {
@@ -938,7 +938,7 @@ title_group: sphericalcow;
 file_name: bug-1893849.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ ; OK; 0.145919; 0; ]
+  [ ; OK; 0.144278; 0; ]
 ]
 }
 {
@@ -947,7 +947,7 @@ title_group: sphericalcow;
 file_name: bug-1893874.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.182115; 0; ]
+  [ ; OK; 0.185375; 0; ]
 ]
 }
 {
@@ -956,7 +956,7 @@ title_group: sphericalcow;
 file_name: bug-1893880.sh;
 hwut_info_time: 1476609833L;
 result_list: [
-  [ ; OK; 0.199755; 0; ]
+  [ ; OK; 0.205356; 0; ]
 ]
 }
 {
@@ -965,7 +965,7 @@ title_group: sphericalcow;
 file_name: bug-1894130.sh;
 hwut_info_time: 1477120997L;
 result_list: [
-  [ ; OK; 0.189692; 1372748867; ]
+  [ ; OK; 0.189828; 1372748867; ]
 ]
 }
 {
@@ -974,7 +974,7 @@ title_group: sphericalcow;
 file_name: bug-1894185.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.282354; 0; ]
+  [ ; OK; 0.288210; 0; ]
 ]
 }
 {
@@ -983,7 +983,7 @@ title_group: sphericalcow;
 file_name: bug-1894578.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ ; OK; 3.151042; 0; ]
+  [ ; OK; 2.982116; 0; ]
 ]
 }
 {
@@ -993,7 +993,7 @@ file_name: bug-1895066.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ line \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.247568; 0; ]
+  [ ; OK; 0.390232; 0; ]
 ]
 }
 {
@@ -1003,8 +1003,8 @@ file_name: bug-1895500.sh;
 hwut_info_time: 1454022450L;
 same_f: True;
 result_list: [
-  [ iconv; OK; 4.499955; 0; ]
-  [ icu; OK; 3.133951; 0; ]
+  [ iconv; OK; 4.319475; 0; ]
+  [ icu; OK; 3.157902; 0; ]
 ]
 }
 {
@@ -1013,7 +1013,7 @@ title_group: sphericalcow;
 file_name: bug-1898125.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.602591; 0; ]
+  [ ; OK; 0.600982; 0; ]
 ]
 }
 {
@@ -1022,7 +1022,7 @@ title_group: sphericalcow;
 file_name: bug-1900391.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.400534; 0; ]
+  [ ; OK; 0.405432; 0; ]
 ]
 }
 {
@@ -1031,7 +1031,7 @@ title_group: sphericalcow;
 file_name: bug-1902175.sh;
 hwut_info_time: 1454022454L;
 result_list: [
-  [ ; OK; 0.143051; 0; ]
+  [ ; OK; 0.149646; 0; ]
 ]
 }
 {
@@ -1040,7 +1040,7 @@ title_group: sphericalcow;
 file_name: bug-1905768.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.277830; 0; ]
+  [ ; OK; 0.283065; 0; ]
 ]
 }
 {
@@ -1049,7 +1049,7 @@ title_group: sphericalcow;
 file_name: bug-1908092.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.591335; 0; ]
+  [ ; OK; 0.551187; 0; ]
 ]
 }
 {
@@ -1058,19 +1058,19 @@ title_group: sphericalcow;
 file_name: bug-1908436.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.210657; 0; ]
+  [ ; OK; 0.207481; 0; ]
 ]
 }
 {
 title: 1935701 - 0.24.7 buffer handling size mismatch;
 title_group: sphericalcow;
-build_time: 0.006225109100341797;
+build_time: 1.4292018413543701;
 file_name: bug-1935701.exe;
-hwut_info_time: 1476814411L;
+hwut_info_time: 1477855769L;
 make_dependent_f: True;
 result_list: [
-  [ FILE; OK; 0.005809; 0; ]
-  [ fstream; OK; 0.006583; 0; ]
+  [ FILE; OK; 0.006534; 0; ]
+  [ fstream; OK; 0.008793; 0; ]
 ]
 }
 {
@@ -1079,7 +1079,7 @@ title_group: sphericalcow;
 file_name: bug-1936707.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.439916; 0; ]
+  [ ; OK; 0.413229; 0; ]
 ]
 }
 {
@@ -1088,7 +1088,7 @@ title_group: sphericalcow;
 file_name: bug-1969629.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.199763; 0; ]
+  [ ; OK; 0.201344; 0; ]
 ]
 }
 {
@@ -1097,7 +1097,7 @@ title_group: sphericalcow;
 file_name: bug-2087087.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 0.139529; 0; ]
+  [ ; OK; 0.144520; 0; ]
 ]
 }
 {
@@ -1107,11 +1107,11 @@ file_name: bug-2095970-ntq.sh;
 hwut_info_time: 1454022450L;
 happy_pattern_list: [ Simple.cpp:\[0-9]+:; ]
 result_list: [
-  [ Normal; OK; 3.359534; 0; ]
-  [ NormalNoAsserts; OK; 3.398487; 0; ]
-  [ NoModeDetection; OK; 5.867276; 0; ]
-  [ NoModeDetectionNoAsserts; OK; 3.116150; 0; ]
-  [ NoModeDetection_ErrorCase; OK; 3.663970; 0; ]
+  [ Normal; OK; 3.332791; 0; ]
+  [ NormalNoAsserts; OK; 3.097977; 0; ]
+  [ NoModeDetection; OK; 3.407101; 0; ]
+  [ NoModeDetectionNoAsserts; OK; 3.175626; 0; ]
+  [ NoModeDetection_ErrorCase; OK; 3.613916; 0; ]
 ]
 }
 {
@@ -1121,11 +1121,11 @@ file_name: bug-2095970.sh;
 hwut_info_time: 1454022451L;
 happy_pattern_list: [ Simple.cpp:\[0-9]+:; ]
 result_list: [
-  [ Normal; OK; 3.554979; 0; ]
-  [ NormalNoAsserts; OK; 3.345708; 0; ]
-  [ NoModeDetection; OK; 3.495505; 0; ]
-  [ NoModeDetectionNoAsserts; OK; 3.362146; 0; ]
-  [ NoModeDetection_ErrorCase; OK; 3.836793; 0; ]
+  [ Normal; OK; 3.397996; 0; ]
+  [ NormalNoAsserts; OK; 3.133911; 0; ]
+  [ NoModeDetection; OK; 3.409907; 0; ]
+  [ NoModeDetectionNoAsserts; OK; 3.140306; 0; ]
+  [ NoModeDetection_ErrorCase; OK; 3.719343; 0; ]
 ]
 }
 {
@@ -1134,11 +1134,11 @@ title_group: sphericalcow;
 file_name: bug-2796383.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ case-1; OK; 0.212380; 0; ]
-  [ case-2; OK; 0.200778; 0; ]
-  [ case-3; OK; 0.291012; 0; ]
-  [ case-4; OK; 0.285290; 0; ]
-  [ case-5; OK; 0.372639; 0; ]
+  [ case-1; OK; 0.217131; 0; ]
+  [ case-2; OK; 0.204393; 0; ]
+  [ case-3; OK; 0.202928; 0; ]
+  [ case-4; OK; 0.205436; 0; ]
+  [ case-5; OK; 0.207116; 0; ]
 ]
 }
 {
@@ -1147,7 +1147,7 @@ title_group: sphericalcow;
 file_name: bug-2798423.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ ; OK; 1.338396; 0; ]
+  [ ; OK; 1.351540; 0; ]
 ]
 }
 {
@@ -1157,9 +1157,9 @@ file_name: bug-2799244.sh;
 hwut_info_time: 1477118639L;
 happy_pattern_list: [ :\[0-9]+; ]
 result_list: [
-  [ error; OK; 0.393266; 0; ]
-  [ good-1; OK; 1.327745; 0; ]
-  [ good-2; OK; 1.169619; -1829836201; ]
+  [ error; OK; 0.389891; 0; ]
+  [ good-1; OK; 1.343159; 0; ]
+  [ good-2; OK; 1.198240; -1829836201; ]
 ]
 }
 {
@@ -1168,7 +1168,7 @@ title_group: the-user-k;
 file_name: bug-3021502.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ ; OK; 1.356188; 1106289097; ]
+  [ ; OK; 1.317645; 1106289097; ]
 ]
 }
 {
@@ -1177,7 +1177,7 @@ title_group: timdawborn;
 file_name: bug-3106424.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.980823; 0; ]
+  [ ; OK; 0.989337; 0; ]
 ]
 }
 {
@@ -1186,10 +1186,10 @@ title_group: wryun;
 file_name: bug-2819022.sh;
 hwut_info_time: 1454022454L;
 result_list: [
-  [ 0; OK; 3.109249; 0; ]
-  [ 1; OK; 3.193975; 0; ]
-  [ 2; OK; 3.110543; 0; ]
-  [ 3; OK; 3.353873; 0; ]
+  [ 0; OK; 3.131515; 0; ]
+  [ 1; OK; 3.078355; 0; ]
+  [ 2; OK; 3.069872; 0; ]
+  [ 3; OK; 3.058552; 0; ]
 ]
 }
 {
@@ -1198,7 +1198,7 @@ title_group: wryun;
 file_name: bug-2819023.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 0.168569; 0; ]
+  [ ; OK; 0.164843; 0; ]
 ]
 }
 {
@@ -1207,7 +1207,7 @@ title_group: wryun;
 file_name: bug-2819043.sh;
 hwut_info_time: 1468821107L;
 result_list: [
-  [ ; OK; 0.755039; 0; ]
+  [ ; OK; 0.758948; 0; ]
 ]
 }
 {
@@ -1216,10 +1216,10 @@ title_group: wryun;
 file_name: bug-2819045.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ 0; OK; 0.302677; 0; ]
-  [ 1; OK; 0.153407; 0; ]
-  [ 2; OK; 0.170621; 0; ]
-  [ 3; OK; 0.165671; 0; ]
+  [ 0; OK; 0.308176; 0; ]
+  [ 1; OK; 0.150489; 0; ]
+  [ 2; OK; 0.168237; 0; ]
+  [ 3; OK; 0.165313; 0; ]
 ]
 }
 {
@@ -1228,9 +1228,9 @@ title_group: yaroslav_xp;
 file_name: feature-2146712.sh;
 hwut_info_time: 1454022449L;
 result_list: [
-  [ Normal; OK; 0.322141; 0; ]
-  [ NotExist; OK; 0.150396; 0; ]
-  [ NoWrite; OK; 0.175968; 0; ]
+  [ Normal; OK; 0.288615; 0; ]
+  [ NotExist; OK; 0.151257; 0; ]
+  [ NoWrite; OK; 0.152987; 0; ]
 ]
 }
 {
@@ -1239,7 +1239,7 @@ title_group: yaroslav_xp;
 file_name: bug-2163753.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 1.376728; 0; ]
+  [ ; OK; 1.374660; 0; ]
 ]
 }
 {
@@ -1248,7 +1248,7 @@ title_group: yaroslavkrv;
 file_name: bug-3097431.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 3.333438; 0; ]
+  [ ; OK; 3.332890; 0; ]
 ]
 }
 {
@@ -1257,14 +1257,14 @@ title_group: ymarkovitch;
 file_name: feature-3030640.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ pp; OK; 0.240885; 0; ]
-  [ ++; OK; 0.240609; 0; ]
-  [ xx; OK; 0.240457; 0; ]
-  [ cc; OK; 0.238977; 0; ]
-  [ PlainC; OK; 0.272145; 0; ]
-  [ PlainCpp; OK; 0.237289; 0; ]
-  [ ErrorC; OK; 0.297881; 0; ]
-  [ ErrorCpp; OK; 0.148820; 0; ]
+  [ pp; OK; 0.239744; 0; ]
+  [ ++; OK; 0.238283; 0; ]
+  [ xx; OK; 0.240376; 0; ]
+  [ cc; OK; 0.240375; 0; ]
+  [ PlainC; OK; 0.277434; 0; ]
+  [ PlainCpp; OK; 0.240668; 0; ]
+  [ ErrorC; OK; 0.147401; 0; ]
+  [ ErrorCpp; OK; 0.146753; 0; ]
 ]
 }
 {
@@ -1273,7 +1273,7 @@ title_group: ymarkovitch;
 file_name: bug-3077292.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 1.141952; 0; ]
+  [ ; OK; 1.157390; 0; ]
 ]
 }
 {
@@ -1282,6 +1282,6 @@ title_group: yoavg;
 file_name: bug-2974074.sh;
 hwut_info_time: 1454022453L;
 result_list: [
-  [ ; OK; 3.008752; 0; ]
+  [ ; OK; 3.017820; 0; ]
 ]
 }

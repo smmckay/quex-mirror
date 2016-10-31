@@ -19,8 +19,8 @@ Result:
 
   [INTERVAL] [SCHEME_ID] [TARGET/STATE [0, 1]]
   [-oo, 9]   None        TargetByStateKey:DropOut
-  [10]       0           (s=2, d=0), (s=DROP_OUT, d=1)
-  [11]       1           (s=DROP_OUT, d=1), (s=2, d=0)
+  [10]       0           (s=2, d=0), (s=DROP_OUT, d=0)
+  [11]       1           (s=DROP_OUT, d=0), (s=2, d=0)
   [12, oo]   None        TargetByStateKey:DropOut
 
   BorderN = 3
@@ -46,8 +46,8 @@ Result:
 
   [INTERVAL] [SCHEME_ID] [TARGET/STATE [1, 0]]
   [-oo, 9]   None        TargetByStateKey:DropOut
-  [10]       0           (s=DROP_OUT, d=1), (s=3, d=0)
-  [11]       1           (s=3, d=0), (s=DROP_OUT, d=1)
+  [10]       0           (s=DROP_OUT, d=0), (s=3, d=0)
+  [11]       1           (s=3, d=0), (s=DROP_OUT, d=0)
   [12, oo]   None        TargetByStateKey:DropOut
 
   BorderN = 3

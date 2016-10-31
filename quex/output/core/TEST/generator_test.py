@@ -467,7 +467,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     })
 
     mode = Mode(sm_name, SourceRef_VOID, 
-                pattern_list, terminal_db, incidence_db,
+                pattern_list, terminal_db, [], incidence_db,
                 RunTimeCounterDb=None, 
                 ReloadStateForward=None, 
                 RequiredRegisterSet=set(),

@@ -247,12 +247,8 @@ never appear in the stream. In that case the following handler is executed.
 
 .. data:: on_skip_range_open
 
-   Implicit Arguments: ``Delimiter`` [``Counter``]
-
-   The ``Delimiter`` contains a zero terminated string with the delimiter that
-   is missing.  For a nested range skipper the ``Counter`` argument notifies
-   additionally about the nesting level, i.e. the number of missing closing
-   delimiters.
+   For a nested range skipper the ``Counter`` argument notifies additionally
+   about the nesting level, i.e. the number of missing closing delimiters.
 
    A range skipper skips until it find the closing delimiter. The event handler
    ``on_skip_range_open`` handles the event that end of stream is reached

@@ -327,8 +327,9 @@ class Mode_Prep:
         self.dial_db            = DialDB()
         self.base_mode_sequence = [ ModePrepDb[name] for name in self.base_mode_name_sequence ]
 
-        self.pattern_list, \
-        self.terminal_db, \
+        self.pattern_list,                \
+        self.terminal_db,                 \
+        self.extra_analyzer_list,         \
         self.run_time_counter_required_f, \
         self.reload_state_forward,        \
         self.required_register_set        = self.__setup_matching_configuration(ModePrepDb)
@@ -353,7 +354,8 @@ class Mode_Prep:
             run_time_counter_db = self.ca_map
 
         return Mode(self.name, self.sr, 
-                    self.pattern_list, self.terminal_db, self.incidence_db,
+                    self.pattern_list, self.terminal_db, self.extra_analyzer_list, 
+                    self.incidence_db,
                     RunTimeCounterDb    = run_time_counter_db,
                     ReloadStateForward  = self.reload_state_forward,
                     RequiredRegisterSet = self.required_register_set,
@@ -394,6 +396,7 @@ class Mode_Prep:
 
         return ppt_list.finalize_pattern_list(), \
                ppt_list.finalize_terminal_db(self.incidence_db), \
+               ppt_list.extra_analyzer_list(), \
                ppt_list.finalize_run_time_counter_required_f(), \
                reload_state_forward, \
                ppt_list.required_register_set

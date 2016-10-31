@@ -66,6 +66,7 @@ def do_core(Mode):
     main_analyzer        = generator.do_main(Mode.sm, ReloadStateForward, 
                                              dial_db)
     # assert all_isinstance(main, (IfDoorIdReferencedCode, int, str, unicode))
+    extra                = generator.do_analyzer_list(Mode.extra_analyzer_list)
 
     # (*) Terminals
     #     (BEFORE 'Reload procedures' because some terminals may add entries
@@ -100,6 +101,7 @@ def do_core(Mode):
     function_body = []
     function_body.extend(pre_context)         # implementation of pre-contexts (if there are some)
     function_body.extend(main)                # main pattern matcher
+    function_body.extend(extra)               # extra state machines (from 'Loopers')
     function_body.extend(bipd)                # (seldom != empty; only for pseudo-ambiguous post contexts)
     function_body.extend(terminals)           
     function_body.extend(state_router)        # route to state by index (only if no computed gotos)

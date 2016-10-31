@@ -73,7 +73,7 @@ from   operator         import attrgetter
 def do(SM, EngineType=engine.FORWARD, 
        ReloadStateExtern=None, OnBeforeReload=None, OnAfterReload=None, 
        OnBeforeEntry=None, 
-       dial_db=None):
+       dial_db=None, OnReloadFailureDoorId=None):
     assert dial_db is not None
 
     # Generate Analyzer from StateMachine
@@ -94,7 +94,8 @@ def do(SM, EngineType=engine.FORWARD,
     # State.door of ReloadState:  OnAfterReload (when reload was a success).
     for state in analyzer.state_db.itervalues():
         # Null-operation, in case no reload required.
-        state.prepare_for_reload(analyzer, OnBeforeReload, OnAfterReload) 
+        state.prepare_for_reload(analyzer, OnBeforeReload, OnAfterReload,
+                                 OnFailureDoorId=OnReloadFailureDoorId) 
 
     # [Optional] Combination of states into MegaState-s.
     if len(Setup.compression_type_list) != 0:

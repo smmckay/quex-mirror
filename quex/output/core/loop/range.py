@@ -2,7 +2,7 @@ import quex.engine.analyzer.door_id_address_label  as     dial
 from   quex.engine.counter                         import CountActionMap
 from   quex.engine.misc.tools                      import typed
 import quex.output.core.loop.core                  as     loop
-from   quex.blackboard                             import Lng
+from   quex.blackboard                             import Lng, E_IncidenceIDs
 
 
 def do(Data, ReloadState):
@@ -11,15 +11,14 @@ def do(Data, ReloadState):
     CaMap            = Data["ca_map"]
     CloserPattern    = Data["closer_pattern"]
     ModeName         = Data["mode_name"]
-    OnSkipRangeOpen  = Data["on_skip_range_open"]
     DoorIdExit       = Data["door_id_exit"]
     dial_db          = Data["dial_db"]
 
-    return get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen, 
+    return get_skipper(ReloadState, CloserPattern, ModeName, 
                        DoorIdExit, CaMap, dial_db) 
 
 @typed(CaMap=CountActionMap)
-def get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen, 
+def get_skipper(ReloadState, CloserPattern, ModeName, 
                 DoorIdExit, CaMap, dial_db):
     """
                                         .---<---+----------<------+
@@ -54,17 +53,21 @@ def get_skipper(ReloadState, CloserPattern, ModeName, OnSkipRangeOpen,
     engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
 
+    door_id_on_reload_failure = dial.DoorID.incidence(E_IncidenceIDs.SKIP_RANGE_OPEN,
+                                                      dial_db)
+
     analyzer_list,         \
     terminal_list,         \
     loop_map,              \
     door_id_loop,          \
     required_register_set, \
     run_time_counter_f     = loop.do(CaMap,
-                                    OnLoopExitDoorId           = DoorIdExit,
-                                    EngineType                 = engine_type,
-                                    ReloadStateExtern          = ReloadState,
-                                    ParallelSmTerminalPairList = psml, 
-                                    dial_db                    = dial_db) 
+                                     OnLoopExitDoorId           = DoorIdExit,
+                                     EngineType                 = engine_type,
+                                     ReloadStateExtern          = ReloadState,
+                                     ParallelSmTerminalPairList = psml, 
+                                     dial_db                    = dial_db,
+                                     OnReloadFailureDoorId      = door_id_on_reload_failure) 
 
     return analyzer_list, terminal_list, \
            required_register_set, \

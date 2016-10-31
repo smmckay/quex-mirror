@@ -13,7 +13,19 @@
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 | [START]
-EHLexer.c:1107:	
-Lexical analyzer mode 'X':
-End of file occurred before closing skip range delimiter!
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x000A
+   lexeme start, input, end of file------->[0002] 0x0000
+   buffer back---------------------------->[0003] 0x0000
+_________________________________________________________________
+EHLexer.c:883:	
+Mode 'X': End of file occurred before closing skip range delimiter!
 The 'on_skip_range_open' handler has not been specified.
+
+
+
+
+
+
+

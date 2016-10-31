@@ -59,7 +59,7 @@ transit%.exe: transit%.qx lexer.c
 on_skip_range_open.exe: on_skip_range_open.qx 
 	echo $<
 	$(QUEX) -i $< -o EHLexer --token-policy single --token-id-prefix TK_ --debug-exception --language C
-	$(LD) ./lexer.c EHLexer.c -o $@ \
+	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
 		-D__TEST_DESCRIPTION='"Default 'on_skip_range_open' event."' \
 		-D__TEST_CHOICES='"default"' \
           -DQUEX_SETTING_BUFFER_SIZE=4 \
