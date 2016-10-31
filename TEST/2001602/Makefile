@@ -53,6 +53,7 @@ lex_codec:
 
 clean:
 	rm -rf EasyLexer*
+	rm -rf Simple*
 	rm -rf $(X)-*
 	rm -rf $(X).cpp
 	rm -rf $(X)

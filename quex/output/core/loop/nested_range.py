@@ -5,7 +5,7 @@ from   quex.engine.operations.operation_list        import Op, OpList
 import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.misc.tools                       import typed
-from   quex.blackboard                              import Lng, E_R, E_IncidenceIDs
+from   quex.blackboard                              import Lng, E_R
 
 def do(Data, ReloadState):
 

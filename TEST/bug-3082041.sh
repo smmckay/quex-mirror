@@ -23,4 +23,5 @@ python ../show-valgrind.py tmp.txt
 #rm tmp.txt
 rm -f EasyLexer*
 rm -f test
+rm -f tmp*
 cd $tmp

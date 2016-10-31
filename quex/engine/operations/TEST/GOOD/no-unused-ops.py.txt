@@ -1,0 +1,30 @@
+No output is good output
+## Assign 43
+## AssignConstant 6
+## AssignPointerDifference 2
+## ColumnCountAdd 6
+## ColumnCountGridAdd 8
+## ColumnCountReferencePDeltaAdd 10
+## ColumnCountReferencePSet 7
+## Decrement 5
+## GotoDoorId 18
+## GotoDoorIdIfCounterEqualZero 2
+## GotoDoorIdIfInputPNotEqualPointer 5
+## IfPreContextSetPositionAndGoto 2
+## Increment 5
+## IndentationHandlerCall 3
+## InputPDereference 6
+## LexemeResetTerminatingZero 1
+## LineCountAdd 4
+## PathIteratorSet 2
+## PointerAdd 3
+## PointerAssignMin 2
+## PreContextOK 2
+## PrepareAfterReload 2
+## QuexAssertNoPassage 2
+## QuexDebug 2
+## RouterByLastAcceptance 2
+## RouterOnStateKey 3
+## StoreInputPosition 10
+## TemplateStateKeySet 2
+<terminated>

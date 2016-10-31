@@ -29,10 +29,10 @@ result_list: [
 {
 title: Checking SVN status;
 file_name: svn-status.sh;
-hwut_info_time: 1476773812L;
+hwut_info_time: 1477894576L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; NO GOOD FILE; 0.397560; 0; ]
+  [ ; OK; 2.393027; -203227541; ]
 ]
 }
 {
@@ -51,7 +51,7 @@ file_name: pyflakes-check.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 82.845329; 0; ]
+  [ ; OK; 82.180342; 0; ]
 ]
 }
 {

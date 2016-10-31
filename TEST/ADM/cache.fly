@@ -34,9 +34,9 @@ file_name: bug-2001602.sh;
 hwut_info_time: 1454022453L;
 same_f: True;
 result_list: [
-  [ iconv; OK; 6.056290; 0; ]
-  [ icu; OK; 6.139432; 0; ]
-  [ codec; OK; 8.484890; 0; ]
+  [ iconv; OK; 5.559898; 0; ]
+  [ icu; OK; 5.955580; 0; ]
+  [ codec; OK; 6.263624; 0; ]
 ]
 }
 {
@@ -407,9 +407,9 @@ result_list: [
 title: 3082041 0.52.4 Buffer Memory Size not Accepted;
 title_group: fschaef;
 file_name: bug-3082041.sh;
-hwut_info_time: 1476654848L;
+hwut_info_time: 1477893922L;
 result_list: [
-  [ ; OK; 4.761563; 0; ]
+  [ ; OK; 4.691796; 0; ]
 ]
 }
 {
@@ -438,9 +438,9 @@ result_list: [
 title: 3513568 0.62.2 Memory Leak when using ICU;
 title_group: fschaef;
 file_name: bug-3513568.sh;
-hwut_info_time: 1476654848L;
+hwut_info_time: 1477894017L;
 result_list: [
-  [ ; OK; 6.815006; 0; ]
+  [ ; OK; 5.371658; 0; ]
 ]
 }
 {
