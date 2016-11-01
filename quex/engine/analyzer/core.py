@@ -598,7 +598,8 @@ class Analyzer:
         # states should be the same.
         def order(X):
             side_info = 0
-            if len(X.transition_map) != 0: side_info = max(trigger_set.size() for trigger_set, t in X.transition_map)
+            if len(X.transition_map) != 0: 
+                side_info = max(trigger_set.size() for trigger_set, t in X.transition_map)
             return (len(X.transition_map), side_info, X.index)
 
         txt = [ repr(state) for state in sorted(self.__state_db.itervalues(), key=order) ]

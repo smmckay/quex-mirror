@@ -94,7 +94,7 @@ class RouterContentElement(object):
         else:
             return "goto %s;"    % (repr_acceptance_id(self.acceptance_id))
 
-    def __str__(self):
+    def __repr__(self):
         return "case %s: %s" % (repr_acceptance_id(self.acceptance_id, PatternStrF=False),
                                 self.get_string())
         

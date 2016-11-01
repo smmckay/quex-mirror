@@ -112,6 +112,7 @@ from   quex.engine.counter                                import CountAction, \
                                                                  count_operation_db_without_reference
 from   quex.engine.misc.interval_handling                 import NumberSet
 from   quex.engine.misc.tools                             import typed
+import quex.engine.misc.error                             as     error
 from   quex.output.cpp.counter_for_pattern                import map_SmLineColumnCountInfo_to_code
 
 from   quex.blackboard import E_CharacterCountType, \
@@ -630,16 +631,19 @@ def _get_analyzer_list(loop_map, EventHandler, AppendixSmList,
     
     RETURNS: list of Analyzer-s.
     """
+    # AppendixSm Ids MUST be unique!
+    assert len(set([sm.get_id() for sm in AppendixSmList])) == len(AppendixSmList)
+
     # Core Loop Analyzer 
-    loop_analyzer, \
-    door_id_loop   = _get_analyzer_for_loop(loop_map, EventHandler)
+    loop_analyzer,         \
+    door_id_loop           = _get_analyzer_for_loop(loop_map, EventHandler)
 
     # Appendix Analyzers 
     appendix_analyzer_list = _get_analyzer_list_for_appendices(loop_map, EventHandler, 
                                                                AppendixSmList,
                                                                IidLoopAfterAppendixDropOut) 
     
-    analyzer_list = [ loop_analyzer ] + appendix_analyzer_list
+    analyzer_list          = [ loop_analyzer ] + appendix_analyzer_list
 
     # Analyzer Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
     assert len(set(a.state_machine_id for a in analyzer_list)) == len(analyzer_list)
@@ -798,50 +802,49 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
             appendix_sm_db[id_key] = combined_sm
         return combined_sm
 
-    first_vs_appendix_sm = [ 
-        (first_set, appendix_sm)
-        for sm in SmList
-        for first_set, appendix_sm in sm.cut_first_transition(CloneStateMachineId=True)
-    ]
-    # The tuples reported by 'iterable()' may contain overlapping character
-    # sets. That is, their may be multiple parallel state machines that trigger
-    # on the same characters in a first transition. 
-    #
-    appendix_lcci_db = {} # map: appendix state machine id --> LCCI
-    for character_set, appendix_sm in first_vs_appendix_sm:
-        if not appendix_sm.get_init_state().has_transitions(): continue
-        lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, appendix_sm, 
-                                                       False,
-                                                       Setup.buffer_codec)
-        appendix_lcci_db[appendix_sm.get_id()] = lcci
+    def get_appendix_lcci_db(first_vs_appendix_sm):
+        """The tuples reported by 'iterable()' may contain overlapping character
+            sets. That is, their may be multiple parallel state machines that trigger
+            on the same characters in a first transition. 
+        """
+        result = {} # map: appendix state machine id --> LCCI
+        for character_set, appendix_sm in first_vs_appendix_sm:
+            if not appendix_sm.get_init_state().has_transitions(): continue
+            lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, appendix_sm, 
+                                                           False,
+                                                           Setup.buffer_codec)
+            result[appendix_sm.get_id()] = lcci
+        return result
 
-    distinct = [] # list of [0] Character Set
-    #                       [1] Count Action related to [0]
-    #                       [2] List of appendix state machines related [0]
-    # All character sets [0] in the distinct list are NON-OVERLAPPING.
-    for character_set, ca, appendix_sm in iterable(first_vs_appendix_sm):
-        remainder = character_set
-        for prev_character_set, prev_ca, prev_appendix_sm_list in distinct:
-            intersection = character_set.intersection(prev_character_set)
-            if intersection.is_empty(): 
-                continue
-            elif intersection.is_equal(prev_character_set):
-                prev_appendix_sm_list.append(appendix_sm)
-            else:
-                prev_character_set.subtract(intersection)
-                distinct.append(
-                    (intersection, ca, prev_appendix_sm_list + [appendix_sm])
+    def get_distinct_map(first_vs_appendix_sm):
+        result = []   # list of [0] Character Set
+        #                       [1] Count Action related to [0]
+        #                       [2] List of appendix state machines related [0]
+        # All character sets [0] in the distinct list are NON-OVERLAPPING.
+        for character_set, ca, appendix_sm in iterable(first_vs_appendix_sm):
+            remainder = character_set
+            for prev_character_set, prev_ca, prev_appendix_sm_list in result:
+                intersection = character_set.intersection(prev_character_set)
+                if intersection.is_empty(): 
+                    continue
+                elif intersection.is_equal(prev_character_set):
+                    prev_appendix_sm_list.append(appendix_sm)
+                else:
+                    prev_character_set.subtract(intersection)
+                    result.append(
+                        (intersection, ca, prev_appendix_sm_list + [appendix_sm])
+                    )
+                remainder.subtract(intersection)
+                if remainder.is_empty(): break
+
+            if not remainder.is_empty():
+                result.append(
+                    (remainder, ca, [appendix_sm])
                 )
-            remainder.subtract(intersection)
-            if remainder.is_empty(): break
-
-        if not remainder.is_empty():
-            distinct.append(
-                (remainder, ca, [appendix_sm])
-            )
+        return result
 
     def _determine_LoopMapEntry(sm_db, CharacterSet, CA, AppendixSmList):
-        appendix_sm       = append_sm_db_get_combined(sm_db, appendix_sm_list)
+        appendix_sm       = append_sm_db_get_combined(sm_db, AppendixSmList)
         has_transitions_f = appendix_sm.get_init_state().has_transitions()
         if not has_transitions_f:
             # There is NO appendix after the first transition.
@@ -861,17 +864,31 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
         return LoopMapEntry(CharacterSet, ca, dial.new_incidence_id(),
                             appendix_sm_id, has_transitions_f)
 
-    # Combine the appendix state machine lists which are related to character
-    # sets into a single combined appendix state machine.
-    appendix_sm_db   = {}
-    loop_map         = [
-        _determine_LoopMapEntry(appendix_sm_db, character_set, ca, appendix_sm_list)
-        for character_set, ca, appendix_sm_list in distinct
+    def get_LoopMap_and_appendix_sm_list(Distinct):
+        # Combine the appendix state machine lists which are related to character
+        # sets into a single combined appendix state machine.
+        appendix_sm_db   = {}
+        loop_map         = [
+            _determine_LoopMapEntry(appendix_sm_db, character_set, ca, appendix_sm_list)
+            for character_set, ca, appendix_sm_list in distinct
+        ]
+        appendix_sm_list = [
+            appendix_sm for appendix_sm in appendix_sm_db.itervalues()
+                        if appendix_sm.get_init_state().has_transitions()
+        ]
+        return loop_map, appendix_sm_list
+
+    first_vs_appendix_sm = [ 
+        (first_set, appendix_sm)
+        for sm in SmList
+        for first_set, appendix_sm in sm.cut_first_transition(CloneStateMachineId=True)
     ]
-    appendix_sm_list = [
-        appendix_sm for appendix_sm in appendix_sm_db.itervalues()
-                    if appendix_sm.get_init_state().has_transitions()
-    ]
+
+    appendix_lcci_db = get_appendix_lcci_db(first_vs_appendix_sm)
+    distinct         = get_distinct_map(first_vs_appendix_sm)
+    loop_map,        \
+    appendix_sm_list = get_LoopMap_and_appendix_sm_list(distinct)
+
     return loop_map, appendix_sm_list, appendix_lcci_db
 
 @typed(loop_map=LoopMap)
@@ -1005,12 +1022,18 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
              [1] Appendix terminals.
     """
     # Codec Transformation
-    appendix_sm_list = []
-    for sm in AppendixSmList:
-        if not sm.get_init_state().has_transitions(): continue
+    def transform(sm, beautifier):
         verdict_f, \
         sm_transformed = Setup.buffer_codec.do_state_machine(sm, beautifier) 
-        appendix_sm_list.append(sm_transformed)
+        if not verdict_f:
+            error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
+                      "contained character not suited for given character encoding.")
+        return sm_transformed
+
+    appendix_sm_list = [
+        transform(sm, beautifier) for sm in AppendixSmList
+                                  if sm.get_init_state().has_transitions()
+    ]
 
     # Appendix Sm Drop Out => Restore position of last loop character.
     # (i)  Couple terminal stored input position in 'LoopRestartP'.

@@ -7,7 +7,7 @@
 #
 #      -- The structure of the analyzers in the list is unimportant;
 #         none of them is modified.
-#      -- The loop maps constitutition is (almost) unimportant. 
+#      -- The loop maps constitution is (almost) unimportant. 
 #
 # IMPORTANT:
 #
@@ -22,8 +22,8 @@
 #
 # Both variations are played through by the 'buffer_codec' being plain Unicode
 # or UTF8, thus the choices: 'Unicode' and 'UTF8'. Additionally, two loop maps
-# are presented: One with same 'ColumnN/CodeUnit' for all characters and one 
-# without it.
+# are presented: One with all the same ratios for 'ColumnN/CodeUnit' for all 
+# characters and one with differing ratios.
 #
 # (C) Frank-Rene Schaefer
 #------------------------------------------------------------------------------
@@ -46,15 +46,18 @@ from   quex.blackboard                            import E_CharacterCountType, \
 if "--hwut-info" in sys.argv:
     print "Loop: Get All Analyzers."
     print "CHOICES: Unicode-Const, Unicode-NonConst, UTF8-Const, UTF8-NonConst;"
+    sys.exit()
 
-if "Unicode" in sys.argv[1]:  encoding = "unicode"
-else:                         encoding = "utf8"
+if "Unicode" in sys.argv[1]:  encoding = "unicode"; lexatom_size = 4;
+else:                         encoding = "utf8";    lexatom_size = 1;
 
 # Constant column number per code unit
 if "NonConst" in sys.argv[1]: column_n_per_code_unit = None
 else:                         column_n_per_code_unit = 6     # See CA_0, below.
 
-def test(LoopMap, EventHandler):
+dial_db = DialDB()
+
+def test(LoopMap, ColumnNPerCodeUnit):
     """
     event_handler:    Simply, some event handlers are generated which allow to
                       identify their placement in the right positions.
@@ -65,14 +68,27 @@ def test(LoopMap, EventHandler):
                       the fly.
     """
     global loop_map
+    global dial_db
 
     Setup.buffer_codec.source_set = NumberSet_All()
 
     appendix_sm_list = _get_appendix_sm_list(loop_map)
 
-    analyzer_list    = loop._get_analyzer_list(loop_map,
-                                               EventHandler, 
-                                               appendix_sm_list) 
+    event_handler    = loop.LoopEventHandlers(ColumnNPerCodeUnit    = ColumnNPerCodeUnit,
+                                              LexemeEndCheckF       = False, 
+                                              EngineType            = engine.FORWARD, 
+                                              ReloadStateExtern     = None, 
+                                              UserBeforeEntryOpList = None, 
+                                              UserOnLoopExitDoorId  = dial_db.new_door_id(), 
+                                              AppendixSmExistF      = len(appendix_sm_list) != 0,
+                                              dial_db               = dial_db, 
+                                              OnReloadFailureDoorId = None) 
+
+    analyzer_list,      \
+    door_id_loop,       \
+    appendix_sm_exist_f = loop._get_analyzer_list(loop_map, event_handler, 
+                                                  appendix_sm_list,
+                                                  dial.new_incidence_id()) 
 
     print_this(analyzer_list)
 
@@ -84,9 +100,11 @@ def _get_appendix_sm_list(LoopMap):
         sm.set_id(SmId)
         return sm
 
+    sm_ids = set(lei.appendix_sm_id for lei in LoopMap
+                 if lei.appendix_sm_has_transitions_f)
     return [
-        get_sm(lei.appendix_sm_id, trigger) for trigger, lei in enumerate(LoopMap)
-        if lei.appendix_sm_has_transitions_f
+        get_sm(SmId=appendix_sm_id, Trigger = 0xB612 + i) 
+        for i, appendix_sm_id in enumerate(sm_ids)
     ]
 
 def print_this(AnalyzerList):
@@ -95,6 +113,7 @@ def print_this(AnalyzerList):
     for i, analyzer in enumerate(AnalyzerList):
         print "--( %i: init si = %i )-------------------------\n" % (i, analyzer.init_state_index)
         print analyzer
+        print analyzer.drop_out.entry.get_string()
 
 if encoding == "unicode":
     NS_A = NumberSet.from_range(ord('A'), ord('A') + 1)
@@ -125,20 +144,16 @@ appendix_sm_id_2 = 33L
 # CHOICE: --> encoding
 #         --> column_n_per_code_unit
 #
-Setup.buffer_codec_set(bc_factory.do(encoding), LexatomSizeInBytes=1)
 
-event_handler = loop.LoopEventHandlers(column_n_per_code_unit, 
-                                       MaintainLexemeF   = False, 
-                                       LexemeEndCheckF   = False, 
-                                       EngineType        = engine.FORWARD, 
-                                       ReloadStateExtern = None) 
+Setup.buffer_codec_set(bc_factory.do(encoding), 
+                       LexatomSizeInBytes=lexatom_size)
 
-loop_map = [
-    LoopMapEntry(NS_A, CA_0, CA_0.get_incidence_id(), None),
-    LoopMapEntry(NS_B, CA_1, CA_1.get_incidence_id(), appendix_sm_id_0, HasTransitionsF=True),
-    LoopMapEntry(NS_C, CA_2, CA_2.get_incidence_id(), appendix_sm_id_0, HasTransitionsF=True),
-    LoopMapEntry(NS_D, CA_3, CA_0.get_incidence_id(), appendix_sm_id_1),
-    LoopMapEntry(NS_E, CA_4, CA_4.get_incidence_id(), appendix_sm_id_2, HasTransitionsF=False)
-]
+loop_map = loop.LoopMap([
+    loop.LoopMapEntry(NS_A, CA_0, CountAction.incidence_id_db_get(CA_0), None),
+    loop.LoopMapEntry(NS_B, CA_1, dial.new_incidence_id(), appendix_sm_id_0, HasTransitionsF=True),
+    loop.LoopMapEntry(NS_C, CA_2, dial.new_incidence_id(), appendix_sm_id_0, HasTransitionsF=True),
+    loop.LoopMapEntry(NS_D, CA_3, dial.new_incidence_id(), appendix_sm_id_1, HasTransitionsF=True),
+    loop.LoopMapEntry(NS_E, CA_4, dial.new_incidence_id(), appendix_sm_id_2, HasTransitionsF=False)
+])
 
-test(loop_map, event_handler)
+test(loop_map, column_n_per_code_unit)
