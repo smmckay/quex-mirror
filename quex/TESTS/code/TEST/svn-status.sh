@@ -9,7 +9,10 @@ if [[ "$1" = "--hwut-info" ]]; then
     exit
 fi
 
-date > file-that-must-be-detected-as-unmanaged.txt
+original_dir=$PWD
+example=file-that-must-be-detected-as-not-under-source-control.txt
+
+date > $example
 
 cd $QUEX_PATH
 hwut make clean    >& /dev/null
@@ -23,6 +26,7 @@ svn status \
 | grep '^?' \
 | awk ' ! /quex\/engine\/analyzer\/examine\/doc\// && ! /demo\/C\/000\/CMakeLists.txt/'
 
-rm -f file-that-must-be-detected-as-unmanaged.txt
+cd $original_dir
+rm -f $example
 
 echo "<terminated>"

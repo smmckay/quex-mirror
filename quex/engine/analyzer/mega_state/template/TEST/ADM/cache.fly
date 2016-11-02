@@ -3,11 +3,11 @@ title: Combination of Two Transition Maps;
 file_name: combine-maps.py;
 hwut_info_time: 1470521545L;
 result_list: [
-  [ 1; OK; 0.093506; 0; ]
-  [ 2; OK; 0.090877; 0; ]
-  [ 2b; OK; 0.091162; 0; ]
-  [ 3; OK; 0.091785; 0; ]
-  [ 4; OK; 0.094353; 0; ]
+  [ 1; OK; 0.091228; 0; ]
+  [ 2; OK; 0.092721; 0; ]
+  [ 2b; OK; 0.091665; 0; ]
+  [ 3; OK; 0.093818; 0; ]
+  [ 4; OK; 0.092292; 0; ]
 ]
 }
 {
@@ -15,9 +15,9 @@ title: Combine Simple;
 file_name: combine-simple.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ plain; OK; 0.102331; 0; ]
-  [ recursive; OK; 0.105015; 0; ]
-  [ distinguished; OK; 0.099620; 0; ]
+  [ plain; OK; 0.101343; 0; ]
+  [ recursive; OK; 0.104663; 0; ]
+  [ distinguished; OK; 0.103247; 0; ]
 ]
 }
 {
@@ -25,11 +25,11 @@ title: Template states handling recursion;
 file_name: recursion.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.099008; 0; ]
-  [ 0b; OK; 0.099878; -226337317; ]
-  [ 1; OK; 0.096536; 0; ]
-  [ 1b; OK; 0.099877; 0; ]
-  [ 1c; OK; 0.097818; 966946270; ]
+  [ 0; OK; 0.094650; 0; ]
+  [ 0b; OK; 0.097607; -226337317; ]
+  [ 1; OK; 0.096036; 0; ]
+  [ 1b; OK; 0.099502; 0; ]
+  [ 1c; OK; 0.100991; 966946270; ]
 ]
 }
 {
@@ -38,8 +38,8 @@ title_group: Transition Map Templates;
 file_name: combine-maps-2.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 1; OK; 0.099848; 0; ]
-  [ 2; OK; 0.105577; 0; ]
+  [ 1; OK; 0.100307; 0; ]
+  [ 2; OK; 0.102391; 0; ]
 ]
 }
 {
@@ -48,11 +48,11 @@ title_group: Transition Map Templates;
 file_name: best_matching_pair.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 0; OK; 0.094907; 0; ]
-  [ 1; OK; 0.094256; 0; ]
-  [ 2; OK; 0.094082; 0; ]
-  [ 3; OK; 0.093090; 0; ]
-  [ recursive; OK; 0.092256; 0; ]
+  [ 0; OK; 0.096501; 0; ]
+  [ 1; OK; 0.097169; 0; ]
+  [ 2; OK; 0.095157; 0; ]
+  [ 3; OK; 0.095703; 0; ]
+  [ recursive; OK; 0.094122; 0; ]
 ]
 }
 {
@@ -61,12 +61,12 @@ title_group: Transition Map Templates;
 file_name: metric.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 1; OK; 0.095150; 0; ]
-  [ 2; OK; 0.092335; 0; ]
-  [ 2b; OK; 0.098020; 0; ]
-  [ 3; OK; 0.097003; 0; ]
-  [ 3b; OK; 0.099759; 0; ]
-  [ 4; OK; 0.094560; 0; ]
-  [ recursive; OK; 0.094869; 0; ]
+  [ 1; OK; 0.094020; 0; ]
+  [ 2; OK; 0.093844; 0; ]
+  [ 2b; OK; 0.094881; 0; ]
+  [ 3; OK; 0.096303; 0; ]
+  [ 3b; OK; 0.093827; 0; ]
+  [ 4; OK; 0.094928; 0; ]
+  [ recursive; OK; 0.095476; 0; ]
 ]
 }

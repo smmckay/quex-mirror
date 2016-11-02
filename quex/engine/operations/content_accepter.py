@@ -159,6 +159,7 @@ def repr_pre_context_id(Value):
 def repr_acceptance_id(Value, PatternStrF=True):
     if   Value == E_IncidenceIDs.VOID:          return "last_acceptance"
     elif Value == E_IncidenceIDs.MATCH_FAILURE: return "Failure"
+    elif Value == E_IncidenceIDs.BAD_LEXATOM:   return "Bad Lexatom"
     elif Value >= 0:                                    
         if PatternStrF:                         return "Pattern%i" % Value
         else:                                   return "%i" % Value

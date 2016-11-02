@@ -1,3 +1,3 @@
 Almost no output is good output:
-?       quex/TESTS/code/TEST/file-that-must-be-detected-as-unmanaged.txt
+?       quex/TESTS/code/TEST/file-that-must-be-detected-as-not-under-source-control.txt
 <terminated>
