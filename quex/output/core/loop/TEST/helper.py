@@ -1,14 +1,14 @@
 import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
-import quex.output.core.loop.run_time_counter        as     run_time_counter
+import quex.output.core.run_time_counter             as     run_time_counter
 import quex.output.core.loop.character_set           as     character_set_skipper
 import quex.output.core.loop.range                   as     range_skipper
 import quex.output.core.loop.nested_range            as     nested_range_skipper
 import quex.output.core.loop.indentation_counter     as     indentation_counter
 from   quex.output.core.TEST.generator_test          import *
-from   quex.output.core.variable_db                  import variable_db
 from   quex.output.core.TEST.generator_test          import __Setup_init_language_database
+from   quex.output.core.variable_db                  import variable_db
 from   quex.input.code.base                          import CodeFragment, SourceRef_VOID
 from   quex.input.files.specifier.counter            import LineColumnCount_Default
 import quex.output.core.base                         as     generator
