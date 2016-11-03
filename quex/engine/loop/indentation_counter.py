@@ -6,7 +6,7 @@ import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.counter                          import IndentationCount, \
                                                            CountActionMap
-import quex.output.core.loop.core                   as     loop
+import quex.engine.loop.core                        as     loop
 from   quex.blackboard                              import Lng, \
                                                            E_IncidenceIDs
 

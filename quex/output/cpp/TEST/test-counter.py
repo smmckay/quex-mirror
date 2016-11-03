@@ -38,7 +38,7 @@ import quex.input.regular_expression.engine           as     core
 import quex.input.files.specifier.counter             as     counter
 import quex.engine.state_machine.transformation.core  as     bc_factory
 import quex.output.core.dictionary                    as     languages
-import quex.output.core.loop.run_time_counter         as     run_time_counter
+import quex.output.core.run_time_counter              as     run_time_counter
 
 from   quex.blackboard  import setup as Setup, Lng
 

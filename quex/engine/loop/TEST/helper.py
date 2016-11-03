@@ -2,10 +2,10 @@ import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.output.core.run_time_counter             as     run_time_counter
-import quex.output.core.loop.character_set           as     character_set_skipper
-import quex.output.core.loop.range                   as     range_skipper
-import quex.output.core.loop.nested_range            as     nested_range_skipper
-import quex.output.core.loop.indentation_counter     as     indentation_counter
+import quex.engine.loop.character_set                as     character_set_skipper
+import quex.engine.loop.range                        as     range_skipper
+import quex.engine.loop.nested_range                 as     nested_range_skipper
+import quex.engine.loop.indentation_counter          as     indentation_counter
 from   quex.output.core.TEST.generator_test          import *
 from   quex.output.core.TEST.generator_test          import __Setup_init_language_database
 from   quex.output.core.variable_db                  import variable_db
@@ -92,16 +92,12 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
 
     end_str = __prepare(Language)
 
-    data = { 
-        "character_set":        TriggerSet, 
-        "ca_map":           LineColumnCount_Default(),
-        "require_label_SKIP_f": False, 
-        "dial_db":              dial_db
-    }
     analyzer_list,  \
     terminal_list, \
     loop_map,      \
-    required_register_set = character_set_skipper.do(data, Analyzer.reload_state)
+    required_register_set = character_set_skipper.do(LineColumnCount_Default(), 
+                                                     TriggerSet, Analyzer.reload_state,
+                                                     dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
 
     variable_db.require_registers(required_register_set)

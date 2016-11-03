@@ -523,7 +523,7 @@ title_group: liancheng;
 file_name: bug-3526210.sh;
 hwut_info_time: 1454022450L;
 result_list: [
-  [ ; OK; 1.400571; 0; ]
+  [ ; OK; 1.413589; 0; ]
 ]
 }
 {

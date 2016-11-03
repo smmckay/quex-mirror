@@ -1,9 +1,9 @@
-import quex.output.core.loop.core                 as     loop
+import quex.engine.loop.core                      as     loop
 from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.counter                        import CountActionMap
 from   quex.engine.misc.interval_handling         import NumberSet
 
-def do(Data, ReloadState):
+def do(CaMap, CharacterSet, ReloadState, dial_db):
     """Fast implementation of character set skipping machine.
     ________________________________________________________________________
     As long as characters of a given character set appears it iterates: 
@@ -56,16 +56,11 @@ def do(Data, ReloadState):
           then the single state may actually be split into a real state machine of
           states.
     """
-    ca_map        = Data["ca_map"]
-    character_set = Data["character_set"]
-    dial_db       = Data["dial_db"]
-    assert isinstance(ca_map, CountActionMap)
-    assert isinstance(character_set, NumberSet)
+    assert isinstance(CaMap, CountActionMap)
+    assert isinstance(CharacterSet, NumberSet)
 
-    ca_map = ca_map.pruned_clone(character_set)
-
-    engine_type = None # Default
     if ReloadState: engine_type = ReloadState.engine_type
+    else:           engine_type = None
 
     on_loop_exit_door_id = DoorID.continue_without_on_after_match(dial_db)
 
@@ -74,7 +69,7 @@ def do(Data, ReloadState):
     loop_map,              \
     door_id_loop,          \
     required_register_set, \
-    run_time_counter_f     = loop.do(ca_map,
+    run_time_counter_f     = loop.do(CaMap.pruned_clone(CharacterSet),
                                      OnLoopExitDoorId  = on_loop_exit_door_id,
                                      EngineType        = engine_type,
                                      ReloadStateExtern = ReloadState, 

@@ -1,3 +1,5 @@
+import quex.engine.loop.core                      as     loop
+import quex.engine.analyzer.engine_supply_factory   as     engine
 
 def do(CaMap, DoorIdLoopExit, dial_db, LexemeEndCheckF=False):
     """Implement loop based on an 'action map'. The 'CaMap' maps from

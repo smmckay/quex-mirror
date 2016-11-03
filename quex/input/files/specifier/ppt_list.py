@@ -24,10 +24,10 @@ import quex.engine.analyzer.door_id_address_label   as     dial
 import quex.engine.misc.error_check                 as     error_check
 from   quex.engine.misc.tools                       import typed
 import quex.engine.misc.error                       as     error
-import quex.output.core.loop.character_set          as     skip_character_set
-import quex.output.core.loop.range                  as     skip_range
-import quex.output.core.loop.nested_range           as     skip_nested_range
-import quex.output.core.loop.indentation_counter    as     indentation_counter
+import quex.engine.loop.character_set               as     skip_character_set
+import quex.engine.loop.range                       as     skip_range
+import quex.engine.loop.nested_range                as     skip_nested_range
+import quex.engine.loop.indentation_counter         as     indentation_counter
 
 from   quex.blackboard import E_IncidenceIDs, \
                               Lng
@@ -382,16 +382,12 @@ class PPT_List(list):
         pattern_str,           \
         aux_source_reference   = Loopers.combined_skip()
 
-        data = { 
-            "ca_map":        CaMap,
-            "character_set": skipped_character_set,
-            "dial_db":       self.terminal_factory.dial_db
-        }
-
         new_analyzer_list,        \
         new_terminal_list,    \
         loop_map,             \
-        required_register_set = skip_character_set.do(data, ReloadState)
+        required_register_set = skip_character_set.do(CaMap, skipped_character_set, 
+                                                      ReloadState, 
+                                                      self.terminal_factory.dial_db)
 
         self.required_register_set.update(required_register_set)
         

@@ -44,7 +44,7 @@ from   quex.engine.misc.interval_handling         import NumberSet, \
 import quex.engine.analyzer.door_id_address_label as     dial
 from   quex.engine.analyzer.door_id_address_label import DialDB
 import quex.engine.state_machine.transformation.core as  bc_factory
-import quex.output.core.loop.core                 as     loop
+import quex.engine.loop.core                      as     loop
 import quex.engine.analyzer.engine_supply_factory as     engine
 from   quex.blackboard                            import E_CharacterCountType, \
                                                          setup as Setup

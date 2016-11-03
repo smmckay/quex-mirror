@@ -1,5 +1,5 @@
 from   quex.input.code.core                         import CodeTerminal
-import quex.output.core.loop.core                   as     loop
+import quex.engine.loop.core                        as     loop
 from   quex.engine.counter                          import CountActionMap
 from   quex.engine.operations.operation_list        import Op, OpList
 import quex.engine.analyzer.door_id_address_label   as     dial

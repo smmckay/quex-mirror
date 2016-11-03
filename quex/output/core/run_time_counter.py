@@ -3,10 +3,9 @@
 _______________________________________________________________________________
 """
 import quex.output.core.base                        as     generator
-import quex.output.core.loop.action_map             as     action_map
+import quex.engine.loop.action_map                  as     action_map
 from   quex.output.core.variable_db                 import variable_db
 from   quex.engine.analyzer.door_id_address_label   import DoorID, DialDB
-import quex.engine.analyzer.engine_supply_factory   as     engine
 from   quex.engine.misc.tools                       import typed
 from   quex.engine.counter                          import CountActionMap
 
@@ -47,6 +46,7 @@ def get(CaMap, Name):
     if function_name is not None:
         # Use previously done implementation for this 'CaMap'
         return function_name, None 
+    function_name  = Lng.DEFAULT_COUNTER_FUNCTION_NAME(Name) 
 
     door_id_return = dial_db.new_door_id()
 
@@ -67,7 +67,6 @@ def get(CaMap, Name):
     implementation = __frame(function_name, Lng.INPUT_P(), code, door_id_return, 
                              dial_db) 
 
-    function_name  = Lng.DEFAULT_COUNTER_FUNCTION_NAME(Name) 
     DefaultCounterFunctionDB.enter(CaMap, function_name)
 
     return function_name, implementation
