@@ -434,16 +434,23 @@ class PPT_List(list):
         """
         if not Loopers.skip_range: return [], [], []
 
+        dial_db             = self.terminal_factory.dial_db
         new_ppt_list        = []
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_range):
-            data = self._range_skipper_data(data, CaMap, Loopers.indentation_handler)
-
-            new_analyzer_list,         \
+            door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
+                                                            data["closer_pattern"],
+                                                            dial_db) 
+            new_analyzer_list,     \
             new_terminal_list,     \
             required_register_set, \
-            run_time_counter_f     = skip_range.do(data, ReloadState)
+            run_time_counter_f     = skip_range.do(ModeName      = self.terminal_factory.mode_name, 
+                                                   CaMap         = CaMap, 
+                                                   CloserPattern = data["closer_pattern"], 
+                                                   DoorIdExit    = door_id_exit,
+                                                   ReloadState   = ReloadState, 
+                                                   dial_db       = dial_db)
 
             self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
@@ -465,16 +472,25 @@ class PPT_List(list):
     def _prepare_skip_nested_range(self, MHI, Loopers, CaMap, ReloadState):
         if not Loopers.skip_nested_range: return [], [], []
 
+        dial_db             = self.terminal_factory.dial_db
         new_ppt_list        = []
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
-            data = self._range_skipper_data(data, CaMap, Loopers.indentation_handler)
+            door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
+                                                            data["closer_pattern"],
+                                                            dial_db)
 
             new_analyzer_list,     \
             new_terminal_list,     \
             required_register_set, \
-            run_time_counter_f     = skip_nested_range.do(data, ReloadState)
+            run_time_counter_f     = skip_nested_range.do(ModeName      = self.terminal_factory.mode_name, 
+                                                          CaMap         = CaMap, 
+                                                          OpenerPattern = data["opener_pattern"], 
+                                                          CloserPattern = data["closer_pattern"], 
+                                                          DoorIdExit    = door_id_exit,
+                                                          ReloadState   = ReloadState, 
+                                                          dial_db       = dial_db)
     
             self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
@@ -492,6 +508,13 @@ class PPT_List(list):
 
         return new_ppt_list, extra_analyzer_list, extra_terminal_list
 
+    def _range_skipper_door_id_exit(self, IndentationHandler, CloserPattern, dial_db):
+        if self._match_indentation_counter_newline_pattern(IndentationHandler,
+                                                           CloserPattern): 
+            return DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)
+        else:
+            return DoorID.continue_without_on_after_match(dial_db)
+            
     @typed(CaMap=CountActionMap, IndentationHandler=(None, IndentationCount))
     def _range_skipper_data(self, data, CaMap, IndentationHandler):
         dial_db = self.terminal_factory.dial_db
@@ -499,11 +522,8 @@ class PPT_List(list):
         #     + Normally: To the begin of the analyzer. Start again.
         #     + End(Sequence) == newline of indentation counter.
         #       => goto indentation counter.
-        if self._match_indentation_counter_newline_pattern(IndentationHandler,
-                                                           data["closer_pattern"]):
-            door_id_exit = DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)
-        else:
-            door_id_exit = DoorID.continue_without_on_after_match(dial_db)
+        door_id_exit = self._range_skipper_door_id_exit(IndentationHandler, 
+                                                        data["closer_pattern"])
 
         # -- data for code generation
         my_data = deepcopy(data)

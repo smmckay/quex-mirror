@@ -2,9 +2,10 @@
 # PURPOSE: Creating a release of Quex
 #   $1  version of the quex release
 #
-#   --no-repo => prevents repository update
+#   --only-collect => only collect files in /tmp/quex-$VERSION
+#   --no-repo      => prevents repository update
 #
-# (C) 2005-2008 Frank-Rene Schaefer  fschaef@users.sourceforge.net
+# (C) 2005-2016 Frank-Rene Schaefer  fschaef@users.sourceforge.net
 # 
 # ABSOLUTELY NO WARRANTY
 #
@@ -22,17 +23,23 @@ INSTALLBUILDER_OUT=$DIR_INSTALLBUILDER/output
 
 # Temporary file for building a distribution file list
 file_list0=/tmp/file-list-0.txt
-file_list=/tmp/file-list-1.txt
+file_list1=/tmp/file-list-1.txt
 
 if [[ -z $1 ]]; then
     echo "Version must be defined as first argument."
     exit
 fi
 
-pushd  demo
-source make_clean.sh
-hwut make clean
-popd
+function clean_directory_tree()
+{
+    hwut i --no-color > unit_test_results.txt;
+
+    hwut make clean
+
+    pushd  demo
+    source make_clean.sh
+    popd
+}
 
 function update_version_information()
 {
@@ -43,8 +50,6 @@ function update_version_information()
     awk -v version="'$1'" ' ! /^QUEX_VERSION/ { print; } /^QUEX_VERSION/ { print "QUEX_VERSION =",version; }' \
         ./quex/DEFINITIONS.py > tmp-DEFINITIONS.txt
     mv tmp-DEFINITIONS.txt ./quex/DEFINITIONS.py;
-
-    hwut i --no-color > unit_test_results.txt;
 }
 
 function create_man_page() {
@@ -58,8 +63,6 @@ function collect_distribution_file_list()
     sub_dir=$(basename $QUEX_PATH)
 
     echo "QUEX_PATH:  $QUEX_PATH"
-    echo "file_list0: $file_list0"
-    echo "file_list:  $file_list"
     echo "sub_dir:    $(basename $QUEX_PATH)"
 
     # (*) Collect the list of files under concern
@@ -68,7 +71,7 @@ function collect_distribution_file_list()
 
     find $sub_dir/quex \
          $sub_dir/demo \
-         -type f  > $file_list0
+         -type f       > $file_list0
 
     echo "$sub_dir/doc/manpage/quex.1"    >> $file_list0
     echo "$sub_dir/LGPL.txt"              >> $file_list0
@@ -100,11 +103,11 @@ function collect_distribution_file_list()
          && ! /tmp.txt$/  \
          && ! /\.log$/    \
          && ! /\/quex\/engine\/analyzer\/examine\/doc\// \
-         && ! /\/quex\/data_base\/misc\// { print; }' $file_list0 > $file_list
+         && ! /\/quex\/data_base\/misc\// { print; }' $file_list0 > $file_list1
 
     # -- create tar file for ./trunk
     echo "-- Snapshot"
-    tar cf /tmp/quex-$1.tar `cat $file_list`
+    tar cf /tmp/quex-$1.tar `cat $file_list1`
     echo `ls -lh /tmp/quex-$1.tar`
 
     # -- change base directory from ./trunk to ./quex-$version
@@ -121,6 +124,8 @@ function collect_distribution_file_list()
 function create_packages() 
 {
     cd /tmp
+    version=quex-$1
+    dir_copy=/tmp/$version
 
     echo "Create installers for $1"
 
@@ -128,15 +133,17 @@ function create_packages()
     ## $INSTALLBUILDER build ./install-builder.xml deb
     #  The 'debian/run.sh' relies on the manpage being in 'doc/manpage/'
     echo "(It is a good idea to run this script as 'sudo' ...)"
+    pushd $QUEX_PATH
     sudo $QUEX_PATH/adm/packager/debian/run.sh $1 0
+    popd
 
     # -- place man page in root directory, 
     #    for source distributions.
-    mv /tmp/quex-$1/doc/manpage /tmp/quex-$1/manpage
-    rmdir /tmp/quex-$1/doc
+    mv $dir_copy/doc/manpage $dir_copy/manpage
+    rmdir $dir_copy/doc
 
     # -- create xml file for the install builder
-    $QUEX_PATH/adm/packager/make_install_builder_script.py `pwd`/quex-$1 $1
+    $QUEX_PATH/adm/packager/make_install_builder_script.py $dir_copy $1
 
     $INSTALLBUILDER build ./install-builder.xml windows
     $INSTALLBUILDER build ./install-builder.xml linux
@@ -146,17 +153,13 @@ function create_packages()
     $INSTALLBUILDER build ./install-builder.xml solaris-intel
 
     cd $INSTALLBUILDER_OUT
-    zip -r quex-$1-osx-installer.app.zip quex-$1-osx-installer.app
+    zip -r $version-osx-installer.app.zip $version-osx-installer.app
 
-    echo "-- Create tar and zip file"
     cd /tmp
-    tar cf quex-$1.tar ./quex-$1 >& /dev/null
-    zip -r quex-$1.zip ./quex-$1 >& /dev/null
-    7z   a quex-$1.7z  ./quex-$1 >& /dev/null
-
-    # -- compress the tar file
-    echo "-- Further compress .tar --> 7z and gzip"
-    gzip -9 quex-$1.tar          >& /dev/null
+    tar  cf $version.tar ./$version >& /dev/null
+    gzip -9 $version.tar            >& /dev/null
+    zip  -r $version.zip ./$version >& /dev/null
+    7z    a $version.7z  ./$version >& /dev/null
 }
 
 function validate_directory_tree()
@@ -234,9 +237,6 @@ function repository_update() {
     cd $QUEX_PATH;
     pwd
 
-    echo "-- get unit test report"
-    hwut i > unit_test_results.txt
-
     # make sure that the new version information is checked in
     echo "-- Update repository / Create tag for $1"
     svn ci -m "Version Info / Prepare Release $1"
@@ -253,12 +253,19 @@ function clean_up() {
     cd /tmp
 
     # (*) clean up
-    rm -f $file_list0 $file_list
+    rm -f $file_list0 $file_list1
 
     cd $orig_directory
 
     echo "Prepared all files in directory /tmp/quex-packages"
 }
+
+if [[ "$*" = *"--only-collect"* ]]; then
+    collect_distribution_file_list $1
+    exit 0
+fi
+
+clean_directory_tree
 
 update_version_information $1
 

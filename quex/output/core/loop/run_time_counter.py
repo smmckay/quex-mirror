@@ -3,7 +3,7 @@
 _______________________________________________________________________________
 """
 import quex.output.core.base                        as     generator
-import quex.output.core.loop.core                   as     loop
+import quex.output.core.loop.action_map             as     action_map
 from   quex.output.core.variable_db                 import variable_db
 from   quex.engine.analyzer.door_id_address_label   import DoorID, DialDB
 import quex.engine.analyzer.engine_supply_factory   as     engine
@@ -45,23 +45,19 @@ def get(CaMap, Name):
 
     function_name = DefaultCounterFunctionDB.get_function_name(CaMap)
     if function_name is not None:
-        return function_name, None # Implementation has been done before.
-
-    function_name  = Lng.DEFAULT_COUNTER_FUNCTION_NAME(Name) 
+        # Use previously done implementation for this 'CaMap'
+        return function_name, None 
 
     door_id_return = dial_db.new_door_id()
-    analyzer_list,         \
-    terminal_list,         \
-    loop_map,              \
-    door_id_loop,          \
-    required_register_set, \
-    run_time_counter_f     = loop.do(CaMap, 
-                                     OnLoopExitDoorId = door_id_return,
-                                     LexemeEndCheckF  = True,
-                                     EngineType       = engine.CHARACTER_COUNTER, 
-                                     dial_db          = dial_db)
+
+    analyzer_list,        \
+    terminal_list,        \
+    required_register_set = action_map.do(CaMap, 
+                                          DoorIdLoopExit  = door_id_return, 
+                                          LexemeEndCheckF = True,
+                                          dial_db         = dial_db)
+
     code = generator.do_analyzer_list(analyzer_list)
-    assert not run_time_counter_f
 
     code.extend(
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
@@ -71,6 +67,7 @@ def get(CaMap, Name):
     implementation = __frame(function_name, Lng.INPUT_P(), code, door_id_return, 
                              dial_db) 
 
+    function_name  = Lng.DEFAULT_COUNTER_FUNCTION_NAME(Name) 
     DefaultCounterFunctionDB.enter(CaMap, function_name)
 
     return function_name, implementation

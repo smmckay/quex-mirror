@@ -7,20 +7,7 @@ from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.misc.tools                       import typed
 from   quex.blackboard                              import Lng, E_R
 
-def do(Data, ReloadState):
-
-    CaMap           = Data["ca_map"]
-    OpenerPattern   = Data["opener_pattern"]
-    CloserPattern   = Data["closer_pattern"]
-    DoorIdExit      = Data["door_id_exit"]
-    dial_db         = Data["dial_db"]
-
-    return get_skipper(ReloadState, OpenerPattern, CloserPattern, 
-                       DoorIdExit, CaMap, dial_db) 
-
-@typed(CaMap=CountActionMap)
-def get_skipper(ReloadState, OpenerPattern, CloserPattern, 
-                DoorIdExit, CaMap, dial_db):
+def do(ModeName, CaMap, OpenerPattern, CloserPattern, DoorIdExit, ReloadState, dial_db):
     """
                                     .---<---+----------<------+------------------.
                                     |       |                 |                  |
@@ -57,8 +44,9 @@ def get_skipper(ReloadState, OpenerPattern, CloserPattern,
     psml, \
     iid_aux_reentry = _get_state_machine_vs_terminal_list(CloserPattern, OpenerPattern,
                                                           DoorIdExit, dial_db)
-    engine_type = None # Default
+
     if ReloadState: engine_type = ReloadState.engine_type
+    else:           engine_type = None
 
     # The first opening pattern must have matched --> counter = 1
     entry_op_list = OpList(Op.AssignConstant(E_R.Counter, 1))

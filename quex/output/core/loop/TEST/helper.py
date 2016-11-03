@@ -128,25 +128,24 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
                               CommentTestStrF=False, ShowPositionF=False, CounterPrintF=True):
     assert QuexBufferSize >= len(CloserSequence) + 2
 
-    end_str = __prepare(Language)
+    end_str        = __prepare(Language)
 
-    sm_close = StateMachine.from_sequence(CloserSequence)  
-    data = { 
-        "closer_pattern":     Pattern(sm_close.get_id(), sm_close,
-                                      None, None, None,
-                                      PatternString="<skip range closer>",
-                                      Sr=SourceRef_VOID),
-        "mode_name":          "MrUnitTest",
-        "on_skip_range_open": CodeFragment([end_str]),
-        "door_id_exit":       DoorID.continue_without_on_after_match(dial_db),
-        "ca_map":             LineColumnCount_Default(),
-        "dial_db":            dial_db,
-    }
+    sm_close       = StateMachine.from_sequence(CloserSequence)  
+    closer_pattern = Pattern(sm_close.get_id(), sm_close,
+                             None, None, None,
+                             PatternString="<skip range closer>",
+                             Sr=SourceRef_VOID),
+    door_id_exit   = DoorID.continue_without_on_after_match(dial_db),
 
     analyzer_list,         \
     terminal_list,         \
     required_register_set, \
-    run_time_counter_f     = range_skipper.do(data, Analyzer.reload_state)
+    run_time_counter_f     = range_skipper.do("MrUnitTest", 
+                                              CaMap         = LineColumnCount_Default(), 
+                                              CloserPattern = closer_pattern, 
+                                              DoorIdExit    = door_id_exit, 
+                                              ReloadState   = Analyzer.reload_state, 
+                                              dial_db       = dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
     assert not run_time_counter_f
 
@@ -171,26 +170,26 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
     sm_close = StateMachine.from_sequence(CloserSequence)  
     sm_open  = StateMachine.from_sequence(OpenerSequence)  
     ca_map   = LineColumnCount_Default()
-    data = { 
-        "closer_pattern":     Pattern(sm_close.get_id(), sm_close,
-                                      None, None, None,
-                                      PatternString="<skip range closer>",
-                                      Sr=SourceRef_VOID),
-        "opener_pattern":     Pattern(sm_open.get_id(), sm_open,
-                                      None, None, None,
-                                      PatternString="<skip range opener>",
-                                      Sr=SourceRef_VOID),
-        "mode_name":          "MrUnitTest",
-        "on_skip_range_open": CodeFragment([end_str]),
-        "door_id_exit":       DoorID.continue_without_on_after_match(dial_db),
-        "ca_map":             ca_map,
-        "dial_db":            dial_db,
-    }
+
+    closer_pattern = Pattern(sm_close.get_id(), sm_close,
+                             None, None, None,
+                             PatternString="<skip range closer>",
+                             Sr=SourceRef_VOID)
+    opener_pattern = Pattern(sm_open.get_id(), sm_open,
+                             None, None, None,
+                             PatternString="<skip range opener>",
+                             Sr=SourceRef_VOID)
+    door_id_exit   = DoorID.continue_without_on_after_match(dial_db)
 
     analyzer_list,         \
     terminal_list,         \
     required_register_set, \
-    run_time_counter_f     = nested_range_skipper.do(data, Analyzer.reload_state)
+    run_time_counter_f     = nested_range_skipper.do("MrUnitTest", ca_map, 
+                                                     OpenerPattern = opener_pattern,
+                                                     CloserPattern = closer_pattern, 
+                                                     DoorIdExit    = door_id_exit, 
+                                                     ReloadState   = Analyzer.reload_state, 
+                                                     dial_db       = dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
     assert not run_time_counter_f
     __require_variables(required_register_set)
