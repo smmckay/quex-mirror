@@ -1,45 +1,39 @@
 Modes
 =====
 
-An analyzer does everything it does in a mode which defines its behavior.  This
-is similar to a human and his moods [#f1]_, but differs in that an analyzer is
-is only in one single mode at a time. An analyzer's behavior is primarily
-determined by the patterns for which it is lurking. All patterns of a mode are
-melted into one single state machine. The fewer patterns an analyzer is trying
-to detect, the smaller its state machine and the more effective it can operate.
-Thus, it may be more efficient to separate patterns into different modes
-according the circumstances under which patterns may trigger. Also, it may be
-that the language changes. For example, in a programming language, when
-suddenly a phrase is to be parsed, then numbers may no longer be considered as
-numbers but just as strings. So, there is a rationale for having modes.
+A lexer does everything it does in a mode.  A lexer mode is similar to human
+moods in the sense that it relates to specific behavior [#f1]_, but differs in
+a way that a lexer is is only in one distinct mode at a time. A lexer's
+behavior is primarily determined by the patterns for which it is lurking. All
+patterns of a mode are melted into one single state machine. The fewer patterns
+a lexer is trying to detect, the smaller its state machine and the more
+effective it can operate.  Thus, it may be more efficient to separate patterns
+into different modes according the circumstances under which patterns may
+trigger. Also, it may be that the language changes. For example, in a
+programming language, when suddenly a phrase is to be parsed, then numbers may
+no longer be considered as numbers but just as strings. 
 
-Modes can be entered in two ways. First, there is the simple 'GOTO mode'
-instruction.  Changing modes this way, the previous mode is forgotten as soon
-as the target mode is entered.  Second, there is a 'GOSUB mode' instruction.
-In that case, modes are stored on a stack--similar to *function calls*. The
-counter part to 'GOSUB mode' is 'GOUP mode'. By means of that the mode is
-entered from which the current mode has been entered--similar to a *return*
-statement in a function. The 'GOSUB/GOUP' functionality allows for a mode to be
-entered from more than one mode, and return without knowing the mode from where
-it entered. For example, a 'mark up mode' and a 'math mode' may both use the
-'string mode' mode to detect strings. As soon as a quote arrives each one
-enters the 'string mode' via 'GOSUB'. The string mode returns upon the closing
-quote to the one from where is was activated via 'GOUP'--without knowing
-whether it was the 'mark-up' or the 'math mode'.
+Modes can be changed in two ways: *history independent*, using `GOTO`  and
+*history denpendent* using `GOSUB` and `GOUP`.  Using `GOTO` a current mode is
+forgotten as soon as the target mode is entered.  Using `GOSUB` the current
+mode is pushed on top of a stack before the new mode is entered. Upon `GOUP` the last
+top-most moded is popped from the stack and re-entered.  The `GOSUB/GOUP`
+functionality allows for a mode to be entered from more than one mode, and
+return without knowing the mode from where it entered. Its mechanics are
+similar to function calls in many programming languages.
 
-The behavior of an analyzer, however, is determined by more than just the
-set of lurking patterns and their related actions. The following enumeration
-lists all types of behavior under the syntactic means that is used to 
-specify them:
+For example, a 'mark up mode' and a 'math mode' may both use the 'string mode'
+mode to detect strings. As soon as a quote arrives each one enters the 'string
+mode' via 'GOSUB'. The string mode returns upon the closing quote to the mode
+from where is was activated applying a 'GOUP'.
 
-.. describe:: Pattern-Action Pairs
+The behavior of a lexer is determined by more than just the set of lurking
+patterns and their related actions. The following enumeration lists all types
+of behavior and the syntactic means that is used to specify them:
 
-  #. Patterns which are lurking to cause actions and send tokens.
+.. describe:: List of base modes  
 
-.. describe:: Event Handlers
-
-  #. On-Incidence definitions for 'on_failure', 'on_end_of_stream', 
-     etc.
+  #. Base modes from which behavior is inherited.
 
 .. describe:: Tags in <...> brackets
 
@@ -59,14 +53,19 @@ specify them:
   #. Inheritance control, specifying if the mode can be inherited or
      not.
 
-.. describe:: List of base modes  
+.. describe:: Pattern-Action Pairs
 
-  #. Base modes from which behavior is inherited.
+  #. Patterns which are lurking to cause actions and send tokens.
+
+.. describe:: Event Handlers
+
+  #. On-Incidence definitions for 'on_failure', 'on_end_of_stream', 
+     etc.
 
 In terms of software design patterns :cite:`Gamma1994design` modes are
 implemented applying the *strategy pattern*. All behavior of a mode is
 controlled by a set of function pointers. Changing a mode means changing the
-set of function pointers. One of those function pointers is the *analyzer
+set of function pointers. One of those function pointers is the *lexer
 function* which runs the state machine that detects lexemes in incoming data
 streams.
 

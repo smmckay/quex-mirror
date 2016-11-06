@@ -1,16 +1,11 @@
 Output
 ======
 
-The natural output of lexical analysis are so-called tokens. A token carries
-the information about the content category that it carries and possibly the
-lexeme or interpretation of the lexeme that matched when the token was
-produced.  In traditional tools, such as 'flex' :cite:`todo` the user is free
-in his way to react on pattern matches [#f1]_.  However, restricting this
-freedom brings clarity with respect to the function of lexical analysis. 
-If output of lexical analysis is a stream of tokens, then a lexical analyzer is
-a translator of a stream of raw, uninterpreted information into a stream of
-minimal interpreted information. In this sense, lexical analysis is a synonym
-for *tokenization*. 
+Lexical analysis is the first step in understanding a sequential stream
+of data. As such it produces *atomic chunks of meaning*, so called *tokens*.
+A token carries the information about the content category that it carries and
+possibly the lexeme or interpretation of the lexeme that matched when the token
+was produced.  In this sense, lexical analysis is *tokenization*. 
 
 Token
    A token contains a *unique token identifier* which identifies the category 
@@ -20,48 +15,43 @@ Token
 For example, a token may carry the meaning 'plus operator' with no further
 information, it may carry the meaning 'function' together with the name of the
 function to which it relates, or it may carry the meaning 'number' with some
-numeric value related to it. Indeed, there are two approaches to 
-handle *lexeme interpretation*:
+numeric value related to it. 
 
- #. Only store a token id along with the token and possibly the raw lexeme 
-    that matched the pattern. The lexeme is interpreted later by a
-    'lexeme interpreter' unit.
+A Quex-generated lexer is aware of the token class. The pattern matching syntax
+provides 'token send' commands, where a token is prepared and sent to the
+receiver. Also, when line and column numbers are computed they are entered into
+the token directly from inside the lexer's engine. For the majority of
+applications, the default token class may do. However, there is a dedicated
+mini-language to describe customized token classes. Even free-style manual
+token classes may be passed to the lexer engine.
 
- #. Interpret the lexeme, for example, as a number and store this 
-    data along with the token.
+Token classes can be designed following two approaches of storing a 
+lexeme's information:
 
-Functionally, both are equivalent. Many times, the lexeme interpretation is
-trivial and it does not harm to web it into the analyzer. In this sense, the
-second approach is more practical. The first one, though, supports a clearer
-design because it separates *tokenization* from *lexeme interpretation*. Also, 
-with this approach lexeme copying might be spared and only the location of 
-the lexeme in the buffer might be referred [#f2]_. 
+ #. Storing the *uninterpreted* lexeme, i.e. the plain matching string.
 
-Quex is aware of the token class and it supports customized token classes.
-It provides a special mini language to describe token classes. Based on these
-descriptions real types are defined in the target language to be used by
-the generated analyzer. 
+ #. Storing the *interpreted* lexeme, i.e. the information that it
+    represents such as a 'number', a 'string', etc.
 
-Another purpose of the token is to carry information about line and column
-numbers. The location where a token occurred is important, for example, for
-error reports when an interpreter must give a hint to where the error occurred.
+Following the first approach is cleaner in the sense that it separates
+the lexer's tokenisation from *lexeme interpretation* being done in a 
+dedicated unit. The second approach, however, may be advantageous with
+respect to the required copying and memory footprint of tokens. Quex's
+default token class has a 'text' and 'number' member. If this is too
+much or not enough, token classes can be designed freely to fit specific 
+design purposes.
 
-Intuitively, a sequence of characters matches a pattern. The sequence
-constitutes a lexeme and its information is stored in a token. The token is
-then be reported to the user. In such scenarios, there is no need to queue
-tokens. However, it is conceivable that a single incident in the input triggers
-more than one token. This is the case, for example, when scopes are determined
-by indentation.  Then, a single newline may close many higher indented scopes.
-Thus in that case, tokens need to be queued. Quex supports both token passing
-policies: single token and token queue.
+TODO:
+.. Talk about the 'lexeme in buffer': In this case, though, a callback must be
+   implemented which reacts on the buffer's content change. On this event the
+   callback must saveguard all related strings.
 
+Tokens may either be communicated one-by-one, or in a queue. A token queue is
+required, in cases where one lexical unit may cause multiple tokens.  For
+example, a newline in indentation based lexical analysis (see 'offside rule'
+:cite:`todo`) may cause multiple scopes to be closed. While there is only one
+match, multiple tokens must be sent. Without a token queue such scenarios
+cannot be handled.
 
 .. rubric: Footnotes
 
-.. [#f1] The same way in Quex, actions related to patterns can be freely
-         specified. However, the ease of the token sending syntax pushes
-         towards the concept of a lexical analyzer as a token sender.
-
-.. [#f2] In this case, though, a callback must be implemented which 
-         reacts on the buffer's content change. On this event the
-         callback must saveguard all related strings.

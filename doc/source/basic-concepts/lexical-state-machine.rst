@@ -1,16 +1,16 @@
 Lexical Analyzers
 =================
 
-The following paragraphs elaborate on the significance of sequential data
-streams for communication. They provide a rationale for the state machine
-approach as a basis for analysis and the reason why Quex implements 'greedy
-match'.  Finally, a very essential definition is done, namely that of a
+The following paragraphs elaborate on sequential data streams and their
+application in communication. They provide a rationale for the state machine
+approach as a basis for lexical analysis and the reason why Quex implements
+'greedy match'.  Finally, a very essential definition is done, namely that of a
 'lexatom'.
 
 Pictures may convey complex ideas very efficiently. They require, however, that
 the content is imaginable and that the relations between objects and their
 graphical representation are properly understood.  The information of a picture
-is perceived in quasi-parallel; all at once. For the image oriented human mind
+is perceived in quasi-parallel--all at once. For the image oriented human mind
 pictures are something very tangible.
 
 Words and phrases are a means of sequential communication. They require
@@ -31,19 +31,21 @@ defined as "an aggregation of letters". With such atomic categories of meaning,
 grammars can be build--grammars which can be recursive. Similar to the way that
 recursive formulas allow the definition of the set of rational numbers,
 grammars allow for an arbitrary descriptive precision.  This is the strength of
-sequential communication (and this is the reason why the command line is more
-powerful than GUIs).
+sequential communication [#f0]_.
 
-The aforementioned two advantages of arbitrary precision through grammar and
-the ability to effectively describe precise patterns make sequential
-communication the natural choice for the transportation of information over
-space and time. The present text deals with automatic text analysis.  The
-ability to describe patterns in brief formal terms is essential for developing
-algorithms to accomplish the task. In the following paragraphs, it is shown how
-state machines are used as formal expressions for pattern matching behavior.
+.. note::
+
+    Arbitrary precision through grammar together with the ability to desribe
+    new patterns effectively and precisely make sequential communication the
+    natural choice for the transportation of information over space and time.
+
+The present text deals with automatic text analysis.  The ability to describe
+patterns in brief formal terms is essential for developing algorithms to
+accomplish the task. In the following paragraphs, it is shown how state
+machines are used as formal expressions for pattern matching behavior.
 
 Figure :ref:`fig:state-machine-students-life` may be considered as an informal
-introduction to state machines. It displays a, slightly idealized, state
+introduction to state machines. It displays a (slightly idealized) state
 machine description of a student's daily life. His states are 'study', 'eat',
 and 'sleep' as they are shown as names framed by ellipses. The transitions
 between those states are triggered by him becoming hungry, replete, tired, and
@@ -80,8 +82,8 @@ A simplified view in the frame of pattern matching is expressed in terms of a
 'deterministic finite automaton' DFA :cite:`todo`. In a DFA, there is one
 category of states which are special: acceptance states. The entry action of an
 acceptance state accepts a pattern, i.e. it signalizes a match. Quex generated
-analyzers can be imagined as DFAs (but in reality, sometimes the transition
-actions are more than just about accepting).
+analyzers can be imagined as DFAs. Internally however, the transition actions
+are more than just about accepting.
 
 .. _fig:state-machine-for-pattern-matching:
 
@@ -89,20 +91,20 @@ actions are more than just about accepting).
    
    Pattern matching via DFA.
 
-For pattern matching the data from the sequential stream are taken as events to
-the state machine.  Figure :ref:`fig:state-machine-for-pattern-matching` shows
-a state machine graph, where a circle represents a state and the arrows
-possible state transitions. A double circle indicates an acceptance state.  The
-depicted state machine can detect the word 'fun'. Any aggregation of two or
-more lowercase letters is identified as a 'WORD'.  A sequence of characters
-'f', 'u', and 'n' guides from the initial state to state 3. Any non-letter in
-that state would cause an else transition, notifying that 'FUN' has been found.
-A longer sequence such as 'fund' would be considered a 'WORD' because the
+For pattern matching a sequential stream feeds data acting as events into the
+state machine.  Figure :ref:`fig:state-machine-for-pattern-matching` shows a
+state machine graph where a circle represents a state and the arrows possible
+state transitions. A double circle indicates an acceptance state.  The depicted
+state machine can detect the word 'fun'. Any aggregation of two or more
+lowercase letters is identified as a 'WORD'.  A sequence of characters 'f',
+'u', and 'n' guides from the initial state to state 3. Any non-letter in that
+state would cause an else transition, notifying that 'FUN' has been found.  A
+longer sequence such as 'fund' would be considered a 'WORD' because the
 transitions continue to state 4.  A sequence of less than two characters drops
 out either at state 0 or state 1.  The 'else' path says that in that case a
 'FAILURE' would be notified. 
 
-Quex's engines do 'greedy match' or longest match, that is the analyzer tries
+Quex's engines do 'greedy match' or longest match, that is the lexer tries
 to 'eat' a maximum of letters until it fails. It walks along the state machine
 graph according to the incoming characters, marks the acceptance of the last
 acceptance state that it passed by, and eventually drops-out. Upon drop-out, it
@@ -119,7 +121,7 @@ pattern match solution.
 
 In times of prevalent ASCII encoding, there never was a problem calling the
 events that cause state transitions 'characters'. However, things become
-difficult, with encodings such as UTF8 and UTF16 where characters are composed
+difficult with encodings such as UTF8 and UTF16 where characters are composed
 of varying number of bytes. There, the term 'code unit' :cite:`Unicode2015`
 must be considered.
 
@@ -133,7 +135,7 @@ code units are required. A code unit in UTF16 is two byte large and characters
 are represented by one or two code units. Lexical analyzers might run in
 Unicode with converted input. Further, the lexical analyzers might be fed with
 streams that have nothing to do with character encodings [#f2]_. To clarify the
-entities on which the analyzing state machine triggers, the term 'lexatom' is
+entities on which a lexer's state machine triggers, the term 'lexatom' is
 introduced.
 
 Lexatom
@@ -163,8 +165,8 @@ represented by a sequences of lexatoms namely '0xF0',  '0x93', '0x8A', and
 
 The term 'lexatom' has been introduced by the author of this text. Its name,
 though, is derived from an established term in computer science: the lexeme
-[#f2]_ . Following the definition in :cite:`Aho2007compilers` (p. 111), let this term be
-defined more precisely. 
+[#f2]_ . Following the definition in :cite:`Aho2007compilers` (p. 111), let
+this term be defined more precisely. 
 
 Lexeme
     A lexeme is a sequence of lexatoms that matches a pattern associated 
@@ -179,7 +181,7 @@ the analyzer's state machine.
 
 Lexatoms are stored as a sequence in a buffer, so that they can be accessed
 quickly by the analyzer. Loading greater chunks of lexatoms into a buffer is
-likely always much faster than loading each lexatom on its own. Given a pointer
+likely always faster than loading each lexatom on its own. Given a pointer
 ``p`` to a lexatom-carrying cell of a buffer and a variable ``v`` to carry the
 value, a state machine event is implemented as a sequence of the following
 instructions:
@@ -197,6 +199,9 @@ how lexatoms are filled into that buffer.
 
 .. rubric:: Footnotes
 
+.. [#f0] For the mentioned reason, every computer scientist is better 
+         advised to familiarize with the command line, rather than 
+         relying on GUIs.
 .. [#f1] Indeed, Quex first produces a so called NFA that combines all
          concurrent pattern matches in one single state machine. Then, 
          it applies powerset construction :cite:`Rabin:1959:FAD` to generate 
