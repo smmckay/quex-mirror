@@ -1,0 +1,13 @@
+token { LETTER; STAR; CLOSING_BRACKET; }
+
+mode X : 
+<skip:       [ \t\n]                    >
+<skip_range: ("/-"|"/+") ("-/"|"+/")    >
+<skip_range: \C{"begin*"} \C{"end"}/"*" >
+<skip_range: "(" a/")"                  >
+<skip_range: "<" ">"|">>"               >
+{
+	[A-Z] => QUEX_TKN_LETTER(Lexeme);
+	"*"   => QUEX_TKN_STAR;
+	")"   => QUEX_TKN_CLOSING_BRACKET;
+}

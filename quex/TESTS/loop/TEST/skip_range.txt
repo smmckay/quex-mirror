@@ -1,0 +1,6 @@
+A/-hello world-/B/-hello world+/C/+hello world-/D
+/+hello world+/
+Ebegin* hello world
+end    bonjour le monde 
+end*F
+<hello longest match>G<hello longest match>>H

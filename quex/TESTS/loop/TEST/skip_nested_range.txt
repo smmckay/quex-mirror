@@ -1,0 +1,12 @@
+A/-/+/-/+hello world+/+/-/-/B
+begin* hello world
+begin*
+begin*
+bonjour le monde
+end   
+end  
+end 
+end*
+end*
+end*C
+<<<hello longest match>> > >>D

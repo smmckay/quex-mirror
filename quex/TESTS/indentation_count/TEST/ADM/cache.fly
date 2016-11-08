@@ -4,9 +4,9 @@ file_name: bad.sh;
 hwut_info_time: 1473824638L;
 happy_pattern_list: [ EasyLexer.c:\[0-9]+:; ]
 result_list: [
-  [ default; OK; 1.469874; 646894342; ]
-  [ customized; OK; 1.507285; 0; ]
-  [ customized-2; OK; 1.505003; 0; ]
+  [ default; OK; 1.432416; 646894342; ]
+  [ customized; OK; 1.448886; 0; ]
+  [ customized-2; OK; 1.468738; 0; ]
 ]
 }
 {
@@ -14,13 +14,13 @@ title: Commonalities of Indentation Counter vs. Patterns;
 file_name: commonalities.sh;
 hwut_info_time: 1454022469L;
 result_list: [
-  [ 1; OK; 0.259131; 0; ]
-  [ 2; OK; 0.238802; 0; ]
-  [ 3; OK; 0.257318; 0; ]
-  [ 4; OK; 0.325683; 0; ]
-  [ 5; OK; 0.208503; 1002458274; ]
-  [ 5b; OK; 0.215661; 0; ]
-  [ 6; OK; 0.187499; 0; ]
+  [ 1; OK; 0.226638; 0; ]
+  [ 2; OK; 0.236156; 0; ]
+  [ 3; OK; 0.236340; 0; ]
+  [ 4; OK; 0.328359; 0; ]
+  [ 5; OK; 0.191430; 1002458274; ]
+  [ 5b; OK; 0.198018; 0; ]
+  [ 6; OK; 0.187509; 0; ]
 ]
 }
 {
@@ -28,11 +28,11 @@ title: Customized Event Handlers;
 file_name: handlers.sh;
 hwut_info_time: 1454022469L;
 result_list: [
-  [ check-eof; OK; 1.513280; 0; ]
-  [ on_dedent; OK; 1.794868; 0; ]
-  [ on_n_dedent; OK; 1.627395; 0; ]
-  [ empty-lines; OK; 1.599777; 0; ]
-  [ on_indentation_error; OK; 1.551212; 0; ]
+  [ check-eof; OK; 1.360706; 0; ]
+  [ on_dedent; OK; 1.364781; 0; ]
+  [ on_n_dedent; OK; 1.369111; 0; ]
+  [ empty-lines; OK; 1.365091; 0; ]
+  [ on_indentation_error; OK; 1.359933; 0; ]
 ]
 }
 {
@@ -40,8 +40,8 @@ title: Indentation Counting and Range Skipper;
 file_name: with-skip-range.sh;
 hwut_info_time: 1454022469L;
 result_list: [
-  [ range; OK; 4.331055; 0; ]
-  [ range-2; OK; 1.891963; 0; ]
-  [ nested_range; OK; 1.697187; 0; ]
+  [ range; OK; 1.477292; 0; ]
+  [ range-2; OK; 1.513511; 0; ]
+  [ nested_range; OK; 1.877095; 0; ]
 ]
 }
