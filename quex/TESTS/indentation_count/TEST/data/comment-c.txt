@@ -1,0 +1,7 @@
+0 null/**/
+/**/1 eins/**/
+    /* */2 zwei/**/
+    /*     */3 drei/**/
+         2 vier/**/
+    1 fuenf/**/
+0 sechs/**/

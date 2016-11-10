@@ -1,0 +1,30 @@
+,-----------------------------------------------------------------
+| [START]
+<NODENT>
+WORD '0' 
+WORD 'one' 
+<NODENT>
+WORD '0' 
+WORD 'two' 
+<INDENT>
+WORD '1' 
+WORD 'three' 
+<INDENT>
+WORD '2' 
+WORD 'four' 
+<NODENT>
+WORD '2' 
+WORD 'five' 
+<NODENT>
+WORD '2' 
+WORD 'six' 
+<DEDENT>
+WORD '1' 
+WORD 'seven' 
+<DEDENT>
+WORD '0' 
+WORD 'eight' 
+<NODENT>
+<TERMINATION>
+| [END] number of token = 26
+`-----------------------------------------------------------------

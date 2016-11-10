@@ -1,0 +1,29 @@
+,-----------------------------------------------------------------
+| [START]
+WORD '0' 
+WORD 'zero' 
+<INDENT>
+WORD '1' 
+WORD 'one' 
+WORD 'alpha' 
+<INDENT>
+WORD '2' 
+WORD 'two' 
+<INDENT>
+WORD '3' 
+WORD 'three' 
+WORD 'beta' 
+<DEDENT>
+WORD '2' 
+WORD 'four' 
+<DEDENT>
+WORD '1' 
+WORD 'five' 
+WORD 'gamma' 
+<DEDENT>
+WORD '0' 
+WORD 'zero' 
+<NODENT>
+<TERMINATION>
+| [END] number of token = 25
+`-----------------------------------------------------------------

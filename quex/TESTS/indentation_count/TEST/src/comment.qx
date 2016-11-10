@@ -1,0 +1,25 @@
+token { 
+    WORD;
+    FAILURE;
+    NEWLINE;
+}
+
+repeated_token { 
+    DEDENT;
+}
+
+mode X :
+<indentation: 
+   "^"                        => suppressor;
+   "#"([^\n]|"\\\n")+"\n"     => comment;
+   "/*"([^*]|\*+[^*/])*\*+"/" => comment;
+   [ :\t]                     => whitespace;  /* Grid of '\t' is determined by counter. */
+>
+<skip: [ \t] >
+<skip_range: "/*" "*/">
+<skip_range: "#"  "\n">
+{
+    on_n_dedent { self_send_n(ClosedN, QUEX_TKN_DEDENT); }
+
+    [0-9a-z]+ => QUEX_TKN_WORD(Lexeme);
+}

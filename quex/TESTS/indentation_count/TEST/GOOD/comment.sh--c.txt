@@ -1,0 +1,26 @@
+,-----------------------------------------------------------------
+| [START]
+WORD '0' 
+WORD 'null' 
+<INDENT>
+WORD '1' 
+WORD 'eins' 
+<INDENT>
+WORD '2' 
+WORD 'zwei' 
+<INDENT>
+WORD '3' 
+WORD 'drei' 
+<DEDENT>
+WORD '2' 
+WORD 'vier' 
+<DEDENT>
+WORD '1' 
+WORD 'fuenf' 
+<DEDENT>
+WORD '0' 
+WORD 'sechs' 
+<NODENT>
+<TERMINATION>
+| [END] number of token = 22
+`-----------------------------------------------------------------

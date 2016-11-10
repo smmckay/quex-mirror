@@ -1,0 +1,7 @@
+0 zero/**/
+/**/1 one/**/alpha
+    /* */2 two/**/
+    /*     */3 three/**/beta
+         2 four/**/
+    1 five/**/gamma
+0 zero/**/
