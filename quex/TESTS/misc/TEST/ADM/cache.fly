@@ -4,7 +4,7 @@ file_name: debug_show.sh;
 hwut_info_time: 1476509391L;
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 1.599926; -2085982518; ]
+  [ ; OK; 1.495616; -2085982518; ]
 ]
 }
 {
@@ -12,7 +12,7 @@ title: Customized codec files (option --codec-file);
 file_name: customized_codec.sh;
 hwut_info_time: 1455575223L;
 result_list: [
-  [ ; OK; 0.387557; 0; ]
+  [ ; OK; 0.659059; 0; ]
 ]
 }
 {
@@ -20,12 +20,12 @@ title: Inadmissible commonalities;
 file_name: commonality.sh;
 hwut_info_time: 1477635660L;
 result_list: [
-  [ indentation-newline; OK; 0.216663; -352328642; ]
-  [ skip; OK; 0.228053; -2122979540; ]
-  [ skip_range; OK; 0.239359; 1537110828; ]
-  [ skip_nested_range; OK; 0.391343; -329299854; ]
-  [ mix; OK; 0.224446; 1313102480; ]
-  [ mix2; OK; 0.224079; 1949128857; ]
+  [ indentation-newline; OK; 0.215686; -352328642; ]
+  [ skip; OK; 0.229451; -2122979540; ]
+  [ skip_range; OK; 0.225849; 1537110828; ]
+  [ skip_nested_range; OK; 0.230225; -329299854; ]
+  [ mix; OK; 0.227116; 1313102480; ]
+  [ mix2; OK; 0.223775; 1949128857; ]
 ]
 }
 {
@@ -33,7 +33,7 @@ title: Respect max. recursion depth upon base mode inclusion.;
 file_name: huge-inheritance.sh;
 hwut_info_time: 1474096444L;
 result_list: [
-  [ ; OK; 0.814153; 0; ]
+  [ ; OK; 0.822842; 0; ]
 ]
 }
 {
@@ -42,7 +42,7 @@ file_name: comment.sh;
 hwut_info_time: 1476509448L;
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.468727; 1363358452; ]
+  [ ; OK; 0.514157; 1363358452; ]
 ]
 }
 {
@@ -51,7 +51,7 @@ file_name: line-number-pragma.sh;
 hwut_info_time: 1477550798L;
 happy_pattern_list: [ :\[0-9]+:; ]
 result_list: [
-  [ qx; OK; 0.630611; 1738900119; ]
-  [ source; OK; 0.033477; 1465977560; ]
+  [ qx; OK; 0.652660; 1738900119; ]
+  [ source; OK; 0.035684; 1465977560; ]
 ]
 }

@@ -30,6 +30,8 @@
 import quex.engine.codec_db.core                              as codec_db
 from   quex.engine.state_machine.core                         import StateMachine
 import quex.engine.state_machine.algorithm.beautifier         as beautifier
+import quex.engine.state_machine.algorithm.nfa_to_dfa         as nfa_to_dfa
+import quex.engine.state_machine.algebra.anti_pattern         as anti_pattern
 import quex.engine.state_machine.algebra.complement           as complement
 import quex.engine.state_machine.algebra.reverse              as reverse
 import quex.engine.state_machine.algebra.intersection         as intersection
@@ -160,18 +162,18 @@ def snap_conditional_expression(stream, PatternDict):
     __debug_entry("conditional expression", stream)    
 
     # -- expression
-    pattern_0 = snap_expression(stream, PatternDict) 
+    pattern_0 = __core(stream, PatternDict) 
     if pattern_0 is None: 
         return None, None, None
     
     # -- '/'
     if not check(stream, '/'): 
         # (1) expression without pre and post condition
-        #     pattern_0 is already beautified by 'snap_expression()'
+        #     pattern_0 is already beautified by '__core()'
         return None, pattern_0, None
         
     # -- expression
-    pattern_1 = snap_expression(stream, PatternDict) 
+    pattern_1 = __core(stream, PatternDict) 
     if pattern_1 is None: 
         return None, pattern_0, None
     
@@ -182,7 +184,7 @@ def snap_conditional_expression(stream, PatternDict):
         return None, pattern_0, pattern_1
 
     # -- expression
-    pattern_2 = snap_expression(stream, PatternDict) 
+    pattern_2 = __core(stream, PatternDict) 
     if pattern_2 is None: 
         # (3) expression with only a pre condition
         #     NOTE: setup_pre_context() marks the state origins!
@@ -190,6 +192,11 @@ def snap_conditional_expression(stream, PatternDict):
     else:
         # (4) expression with post and pre-context
         return pattern_0, pattern_1, pattern_2
+
+def __core(stream, PatternDict):
+    result = snap_expression(stream, PatternDict)
+    if result is None: return None
+    else:              return beautifier.do(result)
 
 def snap_expression(stream, PatternDict):
     """expression:  term
@@ -216,7 +223,7 @@ def snap_expression(stream, PatternDict):
         return __debug_exit(result, stream)
 
     result = parallelize.do([result, result_2], CloneF=True)   # CloneF = False (shold be!)
-    return __debug_exit(beautifier.do(result), stream)
+    return __debug_exit(nfa_to_dfa.do(result), stream)
 
 def snap_term(stream, PatternDict):
     """term:  primary
@@ -243,7 +250,7 @@ def snap_term(stream, PatternDict):
                               MountToFirstStateMachineF=True, 
                               CloneRemainingStateMachinesF=False)    
 
-    return __debug_exit(beautifier.do(result), stream)
+    return __debug_exit(result, stream)
         
 def snap_primary(stream, PatternDict):
     """primary:  " non_double_quote *  "              = character string
@@ -310,11 +317,7 @@ def snap_primary(stream, PatternDict):
     result_repeated = __snap_repetition_range(result, stream) 
     if result_repeated is not None: result = result_repeated
 
-    # There's something going wrong with pseudo-ambigous post context
-    # if we do not clean-up here. TODO: Investigate why?
-    # See tests in generator/TEST directory.
-    return __debug_exit(beautifier.do(result), stream)
-    # return __debug_exit(result, stream)
+    return __debug_exit(result, stream)
 
 def  snap_case_folded_pattern(sh, PatternDict, NumberSetF=False):
     """Parse a case fold expression of the form \C(..){ R } or \C{ R }.
@@ -375,7 +378,7 @@ def  snap_case_folded_pattern(sh, PatternDict, NumberSetF=False):
     result = snap_curly_bracketed_expression(sh, PatternDict, "case fold operator", "C")[0]
     if NumberSetF:
         trigger_set = result.get_number_set()
-        if trigger_set is None:
+        if trigger_set is None or trigger_set.is_empty():
             error.log("Expression in case fold does not result in character set.\n" + 
                       "The content in '\\C{content}' may start with '[' or '[:'.", sh)
 
@@ -514,8 +517,7 @@ def snap_reverse(stream, PatternDict):
 
 def snap_anti_pattern(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "anti-pattern operator", "A")[0]
-    result.transform_to_anti_pattern()
-    return result
+    return anti_pattern.do(result)
 
 def snap_complement(stream, PatternDict):
     pattern_list = snap_curly_bracketed_expression(stream, PatternDict, "complement operator", "Co")
@@ -631,7 +633,11 @@ def snap_curly_bracketed_expression(stream, PatternDict, Name, TriggerChar, MinN
             error.log("Exactly %i pattern%s required between '{' and '}'" \
                       % (MinN, "" if MinN == 1 else "s"), stream)
 
-    return result
+    def ensure_dfa(sm):
+        if not sm.is_DFA_compliant(): return nfa_to_dfa.do(sm)
+        else:                         return sm
+
+    return [ensure_dfa(sm) for sm in result]
 
 # MUST BE SORTED WITH LONGEST PATTERN FIRST!
 CommandDB = sorted([

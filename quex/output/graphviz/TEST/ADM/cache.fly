@@ -5,7 +5,7 @@ file_name: plot-papc.py;
 hwut_info_time: 1474521119L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.245960; 0; ]
+  [ ; OK; 0.205601; 0; ]
 ]
 }
 {
@@ -15,7 +15,7 @@ file_name: plot-core.py;
 hwut_info_time: 1474353016L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.145326; 0; ]
+  [ ; OK; 0.130122; 0; ]
 ]
 }
 {
@@ -25,6 +25,6 @@ file_name: plot-pre-context.py;
 hwut_info_time: 1474521196L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.145035; 0; ]
+  [ ; OK; 0.122595; 0; ]
 ]
 }

@@ -4,9 +4,9 @@ file_name: bad.sh;
 hwut_info_time: 1473824638L;
 happy_pattern_list: [ EasyLexer.c:\[0-9]+:; ]
 result_list: [
-  [ default; OK; 1.653419; 646894342; ]
-  [ customized; OK; 1.696064; 0; ]
-  [ customized-2; OK; 1.480046; 0; ]
+  [ default; OK; 1.401572; 646894342; ]
+  [ customized; OK; 1.408243; 0; ]
+  [ customized-2; OK; 1.430815; 0; ]
 ]
 }
 {
@@ -14,13 +14,13 @@ title: Commonalities of Indentation Counter vs. Patterns;
 file_name: commonalities.sh;
 hwut_info_time: 1454022469L;
 result_list: [
-  [ 1; OK; 0.376351; 0; ]
-  [ 2; OK; 0.467233; 0; ]
-  [ 3; OK; 0.516574; 0; ]
-  [ 4; OK; 0.635001; 0; ]
-  [ 5; OK; 0.195447; 1002458274; ]
-  [ 5b; OK; 0.194888; 0; ]
-  [ 6; OK; 0.190390; 0; ]
+  [ 1; OK; 0.223449; 0; ]
+  [ 2; OK; 0.235766; 0; ]
+  [ 3; OK; 0.233875; 0; ]
+  [ 4; OK; 0.319342; 0; ]
+  [ 5; OK; 0.190048; 1002458274; ]
+  [ 5b; OK; 0.195150; 0; ]
+  [ 6; OK; 0.187532; 0; ]
 ]
 }
 {
@@ -28,9 +28,9 @@ title: Customized Event Handlers;
 file_name: comment.sh;
 hwut_info_time: 1478816939L;
 result_list: [
-  [ bash; OK; 1.734006; -953080206; ]
-  [ c; OK; 0.010636; 1991559820; ]
-  [ mix; OK; 0.017853; -1838391046; ]
+  [ bash; OK; 1.693604; -953080206; ]
+  [ c; OK; 0.010817; 1991559820; ]
+  [ mix; OK; 0.016936; -1838391046; ]
 ]
 }
 {
@@ -38,11 +38,11 @@ title: Customized Event Handlers;
 file_name: handlers.sh;
 hwut_info_time: 1454022469L;
 result_list: [
-  [ check-eof; OK; 1.553501; 0; ]
-  [ on_dedent; OK; 1.357486; 0; ]
-  [ on_n_dedent; OK; 1.340971; 0; ]
-  [ empty-lines; OK; 1.944889; 0; ]
-  [ on_indentation_error; OK; 1.369481; 0; ]
+  [ check-eof; OK; 1.347490; 0; ]
+  [ on_dedent; OK; 1.344664; 0; ]
+  [ on_n_dedent; OK; 1.343923; 0; ]
+  [ empty-lines; OK; 1.336121; 0; ]
+  [ on_indentation_error; OK; 1.332592; 0; ]
 ]
 }
 {
@@ -50,8 +50,8 @@ title: Indentation Counting and Range Skipper;
 file_name: with-skip-range.sh;
 hwut_info_time: 1454022469L;
 result_list: [
-  [ range; OK; 1.490111; 0; ]
-  [ range-2; OK; 1.525920; 0; ]
-  [ nested_range; OK; 1.461443; 0; ]
+  [ range; OK; 1.458360; 0; ]
+  [ range-2; OK; 1.504257; 0; ]
+  [ nested_range; OK; 1.463409; 0; ]
 ]
 }

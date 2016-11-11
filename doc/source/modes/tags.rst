@@ -38,7 +38,8 @@ tags.
          (normal indentation is not subject, it is completely skipped).
 
    TODO: skippers, indentation, etc. can now use arbitrary REs
-   TODO: comments require skip_range and the like to be defined additionally.
+   TODO: comments require skip_range and the like to be defined 
+         additionally.
 
 
 .. data::   <inheritable: arg> 

@@ -1,6 +1,7 @@
 -------------------------------------------------------------------
 expression    = ""a"/";"/"b""
 pattern
+
 init-state = 0L
 00000 
      == ';' ==> 00001
@@ -10,7 +11,8 @@ init-state = 0L
     
 00002 A(pre=10,R)
     
-pre-context = init-state = 0L
+
+pre-context =  init-state = 0L
 00000 
      == 'a' ==> 00001
     
@@ -20,6 +22,7 @@ pre-context = init-state = 0L
 -------------------------------------------------------------------
 expression    = "(d|e)/(a|z)/c"
 pattern
+
 init-state = 0L
 00000 
      == 'a', 'z' ==> 00001
@@ -27,9 +30,10 @@ init-state = 0L
 00001 S
      == 'c' ==> 00002
     
-00002 A(pre=43,R)
+00002 A(pre=39,R)
     
-pre-context = init-state = 0L
+
+pre-context =  init-state = 0L
 00000 
      == ['d', 'e'] ==> 00001
     
@@ -39,6 +43,7 @@ pre-context = init-state = 0L
 -------------------------------------------------------------------
 expression    = ""123"/"aac"|"bad"/"z"|congo"
 pattern
+
 init-state = 0L
 00000 
      == 'a' ==> 00001
@@ -66,7 +71,7 @@ init-state = 0L
 00007 
      == 'o' ==> 00008
     
-00008 A(pre=86,R)
+00008 A(pre=72,R)
     
 00009 
      == 'a' ==> 00010
@@ -74,7 +79,8 @@ init-state = 0L
 00010 
      == 'd' ==> 00003
     
-pre-context = init-state = 0L
+
+pre-context =  init-state = 0L
 00000 
      == '3' ==> 00001
     

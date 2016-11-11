@@ -3,6 +3,7 @@ bug=3402386
 if [[ $1 == "--hwut-info" ]]; then
     echo "ollydbg: $bug Option --language dot;"
     echo "CHOICES: hex, utf8;"
+    echo "HAPPY:   state_machine_[0-9]+;"
     exit
 fi
 
