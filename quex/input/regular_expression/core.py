@@ -12,19 +12,29 @@ def parse(Txt_or_File, AllowNothingIsFineF=False):
 
     return pattern
 
-def parse_character_string(Txt_or_File, Terminator=None):
-    return __parse(Txt_or_File, StateMachine.get_number_sequence, "character string", Terminator)
+def parse_non_precontexted_pattern(Txt_or_File, Name, Terminator, AllowNothingIsFineF=False):
+    sh  = __stream(Txt_or_File)
+    pos = sh.tell()
+
+    pattern, dummy = __parse(Txt_or_File, 
+                             Terminator          = Terminator,
+                             AllowNothingIsFineF = AllowNothingIsFineF)
+    if pattern.has_pre_context():
+        sh.seek(pos)
+        error.log("Patterns in '%s' cannot contain pre-context." % Name, sh)
+    return pattern
 
 def parse_character_set(Txt_or_File, Terminator=None):
     return __parse(Txt_or_File, StateMachine.get_number_set, "character set", Terminator)
 
+def __stream(Txt_or_File):
+    if Txt_or_File.__class__ in [file, StringIO]: return Txt_or_File
+    else:                                         return StringIO(Txt_or_File)
+
 def __parse(Txt_or_File, ExtractFunction=None, Name=None, Terminator=None, 
             AllowNothingIsFineF=False):
 
-    if Txt_or_File.__class__ in [file, StringIO]:
-        sh = Txt_or_File
-    else:
-        sh = StringIO(Txt_or_File)
+    sh = __stream(Txt_or_File)
 
     # (*) Parse the pattern => A Pattern object
     start_position = sh.tell()

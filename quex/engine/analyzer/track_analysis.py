@@ -152,25 +152,19 @@ def do(SM, ToDB):
 
             # Under some circumstances, the init state may accept!
             # (E.g. the appendix state machines of the 'loopers')
-            init_state = state_machine.get_init_state()
-            self.initial_acceptance_id = init_state.get_highest_precedence_acceptance_id()
-            if self.initial_acceptance_id is None:
-                self.initial_acceptance_id = E_IncidenceIDs.MATCH_FAILURE
-
             TreeWalker.__init__(self)
 
         def on_enter(self, Args):
             PreviousTrace = Args[0]
             StateIndex    = Args[1]
-            # print "#sp:", StateIndex
-            # print "#pt:", PreviousTrace
 
             # (*) Update the information about the 'trace of acceptances'
             State = self.sm.states[StateIndex]
 
-            if len(self.path) == 0: trace = _Trace(self.sm.init_state_index,
-                                                   InitAcceptanceId=self.initial_acceptance_id)
-            else:                   trace = PreviousTrace.next_step(StateIndex, State) 
+            if len(self.path) == 0: 
+                trace = _Trace(self.sm.init_state_index, State)
+            else:                   
+                trace = PreviousTrace.next_step(StateIndex, State) 
 
             target_index_list = self.to_db[StateIndex]
             for state_index in self.path:
@@ -317,19 +311,24 @@ class _Trace(object):
                  "__acceptance_trace_len",
                  "__storage_db_len")
 
-    def __init__(self, InitStateIndex=None, HashF=True, 
-                 InitAcceptanceId=E_IncidenceIDs.MATCH_FAILURE):
-        if InitStateIndex is None: # 'None' --> call from '.reproduce()'
-            self.__acceptance_trace = [] 
-        else:
-            self.__acceptance_trace = [ 
+    def __init__(self, InitStateIndex=None, InitState=None, HashF=True): 
+        self.__acceptance_trace = [] 
+        self.__storage_db       = {}
+        if InitStateIndex is not None: # 'None' --> call from '.reproduce()'
+            initial_acceptance_id = InitState.get_highest_precedence_acceptance_id()
+            if initial_acceptance_id is None:
+                initial_acceptance_id = E_IncidenceIDs.MATCH_FAILURE
+            self.__acceptance_trace.append(
                   _AcceptInfo(PreContextID         = E_PreContextIDs.NONE, 
-                              AcceptanceID         = InitAcceptanceId,
+                              AcceptanceID         = initial_acceptance_id,
                               AcceptingStateIndex  = InitStateIndex, 
                               PathSincePositioning = [InitStateIndex], 
                               TransitionNSincePositioning = 0)              
-            ]
-        self.__storage_db       = {}
+            )
+            for cmd in sorted(InitState.single_entry.get_iterable(SeStoreInputPosition), 
+                              key=lambda x: x.acceptance_id(), reverse=True):
+                self.__storage_db[cmd.acceptance_id()] = _StoreInfo([InitStateIndex], 0)
+
         self.__state_index      = InitStateIndex
         self.__parent           = None
         self.__equivalence_hash = None

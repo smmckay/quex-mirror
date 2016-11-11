@@ -5,6 +5,7 @@ import quex.engine.loop.core                       as     loop
 from   quex.blackboard                             import Lng, E_IncidenceIDs
 
 
+@typed(CaMap=CountActionMap)
 def do(ModeName, CaMap, CloserPattern, DoorIdExit, ReloadState, dial_db):
     """
                                         .---<---+----------<------+

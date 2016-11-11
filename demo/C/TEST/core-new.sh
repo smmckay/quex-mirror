@@ -3,11 +3,11 @@ test_dir=../$1
 first_f=$2
 last_f=$3
 
-if [[ "$first_f" != "FIRST" && "$first_f" != "NOT-FIRST" ]]; then
-    echo "## Warning: \$2 is not FIRST or NOT-FIRST as HWUT would ask"
+if [[ "$2" != "FIRST" && "$2" != "not-first" ]]; then
+    echo "Warning: \$2 is not FIRST or not-first as HWUT would ask"
 fi
-if [[ "$second_f" != "LAST" && "$second_f" != "NOT-LAST" ]]; then
-    echo "## Warning: \$3 is not FIRST or NOT-FIRST as HWUT would ask"
+if [[ "$3" != "LAST" && "$3" != "not-last" ]]; then
+    echo "Warning: \$3 is not LAST or not-last as HWUT would ask"
 fi
 
 current_dir=`pwd`

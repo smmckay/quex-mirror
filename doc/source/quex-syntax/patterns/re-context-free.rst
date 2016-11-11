@@ -4,10 +4,11 @@ Context Free Regular Expressions
 ==================================
 
 Context free regular expressions match  against an input independent on what
-comes before or after it.  Context-free-ness means, for example, that the
-regular expression ``for`` will match against the letter sequence `f`, `o`, and
-`r` independent of what comes before or after it.  Pre- and post-context for
-pattern matching are explained in the subsequent section. 
+comes before or after it.  Pre- and post-context for pattern matching are
+explained in the subsequent section. Context-free-ness means, for example, that
+the regular expression ``for`` will match against the letter sequence `f`, `o`,
+and `r` independent of what comes before or after it.  All quex input files
+must be UTF8 encoded.
 
 .. describe:: x 
 
@@ -40,7 +41,7 @@ pattern matching are explained in the subsequent section.
 .. describe:: [abj-oZ]
 
      a "character class" with a range in it; matches an ``a``, a ``b``, any
-     letter from ``j`` through ``o``, or a ``Z``. The minus ``-`` determines
+     letter from ``j`` through ``o``, and a ``Z``. The minus ``-`` determines
      the range specification. Its left part is the start of the range.  Its
      right part is the end of the range (here ``j-o`` means from ``j`` to
      ``o``).  The ``-`` stands for 'range from to' where the character code 
@@ -120,7 +121,7 @@ pattern matching are explained in the subsequent section.
 
      .. describe:: s
 
-        This flag enables simple case folding *without* the multi-character
+        This flag enables simple case folding *without* the multi-character.
 
      .. describe:: m
 
@@ -167,12 +168,13 @@ pattern matching are explained in the subsequent section.
 
 .. describe:: \\A{P}
 
-     Briefly worded, an anti-pattern of a pattern ``P`` matches all lexemes
+     Anti-Pattern. An anti-pattern of a pattern ``P`` matches all lexemes
      which are caught by a match failure of ``P``. 
 
-     Let s(L) be a transformation which extracts out 'shortest' alternatives.
-     Let Lx be the set of *x* from L for which there is a second lexeme *y* in L
-     that starts with *x*. Then,::
+     Let `L` be the set of lexemes that matches `P`. Let s(L) be a
+     transformation which extracts out 'shortest' alternatives.  Let Lx be the
+     set of *x* from L for which there is a second lexeme *y* in L that starts
+     with *x*. Then,::
 
                                  s(L) := L - Lx 
      

@@ -11,8 +11,7 @@ repriorization is implemented. Finaly, a mode's pattern list and terminal
 database is extracted.
 """
 from   quex.input.code.core                         import CodeTerminal
-from   quex.engine.counter                          import CountActionMap, \
-                                                           IndentationCount
+from   quex.engine.counter                          import CountActionMap
 from   quex.engine.pattern                          import Pattern
 import quex.engine.state_machine.check.tail         as     tail
 import quex.engine.state_machine.check.superset     as     superset_check
@@ -24,9 +23,9 @@ import quex.engine.analyzer.door_id_address_label   as     dial
 import quex.engine.misc.error_check                 as     error_check
 from   quex.engine.misc.tools                       import typed
 import quex.engine.misc.error                       as     error
-import quex.engine.loop.character_set               as     skip_character_set
-import quex.engine.loop.range                       as     skip_range
-import quex.engine.loop.nested_range                as     skip_nested_range
+import quex.engine.loop.skip_character_set          as     skip_character_set
+import quex.engine.loop.skip_range                  as     skip_range
+import quex.engine.loop.skip_nested_range           as     skip_nested_range
 import quex.engine.loop.indentation_counter         as     indentation_counter
 
 from   quex.blackboard import E_IncidenceIDs, \
@@ -35,7 +34,6 @@ from   quex.blackboard import E_IncidenceIDs, \
 
 from   collections  import namedtuple
 from   operator     import attrgetter
-from   copy         import deepcopy
 
 class PatternPriority(object):
     """Description of a pattern's priority.
@@ -107,6 +105,7 @@ class PPT_List(list):
     def extra_analyzer_list(self):
         return self.__extra_analyzer_list
 
+    @typed(CaMap=CountActionMap)
     def collect_loopers(self, Loopers, CaMap, ReloadState):
         """Collect patterns and terminals which are required to implement
         skippers and indentation counters.
@@ -131,6 +130,9 @@ class PPT_List(list):
         #            Mode Hierarchy Index < 0!
         assert all(priority.mode_hierarchy_index < 0 
                    for priority, x, x in new_ppt_list)
+        self._assert_incidence_id_consistency(
+            [p.incidence_id for dummy, p, t in new_ppt_list]
+        )
         self[:0] = new_ppt_list
 
     def delete_and_reprioritize(self, BaseModeSequence):
@@ -333,19 +335,15 @@ class PPT_List(list):
 
         check_indentation_setup(ISetup)
 
-        incidence_db = self.terminal_factory.incidence_db
-        data = { 
-            "ca_map":            CaMap,
-            "indentation_setup": ISetup,
-            "incidence_db":      incidence_db,
-            "mode_name":         self.terminal_factory.mode_name,
-            "dial_db":           self.terminal_factory.dial_db,
-        }
-
         new_analyzer_list,     \
         new_terminal_list,     \
         required_register_set, \
-        run_time_counter_f     = indentation_counter.do(data, ReloadState)
+        run_time_counter_f     = indentation_counter.do(self.terminal_factory.mode_name, 
+                                                        CaMap, 
+                                                        ISetup, 
+                                                        self.terminal_factory.incidence_db, 
+                                                        ReloadState, 
+                                                        self.terminal_factory.dial_db)
 
         self.terminal_factory.run_time_counter_required_f |= run_time_counter_f
 
@@ -455,12 +453,13 @@ class PPT_List(list):
             extra_analyzer_list.extend(new_analyzer_list)
             extra_terminal_list.extend(new_terminal_list)
 
+            pattern  = data["opener_pattern"].clone_with_new_incidence_id()
             terminal = self._terminal_goto_to_looper(new_analyzer_list, None, 
                                                      "<skip range>", required_register_set, 
-                                                     Pattern=data["opener_pattern"])
+                                                     Pattern=pattern)
 
             new_ppt_list.append(
-                PPT(PatternPriority(MHI, i), data["opener_pattern"], terminal)
+                PPT(PatternPriority(MHI, i), pattern, terminal)
             )
 
         return new_ppt_list, extra_analyzer_list, extra_terminal_list
@@ -473,6 +472,8 @@ class PPT_List(list):
         extra_terminal_list = []
         extra_analyzer_list = []
         for i, data in enumerate(Loopers.skip_nested_range):
+            pattern  = data["opener_pattern"].clone_with_new_incidence_id()
+
             door_id_exit = self._range_skipper_door_id_exit(Loopers.indentation_handler,
                                                             data["closer_pattern"],
                                                             dial_db)
@@ -482,7 +483,7 @@ class PPT_List(list):
             required_register_set, \
             run_time_counter_f     = skip_nested_range.do(ModeName      = self.terminal_factory.mode_name, 
                                                           CaMap         = CaMap, 
-                                                          OpenerPattern = data["opener_pattern"], 
+                                                          OpenerPattern = pattern,
                                                           CloserPattern = data["closer_pattern"], 
                                                           DoorIdExit    = door_id_exit,
                                                           ReloadState   = ReloadState, 
@@ -496,10 +497,10 @@ class PPT_List(list):
             extra_terminal_list.extend(new_terminal_list)
 
             terminal = self._terminal_goto_to_looper(new_analyzer_list, None, "<skip nested range>", 
-                                                     required_register_set, Pattern=data["opener_pattern"])
+                                                     required_register_set, Pattern=pattern)
 
             new_ppt_list.append(
-                PPT(PatternPriority(MHI, i), data["opener_pattern"], terminal)
+                PPT(PatternPriority(MHI, i), pattern, terminal)
             )
 
         return new_ppt_list, extra_analyzer_list, extra_terminal_list
@@ -511,24 +512,6 @@ class PPT_List(list):
         else:
             return DoorID.continue_without_on_after_match(dial_db)
             
-    @typed(CaMap=CountActionMap, IndentationHandler=(None, IndentationCount))
-    def _range_skipper_data(self, data, CaMap, IndentationHandler):
-        dial_db = self.terminal_factory.dial_db
-        # -- door_id_exit: Where to go after the closing character sequence matched:
-        #     + Normally: To the begin of the analyzer. Start again.
-        #     + End(Sequence) == newline of indentation counter.
-        #       => goto indentation counter.
-        door_id_exit = self._range_skipper_door_id_exit(IndentationHandler, 
-                                                        data["closer_pattern"])
-
-        # -- data for code generation
-        my_data = deepcopy(data)
-        my_data["mode_name"]    = self.terminal_factory.mode_name
-        my_data["door_id_exit"] = door_id_exit
-        my_data["ca_map"]       = CaMap
-        my_data["dial_db"]      = dial_db
-        return my_data
-
     def _match_indentation_counter_newline_pattern(self, indentation_handler, CloserPattern):
         if indentation_handler is None: return False
         indentation_sm_newline = indentation_handler.pattern_newline.sm

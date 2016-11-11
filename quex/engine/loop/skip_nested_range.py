@@ -7,6 +7,7 @@ from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.misc.tools                       import typed
 from   quex.blackboard                              import Lng, E_R
 
+@typed(CaMap=CountActionMap)
 def do(ModeName, CaMap, OpenerPattern, CloserPattern, DoorIdExit, ReloadState, dial_db):
     """
                                     .---<---+----------<------+------------------.

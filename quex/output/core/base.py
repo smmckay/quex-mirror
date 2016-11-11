@@ -27,18 +27,10 @@ from   quex.blackboard        import E_IncidenceIDs, \
 #            termina = terminal for which BIPD operated
 #
 # COUNT_SM:  count_db --> count_sm
-#            analyzer  = get_analyzer
+#            analyzer = get_analyzer
 #            modify analyzer
 #            terminal = exit_door_id
 #
-# SKIPER_SM:
-#
-# RANGE_SKIPPER_SM:
-#
-# NESTER_RANGE_SKIPPER_SM:
-#
-# INDENTATION_DETECTOR_SM:
-
 def do_main(SM, ReloadStateForward, dial_db):
     """Main pattern matching state machine (forward).
     ---------------------------------------------------------------------------
@@ -56,9 +48,6 @@ def do_main(SM, ReloadStateForward, dial_db):
     """
     txt, analyzer = __do_state_machine(SM, engine.Class_FORWARD(), dial_db, 
                                        ReloadStateForward) 
-
-    if analyzer.last_acceptance_variable_required():
-        variable_db.require("last_acceptance")
 
     # Treat the external reload state the same way as if it was generated
     # along the process.
@@ -96,8 +85,6 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
     for sm_id in PreContextSmIdList:
         variable_db.require("pre_context_%i_fulfilled_f", Index = sm_id)
 
-    variable_db.require("input") 
-
     return txt, analyzer
 
 def do_backward_read_position_detectors(BipdDb, dial_db):
@@ -128,8 +115,6 @@ def do_reload_procedure(TheAnalyzer):
     variable_db.require("target_state_else_index")  # upon reload failure
     variable_db.require("target_state_index")       # upon reload success
 
-    require_position_registers(TheAnalyzer)
-
     return reload_state_coder.do(TheAnalyzer.reload_state)
 
 def require_position_registers(TheAnalyzer):
@@ -152,10 +137,16 @@ def require_position_registers(TheAnalyzer):
         # Implement a dummy array (except that there is no reload)
         initial_array = "(void*)0"
 
-    variable_db.require_array("position", ElementN = position_register_n,
-                              Initial = initial_array)
-    variable_db.require("PositionRegisterN", 
-                        Initial = "(size_t)%i" % position_register_n)
+    previous = variable_db.get().get("position")
+    if previous is not None:
+        if previous.element_n > position_register_n:
+            return
+
+    if position_register_n or TheAnalyzer.engine_type.subject_to_reload():
+        variable_db.require_array("position", ElementN = position_register_n,
+                                  Initial = initial_array)
+        variable_db.require("PositionRegisterN", 
+                            Initial = "(size_t)%i" % position_register_n)
 
 @typed(dial_db=DialDB)
 def do_state_router(dial_db):
@@ -232,11 +223,18 @@ def do_analyzer_list(analyzer_list):
     return txt
 
 def do_analyzer(analyzer): 
-    state_machine_code = state_machine_coder.do(analyzer)
-    Lng.REPLACE_INDENT(state_machine_code)
+
     # Variable to store the current input
     variable_db.require("input") 
-    return state_machine_code
+    if analyzer.last_acceptance_variable_required():
+        variable_db.require("last_acceptance")
+
+    require_position_registers(analyzer)
+
+    code = state_machine_coder.do(analyzer)
+    Lng.REPLACE_INDENT(code)
+
+    return code
 
 @typed(TerminalList=[Terminal])
 def do_terminals(TerminalList, TheAnalyzer, dial_db):

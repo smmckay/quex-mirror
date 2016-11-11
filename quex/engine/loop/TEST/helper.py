@@ -1,24 +1,24 @@
 import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
-import quex.output.core.run_time_counter             as     run_time_counter
-import quex.engine.loop.character_set                as     character_set_skipper
-import quex.engine.loop.range                        as     range_skipper
-import quex.engine.loop.nested_range                 as     nested_range_skipper
-import quex.engine.loop.indentation_counter          as     indentation_counter
-from   quex.output.core.TEST.generator_test          import *
-from   quex.output.core.TEST.generator_test          import __Setup_init_language_database
-from   quex.output.core.variable_db                  import variable_db
 from   quex.input.code.base                          import CodeFragment, SourceRef_VOID
 from   quex.input.files.specifier.counter            import LineColumnCount_Default
-import quex.output.core.base                         as     generator
-from   quex.output.core.base                         import do_state_router
+import quex.engine.loop.skip_character_set           as     character_set_skipper
+import quex.engine.loop.skip_range                   as     range_skipper
+import quex.engine.loop.skip_nested_range            as     nested_range_skipper
+import quex.engine.loop.indentation_counter          as     indentation_counter
 from   quex.engine.misc.interval_handling            import NumberSet
 from   quex.engine.state_machine.core                import StateMachine
 from   quex.engine.analyzer.door_id_address_label    import get_plain_strings
 from   quex.engine.pattern                           import Pattern
 import quex.engine.analyzer.engine_supply_factory    as     engine
 import quex.engine.state_machine.transformation.core as     bc_factory
+from   quex.output.core.TEST.generator_test          import *
+from   quex.output.core.TEST.generator_test          import __Setup_init_language_database
+from   quex.output.core.variable_db                  import variable_db
+import quex.output.core.run_time_counter             as     run_time_counter
+import quex.output.core.base                         as     generator
+from   quex.output.core.base                         import do_state_router
 
 # Setup.buffer_element_specification_prepare()
 Setup.buffer_codec_set(bc_factory.do("unicode", None), 1)
@@ -130,8 +130,8 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
     closer_pattern = Pattern(sm_close.get_id(), sm_close,
                              None, None, None,
                              PatternString="<skip range closer>",
-                             Sr=SourceRef_VOID),
-    door_id_exit   = DoorID.continue_without_on_after_match(dial_db),
+                             Sr=SourceRef_VOID)
+    door_id_exit   = DoorID.continue_without_on_after_match(dial_db)
 
     analyzer_list,         \
     terminal_list,         \
@@ -227,15 +227,6 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
     mini_incidence_db = MiniIncidenceDb()
 
     ca_map = LineColumnCount_Default()
-    data = {
-        "indentation_setup":             ISetup,
-        "ca_map":                        ca_map,
-        "incidence_db":                  mini_incidence_db,
-        "default_indentation_handler_f": True,
-        "mode_name":                     "Test",
-        "sm_suppressed_newline":         None,
-        "dial_db":                       dial_db,
-    }
     
     function_name, \
     counter_code   = run_time_counter.get(ca_map, "UNIT_TEST")
@@ -248,7 +239,9 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
     analyzer_list,         \
     terminal_list,         \
     required_register_set, \
-    run_time_counter_f     = indentation_counter.do(data, Analyzer.reload_state)
+    run_time_counter_f     = indentation_counter.do("Test", ca_map, ISetup, 
+                                                    mini_incidence_db, Analyzer.reload_state, 
+                                                    dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
 
     loop_code.extend(

@@ -589,29 +589,6 @@ class StateMachine(object):
                 successor_db[predecessor_si].add(si)
         return successor_db
 
-    def get_number_sequence(self):
-        """Returns a number sequence that represents the state machine.
-        If the state machine cannot be represented by a plain chain of 
-        numbers, then it returns 'None'.
-
-        Assumes: State machine is 'beautified'.
-        """
-        state  = self.get_init_state()
-        result = []
-        while 1 + 1 == 2:
-            target_map = state.target_map.get_map()
-            if   len(target_map) == 0:
-                return result
-            elif len(target_map) > 1:
-                return None
-
-            target_index, trigger_set = target_map.iteritems().next() 
-            number      = trigger_set.get_the_only_element()
-            if number is None:
-                return None
-            result.append(number)
-            state = self.states[target_index]
-
     def get_number_set(self):
         """Returns a number set that represents the state machine.
         If the state machine cannot be represented by a plain NumberSet,

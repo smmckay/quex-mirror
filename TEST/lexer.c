@@ -17,6 +17,10 @@
     printf("`------------------------------------------------------------------------------------\n");
 #endif
 
+#ifdef HWUT_INFO_MESSAGE
+#include <support/C/hwut_unit.h>
+#endif
+
 int 
 main(int argc, char** argv) 
 {        
@@ -33,6 +37,10 @@ main(int argc, char** argv)
     const char*   file_name = argc > 1 ? argv[1] : "example.txt";
 
     QUEX_NAME(from_file_name)(&qlex, file_name, CHARACTER_ENCODING_NAME);
+
+#   ifdef HWUT_INFO_MESSAGE
+	hwut_info(HWUT_INFO_MESSAGE);
+#   endif
 
     TEST_PROLOG
     fflush(stdout);

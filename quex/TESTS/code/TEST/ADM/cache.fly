@@ -4,7 +4,7 @@ file_name: check-default-configuration.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.013430; -1256193323; ]
+  [ ; OK; 0.009614; -1256193323; ]
 ]
 }
 {
@@ -14,7 +14,7 @@ hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ py:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.036574; 590435299; ]
+  [ ; OK; 0.037306; 590435299; ]
 ]
 }
 {
@@ -23,7 +23,7 @@ file_name: no-unused-enum-values.py;
 hwut_info_time: 1477351544L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 3.859323; -235166342; ]
+  [ ; OK; 3.903533; -235166342; ]
 ]
 }
 {
@@ -32,7 +32,7 @@ file_name: svn-status.sh;
 hwut_info_time: 1478116109L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 2.743191; -681318074; ]
+  [ ; OK; 2.602976; -681318074; ]
 ]
 }
 {
@@ -41,8 +41,8 @@ file_name: function-check.sh;
 hwut_info_time: 1477349881L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ example; OK; 0.123246; 1854110009; ]
-  [ real; FAIL; 21.803750; -1820712433; ]
+  [ example; OK; 0.122414; 1854110009; ]
+  [ real; OK; 22.263519; -1820712433; ]
 ]
 }
 {
@@ -51,7 +51,7 @@ file_name: pyflakes-check.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 83.842334; 0; ]
+  [ ; OK; 83.755754; 0; ]
 ]
 }
 {
@@ -61,8 +61,8 @@ hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ man; OK; 0.051962; -1113552213; ]
-  [ sphinx; OK; 0.047800; 0; ]
+  [ man; OK; 0.046540; -1113552213; ]
+  [ sphinx; OK; 0.044095; 0; ]
 ]
 }
 {
@@ -71,7 +71,7 @@ file_name: test-exceptions-in-place.sh;
 hwut_info_time: 1454022470L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.500175; 0; ]
+  [ ; OK; 0.486285; 0; ]
 ]
 }
 {
@@ -80,8 +80,8 @@ file_name: include_guard.py;
 hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 result_list: [
-  [ convention; OK; 0.173154; 0; ]
-  [ undefinition; OK; 0.175135; 0; ]
+  [ convention; OK; 0.163176; 0; ]
+  [ undefinition; OK; 0.161309; 0; ]
 ]
 }
 {
@@ -90,7 +90,7 @@ file_name: macro-check.py;
 hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.035266; 0; ]
+  [ ; OK; 0.037776; 0; ]
 ]
 }
 {
@@ -101,6 +101,6 @@ hwut_info_time: 1461220443L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.157499; 0; ]
+  [ ; OK; 0.146953; 0; ]
 ]
 }

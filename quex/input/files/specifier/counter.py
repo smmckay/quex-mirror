@@ -7,6 +7,7 @@ from   quex.input.code.base                           import SourceRef, \
 from   quex.engine.state_machine.core                 import StateMachine  
 import quex.engine.state_machine.construction.sequentialize as sequentialize
 import quex.engine.state_machine.algorithm.beautifier as     beautifier    
+import quex.engine.state_machine.check.identity       as     identity
 import quex.engine.state_machine.check.tail           as     tail
 from   quex.engine.misc.tools                         import typed
 from   quex.engine.misc.interval_handling             import NumberSet
@@ -143,12 +144,12 @@ class IndentationCount_Prep(CountBase_Prep):
         self.bad_space_character_set  = SourceRefObject("bad", None)
         self.sm_newline               = SourceRefObject("newline", None)
         self.sm_newline_suppressor    = SourceRefObject("suppressor", None)
-        self.sm_comment_list             = []
+        self.sm_comment_list          = []
 
         # The base class defines the '._ca_map_specifier'.
         # However, in this class it is only used for error checking.
         CountBase_Prep.__init__(self, sr, "Indentation counter", 
-                                     ("whitespace", "comment", "newline", "suppressor", "bad"))
+                                ("whitespace", "comment", "newline", "suppressor", "bad"))
 
     def parse(self):
         self._base_parse(self.__fh, IndentationSetupF=True)
@@ -265,8 +266,10 @@ class IndentationCount_Prep(CountBase_Prep):
 
     @typed(sr=SourceRef)
     def __specify_comment(self, Sm, sr):
-        for sm_comment in self.sm_comment_list:
-            _error_if_defined_before(sm_comment, sr)
+        for before in self.sm_comment_list:
+            if not identity.do(before.get(), Sm): continue
+            error.log("'comment' has been defined before;", sr, DontExitF=True)
+            error.log("at this place.", before.sr)
 
         if not Sm.is_DFA_compliant(): Sm = beautifier.do(Sm)
 

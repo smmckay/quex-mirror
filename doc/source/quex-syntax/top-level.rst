@@ -2,20 +2,19 @@ Top Level
 =========
 
 In this section 'top-level' syntax elements are discussed. Those are the syntax
-elements which are not embedded inside others. Each such of them builds up a
-syntactically independent unit. Each of them is presented together with the
-ideas which are associated with it. There are two types of top level syntax
-elements. First there are those which *configure functionality* of the analyzer
-in some dedicated syntax. Second, there are those elements which plainly *paste
-source* code into locations of the generated code. Each category is described
-in its subsection.
+elements which independent and not nested inside others.  Each of them is
+presented together with the ideas which are associated with it. There are two
+types of top level syntax elements. First there are those which *configure
+functionality* and others which plainly *paste source* code into locations of
+the generated code. 
 
 .. _sec:top-level-configuration:
 
 Configuration
 #############
 
-The following item list outlines top-level syntax elements
+The following item list outlines top-level syntax elements for the configuration
+of functionality.
 
 .. data:: mode
 
@@ -35,11 +34,11 @@ The following item list outlines top-level syntax elements
            ...
       }
 
-   The identifier following the ``mode`` keyword an names the mode to be
+   The identifier following the ``mode`` keyword names the mode to be
    specified.  Optional base modes and additional options, or 'tags', can be
    specified after a colon. A base mode list consists of a list of one or more
-   white space separated names. Tags are bracketed in ``<`` and ``>``
-   brackets. Mandatory for a mode is the section in curly brackets which
+   white space separated names. Optional tags are bracketed in ``<`` and ``>``
+   brackets. Mandatory is the section in curly brackets which
    follows. It defines pattern-action pairs and incidence handlers. Modes in
    itself are a subject that is described in its dedicated chapter
    :ref:`sec:modes`.
@@ -79,17 +78,19 @@ The following item list outlines top-level syntax elements
 
               token {
                   ...
-                  TOKEN_NAME;
+                  TOKEN_NAME_0;
+                  TOKEN_NAME_1 = 0x4711;
                   ...
               }
       
-   The token identifiers need to be separated by semi-colons.
+      The token identifiers need to be separated by semi-colons. Optional 
+      assignments may set specific values for tokens.
 
    .. note:: 
 
-      The token identifier in this section are prefix-less. The token prefix, e.g. defined
-      by comand line option ``--token-id-prefix`` is automatically pasted in front of the 
-      identifier.
+      The token identifier in this section are prefix-less. The token prefix,
+      e.g. defined by comand line option ``--token-id-prefix`` is automatically
+      pasted in front of the identifier.
 
       .. code-block:: cpp
 
@@ -120,12 +121,12 @@ The following item list outlines top-level syntax elements
 
 .. data:: start
 
-    An initial mode ``START_MODE`` in which the lexical analyzer starts its
-    analysis can be specified via 
-
-    .. code-block:: cpp
-
-       start = START_MODE;
+      An initial mode ``START_MODE`` in which the lexical analyzer starts its
+      analysis can be specified via 
+      
+      .. code-block:: cpp
+      
+         start = START_MODE;
 
 .. _sec:top-level-paste:
 
@@ -202,9 +203,9 @@ sections allow to make additions to the memento scheme of the include handler:
 
    Implicit Variables:
 
-   ``memento``: Pointer to the memento object.
+   ``memento``:   Pointer to the memento object.
 
-   ``self``: Reference to the lexical analyzer object.
+   ``self``:      Reference to the lexical analyzer object.
 
    ``InputName``: Name of the new data source to be included. 
    

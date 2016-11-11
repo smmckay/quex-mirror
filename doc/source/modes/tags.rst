@@ -38,6 +38,7 @@ tags.
          (normal indentation is not subject, it is completely skipped).
 
    TODO: skippers, indentation, etc. can now use arbitrary REs
+   TODO: comments require skip_range and the like to be defined additionally.
 
 
 .. data::   <inheritable: arg> 
@@ -85,11 +86,11 @@ tags.
     the skipper dominates a pattern definition inside the mode and error message
     is issued.
 
-.. data:: <skip_range: start-re end-string>
+.. data:: <skip_range: start-re end-re>
 
-   This option allows to define an optimized skipper for regions that are of no interest
-   and which are determined by delimiters. In order to define a skipper for C/C++ comments
-   one could write::
+   This option allows to define an optimized skipper for regions that are of no
+   interest and which are determined by delimiters. In order to define a
+   skipper for C/C++ like comments one could write::
 
       mode MINE : 
       <skip_range:  "/*" "*/"> 
@@ -141,7 +142,7 @@ tags.
       whitespace. 
 
 
-.. data::   <skip_nested_range: start-string end-string> 
+.. data::   <skip_nested_range: start-re end-re> 
 
    A nested range skipper makes it easy to comment out regions that 
    already contain a comment. For example, to comment out a code 

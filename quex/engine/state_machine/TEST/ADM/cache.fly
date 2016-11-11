@@ -4,7 +4,7 @@ title_group: DFA;
 file_name: test-StateInfo-trigger-map.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.082997; 0; ]
+  [ ; OK; 0.113335; 0; ]
 ]
 }
 {
@@ -13,14 +13,14 @@ title_group: DFA;
 file_name: test-get_trigger_map.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 1; OK; 0.086765; 0; ]
-  [ 2; OK; 0.081790; 0; ]
-  [ 3; OK; 0.081576; 0; ]
-  [ 4; OK; 0.085457; 0; ]
-  [ 5; OK; 0.084599; 0; ]
-  [ 6; OK; 0.085438; 0; ]
-  [ 7; OK; 0.081417; 0; ]
-  [ 8; OK; 0.081396; 0; ]
+  [ 1; OK; 0.103473; 0; ]
+  [ 2; OK; 0.101260; 0; ]
+  [ 3; OK; 0.093037; 0; ]
+  [ 4; OK; 0.088637; 0; ]
+  [ 5; OK; 0.087653; 0; ]
+  [ 6; OK; 0.086104; 0; ]
+  [ 7; OK; 0.091432; 0; ]
+  [ 8; OK; 0.092697; 0; ]
 ]
 }
 {
@@ -29,7 +29,7 @@ title_group: NFA;
 file_name: test-StateMachine-epsilon-closure.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.057364; 0; ]
+  [ ; OK; 0.058991; 0; ]
 ]
 }
 {
@@ -38,7 +38,7 @@ title_group: NFA;
 file_name: test-StateMachine-elementary_trigger_sets.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.052678; 0; ]
+  [ ; OK; 0.060550; 0; ]
 ]
 }
 {
@@ -47,7 +47,7 @@ title_group: NFA;
 file_name: test-StateMachine-elementary_trigger_sets-2.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.050402; 0; ]
+  [ ; OK; 0.055672; 0; ]
 ]
 }
 {
@@ -56,8 +56,8 @@ title_group: Plot;
 file_name: test-StateMachine-get_graphviz_string.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ 1; OK; 0.052290; 0; ]
-  [ 2; OK; 0.052351; 0; ]
+  [ 1; OK; 0.055702; 0; ]
+  [ 2; OK; 0.053896; 0; ]
 ]
 }
 {
@@ -66,8 +66,8 @@ title_group: Predetermined Character Count;
 file_name: test-count_character_n.py;
 hwut_info_time: 1477597192L;
 result_list: [
-  [ Normal; OK; 0.973817; 0; ]
-  [ BeginOfLine; OK; 0.920842; 0; ]
+  [ Normal; OK; 0.995422; 0; ]
+  [ BeginOfLine; OK; 0.984723; 0; ]
 ]
 }
 {
@@ -76,11 +76,11 @@ title_group: Predetermined Character Count;
 file_name: test-count_character_n-2.py;
 hwut_info_time: 1477597175L;
 result_list: [
-  [ Same; OK; 0.810892; 0; ]
-  [ Different; OK; 1.260261; 0; ]
-  [ TwoSet; OK; 0.635317; 0; ]
-  [ Grid; OK; 0.476582; 0; ]
-  [ Grid-BOL; OK; 0.538812; 0; ]
+  [ Same; OK; 0.679682; 0; ]
+  [ Different; OK; 1.291941; 0; ]
+  [ TwoSet; OK; 0.748234; 0; ]
+  [ Grid; OK; 0.489237; 0; ]
+  [ Grid-BOL; OK; 0.616549; 0; ]
 ]
 }
 {
@@ -89,8 +89,8 @@ title_group: Predetermined Character Count;
 file_name: test-count_character_n-codec.py;
 hwut_info_time: 1477597160L;
 result_list: [
-  [ UTF8; OK; 2.742311; 0; ]
-  [ UTF16; OK; 1.186515; 0; ]
+  [ UTF8; OK; 3.107094; 0; ]
+  [ UTF16; OK; 1.263543; 0; ]
 ]
 }
 {
@@ -99,7 +99,7 @@ title_group: Predetermined Character Count;
 file_name: test-count_newline_n.py;
 hwut_info_time: 1477597139L;
 result_list: [
-  [ ; OK; 1.236900; 0; ]
+  [ ; OK; 1.373607; 0; ]
 ]
 }
 {
@@ -108,7 +108,7 @@ title_group: Pseudo Ambigous Post Condition;
 file_name: test-ambiguous_post_condition-detect.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.605385; 0; ]
+  [ ; OK; 0.670648; 0; ]
 ]
 }
 {
@@ -117,7 +117,7 @@ title_group: Pseudo Ambigous Post Condition;
 file_name: test-ambiguous_post_condition-mount_pseudo.py;
 hwut_info_time: 1471846869L;
 result_list: [
-  [ ; OK; 0.171566; 0; ]
+  [ ; OK; 0.180166; 0; ]
 ]
 }
 {
@@ -126,7 +126,7 @@ title_group: Pseudo Ambigous Post Condition;
 file_name: test-ambiguous_post_condition-philosophical_cut.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.244427; 0; ]
+  [ ; OK; 0.254945; 0; ]
 ]
 }
 {
@@ -135,7 +135,7 @@ title_group: StateMachine;
 file_name: test-StateMachine-clone.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.075314; 0; ]
+  [ ; OK; 0.081341; 0; ]
 ]
 }
 {
@@ -144,22 +144,22 @@ title_group: StateMachine;
 file_name: test-StateMachine-get_predecessor_db.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ linear; OK; 0.452081; 0; ]
-  [ butterfly; OK; 4.328120; 0; ]
-  [ long_loop; OK; 0.516464; 0; ]
-  [ nested_loop; OK; 0.114367; 0; ]
-  [ mini_loop; OK; 0.058459; 0; ]
-  [ fork; OK; 0.475396; 0; ]
-  [ fork2; OK; 0.104849; 0; ]
-  [ fork3; OK; 3.444431; 0; ]
-  [ fork4; OK; 3.863426; 0; ]
-  [ tree; OK; 3.793140; 0; ]
-  [ mini_bubble; OK; 0.052345; 0; ]
-  [ bubble; OK; 0.057376; 0; ]
-  [ bubble2; OK; 0.081325; 0; ]
-  [ bubble2b; OK; 0.063458; 0; ]
-  [ bubble3; OK; 0.070015; 0; ]
-  [ bubble4; OK; 0.070489; 0; ]
+  [ linear; OK; 0.449969; 0; ]
+  [ butterfly; OK; 4.500761; 0; ]
+  [ long_loop; OK; 0.511867; 0; ]
+  [ nested_loop; OK; 0.113181; 0; ]
+  [ mini_loop; OK; 0.058509; 0; ]
+  [ fork; OK; 0.548756; 0; ]
+  [ fork2; OK; 0.123780; 0; ]
+  [ fork3; OK; 3.654059; 0; ]
+  [ fork4; OK; 3.772873; 0; ]
+  [ tree; OK; 4.253148; 0; ]
+  [ mini_bubble; OK; 0.057217; 0; ]
+  [ bubble; OK; 0.069298; 0; ]
+  [ bubble2; OK; 0.083966; 0; ]
+  [ bubble2b; OK; 0.071023; 0; ]
+  [ bubble3; OK; 0.074593; 0; ]
+  [ bubble4; OK; 0.086054; 0; ]
 ]
 }
 {
@@ -168,7 +168,7 @@ title_group: StateMachine Operations;
 file_name: test-setup_post_condition.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.067588; 0; ]
+  [ ; OK; 0.071472; 0; ]
 ]
 }
 {
@@ -177,7 +177,7 @@ title_group: StateMachine Operations;
 file_name: test-setup_border_conditions.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.120427; 0; ]
+  [ ; OK; 0.151212; 0; ]
 ]
 }
 {
@@ -186,7 +186,7 @@ title_group: StateMachine Operations;
 file_name: test-StateMachine-inverse.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.063964; 1885217248; ]
+  [ ; OK; 0.069886; 1885217248; ]
 ]
 }
 {
@@ -195,7 +195,7 @@ title_group: StateMachine Operations;
 file_name: test-parallelize.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.077188; 0; ]
+  [ ; OK; 0.089039; 0; ]
 ]
 }
 {
@@ -204,7 +204,7 @@ title_group: StateMachine Operations;
 file_name: test-repeat.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.063829; 0; ]
+  [ ; OK; 0.075493; 0; ]
 ]
 }
 {
@@ -213,7 +213,7 @@ title_group: StateMachine Operations;
 file_name: test-repeat-pure.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.059493; 0; ]
+  [ ; OK; 0.064550; 0; ]
 ]
 }
 {
@@ -222,7 +222,7 @@ title_group: StateMachine Operations;
 file_name: test-sequentialize.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.055336; 0; ]
+  [ ; OK; 0.062545; 0; ]
 ]
 }
 {
@@ -231,7 +231,7 @@ title_group: StateMachine Operations;
 file_name: test-setup_pre_condition.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.066987; 0; ]
+  [ ; OK; 0.064158; 0; ]
 ]
 }
 {
@@ -240,7 +240,7 @@ title_group: Tracing origin;
 file_name: test-StateMachine-trace-origin-clone.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.055648; 0; ]
+  [ ; OK; 0.062072; 0; ]
 ]
 }
 {
@@ -249,7 +249,7 @@ title_group: Tracing origin;
 file_name: test-StateMachine-trace-origin-hopcroft-optimization.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.057732; 0; ]
+  [ ; OK; 0.066646; 0; ]
 ]
 }
 {
@@ -258,7 +258,7 @@ title_group: Tracing origin;
 file_name: test-StateMachine-trace-origin-create-DFA.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.066749; 0; ]
+  [ ; OK; 0.079180; 0; ]
 ]
 }
 {
@@ -267,7 +267,7 @@ title_group: Tracing origin;
 file_name: test-StateMachine-trace-origin-create-DFA-2.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.112511; 0; ]
+  [ ; OK; 0.138758; 0; ]
 ]
 }
 {
@@ -276,7 +276,7 @@ title_group: Tracing origin;
 file_name: test-parallelize-trace-origin.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.073481; 0; ]
+  [ ; OK; 0.091192; 0; ]
 ]
 }
 {
@@ -285,6 +285,6 @@ title_group: Trigger Set Check;
 file_name: test-StateInfo-has_trigger.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.115182; 0; ]
+  [ ; OK; 0.129456; 0; ]
 ]
 }

@@ -111,6 +111,20 @@ class State:
         if Value: self.single_entry.add_Op(SeAccept)
         else:     self.single_entry.remove_Op(SeAccept)
 
+    def has_specific_acceptance_id(self):
+        return any(cmd.acceptance_id() != E_IncidenceIDs.MATCH_FAILURE 
+                   for cmd in self.single_entry)
+
+    def set_specific_acceptance_id(self, AcceptanceID):
+        """Sets a specific acceptance id, but does not modify the 'store input
+        position' behavior. 
+        """
+        accept_cmd = self.single_entry.find(SeAccept)
+        if accept_cmd is None:
+            self.single_entry.add_Op(SeAccept)
+            accept_cmd = self.single_entry.find(SeAccept)
+        accept_cmd.set_acceptance_id(AcceptanceID)
+
     def mark_acceptance_id(self, AcceptanceID):
         for cmd in self.single_entry:
             if not hasattr(cmd, "set_acceptance_id"): continue

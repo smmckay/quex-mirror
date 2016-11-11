@@ -90,7 +90,6 @@ class Loopers:
         if self.skip_nested_range is not None:
             self.skip_nested_range = [
                 data.finalize(CaMap) for data in self.skip_nested_range
-                for data in self.skip_nested_range
             ]
 
         if self.indentation_handler is not None:
@@ -387,20 +386,18 @@ def __parse_range_skipper_option(fh, identifier, new_mode):
     # Range state machines only accept 'strings' not state machines
     # Pattern: opener 'white space' closer 'white space' '>'
     skip_whitespace(fh)
-    opener_pattern, opener_sequence = regular_expression.parse_character_string(fh, ">")
-    opener_pattern.set_pattern_string("<%s open>" % identifier)
+    opener_pattern = regular_expression.parse_non_precontexted_pattern(fh, identifier, ">",
+                                                                       AllowNothingIsFineF=False)
     skip_whitespace(fh)
-    closer_pattern, closer_sequence = regular_expression.parse_character_string(fh, ">")
-    closer_pattern.set_pattern_string("<%s open>" % identifier)
+    closer_pattern = regular_expression.parse_non_precontexted_pattern(fh, identifier, ">",
+                                                                       AllowNothingIsFineF=True)
+    opener_pattern.set_pattern_string("<%s open>" % identifier)
+    closer_pattern.set_pattern_string("<%s close>" % identifier)
 
     # -- closer
     skip_whitespace(fh)
     if fh.read(1) != ">":
         error.log("missing closing '>' for mode option '%s'" % identifier, fh)
-    elif len(opener_sequence) == 0:
-        error.log("Empty sequence for opening delimiter.", fh)
-    elif len(closer_sequence) == 0:
-        error.log("Empty sequence for closing delimiter.", fh)
 
     return SkipRangeData(opener_pattern, closer_pattern)
 

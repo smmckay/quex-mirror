@@ -1041,8 +1041,9 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
     # Accepting on the initial state of an appendix state machine ensures
     # that any drop-out ends in this restore terminal.
     for init_state in (sm.get_init_state() for sm in appendix_sm_list):
+        if init_state.has_specific_acceptance_id(): continue
         init_state.set_acceptance()
-        init_state.mark_acceptance_id(IidLoopAfterAppendixDropOut)
+        init_state.set_specific_acceptance_id(IidLoopAfterAppendixDropOut)
 
     # Appendix Analyzer List
     return [
