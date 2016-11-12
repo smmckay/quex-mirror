@@ -5,8 +5,8 @@ file_name: test-hopcroft-minimization.py;
 hwut_info_time: 1461220443L;
 same_f: True;
 result_list: [
-  [ NEW; OK; 0.071137; 0; ]
-  [ ADAPT; OK; 0.075183; 0; ]
+  [ NEW; OK; 0.070095; 0; ]
+  [ ADAPT; OK; 0.072519; 0; ]
 ]
 }
 {
@@ -16,8 +16,8 @@ file_name: test-hopcroft-minimization-2.py;
 hwut_info_time: 1461220443L;
 same_f: True;
 result_list: [
-  [ NEW; OK; 0.114028; 0; ]
-  [ ADAPT; OK; 0.113135; 0; ]
+  [ NEW; OK; 0.115242; 0; ]
+  [ ADAPT; OK; 0.109903; 0; ]
 ]
 }
 {
@@ -26,8 +26,8 @@ title_group: DFA;
 file_name: test-hopcroft-minimization-3.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ NEW; OK; 0.056019; 0; ]
-  [ ADAPT; OK; 0.054955; 0; ]
+  [ NEW; OK; 0.057881; 0; ]
+  [ ADAPT; OK; 0.056815; 0; ]
 ]
 }
 {
@@ -36,7 +36,7 @@ title_group: NFA;
 file_name: test-nfa-to-dfa.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.059102; 0; ]
+  [ ; OK; 0.055239; 0; ]
 ]
 }
 {
@@ -45,7 +45,7 @@ title_group: NFA;
 file_name: test-nfa-to-dfa-ng.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.054709; 0; ]
+  [ ; OK; 0.055591; 0; ]
 ]
 }
 {
@@ -54,6 +54,6 @@ title_group: NFA;
 file_name: test-nfa-to-dfa-special.py;
 hwut_info_time: 1461220443L;
 result_list: [
-  [ ; OK; 0.104481; 0; ]
+  [ ; OK; 0.100776; 0; ]
 ]
 }

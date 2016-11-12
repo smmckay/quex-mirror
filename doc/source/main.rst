@@ -10,7 +10,7 @@ Contents:
 
    introduction/main.rst
 
-   basic-concepts/main.rst
+   01-basic-concepts/main.rst
 
    quex-syntax/main.rst
 

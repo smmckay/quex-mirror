@@ -2,7 +2,7 @@
 Quex's Syntax
 **************
 
-This chapter introduces the specification language used by Quex as input.
+This chapter discusses Quex's input language. 
 The first section introduces the 'top-level' syntax, i.e. the syntax that is
 used to configure different main entities. Two particular entities, namely
 *modes* and *tokens*, are presented in great detail in later chapters.  So,

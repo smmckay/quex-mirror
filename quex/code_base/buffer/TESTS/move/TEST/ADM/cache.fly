@@ -1,96 +1,96 @@
 {
 title: (BPC=1, FB=0);
 title_group: move_away_passed_content;
-build_time: 1.3065519332885742;
+build_time: 1.3027710914611816;
 file_name: move_away_passed_content-fb0.exe;
-hwut_info_time: 1478894880L;
+hwut_info_time: 1478933996L;
 make_dependent_f: True;
 result_list: [
-  [ EoS; OK; 0.006112; 0; ]
-  [ NoEoS; OK; 0.007177; 0; ]
+  [ EoS; OK; 0.006283; 0; ]
+  [ NoEoS; OK; 0.005418; 0; ]
 ]
 }
 {
 title: (BPC=1, FB=1);
 title_group: move_away_passed_content;
-build_time: 1.307304859161377;
+build_time: 1.2987399101257324;
 file_name: move_away_passed_content-fb1.exe;
-hwut_info_time: 1478894882L;
+hwut_info_time: 1478933999L;
 make_dependent_f: True;
 result_list: [
-  [ EoS; OK; 0.006777; 0; ]
-  [ NoEoS; OK; 0.008527; 0; ]
+  [ EoS; OK; 0.006703; 0; ]
+  [ NoEoS; OK; 0.006590; 0; ]
 ]
 }
 {
 title: (BPC=1, FB=2);
 title_group: move_away_passed_content;
-build_time: 1.510944128036499;
+build_time: 1.503415822982788;
 file_name: move_away_passed_content-fb2.exe;
-hwut_info_time: 1478894877L;
+hwut_info_time: 1478933994L;
 make_dependent_f: True;
 result_list: [
-  [ EoS; OK; 0.005975; 0; ]
-  [ NoEoS; OK; 0.006078; 0; ]
+  [ EoS; OK; 0.006689; 0; ]
+  [ NoEoS; OK; 0.006621; 0; ]
 ]
 }
 {
 title: (BPC=4, FB=2);
 title_group: move_away_passed_content;
-build_time: 1.3241541385650635;
+build_time: 1.3018360137939453;
 file_name: move_away_passed_content-fb2-32.exe;
-hwut_info_time: 1478894884L;
+hwut_info_time: 1478934000L;
 make_dependent_f: True;
 result_list: [
-  [ EoS; OK; 0.006697; 0; ]
-  [ NoEoS; OK; 0.006825; 0; ]
+  [ EoS; OK; 0.006731; 0; ]
+  [ NoEoS; OK; 0.005848; 0; ]
 ]
 }
 {
 title: (BPC=1);
 title_group: move_away_upfront_content;
-build_time: 1.6005079746246338;
+build_time: 1.5839769840240479;
 file_name: move_away_upfront_content-8.exe;
-hwut_info_time: 1478894876L;
+hwut_info_time: 1478933992L;
 make_dependent_f: True;
 result_list: [
-  [ cib=0; OK; 0.005977; 0; ]
-  [ cib=1; OK; 0.007480; 0; ]
-  [ cib=2; OK; 0.005967; 0; ]
-  [ cib=0:EOS; OK; 0.006010; 0; ]
-  [ cib=1:EOS; OK; 0.006294; 0; ]
-  [ cib=2:EOS; OK; 0.008126; 0; ]
+  [ cib=0; OK; 0.006451; 0; ]
+  [ cib=1; OK; 0.006621; 0; ]
+  [ cib=2; OK; 0.007782; 0; ]
+  [ cib=0:EOS; OK; 0.006633; 0; ]
+  [ cib=1:EOS; OK; 0.006730; 0; ]
+  [ cib=2:EOS; OK; 0.005858; 0; ]
 ]
 }
 {
 title: (BPC=2);
 title_group: move_away_upfront_content;
-build_time: 1.3298687934875488;
+build_time: 1.422666072845459;
 file_name: move_away_upfront_content-16.exe;
-hwut_info_time: 1478894881L;
+hwut_info_time: 1478933998L;
 make_dependent_f: True;
 result_list: [
-  [ cib=0; OK; 0.006333; 0; ]
-  [ cib=1; OK; 0.006238; 0; ]
-  [ cib=2; OK; 0.006043; 0; ]
-  [ cib=0:EOS; OK; 0.006072; 0; ]
-  [ cib=1:EOS; OK; 0.007970; 0; ]
-  [ cib=2:EOS; OK; 0.006008; 0; ]
+  [ cib=0; OK; 0.006377; 0; ]
+  [ cib=1; OK; 0.006657; 0; ]
+  [ cib=2; OK; 0.005827; 0; ]
+  [ cib=0:EOS; OK; 0.006620; 0; ]
+  [ cib=1:EOS; OK; 0.006655; 0; ]
+  [ cib=2:EOS; OK; 0.006469; 0; ]
 ]
 }
 {
 title: (BPC=4);
 title_group: move_away_upfront_content;
-build_time: 1.3331029415130615;
+build_time: 1.3169770240783691;
 file_name: move_away_upfront_content-32.exe;
-hwut_info_time: 1478894878L;
+hwut_info_time: 1478933995L;
 make_dependent_f: True;
 result_list: [
-  [ cib=0; OK; 0.007171; 0; ]
-  [ cib=1; OK; 0.006744; 0; ]
-  [ cib=2; OK; 0.005974; 0; ]
-  [ cib=0:EOS; OK; 0.006289; 0; ]
-  [ cib=1:EOS; OK; 0.008062; 0; ]
-  [ cib=2:EOS; OK; 0.006333; 0; ]
+  [ cib=0; OK; 0.006596; 0; ]
+  [ cib=1; OK; 0.006715; 0; ]
+  [ cib=2; OK; 0.005788; 0; ]
+  [ cib=0:EOS; OK; 0.006671; 0; ]
+  [ cib=1:EOS; OK; 0.007915; 0; ]
+  [ cib=2:EOS; OK; 0.006243; 0; ]
 ]
 }

@@ -8,8 +8,8 @@ def do(sm):
     if not sm.is_DFA_compliant():
         sm = nfa_to_dfa.do(sm)
 
-    original_acceptance_state_index_list = sm.get_acceptance_state_index_list()
-    acceptance_state_index               = sm.create_new_state(AcceptanceF=True)
+    original_acceptance_state_index_set = set(sm.get_acceptance_state_index_list())
+    acceptance_state_index              = sm.create_new_state(AcceptanceF=True)
 
     for state_index, state in sm.states.iteritems():
         if state_index == acceptance_state_index: continue
@@ -19,14 +19,16 @@ def do(sm):
         state.add_transition(drop_out_trigger_set, acceptance_state_index)
 
         # Transform Transitions to Acceptance --> DropOut
-        transition_map = state.target_map.get_map()
-        for target_index in original_acceptance_state_index_list:
-            if transition_map.has_key(target_index):
-                state.target_map.delete_transitions_to_target(target_index)
+        for target_index in original_acceptance_state_index_set:
+            state.target_map.delete_transitions_to_target(target_index)
 
-    # All original target states are deleted
-    for target_index in original_acceptance_state_index_list:
-        del sm.states[target_index]
+    # Remove acceptance from any previous acceptance state.
+    for state_index in original_acceptance_state_index_set:
+        sm.states[state_index].set_acceptance(False)
+
+    # Delete orphan states (which where acceptance state or connected to them)
+    for state_index in sm.get_orphaned_state_index_list():
+        del sm.states[state_index]
 
     return sm
 
