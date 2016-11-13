@@ -1,12 +1,10 @@
 Top Level
 =========
 
-In this section 'top-level' syntax elements are discussed. Those are the syntax
-elements which independent and not nested inside others.  Each of them is
-presented together with the ideas which are associated with it. There are two
-types of top level syntax elements. First there are those which *configure
-functionality* and others which plainly *paste source* code into locations of
-the generated code. 
+In this section 'top-level' syntax elements are presented, i.e. the syntax
+elements which are not nested inside others. There are two types of top level
+syntax elements. There are those which *configure functionality* and others
+which plainly *paste source* code into locations of the generated code. 
 
 .. _sec:top-level-configuration:
 
@@ -38,17 +36,15 @@ of functionality.
    specified.  Optional base modes and additional options, or 'tags', can be
    specified after a colon. A base mode list consists of a list of one or more
    white space separated names. Optional tags are bracketed in ``<`` and ``>``
-   brackets. Mandatory is the section in curly brackets which
-   follows. It defines pattern-action pairs and incidence handlers. Modes in
-   itself are a subject that is described in its dedicated chapter
-   :ref:`sec:modes`.
+   brackets. Mandatory is the section in curly brackets which follows. It
+   defines pattern-action pairs and incidence handlers. Modes in itself are a
+   subject described in a dedicated chapter :ref:`sec:modes`.
 
 .. data:: define
 
-   Definition of shorthands for patterns given as regular expressions [#f1]
-   :reg:`sec:regular-expressions`.  The ``define`` keyword is followed by a
-   section in curly brackets. The content of this section defines pattern
-   names, shorthands, for patterns. 
+   The ``define`` keyword is followed by a section in curly brackets.  In there,
+   shorthands for patterns are defined in terms of regular expressions
+   [#f1] :reg:`sec:regular-expressions`.  
 
    .. code-block:: cpp
 
@@ -83,14 +79,21 @@ of functionality.
                   ...
               }
       
-      The token identifiers need to be separated by semi-colons. Optional 
-      assignments may set specific values for tokens.
+      The token identifiers need to be separated by semi-colons. Optional
+      assignments may set specific values for tokens. If a token is used but
+      not defined in a token section, a warning is issued. 
 
    .. note:: 
 
       The token identifier in this section are prefix-less. The token prefix,
       e.g. defined by comand line option ``--token-id-prefix`` is automatically
       pasted in front of the identifier.
+
+.. data:: repeated_token
+
+      Specifies those token types which are subject to token repetition
+      in notified through a repetition number inside the token itself.  It
+      is discussed in section :ref:`sec:token-repetition`.
 
       .. code-block:: cpp
 
@@ -109,15 +112,9 @@ of functionality.
 
 .. data:: token_type
 
-      Defines a token type other than the default token type. This feature is
-      explained later in chapter :ref:`sec:token` where customized token types are
-      discussed.
-
-.. data:: repeated_token
-
-      Specifies those token types which are subject to token repetition
-      in notified through a repetition number inside the token itself.  It
-      is discussed in section :ref:`sec:token-repetition`.
+      In case the default token class/type is not enough, inside this section a
+      customized token type can be defined. This feature is explained later in
+      chapter :ref:`sec:token`.
 
 .. data:: start
 
@@ -183,23 +180,31 @@ for the given section-name. The available sections are the following:
 .. data:: reset
 
    Section that defines customized behavior upon reset. This fragment is
-   executed after the reset of the remaining parts of the lexical analyser.
+   executed *after* the reset of the remaining parts of the lexical analyser.
    The analyzer is referred to by ``self``.
 
-Quex supports the inclusion of other files or streams during analysis. This
-is done by means of a include stack handler :ref:`sec:include-stack`. It writes the
-relevant state information into a so called *memento* [#f2]_ when it dives
-into a file and restores its state from it when it comes back. The following
-sections allow to make additions to the memento scheme of the include handler:
+Some pattern may trigger a 'stream inclusion'. Inclusion means that the lexer
+interrupts the analysis of the current stream and continues with an 'included'
+stream.  Once the analysis of the included stream terminates it continues at
+the position where it was interrupted in the including file. The storing and
+restoring of a lexer's state follows the 'memento pattern'
+:cite:`Gamma1994design`.  Upon inclusion a memento is pushed on the inclusion
+stack  and upon return a memento is popped. The sections used to configure
+customized memento handling upon inclusion and return from inclusion are the
+following. Lexer's which are not user-extended do not require any customized
+memento handling.
 
 .. data:: memento
 
-   Extensions to the memento class that saves file local data before a sub-file
-   (included file) is handled.
+   Mementos are stored in objects of a memento class. Extensions to this
+   class may be specified in the ``memento`` section. 
 
 .. data:: memento_pack
 
-   Code to be treated when the state of a lexical analyzer is stored in a memento.
+   Additional code to be executed when the state of a lexical analyzer is
+   *stored* in a memento upon inclusion. The code is executed *after* the
+   default inclusion handling is performed, right before the memento is pushed
+   on the stack.
 
    Implicit Variables:
 
@@ -212,9 +217,18 @@ sections allow to make additions to the memento scheme of the include handler:
    The ``InputName`` may be a file name or any artificial identifier passed to one of 
    the include-push functions (:ref:`sec:include-stack`).
 
+   Return value:
+
+   The section may return ``true`` if the constructed memento is functional and ``false`` if
+   not.  A ``false`` causes an immediate deletion of the memento. Then, nothing
+   will be pushed on the stack and the inclusion is aborted.
+
 .. data:: memento_unpack
 
-   Code to be treated when the state of a lexical analyzer is restored from a memento.
+   Additional code to be executed when the state of a lexical analyzer is
+   *restored* from a memento. The code is executed *after* the default return
+   from inclusion handling is performed, right before the deletion of the
+   memento.
 
    Implicit Variables:
 
@@ -227,8 +241,4 @@ sections allow to make additions to the memento scheme of the include handler:
 .. [#f1] Quex's regular expressions extend the POSIX regular expressions by queries 
          for unicode properties :ref:`sec:re-unicode-properties` and regular expression 
          algebra :ref:`sec:re-algebra`.
-
-.. [#f2] File inclusion and return from file inclusion relates to freezing and unfreezing
-         the current state of the analyzer. It is implemented by the so called 'Memento'
-         desing pattern :cite:`Gamma1994design`.
 

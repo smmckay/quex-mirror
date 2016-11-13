@@ -15,11 +15,11 @@ commands for using *Unicode Properties* to define character sets.
 .. note::
 
     The top-level section ``define`` exists to name patterns. This supports the
-    aggregation of complex pattern descriptions out of smaller parts.
-    Moreover, it supports the separation of *pattern definitions* and *pattern
-    matching behavior*, whereby the latter happens inside a mode. 
+    aggregation of complex pattern descriptions out of smaller discernible
+    parts.  Moreover, it supports the separation of *pattern definitions* and
+    *pattern matching behavior*, whereby the latter happens inside a mode. 
 
-    The following example shows patterns for ``WHITESPACE`` and ``IDENTIFIER``
+    In the example below patterns for ``WHITESPACE`` and ``IDENTIFIER`` are
     defined in a ``define`` section. The ``mode`` defines clean pattern action
     pairs by solely expanding the defined patterns.
          
