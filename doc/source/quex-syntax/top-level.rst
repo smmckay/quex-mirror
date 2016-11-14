@@ -219,9 +219,9 @@ memento handling.
 
    Return value:
 
-   The section may return ``true`` if the constructed memento is functional and ``false`` if
-   not.  A ``false`` causes an immediate deletion of the memento. Then, nothing
-   will be pushed on the stack and the inclusion is aborted.
+   The section may return ``true`` if the constructed memento is functional and
+   ``false`` if not.  A ``false`` causes an immediate deletion of the memento.
+   Then, nothing will be pushed on the stack and the inclusion is aborted.
 
 .. data:: memento_unpack
 

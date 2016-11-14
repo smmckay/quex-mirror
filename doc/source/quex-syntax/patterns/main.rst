@@ -6,11 +6,8 @@ Patterns are specified by means of regular expressions
 popularized by the tool 'lex' :cite:`Lesk1975lex`, includes elements of
 *extended POSIX regular expressions* :cite:`Spencer1994regex` and POSIX bracket
 expressions. This facilitates the migration from and to other lexical analyzer
-generators and test environments.  Additionally, there exist some special
-commands for using *Unicode Properties* to define character sets.
-
-.. TODO: Draw relations to *Unicode Regular Expressions* (Unicode UTR #18) is has 
-.. i.e. where it is compliant, and where not.
+generators and test environments.  Several additional non-standard 'commands'
+access the *Unicode Properties* database to define character sets[#f1].
 
 .. note::
 
@@ -55,4 +52,8 @@ final section introduces *regular expression algebra*.
     re-algebra.rst
     summary.rst
    
+
+.. rubric:: Footnotes
+
+.. [#f1] The syntax used follows *Unicode Regular Expressions* (Unicode UTR #18) only partly..
 

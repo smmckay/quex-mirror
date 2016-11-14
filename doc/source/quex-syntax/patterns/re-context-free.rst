@@ -4,7 +4,7 @@ Context Free Regular Expressions
 ==================================
 
 Context free regular expressions match  against an input independent on what
-comes before or after it.  Pre- and post-context for pattern matching are
+comes before or after it.  Pre- and post-contexts for pattern matching are
 explained in the subsequent section. Context-free-ness means, for example, that
 the regular expression ``for`` will match against the letter sequence `f`, `o`,
 and `r` independent of what comes before or after it.  All quex input files
@@ -41,12 +41,13 @@ must be UTF8 encoded.
 .. describe:: [abj-oZ]
 
      a "character class" with a range in it; matches an ``a``, a ``b``, any
-     letter from ``j`` through ``o``, and a ``Z``. The minus ``-`` determines
-     the range specification. Its left part is the start of the range.  Its
-     right part is the end of the range (here ``j-o`` means from ``j`` to
-     ``o``).  The ``-`` stands for 'range from to' where the character code 
-     of the right hand side needs to be greater than the character code of 
-     the left hand side.
+     letter from ``j`` through ``o``, and a ``Z``. The minus ``-`` is used to
+     specify a range. The character to its left is the first character in the
+     range.  The character to its right part is the last character of the range
+     (``j-o`` is equivalent to ``jklmno``). Precisely, for all characters in
+     the range it holds that their code point in Unicode is greater or equal
+     to that of the left character and lesser or equal to that of the right
+     character.
 
 .. describe:: [^A-Z\\n]
 
@@ -85,7 +86,7 @@ must be UTF8 encoded.
                [:\C{[:union([a-z], [ﬀİ]):]}:]   // correct
                [:\C{[a-z]}:]                    // correct
 
-     and *not*::
+     but *not*::
 
                [:\C{union([a-z], [ﬀİ])}:]       // wrong
                [:\C{a-z}:]                      // wrong
@@ -121,7 +122,8 @@ must be UTF8 encoded.
 
      .. describe:: s
 
-        This flag enables simple case folding *without* the multi-character.
+        This flag enables simple case folding disabling the generation 
+        of multi-character sequences.
 
      .. describe:: m
 
@@ -153,18 +155,6 @@ must be UTF8 encoded.
      as Arabic, Binti and Hebrew. Chinese, Japanese, as well as ancient 
      Greek, ancient Latin, Egyptian, and Etruscan can be written in 
      both directions.
-
-     .. note:: 
-
-        For some reason, it has caused some confusion in the past, that pattern
-        substitution requires an extra pair of curly brackets, i.e. to reverse
-        what has been defined as ``PATTERN`` it needs to to be written::
-
-                          \R{{PATTERN}} 
-
-        which reads from inside to outside: expand the pattern definition,
-        then reverse expanded pattern. Inside the curly brackets of ``\R{...}``
-        any pattern expression may occur in the well defined manner.
 
 .. describe:: \\A{P}
 
@@ -282,6 +272,19 @@ must be UTF8 encoded.
      the subset of Unicode characters which is covered by the given encoding.
      Using this is particularly helpful to cut out uncovered characters when a
      encoding engine is used (see :ref:`sec:engine-encoding`).
+
+ .. note:: 
+
+    For some reason, it has caused some confusion in the past, that pattern
+    substitution requires an extra pair of curly brackets, i.e. to reverse
+    what has been defined as ``PATTERN`` it needs to to be written::
+
+                      \R{{PATTERN}} 
+
+    which reads from inside to outside: expand the pattern definition,
+    then reverse expanded pattern. Inside the curly brackets of ``\R{...}``
+    any pattern expression may occur in the well defined manner.
+
 
 Any character specified as character code, i.e. using `\`, `\x`, `\X`, or `\U`
 are considered to be Unicode code points. For applications in English spoken
