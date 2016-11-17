@@ -1,0 +1,10 @@
+{
+title: Algebraic Relations;
+file_name: test-algebraic-relations.py;
+hwut_info_time: 1476742823L;
+result_list: [
+  [ unary; OK; 5.547972; 0; ]
+  [ binary; OK; 10.693973; 0; ]
+  [ derived_binary; OK; 11.734899; 0; ]
+]
+}

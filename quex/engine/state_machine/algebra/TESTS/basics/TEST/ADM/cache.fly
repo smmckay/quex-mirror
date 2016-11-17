@@ -1,0 +1,38 @@
+{
+title: Complementary State Machines;
+file_name: test-complement.py;
+hwut_info_time: 1479281810L;
+result_list: [
+  [ Sequence; OK; 0.226278; 0; ]
+  [ Branches; OK; 0.341506; 0; ]
+  [ Loops; OK; 0.224421; 0; ]
+  [ BranchesLoops; OK; 0.459738; 0; ]
+  [ Misc; OK; 4.720081; 0; ]
+]
+}
+{
+title: Difference Operation;
+file_name: test-difference.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ Easy; OK; 0.304716; 0; ]
+  [ FalseCases; OK; 0.331001; 0; ]
+  [ GoodCases; OK; 0.356746; 0; ]
+  [ FalseCasesII; OK; 0.360388; 0; ]
+  [ GoodCasesII; OK; 0.678953; 0; ]
+  [ Misc; OK; 0.622813; 0; ]
+]
+}
+{
+title: Intersection;
+file_name: test-intersection.py;
+hwut_info_time: 1461220443L;
+result_list: [
+  [ 0; OK; 0.203480; 0; ]
+  [ 1; OK; 0.248961; 0; ]
+  [ 2; OK; 0.214591; 0; ]
+  [ 3; OK; 0.250263; 0; ]
+  [ 4; OK; 0.541119; 0; ]
+  [ 5; OK; 2.283653; 0; ]
+]
+}
