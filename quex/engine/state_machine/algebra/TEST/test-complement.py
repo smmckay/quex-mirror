@@ -10,11 +10,15 @@ import quex.engine.state_machine.algebra.intersection  as intersection
 import quex.engine.state_machine.algebra.union   as union
 from   quex.engine.state_machine.check.special   import is_all, is_none, get_all, get_none
 import quex.engine.state_machine.check.identity  as identity
+import quex.engine.state_machine.check.superset  as superset
 
 if "--hwut-info" in sys.argv:
     print "Complementary State Machines"
     print "CHOICES: Sequence, Branches, Loops, BranchesLoops, Misc;"
     sys.exit(0)
+
+def commonality(A, B):
+    return superset.do(A, B) or superset.do(B, A) 
 
 def test(A_str):
     print "_____________________________________________________________________"
@@ -31,7 +35,9 @@ def test(A_str):
     print
     print "union(A, complement(A)):            All  =", is_all(union.do([sm, result_1st]))
     print "intersection(A, complement(A)):     None =", is_none(intersection.do([sm, result_1st]))
-    print "identity(A, complement(complement(A)):", identity.do(sm, result_2nd)
+    print "identity(A, complement(complement(A)):",     identity.do(sm, result_2nd)
+    assert not commonality(sm, result_1st)
+    assert not commonality(result_1st, result_2nd)
 
 if "Sequence" in sys.argv:
     test('[0-9]')
@@ -39,6 +45,7 @@ if "Sequence" in sys.argv:
     test('[0-9][0-9][0-9]')
     test('a(b?)')
     test('ab(c?)')
+    test('ab|abcd')
 
 elif "Branches" in sys.argv:
     test('12|AB')

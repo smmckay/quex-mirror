@@ -8,5 +8,6 @@ def do(SM_List):
     in this case.
     """
     result = parallelize.do(SM_List)
-    return beautifier.do(result)
+    result = beautifier.do(result)
+    return result
 
