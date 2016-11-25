@@ -1,19 +1,27 @@
-from   quex.engine.state_machine.algebra.TESTS.fundamental_laws.TEST.helper import test2
+import os
 import sys
+sys.path.insert(0, os.environ["QUEX_PATH"])
+from quex.engine.state_machine.core                 import StateMachine
+from quex.engine.state_machine.algebra.TESTS.helper import test2, union, \
+                                                           intersection, \
+                                                           identity, \
+                                                           add_more_DFAs
 
 if "--hwut-info" in sys.argv:
-    print "Commutativity"
+    print "Commutativity;"
+    print "HAPPY: [0-9]+;"
     sys.exit()
 
 count = 0
 
 def commutativity(A, B):
-    first  = union(A, B)
-    second = union(B, A)
+    global count
+    first  = union([A, B])
+    second = union([B, A])
     assert identity(first, second)
 
-    first  = intersection(A, B) 
-    second = intersection(B, A)
+    first  = intersection([A, B]) 
+    second = intersection([B, A]) 
     assert identity(first, second)
 
     count += 1

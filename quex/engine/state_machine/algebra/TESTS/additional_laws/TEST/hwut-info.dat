@@ -1,6 +1,6 @@
 State Machine Algebra
 -------------------------------
---not *.py
+python *.py
 --not test-cut_in.py
 -------------------------------
 

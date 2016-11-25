@@ -1,10 +1,15 @@
 import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
-from quex.engine.state_machine.algebra.TESTS.fundamental_laws.TEST.helper import test3, union, intersection, identity
+from quex.engine.state_machine.core                 import StateMachine
+from quex.engine.state_machine.algebra.TESTS.helper import test3, union, \
+                                                           intersection, \
+                                                           identity, \
+                                                           add_more_DFAs
 
 if "--hwut-info" in sys.argv:
-    print "Associativity"
+    print "Associativity;"
+    print "HAPPY: [0-9]+;"
     sys.exit()
 
 count = 0

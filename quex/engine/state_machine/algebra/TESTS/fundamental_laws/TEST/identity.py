@@ -1,11 +1,11 @@
 import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
-from quex.engine.state_machine.core                                       import StateMachine
-from quex.engine.state_machine.algebra.TESTS.fundamental_laws.TEST.helper import test1, union, \
-                                                                                 intersection, \
-                                                                                 identity, \
-                                                                                 add_more_DFAs
+from quex.engine.state_machine.core                 import StateMachine
+from quex.engine.state_machine.algebra.TESTS.helper import test1, union, \
+                                                           intersection, \
+                                                           identity, \
+                                                           add_more_DFAs
 
 if "--hwut-info" in sys.argv:
     print "Identity with. Empty and Universal;"

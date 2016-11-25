@@ -1,38 +1,50 @@
 {
-file_name: commutativity.py;
-}
-{
-file_name: test-algebraic-relations.py;
-}
-{
+title: Associativity;
 file_name: associativity.py;
+hwut_info_time: 1480111964L;
+interpreter_list: [ python; ]
+happy_pattern_list: [ \[0-9]+; ]
+result_list: [
+  [ ; OK; 37.931729; -25563403; ]
+]
 }
 {
-file_name: __init__.py;
-}
-{
-file_name: distributivity.py;
-}
-{
-file_name: helper.py;
+title: Commutativity;
+file_name: commutativity.py;
+hwut_info_time: 1480111979L;
+interpreter_list: [ python; ]
+happy_pattern_list: [ \[0-9]+; ]
+result_list: [
+  [ ; OK; 9.518279; -1734826908; ]
+]
 }
 {
 title: Complement laws producing Empty and Universal;
 file_name: complement.py;
-hwut_info_time: 1480059488L;
+hwut_info_time: 1480112005L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.000000; 103651949; ]
+  [ ; OK; 0.715225; 103651949; ]
+]
+}
+{
+title: Distributivity;
+file_name: distributivity.py;
+hwut_info_time: 1480112019L;
+interpreter_list: [ python; ]
+happy_pattern_list: [ \[0-9]+; ]
+result_list: [
+  [ ; OK; 31.735094; 0; ]
 ]
 }
 {
 title: Identity with. Empty and Universal;
 file_name: identity.py;
-hwut_info_time: 1480058860L;
+hwut_info_time: 1480112032L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; FAIL; 2.570394; 0; ]
+  [ ; OK; 0.415534; 0; ]
 ]
 }
