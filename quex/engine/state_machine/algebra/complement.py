@@ -10,7 +10,6 @@ ALGEBRAIC RELATIONS:
 
 (C) 2013-2016 Frank-Rene Schaefer
 """
-import quex.engine.state_machine.check.special as     special
 import quex.engine.state_machine.index         as     index
 from   quex.engine.state_machine.state.core    import State
 from   quex.engine.misc.interval_handling      import NumberSet_All
@@ -38,28 +37,26 @@ def do(SM):
     result.add_transition(accept_all_state_index, NumberSet_All(), 
                           accept_all_state_index)
 
-    # (1a) acceptance state     --> non-acceptance state.
-    # (1b) non-acceptance state --> acceptance state.
+    accept_all_state_index_set  = set(si for si in SM.states if SM.is_AcceptAllState(si))
+    accept_only_state_index_set = set(si for si in SM.states if SM.states[si].is_acceptance() and SM.states[si].target_map.is_empty())
+
+    for state_index, state in SM.states.iteritems():
+        result_state = result.states[state_index]
+
+        # drop-out --> transition to 'Accept-All' state.
+        drop_out_trigger_set = state.target_map.get_drop_out_trigger_set_union()
+        if not drop_out_trigger_set.is_empty():
+            result_state.add_transition(drop_out_trigger_set, accept_all_state_index)
+
+    # acceptance state     --> non-acceptance state.
+    # non-acceptance state --> acceptance state.
     for state_index, state in SM.states.iteritems():
         #if state_index == SM.init_state_index: continue
         # deepcopy --> use same state indices in SM and result
         result_state = result.states[state_index]
         result_state.set_acceptance(not state.is_acceptance())
 
-    for state_index, state in SM.states.iteritems():
-        result_state = result.states[state_index]
-
-        # (2a) transition to 'Accept-All' state --> drop-out.
-        for target_index in (i for i in state.target_map.get_target_state_index_list()
-                             if special.is_accept_all_state(SM, i)):
-            result_state.target_map.delete_transitions_to_target(target_index)
-
-        # (2b) drop-out                         --> transition to 'Accept-All' state.
-        drop_out_trigger_set = state.target_map.get_drop_out_trigger_set_union()
-        if not drop_out_trigger_set.is_empty():
-            result_state.add_transition(drop_out_trigger_set, accept_all_state_index)
-
-    result.clean_up()
+    result.delete_hopeless_states()
 
     return result.clone()
 

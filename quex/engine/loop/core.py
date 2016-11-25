@@ -881,7 +881,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
     first_vs_appendix_sm = [ 
         (first_set, appendix_sm)
         for sm in SmList
-        for first_set, appendix_sm in sm.cut_first_transition(CloneStateMachineId=True)
+        for first_set, appendix_sm in _cut_first_transition(sm, CloneStateMachineId=True)
     ]
 
     appendix_lcci_db = get_appendix_lcci_db(first_vs_appendix_sm)
@@ -1056,3 +1056,42 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
         for sm in appendix_sm_list
     ]
 
+
+def _cut_first_transition(sm, CloneStateMachineId=False):
+    """Cuts the first transition and leaves the remaining states in place. 
+    This solution is general(!) and it covers the case that there are 
+    transitions to the init state!
+    
+    EXAMPLE:
+        
+        .-- z -->(( 1 ))          z with: (( 1c ))
+      .'                   ---\
+    ( 0 )--- a -->( 2 )    ---/   a with: ( 2c )-- b ->( 0c )-- z -->(( 1c ))
+      \             /                       \           / 
+       '-<-- b ----'                         '-<- a ---'
+
+    where '0c', '1c', and '2c' are the cloned states of '0', '1', and '2'.
+
+    RETURNS: list of pairs: (trigger set, pruned state machine)
+             
+    trigger set = NumberSet that triggers on the initial state to
+                  the remaining state machine.
+
+    pruned state machine = pruned cloned version of this state machine
+                           consisting of states that come behind the 
+                           state which is reached by 'trigger set'.
+
+    ADAPTS:  Makes the init state's success state the new init state.
+    """
+    successor_db = sm.get_successor_db()
+
+    if CloneStateMachineId: cloned_sm_id = sm.get_id()
+    else:                   cloned_sm_id = None
+
+    return [
+        (trigger_set, sm.clone_from_state_subset(target_si, 
+                                                   list(successor_db[target_si]) + [target_si],
+                                                   cloned_sm_id))
+        for target_si, trigger_set in sm.iterable_init_state_transitions()
+    ]
+        

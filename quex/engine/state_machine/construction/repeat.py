@@ -2,10 +2,7 @@
 # PURPOSE: creates a state machine that is the repeated version of the 
 #          given one. this means, that the success state is linked to the 
 #          start state.
-import sys
-sys.path.append("../")
-
-import sequentialize
+import quex.engine.state_machine.construction.sequentialize as sequentialize
 
 def do(the_state_machine, min_repetition_n = 0, max_repetition_n = -1):
     """ Creates a state machine that represents a repetition of the given 

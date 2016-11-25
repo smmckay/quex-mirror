@@ -1,5 +1,4 @@
 import quex.engine.state_machine.algorithm.beautifier as     beautifier
-import quex.engine.state_machine.check.special        as     special
 import quex.engine.state_machine.index                as     index
 from   quex.engine.state_machine.core                 import StateMachine
 from   quex.engine.state_machine.state.core           import State
@@ -36,7 +35,7 @@ def do(SM_A, SM_B):
     """
     cutter = WalkAlong(SM_A, SM_B)
     if SM_B.get_init_state().is_acceptance():
-        return special.get_none()
+        return StateMachine.Empty()
 
     cutter.do((SM_A.init_state_index, SM_B.init_state_index))
 

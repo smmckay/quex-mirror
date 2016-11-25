@@ -2,9 +2,10 @@
 #       "https://en.wikipedia.org/wiki/Powerset_construction"
 #
 # (C) Frank-Rene Schaefer
-from   quex.engine.state_machine.core        import StateMachine
-from   quex.engine.state_machine.state.core  import State
-from   quex.engine.state_machine.index       import map_state_combination_to_index
+from   quex.engine.state_machine.core                 import StateMachine
+from   quex.engine.state_machine.state.core           import State
+from   quex.engine.state_machine.state.target_map_ops import get_elementary_trigger_sets
+from   quex.engine.state_machine.index                import map_state_combination_to_index
 
 def do(SM, Class_StateMachine=StateMachine, Class_State=State):
     """Creates a deterministic finite automaton (DFA) from a state machine 
@@ -53,8 +54,8 @@ def do(SM, Class_StateMachine=StateMachine, Class_State=State):
         #                [24:60]  --> [ State1 ]
         #                [61:123] --> [ State2, State10 ]
         #
-        elementary_trigger_set_infos = SM.get_elementary_trigger_sets(start_state_combination,
-                                                                      epsilon_closure_db)
+        elementary_trigger_set_infos = get_elementary_trigger_sets(start_state_combination,
+                                                                   SM, epsilon_closure_db)
         ## DEBUG_print(start_state_combination, elementary_trigger_set_infos)
 
         # (*) loop over all elementary trigger sets
@@ -84,4 +85,44 @@ def do(SM, Class_StateMachine=StateMachine, Class_State=State):
 
     return result 
 
+
+if False:
+    # TODO: NFA-To-DFA: Use DFA +  Epsilon Transition Database.
+    # 
+    #       => Results are ONLY DFAs.
+    #       => No epsilon transition in states and/or state machines.
+    #
+    def new_do(StateDb, EpsilonTranstionDb):
+        """StateDb:             state index --> State
+        
+               Describes DFA states and their indices.
+
+           EpsilonTranstionDb:  source state index --> target state index
+
+               Describes added epsilon transitions between the states give by source
+               and target.
+        """
+
+    def new_get_epsilon_closure_db(StateDb, EpsilonTranstionDb):
+        db = {}
+        for si, state in StateDb.items():
+            # Do the first 'level of recursion' without function call, to save time
+            index_list = EpsilonTranstionDb[si] 
+
+            # Epsilon closure for current state
+            ec = set([index]) 
+            if len(index_list) != 0: 
+                for target_index in ifilter(lambda x: x not in ec, index_list):
+                    ec.add(target_index)
+                    self.__dive_for_epsilon_closure(EpsilonTranstionDb, target_index, ec)
+
+            db[index] = ec
+
+        return db
+
+    def new_dive_for_epsilon_closure(EpsilonTranstionDb, StateIndex, result):
+        index_list = EpsilonTranstionDb[StateIndex]
+        for target_index in ifilter(lambda x: x not in result, index_list):
+            result.add(target_index)
+            self.new_dive_for_epsilon_closure(target_index, result)
 

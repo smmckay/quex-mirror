@@ -169,7 +169,7 @@ class TargetMap:
     def get_map(self):
         return self.__db
 
-    def get_trigger_set_line_up(self):
+    def get_trigger_set_line_up(self, Key=None):
         ## WATCH AND SEE THAT WE COULD CACHE HERE AND GAIN A LOT OF SPEED during construction
         ## if self.__dict__.has_key("NONSENSE"): 
         ##    self.NONSENSE += 1
@@ -210,8 +210,8 @@ class TargetMap:
             interval_list = trigger_set.get_intervals(PromiseToTreatWellF=True)
             for interval in interval_list: 
                 # add information about start and end of current interval
-                history.append(history_item(interval.begin, E_Border.BEGIN, target_idx))
-                history.append(history_item(interval.end, E_Border.END, target_idx))
+                history.append(history_item(interval.begin, E_Border.BEGIN, target_idx, Key))
+                history.append(history_item(interval.end, E_Border.END, target_idx, Key))
 
         # (*) sort history according to position
         history.sort(key=attrgetter("position"))
@@ -327,11 +327,12 @@ class TargetMap:
 class history_item(object):
     """To be used by: member function 'get_trigger_set_line_up(self)'
     """
-    __slots__ = ('position', 'change', 'target_idx')
-    def __init__(self, Position, ChangeF, TargetIdx):
+    __slots__ = ('position', 'change', 'target_idx', 'key')
+    def __init__(self, Position, ChangeF, TargetIdx, Key=None):
         self.position   = Position
         self.change     = ChangeF
         self.target_idx = TargetIdx 
+        self.key        = Key
         
     def __repr__(self):         
         if self.change == E_Border.BEGIN: ChangeStr = "begin"

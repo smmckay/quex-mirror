@@ -63,9 +63,9 @@ def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReferen
         return the_state_machine, None
 
     # State machines with no states are senseless here. 
-    assert not the_state_machine.is_empty(), \
+    assert not the_state_machine.is_Empty(), \
            "empty state machine can have no post context."
-    assert post_context_sm is None or not post_context_sm.is_empty(), \
+    assert post_context_sm is None or not post_context_sm.is_Empty(), \
            "empty state machine cannot be a post-context."
 
     # State machines involved with post condition building are part of a pattern, 

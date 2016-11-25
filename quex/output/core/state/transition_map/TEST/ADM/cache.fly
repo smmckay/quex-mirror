@@ -2,57 +2,57 @@
 title: Bisection;
 title_group: Code generation;
 file_name: test-bisection.py;
-hwut_info_time: 1476480955L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.097253; 1199001066; ]
+  [ ; OK; 0.098074; 1199001066; ]
 ]
 }
 {
 title: Branch Table (switch-case);
 title_group: Code generation;
 file_name: test-branch_table.py;
-hwut_info_time: 1476481079L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 result_list: [
-  [ C-2; OK; 0.095346; 182610020; ]
-  [ C-3; OK; 0.094317; -300621916; ]
-  [ C-4; OK; 0.093744; -47012939; ]
-  [ C-5; OK; 0.095118; 1502087645; ]
+  [ C-2; OK; 0.093508; 182610020; ]
+  [ C-3; OK; 0.092418; -300621916; ]
+  [ C-4; OK; 0.093947; -47012939; ]
+  [ C-5; OK; 0.097459; 1502087645; ]
 ]
 }
 {
 title: Branch Table (switch-case) II;
 title_group: Code generation;
 file_name: test-branch_table-2.py;
-hwut_info_time: 1476481400L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 result_list: [
-  [ C-7; OK; 0.095769; 430808041; ]
-  [ C-8; OK; 0.092987; -325495601; ]
-  [ C-9; OK; 0.094997; 1727630274; ]
-  [ C-15; OK; 0.092673; 817630238; ]
-  [ C-16; OK; 0.093284; -1575566909; ]
-  [ C-17; OK; 0.095821; 1689761776; ]
-  [ C-31; OK; 0.098091; 34361944; ]
-  [ C-32; OK; 0.097115; 1227139880; ]
-  [ C-33; OK; 0.093761; -1308129942; ]
+  [ C-7; OK; 0.094972; 430808041; ]
+  [ C-8; OK; 0.094168; -325495601; ]
+  [ C-9; OK; 0.095276; 1727630274; ]
+  [ C-15; OK; 0.096883; 817630238; ]
+  [ C-16; OK; 0.093418; -1575566909; ]
+  [ C-17; OK; 0.094314; 1689761776; ]
+  [ C-31; OK; 0.100060; 34361944; ]
+  [ C-32; OK; 0.100184; 1227139880; ]
+  [ C-33; OK; 0.093229; -1308129942; ]
 ]
 }
 {
 title: Comparison Sequence;
 title_group: Code generation;
 file_name: test-comparison_sequence.py;
-hwut_info_time: 1476481672L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 result_list: [
-  [ C-2-fw; OK; 0.093212; 819861803; ]
-  [ C-2-bw; OK; 0.094137; 1546192954; ]
-  [ C-3-fw; OK; 0.096707; -865424375; ]
-  [ C-3-bw; OK; 0.095966; 70004921; ]
-  [ C-4-fw; OK; 0.098110; 1105232277; ]
-  [ C-4-bw; OK; 0.102450; 1206879699; ]
-  [ C-5-fw; OK; 0.095560; -224267142; ]
-  [ C-5-bw; OK; 0.100211; -182284182; ]
+  [ C-2-fw; OK; 0.093309; 819861803; ]
+  [ C-2-bw; OK; 0.093225; 1546192954; ]
+  [ C-3-fw; OK; 0.099899; -865424375; ]
+  [ C-3-bw; OK; 0.099289; 70004921; ]
+  [ C-4-fw; OK; 0.096575; 1105232277; ]
+  [ C-4-bw; OK; 0.103991; 1206879699; ]
+  [ C-5-fw; OK; 0.099712; -224267142; ]
+  [ C-5-bw; OK; 0.095116; -182284182; ]
 ]
 }

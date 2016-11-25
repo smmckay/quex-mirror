@@ -17,10 +17,9 @@ import quex.engine.state_machine.algebra.cut_in             as module_cut_in
 import quex.engine.state_machine.algebra.cut_end            as module_cut_end  
 import quex.engine.state_machine.algebra.cut_begin          as module_cut_begin  
 import quex.engine.state_machine.algebra.union        as union
-from   quex.engine.state_machine.check.special        import is_all, is_none
 import quex.engine.state_machine.check.identity       as     identity
 import quex.engine.state_machine.check.superset       as     superset
-from   quex.engine.state_machine.check.special        import get_all, get_none
+from   quex.engine.state_machine.core                 import StateMachine
 
 from   itertools import islice
 
@@ -50,8 +49,8 @@ def cut_in(A, B):    return module_cut_in.do(A, B)
 protocol = []
 X        = None
 Y        = None
-All_sm   = get_all()
-None_sm  = get_none()
+All_sm   = StateMachine.Universal()
+None_sm  = StateMachine.Empty()
 
 def equal(X_str, Y_str):
     global X

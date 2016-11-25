@@ -1,7 +1,13 @@
+import os
+import sys
+sys.path.insert(0, os.environ["QUEX_PATH"])
+from quex.engine.state_machine.core                                       import StateMachine
 from quex.engine.state_machine.algebra.TESTS.fundamental_laws.TEST.helper import test1, \
                                                                                  union, \
+                                                                                 intersection, \
                                                                                  complement, \
-                                                                                 identity
+                                                                                 identity, \
+                                                                                 add_more_DFAs
 import sys
 
 if "--hwut-info" in sys.argv:
@@ -12,18 +18,16 @@ if "--hwut-info" in sys.argv:
 count = 0
 
 def complement_laws(A):
-    first  = union(A, complement(A))
-    assert identity(first, Universal)
-    first  = union(complement(A), A)
-    assert identity(first, Universal)
+    global count
+    first  = union([A, complement(A)])
+    assert identity(first, StateMachine.Universal())
 
-    first  = intersection(A, complement(A)) 
-    assert identity(first, Empty)
-    first  = intersection(complement(A), A) 
-    assert identity(first, Empty)
+    first  = intersection([A, complement(A)]) 
+    assert identity(first, StateMachine.Empty())
 
     count += 1
 
+add_more_DFAs()
 test1(complement_laws)
 
 print "<terminated: %i>" % count

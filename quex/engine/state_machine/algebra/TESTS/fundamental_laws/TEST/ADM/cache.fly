@@ -1,10 +1,38 @@
 {
-title: Algebraic Relations;
+file_name: commutativity.py;
+}
+{
 file_name: test-algebraic-relations.py;
-hwut_info_time: 1476742823L;
+}
+{
+file_name: associativity.py;
+}
+{
+file_name: __init__.py;
+}
+{
+file_name: distributivity.py;
+}
+{
+file_name: helper.py;
+}
+{
+title: Complement laws producing Empty and Universal;
+file_name: complement.py;
+hwut_info_time: 1480059488L;
+interpreter_list: [ python; ]
+happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ unary; OK; 5.547972; 0; ]
-  [ binary; OK; 10.693973; 0; ]
-  [ derived_binary; OK; 11.734899; 0; ]
+  [ ; OK; 0.000000; 103651949; ]
+]
+}
+{
+title: Identity with. Empty and Universal;
+file_name: identity.py;
+hwut_info_time: 1480058860L;
+interpreter_list: [ python; ]
+happy_pattern_list: [ \[0-9]+; ]
+result_list: [
+  [ ; FAIL; 2.570394; 0; ]
 ]
 }

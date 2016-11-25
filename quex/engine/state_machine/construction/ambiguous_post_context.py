@@ -171,8 +171,8 @@ def mount(the_state_machine, PostConditionSM):
     assert the_state_machine.__class__.__name__ == "StateMachine"
     assert PostConditionSM.__class__.__name__ == "StateMachine"
     # -- state machines with no states are senseless here. 
-    assert not the_state_machine.is_empty() 
-    assert not PostConditionSM.is_empty()
+    assert not the_state_machine.is_Empty() 
+    assert not PostConditionSM.is_Empty()
 
     # -- trivial pre-conditions should be added last, for simplicity
     # (*) concatinate the two state machines:

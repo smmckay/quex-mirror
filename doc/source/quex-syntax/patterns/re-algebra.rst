@@ -1,20 +1,15 @@
-Basic Algebra
-=============
+Algebra of DFAs
+===============
 
-Every regular expression can be associated with the set of lexemes which it
-matches.  Quex's algebra on regular expressions is defined in terms of
-set-theoretic operations on sets of lexemes.  The set operations of union and
-intersection in the space of lexemes do not generate new lexemes, but select or
-collect only the lexemes of the set on which they operate.  In the same way the
-union and intersection operations on regular expressions shall result in
-regulare expressions which do not match new lexemes, but only match selections
-or collections of lexemes of the regular expressions on which they operate.
+The algebra of DFAs is a translation of the algebra of sets to set of laws,
+properties and operations on state machines. With the introduced set of
+operations and elements a symetric structure is presented allows a calculus on
+DFAs. 
 
 The basic operations of union, intersection, and complementation the are
-defined in term of their counterpart on the space of lexemes.  A regular
-expression is considered as a representer of the set of lexemes which it
-matches.  For example, let the regular expressions P and Q be defined as
-below::
+defined relying on terms of their counterpart on the space of lexemes.  A DFA
+is considered as a representation of the set of lexemes which it matches.  For
+example, let the regular expressions P and Q be defined as below::
 
        P    [0-9]{2}
        Q    [a-b]{2}
@@ -32,28 +27,77 @@ automaton, i.e. regular expression, which matches the union of both, i.e.::
 
     "00", "01", "02", ... "99", "aa", "ab", "ac", ... "zz"
 
-The fundamental operations are available in quex via the commands:
+The fundamental operations are available in Quex via the commands:
 
 .. describe:: \\Union{X0 X1 ... Xn}
 
-   Produces a finite state automaton that matches the union of the 
-   what is matched by the regular expressions ``X0``, ``X1``, ... ``Xn``.
+   matches the *union* of the what is matched by the regular expressions ``X0``,
+   ``X1``, ... ``Xn``.
 
 .. describe:: \\Intersection{X0 X1 ... Xn}
 
-   Produces a finite state automaton that matches the union of the 
-   what is matched by the regular expressions ``X0``, ``X1``, ... ``Xn``.
+   matches the *intersection* of the what is matched by the regular expressions
+   ``X0``, ``X1``, ... ``Xn``.
 
 .. describe:: \\Not{X}
 
-   Produces a finite state automaton that matches the complementary set
-   of lexemes of what is matched by the regular expressions ``X``.
+   matches the *complementary* set of lexemes of what is matched by the regular
+   expressions ``X``.
 
-There are two special patterns: the '\\None' and the '\\Any+' pattern. The first
-does not match anything at all. The second matches absolutely anything that is
-at least one character long. Both are useless in pattern definitions, but they
-play important roles in the algebraic structure. The algebraic operations are
-devided into two categories:
+There are two special patterns: 
+
+.. '\\Empty': accepts nothing--does not match on any input.
+
+.. '\\Universal': matches any character. 
+
+The patterns ``Empty`` and ``Universal`` are symmetric with respect to the 
+complement operation, i.e. ``\Not{\Empty}`` is equivalent to ``\Universal``
+and vice versa. Both are important elements of the algebraic structure.
+Derived from the fundamental operators are the operators for difference
+and symmetric difference, i.e.
+
+.. describe:: \\Diff{A B}
+
+   matches all lexemes matched by 'A' except for those which are matched 
+   also by 'B'.
+
+.. describe:: \\SymDiff{A B}
+
+   matches all lexemes that are matched *either* by 'A' or by 'B' but 
+   not by both.
+
+The given set of properties and operations constitute a structure that
+implements all laws from the algebra of sets, as there are the fundamental
+laws:
+
+.. describe:: Communativity
+    
+    .* \Union{A B} = \Union{B A}
+    .* \Intersection{A B} = \Intersection{B A}
+
+.. describe:: Associativity
+
+    .* \Union{\Union{A B} C} = \Union{A \Union{B C}}
+    .* \Intersection{\Intersection{A B} C} = \Intersection{A \Intersection{B C}}
+
+.. describe:: Distributivity
+
+    .* \Union{A \Intersection{B C}} = \Intersection{\Union{A B} \Union{A C}}
+    .* \Intersection{A \Union{B C}} = \Union{\Intersection{A B} \Intersection{A C}}
+
+Union and intersection with 'Empty' and the 'Universal' DFAs a given DFA obey
+the identity and the complement laws:
+
+    .* \Union{A \Empty} = A
+    .* \Intersection{A \Universal} = A
+    .* \Union{A \Not{A}} = \Universal
+    .* \Intersection{A \Not{A}} = \Empty
+
+All of the above laws follow the principle of symmetric duality, in that if
+``\Union`` and ``\Intersection`` as well as ``\Empty`` and ``\Universal`` are
+interchanged, one set of rules translates into another.
+
+    .* \Intersection{A \Universal} = A
 
 .. describe:: Unary Operations (short 'U').
 
@@ -158,4 +202,85 @@ the operator categories.  Following are the regular expression operators.
    Matches those lexemes of P which do not contain lexemes that
    match Q.
 
+-----------------------
 
+.. describe:: \\Sanitize{P}
+
+     Sanitizes a pattern with regards to two issues. First, it removes
+     acceptance of the zero-length lexeme. Second, it removes acceptance of
+     tails of infinite length and arbirtrary lexatoms. Such patterns may indeed
+     be produced by DFA algrebraic expressions--so this command helps to
+     sanitize.
+
+     The command line option ``--language dot`` allows to print state machine
+     graphs. It is advisable to print graphs for the sanitized state machine
+     in order to see whether it conforms the expectations.
+
+     Notably, this command cannot sanitize patterns that do not accept anything
+     or accept everything as discussed in the frame of DFA algebra.
+
+.. describe:: \\A{P}
+
+    The 'anti-pattern' is a short form of a sanitized complement, i.e.
+    ``\Sanitize{\Not{P}}``. The complement operation on normal may generate
+    acceptance on the zero-length lexeme and iterations on arbitrary lexatoms.
+
+    For a given stream of lexatoms the anti-pattern ``\A{P}`` matches the
+    shortest lexeme that is longer than the longest lexeme matched by ``P``.
+
+      .# The 
+
+
+    the shortest lexeme that does not match ``P`` but which is longer than any matched lexeme of ``P`` but
+    is not matched
+
+    anti-pattern of a pattern ``P`` matches all lexemes which are caught by a
+    match failure of ``P``. 
+
+     Let `L` be the set of lexemes that matches `P`. Let s(L) be a
+     transformation which extracts out 'shortest' alternatives.  Let Lx be the
+     set of *x* from L for which there is a second lexeme *y* in L that starts
+     with *x*. Then,::
+
+                                 s(L) := L - Lx 
+     
+     As a result it is safe to assume that in s(L) there are no two lexemes
+     *x* and *y* so that *x* is the start of *y*. For example, the pattern 
+     '(ab)|(abc)' is matched by "ab" and "abc". The latter starts with the
+     former. The transformation s((ab)|(abc)) takes out the longest 
+     and matches therefore only "ab".
+
+     Anti-Pattern
+        Let Q be the set of all lexemes which are not matched by P. Let
+        s(R) be the pattern that matches shortest alternatives in R. Then, the
+        anti-pattern of P is the pattern which matches the set of lexemes
+        given by 's(Q)'.
+
+     .. _fig-anti-pattern-0:
+ 
+     .. figure:: ../../figures/anti-pattern-0.png
+ 
+        State machine matching the pattern ``for``.
+ 
+     .. _fig-anti-pattern-1:
+ 
+     .. figure:: ../../figures/anti-pattern-1.png
+ 
+        State machine implementing the match of pattern ``\A{for}``.
+
+     Figures :ref:`fig-anti-pattern-0` and :ref:`fig-anti-pattern-1` show the 
+     state machines for matching the pattern ``for`` and ``\A{for}``. These 
+     illustrations demonstrate that the anti-pattern does not match all 
+     patterns which are not matched by ``for``. Instead, it matches a 
+     'shortest subset'.
+   
+     Anti-patterns are especially useful for post contexts 
+     (section :ref:`sec-pre-and-post-conditions`) and to implement shortest 
+     match behavior with a greedy match analyzer engine 
+     (section :ref:`usage-context-free-pitfalls`).
+
+     .. note::
+
+        If it is necessary to ensure that only one character is matched in 
+        case of failure of all other patterns, then it is best to rely on the
+        '.' specifier--as explained above.

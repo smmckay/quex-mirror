@@ -31,7 +31,7 @@ import quex.engine.codec_db.core                              as codec_db
 from   quex.engine.state_machine.core                         import StateMachine
 import quex.engine.state_machine.algorithm.beautifier         as beautifier
 import quex.engine.state_machine.algorithm.nfa_to_dfa         as nfa_to_dfa
-import quex.engine.state_machine.algebra.anti_pattern         as anti_pattern
+import quex.engine.state_machine.algebra.sanitizer            as sanitizer
 import quex.engine.state_machine.algebra.complement           as complement
 import quex.engine.state_machine.algebra.reverse              as reverse
 import quex.engine.state_machine.algebra.intersection         as intersection
@@ -41,7 +41,6 @@ import quex.engine.state_machine.algebra.complement_begin     as complement_begi
 import quex.engine.state_machine.algebra.complement_end       as complement_end  
 import quex.engine.state_machine.algebra.complement_in        as complement_in   
 import quex.engine.state_machine.algebra.union                as union
-from   quex.engine.state_machine.check.special                import get_any, get_none
 from   quex.input.code.base                                   import SourceRef
 
 import quex.input.regular_expression.traditional_character_set  as traditional_character_set
@@ -506,18 +505,22 @@ def snap_bracketed_expression(stream, PatternDict):
     return result
 
 def snap_any(stream, PatternDict):
-    return get_any()
+    return StateMachine.Any()
 
 def snap_none(stream, PatternDict):
-    return get_none()
+    return StateMachine.Empty()
 
 def snap_reverse(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "reverse operator", "R")[0]
     return reverse.do(result, EnsureDFA_f=False)
 
+def snap_sanitizer(stream, PatternDict):
+    result = snap_curly_bracketed_expression(stream, PatternDict, "sanatizer operator", "A")[0]
+    return sanitizer.do(result)
+
 def snap_anti_pattern(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "anti-pattern operator", "A")[0]
-    return anti_pattern.do(result)
+    return sanitizer.do(complement.do(result))
 
 def snap_complement(stream, PatternDict):
     pattern_list = snap_curly_bracketed_expression(stream, PatternDict, "complement operator", "Co")
@@ -645,6 +648,7 @@ CommandDB = sorted([
    # \a, \X, ... those are not treated here. They are treated in 
    # 'snap_backslashed_character()'.
    ("A",            snap_anti_pattern),          # OK
+   ("Sanitize",     snap_sanitizer),             # 
    ("Any",          snap_any),                   # OK
    ("C",            snap_case_folded_pattern),   # OK
    ("Diff",         snap_difference),            # OK

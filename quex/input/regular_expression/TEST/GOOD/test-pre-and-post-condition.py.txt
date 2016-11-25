@@ -30,7 +30,7 @@ init-state = 0L
 00001 S
      == 'c' ==> 00002
     
-00002 A(pre=39,R)
+00002 A(pre=31,R)
     
 
 pre-context =  init-state = 0L
@@ -71,7 +71,7 @@ init-state = 0L
 00007 
      == 'o' ==> 00008
     
-00008 A(pre=72,R)
+00008 A(pre=56,R)
     
 00009 
      == 'a' ==> 00010

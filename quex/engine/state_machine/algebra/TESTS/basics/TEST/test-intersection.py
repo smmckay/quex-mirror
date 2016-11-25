@@ -12,7 +12,7 @@ if "--hwut-info" in sys.argv:
     print "CHOICES: 0, 1, 2, 3, 4, 5;"
     sys.exit(0)
     
-def test(A, B):
+def test(A, B, OnlyOneF=False):
     def __core(A_str, B_str):
         print ("A = " + A_str).replace("\n", "\\n").replace("\t", "\\t")
         print ("B = " + B_str).replace("\n", "\\n").replace("\t", "\\t")
@@ -23,6 +23,7 @@ def test(A, B):
         return result
     print "---------------------------"
     x = __core(A, B)
+    if OnlyOneF: return
     print
     y = __core(B, A)
 
@@ -75,4 +76,6 @@ elif "5" in sys.argv:
     test('((((((((p+)r)+i)+)n)+t)+e)+r)+',        'priprinter')
     test('(printer|rinter|inter|nter|ter|er|r)+', 'printerter')
     test('(printer|rinter|inter|nter|ter|er|r)+', '((((((((p+)r)+i)+)n)+t)+e)+r)+')
+else:
+    test('(pr|r)+', '((p+)r)+', OnlyOneF=True)
 

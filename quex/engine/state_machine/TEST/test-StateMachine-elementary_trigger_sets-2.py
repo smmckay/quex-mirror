@@ -6,6 +6,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from quex.engine.misc.interval_handling import *
 from quex.engine.state_machine.core import *
+from quex.engine.state_machine.state.target_map_ops import get_elementary_trigger_sets
 
 if "--hwut-info" in sys.argv:
     print "NFA: Get elementary trigger sets II"
@@ -28,7 +29,7 @@ def show(ETS):
 
 # (*) compute the elementary trigger set
 epsilon_closure_db = sm.get_epsilon_closure_db()
-ets = sm.get_elementary_trigger_sets([36, 37], epsilon_closure_db).items()
+ets = get_elementary_trigger_sets([36, 37], sm, epsilon_closure_db).items()
 print "elementary trigger sets = ", show(ets)
 i = 10
 for target_indices, trigger_set in ets:
@@ -45,7 +46,7 @@ print "states machine = ", sm
 
 # (*) compute the elementary trigger set
 epsilon_closure_db = sm.get_epsilon_closure_db()
-ets = sm.get_elementary_trigger_sets([36, 37], epsilon_closure_db).items()
+ets = get_elementary_trigger_sets([36, 37], sm, epsilon_closure_db).items()
 print "elementary trigger sets = ", show(ets)
 i = 10
 for target_indices, trigger_set in ets:

@@ -1,6 +1,7 @@
 from   quex.engine.misc.string_handling             import blue_print
 #
-from   quex.engine.misc.interval_handling           import NumberSet, Interval
+from   quex.engine.misc.interval_handling           import NumberSet, Interval, \
+                                                           NumberSet_All
 import quex.engine.state_machine.index              as     state_machine_index
 from   quex.engine.state_machine.state.core         import State
 from   quex.engine.state_machine.state.single_entry import SeAccept
@@ -30,6 +31,50 @@ class StateMachine(object):
         # State Index => State (information about what triggers transition to what target state).
         if InitState is None: InitState = State(AcceptanceF=AcceptanceF)
         self.states = { self.init_state_index: InitState }        
+
+    @staticmethod
+    def Empty():
+        """'Empty' <=> Matches nothing
+                                                 .---.
+                                                 |   |
+                                                 '---'
+        """
+        return StateMachine()
+
+    def is_Empty(self):
+        if   len(self.states) != 1:                 return False
+        elif self.get_init_state().is_acceptance(): return False
+        else:                                       return True
+
+    @staticmethod
+    def Universal():
+        """'Universal' <=> Matches everything      .------<-----------.
+                                                 .===.                |
+                                                 | A |--- any char ---'
+                                                 '==='                 
+        """
+        result = StateMachine(AcceptanceF=True)
+        result.add_transition(result.init_state_index, NumberSet_All(), 
+                              result.init_state_index)
+        return result
+
+    def is_Universal(self):
+        if len(self.states) != 1:                 
+            return False
+        else:
+            return self.is_AcceptAllState(self.init_state_index)
+
+    @staticmethod
+    def Any():
+        """'Any' <=> matches any character.
+                                                 .---.                 .===. 
+                                                 |   |--- any char --->| A |
+                                                 '---'                 '==='
+
+        """
+        result = StateMachine()
+        result.add_transition(result.init_state_index, NumberSet_All(), AcceptanceF=True)
+        return result
 
     @staticmethod
     def from_iterable(InitStateIndex, IterableStateIndexStatePairs):
@@ -339,169 +384,6 @@ class StateMachine(object):
 
         return result
  
-    def get_elementary_trigger_sets(self, StateIdxList, epsilon_closure_db):
-        """NOTE: 'epsilon_closure_db' must previously be calculcated by 
-                 self.get_epsilon_closure_db(). This has to happen once
-                 and for all in order to save computation time.
-           TODO: Performance--at the bottom of this file there is a class 
-                 that might be directly used for indexing into a dictionary
-                 for caching the epsilon closures: MultiOccurrenceNumberList.
-                 (Tests showed that in average the a state combination requires
-                  6x to evaluate into a closure).
-        
-           Considers the trigger dictionary that contains a mapping from target state index 
-           to the trigger set that triggers to it: 
-     
-                   target_state_index   --->   trigger_set 
-    
-           The trigger sets of different target state indices may intersect. As a result,
-           this function produces a list of pairs:
-    
-                  [ state_index_list, elementary_trigger_set ]
-    
-           where the elementary trigger set is the set of all triggers that trigger
-           at the same time to all states in the state_index_list. The list contains 
-           for one state_index_list only one elementary_trigger_set. All elementary
-           trigger sets are disjunct, i.e. they do not intersect.
-    
-          NOTE: A general solution of this problem would have to consider the 
-                inspection of all possible subset combinations. The number of 
-                combinations for N trigger sets is 2^N - which potentially blows
-                the calculation power of the computer. Excessive optimizations
-                would have to be programmed, if not the following were the case: 
-    
-          NOTE: Fortunately, we are dealing with one dimensional sets! Thus, there is
-                a very effective way to determine the elementary trigger sets. Imagine
-                three trigger sets stretching over the range of numbers as follows:
-
-          different targets, e.g. T0, T1, T2 are triggered by different sets of letters
-          in the alphabet. 
-                                                                    letters of alphabet
-                      ---------------------------------------------------->
-
-                  T0  [---------)       [----------)
-                  T1          [------)      [-----)
-                  T2              [----------------------)    
-    
-          => elementary sets: 
-     
-             only T0  [-------)
-             T0, T1           [-)
-             only T1            [-)
-             T1, T2               [--)
-             only T2                 [---)          [----)
-             T0, T2                      [---)     [)
-             T0, T1, T2                      [-----)
-        """
-        # For Documentation Purposes: The following approach has been proven to be SLOWER
-        #                             then the one currently implemented. May be, some time
-        #                             it can be tweaked to be faster.
-        #
-        #                             Also, it is not proven to be correct! 
-        #
-        ##    trigger_list = []
-        ##    for state_index in StateIdxList:
-        ##        state = self.states[state_index]
-        ##        for target_index, trigger_set in state.target_map.get_map().iteritems():
-        ##            target_epsilon_closure = epsilon_closure_db[target_index] 
-        ##            interval_list          = trigger_set.get_intervals(PromiseToTreatWellF=True)
-        ##            trigger_list.extend([x, target_epsilon_closure] for x in interval_list])
-        ##
-        ##    trigger_list.sort(key=lambda x: x[0].begin)
-        ##    for element in trigger_list:
-        ##        # ... continue as shown below
-        ##                
-        ##    return combination_list
-
-        ## Special Case -- Quickly Done: One State, One Target State
-        ##  (Improvement is merely measurable).
-        ##  if len(StateIdxList) == 1:
-        ##      state_idx = list(StateIdxList)[0]
-        ##      if len(epsilon_closure_db[state_idx]) == 1:
-        ##           tm = self.states[state_idx].target_map.get_map()
-        ##           if not tm:
-        ##               return {}
-        ##           elif len(tm) == 1:
-        ##               target, trigger_set = tm.iteritems().next()
-        ##               current_target_epsilon_closure = epsilon_closure_db[target]
-        ##               return { tuple(sorted(current_target_epsilon_closure)): trigger_set }
-
-        ## TODO: Get the epsilon closure before the loop over history!
-        ##
-        ##       self.get_epsilon_closure_of_state_set(current_target_indices,
-        ##                                             epsilon_closure_db)
-
-        # (*) Accumulate the transitions for all states in the state list.
-        #     transitions to the same target state are combined by union.
-        history = flatten_list_of_lists(
-            # -- trigger dictionary:  target_idx --> trigger set that triggers to target
-            self.states[state_idx].target_map.get_trigger_set_line_up() 
-            # NOTE: Duplicate entries in history are perfectly reasonable at this point,
-            #       simply if two states trigger on the same character range to the same 
-            #       target state. When ranges are opened/closed via the history items
-            #       this algo keeps track of duplicates (see below).
-            for state_idx in StateIdxList
-        )
-
-        # (*) sort history according to position
-        history.sort(key = attrgetter("position")) # lambda a, b: cmp(a.position, b.position))
-
-        # (*) build the elementary subset list 
-        combinations           = {}          # use dictionary for uniqueness
-        current_interval_begin = None
-        current_target_indices = {}          # use dictionary for uniqueness
-        current_target_epsilon_closure = []
-        for item in history:
-            # -- add interval and target indice combination to the data
-            #    (only build interval when current begin is there, 
-            #     when the interval size is not zero, and
-            #     when the epsilon closure of target states is not empty)                   
-            if current_interval_begin is not None and \
-               current_interval_begin != item.position and \
-               len(current_target_indices) != 0:
-
-                interval = Interval(current_interval_begin, item.position)
-
-                # key = tuple(current_target_epsilon_closure) 
-                key = tuple(sorted(current_target_epsilon_closure))
-                combination = combinations.get(key)
-                if combination is None:
-                    combinations[key] = NumberSet(interval, ArgumentIsYoursF=True)
-                else:
-                    combination.unite_with(interval)
-           
-            # -- BEGIN / END of interval:
-            #    add or delete a target state to the set of currently considered target states
-            #    NOTE: More than one state can trigger on the same range to the same target state.
-            #          Thus, one needs to keep track of the 'opened' target states.
-            if item.change == E_Border.BEGIN:
-                if current_target_indices.has_key(item.target_idx):
-                    current_target_indices[item.target_idx] += 1
-                else:
-                    current_target_indices[item.target_idx] = 1
-            else:        # == E_Border.END
-                if current_target_indices[item.target_idx] > 1:
-                    current_target_indices[item.target_idx] -= 1
-                else:    
-                    del current_target_indices[item.target_idx] 
-    
-            # -- re-compute the epsilon closure of the target states
-            current_target_epsilon_closure = \
-                self.get_epsilon_closure_of_state_set(current_target_indices,
-                                                      epsilon_closure_db)
-            # -- set the begin of interval to come
-            current_interval_begin = item.position                      
-    
-        ## if proposal is not None:
-        ##    if    len(proposal)     != len(combinations) \
-        ##       or proposal.keys()   != combinations.keys() \
-        ##       or not proposal.values()[0].is_equal(combinations.values()[0]):
-        ##        print "##proposal:    ", proposal
-        ##        print "##combinations:", combinations
-
-        # (*) create the list of pairs [target-index-combination, trigger_set] 
-        return combinations
-
     def get_acceptance_state_list(self):
         return [ state for state in self.states.itervalues() if state.is_acceptance() ]
 
@@ -758,44 +640,6 @@ class StateMachine(object):
         for target_si, trigger_set in self.get_init_state().target_map.get_map().iteritems():
             yield target_si, trigger_set
 
-    def cut_first_transition(self, CloneStateMachineId=False):
-        """Cuts the first transition and leaves the remaining states in place. 
-        This solution is general(!) and it covers the case that there are 
-        transitions to the init state!
-        
-        EXAMPLE:
-            
-            .-- z -->(( 1 ))          z with: (( 1c ))
-          .'                   ---\
-        ( 0 )--- a -->( 2 )    ---/   a with: ( 2c )-- b ->( 0c )-- z -->(( 1c ))
-          \             /                       \           / 
-           '-<-- b ----'                         '-<- a ---'
-
-        where '0c', '1c', and '2c' are the cloned states of '0', '1', and '2'.
-
-        RETURNS: list of pairs: (trigger set, pruned state machine)
-                 
-        trigger set = NumberSet that triggers on the initial state to
-                      the remaining state machine.
-
-        pruned state machine = pruned cloned version of this state machine
-                               consisting of states that come behind the 
-                               state which is reached by 'trigger set'.
-
-        ADAPTS:  Makes the init state's success state the new init state.
-        """
-        successor_db = self.get_successor_db()
-
-        if CloneStateMachineId: cloned_sm_id = self.get_id()
-        else:                   cloned_sm_id = None
-
-        return [
-            (trigger_set, self.clone_from_state_subset(target_si, 
-                                                       list(successor_db[target_si]) + [target_si],
-                                                       cloned_sm_id))
-            for target_si, trigger_set in self.iterable_init_state_transitions()
-        ]
-            
     def clean_up(self):
         # Delete states which are not connected from the init state.
         self.delete_orphaned_states()
@@ -850,18 +694,27 @@ class StateMachine(object):
             result.add(target_index)
             self.__dive_for_epsilon_closure(target_index, result)
 
-    def is_empty(self):
-        """If state machine only contains the initial state that points nowhere,
-           then it is empty.
-        """
-        if len(self.states) != 1: return False
-        return self.states[self.init_state_index].target_map.is_empty()
-
     def is_DFA_compliant(self):
         for state in self.states.values():
             if state.target_map.is_DFA_compliant() == False: 
                 return False
         return True
+
+    def is_AcceptAllState(self, StateIndex):
+        """RETURNS: True,  if the state accepts and iterates on every character to
+                           itself.
+                    False, else.
+        """
+        state = self.states[StateIndex]
+        if not state.is_acceptance():     return False
+
+        tm = state.target_map.get_map()
+        if len(tm) != 1:                  return False
+
+        target_index, trigger_set = tm.iteritems().next()
+        if   target_index != StateIndex:  return False
+        elif not trigger_set.is_all():    return False
+        else:                             return True
 
     def has_orphaned_states(self):
         """Detect whether there are states where there is no transition to them."""
@@ -1145,39 +998,3 @@ class StateMachine(object):
             for number_set in state.target_map.get_map().itervalues():
                 number_set.assert_range(Range.minimum(), Range.supremum())
            
-# NO USES YET: 'MultiOccurrenceNumberList'
-# Candidate to support list based-indexing for caches.
-# in "StateMachine.get_elementary_trigger_sets(self, StateIdxList, ...)"
-class MultiOccurrenceNumberList(object):
-    __slots__ = ("db", "hash_value")
-
-    def __init__(self):
-        self.db         = defaultdict(int)
-        self.hash_value = 0
-
-    def enter(self, X):
-        if X not in self.db:
-            self.hash_value ^= X
-        else:
-            self.db[X] += 1
-
-    def remove(self, X):
-        self.db[X] -= 1
-        if not self.db[X]:
-            self.hash_value ^= X
-
-    def __hash__(self):
-        return self.hash_value
-
-    def __eq__(self, Other):
-        # Clean self and other.
-        for x, occurrence_n in self.db.keys():
-            if not occurrence_n: del self.db[x]
-            other_occurrence = Other.db.get(x)
-            # '0' or 'None'
-            if not other_occurrence: return False
-
-        for x, occurrence_n in Other.db.iterkeys():
-            if not occurrence_n: continue
-            if x not in self.db: return False
-        return True

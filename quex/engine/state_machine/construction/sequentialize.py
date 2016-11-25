@@ -25,7 +25,7 @@ def do(the_state_machine_list,
 
     # state machines with no states can be deleted from the list. they do not do anything
     # and do not introduce triggers.          
-    state_machine_list = filter(lambda sm: not sm.is_empty(), the_state_machine_list)         
+    state_machine_list = filter(lambda sm: not sm.is_Empty(), the_state_machine_list)         
    
     if len(state_machine_list) < 2:
         if len(state_machine_list) < 1: return StateMachine()

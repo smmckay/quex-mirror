@@ -1,4 +1,4 @@
-import quex.engine.state_machine.check.special              as special
+from   quex.engine.state_machine.core                       import StateMachine
 import quex.engine.state_machine.algorithm.beautifier       as beautifier
 import quex.engine.state_machine.construction.sequentialize as sequentialize
 import quex.engine.state_machine.construction.repeat        as repeat
@@ -7,7 +7,7 @@ import quex.engine.state_machine.algebra.complement_begin   as complement_begin
 def do(SM_A, SM_B):
     """\NotIn{P Q} = \NotBegin{P \Any*(Q+)}
     """
-    all_star      = repeat.do(special.get_any(), min_repetition_n=0)
+    all_star      = repeat.do(StateMachine.Any(), min_repetition_n=0)
     sm_b_repeated = repeat.do(SM_B, min_repetition_n=1)
 
     tmp = sequentialize.do([all_star, sm_b_repeated], 

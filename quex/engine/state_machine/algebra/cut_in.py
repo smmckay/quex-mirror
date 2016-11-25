@@ -21,7 +21,7 @@ def do(SM_A, SM_B):
 #
 #
 #    for state_index, state in SM_A.iter
-#    all_star      = repeat.do(special.get_any(), min_repetition_n=0)
+#    all_star      = repeat.do(StateMachine.Any(), min_repetition_n=0)
 #    sm_b_repeated = repeat.do(SM_B, min_repetition_n=1)
 #
 #    tmp = sequentialize.do([all_star, sm_b_repeated], 

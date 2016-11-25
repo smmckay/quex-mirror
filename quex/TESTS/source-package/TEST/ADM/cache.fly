@@ -2,41 +2,41 @@
 title: C;
 title_group: Source Packager;
 file_name: test-c.sh;
-hwut_info_time: 1454022470L;
+hwut_info_time: 1479757921L;
 same_f: True;
 result_list: [
-  [ plain; OK; 1.155343; 0; ]
-  [ iconv; OK; 1.172274; 0; ]
-  [ icu; OK; 1.214064; 0; ]
-  [ codec; OK; 1.042532; -396965334; ]
-  [ codec-utf8; OK; 1.084878; 0; ]
-  [ codec-utf16; OK; 1.058952; 0; ]
-  [ post-categorizer; OK; 1.247954; 0; ]
-  [ no-string-accumulator; OK; 1.138975; 0; ]
-  [ no-include-stack; OK; 1.186737; 0; ]
-  [ no-counter; OK; 1.123443; 0; ]
-  [ manual-token-class; OK; 1.046026; 0; ]
-  [ customized-token-class; OK; 1.154410; 0; ]
+  [ plain; OK; 1.148641; 0; ]
+  [ iconv; OK; 1.172194; 0; ]
+  [ icu; OK; 1.217035; 0; ]
+  [ codec; OK; 1.038026; -396965334; ]
+  [ codec-utf8; OK; 1.084074; 0; ]
+  [ codec-utf16; OK; 1.056327; 0; ]
+  [ post-categorizer; OK; 1.233363; 0; ]
+  [ no-string-accumulator; OK; 1.126455; 0; ]
+  [ no-include-stack; OK; 1.183616; 0; ]
+  [ no-counter; OK; 1.121689; 0; ]
+  [ manual-token-class; OK; 1.045153; 0; ]
+  [ customized-token-class; OK; 1.151108; 0; ]
 ]
 }
 {
 title: C++;
 title_group: Source Packager;
 file_name: test-cpp.sh;
-hwut_info_time: 1454022470L;
+hwut_info_time: 1479757921L;
 same_f: True;
 result_list: [
-  [ plain; OK; 1.464752; 0; ]
-  [ iconv; OK; 1.480397; 0; ]
-  [ icu; OK; 1.576716; 0; ]
-  [ codec; OK; 1.428546; -1161511198; ]
-  [ codec-utf8; OK; 1.475642; 0; ]
-  [ codec-utf16; OK; 1.433593; 0; ]
-  [ post-categorizer; OK; 1.609448; 0; ]
-  [ no-string-accumulator; OK; 1.452378; 0; ]
-  [ no-include-stack; OK; 1.572033; 0; ]
-  [ no-counter; OK; 1.443876; 0; ]
-  [ manual-token-class; OK; 1.397206; 0; ]
-  [ customized-token-class; OK; 1.478791; 0; ]
+  [ plain; OK; 1.452212; 0; ]
+  [ iconv; OK; 1.469554; 0; ]
+  [ icu; OK; 1.566596; 0; ]
+  [ codec; OK; 1.418990; -1161511198; ]
+  [ codec-utf8; OK; 1.465815; 0; ]
+  [ codec-utf16; OK; 1.425368; 0; ]
+  [ post-categorizer; OK; 1.599373; 0; ]
+  [ no-string-accumulator; OK; 1.453888; 0; ]
+  [ no-include-stack; OK; 1.559980; 0; ]
+  [ no-counter; OK; 1.426413; 0; ]
+  [ manual-token-class; OK; 1.376642; 0; ]
+  [ customized-token-class; OK; 1.443760; 0; ]
 ]
 }

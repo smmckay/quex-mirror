@@ -2,58 +2,58 @@
 title: Hopcroft optimization (minimize state set);
 title_group: DFA;
 file_name: test-hopcroft-minimization.py;
-hwut_info_time: 1461220443L;
+hwut_info_time: 1479757922L;
 same_f: True;
 result_list: [
-  [ NEW; OK; 0.070095; 0; ]
-  [ ADAPT; OK; 0.072519; 0; ]
+  [ NEW; OK; 0.076353; 0; ]
+  [ ADAPT; OK; 0.073715; 0; ]
 ]
 }
 {
 title: Hopcroft optimization (minimize state set) II;
 title_group: DFA;
 file_name: test-hopcroft-minimization-2.py;
-hwut_info_time: 1461220443L;
+hwut_info_time: 1479757922L;
 same_f: True;
 result_list: [
-  [ NEW; OK; 0.115242; 0; ]
-  [ ADAPT; OK; 0.109903; 0; ]
+  [ NEW; OK; 0.114588; 0; ]
+  [ ADAPT; OK; 0.113955; 0; ]
 ]
 }
 {
 title: Hopcroft optimization III (state machine combination);
 title_group: DFA;
 file_name: test-hopcroft-minimization-3.py;
-hwut_info_time: 1461220443L;
+hwut_info_time: 1479757922L;
 result_list: [
-  [ NEW; OK; 0.057881; 0; ]
-  [ ADAPT; OK; 0.056815; 0; ]
+  [ NEW; OK; 0.056677; 0; ]
+  [ ADAPT; OK; 0.055558; 0; ]
 ]
 }
 {
 title: Conversion to DFA (subset construction);
 title_group: NFA;
 file_name: test-nfa-to-dfa.py;
-hwut_info_time: 1461220443L;
+hwut_info_time: 1479757922L;
 result_list: [
-  [ ; OK; 0.055239; 0; ]
+  [ ; OK; 0.060949; 0; ]
 ]
 }
 {
 title: Conversion to DFA (subset construction);
 title_group: NFA;
 file_name: test-nfa-to-dfa-ng.py;
-hwut_info_time: 1461220443L;
+hwut_info_time: 1479757922L;
 result_list: [
-  [ ; OK; 0.055591; 0; ]
+  [ ; OK; 0.057610; 0; ]
 ]
 }
 {
 title: Conversion to DFA - Special Case;
 title_group: NFA;
 file_name: test-nfa-to-dfa-special.py;
-hwut_info_time: 1461220443L;
+hwut_info_time: 1479757922L;
 result_list: [
-  [ ; OK; 0.100776; 0; ]
+  [ ; OK; 0.102507; 0; ]
 ]
 }

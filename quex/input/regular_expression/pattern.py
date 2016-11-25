@@ -164,7 +164,7 @@ class Pattern_Prep(object):
                           "Please, log a defect at the projects website quex.sourceforge.net.\n"    + \
                           "Orphan state(s) = " + repr(Sm.get_orphaned_state_index_list()), 
                           Sr, DontExitF=True)
-            elif Sm.is_empty():
+            elif Sm.is_Empty():
                 error.log("Empty %spattern." % Name, Sr)
 
             elif not AllowNothingIsNecessaryF:
@@ -316,7 +316,7 @@ class Pattern_Prep(object):
                 if sm is None: continue
                 sm.delete_transitions_on_number(character)
                 sm.clean_up()
-                if sm.is_empty(): 
+                if sm.is_Empty(): 
                     my_error(name, self)
 
     def __finalize_transform(self, TrafoInfo):

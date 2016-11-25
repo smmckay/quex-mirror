@@ -4,7 +4,6 @@
 from   quex.engine.state_machine.core          import StateMachine
 from   quex.engine.state_machine.state.core    import State
 import quex.engine.state_machine.index         as index
-import quex.engine.state_machine.check.special as special
 from   quex.engine.misc.tools import typed
 
 @typed(StateMachineList=[StateMachine])
@@ -27,9 +26,11 @@ def do(StateMachineList, CommonTerminalStateF=True, CloneF=True):
     """
     assert len(StateMachineList) != 0
               
+    def consider(sm):
+        return not sm.is_Empty() and sm.get_init_state().has_transitions()
     # filter out empty state machines from the consideration          
-    state_machine_list       = [ sm for sm in StateMachineList if not (sm.is_empty() or special.is_none(sm))]
-    empty_state_machine_list = [ sm for sm in StateMachineList if     (sm.is_empty() or special.is_none(sm))]
+    state_machine_list       = [ sm for sm in StateMachineList if consider(sm) ]
+    empty_state_machine_list = [ sm for sm in StateMachineList if not consider(sm) ]
 
     if len(state_machine_list) < 2:
         if len(state_machine_list) < 1: result = StateMachine()

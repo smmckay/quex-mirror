@@ -5,7 +5,10 @@ def line(sm, *StateIndexSequence):
     for info in StateIndexSequence[1:]:
         if type(info) != tuple:
             si = long(info)
-            sm.add_transition(prev_si, 66, si)
+            if unique_transition_f():
+                sm.add_transition(prev_si, unique(), si)
+            else:
+                sm.add_transition(prev_si, 66, si)
         elif info[0] is None:
             si = long(info[1])
             sm.add_epsilon_transition(prev_si, si)
@@ -47,14 +50,17 @@ def get_fork(sm):
                          \              |
                           '->--(4)-->---'
     """
-    sm.add_transition(0L, 66, 1L)
-    sm.add_transition(1L, 66, 2L)
-    sm.add_transition(1L, 66, 3L)
-    sm.add_transition(1L, 66, 4L)
-    sm.add_transition(2L, 66, 5L)
-    sm.add_transition(3L, 66, 5L)
-    sm.add_transition(4L, 66, 5L)
-    sm.add_transition(5L, 66, 6L)
+    def v():
+        if unique_transition_f(): return unique()
+        else:                     return 66
+    sm.add_transition(0L, v(), 1L)
+    sm.add_transition(1L, v(), 2L)
+    sm.add_transition(1L, v(), 3L)
+    sm.add_transition(1L, v(), 4L)
+    sm.add_transition(2L, v(), 5L)
+    sm.add_transition(3L, v(), 5L)
+    sm.add_transition(4L, v(), 5L)
+    sm.add_transition(5L, v(), 6L)
     return sm, 7, pic
 
 def get_fork2(sm):
@@ -226,6 +232,34 @@ def get_tree(sm):
 def get_sm_shape_names():
     return "linear, butterfly, long_loop, nested_loop, mini_loop, fork, fork2, fork3, fork4, tree, mini_bubble, bubble, bubble2, bubble2b, bubble3, bubble4;"
 
+def get_sm_shape_names_list():
+    return get_sm_shape_names().replace(",", " ").replace(";", "").split()
+
+def get_sm_shape_by_name_with_acceptance(Name):
+    sm = get_sm_shape_by_name(Name)[0]
+    acceptance_state_list_db = {
+        "linear":      [6],
+        "butterfly":   [7],
+        "long_loop":   [6],
+        "nested_loop": [4],
+        "mini_loop":   [3],
+        "fork":        [6],
+        "fork2":       [5],
+        "fork3":       [5, 6, 7],
+        "fork4":       [7],
+        "mini_bubble": [1],
+        "bubble":      [1, 2],
+        "bubble2":     [3, 4],
+        "bubble2b":    [3, 4],
+        "bubble3":     [2, 3],
+        "bubble4":     [3, 2],
+        "tree":        [3, 4, 6, 7],
+    }
+
+    for si in acceptance_state_list_db[Name]:
+        sm.states[si].set_acceptance(True)
+    return sm
+
 def get_sm_shape_by_name(Name):
     sm = StateMachine(InitStateIndex=0L)
     if   Name == "linear":      sm, state_n, pic = get_linear(sm)
@@ -245,3 +279,20 @@ def get_sm_shape_by_name(Name):
     elif Name == "bubble4":     sm, state_n, pic = get_bubble4(sm)
     else:                       sm, state_n, pic = get_tree(sm)
     return sm, state_n, pic
+
+
+__unique_transition_f = [ False ]
+
+def set_unique_transition_f():
+    global __unique_transition_f
+    __unique_transition_f[0] = True
+
+def unique_transition_f():
+    return __unique_transition_f[0]
+
+__value = 1
+def unique():
+    global __value
+    __value += 1
+    return __value
+

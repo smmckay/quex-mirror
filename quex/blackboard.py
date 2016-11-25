@@ -155,7 +155,7 @@ E_IncidenceIDs = Enum(
 # => implement as class
 # E_Border = Enum("BEGIN", "END", "UNDEFINED", "_DEBUG_Border")
 class E_Border:
-    BEGIN     = 1
+    BEGIN     = 1   # BEGIN > END is essential for comparison!
     END       = 0
 
 E_DoorIdIndex = Enum("TRANSITION_BLOCK", 

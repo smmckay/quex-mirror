@@ -14,10 +14,8 @@ import quex.engine.state_machine.algebra.complement_begin     as complement_begi
 import quex.engine.state_machine.algebra.complement_end       as complement_end  
 import quex.engine.state_machine.algebra.complement_end       as complement_in  
 import quex.engine.state_machine.algebra.union                as union
-from   quex.engine.state_machine.check.special                import is_all, is_none
 import quex.engine.state_machine.check.identity               as     identity
 import quex.engine.state_machine.check.superset               as     superset
-from   quex.engine.state_machine.check.special                import get_all, get_none
 
 from   itertools import islice
 

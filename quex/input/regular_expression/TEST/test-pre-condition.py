@@ -10,6 +10,7 @@ Setup.path_limit_code   = -1
 
 if "--hwut-info" in sys.argv:
     print "Conditional Analysis: pre conditions"
+    print "HAPPY: pre=[0-9]+;"
     sys.exit(0)
     
 def test(TestString):

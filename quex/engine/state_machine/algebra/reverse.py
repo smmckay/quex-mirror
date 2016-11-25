@@ -10,7 +10,6 @@
 from   quex.engine.state_machine.state.single_entry   import SeAccept
 from   quex.engine.state_machine.core                 import StateMachine
 import quex.engine.state_machine.algorithm.beautifier as beautifier
-import quex.engine.state_machine.check.special        as special
 
 def do(SM, EnsureDFA_f=True):
     result = __do(SM)
@@ -27,7 +26,7 @@ def __do(SM):
         # If there is no acceptance state in a state machine, the state machine
         # cannot match any pattern, it is equivalent to '\None'. The reverse
         # of \None is \None.
-        return special.get_none()
+        return StateMachine.Empty()
        
     # Ensure that each target state index has a state inside the state machine
     for state_index in SM.states.keys():

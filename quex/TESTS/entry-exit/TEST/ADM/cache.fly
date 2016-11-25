@@ -1,18 +1,18 @@
 {
 title: With Errors;
 file_name: bad.sh;
-hwut_info_time: 1454022470L;
+hwut_info_time: 1479757921L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 1.874719; 0; ]
+  [ ; OK; 1.866682; 0; ]
 ]
 }
 {
 title: Without Errors;
 file_name: good.sh;
-hwut_info_time: 1454022470L;
+hwut_info_time: 1479757921L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 2.410436; 0; ]
+  [ ; OK; 2.292568; 0; ]
 ]
 }

@@ -31,7 +31,14 @@ def parse(fh):
     mode_name = read_identifier(fh, OnMissingStr="Missing identifier at beginning of mode definition.")
 
     # NOTE: constructor does register this mode in the mode_db
-    new_mode  = Mode_PrepPrep(mode_name, SourceRef.from_FileHandle(fh))
+    new_mode = Mode_PrepPrep(mode_name, SourceRef.from_FileHandle(fh))
+    if new_mode.name in blackboard.mode_prep_prep_db:
+        error.log("Mode '%s' has been defined twice.\n" % new_mode.name,
+                  new_mode.sr, DontExitF=True)
+        error.log("Earlier definition here.",
+                  blackboard.mode_prep_prep_db[new_mode.name].sr)
+
+    blackboard.mode_prep_prep_db[new_mode.name] = new_mode
 
     # (*) inherited modes / option_db
     skip_whitespace(fh)

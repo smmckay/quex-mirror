@@ -5,6 +5,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine     as regex
 import quex.engine.state_machine.algebra.difference as difference
+import quex.engine.state_machine.algorithm.beautifier as beautifier
 
 if "--hwut-info" in sys.argv:
     print "Difference Operation"
@@ -17,7 +18,8 @@ def test(A, B):
         print ("sub   = " + SubPattern).replace("\n", "\\n").replace("\t", "\\t")
         super_p = regex.do(SuperPattern, {}).sm
         sub_p   = regex.do(SubPattern, {}).sm
-        print "result = ", difference.do(super_p, sub_p).get_string(NormalizeF=True)
+        result  = difference.do(super_p, sub_p)
+        print "result = ", difference.do(super_p, sub_p) # .get_string(NormalizeF=False)
     print "---------------------------"
     __core(A, B)
     print
@@ -70,7 +72,7 @@ elif "Misc" in sys.argv:
 
     test('ab("12"|("AB"|"XY")+)+"12"("AA"|"BB")?z', 'ab12AB12AAz')
 
-elif "Pre-Post-Conditions":
+elif "Pre-Post-Conditions" in sys.argv:
     # with pre and post-conditions
     test('A/B',      'AB')
     test('A/B/',     'B')
@@ -80,3 +82,6 @@ elif "Pre-Post-Conditions":
     test('A/B(C?)/', 'A+/B/')
     test('B$',  'B')
     test('^B',  'B')
+
+else:
+    test('[0-9]+', '0')

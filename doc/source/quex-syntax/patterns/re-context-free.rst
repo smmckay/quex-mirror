@@ -24,6 +24,10 @@ must be UTF8 encoded.
      systems where newline is coded as '0x0D, 0x0A' this does match the '0x0D'
      character whenever a newline occurs.
 
+.. describe:: \\Any
+
+     Matches absolutely any character.
+
 .. describe:: [xyz]
 
      a "character class" or "character set"; in this case, the pattern matches
@@ -137,77 +141,24 @@ must be UTF8 encoded.
         By setting the *t* flag, the turkish case mapping is enabled. Whenever
         the turkish case folding is an alternative, it is preferred.
     
-     The default behavior corresponds to the flags *s* and *m* 
-     (``\C{R}`` ≡ ``\C(sm){R}``) for patterns and *s* (``\C{R}`` ≡ ``\C(s){R}``) 
-     for character sets. Characters that are beyond the scope of the current 
-     encoding or input character byte width are cut out seamlessly. 
+     The default behavior corresponds to the flags *s* and *m* (i.e. ``\C{R}``
+     ≡ ``\C(sm){R}``) for patterns and *s* (i.e. ``\C{R}`` ≡ ``\C(s){R}``) for
+     character sets. Characters that are beyond the scope of the current
+     encoding or input character byte width are cut out. 
 
 .. describe:: \\R{ ... }
 
-     Reverse the pattern specified in brackets. If for example, it is
+     Reverses the pattern specified in brackets. If for example, it is
      specified::
 
-            "Hello "\R{dlroW} => QUEX_TKN_HELLO_WORD(Lexeme)
+            \R{dlroW} => QUEX_TKN_HELLO_WORD(Lexeme)
 
-     then the token ``HELLO_WORLD`` would be sent upon the appearance of 
-     'Hello World' in the input stream. This feature is mainly useful for
-     definitions of patterns of right-to-left writing systems such 
-     as Arabic, Binti and Hebrew. Chinese, Japanese, as well as ancient 
-     Greek, ancient Latin, Egyptian, and Etruscan can be written in 
-     both directions.
+     then the token ``WORLD`` would be sent upon the appearance of 'World' in
+     the input stream. This feature is mainly useful for definitions of
+     patterns of right-to-left writing systems such as Arabic, Binti and
+     Hebrew. Chinese, Japanese, as well as ancient Greek, ancient Latin,
+     Egyptian, and Etruscan can be written in both directions.
 
-.. describe:: \\A{P}
-
-     Anti-Pattern. An anti-pattern of a pattern ``P`` matches all lexemes
-     which are caught by a match failure of ``P``. 
-
-     Let `L` be the set of lexemes that matches `P`. Let s(L) be a
-     transformation which extracts out 'shortest' alternatives.  Let Lx be the
-     set of *x* from L for which there is a second lexeme *y* in L that starts
-     with *x*. Then,::
-
-                                 s(L) := L - Lx 
-     
-     As a result it is safe to assume that in s(L) there are no two lexemes
-     *x* and *y* so that *x* is the start of *y*. For example, the pattern 
-     '(ab)|(abc)' is matched by "ab" and "abc". The latter starts with the
-     former. The transformation s((ab)|(abc)) takes out the longest 
-     and matches therefore only "ab".
-
-     Anti-Pattern
-        Let Q be the set of all lexemes which are not matched by P. Let
-        s(R) be the pattern that matches shortest alternatives in R. Then, the
-        anti-pattern of P is the pattern which matches the set of lexemes
-        given by 's(Q)'.
-
-     .. _fig-anti-pattern-0:
- 
-     .. figure:: ../../figures/anti-pattern-0.png
- 
-        State machine matching the pattern ``for``.
- 
-     .. _fig-anti-pattern-1:
- 
-     .. figure:: ../../figures/anti-pattern-1.png
- 
-        State machine implementing the match of pattern ``\A{for}``.
-
-     Figures :ref:`fig-anti-pattern-0` and :ref:`fig-anti-pattern-1` show the 
-     state machines for matching the pattern ``for`` and ``\A{for}``. These 
-     illustrations demonstrate that the anti-pattern does not match all 
-     patterns which are not matched by ``for``. Instead, it matches a 
-     'shortest subset'.
-   
-     Anti-patterns are especially useful for post contexts 
-     (section :ref:`sec-pre-and-post-conditions`) and to implement shortest 
-     match behavior with a greedy match analyzer engine 
-     (section :ref:`usage-context-free-pitfalls`).
-
-     .. note::
-
-        If it is necessary to ensure that only one character is matched in 
-        case of failure of all other patterns, then it is best to rely on the
-        '.' specifier--as explained above.
 
 .. describe:: \\0 
 
@@ -228,21 +179,21 @@ must be UTF8 encoded.
 
 .. describe:: \\X7A27 
 
-     the character with hexadecimal value 7A27. A maximum of *four*
-     hexadecimal digits can be specified. The delimiting rules are are
-     analogous to the rules for `\U`. 
+     the character with hexadecimal value 7A27. A maximum of *four* hexadecimal
+     digits can be specified. The delimiting rules are are analogous to the
+     rules for `\U`. 
 
 .. describe:: \\x27 
 
-    the character with hexadecimal value 27. A maximum
-    of *two* hexadecimal digits can be specified. The
-    delimiting rules are are analogous to the rules for `\U`. 
+    the character with hexadecimal value 27. A maximum of *two* hexadecimal
+    digits can be specified. The delimiting rules are are analogous to the
+    rules for `\U`. 
 
 .. describe:: \\123 
 
-    the character with octal value 123, a maximum of three
-    digits less than 8 can follow the backslash. The
-    delimiting rules are analogous to the rules for `\U`. 
+    the character with octal value 123, a maximum of three digits less than 8
+    can follow the backslash. The delimiting rules are analogous to the rules
+    for `\U`. 
 
 
 .. describe:: \\a, \\b, \\f, \\n, \\r, \\t, \\r, or \\v
@@ -275,16 +226,14 @@ must be UTF8 encoded.
 
  .. note:: 
 
-    For some reason, it has caused some confusion in the past, that pattern
-    substitution requires an extra pair of curly brackets, i.e. to reverse
+    The brackets for pattern substituion and the brackets required for framing
+    a command are not the same--both need to be specified. E.g.  to reverse
     what has been defined as ``PATTERN`` it needs to to be written::
 
                       \R{{PATTERN}} 
 
     which reads from inside to outside: expand the pattern definition,
-    then reverse expanded pattern. Inside the curly brackets of ``\R{...}``
-    any pattern expression may occur in the well defined manner.
-
+    then reverse expanded pattern. 
 
 Any character specified as character code, i.e. using `\`, `\x`, `\X`, or `\U`
 are considered to be Unicode code points. For applications in English spoken
@@ -292,19 +241,20 @@ cultures this is identical to the ASCII encoding. For details about Unicode
 code tables consider the standard :ref:`Unicode50`. Section
 :ref:`sec:ucs-properties` gives an overview over the Unicode property system.
 
-Two special expressions are due to the tradition of lex/flex. In Quex's 
-terminology they are actually event handlers. They are still present in 
-recognition of history and can only be used in the ``mode`` section:
+Two special expressions are due to the tradition of lex/flex. In Quex's
+terminology they are actually event handlers. They are still present in the
+form of patterns in recognition of history and can only be used in the ``mode``
+section:
 
 .. describe:: <<EOF>> 
 
-    the incidence of an end-of-file (end of data-stream) it is a 
-    synonym for the incidence handler ``on_end_of_stream``. 
+    the incidence of an end-of-file (end of data-stream) it is a synonym for
+    the incidence handler ``on_end_of_stream``. 
 
 .. describe:: <<FAIL>> 
 
-    the incidence of failure, i.e. no single pattern matched. It is 
-    a synonym for ``on_failure``.
+    the incidence of failure, i.e. no single pattern matched. It is a synonym
+    for ``on_failure``.
 
 The incidence handlers ``on_end_of_stream`` and ``on_failure`` are explained in
 section :ref:`sec:incidence-handlers`.

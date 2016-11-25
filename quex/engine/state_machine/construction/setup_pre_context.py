@@ -28,8 +28,8 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF):
     #___________________________________________________________________________________________
     # (*) do some consistency checking   
     # -- state machines with no states are senseless here. 
-    assert not the_state_machine.is_empty() 
-    assert pre_context_sm is None or not pre_context_sm.is_empty()
+    assert not the_state_machine.is_Empty() 
+    assert pre_context_sm is None or not pre_context_sm.is_Empty()
     # -- trivial pre-conditions should be added last, for simplicity
 
     #___________________________________________________________________________________________

@@ -139,7 +139,6 @@ class Mode_PrepPrep:
 
     def __init__(self, Name, SourceReference):
         # Register Mode_PrepPrep at the mode database
-        blackboard.mode_prep_prep_db[Name] = self
         self.name  = Name
         self.sr    = SourceReference
 

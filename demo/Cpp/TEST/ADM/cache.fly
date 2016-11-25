@@ -1,211 +1,211 @@
 {
 title: No references to C demos;
 file_name: no-references-to-c.sh;
-hwut_info_time: 1472366238L;
+hwut_info_time: 1479757924L;
 result_list: [
-  [ ; OK; 0.018879; 356464947; ]
+  [ ; OK; 0.018967; 356464947; ]
 ]
 }
 {
 title: Single Mode Example;
 title_group: demo/000;
 file_name: 000.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 5.443435; 0; ]
-  [ DEBUG; OK; 5.818508; 0; ]
+  [ NDEBUG; OK; 5.264839; 0; ]
+  [ DEBUG; OK; 5.712114; 0; ]
 ]
 }
 {
 title: Multiple Modes, Mode Transitions;
 title_group: demo/001;
 file_name: 001.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 5.452232; 0; ]
-  [ DEBUG; OK; 5.892218; 0; ]
+  [ NDEBUG; OK; 5.182322; 0; ]
+  [ DEBUG; OK; 5.638418; 0; ]
 ]
 }
 {
 title: Indentation Based Scopes;
 title_group: demo/002;
 file_name: 002.sh;
-hwut_info_time: 1472451934L;
+hwut_info_time: 1479757924L;
 same_f: True;
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ NDEBUG; OK; 2.255900; 0; ]
-  [ DEBUG; OK; 6.027595; 0; ]
-  [ customized; OK; 2.306030; 0; ]
+  [ NDEBUG; OK; 2.275946; 0; ]
+  [ DEBUG; OK; 5.957336; 0; ]
+  [ customized; OK; 2.360030; 0; ]
 ]
 }
 {
 title: Byte Order Mark (BOM) Cutting;
 title_group: demo/003;
 file_name: 003-bom.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 result_list: [
-  [ Without; OK; 5.701803; 0; ]
-  [ UTF8-BOM; OK; 5.625354; 0; ]
-  [ UTF16BE-BOM; OK; 7.223702; 0; ]
+  [ Without; OK; 5.640450; 0; ]
+  [ UTF8-BOM; OK; 5.685190; 0; ]
+  [ UTF16BE-BOM; OK; 7.220182; 0; ]
 ]
 }
 {
 title: Unicode Based Lexical Analyzis (Using GNU's Lib IConv);
 title_group: demo/003;
 file_name: 003.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ BPC=2; OK; 7.595086; 0; ]
-  [ BPC=2_NDEBUG; OK; 5.587145; 0; ]
-  [ BPC=4; OK; 5.573974; 0; ]
-  [ BPC=4_NDEBUG; OK; 5.641593; 0; ]
-  [ BPC=wchar_t; OK; 5.597506; 0; ]
+  [ BPC=2; OK; 7.425593; 0; ]
+  [ BPC=2_NDEBUG; OK; 5.606593; 0; ]
+  [ BPC=4; OK; 5.600923; 0; ]
+  [ BPC=4_NDEBUG; OK; 5.669756; 0; ]
+  [ BPC=wchar_t; OK; 5.572288; 0; ]
 ]
 }
 {
 title: Unicode Based Lexical Analyzis (Using IBM's ICU Library);
 title_group: demo/003;
 file_name: 003-icu.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ BPC=2; OK; 7.484505; 0; ]
-  [ BPC=2_NDEBUG; OK; 5.649828; 0; ]
-  [ BPC=4; OK; 5.598311; 0; ]
-  [ BPC=4_NDEBUG; OK; 5.775929; 0; ]
-  [ BPC=wchar_t; OK; 5.650129; 0; ]
+  [ BPC=2; OK; 7.398336; 0; ]
+  [ BPC=2_NDEBUG; OK; 5.618258; 0; ]
+  [ BPC=4; OK; 5.559703; 0; ]
+  [ BPC=4_NDEBUG; OK; 5.725967; 0; ]
+  [ BPC=wchar_t; OK; 5.629983; 0; ]
 ]
 }
 {
 title: A C-Lexical Analyser;
 title_group: demo/004;
 file_name: 004.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 6.824473; 0; ]
-  [ DEBUG; OK; 9.236189; 0; ]
+  [ NDEBUG; OK; 6.898449; 0; ]
+  [ DEBUG; OK; 9.077117; 0; ]
 ]
 }
 {
 title: Including Files;
 title_group: demo/005;
 file_name: 005.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 result_list: [
-  [ 1; OK; 6.813658; 0; ]
-  [ 1_NDEBUG; OK; 5.805338; 0; ]
-  [ 2; OK; 5.697892; 0; ]
-  [ 2_NDEBUG; OK; 5.491405; 0; ]
+  [ 1; OK; 5.757555; 0; ]
+  [ 1_NDEBUG; OK; 5.400074; 0; ]
+  [ 2; OK; 5.415489; 0; ]
+  [ 2_NDEBUG; OK; 5.358340; 0; ]
 ]
 }
 {
 title: Pseudo Ambiguous Post Conditions;
 title_group: demo/006;
 file_name: 006.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 5.732379; 0; ]
-  [ DEBUG; OK; 6.689789; 0; ]
+  [ NDEBUG; OK; 5.438659; 0; ]
+  [ DEBUG; OK; 5.928361; 0; ]
 ]
 }
 {
 title: Miscellaneous Features;
 title_group: demo/007;
 file_name: 007.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 6.153608; 0; ]
-  [ DEBUG; OK; 6.810303; 0; ]
+  [ NDEBUG; OK; 5.496039; 0; ]
+  [ DEBUG; OK; 6.234502; 0; ]
 ]
 }
 {
 title: Interface to Bison/Yacc (Contributed by Marco Antonelli);
 title_group: demo/008;
 file_name: 008.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 8.572562; 0; ]
-  [ DEBUG; OK; 7.863249; 0; ]
+  [ NDEBUG; OK; 6.985848; 0; ]
+  [ DEBUG; OK; 6.946349; 0; ]
 ]
 }
 {
 title: Lexers on pipes, sockets, and the command line.;
 title_group: demo/009;
 file_name: 009.sh;
-hwut_info_time: 1472452010L;
+hwut_info_time: 1479757924L;
 result_list: [
-  [ stdin; OK; 6.555649; 0; ]
-  [ stdin-utf8; OK; 10.343441; 1630162624; ]
-  [ socket; OK; 8.476575; 0; ]
-  [ socket-utf8; OK; 11.203944; -1802959497; ]
-  [ command-line; OK; 6.422200; 1279307427; ]
-  [ command-line-utf8; OK; 10.156079; 185006007; ]
+  [ stdin; OK; 5.694890; 0; ]
+  [ stdin-utf8; OK; 7.864359; 1630162624; ]
+  [ socket; OK; 7.985541; 0; ]
+  [ socket-utf8; OK; 10.076904; -1802959497; ]
+  [ command-line; OK; 5.727885; 1279307427; ]
+  [ command-line-utf8; OK; 7.865184; 185006007; ]
 ]
 }
 {
 title: Manual Buffer Filling (w/o Converter);
 title_group: demo/010;
 file_name: 010.sh;
-hwut_info_time: 1473600704L;
+hwut_info_time: 1479757924L;
 result_list: [
-  [ feeder-plain; OK; 7.937394; 1440434584; ]
-  [ feeder-converter; OK; 20.959140; 846498296; ]
-  [ gavager-plain; OK; 7.599651; 1857402259; ]
-  [ gavager-converter; OK; 12.414232; -339544945; ]
-  [ point-plain; OK; 6.150408; 973222677; ]
+  [ feeder-plain; OK; 6.765189; 1440434584; ]
+  [ feeder-converter; OK; 16.686072; 846498296; ]
+  [ gavager-plain; OK; 6.310267; 1857402259; ]
+  [ gavager-converter; OK; 9.962613; -339544945; ]
+  [ point-plain; OK; 5.019587; 973222677; ]
 ]
 }
 {
 title: Engine Encoding (Example ISO8859-7);
 title_group: demo/011;
 file_name: 011.sh;
-hwut_info_time: 1477175532L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ iso8859-7; OK; 6.830486; 0; ]
-  [ utf8; OK; 7.404156; 0; ]
-  [ utf16-be; OK; 7.166470; 0; ]
-  [ utf16-le; OK; 7.160965; 0; ]
+  [ iso8859-7; OK; 5.550907; 0; ]
+  [ utf8; OK; 5.725715; 0; ]
+  [ utf16-be; OK; 5.571251; 0; ]
+  [ utf16-le; OK; 5.544638; 0; ]
 ]
 }
 {
 title: Engine Encoding UTF16;
 title_group: demo/011b;
 file_name: 011b.sh;
-hwut_info_time: 1472452176L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ LE; OK; 7.412599; 0; ]
-  [ BE; OK; 7.567438; 0; ]
+  [ LE; OK; 5.583019; 0; ]
+  [ BE; OK; 5.574613; 0; ]
 ]
 }
 {
 title: Single Application/Multiple Lexical Analyzers;
 title_group: demo/012;
 file_name: 012.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 13.302521; 0; ]
-  [ DEBUG; OK; 17.685616; 0; ]
+  [ NDEBUG; OK; 10.272528; 0; ]
+  [ DEBUG; OK; 13.158851; 0; ]
 ]
 }
 {
 title: Multiple Lexical Analyzers -- shared token;
 title_group: demo/012b;
 file_name: 012b.sh;
-hwut_info_time: 1454022477L;
+hwut_info_time: 1479757924L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 16.391378; 0; ]
-  [ DEBUG; OK; 20.827469; 0; ]
+  [ NDEBUG; OK; 12.044827; 0; ]
+  [ DEBUG; OK; 14.704339; 0; ]
 ]
 }

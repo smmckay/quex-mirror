@@ -7,7 +7,6 @@ import quex.input.regular_expression.engine               as regex
 import quex.engine.state_machine.algebra.complement_begin as complement_begin
 import quex.engine.state_machine.algebra.union            as union
 import quex.engine.state_machine.algebra.intersection     as intersection
-import quex.engine.state_machine.check.special            as special
 import quex.engine.state_machine.check.identity           as identity
 import quex.engine.state_machine.check.superset           as superset
 import quex.engine.state_machine.algorithm.beautifier     as beautifier
@@ -32,11 +31,11 @@ def test(A, B):
         #print cutter.get_string(NormalizeF=False)
         result = clean(complement_begin.do(orig, cutter))
         print
-        if not special.is_none(result):
+        if not result.is_Empty():
             print "superset(Original, result):           %s" % superset.do(orig, result)
-        if not special.is_none(result):
+        if not result.is_Empty():
             tmp = clean(intersection.do([cutter, result]))
-            print "intersection(Cutter, result) is None: %s" % special.is_none(tmp)
+            print "intersection(Cutter, result) is None: %s" % tmp.is_Empty()
         tmp = clean(union.do([orig, result]))
         print "union(Original, result) == Original:  %s" % identity.do(tmp, orig)
         print
