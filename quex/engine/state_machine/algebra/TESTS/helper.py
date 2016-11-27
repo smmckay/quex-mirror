@@ -1,6 +1,7 @@
 from   quex.engine.state_machine.algebra.union        import do as union 
 from   quex.engine.state_machine.algebra.intersection import do as intersection 
 from   quex.engine.state_machine.algebra.complement   import do as complement 
+from   quex.engine.state_machine.algebra.difference   import do as difference 
 from   quex.engine.state_machine.check.identity       import do as identity 
 from   quex.engine.state_machine.core                 import StateMachine
 
@@ -14,10 +15,6 @@ def dfa(Str):
     return regex.do(Str, {}, AllowNothingIsNecessaryF=True).sm
 
 __dfa_list = [
-        StateMachine.Universal(),  # Matches all lexemes
-        StateMachine.Empty(),      # Matches the lexeme of zero length
-]
-__dfa_list.extend([
         StateMachine.Universal(),  # Matches all lexemes
         StateMachine.Empty(),      # Matches the lexeme of zero length
         #
@@ -45,7 +42,7 @@ __dfa_list.extend([
         # "Misc" 
         dfa('(pri|ri|n)+'),
         dfa('(p?r?i?|rin|n)+'),
-])
+]
 
 def add_more_DFAs():
     global __dfa_list
@@ -53,6 +50,11 @@ def add_more_DFAs():
         shapes.get_sm_shape_by_name_with_acceptance(name.strip())
         for name in shapes.get_sm_shape_names_list()
     )
+
+def sample_DFAs(Factor):
+    global __dfa_list
+    __dfa_list = [ dfa for i, dfa in enumerate(__dfa_list)
+                   if i % Factor == 0 ]
 
 assert all(isinstance(dfa, StateMachine) for dfa in __dfa_list)
 
@@ -68,8 +70,8 @@ def iterate2():
 
 def iterate3():
     for i, dfa0 in enumerate(__dfa_list):
-        for k, dfa1 in enumerate(__dfa_list[:i]):
-            for dfa2 in __dfa_list[:k]:
+        for k, dfa1 in enumerate(__dfa_list[i:]):
+            for dfa2 in __dfa_list[k:]:
                 yield dfa0, dfa1, dfa2
 
 def test1(function):
