@@ -210,6 +210,7 @@ class TargetMap:
             interval_list = trigger_set.get_intervals(PromiseToTreatWellF=True)
             for interval in interval_list: 
                 # add information about start and end of current interval
+                if interval.is_empty(): continue
                 history.append(history_item(interval.begin, E_Border.BEGIN, target_idx, Key))
                 history.append(history_item(interval.end, E_Border.END, target_idx, Key))
 

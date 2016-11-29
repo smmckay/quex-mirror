@@ -1,31 +1,34 @@
 Algebra of DFAs
 ===============
 
-The algebra of DFAs is a translation of the algebra of sets to set of laws,
-properties and operations on state machines. With the introduced set of
-operations and elements a symetric structure is presented allows a calculus on
-DFAs. 
+Quex implements an 'Algebra of DFAs'. That is, there is a set of operations on
+state machines and properties that is equivalent to th algebra of sets.  In
+fact, the operations involved are designed to match set operations in the *set
+of lexemes*. Each DFA matches a distinct set of lexemes. Operations of union,
+intersection, complement, etc. are developped so that the according set
+operations in the space of lexemes match. The result is a set of operations
+that shows a symetric structure and allows a calculus on DFAs. The following
+shows the example of the 'union' operation.  Let the regular expressions P and
+Q be defined as below::
 
-The basic operations of union, intersection, and complementation the are
-defined relying on terms of their counterpart on the space of lexemes.  A DFA
-is considered as a representation of the set of lexemes which it matches.  For
-example, let the regular expressions P and Q be defined as below::
-
-       P    [0-9]{2}
-       Q    [a-b]{2}
+       P    [0-9]
+       Q    [a-z]
 
 That is, P matches the lexemes::
 
-    "00", "01", "02", ... "99"
+    "0", "1", "2", ... "9"
 
 and Q matches lexemes following the pattern::
 
-    "aa", "ab", "ac", ... "zz"
+    "a", "b", "c", ... "z"
 
-Then, for example, the *union* of P and Q must produce a finites state
-automaton, i.e. regular expression, which matches the union of both, i.e.::
+In the space of lexemes the union between the two sets is::
 
-    "00", "01", "02", ... "99", "aa", "ab", "ac", ... "zz"
+    "0", "1", "2", ... "9", "a", "b", "c", ... "z"
+
+The 'union' operator on DFAs delivers a state machine that corresponds to::
+
+    [0-9a-z]
 
 The fundamental operations are available in Quex via the commands:
 
@@ -44,11 +47,13 @@ The fundamental operations are available in Quex via the commands:
    matches the *complementary* set of lexemes of what is matched by the regular
    expressions ``X``.
 
-There are two special patterns: 
+The set of all lexemes, the *universal set*, and the *empty set* of lexemes
+find the counterpart in the space of DFAs in the *universally matching DFA* and
+the *unmatching DFA* given by:
 
-.. '\\Empty': accepts nothing--does not match on any input.
+.. '\\Universal': matches any lexatom sequence.
 
-.. '\\Universal': matches any character. 
+.. '\\Empty': matches no lexeme at all, not even the zero-length lexeme. 
 
 The patterns ``Empty`` and ``Universal`` are symmetric with respect to the 
 complement operation, i.e. ``\Not{\Empty}`` is equivalent to ``\Universal``

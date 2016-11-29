@@ -24,6 +24,5 @@ def test(TestString):
         print x.message
 
 test("\\A{for}")    
-sys.exit()
 test("\\A{[ab][cd][de]}")    
 test("\\A{x+y+}")    

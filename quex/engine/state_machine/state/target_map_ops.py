@@ -138,6 +138,8 @@ def get_elementary_trigger_sets(StateIdxList, sm=None, epsilon_closure_db=None):
             else:
                 current_target_indices[item.target_idx] = 1
         else:        # == E_Border.END
+            if item.target_idx not in current_target_indices:
+                print "#ERROR:", history
             if current_target_indices[item.target_idx] > 1:
                 current_target_indices[item.target_idx] -= 1
             else:    
