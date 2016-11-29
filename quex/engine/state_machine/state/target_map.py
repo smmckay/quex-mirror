@@ -260,6 +260,14 @@ class TargetMap:
             if self.has_trigger(code): return True
         return False
 
+    def minimum(self):
+        if not self.__db: return None
+        return min(trigger_set.minimum() for trigger_set in self.__db.itervalues())
+
+    def least_greater_bound(self):
+        if not self.__db: return None
+        return max(trigger_set.least_greater_bound() for trigger_set in self.__db.itervalues())
+
     def has_trigger(self, CharCode):
         assert type(CharCode) == int
         if self.get_resulting_target_state_index(CharCode) is None: return False

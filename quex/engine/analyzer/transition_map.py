@@ -555,7 +555,7 @@ class TransitionMap(list):
 
         if TotalRangeF: 
             assert self[0][0].begin == Setup.buffer_codec.drain_set.minimum()
-            assert self[-1][0].end  == Setup.buffer_codec.drain_set.supremum()
+            assert self[-1][0].end  == Setup.buffer_codec.drain_set.least_greater_bound()
 
         iterable    = self.__iter__()
         info        = iterable.next()

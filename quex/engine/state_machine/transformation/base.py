@@ -91,7 +91,7 @@ class EncodingTrafo:
 
         assert LexatomByteN >= 1
         lexatom_min_value = self.drain_set.minimum()
-        lexatom_max_value = self.drain_set.supremum() - 1
+        lexatom_max_value = self.drain_set.least_greater_bound() - 1
         if LexatomByteN != -1:
             try:    
                 value_n = 256 ** LexatomByteN

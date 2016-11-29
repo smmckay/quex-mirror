@@ -996,5 +996,5 @@ class StateMachine(object):
     def assert_range(self, Range):
         for state in self.states.itervalues():
             for number_set in state.target_map.get_map().itervalues():
-                number_set.assert_range(Range.minimum(), Range.supremum())
+                number_set.assert_range(Range.minimum(), Range.least_greater_bound())
            

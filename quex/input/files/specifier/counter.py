@@ -95,7 +95,7 @@ class LineColumnCount_Prep(CountBase_Prep):
         # 
         ca_map = self._ca_map_specifier.finalize(
                               Setup.buffer_codec.source_set.minimum(), 
-                              Setup.buffer_codec.source_set.supremum(), 
+                              Setup.buffer_codec.source_set.least_greater_bound(), 
                               self.sr)
         check_grid_values_integer_multiples(ca_map)
         check_defined(ca_map, self.sr, E_CharacterCountType.LINE)
@@ -521,7 +521,7 @@ def LineColumnCount_Default():
         specifier.add(NumberSet(ord('\t')), E_CharacterCountType.GRID, 4, SourceRef_DEFAULT)
         specifier.define_else(E_CharacterCountType.COLUMN,   1, SourceRef_DEFAULT)     # Define: "\else"
         _ca_map_default = specifier.finalize(Setup.buffer_codec.source_set.minimum(), 
-                                             Setup.buffer_codec.source_set.supremum(), # Apply:  "\else"
+                                             Setup.buffer_codec.source_set.least_greater_bound(), # Apply:  "\else"
                                              SourceRef_DEFAULT) 
     return _ca_map_default
 

@@ -73,7 +73,7 @@ def get_Analyzer(StatesDescription):
         tm = TransitionMap.from_iterable(transition_map)
         tm.fill_gaps(E_StateIndices.DROP_OUT,
                      Setup.buffer_codec.drain_set.minimum(), 
-                     Setup.buffer_codec.drain_set.supremum())
+                     Setup.buffer_codec.drain_set.least_greater_bound())
         analyzer.state_db[state_index] = get_AnalyzerState(state_index, tm)
         all_state_index_set.update(x[1] for x in transition_map)
 

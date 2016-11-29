@@ -3,6 +3,7 @@ from   quex.engine.state_machine.algebra.intersection import do as intersection
 from   quex.engine.state_machine.algebra.complement   import do as complement 
 from   quex.engine.state_machine.algebra.difference   import do as difference 
 from   quex.engine.state_machine.check.identity       import do as identity 
+from   quex.engine.state_machine.check.superset       import do as superset 
 from   quex.engine.state_machine.core                 import StateMachine
 
 import quex.input.regular_expression.engine           as     regex

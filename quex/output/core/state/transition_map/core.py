@@ -14,7 +14,7 @@ def do(txt, TM):
     """
     #__________________________________________________________________________
     #
-    #   NOT:      TM.prune(min, supremum) !!
+    #   NOT:      TM.prune(min, least_greater_bound) !!
     #
     # Pruning at this point in time would mean that possible transitions are 
     # cut. As a consequence whole branches of the the state machine may be 

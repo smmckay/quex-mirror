@@ -116,7 +116,7 @@ def prepare(tm):
     tm.sort()
     tm.fill_gaps(E_IncidenceIDs.MATCH_FAILURE, 
                  Setup.buffer_codec.drain_set.minimum(), 
-                 Setup.buffer_codec.drain_set.supremum())
+                 Setup.buffer_codec.drain_set.least_greater_bound())
 
     iid_db = defaultdict(NumberSet)
     for interval, iid in tm:

@@ -480,7 +480,7 @@ class NumberSet(object):
         if len(self.__intervals) == 0: return sys.maxint   # i.e. an absurd value
         else:                          return self.__intervals[0].begin
 
-    def supremum(self):
+    def least_greater_bound(self):
         if len(self.__intervals) == 0: return - sys.maxint # i.e. an absurd value
         else:                          return self.__intervals[-1].end
 
@@ -1045,8 +1045,8 @@ class NumberSet(object):
     def assert_range(self, Minimum, Supremum):
         assert self.minimum()  >= Minimum, \
                "FAIL: %s >= %s" % (self.minimum(), Minimum)
-        assert self.supremum() <= Supremum, \
-               "FAIL: %s <= %s" % (self.supremum(), Supremum)
+        assert self.least_greater_bound() <= Supremum, \
+               "FAIL: %s <= %s" % (self.least_greater_bound(), Supremum)
 
 
 # Range of code points that are covered by Unicode

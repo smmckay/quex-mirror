@@ -111,7 +111,7 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
         number_set = from_target_map[ToSi]
 
         # Check whether a modification is necessary
-        if number_set.supremum() <= self.UnchangedRange: 
+        if number_set.least_greater_bound() <= self.UnchangedRange: 
             if Setup.bad_lexatom_detection_f: 
                 self._plug_encoding_error_detector_single_state(sm, from_target_map)
             return True, False
