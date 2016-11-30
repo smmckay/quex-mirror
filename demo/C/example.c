@@ -30,7 +30,7 @@ main(int argc, char** argv)
 
     } while( token_p->_id != QUEX_TKN_TERMINATION );
 
-    printf("| [END] number of token = %i\n", number_of_tokens);
+    printf("| [END] number of token = %i\n", (int)number_of_tokens);
     printf("`-----------------------------------------------------------------\n");
 
     quex_EasyLexer_destruct(&qlex);
