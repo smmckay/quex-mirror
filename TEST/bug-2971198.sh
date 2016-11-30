@@ -11,7 +11,7 @@ quex -i error.qx -o Simple --debug-exception >& tmp.txt
 
 cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ '
 rm tmp.txt
-ls Simple*
+ls Simple* | sort
 
 # cleansening
 rm -f Simple*

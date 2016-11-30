@@ -22,7 +22,7 @@ else
 fi
 
 # Display the generated files
-ls Lexer*
+ls Lexer* | sort
 
 rm Lexer*
 
