@@ -180,7 +180,7 @@ QUEX_NAME(LexatomLoader_lexatom_index_step_to)(QUEX_NAME(LexatomLoader)*        
         loaded_n = me->derived.load_lexatoms(me, &chunk[0], (size_t)remaining_n, 
                                              &end_of_stream_f, &encoding_error_f);
         me->lexatom_index_next_to_fill += (QUEX_TYPE_STREAM_POSITION)loaded_n;
-        if( remaining_n > loaded_n ) {
+        if( remaining_n > (QUEX_TYPE_STREAM_POSITION)loaded_n ) {
             return false;
         }
     }
