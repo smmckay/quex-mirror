@@ -5,9 +5,9 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 1.260775; 0; ]
-  [ Cpp; OK; 2.003882; 0; ]
-  [ ANSI-C-CG; OK; 1.051730; 0; ]
+  [ ANSI-C; OK; 0.959401; 0; ]
+  [ Cpp; OK; 1.903313; 0; ]
+  [ ANSI-C-CG; OK; 1.055763; 0; ]
 ]
 }
 {
@@ -18,19 +18,19 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.050228; 0; ]
-  [ ANSI-C; OK; 1.105664; 0; ]
-  [ ANSI-C-CG; OK; 1.085673; 0; ]
-  [ Cpp; OK; 1.952808; 0; ]
-  [ Cpp-Template; OK; 2.503862; 0; ]
-  [ Cpp-Template-CG; OK; 2.353347; 0; ]
-  [ Cpp-Path; OK; 1.931098; 0; ]
-  [ Cpp-PathUniform; OK; 2.555423; 0; ]
-  [ Cpp-Path-CG; OK; 2.198046; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.358433; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.021608; 0; ]
-  [ Cpp-ASSERTS; OK; 1.896427; 0; ]
-  [ ANSI-C-ASSERTS; OK; 1.205207; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.132464; 0; ]
+  [ ANSI-C; OK; 1.184261; 0; ]
+  [ ANSI-C-CG; OK; 1.044572; 0; ]
+  [ Cpp; OK; 2.245255; 0; ]
+  [ Cpp-Template; OK; 2.595381; 0; ]
+  [ Cpp-Template-CG; OK; 2.741425; 0; ]
+  [ Cpp-Path; OK; 2.335611; 0; ]
+  [ Cpp-PathUniform; OK; 2.292098; 0; ]
+  [ Cpp-Path-CG; OK; 2.088005; 0; ]
+  [ Cpp-PathUniform-CG; OK; 2.767715; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.169417; 0; ]
+  [ Cpp-ASSERTS; OK; 2.614555; 0; ]
+  [ ANSI-C-ASSERTS; OK; 1.196962; 0; ]
 ]
 }
 {
@@ -41,20 +41,20 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.278560; 0; ]
-  [ ANSI-C; OK; 1.767042; 0; ]
-  [ ANSI-C-CG; OK; 1.272393; 0; ]
-  [ Cpp; OK; 1.869913; 0; ]
-  [ Cpp_StrangeStream; OK; 1.787096; 0; ]
-  [ Cpp-Template; OK; 2.078825; 0; ]
-  [ Cpp-Template-CG; OK; 1.974359; 0; ]
-  [ Cpp-Path; OK; 1.773034; 0; ]
-  [ Cpp-PathUniform; OK; 1.783726; 0; ]
-  [ Cpp-Path-CG; OK; 1.861618; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.749003; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.422371; 0; ]
-  [ Cpp-ASSERTS; OK; 1.741430; 0; ]
-  [ ANSI-C-ASSERTS; OK; 1.144699; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.132908; 0; ]
+  [ ANSI-C; OK; 1.360608; 0; ]
+  [ ANSI-C-CG; OK; 1.201809; 0; ]
+  [ Cpp; OK; 2.487086; 0; ]
+  [ Cpp_StrangeStream; OK; 1.955471; 0; ]
+  [ Cpp-Template; OK; 2.347053; 0; ]
+  [ Cpp-Template-CG; OK; 2.017990; 0; ]
+  [ Cpp-Path; OK; 1.962542; 0; ]
+  [ Cpp-PathUniform; OK; 2.051840; 0; ]
+  [ Cpp-Path-CG; OK; 1.825167; 0; ]
+  [ Cpp-PathUniform-CG; OK; 2.091290; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.234476; 0; ]
+  [ Cpp-ASSERTS; OK; 2.223365; 0; ]
+  [ ANSI-C-ASSERTS; OK; 1.325935; 0; ]
 ]
 }
 {
@@ -65,20 +65,20 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 0.942853; 0; ]
-  [ ANSI-C; OK; 0.939891; 0; ]
-  [ ANSI-C-CG; OK; 0.954065; 0; ]
-  [ Cpp; OK; 1.679753; 0; ]
-  [ Cpp_StrangeStream; OK; 1.914059; 0; ]
-  [ Cpp-Template; OK; 1.727281; 0; ]
-  [ Cpp-Template-CG; OK; 1.975107; 0; ]
-  [ Cpp-Path; OK; 1.636734; 0; ]
-  [ Cpp-PathUniform; OK; 1.707399; 0; ]
-  [ Cpp-Path-CG; OK; 1.734592; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.865688; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.112912; 0; ]
-  [ Cpp-ASSERTS; OK; 1.794231; 0; ]
-  [ ANSI-C-ASSERTS; OK; 0.951778; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.120979; 0; ]
+  [ ANSI-C; OK; 0.958601; 0; ]
+  [ ANSI-C-CG; OK; 1.296237; 0; ]
+  [ Cpp; OK; 1.878889; 0; ]
+  [ Cpp_StrangeStream; OK; 1.857962; 0; ]
+  [ Cpp-Template; OK; 1.960105; 0; ]
+  [ Cpp-Template-CG; OK; 1.923825; 0; ]
+  [ Cpp-Path; OK; 1.741878; 0; ]
+  [ Cpp-PathUniform; OK; 1.671306; 0; ]
+  [ Cpp-Path-CG; OK; 1.817938; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.878676; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.224525; 0; ]
+  [ Cpp-ASSERTS; OK; 1.882997; 0; ]
+  [ ANSI-C-ASSERTS; OK; 0.956756; 0; ]
 ]
 }
 {
@@ -89,18 +89,18 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.194516; 0; ]
-  [ ANSI-C; OK; 0.964037; 0; ]
-  [ ANSI-C-CG; OK; 0.976255; 0; ]
-  [ Cpp; OK; 1.753440; 0; ]
-  [ Cpp_StrangeStream; OK; 1.999949; 0; ]
-  [ Cpp-Template; OK; 1.900397; 0; ]
-  [ Cpp-Template-CG; OK; 2.336597; 0; ]
-  [ Cpp-Path; OK; 1.724355; 0; ]
-  [ Cpp-PathUniform; OK; 1.996139; 0; ]
-  [ Cpp-Path-CG; OK; 1.807579; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.789735; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.079441; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.944637; 0; ]
+  [ ANSI-C; OK; 1.163572; 0; ]
+  [ ANSI-C-CG; OK; 0.980529; 0; ]
+  [ Cpp; OK; 1.662748; 0; ]
+  [ Cpp_StrangeStream; OK; 1.905604; 0; ]
+  [ Cpp-Template; OK; 1.980294; 0; ]
+  [ Cpp-Template-CG; OK; 1.755888; 0; ]
+  [ Cpp-Path; OK; 1.708232; 0; ]
+  [ Cpp-PathUniform; OK; 1.643619; 0; ]
+  [ Cpp-Path-CG; OK; 1.634264; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.779882; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.050307; 0; ]
 ]
 }
 {
@@ -111,18 +111,18 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 0.966939; 0; ]
-  [ ANSI-C; OK; 1.382932; 0; ]
-  [ ANSI-C-CG; OK; 1.256121; 0; ]
-  [ Cpp; OK; 1.687907; 0; ]
-  [ Cpp_StrangeStream; OK; 1.781729; 0; ]
-  [ Cpp-Template; OK; 1.754419; 0; ]
-  [ Cpp-Template-CG; OK; 1.722733; 0; ]
-  [ Cpp-Path; OK; 1.644585; 0; ]
-  [ Cpp-PathUniform; OK; 1.741527; 0; ]
-  [ Cpp-Path-CG; OK; 1.709624; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.692609; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.206225; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.068362; 0; ]
+  [ ANSI-C; OK; 1.173096; 0; ]
+  [ ANSI-C-CG; OK; 1.014623; 0; ]
+  [ Cpp; OK; 1.805858; 0; ]
+  [ Cpp_StrangeStream; OK; 2.094502; 0; ]
+  [ Cpp-Template; OK; 1.916341; 0; ]
+  [ Cpp-Template-CG; OK; 2.071640; 0; ]
+  [ Cpp-Path; OK; 1.881376; 0; ]
+  [ Cpp-PathUniform; OK; 2.010508; 0; ]
+  [ Cpp-Path-CG; OK; 1.790362; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.872155; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.218263; 0; ]
 ]
 }
 {
@@ -133,9 +133,9 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.952353; 0; ]
-  [ Cpp; OK; 1.873671; 0; ]
-  [ ANSI-C-CG; OK; 0.906045; 0; ]
+  [ ANSI-C; OK; 1.040938; 0; ]
+  [ Cpp; OK; 1.787713; 0; ]
+  [ ANSI-C-CG; OK; 0.936739; 0; ]
 ]
 }
 {
@@ -146,9 +146,9 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 1.065232; 0; ]
-  [ Cpp; OK; 2.040760; 0; ]
-  [ ANSI-C-CG; OK; 0.949293; 0; ]
+  [ ANSI-C; OK; 0.972223; 0; ]
+  [ Cpp; OK; 1.754461; 0; ]
+  [ ANSI-C-CG; OK; 1.008279; 0; ]
 ]
 }
 {
@@ -159,18 +159,18 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 2.874375; 0; ]
-  [ ANSI-C; OK; 1.352751; 0; ]
-  [ ANSI-C-CG; OK; 1.386684; 0; ]
-  [ Cpp; OK; 2.147782; 0; ]
-  [ Cpp_StrangeStream; OK; 2.037902; 0; ]
-  [ Cpp-Template; OK; 3.893773; 0; ]
-  [ Cpp-Template-CG; OK; 2.663349; 0; ]
-  [ Cpp-Path; OK; 2.065498; 0; ]
-  [ Cpp-PathUniform; OK; 2.187029; 0; ]
-  [ Cpp-Path-CG; OK; 2.244885; 0; ]
-  [ Cpp-PathUniform-CG; OK; 3.353193; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.644101; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.285134; 0; ]
+  [ ANSI-C; OK; 1.374988; 0; ]
+  [ ANSI-C-CG; OK; 1.326356; 0; ]
+  [ Cpp; OK; 2.326688; 0; ]
+  [ Cpp_StrangeStream; OK; 2.280810; 0; ]
+  [ Cpp-Template; OK; 2.728906; 0; ]
+  [ Cpp-Template-CG; OK; 2.847200; 0; ]
+  [ Cpp-Path; OK; 2.453737; 0; ]
+  [ Cpp-PathUniform; OK; 2.384392; 0; ]
+  [ Cpp-Path-CG; OK; 2.431979; 0; ]
+  [ Cpp-PathUniform-CG; OK; 2.409751; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.665501; 0; ]
 ]
 }
 {
@@ -181,18 +181,18 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.029659; 0; ]
-  [ ANSI-C; OK; 1.021300; 0; ]
-  [ ANSI-C-CG; OK; 1.157721; 0; ]
-  [ Cpp; OK; 1.762171; 0; ]
-  [ Cpp_StrangeStream; OK; 1.706048; 0; ]
-  [ Cpp-Template; OK; 1.848017; 0; ]
-  [ Cpp-Template-CG; OK; 1.693307; 0; ]
-  [ Cpp-Path; OK; 1.678001; 0; ]
-  [ Cpp-PathUniform; OK; 1.689271; 0; ]
-  [ Cpp-Path-CG; OK; 1.737317; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.685020; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.184030; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.165073; 0; ]
+  [ ANSI-C; OK; 1.016243; 0; ]
+  [ ANSI-C-CG; OK; 1.107066; 0; ]
+  [ Cpp; OK; 1.768624; 0; ]
+  [ Cpp_StrangeStream; OK; 1.810452; 0; ]
+  [ Cpp-Template; OK; 1.853471; 0; ]
+  [ Cpp-Template-CG; OK; 1.781110; 0; ]
+  [ Cpp-Path; OK; 1.738440; 0; ]
+  [ Cpp-PathUniform; OK; 1.817431; 0; ]
+  [ Cpp-Path-CG; OK; 2.096799; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.868355; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.006350; 0; ]
 ]
 }
 {
@@ -203,18 +203,18 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.049822; 0; ]
-  [ ANSI-C; OK; 1.012329; 0; ]
-  [ ANSI-C-CG; OK; 1.019375; 0; ]
-  [ Cpp; OK; 1.835902; 0; ]
-  [ Cpp_StrangeStream; OK; 1.847794; 0; ]
-  [ Cpp-Template; OK; 1.873555; 0; ]
-  [ Cpp-Template-CG; OK; 1.919160; 0; ]
-  [ Cpp-Path; OK; 1.791763; 0; ]
-  [ Cpp-PathUniform; OK; 1.921118; 0; ]
-  [ Cpp-Path-CG; OK; 1.801991; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.923611; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.066132; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.267237; 0; ]
+  [ ANSI-C; OK; 1.505109; 0; ]
+  [ ANSI-C-CG; OK; 1.412618; 0; ]
+  [ Cpp; OK; 1.994294; 0; ]
+  [ Cpp_StrangeStream; OK; 2.099899; 0; ]
+  [ Cpp-Template; OK; 2.386288; 0; ]
+  [ Cpp-Template-CG; OK; 1.926536; 0; ]
+  [ Cpp-Path; OK; 2.249177; 0; ]
+  [ Cpp-PathUniform; OK; 1.951294; 0; ]
+  [ Cpp-Path-CG; OK; 2.442988; 0; ]
+  [ Cpp-PathUniform-CG; OK; 2.070092; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.121683; 0; ]
 ]
 }
 {
@@ -225,9 +225,9 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 1.035801; 0; ]
-  [ Cpp-Path-CG; OK; 1.782648; 0; ]
-  [ Cpp-Template; OK; 1.902570; 0; ]
+  [ ANSI-C; OK; 1.108264; 0; ]
+  [ Cpp-Path-CG; OK; 2.143495; 0; ]
+  [ Cpp-Template; OK; 2.072646; 0; ]
 ]
 }
 {
@@ -238,16 +238,16 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 0.957127; 0; ]
-  [ ANSI-C; OK; 0.918019; 0; ]
-  [ ANSI-C-CG; OK; 0.982574; 0; ]
-  [ Cpp; OK; 1.596450; 0; ]
-  [ Cpp_StrangeStream; OK; 1.634613; 0; ]
-  [ Cpp-Template; OK; 1.601235; 0; ]
-  [ Cpp-Template-CG; OK; 1.629893; 0; ]
-  [ Cpp-Path; OK; 1.615593; 0; ]
-  [ Cpp-Path-CG; OK; 1.599341; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.031236; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.070978; 0; ]
+  [ ANSI-C; OK; 0.987824; 0; ]
+  [ ANSI-C-CG; OK; 0.989797; 0; ]
+  [ Cpp; OK; 1.948717; 0; ]
+  [ Cpp_StrangeStream; OK; 1.696919; 0; ]
+  [ Cpp-Template; OK; 1.846778; 0; ]
+  [ Cpp-Template-CG; OK; 1.705552; 0; ]
+  [ Cpp-Path; OK; 1.963141; 0; ]
+  [ Cpp-Path-CG; OK; 1.781255; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.193372; 0; ]
 ]
 }
 {
@@ -258,16 +258,16 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.138661; 0; ]
-  [ ANSI-C; OK; 1.047137; 0; ]
-  [ ANSI-C-CG; OK; 0.963341; 0; ]
-  [ Cpp; OK; 2.123226; 0; ]
-  [ Cpp_StrangeStream; OK; 1.771130; 0; ]
-  [ Cpp-Template; OK; 1.773930; 0; ]
-  [ Cpp-Template-CG; OK; 1.845174; 0; ]
-  [ Cpp-Path; OK; 1.862871; 0; ]
-  [ Cpp-Path-CG; OK; 1.824128; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.102787; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.025139; 0; ]
+  [ ANSI-C; OK; 1.104672; 0; ]
+  [ ANSI-C-CG; OK; 1.151574; 0; ]
+  [ Cpp; OK; 1.922784; 0; ]
+  [ Cpp_StrangeStream; OK; 1.755268; 0; ]
+  [ Cpp-Template; OK; 1.812100; 0; ]
+  [ Cpp-Template-CG; OK; 1.895932; 0; ]
+  [ Cpp-Path; OK; 2.172614; 0; ]
+  [ Cpp-Path-CG; OK; 1.824084; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.208023; 0; ]
 ]
 }
 {
@@ -278,18 +278,18 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.025551; 0; ]
-  [ ANSI-C; OK; 1.412033; 0; ]
-  [ ANSI-C-CG; OK; 1.039703; 0; ]
-  [ Cpp; OK; 1.770465; 0; ]
-  [ Cpp_StrangeStream; OK; 1.754830; 0; ]
-  [ Cpp-Template; OK; 1.917923; 0; ]
-  [ Cpp-Template-CG; OK; 2.004526; 0; ]
-  [ Cpp-Path; OK; 2.052008; 0; ]
-  [ Cpp-PathUniform; OK; 1.968204; 0; ]
-  [ Cpp-Path-CG; OK; 2.105265; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.540317; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.122993; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.334709; 0; ]
+  [ ANSI-C; OK; 1.176202; 0; ]
+  [ ANSI-C-CG; OK; 1.125424; 0; ]
+  [ Cpp; OK; 2.113967; 0; ]
+  [ Cpp_StrangeStream; OK; 1.978776; 0; ]
+  [ Cpp-Template; OK; 2.213716; 0; ]
+  [ Cpp-Template-CG; OK; 2.069894; 0; ]
+  [ Cpp-Path; OK; 2.126601; 0; ]
+  [ Cpp-PathUniform; OK; 1.869645; 0; ]
+  [ Cpp-Path-CG; OK; 2.039836; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.840593; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.606449; 0; ]
 ]
 }
 {
@@ -300,16 +300,16 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.023379; 0; ]
-  [ ANSI-C; OK; 1.098459; 0; ]
-  [ ANSI-C-CG; OK; 1.061465; 0; ]
-  [ Cpp; OK; 1.746761; 0; ]
-  [ Cpp_StrangeStream; OK; 2.961371; 0; ]
-  [ Cpp-Template; OK; 1.802162; 0; ]
-  [ Cpp-Template-CG; OK; 1.817947; 0; ]
-  [ Cpp-Path; OK; 1.715842; 0; ]
-  [ Cpp-Path-CG; OK; 1.720598; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.256672; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.247076; 0; ]
+  [ ANSI-C; OK; 1.157704; 0; ]
+  [ ANSI-C-CG; OK; 1.196964; 0; ]
+  [ Cpp; OK; 2.058985; 0; ]
+  [ Cpp_StrangeStream; OK; 2.697538; 0; ]
+  [ Cpp-Template; OK; 2.450685; 0; ]
+  [ Cpp-Template-CG; OK; 2.273189; 0; ]
+  [ Cpp-Path; OK; 1.801549; 0; ]
+  [ Cpp-Path-CG; OK; 2.196123; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.223033; 0; ]
 ]
 }
 {
@@ -320,18 +320,18 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.387998; 0; ]
-  [ ANSI-C; OK; 1.413270; 0; ]
-  [ ANSI-C-CG; OK; 1.394541; 0; ]
-  [ Cpp; OK; 2.770115; 0; ]
-  [ Cpp_StrangeStream; OK; 2.143736; 0; ]
-  [ Cpp-Template; OK; 4.688305; 0; ]
-  [ Cpp-Template-CG; OK; 4.746790; 0; ]
-  [ Cpp-Path; OK; 2.237694; 0; ]
-  [ Cpp-PathUniform; OK; 2.236724; 0; ]
-  [ Cpp-Path-CG; OK; 2.259116; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.250252; 0; ]
-  [ ANSI-C-PathTemplate; OK; 2.444805; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.966354; 0; ]
+  [ ANSI-C; OK; 1.928119; 0; ]
+  [ ANSI-C-CG; OK; 1.416964; 0; ]
+  [ Cpp; OK; 3.059597; 0; ]
+  [ Cpp_StrangeStream; OK; 2.372277; 0; ]
+  [ Cpp-Template; OK; 5.628271; 0; ]
+  [ Cpp-Template-CG; OK; 5.463254; 0; ]
+  [ Cpp-Path; OK; 2.418402; 0; ]
+  [ Cpp-PathUniform; OK; 2.578488; 0; ]
+  [ Cpp-Path-CG; OK; 2.829293; 0; ]
+  [ Cpp-PathUniform-CG; OK; 2.601943; 0; ]
+  [ ANSI-C-PathTemplate; OK; 3.083075; 0; ]
 ]
 }
 {
@@ -342,9 +342,9 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.863786; 0; ]
-  [ Cpp; OK; 1.553057; 0; ]
-  [ ANSI-C-CG; OK; 0.958938; 0; ]
+  [ ANSI-C; OK; 0.941222; 0; ]
+  [ Cpp; OK; 1.693206; 0; ]
+  [ ANSI-C-CG; OK; 0.862131; 0; ]
 ]
 }
 {
@@ -355,9 +355,9 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.850749; 0; ]
-  [ Cpp; OK; 1.574338; 0; ]
-  [ ANSI-C-CG; OK; 0.889031; 0; ]
+  [ ANSI-C; OK; 1.008109; 0; ]
+  [ Cpp; OK; 1.593665; 0; ]
+  [ ANSI-C-CG; OK; 0.887060; 0; ]
 ]
 }
 {
@@ -368,9 +368,9 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.932078; 0; ]
-  [ Cpp; OK; 1.630206; 0; ]
-  [ ANSI-C-CG; OK; 0.914245; 0; ]
+  [ ANSI-C; OK; 1.006048; 0; ]
+  [ Cpp; OK; 1.682777; 0; ]
+  [ ANSI-C-CG; OK; 0.962831; 0; ]
 ]
 }
 {
@@ -381,8 +381,8 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.915379; 0; ]
-  [ Cpp-Template; OK; 1.625997; 0; ]
+  [ ANSI-C; OK; 0.993199; 0; ]
+  [ Cpp-Template; OK; 1.692365; 0; ]
 ]
 }
 {
@@ -393,18 +393,18 @@ hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 0.911600; 0; ]
-  [ ANSI-C; OK; 0.914788; 0; ]
-  [ ANSI-C-CG; OK; 0.910925; 0; ]
-  [ Cpp; OK; 1.650916; 0; ]
-  [ Cpp_StrangeStream; OK; 1.659886; 0; ]
-  [ Cpp-Template; OK; 1.657151; 0; ]
-  [ Cpp-Template-CG; OK; 1.671361; 0; ]
-  [ Cpp-Path; OK; 1.640324; 0; ]
-  [ Cpp-PathUniform; OK; 1.640360; 0; ]
-  [ Cpp-Path-CG; OK; 1.661708; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.594194; 0; ]
-  [ ANSI-C-PathTemplate; OK; 0.928214; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.966474; 0; ]
+  [ ANSI-C; OK; 1.039800; 0; ]
+  [ ANSI-C-CG; OK; 1.223954; 0; ]
+  [ Cpp; OK; 1.775981; 0; ]
+  [ Cpp_StrangeStream; OK; 1.698271; 0; ]
+  [ Cpp-Template; OK; 1.829928; 0; ]
+  [ Cpp-Template-CG; OK; 1.748002; 0; ]
+  [ Cpp-Path; OK; 1.690228; 0; ]
+  [ Cpp-PathUniform; OK; 1.696075; 0; ]
+  [ Cpp-Path-CG; OK; 1.659413; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.653257; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.009059; 0; ]
 ]
 }
 {
@@ -414,11 +414,11 @@ file_name: test-single-state-transitions.py;
 hwut_info_time: 1480142571L;
 interpreter_list: [ python; ]
 result_list: [
-  [ A; OK; 0.311941; 0; ]
-  [ B; OK; 3.406013; 0; ]
-  [ C; OK; 34.664970; 0; ]
-  [ A-UTF8; OK; 0.393740; 0; ]
-  [ B-UTF8; OK; 6.423147; 0; ]
-  [ C-UTF8; OK; 22.101477; 0; ]
+  [ A; OK; 0.325630; 0; ]
+  [ B; OK; 4.209693; 0; ]
+  [ C; OK; 41.263187; 0; ]
+  [ A-UTF8; OK; 0.440226; 0; ]
+  [ B-UTF8; OK; 6.665841; 0; ]
+  [ C-UTF8; OK; 28.133224; 0; ]
 ]
 }
