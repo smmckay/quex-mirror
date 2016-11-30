@@ -241,8 +241,8 @@ title_group: dlazesz;
 file_name: bug-261.sh;
 hwut_info_time: 1479757918L;
 result_list: [
-  [ 1; FAIL; 1.627205; 0; ]
-  [ 2; FAIL; 1.561929; 0; ]
+  [ 1; OK; 1.479169; 764339645; ]
+  [ 2; OK; 1.500936; -265107287; ]
 ]
 }
 {
@@ -504,7 +504,7 @@ title_group: kromaks;
 file_name: bug-2971198.sh;
 hwut_info_time: 1479757918L;
 result_list: [
-  [ ; TIME_OUT; 47.830197; 0; ]
+  [ ; OK; 47.897870; 0; ]
 ]
 }
 {

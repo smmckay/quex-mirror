@@ -42,7 +42,7 @@ hwut_info_time: 1479757921L;
 interpreter_list: [ bash; ]
 result_list: [
   [ example; OK; 0.132543; 1854110009; ]
-  [ real; FAIL; 22.749458; -1820712433; ]
+  [ real; OK; 22.381282; -1191039011; ]
 ]
 }
 {
@@ -51,7 +51,7 @@ file_name: pyflakes-check.sh;
 hwut_info_time: 1479757921L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 84.022639; 0; ]
+  [ ; OK; 83.386733; 0; ]
 ]
 }
 {

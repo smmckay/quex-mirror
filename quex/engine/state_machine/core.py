@@ -6,14 +6,13 @@ import quex.engine.state_machine.index              as     state_machine_index
 from   quex.engine.state_machine.state.core         import State
 from   quex.engine.state_machine.state.single_entry import SeAccept
 
-from   quex.engine.misc.tools  import flatten_list_of_lists, typed
+from   quex.engine.misc.tools  import typed
 from   quex.blackboard         import E_IncidenceIDs, \
                                       E_PreContextIDs, \
-                                      E_StateIndices, \
-                                      E_Border
+                                      E_StateIndices
 
 from   copy        import deepcopy, copy
-from   operator    import attrgetter, itemgetter
+from   operator    import itemgetter
 from   itertools   import ifilter, imap
 from   collections import defaultdict
 import sys
@@ -722,24 +721,15 @@ class StateMachine(object):
         for state in self.states.values():
             unique.update(state.target_map.get_target_state_index_list())
 
-        for state_index in self.states.keys():
-            # The init state is never considered to be an 'orphan'
-            if state_index not in unique and state_index != self.init_state_index: return True
-        return False
+        return any(state_index not in unique and state_index != self.init_state_index
+                   for state_index in self.states.iterkeys())
 
     def has_pre_context_begin_of_line_f(self):
         return any(state.pre_context_id() == E_PreContextIDs.BEGIN_OF_LINE
                    for state in self.states.itervalues())
 
-    def has_acceptance_states(self):
-        for state in self.states.itervalues():
-            if state.is_acceptance(): return True
-        return False
-
     def has_origins(self):
-        for state in self.states.values():
-            if len(state.single_entry) > 1: return True
-        return False
+        return any(len(state.single_entry) > 1 for state in self.states.itervalues())
 
     def create_new_init_state(self, AcceptanceF=False):
         self.init_state_index = self.create_new_state()

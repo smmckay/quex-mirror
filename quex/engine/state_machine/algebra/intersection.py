@@ -10,11 +10,8 @@
 ___________________________________________________________________________
 """
 from   quex.engine.state_machine.core                 import StateMachine
-from   quex.engine.state_machine.state.core           import State
 from   quex.engine.state_machine.state.target_map_ops import get_intersection_line_up
-from   quex.engine.state_machine.index                import map_state_combination_to_index
 import quex.engine.state_machine.index                as     index
-import quex.engine.state_machine.algebra.reverse      as     reverse
 
 def do(SM_List):
     N = len(SM_List)

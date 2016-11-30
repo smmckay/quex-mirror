@@ -13,14 +13,14 @@ result_list: [
 {
 title: Difference Operation;
 file_name: test-difference.py;
-hwut_info_time: 1480053920L;
+hwut_info_time: 1480491467L;
 result_list: [
   [ Easy; OK; 0.202509; 0; ]
   [ FalseCases; OK; 0.201180; 0; ]
   [ GoodCases; OK; 0.227353; 0; ]
   [ FalseCasesII; OK; 0.213649; 0; ]
   [ GoodCasesII; OK; 0.421441; 0; ]
-  [ Misc; FAIL; 0.379246; 0; ]
+  [ Misc; OK; 0.366712; 0; ]
 ]
 }
 {

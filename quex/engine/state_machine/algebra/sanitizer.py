@@ -1,5 +1,4 @@
-from   quex.engine.state_machine.core                 import StateMachine
-import quex.engine.state_machine.algorithm.nfa_to_dfa as nfa_to_dfa
+from   quex.engine.state_machine.core import StateMachine
 
 def do(sm):
     """Sanitization: 

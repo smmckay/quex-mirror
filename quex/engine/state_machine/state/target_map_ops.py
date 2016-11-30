@@ -2,7 +2,8 @@ from   quex.engine.misc.interval_handling  import NumberSet, Interval
 from   quex.engine.misc.tools              import flatten_list_of_lists
 
 from   quex.blackboard import E_Border
-from   operator import attrgetter
+
+from   collections import defaultdict
 
 assert E_Border.BEGIN > E_Border.END
 

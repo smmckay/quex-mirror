@@ -1,3 +1,5 @@
+case2.qx:23:warning: Post context requires philosophical cut--handle with care!
+case2.qx:23:warning: Proposal: Isolate pattern and ensure results are as expected!
 ,------------------------------------------------------------------------------------
 | [START]
 (1, 1)  	FAILURE
@@ -7,4 +9,5 @@
 (2, 1)  	<TERMINATION>
 | [END] number of token = 5
 `------------------------------------------------------------------------------------
+
 

@@ -7,8 +7,13 @@ get_property_value_matches
 __iadd__
 __invert__
 __missing__
+new_do
 NewFaster_Enum
+new_get_epsilon_closure_db
 __nonzero__
 pair_combinations
 print_mouth
 <terminated>
+
+
+

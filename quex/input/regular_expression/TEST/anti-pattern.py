@@ -19,7 +19,7 @@ def test(TestString):
     stream = StringIO.StringIO(TestString)
     try:
         result = engine.do(stream, {})
-        print "result     = " + result.get_string(Option="hex", NormalizeF=True) 
+        print "result     = " + result.get_string(NormalizeF=True) 
     except exception.RegularExpressionException, x:
         print x.message
 

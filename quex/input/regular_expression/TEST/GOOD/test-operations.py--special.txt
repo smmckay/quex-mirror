@@ -32,19 +32,23 @@ init-state = 0L
 
 -------------------------------------------------------------------
 expression    = "\Any*"
-command line:1:error: The core pattern contains in a 'nothing is necessary' path in the state machine.
-command line:1:error: This means, that without reading a character the analyzer drops into
-command line:1:error: an acceptance state. The analyzer would then stall.
+state machine
+init-state = 0L
+00000 A
+     == [-oo, oo] ==> 00000
 -------------------------------------------------------------------
+    
+
 expression    = "x\None"
 state machine
 init-state = 0L
 00000 
      == 'x' ==> 00001
-    
 00001 A
     
-
 -------------------------------------------------------------------
+    
+
 expression    = "\None"
 command line:1:error: Empty pattern.
+

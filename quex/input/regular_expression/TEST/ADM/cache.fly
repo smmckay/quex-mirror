@@ -1,9 +1,9 @@
 {
 title: Anti-Patterns;
 file_name: anti-pattern.py;
-hwut_info_time: 1479963523L;
+hwut_info_time: 1480488204L;
 result_list: [
-  [ ; FAIL; 0.127610; 0; ]
+  [ ; OK; 0.000000; 1956969031; ]
 ]
 }
 {
@@ -20,11 +20,11 @@ title: Operations;
 file_name: test-operations.py;
 hwut_info_time: 1479962523L;
 result_list: [
-  [ special; FAIL; 0.103121; 0; ]
-  [ 0; OK; 0.106566; 0; ]
-  [ 1; OK; 0.158311; 1425488154; ]
-  [ 2; OK; 0.158135; 0; ]
-  [ 3; OK; 0.164228; 0; ]
+  [ special; OK; 0.098378; 1541720877; ]
+  [ 0; OK; 0.091996; 0; ]
+  [ 1; OK; 0.145444; 1425488154; ]
+  [ 2; OK; 0.149180; 0; ]
+  [ 3; OK; 0.157195; 0; ]
 ]
 }
 {

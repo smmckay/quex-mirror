@@ -232,19 +232,6 @@ result_list: [
 {
 title: LexatomLoader_Plain (BPC=4, FALLBACK=0);
 title_group: Buffer Tell&Seek;
-build_time: 1.496946096420288;
-file_name: test-Plain-4-0.exe;
-hwut_info_time: 1480450962L;
-make_dependent_f: True;
-same_f: True;
-result_list: [
-  [ linear; OK; 0.699969; 0; ]
-  [ stepping; OK; 3.134416; 0; ]
-]
-}
-{
-title: LexatomLoader_Plain (BPC=4, FALLBACK=0);
-title_group: Buffer Tell&Seek;
 build_time: 2.9390718936920166;
 file_name: test-Plain-wiostream-2-0.exe;
 hwut_info_time: 1480450955L;
@@ -253,6 +240,19 @@ same_f: True;
 result_list: [
   [ linear; OK; 0.160689; 0; ]
   [ stepping; OK; 0.213241; 0; ]
+]
+}
+{
+title: LexatomLoader_Plain (BPC=4, FALLBACK=0);
+title_group: Buffer Tell&Seek;
+build_time: 1.496946096420288;
+file_name: test-Plain-4-0.exe;
+hwut_info_time: 1480450962L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ linear; OK; 0.699969; 0; ]
+  [ stepping; OK; 3.134416; 0; ]
 ]
 }
 {

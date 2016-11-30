@@ -10,10 +10,7 @@ ALGEBRAIC RELATIONS:
 
 (C) 2013-2016 Frank-Rene Schaefer
 """
-import quex.engine.state_machine.index         as     index
-from   quex.engine.state_machine.state.core    import State
 from   quex.engine.misc.interval_handling      import NumberSet_All
-from   quex.blackboard                         import setup as Setup
 from   copy import deepcopy
 
 def do(SM):
@@ -36,9 +33,6 @@ def do(SM):
     accept_all_state_index = result.create_new_state(AcceptanceF=True) 
     result.add_transition(accept_all_state_index, NumberSet_All(), 
                           accept_all_state_index)
-
-    accept_all_state_index_set  = set(si for si in SM.states if SM.is_AcceptAllState(si))
-    accept_only_state_index_set = set(si for si in SM.states if SM.states[si].is_acceptance() and SM.states[si].target_map.is_empty())
 
     for state_index, state in SM.states.iteritems():
         result_state = result.states[state_index]

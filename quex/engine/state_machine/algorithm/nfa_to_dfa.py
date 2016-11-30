@@ -110,19 +110,19 @@ if False:
             index_list = EpsilonTranstionDb[si] 
 
             # Epsilon closure for current state
-            ec = set([index]) 
+            ec = set([si]) 
             if len(index_list) != 0: 
-                for target_index in ifilter(lambda x: x not in ec, index_list):
+                for target_index in filter(lambda x: x not in ec, index_list):
                     ec.add(target_index)
-                    self.__dive_for_epsilon_closure(EpsilonTranstionDb, target_index, ec)
+                    state.__dive_for_epsilon_closure(EpsilonTranstionDb, target_index, ec)
 
-            db[index] = ec
+            db[si] = ec
 
         return db
 
     def new_dive_for_epsilon_closure(EpsilonTranstionDb, StateIndex, result):
         index_list = EpsilonTranstionDb[StateIndex]
-        for target_index in ifilter(lambda x: x not in result, index_list):
+        for target_index in filter(lambda x: x not in result, index_list):
             result.add(target_index)
-            self.new_dive_for_epsilon_closure(target_index, result)
+            result.new_dive_for_epsilon_closure(target_index, result)
 

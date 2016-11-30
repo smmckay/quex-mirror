@@ -4,7 +4,7 @@ file_name: debug_show.sh;
 hwut_info_time: 1479757921L;
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; FAIL; 2.168523; -2085982518; ]
+  [ ; OK; 0.000000; -311798442; ]
 ]
 }
 {

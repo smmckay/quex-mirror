@@ -19,7 +19,7 @@ def test(A, B):
         super_p = regex.do(SuperPattern, {}).sm
         sub_p   = regex.do(SubPattern, {}).sm
         result  = difference.do(super_p, sub_p)
-        print "result = ", difference.do(super_p, sub_p) # .get_string(NormalizeF=False)
+        print "result = ", beautifier.do(difference.do(super_p, sub_p)) # .get_string(NormalizeF=False)
     print "---------------------------"
     __core(A, B)
     print

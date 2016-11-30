@@ -59,7 +59,7 @@ interpreter_list: [ python; ]
 result_list: [
   [ Plain; OK; 0.112485; 0; ]
   [ AppendixNoI; OK; 0.118262; 0; ]
-  [ AppendixI; FAIL; 0.123491; 0; ]
+  [ AppendixI; OK; 0.000000; 1515286970; ]
   [ Split; OK; 0.114654; 0; ]
 ]
 }
