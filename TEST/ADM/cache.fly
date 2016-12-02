@@ -270,7 +270,7 @@ file_name: bug-257.sh;
 hwut_info_time: 1480539692L;
 happy_pattern_list: [ ^include_me.h:\[0-9]+:; ]
 result_list: [
-  [ ; FAIL; 0.096931; 1919775298; ]
+  [ ; FAIL; 0.099040; 1919775298; ]
 ]
 }
 {
@@ -361,7 +361,7 @@ title_group: fschaef;
 file_name: bug-2277660.sh;
 hwut_info_time: 1480539693L;
 result_list: [
-  [ ; FAIL; 2.039621; 1878828055; ]
+  [ ; FAIL; 2.038997; 1878828055; ]
 ]
 }
 {
@@ -568,7 +568,7 @@ title_group: marcoantonelli;
 file_name: bug-2257908.sh;
 hwut_info_time: 1480539693L;
 result_list: [
-  [ ; FAIL; 1.027312; 1788230229; ]
+  [ ; FAIL; 1.016963; 1788230229; ]
 ]
 }
 {
@@ -586,7 +586,7 @@ title_group: nazim-can-bedir;
 file_name: bug-2896732.sh;
 hwut_info_time: 1480539696L;
 result_list: [
-  [ ; FAIL; 3.383934; 1284789366; ]
+  [ ; FAIL; 3.335399; 1284789366; ]
 ]
 }
 {
@@ -656,8 +656,8 @@ result_list: [
   [ utf16; OK; 0.061095; 0; ]
   [ utf16-with-bom; OK; 0.061286; 0; ]
   [ utf8-error; OK; 0.060859; 0; ]
-  [ utf8; FAIL; 0.111398; -379472410; ]
-  [ utf8-with-bom; FAIL; 0.100047; -379472410; ]
+  [ utf8; FAIL; 0.112715; -379472410; ]
+  [ utf8-with-bom; FAIL; 0.101493; -379472410; ]
 ]
 }
 {
@@ -696,7 +696,7 @@ title_group: prade2p;
 file_name: bug-2914877.sh;
 hwut_info_time: 1480539693L;
 result_list: [
-  [ ; FAIL; 0.095636; 707309222; ]
+  [ ; FAIL; 0.097795; 707309222; ]
 ]
 }
 {
@@ -705,7 +705,7 @@ title_group: rami-al-rafou;
 file_name: bug-3476232.sh;
 hwut_info_time: 1480539697L;
 result_list: [
-  [ ; FAIL; 6.136644; 1764378916; ]
+  [ ; KEYBOARD_INTERRUPT; 6.136644; 1764378916; ]
 ]
 }
 {
@@ -774,7 +774,7 @@ title_group: sbellon;
 file_name: bug-3538026.sh;
 hwut_info_time: 1480539692L;
 result_list: [
-  [ ; FAIL; 0.132446; -2002306603; ]
+  [ ; FAIL; 0.132414; -2002306603; ]
 ]
 }
 {
@@ -783,7 +783,7 @@ title_group: sphericalcow;
 file_name: bug-1885304.sh;
 hwut_info_time: 1480539696L;
 result_list: [
-  [ ; FAIL; 0.406841; 0; ]
+  [ ; FAIL; 0.409378; 0; ]
 ]
 }
 {
@@ -1023,7 +1023,7 @@ title_group: sphericalcow;
 file_name: bug-1900391.sh;
 hwut_info_time: 1480539694L;
 result_list: [
-  [ ; FAIL; 0.136426; 0; ]
+  [ ; FAIL; 0.136333; 0; ]
 ]
 }
 {
@@ -1169,7 +1169,7 @@ title_group: the-user-k;
 file_name: bug-3021502.sh;
 hwut_info_time: 1480539689L;
 result_list: [
-  [ ; FAIL; 0.537284; 1106289097; ]
+  [ ; FAIL; 0.542946; 1106289097; ]
 ]
 }
 {
@@ -1229,7 +1229,7 @@ title_group: yaroslav_xp;
 file_name: feature-2146712.sh;
 hwut_info_time: 1480539691L;
 result_list: [
-  [ Normal; FAIL; 0.112796; 0; ]
+  [ Normal; FAIL; 0.112822; 0; ]
   [ NotExist; OK; 0.062636; 0; ]
   [ NoWrite; OK; 0.063795; 0; ]
 ]
@@ -1258,12 +1258,12 @@ title_group: ymarkovitch;
 file_name: feature-3030640.sh;
 hwut_info_time: 1480547732L;
 result_list: [
-  [ pp; FAIL; 0.096758; 570303334; ]
-  [ ++; FAIL; 0.097964; -1965423731; ]
-  [ xx; FAIL; 0.096797; -1606129661; ]
-  [ cc; FAIL; 0.096635; 598060113; ]
-  [ PlainC; FAIL; 0.108019; 604955410; ]
-  [ PlainCpp; FAIL; 0.097696; 435199230; ]
+  [ pp; FAIL; 0.104039; 570303334; ]
+  [ ++; FAIL; 0.099289; -1965423731; ]
+  [ xx; FAIL; 0.099263; -1606129661; ]
+  [ cc; FAIL; 0.099460; 598060113; ]
+  [ PlainC; FAIL; 0.108449; 604955410; ]
+  [ PlainCpp; FAIL; 0.098104; 435199230; ]
   [ ErrorC; OK; 0.062242; 0; ]
   [ ErrorCpp; OK; 0.061339; 0; ]
 ]

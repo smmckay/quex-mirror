@@ -160,8 +160,8 @@ hwut_info_time: 1480721052L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; NO OUTPUT; 0.062022; 0; ]
-  [ stepping; NO OUTPUT; 0.064519; 0; ]
+  [ linear; OK; 0.053024; 0; ]
+  [ stepping; OK; 0.056678; 0; ]
 ]
 }
 {
@@ -173,8 +173,8 @@ hwut_info_time: 1480721052L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; NO OUTPUT; 0.058692; 0; ]
-  [ stepping; NO OUTPUT; 0.062842; 0; ]
+  [ linear; OK; 0.052201; 0; ]
+  [ stepping; OK; 0.055360; 0; ]
 ]
 }
 {
@@ -186,8 +186,8 @@ hwut_info_time: 1480721052L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; NO OUTPUT; 0.054228; 0; ]
-  [ stepping; NO OUTPUT; 0.060655; 0; ]
+  [ linear; OK; 0.049569; 0; ]
+  [ stepping; OK; 0.058721; 0; ]
 ]
 }
 {
@@ -199,8 +199,8 @@ hwut_info_time: 1480721053L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; NO OUTPUT; 0.098390; 0; ]
-  [ stepping; NO OUTPUT; 0.109629; 0; ]
+  [ linear; OK; 0.094122; 0; ]
+  [ stepping; OK; 0.102974; 0; ]
 ]
 }
 {
@@ -212,8 +212,8 @@ hwut_info_time: 1480721053L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; NO OUTPUT; 0.095473; 0; ]
-  [ stepping; NO OUTPUT; 0.106258; 0; ]
+  [ linear; OK; 0.089142; 0; ]
+  [ stepping; OK; 0.099960; 0; ]
 ]
 }
 {
@@ -225,8 +225,21 @@ hwut_info_time: 1480721054L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; NO OUTPUT; 0.118436; 0; ]
-  [ stepping; NO OUTPUT; 0.102149; 0; ]
+  [ linear; OK; 0.084380; 0; ]
+  [ stepping; OK; 0.096039; 0; ]
+]
+}
+{
+title: LexatomLoader_Plain (BPC=4, FALLBACK=0);
+title_group: Buffer Tell&Seek;
+build_time: 0.00501704216003418;
+file_name: test-Plain-4-0.exe;
+hwut_info_time: 1480721054L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ linear; OK; 0.142955; 0; ]
+  [ stepping; OK; 0.691086; 0; ]
 ]
 }
 {
@@ -240,19 +253,6 @@ same_f: True;
 result_list: [
   [ linear; OK; 0.055353; 0; ]
   [ stepping; OK; 0.062172; 0; ]
-]
-}
-{
-title: LexatomLoader_Plain (BPC=4, FALLBACK=0);
-title_group: Buffer Tell&Seek;
-build_time: 0.00501704216003418;
-file_name: test-Plain-4-0.exe;
-hwut_info_time: 1480721054L;
-make_dependent_f: True;
-same_f: True;
-result_list: [
-  [ linear; NO OUTPUT; 0.151462; 0; ]
-  [ stepping; NO OUTPUT; 0.697764; 0; ]
 ]
 }
 {
@@ -277,8 +277,8 @@ hwut_info_time: 1480721054L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; NO OUTPUT; 0.147281; 0; ]
-  [ stepping; NO OUTPUT; 0.688608; 0; ]
+  [ linear; OK; 0.142718; 0; ]
+  [ stepping; OK; 0.692358; 0; ]
 ]
 }
 {
@@ -290,8 +290,8 @@ hwut_info_time: 1480721055L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; NO OUTPUT; 0.146145; 0; ]
-  [ stepping; NO OUTPUT; 0.692680; 0; ]
+  [ linear; OK; 0.136867; 0; ]
+  [ stepping; OK; 0.680327; 0; ]
 ]
 }
 {

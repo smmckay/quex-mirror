@@ -75,10 +75,10 @@ test_file(bool BinaryF, const char* FileStem)
      * containing the REFERENCE data and the INPUT file are the SAME.        */
     const char*               file_name   = find_reference(FileStem); 
     FILE*                     fh          = fopen(file_name, "rb"); 
-    QUEX_NAME(ByteLoader)*               byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
-    QUEX_NAME(LexatomLoader)*  filler;
+    QUEX_NAME(ByteLoader)*    byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
+    QUEX_NAME(LexatomLoader)* filler;
     const size_t              MemorySize  = true ? 5 : 16;
-    QUEX_TYPE_LEXATOM       memory[MemorySize];
+    QUEX_TYPE_LEXATOM         memory[MemorySize];
 
     if( ! fh ) {
         printf("Failed to open '%s'.", file_name);
@@ -94,6 +94,7 @@ test_file(bool BinaryF, const char* FileStem)
     hwut_verify(basic_functionality(&buffer, file_name));
 
     filler->delete_self(filler);
+    byte_loader->delete_self(byte_loader);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

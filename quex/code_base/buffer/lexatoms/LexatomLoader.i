@@ -138,7 +138,7 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
     me->derived.fill_finish         = derived_fill_finish;
     me->derived.get_fill_boundaries = derived_get_fill_boundaries;
 
-    me->byte_loader                    = byte_loader;
+    me->byte_loader                 = byte_loader;
 
     me->_byte_order_reversion_active_f = false;
     me->lexatom_index_next_to_fill   = 0;
@@ -156,8 +156,10 @@ QUEX_NAME(LexatomLoader_reset)(QUEX_NAME(LexatomLoader)* me, QUEX_NAME(ByteLoade
         if( QUEX_NAME(ByteLoader_is_equivalent)(new_byte_loader, me->byte_loader) ) {
             __QUEX_STD_printf("Upon 'reset': current and new QUEX_NAME(ByteLoader )objects contain same input handle.\n"); 
         }
-        QUEX_NAME(ByteLoader_delete)(&me->byte_loader);
-        me->byte_loader = new_byte_loader;
+        if( me->byte_loader && me->byte_loader->ownership == E_Ownership_LEXICAL_ANALYZER ) {
+            QUEX_NAME(ByteLoader_delete)(&me->byte_loader);
+            me->byte_loader = new_byte_loader;
+        }
     }
     QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
 }
