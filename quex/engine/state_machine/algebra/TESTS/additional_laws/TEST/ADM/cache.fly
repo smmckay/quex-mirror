@@ -5,7 +5,7 @@ hwut_info_time: 1480112483L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 3.802824; 595752344; ]
+  [ ; OK; 4.781317; 595752344; ]
 ]
 }
 {
@@ -15,7 +15,7 @@ hwut_info_time: 1480113805L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.333768; 15095942; ]
+  [ ; OK; 0.437233; 15095942; ]
 ]
 }
 {
@@ -25,7 +25,7 @@ hwut_info_time: 1480112230L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.383963; 15095942; ]
+  [ ; OK; 0.574127; 15095942; ]
 ]
 }
 {
@@ -35,7 +35,7 @@ hwut_info_time: 1480233179L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 3.495962; 1157994512; ]
+  [ ; OK; 5.006332; 1157994512; ]
 ]
 }
 {
@@ -46,7 +46,7 @@ hwut_info_time: 1480232518L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 16.812465; 595752344; ]
+  [ ; OK; 17.755626; 595752344; ]
 ]
 }
 {
@@ -57,9 +57,9 @@ hwut_info_time: 1480232772L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ 1; OK; 1.123080; -1826475641; ]
-  [ 2; OK; 11.355075; 1157994512; ]
-  [ 3; OK; 8.178531; 267470175; ]
+  [ 1; OK; 1.254455; -1826475641; ]
+  [ 2; OK; 14.573583; 1157994512; ]
+  [ 3; OK; 11.516492; 267470175; ]
 ]
 }
 {
@@ -70,6 +70,6 @@ hwut_info_time: 1480200934L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 1.681592; -1826475641; ]
+  [ ; OK; 2.526070; -1826475641; ]
 ]
 }

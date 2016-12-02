@@ -3,25 +3,25 @@ title: Checking DELETE marks internally.;
 file_name: deletion.py;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ 3-begin; OK; 0.231287; 0; ]
-  [ 3-mid; OK; 0.177042; 0; ]
-  [ 3-end; OK; 0.212552; 0; ]
-  [ 2-begin; OK; 0.167153; 0; ]
-  [ 2-end; OK; 0.155915; 0; ]
-  [ 1; OK; 0.140767; -694270014; ]
-  [ Nonsense; OK; 0.168782; 0; ]
-  [ derived-3-begin; OK; 0.183533; 0; ]
-  [ derived-3-mid; OK; 0.183009; 0; ]
-  [ derived-3-end; OK; 0.221675; 0; ]
-  [ derived-2-begin; OK; 0.169603; 0; ]
-  [ derived-2-end; OK; 0.240649; 0; ]
-  [ derived-1; OK; 0.227032; 2081118427; ]
-  [ derived-Nonsense; OK; 0.221172; 0; ]
-  [ before; OK; 0.200167; 0; ]
-  [ derived-before; OK; 0.224163; 0; ]
-  [ derived-deeply; OK; 0.343110; 0; ]
-  [ superset; OK; 0.207058; 0; ]
-  [ subset; OK; 0.160953; 0; ]
+  [ 3-begin; FAIL; 0.230273; 0; ]
+  [ 3-mid; FAIL; 0.220498; 0; ]
+  [ 3-end; FAIL; 0.187598; 0; ]
+  [ 2-begin; FAIL; 0.160351; 0; ]
+  [ 2-end; FAIL; 0.248033; 0; ]
+  [ 1; FAIL; 0.190169; -694270014; ]
+  [ Nonsense; FAIL; 0.171057; 0; ]
+  [ derived-3-begin; FAIL; 0.194291; 0; ]
+  [ derived-3-mid; FAIL; 0.205357; 0; ]
+  [ derived-3-end; FAIL; 0.180285; 0; ]
+  [ derived-2-begin; FAIL; 0.169171; 0; ]
+  [ derived-2-end; FAIL; 0.233632; 0; ]
+  [ derived-1; FAIL; 0.188972; 2081118427; ]
+  [ derived-Nonsense; FAIL; 0.229116; 0; ]
+  [ before; FAIL; 0.183472; 0; ]
+  [ derived-before; FAIL; 0.200655; 0; ]
+  [ derived-deeply; FAIL; 0.212641; 0; ]
+  [ superset; FAIL; 0.199450; 0; ]
+  [ subset; FAIL; 0.180882; 0; ]
 ]
 }
 {
@@ -29,25 +29,25 @@ title: Checking PRIORITY-MARK internally.;
 file_name: priority.py;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ 3-begin; OK; 0.392240; 0; ]
-  [ 3-mid; OK; 0.189317; 0; ]
-  [ 3-end; OK; 0.272189; 0; ]
-  [ 2-begin; OK; 0.185023; 0; ]
-  [ 2-end; OK; 0.242264; 0; ]
-  [ 1; OK; 0.171988; 0; ]
-  [ Nonsense; OK; 0.157530; 0; ]
-  [ derived-3-begin; OK; 0.273795; 0; ]
-  [ derived-3-mid; OK; 0.260596; 0; ]
-  [ derived-3-end; OK; 0.259456; 0; ]
-  [ derived-2-begin; OK; 0.264512; 0; ]
-  [ derived-2-end; OK; 0.293190; 0; ]
-  [ derived-1; OK; 0.209060; 0; ]
-  [ derived-Nonsense; OK; 0.285432; 0; ]
-  [ before; OK; 0.148542; 0; ]
-  [ derived-before; OK; 0.162874; 0; ]
-  [ derived-deeply; OK; 0.212057; 0; ]
-  [ superset; OK; 0.164065; 0; ]
-  [ subset; OK; 0.166641; 0; ]
+  [ 3-begin; FAIL; 0.233054; 0; ]
+  [ 3-mid; FAIL; 0.227119; 0; ]
+  [ 3-end; FAIL; 0.307629; 0; ]
+  [ 2-begin; FAIL; 0.199357; 0; ]
+  [ 2-end; FAIL; 0.259611; 0; ]
+  [ 1; FAIL; 0.194968; 0; ]
+  [ Nonsense; FAIL; 0.178138; 0; ]
+  [ derived-3-begin; FAIL; 0.317663; 0; ]
+  [ derived-3-mid; FAIL; 0.269633; 0; ]
+  [ derived-3-end; FAIL; 0.369644; 0; ]
+  [ derived-2-begin; FAIL; 0.320515; 0; ]
+  [ derived-2-end; FAIL; 0.277342; 0; ]
+  [ derived-1; FAIL; 0.266627; 0; ]
+  [ derived-Nonsense; FAIL; 0.306835; 0; ]
+  [ before; FAIL; 0.183776; 0; ]
+  [ derived-before; FAIL; 0.256738; 0; ]
+  [ derived-deeply; FAIL; 0.211532; 0; ]
+  [ superset; FAIL; 0.204809; 0; ]
+  [ subset; FAIL; 0.194032; 0; ]
 ]
 }
 {
@@ -55,7 +55,7 @@ title: Local variables.;
 file_name: local-variables.sh;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ ; OK; 3.395500; 0; ]
+  [ ; FAIL; 3.990399; 0; ]
 ]
 }
 {
@@ -63,10 +63,10 @@ title: PRIORITY-MARK or DELETION on not existing pattern.;
 file_name: unvalid-marks.sh;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ PRIORITY-good; OK; 0.582512; 0; ]
-  [ PRIORITY-fail; OK; 0.468997; 0; ]
-  [ DELETION-good; OK; 0.451698; 0; ]
-  [ DELETION-fail; OK; 0.424579; 0; ]
+  [ PRIORITY-good; FAIL; 0.636255; 0; ]
+  [ PRIORITY-fail; FAIL; 0.623468; 0; ]
+  [ DELETION-good; FAIL; 0.764317; 0; ]
+  [ DELETION-fail; FAIL; 0.623143; 0; ]
 ]
 }
 {
@@ -75,7 +75,7 @@ title_group: Precedence;
 file_name: derived-before-base.sh;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ ; OK; 3.734009; 0; ]
+  [ ; FAIL; 4.192938; 0; ]
 ]
 }
 {
@@ -84,6 +84,6 @@ title_group: Precedence;
 file_name: large-tree.sh;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ ; OK; 2.936305; -1870201790; ]
+  [ ; FAIL; 3.277953; -1870201790; ]
 ]
 }

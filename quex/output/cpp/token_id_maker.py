@@ -208,22 +208,26 @@ def __warn_on_double_definition():
             clash_db[x.number].append(x)
             clash_db[x.number].append(y)
 
-    def find_source_reference(TokenList):
-        for token in TokenList:
-            if token.sr.is_void(): continue
-            return token.sr
-        return None
-    
     if len(clash_db) != 0:
         item_list = clash_db.items()
         item_list.sort()
-        sr = find_source_reference(item_list[0][1])
-        error.warning("Following token ids have the same numeric value assigned:", sr)
         for x, token_id_list in item_list:
-            sr = find_source_reference(token_id_list)
-            token_ids_sorted = sorted(list(set(token_id_list)), key=attrgetter("name")) # Ensure uniqueness
-            error.warning("  %s: %s" % (x, "".join(["%s, " % t.name for t in token_ids_sorted])), 
-                          sr)
+            done = set()
+            new_token_id_list = []
+            for token_id in token_id_list:
+                if token_id.name in done: continue
+                done.add(token_id.name)
+                new_token_id_list.append(token_id)
+
+            subitem_list = sorted([ 
+                (token_id.sr.line_n, token_id.name, token_id.sr) 
+                for token_id in new_token_id_list 
+            ])
+            if not subitem_list: continue
+            dummy, dummy, sr = subitem_list[0]
+            error.warning("Token ids with same numeric value %i fuond:" % x, sr)
+            for dummy, name, sr in subitem_list:
+                error.warning("  %s" % name, sr)
                       
 def __warn_implicit_token_definitions():
     """Output a message on token_ids which have been generated automatically.

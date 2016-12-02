@@ -2,9 +2,13 @@ simple.qx:13:warning: Detected implicit token identifier definitions. Proposal:
 simple.qx:13:warning:    token {
 simple.qx:13:warning:      Z;
 simple.qx:13:warning:    }
-simple.qx:8:warning: Following token ids have the same numeric value assigned:
-simple.qx:8:warning:   111: DEDENT, F, UNINITIALIZED, 
-simple.qx:5:warning:   115: C, E, 
+<default>:0:warning: Token ids with same numeric value 111 fuond:
+<default>:0:warning:   DEDENT
+simple.qx:2:warning:   UNINITIALIZED
+simple.qx:8:warning:   F
+simple.qx:5:warning: Token ids with same numeric value 115 fuond:
+simple.qx:5:warning:   C
+simple.qx:7:warning:   E
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_A             = ((QUEX_TYPE_TOKEN_ID)114);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_B             = ((QUEX_TYPE_TOKEN_ID)116);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_C             = ((QUEX_TYPE_TOKEN_ID)115);
@@ -17,3 +21,7 @@ const QUEX_TYPE_TOKEN_ID QUEX_TKN_NODENT        = ((QUEX_TYPE_TOKEN_ID)113);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_TERMINATION   = ((QUEX_TYPE_TOKEN_ID)0);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_UNINITIALIZED = ((QUEX_TYPE_TOKEN_ID)111);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_Z             = ((QUEX_TYPE_TOKEN_ID)118);
+
+
+
+

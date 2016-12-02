@@ -4,9 +4,9 @@ file_name: bad.sh;
 hwut_info_time: 1479757921L;
 happy_pattern_list: [ EasyLexer.c:\[0-9]+:; ]
 result_list: [
-  [ default; OK; 1.597650; 646894342; ]
-  [ customized; OK; 1.588733; 0; ]
-  [ customized-2; OK; 1.583260; 0; ]
+  [ default; FAIL; 2.224597; 646894342; ]
+  [ customized; FAIL; 2.070851; 0; ]
+  [ customized-2; FAIL; 1.966990; 0; ]
 ]
 }
 {
@@ -14,13 +14,13 @@ title: Commonalities of Indentation Counter vs. Patterns;
 file_name: commonalities.sh;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ 1; OK; 0.361346; 0; ]
-  [ 2; OK; 0.356351; 0; ]
-  [ 3; OK; 0.359387; 0; ]
-  [ 4; OK; 0.518205; 0; ]
-  [ 5; OK; 0.345654; 1002458274; ]
-  [ 5b; OK; 0.297280; 0; ]
-  [ 6; OK; 0.376754; 0; ]
+  [ 1; FAIL; 0.286967; 0; ]
+  [ 2; FAIL; 0.360865; 0; ]
+  [ 3; FAIL; 0.360528; 0; ]
+  [ 4; FAIL; 0.365953; 0; ]
+  [ 5; FAIL; 0.331243; 1002458274; ]
+  [ 5b; FAIL; 0.295982; 0; ]
+  [ 6; FAIL; 0.290229; 0; ]
 ]
 }
 {
@@ -28,9 +28,9 @@ title: Customized Event Handlers;
 file_name: comment.sh;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ bash; OK; 2.176451; -953080206; ]
-  [ c; OK; 0.012485; 1991559820; ]
-  [ mix; OK; 0.027560; -1838391046; ]
+  [ bash; FAIL; 2.426272; -953080206; ]
+  [ c; OK; 0.023804; 1991559820; ]
+  [ mix; OK; 0.031763; -1838391046; ]
 ]
 }
 {
@@ -38,11 +38,11 @@ title: Customized Event Handlers;
 file_name: handlers.sh;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ check-eof; OK; 1.637409; 0; ]
-  [ on_dedent; OK; 2.683978; 0; ]
-  [ on_n_dedent; OK; 1.899890; 0; ]
-  [ empty-lines; OK; 1.803336; 0; ]
-  [ on_indentation_error; OK; 2.274894; 0; ]
+  [ check-eof; FAIL; 1.969701; 0; ]
+  [ on_dedent; FAIL; 2.064900; 0; ]
+  [ on_n_dedent; FAIL; 2.299228; 0; ]
+  [ empty-lines; FAIL; 2.050327; 0; ]
+  [ on_indentation_error; FAIL; 1.737087; 0; ]
 ]
 }
 {
@@ -50,8 +50,8 @@ title: Indentation Counting and Range Skipper;
 file_name: with-skip-range.sh;
 hwut_info_time: 1479757921L;
 result_list: [
-  [ range; OK; 1.602992; 0; ]
-  [ range-2; OK; 1.711385; 0; ]
-  [ nested_range; OK; 1.799533; 0; ]
+  [ range; FAIL; 1.793168; 0; ]
+  [ range-2; FAIL; 2.030858; 0; ]
+  [ nested_range; FAIL; 2.047851; 0; ]
 ]
 }
