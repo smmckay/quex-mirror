@@ -1,89 +1,89 @@
 {
 title: Checking DELETE marks internally.;
 file_name: deletion.py;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ 3-begin; FAIL; 0.230273; 0; ]
-  [ 3-mid; FAIL; 0.220498; 0; ]
-  [ 3-end; FAIL; 0.187598; 0; ]
-  [ 2-begin; FAIL; 0.160351; 0; ]
-  [ 2-end; FAIL; 0.248033; 0; ]
-  [ 1; FAIL; 0.190169; -694270014; ]
-  [ Nonsense; FAIL; 0.171057; 0; ]
-  [ derived-3-begin; FAIL; 0.194291; 0; ]
-  [ derived-3-mid; FAIL; 0.205357; 0; ]
-  [ derived-3-end; FAIL; 0.180285; 0; ]
-  [ derived-2-begin; FAIL; 0.169171; 0; ]
-  [ derived-2-end; FAIL; 0.233632; 0; ]
-  [ derived-1; FAIL; 0.188972; 2081118427; ]
-  [ derived-Nonsense; FAIL; 0.229116; 0; ]
-  [ before; FAIL; 0.183472; 0; ]
-  [ derived-before; FAIL; 0.200655; 0; ]
-  [ derived-deeply; FAIL; 0.212641; 0; ]
-  [ superset; FAIL; 0.199450; 0; ]
-  [ subset; FAIL; 0.180882; 0; ]
+  [ 3-begin; OK; 0.058892; 0; ]
+  [ 3-mid; OK; 0.058484; 0; ]
+  [ 3-end; OK; 0.057693; 0; ]
+  [ 2-begin; OK; 0.056544; 0; ]
+  [ 2-end; OK; 0.057176; 0; ]
+  [ 1; OK; 0.056186; -694270014; ]
+  [ Nonsense; OK; 0.057599; 0; ]
+  [ derived-3-begin; OK; 0.061706; 0; ]
+  [ derived-3-mid; OK; 0.061684; 0; ]
+  [ derived-3-end; OK; 0.061202; 0; ]
+  [ derived-2-begin; OK; 0.060580; 0; ]
+  [ derived-2-end; OK; 0.061174; 0; ]
+  [ derived-1; OK; 0.058873; 2081118427; ]
+  [ derived-Nonsense; OK; 0.061772; 0; ]
+  [ before; OK; 0.057707; 0; ]
+  [ derived-before; OK; 0.061075; 0; ]
+  [ derived-deeply; OK; 0.075650; 0; ]
+  [ superset; OK; 0.059008; 0; ]
+  [ subset; OK; 0.059415; 0; ]
 ]
 }
 {
 title: Checking PRIORITY-MARK internally.;
 file_name: priority.py;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ 3-begin; FAIL; 0.233054; 0; ]
-  [ 3-mid; FAIL; 0.227119; 0; ]
-  [ 3-end; FAIL; 0.307629; 0; ]
-  [ 2-begin; FAIL; 0.199357; 0; ]
-  [ 2-end; FAIL; 0.259611; 0; ]
-  [ 1; FAIL; 0.194968; 0; ]
-  [ Nonsense; FAIL; 0.178138; 0; ]
-  [ derived-3-begin; FAIL; 0.317663; 0; ]
-  [ derived-3-mid; FAIL; 0.269633; 0; ]
-  [ derived-3-end; FAIL; 0.369644; 0; ]
-  [ derived-2-begin; FAIL; 0.320515; 0; ]
-  [ derived-2-end; FAIL; 0.277342; 0; ]
-  [ derived-1; FAIL; 0.266627; 0; ]
-  [ derived-Nonsense; FAIL; 0.306835; 0; ]
-  [ before; FAIL; 0.183776; 0; ]
-  [ derived-before; FAIL; 0.256738; 0; ]
-  [ derived-deeply; FAIL; 0.211532; 0; ]
-  [ superset; FAIL; 0.204809; 0; ]
-  [ subset; FAIL; 0.194032; 0; ]
+  [ 3-begin; OK; 0.078863; 0; ]
+  [ 3-mid; OK; 0.079495; 0; ]
+  [ 3-end; OK; 0.077532; 0; ]
+  [ 2-begin; OK; 0.068584; 0; ]
+  [ 2-end; OK; 0.068967; 0; ]
+  [ 1; OK; 0.060183; 0; ]
+  [ Nonsense; OK; 0.063545; 0; ]
+  [ derived-3-begin; OK; 0.096750; 0; ]
+  [ derived-3-mid; OK; 0.095735; 0; ]
+  [ derived-3-end; OK; 0.094474; 0; ]
+  [ derived-2-begin; OK; 0.090221; 0; ]
+  [ derived-2-end; OK; 0.088808; 0; ]
+  [ derived-1; OK; 0.083452; 0; ]
+  [ derived-Nonsense; OK; 0.091766; 0; ]
+  [ before; OK; 0.057645; 0; ]
+  [ derived-before; OK; 0.062203; 0; ]
+  [ derived-deeply; OK; 0.074190; 0; ]
+  [ superset; OK; 0.055604; 0; ]
+  [ subset; OK; 0.056648; 0; ]
 ]
 }
 {
 title: Local variables.;
 file_name: local-variables.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ ; FAIL; 3.990399; 0; ]
+  [ ; OK; 0.896008; 0; ]
 ]
 }
 {
 title: PRIORITY-MARK or DELETION on not existing pattern.;
 file_name: unvalid-marks.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ PRIORITY-good; FAIL; 0.636255; 0; ]
-  [ PRIORITY-fail; FAIL; 0.623468; 0; ]
-  [ DELETION-good; FAIL; 0.764317; 0; ]
-  [ DELETION-fail; FAIL; 0.623143; 0; ]
+  [ PRIORITY-good; OK; 0.154923; 0; ]
+  [ PRIORITY-fail; OK; 0.158938; 0; ]
+  [ DELETION-good; OK; 0.154953; 0; ]
+  [ DELETION-fail; OK; 0.153811; 0; ]
 ]
 }
 {
 title: Derived before Base;
 title_group: Precedence;
 file_name: derived-before-base.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ ; FAIL; 4.192938; 0; ]
+  [ ; OK; 0.942267; 0; ]
 ]
 }
 {
 title: Larger Inheritance Tree;
 title_group: Precedence;
 file_name: large-tree.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ ; FAIL; 3.277953; -1870201790; ]
+  [ ; OK; 0.909475; -1870201790; ]
 ]
 }

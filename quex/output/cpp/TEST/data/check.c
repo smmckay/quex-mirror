@@ -22,7 +22,7 @@ main(int argc, char** argv)
     if( verbose_f ) {
         printf("file:     '%s';\n"
                "char_size: %i;\n" 
-               "byte_n:    %i;\n", DEF_FILE_NAME, sizeof(QUEX_TYPE_LEXATOM), (int)n);
+               "byte_n:    %i;\n", DEF_FILE_NAME, (int)sizeof(QUEX_TYPE_LEXATOM), (int)n);
     }
 
     me.counter._column_number_at_end = 1;

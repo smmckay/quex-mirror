@@ -1,199 +1,199 @@
 {
 title: Anti-Patterns;
 file_name: anti-pattern.py;
-hwut_info_time: 1480488204L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.158723; 1956969031; ]
+  [ ; OK; 0.045646; 1956969031; ]
 ]
 }
 {
 title: Case Folding;
 file_name: test-case_fold.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ set; OK; 0.177470; 0; ]
-  [ pattern; OK; 0.182807; 0; ]
+  [ set; OK; 0.052001; 0; ]
+  [ pattern; OK; 0.050280; 0; ]
 ]
 }
 {
 title: Operations;
 file_name: test-operations.py;
-hwut_info_time: 1479962523L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ special; OK; 0.176715; 1541720877; ]
-  [ 0; OK; 0.153619; 0; ]
-  [ 1; OK; 0.188728; 1425488154; ]
-  [ 2; OK; 0.350796; 0; ]
-  [ 3; OK; 0.235722; 0; ]
+  [ special; OK; 0.039876; 1541720877; ]
+  [ 0; OK; 0.037534; 0; ]
+  [ 1; OK; 0.054490; 1425488154; ]
+  [ 2; OK; 0.061416; 0; ]
+  [ 3; OK; 0.063388; 0; ]
 ]
 }
 {
 title: State Machine Pattern Matching;
 file_name: test-pattern-matching.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.180714; 0; ]
+  [ ; OK; 0.042248; 0; ]
 ]
 }
 {
 title: Transformations;
 file_name: test-transformation.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.318735; 1005104571; ]
+  [ ; OK; 0.072340; 1005104571; ]
 ]
 }
 {
 title: General;
 title_group: Backslashed Characters;
 file_name: test-snap_backslashed_character.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.036606; 0; ]
+  [ ; OK; 0.012241; 0; ]
 ]
 }
 {
 title: Lonestanding characters;
 title_group: Basics;
 file_name: test-lonely-characters.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.163544; 0; ]
+  [ ; OK; 0.052610; 0; ]
 ]
 }
 {
 title: Map character *range* to state machine;
 title_group: Basics;
 file_name: test-set.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.090594; 0; ]
+  [ ; OK; 0.021264; 0; ]
 ]
 }
 {
 title: Map character *string* to state machine;
 title_group: Basics;
 file_name: test-string.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.125946; 0; ]
+  [ ; OK; 0.020398; 0; ]
 ]
 }
 {
 title: Snap string until (low level function);
 title_group: Basics;
 file_name: test-snap_until.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.179282; 0; ]
+  [ ; OK; 0.036034; 0; ]
 ]
 }
 {
 title: Alternative Expressions;
 title_group: Combination;
 file_name: test-alternatives.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.197748; 0; ]
+  [ ; OK; 0.051825; 0; ]
 ]
 }
 {
 title: Alternative Expressions;
 title_group: Combination;
 file_name: test-set-expressions.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.172411; 0; ]
+  [ ; OK; 0.038806; 0; ]
 ]
 }
 {
 title: Simple repeated expressions;
 title_group: Combination;
 file_name: test-repeated-expressions.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.177916; 0; ]
+  [ ; OK; 0.056995; 0; ]
 ]
 }
 {
 title: Begin of Line '^', End of Line '$';
 title_group: Conditional Analysis;
 file_name: test-bol-eol.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.165523; 0; ]
+  [ ; OK; 0.051874; 0; ]
 ]
 }
 {
 title: End of Line '$' (with DOS/Windows '\\r\\n');
 title_group: Conditional Analysis;
 file_name: test-eol-carriage-return-newline.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.201686; 0; ]
+  [ ; OK; 0.042706; 0; ]
 ]
 }
 {
 title: post conditions;
 title_group: Conditional Analysis;
 file_name: test-post-condition.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.167214; 0; ]
+  [ ; OK; 0.045960; 0; ]
 ]
 }
 {
 title: pre conditions;
 title_group: Conditional Analysis;
 file_name: test-pre-condition.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 happy_pattern_list: [ pre=\[0-9]+; ]
 result_list: [
-  [ ; OK; 0.137832; -819198278; ]
+  [ ; OK; 0.045324; -819198278; ]
 ]
 }
 {
 title: pre- and post-conditions;
 title_group: Conditional Analysis;
 file_name: test-pre-and-post-condition.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.208262; -298438719; ]
+  [ ; OK; 0.049555; -298438719; ]
 ]
 }
 {
 title: Character Sets;
 title_group: Replacement;
 file_name: test-replacement-2.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.230044; 0; ]
+  [ ; OK; 0.056937; 0; ]
 ]
 }
 {
 title: Regular Expression State Machines;
 title_group: Replacement;
 file_name: test-replacement.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 0.145854; 0; ]
+  [ ; OK; 0.048855; 0; ]
 ]
 }
 {
 title: Set Operations;
 title_group: Unicode properties;
 file_name: test-properties-2.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 1.029347; 0; ]
+  [ ; OK; 0.297111; 0; ]
 ]
 }
 {
 title: Simple;
 title_group: Unicode properties;
 file_name: test-properties.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539698L;
 result_list: [
-  [ ; OK; 1.150494; 0; ]
+  [ ; OK; 0.279303; 0; ]
 ]
 }

@@ -1,75 +1,75 @@
 {
 title: Absorbtion;
 file_name: absorption.py;
-hwut_info_time: 1480112483L;
+hwut_info_time: 1480539706L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 4.781317; 595752344; ]
+  [ ; OK; 1.309963; 595752344; ]
 ]
 }
 {
 title: Domination;
 file_name: domination.py;
-hwut_info_time: 1480113805L;
+hwut_info_time: 1480539706L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.437233; 15095942; ]
+  [ ; OK; 0.133936; 15095942; ]
 ]
 }
 {
 title: Idempotency;
 file_name: idempotency.py;
-hwut_info_time: 1480112230L;
+hwut_info_time: 1480539706L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 0.574127; 15095942; ]
+  [ ; OK; 0.157913; 15095942; ]
 ]
 }
 {
 title: Intersection by Difference;
 file_name: intersection_by_difference.py;
-hwut_info_time: 1480233179L;
+hwut_info_time: 1480539706L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 5.006332; 1157994512; ]
+  [ ; OK; 1.361147; 1157994512; ]
 ]
 }
 {
 title: DeMorgan's Law;
 title_group: Complement;
 file_name: complement-de-morgan.py;
-hwut_info_time: 1480232518L;
+hwut_info_time: 1480539706L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 17.755626; 595752344; ]
+  [ ; OK; 5.072123; 595752344; ]
 ]
 }
 {
 title: Relativity in difference operations;
 title_group: Complement;
 file_name: complement-relative.py;
-hwut_info_time: 1480232772L;
+hwut_info_time: 1480539706L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ 1; OK; 1.254455; -1826475641; ]
-  [ 2; OK; 14.573583; 1157994512; ]
-  [ 3; OK; 11.516492; 267470175; ]
+  [ 1; OK; 0.419244; -1826475641; ]
+  [ 2; OK; 3.575341; 1157994512; ]
+  [ 3; OK; 3.003815; 267470175; ]
 ]
 }
 {
 title: Uniqueness and Involution;
 title_group: Complement;
 file_name: complement-uniqueness.py;
-hwut_info_time: 1480200934L;
+hwut_info_time: 1480539706L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ ; OK; 2.526070; -1826475641; ]
+  [ ; OK; 0.609741; -1826475641; ]
 ]
 }

@@ -1,106 +1,106 @@
 {
 title: Check if the default configuration has been updated.;
 file_name: check-default-configuration.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.015336; -1256193323; ]
+  [ ; OK; 0.006001; -1256193323; ]
 ]
 }
 {
 title: Check that 'Lexeme' macro is not used.;
 file_name: no-use-of-lexeme-macro.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ py:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.074068; 590435299; ]
+  [ ; OK; 0.017198; 590435299; ]
 ]
 }
 {
 title: Check that there are no trailing unused Enum Values;
 file_name: no-unused-enum-values.py;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 5.709809; -235166342; ]
+  [ ; OK; 1.179377; -235166342; ]
 ]
 }
 {
 title: Checking SVN status;
 file_name: svn-status.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 4.838952; -681318074; ]
+  [ ; FAIL; 0.876955; -681318074; ]
 ]
 }
 {
 title: Checking for defined but unused functions.;
 file_name: function-check.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ example; OK; 0.269448; 1854110009; ]
-  [ real; OK; 30.253404; -1191039011; ]
+  [ example; FAIL; 0.038151; 1854110009; ]
+  [ real; FAIL; 6.195043; -1191039011; ]
 ]
 }
 {
 title: Code Check with pyflakes;
 file_name: pyflakes-check.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 111.026843; 0; ]
+  [ ; OK; 0.095562; 0; ]
 ]
 }
 {
 title: Command Line Option Documentation;
 file_name: command_line_options-verify-doc.py;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ man; OK; 0.062488; -1113552213; ]
-  [ sphinx; OK; 0.096994; 0; ]
+  [ man; OK; 0.020218; -1113552213; ]
+  [ sphinx; OK; 0.018577; 0; ]
 ]
 }
 {
 title: Double Check that Exception Handlers are in place;
 file_name: test-exceptions-in-place.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.863553; 0; ]
+  [ ; OK; 0.194228; 0; ]
 ]
 }
 {
 title: Include Guards for C/C++;
 file_name: include_guard.py;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ convention; OK; 0.225419; 0; ]
-  [ undefinition; OK; 0.233682; 0; ]
+  [ convention; OK; 0.053664; 0; ]
+  [ undefinition; OK; 0.052283; 0; ]
 ]
 }
 {
 title: Propper undefinition of configuration parameters.;
 file_name: macro-check.py;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.050663; 0; ]
+  [ ; OK; 0.014129; 0; ]
 ]
 }
 {
 title: __parse_token_id_file;
 title_group: User defined token id file;
 file_name: test-token_id_file-find_ids.py;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.243195; 0; ]
+  [ ; OK; 0.064466; 0; ]
 ]
 }

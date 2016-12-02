@@ -1,16 +1,16 @@
 {
 title: Explicit Token Type Member Assignment;
 file_name: token_type-member-name.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ ; FAIL; 0.229775; 0; ]
+  [ ; OK; 0.060023; 0; ]
 ]
 }
 {
 title: UCS Character Code Names;
 file_name: ucs-character-name.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ 1; FAIL; 5.827447; 0; ]
+  [ 1; OK; 1.648196; 0; ]
 ]
 }

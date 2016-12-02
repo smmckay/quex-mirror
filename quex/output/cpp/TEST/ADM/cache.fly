@@ -1,68 +1,71 @@
 {
+title: Token Class Template;
 file_name: test-token_class.py;
+hwut_info_time: 1480539699L;
+happy_pattern_list: [ line \[0-9]+; ]
 result_list: [
-  [ ; NO OUTPUT; 0.105440; 0; ]
+  [ ; OK; 0.042926; 0; ]
 ]
 }
 {
 title: Default Implementation;
 title_group: Character Counter;
 file_name: test-counter.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539699L;
 same_f: True;
 result_list: [
-  [ ascii-1; OK; 0.626875; 0; ]
-  [ ascii-1-wo-ReferenceP; OK; 0.551728; 0; ]
-  [ utf_16_le-1; OK; 0.475193; 0; ]
-  [ utf_16_le-1-wo-ReferenceP; OK; 0.615610; 0; ]
-  [ utf_16_le-2; OK; 0.550405; 0; ]
-  [ utf_16_le-2-wo-ReferenceP; OK; 0.771713; 0; ]
-  [ utf_32_le-1; OK; 0.610266; 0; ]
-  [ utf_32_le-1-wo-ReferenceP; OK; 0.450904; 0; ]
-  [ cp737-1; OK; 0.591337; 0; ]
-  [ cp737-1-wo-ReferenceP; OK; 0.474277; 0; ]
-  [ utf_8-1; OK; 0.630074; 0; ]
-  [ utf_8-1-wo-ReferenceP; OK; 0.765113; 0; ]
-  [ utf_8-2; OK; 0.727620; 0; ]
-  [ utf_8-2-wo-ReferenceP; OK; 0.546773; 0; ]
-  [ utf_8-3; OK; 0.712566; 0; ]
-  [ utf_8-3-wo-ReferenceP; OK; 0.578322; 0; ]
-  [ utf_8-4; OK; 0.640142; 0; ]
-  [ utf_8-4-wo-ReferenceP; OK; 0.537037; 0; ]
+  [ ascii-1; OK; 0.146391; 0; ]
+  [ ascii-1-wo-ReferenceP; OK; 0.156697; 0; ]
+  [ utf_16_le-1; OK; 0.148917; 0; ]
+  [ utf_16_le-1-wo-ReferenceP; OK; 0.149022; 0; ]
+  [ utf_16_le-2; OK; 0.156598; 0; ]
+  [ utf_16_le-2-wo-ReferenceP; OK; 0.151154; 0; ]
+  [ utf_32_le-1; OK; 0.168418; 0; ]
+  [ utf_32_le-1-wo-ReferenceP; OK; 0.152205; 0; ]
+  [ cp737-1; OK; 0.148376; 0; ]
+  [ cp737-1-wo-ReferenceP; OK; 0.159451; 0; ]
+  [ utf_8-1; FAIL; 0.050140; 0; ]
+  [ utf_8-1-wo-ReferenceP; OK; 0.177484; 0; ]
+  [ utf_8-2; FAIL; 0.050328; 0; ]
+  [ utf_8-2-wo-ReferenceP; OK; 0.184820; 0; ]
+  [ utf_8-3; FAIL; 0.051484; 0; ]
+  [ utf_8-3-wo-ReferenceP; OK; 0.185084; 0; ]
+  [ utf_8-4; FAIL; 0.050591; 0; ]
+  [ utf_8-4-wo-ReferenceP; OK; 0.186563; 0; ]
 ]
 }
 {
 title: Determine UTF-8 Range Map for Codec;
 title_group: Converter;
 file_name: test-converter-x.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539699L;
 result_list: [
-  [ 1; OK; 0.103476; 0; ]
-  [ 2; OK; 0.168160; 0; ]
-  [ 3; OK; 0.149043; 0; ]
+  [ 1; OK; 0.039063; 0; ]
+  [ 2; OK; 0.038399; 0; ]
+  [ 3; OK; 0.039224; 0; ]
 ]
 }
 {
 title: Determine UTF-8 Range Map for Codec;
 title_group: Converter;
 file_name: test-converter-C.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539699L;
 result_list: [
-  [ cp037; OK; 1.048414; 0; ]
-  [ cp737; OK; 1.145107; 0; ]
-  [ cp866; OK; 1.055581; 0; ]
-  [ cp1256; OK; 0.908959; 0; ]
+  [ cp037; OK; 0.207809; 0; ]
+  [ cp737; OK; 0.196906; 0; ]
+  [ cp866; OK; 0.196968; 0; ]
+  [ cp1256; OK; 0.194354; 0; ]
 ]
 }
 {
 title: Determine UTF-8 Range Map for Codec;
 title_group: Converter;
 file_name: test-converter.py;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539699L;
 result_list: [
-  [ 1; OK; 0.138784; 0; ]
-  [ 2; OK; 0.196254; 0; ]
-  [ 3; OK; 0.143929; 0; ]
-  [ 4; OK; 0.168311; 0; ]
+  [ 1; OK; 0.038580; 0; ]
+  [ 2; OK; 0.038757; 0; ]
+  [ 3; OK; 0.038851; 0; ]
+  [ 4; OK; 0.039870; 0; ]
 ]
 }

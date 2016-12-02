@@ -2,41 +2,41 @@
 title: C;
 title_group: Source Packager;
 file_name: test-c.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 same_f: True;
 result_list: [
-  [ plain; FAIL; 1.514654; 0; ]
-  [ iconv; FAIL; 1.858735; 0; ]
-  [ icu; FAIL; 1.594971; 0; ]
-  [ codec; FAIL; 1.671037; -396965334; ]
-  [ codec-utf8; FAIL; 1.402156; 0; ]
-  [ codec-utf16; FAIL; 1.675224; 0; ]
-  [ post-categorizer; FAIL; 1.877487; 0; ]
-  [ no-string-accumulator; FAIL; 1.579364; 0; ]
-  [ no-include-stack; FAIL; 1.818618; 0; ]
-  [ no-counter; FAIL; 1.714580; 0; ]
-  [ manual-token-class; FAIL; 1.709707; 0; ]
-  [ customized-token-class; FAIL; 1.482970; 0; ]
+  [ plain; OK; 0.473194; 0; ]
+  [ iconv; OK; 0.484970; 0; ]
+  [ icu; OK; 0.504545; 0; ]
+  [ codec; OK; 0.433429; -396965334; ]
+  [ codec-utf8; OK; 0.447933; 0; ]
+  [ codec-utf16; OK; 0.437098; 0; ]
+  [ post-categorizer; OK; 0.508429; 0; ]
+  [ no-string-accumulator; OK; 0.466604; 0; ]
+  [ no-include-stack; OK; 0.489917; 0; ]
+  [ no-counter; OK; 0.465424; 0; ]
+  [ manual-token-class; OK; 0.439277; 0; ]
+  [ customized-token-class; OK; 0.492848; 0; ]
 ]
 }
 {
 title: C++;
 title_group: Source Packager;
 file_name: test-cpp.sh;
-hwut_info_time: 1479757921L;
+hwut_info_time: 1480539701L;
 same_f: True;
 result_list: [
-  [ plain; FAIL; 2.252872; 0; ]
-  [ iconv; FAIL; 2.234135; 0; ]
-  [ icu; FAIL; 2.350911; 0; ]
-  [ codec; FAIL; 2.072915; -1161511198; ]
-  [ codec-utf8; FAIL; 2.177439; 0; ]
-  [ codec-utf16; FAIL; 2.119326; 0; ]
-  [ post-categorizer; FAIL; 2.459435; 0; ]
-  [ no-string-accumulator; FAIL; 2.102791; 0; ]
-  [ no-include-stack; FAIL; 2.048793; 0; ]
-  [ no-counter; FAIL; 2.170355; 0; ]
-  [ manual-token-class; FAIL; 2.270807; 0; ]
-  [ customized-token-class; FAIL; 2.185240; 0; ]
+  [ plain; OK; 0.444829; 0; ]
+  [ iconv; OK; 0.448784; 0; ]
+  [ icu; OK; 0.479559; 0; ]
+  [ codec; OK; 0.428192; -1161511198; ]
+  [ codec-utf8; OK; 0.446698; 0; ]
+  [ codec-utf16; OK; 0.442452; 0; ]
+  [ post-categorizer; OK; 0.486591; 0; ]
+  [ no-string-accumulator; OK; 0.440964; 0; ]
+  [ no-include-stack; OK; 0.476561; 0; ]
+  [ no-counter; OK; 0.429671; 0; ]
+  [ manual-token-class; OK; 0.416535; 0; ]
+  [ customized-token-class; OK; 0.446278; 0; ]
 ]
 }

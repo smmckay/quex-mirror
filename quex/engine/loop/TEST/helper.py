@@ -464,7 +464,7 @@ show_next_character(QUEX_TYPE_ANALYZER* me)
             printf("next letter: <0x%02X>", (int)(buffer->_read_p[0]));
 
 #       if $$SHOW_POSITION$$
-        printf(" column_n: %i", me->counter._column_number_at_end);
+        printf(" column_n: %i", (int)me->counter._column_number_at_end);
 #       endif
         printf("\\n");
     }

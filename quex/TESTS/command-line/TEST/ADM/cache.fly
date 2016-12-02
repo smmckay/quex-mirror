@@ -1,17 +1,17 @@
 {
 title: Detect lower prio-patterns outrun higher-prio patterns;
 file_name: outrun.sh;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539701L;
 happy_pattern_list: [ outrun.qx:\[0-9]+:; ]
 result_list: [
-  [ ; FAIL; 1.168211; 0; ]
+  [ ; OK; 0.335546; 0; ]
 ]
 }
 {
 title: Disable several error messages.;
 file_name: no-error-flags.sh;
-hwut_info_time: 1479757919L;
+hwut_info_time: 1480539701L;
 result_list: [
-  [ ; FAIL; 0.607549; 0; ]
+  [ ; OK; 0.165505; 0; ]
 ]
 }
