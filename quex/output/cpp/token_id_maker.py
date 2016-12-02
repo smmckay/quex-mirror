@@ -235,6 +235,7 @@ def __warn_on_double_definition():
         error.warning("Token ids with same numeric value %i fuond:" % x, sr) 
         for dummy, name, sr in subitem_list:
             error.warning("  %s" % name, sr)
+
     if sr is not None:
         error.warning("", sr, SuppressCode=NotificationDB.warning_on_duplicate_token_id)
                       
