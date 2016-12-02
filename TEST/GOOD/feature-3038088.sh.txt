@@ -9,6 +9,7 @@ simple.qx:8:warning:   F
 simple.qx:5:warning: Token ids with same numeric value 115 fuond:
 simple.qx:5:warning:   C
 simple.qx:7:warning:   E
+simple.qx:7:warning: ('--suppress 18' to avoid this message)
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_A             = ((QUEX_TYPE_TOKEN_ID)114);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_B             = ((QUEX_TYPE_TOKEN_ID)116);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_C             = ((QUEX_TYPE_TOKEN_ID)115);
@@ -21,7 +22,4 @@ const QUEX_TYPE_TOKEN_ID QUEX_TKN_NODENT        = ((QUEX_TYPE_TOKEN_ID)113);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_TERMINATION   = ((QUEX_TYPE_TOKEN_ID)0);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_UNINITIALIZED = ((QUEX_TYPE_TOKEN_ID)111);
 const QUEX_TYPE_TOKEN_ID QUEX_TKN_Z             = ((QUEX_TYPE_TOKEN_ID)118);
-
-
-
 

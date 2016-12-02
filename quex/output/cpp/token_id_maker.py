@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+from   quex.input.setup                 import NotificationDB
 from   quex.input.files.token_id_file   import TokenInfo, \
                                                space
 from   quex.engine.misc.file_in         import get_include_guard_extension
@@ -199,6 +200,9 @@ def __warn_on_double_definition():
     """
     assert len(Setup.token_id_foreign_definition_file) == 0
 
+    if NotificationDB.message_on_extra_options in blackboard.setup.suppressed_notification_list:
+        return
+
     clash_db = defaultdict(list)
 
     token_list = token_id_db.values()
@@ -208,26 +212,31 @@ def __warn_on_double_definition():
             clash_db[x.number].append(x)
             clash_db[x.number].append(y)
 
-    if len(clash_db) != 0:
-        item_list = clash_db.items()
-        item_list.sort()
-        for x, token_id_list in item_list:
-            done = set()
-            new_token_id_list = []
-            for token_id in token_id_list:
-                if token_id.name in done: continue
-                done.add(token_id.name)
-                new_token_id_list.append(token_id)
+    if not clash_db: 
+        return
 
-            subitem_list = sorted([ 
-                (token_id.sr.line_n, token_id.name, token_id.sr) 
-                for token_id in new_token_id_list 
-            ])
-            if not subitem_list: continue
-            dummy, dummy, sr = subitem_list[0]
-            error.warning("Token ids with same numeric value %i fuond:" % x, sr)
-            for dummy, name, sr in subitem_list:
-                error.warning("  %s" % name, sr)
+    item_list = clash_db.items()
+    item_list.sort()
+    sr = None
+    for x, token_id_list in item_list:
+        done = set()
+        new_token_id_list = []
+        for token_id in token_id_list:
+            if token_id.name in done: continue
+            done.add(token_id.name)
+            new_token_id_list.append(token_id)
+
+        subitem_list = sorted([ 
+            (token_id.sr.line_n, token_id.name, token_id.sr) 
+            for token_id in new_token_id_list 
+        ])
+        if not subitem_list: continue
+        dummy, dummy, sr = subitem_list[0]
+        error.warning("Token ids with same numeric value %i fuond:" % x, sr) 
+        for dummy, name, sr in subitem_list:
+            error.warning("  %s" % name, sr)
+    if sr:
+        error.warning("", sr, SuppressCode=NotificationDB.warning_on_duplicate_token_id)
                       
 def __warn_implicit_token_definitions():
     """Output a message on token_ids which have been generated automatically.

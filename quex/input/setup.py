@@ -294,6 +294,7 @@ class NotificationDB:
     warning_on_no_token_class_take_text              = 15
     warning_on_no_warning_on_missing_take_text       = 16
     error_ufo_on_command_line_f                      = 17
+    warning_on_duplicate_token_id                    = 18
 
 DEPRECATED = { 
   "XX_read_pattern_file": 

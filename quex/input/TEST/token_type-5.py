@@ -6,6 +6,7 @@ sys.path.append(os.environ["QUEX_PATH"])
 import quex.blackboard         
 from   quex.input.setup            import NotificationDB         
 import quex.output.core.dictionary as     languages
+
 quex.blackboard.setup.language_db = languages.db["C++"]
 quex.blackboard.setup.suppressed_notification_list = [ NotificationDB.warning_on_no_token_class_take_text ]
 quex.blackboard.setup.output_token_class_file = ""

@@ -47,6 +47,9 @@ The fundamental operations are available in Quex via the commands:
    matches the *complementary* set of lexemes of what is matched by the regular
    expressions ``X``.
 
+The union operation is identical to what the ``|`` operator does. The according
+state machines are setup in parallel.
+
 The set of all lexemes, the *universal set*, and the *empty set* of lexemes
 find the counterpart in the space of DFAs in the *universally matching DFA* and
 the *unmatching DFA* given by:

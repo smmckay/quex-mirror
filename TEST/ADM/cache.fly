@@ -270,7 +270,7 @@ file_name: bug-257.sh;
 hwut_info_time: 1480539692L;
 happy_pattern_list: [ ^include_me.h:\[0-9]+:; ]
 result_list: [
-  [ ; FAIL; 0.370779; 0; ]
+  [ ; OK; 0.000000; 1919775298; ]
 ]
 }
 {
@@ -361,7 +361,7 @@ title_group: fschaef;
 file_name: bug-2277660.sh;
 hwut_info_time: 1480539693L;
 result_list: [
-  [ ; FAIL; 5.740662; 0; ]
+  [ ; OK; 0.000000; 1878828055; ]
 ]
 }
 {
@@ -390,7 +390,7 @@ title_group: fschaef;
 file_name: feature-3038088.sh;
 hwut_info_time: 1480539691L;
 result_list: [
-  [ ; OK; 0.244467; 917918094; ]
+  [ ; OK; 0.244761; 202134992; ]
 ]
 }
 {
@@ -568,7 +568,7 @@ title_group: marcoantonelli;
 file_name: bug-2257908.sh;
 hwut_info_time: 1480539693L;
 result_list: [
-  [ ; FAIL; 1.111690; 0; ]
+  [ ; OK; 0.000000; 1788230229; ]
 ]
 }
 {
@@ -656,8 +656,8 @@ result_list: [
   [ utf16; OK; 0.202579; 0; ]
   [ utf16-with-bom; OK; 0.221111; 0; ]
   [ utf8-error; OK; 0.239041; 0; ]
-  [ utf8; FAIL; 0.402537; 0; ]
-  [ utf8-with-bom; FAIL; 0.349958; 0; ]
+  [ utf8; OK; 0.000000; -379472410; ]
+  [ utf8-with-bom; OK; 0.000000; -379472410; ]
 ]
 }
 {
@@ -696,7 +696,7 @@ title_group: prade2p;
 file_name: bug-2914877.sh;
 hwut_info_time: 1480539693L;
 result_list: [
-  [ ; FAIL; 0.613086; 0; ]
+  [ ; OK; 0.000000; 707309222; ]
 ]
 }
 {
@@ -705,7 +705,7 @@ title_group: rami-al-rafou;
 file_name: bug-3476232.sh;
 hwut_info_time: 1480539697L;
 result_list: [
-  [ ; FAIL; 21.282970; 0; ]
+  [ ; OK; 0.000000; 1764378916; ]
 ]
 }
 {
@@ -774,7 +774,7 @@ title_group: sbellon;
 file_name: bug-3538026.sh;
 hwut_info_time: 1480539692L;
 result_list: [
-  [ ; FAIL; 0.483827; -1667751238; ]
+  [ ; OK; 0.000000; -2002306603; ]
 ]
 }
 {
@@ -1258,14 +1258,14 @@ title_group: ymarkovitch;
 file_name: feature-3030640.sh;
 hwut_info_time: 1480547732L;
 result_list: [
-  [ pp; FAIL; 0.288637; -1844138230; ]
-  [ ++; FAIL; 0.294044; 2106491973; ]
-  [ xx; FAIL; 0.326532; 714434802; ]
-  [ cc; FAIL; 0.340151; -1983529437; ]
-  [ PlainC; FAIL; 0.362985; 808581245; ]
-  [ PlainCpp; FAIL; 0.316953; -1800518646; ]
-  [ ErrorC; OK; 0.275538; 0; ]
-  [ ErrorCpp; OK; 0.258593; 0; ]
+  [ pp; OK; 0.000000; 570303334; ]
+  [ ++; OK; 0.000000; -1965423731; ]
+  [ xx; OK; 0.000000; -1606129661; ]
+  [ cc; OK; 0.000000; 598060113; ]
+  [ PlainC; OK; 0.000000; 604955410; ]
+  [ PlainCpp; OK; 0.000000; 435199230; ]
+  [ ErrorC; OK; 0.153492; 0; ]
+  [ ErrorCpp; OK; 0.150379; 0; ]
 ]
 }
 {
