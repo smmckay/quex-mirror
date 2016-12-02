@@ -75,7 +75,7 @@ main(int argc, char** argv)
 
     if( cl_has(argc, argv, "--hwut-info") ) {
         printf("move_away_passed_content: (BPC=%i, FB=%i);\n", 
-               sizeof(QUEX_TYPE_LEXATOM),
+               (int)sizeof(QUEX_TYPE_LEXATOM),
                (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
         printf("CHOICES: EoS, NoEoS;\n");
         return 0;

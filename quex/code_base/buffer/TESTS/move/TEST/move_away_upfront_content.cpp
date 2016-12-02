@@ -76,7 +76,7 @@ main(int argc, char** argv)
 
     if( cl_has(argc, argv, "--hwut-info") ) {
         printf("move_away_upfront_content: (BPC=%i);\n", 
-               sizeof(QUEX_TYPE_LEXATOM));
+               (int)sizeof(QUEX_TYPE_LEXATOM));
         printf("CHOICES: cib=0, cib=1, cib=2, cib=0:EOS, cib=1:EOS, cib=2:EOS;\n");
         return 0;
     };
