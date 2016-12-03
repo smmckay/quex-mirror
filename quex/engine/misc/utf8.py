@@ -1,11 +1,12 @@
 import sys
 import quex.engine.misc.error as error
 
+from   quex.constants import INTEGER_MAX
 import StringIO
 
 utf8_char_db = {
-    -sys.maxint:   "-oo",
-    sys.maxint:    "oo",            
+    -INTEGER_MAX:   "-oo",
+    INTEGER_MAX:    "oo",            
     ord(' '):      "' '",
     ord('\n'):     "'\\n'",
     ord('\t'):     "'\\t'",
@@ -61,8 +62,8 @@ def unicode_to_utf8(UnicodeValue):
 def unicode_to_pretty_utf8(Code):
     global utf8_char_db
     
-    if   Code == -sys.maxint:         return "-oo"
-    elif Code == sys.maxint:          return "oo"
+    if   Code == -INTEGER_MAX:         return "-oo"
+    elif Code == INTEGER_MAX:          return "oo"
     elif Code < 0 or Code > 0x10FFFF: return "<%i>" % Code
 
     if utf8_char_db.has_key(Code): return utf8_char_db[Code]

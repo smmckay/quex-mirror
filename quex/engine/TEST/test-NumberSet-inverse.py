@@ -4,8 +4,9 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from quex.engine.misc.interval_handling import Interval, NumberSet
+from quex.constants import INTEGER_MAX
 
-all = NumberSet.from_range(-sys.maxint, sys.maxint)
+all = NumberSet.from_range(-INTEGER_MAX, INTEGER_MAX)
 
 if "--hwut-info" in sys.argv:
     print "NumberSet: Inverse"
@@ -48,17 +49,17 @@ elif "serious" in sys.argv:
         assert result.union(nset).is_all()
 
     test([(0,               100)])
-    test([(0,               sys.maxint)])
-    test([(-sys.maxint,     0)])
-    test([(-sys.maxint,     sys.maxint)])
+    test([(0,               INTEGER_MAX)])
+    test([(-INTEGER_MAX,     0)])
+    test([(-INTEGER_MAX,     INTEGER_MAX)])
 
     test([(0,         100), (500, 600)])
-    test([(0,         100), (500, sys.maxint)])
-    test([(-sys.maxint, 0), (500, 600)])
-    test([(-sys.maxint, 0), (500, sys.maxint)])
+    test([(0,         100), (500, INTEGER_MAX)])
+    test([(-INTEGER_MAX, 0), (500, 600)])
+    test([(-INTEGER_MAX, 0), (500, INTEGER_MAX)])
 
     test([(0,         100), (100, 200), (500, 600)])
-    test([(0,         100), (100, 200), (500, sys.maxint)])
-    test([(-sys.maxint, 0), (100, 200), (500, 600)])
-    test([(-sys.maxint, 0), (100, 200), (500, sys.maxint)])
+    test([(0,         100), (100, 200), (500, INTEGER_MAX)])
+    test([(-INTEGER_MAX, 0), (100, 200), (500, 600)])
+    test([(-INTEGER_MAX, 0), (100, 200), (500, INTEGER_MAX)])
 

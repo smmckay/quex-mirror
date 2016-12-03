@@ -10,6 +10,7 @@ from   quex.engine.misc.tools  import typed
 from   quex.blackboard         import E_IncidenceIDs, \
                                       E_PreContextIDs, \
                                       E_StateIndices
+from   quex.constants          import INTEGER_MAX
 
 from   copy        import deepcopy, copy
 from   operator    import itemgetter
@@ -611,7 +612,7 @@ class StateMachine(object):
                 trigger_set_min = trigger_set_to_A.minimum()
                 target_tm       = state_db[A].target_map.get_map()
                 target_branch_n = len(target_tm)
-                if len(target_tm) == 0: target_tm_min = -sys.maxint
+                if len(target_tm) == 0: target_tm_min = -INTEGER_MAX
                 else:                   target_tm_min = min(map(lambda x: x.minimum(), target_tm.itervalues()))
                 return (trigger_set_min, target_branch_n, target_tm_min, A)
 

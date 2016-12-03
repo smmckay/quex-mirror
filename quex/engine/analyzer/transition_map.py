@@ -3,8 +3,10 @@ from   quex.engine.misc.tools                          import r_enumerate
 from   quex.engine.analyzer.mega_state.target     import TargetByStateKey
 from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.analyzer.state.entry_action    import TransitionID
-from   quex.blackboard                            import E_StateIndices, \
-                                                         setup as Setup
+
+from   quex.blackboard  import E_StateIndices, \
+                               setup as Setup
+from   quex.constants   import INTEGER_MAX
 
 from   itertools   import izip
 from   collections import defaultdict
@@ -590,8 +592,8 @@ class TransitionMap(list):
     def get_string(self, Option="utf8", IntervalF=True):
         assert Option in ("hex", "dec", "utf8")
         def get(X):
-            if   X == sys.maxint:   return "+oo"
-            elif X == - sys.maxint: return "-oo"
+            if   X == INTEGER_MAX:   return "+oo"
+            elif X == - INTEGER_MAX: return "-oo"
             return "%i" % X
         if len(self) == 0:
             return "   <empty>"

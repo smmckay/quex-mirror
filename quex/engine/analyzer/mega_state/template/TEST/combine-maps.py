@@ -14,6 +14,8 @@ import quex.engine.operations.tree                 as     entry_door_tree
 
 from   quex.engine.misc.interval_handling import *
 
+from   quex.constants import INTEGER_MAX
+
 dial_db = DialDB()
 
 if "--hwut-info" in sys.argv:
@@ -72,48 +74,48 @@ def test(TMA, TMB):
     test_core(tm_b, tm_a)
 
 tm0 = [ 
-    (Interval(-sys.maxint, 10), 1L),
-    (Interval(10, sys.maxint),  2L),
+    (Interval(-INTEGER_MAX, 10), 1L),
+    (Interval(10, INTEGER_MAX),  2L),
 ]
 
 if "1" in sys.argv:
     tm1 = [ 
-        (Interval(-sys.maxint, 30), 1L),
-        (Interval(30, sys.maxint),  2L),
+        (Interval(-INTEGER_MAX, 30), 1L),
+        (Interval(30, INTEGER_MAX),  2L),
     ]
     test(tm0, tm1)
 
 elif "2" in sys.argv:
     tm1 = [ 
-        (Interval(-sys.maxint, 10), 2L),
-        (Interval(10, sys.maxint),  1L),
+        (Interval(-INTEGER_MAX, 10), 2L),
+        (Interval(10, INTEGER_MAX),  1L),
     ]
     test(tm0, tm1)
 
 elif "2b" in sys.argv:
     tm1 = [ 
-            (Interval(-sys.maxint, 10), 1L),
-            (Interval(10, sys.maxint),  2L),
+            (Interval(-INTEGER_MAX, 10), 1L),
+            (Interval(10, INTEGER_MAX),  2L),
           ]
     test(tm0, tm1)
 
 elif "3" in sys.argv:
     tm1 = [ 
-            (Interval(-sys.maxint, 5),  2L),
+            (Interval(-INTEGER_MAX, 5),  2L),
             (Interval(5, 20),           3L),
             (Interval(20, 25),          4L),
             (Interval(25, 35),          5L),
-            (Interval(35, sys.maxint),  1L),
+            (Interval(35, INTEGER_MAX),  1L),
           ]
     test(tm0, tm1)
 
 elif "4" in sys.argv:
     tm0 = [ 
-            (Interval(-sys.maxint, sys.maxint), 2L),
+            (Interval(-INTEGER_MAX, INTEGER_MAX), 2L),
           ]
     tm1 = [ 
-            (Interval(-sys.maxint, 20), 2L),
-            (Interval(20, sys.maxint),  1L),
+            (Interval(-INTEGER_MAX, 20), 2L),
+            (Interval(20, INTEGER_MAX),  1L),
           ]
     test(tm0, tm1)
 
@@ -125,7 +127,7 @@ elif "4" in sys.argv:
 #     print "=> when First triggers to 1L and Second to 2L, then both"
 #     print "   are recursive and no distinction needs to be made."
 #     tm1 = [ 
-#             (Interval(-sys.maxint, sys.maxint), 2L),
+#             (Interval(-INTEGER_MAX, INTEGER_MAX), 2L),
 #           ]
 #     test(tm0, tm1) # , [1L], [2L], DrawF=True)
 #    Today, I would say that the comment below is utter nonsense: <fschaef>
@@ -142,7 +144,7 @@ elif "4" in sys.argv:
 #    print "   are recursive and no distinction needs to be made."
 #    print "BUT: HERE STATE ENTRIES ARE NOT UNIFORM --> NO RECURSION DETECTION"
 #    tm1 = [ 
-#            (Interval(-sys.maxint, sys.maxint), 2L),
+#            (Interval(-INTEGER_MAX, INTEGER_MAX), 2L),
 #          ]
 #    test(tm0, tm1, [1L], [2L])
 

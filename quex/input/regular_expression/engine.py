@@ -67,8 +67,9 @@ from   quex.engine.misc.file_in            import check, \
                                                   read_identifier, \
                                                   read_until_character
 import quex.engine.misc.utf8               as utf8
-from   quex.blackboard                     import setup as Setup
-from   quex.input.regular_expression.exception                 import RegularExpressionException
+from   quex.blackboard import setup as Setup
+from   quex.constants  import INTEGER_MAX
+from   quex.input.regular_expression.exception import RegularExpressionException
 
 from   StringIO import StringIO
 import sys
@@ -543,17 +544,17 @@ def snap_untie(stream, PatternDict):
 
 def snap_union(stream, PatternDict):
     pattern_list = snap_curly_bracketed_expression(stream, PatternDict, "union operator", "Union", 
-                                                   MinN=2, MaxN=sys.maxint)
+                                                   MinN=2, MaxN=INTEGER_MAX)
     return union.do(pattern_list)
 
 def snap_intersection(stream, PatternDict):
     pattern_list = snap_curly_bracketed_expression(stream, PatternDict, "intersection operator", "Intersection", 
-                                                   MinN=2, MaxN=sys.maxint)
+                                                   MinN=2, MaxN=INTEGER_MAX)
     return intersection.do(pattern_list)
 
 def snap_not_in(stream, PatternDict):
     sm_list = snap_curly_bracketed_expression(stream, PatternDict, "not-in operator", "NotIn", 
-                                              MinN=2, MaxN=sys.maxint)
+                                              MinN=2, MaxN=INTEGER_MAX)
     if len(sm_list) == 2:
         return complement_in.do(sm_list[0], sm_list[1])
     else:
@@ -561,7 +562,7 @@ def snap_not_in(stream, PatternDict):
 
 def snap_not_begin(stream, PatternDict):
     sm_list = snap_curly_bracketed_expression(stream, PatternDict, "not-begin operator", "NotBegin", 
-                                              MinN=2, MaxN=sys.maxint)
+                                              MinN=2, MaxN=INTEGER_MAX)
     if len(sm_list) == 2:
         return complement_begin.do(sm_list[0], sm_list[1])
     else:
@@ -569,7 +570,7 @@ def snap_not_begin(stream, PatternDict):
 
 def snap_not_end(stream, PatternDict):
     sm_list = snap_curly_bracketed_expression(stream, PatternDict, "not-end operator", "NotEnd", 
-                                              MinN=2, MaxN=sys.maxint)
+                                              MinN=2, MaxN=INTEGER_MAX)
     if len(sm_list) == 2:
         return complement_end.do(sm_list[0], sm_list[1])
     else:
@@ -588,7 +589,7 @@ def snap_symmetric_difference(stream, PatternDict):
 def snap_curly_bracketed_expression(stream, PatternDict, Name, TriggerChar, MinN=1, MaxN=1):
     """Snaps a list of RE's in '{' and '}'. The separator between the patterns is 
        whitespace. 'MinN' and 'MaxN' determine the number of expected patterns.
-       Set 'MaxN=sys.maxint' for an arbitrary number of patterns.
+       Set 'MaxN=INTEGER_MAX' for an arbitrary number of patterns.
 
 
 

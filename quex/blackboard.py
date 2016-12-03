@@ -20,10 +20,13 @@
 #            imports are 'flat' and only cause environment or outer modules.   #
 #_______________________________________________________________________________
 from   quex.input.code.base   import CodeFragment_NULL
-from   quex.input.setup       import QuexSetup, SETUP_INFO
+from   quex.input.setup       import QuexSetup, \
+                                     SETUP_INFO
 from   quex.engine.misc.enum  import Enum
 
-import quex.engine.state_machine.transformation.core      as     bc_factory
+import quex.engine.state_machine.transformation.core as     bc_factory
+
+import sys
 
 #------------------------------------------------------------------------------
 # setup: All information of the user's desired setup.

@@ -2,6 +2,7 @@
 import sys
 sys.path.append("../")
 from quex.engine.misc.interval_handling import Interval
+from quex.constants import INTEGER_MAX
 
 
 def the_union(Comment, A, B):
@@ -74,11 +75,11 @@ def test_inverse():
     the_inverse("(a) normal",
                 Interval(5000,6000))
     the_inverse("(b) lower border = - maxint",
-                Interval(-sys.maxint,6000))
+                Interval(-INTEGER_MAX,6000))
     the_inverse("(c) upper border = maxint",
-                Interval(5000,sys.maxint))
+                Interval(5000,INTEGER_MAX))
     the_inverse("(c) upper/lower border = +/- maxint",
-                Interval(-sys.maxint,sys.maxint))
+                Interval(-INTEGER_MAX,INTEGER_MAX))
     
 
 

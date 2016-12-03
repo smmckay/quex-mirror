@@ -6,6 +6,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from   quex.engine.misc.interval_handling       import Interval
 from   quex.engine.analyzer.transition_map import TransitionMap
+from   quex.constant import INTEGER_MAX
 from   copy import deepcopy
 from   itertools import islice
 
@@ -26,11 +27,11 @@ def construct_tm(IntervalList):
 
 def get_borders(IntervalList):
     def add(border_set, X):
-        if X != -sys.maxint: border_set.add(X - 1)
-        if X !=  sys.maxint: border_set.add(X + 1)
+        if X != -INTEGER_MAX: border_set.add(X - 1)
+        if X !=  INTEGER_MAX: border_set.add(X + 1)
         border_set.add(X)
 
-    border_set = set([-sys.maxint, sys.maxint])
+    border_set = set([-INTEGER_MAX, INTEGER_MAX])
     for begin, end in IntervalList:
         add(border_set, begin)
         add(border_set, end)
@@ -50,16 +51,16 @@ def iterate(TM, BorderList):
             show_tm(dummy)
 
 def stringey(Value):
-    if   Value == -sys.maxint:     return "-oo"
-    elif Value == -sys.maxint + 1: return "-oo+1"
-    elif Value == sys.maxint:      return "oo"
-    elif Value == sys.maxint - 1:  return "+oo-1"
+    if   Value == -INTEGER_MAX:     return "-oo"
+    elif Value == -INTEGER_MAX + 1: return "-oo+1"
+    elif Value == INTEGER_MAX:      return "oo"
+    elif Value == INTEGER_MAX - 1:  return "+oo-1"
     else:                          return "%s" % Value
 
 def nicey(Value):
-    if   Value == -sys.maxint:   return -20
+    if   Value == -INTEGER_MAX:   return -20
     elif Value < -19:            return -19
-    elif Value ==  sys.maxint:   return  20
+    elif Value ==  INTEGER_MAX:   return  20
     elif Value > 19:             return  19
     else:                        return Value
    
@@ -75,9 +76,9 @@ def show_tm(TM):
         print " " * B + "                    < >"
         return
 
-    x_iterable = [-sys.maxint, -sys.maxint+1] \
+    x_iterable = [-INTEGER_MAX, -INTEGER_MAX+1] \
                  + range(-18, 19)             \
-                 + [sys.maxint-1, sys.maxint]
+                 + [INTEGER_MAX-1, INTEGER_MAX]
     L          = len(TM)
     txt        = [" " * (B+1)]
     target     = None
@@ -126,19 +127,19 @@ def test(*IntervalList):
 
 if   "1" in sys.argv:
     test((-5,6))
-    test((-sys.maxint,0))
+    test((-INTEGER_MAX,0))
     test((0,1))
-    test((0,sys.maxint))
-    test((-sys.maxint,sys.maxint))
+    test((0,INTEGER_MAX))
+    test((-INTEGER_MAX,INTEGER_MAX))
 
 elif "2" in sys.argv:
     test((0, 6),           (6, 12))
     test((0, 5),           (6, 11))
     test((0, 4),           (8, 12))
-    test((-sys.maxint, 6), (6, 12))
-    test((-sys.maxint, 5), (6, 11))
-    test((0, 6),           (6, sys.maxint))
-    test((0, 5),           (6, sys.maxint))
+    test((-INTEGER_MAX, 6), (6, 12))
+    test((-INTEGER_MAX, 5), (6, 11))
+    test((0, 6),           (6, INTEGER_MAX))
+    test((0, 5),           (6, INTEGER_MAX))
 
 elif "3" in sys.argv:
     test((-1,0),   (0, 1), (1, 2))
@@ -150,33 +151,33 @@ sys.exit()
 
 def show(TM):
     txt = TM.get_string(Option="dec")
-    txt = txt.replace("%s" % -sys.maxint, "-oo")
-    txt = txt.replace("%s" % (sys.maxint-1), "oo")
+    txt = txt.replace("%s" % -INTEGER_MAX, "-oo")
+    txt = txt.replace("%s" % (INTEGER_MAX-1), "oo")
     print txt
 
 def test(TM, Target="X"):
     tm = [ (Interval(x[0], x[1]), y) for x, y in TM ]
     print "____________________________________________________________________"
     range_list = [
-        (-sys.maxint, sys.maxint),
-        (-sys.maxint, 10),
-        (-sys.maxint, 1),
-        (-sys.maxint, 0),
-        (-sys.maxint, -sys.maxint),
+        (-INTEGER_MAX, INTEGER_MAX),
+        (-INTEGER_MAX, 10),
+        (-INTEGER_MAX, 1),
+        (-INTEGER_MAX, 0),
+        (-INTEGER_MAX, -INTEGER_MAX),
 
-        (0, sys.maxint),
+        (0, INTEGER_MAX),
         (0, 10),
         (0, 1),
         (0, 0),
 
-        (1, sys.maxint),
+        (1, INTEGER_MAX),
         (1, 10),
         (1, 1),
 
-        (10, sys.maxint),
+        (10, INTEGER_MAX),
         (10, 10),
 
-        (sys.maxint, sys.maxint),
+        (INTEGER_MAX, INTEGER_MAX),
     ]
 
 #test([((0, 1),           "1"), ((10, 11),        "2")], "1")
@@ -184,38 +185,38 @@ def test(TM, Target="X"):
 
 if "1" in sys.argv:
     test([((0, 1),                    "1")])
-    test([((-sys.maxint, 1),          "1")])
-    test([((0, sys.maxint),           "1")])
-    test([((-sys.maxint, sys.maxint), "1")])
+    test([((-INTEGER_MAX, 1),          "1")])
+    test([((0, INTEGER_MAX),           "1")])
+    test([((-INTEGER_MAX, INTEGER_MAX), "1")])
 
     print "# Required: Smoothing ______________________________________________"
     test([((0, 1),                    "1")], "1")
-    test([((-sys.maxint, 1),          "1")], "1")
-    test([((0, sys.maxint),           "1")], "1")
-    test([((-sys.maxint, sys.maxint), "1")], "1")
+    test([((-INTEGER_MAX, 1),          "1")], "1")
+    test([((0, INTEGER_MAX),           "1")], "1")
+    test([((-INTEGER_MAX, INTEGER_MAX), "1")], "1")
 
 elif "2-same" in sys.argv:
 
     test([((0, 1),           "1"), ((10, 11),        "1")])
     test([((0, 1),           "1"), ((1, 2),          "1")])
-    test([((-sys.maxint, 1), "1"), ((10, 11),        "1")])
-    test([((0, 1),           "1"), ((1, sys.maxint), "1")])
-    test([((-sys.maxint, 1), "1"), ((1, sys.maxint), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((10, 11),        "1")])
+    test([((0, 1),           "1"), ((1, INTEGER_MAX), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((1, INTEGER_MAX), "1")])
 
     print "# Required: Smoothing ______________________________________________"
     test([((0, 1),           "1"), ((10, 11),        "1")], "1")
     test([((0, 1),           "1"), ((1, 2),          "1")], "1")
-    test([((-sys.maxint, 1), "1"), ((10, 11),        "1")], "1")
-    test([((0, 1),           "1"), ((1, sys.maxint), "1")], "1")
-    test([((-sys.maxint, 1), "1"), ((1, sys.maxint), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((10, 11),        "1")], "1")
+    test([((0, 1),           "1"), ((1, INTEGER_MAX), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((1, INTEGER_MAX), "1")], "1")
 
 elif "2-diff" in sys.argv:
 
     test([((0, 1),           "1"), ((10, 11),        "2")])
     test([((0, 1),           "1"), ((1, 2),          "2")])
-    test([((-sys.maxint, 1), "1"), ((10, 11),        "2")])
-    test([((0, 1),           "1"), ((1, sys.maxint), "2")])
-    test([((-sys.maxint, 1), "1"), ((1, sys.maxint), "2")])
+    test([((-INTEGER_MAX, 1), "1"), ((10, 11),        "2")])
+    test([((0, 1),           "1"), ((1, INTEGER_MAX), "2")])
+    test([((-INTEGER_MAX, 1), "1"), ((1, INTEGER_MAX), "2")])
 
 elif "3-same" in sys.argv:
 
@@ -224,13 +225,13 @@ elif "3-same" in sys.argv:
     test([((0, 1),           "1"), ((9, 10),         "1"), ((10, 11),        "1")])
     test([((0, 1),           "1"), ((1, 2),          "1"), ((2, 4),          "1")])
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "1"), ((10, 11),         "1")])
-    test([((0, 1),           "1"), ((5, 6),          "1"), ((10, sys.maxint), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "1"), ((10, 11),         "1")])
+    test([((0, 1),           "1"), ((5, 6),          "1"), ((10, INTEGER_MAX), "1")])
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "1"), ((10, sys.maxint), "1")])
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "1"), ((10, sys.maxint), "1")])
-    test([((-sys.maxint, 1), "1"), ((9, 10),         "1"), ((10, sys.maxint), "1")])
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "1"), ((2,  sys.maxint), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "1"), ((10, INTEGER_MAX), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "1"), ((10, INTEGER_MAX), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((9, 10),         "1"), ((10, INTEGER_MAX), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "1"), ((2,  INTEGER_MAX), "1")])
 
     print "# Required: Smoothing ______________________________________________"
     test([((0, 1),           "1"), ((5, 6),          "1"), ((10, 11),        "1")], "1")
@@ -238,13 +239,13 @@ elif "3-same" in sys.argv:
     test([((0, 1),           "1"), ((9, 10),         "1"), ((10, 11),        "1")], "1")
     test([((0, 1),           "1"), ((1, 2),          "1"), ((2, 4),          "1")], "1")
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "1"), ((10, 11),         "1")], "1")
-    test([((0, 1),           "1"), ((5, 6),          "1"), ((10, sys.maxint), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "1"), ((10, 11),         "1")], "1")
+    test([((0, 1),           "1"), ((5, 6),          "1"), ((10, INTEGER_MAX), "1")], "1")
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "1"), ((10, sys.maxint), "1")], "1")
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "1"), ((10, sys.maxint), "1")], "1")
-    test([((-sys.maxint, 1), "1"), ((9, 10),         "1"), ((10, sys.maxint), "1")], "1")
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "1"), ((2,  sys.maxint), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "1"), ((10, INTEGER_MAX), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "1"), ((10, INTEGER_MAX), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((9, 10),         "1"), ((10, INTEGER_MAX), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "1"), ((2,  INTEGER_MAX), "1")], "1")
 
 
 elif "3-diff" in sys.argv:
@@ -254,13 +255,13 @@ elif "3-diff" in sys.argv:
     test([((0, 1),           "1"), ((9, 10),         "2"), ((10, 11),        "1")])
     test([((0, 1),           "1"), ((1, 2),          "2"), ((2, 4),          "1")])
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "2"), ((10, 11),         "1")])
-    test([((0, 1),           "1"), ((5, 6),          "2"), ((10, sys.maxint), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "2"), ((10, 11),         "1")])
+    test([((0, 1),           "1"), ((5, 6),          "2"), ((10, INTEGER_MAX), "1")])
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "2"), ((10, sys.maxint), "1")])
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "2"), ((10, sys.maxint), "1")])
-    test([((-sys.maxint, 1), "1"), ((9, 10),         "2"), ((10, sys.maxint), "1")])
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "2"), ((2,  sys.maxint), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "2"), ((10, INTEGER_MAX), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "2"), ((10, INTEGER_MAX), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((9, 10),         "2"), ((10, INTEGER_MAX), "1")])
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "2"), ((2,  INTEGER_MAX), "1")])
 
     print "# Required: Smoothing ______________________________________________"
     print "# --> 1"
@@ -269,13 +270,13 @@ elif "3-diff" in sys.argv:
     test([((0, 1),           "1"), ((9, 10),         "2"), ((10, 11),        "1")], "1")
     test([((0, 1),           "1"), ((1, 2),          "2"), ((2, 4),          "1")], "1")
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "2"), ((10, 11),         "1")], "1")
-    test([((0, 1),           "1"), ((5, 6),          "2"), ((10, sys.maxint), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "2"), ((10, 11),         "1")], "1")
+    test([((0, 1),           "1"), ((5, 6),          "2"), ((10, INTEGER_MAX), "1")], "1")
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "2"), ((10, sys.maxint), "1")], "1")
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "2"), ((10, sys.maxint), "1")], "1")
-    test([((-sys.maxint, 1), "1"), ((9, 10),         "2"), ((10, sys.maxint), "1")], "1")
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "2"), ((2,  sys.maxint), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "2"), ((10, INTEGER_MAX), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "2"), ((10, INTEGER_MAX), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((9, 10),         "2"), ((10, INTEGER_MAX), "1")], "1")
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "2"), ((2,  INTEGER_MAX), "1")], "1")
 
     print "# --> 2"
     test([((0, 1),           "1"), ((5, 6),          "2"), ((10, 11),        "1")], "2")
@@ -283,13 +284,13 @@ elif "3-diff" in sys.argv:
     test([((0, 1),           "1"), ((9, 10),         "2"), ((10, 11),        "1")], "2")
     test([((0, 1),           "1"), ((1, 2),          "2"), ((2, 4),          "1")], "2")
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "2"), ((10, 11),         "1")], "2")
-    test([((0, 1),           "1"), ((5, 6),          "2"), ((10, sys.maxint), "1")], "2")
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "2"), ((10, 11),         "1")], "2")
+    test([((0, 1),           "1"), ((5, 6),          "2"), ((10, INTEGER_MAX), "1")], "2")
 
-    test([((-sys.maxint, 1), "1"), ((5, 6),          "2"), ((10, sys.maxint), "1")], "2")
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "2"), ((10, sys.maxint), "1")], "2")
-    test([((-sys.maxint, 1), "1"), ((9, 10),         "2"), ((10, sys.maxint), "1")], "2")
-    test([((-sys.maxint, 1), "1"), ((1, 2),          "2"), ((2,  sys.maxint), "1")], "2")
+    test([((-INTEGER_MAX, 1), "1"), ((5, 6),          "2"), ((10, INTEGER_MAX), "1")], "2")
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "2"), ((10, INTEGER_MAX), "1")], "2")
+    test([((-INTEGER_MAX, 1), "1"), ((9, 10),         "2"), ((10, INTEGER_MAX), "1")], "2")
+    test([((-INTEGER_MAX, 1), "1"), ((1, 2),          "2"), ((2,  INTEGER_MAX), "1")], "2")
 
 
 

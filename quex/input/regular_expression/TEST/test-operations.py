@@ -7,7 +7,8 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.regular_expression.engine as core
 from   quex.input.regular_expression.exception import RegularExpressionException
 from   quex.blackboard import setup as Setup
-Setup.set_all_character_set_UNIT_TEST(-sys.maxint, sys.maxint)
+from   quex.constants  import INTEGER_MAX
+Setup.set_all_character_set_UNIT_TEST(-INTEGER_MAX, INTEGER_MAX)
 Setup.buffer_limit_code = -1
 Setup.path_limit_code   = -1
 

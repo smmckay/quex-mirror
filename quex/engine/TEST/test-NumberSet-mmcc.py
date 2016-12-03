@@ -4,6 +4,7 @@ import os
 from copy import deepcopy
 sys.path.append(os.environ["QUEX_PATH"])
 from quex.engine.misc.interval_handling import Interval, NumberSet
+from quex.constants import INTEGER_MAX
 
 if "--hwut-info" in sys.argv:
     print "NumberSet: Massive Mutual Consistency Check"
@@ -76,7 +77,7 @@ class NumberSetGenerator:
 
 generator = NumberSetGenerator()
 
-all = NumberSet.from_range(-sys.maxint, sys.maxint)
+all = NumberSet.from_range(-INTEGER_MAX, INTEGER_MAX)
 
 # Generate 100 NumberSets
 number_set_list = []

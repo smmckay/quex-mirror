@@ -16,10 +16,11 @@
 
 
 # import quex.output.core.dictionary as languages
-import quex.engine.misc.utf8 as utf8
+import quex.engine.misc.utf8  as     utf8
 from   quex.engine.misc.tools import r_enumerate, \
                                      typed, \
                                      flatten_list_of_lists
+from   quex.constants         import INTEGER_MAX
 
 import sys
 from   copy      import copy
@@ -55,7 +56,7 @@ class Interval(object):
 
             self.begin = Begin            
             if End is None:  
-                if self.begin != sys.maxint: self.end = self.begin + 1
+                if self.begin != INTEGER_MAX: self.end = self.begin + 1
                 else:                        self.end = self.begin
             else:    
                 self.end = End
@@ -69,7 +70,7 @@ class Interval(object):
         return self.begin == self.end
 
     def is_all(self):
-        return self.begin == -sys.maxint and self.end == sys.maxint   
+        return self.begin == -INTEGER_MAX and self.end == INTEGER_MAX   
 
     def is_equal(self, Other):
         return self.begin == Other.begin and self.end == Other.end
@@ -219,14 +220,14 @@ class Interval(object):
         assert Option in ("hex", "dec", "utf8", "")
         assert self.end >= self.begin
         if   Option == "hex":  
-            __repr = lambda x:     "-oo" if x == - sys.maxint   \
-                               else "oo" if x == sys.maxint - 1 \
+            __repr = lambda x:     "-oo" if x == - INTEGER_MAX   \
+                               else "oo" if x == INTEGER_MAX - 1 \
                                else "%04X" % x
         elif Option == "utf8": 
             __repr = lambda x: utf8.unicode_to_pretty_utf8(x)
         else: 
-            __repr = lambda x:     "-oo" if x == - sys.maxint   \
-                               else "oo" if x == sys.maxint - 1 \
+            __repr = lambda x:     "-oo" if x == - INTEGER_MAX   \
+                               else "oo" if x == INTEGER_MAX - 1 \
                                else "%s" % x
         
         if self.begin == self.end:       return "[]"
@@ -242,8 +243,8 @@ class Interval(object):
         elif self.end - self.begin == 1: 
             return utf8.unicode_to_pretty_utf8(self.begin) 
         else:                          
-            if   self.end == -sys.maxint: end_char = "-oo"
-            elif self.end == sys.maxint:  end_char = "oo"
+            if   self.end == -INTEGER_MAX: end_char = "-oo"
+            elif self.end == INTEGER_MAX:  end_char = "oo"
             else:                         end_char = utf8.unicode_to_pretty_utf8(self.end-1)
             return "[" + utf8.unicode_to_pretty_utf8(self.begin) + ", " + end_char + "]"
 
@@ -477,11 +478,11 @@ class NumberSet(object):
         return (self.__intervals[0].end - self.__intervals[0].begin) == 1
 
     def minimum(self):
-        if len(self.__intervals) == 0: return sys.maxint   # i.e. an absurd value
+        if len(self.__intervals) == 0: return INTEGER_MAX   # i.e. an absurd value
         else:                          return self.__intervals[0].begin
 
     def least_greater_bound(self):
-        if len(self.__intervals) == 0: return - sys.maxint # i.e. an absurd value
+        if len(self.__intervals) == 0: return - INTEGER_MAX # i.e. an absurd value
         else:                          return self.__intervals[-1].end
 
     def is_empty(self):
@@ -761,8 +762,8 @@ class NumberSet(object):
            RETURNS: True, if self covers from Begin to End all characters.
                     False, if not.
         """
-        Begin = max(Begin, -sys.maxint)
-        End   = min(End, sys.maxint)
+        Begin = max(Begin, -INTEGER_MAX)
+        End   = min(End, INTEGER_MAX)
         if   len(self.__intervals) != 1:        return False
         elif self.__intervals[0].begin > Begin: return False
         elif self.__intervals[0].end < End:     return False
@@ -886,8 +887,8 @@ class NumberSet(object):
             return
 
         first = self.__intervals[0]
-        if first.begin != -sys.maxint:
-            prev = Interval(-sys.maxint, first.begin)
+        if first.begin != -INTEGER_MAX:
+            prev = Interval(-INTEGER_MAX, first.begin)
             self.__intervals.insert(0, prev)
             i    = 1
         else:
@@ -901,11 +902,11 @@ class NumberSet(object):
                 prev       = x
 
         last = self.__intervals[-1]
-        if last.end == sys.maxint:
+        if last.end == INTEGER_MAX:
             del self.__intervals[-1]
         else:
             last.begin = last.end
-            last.end   = sys.maxint
+            last.end   = INTEGER_MAX
 
         self.intersect_with(UniversalSet)
 
@@ -992,7 +993,7 @@ class NumberSet(object):
 
     def get_number_list(self):
         """RETURNS: -- List of all numbers which are contained in the number set. 
-                    -- None, if one border is 'sys.maxint'. The list would be too big.
+                    -- None, if one border is 'INTEGER_MAX'. The list would be too big.
         """
         return flatten_list_of_lists(
             xrange(interval.begin, interval.end)
@@ -1054,7 +1055,7 @@ def UnicodeInterval():
     return Interval(0x0, 0x110000)
 
 def Interval_All():
-    return Interval(-sys.maxint, sys.maxint)
+    return Interval(-INTEGER_MAX, INTEGER_MAX)
 
 def NumberSet_All():
     return NumberSet(Interval_All())

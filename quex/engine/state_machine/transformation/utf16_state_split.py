@@ -37,6 +37,7 @@ from   quex.engine.state_machine.transformation.state_split import EncodingTrafo
 from   quex.engine.misc.utf16                               import utf16_to_unicode, \
                                                                    unicode_to_utf16
 from   quex.engine.misc.interval_handling                   import Interval, NumberSet, NumberSet_All
+from   quex.constants import INTEGER_MAX
 
 
 ForbiddenRange = Interval(0xD800, 0xE000)
@@ -170,8 +171,8 @@ def _get_contigous_intervals(X):
                         None => No such intervals
     """
     global ForbiddenRange
-    if X.begin == -sys.maxint: X.begin = 0
-    if X.end   == sys.maxint:  X.end   = 0x110000
+    if X.begin == -INTEGER_MAX: X.begin = 0
+    if X.end   == INTEGER_MAX:  X.end   = 0x110000
     assert X.end != X.begin     # Empty intervals are nonsensical
     assert X.end <= 0x110000    # Interval must lie in unicode range
     assert not X.check_overlap(ForbiddenRange) # The 'forbidden range' is not to be covered.

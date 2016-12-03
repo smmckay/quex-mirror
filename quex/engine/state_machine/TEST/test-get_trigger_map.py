@@ -3,9 +3,9 @@ import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-
 from quex.engine.state_machine.core import *
 from quex.engine.analyzer.transition_map import TransitionMap
+from quex.constants import INTEGER_MAX
 
 if "--hwut-info" in sys.argv:
     print "DFA: Get Trigger Map (intervals --> target states)"
@@ -59,24 +59,24 @@ elif "4" in sys.argv:
 
     
 elif "5" in sys.argv:
-    # (*) Intervals with sys.maxint
+    # (*) Intervals with INTEGER_MAX
     s = State()
-    s.add_transition(NumberSet(Interval(-sys.maxint, sys.maxint)), 1L)
+    s.add_transition(NumberSet(Interval(-INTEGER_MAX, INTEGER_MAX)), 1L)
     test(s)
 
 elif "6" in sys.argv:
     s = State()
-    s.add_transition(NumberSet(Interval(-sys.maxint, 0)), 1L)
+    s.add_transition(NumberSet(Interval(-INTEGER_MAX, 0)), 1L)
     test(s)
 
 elif "7" in sys.argv:
     s = State()
-    s.add_transition(NumberSet(Interval(0, sys.maxint)), 1L)
+    s.add_transition(NumberSet(Interval(0, INTEGER_MAX)), 1L)
     test(s)
 
 elif "8" in sys.argv:
     s = State()
-    s.add_transition(NumberSet([Interval(-sys.maxint, 50), Interval(60, sys.maxint)]), 1L)
+    s.add_transition(NumberSet([Interval(-INTEGER_MAX, 50), Interval(60, INTEGER_MAX)]), 1L)
     test(s)
 
     

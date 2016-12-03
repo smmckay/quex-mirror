@@ -7,6 +7,7 @@ from   quex.DEFINITIONS              import QUEX_PATH
 import quex.engine.misc.error        as     error
 
 from   quex.engine.misc.interval_handling import Interval, NumberSet
+from   quex.constants import INTEGER_MAX
 
 import re
 import fnmatch
@@ -162,7 +163,7 @@ class PropertyInfo:
             txt += "VALUE_ALIASES = (Binary has no values)\n"
         else:
             txt += "VALUE_ALIASES = {\n    "
-            txt += self.get_value_list_help(sys.maxint).replace(", ", ",\n    ")
+            txt += self.get_value_list_help(INTEGER_MAX).replace(", ", ",\n    ")
             txt += "\n}\n" 
         return txt
 

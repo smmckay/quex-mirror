@@ -40,7 +40,8 @@ from   quex.engine.analyzer.mega_state.template.gain_transition_map import __tra
 from   quex.engine.analyzer.mega_state.template.TEST.templates_aux import *
 from   quex.engine.misc.interval_handling import *
 
-from   quex.blackboard  import E_StateIndices
+from   quex.blackboard  import E_StateIndices, \
+                               INTEGER_MAX
 
 
 
@@ -138,68 +139,68 @@ def test(TriggerMapA, TriggerMapB):
     assert gain0 == gain1
 
 tm0 = [ 
-    (Interval(-sys.maxint, 10), [10L, 11L]),
-    (Interval(10, sys.maxint),  [20L, 21L]),
+    (Interval(-INTEGER_MAX, 10), [10L, 11L]),
+    (Interval(10, INTEGER_MAX),  [20L, 21L]),
 ]
 
 if "1" in sys.argv:
     tm1 = [ 
-        (Interval(-sys.maxint, 30), [10L, 11L]),
-        (Interval(30, sys.maxint),  [20L, 21L]),
+        (Interval(-INTEGER_MAX, 30), [10L, 11L]),
+        (Interval(30, INTEGER_MAX),  [20L, 21L]),
     ]
 
 elif "2" in sys.argv:
     tm1 = [ 
-        (Interval(-sys.maxint, 10), [20L, 21L]),
-        (Interval(10, sys.maxint),  [10L, 11L])
+        (Interval(-INTEGER_MAX, 10), [20L, 21L]),
+        (Interval(10, INTEGER_MAX),  [10L, 11L])
     ]
 
 elif "2b" in sys.argv:
     tm1 = [ 
-        (Interval(-sys.maxint, 10), [10L, 11L]),
-        (Interval(10, sys.maxint),  [20L, 21L]),
+        (Interval(-INTEGER_MAX, 10), [10L, 11L]),
+        (Interval(10, INTEGER_MAX),  [20L, 21L]),
     ]
 
 elif "3" in sys.argv:
     tm1 = [ 
-        (Interval(-sys.maxint, 5),  [20L, 21L]),
+        (Interval(-INTEGER_MAX, 5),  [20L, 21L]),
         (Interval(5, 20),           [30L, 31L]),
         (Interval(20, 25),          [40L, 41L]),
         (Interval(25, 35),          [50L, 51L]),
-        (Interval(35, sys.maxint),  [10L, 20L]),
+        (Interval(35, INTEGER_MAX),  [10L, 20L]),
     ]
 
 elif "3b" in sys.argv:
     tm0 = [ 
-        (Interval(-sys.maxint, 5), [10L, 11L]),
+        (Interval(-INTEGER_MAX, 5), [10L, 11L]),
         (Interval(5, 20),           [20L, 21L]),
-        (Interval(20, sys.maxint),  [10L, 11L]),
+        (Interval(20, INTEGER_MAX),  [10L, 11L]),
     ]
     tm1 = [ 
-        (Interval(-sys.maxint, 5),  [20L, 21L]),
+        (Interval(-INTEGER_MAX, 5),  [20L, 21L]),
         (Interval(5, 20),           [30L, 31L]),
         (Interval(20, 25),          [20L, 21L]),
-        (Interval(25, sys.maxint),  [20L, 21L]),
+        (Interval(25, INTEGER_MAX),  [20L, 21L]),
     ]
 
 
 elif "4" in sys.argv:
     tm0 = [ 
-        (Interval(-sys.maxint, sys.maxint), [20L, 21L]),
+        (Interval(-INTEGER_MAX, INTEGER_MAX), [20L, 21L]),
     ]
     tm1 = [ 
-        (Interval(-sys.maxint, 20), [20L, 21L]), 
-        (Interval(20, sys.maxint),  [10L, 11L]), 
+        (Interval(-INTEGER_MAX, 20), [20L, 21L]), 
+        (Interval(20, INTEGER_MAX),  [10L, 11L]), 
     ]
 
 elif "recursive" in sys.argv:
     tm0 = [ 
-        (Interval(-sys.maxint, 10), [0L, 1L]),
-        (Interval(10, sys.maxint),  [20L, 21L]),
+        (Interval(-INTEGER_MAX, 10), [0L, 1L]),
+        (Interval(10, INTEGER_MAX),  [20L, 21L]),
     ]
 
     tm1 = [ 
-        (Interval(-sys.maxint, sys.maxint), (2L, 3L)),
+        (Interval(-INTEGER_MAX, INTEGER_MAX), (2L, 3L)),
     ]
 test(tm0, tm1)
 

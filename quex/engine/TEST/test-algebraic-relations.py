@@ -5,13 +5,14 @@ from   copy import copy
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from quex.engine.misc.interval_handling import NumberSet, Interval
+from quex.constants import INTEGER_MAX
 
 if "--hwut-info" in sys.argv:
     print "NumberSet: Algebraic Relations;"
     print "CHOICES: unary, binary;"
     sys.exit()
 
-all = NumberSet.from_range(-sys.maxint, sys.maxint)
+all = NumberSet.from_range(-INTEGER_MAX, INTEGER_MAX)
 
 def inv(A):     
     result = A.get_complement(all)
@@ -56,7 +57,7 @@ def symdiff(A, B):
 
 protocol = []
 X        = None
-S_All    = NumberSet(Interval(-sys.maxint, sys.maxint))
+S_All    = NumberSet(Interval(-INTEGER_MAX, INTEGER_MAX))
 S_None   = NumberSet()
 
 correct_n = 0
@@ -134,25 +135,25 @@ if "unary" in sys.argv:
     unary([(0,1)])
     unary([(-1,0)])
     unary([(-1,1)])
-    unary([(-sys.maxint, sys.maxint)])
+    unary([(-INTEGER_MAX, INTEGER_MAX)])
     unary([])
     unary([(0,1), (2,3)])
     unary([(0,1), (1,2)])
 
     unary([(0,               100)])
-    unary([(0,               sys.maxint)])
-    unary([(-sys.maxint,     0)])
-    unary([(-sys.maxint,     sys.maxint)])
+    unary([(0,               INTEGER_MAX)])
+    unary([(-INTEGER_MAX,     0)])
+    unary([(-INTEGER_MAX,     INTEGER_MAX)])
 
     unary([(0,         100), (500, 600)])
-    unary([(0,         100), (500, sys.maxint)])
-    unary([(-sys.maxint, 0), (500, 600)])
-    unary([(-sys.maxint, 0), (500, sys.maxint)])
+    unary([(0,         100), (500, INTEGER_MAX)])
+    unary([(-INTEGER_MAX, 0), (500, 600)])
+    unary([(-INTEGER_MAX, 0), (500, INTEGER_MAX)])
 
     unary([(0,         100), (100, 200), (500, 600)])
-    unary([(0,         100), (100, 200), (500, sys.maxint)])
-    unary([(-sys.maxint, 0), (100, 200), (500, 600)])
-    unary([(-sys.maxint, 0), (100, 200), (500, sys.maxint)])
+    unary([(0,         100), (100, 200), (500, INTEGER_MAX)])
+    unary([(-INTEGER_MAX, 0), (100, 200), (500, 600)])
+    unary([(-INTEGER_MAX, 0), (100, 200), (500, INTEGER_MAX)])
 
 elif "binary" in sys.argv:
     correct_n = 0

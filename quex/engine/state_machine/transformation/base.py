@@ -1,6 +1,7 @@
 import quex.engine.misc.error             as     error
 from   quex.engine.misc.interval_handling import NumberSet, Interval_All, Interval
 from   quex.engine.misc.tools             import typed
+from   quex.constants                     import INTEGER_MAX
 
 import sys
 
@@ -103,7 +104,7 @@ class EncodingTrafo:
             lexatom_min_value = 0
             lexatom_max_value = min(lexatom_max_value, value_n - 1)
 
-        lexatom_max_value = min(lexatom_max_value, sys.maxint)
+        lexatom_max_value = min(lexatom_max_value, INTEGER_MAX)
 
         assert lexatom_max_value > lexatom_min_value
 

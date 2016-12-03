@@ -7,8 +7,10 @@ from quex.engine.misc.string_handling                     import blue_print
 from quex.engine.misc.file_in                             import make_safe_identifier
 from quex.engine.misc.file_operations                     import get_file_content_or_die
 from quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
-from quex.blackboard                                      import setup as Setup, \
-                                                                 Lng
+
+from quex.blackboard import setup as Setup, \
+                            Lng
+from quex.constants  import INTEGER_MAX
 
 def do():
     if Setup.buffer_codec.name == "unicode": 
@@ -267,7 +269,7 @@ class ConverterWriterUTF8(ConverterWriter):
 
             The range borders are, therefore, as mentioned in the return value.
         """
-        return [ 0x0, 0x00000080, 0x00000800, 0x00010000, 0x00200000, 0x04000000, 0x80000000, sys.maxint] 
+        return [ 0x0, 0x00000080, 0x00000800, 0x00010000, 0x00200000, 0x04000000, 0x80000000, INTEGER_MAX] 
 
 class ConverterWriterUTF16(ConverterWriter):
     def get_epilog(self):
@@ -282,8 +284,8 @@ class ConverterWriterUTF16(ConverterWriter):
                     }[RangeIndex]
 
     def get_byte_format_range_border_list(self):
-        """UCS4 covers the whole range of unicode (extend 0x10FFFF to sys.maxint to be nice)."""
-        return [ 0x0, 0x10000, sys.maxint] 
+        """UCS4 covers the whole range of unicode (extend 0x10FFFF to INTEGER_MAX to be nice)."""
+        return [ 0x0, 0x10000, INTEGER_MAX] 
     
     def get_unicode_range_conversion(self, Info):
         # Take the unicode value via the UCS4 converter
@@ -297,8 +299,8 @@ class ConverterWriterUTF32(ConverterWriter):
         return "*(*output_pp)++ = unicode;\n"
 
     def get_byte_format_range_border_list(self):
-        """UCS4 covers the whole range of unicode (extend 0x10FFFF to sys.maxint to be nice)."""
-        return [ 0x0, sys.maxint] 
+        """UCS4 covers the whole range of unicode (extend 0x10FFFF to INTEGER_MAX to be nice)."""
+        return [ 0x0, INTEGER_MAX] 
 
 class ConversionInfo:
     """A given interval in the codec corresponds to a certain byte formatting

@@ -20,6 +20,8 @@ from   quex.engine.state_machine.state.core                 import State
 from   quex.engine.misc.interval_handling                   import NumberSet, Interval
 from   quex.engine.misc.tools                               import typed
 
+from   quex.constants import INTEGER_MAX
+
 from   copy        import copy
 from   operator    import attrgetter
 from   collections import defaultdict
@@ -200,7 +202,7 @@ def print_combination_result(combined, A, B, A_name, B_name):
 def print_tm(TM, StateIndexList, OnlyStateIndexF=False):
     tm_str = [("  [INTERVAL]", "[SCHEME_ID]", "[TARGET/STATE %s]" % [int(x) for x in StateIndexList])]
     for interval, target in TM:
-        interval_str = "  " + repr(interval).replace("%i" % sys.maxint, "oo").replace("%i" % (sys.maxint-1), "oo")
+        interval_str = "  " + repr(interval).replace("%i" % INTEGER_MAX, "oo").replace("%i" % (INTEGER_MAX-1), "oo")
         target_str   = str(target)
         target_str   = target_str.replace("TargetByStateKey:DoorID", "**")
         target_str   = target_str.replace("TargetByStateKey:scheme", "")

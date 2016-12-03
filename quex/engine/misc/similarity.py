@@ -2,12 +2,12 @@ import sys
 
 
 def get(Word, WordList):
-    min_distance = sys.maxint
+    min_distance = None
     min_i        = -1
 
     for i in range(len(WordList)):
         distance = compute_distance(Word, WordList[i])
-        if distance < min_distance: 
+        if min_distance is None or distance < min_distance: 
             min_i        = i
             min_distance = distance
     
