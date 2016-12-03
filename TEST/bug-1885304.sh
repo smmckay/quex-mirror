@@ -41,8 +41,10 @@ rm Xanther*
 echo "Watch out, that output from unix file format is the same as from dos format."
 echo "DATE stamps are ignored"
 echo
+echo "||||"
 ls Dos*
 ls Unix*
+echo "||||"
 echo
 echo "(*) Dos vs Unix (no output is good output)"
 cat Dos  | awk '! /DATE/' > tmp0.txt

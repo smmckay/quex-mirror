@@ -8,7 +8,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 make  >& tmp.txt
-cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ '
+bash $tmp/quex_pathify.sh tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ '
 ./a.out
 rm -f tmp.txt
 

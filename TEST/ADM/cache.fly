@@ -361,7 +361,7 @@ title_group: fschaef;
 file_name: bug-2277660.sh;
 hwut_info_time: 1480539693L;
 result_list: [
-  [ ; FAIL; 2.049331; 300310897; ]
+  [ ; OK; 2.035776; 300310897; ]
 ]
 }
 {
@@ -568,7 +568,7 @@ title_group: marcoantonelli;
 file_name: bug-2257908.sh;
 hwut_info_time: 1480539693L;
 result_list: [
-  [ ; FAIL; 1.016507; 2060103382; ]
+  [ ; OK; 1.015312; 2060103382; ]
 ]
 }
 {
@@ -705,7 +705,7 @@ title_group: rami-al-rafou;
 file_name: bug-3476232.sh;
 hwut_info_time: 1480539697L;
 result_list: [
-  [ ; FAIL; 6.127721; -1625753829; ]
+  [ ; OK; 6.138979; -1625753829; ]
 ]
 }
 {
@@ -781,9 +781,9 @@ result_list: [
 title: 1885304 Problems with files with DOS CR/LF line endings;
 title_group: sphericalcow;
 file_name: bug-1885304.sh;
-hwut_info_time: 1480539696L;
+hwut_info_time: 1480803319L;
 result_list: [
-  [ ; FAIL; 0.416878; 206479834; ]
+  [ ; OK; 0.413016; 206479834; ]
 ]
 }
 {
@@ -1023,7 +1023,7 @@ title_group: sphericalcow;
 file_name: bug-1900391.sh;
 hwut_info_time: 1480539694L;
 result_list: [
-  [ ; FAIL; 0.136754; 0; ]
+  [ ; FAIL; 0.136673; 0; ]
 ]
 }
 {
@@ -1167,9 +1167,9 @@ result_list: [
 title: 3021502 0.49.2 Buffer-size gets ignored;
 title_group: the-user-k;
 file_name: bug-3021502.sh;
-hwut_info_time: 1480539689L;
+hwut_info_time: 1480803654L;
 result_list: [
-  [ ; FAIL; 0.539084; 1106289097; ]
+  [ ; FAIL; 0.542527; 153847612; ]
 ]
 }
 {
