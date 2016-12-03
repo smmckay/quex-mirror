@@ -166,7 +166,7 @@ feed_file_to_socket(char* FileName, int socket_fd, int ChunkSize, int Delay_ms)
          * feeding.                                                          */
         read_n = fread(&buffer[0], 1, ChunkSize, fh);
         buffer[read_n] = '\0';
-        printf("flush: %i: [%s]\n", read_n, &buffer[0]);
+        printf("flush: %i: [%s]\n", (int)read_n, &buffer[0]);
         if( ! read_n ) break;
 
         /* Flush the bytes into the socket.                                  */
