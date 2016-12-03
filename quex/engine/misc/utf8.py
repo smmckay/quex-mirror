@@ -1,4 +1,3 @@
-import sys
 import quex.engine.misc.error as error
 
 from   quex.constants import INTEGER_MAX

@@ -10,7 +10,6 @@ from   quex.constants   import INTEGER_MAX
 
 from   itertools   import izip
 from   collections import defaultdict
-import sys
 
 class TransitionMap(list):
     """________________________________________________________________________

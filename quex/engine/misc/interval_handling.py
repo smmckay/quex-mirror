@@ -22,7 +22,6 @@ from   quex.engine.misc.tools import r_enumerate, \
                                      flatten_list_of_lists
 from   quex.constants         import INTEGER_MAX
 
-import sys
 from   copy      import copy
 from   itertools import izip, islice
 

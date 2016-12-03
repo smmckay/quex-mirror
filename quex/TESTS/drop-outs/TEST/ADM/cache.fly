@@ -1,15 +1,15 @@
 {
 title: Testing states with no hole in transition map;
-build_time: 1.382554054260254;
+build_time: 1.3768229484558105;
 file_name: lexer;
-hwut_info_time: 1480754145L;
+hwut_info_time: 1480770891L;
 make_dependent_f: True;
 result_list: [
-  [ BEGIN-1; OK; 0.010415; 0; ]
-  [ BEGIN-many; OK; 0.004868; 0; ]
-  [ MIDDLE-1; OK; 0.004655; 0; ]
-  [ MIDDLE-many; OK; 0.005403; 0; ]
-  [ END-1; OK; 0.008390; 0; ]
-  [ END-many; OK; 0.005232; 0; ]
+  [ BEGIN-1; OK; 0.005213; 0; ]
+  [ BEGIN-many; OK; 0.007186; 0; ]
+  [ MIDDLE-1; OK; 0.005245; 0; ]
+  [ MIDDLE-many; OK; 0.006592; 0; ]
+  [ END-1; OK; 0.007073; 0; ]
+  [ END-many; OK; 0.005501; 0; ]
 ]
 }

@@ -1,20 +1,20 @@
 {
 title: With token policy 'queue'.;
-build_time: 3.5778939723968506;
+build_time: 3.7894740104675293;
 file_name: simple-queue.exe;
-hwut_info_time: 1480754266L;
+hwut_info_time: 1480771012L;
 make_dependent_f: True;
 result_list: [
-  [ ; OK; 0.010553; 0; ]
+  [ ; OK; 0.006530; 0; ]
 ]
 }
 {
 title: With token policy 'simple'.;
-build_time: 3.5790159702301025;
+build_time: 3.531852960586548;
 file_name: simple.exe;
-hwut_info_time: 1480754269L;
+hwut_info_time: 1480771016L;
 make_dependent_f: True;
 result_list: [
-  [ ; OK; 0.006402; 0; ]
+  [ ; OK; 0.006396; 0; ]
 ]
 }

@@ -26,7 +26,6 @@ from   quex.engine.misc.enum  import Enum
 
 import quex.engine.state_machine.transformation.core as     bc_factory
 
-import sys
 
 #------------------------------------------------------------------------------
 # setup: All information of the user's desired setup.

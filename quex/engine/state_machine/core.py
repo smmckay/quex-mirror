@@ -16,7 +16,6 @@ from   copy        import deepcopy, copy
 from   operator    import itemgetter
 from   itertools   import ifilter, imap
 from   collections import defaultdict
-import sys
 
 class StateMachine(object):
     def __init__(self, InitStateIndex=None, AcceptanceF=False, InitState=None, DoNothingF=False):

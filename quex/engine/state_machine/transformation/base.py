@@ -3,7 +3,6 @@ from   quex.engine.misc.interval_handling import NumberSet, Interval_All, Interv
 from   quex.engine.misc.tools             import typed
 from   quex.constants                     import INTEGER_MAX
 
-import sys
 
 class EncodingTrafo:
     """Maintains information about a encoding transformation and functions that
