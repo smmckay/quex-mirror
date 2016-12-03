@@ -6,10 +6,14 @@ fi
 
 echo
 echo "-- Check for references to 'Cpp demos' (no output is good output) --"
-grep -sHIne '/Cpp/' *.sh | awk '! /no-references/ && ! /makefile-diff/' | sort
+echo "||||"
+grep -sHIne '/Cpp/' *.sh | awk '! /no-references/ && ! /makefile-diff/'
+echo "||||"
 echo "--"
 echo
 echo "-- Check for references to 'Cpp demos' --"
-grep -sHIne '/C/' *.sh | awk '! /no-references/ && ! /makefile-diff/' | sort
+echo "||||"
+grep -sHIne '/C/' *.sh | awk '! /no-references/ && ! /makefile-diff/'
+echo "||||"
 echo "--"
 echo "<terminated>"
