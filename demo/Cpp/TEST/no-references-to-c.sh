@@ -6,10 +6,14 @@ fi
 
 echo
 echo "-- Check for references to 'C demos' (no output is good output) --"
-grep -sHIne '/C/' *.sh | awk '! /no-references/' | sort
+echo "||||"
+grep -sHIne '/C/' *.sh | awk '! /no-references/' 
+echo "||||"
 echo "--"
 echo
 echo "-- Check for references to 'Cpp demos' --"
-grep -sHIne '/Cpp/' *.sh | sort | awk '! /no-references/' | sort
+echo "||||"
+grep -sHIne '/Cpp/' *.sh | sort | awk '! /no-references/' 
+echo "||||"
 echo "--"
 echo "<terminated>"

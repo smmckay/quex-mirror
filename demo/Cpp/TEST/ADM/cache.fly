@@ -1,9 +1,9 @@
 {
 title: No references to C demos;
 file_name: no-references-to-c.sh;
-hwut_info_time: 1480543805L;
+hwut_info_time: 1480795596L;
 result_list: [
-  [ ; OK; 0.027687; 356464947; ]
+  [ ; OK; 0.022397; 1855339388; ]
 ]
 }
 {
