@@ -12,7 +12,6 @@ from   quex.blackboard                  import setup as Setup, \
 import quex.blackboard                  as     blackboard
 
 from   collections import defaultdict
-from   operator    import attrgetter
 import time
 
 standard_token_id_list = ["TERMINATION", "UNINITIALIZED", "INDENT", "NODENT", "DEDENT"]

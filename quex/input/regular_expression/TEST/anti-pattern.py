@@ -7,7 +7,8 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.regular_expression.exception as exception
 import quex.input.regular_expression.engine as engine
 from   quex.blackboard import setup as Setup
-from   quex.constant   import INTEGER_MAX
+from   quex.constants  import INTEGER_MAX
+
 Setup.set_all_character_set_UNIT_TEST(-INTEGER_MAX, INTEGER_MAX)
 
 if "--hwut-info" in sys.argv:

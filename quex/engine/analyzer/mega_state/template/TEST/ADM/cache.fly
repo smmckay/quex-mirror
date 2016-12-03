@@ -1,13 +1,13 @@
 {
 title: Combination of Two Transition Maps;
 file_name: combine-maps.py;
-hwut_info_time: 1480539708L;
+hwut_info_time: 1480752531L;
 result_list: [
-  [ 1; OK; 0.096195; 0; ]
-  [ 2; OK; 0.094439; 0; ]
-  [ 2b; OK; 0.094160; 0; ]
-  [ 3; OK; 0.095233; 0; ]
-  [ 4; OK; 0.094860; 0; ]
+  [ 1; OK; 0.096273; 0; ]
+  [ 2; OK; 0.095395; 0; ]
+  [ 2b; OK; 0.094978; 0; ]
+  [ 3; OK; 0.093592; 0; ]
+  [ 4; OK; 0.096320; 0; ]
 ]
 }
 {
@@ -15,9 +15,9 @@ title: Combine Simple;
 file_name: combine-simple.py;
 hwut_info_time: 1480539708L;
 result_list: [
-  [ plain; OK; 0.102415; 0; ]
-  [ recursive; OK; 0.102001; 0; ]
-  [ distinguished; OK; 0.104934; 0; ]
+  [ plain; OK; 0.106521; 0; ]
+  [ recursive; OK; 0.108707; 0; ]
+  [ distinguished; OK; 0.105630; 0; ]
 ]
 }
 {
@@ -25,21 +25,21 @@ title: Template states handling recursion;
 file_name: recursion.py;
 hwut_info_time: 1480539708L;
 result_list: [
-  [ 0; OK; 0.106645; 0; ]
-  [ 0b; OK; 0.100284; -226337317; ]
-  [ 1; OK; 0.097558; 0; ]
-  [ 1b; OK; 0.100654; 0; ]
-  [ 1c; OK; 0.098921; 966946270; ]
+  [ 0; OK; 0.101707; 0; ]
+  [ 0b; OK; 0.101099; -226337317; ]
+  [ 1; OK; 0.099853; 0; ]
+  [ 1b; OK; 0.099096; 0; ]
+  [ 1c; OK; 0.099375; 966946270; ]
 ]
 }
 {
 title: Combine Combined Trigger Maps;
 title_group: Transition Map Templates;
 file_name: combine-maps-2.py;
-hwut_info_time: 1480539708L;
+hwut_info_time: 1480752037L;
 result_list: [
-  [ 1; OK; 0.105095; 0; ]
-  [ 2; OK; 0.105857; 0; ]
+  [ 1; OK; 0.101310; 0; ]
+  [ 2; OK; 0.101525; 0; ]
 ]
 }
 {
@@ -48,25 +48,25 @@ title_group: Transition Map Templates;
 file_name: best_matching_pair.py;
 hwut_info_time: 1480539708L;
 result_list: [
-  [ 0; OK; 0.098843; 0; ]
-  [ 1; OK; 0.106143; 0; ]
-  [ 2; OK; 0.099795; 0; ]
-  [ 3; OK; 0.096404; 0; ]
-  [ recursive; OK; 0.099787; 0; ]
+  [ 0; OK; 0.098523; 0; ]
+  [ 1; OK; 0.096501; 0; ]
+  [ 2; OK; 0.101093; 0; ]
+  [ 3; OK; 0.095741; 0; ]
+  [ recursive; OK; 0.095692; 0; ]
 ]
 }
 {
 title: Target Idx Combination Metric;
 title_group: Transition Map Templates;
 file_name: metric.py;
-hwut_info_time: 1480539708L;
+hwut_info_time: 1480760902L;
 result_list: [
-  [ 1; OK; 0.098692; 0; ]
-  [ 2; OK; 0.093843; 0; ]
-  [ 2b; OK; 0.094270; 0; ]
-  [ 3; OK; 0.098496; 0; ]
-  [ 3b; OK; 0.097099; 0; ]
-  [ 4; OK; 0.095311; 0; ]
-  [ recursive; OK; 0.092377; 0; ]
+  [ 1; OK; 0.098593; 0; ]
+  [ 2; OK; 0.100888; 0; ]
+  [ 2b; OK; 0.096994; 0; ]
+  [ 3; OK; 0.102131; 0; ]
+  [ 3b; OK; 0.100866; 0; ]
+  [ 4; OK; 0.101699; 0; ]
+  [ recursive; OK; 0.102040; 0; ]
 ]
 }

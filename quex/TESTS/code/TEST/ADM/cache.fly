@@ -4,7 +4,7 @@ file_name: check-default-configuration.sh;
 hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.019038; -1256193323; ]
+  [ ; OK; 0.010143; -1256193323; ]
 ]
 }
 {
@@ -14,7 +14,7 @@ hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ py:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.145309; 590435299; ]
+  [ ; OK; 0.054134; 590435299; ]
 ]
 }
 {
@@ -23,7 +23,7 @@ file_name: no-unused-enum-values.py;
 hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 4.945318; -235166342; ]
+  [ ; OK; 3.920164; -235166342; ]
 ]
 }
 {
@@ -32,7 +32,7 @@ file_name: svn-status.sh;
 hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 3.222031; -681318074; ]
+  [ ; FAIL; 2.938073; -681318074; ]
 ]
 }
 {
@@ -41,7 +41,7 @@ file_name: function-check.sh;
 hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ example; OK; 0.142556; 1854110009; ]
+  [ example; OK; 0.136313; 1854110009; ]
   [ real; TIME_OUT; 6.195043; -1191039011; ]
 ]
 }
@@ -61,8 +61,8 @@ hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ man; OK; 0.053108; -1113552213; ]
-  [ sphinx; OK; 0.050475; 0; ]
+  [ man; OK; 0.056892; -1113552213; ]
+  [ sphinx; OK; 0.048694; 0; ]
 ]
 }
 {
@@ -71,7 +71,7 @@ file_name: test-exceptions-in-place.sh;
 hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.639129; 0; ]
+  [ ; OK; 0.491952; 0; ]
 ]
 }
 {
@@ -80,8 +80,8 @@ file_name: include_guard.py;
 hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ convention; OK; 0.248234; 0; ]
-  [ undefinition; OK; 0.212783; 0; ]
+  [ convention; OK; 0.174762; 0; ]
+  [ undefinition; OK; 0.173003; 0; ]
 ]
 }
 {
@@ -90,7 +90,7 @@ file_name: macro-check.py;
 hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.040217; 0; ]
+  [ ; OK; 0.039904; 0; ]
 ]
 }
 {
@@ -101,6 +101,6 @@ hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.186846; 0; ]
+  [ ; OK; 0.154536; 0; ]
 ]
 }

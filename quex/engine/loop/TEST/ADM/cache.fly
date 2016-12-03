@@ -5,9 +5,9 @@ file_name: indentation-w-comments.py;
 hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 result_list: [
-  [ NewlineTerminated; OK; 0.219121; 0; ]
-  [ NotNewlineTerminated; OK; 0.254212; 0; ]
-  [ Mixed; OK; 1.521267; 0; ]
+  [ NewlineTerminated; OK; 0.155298; 0; ]
+  [ NotNewlineTerminated; OK; 0.149973; 0; ]
+  [ Mixed; OK; 0.985906; 0; ]
 ]
 }
 {
@@ -17,10 +17,10 @@ file_name: indentation-w-tabs.py;
 hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 result_list: [
-  [ Front; OK; 0.179330; 0; ]
-  [ Back; OK; 1.334748; 0; ]
-  [ InComment; OK; 0.211386; 0; ]
-  [ Potpourri; OK; 0.191832; 0; ]
+  [ Front; OK; 0.157033; 0; ]
+  [ Back; OK; 0.994890; 0; ]
+  [ InComment; OK; 0.152214; 0; ]
+  [ Potpourri; OK; 0.153853; 0; ]
 ]
 }
 {
@@ -30,11 +30,11 @@ file_name: indentation.py;
 hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 result_list: [
-  [ InAndOut; OK; 0.269003; 0; ]
-  [ EmptyLines; OK; 0.254203; 0; ]
-  [ NoDents; OK; 0.242918; 0; ]
-  [ SuppressedNewline; OK; 0.259957; 0; ]
-  [ CloseMultiple; OK; 2.095650; 0; ]
+  [ InAndOut; OK; 0.153787; 0; ]
+  [ EmptyLines; OK; 0.143726; 0; ]
+  [ NoDents; OK; 0.142821; 0; ]
+  [ SuppressedNewline; OK; 0.143555; 0; ]
+  [ CloseMultiple; OK; 0.943312; 0; ]
 ]
 }
 {
@@ -44,10 +44,10 @@ file_name: loop-get_analazer_list.py;
 hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 result_list: [
-  [ loop; OK; 0.132675; 1682989222; ]
-  [ appendix; OK; 0.172869; 382074004; ]
-  [ appendix-wot; OK; 0.121445; 1682989222; ]
-  [ non-const; OK; 0.156518; 581344918; ]
+  [ loop; OK; 0.111569; 1682989222; ]
+  [ appendix; OK; 0.120583; 382074004; ]
+  [ appendix-wot; OK; 0.109227; 1682989222; ]
+  [ non-const; OK; 0.134784; 581344918; ]
 ]
 }
 {
@@ -57,10 +57,10 @@ file_name: loop-get_loop_map.py;
 hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 result_list: [
-  [ Plain; OK; 0.102065; 0; ]
-  [ AppendixNoI; OK; 0.104603; 0; ]
-  [ AppendixI; OK; 0.121396; 1515286970; ]
-  [ Split; OK; 0.100939; 0; ]
+  [ Plain; OK; 0.101580; 0; ]
+  [ AppendixNoI; OK; 0.108943; 0; ]
+  [ AppendixI; OK; 0.108902; 1515286970; ]
+  [ Split; OK; 0.102922; 0; ]
 ]
 }
 {
@@ -71,10 +71,10 @@ hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ 5; OK; 0.955394; 0; ]
-  [ 6; OK; 1.047314; 0; ]
-  [ 7; OK; 1.196057; 0; ]
-  [ 8; OK; 1.101132; 0; ]
+  [ 5; OK; 0.943518; 0; ]
+  [ 6; OK; 0.942972; 0; ]
+  [ 7; OK; 0.945978; 0; ]
+  [ 8; OK; 0.940999; 0; ]
 ]
 }
 {
@@ -85,12 +85,12 @@ hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ 3; OK; 1.430446; 0; ]
-  [ 4; OK; 0.234096; 0; ]
-  [ 5; OK; 0.235781; 0; ]
-  [ 6; OK; 0.234869; 0; ]
-  [ 7; OK; 0.296025; 0; ]
-  [ 8; OK; 0.245465; 0; ]
+  [ 3; OK; 0.955931; 0; ]
+  [ 4; OK; 0.231711; 0; ]
+  [ 5; OK; 0.236987; 0; ]
+  [ 6; OK; 0.233782; 0; ]
+  [ 7; OK; 0.233112; 0; ]
+  [ 8; OK; 0.232870; 0; ]
 ]
 }
 {
@@ -100,10 +100,10 @@ file_name: skip-nested_range.py;
 hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 result_list: [
-  [ one; OK; 1.023021; 0; ]
-  [ two; OK; 2.577202; 0; ]
-  [ three; OK; 2.775505; 0; ]
-  [ same-head; OK; 2.705782; 0; ]
+  [ one; OK; 0.966796; 0; ]
+  [ two; OK; 2.531643; 0; ]
+  [ three; OK; 2.590959; 0; ]
+  [ same-head; OK; 2.599819; 0; ]
 ]
 }
 {
@@ -113,9 +113,9 @@ file_name: skip-range.py;
 hwut_info_time: 1480539709L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 1; OK; 1.007819; 0; ]
-  [ 2; OK; 1.108881; 0; ]
-  [ 3; OK; 1.296167; 0; ]
-  [ 4; OK; 1.401476; 0; ]
+  [ 1; OK; 0.955775; 0; ]
+  [ 2; OK; 1.079022; 0; ]
+  [ 3; OK; 1.288184; 0; ]
+  [ 4; OK; 1.391166; 0; ]
 ]
 }

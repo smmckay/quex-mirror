@@ -1,424 +1,424 @@
 {
 title: Mode Changes;
 file_name: test-mode-changes.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 1.082774; 0; ]
-  [ Cpp; OK; 1.584684; 0; ]
-  [ ANSI-C-CG; OK; 0.907538; 0; ]
+  [ ANSI-C; OK; 0.918053; 0; ]
+  [ Cpp; OK; 1.603315; 0; ]
+  [ ANSI-C-CG; OK; 0.899127; 0; ]
 ]
 }
 {
 title: Backwards;
 title_group: Buffer Reload;
 file_name: test-backward_loading.py;
-hwut_info_time: 1480539699L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.029002; 0; ]
-  [ ANSI-C; OK; 1.009882; 0; ]
-  [ ANSI-C-CG; OK; 0.951906; 0; ]
-  [ Cpp; OK; 1.717544; 0; ]
-  [ Cpp-Template; OK; 1.954106; 0; ]
-  [ Cpp-Template-CG; OK; 2.086842; 0; ]
-  [ Cpp-Path; OK; 1.779834; 0; ]
-  [ Cpp-PathUniform; OK; 1.907621; 0; ]
-  [ Cpp-Path-CG; OK; 2.091165; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.174989; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.015776; 0; ]
-  [ Cpp-ASSERTS; OK; 1.717802; 0; ]
-  [ ANSI-C-ASSERTS; OK; 0.945179; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.946266; 0; ]
+  [ ANSI-C; OK; 0.939236; 0; ]
+  [ ANSI-C-CG; OK; 0.940399; 0; ]
+  [ Cpp; OK; 1.663273; 0; ]
+  [ Cpp-Template; OK; 1.701818; 0; ]
+  [ Cpp-Template-CG; OK; 1.688815; 0; ]
+  [ Cpp-Path; OK; 1.676447; 0; ]
+  [ Cpp-PathUniform; OK; 1.665465; 0; ]
+  [ Cpp-Path-CG; OK; 1.678299; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.657385; 0; ]
+  [ ANSI-C-PathTemplate; OK; 0.977600; 0; ]
+  [ Cpp-ASSERTS; OK; 1.667387; 0; ]
+  [ ANSI-C-ASSERTS; OK; 0.944344; 0; ]
 ]
 }
 {
 title: Forward Position Adaption;
 title_group: Buffer Reload;
 file_name: test-position_adaption.py;
-hwut_info_time: 1480539699L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.483709; 0; ]
-  [ ANSI-C; OK; 1.192083; 0; ]
-  [ ANSI-C-CG; OK; 1.235247; 0; ]
-  [ Cpp; OK; 2.568877; 0; ]
-  [ Cpp_StrangeStream; OK; 2.141568; 0; ]
-  [ Cpp-Template; OK; 2.723130; 0; ]
-  [ Cpp-Template-CG; OK; 2.596248; 0; ]
-  [ Cpp-Path; OK; 2.186817; 0; ]
-  [ Cpp-PathUniform; OK; 2.435033; 0; ]
-  [ Cpp-Path-CG; OK; 2.099117; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.537183; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.484779; 0; ]
-  [ Cpp-ASSERTS; OK; 2.635578; 0; ]
-  [ ANSI-C-ASSERTS; OK; 1.325210; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.028655; 0; ]
+  [ ANSI-C; OK; 1.019820; 0; ]
+  [ ANSI-C-CG; OK; 1.014930; 0; ]
+  [ Cpp; OK; 1.729488; 0; ]
+  [ Cpp_StrangeStream; OK; 1.733820; 0; ]
+  [ Cpp-Template; OK; 1.904662; 0; ]
+  [ Cpp-Template-CG; OK; 1.877694; 0; ]
+  [ Cpp-Path; OK; 1.734079; 0; ]
+  [ Cpp-PathUniform; OK; 1.733190; 0; ]
+  [ Cpp-Path-CG; OK; 1.749088; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.746314; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.142544; 0; ]
+  [ Cpp-ASSERTS; OK; 1.730044; 0; ]
+  [ ANSI-C-ASSERTS; OK; 1.023653; 0; ]
 ]
 }
 {
 title: No Backward Reload -- Precondition at Border;
 title_group: Buffer Reload;
 file_name: test-no-backward-reloading.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.122353; 0; ]
-  [ ANSI-C; OK; 1.346967; 0; ]
-  [ ANSI-C-CG; OK; 1.294629; 0; ]
-  [ Cpp; OK; 2.327646; 0; ]
-  [ Cpp_StrangeStream; OK; 2.041802; 0; ]
-  [ Cpp-Template; OK; 2.248011; 0; ]
-  [ Cpp-Template-CG; OK; 1.954912; 0; ]
-  [ Cpp-Path; OK; 2.287977; 0; ]
-  [ Cpp-PathUniform; OK; 1.955382; 0; ]
-  [ Cpp-Path-CG; OK; 2.524627; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.038092; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.126163; 0; ]
-  [ Cpp-ASSERTS; OK; 2.291064; 0; ]
-  [ ANSI-C-ASSERTS; OK; 1.295774; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.924880; 0; ]
+  [ ANSI-C; OK; 0.917198; 0; ]
+  [ ANSI-C-CG; OK; 0.917143; 0; ]
+  [ Cpp; OK; 1.627091; 0; ]
+  [ Cpp_StrangeStream; OK; 1.647227; 0; ]
+  [ Cpp-Template; OK; 1.683292; 0; ]
+  [ Cpp-Template-CG; OK; 1.804659; 0; ]
+  [ Cpp-Path; OK; 1.636728; 0; ]
+  [ Cpp-PathUniform; OK; 1.653942; 0; ]
+  [ Cpp-Path-CG; OK; 1.635534; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.635690; 0; ]
+  [ ANSI-C-PathTemplate; OK; 0.941257; 0; ]
+  [ Cpp-ASSERTS; OK; 1.620687; 0; ]
+  [ ANSI-C-ASSERTS; OK; 0.917953; 0; ]
 ]
 }
 {
 title: Reentry analysis without return from function;
 title_group: CONTINUE;
 file_name: test-continue-without-return.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.047315; 0; ]
-  [ ANSI-C; OK; 1.044122; 0; ]
-  [ ANSI-C-CG; OK; 1.111181; 0; ]
-  [ Cpp; OK; 1.809497; 0; ]
-  [ Cpp_StrangeStream; OK; 1.793712; 0; ]
-  [ Cpp-Template; OK; 1.910788; 0; ]
-  [ Cpp-Template-CG; OK; 2.130718; 0; ]
-  [ Cpp-Path; OK; 1.991782; 0; ]
-  [ Cpp-PathUniform; OK; 1.766001; 0; ]
-  [ Cpp-Path-CG; OK; 2.093608; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.887229; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.196608; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.965798; 0; ]
+  [ ANSI-C; OK; 0.929342; 0; ]
+  [ ANSI-C-CG; OK; 0.918440; 0; ]
+  [ Cpp; OK; 1.602110; 0; ]
+  [ Cpp_StrangeStream; OK; 1.630327; 0; ]
+  [ Cpp-Template; OK; 1.657537; 0; ]
+  [ Cpp-Template-CG; OK; 1.671047; 0; ]
+  [ Cpp-Path; OK; 1.754971; 0; ]
+  [ Cpp-PathUniform; OK; 1.626421; 0; ]
+  [ Cpp-Path-CG; OK; 1.617659; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.623690; 0; ]
+  [ ANSI-C-PathTemplate; OK; 0.934443; 0; ]
 ]
 }
 {
 title: Part 2;
 title_group: Post Conditions;
 file_name: test-post-conditions-2.py;
-hwut_info_time: 1480539699L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.207165; 0; ]
-  [ ANSI-C; OK; 1.124283; 0; ]
-  [ ANSI-C-CG; OK; 1.046742; 0; ]
-  [ Cpp; OK; 1.804720; 0; ]
-  [ Cpp_StrangeStream; OK; 2.048497; 0; ]
-  [ Cpp-Template; OK; 2.020581; 0; ]
-  [ Cpp-Template-CG; OK; 1.966753; 0; ]
-  [ Cpp-Path; OK; 1.998007; 0; ]
-  [ Cpp-PathUniform; OK; 1.997326; 0; ]
-  [ Cpp-Path-CG; OK; 2.015107; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.074611; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.086435; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.941399; 0; ]
+  [ ANSI-C; OK; 0.937540; 0; ]
+  [ ANSI-C-CG; OK; 0.941454; 0; ]
+  [ Cpp; OK; 1.632437; 0; ]
+  [ Cpp_StrangeStream; OK; 1.664283; 0; ]
+  [ Cpp-Template; OK; 1.702939; 0; ]
+  [ Cpp-Template-CG; OK; 1.698329; 0; ]
+  [ Cpp-Path; OK; 1.646456; 0; ]
+  [ Cpp-PathUniform; OK; 1.651104; 0; ]
+  [ Cpp-Path-CG; OK; 1.656338; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.647341; 0; ]
+  [ ANSI-C-PathTemplate; OK; 0.977901; 0; ]
 ]
 }
 {
 title: Part I;
 title_group: Post Conditions;
 file_name: test-post-conditions.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 1.047958; 0; ]
-  [ Cpp; OK; 2.358722; 0; ]
-  [ ANSI-C-CG; OK; 1.290325; 0; ]
+  [ ANSI-C; OK; 0.889430; 0; ]
+  [ Cpp; OK; 1.609260; 0; ]
+  [ ANSI-C-CG; OK; 0.890168; 0; ]
 ]
 }
 {
 title: Part III;
 title_group: Post Conditions;
 file_name: test-post-conditions-3.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 1.302273; 0; ]
-  [ Cpp; OK; 2.385988; 0; ]
-  [ ANSI-C-CG; OK; 1.063607; 0; ]
+  [ ANSI-C; OK; 0.886090; 0; ]
+  [ Cpp; OK; 1.587009; 0; ]
+  [ ANSI-C-CG; OK; 0.898117; 0; ]
 ]
 }
 {
 title: Multiple Identical Pre-Conditions;
 title_group: Pre Conditions;
 file_name: test-pre-conditions-3.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.682807; 0; ]
-  [ ANSI-C; OK; 1.741567; 0; ]
-  [ ANSI-C-CG; OK; 1.644688; 0; ]
-  [ Cpp; OK; 2.390368; 0; ]
-  [ Cpp_StrangeStream; OK; 2.650937; 0; ]
-  [ Cpp-Template; OK; 3.184755; 0; ]
-  [ Cpp-Template-CG; OK; 3.703898; 0; ]
-  [ Cpp-Path; OK; 2.852748; 0; ]
-  [ Cpp-PathUniform; OK; 2.960472; 0; ]
-  [ Cpp-Path-CG; OK; 2.776966; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.325751; 0; ]
-  [ ANSI-C-PathTemplate; OK; 2.224912; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.226495; 0; ]
+  [ ANSI-C; OK; 1.226162; 0; ]
+  [ ANSI-C-CG; OK; 1.222932; 0; ]
+  [ Cpp; OK; 1.964441; 0; ]
+  [ Cpp_StrangeStream; OK; 1.975930; 0; ]
+  [ Cpp-Template; OK; 2.567320; 0; ]
+  [ Cpp-Template-CG; OK; 2.539819; 0; ]
+  [ Cpp-Path; OK; 2.020534; 0; ]
+  [ Cpp-PathUniform; OK; 2.031339; 0; ]
+  [ Cpp-Path-CG; OK; 2.008746; 0; ]
+  [ Cpp-PathUniform-CG; OK; 2.031058; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.570658; 0; ]
 ]
 }
 {
 title: Part 2;
 title_group: Pre Conditions;
 file_name: test-pre-conditions-2.py;
-hwut_info_time: 1480539699L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.405710; 0; ]
-  [ ANSI-C; OK; 1.291490; 0; ]
-  [ ANSI-C-CG; OK; 1.420285; 0; ]
-  [ Cpp; OK; 2.352705; 0; ]
-  [ Cpp_StrangeStream; OK; 2.323828; 0; ]
-  [ Cpp-Template; OK; 2.406856; 0; ]
-  [ Cpp-Template-CG; OK; 2.405146; 0; ]
-  [ Cpp-Path; OK; 2.392969; 0; ]
-  [ Cpp-PathUniform; OK; 2.028106; 0; ]
-  [ Cpp-Path-CG; OK; 2.899993; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.419218; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.682887; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.923590; 0; ]
+  [ ANSI-C; OK; 0.932222; 0; ]
+  [ ANSI-C-CG; OK; 0.924359; 0; ]
+  [ Cpp; OK; 1.637642; 0; ]
+  [ Cpp_StrangeStream; OK; 1.796946; 0; ]
+  [ Cpp-Template; OK; 1.689210; 0; ]
+  [ Cpp-Template-CG; OK; 1.735401; 0; ]
+  [ Cpp-Path; OK; 1.646173; 0; ]
+  [ Cpp-PathUniform; OK; 1.658047; 0; ]
+  [ Cpp-Path-CG; OK; 1.642529; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.644709; 0; ]
+  [ ANSI-C-PathTemplate; OK; 0.957506; 0; ]
 ]
 }
 {
 title: Simple;
 title_group: Pre- and Post- Conditions;
 file_name: test-pre-post-condition.py;
-hwut_info_time: 1480539699L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.441837; 0; ]
-  [ ANSI-C; OK; 1.379625; 0; ]
-  [ ANSI-C-CG; OK; 1.406827; 0; ]
-  [ Cpp; OK; 2.463615; 0; ]
-  [ Cpp_StrangeStream; OK; 2.097904; 0; ]
-  [ Cpp-Template; OK; 2.094531; 0; ]
-  [ Cpp-Template-CG; OK; 2.416061; 0; ]
-  [ Cpp-Path; OK; 3.022817; 0; ]
-  [ Cpp-PathUniform; OK; 2.433192; 0; ]
-  [ Cpp-Path-CG; OK; 2.121676; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.575074; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.469860; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.007406; 0; ]
+  [ ANSI-C; OK; 1.007218; 0; ]
+  [ ANSI-C-CG; OK; 1.013771; 0; ]
+  [ Cpp; OK; 1.710461; 0; ]
+  [ Cpp_StrangeStream; OK; 1.731981; 0; ]
+  [ Cpp-Template; OK; 1.790795; 0; ]
+  [ Cpp-Template-CG; OK; 1.801107; 0; ]
+  [ Cpp-Path; OK; 1.745125; 0; ]
+  [ Cpp-PathUniform; OK; 1.740598; 0; ]
+  [ Cpp-Path-CG; OK; 1.739489; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.738287; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.075921; 0; ]
 ]
 }
 {
 title: The forth test;
 title_group: Pre-conditions;
 file_name: test-pre-conditions-4.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 1.267132; 0; ]
-  [ Cpp-Path-CG; OK; 2.484373; 0; ]
-  [ Cpp-Template; OK; 2.205634; 0; ]
+  [ ANSI-C; OK; 0.976691; 0; ]
+  [ Cpp-Path-CG; OK; 1.702940; 0; ]
+  [ Cpp-Template; OK; 1.871763; 0; ]
 ]
 }
 {
 title: Part I;
 title_group: Pseudo Ambgiguous Post Condition;
 file_name: test-pseudo_ambiguous_post_conditions.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.654839; 0; ]
-  [ ANSI-C; OK; 1.340942; 0; ]
-  [ ANSI-C-CG; OK; 1.227754; 0; ]
-  [ Cpp; OK; 1.841264; 0; ]
-  [ Cpp_StrangeStream; OK; 1.911623; 0; ]
-  [ Cpp-Template; OK; 1.854643; 0; ]
-  [ Cpp-Template-CG; OK; 2.119716; 0; ]
-  [ Cpp-Path; OK; 1.803259; 0; ]
-  [ Cpp-Path-CG; OK; 2.566429; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.266473; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.898129; 0; ]
+  [ ANSI-C; OK; 0.887548; 0; ]
+  [ ANSI-C-CG; OK; 0.891959; 0; ]
+  [ Cpp; OK; 1.585680; 0; ]
+  [ Cpp_StrangeStream; OK; 1.589284; 0; ]
+  [ Cpp-Template; OK; 1.590111; 0; ]
+  [ Cpp-Template-CG; OK; 1.583745; 0; ]
+  [ Cpp-Path; OK; 1.590566; 0; ]
+  [ Cpp-Path-CG; OK; 1.580438; 0; ]
+  [ ANSI-C-PathTemplate; OK; 0.914244; 0; ]
 ]
 }
 {
 title: Part II;
 title_group: Pseudo Ambgiguous Post Condition;
 file_name: test-pseudo_ambiguous_post_conditions-2.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.359894; 0; ]
-  [ ANSI-C; OK; 1.355027; 0; ]
-  [ ANSI-C-CG; OK; 1.339794; 0; ]
-  [ Cpp; OK; 2.012723; 0; ]
-  [ Cpp_StrangeStream; OK; 1.938719; 0; ]
-  [ Cpp-Template; OK; 2.178898; 0; ]
-  [ Cpp-Template-CG; OK; 2.252455; 0; ]
-  [ Cpp-Path; OK; 2.104664; 0; ]
-  [ Cpp-Path-CG; OK; 2.299546; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.163517; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.953323; 0; ]
+  [ ANSI-C; OK; 0.954078; 0; ]
+  [ ANSI-C-CG; OK; 0.953325; 0; ]
+  [ Cpp; OK; 1.656539; 0; ]
+  [ Cpp_StrangeStream; OK; 1.671181; 0; ]
+  [ Cpp-Template; OK; 1.719957; 0; ]
+  [ Cpp-Template-CG; OK; 1.724323; 0; ]
+  [ Cpp-Path; OK; 1.699055; 0; ]
+  [ Cpp-Path-CG; OK; 1.671935; 0; ]
+  [ ANSI-C-PathTemplate; OK; 0.993133; 0; ]
 ]
 }
 {
 title: Begin of Line (BOL), End of Line (EOL);
 title_group: Simple;
 file_name: test-bol-eol.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.103361; 0; ]
-  [ ANSI-C; OK; 1.361173; 0; ]
-  [ ANSI-C-CG; OK; 1.368608; 0; ]
-  [ Cpp; OK; 2.399179; 0; ]
-  [ Cpp_StrangeStream; OK; 2.417196; 0; ]
-  [ Cpp-Template; OK; 2.535303; 0; ]
-  [ Cpp-Template-CG; OK; 2.586987; 0; ]
-  [ Cpp-Path; OK; 2.111212; 0; ]
-  [ Cpp-PathUniform; OK; 2.076590; 0; ]
-  [ Cpp-Path-CG; OK; 2.016426; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.023896; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.277114; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.964512; 0; ]
+  [ ANSI-C; OK; 0.973699; 0; ]
+  [ ANSI-C-CG; OK; 0.977717; 0; ]
+  [ Cpp; OK; 1.670980; 0; ]
+  [ Cpp_StrangeStream; OK; 1.690326; 0; ]
+  [ Cpp-Template; OK; 1.790666; 0; ]
+  [ Cpp-Template-CG; OK; 1.786875; 0; ]
+  [ Cpp-Path; OK; 1.714198; 0; ]
+  [ Cpp-PathUniform; OK; 1.692848; 0; ]
+  [ Cpp-Path-CG; OK; 1.687857; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.698485; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.086121; 0; ]
 ]
 }
 {
 title: Keywords 'for', 'forest', 'forester', and 'formidable';
 title_group: Simple;
 file_name: test-simple-5.py;
-hwut_info_time: 1480539699L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.185062; 0; ]
-  [ ANSI-C; OK; 1.191407; 0; ]
-  [ ANSI-C-CG; OK; 1.274243; 0; ]
-  [ Cpp; OK; 2.392699; 0; ]
-  [ Cpp_StrangeStream; OK; 1.727097; 0; ]
-  [ Cpp-Template; OK; 1.823886; 0; ]
-  [ Cpp-Template-CG; OK; 1.803702; 0; ]
-  [ Cpp-Path; OK; 2.195425; 0; ]
-  [ Cpp-Path-CG; OK; 1.954118; 0; ]
-  [ ANSI-C-PathTemplate; OK; 1.474756; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.987499; 0; ]
+  [ ANSI-C; OK; 0.977275; 0; ]
+  [ ANSI-C-CG; OK; 0.978650; 0; ]
+  [ Cpp; OK; 1.684215; 0; ]
+  [ Cpp_StrangeStream; OK; 1.702280; 0; ]
+  [ Cpp-Template; OK; 1.772441; 0; ]
+  [ Cpp-Template-CG; OK; 1.763760; 0; ]
+  [ Cpp-Path; OK; 1.724276; 0; ]
+  [ Cpp-Path-CG; OK; 1.723885; 0; ]
+  [ ANSI-C-PathTemplate; OK; 1.029301; 0; ]
 ]
 }
 {
 title: Maximum Length Match;
 title_group: Simple;
 file_name: test-simple-2.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 1.390243; 0; ]
-  [ ANSI-C; OK; 1.439944; 0; ]
-  [ ANSI-C-CG; OK; 1.446424; 0; ]
-  [ Cpp; OK; 2.154291; 0; ]
-  [ Cpp_StrangeStream; OK; 2.150615; 0; ]
-  [ Cpp-Template; OK; 4.760786; 0; ]
-  [ Cpp-Template-CG; OK; 4.747211; 0; ]
-  [ Cpp-Path; OK; 2.278330; 0; ]
-  [ Cpp-PathUniform; OK; 2.256015; 0; ]
-  [ Cpp-Path-CG; OK; 2.274405; 0; ]
-  [ Cpp-PathUniform-CG; OK; 2.267199; 0; ]
-  [ ANSI-C-PathTemplate; OK; 2.367528; 0; ]
+  [ ANSI-C-PlainMemory; OK; 1.381049; 0; ]
+  [ ANSI-C; OK; 1.394825; 0; ]
+  [ ANSI-C-CG; OK; 1.385141; 0; ]
+  [ Cpp; OK; 2.131883; 0; ]
+  [ Cpp_StrangeStream; OK; 2.154876; 0; ]
+  [ Cpp-Template; OK; 4.673386; 0; ]
+  [ Cpp-Template-CG; OK; 4.670048; 0; ]
+  [ Cpp-Path; OK; 2.236146; 0; ]
+  [ Cpp-PathUniform; OK; 2.233229; 0; ]
+  [ Cpp-Path-CG; OK; 2.248336; 0; ]
+  [ Cpp-PathUniform-CG; OK; 2.281061; 0; ]
+  [ ANSI-C-PathTemplate; OK; 2.359148; 0; ]
 ]
 }
 {
 title: Reload Init State;
 title_group: Simple;
 file_name: test-simple-3.py;
-hwut_info_time: 1480539699L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.862758; 0; ]
-  [ Cpp; OK; 1.540829; 0; ]
-  [ ANSI-C-CG; OK; 0.850750; 0; ]
+  [ ANSI-C; OK; 0.861589; 0; ]
+  [ Cpp; OK; 1.549953; 0; ]
+  [ ANSI-C-CG; OK; 0.850577; 0; ]
 ]
 }
 {
 title: Reload Init State;
 title_group: Simple;
 file_name: test-continue-without-return-2.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.873501; 0; ]
-  [ Cpp; OK; 1.573705; 0; ]
-  [ ANSI-C-CG; OK; 0.855662; 0; ]
+  [ ANSI-C; OK; 0.848792; 0; ]
+  [ Cpp; OK; 1.653562; 0; ]
+  [ ANSI-C-CG; OK; 0.904612; 0; ]
 ]
 }
 {
 title: Reload Init State;
 title_group: Simple;
 file_name: test-pre-conditions.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.929292; 0; ]
-  [ Cpp; OK; 1.635644; 0; ]
-  [ ANSI-C-CG; OK; 0.926106; 0; ]
+  [ ANSI-C; OK; 0.912157; 0; ]
+  [ Cpp; OK; 1.621376; 0; ]
+  [ ANSI-C-CG; OK; 0.917328; 0; ]
 ]
 }
 {
 title: Reload Init State;
 title_group: Simple;
 file_name: test-simple-6.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C; OK; 0.878966; 0; ]
-  [ Cpp-Template; OK; 1.608716; 0; ]
+  [ ANSI-C; OK; 0.893269; 0; ]
+  [ Cpp-Template; OK; 1.609862; 0; ]
 ]
 }
 {
 title: Tiny Expressions;
 title_group: Simple;
 file_name: test-simple.py;
-hwut_info_time: 1480539699L;
+hwut_info_time: 1479757919L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ ANSI-C-PlainMemory; OK; 0.918063; 0; ]
-  [ ANSI-C; OK; 0.934119; 0; ]
-  [ ANSI-C-CG; OK; 0.919599; 0; ]
-  [ Cpp; OK; 1.642941; 0; ]
-  [ Cpp_StrangeStream; OK; 1.642283; 0; ]
-  [ Cpp-Template; OK; 1.676658; 0; ]
-  [ Cpp-Template-CG; OK; 1.684654; 0; ]
-  [ Cpp-Path; OK; 1.641532; 0; ]
-  [ Cpp-PathUniform; OK; 1.633462; 0; ]
-  [ Cpp-Path-CG; OK; 1.621693; 0; ]
-  [ Cpp-PathUniform-CG; OK; 1.637180; 0; ]
-  [ ANSI-C-PathTemplate; OK; 0.948411; 0; ]
+  [ ANSI-C-PlainMemory; OK; 0.921286; 0; ]
+  [ ANSI-C; OK; 0.928581; 0; ]
+  [ ANSI-C-CG; OK; 0.928465; 0; ]
+  [ Cpp; OK; 1.614839; 0; ]
+  [ Cpp_StrangeStream; OK; 1.635071; 0; ]
+  [ Cpp-Template; OK; 1.672913; 0; ]
+  [ Cpp-Template-CG; OK; 1.668011; 0; ]
+  [ Cpp-Path; OK; 1.620039; 0; ]
+  [ Cpp-PathUniform; OK; 1.629099; 0; ]
+  [ Cpp-Path-CG; OK; 1.619235; 0; ]
+  [ Cpp-PathUniform-CG; OK; 1.628795; 0; ]
+  [ ANSI-C-PathTemplate; OK; 0.942054; 0; ]
 ]
 }
 {
 title: Transition Code Generation;
 title_group: Single State;
 file_name: test-single-state-transitions.py;
-hwut_info_time: 1480539700L;
+hwut_info_time: 1480142571L;
 interpreter_list: [ python; ]
 result_list: [
-  [ A; OK; 0.314514; 0; ]
-  [ B; OK; 3.475849; 0; ]
-  [ C; TIME_OUT; 10.693895; 0; ]
-  [ A-UTF8; OK; 0.394067; 0; ]
-  [ B-UTF8; OK; 6.422355; 0; ]
-  [ C-UTF8; TIME_OUT; 7.137064; 0; ]
+  [ A; OK; 0.331688; 0; ]
+  [ B; OK; 3.364971; 0; ]
+  [ C; OK; 34.213188; 0; ]
+  [ A-UTF8; OK; 0.391436; 0; ]
+  [ B-UTF8; OK; 6.366974; 0; ]
+  [ C-UTF8; OK; 22.129696; 0; ]
 ]
 }

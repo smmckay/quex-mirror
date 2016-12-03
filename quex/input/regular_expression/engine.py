@@ -72,7 +72,6 @@ from   quex.constants  import INTEGER_MAX
 from   quex.input.regular_expression.exception import RegularExpressionException
 
 from   StringIO import StringIO
-import sys
        
 
 CONTROL_CHARACTERS = [ "+", "*", "\"", "/", "(", ")", "{", "}", "|", "[", "]", "$"] 

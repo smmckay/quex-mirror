@@ -4,9 +4,10 @@ import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from   quex.engine.misc.interval_handling       import Interval
+from   quex.engine.misc.interval_handling  import Interval
 from   quex.engine.analyzer.transition_map import TransitionMap
-from   quex.constant import INTEGER_MAX
+from   quex.constants import INTEGER_MAX
+
 from   copy import deepcopy
 from   itertools import islice
 
