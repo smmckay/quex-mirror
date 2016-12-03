@@ -71,7 +71,7 @@ main(int argc, char** argv)
 
         /* Last received byte is the terminating zero! => -1 !               
          *                                                                   */
-        printf("    read: %i [byte]\n", received_n - 1);
+        printf("    read: %i [byte]\n", (int)received_n - 1);
 
         qlex->reset();
 
