@@ -1,6 +1,4 @@
 ## 1 seconds
-## 2 seconds
-## 3 seconds
 tokenizer.qx:69:warning: Pattern contains elements not found in engine codec 'unicode'.
 tokenizer.qx:69:warning: (Buffer element size is 1 [byte])
 tokenizer.qx:71:warning: Pattern contains elements not found in engine codec 'unicode'.
@@ -11,10 +9,12 @@ tokenizer.qx:73:warning: Pattern contains elements not found in engine codec 'un
 tokenizer.qx:73:warning: (Buffer element size is 1 [byte])
 tokenizer.qx:75:warning: Pattern contains elements not found in engine codec 'unicode'.
 tokenizer.qx:75:warning: (Buffer element size is 1 [byte])
-## 4 seconds
+## 2 seconds
 Oll Korrekt
+||||
 Lexer
 Lexer-configuration
 Lexer.cpp
 Lexer-token
 Lexer-token_ids
+||||

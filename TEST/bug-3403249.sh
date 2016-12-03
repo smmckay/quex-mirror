@@ -11,7 +11,9 @@ cd $bug/
 quex -i $1.qx -b 2 -o Simple >& tmp.txt
 cat tmp.txt 
 if [ -e Simple ]; then
-    ls Simple* | sort
+    echo "||||"
+    ls Simple* 
+    echo "||||"
 fi
 rm tmp.txt
 rm -f Simple*

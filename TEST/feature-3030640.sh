@@ -22,7 +22,9 @@ else
 fi
 
 # Display the generated files
-ls Lexer* | sort
+echo "||||"
+ls Lexer* 
+echo "||||"
 
 rm Lexer*
 

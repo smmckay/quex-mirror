@@ -5,6 +5,7 @@ Confirm, that 'unix' contains NO 0x0A 0x0D as newline characters
 Watch out, that output from unix file format is the same as from dos format.
 DATE stamps are ignored
 
+||||
 Dos
 Dos-configuration
 Dos.cpp
@@ -15,6 +16,7 @@ Unix-configuration
 Unix.cpp
 Unix-token
 Unix-token_ids
+||||
 
 (*) Dos vs Unix (no output is good output)
 
@@ -45,12 +47,10 @@ Unix-token_ids
 > #   line 27 "unix.qx"
 < #   line 28 "dos.qx"
 > #   line 28 "unix.qx"
+
 (*) Dos-token vs Unix-token (no output is good output)
+
 (*) Dos-token_ids vs Unix-token_ids (no output is good output)
 
+
 DONE
-
-
-
-
-

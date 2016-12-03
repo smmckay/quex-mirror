@@ -16,7 +16,9 @@ cat tmp.txt
 rm tmp.txt
 echo
 echo "file list after:"
+echo "||||"
 ls
+echo "||||"
 
 # cleansening
 rm Simple*
