@@ -3,7 +3,7 @@ title: No references to C demos;
 file_name: no-references-to-c.sh;
 hwut_info_time: 1480795697L;
 result_list: [
-  [ ; OK; 0.008267; 1855339388; ]
+  [ ; OK; 0.037664; 1855339388; ]
 ]
 }
 {
@@ -13,8 +13,8 @@ file_name: 000.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 1.676883; 0; ]
-  [ DEBUG; OK; 1.840316; 0; ]
+  [ NDEBUG; OK; 5.303232; 0; ]
+  [ DEBUG; OK; 5.732114; 0; ]
 ]
 }
 {
@@ -24,8 +24,8 @@ file_name: 001.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 1.862490; 0; ]
-  [ DEBUG; OK; 2.014892; 0; ]
+  [ NDEBUG; OK; 5.256257; 0; ]
+  [ DEBUG; OK; 5.663084; 0; ]
 ]
 }
 {
@@ -36,9 +36,9 @@ hwut_info_time: 1480539710L;
 same_f: True;
 happy_pattern_list: [ \[0-9]+; ]
 result_list: [
-  [ NDEBUG; OK; 0.797106; 0; ]
-  [ DEBUG; OK; 1.961697; 0; ]
-  [ customized; OK; 0.797190; 0; ]
+  [ NDEBUG; OK; 2.289922; 0; ]
+  [ DEBUG; OK; 6.079491; 0; ]
+  [ customized; OK; 2.317150; 0; ]
 ]
 }
 {
@@ -47,9 +47,9 @@ title_group: demo/003;
 file_name: 003-bom.sh;
 hwut_info_time: 1480539710L;
 result_list: [
-  [ Without; OK; 1.847706; 0; ]
-  [ UTF8-BOM; OK; 1.796135; 0; ]
-  [ UTF16BE-BOM; OK; 2.278190; 0; ]
+  [ Without; OK; 5.690118; 0; ]
+  [ UTF8-BOM; OK; 5.658103; 0; ]
+  [ UTF16BE-BOM; OK; 7.217144; 0; ]
 ]
 }
 {
@@ -59,11 +59,11 @@ file_name: 003.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ BPC=2; OK; 2.436006; 0; ]
-  [ BPC=2_NDEBUG; OK; 1.819979; 0; ]
-  [ BPC=4; OK; 1.836130; 0; ]
-  [ BPC=4_NDEBUG; OK; 1.814443; 0; ]
-  [ BPC=wchar_t; OK; 1.811135; 0; ]
+  [ BPC=2; OK; 7.496715; 0; ]
+  [ BPC=2_NDEBUG; OK; 5.656479; 0; ]
+  [ BPC=4; OK; 5.638031; 0; ]
+  [ BPC=4_NDEBUG; OK; 5.608617; 0; ]
+  [ BPC=wchar_t; OK; 5.682432; 0; ]
 ]
 }
 {
@@ -73,11 +73,11 @@ file_name: 003-icu.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ BPC=2; OK; 2.435434; 0; ]
-  [ BPC=2_NDEBUG; OK; 1.825773; 0; ]
-  [ BPC=4; OK; 1.823000; 0; ]
-  [ BPC=4_NDEBUG; OK; 1.816684; 0; ]
-  [ BPC=wchar_t; OK; 1.825237; 0; ]
+  [ BPC=2; OK; 7.462867; 0; ]
+  [ BPC=2_NDEBUG; OK; 5.646297; 0; ]
+  [ BPC=4; OK; 5.588379; 0; ]
+  [ BPC=4_NDEBUG; OK; 5.659122; 0; ]
+  [ BPC=wchar_t; OK; 5.606332; 0; ]
 ]
 }
 {
@@ -87,8 +87,8 @@ file_name: 004.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 2.271625; 0; ]
-  [ DEBUG; OK; 3.141004; 0; ]
+  [ NDEBUG; OK; 6.688499; 0; ]
+  [ DEBUG; OK; 8.971728; 0; ]
 ]
 }
 {
@@ -97,10 +97,10 @@ title_group: demo/005;
 file_name: 005.sh;
 hwut_info_time: 1480539710L;
 result_list: [
-  [ 1; OK; 1.881796; 0; ]
-  [ 1_NDEBUG; OK; 1.743096; 0; ]
-  [ 2; OK; 1.711825; 0; ]
-  [ 2_NDEBUG; OK; 1.724054; 0; ]
+  [ 1; OK; 5.775967; 0; ]
+  [ 1_NDEBUG; OK; 5.327460; 0; ]
+  [ 2; OK; 5.338462; 0; ]
+  [ 2_NDEBUG; OK; 5.412714; 0; ]
 ]
 }
 {
@@ -110,8 +110,8 @@ file_name: 006.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 1.740519; 0; ]
-  [ DEBUG; OK; 1.946627; 0; ]
+  [ NDEBUG; OK; 5.412458; 0; ]
+  [ DEBUG; OK; 5.998631; 0; ]
 ]
 }
 {
@@ -121,8 +121,8 @@ file_name: 007.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 1.782592; 0; ]
-  [ DEBUG; OK; 2.076925; 0; ]
+  [ NDEBUG; OK; 5.502300; 0; ]
+  [ DEBUG; OK; 6.293039; 0; ]
 ]
 }
 {
@@ -132,8 +132,8 @@ file_name: 008.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 2.204614; 0; ]
-  [ DEBUG; OK; 2.197497; 0; ]
+  [ NDEBUG; OK; 7.007470; 0; ]
+  [ DEBUG; OK; 7.007353; 0; ]
 ]
 }
 {
@@ -142,12 +142,12 @@ title_group: demo/009;
 file_name: 009.sh;
 hwut_info_time: 1480762277L;
 result_list: [
-  [ stdin; OK; 1.822762; 0; ]
-  [ stdin-utf8; OK; 2.602869; 1630162624; ]
-  [ socket; OK; 5.294500; 0; ]
-  [ socket-utf8; OK; 6.073223; -1802959497; ]
-  [ command-line; OK; 1.858681; 1279307427; ]
-  [ command-line-utf8; OK; 2.616779; 185006007; ]
+  [ stdin; OK; 5.702669; 0; ]
+  [ stdin-utf8; OK; 7.846068; 1630162624; ]
+  [ socket; OK; 8.070151; 0; ]
+  [ socket-utf8; OK; 10.267043; -1802959497; ]
+  [ command-line; OK; 5.725806; 1279307427; ]
+  [ command-line-utf8; OK; 7.893124; 185006007; ]
 ]
 }
 {
@@ -156,11 +156,11 @@ title_group: demo/010;
 file_name: 010.sh;
 hwut_info_time: 1480539710L;
 result_list: [
-  [ feeder-plain; OK; 2.098576; 1440434584; ]
-  [ feeder-converter; OK; 5.312789; 846498296; ]
-  [ gavager-plain; OK; 1.908623; 1857402259; ]
-  [ gavager-converter; OK; 3.201668; -339544945; ]
-  [ point-plain; OK; 1.543633; 973222677; ]
+  [ feeder-plain; OK; 6.809925; 1440434584; ]
+  [ feeder-converter; OK; 16.789801; 846498296; ]
+  [ gavager-plain; OK; 6.325158; 1857402259; ]
+  [ gavager-converter; OK; 10.024424; -339544945; ]
+  [ point-plain; OK; 5.014026; 973222677; ]
 ]
 }
 {
@@ -170,10 +170,10 @@ file_name: 011.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ iso8859-7; OK; 1.775178; 0; ]
-  [ utf8; OK; 1.882904; 0; ]
-  [ utf16-be; OK; 1.789959; 0; ]
-  [ utf16-le; OK; 1.803174; 0; ]
+  [ iso8859-7; OK; 5.564473; 0; ]
+  [ utf8; OK; 5.758272; 0; ]
+  [ utf16-be; OK; 5.575123; 0; ]
+  [ utf16-le; OK; 5.586903; 0; ]
 ]
 }
 {
@@ -183,8 +183,8 @@ file_name: 011b.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ LE; OK; 1.808519; 0; ]
-  [ BE; OK; 1.820637; 0; ]
+  [ LE; OK; 5.651039; 0; ]
+  [ BE; OK; 5.626804; 0; ]
 ]
 }
 {
@@ -194,8 +194,8 @@ file_name: 012.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 3.421732; 0; ]
-  [ DEBUG; OK; 4.510820; 0; ]
+  [ NDEBUG; OK; 10.474749; 0; ]
+  [ DEBUG; OK; 13.300603; 0; ]
 ]
 }
 {
@@ -205,7 +205,7 @@ file_name: 012b.sh;
 hwut_info_time: 1480539710L;
 same_f: True;
 result_list: [
-  [ NDEBUG; OK; 3.808240; 0; ]
-  [ DEBUG; OK; 4.847535; 0; ]
+  [ NDEBUG; OK; 12.016595; 0; ]
+  [ DEBUG; OK; 14.706069; 0; ]
 ]
 }

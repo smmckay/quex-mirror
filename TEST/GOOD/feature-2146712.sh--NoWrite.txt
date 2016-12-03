@@ -1,4 +1,5 @@
 command line: The directory x/y/z was specified for output, but is not writeable.
+||||
 .
 ./a
 ./a/b
@@ -9,3 +10,4 @@ command line: The directory x/y/z was specified for output, but is not writeable
 ./x
 ./x/y
 ./x/y/z
+||||

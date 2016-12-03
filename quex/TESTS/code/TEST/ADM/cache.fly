@@ -4,7 +4,7 @@ file_name: check-default-configuration.sh;
 hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.004769; -1256193323; ]
+  [ ; OK; 0.014720; -1256193323; ]
 ]
 }
 {
@@ -14,7 +14,7 @@ hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 happy_pattern_list: [ py:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.017790; 590435299; ]
+  [ ; OK; 0.045506; 590435299; ]
 ]
 }
 {
@@ -23,7 +23,7 @@ file_name: no-unused-enum-values.py;
 hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 1.199811; -235166342; ]
+  [ ; OK; 4.249637; -235166342; ]
 ]
 }
 {
@@ -32,17 +32,17 @@ file_name: svn-status.sh;
 hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; FAIL; 0.835700; -681318074; ]
+  [ ; OK; 3.179318; -681318074; ]
 ]
 }
 {
 title: Checking for defined but unused functions.;
 file_name: function-check.sh;
-hwut_info_time: 1480801386L;
+hwut_info_time: 1480801469L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ example; FAIL; 0.037764; 1959738863; ]
-  [ real; FAIL; 6.090224; 764609792; ]
+  [ example; OK; 0.135067; 1959738863; ]
+  [ real; OK; 23.178222; 764609792; ]
 ]
 }
 {
@@ -51,7 +51,7 @@ file_name: pyflakes-check.sh;
 hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.096321; 0; ]
+  [ ; OK; 84.801450; 0; ]
 ]
 }
 {
@@ -61,8 +61,8 @@ hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 same_f: True;
 result_list: [
-  [ man; OK; 0.020202; -1113552213; ]
-  [ sphinx; OK; 0.020035; 0; ]
+  [ man; OK; 0.056884; -1113552213; ]
+  [ sphinx; OK; 0.048598; 0; ]
 ]
 }
 {
@@ -71,7 +71,7 @@ file_name: test-exceptions-in-place.sh;
 hwut_info_time: 1480539702L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ ; OK; 0.197247; 0; ]
+  [ ; OK; 0.480763; 0; ]
 ]
 }
 {
@@ -80,8 +80,8 @@ file_name: include_guard.py;
 hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ convention; OK; 0.052932; 0; ]
-  [ undefinition; OK; 0.052993; 0; ]
+  [ convention; OK; 0.174431; 0; ]
+  [ undefinition; OK; 0.171761; 0; ]
 ]
 }
 {
@@ -90,7 +90,7 @@ file_name: macro-check.py;
 hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.014659; 0; ]
+  [ ; OK; 0.037652; 0; ]
 ]
 }
 {
@@ -101,6 +101,6 @@ hwut_info_time: 1480539702L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ data/example-x-x.h:\[0-9]+:; ]
 result_list: [
-  [ ; OK; 0.064257; 0; ]
+  [ ; OK; 0.152556; 0; ]
 ]
 }

@@ -1,48 +1,48 @@
 {
 title: Pseudo Analysis;
 title_group: Token Policy 'queue';
-build_time: 0.9591770172119141;
+build_time: 3.2044320106506348;
 file_name: queue.exe;
-hwut_info_time: 1480801104L;
+hwut_info_time: 1480806150L;
 make_dependent_f: True;
 happy_pattern_list: [ :\[0-9]+; ]
 result_list: [
-  [ ; FAIL; 0.127947; 0; ]
+  [ ; OK; 0.309259; 0; ]
 ]
 }
 {
 title: Real Analysis;
 title_group: Token Policy 'queue';
-build_time: 0.9552090167999268;
+build_time: 3.202716827392578;
 file_name: queue-real.exe;
-hwut_info_time: 1480801107L;
+hwut_info_time: 1480806160L;
 make_dependent_f: True;
 happy_pattern_list: [ :\[0-9]+; ]
 result_list: [
-  [ ; OK; 0.002532; 0; ]
+  [ ; OK; 0.007064; 0; ]
 ]
 }
 {
 title: Pseudo Analysis;
 title_group: Token Policy 'single';
-build_time: 0.9016501903533936;
+build_time: 3.071953058242798;
 file_name: users_token.exe;
-hwut_info_time: 1480801105L;
+hwut_info_time: 1480806153L;
 make_dependent_f: True;
 happy_pattern_list: [ :\[0-9]+; ]
 result_list: [
-  [ ; OK; 0.002106; 0; ]
+  [ ; OK; 0.008445; 0; ]
 ]
 }
 {
 title: Real Analysis;
 title_group: Token Policy 'single';
-build_time: 0.9323890209197998;
+build_time: 3.1663970947265625;
 file_name: users_token-real.exe;
-hwut_info_time: 1480801106L;
+hwut_info_time: 1480806157L;
 make_dependent_f: True;
 happy_pattern_list: [ :\[0-9]+; ]
 result_list: [
-  [ ; OK; 0.002069; 0; ]
+  [ ; OK; 0.011418; 0; ]
 ]
 }

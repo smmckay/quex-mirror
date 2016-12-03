@@ -1,4 +1,5 @@
 command line: The directory a/b/c/x was specified for output, but does not exists.
+||||
 .
 ./a
 ./a/b
@@ -9,3 +10,4 @@ command line: The directory a/b/c/x was specified for output, but does not exist
 ./x
 ./x/y
 ./x/y/z
+||||
