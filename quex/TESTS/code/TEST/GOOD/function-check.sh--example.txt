@@ -1,4 +1,6 @@
+||||
 BAD
 def_but_not_called
 UnusedFunctionWhichNeedsToBeFound
+||||
 <terminated>

@@ -75,7 +75,9 @@ if [[ "$1" = "compile" ]] || [[ "$2" = "compile" ]]; then
         grep -sHIne "$fdef" $QUEX_PATH -r --include "*.py"
     done < $tmp_file
 else
+    echo "||||"
     echo ${functions_unused[@]} | tr " " "\n" | sort
+    echo "||||"
 fi
 
 # python ./function-check-side-kick.py $functions_unused > $grep_expressions

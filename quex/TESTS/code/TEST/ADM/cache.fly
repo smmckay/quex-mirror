@@ -38,11 +38,11 @@ result_list: [
 {
 title: Checking for defined but unused functions.;
 file_name: function-check.sh;
-hwut_info_time: 1480539702L;
+hwut_info_time: 1480801386L;
 interpreter_list: [ bash; ]
 result_list: [
-  [ example; FAIL; 0.037109; 1854110009; ]
-  [ real; FAIL; 6.044960; -1191039011; ]
+  [ example; FAIL; 0.037764; 1959738863; ]
+  [ real; FAIL; 6.090224; 764609792; ]
 ]
 }
 {
