@@ -1,9 +1,9 @@
 {
 title: No references to Cpp demos;
 file_name: no-references-to-cpp.sh;
-hwut_info_time: 1480539709L;
+hwut_info_time: 1480762446L;
 result_list: [
-  [ ; OK; 0.028354; -137335122; ]
+  [ ; OK; 0.026754; -137335122; ]
 ]
 }
 {
