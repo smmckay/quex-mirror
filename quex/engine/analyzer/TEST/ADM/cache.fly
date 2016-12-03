@@ -1,255 +1,255 @@
 {
 title: Position Register vs. Post-Context and Last Acceptance;
 file_name: test-position_register_map.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 0; OK; 0.107994; 0; ]
-  [ 1; OK; 0.121077; 0; ]
-  [ 2; OK; 0.147128; 0; ]
-  [ 3; OK; 0.147649; 0; ]
-  [ 4; OK; 0.141112; 0; ]
-  [ 5; OK; 0.220012; 0; ]
+  [ 0; OK; 0.045458; 0; ]
+  [ 1; OK; 0.050839; 0; ]
+  [ 2; OK; 0.063372; 0; ]
+  [ 3; OK; 0.060583; 0; ]
+  [ 4; OK; 0.059666; 0; ]
+  [ 5; OK; 0.088590; 0; ]
 ]
 }
 {
 title: Single Pattern;
 title_group: Paths Analysis;
 file_name: paths_analysis-single-pattern.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 0; OK; 0.114977; 0; ]
-  [ 1; OK; 0.121400; 0; ]
-  [ 2; OK; 0.117372; 0; ]
-  [ 3; OK; 0.127489; 0; ]
-  [ 4; OK; 0.112448; 0; ]
-  [ 5; OK; 0.133027; 0; ]
-  [ 6; OK; 0.108644; 0; ]
-  [ 7; OK; 0.112644; 0; ]
-  [ 8; OK; 0.110611; 0; ]
-  [ 9; OK; 0.123099; 0; ]
-  [ 10; OK; 0.115105; 0; ]
+  [ 0; OK; 0.047919; 0; ]
+  [ 1; OK; 0.048771; 0; ]
+  [ 2; OK; 0.049141; 0; ]
+  [ 3; OK; 0.052437; 0; ]
+  [ 4; OK; 0.047752; 0; ]
+  [ 5; OK; 0.053256; 0; ]
+  [ 6; OK; 0.045756; 0; ]
+  [ 7; OK; 0.045636; 0; ]
+  [ 8; OK; 0.047384; 0; ]
+  [ 9; OK; 0.050269; 0; ]
+  [ 10; OK; 0.047260; 0; ]
 ]
 }
 {
 title: Without Pre- and Post-Contexts;
 title_group: Paths Analyzis;
 file_name: paths_analysis.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 0; OK; 0.108458; 0; ]
-  [ 1; OK; 0.113252; 0; ]
-  [ 2; OK; 0.113055; 0; ]
-  [ 3; OK; 0.122215; 0; ]
-  [ 4; OK; 0.120064; 0; ]
-  [ 5; OK; 0.121964; 0; ]
-  [ 6; OK; 0.122876; 0; ]
-  [ 7; OK; 0.133896; 0; ]
-  [ 8; OK; 0.128312; 0; ]
-  [ 9; OK; 0.118147; 0; ]
-  [ 10; OK; 0.133370; 0; ]
+  [ 0; OK; 0.047025; 0; ]
+  [ 1; OK; 0.047932; 0; ]
+  [ 2; OK; 0.049407; 0; ]
+  [ 3; OK; 0.050717; 0; ]
+  [ 4; OK; 0.050549; 0; ]
+  [ 5; OK; 0.051699; 0; ]
+  [ 6; OK; 0.050563; 0; ]
+  [ 7; OK; 0.055137; 0; ]
+  [ 8; OK; 0.054562; 0; ]
+  [ 9; OK; 0.049236; 0; ]
+  [ 10; OK; 0.052987; 0; ]
 ]
 }
 {
 title: Single Pattern Checks;
 title_group: Track Analysis;
 file_name: track_analysis_single_pattern.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 0; OK; 0.108773; 0; ]
-  [ 1; OK; 0.116525; 0; ]
-  [ 2; OK; 0.114094; 0; ]
-  [ 3; OK; 0.129487; 0; ]
-  [ 4; OK; 0.112559; 0; ]
-  [ 5; OK; 0.127468; 0; ]
-  [ 6; OK; 0.108404; 0; ]
-  [ 7; OK; 0.109713; 0; ]
-  [ 8; OK; 0.111675; 0; ]
-  [ 9; OK; 0.117090; 0; ]
-  [ 10; OK; 0.110024; 0; ]
+  [ 0; OK; 0.046467; 0; ]
+  [ 1; OK; 0.047539; 0; ]
+  [ 2; OK; 0.048416; 0; ]
+  [ 3; OK; 0.049150; 0; ]
+  [ 4; OK; 0.047474; 0; ]
+  [ 5; OK; 0.051027; 0; ]
+  [ 6; OK; 0.046027; 0; ]
+  [ 7; OK; 0.045524; 0; ]
+  [ 8; OK; 0.046141; 0; ]
+  [ 9; OK; 0.048437; 0; ]
+  [ 10; OK; 0.048101; 0; ]
 ]
 }
 {
 title: Backward Input Position Detection;
 title_group: Track Analyzis;
 file_name: paths_analysis-backward-input-position-detection.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.109615; 0; ]
+  [ ; OK; 0.046594; 0; ]
 ]
 }
 {
 title: Backwards - For Pre-Context;
 title_group: Track Analyzis;
 file_name: paths_analysis-backwards.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 0; OK; 0.114441; 0; ]
-  [ 1; OK; 0.117984; 0; ]
+  [ 0; OK; 0.047885; 0; ]
+  [ 1; OK; 0.050418; 0; ]
 ]
 }
 {
 title: Special Loops and Forks;
 title_group: Track Analyzis;
 file_name: paths_analysis-loops.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 0; OK; 0.166885; 0; ]
-  [ 1; OK; 0.198776; 0; ]
-  [ 2; OK; 0.129458; 0; ]
-  [ 3; OK; 0.152247; 0; ]
-  [ 4; OK; 0.139397; 0; ]
-  [ 5; OK; 0.142576; 0; ]
-  [ 6; OK; 0.163804; 0; ]
-  [ 7; OK; 0.147968; 0; ]
+  [ 0; OK; 0.067889; 0; ]
+  [ 1; OK; 0.074543; 0; ]
+  [ 2; OK; 0.054839; 0; ]
+  [ 3; OK; 0.062397; 0; ]
+  [ 4; OK; 0.054715; 0; ]
+  [ 5; OK; 0.058476; 0; ]
+  [ 6; OK; 0.068427; 0; ]
+  [ 7; OK; 0.061268; 0; ]
 ]
 }
 {
 title: With Post-Contexts;
 title_group: Track Analyzis;
 file_name: paths_analysis-post.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 3; OK; 0.126096; 0; ]
-  [ 4; OK; 0.132973; 0; ]
-  [ 5; OK; 0.128818; 0; ]
-  [ 6; OK; 0.123937; 0; ]
-  [ 7; OK; 0.125811; 0; ]
-  [ 8; OK; 0.146339; 0; ]
-  [ 9; OK; 0.131510; 0; ]
-  [ 10; OK; 0.147567; 0; ]
+  [ 3; OK; 0.053565; 0; ]
+  [ 4; OK; 0.055438; 0; ]
+  [ 5; OK; 0.053355; 0; ]
+  [ 6; OK; 0.054598; 0; ]
+  [ 7; OK; 0.052242; 0; ]
+  [ 8; OK; 0.059198; 0; ]
+  [ 9; OK; 0.055986; 0; ]
+  [ 10; OK; 0.059393; 0; ]
 ]
 }
 {
 title: With Pre- and Post-Contexts;
 title_group: Track Analyzis;
 file_name: paths_analysis-pre-post.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 1; OK; 0.125691; 0; ]
-  [ 2; OK; 0.129089; 0; ]
-  [ 3; OK; 0.132215; 0; ]
-  [ 4; OK; 0.137143; 0; ]
-  [ 5; OK; 0.144957; 0; ]
-  [ 6; OK; 0.130028; 0; ]
-  [ 7; OK; 0.181394; 0; ]
-  [ 8; OK; 0.147275; 0; ]
-  [ 9; OK; 0.149091; 0; ]
+  [ 1; OK; 0.054519; 0; ]
+  [ 2; OK; 0.054888; 0; ]
+  [ 3; OK; 0.057889; 0; ]
+  [ 4; OK; 0.055597; 0; ]
+  [ 5; OK; 0.057466; 0; ]
+  [ 6; OK; 0.055512; 0; ]
+  [ 7; OK; 0.075803; 0; ]
+  [ 8; OK; 0.061988; 0; ]
+  [ 9; OK; 0.062673; 0; ]
 ]
 }
 {
 title: With Pre-Contexts;
 title_group: Track Analyzis;
 file_name: paths_analysis-pre.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 0; OK; 0.116997; 0; ]
-  [ 1; OK; 0.120134; 0; ]
-  [ 2; OK; 0.115793; 0; ]
-  [ 3; OK; 0.115823; 0; ]
-  [ 4; OK; 0.118129; 0; ]
-  [ 5; OK; 0.123511; 0; ]
-  [ 6; OK; 0.128979; 0; ]
-  [ 7; OK; 0.125877; 0; ]
-  [ 8; OK; 0.134506; 0; ]
-  [ 9; OK; 0.126858; 0; ]
-  [ 10; OK; 0.173267; 0; ]
-  [ 11; OK; 0.159739; 0; ]
-  [ 12; OK; 0.178207; 0; ]
-  [ 13; OK; 0.127418; 0; ]
-  [ 14; OK; 0.130201; 0; ]
+  [ 0; OK; 0.049504; 0; ]
+  [ 1; OK; 0.050535; 0; ]
+  [ 2; OK; 0.050836; 0; ]
+  [ 3; OK; 0.050405; 0; ]
+  [ 4; OK; 0.051154; 0; ]
+  [ 5; OK; 0.053578; 0; ]
+  [ 6; OK; 0.055248; 0; ]
+  [ 7; OK; 0.052664; 0; ]
+  [ 8; OK; 0.053773; 0; ]
+  [ 9; OK; 0.053354; 0; ]
+  [ 10; OK; 0.073858; 0; ]
+  [ 11; OK; 0.067232; 0; ]
+  [ 12; OK; 0.076405; 0; ]
+  [ 13; OK; 0.053455; 0; ]
+  [ 14; OK; 0.054950; 0; ]
 ]
 }
 {
 title: Without Pre- and Post-Contexts;
 title_group: Track Analyzis;
 file_name: track_analysis.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 0; OK; 0.109187; 0; ]
-  [ 1; OK; 0.112675; 0; ]
-  [ 2; OK; 0.115154; 0; ]
-  [ 3; OK; 0.115378; 0; ]
-  [ 4; OK; 0.128044; 0; ]
-  [ 5; OK; 0.117387; 0; ]
-  [ 6; OK; 0.117007; 0; ]
-  [ 7; OK; 0.124543; 0; ]
-  [ 8; OK; 0.123899; 0; ]
-  [ 9; OK; 0.120243; 0; ]
-  [ 10; OK; 0.123561; 0; ]
+  [ 0; OK; 0.048708; 0; ]
+  [ 1; OK; 0.048077; 0; ]
+  [ 2; OK; 0.047714; 0; ]
+  [ 3; OK; 0.049005; 0; ]
+  [ 4; OK; 0.048977; 0; ]
+  [ 5; OK; 0.049646; 0; ]
+  [ 6; OK; 0.048306; 0; ]
+  [ 7; OK; 0.053639; 0; ]
+  [ 8; OK; 0.052451; 0; ]
+  [ 9; OK; 0.049129; 0; ]
+  [ 10; OK; 0.051281; 0; ]
 ]
 }
 {
 title: TransitionMap.izip;
 title_group: Transition Map Tools;
 file_name: transition_map_tools-zipped_iterable.py;
-hwut_info_time: 1480752108L;
+hwut_info_time: 1480752764L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.082434; 0; ]
+  [ ; OK; 0.033805; 0; ]
 ]
 }
 {
 title: combine_adjacent;
 title_group: Transition Map Tools;
 file_name: transition_map_tools-combine_adjacent.py;
-hwut_info_time: 1480752085L;
+hwut_info_time: 1480752764L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 1; OK; 0.100722; 0; ]
-  [ 2-same; OK; 0.085769; 0; ]
-  [ 2-diff; OK; 0.083583; 0; ]
-  [ 3-same; OK; 0.087262; 0; ]
-  [ 3-diff; OK; 0.094582; 0; ]
+  [ 1; OK; 0.036196; 0; ]
+  [ 2-same; OK; 0.034689; 0; ]
+  [ 2-diff; OK; 0.035742; 0; ]
+  [ 3-same; OK; 0.036021; 0; ]
+  [ 3-diff; OK; 0.036758; 0; ]
 ]
 }
 {
 title: fill_gaps;
 title_group: Transition Map Tools;
 file_name: transition_map_tools-fill_gaps.py;
-hwut_info_time: 1480752060L;
+hwut_info_time: 1480752764L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 1; OK; 0.083754; 0; ]
-  [ 2-same; OK; 0.083457; 0; ]
-  [ 2-diff; OK; 0.087206; 0; ]
-  [ 3-same; OK; 0.086954; 0; ]
-  [ 3-diff; OK; 0.089146; 0; ]
+  [ 1; OK; 0.034804; 0; ]
+  [ 2-same; OK; 0.036340; 0; ]
+  [ 2-diff; OK; 0.034745; 0; ]
+  [ 3-same; OK; 0.036491; 0; ]
+  [ 3-diff; OK; 0.036079; 0; ]
 ]
 }
 {
 title: prune;
 title_group: Transition Map Tools;
 file_name: transition_map_tools-prune.py;
-hwut_info_time: 1480760741L;
+hwut_info_time: 1480762393L;
 interpreter_list: [ python; ]
 result_list: [
-  [ 1; OK; 0.121448; 0; ]
-  [ 2; OK; 0.362141; 0; ]
-  [ 3; OK; 0.169725; 0; ]
+  [ 1; OK; 0.048329; 0; ]
+  [ 2; OK; 0.127406; 0; ]
+  [ 3; OK; 0.065622; 0; ]
 ]
 }
 {
 title: set;
 title_group: Transition Map Tools;
 file_name: transition_map_tools.py;
-hwut_info_time: 1479757922L;
+hwut_info_time: 1480539707L;
 interpreter_list: [ python; ]
 result_list: [
-  [ Normal; OK; 0.081741; 0; ]
-  [ Apart; OK; 0.082096; 0; ]
-  [ AbsorbA; OK; 0.093634; 0; ]
-  [ AbsorbB; OK; 0.081002; 0; ]
-  [ AbsorbC; OK; 0.081533; 0; ]
+  [ Normal; OK; 0.033928; 0; ]
+  [ Apart; OK; 0.033145; 0; ]
+  [ AbsorbA; OK; 0.033212; 0; ]
+  [ AbsorbB; OK; 0.033598; 0; ]
+  [ AbsorbC; OK; 0.033456; 0; ]
 ]
 }

@@ -3,11 +3,11 @@ title: Complementary State Machines;
 file_name: test-complement.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ Sequence; OK; 0.161386; 0; ]
-  [ Branches; OK; 0.227597; 0; ]
-  [ Loops; OK; 0.168125; 0; ]
-  [ BranchesLoops; OK; 0.275822; 0; ]
-  [ Misc; OK; 2.374452; 0; ]
+  [ Sequence; OK; 0.066125; 0; ]
+  [ Branches; OK; 0.085335; 0; ]
+  [ Loops; OK; 0.066930; 0; ]
+  [ BranchesLoops; OK; 0.105201; 0; ]
+  [ Misc; OK; 0.821510; 0; ]
 ]
 }
 {
@@ -15,12 +15,12 @@ title: Difference Operation;
 file_name: test-difference.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ Easy; OK; 0.206394; 0; ]
-  [ FalseCases; OK; 0.214814; 0; ]
-  [ GoodCases; OK; 0.232229; 0; ]
-  [ FalseCasesII; OK; 0.192754; 0; ]
-  [ GoodCasesII; OK; 0.402972; 0; ]
-  [ Misc; OK; 0.368894; 0; ]
+  [ Easy; OK; 0.086602; 0; ]
+  [ FalseCases; OK; 0.089617; 0; ]
+  [ GoodCases; OK; 0.093561; 0; ]
+  [ FalseCasesII; OK; 0.079597; 0; ]
+  [ GoodCasesII; OK; 0.163309; 0; ]
+  [ Misc; OK; 0.147169; 0; ]
 ]
 }
 {
@@ -28,12 +28,12 @@ title: Intersection;
 file_name: test-intersection.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ 0; OK; 0.150148; 0; ]
-  [ 1; OK; 0.164446; 0; ]
-  [ 2; OK; 0.153320; 0; ]
-  [ 3; OK; 0.178205; 0; ]
-  [ 4; OK; 0.326671; 0; ]
-  [ 5; OK; 1.744435; 0; ]
+  [ 0; OK; 0.062207; 0; ]
+  [ 1; OK; 0.069079; 0; ]
+  [ 2; OK; 0.063426; 0; ]
+  [ 3; OK; 0.071354; 0; ]
+  [ 4; OK; 0.129515; 0; ]
+  [ 5; OK; 0.581869; 0; ]
 ]
 }
 {
@@ -41,9 +41,9 @@ title: Union;
 file_name: test-union.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ Sequences; OK; 0.135160; 598397171; ]
-  [ SequenceAndOptional; OK; 0.184214; -330647130; ]
-  [ SequenceAndLoop; OK; 0.256866; 551941310; ]
-  [ Loops; OK; 0.165936; 143352521; ]
+  [ Sequences; OK; 0.056140; 598397171; ]
+  [ SequenceAndOptional; OK; 0.077569; -330647130; ]
+  [ SequenceAndLoop; OK; 0.103566; 551941310; ]
+  [ Loops; OK; 0.068797; 143352521; ]
 ]
 }
