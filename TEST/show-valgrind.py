@@ -39,7 +39,6 @@ for line in fh.readlines():
         elif line.find(" by 0x") != -1:
             # If last 'by ..' line contains 'ld' it is a leak in the std_lib
             if line.find("/ld-") != -1: leak_in_std_lib = True
-            else:                       leak_in_std_lib = False
         elif     line.find("still reachable:") != -1 \
              and not leak_in_std_lib:          
             text.append("VALGRIND: %s" % tail.replace("=", ""))
