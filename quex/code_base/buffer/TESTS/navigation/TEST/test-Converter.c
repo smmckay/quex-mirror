@@ -53,7 +53,7 @@ main(int argc, char** argv)
     const size_t  BPC = sizeof(QUEX_TYPE_LEXATOM);
 
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
-        printf("Buffer Tell&Seek: LexatomLoader_Converter_IConv (BPC=%i, FALLBACK=%i);\n", 
+        printf("Buffer Tell&Seek: LexatomLoader_Converter (BPC=%i, FALLBACK=%i);\n", 
                (int)BPC, (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
         printf("CHOICES: ICU-linear, ICU-stepping,\n"
                "         IConv-linear, IConv-stepping,\n"
@@ -109,8 +109,8 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
     QUEX_NAME(ByteLoader)*    byte_loader   = QUEX_NAME(ByteLoader_Memory_new_from_file_name)(FileName);
 #   endif
     const size_t              MemorySize    = true ? 5 : 16;
-    QUEX_TYPE_LEXATOM       memory[MemorySize];
-    QUEX_NAME(LexatomLoader)*  filler;  
+    QUEX_TYPE_LEXATOM         memory[MemorySize];
+    QUEX_NAME(LexatomLoader)* filler;  
 
     switch( CTT ) {
     case TEST_ICU:   converter = QUEX_NAME(Converter_ICU_new)(Codec, 0); break;

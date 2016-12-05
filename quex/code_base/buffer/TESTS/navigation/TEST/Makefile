@@ -25,7 +25,8 @@
 TESTS := \
 	     $(foreach S, 1 2 4, $(foreach FB, 0 1 2, test-Plain-$(S)-$(FB).exe)) \
 	     $(foreach S, 1 2 4, $(foreach FB, 0 1 2, test-Converter-$(S)-$(FB).exe)) \
-	     $(foreach FB, 0 1 2, test-Plain-wiostream-2-$(FB).exe)
+	     $(foreach FB, 0 1 2, test-Plain-wiostream-2-$(FB).exe) \
+	     $(foreach FB, 0 1 2, test-Converter-StrangeStream-2-$(FB).exe)
 
 DEFS       := -DQUEX_OPTION_ASSERTS \
               -DQUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE=5 \
