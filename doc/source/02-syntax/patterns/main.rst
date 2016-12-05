@@ -32,7 +32,7 @@ access the *Unicode Properties* database to define character sets[#f1].
         }
 
         mode MINE {
-            {WHITESPACE}  { /* do nothing */ }
+            {WHITESPACE}  { /** do nothing **/ }
             {IDENTIFIER}  => QUEX_TKN_IDENTIFIER(Lexeme);
         }
 

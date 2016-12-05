@@ -321,3 +321,39 @@ regular expressions.
     the expansion of the defined pattern "NAME". Pattern names can
     be defined in *define* sections (see section :ref:`sec:top-level-configuration`).
 
+
+*Sanity*
+
+This section presented a short summary on regular expression syntax. While
+the following sections go into more detail, they also provide more powerful
+means to model the matching behavior. However, with these operations it
+becomes more challenging to define the exact desired regular expression.
+In particular, patterns may be *admissible* and *inadmissible*.
+
+The admissibility of a patterns is related to its behavior.  A pattern that
+matches on an empty sequence is inadmissible, because it accepts without
+continuing reading the input.  The lexer then stalls. A pattern that does not
+accept anything is also inadmissible, because it cannot be related to a match
+action. If such an inadmissible pattern is detected, Quex reports an error. Any
+pattern that is not inadmissible is admissible. However, even for admissible
+patterns there remains an issue with *sanity*. If pattern contains a state that
+iterates on any lexatom to itself, then this state would eat anything until the
+end of input. As a shorthand to transform any pattern into a *sane* pattern
+the following command may be used.
+
+.. describe:: \\Sanitize{P}
+
+     Sanitizes a pattern with regards to two issues. First, it removes
+     acceptance of the zero-length lexeme. Second, it removes acceptance of
+     tails of infinite length and arbirtrary lexatoms. Such patterns may indeed
+     be produced by DFA algrebraic expressions--so this command helps to
+     sanitize.
+
+     The command line option ``--language dot`` allows to print state machine
+     graphs. It is advisable to print graphs for the sanitized state machine
+     in order to see whether it conforms the expectations.
+
+     Notably, this command cannot sanitize patterns that do not accept anything
+     or accept everything as discussed in the frame of DFA algebra.
+
+

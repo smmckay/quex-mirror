@@ -23,7 +23,7 @@ QUEX_NAME(ByteLoader_FILE_new)(FILE* fh, bool BinaryModeF)
     if( ! fh ) return (QUEX_NAME(ByteLoader)*)0;
 
     me = (QUEX_NAME(ByteLoader_FILE)*)QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_FILE)),
-                                                          E_MemoryObjectType_BYTE_LOADER);
+                                                                     E_MemoryObjectType_BYTE_LOADER);
     if( ! me ) return (QUEX_NAME(ByteLoader)*)0;
 
     QUEX_NAME(ByteLoader_FILE_construct)(me, fh);

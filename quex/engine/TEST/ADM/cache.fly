@@ -4,7 +4,7 @@ title_group: NumberSet;
 file_name: test-NumberSet-add_interval.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ ; OK; 0.074779; 0; ]
+  [ ; OK; 0.071187; 0; ]
 ]
 }
 {
@@ -13,8 +13,8 @@ title_group: NumberSet;
 file_name: test-algebraic-relations.py;
 hwut_info_time: 1480752763L;
 result_list: [
-  [ unary; OK; 0.142227; 0; ]
-  [ binary; OK; 5.684110; 0; ]
+  [ unary; OK; 0.129441; 0; ]
+  [ binary; OK; 5.649407; 0; ]
 ]
 }
 {
@@ -23,13 +23,13 @@ title_group: NumberSet;
 file_name: test-NumberSet-cut.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ empty; OK; 0.040318; 0; ]
-  [ 1; OK; 0.044554; 0; ]
-  [ 1b; OK; 0.041674; 0; ]
-  [ 2; OK; 0.048903; 0; ]
-  [ 2b; OK; 0.046980; 0; ]
-  [ 3; OK; 0.056575; 0; ]
-  [ 3b; OK; 0.048552; 0; ]
+  [ empty; OK; 0.041022; 0; ]
+  [ 1; OK; 0.043116; 0; ]
+  [ 1b; OK; 0.037818; 0; ]
+  [ 2; OK; 0.048245; 0; ]
+  [ 2b; OK; 0.044165; 0; ]
+  [ 3; OK; 0.054201; 0; ]
+  [ 3b; OK; 0.050031; 0; ]
 ]
 }
 {
@@ -38,7 +38,7 @@ title_group: NumberSet;
 file_name: test-NumberSet-cut_interval.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ ; OK; 0.059131; 0; ]
+  [ ; OK; 0.060728; 0; ]
 ]
 }
 {
@@ -47,7 +47,7 @@ title_group: NumberSet;
 file_name: test-NumberSet-difference.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ ; OK; 0.043016; 0; ]
+  [ ; OK; 0.042042; 0; ]
 ]
 }
 {
@@ -56,7 +56,7 @@ title_group: NumberSet;
 file_name: test-NumberSet-intersection.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ ; OK; 0.047223; 0; ]
+  [ ; OK; 0.043491; 0; ]
 ]
 }
 {
@@ -65,8 +65,8 @@ title_group: NumberSet;
 file_name: test-Interval-cmp.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ normal; OK; 0.039969; 0; ]
-  [ special; OK; 0.038661; 0; ]
+  [ normal; OK; 0.047377; 0; ]
+  [ special; OK; 0.039657; 0; ]
 ]
 }
 {
@@ -75,9 +75,9 @@ title_group: NumberSet;
 file_name: test-NumberSet-inverse.py;
 hwut_info_time: 1480752763L;
 result_list: [
-  [ 1; OK; 0.041434; 0; ]
-  [ 2; OK; 0.041233; 0; ]
-  [ serious; OK; 0.040600; 0; ]
+  [ 1; OK; 0.038385; 0; ]
+  [ 2; OK; 0.042736; 0; ]
+  [ serious; OK; 0.040752; 0; ]
 ]
 }
 {
@@ -87,11 +87,11 @@ file_name: test-NumberSet-mmcc.py;
 hwut_info_time: 1480752763L;
 same_f: True;
 result_list: [
-  [ union; OK; 9.638312; 0; ]
-  [ intersection; OK; 9.303612; 0; ]
-  [ symmetric_difference; OK; 8.406942; 0; ]
-  [ difference; OK; 11.638586; 0; ]
-  [ is_superset; OK; 0.409675; 0; ]
+  [ union; OK; 9.698797; 0; ]
+  [ intersection; OK; 9.304108; 0; ]
+  [ symmetric_difference; OK; 8.313322; 0; ]
+  [ difference; OK; 11.760796; 0; ]
+  [ is_superset; OK; 0.406564; 0; ]
 ]
 }
 {
@@ -100,8 +100,8 @@ title_group: NumberSet;
 file_name: test-NumberSet-is_superset.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ Normal; OK; 0.039958; 0; ]
-  [ Examples; OK; 0.039847; 0; ]
+  [ Normal; OK; 0.038246; 0; ]
+  [ Examples; OK; 0.036940; 0; ]
 ]
 }
 {
@@ -110,9 +110,9 @@ title_group: NumberSet;
 file_name: test-NumberSet-transform.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ 1; OK; 0.041294; 0; ]
-  [ 2; OK; 0.047335; 0; ]
-  [ 3; OK; 0.046833; 0; ]
+  [ 1; OK; 0.044006; 0; ]
+  [ 2; OK; 0.044055; 0; ]
+  [ 3; OK; 0.047083; 0; ]
 ]
 }
 {
@@ -121,9 +121,9 @@ title_group: NumberSet;
 file_name: test-NumberSet-transform-cp037.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ 1; OK; 0.085705; 0; ]
-  [ all; OK; 0.070708; 0; ]
-  [ some; OK; 0.071147; 0; ]
+  [ 1; OK; 0.095587; 0; ]
+  [ all; OK; 0.071888; 0; ]
+  [ some; OK; 0.086431; 0; ]
 ]
 }
 {
@@ -132,13 +132,13 @@ title_group: NumberSet;
 file_name: test-NumberSet-transform-x.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ 10; OK; 0.048022; 0; ]
-  [ 100; OK; 0.059399; 0; ]
-  [ 250; OK; 0.099971; 0; ]
-  [ 500; OK; 0.224433; 0; ]
-  [ 1000; OK; 0.649234; 0; ]
-  [ 2000; OK; 2.242456; 0; ]
-  [ 3000; OK; 4.925725; 0; ]
+  [ 10; OK; 0.048320; 0; ]
+  [ 100; OK; 0.057491; 0; ]
+  [ 250; OK; 0.102398; 0; ]
+  [ 500; OK; 0.213528; 0; ]
+  [ 1000; OK; 0.627209; 0; ]
+  [ 2000; OK; 2.272165; 0; ]
+  [ 3000; OK; 4.962844; 0; ]
 ]
 }
 {
@@ -147,7 +147,7 @@ title_group: NumberSet;
 file_name: test-NumberSet-union.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ ; OK; 0.044359; 0; ]
+  [ ; OK; 0.038347; 0; ]
 ]
 }
 {
@@ -156,7 +156,7 @@ title_group: UTF16;
 file_name: test-utf16-byte-sequences.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ ; OK; 0.370888; 0; ]
+  [ ; OK; 0.386230; 0; ]
 ]
 }
 {
@@ -165,7 +165,7 @@ title_group: UTF8;
 file_name: test-utf8-byte-sequences.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ ; OK; 3.956646; 0; ]
+  [ ; OK; 3.969466; 0; ]
 ]
 }
 {
@@ -174,6 +174,6 @@ title_group: UTF8;
 file_name: test-utf8-UCS-to-UTF8.py;
 hwut_info_time: 1480539704L;
 result_list: [
-  [ ; OK; 0.038081; 0; ]
+  [ ; OK; 0.038083; 0; ]
 ]
 }

@@ -31,8 +31,15 @@ class Pattern_Prep(object):
                  BeginOfLineF=False, EndOfLineF=False, Sr=SourceRef_VOID, 
                  PatternString="",
                  AllowNothingIsNecessaryF=False):
+        def assert_sm(sm):
+            if sm is None: return
+            assert isinstance(sm, StateMachine)
+            assert sm.is_DFA_compliant()
         assert CoreSM is not None
-        assert PreContextSM is None or isinstance(PreContextSM, StateMachine)
+        assert_sm(CoreSM)
+        assert_sm(PreContextSM)
+        assert_sm(PostContextSM)
+
         self.check_initial(CoreSM, 
                            BeginOfLineF, PreContextSM, 
                            EndOfLineF, PostContextSM, 
@@ -51,14 +58,6 @@ class Pattern_Prep(object):
         #
         #    Same as for backward input position detection holds for pre-contexts.
         self.__pre_context_sm_to_be_inverted = PreContextSM
-
-        # All state machines must be DFAs
-        if not self.__sm.is_DFA_compliant(): 
-            self.__sm  = beautifier.do(self.__sm)
-
-        if         self.__pre_context_sm_to_be_inverted is not None \
-           and not self.__pre_context_sm_to_be_inverted.is_DFA_compliant(): 
-            self.__pre_context_sm_to_be_inverted = beautifier.do(self.__pre_context_sm_to_be_inverted)
 
         # Detect the trivial pre-context
         self.__pre_context_begin_of_line_f = BeginOfLineF

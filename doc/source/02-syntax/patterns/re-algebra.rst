@@ -48,9 +48,9 @@ The fundamental operations are available in Quex via the commands:
    expressions ``X``.
 
 The union operation is identical to what the ``|`` operator does. The according
-state machines are setup in parallel. Intersection is more subtle. It generates
-a state machine that only contains paths which can be walked along in all
-state machines. Resulting configurations may :
+state machines are setup in parallel. The result of an intersection is a state
+machine, that contains only those paths to acceptance which are present in all
+operands.  Resulting configurations may :
 
 The set of all lexemes, the *universal set*, and the *empty set* of lexemes
 find the counterpart in the space of DFAs in the *universally matching DFA* and

@@ -12,7 +12,7 @@ QUEX_NAMESPACE_MAIN_OPEN
                     
 QUEX_INLINE void   QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER*  me,
                              QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                             size_t               BufferMemorySize,
+                             size_t             BufferMemorySize,
                              QUEX_TYPE_LEXATOM* BufferEndOfContentP  /* = 0x0   */);
 QUEX_INLINE void   QUEX_NAME(Asserts_construct)(const char* CodecName);
 QUEX_INLINE void   QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me);
