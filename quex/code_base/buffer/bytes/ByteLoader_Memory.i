@@ -143,8 +143,8 @@ QUEX_NAME(ByteLoader_Memory_load)(QUEX_NAME(ByteLoader)* alter_ego,
     const ptrdiff_t               Remaining = me->byte_array.end_p - me->byte_array.position;
     ptrdiff_t                     copy_n;
 
-    if( Remaining < ByteN ) { copy_n = Remaining; *end_of_stream_f = true; }
-    else                    { copy_n = ByteN; } 
+    if( (size_t)Remaining < ByteN ) { copy_n = Remaining; *end_of_stream_f = true; }
+    else                            { copy_n = ByteN; } 
 
     __QUEX_STD_memcpy((void*)buffer, (void*)me->byte_array.position, copy_n);
     me->byte_array.position += copy_n;

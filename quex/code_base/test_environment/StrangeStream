@@ -17,32 +17,29 @@ QUEX_NAMESPACE_MAIN_OPEN
 class StrangeStream_unit_test {
 };
 
-template <class StdStreamType>
-class StrangeStream {
-    /* PURPOSE: Implementing a class that does not increment the stream position
-     *          according to the number of bytes being transferred. Instead, it
-     *          increments it deterministically in a strange manner.
-     *
-     * WHY: Because the Microsoft implementation of istream behaves strange. Whenever
-     *      a '\r\n' occurs, it transfers a '\n' into the buffer and increments the
-     *      input stream by two. This is likely to cause confusion. With this class
-     *      the robustness of the system against such weird things can be tested.     
-     *
-     * IT HOLDS: 
-     *       -- When reading of N bytes starts at a distinct stream position x
-     *          then the read in segment is always the same.
-     *       -- Characters that come later in a stream correspond to higher
-     *          stream position. Stream position is monotonously increasing
-     *          with the read in character number.
-     *
-     * IT DOES NOT HOLD: 
-     *       -- There is **no** garanty that if N letters are read in 'x' is
-     *          in any way proportional to N.
-     *       -- If N letters where read in and the stream position after that
-     *          is 'x' than the letter N-1 **does not** necessarily appear
-     *          at position 'x-1' or whatever fixed offset.
-     *
-     */
+template <class StdStreamType> class StrangeStream {
+/* PURPOSE: Implementing a class that does not increment the stream position
+ * according to the number of bytes being transferred. Instead, it increments
+ * it deterministically in a strange manner.
+ *
+ * IT HOLDS: -- When reading of N bytes starts at a distinct stream position x
+ *              then the read in segment is always the same.  
+ *           -- Characters that come later in a stream correspond to higher 
+ *              stream position. Stream position is monotonously increasing 
+ *              with the read in character number.
+ *
+ * BUT: -- There is **no** guaranty that if N letters are read, the stream 
+ *         position is increased by N.
+ *      -- If N letters were read in and the stream position after that is 'x' 
+ *         then the letter at N-1 *does not* necessarily appear at position 'x-1' 
+ *         or whatever fixed offset.                  
+ *
+ * REASON: At the time of this writing,  the Microsoft implementation of
+ * istream behaves strange. Whenever a '\r\n' occurs, it transfers a '\n' into
+ * the buffer and increments the input stream by two. This is likely to cause
+ * confusion. With this class the robustness of the system against such weird
+ * things can be tested.                                                      */ 
+
     StdStreamType*   sh;
     uint32_t         seed;
 
@@ -71,7 +68,6 @@ public:
 private:
     intern_pos_type  __map_strange_to_real_position(pos_type Pos);
     pos_type         __map_real_to_strange_position(intern_pos_type Pos);
-
 };
 
 #define TEMPLATE_IN  template <class StdStreamType> inline
