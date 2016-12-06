@@ -25,8 +25,8 @@
 TESTS := \
 	     $(foreach S, 1 2 4, $(foreach FB, 0 1 2, test-Plain-$(S)-$(FB).exe)) \
 	     $(foreach S, 1 2 4, $(foreach FB, 0 1 2, test-Converter-$(S)-$(FB).exe)) \
-	     $(foreach FB, 0 1 2, test-Plain-wiostream-2-$(FB).exe) \
-	     $(foreach FB, 0 1 2, test-Converter-StrangeStream-2-$(FB).exe)
+	     $(foreach FB, 0 1 2, test-Plain-wiostream-wchar_t-$(FB).exe) \
+	     $(foreach S, 1 2 4, $(foreach FB, 0 2, test-Converter-StrangeStream-$(S)-$(FB).exe)) 
 
 DEFS       := -DQUEX_OPTION_ASSERTS \
               -DQUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE=5 \
@@ -65,12 +65,26 @@ hwut-end: clean
 %-4-2.exe: %.c basic_functionality.c
 	$(CC) $(SIZE_4) $(FALLBACK_2) $< $(XLIBS) -o $@
 
+%-4-0.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_4) $(FALLBACK_0) $< $(XLIBS) -o $@
+%-4-1.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_4) $(FALLBACK_1) $< $(XLIBS) -o $@
+%-4-2.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_4) $(FALLBACK_2) $< $(XLIBS) -o $@
+
 %-2-0.exe: %.c basic_functionality.c
 	$(CC) $(SIZE_2) $(FALLBACK_0) $< $(XLIBS) -o $@
 %-2-1.exe: %.c basic_functionality.c
 	$(CC) $(SIZE_2) $(FALLBACK_1) $< $(XLIBS) -o $@
 %-2-2.exe: %.c basic_functionality.c
 	$(CC) $(SIZE_2) $(FALLBACK_2) $< $(XLIBS) -o $@
+
+%-wchar_t-0.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_WC) $(FALLBACK_0) $< $(XLIBS) -o $@
+%-wchar_t-1.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_WC) $(FALLBACK_1) $< $(XLIBS) -o $@
+%-wchar_t-2.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_WC) $(FALLBACK_2) $< $(XLIBS) -o $@
 
 %-2-0.exe: %.cpp basic_functionality.c
 	$(CCP) $(SIZE_WC) $(FALLBACK_0) $< $(XLIBS) -o $@
@@ -85,6 +99,13 @@ hwut-end: clean
 	$(CC) $(SIZE_1) $(FALLBACK_1) $< $(XLIBS) -o $@
 %-1-2.exe: %.c basic_functionality.c
 	$(CC) $(SIZE_1) $(FALLBACK_2) $< $(XLIBS) -o $@
+
+%-1-0.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_1) $(FALLBACK_0) $< $(XLIBS) -o $@
+%-1-1.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_1) $(FALLBACK_1) $< $(XLIBS) -o $@
+%-1-2.exe: %.cpp basic_functionality.c
+	$(CCP) $(SIZE_1) $(FALLBACK_2) $< $(XLIBS) -o $@
 
 
 %.E: %.c

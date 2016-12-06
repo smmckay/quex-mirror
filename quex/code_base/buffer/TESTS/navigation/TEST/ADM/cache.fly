@@ -1,4 +1,97 @@
 {
+file_name: test-Converter-StrangeStream-2-1.exe;
+}
+{
+file_name: test-Converter-StrangeStream-1-1.exe;
+}
+{
+file_name: test-Converter-StrangeStream-4-1.exe;
+}
+{
+title: LexatomLoader_Converter StrangeStream (BPC=1, FALLBACK=0);
+title_group: Buffer Tell&Seek;
+build_time: 0.004815101623535156;
+file_name: test-Converter-StrangeStream-1-0.exe;
+hwut_info_time: 1481010506L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ ICU-stepping; OK; 0.000000; 7526006; ]
+  [ IConv-linear; OK; 0.000000; 7526006; ]
+  [ ICU-stepping-cls; OK; 0.000000; 7526006; ]
+]
+}
+{
+title: LexatomLoader_Converter StrangeStream (BPC=1, FALLBACK=2);
+title_group: Buffer Tell&Seek;
+build_time: 0.004855155944824219;
+file_name: test-Converter-StrangeStream-1-2.exe;
+hwut_info_time: 1481010508L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ ICU-stepping; OK; 0.000000; 7526006; ]
+  [ IConv-linear; OK; 0.000000; 7526006; ]
+  [ ICU-stepping-cls; OK; 0.000000; 7526006; ]
+]
+}
+{
+title: LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=0);
+title_group: Buffer Tell&Seek;
+build_time: 0.004808902740478516;
+file_name: test-Converter-StrangeStream-4-0.exe;
+hwut_info_time: 1481010511L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ ICU-stepping; OK; 0.000000; 293945257; ]
+  [ IConv-linear; OK; 0.000000; 293945257; ]
+  [ ICU-stepping-cls; OK; 0.000000; 293945257; ]
+]
+}
+{
+title: LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=0);
+title_group: Buffer Tell&Seek;
+build_time: 0.0048220157623291016;
+file_name: test-Converter-StrangeStream-2-0.exe;
+hwut_info_time: 1481010508L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ ICU-stepping; OK; 0.000000; 293945257; ]
+  [ IConv-linear; OK; 0.000000; 293945257; ]
+  [ ICU-stepping-cls; OK; 0.000000; 293945257; ]
+]
+}
+{
+title: LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=2);
+title_group: Buffer Tell&Seek;
+build_time: 0.0047838687896728516;
+file_name: test-Converter-StrangeStream-2-2.exe;
+hwut_info_time: 1481010510L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ ICU-stepping; OK; 0.000000; 293945257; ]
+  [ IConv-linear; OK; 0.000000; 293945257; ]
+  [ ICU-stepping-cls; OK; 0.000000; 293945257; ]
+]
+}
+{
+title: LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=2);
+title_group: Buffer Tell&Seek;
+build_time: 0.005666017532348633;
+file_name: test-Converter-StrangeStream-4-2.exe;
+hwut_info_time: 1481010512L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ ICU-stepping; OK; 0.000000; 293945257; ]
+  [ IConv-linear; OK; 0.000000; 293945257; ]
+  [ ICU-stepping-cls; OK; 0.000000; 293945257; ]
+]
+}
+{
 title: LexatomLoader_Converter_IConv (BPC=1, FALLBACK=0);
 title_group: Buffer Tell&Seek;
 build_time: 1.7312219142913818;
@@ -232,19 +325,6 @@ result_list: [
 {
 title: LexatomLoader_Plain (BPC=4, FALLBACK=0);
 title_group: Buffer Tell&Seek;
-build_time: 3.412036180496216;
-file_name: test-Plain-wiostream-2-0.exe;
-hwut_info_time: 1480923891L;
-make_dependent_f: True;
-same_f: True;
-result_list: [
-  [ linear; OK; 0.186221; 0; ]
-  [ stepping; OK; 0.178790; 0; ]
-]
-}
-{
-title: LexatomLoader_Plain (BPC=4, FALLBACK=0);
-title_group: Buffer Tell&Seek;
 build_time: 1.6009860038757324;
 file_name: test-Plain-4-0.exe;
 hwut_info_time: 1480923900L;
@@ -256,16 +336,16 @@ result_list: [
 ]
 }
 {
-title: LexatomLoader_Plain (BPC=4, FALLBACK=1);
+title: LexatomLoader_Plain (BPC=4, FALLBACK=0);
 title_group: Buffer Tell&Seek;
-build_time: 3.3196098804473877;
-file_name: test-Plain-wiostream-2-1.exe;
-hwut_info_time: 1480923898L;
+build_time: 3.412036180496216;
+file_name: test-Plain-wiostream-2-0.exe;
+hwut_info_time: 1480923891L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; OK; 0.157318; 0; ]
-  [ stepping; OK; 0.191318; 0; ]
+  [ linear; OK; 0.186221; 0; ]
+  [ stepping; OK; 0.178790; 0; ]
 ]
 }
 {
@@ -282,16 +362,16 @@ result_list: [
 ]
 }
 {
-title: LexatomLoader_Plain (BPC=4, FALLBACK=2);
+title: LexatomLoader_Plain (BPC=4, FALLBACK=1);
 title_group: Buffer Tell&Seek;
-build_time: 1.6668720245361328;
-file_name: test-Plain-4-2.exe;
-hwut_info_time: 1480923914L;
+build_time: 3.3196098804473877;
+file_name: test-Plain-wiostream-2-1.exe;
+hwut_info_time: 1480923898L;
 make_dependent_f: True;
 same_f: True;
 result_list: [
-  [ linear; OK; 0.778843; 0; ]
-  [ stepping; OK; 3.956313; 0; ]
+  [ linear; OK; 0.157318; 0; ]
+  [ stepping; OK; 0.191318; 0; ]
 ]
 }
 {
@@ -305,5 +385,18 @@ same_f: True;
 result_list: [
   [ linear; OK; 0.162946; 0; ]
   [ stepping; OK; 0.177940; 0; ]
+]
+}
+{
+title: LexatomLoader_Plain (BPC=4, FALLBACK=2);
+title_group: Buffer Tell&Seek;
+build_time: 1.6668720245361328;
+file_name: test-Plain-4-2.exe;
+hwut_info_time: 1480923914L;
+make_dependent_f: True;
+same_f: True;
+result_list: [
+  [ linear; OK; 0.778843; 0; ]
+  [ stepping; OK; 3.956313; 0; ]
 ]
 }
