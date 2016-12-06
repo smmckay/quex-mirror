@@ -44,8 +44,8 @@ QUEX_MEMBER_FUNCTION2(from, file_name,
 QUEX_INLINE void
 QUEX_MEMBER_FUNCTION3(from, FILE,
                       __QUEX_STD_FILE*  fh, 
-                      const char*       CodecName /* = 0x0   */,
-                      bool              BinaryModeF)
+                      const char*       CodecName   /* = 0x0   */,
+                      bool              BinaryModeF /* = false */)
 /* 'BinaryModeF' tells whether the file has been opened in 'binary mode'.    */
 {
     QUEX_NAME(ByteLoader)*   byte_loader;
@@ -69,14 +69,17 @@ QUEX_MEMBER_FUNCTION3(from, FILE,
 
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTION2(from, istream,
+QUEX_MEMBER_FUNCTION3(from, istream,
                       std::istream*   istream_p, 
-                      const char*     CodecName /* = 0x0   */)
+                      const char*     CodecName   /* = 0x0   */,
+                      bool            BinaryModeF /* = false */)
 {
     QUEX_NAME(ByteLoader)*   byte_loader;
     __quex_assert( istream_p );
 
     byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
+    byte_loader->binary_mode_f = BinaryModeF;
+
     /* NOT: Abort/return if byte_loader == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
     if( byte_loader ) {
@@ -89,14 +92,17 @@ QUEX_MEMBER_FUNCTION2(from, istream,
 
 #if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void 
-QUEX_MEMBER_FUNCTION2(from, wistream,
+QUEX_MEMBER_FUNCTION3(from, wistream,
                       std::wistream*  istream_p, 
-                      const char*     CodecName /* = 0x0   */)
+                      const char*     CodecName   /* = 0x0   */,
+                      bool            BinaryModeF /* = false */)
 {
     QUEX_NAME(ByteLoader)*   byte_loader;
     __quex_assert( istream_p );
 
     byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
+    byte_loader->binary_mode_f = BinaryModeF;
+
     /* NOT: Abort/return if byte_loader == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
     if( byte_loader ) {
@@ -118,6 +124,8 @@ QUEX_MEMBER_FUNCTION2(from_StrangeStream, strange_stream,
     __quex_assert( istream_p );
 
     byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
+    byte_loader->binary_mode_f = false;
+
     /* NOT: Abort/return if byte_loader == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
     if( byte_loader ) {
@@ -134,8 +142,8 @@ QUEX_MEMBER_FUNCTION2(from_StrangeStream, strange_stream,
  *                                                                           */
 QUEX_INLINE void
 QUEX_MEMBER_FUNCTION2(from, ByteLoader,
-                      QUEX_NAME(ByteLoader)*   byte_loader,
-                      const char*   CodecName) 
+                      QUEX_NAME(ByteLoader)*  byte_loader,
+                      const char*             CodecName) 
 {
     QUEX_NAME(LexatomLoader)* filler;
     QUEX_NAME(Asserts_construct)(CodecName);

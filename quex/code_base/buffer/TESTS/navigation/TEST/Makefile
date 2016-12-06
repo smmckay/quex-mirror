@@ -115,4 +115,4 @@ hwut-end: clean
 	g++ $(DEFS) $(INCLUDES) -E $< -o $@
 
 clean: 
-	rm -rf $(TESTS) *.o *.E
+	rm -rf $(TESTS) *.exe *.o *.E

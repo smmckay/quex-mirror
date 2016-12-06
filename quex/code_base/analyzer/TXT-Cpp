@@ -110,10 +110,13 @@ public:
      * 'from' functions are provided so that explicit constructor calls 
      * can be done without placement ::new or sophisticated C++11 features.  */
     void    from(const char*  Filename, const char*  CodecName = 0x0);
-    void    from(std::FILE* fh, const char*  CodecName = 0x0, bool BinaryModeF=false);
-    void    from(std::istream* istream_p, const char*  CodecName = 0x0);
+    void    from(std::FILE* fh, const char*  CodecName = 0x0, 
+                 bool BinaryModeF=false);
+    void    from(std::istream* istream_p, const char*  CodecName = 0x0, 
+                 bool BinaryModeF=false);
 #   if defined(__QUEX_OPTION_WCHAR_T)
-    void    from(std::wistream* istream_p, const char*  CodecName = 0x0);
+    void    from(std::wistream* istream_p, const char*  CodecName = 0x0, 
+                 bool BinaryModeF=false);
 #   endif
     void    from(QUEX_NAME(ByteLoader)* byte_loader, const char*  CodecName = 0x0);
     void    from(QUEX_NAME(LexatomLoader)* filler);
@@ -135,18 +138,21 @@ public:
 
     /* Level (2) ______________________________________________________________
      *                                                                       */
-    $$LEXER_CLASS_NAME$$(std::FILE*     fh, const char*  CodecName = 0x0, bool BinaryModeF=false)
+    $$LEXER_CLASS_NAME$$(std::FILE*     fh, const char*  CodecName = 0x0, 
+    $$___SPACE___$$      bool BinaryModeF = false)
     $$___SPACE___$${ from(fh, CodecName, BinaryModeF); }
-    $$LEXER_CLASS_NAME$$(std::istream*  istream_p, const char*  CodecName = 0x0)
-    $$___SPACE___$${ from(istream_p, CodecName); }
+    $$LEXER_CLASS_NAME$$(std::istream*  istream_p, const char*  CodecName = 0x0, 
+    $$___SPACE___$$      bool BinaryModeF = false)
+    $$___SPACE___$${ from(istream_p, CodecName, BinaryModeF); }
 #   if defined(__QUEX_OPTION_WCHAR_T)
-    $$LEXER_CLASS_NAME$$(std::wistream* istream_p, const char*  CodecName = 0x0)
-    $$___SPACE___$${ from(istream_p, CodecName); }
+    $$LEXER_CLASS_NAME$$(std::wistream* istream_p, const char*  CodecName = 0x0,
+    $$___SPACE___$$      bool BinaryModeF = false)
+    $$___SPACE___$${ from(istream_p, CodecName, BinaryModeF); }
 #   endif
 #   if defined(__QUEX_OPTION_UNIT_TEST)
     template <class UnderlyingStreamT>
     $$LEXER_CLASS_NAME$$(quex::StrangeStream<UnderlyingStreamT>*  istream_p, 
-    $$___SPACE___$$const char*                              CodecName = 0x0)
+    $$___SPACE___$$      const char*                              CodecName = 0x0)
     $$___SPACE___$${ from_StrangeStream(istream_p, CodecName); }
 #   endif
 
@@ -187,10 +193,13 @@ public:
 
     /* Level (2) ______________________________________________________________
      *                                                                       */
-    void    reset(__QUEX_STD_FILE*  fh, const char*  CodecName = 0x0, bool BinaryModeF=false);
-    void    reset(std::istream*     istream_p, const char*  CodecName = 0x0);
+    void    reset(__QUEX_STD_FILE*  fh, const char*  CodecName = 0x0, 
+                  bool BinaryModeF = false);
+    void    reset(std::istream*     istream_p, const char*  CodecName = 0x0,
+                  bool BinaryModeF = false);
 #   if defined(__QUEX_OPTION_WCHAR_T)
-    void    reset(std::wistream*    istream_p, const char*  CodecName = 0x0);
+    void    reset(std::wistream*    istream_p, const char*  CodecName = 0x0,
+                  bool BinaryModeF = false);
 #   endif
 #   if defined(__QUEX_OPTION_UNIT_TEST)
     template <class UnderlyingStreamT>
@@ -227,15 +236,17 @@ public:
      *                                                                       */
     bool    include_push(const char*       InputName, 
                          __QUEX_STD_FILE*  fh, 
-                         const char*       CodecName = 0x0,
+                         const char*       CodecName   = 0x0,
                          bool              BinaryModeF = false);
     bool    include_push(const char*       InputName,
                          std::istream*     istream_p, 
-                         const char*       CodecName = 0x0);
+                         const char*       CodecName   = 0x0,
+                         bool              BinaryModeF = false);
 #   if defined(__QUEX_OPTION_WCHAR_T)
     bool    include_push(const char*    InputName, 
                          std::wistream* istream_p, 
-                         const char*    CodecName = 0x0);
+                         const char*    CodecName   = 0x0,
+                         bool           BinaryModeF = false);
 #   endif
 #   if defined(__QUEX_OPTION_UNIT_TEST)
     template <class UnderlyingStreamT>

@@ -25,13 +25,14 @@ QUEX_INLINE void QUEX_NAME(from_FILE)(
                                   QUEX_TYPE_ANALYZER*,
                                   __QUEX_STD_FILE*  fh, 
                                   const char*       CodecName   /* = 0x0   */,
-                                  bool              BinaryModeF /* false */);
+                                  bool              BinaryModeF /* = false */);
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void QUEX_NAME(from_istream)(
                                   QUEX_TYPE_ANALYZER*,
                                   std::istream*  istream_p, 
-                                  const char*    CodecName /* = 0x0   */);
+                                  const char*    CodecName   /* = 0x0   */);
+                                  bool           BinaryModeF /* = false */);
 
 #endif
 
@@ -39,7 +40,8 @@ QUEX_INLINE void QUEX_NAME(from_istream)(
 QUEX_INLINE void QUEX_NAME(from_wistream)(
                                   QUEX_TYPE_ANALYZER*,
                                   std::wistream*  istream_p, 
-                                  const char*     CodecName /* = 0x0   */);
+                                  const char*     CodecName   /* = 0x0   */,
+                                  bool            BinaryModeF /* = false */);
 #endif
 
 /* Level (3) __________________________________________________________________

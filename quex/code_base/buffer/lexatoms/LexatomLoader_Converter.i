@@ -120,9 +120,10 @@ QUEX_NAME(LexatomLoader_Converter_construct)(QUEX_NAME(LexatomLoader_Converter)*
                                        converter->byte_n_per_lexatom : -1;
     uint8_t*    raw_memory;
 
-    /* Binary mode is absolutely required for converters, otherwise the 
-     * positioning with respect to the raw buffer becomes unreliable.        */
-    //__quex_assert( ! byte_loader || byte_loader->binary_mode_f );
+    /* NO LONGER VALID: "Binary mode is absolutely required for converters,
+     *                   otherwise the positioning with respect to the raw 
+     *                   buffer becomes unreliable."                         */
+    /* __quex_assert( ! byte_loader || byte_loader->binary_mode_f );         */
 
     QUEX_NAME(LexatomLoader_setup)(&me->base,
                                   QUEX_NAME(LexatomLoader_Converter_load_lexatoms),

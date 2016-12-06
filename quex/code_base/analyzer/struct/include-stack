@@ -34,6 +34,23 @@ QUEX_INLINE bool QUEX_NAME(include_push_POSIX)(QUEX_TYPE_ANALYZER*  me,
                                                const char*          CodecName /* = 0x0   */);
 #endif
 
+#ifndef __QUEX_OPTION_PLAIN_C
+QUEX_INLINE bool
+QUEX_NAME(include_push_istream)(QUEX_TYPE_ANALYZER* me,
+                                const char*    InputName,
+                                std::istream*  istream_p, 
+                                const char*    CodecName   /* = 0x0 */,
+                                bool           BinaryModeF /* = false */);
+#endif
+
+#if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE bool
+QUEX_NAME(include_push_wistream)(QUEX_TYPE_ANALYZER* me, 
+                                 const char*     InputName,
+                                 std::wistream*  istream_p, 
+                                 const char*     CodecName   /* = 0x0   */,
+                                 bool            BinaryModeF /* = false */);
+#endif
 
 /* Level (3) __________________________________________________________________
  *                                                                           */
@@ -46,8 +63,8 @@ QUEX_INLINE bool QUEX_NAME(include_push_ByteLoader)(
 /* Level (4) __________________________________________________________________
  *                                                                           */
 QUEX_INLINE bool QUEX_NAME(include_push_LexatomLoader)(
-                           QUEX_TYPE_ANALYZER*      me,
-                           const char*              InputName,
+                           QUEX_TYPE_ANALYZER*       me,
+                           const char*               InputName,
                            QUEX_NAME(LexatomLoader)* filler); 
 
 /* Level (5) __________________________________________________________________
@@ -55,9 +72,9 @@ QUEX_INLINE bool QUEX_NAME(include_push_LexatomLoader)(
 QUEX_INLINE bool QUEX_NAME(include_push_memory)(
                            QUEX_TYPE_ANALYZER*  me,
                            const char*          InputName,
-                           QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
+                           QUEX_TYPE_LEXATOM*   BufferMemoryBegin, 
                            size_t               BufferMemorySize,
-                           QUEX_TYPE_LEXATOM* BufferEndOfFileP); 
+                           QUEX_TYPE_LEXATOM*   BufferEndOfFileP); 
 
 /* Basic constructions ________________________________________________________
  *                                                                           */

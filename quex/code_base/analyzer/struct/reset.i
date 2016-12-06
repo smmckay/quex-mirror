@@ -73,15 +73,18 @@ QUEX_MEMBER_FUNCTION3(reset, FILE,
 
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTION2(reset, istream,
+QUEX_MEMBER_FUNCTION3(reset, istream,
                       std::istream*   istream_p, 
-                      const char*     CodecName /* = 0x0   */)
+                      const char*     CodecName   /* = 0x0   */,
+                      bool            BinaryModeF /* = false */)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_NAME(ByteLoader)*   byte_loader;
     __quex_assert( istream_p );
 
     byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
+    byte_loader->binary_mode_f = BinaryModeF;
+
     /* NOT: Abort/return if byte_loader == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
     if( byte_loader ) {
@@ -94,14 +97,17 @@ QUEX_MEMBER_FUNCTION2(reset, istream,
 
 #if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTION2(reset, wistream,
+QUEX_MEMBER_FUNCTION3(reset, wistream,
                       std::wistream*  istream_p, 
-                      const char*     CodecName /* = 0x0   */)
+                      const char*     CodecName   /* = 0x0   */,
+                      bool            BinaryModeF /* = false */)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_NAME(ByteLoader)*   byte_loader;
     __quex_assert( istream_p );
     byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
+    byte_loader->binary_mode_f = BinaryModeF;
+
     /* NOT: Abort/return if byte_loader == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
     if( byte_loader ) {
@@ -122,6 +128,8 @@ QUEX_MEMBER_FUNCTION2(reset_StrangeStream, strange_stream,
     QUEX_NAME(ByteLoader)*   byte_loader;
     __quex_assert( istream_p );
     byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
+    byte_loader->binary_mode_f = false;
+
     /* NOT: Abort/return if byte_loader == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
     if( byte_loader ) {
