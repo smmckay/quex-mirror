@@ -4,7 +4,7 @@ file_name: no-unused-ops.py;
 hwut_info_time: 1480539705L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.101355; 0; ]
+  [ ; OK; 0.437221; 0; ]
 ]
 }
 {
@@ -13,8 +13,8 @@ file_name: test-SharedTailDB.py;
 hwut_info_time: 1480539705L;
 interpreter_list: [ python; ]
 result_list: [
-  [ init; OK; 0.044041; 0; ]
-  [ pop_best; OK; 0.045239; 0; ]
+  [ init; OK; 0.108803; 0; ]
+  [ pop_best; OK; 0.113559; 0; ]
 ]
 }
 {
@@ -24,7 +24,7 @@ file_name: basic.py;
 hwut_info_time: 1480539705L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.043966; 0; ]
+  [ ; OK; 0.111169; 0; ]
 ]
 }
 {
@@ -34,7 +34,7 @@ file_name: is_switchable.py;
 hwut_info_time: 1480539705L;
 interpreter_list: [ python; ]
 result_list: [
-  [ ; OK; 0.041779; 0; ]
+  [ ; OK; 0.103446; 0; ]
 ]
 }
 {
@@ -44,8 +44,8 @@ file_name: can_be_moved_to_tail.py;
 hwut_info_time: 1480539705L;
 interpreter_list: [ python; ]
 result_list: [
-  [ no-exceptions; OK; 0.041387; 0; ]
-  [ with-exceptions; OK; 0.041956; 0; ]
+  [ no-exceptions; OK; 0.104804; 0; ]
+  [ with-exceptions; OK; 0.098542; 0; ]
 ]
 }
 {
@@ -55,10 +55,10 @@ file_name: test-shared_tail.py;
 hwut_info_time: 1480539705L;
 interpreter_list: [ python; ]
 result_list: [
-  [ one-or-none; OK; 0.043346; 0; ]
-  [ two; OK; 0.044493; 0; ]
-  [ two-bad; OK; 0.041885; 0; ]
-  [ multiple; OK; 0.047548; 0; ]
+  [ one-or-none; OK; 0.172164; 0; ]
+  [ two; OK; 0.127336; 0; ]
+  [ two-bad; OK; 0.105673; 0; ]
+  [ multiple; OK; 0.147146; 0; ]
 ]
 }
 {
@@ -69,11 +69,11 @@ hwut_info_time: 1480539705L;
 interpreter_list: [ python; ]
 happy_pattern_list: [ \[0-9]+/\[0-9]+; ]
 result_list: [
-  [ EqualOp; OK; 0.047029; 0; ]
-  [ no-common; OK; 0.043822; 0; ]
-  [ 1-common; OK; 0.046496; 0; ]
-  [ 2-common; OK; 0.044802; 0; ]
-  [ 3-common; OK; 0.046377; 0; ]
-  [ start-indices; OK; 0.048058; 0; ]
+  [ EqualOp; OK; 0.114612; 0; ]
+  [ no-common; OK; 0.108223; 0; ]
+  [ 1-common; OK; 0.110938; 0; ]
+  [ 2-common; OK; 0.108081; 0; ]
+  [ 3-common; OK; 0.108548; 0; ]
+  [ start-indices; OK; 0.123195; 0; ]
 ]
 }
