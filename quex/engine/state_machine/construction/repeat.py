@@ -57,9 +57,9 @@ def kleene_closure(the_state_machine):
     result = the_state_machine.clone()
 
     # (*) add additional initial state
-    prev_init_state_index  = result.init_state_index
+    prev_init_state_index = result.init_state_index
     result.create_new_init_state() 
-    result.mount_to_initial_state(prev_init_state_index)
+    result.states[result.init_state_index].target_map.add_epsilon_target_state(prev_init_state_index)
 
     # (*) add additional terminal state
     new_terminal_state_index = result.create_new_state()

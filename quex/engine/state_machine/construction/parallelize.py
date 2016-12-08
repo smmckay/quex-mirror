@@ -3,6 +3,7 @@
 ###############################################################################
 from   quex.engine.state_machine.core          import StateMachine
 from   quex.engine.state_machine.state.core    import State
+import quex.engine.state_machine.algorithm.nfa_to_dfa as nfa_to_dfa
 import quex.engine.state_machine.index         as index
 from   quex.engine.misc.tools import typed
 
@@ -43,8 +44,7 @@ def do(StateMachineList, CommonTerminalStateF=True, CloneF=True):
     #     states with new ids, but the 'behavior' remains. This allows
     #     state machines to appear twice, or being used in 'larger'
     #     conglomerates.
-    if CloneF: clone_list = map(lambda sm: sm.clone(), state_machine_list)
-    else:      clone_list = state_machine_list
+    clone_list = state_machine_list
 
     # (*) collect all transitions from both state machines into a single one
     #     (clone to ensure unique identifiers of states)
@@ -53,30 +53,13 @@ def do(StateMachineList, CommonTerminalStateF=True, CloneF=True):
 
     for clone in clone_list:
         result.states.update(clone.states)
+        new_init_state.target_map.add_epsilon_target_state(clone.init_state_index)
 
-    # (*) add additional **init** and **end** state
-    #     NOTE: when the result state machine was created, it already contains a 
-    #           new initial state index. thus at this point only the new terminal
-    #           state has to be created. 
-    #     NOTE: it is essential that the acceptance flag stays False, at this
-    #           point in time, so that the mounting operations only happen on
-    #           the old acceptance states. Later the acceptance state is raised
-    #           to 'accepted' (see below)
-    new_terminal_state_index = -1L
-    if CommonTerminalStateF:
-        new_terminal_state_index = index.get()
-        result.states[new_terminal_state_index] = State() 
-    
-    # (*) Connect from the new initial state to the initial states of the
-    #     clones via epsilon transition. 
-    #     Connect from each success state of the clones to the new terminal
-    #     state via epsilon transition.
-    for clone in clone_list:
-        result.mount_to_initial_state(clone.init_state_index)
-
-    if CommonTerminalStateF:
-        result.mount_to_acceptance_states(new_terminal_state_index,
-                                          CancelStartAcceptanceStateF=False)
+    # ADDES THIS:
+    result = nfa_to_dfa.do(result)
+    #if CommonTerminalStateF:
+    #    result.mount_to_acceptance_states(new_terminal_state_index,
+    #                                      CancelStartAcceptanceStateF=False)
 
     return __consider_empty_state_machines(result, empty_state_machine_list)
 
@@ -94,5 +77,6 @@ def __consider_empty_state_machines(sm, EmptyStateMachineList):
     single_entry = sm.get_init_state().single_entry
     for esm in EmptyStateMachineList:
         single_entry.merge(esm.get_init_state().single_entry)
+
     return sm
 

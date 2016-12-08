@@ -1,6 +1,6 @@
-import quex.engine.state_machine.construction.parallelize as parallelize
-import quex.engine.state_machine.algorithm.beautifier     as beautifier
-import quex.engine.misc.error                             as     error
+import quex.engine.state_machine.construction.parallelize        as parallelize
+import quex.engine.state_machine.algorithm.hopcroft_minimization as hopcroft_minimization
+import quex.engine.misc.error                                    as     error
 
 def do(StateMachine_List, FilterDominatedOriginsF=True,
        MarkNotSet=set(), AlllowInitStateAcceptF=False):
@@ -55,7 +55,7 @@ def do(StateMachine_List, FilterDominatedOriginsF=True,
         assert sm.is_DFA_compliant(), sm.get_string(Option="hex")
 
     # (2) setup all patterns in paralell 
-    sm = parallelize.do(StateMachine_List, CommonTerminalStateF=False) #, CloneF=False)
+    sm = parallelize.do(StateMachine_List, CommonTerminalStateF=False)
     __check("Parallelization", sm, AlllowInitStateAcceptF)
 
     # (4) determine for each state in the DFA what is the dominating original 
@@ -64,7 +64,7 @@ def do(StateMachine_List, FilterDominatedOriginsF=True,
     __check("Filter Dominated Origins", sm, AlllowInitStateAcceptF)
 
     # (3) convert the state machine to an DFA (paralellization created an NFA)
-    sm = beautifier.do(sm)
+    sm = hopcroft_minimization.do(sm, CreateNewStateMachineF=False)
     __check("NFA to DFA, Hopcroft Minimization", sm, AlllowInitStateAcceptF)
     
     return sm
