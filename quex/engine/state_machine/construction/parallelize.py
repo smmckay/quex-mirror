@@ -44,14 +44,13 @@ def do(StateMachineList, CommonTerminalStateF=True, CloneF=True):
     #     states with new ids, but the 'behavior' remains. This allows
     #     state machines to appear twice, or being used in 'larger'
     #     conglomerates.
-    clone_list = state_machine_list
 
     # (*) collect all transitions from both state machines into a single one
     #     (clone to ensure unique identifiers of states)
     new_init_state = State() 
     result         = StateMachine(InitState=new_init_state)
 
-    for clone in clone_list:
+    for clone in state_machine_list:
         result.states.update(clone.states)
         new_init_state.target_map.add_epsilon_target_state(clone.init_state_index)
 
