@@ -6,8 +6,8 @@ import quex.engine.state_machine.construction.sequentialize          as     sequ
 import quex.engine.state_machine.algorithm.beautifier   as     beautifier
 import quex.engine.state_machine.construction.ambiguous_post_context as     ambiguous_post_context
 
-from   quex.blackboard import E_PreContextIDs, \
-                              setup as Setup
+from   quex.constants  import E_PreContextIDs
+from   quex.blackboard import setup as Setup
 
 
 def do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReference):

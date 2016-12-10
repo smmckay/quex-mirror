@@ -4,7 +4,7 @@ import quex.engine.misc.error          as     error
 from   quex.engine.misc.tools          import typed
 import quex.blackboard                 as     blackboard
 from   quex.blackboard                 import setup as Setup
-from   quex.blackboard                 import E_IncidenceIDs
+from   quex.constants                  import E_IncidenceIDs
 
 @typed(ModePrepList=[Mode_Prep])
 def do_pre(ModePrepList):

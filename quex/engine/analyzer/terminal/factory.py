@@ -9,8 +9,8 @@ from   quex.engine.misc.tools                      import typed
 from   quex.output.cpp.counter_for_pattern         import map_SmLineColumnCountInfo_to_code
 
 import quex.blackboard as blackboard
-from   quex.blackboard import Lng, \
-                              E_IncidenceIDs, \
+from   quex.blackboard import Lng
+from   quex.constants  import E_IncidenceIDs, \
                               E_TerminalType
 
 class TerminalFactory:

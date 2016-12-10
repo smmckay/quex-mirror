@@ -1,7 +1,7 @@
 from   quex.engine.misc.interval_handling import NumberSet, Interval
-from   quex.blackboard                    import E_Border, \
-                                                 E_StateIndices, \
-                                                 setup as Setup
+from   quex.engine.state_machine.state.target_map_ops import E_Border
+from   quex.constants                     import E_StateIndices
+from   quex.blackboard                    import setup as Setup
 from   operator import attrgetter
 
 class TargetMap:
@@ -111,11 +111,14 @@ class TargetMap:
         for target_index, trigger_set in self.__db.items():
             if trigger_set.is_empty(): del self.__db[target_index]
 
+    def get_transition_n(self):
+        return len(self.__db)
+
     def get_trigger_set_union(self):
-        result = NumberSet()
+        interval_list = []
         for trigger_set in self.__db.itervalues():
-            result.unite_with(trigger_set)
-        return result
+            interval_list.extend(trigger_set.get_intervals())
+        return NumberSet.from_IntervalList(interval_list)
 
     def get_drop_out_trigger_set_union(self):
         """This function returns the union of all trigger sets that do not
@@ -168,6 +171,10 @@ class TargetMap:
 
     def get_map(self):
         return self.__db
+
+    def update(self, Other):
+        self.__db.update(Other.__db)
+        self.__epsilon_target_index_list.extend(Other.__epsilon_target_index_list)
 
     def get_trigger_set_line_up(self, Key=None):
         ## WATCH AND SEE THAT WE COULD CACHE HERE AND GAIN A LOT OF SPEED during construction

@@ -6,7 +6,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from quex.engine.state_machine.core import *
 from quex.engine.analyzer.transition_map import TransitionMap
-from quex.blackboard                import E_StateIndices
+from quex.constants                 import E_StateIndices
 
 if "--hwut-info" in sys.argv:
     print "DFA: Get Trigger Map (intervals --> target states)"

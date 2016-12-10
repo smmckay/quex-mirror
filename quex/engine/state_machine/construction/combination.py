@@ -24,10 +24,11 @@ def do(StateMachine_List, FilterDominatedOriginsF=True,
     if len(StateMachine_List) == 0:
         return None
 
-    def __check(Place, sm, AlllowInitStateAcceptF):
+    def __insight_check(Place, sm, AlllowInitStateAcceptF):
         __check_on_orphan_states(Place, sm)
         if not AlllowInitStateAcceptF:
             __check_on_init_state_not_acceptance(Place, sm)
+        error.insight("%s done." % Place)
 
     def __check_on_orphan_states(Place, sm):
         orphan_state_list = sm.get_orphaned_state_index_list()
@@ -43,6 +44,16 @@ def do(StateMachine_List, FilterDominatedOriginsF=True,
                       "Initial state 'accepts'. This should never happen.\n" + \
                       "Please, log a defect at the projects web site quex.sourceforge.net.\n")
 
+    def __insight_begin(SM_List):
+        ttn = 0
+        for sm in SM_List:
+            ttn += sum(state.target_map.get_transition_n() 
+                       for state in sm.states.itervalues())
+        error.insight("Combine Patterns: %i patterns; %i total transition number;" \
+                      % (len(SM_List), ttn))
+
+    __insight_begin(StateMachine_List)
+
     # (1) mark at each state machine the machine and states as 'original'.
     #      
     # This is necessary to trace in the combined state machine the pattern that
@@ -55,16 +66,18 @@ def do(StateMachine_List, FilterDominatedOriginsF=True,
         assert sm.is_DFA_compliant(), sm.get_string(Option="hex")
 
     # (2) setup all patterns in paralell 
-    sm = parallelize.do(StateMachine_List, CommonTerminalStateF=False)
-    __check("Parallelization", sm, AlllowInitStateAcceptF)
+    sm = parallelize.do([sm.clone() for sm in StateMachine_List], 
+                        CommonTerminalStateF=False) 
+    __insight_check("Combine patterns", sm, AlllowInitStateAcceptF)
+
 
     # (4) determine for each state in the DFA what is the dominating original 
     #     state
     if FilterDominatedOriginsF: sm.filter_dominated_origins()
-    __check("Filter Dominated Origins", sm, AlllowInitStateAcceptF)
+    __insight_check("Clean-up state entry operations", sm, AlllowInitStateAcceptF)
 
     # (3) convert the state machine to an DFA (paralellization created an NFA)
     sm = hopcroft_minimization.do(sm, CreateNewStateMachineF=False)
-    __check("NFA to DFA, Hopcroft Minimization", sm, AlllowInitStateAcceptF)
+    __insight_check("Hopcroft Minimization", sm, AlllowInitStateAcceptF)
     
     return sm

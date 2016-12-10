@@ -1,5 +1,5 @@
 from quex.engine.state_machine.core import StateMachine
-from quex.blackboard                import E_Commonality
+from quex.constants                 import E_Commonality
 
 class Checker:
     """Checks whether one state machine may match a lexeme that is the START of

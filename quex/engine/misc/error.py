@@ -3,6 +3,8 @@ import quex.engine.misc.similarity as     similarity
 from   quex.input.code.base        import SourceRef, SourceRef_VOID
 
 from   StringIO import StringIO
+
+import time
 import types
 import sys
 import os
@@ -157,4 +159,23 @@ def verify_word_in_list(Word, WordList, Comment, Fh_or_Sr=-1, ExitF=True, Suppre
 
     return False
 
+__insight_ref_str    = ""
+__insight_time_begin = None
+def insight_set_reference_str(RefStr):
+    global __insight_ref_str
+    if RefStr is None: __insight_ref_str = ""
+    else:              __insight_ref_str = "%s: " % RefStr
+
+def insight(Msg):
+    global __reference_to_setup
+    global __insight_ref_str
+    global __insight_time_begin 
+
+    if __insight_time_begin is None: __insight_time_begin = time.time()
+
+    if not __reference_to_setup.insight_f: return
+
+    time_sec = time.time() - __insight_time_begin
+    #memory = 4711 # psutils.memory_usage()
+    print "%5is  %s%s" % (time_sec, __insight_ref_str, Msg)
 

@@ -2,12 +2,12 @@
 #       "https://en.wikipedia.org/wiki/Powerset_construction"
 #
 # (C) Frank-Rene Schaefer
-from   quex.engine.state_machine.core                 import StateMachine
-from   quex.engine.state_machine.state.core           import State
+#from   quex.engine.state_machine.core                 import StateMachine
+#from   quex.engine.state_machine.state.core           import State
 from   quex.engine.state_machine.state.target_map_ops import get_elementary_trigger_sets
 from   quex.engine.state_machine.index                import map_state_combination_to_index
 
-def do(SM, Class_StateMachine=StateMachine, Class_State=State):
+def do(SM, Class_StateMachine=None, Class_State=None):
     """Creates a deterministic finite automaton (DFA) from a state machine 
     - which may be a NFA (non-deterministic finite automaton). 
     
@@ -17,6 +17,9 @@ def do(SM, Class_StateMachine=StateMachine, Class_State=State):
     sets. A very good description of the subset construction algorithm can be
     found in 'Engineering a Compiler' by Keith Cooper.
     """
+    Class_StateMachine = SM.__class__
+    Class_State        = SM.get_init_state().__class__
+
     # (*) create the result state machine
     initial_state_epsilon_closure = SM.get_epsilon_closure(SM.init_state_index) 
 

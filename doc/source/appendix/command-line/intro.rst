@@ -59,6 +59,15 @@ Default: empty list
 
 Default: Lexer
 
+.. cmdoption:: --insight 
+
+    Prints insights on construction process together with time stamps. This option is usefule 
+    for large, complex, and time consuming lexical analyzer specifications.  
+
+    
+
+Default: false (disabled)
+
 .. cmdoption:: --output-directory, --odir directory
 
     ``directory`` = name of the output directory where generated files are to be written. This does 

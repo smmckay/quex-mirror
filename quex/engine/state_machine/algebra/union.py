@@ -1,5 +1,5 @@
-import quex.engine.state_machine.construction.parallelize          as     parallelize
-import quex.engine.state_machine.algorithm.beautifier as     beautifier
+import quex.engine.state_machine.construction.parallelize        as parallelize
+import quex.engine.state_machine.algorithm.hopcroft_minimization as hopcroft_minimization
 
 def do(SM_List):
     """The 'parallelize' module does a union of multiple state machines,
@@ -8,6 +8,5 @@ def do(SM_List):
     in this case.
     """
     result = parallelize.do(SM_List)
-    result = beautifier.do(result)
-    return result
+    return hopcroft_minimization.do(result, CreateNewStateMachineF=False)
 

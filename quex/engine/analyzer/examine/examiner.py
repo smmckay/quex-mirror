@@ -1,7 +1,7 @@
 from   quex.engine.analyzer.examine.recursive_recipe_accumulator  import RecursiveRecipeAccumulator
 from   quex.engine.analyzer.examine.state_info                    import LinearStateInfo, \
                                                                          MouthStateInfo
-from   quex.blackboard                                            import E_StateIndices
+from   quex.constants                                             import E_StateIndices
 
 from   itertools import chain
 

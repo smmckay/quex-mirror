@@ -9,7 +9,7 @@ import quex.input.regular_expression.engine       as regex
 import quex.engine.analyzer.core                  as core
 import quex.engine.analyzer.position_register_map as position_register_map
 import quex.engine.analyzer.engine_supply_factory as     engine
-from   quex.blackboard                            import  E_TransitionN
+from   quex.constants                             import  E_TransitionN
 from   operator import itemgetter
 import help
 

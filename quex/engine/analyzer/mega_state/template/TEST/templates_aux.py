@@ -25,7 +25,8 @@ from   quex.constants import INTEGER_MAX
 from   copy        import copy
 from   operator    import attrgetter
 from   collections import defaultdict
-from   quex.blackboard import E_StateIndices, E_Compression, setup as Setup
+from   quex.blackboard import setup as Setup
+from   quex.constants  import E_StateIndices, E_Compression
 
 import sys
 

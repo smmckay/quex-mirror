@@ -20,13 +20,13 @@ count = 0
 
 def join_and_meets(A, B):
     global count
-    Join = union([A, B])    
-    assert superset(Join, A)
-    assert superset(Join, B)
+    Join = union([A.clone(), B.clone()])    
+    assert superset(Join.clone(), A.clone())
+    assert superset(Join.clone(), B.clone())
 
-    Meet = intersection([A, B])    
-    assert superset(A, Meet)
-    assert superset(B, Meet)
+    Meet = intersection([A.clone(), B.clone()])    
+    assert superset(A.clone(), Meet.clone())
+    assert superset(B.clone(), Meet.clone())
     count += 1
 
 test2(join_and_meets)

@@ -25,8 +25,8 @@ from   quex.engine.misc.tools                      import typed
 from   quex.engine.misc.interval_handling          import NumberSet, NumberSet_All
 import quex.engine.misc.error                      as     error
 
-from   quex.blackboard import setup as Setup, \
-                              E_CharacterCountType, \
+from   quex.blackboard import setup as Setup
+from   quex.constants  import E_CharacterCountType, \
                               E_R
 from   collections     import namedtuple, defaultdict
 from   operator        import itemgetter

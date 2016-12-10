@@ -1,7 +1,7 @@
 import quex.output.core.state.entry as     entry
 from   quex.output.core.variable_db import variable_db
-from   quex.blackboard              import Lng, \
-                                           E_StateIndices
+from   quex.blackboard              import Lng
+from   quex.constants               import E_StateIndices
 
 def do(TheReloadState):
     assert TheReloadState.index in (E_StateIndices.RELOAD_FORWARD, \

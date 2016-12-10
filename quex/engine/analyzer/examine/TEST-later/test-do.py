@@ -8,7 +8,7 @@ from quex.engine.state_machine.TEST.helper_state_machine_shapes import *
 from quex.engine.analyzer.examine.TEST.helper                   import *
 from quex.engine.analyzer.examine.acceptance                    import RecipeAcceptance
 import quex.engine.analyzer.examine.core                        as     examination
-from quex.blackboard import E_IncidenceIDs, E_PreContextIDs
+from quex.constants import E_IncidenceIDs, E_PreContextIDs
 
 if "--hwut-info" in sys.argv:
     print "Complete Process;"

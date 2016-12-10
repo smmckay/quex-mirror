@@ -46,8 +46,9 @@ def do(file_list):
     if not Setup.token_id_foreign_definition:
         prepare_default_standard_token_ids()
 
-    for file in file_list:
-        fh = open_file_or_die(file, CodecCheckF=True)
+    for file_name in file_list:
+        error.insight("File '%s'" % file_name)
+        fh = open_file_or_die(file_name, CodecCheckF=True)
 
         # read all modes until end of file
         try:
@@ -76,6 +77,7 @@ def parse_section(fh):
 
     error.verify_word_in_list(word, blackboard.all_section_title_list, 
                         "Unknown quex section '%s'" % word, fh)
+
     try:
         # (*) determine what is defined
         #
@@ -123,6 +125,7 @@ def parse_section(fh):
             
         elif word == "define":
             parse_pattern_name_definitions(fh)
+            error.insight("Section '%s'" % word)
             return
 
         elif word == "token":       

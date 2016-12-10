@@ -31,8 +31,8 @@ from   quex.engine.misc.tools                            import typed, \
                                                                 flatten_list_of_lists
 import quex.output.cpp.templates                         as     cpp
 
-from   quex.blackboard   import setup as Setup, \
-                                E_StateIndices,  \
+from   quex.blackboard   import setup as Setup
+from   quex.constants    import E_StateIndices,  \
                                 E_IncidenceIDs, \
                                 E_TransitionN,   \
                                 E_PreContextIDs, \

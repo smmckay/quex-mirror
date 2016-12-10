@@ -2,7 +2,7 @@ from quex.engine.analyzer.examine.state_info import *
 from quex.engine.analyzer.examine.acceptance import *
 from quex.engine.operations.se_operations    import SeAccept, SeStoreInputPosition
 from quex.engine.misc.tools                  import flatten_list_of_lists
-from quex.blackboard                         import E_PreContextIDs, E_R, E_IncidenceIDs
+from quex.constants                         import E_PreContextIDs, E_R, E_IncidenceIDs
 
 from copy import deepcopy, copy
 from itertools import izip

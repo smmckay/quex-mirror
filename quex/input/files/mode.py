@@ -29,6 +29,7 @@ def parse(fh):
     # NOTE: Catching of EOF happens in caller: parse_section(...)
     skip_whitespace(fh)
     mode_name = read_identifier(fh, OnMissingStr="Missing identifier at beginning of mode definition.")
+    error.insight("Mode '%s'" % mode_name)
 
     # NOTE: constructor does register this mode in the mode_db
     new_mode = Mode_PrepPrep(mode_name, SourceRef.from_FileHandle(fh))

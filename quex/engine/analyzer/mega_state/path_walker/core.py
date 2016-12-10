@@ -112,7 +112,7 @@ where the path iterator (~ state  key) is set to the appropriate position.
 """
 import quex.engine.analyzer.mega_state.path_walker.find  as     find
 from   quex.engine.analyzer.mega_state.path_walker.state import PathWalkerState
-from   quex.blackboard                                   import E_Compression
+from   quex.constants                                    import E_Compression
 
 from   copy        import copy
 

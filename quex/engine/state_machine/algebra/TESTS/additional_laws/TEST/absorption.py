@@ -17,8 +17,8 @@ count = 0
 
 def absorbtion(A, B):
     global count
-    assert identity(union([A, intersection([A, B])]), A)
-    assert identity(intersection([A, union([A, B])]), A)
+    assert identity(union([A, intersection([A.clone(), B.clone()])]), A.clone())
+    assert identity(intersection([A, union([A.clone(), B.clone()])]), A.clone())
 
 
     count += 1

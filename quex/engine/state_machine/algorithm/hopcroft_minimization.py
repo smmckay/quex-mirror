@@ -1,6 +1,5 @@
 # (C) 2005-2011 Frank-Rene Schaefer
-import quex.engine.state_machine.index as     state_machine_index
-from   quex.engine.state_machine.core  import StateMachine, State
+import quex.engine.state_machine.index as state_machine_index
 from   itertools   import islice, ifilter, chain
 from   collections import defaultdict
 
@@ -369,7 +368,7 @@ class HopcroftMinization:
 
         return new_index
 
-def do(SM, CreateNewStateMachineF=True, Class_StateMachine=StateMachine, Class_State=State):
+def do(SM, CreateNewStateMachineF=True, Class_StateMachine=None, Class_State=None):
     """Reduces the number of states according to equivalence classes of states. It starts
        with two sets: 
        
@@ -388,6 +387,8 @@ def do(SM, CreateNewStateMachineF=True, Class_StateMachine=StateMachine, Class_S
        The original state set is replaced by the two new ones. This algorithm is 
        repeated until the state sets do not change anymore.
     """        
+    Class_StateMachine = SM.__class__
+    Class_State        = SM.get_init_state().__class__
     result = HopcroftMinization(SM)
 
     if CreateNewStateMachineF: return create_state_machine(SM, result, Class_StateMachine, Class_State)
@@ -411,7 +412,7 @@ def create_state_machine(SM, Result, Class_StateMachine, Class_State):
     state_set_containing_initial_state_i = Result.map[SM.init_state_index]
     new_init_state_index                 = map_new_state_index[state_set_containing_initial_state_i]
 
-    result = StateMachine(new_init_state_index)
+    result = Class_StateMachine(new_init_state_index)
 
     # Ensure that each target state index has a state inside the state machine
     # Build up the state machine out of the state sets

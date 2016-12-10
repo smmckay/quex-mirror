@@ -5,7 +5,8 @@ from   quex.engine.operations.operation_list        import Op, OpList
 import quex.engine.analyzer.door_id_address_label   as     dial
 from   quex.engine.analyzer.terminal.core           import Terminal
 from   quex.engine.misc.tools                       import typed
-from   quex.blackboard                              import Lng, E_R
+from   quex.blackboard                              import Lng
+from   quex.constants                               import E_R
 
 @typed(CaMap=CountActionMap)
 def do(ModeName, CaMap, OpenerPattern, CloserPattern, DoorIdExit, ReloadState, dial_db):

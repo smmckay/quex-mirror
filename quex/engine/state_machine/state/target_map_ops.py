@@ -1,7 +1,6 @@
 from   quex.engine.misc.interval_handling  import NumberSet, Interval
 from   quex.engine.misc.tools              import flatten_list_of_lists
-
-from   quex.blackboard import E_Border
+from   quex.constants import E_Border
 
 from   collections import defaultdict
 

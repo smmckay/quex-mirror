@@ -7,7 +7,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.regular_expression.engine  as regex
 import quex.engine.state_machine.algorithm.acceptance_pruning as     acceptance_pruning
 import quex.engine.analyzer.engine_supply_factory as     engine
-from   quex.blackboard                            import E_InputActions
+from   quex.constants                            import E_InputActions
 import help
 
 if "--hwut-info" in sys.argv:

@@ -3,25 +3,25 @@ title: Checking DELETE marks internally.;
 file_name: deletion.py;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ 3-begin; OK; 0.136909; 0; ]
-  [ 3-mid; OK; 0.147857; 0; ]
-  [ 3-end; OK; 0.146401; 0; ]
-  [ 2-begin; OK; 0.135452; 0; ]
-  [ 2-end; OK; 0.138829; 0; ]
-  [ 1; OK; 0.132744; 0; ]
-  [ Nonsense; OK; 0.144691; 0; ]
-  [ derived-3-begin; OK; 0.168218; 0; ]
-  [ derived-3-mid; OK; 0.146045; 0; ]
-  [ derived-3-end; OK; 0.144596; 0; ]
-  [ derived-2-begin; OK; 0.143396; 0; ]
-  [ derived-2-end; OK; 0.144568; 0; ]
-  [ derived-1; OK; 0.141314; 0; ]
-  [ derived-Nonsense; OK; 0.147267; 0; ]
-  [ before; OK; 0.139175; 0; ]
-  [ derived-before; OK; 0.145803; 0; ]
-  [ derived-deeply; OK; 0.178683; 0; ]
-  [ superset; OK; 0.143409; 0; ]
-  [ subset; OK; 0.137899; 0; ]
+  [ 3-begin; OK; 0.139880; 0; ]
+  [ 3-mid; OK; 0.141821; 0; ]
+  [ 3-end; OK; 0.138898; 0; ]
+  [ 2-begin; OK; 0.154491; 0; ]
+  [ 2-end; OK; 0.135511; 0; ]
+  [ 1; OK; 0.137381; 0; ]
+  [ Nonsense; OK; 0.141025; 0; ]
+  [ derived-3-begin; OK; 0.147573; 0; ]
+  [ derived-3-mid; OK; 0.146062; 0; ]
+  [ derived-3-end; OK; 0.161264; 0; ]
+  [ derived-2-begin; OK; 0.144383; 0; ]
+  [ derived-2-end; OK; 0.146217; 0; ]
+  [ derived-1; OK; 0.141077; 0; ]
+  [ derived-Nonsense; OK; 0.146483; 0; ]
+  [ before; OK; 0.170041; 0; ]
+  [ derived-before; OK; 0.145345; 0; ]
+  [ derived-deeply; OK; 0.179134; 0; ]
+  [ superset; OK; 0.140180; 0; ]
+  [ subset; OK; 0.142312; 0; ]
 ]
 }
 {
@@ -29,25 +29,25 @@ title: Checking PRIORITY-MARK internally.;
 file_name: priority.py;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ 3-begin; OK; 0.189895; 0; ]
-  [ 3-mid; OK; 0.190311; 0; ]
-  [ 3-end; OK; 0.183587; 0; ]
-  [ 2-begin; OK; 0.163648; 0; ]
-  [ 2-end; OK; 0.162503; 0; ]
-  [ 1; OK; 0.144908; 0; ]
-  [ Nonsense; OK; 0.155824; 0; ]
-  [ derived-3-begin; OK; 0.236663; 0; ]
-  [ derived-3-mid; OK; 0.234497; 0; ]
-  [ derived-3-end; OK; 0.234574; 0; ]
-  [ derived-2-begin; OK; 0.219192; 0; ]
-  [ derived-2-end; OK; 0.224453; 0; ]
-  [ derived-1; OK; 0.204106; 0; ]
-  [ derived-Nonsense; OK; 0.248186; 0; ]
-  [ before; OK; 0.137205; 0; ]
-  [ derived-before; OK; 0.150884; 0; ]
-  [ derived-deeply; OK; 0.180649; 0; ]
-  [ superset; OK; 0.141252; 0; ]
-  [ subset; OK; 0.140014; 0; ]
+  [ 3-begin; OK; 0.196790; 0; ]
+  [ 3-mid; OK; 0.189371; 0; ]
+  [ 3-end; OK; 0.186726; 0; ]
+  [ 2-begin; OK; 0.163592; 0; ]
+  [ 2-end; OK; 0.162300; 0; ]
+  [ 1; OK; 0.142523; 0; ]
+  [ Nonsense; OK; 0.157186; 0; ]
+  [ derived-3-begin; OK; 0.232549; 0; ]
+  [ derived-3-mid; OK; 0.235480; 0; ]
+  [ derived-3-end; OK; 0.236756; 0; ]
+  [ derived-2-begin; OK; 0.237115; 0; ]
+  [ derived-2-end; OK; 0.217595; 0; ]
+  [ derived-1; OK; 0.207389; 0; ]
+  [ derived-Nonsense; OK; 0.227116; 0; ]
+  [ before; OK; 0.139175; 0; ]
+  [ derived-before; OK; 0.146495; 0; ]
+  [ derived-deeply; OK; 0.183585; 0; ]
+  [ superset; OK; 0.145496; 0; ]
+  [ subset; OK; 0.143810; 0; ]
 ]
 }
 {
@@ -55,7 +55,7 @@ title: Local variables.;
 file_name: local-variables.sh;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ ; OK; 3.062914; 0; ]
+  [ ; OK; 3.072984; 0; ]
 ]
 }
 {
@@ -63,10 +63,10 @@ title: PRIORITY-MARK or DELETION on not existing pattern.;
 file_name: unvalid-marks.sh;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ PRIORITY-good; OK; 0.403904; 0; ]
-  [ PRIORITY-fail; OK; 0.401255; 0; ]
-  [ DELETION-good; OK; 0.394148; 0; ]
-  [ DELETION-fail; OK; 0.412805; 0; ]
+  [ PRIORITY-good; OK; 0.555427; 0; ]
+  [ PRIORITY-fail; OK; 0.390253; 0; ]
+  [ DELETION-good; OK; 0.399590; 0; ]
+  [ DELETION-fail; OK; 0.393808; 0; ]
 ]
 }
 {
@@ -75,7 +75,7 @@ title_group: Precedence;
 file_name: derived-before-base.sh;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ ; OK; 3.144126; 0; ]
+  [ ; OK; 3.099733; 0; ]
 ]
 }
 {
@@ -84,6 +84,6 @@ title_group: Precedence;
 file_name: large-tree.sh;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ ; OK; 2.282765; 0; ]
+  [ ; OK; 2.272099; 0; ]
 ]
 }

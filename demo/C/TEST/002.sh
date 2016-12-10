@@ -2,7 +2,7 @@
 if [[ $1 == "--hwut-info" ]]; then
     echo "demo/002: Indentation Based Scopes"
     echo "CHOICES:  NDEBUG, DEBUG, customized;"
-    echo "HAPPY:    [0-9]+;"
+    # echo "HAPPY:    [0-9]+;"
     echo "SAME;"
     exit
 fi

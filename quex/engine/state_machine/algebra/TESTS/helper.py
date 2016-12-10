@@ -62,18 +62,18 @@ assert all(isinstance(dfa, StateMachine) for dfa in __dfa_list)
 def iterate1():
     global __dfa_list
     for dfa in __dfa_list:
-        yield dfa
+        yield dfa.clone()
 
 def iterate2():
     for dfa0 in __dfa_list:
         for dfa1 in __dfa_list:
-            yield dfa0, dfa1
+            yield dfa0.clone(), dfa1.clone()
 
 def iterate3():
     for i, dfa0 in enumerate(__dfa_list):
         for k, dfa1 in enumerate(__dfa_list[i:]):
             for dfa2 in __dfa_list[k:]:
-                yield dfa0, dfa1, dfa2
+                yield dfa0.clone(), dfa1.clone(), dfa2.clone()
 
 def test1(function):
     for arg in iterate1():

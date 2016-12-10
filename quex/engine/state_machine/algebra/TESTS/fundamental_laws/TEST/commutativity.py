@@ -16,12 +16,12 @@ count = 0
 
 def commutativity(A, B):
     global count
-    first  = union([A, B])
-    second = union([B, A])
+    first  = union([A.clone(), B.clone()])
+    second = union([B.clone(), A.clone()])
     assert identity(first, second)
 
-    first  = intersection([A, B]) 
-    second = intersection([B, A]) 
+    first  = intersection([A.clone(), B.clone()]) 
+    second = intersection([B.clone(), A.clone()]) 
     assert identity(first, second)
 
     count += 1

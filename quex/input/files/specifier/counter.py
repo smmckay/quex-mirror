@@ -23,8 +23,8 @@ from   quex.engine.misc.file_in                       import check, \
                                                              skip_whitespace, \
                                                              read_identifier, \
                                                              read_integer
-from   quex.blackboard import E_CharacterCountType, \
-                              setup as Setup
+from   quex.constants  import E_CharacterCountType
+from   quex.blackboard import setup as Setup
 
 from   collections import defaultdict
 from   operator    import itemgetter

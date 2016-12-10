@@ -6,7 +6,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine                   as     regex
 import quex.engine.state_machine.algorithm.acceptance_pruning as     acceptance_pruning
-from   quex.blackboard                                        import E_InputActions
+from   quex.constants                                         import E_InputActions
 import help
 
 choice_str = "CHOICES: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10;"

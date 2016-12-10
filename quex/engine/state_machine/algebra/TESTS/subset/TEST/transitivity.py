@@ -20,11 +20,11 @@ count = 0
 
 def transitivity(A, B, C):
     global count
-    Bnew = union([A, B])    # => Bnew = superset of A
-    Cnew = union([Bnew, C]) # => Cnew = superset of Bnew
-    assert superset(Bnew, A)
-    assert superset(Cnew, Bnew)
-    assert superset(Cnew, A)
+    Bnew = union([A.clone(), B.clone()])    # => Bnew = superset of A
+    Cnew = union([Bnew.clone(), C.clone()]) # => Cnew = superset of Bnew
+    assert superset(Bnew.clone(), A.clone())
+    assert superset(Cnew.clone(), Bnew.clone())
+    assert superset(Cnew.clone(), A.clone())
 
     count += 1
 

@@ -6,9 +6,9 @@ from   quex.engine.analyzer.state.entry_action     import TransitionAction
 from   quex.engine.analyzer.door_id_address_label  import DoorID
 from   quex.engine.operations.operation_list       import OpList, Op
 from   quex.engine.misc.tools                      import typed
-from   quex.blackboard                             import setup as Setup, \
-                                                          E_IncidenceIDs, \
-                                                          E_StateIndices
+from   quex.blackboard import setup as Setup
+from   quex.constants  import E_IncidenceIDs, \
+                              E_StateIndices
 
 class Processor(object):
     __slots__ = ("_index", "entry")

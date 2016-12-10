@@ -67,6 +67,12 @@ Option("analyzer_class", "[name ::]* name",
     """generates a lexical analyzer class \\v{Lexer} in default name space \\v{quex}.
     """
     ),
+Option("insight_f", None,
+    """
+    Prints insights on construction process together with time stamps. This
+    option is usefule for large, complex, and time consuming lexical
+    analyzer specifications.
+    """),
 Option("output_directory", "directory",
     """
      \\v{directory} = name of the output directory where generated files are 

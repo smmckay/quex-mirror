@@ -359,6 +359,22 @@ class NumberSet(object):
             result.unite_with(x)
         return result
 
+    @staticmethod
+    def from_IntervalList(IntervalList):
+        result = NumberSet()
+        if not IntervalList: return result
+
+        iterable = iter(sorted(IntervalList))
+        prev     = iterable.next()
+        result.__intervals.append(prev)
+        for interval in iterable:
+            if interval.begin <= prev.end: 
+                prev.end = interval.end
+            else:                          
+                prev = interval.clone()
+                result.__intervals.append(prev)
+        return result
+
     def __clone_intervals(self):
         return [ Interval(x.begin, x.end) for x in self.__intervals ]
 

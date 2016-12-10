@@ -3,7 +3,7 @@ from   quex.engine.analyzer.door_id_address_label        import DialDB
 import quex.engine.analyzer.mega_state.path_walker.find  as     find
 import quex.engine.analyzer.engine_supply_factory        as     engine
 from   quex.engine.analyzer.core                         import Analyzer
-from   quex.blackboard                                   import E_Compression, \
+from   quex.constants                                    import E_Compression, \
                                                                 E_StateIndices
 
 def find_core(sm, SelectF=False):

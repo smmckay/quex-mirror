@@ -34,7 +34,7 @@ class EncodingTrafoByTable(EncodingTrafo, list):
 
         self.BadLexatomSet = drain_set.complement(Setup.buffer_codec.lexatom_range)
 
-    def do_transition(self, sm, FromSi, from_target_map, ToSi, beautifier):
+    def do_transition(self, sm, FromSi, from_target_map, ToSi):
         """RETURNS: [0] True if complete, False else.
                     [1] True if orphan states possibly generated, False else.
         """

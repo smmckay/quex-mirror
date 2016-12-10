@@ -1,6 +1,7 @@
 -------------------------------------------------------------------
 expression    = "µ/µ+/µ"
 pattern
+
 init-state = 0L
 00000 
      == [00C2]  ==> 00001
@@ -14,10 +15,11 @@ init-state = 0L
 00003 
      == [00B5]  ==> 00004
     
-00004 A(pre=32)
+00004 A(pre=29)
      == [00C2]  ==> 00003
     
-pre-context = init-state = 0L
+
+pre-context =  init-state = 0L
 00000 
      == [00B5]  ==> 00001
     
@@ -26,7 +28,8 @@ pre-context = init-state = 0L
     
 00002 A
     
-post-context backward input position detector = init-state = 0L
+
+post-context backward input position detector =  init-state = 0L
 00000 
      == [00B5]  ==> 00001
     
@@ -39,6 +42,7 @@ post-context backward input position detector = init-state = 0L
 -------------------------------------------------------------------
 expression    = "[aµ]+/[aµ]"
 pattern
+
 init-state = 0L
 00000 
      == [0061]  ==> 00001
@@ -58,7 +62,8 @@ init-state = 0L
 00004 
      == [00B5]  ==> 00001
     
-post-context backward input position detector = init-state = 0L
+
+post-context backward input position detector =  init-state = 0L
 00000 
      == [0061]  ==> 00001
      == [00B5]  ==> 00002
@@ -72,6 +77,7 @@ post-context backward input position detector = init-state = 0L
 -------------------------------------------------------------------
 expression    = "\Intersection{[^a] [\X0000-\U10FFFF]}+/\Intersection{[^a] [\X0000-\U10FFFF]}a"
 pattern
+
 init-state = 0L
 00000 
      == [0000, 0060] [0062, 007F]  ==> 00001
@@ -139,7 +145,8 @@ init-state = 0L
 00015 
      == [0080, 008F]  ==> 00012
     
-post-context backward input position detector = init-state = 0L
+
+post-context backward input position detector =  init-state = 0L
 00000 
      == [0061]  ==> 00001
     

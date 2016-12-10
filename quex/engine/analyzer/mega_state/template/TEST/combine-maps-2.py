@@ -13,8 +13,7 @@ from   quex.engine.analyzer.mega_state.template.state              import Templa
 from   quex.engine.analyzer.mega_state.template.TEST.templates_aux import *
 
 from   quex.engine.misc.interval_handling import *
-from   quex.blackboard import E_StateIndices
-from   quex.constants  import INTEGER_MAX
+from   quex.constants  import E_StateIndices, INTEGER_MAX
 
 
 if "--hwut-info" in sys.argv:

@@ -19,10 +19,10 @@ count = 0
 
 def complement_laws(A):
     global count
-    first  = union([A, complement(A)])
+    first  = union([A.clone(), complement(A.clone())])
     assert identity(first, StateMachine.Universal())
 
-    first  = intersection([A, complement(A)]) 
+    first  = intersection([A.clone(), complement(A.clone())]) 
     assert identity(first, StateMachine.Empty())
 
     count += 1

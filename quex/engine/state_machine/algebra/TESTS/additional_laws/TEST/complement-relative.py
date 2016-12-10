@@ -34,23 +34,23 @@ def two(A, B):
 
 def three(A, B, C):
     global count
-    diff_C_B = difference(C, B)
-    diff_C_A = difference(C, A)
-    diff_B_A = difference(B, A)
-    assert identity(difference(C, intersection([A, B])),
-                    union([diff_C_A, diff_C_B]))
-    assert identity(difference(C, union([A, B])),
-                    intersection([diff_C_A, diff_C_B]))
+    diff_C_B = difference(C.clone(), B.clone())
+    diff_C_A = difference(C.clone(), A.clone())
+    diff_B_A = difference(B.clone(), A.clone())
+    assert identity(difference(C.clone(), intersection([A.clone(), B.clone()])),
+                    union([diff_C_A.clone(), diff_C_B.clone()]))
+    assert identity(difference(C.clone(), union([A.clone(), B.clone()])),
+                    intersection([diff_C_A.clone(), diff_C_B.clone()]))
 
-    assert identity(difference(C, diff_B_A),
-                    union([intersection([A, C]), diff_C_B]))
+    assert identity(difference(C.clone(), diff_B_A.clone()),
+                    union([intersection([A.clone(), C.clone()]), diff_C_B.clone()]))
 
-    tmp = intersection([diff_B_A, C])
-    assert identity(tmp, difference(intersection([B, C]), A))
-    assert identity(tmp, intersection([B, diff_C_A]))
+    tmp = intersection([diff_B_A.clone(), C.clone()])
+    assert identity(tmp, difference(intersection([B.clone(), C.clone()]), A.clone()))
+    assert identity(tmp, intersection([B.clone(), diff_C_A.clone()]))
 
-    assert identity(union([diff_B_A, C]), 
-                    difference(union([B, C]), difference(A, C)))
+    assert identity(union([diff_B_A.clone(), C.clone()]), 
+                    difference(union([B.clone(), C.clone()]), difference(A.clone(), C.clone())))
     count += 1
 
 if   "1" in sys.argv: 

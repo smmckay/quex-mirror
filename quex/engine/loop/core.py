@@ -103,7 +103,6 @@ from   quex.engine.state_machine.core                     import StateMachine
 import quex.engine.state_machine.construction.combination as     combination
 from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
 import quex.engine.state_machine.index                    as     index
-import quex.engine.state_machine.algorithm.beautifier     as     beautifier
 from   quex.engine.operations.operation_list              import Op, \
                                                                  OpList
 from   quex.engine.counter                                import CountAction, \
@@ -115,10 +114,9 @@ from   quex.engine.misc.tools                             import typed
 import quex.engine.misc.error                             as     error
 from   quex.output.cpp.counter_for_pattern                import map_SmLineColumnCountInfo_to_code
 
-from   quex.blackboard import E_CharacterCountType, \
-                              E_R, \
-                              setup as Setup, \
-                              Lng
+from   quex.blackboard import setup as Setup, Lng
+from   quex.constants  import E_CharacterCountType, \
+                              E_R
 
 from   itertools   import chain
 
@@ -919,7 +917,7 @@ def _get_analyzer_for_loop(loop_map, EventHandler):
     )
 
     # Code Transformation
-    verdict_f, sm = Setup.buffer_codec.do_state_machine(sm, beautifier)
+    verdict_f, sm = Setup.buffer_codec.do_state_machine(sm)
 
     # Loop Analyzer
     analyzer = analyzer_generator.do(sm, 
@@ -1022,17 +1020,17 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
              [1] Appendix terminals.
     """
     # Codec Transformation
-    def transform(sm, beautifier):
+    def transform(sm):
         verdict_f, \
-        sm_transformed = Setup.buffer_codec.do_state_machine(sm, beautifier) 
+        sm_transformed = Setup.buffer_codec.do_state_machine(sm) 
         if not verdict_f:
             error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
                       "contained character not suited for given character encoding.")
         return sm_transformed
 
     appendix_sm_list = [
-        transform(sm, beautifier) for sm in AppendixSmList
-                                  if sm.get_init_state().has_transitions()
+        transform(sm) for sm in AppendixSmList
+                      if sm.get_init_state().has_transitions()
     ]
 
     # Appendix Sm Drop Out => Restore position of last loop character.

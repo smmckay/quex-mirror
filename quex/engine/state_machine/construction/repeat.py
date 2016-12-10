@@ -9,6 +9,8 @@ def do(the_state_machine, min_repetition_n = 0, max_repetition_n = -1):
         'the_state_machine'. Minimum and maximim number of repetitions can be specified.
     """
     assert min_repetition_n <= max_repetition_n or max_repetition_n == -1
+    def clone_n(SM, N):
+        return [SM.clone() for i in range(N)]
 
     # (*) if minimum number of repetitions is required, then the initial
     #     repetition is produced by sequentialization.
@@ -20,7 +22,8 @@ def do(the_state_machine, min_repetition_n = 0, max_repetition_n = -1):
         # the first N repetitions happend, the state machines enters into the
         # following 'repetition states'.
         # NOTE: sequentialize clones the given state machines 
-        initial_state_machine = sequentialize.do([the_state_machine] * min_repetition_n)
+        sm_list = clone_n(the_state_machine, min_repetition_n)
+        initial_state_machine = sequentialize.do(sm_list)
 
     if max_repetition_n != -1:
         # if a maximum number of repetitions is given, then the state machine needs 
@@ -28,25 +31,30 @@ def do(the_state_machine, min_repetition_n = 0, max_repetition_n = -1):
         # is computed.
         # NOTE: sequentialize clones the given state machines 
         if initial_state_machine is not None: 
-            return sequentialize.do([initial_state_machine] 
-                                    + [the_state_machine] * (max_repetition_n - min_repetition_n),
+            sm_list = [initial_state_machine]
+            sm_list.extend(
+                clone_n(the_state_machine, (max_repetition_n - min_repetition_n))
+            )
+            return sequentialize.do(sm_list, 
                                     LeaveIntermediateAcceptanceStatesF = True)
         else:
-            concatenation = sequentialize.do([the_state_machine] * max_repetition_n,
+            sm_list = clone_n(the_state_machine, max_repetition_n)
+            concatenation = sequentialize.do(sm_list,
                                              LeaveIntermediateAcceptanceStatesF = True)
             # Here, zero initial repetitions are required, thus the initial state must be
             # an acceptance state.
             concatenation.states[concatenation.init_state_index].set_acceptance(True)                                      
             return concatenation
-
-    # (*) clone the state machine
-    #     NOTE: kleene_closure() clones the state machine.
-    pure_repetition = kleene_closure(the_state_machine)
-    if initial_state_machine is not None: 
-        return sequentialize.do([initial_state_machine] + [ pure_repetition ],
-                                LeaveIntermediateAcceptanceStatesF = True)
     else:
-        return pure_repetition
+        # (*) clone the state machine
+        #     NOTE: kleene_closure() clones the state machine.
+        pure_repetition = kleene_closure(the_state_machine)
+        if initial_state_machine is not None: 
+            sm_list = [initial_state_machine, pure_repetition]
+            return sequentialize.do(sm_list,
+                                    LeaveIntermediateAcceptanceStatesF = True)
+        else:
+            return pure_repetition
 
 def kleene_closure(the_state_machine):
     """Creates a state machine that is repeated any number of times 

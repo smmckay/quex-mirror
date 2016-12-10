@@ -1,23 +1,15 @@
 {
-title: Unique State Indices;
-file_name: test-unique-state-indices.py;
-hwut_info_time: 1480539706L;
-result_list: [
-  [ ; OK; 0.369388; 0; ]
-]
-}
-{
 title: Cut patterns from P that begin with Q.;
 title_group: Complement Begin;
 file_name: test-complement_begin.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ 0; OK; 0.364920; 0; ]
-  [ 1; OK; 0.235504; 0; ]
-  [ 2; OK; 0.203513; 0; ]
-  [ 3; OK; 0.265329; 0; ]
-  [ 4; OK; 0.564633; 0; ]
-  [ 5; OK; 0.511906; 0; ]
+  [ 0; OK; 0.343706; 0; ]
+  [ 1; OK; 0.212528; 0; ]
+  [ 2; OK; 0.197667; 0; ]
+  [ 3; OK; 0.253483; 0; ]
+  [ 4; OK; 0.540534; 0; ]
+  [ 5; OK; 0.513304; 0; ]
 ]
 }
 {
@@ -26,12 +18,12 @@ title_group: Complement Begin;
 file_name: test-complement_in.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ 0; OK; 0.378970; 0; ]
-  [ 1; OK; 0.259846; 0; ]
-  [ 2; OK; 0.216045; 0; ]
-  [ 3; OK; 0.235817; 0; ]
-  [ 4; OK; 0.413127; 0; ]
-  [ 5; OK; 0.577599; 0; ]
+  [ 0; OK; 0.392270; 0; ]
+  [ 1; OK; 0.274206; 0; ]
+  [ 2; OK; 0.225723; 0; ]
+  [ 3; OK; 0.235595; 0; ]
+  [ 4; OK; 0.431650; 0; ]
+  [ 5; OK; 0.584033; 0; ]
 ]
 }
 {
@@ -40,12 +32,12 @@ title_group: Complement End;
 file_name: test-complement_end.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ 0; OK; 0.290816; 0; ]
-  [ 1; OK; 0.289363; 0; ]
-  [ 2; OK; 0.222164; 0; ]
-  [ 3; OK; 0.254110; 0; ]
-  [ 4; OK; 0.457690; 0; ]
-  [ 5; OK; 0.702920; 0; ]
+  [ 0; OK; 0.269111; 0; ]
+  [ 1; OK; 0.283065; 0; ]
+  [ 2; OK; 0.216186; 0; ]
+  [ 3; OK; 0.243877; 0; ]
+  [ 4; OK; 0.457426; 0; ]
+  [ 5; OK; 0.597168; 0; ]
 ]
 }
 {
@@ -54,12 +46,12 @@ title_group: Cut Begin;
 file_name: test-cut_begin.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ 0; OK; 0.287470; 0; ]
-  [ 1; OK; 0.181561; 0; ]
-  [ 2; OK; 0.167653; 0; ]
-  [ 3; OK; 0.199787; 0; ]
-  [ 4; OK; 0.309793; 0; ]
-  [ 5; OK; 0.193645; 0; ]
+  [ 0; OK; 0.300511; 0; ]
+  [ 1; OK; 0.182769; 0; ]
+  [ 2; OK; 0.168411; 0; ]
+  [ 3; OK; 0.195493; 0; ]
+  [ 4; OK; 0.318353; 0; ]
+  [ 5; OK; 0.200981; 0; ]
 ]
 }
 {
@@ -68,11 +60,11 @@ title_group: Cut End;
 file_name: test-cut_end.py;
 hwut_info_time: 1480539706L;
 result_list: [
-  [ 0; OK; 0.397911; 0; ]
-  [ 1; OK; 0.253147; 0; ]
-  [ 2; OK; 0.212685; 0; ]
-  [ 3; OK; 0.244200; 0; ]
-  [ 4; OK; 0.411325; 0; ]
-  [ 5; OK; 0.241182; 0; ]
+  [ 0; OK; 0.423151; 0; ]
+  [ 1; OK; 0.261924; 0; ]
+  [ 2; OK; 0.221489; 0; ]
+  [ 3; OK; 0.242837; 0; ]
+  [ 4; OK; 0.414803; 0; ]
+  [ 5; OK; 0.233452; 0; ]
 ]
 }

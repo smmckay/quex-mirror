@@ -1,7 +1,9 @@
-import quex.engine.misc.error             as     error
-from   quex.engine.misc.interval_handling import NumberSet, Interval_All, Interval
-from   quex.engine.misc.tools             import typed
-from   quex.constants                     import INTEGER_MAX
+import quex.engine.misc.error                                    as     error
+from   quex.engine.misc.interval_handling                        import NumberSet, Interval_All, Interval
+import quex.engine.state_machine.algorithm.nfa_to_dfa            as     nfa_to_dfa
+import quex.engine.state_machine.algorithm.hopcroft_minimization as     hopcroft_minimization
+from   quex.engine.misc.tools                                    import typed
+from   quex.constants                                            import INTEGER_MAX
 
 
 class EncodingTrafo:
@@ -22,7 +24,7 @@ class EncodingTrafo:
         # To be adapted later by 'adapt_source_and_drain_range()'
         self.lexatom_range = Interval_All()
 
-    def do_state_machine(self, sm, beautifier):
+    def do_state_machine(self, sm):
         """Transforms a given state machine from 'Unicode Driven' to another
            character encoding type.
         
@@ -42,8 +44,7 @@ class EncodingTrafo:
         for from_si, state in sm.states.items():
             target_map = state.target_map.get_map()
             for to_si in target_map.keys():
-                c_f, op_f = self.do_transition(sm, from_si, target_map, to_si, 
-                                               beautifier)
+                c_f, op_f = self.do_transition(sm, from_si, target_map, to_si) 
                 complete_f         &= c_f
                 orphans_possible_f |= op_f
 
@@ -57,13 +58,10 @@ class EncodingTrafo:
         # AFTER: Whatever happend, the transitions in the state machine MUST
         #        lie in the drain_set.
         # sm.assert_range(self.drain_set)
-
         if not sm.is_DFA_compliant(): 
-            return complete_f, beautifier.do(sm)
-        elif self.hopcroft_minimization_always_makes_sense():                         
-            return complete_f, beautifier.do(sm, NfaToDfaF=False)
-        else:                         
-            return complete_f, sm
+            sm = nfa_to_dfa.do(sm)
+        sm = hopcroft_minimization.do(sm, CreateNewStateMachineF=False)
+        return complete_f, sm
 
     def do_NumberSet(self, number_set):              
         assert False, "Must be implemented by derived class"
@@ -121,7 +119,7 @@ class EncodingTrafoUnicode(EncodingTrafo):
     def __init__(self, SourceSet, DrainSet):
         EncodingTrafo.__init__(self, "unicode", SourceSet, DrainSet)
 
-    def do_transition(self, sm, FromSi, from_target_map, ToSi, beautifier):
+    def do_transition(self, sm, FromSi, from_target_map, ToSi):
         """RETURNS: [0] True if complete, False else.
                     [1] True if orphan states possibly generated, False else.
         """

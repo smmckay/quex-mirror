@@ -1,7 +1,7 @@
 from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.operations.operation_list      import OpList, \
                                                          Op
-from   quex.blackboard  import E_InputActions, E_R
+from   quex.constants  import E_InputActions, E_R
 
 class Base:
     def is_FORWARD(self):                  return False

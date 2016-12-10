@@ -6,11 +6,11 @@ import quex.engine.operations.shared_tail             as     command_list_shared
 import quex.engine.analyzer.engine_supply_factory     as     engine
 from   quex.output.core.dictionary                    import db
 
-from   quex.blackboard import E_Op, \
-                              E_R, \
-                              E_Compression, \
-                              setup as Setup, \
+from   quex.blackboard import setup as Setup, \
                               Lng
+from   quex.constants  import E_Op, \
+                              E_R, \
+                              E_Compression
 
 from   itertools   import permutations
 from   collections import defaultdict

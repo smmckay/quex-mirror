@@ -10,9 +10,10 @@ from   quex.engine.analyzer.terminal.core         import Terminal
 import quex.engine.analyzer.core                  as     analyzer_generator
 
 from   quex.engine.misc.tools import typed
-from   quex.blackboard        import E_IncidenceIDs, \
-                                     setup as Setup, \
-                                     Lng
+
+from   quex.constants  import E_IncidenceIDs
+from   quex.blackboard import setup as Setup, \
+                              Lng
 
 # MAIN:      sm --> analyzer
 #            sm_txt --> code_analyzer

@@ -1,7 +1,7 @@
 from   quex.engine.operations.operation_list import OpList
 
-from   quex.blackboard import E_StateIndices, \
-                              E_TriggerIDs
+from   quex.constants import E_StateIndices, \
+                             E_TriggerIDs
 
 from   collections     import namedtuple
 

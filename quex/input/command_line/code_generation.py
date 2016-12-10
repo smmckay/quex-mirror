@@ -12,8 +12,9 @@ import quex.engine.misc.error                        as     error
 import quex.engine.state_machine.transformation.core as     bc_factory
 
 
-from   quex.blackboard import setup as Setup, E_Compression
-import quex.blackboard as blackboard
+from   quex.blackboard import setup as Setup
+import quex.blackboard as     blackboard
+from   quex.constants  import E_Compression
 
 from   operator import itemgetter
 import re

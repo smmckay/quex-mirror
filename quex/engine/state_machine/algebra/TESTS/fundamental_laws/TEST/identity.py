@@ -18,10 +18,10 @@ def identity_vs_empty_and_universal(A):
     global count
     count += 1
     # if count != 3: return
-    first  = union([A, StateMachine.Empty()])
-    assert identity(first, A)
+    first  = union([A.clone(), StateMachine.Empty()])
+    assert identity(first, A.clone())
 
-    first  = intersection([A, StateMachine.Universal()]) 
+    first  = intersection([A.clone(), StateMachine.Universal()]) 
     assert identity(first, A)
 
 add_more_DFAs()

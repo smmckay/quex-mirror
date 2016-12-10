@@ -2,5 +2,6 @@ State Machine Algebra
 -------------------------------
 *.py
 --not test-cut_in.py
+--not *-DELETED
 -------------------------------
 

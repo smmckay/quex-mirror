@@ -1,10 +1,10 @@
 import quex.engine.state_machine.index  as     sm_index
 from   quex.engine.misc.tools           import print_callstack, \
                                                TypedSet
-from   quex.blackboard                  import E_IncidenceIDs, \
-                                               E_StateIndices, \
-                                               E_DoorIdIndex, \
-                                               Lng
+from   quex.blackboard import Lng
+from   quex.constants  import E_IncidenceIDs, \
+                              E_StateIndices, \
+                              E_DoorIdIndex
 from   collections import namedtuple
 #______________________________________________________________________________
 #

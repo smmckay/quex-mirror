@@ -8,10 +8,10 @@ commands of multi-entry state machines.
 """
 from quex.engine.misc.tools import typed
 
-from quex.blackboard import E_PreContextIDs, \
-                            E_IncidenceIDs, \
-                            E_PostContextIDs, \
-                            E_R
+from quex.constants import E_PreContextIDs, \
+                           E_IncidenceIDs, \
+                           E_PostContextIDs, \
+                           E_R
 
 class SeOp:
     def __init__(self, AcceptanceId):

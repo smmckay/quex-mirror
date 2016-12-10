@@ -7,7 +7,7 @@ from   quex.engine.misc.interval_handling                    import *
 import quex.engine.state_machine.core                   as core
 import quex.engine.state_machine.algorithm.nfa_to_dfa   as nfa_to_dfa
 import quex.engine.analyzer.mega_state.path_walker.core as paths 
-from   quex.blackboard                                  import E_Compression
+from   quex.constants                                   import E_Compression
 
 from   helper import find_core
 

@@ -68,15 +68,15 @@
 #
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________
-from   quex.blackboard       import E_Op, \
-                                    E_R, \
-                                    E_PreContextIDs
 from   quex.engine.operations.content_router_on_state_key import RouterOnStateKeyContent
 from   quex.engine.operations.content_accepter            import AccepterContent, \
                                                                  repr_pre_context_id
 from   quex.engine.operations.content_terminal_router     import RouterContent, \
                                                                  repr_position_register
 from   quex.engine.misc.tools import delete_if
+from   quex.constants import E_Op, \
+                             E_R, \
+                             E_PreContextIDs
 
 from   collections import namedtuple
 import types

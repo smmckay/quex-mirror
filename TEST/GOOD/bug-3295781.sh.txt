@@ -1,13 +1,13 @@
     /* analyzer_function */ QUEX_NAME(Y_analyzer_function)
     /* analyzer_function */ QUEX_NAME(X_analyzer_function)
-    __quex_debug_template_state(269, state_key);
+    __quex_debug_template_state(267, state_key);
 QUEX_NAME(Y_analyzer_function)(QUEX_TYPE_ANALYZER* me) 
-    __quex_debug_path_walker_state(281, path_walker_281_path_base, path_iterator);
-    __quex_debug_template_state(282, state_key);
-    __quex_debug_template_state(146, state_key);
+    __quex_debug_path_walker_state(279, path_walker_279_path_base, path_iterator);
+    __quex_debug_template_state(280, state_key);
+    __quex_debug_template_state(150, state_key);
 QUEX_NAME(X_analyzer_function)(QUEX_TYPE_ANALYZER* me) 
+    __quex_debug_path_walker_state(281, path_walker_281_path_base, path_iterator);
+    __quex_debug_path_walker_state(282, path_walker_282_path_base, path_iterator);
     __quex_debug_path_walker_state(283, path_walker_283_path_base, path_iterator);
-    __quex_debug_path_walker_state(284, path_walker_284_path_base, path_iterator);
-    __quex_debug_path_walker_state(285, path_walker_285_path_base, path_iterator);
-    __quex_debug_template_state(289, state_key);
+    __quex_debug_template_state(287, state_key);
 ## Compile: No output is good output

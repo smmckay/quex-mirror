@@ -3,8 +3,8 @@ import quex.engine.analyzer.mega_state.template.core    as     template_analyzer
 from   quex.engine.analyzer.mega_state.template.state   import TemplateState
 import quex.engine.analyzer.mega_state.path_walker.core as     path_analyzer
 from   quex.engine.analyzer.mega_state.target           import TargetByStateKey
-from   quex.blackboard                                  import setup as Setup, \
-                                                               E_Compression
+from   quex.blackboard import setup as Setup
+from   quex.constants  import E_Compression
 
 def do(TheAnalyzer):
     """MegaState Analysis _____________________________________________________

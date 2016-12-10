@@ -151,6 +151,7 @@ SETUP_INFO = {
     "string_accumulator_f":           [["--no-string-accumulator", "--nsacc"], SetupParTypes.NEGATED_FLAG],
     "converter_iconv_f":              [["--iconv"],                            SetupParTypes.FLAG],
     "converter_icu_f":                [["--icu"],                              SetupParTypes.FLAG],
+    "insight_f":                      [["--insight"],                              SetupParTypes.FLAG],
     "converter_user_new_func":        [["--converter-new", "--cn"],            ""],
     "converter_ucs_coding_name":      [["--converter-ucs-coding-name", "--cucn"], ""],
     "include_stack_support_f":        [["--no-include-stack", "--nois"],       SetupParTypes.NEGATED_FLAG],

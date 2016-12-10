@@ -46,8 +46,9 @@ from   quex.engine.analyzer.door_id_address_label import DialDB
 import quex.engine.state_machine.transformation.core as  bc_factory
 import quex.engine.loop.core                      as     loop
 import quex.engine.analyzer.engine_supply_factory as     engine
-from   quex.blackboard                            import E_CharacterCountType, \
-                                                         setup as Setup
+from   quex.blackboard                            import setup as Setup
+from   quex.constants                             import E_CharacterCountType
+                                                         
 
 from   operator import attrgetter
 

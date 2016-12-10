@@ -5,7 +5,7 @@ from   quex.engine.analyzer.state.entry import Entry
 import quex.engine.state_machine.index  as     index
 from   quex.engine.misc.tools           import typed
 
-from   quex.blackboard import E_IncidenceIDs
+from   quex.constants import E_IncidenceIDs
 
 from   copy  import copy
 

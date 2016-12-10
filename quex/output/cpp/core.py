@@ -8,9 +8,10 @@ from   quex.engine.misc.tools                             import all_isinstance,
                                                                  typed, \
                                                                  flatten_list_of_lists
 import quex.output.core.run_time_counter                  as     run_time_counter
-from   quex.blackboard                                    import setup as Setup, \
-                                                                 E_IncidenceIDs, \
-                                                                 Lng
+
+from   quex.blackboard import setup as Setup, \
+                              Lng
+from   quex.constants  import E_IncidenceIDs
 
 @typed(ModeNameList = [(str, unicode)])
 def do(Mode, ModeNameList):

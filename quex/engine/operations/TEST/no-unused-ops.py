@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from quex.blackboard import E_Op
+from quex.constants  import E_Op
 
 if "--hwut-info" in sys.argv:
     print "Check that there are no trailing unused Ops;"

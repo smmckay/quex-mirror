@@ -57,9 +57,9 @@ import quex.output.core.state_router               as     state_router_generator
 import quex.output.cpp.core                        as     cpp_generator
 #
 import quex.blackboard as blackboard
-from   quex.blackboard import E_Compression, \
-                              setup as Setup, \
-                              E_IncidenceIDs, \
+from   quex.constants  import E_Compression, \
+                              E_IncidenceIDs
+from   quex.blackboard import setup as Setup, \
                               signal_character_list, \
                               Lng
 

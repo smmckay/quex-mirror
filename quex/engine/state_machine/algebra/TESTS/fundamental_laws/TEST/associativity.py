@@ -16,14 +16,13 @@ count = 0
 
 def associativity(A, B, C):
     global count
-    first  = union([union([A, B]), C])
-    second = union([A, union([B, C])])
+    first  = union([union([A.clone(), B.clone()]), C.clone()])
+    second = union([A.clone(), union([B.clone(), C.clone()])])
     assert identity(first, second), \
              "First: %s;\nSecond: %s;\n" % (first, second) \
            + "A: %s;\nB: %s;\nC: %s;\n" % (A, B, C)
-
-    first  = intersection([intersection([A, B]), C])
-    second = intersection([A, intersection([B, C])])
+    first  = intersection([intersection([A.clone(), B.clone()]), C.clone()])
+    second = intersection([A, intersection([B.clone(), C.clone()])])
     assert identity(first, second), \
            "A: %s;\nB: %s;\nC: %s;\n" % (A, B, C)
     count += 1

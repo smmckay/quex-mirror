@@ -6,7 +6,8 @@ import quex.engine.analyzer.track_analysis         as     track_analysis
 from   quex.engine.analyzer.position_register_map  import print_this
 import quex.engine.analyzer.engine_supply_factory  as     engine
 import quex.engine.state_machine.construction.combination  as     combination
-from   quex.blackboard                                     import E_InputActions, setup as Setup, E_StateIndices, E_PreContextIDs, E_Op
+from   quex.constants  import E_InputActions, E_StateIndices, E_PreContextIDs, E_Op
+from   quex.blackboard import setup as Setup
 
 import sys
 import os

@@ -3,7 +3,7 @@ from   quex.engine.state_machine.state.single_entry import SingleEntry, \
                                                            SeStoreInputPosition
 from   quex.engine.state_machine.state.target_map   import TargetMap
 from   quex.engine.misc.tools import typed 
-from   quex.blackboard        import E_PreContextIDs, \
+from   quex.constants         import E_PreContextIDs, \
                                      E_IncidenceIDs
 
 class State:
@@ -68,9 +68,37 @@ class State:
     def single_entry(self):
         return self.__single_entry
 
+    def set_single_entry(self, Other):
+        self.__single_entry = Other
+
     @property
     def target_map(self):
         return self.__target_map
+
+    @staticmethod
+    def interference(StateList):
+        """RETURNS: True, if either the single_entry objects differ.
+                          Or, if the transition maps intersect.
+                    False, else.
+        """
+        if len(StateList) < 1: 
+            return False
+        prototype = StateList[0]
+        for s in StateList[1:]:
+            if not s.__single_entry.is_equal(prototype.__single_entry):
+                return True
+
+        prototype_tsu = prototype.target_map.get_trigger_set_union()
+        for s in StateList[1:]:
+            tsu = s.target_map.get_trigger_set_union()
+            if tsu.has_intersection(prototype_tsu):
+                return True
+            prototype_tsu.unite_with(tsu)
+        
+        # All single_entry operations are equal.
+        # No transition trigger set intersects.
+        # => no interference!
+        return False
 
     def has_transitions(self):
         return not self.target_map.is_empty()

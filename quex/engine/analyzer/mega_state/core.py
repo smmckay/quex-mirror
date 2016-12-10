@@ -63,8 +63,8 @@ from quex.engine.analyzer.state.core            import AnalyzerState
 from quex.engine.analyzer.state.entry           import Entry
 from quex.engine.analyzer.transition_map        import TransitionMap
 from quex.engine.misc.interval_handling         import Interval
-from quex.blackboard                            import setup as Setup, \
-                                                       E_StateIndices, \
+from quex.blackboard                            import setup as Setup
+from quex.constants                             import E_StateIndices, \
                                                        E_Compression
 
 from quex.engine.misc.tools import typed

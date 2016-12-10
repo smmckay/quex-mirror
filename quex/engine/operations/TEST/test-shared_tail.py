@@ -22,7 +22,7 @@ import os
 import sys 
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from   quex.blackboard                            import E_Op
+from   quex.constants                             import E_Op
 from   quex.engine.operations.operation_list         import *
 import quex.engine.operations.shared_tail  as     shared_tail
 from   quex.engine.operations.TEST.helper  import *

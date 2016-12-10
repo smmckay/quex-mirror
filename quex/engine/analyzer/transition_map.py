@@ -1,12 +1,11 @@
-from   quex.engine.misc.interval_handling              import Interval
-from   quex.engine.misc.tools                          import r_enumerate
+from   quex.engine.misc.interval_handling         import Interval
+from   quex.engine.misc.tools                     import r_enumerate
 from   quex.engine.analyzer.mega_state.target     import TargetByStateKey
 from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.analyzer.state.entry_action    import TransitionID
 
-from   quex.blackboard  import E_StateIndices, \
-                               setup as Setup
-from   quex.constants   import INTEGER_MAX
+from   quex.blackboard  import setup as Setup
+from   quex.constants   import INTEGER_MAX, E_StateIndices
 
 from   itertools   import izip
 from   collections import defaultdict

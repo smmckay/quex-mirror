@@ -14,7 +14,8 @@ from   quex.engine.state_machine.state.target_map_ops import get_intersection_li
 import quex.engine.state_machine.index                as     index
 
 def do(SM_List):
-    N = len(SM_List)
+    for sm in SM_List:
+        sm.assert_consistency() 
 
     if any(sm.is_Empty() for sm in SM_List): # If one state machine is '\Empty',
         return StateMachine.Empty()          # the intersection is '\Empty'
@@ -24,8 +25,9 @@ def do(SM_List):
 
     # Result state setup: A result state is setup out of a state from each DFA.
     #                     state_setup[i] is the state from DFA 'SM_List[i]'.
-    worklist = [ (result.init_state_index, init_state_setup) ]
+    worklist       = [ (result.init_state_index, init_state_setup) ]
     state_setup_db = {}
+    N              = len(SM_List)
     while worklist:
         state_index, state_setup = worklist.pop()
 

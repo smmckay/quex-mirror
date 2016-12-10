@@ -8,7 +8,7 @@ import quex.engine.state_machine.core  as core
 import quex.engine.analyzer.mega_state.path_walker.core  as paths 
 from   quex.engine.analyzer.core       import Analyzer
 import quex.engine.analyzer.engine_supply_factory      as     engine
-from   quex.blackboard                 import E_Compression
+from   quex.constants                  import E_Compression
 
 from   helper import find_core
 

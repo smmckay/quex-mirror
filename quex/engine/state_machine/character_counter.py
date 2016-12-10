@@ -2,7 +2,7 @@
 from   quex.engine.counter          import CountActionMap
 from   quex.engine.misc.tree_walker import TreeWalker
 from   quex.engine.misc.tools       import typed
-from   quex.blackboard              import E_Count
+from   quex.constants               import E_Count
 
 class SmLineColumnCountInfo:
     """Information on character counting characteristics of lexeme that match a 

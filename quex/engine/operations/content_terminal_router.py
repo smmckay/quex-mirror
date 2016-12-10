@@ -1,7 +1,7 @@
 from  quex.engine.operations.content_accepter import repr_acceptance_id
-from  quex.blackboard import E_TransitionN, \
-                             E_IncidenceIDs, \
-                             E_PostContextIDs
+from  quex.constants import E_TransitionN, \
+                            E_IncidenceIDs, \
+                            E_PostContextIDs
                              
 from copy import deepcopy
 

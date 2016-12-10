@@ -3,7 +3,7 @@ from   quex.engine.analyzer.mega_state.template.state     import TemplateState, 
                                                                  PseudoTemplateState
 from   quex.engine.analyzer.mega_state.template.candidate import TemplateStateCandidate
 
-from   quex.blackboard import E_Compression
+from   quex.constants  import E_Compression
 
 from   itertools       import ifilter, islice
 from   operator        import attrgetter

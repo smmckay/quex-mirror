@@ -23,7 +23,6 @@ from   quex.output.core.base                              import do_analyzer
 from   quex.engine.state_machine.core                     import StateMachine
 from   quex.engine.analyzer.door_id_address_label         import DoorID
 import quex.engine.analyzer.core                          as     analyzer_generator
-import quex.engine.state_machine.algorithm.beautifier     as     beautifier
 from   quex.engine.analyzer.door_id_address_label         import DialDB
 from   quex.engine.analyzer.transition_map                import TransitionMap  
 import quex.engine.state_machine.transformation.core      as     bc_factory
@@ -130,7 +129,7 @@ def get_transition_function(iid_map, Codec):
     else:               Setup.buffer_codec_set(bc_factory.do("unicode"), -1)
 
     sm        = StateMachine.from_IncidenceIdMap(iid_map)
-    dummy, sm = Setup.buffer_codec.do_state_machine(sm, beautifier)
+    dummy, sm = Setup.buffer_codec.do_state_machine(sm)
     analyzer  = analyzer_generator.do(sm, engine.CHARACTER_COUNTER, dial_db=dial_db)
     tm_txt    = do_analyzer(analyzer)
     tm_txt    = Lng.GET_PLAIN_STRINGS(tm_txt, dial_db=dial_db)

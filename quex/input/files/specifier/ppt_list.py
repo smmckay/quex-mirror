@@ -28,8 +28,8 @@ import quex.engine.loop.skip_range                  as     skip_range
 import quex.engine.loop.skip_nested_range           as     skip_nested_range
 import quex.engine.loop.indentation_counter         as     indentation_counter
 
-from   quex.blackboard import E_IncidenceIDs, \
-                              Lng
+from   quex.constants  import E_IncidenceIDs
+from   quex.blackboard import Lng
 
 
 from   collections  import namedtuple

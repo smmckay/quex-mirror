@@ -17,7 +17,7 @@ import os
 import sys 
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from   quex.blackboard                            import E_Op
+from   quex.constants                             import E_Op
 from   quex.engine.operations.operation_list         import *
 from   quex.engine.operations.shared_tail  import r_find_last_common
 from   quex.engine.operations.TEST.helper  import *

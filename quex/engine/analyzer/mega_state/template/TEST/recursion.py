@@ -34,7 +34,7 @@ from   quex.engine.operations.operation_list                       import Op
 from   quex.engine.analyzer.mega_state.template.TEST.templates_aux import *
 
 from   quex.engine.misc.interval_handling import *
-from   quex.blackboard                    import E_StateIndices, E_R
+from   quex.constants                     import E_StateIndices, E_R
 
 
 if "--hwut-info" in sys.argv:

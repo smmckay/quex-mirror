@@ -2,63 +2,63 @@
 title: Plugging Wild Cards;
 title_group: Paths;
 file_name: find-3.py;
-hwut_info_time: 1480539708L;
+hwut_info_time: 1481263798L;
 happy_pattern_list: [ DROP_OUT, d=\[0-9]+; ]
 result_list: [
-  [ 1; OK; 0.110197; 0; ]
-  [ 2; OK; 0.106033; 0; ]
-  [ 3; OK; 0.102452; 0; ]
-  [ 4; OK; 0.113303; 0; ]
+  [ 1; OK; 0.108820; 0; ]
+  [ 2; OK; 0.106740; 0; ]
+  [ 3; OK; 0.112833; 0; ]
+  [ 4; OK; 0.107595; 0; ]
 ]
 }
 {
 title: collect;
 title_group: Paths;
 file_name: find.py;
-hwut_info_time: 1480539708L;
+hwut_info_time: 1481263804L;
 happy_pattern_list: [ DROP_OUT, d=\[0-9]+; ]
 result_list: [
-  [ 1; OK; 0.105181; 0; ]
-  [ 2; OK; 0.103751; 0; ]
-  [ 3; OK; 0.102591; 0; ]
-  [ 4; OK; 0.117699; 0; ]
-  [ 5; OK; 0.110211; 0; ]
-  [ 6; OK; 0.108397; 0; ]
+  [ 1; OK; 0.106762; 0; ]
+  [ 2; OK; 0.105200; 0; ]
+  [ 3; OK; 0.103561; 0; ]
+  [ 4; OK; 0.115568; 0; ]
+  [ 5; OK; 0.113296; 0; ]
+  [ 6; OK; 0.109552; 0; ]
 ]
 }
 {
 title: find_path (mean tests);
 title_group: Paths;
 file_name: find-2.py;
-hwut_info_time: 1480539708L;
+hwut_info_time: 1481263791L;
 happy_pattern_list: [ DROP_OUT, d=\[0-9]+; ]
 result_list: [
-  [ 1; OK; 0.105596; 0; ]
-  [ 2; OK; 0.108143; 0; ]
-  [ 3; OK; 0.107693; 0; ]
-  [ 4a; OK; 0.130652; 0; ]
-  [ 4b; OK; 0.162934; 0; ]
+  [ 1; OK; 0.102437; 0; ]
+  [ 2; OK; 0.145257; 0; ]
+  [ 3; OK; 0.103781; 0; ]
+  [ 4a; OK; 0.135528; 0; ]
+  [ 4b; OK; 0.162743; 0; ]
 ]
 }
 {
 title: select;
 title_group: Paths;
 file_name: select_longest_paths.py;
-hwut_info_time: 1480539708L;
+hwut_info_time: 1479757922L;
 result_list: [
-  [ 0; OK; 0.090554; 0; ]
-  [ 1; OK; 0.087771; 0; ]
-  [ 2; OK; 0.095930; 0; ]
-  [ 3; OK; 0.088487; 0; ]
-  [ 4; OK; 0.096792; 0; ]
-  [ 5; OK; 0.088982; 0; ]
-  [ 6; OK; 0.088894; 0; ]
-  [ 7; OK; 0.088595; 0; ]
-  [ 8; OK; 0.088980; 0; ]
-  [ 9; OK; 0.088260; 0; ]
-  [ 10; OK; 0.089857; 0; ]
-  [ 11a; OK; 0.087474; 0; ]
-  [ 11b; OK; 0.090138; 0; ]
-  [ 12; OK; 0.089051; 0; ]
+  [ 0; OK; 0.092165; 0; ]
+  [ 1; OK; 0.092359; 0; ]
+  [ 2; OK; 0.093216; 0; ]
+  [ 3; OK; 0.094925; 0; ]
+  [ 4; OK; 0.091872; 0; ]
+  [ 5; OK; 0.092995; 0; ]
+  [ 6; OK; 0.096715; 0; ]
+  [ 7; OK; 0.094509; 0; ]
+  [ 8; OK; 0.092705; 0; ]
+  [ 9; OK; 0.089100; 0; ]
+  [ 10; OK; 0.092471; 0; ]
+  [ 11a; OK; 0.092032; 0; ]
+  [ 11b; OK; 0.106107; 0; ]
+  [ 12; OK; 0.091247; 0; ]
 ]
 }

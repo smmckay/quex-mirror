@@ -2,8 +2,10 @@ from quex.engine.misc.tools               import typed
 from quex.engine.operations.se_operations import SeOp, \
                                                  SeAccept, \
                                                  SeStoreInputPosition
-from quex.blackboard import E_PreContextIDs, \
+from quex.constants  import E_PreContextIDs, \
                             E_IncidenceIDs
+
+from itertools import izip
 
 class SingleEntry(object):
     __slots__ = ('__list')
@@ -28,9 +30,13 @@ class SingleEntry(object):
             if cmd.__class__ == OpClass: return cmd
         return None
 
-    def get_iterable(self, OpClass):
-        for cmd in self.__list:
+    def get_iterable(self, OpClass, Start=0):
+        for cmd in self.__list[Start:]:
             if cmd.__class__ == OpClass: yield cmd
+
+    def get_enumerated_iterable(self, OpClass, Start=0):
+        for i, cmd in enumerate(self.__list[Start:0]):
+            if cmd.__class__ == OpClass: yield i, cmd
         
     def has(self, Op):
         for candidate in self.__list:
@@ -96,24 +102,30 @@ class SingleEntry(object):
         del self.__list[:]
 
     def delete_dominated(self):
-        """Simplification to make Hopcroft Minimization more efficient. The first unconditional
-        acceptance makes any lower prioritized acceptances meaningless. 
-
-        This function is to be seen in analogy with the function 'get_acceptance_detector'. 
-        Except for the fact that it requires the 'end of core pattern' markers of post
-        conditioned patterns. If the markers are not set, the store input position commands
-        are not called properly, and when restoring the input position bad bad things happen 
-        ... i.e. segmentation faults.
+        """Simplification to make Hopcroft Minimization more efficient. The
+        first unconditional acceptance makes any lower prioritized acceptances
+        meaningless. 
         """
-        # NOTE: Acceptance origins sort before non-acceptance origins
-        min_acceptance_id = None
-        for cmd in self.get_iterable(SeAccept):
-            if min_acceptance_id is None or min_acceptance_id > cmd.acceptance_id():
-                min_acceptance_id = cmd.acceptance_id()
+        # Find the first unconditional acceptance
+        unconditional_acceptance_i = None
+        for i, cmd in self.get_enumerated_iterable(SeAccept):
+            if cmd.pre_context_id() != E_PreContextIDs.NONE:
+                unconditional_acceptance_i = i
+                break
+
+        if unconditional_acceptance_i is None:
+            return
+
+        # There MUST be at least one unconditional 'SeAccept' 
+        # => min() not on empty set
+        min_acceptance_id = min(
+            cmd.acceptance_id()
+            for cmd in self.get_iterable(SeAccept, Start=unconditional_acceptance_i)
+        )
 
         # Delete any SeAccept command where '.acceptance_id() > min_acceptance_id'
-        for i in xrange(len(self.__list)-1, -1, -1):
-            cmd = self.__list[i]
+        #
+        for i, cmd in self.get_enumerated_iterable(SeAccept, Start=unconditional_acceptance_i):
             if cmd.__class__ == SeAccept and cmd.acceptance_id() > min_acceptance_id:
                 del self.__list[i]
 
@@ -177,4 +189,9 @@ class SingleEntry(object):
 
     def __len__(self):
         return len(self.__list)
+
+    def is_equal(self, Other):
+        if len(self.__list) != len(Other.__list): return False
+        return all(op_x == op_y 
+                   for op_x, op_y in izip(self.__list, Other.__list))
 

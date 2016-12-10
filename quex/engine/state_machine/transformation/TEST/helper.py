@@ -116,7 +116,7 @@ def transform(Trafo, orig):
     print "# Number of states in state machine:"
     print "#   Unicode:       %i" % len(orig.states)
     state_n_before = len(orig.states)
-    verdict_f, result = Trafo.do_state_machine(orig, beautifier)
+    verdict_f, result = Trafo.do_state_machine(orig)
     print "#   %s:            %i" % (Trafo.name, len(result.states))
     return state_n_before, result
 
@@ -178,7 +178,7 @@ def generate_sm_for_boarders(Boarders, Trafo):
         sm.states[target_idx].set_acceptance()
 
     Trafo.adapt_source_and_drain_range(-1)
-    verdict_f, result = Trafo.do_state_machine(sm, beautifier)
+    verdict_f, result = Trafo.do_state_machine(sm)
     assert verdict_f
     return result
 
@@ -273,8 +273,9 @@ def test_plug_sequence(ByteSequenceDB):
 
     trafo = EncodingTrafoUTF8() 
     Setup.buffer_codec_set(trafo, 1)
-    trafo._plug_interval_sequences(sm, sm.init_state_index, end_index, ByteSequenceDB, beautifier)
+    trafo._plug_interval_sequences(sm, sm.init_state_index, end_index, ByteSequenceDB)
 
+    sm = beautifier.do(sm)
     if len(sm.get_orphaned_state_index_list()) != 0:
         print "Error: Orphaned States Detected!"
 

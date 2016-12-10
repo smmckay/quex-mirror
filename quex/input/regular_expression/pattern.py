@@ -328,13 +328,16 @@ class Pattern_Prep(object):
         # However: Transformation may generate a new state machine.
         # => To maintain incidence id, store the original one and restore it
         #    after transformation. 
-        c0, sm                            = Setup.buffer_codec.do_state_machine(self.__sm, 
-                                                                                beautifier)
-        c1, pre_context_sm_to_be_inverted = Setup.buffer_codec.do_state_machine(self.__pre_context_sm_to_be_inverted, 
-                                                                                beautifier)
-        c2, post_context_sm               = Setup.buffer_codec.do_state_machine(self.__post_context_sm, 
-                                                                                beautifier)
+        c0, sm                            = Setup.buffer_codec.do_state_machine(self.__sm) 
+        c1, pre_context_sm_to_be_inverted = Setup.buffer_codec.do_state_machine(self.__pre_context_sm_to_be_inverted) 
+        c2, post_context_sm               = Setup.buffer_codec.do_state_machine(self.__post_context_sm) 
+        verdict = c0 and c1 and c2
+
         # Only if all transformations have been complete, then the transformation
         # can be considered complete.
-        return c0 and c1 and c2, sm, pre_context_sm_to_be_inverted, post_context_sm
+
+        return verdict, \
+               sm, \
+               pre_context_sm_to_be_inverted, \
+               post_context_sm
 

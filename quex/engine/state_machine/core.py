@@ -7,10 +7,10 @@ from   quex.engine.state_machine.state.core         import State
 from   quex.engine.state_machine.state.single_entry import SeAccept
 
 from   quex.engine.misc.tools  import typed
-from   quex.blackboard         import E_IncidenceIDs, \
+from   quex.constants          import E_IncidenceIDs, \
                                       E_PreContextIDs, \
-                                      E_StateIndices
-from   quex.constants          import INTEGER_MAX
+                                      E_StateIndices, \
+                                      INTEGER_MAX
 
 from   copy        import deepcopy, copy
 from   operator    import itemgetter
@@ -383,6 +383,11 @@ class StateMachine(object):
 
         return result
  
+    def acceptance_state_iterable(self):
+        return [ (si, state) 
+                 for si, state in self.states.iteritems() if state.is_acceptance() 
+        ]
+
     def get_acceptance_state_list(self):
         return [ state for state in self.states.itervalues() if state.is_acceptance() ]
 
@@ -715,6 +720,10 @@ class StateMachine(object):
         elif not trigger_set.is_all():    return False
         else:                             return True
 
+    def has_transition_to(self, TargetIndex):
+        return any(state.target_map.has_target(TargetIndex)
+                   for state in self.states.itervalues())
+
     def has_orphaned_states(self):
         """Detect whether there are states where there is no transition to them."""
         unique = set([])
@@ -838,14 +847,6 @@ class StateMachine(object):
                 state.set_pre_context_id(E_PreContextIDs.NONE) 
                 state.set_acceptance(False)
 
-    def mount_to_initial_state(self, TargetStateIdx):
-        """Adds an epsilon transition from initial state to the given 'TargetStateIdx'. 
-        The initial states epsilon transition to TERMINATE is deleted."""
-
-        assert self.states.has_key(self.init_state_index)
-
-        self.states[self.init_state_index].target_map.add_epsilon_target_state(TargetStateIdx)
-
     def mount_cloned(self, OtherSM, OperationIndex, OtherStartIndex, OtherEndIndex):
         """Clone all states in 'OtherSM' which lie on the path from 'OtherStartIndex'
         to 'OtherEndIndex'. If 'OtherEndIndex' is None, then it ends when there's no further
@@ -895,6 +896,10 @@ class StateMachine(object):
         remain referencable from outside and even before this operation.
         """
         self.mount_cloned(OtherSM, OperationIndex, OtherStartIndex, None)
+
+    def replace_target_indices(self, ReplacementDict):
+        for state in self.states.itervalues():
+            state.target_map.replace_target_indices(ReplacementDict)
 
     def mount_absorbed_states_between(self, BeginIndex, EndIndex, 
                                       state_db, ASBeginIndex, ASEndIndex):
@@ -974,14 +979,9 @@ class StateMachine(object):
     def assert_consistency(self):
         """Check: -- whether each target state in contained inside the state machine.
         """
-        target_state_index_list = self.states.keys()
-        for index, state in self.states.items():
-            for target_state_index in state.target_map.get_target_state_index_list():
-                assert target_state_index in target_state_index_list, \
-                       "state machine contains target state %s that is not contained in itself." \
-                       % repr(target_state_index) + "\n" \
-                       "present state indices: " + repr(self.states.keys()) + "\n" + \
-                       "state machine = " + self.get_string(NormalizeF=False)
+        state_indice_set = set(self.states.iterkeys())
+        for state in self.states.itervalues():
+            assert state_indice_set.issuperset(state.target_map.get_target_state_index_list())
 
     def assert_range(self, Range):
         for state in self.states.itervalues():

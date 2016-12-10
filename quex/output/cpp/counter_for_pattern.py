@@ -4,8 +4,8 @@ _______________________________________________________________________________
 """
 import quex.engine.state_machine.character_counter as character_counter
 from   quex.engine.misc.tools import typed
-from   quex.blackboard        import E_Count, \
-                                     Lng
+from   quex.constants         import E_Count
+from   quex.blackboard        import Lng
 
 @typed(lcci=(None, character_counter.SmLineColumnCountInfo))
 def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):

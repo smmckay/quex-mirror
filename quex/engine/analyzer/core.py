@@ -57,8 +57,8 @@ from   quex.engine.state_machine.core               import StateMachine
 from   quex.engine.state_machine.state.single_entry import SeAccept      
 
 from   quex.engine.misc.tools                            import typed
-from   quex.blackboard  import setup as Setup, \
-                               E_IncidenceIDs, \
+from   quex.blackboard  import setup as Setup
+from   quex.constants   import E_IncidenceIDs, \
                                E_TransitionN, \
                                E_PreContextIDs, \
                                E_Op, \

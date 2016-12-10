@@ -1,10 +1,9 @@
 from   quex.engine.analyzer.state.core            import AnalyzerState
 from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.analyzer.transition_map        import TransitionMap       
+from   quex.engine.misc.tools                     import UniformObject
 
-from   quex.engine.misc.tools                       import UniformObject
-
-from   quex.blackboard                         import E_Compression, E_StateIndices
+from   quex.constants import E_Compression, E_StateIndices
 
 from   collections import namedtuple
 

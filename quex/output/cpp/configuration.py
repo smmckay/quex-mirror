@@ -3,8 +3,9 @@ from   quex.engine.misc.file_in         import get_include_guard_extension, \
                                                make_safe_identifier
 
 from   quex.engine.misc.string_handling import blue_print
-from   quex.blackboard  import setup as Setup, E_IncidenceIDs, Lng
+from   quex.blackboard  import setup as Setup, Lng
 import quex.blackboard  as blackboard
+from   quex.constants   import E_IncidenceIDs
 from   quex.DEFINITIONS import QUEX_PATH, QUEX_VERSION
 import time
 

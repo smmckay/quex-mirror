@@ -3,9 +3,9 @@ from   quex.engine.analyzer.state.entry_action    import TransitionID, Transitio
 from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.misc.tools                     import typed, \
                                                          TypedDict
-from   quex.blackboard                            import E_Op, \
-                                                         E_StateIndices, \
-                                                         E_DoorIdIndex
+from   quex.constants import E_Op, \
+                             E_StateIndices, \
+                             E_DoorIdIndex
 
 class Entry(object):
     """________________________________________________________________________

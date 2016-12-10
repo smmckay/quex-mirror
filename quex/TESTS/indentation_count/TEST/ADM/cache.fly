@@ -4,9 +4,9 @@ file_name: bad.sh;
 hwut_info_time: 1480539700L;
 happy_pattern_list: [ EasyLexer.c:\[0-9]+:; ]
 result_list: [
-  [ default; OK; 1.441123; 0; ]
-  [ customized; OK; 1.458202; 0; ]
-  [ customized-2; OK; 1.452978; 0; ]
+  [ default; OK; 1.462127; 0; ]
+  [ customized; OK; 1.459906; 0; ]
+  [ customized-2; OK; 1.473458; 0; ]
 ]
 }
 {
@@ -14,13 +14,13 @@ title: Commonalities of Indentation Counter vs. Patterns;
 file_name: commonalities.sh;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ 1; OK; 0.221317; 0; ]
-  [ 2; OK; 0.233014; 0; ]
-  [ 3; OK; 0.235756; 0; ]
-  [ 4; OK; 0.316958; 0; ]
-  [ 5; OK; 0.192949; 0; ]
-  [ 5b; OK; 0.250692; 0; ]
-  [ 6; OK; 0.214919; 0; ]
+  [ 1; OK; 0.230779; 0; ]
+  [ 2; OK; 0.232460; 0; ]
+  [ 3; OK; 0.240766; 0; ]
+  [ 4; OK; 0.525158; 0; ]
+  [ 5; OK; 0.198997; 0; ]
+  [ 5b; OK; 0.198221; 0; ]
+  [ 6; OK; 0.195408; 0; ]
 ]
 }
 {
@@ -28,9 +28,9 @@ title: Customized Event Handlers;
 file_name: comment.sh;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ bash; OK; 1.755778; 0; ]
-  [ c; OK; 0.010926; 0; ]
-  [ mix; OK; 0.018912; 0; ]
+  [ bash; OK; 1.909275; 0; ]
+  [ c; OK; 0.012451; 0; ]
+  [ mix; OK; 0.019512; 0; ]
 ]
 }
 {
@@ -38,11 +38,11 @@ title: Customized Event Handlers;
 file_name: handlers.sh;
 hwut_info_time: 1480539701L;
 result_list: [
-  [ check-eof; OK; 1.347489; 0; ]
-  [ on_dedent; OK; 1.342398; 0; ]
-  [ on_n_dedent; OK; 1.366122; 0; ]
-  [ empty-lines; OK; 1.364754; 0; ]
-  [ on_indentation_error; OK; 1.370821; 0; ]
+  [ check-eof; OK; 1.389660; 0; ]
+  [ on_dedent; OK; 1.371753; 0; ]
+  [ on_n_dedent; OK; 1.356702; 0; ]
+  [ empty-lines; OK; 1.384387; 0; ]
+  [ on_indentation_error; OK; 1.385327; 0; ]
 ]
 }
 {
@@ -50,8 +50,8 @@ title: Indentation Counting and Range Skipper;
 file_name: with-skip-range.sh;
 hwut_info_time: 1480539700L;
 result_list: [
-  [ range; OK; 1.474647; 0; ]
-  [ range-2; OK; 1.542390; 0; ]
-  [ nested_range; OK; 1.469420; 0; ]
+  [ range; OK; 1.462366; 0; ]
+  [ range-2; OK; 1.581814; 0; ]
+  [ nested_range; OK; 1.539366; 0; ]
 ]
 }

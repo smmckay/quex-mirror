@@ -1,4 +1,4 @@
-from quex.blackboard import E_PreContextIDs
+from quex.constants  import E_PreContextIDs
 from quex.engine.state_machine.core import StateMachine
 
 class Checker:

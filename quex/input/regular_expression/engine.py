@@ -221,7 +221,7 @@ def snap_expression(stream, PatternDict):
         stream.seek(position_1) 
         return __debug_exit(result, stream)
 
-    result = parallelize.do([result, result_2], CloneF=True)   # CloneF = False (shold be!)
+    result = parallelize.do([result, result_2])
     return __debug_exit(nfa_to_dfa.do(result), stream)
 
 def snap_term(stream, PatternDict):

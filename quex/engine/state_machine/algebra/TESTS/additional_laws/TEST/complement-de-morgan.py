@@ -17,10 +17,10 @@ count = 0
 
 def de_morgan(A, B):
     global count
-    assert identity(complement(union([A, B])), 
-                    intersection([complement(A), complement(B)]))
-    assert identity(complement(intersection([A, B])), 
-                    union([complement(A), complement(B)]))
+    assert identity(complement(union([A.clone(), B.clone()])), 
+                    intersection([complement(A.clone()), complement(B.clone())]))
+    assert identity(complement(intersection([A.clone(), B.clone()])), 
+                    union([complement(A.clone()), complement(B.clone())]))
     count += 1
 
 test2(de_morgan)

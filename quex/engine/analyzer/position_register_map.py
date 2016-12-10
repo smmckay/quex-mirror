@@ -1,4 +1,4 @@
-from quex.blackboard import E_TransitionN
+from quex.constants import E_TransitionN
 
 from collections import defaultdict
 from operator    import itemgetter, attrgetter

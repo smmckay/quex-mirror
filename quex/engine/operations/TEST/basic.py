@@ -27,8 +27,8 @@ from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 import quex.engine.operations.shared_tail         as     command_list_shared_tail
 from   quex.output.core.dictionary                import db
 
-from   quex.blackboard import E_Op, \
-                              setup as Setup, \
+from   quex.constants  import E_Op
+from   quex.blackboard import setup as Setup, \
                               Lng
 
 from   collections import defaultdict

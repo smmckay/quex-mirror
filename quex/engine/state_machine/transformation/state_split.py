@@ -104,7 +104,7 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
         base.EncodingTrafo.__init__(self, Name, NumberSet.from_range(0, 0x110000),
                                     CodeUnitRange)
 
-    def do_transition(self, sm, FromSi, from_target_map, ToSi, beautifier):
+    def do_transition(self, sm, FromSi, from_target_map, ToSi):
         """RETURNS: [0] True if complete, False else.
                     [1] True if orphan states possibly generated, False else.
         """
@@ -127,7 +127,7 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
 
         # Second, enter the new transitions.
         self._plug_interval_sequences(sm, FromSi, ToSi, 
-                                      transformed_interval_sequence_list, beautifier)
+                                      transformed_interval_sequence_list)
         return True, False
 
     def do_NumberSet(self, NSet):
@@ -154,11 +154,10 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
     def hopcroft_minimization_always_makes_sense(self): 
         return True
 
-    def _plug_interval_sequences(self, sm, BeginIndex, EndIndex, IntervalSequenceList, beautifier):
+    def _plug_interval_sequences(self, sm, BeginIndex, EndIndex, IntervalSequenceList):
         sub_sm = StateMachine.from_interval_sequences(IntervalSequenceList)
         if Setup.bad_lexatom_detection_f: 
             self._plug_encoding_error_detectors(sub_sm)
-        sub_sm = beautifier.do(sub_sm)
 
         # The 'End State' is the state where there are no further transitions.
         new_end_si = None
