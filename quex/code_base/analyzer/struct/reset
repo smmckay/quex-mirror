@@ -46,7 +46,7 @@ QUEX_INLINE void QUEX_NAME(reset_istream)(QUEX_TYPE_ANALYZER* me,
 
 #if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void QUEX_NAME(reset_wistream)(QUEX_TYPE_ANALYZER* me,
-                                           std::wistream*  istream_p, 
+                                           std::wistream*  wistream_p, 
                                            const char*     CodecName   /* = 0x0   */,
                                            bool            BinaryModeF /* = false */);
 #endif

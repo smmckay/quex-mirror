@@ -47,7 +47,7 @@ QUEX_NAME(include_push_istream)(QUEX_TYPE_ANALYZER* me,
 QUEX_INLINE bool
 QUEX_NAME(include_push_wistream)(QUEX_TYPE_ANALYZER* me, 
                                  const char*     InputName,
-                                 std::wistream*  istream_p, 
+                                 std::wistream*  wistream_p, 
                                  const char*     CodecName   /* = 0x0   */,
                                  bool            BinaryModeF /* = false */);
 #endif

@@ -98,14 +98,14 @@ QUEX_MEMBER_FUNCTION3(reset, istream,
 #if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void
 QUEX_MEMBER_FUNCTION3(reset, wistream,
-                      std::wistream*  istream_p, 
+                      std::wistream*  wistream_p, 
                       const char*     CodecName   /* = 0x0   */,
                       bool            BinaryModeF /* = false */)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( istream_p );
-    byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
+    __quex_assert( wistream_p );
+    byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p);
     byte_loader->binary_mode_f = BinaryModeF;
 
     /* NOT: Abort/return if byte_loader == 0 !!

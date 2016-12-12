@@ -111,16 +111,16 @@ QUEX_MEMBER_FUNCTION4(include_push, istream,
 QUEX_INLINE bool
 QUEX_MEMBER_FUNCTION4(include_push, wistream,
                       const char*     InputName,
-                      std::wistream*  istream_p, 
+                      std::wistream*  wistream_p, 
                       const char*     CodecName   /* = 0x0   */,
                       bool            BinaryModeF /* = false */)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    bool          verdict_f;
+    bool                     verdict_f;
     QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( istream_p );
+    __quex_assert( wistream_p );
 
-    byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
+    byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p);
     byte_loader->binary_mode_f = BinaryModeF;
 
     /* NOT: Abort/return if byte_loader == 0 !!
@@ -129,6 +129,7 @@ QUEX_MEMBER_FUNCTION4(include_push, wistream,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
+
     verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, 
                                            byte_loader, CodecName); 
     if( ! verdict_f ) {
