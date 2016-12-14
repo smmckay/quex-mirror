@@ -64,6 +64,7 @@ QUEX_NAME(ByteLoader_stream_construct)(QUEX_NAME(ByteLoader_stream)<StreamType>*
                          QUEX_NAME(ByteLoader_stream_load)<StreamType>,
                          QUEX_NAME(ByteLoader_stream_delete_self)<StreamType>,
                          QUEX_NAME(ByteLoader_stream_compare_handle)<StreamType>);
+    me->base.element_size = sizeof(typename StreamType::char_type);
 }
 
 template <class StreamType> QUEX_INLINE void

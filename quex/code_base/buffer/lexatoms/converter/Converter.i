@@ -20,16 +20,17 @@ QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
                                ptrdiff_t    (*stomach_byte_n)(QUEX_NAME(Converter)*),
                                void         (*stomach_clear)(QUEX_NAME(Converter)*))
 /* RETURNS: true  -- construction succesful
- *          false -- else.                                                   */
+ *          false -- else.                                                    */
 {
     me->convert            = convert;
     me->stomach_byte_n     = stomach_byte_n;
     me->stomach_clear      = stomach_clear;
     me->delete_self        = delete_self;
 
-    me->virginity_f        = true;
-    me->byte_n_per_lexatom = -1;     /* No fixed ratio 'byte_n/lexatom' */
-    me->ownership          = E_Ownership_EXTERNAL;
+    me->virginity_f          = true;
+    me->byte_n_per_lexatom   = -1;         /* No fixed ratio 'byte_n/lexatom' */
+    me->input_code_unit_size = -1;         /* Unknown input code unit size.   */
+    me->ownership            = E_Ownership_EXTERNAL;
 
     /* Opens internally a conversion handle for the conversion from 'FromCodec'
      * to 'ToCodec'. Pass '0x0' as 'ToCodec' in order to indicate a conversion
@@ -37,11 +38,11 @@ QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
      *
      * It is the task of the particular implementation to provide the 'ToCodec'
      * which is appropriate for sizeof(QUEX_TYPE_LEXATOM), i.e.  ASCII, UCS2,
-     * UCS4.                                                                 */
+     * UCS4.                                                                  */
 
     return open(me, FromCodec, ToCodec);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /*  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__CONVERTER_I */
+#endif /*  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__CONVERTER_I     */

@@ -39,6 +39,7 @@ QUEX_NAME(ByteLoader_construct)(QUEX_NAME(ByteLoader)* me,
     me->initial_position = tell(me);
 
     me->binary_mode_f    = false;                /* Default: 'false' is SAFE */
+    me->element_size     = 1;                    /* Default: 1 [byte]        */
 }
 
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION

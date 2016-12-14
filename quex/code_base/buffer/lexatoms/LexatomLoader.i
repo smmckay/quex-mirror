@@ -36,6 +36,21 @@ QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader,
 
     /* byte_loader = 0; possible if memory is filled manually.               */
     if( converter ) {
+        if(    byte_loader 
+            && converter->input_code_unit_size != -1
+            && converter->input_code_unit_size <  (int)byte_loader->element_size )
+        {
+#           ifndef QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED
+            __QUEX_STD_printf("Error: The specified byte loader provides elements of size %i.\n", 
+                              (int)byte_loader->element_size);
+            __QUEX_STD_printf("Error: The converter requires input elements of size <= %i.\n", 
+                              (int)converter->input_code_unit_size);
+            __QUEX_STD_printf("Error: This happens, for example, when using 'wistream' input\n"
+                              "Error: without considering 'sizeof(wchar_t)' with respect to\n"
+                              "Error: the encodings code unit's size. (UTF8=1byte, UTF16=2byte, etc.)\n");
+#           endif
+            return (QUEX_NAME(LexatomLoader)*)0x0;
+        }
         filler = QUEX_NAME(LexatomLoader_Converter_new)(byte_loader, converter, 
                                                         TranslationBufferMemorySize);
     }

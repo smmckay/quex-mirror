@@ -89,30 +89,6 @@ QUEX_MEMBER_FUNCTION3(from, istream,
 }
 #endif
 
-
-#if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE void 
-QUEX_MEMBER_FUNCTION3(from, wistream,
-                      std::wistream*  wistream_p, 
-                      const char*     CodecName   /* = 0x0   */,
-                      bool            BinaryModeF /* = false */)
-{
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( wistream_p );
-
-    byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p);
-    byte_loader->binary_mode_f = BinaryModeF;
-
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    QUEX_MEMBER_FUNCTION_CALL2(from, ByteLoader, byte_loader, CodecName); 
-}
-#endif
-
 #if defined(__QUEX_OPTION_UNIT_TEST) && ! defined (__QUEX_OPTION_PLAIN_C)
 /* StrangeStreams are not for C-language stuff */
 template<class UnderlyingStreamT> QUEX_INLINE void

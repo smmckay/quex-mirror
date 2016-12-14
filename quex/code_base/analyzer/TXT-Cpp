@@ -114,10 +114,6 @@ public:
                  bool BinaryModeF=false);
     void    from(std::istream* istream_p, const char*  CodecName = 0x0, 
                  bool BinaryModeF=false);
-#   if defined(__QUEX_OPTION_WCHAR_T)
-    void    from(std::wistream* istream_p, const char*  CodecName = 0x0, 
-                 bool BinaryModeF=false);
-#   endif
     void    from(QUEX_NAME(ByteLoader)* byte_loader, const char*  CodecName = 0x0);
     void    from(QUEX_NAME(LexatomLoader)* filler);
     void    from(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
@@ -144,11 +140,6 @@ public:
     $$LEXER_CLASS_NAME$$(std::istream*  istream_p, const char*  CodecName = 0x0, 
     $$___SPACE___$$      bool BinaryModeF = false)
     $$___SPACE___$${ from(istream_p, CodecName, BinaryModeF); }
-#   if defined(__QUEX_OPTION_WCHAR_T)
-    $$LEXER_CLASS_NAME$$(std::wistream* istream_p, const char*  CodecName = 0x0,
-    $$___SPACE___$$      bool BinaryModeF = false)
-    $$___SPACE___$${ from(istream_p, CodecName, BinaryModeF); }
-#   endif
 #   if defined(__QUEX_OPTION_UNIT_TEST)
     template <class UnderlyingStreamT>
     $$LEXER_CLASS_NAME$$(quex::StrangeStream<UnderlyingStreamT>*  istream_p, 
@@ -197,10 +188,6 @@ public:
                   bool BinaryModeF = false);
     void    reset(std::istream*     istream_p, const char*  CodecName = 0x0,
                   bool BinaryModeF = false);
-#   if defined(__QUEX_OPTION_WCHAR_T)
-    void    reset(std::wistream*    istream_p, const char*  CodecName = 0x0,
-                  bool BinaryModeF = false);
-#   endif
 #   if defined(__QUEX_OPTION_UNIT_TEST)
     template <class UnderlyingStreamT>
     void    reset_StrangeStream(quex::StrangeStream<UnderlyingStreamT>*  istream_p, 
@@ -242,12 +229,6 @@ public:
                          std::istream*     istream_p, 
                          const char*       CodecName   = 0x0,
                          bool              BinaryModeF = false);
-#   if defined(__QUEX_OPTION_WCHAR_T)
-    bool    include_push(const char*    InputName, 
-                         std::wistream* istream_p, 
-                         const char*    CodecName   = 0x0,
-                         bool           BinaryModeF = false);
-#   endif
 #   if defined(__QUEX_OPTION_UNIT_TEST)
     template <class UnderlyingStreamT>
     bool    include_push(const char*                              InputName, 

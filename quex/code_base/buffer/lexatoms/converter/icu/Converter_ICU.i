@@ -104,6 +104,12 @@ QUEX_NAME(Converter_ICU_open)(QUEX_NAME(Converter)* alter_ego,
     else {
         me->base.byte_n_per_lexatom = -1;
     }
+    if( __QUEX_STD_strcmp(FromCoding, "UTF16") == 0 ) {
+        me->base.input_code_unit_size = 2;
+    }
+    else if( __QUEX_STD_strcmp(FromCoding, "UTF8") == 0 ) {
+        me->base.input_code_unit_size = 1;
+    }
 
     if( ! ToCoding ) {
          /* From the ICU Documentation: "ICU does not use UCS-2. UCS-2 is a

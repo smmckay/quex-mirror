@@ -73,8 +73,8 @@ QUEX_NAME(RawBuffer_load)(QUEX_NAME(RawBuffer)*  me,
 
 QUEX_INLINE QUEX_NAME(LexatomLoader)*
 QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
-                                      QUEX_NAME(Converter)*  converter,
-                                      size_t                 RawMemorySize)
+                                       QUEX_NAME(Converter)*  converter,
+                                       size_t                 RawMemorySize)
 { 
     QUEX_NAME(LexatomLoader_Converter)*  me;
     __quex_assert(RawMemorySize >= 6);  /* UTF-8 char can be 6 bytes long    */
@@ -107,9 +107,9 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
 
 QUEX_INLINE void
 QUEX_NAME(LexatomLoader_Converter_construct)(QUEX_NAME(LexatomLoader_Converter)* me, 
-                                            QUEX_NAME(ByteLoader)*             byte_loader,
-                                            QUEX_NAME(Converter)*              converter,
-                                            size_t                             RawMemorySize)
+                                             QUEX_NAME(ByteLoader)*              byte_loader,
+                                             QUEX_NAME(Converter)*               converter,
+                                             size_t                              RawMemorySize)
 {
     /* A linear relationship between stream position and lexatom index 
      * requires that: (1) The input stream is in 'binary mode'. That is, the 
@@ -117,7 +117,7 @@ QUEX_NAME(LexatomLoader_Converter_construct)(QUEX_NAME(LexatomLoader_Converter)*
      * behind. (2) The input codec is of fixed size, i.e. 
      * converter->byte_n_per_lexatom != -1.                                */ 
     ptrdiff_t   byte_n_per_lexatom = byte_loader && byte_loader->binary_mode_f ? 
-                                       converter->byte_n_per_lexatom : -1;
+                                     converter->byte_n_per_lexatom : -1;
     uint8_t*    raw_memory;
 
     /* NO LONGER VALID: "Binary mode is absolutely required for converters,

@@ -73,6 +73,10 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Converter_ta
      * all lexatoms of the lexatom set. Using the flag, the buffer filler can
      * adapt the seek algorithm for navigation in the lexatom stream.                 */
 
+    int     input_code_unit_size;                              /* -1 => undetermined. */
+    /* Converters convert input streams of a specific codec. Examples: The 'code unit' 
+     * of UTF8 is a byte, the code unit of UTF16 is 2byte.                            */
+
     bool    virginity_f;
 
 } QUEX_NAME(Converter);

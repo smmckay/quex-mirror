@@ -94,11 +94,21 @@ QUEX_NAME(Converter_IConv_open)(QUEX_NAME(Converter)* alter_ego,
     me->base.byte_n_per_lexatom = -1;
     if(    __QUEX_STD_strcmp(FromCodec, "UCS-4LE") == 0 
         || __QUEX_STD_strcmp(FromCodec, "UCS-4BE")  == 0) {
-        me->base.byte_n_per_lexatom = 4;
+        me->base.byte_n_per_lexatom   = 4;
+        me->base.input_code_unit_size = 4;
     }
     else if(   __QUEX_STD_strcmp(FromCodec, "UCS-2LE") == 0 
             || __QUEX_STD_strcmp(FromCodec, "UCS-2BE")  == 0) {
-        me->base.byte_n_per_lexatom = 2;
+        me->base.byte_n_per_lexatom   = 2;
+        me->base.input_code_unit_size = 2;
+    }
+    else if( __QUEX_STD_strcmp(FromCodec, "UTF16") == 0 ) {
+        me->base.byte_n_per_lexatom   = -1;
+        me->base.input_code_unit_size = 2;
+    }
+    else if( __QUEX_STD_strcmp(FromCodec, "UTF8") == 0 ) {
+        me->base.byte_n_per_lexatom   = -1;
+        me->base.input_code_unit_size = 1;
     }
 
     return true;
