@@ -12,7 +12,7 @@ lex_iconv:
 		../lexer.cpp                  \
 		-ggdb                         \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
-		-DQUEX_SETTING_ICONV_TRANSLATION_BUFFER_SIZE=64 \
+		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-o $@ 
 
@@ -32,7 +32,7 @@ lex_icu:
 		$(LIB_CONV)                   \
 		-ggdb                         \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
-		-DQUEX_SETTING_ICONV_TRANSLATION_BUFFER_SIZE=64 \
+		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED  \
 		-o $@
 
@@ -46,7 +46,7 @@ lex_codec:
 		../lexer.cpp                     \
 		-ggdb                            \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64    \
-		-DQUEX_SETTING_ICONV_TRANSLATION_BUFFER_SIZE=64 \
+		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED  \
 		-o $@
 #-DQUEX_OPTION_DEBUG_SHOW 

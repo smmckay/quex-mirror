@@ -515,7 +515,7 @@ DOC = {
     "buffer_codec_name":              ("Buffer internal codec.", ""),
     "buffer_codec_file":              ("Codec file describing mapping to unicode code points.", ""),
     "buffer_limit_code":              ("Buffer limit code.", ""),
-    "buffer_lexatom_size_in_byte":            ("Buffer element size.", ""),
+    "buffer_lexatom_size_in_byte":    ("Buffer element size.", ""),
     "buffer_lexatom_type":            ("Buffer element type.", ""),
     "buffer_byte_order":              ("Byte order of buffer elements.", ""),
     "comment_state_machine_f":        ("Provide state machine description in comment of generated code.", ""),

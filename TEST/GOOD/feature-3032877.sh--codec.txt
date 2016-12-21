@@ -7,16 +7,14 @@ ARGUMENT_LIST: --bet u8 --codec utf8
 _____________________________________________________________________
 ARGUMENT_LIST: --bet u16 --codec utf8
 
-command line: Using codec 'utf8' while buffer element size is not 1 (found 2).
-command line: Consult command line argument --buffer-element-size, -b, or --bes
-File EasyLexer-configuration does not exits.
+#   define QUEX_TYPE_LEXATOM          u16
+#   define QUEX_TYPE_LEXATOM_BACKUP   u16
 
 _____________________________________________________________________
 ARGUMENT_LIST: --bet u32 --codec utf8
 
-command line: Using codec 'utf8' while buffer element size is not 1 (found 4).
-command line: Consult command line argument --buffer-element-size, -b, or --bes
-File EasyLexer-configuration does not exits.
+#   define QUEX_TYPE_LEXATOM          u32
+#   define QUEX_TYPE_LEXATOM_BACKUP   u32
 
 _____________________________________________________________________
 ARGUMENT_LIST: --bet uint8_t --codec utf8
@@ -27,37 +25,32 @@ ARGUMENT_LIST: --bet uint8_t --codec utf8
 _____________________________________________________________________
 ARGUMENT_LIST: --bet uint16_t --codec utf8
 
-command line: Using codec 'utf8' while buffer element size is not 1 (found 2).
-command line: Consult command line argument --buffer-element-size, -b, or --bes
-File EasyLexer-configuration does not exits.
+#   define QUEX_TYPE_LEXATOM          uint16_t
+#   define QUEX_TYPE_LEXATOM_BACKUP   uint16_t
 
 _____________________________________________________________________
 ARGUMENT_LIST: --bet uint32_t --codec utf8
 
-command line: Using codec 'utf8' while buffer element size is not 1 (found 4).
-command line: Consult command line argument --buffer-element-size, -b, or --bes
-File EasyLexer-configuration does not exits.
+#   define QUEX_TYPE_LEXATOM          uint32_t
+#   define QUEX_TYPE_LEXATOM_BACKUP   uint32_t
 
 _____________________________________________________________________
 ARGUMENT_LIST: --bet wchar_t --codec utf8
 
-command line: Using codec 'utf8' while buffer element size undetermined (found type 'wchar_t').
-command line: Consult command line argument --buffer-element-size, -b, or --bes
-File EasyLexer-configuration does not exits.
+#   define QUEX_TYPE_LEXATOM          wchar_t
+#   define QUEX_TYPE_LEXATOM_BACKUP   wchar_t
 
 _____________________________________________________________________
 ARGUMENT_LIST: --bet UChar --codec utf8
 
-command line: Using codec 'utf8' while buffer element size undetermined (found type 'UChar').
-command line: Consult command line argument --buffer-element-size, -b, or --bes
-File EasyLexer-configuration does not exits.
+#   define QUEX_TYPE_LEXATOM          UChar
+#   define QUEX_TYPE_LEXATOM_BACKUP   UChar
 
 _____________________________________________________________________
 ARGUMENT_LIST: --bet UChar --codec utf8 --converter-ucs-coding-name ASCII
 
-command line: Using codec 'utf8' while buffer element size undetermined (found type 'UChar').
-command line: Consult command line argument --buffer-element-size, -b, or --bes
-File EasyLexer-configuration does not exits.
+#   define QUEX_TYPE_LEXATOM          UChar
+#   define QUEX_TYPE_LEXATOM_BACKUP   UChar
 
 _____________________________________________________________________
 ARGUMENT_LIST: --bet UChar --codec utf8 -b 1
@@ -68,7 +61,18 @@ ARGUMENT_LIST: --bet UChar --codec utf8 -b 1
 _____________________________________________________________________
 ARGUMENT_LIST: --bet UChar --codec utf8 -b 2
 
-command line: Using codec 'utf8' while buffer element size is not 1 (found 2).
-command line: Consult command line argument --buffer-element-size, -b, or --bes
-File EasyLexer-configuration does not exits.
+#   define QUEX_TYPE_LEXATOM          UChar
+#   define QUEX_TYPE_LEXATOM_BACKUP   UChar
+
+
+
+
+
+
+
+
+
+
+
+
 

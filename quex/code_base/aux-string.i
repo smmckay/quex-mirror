@@ -4,6 +4,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__AUX_STRING_I
 #define __QUEX_INCLUDE_GUARD__AUX_STRING_I
 
+#if ! defined(QUEX_OPTION_AUX_STRING_DISABLED)
+
 #include <quex/code_base/definitions>
 
 #ifndef  QUEX_CHARACTER_CONVERTER_DECLARED
@@ -39,15 +41,21 @@ QUEX_NAME(strcmp)(const QUEX_TYPE_LEXATOM* it0,
 
 QUEX_INLINE void
 QUEX_NAME(to_utf8)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM* SourceEnd,
-                   uint8_t**                   drain_p,  const uint8_t*             DrainEnd)
+                   uint8_t**                 drain_p,  const uint8_t*           DrainEnd)
 {
+    /* If this causes an error, you might carry an encoding in chunks of 
+     * inappropriate size (e.g. 'utf8' in a 'wchar_t'). Use the command line
+     * option 
+     *                '-DQUEX_OPTION_AUX_STRING_DISABLED'
+     *
+     * to disable this file completely!                                       */
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,utf8)(
                           source_p, SourceEnd, drain_p, DrainEnd);
 }
 
 QUEX_INLINE void
 QUEX_NAME(to_utf16)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM* SourceEnd,
-                    uint16_t**                  drain_p,  const uint16_t*            DrainEnd)
+                    uint16_t**                drain_p,  const uint16_t*          DrainEnd)
 {
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,utf16)(
                           source_p, SourceEnd, drain_p, DrainEnd);
@@ -55,7 +63,7 @@ QUEX_NAME(to_utf16)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM*
 
 QUEX_INLINE void
 QUEX_NAME(to_utf32)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM* SourceEnd,
-                    uint32_t**                  drain_p,  const uint32_t*            DrainEnd)
+                    uint32_t**                drain_p,  const uint32_t*          DrainEnd)
 {
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,utf32)(
                           source_p, SourceEnd, drain_p, DrainEnd);
@@ -63,7 +71,7 @@ QUEX_NAME(to_utf32)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM*
 
 QUEX_INLINE void
 QUEX_NAME(to_char)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM* SourceEnd,
-                   char**                      drain_p,  const char*                DrainEnd)
+                   char**                    drain_p,  const char*              DrainEnd)
 {
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,char)(
                           source_p, SourceEnd, drain_p, DrainEnd);
@@ -72,7 +80,7 @@ QUEX_NAME(to_char)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM* 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
 QUEX_INLINE void
 QUEX_NAME(to_wchar)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM* SourceEnd,
-                    wchar_t**                   drain_p,  const wchar_t*             DrainEnd)
+                    wchar_t**                 drain_p,  const wchar_t*           DrainEnd)
 {
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,wchar)(
                           source_p, SourceEnd, drain_p, DrainEnd);
@@ -81,4 +89,5 @@ QUEX_NAME(to_wchar)(const QUEX_TYPE_LEXATOM** source_p, const QUEX_TYPE_LEXATOM*
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
+#endif /* ! defined(QUEX_OPTION_AUX_STRING_DISABLED) */
 #endif /* __QUEX_INCLUDE_GUARD__AUX_STRING_I */

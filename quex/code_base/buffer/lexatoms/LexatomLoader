@@ -110,9 +110,8 @@ QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*           byte_loader,
                              struct QUEX_NAME(Converter_tag)* converter,
                              const size_t                     TranslationBufferMemorySize);
 
-QUEX_INLINE QUEX_NAME(LexatomLoader)* 
-QUEX_NAME(LexatomLoader_new_DEFAULT)(QUEX_NAME(ByteLoader)*  byte_loader, 
-                                     const char*             InputCodecName);
+QUEX_INLINE struct QUEX_NAME(Converter_tag)* 
+QUEX_NAME(LexatomLoader_new_Converter_DEFAULT)(const char* InputCodecName);
 
 QUEX_INLINE void    
 QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,

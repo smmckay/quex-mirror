@@ -1,0 +1,1 @@
+token { ID; } mode X : <skip: [ ]> { [a-z]+ => CODEC_TKN_ID(Lexeme); }

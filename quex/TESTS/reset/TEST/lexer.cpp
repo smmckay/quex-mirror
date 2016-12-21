@@ -4,21 +4,34 @@
 // (*) include lexical analyser header
 #include "Simple"
 
+#include "quex/code_base/buffer/bytes/ByteLoader_FILE.i"
+
 using namespace std;
+
+#if   defined(QUEX_OPTION_CONVERTER_ICONV)
+#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_IConv_new)
+#elif defined(QUEX_OPTION_CONVERTER_ICU)
+#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_ICU_new)
+#elif defined(QUEX_SETTING_UT_CONVERTER_NEW)
+#   undef  QUEX_SETTING_UT_CONVERTER_NEW
+#endif
 
 int 
 main(int argc, char** argv) 
 {        
-    quex::Token*   token_p = 0x0;
+    using namespace quex;
+    Token*   token_p = 0x0;
 #   if   defined (__QUEX_SETTING_TEST_UTF8)
     const char*    file_name = "example-hindi.utf8";
 #   else
     const char*    file_name = "example.txt";
 #   endif
 #   ifdef __QUEX_OPTION_CONVERTER
-    quex::Simple   qlex(file_name, "UTF8");
+    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
+    Simple   qlex(byte_loader, QUEX_SETTING_UT_CONVERTER_NEW, 
+                  "UTF-8");
 #   else
-    quex::Simple   qlex(file_name);
+    Simple   qlex(file_name);
 #   endif
 
     if( argc < 2 ) {

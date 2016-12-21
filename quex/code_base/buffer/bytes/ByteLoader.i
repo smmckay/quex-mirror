@@ -154,6 +154,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 #include <quex/code_base/buffer/bytes/ByteLoader_FILE.i>
 #include <quex/code_base/buffer/bytes/ByteLoader_stream.i>
+#include <quex/code_base/buffer/bytes/ByteLoader_wstream.i>
 #ifdef QUEX_OPTION_POSIX
 #   include <quex/code_base/buffer/bytes/ByteLoader_POSIX.i>    /* (tm) */
 #endif

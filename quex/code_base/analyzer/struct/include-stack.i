@@ -31,7 +31,8 @@ QUEX_MEMBER_FUNCTION2(include_push, file_name,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, FileName, byte_loader, CodecName); 
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL4(include_push, ByteLoader, FileName, byte_loader, 
+                                           (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
     if( ! verdict_f ) {
         QUEX_NAME(ByteLoader_delete)(&byte_loader);
     }
@@ -67,8 +68,9 @@ QUEX_MEMBER_FUNCTION4(include_push, FILE,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, 
-                                           byte_loader, CodecName); 
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL4(include_push, ByteLoader, InputName, 
+                                           byte_loader, 
+                                           (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
     if( ! verdict_f ) {
         QUEX_NAME(ByteLoader_delete)(&byte_loader);
     }
@@ -97,8 +99,42 @@ QUEX_MEMBER_FUNCTION4(include_push, istream,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, 
-                                           byte_loader, CodecName); 
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL4(include_push, ByteLoader, InputName, 
+                                           byte_loader, 
+                                           (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
+    if( ! verdict_f ) {
+        QUEX_NAME(ByteLoader_delete)(&byte_loader);
+    }
+    return verdict_f;
+}
+#endif
+
+
+#if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE bool
+QUEX_MEMBER_FUNCTION4(include_push, wistream,
+                      const char*     InputName,
+                      std::wistream*  wistream_p, 
+                      const char*     CodecName   /* = 0x0   */,
+                      bool            BinaryModeF /* = false */)
+{
+    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
+    bool                     verdict_f;
+    QUEX_NAME(ByteLoader)*   byte_loader;
+    __quex_assert(wistream_p);
+
+    byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p);
+    byte_loader->binary_mode_f = BinaryModeF;
+
+    /* NOT: Abort/return if byte_loader == 0 !!
+     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
+    if( ! byte_loader ) {
+        return false;
+    }
+    byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL4(include_push, ByteLoader, InputName, 
+                                           byte_loader, 
+                                           (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
     if( ! verdict_f ) {
         QUEX_NAME(ByteLoader_delete)(&byte_loader);
     }
@@ -127,8 +163,9 @@ QUEX_MEMBER_FUNCTION3(include_push, strange_stream,
         return false;
     }
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    verdict_f = QUEX_MEMBER_FUNCTION_CALL3(include_push, ByteLoader, InputName, 
-                                           byte_loader, CodecName); 
+    verdict_f = QUEX_MEMBER_FUNCTION_CALL4(include_push, ByteLoader, InputName, 
+                                           byte_loader, 
+                                           (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
     if( ! verdict_f ) {
         QUEX_NAME(ByteLoader_delete)(&byte_loader);
     }
@@ -140,17 +177,21 @@ QUEX_MEMBER_FUNCTION3(include_push, strange_stream,
 /* Level (3) __________________________________________________________________
  *                                                                           */
 QUEX_INLINE bool
-QUEX_MEMBER_FUNCTION3(include_push, ByteLoader,
-                      const char*   InputName,
-                      QUEX_NAME(ByteLoader)*   byte_loader,
-                      const char*   CodecName) 
+QUEX_MEMBER_FUNCTION4(include_push, ByteLoader,
+                      const char*             InputName,
+                      QUEX_NAME(ByteLoader)*  byte_loader,
+                      QUEX_TYPE_CONVERTER_NEW ConverterNew,
+                      const char*             CodecName) 
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     bool                     verdict_f;
     QUEX_NAME(LexatomLoader)* filler;
     QUEX_NAME(Asserts_construct)(CodecName);
 
-    filler = QUEX_NAME(LexatomLoader_new_DEFAULT)(byte_loader, CodecName);
+    filler = QUEX_NAME(LexatomLoader_new)(byte_loader, 
+                                          ConverterNew ? ConverterNew(CodecName, (const char*)0)
+                                                       : (QUEX_NAME(Converter)*)0,
+                                          QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
     /* NOT: Abort/return if filler == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
     if( filler ) {

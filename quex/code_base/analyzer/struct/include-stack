@@ -43,12 +43,23 @@ QUEX_NAME(include_push_istream)(QUEX_TYPE_ANALYZER* me,
                                 bool           BinaryModeF /* = false */);
 #endif
 
+#if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE bool
+QUEX_NAME(include_push_wistream)(QUEX_TYPE_ANALYZER* me, 
+                                 const char*     InputName,
+                                 std::wistream*  wistream_p, 
+                                 const char*     CodecName   /* = 0x0   */,
+                                 bool            BinaryModeF /* = false */);
+#endif
+
 /* Level (3) __________________________________________________________________
  *                                                                           */
 QUEX_INLINE bool QUEX_NAME(include_push_ByteLoader)(
                            QUEX_TYPE_ANALYZER*    me,
                            const char*            InputName,
                            QUEX_NAME(ByteLoader)* byte_loader,
+                           QUEX_NAME(Converter)* (*converter_new)(const char* From, 
+                                                                  const char* To),
                            const char*            CodecName);
 
 /* Level (4) __________________________________________________________________

@@ -5,6 +5,7 @@
 #define  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__CONSTRUCTOR
 
 #include <quex/code_base/definitions>
+#include <quex/code_base/analyzer/struct/basic>
 
 QUEX_NAMESPACE_MAIN_OPEN 
 #ifdef __QUEX_OPTION_PLAIN_C
@@ -36,12 +37,24 @@ QUEX_INLINE void QUEX_NAME(from_istream)(
 
 #endif
 
+#if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
+/* REMEMBER: istream  ---> ios  ---> ios_base
+ * BUT:      wistream ---> wios ---> ios_base
+ * => 'istream' cannot be used to handle 'wistream'.                          */
+QUEX_INLINE void QUEX_NAME(from_wistream)(
+                                  QUEX_TYPE_ANALYZER*,
+                                  std::wistream*  wistream_p, 
+                                  const char*     CodecName   /* = 0x0   */,
+                                  bool            BinaryModeF /* = false */);
+#endif
+
 /* Level (3) __________________________________________________________________
  *                                                                           */
 QUEX_INLINE void QUEX_NAME(from_ByteLoader)(
                                   QUEX_TYPE_ANALYZER*,
-                                  QUEX_NAME(ByteLoader)* byte_loader,
-                                  const char*            CodecName);
+                                  QUEX_NAME(ByteLoader)*  byte_loader,
+                                  QUEX_TYPE_CONVERTER_NEW ConverterNew,
+                                  const char*             CodecName);
 
 /* Level (4) __________________________________________________________________
  *                                                                           */
@@ -54,7 +67,7 @@ QUEX_INLINE void QUEX_NAME(from_LexatomLoader)(
 QUEX_INLINE void QUEX_NAME(from_memory)(
                                   QUEX_TYPE_ANALYZER*,
                                   QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                                  size_t               BufferMemorySize,
+                                  size_t             BufferMemorySize,
                                   QUEX_TYPE_LEXATOM* BufferEndOfFileP); 
 
 /* Basic constructions ________________________________________________________

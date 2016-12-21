@@ -36,10 +36,9 @@ main(int argc, char** argv)
         (void)boeck_lex.receive();
 
         /* Lexeme is same for all three. */
-        const char* lexeme = max_token->pretty_char_text().c_str();
-        int         L      = (int)max_token->text.length();
+        int  L = (int)max_token->text.length();
 
-        printf("%s", lexeme);
+        printf("%s", max_token->pretty_char_text().c_str());
 
         for(int i=0; i < 10 - L ; ++i) printf(" ");
         printf("\t");

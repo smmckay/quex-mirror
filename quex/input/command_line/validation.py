@@ -167,15 +167,15 @@ def do(setup, command_line, argv):
 
     # Internal engine character encoding
     def __codec_vs_buffer_lexatom_size_in_byte(CodecName, RequiredBufferElementSize):
-        if   setup.buffer_codec.name   != CodecName:                 return
-        elif setup.buffer_lexatom_size_in_byte == RequiredBufferElementSize: return
+        if   setup.buffer_codec.name           != CodecName:                 return
+        elif setup.buffer_lexatom_size_in_byte >=  RequiredBufferElementSize: return
 
         if setup.buffer_lexatom_size_in_byte == -1: 
             msg_str = "undetermined (found type '%s')" % setup.buffer_lexatom_type
         else:
             msg_str = "is not %i (found %i)" % (RequiredBufferElementSize, setup.buffer_lexatom_size_in_byte)
 
-        error.log("Using codec '%s' while buffer element size %s.\n" % (CodecName, msg_str) + 
+        error.log("Using encoding '%s' while buffer element size is %s.\n" % (CodecName, msg_str) + 
                   "Consult command line argument %s" \
                   % command_line_args_string("buffer_lexatom_size_in_byte"))
 
@@ -184,7 +184,8 @@ def do(setup, command_line, argv):
             error.verify_word_in_list(setup.buffer_codec_name,
                                       codec_db.get_supported_codec_list() + ["utf8", "utf16"],
                                       "Codec '%s' is not supported." % setup.buffer_codec.name)
-        __codec_vs_buffer_lexatom_size_in_byte("utf8", 1)
+        # NOT: __codec_vs_buffer_lexatom_size_in_byte("utf8", 1)
+        # BECAUSE: Code unit size is one. No type has a size of less than one byte!
         __codec_vs_buffer_lexatom_size_in_byte("utf16", 2)
 
     if setup.external_lexeme_null_object and setup.token_class_only_f:

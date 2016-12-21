@@ -2,22 +2,34 @@
 #include<iostream> 
 
 #include <./Simple>
+#include "quex/code_base/buffer/bytes/ByteLoader_FILE.i"
+
+#if   defined(QUEX_OPTION_CONVERTER_ICONV)
+#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_IConv_new)
+#elif defined(QUEX_OPTION_CONVERTER_ICU)
+#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_ICU_new)
+#elif defined(QUEX_SETTING_UT_CONVERTER_NEW)
+#   undef  QUEX_SETTING_UT_CONVERTER_NEW
+#endif
 
 using namespace std;
 
 int 
 main(int argc, char** argv) 
 {        
+    using namespace quex;
     // we want to have error outputs in stdout, so that the unit test could see it.
-    quex::Token*  token_p;
+    Token*      token_p;
 #   ifdef STRANGE_STREAM
-    ifstream                       istr("example.txt");
-    quex::StrangeStream<ifstream>  strange_stream(&istr);
-    quex::Simple                   qlex(&strange_stream);
-#   elif defined(CONVERTER_ENCODING)
-    quex::Simple  qlex(argc == 1 ? "example.txt" : argv[1], CONVERTER_ENCODING);
+    ifstream                 istr("example.txt");
+    StrangeStream<ifstream>  strange_stream(&istr);
+    Simple                   qlex(&strange_stream);
+#   elif defined (QUEX_SETTING_UT_CONVERTER_NEW)
+    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(argv[1]);
+    Simple  qlex(byte_loader, QUEX_SETTING_UT_CONVERTER_NEW, 
+                 CONVERTER_ENCODING);
 #   else
-    quex::Simple  qlex(argc == 1 ? "example.txt" : argv[1]);
+    Simple  qlex(argc == 1 ? "example.txt" : argv[1]);
 #   endif
 
     cout << "## An Assert-Abortion might be an intended element of the experiment.\n";

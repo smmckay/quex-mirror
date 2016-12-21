@@ -17,6 +17,14 @@
     printf("`------------------------------------------------------------------------------------\n");
 #endif
 
+#if   defined(QUEX_OPTION_CONVERTER_ICONV)
+#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_IConv_new)
+#elif defined(QUEX_OPTION_CONVERTER_ICU)
+#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_ICU_new)
+#elif defined(QUEX_SETTING_UT_CONVERTER_NEW)
+#   undef  QUEX_SETTING_UT_CONVERTER_NEW
+#endif
+
 #ifdef HWUT_INFO_MESSAGE
 #include <support/C/hwut_unit.h>
 #endif
@@ -36,7 +44,14 @@ main(int argc, char** argv)
 #   endif
     const char*   file_name = argc > 1 ? argv[1] : "example.txt";
 
+
+#   if defined (QUEX_SETTING_UT_CONVERTER_NEW)
+    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
+    QUEX_NAME(from_ByteLoader)(&qlex, byte_loader, 
+                               QUEX_SETTING_UT_CONVERTER_NEW, "UTF-8");
+#   else                        
     QUEX_NAME(from_file_name)(&qlex, file_name, CHARACTER_ENCODING_NAME);
+#   endif
 
 #   ifdef HWUT_INFO_MESSAGE
 	hwut_info(HWUT_INFO_MESSAGE);
@@ -87,6 +102,7 @@ main(int argc, char** argv)
 
     TEST_EPILOG
 
+    byte_loader->delete_self(byte_loader);
     QUEX_NAME(destruct)(&qlex);
     return 0;
 }

@@ -1,13 +1,13 @@
 /* PURPOSE:
  * 
  * Generate function implementations for all string converters FROM 
- * a given codec:
+ * a given encoding '__QUEX_FROM':
  *
  *        QUEX_CONVERTER_STRING(FROM, utf8)(...)
  *        QUEX_CONVERTER_STRING(FROM, utf16)(...)
  *        QUEX_CONVERTER_STRING(FROM, utf32)(...)
  *        QUEX_CONVERTER_STRING(FROM, char)(...)
- *        QUEX_CONVERTER_STRING(FROM, wchar_t)(...)
+ *        QUEX_CONVERTER_STRING(FROM, wchar)(...)
  *
  * It is Assumed that the character converters for each function are 
  * available!

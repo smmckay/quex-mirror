@@ -36,7 +36,8 @@ QUEX_MEMBER_FUNCTION2(from, file_name,
     if( byte_loader ) {
         byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
     }
-    QUEX_MEMBER_FUNCTION_CALL2(from, ByteLoader, byte_loader, CodecName); 
+    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, byte_loader, 
+                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
 }
 
 /* Level (2) __________________________________________________________________
@@ -64,7 +65,8 @@ QUEX_MEMBER_FUNCTION3(from, FILE,
     if( byte_loader ) {
         byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
     }
-    QUEX_MEMBER_FUNCTION_CALL2(from, ByteLoader, byte_loader, CodecName); 
+    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, byte_loader, 
+                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
 }
 
 #ifndef __QUEX_OPTION_PLAIN_C
@@ -85,7 +87,33 @@ QUEX_MEMBER_FUNCTION3(from, istream,
     if( byte_loader ) {
         byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
     }
-    QUEX_MEMBER_FUNCTION_CALL2(from, ByteLoader, byte_loader, CodecName); 
+    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, 
+                               byte_loader, (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
+}
+#endif
+
+
+#if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE void 
+QUEX_MEMBER_FUNCTION3(from, wistream,
+                      std::wistream*  wistream_p, 
+                      const char*     CodecName   /* = 0x0   */,
+                      bool            BinaryModeF /* = false */)
+{
+    QUEX_NAME(ByteLoader)*   byte_loader;
+    __quex_assert(wistream_p);
+
+    byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p);
+    byte_loader->binary_mode_f = BinaryModeF;
+
+    /* NOT: Abort/return if byte_loader == 0 !!
+     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
+    if( byte_loader ) {
+        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
+    }
+    byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
+    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, byte_loader, 
+                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
 }
 #endif
 
@@ -109,7 +137,8 @@ QUEX_MEMBER_FUNCTION2(from_StrangeStream, strange_stream,
     }
 
     byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    QUEX_MEMBER_FUNCTION_CALL2(from, ByteLoader, byte_loader, CodecName); 
+    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, byte_loader, 
+                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
 }
 #endif
 
@@ -117,14 +146,18 @@ QUEX_MEMBER_FUNCTION2(from_StrangeStream, strange_stream,
 /* Level (3) __________________________________________________________________
  *                                                                           */
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTION2(from, ByteLoader,
+QUEX_MEMBER_FUNCTION3(from, ByteLoader,
                       QUEX_NAME(ByteLoader)*  byte_loader,
+                      QUEX_TYPE_CONVERTER_NEW ConverterNew, 
                       const char*             CodecName) 
 {
     QUEX_NAME(LexatomLoader)* filler;
     QUEX_NAME(Asserts_construct)(CodecName);
 
-    filler = QUEX_NAME(LexatomLoader_new_DEFAULT)(byte_loader, CodecName);
+    filler = QUEX_NAME(LexatomLoader_new)(byte_loader, 
+                                          ConverterNew ? ConverterNew(CodecName, (const char*)0)
+                                                       : (QUEX_NAME(Converter)*)0,
+                                          QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
     /* NOT: Abort/return if filler == 0 !!
      *      Incomplete construction => propper destruction IMPOSSIBLE!       */
     if( filler ) {

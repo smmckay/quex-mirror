@@ -10,15 +10,19 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-    QUEX_INLINE void 
-    QUEX_NAME(destruct_basic)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE void 
+QUEX_NAME(destruct_basic)(QUEX_TYPE_ANALYZER* me);
 
-    QUEX_INLINE void
-    QUEX_NAME(reset_basic)(QUEX_TYPE_ANALYZER*     me,
-                           QUEX_NAME(ByteLoader)*             byte_loader, 
-                           const QUEX_NAME(Mode)*  Mode, 
-                           const char*             CharacterEncodingName, 
-                           const size_t            TranslationBufferMemorySize);
+QUEX_INLINE void
+QUEX_NAME(reset_basic)(QUEX_TYPE_ANALYZER*     me,
+                       QUEX_NAME(ByteLoader)*             byte_loader, 
+                       const QUEX_NAME(Mode)*  Mode, 
+                       const char*             CharacterEncodingName, 
+                       const size_t            TranslationBufferMemorySize);
+
+/* Function pointer to what can allocate a 'converter'.                       */
+typedef QUEX_NAME(Converter)* (*QUEX_TYPE_CONVERTER_NEW)(const char* From, 
+                                                         const char* To);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

@@ -1,70 +1,70 @@
 #_[ Print 2 analyzer(s) ]______________________________
 
---( 0: init si = 31 )-------------------------
+--( 0: init si = 19 )-------------------------
 
-State 34:
+State 21:
   .entry:
-    .from 31: 
-    .from 32: 
-    .from 33: 
+    .from 19: 
+    .from 20: 
+    .from 22: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=1)
 
-State 35:
+State 23:
   .entry:
-    .from 33: 
+    .from 22: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=2)
 
-State 37:
+State 25:
   .entry:
-    .from 33: 
+    .from 22: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=3)
 
-State 38:
+State 27:
   .entry:
-    .from 32: 
+    .from 20: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=4)
 
-State 32:
+State 20:
   .entry:
     .from REOAD_FORWARD: 
-    .from 31: 
- -- .transition_map:
-    [0]: DoorID(s=RELOAD_FORWARD, d=0)
-    [1, 127]: DoorID(s=34, d=0)
-    [128]: DoorID(s=38, d=0)
-    [129, 191]: DoorID(s=DROP_OUT, d=0)
-    [192, 255]: DoorID(s=34, d=0)
-
-State 33:
-  .entry:
-    .from REOAD_FORWARD: 
-    .from 31: 
+    .from 19: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=1)
-    [1, 127]: DoorID(s=34, d=0)
-    [128]: DoorID(s=37, d=0)
-    [129]: DoorID(s=35, d=0)
-    [130, 191]: DoorID(s=DROP_OUT, d=0)
-    [192, 255]: DoorID(s=34, d=0)
+    [1, 127]: DoorID(s=21, d=0)
+    [128]: DoorID(s=27, d=0)
+    [129, 191]: DoorID(s=DROP_OUT, d=0)
+    [192, 255]: DoorID(s=21, d=0)
 
-State 31:
+State 22:
+  .entry:
+    .from REOAD_FORWARD: 
+    .from 19: 
+ -- .transition_map:
+    [0]: DoorID(s=RELOAD_FORWARD, d=2)
+    [1, 127]: DoorID(s=21, d=0)
+    [128]: DoorID(s=25, d=0)
+    [129]: DoorID(s=23, d=0)
+    [130, 191]: DoorID(s=DROP_OUT, d=0)
+    [192, 255]: DoorID(s=21, d=0)
+
+State 19:
   .entry:
     .from REOAD_FORWARD: 
     .from BEFORE_ENTRY: 
-    .from 41: 
+    .from 29: 
  -- .transition_map:
-    [0]: DoorID(s=RELOAD_FORWARD, d=2)
+    [0]: DoorID(s=RELOAD_FORWARD, d=0)
     [1, 127]: DoorID(s=DROP_OUT, d=0)
-    [128, 191]: DoorID(s=34, d=0)
+    [128, 191]: DoorID(s=21, d=0)
     [192, 215]: DoorID(s=DROP_OUT, d=0)
-    [216]: DoorID(s=33, d=0)
-    [217]: DoorID(s=32, d=0)
+    [216]: DoorID(s=22, d=0)
+    [217]: DoorID(s=20, d=0)
     [218, 253]: DoorID(s=DROP_OUT, d=0)
-    [254, 255]: DoorID(s=34, d=0)
+    [254, 255]: DoorID(s=21, d=0)
 
 
 DoorID(s=DROP_OUT, d=0) => case Failure: pos = lexeme_start_p + 1;  goto Failure;
@@ -76,41 +76,41 @@ DoorID(s=DROP_OUT, d=4) => case 2: goto Pattern2;
 
 State 1:
   .entry:
-    .from 50: 
+    .from 32: 
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=6)
 
-State 49:
+State 34:
   .entry:
     .from 0: 
-    .from 48: 
-    .from 50: 
+    .from 31: 
+    .from 32: 
  -- .transition_map:
-    [0, 255]: DoorID(s=DROP_OUT, d=8)
+    [0, 255]: DoorID(s=DROP_OUT, d=9)
 
-State 48:
+State 31:
   .entry:
     .from REOAD_FORWARD: 
     .from 0: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=5)
-    [1, 127]: DoorID(s=49, d=0)
+    [1, 127]: DoorID(s=34, d=0)
     [128, 151]: DoorID(s=DROP_OUT, d=7)
-    [152]: DoorID(s=50, d=0)
+    [152]: DoorID(s=32, d=0)
     [153, 191]: DoorID(s=DROP_OUT, d=7)
-    [192, 255]: DoorID(s=49, d=0)
+    [192, 255]: DoorID(s=34, d=0)
 
-State 50:
+State 32:
   .entry:
     .from REOAD_FORWARD: 
-    .from 48: 
+    .from 31: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=4)
-    [1, 127]: DoorID(s=49, d=0)
-    [128, 145]: DoorID(s=DROP_OUT, d=9)
+    [1, 127]: DoorID(s=34, d=0)
+    [128, 145]: DoorID(s=DROP_OUT, d=8)
     [146]: DoorID(s=1, d=0)
-    [147, 191]: DoorID(s=DROP_OUT, d=9)
-    [192, 255]: DoorID(s=49, d=0)
+    [147, 191]: DoorID(s=DROP_OUT, d=8)
+    [192, 255]: DoorID(s=34, d=0)
 
 State 0:
   .entry:
@@ -119,15 +119,15 @@ State 0:
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=3)
     [1, 127]: DoorID(s=DROP_OUT, d=5)
-    [128, 191]: DoorID(s=49, d=0)
+    [128, 191]: DoorID(s=34, d=0)
     [192, 234]: DoorID(s=DROP_OUT, d=5)
-    [235]: DoorID(s=48, d=0)
+    [235]: DoorID(s=31, d=0)
     [236, 253]: DoorID(s=DROP_OUT, d=5)
-    [254, 255]: DoorID(s=49, d=0)
+    [254, 255]: DoorID(s=34, d=0)
 
 
 DoorID(s=DROP_OUT, d=5) => case 4: goto Pattern4;
 DoorID(s=DROP_OUT, d=6) => case 4711: goto Pattern4711;
 DoorID(s=DROP_OUT, d=7) => case 4: pos -= 1;  goto Pattern4;
-DoorID(s=DROP_OUT, d=8) => case Bad Lexatom: goto Bad Lexatom;
-DoorID(s=DROP_OUT, d=9) => case 4: pos -= 2;  goto Pattern4;
+DoorID(s=DROP_OUT, d=8) => case 4: pos -= 2;  goto Pattern4;
+DoorID(s=DROP_OUT, d=9) => case Bad Lexatom: goto Bad Lexatom;

@@ -217,7 +217,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr)
 
 def run_this(Str, filter_result_db=None, FilterFunc=None):
-    try:
+    if True: #try:
         fh_out = open("tmp.out", "w")
         fh_err = open("tmp.err", "w")
         call_list = Str.split()
@@ -259,7 +259,7 @@ def run_this(Str, filter_result_db=None, FilterFunc=None):
 
         os.remove("tmp.out")
         os.remove("tmp.err")
-    except:
+    else: #except:
         print "<<execution failed>>"
 
 def compile_and_run(Language, SourceCode, AssertsActionvation_str="", StrangeStream_str=""):

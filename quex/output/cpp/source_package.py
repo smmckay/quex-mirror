@@ -61,6 +61,8 @@ base_buffer = """
 /buffer/bytes/ByteLoader_POSIX.i
 /buffer/bytes/ByteLoader_stream
 /buffer/bytes/ByteLoader_stream.i
+/buffer/bytes/ByteLoader_wstream
+/buffer/bytes/ByteLoader_wstream.i
 """
 
 base_analyzer = """

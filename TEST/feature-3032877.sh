@@ -27,7 +27,7 @@ function perform_test() {
         cat tmp.txt
         rm -f tmp.txt
     else
-        echo "File EasyLexer-configuration does not exits."
+        echo "File EasyLexer-configuration does not exist."
     fi
     rm -f EasyLexer*
     rm -f Lexer*

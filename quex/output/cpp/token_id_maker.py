@@ -127,7 +127,7 @@ file_str = \
  * DATE: $$DATE$$
  *
  * (C) 2005-2010 Frank-Rene Schaefer
- * ABSOLUTELY NO WARRANTY                                           */
+ * ABSOLUTELY NO WARRANTY                                                     */
 #ifndef __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__
 #define __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__
 
@@ -138,17 +138,19 @@ file_str = \
 #endif
 
 /* The token class definition file can only be included after 
- * the definition on TERMINATION and UNINITIALIZED.          
- * (fschaef 12y03m24d: "I do not rememember why I wrote this.")    */
+ * the definition of TERMINATION and UNINITIALIZED.          
+ * (fschaef 12y03m24d: "I do not rememember why I wrote this.")               */
 #include "$$TOKEN_CLASS_DEFINITION_FILE$$"
 
+/* Note: When multiple lexical analyzers are included, then their
+ *       token prefix must differ! Use '--token-id-prefix'.                   */
 $$TOKEN_ID_DEFINITIONS$$
 
 QUEX_NAMESPACE_TOKEN_OPEN
 extern const char* QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID);
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__ */
+#endif /* __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__        */
 """
 
 func_str = \

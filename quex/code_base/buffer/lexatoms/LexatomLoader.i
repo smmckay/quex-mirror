@@ -40,7 +40,6 @@ QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader,
             && converter->input_code_unit_size != -1
             && converter->input_code_unit_size <  (int)byte_loader->element_size )
         {
-#           ifndef QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED
             __QUEX_STD_printf("Error: The specified byte loader provides elements of size %i.\n", 
                               (int)byte_loader->element_size);
             __QUEX_STD_printf("Error: The converter requires input elements of size <= %i.\n", 
@@ -48,7 +47,6 @@ QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader,
             __QUEX_STD_printf("Error: This happens, for example, when using 'wistream' input\n"
                               "Error: without considering 'sizeof(wchar_t)' with respect to\n"
                               "Error: the encodings code unit's size. (UTF8=1byte, UTF16=2byte, etc.)\n");
-#           endif
             return (QUEX_NAME(LexatomLoader)*)0x0;
         }
         filler = QUEX_NAME(LexatomLoader_Converter_new)(byte_loader, converter, 
@@ -61,9 +59,8 @@ QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader,
     return filler;
 }
 
-QUEX_INLINE QUEX_NAME(LexatomLoader)* 
-QUEX_NAME(LexatomLoader_new_DEFAULT)(QUEX_NAME(ByteLoader)*   byte_loader, 
-                                     const char*              InputCodecName) 
+QUEX_INLINE QUEX_NAME(Converter)* 
+QUEX_NAME(LexatomLoader_new_Converter_DEFAULT)(const char* InputCodecName) 
 {
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
     QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)(InputCodecName, 0);
@@ -73,24 +70,26 @@ QUEX_NAME(LexatomLoader_new_DEFAULT)(QUEX_NAME(ByteLoader)*   byte_loader,
     QUEX_NAME(Converter)* converter = (QUEX_NAME(Converter)*)0;
 #   endif
 
-    if( converter ) {
-        converter->ownership = E_Ownership_LEXICAL_ANALYZER;
-        if( ! InputCodecName ) {
-#           ifndef QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED
-            __QUEX_STD_printf("Warning: No character encoding name specified, while this\n" \
-                              "Warning: analyzer was generated for use with a converter.\n" \
-                              "Warning: Please, consult the documentation about the constructor\n" \
-                              "Warning: or the reset function. If it is desired to do a plain\n" \
-                              "Warning: buffer filler with this setup, you might want to disable\n" \
-                              "Warning: this warning with the macro:\n" \
-                              "Warning:     QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED\n");
-#           endif
-            return (QUEX_NAME(LexatomLoader)*)0x0;
-        }
-    } 
+    if( ! converter ) {
+        return converter;
+    }
 
-    return QUEX_NAME(LexatomLoader_new)(byte_loader, converter,
-                                        QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
+    converter->ownership = E_Ownership_LEXICAL_ANALYZER;
+
+    if( ! InputCodecName ) {
+#       ifndef QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED
+        __QUEX_STD_printf("Warning: No character encoding name specified, while this\n" \
+                          "Warning: analyzer was generated for use with a converter.\n" \
+                          "Warning: Please, consult the documentation about the constructor\n" \
+                          "Warning: or the reset function. If it is desired to do a plain\n" \
+                          "Warning: buffer filler with this setup, you might want to disable\n" \
+                          "Warning: this warning with the macro:\n" \
+                          "Warning:     QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED\n");
+#       endif
+        return (QUEX_NAME(Converter)*)0x0;
+    }
+
+    return converter;
 }
 
 QUEX_INLINE void       

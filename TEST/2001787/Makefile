@@ -2,6 +2,8 @@ X = Simple
 
 # -DQUEX_OPTION_DEBUG_SHOW 
 
+all: lexer-iconv lexer-icu
+
 lexer-iconv: Simple.cpp
 	@g++ -I./ -I$(QUEX_PATH) \
 		Simple.cpp                    \
@@ -9,7 +11,7 @@ lexer-iconv: Simple.cpp
 		-ggdb                         \
 		-o $@                         \
 		-D'CONVERTER_ENCODING="UTF8"' \
-		-D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICONV > tmp.txt 2>&1
+		> tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
 	
@@ -21,7 +23,7 @@ lexer-icu: Simple.cpp
 		-ggdb                         \
 		-o $@                         \
 		-D'CONVERTER_ENCODING="UTF8"' \
-		-D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICU > tmp.txt 2>&1
+		> tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
 

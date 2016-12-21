@@ -1,0 +1,9 @@
+Using 'wchar_t' tokens must include 
+
+      ~/prj/quex/trunk/quex/code_base/token/CppWChar.qx
+
+and define
+
+      -DQUEX_OPTION_AUX_STRING_DISABLED
+
+EXAMPLE: 'TEST/293' (regression test)

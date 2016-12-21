@@ -33,9 +33,9 @@ trigger_set = NumberSet([Interval(ord('a'), ord('z') + 1),
 
 def build(TriggerSet, BufferSize):
     Language = "ANSI-C"
-    code = create_character_set_skipper_code(Language, "", TriggerSet, 
-                                             QuexBufferSize=BufferSize+2,
-                                             CounterPrintF="short")
+    code     = create_character_set_skipper_code(Language, "", TriggerSet, 
+                                                 QuexBufferSize=BufferSize+2,
+                                                 CounterPrintF="short")
     exe_name, tmp_file_name = compile(Language, code)
     return exe_name, tmp_file_name
 
@@ -72,9 +72,13 @@ run(exe, "abcdefghijklmnopqrstuvwx_X", FilterF=True, NextLetter="_")
 run(exe, "abcdefghijklmnopqrstuvwxy_X", FilterF=True, NextLetter="_")
 run(exe, "abcdefghijklmnopqrstuvwxyz_X", FilterF=True, NextLetter="_")
 
-if "LAST" in sys.argv:
-    try: os.remove(exe)
-    except: pass
-    try: os.remove(tmp_file)
-    except: pass
+if REMOVE_FILES:
+    if "LAST" in sys.argv:
+        try: os.remove(exe)
+        except: pass
+        try: os.remove(tmp_file)
+        except: pass
+else:
+    print "#exe:",      exe
+    print "#tmp_file:", tmp_file
 

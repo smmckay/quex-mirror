@@ -43,9 +43,9 @@ Two string converters are defined for each translation
 
     QUEX_INLINE void
     QUEX_CONVERTER_STRING(from, to)(const in_type**  source_pp, 
-                                      const in_type*   SourceEnd, 
-                                      out_type**       drain_pp,  
-                                      const out_type*  DrainEnd);
+                                    const in_type*   SourceEnd, 
+                                    out_type**       drain_pp,  
+                                    const out_type*  DrainEnd);
 
     QUEX_INLINE std::basic_string<in_type>
     QUEX_CONVERTER_STRING(buffer, to)(const std::basic_string<in_type>& Source);

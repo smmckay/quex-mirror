@@ -70,8 +70,8 @@ QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const __QUEX_FROM_TYPE**  sour
     source_iterator = *source_pp;
 
     while( 1 + 1 == 2 ) { 
-        if( source_iterator == SourceEnd ) break;
-        if( DrainEnd - drain_iterator < (ptrdiff_t)__QUEX_TO_MAX_LENGTH(__QUEX_TO) ) break;
+        if     ( source_iterator == SourceEnd ) break;
+        else if( DrainEnd - drain_iterator < (ptrdiff_t)__QUEX_TO_MAX_LENGTH(__QUEX_TO) ) break;
         QUEX_CONVERTER_CHAR(__QUEX_FROM, __QUEX_TO)(&source_iterator, &drain_iterator);
         __quex_assert(source_iterator >  *source_pp);
         __quex_assert(source_iterator <= SourceEnd);
