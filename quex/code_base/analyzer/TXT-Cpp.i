@@ -1,6 +1,6 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_MEMBER_FUNCTIONO(user_constructor)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) 
@@ -13,6 +13,7 @@ $$CONSTRUCTOR_MODE_DB_INITIALIZATION_CODE$$
 $$CONSTRUCTOR_EXTENSTION$$
 /* END: _______________________________________________________________________*/
 #undef self
+    return true;
 }
 
 QUEX_INLINE void

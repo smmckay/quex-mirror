@@ -22,15 +22,20 @@ QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
 /* RETURNS: true  -- construction succesful
  *          false -- else.                                                    */
 {
-    me->convert            = convert;
-    me->stomach_byte_n     = stomach_byte_n;
-    me->stomach_clear      = stomach_clear;
-    me->delete_self        = delete_self;
+    __quex_assert(open);              /* All functions MUST be defined.       */
+    __quex_assert(convert);
+    __quex_assert(delete_self);
+    __quex_assert(stomach_byte_n);
+    __quex_assert(stomach_clear);
+
+    me->convert        = convert;
+    me->stomach_byte_n = stomach_byte_n;
+    me->stomach_clear  = stomach_clear;
+    me->delete_self    = delete_self;
 
     me->virginity_f          = true;
     me->byte_n_per_lexatom   = -1;         /* No fixed ratio 'byte_n/lexatom' */
     me->input_code_unit_size = -1;         /* Unknown input code unit size.   */
-    me->ownership            = E_Ownership_EXTERNAL;
 
     /* Opens internally a conversion handle for the conversion from 'FromCodec'
      * to 'ToCodec'. Pass '0x0' as 'ToCodec' in order to indicate a conversion
@@ -42,6 +47,14 @@ QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
 
     return open(me, FromCodec, ToCodec);
 }
+
+QUEX_INLINE void
+QUEX_NAME(Converter_reset)(QUEX_NAME(Converter)* me)
+{
+    me->stomach_clear(me_real->converter);
+    me->virginity_f = true;
+}
+
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

@@ -253,7 +253,13 @@ QUEX_NAME(PostCategorizer_clear)(QUEX_NAME(Dictionary)* me)
     me->root = (QUEX_NAME(DictionaryNode)*)0;
 }
 
-    QUEX_INLINE void
+QUEX_INLINE void
+QUEX_NAME(PostCategorizer_mark_resources_as_absent)(QUEX_NAME(Dictionary)* me)
+{ 
+    me->root = (QUEX_NAME(DictionaryNode)*)0;
+}
+
+QUEX_INLINE void
 QUEX_NAME(PostCategorizer_print_tree)(QUEX_NAME(DictionaryNode)* node, int Depth)
 {
     int i = 0;

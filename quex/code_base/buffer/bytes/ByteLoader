@@ -50,7 +50,6 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(ByteLoader_t
     bool  (*on_nothing)(struct QUEX_NAME(ByteLoader_tag)*, size_t TryN, size_t RequestN);
 
     E_Ownership               handle_ownership;
-    E_Ownership               ownership;
 
     /* Upon construction, the stream handle may be setup to a particular 
      * position in the stream. This is going to be the reference position.   

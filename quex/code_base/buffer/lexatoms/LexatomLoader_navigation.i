@@ -34,6 +34,10 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+QUEX_INLINE void  QUEX_NAME(LexatomLoader_lexatom_index_reset_backup)(QUEX_NAME(LexatomLoader)* me, 
+                                             QUEX_TYPE_STREAM_POSITION Backup_lexatom_index_next_to_fill, 
+                                             ptrdiff_t                 BackupStomachByteN, 
+                                             QUEX_TYPE_STREAM_POSITION BackupByteLoaderPosition);
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION 
 QUEX_NAME(LexatomLoader_lexatom_index_tell)(QUEX_NAME(LexatomLoader)* me)
 {
@@ -88,7 +92,9 @@ QUEX_NAME(LexatomLoader_lexatom_index_seek)(QUEX_NAME(LexatomLoader)*         me
     if( CharacterIndex < me->lexatom_index_next_to_fill ) {
         /* Character index lies backward, so stepping needs to start from 
          * the initial position.                                             */
-        QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
+        if( ! QUEX_NAME(LexatomLoader_lexatom_index_reset)(me) ) {
+            return false;
+        }
     }
 
     /* step_forward_n_lexatoms() calls derived.load_lexatoms() 
@@ -104,20 +110,25 @@ QUEX_NAME(LexatomLoader_lexatom_index_seek)(QUEX_NAME(LexatomLoader)*         me
     return true;
 }
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(LexatomLoader_lexatom_index_reset)(QUEX_NAME(LexatomLoader)* me)
 /* Set the lexatom index position to '0' and the byte loader to the initial
  * position. The 'stomach' of derived buffer fillers is cleared, so that 
- * filling may start from the beginning.                                     */
+ * filling may start from the beginning.                                     
+ * 
+ * RETURNS: true, if initial position has been reached.
+ *          false, if positioning failed.                                    */
 {
     if( me->byte_loader ) {
         me->byte_loader->seek(me->byte_loader, me->byte_loader->initial_position);
         if( me->byte_loader->tell(me->byte_loader) != me->byte_loader->initial_position ) {
             QUEX_ERROR_EXIT("QUEX_NAME(ByteLoader )failed to seek to initial position.\n");
+            return false;
         }
     }
     me->lexatom_index_next_to_fill = 0;
     me->stomach_clear(me);
+    return true;
 }
 
 QUEX_INLINE void
@@ -133,17 +144,19 @@ QUEX_NAME(LexatomLoader_lexatom_index_reset_backup)(QUEX_NAME(LexatomLoader)* me
         /* Since it was not possible to determine the number of bytes in
          * the converter's stomach, the backup position must be reached 
          * by starting from the begining.                                    */
-        QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
-        if( ! QUEX_NAME(LexatomLoader_lexatom_index_step_to)(me, (ptrdiff_t)Backup_lexatom_index_next_to_fill) ) {
+        if( ! QUEX_NAME(LexatomLoader_lexatom_index_reset)(me) ) {
+            return;
+        }
+        else if( ! QUEX_NAME(LexatomLoader_lexatom_index_step_to)(me, (ptrdiff_t)Backup_lexatom_index_next_to_fill) ) {
             QUEX_ERROR_EXIT("LexatomLoader failed to seek previously reached lexatom.\n");
         }
-        return;
     }
-
-    backup_byte_pos = BackupByteLoaderPosition - BackupStomachByteN;
-    me->byte_loader->seek(me->byte_loader, backup_byte_pos);
-    me->stomach_clear(me);
-    me->lexatom_index_next_to_fill = Backup_lexatom_index_next_to_fill;
+    else {
+        backup_byte_pos = BackupByteLoaderPosition - BackupStomachByteN;
+        me->byte_loader->seek(me->byte_loader, backup_byte_pos);
+        me->stomach_clear(me);
+        me->lexatom_index_next_to_fill = Backup_lexatom_index_next_to_fill;
+    }
 }
 
 QUEX_INLINE bool 

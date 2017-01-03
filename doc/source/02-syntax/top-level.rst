@@ -177,6 +177,10 @@ for the given section-name. The available sections are the following:
 
    Initializes a self declared member of the analyzer ``my_counter`` to 4711.
 
+   May return a ``bool`` indicating that the initialization succeeded
+   (``true``) or failed (``false``). By default, it returns ``true``.
+
+
 .. data:: reset
 
    Section that defines customized behavior upon reset. This fragment is

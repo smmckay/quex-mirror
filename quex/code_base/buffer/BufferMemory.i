@@ -14,7 +14,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE void 
 QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  me, 
-                                  QUEX_TYPE_LEXATOM*      Memory, 
+                                  QUEX_TYPE_LEXATOM*        Memory, 
                                   const size_t              Size,
                                   E_Ownership               Ownership) 
 {
@@ -44,9 +44,14 @@ QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me)
     if( me->_front && me->ownership == E_Ownership_LEXICAL_ANALYZER ) {
         QUEXED(MemoryManager_free)((void*)me->_front, 
                                    E_MemoryObjectType_BUFFER_MEMORY);
-        /* Protect against double-destruction.                               */
-        me->_front = me->_back = (QUEX_TYPE_LEXATOM*)0x0;
     }
+    QUEX_NAME(BufferMemory_mark_resources_as_absent)(me);
+}
+
+QUEX_INLINE void 
+QUEX_NAME(BufferMemory_mark_resources_as_absent)(QUEX_NAME(BufferMemory)* me) 
+{
+    me->_front = me->_back = (QUEX_TYPE_LEXATOM*)0x0;
 }
 
 QUEX_INLINE size_t          

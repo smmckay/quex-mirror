@@ -234,7 +234,7 @@ QUEX_NAME(Converter_ICU_stomach_clear)(QUEX_NAME(Converter)* alter_ego)
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
 
     // if( me->from_handle ) ucnv_reset(me->from_handle);
-    //  if( me->to_handle )   ucnv_reset(me->to_handle);
+    // if( me->to_handle )   ucnv_reset(me->to_handle);
 
     /* Reset the pivot buffer iterators */
     //me->pivot.source = &me->pivot.buffer[0];

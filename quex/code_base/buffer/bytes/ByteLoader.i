@@ -34,7 +34,6 @@ QUEX_NAME(ByteLoader_construct)(QUEX_NAME(ByteLoader)* me,
     me->on_nothing     = (bool  (*)(struct QUEX_NAME(ByteLoader_tag)*, size_t, size_t))0;
 
     me->handle_ownership = E_Ownership_EXTERNAL; /* Default                  */
-    me->ownership        = E_Ownership_EXTERNAL; /* Default                  */
 
     me->initial_position = tell(me);
 
@@ -144,9 +143,8 @@ QUEX_NAME(ByteLoader_is_equivalent)(const QUEX_NAME(ByteLoader)* A,
 QUEX_INLINE void  
 QUEX_NAME(ByteLoader_delete)(QUEX_NAME(ByteLoader)** me)
 {
-    if( ! *me )                                                 return;
-    else if( (*me)->ownership != E_Ownership_LEXICAL_ANALYZER ) return;
-    else if( (*me)->delete_self )                               (*me)->delete_self(*me);
+    if( ! *me )                   return;
+    else if( (*me)->delete_self ) (*me)->delete_self(*me);
     (*me) = (QUEX_NAME(ByteLoader)*)0;
 }
 

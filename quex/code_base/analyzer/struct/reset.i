@@ -1,6 +1,24 @@
 /* -*- C++ -*- vim:set syntax=cpp:
- * (C)  Frank-Rene Schaefer
- * ABSOLUTELY NO WARRANTY                                                    */
+ *
+ * RESET: Reset lexical analysis with a new input stream.
+ *
+ * All components of the lexer are reset into a state so that the new input
+ * stream can be analyzed. 
+ *
+ *   -- Reset may fail, but it never throws an exception!
+ *      Failure is notified by the '.error_code' flag.
+ *   -- '.receive()' may always be called, but that function might return
+ *      immediately if '.error_code' is not 'NONE'.
+ *   -- The destructor can be called safely for any object that has been 
+ *      'reset'--even if the reset failed.
+ *
+ * FAILURE => Lexer is in DYSFUNCTIONAL state.
+ *
+ * NOTE: The state before the reset is FORGOTTEN. For a 'reminiscent reset' 
+ *       the 'include' feature may be considered.
+ *
+ * (C) 2006-2017 Frank-Rene Schaefer
+ * ABSOLUTELY NO WARRANTY                                                     */
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__RESET_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__RESET_I
 
@@ -9,258 +27,169 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-/* Level (0) __________________________________________________________________
- *                                                                           */
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTIONO(reset)  
+QUEX_INLINE bool
+QUEX_NAME(reset)(QUEX_TYPE_ANALYZER* me)  
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_NAME(LexatomLoader)* filler = me->buffer.filler;
 
-    if( filler ) {
-        QUEX_NAME(LexatomLoader_reset)(filler, filler->byte_loader);
-    }
+    QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
+    QUEX_NAME(Buffer_reset)(&me->buffer);
 
-    QUEX_MEMBER_FUNCTION_CALL1(reset, LexatomLoader, filler);
+    /* Reset all but 'LexatomLoader' and 'Buffer'.                            */
+    if( ! QUEX_NAME(reset_all_but_buffer)(me, me->input_name) ) {
+        QUEX_NAME(Buffer_destruct)(&me->buffer);
+        QUEX_NAME(mark_resources_as_absent)(me);
+    }
 }
 
-/* Level (1) __________________________________________________________________
- *                                                                           */
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION2(reset, file_name, 
-                      const char* FileName, 
-                      const char* CodecName /* = 0x0 */) 
-{
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(ByteLoader)*   byte_loader;
-
-    byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    QUEX_MEMBER_FUNCTION_CALL3(reset, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-
-/* Level (2) __________________________________________________________________
- *                                                                           */
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION3(reset, FILE,
-                      __QUEX_STD_FILE* fh, 
-                      const char*      CodecName /* = 0x0   */,
-                      bool             BinaryModeF)
-{
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( fh );
-
-    /* At the time of this writing 'stdin' as located in the C++ global
-     * namespace.  This seemed suspicous to the author. To avoid compilation
-     * errors in the future the test for the standard input is only active in
-     * 'C'. It is only about user information anyway. So better no risks taken.
-     * <fschaef 2010y02m06d>                                                 */
-    setbuf(fh, 0);   /* turn off system based buffering! 
-    **               ** this is essential to profit from the quex buffer!    */
-    byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, BinaryModeF);
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    QUEX_MEMBER_FUNCTION_CALL3(reset, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-
-#ifndef __QUEX_OPTION_PLAIN_C
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION3(reset, istream,
-                      std::istream*   istream_p, 
-                      const char*     CodecName   /* = 0x0   */,
-                      bool            BinaryModeF /* = false */)
-{
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( istream_p );
-
-    byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
-    byte_loader->binary_mode_f = BinaryModeF;
-
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    QUEX_MEMBER_FUNCTION_CALL3(reset, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-#endif
-
-
-#if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION3(reset, wistream,
-                      std::wistream*  wistream_p, 
-                      const char*     CodecName   /* = 0x0   */,
-                      bool            BinaryModeF /* = false */)
-{
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert(wistream_p);
-    byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p);
-    byte_loader->binary_mode_f = BinaryModeF;
-
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    QUEX_MEMBER_FUNCTION_CALL3(reset, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-#endif
-
-#if defined(__QUEX_OPTION_UNIT_TEST) && ! defined (__QUEX_OPTION_PLAIN_C)
-/* StrangeStreams are not for C-language stuff */
-template<class UnderlyingStreamT> QUEX_INLINE void
-QUEX_MEMBER_FUNCTION2(reset_StrangeStream, strange_stream, 
-                      quex::StrangeStream<UnderlyingStreamT>*  istream_p, 
-                      const char*                              CodecName /* = 0x0   */)
-{
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( istream_p );
-    byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
-    byte_loader->binary_mode_f = false;
-
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    QUEX_MEMBER_FUNCTION_CALL3(reset, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-#endif
-
-
-/* Level (3) __________________________________________________________________
- *                                                                           */
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION3(reset, ByteLoader,
-                      QUEX_NAME(ByteLoader)*  byte_loader,
-                      QUEX_TYPE_CONVERTER_NEW ConverterNew,
-                      const char*             CodecName) 
-{
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(LexatomLoader)* filler = me->buffer.filler;
-    QUEX_NAME(Asserts_construct)(CodecName);
-    
-    if( filler ) {
-        QUEX_NAME(LexatomLoader_reset)(filler, byte_loader);
-    }
-    else {
-        filler = QUEX_NAME(LexatomLoader_new)(byte_loader, 
-                                              ConverterNew ? ConverterNew(CodecName, (const char*)0)
-                                                           : (QUEX_NAME(Converter)*)0,
-                                              QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
-        /* NOT: Abort/return if filler == 0 !!
-         *      Incomplete construction => propper destruction IMPOSSIBLE!   */
-        if( filler ) {
-            filler->ownership = E_Ownership_LEXICAL_ANALYZER;
-        }
-    }
-
-    QUEX_MEMBER_FUNCTION_CALL1(reset, LexatomLoader, filler);
-}
-
-/* Level (4) __________________________________________________________________
- *                                                                           */
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION1(reset, LexatomLoader,
-                      QUEX_NAME(LexatomLoader)* filler)
-{
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    if( filler != me->buffer.filler ) {
-        if( me->buffer.filler && me->buffer.filler->ownership == E_Ownership_LEXICAL_ANALYZER ) {
-            me->buffer.filler->delete_self(me->buffer.filler); 
-        }
-        me->buffer.filler = filler;
-    }
-    else {
-        /* Assume, that buffer filler has been reset.                        */
-    }
-    QUEX_NAME(Buffer_init_content)(&me->buffer, (QUEX_TYPE_LEXATOM*)0);
-    QUEX_NAME(Buffer_init_analyzis)(&me->buffer); 
-    QUEX_MEMBER_FUNCTION_CALLO1(basic_reset, (const char*)"<unknown>");
-}
-
-/* Level (5) __________________________________________________________________
- *                                                                           */
-QUEX_INLINE QUEX_TYPE_LEXATOM*
-QUEX_MEMBER_FUNCTION3(reset, memory,
-                      QUEX_TYPE_LEXATOM*    Memory,
-                      const size_t          MemorySize,
-                      QUEX_TYPE_LEXATOM*    EndOfFileP)
-/* When memory is provided from extern, the 'external entity' is
- * responsible for filling it. There is no 'file/stream handle', no 'byte
- * loader', and 'no buffer filler'.                                          
+QUEX_INLINE bool
+QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me, 
+                           const char*           FileName, 
+                           QUEX_NAME(Converter)* converter /* = 0 */,
+                           const char*           CodecName /* = 0 */) 
+/* Open 'FileName' as C-Standard Lib 'FILE'. 
  *
- * RETURN: != 0, previous buffer memory, in case that the user is responsible
- *               for deleting it.
- *         == 0  if the previous memory was owned by the lexical analyzer and
- *               accordingly, it deleted it itself.                          */
+ *                OWNERSHIP OF 'converter' IS TAKEN OVER!
+ *                USER IS **NOT** RESPONSIBLE FOR DELETING IT!
+ *
+ * RETURNS: true, in case of success.
+ *          false, in case of failure.                                        */
+{
+    QUEX_NAME(ByteLoader)*   byte_loader;
+
+    /* NEW: ByteLoader.                                                       */
+    byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
+    if( ! byte_loader ) {
+        me->error_code = QUEX_ENUM_ERROR_RESET_BYTE_LOADER_ALLOCATION;
+        goto ERROR_0;
+    }
+
+    /* DELEGATE TO: 'reset_ByteLoader()'                                      */
+    if( ! QUEX_NAME(reset_ByteLoader)(me, byte_loader, ConverterNew, 
+                                      CodecName, FileName) ) {
+        goto ERROR_1;
+    }
+    return true;
+
+ERROR_1:
+    /* 'reset_ByteLoader()' error: => byte_loader is already deleted.         */
+ERROR_0:
+    QUEX_NAME(mark_resources_as_absent)(me);
+    return false;
+}
+
+/* USE: byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, BinaryModeF);
+ *      byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p, BinaryModeF);
+ *      byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p, BinaryModeF);
+ *      ...
+ *      Unit Test's StrangeStreams:
+ *      byte_loader = QUEX_NAME(ByteLoader_stream_new)(strangestr_p, false);  */
+QUEX_INLINE bool
+QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
+                            QUEX_NAME(ByteLoader)*  byte_loader,
+                            QUEX_NAME(Converter)*   converter /* = 0 */,
+                            const char*             CodecName /* = 0 */, 
+                            const char*             InputName /* = 0 */) 
+/* Resets the 'filler' to a new 'byte_loader' and 'converter'. If it fails
+ * the 'filler' is freed and set to NULL. '.error_code' contains the code of
+ * the error that occurred.
+ *
+ *                OWNERSHIP OF 'byte_loader' IS TAKEN OVER!
+ *                OWNERSHIP OF 'converter' IS TAKEN OVER!
+ *                USER IS **NOT** RESPONSIBLE FOR DELETING IT!
+ *
+ * RETURNS: true, in case of success.
+ *          false, in case of failure.                                        */
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_TYPE_LEXATOM*       previous_buffer_memory;
+    QUEX_NAME(LexatomLoader)* filler    = me->buffer.filler;
+     
+    QUEX_NAME(Asserts_construct)(CodecName);
+
+    if( me->buffer.filler ) {
+        filler->delete_self(filler);
+    }
+    me->buffer.filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
+    if( ! me->buffer.filler ) {
+        goto ERROR_0;
+    }
+
+    QUEX_NAME(Buffer_reset)(&me->buffer);
+
+    if( ! QUEX_NAME(reset_all_but_buffer)(me, InputName) ) {
+        goto ERROR_1;
+    }
+    return true;
+
+ERROR_1:
+    QUEX_NAME(Buffer_destruct)(&me->buffer);
+    QUEX_NAME(mark_resources_as_absent)(me);
+    return false;
+
+ERROR_0:
+    if( converter ) {
+        converter->delete_self(converter);
+    }
+    QUEX_NAME(mark_resources_as_absent)(me);
+    return false;
+}
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*
+QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me, 
+                        QUEX_TYPE_LEXATOM*   Memory,
+                        const size_t         MemorySize,
+                        QUEX_TYPE_LEXATOM*   EndOfFileP)
+/* Take-in a user's chunk of memory--filled as it is. There is no LexatomLoader.
+ * If the buffer's current memory is owned externally, a pointer to it is 
+ * returned. Else, zero is returned.
+ *
+ *                  OWNERSHIP OF 'Memory' REMAINS AT USER!
+ *                   USER IS RESPONSIBLE FOR DELETING IT!
+ *
+ * RETURN: != 0, pointer to previous memory owned by user.
+ *         == 0, no user-owned memory inside the buffer before reset.        
+ *
+ * Success or failure of reset is accessed by '.error_code'.                  */
+{
+    QUEX_TYPE_LEXATOM*  user_owned_memory;
     QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
+
+    user_owned_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
+                        (const QUEX_TYPE_LEXATOM*)0 : me->buffer._memory._front;
 
     QUEX_NAME(Buffer_destruct)(&me->buffer); 
     /* In case, that the memory was owned by the analyzer, the destructor did
-     * not delete it and did not set 'me->buffer._memory._front' to zero.    */
-    previous_buffer_memory = me->buffer._memory._front;
-    QUEX_NAME(Buffer_construct)(&me->buffer, 
-                                (QUEX_NAME(LexatomLoader)*)0,
-                                Memory, MemorySize, EndOfFileP,
-                                E_Ownership_EXTERNAL);
-    QUEX_MEMBER_FUNCTION_CALLO1(basic_reset, (const char*)"<memory>");
+     * not delete it and did not set 'me->buffer._memory._front' to zero.     */
 
-    return previous_buffer_memory;
+    if( QUEX_NAME(reset_all_but_buffer)(me, "<memory>") ) {
+        QUEX_NAME(Buffer_construct)(&me->buffer, 
+                                    (QUEX_NAME(LexatomLoader)*)0,
+                                    Memory, MemorySize, EndOfFileP,
+                                    E_Ownership_EXTERNAL);
+    }
+    else {
+        QUEX_NAME(mark_resources_as_absent)(me);
+    }
+    return user_owned_memory;
 }
 
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTIONO1(basic_reset, const char* InputNameP)
+QUEX_INLINE bool
+QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me, 
+                                const char*          InputName) 
+/* Resets anything but 'Buffer'.
+ * 
+ * RETURNS: true, for success.
+ *          false, for failure.                                               */
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    bool  byte_order_reversion_f = me->buffer.filler ? 
-                                     me->buffer.filler->_byte_order_reversion_active_f
-                                   : false;
-    QUEX_NAME(Tokens_destruct)(me);
-    QUEX_NAME(Tokens_construct)(me);
+    QUEX_NAME(destruct_all_but_buffer)(me);
 
-    QUEX_NAME(ModeStack_construct)(me);
-
-    __QUEX_IF_INCLUDE_STACK(     QUEX_MEMBER_FUNCTION_CALLO(include_stack_delete));
-
-    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator));
-    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_construct)(&me->accumulator, me));
-
-    __QUEX_IF_POST_CATEGORIZER(  QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
-    __QUEX_IF_POST_CATEGORIZER(  QUEX_NAME(PostCategorizer_construct)(&me->post_categorizer));
-
-    __QUEX_IF_COUNT(             QUEX_NAME(Counter_construct)(&me->counter); )
-
-    QUEX_NAME(set_mode_brutally_by_id)(me, __QUEX_SETTING_INITIAL_LEXER_MODE_ID);
-
-    if( me->buffer.filler && byte_order_reversion_f )
-    {
-        me->buffer.filler->_byte_order_reversion_active_f = true;
+    /* If user reset fails, all non-buffer components are destructed. 
+     * => Safe to return. Caller must take care of buffer.                    */
+    if( ! QUEX_MEMBER_FUNCTION_CALLO(user_reset) ) {
+        return false;
     }
 
-    (void)QUEX_MEMBER_FUNCTION_CALLO1(input_name_set, InputNameP);
-
-    QUEX_MEMBER_FUNCTION_CALLO(user_reset);
+    return QUEX_NAME(construct_all_but_buffer)(me);
 }
 
 

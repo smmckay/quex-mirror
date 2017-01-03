@@ -1,0 +1,7 @@
+FOR RELEASE: 0.66.6
+
+-- Refactor constructor/include-stack/reset
+-- Remove 'single token' strategy; only allow 'token-queue'
+-- sorted token members in 'token_type'.
+-- bug-293
+-- May be have a 'quex analyzer base class'.

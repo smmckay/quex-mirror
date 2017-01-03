@@ -96,8 +96,8 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
         /* Refill required.
          * => Try to get more out of the remainder of the external chunk.    */
         me->external_chunk.begin_p = me->base.lexer->buffer.fill(&me->base.lexer->buffer, 
-                                                            me->external_chunk.begin_p, 
-                                                            me->external_chunk.end_p);
+                                                                 me->external_chunk.begin_p, 
+                                                                 me->external_chunk.end_p);
         token = QUEX_NAME(FeederBase_deliver)(&me->base);
     }
     return token;

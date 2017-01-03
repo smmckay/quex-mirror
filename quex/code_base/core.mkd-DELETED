@@ -51,8 +51,6 @@ __QUEX_CORE = \
     ./analyzer/Mode \
     ./analyzer/PostCategorizer.i \
     ./analyzer/PostCategorizer \
-    ./analyzer/struct/basic \
-    ./analyzer/struct/basic.i \
     ./analyzer/asserts \
     ./analyzer/member/mode-handling.i \
     ./analyzer/member/token-receiving.i \

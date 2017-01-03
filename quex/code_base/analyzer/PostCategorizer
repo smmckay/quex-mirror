@@ -81,6 +81,9 @@ QUEX_INLINE void
 QUEX_NAME(PostCategorizer_clear)(QUEX_NAME(Dictionary)* me);
 
 QUEX_INLINE void
+QUEX_NAME(PostCategorizer_mark_resources_as_absent)(QUEX_NAME(Dictionary)* me);
+
+QUEX_INLINE void
 QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE

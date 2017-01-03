@@ -84,24 +84,16 @@ QUEX_NAMESPACE_MAIN_OPEN
        * 'from' functions are provided so that explicit constructor calls 
        * can be done without placement ::new or sophisticated C++11 features.  */
       void    from(const char*  Filename, const char*  CodecName = 0x0);
-      void    from(std::FILE* fh, const char*  CodecName = 0x0, bool BinaryF=true);
-      void    from(std::istream* istream_p, const char*  CodecName = 0x0, bool BinaryF=false);
-      void    from(std::wistream* istream_p, const char*  CodecName = 0x0, bool BinaryF=false);
-      template <class UnderlyingStreamT> void
-              from_StrangeStream(quex::StrangeStream<UnderlyingStreamT>*  istream_p, const char* CodecName = 0x0);
-      void    from(QUEX_NAME(ByteLoader)* byte_loader, 
+      void    from(QUEX_NAME(ByteLoader)*  byte_loader, 
                    QUEX_TYPE_CONVERTER_NEW ConverterNew,
-                   const char*  CodecName = 0x0);
+                   const char*             CodecName = 0x0);
       void    from(QUEX_NAME(LexatomLoader)* lexatom_loader);
       void    from(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
                    size_t             BufferMemorySize,
                    QUEX_TYPE_LEXATOM* BufferEndOfContentP = 0x0);
+
       // (*) Common for constructor, reset, and include push ___________________________
-      void    basic_constructor(const char*);
-      void    basic_include_push(); 
-      void    basic_reset();
-      
-      void    user_constructor();
+      bool    user_constructor();
       void    user_memento_pack(QUEX_NAME(Memento)*); 
       void    user_memento_unpack(QUEX_NAME(Memento)*);
       void    user_reset();
@@ -138,7 +130,7 @@ QUEX_NAMESPACE_MAIN_OPEN
    } quex_TestAnalyzer;
 #  endif
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_MEMBER_FUNCTIONO(user_constructor)
 {
 #   if __cplusplus
@@ -146,6 +138,7 @@ QUEX_MEMBER_FUNCTIONO(user_constructor)
 #   else
     (void)me;
 #   endif
+    return true;
 }
 
 QUEX_INLINE void
@@ -192,7 +185,6 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #include    <quex/code_base/aux-string.i>
 
 #include    <quex/code_base/analyzer/struct/constructor.i>
-#include    <quex/code_base/analyzer/struct/basic.i>
 
 #include    <quex/code_base/buffer/Buffer.i>
 #include    <quex/code_base/buffer/lexatoms/LexatomLoader.i>

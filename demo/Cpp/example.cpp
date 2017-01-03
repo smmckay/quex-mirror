@@ -3,8 +3,11 @@
 
 #include "EasyLexer"
 
-#ifndef     ENCODING_NAME
-#    define ENCODING_NAME (0x0)
+#ifndef    ENCODING_NAME
+#   define ENCODING_NAME 0
+#endif
+#ifndef    CONVERTER_NEW
+#   define CONVERTER_NEW 0
 #endif
 
 static void print_token(quex::Token* token_p);
@@ -14,8 +17,9 @@ main(int argc, char** argv)
 {        
     using namespace std;
 
-    quex::Token*       token_p = 0x0;
-    quex::EasyLexer    qlex(argc == 1 ? "example.txt" : argv[1], ENCODING_NAME);
+    quex::Token*       token_p = 0;
+    quex::EasyLexer    qlex(argc == 1 ? "example.txt" : argv[1], 
+                            CONVERTER_NEW, ENCODING_NAME);
 
     cout << ",-----------------------------------------------------------------\n";
     cout << "| [START]\n";

@@ -68,12 +68,26 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
 }
 
 QUEX_INLINE void
+QUEX_NAME(Buffer_reset)(QUEX_TYPE_ANALYZER* me)
+{
+    QUEX_NAME(Buffer_init_content)(&me->buffer, (QUEX_TYPE_LEXATOM*)0);
+    QUEX_NAME(Buffer_init_analyzis)(&me->buffer); 
+}
+
+QUEX_INLINE void
 QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
 {
-    if( me->filler && me->filler->ownership == E_Ownership_LEXICAL_ANALYZER ) {
+    if( me->filler ) {
         me->filler->delete_self(me->filler); 
     }
     QUEX_NAME(BufferMemory_destruct)(&me->_memory);
+}
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_mark_resources_as_absent)(QUEX_NAME(Buffer)* me)
+{
+    me->filler = (QUEX_NAME(LexatomLoader_tag)*)0;
+    QUEX_NAME(BufferMemory_mark_resources_as_absent)(me);
 }
 
 QUEX_INLINE void

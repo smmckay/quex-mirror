@@ -8,9 +8,13 @@
 #   error "This example has been designed for token passing policy 'single'."
 #endif
 
-#ifndef     ENCODING_NAME
-#    define ENCODING_NAME (0x0)
+#ifndef    ENCODING_NAME
+#   define ENCODING_NAME 0
 #endif
+#ifndef    CONVERTER_NEW
+#   define CONVERTER_NEW 0
+#endif
+
 
 static void print_token(quex::Token* token_p);
 
@@ -19,7 +23,8 @@ main(int argc, char** argv)
 {        
     using namespace std;
 
-    quex::EasyLexer    qlex(argc == 1 ? "example.txt" : argv[1], ENCODING_NAME);
+    quex::EasyLexer    qlex(argc == 1 ? "example.txt" : argv[1], 
+                            CONVERTER_NEW, ENCODING_NAME);
     quex::Token*       token_p  = qlex.token_p();
     QUEX_TYPE_TOKEN_ID token_id = QUEX_TKN_UNINITIALIZED;
     int                number_of_tokens = 0;

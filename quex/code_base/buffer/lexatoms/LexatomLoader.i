@@ -10,16 +10,14 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+QUEX_INLINE bool       QUEX_NAME(LexatomLoader_ByteLoader_Converter_consistency)(QUEX_NAME(ByteLoader)*  byte_loader, 
+                                                                                 QUEX_NAME(Converter)*   converter);
 QUEX_INLINE bool       QUEX_NAME(LexatomLoader_lexatom_index_seek)(QUEX_NAME(LexatomLoader)*         me, 
                                                                     const QUEX_TYPE_STREAM_POSITION  LexatomIndex);
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION 
                        QUEX_NAME(LexatomLoader_lexatom_index_tell)(QUEX_NAME(LexatomLoader)* me);
 QUEX_INLINE bool       QUEX_NAME(LexatomLoader_lexatom_index_step_to)(QUEX_NAME(LexatomLoader)*        me,
-                                                                       const QUEX_TYPE_STREAM_POSITION TargetCI);
-QUEX_INLINE void       QUEX_NAME(LexatomLoader_lexatom_index_reset_backup)(QUEX_NAME(LexatomLoader)* me, 
-                                                          QUEX_TYPE_STREAM_POSITION Backup_lexatom_index_next_to_fill, 
-                                                          ptrdiff_t                 BackupStomachByteN, 
-                                                          QUEX_TYPE_STREAM_POSITION BackupByteLoaderPosition);
+                                                                      const QUEX_TYPE_STREAM_POSITION TargetCI);
 QUEX_INLINE void       QUEX_NAME(LexatomLoader_reverse_byte_order)(QUEX_TYPE_LEXATOM*       Begin, 
                                                                   const QUEX_TYPE_LEXATOM* End);
 
@@ -28,29 +26,16 @@ QUEX_INLINE void       QUEX_NAME(LexatomLoader_delete_self)(QUEX_NAME(LexatomLoa
                        
 QUEX_INLINE QUEX_NAME(LexatomLoader)*
 QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader, 
-                             QUEX_NAME(Converter)*   converter,
-                             const size_t            TranslationBufferMemorySize)
+                             QUEX_NAME(Converter)*   converter)
 {
     QUEX_NAME(LexatomLoader)* filler;
-    (void)TranslationBufferMemorySize;
 
     /* byte_loader = 0; possible if memory is filled manually.               */
     if( converter ) {
-        if(    byte_loader 
-            && converter->input_code_unit_size != -1
-            && converter->input_code_unit_size <  (int)byte_loader->element_size )
-        {
-            __QUEX_STD_printf("Error: The specified byte loader provides elements of size %i.\n", 
-                              (int)byte_loader->element_size);
-            __QUEX_STD_printf("Error: The converter requires input elements of size <= %i.\n", 
-                              (int)converter->input_code_unit_size);
-            __QUEX_STD_printf("Error: This happens, for example, when using 'wistream' input\n"
-                              "Error: without considering 'sizeof(wchar_t)' with respect to\n"
-                              "Error: the encodings code unit's size. (UTF8=1byte, UTF16=2byte, etc.)\n");
-            return (QUEX_NAME(LexatomLoader)*)0x0;
+        if( ! QUEX_NAME(LexatomLoader_ByteLoader_Converter_consistency)(byte_loader, converter) ) {
+            return (QUEX_NAME(LexatomLoader)*)0;
         }
-        filler = QUEX_NAME(LexatomLoader_Converter_new)(byte_loader, converter, 
-                                                        TranslationBufferMemorySize);
+        filler = QUEX_NAME(LexatomLoader_Converter_new)(byte_loader, converter);
     }
     else {
         filler = QUEX_NAME(LexatomLoader_Plain_new)(byte_loader); 
@@ -59,37 +44,29 @@ QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*  byte_loader,
     return filler;
 }
 
-QUEX_INLINE QUEX_NAME(Converter)* 
-QUEX_NAME(LexatomLoader_new_Converter_DEFAULT)(const char* InputCodecName) 
+QUEX_INLINE bool
+QUEX_NAME(LexatomLoader_ByteLoader_Converter_consistency)(QUEX_NAME(ByteLoader)*  byte_loader, 
+                                                          QUEX_NAME(Converter)*   converter)
 {
-#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
-    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)(InputCodecName, 0);
-#   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_ICU_new)(InputCodecName, 0);
-#   else
-    QUEX_NAME(Converter)* converter = (QUEX_NAME(Converter)*)0;
-#   endif
-
-    if( ! converter ) {
-        return converter;
+    if( ! byte_loader ) {
+        return true;
     }
-
-    converter->ownership = E_Ownership_LEXICAL_ANALYZER;
-
-    if( ! InputCodecName ) {
-#       ifndef QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED
-        __QUEX_STD_printf("Warning: No character encoding name specified, while this\n" \
-                          "Warning: analyzer was generated for use with a converter.\n" \
-                          "Warning: Please, consult the documentation about the constructor\n" \
-                          "Warning: or the reset function. If it is desired to do a plain\n" \
-                          "Warning: buffer filler with this setup, you might want to disable\n" \
-                          "Warning: this warning with the macro:\n" \
-                          "Warning:     QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED\n");
-#       endif
-        return (QUEX_NAME(Converter)*)0x0;
+    else if( converter->input_code_unit_size == -1 ) {
+        return true;
     }
-
-    return converter;
+    else if( converter->input_code_unit_size >= (int)byte_loader->element_size ) {
+        return true;
+    }
+    else {
+        __QUEX_STD_printf("Error: The specified byte loader provides elements of size %i.\n", 
+                          (int)byte_loader->element_size);
+        __QUEX_STD_printf("Error: The converter requires input elements of size <= %i.\n", 
+                          (int)converter->input_code_unit_size);
+        __QUEX_STD_printf("Error: This happens, for example, when using 'wistream' input\n"
+                          "Error: without considering 'sizeof(wchar_t)' with respect to\n"
+                          "Error: the encodings code unit's size. (UTF8=1byte, UTF16=2byte, etc.)\n");
+        return false;
+    }
 }
 
 QUEX_INLINE void       
@@ -97,12 +74,12 @@ QUEX_NAME(LexatomLoader_delete_self)(QUEX_NAME(LexatomLoader)* me)
 { 
     if( ! me ) return;
 
-    if( me->byte_loader && me->byte_loader->ownership == E_Ownership_LEXICAL_ANALYZER ) {
+    if( me->byte_loader ) {
         QUEX_NAME(ByteLoader_delete)(&me->byte_loader);
     }
 
     /* destruct_self: Free resources occupied by 'me' BUT NOT 'myself'.
-     * delete_self:   Free resources occupied by 'me' AND 'myself'.          */
+     * delete_self:   Free resources occupied by 'me' AND 'myself'.           */
     if( me->derived.destruct_self ) {
         me->derived.destruct_self(me);
     }
@@ -157,25 +134,6 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
     me->_byte_order_reversion_active_f = false;
     me->lexatom_index_next_to_fill   = 0;
     me->byte_n_per_lexatom           = ByteNPerCharacter;
-
-    /* Default: External ownership                                           */
-    me->ownership = E_Ownership_EXTERNAL;
-}
-
-QUEX_INLINE void
-QUEX_NAME(LexatomLoader_reset)(QUEX_NAME(LexatomLoader)* me, QUEX_NAME(ByteLoader)* new_byte_loader)
-/* Resets the LexatomLoader with a new QUEX_NAME(ByteLoader).                            */
-{
-    if( new_byte_loader != me->byte_loader ) {
-        if( QUEX_NAME(ByteLoader_is_equivalent)(new_byte_loader, me->byte_loader) ) {
-            __QUEX_STD_printf("Upon 'reset': current and new QUEX_NAME(ByteLoader )objects contain same input handle.\n"); 
-        }
-        if( me->byte_loader && me->byte_loader->ownership == E_Ownership_LEXICAL_ANALYZER ) {
-            QUEX_NAME(ByteLoader_delete)(&me->byte_loader);
-            me->byte_loader = new_byte_loader;
-        }
-    }
-    QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
 }
 
 QUEX_INLINE ptrdiff_t       

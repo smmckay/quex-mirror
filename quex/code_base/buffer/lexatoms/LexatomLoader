@@ -23,10 +23,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(LexatomLoade
      * which shall be called in any '_construct' function of a filler. Note,
      * that filler types shall inherit this class. This means, that the first
      * element of the derived struct is to be of this type and best called
-     * 'base'.  For example, please, consider the 'plain' and 'iconv'
+     * 'base'.  For example, please, consider the 'plain' and 'converter'
      * implementations in the correspondent sub directories.                 */
-    E_Ownership               ownership;
-
     QUEX_NAME(ByteLoader)*    byte_loader;
 
     /* -- 'Tell': Character index of the next lexatom to be loaded into
@@ -107,11 +105,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(LexatomLoade
 
 QUEX_INLINE QUEX_NAME(LexatomLoader)*
 QUEX_NAME(LexatomLoader_new)(QUEX_NAME(ByteLoader)*           byte_loader, 
-                             struct QUEX_NAME(Converter_tag)* converter,
-                             const size_t                     TranslationBufferMemorySize);
-
-QUEX_INLINE struct QUEX_NAME(Converter_tag)* 
-QUEX_NAME(LexatomLoader_new_Converter_DEFAULT)(const char* InputCodecName);
+                             struct QUEX_NAME(Converter_tag)* converter);
 
 QUEX_INLINE void    
 QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
@@ -144,11 +138,7 @@ QUEX_INLINE ptrdiff_t
                                   bool*                      end_of_stream_f,
                                   bool*                      encoding_error_f);
 
-QUEX_INLINE void    
-    QUEX_NAME(LexatomLoader_reset)(QUEX_NAME(LexatomLoader)* me, 
-                                  QUEX_NAME(ByteLoader)*     new_byte_loader);
-
-QUEX_INLINE void       
+QUEX_INLINE bool       
     QUEX_NAME(LexatomLoader_lexatom_index_reset)(QUEX_NAME(LexatomLoader)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE

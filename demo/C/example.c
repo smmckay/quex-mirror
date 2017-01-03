@@ -2,8 +2,11 @@
 
 #include "EasyLexer.h"
 
-#ifndef     ENCODING_NAME
-#    define ENCODING_NAME (0x0)
+#ifndef    ENCODING_NAME
+#   define ENCODING_NAME NULL
+#endif
+#ifndef    CONVERTER_NEW
+#   define CONVERTER_NEW NULL
 #endif
 
 static void print_token(quex_Token* token_p);
@@ -16,7 +19,8 @@ main(int argc, char** argv)
     quex_EasyLexer  qlex;
     const char*     FileName = (argc == 1) ? "example.txt" : argv[1];
 
-    quex_EasyLexer_from_file_name(&qlex, FileName, ENCODING_NAME);
+    quex_EasyLexer_from_file_name(&qlex, FileName, CONVERTER_NEW, 
+                                  ENCODING_NAME);
 
     printf(",-----------------------------------------------------------------\n");
     printf("| [START]\n");

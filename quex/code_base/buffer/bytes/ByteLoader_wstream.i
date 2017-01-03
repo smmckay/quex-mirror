@@ -52,7 +52,6 @@ QUEX_NAME(ByteLoader_wstream_new_from_file_name)(const char* FileName)
     if( ! alter_ego ) {
         return (QUEX_NAME(ByteLoader)*)0;
     }
-    alter_ego->handle_ownership = E_Ownership_LEXICAL_ANALYZER;
     return alter_ego;
 }
 

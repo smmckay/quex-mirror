@@ -67,17 +67,17 @@ QUEX_INLINE void
 QUEX_NAME(RawBuffer_move_away_passed_content)(QUEX_NAME(RawBuffer)*  me);
 
 QUEX_INLINE bool 
-QUEX_NAME(RawBuffer_load)(QUEX_NAME(RawBuffer)*  me,
-                          QUEX_NAME(ByteLoader)*            byte_loader, 
-                          bool*                  end_of_stream_f);
+QUEX_NAME(RawBuffer_load)(QUEX_NAME(RawBuffer)*   me,
+                          QUEX_NAME(ByteLoader)*  byte_loader, 
+                          bool*                   end_of_stream_f);
 
 QUEX_INLINE QUEX_NAME(LexatomLoader)*
 QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
-                                       QUEX_NAME(Converter)*  converter,
-                                       size_t                 RawMemorySize)
+                                       QUEX_NAME(Converter)*  converter)
 { 
     QUEX_NAME(LexatomLoader_Converter)*  me;
-    __quex_assert(RawMemorySize >= 6);  /* UTF-8 char can be 6 bytes long    */
+    /* UTF-8 char can be 6 bytes long => min. size of translation buffer.    */
+    __quex_assert(QUEX_SETTING_TRANSLATION_BUFFER_SIZE >= 6);  
 
     if( ! converter ) {
         return (QUEX_NAME(LexatomLoader)*)0;
@@ -99,7 +99,8 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
                                          E_MemoryObjectType_BUFFER_FILLER);
     if( ! me) return (QUEX_NAME(LexatomLoader)*)0;
 
-    QUEX_NAME(LexatomLoader_Converter_construct)(me, byte_loader, converter, RawMemorySize);
+    QUEX_NAME(LexatomLoader_Converter_construct)(me, byte_loader, converter, 
+                                                 QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
 
     return &me->base;
 
@@ -180,7 +181,7 @@ QUEX_NAME(LexatomLoader_Converter_stomach_clear)(QUEX_NAME(LexatomLoader)* alter
 {
     QUEX_NAME(LexatomLoader_Converter)* me = (QUEX_NAME(LexatomLoader_Converter)*)alter_ego;
     QUEX_NAME(RawBuffer_init)(&me->raw_buffer, 0, 0);
-    if( me->converter->stomach_clear ) me->converter->stomach_clear(me->converter);
+    QUEX_NAME(Converter_reset)(me->converter);
 }
 
 QUEX_INLINE void   
@@ -194,7 +195,7 @@ QUEX_NAME(LexatomLoader_Converter_destruct_self)(QUEX_NAME(LexatomLoader)* alter
 
     QUEX_ASSERT_RAW_BUFFER(&me->raw_buffer);
 
-    if( me->converter && me->converter->ownership == E_Ownership_LEXICAL_ANALYZER ) {
+    if( me->converter ) {
         me->converter->delete_self(me->converter); 
     }
 

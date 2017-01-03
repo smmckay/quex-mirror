@@ -1,6 +1,30 @@
 /* -*- C++ -*- vim:set syntax=cpp:
- * (C) 2005-2015 Frank-Rene Schaefer
- * ABSOLUTELY NO WARRANTY                                                    */
+ *
+ * CONSTRUCTION: Setup a lexical analyzer.
+ *
+ *   -- Construction may fail, but it never throws an exception!
+ *      Failure is notified by the '.error_code' flag.
+ *   -- '.receive()' may always be called, but that function might return
+ *      immediately if '.error_code' is not 'NONE'.
+ *   -- The destructor can be called safely for any object that has been 
+ *      'constructed'--even if the construction failed.
+ *
+ * FAILURE => Lexer is in DYSFUNCTIONAL state.
+ *
+ *  .error_code == 'NONE': All resources have been allocated. Lexical 
+ *                         analysis may start.
+ *
+ *  .error_code != 'NONE': Error during resource allocation.
+ *                         Lexical analysis will immediately send 
+ *                         'TERMINATION' token.
+ *                         The lexer must (and can) be destructed.
+ *
+ * DESTRUCTION:
+ *
+ *   -- never fails, never throws exceptions.
+ *
+ * (C) 2005-2017 Frank-Rene Schaefer
+ * ABSOLUTELY NO WARRANTY                                                     */
 #ifndef  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__CONSTRUCTOR_I
 #define  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__CONSTRUCTOR_I
 
@@ -11,195 +35,113 @@
 QUEX_NAMESPACE_MAIN_OPEN
                     
 QUEX_INLINE void   QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER*  me,
-                             QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                             size_t             BufferMemorySize,
-                             QUEX_TYPE_LEXATOM* BufferEndOfContentP  /* = 0x0   */);
+                                                  QUEX_TYPE_LEXATOM*   BufferMemoryBegin, 
+                                                  size_t               BufferMemorySize,
+                                                  QUEX_TYPE_LEXATOM*   BufferEndOfContentP /* = 0 */);
 QUEX_INLINE void   QUEX_NAME(Asserts_construct)(const char* CodecName);
 QUEX_INLINE void   QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(Tokens_reset)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me);
 
-
-/* Level (1) __________________________________________________________________
- *                                                                           */
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTION2(from, file_name,
-                      const char*  FileName, 
-                      const char*  CodecName)
+QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
+                          const char*             FileName, 
+                          QUEX_NAME(Converter)*   converter /* = 0 */,
+                          const char*             CodecName /* = 0 */)
 {
     QUEX_NAME(ByteLoader)*   byte_loader;
 
     byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
+
+    if( ! byte_loader ) {
+        me->error_code = QUEX_ENUM_ERROR_ALLOCATION_BYTE_LOADER;
+        goto ERROR_0;
     }
-    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
+
+    QUEX_NAME(from_ByteLoader)(me, byte_loader, converter, CodecName); 
+
+    if( me->error_code != QUEX_ENUM_ERROR_NONE ) {
+        goto ERROR_1;
+    }
+
+ERROR_1:
+    /* from_ByteLoader() error: byte_loader->ownership = LEXICAL_ANALYZER.
+     *                          => byte_loader is already deleted.            */
+ERROR_0:
+    QUEX_NAME(mark_resources_as_absent)(me);
 }
 
-/* Level (2) __________________________________________________________________
- *                                                                           */
+/* USE: byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, BinaryModeF);
+ *      byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p, BinaryModeF);
+ *      byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p, BinaryModeF);
+ *      ...
+ *      Unit Test's StrangeStreams:
+ *      byte_loader = QUEX_NAME(ByteLoader_stream_new)(strangestr_p, false);  */
+
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTION3(from, FILE,
-                      __QUEX_STD_FILE*  fh, 
-                      const char*       CodecName   /* = 0x0   */,
-                      bool              BinaryModeF /* = false */)
-/* 'BinaryModeF' tells whether the file has been opened in 'binary mode'.    */
-{
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( fh );
-
-    /* At the time of this writing 'stdin' as located in the C++ global
-     * namespace.  This seemed suspicous to the author. To avoid compilation
-     * errors in the future the test for the standard input is only active in
-     * 'C'. It is only about user information anyway. So better no risks taken.
-     * <fschaef 2010y02m06d>                                                 */
-    setbuf(fh, 0);   /* turn off system based buffering! 
-    **               ** this is essential to profit from the quex buffer!    */
-    byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, BinaryModeF);
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-
-#ifndef __QUEX_OPTION_PLAIN_C
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION3(from, istream,
-                      std::istream*   istream_p, 
-                      const char*     CodecName   /* = 0x0   */,
-                      bool            BinaryModeF /* = false */)
-{
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( istream_p );
-
-    byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
-    byte_loader->binary_mode_f = BinaryModeF;
-
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, 
-                               byte_loader, (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-#endif
-
-
-#if defined(__QUEX_OPTION_WCHAR_T) && ! defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE void 
-QUEX_MEMBER_FUNCTION3(from, wistream,
-                      std::wistream*  wistream_p, 
-                      const char*     CodecName   /* = 0x0   */,
-                      bool            BinaryModeF /* = false */)
-{
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert(wistream_p);
-
-    byte_loader = QUEX_NAME(ByteLoader_wstream_new)(wistream_p);
-    byte_loader->binary_mode_f = BinaryModeF;
-
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-    byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-#endif
-
-#if defined(__QUEX_OPTION_UNIT_TEST) && ! defined (__QUEX_OPTION_PLAIN_C)
-/* StrangeStreams are not for C-language stuff */
-template<class UnderlyingStreamT> QUEX_INLINE void
-QUEX_MEMBER_FUNCTION2(from_StrangeStream, strange_stream, 
-                      quex::StrangeStream<UnderlyingStreamT>*  istream_p, 
-                      const char*                              CodecName /* = 0x0   */)
-{
-    QUEX_NAME(ByteLoader)*   byte_loader;
-    __quex_assert( istream_p );
-
-    byte_loader = QUEX_NAME(ByteLoader_stream_new)(istream_p);
-    byte_loader->binary_mode_f = false;
-
-    /* NOT: Abort/return if byte_loader == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( byte_loader ) {
-        byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-
-    byte_loader->ownership = E_Ownership_LEXICAL_ANALYZER;
-    QUEX_MEMBER_FUNCTION_CALL3(from, ByteLoader, byte_loader, 
-                               (QUEX_TYPE_CONVERTER_NEW)0, CodecName); 
-}
-#endif
-
-
-/* Level (3) __________________________________________________________________
- *                                                                           */
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION3(from, ByteLoader,
-                      QUEX_NAME(ByteLoader)*  byte_loader,
-                      QUEX_TYPE_CONVERTER_NEW ConverterNew, 
-                      const char*             CodecName) 
-{
-    QUEX_NAME(LexatomLoader)* filler;
-    QUEX_NAME(Asserts_construct)(CodecName);
-
-    filler = QUEX_NAME(LexatomLoader_new)(byte_loader, 
-                                          ConverterNew ? ConverterNew(CodecName, (const char*)0)
-                                                       : (QUEX_NAME(Converter)*)0,
-                                          QUEX_SETTING_TRANSLATION_BUFFER_SIZE);
-    /* NOT: Abort/return if filler == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
-    if( filler ) {
-        filler->ownership = E_Ownership_LEXICAL_ANALYZER;
-    }
-
-    QUEX_MEMBER_FUNCTION_CALL1(from, LexatomLoader, filler);
-}
-
-/* Level (4) __________________________________________________________________
- *                                                                           */
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTION1(from, LexatomLoader,
-                      QUEX_NAME(LexatomLoader)* filler)
+QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
+                           QUEX_NAME(ByteLoader)*  byte_loader,
+                           QUEX_NAME(Converter)*   converter /* = 0 */,
+                           const char*             CodecName) 
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_TYPE_LEXATOM* memory;
+    QUEX_NAME(Converter)*     converter = (QUEX_NAME(Converter)*)0;
+    QUEX_NAME(LexatomLoader)* filler;
+    QUEX_TYPE_LEXATOM*        memory;
+    QUEX_NAME(Asserts_construct)(CodecName);
 
+    /* NEW: Filler.                                                           */
+    filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
+
+    if( ! filler ) {
+        me->error_code = QUEX_ENUM_ERROR_ALLOCATION_LEXATOM_LOADER;
+        goto ERROR_0;
+    }
+
+    /* NEW: Memory.                                                           */
     memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
                        QUEX_SETTING_BUFFER_SIZE * sizeof(QUEX_TYPE_LEXATOM), 
                        E_MemoryObjectType_BUFFER_MEMORY);
-    /* NOT: Abort/return if memory == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!       */
+    if( ! memory ) {
+        me->error_code = QUEX_ENUM_ERROR_ALLOCATION_BUFFER_MEMORY;
+        goto ERROR_1;
+    }
 
     QUEX_NAME(Buffer_construct)(&me->buffer, filler,
                                 memory, QUEX_SETTING_BUFFER_SIZE, 
                                 (QUEX_TYPE_LEXATOM*)0,
                                 E_Ownership_LEXICAL_ANALYZER);
-    QUEX_MEMBER_FUNCTION_CALLO1(basic_constructor, (const char*)"<unknown>");
+
+    QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<unknown>");
+    if( me->error_code != QUEX_ENUM_ERROR_NONE ) {
+        goto ERROR_2;
+    }
+
+    return;
+
+    /* ERROR CASES: Free Resources __________________________________________*/
+ERROR_2:
+    QUEX_NAME(Buffer_destruct)(&me->buffer);
+ERROR_1:
+    me->buffer.filler->delete_self(me->buffer.filler); 
+    QUEX_NAME(mark_resources_as_absent)(me);
+    return;
+ERROR_0:
+    byte_loader->delete_self(byte_loader);
+    QUEX_NAME(mark_resources_as_absent)(me);
+    return;
 }
 
-/* Level (5) __________________________________________________________________
- *                                                                           */
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTION3(from, memory,
-                      QUEX_TYPE_LEXATOM* Memory,
-                      const size_t       MemorySize,
-                      QUEX_TYPE_LEXATOM* EndOfFileP)
+QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
+                       QUEX_TYPE_LEXATOM*  Memory,
+                       const size_t        MemorySize,
+                       QUEX_TYPE_LEXATOM*  EndOfFileP)
 
 /* When memory is provided from extern, the 'external entity' is responsible
- * for filling it. There is no 'file/stream handle', no 'byte loader', and 'no
- * buffer filler'.                                                           */
+ * for filling it. There is no 'file/stream handle', no 'ByteLoader', and no
+ * 'LexatomLoader'.                                                           */
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
@@ -208,19 +150,51 @@ QUEX_MEMBER_FUNCTION3(from, memory,
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
                                 E_Ownership_EXTERNAL);
-    QUEX_MEMBER_FUNCTION_CALLO1(basic_constructor, (const char*)"<memory>");
+
+    if( ! QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<memory>") ) {
+        QUEX_NAME(Buffer_destruct)(&me->buffer); 
+        QUEX_NAME(mark_resources_as_absent)(me);
+    }
+
+    /* No further distinguishing between success and error. User might consider
+     * '.error_code' later.                                                   */
 }
 
-QUEX_INLINE void
-QUEX_MEMBER_FUNCTIONO1(basic_constructor, const char* InputNameP)
+QUEX_INLINE bool
+QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
+/* Constructs anything but 'LexatomLoader' and 'Buffer'.
+ * 
+ * RETURNS: true, for success.
+ *          false, for failure.                                               */
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(Tokens_construct)(me);
-    QUEX_NAME(ModeStack_construct)(me);
-    __QUEX_IF_INCLUDE_STACK(     me->_parent_memento = (QUEX_NAME(Memento)*)0);
-    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_construct)(&me->accumulator, me));
-    __QUEX_IF_POST_CATEGORIZER(  QUEX_NAME(PostCategorizer_construct)(&me->post_categorizer));
-    __QUEX_IF_COUNT(             QUEX_NAME(Counter_construct)(&me->counter); )
+
+    __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
+
+    if( ! QUEX_NAME(Tokens_construct)(me) ) {
+        goto ERROR_0;
+    }
+    else if( ! QUEX_NAME(ModeStack_construct)(me) ) {
+        goto ERROR_1;
+    }
+#   ifdef QUEX_OPTION_STRING_ACCUMULATOR
+    else if( ! QUEX_NAME(Accumulator_construct)(&me->accumulator, me) ) {
+        me->error_code = QUEX_ENUM_ERROR_CONSTRUCT_ACCUMULATOR;
+        goto ERROR_2;
+    }
+#   endif
+#   ifdef QUEX_OPTION_POST_CATEGORIZER
+    else if( ! QUEX_NAME(PostCategorizer_construct)(&me->post_categorizer) ) {
+        me->error_code = QUEX_ENUM_ERROR_CONSTRUCT_POST_CATEGORIZER;
+        goto ERROR_3;
+    }
+#   endif
+#   ifdef QUEX_OPTION_COUNT
+    else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
+        me->error_code = QUEX_ENUM_ERROR_CONSTRUCT_COUNTER;
+        goto ERROR_4;
+    }
+#   endif
 
     /* A user's mode change callbacks may be called as a consequence of the 
      * call to 'set_mode_brutally_by_id()'. The current mode must be set to '0'
@@ -229,46 +203,119 @@ QUEX_MEMBER_FUNCTIONO1(basic_constructor, const char* InputNameP)
     QUEX_NAME(set_mode_brutally_by_id)(me, __QUEX_SETTING_INITIAL_LEXER_MODE_ID);
 
     me->__input_name = (char*)0;
-    (void)QUEX_MEMBER_FUNCTION_CALLO1(input_name_set, InputNameP);
+    if( ! QUEX_MEMBER_FUNCTION_CALLO1(input_name_set, InputNameP) ) {
+        me->error_code = QUEX_ENUM_ERROR_INPUT_NAME_SET;
+        goto ERROR_5;
+    }
+    else if( ! QUEX_MEMBER_FUNCTION_CALLO(user_constructor) ) {
+        me->error_code = QUEX_ENUM_ERROR_USER_CONSTRUCTOR;
+        goto ERROR_5;
+    }
 
-    QUEX_MEMBER_FUNCTION_CALLO(user_constructor);
+    me->error_code = QUEX_ENUM_ERROR_NONE;
+    return true;
+
+    /* ERROR CASES: Free Resources ___________________________________________*/
+ERROR_6:
+    (void)QUEX_NAME(input_name_set)(me, (const char*)0);
+ERROR_5:
+    /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
+ERROR_4:
+    __QUEX_IF_POST_CATEGORIZER(QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
+ERROR_3:
+    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator, me));
+ERROR_2:
+    /* NO ALLOCATED RESOURCES IN: 'me->mode_stack'                            */
+ERROR_1:
+    QUEX_NAME(Tokens_destruct)(me);
+ERROR_0:
+    /* NO ALLOCATED RESOURCES IN: 'me->_parent_memento = 0'                   */
+    return false;
 }
 
 QUEX_INLINE 
-QUEX_DESTRUCTOR() 
+QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(Tokens_destruct)(me);
-
-    __QUEX_IF_INCLUDE_STACK(QUEX_MEMBER_FUNCTION_CALLO(include_stack_delete));
-    /* IMPORTANT: THE ACCUMULATOR CAN ONLY BE DESTRUCTED AFTER THE INCLUDE 
-     *            STACK HAS BEEN DELETED. OTHERWISE, THERE MIGHT BE LEAKS. 
-     * TODO: Why? I cannot see a reason <fschaef 15y08m03d>                  */
-    __QUEX_IF_STRING_ACCUMULATOR( QUEX_NAME(Accumulator_destruct)(&me->accumulator));
-    __QUEX_IF_POST_CATEGORIZER(   QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
+    QUEX_NAME(destruct_all_but_buffer)(me);
 
     QUEX_NAME(Buffer_destruct)(&me->buffer);
+
+    /* Protect against double destruction.                                    */
+    QUEX_NAME(mark_resources_as_absent)(me);
+}
+
+QUEX_INLINE void
+QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
+{
+    __QUEX_IF_INCLUDE_STACK(QUEX_MEMBER_FUNCTION_CALLO(include_stack_delete));
+    /*
+     *              DESTRUCT ANYTHING ONLY AFTER INCLUDE STACK                
+     *
+     * During destruction the all previously pushed analyzer states are 
+     * popped and destructed, until only the outest state remains. This
+     * is then the state that is destructed here.                             */
+    QUEX_NAME(Tokens_destruct)(me);
+    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator));
+    __QUEX_IF_POST_CATEGORIZER(  QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
+
 
     if( me->__input_name ) {
         QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
     }
 }
 
+void
+QUEX_NAME(mark_resources_as_absent)(QUEX_TYPE_ANALYZER* me)
+/* Resouces = 'absent' => Destructor knows that it must not be freed. 
+ * 
+ * This function is essential to set the lexical analyzer into a state
+ * where it is safe to be destructed, even if some resources were missing.    
+ *
+ * IMPORTANT: The '.error_code' remains intact!
+ *______________________________________________________________________________
+ * WARNING: This function is NOT to be called, if not all resources are 
+ *          disattached (destructed/freed) from the lexical analyzer. 
+ *          Otherwise: unreferenced trailing objects; memory leaks.
+ *____________________________________________________________________________*/
+{
+    E_Error  backup = me->error_code;
+
+    memset((void*)me, 0, sizeof(QUEX_TYPE_ANALYZER));
+    /* => ._parent_memento == 0 (include stack is marked as 'clear')
+     * => ._token          == 0 (if not token queue, the token is 'clear')
+     *                          For the case of 'token queue' a dedicated
+     *                          'mark_resources_as_absent' is called.
+     * => .__input_name    == 0                                               */
+#   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
+    QUEX_NAME(TokenQueue_mark_resources_as_absent)(&me->_token_queue);
+#   endif 
+#   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
+    QUEX_NAME(Accumulator_mark_resources_as_absent)(&me->accumulator)
+#   endif
+#   if defined(QUEX_OPTION_POST_CATEGORIZER)
+    QUEX_NAME(PostCategorizer_mark_resources_as_absent)(&me->post_categorizer)
+#   endif
+    QUEX_NAME(Buffer_mark_resources_as_absent)(&me->buffer);
+
+    me->error_code = backup;
+}
+
+
 QUEX_INLINE void
-QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER*  me,
-                               QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                               size_t               BufferMemorySize,
-                               QUEX_TYPE_LEXATOM* BufferEndOfContentP  /* = 0x0   */)
+QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
+                               QUEX_TYPE_LEXATOM*  BufferMemoryBegin, 
+                               size_t              BufferMemorySize,
+                               QUEX_TYPE_LEXATOM*  BufferEndOfContentP /* = 0 */)
 {
 #   ifdef QUEX_OPTION_ASSERTS
-    size_t  memory_size = BufferMemoryBegin ? BufferMemorySize 
-                          :                   QUEX_SETTING_BUFFER_SIZE;
+    size_t               memory_size = BufferMemoryBegin ? BufferMemorySize 
+                                       :                   QUEX_SETTING_BUFFER_SIZE;
     QUEX_TYPE_LEXATOM*   iterator = 0x0;
 
     __quex_assert(memory_size == 0 || memory_size > 2);
     if( BufferMemoryBegin ) {
-        /* End of File must be inside the buffer, because we assume that the buffer
-         * contains all that is required.                                           */
+        /* End of File must be inside the buffer, because we assume that the 
+         * buffer contains all that is required.                              */
         if( BufferMemorySize <= QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 2) {
             QUEX_ERROR_EXIT("\nConstructor: Provided memory size must be more than 2 greater than\n"
                             "Constructor: QUEX_SETTING_BUFFER_MIN_FALLBACK_N. If in doubt, specify\n"
@@ -340,14 +387,14 @@ QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
 #if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
 #   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     /* Assume that the user will pass us a constructed token queue */
-    QUEX_NAME(TokenQueue_disfunctionality_set)(&me->_token_queue);
+    QUEX_NAME(TokenQueue_mark_resources_as_absent)(&me->_token_queue);
 #   else
     QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
                                     (QUEX_TYPE_TOKEN*)&me->__memory_token_queue,
                                     QUEX_SETTING_TOKEN_QUEUE_SIZE);
 #   endif
 #elif defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    /* Assume that the user will pass us a constructed token */
+    /* Assume that the user will pass us a constructed token                  */
     me->token = (QUEX_TYPE_TOKEN*)0x0;     
 #   else
     me->token = &me->__memory_token;     
@@ -361,13 +408,13 @@ QUEX_INLINE void
 QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me)
 {
     /* Even if the token memory is user managed, the destruction (not the
-     * freeing of memory) must happen at this place.                     */
+     * freeing of memory) must happen at this place.                          */
 #ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE 
     QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
 #else
 #   if      defined(__QUEX_OPTION_PLAIN_C) \
        && ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-        QUEX_NAME_TOKEN(destruct)(me->token);
+    QUEX_NAME_TOKEN(destruct)(me->token);
 #   endif
 #endif
 }
@@ -391,14 +438,16 @@ QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me)
 }
 
 QUEX_INLINE const char*
-QUEX_MEMBER_FUNCTIONO(input_name)
-{ QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) return me->__input_name; }
+QUEX_NAME(input_name)(QUEX_TYPE_ANALYZER* me)
+{ return me->__input_name; }
 
 QUEX_INLINE bool
-QUEX_MEMBER_FUNCTIONO1(input_name_set, const char* InputNameP)
+QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
+/* Sets the 'input name', i.e. some string that identifies the input stream.
+ * In case of failure '.__input_name' is set to NULL.
+ *
+ * RETURNS: true, for success. false, else.                                   */
 { 
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-
     if( me->__input_name ) {
         QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
     }
@@ -411,7 +460,6 @@ QUEX_MEMBER_FUNCTIONO1(input_name_set, const char* InputNameP)
     }
     return false;
 }
-
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
