@@ -130,7 +130,7 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
      * buffer only requires 'end_p - read_p + 2'. '+2' for the boarders of the
      * buffer. Additionally, the 'fallback_n' needs to be considered.        */
     ptrdiff_t   occupied =   including->input.end_p - including->_read_p + 2
-                           + QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
+                           + QUEX_SETTING_BUFFER_MIN_FALLBACK_N - 1;
     ptrdiff_t   free     = QUEX_SETTING_BUFFER_SIZE - occupied;
 
     split_f = (free >= QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ?  true : false;
@@ -146,6 +146,8 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
         __quex_assert(&included->_memory._back[1] == MemoryEnd);
     }
     else {
+        __quex_assert(included->_memory.ownership != E_Ownership_INCLUDING_BUFFER);
+
         if( Verdict ) {
             __quex_assert(included->_memory.ownership == E_Ownership_LEXICAL_ANALYZER);
             /* Intermediate dummy alloction prevents adjacent buffers. 
