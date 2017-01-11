@@ -34,6 +34,10 @@ QUEX_INLINE void QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER*);
 QUEX_INLINE void QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER*);
 
 
+QUEX_INLINE void
+QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me, 
+                               void**               buffer_memory);
+
 QUEX_INLINE const char*
 QUEX_NAME(input_name)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE bool

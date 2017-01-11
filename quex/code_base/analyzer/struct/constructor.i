@@ -461,6 +461,16 @@ QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
     return false;
 }
 
+QUEX_INLINE void
+QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me, 
+                               void**               buffer_memory)
+{
+    QUEX_TYPE_LEXATOM*  user_owned_memory;
+    user_owned_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
+                          (const QUEX_TYPE_LEXATOM*)0 
+                        : me->buffer._memory._front;
+}
+
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /*  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__CONSTRUCTOR_I */

@@ -19,6 +19,7 @@ typedef struct {
     int allocation_n;
     int allocated_byte_n;
     int free_n;
+    int allocation_addmissible_f;
 } MemoryManager_UnitTest_t;
 
 /* Object must be defined in unit test!                                       */
@@ -28,7 +29,12 @@ uint8_t*
 QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN, 
                                    E_MemoryObjectType Type)
 {
-    uint8_t*  me = (uint8_t*)__QUEX_STD_malloc((size_t)ByteN);
+    uint8_t*  me;
+
+    if( ! MemoryManager_UnitTest.allocation_addmissible_f ) {
+        return (uint8_t*)0;
+    }
+    me = (uint8_t*)__QUEX_STD_malloc((size_t)ByteN);
 
     (void)Type;
 #   ifdef QUEX_OPTION_ASSERTS

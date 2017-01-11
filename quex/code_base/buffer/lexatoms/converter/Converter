@@ -91,6 +91,8 @@ QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
                     ptrdiff_t    (*stomach_byte_n)(QUEX_NAME(Converter)*),
                     void         (*stomach_clear)(QUEX_NAME(Converter)*));
 
+QUEX_INLINE void 
+QUEX_NAME(Converter_reset)(QUEX_NAME(Converter)* me);
 
 /* Function pointer to what can allocate a 'converter'.                       */
 typedef QUEX_NAME(Converter)* (*QUEX_TYPE_CONVERTER_NEW)(const char* From, 

@@ -9,7 +9,8 @@
  *                   Buffer_construct_included() and 
  *                   Buffer_destruct_included()
  *
- * Those are the functions to be tested in this file.
+ * CHOICES: allocate    -- MemoryManager allocates a 2nd buffer if split fails.
+ *          no-allocate -- MemoryManager does not allocate 2nd buffer.
  *
  * (C) Frank-Rene Schaefer.                                                   */
 #define  __QUEX_OPTION_PLAIN_C
@@ -29,31 +30,42 @@ static void
 self_check_destruction(QUEX_NAME(Buffer)* including, size_t MemorySize);
 static int
 self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* included,
-                        QUEX_TYPE_LEXATOM* MemoryBack,
-                        ptrdiff_t          DistanceReadToEnd);
+                        QUEX_TYPE_LEXATOM* MemoryEnd,
+                        ptrdiff_t          DistanceReadToEnd,
+                        bool               Verdict);
 
 int
 main(int argc, char** argv)
 {
     const size_t       MemorySize = QUEX_SETTING_BUFFER_SIZE;
+    QUEX_TYPE_LEXATOM* dummy;
     QUEX_TYPE_LEXATOM* memory;
     QUEX_TYPE_LEXATOM* read_p;
     QUEX_TYPE_LEXATOM* end_p;
     QUEX_TYPE_LEXATOM* p;
+    bool               verdict;
+    QUEX_NAME(Buffer)  including;
+    QUEX_NAME(Buffer)  included;
+    size_t             split_n = 0, count_n = 0;
+    ptrdiff_t          read_i, end_i, i;
+    bool               allocation_f;
 
-    hwut_info("Construct/Destruct Included Buffer;");
+    hwut_info("Construct/Destruct Included Buffer;"
+              "CHOICES: allocate, no-allocate;");
 
-    QUEX_NAME(Buffer) including;
-    QUEX_NAME(Buffer) included;
-    size_t            split_n = 0, count_n = 0;
-    ptrdiff_t         read_i, end_i, i;
+    hwut_if_choice("allocate")    allocation_f = true;
+    hwut_if_choice("no-allocate") allocation_f = false;
 
-    for(read_i = 0; read_i != MemorySize; ++read_i) {
-        for(end_i = read_i; end_i != MemorySize; ++end_i) {
+    for(read_i = 1; read_i != MemorySize -1 ; ++read_i) {
+        for(end_i = read_i + 1; end_i < MemorySize; ++end_i) {
   
+            MemoryManager_UnitTest.allocation_addmissible_f = true;
             memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
                                 MemorySize * sizeof(QUEX_TYPE_LEXATOM), 
                                 E_MemoryObjectType_BUFFER_MEMORY);
+            /* Dummy allocation to prevent adjacent memories.                */
+            dummy = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
+                                        4711, E_MemoryObjectType_BUFFER_MEMORY);
 
             read_p = &memory[read_i];
             end_p  = &memory[end_i];
@@ -70,11 +82,13 @@ main(int argc, char** argv)
             }
 
             /* Construct Included ____________________________________________*/
-            QUEX_NAME(Buffer_construct_included)(&including, &included, 
-                                                 (QUEX_NAME(LexatomLoader)*)0);
+            MemoryManager_UnitTest.allocation_addmissible_f = allocation_f;
+            verdict = QUEX_NAME(Buffer_construct_included)(&including, &included, 
+                                                           (QUEX_NAME(LexatomLoader)*)0);
 
             split_n += self_check_construction(&including, &included, 
-                                               &memory[MemorySize-1], end_i - read_i);
+                                               &memory[MemorySize], 
+                                               end_i - read_i, verdict);
 
             /* Destruct Included _____________________________________________*/
             QUEX_NAME(Buffer_destruct_included)(&including, &included);
@@ -85,32 +99,62 @@ main(int argc, char** argv)
             QUEX_NAME(Buffer_destruct)(&including); 
 
             count_n += 1;
+
+            QUEXED(MemoryManager_free)(dummy, E_MemoryObjectType_BUFFER_MEMORY);
         }
     }
 
-    printf("<terminated: %i; splits: %i; allocate_n: %i; allocated_byte_n: %i; free_n: %i;>\n", 
+    printf("<terminated: %i; splits: %i; allocated_byte_n: %i; allocate_n: %i; free_n: %i;>\n", 
            (int)count_n, (int)split_n,
-           (int)MemoryManager_UnitTest.allocation_n, 
            (int)MemoryManager_UnitTest.allocated_byte_n, 
+           (int)MemoryManager_UnitTest.allocation_n, 
            (int)MemoryManager_UnitTest.free_n); 
 }
 
 static int
 self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* included, 
-                        QUEX_TYPE_LEXATOM* MemoryBack,
-                        ptrdiff_t          DistanceReadToEnd)
+                        QUEX_TYPE_LEXATOM* MemoryEnd,
+                        ptrdiff_t          DistanceReadToEnd,
+                        bool               Verdict)
 {
     QUEX_TYPE_LEXATOM* p;
     bool               split_f;
     ptrdiff_t          i;
+    /*         front           read_p      end_p
+     *           |               |           |
+     *          .-------------------------------------------------.
+     *          |0|-|-|-|-|-|-|-|a|b|c|d|e|f|0| | | | | | | | | | |
+     *          '-------------------------------------------------'
+     *
+     * From 'front' to 'read_p' everything has been processed. The including
+     * buffer only requires 'end_p - read_p + 2'. '+2' for the boarders of the
+     * buffer. Additionally, the 'fallback_n' needs to be considered.        */
+    ptrdiff_t   occupied =   including->input.end_p - including->_read_p + 2
+                           + QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
+    ptrdiff_t   free     = QUEX_SETTING_BUFFER_SIZE - occupied;
 
-    __quex_assert(&including->_memory._back[1] - &included->_memory._front[0]
-                  >= QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE);
-
-    split_f = (&including->_memory._back[1] == &included->_memory._front[0]) ? true : false;
+    split_f = (free >= QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ?  true : false;
 
     if( split_f ) {
-        __quex_assert(included->_memory._back == MemoryBack);
+        __quex_assert(included->_memory.ownership == E_Ownership_INCLUDING_BUFFER);
+
+        /* Intermediate dummy alloction prevents adjacent buffers. 
+         * => Only upon 'split' the buffers contents are adjacent!            */
+        __quex_assert(&including->_memory._back[1] == &included->_memory._front[0]);
+        __quex_assert(&included->_memory._back[1] - &included->_memory._front[0]
+                      >= QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE);
+        __quex_assert(&included->_memory._back[1] == MemoryEnd);
+    }
+    else {
+        if( Verdict ) {
+            __quex_assert(included->_memory.ownership == E_Ownership_LEXICAL_ANALYZER);
+            /* Intermediate dummy alloction prevents adjacent buffers. 
+             * => Only upon 'split' the buffers contents are adjacent!        */
+            __quex_assert(&including->_memory._back[1] != &included->_memory._front[0]);
+        }
+
+        /* Here, construction can only succeed, if allocation is addmissible. */
+        __quex_assert(Verdict == MemoryManager_UnitTest.allocation_addmissible_f);
     }
 
     __quex_assert(   including->input.end_p -including->_read_p == DistanceReadToEnd);

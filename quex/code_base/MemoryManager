@@ -22,7 +22,8 @@ typedef enum {
 } E_MemoryObjectType;
  
 typedef enum {
-    E_Ownership_LEXICAL_ANALYZER,
+    E_Ownership_LEXICAL_ANALYZER, 
+    E_Ownership_INCLUDING_BUFFER,
     E_Ownership_EXTERNAL
 } E_Ownership;
 #endif

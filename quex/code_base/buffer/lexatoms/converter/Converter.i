@@ -51,7 +51,7 @@ QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
 QUEX_INLINE void
 QUEX_NAME(Converter_reset)(QUEX_NAME(Converter)* me)
 {
-    me->stomach_clear(me_real->converter);
+    me->stomach_clear(me);
     me->virginity_f = true;
 }
 

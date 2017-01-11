@@ -110,8 +110,7 @@ QUEX_INLINE void    QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*              
                                                 E_Ownership                           Ownership);
 
 /* Constructor, destructor, reset. */
-QUEX_INLINE void  QUEX_NAME(Buffer_reset)(QUEX_NAME(Buffer)*                   me, 
-                                          struct QUEX_NAME(LexatomLoader_tag)* filler); 
+QUEX_INLINE void  QUEX_NAME(Buffer_reset)(QUEX_NAME(Buffer)* me); 
 
 QUEX_INLINE void  QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void  QUEX_NAME(Buffer_mark_resources_as_absent)(QUEX_NAME(Buffer)* me);

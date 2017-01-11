@@ -29,17 +29,26 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE bool
 QUEX_NAME(reset)(QUEX_TYPE_ANALYZER* me)  
+/* Reset given setup to initial position. This works on 'byte_loader' buffers
+ * as well as buffers initialized to run on memory only.
+ *
+ * RETURNS: true, in case of success.
+ *          false, in case of failure.                                        */
 {
-    QUEX_NAME(LexatomLoader)* filler = me->buffer.filler;
+    if( me->buffer.filler ) {
+        QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
+    }
 
-    QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
     QUEX_NAME(Buffer_reset)(&me->buffer);
 
     /* Reset all but 'LexatomLoader' and 'Buffer'.                            */
     if( ! QUEX_NAME(reset_all_but_buffer)(me, me->input_name) ) {
         QUEX_NAME(Buffer_destruct)(&me->buffer);
         QUEX_NAME(mark_resources_as_absent)(me);
+        return false;
     }
+
+    return true;
 }
 
 QUEX_INLINE bool
@@ -47,10 +56,13 @@ QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me,
                            const char*           FileName, 
                            QUEX_NAME(Converter)* converter /* = 0 */,
                            const char*           CodecName /* = 0 */) 
-/* Open 'FileName' as C-Standard Lib 'FILE'. 
+/* Reset on file 'FileName' as C-Standard Lib 'FILE'. 
  *
  *                OWNERSHIP OF 'converter' IS TAKEN OVER!
  *                USER IS **NOT** RESPONSIBLE FOR DELETING IT!
+ *
+ * 'reset_memory()' or 'include_push_memory()' has been applied before?
+ * => 'collect_user_memory()' delivers memory to be user-de-allocated.
  *
  * RETURNS: true, in case of success.
  *          false, in case of failure.                                        */
@@ -98,6 +110,9 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
  *                OWNERSHIP OF 'converter' IS TAKEN OVER!
  *                USER IS **NOT** RESPONSIBLE FOR DELETING IT!
  *
+ * 'reset_memory()' or 'include_push_memory()' has been applied before?
+ * => 'collect_user_memory()' delivers memory to be user-de-allocated.
+ *
  * RETURNS: true, in case of success.
  *          false, in case of failure.                                        */
 {
@@ -134,7 +149,7 @@ ERROR_0:
     return false;
 }
 
-QUEX_INLINE QUEX_TYPE_LEXATOM*
+QUEX_INLINE bool
 QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me, 
                         QUEX_TYPE_LEXATOM*   Memory,
                         const size_t         MemorySize,
@@ -144,33 +159,31 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
  * returned. Else, zero is returned.
  *
  *                  OWNERSHIP OF 'Memory' REMAINS AT USER!
- *                   USER IS RESPONSIBLE FOR DELETING IT!
+ *                  USER IS RESPONSIBLE FOR DELETING IT!
  *
- * RETURN: != 0, pointer to previous memory owned by user.
- *         == 0, no user-owned memory inside the buffer before reset.        
+ * 'reset_memory()' or 'include_push_memory()' has been applied before?
+ * => 'collect_user_memory()' delivers memory to be user-de-allocated.
  *
- * Success or failure of reset is accessed by '.error_code'.                  */
+ * RETURNS: true, in case of success.
+ *          false, in case of failure.                                        */
 {
-    QUEX_TYPE_LEXATOM*  user_owned_memory;
     QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
-
-    user_owned_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
-                        (const QUEX_TYPE_LEXATOM*)0 : me->buffer._memory._front;
 
     QUEX_NAME(Buffer_destruct)(&me->buffer); 
     /* In case, that the memory was owned by the analyzer, the destructor did
      * not delete it and did not set 'me->buffer._memory._front' to zero.     */
 
-    if( QUEX_NAME(reset_all_but_buffer)(me, "<memory>") ) {
+    if( ! QUEX_NAME(reset_all_but_buffer)(me, "<memory>") ) {
+        QUEX_NAME(mark_resources_as_absent)(me);
+        return false;
+    }
+    else {
         QUEX_NAME(Buffer_construct)(&me->buffer, 
                                     (QUEX_NAME(LexatomLoader)*)0,
                                     Memory, MemorySize, EndOfFileP,
                                     E_Ownership_EXTERNAL);
+        return true;
     }
-    else {
-        QUEX_NAME(mark_resources_as_absent)(me);
-    }
-    return user_owned_memory;
 }
 
 QUEX_INLINE bool

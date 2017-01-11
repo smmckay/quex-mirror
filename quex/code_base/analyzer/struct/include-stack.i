@@ -49,8 +49,8 @@ QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
         goto ERROR_0;
     }
 
-    QUEX_NAME(include_push)(this, ByteLoader, FileName, byte_loader, 
-                            (QUEX_TYPE_CONVERTER_NEW)0); 
+    QUEX_NAME(include_push_ByteLoader)(this, FileName, byte_loader, 
+                                       (QUEX_TYPE_CONVERTER_NEW)0); 
     if( ! me->error_code != QUEX_ENUM_ERROR_NONE ) {
         goto ERROR_1;
     }
@@ -91,17 +91,7 @@ QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
         goto ERROR_0;
     }
 
-    memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
-                       QUEX_SETTING_BUFFER_SIZE * sizeof(QUEX_TYPE_LEXATOM), 
-                       E_MemoryObjectType_BUFFER_MEMORY);
-    if( ! memory ) {
-        goto ERROR_1;
-    }
-
-    QUEX_NAME(Buffer_construct)(&new_buffer_setup, filler,
-                                memory, QUEX_SETTING_BUFFER_SIZE, 
-                                (QUEX_TYPE_LEXATOM*)0,
-                                E_Ownership_LEXICAL_ANALYZER);
+    QUEX_NAME(Buffer_construct_included)(&me->buffer, &new_buffer_setup);
 
     /* The 'new_buffer_setup' is only copied including the reference to the
      * new memory. However, the box object 'new_buffer_setup' is left alone.  */
@@ -222,12 +212,13 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(Memento)* memento;
     /* Not included? return 'false' to indicate we're on the top level       */
     if( ! me->_parent_memento ) return false;                             
+
+    memento             = me->_parent_memento;
                                                                             
     /* Buffer_destruct() takes care of propper destructor calls for byte-
      * loaders, buffer fillers, and converters.                              */
-    QUEX_NAME(Buffer_destruct)(&me->buffer);                              
+    QUEX_NAME(Buffer_destruct_included)(&memento->buffer, &me->buffer);                              
 
-    memento             = me->_parent_memento;
     me->_parent_memento = memento->_parent_memento;
     /* memento_unpack():                                                    
      *    => Current mode                                                   
