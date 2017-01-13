@@ -1,4 +1,6 @@
-all: construct_destruct_included.exe
+TESTS := construct_destruct_included.exe
+
+all: $(TESTS)
 
 construct_destruct_included.exe: 
 	gcc construct_destruct_included.c -ggdb \
@@ -6,6 +8,9 @@ construct_destruct_included.exe:
 		-DQUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE=4      \
 		-DQUEX_SETTING_BUFFER_SIZE=11                 \
 	    -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1
+
+hwut-info:
+	@echo $(TESTS)
 
 clean: 
 	rm -f *.exe *.o 

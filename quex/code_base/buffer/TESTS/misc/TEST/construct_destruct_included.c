@@ -83,6 +83,7 @@ main(int argc, char** argv)
 
             /* Construct Included ____________________________________________*/
             MemoryManager_UnitTest.allocation_addmissible_f = allocation_f;
+            including._lexeme_start_p = including._read_p;
             verdict = QUEX_NAME(Buffer_construct_included)(&including, &included, 
                                                            (QUEX_NAME(LexatomLoader)*)0);
 
@@ -126,18 +127,24 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
      *          |0|-|-|-|-|-|-|-|a|b|c|d|e|f|0| | | | | | | | | | |
      *          '-------------------------------------------------'
      *
+     * may be moved to
+     *
+     *       front read_p      end_p
+     *           | |           |
+     *          .-------------------------------------------------.
+     *          |0|a|b|c|d|e|f|0| | | | | | | | | | | | | | | | | |
+     *          '-------------------------------------------------'
+     *
      * From 'front' to 'read_p' everything has been processed. The including
      * buffer only requires 'end_p - read_p + 2'. '+2' for the boarders of the
      * buffer. Additionally, the 'fallback_n' needs to be considered.        */
     ptrdiff_t   occupied =   including->input.end_p - including->_read_p + 2
-                           + QUEX_SETTING_BUFFER_MIN_FALLBACK_N - 1;
-    ptrdiff_t   free     = QUEX_SETTING_BUFFER_SIZE - occupied;
+                           + (including->_read_p > &including->_memory._front[1]) ? 
+                                   QUEX_SETTING_BUFFER_MIN_FALLBACK_N : 0;
+    ptrdiff_t   free     =   MemoryEnd - &including->_memory._front[0]
+                           - occupied;
 
-    split_f = (free >= QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ?  true : false;
-
-    if( split_f ) {
-        __quex_assert(included->_memory.ownership == E_Ownership_INCLUDING_BUFFER);
-
+    if( included->_memory.ownership == E_Ownership_INCLUDING_BUFFER ) {
         /* Intermediate dummy alloction prevents adjacent buffers. 
          * => Only upon 'split' the buffers contents are adjacent!            */
         __quex_assert(&including->_memory._back[1] == &included->_memory._front[0]);
@@ -146,26 +153,27 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
         __quex_assert(&included->_memory._back[1] == MemoryEnd);
     }
     else {
-        __quex_assert(included->_memory.ownership != E_Ownership_INCLUDING_BUFFER);
-
         if( Verdict ) {
-            __quex_assert(included->_memory.ownership == E_Ownership_LEXICAL_ANALYZER);
             /* Intermediate dummy alloction prevents adjacent buffers. 
              * => Only upon 'split' the buffers contents are adjacent!        */
             __quex_assert(&including->_memory._back[1] != &included->_memory._front[0]);
+        }
+        else {
+            __quex_assert(included->_memory._back == (QUEX_TYPE_LEXATOM*)0);
+            __quex_assert(included->_memory._front == (QUEX_TYPE_LEXATOM*)0);
         }
 
         /* Here, construction can only succeed, if allocation is addmissible. */
         __quex_assert(Verdict == MemoryManager_UnitTest.allocation_addmissible_f);
     }
 
-    __quex_assert(   including->input.end_p -including->_read_p == DistanceReadToEnd);
+    __quex_assert(including->input.end_p -including->_read_p == DistanceReadToEnd);
 
     for(p=including->_read_p, i=1; p != including->input.end_p; ++p, ++i) {
         __quex_assert(*p == i);
     }
 
-    return split_f ? 1 : 0;
+    return included->_memory.ownership == E_Ownership_INCLUDING_BUFFER;
 }
 
 static void
