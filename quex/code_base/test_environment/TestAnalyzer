@@ -94,6 +94,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 
       // (*) Common for constructor, reset, and include push ___________________________
       bool    user_constructor();
+      void    user_destructor();
       void    user_memento_pack(QUEX_NAME(Memento)*); 
       void    user_memento_unpack(QUEX_NAME(Memento)*);
       void    user_reset();
@@ -140,6 +141,18 @@ QUEX_MEMBER_FUNCTIONO(user_constructor)
 #   endif
     return true;
 }
+
+QUEX_INLINE void
+QUEX_MEMBER_FUNCTIONO(user_destructor)
+{
+#   if __cplusplus
+    (void)this;
+#   else
+    (void)me;
+#   endif
+    return true;
+}
+
 
 QUEX_INLINE void
 QUEX_MEMBER_FUNCTIONO(user_reset) 

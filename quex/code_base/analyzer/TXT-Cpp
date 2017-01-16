@@ -295,13 +295,14 @@ public:
 public:
     void    print_this();
 
-private:
     // (*) Common for constructor, reset, and include push ___________________________
     bool    user_constructor();
+    bool    user_destructor();
     bool    user_memento_pack(const char* InputName, QUEX_NAME(Memento)*); 
     void    user_memento_unpack(QUEX_NAME(Memento)*);
     void    user_reset();
 
+private:
     /* (*) All Modes are Friends ___________________________________________________*/
 $$MODE_CLASS_FRIENDS$$  
 

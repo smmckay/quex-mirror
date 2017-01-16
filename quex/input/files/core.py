@@ -87,7 +87,9 @@ def parse_section(fh):
         #                              of the engine (e.g. "#include<...>")
         #     -- 'body { ... }'     => define code that is to be pasted in the class' body
         #                              of the engine (e.g. "public: int  my_member;")
-        #     -- 'init { ... }'     => define code that is to be pasted in the class' constructors
+        #     -- 'constructor { ... }' => define code that is to be pasted in the class' constructor
+        #                              of the engine (e.g. "my_member = -1;")
+        #     -- 'destructor { ... }' => define code that is to be pasted in the class' destructor
         #                              of the engine (e.g. "my_member = -1;")
         #     -- 'define { ... }'   => define patterns shorthands such as IDENTIFIER for [a-z]+
         #     -- 'repeated_token_id = QUEX_TKN_ ...;' => enables token repetition, defines
@@ -100,6 +102,11 @@ def parse_section(fh):
             fragment     = code_fragment.parse(fh, word, AllowBriefTokenSenderF=False)        
             blackboard.__dict__[element_name] = fragment
             return
+
+        elif word == "init":
+            error.log("Section 'init' is no longer supported.\n"
+                      "Keyword 'constructor' is provided instead.\n"
+                      "Use 'destructor' to define destructor code.\n")
 
         elif word == "start":
             mode_name = parse_identifier_assignment(fh)

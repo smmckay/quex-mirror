@@ -209,7 +209,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNam
     }
     else if( ! QUEX_MEMBER_FUNCTION_CALLO(user_constructor) ) {
         me->error_code = E_Error_UserConstructor_Failed;
-        goto ERROR_5;
+        goto ERROR_6;
     }
 
     me->error_code = E_Error_None;
@@ -220,10 +220,14 @@ ERROR_6:
     (void)QUEX_NAME(input_name_set)(me, (const char*)0);
 ERROR_5:
     /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
+#   ifdef QUEX_OPTION_COUNT
 ERROR_4:
     __QUEX_IF_POST_CATEGORIZER(QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
+#   endif
+#   ifdef QUEX_OPTION_STRING_ACCUMULATOR
 ERROR_3:
-    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator, me));
+    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator));
+#   endif
 ERROR_2:
     /* NO ALLOCATED RESOURCES IN: 'me->mode_stack'                            */
 ERROR_1:

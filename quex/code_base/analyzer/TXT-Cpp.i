@@ -17,6 +17,20 @@ $$CONSTRUCTOR_EXTENSTION$$
 }
 
 QUEX_INLINE void
+QUEX_MEMBER_FUNCTIONO(user_destructor)
+{
+    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) 
+    (void)me;
+
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+/* START: User's constructor extensions _______________________________________*/
+$$DESTRUCTOR_EXTENSTION$$
+/* END: _______________________________________________________________________*/
+#undef self
+    return true;
+}
+
+QUEX_INLINE void
 QUEX_MEMBER_FUNCTIONO(user_reset) 
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)

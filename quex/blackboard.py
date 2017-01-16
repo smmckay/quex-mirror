@@ -171,7 +171,8 @@ memento_unpack_extension = CodeFragment_NULL
 fragment_db = {
     "header":         "header",
     "body":           "class_body_extension",
-    "init":           "class_constructor_extension",
+    "constructor":    "class_constructor_extension",
+    "destructor":     "class_destructor_extension",
     "reset":          "reset_extension",
     "memento":        "memento_class_extension",
     "memento_pack":   "memento_pack_extension",

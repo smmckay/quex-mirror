@@ -30,6 +30,7 @@ QUEX_INLINE void QUEX_NAME(from_memory)(
 QUEX_INLINE bool QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER*, 
                                                      const char*);
 QUEX_INLINE bool QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER*);
+QUEX_INLINE bool QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER*);
 QUEX_INLINE void QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER*); 
 QUEX_INLINE void QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER*);
 QUEX_INLINE void QUEX_NAME(mark_resources_as_absent)(QUEX_TYPE_ANALYZER* me);
