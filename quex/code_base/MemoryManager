@@ -40,6 +40,9 @@ extern size_t
 QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
                                  uint8_t* source_begin_p, uint8_t* source_end_p);
 
+const char*
+QUEXED_DEF(MemoryManager_clone_string)(const char* String);
+
 extern bool 
 QUEXED_DEF(system_is_little_endian)(void);
 

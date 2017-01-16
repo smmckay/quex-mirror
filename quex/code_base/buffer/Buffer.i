@@ -61,26 +61,28 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
     me->on_overflow       = QUEX_NAME(Buffer_on_overflow_DEFAULT);
 
     /* Initialize.                                                           */
-    QUEX_NAME(Buffer_init_content)(me, EndOfFileP);
-    QUEX_NAME(Buffer_init_analyzis)(me);
+    QUEX_NAME(Buffer_init)(me, EndOfFileP);
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_reset)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_init)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFileP)
 {
-    QUEX_NAME(Buffer_init_content)(me, (QUEX_TYPE_LEXATOM*)0);
+    QUEX_NAME(Buffer_init_content)(me, EndOfFileP);
     QUEX_NAME(Buffer_init_analyzis)(me); 
 }
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
+/* Destruct 'me' and mark all resources as absent.                            */
 {
     if( me->filler ) {
         me->filler->delete_self(me->filler); 
     }
+    me->filler = (QUEX_NAME(LexatomLoader)*)0;
     QUEX_NAME(BufferMemory_destruct)(&me->_memory);
+    /* => memory resources are marked as absent.                              */
 }
 
 QUEX_INLINE bool
@@ -89,8 +91,8 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
                                      QUEX_NAME(LexatomLoader)* filler)
 /* Construct 'included' buffer (-> memory split):
  *
- *            THIS FEATURE CANNOT BE USED IF (LATER) MULTI-THREAT 
- *                     LEXICAL ANALYSIS IS IMPLEMENTED!
+ * Constructor takes over ownership over 'filler'. If construction fails,
+ * the 'filler' is immediatedly deleted.
  *
  * To optimize memory usage and minimize the generation of new buffers in 
  * situations of extensive file inclusions, the current buffer's memory may
@@ -121,25 +123,42 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
  *                 functional.
  *                                                                            */
 {
-    ptrdiff_t          available_size = including->_memory._back - including->input.end_p;
-    QUEX_TYPE_LEXATOM* memory;
-    size_t             memory_size;
-    E_Ownership        ownership;
+    /*         front           read_p      end_p                 back
+     *           |               |           |                   |
+     *          .-------------------------------------------------.
+     *          |0|-|-|-|-|-|-|-|a|b|c|d|e|f|0| | | | | | | | | | |
+     *          '-------------------------------------------------'
+     *                                         :                 :
+     *                                         '--- available ---'
+     *                                                                        */
+    ptrdiff_t                 available_size =   including->_memory._back 
+                                               - including->input.end_p;
+    QUEX_TYPE_LEXATOM*        memory;
+    size_t                    memory_size;
+    E_Ownership               ownership;
+    ptrdiff_t                 move_distance;
+    QUEX_TYPE_STREAM_POSITION backup_ios;
 
     if( available_size < QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE ) {
+        /* Buffer_move_away_passed_content() refuses to move if end of stream
+         * is inside buffer. 
+         * => Trick: Backup & restore 'lexatom_index_end_of_stream'           */
+        backup_ios = including->input.lexatom_index_end_of_stream;
+        including->input.lexatom_index_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
         /* Position registers are only relevant during lexical analyzis.
          * Inclusion happens in a 'terminal' or external to the lexer step.   
          * => Position registers = empty set.                                 */
-        including->_lexeme_start_p = including->_read_p;
-        QUEX_NAME(Buffer_move_away_passed_content)(including, 
-                                                   (QUEX_TYPE_LEXATOM)0, 0); 
-        available_size = including->_memory._back - including->input.end_p;
-        /* After 'move away' possible:
+        (void)QUEX_NAME(Buffer_move_away_passed_content)(including, 
+                                                         (QUEX_TYPE_LEXATOM)0, 0); 
+        including->input.lexatom_index_end_of_stream = backup_ios;
+
+        /* After 'move away' possibly:
          *
          *   size(including's buffer) < 'QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE'
          *
-         * However, this is not a problem, since it is not going to be used 
-         * before the included buffer terminates.                             */
+         * However, 'including' buffer is NOT used before 'included' terminates.
+         * => included is pasted back at the end of including.                */
+        available_size = including->_memory._back - including->input.end_p;
     }
 
     if( available_size < QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE ) {
@@ -148,6 +167,9 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
                                 memory_size * sizeof(QUEX_TYPE_LEXATOM), 
                                 E_MemoryObjectType_BUFFER_MEMORY);
         if( ! memory ) {
+            if( filler ) {
+                filler->delete_self(filler); 
+            }
             QUEX_NAME(Buffer_mark_resources_as_absent)(included);
             return false;
         }
@@ -355,8 +377,12 @@ QUEX_INLINE bool
 QUEX_NAME(Buffer_is_end_of_file)(QUEX_NAME(Buffer)* me)
 { 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    if     ( me->_read_p != me->input.end_p )              return false;
-    else if( me->input.lexatom_index_end_of_stream == -1 ) return false;
+    if( me->input.lexatom_index_end_of_stream == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        return false;
+    }
+    else if( me->_read_p != me->input.end_p ) {
+        return false;
+    }
 
     return    QUEX_NAME(Buffer_input_lexatom_index_end)(me) 
            == me->input.lexatom_index_end_of_stream;
@@ -367,8 +393,12 @@ QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me)
 { 
     const ptrdiff_t ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
 
-    if     ( me->input.lexatom_index_end_of_stream == -1 )                           return false;
-    else if( me->input.lexatom_index_end_of_stream < me->input.lexatom_index_begin ) return false;
+    if( me->input.lexatom_index_end_of_stream == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        return false;
+    }
+    else if( me->input.lexatom_index_end_of_stream < me->input.lexatom_index_begin ) {
+        return false;
+    }
     
     return me->input.lexatom_index_end_of_stream - me->input.lexatom_index_begin < ContentSize;
 }
@@ -535,7 +565,7 @@ QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*  me,
  *                         start. Shall help to avoid extensive backward
  *                         loading.
  *
- * RETURNS: Pointer to the end of the maintained content.                    */
+ * RETURNS: Moved distance.                                                  */
 { 
     QUEX_TYPE_LEXATOM*        BeginP = &me->_memory._front[1];
     const QUEX_TYPE_LEXATOM*  EndP   = me->_memory._back;

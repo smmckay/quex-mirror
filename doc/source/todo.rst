@@ -9,3 +9,6 @@ for the 'buffer._memory.ownership' before reload!
 
 -- Including: Buffer splits, so that frequent inclusion does not require
               allocation of huge amounts of buffers.
+
+-- Reset: user_reset must destruct newly created resources and 
+                     mark them 'absent' in case of failure.

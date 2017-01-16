@@ -63,6 +63,19 @@ QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
     return size;
 }
 
+const char*
+QUEXED_DEF(MemoryManager_clone_string)(const char* String)
+{ 
+    const char* result = (char*)QUEXED(MemoryManager_allocate)(
+                                       sizeof(char)*(__QUEX_STD_strlen(InputNameP)+1),
+                                       E_MemoryObjectType_BUFFER_MEMORY);
+    if( result ) {
+        return (const char*)0;
+    }
+    __QUEX_STD_strcpy(result, InputNameP);
+    return result;
+}
+
 bool 
 QUEXED_DEF(system_is_little_endian)(void)
 {

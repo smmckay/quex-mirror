@@ -21,7 +21,7 @@ QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  me,
     if( Memory ) {
         /* "Memory size > QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 2" is reqired.
          * Maybe, define '-DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0' for 
-         * compilation (assumed no pre-contexts.)                                */
+         * compilation (assumed no pre-contexts.)                             */
         __quex_assert(Size > QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 2);
 
         me->_front    = Memory;
@@ -39,7 +39,7 @@ QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  me,
 QUEX_INLINE void 
 QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me) 
 /* Does not set 'me->_front' to zero, if it is not deleted. Thus, the user
- * may detect wether it needs to be deleted or not.                          */
+ * may detect wether it needs to be deleted or not.                           */
 {
     if( me->_front && me->ownership == E_Ownership_LEXICAL_ANALYZER ) {
         QUEXED(MemoryManager_free)((void*)me->_front, 
@@ -51,7 +51,9 @@ QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me)
 QUEX_INLINE void 
 QUEX_NAME(BufferMemory_mark_resources_as_absent)(QUEX_NAME(BufferMemory)* me) 
 {
+    /* 'me->_front == 0' prevents 'MemoryManager_free()'                      */
     me->_front = me->_back = (QUEX_TYPE_LEXATOM*)0x0;
+    me->ownership = E_Ownership_LEXICAL_ANALYZER;
 }
 
 QUEX_INLINE size_t          

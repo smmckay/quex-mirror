@@ -12,10 +12,29 @@
  *   -- The destructor can be called safely for any object that has been 
  *      'reset'--even if the reset failed.
  *
- * FAILURE => Lexer is in DYSFUNCTIONAL state.
+ * FAILURE => Current lexer: all resources marked absent 
+                             -> dysfunctional but destruct-able.
+ *            Overtaken objects are destructed and freed!
  *
  * NOTE: The state before the reset is FORGOTTEN. For a 'reminiscent reset' 
  *       the 'include' feature may be considered.
+ *
+ *______________________________________________________________________________
+ * INSIGHT: 
+ *
+ *    Reset consists of two major phases:
+ * 
+ *    (1) Resources and contents are reset. FAILURE MAY OCCURR.
+ *        If errors occur, the lexer is still UNTOUCHED!
+ *
+ *    (2) All allocation has been done. SUCCESS IS GRANTED. 
+ *        Only then, the lexer object is assigned new content.
+ * 
+ * The *pivot point* of 'success granted' is inside the function 
+ * 'include_push_all_but_buffer()'. If it returns != NULL, success is granted.
+ * Anything that might fail, *must happen before* the call to this function.
+ * The exact 'pivot point' is marked in a comment by '[PIVOT POINT]'.
+ *______________________________________________________________________________
  *
  * (C) 2006-2017 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                     */
@@ -39,23 +58,26 @@ QUEX_NAME(reset)(QUEX_TYPE_ANALYZER* me)
         QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
     }
 
-    QUEX_NAME(Buffer_reset)(&me->buffer);
-
-    /* Reset all but 'LexatomLoader' and 'Buffer'.                            */
-    if( ! QUEX_NAME(reset_all_but_buffer)(me, me->input_name) ) {
-        QUEX_NAME(Buffer_destruct)(&me->buffer);
-        QUEX_NAME(mark_resources_as_absent)(me);
+    if( ! QUEX_NAME(Buffer_init)(&me->buffer, (QUEX_TYPE_LEXATOM*)0) ) {
+        goto ERROR_0;
+    }
+    else if( ! QUEX_NAME(reset_all_but_buffer)(me, me->input_name) ) {
         return false;
     }
 
     return true;
+
+ERROR_2:
+    QUEX_NAME(Buffer_destruct)(&me->buffer);
+ERROR_0:
+    QUEX_NAME(mark_resources_as_absent)(me);
+    return false;
 }
 
 QUEX_INLINE bool
 QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me, 
                            const char*           FileName, 
-                           QUEX_NAME(Converter)* converter /* = 0 */,
-                           const char*           CodecName /* = 0 */) 
+                           QUEX_NAME(Converter)* new_converter /* = 0 */)
 /* Reset on file 'FileName' as C-Standard Lib 'FILE'. 
  *
  *                OWNERSHIP OF 'converter' IS TAKEN OVER!
@@ -67,26 +89,25 @@ QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me,
  * RETURNS: true, in case of success.
  *          false, in case of failure.                                        */
 {
-    QUEX_NAME(ByteLoader)*   byte_loader;
+    QUEX_NAME(ByteLoader)*   new_byte_loader;
 
     /* NEW: ByteLoader.                                                       */
-    byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
-    if( ! byte_loader ) {
+    new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
+    if( ! new_byte_loader ) {
         me->error_code = QUEX_ENUM_ERROR_RESET_BYTE_LOADER_ALLOCATION;
         goto ERROR_0;
     }
 
-    /* DELEGATE TO: 'reset_ByteLoader()'                                      */
-    if( ! QUEX_NAME(reset_ByteLoader)(me, byte_loader, ConverterNew, 
-                                      CodecName, FileName) ) {
+    if( ! QUEX_NAME(reset_ByteLoader)(me, new_byte_loader, new_converter, FileName) ) {
         goto ERROR_1;
     }
     return true;
 
 ERROR_1:
-    /* 'reset_ByteLoader()' error: => byte_loader is already deleted.         */
+    /* 'reset_ByteLoader()': deletes and mark absent everything.              */
 ERROR_0:
-    QUEX_NAME(mark_resources_as_absent)(me);
+    /* 'destruct' marks resources as absent => double destruction is safe.    */
+    QUEX_NAME(destruct)(me);
     return false;
 }
 
@@ -98,16 +119,15 @@ ERROR_0:
  *      byte_loader = QUEX_NAME(ByteLoader_stream_new)(strangestr_p, false);  */
 QUEX_INLINE bool
 QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
-                            QUEX_NAME(ByteLoader)*  byte_loader,
-                            QUEX_NAME(Converter)*   converter /* = 0 */,
-                            const char*             CodecName /* = 0 */, 
+                            QUEX_NAME(ByteLoader)*  new_byte_loader,
+                            QUEX_NAME(Converter)*   new_converter /* = 0 */,
                             const char*             InputName /* = 0 */) 
-/* Resets the 'filler' to a new 'byte_loader' and 'converter'. If it fails
+/* Resets the 'filler' to a new 'new_byte_loader' and 'new_converter'. If it fails
  * the 'filler' is freed and set to NULL. '.error_code' contains the code of
  * the error that occurred.
  *
- *                OWNERSHIP OF 'byte_loader' IS TAKEN OVER!
- *                OWNERSHIP OF 'converter' IS TAKEN OVER!
+ *                OWNERSHIP OF 'new_byte_loader' IS TAKEN OVER!
+ *                OWNERSHIP OF 'new_converter' IS TAKEN OVER!
  *                USER IS **NOT** RESPONSIBLE FOR DELETING IT!
  *
  * 'reset_memory()' or 'include_push_memory()' has been applied before?
@@ -117,35 +137,40 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
  *          false, in case of failure.                                        */
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(LexatomLoader)* filler    = me->buffer.filler;
+    QUEX_NAME(LexatomLoader)* new_filler;
      
     QUEX_NAME(Asserts_construct)(CodecName);
 
-    if( me->buffer.filler ) {
-        filler->delete_self(filler);
-    }
-    me->buffer.filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
-    if( ! me->buffer.filler ) {
+    new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
+    if( ! new_filler ) {
         goto ERROR_0;
     }
+    if( me->buffer.filler ) {
+        me->buffer.filler->delete_self(me->buffer.filler);
+    }
+    me->buffer.filler = new_filler;
 
-    QUEX_NAME(Buffer_reset)(&me->buffer);
+    QUEX_NAME(Buffer_init)(&me->buffer, (QUEX_TYPE_LEXATOM*)0);
 
     if( ! QUEX_NAME(reset_all_but_buffer)(me, InputName) ) {
         goto ERROR_1;
     }
     return true;
 
+    /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_1:
+    /* 'reset_all_but_buffer()' destructed and marked absent any resource 
+     *                          but the buffer.                               */
     QUEX_NAME(Buffer_destruct)(&me->buffer);
-    QUEX_NAME(mark_resources_as_absent)(me);
+    /* 'Buffer_destruct()' destructs and marks absent the 'new_filler' and in 
+     *                     'new_byte_loader' and 'new_converter'.             */
     return false;
 
 ERROR_0:
-    if( converter ) {
-        converter->delete_self(converter);
-    }
-    QUEX_NAME(mark_resources_as_absent)(me);
+    if( new_byte_loader ) new_byte_loader->delete_self(new_byte_loader);
+    if( new_converter )   new_converter->delete_self(new_converter);
+    /* 'destruct' marks resources as absent => double destruction is safe.    */
+    QUEX_NAME(destruct)(me);  /* Destructs also 'me->buffer'                  */
     return false;
 }
 
@@ -170,39 +195,57 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
     QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
 
     QUEX_NAME(Buffer_destruct)(&me->buffer); 
-    /* In case, that the memory was owned by the analyzer, the destructor did
-     * not delete it and did not set 'me->buffer._memory._front' to zero.     */
+    /* Buffer's memory owned externally => memory NOT freed!
+     * but 'me->buffer._memory._front = NULL'!                                */
 
     if( ! QUEX_NAME(reset_all_but_buffer)(me, "<memory>") ) {
-        QUEX_NAME(mark_resources_as_absent)(me);
-        return false;
+        goto ERROR_0;
     }
-    else {
-        QUEX_NAME(Buffer_construct)(&me->buffer, 
-                                    (QUEX_NAME(LexatomLoader)*)0,
-                                    Memory, MemorySize, EndOfFileP,
-                                    E_Ownership_EXTERNAL);
-        return true;
-    }
+
+    QUEX_NAME(Buffer_construct)(&me->buffer, 
+                                (QUEX_NAME(LexatomLoader)*)0,
+                                Memory, MemorySize, EndOfFileP,
+                                E_Ownership_EXTERNAL);
+    return true;
+
+    /* ERROR CASES: Free Resources ___________________________________________*/
+ERROR_0:
+    /* 'reset_all_but_buffer()' All but the buffer resource destructed and 
+     *                          marked as absent. 
+     * 'Buffer_destruct()' marked buffer resources as absent.                 */
+    return false;
 }
 
 QUEX_INLINE bool
 QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me, 
                                 const char*          InputName) 
-/* Resets anything but 'Buffer'.
+/* Resets anything but 'Buffer'. 
+ *
+ * FAILURE: All but the buffer's resources are destructed and marked absent.
  * 
  * RETURNS: true, for success.
- *          false, for failure.                                               */
+ *          false, else. Buffer's resource must be destructed/marked absent.  */
 {
     QUEX_NAME(destruct_all_but_buffer)(me);
 
-    /* If user reset fails, all non-buffer components are destructed. 
-     * => Safe to return. Caller must take care of buffer.                    */
-    if( ! QUEX_MEMBER_FUNCTION_CALLO(user_reset) ) {
-        return false;
-    }
+    /*__________________________________________________________________________
+     *
+     * [PIVOT POINT] All but buffer's resources are desctructed.
+     *
+     * From here: Construct new lexical analyzer object.
+     *________________________________________________________________________*/
 
-    return QUEX_NAME(construct_all_but_buffer)(me);
+    if( ! QUEX_MEMBER_FUNCTION_CALLO(user_reset) ) {
+        goto ERROR_0;
+    }
+    else if( ! QUEX_NAME(construct_all_but_buffer)(me) ) {
+        goto ERROR_0;
+    }
+    return true;
+
+    /* ERROR CASES: Free Resources ___________________________________________*/
+ERROR_0:
+    return false;
 }
 
 

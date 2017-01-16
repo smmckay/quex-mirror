@@ -10,6 +10,7 @@
  *
  * PUSH: 'include'
  *
+ *   -- Takes over any OWNERSHIP! 
  *   -- Include may fail, but it never throws an exception!
  *      Failure is notified by the '.error_code' flag.
  *   -- '.receive()' may always be called, but that function might return
@@ -17,18 +18,38 @@
  *   -- The destructor can be called safely for any object that has been 
  *      'included'--even if the inclusion failed.
  *
+ * FAILURE => Current lexical analyzer object remains as it is!
+ *            Overtaken objects are deleted!
+ *
  * POP: 'return from include'
  *
  *   -- never fails, never throws exceptions.
  *
- * (C) 2004-2017 Frank-Rene Schaefer
+ *______________________________________________________________________________
+ * INSIGHT: 
  *
- *  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__INCLUDE_STACK_I may be undefined in case
- *    that multiple lexical analyzers are used. Then, the name of the
- *    QUEX_NAME(Accumulator) must be different.                               */
+ *    The process of 'include_push' consists of two major phases:
+ * 
+ *    (1) New resources are allocated. In that phases FAILURES MAY OCCUR. 
+ *        If errors occur, the lexer is still UNTOUCHED!
+ *
+ *    (2) All allocation has been done. SUCCESS IS GRANTED. 
+ *        Only then, the lexer object is assigned new content.
+ * 
+ * The *pivot point* of 'success granted' is inside the function 
+ * 'include_push_all_but_buffer()'. If it returns != NULL, success is granted.
+ * Anything that might fail, *must happen before* the call to this function.
+ * The exact 'pivot point' is marked in a comment by '[PIVOT POINT]'.
+ *______________________________________________________________________________
+ *
+ * (C) 2004-2017 Frank-Rene Schaefer
+ *____________________________________________________________________________*/
 #ifndef  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__INCLUDE_STACK_I
 #define  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__INCLUDE_STACK_I
 
+/*  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__INCLUDE_STACK_I may be undefined in case
+ *    that multiple lexical analyzers are used. Then, the name of the
+ *    QUEX_NAME(Accumulator) must be different.                               */
 #ifndef   QUEX_TYPE_ANALYZER
 #   error "Macro QUEX_TYPE_ANALYZER must be defined before inclusion of this file."
 #endif
@@ -39,28 +60,24 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_INLINE bool
 QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
                                   const char*             FileName, 
-                                  QUEX_NAME(Converter)*   converter /* = 0 */)
+                                  QUEX_NAME(Converter)*   new_converter /* = 0 */)
 {
-    bool                    verdict_f;
-    QUEX_NAME(ByteLoader)*  byte_loader;
+    QUEX_NAME(ByteLoader)*  new_byte_loader;
 
-    byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
-    if( ! byte_loader ) {
+    new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
+    if( ! new_byte_loader ) {
         goto ERROR_0;
     }
-
-    QUEX_NAME(include_push_ByteLoader)(this, FileName, byte_loader, 
-                                       (QUEX_TYPE_CONVERTER_NEW)0); 
-    if( ! me->error_code != QUEX_ENUM_ERROR_NONE ) {
+    else if( ! QUEX_NAME(include_push_ByteLoader)(this, FileName, new_byte_loader, new_converter) ) {
         goto ERROR_1;
     }
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
-ERROR_1:
-    /* ByteLoader: 'E_Ownership_LEXICAL_ANALYZER' lets 'filler->delete_self()'
-     * take care of its free-ing.                                             */
 ERROR_0:
+    new_converter->delete_self(new_converter);
+ERROR_1:
+    /* All resource freeing is done in called functions.                      */
     return false;
 }
 
@@ -73,45 +90,55 @@ ERROR_0:
 QUEX_INLINE bool
 QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                                    const char*             InputName,
-                                   QUEX_NAME(ByteLoader)*  byte_loader,
-                                   QUEX_NAME(Converter)*   converter /* = 0 */)
+                                   QUEX_NAME(ByteLoader)*  new_byte_loader,
+                                   QUEX_NAME(Converter)*   new_converter /* = 0 */)
 {
-    bool                      verdict_f;
-    QUEX_NAME(Converter)*     converter;
-    QUEX_NAME(LexatomLoader)* filler;
-    QUEX_TYPE_LEXATOM*        memory;
-    QUEX_NAME(Buffer)         new_buffer_setup;
+    QUEX_NAME(LexatomLoader)* new_filler;
+    QUEX_NAME(Memento)*       new_memento;
+    QUEX_NAME(Buffer)         new_buffer;
     QUEX_NAME(Asserts_construct)(CodecName);
 
-    filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
-
-    /* NOT: Abort/return if filler == 0 !!
-     *      Incomplete construction => propper destruction IMPOSSIBLE!        */
-    if( ! filler ) {
+    new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
+    if( ! new_filler ) {
         goto ERROR_0;
     }
+    else if( me->buffer.filler )
+    {
+        /* Overtake the byte order reversion behavior of including filler.    */                                                
+        new_filler->_byte_order_reversion_active_f = \
+                              me->buffer.filler->_byte_order_reversion_active_f;
+    }
 
-    QUEX_NAME(Buffer_construct_included)(&me->buffer, &new_buffer_setup);
+    if( ! QUEX_NAME(Buffer_construct_included)(&me->buffer, &new_buffer, new_filler) ) {
+        goto ERROR_1;
+    }
 
-    /* The 'new_buffer_setup' is only copied including the reference to the
-     * new memory. However, the box object 'new_buffer_setup' is left alone.  */
-    if( ! QUEX_NAME(include_push_all_but_buffer)(this, InputName, &new_buffer_setup) ) {
+    new_memento = QUEX_NAME(include_push_all_but_buffer)(this, InputName);
+    if( ! new_memento ) {
         goto ERROR_2;
     }
+    new_memento->buffer = me->buffer;
+    /* 'new_buffer' pointer/objects are all overtaken by 'me->buffer'.
+     * 'new_buffer' smoothly vanishes then upon leaving the function's scope. */
+    me->buffer          = new_buffer;       
+    me->_parent_memento = new_memento;
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_2:
-    /* Memory 'E_Ownership_LEXICAL_ANALYZER' => destruct frees the memory.   */
-    QUEX_NAME(Buffer_destruct)(&me->buffer);
+    /* 'include_push_all_but_buffer()' destructed 'new_buffer'.               */
+    return false;
 ERROR_1:
-    me->buffer.filler->delete_self(me->buffer.filler); 
-    me->buffer.filler = (QUEX_NAME(LexatomLoader)*)0;
+    /* 'Buffer_construct_included()' deleted 'new_filler'.
+     * filler->delete_self()' frees 'new_byte_loader' and 'new_converter'.    */
+    return false;
 ERROR_0:
+    if( new_byte_loader ) new_byte_loader->delete_self(new_byte_loader);
+    if( new_converter )   new_converter->delete_self(new_converter);
     return false;
 }
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
                                const char*         InputName,
                                QUEX_TYPE_LEXATOM*  Memory,
@@ -121,29 +148,42 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
  * responsible for filling it. There is no 'file/stream handle', no 'byte
  * loader', and 'no buffer filler'.                                           */
 {
-    QUEX_NAME(Buffer) new_buffer_setup;
+    QUEX_NAME(Buffer)    new_buffer;
+    QUEX_NAME(Memento)*  new_memento;
+
     QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
 
-    QUEX_NAME(Buffer_construct)(&new_buffer_setup, 
+    QUEX_NAME(Buffer_construct)(&new_buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
                                 E_Ownership_EXTERNAL);
 
-    /* The 'new_buffer_setup' is only copied including the reference to the
-     * new memory. However, the box object 'new_buffer_setup' is left alone.  */
-    QUEX_NAME(include_push_all_but_buffer)(this,, InputName, &new_buffer_setup);
+    /* The 'new_buffer' is only copied including the reference to the new 
+     * memory. However, the box object 'new_buffer' is left alone.            */
+    new_memento = QUEX_NAME(include_push_all_but_buffer)(this, InputName);
+    if( ! new_memento ) {
+        goto ERROR_0;
+    }
+    new_memento->buffer = me->buffer;
+    /* 'new_buffer' pointer/objects are all overtaken by 'me->buffer'.
+     * 'new_buffer' smoothly vanishes then upon leaving the function's scope. */
+    me->buffer          = new_buffer;
+    me->_parent_memento = new_memento;
+    return true;
 
-    /* ERROR: 'Buffer_destruct()' does not make sense, since the complete
-     *         content is provided from extern. 
-     * => User needs to check the 'error_code' after include_push.            */
+    /* ERROR CASES: Free Resources ___________________________________________*/
+ERROR_0:
+    QUEX_NAME(Buffer_destruct)(&new_buffer);
+    return false;
 }
 
 QUEX_INLINE bool
 QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me 
-                                       const char*         InputNameP,
-                                       QUEX_NAME(Buffer)*  new_buffer_setup)
+                                       const char*         InputNameP)
 {
     QUEX_NAME(Memento)* memento;
+    QUEX_NAME(Counter)  new_counter;
+    const char*         new_input_name;
    
     memento = (QUEX_NAME(Memento)*)QUEXED(MemoryManager_allocate)(
                                           sizeof(QUEX_NAME(Memento)), 
@@ -157,19 +197,10 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me
     new ((void*)memento) QUEX_NAME(Memento);
 #   endif
 
-    if( me->buffer.filler )
-    {
-        /* By default overtake the byte order reversion behavior of the 
-         * including buffer.                                                 */
-        new_buffer_setup->filler->_byte_order_reversion_active_f = \
-                          me->buffer.filler->_byte_order_reversion_active_f;
-    }
-
     /* 'memento->__input_name' points to previously allocated memory.        */
     memento->__input_name  = me->__input_name;
     me->__input_name       = (char*)0;                 /* Release ownership. */
     memento->_parent_memento                  = me->_parent_memento;
-    memento->buffer                           = me->buffer;
     memento->__current_mode_p                 = me->__current_mode_p; 
     memento->current_analyzer_function        = me->current_analyzer_function;
 #   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
@@ -178,26 +209,38 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me
 #   endif
     __QUEX_IF_COUNT(memento->counter          = me->counter);
 
-    me->buffer                                = *new_buffer_setup;
-    __QUEX_IF_COUNT(QUEX_NAME(Counter_construct)(&me->counter); )
-
     /* Deriberately not subject to include handling:
      *    -- Mode stack.
      *    -- Token and token queues.
      *    -- Post categorizer.                                               */
-    if( ! QUEX_MEMBER_FUNCTION_CALLO2(user_memento_pack, InputNameP, memento) ) {
-        goto ERROR_1;
-    }
-    else if( ! QUEX_NAME(input_name_set)(me, InputNameP) ) {
+    new_input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
+    if( ! new_input_name ) {
         goto ERROR_1;
     }
 
-    /* Put memento on stack AFTER user has done to it its duties.            */
-    me->_parent_memento = memento;
+    /* When 'user_memento_pack()' is called, nothing has been done to the 
+     * current lexical analyzer object, yet!                                 */
+    if( ! QUEX_MEMBER_FUNCTION_CALLO2(user_memento_pack, InputNameP, memento) ) {
+        goto ERROR_2;
+    }
+    /*________________________________________________________________________
+     *
+     * [PIVOT POINT] Last possibility of failure has been passed!
+     *
+     * From here: lexical analyzer object may receive assignments!
+     *_______________________________________________________________________*/
+    __QUEX_IF_COUNT(QUEX_NAME(Counter_construct)(&new_counter); )
+
+    /* Only if all is OK, change the current analyzer object.                */
+    me->counter         = new_counter; /* Plain copy is enough.              */
+    me->__input_name    = new_input_name;
 
     return true;
 
-    /* ERROR CASES: Free Resources __________________________________________*/
+    /* ERROR CASES: Free Resources _____________________________________________
+     * In any error case: 'me' is unchanged. New things are destructed.       */
+ERROR_2:
+    QUEXED(MemoryManager_free)(new_input_name, E_MemoryObjectType_MEMENTO);
 ERROR_1:
     QUEXED(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
 ERROR_0:

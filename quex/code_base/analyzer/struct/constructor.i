@@ -9,7 +9,9 @@
  *   -- The destructor can be called safely for any object that has been 
  *      'constructed'--even if the construction failed.
  *
- * FAILURE => Lexer is in DYSFUNCTIONAL state.
+ * FAILURE => Current lexer: all resources marked absent 
+ *                           -> dysfunctional but destruct-able.
+ *            Overtaken objects are destructed and freed!
  *
  *  .error_code == 'NONE': All resources have been allocated. Lexical 
  *                         analysis may start.
@@ -47,8 +49,7 @@ QUEX_INLINE void   QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void
 QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
                           const char*             FileName, 
-                          QUEX_NAME(Converter)*   converter /* = 0 */,
-                          const char*             CodecName /* = 0 */)
+                          QUEX_NAME(Converter)*   converter /* = 0 */)
 {
     QUEX_NAME(ByteLoader)*   byte_loader;
 
@@ -59,15 +60,16 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
         goto ERROR_0;
     }
 
-    QUEX_NAME(from_ByteLoader)(me, byte_loader, converter, CodecName); 
+    QUEX_NAME(from_ByteLoader)(me, byte_loader, converter); 
 
     if( me->error_code != QUEX_ENUM_ERROR_NONE ) {
         goto ERROR_1;
     }
+    return;
 
+    /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_1:
-    /* from_ByteLoader() error: byte_loader->ownership = LEXICAL_ANALYZER.
-     *                          => byte_loader is already deleted.            */
+    /* from_ByteLoader(): destructed and marked all resources absent.         */
 ERROR_0:
     QUEX_NAME(mark_resources_as_absent)(me);
 }
@@ -82,13 +84,13 @@ ERROR_0:
 QUEX_INLINE void
 QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                            QUEX_NAME(ByteLoader)*  byte_loader,
-                           QUEX_NAME(Converter)*   converter /* = 0 */,
-                           const char*             CodecName) 
+                           QUEX_NAME(Converter)*   converter /* = 0 */)
 {
     QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_NAME(Converter)*     converter = (QUEX_NAME(Converter)*)0;
     QUEX_NAME(LexatomLoader)* filler;
     QUEX_TYPE_LEXATOM*        memory;
+
     QUEX_NAME(Asserts_construct)(CodecName);
 
     /* NEW: Filler.                                                           */
@@ -117,14 +119,15 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     if( me->error_code != QUEX_ENUM_ERROR_NONE ) {
         goto ERROR_2;
     }
-
     return;
 
     /* ERROR CASES: Free Resources __________________________________________*/
 ERROR_2:
     QUEX_NAME(Buffer_destruct)(&me->buffer);
+    /* 'construct_all_but_buffer()' freed and marked everything else absent. */
+    return;
 ERROR_1:
-    me->buffer.filler->delete_self(me->buffer.filler); 
+    filler->delete_self(filler); 
     QUEX_NAME(mark_resources_as_absent)(me);
     return;
 ERROR_0:
@@ -152,12 +155,14 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
                                 E_Ownership_EXTERNAL);
 
     if( ! QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<memory>") ) {
-        QUEX_NAME(Buffer_destruct)(&me->buffer); 
-        QUEX_NAME(mark_resources_as_absent)(me);
+        goto ERROR_0;
     }
+    return;
 
-    /* No further distinguishing between success and error. User might consider
-     * '.error_code' later.                                                   */
+    /* ERROR CASES: Free Resources ___________________________________________*/
+ERROR_0:
+    QUEX_NAME(Buffer_destruct)(&me->buffer); 
+    /* 'construct_all_but_buffer()' freed and marked everything else absent.  */
 }
 
 QUEX_INLINE bool
@@ -167,8 +172,6 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNam
  * RETURNS: true, for success.
  *          false, for failure.                                               */
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-
     __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
 
     if( ! QUEX_NAME(Tokens_construct)(me) ) {
@@ -451,19 +454,13 @@ QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
     if( me->__input_name ) {
         QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
     }
-    me->__input_name = (char*)QUEXED(MemoryManager_allocate)(
-                                    sizeof(char)*(__QUEX_STD_strlen(InputNameP)+1),
-                                    E_MemoryObjectType_BUFFER_MEMORY);
-    if( me->__input_name ) {
-        __QUEX_STD_strcpy(me->__input_name, InputNameP);
-        return true;
-    }
-    return false;
+    me->__input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
+    return me->__input_name ? true : false;
 }
 
 QUEX_INLINE void
 QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me, 
-                               void**               buffer_memory)
+                               void**              buffer_memory)
 {
     QUEX_TYPE_LEXATOM*  user_owned_memory;
     user_owned_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
