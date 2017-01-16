@@ -15,7 +15,7 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me, 
                                  QUEX_TYPE_ANALYZER*       lexer)
 {
@@ -23,6 +23,8 @@ QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me,
     QUEX_NAME(Accumulator_init_memory)(me);
     __QUEX_IF_COUNT_LINES(me->_begin_line = 0);
     __QUEX_IF_COUNT_COLUMNS(me->_begin_column = 0);
+
+    return true;
 }
 
 

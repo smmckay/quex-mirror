@@ -48,7 +48,7 @@ QUEX_NAME(PostCategorizer_allocate_node)(size_t RemainderL);
 QUEX_INLINE  void 
 QUEX_NAME(PostCategorizer_free_node)(QUEX_NAME(DictionaryNode)* node);
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me);
 
 QUEX_INLINE void

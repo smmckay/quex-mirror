@@ -24,6 +24,7 @@
 #           endif
 #       endif
 
+        E_Error            error_code;
         char*              __input_name;
         QUEX_NAME(Buffer)  buffer;
 

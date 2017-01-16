@@ -136,7 +136,6 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     QUEX_TYPE_LEXATOM*        memory;
     size_t                    memory_size;
     E_Ownership               ownership;
-    ptrdiff_t                 move_distance;
     QUEX_TYPE_STREAM_POSITION backup_ios;
 
     if( available_size < QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE ) {

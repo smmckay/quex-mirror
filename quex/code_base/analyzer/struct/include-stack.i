@@ -229,7 +229,7 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me
      *
      * From here: lexical analyzer object may receive assignments!
      *_______________________________________________________________________*/
-    __QUEX_IF_COUNT(QUEX_NAME(Counter_construct)(&new_counter); )
+    __QUEX_IF_COUNT((void)QUEX_NAME(Counter_construct)(&new_counter);)
 
     /* Only if all is OK, change the current analyzer object.                */
     me->counter         = new_counter; /* Plain copy is enough.              */

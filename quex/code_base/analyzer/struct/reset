@@ -8,8 +8,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN 
 
-#ifdef __QUEX_OPTION_PLAIN_C
-
 /* The constructor 'core' function is implemented per analyzer.
  * It's implementation happens inside the generated source file.             */
 
@@ -42,8 +40,6 @@ QUEX_INLINE QUEX_TYPE_LEXATOM*
 QUEX_INLINE void QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
                                                  const char*         InputName);
 QUEX_INLINE void QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me);
-
-#endif
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

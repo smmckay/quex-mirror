@@ -66,7 +66,7 @@ int
 main(int  argc, char** argv)
 {
     QUEX_NAME(Counter)   x;
-    QUEX_NAME(Counter_construct)(&x); 
+    (void)QUEX_NAME(Counter_construct)(&x); 
         
     if( argc > 1 and strcmp(argv[1], "--hwut-info") == 0 ) {
         cout << "Count Line and Column: Without Indentation Count II\n";

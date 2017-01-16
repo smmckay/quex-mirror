@@ -58,10 +58,11 @@ QUEX_NAME(DictionaryNode_new)(QUEX_TYPE_LEXATOM         FirstCharacter,
     return me;
 }
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me)
 {
     me->root = 0x0;
+    return true;
 }
 
 QUEX_INLINE void

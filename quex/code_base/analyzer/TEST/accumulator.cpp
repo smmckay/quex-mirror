@@ -101,7 +101,7 @@ main(int argc, char** argv)
 
     analyzer._token_queue.write_iterator = analyzer._token_queue.begin;
     analyzer._token_queue.read_iterator = analyzer._token_queue.begin;
-    QUEX_NAME(Accumulator_construct)(&accumulator, &analyzer);
+    (void)QUEX_NAME(Accumulator_construct)(&accumulator, &analyzer);
 
     if     ( strcmp(argv[1], "String") == 0 ) {
         QUEX_NAME(Accumulator_add)(&accumulator, TestString0, TestString0 + strlen(TestString0));

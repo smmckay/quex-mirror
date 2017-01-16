@@ -118,6 +118,20 @@ typedef enum {
 } E_LoadResult;
 #endif
 
+#ifndef QUEX_TYPE_DEFINITIONS_E_ERROR
+#define QUEX_TYPE_DEFINITIONS_E_ERROR
+typedef enum {
+    E_Error_Allocation_BufferMemory_Failed,
+    E_Error_Allocation_ByteLoader_Failed,
+    E_Error_Allocation_LexatomLoader_Failed,
+    E_Error_Constructor_Accumulator_Failed,
+    E_Error_Constructor_Counter_Failed,
+    E_Error_Constructor_PostCategorizer_Failed,
+    E_Error_InputName_Set_Failed,
+    E_Error_None
+} E_Error;
+#endif
+
 #define E_LoadResult_NAME(LR) \
             (  (LR) == E_LoadResult_DONE              ? "DONE"              \
              : (LR) == E_LoadResult_COMPLETE          ? "COMPLETE"          \

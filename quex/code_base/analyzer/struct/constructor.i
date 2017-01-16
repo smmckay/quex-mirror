@@ -40,11 +40,11 @@ QUEX_INLINE void   QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER*  me,
                                                   QUEX_TYPE_LEXATOM*   BufferMemoryBegin, 
                                                   size_t               BufferMemorySize,
                                                   QUEX_TYPE_LEXATOM*   BufferEndOfContentP /* = 0 */);
-QUEX_INLINE void   QUEX_NAME(Asserts_construct)(const char* CodecName);
-QUEX_INLINE void   QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE void   QUEX_NAME(Asserts_construct)();
+QUEX_INLINE bool   QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(Tokens_reset)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE void   QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE bool   QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me);
 
 QUEX_INLINE void
 QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
@@ -56,13 +56,13 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
     byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
 
     if( ! byte_loader ) {
-        me->error_code = QUEX_ENUM_ERROR_ALLOCATION_BYTE_LOADER;
+        me->error_code = E_Error_Allocation_ByteLoader_Failed;
         goto ERROR_0;
     }
 
     QUEX_NAME(from_ByteLoader)(me, byte_loader, converter); 
 
-    if( me->error_code != QUEX_ENUM_ERROR_NONE ) {
+    if( me->error_code != E_Error_None ) {
         goto ERROR_1;
     }
     return;
@@ -86,18 +86,16 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                            QUEX_NAME(ByteLoader)*  byte_loader,
                            QUEX_NAME(Converter)*   converter /* = 0 */)
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
-    QUEX_NAME(Converter)*     converter = (QUEX_NAME(Converter)*)0;
     QUEX_NAME(LexatomLoader)* filler;
     QUEX_TYPE_LEXATOM*        memory;
 
-    QUEX_NAME(Asserts_construct)(CodecName);
+    QUEX_NAME(Asserts_construct)();
 
     /* NEW: Filler.                                                           */
     filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
 
     if( ! filler ) {
-        me->error_code = QUEX_ENUM_ERROR_ALLOCATION_LEXATOM_LOADER;
+        me->error_code = E_Error_Allocation_LexatomLoader_Failed; 
         goto ERROR_0;
     }
 
@@ -106,7 +104,7 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                        QUEX_SETTING_BUFFER_SIZE * sizeof(QUEX_TYPE_LEXATOM), 
                        E_MemoryObjectType_BUFFER_MEMORY);
     if( ! memory ) {
-        me->error_code = QUEX_ENUM_ERROR_ALLOCATION_BUFFER_MEMORY;
+        me->error_code = E_Error_Allocation_BufferMemory_Failed;
         goto ERROR_1;
     }
 
@@ -116,7 +114,7 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                                 E_Ownership_LEXICAL_ANALYZER);
 
     QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<unknown>");
-    if( me->error_code != QUEX_ENUM_ERROR_NONE ) {
+    if( me->error_code != E_Error_None ) {
         goto ERROR_2;
     }
     return;
@@ -146,7 +144,6 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
  * for filling it. There is no 'file/stream handle', no 'ByteLoader', and no
  * 'LexatomLoader'.                                                           */
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
 
     QUEX_NAME(Buffer_construct)(&me->buffer, 
@@ -182,19 +179,19 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNam
     }
 #   ifdef QUEX_OPTION_STRING_ACCUMULATOR
     else if( ! QUEX_NAME(Accumulator_construct)(&me->accumulator, me) ) {
-        me->error_code = QUEX_ENUM_ERROR_CONSTRUCT_ACCUMULATOR;
+        me->error_code = E_Error_Constructor_Accumulator_Failed;
         goto ERROR_2;
     }
 #   endif
 #   ifdef QUEX_OPTION_POST_CATEGORIZER
     else if( ! QUEX_NAME(PostCategorizer_construct)(&me->post_categorizer) ) {
-        me->error_code = QUEX_ENUM_ERROR_CONSTRUCT_POST_CATEGORIZER;
+        me->error_code = E_Error_Constructor_PostCategorizer_Failed;
         goto ERROR_3;
     }
 #   endif
 #   ifdef QUEX_OPTION_COUNT
     else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
-        me->error_code = QUEX_ENUM_ERROR_CONSTRUCT_COUNTER;
+        me->error_code = E_Error_Constructor_Counter_Failed;
         goto ERROR_4;
     }
 #   endif
@@ -206,16 +203,16 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNam
     QUEX_NAME(set_mode_brutally_by_id)(me, __QUEX_SETTING_INITIAL_LEXER_MODE_ID);
 
     me->__input_name = (char*)0;
-    if( ! QUEX_MEMBER_FUNCTION_CALLO1(input_name_set, InputNameP) ) {
-        me->error_code = QUEX_ENUM_ERROR_INPUT_NAME_SET;
+    if( ! QUEX_NAME(input_name_set)(me, InputNameP) ) {
+        me->error_code = E_Error_InputName_Set_Failed;
         goto ERROR_5;
     }
     else if( ! QUEX_MEMBER_FUNCTION_CALLO(user_constructor) ) {
-        me->error_code = QUEX_ENUM_ERROR_USER_CONSTRUCTOR;
+        me->error_code = E_Error_UserConstructor_Failed;
         goto ERROR_5;
     }
 
-    me->error_code = QUEX_ENUM_ERROR_NONE;
+    me->error_code = E_Error_None;
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
@@ -242,6 +239,8 @@ QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(destruct_all_but_buffer)(me);
 
     QUEX_NAME(Buffer_destruct)(&me->buffer);
+
+    QUEX_MEMBER_FUNCTION_CALLO(user_destructor);
 
     /* Protect against double destruction.                                    */
     QUEX_NAME(mark_resources_as_absent)(me);
@@ -359,10 +358,8 @@ QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
  *                                                                           */
 
 QUEX_INLINE void
-QUEX_NAME(Asserts_construct)(const char* CodecName)
+QUEX_NAME(Asserts_construct)()
 {
-    (void)CodecName;
-
 #   if      defined(QUEX_OPTION_ASSERTS) \
        && ! defined(QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED)
     __QUEX_STD_printf(__QUEX_MESSAGE_ASSERTS_INFO);
@@ -373,18 +370,12 @@ QUEX_NAME(Asserts_construct)(const char* CodecName)
         QUEX_ERROR_EXIT("Path termination code (PTC) and buffer limit code (BLC) must be different.\n");
     }
 #   endif
-
-#   if defined(__QUEX_OPTION_ENGINE_RUNNING_ON_CODEC)
-    if( CodecName ) {
-        __QUEX_STD_printf(__QUEX_MESSAGE_CHARACTER_ENCODING_SPECIFIED_WITHOUT_CONVERTER, CodecName);
-    }
-#   endif
 }
 
 #if ! defined(QUEX_TYPE_TOKEN)
 #      error "QUEX_TYPE_TOKEN must be defined before inclusion of this file."
 #endif
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
 {
 #if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
@@ -405,6 +396,7 @@ QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME_TOKEN(construct)(me->token);
 #   endif
 #endif
+    return true;
 }
 
 QUEX_INLINE void
@@ -429,15 +421,16 @@ QUEX_NAME(Tokens_reset)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(TokenQueue_reset)(&me->_token_queue);
 #else
     QUEX_NAME(Tokens_destruct(me));
-    QUEX_NAME(Tokens_construct(me));
+    (void)QUEX_NAME(Tokens_construct(me));
 #endif
 }
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me)
 {
     me->_mode_stack.end        = me->_mode_stack.begin;
     me->_mode_stack.memory_end = &me->_mode_stack.begin[QUEX_SETTING_MODE_STACK_SIZE];
+    return true;
 }
 
 QUEX_INLINE const char*

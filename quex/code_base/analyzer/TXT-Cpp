@@ -109,68 +109,58 @@ public:
      *
      * 'from' functions are provided so that explicit constructor calls 
      * can be done without placement ::new or sophisticated C++11 features.  */
-    $$LEXER_CLASS_NAME$$(const char*             Filename, 
-    $$___SPACE___$$ QUEX_TYPE_CONVERTER_NEW ConverterNew = 0, 
-    $$___SPACE___$$ const char*             CodecName    = 0x0)
-    { QUEX_NAME(from_file_name)(this, Filename, ConverterNew, CodecName); }
+    $$LEXER_CLASS_NAME$$(const char*      Filename, 
+    $$___SPACE___$$ QUEX_NAME(Converter)* Converter = 0) 
+    { QUEX_NAME(from_file_name)(this, Filename, Converter); }
 
     $$LEXER_CLASS_NAME$$(QUEX_NAME(ByteLoader)*  byte_loader, 
-    $$___SPACE___$$ QUEX_TYPE_CONVERTER_NEW ConverterNew = 0,
-    $$___SPACE___$$ const char*             CodecName    = 0)
-    { QUEX_NANME(from_ByteLoader)(this, byte_loader, ConverterNew, CodecName); }
+    $$___SPACE___$$ QUEX_NAME(Converter)*        Converter = 0) 
+    { QUEX_NAME(from_ByteLoader)(this, byte_loader, Converter); }
 
     $$LEXER_CLASS_NAME$$(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-    $$___SPACE___$$ size_t                   BufferMemorySize,
-    $$___SPACE___$$ QUEX_TYPE_LEXATOM*       BufferEndOfContentP = 0x0)
+    $$___SPACE___$$ size_t                  BufferMemorySize,
+    $$___SPACE___$$ QUEX_TYPE_LEXATOM*      BufferEndOfContentP = 0x0)
     { QUEX_NAME(from_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
     virtual ~$$LEXER_CLASS_NAME$$()
-    { QUEX_NAME(destruct)(me); }
-
-    const char* input_name();
-    { return QUEX_NAME(input_name)(this); }
-    bool        input_name_set(const char* InputName)
-    { return QUEX_NAME(input_name_set)(this, InputName); }
+    { QUEX_NAME(destruct)(this); }
 
     /*_________________________________________________________________________
      * Reset:
      *                                                                       */
-    void    reset();
+    void    reset()
     { QUEX_NAME(reset)(this); }
-    void    reset(const char*             FileName, 
-                  QUEX_TYPE_CONVERTER_NEW ConverterNew = 0,
-                  const char*             CodecName    = 0);
-    { QUEX_NAME(reset_file_name)(this, FileName, ConverterNew, CodecName); }
+    void    reset(const char*            FileName, 
+                  QUEX_NAME(Converter)*  Converter = 0)
+    { QUEX_NAME(reset_file_name)(this, FileName, Converter); }
 
     void    reset(QUEX_NAME(ByteLoader)*  byte_loader, 
-                  QUEX_TYPE_CONVERTER_NEW ConverterNew,
-                  const char*             CodecName = 0x0);
-    { QUEX_NAME(reset_ByteLoader)(this, byte_loader, ConverterNew, CodecName); }
+                  QUEX_NAME(Converter)*   Converter = 0)
+    { QUEX_NAME(reset_ByteLoader)(this, byte_loader, Converter); }
 
     QUEX_TYPE_LEXATOM*
             reset(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
                   size_t             BufferMemorySize,
-                  QUEX_TYPE_LEXATOM* BufferEndOfContentP);  
-    { QUEX_NAME(reset_memory)(this, Memory, Memorysize, EndOfFileP); }
+                  QUEX_TYPE_LEXATOM* BufferEndOfContentP)  
+    { return QUEX_NAME(reset_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
 #   ifdef QUEX_OPTION_INCLUDE_STACK
     /*_________________________________________________________________________
      * Include:
      *                                                                       */
     bool    include_push(const char*             FileName, 
-                         QUEX_TYPE_CONVERTER_NEW ConverterNew = 0, 
-                         const char*             CodecName    = 0);
-            { QUEX_NAME(include_push_file_name)(this, FileName, ConverterNew, CodecName); }
+                         QUEX_NAME(Converter)*   Converter = 0)
+            { return QUEX_NAME(include_push_file_name)(this, FileName, Converter); }
     bool    include_push(const char*             InputName, 
                          QUEX_NAME(ByteLoader)*  byte_loader, 
-                         QUEX_TYPE_CONVERTER_NEW ConverterNew = 0,
-                         const char*             CodecName    = 0);
-            { QUEX_NAME(include_push_ByteLoader)(this, byte_loader, ConverterNew, CodecName); }
+                         QUEX_NAME(Converter)*   Converter = 0)
+            { return QUEX_NAME(include_push_ByteLoader)(this, InputName, byte_loader, Converter); }
     bool    include_push(const char*        InputName, 
                          QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
                          size_t             BufferMemorySize,
-                         QUEX_TYPE_LEXATOM* BufferEndOfContentP);  
-            { QUEX_NAME(include_push_memory)(this, Memory, Memorysize, EndOfFileP); }
+                         QUEX_TYPE_LEXATOM* BufferEndOfContentP)  
+            { return QUEX_NAME(include_push_memory)(this, InputName, BufferMemoryBegin, 
+                                                    BufferMemorySize, BufferEndOfContentP); }
 
     bool    include_pop();
     void    include_stack_delete();
@@ -233,6 +223,11 @@ public:
        void              token_queue_set(QUEX_TYPE_TOKEN* Begin, size_t Size);
 #      endif
 #   endif
+
+    const char* input_name()
+    { return QUEX_NAME(input_name)(this); }
+    bool        input_name_set(const char* InputName)
+    { return QUEX_NAME(input_name_set)(this, InputName); }
 
     //
     // (*) Mode handling
