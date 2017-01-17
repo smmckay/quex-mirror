@@ -162,16 +162,16 @@ for the given section-name. The available sections are the following:
    defines an additional variable ``my_counter`` and a friend function inside
    the lexer class' body.
 
-.. data:: init
+.. data:: constructor
 
-   Extensions to the lexical analyzer constructor. This is the place to initialize
-   the additional members mentioned in the ``body`` section. Note, that as in every
-   code fragment, the analyzer itself is referred to via the ``self`` variable. 
+   Extensions to the lexer's  constructor. This is the place to initialize the
+   additional members mentioned in the ``body`` section. Note, that as in every
+   code fragment, the analyzer itself is referred to via the ``self`` variable.
    For example
 
    .. code-block:: cpp
 
-        init {
+        constructor {
                 self.my_counter = 4711;
         }
 
@@ -180,6 +180,21 @@ for the given section-name. The available sections are the following:
    May return a ``bool`` indicating that the initialization succeeded
    (``true``) or failed (``false``). By default, it returns ``true``.
 
+.. data:: destructor
+
+   Extensions to the lexer's destructor. In there, resources may be freed.
+   Also, it is good practice to mark absence of resources. The destructor
+   may also be used in places, where it is expected that the lexer is made
+   safe againt double destruction.
+
+   .. code-block:: cpp
+
+       destructor {
+           if( NULL != self.database_fh ) {  // Only close, if fh != NULL 
+               fclose(self.database_fh); 
+               self.database_fh = NULL;      // Mark fh as closed.        
+           }
+       }
 
 .. data:: reset
 

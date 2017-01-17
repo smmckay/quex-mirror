@@ -55,22 +55,21 @@ QUEX_NAME(reset)(QUEX_TYPE_ANALYZER* me)
  *          false, in case of failure.                                        */
 {
     if( me->buffer.filler ) {
-        QUEX_NAME(LexatomLoader_lexatom_index_reset)(me);
+        if( ! QUEX_NAME(LexatomLoader_lexatom_index_reset)(me->buffer.filler) ) {
+            goto ERROR_0;
+        }
     }
 
-    if( ! QUEX_NAME(Buffer_init)(&me->buffer, (QUEX_TYPE_LEXATOM*)0) ) {
+    QUEX_NAME(Buffer_init)(&me->buffer, (QUEX_TYPE_LEXATOM*)0); 
+
+    if( ! QUEX_NAME(reset_all_but_buffer)(me, me->__input_name) ) {
         goto ERROR_0;
-    }
-    else if( ! QUEX_NAME(reset_all_but_buffer)(me, me->input_name) ) {
-        return false;
     }
 
     return true;
 
-ERROR_2:
-    QUEX_NAME(Buffer_destruct)(&me->buffer);
 ERROR_0:
-    QUEX_NAME(mark_resources_as_absent)(me);
+    QUEX_NAME(Buffer_destruct)(&me->buffer);
     return false;
 }
 
@@ -94,7 +93,7 @@ QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me,
     /* NEW: ByteLoader.                                                       */
     new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
     if( ! new_byte_loader ) {
-        me->error_code = QUEX_ENUM_ERROR_RESET_BYTE_LOADER_ALLOCATION;
+        me->error_code = E_Error_Allocation_ByteLoader_Failed; 
         goto ERROR_0;
     }
 

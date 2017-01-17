@@ -71,7 +71,6 @@ QUEX_NAME(TokenQueue_init)(QUEX_NAME(TokenQueue)* me,
     QUEX_NAME(TokenQueue_reset)(me);                                
 }
 
-#if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
 QUEX_INLINE void
 QUEX_NAME(TokenQueue_mark_resources_as_absent)(QUEX_NAME(TokenQueue)* me) 
 {
@@ -82,6 +81,7 @@ QUEX_NAME(TokenQueue_mark_resources_as_absent)(QUEX_NAME(TokenQueue)* me)
     me->end_minus_safety_border = (QUEX_TYPE_TOKEN*)0;
 }
 
+#if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
 QUEX_INLINE bool
 QUEX_NAME(TokenQueue_disfunctionality_check)(QUEX_NAME(TokenQueue)* me) 
 {

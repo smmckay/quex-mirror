@@ -63,7 +63,7 @@ QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
     return size;
 }
 
-const char*
+char*
 QUEXED_DEF(MemoryManager_clone_string)(const char* String)
 { 
     const char* result = (char*)QUEXED(MemoryManager_allocate)(

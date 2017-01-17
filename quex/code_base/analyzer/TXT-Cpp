@@ -135,8 +135,9 @@ public:
     { QUEX_NAME(reset_file_name)(this, FileName, Converter); }
 
     void    reset(QUEX_NAME(ByteLoader)*  byte_loader, 
-                  QUEX_NAME(Converter)*   Converter = 0)
-    { QUEX_NAME(reset_ByteLoader)(this, byte_loader, Converter); }
+                  QUEX_NAME(Converter)*   Converter = 0,
+                  const char*             InputName = 0)
+    { QUEX_NAME(reset_ByteLoader)(this, byte_loader, Converter, InputName); }
 
     QUEX_TYPE_LEXATOM*
             reset(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
@@ -297,10 +298,10 @@ public:
 
     // (*) Common for constructor, reset, and include push ___________________________
     bool    user_constructor();
-    bool    user_destructor();
+    void    user_destructor();
     bool    user_memento_pack(const char* InputName, QUEX_NAME(Memento)*); 
     void    user_memento_unpack(QUEX_NAME(Memento)*);
-    void    user_reset();
+    bool    user_reset();
 
 private:
     /* (*) All Modes are Friends ___________________________________________________*/
@@ -314,7 +315,7 @@ $$CLASS_BODY_EXTENSION$$
 #undef  self
 
 public:
-    // (*) Token sending happens only via 'self_send*(...)' macros
+    // Token sending happens only via 'self_send*(...)' macros
     void   send(const QUEX_TYPE_TOKEN_ID TokenID)
     { (void)TokenID; QUEX_ERROR_DEPRECATED("Member functions .send()", "macros: self_send*()"); }
     // At least warn those, who still use the old interface ...

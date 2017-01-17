@@ -149,6 +149,11 @@ class_body_extension = CodeFragment_NULL
 #-----------------------------------------------------------------------------------------
 class_constructor_extension = CodeFragment_NULL
 
+#-----------------------------------------------------------------------------------------
+# class_destructor_extension: code fragment that is to be pasted inside the lexer class constructor
+#-----------------------------------------------------------------------------------------
+class_destructor_extension = CodeFragment_NULL
+
 # reset_extension: code fragment for user defined reset actions
 #-----------------------------------------------------------------------------------------
 reset_extension = CodeFragment_NULL

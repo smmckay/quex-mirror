@@ -197,7 +197,7 @@ the three handlers shown below.
          body {
              bool   on_failure_exception_f;
          } 
-         init {
+         constructor {
              on_failure_exception_f = false;
          }
          ...

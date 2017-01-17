@@ -222,13 +222,15 @@ ERROR_5:
     /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
 #   ifdef QUEX_OPTION_COUNT
 ERROR_4:
+#   endif
     __QUEX_IF_POST_CATEGORIZER(QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
-#   endif
-#   ifdef QUEX_OPTION_STRING_ACCUMULATOR
+#   ifdef QUEX_OPTION_POST_CATEGORIZER
 ERROR_3:
-    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator));
 #   endif
+    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator));
+#   ifdef QUEX_OPTION_STRING_ACCUMULATOR
 ERROR_2:
+#   endif
     /* NO ALLOCATED RESOURCES IN: 'me->mode_stack'                            */
 ERROR_1:
     QUEX_NAME(Tokens_destruct)(me);
@@ -237,7 +239,7 @@ ERROR_0:
     return false;
 }
 
-QUEX_INLINE 
+QUEX_INLINE void
 QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
 {
     QUEX_NAME(destruct_all_but_buffer)(me);
@@ -296,10 +298,10 @@ QUEX_NAME(mark_resources_as_absent)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(TokenQueue_mark_resources_as_absent)(&me->_token_queue);
 #   endif 
 #   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
-    QUEX_NAME(Accumulator_mark_resources_as_absent)(&me->accumulator)
+    QUEX_NAME(Accumulator_mark_resources_as_absent)(&me->accumulator);
 #   endif
 #   if defined(QUEX_OPTION_POST_CATEGORIZER)
-    QUEX_NAME(PostCategorizer_mark_resources_as_absent)(&me->post_categorizer)
+    QUEX_NAME(PostCategorizer_mark_resources_as_absent)(&me->post_categorizer);
 #   endif
     QUEX_NAME(Buffer_mark_resources_as_absent)(&me->buffer);
 
@@ -457,12 +459,11 @@ QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
 
 QUEX_INLINE void
 QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me, 
-                               void**              buffer_memory)
+                               void**              user_buffer_memory)
 {
-    QUEX_TYPE_LEXATOM*  user_owned_memory;
-    user_owned_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
-                          (const QUEX_TYPE_LEXATOM*)0 
-                        : me->buffer._memory._front;
+    *user_buffer_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
+                            (void*)0 
+                          : (void*)me->buffer._memory._front;
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE
