@@ -68,7 +68,7 @@ QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
     if( ! new_byte_loader ) {
         goto ERROR_0;
     }
-    else if( ! QUEX_NAME(include_push_ByteLoader)(this, FileName, new_byte_loader, new_converter) ) {
+    else if( ! QUEX_NAME(include_push_ByteLoader)(me, FileName, new_byte_loader, new_converter) ) {
         goto ERROR_1;
     }
     return true;
@@ -96,7 +96,6 @@ QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     QUEX_NAME(LexatomLoader)* new_filler;
     QUEX_NAME(Memento)*       new_memento;
     QUEX_NAME(Buffer)         new_buffer;
-    QUEX_NAME(Asserts_construct)(CodecName);
 
     new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
     if( ! new_filler ) {
@@ -113,7 +112,7 @@ QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
         goto ERROR_1;
     }
 
-    new_memento = QUEX_NAME(include_push_all_but_buffer)(this, InputName);
+    new_memento = QUEX_NAME(include_push_all_but_buffer)(me, InputName);
     if( ! new_memento ) {
         goto ERROR_2;
     }
@@ -160,7 +159,7 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
 
     /* The 'new_buffer' is only copied including the reference to the new 
      * memory. However, the box object 'new_buffer' is left alone.            */
-    new_memento = QUEX_NAME(include_push_all_but_buffer)(this, InputName);
+    new_memento = QUEX_NAME(include_push_all_but_buffer)(me, InputName);
     if( ! new_memento ) {
         goto ERROR_0;
     }
@@ -177,13 +176,13 @@ ERROR_0:
     return false;
 }
 
-QUEX_INLINE bool
-QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me 
+QUEX_INLINE struct QUEX_NAME(Memento_tag)*
+QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
                                        const char*         InputNameP)
 {
     QUEX_NAME(Memento)* memento;
     QUEX_NAME(Counter)  new_counter;
-    const char*         new_input_name;
+    char*               new_input_name;
    
     memento = (QUEX_NAME(Memento)*)QUEXED(MemoryManager_allocate)(
                                           sizeof(QUEX_NAME(Memento)), 
@@ -235,7 +234,7 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me
     me->counter         = new_counter; /* Plain copy is enough.              */
     me->__input_name    = new_input_name;
 
-    return true;
+    return memento;
 
     /* ERROR CASES: Free Resources _____________________________________________
      * In any error case: 'me' is unchanged. New things are destructed.       */
@@ -244,7 +243,7 @@ ERROR_2:
 ERROR_1:
     QUEXED(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
 ERROR_0:
-    return false;
+    return (QUEX_NAME(Memento)*)0;
 }   
 
 QUEX_INLINE bool

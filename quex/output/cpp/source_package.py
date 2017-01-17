@@ -78,8 +78,6 @@ base_analyzer = """
 /analyzer/headers.i
 /analyzer/EngineMemento_body
 /analyzer/Engine_body
-/analyzer/struct/basic
-/analyzer/struct/basic.i
 /analyzer/struct/constructor
 /analyzer/struct/constructor.i
 /analyzer/struct/reset

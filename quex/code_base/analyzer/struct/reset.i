@@ -135,11 +135,8 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
  * RETURNS: true, in case of success.
  *          false, in case of failure.                                        */
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     QUEX_NAME(LexatomLoader)* new_filler;
      
-    QUEX_NAME(Asserts_construct)(CodecName);
-
     new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
     if( ! new_filler ) {
         goto ERROR_0;
@@ -237,7 +234,7 @@ QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me,
     if( ! QUEX_MEMBER_FUNCTION_CALLO(user_reset) ) {
         goto ERROR_0;
     }
-    else if( ! QUEX_NAME(construct_all_but_buffer)(me) ) {
+    else if( ! QUEX_NAME(construct_all_but_buffer)(me, InputName) ) {
         goto ERROR_0;
     }
     return true;

@@ -331,9 +331,9 @@
 #   define QUEX_MEMBER_FUNCTION_CALL(N, SFX)            this->N()
 #   define QUEX_MEMBER_FUNCTION_CALLO(N)                me->N()
 #   define QUEX_MEMBER_FUNCTION_CALL1(N, SFX, A)        this->N(A)      
-#   define QUEX_MEMBER_FUNCTION_CALLO1(N, A)            this->N(A)      
+#   define QUEX_MEMBER_FUNCTION_CALLO1(N, A)            me->N(A)      
 #   define QUEX_MEMBER_FUNCTION_CALL2(N, SFX, A, B)     this->N(A, B)   
-#   define QUEX_MEMBER_FUNCTION_CALLO2(N, A, B)         this->N(A, B)      
+#   define QUEX_MEMBER_FUNCTION_CALLO2(N, A, B)         me->N(A, B)      
 #   define QUEX_MEMBER_FUNCTION_CALL3(N, SFX, A, B, C)  this->N(A, B, C)
 #   define QUEX_MEMBER_FUNCTION_CALL4(N, SFX, A, B, C, D)  this->N(A, B, C, D)
 

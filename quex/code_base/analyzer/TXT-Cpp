@@ -128,21 +128,20 @@ public:
     /*_________________________________________________________________________
      * Reset:
      *                                                                       */
-    void    reset()
-    { QUEX_NAME(reset)(this); }
-    void    reset(const char*            FileName, 
-                  QUEX_NAME(Converter)*  Converter = 0)
-    { QUEX_NAME(reset_file_name)(this, FileName, Converter); }
+    bool reset()
+    { return QUEX_NAME(reset)(this); }
+    bool reset(const char*            FileName, 
+               QUEX_NAME(Converter)*  Converter = 0)
+    { return QUEX_NAME(reset_file_name)(this, FileName, Converter); }
 
-    void    reset(QUEX_NAME(ByteLoader)*  byte_loader, 
-                  QUEX_NAME(Converter)*   Converter = 0,
-                  const char*             InputName = 0)
-    { QUEX_NAME(reset_ByteLoader)(this, byte_loader, Converter, InputName); }
+    bool reset(QUEX_NAME(ByteLoader)*  byte_loader, 
+               QUEX_NAME(Converter)*   Converter = 0,
+               const char*             InputName = 0)
+    { return QUEX_NAME(reset_ByteLoader)(this, byte_loader, Converter, InputName); }
 
-    QUEX_TYPE_LEXATOM*
-            reset(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                  size_t             BufferMemorySize,
-                  QUEX_TYPE_LEXATOM* BufferEndOfContentP)  
+    bool reset(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
+               size_t             BufferMemorySize,
+               QUEX_TYPE_LEXATOM* BufferEndOfContentP)  
     { return QUEX_NAME(reset_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
 #   ifdef QUEX_OPTION_INCLUDE_STACK
