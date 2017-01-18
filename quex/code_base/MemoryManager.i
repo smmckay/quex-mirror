@@ -69,7 +69,7 @@ QUEXED_DEF(MemoryManager_clone_string)(const char* String)
     char* result = (char*)QUEXED(MemoryManager_allocate)(
                                  sizeof(char)*(__QUEX_STD_strlen(String)+1),
                                  E_MemoryObjectType_BUFFER_MEMORY);
-    if( result ) {
+    if( ! result ) {
         return (char*)0;
     }
     __QUEX_STD_strcpy(result, String);

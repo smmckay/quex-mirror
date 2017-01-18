@@ -1,4 +1,21 @@
 /* vim: set ft=c: 
+ *
+ * ByteLoader: Loading bytes into a buffer from some arbitrary source.
+ *
+ * The 'ByteLoader' is the interface class that defines the API to load bytes
+ * into a buffer. The bytes at this point are not interpreted or related to 
+ * 'lexatoms'. All processes provided input must be derived from this class.
+ *
+ * Examples:
+ *
+ *     'ByteLoader_FILE' loads content from a Standard C-lib FILE.
+ *     'ByteLoader_stream' loads content from a 'std::stream' object.
+ *     'ByteLoader_wstream' loads content from a 'std::wstream' object.
+ *     'ByteLoader_POSIX' loads content from a 'POSIX' file descriptor.
+ *
+ * Ownership of file/stream/socket handles is passed to the 'ByteLoader'. The
+ * handle is closed and destructed along with the ByteLoader's destruction.
+ *
  * (C) Frank-Rene Schaefer                                                    */
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER
 #define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER

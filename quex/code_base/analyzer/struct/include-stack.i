@@ -310,7 +310,7 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
 QUEX_INLINE void
 QUEX_NAME(include_stack_delete)(QUEX_TYPE_ANALYZER* me)
 {
-    while( QUEX_MEMBER_FUNCTION_CALLO(include_pop) );
+    while( QUEX_NAME(include_pop)(me) );
 }
 
 QUEX_INLINE bool

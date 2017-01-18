@@ -255,7 +255,7 @@ QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
 QUEX_INLINE void
 QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
 {
-    __QUEX_IF_INCLUDE_STACK(QUEX_MEMBER_FUNCTION_CALLO(include_stack_delete));
+    __QUEX_IF_INCLUDE_STACK(QUEX_NAME(include_stack_delete)(me));
     /*
      *              DESTRUCT ANYTHING ONLY AFTER INCLUDE STACK                
      *
