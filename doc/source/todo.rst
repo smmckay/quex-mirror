@@ -12,3 +12,5 @@ for the 'buffer._memory.ownership' before reload!
 
 -- Reset: user_reset must destruct newly created resources and 
                      mark them 'absent' in case of failure.
+
+-- ByteLoader->input_handle_ownership => prevent closure/freeing of handle

@@ -45,6 +45,9 @@ QUEX_NAME(ByteLoader_POSIX_new_from_file_name)(const char* FileName)
     if( ! alter_ego ) {
         return (QUEX_NAME(ByteLoader)*)0;
     }
+
+    /* ByteLoader from file name *must* be owned by lexical analyzer, 
+     * to ensure automatic closure and deletion.                              */
     alter_ego->handle_ownership = E_Ownership_LEXICAL_ANALYZER;
     return alter_ego;
 }
