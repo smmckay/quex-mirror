@@ -136,6 +136,12 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
  *          false, in case of failure.                                        */
 {
     QUEX_NAME(LexatomLoader)* new_filler;
+
+    if( QUEX_NAME(Buffer_resources_absent)(&me->buffer) ) {
+        /* The buffer has not even been setup. Quit.                          */
+        me->error_code = E_Error_Reset_BufferResourcesAbsent;
+        goto ERROR_0;
+    }
      
     new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
     if( ! new_filler ) {

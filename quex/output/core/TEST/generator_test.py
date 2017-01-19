@@ -2,7 +2,7 @@
 
 # Switch: Removal of source and executable file
 #         'False' --> No removal.
-if True: 
+if False: 
     REMOVE_FILES = True; 
 else:     
     print "NOTE:> Do not remove files!;"
@@ -516,6 +516,7 @@ $$__QUEX_OPTION_TOKEN_QUEUE$$
 #include <quex/code_base/test_environment/TestAnalyzer>
 #include <quex/code_base/analyzer/asserts.i>
 #include <quex/code_base/analyzer/struct/constructor.i>
+#include <quex/code_base/analyzer/struct/reset.i>
 #include <quex/code_base/analyzer/member/mode-handling.i>
 #include <quex/code_base/buffer/asserts.i>
 #ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
@@ -723,10 +724,11 @@ test_program_db = {
         using namespace std;
         using namespace quex;
 
-        istringstream* istr = new istringstream("$$TEST_STRING$$");
+        istringstream*          istr = new istringstream("$$TEST_STRING$$");
+        QUEX_NAME(ByteLoader)*  byte_loader = QUEX_NAME(ByteLoader_stream_new)(istr);
 
         DEAL_WITH_COMPUTED_GOTOS();
-        lexer_state.from(istr, 0x0);
+        lexer_state.reset(byte_loader, NULL, NULL);
 
         return run_test("$$TEST_STRING$$", "$$COMMENT$$");
     }\n""",

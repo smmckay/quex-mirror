@@ -35,11 +35,11 @@ QUEX_NAME(Accumulator_destruct)(QUEX_NAME(Accumulator)* me)
         QUEXED(MemoryManager_free)((void*)me->text.begin,
                                    E_MemoryObjectType_TEXT);
     }
-    QUEX_NAME(Accumulator_mark_resources_as_absent)(me);
+    QUEX_NAME(Accumulator_resources_absent_mark)(me);
 }
 
 QUEX_INLINE void
-QUEX_NAME(Accumulator_mark_resources_as_absent)(QUEX_NAME(Accumulator)* me)
+QUEX_NAME(Accumulator_resources_absent_mark)(QUEX_NAME(Accumulator)* me)
 {
     me->the_lexer       = 0x0;
     me->text.begin      = 0x0;

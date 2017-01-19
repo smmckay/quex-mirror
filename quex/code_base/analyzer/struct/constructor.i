@@ -71,7 +71,7 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
 ERROR_1:
     /* from_ByteLoader(): destructed and marked all resources absent.         */
 ERROR_0:
-    QUEX_NAME(mark_resources_as_absent)(me);
+    QUEX_NAME(resources_absent_mark)(me);
 }
 
 /* USE: byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, BinaryModeF);
@@ -126,11 +126,11 @@ ERROR_2:
     return;
 ERROR_1:
     filler->delete_self(filler); 
-    QUEX_NAME(mark_resources_as_absent)(me);
+    QUEX_NAME(resources_absent_mark)(me);
     return;
 ERROR_0:
     byte_loader->delete_self(byte_loader);
-    QUEX_NAME(mark_resources_as_absent)(me);
+    QUEX_NAME(resources_absent_mark)(me);
     return;
 }
 
@@ -249,7 +249,7 @@ QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
     QUEX_MEMBER_FUNCTION_CALLO(user_destructor);
 
     /* Protect against double destruction.                                    */
-    QUEX_NAME(mark_resources_as_absent)(me);
+    QUEX_NAME(resources_absent_mark)(me);
 }
 
 QUEX_INLINE void
@@ -273,7 +273,7 @@ QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
 }
 
 void
-QUEX_NAME(mark_resources_as_absent)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 /* Resouces = 'absent' => Destructor knows that it must not be freed. 
  * 
  * This function is essential to set the lexical analyzer into a state
@@ -292,18 +292,18 @@ QUEX_NAME(mark_resources_as_absent)(QUEX_TYPE_ANALYZER* me)
     /* => ._parent_memento == 0 (include stack is marked as 'clear')
      * => ._token          == 0 (if not token queue, the token is 'clear')
      *                          For the case of 'token queue' a dedicated
-     *                          'mark_resources_as_absent' is called.
+     *                          'resources_absent_mark' is called.
      * => .__input_name    == 0                                               */
 #   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
-    QUEX_NAME(TokenQueue_mark_resources_as_absent)(&me->_token_queue);
+    QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
 #   endif 
 #   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
-    QUEX_NAME(Accumulator_mark_resources_as_absent)(&me->accumulator);
+    QUEX_NAME(Accumulator_resources_absent_mark)(&me->accumulator);
 #   endif
 #   if defined(QUEX_OPTION_POST_CATEGORIZER)
-    QUEX_NAME(PostCategorizer_mark_resources_as_absent)(&me->post_categorizer);
+    QUEX_NAME(PostCategorizer_resources_absent_mark)(&me->post_categorizer);
 #   endif
-    QUEX_NAME(Buffer_mark_resources_as_absent)(&me->buffer);
+    QUEX_NAME(Buffer_resources_absent_mark)(&me->buffer);
 
     me->error_code = backup;
 }
@@ -387,7 +387,7 @@ QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
 #if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
 #   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     /* Assume that the user will pass us a constructed token queue */
-    QUEX_NAME(TokenQueue_mark_resources_as_absent)(&me->_token_queue);
+    QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
 #   else
     QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
                                     (QUEX_TYPE_TOKEN*)&me->__memory_token_queue,

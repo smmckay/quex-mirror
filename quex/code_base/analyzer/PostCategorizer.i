@@ -255,7 +255,7 @@ QUEX_NAME(PostCategorizer_clear)(QUEX_NAME(Dictionary)* me)
 }
 
 QUEX_INLINE void
-QUEX_NAME(PostCategorizer_mark_resources_as_absent)(QUEX_NAME(Dictionary)* me)
+QUEX_NAME(PostCategorizer_resources_absent_mark)(QUEX_NAME(Dictionary)* me)
 { 
     me->root = (QUEX_NAME(DictionaryNode)*)0;
 }

@@ -72,7 +72,7 @@ QUEX_NAME(TokenQueue_init)(QUEX_NAME(TokenQueue)* me,
 }
 
 QUEX_INLINE void
-QUEX_NAME(TokenQueue_mark_resources_as_absent)(QUEX_NAME(TokenQueue)* me) 
+QUEX_NAME(TokenQueue_resources_absent_mark)(QUEX_NAME(TokenQueue)* me) 
 {
     me->begin                   = (QUEX_TYPE_TOKEN*)0;                           
     me->end                     = (QUEX_TYPE_TOKEN*)0;
@@ -83,7 +83,7 @@ QUEX_NAME(TokenQueue_mark_resources_as_absent)(QUEX_NAME(TokenQueue)* me)
 
 #if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
 QUEX_INLINE bool
-QUEX_NAME(TokenQueue_disfunctionality_check)(QUEX_NAME(TokenQueue)* me) 
+QUEX_NAME(TokenQueue_resources_absent)(QUEX_NAME(TokenQueue)* me) 
 {
     return    me->begin                   == (QUEX_TYPE_TOKEN*)0                           
            && me->end                     == (QUEX_TYPE_TOKEN*)0
@@ -132,9 +132,9 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(TokenQueue_access_write_p)(QUEX_NAME(TokenQueue)* me) 
 { 
 #   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    __quex_assert( ! QUEX_NAME(TokenQueue_disfunctionality_check)(me) );
+    __quex_assert( ! QUEX_NAME(TokenQueue_resources_absent)(me) );
     __quex_assert( me->write_iterator < me->end_minus_safety_border );
-    if( QUEX_NAME(TokenQueue_disfunctionality_check)(me) ) {
+    if( QUEX_NAME(TokenQueue_resources_absent)(me) ) {
         return (QUEX_TYPE_TOKEN*)0;
     }
     else if( me->write_iterator < me->end_minus_safety_border ) {

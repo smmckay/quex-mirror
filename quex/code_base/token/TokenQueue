@@ -35,9 +35,9 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE void             QUEX_NAME(TokenQueue_construct)(QUEX_NAME(TokenQueue)* me, 
                                                                  QUEX_TYPE_TOKEN*       Memory,
                                                                  const size_t           N);
-    QUEX_INLINE void             QUEX_NAME(TokenQueue_mark_resources_as_absent)(QUEX_NAME(TokenQueue)* me);
+    QUEX_INLINE void             QUEX_NAME(TokenQueue_resources_absent_mark)(QUEX_NAME(TokenQueue)* me);
 #   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    QUEX_INLINE bool             QUEX_NAME(TokenQueue_disfunctionality_check)(QUEX_NAME(TokenQueue)* me);
+    QUEX_INLINE bool             QUEX_NAME(TokenQueue_resources_absent)(QUEX_NAME(TokenQueue)* me);
 #   endif
     QUEX_INLINE void             QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE void             QUEX_NAME(TokenQueue_remainder_get)(QUEX_NAME(TokenQueue)* me,

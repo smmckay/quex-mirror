@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.66.5"
-#define QUEX_SETTING_BUILD_DATE        "Thu Jan 19 00:00:19 2017"
+#define QUEX_SETTING_BUILD_DATE        "Thu Jan 19 08:29:03 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -64,7 +64,7 @@
 
 #define    __QUEX_SETTING_MAX_MODE_CLASS_N         (64)
 #ifndef    __QUEX_SETTING_INITIAL_LEXER_MODE_ID
-#   define __QUEX_SETTING_INITIAL_LEXER_MODE_ID    (QUEX_NAME(ModeID_))
+#   define __QUEX_SETTING_INITIAL_LEXER_MODE_ID    (QUEX_NAME(ModeID_M))
 #endif
 /* QUEX_TYPE_TOKEN_ID is later on defined inside the token class header.      */
 #define    __QUEX_SETTING_TOKEN_ID_TERMINATION       ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_TERMINATION)

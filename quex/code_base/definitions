@@ -129,6 +129,7 @@ typedef enum {
     E_Error_Constructor_PostCategorizer_Failed,
     E_Error_InputName_Set_Failed,
     E_Error_None,
+    E_Error_Reset_BufferResourcesAbsent,
     E_Error_UserConstructor_Failed
 } E_Error;
 #endif

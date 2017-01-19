@@ -169,7 +169,7 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
             if( filler ) {
                 filler->delete_self(filler); 
             }
-            QUEX_NAME(Buffer_mark_resources_as_absent)(included);
+            QUEX_NAME(Buffer_resources_absent_mark)(included);
             return false;
         }
         ownership = E_Ownership_LEXICAL_ANALYZER;
@@ -202,10 +202,17 @@ QUEX_NAME(Buffer_destruct_included)(QUEX_NAME(Buffer)* including,
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_mark_resources_as_absent)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me)
 {
     me->filler = (QUEX_NAME(LexatomLoader)*)0;
-    QUEX_NAME(BufferMemory_mark_resources_as_absent)(&me->_memory);
+    QUEX_NAME(BufferMemory_resources_absent_mark)(&me->_memory);
+}
+
+QUEX_INLINE bool    
+QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me)
+{
+    /* 'me->filler' may be NULL, if the lexers runs directly on memory.       */
+    return QUEX_NAME(BufferMemory_resources_absent)(&me->_memory);
 }
 
 QUEX_INLINE void

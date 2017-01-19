@@ -66,7 +66,13 @@ QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
 char*
 QUEXED_DEF(MemoryManager_clone_string)(const char* String)
 { 
-    char* result = (char*)QUEXED(MemoryManager_allocate)(
+    char* result;
+   
+    if( ! String ) {
+        return (char*)0;
+    }
+   
+    result = (char*)QUEXED(MemoryManager_allocate)(
                                  sizeof(char)*(__QUEX_STD_strlen(String)+1),
                                  E_MemoryObjectType_BUFFER_MEMORY);
     if( ! result ) {

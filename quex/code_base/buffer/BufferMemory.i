@@ -45,15 +45,23 @@ QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me)
         QUEXED(MemoryManager_free)((void*)me->_front, 
                                    E_MemoryObjectType_BUFFER_MEMORY);
     }
-    QUEX_NAME(BufferMemory_mark_resources_as_absent)(me);
+    QUEX_NAME(BufferMemory_resources_absent_mark)(me);
 }
 
 QUEX_INLINE void 
-QUEX_NAME(BufferMemory_mark_resources_as_absent)(QUEX_NAME(BufferMemory)* me) 
+QUEX_NAME(BufferMemory_resources_absent_mark)(QUEX_NAME(BufferMemory)* me) 
 {
     /* 'me->_front == 0' prevents 'MemoryManager_free()'                      */
     me->_front = me->_back = (QUEX_TYPE_LEXATOM*)0x0;
     me->ownership = E_Ownership_LEXICAL_ANALYZER;
+}
+
+QUEX_INLINE bool 
+QUEX_NAME(BufferMemory_resources_absent)(QUEX_NAME(BufferMemory)* me) 
+{
+    /* Ownership is irrelevant.                                               */
+    return    (me->_front == me->_back) 
+           && (me->_front == (QUEX_TYPE_LEXATOM*)0x0);
 }
 
 QUEX_INLINE size_t          

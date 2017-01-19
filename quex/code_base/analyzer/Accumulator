@@ -50,7 +50,7 @@ QUEX_INLINE void
 QUEX_NAME(Accumulator_clear)(QUEX_NAME(Accumulator)* me);
 
 QUEX_INLINE void
-QUEX_NAME(Accumulator_mark_resources_as_absent)(QUEX_NAME(Accumulator)* me);
+QUEX_NAME(Accumulator_resources_absent_mark)(QUEX_NAME(Accumulator)* me);
 
 QUEX_INLINE void 
 QUEX_NAME(Accumulator_add)(QUEX_NAME(Accumulator)*    me,
