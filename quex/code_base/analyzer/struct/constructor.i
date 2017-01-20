@@ -207,7 +207,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNam
         me->error_code = E_Error_InputName_Set_Failed;
         goto ERROR_5;
     }
-    else if( ! QUEX_MEMBER_FUNCTION_CALLO(user_constructor) ) {
+    else if( ! QUEX_NAME(user_constructor)(me) ) {
         me->error_code = E_Error_UserConstructor_Failed;
         goto ERROR_6;
     }
@@ -246,7 +246,7 @@ QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
 
     QUEX_NAME(Buffer_destruct)(&me->buffer);
 
-    QUEX_MEMBER_FUNCTION_CALLO(user_destructor);
+    QUEX_NAME(user_destructor)(me);
 
     /* Protect against double destruction.                                    */
     QUEX_NAME(resources_absent_mark)(me);

@@ -1,6 +1,3 @@
-namespace quex {
-class Token { public: int _id; int type_id() { return _id; } };
-}
 /* -*- C++ -*-   vim: set syntax=cpp:
  * CONTENT: 
  *
@@ -68,6 +65,8 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 #endif
 #include <quex/code_base/analyzer/headers>
 
+#include "TestAnalyzer-token_ids"
+#include "TestAnalyzer-token"
 
 QUEX_NAMESPACE_MAIN_OPEN 
 
@@ -120,7 +119,7 @@ public:
      * 'from' functions are provided so that explicit constructor calls 
      * can be done without placement ::new or sophisticated C++11 features.  */
     TestAnalyzer()
-    { QUEX_NAME(resources_absent_mark)(this); error_code = E_Error_None; }
+    { QUEX_NAME(resources_absent_mark)(this); error_code = E_Error_Uninitialized; }
     TestAnalyzer(const char*      Filename, 
                   QUEX_NAME(Converter)* Converter = 0) 
     { QUEX_NAME(from_file_name)(this, Filename, Converter); }
@@ -320,13 +319,6 @@ public:
 public:
     void    print_this();
 
-    // (*) Common for constructor, reset, and include push ___________________________
-    bool    user_constructor();
-    void    user_destructor();
-    bool    user_memento_pack(const char* InputName, QUEX_NAME(Memento)*); 
-    void    user_memento_unpack(QUEX_NAME(Memento)*);
-    bool    user_reset();
-
 private:
     /* (*) All Modes are Friends ___________________________________________________*/
     friend     __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER*);
@@ -358,9 +350,90 @@ public:
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED____QUEX____TESTANALYZER */
-namespace quex {
-bool TestAnalyzer::user_constructor() { return true; }
-void TestAnalyzer::user_destructor() {}
-bool TestAnalyzer::user_reset() { return true; }
+QUEX_NAMESPACE_MAIN_OPEN
+
+QUEX_INLINE bool
+QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
+{
+    (void)me;
+
+    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_M)] == &QUEX_NAME(M));
+
+
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+/* START: User's constructor extensions _______________________________________*/
+
+/* END: _______________________________________________________________________*/
+#undef self
+    return true;
 }
+
+QUEX_INLINE void
+QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
+{
+    (void)me;
+
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+/* START: User's constructor extensions _______________________________________*/
+
+/* END: _______________________________________________________________________*/
+#undef self
+}
+
+QUEX_INLINE bool
+QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
+{
+    (void)me;
+
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+/* START: User's 'reset' ______________________________________________________*/
+
+/* END: _______________________________________________________________________*/
+#undef self
+    return true;
+}
+
+#ifdef QUEX_OPTION_INCLUDE_STACK
+
+QUEX_INLINE bool
+QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me, 
+                             const char*         InputName, 
+                             QUEX_NAME(Memento)* memento) 
+{
+    (void)me; (void)memento; (void)InputName;
+
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+/* START: User's memento 'pack' _______________________________________________*/
+
+/* END: _______________________________________________________________________*/
+#undef self
+    return true;
+}
+
+QUEX_INLINE void
+QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me, 
+                               QUEX_NAME(Memento)*  memento)
+{
+    (void)me; (void)memento;
+
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+/* START: User's memento 'unpack' _____________________________________________*/
+
+/* END: _______________________________________________________________________*/
+#undef self
+}
+#endif /* QUEX_OPTION_INCLUDE_STACK */
+
+QUEX_NAMESPACE_MAIN_CLOSE
+
+#if defined(__QUEX_OPTION_CONVERTER_HELPER)
+#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
+#else
+#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
+#endif
+#include <quex/code_base/analyzer/headers.i>
+
+
+
+
+#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED____QUEX____TESTANALYZER */

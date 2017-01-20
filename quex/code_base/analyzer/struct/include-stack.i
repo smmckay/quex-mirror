@@ -219,7 +219,7 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 
     /* When 'user_memento_pack()' is called, nothing has been done to the 
      * current lexical analyzer object, yet!                                 */
-    if( ! QUEX_MEMBER_FUNCTION_CALLO2(user_memento_pack, InputNameP, memento) ) {
+    if( ! QUEX_NAME(user_memento_pack)(me, InputNameP, memento) ) {
         goto ERROR_2;
     }
     /*________________________________________________________________________
@@ -293,7 +293,7 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
 #   endif
     __QUEX_IF_COUNT(me->counter          = memento->counter);
 
-    QUEX_MEMBER_FUNCTION_CALLO1(user_memento_unpack,memento);
+    QUEX_NAME(user_memento_unpack)(me, memento);
 
 #   ifndef __QUEX_OPTION_PLAIN_C
     /* Counterpart to placement new: Explicit destructor call.

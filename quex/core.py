@@ -30,6 +30,9 @@ def do():
 
     mode_db = quex_file_parser.do(Setup.input_mode_files)
 
+    _write(mode_db)
+
+def _write(mode_db):
     # (*) Generate the token ids
     #     (This needs to happen after the parsing of mode_db, since during that
     #      the token_id_db is developed.)

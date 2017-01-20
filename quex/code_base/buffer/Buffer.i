@@ -211,8 +211,8 @@ QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me)
 QUEX_INLINE bool    
 QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me)
 {
-    /* 'me->filler' may be NULL, if the lexers runs directly on memory.       */
-    return QUEX_NAME(BufferMemory_resources_absent)(&me->_memory);
+    return    me->filler == (QUEX_NAME(LexatomLoader)*)0 
+           && QUEX_NAME(BufferMemory_resources_absent)(&me->_memory);
 }
 
 QUEX_INLINE void

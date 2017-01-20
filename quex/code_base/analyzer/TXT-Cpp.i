@@ -1,9 +1,8 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE bool
-QUEX_MEMBER_FUNCTIONO(user_constructor)
+QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) 
     (void)me;
 
 $$CONSTRUCTOR_MODE_DB_INITIALIZATION_CODE$$
@@ -17,9 +16,8 @@ $$CONSTRUCTOR_EXTENSTION$$
 }
 
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTIONO(user_destructor)
+QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) 
     (void)me;
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
@@ -30,9 +28,8 @@ $$DESTRUCTOR_EXTENSTION$$
 }
 
 QUEX_INLINE bool
-QUEX_MEMBER_FUNCTIONO(user_reset) 
+QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER)
     (void)me;
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
@@ -46,11 +43,10 @@ $$RESET_EXTENSIONS$$
 #ifdef QUEX_OPTION_INCLUDE_STACK
 
 QUEX_INLINE bool
-QUEX_MEMBER_FUNCTIONO2(user_memento_pack, 
-                       const char*         InputName, 
-                       QUEX_NAME(Memento)* memento) 
+QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me, 
+                             const char*         InputName, 
+                             QUEX_NAME(Memento)* memento) 
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) 
     (void)me; (void)memento; (void)InputName;
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
@@ -62,9 +58,9 @@ $$MEMENTO_EXTENSIONS_PACK$$
 }
 
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTIONO1(user_memento_unpack, QUEX_NAME(Memento)*  memento)
+QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me, 
+                               QUEX_NAME(Memento)*  memento)
 {
-    QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) 
     (void)me; (void)memento;
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)

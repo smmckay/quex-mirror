@@ -9,50 +9,54 @@ from   quex.engine.misc.file_operations import open_file_or_die
 from   quex.output.core.dictionary      import db
 import quex.output.cpp.configuration    as configuration
 import quex.output.cpp.analyzer_class   as analyzer_class
+import quex.core                        as core
 
 from   quex.blackboard                  import Lng, setup as Setup
 
-Setup.language_db = db[Setup.language]
 
-command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", "--token-policy", "single", "--no-include-stack"])
+def code(Language, Suffix):
+    Setup.language_db = db[Language]
 
-# Parse default token file
-fh = open_file_or_die(os.environ["QUEX_PATH"] 
-                      + Lng["$code_base"] 
-                      + Lng["$token-default-file"])
-mode_db = quex_file_parser.do(Setup.input_mode_files)
-fh.close()
+    core.do()
 
-BeginOfLineSupportF = True
-IndentationSupportF = False     
+    if False:
+        if Language == "C++":
+            clean("TestAnalyzer", Suffix)
+            clean("TestAnalyzer-configuration", Suffix)
+            clean("TestAnalyzer-token_ids", Suffix)
+            clean("TestAnalyzer-token", Suffix)
+        else:
+            clean("TestAnalyzer", Suffix)
+            clean("TestAnalyzer-configuration", Suffix)
+            clean("TestAnalyzer-token_ids", Suffix)
+            clean("TestAnalyzer-token", Suffix)
 
-txt = configuration.do({})
-result = []
-for line in txt.splitlines():
-    if line.find("__QUEX_SETTING_MAX_MODE_CLASS_N") != -1: 
-        line = line.replace("(0)", "(64)")
-    result.append("%s\n" % line)
+def clean(FileName, Suffix):
+    result = []
+    fh = open(FileName)
+    for line in fh.readlines():
+        line = line.replace("TestAnalyzer-configuration",
+                            "TestAnalyzer%s-configuration" % Suffix)
+        line = line.replace("TestAnalyzer-token_ids",
+                            "TestAnalyzer%s-token_ids" % Suffix)
+        line = line.replace("TestAnalyzer-token",
+                            "TestAnalyzer%s-token" % Suffix)
+        result.append(line)
+    fh.close()
+    fh = open(FileName, "wb")
+    fh.write("".join(result))
+    fh.close()
 
-open("TestAnalyzer-configuration", "w").write("".join(result))
+if sys.argv[1] == "C++":
+    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", "--token-policy", 
+                     "single", "--no-include-stack", "--language", "C++"])
+    code("C++", "Cpp")
+    os.remove("TestAnalyzer.cpp")
+elif sys.argv[1] == "C":
+    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", "--token-policy", 
+                     "single", "--no-include-stack", "--language", "C"])
+    code("C", "C")
+    os.remove("TestAnalyzer.c")
 
-result = [
-    "namespace quex {\n"
-    "class Token { public: int _id; int type_id() { return _id; } };\n"
-    "}\n"
-]
-for line in analyzer_class.do(mode_db).splitlines():
-    if line.find("include") != -1 and line.find("#") != -1: 
-        if line.find("-token_id") != -1: continue
-        if line.find("-token") != -1: continue
-    if line.find("$$ADDITIONAL_HEADER_CONTENT$$") != -1: continue
-    result.append("%s\n" % line)
-
-result.extend([
-    "namespace quex {\n"
-    "bool TestAnalyzer::user_constructor() { return true; }\n",
-    "void TestAnalyzer::user_destructor() {}\n",
-    "bool TestAnalyzer::user_reset() { return true; }\n",
-    "}"
-])
-open("TestAnalyzer", "w").write("".join(result))
-
+else:
+    print "pass 'C' or C++' as first command line argument"

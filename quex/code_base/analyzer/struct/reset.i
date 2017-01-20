@@ -137,9 +137,8 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
 {
     QUEX_NAME(LexatomLoader)* new_filler;
 
-    if( QUEX_NAME(Buffer_resources_absent)(&me->buffer) ) {
-        /* The buffer has not even been setup. Quit.                          */
-        me->error_code = E_Error_Reset_BufferResourcesAbsent;
+    if( me->error_code != E_Error_None ) {
+        me->error_code = E_Error_Reset_OnError;
         goto ERROR_0;
     }
      
@@ -196,12 +195,16 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
 {
     QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
 
+    if( me->error_code != E_Error_None ) {
+        me->error_code = E_Error_Reset_OnError;
+        goto ERROR_0;
+    }
     QUEX_NAME(Buffer_destruct)(&me->buffer); 
     /* Buffer's memory owned externally => memory NOT freed!
      * but 'me->buffer._memory._front = NULL'!                                */
 
     if( ! QUEX_NAME(reset_all_but_buffer)(me, "<memory>") ) {
-        goto ERROR_0;
+        goto ERROR_1;
     }
 
     QUEX_NAME(Buffer_construct)(&me->buffer, 
@@ -211,10 +214,14 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
-ERROR_0:
+ERROR_1:
     /* 'reset_all_but_buffer()' All but the buffer resource destructed and 
      *                          marked as absent. 
      * 'Buffer_destruct()' marked buffer resources as absent.                 */
+    return false;
+
+ERROR_0:
+    QUEX_NAME(destruct)(me);
     return false;
 }
 
@@ -237,7 +244,8 @@ QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me,
      * From here: Construct new lexical analyzer object.
      *________________________________________________________________________*/
 
-    if( ! QUEX_MEMBER_FUNCTION_CALLO(user_reset) ) {
+    if( ! QUEX_NAME(user_reset)(me) ) {
+        me->error_code = E_Error_UserReset_Failed;
         goto ERROR_0;
     }
     else if( ! QUEX_NAME(construct_all_but_buffer)(me, InputName) ) {

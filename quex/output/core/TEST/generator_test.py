@@ -507,13 +507,19 @@ $$__QUEX_OPTION_TOKEN_QUEUE$$
 #define QUEX_OPTION_INCLUDE_STACK_DISABLED
 #define QUEX_OPTION_STRING_ACCUMULATOR_DISABLED
 
+#if 0
 #define QUEX_TKN_TERMINATION       0
 #define QUEX_TKN_UNINITIALIZED     1
 #define QUEX_TKN_INDENT            3
 #define QUEX_TKN_DEDENT            4
 #define QUEX_TKN_NODENT            5
+#endif
 
+#ifdef __cplusplus
 #include <quex/code_base/test_environment/TestAnalyzer>
+#else
+#include <quex/code_base/test_environment/TestAnalyzer.h>
+#endif
 #include <quex/code_base/analyzer/asserts.i>
 #include <quex/code_base/analyzer/struct/constructor.i>
 #include <quex/code_base/analyzer/struct/reset.i>
@@ -547,9 +553,9 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #endif
 
 #ifdef __QUEX_OPTION_PLAIN_C
-quex_TestAnalyzer    lexer_state;
+quex_TestAnalyzer*   lexer_state;
 #else
-TestAnalyzer         lexer_state;
+TestAnalyzer*        lexer_state;
 #endif
 
 static __QUEX_TYPE_ANALYZER_RETURN_VALUE  QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER*);
@@ -624,8 +630,8 @@ run_test(const char* TestString, const char* Comment)
     }
     printf("(*) result:\\n");
 
-    real_buffer_size =   lexer_state.buffer._memory._back 
-                       - lexer_state.buffer._memory._front + 1;
+    real_buffer_size =   lexer_state->buffer._memory._back 
+                       - lexer_state->buffer._memory._front + 1;
     if( real_buffer_size != $$BUFFER_SIZE$$ ) {
         printf("ERROR: buffer_size: { required: $$BUFFER_SIZE$$; real: %i; }\\n",
                (int)real_buffer_size);
@@ -634,17 +640,17 @@ run_test(const char* TestString, const char* Comment)
 
 #   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
 
-    while( lexer_state.current_analyzer_function(&lexer_state) == true );
+    while( lexer_state->current_analyzer_function(lexer_state) == true );
 
 #   else
 
     while( 1 + 1 == 2 ) {
-        lexer_state.current_analyzer_function(&lexer_state);
+        lexer_state->current_analyzer_function(lexer_state);
         printf("---\\n");
 
         /* Print the token queue */
-        while( QUEX_NAME(TokenQueue_is_empty)(&lexer_state._token_queue) == false ) {        
-            switch( QUEX_NAME(TokenQueue_pop)(&lexer_state._token_queue)->_id ) {
+        while( QUEX_NAME(TokenQueue_is_empty)(&lexer_state->_token_queue) == false ) {        
+            switch( QUEX_NAME(TokenQueue_pop)(&lexer_state->_token_queue)->_id ) {
             case QUEX_TKN_INDENT:      printf("INDENT\\n"); break;
             case QUEX_TKN_DEDENT:      printf("DEDENT\\n"); break;
             case QUEX_TKN_NODENT:      printf("NODENT\\n"); break;
@@ -652,7 +658,7 @@ run_test(const char* TestString, const char* Comment)
             default:                   printf("Unknown Token ID\\n"); break;
             }
         }
-        QUEX_NAME(TokenQueue_reset)(&lexer_state._token_queue);
+        QUEX_NAME(TokenQueue_reset)(&lexer_state->_token_queue);
     }
 
 #   endif
@@ -670,9 +676,11 @@ test_program_db = {
     int main(int argc, char** argv)
     {
         QUEX_TYPE_LEXATOM  TestString[] = "\\0$$TEST_STRING$$\\0";
-        const size_t         MemorySize   = strlen((const char*)&TestString[1]) + 2;
+        const size_t       MemorySize   = strlen((const char*)&TestString[1]) + 2;
+        quex_TestAnalyzer  object;
 
         DEAL_WITH_COMPUTED_GOTOS();
+        lexer_state = &object;
         QUEX_NAME(from_memory)(&lexer_state, 
                                TestString, MemorySize, &TestString[MemorySize - 1]); 
         /**/
@@ -689,6 +697,9 @@ test_program_db = {
         char   buffer[65536*16];
         FILE*  fh;
         int    n;
+        quex_TestAnalyzer object;
+
+        lexer_state = &object;
     
         if( argc > 1 ) {
             fh = fopen(argv[1], "rb");
@@ -706,7 +717,7 @@ test_program_db = {
         fseek(fh, 0, SEEK_SET); /* start reading from the beginning */
 
         DEAL_WITH_COMPUTED_GOTOS();
-        QUEX_NAME(from_FILE)(&lexer_state, fh, 0x0, true);
+        QUEX_NAME(from_FILE)(lexer_state, fh, 0x0, true);
         /**/
         (void)run_test(test_string, "$$COMMENT$$");
 
@@ -728,7 +739,7 @@ test_program_db = {
         QUEX_NAME(ByteLoader)*  byte_loader = QUEX_NAME(ByteLoader_stream_new)(istr);
 
         DEAL_WITH_COMPUTED_GOTOS();
-        lexer_state.reset(byte_loader, NULL, NULL);
+        lexer_state = TestAnalyzer::from_ByteLoader(byte_loader, NULL);
 
         return run_test("$$TEST_STRING$$", "$$COMMENT$$");
     }\n""",
@@ -749,7 +760,7 @@ test_program_db = {
         StrangeStream<istringstream>*  strange_stream = new StrangeStream<istringstream>(&istr);
 
         DEAL_WITH_COMPUTED_GOTOS();
-        lexer_state.from_StrangeStream(strange_stream, 0x0);
+        lexer_state = TestAnalyzer::from_StrangeStream(strange_stream, 0x0);
         return run_test("$$TEST_STRING$$", "$$COMMENT$$");
     }\n""",
 
@@ -759,14 +770,17 @@ test_program_db = {
 
     int main(int argc, char** argv)
     {
-        char   test_string[65536];
-        FILE*  fh = fopen(argv[1], "rb");
+        char              test_string[65536];
+        FILE*             fh = fopen(argv[1], "rb");
+        quex_TestAnalyzer object;
+
+        lexer_state = &object;
 
         (void)fread(test_string, 1, 65536, fh);
         fseek(fh, 0, SEEK_SET); /* start reading from the beginning */
 
         DEAL_WITH_COMPUTED_GOTOS();
-        QUEX_NAME(from_FILE)(&lexer_state, fh, 0x0, true);
+        QUEX_NAME(from_FILE)(lexer_state, fh, 0x0, true);
 
         (void)run_test(test_string, "$$COMMENT$$");
 

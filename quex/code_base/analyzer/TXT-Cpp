@@ -110,7 +110,7 @@ public:
      * 'from' functions are provided so that explicit constructor calls 
      * can be done without placement ::new or sophisticated C++11 features.  */
     $$LEXER_CLASS_NAME$$()
-    { QUEX_NAME(resources_absent_mark)(this); error_code = E_Error_None; }
+    { QUEX_NAME(resources_absent_mark)(this); error_code = E_Error_Uninitialized; }
     $$LEXER_CLASS_NAME$$(const char*      Filename, 
     $$___SPACE___$$ QUEX_NAME(Converter)* Converter = 0) 
     { QUEX_NAME(from_file_name)(this, Filename, Converter); }
@@ -309,13 +309,6 @@ public:
 
 public:
     void    print_this();
-
-    // (*) Common for constructor, reset, and include push ___________________________
-    bool    user_constructor();
-    void    user_destructor();
-    bool    user_memento_pack(const char* InputName, QUEX_NAME(Memento)*); 
-    void    user_memento_unpack(QUEX_NAME(Memento)*);
-    bool    user_reset();
 
 private:
     /* (*) All Modes are Friends ___________________________________________________*/
