@@ -30,90 +30,32 @@ def do():
 
     mode_db = quex_file_parser.do(Setup.input_mode_files)
 
-    _write(mode_db)
+    _generate(mode_db)
 
-def _write(mode_db):
-    # (*) Generate the token ids
-    #     (This needs to happen after the parsing of mode_db, since during that
-    #      the token_id_db is developed.)
-    if Setup.external_lexeme_null_object != "":
-        # Assume external implementation
-        token_id_header                        = None
-        function_map_id_to_name_implementation = ""
-    else:
-        token_id_header                        = token_id_maker.do(Setup) 
-        function_map_id_to_name_implementation = token_id_maker.do_map_id_to_name_function()
-
-    # (*) [Optional] Make a customized token class
+def _generate(mode_db):
+    token_id_header, \
+    func_map_token_id_to_name_implementation, \
     class_token_header, \
-    class_token_implementation = token_class_maker.do(function_map_id_to_name_implementation)
+    class_token_implementation = _prepare_token_class()
 
     if Setup.token_class_only_f:
-        write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
-                                 do_token_class_info() \
-                               + class_token_header)
-        write_safely_and_close(Setup.output_token_class_file_implementation,
-                               class_token_implementation)
-        write_safely_and_close(Setup.output_token_id_file, token_id_header)
-        Lng.straighten_open_line_pragmas(Setup.output_token_id_file)
-        Lng.straighten_open_line_pragmas(Setup.output_token_class_file_implementation)
-        Lng.straighten_open_line_pragmas(blackboard.token_type_definition.get_file_name())
+        _write_token_class(class_token_header, 
+                           class_token_implementation, 
+                           token_id_header)
         return
 
-    # (*) implement the lexer mode-specific analyser functions
-    function_analyzers_implementation \
-                            = analyzer_functions_get(mode_db)
+    configuration_header,                 \
+    analyzer_header,                      \
+    engine_txt,                           \
+    codec_converter_helper_header,        \
+    codec_converter_helper_implementation = _prepare_all(mode_db, 
+                                                         class_token_implementation,
+                                                         func_map_token_id_to_name_implementation)
 
-    # (*) Implement the 'quex' core class from a template
-    # -- do the coding of the class framework
-    configuration_header    = configuration.do(mode_db)
-    analyzer_header         = analyzer_class.do(mode_db)
-    analyzer_implementation = analyzer_class.do_implementation(mode_db) + "\n"
-    mode_implementation     = mode_classes.do(mode_db)
-
-    # (*) [Optional] Generate a converter helper
-    codec_converter_helper_header, \
-    codec_converter_helper_implementation = codec_converter_helper.do()
-    
-    # Implementation (Potential Inline Functions)
-    if class_token_implementation is not None:
-         analyzer_implementation += class_token_implementation + "\n" 
-
-    # Engine (Source Code)
-    engine_txt =   Lng.ENGINE_TEXT_EPILOG()               + "\n" \
-                 + mode_implementation                    + "\n" \
-                 + function_analyzers_implementation      + "\n" \
-                 + function_map_id_to_name_implementation + "\n" 
-
-    # (*) Write Files ___________________________________________________________________
-    if codec_converter_helper_header is not None:
-        write_safely_and_close(Setup.output_buffer_codec_header,   
-                               codec_converter_helper_header) 
-        write_safely_and_close(Setup.output_buffer_codec_header_i, 
-                               codec_converter_helper_implementation) 
-
-    if token_id_header is not None:
-        write_safely_and_close(Setup.output_token_id_file, token_id_header)
-
-    write_safely_and_close(Setup.output_configuration_file, configuration_header)
-
-    if Setup.language == "C":
-        engine_txt     += analyzer_implementation
-    else:
-        analyzer_header = analyzer_header.replace("$$ADDITIONAL_HEADER_CONTENT$$", 
-                                                  analyzer_implementation)
-
-    write_safely_and_close(Setup.output_header_file, analyzer_header)
-    write_safely_and_close(Setup.output_code_file,   engine_txt)
-
-    if class_token_header is not None:
-        write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
-                               class_token_header)
-
-    Lng.straighten_open_line_pragmas(Setup.output_header_file)
-    Lng.straighten_open_line_pragmas(Setup.output_code_file)
-    if not blackboard.token_type_definition.manually_written():
-        Lng.straighten_open_line_pragmas(blackboard.token_type_definition.get_file_name())
+    _write_all(configuration_header, analyzer_header, engine_txt, 
+               class_token_header, token_id_header,
+               codec_converter_helper_header, 
+               codec_converter_helper_implementation)
 
     if Setup.source_package_directory != "":
         source_package.do()
@@ -189,4 +131,104 @@ def do_comment_pattern_action_pairs(ModeIterable):
                              txt                      + \
                              "\nEND: MODE PATTERNS")
     return comment 
+
+def _prepare_token_class():
+    # (*) Generate the token ids
+    #     (This needs to happen after the parsing of mode_db, since during that
+    #      the token_id_db is developed.)
+    if Setup.external_lexeme_null_object != "":
+        # Assume external implementation
+        token_id_header                          = None
+        func_map_token_id_to_name_implementation = ""
+    else:
+        token_id_header                          = token_id_maker.do(Setup) 
+        func_map_token_id_to_name_implementation = token_id_maker.do_map_id_to_name_function()
+
+    # (*) [Optional] Make a customized token class
+    class_token_header, \
+    class_token_implementation = token_class_maker.do(func_map_token_id_to_name_implementation)
+
+    return token_id_header, \
+           func_map_token_id_to_name_implementation, \
+           class_token_header, \
+           class_token_implementation
+
+def _prepare_all(mode_db, class_token_implementation, 
+                 func_map_token_id_to_name_implementation):
+    # (*) implement the lexer mode-specific analyser functions
+    function_analyzers_implementation \
+                            = analyzer_functions_get(mode_db)
+
+    # (*) Implement the 'quex' core class from a template
+    # -- do the coding of the class framework
+    configuration_header    = configuration.do(mode_db)
+    analyzer_header         = analyzer_class.do(mode_db)
+    analyzer_implementation = analyzer_class.do_implementation(mode_db) 
+    mode_implementation     = mode_classes.do(mode_db)
+
+    # (*) [Optional] Generate a converter helper
+    codec_converter_helper_header, \
+    codec_converter_helper_implementation = codec_converter_helper.do()
+    
+    # Engine (Source Code)
+    engine_txt = "\n".join([Lng.ENGINE_TEXT_EPILOG(),
+                            mode_implementation,
+                            function_analyzers_implementation,
+                            func_map_token_id_to_name_implementation,
+                            analyzer_implementation,
+                            class_token_implementation])
+
+    return configuration_header, \
+           analyzer_header, \
+           engine_txt, \
+           codec_converter_helper_header, \
+           codec_converter_helper_implementation
+
+def _write_all(configuration_header, analyzer_header, engine_txt, 
+               class_token_header, token_id_header, 
+               codec_converter_helper_header, 
+               codec_converter_helper_implementation):
+
+    if codec_converter_helper_header is not None:
+        write_safely_and_close(Setup.output_buffer_codec_header,   
+                               codec_converter_helper_header) 
+        write_safely_and_close(Setup.output_buffer_codec_header_i, 
+                               codec_converter_helper_implementation) 
+
+    if token_id_header is not None:
+        write_safely_and_close(Setup.output_token_id_file, token_id_header)
+
+    write_safely_and_close(Setup.output_configuration_file, configuration_header)
+
+
+    write_safely_and_close(Setup.output_header_file, analyzer_header)
+    write_safely_and_close(Setup.output_code_file,   engine_txt)
+
+    if class_token_header is not None:
+        write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
+                               class_token_header)
+
+    _straighten_open_line_pragmas_all()
+
+def _write_token_class(class_token_header, class_token_implementation, 
+                       token_id_header):
+    write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
+                             do_token_class_info() \
+                           + class_token_header)
+    write_safely_and_close(Setup.output_token_class_file_implementation,
+                           class_token_implementation)
+    write_safely_and_close(Setup.output_token_id_file, token_id_header)
+    _straighten_open_line_pragmas_for_token()
+
+def _straighten_open_line_pragmas_for_token():
+    Lng.straighten_open_line_pragmas(Setup.output_token_id_file)
+    Lng.straighten_open_line_pragmas(Setup.output_token_class_file_implementation)
+    Lng.straighten_open_line_pragmas(blackboard.token_type_definition.get_file_name())
+
+def _straighten_open_line_pragmas_all():
+    Lng.straighten_open_line_pragmas(Setup.output_header_file)
+    Lng.straighten_open_line_pragmas(Setup.output_code_file)
+    if not blackboard.token_type_definition.manually_written():
+        Lng.straighten_open_line_pragmas(blackboard.token_type_definition.get_file_name())
+
 

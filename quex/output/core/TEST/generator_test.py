@@ -2,7 +2,7 @@
 
 # Switch: Removal of source and executable file
 #         'False' --> No removal.
-if False: 
+if True: 
     REMOVE_FILES = True; 
 else:     
     print "NOTE:> Do not remove files!;"
@@ -564,7 +564,7 @@ static __QUEX_TYPE_ANALYZER_RETURN_VALUE  QUEX_NAME(Mrs_analyzer_function)(QUEX_
 #endif
 
 QUEX_NAMESPACE_MAIN_OPEN
-QUEX_NAME(Mode) first_mode = {
+QUEX_NAME(Mode) QUEX_NAME(M) = {
       /* id                */ 0, 
       /* name              */ "Mode0", 
 #     if      defined( QUEX_OPTION_INDENTATION_TRIGGER) \
@@ -582,7 +582,7 @@ QUEX_NAME(Mode) first_mode = {
 };
 
 #ifdef QUEX_UNIT_TEST_SECOND_MODE
-QUEX_NAME(Mode) second_mode = {
+QUEX_NAME(Mode) QUEX_NAME(M2) = {
       /* id                */ 1, 
       /* name              */ "Mode1", 
 #     if      defined( QUEX_OPTION_INDENTATION_TRIGGER) \
@@ -601,10 +601,11 @@ QUEX_NAME(Mode) second_mode = {
 #endif
 
 QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {
-   &first_mode
-#ifdef QUEX_UNIT_TEST_SECOND_MODE
-   , &second_mode
-#endif
+   &QUEX_NAME(M)
+#  ifdef QUEX_UNIT_TEST_SECOND_MODE
+   , 
+   &QUEX_NAME(M2)
+#  endif
 };
 QUEX_NAMESPACE_MAIN_CLOSE
 
@@ -681,7 +682,7 @@ test_program_db = {
 
         DEAL_WITH_COMPUTED_GOTOS();
         lexer_state = &object;
-        QUEX_NAME(from_memory)(&lexer_state, 
+        QUEX_NAME(from_memory)(lexer_state, 
                                TestString, MemorySize, &TestString[MemorySize - 1]); 
         /**/
         return run_test((const char*)&TestString[1], "$$COMMENT$$");
@@ -697,7 +698,8 @@ test_program_db = {
         char   buffer[65536*16];
         FILE*  fh;
         int    n;
-        quex_TestAnalyzer object;
+        quex_TestAnalyzer      object;
+        QUEX_NAME(ByteLoader)* byte_loader;
 
         lexer_state = &object;
     
@@ -717,7 +719,8 @@ test_program_db = {
         fseek(fh, 0, SEEK_SET); /* start reading from the beginning */
 
         DEAL_WITH_COMPUTED_GOTOS();
-        QUEX_NAME(from_FILE)(lexer_state, fh, 0x0, true);
+        byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
+        QUEX_NAME(from_ByteLoader)(lexer_state, byte_loader, NULL);
         /**/
         (void)run_test(test_string, "$$COMMENT$$");
 
@@ -758,9 +761,10 @@ test_program_db = {
 
         istringstream                  istr("$$TEST_STRING$$");
         StrangeStream<istringstream>*  strange_stream = new StrangeStream<istringstream>(&istr);
+        QUEX_NAME(ByteLoader)*         byte_loader = QUEX_NAME(ByteLoader_stream_new)(strange_stream);
 
         DEAL_WITH_COMPUTED_GOTOS();
-        lexer_state = TestAnalyzer::from_StrangeStream(strange_stream, 0x0);
+        lexer_state = TestAnalyzer::from_ByteLoader(byte_loader, 0x0);
         return run_test("$$TEST_STRING$$", "$$COMMENT$$");
     }\n""",
 

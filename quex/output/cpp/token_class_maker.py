@@ -10,11 +10,14 @@ from   quex.blackboard                    import setup as Setup, Lng
 import re
 
 def do(MapTokenIDToNameFunctionStr):
+    """RETURNS: [0] header code
+                [1] implementation
+    """
     assert blackboard.token_type_definition is not None
 
     if blackboard.token_type_definition.manually_written():
         # User has specified a manually written token class
-        return None, None
+        return "", ""
 
     txt, txt_i = _do(blackboard.token_type_definition)
 

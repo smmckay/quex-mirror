@@ -12,50 +12,50 @@ import quex.output.cpp.analyzer_class   as analyzer_class
 import quex.core                        as core
 
 from   quex.blackboard                  import Lng, setup as Setup
+import quex.blackboard as blackboard
 
+def code(Language):
+    global tail_str
+    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", "--token-policy", 
+                     "single", "--no-include-stack", "--language", Language])
+    mode_db = quex_file_parser.do(Setup.input_mode_files)
 
-def code(Language, Suffix):
-    Setup.language_db = db[Language]
+    core._generate(mode_db)
 
-    core.do()
+    return mode_db
 
-    if False:
-        if Language == "C++":
-            clean("TestAnalyzer", Suffix)
-            clean("TestAnalyzer-configuration", Suffix)
-            clean("TestAnalyzer-token_ids", Suffix)
-            clean("TestAnalyzer-token", Suffix)
-        else:
-            clean("TestAnalyzer", Suffix)
-            clean("TestAnalyzer-configuration", Suffix)
-            clean("TestAnalyzer-token_ids", Suffix)
-            clean("TestAnalyzer-token", Suffix)
+def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
+    # Analyzer class implementation
+    #
+    analyzer_class_implementation = analyzer_class.do_implementation(mode_db)
+    with open(FileName, "a") as fh:
+        fh.write(analyzer_class_implementation)
 
-def clean(FileName, Suffix):
-    result = []
-    fh = open(FileName)
-    for line in fh.readlines():
-        line = line.replace("TestAnalyzer-configuration",
-                            "TestAnalyzer%s-configuration" % Suffix)
-        line = line.replace("TestAnalyzer-token_ids",
-                            "TestAnalyzer%s-token_ids" % Suffix)
-        line = line.replace("TestAnalyzer-token",
-                            "TestAnalyzer%s-token" % Suffix)
-        result.append(line)
-    fh.close()
-    fh = open(FileName, "wb")
-    fh.write("".join(result))
-    fh.close()
+    if not TokenClassImplementationF:
+        return
+
+    # Token class implementation (In C++ it is pasted into header)
+    #
+    dummy,                                 \
+    map_token_id_to_string_implementation, \
+    dummy,                                 \
+    token_class_implementation             = core._prepare_token_class()
+
+    with open(FileName, "a") as fh:
+        fh.write("%s\n%s" % (token_class_implementation,
+                             map_token_id_to_string_implementation))
+    
+    Lng.straighten_open_line_pragmas(FileName)
 
 if sys.argv[1] == "C++":
-    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", "--token-policy", 
-                     "single", "--no-include-stack", "--language", "C++"])
-    code("C++", "Cpp")
+    mode_db = code("C++")
+    add_engine_stuff(mode_db, "TestAnalyzer")
     os.remove("TestAnalyzer.cpp")
+
 elif sys.argv[1] == "C":
-    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", "--token-policy", 
-                     "single", "--no-include-stack", "--language", "C"])
-    code("C", "C")
+    mode_db = code("C")
+    add_engine_stuff(mode_db, "TestAnalyzer.h",
+                     TokenClassImplementationF=True)
     os.remove("TestAnalyzer.c")
 
 else:

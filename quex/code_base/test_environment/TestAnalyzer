@@ -341,15 +341,11 @@ public:
     // Token sending happens only via 'self_send*(...)' macros
     void   send(const QUEX_TYPE_TOKEN_ID TokenID)
     { (void)TokenID; QUEX_ERROR_DEPRECATED("Member functions .send()", "macros: self_send*()"); }
-    // At least warn those, who still use the old interface ...
-    void   get_token() 
-    { QUEX_ERROR_DEPRECATED("Member functions .get_token()", ".receive(...)"); }
-    void   get_token(QUEX_TYPE_TOKEN*   result_p)  { (void)result_p; get_token(); }
-    void   get_token(QUEX_TYPE_TOKEN**  result_pp) { (void)result_pp; get_token(); }
 };
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
+#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED____QUEX____TESTANALYZER */
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE bool
@@ -433,7 +429,3 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #endif
 #include <quex/code_base/analyzer/headers.i>
 
-
-
-
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED____QUEX____TESTANALYZER */
