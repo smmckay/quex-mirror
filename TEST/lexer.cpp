@@ -14,10 +14,6 @@ extern "C" {
 
 using namespace std;
 
-#if ! defined(QUEX_SETTING_UT_CONVERTER_NEW)
-#   undef  QUEX_SETTING_UT_CONVERTER_NEW NULL
-#endif
-
 #ifndef   TEST_EPILOG
 #   define TEST_EPILOG \
     printf("| [END] number of token = %li\n", token_n); \
@@ -36,9 +32,14 @@ int main(int argc, char** argv)
     QUEX_TYPE_TOKEN_ID    token_id = (QUEX_TYPE_TOKEN_ID)0x0;
 #   endif
     // (*) create the lexical analyser
-    Simple*               qlex = new Simple(argv[1], 
-                                            QUEX_SETTING_UT_CONVERTER_NEW, 
-                                            "UTF-8");
+#   ifndef CONVERTER
+#   define                converter NULL
+#   elif   CONVERTER == ICONV
+    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_ICU_new)("UTF8");
+#   elif   CONVERTER == ICONV
+    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)("UTF8");
+#   endif
+    Simple*               qlex = Simple::from_file_name(argv[1], converter); 
 
     // (*) loop until the 'termination' token arrives
     do {
@@ -73,6 +74,5 @@ int main(int argc, char** argv)
 
     TEST_EPILOG
 
-    byte_loader->delete_self(byte_loader);
     delete qlex;
 }

@@ -11,7 +11,7 @@ body {
     size_t  my_number;
 }
 
-init {
+constructor {
     self.my_number = 0;
 }
 

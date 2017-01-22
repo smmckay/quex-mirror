@@ -8,7 +8,7 @@ body {
     { printf("((A)) 8"); }
 }
 
-init           { printf("((A)) 3"); }
+constructor    { printf("((A)) 3"); }
 reset          { printf("((A)) 4"); }
 memento        { printf("((A)) 5"); }
 memento_pack   { printf("((A)) 6"); }

@@ -18,7 +18,7 @@ token {
 body {
     int my_counter;
 }
-init {
+constructor {
     self.my_counter = 0;
 }
 header {

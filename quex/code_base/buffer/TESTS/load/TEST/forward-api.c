@@ -116,25 +116,25 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
     case E_LexatomLoader_ICU:
         self.converter      = QUEX_NAME(Converter_ICU_new)("UTF-8", 0);
         self.lexatom_loader = QUEX_NAME(LexatomLoader_new)(&self.byte_loader.base, 
-                                                           self.converter, 7);
+                                                           self.converter);
         break;
 
     case E_LexatomLoader_IConv:
         self.converter      = QUEX_NAME(Converter_IConv_new)("UTF-8", 0);
         self.lexatom_loader = QUEX_NAME(LexatomLoader_new)(&self.byte_loader.base, 
-                                                           self.converter, 7);
+                                                           self.converter);
         break;
 
     case E_LexatomLoader_Plain:
         self.converter      = (QUEX_NAME(Converter)*)0; 
         self.lexatom_loader = QUEX_NAME(LexatomLoader_new)(&self.byte_loader.base, 
-                                                           self.converter, 0);
+                                                           self.converter);
         break;
 
     case E_LexatomLoader_NoByteLoader:
         self.converter      = (QUEX_NAME(Converter)*)0; 
         self.lexatom_loader = QUEX_NAME(LexatomLoader_new)(&self.byte_loader.base, 
-                                                           self.converter, 0);
+                                                           self.converter);
         self.lexatom_loader->byte_loader = (QUEX_NAME(ByteLoader)*)0;
         break;
 

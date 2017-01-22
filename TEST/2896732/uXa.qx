@@ -50,7 +50,7 @@ body {
 		}
 }
 
-init {
+constructor {
 	self.textAccumulator.clear();
 	self.comment.isBlock = true;
 	self.comment.bnCount = 0x00;

@@ -87,7 +87,7 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
                                            (const uint8_t*)&PseudoFile[0], 
                                            (const uint8_t*)&PseudoFile[PSEUDO_FILE_ELEMENT_N]);
     filler = QUEX_NAME(LexatomLoader_new)(&loader.base, 
-                                         (QUEX_NAME(Converter)*)0, 0);
+                                         (QUEX_NAME(Converter)*)0);
 
     QUEX_NAME(Buffer_construct)(&buffer, filler,
                                 &memory[0], BufferElementN,

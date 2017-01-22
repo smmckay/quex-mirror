@@ -29,6 +29,7 @@ TESTS := \
 	     $(foreach S, 1 2 4, $(foreach FB, 0 2, test-Converter-StrangeStream-$(S)-$(FB).exe)) 
 
 DEFS       := -DQUEX_OPTION_ASSERTS \
+	          -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=7 \
               -DQUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE=5 \
 			  -DQUEX_OPTION_CONVERTER_ICONV \
 			  -DQUEX_OPTION_CONVERTER_ICU 
@@ -44,7 +45,7 @@ FALLBACK_2 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=2
 
 CFLAGS := -ggdb -Wall -Werror $(INCLUDES) $(DEFS) \
 	      -fsanitize=address basic_functionality.c
-CC     := gcc $(CFLAGS) -D__QUEX_OPTION_PLAIN_C -Wall -Werror
+CC     := gcc $(CFLAGS) -D__QUEX_OPTION_PLAIN_C -Wall -Werror -pg -fprofile-arcs
 CCP    := g++ $(CFLAGS) -Wall -Werror
 
 XLIBS := $(shell icu-config --ldflags) 

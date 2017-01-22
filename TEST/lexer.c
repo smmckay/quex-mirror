@@ -17,10 +17,6 @@
     printf("`------------------------------------------------------------------------------------\n");
 #endif
 
-#if ! defined(QUEX_SETTING_UT_CONVERTER_NEW)
-#   undef  QUEX_SETTING_UT_CONVERTER_NEW NULL
-#endif
-
 #ifdef HWUT_INFO_MESSAGE
 #include <support/C/hwut_unit.h>
 #endif

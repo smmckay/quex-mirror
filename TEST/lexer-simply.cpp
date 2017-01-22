@@ -11,6 +11,9 @@
 #elif defined(QUEX_SETTING_UT_CONVERTER_NEW)
 #   undef  QUEX_SETTING_UT_CONVERTER_NEW
 #endif
+#ifndef    CONVERTER
+#   define CONVERTER 0
+#endif
 
 using namespace std;
 
@@ -23,13 +26,15 @@ main(int argc, char** argv)
 #   ifdef STRANGE_STREAM
     ifstream                 istr("example.txt");
     StrangeStream<ifstream>  strange_stream(&istr);
-    Simple                   qlex(&strange_stream);
-#   elif defined (QUEX_SETTING_UT_CONVERTER_NEW)
-    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(argv[1]);
-    Simple  qlex(byte_loader, QUEX_SETTING_UT_CONVERTER_NEW, 
-                 CONVERTER_ENCODING);
+    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_stream_new)(&strange_stream);
+    Simple                   qlex(byte_loader, NULL);
+#   elif defined (CONVERTER)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)();
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)();
+    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(argv[1]);
+    Simple                   qlex(byte_loader, converter); 
 #   else
-    Simple  qlex(argc == 1 ? "example.txt" : argv[1]);
+    Simple                   qlex(argc == 1 ? "example.txt" : argv[1]);
 #   endif
 
     cout << "## An Assert-Abortion might be an intended element of the experiment.\n";

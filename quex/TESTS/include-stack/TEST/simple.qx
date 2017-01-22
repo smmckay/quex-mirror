@@ -14,7 +14,7 @@ body {
     }
 }
 
-init {
+constructor {
     self.include_depth = 0;
     self.directory     = "example/";
 }

@@ -189,7 +189,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNam
         goto ERROR_3;
     }
 #   endif
-#   ifdef QUEX_OPTION_COUNT
+#   ifdef __QUEX_OPTION_COUNTER
     else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
         me->error_code = E_Error_Constructor_Counter_Failed;
         goto ERROR_4;
@@ -220,7 +220,7 @@ ERROR_6:
     (void)QUEX_NAME(input_name_set)(me, (const char*)0);
 ERROR_5:
     /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
-#   ifdef QUEX_OPTION_COUNT
+#   ifdef __QUEX_OPTION_COUNTER
 ERROR_4:
 #   endif
     __QUEX_IF_POST_CATEGORIZER(QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));

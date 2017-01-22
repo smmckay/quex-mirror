@@ -181,7 +181,9 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
                                        const char*         InputNameP)
 {
     QUEX_NAME(Memento)* memento;
+#   ifdef __QUEX_OPTION_COUNTER
     QUEX_NAME(Counter)  new_counter;
+#   endif
     char*               new_input_name;
    
     memento = (QUEX_NAME(Memento)*)QUEXED(MemoryManager_allocate)(
@@ -192,13 +194,13 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     }
 #   ifndef __QUEX_OPTION_PLAIN_C
     /* Use placement 'new' for explicit call of constructor. 
-     * Necessary in C++: Call to constructor for user defined members.       */
+     * Necessary in C++: Call to constructor for user defined members.        */
     new ((void*)memento) QUEX_NAME(Memento);
 #   endif
 
-    /* 'memento->__input_name' points to previously allocated memory.        */
+    /* 'memento->__input_name' points to previously allocated memory.         */
     memento->__input_name  = me->__input_name;
-    me->__input_name       = (char*)0;                 /* Release ownership. */
+    me->__input_name       = (char*)0;                 /* Release ownership.  */
     memento->_parent_memento                  = me->_parent_memento;
     memento->__current_mode_p                 = me->__current_mode_p; 
     memento->current_analyzer_function        = me->current_analyzer_function;
@@ -206,32 +208,32 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
        || defined(QUEX_OPTION_ASSERTS)
     memento->DEBUG_analyzer_function_at_entry = me->DEBUG_analyzer_function_at_entry;
 #   endif
-    __QUEX_IF_COUNT(memento->counter          = me->counter);
+#   ifdef __QUEX_OPTION_COUNTER
+    __QUEX_IF_COUNT(memento->counter = me->counter); /* Plain copy is ok.     */ 
+#   endif
 
     /* Deriberately not subject to include handling:
      *    -- Mode stack.
      *    -- Token and token queues.
-     *    -- Post categorizer.                                               */
+     *    -- Post categorizer.                                                */
     new_input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
     if( ! new_input_name ) {
         goto ERROR_1;
     }
 
     /* When 'user_memento_pack()' is called, nothing has been done to the 
-     * current lexical analyzer object, yet!                                 */
+     * current lexical analyzer object, yet!                                  */
     if( ! QUEX_NAME(user_memento_pack)(me, InputNameP, memento) ) {
         goto ERROR_2;
     }
-    /*________________________________________________________________________
+    /*_________________________________________________________________________
      *
      * [PIVOT POINT] Last possibility of failure has been passed!
      *
      * From here: lexical analyzer object may receive assignments!
-     *_______________________________________________________________________*/
+     *________________________________________________________________________*/
     __QUEX_IF_COUNT((void)QUEX_NAME(Counter_construct)(&new_counter);)
 
-    /* Only if all is OK, change the current analyzer object.                */
-    me->counter         = new_counter; /* Plain copy is enough.              */
     me->__input_name    = new_input_name;
 
     return memento;

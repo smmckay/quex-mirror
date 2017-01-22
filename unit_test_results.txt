@@ -103,7 +103,7 @@ TEST                                                                 <no date>
  * eabrams:
 
     patch-16 Compile error when indentation based without token queue
-        patch-16.sh ................................................[FAIL]
+        patch-16.sh ..................................................[OK]
 
  * enmarabrams:
 
@@ -157,9 +157,9 @@ TEST                                                                 <no date>
     3082041 0.52.4 Buffer Memory Size not Accepted
         bug-3082041.sh .............................................[FAIL]
     3102035 0.55.1 Weird Setup causes Duplicate State Label
-        bug-3102035.sh 1 ...........................................[FAIL]
+        bug-3102035.sh 1 .............................................[OK]
                        2 .............................................[OK]
-                       3 ...........................................[FAIL]
+                       3 .............................................[OK]
                        4 ...........................................[FAIL]
                        5 ...........................................[FAIL]
     3157923 Memory Leak by Components
@@ -207,7 +207,7 @@ TEST                                                                 <no date>
         bug-3515838.sh C .............................................[OK]
                        Cpp ...........................................[OK]
     3526210 0.62.4 Accumulator misbehaviour when no text is to be flushed
-        bug-3526210.sh .............................................[FAIL]
+        bug-3526210.sh ...............................................[OK]
 
  * mabraham:
 
@@ -242,7 +242,7 @@ TEST                                                                 <no date>
  * nobody:
 
     2395200 assert  in QuexLexatomLoader_load_forward (The StrangeStream Issue)
-        bug-2395200.sh lexer .......................................[FAIL]
+        bug-2395200.sh lexer .........................................[OK]
     2841726 0.44.2 Unknown exception on unicode properties
         bug-2841726.sh ...............................................[OK]
     2891125 0.45.1 bug in -- version
@@ -265,7 +265,7 @@ TEST                                                                 <no date>
                        utf8-error ....................................[OK]
                        utf8-with-bom .................................[OK]
     3512806 0.62.2 build error
-        bug-3512806.sh C ...........................................[FAIL]
+        bug-3512806.sh C .............................................[OK]
                        Cpp ...........................................[OK]
 
  * otsakiridis:
@@ -277,7 +277,7 @@ TEST                                                                 <no date>
  * petulda:
 
     3178600 0.58.1 Last appeared char not stored when switching modes
-        bug-3178600.sh .............................................[FAIL]
+        bug-3178600.sh ...............................................[OK]
 
  * prade2p:
 
@@ -287,7 +287,7 @@ TEST                                                                 <no date>
  * rami-al-rafou:
 
     3476232 0.62.1 Slow C code generation (unicode)
-        bug-3476232.sh .............................................[FAIL]
+        bug-3476232.sh ...............................................[OK]
 
  * rayhayes:
 
@@ -297,7 +297,7 @@ TEST                                                                 <no date>
  * remcobloemen1:
 
     3295781 Duplicate label with Template and Path Compression
-        bug-3295781.sh .............................................[FAIL]
+        bug-3295781.sh ...............................................[OK]
 
  * rmanoj-oss:
 
@@ -315,7 +315,7 @@ TEST                                                                 <no date>
  * sbellon:
 
     265 Modification time change on input file.
-        bug-265.sh ...................................................[OK]
+        bug-265.sh .................................................[FAIL]
     3524729 0.62.4 token_type distinct members cause overloading error
         bug-3524729.sh ...............................................[OK]
     3538026 Handling of spurious transition in PathWalkerState
@@ -387,8 +387,8 @@ TEST                                                                 <no date>
     1908436 0.23.6 rule precedence reversed for identical patterns
         bug-1908436.sh ...............................................[OK]
     1935701 - 0.24.7 buffer handling size mismatch
-        bug-1935701.exe FILE ................................[MAKE FAILED]
-                        fstream .............................[MAKE FAILED]
+        bug-1935701.exe FILE .........................................[OK]
+                        fstream ......................................[OK]
     1936707 0.24.10 --plot flag doesnt seem to work
         bug-1936707.sh ...............................................[OK]
     1969629 0.25.4 token list with just TERMINATION treated empty
@@ -423,7 +423,7 @@ TEST                                                                 <no date>
  * the-user-k:
 
     3021502 0.49.2 Buffer-size gets ignored
-        bug-3021502.sh .............................................[FAIL]
+        bug-3021502.sh ...............................................[OK]
 
  * timdawborn:
 
@@ -473,7 +473,7 @@ TEST                                                                 <no date>
                            pp ........................................[OK]
                            xx ........................................[OK]
     3077292 0.52.3 Compilation Error With DEBUG_MODE_TRANSITIONS
-        bug-3077292.sh .............................................[FAIL]
+        bug-3077292.sh ...............................................[OK]
 
  * yoavg:
 
@@ -518,7 +518,6 @@ TEST                                                                 <no date>
     [FAIL] bug-261.sh _ 1
                     \__ 2
     [FAIL] bug-3510261.sh
-    [FAIL] patch-16.sh
     [FAIL] bug-1952133.sh _ 127
                         \__ 128
                         \__ 129
@@ -545,30 +544,20 @@ TEST                                                                 <no date>
                         \__ non-newline-skipper
     [FAIL] feature-3039173.sh
     [FAIL] bug-3082041.sh
-    [FAIL] bug-3102035.sh _ 1
-                        \__ 3
-                        \__ 4
+    [FAIL] bug-3102035.sh _ 4
                         \__ 5
     [FAIL] bug-3157923.sh
     [FAIL] bug-3513568.sh
     [FAIL] bug-3235790.sh
     [FAIL] bug-3115741.sh _ general
                         \__ undo-line-colum-count
-    [FAIL] bug-3526210.sh
     [FAIL] bug-3109479.sh _ 3
                         \__ 4
     [FAIL] bug-2896732.sh
-    [FAIL] bug-2395200.sh _ lexer
-    [FAIL] bug-3512806.sh _ C
-    [FAIL] bug-3178600.sh
-    [FAIL] bug-3476232.sh
-    [FAIL] bug-3295781.sh
+    [FAIL] bug-265.sh
     [FAIL] bug-1892809.sh
     [FAIL] bug-1895500.sh _ iconv
                         \__ icu
-    [FAIL] bug-1935701.exe _ FILE
-                         \__ fstream
-    [FAIL] bug-3021502.sh
     [FAIL] bug-3106424.sh
     [FAIL] bug-2819022.sh _ 0
                         \__ 1
@@ -579,7 +568,6 @@ TEST                                                                 <no date>
                             \__ NotExist
     [FAIL] bug-2163753.sh
     [FAIL] bug-3097431.sh
-    [FAIL] bug-3077292.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -589,7 +577,7 @@ demo/TEST                                                            <no date>
  * Makefile Differences to C++ Version
         makefile-diff.sh 000 .........................................[OK]
                          001 .........................................[OK]
-                         002 .........................................[OK]
+                         002 .......................................[FAIL]
                          003 .........................................[OK]
                          005 .........................................[OK]
                          006 .........................................[OK]
@@ -600,10 +588,12 @@ demo/TEST                                                            <no date>
                          011 .........................................[OK]
                          012 .........................................[OK]
                          012b ........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] makefile-diff.sh _ 002
 ===============================================================================
                                                                                
                                   Demos for C                                  
@@ -680,17 +670,17 @@ demo/C/TEST                                                          <no date>
  * demo/008:
 
     Interface to Bison/Yacc (Contributed by Marco Antonelli)
-        008.sh DEBUG ...............................................[FAIL]
-               NDEBUG ..............................................[FAIL]
+        008.sh DEBUG .................................................[OK]
+               NDEBUG ................................................[OK]
 
  * demo/009:
 
     Lexers on pipes, sockets, and the command line.
         009.sh command-line ........................................[FAIL]
                command-line-utf8 ...................................[FAIL]
-               socket ..............................................[FAIL]
+               socket ................................................[OK]
                socket-utf8 .........................................[FAIL]
-               stdin ...............................................[FAIL]
+               stdin .................................................[OK]
                stdin-utf8 ..........................................[FAIL]
 
  * demo/010:
@@ -700,15 +690,15 @@ demo/C/TEST                                                          <no date>
                feeder-plain ........................................[FAIL]
                gavager-converter ...................................[FAIL]
                gavager-plain .......................................[FAIL]
-               point-plain .........................................[FAIL]
+               point-plain ...........................................[OK]
 
  * demo/011:
 
     Engine Encoding (Example ISO8859-7)
-        011.sh iso8859-7 ...........................................[FAIL]
+        011.sh iso8859-7 .............................................[OK]
                utf16-be ............................................[FAIL]
                utf16-le ............................................[FAIL]
-               utf8 ................................................[FAIL]
+               utf8 ..................................................[OK]
 
  * demo/011b:
 
@@ -762,23 +752,16 @@ demo/C/TEST                                                          <no date>
                 \__ NDEBUG
     [FAIL] 007.sh _ DEBUG
                 \__ NDEBUG
-    [FAIL] 008.sh _ DEBUG
-                \__ NDEBUG
     [FAIL] 009.sh _ command-line
                 \__ command-line-utf8
-                \__ socket
                 \__ socket-utf8
-                \__ stdin
                 \__ stdin-utf8
     [FAIL] 010.sh _ feeder-converter
                 \__ feeder-plain
                 \__ gavager-converter
                 \__ gavager-plain
-                \__ point-plain
-    [FAIL] 011.sh _ iso8859-7
-                \__ utf16-be
+    [FAIL] 011.sh _ utf16-be
                 \__ utf16-le
-                \__ utf8
     [FAIL] 011b.sh _ BE
                  \__ LE
     [FAIL] 012.sh _ DEBUG
@@ -861,8 +844,8 @@ demo/Cpp/TEST                                                        <no date>
  * demo/008:
 
     Interface to Bison/Yacc (Contributed by Marco Antonelli)
-        008.sh DEBUG .................................................[OK]
-               NDEBUG ................................................[OK]
+        008.sh DEBUG ...............................................[FAIL]
+               NDEBUG ..............................................[FAIL]
 
  * demo/009:
 
@@ -934,6 +917,8 @@ demo/Cpp/TEST                                                        <no date>
                 \__ 2
                 \__ 2_NDEBUG
     [FAIL] 006.sh _ DEBUG
+                \__ NDEBUG
+    [FAIL] 008.sh _ DEBUG
                 \__ NDEBUG
     [FAIL] 009.sh _ command-line
                 \__ command-line-utf8
@@ -1163,7 +1148,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................[KEYBOARD_INTERRUPT]
+        pyflakes-check.sh ..........................................[FAIL]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1226,23 +1211,16 @@ quex/TESTS/did-you-mean/TEST                                         <no date>
 quex/TESTS/drop-outs/TEST                                            <no date>
 -------------------------------------------------------------------------------
  * Testing states with no hole in transition map
-        lexer BEGIN-1 .......................................[MAKE FAILED]
-              BEGIN-many ....................................[MAKE FAILED]
-              END-1 .........................................[MAKE FAILED]
-              END-many ......................................[MAKE FAILED]
-              MIDDLE-1 ......................................[MAKE FAILED]
-              MIDDLE-many ...................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] lexer _ BEGIN-1
-               \__ BEGIN-many
-               \__ END-1
-               \__ END-many
-               \__ MIDDLE-1
-               \__ MIDDLE-many
+        lexer BEGIN-1 ................................................[OK]
+              BEGIN-many .............................................[OK]
+              END-1 ..................................................[OK]
+              END-many ...............................................[OK]
+              MIDDLE-1 ...............................................[OK]
+              MIDDLE-many ............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                 Mode Transition Permissions 'entry' and 'exit'                 
@@ -1660,24 +1638,24 @@ quex/TESTS/source-package/TEST                                       <no date>
  * Source Packager:
 
     C
-        test-c.sh codec ............................................[FAIL]
-                  codec-utf16 ......................................[FAIL]
-                  codec-utf8 .......................................[FAIL]
-                  customized-token-class ...........................[FAIL]
-                  iconv ............................................[FAIL]
-                  icu ..............................................[FAIL]
-                  manual-token-class ...............................[FAIL]
+        test-c.sh codec ..............................................[OK]
+                  codec-utf16 ........................................[OK]
+                  codec-utf8 .........................................[OK]
+                  customized-token-class .............................[OK]
+                  iconv ..............................................[OK]
+                  icu ................................................[OK]
+                  manual-token-class .................................[OK]
                   no-counter .......................................[FAIL]
-                  no-include-stack .................................[FAIL]
-                  no-string-accumulator ............................[FAIL]
-                  plain ............................................[FAIL]
-                  post-categorizer .................................[FAIL]
+                  no-include-stack ...................................[OK]
+                  no-string-accumulator ..............................[OK]
+                  plain ..............................................[OK]
+                  post-categorizer ...................................[OK]
     C++
         test-cpp.sh codec ............................................[OK]
                     codec-utf16 ......................................[OK]
                     codec-utf8 .......................................[OK]
                     customized-token-class ...........................[OK]
-                    iconv ..........................................[FAIL]
+                    iconv ............................................[OK]
                     icu ..............................................[OK]
                     manual-token-class ...............................[OK]
                     no-counter .....................................[FAIL]
@@ -1690,20 +1668,8 @@ quex/TESTS/source-package/TEST                                       <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-c.sh _ codec
-                   \__ codec-utf16
-                   \__ codec-utf8
-                   \__ customized-token-class
-                   \__ iconv
-                   \__ icu
-                   \__ manual-token-class
-                   \__ no-counter
-                   \__ no-include-stack
-                   \__ no-string-accumulator
-                   \__ plain
-                   \__ post-categorizer
-    [FAIL] test-cpp.sh _ iconv
-                     \__ no-counter
+    [FAIL] test-c.sh _ no-counter
+    [FAIL] test-cpp.sh _ no-counter
 ===============================================================================
                                                                                
                                   Token Class                                  
@@ -2027,28 +1993,28 @@ quex/engine/loop/TEST                                                <no date>
                      7 .............................................[FAIL]
                      8 .............................................[FAIL]
     Varrying Buffer Size
-        skip.py 3 ..................................................[FAIL]
-                4 .............................................[NO OUTPUT]
-                5 .............................................[NO OUTPUT]
-                6 .............................................[NO OUTPUT]
-                7 .............................................[NO OUTPUT]
-                8 .............................................[NO OUTPUT]
+        skip.py 3 ....................................................[OK]
+                4 ....................................................[OK]
+                5 ....................................................[OK]
+                6 ....................................................[OK]
+                7 ....................................................[OK]
+                8 ....................................................[OK]
 
  * Skip-NestedRange:
 
     Delimiters of different sizes
-        skip-nested_range.py one ...................................[FAIL]
-                             same-head .............................[FAIL]
-                             three .................................[FAIL]
-                             two ...................................[FAIL]
+        skip-nested_range.py one .....................................[OK]
+                             same-head ...............................[OK]
+                             three ...................................[OK]
+                             two .....................................[OK]
 
  * Skip-Range:
 
     Varrying DelimiterLength (Buffer=length+3)
-        skip-range.py 1 ............................................[FAIL]
-                      2 ............................................[FAIL]
-                      3 ............................................[FAIL]
-                      4 ............................................[FAIL]
+        skip-range.py 1 ..............................................[OK]
+                      2 ..............................................[OK]
+                      3 ..............................................[OK]
+                      4 ..............................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
@@ -2070,20 +2036,6 @@ quex/engine/loop/TEST                                                <no date>
                       \__ 6
                       \__ 7
                       \__ 8
-    [FAIL] skip.py _ 3
-                 \__ 4
-                 \__ 5
-                 \__ 6
-                 \__ 7
-                 \__ 8
-    [FAIL] skip-nested_range.py _ one
-                              \__ same-head
-                              \__ three
-                              \__ two
-    [FAIL] skip-range.py _ 1
-                       \__ 2
-                       \__ 3
-                       \__ 4
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -2926,61 +2878,44 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * API:
 
     load_forward
-        forward-api.exe BAD_LEXATOM .........................[MAKE FAILED]
-                        DONE ................................[MAKE FAILED]
-                        NO_MORE_DATA ........................[MAKE FAILED]
-                        NO_SPACE_FOR_LOAD ...................[MAKE FAILED]
+        forward-api.exe BAD_LEXATOM ................................[FAIL]
+                        DONE .........................................[OK]
+                        NO_MORE_DATA .................................[OK]
+                        NO_SPACE_FOR_LOAD ............................[OK]
 
  * Buffer_load_backward:
 
     (BPC=1, FB=0)
-        backward-fb0.exe BufferSize-3 .......................[MAKE FAILED]
-                         BufferSize-4 .......................[MAKE FAILED]
-                         BufferSize-5 .......................[MAKE FAILED]
+        backward-fb0.exe BufferSize-3 ................................[OK]
+                         BufferSize-4 ................................[OK]
+                         BufferSize-5 ................................[OK]
     (BPC=1, FB=1)
-        backward-fb1.exe BufferSize-4 .......................[MAKE FAILED]
-                         BufferSize-5 .......................[MAKE FAILED]
+        backward-fb1.exe BufferSize-4 ................................[OK]
+                         BufferSize-5 ................................[OK]
     (BPC=1, FB=2)
-        backward-fb2.exe BufferSize-5 .......................[MAKE FAILED]
+        backward-fb2.exe BufferSize-5 ................................[OK]
     (BPC=4, FB=2)
-        backward-fb2-32.exe BufferSize-5 ....................[MAKE FAILED]
+        backward-fb2-32.exe BufferSize-5 .............................[OK]
 
  * Buffer_load_forward:
 
     (BPC=1, FB=0)
-        forward-fb0.exe BufferSize-3 ........................[MAKE FAILED]
-                        BufferSize-4 ........................[MAKE FAILED]
-                        BufferSize-5 ........................[MAKE FAILED]
+        forward-fb0.exe BufferSize-3 .................................[OK]
+                        BufferSize-4 .................................[OK]
+                        BufferSize-5 .................................[OK]
     (BPC=1, FB=1)
-        forward-fb1.exe BufferSize-4 ........................[MAKE FAILED]
-                        BufferSize-5 ........................[MAKE FAILED]
+        forward-fb1.exe BufferSize-4 .................................[OK]
+                        BufferSize-5 .................................[OK]
     (BPC=1, FB=2)
-        forward-fb2.exe BufferSize-5 ........................[MAKE FAILED]
+        forward-fb2.exe BufferSize-5 .................................[OK]
     (BPC=4, FB=2)
-        forward-fb2-32.exe BufferSize-5 .....................[MAKE FAILED]
+        forward-fb2-32.exe BufferSize-5 ..............................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] forward-api.exe _ BAD_LEXATOM
-                         \__ DONE
-                         \__ NO_MORE_DATA
-                         \__ NO_SPACE_FOR_LOAD
-    [FAIL] backward-fb0.exe _ BufferSize-3
-                          \__ BufferSize-4
-                          \__ BufferSize-5
-    [FAIL] backward-fb1.exe _ BufferSize-4
-                          \__ BufferSize-5
-    [FAIL] backward-fb2.exe _ BufferSize-5
-    [FAIL] backward-fb2-32.exe _ BufferSize-5
-    [FAIL] forward-fb0.exe _ BufferSize-3
-                         \__ BufferSize-4
-                         \__ BufferSize-5
-    [FAIL] forward-fb1.exe _ BufferSize-4
-                         \__ BufferSize-5
-    [FAIL] forward-fb2.exe _ BufferSize-5
-    [FAIL] forward-fb2-32.exe _ BufferSize-5
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3004,72 +2939,45 @@ quex/code_base/buffer/TESTS/move/TEST                                <no date>
  * move_away_passed_content:
 
     (BPC=1, FB=0)
-        move_away_passed_content-fb0.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb0.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=1, FB=1)
-        move_away_passed_content-fb1.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb1.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=1, FB=2)
-        move_away_passed_content-fb2.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb2.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=4, FB=2)
-        move_away_passed_content-fb2-32.exe EoS .............[MAKE FAILED]
-                                            NoEoS ...........[MAKE FAILED]
+        move_away_passed_content-fb2-32.exe EoS ......................[OK]
+                                            NoEoS ....................[OK]
 
  * move_away_upfront_content:
 
     (BPC=1)
-        move_away_upfront_content-8.exe cib=0 ...............[MAKE FAILED]
-                                        cib=0:EOS ...........[MAKE FAILED]
-                                        cib=1 ...............[MAKE FAILED]
-                                        cib=1:EOS ...........[MAKE FAILED]
-                                        cib=2 ...............[MAKE FAILED]
-                                        cib=2:EOS ...........[MAKE FAILED]
+        move_away_upfront_content-8.exe cib=0 ........................[OK]
+                                        cib=0:EOS ....................[OK]
+                                        cib=1 ........................[OK]
+                                        cib=1:EOS ....................[OK]
+                                        cib=2 ........................[OK]
+                                        cib=2:EOS ....................[OK]
     (BPC=2)
-        move_away_upfront_content-16.exe cib=0 ..............[MAKE FAILED]
-                                         cib=0:EOS ..........[MAKE FAILED]
-                                         cib=1 ..............[MAKE FAILED]
-                                         cib=1:EOS ..........[MAKE FAILED]
-                                         cib=2 ..............[MAKE FAILED]
-                                         cib=2:EOS ..........[MAKE FAILED]
+        move_away_upfront_content-16.exe cib=0 .......................[OK]
+                                         cib=0:EOS ...................[OK]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
     (BPC=4)
-        move_away_upfront_content-32.exe cib=0 ..............[MAKE FAILED]
-                                         cib=0:EOS ..........[MAKE FAILED]
-                                         cib=1 ..............[MAKE FAILED]
-                                         cib=1:EOS ..........[MAKE FAILED]
-                                         cib=2 ..............[MAKE FAILED]
-                                         cib=2:EOS ..........[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] move_away_passed_content-fb0.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb1.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb2.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb2-32.exe _ EoS
-                                             \__ NoEoS
-    [FAIL] move_away_upfront_content-8.exe _ cib=0
-                                         \__ cib=0:EOS
-                                         \__ cib=1
-                                         \__ cib=1:EOS
-                                         \__ cib=2
-                                         \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-16.exe _ cib=0
-                                          \__ cib=0:EOS
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-32.exe _ cib=0
-                                          \__ cib=0:EOS
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
+        move_away_upfront_content-32.exe cib=0 .......................[OK]
+                                         cib=0:EOS ...................[OK]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       Extensive Tests on Buffer Seek&Tell                      
@@ -3080,229 +2988,132 @@ quex/code_base/buffer/TESTS/navigation/TEST                          <no date>
  * Buffer Tell&Seek:
 
     LexatomLoader_Converter (BPC=1, FALLBACK=0)
-        test-Converter-1-0.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-1-0.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=1, FALLBACK=1)
-        test-Converter-1-1.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-1-1.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=1, FALLBACK=2)
-        test-Converter-1-2.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-1-2.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=2, FALLBACK=0)
-        test-Converter-2-0.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-2-0.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=2, FALLBACK=1)
-        test-Converter-2-1.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-2-1.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=2, FALLBACK=2)
-        test-Converter-2-2.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-2-2.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=4, FALLBACK=0)
-        test-Converter-4-0.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-4-0.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=4, FALLBACK=1)
-        test-Converter-4-1.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-4-1.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=4, FALLBACK=2)
-        test-Converter-4-2.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-4-2.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter StrangeStream (BPC=1, FALLBACK=0)
-        test-Converter-StrangeStream-1-0.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-1-0.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=1, FALLBACK=2)
-        test-Converter-StrangeStream-1-2.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-1-2.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=0)
-        test-Converter-StrangeStream-2-0.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-2-0.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=0)
-        test-Converter-StrangeStream-4-0.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-4-0.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=2)
-        test-Converter-StrangeStream-2-2.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-2-2.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=2)
-        test-Converter-StrangeStream-4-2.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-4-2.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=0)
-        test-Plain-1-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=1)
-        test-Plain-1-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=2)
-        test-Plain-1-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=0)
-        test-Plain-2-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=1)
-        test-Plain-2-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=2)
-        test-Plain-2-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=0)
-        test-Plain-4-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=1)
-        test-Plain-4-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=2)
-        test-Plain-4-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=0)
-        test-Plain-wiostream-wchar_t-0.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
+        test-Plain-wiostream-wchar_t-0.exe linear ....................[OK]
+                                           stepping ..................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=1)
-        test-Plain-wiostream-wchar_t-1.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
+        test-Plain-wiostream-wchar_t-1.exe linear ....................[OK]
+                                           stepping ..................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=2)
-        test-Plain-wiostream-wchar_t-2.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-Converter-1-0.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-1-1.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-1-2.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-2-0.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-2-1.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-2-2.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-4-0.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-4-1.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-4-2.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-StrangeStream-1-0.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-1-2.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-2-0.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-4-0.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-2-2.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-4-2.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Plain-1-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-1-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-1-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-0.exe _ linear
-                                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-1.exe _ linear
-                                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-2.exe _ linear
-                                            \__ stepping
+        test-Plain-wiostream-wchar_t-2.exe linear ....................[OK]
+                                           stepping ..................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Pathwalker State Construction                         
@@ -3444,52 +3255,39 @@ quex/code_base/buffer/lexatoms/converter/iconv/TEST                  <no date>
  * Convert all in one beat:
 
     uint16_t
-        one-beat-2.exe ......................................[MAKE FAILED]
+        one-beat-2.exe ...............................................[OK]
     uint32_t
-        one-beat-4.exe ......................................[MAKE FAILED]
+        one-beat-4.exe ...............................................[OK]
     uint8_t
-        one-beat-1.exe ......................................[MAKE FAILED]
+        one-beat-1.exe ...............................................[OK]
     wchar_t
-        one-beat-WC.exe .....................................[MAKE FAILED]
+        one-beat-WC.exe ..............................................[OK]
 
  * Convert drain character by drain character:
 
     uint16_t
-        stepwise-drain-2.exe ................................[MAKE FAILED]
+        stepwise-drain-2.exe .........................................[OK]
     uint32_t
-        stepwise-drain-4.exe ................................[MAKE FAILED]
+        stepwise-drain-4.exe .........................................[OK]
     uint8_t
-        stepwise-drain-1.exe ................................[MAKE FAILED]
+        stepwise-drain-1.exe .........................................[OK]
     wchar_t
-        stepwise-drain-WC.exe ...............................[MAKE FAILED]
+        stepwise-drain-WC.exe ........................................[OK]
 
  * Convert source byte by source byte:
 
     uint16_t
-        stepwise-source-2.exe ...............................[MAKE FAILED]
+        stepwise-source-2.exe ........................................[OK]
     uint32_t
-        stepwise-source-4.exe ...............................[MAKE FAILED]
+        stepwise-source-4.exe ........................................[OK]
     uint8_t
-        stepwise-source-1.exe ...............................[MAKE FAILED]
+        stepwise-source-1.exe ........................................[OK]
     wchar_t
-        stepwise-source-WC.exe ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] one-beat-2.exe
-    [FAIL] one-beat-4.exe
-    [FAIL] one-beat-1.exe
-    [FAIL] one-beat-WC.exe
-    [FAIL] stepwise-drain-2.exe
-    [FAIL] stepwise-drain-4.exe
-    [FAIL] stepwise-drain-1.exe
-    [FAIL] stepwise-drain-WC.exe
-    [FAIL] stepwise-source-2.exe
-    [FAIL] stepwise-source-4.exe
-    [FAIL] stepwise-source-1.exe
-    [FAIL] stepwise-source-WC.exe
+        stepwise-source-WC.exe .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                             ICU Converter Interface                            
@@ -3704,14 +3502,14 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       96  238   [FAIL] TEST                                                          
-       53  54    [FAIL] demo/C/TEST                                                   
-       38  54    [FAIL] ..../Cpp/TEST                                                 
-           13      [OK] ..../TEST                                                     
+       84  238   [FAIL] TEST                                                          
+       46  54    [FAIL] demo/C/TEST                                                   
+       40  54    [FAIL] ..../Cpp/TEST                                                 
+        1  13    [FAIL] ..../TEST                                                     
         7  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
-        6  6     [FAIL] ........../drop-outs/TEST                                     
+           6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
        10  10    [FAIL] ........../event-handling/TEST                                
@@ -3721,24 +3519,24 @@ SUMMARY:
         2  45    [FAIL] ........../match-precedence/TEST                              
         3  12    [FAIL] ........../misc/TEST                                          
        55  55    [FAIL] ........../reset/TEST                                         
-       14  24    [FAIL] ........../source-package/TEST                                
+        2  24    [FAIL] ........../source-package/TEST                                
            2       [OK] ........../token-class/TEST                                   
            4       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
            42      [OK] ............../analyzer/TEST                                  
-       18  18    [FAIL] ............../buffer/TESTS/load/TEST                         
+        1  18    [FAIL] ............../buffer/TESTS/load/TEST                         
            2       [OK] .........................../misc/TEST                         
-       26  26    [FAIL] .........................../move/TEST                         
-       96  96    [FAIL] .........................../navigation/TEST                   
+           26      [OK] .........................../move/TEST                         
+           96      [OK] .........................../navigation/TEST                   
            12      [OK] ...................../bytes/TEST                              
-       12  12    [FAIL] ...................../lexatoms/converter/iconv/TEST           
+           12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
            10      [OK] ............../converter_helper/TEST                          
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-       30  38    [FAIL] .........../loop/TEST                                         
+       16  38    [FAIL] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
            17      [OK] .........../operations/TEST                                   
         4  58    [FAIL] .........../state_machine/TEST                                
@@ -3758,11 +3556,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____    _  _   ____            
-    |  ___|_ _(_) |___     | ___|  | || | |___ \     __  __
-    | |_ / _` | | / __|    |___ \  | || |_  __) |    \ \/ /
-    |  _| (_| | | \__ \     ___) | |__   _ / __/      >  < 
-    |_|  \__,_|_|_|___/    |____/     |_| |_____|    /_/\_\
+     _____     _ _          _____  _  _   _____           
+    |  ___|_ _(_) |___     |___ / | || | |___ /     __  __
+    | |_ / _` | | / __|      |_ \ | || |_  |_ \     \ \/ /
+    |  _| (_| | | \__ \     ___) ||__   _ ___) |     >  < 
+    |_|  \__,_|_|_|___/    |____/    |_| |____/     /_/\_\
                                                                    (1631 tests)
 
 ===============================================================================

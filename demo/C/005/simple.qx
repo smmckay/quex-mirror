@@ -11,7 +11,7 @@ body {
     size_t      include_depth;  /* Track the include depth for fun */
 }
 
-init {
+constructor {
     self.letter_count  = 0;
     self.include_depth = 0;
 }

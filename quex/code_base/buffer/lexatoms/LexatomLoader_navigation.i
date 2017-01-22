@@ -68,8 +68,8 @@ QUEX_NAME(LexatomLoader_lexatom_index_seek)(QUEX_NAME(LexatomLoader)*         me
      *                           the stomach. 
      * => When backup position is to setup, start stepping from beginning.
      * (This is currently only an issue with ICU; IConv behaves well)        */
-    backup_stomach_byte_n               = me->stomach_byte_n(me);
-    backup_byte_loader_position         = me->byte_loader->tell(me->byte_loader);
+    backup_stomach_byte_n             = me->stomach_byte_n(me);
+    backup_byte_loader_position       = me->byte_loader->tell(me->byte_loader);
     backup_lexatom_index_next_to_fill = me->lexatom_index_next_to_fill;
 
     if( me->byte_n_per_lexatom != -1 ) {
