@@ -36,12 +36,10 @@ QUEX_INLINE void
 QUEX_NAME(Converter_IConv_delete_self)(QUEX_NAME(Converter)* me);
 
 QUEX_INLINE ptrdiff_t 
-QUEX_NAME(Converter_IConv_stomach_byte_n)(QUEX_NAME(Converter)* me)
-{ return 0; }
+QUEX_NAME(Converter_IConv_stomach_byte_n)(QUEX_NAME(Converter)* me);
 
 QUEX_INLINE void 
-QUEX_NAME(Converter_IConv_stomach_clear)(QUEX_NAME(Converter)* me)
-{ }
+QUEX_NAME(Converter_IConv_stomach_clear)(QUEX_NAME(Converter)* me);
 
 QUEX_INLINE QUEX_NAME(Converter)*
 QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
@@ -186,11 +184,11 @@ QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*  alter_ego,
 
 QUEX_INLINE ptrdiff_t 
 QUEX_NAME(Converter_IConv_stomach_byte_n)(QUEX_NAME(Converter)* me)
-{ return 0; }
+{ (void)me; return 0; }
 
 QUEX_INLINE void 
 QUEX_NAME(Converter_IConv_stomach_clear)(QUEX_NAME(Converter)* me)
-{ }
+{ (void)me; }
 
 QUEX_INLINE void 
 QUEX_NAME(Converter_IConv_delete_self)(QUEX_NAME(Converter)* alter_ego)

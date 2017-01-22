@@ -109,10 +109,10 @@ hwut-end: clean
 
 
 %.E: %.c
-	$(CC) $(DEFS) $(INCLUDES) -E $< -o $@
+	$(CC) $(DEFS) $(INCLUDES) $< -E > $@
 
 %.E: %.cpp
-	g++ $(DEFS) $(INCLUDES) -E $< -o $@
+	g++ $(DEFS) $(INCLUDES) $< -E > $@
 
 clean: 
 	rm -rf $(TESTS) *.exe *.o *.E

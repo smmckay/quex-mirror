@@ -272,7 +272,7 @@ QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
     }
 }
 
-void
+QUEX_INLINE void
 QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 /* Resouces = 'absent' => Destructor knows that it must not be freed. 
  * 

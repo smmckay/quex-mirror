@@ -128,7 +128,7 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
         hwut_verify(false);
     }
 
-    filler = QUEX_NAME(LexatomLoader_Converter_new)(byte_loader, converter, 7);
+    filler = QUEX_NAME(LexatomLoader_Converter_new)(byte_loader, converter);
 
     /* If file was not opened in binary mode no converter filler is created! */
     __quex_assert(filler); 
@@ -146,9 +146,9 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
     /* REFERENCE file and INPUT file are the SAME.                           */
     hwut_verify(basic_functionality(&buffer, ref_file_name));
 
-    filler->delete_self(filler);
-    byte_loader->delete_self(byte_loader);
-    converter->delete_self(converter);
+    //filler->delete_self(filler);
+    //byte_loader->delete_self(byte_loader);
+    //converter->delete_self(converter);
 }
 
 static ptrdiff_t

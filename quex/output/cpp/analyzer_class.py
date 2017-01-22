@@ -100,7 +100,7 @@ def do_implementation(ModeDB):
                 ["$$MEMENTO_EXTENSIONS_PACK$$",                 Lng.SOURCE_REFERENCED(blackboard.memento_pack_extension)],
                 ["$$MEMENTO_EXTENSIONS_UNPACK$$",               Lng.SOURCE_REFERENCED(blackboard.memento_unpack_extension)],
                 ])
-    return func_txt
+    return "\n%s\n" % func_txt
 
 def get_constructor_code(ModeDb):
     L = max(map(lambda m: len(m.name), ModeDb.itervalues()))

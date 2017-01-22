@@ -15,7 +15,7 @@ else
 endif
 
 # (*) COMPILER SETTINGS ________________________________________________________
-COMPILER := g++ -Wall -Werror -Wconversion -pedantic # -ggdb 
+COMPILER := g++ -Wall -Werror -Wconversion -pedantic -ggdb 
 
 CC := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
       -DPRINT_LINE_COLUMN_NUMBER                        \

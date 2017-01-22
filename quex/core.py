@@ -163,7 +163,11 @@ def _prepare_all(mode_db, class_token_implementation,
     # -- do the coding of the class framework
     configuration_header    = configuration.do(mode_db)
     analyzer_header         = analyzer_class.do(mode_db)
-    analyzer_implementation = analyzer_class.do_implementation(mode_db) 
+    if Setup.language == "C++":
+        analyzer_header        += analyzer_class.do_implementation(mode_db) 
+        analyzer_implementation = ""
+    else:
+        analyzer_implementation = analyzer_class.do_implementation(mode_db) 
     mode_implementation     = mode_classes.do(mode_db)
 
     # (*) [Optional] Generate a converter helper
