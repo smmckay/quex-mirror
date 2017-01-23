@@ -36,8 +36,16 @@ main(int argc, char** argv)
 #   endif
     const char*   file_name = argc > 1 ? argv[1] : "example.txt";
 
-    QUEX_NAME(from_ByteLoader)(&qlex, file_name, 
-                               QUEX_SETTING_UT_CONVERTER_NEW, "UTF-8");
+    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
+
+#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+#   else
+#   define                   converter NULL
+#   endif
+    QUEX_NAME(from_ByteLoader)(&qlex, byte_loader, converter);
 
 #   ifdef HWUT_INFO_MESSAGE
 	hwut_info(HWUT_INFO_MESSAGE);
@@ -88,7 +96,6 @@ main(int argc, char** argv)
 
     TEST_EPILOG
 
-    byte_loader->delete_self(byte_loader);
     QUEX_NAME(destruct)(&qlex);
     return 0;
 }

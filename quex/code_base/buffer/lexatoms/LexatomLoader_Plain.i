@@ -140,7 +140,7 @@ QUEX_NAME(LexatomLoader_Plain_load_lexatoms)(QUEX_NAME(LexatomLoader)*  alter_eg
                                                end_of_stream_f);
 
     if( loaded_byte_n % sizeof(QUEX_TYPE_LEXATOM) ) {
-        __QUEX_STD_printf("Error: End of file cuts in the middle a multi-byte character.");
+        __QUEX_STD_printf("Error: End of file cuts in the middle of a multi-byte character.");
     }
     loaded_n = loaded_byte_n / sizeof(QUEX_TYPE_LEXATOM);
 

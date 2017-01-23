@@ -15,20 +15,24 @@ main(int argc, char** argv)
 {        
     using namespace quex;
     // we want to have error outputs in stdout, so that the unit test could see it.
-    Token*      token_p;
+    Token*                   token_p;
+    const char*              file_name = argc < 2 ? "example.txt" : argv[1];
+
 #   ifdef STRANGE_STREAM
-    ifstream                 istr("example.txt");
+    ifstream                 istr(file_name);
     StrangeStream<ifstream>  strange_stream(&istr);
     QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_stream_new)(&strange_stream);
-    Simple                   qlex(byte_loader, NULL);
-#   if defined(QUEX_OPTION_CONVERTER_ICONV)
+#   else
+    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
+#   endif
+
+#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
     QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
 #   elif defined(QUEX_OPTION_CONVERTER_ICU)
     QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
 #   else
 #   define                   converter NULL
 #   endif
-    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(argv[1]);
     Simple                   qlex(byte_loader, converter); 
 
     cout << "## An Assert-Abortion might be an intended element of the experiment.\n";

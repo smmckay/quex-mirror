@@ -126,7 +126,8 @@ def __Setup_init_language_database(Language):
 def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
        SecondPatternActionPairList=[], QuexBufferFallbackN=0, ShowBufferLoadsF=False,
-       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
+       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS",
+       TokenQueueF=False):
 
     assert QuexBufferFallbackN >= 0
 
@@ -207,7 +208,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     source_code =   create_common_declarations(Language, QuexBufferSize, 
                                                QuexBufferFallbackN, BufferLimitCode, 
-                                               ComputedGotoF=computed_goto_f) \
+                                               ComputedGotoF=computed_goto_f,
+                                               TokenQueueF=TokenQueueF) \
                   + state_machine_code \
                   + test_program
 

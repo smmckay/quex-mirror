@@ -32,12 +32,12 @@ int main(int argc, char** argv)
     QUEX_TYPE_TOKEN_ID    token_id = (QUEX_TYPE_TOKEN_ID)0x0;
 #   endif
     // (*) create the lexical analyser
-#   ifndef CONVERTER
-#   define                converter NULL
-#   elif   CONVERTER == ICONV
-    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_ICU_new)("UTF8");
-#   elif   CONVERTER == ICONV
-    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)("UTF8");
+#   if defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+#   else
+#   define                   converter NULL
 #   endif
     Simple*               qlex = Simple::from_file_name(argv[1], converter); 
 
