@@ -48,7 +48,7 @@ self_test(const char* CharFilename)
     string         Directory("example/");
     string         Filename(CharFilename);
     ifstream       istr((Directory + Filename + ".txt").c_str());
-    quex::Simple   qlex(&istr);
+    quex::Simple   qlex(quex::QUEX_NAME(ByteLoader_stream_new)(&istr), NULL);
 
 #   ifdef  QUEX_OPTION_TOKEN_POLICY_QUEUE
     quex::Token*  token_p = 0x0;

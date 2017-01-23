@@ -78,7 +78,7 @@ mode OPEN_INCLUDED_FILE : END_INCLUDED_FILE {
                        self.input_name(), (int)self.line_number(), 
                        Filename.c_str());
 
-                self.include_push(Filename.c_str(), input_handle);
+                self.include_push(Filename.c_str(), NULL);
             }
         }
         /* IMPORTANT */

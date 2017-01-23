@@ -124,7 +124,8 @@ public:
     $$___SPACE___$$ QUEX_TYPE_LEXATOM*      BufferEndOfContentP = 0x0)
     { QUEX_NAME(from_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
-    static $$LEXER_CLASS_NAME$$* from_file_name(const char*      Filename, 
+    /* The 'new' helpers.                                                     */
+    static $$LEXER_CLASS_NAME$$* from_file_name(const char*           Filename, 
     $$___SPACE___$$                             QUEX_NAME(Converter)* Converter = 0) 
     { return new $$LEXER_CLASS_NAME$$(Filename, Converter); }
 
@@ -168,7 +169,7 @@ public:
             { return QUEX_NAME(include_push_file_name)(this, FileName, Converter); }
     bool    include_push(const char*             InputName, 
                          QUEX_NAME(ByteLoader)*  byte_loader, 
-                         QUEX_NAME(Converter)*   Converter = 0)
+                         QUEX_NAME(Converter)*   Converter)  /* != 0 to avoid ambiguity. */
             { return QUEX_NAME(include_push_ByteLoader)(this, InputName, byte_loader, Converter); }
     bool    include_push(const char*        InputName, 
                          QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
@@ -177,9 +178,12 @@ public:
             { return QUEX_NAME(include_push_memory)(this, InputName, BufferMemoryBegin, 
                                                     BufferMemorySize, BufferEndOfContentP); }
 
-    bool    include_pop();
-    void    include_stack_delete();
-    bool    include_detect_recursion(const char* InputName);
+    bool    include_pop()
+            { return QUEX_NAME(include_pop)(this); }
+    void    include_stack_delete()
+            { QUEX_NAME(include_stack_delete)(this); }
+    bool    include_detect_recursion(const char* InputName)
+            { return QUEX_NAME(include_detect_recursion)(this, InputName); }
 #   endif
 
     QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get();
