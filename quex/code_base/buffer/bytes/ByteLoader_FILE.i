@@ -55,9 +55,6 @@ QUEX_NAME(ByteLoader_FILE_new_from_file_name)(const char* FileName)
 QUEX_INLINE void
 QUEX_NAME(ByteLoader_FILE_construct)(QUEX_NAME(ByteLoader_FILE)* me, __QUEX_STD_FILE* fh)
 {
-    setbuf(fh, 0);   /* turn off system based buffering! 
-    **               ** this is essential to profit from the quex buffer!    */
-
     /* IMPORTANT: input_handle must be set BEFORE call to base constructor!
      *            Constructor does call 'tell()'                             */
     me->input_handle = fh;

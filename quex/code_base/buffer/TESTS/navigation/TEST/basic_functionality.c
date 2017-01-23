@@ -30,6 +30,12 @@
 #include <quex/code_base/MemoryManager.i>
 //#include <quex/code_base/buffer/asserts.i>
 
+/* Number of positionings defines the duration of the test! For analysis,
+ * in order to reduce test duration, the number may be reduced here.         */
+#ifndef   UNIT_TEST_POSITIONING_TEST_N
+#  define UNIT_TEST_POSITIONING_TEST_N 65536
+#endif
+
 QUEX_NAMESPACE_MAIN_OPEN
 
 static QUEX_TYPE_LEXATOM       reference[8192];
@@ -85,7 +91,7 @@ basic_functionality(QUEX_NAME(Buffer)* me, const char* ReferenceFileName)
     hwut_verify(seek_backward(me, position_limit));
 
     /* MASSIVE random positioning tests.                                     */
-    for(i=0; i < 65536 ; ++i) {
+    for(i=0; i < UNIT_TEST_POSITIONING_TEST_N ; ++i) {
         /* Choose a position from 0 to size + 3. Choose a position beyond the
          * possible maximum, so that the error handling check is included.   
          * 13  = largest prime < 2**4;

@@ -3,9 +3,6 @@
 
 #include "EasyLexer"
 
-#ifndef    ENCODING_NAME
-#   define ENCODING_NAME 0
-#endif
 #ifndef    CONVERTER
 #   define CONVERTER 0
 #endif

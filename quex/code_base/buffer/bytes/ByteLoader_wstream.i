@@ -61,7 +61,7 @@ QUEX_NAME(ByteLoader_wstream_new_from_file_name)(const char* FileName)
 
 QUEX_INLINE void
 QUEX_NAME(ByteLoader_wstream_construct)(QUEX_NAME(ByteLoader_wstream)* me, 
-                                       std::wistream*                               sh)
+                                        std::wistream*                 sh)
 {
     /* IMPORTANT: input_handle must be set BEFORE call to constructor!
      *            Constructor does call 'tell()'                             */

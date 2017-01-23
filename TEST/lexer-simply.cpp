@@ -4,13 +4,6 @@
 #include <./Simple>
 #include "quex/code_base/buffer/bytes/ByteLoader_FILE.i"
 
-#if   defined(QUEX_OPTION_CONVERTER_ICONV)
-#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_IConv_new)
-#elif defined(QUEX_OPTION_CONVERTER_ICU)
-#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_ICU_new)
-#elif defined(QUEX_SETTING_UT_CONVERTER_NEW)
-#   undef  QUEX_SETTING_UT_CONVERTER_NEW
-#endif
 #ifndef    CONVERTER
 #   define CONVERTER 0
 #endif
@@ -28,14 +21,15 @@ main(int argc, char** argv)
     StrangeStream<ifstream>  strange_stream(&istr);
     QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_stream_new)(&strange_stream);
     Simple                   qlex(byte_loader, NULL);
-#   elif defined (CONVERTER)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)();
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)();
+#   if defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+#   else
+#   define                   converter NULL
+#   endif
     QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(argv[1]);
     Simple                   qlex(byte_loader, converter); 
-#   else
-    Simple                   qlex(argc == 1 ? "example.txt" : argv[1]);
-#   endif
 
     cout << "## An Assert-Abortion might be an intended element of the experiment.\n";
 #   ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE

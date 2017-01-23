@@ -8,14 +8,6 @@
 
 using namespace std;
 
-#if   defined(QUEX_OPTION_CONVERTER_ICONV)
-#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_IConv_new)
-#elif defined(QUEX_OPTION_CONVERTER_ICU)
-#   define QUEX_SETTING_UT_CONVERTER_NEW QUEX_NAME(Converter_ICU_new)
-#elif defined(QUEX_SETTING_UT_CONVERTER_NEW)
-#   undef  QUEX_SETTING_UT_CONVERTER_NEW
-#endif
-
 int 
 main(int argc, char** argv) 
 {        
@@ -26,13 +18,15 @@ main(int argc, char** argv)
 #   else
     const char*    file_name = "example.txt";
 #   endif
-#   ifdef __QUEX_OPTION_CONVERTER
-    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
-    Simple   qlex(byte_loader, QUEX_SETTING_UT_CONVERTER_NEW, 
-                  "UTF-8");
+#   if defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
 #   else
-    Simple   qlex(file_name);
+#   define                   converter NULL
 #   endif
+    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
+    Simple   qlex(byte_loader, converter);
 
     if( argc < 2 ) {
         printf("Command line argument required!\n");

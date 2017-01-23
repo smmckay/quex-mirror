@@ -9,8 +9,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    FILE*          fh = fopen("example.txt", "r");
-    quex::Simple   qlex(fh);
+    quex::Simple   qlex("example.txt", NULL);
 
     if( argc < 2 ) {
         printf("Command line argument required!\n");
