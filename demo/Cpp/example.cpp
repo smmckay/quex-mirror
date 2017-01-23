@@ -3,19 +3,24 @@
 
 #include "EasyLexer"
 
-#ifndef    CONVERTER
-#   define CONVERTER 0
-#endif
-
 static void print_token(quex::Token* token_p);
 
 int 
 main(int argc, char** argv) 
 {        
-    quex::EasyLexer    qlex(argc == 1 ? "example.txt" : argv[1], CONVERTER);
-    quex::Token*       token_p = 0;
-
     using namespace std;
+    using namespace quex;
+
+#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+#   else
+#   define                   converter NULL
+#   endif
+    EasyLexer    qlex(argc == 1 ? "example.txt" : argv[1], converter);
+    Token*       token_p = 0;
+
     cout << ",-----------------------------------------------------------------\n";
     cout << "| [START]\n";
 

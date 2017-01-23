@@ -2,12 +2,6 @@
 
 #include "EasyLexer.h"
 
-#ifndef    ENCODING_NAME
-#   define ENCODING_NAME NULL
-#endif
-#ifndef    CONVERTER_NEW
-#   define CONVERTER_NEW NULL
-#endif
 
 static void print_token(quex_Token* token_p);
 
@@ -18,9 +12,14 @@ main(int argc, char** argv)
     size_t          number_of_tokens = 0;
     quex_EasyLexer  qlex;
     const char*     FileName = (argc == 1) ? "example.txt" : argv[1];
-
-    quex_EasyLexer_from_file_name(&qlex, FileName, CONVERTER_NEW, 
-                                  ENCODING_NAME);
+#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+#   else
+#   define                   converter NULL
+#   endif
+    quex_EasyLexer_from_file_name(&qlex, FileName, converter); 
 
     printf(",-----------------------------------------------------------------\n");
     printf("| [START]\n");
