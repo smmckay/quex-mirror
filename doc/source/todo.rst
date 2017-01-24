@@ -13,4 +13,8 @@ for the 'buffer._memory.ownership' before reload!
 -- Reset: user_reset must destruct newly created resources and 
                      mark them 'absent' in case of failure.
 
+    qlex.collect_user_memory(&prev);
+    assert(qlex.reset(buffer_1, Size1, end_of_content_p));
+    if( prev ) delete [] prev;
+
 -- ByteLoader->input_handle_ownership => prevent closure/freeing of handle

@@ -64,7 +64,9 @@ namespace quex {
 			virtual bool omitPosition();
 	};
 
-	Parser::Parser(const std::string & fileName, const char * encoding, bool byteOrderReversionFlag) : filePath(fileName), lexer(fileName,encoding), tokenMemento(), tokenQueue() {
+	Parser::Parser(const std::string & fileName, const char * encoding, bool byteOrderReversionFlag) 
+        : filePath(fileName), 
+          lexer(fileName.c_str(),NULL), tokenMemento(), tokenQueue() {
 		tokenMemento.push(new deque<Token *>());
 	}
 

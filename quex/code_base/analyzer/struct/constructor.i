@@ -459,11 +459,11 @@ QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
 
 QUEX_INLINE void
 QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me, 
-                               void**              user_buffer_memory)
+                               QUEX_TYPE_LEXATOM** user_buffer_memory)
 {
     *user_buffer_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
-                            (void*)0 
-                          : (void*)me->buffer._memory._front;
+                            (QUEX_TYPE_LEXATOM*)0 
+                          : (QUEX_TYPE_LEXATOM*)me->buffer._memory._front;
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

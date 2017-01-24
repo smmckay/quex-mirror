@@ -786,7 +786,8 @@ test_program_db = {
         fseek(fh, 0, SEEK_SET); /* start reading from the beginning */
 
         DEAL_WITH_COMPUTED_GOTOS();
-        QUEX_NAME(from_FILE)(lexer_state, fh, 0x0, true);
+        QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
+        QUEX_NAME(from_ByteLoader)(lexer_state, byte_loader, NULL); 
 
         (void)run_test(test_string, "$$COMMENT$$");
 

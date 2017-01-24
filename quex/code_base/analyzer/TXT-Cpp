@@ -160,6 +160,9 @@ public:
                QUEX_TYPE_LEXATOM* BufferEndOfContentP)  
     { return QUEX_NAME(reset_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
+    void collect_user_memory(QUEX_TYPE_LEXATOM** user_memory_p)
+    { return QUEX_NAME(collect_user_memory)(this, user_memory_p); }
+
 #   ifdef QUEX_OPTION_INCLUDE_STACK
     /*_________________________________________________________________________
      * Include:

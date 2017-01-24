@@ -57,7 +57,9 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
         end_of_content_p = (QUEX_TYPE_LEXATOM*)0;
     }
 
-    QUEX_TYPE_LEXATOM*  prev = qlex.reset(buffer_1, Size1, end_of_content_p);
+    QUEX_TYPE_LEXATOM*  prev;
+    qlex.collect_user_memory(&prev);
+    assert(qlex.reset(buffer_1, Size1, end_of_content_p));
     if( prev ) delete [] prev;
 
     cout << "\n\n";
@@ -69,7 +71,10 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
     print_this(&qlex, 1, Size1, ContentSize1);
 
     if( buffer_1 ) {
-        prev = qlex.reset((QUEX_TYPE_LEXATOM*)0x0, 0, (QUEX_TYPE_LEXATOM*)0x0);
+        qlex.collect_user_memory(&prev);
+        assert(qlex.reset((QUEX_TYPE_LEXATOM*)0x0, 0, (QUEX_TYPE_LEXATOM*)0x0));
+        if( prev ) delete [] prev;
+
         cout << "\n\n";
         cout << "reset_buffer reported buffer: " << ((prev == buffer_1) ? "Correct" : "False");
         if( prev != buffer_1 ) cout << "\n## " << (long)prev << " " << (long)buffer_1 << endl;
