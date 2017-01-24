@@ -181,9 +181,6 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
                                        const char*         InputNameP)
 {
     QUEX_NAME(Memento)* memento;
-#   ifdef __QUEX_OPTION_COUNTER
-    QUEX_NAME(Counter)  new_counter;
-#   endif
     char*               new_input_name;
    
     memento = (QUEX_NAME(Memento)*)QUEXED(MemoryManager_allocate)(
@@ -232,7 +229,7 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
      *
      * From here: lexical analyzer object may receive assignments!
      *________________________________________________________________________*/
-    __QUEX_IF_COUNT((void)QUEX_NAME(Counter_construct)(&new_counter);)
+    __QUEX_IF_COUNT((void)QUEX_NAME(Counter_construct)(&me->counter);)
 
     me->__input_name    = new_input_name;
 
