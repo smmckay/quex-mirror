@@ -38,8 +38,6 @@ main(int argc, char** argv)
             }
             print(&qlex, ">> including: ", (const char*)token_p->text, 0x0);
             included_file_name = ((const char*)token_p->text);
-            /* In real life: BETTER COPY THE FILENAME TO A SAFE PLACE! 
-             * Otherwise, when the buffer switches it may get overwritten! */
             QUEX_NAME(include_push_file_name)(&qlex, included_file_name, 0x0);
         }
         else if( token_id == QUEX_TKN_TERMINATION ) {
@@ -80,7 +78,7 @@ print(QUEX_TYPE_ANALYZER* qlex, const char* Str1,
       const char* Str2 /* = 0x0 */, const char* Str3 /* = 0x0*/)
 {
     space(qlex->include_depth);
-    printf("%s", Str1);
+    if( Str1 ) printf("%s", Str1);
     if( Str2 != 0x0 ) printf("%s", Str2);
     if( Str3 != 0x0 ) printf("%s", Str3);
     printf("\n");

@@ -15,12 +15,12 @@ int
 main(int argc, char** argv) 
 {        
     // we want to have error outputs in stdout, so that the unit test could see it.
-    max::Lexer     max_lex("example-utf16.txt", "UTF16");
-    moritz::Lexer  moritz_lex("example-ucs2.txt", "UCS-2");
-    boeck::Lexer   boeck_lex("example-utf8.txt");
-    max::Token*    max_token    = 0x0;
-    moritz::Token* moritz_token = 0x0;
-    boeck::Token*  boeck_token  = 0x0;
+    max::Lexer      max_lex("example-utf16.txt", max::Lexer_Converter_IConv_new("UTF16", NULL));
+    moritz::Lexer   moritz_lex("example-ucs2.txt", moritz::Lexer_Converter_IConv_new("UCS-2", NULL));
+    boeck::Lexer    boeck_lex("example-utf8.txt");
+    max::Token*     max_token    = 0x0;
+    moritz::Token*  moritz_token = 0x0;
+    boeck::Token*   boeck_token  = 0x0;
 
 
     // Each lexer reads one token, since the grammars are similar the lexeme 

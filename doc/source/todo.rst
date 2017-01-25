@@ -18,3 +18,12 @@ for the 'buffer._memory.ownership' before reload!
     if( prev ) delete [] prev;
 
 -- ByteLoader->input_handle_ownership => prevent closure/freeing of handle
+
+-- warn about the 'c_str()': the string does not 'live' long enough to 
+   be assigned to a variable.
+
+   For c_str() the only safe usage is when you pass it as a parameter to a function. 
+
+   In doubt: use 
+   "size_t copy (char* s, size_t len, size_t pos = 0) const;"
+   Do not forget terminating zero using std::string::length();

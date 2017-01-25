@@ -42,11 +42,9 @@
 #if ! defined(WITH_UTF8)
 #   include <LexAscii.h>
 #   define  LEXER_CLASS   quex_LexAscii
-#   define  CODEC         NULL
 #else
 #   include <LexUtf8.h>
 #   define  LEXER_CLASS   quex_LexUtf8
-#   define  CODEC         "UTF8"
 #endif
 
 static void  print_token(quex_Token*  token);
@@ -60,9 +58,12 @@ main(int argc, char** argv)
     char                     buffer[4096];
     char*                    p;
     ssize_t                  received_n;
-    QUEX_NAME(LexatomLoader)* filler = QUEX_NAME(LexatomLoader_new_DEFAULT)(NULL, CODEC);
-
-    QUEX_NAME(from_LexatomLoader)(&qlex, filler);
+#if defined(WITH_UTF8)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   else
+#   define                   converter NULL
+#endif
+    QUEX_NAME(from_ByteLoader)(&qlex, NULL, converter);
 
     while( 1 + 1 == 2 ) {
         printf("type here: ");
@@ -82,7 +83,6 @@ main(int argc, char** argv)
     }
         
     QUEX_NAME(destruct)(&qlex);
-    filler->delete_self(filler);
     printf("<terminated>\n");
     return 0;
 }

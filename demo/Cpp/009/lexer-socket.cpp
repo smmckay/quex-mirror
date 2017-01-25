@@ -57,11 +57,9 @@
 #if ! defined(WITH_UTF8)
 #   include <LexAscii>
 #   define  LEXER_CLASS   LexAscii
-#   define  CODEC         NULL
 #else
 #   include <LexUtf8>
 #   define  LEXER_CLASS   LexUtf8
-#   define  CODEC         "UTF8"
 #endif
 
 static int  setup_socket_server(void);
@@ -93,6 +91,11 @@ accept_and_lex(int listen_fd)
     Token*        token;
     LEXER_CLASS*  qlex;
     bool          continue_f;
+#if defined(WITH_UTF8)
+    QUEX_NAME(Converter)*  converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   else
+#   define                 converter NULL
+#endif
 
     QUEX_NAME(ByteLoader)* loader = QUEX_NAME(ByteLoader_POSIX_new)(connected_fd);
 
@@ -107,7 +110,7 @@ accept_and_lex(int listen_fd)
     /* A handler for the case that nothing is received over the line. */
     loader->on_nothing = self_on_nothing; 
 
-    qlex = new LEXER_CLASS(loader, CODEC);
+    qlex = LEXER_CLASS::from_ByteLoader(loader, converter);
 
     token = qlex->token;
     continue_f = true;
@@ -123,7 +126,6 @@ accept_and_lex(int listen_fd)
     } while( token->_id != QUEX_TKN_TERMINATION );
         
     delete qlex;
-    loader->delete_self(loader);
     printf("<terminated>\n");
     return continue_f;
 }

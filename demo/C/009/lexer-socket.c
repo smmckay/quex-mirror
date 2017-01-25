@@ -57,11 +57,9 @@
 #if ! defined(WITH_UTF8)
 #   include <LexAscii.h>
 #   define  LEXER_CLASS   quex_LexAscii
-#   define  CODEC         NULL
 #else
 #   include <LexUtf8.h>
 #   define  LEXER_CLASS   quex_LexUtf8
-#   define  CODEC         "UTF8"
 #endif
 
 static int  setup_socket_server(void);
@@ -88,10 +86,15 @@ accept_and_lex(int listen_fd)
  * RETURNS: True, lexing successful.
  *          False, if an error occured or the 'BYE' token requests to stop.  */
 {
-    int              connected_fd = accept(listen_fd, (struct sockaddr*)NULL ,NULL); 
-    quex_Token*      token;
-    LEXER_CLASS      qlex;
-    bool             continue_f;
+    int                    connected_fd = accept(listen_fd, (struct sockaddr*)NULL ,NULL); 
+    quex_Token*            token;
+    LEXER_CLASS            qlex;
+    bool                   continue_f;
+#if defined(WITH_UTF8)
+    QUEX_NAME(Converter)*  converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   else
+#   define                 converter NULL
+#endif
 
     QUEX_NAME(ByteLoader)* loader = QUEX_NAME(ByteLoader_POSIX_new)(connected_fd);
 
@@ -106,7 +109,7 @@ accept_and_lex(int listen_fd)
     /* A handler for the case that nothing is received over the line. */
     loader->on_nothing = self_on_nothing; 
 
-    QUEX_NAME(from_ByteLoader)(&qlex, loader, CODEC);
+    QUEX_NAME(from_ByteLoader)(&qlex, loader, converter);
 
     token = qlex.token;
     continue_f = true;
@@ -123,7 +126,6 @@ accept_and_lex(int listen_fd)
     } while( token->_id != QUEX_TKN_TERMINATION );
         
     QUEX_NAME(destruct)(&qlex);
-    loader->delete_self(loader);
     printf("<terminated>\n");
     return continue_f;
 }

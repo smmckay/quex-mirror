@@ -26,11 +26,9 @@
 #if ! defined(WITH_UTF8)
 #   include <LexAscii>
 #   define  LEXER_CLASS   LexAscii
-#   define  CODEC         NULL
 #else
 #   include <LexUtf8>
 #   define  LEXER_CLASS   LexUtf8
-#   define  CODEC         "UTF8"
 #endif
 
 int 
@@ -40,11 +38,16 @@ main(int argc, char** argv)
 
     Token*                 token;
     LEXER_CLASS*           qlex;   
+#if defined(WITH_UTF8)
+    QUEX_NAME(Converter)*  converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   else
+#   define                 converter NULL
+#endif
     QUEX_NAME(ByteLoader)* loader = QUEX_NAME(ByteLoader_POSIX_new)(0); /* 0 = stdin */
 
     QUEX_NAME(ByteLoader_seek_disable)(loader);
 
-    qlex = new LEXER_CLASS(loader, CODEC);
+    qlex = LEXER_CLASS::from_ByteLoader(loader, converter);
 
     token = qlex->token;
     do {
@@ -53,7 +56,6 @@ main(int argc, char** argv)
     } while( token->_id != QUEX_TKN_TERMINATION && token->_id != QUEX_TKN_BYE );
         
     delete qlex;
-    loader->delete_self(loader);
     return 0;
 }
 

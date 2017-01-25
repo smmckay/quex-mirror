@@ -1,10 +1,8 @@
 #include <stdio.h>
 
 #ifdef QUEX_EXAMPLE_WITH_CONVERTER
-#   define  CODEC_NAME "UTF-8"
 #   include "lexConverter.h"
 #else
-#   define  CODEC_NAME ((const char*)0)
 #   include "lexPlain.h"
 #endif
 #include "quex/code_base/analyzer/adaptors/Feeder.i"
@@ -22,14 +20,21 @@ static void show_buffer(CLexer* lexer,
 int 
 main(int argc, char** argv) 
 {        
-    CLexer    lexer;
     CToken*   token;
+#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+#   else
+#   define                   converter NULL
+#   endif
+    CLexer    lexer;
     CFeeder   feeder;
     size_t    received_n;
     uint8_t*  rx_content_p;
     char      buffer[256];
 
-    QUEX_NAME(from_ByteLoader)(&lexer, (QUEX_NAME(ByteLoader)*)0, CODEC_NAME);
+    QUEX_NAME(from_ByteLoader)(&lexer, (QUEX_NAME(ByteLoader)*)0, converter);
     QUEX_NAME(Feeder_construct)(&feeder, &lexer, QUEX_TKN_BYE);
 
     token = (CToken*)0;

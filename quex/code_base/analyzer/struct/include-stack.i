@@ -75,7 +75,7 @@ QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
 
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_0:
-    new_converter->delete_self(new_converter);
+    if( new_converter) new_converter->delete_self(new_converter);
 ERROR_1:
     /* All resource freeing is done in called functions.                      */
     return false;

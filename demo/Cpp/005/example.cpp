@@ -18,13 +18,14 @@ main(int argc, char** argv)
     Token*     token;
     // (*) create the lexical analyser
     //     if no command line argument is specified user file 'example.txt'
-    EasyLexer  qlex(argc == 1 ? "example.txt" : argv[1]);
+    EasyLexer  qlex(argc == 1 ? "example.txt" : argv[1], NULL);
 
     cout << ",------------------------------------------------------------------------------------\n";
     cout << "| [START]\n";
 
-    int  number_of_tokens = 0;
-    bool continue_lexing_f = true;
+    int   number_of_tokens = 0;
+    bool  continue_lexing_f = true;
+    char  file_name[256];
     // (*) loop until the 'termination' token arrives
     token = qlex.token_p();
     do {
@@ -43,11 +44,11 @@ main(int argc, char** argv)
                       (char*)QUEX_NAME_TOKEN(map_id_to_name)(token_id));
                 break;
             }
-            print(&qlex, ">> including: ", (const char*)token->get_text().c_str());
-            const char* file_name = (const char*)token->get_text().c_str();
-            /* In real life: BETTER COPY THE FILENAME TO A SAFE PLACE! 
-             * Otherwise, when the buffer switches it may get overwritten! */
-            qlex.include_push(file_name);
+            if( token->get_text().copy((uint8_t*)&file_name[0], (size_t)255) == token->get_text().length() ) {
+                file_name[token->get_text().length()] = (char)0;
+                print(&qlex, ">> including: ", (const char*)&file_name[0]);
+                qlex.include_push(&file_name[0], NULL);
+            }
         }
         else if( token_id == QUEX_TKN_TERMINATION ) {
             if( qlex.include_pop() == false ) 
@@ -86,8 +87,8 @@ print(QUEX_TYPE_ANALYZER* qlex, const char* Str1,
       const char* Str2 /* = 0x0 */, const char* Str3 /* = 0x0*/)
 {
     space(qlex->include_depth);
-    printf("%s", Str1);
-    if( Str2 != 0x0 ) printf("%s", Str2);
-    if( Str3 != 0x0 ) printf("%s", Str3);
+    if( Str1 ) printf("%s", Str1);
+    if( Str2 ) printf("%s", Str2);
+    if( Str3 ) printf("%s", Str3);
     printf("\n");
 }
