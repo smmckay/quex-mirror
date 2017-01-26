@@ -24,7 +24,7 @@ extern "C" {
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE bool 
-QUEX_NAME(Converter_IConv_open)(QUEX_NAME(Converter)* me,
+QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* me,
                                 const char* FromCodec, const char* ToCodec);
 QUEX_INLINE E_LoadResult 
 QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*     me, 
@@ -41,6 +41,10 @@ QUEX_NAME(Converter_IConv_stomach_byte_n)(QUEX_NAME(Converter)* me);
 QUEX_INLINE void 
 QUEX_NAME(Converter_IConv_stomach_clear)(QUEX_NAME(Converter)* me);
 
+QUEX_INLINE bool    
+QUEX_NAME(Converter_IConv_initialize_by_bom_id)(struct QUEX_NAME(Converter_tag)* me,
+                                                QUEX_TYPE_BOM                    BomId);
+
 QUEX_INLINE QUEX_NAME(Converter)*
 QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
 {
@@ -55,7 +59,8 @@ QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
     me->handle = (iconv_t)-1;
     if( ! QUEX_NAME(Converter_construct)(&me->base,
                                          FromCodec, ToCodec,
-                                         QUEX_NAME(Converter_IConv_open),
+                                         QUEX_NAME(Converter_IConv_initialize),
+                                         QUEX_NAME(Converter_IConv_initialize_by_bom_id),
                                          QUEX_NAME(Converter_IConv_convert),
                                          QUEX_NAME(Converter_IConv_delete_self),
                                          QUEX_NAME(Converter_IConv_stomach_byte_n),
@@ -68,11 +73,21 @@ QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
 }
 
 QUEX_INLINE bool 
-QUEX_NAME(Converter_IConv_open)(QUEX_NAME(Converter)* alter_ego,
-                                const char*           FromCodec, 
-                                const char*           ToCodec)
+QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* alter_ego,
+                                      const char*           FromCodec, 
+                                      const char*           ToCodec)
+/* Initializes the converter, or in case that 'FromCodec == 0', it marks
+ * the object as 'not-initialized'. 'Converter_IConv_initialize_by_bom_id()'
+ * will act upon that information.  
+ *
+ * RETURNS: true, if success. false, else.                                    */
 {
     QUEX_NAME(Converter_IConv)* me = (QUEX_NAME(Converter_IConv)*)alter_ego;
+
+    if( ! FromCodec ) {
+        me->handle = (iconv_t)-1;               /* mark 'not-initialized'.    */
+        return true;                            /* still, nothing went wrong. */
+    }
 #   if   defined(__QUEX_OPTION_LITTLE_ENDIAN)
     const bool little_endian_f = true;
 #   elif defined(__QUEX_OPTION_BIG_ENDIAN)
@@ -118,6 +133,47 @@ QUEX_NAME(Converter_IConv_open)(QUEX_NAME(Converter)* alter_ego,
     }
 
     return true;
+}
+
+QUEX_INLINE bool    
+QUEX_NAME(Converter_IConv_initialize_by_bom_id)(QUEX_NAME(Converter)* alter_ego,
+                                                QUEX_TYPE_BOM         BomId)
+{
+    QUEX_NAME(Converter_IConv)* me = (QUEX_NAME(Converter_IConv)*)alter_ego;
+    const char* name;
+
+    if( me->handle != (iconv_t)-1 ) {
+        iconv_close(me->handle); 
+    }
+
+    switch( BomId ) {
+    case QUEX_BOM_UTF_8:           name = "UTF-8"; break;                      
+    case QUEX_BOM_UTF_1:           name = "UTF-1"; break;                      
+    case QUEX_BOM_UTF_EBCDIC:      return false; /* name = "UTF_EBCDIC"; break; */
+    case QUEX_BOM_BOCU_1:          return false; /* name = "BOCU_1"; break;     */
+    case QUEX_BOM_GB_18030:        name = "GB18030"; break;                
+    case QUEX_BOM_UTF_7:           name = "UTF-7"; break;                      
+    case QUEX_BOM_UTF_16:          name = "UTF-16"; break;                                  
+    case QUEX_BOM_UTF_16_LE:       name = "UTF-16LE"; break;              
+    case QUEX_BOM_UTF_16_BE:       name = "UTF-16BE"; break;              
+    case QUEX_BOM_UTF_32:          name = "UTF-32"; break;                    
+    case QUEX_BOM_UTF_32_LE:       name = "UTF-32LE"; break;              
+    case QUEX_BOM_UTF_32_BE:       name = "UTF-32BE"; break;              
+    case QUEX_BOM_SCSU:            /* not supported. */
+    case QUEX_BOM_SCSU_TO_UCS:     /* not supported. */
+    case QUEX_BOM_SCSU_W0_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W1_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W2_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W3_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W4_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W5_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W6_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W7_TO_FE80: /* not supported. */
+    default:
+    case QUEX_BOM_NONE:            return false;
+    }
+
+    return me->base.initialize(alter_ego, name, NULL);
 }
 
 QUEX_INLINE E_LoadResult 

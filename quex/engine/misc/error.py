@@ -161,10 +161,6 @@ def verify_word_in_list(Word, WordList, Comment, Fh_or_Sr=-1, ExitF=True, Suppre
 
 __insight_ref_str    = ""
 __insight_time_begin = None
-def insight_set_reference_str(RefStr):
-    global __insight_ref_str
-    if RefStr is None: __insight_ref_str = ""
-    else:              __insight_ref_str = "%s: " % RefStr
 
 def insight(Msg):
     global __reference_to_setup

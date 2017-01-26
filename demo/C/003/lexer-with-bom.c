@@ -14,26 +14,30 @@ main(int argc, char** argv)
     FILE*           fh = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
     quex_EasyLexer  qlex;
 
-    /* Either there is no BOM, or if there is one, then it must be UTF8      */
-    QUEX_TYPE_BOM   bom_type = quex_bom_snap(fh);
-
-    printf("Found BOM: %s\n", quex_bom_name(bom_type));
-
-    if( (bom_type & (QUEX_BOM_UTF_8 | QUEX_BOM_NONE)) == 0 ) {
-        printf("Found a non-UTF8 BOM. Exit\n");
-        fclose(fh);
-        return 0;
-    }
-
     /* The lexer **must** be constructed after the BOM-cut */
     QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
-    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    QUEX_NAME(Converter)*  converter   = QUEX_NAME(Converter_IConv_new)(NULL, NULL);
 #   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+    QUEX_NAME(Converter)*  converter   = QUEX_NAME(Converter_ICU_new)(NULL, NULL);
 #   else
-#   define                converter NULL
+#   define                 converter NULL
 #   endif
+    QUEX_TYPE_BOM          bom_id      = quex_bom_snap(fh);
+
+    printf("Found BOM: %s\n", quex_bom_name(bom_id));
+
+    if( bom_id == QUEX_BOM_NONE ) {
+        /* No BOM in data stream => try to interpret data as UTF8 */
+        converter->initialize(converter, "UTF8", NULL);
+    }
+    else if( ! converter->initialize_by_bom_id(converter, bom_id) ) {
+        printf("Cannot treat coding given by BOM.\n");
+        fclose(fh);
+        converter->delete_self(converter);
+        byte_loader->delete_self(byte_loader);
+        return 0;
+    }
     QUEX_NAME(from_ByteLoader)(&qlex, byte_loader, converter);
 
     printf(",-----------------------------------------------------------------\n");

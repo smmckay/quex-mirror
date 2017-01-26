@@ -11,27 +11,41 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_INLINE bool
 QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
                                const char*  FromCodec, const char* ToCodec,
-                               bool         (*open)(struct QUEX_NAME(Converter_tag)*, 
-                                                    const char* FromCodec, const char* ToCodec),  
+                               bool         (*initialize)(QUEX_NAME(Converter)*, 
+                                                          const char* FromCodingName, 
+                                                          const char* ToCodingName),  
+                               bool         (*initialize_by_bom_id)(QUEX_NAME(Converter)*, 
+                                                                    QUEX_TYPE_BOM),
                                E_LoadResult (*convert)(QUEX_NAME(Converter)*, 
                                                        uint8_t**             source, const uint8_t*             SourceEnd, 
                                                        QUEX_TYPE_LEXATOM** drain,  const QUEX_TYPE_LEXATOM* DrainEnd),
                                void         (*delete_self)(QUEX_NAME(Converter)*),
                                ptrdiff_t    (*stomach_byte_n)(QUEX_NAME(Converter)*),
                                void         (*stomach_clear)(QUEX_NAME(Converter)*))
-/* RETURNS: true  -- construction succesful
+/* If 'FromCodec == 0': The converter is expected to adapt to a BOM (byte order
+ *                      mark *later*. 'initialize' is expected to mark the 
+ *                      derived class' as 'not-initialized'.
+ *                      In that case, the function '.initialize_by_bom_id' must 
+ *                      be called before the converter is operational. That 
+ *                      function may check, whether an initialization has been
+ *                      done before.
+ * 
+ * RETURNS: true  -- construction succesful
  *          false -- else.                                                    */
 {
-    __quex_assert(open);              /* All functions MUST be defined.       */
+    __quex_assert(initialize);           /* All functions MUST be defined.    */
+    __quex_assert(initialize_by_bom_id); /* All functions MUST be defined.    */
     __quex_assert(convert);
     __quex_assert(delete_self);
     __quex_assert(stomach_byte_n);
     __quex_assert(stomach_clear);
 
-    me->convert        = convert;
-    me->stomach_byte_n = stomach_byte_n;
-    me->stomach_clear  = stomach_clear;
-    me->delete_self    = delete_self;
+    me->initialize           = initialize;
+    me->initialize_by_bom_id = initialize_by_bom_id;
+    me->convert              = convert;
+    me->stomach_byte_n       = stomach_byte_n;
+    me->stomach_clear        = stomach_clear;
+    me->delete_self          = delete_self;
 
     me->virginity_f          = true;
     me->byte_n_per_lexatom   = -1;         /* No fixed ratio 'byte_n/lexatom' */
@@ -45,7 +59,7 @@ QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
      * which is appropriate for sizeof(QUEX_TYPE_LEXATOM), i.e.  ASCII, UCS2,
      * UCS4.                                                                  */
 
-    return open(me, FromCodec, ToCodec);
+    return initialize(me, FromCodec, ToCodec);
 }
 
 QUEX_INLINE void

@@ -372,19 +372,21 @@ QUEX_NAME(LexatomLoader_call_converter)(QUEX_NAME(LexatomLoader_Converter)* me,
 {
     QUEX_NAME(RawBuffer)*  raw = &me->raw_buffer;
     E_LoadResult           load_result;
-    (void)load_result;
 
     load_result = me->converter->convert(me->converter, 
                                          &raw->next_to_convert_p, raw->fill_end_p,
                                          insertion_p, RegionEndP);
-    
-    QUEX_NAME(LexatomLoader_remove_spurious_BOM)(me, insertion_p, RegionBeginP);
-    me->converter->virginity_f = false;
 
     /* A converter does not load => It cannot report 'end of stream'     */
     __quex_assert(   load_result == E_LoadResult_COMPLETE
                   || load_result == E_LoadResult_INCOMPLETE
                   || load_result == E_LoadResult_BAD_LEXATOM);
+    
+    if( *insertion_p > RegionBeginP ) {
+        QUEX_NAME(LexatomLoader_remove_spurious_BOM)(me, insertion_p, RegionBeginP);
+        me->converter->virginity_f = false;
+    }
+
     return load_result;
 }
 
@@ -395,7 +397,7 @@ QUEX_NAME(LexatomLoader_remove_spurious_BOM)(QUEX_NAME(LexatomLoader_Converter)*
 {
     uint32_t  first_lexatom;
 
-    if( *buffer_insertion_p == RegionBeginP ) return;
+    __quex_assert(*buffer_insertion_p > RegionBeginP);
 
     first_lexatom = (uint32_t)RegionBeginP[0];    /* avoid warning */
     if( first_lexatom != 0xFEFF ) return;

@@ -1,0 +1,4 @@
+## make lexer    
+Found BOM: UTF_EBCDIC
+Cannot treat coding given by BOM.
+VALGRIND:   All heap blocks were freed -- no leaks are possible

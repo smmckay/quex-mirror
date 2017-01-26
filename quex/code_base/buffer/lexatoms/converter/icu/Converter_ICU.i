@@ -17,9 +17,9 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE bool
-QUEX_NAME(Converter_ICU_open)(QUEX_NAME(Converter)* me, 
-                              const char*           FromCoding, 
-                              const char*           ToCoding);
+QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* me, 
+                                    const char*           FromCoding, 
+                                    const char*           ToCoding);
 QUEX_INLINE E_LoadResult
 QUEX_NAME(Converter_ICU_convert)(QUEX_NAME(Converter)*       me, 
                                  uint8_t**                   source, 
@@ -52,7 +52,8 @@ QUEX_NAME(Converter_ICU_new)(const char* FromCoding, const char* ToCoding)
 
     if( ! QUEX_NAME(Converter_construct)(&me->base,
                                          FromCoding, ToCoding,
-                                         QUEX_NAME(Converter_ICU_open),
+                                         QUEX_NAME(Converter_ICU_initialize),
+                                         QUEX_NAME(Converter_ICU_initialize_by_bom_id),
                                          QUEX_NAME(Converter_ICU_convert),
                                          QUEX_NAME(Converter_ICU_delete_self),
                                          QUEX_NAME(Converter_ICU_stomach_byte_n),
@@ -65,9 +66,14 @@ QUEX_NAME(Converter_ICU_new)(const char* FromCoding, const char* ToCoding)
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Converter_ICU_open)(QUEX_NAME(Converter)* alter_ego, 
-                              const char*           FromCoding, 
-                              const char*           ToCoding)
+QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego, 
+                                    const char*           FromCoding, 
+                                    const char*           ToCoding)
+/* Initializes the converter, or in case that 'FromCodec == 0', it marks
+ * the object as 'not-initialized'. 'Converter_IConv_initialize_by_bom_id()'
+ * will act upon that information.  
+ *
+ * RETURNS: true, if success. false, else.                                    */
 {
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
 #   if   defined(__QUEX_OPTION_LITTLE_ENDIAN)
@@ -77,10 +83,17 @@ QUEX_NAME(Converter_ICU_open)(QUEX_NAME(Converter)* alter_ego,
 #   elif defined(__QUEX_OPTION_SYSTEM_ENDIAN) 
     const bool little_endian_f = QUEXED(system_is_little_endian)();
 #   endif
+    me->from_handle = 0x0;
+    me->to_handle   = 0x0; 
+    if( ! FromCoding ) {
+        /* me->from_handle = 0; mark as 'not-initialized'.                    */
+        return true;                            /* still, nothing went wrong. */
+        return true;
+    }
 
     __quex_assert(me);
 
-    /* Default: assume input encoding to have dynamic lexatom sizes.   */
+    /* Default: assume input encoding to have dynamic lexatom sizes.          */
     if( ucnv_compareNames(FromCoding, "UTF32") == 0 ) {
         FromCoding = "UTF32_PlatformEndian";
     }
@@ -88,8 +101,8 @@ QUEX_NAME(Converter_ICU_open)(QUEX_NAME(Converter)* alter_ego,
         FromCoding = "UTF16_PlatformEndian";
     }
 
-    /* Open conversion handles                                           */
-    me->status = U_ZERO_ERROR;
+    /* Open conversion handles                                                */
+    me->status      = U_ZERO_ERROR;
     me->from_handle = ucnv_open(FromCoding, &me->status);
     if( me->from_handle == NULL || ! U_SUCCESS(me->status) ) return false;
 
@@ -136,6 +149,46 @@ QUEX_NAME(Converter_ICU_open)(QUEX_NAME(Converter)* alter_ego,
     me->reset_upon_next_conversion_f = TRUE;
 
     return true;
+}
+
+QUEX_INLINE bool    
+QUEX_NAME(Converter_ICU_initialize_by_bom_id)(QUEX_NAME(Converter)* me,
+                                              QUEX_TYPE_BOM         BomId)
+{
+    QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
+    const char* name;
+
+    if( me->from_handle ) ucnv_close(me->from_handle); 
+    if( me->to_handle )   ucnv_close(me->to_handle);
+
+    switch( BomId ) {
+    case QUEX_BOM_UTF_8:           name = "UTF-8"; break;                      
+    case QUEX_BOM_UTF_1:           name = "UTF-1"; break;                      
+    case QUEX_BOM_UTF_EBCDIC:      return false; /* name = "UTF_EBCDIC"; */
+    case QUEX_BOM_BOCU_1:          name = "BOCU-1"; break;                    
+    case QUEX_BOM_GB_18030:        name = "gb18030"; break;                
+    case QUEX_BOM_UTF_7:           name = "UTF-7"; break;                      
+    case QUEX_BOM_UTF_16:          name = "UTF-16"; break;                                  
+    case QUEX_BOM_UTF_16_LE:       name = "UTF-16LE"; break;              
+    case QUEX_BOM_UTF_16_BE:       name = "UTF-16BE"; break;              
+    case QUEX_BOM_UTF_32:          name = "UTF-32"; break;                    
+    case QUEX_BOM_UTF_32_LE:       name = "UTF-32LE"; break;              
+    case QUEX_BOM_UTF_32_BE:       name = "UTF-32BE"; break;              
+    case QUEX_BOM_SCSU:            name = "SCSU"; break;                        
+    case QUEX_BOM_SCSU_TO_UCS:     /* not supported. */
+    case QUEX_BOM_SCSU_W0_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W1_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W2_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W3_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W4_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W5_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W6_TO_FE80: /* not supported. */
+    case QUEX_BOM_SCSU_W7_TO_FE80: /* not supported. */
+    default:
+    case QUEX_BOM_NONE:            return false;
+    }
+
+    return QUEX_NAME(Converter_ICU)(me, name, NULL);
 }
 
 QUEX_INLINE E_LoadResult
@@ -249,8 +302,8 @@ QUEX_NAME(Converter_ICU_delete_self)(QUEX_NAME(Converter)* alter_ego)
 {
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
 
-    ucnv_close(me->from_handle);
-    ucnv_close(me->to_handle);
+    if( me->from_handle ) ucnv_close(me->from_handle);
+    if( me->to_handle )   ucnv_close(me->to_handle);
 
     QUEXED(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
 
