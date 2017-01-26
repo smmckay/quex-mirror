@@ -25,8 +25,16 @@ main(int argc, char** argv)
         return 0;
     }
 
-    /* The lexer **must** be constructed after the BOM-cut                   */
-    QUEX_NAME(from_FILE)(&qlex, fh, "UTF8", true);
+    /* The lexer **must** be constructed after the BOM-cut */
+    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
+#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+#   else
+#   define                converter NULL
+#   endif
+    QUEX_NAME(from_ByteLoader)(&qlex, byte_loader, converter);
 
     printf(",-----------------------------------------------------------------\n");
     printf("| [START]\n");

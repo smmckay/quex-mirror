@@ -9,18 +9,15 @@ int
 main(int argc, char** argv) 
 {        
     using namespace std;
+    using namespace quex;
 
-    quex::Token*          token_p = 0x0;
-    // (*) create the lexical analyser
-    //     1st arg: input file, default = 'example.txt'
-    //     2nd arg: input character encoding name, 0x0 --> no codec conversion
+    Token*                token_p = 0x0;
     FILE*                 fh = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
-
-    /* Either there is no BOM, or if there is one, then it must be UTF8 */
     QUEX_TYPE_BOM         bom_type = quex::bom_snap(fh);
 
-    cout << "Found BOM: " << quex::bom_name(bom_type) << endl;
+    cout << "Found BOM: " << bom_name(bom_type) << endl;
 
+    /* Either there is no BOM, or if there is one, then it must be UTF8 */
     if( (bom_type & (QUEX_BOM_UTF_8 | QUEX_BOM_NONE)) == 0 ) {
         cout << "Found a non-UTF8 BOM. Exit\n";
         fclose(fh);
@@ -28,7 +25,15 @@ main(int argc, char** argv)
     }
 
     /* The lexer **must** be constructed after the BOM-cut */
-    quex::EasyLexer       qlex(fh, "UTF8", true);
+    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
+#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
+    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+#   elif defined(QUEX_OPTION_CONVERTER_ICU)
+    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+#   else
+#   define                converter NULL
+#   endif
+    EasyLexer             qlex(byte_loader, converter);
 
 
     cout << ",-----------------------------------------------------------------\n";
