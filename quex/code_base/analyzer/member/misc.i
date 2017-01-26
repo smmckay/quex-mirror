@@ -201,13 +201,6 @@ QUEX_INLINE void
 QUEX_MEMBER(print_this)()
 { QUEX_NAME(print_this)(this); }
 
-QUEX_INLINE bool
-QUEX_MEMBER(byte_order_reversion)()
-{ return QUEX_NAME(byte_order_reversion)(this); }
-
-QUEX_INLINE void     
-QUEX_MEMBER(byte_order_reversion_set)(bool Value)
-{ QUEX_NAME(byte_order_reversion_set)(this, Value); }
 #endif
 
 QUEX_NAMESPACE_MAIN_CLOSE

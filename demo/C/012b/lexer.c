@@ -24,9 +24,13 @@ main(int argc, char** argv)
     char          buffer[1024];
     size_t        i = 0;
 
-    max_Lexer_from_file_name(&max_lex,       "ucs4.txt", "UCS4");
-    moritz_Lexer_from_file_name(&moritz_lex, "ucs4.txt", "UCS4");
-    boeck_Lexer_from_file_name(&boeck_lex,   "ucs4.txt", "UCS4");
+    max_Lexer_Converter*    max_converter    = max_Lexer_Converter_ICU_new("UCS4", NULL);
+    moritz_Lexer_Converter* moritz_converter = moritz_Lexer_Converter_ICU_new("UCS4", NULL);
+    boeck_Lexer_Converter*  boeck_converter  = boeck_Lexer_Converter_ICU_new("UCS4", NULL);
+
+    max_Lexer_from_file_name(&max_lex,       "ucs4.txt", max_converter);
+    moritz_Lexer_from_file_name(&moritz_lex, "ucs4.txt", moritz_converter);
+    boeck_Lexer_from_file_name(&boeck_lex,   "ucs4.txt", boeck_converter);
 
     /* Each lexer reads one token, since the grammars are similar the lexeme 
      * is always the same.                                                   */

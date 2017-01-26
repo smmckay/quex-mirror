@@ -39,6 +39,8 @@ def _generate(mode_db):
     class_token_implementation = _prepare_token_class()
 
     if Setup.token_class_only_f:
+        class_token_header =   do_token_class_info() \
+                             + class_token_header
         _write_token_class(class_token_header, 
                            class_token_implementation, 
                            token_id_header)
@@ -163,11 +165,7 @@ def _prepare_all(mode_db, class_token_implementation,
     # -- do the coding of the class framework
     configuration_header    = configuration.do(mode_db)
     analyzer_header         = analyzer_class.do(mode_db)
-    if Setup.language == "C++":
-        analyzer_header        += analyzer_class.do_implementation(mode_db) 
-        analyzer_implementation = ""
-    else:
-        analyzer_implementation = analyzer_class.do_implementation(mode_db) 
+    analyzer_implementation = analyzer_class.do_implementation(mode_db) 
     mode_implementation     = mode_classes.do(mode_db)
 
     # (*) [Optional] Generate a converter helper
@@ -208,7 +206,7 @@ def _write_all(configuration_header, analyzer_header, engine_txt,
     write_safely_and_close(Setup.output_header_file, analyzer_header)
     write_safely_and_close(Setup.output_code_file,   engine_txt)
 
-    if class_token_header is not None:
+    if class_token_header:
         write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
                                class_token_header)
 
@@ -217,8 +215,7 @@ def _write_all(configuration_header, analyzer_header, engine_txt,
 def _write_token_class(class_token_header, class_token_implementation, 
                        token_id_header):
     write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
-                             do_token_class_info() \
-                           + class_token_header)
+                           class_token_header) 
     write_safely_and_close(Setup.output_token_class_file_implementation,
                            class_token_implementation)
     write_safely_and_close(Setup.output_token_id_file, token_id_header)

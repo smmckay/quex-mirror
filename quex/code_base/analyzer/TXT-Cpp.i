@@ -1,6 +1,6 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE bool
+bool
 QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
@@ -15,7 +15,7 @@ $$CONSTRUCTOR_EXTENSTION$$
     return true;
 }
 
-QUEX_INLINE void
+void
 QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
@@ -27,7 +27,7 @@ $$DESTRUCTOR_EXTENSTION$$
 #undef self
 }
 
-QUEX_INLINE bool
+bool
 QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
@@ -42,7 +42,7 @@ $$RESET_EXTENSIONS$$
 
 #ifdef QUEX_OPTION_INCLUDE_STACK
 
-QUEX_INLINE bool
+bool
 QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me, 
                              const char*         InputName, 
                              QUEX_NAME(Memento)* memento) 
@@ -57,7 +57,7 @@ $$MEMENTO_EXTENSIONS_PACK$$
     return true;
 }
 
-QUEX_INLINE void
+void
 QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me, 
                                QUEX_NAME(Memento)*  memento)
 {
@@ -72,11 +72,4 @@ $$MEMENTO_EXTENSIONS_UNPACK$$
 #endif /* QUEX_OPTION_INCLUDE_STACK */
 
 QUEX_NAMESPACE_MAIN_CLOSE
-
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "$$CONVERTER_HELPER_I$$"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
-#endif
-#include <quex/code_base/analyzer/headers.i>
 

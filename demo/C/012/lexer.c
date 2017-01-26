@@ -20,10 +20,11 @@ main(int argc, char** argv)
     moritz_Token* moritz_token = 0x0;
     boeck_Token*  boeck_token  = 0x0;
 
-    size_t          i = 0;
+    size_t        i = 0;
 
     max_Lexer_Converter*    converter_utf16 = max_Lexer_Converter_IConv_new("UTF16", NULL);
     moritz_Lexer_Converter* converter_ucs2  = moritz_Lexer_Converter_IConv_new("UCS-2", NULL);
+
     max_Lexer_from_file_name(&max_lex,       "example-utf16.txt", converter_utf16);
     moritz_Lexer_from_file_name(&moritz_lex, "example-ucs2.txt",  converter_ucs2);
     boeck_Lexer_from_file_name(&boeck_lex,   "example-utf8.txt",  NULL);

@@ -15,13 +15,12 @@ main(int argc, char** argv)
     using namespace std;
 
     // we want to have error outputs in stdout, so that the unit test could see it.
-    max::Lexer     max_lex("ucs4.txt", "UCS4");
+    max::Lexer      max_lex("ucs4.txt", max::Lexer_Converter_ICU_new("UCS4", NULL));
     A::B::C::Token* max_token    = 0x0;
-    moritz::Lexer  moritz_lex("ucs4.txt", "UCS4");
+    moritz::Lexer   moritz_lex("ucs4.txt", moritz::Lexer_Converter_ICU_new("UCS4", NULL));
     A::B::C::Token* moritz_token = 0x0;
-    boeck::Lexer   boeck_lex("ucs4.txt", "UCS4");
+    boeck::Lexer    boeck_lex("ucs4.txt", boeck::Lexer_Converter_ICU_new("UCS4", NULL));
     A::B::C::Token* boeck_token  = 0x0;
-
 
     // Each lexer reads one token, since the grammars are similar the lexeme 
     // is always the same.                                                    

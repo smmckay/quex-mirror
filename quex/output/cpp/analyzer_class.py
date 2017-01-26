@@ -58,6 +58,7 @@ def do(ModeDB):
                 ["$$___SPACE___$$",                      " " * (len(LexerClassName) + 1)],
                 ["$$CLASS_BODY_EXTENSION$$",             Lng.SOURCE_REFERENCED(blackboard.class_body_extension)],
                 ["$$CONVERTER_HELPER$$",                 Setup.get_file_reference(Setup.output_buffer_codec_header)],
+                ["$$CONVERTER_HELPER_I$$",               Setup.get_file_reference(Setup.output_buffer_codec_header_i)],
                 ["$$INCLUDE_GUARD_EXTENSION$$",          include_guard_ext],
                 ["$$LEXER_CLASS_NAME$$",                 LexerClassName],
                 ["$$LEXER_NAME_SPACE$$",                 lexer_name_space_safe],
@@ -90,16 +91,14 @@ def do_implementation(ModeDB):
                                     + "/analyzer/TXT-Cpp.i")
     func_txt = get_file_content_or_die(FileTemplate)
 
-    func_txt = blue_print(func_txt,
-            [
-                ["$$CONSTRUCTOR_EXTENSTION$$",                  Lng.SOURCE_REFERENCED(blackboard.class_constructor_extension)],
-                ["$$DESTRUCTOR_EXTENSTION$$",                   Lng.SOURCE_REFERENCED(blackboard.class_destructor_extension)],
-                ["$$CONVERTER_HELPER_I$$",                      Setup.get_file_reference(Setup.output_buffer_codec_header_i)],
-                ["$$CONSTRUCTOR_MODE_DB_INITIALIZATION_CODE$$", get_constructor_code(ModeDB)],
-                ["$$RESET_EXTENSIONS$$",                        Lng.SOURCE_REFERENCED(blackboard.reset_extension)],
-                ["$$MEMENTO_EXTENSIONS_PACK$$",                 Lng.SOURCE_REFERENCED(blackboard.memento_pack_extension)],
-                ["$$MEMENTO_EXTENSIONS_UNPACK$$",               Lng.SOURCE_REFERENCED(blackboard.memento_unpack_extension)],
-                ])
+    func_txt = blue_print(func_txt, [
+        ["$$CONSTRUCTOR_EXTENSTION$$",                  Lng.SOURCE_REFERENCED(blackboard.class_constructor_extension)],
+        ["$$DESTRUCTOR_EXTENSTION$$",                   Lng.SOURCE_REFERENCED(blackboard.class_destructor_extension)],
+        ["$$CONSTRUCTOR_MODE_DB_INITIALIZATION_CODE$$", get_constructor_code(ModeDB)],
+        ["$$RESET_EXTENSIONS$$",                        Lng.SOURCE_REFERENCED(blackboard.reset_extension)],
+        ["$$MEMENTO_EXTENSIONS_PACK$$",                 Lng.SOURCE_REFERENCED(blackboard.memento_pack_extension)],
+        ["$$MEMENTO_EXTENSIONS_UNPACK$$",               Lng.SOURCE_REFERENCED(blackboard.memento_unpack_extension)],
+    ])
     return "\n%s\n" % func_txt
 
 def get_constructor_code(ModeDb):

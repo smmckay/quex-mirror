@@ -195,8 +195,10 @@ public:
     void                  input_pointer_set(QUEX_TYPE_LEXATOM*);
 
     /* -- activate/deactivate byte order reversion (big-/little-endian)      */
-    bool                  byte_order_reversion();
-    void                  byte_order_reversion_set(bool Value);
+    bool                  byte_order_reversion()
+            { return QUEX_NAME(byte_order_reversion)(this); }
+    void                  byte_order_reversion_set(bool Value)
+            { return QUEX_NAME(byte_order_reversion_set)(this, Value); }
 
     /* NOTE: All calls to receive functions for 'queue' and 'single'
      *       are deliberately chosen to be incompatible! Thus, when 
@@ -336,5 +338,12 @@ public:
 };
 
 QUEX_NAMESPACE_MAIN_CLOSE
+
+#if defined(__QUEX_OPTION_CONVERTER_HELPER)
+#   include "$$CONVERTER_HELPER_I$$"
+#else
+#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
+#endif
+#include <quex/code_base/analyzer/headers.i>
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */
