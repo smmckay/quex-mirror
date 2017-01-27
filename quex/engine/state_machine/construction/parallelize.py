@@ -61,8 +61,8 @@ def do(StateMachineList, CommonTerminalStateF=True):
         result.assert_consistency()
 
 
-    if CommonTerminalStateF:
-        __combine_transitionless_acceptance_states(result)
+    #if CommonTerminalStateF:
+    #    __combine_transitionless_acceptance_states(result)
 
     return __consider_empty_state_machines(result, empty_sm_list)
 
