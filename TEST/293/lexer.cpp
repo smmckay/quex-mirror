@@ -22,13 +22,13 @@ int main(int argc, char** argv)
     wstringstream* istr = new std::wstringstream(str);
 
     if( argc > 1 && strcmp(argv[1], "bad") == 0 ) {
-        QUEX_NAME(ByteLoader)*  byte_loader = QUEX_NAME(ByteLoader_wstream)(istr);
-        IConv::Lexer lex(byte_loader, 
-                         QUEX_NAME(Converter_IConv_new),
-                         "UTF8"); // Should break right here!
+        IConv::QUEX_NAME(ByteLoader)*  byte_loader = IConv::QUEX_NAME(ByteLoader_wstream_new)(istr);
+        IConv::QUEX_NAME(Converter)*   converter   = IConv::QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+        IConv::Lexer lex(byte_loader, converter); // Should break HERE!
     }
     else /* 'good' */ {
-        Codec::Lexer  lex(istr); 
+        Codec::QUEX_NAME(ByteLoader)*  byte_loader = Codec::QUEX_NAME(ByteLoader_wstream_new)(istr);
+        Codec::Lexer  lex(byte_loader, NULL); 
         Codec::Token* token;
 
         do {

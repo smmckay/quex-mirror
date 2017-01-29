@@ -3,6 +3,7 @@
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
 .PHONY: clean 
+.SECONDARY:
 
 
 include info.mk

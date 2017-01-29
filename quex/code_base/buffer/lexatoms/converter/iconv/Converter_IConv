@@ -10,15 +10,15 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-    typedef QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG struct {
-        QUEX_NAME(Converter)  base;
+typedef QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG struct {
+    QUEX_NAME(Converter)  base;
 
-        iconv_t               handle;
+    iconv_t               handle;
 
-    } QUEX_NAME(Converter_IConv);
+} QUEX_NAME(Converter_IConv);
 
-    QUEX_INLINE QUEX_NAME(Converter)* QUEX_NAME(Converter_IConv_new)(const char* FromCodec, 
-                                                                     const char* ToCodec);
+QUEX_INLINE QUEX_NAME(Converter)* QUEX_NAME(Converter_IConv_new)(const char* FromCodec, 
+                                                                 const char* ToCodec);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

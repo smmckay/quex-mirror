@@ -3,6 +3,7 @@
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
 .PHONY: clean GENERATE_LEXER GENERATE_PARSER
+.SECONDARY:
 
 ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)

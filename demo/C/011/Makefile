@@ -1,3 +1,4 @@
+.SECONDARY:
 
 APPS := iso8859-7-lexer \
 	    utf8-lexer      \

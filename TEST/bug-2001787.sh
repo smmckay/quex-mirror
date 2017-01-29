@@ -24,7 +24,7 @@ cat tmp.txt
 rm -f tmp.txt
 
 # cleansening
-if [[ $3 == "LAST" ]]; then
+if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
    make clean
 fi
 

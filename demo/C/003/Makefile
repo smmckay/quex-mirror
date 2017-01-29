@@ -14,6 +14,7 @@
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
 .PHONY: clean
+.SECONDARY:
 
 ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)

@@ -1,0 +1,18 @@
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
+Error: The specified byte loader provides elements of size 4.
+Error: The converter requires input elements of size <= 1.
+Error: This happens, for example, when using 'wistream' input
+Error: without considering 'sizeof(wchar_t)' with respect to
+Error: the encodings code unit's size. (UTF8=1byte, UTF16=2byte, etc.)

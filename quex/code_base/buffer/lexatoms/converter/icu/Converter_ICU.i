@@ -20,6 +20,10 @@ QUEX_INLINE bool
 QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* me, 
                                     const char*           FromCoding, 
                                     const char*           ToCoding);
+QUEX_INLINE bool    
+QUEX_NAME(Converter_ICU_initialize_by_bom_id)(QUEX_NAME(Converter)* me,
+                                              QUEX_TYPE_BOM         BomId);
+
 QUEX_INLINE E_LoadResult
 QUEX_NAME(Converter_ICU_convert)(QUEX_NAME(Converter)*       me, 
                                  uint8_t**                   source, 
@@ -152,7 +156,7 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego,
 }
 
 QUEX_INLINE bool    
-QUEX_NAME(Converter_ICU_initialize_by_bom_id)(QUEX_NAME(Converter)* me,
+QUEX_NAME(Converter_ICU_initialize_by_bom_id)(QUEX_NAME(Converter)* alter_ego,
                                               QUEX_TYPE_BOM         BomId)
 {
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
@@ -188,7 +192,7 @@ QUEX_NAME(Converter_ICU_initialize_by_bom_id)(QUEX_NAME(Converter)* me,
     case QUEX_BOM_NONE:            return false;
     }
 
-    return QUEX_NAME(Converter_ICU)(me, name, NULL);
+    return QUEX_NAME(Converter_ICU_initialize)(alter_ego, name, NULL);
 }
 
 QUEX_INLINE E_LoadResult

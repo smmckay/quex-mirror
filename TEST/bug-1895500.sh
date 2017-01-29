@@ -18,7 +18,7 @@ make lexer-$1
 ./lexer-$1 example-utf-8.dat
 
 # cleansening
-if [[ $3 == "LAST" ]]; then
+if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
    make clean
 fi
 

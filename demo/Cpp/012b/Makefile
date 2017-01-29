@@ -1,3 +1,5 @@
+.SECONDARY:
+
 ENGINE = \
 		boeck_Lexer.cpp   \
 		max_Lexer.cpp     \

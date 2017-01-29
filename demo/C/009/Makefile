@@ -2,6 +2,7 @@
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________
 .PHONY: clean
+.SECONDARY:
 
 FILES := lexer-command-line lexer-command-line-utf8 \
 	     lexer-stdin        lexer-stdin-utf8        \

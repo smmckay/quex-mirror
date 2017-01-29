@@ -18,7 +18,7 @@ make lexer-$1 >& /dev/null
 ./lexer-$1 text.345
 
 # cleansening
-if [[ $3 == "LAST" ]]; then
+if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
     make clean >& /dev/null
 fi
 cd $tmp

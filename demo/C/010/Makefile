@@ -1,6 +1,7 @@
 # (C) Frank-Rene Schaefer
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+.SECONDARY:
 
 FILES := feeder-plain.exe  feeder-converter.exe  \
 	     gavager-plain.exe gavager-converter.exe \

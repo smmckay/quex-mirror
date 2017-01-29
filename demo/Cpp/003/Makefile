@@ -14,6 +14,7 @@
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
 .PHONY: clean
+.SECONDARY: # avoid remove of intermediate targets => faster unit testing
 
 ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)

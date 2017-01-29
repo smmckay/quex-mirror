@@ -17,7 +17,7 @@ $QUEX_PATH/TEST/call-make.sh $1.exe
 $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$1.exe 
 cat tmp.txt; rm -f tmp.txt
 
-if [[ "$3" == "LAST" ]]; then
+if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
     make clean >& /dev/null
 fi
 

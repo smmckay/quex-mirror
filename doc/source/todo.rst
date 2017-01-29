@@ -27,3 +27,6 @@ for the 'buffer._memory.ownership' before reload!
    In doubt: use 
    "size_t copy (char* s, size_t len, size_t pos = 0) const;"
    Do not forget terminating zero using std::string::length();
+
+-- QUEX_NAME(something) must be invoqued with Lexer::QUEX_NAME(something)
+   if 'using namespace Lexer;' is not given.
