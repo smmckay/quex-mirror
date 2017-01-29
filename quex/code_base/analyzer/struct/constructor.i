@@ -413,8 +413,7 @@ QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me)
 #ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE 
     QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
 #else
-#   if      defined(__QUEX_OPTION_PLAIN_C) \
-       && ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+#   if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     QUEX_NAME_TOKEN(destruct)(me->token);
 #   endif
 #endif

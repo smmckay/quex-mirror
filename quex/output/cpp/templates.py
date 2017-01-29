@@ -337,20 +337,25 @@ def reentry_preparation(Lng, PreConditionIDList, OnAfterMatchCode, dial_db):
         "\n%s\n" % Lng.GOTO(DoorID.global_reentry(dial_db), dial_db), 
     ]
 
+def get_implementation_header(Setup):
+    if Setup.language != "C":
+        return ""
+
+    if Setup.converter_helper_required_f:
+        result = "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header_i)
+    else:
+        result = "#include \"quex/code_base/converter_helper/from-unicode-buffer.i\"\n"
+    result += "#include <quex/code_base/analyzer/headers.i>\n"
+    result += "#include <quex/code_base/analyzer/C-adaptions.h>\n"
+    return result
+
 def __frame_of_all(Code, Setup):
     # namespace_ref   = Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space)
     # if len(namespace_ref) > 2 and namespace_ref[:2] == "::":  namespace_ref = namespace_ref[2:]
     # if len(namespace_ref) > 2 and namespace_ref[-2:] == "::": namespace_ref = namespace_ref[:-2]
     # "using namespace " + namespace_ref + ";\n"       + \
 
-    implementation_header_str = ""
-    if Setup.language == "C":
-        if Setup.converter_helper_required_f:
-            implementation_header_str += "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header_i)
-        else:
-            implementation_header_str += "#include \"quex/code_base/converter_helper/from-unicode-buffer.i\"\n"
-        implementation_header_str += "#include <quex/code_base/analyzer/headers.i>\n"
-        implementation_header_str += "#include <quex/code_base/analyzer/C-adaptions.h>\n"
+    implementation_header_str = get_implementation_header(Setup)
 
     lexeme_null_definition = ""
     if Setup.external_lexeme_null_object == "":

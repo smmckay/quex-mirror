@@ -112,9 +112,11 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__QUEX___TESTANALYZER */
+#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
+
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE bool
+bool
 QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
@@ -130,7 +132,7 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
     return true;
 }
 
-QUEX_INLINE void
+void
 QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
@@ -142,7 +144,7 @@ QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
 #undef self
 }
 
-QUEX_INLINE bool
+bool
 QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
@@ -157,7 +159,7 @@ QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 
 #ifdef QUEX_OPTION_INCLUDE_STACK
 
-QUEX_INLINE bool
+bool
 QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me, 
                              const char*         InputName, 
                              QUEX_NAME(Memento)* memento) 
@@ -172,7 +174,7 @@ QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me,
     return true;
 }
 
-QUEX_INLINE void
+void
 QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me, 
                                QUEX_NAME(Memento)*  memento)
 {
@@ -188,13 +190,12 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
-#endif
-#include <quex/code_base/analyzer/headers.i>
 
+#include "quex/code_base/converter_helper/from-unicode-buffer.i"
+#include <quex/code_base/analyzer/headers.i>
+#include <quex/code_base/analyzer/C-adaptions.h>
+#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
+#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 /* -*- C++ -*-   vim: set syntax=cpp: 
  * (C) 2004-2009 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY
@@ -235,7 +236,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 239 "TestAnalyzer.h"
+#   line 240 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -265,7 +266,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 269 "TestAnalyzer.h"
+#   line 270 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -306,7 +307,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 310 "TestAnalyzer.h"
+#   line 311 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -397,7 +398,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 401 "TestAnalyzer.h"
+#   line 402 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -419,7 +420,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 423 "TestAnalyzer.h"
+#   line 424 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -438,7 +439,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 442 "TestAnalyzer.h"
+#   line 443 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -515,7 +516,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #include <quex/code_base/converter_helper/identity.i>
    
 
-#   line 519 "TestAnalyzer.h"
+#   line 520 "TestAnalyzer.h"
 
 
 
@@ -560,3 +561,4 @@ QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
+#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */

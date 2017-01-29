@@ -8,6 +8,7 @@ import quex.input.files.core            as quex_file_parser
 from   quex.engine.misc.file_operations import open_file_or_die
 from   quex.output.core.dictionary      import db
 import quex.output.cpp.configuration    as configuration
+import quex.output.cpp.templates        as templates
 import quex.output.cpp.analyzer_class   as analyzer_class
 import quex.core                        as core
 
@@ -27,9 +28,14 @@ def code(Language):
 def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     # Analyzer class implementation
     #
-    analyzer_class_implementation = analyzer_class.do_implementation(mode_db)
+    analyzer_class_implementation  = "#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n"
+    analyzer_class_implementation += analyzer_class.do_implementation(mode_db)
+    analyzer_class_implementation += templates.get_implementation_header(Setup)
+    analyzer_class_implementation += "#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n"
+
     with open(FileName, "a") as fh:
         fh.write(analyzer_class_implementation)
+
 
     if not TokenClassImplementationF:
         return
@@ -42,14 +48,16 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     token_class_implementation             = core._prepare_token_class()
 
     with open(FileName, "a") as fh:
+        fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")
         fh.write("%s\n%s" % (token_class_implementation,
                              map_token_id_to_string_implementation))
-    
+        fh.write("#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
+
     Lng.straighten_open_line_pragmas(FileName)
 
 if sys.argv[1] == "C++":
     mode_db = code("C++")
-    add_engine_stuff(mode_db, "TestAnalyzer")
+    add_engine_stuff(mode_db, "TestAnalyzer", TokenClassImplementationF=True)
     os.remove("TestAnalyzer.cpp")
 
 elif sys.argv[1] == "C":
