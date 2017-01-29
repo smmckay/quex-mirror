@@ -10,7 +10,8 @@ lexer-iconv: Simple.cpp
 		../lexer-simply.cpp           \
 		-ggdb                         \
 		-o $@                         \
-		-D'CONVERTER_ENCODING="UTF8"' \
+		-DQUEX_OPTION_CONVERTER_ICONV \
+		-DQUEX_SETTING_BUFFER_SIZE=65536 \
 		> tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
@@ -22,7 +23,8 @@ lexer-icu: Simple.cpp
 		../lexer-simply.cpp           \
 		-ggdb                         \
 		-o $@                         \
-		-D'CONVERTER_ENCODING="UTF8"' \
+		-DQUEX_OPTION_CONVERTER_ICU   \
+		-DQUEX_SETTING_BUFFER_SIZE=65536 \
 		> tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
