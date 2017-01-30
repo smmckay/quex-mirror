@@ -6,6 +6,7 @@
 #define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__COMMON_H
 
 #include <quex/code_base/definitions>
+#include <quex/code_base/MemoryManager>
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/asserts>
 #if ! defined(__QUEX_OPTION_PLAIN_C)
@@ -19,5 +20,7 @@
  * converters must at least check that before they are included, the converter
  * headers have been made available--by inclusion before they were included  */
 #define QUEX_CHARACTER_CONVERTER_DECLARED
+
+#include <quex/code_base/MemoryManager.i>
 
 #endif                   /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__COMMON_H */

@@ -1,11 +1,9 @@
 .SECONDARY:
 
-ENGINE = \
-		boeck_Lexer.c    \
-		max_Lexer.c      \
-		moritz_Lexer.c             
-
-OBJS = $(ENGINE:.c=.o) lexer.o
+OBJS =  lexer.o          \
+		boeck_Lexer.o    \
+		max_Lexer.o      \
+		moritz_Lexer.o             
 
 ifdef ASSERTS_ENABLED_F
 	CCFLAG_ASSERTS=# By default asserts are enabled
@@ -27,7 +25,7 @@ lexer: $(OBJS)
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 
 %.E: %.c
-	gcc -E $< -o  $@ -I$(QUEX_PATH) 
+	$(CC) $< -E -o $@ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) 
 # -DQUEX_OPTION_ASSERTS_DISABLED
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 

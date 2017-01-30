@@ -1,11 +1,9 @@
 .SECONDARY:
 
-ENGINE = \
-		boeck_Lexer.cpp              \
-		max_Lexer.cpp                \
-		moritz_Lexer.cpp             
-
-OBJS =  lexer.o $(ENGINE:.cpp=.o)
+OBJS =  lexer.o          \
+		boeck_Lexer.o    \
+		max_Lexer.o      \
+		moritz_Lexer.o             
 
 ifdef ASSERTS_ENABLED_F
 	CCFLAG_ASSERTS=# By default asserts are enabled

@@ -26,7 +26,6 @@
  *
  * (C) 2010-2012 Frank-Rene Schaefer 
  * ABSOLUTELY NO WARRANTY                                                    */
-
 #if   ! defined(__QUEX_FROM)
 #   error "__QUEX_FROM must be defined!"
 #elif ! defined(__QUEX_FROM_TYPE)
@@ -124,3 +123,4 @@ QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const std::basic_string<__QUEX
 #undef __QUEX_TO_MAX_LENGTH_utf32 
 #undef ____QUEX_TO_MAX_LENGTH  
 #undef __QUEX_TO_MAX_LENGTH  
+

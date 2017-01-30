@@ -1,13 +1,3 @@
-< 		boeck_Lexer.cpp              \
-< 		max_Lexer.cpp                \
-< 		moritz_Lexer.cpp             
----
-> 		boeck_Lexer.c    \
-> 		max_Lexer.c      \
-> 		moritz_Lexer.c             
-< OBJS =  lexer.o $(ENGINE:.cpp=.o)
----
-> OBJS = $(ENGINE:.c=.o) lexer.o
 < CC := g++ -ggdb -Wall -Werror -DQUEX_OPTION_MULTI 
 ---
 > CC := gcc -ggdb -Wall -Werror -DQUEX_OPTION_MULTI
@@ -22,12 +12,8 @@
 ---
 > %.o: %.c 
 < %.E: %.cpp
-< 	g++ -E $< -o  $@ \
-< 		-I$(QUEX_PATH) 
-< 		
 ---
 > %.E: %.c
-> 	gcc -E $< -o  $@ -I$(QUEX_PATH) 
 < max_Lexer.cpp:    max.qx
 ---
 > max_Lexer.c: max.qx
