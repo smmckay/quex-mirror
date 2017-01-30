@@ -397,10 +397,8 @@ QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
     /* Assume that the user will pass us a constructed token                  */
     me->token = (QUEX_TYPE_TOKEN*)0x0;     
 #   else
-    me->token = &me->__memory_token;     
-#   ifdef __QUEX_OPTION_PLAIN_C
+    me->token = (QUEX_TYPE_TOKEN*)&me->__memory_token;     
     QUEX_NAME_TOKEN(construct)(me->token);
-#   endif
 #endif
     return true;
 }
@@ -415,6 +413,7 @@ QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me)
 #else
 #   if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     QUEX_NAME_TOKEN(destruct)(me->token);
+    me->token = (QUEX_TYPE_TOKEN*)0;
 #   endif
 #endif
 }

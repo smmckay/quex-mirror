@@ -7,6 +7,8 @@ CC = g++ -I$(QUEX_PATH) \
      # -DQUEX_OPTION_DEBUG_SHOW 
 	 # -fsanitize=address
 
+all: $(FILES)
+
 codec-lexer: lexer.cpp 
 	quex -i simple-hindi.qx -o Simple --token-policy single --codec utf8 --debug-exception
 	$(CC) lexer.cpp Simple.cpp  -o $@ \

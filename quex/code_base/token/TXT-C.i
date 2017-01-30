@@ -46,7 +46,8 @@ $TOKEN_CLASS_destruct($TOKEN_CLASS* __this)
 {
 #   define self (*__this)
 #   define LexemeNull  &QUEX_LEXEME_NULL
-    (void)__this;
+    if( ! __this ) return;
+
 $$DESTRUCTOR$$
 #   undef  LexemeNull
 #   undef  self

@@ -46,6 +46,7 @@ QUEX_NAME_TOKEN(construct)($TOKEN_CLASS* __this)
 QUEX_INLINE void
 QUEX_NAME_TOKEN(destruct)($TOKEN_CLASS* __this)
 {
+    if( ! __this ) return;
     __this->$TOKEN_CLASS::~$TOKEN_CLASS();  
 }
 
