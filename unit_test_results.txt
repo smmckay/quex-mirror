@@ -4,6 +4,8 @@
                                                                                
 TEST                                                                 <no date>
 -------------------------------------------------------------------------------
+ * 
+        bug-1935701.exe ....................................[NO GOOD FILE]
 
  * Dizzzy:
 
@@ -47,7 +49,7 @@ TEST                                                                 <no date>
                        iconv .........................................[OK]
                        icu ...........................................[OK]
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
-        bug-2619679.sh ...............................................[OK]
+        bug-2619679.sh .............................................[FAIL]
     286 Maintaining character index during manual buffer filling.
         bug-286.sh ............................................[NO OUTPUT]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
@@ -389,9 +391,6 @@ TEST                                                                 <no date>
         bug-1908092.sh ...............................................[OK]
     1908436 0.23.6 rule precedence reversed for identical patterns
         bug-1908436.sh ...............................................[OK]
-    1935701 - 0.24.7 buffer handling size mismatch
-        bug-1935701.exe FILE .........................................[OK]
-                        fstream ......................................[OK]
     1936707 0.24.10 --plot flag doesnt seem to work
         bug-1936707.sh ...............................................[OK]
     1969629 0.25.4 token list with just TERMINATION treated empty
@@ -462,7 +461,7 @@ TEST                                                                 <no date>
  * yaroslavkrv:
 
     3097431 0.54.1 Line-Column numbers
-        bug-3097431.sh ...............................................[OK]
+        bug-3097431.sh .............................................[FAIL]
 
  * ymarkovitch:
 
@@ -487,7 +486,9 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] bug-1935701.exe
     [FAIL] bug-3025173.sh
+    [FAIL] bug-2619679.sh
     [FAIL] bug-286.sh
     [FAIL] bug-2209142.sh _ error
     [FAIL] feature-3039173.sh
@@ -499,6 +500,7 @@ TEST                                                                 <no date>
     [FAIL] feature-2146712.sh _ NoWrite
                             \__ Normal
                             \__ NotExist
+    [FAIL] bug-3097431.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1419,13 +1421,11 @@ quex/TESTS/token-class/TEST                                          <no date>
  * With token policy 'queue'.
         simple-queue.exe .............................................[OK]
  * With token policy 'simple'.
-        simple.exe .................................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] simple.exe
+        simple.exe ...................................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -3218,13 +3218,14 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
+    [NO GOOD FILE] bug-1935701.exe
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       12  240   [FAIL] TEST                                                          
+       15  239   [FAIL] TEST                                                          
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
         3  13    [FAIL] ..../TEST                                                     
@@ -3242,7 +3243,7 @@ SUMMARY:
         1  12    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
         2  24    [FAIL] ........../source-package/TEST                                
-        1  2     [FAIL] ........../token-class/TEST                                   
+           2       [OK] ........../token-class/TEST                                   
            4       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
            42      [OK] ............../analyzer/TEST                                  
@@ -3278,11 +3279,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  ____            
-    |  ___|_ _(_) |___     |___  ||___ \     __  __
-    | |_ / _` | | / __|       / /   __) |    \ \/ /
-    |  _| (_| | | \__ \      / /   / __/      >  < 
-    |_|  \__,_|_|_|___/     /_/   |_____|    /_/\_\
-                                                                   (1637 tests)
+     _____     _ _          _____  _  _            
+    |  ___|_ _(_) |___     |___  || || |     __  __
+    | |_ / _` | | / __|       / / | || |_    \ \/ /
+    |  _| (_| | | \__ \      / /  |__   _     >  < 
+    |_|  \__,_|_|_|___/     /_/      |_|     /_/\_\
+                                                                   (1636 tests)
 
 ===============================================================================

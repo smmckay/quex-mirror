@@ -87,18 +87,22 @@ QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const std::basic_string<__QUEX
 {
     /* Avoiding the mess with 'c_str()' and 'begin()' in 'std::string()'
      * => copy string to a temporary array.                                   */
-    __QUEX_FROM_TYPE                   source[Source.length() + 1];
+    __QUEX_FROM_TYPE*                  source = (__QUEX_FROM_TYPE*)
+                                                QUEXED(MemoryManager_allocate)(
+                                                sizeof(__QUEX_FROM_TYPE) * (Source.length() + 1),
+                                                E_MemoryObjectType_TEXT);
     const __QUEX_FROM_TYPE*            source_iterator;
-    const __QUEX_FROM_TYPE*            SourceEnd = &source[Source.length()+1];
-    __QUEX_TO_TYPE                     drain[__QUEX_TO_MAX_LENGTH(__QUEX_TO) + 1];
+    const __QUEX_FROM_TYPE*            SourceEnd = &source[Source.length()];
+    __QUEX_TO_TYPE                     drain[__QUEX_TO_MAX_LENGTH(__QUEX_TO)];
     __QUEX_TO_TYPE*                    drain_iterator  = 0;
     std::basic_string<__QUEX_TO_TYPE>  result;
 
-    if( ! Source.copy(&source[0], Source.length()+1) ) {
+    if( ! Source.copy(&source[0], Source.length()) ) {
+        QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
         return result;
     }
-    /* .copy() does not append a terminating zero (how nice!).                */
-    source[Source.length()] = (__QUEX_FROM_TYPE)0;
+    /* .copy() does not append a terminating zero ...
+     * and it is not to be copied.                                            */
 
     for(source_iterator = &source[0]; source_iterator != SourceEnd; ) {
         drain_iterator = drain;
@@ -107,6 +111,8 @@ QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const std::basic_string<__QUEX
         __quex_assert(source_iterator <= SourceEnd);
         result.append((__QUEX_TO_TYPE*)drain, (size_t)(drain_iterator - drain));
     }
+
+    QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
     return result;
 }
 #endif
