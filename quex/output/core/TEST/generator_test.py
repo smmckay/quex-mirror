@@ -527,6 +527,9 @@ $$__QUEX_OPTION_TOKEN_QUEUE$$
 #define QUEX_TKN_NODENT            5
 #endif
 
+#ifdef QUEX_UNIT_TEST_SECOND_MODE
+#  define __QUEX_SETTING_MAX_MODE_CLASS_N 2
+#endif
 #ifdef __cplusplus
 #include <quex/code_base/test_environment/TestAnalyzer>
 #else

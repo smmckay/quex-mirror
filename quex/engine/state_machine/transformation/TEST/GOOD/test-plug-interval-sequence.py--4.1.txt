@@ -9,7 +9,7 @@
 # (2)      [00F1]     [0082]     [0084]     [0080, 00A0]
 #    L    = 4
 #    DIdx = 2
-digraph state_machine_0 {
+digraph ((state_machine_2)) {
 rankdir=LR;
 size="8,5"
 node [shape = doublecircle]; 

@@ -284,6 +284,9 @@ def test_plug_sequence(ByteSequenceDB):
 def show_graphviz(sm):
     gv_str = sm.get_graphviz_string(Option="hex")
     for line in gv_str.splitlines():
+        if line.startswith("digraph state_machine_"):
+            line = line.replace("digraph state_machine_", "digraph ((state_machine_")
+            line = line.replace(" {", ")) {")
         if "->" not in line or "label" not in line: print line; continue
         fields = line.split()
         if len(fields) < 3: 

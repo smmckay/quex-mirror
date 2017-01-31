@@ -8,7 +8,7 @@
 # (1)      [0071]     [0080, 00BF]     [0080, 00BF]
 #    L    = 3
 #    DIdx = 0
-digraph state_machine_0 {
+digraph ((state_machine_2)) {
 rankdir=LR;
 size="8,5"
 node [shape = doublecircle]; 
@@ -17,4 +17,3 @@ node [shape = circle];
 ((2)) -> ((3)) [label ="[0080, 00BF] "];
 ((3)) -> ((1)) [label ="[0080, 00BF] "];
 }
-

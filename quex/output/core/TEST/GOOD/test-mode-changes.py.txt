@@ -7,14 +7,18 @@
                  " " --> 2: WHITESPACE CONTINUE
 ## (1) code generation
 ## (2) compiling generated engine code and test
-g++  ./tmp.cpp -I./. -I$QUEX_PATH -o ./tmp.cpp.exe -D__QUEX_OPTION_UNIT_TEST_ISOLATED_CODE_GENERATION -ggdb ##
-## (3) running the test
+g++ -Wall -Werror -Wno-error=unused-function -DQUEX_UNIT_TEST_SECOND_MODE -DQUEX_OPTION_ASSERTS ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
+## (*) running the test
 (*) test string: 
 '" "'
 (*) result:
            1: X ->2  '"'
+---
 2: WHITESPACE CONTINUE  ' '
            2: X ->1  '"'
+---
+---
   ''
 
-## (4) cleaning up
+
+

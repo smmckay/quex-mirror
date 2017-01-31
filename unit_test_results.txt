@@ -2045,9 +2045,9 @@ quex/input/regular_expression/TEST                                   <no date>
 quex/output/core/TEST                                                <no date>
 -------------------------------------------------------------------------------
  * Mode Changes
-        test-mode-changes.py ANSI-C ................................[FAIL]
-                             ANSI-C-CG .............................[FAIL]
-                             Cpp ...................................[FAIL]
+        test-mode-changes.py ANSI-C ..................................[OK]
+                             ANSI-C-CG ...............................[OK]
+                             Cpp .....................................[OK]
 
  * Buffer Reload:
 
@@ -2099,18 +2099,18 @@ quex/output/core/TEST                                                <no date>
  * CONTINUE:
 
     Reentry analysis without return from function
-        test-continue-without-return.py ANSI-C .....................[FAIL]
-                                        ANSI-C-CG ..................[FAIL]
-                                        ANSI-C-PathTemplate ........[FAIL]
-                                        ANSI-C-PlainMemory .........[FAIL]
-                                        Cpp ........................[FAIL]
-                                        Cpp-Path ...................[FAIL]
-                                        Cpp-Path-CG ................[FAIL]
-                                        Cpp-PathUniform ............[FAIL]
-                                        Cpp-PathUniform-CG .........[FAIL]
-                                        Cpp-Template ...............[FAIL]
-                                        Cpp-Template-CG ............[FAIL]
-                                        Cpp_StrangeStream ..........[FAIL]
+        test-continue-without-return.py ANSI-C .......................[OK]
+                                        ANSI-C-CG ....................[OK]
+                                        ANSI-C-PathTemplate ..........[OK]
+                                        ANSI-C-PlainMemory ...........[OK]
+                                        Cpp ..........................[OK]
+                                        Cpp-Path .....................[OK]
+                                        Cpp-Path-CG ..................[OK]
+                                        Cpp-PathUniform ..............[OK]
+                                        Cpp-PathUniform-CG ...........[OK]
+                                        Cpp-Template .................[OK]
+                                        Cpp-Template-CG ..............[OK]
+                                        Cpp_StrangeStream ............[OK]
 
  * Post Conditions:
 
@@ -2253,9 +2253,9 @@ quex/output/core/TEST                                                <no date>
                          Cpp-Template-CG .............................[OK]
                          Cpp_StrangeStream ...........................[OK]
     Reload Init State
-        test-continue-without-return-2.py ANSI-C ...................[FAIL]
-                                          ANSI-C-CG ................[FAIL]
-                                          Cpp ......................[FAIL]
+        test-continue-without-return-2.py ANSI-C .....................[OK]
+                                          ANSI-C-CG ..................[OK]
+                                          Cpp ........................[OK]
     Reload Init State
         test-pre-conditions.py ANSI-C ................................[OK]
                                ANSI-C-CG .............................[OK]
@@ -2290,29 +2290,10 @@ quex/output/core/TEST                                                <no date>
                                          B-UTF8 ......................[OK]
                                          C ...........................[OK]
                                          C-UTF8 ......................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-mode-changes.py _ ANSI-C
-                              \__ ANSI-C-CG
-                              \__ Cpp
-    [FAIL] test-continue-without-return.py _ ANSI-C
-                                         \__ ANSI-C-CG
-                                         \__ ANSI-C-PathTemplate
-                                         \__ ANSI-C-PlainMemory
-                                         \__ Cpp
-                                         \__ Cpp-Path
-                                         \__ Cpp-Path-CG
-                                         \__ Cpp-PathUniform
-                                         \__ Cpp-PathUniform-CG
-                                         \__ Cpp-Template
-                                         \__ Cpp-Template-CG
-                                         \__ Cpp_StrangeStream
-    [FAIL] test-continue-without-return-2.py _ ANSI-C
-                                           \__ ANSI-C-CG
-                                           \__ Cpp
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Output Cpp                                   
@@ -2484,31 +2465,31 @@ quex/engine/state_machine/transformation/TEST                        <no date>
  * State Split:
 
     Plug Interval Sequence
-        test-plug-interval-sequence.py 1.1 .........................[FAIL]
-                                       1.2 .........................[FAIL]
-                                       2.1 .........................[FAIL]
-                                       2.2 .........................[FAIL]
-                                       2.3 .........................[FAIL]
-                                       3.1 .........................[FAIL]
-                                       3.2 .........................[FAIL]
+        test-plug-interval-sequence.py 1.1 ...........................[OK]
+                                       1.2 ...........................[OK]
+                                       2.1 ...........................[OK]
+                                       2.2 ...........................[OK]
+                                       2.3 ...........................[OK]
+                                       3.1 ...........................[OK]
+                                       3.2 ...........................[OK]
                                        3.3 .........................[FAIL]
-                                       4.1 .........................[FAIL]
-                                       4.2 .........................[FAIL]
-                                       4.3 .........................[FAIL]
-                                       4.4 .........................[FAIL]
+                                       4.1 ...........................[OK]
+                                       4.2 ...........................[OK]
+                                       4.3 ...........................[OK]
+                                       4.4 ...........................[OK]
     Plug Interval Sequence - With BL Detection
-        test-plug-interval-sequence-with-bad-lexatom-detection.py 1.1 [FAIL]
-                                                                  1.2 [FAIL]
-                                                                  2.1 [FAIL]
-                                                                  2.2 [FAIL]
-                                                                  2.3 [FAIL]
-                                                                  3.1 [FAIL]
-                                                                  3.2 [FAIL]
-                                                                  3.3 [FAIL]
-                                                                  4.1 [FAIL]
-                                                                  4.2 [FAIL]
-                                                                  4.3 [FAIL]
-                                                                  4.4 [FAIL]
+        test-plug-interval-sequence-with-bad-lexatom-detection.py 1.1 [OK]
+                                                                  1.2 [OK]
+                                                                  2.1 [OK]
+                                                                  2.2 [OK]
+                                                                  2.3 [OK]
+                                                                  3.1 [OK]
+                                                                  3.2 [OK]
+                                                                  3.3 [OK]
+                                                                  4.1 [OK]
+                                                                  4.2 [OK]
+                                                                  4.3 [OK]
+                                                                  4.4 [OK]
 
  * Table-Based Transformations (fixed size):
 
@@ -2560,30 +2541,7 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-plug-interval-sequence.py _ 1.1
-                                        \__ 1.2
-                                        \__ 2.1
-                                        \__ 2.2
-                                        \__ 2.3
-                                        \__ 3.1
-                                        \__ 3.2
-                                        \__ 3.3
-                                        \__ 4.1
-                                        \__ 4.2
-                                        \__ 4.3
-                                        \__ 4.4
-    [FAIL] test-plug-interval-sequence-with-bad-lexatom-detection.py _ 1.1
-                                                                   \__ 1.2
-                                                                   \__ 2.1
-                                                                   \__ 2.2
-                                                                   \__ 2.3
-                                                                   \__ 3.1
-                                                                   \__ 3.2
-                                                                   \__ 3.3
-                                                                   \__ 4.1
-                                                                   \__ 4.2
-                                                                   \__ 4.3
-                                                                   \__ 4.4
+    [FAIL] test-plug-interval-sequence.py _ 3.3
 ===============================================================================
                                                                                
                          Forward and Backward Loading                          
@@ -3260,20 +3218,20 @@ SUMMARY:
            4       [OK] ......................................./subset/TEST           
            9       [OK] ........................./algorithm/TEST                      
            14      [OK] ........................./check/TEST                          
-       24  53    [FAIL] ........................./transformation/TEST                 
+        1  53    [FAIL] ........................./transformation/TEST                 
            58      [OK] ..../input/TEST                                               
            27      [OK] ........../regular_expression/TEST                            
-       18  196   [FAIL] ..../output/core/TEST                                         
+           196     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
            30      [OK] .........../cpp/TEST                                          
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _           __    ____            
-    |  ___|_ _(_) |___      / /_  |___ \     __  __
-    | |_ / _` | | / __|    | '_ \   __) |    \ \/ /
-    |  _| (_| | | \__ \    | (_) | / __/      >  < 
-    |_|  \__,_|_|_|___/     \___/ |_____|    /_/\_\
+     _____     _ _          ____   _           
+    |  ___|_ _(_) |___     |___ \ / |    __  __
+    | |_ / _` | | / __|      __) || |    \ \/ /
+    |  _| (_| | | \__ \     / __/ | |     >  < 
+    |_|  \__,_|_|_|___/    |_____||_|    /_/\_\
                                                                    (1638 tests)
 
 ===============================================================================
