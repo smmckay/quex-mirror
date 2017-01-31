@@ -190,7 +190,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     state_machine_code = create_state_machine_function(PatternActionPairList, 
                                                        adapted_dict, 
-                                                       BufferLimitCode)
+                                                       BufferLimitCode,
+                                                       TokenQueueF=TokenQueueF)
 
     if len(SecondPatternActionPairList) != 0:
         dial_db = DialDB()
@@ -198,7 +199,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
         state_machine_code += create_state_machine_function(SecondPatternActionPairList, 
                                                             PatternDictionary, 
                                                             BufferLimitCode,
-                                                            SecondModeF=True)
+                                                            SecondModeF=True, 
+                                                            TokenQueueF=TokenQueueF)
 
     if ShowBufferLoadsF:
         state_machine_code = "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS\n" + \
@@ -388,7 +390,7 @@ def create_common_declarations(Language, QuexBufferSize,
     return txt
 
 def create_state_machine_function(PatternActionPairList, PatternDictionary, 
-                                  BufferLimitCode, SecondModeF=False):
+                                  BufferLimitCode, SecondModeF=False, TokenQueueF=False):
     global dial_db
     incidence_db = IncidenceDB()
 
@@ -420,9 +422,14 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
         if   "->1" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mr_analyzer_function);\n")
         elif "->2" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mrs_analyzer_function);\n")
 
-        if "CONTINUE" in PatternName: txt.append("")
-        elif "STOP" in PatternName:   txt.append("return false;\n")
-        else:                         txt.append("return true;\n")
+        if TokenQueueF:
+            if "CONTINUE" in PatternName: txt.append("")
+            elif "STOP" in PatternName:   txt.append("me->error_code = E_Error_UnitTest_Termination; return;\n")
+            else:                         txt.append("return;\n")
+        else:
+            if "CONTINUE" in PatternName: txt.append("")
+            elif "STOP" in PatternName:   txt.append("return false;\n")
+            else:                         txt.append("return true;\n")
 
 
         txt.append("%s\n" % Lng.GOTO(DoorID.continue_with_on_after_match(dial_db), dial_db))
@@ -449,7 +456,10 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     # -- PatternList/TerminalDb
     #    (Terminals can only be generated after the 'mount procedure', because, 
     #     the bipd_sm is generated through mounting.)
-    on_failure = CodeTerminal(["return false;\n"])
+    if TokenQueueF:
+        on_failure = CodeTerminal(["me->error_code = E_Error_UnitTest_Termination; return;\n"])
+    else:
+        on_failure = CodeTerminal(["return false;\n"])
     terminal_db.update({
         E_IncidenceIDs.MATCH_FAILURE: Terminal(on_failure, "FAILURE", 
                                                E_IncidenceIDs.MATCH_FAILURE,
@@ -647,7 +657,7 @@ run_test(const char* TestString, const char* Comment)
 
 #   else
 
-    while( 1 + 1 == 2 ) {
+    while( lexer_state->error_code == E_Error_None ) {
         lexer_state->current_analyzer_function(lexer_state);
         printf("---\\n");
 

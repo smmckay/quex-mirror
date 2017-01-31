@@ -131,6 +131,7 @@ typedef enum {
     E_Error_None,
     E_Error_Reset_OnError,
     E_Error_Uninitialized,
+    E_Error_UnitTest_Termination,
     E_Error_UserConstructor_Failed,
     E_Error_UserReset_Failed,
 } E_Error;
