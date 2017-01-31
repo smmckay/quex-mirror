@@ -18,13 +18,14 @@ choice = sys.argv[1]
 
 pattern_action_pair_list = [
         ('\\"',  "1: X ->2"),
-        ('" "', "1: WHITESPACE CONTINUE"),
+        ('" "',  "1: WHITESPACE CONTINUE"),
 ]
 pattern_action_pair_list_2 = [
         ('\\"',  "2: X ->1"),
-        ('" "', "2: WHITESPACE CONTINUE"),
+        ('" "',  "2: WHITESPACE CONTINUE"),
 ]
 test_str = "\" \""
 
 generator_test.do(pattern_action_pair_list, test_str, {}, choice, 
-                  SecondPatternActionPairList=pattern_action_pair_list_2)    
+                  SecondPatternActionPairList=pattern_action_pair_list_2,
+                  TokenQueueF=True)    

@@ -246,6 +246,7 @@ QUEX_NAME_TOKEN(construct)(Token* __this)
 QUEX_INLINE void
 QUEX_NAME_TOKEN(destruct)(Token* __this)
 {
+    if( ! __this ) return;
     __this->Token::~Token();  
 }
 
@@ -268,7 +269,7 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
 #       endif
    
 
-#   line 272 "TestAnalyzer-token"
+#   line 273 "TestAnalyzer-token"
 
 #   undef Other
 #   undef self
@@ -304,7 +305,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
             QUEX_TYPE_LEXATOM* it = 0x0;
             printf("%lX ", (long)__this);
             printf("previous:  '");
-            for(it = (QUEX_TYPE_LEXATOM*)self.text.c_str(); *it ; ++it) printf("%04X.", (int)*it);
+            for(it = (QUEX_TYPE_LEXATOM*)self.text.begin(); *it ; ++it) printf("%04X.", (int)*it);
             printf("'\n");
             printf("take_text: '");
             for(it = (QUEX_TYPE_LEXATOM*)Begin; it != End; ++it) printf("%04X.", (int)*it);
@@ -321,7 +322,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
             /* Hint for debug: To check take_text change "#if 0" to "#if 1". */
             QUEX_TYPE_LEXATOM* it = 0x0;
             printf("after:     '");
-            for(it = (QUEX_TYPE_LEXATOM*)self.text.c_str(); *it ; ++it) printf("%04X.", (int)*it);
+            for(it = (QUEX_TYPE_LEXATOM*)self.text.begin(); *it ; ++it) printf("%04X.", (int)*it);
             printf("'\n");
         }
 #       endif
@@ -331,7 +332,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
         return false;      
    
 
-#   line 335 "TestAnalyzer-token"
+#   line 336 "TestAnalyzer-token"
 
 #   undef analyzer
 #   undef self
@@ -351,7 +352,7 @@ QUEX_NAME_TOKEN(repetition_n_get)(Token* __this)
        return self.number;
    
 
-#   line 355 "TestAnalyzer-token"
+#   line 356 "TestAnalyzer-token"
 
 #   undef self
 }
@@ -368,7 +369,7 @@ QUEX_NAME_TOKEN(repetition_n_set)(Token* __this, size_t N)
        self.number = N;
    
 
-#   line 372 "TestAnalyzer-token"
+#   line 373 "TestAnalyzer-token"
 
 #   undef  self
 }

@@ -15,4 +15,4 @@ pattern_action_pair_list = [
 ]
 test_str = "ABERHALLO: GUGU PRINT PRINT: PRINTERLEIN"
 
-generator_test.do(pattern_action_pair_list, test_str, {}, choice)    
+generator_test.do(pattern_action_pair_list, test_str, {}, choice, TokenQueueF=True)    

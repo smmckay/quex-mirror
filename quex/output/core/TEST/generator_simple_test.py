@@ -7,7 +7,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={},
        Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
        QuexBufferFallbackN=-1, ShowBufferLoadsF=False,
-       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
+       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS",
+       TokenQueueF=False):
 
     setup_buffer(BufferLimitCode)
 
@@ -22,7 +23,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={},
                                                        pattern_db, 
                                                        BufferLimitCode)
 
-    source_code =   create_common_declarations(Language, QuexBufferFallbackN, BufferLimitCode) \
+    source_code =   create_common_declarations(Language, QuexBufferFallbackN, BufferLimitCode, 
+                                               TokenQueueF=TokenQueueF) \
                   + state_machine_code \
                   + test_program
 
