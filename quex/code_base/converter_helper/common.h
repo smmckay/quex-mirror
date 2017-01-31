@@ -21,6 +21,4 @@
  * headers have been made available--by inclusion before they were included  */
 #define QUEX_CHARACTER_CONVERTER_DECLARED
 
-#include <quex/code_base/MemoryManager.i>
-
 #endif                   /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__COMMON_H */

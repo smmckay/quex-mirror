@@ -1,7 +1,7 @@
 #include<fstream>    
 #include<iostream> 
 
-#include <./Simple>
+#include <Simple>
 #include "quex/code_base/buffer/bytes/ByteLoader_FILE.i"
 
 #ifndef    CONVERTER

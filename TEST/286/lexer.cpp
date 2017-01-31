@@ -7,8 +7,8 @@ int main(int argc, char** argv)
 	using namespace quex;
 
 	quex::Token              token;
-    QUEX_NAME(LexatomLoader)* filler = QUEX_NAME(LexatomLoader_new_DEFAULT)(NULL, "UTF8");
-	quex::tokenizer_it       qlex(filler); 
+    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+	quex::tokenizer_it       qlex((QUEX_NAME(ByteLoader)*)NULL, converter); 
     uint8_t*                 begin_p;
     const uint8_t*           end_p;
     size_t                   received_n;
@@ -48,6 +48,5 @@ int main(int argc, char** argv)
 			}
 		}
 	}
-    filler->delete_self(filler);
 }
 

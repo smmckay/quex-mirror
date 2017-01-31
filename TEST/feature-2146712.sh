@@ -8,6 +8,12 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
+
+rm a/b/c/d/* -f
+chomd u+w x/y/z
+rm x/y/z/* -f
+chmod u-w x/y/z
+
 if [[ $1 == "Normal" ]]; then
     quex -i simple.qx --output-directory a/b/c/d
     echo "||||"
@@ -22,7 +28,6 @@ if [[ $1 == "NotExist" ]]; then
     echo "||||"
 fi
 if [[ $1 == "NoWrite" ]]; then
-    chmod u-w x/y/z
     quex -i simple.qx --output-directory x/y/z
     echo "||||"
     find -path "*.svn*" -prune -or -print 

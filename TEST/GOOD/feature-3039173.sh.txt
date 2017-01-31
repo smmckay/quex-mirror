@@ -24,27 +24,12 @@ _________________________________________________________________
                                            [0005] 0x000A
    end of file---------------------------->[0006] 0x0000
                                            ...
-                                           [FFFB] 0x00FF
-                                           [FFFC] 0x00FF
-                                           [FFFD] 0x00FF
-                                           [FFFE] 0x00FF
-   buffer back---------------------------->[FFFF] 0x0000
+                                           [1FFFB] 0x00FF
+                                           [1FFFC] 0x00FF
+                                           [1FFFD] 0x00FF
+                                           [1FFFE] 0x00FF
+   buffer back---------------------------->[1FFFF] 0x0000
 _________________________________________________________________
-Simple.c:499:	
+Simple.c:495:	
 Mode 'X': Match failure, no pattern matched!
 The 'on_failure' handler has not been specified.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

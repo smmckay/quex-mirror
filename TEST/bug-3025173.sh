@@ -9,7 +9,11 @@ tmp=`pwd`
 cd $bug/ 
 
 echo "(1) Generate 'OK-Sources' and Compile"
-quex -i scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token --debug-exception >& tmp.txt
+quex -i scan.qx -o br_scan \
+     --token-class-file token.h --token-id-prefix BR_TKN_ \
+     --foreign-token-id-file gramma.h --token-class blackray::Token \
+     --debug-exception >& tmp.txt
+
 # File 'check' will only be there, if the compilation was successful
 rm -f check
 g++ -Wall -Werror br_scan.cpp example.cpp -I$QUEX_PATH -I. -o check -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED >& tmp.txt

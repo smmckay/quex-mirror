@@ -1,6 +1,13 @@
 X = Simple
 
+#-DQUEX_OPTION_DEBUG_SHOW \
+#-D__QUEX_OPTION_UNIT_TEST \
+#-D__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS \
+#-D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICONV 
+
 LIB_CONV  = `icu-config --ldflags --cppflags`
+
+all: lex_icu lex_iconv lex_codec
 
 lex_iconv: 
 	@echo "Call to quex"
@@ -15,11 +22,6 @@ lex_iconv:
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-o $@ 
-
-#-DQUEX_OPTION_DEBUG_SHOW \
-#-D__QUEX_OPTION_UNIT_TEST \
-#-D__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS \
-#-D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICONV 
 
 lex_icu: 
 	@echo "Call to quex"

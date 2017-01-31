@@ -4,8 +4,6 @@
                                                                                
 TEST                                                                 <no date>
 -------------------------------------------------------------------------------
- * 
-        bug-1935701.exe ....................................[NO GOOD FILE]
 
  * Dizzzy:
 
@@ -19,7 +17,7 @@ TEST                                                                 <no date>
     3022603 0.49.2 Using external buffer with Quex lexer
         bug-3022603.sh ...............................................[OK]
     3025173 0.49.2 Custom Token struct for quex
-        bug-3025173.sh .............................................[FAIL]
+        bug-3025173.sh ...............................................[OK]
     3032877 -b, --buffer-element-size enhancement
         feature-3032877.sh codec .....................................[OK]
                            icu .......................................[OK]
@@ -51,7 +49,7 @@ TEST                                                                 <no date>
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
         bug-2619679.sh ...............................................[OK]
     286 Maintaining character index during manual buffer filling.
-        bug-286.sh ............................................[NO OUTPUT]
+        bug-286.sh ...................................................[OK]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
         bug-2937342.sh 1 .............................................[OK]
                        2 .............................................[OK]
@@ -142,7 +140,7 @@ TEST                                                                 <no date>
                        funny_comments ................................[OK]
                        shell_comments ................................[OK]
     2209142 0.33.1-pre-release: RE not suited for comment elimination
-        bug-2209142.sh error .......................................[FAIL]
+        bug-2209142.sh error .........................................[OK]
                        good ..........................................[OK]
     2277660 character count pre-determination
         bug-2277660.sh ...............................................[OK]
@@ -158,7 +156,7 @@ TEST                                                                 <no date>
     3038088 token_id = numeric value
         feature-3038088.sh ...........................................[OK]
     3039173 On Mismatch: abort()
-        feature-3039173.sh .........................................[FAIL]
+        feature-3039173.sh ...........................................[OK]
     3082041 0.52.4 Buffer Memory Size not Accepted
         bug-3082041.sh ...............................................[OK]
     3102035 0.55.1 Weird Setup causes Duplicate State Label
@@ -361,7 +359,7 @@ TEST                                                                 <no date>
     1892227 accepted as identifiers in def
         bug-1892227.sh ...............................................[OK]
     1892809 0.20.4 \x, \X, \U accept too many digits
-        bug-1892809.sh .............................................[FAIL]
+        bug-1892809.sh ...............................................[OK]
     1893849 0.20.5 allows engine names that are not valid identifiers
         bug-1893849.sh ...............................................[OK]
     1893874 Missing colon in mode definition crashes 0.20.5
@@ -391,6 +389,9 @@ TEST                                                                 <no date>
         bug-1908092.sh ...............................................[OK]
     1908436 0.23.6 rule precedence reversed for identical patterns
         bug-1908436.sh ...............................................[OK]
+    1935701 - 0.24.7 buffer handling size mismatch
+        bug-1935701.exe FILE .........................................[OK]
+                        fstream ......................................[OK]
     1936707 0.24.10 --plot flag doesnt seem to work
         bug-1936707.sh ...............................................[OK]
     1969629 0.25.4 token list with just TERMINATION treated empty
@@ -452,9 +453,9 @@ TEST                                                                 <no date>
  * yaroslav_xp:
 
     2146712 (feature) output directory parameter for the command line
-        feature-2146712.sh NoWrite .................................[FAIL]
-                           Normal ..................................[FAIL]
-                           NotExist ................................[FAIL]
+        feature-2146712.sh NoWrite ...................................[OK]
+                           Normal ....................................[OK]
+                           NotExist ..................................[OK]
     2163753 0.32.1 Incorrect on_failure behavior
         bug-2163753.sh ...............................................[OK]
 
@@ -486,30 +487,23 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-1935701.exe
-    [FAIL] bug-3025173.sh
-    [FAIL] bug-286.sh
-    [FAIL] bug-2209142.sh _ error
-    [FAIL] feature-3039173.sh
     [FAIL] bug-3157923.sh
     [FAIL] bug-3513568.sh
     [FAIL] bug-265.sh
-    [FAIL] bug-1892809.sh
     [FAIL] bug-3106424.sh
-    [FAIL] feature-2146712.sh _ NoWrite
-                            \__ Normal
-                            \__ NotExist
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
                                                                                
 demo/TEST                                                            <no date>
 -------------------------------------------------------------------------------
+ * List all GOOD files which are identical
+        good-files-identity.sh .......................................[OK]
  * Makefile Differences to C++ Version
         makefile-diff.sh 000 .........................................[OK]
                          001 .........................................[OK]
-                         002 .......................................[FAIL]
-                         003 .......................................[FAIL]
+                         002 .........................................[OK]
+                         003 .........................................[OK]
                          005 .........................................[OK]
                          006 .........................................[OK]
                          007 .........................................[OK]
@@ -517,16 +511,12 @@ demo/TEST                                                            <no date>
                          009 .........................................[OK]
                          010 .........................................[OK]
                          011 .........................................[OK]
-                         012 .......................................[FAIL]
+                         012 .........................................[OK]
                          012b ........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] makefile-diff.sh _ 002
-                          \__ 003
-                          \__ 012
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Demos for C                                  
@@ -644,18 +634,21 @@ demo/C/TEST                                                          <no date>
  * demo/012:
 
     Single Application/Multiple Lexical Analyzers
-        012.sh DEBUG .................................................[OK]
-               NDEBUG ................................................[OK]
+        012.sh DEBUG ...............................................[FAIL]
+               NDEBUG ..............................................[FAIL]
 
  * demo/012b:
 
     Multiple Lexical Analyzers -- shared token
         012b.sh DEBUG ................................................[OK]
                 NDEBUG ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] 012.sh _ DEBUG
+                \__ NDEBUG
 ===============================================================================
                                                                                
                                  Demos for Cpp                                 
@@ -773,18 +766,21 @@ demo/Cpp/TEST                                                        <no date>
  * demo/012:
 
     Single Application/Multiple Lexical Analyzers
-        012.sh DEBUG .................................................[OK]
-               NDEBUG ................................................[OK]
+        012.sh DEBUG ...............................................[FAIL]
+               NDEBUG ..............................................[FAIL]
 
  * demo/012b:
 
     Multiple Lexical Analyzers -- shared token
         012b.sh DEBUG ................................................[OK]
                 NDEBUG ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] 012.sh _ DEBUG
+                \__ NDEBUG
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -1384,7 +1380,7 @@ quex/TESTS/source-package/TEST                                       <no date>
                   customized-token-class .............................[OK]
                   iconv ..............................................[OK]
                   icu ................................................[OK]
-                  manual-token-class ...............................[FAIL]
+                  manual-token-class .................................[OK]
                   no-counter .........................................[OK]
                   no-include-stack ...................................[OK]
                   no-string-accumulator ..............................[OK]
@@ -1397,19 +1393,16 @@ quex/TESTS/source-package/TEST                                       <no date>
                     customized-token-class ...........................[OK]
                     iconv ............................................[OK]
                     icu ..............................................[OK]
-                    manual-token-class .............................[FAIL]
+                    manual-token-class ...............................[OK]
                     no-counter .......................................[OK]
                     no-include-stack .................................[OK]
                     no-string-accumulator ............................[OK]
                     plain ............................................[OK]
                     post-categorizer .................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-c.sh _ manual-token-class
-    [FAIL] test-cpp.sh _ manual-token-class
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Token Class                                  
@@ -1519,21 +1512,31 @@ quex/code_base/converter_helper/TEST                                 <no date>
  * Test of complete character set on base converters (utf8, utf16, utf32)
         characters ...................................................[OK]
  * utf16 to utf8, utf16, and utf32
-        from-utf16 Drain_ToSmall .....................................[OK]
-                   Source_Empty ......................................[OK]
-                   Source_TestFile ...................................[OK]
+        from-utf16 Drain_ToSmall ............................[MAKE FAILED]
+                   Source_Empty .............................[MAKE FAILED]
+                   Source_TestFile ..........................[MAKE FAILED]
  * utf32 to utf8, utf16, and utf32
-        from-utf32 Drain_ToSmall .....................................[OK]
-                   Source_Empty ......................................[OK]
-                   Source_TestFile ...................................[OK]
+        from-utf32 Drain_ToSmall ............................[MAKE FAILED]
+                   Source_Empty .............................[MAKE FAILED]
+                   Source_TestFile ..........................[MAKE FAILED]
  * utf8 to utf8, utf16, and utf32
-        from-utf8 Drain_ToSmall ......................................[OK]
-                  Source_Empty .......................................[OK]
-                  Source_TestFile ....................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        from-utf8 Drain_ToSmall .............................[MAKE FAILED]
+                  Source_Empty ..............................[MAKE FAILED]
+                  Source_TestFile ...........................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] from-utf16 _ Drain_ToSmall
+                    \__ Source_Empty
+                    \__ Source_TestFile
+    [FAIL] from-utf32 _ Drain_ToSmall
+                    \__ Source_Empty
+                    \__ Source_TestFile
+    [FAIL] from-utf8 _ Drain_ToSmall
+                   \__ Source_Empty
+                   \__ Source_TestFile
 ===============================================================================
                                                                                
                                 Track Analysis                                 
@@ -3216,17 +3219,16 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] bug-1935701.exe
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       13  239   [FAIL] TEST                                                          
-           56      [OK] demo/C/TEST                                                   
-           56      [OK] ..../Cpp/TEST                                                 
-        3  13    [FAIL] ..../TEST                                                     
+        4  240   [FAIL] TEST                                                          
+        2  56    [FAIL] demo/C/TEST                                                   
+        2  56    [FAIL] ..../Cpp/TEST                                                 
+           14      [OK] ..../TEST                                                     
         6  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
@@ -3240,7 +3242,7 @@ SUMMARY:
            45      [OK] ........../match-precedence/TEST                              
         1  12    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
-        2  24    [FAIL] ........../source-package/TEST                                
+           24      [OK] ........../source-package/TEST                                
            2       [OK] ........../token-class/TEST                                   
            4       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
@@ -3252,7 +3254,7 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-           10      [OK] ............../converter_helper/TEST                          
+        9  10    [FAIL] ............../converter_helper/TEST                          
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
@@ -3277,11 +3279,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  ____            
-    |  ___|_ _(_) |___     |___  ||___ \     __  __
-    | |_ / _` | | / __|       / /   __) |    \ \/ /
-    |  _| (_| | | \__ \      / /   / __/      >  < 
-    |_|  \__,_|_|_|___/     /_/   |_____|    /_/\_\
-                                                                   (1636 tests)
+     _____     _ _          _____  _           
+    |  ___|_ _(_) |___     |___  |/ |    __  __
+    | |_ / _` | | / __|       / / | |    \ \/ /
+    |  _| (_| | | \__ \      / /  | |     >  < 
+    |_|  \__,_|_|_|___/     /_/   |_|    /_/\_\
+                                                                   (1638 tests)
 
 ===============================================================================
