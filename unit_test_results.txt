@@ -1512,31 +1512,21 @@ quex/code_base/converter_helper/TEST                                 <no date>
  * Test of complete character set on base converters (utf8, utf16, utf32)
         characters ...................................................[OK]
  * utf16 to utf8, utf16, and utf32
-        from-utf16 Drain_ToSmall ............................[MAKE FAILED]
-                   Source_Empty .............................[MAKE FAILED]
-                   Source_TestFile ..........................[MAKE FAILED]
+        from-utf16 Drain_ToSmall .....................................[OK]
+                   Source_Empty ......................................[OK]
+                   Source_TestFile ...................................[OK]
  * utf32 to utf8, utf16, and utf32
-        from-utf32 Drain_ToSmall ............................[MAKE FAILED]
-                   Source_Empty .............................[MAKE FAILED]
-                   Source_TestFile ..........................[MAKE FAILED]
+        from-utf32 Drain_ToSmall .....................................[OK]
+                   Source_Empty ......................................[OK]
+                   Source_TestFile ...................................[OK]
  * utf8 to utf8, utf16, and utf32
-        from-utf8 Drain_ToSmall .............................[MAKE FAILED]
-                  Source_Empty ..............................[MAKE FAILED]
-                  Source_TestFile ...........................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] from-utf16 _ Drain_ToSmall
-                    \__ Source_Empty
-                    \__ Source_TestFile
-    [FAIL] from-utf32 _ Drain_ToSmall
-                    \__ Source_Empty
-                    \__ Source_TestFile
-    [FAIL] from-utf8 _ Drain_ToSmall
-                   \__ Source_Empty
-                   \__ Source_TestFile
+        from-utf8 Drain_ToSmall ......................................[OK]
+                  Source_Empty .......................................[OK]
+                  Source_TestFile ....................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                 Track Analysis                                 
@@ -3254,7 +3244,7 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-        9  10    [FAIL] ............../converter_helper/TEST                          
+           10      [OK] ............../converter_helper/TEST                          
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
@@ -3279,11 +3269,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  _           
-    |  ___|_ _(_) |___     |___  |/ |    __  __
-    | |_ / _` | | / __|       / / | |    \ \/ /
-    |  _| (_| | | \__ \      / /  | |     >  < 
-    |_|  \__,_|_|_|___/     /_/   |_|    /_/\_\
+     _____     _ _           __    ____            
+    |  ___|_ _(_) |___      / /_  |___ \     __  __
+    | |_ / _` | | / __|    | '_ \   __) |    \ \/ /
+    |  _| (_| | | \__ \    | (_) | / __/      >  < 
+    |_|  \__,_|_|_|___/     \___/ |_____|    /_/\_\
                                                                    (1638 tests)
 
 ===============================================================================
