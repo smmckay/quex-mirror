@@ -993,7 +993,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1017,7 +1017,6 @@ quex/TESTS/code/TEST                                                 <no date>
     [FAIL] check-default-configuration.sh
     [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
-    [FAIL] pyflakes-check.sh
     [FAIL] include_guard.py _ convention
                           \__ undefinition
 ===============================================================================
@@ -3177,7 +3176,7 @@ SUMMARY:
         2  56    [FAIL] demo/C/TEST                                                   
         2  56    [FAIL] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-        6  14    [FAIL] quex/TESTS/code/TEST                                          
+        5  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3227,11 +3226,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____   _           
-    |  ___|_ _(_) |___     |___ \ / |    __  __
-    | |_ / _` | | / __|      __) || |    \ \/ /
-    |  _| (_| | | \__ \     / __/ | |     >  < 
-    |_|  \__,_|_|_|___/    |_____||_|    /_/\_\
+     _____     _ _          ____    ___            
+    |  ___|_ _(_) |___     |___ \  / _ \     __  __
+    | |_ / _` | | / __|      __) || | | |    \ \/ /
+    |  _| (_| | | \__ \     / __/ | |_| |     >  < 
+    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
                                                                    (1638 tests)
 
 ===============================================================================
