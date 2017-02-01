@@ -1,6 +1,6 @@
 Regression Tests and Feature Implementation Tests
 ------------------------------------------------------
-*.sh
+bash *.sh
 --not quex_pathify.sh
 --not mktest.sh
 --not bug-template.sh
