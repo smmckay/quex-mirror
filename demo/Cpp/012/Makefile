@@ -18,8 +18,8 @@ lexer: $(OBJS)
 	 
 # -DQUEX_OPTION_ASSERTS_DISABLED
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-#
-lexer.o: lexer.cpp $(ENGINE)
+
+lexer.o: lexer.cpp max_Lexer moritz_Lexer boeck_Lexer
 	$(CC) -c $< -o $@ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) 
 
 %.o: %.cpp 
@@ -34,28 +34,28 @@ lexer.o: lexer.cpp $(ENGINE)
 # -DQUEX_OPTION_ASSERTS_DISABLED
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 
+max_Lexer \
 max_Lexer.cpp:    max.qx
 	quex -i token.qx $< -o max::Lexer --iconv -b 4     \
 		 --token-id-prefix MAX_TKN_ --token-policy single \
 		 --suppress 6
 
+moritz_Lexer \
 moritz_Lexer.cpp: moritz.qx
 	quex -i token.qx $< -o moritz::Lexer --iconv -b 2     \
 		 --token-id-prefix MORITZ_TKN_ --token-policy single \
 		 --suppress 6
 
+boeck_Lexer \
 boeck_Lexer.cpp:  boeck.qx
 	quex -i token.qx $< -o boeck::Lexer --codec utf8 \
 		 --token-id-prefix TKN_ --token-policy single   \
 		 --suppress 6
 
 clean:
-	rm -rf $(ENGINE)
-	rm -rf $(ENGINE:.cpp=.o)
-	rm -rf $(ENGINE:.cpp=)
-	rm -rf $(ENGINE:.cpp=-token_ids)
-	rm -rf $(ENGINE:.cpp=-token)
-	rm -rf $(ENGINE:.cpp=-configuration)
+	rm -rf boeck_Lexer*
+	rm -rf max_Lexer*
+	rm -rf moritz_Lexer*
 	rm -rf lexer
 	rm -rf *.E
 	rm -rf lexer.o
