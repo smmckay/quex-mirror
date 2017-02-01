@@ -988,7 +988,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
@@ -1015,7 +1015,6 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] check-default-configuration.sh
-    [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
     [FAIL] include_guard.py _ convention
                           \__ undefinition
@@ -3176,7 +3175,7 @@ SUMMARY:
         2  56    [FAIL] demo/C/TEST                                                   
         2  56    [FAIL] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-        5  14    [FAIL] quex/TESTS/code/TEST                                          
+        4  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3226,11 +3225,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____    ___            
-    |  ___|_ _(_) |___     |___ \  / _ \     __  __
-    | |_ / _` | | / __|      __) || | | |    \ \/ /
-    |  _| (_| | | \__ \     / __/ | |_| |     >  < 
-    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
+     _____     _ _          _   ___            
+    |  ___|_ _(_) |___     / | / _ \     __  __
+    | |_ / _` | | / __|    | || (_) |    \ \/ /
+    |  _| (_| | | \__ \    | | \__, |     >  < 
+    |_|  \__,_|_|_|___/    |_|   /_/     /_/\_\
                                                                    (1638 tests)
 
 ===============================================================================
