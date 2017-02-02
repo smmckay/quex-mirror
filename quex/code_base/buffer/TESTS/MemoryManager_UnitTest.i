@@ -19,8 +19,12 @@ typedef struct {
     int allocation_n;
     int allocated_byte_n;
     int free_n;
+
     int allocation_addmissible_f;
-    int allocation_ByteLoader_f;
+    int forbid_ByteLoader_f;
+    int forbid_LexatomLoader_f;
+    int forbid_BufferMemory_f;
+    int forbid_InputName_f;
 } MemoryManager_UnitTest_t;
 
 /* Object must be defined in unit test!                                       */
@@ -37,8 +41,17 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
     }
     switch( Type ) {
     case E_MemoryObjectType_BYTE_LOADER:
-        if( ! MemoryManager_UnitTest.allocation_ByteLoader_f ) return (uint8_t*)0;
-        else                                                   break;
+        if( MemoryManager_UnitTest.forbid_ByteLoader_f ) return (uint8_t*)0;
+        else                                             break;
+    case E_MemoryObjectType_BUFFER_FILLER:
+        if( MemoryManager_UnitTest.forbid_LexatomLoader_f ) return (uint8_t*)0;
+        else                                                break;
+    case E_MemoryObjectType_BUFFER_MEMORY:
+        if( MemoryManager_UnitTest.forbid_BufferMemory_f ) return (uint8_t*)0;
+        else                                               break;
+    case E_MemoryObjectType_INPUT_NAME:
+        if( MemoryManager_UnitTest.forbid_InputName_f ) return (uint8_t*)0;
+        else                                            break;
     }
     me = (uint8_t*)__QUEX_STD_malloc((size_t)ByteN);
 

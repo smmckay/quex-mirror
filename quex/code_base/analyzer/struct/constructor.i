@@ -494,7 +494,7 @@ QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
  * RETURNS: true, for success. false, else.                                   */
 { 
     if( me->__input_name ) {
-        QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
+        QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_INPUT_NAME);
     }
     me->__input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
     return me->__input_name ? true : false;

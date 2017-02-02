@@ -15,6 +15,7 @@ typedef enum {
     E_MemoryObjectType_BUFFER_FILLER,
     E_MemoryObjectType_BUFFER_RAW,
     E_MemoryObjectType_CONVERTER,
+    E_MemoryObjectType_INPUT_NAME,
     E_MemoryObjectType_MEMENTO,
     E_MemoryObjectType_POST_CATEGORIZER_NODE,
     E_MemoryObjectType_TEXT,
