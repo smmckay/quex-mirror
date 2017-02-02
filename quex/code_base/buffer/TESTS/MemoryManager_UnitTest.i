@@ -20,6 +20,7 @@ typedef struct {
     int allocated_byte_n;
     int free_n;
     int allocation_addmissible_f;
+    int allocation_ByteLoader_f;
 } MemoryManager_UnitTest_t;
 
 /* Object must be defined in unit test!                                       */
@@ -33,6 +34,11 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
 
     if( ! MemoryManager_UnitTest.allocation_addmissible_f ) {
         return (uint8_t*)0;
+    }
+    switch( Type ) {
+    case E_MemoryObjectType_BYTE_LOADER:
+        if( ! MemoryManager_UnitTest.allocation_ByteLoader_f ) return (uint8_t*)0;
+        else                                                   break;
     }
     me = (uint8_t*)__QUEX_STD_malloc((size_t)ByteN);
 
@@ -84,6 +90,28 @@ QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
     __QUEX_STD_memcpy(drain_begin_p, source_begin_p, size);
 
     return size;
+}
+
+char*
+QUEXED_DEF(MemoryManager_clone_string)(const char* String)
+{ 
+    char* result;
+   
+    if( ! String ) {
+        return (char*)0;
+    }
+    if( ! MemoryManager_UnitTest.allocation_addmissible_f ) {
+        return (char*)0;
+    }
+   
+    result = (char*)QUEXED(MemoryManager_allocate)(
+                                 sizeof(char)*(__QUEX_STD_strlen(String)+1),
+                                 E_MemoryObjectType_BUFFER_MEMORY);
+    if( ! result ) {
+        return (char*)0;
+    }
+    __QUEX_STD_strcpy(result, String);
+    return result;
 }
 
 bool 

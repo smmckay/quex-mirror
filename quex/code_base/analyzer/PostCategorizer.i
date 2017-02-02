@@ -260,6 +260,13 @@ QUEX_NAME(PostCategorizer_resources_absent_mark)(QUEX_NAME(Dictionary)* me)
     me->root = (QUEX_NAME(DictionaryNode)*)0;
 }
 
+QUEX_INLINE bool
+QUEX_NAME(PostCategorizer_resources_absent)(QUEX_NAME(Dictionary)* me)
+{ 
+    return me->root == (QUEX_NAME(DictionaryNode)*)0;
+}
+
+
 QUEX_INLINE void
 QUEX_NAME(PostCategorizer_print_tree)(QUEX_NAME(DictionaryNode)* node, int Depth)
 {

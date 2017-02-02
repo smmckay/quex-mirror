@@ -3,12 +3,12 @@ Pragmas to set-back the file internal line numbers.
 
 LineNumberPragma
    <no output is good output/print only errors>
-   count: 7
+   count: 3
 LineNumberPragma-token
    <no output is good output/print only errors>
    count: 11
 LineNumberPragma.cpp
    <no output is good output/print only errors>
-   count: 44
+   count: 48
 __________________________________________________________________
 <terminated>

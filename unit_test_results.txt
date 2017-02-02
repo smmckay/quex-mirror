@@ -166,7 +166,7 @@ TEST                                                                 <no date>
                        4 .............................................[OK]
                        5 .............................................[OK]
     3157923 Memory Leak by Components
-        bug-3157923.sh .............................................[FAIL]
+        bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
         bug-3513568.sh ...............................................[OK]
 
@@ -482,12 +482,10 @@ TEST                                                                 <no date>
 
     2974074 0.48.1 union modifies its arguments
         bug-2974074.sh ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] bug-3157923.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -973,7 +971,7 @@ quex/input/TEST                                                      <no date>
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Check if the default configuration has been updated.
-        check-default-configuration.sh .............................[FAIL]
+        check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
@@ -982,7 +980,7 @@ quex/TESTS/code/TEST                                                 <no date>
         svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .....................................[FAIL]
+                          real .......................................[OK]
  * Code Check with pyflakes
         pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
@@ -991,8 +989,8 @@ quex/TESTS/code/TEST                                                 <no date>
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ................................[FAIL]
-                         undefinition ..............................[FAIL]
+        include_guard.py convention ..................................[OK]
+                         undefinition ................................[OK]
  * Propper undefinition of configuration parameters.
         macro-check.py ...............................................[OK]
 
@@ -1000,15 +998,10 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] check-default-configuration.sh
-    [FAIL] function-check.sh _ real
-    [FAIL] include_guard.py _ convention
-                          \__ undefinition
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1273,13 +1266,11 @@ quex/TESTS/misc/TEST                                                 <no date>
         comment.sh ...................................................[OK]
  * Testing the implementation of line number pragmas
         line-number-pragma.sh qx .....................................[OK]
-                              source ...............................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] line-number-pragma.sh _ source
+                              source .................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -1845,7 +1836,7 @@ quex/engine/state_machine/TEST                                       <no date>
  * NFA:
 
     Epsilon closure (single state)
-        test-StateMachine-epsilon-closure.py .......................[FAIL]
+        test-StateMachine-epsilon-closure.py .........................[OK]
     Get elementary trigger sets (target index --> trigger sets)
         test-StateMachine-elementary_trigger_sets.py .................[OK]
     Get elementary trigger sets II
@@ -1946,7 +1937,6 @@ quex/engine/state_machine/TEST                                       <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-StateMachine-epsilon-closure.py
     [FAIL] test-parallelize.py
     [FAIL] test-StateMachine-trace-origin-create-DFA-2.py
     [FAIL] test-parallelize-trace-origin.py
@@ -2461,7 +2451,7 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                        2.3 ...........................[OK]
                                        3.1 ...........................[OK]
                                        3.2 ...........................[OK]
-                                       3.3 .........................[FAIL]
+                                       3.3 ...........................[OK]
                                        4.1 ...........................[OK]
                                        4.2 ...........................[OK]
                                        4.3 ...........................[OK]
@@ -2525,12 +2515,10 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                               plain ..................................[OK]
     Unicode Language-Scripts as Examplary Ranges
         test-utf8-on-unicode-script-ranges.py ........................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-plug-interval-sequence.py _ 3.3
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Forward and Backward Loading                          
@@ -2541,7 +2529,7 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * API:
 
     load_forward
-        forward-api.exe BAD_LEXATOM ................................[FAIL]
+        forward-api.exe BAD_LEXATOM ..................................[OK]
                         DONE .........................................[OK]
                         NO_MORE_DATA .................................[OK]
                         NO_SPACE_FOR_LOAD ............................[OK]
@@ -2573,12 +2561,10 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
         forward-fb2.exe BufferSize-5 .................................[OK]
     (BPC=4, FB=2)
         forward-fb2-32.exe BufferSize-5 ..............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] forward-api.exe _ BAD_LEXATOM
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3162,11 +3148,11 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        1  240   [FAIL] TEST                                                          
+           240     [OK] TEST                                                          
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-        4  14    [FAIL] quex/TESTS/code/TEST                                          
+           14      [OK] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3177,14 +3163,14 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-        1  12    [FAIL] ........../misc/TEST                                          
+           12      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            24      [OK] ........../source-package/TEST                                
            2       [OK] ........../token-class/TEST                                   
            4       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
            42      [OK] ............../analyzer/TEST                                  
-        1  18    [FAIL] ............../buffer/TESTS/load/TEST                         
+           18      [OK] ............../buffer/TESTS/load/TEST                         
            2       [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
            96      [OK] .........................../navigation/TEST                   
@@ -3199,7 +3185,7 @@ SUMMARY:
            38      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
            17      [OK] .........../operations/TEST                                   
-        4  58    [FAIL] .........../state_machine/TEST                                
+        3  58    [FAIL] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
            30      [OK] ......................................./extra_operations/TEST 
@@ -3207,7 +3193,7 @@ SUMMARY:
            4       [OK] ......................................./subset/TEST           
            9       [OK] ........................./algorithm/TEST                      
            14      [OK] ........................./check/TEST                          
-        1  53    [FAIL] ........................./transformation/TEST                 
+           53      [OK] ........................./transformation/TEST                 
            58      [OK] ..../input/TEST                                               
            27      [OK] ........../regular_expression/TEST                            
            196     [OK] ..../output/core/TEST                                         
@@ -3216,11 +3202,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  ____            
-    |  ___|_ _(_) |___     / ||___ \     __  __
-    | |_ / _` | | / __|    | |  __) |    \ \/ /
-    |  _| (_| | | \__ \    | | / __/      >  < 
-    |_|  \__,_|_|_|___/    |_||_____|    /_/\_\
+     _____     _ _       _____     _          
+    |  ___|_ _(_) |___  |_   _| __(_) ___ ___ 
+    | |_ / _` | | / __|   | || '__| |/ __/ _ \
+    |  _| (_| | | \__ \   | || |  | | (_|  __/
+    |_|  \__,_|_|_|___/   |_||_|  |_|\___\___|
                                                                    (1638 tests)
 
 ===============================================================================

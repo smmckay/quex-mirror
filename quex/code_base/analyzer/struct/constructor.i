@@ -288,7 +288,7 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 {
     E_Error  backup = me->error_code;
 
-    memset((void*)me, 0, sizeof(QUEX_TYPE_ANALYZER));
+    __QUEX_STD_memset((void*)me, 0, sizeof(QUEX_TYPE_ANALYZER));
     /* => ._parent_memento == 0 (include stack is marked as 'clear')
      * => ._token          == 0 (if not token queue, the token is 'clear')
      *                          For the case of 'token queue' a dedicated
@@ -296,6 +296,8 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
      * => .__input_name    == 0                                               */
 #   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
+#   else
+    me->token = (QUEX_TYPE_TOKEN*)0;
 #   endif 
 #   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
     QUEX_NAME(Accumulator_resources_absent_mark)(&me->accumulator);
@@ -306,6 +308,49 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(Buffer_resources_absent_mark)(&me->buffer);
 
     me->error_code = backup;
+}
+
+QUEX_INLINE bool
+QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me)
+/* RETURNS: 'true' if all resources are marked absent.
+ *          'false' if at least one is not marked absent.                     */
+{
+    QUEX_TYPE_ANALYZER empty_block;
+
+    __QUEX_STD_memset((void*)&empty_block, 0, sizeof(QUEX_TYPE_ANALYZER));
+    /* => ._parent_memento == 0 (include stack is marked as 'clear')
+     * => ._token          == 0 (if not token queue, the token is 'clear')
+     *                          For the case of 'token queue' a dedicated
+     *                          'resources_absent_mark' is called.
+     * => .__input_name    == 0                                               */
+    if( ! __QUEX_STD_memcmp(me, &empty_block, sizeof(QUEX_TYPE_ANALYZER)) ) {
+        return false;
+    }
+#   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
+    else if( ! QUEX_NAME(TokenQueue_resources_absent)(&me->_token_queue) ) {
+        return false;
+    }
+#   else
+    else if( me->token ) {
+        return false;
+    }
+#   endif 
+#   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
+    else if( ! QUEX_NAME(Accumulator_resources_absent)(&me->accumulator) ) {
+        return false;
+    }
+#   endif
+#   if defined(QUEX_OPTION_POST_CATEGORIZER)
+    else if( ! QUEX_NAME(PostCategorizer_resources_absent)(&me->post_categorizer) ) {
+        return false;
+    }
+#   endif
+    else if( ! QUEX_NAME(Buffer_resources_absent)(&me->buffer) ) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 

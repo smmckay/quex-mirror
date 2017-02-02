@@ -53,6 +53,8 @@ main(int argc, char** argv)
     hwut_info("Construct/Destruct Included Buffer;"
               "CHOICES: allocate, no-allocate;");
 
+    memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest));
+
     hwut_if_choice("allocate")    allocation_f = true;
     hwut_if_choice("no-allocate") allocation_f = false;
 

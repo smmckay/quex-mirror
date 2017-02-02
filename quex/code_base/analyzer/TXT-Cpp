@@ -312,7 +312,12 @@ public:
     void    move_forward(const size_t) { QUEX_ERROR_EXIT("'move_forward()' has been renamed to 'seek_forward()'."); }
     void    move_backward(const size_t){ QUEX_ERROR_EXIT("'move_backward()' has been renamed to 'seek_backward()'."); }
 
+private:
+    void    resources_absent_mark()
+    { QUEX_NAME(resources_absent_mark)(this); }
 public:
+    bool    resources_absent()
+    { return QUEX_NAME(resources_absent)(this); }
 
     void    set_callback_on_buffer_content_change(void (*callback)(const QUEX_TYPE_LEXATOM*, 
                                                                    const QUEX_TYPE_LEXATOM*));

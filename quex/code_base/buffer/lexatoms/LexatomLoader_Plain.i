@@ -60,7 +60,9 @@ QUEX_NAME(LexatomLoader_Plain_new)(QUEX_NAME(ByteLoader)* byte_loader)
          (QUEX_NAME(LexatomLoader_Plain)*) \
           QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(LexatomLoader_Plain)),
                                          E_MemoryObjectType_BUFFER_FILLER);
-    __quex_assert(me);
+    if( ! me ) {
+        return (QUEX_NAME(LexatomLoader*))0;
+    }
     /* __quex_assert(byte_loader); not for manual filling. */
 
     QUEX_NAME(LexatomLoader_Plain_construct)(me, byte_loader);

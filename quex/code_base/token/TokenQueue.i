@@ -81,7 +81,6 @@ QUEX_NAME(TokenQueue_resources_absent_mark)(QUEX_NAME(TokenQueue)* me)
     me->end_minus_safety_border = (QUEX_TYPE_TOKEN*)0;
 }
 
-#if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
 QUEX_INLINE bool
 QUEX_NAME(TokenQueue_resources_absent)(QUEX_NAME(TokenQueue)* me) 
 {
@@ -91,7 +90,6 @@ QUEX_NAME(TokenQueue_resources_absent)(QUEX_NAME(TokenQueue)* me)
            && me->write_iterator          == (QUEX_TYPE_TOKEN*)0
            && me->end_minus_safety_border == (QUEX_TYPE_TOKEN*)0;
 }
-#endif
 
 QUEX_INLINE void
 QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me)

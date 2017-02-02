@@ -63,6 +63,7 @@
 #   define __QUEX_STD_memcpy   std::memcpy
 #   define __QUEX_STD_memmove  std::memmove
 #   define __QUEX_STD_memset   std::memset
+#   define __QUEX_STD_memcmp   std::memcmp
 #   define __QUEX_STD_printf   std::printf
 #   define __QUEX_STD_sprintf  std::sprintf
 #   define __QUEX_STD_strcmp   std::strcmp
@@ -91,6 +92,7 @@
 #   define __QUEX_STD_memcpy   memcpy
 #   define __QUEX_STD_memmove  memmove
 #   define __QUEX_STD_memset   memset
+#   define __QUEX_STD_memcmp   memcmp
 #   define __QUEX_STD_printf   printf
 #   define __QUEX_STD_strcmp   strcmp
 #   define __QUEX_STD_strcpy   strcpy
@@ -118,6 +120,17 @@ typedef enum {
 } E_LoadResult;
 #endif
 
+#define E_LoadResult_NAME(LR) \
+            (  (LR) == E_LoadResult_DONE              ? "DONE"              \
+             : (LR) == E_LoadResult_COMPLETE          ? "COMPLETE"          \
+             : (LR) == E_LoadResult_INCOMPLETE        ? "INCOMPLETE"        \
+             : (LR) == E_LoadResult_BAD_LEXATOM       ? "BAD LEXATOM"       \
+             : (LR) == E_LoadResult_NO_MORE_DATA      ? "NO MORE DATA"      \
+             : (LR) == E_LoadResult_NO_SPACE_FOR_LOAD ? "NO SPACE FOR LOAD" \
+             : (LR) == E_LoadResult_FAILURE           ? "FAILURE"           \
+             : (LR) == E_LoadResult_VOID              ? "VOID"              \
+             :                                          "<error>")
+
 #ifndef QUEX_TYPE_DEFINITIONS_E_ERROR
 #define QUEX_TYPE_DEFINITIONS_E_ERROR
 typedef enum {
@@ -136,17 +149,6 @@ typedef enum {
     E_Error_UserReset_Failed,
 } E_Error;
 #endif
-
-#define E_LoadResult_NAME(LR) \
-            (  (LR) == E_LoadResult_DONE              ? "DONE"              \
-             : (LR) == E_LoadResult_COMPLETE          ? "COMPLETE"          \
-             : (LR) == E_LoadResult_INCOMPLETE        ? "INCOMPLETE"        \
-             : (LR) == E_LoadResult_BAD_LEXATOM       ? "BAD LEXATOM"       \
-             : (LR) == E_LoadResult_NO_MORE_DATA      ? "NO MORE DATA"      \
-             : (LR) == E_LoadResult_NO_SPACE_FOR_LOAD ? "NO SPACE FOR LOAD" \
-             : (LR) == E_LoadResult_FAILURE           ? "FAILURE"           \
-             : (LR) == E_LoadResult_VOID              ? "VOID"              \
-             :                                          "<error>")
 
 /* Define the QUEX_TYPE_STREAM_POSITION at a central place, so that it is the
  * same when it is used in multiple analyzers compiled into one binary.      */

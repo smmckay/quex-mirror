@@ -17,6 +17,4 @@ __nonzero__
 pair_combinations
 print_mouth
 ||||
-
-|  ??  |
 <terminated>

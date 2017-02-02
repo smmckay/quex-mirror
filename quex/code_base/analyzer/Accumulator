@@ -52,6 +52,9 @@ QUEX_NAME(Accumulator_clear)(QUEX_NAME(Accumulator)* me);
 QUEX_INLINE void
 QUEX_NAME(Accumulator_resources_absent_mark)(QUEX_NAME(Accumulator)* me);
 
+QUEX_INLINE bool
+QUEX_NAME(Accumulator_resources_absent)(QUEX_NAME(Accumulator)* me);
+
 QUEX_INLINE void 
 QUEX_NAME(Accumulator_add)(QUEX_NAME(Accumulator)*    me,
                            const QUEX_TYPE_LEXATOM* Begin, const QUEX_TYPE_LEXATOM* End);

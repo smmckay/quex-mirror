@@ -97,7 +97,9 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
     me = (QUEX_NAME(LexatomLoader_Converter)*) \
           QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(LexatomLoader_Converter)),
                                          E_MemoryObjectType_BUFFER_FILLER);
-    if( ! me) return (QUEX_NAME(LexatomLoader)*)0;
+    if( ! me) {
+        return (QUEX_NAME(LexatomLoader)*)0;
+    }
 
     QUEX_NAME(LexatomLoader_Converter_construct)(me, byte_loader, converter, 
                                                  QUEX_SETTING_TRANSLATION_BUFFER_SIZE);

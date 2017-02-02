@@ -138,7 +138,14 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     E_Ownership               ownership;
     QUEX_TYPE_STREAM_POSITION backup_ios;
 
-    if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ) {
+    if( QUEX_NAME(Buffer_resources_absent)(including) ) {
+        if( filler ) {
+            filler->delete_self(filler); 
+        }
+        QUEX_NAME(Buffer_resources_absent_mark)(included);
+        return false;
+    }
+    else if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ) {
         /* Buffer_move_away_passed_content() refuses to move if end of stream
          * is inside buffer. 
          * => Trick: Backup & restore 'lexatom_index_end_of_stream'           */
