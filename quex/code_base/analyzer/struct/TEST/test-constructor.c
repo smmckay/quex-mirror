@@ -51,25 +51,28 @@ main(int argc, char** argv)
 static void 
 self_file_name()
 {
-    quex_TestAnalyzer  lexer[3];
+    quex_TestAnalyzer  lexer[20];
     quex_TestAnalyzer* lx = &lexer[0];
 
-    {
-        QUEX_NAME(from_file_name)(lx, "file-that-does-not-exists.txt", NULL);
-        hwut_verify(  QUEX_NAME(resources_absent)(lx));
-    }
-
-    ++lx;
+    /* Good case                                                              */
     {
         QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
         hwut_verify(! QUEX_NAME(resources_absent)(lx));
+    }
+
+    /* Bad cases                                                              */
+    ++lx;
+    {
+        QUEX_NAME(from_file_name)(lx, "file-that-does-not-exists.txt", NULL);
+        hwut_verify(lx->error_code == E_Error_Allocation_ByteLoader_Failed);
+        hwut_verify(QUEX_NAME(resources_absent)(lx));
     }
 
     ++lx;
     {
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
         QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
-        hwut_verify(lx->error_code = E_Error_Allocation_ByteLoader_Failed); 
+        hwut_verify(lx->error_code == E_Error_Allocation_ByteLoader_Failed); 
         hwut_verify(QUEX_NAME(resources_absent)(lx));
         MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
     }
@@ -78,7 +81,7 @@ self_file_name()
     {
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
         QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
-        hwut_verify(lx->error_code = E_Error_Allocation_LexatomLoader_Failed); 
+        hwut_verify(lx->error_code == E_Error_Allocation_LexatomLoader_Failed); 
         hwut_verify(QUEX_NAME(resources_absent)(lx));
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     }
@@ -87,7 +90,7 @@ self_file_name()
     {
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
         QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
-        hwut_verify(lx->error_code = E_Error_Allocation_BufferMemory_Failed); 
+        hwut_verify(lx->error_code == E_Error_Allocation_BufferMemory_Failed); 
         hwut_verify(QUEX_NAME(resources_absent)(lx));
         MemoryManager_UnitTest.forbid_BufferMemory_f = false;
     }
@@ -105,7 +108,7 @@ self_file_name()
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
         QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
-        hwut_verify(lx->error_code = E_Error_InputName_Set_Failed); 
+        hwut_verify(lx->error_code == E_Error_InputName_Set_Failed); 
         hwut_verify(QUEX_NAME(resources_absent)(lx));
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }

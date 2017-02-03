@@ -316,6 +316,8 @@ QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me)
  *          'false' if at least one is not marked absent.                     */
 {
     QUEX_TYPE_ANALYZER empty_block;
+    E_Error            backup_error_code;
+    bool               verdict;
 
     __QUEX_STD_memset((void*)&empty_block, 0, sizeof(QUEX_TYPE_ANALYZER));
     /* => ._parent_memento == 0 (include stack is marked as 'clear')
@@ -323,9 +325,12 @@ QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me)
      *                          For the case of 'token queue' a dedicated
      *                          'resources_absent_mark' is called.
      * => .__input_name    == 0                                               */
-    if( ! __QUEX_STD_memcmp(me, &empty_block, sizeof(QUEX_TYPE_ANALYZER)) ) {
-        return false;
-    }
+    backup_error_code = me->error_code;
+    me->error_code    = (E_Error)0;
+    verdict           = (__QUEX_STD_memcmp(me, &empty_block, sizeof(QUEX_TYPE_ANALYZER)) == 0) ? true : false;
+    me->error_code    = backup_error_code;
+    if( ! verdict ) return false;
+
 #   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
     else if( ! QUEX_NAME(TokenQueue_resources_absent)(&me->_token_queue) ) {
         return false;
