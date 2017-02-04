@@ -203,6 +203,7 @@ self_memory()
     MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
     MemoryManager_UnitTest.forbid_InputName_f     = false;
+    UserConstructor_UnitTest_return_value         = true;
 
     memset(&memory[0], 0x5A, sizeof(memory));
     memory[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
