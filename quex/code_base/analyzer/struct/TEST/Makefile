@@ -2,6 +2,8 @@ FILES    := test-constructor.exe
 
 DEFINES  := -D__QUEX_OPTION_PLAIN_C \
 	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \
+			-DQUEX_OPTION_CONVERTER_ICONV \
+			-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=65536 \
 			-DQUEX_OPTION_STRING_ACCUMULATOR \
             -DQUEX_OPTION_POST_CATEGORIZER 
 
@@ -12,6 +14,9 @@ INCLUDES := -I$(QUEX_PATH) \
 CC       := gcc $(INCLUDES) $(DEFINES) -ggdb
 	
 all:     $(FILES)
+
+hwut-info: 
+	@echo $(FILES)
 
 %.exe: %.c TestAnalyzer-dummy.o
 	$(CC) $^ -o $@

@@ -1,0 +1,5 @@
+Resource Scenarios for Constructor, Include, and Reset
+----------------------------------------------------------
+bash helper.sh *.exe
+--not helper.sh
+----------------------------------------------------------
