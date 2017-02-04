@@ -1,4 +1,5 @@
-FILES    := test-constructor.exe
+FILES    := test-constructor.exe \
+	        test-reset.exe
 
 DEFINES  := -D__QUEX_OPTION_PLAIN_C \
 	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \

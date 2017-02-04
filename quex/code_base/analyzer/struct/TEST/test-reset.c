@@ -37,24 +37,38 @@ quex_TestAnalyzer* lx;
 int
 main(int argc, char** argv)
 {
-    hwut_info("Constructor;\n"
+    uint8_t memory[65536];
+
+    hwut_info("Reset;\n"
               "CHOICES: file-name, byte-loader, memory;\n");
 
+    memset(&memory[0], 0x5A, sizeof(memory));
+    memory[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    memory[65536-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
     memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest));
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;
-    MemoryManager_UnitTest.forbid_ByteLoader_f      = false;
-    MemoryManager_UnitTest.forbid_LexatomLoader_f   = false;
-    MemoryManager_UnitTest.forbid_BufferMemory_f    = false;
-    MemoryManager_UnitTest.forbid_InputName_f       = false;
-    UserConstructor_UnitTest_return_value           = true;
+    UserReset_UnitTest_return_value           = true;
 
     memset(&lexer[0], 0x5A, sizeof(lexer));            /* Poisson all memory. */
     lx = &lexer[0];
 
+    /* Construct: ByteLoader */
+    QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+
+    /* Reset */
     hwut_if_choice("file-name")   self_file_name(); 
     hwut_if_choice("byte-loader") self_byte_loader(); 
     hwut_if_choice("memory")      self_memory(); 
+
+    /* Construct: Memory */
+    QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+
+    /* Reset */
+    hwut_if_choice("file-name")   self_file_name(); 
+    hwut_if_choice("byte-loader") self_byte_loader(); 
+    hwut_if_choice("memory")      self_memory(); 
+
 
     /* Destruct safely all lexers. */
     self_destruct(&lexer[0], lx - &lexer[0]);
@@ -69,53 +83,48 @@ self_file_name()
 {
     /* Good case                                                              */
     {
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_None);
     }
 
     /* Bad cases                                                              */
     ++lx;
     {
-        QUEX_NAME(from_file_name)(lx, "file-that-does-not-exists.txt", NULL);
+        QUEX_NAME(reset_file_name)(lx, "file-that-does-not-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_ByteLoader_Failed);
     }
-
     ++lx;
     {
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_ByteLoader_Failed); 
         MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
     }
-
     ++lx;
     {
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_LexatomLoader_Failed); 
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     }
-
     ++lx;
     {
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_BufferMemory_Failed); 
         MemoryManager_UnitTest.forbid_BufferMemory_f = false;
     }
-
     ++lx;
     {
-        UserConstructor_UnitTest_return_value = false;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
-        self_assert(lx, E_Error_UserConstructor_Failed); 
-        UserConstructor_UnitTest_return_value = true;
+        UserReset_UnitTest_return_value = false;
+        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
+        self_assert(lx, E_Error_UserReset_Failed); 
+        UserReset_UnitTest_return_value = true;
     }
-
     ++lx;
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_InputName_Set_Failed); 
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }
@@ -131,7 +140,7 @@ self_byte_loader()
     self_byte_loader_core(E_Error_Allocation_LexatomLoader_Failed);
     self_byte_loader_core(E_Error_Allocation_BufferMemory_Failed);
     self_byte_loader_core(E_Error_InputName_Set_Failed);
-    self_byte_loader_core(E_Error_UserConstructor_Failed);
+    self_byte_loader_core(E_Error_UserReset_Failed);
 }
 
 static void
@@ -154,8 +163,8 @@ self_byte_loader_core(E_Error ExpectedError)
     case E_Error_InputName_Set_Failed:
         MemoryManager_UnitTest.forbid_InputName_f = true;
         break;
-    case E_Error_UserConstructor_Failed:
-        UserConstructor_UnitTest_return_value = false;
+    case E_Error_UserReset_Failed:
+        UserReset_UnitTest_return_value = false;
         break;
     case E_Error_None:
         success_f = true;
@@ -164,28 +173,28 @@ self_byte_loader_core(E_Error ExpectedError)
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(from_ByteLoader)(lx, byte_loader, converter);
+        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter, "UT Input0");
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = NULL;
-        QUEX_NAME(from_ByteLoader)(lx, byte_loader, converter);
+        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter, "UT Input0");
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = NULL;
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(from_ByteLoader)(lx, byte_loader, converter);
+        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter, "UT Input1");
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = NULL;
         converter   = NULL;
-        QUEX_NAME(from_ByteLoader)(lx, byte_loader, converter);
+        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter, "UT Input2");
         self_assert(lx, ExpectedError);
     }
     ++lx;
@@ -194,7 +203,7 @@ self_byte_loader_core(E_Error ExpectedError)
     MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
     MemoryManager_UnitTest.forbid_InputName_f     = false;
-    UserConstructor_UnitTest_return_value         = true;
+    UserReset_UnitTest_return_value         = true;
 }
 
 static void 
@@ -207,31 +216,30 @@ self_memory()
     memory[65536-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
 
     {
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
     ++lx;
     {
-        /* Forbidding Allocation: ByteLoader, LexatomLoader, Memory
-         * => No Error!                                                       */
+        /* No alloaction of byte loader, lexatom loader or memory needed. */
         MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
         MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
 
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
     ++lx;
     {
-        UserConstructor_UnitTest_return_value = false;
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
-        self_assert(lx, E_Error_UserConstructor_Failed);
-        UserConstructor_UnitTest_return_value = true;
+        UserReset_UnitTest_return_value = false;
+        QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        self_assert(lx, E_Error_UserReset_Failed);
+        UserReset_UnitTest_return_value = true;
     }
     ++lx;
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_InputName_Set_Failed);
 
         MemoryManager_UnitTest.forbid_InputName_f = false;
