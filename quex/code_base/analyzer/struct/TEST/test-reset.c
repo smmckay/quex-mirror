@@ -31,8 +31,9 @@ static void self_destruct(quex_TestAnalyzer* lexer, size_t N);
 static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
 static void self_byte_loader_core(E_Error ExpectedError);
 
-quex_TestAnalyzer  lexer[128];
-quex_TestAnalyzer* lx;
+quex_TestAnalyzer        lexer[64];
+const quex_TestAnalyzer* lexerEnd = &lexer[64];
+quex_TestAnalyzer*       lx;
 
 int
 main(int argc, char** argv)
@@ -48,32 +49,43 @@ main(int argc, char** argv)
     memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest));
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;
-    UserReset_UnitTest_return_value           = true;
+    UserConstructor_UnitTest_return_value           = true;
+    UserReset_UnitTest_return_value                 = true;
 
-    memset(&lexer[0], 0x5A, sizeof(lexer));            /* Poisson all memory. */
-    lx = &lexer[0];
+    memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */
 
     /* Construct: ByteLoader */
-    QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+    for(lx=&lexer[0]; lx != lexerEnd; ++lx) {
+        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        assert(lx->error_code == E_Error_None);
+    }
 
     /* Reset */
+    lx = &lexer[0];
     hwut_if_choice("file-name")   self_file_name(); 
     hwut_if_choice("byte-loader") self_byte_loader(); 
     hwut_if_choice("memory")      self_memory(); 
-
-    /* Construct: Memory */
-    QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
-
-    /* Reset */
-    hwut_if_choice("file-name")   self_file_name(); 
-    hwut_if_choice("byte-loader") self_byte_loader(); 
-    hwut_if_choice("memory")      self_memory(); 
-
 
     /* Destruct safely all lexers. */
-    self_destruct(&lexer[0], lx - &lexer[0]);
+    self_destruct(&lexer[0], lexerEnd - &lexer[0]);
+    printf("<terminated 'byte loader': %i>\n", (int)(lx- &lexer[0]));
 
-    printf("<terminated: %i>\n", (int)(lx- &lexer[0]));
+    /* Construct: Memory */
+    for(lx=&lexer[0]; lx != lexerEnd; ++lx) {
+        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        assert(lx->error_code == E_Error_None);
+    }
+
+    /* Reset */
+    lx = &lexer[0];
+    hwut_if_choice("file-name")   self_file_name(); 
+    hwut_if_choice("byte-loader") self_byte_loader(); 
+    hwut_if_choice("memory")      self_memory(); 
+
+    /* Destruct safely all lexers. */
+    self_destruct(&lexer[0], lexerEnd - &lexer[0]);
+
+    printf("<terminated 'memory': %i>\n", (int)(lx- &lexer[0]));
 
     return 0;
 }
@@ -108,10 +120,10 @@ self_file_name()
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     }
     ++lx;
-    {
+    {   /* Buffer Memory allocation is not required => No Error!              */
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
         QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
-        self_assert(lx, E_Error_Allocation_BufferMemory_Failed); 
+        self_assert(lx, E_Error_None); 
         MemoryManager_UnitTest.forbid_BufferMemory_f = false;
     }
     ++lx;
@@ -137,6 +149,7 @@ self_byte_loader()
     self_byte_loader_core(E_Error_None);
 
     /* Bad cases                                                              */
+    self_byte_loader_core(E_Error_Allocation_ByteLoader_Failed);
     self_byte_loader_core(E_Error_Allocation_LexatomLoader_Failed);
     self_byte_loader_core(E_Error_Allocation_BufferMemory_Failed);
     self_byte_loader_core(E_Error_InputName_Set_Failed);
@@ -152,13 +165,16 @@ self_byte_loader_core(E_Error ExpectedError)
 
     switch( ExpectedError ) {
     case E_Error_Allocation_ByteLoader_Failed:
-        assert(false); /* Not subject to test, here. */
+        ExpectedError = E_Error_None;
+        success_f     = true;                       /* Allocation not needed. */
         break;
     case E_Error_Allocation_LexatomLoader_Failed:
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
         break;
     case E_Error_Allocation_BufferMemory_Failed:
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
+        ExpectedError = E_Error_None;
+        success_f     = true;                       /* Allocation not needed. */
         break;
     case E_Error_InputName_Set_Failed:
         MemoryManager_UnitTest.forbid_InputName_f = true;
@@ -170,6 +186,7 @@ self_byte_loader_core(E_Error ExpectedError)
         success_f = true;
         break;
     }
+
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
@@ -203,7 +220,7 @@ self_byte_loader_core(E_Error ExpectedError)
     MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
     MemoryManager_UnitTest.forbid_InputName_f     = false;
-    UserReset_UnitTest_return_value         = true;
+    UserReset_UnitTest_return_value               = true;
 }
 
 static void 
