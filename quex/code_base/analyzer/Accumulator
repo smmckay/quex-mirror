@@ -34,7 +34,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
 
 } QUEX_NAME(Accumulator);
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(Accumulator_init_memory)(QUEX_NAME(Accumulator)*   me);
 
 QUEX_INLINE bool

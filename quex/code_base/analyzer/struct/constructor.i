@@ -213,7 +213,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNam
         me->error_code = E_Error_InputName_Set_Failed;
         goto ERROR_5;
     }
-    else if( ! QUEX_NAME(user_constructor)(me) ) {
+    else if( CallUserConstructorF && ! QUEX_NAME(user_constructor)(me) ) {
         me->error_code = E_Error_UserConstructor_Failed;
         goto ERROR_6;
     }
