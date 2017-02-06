@@ -82,7 +82,8 @@ QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
     }
     me->filler = (QUEX_NAME(LexatomLoader)*)0;
     QUEX_NAME(BufferMemory_destruct)(&me->_memory);
-    /* => memory resources are marked as absent.                              */
+
+    QUEX_NAME(Buffer_resources_absent_mark)(me);
 }
 
 QUEX_INLINE bool
@@ -211,8 +212,7 @@ QUEX_NAME(Buffer_destruct_included)(QUEX_NAME(Buffer)* including,
 QUEX_INLINE void
 QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me)
 {
-    me->filler = (QUEX_NAME(LexatomLoader)*)0;
-    QUEX_NAME(BufferMemory_resources_absent_mark)(&me->_memory);
+    __QUEX_STD_memset((void*)me, 0, sizeof(QUEX_NAME(Buffer)));
 }
 
 QUEX_INLINE bool    

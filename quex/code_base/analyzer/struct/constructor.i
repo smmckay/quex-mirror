@@ -113,7 +113,7 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                                 (QUEX_TYPE_LEXATOM*)0,
                                 E_Ownership_LEXICAL_ANALYZER);
 
-    QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<unknown>");
+    QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<unknown>", true);
     if( me->error_code != E_Error_None ) {
         goto ERROR_2;
     }
@@ -122,14 +122,15 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     /* ERROR CASES: Free Resources __________________________________________*/
 ERROR_2:
     QUEX_NAME(Buffer_destruct)(&me->buffer);
-    /* 'construct_all_but_buffer()' freed and marked everything else absent. */
+    QUEX_NAME(resources_absent_mark)(me);
     return;
 ERROR_1:
-    filler->delete_self(filler); 
+    if( filler ) filler->delete_self(filler); 
     QUEX_NAME(resources_absent_mark)(me);
     return;
 ERROR_0:
-    byte_loader->delete_self(byte_loader);
+    if( byte_loader ) byte_loader->delete_self(byte_loader);
+    if( converter )   converter->delete_self(converter);
     QUEX_NAME(resources_absent_mark)(me);
     return;
 }
@@ -144,26 +145,31 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
  * for filling it. There is no 'file/stream handle', no 'ByteLoader', and no
  * 'LexatomLoader'.                                                           */
 {
-    QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
+    if( ! QUEX_NAME(BufferMemory_check_chunk)(Memory, MemorySize, EndOfFileP) ) {
+        me->error_code = E_Error_ProvidedExternal_Memory_Corrupt;
+        goto ERROR_0;
+    }
 
     QUEX_NAME(Buffer_construct)(&me->buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
                                 E_Ownership_EXTERNAL);
 
-    if( ! QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<memory>") ) {
-        goto ERROR_0;
+    if( ! QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<memory>", true) ) {
+        goto ERROR_1;
     }
     return;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
-ERROR_0:
+ERROR_1:
     QUEX_NAME(Buffer_destruct)(&me->buffer); 
-    /* 'construct_all_but_buffer()' freed and marked everything else absent.  */
+ERROR_0:
+    QUEX_NAME(resources_absent_mark)(me);
 }
 
 QUEX_INLINE bool
-QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
+QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNameP, 
+                                    bool CallUserConstructorF)
 /* Constructs anything but 'LexatomLoader' and 'Buffer'.
  * 
  * RETURNS: true, for success.
@@ -236,6 +242,7 @@ ERROR_1:
     QUEX_NAME(Tokens_destruct)(me);
 ERROR_0:
     /* NO ALLOCATED RESOURCES IN: 'me->_parent_memento = 0'                   */
+    QUEX_NAME(all_but_buffer_resources_absent_mark)(me);
     return false;
 }
 
@@ -270,6 +277,8 @@ QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
     if( me->__input_name ) {
         QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
     }
+
+    QUEX_NAME(all_but_buffer_resources_absent_mark)(me);
 }
 
 QUEX_INLINE void
@@ -288,12 +297,6 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 {
     E_Error  backup = me->error_code;
 
-    __QUEX_STD_memset((void*)me, 0, sizeof(QUEX_TYPE_ANALYZER));
-    /* => ._parent_memento == 0 (include stack is marked as 'clear')
-     * => ._token          == 0 (if not token queue, the token is 'clear')
-     *                          For the case of 'token queue' a dedicated
-     *                          'resources_absent_mark' is called.
-     * => .__input_name    == 0                                               */
 #   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
 #   else
@@ -305,9 +308,24 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 #   if defined(QUEX_OPTION_POST_CATEGORIZER)
     QUEX_NAME(PostCategorizer_resources_absent_mark)(&me->post_categorizer);
 #   endif
+
     QUEX_NAME(Buffer_resources_absent_mark)(&me->buffer);
 
+    __QUEX_STD_memset((void*)me, 0, sizeof(QUEX_TYPE_ANALYZER));
+    /* => ._parent_memento == 0 (include stack is marked as 'clear')
+     * => ._token          == 0 (if not token queue, the token is 'clear')
+     *                          For the case of 'token queue' a dedicated
+     *                          'resources_absent_mark' is called.
+     * => .__input_name    == 0                                               */
     me->error_code = backup;
+}
+
+QUEX_INLINE void
+QUEX_NAME(all_but_buffer_resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
+{
+    QUEX_NAME(Buffer) backup = me->buffer;           /* Plain copy suffices   */
+    QUEX_NAME(resources_absent_mark)(me);
+    me->buffer = backup;                             /* Plain copy resets all */
 }
 
 QUEX_INLINE bool

@@ -705,7 +705,7 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
-
+return UserConstructor_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -730,7 +730,7 @@ QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's 'reset' ______________________________________________________*/
-
+return UserReset_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -747,7 +747,7 @@ QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me,
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's memento 'pack' _______________________________________________*/
-
+return UserMementoPack_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -830,7 +830,8 @@ quex_Token_destruct(quex_Token* __this)
 {
 #   define self (*__this)
 #   define LexemeNull  &QUEX_LEXEME_NULL
-    (void)__this;
+    if( ! __this ) return;
+
 
 #   line 38 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
@@ -841,7 +842,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 845 "TestAnalyzer.c"
+#   line 846 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -882,7 +883,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 886 "TestAnalyzer.c"
+#   line 887 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -973,7 +974,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 977 "TestAnalyzer.c"
+#   line 978 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -995,7 +996,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 999 "TestAnalyzer.c"
+#   line 1000 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1014,7 +1015,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1018 "TestAnalyzer.c"
+#   line 1019 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1091,9 +1092,12 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #include <quex/code_base/converter_helper/identity.i>
    
 
-#   line 1095 "TestAnalyzer.c"
+#   line 1096 "TestAnalyzer.c"
 
 
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
+bool UserConstructor_UnitTest_return_value = false;
+bool UserReset_UnitTest_return_value = false;
+bool UserMementoPack_UnitTest_return_value = false;

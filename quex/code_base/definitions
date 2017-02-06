@@ -142,11 +142,12 @@ typedef enum {
     E_Error_Constructor_PostCategorizer_Failed,
     E_Error_InputName_Set_Failed,
     E_Error_None,
+    E_Error_ProvidedExternal_Memory_Corrupt,
     E_Error_Reset_OnError,
     E_Error_Uninitialized,
     E_Error_UnitTest_Termination,
     E_Error_UserConstructor_Failed,
-    E_Error_UserReset_Failed,
+    E_Error_UserReset_Failed
 } E_Error;
 #endif
 
@@ -350,15 +351,6 @@ typedef enum {
 #   define __quex_debug_counter()                 /* empty */
 
 #endif /* ! QUEX_OPTION_DEBUG_SHOW */
-
-#define QUEX_ASSERT_MEMORY(BEGIN, SIZE, EOF_P) \
-    __quex_assert((! (BEGIN)) || (SIZE) > 2);                                              \
-    __quex_assert((! (BEGIN)) || ((EOF_P) > (BEGIN) && (EOF_P) <= &(BEGIN)[(SIZE)-1]));    \
-    __quex_assert((  (BEGIN)) || ((SIZE) == 0       && (EOF_P) == (QUEX_TYPE_LEXATOM*)0)); \
-    /* (BEGIN) MUST contain the limitting elements set to BUFFER LIMIT CODE   */           \
-    __quex_assert(! (BEGIN)   || (BEGIN)[0]        == QUEX_SETTING_BUFFER_LIMIT_CODE);     \
-    __quex_assert(! (BEGIN)   || (BEGIN)[(SIZE)-1] == QUEX_SETTING_BUFFER_LIMIT_CODE);     \
-    __quex_assert(! (EOF_P)   || (EOF_P)[0]        == QUEX_SETTING_BUFFER_LIMIT_CODE)
 
 #if  defined(QUEX_OPTION_DEBUG_SHOW_LOADS)
 

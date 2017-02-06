@@ -150,7 +150,14 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
     QUEX_NAME(Buffer)    new_buffer;
     QUEX_NAME(Memento)*  new_memento;
 
-    QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
+    if( ! QUEX_NAME(BufferMemory_check_chunk)(Memory, MemorySize, EndOfFileP) ) {
+        me->error_code = E_Error_ProvidedExternal_Memory_Corrupt;
+        goto ERROR_0;
+    }
+    else if( me->error_code != E_Error_None ) {
+        me->error_code = E_Error_Reset_OnError;
+        goto ERROR_0;
+    }
 
     QUEX_NAME(Buffer_construct)(&new_buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,
@@ -161,7 +168,7 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
      * memory. However, the box object 'new_buffer' is left alone.            */
     new_memento = QUEX_NAME(include_push_all_but_buffer)(me, InputName);
     if( ! new_memento ) {
-        goto ERROR_0;
+        goto ERROR_1;
     }
     new_memento->buffer = me->buffer;
     /* 'new_buffer' pointer/objects are all overtaken by 'me->buffer'.
@@ -173,6 +180,7 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_0:
     QUEX_NAME(Buffer_destruct)(&new_buffer);
+ERROR_1:
     return false;
 }
 

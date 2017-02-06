@@ -50,6 +50,10 @@ QUEX_TYPE0_TOKEN;
  *        Must come before token class definition, since the token class 
  *        might rely on contents of the header.                                */
 
+extern bool UserConstructor_UnitTest_return_value;
+extern bool UserReset_UnitTest_return_value;
+extern bool UserMementoPack_UnitTest_return_value;
+
 
 /* END: _______________________________________________________________________*/
 #if defined(__QUEX_OPTION_CONVERTER_HELPER)
@@ -126,7 +130,7 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
-
+return UserConstructor_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -151,7 +155,7 @@ QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's 'reset' ______________________________________________________*/
-
+return UserReset_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -168,7 +172,7 @@ QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me,
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's memento 'pack' _______________________________________________*/
-
+return UserMementoPack_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -194,6 +198,9 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #include "quex/code_base/converter_helper/from-unicode-buffer.i"
 #include <quex/code_base/analyzer/headers.i>
 #include <quex/code_base/analyzer/C-adaptions.h>
+bool UserConstructor_UnitTest_return_value = false;
+bool UserReset_UnitTest_return_value = false;
+bool UserMementoPack_UnitTest_return_value = false;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 /* -*- C++ -*-   vim: set syntax=cpp: 
@@ -236,7 +243,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 240 "TestAnalyzer.h"
+#   line 247 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -267,7 +274,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 271 "TestAnalyzer.h"
+#   line 278 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -308,7 +315,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 312 "TestAnalyzer.h"
+#   line 319 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -399,7 +406,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 403 "TestAnalyzer.h"
+#   line 410 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -421,7 +428,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 425 "TestAnalyzer.h"
+#   line 432 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -440,7 +447,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 444 "TestAnalyzer.h"
+#   line 451 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -517,7 +524,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #include <quex/code_base/converter_helper/identity.i>
    
 
-#   line 521 "TestAnalyzer.h"
+#   line 528 "TestAnalyzer.h"
 
 
 
@@ -562,4 +569,7 @@ QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
+bool UserConstructor_UnitTest_return_value = false;
+bool UserReset_UnitTest_return_value = false;
+bool UserMementoPack_UnitTest_return_value = false;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */

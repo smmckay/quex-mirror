@@ -10,6 +10,18 @@ import quex.output.cpp.analyzer_class   as analyzer_class
 import quex.core                        as core
 
 from   quex.blackboard                  import Lng, setup as Setup
+import quex.blackboard                  as     blackboard
+from   quex.input.code.base             import CodeFragment
+
+blackboard.header = CodeFragment(
+"""
+extern bool UserConstructor_UnitTest_return_value;
+extern bool UserReset_UnitTest_return_value;
+extern bool UserMementoPack_UnitTest_return_value;
+""")
+blackboard.class_constructor_extension = CodeFragment("return UserConstructor_UnitTest_return_value;")
+blackboard.reset_extension             = CodeFragment("return UserReset_UnitTest_return_value;")
+blackboard.memento_pack_extension      = CodeFragment("return UserMementoPack_UnitTest_return_value;")
 
 def code(Language):
     global tail_str
@@ -22,11 +34,15 @@ def code(Language):
     return mode_db
 
 def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
+
     # Analyzer class implementation
     #
     analyzer_class_implementation  = "#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n"
     analyzer_class_implementation += analyzer_class.do_implementation(mode_db)
     analyzer_class_implementation += templates.get_implementation_header(Setup)
+    analyzer_class_implementation += "bool UserConstructor_UnitTest_return_value = false;\n"
+    analyzer_class_implementation += "bool UserReset_UnitTest_return_value = false;\n"
+    analyzer_class_implementation += "bool UserMementoPack_UnitTest_return_value = false;\n"
     analyzer_class_implementation += "#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n"
 
     with open(FileName, "a") as fh:
@@ -47,20 +63,36 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
         fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")
         fh.write("%s\n%s" % (token_class_implementation,
                              map_token_id_to_string_implementation))
+        fh.write("bool UserConstructor_UnitTest_return_value = false;\n")
+        fh.write("bool UserReset_UnitTest_return_value = false;\n")
+        fh.write("bool UserMementoPack_UnitTest_return_value = false;\n")
         fh.write("#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
 
     Lng.straighten_open_line_pragmas(FileName)
 
+def append_variable_definitions(FileName):
+    fh = open(FileName)
+    content = fh.read()
+    fh.close()
+    fh = open(FileName, "wb")
+    fh.write(content)
+    fh.write("bool UserConstructor_UnitTest_return_value = false;\n")
+    fh.write("bool UserReset_UnitTest_return_value = false;\n")
+    fh.write("bool UserMementoPack_UnitTest_return_value = false;\n")
+    fh.close()
+
 if sys.argv[1] == "C++":
     mode_db = code("C++")
     add_engine_stuff(mode_db, "TestAnalyzer", TokenClassImplementationF=True)
-    os.remove("TestAnalyzer.cpp")
+    os.rename("TestAnalyzer.cpp", "TestAnalyzer-dummy.cpp")
+    append_variable_definitions("TestAnalyzer-dummy.cpp")
 
 elif sys.argv[1] == "C":
     mode_db = code("C")
     add_engine_stuff(mode_db, "TestAnalyzer.h",
                      TokenClassImplementationF=True)
-    os.remove("TestAnalyzer.c")
+    os.rename("TestAnalyzer.c", "TestAnalyzer-dummy.c")
+    append_variable_definitions("TestAnalyzer-dummy.c")
 
 else:
     print "pass 'C' or C++' as first command line argument"

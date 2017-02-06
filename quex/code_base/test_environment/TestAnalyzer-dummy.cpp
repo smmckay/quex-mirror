@@ -702,7 +702,7 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
-
+return UserConstructor_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -727,7 +727,7 @@ QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's 'reset' ______________________________________________________*/
-
+return UserReset_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -744,7 +744,7 @@ QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me,
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's memento 'pack' _______________________________________________*/
-
+return UserMementoPack_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -768,3 +768,6 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
+bool UserConstructor_UnitTest_return_value = false;
+bool UserReset_UnitTest_return_value = false;
+bool UserMementoPack_UnitTest_return_value = false;

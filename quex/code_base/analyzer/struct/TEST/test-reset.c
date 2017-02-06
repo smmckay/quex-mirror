@@ -1,17 +1,26 @@
-/* PURPOSE: Test constructor and destructor functions.
+/* PURPOSE: Test reset functions.
  *
- * Constructors come in three flavors (== CHOICES): 
+ * Reset functions come in three flavors (== CHOICES): 
  *
  *    filen-name:  based on a file name.
  *    byte-loader: based on ByteLoader and Converter objects.
  *    memory:      based on memory chunks.
+ *    plain:       based on current state of objects.
  *
- * Construction may fail, due to memory allocation failure or due to failure
+ * Important:
+ *              RESET != DESTRUCTOR + CONSTRUCTOR
+ *
+ * because DESTRUCTOR and CONSTRUCTOR may involve resource de-allocation and
+ * resource re-allocation. Reset, instead may work on existing resources.
+ *
+ * Reset may fail, due to memory allocation failure or due to failure
  * of the user constructor. For all three flavors all memory allocations
  * failures are considered and the consequences are checked. 
  *
- * The destruction must be possible in any case. Thus it is performed for
- * each an every lexer that is subject to a construction try.
+ * Resets are performed on four states:
+ *    -- lexer has been constructed with loader (and converter)
+ *    -- lexer has been constructed on memory
+ *    -- lexer construction failure (resources marked absent)
  *
  * Test is best run inside a 'valgrind' session, so that memory leaks may be
  * properly detected.
@@ -24,12 +33,18 @@
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
+static void self_reset_on_loader(int argc, char** argv);
+static void self_reset_on_memory(int argc, char** argv);
+
+/* CHOICES: */
 static void self_file_name();
 static void self_byte_loader();
+static void self_byte_loader_core(E_Error ExpectedError);
 static void self_memory();
+static void self_plain();
+
 static void self_destruct(quex_TestAnalyzer* lexer, size_t N);
 static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
-static void self_byte_loader_core(E_Error ExpectedError);
 
 quex_TestAnalyzer        lexer[64];
 const quex_TestAnalyzer* lexerEnd = &lexer[64];
@@ -38,23 +53,27 @@ quex_TestAnalyzer*       lx;
 int
 main(int argc, char** argv)
 {
-    uint8_t memory[65536];
-
     hwut_info("Reset;\n"
-              "CHOICES: file-name, byte-loader, memory;\n");
+              "CHOICES: file-name, byte-loader, memory, plain;\n");
 
-    memset(&memory[0], 0x5A, sizeof(memory));
-    memory[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
-    memory[65536-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
     memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest));
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;
     UserConstructor_UnitTest_return_value           = true;
     UserReset_UnitTest_return_value                 = true;
 
-    memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */
+    self_reset_on_loader(argc, argv);
 
+    self_reset_on_memory(argc, argv);
+
+    return 0;
+}
+
+static void
+self_reset_on_loader(int argc, char** argv)
+{
     /* Construct: ByteLoader */
+    memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */
     for(lx=&lexer[0]; lx != lexerEnd; ++lx) {
         QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
         assert(lx->error_code == E_Error_None);
@@ -65,29 +84,40 @@ main(int argc, char** argv)
     hwut_if_choice("file-name")   self_file_name(); 
     hwut_if_choice("byte-loader") self_byte_loader(); 
     hwut_if_choice("memory")      self_memory(); 
+    hwut_if_choice("plain")       self_plain(); 
 
     /* Destruct safely all lexers. */
     self_destruct(&lexer[0], lexerEnd - &lexer[0]);
     printf("<terminated 'byte loader': %i>\n", (int)(lx- &lexer[0]));
+}
+
+static void
+self_reset_on_memory(int argc, char** argv)
+{
+    uint8_t memory[65536];
+
+    memset(&memory[0], 0x5A, sizeof(memory));
+    memory[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    memory[65536-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+
 
     /* Construct: Memory */
+    memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */
     for(lx=&lexer[0]; lx != lexerEnd; ++lx) {
         QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
         assert(lx->error_code == E_Error_None);
     }
-
     /* Reset */
     lx = &lexer[0];
     hwut_if_choice("file-name")   self_file_name(); 
     hwut_if_choice("byte-loader") self_byte_loader(); 
     hwut_if_choice("memory")      self_memory(); 
+    hwut_if_choice("plain")       self_plain(); 
 
     /* Destruct safely all lexers. */
     self_destruct(&lexer[0], lexerEnd - &lexer[0]);
 
     printf("<terminated 'memory': %i>\n", (int)(lx- &lexer[0]));
-
-    return 0;
 }
 
 static void 
@@ -262,7 +292,17 @@ self_memory()
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }
     ++lx;
+}
 
+static void 
+self_plain()
+{
+    {
+        QUEX_NAME(reset)(lx);
+        self_assert(lx, E_Error_None);
+        hwut_verify(! QUEX_NAME(resources_absent)(&lexer[0]));
+    }
+    ++lx;
 }
 
 static void

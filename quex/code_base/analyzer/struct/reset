@@ -1,6 +1,14 @@
 /* -*- C++ -*- vim: set syntax=cpp:
- * (C) 2005-2010 Frank-Rene Schaefer
- * ABSOLUTELY NO WARRANTY              */
+ *
+ * Important:
+ *                  RESET != DESTRUCTOR + CONSTRUCTOR
+ *
+ * because DESTRUCTOR and CONSTRUCTOR may involve resource de-allocation and
+ * resource re-allocation. Reset, instead may work on existing resources.
+ *
+ * (C) 2005-2017 Frank-Rene Schaefer
+ *
+ * ABSOLUTELY NO WARRANTY                                                    */
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__RESET
 #define __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__RESET
 

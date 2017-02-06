@@ -68,6 +68,30 @@ QUEX_INLINE size_t
 QUEX_NAME(BufferMemory_size)(QUEX_NAME(BufferMemory)* me)
 { return (size_t)(me->_back - me->_front + 1); }
 
+QUEX_INLINE bool
+QUEX_NAME(BufferMemory_check_chunk)(const QUEX_TYPE_LEXATOM* Front, 
+                                    size_t                   Size, 
+                                    const QUEX_TYPE_LEXATOM* EndOfFileP) 
+{
+    const QUEX_TYPE_LEXATOM* Back = &Front[Size-1];
+
+    if( ! Front ) {
+        return (Size == 0 && ! EndOfFileP) ? true : false; 
+    }
+    else if(   Size < 3  
+            || ! EndOfFileP
+            || EndOfFileP    <= Front 
+            || EndOfFileP    >  Back  
+            || Front[0]      != QUEX_SETTING_BUFFER_LIMIT_CODE    
+            || Back[0]       != QUEX_SETTING_BUFFER_LIMIT_CODE 
+            || EndOfFileP[0] != QUEX_SETTING_BUFFER_LIMIT_CODE ) {
+        return false;
+    }
+    else  {
+        return true;
+    }
+}
+
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /*  __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MEMORY_I */

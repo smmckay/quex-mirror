@@ -144,6 +144,7 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
      
     new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
     if( ! new_filler ) {
+        me->error_code = E_Error_Allocation_LexatomLoader_Failed;
         goto ERROR_0;
     }
     if( me->buffer.filler ) {
@@ -159,18 +160,11 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
-ERROR_1:
-    /* 'reset_all_but_buffer()' destructed and marked absent any resource 
-     *                          but the buffer.                               */
-    QUEX_NAME(Buffer_destruct)(&me->buffer);
-    /* 'Buffer_destruct()' destructs and marks absent the 'new_filler' and in 
-     *                     'new_byte_loader' and 'new_converter'.             */
-    return false;
-
 ERROR_0:
     if( new_byte_loader ) new_byte_loader->delete_self(new_byte_loader);
     if( new_converter )   new_converter->delete_self(new_converter);
     /* 'destruct' marks resources as absent => double destruction is safe.    */
+ERROR_1:
     QUEX_NAME(destruct)(me);  /* Destructs also 'me->buffer'                  */
     return false;
 }
@@ -193,12 +187,15 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
  * RETURNS: true, in case of success.
  *          false, in case of failure.                                        */
 {
-    QUEX_ASSERT_MEMORY(Memory, MemorySize, EndOfFileP);
-
-    if( me->error_code != E_Error_None ) {
+    if( ! QUEX_NAME(BufferMemory_check_chunk)(Memory, MemorySize, EndOfFileP) ) {
+        me->error_code = E_Error_ProvidedExternal_Memory_Corrupt;
+        goto ERROR_0;
+    }
+    else if( me->error_code != E_Error_None ) {
         me->error_code = E_Error_Reset_OnError;
         goto ERROR_0;
     }
+
     QUEX_NAME(Buffer_destruct)(&me->buffer); 
     /* Buffer's memory owned externally => memory NOT freed!
      * but 'me->buffer._memory._front = NULL'!                                */
@@ -216,8 +213,8 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_1:
     /* 'reset_all_but_buffer()' All but the buffer resource destructed and 
-     *                          marked as absent. 
-     * 'Buffer_destruct()' marked buffer resources as absent.                 */
+     *                          marked as absent.                             */
+    QUEX_NAME(Buffer_destruct)(&me->buffer);
     return false;
 
 ERROR_0:
@@ -228,7 +225,9 @@ ERROR_0:
 QUEX_INLINE bool
 QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me, 
                                 const char*          InputName) 
-/* Resets anything but 'Buffer'. 
+/* Resets anything but 'Buffer'. In general reset is not equal to 'destruct'
+ * followed by 'construct'. However, for the concerned components it is 
+ * convenient.
  *
  * FAILURE: All but the buffer's resources are destructed and marked absent.
  * 
@@ -248,7 +247,7 @@ QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me,
         me->error_code = E_Error_UserReset_Failed;
         goto ERROR_0;
     }
-    else if( ! QUEX_NAME(construct_all_but_buffer)(me, InputName) ) {
+    else if( ! QUEX_NAME(construct_all_but_buffer)(me, InputName, false) ) {
         goto ERROR_0;
     }
     return true;

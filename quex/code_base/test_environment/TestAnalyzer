@@ -55,6 +55,10 @@ QUEX_NAMESPACE_TOKEN_CLOSE
  *        Must come before token class definition, since the token class 
  *        might rely on contents of the header.                                */
 
+extern bool UserConstructor_UnitTest_return_value;
+extern bool UserReset_UnitTest_return_value;
+extern bool UserMementoPack_UnitTest_return_value;
+
 
 /* END: _______________________________________________________________________*/
 
@@ -321,7 +325,12 @@ public:
     void    move_forward(const size_t) { QUEX_ERROR_EXIT("'move_forward()' has been renamed to 'seek_forward()'."); }
     void    move_backward(const size_t){ QUEX_ERROR_EXIT("'move_backward()' has been renamed to 'seek_backward()'."); }
 
+private:
+    void    resources_absent_mark()
+    { QUEX_NAME(resources_absent_mark)(this); }
 public:
+    bool    resources_absent()
+    { return QUEX_NAME(resources_absent)(this); }
 
     void    set_callback_on_buffer_content_change(void (*callback)(const QUEX_TYPE_LEXATOM*, 
                                                                    const QUEX_TYPE_LEXATOM*));
@@ -377,7 +386,7 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
-
+return UserConstructor_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -402,7 +411,7 @@ QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's 'reset' ______________________________________________________*/
-
+return UserReset_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -419,7 +428,7 @@ QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me,
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's memento 'pack' _______________________________________________*/
-
+return UserMementoPack_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
@@ -442,6 +451,9 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 QUEX_NAMESPACE_MAIN_CLOSE
 
 
+bool UserConstructor_UnitTest_return_value = false;
+bool UserReset_UnitTest_return_value = false;
+bool UserMementoPack_UnitTest_return_value = false;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 
@@ -483,4 +495,7 @@ QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
+bool UserConstructor_UnitTest_return_value = false;
+bool UserReset_UnitTest_return_value = false;
+bool UserMementoPack_UnitTest_return_value = false;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */

@@ -43,6 +43,7 @@ QUEX_NAME(ByteLoader_FILE_new_from_file_name)(const char* FileName)
     }
     alter_ego = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
     if( ! alter_ego ) {
+        __QUEX_STD_fclose(fh);
         return (QUEX_NAME(ByteLoader)*)0;
     }
 
@@ -73,7 +74,7 @@ QUEX_NAME(ByteLoader_FILE_delete_self)(QUEX_NAME(ByteLoader)* alter_ego)
     QUEX_NAME(ByteLoader_FILE)* me = (QUEX_NAME(ByteLoader_FILE)*)(alter_ego);
 
     if( me->input_handle && me->base.handle_ownership == E_Ownership_LEXICAL_ANALYZER ) {
-        fclose(me->input_handle);
+        __QUEX_STD_fclose(me->input_handle);
     }
     QUEXED(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
 }
