@@ -66,6 +66,7 @@ QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
 
     new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
     if( ! new_byte_loader ) {
+        me->error_code = E_Error_Allocation_ByteLoader_Failed;
         goto ERROR_0;
     }
     else if( ! QUEX_NAME(include_push_ByteLoader)(me, FileName, new_byte_loader, new_converter) ) {
@@ -99,6 +100,7 @@ QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
 
     new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
     if( ! new_filler ) {
+        me->error_code = E_Error_Allocation_LexatomLoader_Failed;
         goto ERROR_0;
     }
     else if( me->buffer.filler )
@@ -204,11 +206,11 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 #   endif
 
     /* 'memento->__input_name' points to previously allocated memory.         */
-    memento->__input_name  = me->__input_name;
-    me->__input_name       = (char*)0;                 /* Release ownership.  */
-    memento->_parent_memento                  = me->_parent_memento;
-    memento->__current_mode_p                 = me->__current_mode_p; 
-    memento->current_analyzer_function        = me->current_analyzer_function;
+    memento->__input_name              = me->__input_name;
+    me->__input_name                   = (char*)0;     /* Release ownership.  */
+    memento->_parent_memento           = me->_parent_memento;
+    memento->__current_mode_p          = me->__current_mode_p; 
+    memento->current_analyzer_function = me->current_analyzer_function;
 #   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
        || defined(QUEX_OPTION_ASSERTS)
     memento->DEBUG_analyzer_function_at_entry = me->DEBUG_analyzer_function_at_entry;
@@ -223,12 +225,14 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
      *    -- Post categorizer.                                                */
     new_input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
     if( ! new_input_name ) {
+        me->error_code = E_Error_InputName_Set_Failed;
         goto ERROR_1;
     }
 
     /* When 'user_memento_pack()' is called, nothing has been done to the 
      * current lexical analyzer object, yet!                                  */
     if( ! QUEX_NAME(user_memento_pack)(me, InputNameP, memento) ) {
+        me->error_code = E_Error_UserMementoPack_Failed;
         goto ERROR_2;
     }
     /*_________________________________________________________________________
@@ -239,7 +243,7 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
      *________________________________________________________________________*/
     __QUEX_IF_COUNT((void)QUEX_NAME(Counter_construct)(&me->counter);)
 
-    me->__input_name    = new_input_name;
+    me->__input_name = new_input_name;
 
     return memento;
 
@@ -248,6 +252,9 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 ERROR_2:
     QUEXED(MemoryManager_free)(new_input_name, E_MemoryObjectType_MEMENTO);
 ERROR_1:
+    /* Memento will be destroyed, overtake ownership.                         */
+    me->__input_name      = memento->__input_name; 
+    memento->__input_name = (char*)0;
     QUEXED(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
 ERROR_0:
     return (QUEX_NAME(Memento)*)0;
