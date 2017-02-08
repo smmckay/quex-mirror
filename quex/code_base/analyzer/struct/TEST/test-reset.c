@@ -46,8 +46,8 @@ static void self_plain();
 static void self_destruct(quex_TestAnalyzer* lexer, size_t N);
 static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
 
-quex_TestAnalyzer        lexer[64];
-const quex_TestAnalyzer* lexerEnd = &lexer[64];
+quex_TestAnalyzer        lexer[24];
+const quex_TestAnalyzer* lexerEnd = &lexer[24];
 quex_TestAnalyzer*       lx;
 
 int
@@ -61,8 +61,10 @@ main(int argc, char** argv)
     MemoryManager_UnitTest.allocation_addmissible_f = true;
 
     self_reset_on_loader(argc, argv);
+    hwut_verify(lx <= &lexer[24]);
 
     self_reset_on_memory(argc, argv);
+    hwut_verify(lx <= &lexer[24]);
 
     return 0;
 }
@@ -218,6 +220,7 @@ self_byte_loader_core(E_Error ExpectedError)
         break;
     case E_Error_InputName_Set_Failed:
         MemoryManager_UnitTest.forbid_InputName_f = true;
+        ExpectedError = E_Error_None;
         break;
     case E_Error_UserReset_Failed:
         UserReset_UnitTest_return_value = false;
@@ -230,28 +233,28 @@ self_byte_loader_core(E_Error ExpectedError)
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter, "UT Input0");
+        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = NULL;
-        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter, "UT Input0");
+        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = NULL;
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter, "UT Input1");
+        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = NULL;
         converter   = NULL;
-        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter, "UT Input2");
+        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
@@ -279,9 +282,9 @@ self_memory()
     ++lx;
     {
         /* No alloaction of byte loader, lexatom loader or memory needed. */
-        MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
-        MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
-        MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
+        MemoryManager_UnitTest.forbid_ByteLoader_f    = true;
+        MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
+        MemoryManager_UnitTest.forbid_BufferMemory_f  = true;
 
         QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
@@ -297,7 +300,7 @@ self_memory()
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
         QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
-        self_assert(lx, E_Error_InputName_Set_Failed);
+        self_assert(lx, E_Error_None);
 
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }

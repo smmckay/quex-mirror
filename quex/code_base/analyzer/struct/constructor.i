@@ -51,23 +51,29 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
                           const char*             FileName, 
                           QUEX_NAME(Converter)*   converter /* = 0 */)
 {
-    QUEX_NAME(ByteLoader)*   byte_loader;
+    QUEX_NAME(ByteLoader)*   new_byte_loader;
 
-    byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
+    new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
 
-    if( ! byte_loader ) {
+    if( ! new_byte_loader ) {
         me->error_code = E_Error_Allocation_ByteLoader_Failed;
         goto ERROR_0;
     }
-
-    QUEX_NAME(from_ByteLoader)(me, byte_loader, converter); 
+    QUEX_NAME(from_ByteLoader)(me, new_byte_loader, converter); 
 
     if( me->error_code != E_Error_None ) {
         goto ERROR_1;
     }
+    else if( ! QUEX_NAME(input_name_set)(me, FileName) ) {
+        me->error_code = E_Error_InputName_Set_Failed;
+        goto ERROR_0;
+    }
+
     return;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
+ERROR_2:
+    if( converter ) converter->delete_self(converter);
 ERROR_1:
     /* from_ByteLoader(): destructed and marked all resources absent.         */
 ERROR_0:
@@ -88,8 +94,6 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
 {
     QUEX_NAME(LexatomLoader)* filler;
     QUEX_TYPE_LEXATOM*        memory;
-
-    QUEX_NAME(Asserts_construct)();
 
     /* NEW: Filler.                                                           */
     filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
@@ -113,7 +117,7 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                                 (QUEX_TYPE_LEXATOM*)0,
                                 E_Ownership_LEXICAL_ANALYZER);
 
-    QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<unknown>", true);
+    QUEX_NAME(construct_all_but_buffer)(me, true);
     if( me->error_code != E_Error_None ) {
         goto ERROR_2;
     }
@@ -155,7 +159,7 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
                                 Memory, MemorySize, EndOfFileP,
                                 E_Ownership_EXTERNAL);
 
-    if( ! QUEX_NAME(construct_all_but_buffer)(me, (const char*)"<memory>", true) ) {
+    if( ! QUEX_NAME(construct_all_but_buffer)(me, true) ) {
         goto ERROR_1;
     }
     return;
@@ -168,13 +172,17 @@ ERROR_0:
 }
 
 QUEX_INLINE bool
-QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNameP, 
-                                    bool CallUserConstructorF)
+QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, 
+                                    bool                CallUserConstructorF)
 /* Constructs anything but 'LexatomLoader' and 'Buffer'.
  * 
  * RETURNS: true, for success.
  *          false, for failure.                                               */
 {
+    QUEX_NAME(Asserts_construct)();
+
+    me->__input_name = (char*)0;
+
     __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
 
     if( ! QUEX_NAME(Tokens_construct)(me) ) {
@@ -208,22 +216,15 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me, const char* InputNam
     me->__current_mode_p = (QUEX_NAME(Mode)*)0;
     QUEX_NAME(set_mode_brutally_by_id)(me, __QUEX_SETTING_INITIAL_LEXER_MODE_ID);
 
-    me->__input_name = (char*)0;
-    if( ! QUEX_NAME(input_name_set)(me, InputNameP) ) {
-        me->error_code = E_Error_InputName_Set_Failed;
-        goto ERROR_5;
-    }
-    else if( CallUserConstructorF && ! QUEX_NAME(user_constructor)(me) ) {
+    if( CallUserConstructorF && ! QUEX_NAME(user_constructor)(me) ) {
         me->error_code = E_Error_UserConstructor_Failed;
-        goto ERROR_6;
+        goto ERROR_5;
     }
 
     me->error_code = E_Error_None;
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
-ERROR_6:
-    (void)QUEX_NAME(input_name_set)(me, (const char*)0);
 ERROR_5:
     /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
 #   ifdef __QUEX_OPTION_COUNTER
@@ -519,8 +520,14 @@ QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
     if( me->__input_name ) {
         QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_INPUT_NAME);
     }
-    me->__input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
-    return me->__input_name ? true : false;
+    if(  ! InputNameP ) {
+        me->__input_name = (char*)0;
+        return true;
+    }
+    else {
+        me->__input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
+        return me->__input_name ? true : false;
+    }
 }
 
 QUEX_INLINE void

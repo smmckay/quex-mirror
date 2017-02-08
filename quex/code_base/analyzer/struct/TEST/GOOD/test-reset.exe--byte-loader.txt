@@ -1,5 +1,3 @@
-||||
 <terminated 'byte loader': 24>
 <terminated 'memory': 24>
- All heap blocks were freed -- no leaks are possible
-||||
+

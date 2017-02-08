@@ -62,7 +62,7 @@ QUEX_NAME(reset)(QUEX_TYPE_ANALYZER* me)
 
     QUEX_NAME(Buffer_init)(&me->buffer, (QUEX_TYPE_LEXATOM*)0); 
 
-    if( ! QUEX_NAME(reset_all_but_buffer)(me, me->__input_name) ) {
+    if( ! QUEX_NAME(reset_all_but_buffer)(me) ) {
         goto ERROR_0;
     }
 
@@ -97,9 +97,14 @@ QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me,
         goto ERROR_0;
     }
 
-    if( ! QUEX_NAME(reset_ByteLoader)(me, new_byte_loader, new_converter, FileName) ) {
+    if( ! QUEX_NAME(reset_ByteLoader)(me, new_byte_loader, new_converter) ) {
         goto ERROR_1;
     }
+    else if( ! QUEX_NAME(input_name_set)(me, FileName) ) {
+        me->error_code = E_Error_InputName_Set_Failed;
+        goto ERROR_0;
+    }
+
     return true;
 
 ERROR_1:
@@ -119,8 +124,7 @@ ERROR_0:
 QUEX_INLINE bool
 QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                             QUEX_NAME(ByteLoader)*  new_byte_loader,
-                            QUEX_NAME(Converter)*   new_converter /* = 0 */,
-                            const char*             InputName /* = 0 */) 
+                            QUEX_NAME(Converter)*   new_converter /* = 0 */)
 /* Resets the 'filler' to a new 'new_byte_loader' and 'new_converter'. If it fails
  * the 'filler' is freed and set to NULL. '.error_code' contains the code of
  * the error that occurred.
@@ -154,7 +158,7 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
 
     QUEX_NAME(Buffer_init)(&me->buffer, (QUEX_TYPE_LEXATOM*)0);
 
-    if( ! QUEX_NAME(reset_all_but_buffer)(me, InputName) ) {
+    if( ! QUEX_NAME(reset_all_but_buffer)(me) ) {
         goto ERROR_1;
     }
     return true;
@@ -200,7 +204,7 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
     /* Buffer's memory owned externally => memory NOT freed!
      * but 'me->buffer._memory._front = NULL'!                                */
 
-    if( ! QUEX_NAME(reset_all_but_buffer)(me, "<memory>") ) {
+    if( ! QUEX_NAME(reset_all_but_buffer)(me) ) {
         goto ERROR_1;
     }
 
@@ -223,8 +227,7 @@ ERROR_0:
 }
 
 QUEX_INLINE bool
-QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me, 
-                                const char*          InputName) 
+QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me) 
 /* Resets anything but 'Buffer'. In general reset is not equal to 'destruct'
  * followed by 'construct'. However, for the concerned components it is 
  * convenient.
@@ -247,7 +250,7 @@ QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me,
         me->error_code = E_Error_UserReset_Failed;
         goto ERROR_0;
     }
-    else if( ! QUEX_NAME(construct_all_but_buffer)(me, InputName, false) ) {
+    else if( ! QUEX_NAME(construct_all_but_buffer)(me, false) ) {
         goto ERROR_0;
     }
     return true;

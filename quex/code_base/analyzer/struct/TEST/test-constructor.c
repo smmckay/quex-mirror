@@ -153,6 +153,8 @@ self_byte_loader_core(E_Error ExpectedError)
         break;
     case E_Error_InputName_Set_Failed:
         MemoryManager_UnitTest.forbid_InputName_f = true;
+        ExpectedError = E_Error_None;
+        success_f = true; /* Input name is NOT set. */
         break;
     case E_Error_UserConstructor_Failed:
         UserConstructor_UnitTest_return_value = false;
@@ -232,7 +234,9 @@ self_memory()
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
         QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
-        self_assert(lx, E_Error_InputName_Set_Failed);
+        /* Input name is not set upon construction from memory. */
+        hwut_verify(lx->__input_name == (char*)0);
+        self_assert(lx, E_Error_None);
 
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }
