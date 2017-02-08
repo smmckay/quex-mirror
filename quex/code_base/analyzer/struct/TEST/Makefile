@@ -15,7 +15,7 @@ INCLUDES := -I$(QUEX_PATH) \
  		    -I$(QUEX_PATH)/quex/code_base/test_environment \
 			-I$(HWUT_PATH)/support/C
 
-CC       := gcc $(INCLUDES) $(DEFINES) -ggdb -fsanitize=address
+CC       := gcc $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address
 	
 all:     $(FILES)
 
