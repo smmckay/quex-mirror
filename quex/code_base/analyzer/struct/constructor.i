@@ -57,7 +57,7 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
 
     if( ! new_byte_loader ) {
         me->error_code = E_Error_Allocation_ByteLoader_Failed;
-        goto ERROR_0;
+        goto ERROR_2;
     }
     QUEX_NAME(from_ByteLoader)(me, new_byte_loader, converter); 
 
@@ -74,10 +74,13 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_2:
     if( converter ) converter->delete_self(converter);
+    QUEX_NAME(resources_absent_mark)(me);
 ERROR_1:
     /* from_ByteLoader(): destructed and marked all resources absent.         */
+    return;
 ERROR_0:
-    QUEX_NAME(resources_absent_mark)(me);
+    __quex_assert(me->__input_name == (char*)0); /* see constructor core      */
+    QUEX_NAME(destruct)(me);
 }
 
 /* USE: byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, BinaryModeF);
@@ -92,28 +95,28 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                            QUEX_NAME(ByteLoader)*  byte_loader,
                            QUEX_NAME(Converter)*   converter /* = 0 */)
 {
-    QUEX_NAME(LexatomLoader)* filler;
-    QUEX_TYPE_LEXATOM*        memory;
+    QUEX_NAME(LexatomLoader)* new_filler;
+    QUEX_TYPE_LEXATOM*        new_memory;
 
     /* NEW: Filler.                                                           */
-    filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
+    new_filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
 
-    if( ! filler ) {
+    if( ! new_filler ) {
         me->error_code = E_Error_Allocation_LexatomLoader_Failed; 
         goto ERROR_0;
     }
 
     /* NEW: Memory.                                                           */
-    memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
+    new_memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
                        QUEX_SETTING_BUFFER_SIZE * sizeof(QUEX_TYPE_LEXATOM), 
                        E_MemoryObjectType_BUFFER_MEMORY);
-    if( ! memory ) {
+    if( ! new_memory ) {
         me->error_code = E_Error_Allocation_BufferMemory_Failed;
         goto ERROR_1;
     }
 
-    QUEX_NAME(Buffer_construct)(&me->buffer, filler,
-                                memory, QUEX_SETTING_BUFFER_SIZE, 
+    QUEX_NAME(Buffer_construct)(&me->buffer, new_filler,
+                                new_memory, QUEX_SETTING_BUFFER_SIZE, 
                                 (QUEX_TYPE_LEXATOM*)0,
                                 E_Ownership_LEXICAL_ANALYZER);
 
@@ -129,7 +132,7 @@ ERROR_2:
     QUEX_NAME(resources_absent_mark)(me);
     return;
 ERROR_1:
-    if( filler ) filler->delete_self(filler); 
+    if( new_filler ) new_filler->delete_self(new_filler); 
     QUEX_NAME(resources_absent_mark)(me);
     return;
 ERROR_0:

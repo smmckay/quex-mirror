@@ -128,6 +128,7 @@ QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_2:
     /* 'include_push_all_but_buffer()' destructed 'new_buffer'.               */
+    QUEX_NAME(Buffer_destruct_included)(&me->buffer, &new_buffer);                              
     return false;
 ERROR_1:
     /* 'Buffer_construct_included()' deleted 'new_filler'.
@@ -180,9 +181,9 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
-ERROR_0:
-    QUEX_NAME(Buffer_destruct)(&new_buffer);
 ERROR_1:
+    QUEX_NAME(Buffer_destruct)(&new_buffer);
+ERROR_0:
     return false;
 }
 

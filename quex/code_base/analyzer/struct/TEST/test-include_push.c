@@ -19,7 +19,10 @@
  * Include-push operations are performed on four states:
  *    -- lexer has been constructed with loader (and converter)
  *    -- lexer has been constructed on memory
- *    -- lexer construction failure (resources marked absent)
+ *
+ * The 'PopF' determines whether the destructor is directly called on the 
+ * analyzer which included, or whether the 'include_pop()' function is called
+ * before.
  *
  * Test is best run inside a 'valgrind' session, so that memory leaks may be
  * properly detected.
@@ -32,8 +35,8 @@
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
-static void self_include_push_on_loader(int argc, char** argv);
-static void self_include_push_on_memory(int argc, char** argv);
+static void self_include_push_on_loader(int argc, char** argv, bool PopF);
+static void self_include_push_on_memory(int argc, char** argv, bool PopF);
 
 /* CHOICES: */
 static void self_file_name();
@@ -41,6 +44,7 @@ static void self_byte_loader();
 static void self_byte_loader_core(E_Error ExpectedError);
 static void self_memory();
 
+static void self_pop(quex_TestAnalyzer* lexer, size_t N);
 static void self_destruct(quex_TestAnalyzer* lexer, size_t N);
 static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
 
@@ -52,24 +56,30 @@ quex_TestAnalyzer        backup;
 int
 main(int argc, char** argv)
 {
-    hwut_info("Reset;\n"
+    hwut_info("Include Push/Pop;\n"
               "CHOICES: file-name, byte-loader, memory;\n");
 
     memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest));
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;
 
-    self_include_push_on_loader(argc, argv);
+    self_include_push_on_loader(argc, argv, /* PopF */false);
     hwut_verify(lx <= &lexer[25]);
 
-    self_include_push_on_memory(argc, argv);
+    self_include_push_on_loader(argc, argv, /* PopF */true);
+    hwut_verify(lx <= &lexer[25]);
+
+    self_include_push_on_memory(argc, argv, /* PopF */false);
+    hwut_verify(lx <= &lexer[25]);
+
+    self_include_push_on_memory(argc, argv, /* PopF */true);
     hwut_verify(lx <= &lexer[25]);
 
     return 0;
 }
 
 static void
-self_include_push_on_loader(int argc, char** argv)
+self_include_push_on_loader(int argc, char** argv, bool PopF)
 {
     /* Construct: ByteLoader */
     UserConstructor_UnitTest_return_value = true; 
@@ -92,12 +102,13 @@ self_include_push_on_loader(int argc, char** argv)
     hwut_if_choice("memory")      self_memory(); 
 
     /* Destruct safely all lexers. */
+    if( PopF ) self_pop(&lexer[0], lexerEnd - &lexer[0]);
     self_destruct(&lexer[0], lexerEnd - &lexer[0]);
     printf("<terminated 'byte loader': %i>\n", (int)(lx- &lexer[0]));
 }
 
 static void
-self_include_push_on_memory(int argc, char** argv)
+self_include_push_on_memory(int argc, char** argv, bool PopF)
 {
     uint8_t memory[65536];
 
@@ -125,6 +136,7 @@ self_include_push_on_memory(int argc, char** argv)
     hwut_if_choice("memory")      self_memory(); 
 
     /* Destruct safely all lexers. */
+    if( PopF ) self_pop(&lexer[0], lexerEnd - &lexer[0]);
     self_destruct(&lexer[0], lexerEnd - &lexer[0]);
 
     printf("<terminated 'memory': %i>\n", (int)(lx- &lexer[0]));
@@ -153,7 +165,7 @@ self_file_name()
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
         QUEX_NAME(include_push_file_name)(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_ByteLoader_Failed); 
-        MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
+        MemoryManager_UnitTest.forbid_ByteLoader_f = false;
     }
     ++lx;
     backup = *lx;
@@ -327,6 +339,19 @@ self_destruct(quex_TestAnalyzer* lexer, size_t N)
     for(i=0; i<N; ++i) {
         QUEX_NAME(destruct)(&lexer[i]);
         hwut_verify(QUEX_NAME(resources_absent)(&lexer[i]));
+    }
+}
+
+static void
+self_pop(quex_TestAnalyzer* lexer, size_t N)
+{
+    int i;
+
+    for(i=0; i<N; ++i) {
+        if( lexer[i].error_code == E_Error_None ) {
+            QUEX_NAME(include_pop)(&lexer[i]);
+        }
+        hwut_verify(! QUEX_NAME(resources_absent)(&lexer[i]));
     }
 }
 
