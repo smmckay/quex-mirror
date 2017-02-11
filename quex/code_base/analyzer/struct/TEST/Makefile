@@ -1,11 +1,13 @@
 FILES    := test-constructor.exe \
 	        test-reset.exe \
-	        test-include_push.exe
+	        test-include_push.exe \
+	        test-include-deep.exe
 
 DEFINES  := -D__QUEX_OPTION_PLAIN_C \
 	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \
 			-DQUEX_OPTION_CONVERTER_ICONV \
 			-DQUEX_SETTING_BUFFER_SIZE=256 \
+			-DQUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE=16  \
 			-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=256 \
 			-DQUEX_OPTION_INCLUDE_STACK \
 			-DQUEX_OPTION_STRING_ACCUMULATOR \
@@ -37,4 +39,4 @@ TestAnalyzer-dummy.E: $(QUEX_PATH)/quex/code_base/test_environment/TestAnalyzer-
 	$(CC) -E $< -o $@
 
 clean:
-	rm -f *.exe *.o *~ tmp.* *.gc*
+	rm -f *.exe *.o *~ tmp.* *.gc* *.E *.sw[mnop]
