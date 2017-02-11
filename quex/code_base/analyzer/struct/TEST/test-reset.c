@@ -85,6 +85,7 @@ self_reset_on_loader(int argc, char** argv)
     /* Reset */
     UserConstructor_UnitTest_return_value = false; /* Shall not be called! */
     UserReset_UnitTest_return_value       = true;
+    UserMementoPack_UnitTest_return_value = false;
 
     lx = &lexer[0];
     hwut_if_choice("file-name")   self_file_name(); 
@@ -108,6 +109,7 @@ self_reset_on_memory(int argc, char** argv)
 
     UserConstructor_UnitTest_return_value = true; 
     UserReset_UnitTest_return_value       = false; /* Shall not be called! */
+    UserMementoPack_UnitTest_return_value = false;
 
     /* Construct: Memory */
     memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */

@@ -141,6 +141,8 @@ typedef enum {
     E_Error_Constructor_Counter_Failed,
     E_Error_Constructor_PostCategorizer_Failed,
     E_Error_InputName_Set_Failed,
+    E_Error_IncludePopOnEmptyStack,
+    E_Error_IncludePush_OnError,
     E_Error_None,
     E_Error_ProvidedExternal_Memory_Corrupt,
     E_Error_Reset_OnError,

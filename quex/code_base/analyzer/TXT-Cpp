@@ -152,9 +152,8 @@ public:
     { return QUEX_NAME(reset_file_name)(this, FileName, Converter); }
 
     bool reset(QUEX_NAME(ByteLoader)*  byte_loader, 
-               QUEX_NAME(Converter)*   Converter = 0,
-               const char*             InputName = 0)
-    { return QUEX_NAME(reset_ByteLoader)(this, byte_loader, Converter, InputName); }
+               QUEX_NAME(Converter)*   Converter = 0)
+    { return QUEX_NAME(reset_ByteLoader)(this, byte_loader, Converter); }
 
     bool reset(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
                size_t             BufferMemorySize,

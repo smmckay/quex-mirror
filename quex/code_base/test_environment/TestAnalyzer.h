@@ -198,9 +198,9 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #include "quex/code_base/converter_helper/from-unicode-buffer.i"
 #include <quex/code_base/analyzer/headers.i>
 #include <quex/code_base/analyzer/C-adaptions.h>
-bool UserConstructor_UnitTest_return_value = false;
-bool UserReset_UnitTest_return_value = false;
-bool UserMementoPack_UnitTest_return_value = false;
+bool UserConstructor_UnitTest_return_value = true;
+bool UserReset_UnitTest_return_value       = true;
+bool UserMementoPack_UnitTest_return_value = true;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 /* -*- C++ -*-   vim: set syntax=cpp: 
@@ -569,7 +569,8 @@ QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
-bool UserConstructor_UnitTest_return_value = false;
-bool UserReset_UnitTest_return_value = false;
-bool UserMementoPack_UnitTest_return_value = false;
+#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
+bool UserConstructor_UnitTest_return_value = true;
+bool UserReset_UnitTest_return_value       = true;
+bool UserMementoPack_UnitTest_return_value = true;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */

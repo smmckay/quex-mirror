@@ -158,7 +158,7 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
         goto ERROR_0;
     }
     else if( me->error_code != E_Error_None ) {
-        me->error_code = E_Error_Reset_OnError;
+        me->error_code = E_Error_IncludePush_OnError;
         goto ERROR_0;
     }
 
@@ -268,7 +268,10 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
 {
     QUEX_NAME(Memento)* memento;
     /* Not included? return 'false' to indicate we're on the top level       */
-    if( ! me->_parent_memento ) return false;                             
+    if( ! me->_parent_memento ) {
+        me->error_code = E_Error_IncludePopOnEmptyStack;
+        return false;                             
+    }
 
     memento             = me->_parent_memento;
                                                                             
@@ -325,6 +328,8 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
 QUEX_INLINE void
 QUEX_NAME(include_stack_delete)(QUEX_TYPE_ANALYZER* me)
 {
+    /* Avoid 'E_Error_IncludePopOnEmptyStack'. Check before.                 */
+    if( ! me->_parent_memento ) return;
     while( QUEX_NAME(include_pop)(me) );
 }
 

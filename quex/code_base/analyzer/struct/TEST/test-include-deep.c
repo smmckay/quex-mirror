@@ -29,7 +29,7 @@ static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
 
 quex_TestAnalyzer      lexer;
 quex_TestAnalyzer*     lx =&lexer;
-#define                MemorySize 256
+#define                MemorySize 7
 uint8_t                memory[MemorySize];
 int                    self_split_n = 0;
 int                    self_total_n = 0;
@@ -55,7 +55,7 @@ main(int argc, char** argv)
     MemoryManager_UnitTest.forbid_BufferMemory_f    = false;
     MemoryManager_UnitTest.forbid_InputName_f       = false;
     UserConstructor_UnitTest_return_value           = true;
-    UserReset_UnitTest_return_value                 = true;
+    UserReset_UnitTest_return_value                 = false;
     UserMementoPack_UnitTest_return_value           = true;
 
     self_run(2);
@@ -107,7 +107,7 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
     hwut_verify(MemoryManager_UnitTest.forbid_BufferMemory_f    == false);
     hwut_verify(MemoryManager_UnitTest.forbid_InputName_f       == false);
     hwut_verify(UserConstructor_UnitTest_return_value           == true);
-    hwut_verify(UserReset_UnitTest_return_value                 == true);
+    hwut_verify(UserReset_UnitTest_return_value                 == false);
     hwut_verify(UserMementoPack_UnitTest_return_value           == true);
 
     for(i=0; i<MaxDepth; ++i) {

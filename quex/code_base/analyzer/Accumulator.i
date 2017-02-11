@@ -75,6 +75,7 @@ QUEX_NAME(Accumulator_init_memory)(QUEX_NAME(Accumulator)*   me)
     me->text.begin      = chunk;
     me->text.end        = me->text.begin;
     me->text.memory_end = &me->text.begin[QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE];
+    return true;
 }
 
 QUEX_INLINE bool

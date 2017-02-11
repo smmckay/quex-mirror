@@ -48,6 +48,8 @@ main(int argc, char** argv)
     MemoryManager_UnitTest.forbid_BufferMemory_f    = false;
     MemoryManager_UnitTest.forbid_InputName_f       = false;
     UserConstructor_UnitTest_return_value           = true;
+    UserReset_UnitTest_return_value                 = false;
+    UserMementoPack_UnitTest_return_value           = false;
 
     memset(&lexer[0], 0x5A, sizeof(lexer));            /* Poisson all memory. */
     lx = &lexer[0];

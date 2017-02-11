@@ -40,9 +40,9 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     analyzer_class_implementation  = "#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n"
     analyzer_class_implementation += analyzer_class.do_implementation(mode_db)
     analyzer_class_implementation += templates.get_implementation_header(Setup)
-    analyzer_class_implementation += "bool UserConstructor_UnitTest_return_value = false;\n"
-    analyzer_class_implementation += "bool UserReset_UnitTest_return_value = false;\n"
-    analyzer_class_implementation += "bool UserMementoPack_UnitTest_return_value = false;\n"
+    analyzer_class_implementation += "bool UserConstructor_UnitTest_return_value = true;\n"
+    analyzer_class_implementation += "bool UserReset_UnitTest_return_value       = true;\n"
+    analyzer_class_implementation += "bool UserMementoPack_UnitTest_return_value = true;\n"
     analyzer_class_implementation += "#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n"
 
     with open(FileName, "a") as fh:
@@ -63,9 +63,10 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
         fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")
         fh.write("%s\n%s" % (token_class_implementation,
                              map_token_id_to_string_implementation))
-        fh.write("bool UserConstructor_UnitTest_return_value = false;\n")
-        fh.write("bool UserReset_UnitTest_return_value = false;\n")
-        fh.write("bool UserMementoPack_UnitTest_return_value = false;\n")
+        fh.write("#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
+        fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
+        fh.write("bool UserReset_UnitTest_return_value       = true;\n")
+        fh.write("bool UserMementoPack_UnitTest_return_value = true;\n")
         fh.write("#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
 
     Lng.straighten_open_line_pragmas(FileName)
