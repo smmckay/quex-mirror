@@ -141,7 +141,6 @@ self_byte_loader_core(E_Error ExpectedError)
 {
     QUEX_NAME(ByteLoader)* byte_loader;
     QUEX_NAME(Converter)*  converter;
-    bool                   success_f = false;
 
     switch( ExpectedError ) {
     case E_Error_Allocation_ByteLoader_Failed:
@@ -156,13 +155,14 @@ self_byte_loader_core(E_Error ExpectedError)
     case E_Error_InputName_Set_Failed:
         MemoryManager_UnitTest.forbid_InputName_f = true;
         ExpectedError = E_Error_None;
-        success_f = true; /* Input name is NOT set. */
         break;
     case E_Error_UserConstructor_Failed:
         UserConstructor_UnitTest_return_value = false;
         break;
     case E_Error_None:
-        success_f = true;
+        break;
+    default:
+        assert(false);
         break;
     }
     {

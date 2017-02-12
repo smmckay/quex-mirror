@@ -1,9 +1,10 @@
 FILES    := test-constructor.exe \
 	        test-reset.exe \
 	        test-include_push.exe \
-	        test-include-deep.exe
+	        test-include-deep.exe \
+			deleteability.exe
 
-DEFINES  := -D__QUEX_OPTION_PLAIN_C \
+DEFINES  := \
 	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \
 			-DQUEX_OPTION_CONVERTER_ICONV \
 			-DQUEX_SETTING_BUFFER_SIZE=31 \
@@ -17,7 +18,8 @@ INCLUDES := -I$(QUEX_PATH) \
  		    -I$(QUEX_PATH)/quex/code_base/test_environment \
 			-I$(HWUT_PATH)/support/C
 
-CC       := gcc $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address
+CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address
+CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address
 	
 all:     $(FILES)
 
@@ -27,13 +29,20 @@ hwut-info:
 %.exe: %.c TestAnalyzer-dummy.o
 	$(CC) $^ -o $@ 
 
+%.exe: %.cpp Dumlyzer.o
+	$(CPP) -IDum $^ -o $@ 
+
 %.E: %.c
 	$(CC) -E $^ -o $@ 
 
 # Trick: Use 'QUEX_OPTION_MULTI' to avoid inclusion of 'multi.i' in 'single.i'
 #        which is included in 'TestAnalyzer-dummy.c'.
 TestAnalyzer-dummy.o: $(QUEX_PATH)/quex/code_base/test_environment/TestAnalyzer-dummy.c
-	$(CC) -c -DQUEX_OPTION_MULTI $< -o $@
+	$(CC) -c -D__QUEX_OPTION_PLAIN_C -DQUEX_OPTION_MULTI $< -o $@
+
+Dumlyzer.o: Dum/Dumlyzer.cpp
+	$(CPP) -c -IDum -DQUEX_OPTION_MULTI $< -o $@
+
 
 TestAnalyzer-dummy.E: $(QUEX_PATH)/quex/code_base/test_environment/TestAnalyzer-dummy.c
 	$(CC) -E $< -o $@

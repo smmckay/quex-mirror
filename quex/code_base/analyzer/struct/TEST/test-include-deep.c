@@ -13,20 +13,6 @@
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
-static void self_include_push_on_loader(int argc, char** argv, bool PopF);
-static void self_include_push_on_memory(int argc, char** argv, bool PopF);
-
-
-/* CHOICES: */
-static void self_file_name();
-static void self_byte_loader();
-static void self_byte_loader_core(E_Error ExpectedError);
-static void self_memory();
-
-static void self_pop(quex_TestAnalyzer* lexer, size_t N);
-static void self_destruct(quex_TestAnalyzer* lexer, size_t N);
-static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
-
 quex_TestAnalyzer      lexer;
 quex_TestAnalyzer*     lx =&lexer;
 #define                MemorySize 7
@@ -139,7 +125,7 @@ do_action(uint32_t n)
 
     /* Setup the pointers, so that the inclusion type varries.
      * => usage of current buffer for the included buffer.                    */
-    //self_setup_pointers(n);
+    self_setup_pointers(n);
 
     switch( n % 3 ) {                             
 
@@ -184,14 +170,14 @@ self_setup_pointers(uint32_t n)
     uint32_t           random1                = hwut_random_next(random0);
     QUEX_TYPE_LEXATOM* end_p_current          = lx->buffer.input.end_p ? lx->buffer.input.end_p 
                                                                        : &lx->buffer._memory._front[1];
-    ptrdiff_t          end_p_max_increment_n  = lx->buffer._memory._back - lx->buffer.input.end_p;
+    ptrdiff_t          end_p_max_increment_n  = lx->buffer._memory._back - end_p_current;
     ptrdiff_t          end_p_increment_n      = end_p_max_increment_n ? random0 % end_p_max_increment_n
                                                                       : 0;
     QUEX_TYPE_LEXATOM* end_p_new              = lx->buffer.input.end_p + end_p_increment_n;
     ptrdiff_t          read_p_max_increment_n = end_p_new - lx->buffer._read_p;
     ptrdiff_t          read_p_increment_n     = read_p_max_increment_n ? random1 % read_p_max_increment_n
                                                                        : 0;
-    QUEX_TYPE_LEXATOM* read_p_new             = lx->buffer._read_p + end_p_increment_n;
+    QUEX_TYPE_LEXATOM* read_p_new             = lx->buffer._read_p + read_p_increment_n;
 
     *(lx->buffer.input.end_p)  = 0x5A;
     lx->buffer.input.end_p     = end_p_new;

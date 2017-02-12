@@ -205,12 +205,10 @@ self_byte_loader_core(E_Error ExpectedError)
 {
     QUEX_NAME(ByteLoader)* byte_loader;
     QUEX_NAME(Converter)*  converter;
-    bool                   success_f = false;
 
     switch( ExpectedError ) {
     case E_Error_Allocation_ByteLoader_Failed:
         ExpectedError = E_Error_None;
-        success_f     = true;                       /* Allocation not needed. */
         break;
     case E_Error_Allocation_LexatomLoader_Failed:
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
@@ -218,7 +216,6 @@ self_byte_loader_core(E_Error ExpectedError)
     case E_Error_Allocation_BufferMemory_Failed:
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
         ExpectedError = E_Error_None;
-        success_f     = true;                       /* Allocation not needed. */
         break;
     case E_Error_InputName_Set_Failed:
         MemoryManager_UnitTest.forbid_InputName_f = true;
@@ -228,7 +225,9 @@ self_byte_loader_core(E_Error ExpectedError)
         UserReset_UnitTest_return_value = false;
         break;
     case E_Error_None:
-        success_f = true;
+        break;
+    default:
+        assert(false);
         break;
     }
 
