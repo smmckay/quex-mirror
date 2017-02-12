@@ -19,7 +19,7 @@ INCLUDES := -I$(QUEX_PATH) \
 			-I$(HWUT_PATH)/support/C
 
 CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address
-CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address
+CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb -fstack-protector-all # -fsanitize=address
 	
 all:     $(FILES)
 

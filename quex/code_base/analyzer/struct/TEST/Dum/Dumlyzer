@@ -91,7 +91,22 @@ extern     bool QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)*);
 
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
-#   include <quex/code_base/analyzer/EngineMemento_body>
+        char*                           __input_name;
+
+        QUEX_NAME(Buffer)               buffer;
+
+        struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
+        QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
+
+#       if     defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
+            || defined(QUEX_OPTION_ASSERTS)
+        QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
+#       endif
+
+#       ifdef  QUEX_OPTION_INCLUDE_STACK
+        struct QUEX_NAME(Memento_tag)*  _parent_memento;
+#       endif
+
 
     QUEX_NAME(Memento_tag)()  {}  /* Con- and Destruction necessary to trigger */
     ~QUEX_NAME(Memento_tag)() {}  /* con- and destruction of user members.     */
@@ -109,9 +124,56 @@ extern QUEX_NAME(Mode)*   (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);
 
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG Dumlyzer {
 public:
-#   include <quex/code_base/analyzer/Engine_body>
+
+        /*_________________________________________________________________________
+         *  Tokens:      
+         *                                                                        
+         *  Allow public access.
+         *
+         *  Tokens are placed directly before the buffer. They are one of the most
+         *  used variables. The most used variables shall be stored close to each
+         *  other, in order to prevent cache misses.                               
+         * 
+         *  Note, that the token queue is also implemented from higher addresses 
+         *  to lower addresses. It is assumed that it is most likely only filled
+         *  at the top, and thus the addresses close to the buffer shall be used
+         *  more often than the addresses far from it.                            */
+#       ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
+            QUEX_NAME(TokenQueue)  _token_queue;  
+#           if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+            /* Avoid constructor call to Token() => define plain memory.          */
+            uint8_t            __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
+#           endif
+#       else
+            QUEX_TYPE_TOKEN*   token;         
+#           if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+            /* Avoid constructor call to Token() => define plain memory.          */
+            uint8_t            __memory_token[sizeof(QUEX_TYPE_TOKEN)];
+#           endif
+#       endif
+
+        E_Error            error_code;
+        char*              __input_name;
+        QUEX_NAME(Buffer)  buffer;
+
+#if     defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
+     || defined(QUEX_OPTION_ASSERTS)
+        /* When a mode change happens and the user does not 'return' but 'CONTINUE'
+         * an error must be logged, since the following characters are still swallowed
+         * by the current function and not the new one. For this one needs to return and
+         * then continue further.                                                 */
+        QUEX_NAME(AnalyzerFunctionP)  DEBUG_analyzer_function_at_entry;
+#       endif
+
+        /* Each mode has a dedicated analyzer function.  The function pointer
+         * to the currently active mode's function is stored redundantly in 
+         * 'current_analyzer_function' to accelerate the access to it.            */
+        QUEX_NAME(AnalyzerFunctionP)  current_analyzer_function;
+        QUEX_NAME(Mode)*              __current_mode_p; 
+
+        QUEX_NAME(ModeStack)          _mode_stack;
+
 private:
-    Dumlyzer(const Dumlyzer&) {}
 public:
     typedef QUEX_TYPE_TOKEN      token_type;
     typedef QUEX_TYPE_TOKEN_ID   token_id_type;
@@ -125,27 +187,10 @@ public:
     Dumlyzer()
     { QUEX_NAME(resources_absent_mark)(this); error_code = E_Error_Uninitialized; }
 
-    Dumlyzer(const char*      Filename, 
-                  QUEX_NAME(Converter)* Converter = 0) 
-    { QUEX_NAME(from_file_name)(this, Filename, Converter); }
-
-    Dumlyzer(QUEX_NAME(ByteLoader)*  byte_loader, 
-                  QUEX_NAME(Converter)*        Converter = 0) 
-    { QUEX_NAME(from_ByteLoader)(this, byte_loader, Converter); }
-
     Dumlyzer(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
                   size_t                  BufferMemorySize,
                   QUEX_TYPE_LEXATOM*      BufferEndOfContentP = 0x0)
     { QUEX_NAME(from_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
-
-    /* The 'new' helpers.                                                     */
-    static Dumlyzer* from_file_name(const char*           Filename, 
-                                              QUEX_NAME(Converter)* Converter = 0) 
-    { return new Dumlyzer(Filename, Converter); }
-
-    static Dumlyzer* from_ByteLoader(QUEX_NAME(ByteLoader)*  byte_loader, 
-                                               QUEX_NAME(Converter)*   Converter = 0) 
-    { return new Dumlyzer(byte_loader, Converter); }
 
     static Dumlyzer* from_memory(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
                                            size_t             BufferMemorySize,
@@ -291,27 +336,7 @@ public:
     QUEX_NAME(Mode)&      map_mode_id_to_mode(const int              ModeID);       
     int                   map_mode_to_mode_id(const QUEX_NAME(Mode)& Mode) const;
 
-#   ifdef  QUEX_OPTION_LINE_NUMBER_COUNTING
-    size_t      line_number() const            { return line_number_at_begin(); }
-    size_t      line_number_at_begin() const   { return counter._line_number_at_begin; }
-    size_t      line_number_at_end() const     { return counter._line_number_at_end; }
-    /*          line_number_set(...) defines the column number of the next pattern match. */
-    void        line_number_set(size_t Y)      { counter._line_number_at_end = Y; }
-#   endif
-#   ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
-    size_t      column_number() const          { return column_number_at_begin(); }
-    size_t      column_number_at_begin() const { return counter._column_number_at_begin; }
-    size_t      column_number_at_end() const   { return counter._column_number_at_end; }
-    /*          column_number_set(...) defines the column number of the next pattern match. */
-    void        column_number_set(size_t X)    { counter._column_number_at_end = X; }
-#   endif
-#   ifdef   QUEX_OPTION_INDENTATION_TRIGGER
-    size_t      indentation()                  { return counter._indentation_stack.back - counter._indentation_stack.front + 1; }
-#   endif
-
-    // (*) Version information
-    const char* version() const; // created by quex for version/date information
-
+    const char* version() const;
     // (*) Tell/Seek/Move on basis of character index
     size_t  tell();
     void    seek(const size_t);

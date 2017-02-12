@@ -130,8 +130,8 @@
 
 #define    QUEX_IF_IS_NEWLINE(X)    if( X == '\n' )
 
-#ifndef QUEX_OPTION_POST_CATEGORIZER
-/* #define QUEX_OPTION_POST_CATEGORIZER */
+#ifdef QUEX_OPTION_POST_CATEGORIZER
+#undef QUEX_OPTION_POST_CATEGORIZER 
 #endif
 
 /* Mode Transitions:
@@ -150,8 +150,8 @@
 /* #define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED                       */
                                                                              
 /* Include Stack Support                                                      */
-#ifndef   QUEX_OPTION_INCLUDE_STACK
-/* #define QUEX_OPTION_INCLUDE_STACK */
+#ifdef   QUEX_OPTION_INCLUDE_STACK
+#undef   QUEX_OPTION_INCLUDE_STACK 
 #endif
 
 /* BLC -- Buffer Limit Code:

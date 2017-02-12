@@ -3,28 +3,22 @@
 #include <quex/code_base/MemoryManager.i>
 #include <hwut_unit.h>
 
-class MiniClass {
-    MiniClass() {
-    }
-    uint8_t            __memory_token[sizeof(QUEX_TYPE_TOKEN)];
-};
+using namespace quex;
+
+Dumlyzer* dl;
 
 int
 main(int argc, char** argv)
 {
-    using namespace quex;
 
-    uint8_t memory[64];
 
 #   if 1
-    memset(&memory[0], 0x5A, sizeof(memory));
-    memory[0]    = QUEX_SETTING_BUFFER_LIMIT_CODE;
-    memory[64-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    uint8_t memory[] { QUEX_SETTING_BUFFER_LIMIT_CODE, 'x', QUEX_SETTING_BUFFER_LIMIT_CODE };
 
     // Dumlyzer*  dl = new Dumlyzer((QUEX_NAME(ByteLoader)*)0, NULL);
-    Dumlyzer*  dl = new Dumlyzer(&memory[0], 64, &memory[64-1]);
+    dl = new Dumlyzer(&memory[0], 3, &memory[3-1]);
 #   else
-    MiniClass* dl = new MiniClass();
+    Mini*  dl = new Mini();
 #   endif
 
     delete dl;

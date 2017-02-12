@@ -32,7 +32,7 @@ bool QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode)                      
 
 __QUEX_TYPE_ANALYZER_RETURN_VALUE  
 QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)   { return (__QUEX_TYPE_ANALYZER_RETURN_VALUE)0; }
-bool QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me) { (void)me; return false; }
+bool QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me) { return false; }
 void QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)  { }
 bool QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)       { return true; }
 
