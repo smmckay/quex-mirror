@@ -6,17 +6,8 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_NAME(Mode) QUEX_NAME(M) = {
     /* id                */ QUEX_NAME(ModeID_M),
     /* name              */ "M",
-#   if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \
-       && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
-    /* on_indentation    */ QUEX_NAME(Mode_on_indentation_null_function),
-#   endif
     /* on_entry          */ QUEX_NAME(Mode_on_entry_exit_null_function),
     /* on_exit           */ QUEX_NAME(Mode_on_entry_exit_null_function),
-#   if      defined(QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK)
-    /* has_base          */ QUEX_NAME(M_has_base),
-    /* has_entry_from    */ QUEX_NAME(M_has_entry_from),
-    /* has_exit_to       */ QUEX_NAME(M_has_exit_to),
-#   endif
     /* analyzer_function */ QUEX_NAME(M_analyzer_function)
 };
 

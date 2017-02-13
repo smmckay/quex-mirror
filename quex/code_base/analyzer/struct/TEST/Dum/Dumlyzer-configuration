@@ -138,8 +138,8 @@
  *    If the engine was created without the flag '--no-mode-transition-check'
  *    then code for mode transition control is inserted. It can be deactivated
  *    by commenting the following option out.                                 */
-#ifndef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-#define    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+#undef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #endif
 
 #ifndef    QUEX_SETTING_MODE_STACK_SIZE 
@@ -236,26 +236,11 @@
  *                                                                           */
 /* #define __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT */
 /* #define __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT */
-#ifndef    QUEX_OPTION_CONVERTER_ICONV
-/* #define QUEX_OPTION_CONVERTER_ICONV */
+#ifdef QUEX_OPTION_CONVERTER_ICONV
+#undef QUEX_OPTION_CONVERTER_ICONV 
 #endif
-#ifndef    QUEX_OPTION_CONVERTER_ICU
-/* #define QUEX_OPTION_CONVERTER_ICU */
-#endif
-#if defined(QUEX_OPTION_CONVERTER_ICONV) || defined(QUEX_OPTION_CONVERTER_ICU)
-#    ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
-#        define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)65536)
-#    endif
-#else
-#    ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
-#        define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)0)
-#    endif
-#endif
-/* The call the the 'new' function for the converter, i.e. the function that
- * allocates the converter and initializes it. If it is 0x0, this means that
- * the converter pointer is set to 0x0.                                      */
-#ifndef QUEX_SETTING_BUFFER_FILLERS_CONVERTER_NEW 
-/* #   define QUEX_SETTING_BUFFER_FILLERS_CONVERTER_NEW  */
+#ifdef QUEX_OPTION_CONVERTER_ICU
+#undef QUEX_OPTION_CONVERTER_ICU 
 #endif
 
 /* Begin of line pre-condition requires an extra flag in the buffer
@@ -264,11 +249,11 @@
 /* #define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
 
 /* Following switch is also set, if a user defined converter is defined.     */
-#ifndef    __QUEX_OPTION_CONVERTER
-/* #define __QUEX_OPTION_CONVERTER */
+#ifdef __QUEX_OPTION_CONVERTER
+#undef __QUEX_OPTION_CONVERTER 
 #endif
-#ifndef    __QUEX_OPTION_CONVERTER_HELPER
-/* #define __QUEX_OPTION_CONVERTER_HELPER */
+#ifdef __QUEX_OPTION_CONVERTER_HELPER
+#undef __QUEX_OPTION_CONVERTER_HELPER 
 #endif
 
 /* Type Definitions 

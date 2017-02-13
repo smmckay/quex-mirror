@@ -67,7 +67,29 @@ extern bool UserMementoPack_UnitTest_return_value;
 #else
 #   include "quex/code_base/converter_helper/from-unicode-buffer"
 #endif
-#include <quex/code_base/analyzer/headers>
+#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS
+#define __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS
+
+#include    <quex/code_base/aux-string>
+#include    <quex/code_base/analyzer/asserts>
+
+#include    <quex/code_base/definitions>
+
+#include    <quex/code_base/buffer/Buffer>
+#include    <quex/code_base/buffer/lexatoms/LexatomLoader>
+#include    <quex/code_base/buffer/bytes/ByteLoader>
+
+#include    <quex/code_base/MemoryManager>
+#include    <quex/code_base/analyzer/Mode>
+
+#include    <quex/code_base/analyzer/struct/constructor>
+//#include    <quex/code_base/analyzer/member/misc>
+//#include    <quex/code_base/analyzer/member/navigation>
+//#include    <quex/code_base/analyzer/member/mode-handling>
+#include    <quex/code_base/analyzer/member/token-receiving>
+#include    <quex/code_base/analyzer/member/token-sending>
+
+#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS */
 
 #include "Dumlyzer-token_ids"
 #include "Dumlyzer-token"
@@ -82,43 +104,6 @@ enum {
 
 
 extern     __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER*);
-#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-extern     bool QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)*);
-extern     bool QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)*);
-extern     bool QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)*);
-#endif
-
-
-
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
-        char*                           __input_name;
-
-        QUEX_NAME(Buffer)               buffer;
-
-        struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
-        QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
-
-#       if     defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
-            || defined(QUEX_OPTION_ASSERTS)
-        QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
-#       endif
-
-#       ifdef  QUEX_OPTION_INCLUDE_STACK
-        struct QUEX_NAME(Memento_tag)*  _parent_memento;
-#       endif
-
-
-    QUEX_NAME(Memento_tag)()  {}  /* Con- and Destruction necessary to trigger */
-    ~QUEX_NAME(Memento_tag)() {}  /* con- and destruction of user members.     */
-
-/* START: User's memento extentions ___________________________________________*/
-
-/* END: _______________________________________________________________________*/
-} QUEX_NAME(Memento);
-
-QUEX_NAMESPACE_MAIN_CLOSE 
-
-QUEX_NAMESPACE_MAIN_OPEN 
 
 extern QUEX_NAME(Mode)*   (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
@@ -138,19 +123,8 @@ public:
          *  to lower addresses. It is assumed that it is most likely only filled
          *  at the top, and thus the addresses close to the buffer shall be used
          *  more often than the addresses far from it.                            */
-#       ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
-            QUEX_NAME(TokenQueue)  _token_queue;  
-#           if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-            /* Avoid constructor call to Token() => define plain memory.          */
-            uint8_t            __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
-#           endif
-#       else
-            QUEX_TYPE_TOKEN*   token;         
-#           if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-            /* Avoid constructor call to Token() => define plain memory.          */
-            uint8_t            __memory_token[sizeof(QUEX_TYPE_TOKEN)];
-#           endif
-#       endif
+        QUEX_TYPE_TOKEN*   token;         
+        uint8_t            __memory_token[sizeof(QUEX_TYPE_TOKEN)];
 
         E_Error            error_code;
         char*              __input_name;
@@ -174,22 +148,15 @@ public:
         QUEX_NAME(ModeStack)          _mode_stack;
 
 private:
+        Dumlyzer() { assert(false); }
 public:
     typedef QUEX_TYPE_TOKEN      token_type;
     typedef QUEX_TYPE_TOKEN_ID   token_id_type;
     typedef QUEX_TYPE_LEXATOM    char_type;
 
-    /*_________________________________________________________________________
-     * Constructor:
-     *
-     * 'from' functions are provided so that explicit constructor calls 
-     * can be done without placement ::new or sophisticated C++11 features.  */
-    Dumlyzer()
-    { QUEX_NAME(resources_absent_mark)(this); error_code = E_Error_Uninitialized; }
-
     Dumlyzer(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                  size_t                  BufferMemorySize,
-                  QUEX_TYPE_LEXATOM*      BufferEndOfContentP = 0x0)
+             size_t             BufferMemorySize,
+             QUEX_TYPE_LEXATOM* BufferEndOfContentP = 0x0)
     { QUEX_NAME(from_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
     static Dumlyzer* from_memory(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
@@ -200,89 +167,15 @@ public:
     virtual ~Dumlyzer()
     { QUEX_NAME(destruct)(this); }
 
-    /*_________________________________________________________________________
-     * Reset:
-     *                                                                       */
-    bool reset()
-    { return QUEX_NAME(reset)(this); }
-    bool reset(const char*            FileName, 
-               QUEX_NAME(Converter)*  Converter = 0)
-    { return QUEX_NAME(reset_file_name)(this, FileName, Converter); }
-
-    bool reset(QUEX_NAME(ByteLoader)*  byte_loader, 
-               QUEX_NAME(Converter)*   Converter = 0)
-    { return QUEX_NAME(reset_ByteLoader)(this, byte_loader, Converter); }
-
-    bool reset(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-               size_t             BufferMemorySize,
-               QUEX_TYPE_LEXATOM* BufferEndOfContentP)  
-    { return QUEX_NAME(reset_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
-
-    void collect_user_memory(QUEX_TYPE_LEXATOM** user_memory_p)
-    { return QUEX_NAME(collect_user_memory)(this, user_memory_p); }
-
-#   ifdef QUEX_OPTION_INCLUDE_STACK
-    /*_________________________________________________________________________
-     * Include:
-     *                                                                       */
-    bool    include_push(const char*             FileName, 
-                         QUEX_NAME(Converter)*   Converter = 0)
-            { return QUEX_NAME(include_push_file_name)(this, FileName, Converter); }
-    bool    include_push(const char*             InputName, 
-                         QUEX_NAME(ByteLoader)*  byte_loader, 
-                         QUEX_NAME(Converter)*   Converter)  /* != 0 to avoid ambiguity. */
-            { return QUEX_NAME(include_push_ByteLoader)(this, InputName, byte_loader, Converter); }
-    bool    include_push(const char*        InputName, 
-                         QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
-                         size_t             BufferMemorySize,
-                         QUEX_TYPE_LEXATOM* BufferEndOfContentP)  
-            { return QUEX_NAME(include_push_memory)(this, InputName, BufferMemoryBegin, 
-                                                    BufferMemorySize, BufferEndOfContentP); }
-
-    bool    include_pop()
-            { return QUEX_NAME(include_pop)(this); }
-    void    include_stack_delete()
-            { QUEX_NAME(include_stack_delete)(this); }
-    bool    include_detect_recursion(const char* InputName)
-            { return QUEX_NAME(include_detect_recursion)(this, InputName); }
-#   endif
-
     QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get();
     QUEX_TYPE_LEXATOM*    input_pointer_get();
     void                  input_pointer_set(QUEX_TYPE_LEXATOM*);
-
-    /* -- activate/deactivate byte order reversion (big-/little-endian)      */
-    bool                  byte_order_reversion()
-            { return QUEX_NAME(byte_order_reversion)(this); }
-    void                  byte_order_reversion_set(bool Value)
-            { return QUEX_NAME(byte_order_reversion_set)(this, Value); }
 
     /* NOTE: All calls to receive functions for 'queue' and 'single'
      *       are deliberately chosen to be incompatible! Thus, when 
      *       the user switches the token passing policy, he must re-
      *       think his receive mechanism.                                    */
-#   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
-    /* (1) Token Queue 
-     * 
-     *   When using a token queue, the pointer **must** be adapted.
-     *   Otherwise, very strange results may occur. Force the user to
-     *   provide a pointer that can be adapted by having him specify
-     *   the second argument--not only a return value.
-     *
-     *   Command line option:  --token-policy  queue                         */
-    void                receive(QUEX_TYPE_TOKEN**);
-#   elif defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)  
-    /* (2) Single Token
-     * 
-     *   When there is only one single token as interface, than the
-     *   token id is returned. This enables a minimal setup were the
-     *   analyzer may only return a token id and does not work on tokens. 
-     *
-     *   Command line options: --token-policy  single                        */
     QUEX_TYPE_TOKEN_ID  receive();
-#   else
-#       error "This section should never be compiled."
-#   endif
 
     /* A pointer to an object of the token queue/object is used in order to
      * make memory management more flexible.  The token queue/token object is
@@ -290,86 +183,10 @@ public:
      * with other heavily used data so that the cache can take advantage of
      * data locality.                                                        */
     QUEX_TYPE_TOKEN*     token_p();
-#   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE) 
-       QUEX_TYPE_TOKEN*  token_p_swap(QUEX_TYPE_TOKEN*);
-#      if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-       void              token_p_set(QUEX_TYPE_TOKEN*);
-#      endif
-#   else
-       bool              token_queue_is_empty();
-       void              token_queue_remainder_get(QUEX_TYPE_TOKEN** begin, QUEX_TYPE_TOKEN** end);
-       void              token_queue_swap(QUEX_TYPE_TOKEN** queue, 
-                                          size_t*           size); 
-#      if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-       void              token_queue_get(QUEX_TYPE_TOKEN** begin, size_t* size);
-       void              token_queue_set(QUEX_TYPE_TOKEN* Begin, size_t Size);
-#      endif
-#   endif
-
-    const char* input_name()
-    { return QUEX_NAME(input_name)(this); }
-    bool        input_name_set(const char* InputName)
-    { return QUEX_NAME(input_name_set)(this, InputName); }
-
-    //
-    // (*) Mode handling
-    //
-    //     -- modes: read access
-    QUEX_NAME(Mode)&      mode();
-    int                   mode_id() const;
-    const char*           mode_name() const;
-    //
-    //     -- modes: changing lexical analysis mode
-    void                  set_mode_brutally(const int ModeId);
-    void                  set_mode_brutally(const QUEX_NAME(Mode)& Mode);
-    //                    
-    void                  operator<<(const int ModeId);               
-    void                  operator<<(/* NOT const*/ QUEX_NAME(Mode)& Mode);  
-    //                    
-    void                  pop_mode();
-    void                  pop_drop_mode();
-    void                  push_mode(QUEX_NAME(Mode)& new_mode);
-    //                    
-    void                  enter_mode(/* NOT const*/ QUEX_NAME(Mode)& TargetMode);
-    //
-    //     -- map: mode id to mode and vice versa
-    QUEX_NAME(Mode)&      map_mode_id_to_mode(const int              ModeID);       
-    int                   map_mode_to_mode_id(const QUEX_NAME(Mode)& Mode) const;
-
-    const char* version() const;
-    // (*) Tell/Seek/Move on basis of character index
-    size_t  tell();
-    void    seek(const size_t);
-    void    seek_forward(const size_t);
-    void    seek_backward(const size_t);
-
-    void    undo();
-    void    undo(size_t DeltaN_Backward);
-
-    void    move_forward(const size_t) { QUEX_ERROR_EXIT("'move_forward()' has been renamed to 'seek_forward()'."); }
-    void    move_backward(const size_t){ QUEX_ERROR_EXIT("'move_backward()' has been renamed to 'seek_backward()'."); }
-
-private:
-    void    resources_absent_mark()
-    { QUEX_NAME(resources_absent_mark)(this); }
-public:
-    bool    resources_absent()
-    { return QUEX_NAME(resources_absent)(this); }
-
-    void    set_callback_on_buffer_content_change(void (*callback)(const QUEX_TYPE_LEXATOM*, 
-                                                                   const QUEX_TYPE_LEXATOM*));
-
-public:
-    void    print_this();
 
 private:
     /* (*) All Modes are Friends ___________________________________________________*/
     friend     __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER*);
-#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-    friend     bool QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)*);
-    friend     bool QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)*);
-    friend     bool QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)*);
-#endif
 
   
 
@@ -379,12 +196,20 @@ public:
 
 /* END: ____________________________________________________________________________*/
 #undef  self
-
-public:
-    // Token sending happens only via 'self_send*(...)' macros
-    void   send(const QUEX_TYPE_TOKEN_ID TokenID)
-    { (void)TokenID; QUEX_ERROR_DEPRECATED("Member functions .send()", "macros: self_send*()"); }
 };
+
+QUEX_INLINE void 
+QUEX_NAME(set_mode_brutally)(QUEX_TYPE_ANALYZER* me, QUEX_NAME(Mode)* ModeP) 
+{ 
+    me->__current_mode_p          = ModeP;
+    me->current_analyzer_function = ModeP->analyzer_function; 
+}
+
+QUEX_INLINE void
+QUEX_NAME(set_mode_brutally_by_id)(QUEX_TYPE_ANALYZER* me, const int ModeID)
+{ 
+    QUEX_NAME(set_mode_brutally)(me, QUEX_NAME(mode_db)[ModeID]); 
+}
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
@@ -393,7 +218,38 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #else
 #   include "quex/code_base/converter_helper/from-unicode-buffer.i"
 #endif
-#include <quex/code_base/analyzer/headers.i>
+
+#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I
+#define __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I
+
+#if ! defined(__QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION)
+#   error "No configuration header included before this header."
+#endif
+
+#include    <quex/code_base/aux-string.i>
+
+#include    <quex/code_base/analyzer/asserts.i>
+#include    <quex/code_base/buffer/asserts.i>
+
+/* Token sending happens only via macros, for flexibility. */
+#include    <quex/code_base/analyzer/member/token-receiving.i>
+//#include    <quex/code_base/analyzer/member/mode-handling.i>
+//#include    <quex/code_base/analyzer/member/misc.i>
+//#include    <quex/code_base/analyzer/member/navigation.i>
+#include    <quex/code_base/analyzer/struct/constructor.i>
+
+#include    <quex/code_base/analyzer/Mode.i>
+
+#include    <quex/code_base/buffer/Buffer.i>
+#include    <quex/code_base/buffer/lexatoms/LexatomLoader.i>
+#include    <quex/code_base/buffer/bytes/ByteLoader>
+
+#if defined(__QUEX_OPTION_CONVERTER)
+#   include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter.i>
+#endif
+
+
+#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I */
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED____QUEX____TESTANALYZER */
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
@@ -428,50 +284,6 @@ QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
 #undef self
 }
 
-bool
-QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
-{
-    (void)me;
-
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
-/* START: User's 'reset' ______________________________________________________*/
-return UserReset_UnitTest_return_value;
-/* END: _______________________________________________________________________*/
-#undef self
-    return true;
-}
-
-#ifdef QUEX_OPTION_INCLUDE_STACK
-
-bool
-QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me, 
-                             const char*         InputName, 
-                             QUEX_NAME(Memento)* memento) 
-{
-    (void)me; (void)memento; (void)InputName;
-
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
-/* START: User's memento 'pack' _______________________________________________*/
-return UserMementoPack_UnitTest_return_value;
-/* END: _______________________________________________________________________*/
-#undef self
-    return true;
-}
-
-void
-QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me, 
-                               QUEX_NAME(Memento)*  memento)
-{
-    (void)me; (void)memento;
-
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
-/* START: User's memento 'unpack' _____________________________________________*/
-
-/* END: _______________________________________________________________________*/
-#undef self
-}
-#endif /* QUEX_OPTION_INCLUDE_STACK */
-
 QUEX_NAMESPACE_MAIN_CLOSE
 
 
@@ -486,37 +298,7 @@ QUEX_NAMESPACE_TOKEN_OPEN
 
 const char*
 QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
-{
-   static char  error_string[64];
-   static const char  uninitialized_string[] = "<UNINITIALIZED>";
-   static const char  termination_string[]   = "<TERMINATION>";
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   static const char  indent_string[]        = "<INDENT>";
-   static const char  dedent_string[]        = "<DEDENT>";
-   static const char  nodent_string[]        = "<NODENT>";
-#  endif
-   static const char  token_id_str_X[]             = "X";
-       
-
-   /* NOTE: This implementation works only for token id types that are 
-    *       some type of integer or enum. In case an alien type is to
-    *       used, this function needs to be redefined.                  */
-   switch( TokenID ) {
-   default: {
-       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
-       return error_string;
-   }
-   case QUEX_TKN_TERMINATION:    return termination_string;
-   case QUEX_TKN_UNINITIALIZED:  return uninitialized_string;
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   case QUEX_TKN_INDENT:         return indent_string;
-   case QUEX_TKN_DEDENT:         return dedent_string;
-   case QUEX_TKN_NODENT:         return nodent_string;
-#  endif
-   case QUEX_TKN_X:             return token_id_str_X;
-
-   }
-}
+{ return ""; }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 bool UserConstructor_UnitTest_return_value = true;
