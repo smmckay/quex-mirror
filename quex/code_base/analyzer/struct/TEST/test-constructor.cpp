@@ -16,23 +16,38 @@
  * Test is best run inside a 'valgrind' session, so that memory leaks may be
  * properly detected.
  *
+ * Delete-Ability/V-Table Corruption:
+ *
+ * Unwise use of 'memset', for example, may alter the V-Table of lexer objects.
+ * In such cases, it is likely that the virtual destructor pointer is corrupted.
+ *
+ * => (1) Placement new to construct lexical analyzers.
+ *    (2) Explicit destructor calls to destruct.
+ *
+ * In case that the v-table is corrupted, this procudure is likely to fail.
+ *
  * (C) 2017 Frank-Rene Schaefer                                               */
-#include <TestAnalyzer.h>
+#include <TestAnalyzer>
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/buffer/TESTS/MemoryManager_UnitTest.i>
 #include <hwut_unit.h>
 
+namespace quex {
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
+}
+
+using namespace quex;
 
 static void self_file_name();
 static void self_byte_loader();
 static void self_memory();
-static void self_destruct(quex_TestAnalyzer* lexer, size_t N);
-static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
+static void self_destruct(size_t N);
+static void self_assert(TestAnalyzer* lexer, E_Error ExpectedError);
 static void self_byte_loader_core(E_Error ExpectedError);
 
-quex_TestAnalyzer  lexer[128];
-quex_TestAnalyzer* lx;
+uint8_t       lexer_memory[sizeof(TestAnalyzer)*128];
+TestAnalyzer* lx0 = reinterpret_cast<TestAnalyzer*>(&lexer_memory[0]);
+TestAnalyzer* lx = lx0;
 
 int
 main(int argc, char** argv)
@@ -40,7 +55,7 @@ main(int argc, char** argv)
     hwut_info("Constructor;\n"
               "CHOICES: file-name, byte-loader, memory;\n");
 
-    memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest));
+    memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest_t));
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;
     MemoryManager_UnitTest.forbid_ByteLoader_f      = false;
@@ -51,17 +66,17 @@ main(int argc, char** argv)
     UserReset_UnitTest_return_value                 = false;
     UserMementoPack_UnitTest_return_value           = false;
 
-    memset(&lexer[0], 0x5A, sizeof(lexer));            /* Poisson all memory. */
-    lx = &lexer[0];
+    memset(&lexer_memory[0], 0x5A, sizeof(lexer_memory)); /* Poisson all memory. */
+    lx = lx0;
 
     hwut_if_choice("file-name")   self_file_name(); 
     hwut_if_choice("byte-loader") self_byte_loader(); 
     hwut_if_choice("memory")      self_memory(); 
 
     /* Destruct safely all lexers. */
-    self_destruct(&lexer[0], lx - &lexer[0]);
+    self_destruct((size_t)(lx - lx0));
 
-    printf("<terminated: %i>\n", (int)(lx- &lexer[0]));
+    printf("<terminated: %i>\n", (int)(lx- lx0));
 
     return 0;
 }
@@ -71,21 +86,21 @@ self_file_name()
 {
     /* Good case                                                              */
     {
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_None);
     }
 
     /* Bad cases                                                              */
     ++lx;
     {
-        QUEX_NAME(from_file_name)(lx, "file-that-does-not-exists.txt", NULL);
+        new (lx) TestAnalyzer("file-that-does-not-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_ByteLoader_Failed);
     }
 
     ++lx;
     {
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_ByteLoader_Failed); 
         MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
     }
@@ -93,7 +108,7 @@ self_file_name()
     ++lx;
     {
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_LexatomLoader_Failed); 
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     }
@@ -101,7 +116,7 @@ self_file_name()
     ++lx;
     {
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_BufferMemory_Failed); 
         MemoryManager_UnitTest.forbid_BufferMemory_f = false;
     }
@@ -109,7 +124,7 @@ self_file_name()
     ++lx;
     {
         UserConstructor_UnitTest_return_value = false;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_UserConstructor_Failed); 
         UserConstructor_UnitTest_return_value = true;
     }
@@ -117,7 +132,7 @@ self_file_name()
     ++lx;
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_InputName_Set_Failed); 
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }
@@ -168,28 +183,28 @@ self_byte_loader_core(E_Error ExpectedError)
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(from_ByteLoader)(lx, byte_loader, converter);
+        new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = NULL;
-        QUEX_NAME(from_ByteLoader)(lx, byte_loader, converter);
+        new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = NULL;
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(from_ByteLoader)(lx, byte_loader, converter);
+        new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = NULL;
         converter   = NULL;
-        QUEX_NAME(from_ByteLoader)(lx, byte_loader, converter);
+        new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
@@ -211,7 +226,7 @@ self_memory()
     memory[65536-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
 
     {
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
     ++lx;
@@ -222,20 +237,20 @@ self_memory()
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
         MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
 
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
     ++lx;
     {
         UserConstructor_UnitTest_return_value = false;
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_UserConstructor_Failed);
         UserConstructor_UnitTest_return_value = true;
     }
     ++lx;
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         /* Input name is not set upon construction from memory. */
         hwut_verify(lx->__input_name == (char*)0);
         self_assert(lx, E_Error_None);
@@ -247,18 +262,18 @@ self_memory()
 }
 
 static void
-self_destruct(quex_TestAnalyzer* lexer, size_t N)
+self_destruct(size_t N)
 {
-    int i;
+    TestAnalyzer* End = &lx0[N];
 
-    for(i=0; i<N; ++i) {
-        QUEX_NAME(destruct)(&lexer[i]);
-        hwut_verify(QUEX_NAME(resources_absent)(&lexer[i]));
+    for(TestAnalyzer* it = lx0; it != End; ++it) {
+        it->~TestAnalyzer();
+        hwut_verify(QUEX_NAME(resources_absent)(it));
     }
 }
 
 static void 
-self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
+self_assert(TestAnalyzer* lexer, E_Error ExpectedError)
 {
     hwut_verify(lx->error_code == ExpectedError);
 
