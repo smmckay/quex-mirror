@@ -62,15 +62,6 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 /* END: _______________________________________________________________________*/
 
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "quex/code_base/converter_helper/from-unicode-buffer"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer"
-#endif
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS
-#define __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS
-
-#include    <quex/code_base/aux-string>
 #include    <quex/code_base/analyzer/asserts>
 
 #include    <quex/code_base/definitions>
@@ -83,13 +74,7 @@ extern bool UserMementoPack_UnitTest_return_value;
 #include    <quex/code_base/analyzer/Mode>
 
 #include    <quex/code_base/analyzer/struct/constructor>
-//#include    <quex/code_base/analyzer/member/misc>
-//#include    <quex/code_base/analyzer/member/navigation>
-//#include    <quex/code_base/analyzer/member/mode-handling>
-#include    <quex/code_base/analyzer/member/token-receiving>
-#include    <quex/code_base/analyzer/member/token-sending>
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS */
 
 #include "Dumlyzer-token_ids"
 #include "Dumlyzer-token"
@@ -108,51 +93,21 @@ extern     __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(M_analyzer_function)(QUEX
 extern QUEX_NAME(Mode)*   (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG Dumlyzer {
-public:
-
-        /*_________________________________________________________________________
-         *  Tokens:      
-         *                                                                        
-         *  Allow public access.
-         *
-         *  Tokens are placed directly before the buffer. They are one of the most
-         *  used variables. The most used variables shall be stored close to each
-         *  other, in order to prevent cache misses.                               
-         * 
-         *  Note, that the token queue is also implemented from higher addresses 
-         *  to lower addresses. It is assumed that it is most likely only filled
-         *  at the top, and thus the addresses close to the buffer shall be used
-         *  more often than the addresses far from it.                            */
-        QUEX_TYPE_TOKEN*   token;         
-        uint8_t            __memory_token[sizeof(QUEX_TYPE_TOKEN)];
-
-        E_Error            error_code;
-        char*              __input_name;
-        QUEX_NAME(Buffer)  buffer;
-
-#if     defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
-     || defined(QUEX_OPTION_ASSERTS)
-        /* When a mode change happens and the user does not 'return' but 'CONTINUE'
-         * an error must be logged, since the following characters are still swallowed
-         * by the current function and not the new one. For this one needs to return and
-         * then continue further.                                                 */
-        QUEX_NAME(AnalyzerFunctionP)  DEBUG_analyzer_function_at_entry;
-#       endif
-
-        /* Each mode has a dedicated analyzer function.  The function pointer
-         * to the currently active mode's function is stored redundantly in 
-         * 'current_analyzer_function' to accelerate the access to it.            */
-        QUEX_NAME(AnalyzerFunctionP)  current_analyzer_function;
-        QUEX_NAME(Mode)*              __current_mode_p; 
-
-        QUEX_NAME(ModeStack)          _mode_stack;
-
 private:
-        Dumlyzer() { assert(false); }
+    Dumlyzer() { assert(false); }
 public:
-    typedef QUEX_TYPE_TOKEN      token_type;
-    typedef QUEX_TYPE_TOKEN_ID   token_id_type;
-    typedef QUEX_TYPE_LEXATOM    char_type;
+
+    QUEX_TYPE_TOKEN*              token;         
+    uint8_t                       __memory_token[sizeof(QUEX_TYPE_TOKEN)];
+
+    E_Error                       error_code;
+    char*                         __input_name;
+    QUEX_NAME(Buffer)             buffer;
+
+    QUEX_NAME(AnalyzerFunctionP)  current_analyzer_function;
+    QUEX_NAME(Mode)*              __current_mode_p; 
+
+    QUEX_NAME(ModeStack)          _mode_stack;
 
     Dumlyzer(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
              size_t             BufferMemorySize,
@@ -166,23 +121,6 @@ public:
 
     virtual ~Dumlyzer()
     { QUEX_NAME(destruct)(this); }
-
-    QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get();
-    QUEX_TYPE_LEXATOM*    input_pointer_get();
-    void                  input_pointer_set(QUEX_TYPE_LEXATOM*);
-
-    /* NOTE: All calls to receive functions for 'queue' and 'single'
-     *       are deliberately chosen to be incompatible! Thus, when 
-     *       the user switches the token passing policy, he must re-
-     *       think his receive mechanism.                                    */
-    QUEX_TYPE_TOKEN_ID  receive();
-
-    /* A pointer to an object of the token queue/object is used in order to
-     * make memory management more flexible.  The token queue/token object is
-     * heavily used and it should be possible to put it somewhere in memory
-     * with other heavily used data so that the cache can take advantage of
-     * data locality.                                                        */
-    QUEX_TYPE_TOKEN*     token_p();
 
 private:
     /* (*) All Modes are Friends ___________________________________________________*/
@@ -213,33 +151,9 @@ QUEX_NAME(set_mode_brutally_by_id)(QUEX_TYPE_ANALYZER* me, const int ModeID)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
-#endif
-
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I
-#define __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I
-
-#if ! defined(__QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION)
-#   error "No configuration header included before this header."
-#endif
-
-#include    <quex/code_base/aux-string.i>
-
 #include    <quex/code_base/analyzer/asserts.i>
-#include    <quex/code_base/buffer/asserts.i>
-
-/* Token sending happens only via macros, for flexibility. */
-#include    <quex/code_base/analyzer/member/token-receiving.i>
-//#include    <quex/code_base/analyzer/member/mode-handling.i>
-//#include    <quex/code_base/analyzer/member/misc.i>
-//#include    <quex/code_base/analyzer/member/navigation.i>
 #include    <quex/code_base/analyzer/struct/constructor.i>
-
 #include    <quex/code_base/analyzer/Mode.i>
-
 #include    <quex/code_base/buffer/Buffer.i>
 #include    <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include    <quex/code_base/buffer/bytes/ByteLoader>
@@ -247,9 +161,6 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #if defined(__QUEX_OPTION_CONVERTER)
 #   include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter.i>
 #endif
-
-
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I */
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED____QUEX____TESTANALYZER */
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER

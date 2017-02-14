@@ -1,8 +1,7 @@
 FILES    := test-constructor.exe \
 	        test-reset.exe \
 	        test-include_push.exe \
-	        test-include-deep.exe \
-			deleteability.exe
+	        test-include-deep.exe 
 
 DEFINES  := \
 	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \
@@ -29,8 +28,8 @@ hwut-info:
 %.exe: %.c TestAnalyzer-dummy.o
 	$(CC) $^ -o $@ 
 
-%.exe: %.cpp Dumlyzer.o
-	$(CPP) -IDum $^ -o $@ 
+%.exe: %.cpp TestAnalyzer-dummy-Cpp.o
+	$(CPP) $^ -lefence -o $@ 
 
 %.E: %.c
 	$(CC) -E $^ -o $@ 
@@ -40,9 +39,8 @@ hwut-info:
 TestAnalyzer-dummy.o: $(QUEX_PATH)/quex/code_base/test_environment/TestAnalyzer-dummy.c
 	$(CC) -c -D__QUEX_OPTION_PLAIN_C -DQUEX_OPTION_MULTI $< -o $@
 
-Dumlyzer.o: Dum/Dumlyzer.cpp
-	$(CPP) -c -IDum -DQUEX_OPTION_MULTI $< -o $@
-
+TestAnalyzer-dummy-Cpp.o: $(QUEX_PATH)/quex/code_base/test_environment/TestAnalyzer-dummy.cpp
+	$(CC) -c -DQUEX_OPTION_MULTI $< -o $@
 
 TestAnalyzer-dummy.E: $(QUEX_PATH)/quex/code_base/test_environment/TestAnalyzer-dummy.c
 	$(CC) -E $< -o $@
