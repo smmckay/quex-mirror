@@ -52,6 +52,15 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
     case E_MemoryObjectType_INPUT_NAME:
         if( MemoryManager_UnitTest.forbid_InputName_f ) return (uint8_t*)0;
         else                                            break;
+    case E_MemoryObjectType_BUFFER:
+    case E_MemoryObjectType_BUFFER_RAW:
+    case E_MemoryObjectType_CONVERTER:
+    case E_MemoryObjectType_MEMENTO:
+    case E_MemoryObjectType_POST_CATEGORIZER_NODE:
+    case E_MemoryObjectType_TEXT:
+    case E_MemoryObjectType_TOKEN_ARRAY:
+    default:
+        break;
     }
     me = (uint8_t*)__QUEX_STD_malloc((size_t)ByteN);
 

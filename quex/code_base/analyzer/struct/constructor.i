@@ -44,7 +44,6 @@ QUEX_INLINE void   QUEX_NAME(Asserts_construct)();
 QUEX_INLINE bool   QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(Tokens_reset)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE bool   QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me);
 
 QUEX_INLINE void
 QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
@@ -191,7 +190,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     if( ! QUEX_NAME(Tokens_construct)(me) ) {
         goto ERROR_0;
     }
-    else if( ! QUEX_NAME(ModeStack_construct)(me) ) {
+    else if( ! QUEX_NAME(ModeStack_construct)(&me->_mode_stack) ) {
         goto ERROR_1;
     }
 #   ifdef QUEX_OPTION_STRING_ACCUMULATOR
@@ -299,8 +298,8 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
  *          Otherwise: unreferenced trailing objects; memory leaks.
  *____________________________________________________________________________*/
 {
-    E_Error  backup = me->error_code;
-
+    /* NOTE: 'memset()' will destroy the v-table in case that the analyzer 
+     *       is a c++ class object.                                           */
 #   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
 #   else
@@ -315,21 +314,26 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 
     QUEX_NAME(Buffer_resources_absent_mark)(&me->buffer);
 
-    __QUEX_STD_memset((void*)me, 0, sizeof(QUEX_TYPE_ANALYZER));
-    /* => ._parent_memento == 0 (include stack is marked as 'clear')
-     * => ._token          == 0 (if not token queue, the token is 'clear')
-     *                          For the case of 'token queue' a dedicated
-     *                          'resources_absent_mark' is called.
-     * => .__input_name    == 0                                               */
-    me->error_code = backup;
+    me->current_analyzer_function = (QUEX_NAME(AnalyzerFunctionP))0;
+    me->__current_mode_p          = (QUEX_NAME(Mode)*)0; 
+
+    QUEX_NAME(ModeStack_resources_absent_mark)(&me->_mode_stack);
+    __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
+    me->__input_name    = (char*)0;
 }
 
 QUEX_INLINE void
 QUEX_NAME(all_but_buffer_resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 {
-    QUEX_NAME(Buffer) backup = me->buffer;           /* Plain copy suffices   */
+    uint8_t backup[sizeof(QUEX_NAME(Buffer))];
+
+    /* Plain copy suffices (backup holds pointers safely).                    */
+    memcpy((void*)&backup[0], (void*)&me->buffer, sizeof(QUEX_NAME(Buffer)));
+
     QUEX_NAME(resources_absent_mark)(me);
-    me->buffer = backup;                             /* Plain copy resets all */
+
+    /* Plain copy suffices (backup resets pointers safely).                   */
+    memcpy((void*)&me->buffer, (void*)&backup[0], sizeof(QUEX_NAME(Buffer)));
 }
 
 QUEX_INLINE bool
@@ -337,31 +341,20 @@ QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me)
 /* RETURNS: 'true' if all resources are marked absent.
  *          'false' if at least one is not marked absent.                     */
 {
-    QUEX_TYPE_ANALYZER empty_block;
-    E_Error            backup_error_code;
-    bool               verdict;
-
-    __QUEX_STD_memset((void*)&empty_block, 0, sizeof(QUEX_TYPE_ANALYZER));
-    /* => ._parent_memento == 0 (include stack is marked as 'clear')
-     * => ._token          == 0 (if not token queue, the token is 'clear')
-     *                          For the case of 'token queue' a dedicated
-     *                          'resources_absent_mark' is called.
-     * => .__input_name    == 0                                               */
-    backup_error_code = me->error_code;
-    me->error_code    = (E_Error)0;
-    verdict           = (__QUEX_STD_memcmp(me, &empty_block, sizeof(QUEX_TYPE_ANALYZER)) == 0) ? true : false;
-    me->error_code    = backup_error_code;
-    if( ! verdict ) return false;
-
 #   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
-    else if( ! QUEX_NAME(TokenQueue_resources_absent)(&me->_token_queue) ) {
+    if( ! QUEX_NAME(TokenQueue_resources_absent)(&me->_token_queue) ) {
         return false;
     }
 #   else
-    else if( me->token ) {
+    if( me->token ) {
         return false;
     }
 #   endif 
+#   if defined(QUEX_OPTION_INCLUDE_STACK)
+    else if( me->_parent_memento != (QUEX_NAME(Memento)*)0 ) {
+        return false;
+    }
+#   endif
 #   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
     else if( ! QUEX_NAME(Accumulator_resources_absent)(&me->accumulator) ) {
         return false;
@@ -373,6 +366,14 @@ QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me)
     }
 #   endif
     else if( ! QUEX_NAME(Buffer_resources_absent)(&me->buffer) ) {
+        return false;
+    }
+    else if( ! QUEX_NAME(ModeStack_resources_absent)(&me->_mode_stack) ) {
+        return false;
+    }
+    else if(    me->current_analyzer_function != (QUEX_NAME(AnalyzerFunctionP))0
+             || me->__current_mode_p          != (QUEX_NAME(Mode)*)0
+             || me->__input_name              != (char*)0 ) {
         return false;
     }
     else {
@@ -499,14 +500,6 @@ QUEX_NAME(Tokens_reset)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(Tokens_destruct(me));
     (void)QUEX_NAME(Tokens_construct(me));
 #endif
-}
-
-QUEX_INLINE bool
-QUEX_NAME(ModeStack_construct)(QUEX_TYPE_ANALYZER* me)
-{
-    me->_mode_stack.end        = me->_mode_stack.begin;
-    me->_mode_stack.memory_end = &me->_mode_stack.begin[QUEX_SETTING_MODE_STACK_SIZE];
-    return true;
 }
 
 QUEX_INLINE const char*

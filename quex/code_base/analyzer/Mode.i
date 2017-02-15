@@ -34,6 +34,28 @@ QUEX_NAMESPACE_MAIN_OPEN
                                                 const QUEX_NAME(Mode)* TheMode) 
     { (void)me; (void)TheMode; }
 
+    QUEX_INLINE bool
+    QUEX_NAME(ModeStack_construct)(QUEX_NAME(ModeStack)* me)
+    {
+        me->end        = &me->begin[0];
+        me->memory_end = &me->begin[QUEX_SETTING_MODE_STACK_SIZE];
+        return true;
+    }
+
+    QUEX_INLINE void
+    QUEX_NAME(ModeStack_resources_absent_mark)(QUEX_NAME(ModeStack)* me)
+    {
+        me->end        = (QUEX_NAME(Mode)**)0;
+        me->memory_end = (QUEX_NAME(Mode)**)0;
+    }
+
+    QUEX_INLINE bool
+    QUEX_NAME(ModeStack_resources_absent)(QUEX_NAME(ModeStack)* me)
+    {
+        return    me->end        == (QUEX_NAME(Mode)**)0
+               && me->memory_end == (QUEX_NAME(Mode)**)0;
+    }
+
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__MODE_I */

@@ -65,7 +65,7 @@ main(int argc, char** argv)
 
     qlex = LEXER_CLASS::from_ByteLoader(NULL, converter);
 
-    while( 1 + 1 == 2 ) {
+    while( ! token || token->_id != QUEX_TKN_BYE ) {
         printf("type here: ");
 
 		cin.getline((std::basic_istream<char>::char_type*)&buffer[0], sizeof(buffer)-1);

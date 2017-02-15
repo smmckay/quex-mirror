@@ -104,6 +104,7 @@ QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me)
     /* The memory chunk for the token queue itself is located inside the
      * analyzer object. Thus, no explicit free is necessary. In case of user
      * managed token queue memory the user takes care of the deletion.        */
+    QUEX_NAME(TokenQueue_resources_absent_mark)(me);
 #   endif
 }
 

@@ -52,7 +52,7 @@ static void  print_token(quex_Token*  token);
 int 
 main(int argc, char** argv) 
 {        
-    quex_Token*              token;
+    quex_Token*              token = 0;
     LEXER_CLASS              qlex;   
     size_t                   size = 4096;
     char                     buffer[4096];
@@ -65,7 +65,7 @@ main(int argc, char** argv)
 #endif
     QUEX_NAME(from_ByteLoader)(&qlex, NULL, converter);
 
-    while( 1 + 1 == 2 ) {
+    while( ! token || token->_id != QUEX_TKN_BYE ) {
         printf("type here: ");
         p    = &buffer[0];
         size = 4096;

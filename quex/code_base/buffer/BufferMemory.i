@@ -50,6 +50,8 @@ QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me)
 
 QUEX_INLINE void 
 QUEX_NAME(BufferMemory_resources_absent_mark)(QUEX_NAME(BufferMemory)* me) 
+/* Marks memory absent. If previously the ownership was 'E_Ownership_EXTERNAL'.
+ * then the concerned memory is no longer referred by this buffer.            */
 {
     /* 'me->_front == 0' prevents 'MemoryManager_free()'                      */
     me->_front = me->_back = (QUEX_TYPE_LEXATOM*)0x0;

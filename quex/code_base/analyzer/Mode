@@ -62,6 +62,11 @@ QUEX_NAMESPACE_MAIN_OPEN
         QUEX_NAME(Mode)** end;
         QUEX_NAME(Mode)** memory_end;
     } QUEX_NAME(ModeStack);
+
+    QUEX_INLINE bool  QUEX_NAME(ModeStack_construct)(QUEX_NAME(ModeStack)* me);
+    QUEX_INLINE void  QUEX_NAME(ModeStack_resources_absent_mark)(QUEX_NAME(ModeStack)* me);
+    QUEX_INLINE bool  QUEX_NAME(ModeStack_resources_absent)(QUEX_NAME(ModeStack)* me);
+
 QUEX_NAMESPACE_MAIN_CLOSE
 
 

@@ -15,7 +15,13 @@ uint8_t*
 QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN, 
                                    E_MemoryObjectType Type)
 {
-    uint8_t*  me = (uint8_t*)__QUEX_STD_malloc((size_t)ByteN);
+    uint8_t* me = 0;
+#   ifdef __cplusplus
+    try                   { me = new uint8_t[ByteN]; } 
+    catch(std::bad_alloc) { return (uint8_t*)0; }
+#   else
+    me = (uint8_t*)__QUEX_STD_malloc(ByteN);
+#   endif
 
     (void)Type;
 #   ifdef QUEX_OPTION_ASSERTS
@@ -28,12 +34,16 @@ void
 QUEXED_DEF(MemoryManager_free)(void*              alter_ego, 
                                E_MemoryObjectType Type)  
 { 
-    void* me = (void*)alter_ego;
     (void)Type;
     /* The de-allocator shall never be called for LexemeNull object.         */
-    if( me ) {
-        __QUEX_STD_free(me); 
-    }
+    if( ! alter_ego ) return;
+#   ifdef __cplusplus
+    uint8_t* me = (uint8_t*)alter_ego;
+    delete [] me;
+#   else
+    void* me = (void*)alter_ego;
+    __QUEX_STD_free(me); 
+#   endif
 }
 
 size_t
