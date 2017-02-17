@@ -768,6 +768,6 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
-bool UserConstructor_UnitTest_return_value = false;
-bool UserReset_UnitTest_return_value = false;
-bool UserMementoPack_UnitTest_return_value = false;
+bool UserConstructor_UnitTest_return_value = true;
+bool UserReset_UnitTest_return_value       = true;
+bool UserMementoPack_UnitTest_return_value = true;

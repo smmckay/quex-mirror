@@ -1098,6 +1098,6 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
-bool UserConstructor_UnitTest_return_value = false;
-bool UserReset_UnitTest_return_value = false;
-bool UserMementoPack_UnitTest_return_value = false;
+bool UserConstructor_UnitTest_return_value = true;
+bool UserReset_UnitTest_return_value       = true;
+bool UserMementoPack_UnitTest_return_value = true;

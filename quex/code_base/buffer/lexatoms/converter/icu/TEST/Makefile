@@ -18,6 +18,8 @@
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________
 
+.SECONDARY:
+
 FILES := $(foreach S, 1 2 4 WC, one-beat-$(S).exe)       \
 	     $(foreach S, 1 2 4 WC, stepwise-drain-$(S).exe) \
 	     $(foreach S, 1 2 4 WC, stepwise-source-$(S).exe) 

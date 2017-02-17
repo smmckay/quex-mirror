@@ -63,10 +63,11 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
         fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")
         fh.write("%s\n%s" % (token_class_implementation,
                              map_token_id_to_string_implementation))
-        fh.write("#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
-        fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
-        fh.write("bool UserReset_UnitTest_return_value       = true;\n")
-        fh.write("bool UserMementoPack_UnitTest_return_value = true;\n")
+
+        # fh.write("#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
+        # fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
+        # fh.write("bool UserReset_UnitTest_return_value       = true;\n")
+        # fh.write("bool UserMementoPack_UnitTest_return_value = true;\n")
         fh.write("#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
 
     Lng.straighten_open_line_pragmas(FileName)
@@ -77,9 +78,9 @@ def append_variable_definitions(FileName):
     fh.close()
     fh = open(FileName, "wb")
     fh.write(content)
-    fh.write("bool UserConstructor_UnitTest_return_value = false;\n")
-    fh.write("bool UserReset_UnitTest_return_value = false;\n")
-    fh.write("bool UserMementoPack_UnitTest_return_value = false;\n")
+    fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
+    fh.write("bool UserReset_UnitTest_return_value       = true;\n")
+    fh.write("bool UserMementoPack_UnitTest_return_value = true;\n")
     fh.close()
 
 if sys.argv[1] == "C++":
