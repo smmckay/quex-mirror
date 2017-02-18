@@ -292,6 +292,11 @@ TEST                                                                 <no date>
     3476232 0.62.1 Slow C code generation (unicode)
         bug-3476232.sh ...............................................[OK]
 
+ * raphamiard:
+
+    185 0.66.5 Stable output for distinct token fields
+        feature-185.sh ...............................................[OK]
+
  * rayhayes:
 
     284 Assert on '--version' (also check for '--help')
@@ -3185,7 +3190,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-           240     [OK] TEST                                                          
+           241     [OK] TEST                                                          
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
@@ -3246,6 +3251,6 @@ SUMMARY:
    | | | | | | | ' // _ \| '__| '__/ _ \/ __| __|  | |
    | |_| | | | | . \ (_) | |  | | |  __/ (__| |_   |_|
     \___/|_|_| |_|\_\___/|_|  |_|  \___|\___|\__|  (_)
-                                                                   (1649 tests)
+                                                                   (1650 tests)
 
 ===============================================================================
