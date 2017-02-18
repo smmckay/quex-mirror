@@ -33,10 +33,10 @@ def do():
     _generate(mode_db)
 
 def _generate(mode_db):
-    token_id_header, \
+    token_id_header,                          \
     func_map_token_id_to_name_implementation, \
-    class_token_header, \
-    class_token_implementation = _prepare_token_class()
+    class_token_header,                       \
+    class_token_implementation                = _prepare_token_class()
 
     if Setup.token_class_only_f:
         class_token_header =   do_token_class_info() \
@@ -138,7 +138,7 @@ def _prepare_token_class():
     # (*) Generate the token ids
     #     (This needs to happen after the parsing of mode_db, since during that
     #      the token_id_db is developed.)
-    if Setup.external_lexeme_null_object != "":
+    if Setup.external_lexeme_null_object: # or Setup.token_class_only_f:
         # Assume external implementation
         token_id_header                          = None
         func_map_token_id_to_name_implementation = ""
@@ -216,15 +216,14 @@ def _write_token_class(class_token_header, class_token_implementation,
                        token_id_header):
     write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
                            class_token_header) 
+    Lng.straighten_open_line_pragmas(blackboard.token_type_definition.get_file_name())
     write_safely_and_close(Setup.output_token_class_file_implementation,
                            class_token_implementation)
-    write_safely_and_close(Setup.output_token_id_file, token_id_header)
-    _straighten_open_line_pragmas_for_token()
-
-def _straighten_open_line_pragmas_for_token():
-    Lng.straighten_open_line_pragmas(Setup.output_token_id_file)
     Lng.straighten_open_line_pragmas(Setup.output_token_class_file_implementation)
-    Lng.straighten_open_line_pragmas(blackboard.token_type_definition.get_file_name())
+
+    if token_id_header is not None:
+        write_safely_and_close(Setup.output_token_id_file, token_id_header)
+        Lng.straighten_open_line_pragmas(Setup.output_token_id_file)
 
 def _straighten_open_line_pragmas_all():
     Lng.straighten_open_line_pragmas(Setup.output_header_file)

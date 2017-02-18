@@ -30,3 +30,6 @@ for the 'buffer._memory.ownership' before reload!
 
 -- QUEX_NAME(something) must be invoqued with Lexer::QUEX_NAME(something)
    if 'using namespace Lexer;' is not given.
+
+-- MEmbers in token type remain in same sequence as they are mentioned.
+   => packaging may be controlled.

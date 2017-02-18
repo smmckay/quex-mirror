@@ -16,18 +16,19 @@ from   quex.input.setup                import E_Files, \
                                               NotificationDB
 from   quex.blackboard                 import setup as Setup, \
                                               Lng
+from   collections import OrderedDict
 
 token_type_code_fragment_db = { 
-        "constructor":    CodeUser_NULL, 
-        "destructor":     CodeUser_NULL,
-        "copy":           None, 
-        "body":           CodeUser_NULL,
-        "header":         CodeUser_NULL,
-        "footer":         CodeUser_NULL,
-        "take_text":      None,
-        "repetition_set": CodeUser_NULL,
-        "repetition_get": CodeUser_NULL,
-        }
+    "constructor":    CodeUser_NULL, 
+    "destructor":     CodeUser_NULL,
+    "copy":           None, 
+    "body":           CodeUser_NULL,
+    "header":         CodeUser_NULL,
+    "footer":         CodeUser_NULL,
+    "take_text":      None,
+    "repetition_set": CodeUser_NULL,
+    "repetition_get": CodeUser_NULL,
+}
 
 class TokenTypeDescriptorCore:
     """Object used during the generation of the TokenTypeDescriptor."""
@@ -50,26 +51,26 @@ class TokenTypeDescriptorCore:
             self.column_number_type    = CodeUser("size_t", SourceRef())
             self.line_number_type      = CodeUser("size_t", SourceRef())
 
-            self.distinct_db = {}
-            self.union_db    = {}
+            self.distinct_db = OrderedDict() # See comment [MEMBER PACKAGING]
+            self.union_db    = OrderedDict() # See comment [MEMBER PACKAGING]
 
             for name, default_value in token_type_code_fragment_db.iteritems():
                 self.__dict__[name] = default_value
 
         else:
-            self._file_name                = Core._file_name
-            self._file_name_implementation = Core._file_name_implementation
-            self.class_name            = Core.class_name
-            self.class_name_safe       = Core.class_name_safe
-            self.name_space            = Core.name_space
+            self._file_name                 = Core._file_name
+            self._file_name_implementation  = Core._file_name_implementation
+            self.class_name                 = Core.class_name
+            self.class_name_safe            = Core.class_name_safe
+            self.name_space                 = Core.name_space
             self.open_for_derivation_f      = Core.open_for_derivation_f
             self.token_contains_token_id_f  = Core.token_contains_token_id_f
-            self.token_id_type         = Core.token_id_type
-            self.column_number_type    = Core.column_number_type
-            self.line_number_type      = Core.line_number_type
+            self.token_id_type              = Core.token_id_type
+            self.column_number_type         = Core.column_number_type
+            self.line_number_type           = Core.line_number_type
 
-            self.distinct_db           = Core.distinct_db
-            self.union_db              = Core.union_db
+            self.distinct_db = Core.distinct_db
+            self.union_db    = Core.union_db
 
             for name in token_type_code_fragment_db.keys():
                 self.__dict__[name] = Core.__dict__[name]
@@ -104,7 +105,7 @@ class TokenTypeDescriptorCore:
         # '0' to make sure, that it works on an empty sequence too.
         L = self.union_members_type_name_length_max()
         for name, type_descr in self.union_db.items():
-            if type(type_descr) == dict:
+            if isinstance(type_descr, OrderedDict):
                 txt += "    {\n"
                 for sub_name, sub_type in type_descr.items():
                     txt += "        %s%s %s\n" % \
@@ -156,7 +157,7 @@ class TokenTypeDescriptor(TokenTypeDescriptorCore):
         # (*) Max length of variables etc. for pretty printing
         max_length = 0
         for type_descr in self.union_db.values():
-            if type(type_descr) == dict:
+            if isinstance(type_descr, OrderedDict):
                 length = 4 + max([0] + map(lambda x: len(x.get_text()), type_descr.values()))
             else:
                 length = len(type_descr.get_text())
@@ -165,7 +166,7 @@ class TokenTypeDescriptor(TokenTypeDescriptorCore):
 
         max_length = 0
         for name, type_descr in self.union_db.items():
-            if type(type_descr) == dict:
+            if isinstance(type_descr, OrderedDict):
                 length = 4 + max([0] + map(lambda x: len(x), type_descr.keys()))
             else:
                 length = len(name)
@@ -189,7 +190,7 @@ class TokenTypeDescriptor(TokenTypeDescriptorCore):
         for name, type_code in self.distinct_db.items():
             db[name] = [type_code, name]
         for name, type_descr in self.union_db.items():
-            if type(type_descr) == dict:
+            if isinstance(type_descr, OrderedDict):
                 for sub_name, sub_type in type_descr.items():
                     db[sub_name] = [sub_type, "content." + name + "." + sub_name]
             else:
@@ -403,15 +404,15 @@ def parse_union_members(fh, section_name, descriptor, already_defined_list):
         error.log("Missing opening '{' at begin of token_type section '%s'." % section_name, fh);
 
     result = parse_variable_definition_list(fh, "union", already_defined_list, 
-                                                         GroupF=True)
-    if result == {}: 
+                                            GroupF=True)
+    if not result:
         error.log("Missing variable definition in token_type 'union' section.", fh)
     descriptor.union_db = result
 
 def parse_variable_definition_list(fh, SectionName, already_defined_list, GroupF=False):
     position = fh.tell()
 
-    db = {}
+    db = OrderedDict() # See comment [MEMBER PACKAGING]
     while 1 + 1 == 2:
         try: 
             result = parse_variable_definition(fh, GroupF=True, already_defined_list=already_defined_list) 
@@ -435,7 +436,7 @@ def parse_variable_definition_list(fh, SectionName, already_defined_list, GroupF
         db[name] = type_descriptor
 
         if len(result) == 1:
-            assert type(type_descriptor) == dict
+            assert isinstance(type_descriptor, OrderedDict)
             # In case of a 'combined' definition each variable needs to be validated.
             for sub_name, sub_type in type_descriptor.items():
                 __validate_definition(sub_type, sub_type, already_defined_list, 
@@ -543,3 +544,11 @@ _warning_msg = \
 """Section token_type does not contain a 'take_text' section. It would be
 necessary if the analyzer uses the string accumulator."""
 
+#______________________________________________________________________________
+# [MEMBER PACKAGING] 
+#
+# The classes uses 'OrderedDict' objects for members, so that ihe iteration
+# over members happens in the order that they were defined. This supports the
+# 'packaging', i.e. the user is able to determine the place where members are
+# stored. 
+#______________________________________________________________________________

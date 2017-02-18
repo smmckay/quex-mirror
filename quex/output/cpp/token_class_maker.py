@@ -8,6 +8,7 @@ import quex.blackboard                    as     blackboard
 from   quex.blackboard                    import setup as Setup, Lng
 
 import re
+from   collections import OrderedDict
 
 def do(MapTokenIDToNameFunctionStr):
     """RETURNS: [0] header code
@@ -167,34 +168,45 @@ def _do(Descr):
 
     return txt, txt_i
 
+#______________________________________________________________________________
+# [MEMBER PACKAGING]
+#
+# The 'distinct_db' and 'union_db' dictionaries are not to be sorted for
+# iteration! The members need to be written in the sequence which is provided 
+# by '.items()'.
+# => The ordered dictionary lists them in the sequence as when they were 
+#    defined. 
+# => User is able to define 'packaging'.
+#______________________________________________________________________________
+
 def get_distinct_members(Descr):
-    # '0' to make sure, that it works on an empty sequence too.
     TL = Descr.type_name_length_max()
     NL = Descr.variable_name_length_max()
-    txt = ""
-    for name, type_code in Descr.distinct_db.items():
-        txt += __member(type_code, TL, name, NL)
-    #txt += Lng._SOURCE_REFERENCE_END()
-    return txt
+
+    return "".join(
+        __member(type_code, TL, name, NL)
+        for name, type_code in Descr.distinct_db.items()      # No sort! [MEMBER PACKAGING]
+    )
 
 def get_union_members(Descr):
-    # '0' to make sure, that it works on an empty sequence too.
     TL = Descr.type_name_length_max()
     NL = Descr.variable_name_length_max()
-    if len(Descr.union_db) == 0: return ""
+    if not Descr.union_db: return ""
     
-    txt = "    union {\n"
-    for name, type_descr in Descr.union_db.items():
-        if type(type_descr) == dict:
-            txt += "        struct {\n"
-            for sub_name, sub_type in type_descr.items():
-                txt += __member(sub_type, TL, sub_name, NL, IndentationOffset=" " * 8)
-            txt += "\n        } %s;\n" % name
+    txt = ["    union {\n"]
+    for name, type_descr in Descr.union_db.items():           # No sort! [MEMBER PACKAGING]
+        if isinstance(type_descr, OrderedDict):
+            txt.append("        struct {\n")
+            txt.extend(
+                __member(sub_type, TL, sub_name, NL, IndentationOffset=" " * 8)
+                for sub_name, sub_type in type_descr.items()  # No sort! [MEMBER PACKAGING]
+            )
+            txt.append("\n        } %s;\n" % name)
         else:
-            txt += __member(type_descr, TL, name, NL, IndentationOffset=" " * 4) + "\n"
-    txt += "    } content;\n"
+            txt.append("%s\n" % __member(type_descr, TL, name, NL, IndentationOffset=" " * 4))
+    txt.append("    } content;\n")
     #txt += Lng._SOURCE_REFERENCE_END()
-    return txt
+    return "".join(txt)
 
 def __member(TypeCode, MaxTypeNameL, VariableName, MaxVariableNameL, IndentationOffset=""):
     my_def  = Lng._SOURCE_REFERENCE_BEGIN(TypeCode.sr)
@@ -260,75 +272,66 @@ def get_quick_setters(Descr):
         """
         signature = map(lambda x: x[1].get_pure_text(), ArgList)
         if signature in used_signature_list:
-            return ""
+            return []
         else:
             used_signature_list.append(signature)
 
-        txt = "    void set(const QUEX_TYPE_TOKEN_ID ID, "
-        i = -1
-        for name, type_info in ArgList:
-            i += 1
+        def _get_arg(info, i):
+            name, type_info = info
             type_str = type_info.get_pure_text()
             if type_str.find("const") != -1: type_str = type_str[5:]
-            txt += "const %s& Value%i, " % (type_str, i)
-        txt = txt[:-2]
-        txt += ")\n    { "
-        txt += "_id = ID; "
-        i = -1
-        for name, type_info in ArgList:
-            i += 1
-            txt += "%s = Value%i; " % (variable_db[name][1], i)
-        txt += "}\n"
+            return "const %s& Value%i" % (type_str, i)
+
+        def _get_assignment(info, i):
+            name, type_info = info
+            return "%s = Value%i; " % (variable_db[name][1], i)
+
+        txt  = [
+            "    void set(const QUEX_TYPE_TOKEN_ID ID, ",
+            ", ".join(
+                _get_arg(info, i) for i, info in enumerate(ArgList)
+            ),
+            ")\n    { ",
+            "_id = ID; "
+        ]
+        txt.extend(
+            _get_assignment(info, i)
+            for i, info in enumerate(ArgList)
+        )
+        txt.append("}\n")
 
         return txt
 
-    def __combined_quick_setters(member_db, used_signature_list, AllOnlyF=False):
-        txt = ""
+    def __combined_quick_setters(member_db, used_signature_list):
         member_list = member_db.items()
-        if len(member_list) == 0: return ""
+        if len(member_list) == 0: return []
 
         # sort the members with respect to their occurence in the token_type section
         member_list.sort(lambda x, y: cmp(x[1].sr.line_n, y[1].sr.line_n))
-        L = len(member_list)
-        PresenceAll  = [ 1 ] * L
-        if AllOnlyF: presence_map = PresenceAll
-        else:        presence_map = [ 1 ] + [ 0 ] * (L - 1)  
+        L        = len(member_list)
+        # build the argument list consisting of a permutation of distinct members
+        arg_list = [ member_list[i] for i in range(L) ]
 
-        while 1 + 1 == 2:
-            # build the argument list consisting of a permutation of distinct members
-            arg_list = []
-            for i in range(L):
-                if presence_map[i]: arg_list.append(member_list[i])
-
-            txt += __quick_setter(arg_list, used_signature_list)
-
-            # increment the presence map
-            if presence_map == PresenceAll:
-                break
-            for i in range(L):
-                if presence_map[i] == 1: presence_map[i] = 0
-                else:                    presence_map[i] = 1; break
-
-        return txt
-
-    txt = ""
+        return __quick_setter(arg_list, used_signature_list)
 
     # (*) Quick setters for distinct members
-    txt += __combined_quick_setters(Descr.distinct_db, used_signature_list)
+    txt = __combined_quick_setters(Descr.distinct_db, used_signature_list)
 
     # (*) Quick setters for union members
     complete_f = True
     for name, type_info in Descr.union_db.items():
-        if type(type_info) != dict: setter_txt = __quick_setter([[name, type_info]], used_signature_list)
-        else:                       setter_txt = __combined_quick_setters(type_info, used_signature_list, AllOnlyF=True)
-        if len(setter_txt) == 0: complete_f = False
-        txt += setter_txt
+        if isinstance(type_info, OrderedDict): 
+            setter_txt = __combined_quick_setters(type_info, used_signature_list)
+        else:                                  
+            setter_txt = __quick_setter([[name, type_info]], used_signature_list)
+
+        if not setter_txt: complete_f = False
+        txt.extend(setter_txt)
 
     if not complete_f:
-        txt = "   /* Not all members are accessed via quick-setters (avoid overload errors). */" \
-              + txt
+        txt.insert(0, "   /* Not all members are accessed via quick-setters (avoid overload errors). */")
 
-    return txt
+    return "".join(txt)
 
 def __get_converter_configuration(IncludeGuardExtension):
     token_descr = blackboard.token_type_definition

@@ -18,20 +18,28 @@ def get_sequence(letter_list):
                 result.append("%s%s%s_position : uint%i_t;" % (x, y, z, bit_n))
     return result
 
+position = 0
 def get_section(Name, Prefix, LetterList):
+    global position
     seq = get_sequence(LetterList)
     random.shuffle(seq)
 
     print "%s{" % Name
-    for position, line in enumerate(seq):
+    for line in seq:
+        position += 1
         line = line.replace("_position", "_position_%03i" % position)
         print "   %s%s" % (Prefix, line)
     print "}"
 
 print "token_type {"
+print "take_text {}"
+print "constructor {}"
+print "destructor {}"
+# get_section("distinct ", "", "ABCD")
 get_section("distinct ", "", "ABCDEFGHI")
 
 print "union {"
+
 get_section("", "    A_union0_", "ABCD")
 get_section("", "    B_union1_", "ABCD")
 get_section("", "    C_union2_", "ABCD")
@@ -40,3 +48,4 @@ print "}"
 
 print "}"
 
+# print "token { X; Y; Z; }"

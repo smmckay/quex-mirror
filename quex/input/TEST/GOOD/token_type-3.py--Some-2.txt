@@ -18,11 +18,11 @@ type(line_number)   = size_t
 distinct members {
 }
 union members {
-    std::vector<int> number_list
     {
         std::string  name
         int          value
     }
     std::string      namer
+    std::vector<int> number_list
 }
 
