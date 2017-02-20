@@ -1,4 +1,4 @@
 <terminated: file_name: 4795; byte_loader: 4760; memory: 4893>
-<terminated: buffer-splits: 5943/14448; allocated_byte_n: 3647770; allocate_n: 58982; free_n: 58982;>
+<terminated: buffer-splits: 5943/14448; allocate_n: 58982; free_n: 58982;>
  All heap blocks were freed -- no leaks are possible
  ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

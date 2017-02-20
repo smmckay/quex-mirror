@@ -146,6 +146,7 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
     /* REFERENCE file and INPUT file are the SAME.                           */
     hwut_verify(basic_functionality(&buffer, ref_file_name));
 
+    QUEX_NAME(Buffer_destruct)(&buffer);
     //filler->delete_self(filler);
     //byte_loader->delete_self(byte_loader);
     //converter->delete_self(converter);

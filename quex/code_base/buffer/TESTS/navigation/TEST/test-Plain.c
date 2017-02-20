@@ -93,6 +93,7 @@ test_file(bool BinaryF, const char* FileStem)
     /* REFERENCE file and INPUT file are the SAME.                           */
     hwut_verify(basic_functionality(&buffer, file_name));
 
+    QUEX_NAME(Buffer_destruct)(&buffer);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE
