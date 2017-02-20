@@ -138,7 +138,8 @@ def _prepare_token_class():
     # (*) Generate the token ids
     #     (This needs to happen after the parsing of mode_db, since during that
     #      the token_id_db is developed.)
-    if Setup.external_lexeme_null_object: # or Setup.token_class_only_f:
+    if    Setup.external_lexeme_null_object \
+       or (Setup.token_class_only_f and not token_id_maker.has_specific_token_ids()): 
         # Assume external implementation
         token_id_header                          = None
         func_map_token_id_to_name_implementation = ""
@@ -221,6 +222,7 @@ def _write_token_class(class_token_header, class_token_implementation,
                            class_token_implementation)
     Lng.straighten_open_line_pragmas(Setup.output_token_class_file_implementation)
 
+    print "#token_id_header:", token_id_header
     if token_id_header is not None:
         write_safely_and_close(Setup.output_token_id_file, token_id_header)
         Lng.straighten_open_line_pragmas(Setup.output_token_id_file)

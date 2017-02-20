@@ -35,7 +35,7 @@ def do(setup):
     # (1) Error Check
     #
     __warn_implicit_token_definitions()
-    if len(Setup.token_id_foreign_definition_file) == 0:
+    if not Setup.token_id_foreign_definition_file:
         __autogenerate_token_id_numbers()
         __warn_on_double_definition()
         # If a mandatory token id is missing, this means that Quex did not
@@ -48,11 +48,11 @@ def do(setup):
 
     # (2) Generate token id file (if not specified outside)
     #
-    if len(Setup.token_id_foreign_definition_file) != 0:
+    if not Setup.token_id_foreign_definition_file:
+        token_id_txt = __get_token_id_definition_txt()
+    else:
         # Content of file = inclusion of 'Setup.token_id_foreign_definition_file'.
         token_id_txt = ["#include \"%s\"\n" % Setup.get_file_reference(Setup.token_id_foreign_definition_file)]
-    else:
-        token_id_txt = __get_token_id_definition_txt()
 
     include_guard_ext = get_include_guard_extension(Setup.analyzer_name_safe.upper()     \
                                                     + "__"                               \
@@ -263,11 +263,14 @@ def __warn_implicit_token_definitions():
         error.warning("Above token ids must be defined in '%s'" \
                       % Setup.token_id_foreign_definition_file, sr)
 
-def __error_on_no_specific_token_ids():
+def has_specific_token_ids():
     all_token_id_set = set(token_id_db.iterkeys())
     all_token_id_set.difference_update(standard_token_id_list)
-    if len(all_token_id_set) != 0:
-        return
+    if all_token_id_set: return True
+    else:                return False
+
+def __error_on_no_specific_token_ids():
+    if has_specific_token_ids(): return
 
     token_id_str = [
         "    %s%s\n" % (Setup.token_id_prefix, name)
