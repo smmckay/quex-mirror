@@ -222,7 +222,6 @@ def _write_token_class(class_token_header, class_token_implementation,
                            class_token_implementation)
     Lng.straighten_open_line_pragmas(Setup.output_token_class_file_implementation)
 
-    print "#token_id_header:", token_id_header
     if token_id_header is not None:
         write_safely_and_close(Setup.output_token_id_file, token_id_header)
         Lng.straighten_open_line_pragmas(Setup.output_token_id_file)
