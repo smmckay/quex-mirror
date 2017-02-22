@@ -67,7 +67,7 @@ from   quex.constants   import E_IncidenceIDs, \
 
 from   collections      import defaultdict
 from   itertools        import imap
-from   operator         import attrgetter
+from   operator         import attrgetter, itemgetter
 
 @typed(dial_db=DialDB)
 def do(SM, EngineType=engine.FORWARD, 
@@ -92,7 +92,7 @@ def do(SM, EngineType=engine.FORWARD,
     # ReloadState.door of state:  OnBeforeReload
     #                             prepare goto on reload success and reload fail
     # State.door of ReloadState:  OnAfterReload (when reload was a success).
-    for state in analyzer.state_db.itervalues():
+    for si, state in sorted(analyzer.state_db.iteritems(), key=itemgetter(0)):
         # Null-operation, in case no reload required.
         state.prepare_for_reload(analyzer, OnBeforeReload, OnAfterReload,
                                  OnFailureDoorId=OnReloadFailureDoorId) 
@@ -157,7 +157,7 @@ class Analyzer:
         # (*) Prepare AnalyzerState Objects
         self.__state_db.update(
             (state_index, self.prepare_state(state, state_index, OnBeforeEntry))
-            for state_index, state in SM.states.iteritems()
+            for state_index, state in sorted(SM.states.iteritems(), key=itemgetter(0))
         )
 
         self.__mega_state_list          = []
@@ -172,7 +172,7 @@ class Analyzer:
             self.reload_state_extern_f = True
 
     def _prepare_entries_and_drop_out_withou_analysis(self, EngineType, SM):
-        for state_index, state in SM.states.iteritems():
+        for state_index, state in sorted(SM.states.iteritems(), key=itemgetter(0)):
             if not self.state_db[state_index].transition_map.has_drop_out(): continue
             cl = EngineType.create_DropOut(state, self.dial_db)
             self.drop_out.entry.enter_OpList(E_StateIndices.DROP_OUT, 
@@ -250,7 +250,7 @@ class Analyzer:
         return self.__from_db
 
     def iterable_target_state_indices(self, StateIndex):
-        for i in self.__state_db[StateIndex].map_target_index_to_character_set.iterkeys():
+        for i in sorted(self.__state_db[StateIndex].map_target_index_to_character_set.iterkeys()):
             yield i
         yield None
 
@@ -315,12 +315,12 @@ class Analyzer:
     def prepare_DoorIDs(self):
         """Assign DoorID-s to transition actions and relate transitions to DoorID-s.
         """
-        for state in self.__state_db.itervalues():
+        for si, state in sorted(self.__state_db.iteritems(), key=itemgetter(0)):
             state.entry.categorize(state.index)
 
         self.drop_out.entry.categorize(E_StateIndices.DROP_OUT)
 
-        for state in self.__state_db.itervalues():
+        for si, state in sorted(self.__state_db.iteritems(), key=itemgetter(0)):
             assert state.transition_map is not None
             state.transition_map = state.transition_map.relate_to_DoorIDs(self, state.index)
 
@@ -460,7 +460,7 @@ class Analyzer:
     def configure_all_drop_outs(self):
         acceptance_storage_db = defaultdict(list)
         position_storage_db   = defaultdict(list)
-        for state_index, trace_list in self.__trace_db.iteritems():
+        for state_index, trace_list in sorted(self.__trace_db.iteritems(), key=itemgetter(0)):
             if not self.state_db[state_index].transition_map.has_drop_out(): continue
             cl = self.drop_out_configure(state_index, trace_list, 
                                          acceptance_storage_db,
@@ -540,7 +540,7 @@ class Analyzer:
         # preceed the already mentioned ones. Since they all trigger on lexemes of the
         # same length, the only precendence criteria is the acceptance_id.
         # 
-        for state_index in acceptance_storage_db.iterkeys():
+        for state_index in sorted(acceptance_storage_db.iterkeys()):
             entry = self.__state_db[state_index].entry
             # Only the trace content that concerns the current state is filtered out.
             # It should be the same for all traces through 'state_index'
@@ -564,7 +564,7 @@ class Analyzer:
         any state that has undetermined positioning restores the input position.
         Thus 'restore_position_f(register)' is enough to catch this case.
         """
-        for state_index, info_list in position_storage_db.iteritems():
+        for state_index, info_list in sorted(position_storage_db.iteritems(), key=itemgetter(0)):
             target_state_index_list = self.__to_db[state_index]
             for end_state_index, pre_context_id, acceptance_id in info_list:
                 # state_index      --> state that stores the input position

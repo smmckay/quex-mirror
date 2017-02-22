@@ -1,4 +1,4 @@
-# hwut make clean
+#! /usr/bin/env bash
 
 function run {
     pushd $1 
@@ -9,6 +9,8 @@ function run {
     echo
 }
 
+hwut make clean
+
 run TEST
 run demo/C
 run demo/Cpp
@@ -16,6 +18,7 @@ run quex/TESTS
 run quex/engine
 run quex/input
 run quex/output
+run quex/code_base
 
 
 # Wait until all hwut jobs terminated

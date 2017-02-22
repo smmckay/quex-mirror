@@ -456,7 +456,7 @@ class SharedTailDB:
 
     def get_string(self, CommandAliasDb):
         txt = [
-            ".state_index:    %i;\n" % self.state_index,
+            ".state_index:    %s;\n" % self.state_index,
             ".root:           door_id: %s; child_n: %i\n" % (str(self.root.door_id), len(self.root.child_set)),
             ".candidate_db.keys(): %s;\n" % "".join("%s, " % str(door_id) for door_id in sorted(self._candidate_db.iterkeys())),
             ".shared_tails: {\n"
