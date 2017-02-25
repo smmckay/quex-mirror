@@ -5,7 +5,7 @@ LIB_CONV  = `icu-config --ldflags --cppflags`
 # 
 lex_iconv: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) --bet wchar_t --iconv  
+	@quex -i simple.qx -o $(X) --bet wchar_t 
 	@echo "Compiling"
 	g++ -I./ -I$(QUEX_PATH) \
 		$(X).cpp                      \
@@ -13,6 +13,7 @@ lex_iconv:
 		../lexer.cpp                     \
 		-ggdb \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
+	   	-DQUEX_OPTION_CONVERTER_ICONV \
 		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
@@ -20,7 +21,7 @@ lex_iconv:
 
 lex_icu: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) --bet wchar_t --icu  
+	@quex -i simple.qx -o $(X) --bet wchar_t 
 	@echo "Compiling"
 	g++ -I./ -I$(QUEX_PATH) \
 		$(X).cpp                      \
@@ -29,7 +30,9 @@ lex_icu:
 		$(LIB_CONV)                   \
 		-ggdb                         \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
+		`icu-config --ldflags`      \
 		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
+	   	-DQUEX_OPTION_CONVERTER_ICU \
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-o $@
@@ -52,7 +55,7 @@ lex_codec:
 # 
 lex_iconv_c: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) --bet wchar_t --iconv  --language c
+	@quex -i simple.qx -o $(X) --bet wchar_t --language c
 	@echo "Compiling"
 	gcc -I./ -I$(QUEX_PATH) \
 		$(X).c                      \
@@ -63,13 +66,14 @@ lex_iconv_c:
 		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
 		-DPRINT_TOKEN \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
+	   	-DQUEX_OPTION_CONVERTER_ICONV \
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-o $@
 
 lex_icu_c: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) --bet wchar_t --icu  --language c
+	@quex -i simple.qx -o $(X) --bet wchar_t --language c
 	@echo "Compiling"
 	gcc -I./ -I$(QUEX_PATH) \
 		$(X).c                      \
@@ -81,6 +85,8 @@ lex_icu_c:
 		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
 		-DPRINT_TOKEN \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
+	   	-DQUEX_OPTION_CONVERTER_ICU \
+		`icu-config --ldflags`      \
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-o $@
