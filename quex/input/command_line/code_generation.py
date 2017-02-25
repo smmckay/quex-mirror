@@ -76,9 +76,7 @@ def prepare(command_line, argv):
                   + "Quex can continue, but the result is questionable.\n", \
                   DontExitF=True)
 
-    Setup.converter_f = False
-    if Setup.converter_iconv_f or Setup.converter_icu_f:
-        Setup.converter_f = True
+    Setup.converter_f = True
 
     # The only case where no converter helper is required is where ASCII 
     # (Unicode restricted to [0, FF] is used.

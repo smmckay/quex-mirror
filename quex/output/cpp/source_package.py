@@ -202,8 +202,8 @@ def do():
     if LexatomLoaderF:
         txt += buffer_filler
         txt += buffer_filler_converter
-        if   Setup.converter_icu_f:   txt += buffer_filler_icu
-        elif Setup.converter_iconv_f: txt += buffer_filler_iconv
+        txt += buffer_filler_icu
+        txt += buffer_filler_iconv
         txt += buffer_filler_plain
 
     # if Setup.converter_helper_required_f:

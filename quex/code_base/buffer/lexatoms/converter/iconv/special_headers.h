@@ -20,10 +20,6 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__SPECIAL_HEADERS_H
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__SPECIAL_HEADERS_H
 
-#if ! defined(QUEX_OPTION_CONVERTER_ICONV)
-#    error "This header has been included without setting the compile option QUEX_OPTION_CONVERTER_ICONV. This could cause problems on systems where the correspondent headers are not installed. Make the inclusion of this header dependent on the above compile option."
-#endif
-
 #if ! defined (__QUEX_OPTION_PLAIN_C)
     extern "C" { 
 #   include <iconv.h>

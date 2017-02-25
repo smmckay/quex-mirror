@@ -15,10 +15,6 @@ extern "C" {
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
 
-#if ! defined(QUEX_OPTION_CONVERTER_ICONV)
-#    error "This header has been included without setting the compile option QUEX_OPTION_CONVERTER_ICONV. This could cause problems on systems where the correspondent headers are not installed. Make the inclusion of this header dependent on the above compile option."
-#endif
-
 #include <quex/code_base/analyzer/configuration/validation>
 
 QUEX_NAMESPACE_MAIN_OPEN

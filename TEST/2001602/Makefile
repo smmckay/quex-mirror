@@ -11,7 +11,7 @@ all: lex_icu lex_iconv lex_codec
 
 lex_iconv: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) -b 2 --iconv --debug-exception
+	@quex -i simple.qx -o $(X) -b 2 --debug-exception
 	@echo "Compiling"
 	g++ -I./ -I$(QUEX_PATH) \
 		$(X).cpp                      \
@@ -19,13 +19,14 @@ lex_iconv:
 		../lexer.cpp                  \
 		-ggdb                         \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
+	   	-DQUEX_OPTION_CONVERTER_ICONV \
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-o $@ 
 
 lex_icu: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) -b 2 --icu --debug-exception
+	@quex -i simple.qx -o $(X) -b 2 --debug-exception
 	@echo "Compiling"
 	g++ -I./ -I$(QUEX_PATH) \
 		$(X).cpp                      \
@@ -34,6 +35,7 @@ lex_icu:
 		$(LIB_CONV)                   \
 		-ggdb                         \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
+	   	-DQUEX_OPTION_CONVERTER_ICU \
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED  \
 		-o $@

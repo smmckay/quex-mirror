@@ -110,49 +110,6 @@ def do(setup, command_line, argv):
                       CommandLineOption=SETUP_INFO["token_id_foreign_definition"][0])
     __check_file_name(setup, "input_mode_files", "quex source file")
 
-    # Check that not more than one converter is specified
-    converter_n = 0
-    if setup.converter_iconv_f: converter_n += 1
-    if setup.converter_icu_f:   converter_n += 1 
-    if converter_n > 1:
-        error.log("More than one character converter has been specified. Note, that the\n" + \
-                  "options '--icu', '--iconv', and '--converter-new' (or '--cn') are\n"    + \
-                  "to be used mutually exclusively.")
-    if converter_n == 1 and setup.buffer_codec.name != "unicode":  
-        # If the buffer codec is other than unicode, then no converter shall
-        # be used to fill the buffer. Instead, the engine is transformed, so 
-        # that it works directly on the codec.
-        error.log("An engine that is to be generated for a specific codec cannot rely\n"      + \
-                  "on converters. Do no use '--codec' together with '--icu', '--iconv', or\n" + \
-                  "`--converter-new`.")
-
-    # If a converter has been specified and no bytes-element-size has been specified,
-    # it defaults to '1 byte' which is most likely not what is desired for unicode.
-    if     converter_n == 1 \
-       and setup.buffer_lexatom_size_in_byte == 1 \
-       and not command_line_args_defined(command_line, "buffer_lexatom_size_in_byte") \
-       and not command_line_args_defined(command_line, "buffer_lexatom_type"):
-        error.log("A converter has been specified, but the default buffer element size\n" + \
-                  "is left to 1 byte. Consider %s or %s." \
-                  % (command_line_args_string("buffer_lexatom_size_in_byte"),
-                     command_line_args_string("buffer_lexatom_type")))
-
-    # If a user defined type is specified for 'engine character type' and 
-    # a converter, then the name of the target type must be specified explicitly.
-    if         setup.buffer_lexatom_type != "" \
-       and not global_character_type_db.has_key(setup.buffer_lexatom_type) \
-       and     setup.converter_ucs_coding_name == "" \
-       and     converter_n != 0:
-        tc = setup.buffer_lexatom_type
-        error.log("A character code converter has been specified. It is supposed to convert\n" + \
-                  "incoming data into an internal buffer of unicode characters. The size of\n" + \
-                  "each character is determined by '%s' which is a user defined type.\n" % tc  + \
-                  "\n" + \
-                  "Quex cannot determine automatically the name that the converter requires\n" +      \
-                  "to produce unicode characters for type '%s'. It must be specified by the\n" % tc + \
-                  "command line option %s." \
-                  % command_line_args_string("converter_ucs_coding_name"))
-
     # Token transmission policy
     token_policy_list = ["queue", "single", "users_token", "users_queue"]
     if setup.token_policy not in token_policy_list:

@@ -11,6 +11,10 @@ extern "C" {
 // (*) include lexical analyser header
 #include "Simple"
 #include "quex/code_base/buffer/bytes/ByteLoader_FILE.i"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
 
 using namespace std;
 

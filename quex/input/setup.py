@@ -149,8 +149,6 @@ SETUP_INFO = {
     "path_limit_code":                [["--path-termination"],                 0x1],
     "dos_carriage_return_newline_f":  [["--no-DOS"],                           SetupParTypes.NEGATED_FLAG],
     "string_accumulator_f":           [["--no-string-accumulator", "--nsacc"], SetupParTypes.NEGATED_FLAG],
-    "converter_iconv_f":              [["--iconv"],                            SetupParTypes.FLAG],
-    "converter_icu_f":                [["--icu"],                              SetupParTypes.FLAG],
     "insight_f":                      [["--insight"],                              SetupParTypes.FLAG],
     "converter_ucs_coding_name":      [["--converter-ucs-coding-name", "--cucn"], ""],
     "include_stack_support_f":        [["--no-include-stack", "--nois"],       SetupParTypes.NEGATED_FLAG],
@@ -269,6 +267,8 @@ SETUP_INFO = {
     "XX_token_class_take_text_check_f":  [["--token-type-no-take_text-check",     "--ttnttc"], SetupParTypes.NEGATED_FLAG], 
     "XX_buffer_based_analyzis_f":        [["--buffer-based", "--bb"],             SetupParTypes.FLAG],
     "XX_converter_user_new_func":        [["--converter-new", "--cn"],            ""],
+    "XX_converter_iconv_f":              [["--iconv"],                            SetupParTypes.FLAG],
+    "XX_converter_icu_f":                [["--icu"],                              SetupParTypes.FLAG],
 }
 
 class NotificationDB:
@@ -449,6 +449,14 @@ DEPRECATED = {
     ("Options '--converter-new' and '--cn' are deprecated. Converters are now\n"
      "allocated by the user and passed to constructor, include-push, and reset\n"
      "functions.", "0.67.2"),
+  "XX_converter_iconv_f": 
+    ("Option '--iconv' no longer supported. Converters are passed created by\n"
+     "user and passed to constructor. See demo examples or documentation."
+     "0.67.2"),
+  "XX_converter_icu_f":                
+    ("Option '--icu' no longer supported. Converters are passed created by\n"
+     "user and passed to constructor. See demo examples or documentation."
+     "0.67.2"),
 }
  
 global_character_type_db = {
