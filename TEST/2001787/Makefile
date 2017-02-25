@@ -24,6 +24,7 @@ lexer-icu: Simple.cpp
 		-ggdb                         \
 		-o $@                         \
 		-DQUEX_OPTION_CONVERTER_ICU   \
+		`icu-config --ldflags`      \
 		-DQUEX_SETTING_BUFFER_SIZE=65536 \
 		> tmp.txt 2>&1
 	@cat tmp.txt
@@ -31,7 +32,7 @@ lexer-icu: Simple.cpp
 
 
 Simple.cpp: simple.qx
-	@quex -i $< -o Simple --bet wchar_t --iconv --token-policy single --debug-exception
+	@quex -i $< -o Simple --bet wchar_t --token-policy single --debug-exception
 
 
 clean:

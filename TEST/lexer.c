@@ -1,4 +1,8 @@
 #include "Simple.h"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
 
 #ifndef    CHARACTER_ENCODING_NAME 
 #   define CHARACTER_ENCODING_NAME 0x0
