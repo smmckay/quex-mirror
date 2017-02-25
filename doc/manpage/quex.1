@@ -1,5 +1,5 @@
 .\" Manpage for quex.
-.TH QUEX 1 "Quex 0.66.5" "User Commands"
+.TH QUEX 1 "Quex 0.66.6-pre" "User Commands"
 .SH NAME
 Quex \- A fast lexical analyzer generator
 .SH SYNOPSIS
@@ -776,7 +776,7 @@ Default: true (not disabled)
 
 Input codecs other than ASCII or UTF32 (which map 1:1 to Unicode code points) can be used in two ways. Either on uses a converter that converts the file content into Unicode and the engine still runs on Unicode, or the engine itself is adapted to the require codec. 
 
-Currently quex-generated lexers can interact with GNU IConv and IBM's ICU library as input converters. Using one of those requires, of course, that the correspondent library is installed and available. On Unix systems, the iconv library is usually present. ICU is likely required to be installed but also freely available. Using input converters, such as IConv or ICU lets is a flexible solution. The converter can be adapted dynamically while the internal engine remains running on Unicode. 
+Currently quex-generated lexers can interact with GNU IConv and IBM's ICU library as input converters. Using one of those requires, of course, that the correspondent library is installed and available. On Unix systems, the iconv library is usually present. ICU is likely required to be installed but also freely available. Using input converters, such as IConv or ICU is a flexible solution. The converter can be adapted dynamically while the internal engine remains running on Unicode. 
 
 .TP
 .BI "--iconv "
@@ -975,18 +975,6 @@ Default: <system>
 
 
 The implementation of customized converters is supported by the following options. 
-
-.TP
-.BI "--converter-new, --cn function name"
-
-.RS
-With the command line option above the user may specify his own converter. The string that follows the option is the name of the converter's 
-.B "_New"
-function. When this option is set, automatically customized user conversion is turned on. 
-
-
-.RE
-
 
 .TP
 .BI "--converter-ucs-coding-name, --cucn name"

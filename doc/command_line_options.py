@@ -370,7 +370,7 @@ Currently quex-generated lexers can interact with GNU IConv and IBM's ICU librar
 as input converters. Using one of those requires, of course, that  
 the correspondent library is installed and available. On Unix systems, the iconv library
 is usually present. ICU is likely required to be installed but also freely
-available. Using input converters, such as IConv or ICU lets is a flexible solution.
+available. Using input converters, such as IConv or ICU is a flexible solution.
 The converter can be adapted dynamically while the internal engine remains
 running on Unicode.
 """,
@@ -533,13 +533,6 @@ Option("buffer_byte_order", "little|big|<system>",
 """
 The implementation of customized converters is supported by the following options.
 """,
-Option("converter_user_new_func", "function name",
-     """
-     With the command line option above the user may specify his own
-     converter. The string that follows the option is the name of the
-     converter's \\v{_New} function. When this option is set, automatically
-     customized user conversion is turned on.
-     """),
 Option("converter_ucs_coding_name", "name", 
      """
      Determines what string is passed to the converter so that it converters

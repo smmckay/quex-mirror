@@ -77,7 +77,7 @@ def prepare(command_line, argv):
                   DontExitF=True)
 
     Setup.converter_f = False
-    if Setup.converter_iconv_f or Setup.converter_icu_f or len(Setup.converter_user_new_func) != 0:
+    if Setup.converter_iconv_f or Setup.converter_icu_f:
         Setup.converter_f = True
 
     # The only case where no converter helper is required is where ASCII 

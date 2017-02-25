@@ -2,7 +2,7 @@ Command Line Options
 ====================
 
 This chapter sums up all command line options which can be passed to quex
-(Version 0.66.5) together with their meaning.  Most of the options here are alread explained in
+(Version 0.66.6-pre) together with their meaning.  Most of the options here are alread explained in
 separate sections. The present enumeration serves the purpose of a quick
 reference. There are command line options for code generations, but also for
 queries. Each family of options is described in a separate section.
@@ -498,9 +498,9 @@ Currently quex-generated
 lexers can interact with GNU IConv and IBM's ICU library as input converters. Using 
 one of those requires, of course, that the correspondent library is installed and available. 
 On Unix systems, the iconv library is usually present. ICU is likely required to be installed 
-but also freely available. Using input converters, such as IConv or ICU lets is a flexible 
-solution. The converter can be adapted dynamically while the internal engine remains 
-running on Unicode.  
+but also freely available. Using input converters, such as IConv or ICU is a flexible solution. 
+The converter can be adapted dynamically while the internal engine remains running on 
+Unicode.  
 
 .. cmdoption:: --iconv 
 
@@ -682,14 +682,6 @@ Default: -1
 Default: <system>
 
 The implementation of customized converters is supported by the following options.  
-
-.. cmdoption:: --converter-new, --cn function name
-
-    With the command line option above the user may specify his own converter. The string that follows 
-    the option is the name of the converter's ``_New`` function. When this option is set, 
-    automatically customized user conversion is turned on.  
-
-    
 
 .. cmdoption:: --converter-ucs-coding-name, --cucn name
 

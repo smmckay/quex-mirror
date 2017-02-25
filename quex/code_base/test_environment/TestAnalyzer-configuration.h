@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.66.6-pre"
-#define QUEX_SETTING_BUILD_DATE        "Thu Feb 16 23:43:48 2017"
+#define QUEX_SETTING_BUILD_DATE        "Sat Feb 25 11:23:24 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -251,13 +251,6 @@
 #        define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)0)
 #    endif
 #endif
-/* The call the the 'new' function for the converter, i.e. the function that
- * allocates the converter and initializes it. If it is 0x0, this means that
- * the converter pointer is set to 0x0.                                      */
-#ifndef QUEX_SETTING_BUFFER_FILLERS_CONVERTER_NEW 
-/* #   define QUEX_SETTING_BUFFER_FILLERS_CONVERTER_NEW  */
-#endif
-
 /* Begin of line pre-condition requires an extra flag in the buffer
  * structure. Only out-comment this in case of tough memory restrictions,
  * if no begin of line pre-condition is required.                            */

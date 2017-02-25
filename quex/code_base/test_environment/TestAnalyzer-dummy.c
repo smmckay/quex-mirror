@@ -159,10 +159,10 @@ __QUEX_IF_COUNT_COLUMNS(count_reference_p = (me->buffer._read_p));
 _13:
     __quex_debug("Init State\n");
     __quex_debug_state(21);
-if     ( input >= 0xB )  goto _2;
-else if( input == 0xA )  goto _3;
-else if( input == 0x9 )  goto _4;
-else                     goto _2;
+if     ( input >= 0xB )  goto _4;
+else if( input == 0xA )  goto _2;
+else if( input == 0x9 )  goto _3;
+else                     goto _4;
 
 
     __quex_assert_no_passage();
@@ -192,7 +192,7 @@ _7:
 
 
     __quex_assert_no_passage();
-_2:
+_4:
     /* (24 from 21)  */
     ++(me->buffer._read_p);
 
@@ -204,7 +204,7 @@ goto _7;
 
 
     __quex_assert_no_passage();
-_3:
+_2:
     /* (22 from 21)  */
     ++(me->buffer._read_p);
 
@@ -216,7 +216,7 @@ goto _5;
 
 
     __quex_assert_no_passage();
-_4:
+_3:
     /* (23 from 21)  */
     ++(me->buffer._read_p);
 

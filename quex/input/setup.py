@@ -152,7 +152,6 @@ SETUP_INFO = {
     "converter_iconv_f":              [["--iconv"],                            SetupParTypes.FLAG],
     "converter_icu_f":                [["--icu"],                              SetupParTypes.FLAG],
     "insight_f":                      [["--insight"],                              SetupParTypes.FLAG],
-    "converter_user_new_func":        [["--converter-new", "--cn"],            ""],
     "converter_ucs_coding_name":      [["--converter-ucs-coding-name", "--cucn"], ""],
     "include_stack_support_f":        [["--no-include-stack", "--nois"],       SetupParTypes.NEGATED_FLAG],
     "input_mode_files":               [["-i"],                                 SetupParTypes.LIST],
@@ -269,6 +268,7 @@ SETUP_INFO = {
     "XX_engine":                            [["--engine"], None],
     "XX_token_class_take_text_check_f":  [["--token-type-no-take_text-check",     "--ttnttc"], SetupParTypes.NEGATED_FLAG], 
     "XX_buffer_based_analyzis_f":        [["--buffer-based", "--bb"],             SetupParTypes.FLAG],
+    "XX_converter_user_new_func":        [["--converter-new", "--cn"],            ""],
 }
 
 class NotificationDB:
@@ -433,7 +433,7 @@ DEPRECATED = {
       ("Option '--state-entry-analysis-complexity-limit' is no longer necessary.\n"
        "The related algorithm has been improved.", "0.65.1"),
   "XX_mode_files":
-      ("Option '--mode-files' is no longer supported, use '-i' instead.",
+      ("Option '--mode-files' is no longer supported. Use '-i' instead.",
        "0.65.1"),
   "XX_engine":
       ("Option '--engine' is no longer supported, use '-o' or '--analyzer-class' instead.",
@@ -442,9 +442,13 @@ DEPRECATED = {
       ("Option '--token-type-no-take_text-check' or '--ttnttc' is replaced by '--suppress %i'."
        % NotificationDB.warning_on_no_token_class_take_text,
        "0.65.1"),
-    "XX_buffer_based_analyzis_f":        
-      ("Option '--buffer-base' and '--bb' are deprecated. Buffer fillers are\n"
-       "used for manual filling.", "0.65.1"),
+  "XX_buffer_based_analyzis_f":        
+    ("Option '--buffer-base' and '--bb' are deprecated. Buffer fillers are\n"
+     "used for manual filling.", "0.65.1"),
+  "XX_converter_user_new_func":        
+    ("Options '--converter-new' and '--cn' are deprecated. Converters are now\n"
+     "allocated by the user and passed to constructor, include-push, and reset\n"
+     "functions.", "0.67.2"),
 }
  
 global_character_type_db = {
@@ -534,7 +538,6 @@ DOC = {
     "string_accumulator_f":           ("", ""),
     "converter_iconv_f":              ("Use 'iconv' library for character conversions.", ""),
     "converter_icu_f":                ("Use 'icu' library for character conversions.", ""),
-    "converter_user_new_func":        ("", ""),
     "converter_ucs_coding_name":      ("", ""),
     "include_stack_support_f":        ("", ""),
     "input_mode_files":               ("", ""),

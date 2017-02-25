@@ -28,13 +28,6 @@ def do(Mode_PrepPrepDB):
         entry_handler_active_f |= mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY)
         exit_handler_active_f  |= mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT)
 
-    # Buffer filler converter (0x0 means: no buffer filler converter)
-    converter_new_str = "#   define QUEX_SETTING_BUFFER_FILLERS_CONVERTER_NEW " 
-    if Setup.converter_user_new_func != "": 
-        converter_new_str += Setup.converter_user_new_func + "()"
-    else: 
-        converter_new_str = "/* " + converter_new_str + " */"
-
     # Token repetition support
     token_repeat_test_txt = ""
     for token_id_str in blackboard.token_repetition_token_id_list:
@@ -113,7 +106,6 @@ def do(Mode_PrepPrepDB):
              ["$$NAMESPACE_TOKEN_CLOSE$$",      Lng.NAMESPACE_CLOSE(token_descr.name_space).replace("\n", "\\\n")],
              ["$$NAMESPACE_TOKEN_OPEN$$",       Lng.NAMESPACE_OPEN(token_descr.name_space).replace("\n", "\\\n")],
              ["$$PATH_TERMINATION_CODE$$",      "0x%X" % Setup.path_limit_code],
-             ["$$QUEX_SETTING_BUFFER_FILLERS_CONVERTER_NEW$$", converter_new_str],
              ["$$QUEX_TYPE_LEXATOM$$",        Setup.buffer_lexatom_type],
              ["$$QUEX_SETTING_CHARACTER_SIZE$$", character_size_str],
              ["$$QUEX_NAMESPACE_LEXEME_NULL_OPEN$$",   Lng.NAMESPACE_OPEN(Setup.lexeme_null_namespace).replace("\n", "\\\n")],
