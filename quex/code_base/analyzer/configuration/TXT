@@ -236,21 +236,11 @@ $$SWITCH$$ QUEX_OPTION_INDENTATION_TRIGGER
  *                                                                           */
 $$SWITCH$$ __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
 $$SWITCH$$ __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
-#ifndef    QUEX_OPTION_CONVERTER_ICONV
-$$SWITCH$$ QUEX_OPTION_CONVERTER_ICONV
+
+#ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
+#    define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)65536)
 #endif
-#ifndef    QUEX_OPTION_CONVERTER_ICU
-$$SWITCH$$ QUEX_OPTION_CONVERTER_ICU
-#endif
-#if defined(QUEX_OPTION_CONVERTER_ICONV) || defined(QUEX_OPTION_CONVERTER_ICU)
-#    ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
-#        define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)65536)
-#    endif
-#else
-#    ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
-#        define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)0)
-#    endif
-#endif
+
 /* Begin of line pre-condition requires an extra flag in the buffer
  * structure. Only out-comment this in case of tough memory restrictions,
  * if no begin of line pre-condition is required.                            */

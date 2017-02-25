@@ -44,8 +44,6 @@ def do(Mode_PrepPrepDB):
 
     txt = __switch(txt, "QUEX_OPTION_COLUMN_NUMBER_COUNTING",        Setup.count_column_number_f)        
     txt = __switch(txt, "QUEX_OPTION_COMPUTED_GOTOS",                False)
-    txt = __switch(txt, "QUEX_OPTION_CONVERTER_ICONV",               Setup.converter_iconv_f)
-    txt = __switch(txt, "QUEX_OPTION_CONVERTER_ICU",                 Setup.converter_icu_f)
     txt = __switch(txt, "QUEX_OPTION_INCLUDE_STACK",                 Setup.include_stack_support_f)
     txt = __switch(txt, "QUEX_OPTION_LINE_NUMBER_COUNTING",          Setup.count_line_number_f)      
     txt = __switch(txt, "QUEX_OPTION_POST_CATEGORIZER",              Setup.post_categorizer_f)

@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.66.6-pre"
-#define QUEX_SETTING_BUILD_DATE        "Sat Feb 25 11:23:24 2017"
+#define QUEX_SETTING_BUILD_DATE        "Sat Feb 25 22:35:27 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -236,21 +236,11 @@
  *                                                                           */
 /* #define __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT */
 /* #define __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT */
-#ifndef    QUEX_OPTION_CONVERTER_ICONV
-/* #define QUEX_OPTION_CONVERTER_ICONV */
+
+#ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
+#    define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)65536)
 #endif
-#ifndef    QUEX_OPTION_CONVERTER_ICU
-/* #define QUEX_OPTION_CONVERTER_ICU */
-#endif
-#if defined(QUEX_OPTION_CONVERTER_ICONV) || defined(QUEX_OPTION_CONVERTER_ICU)
-#    ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
-#        define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)65536)
-#    endif
-#else
-#    ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
-#        define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)0)
-#    endif
-#endif
+
 /* Begin of line pre-condition requires an extra flag in the buffer
  * structure. Only out-comment this in case of tough memory restrictions,
  * if no begin of line pre-condition is required.                            */

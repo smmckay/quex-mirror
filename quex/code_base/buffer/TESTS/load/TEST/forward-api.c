@@ -28,9 +28,6 @@
  * E_LoadResult_NO_MORE_DATA => EOS must be set.
  *
  */
-#define QUEX_OPTION_CONVERTER_ICONV
-#define QUEX_OPTION_CONVERTER_ICU
-
 #define BufferElementN (QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 5)
 
 #include "commonly_pasted.c"

@@ -422,12 +422,4 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter_RawBuffer.i>
 #include <quex/code_base/buffer/lexatoms/converter/Converter.i>
 
-#ifdef QUEX_OPTION_CONVERTER_ICONV
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#endif
-#ifdef QUEX_OPTION_CONVERTER_ICU
-#   include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
-#endif
-
-
 #endif /*  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I */

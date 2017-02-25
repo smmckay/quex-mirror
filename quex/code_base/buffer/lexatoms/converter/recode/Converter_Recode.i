@@ -6,10 +6,6 @@
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/MemoryManager>
 
-#if ! defined(QUEX_OPTION_CONVERTER_ICU)
-#    error "This header has been included without setting the compile option QUEX_OPTION_CONVERTER_ICU. This could cause problems on systems where the correspondent headers are not installed. Make the inclusion of this header dependent on the above compile option."
-#endif
-
 QUEX_NAMESPACE_MAIN_OPEN
 
     QUEX_INLINE void
