@@ -451,11 +451,11 @@ DEPRECATED = {
      "functions.", "0.67.2"),
   "XX_converter_iconv_f": 
     ("Option '--iconv' no longer supported. Converters are passed created by\n"
-     "user and passed to constructor. See demo examples or documentation."
+     "user and passed to constructor. See demo examples or documentation.",
      "0.67.2"),
   "XX_converter_icu_f":                
     ("Option '--icu' no longer supported. Converters are passed created by\n"
-     "user and passed to constructor. See demo examples or documentation."
+     "user and passed to constructor. See demo examples or documentation.",
      "0.67.2"),
 }
  

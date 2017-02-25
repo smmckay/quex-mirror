@@ -407,8 +407,6 @@ GENERATOR MODE (selected options):
   --path-compression      Use template/path compression to reduce code size.
   --no-count-lines, 
   --no-count-columns      Disable line/column counting.
-  --iconv, 
-  --icu                   Generates analyzer with a converter IConv or ICU.
   --language, -l [C|C++|dot]  
                           Language for which code is to be generated. 'dot' 
                           generates 'graphviz' state machine graphs.
