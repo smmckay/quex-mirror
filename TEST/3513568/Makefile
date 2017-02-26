@@ -29,12 +29,12 @@ COMMON_TOKEN_OPTIONS = \
 	gcc -E $< -o  $@ -I$(QUEX_PATH) 
 	
 boeck_Lexer.c:  boeck.qx Common-token.c Common-token_ids
-	quex -i $< -o boeck::Lexer --icu -b 4 $(COMMON_TOKEN_OPTIONS) --language C --suppress 15 --no-string-accumulator --debug-exception
+	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C --suppress 15 --no-string-accumulator --debug-exception
 
 Common-token_ids \
 Common-token.c: 
 	quex -i token_ids.qx token_type.qx \
-		 --icu -b 4                    \
+		 -b 4                          \
 		 --token-id-prefix TKN_        \
 		 -o Common                     \
 		 --token-class Common::Token   \

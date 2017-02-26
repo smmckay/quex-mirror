@@ -13,7 +13,7 @@ newline-skipper:
 		-DQUEX_SETTING_BUFFER_SIZE=4
 
 newline-skipper-utf8: 
-	@quex -i token.qx newline-skipper-utf8.qx -o Simple --iconv -b 2 --token-policy single --debug-exception
+	@quex -i token.qx newline-skipper-utf8.qx -o Simple  -b 2 --token-policy single --debug-exception
 	@g++ -I$(QUEX_PATH) -I./ ../lexer-simply.cpp Simple*.cpp -ggdb -o lexer \
 		-DPRINT_LINE_COLUMN \
 		-DCONVERTER_ENCODING='"UTF-8"' \

@@ -12,13 +12,11 @@ function run {
 hwut make clean
 
 run TEST
-run demo/C
-run demo/Cpp
-run quex/TESTS
+run demo
+run quex/code_base
 run quex/engine
 run quex/input
 run quex/output
-run quex/code_base
 
 
 # Wait until all hwut jobs terminated

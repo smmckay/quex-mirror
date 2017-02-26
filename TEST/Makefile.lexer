@@ -1,0 +1,29 @@
+# GENERAL _____________________________________________________________________
+GENERAL_WARNINGS := -Wall -Werror
+GENERAL_INCLUDES := -I. -I$(QUEX_PATH)
+GENERAL_FLAGS    := $(GENERAL_WARNINGS) \
+	                $(GENERAL_INCLUDES) \
+			        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+
+CC          := gcc -c $(GENERAL_FLAGS)
+CPP         := g++ -c $(GENERAL_FLAGS)
+LDC         := gcc $(GENERAL_FLAGS)
+LDCPP       := g++ $(GENERAL_FLAGS)
+
+# ICONV _______________________________________________________________________
+# LIB_ICONV := -liconv
+FLAGS_ICONV := -DQUEX_OPTION_CONVERTER_ICONV
+
+CC_ICONV    := $(CC) $(FLAGS_ICONV)
+CPP_ICONV   := $(CPP) $(FLAGS_ICONV)
+LDC_ICONV   := $(LDCC) $(FLAGS_ICONV) $(LIB_ICONV)
+LDCPP_ICONV := $(LDCPP) $(FLAGS_ICONV) $(LIB_ICONV)
+
+# ICU _________________________________________________________________________
+LIB_ICU     := `icu-config --ldflags --cppflags`
+FLAGS_ICU   := -DQUEX_OPTION_CONVERTER_ICU
+
+CC_ICU      := $(CC) $(FLAGS_ICU)
+CPP_ICU     := $(CPP) $(FLAGS_ICU)
+LDC_ICU     := $(LDCC) $(FLAGS_ICU) 
+LDCPP_ICU   := $(LDCPP) $(FLAGS_ICU) 
