@@ -2,6 +2,8 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
+
 .PHONY: clean
 
 ifndef QUEX_PATH
@@ -24,10 +26,7 @@ APPLICATION      = lexer
 # (*) COMPILER SETTINGS ________________________________________________________
 #     (change COMPILER to whatever you use as compiler on the command line,
 #      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-COMPILER = g++ -ggdb -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -pedantic
-CC = $(COMPILER) \
-	 -I./ -I$(QUEX_PATH)  \
-     -DQUEX_OPTION_ASSERTS_DISABLED 
+CCP = $(CPP) -DQUEX_OPTION_ASSERTS_DISABLED 
 
 # (*) RULES ____________________________________________________________________
 # -- application
@@ -35,7 +34,7 @@ $(APPLICATION): ../lexer-simply.cpp $(ENGINE_NAME).cpp
 	@echo "##"
 	@echo "## The issue here was that there were warnings about double defined macros."
 	@echo "##"
-	$(CC) -o $(APPLICATION) \
+	$(CPP) -o $(APPLICATION) \
 		  ../lexer-simply.cpp $(ENGINE_NAME).cpp 
           
 $(ENGINE_SOURCES): $(MODE_FILES) 

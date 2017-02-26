@@ -1,3 +1,4 @@
+include ../Makefile.lexer
 X = Simple
 
 # -DQUEX_OPTION_DEBUG_SHOW 
@@ -5,12 +6,7 @@ X = Simple
 all: lexer-iconv lexer-icu
 
 lexer-iconv: Simple.cpp
-	@g++ -I./ -I$(QUEX_PATH) \
-		Simple.cpp                    \
-		../lexer-simply.cpp           \
-		-ggdb                         \
-		-o $@                         \
-		-DQUEX_OPTION_CONVERTER_ICONV \
+	$(LDCPP_ICONV) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ \
 		-DQUEX_SETTING_BUFFER_SIZE=65536 \
 		> tmp.txt 2>&1
 	@cat tmp.txt
@@ -18,14 +14,8 @@ lexer-iconv: Simple.cpp
 	
 
 lexer-icu: Simple.cpp
-	@g++ -I./ -I$(QUEX_PATH) \
-		Simple.cpp                    \
-		../lexer-simply.cpp           \
-		-ggdb                         \
-		-o $@                         \
-		-DQUEX_OPTION_CONVERTER_ICU   \
-		`icu-config --ldflags`      \
-		-DQUEX_SETTING_BUFFER_SIZE=65536 \
+	$(LDCPP_ICU) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ \
+		-DQUEX_SETTING_BUFFER_SIZE=65536 $(LIB_ICU) \
 		> tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt

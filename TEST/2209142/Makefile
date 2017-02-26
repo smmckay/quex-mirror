@@ -2,6 +2,8 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
+
 .PHONY: clean ERROR GOOD
 
 ifndef QUEX_PATH
@@ -13,7 +15,7 @@ endif
 # -- FILES PRODUCED BY QUEX
 #
 # (*) COMPILER SETTINGS ________________________________________________________
-CC = @g++ -I./ -I$(QUEX_PATH) $(EXT_CFLAGS) -ggdb
+CPP := $(CPP) $(EXT_CFLAGS) 
 
 # (*) RULES ____________________________________________________________________
 all: error good
@@ -21,11 +23,11 @@ all: error good
 # -- application
 error: ../lexer-simply.cpp 
 	@quex -i error.qx -o Simple --token-policy single > tmp.txt 2>&1
-	$(CC) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
+	@$(CPP) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
 
 good: ../lexer-simply.cpp 
 	@quex -i good.qx -o Simple --token-policy single --debug-exception > tmp.txt 2>&1
-	$(CC) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
+	@$(CPP) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
 
 
 

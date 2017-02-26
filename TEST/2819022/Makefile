@@ -1,12 +1,8 @@
+include ../Makefile.lexer
+
 lexer: 
 	quex -i error-$(CASE).qx -o Simple 
-	g++ -I$(QUEX_PATH) -I. \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		../lexer.cpp Simple.cpp  \
-		`icu-config --ldflags`      \
-		-Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-o lexer
-        # -DQUEX_OPTION_DEBUG_SHOW \
+	$(LDCPP) ../lexer.cpp Simple.cpp -o lexer
 
 Simple.E:
 	g++ -c -E -I$(QUEX_PATH) -I. \

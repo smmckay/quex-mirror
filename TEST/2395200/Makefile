@@ -1,3 +1,5 @@
+include ../Makefile.lexer
+
 .PHONY: lexer error-lexer
 
 CFLAGS = \
@@ -8,12 +10,9 @@ CFLAGS = \
      -D__QUEX_OPTION_UNIT_TEST
 	 #-DQUEX_OPTION_DEBUG_SHOW
 
-CC = g++ -I$(QUEX_PATH) -I. $(CFLAGS) -ggdb \
-
 lexer:
 	quex -i simple.qx -o Simple --token-policy single --debug-exception
-	$(CC) -DSTRANGE_STREAM \
-		  ../lexer-simply.cpp Simple.cpp -o lexer
+	$(LDCPP) -DSTRANGE_STREAM ../lexer-simply.cpp Simple.cpp -o lexer
 
 clean:
 	rm -f Simple*

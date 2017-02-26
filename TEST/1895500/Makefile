@@ -1,21 +1,11 @@
 
 lexer-iconv: Simple.cpp
-	@g++ -I./ -I$(QUEX_PATH) \
-		Simple.cpp     \
-		../lexer.cpp        \
-		-ggdb               \
-		-o $@               \
-		-D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICONV > tmp.txt 2>&1
+	@$(LDC_ICONV) Simple.cpp ../lexer.cpp -o $@ > tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
 	
 lexer-icu: Simple.cpp
-	@g++ -I./ -I$(QUEX_PATH) \
-		Simple.cpp     \
-		../lexer.cpp           \
-		-ggdb               \
-		-o $@               \
-		-D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICU > tmp.txt 2>&1
+	@$(LDC_ICONV) Simple.cpp ../lexer.cpp -o $@ $(LIB_ICU) > tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
 

@@ -10,7 +10,6 @@ all: Simple.c
 	    -DQUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE 
 		
 # -DQUEX_OPTION_DEBUG_SHOW  
-# -D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICONV 
 
 Simple.E: Simple.c
 	gcc -E -I./ -I$(QUEX_PATH) Simple.c -o Simple.E

@@ -1,5 +1,11 @@
+include ../Makefile.lexer
+
 X = Simple
 LIB_CONV  = `icu-config --ldflags --cppflags`
+
+DEFINES := -DQUEX_SETTING_BUFFER_SIZE=64 \
+		   -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
+	       -DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' 
 
 # C++ Versions ________________________________________________________________
 # 
@@ -7,50 +13,19 @@ lex_iconv:
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t 
 	@echo "Compiling"
-	g++ -I./ -I$(QUEX_PATH) \
-		$(X).cpp                      \
-		-Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED                         \
-		../lexer.cpp                     \
-		-ggdb \
-	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
-	   	-DQUEX_OPTION_CONVERTER_ICONV \
-		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
-		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-o $@
+	$(LDCPP_ICONV) $(X).cpp ../lexer.cpp $(DEFINES) -o $@
 
 lex_icu: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t 
 	@echo "Compiling"
-	g++ -I./ -I$(QUEX_PATH) \
-		$(X).cpp                      \
-		-Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED                         \
-		../lexer.cpp                     \
-		$(LIB_CONV)                   \
-		-ggdb                         \
-	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
-		`icu-config --ldflags`      \
-		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
-	   	-DQUEX_OPTION_CONVERTER_ICU \
-		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-o $@
+	$(LDCPP_ICU) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU)
 
 lex_codec: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --codec utf8  
 	@echo "Compiling"
-	g++ -I./ -I$(QUEX_PATH) \
-		$(X).cpp                      \
-		../lexer.cpp                     \
-		-ggdb \
-	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
-		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
-		`icu-config --ldflags`      \
-		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-o $@
+	$(LDCPP) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
 
 # C Versions ________________________________________________________________
 # 
@@ -58,57 +33,19 @@ lex_iconv_c:
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t --language c
 	@echo "Compiling"
-	gcc -I./ -I$(QUEX_PATH) \
-		$(X).c                      \
-		-Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED                         \
-		../lexer.c                     \
-		-ggdb \
-		`icu-config --ldflags`      \
-		-DCHARACTER_ENCODING_NAME=\"UTF-8\" \
-		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
-		-DPRINT_TOKEN \
-	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
-	   	-DQUEX_OPTION_CONVERTER_ICONV \
-		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-o $@
+	$(LDC_ICONV) $(X).c ../lexer.c $(DEFINES) -o $@
 
 lex_icu_c: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t --language c
 	@echo "Compiling"
-	gcc -I./ -I$(QUEX_PATH) \
-		$(X).c                      \
-		-Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED                         \
-		../lexer.c                     \
-		$(LIB_CONV)                   \
-		-ggdb                         \
-		-DCHARACTER_ENCODING_NAME=\"UTF-8\" \
-		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
-		-DPRINT_TOKEN \
-	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
-	   	-DQUEX_OPTION_CONVERTER_ICU \
-		`icu-config --ldflags`      \
-		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-o $@
+	$(LDC_ICU) $(X).c ../lexer.c $(DEFINES) -o $@ $(LIB_ICU)
 
 lex_codec_c: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --codec utf8  --language C
 	@echo "Compiling"
-	gcc -I./ -I$(QUEX_PATH) \
-		$(X).c                      \
-		../lexer.c                     \
-		-ggdb \
-	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
-		-DPRINT_TOKEN \
-		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
-		`icu-config --ldflags`      \
-		-DCHARACTER_ENCODING_NAME=0x0 \
-		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-o $@
+	$(LDC) $(X).c ../lexer.c $(DEFINES) -o $@ 
 
 wiki.txt: wiki.txt.bz2
 	bzip2 -dk wiki.txt.bz2

@@ -1,10 +1,17 @@
+include ../Makefile.lexer
+
 Cpp: ./lexer tiny_lexer.cpp
-	g++ -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -fexceptions -DQUEX_SETTING_BUFFER_SIZE=0 -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 -DQUEX_TYPE_LEXATOM='unsigned char' -DQUEX_OPTION_TERMINATION_ZERO_DISABLED -g -DQUEX_OPTION_ASSERTS_DISABLED -Ilexer -c lexer/tiny_lexer.cpp -o tiny_lexer.o
+	$(LDCPP) -fexceptions -DQUEX_SETTING_BUFFER_SIZE=0 -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
+		     -DQUEX_TYPE_LEXATOM='unsigned char' -DQUEX_OPTION_TERMINATION_ZERO_DISABLED -g \
+			 -DQUEX_OPTION_ASSERTS_DISABLED \
+		     -Ilexer -c lexer/tiny_lexer.cpp -o tiny_lexer.o
 	@echo Compiling Done
 
 C: ./lexer tiny_lexer.c
-	gcc -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -fexceptions -DQUEX_SETTING_BUFFER_SIZE=0 -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 -DQUEX_TYPE_LEXATOM='unsigned char' -DQUEX_OPTION_TERMINATION_ZERO_DISABLED -g -DQUEX_OPTION_ASSERTS_DISABLED -Ilexer -c lexer/tiny_lexer.c -o tiny_lexer.o \
-		`icu-config --ldflags`      
+	$(LDC) -fexceptions -DQUEX_SETTING_BUFFER_SIZE=0 -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
+		   -DQUEX_TYPE_LEXATOM='unsigned char' -DQUEX_OPTION_TERMINATION_ZERO_DISABLED -g \
+		   -DQUEX_OPTION_ASSERTS_DISABLED \
+		   -Ilexer -c lexer/tiny_lexer.c -o tiny_lexer.o 
 	@echo Compiling Done
 
 

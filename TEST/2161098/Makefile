@@ -1,11 +1,13 @@
+include ../Makefile.lexer
 INPUT=funny_comments # This is overidden by a command line argument of the for INPUT=something
+
 
 DEFINES = \
 		-DPRINT_LINE_COLUMN \
 		-DQUEX_OPTION_LINE_NUMBER_COUNTING \
 		-DQUEX_OPTION_COLUMN_NUMBER_COUNTING \
 
-CC = g++ -I$(QUEX_PATH) -I./ -ggdb -o lexer
+CC := $(LDCPP) -o lexer
 
 all: $(INPUT)
 

@@ -1,5 +1,7 @@
+include ../Makefile.lexer
+
 lexer: lexer.cpp tokenizer_it.cpp
-	g++ -I$(QUEX_PATH) -I. $^ -o $@ -ggdb
+	$(LDCPP) $^ -o $@ -ggdb
 
 tokenizer_it.cpp: simple.qx
 	quex -i simple.qx -o tokenizer_it \

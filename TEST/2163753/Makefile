@@ -10,7 +10,6 @@ all: $(X).c
 		`icu-config --ldflags`      \
 		-DPRINT_TOKEN 
 	   	# -DQUEX_OPTION_DEBUG_SHOW 
-		# -D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICONV 
 
 
 $(X).c: simple.qx

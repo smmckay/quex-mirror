@@ -6,9 +6,9 @@ GENERAL_FLAGS    := $(GENERAL_WARNINGS) \
 			        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 
 CC          := gcc -c $(GENERAL_FLAGS)
-CPP         := g++ -c $(GENERAL_FLAGS)
+CPP         := g++ -c $(GENERAL_FLAGS) -pedantic
 LDC         := gcc $(GENERAL_FLAGS)
-LDCPP       := g++ $(GENERAL_FLAGS)
+LDCPP       := g++ $(GENERAL_FLAGS) -pedantic
 
 # ICONV _______________________________________________________________________
 # LIB_ICONV := -liconv

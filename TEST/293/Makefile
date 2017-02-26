@@ -1,7 +1,8 @@
+include ../Makefile.lexer
 
 OBJS =  lexer.o IConvLexer.o CodecLexer.o
 
-CC := g++ -ggdb -Wall -Werror \
+CC := $(CPP_ICONV) \
 	  -DQUEX_OPTION_MULTI \
 	  -DQUEX_OPTION_CONVERTER_ICONV
 	  # -DQUEX_OPTION_ASSERTS_DISABLED

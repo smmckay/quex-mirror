@@ -2,6 +2,7 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
 .PHONY: clean
 
 ifndef QUEX_PATH
@@ -19,8 +20,7 @@ ENGINE_SOURCES = $(ENGINE_NAME)                     \
                  $(ENGINE_NAME)-token               \
 
 # (*) COMPILER SETTINGS ________________________________________________________
-CC = @g++ -I./ -I$(QUEX_PATH) $(EXT_CFLAGS) -ggdb \
-	 -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
+CC := $(LDCPP) $(EXT_CFLAGS) 
 
 # (*) RULES ____________________________________________________________________
 all: lexer
