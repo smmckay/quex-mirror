@@ -7,7 +7,7 @@ fi
 echo "Note: the important phrase is 'no leaks are possible'."
 tmp=`pwd`
 cd $bug/ 
-./compile.sh >& tmp.txt
+make >& tmp.txt
 cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ '
 $QUEX_PATH/TEST/valgrindi.sh valgrint-out.txt ./uXa example.txt >& /dev/null
 cat valgrint-out.txt

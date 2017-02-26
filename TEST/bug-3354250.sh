@@ -10,12 +10,12 @@ cd $bug/
 
 echo "Stripped Down Scanner:"
 echo "(No output is good output)"
-quex -i scanner1.qx --icu -b 2 -o Simple >& Simple.txt
+quex -i scanner1.qx -b 2 -o Simple >& Simple.txt
 cat Simple.txt
 echo
 echo "Not-So-Stripped Down Scanner:"
 echo "(No output is good output)"
-quex -i scanner1.qx --icu -b 2 -o Simple >& Simple.txt
+quex -i scanner1.qx -b 2 -o Simple >& Simple.txt
 
 rm -f Simple*
 

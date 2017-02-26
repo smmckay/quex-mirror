@@ -9,7 +9,7 @@ fi
 
 case $1 in
     normal) converter="";;
-    icu)    converter=--icu;;
+    icu)    converter="";;
     codec)  converter="--codec utf8";;
 esac
 

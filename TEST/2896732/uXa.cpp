@@ -178,7 +178,7 @@ namespace quex {
 		} else {
 			size_t needCount = (peekIndex + 1) - queueSize;
 
-			for(int index = 0x00;index < needCount;index++) {
+			for(int index = 0x00;index < (int)needCount;index++) {
                 Token*  token_p = 0x0;
                 // Receive from lexer...
                 lexer.receive(&token_p);

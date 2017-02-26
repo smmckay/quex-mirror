@@ -16,7 +16,7 @@ newline-skipper:
 
 newline-skipper-utf8: 
 	@quex -i token.qx newline-skipper-utf8.qx -o Simple  -b 2 --token-policy single --debug-exception
-	@$(LDCPP) ../lexer-simply.cpp Simple*.cpp -o lexer \
+	@$(LDCPP_ICONV) ../lexer-simply.cpp Simple*.cpp -o lexer \
 		-DPRINT_LINE_COLUMN \
 		-DCONVERTER_ENCODING='"UTF-8"' \
 		-DQUEX_OPTION_LINE_NUMBER_COUNTING \
