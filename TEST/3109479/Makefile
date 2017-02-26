@@ -38,7 +38,8 @@ LD = $(COMPILER)
 # (*) RULES ____________________________________________________________________
 # -- application
 lexer:          example.o Simple.o
-	$(LD) -o $@ example.o Simple.o 
+	$(LD) -o $@ example.o Simple.o \
+		  `icu-config --ldflags`      
           
 # Object files:
 Simple.o: Simple.c 

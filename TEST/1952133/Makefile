@@ -33,7 +33,8 @@ all: lexer
 
 # -- application
 lexer: lexer.o Simple.o 
-	$(LD) lexer.o Simple.o -o $@
+	$(LD) lexer.o Simple.o -o $@ \
+		`icu-config --ldflags`      
 
 # -- engine and object files
 lexer.o: ../lexer.c Simple.c

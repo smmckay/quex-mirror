@@ -40,12 +40,14 @@ Case%: Case%.c
 Case4: $(QUEX_PATH)/TEST/lexer.c
 	quex -i case4.qx  -o Simple --language C --debug-exception
 	$(CC) $^ Simple.c -o $@ \
-		  -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
+		  -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
+		  `icu-config --ldflags`      
 
 Case5: $(QUEX_PATH)/TEST/lexer.c
 	quex -i case5.qx  -o Simple --language C --debug-exception
 	$(CC) $^ Simple.c -o $@ \
-		  -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
+		  -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
+		  `icu-config --ldflags`      
 
 Case2.c: case2.qx 
 	## Case2 causes an error message which we want to see: no '--debug-exception'

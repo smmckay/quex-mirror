@@ -3,6 +3,7 @@ lexer:
 	g++ -I$(QUEX_PATH) -I. \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		../lexer.cpp Simple.cpp  \
+		`icu-config --ldflags`      \
 		-Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-o lexer
         # -DQUEX_OPTION_DEBUG_SHOW \

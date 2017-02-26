@@ -12,6 +12,7 @@ lexer:
 		-DPRINT_TOKEN \
 		$(CFLAGS) \
 		../lexer.c Simple*.c \
+		`icu-config --ldflags`      \
 		-ggdb -o lexer
 
 lexer.E:

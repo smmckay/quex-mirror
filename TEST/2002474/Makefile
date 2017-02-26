@@ -47,6 +47,7 @@ lex_codec:
 		-ggdb \
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
 		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
+		`icu-config --ldflags`      \
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-o $@
@@ -62,6 +63,7 @@ lex_iconv_c:
 		-Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED                         \
 		../lexer.c                     \
 		-ggdb \
+		`icu-config --ldflags`      \
 		-DCHARACTER_ENCODING_NAME=\"UTF-8\" \
 		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
 		-DPRINT_TOKEN \
@@ -102,6 +104,7 @@ lex_codec_c:
 	   	-DQUEX_SETTING_BUFFER_SIZE=64 \
 		-DPRINT_TOKEN \
 		-DPRINT_TOKEN_FIRST_NUMBER='402508 - 20' \
+		`icu-config --ldflags`      \
 		-DCHARACTER_ENCODING_NAME=0x0 \
 		-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \

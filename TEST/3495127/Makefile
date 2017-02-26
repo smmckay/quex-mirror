@@ -4,6 +4,7 @@ all: Simple.c
 		Simple.c \
 		lexer.c  \
 		-ggdb \
+		`icu-config --ldflags` \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-DPRINT_TOKEN                                  \
 	    -DQUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE 
