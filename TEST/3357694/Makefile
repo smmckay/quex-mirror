@@ -1,15 +1,16 @@
+include ../Makefile.lexer
 .PHONY: SOURCES
 
 ICU_LFLAGS=$(shell icu-config --ldflags)
 
 test: lexer.o Simple.o
-	gcc -o $@ $^ $(ICU_LFLAGS)
+	$(LDC_ICU) -o $@ $^ $(ICU_LFLAGS)
 
 lexer.o: ../lexer.c SOURCES
-	gcc -c -o $@ -I$$QUEX_PATH -I. -DCHARACTER_ENCODING_NAME=\"utf8\" -DPRINT_TOKEN $< -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
+	$(CC) -o $@ -DCHARACTER_ENCODING_NAME=\"utf8\" -DPRINT_TOKEN $< 
 
 Simple.o: Simple.c SOURCES
-	gcc -c -o $@ -I$$QUEX_PATH -I. $< -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
+	$(CC) -o $@ $< 
 
 Simple \
 Simple.cpp: SOURCES

@@ -11,9 +11,9 @@ tmp=`pwd`
 cd $bug/ 
 
 case $1 in 
-    Normal)              make test                                   >& tmp.txt;;
-    TemplateCompression) make test ADD_OPTION=--template-compression >& tmp.txt;;
-    PathCompression)     make test ADD_OPTION=--path-compression     >& tmp.txt;;
+    Normal)                  make test                                   >& tmp.txt;;
+    TemplateCompression)     make test ADD_OPTION=--template-compression >& tmp.txt;;
+    PathCompression)         make test ADD_OPTION=--path-compression     >& tmp.txt;;
     PathTemplateCompression) make test ADD_OPTION='--path-compression --template-compression' >& tmp.txt;;
 esac
 

@@ -1,5 +1,7 @@
 #include "iostream"
 #include "tokenizer_it"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 
 int main(int argc, char** argv)
 {
@@ -29,8 +31,8 @@ int main(int argc, char** argv)
          * correctly, the newline needs to be re-inserted manually.          */
         begin_p[received_n-1] = '\n';
 
-        printf("line: (%i) [", received_n); 
-        for(int i=0; i < received_n; ++i) printf("%02X.", (int)begin_p[i]);
+        printf("line: (%i) [", (int)received_n); 
+        for(int i=0; i < (int)received_n; ++i) printf("%02X.", (int)begin_p[i]);
         printf("]\n");
 
 		qlex.buffer.fill_finish(&qlex.buffer, &begin_p[received_n]);

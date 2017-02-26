@@ -1,5 +1,6 @@
-ENGINE = \
-		boeck_Lexer.c   
+include ../Makefile.lexer
+
+ENGINE = boeck_Lexer.c   
 
 ifdef ASSERTS_ENABLED_F
 	CCFLAG_ASSERTS=# By default asserts are enabled
@@ -7,15 +8,13 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-CC := gcc -Wall -Werror -ggdb -DQUEX_OPTION_MULTI
+CC := $(CC) -Wall -Werror -ggdb -DQUEX_OPTION_MULTI
 
 lexer: $(ENGINE:.c=.o) lexer.o Common-token.o
-	$(CC) $^ -o  $@ `icu-config --ldflags` -I$(QUEX_PATH) 
+	$(LDC) $^ -o  $@ $(LIB_ICU) 
 	 
 %.o: %.c 
-	$(CC) -c $< -ggdb -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -o $@ \
-		-I$(QUEX_PATH)          \
-		$(CCFLAG_ASSERTS) 
+	$(CC) $< -o $@ $(CCFLAG_ASSERTS) 
 
 # -DQUEX_OPTION_ASSERTS_DISABLED
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 

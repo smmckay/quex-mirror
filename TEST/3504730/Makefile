@@ -2,23 +2,11 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
+
 .PHONY: clean
 
-ifndef QUEX_PATH
-    $(error The environment variable QUEX_PATH is not defined!)
-endif
-
-
-# (*) COMPILER SETTINGS ________________________________________________________
-CC = gcc                              \
-	 -I./ -I$(QUEX_PATH)              \
-	 -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -Wconversion -pedantic     \
-	 $(CCFLAG_ASSERTS) 
-     # -DQUEX_OPTION_ASSERTS_DISABLED
-     # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-     # -DQUEX_OPTION_DEBUG_SHOW
-   
-LD = $(COMPILER) 
+LD = $(LDC) 
 
 # (*) RULES ____________________________________________________________________
 simple: $(QUEX_PATH)/TEST/lexer.c  
@@ -27,7 +15,7 @@ simple: $(QUEX_PATH)/TEST/lexer.c
 		 --token-id-offset  0x1000     \
 		 --language         C          \
 		 --debug-exception
-	$(CC) $^ Simple.c -o $@ -DPRINT_TOKEN `icu-config --ldflags`      
+	$(CC) $^ Simple.c -o $@ -DPRINT_TOKEN 
 
 more: $(QUEX_PATH)/TEST/lexer.c 
 	quex -i                 more.qx  \
@@ -35,7 +23,7 @@ more: $(QUEX_PATH)/TEST/lexer.c
 		 --token-id-offset  0x1000   \
 		 --language         C        \
 		 --debug-exception
-	$(CC) $^ Simple.c -o $@ -DPRINT_TOKEN `icu-config --ldflags`      
+	$(CC) $^ Simple.c -o $@ -DPRINT_TOKEN 
 
 # (*) HELPERS __________________________________________________________________
 clean:	

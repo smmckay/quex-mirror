@@ -1,17 +1,17 @@
+include ../Makefile.lexer
+
 # Leave the generated code for debugging etc.
 .SECONDARY: Simple.c 
 
 test: Simple.o lexer.o
-	gcc -o $@ $^ -ggdb
+	$(LDC) -o $@ $^ -ggdb
 
 %.o: %.c
-	gcc -c -o $@ -I$(QUEX_PATH) -I. $<                 \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+	$(CC) -o $@ $< 
 
 %.o: ../%.c
-	gcc -c -o $@ -I$(QUEX_PATH) -I. $<                 \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-DPRINT_LINE_COLUMN_NUMBER                     \
+	$(CC) -o $@ $<                 \
+		-DPRINT_LINE_COLUMN_NUMBER \
 		-DPRINT_TOKEN                  
 
 Simple.c: test.qx

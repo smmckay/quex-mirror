@@ -2,6 +2,7 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
 .PHONY: clean
 
 ifndef QUEX_PATH
@@ -14,9 +15,7 @@ endif
 #     
 #     Buffer sizes:   28 --> buffer overflow
 #                     29 --> OK
-COMPILER = @gcc
-CC = $(COMPILER) -c -fPIC -Wno-deprecated -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-	 -I./ -I$(QUEX_PATH) $(NDEBUG_F) \
+CC := $(CC) -fPIC $(NDEBUG_F) \
      -DQUEX_SETTING_BUFFER_SIZE=$(BUFFER_SIZE) \
 	 -DQUEX_OPTION_ACTIVATE_ASSERTS \
 	 -DPRINT_TOKEN \
@@ -26,7 +25,7 @@ CC = $(COMPILER) -c -fPIC -Wno-deprecated -Wall -Werror -DQUEX_OPTION_ASSERTS_WA
      # -DQUEX_OPTION_DEBUG_SHOW \
      # -D__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS \
 
-LD = $(COMPILER)
+LD = $(LDC)
 
 # (*) RULES ____________________________________________________________________
 all: lexer

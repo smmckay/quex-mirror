@@ -1,3 +1,5 @@
+include ../Makefile.lexer
+
 CFLAGS:=-Wimplicit
 QUEX_PARAMS:=-DQUEX_OPTION_ASSERTS_DISABLED -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 #-DQUEX_OPTION_DEBUG_SHOW
 
@@ -13,11 +15,11 @@ QUEX_PARAMS:=-DQUEX_OPTION_ASSERTS_DISABLED -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N
 		-o $(basename $@)
 
 %.o: %.c Makefile
-	gcc -ggdb -I$(QUEX_PATH) $(QUEX_PARAMS) -I. $(CFLAGS) -c $< -o $@
+	$(CC) $(QUEX_PARAMS) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean all
 all: simple.o main.o
-	gcc -o lexer simple.o main.o
+	$(LDC) -o lexer simple.o main.o
 
 clean:
 	touch simple.qx

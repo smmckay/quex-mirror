@@ -2,6 +2,8 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
+
 .PHONY: clean
 
 ifndef QUEX_PATH
@@ -11,9 +13,8 @@ endif
 # (*) COMPILER SETTINGS ________________________________________________________
 #     (change COMPILER to whatever you use as compiler on the command line,
 #      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-COMPILER = gcc -ggdb -pedantic -Wconversion -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -W
 
-CC = $(COMPILER)        \
+CC := $(LDC)        \
 	 -DPRINT_LINE_COLUMN_NUMBER \
 	 -I./ -I$(QUEX_PATH)  # -DQUEX_OPTION_DEBUG_SHOW
      # -DQUEX_OPTION_ASSERTS_DISABLED
@@ -21,13 +22,13 @@ CC = $(COMPILER)        \
    
 case1:
 	quex -i                 case1.qx  \
-	     -o           Simple  \
+	     -o                 Simple  \
 		 --token-id-offset  0x1000     --debug-exception --language C
 	$(CC) -o $@ ../lexer.c Simple.c `icu-config --ldflags`      
           
 case2:
 	quex -i                 case2.qx  \
-	     -o           Simple  \
+	     -o                 Simple  \
 		 --token-id-offset  0x1000     --debug-exception --language C
 	$(CC) -o $@ ../lexer.c Simple.c `icu-config --ldflags`      
 

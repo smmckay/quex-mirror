@@ -5,9 +5,9 @@ GENERAL_FLAGS    := $(GENERAL_WARNINGS) \
 	                $(GENERAL_INCLUDES) \
 			        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 
-CC          := gcc -c $(GENERAL_FLAGS)
+CC          := gcc -c $(GENERAL_FLAGS) -Wno-deprecated
 CPP         := g++ -c $(GENERAL_FLAGS) -pedantic
-LDC         := gcc $(GENERAL_FLAGS)
+LDC         := gcc $(GENERAL_FLAGS) -Wno-deprecated
 LDCPP       := g++ $(GENERAL_FLAGS) -pedantic
 
 # ICONV _______________________________________________________________________
@@ -16,7 +16,7 @@ FLAGS_ICONV := -DQUEX_OPTION_CONVERTER_ICONV
 
 CC_ICONV    := $(CC) $(FLAGS_ICONV)
 CPP_ICONV   := $(CPP) $(FLAGS_ICONV)
-LDC_ICONV   := $(LDCC) $(FLAGS_ICONV) $(LIB_ICONV)
+LDC_ICONV   := $(LDC) $(FLAGS_ICONV) $(LIB_ICONV)
 LDCPP_ICONV := $(LDCPP) $(FLAGS_ICONV) $(LIB_ICONV)
 
 # ICU _________________________________________________________________________
@@ -25,5 +25,5 @@ FLAGS_ICU   := -DQUEX_OPTION_CONVERTER_ICU
 
 CC_ICU      := $(CC) $(FLAGS_ICU)
 CPP_ICU     := $(CPP) $(FLAGS_ICU)
-LDC_ICU     := $(LDCC) $(FLAGS_ICU) 
+LDC_ICU     := $(LDC) $(FLAGS_ICU) 
 LDCPP_ICU   := $(LDCPP) $(FLAGS_ICU) 

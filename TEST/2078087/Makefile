@@ -1,3 +1,5 @@
+include ../Makefile.lexer
+
 .PHONY: lexer
 
 CFLAGS = \
@@ -8,16 +10,8 @@ CFLAGS = \
 
 lexer:
 	quex -i $(INPUT) -o Simple --token-policy single --language C --debug-exception
-	gcc -I$(QUEX_PATH) -I. -Wall \
-		-DPRINT_TOKEN \
-		$(CFLAGS) \
-		../lexer.c Simple*.c \
-		`icu-config --ldflags`      \
-		-ggdb -o lexer
+	$(LDC) -DPRINT_TOKEN $(CFLAGS) ../lexer.c Simple*.c -o lexer
 
 lexer.E:
 	quex -i $(INPUT) -o Simple --token-policy single --language C --debug-exception
-	gcc -I$(QUEX_PATH) -I. -Wall \
-		-E $(CFLAGS) \
-		../lexer.c \
-		-ggdb -o lexer.E
+	$(LDC) -I$(QUEX_PATH) -I. -Wall -E $(CFLAGS) ../lexer.c -o lexer.E

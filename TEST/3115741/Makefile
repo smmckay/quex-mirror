@@ -2,6 +2,8 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
+
 .PHONY: clean
 
 ifndef QUEX_PATH
@@ -17,12 +19,7 @@ endif
 
 CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS
 
-# (*) COMPILER SETTINGS ________________________________________________________
-#     (change COMPILER to whatever you use as compiler on the command line,
-#      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-COMPILER = gcc -ggdb 
-
-CC = $(COMPILER) -c \
+CC := $(CC) -c \
 	 -I./ -I$(QUEX_PATH)                            \
 	 -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -Wconversion -pedantic \
 	 -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
@@ -31,13 +28,12 @@ CC = $(COMPILER) -c \
    
 # -DQUEX_OPTION_DEBUG_SHOW                       \
 	
-LD = $(COMPILER) 
+LD := $(LDC) 
 
 # (*) RULES ____________________________________________________________________
 # -- application
 lexer:          example.o Simple.o
-	$(LD) -o $@ example.o Simple.o \
-		  `icu-config --ldflags`      
+	$(LD) -o $@ example.o Simple.o 
           
 # Object files:
 Simple.o: Simple.c 

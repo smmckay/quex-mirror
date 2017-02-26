@@ -1,18 +1,15 @@
+include ../Makefile.lexer
+
 all: Simple.c 
 	@echo "Compiling"
-	@gcc -I./ -I$(QUEX_PATH) \
-		Simple.c \
-		lexer.c  \
-		-ggdb \
-		`icu-config --ldflags` \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		-DPRINT_TOKEN                                  \
-	    -DQUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE 
+	@$(LDC) Simple.c lexer.c  \
+			-DPRINT_TOKEN                                  \
+	        -DQUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE 
 		
 # -DQUEX_OPTION_DEBUG_SHOW  
 
 Simple.E: Simple.c
-	gcc -E -I./ -I$(QUEX_PATH) Simple.c -o Simple.E
+	$(LDC) -E -I./ -I$(QUEX_PATH) Simple.c -o Simple.E
 
 Simple.c: $(TOKEN_POLICY).qx
 	@echo "Call to quex"

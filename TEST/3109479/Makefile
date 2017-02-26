@@ -2,6 +2,8 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
+
 .PHONY: clean
 
 ifndef QUEX_PATH
@@ -23,9 +25,7 @@ else
 endif
 	
 
-CC = $(COMPILER) -c \
-	 -I./ -I$(QUEX_PATH)                            \
-	 -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -Wconversion -pedantic                   \
+CC := $(CC) \
 	 -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 	 -DPRINT_TOKEN
      # -DQUEX_OPTION_DEBUG_SHOW \
@@ -33,13 +33,12 @@ CC = $(COMPILER) -c \
      # -DQUEX_OPTION_ASSERTS_DISABLED
      # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
    
-LD = $(COMPILER) 
+   LD := $(LDC) 
 
 # (*) RULES ____________________________________________________________________
 # -- application
-lexer:          example.o Simple.o
-	$(LD) -o $@ example.o Simple.o \
-		  `icu-config --ldflags`      
+lexer: example.o Simple.o
+	$(LDC) -o $@ example.o Simple.o 
           
 # Object files:
 Simple.o: Simple.c 

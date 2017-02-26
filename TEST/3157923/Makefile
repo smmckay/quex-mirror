@@ -1,6 +1,8 @@
+include ../Makefile.lexer
+
 lexer: simple.qx main.c
 	quex -i  simple.qx -o Simple --post-categorizer --language C --debug-exception
-	gcc -I$(QUEX_PATH) main.c Simple.c -o lexer -ggdb -Wall -Werror
+	$(LDC) main.c Simple.c -o lexer 
 
 clean: 
 	rm -f Simple*

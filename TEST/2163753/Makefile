@@ -1,16 +1,11 @@
+include ../Makefile.lexer
 X = Simple
 
+# -DQUEX_OPTION_DEBUG_SHOW 
+#
 all: $(X).c 
 	@echo "Compiling"
-	@gcc -I./ -I$(QUEX_PATH) \
-		$(X).c             \
-		../lexer.c  \
-		-ggdb \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		`icu-config --ldflags`      \
-		-DPRINT_TOKEN 
-	   	# -DQUEX_OPTION_DEBUG_SHOW 
-
+	@$(LDC_ICU) $(X).c ../lexer.c  $(LIB_ICU) -DPRINT_TOKEN 
 
 $(X).c: simple.qx
 	@echo "Call to quex"

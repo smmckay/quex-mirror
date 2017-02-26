@@ -2,6 +2,7 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
 .PHONY: clean
 # .SECONDARY: Case1.c
 
@@ -9,13 +10,7 @@ ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)
 endif
 
-
-# (*) COMPILER SETTINGS ________________________________________________________
-#     (change COMPILER to whatever you use as compiler on the command line,
-#      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-COMPILER = gcc # -ggdb # -Os
-
-CC = $(COMPILER) \
+CC := $(CC) \
 	 -I./ -I$(QUEX_PATH)                             \
 	 -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -W -Wconversion -pedantic                 \
 	 $(CCFLAG_ASSERTS)                               \
@@ -25,7 +20,7 @@ CC = $(COMPILER) \
      # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
      # -DQUEX_OPTION_DEBUG_SHOW
    
-LD = $(COMPILER) 
+LD := $(LDC) 
 
 # (*) RULES ____________________________________________________________________
 # -- application
@@ -39,15 +34,11 @@ Case%: Case%.c
 
 Case4: $(QUEX_PATH)/TEST/lexer.c
 	quex -i case4.qx  -o Simple --language C --debug-exception
-	$(CC) $^ Simple.c -o $@ \
-		  -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		  `icu-config --ldflags`      
+	$(CC) $^ Simple.c -o $@ 
 
 Case5: $(QUEX_PATH)/TEST/lexer.c
 	quex -i case5.qx  -o Simple --language C --debug-exception
-	$(CC) $^ Simple.c -o $@ \
-		  -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-		  `icu-config --ldflags`      
+	$(CC) $^ Simple.c -o $@ 
 
 Case2.c: case2.qx 
 	## Case2 causes an error message which we want to see: no '--debug-exception'

@@ -14,28 +14,18 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-# (*) COMPILER SETTINGS ________________________________________________________
-#     (change COMPILER to whatever you use as compiler on the command line,
-#      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-COMPILER = gcc -ggdb 
-
-CC = $(COMPILER) -c \
-	 -I./ -I$(QUEX_PATH)            \
-	 -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -Wconversion -pedantic   \
+CC = $(CC) -c -Wconversion -pedantic   \
      # -DQUEX_OPTION_DEBUG_SHOW_MODES \
      # -DQUEX_OPTION_DEBUG_SHOW       \
 	 $(CCFLAG_ASSERTS) 
      # -DQUEX_OPTION_ASSERTS_DISABLED
      # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
    
-LD = $(COMPILER) 
+LD = $(LDC) 
 
-# (*) RULES ____________________________________________________________________
-# -- application
 lexer:          example.o EasyLexer.o
 	$(LD) -o $@ example.o EasyLexer.o 
           
-# Object files:
 EasyLexer.o: EasyLexer.c 
 	$(CC) $< -o $@ 
 
