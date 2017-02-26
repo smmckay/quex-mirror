@@ -10,7 +10,7 @@ CFLAGS = \
 
 lexer:
 	quex -i $(INPUT) -o Simple --token-policy single --language C --debug-exception
-	$(LDC) -DPRINT_TOKEN $(CFLAGS) ../lexer.c Simple*.c -o lexer
+	$(LDC_ICONV) -DPRINT_TOKEN $(CFLAGS) ../lexer.c Simple*.c -o lexer
 
 lexer.E:
 	quex -i $(INPUT) -o Simple --token-policy single --language C --debug-exception

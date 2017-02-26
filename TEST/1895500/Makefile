@@ -1,11 +1,14 @@
+include ../Makefile.lexer
+
+all: lexer-iconv lexer-icu
 
 lexer-iconv: Simple.cpp
-	@$(LDC_ICONV) Simple.cpp ../lexer.cpp -o $@ > tmp.txt 2>&1
+	$(LDCPP_ICONV) Simple.cpp ../lexer.cpp -o $@ > tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
 	
 lexer-icu: Simple.cpp
-	@$(LDC_ICONV) Simple.cpp ../lexer.cpp -o $@ $(LIB_ICU) > tmp.txt 2>&1
+	$(LDCPP_ICONV) Simple.cpp ../lexer.cpp -o $@ $(LIB_ICU) > tmp.txt 2>&1
 	@cat tmp.txt
 	@rm  tmp.txt
 

@@ -1,12 +1,13 @@
 #include "Simple.h"
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
-
-#ifndef    CHARACTER_ENCODING_NAME 
-#   define CHARACTER_ENCODING_NAME 0x0
+#ifdef  QUEX_OPTION_CONVERTER_ICONV
+#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
+#ifdef  QUEX_OPTION_CONVERTER_ICU
+#   include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+#   include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
+#endif
+
 #ifndef    PRINT_TOKEN_FIRST_NUMBER 
 #   define PRINT_TOKEN_FIRST_NUMBER 0
 #endif

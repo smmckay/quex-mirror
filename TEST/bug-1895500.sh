@@ -14,7 +14,7 @@ if [[ $2 == "FIRST" ]]; then
     make clean
 fi
 
-make lexer-$1
+make lexer-$1 >& /dev/null
 ./lexer-$1 example-utf-8.dat
 
 # cleansening

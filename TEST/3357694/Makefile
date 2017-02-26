@@ -7,7 +7,7 @@ test: lexer.o Simple.o
 	$(LDC_ICU) -o $@ $^ $(ICU_LFLAGS)
 
 lexer.o: ../lexer.c SOURCES
-	$(CC) -o $@ -DCHARACTER_ENCODING_NAME=\"utf8\" -DPRINT_TOKEN $< 
+	$(CC_ICU) -o $@ -DPRINT_TOKEN $< 
 
 Simple.o: Simple.c SOURCES
 	$(CC) -o $@ $< 
