@@ -2,7 +2,7 @@ include ../Makefile.lexer
 
 OBJS =  lexer.o IConvLexer.o CodecLexer.o
 
-CC := $(CPP_ICONV) \
+CC := $(LDCPP_ICONV) \
 	  -DQUEX_OPTION_MULTI \
 	  -DQUEX_OPTION_CONVERTER_ICONV
 	  # -DQUEX_OPTION_ASSERTS_DISABLED
