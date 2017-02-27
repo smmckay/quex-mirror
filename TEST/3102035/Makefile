@@ -10,7 +10,7 @@ ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)
 endif
 
-CC := $(CC) \
+LDC := $(LDC) \
 	 -I./ -I$(QUEX_PATH)                             \
 	 -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -W -Wconversion -pedantic                 \
 	 $(CCFLAG_ASSERTS)                               \
@@ -20,13 +20,11 @@ CC := $(CC) \
      # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
      # -DQUEX_OPTION_DEBUG_SHOW
    
-LD := $(LDC) 
-
 # (*) RULES ____________________________________________________________________
 # -- application
 # Object files:
 Case%: Case%.c 
-	$(CC) -c $< -o $@.o
+	$(LDC) -c $< -o $@.o
 
 # Macro expansions (only for debugging):
 %.E: %.c    
@@ -34,11 +32,11 @@ Case%: Case%.c
 
 Case4: $(QUEX_PATH)/TEST/lexer.c
 	quex -i case4.qx  -o Simple --language C --debug-exception
-	$(CC) $^ Simple.c -o $@ 
+	$(LDC) $^ Simple.c -o $@ 
 
 Case5: $(QUEX_PATH)/TEST/lexer.c
 	quex -i case5.qx  -o Simple --language C --debug-exception
-	$(CC) $^ Simple.c -o $@ 
+	$(LDC) $^ Simple.c -o $@ 
 
 Case2.c: case2.qx 
 	## Case2 causes an error message which we want to see: no '--debug-exception'

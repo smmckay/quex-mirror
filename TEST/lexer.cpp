@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     assert(argc > 1);
 
     // (*) create token
-    Token*                token_p;
+    Token*                token_p = 0;
     long                  token_n = 0;
 #   ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE
     QUEX_TYPE_TOKEN_ID    token_id = (QUEX_TYPE_TOKEN_ID)0x0;
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 #   else
 #   define                   converter NULL
 #   endif
-    Simple*               qlex = Simple::from_file_name(argv[1], converter); 
+    Simple*                  qlex = Simple::from_file_name(argv[1], converter); 
 
     // (*) loop until the 'termination' token arrives
     do {
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
         // (*) print out token information
         cerr.flush();
-        if( token_n >= PRINT_TOKEN_FIRST_NUMBER ) {
+        if( token_p && token_n >= PRINT_TOKEN_FIRST_NUMBER ) {
 #           if defined (QUEX_OPTION_CONVERTER_ICU) || defined (QUEX_OPTION_CONVERTER_ICONV)
             cout << *token_p << endl;
 #           else

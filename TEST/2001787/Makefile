@@ -7,18 +7,12 @@ all: lexer-iconv lexer-icu
 
 lexer-iconv: Simple.cpp
 	$(LDCPP_ICONV) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ \
-		-DQUEX_SETTING_BUFFER_SIZE=65536 \
-		> tmp.txt 2>&1
-	@cat tmp.txt
-	@rm  tmp.txt
+		-DQUEX_SETTING_BUFFER_SIZE=65536 
 	
 
 lexer-icu: Simple.cpp
 	$(LDCPP_ICU) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ \
-		-DQUEX_SETTING_BUFFER_SIZE=65536 $(LIB_ICU) \
-		> tmp.txt 2>&1
-	@cat tmp.txt
-	@rm  tmp.txt
+		-DQUEX_SETTING_BUFFER_SIZE=65536 $(LIB_ICU) 
 
 
 Simple.cpp: simple.qx

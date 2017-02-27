@@ -18,7 +18,7 @@ if [[ $2 == "FIRST" ]]; then
     make clean
 fi
 
-make lexer-$1 
+make lexer-$1  >& /dev/null
 ./lexer-$1 example.txt 2> tmp.txt
 cat tmp.txt
 rm -f tmp.txt
