@@ -60,6 +60,8 @@
 #else
 #   include <LexUtf8.h>
 #   define  LEXER_CLASS   quex_LexUtf8
+#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
 
 static int  setup_socket_server(void);

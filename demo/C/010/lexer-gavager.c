@@ -2,6 +2,8 @@
 
 #ifdef QUEX_EXAMPLE_WITH_CONVERTER
 #   include "lexConverter.h"
+#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #else
 #   include "lexPlain.h"
 #endif

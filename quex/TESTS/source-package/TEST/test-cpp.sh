@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 if [[ $1 == "--hwut-info" ]]; then
     echo "Source Packager: C++;"
-    echo "CHOICES: plain, iconv, icu, codec, codec-utf8, codec-utf16, post-categorizer, no-string-accumulator, no-include-stack, no-counter, manual-token-class, customized-token-class;"
+    echo "CHOICES: plain, codec, codec-utf8, codec-utf16, post-categorizer, no-string-accumulator, no-include-stack, no-counter, manual-token-class, customized-token-class;"
     echo "SAME;"
     exit
 fi
@@ -15,12 +15,6 @@ fi
 case $1 in
     plain) 
         option='-i simple.qx '
-        ;;
-    iconv)
-        option='-i simple.qx --iconv -b 2'
-        ;;
-    icu)
-        option='-i simple.qx --icu -b 2'
         ;;
     codec)
         option='-i simple.qx --codec iso8859_7'

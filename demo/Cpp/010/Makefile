@@ -29,7 +29,8 @@ CC_CONVERTER := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
 	              -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=6        \
 	              -DQUEX_SETTING_BUFFER_SIZE=16                   \
 			      -DQUEX_TYPE_LEXATOM=wchar_t                     \
-			      -DQUEX_EXAMPLE_WITH_CONVERTER
+			      -DQUEX_EXAMPLE_WITH_CONVERTER                   \
+			      -DQUEX_OPTION_CONVERTER_ICONV
 			  
 # -DQUEX_OPTION_DEBUG_SHOW    
 # -DQUEX_OPTION_ASSERTS_DISABLED
