@@ -33,19 +33,19 @@ lex_iconv_c:
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t --language c
 	@echo "Compiling"
-	$(LDC_ICONV) $(X).c ../lexer.c $(DEFINES) -o $@
+	$(LDC_ICONV) $(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@
 
 lex_icu_c: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t --language c
 	@echo "Compiling"
-	$(LDC_ICU) $(X).c ../lexer.c $(DEFINES) -o $@ $(LIB_ICU)
+	$(LDC_ICU) $(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@ $(LIB_ICU)
 
 lex_codec_c: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --codec utf8  --language C
 	@echo "Compiling"
-	$(LDC) $(X).c ../lexer.c $(DEFINES) -o $@ 
+	$(LDC) $(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@ 
 
 wiki.txt: wiki.txt.bz2
 	bzip2 -dk wiki.txt.bz2

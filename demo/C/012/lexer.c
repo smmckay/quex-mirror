@@ -1,7 +1,11 @@
 #include <stdio.h> 
 
 #include "moritz_Lexer.h"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #include "max_Lexer.h"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #include "boeck_Lexer.h"
 
 /* When using multipl lexical analyzers, it must be compiled with 

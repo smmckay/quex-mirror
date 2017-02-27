@@ -67,7 +67,6 @@ lexPlain.cpp: lexPlain.qx
 lexConverter.cpp: lexConverter.qx 
 	quex -i                    lexConverter.qx   \
 		 -o                    lexConverter      \
-		 --iconv                                 \
 		 --token-policy        single            \
 		 --buffer-element-type wchar_t           
 

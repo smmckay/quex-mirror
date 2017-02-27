@@ -35,7 +35,7 @@ if [[ $1 == "NoModeDetection_ErrorCase" ]]; then
          >& /dev/null
 fi
 
-./lexer >& tmp.txt
+bash ../valgrindi.sh tmp.txt ./lexer 
 cat tmp.txt
 rm tmp.txt
 # cleansening

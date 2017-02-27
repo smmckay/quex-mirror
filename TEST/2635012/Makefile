@@ -6,12 +6,11 @@ CPP := $(CPP) $(CFLAGS)
 
 without-include-stack:
 	quex -i simple.qx -o Simple 
-	$(CPP) -DQUEX_OPTION_INCLUDE_STACK_DISABLED \
-		  lexer.cpp Simple*.cpp -o lexer
+	$(LDCPP) -DQUEX_OPTION_INCLUDE_STACK_DISABLED lexer.cpp Simple*.cpp -o lexer
 
 with-include-stack:
 	quex -i simple.qx -o Simple 
-	$(CPP) lexer.cpp Simple*.cpp -o lexer
+	$(LDCPP) lexer.cpp Simple*.cpp -o lexer
 
 clean:
 	rm -f Simple*

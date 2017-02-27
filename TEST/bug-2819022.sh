@@ -8,9 +8,7 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-make CASE=$1 > tmp.txt
-cat tmp.txt | awk '/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/ '
-rm tmp.txt
+make CASE=$1 >& /dev/null
 echo ----------------------------------
 cat error-$1.txt
 echo ----------------------------------

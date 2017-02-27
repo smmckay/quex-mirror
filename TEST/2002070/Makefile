@@ -1,3 +1,5 @@
+include ../Makefile.lexer
+
 DEF_SIZE := -DQUEX_SETTING_BUFFER_SIZE=64
 
 lexer-iconv: Simple.cpp text.345

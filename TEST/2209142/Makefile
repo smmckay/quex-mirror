@@ -23,11 +23,11 @@ all: error good
 # -- application
 error: ../lexer-simply.cpp 
 	@quex -i error.qx -o Simple --token-policy single > tmp.txt 2>&1
-	@$(CPP) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
+	@$(LDCPP) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
 
 good: ../lexer-simply.cpp 
 	@quex -i good.qx -o Simple --token-policy single --debug-exception > tmp.txt 2>&1
-	@$(CPP) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
+	@$(LDCPP) $< Simple.cpp -DPRINT_LINE_COLUMN -o $@ 
 
 
 

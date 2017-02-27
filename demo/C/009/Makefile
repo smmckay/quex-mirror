@@ -64,7 +64,6 @@ feed-socket:             feed-socket.o
 LexUtf8.h LexUtf8.c: utf8.qx 
 	quex -i             utf8.qx \
 	     -o             LexUtf8 \
-		 --iconv                \
 		 --language     C       \
 		 --bet          wchar_t \
 		 --token-policy single       

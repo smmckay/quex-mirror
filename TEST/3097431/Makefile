@@ -2,8 +2,8 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
 .PHONY: clean
-include ./Makefile.lexer
 
 ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)

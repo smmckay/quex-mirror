@@ -1,2 +1,1 @@
-gcc -I<<QUEX_PATH>> main.c Simple.c -o lexer -ggdb -Wall -Werror
 VALGRIND:   All heap blocks were freed -- no leaks are possible

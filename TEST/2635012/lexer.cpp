@@ -1,16 +1,19 @@
 #include<fstream>    
 #include<fstream> 
 #include <./Simple>
+#include <quex/code_base/buffer/bytes/ByteLoader_stream.i>
 
 using namespace std;
 
 int 
 main(int argc, char** argv) 
 {        
+    using namespace quex;
     // we want to have error outputs in stdout, so that the unit test could see it.
-    quex::Token     Token;
-    ifstream        istr("example.txt");
-    quex::Simple    qlex(&istr);
+    Token     Token;
+    ifstream  istr("example.txt");
+    Simple    qlex(QUEX_NAME(ByteLoader_stream_new)(&istr), 
+                   (QUEX_NAME(Converter)*)0);
 
     qlex._parent_memento = 0;
     qlex.include_pop();

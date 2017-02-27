@@ -1,4 +1,6 @@
 #include "EasyLexer.h"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #include <quex/code_base/bom>
 #include <stdio.h>    
 

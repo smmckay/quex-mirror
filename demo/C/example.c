@@ -1,6 +1,8 @@
 #include <stdio.h>    
 
 #include "EasyLexer.h"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 
 
 static void print_token(quex_Token* token_p);

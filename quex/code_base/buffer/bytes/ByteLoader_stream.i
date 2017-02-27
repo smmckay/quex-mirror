@@ -37,8 +37,8 @@ QUEX_NAME(ByteLoader_stream_new)(StreamType* sh)
 QUEX_INLINE QUEX_NAME(ByteLoader)*    
 QUEX_NAME(ByteLoader_stream_new_from_file_name)(const char* FileName)
 {
-    std::ifstream*  sh = new std::ifstream(FileName, std::ios_base::binary | std::ios::in);
-    QUEX_NAME(ByteLoader)*     alter_ego;
+    std::ifstream*         sh = new std::ifstream(FileName, std::ios_base::binary | std::ios::in);
+    QUEX_NAME(ByteLoader)* alter_ego;
     if( ! sh || ! *sh ) {
         return (QUEX_NAME(ByteLoader)*)0;
     }

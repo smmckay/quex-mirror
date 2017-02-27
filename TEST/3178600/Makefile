@@ -2,6 +2,8 @@
 #
 # ABSOLUTELY NO WARRANTY
 #_______________________________________________________________________________
+include ../Makefile.lexer
+
 .PHONY: clean
 
 ifndef QUEX_PATH
@@ -14,14 +16,14 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-CC = $(CC) -c -Wconversion -pedantic   \
+CC := $(CC) -c -Wconversion -pedantic   \
      # -DQUEX_OPTION_DEBUG_SHOW_MODES \
      # -DQUEX_OPTION_DEBUG_SHOW       \
 	 $(CCFLAG_ASSERTS) 
      # -DQUEX_OPTION_ASSERTS_DISABLED
      # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
    
-LD = $(LDC) 
+LD := $(LDC) 
 
 lexer:          example.o EasyLexer.o
 	$(LD) -o $@ example.o EasyLexer.o 

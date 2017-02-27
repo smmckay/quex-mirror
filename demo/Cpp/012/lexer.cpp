@@ -1,7 +1,11 @@
 #include<cstdio> 
 
 #include "moritz_Lexer"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #include "max_Lexer"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #include "boeck_Lexer"
 
 /* When using multiple lexical analyzers, it must be compiled with 

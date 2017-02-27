@@ -32,19 +32,19 @@ COMMON_TOKEN_OPTIONS = \
 	gcc -E $< -o  $@ -I$(QUEX_PATH)
 	
 boeck_Lexer.c:  boeck.qx A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o boeck::Lexer --icu -b 4 $(COMMON_TOKEN_OPTIONS) --language C
+	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C
 
 max_Lexer.c:    max.qx A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o max::Lexer --icu -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+	quex -i $< -o max::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
 
 moritz_Lexer.c: moritz.qx A_B_C-token.c A_B_C-token_ids.h
-	quex -i $< -o moritz::Lexer --icu -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+	quex -i $< -o moritz::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
 
 A_B_C-token_ids.h \
 A_B_C-token.c: 
 	quex -i token_ids.qx               \
 		 --language C                  \
-		 --icu -b 4                    \
+		 -b 4                          \
 		 --token-id-prefix TKN_        \
 		 -o A::B::C                    \
 		 --token-class A::B::C::Token  \

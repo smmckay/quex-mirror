@@ -8,7 +8,7 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-CC := $(CC) -Wall -Werror -ggdb -DQUEX_OPTION_MULTI
+CC := $(CC) -DQUEX_OPTION_MULTI
 
 lexer: $(ENGINE:.c=.o) lexer.o Common-token.o
 	$(LDC) $^ -o  $@ $(LIB_ICU) 
@@ -19,16 +19,17 @@ lexer: $(ENGINE:.c=.o) lexer.o Common-token.o
 # -DQUEX_OPTION_ASSERTS_DISABLED
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 
-COMMON_TOKEN_OPTIONS = \
-	 --token-class-file Common-token.h \
-     --token-policy single --suppress 5
-		 # --no-message-on-extra-options \
+COMMON_TOKEN_OPTIONS = --token-class-file Common-token.h \
+                       --token-policy single --suppress 5
+	   	 	           # --no-message-on-extra-options \
 
 %.E: %.c
 	gcc -E $< -o  $@ -I$(QUEX_PATH) 
 	
 boeck_Lexer.c:  boeck.qx Common-token.c Common-token_ids
-	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C --suppress 15 --no-string-accumulator --debug-exception
+	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
+		 --language C --suppress 15 --no-string-accumulator \
+		 --debug-exception
 
 Common-token_ids \
 Common-token.c: 

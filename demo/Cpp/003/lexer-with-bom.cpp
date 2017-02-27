@@ -2,6 +2,8 @@
 #include<iostream> 
 
 #include "EasyLexer"
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 
 int 
 main(int argc, char** argv) 

@@ -1,4 +1,5 @@
 include ../Makefile.lexer
+
 X = Simple
 
 # -DQUEX_OPTION_DEBUG_SHOW 

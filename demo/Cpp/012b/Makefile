@@ -32,18 +32,18 @@ COMMON_TOKEN_OPTIONS = \
 	g++ -E $< -o  $@ -I$(QUEX_PATH) 
 	
 boeck_Lexer.cpp:  boeck.qx A_B_C-token.cpp A_B_C-token_ids
-	quex -i $< -o boeck::Lexer --icu -b 4 $(COMMON_TOKEN_OPTIONS) 
+	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
 
 max_Lexer.cpp:    max.qx A_B_C-token.cpp A_B_C-token_ids
-	quex -i $< -o max::Lexer --icu -b 4 $(COMMON_TOKEN_OPTIONS) 
+	quex -i $< -o max::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
 
 moritz_Lexer.cpp: moritz.qx A_B_C-token.cpp A_B_C-token_ids
-	quex -i $< -o moritz::Lexer --icu -b 4 $(COMMON_TOKEN_OPTIONS) 
+	quex -i $< -o moritz::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
 
 A_B_C-token_ids \
 A_B_C-token.cpp: 
 	quex -i token_ids.qx               \
-		 --icu -b 4                    \
+		 -b 4                          \
 		 --token-id-prefix TKN_        \
 		 -o A::B::C                    \
 		 --token-class A::B::C::Token  \

@@ -65,10 +65,8 @@ endif
 CONVERTER=undefined # (overidden by command line specification)
 ifeq ($(CONVERTER),icu)
 	LIB_CONV  = `icu-config --ldflags`
-	QUEX_FLAG = --icu
 else
 	LIB_CONV  = $(LIBICONV)
-	QUEX_FLAG = --iconv
 endif
 
 
@@ -85,10 +83,10 @@ EasyLexer.o: EasyLexer.cpp
 	$(CC) $< -o $@ 
 
 example.o: ../example.cpp  EasyLexer.cpp
-	$(CC) $< -o $@ 
+	$(CC) -DQUEX_OPTION_CONVERTER_ICONV $< -o $@ 
 
 lexer-with-bom.o: lexer-with-bom.cpp  EasyLexer.cpp
-	$(CC) $< -o $@ 
+	$(CC) -DQUEX_OPTION_CONVERTER_ICONV $< -o $@ 
 
 # Macro expansions (only for debugging):
 %.E: %.cpp    

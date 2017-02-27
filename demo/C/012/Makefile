@@ -34,16 +34,16 @@ lexer.o: lexer.c max_Lexer.h moritz_Lexer.h boeck_Lexer.h
 
 max_Lexer.h \
 max_Lexer.c: max.qx
-	quex -i token.qx $< -o max::Lexer --iconv -b 4     \
+	quex -i token.qx $< -o max::Lexer -b 4                \
 		 --token-id-prefix MAX_TKN_ --token-policy single \
-		 --language C                                  \
+		 --language C                                     \
 		 --suppress 6
 
 moritz_Lexer.h \
 moritz_Lexer.c: moritz.qx
-	quex -i token.qx $< -o moritz::Lexer --iconv -b 2     \
+	quex -i token.qx $< -o moritz::Lexer -b 2                \
 		 --token-id-prefix MORITZ_TKN_ --token-policy single \
-		 --language C                                     \
+		 --language C                                        \
 		 --suppress 6
 
 boeck_Lexer.h \

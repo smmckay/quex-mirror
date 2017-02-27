@@ -36,13 +36,13 @@ lexer.o: lexer.cpp max_Lexer moritz_Lexer boeck_Lexer
 
 max_Lexer \
 max_Lexer.cpp:    max.qx
-	quex -i token.qx $< -o max::Lexer --iconv -b 4     \
+	quex -i token.qx $< -o max::Lexer -b 4                \
 		 --token-id-prefix MAX_TKN_ --token-policy single \
 		 --suppress 6
 
 moritz_Lexer \
 moritz_Lexer.cpp: moritz.qx
-	quex -i token.qx $< -o moritz::Lexer --iconv -b 2     \
+	quex -i token.qx $< -o moritz::Lexer -b 2                \
 		 --token-id-prefix MORITZ_TKN_ --token-policy single \
 		 --suppress 6
 
