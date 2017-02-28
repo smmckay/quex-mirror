@@ -19,6 +19,8 @@ INCLUDES := -I$(QUEX_PATH) \
 
 CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address
 CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb -fstack-protector-all # -fsanitize=address
+
+LIB_ICU  := `icu-config --ldflags --cppflags`
 	
 all:     $(FILES)
 
@@ -26,10 +28,10 @@ hwut-info:
 	@echo $(FILES)
 
 %.exe: %.c TestAnalyzer-dummy.o
-	$(CC) $^ -o $@ 
+	$(CC) $^ -o $@ $(LIB_ICU)
 
 %.exe: %.cpp TestAnalyzer-dummy-Cpp.o
-	$(CPP) $^ -lefence -o $@ 
+	$(CPP) $^ -lefence -o $@ $(LIB_ICU)
 
 %.E: %.c
 	$(CC) -E $^ -o $@ 

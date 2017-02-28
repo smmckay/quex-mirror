@@ -30,6 +30,10 @@
 #include <TestAnalyzer>
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/buffer/TESTS/MemoryManager_UnitTest.i>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
 #include <hwut_unit.h>
 
 namespace quex {
