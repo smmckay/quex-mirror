@@ -17,6 +17,7 @@ run quex/code_base
 run quex/engine
 run quex/input
 run quex/output
+run quex/TESTS
 
 
 # Wait until all hwut jobs terminated
