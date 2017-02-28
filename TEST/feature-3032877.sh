@@ -3,13 +3,12 @@ bug=3032877
 if [[ $1 == "--hwut-info" ]]; then
     echo "alexeevm: $bug -b, --buffer-element-size enhancement"
     # One converter is enough to test here
-    echo "CHOICES: normal, icu, codec;"
+    echo "CHOICES: normal, codec;"
     exit
 fi
 
 case $1 in
     normal) converter="";;
-    icu)    converter="";;
     codec)  converter="--codec utf8";;
 esac
 

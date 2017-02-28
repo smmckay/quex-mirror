@@ -37,6 +37,10 @@ if [[ $1 == "NoModeDetection_ErrorCase" ]]; then
          EXT_TOKEN_QUEUE_FLAG='--token-policy single' \
          EXT_CFLAGS='-DQUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE_DISABLED' \
          >& /dev/null
+    ./lexer >& tmp.txt
+    cat tmp.txt
+    rm  -f tmp.txt
+    exit
 fi
 bash ../valgrindi.sh tmp.txt ./lexer 
 cat tmp.txt

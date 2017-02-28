@@ -26,7 +26,6 @@ APPLICATION      = lexer
 # (*) COMPILER SETTINGS ________________________________________________________
 #     (change COMPILER to whatever you use as compiler on the command line,
 #      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-CCP = $(CPP) -DQUEX_OPTION_ASSERTS_DISABLED 
 
 # (*) RULES ____________________________________________________________________
 # -- application
@@ -34,7 +33,7 @@ $(APPLICATION): ../lexer-simply.cpp $(ENGINE_NAME).cpp
 	@echo "##"
 	@echo "## The issue here was that there were warnings about double defined macros."
 	@echo "##"
-	$(CPP) -o $(APPLICATION) \
+	$(LDCPP) -DQUEX_OPTION_ASSERTS_DISABLED -o $(APPLICATION) \
 		  ../lexer-simply.cpp $(ENGINE_NAME).cpp 
           
 $(ENGINE_SOURCES): $(MODE_FILES) 
