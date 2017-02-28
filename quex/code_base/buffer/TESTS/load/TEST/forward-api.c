@@ -33,6 +33,10 @@
 #include "commonly_pasted.c"
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter.i>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
 
 typedef enum {
     E_LexatomLoader_ICU,

@@ -1,8 +1,14 @@
 #include<stdio.h> 
 
 #include "moritz_Lexer.h"
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
 #include "max_Lexer.h"
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
 #include "boeck_Lexer.h"
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
 
 /* When using multiple lexical analyzers, it must be compiled with 
  * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.      */

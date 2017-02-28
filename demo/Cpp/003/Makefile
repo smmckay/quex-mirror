@@ -80,7 +80,7 @@ lexer-with-bom: lexer-with-bom.o EasyLexer.o
           
 # Object files:
 EasyLexer.o: EasyLexer.cpp 
-	$(CC) $< -o $@ 
+	$(CC) -DQUEX_OPTION_CONVERTER_ICONV $< -o $@ 
 
 example.o: ../example.cpp  EasyLexer.cpp
 	$(CC) -DQUEX_OPTION_CONVERTER_ICONV $< -o $@ 

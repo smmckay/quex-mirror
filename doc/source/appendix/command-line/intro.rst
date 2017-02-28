@@ -500,33 +500,8 @@ one of those requires, of course, that the correspondent library is installed an
 On Unix systems, the iconv library is usually present. ICU is likely required to be installed 
 but also freely available. Using input converters, such as IConv or ICU is a flexible solution. 
 The converter can be adapted dynamically while the internal engine remains running on 
-Unicode.  
-
-.. cmdoption:: --iconv 
-
-    Enable the use of the IConv library for character stream decoding. This is equivalent to defining 
-    '-DQUEX_OPTION_CONVERTER_ICONV' as a compiler flag. Depending on the compiler 
-    setup the '-liconv' flag must be set explicitly in order to link against the IConv library. 
-     
-
-    
-
-Default: false (disabled)
-
-.. cmdoption:: --icu 
-
-    Enable the use of IBM's ICU library for character stream decoding. This is equivalent to defining 
-    '-DQUEX_OPTION_CONVERTER_ICU' as a compiler flag. There are a couple of libraries 
-    that are required for ICU. You can query those using the ICU tool 'icu-config'. A command 
-    line call to this tool with '--ldflags' delivers all libraries that need to be linked. 
-    A typical list is '-lpthread -lm -L/usr/lib -licui18n -licuuc -licudata'.  
-
-    
-
-Default: false (disabled)
-
-Alternatively, the engine can run directly on a specific codec, i.e. without a conversion to Unicode. 
-This approach is less flexible, but may be faster.  
+Unicode. Alternatively, the engine can run directly on a specific codec, i.e. without a conversion 
+to Unicode. This approach is less flexible, but may be faster.  
 
 .. cmdoption:: --codec codec name
 

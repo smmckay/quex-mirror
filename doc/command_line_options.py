@@ -366,35 +366,17 @@ can be used in two ways. Either on uses a converter that converts the file
 content into Unicode and the engine still runs on Unicode, or the engine itself
 is adapted to the require codec. 
 
-Currently quex-generated lexers can interact with GNU IConv and IBM's ICU library
-as input converters. Using one of those requires, of course, that  
-the correspondent library is installed and available. On Unix systems, the iconv library
-is usually present. ICU is likely required to be installed but also freely
-available. Using input converters, such as IConv or ICU is a flexible solution.
-The converter can be adapted dynamically while the internal engine remains
-running on Unicode.
+Currently quex-generated lexers can interact with GNU IConv and IBM's ICU
+library as input converters. Using one of those requires, of course, that  the
+correspondent library is installed and available. On Unix systems, the iconv
+library is usually present. ICU is likely required to be installed but also
+freely available. Using input converters, such as IConv or ICU is a flexible
+solution.  The converter can be adapted dynamically while the internal engine
+remains running on Unicode.  Alternatively, the engine can run directly on a
+specific codec, i.e. without a conversion to Unicode. This approach is less
+flexible, but may be faster.
 """,
-Option("converter_iconv_f", None, 
-     """
-     Enable the use of the IConv library for character stream decoding.
-     This is equivalent to defining '-DQUEX_OPTION_CONVERTER_ICONV'
-     as a compiler flag. Depending on the compiler setup the '-liconv' flag 
-     must be set explicitly in order to link against the IConv
-     library.
-     """),
-Option("converter_icu_f", None,
-     """
-     Enable the use of IBM's ICU library for character stream decoding.
-     This is equivalent to defining '-DQUEX_OPTION_CONVERTER_ICU'
-     as a compiler flag. There are a couple of libraries that are required
-     for ICU. You can query those using the ICU tool 'icu-config'. A command 
-     line call to this tool with '--ldflags' delivers all libraries that need
-     to be linked. A typical list is '-lpthread -lm -L/usr/lib -licui18n -licuuc 
-     -licudata'."""),
-"""
-Alternatively, the engine can run directly on a specific codec, i.e. without a conversion
-to Unicode. This approach is less flexible, but may be faster.
-""",
+
 Option("buffer_codec_name", "codec name",
      """
      Specifies a codec for the generated engine. The codec name specifies

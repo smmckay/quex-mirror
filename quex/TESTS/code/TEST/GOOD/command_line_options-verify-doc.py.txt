@@ -3,5 +3,5 @@
 (*) Options which are not documented (no output is good output)
 error: --debug-exception is not documented
 error: --debug-limit-recursion is not documented
-Documented options 102 out of 104 existing options.
+Documented options 100 out of 102 existing options.
 (*) Options which are reported, but are not available in application  (no output is good output)

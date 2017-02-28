@@ -33,3 +33,10 @@ for the 'buffer._memory.ownership' before reload!
 
 -- MEmbers in token type remain in same sequence as they are mentioned.
    => packaging may be controlled.
+
+-- Use of converters => include
+
+    #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+    #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+    #include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+    #include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
