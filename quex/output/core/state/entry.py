@@ -47,7 +47,6 @@ def do(TheState):
     between the doors. To take profit from similarities, command lists are
     organized in a command tree as explained in the entry of the file.
     """
-    print "#TheState.index:", TheState.index
     cmd_tree = CommandTree.from_AnalyzerState(TheState)
 
     # Determin the branch that starts from a leaf and ends at the entry
@@ -61,8 +60,10 @@ def do(TheState):
 
     post_txt = do_leafs(TheState, cmd_tree, done_set)
 
-    print "#pre:", "".join("%s" % x for x in pre_txt)
-    print "#post:", "".join("%s" % x for x in post_txt)
+    if TheState.index == 216:
+        print "#TheState.index:", TheState.index
+        print "#pre: ", "".join("%s" % x for x in pre_txt)
+        print "#post:", "".join("%s" % x for x in pre_txt)
     return pre_txt, post_txt
 
 def __select_the_straight(OpTree, TheState):
@@ -91,9 +92,15 @@ def do_leafs(TheState, OpTree, done_set):
     """
     outer_door_id_set = TheState.entry.door_id_set()
 
+    if TheState.index == 216:
+        print "#OpTree:", OpTree.get_string()
+
     txt_list = []
-    for door_id in outer_door_id_set:
+    for door_id in sorted(outer_door_id_set):
         if door_id in done_set: continue
+        if TheState.index == 216:
+            print "#LeafDoorId:", door_id
+
         branch_txt = do_from_leaf_to_root(TheState, OpTree, door_id, done_set)
         txt_list.append(branch_txt)
 

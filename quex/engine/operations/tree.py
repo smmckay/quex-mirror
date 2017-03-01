@@ -88,6 +88,8 @@ from   quex.engine.misc.tools                     import flatten_list_of_lists
 
 from   quex.engine.misc.tools import typed, TypedDict
 
+from   collections import OrderedDict
+
 class CommandTree:
     def __init__(self, StateIndex, DoorId_OpList_Iterable, dial_db):
         """StateIndex -- Index of state for which one operates.
@@ -263,14 +265,15 @@ class SharedTailDB:
         root_child_set   = set(door_id for door_id, cl in DoorId_OpList) 
         self.root        = Door(self.dial_db.new_door_id(StateIndex), [], None,
                                 root_child_set)
-        self.door_db     = TypedDict(DoorID, Door) # {}   # map: DoorID --> Door 
-        #                                          #  ... with ALL Door-s related to the 'problem'
+        self.door_db     = OrderedDict() # {}   # map: DoorID --> Door 
+        #                                #  ... with ALL Door-s related to the 'problem'
 
         # map: Shared Tail --> SharedTailCandidateInfo
-        self._tail_db      = {} # map: command list tail --> those who share it
-        self._candidate_db = {} # map: DoorID --> Door 
-        #                       #  ... but only with those DoorID-s that are 
-        #                       #      subject to shared tail investigation.
+        # 'OrderedDict' to for platform independence.
+        self._tail_db      = OrderedDict() # map: command list tail --> those who share it
+        self._candidate_db = OrderedDict() # map: DoorID --> Door 
+        #                                  #  ... but only with those DoorID-s that are 
+        #                                  #      subject to shared tail investigation.
 
         # Doors which cannot extract a tail are dropped from consideration. 
         # (See discussion at end [DROP_NON_SHARER])
@@ -279,7 +282,7 @@ class SharedTailDB:
         # Else, look into _tail_db if it finally shared something. 
         good_set = set()
 
-        for door_id, command_list in DoorId_OpList:
+        for door_id, command_list in sorted(DoorId_OpList):
             door = Door(door_id, command_list, self.root, set())
             if self._tail_db_enter(door_id, door): 
                 good_set.add(door_id)
@@ -303,7 +306,7 @@ class SharedTailDB:
                          extract a shared tail of comands.
                  False -- if it was not possible.
         """
-        if len(self._tail_db) == 0:
+        if not self._tail_db:
             return False
 
         best_candidate = self._find_best()
