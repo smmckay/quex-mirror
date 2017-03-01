@@ -61,6 +61,8 @@ def do(TheState):
 
     post_txt = do_leafs(TheState, cmd_tree, done_set)
 
+    print "#pre:", "".join(pre_text)
+    print "#post:", "".join(post_text)
     return pre_txt, post_txt
 
 def __select_the_straight(OpTree, TheState):
