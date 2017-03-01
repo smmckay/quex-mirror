@@ -47,6 +47,7 @@ def do(TheState):
     between the doors. To take profit from similarities, command lists are
     organized in a command tree as explained in the entry of the file.
     """
+    print "#TheState.index:", TheState.index
     cmd_tree = CommandTree.from_AnalyzerState(TheState)
 
     # Determin the branch that starts from a leaf and ends at the entry
