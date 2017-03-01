@@ -8,7 +8,7 @@ where its leafs are the entries from other states.
                    |                    |                  |   
              .-------------.      .-------------.    .-------------.
              |DoorID:      |      |DoorID:      |    |DoorID:      |
-             | OpList |      | OpList |    | OpList |
+             | OpList      |      | OpList      |    | OpList      |
              '-------------'      '-------------'    '-------------'
                parent \             / parent               / parent
                        \           /                      /
