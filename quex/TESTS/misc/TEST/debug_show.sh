@@ -21,8 +21,8 @@ case $1 in
         echo "Extracted (path_walker, state_index, template, etc.)"
         echo "This only proves that there were MegaStates involved."
         echo
-        cat tmp.txt | awk '/state_key/ || /template/ || /path/ || /number of token/ { print $0; }' | sort -u
-        rm ./debug_show Simple* tmp.txt
+        cat tmp.txt | grep -ae 'state_key\|template\|path walker\|path_iterator\|number of token' | sort -u
+        # rm ./debug_show Simple* tmp.txt
         ;;
 esac
 
