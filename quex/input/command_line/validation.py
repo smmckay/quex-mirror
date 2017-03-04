@@ -1,8 +1,6 @@
 from   quex.DEFINITIONS              import QUEX_PATH
 import quex.input.command_line.query as     query
 from   quex.input.setup              import SETUP_INFO, DEPRECATED, \
-                                            global_character_type_db, \
-                                            command_line_args_defined, \
                                             command_line_args_string, \
                                             command_line_args, \
                                             SetupParTypes, \

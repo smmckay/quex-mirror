@@ -83,9 +83,15 @@ goto _36;
 
 
     __quex_assert_no_passage();
-_24:
-    /* (DROP_OUT from 137)  */
-    goto _31;
+_21:
+    /* (DROP_OUT from 123)  */
+    goto _29;
+
+
+    __quex_assert_no_passage();
+_22:
+    /* (DROP_OUT from 129)  */
+    goto _37;
 
 
     __quex_assert_no_passage();
@@ -95,21 +101,15 @@ _23:
 
 
     __quex_assert_no_passage();
-_21:
-    /* (DROP_OUT from 123)  */
-    goto _29;
+_24:
+    /* (DROP_OUT from 137)  */
+    goto _31;
 
 
     __quex_assert_no_passage();
 _25:
     /* (DROP_OUT from 141)  */
     goto _28;
-
-
-    __quex_assert_no_passage();
-_22:
-    /* (DROP_OUT from 129)  */
-    goto _37;
 
 
     __quex_assert_no_passage();

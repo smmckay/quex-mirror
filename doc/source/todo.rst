@@ -40,3 +40,5 @@ for the 'buffer._memory.ownership' before reload!
     #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
     #include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
     #include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
+
+-- On error in analyzer function --> TKN_TERMINATION + error message.

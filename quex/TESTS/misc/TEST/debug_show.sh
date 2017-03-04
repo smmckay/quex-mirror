@@ -22,7 +22,7 @@ case $1 in
         echo "This only proves that there were MegaStates involved."
         echo
         cat tmp.txt | grep -ae 'state_key\|template\|path walker\|path_iterator\|number of token' | sort -u
-        # rm ./debug_show Simple* tmp.txt
+        rm ./debug_show Simple* tmp.txt
         ;;
 esac
 

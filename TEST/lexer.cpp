@@ -50,6 +50,7 @@ int main(int argc, char** argv)
         // (*) get next token from the token stream
 #       ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE
         token_id = qlex->receive();
+        token_p  = qlex->token;
 #       else
         qlex->receive(&token_p);
 #       endif

@@ -123,9 +123,10 @@ class IncidenceDB(dict):
         txt = [
             '__QUEX_STD_printf("\\n");\n',
             'QUEX_NAME(Buffer_show_debug_content)(&me->buffer);\n',
-            '__QUEX_STD_printf("\\n");\n',
-            'QUEX_ERROR_EXIT("\\nMode \'%s\': %s\\n"\n' % (ModeName, msg),
-            '                "%s\\n");' % note_txt
+            '__QUEX_STD_printf("\\n\\n");\n',
+            '__QUEX_STD_printf("Mode \'%s\': %s\\n"\n' % (ModeName, msg),
+            '                  "%s\\n");\n' % note_txt,
+            'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n'
         ]
 
         return CodeFragment(txt, SourceRef_DEFAULT)

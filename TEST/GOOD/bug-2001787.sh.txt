@@ -4,6 +4,12 @@
 URL 'http://www.dog.com/get?q=food'
 
 
+
+Mode 'ONE_AND_ONLY': Match failure, no pattern matched!
+The 'on_failure' handler has not been specified.
+<TERMINATION> 'http://www.dog.com/get?q=food'
+| [END] number of token = 2
+`------------------------------------------------------------------------------------
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
                                            [0001] 0x0068
@@ -29,8 +35,3 @@ _________________________________________________________________
                                            [FFFE] 0xFFFFFFFF
    buffer back---------------------------->[FFFF] 0x0000
 _________________________________________________________________
-Simple.cpp:761:	terminate called after throwing an instance of 'std::runtime_error'
-  what():  
-Mode 'ONE_AND_ONLY': Match failure, no pattern matched!
-The 'on_failure' handler has not been specified.
-
