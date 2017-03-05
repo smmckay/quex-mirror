@@ -140,18 +140,60 @@ typedef enum {
     E_Error_Constructor_Accumulator_Failed,
     E_Error_Constructor_Counter_Failed,
     E_Error_Constructor_PostCategorizer_Failed,
-    E_Error_InputName_Set_Failed,
     E_Error_IncludePopOnEmptyStack,
     E_Error_IncludePush_OnError,
+    E_Error_InputName_Set_Failed,
+    E_Error_NoHandler_OnBadLexatom,
+    E_Error_NoHandler_OnFailure,
+    E_Error_NoHandler_OnIndentationBad,
+    E_Error_NoHandler_OnLoadFailure,
+    E_Error_NoHandler_OnOverflow,
+    E_Error_NoHandler_OnSkipRangeOpen,
     E_Error_None,
     E_Error_ProvidedExternal_Memory_Corrupt,
     E_Error_Reset_OnError,
     E_Error_Uninitialized,
     E_Error_UnitTest_Termination,
     E_Error_UserConstructor_Failed,
-    E_Error_UserReset_Failed,
-    E_Error_UserMementoPack_Failed
+    E_Error_UserMementoPack_Failed,
+    E_Error_UserReset_Failed
 } E_Error;
+
+#define E_Error_NAME(E) \
+    (  (E) == E_Error_Allocation_BufferMemory_Failed     ? "Allocation_BufferMemory_Failed"     \
+     : (E) == E_Error_Allocation_ByteLoader_Failed       ? "Allocation_ByteLoader_Failed"       \
+     : (E) == E_Error_Allocation_LexatomLoader_Failed    ? "Allocation_LexatomLoader_Failed"    \
+     : (E) == E_Error_Constructor_Accumulator_Failed     ? "Constructor_Accumulator_Failed"     \
+     : (E) == E_Error_Constructor_Counter_Failed         ? "Constructor_Counter_Failed"         \
+     : (E) == E_Error_Constructor_PostCategorizer_Failed ? "Constructor_PostCategorizer_Failed" \
+     : (E) == E_Error_IncludePopOnEmptyStack             ? "IncludePopOnEmptyStack"             \
+     : (E) == E_Error_IncludePush_OnError                ? "IncludePush_OnError"                \
+     : (E) == E_Error_InputName_Set_Failed               ? "InputName_Set_Failed"               \
+     : (E) == E_Error_NoHandler_OnBadLexatom             ? "NoHandler_OnBadLexatom"             \
+     : (E) == E_Error_NoHandler_OnFailure                ? "NoHandler_OnFailure"                \
+     : (E) == E_Error_NoHandler_OnIndentationBad         ? "NoHandler_OnIndentationBad"         \
+     : (E) == E_Error_NoHandler_OnLoadFailure            ? "NoHandler_OnLoadFailure"            \
+     : (E) == E_Error_NoHandler_OnOverflow               ? "NoHandler_OnOverflow"               \
+     : (E) == E_Error_NoHandler_OnSkipRangeOpen          ? "NoHandler_OnSkipRangeOpen"          \
+     : (E) == E_Error_None                               ? "None"                               \
+     : (E) == E_Error_ProvidedExternal_Memory_Corrupt    ? "ProvidedExternal_Memory_Corrupt"    \
+     : (E) == E_Error_Reset_OnError                      ? "Reset_OnError"                      \
+     : (E) == E_Error_Uninitialized                      ? "Uninitialized"                      \
+     : (E) == E_Error_UnitTest_Termination               ? "UnitTest_Termination"               \
+     : (E) == E_Error_UserConstructor_Failed             ? "UserConstructor_Failed"             \
+     : (E) == E_Error_UserMementoPack_Failed             ? "UserMementoPack_Failed"             \
+     : (E) == E_Error_UserReset_Failed                   ? "E_Error_UserReset_Failed"           \
+     :                                                     "<Error Void>")
+
+#define E_Error_MISSING_HANDLER_NAME(E) \
+     (  (E) == E_Error_NoHandler_OnBadLexatom     ? "on_bad_lexatom"     \
+      : (E) == E_Error_NoHandler_OnFailure        ? "on_failure"         \
+      : (E) == E_Error_NoHandler_OnIndentationBad ? "on_indentation_bad" \
+      : (E) == E_Error_NoHandler_OnLoadFailure    ? "on_load_failure"    \
+      : (E) == E_Error_NoHandler_OnOverflow       ? "on_overflow"        \
+      : (E) == E_Error_NoHandler_OnSkipRangeOpen  ? "on_skip_range_open" \
+      :                                             (const char*)0)
+
 #endif
 
 /* Define the QUEX_TYPE_STREAM_POSITION at a central place, so that it is the

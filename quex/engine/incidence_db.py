@@ -8,7 +8,8 @@ from   quex.blackboard import standard_incidence_db, \
                               standard_incidence_db_get_name, \
                               standard_incidence_db_is_mandatory, \
                               standard_incidence_db_get_terminal_type, \
-                              E_IncidenceIDs
+                              E_IncidenceIDs, \
+                              Lng
 
 
 class IncidenceDB(dict):
@@ -95,41 +96,12 @@ class IncidenceDB(dict):
 
     @staticmethod
     def __default_code_fragment(IncidenceId, ModeName):
-
         if IncidenceId == E_IncidenceIDs.END_OF_STREAM:
-            txt = 'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n'
-                # NOT: "Lng.PURE_RETURN" because the terminal end of stream 
-                #      exits anyway immediately--after 'on_after_match'.
-            return CodeFragment(txt, SourceRef_DEFAULT)
-
-        handler_name = standard_incidence_db_get_name(IncidenceId)
-        note_txt     = 'The \'%s\' handler has not been specified.' % handler_name
-
-        msg = {
-            E_IncidenceIDs.MATCH_FAILURE:
-                'Match failure, no pattern matched!', 
-            E_IncidenceIDs.SKIP_RANGE_OPEN:
-                'End of file occurred before closing skip range delimiter!',
-            E_IncidenceIDs.INDENTATION_BAD:
-                'Bad indentation character detected!',
-            E_IncidenceIDs.BAD_LEXATOM:
-                'Bad lexatom (character encoding error) detected!',
-            E_IncidenceIDs.LOAD_FAILURE:
-                'General failure while loading buffer.',
-            E_IncidenceIDs.OVERFLOW:
-                'Lexeme exceeds buffer size.',
-        }[IncidenceId]
-            
-        txt = [
-            '__QUEX_STD_printf("\\n");\n',
-            'QUEX_NAME(Buffer_show_debug_content)(&me->buffer);\n',
-            '__QUEX_STD_printf("\\n\\n");\n',
-            '__QUEX_STD_printf("Mode \'%s\': %s\\n"\n' % (ModeName, msg),
-            '                  "%s\\n");\n' % note_txt,
-            'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n'
-        ]
-
-        return CodeFragment(txt, SourceRef_DEFAULT)
+            return CodeFragment(Lng.EXIT_ON_TERMINATION(), 
+                                SourceRef_DEFAULT)
+        else:
+            return CodeFragment(Lng.EXIT_ON_MISSING_HANDLER(IncidenceId), 
+                                SourceRef_DEFAULT)
 
     @typed(factory=TerminalFactory)
     def extract_terminal_db(self, factory, ReloadRequiredF):

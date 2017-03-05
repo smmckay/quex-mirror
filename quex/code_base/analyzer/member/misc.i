@@ -8,6 +8,7 @@
 #   include <quex/code_base/analyzer/Counter>
 #endif
 #include <quex/code_base/token/TokenPolicy>
+#include <quex/code_base/buffer/Buffer_debug>
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -125,11 +126,24 @@ QUEX_INLINE void
 QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
 {
     QUEX_NAME(Mode)** iterator = 0x0;
+    const char*       handler_name = (const char*)0;
 
-    __QUEX_STD_printf("   CurrentMode = %s;\n", 
+    __QUEX_STD_printf("   CurrentMode = %s; ", 
                       me->__current_mode_p == 0x0 ? "0x0" : me->__current_mode_p->name);
 
-    QUEX_NAME(Buffer_print_this)(&me->buffer);
+    if( me->error_code == E_Error_None ) {
+        __QUEX_STD_printf("<no error>\\n");
+        QUEX_NAME(Buffer_print_this)(&me->buffer);
+    } 
+    else {
+        __QUEX_STD_printf("%s\\n", E_Error_NAME(me->error_code));
+        handler_name = E_Error_MISSING_HANDLER_NAME(me->error_code);
+        if( handler_name ) {
+            __QUEX_STD_printf("'%s' has not been specified for mode.\n", handler_name);
+        }
+        QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
+        __QUEX_STD_printf("\\n\\n");
+    }
 
 #   ifdef QUEX_OPTION_STRING_ACCUMULATOR
     QUEX_NAME(Accumulator_print_this)(&me->accumulator);

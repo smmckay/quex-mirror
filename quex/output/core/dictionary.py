@@ -915,6 +915,26 @@ class Lng_Cpp(dict):
         assert type(VariableDB) != dict
         return cpp._local_variable_definitions(VariableDB.get()) 
 
+    def EXIT_ON_MISSING_HANDLER(self, IncidenceId):
+        error_code = {
+            E_IncidenceIDs.MATCH_FAILURE:   "E_Error_NoHandler_OnFailure",
+            E_IncidenceIDs.SKIP_RANGE_OPEN: "E_Error_NoHandler_OnSkipRangeOpen",
+            E_IncidenceIDs.INDENTATION_BAD: "E_Error_NoHandler_OnIndentationBad",
+            E_IncidenceIDs.BAD_LEXATOM:     "E_Error_NoHandler_OnBadLexatom",
+            E_IncidenceIDs.LOAD_FAILURE:    "E_Error_NoHandler_OnLoadFailure",
+            E_IncidenceIDs.OVERFLOW:        "E_Error_NoHandler_OnOverflow",
+        }[IncidenceId]
+            
+        return [
+            'self.error_code = %s;\n' % error_code,
+            'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n'
+        ]
+
+    def EXIT_ON_TERMINATION(self):
+        # NOT: "Lng.PURE_RETURN" because the terminal end of stream 
+        #      exits anyway immediately--after 'on_after_match'.
+        return 'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n'
+
     @typed(dial_db=DialDB)
     def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):
         assert self.__code_generation_reload_label is None
