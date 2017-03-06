@@ -103,6 +103,35 @@ QUEXED_DEF(system_is_little_endian)(void)
     return u.c[sizeof(long int)-1] != 1;
 }
 
+void
+QUEXED_DEF(print_relative_positions)(const void*  Begin,       const void* End, 
+                                     size_t       ElementSize, const void* P)
+/* Begin       = pointer to first element of buffer.
+ * End         = pointer behind last element of buffer.
+ * ElementSize = size in bytes of each element of buffer.
+ * P           = pointer for which relative position is to be printed.        */
+{
+    const uint8_t* BytePBegin = (const uint8_t*)Begin;
+    const uint8_t* BytePEnd   = (const uint8_t*)End;
+    const uint8_t* ByteP      = (const uint8_t*)P;
+
+    if( P == 0x0 ) {
+        __QUEX_STD_printf("<void>;");
+    }
+    else if( P < Begin ) {
+        __QUEX_STD_printf("begin - %i <beyond boarder>;", 
+                          (int)(BytePBegin - ByteP) / (int)ElementSize);
+    }
+    else if( P >= End ) {
+        __QUEX_STD_printf("end + %i <beyond boarder>;", 
+                          (int)(ByteP - BytePEnd) / (int)ElementSize);
+    }
+    else {
+        __QUEX_STD_printf("begin + %i, end - %i;", 
+                          (int)(ByteP - BytePBegin) / (int)ElementSize, 
+                          (int)(BytePEnd - ByteP) / (int)ElementSize);
+    }
+}
 
 QUEX_NAMESPACE_QUEX_CLOSE
  

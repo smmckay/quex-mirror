@@ -108,6 +108,7 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
                                                                            QUEX_NAME(Buffer)*         buffer,
                                                                            void**                     begin_p, 
                                                                            const void**               end_p),
+                               void         (*derived_print_this)(QUEX_NAME(LexatomLoader)*  alter_ego),
                                QUEX_NAME(ByteLoader)*  byte_loader,
                                ptrdiff_t    ByteNPerCharacter)
 {
@@ -122,6 +123,7 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
     me->input_lexatom_seek    = QUEX_NAME(LexatomLoader_lexatom_index_seek);
     me->derived.load_lexatoms = derived_load_lexatoms;
     me->derived.destruct_self = derived_destruct_self;
+    me->derived.print_this    = derived_print_this;
     me->delete_self           = QUEX_NAME(LexatomLoader_delete_self);
 
     /* Support for manual buffer filling.                                    */
@@ -216,6 +218,27 @@ QUEX_NAME(LexatomLoader_reverse_byte_order)(QUEX_TYPE_LEXATOM*       Begin,
         }
         break;
     }
+}
+
+QUEX_INLINE void       
+QUEX_NAME(LexatomLoader_print_this)(QUEX_NAME(LexatomLoader)* me)
+{
+    __QUEX_STD_printf("  filler: ");
+    if( ! me ) {
+        __QUEX_STD_printf("<none>\n");
+        return;
+    }
+    if( me->derived.print_this ) {
+        me->derived.print_this(me);
+    }
+    /* me->byte_loader->print_this(me->byte_loader); */
+
+    __QUEX_STD_printf("   _byte_order_reversion_active_f = %s;\n", 
+                      me->_byte_order_reversion_active_f ? "true" : "false");
+    __QUEX_STD_printf("   lexatom_index_next_to_fill     = %i;\n", 
+                      (int)me->lexatom_index_next_to_fill);
+    __QUEX_STD_printf("   byte_n_per_lexatom             = %i;\n", 
+                      (int)me->byte_n_per_lexatom);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

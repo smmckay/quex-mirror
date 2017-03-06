@@ -35,6 +35,9 @@ QUEX_NAME(Converter_ICU_stomach_byte_n)(QUEX_NAME(Converter)* me);
 QUEX_INLINE void 
 QUEX_NAME(Converter_ICU_stomach_clear)(QUEX_NAME(Converter)* me);
 
+QUEX_INLINE void 
+QUEX_NAME(Converter_ICU_print_this)(QUEX_NAME(Converter)* me)
+
 QUEX_INLINE QUEX_NAME(Converter)*
 QUEX_NAME(Converter_ICU_new)(const char* FromCoding, const char* ToCoding)
 {
@@ -57,7 +60,8 @@ QUEX_NAME(Converter_ICU_new)(const char* FromCoding, const char* ToCoding)
                                          QUEX_NAME(Converter_ICU_convert),
                                          QUEX_NAME(Converter_ICU_delete_self),
                                          QUEX_NAME(Converter_ICU_stomach_byte_n),
-                                         QUEX_NAME(Converter_ICU_stomach_clear)) ) {
+                                         QUEX_NAME(Converter_ICU_stomach_clear),
+                                         QUEX_NAME(Converter_ICU_print_this)) ) {
         QUEXED(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
         return (QUEX_NAME(Converter)*)0;
     }
@@ -310,6 +314,34 @@ QUEX_NAME(Converter_ICU_delete_self)(QUEX_NAME(Converter)* alter_ego)
     /* There should be a way to call 'ucnv_flushCache()' as soon as all converters
      * are freed automatically.                                                       */
     u_cleanup();
+}
+
+QUEX_INLINE void 
+QUEX_NAME(Converter_ICU_print_this)(QUEX_NAME(Converter)* alter_ego)
+{
+    QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
+    const void*  PivotBegin = (const void*)&me->pivot.buffer[0];
+    const void*  PivotEnd   = (const void*)&me->pivot.buffer[QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE];
+
+    __QUEX_STD_printf("   type:                         ICU, IBM (tm);\n");
+    __QUEX_STD_printf("   from_handle:                  ((%p));\n", (void*)me->from_handle);
+    __QUEX_STD_printf("   to_handle:                    ((%p));\n", (void*)me->to_handle);
+    __QUEX_STD_printf("   status:                       %s;\n",     u_errorName(me->status));
+    __QUEX_STD_printf("   reset_upon_next_conversion_f: %s;\n",
+                      me->reset_upon_next_conversion_f ? "true" : "false");
+
+    __QUEX_STD_printf("   pivot: {\n");
+    __QUEX_STD_printf("      buffer: { begin: ((%p)) end: ((%p)) size: %i; }\n",
+                      PivotBegin, PivotEnd, (int)QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE);
+    __QUEX_STD_printf("      source: ");
+    __QUEX_STD_printf("\n");
+    QUEXED(print_relative_positions)(PivotBegin, PivotEnd, sizeof(buffer[0]),
+                                     (void*)me->pivot.source);
+    __QUEX_STD_printf("      target: ");
+    QUEXED(print_relative_positions)(PivotBegin, PivotEnd, sizeof(buffer[0]),
+                                     me->pivot.target);
+    __QUEX_STD_printf("\n");
+    __QUEX_STD_printf("    }\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

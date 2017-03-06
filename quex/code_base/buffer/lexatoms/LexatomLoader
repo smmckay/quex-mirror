@@ -12,6 +12,18 @@ struct QUEX_NAME(Converter_tag);
 struct QUEX_NAME(Buffer_tag);
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(LexatomLoader_tag) {
+    /* -- byte order (i.e little- vs. big-endian) reversion: enable/disable
+     *    the reversion of byte order.    
+     *                                                                       */
+    bool                      _byte_order_reversion_active_f;
+
+    QUEX_TYPE_STREAM_POSITION lexatom_index_next_to_fill;
+
+    /* Byte number per lexatom. If != -1 => there is a linear relationship
+     *                            between lexatom position and lexatom
+     *                            index.                                     */
+    ptrdiff_t                 byte_n_per_lexatom;
+
     /* This is the interface that the buffer sees of the buffer filler. Its
      * task is to coordinate the filling of buffer content from a stream in the
      * background. Some fillers may convert lexatoms or filter.  All fillers
@@ -57,18 +69,6 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(LexatomLoade
     void        (*delete_self)(struct QUEX_NAME(LexatomLoader_tag)*);         
                                                                              
                                                                              
-    /* -- byte order (i.e little- vs. big-endian) reversion: enable/disable
-     *    the reversion of byte order.    
-     *                                                                       */
-    bool                      _byte_order_reversion_active_f;
-
-    QUEX_TYPE_STREAM_POSITION lexatom_index_next_to_fill;
-
-    /* Byte number per lexatom. If != -1 => there is a linear relationship
-     *                            between lexatom position and lexatom
-     *                            index.                                     */
-    ptrdiff_t                 byte_n_per_lexatom;
-
     struct {
         /* PASSIVE API: Lexical analyzer requests LexatomLoader to fill its
          *              buffer.                                              */
@@ -96,6 +96,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(LexatomLoade
                                            QUEX_NAME(Buffer)*                    buffer,
                                            void**                                begin_p, 
                                            const void**                          end_p);
+
+        void        (*print_this)(struct QUEX_NAME(LexatomLoader_tag)*  alter_ego);
 
         /* destruct_self: Free resources occupied by 'me' BUT NOT 'myself'.
          * delete_self:   Free resources occupied by 'me' AND 'myself'.      */
@@ -127,6 +129,7 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
                                                                            QUEX_NAME(Buffer)*        buffer,
                                                                            void**                    begin_p, 
                                                                            const void**              end_p),
+                               void         (*derived_print_this)(QUEX_NAME(LexatomLoader)*  alter_ego),
                                QUEX_NAME(ByteLoader)*  byte_loader, 
                                ptrdiff_t               ByteNPerCharacter);
 
@@ -140,6 +143,9 @@ QUEX_INLINE ptrdiff_t
 
 QUEX_INLINE bool       
     QUEX_NAME(LexatomLoader_lexatom_index_reset)(QUEX_NAME(LexatomLoader)* me);
+
+QUEX_INLINE void       
+    QUEX_NAME(LexatomLoader_print_this)(QUEX_NAME(LexatomLoader)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

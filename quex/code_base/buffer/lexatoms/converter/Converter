@@ -75,6 +75,9 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Converter_ta
     /* Initializes the converter according the given BomId. An error during is 
      * reported as 'false'.                                                   */
 
+    void    (*print_this)(struct QUEX_NAME(Converter_tag)*);
+    /* Prints current state of 'this' converter.                              */
+
     void    (*delete_self)(struct QUEX_NAME(Converter_tag)*);
     /* Closes the conversion handle produced with initialize(...).      
      * Deletes the object of the derived class.                               */
@@ -95,25 +98,25 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Converter_ta
 
 } QUEX_NAME(Converter);
 
-QUEX_INLINE bool
-QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
-                    const char*  FromCodec, const char* ToCodec,
-                    bool         (*initialize)(QUEX_NAME(Converter)*, 
-                                               const char* FromCodingName, 
-                                               const char* ToCodingName),  
-                    bool         (*initialize_by_bom_id)(QUEX_NAME(Converter)*, 
-                                                         QUEX_TYPE_BOM),
-                    E_LoadResult (*convert)(QUEX_NAME(Converter)*, 
-                                            uint8_t**             source, 
-                                            const uint8_t*             SourceEnd, 
-                                            QUEX_TYPE_LEXATOM** drain,  
-                                            const QUEX_TYPE_LEXATOM* DrainEnd),
-                    void         (*delete_self)(QUEX_NAME(Converter)*),
-                    ptrdiff_t    (*stomach_byte_n)(QUEX_NAME(Converter)*),
-                    void         (*stomach_clear)(QUEX_NAME(Converter)*));
+QUEX_INLINE bool QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
+                                                const char*  FromCodec, const char* ToCodec,
+                                                bool         (*initialize)(QUEX_NAME(Converter)*, 
+                                                                           const char* FromCodingName, 
+                                                                           const char* ToCodingName),  
+                                                bool         (*initialize_by_bom_id)(QUEX_NAME(Converter)*, 
+                                                                                     QUEX_TYPE_BOM),
+                                                E_LoadResult (*convert)(QUEX_NAME(Converter)*, 
+                                                                        uint8_t**           source, 
+                                                                        const uint8_t*      SourceEnd, 
+                                                                        QUEX_TYPE_LEXATOM** drain,  
+                                                                        const QUEX_TYPE_LEXATOM* DrainEnd),
+                                                void         (*delete_self)(QUEX_NAME(Converter)*),
+                                                ptrdiff_t    (*stomach_byte_n)(QUEX_NAME(Converter)*),
+                                                void         (*stomach_clear)(QUEX_NAME(Converter)*),
+                                                void         (*print_this)(QUEX_NAME(Converter)*));
 
-QUEX_INLINE void 
-QUEX_NAME(Converter_reset)(QUEX_NAME(Converter)* me);
+QUEX_INLINE void QUEX_NAME(Converter_reset)(QUEX_NAME(Converter)* me);
+QUEX_INLINE void QUEX_NAME(Converter_print_this)(QUEX_NAME(Converter)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

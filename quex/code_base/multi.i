@@ -18,7 +18,7 @@
  * Option 'QUEX_OPTION_MULTI' avoids the inclusion of some critical files 
  * during the implementation of all files. Instead, the explicit inclusion of 
  * 'multi.i' in one file delivers the reqired implementations. A good candidate
- * for '#includ'-ing is the interface module where the lexical analyzers are 
+ * for '#include'-ing is the interface module where the lexical analyzers are 
  * called.
  *
  * If the global quex namespace is chosen to be different from 'quex', the 

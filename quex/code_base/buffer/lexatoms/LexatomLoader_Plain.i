@@ -53,6 +53,9 @@ QUEX_NAME(LexatomLoader_Plain_get_fill_boundaries)(QUEX_NAME(LexatomLoader)* alt
                                                    void**                    begin_p, 
                                                    const void**              end_p);
 
+QUEX_INLINE void 
+QUEX_NAME(LexatomLoader_Plain_print_this)(QUEX_NAME(LexatomLoader)* alter_ego);
+
 QUEX_INLINE QUEX_NAME(LexatomLoader)*
 QUEX_NAME(LexatomLoader_Plain_new)(QUEX_NAME(ByteLoader)* byte_loader)
 {
@@ -81,15 +84,16 @@ QUEX_NAME(LexatomLoader_Plain_construct)(QUEX_NAME(LexatomLoader_Plain)* me,
     ptrdiff_t   byte_n_per_lexatom = byte_loader && byte_loader->binary_mode_f ? 
                                        (ptrdiff_t)sizeof(QUEX_TYPE_LEXATOM) : -1;
     QUEX_NAME(LexatomLoader_setup)(&me->base,
-                                  QUEX_NAME(LexatomLoader_Plain_load_lexatoms),
-                                  QUEX_NAME(LexatomLoader_Plain_stomach_byte_n),
-                                  QUEX_NAME(LexatomLoader_Plain_stomach_clear),
-                                  QUEX_NAME(LexatomLoader_Plain_destruct_self), 
-                                  QUEX_NAME(LexatomLoader_Plain_fill_prepare), 
-                                  QUEX_NAME(LexatomLoader_Plain_fill_finish), 
-                                  QUEX_NAME(LexatomLoader_Plain_get_fill_boundaries),
-                                  byte_loader,
-                                  byte_n_per_lexatom);
+                                   QUEX_NAME(LexatomLoader_Plain_load_lexatoms),
+                                   QUEX_NAME(LexatomLoader_Plain_stomach_byte_n),
+                                   QUEX_NAME(LexatomLoader_Plain_stomach_clear),
+                                   QUEX_NAME(LexatomLoader_Plain_destruct_self), 
+                                   QUEX_NAME(LexatomLoader_Plain_fill_prepare), 
+                                   QUEX_NAME(LexatomLoader_Plain_fill_finish), 
+                                   QUEX_NAME(LexatomLoader_Plain_get_fill_boundaries),
+                                   QUEX_NAME(LexatomLoader_Plain_print_this),
+                                   byte_loader,
+                                   byte_n_per_lexatom);
 }
 
 QUEX_INLINE ptrdiff_t 
@@ -191,6 +195,13 @@ QUEX_NAME(LexatomLoader_Plain_fill_finish)(QUEX_NAME(LexatomLoader)*  alter_ego,
     /* Copying of content is done, already, by caller.                       */
     /* Inserted number of lexatoms = End - Begin.                            */
     return (ptrdiff_t)(FilledEndP - insertion_p);
+}
+
+QUEX_INLINE void 
+QUEX_NAME(LexatomLoader_Plain_print_this)(QUEX_NAME(LexatomLoader)* alter_ego)
+{
+    (void)alter_ego;
+    __QUEX_STD_printf("  type: plain;\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

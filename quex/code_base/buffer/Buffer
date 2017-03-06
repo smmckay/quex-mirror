@@ -29,6 +29,7 @@ QUEX_INLINE void    QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  
 QUEX_INLINE void    QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me);
 QUEX_INLINE void    QUEX_NAME(BufferMemory_resources_absent_mark)(QUEX_NAME(BufferMemory)* me);
 QUEX_INLINE bool    QUEX_NAME(BufferMemory_resources_absent)(QUEX_NAME(BufferMemory)* me); 
+QUEX_INLINE void    QUEX_NAME(BufferMemory_print_this)(QUEX_NAME(BufferMemory)* me);
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) { 
 /* Buffer of lexatoms on which the analyzer runs. 
@@ -51,21 +52,22 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
  *           _back -----------------------------------------------'
  * 
  * 'lexatom_index_end_of_stream == -1' => end of stream has not yet been
- * detected.                                                                 */
+ * detected.                                                                  */
                                                                              
     QUEX_NAME(BufferMemory)  _memory;                                        
                                                                              
-    /* (*) Iterator positions for lexical analysis                           */
-    QUEX_TYPE_LEXATOM*     _read_p;                                        
-    QUEX_TYPE_LEXATOM*     _lexeme_start_p;                                
-                                                                             
+    /* Information about content loaded into the buffer.                      */
     struct {                                                                 
         QUEX_TYPE_LEXATOM*        end_p;                                     
         QUEX_TYPE_STREAM_POSITION lexatom_index_begin;                     
-        /* Character index + 1 of the last lexatom in the stream.          */
+        /* Character index + 1 of the last lexatom in the stream.             */
         QUEX_TYPE_STREAM_POSITION lexatom_index_end_of_stream; 
     } input;
 
+    /* (*) Iterator positions for lexical analysis                            */
+    QUEX_TYPE_LEXATOM*       _read_p;                                        
+    QUEX_TYPE_LEXATOM*       _lexeme_start_p;                                
+                                                                             
     /* (*) Information about previous content:
      *
      * _lexatom_at_lexeme_start: lexatom that has been covered by a 
@@ -73,7 +75,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
      *                             analysis.
      * _lexatom_at_lexeme_start: Used to check whether the lexeme's 
      *                             preceeding lexatom was newline. 
-     *                             (i.e. for begin-of-line pre-context).     */
+     *                             (i.e. for begin-of-line pre-context).      */
     QUEX_TYPE_LEXATOM      _lexatom_at_lexeme_start;      
 #   ifdef __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
     QUEX_TYPE_LEXATOM      _lexatom_before_lexeme_start;  
@@ -96,7 +98,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
      *                    to 'EndP' needs to be copied somewhere else.
      * on_overflow: Distance between current '_read_p' and the lexeme start
      *              plus the fallback region are too big for the current 
-     *              buffer's size.                                           */
+     *              buffer's size.                                            */
     void      (*on_content_change)(const QUEX_TYPE_LEXATOM*  BeginP,
                                           const QUEX_TYPE_LEXATOM*  EndP);
     void      (*on_overflow)(struct QUEX_NAME(Buffer_tag)*, bool ForwardF);

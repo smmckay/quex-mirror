@@ -22,6 +22,11 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_INLINE bool 
 QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* me,
                                 const char* FromCodec, const char* ToCodec);
+
+QUEX_INLINE bool    
+QUEX_NAME(Converter_IConv_initialize_by_bom_id)(struct QUEX_NAME(Converter_tag)* me,
+                                                QUEX_TYPE_BOM                    BomId);
+
 QUEX_INLINE E_LoadResult 
 QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*     me, 
                                    uint8_t**                 source, 
@@ -37,9 +42,8 @@ QUEX_NAME(Converter_IConv_stomach_byte_n)(QUEX_NAME(Converter)* me);
 QUEX_INLINE void 
 QUEX_NAME(Converter_IConv_stomach_clear)(QUEX_NAME(Converter)* me);
 
-QUEX_INLINE bool    
-QUEX_NAME(Converter_IConv_initialize_by_bom_id)(struct QUEX_NAME(Converter_tag)* me,
-                                                QUEX_TYPE_BOM                    BomId);
+QUEX_INLINE void 
+QUEX_NAME(Converter_IConv_print_this)(QUEX_NAME(Converter)* me);
 
 QUEX_INLINE QUEX_NAME(Converter)*
 QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
@@ -60,7 +64,8 @@ QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
                                          QUEX_NAME(Converter_IConv_convert),
                                          QUEX_NAME(Converter_IConv_delete_self),
                                          QUEX_NAME(Converter_IConv_stomach_byte_n),
-                                         QUEX_NAME(Converter_IConv_stomach_clear)) ) {
+                                         QUEX_NAME(Converter_IConv_stomach_clear),
+                                         QUEX_NAME(Converter_IConv_print_this)) ) {
         QUEXED(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
         return (QUEX_NAME(Converter)*)0;
     }
@@ -249,6 +254,15 @@ QUEX_NAME(Converter_IConv_delete_self)(QUEX_NAME(Converter)* alter_ego)
 
     iconv_close(me->handle); 
     QUEXED(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
+}
+
+QUEX_INLINE void 
+QUEX_NAME(Converter_IConv_print_this)(QUEX_NAME(Converter)* alter_ego)
+{
+    QUEX_NAME(Converter_IConv)* me = (QUEX_NAME(Converter_IConv)*)alter_ego;
+
+    __QUEX_STD_printf("   type:    IConv, GNU;\n");
+    __QUEX_STD_printf("   handle:  ((%i));\n", (int)me->handle);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE
