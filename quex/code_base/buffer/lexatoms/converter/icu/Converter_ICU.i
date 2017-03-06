@@ -36,7 +36,7 @@ QUEX_INLINE void
 QUEX_NAME(Converter_ICU_stomach_clear)(QUEX_NAME(Converter)* me);
 
 QUEX_INLINE void 
-QUEX_NAME(Converter_ICU_print_this)(QUEX_NAME(Converter)* me)
+QUEX_NAME(Converter_ICU_print_this)(QUEX_NAME(Converter)* me);
 
 QUEX_INLINE QUEX_NAME(Converter)*
 QUEX_NAME(Converter_ICU_new)(const char* FromCoding, const char* ToCoding)
@@ -335,10 +335,10 @@ QUEX_NAME(Converter_ICU_print_this)(QUEX_NAME(Converter)* alter_ego)
                       PivotBegin, PivotEnd, (int)QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE);
     __QUEX_STD_printf("      source: ");
     __QUEX_STD_printf("\n");
-    QUEXED(print_relative_positions)(PivotBegin, PivotEnd, sizeof(buffer[0]),
+    QUEXED(print_relative_positions)(PivotBegin, PivotEnd, sizeof(UChar),
                                      (void*)me->pivot.source);
     __QUEX_STD_printf("      target: ");
-    QUEXED(print_relative_positions)(PivotBegin, PivotEnd, sizeof(buffer[0]),
+    QUEXED(print_relative_positions)(PivotBegin, PivotEnd, sizeof(UChar),
                                      me->pivot.target);
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("    }\n");
