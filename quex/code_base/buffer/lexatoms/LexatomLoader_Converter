@@ -120,7 +120,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
      *                                                                   */
     QUEX_NAME(LexatomLoader)   base;
 
-    // in base QUEX_NAME(ByteLoader)*    byte_loader;
+    /* in base QUEX_NAME(ByteLoader)*    byte_loader; */
     QUEX_NAME(Converter)*     converter;
     QUEX_NAME(RawBuffer)      raw_buffer;
 
