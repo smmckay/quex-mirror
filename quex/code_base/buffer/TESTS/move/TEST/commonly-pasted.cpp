@@ -55,6 +55,7 @@ self_print(QUEX_NAME(Buffer)* buffer)
            (int)(buffer->input.lexatom_index_end_of_stream));
 
     QUEX_NAME(Buffer_print_content)(buffer);
+    printf("\n");
 }
 
 static void
