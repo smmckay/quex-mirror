@@ -8,7 +8,7 @@
 #   include "lexPlain.h"
 #endif
 #include "quex/code_base/analyzer/adaptors/Feeder.i"
-#include "quex/code_base/buffer/Buffer_debug"
+#include "quex/code_base/buffer/Buffer_print"
 
 #include "receiver.h"
 

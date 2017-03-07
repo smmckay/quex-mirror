@@ -22,7 +22,7 @@ QUEX_NAMESPACE_LEXEME_NULL_CLOSE
 #       include <iostream>
 #       include <string>
 
-#include <quex/code_base/converter_helper/identity>
+#include <quex/code_base/converter_helper/from-unicode-buffer>
    
 
 #   line 29 "TestAnalyzer-token"
@@ -144,7 +144,7 @@ public:
             /* Compiler complains => Are you using 'wchar_t' or 'wistream' ? 
              * => Add file '$QUEX_PATH/quex/code_base/token/CppWChar.qx' to 
              *    the list of quex input files.                               */
-            std::string             tmp = QUEX_CONVERTER_STRING(identical,char)(self.text);
+            std::string             tmp = QUEX_CONVERTER_STRING(unicode,char)(self.text);
             std::string::size_type  pos = 0;
 
             while( (pos = tmp.find("\n") ) != __string::npos ) tmp.replace(pos, (size_t)1, "\\n");
@@ -180,7 +180,7 @@ public:
         { ostr << Tok.get_string(); return ostr; }
         } /* Closing Namespace 'quex' */
 
-#include <quex/code_base/converter_helper/identity.i>
+#include <quex/code_base/converter_helper/from-unicode-buffer.i>
    
 
 #   line 187 "TestAnalyzer-token"

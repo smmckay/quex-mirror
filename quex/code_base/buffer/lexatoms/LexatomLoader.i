@@ -6,7 +6,7 @@
 #include <quex/code_base/buffer/Buffer>
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/buffer/lexatoms/LexatomLoader>
-#include <quex/code_base/buffer/Buffer_debug>
+#include <quex/code_base/buffer/Buffer_print>
 
 QUEX_NAMESPACE_MAIN_OPEN
 

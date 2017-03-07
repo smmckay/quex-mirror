@@ -432,11 +432,9 @@ _3:
     __quex_debug("* TERMINAL BAD_LEXATOM\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': Bad lexatom (character encoding error) detected!\n"
-                "The 'on_bad_lexatom' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnBadLexatom;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
     /* Bad lexatom detection FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
@@ -446,11 +444,9 @@ _4:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': General failure while loading buffer.\n"
-                "The 'on_load_failure' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnLoadFailure;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
     /* Load failure FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
@@ -459,13 +455,10 @@ goto _2;
 _5:
     __quex_debug("* TERMINAL OVERFLOW\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
-QUEX_LEXEME_TERMINATING_ZERO_SET(&me->buffer);
 {
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': Lexeme exceeds buffer size.\n"
-                "The 'on_overflow' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnOverflow;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
     /* Lexeme size exceeds buffer size. No further buffer load possible.
      */
@@ -485,11 +478,9 @@ _8:
     __quex_debug("* TERMINAL FAILURE\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': Match failure, no pattern matched!\n"
-                "The 'on_failure' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnFailure;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
 goto _7;
 _9:
@@ -497,11 +488,9 @@ _9:
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': End of file occurred before closing skip range delimiter!\n"
-                "The 'on_skip_range_open' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnSkipRangeOpen;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
     /* End of Stream appeared, while scanning for end of skip-range.
      */
@@ -517,7 +506,7 @@ self_send(QUEX_TKN_X);
 QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
 
 
-#   line 521 "TestAnalyzer.cpp"
+#   line 510 "TestAnalyzer.cpp"
 
 }
 goto _0;

@@ -6,7 +6,7 @@
 #include <quex/code_base/buffer/Buffer.i>
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include <quex/code_base/MemoryManager>
-#include <quex/code_base/buffer/Buffer_debug.i>
+#include <quex/code_base/buffer/Buffer_print.i>
 #include <quex/code_base/converter_helper/from-utf8.i>
 #include <quex/code_base/converter_helper/from-utf16.i>
 #include <quex/code_base/converter_helper/from-utf32.i>

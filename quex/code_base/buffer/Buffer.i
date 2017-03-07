@@ -6,7 +6,7 @@
 #include <quex/code_base/buffer/asserts>
 #include <quex/code_base/definitions>
 #include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/buffer/Buffer_debug.i>
+#include <quex/code_base/buffer/Buffer_print.i>
 #include <quex/code_base/buffer/lexatoms/LexatomLoader>
 #include <quex/code_base/MemoryManager>
 
@@ -1077,7 +1077,7 @@ QUEX_NAME(Buffer_on_overflow_DEFAULT)(QUEX_NAME(Buffer)* me, bool ForwardF)
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include <quex/code_base/buffer/Buffer_debug.i>
+#include <quex/code_base/buffer/Buffer_print.i>
 #include <quex/code_base/buffer/Buffer_navigation.i>
 #include <quex/code_base/buffer/Buffer_fill.i>
 #include <quex/code_base/buffer/BufferMemory.i>

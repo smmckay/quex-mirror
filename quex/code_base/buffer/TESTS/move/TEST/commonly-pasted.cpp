@@ -3,7 +3,7 @@
 
 #include <quex/code_base/test_environment/TestAnalyzer-configuration>
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include <quex/code_base/buffer/Buffer_debug.i>
+#include <quex/code_base/buffer/Buffer_print.i>
 #include <quex/code_base/buffer/Buffer.i>
 #include <quex/code_base/buffer/asserts.i>
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
@@ -54,7 +54,7 @@ self_print(QUEX_NAME(Buffer)* buffer)
            (int)(buffer->input.end_p ? buffer->input.end_p - buffer->_memory._front : -1),
            (int)(buffer->input.lexatom_index_end_of_stream));
 
-    QUEX_NAME(Buffer_show_content_intern)(buffer);
+    QUEX_NAME(Buffer_print_content)(buffer);
 }
 
 static void

@@ -503,7 +503,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             const char*                 DrainEnd  = buffer + BufferSize;
 
             const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (size_t)(QUEX_NAME(strlen)(source)) + 1;
-            QUEX_CONVERTER_STRING(identical,char)(&source, SourceEnd, &drain, DrainEnd);
+            QUEX_CONVERTER_STRING(unicode,char)(&source, SourceEnd, &drain, DrainEnd);
             return buffer;
         }
 
@@ -516,12 +516,12 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             const QUEX_TYPE_LEXATOM*  source    = me->text;
             const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (ptrdiff_t)(QUEX_NAME(strlen)(source)) + 1;
 
-            QUEX_CONVERTER_STRING(identical,wchar)(&source, SourceEnd, &drain, DrainEnd);
+            QUEX_CONVERTER_STRING(unicode,wchar)(&source, SourceEnd, &drain, DrainEnd);
             return buffer;
         }
 #       endif
 
-#include <quex/code_base/converter_helper/identity.i>
+#include <quex/code_base/converter_helper/from-unicode-buffer.i>
    
 
 #   line 528 "TestAnalyzer.h"

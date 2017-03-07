@@ -9,337 +9,185 @@
 #include <quex/code_base/buffer/lexatoms/LexatomLoader>
 #include <quex/code_base/buffer/asserts>
 #include <quex/code_base/buffer/asserts.i>
-#include <quex/code_base/buffer/Buffer_debug>
+#include <quex/code_base/buffer/Buffer_print>
 
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-    QUEX_INLINE void 
-    QUEX_NAME(Buffer_show_brief_content)(QUEX_NAME(Buffer)* buffer) 
-    {
-        QUEX_NAME(LexatomLoader)* me = buffer->filler;
+QUEX_INLINE void  
+QUEX_NAME(Buffer_print_content_detailed_lines)(QUEX_TYPE_LEXATOM** iterator, 
+                                               QUEX_TYPE_LEXATOM*  Begin, 
+                                               QUEX_TYPE_LEXATOM*  TotalEnd, 
+                                               QUEX_NAME(Buffer)*  buffer);
 
-        __quex_assert(buffer != 0x0);
-        __quex_assert(me != 0x0);
+QUEX_INLINE void  
+QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)* me)
+{
+    QUEX_NAME(Buffer_print_content_core)(sizeof(QUEX_TYPE_LEXATOM),
+                                         (const uint8_t*)me->_memory._front,
+                                         (const uint8_t*)me->_memory._back, 
+                                         (const uint8_t*)me->_read_p, 
+                                         (const uint8_t*)me->input.end_p,
+                                         /* BordersF */ true);
 
-        QUEX_BUFFER_ASSERT_CONSISTENCY(buffer);
-        __QUEX_STD_printf("Begin of Buffer Character Index: %i\n", (int)QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer));
-        __QUEX_STD_printf("End   of Buffer Character Index: %i\n", (int)me->input_lexatom_tell(me));
-        if( buffer->input.end_p == 0x0 )
-            __QUEX_STD_printf("_memory.input.end_p (offset)  = <0x0>\n");
-        else
-            __QUEX_STD_printf("input.end_p (offset)  = %08X\n", 
-                              (int)(buffer->input.end_p  - buffer->_memory._front));
-        __QUEX_STD_printf("_read_p (offset)        = %08X\n", (int)(buffer->_read_p        - buffer->_memory._front));
-        __QUEX_STD_printf("_lexeme_start_p (offset) = %08X\n", (int)(buffer->_lexeme_start_p - buffer->_memory._front));
-        __QUEX_STD_printf("_back (offset)           = %08X\n", (int)(buffer->_memory._back   - buffer->_memory._front));
+}
+
+QUEX_INLINE void  
+QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* buffer) 
+{
+    /* Assumptions: 
+     *    (1) width of terminal     = 80 chars
+     *    (2) border right and left = 3 chars
+     *    (3) display at least the last 5 chars at the begin of buffer.
+     *                                  5 chars around input_p.
+     *                                  5 chars from lexeme_start.
+     *                                  5 chars to the end of buffer.
+     *
+     *    |12345 ...      12345  ....       12345      ....    12345|
+     *    Begin           lexeme start        input_p               buffer end     */ 
+    QUEX_TYPE_LEXATOM*  iterator  = buffer->_memory._front;
+    QUEX_TYPE_LEXATOM*  total_end = buffer->_memory._back + 1;
+
+    __quex_assert(buffer != 0x0);
+    __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->_memory._front,      total_end, buffer);
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->_lexeme_start_p - 2, total_end, buffer);
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->_read_p        - 2, total_end, buffer);
+    if( buffer->input.end_p != 0x0 ) {
+        QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->input.end_p - 4, total_end, buffer);
     }
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->_memory._back   - 4, total_end, buffer);
+    __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
+}
 
-    QUEX_INLINE void 
-    QUEX_NAME(Buffer_x_show_content)(QUEX_NAME(Buffer)* buffer) 
-    {
-        QUEX_NAME(Buffer_show_content_intern)(buffer);
-        QUEX_NAME(Buffer_show_brief_content)(buffer);
-    }
-
-    QUEX_INLINE QUEX_TYPE_LEXATOM
-    QUEX_NAME(__Buffer_get_border_char)(QUEX_NAME(Buffer)* buffer, const QUEX_TYPE_LEXATOM* C) 
-    {
-        if     ( *C != QUEX_SETTING_BUFFER_LIMIT_CODE )   
-            return (QUEX_TYPE_LEXATOM)'?'; 
-        else if( buffer->input.end_p == C )       
-            return (QUEX_TYPE_LEXATOM)']'; /* End of stream sign. */
-        else if( QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer) == 0 && buffer->_memory._front == C )     
-            return (QUEX_TYPE_LEXATOM)'['; /* Begin of stream sign. */
-        else
-            return (QUEX_TYPE_LEXATOM)'|';
-    }
-
-    QUEX_INLINE void
-    QUEX_NAME(Buffer_show_content_intern)(QUEX_NAME(Buffer)* buffer)
-    {
-        size_t                i = 0;
-        size_t                length = 0;
-
-        QUEX_TYPE_LEXATOM   EmptyChar    = (QUEX_TYPE_LEXATOM)(-1);
-        QUEX_TYPE_LEXATOM*  BeginP = &buffer->_memory._front[1]; 
-        QUEX_TYPE_LEXATOM*  BufferFront  = buffer->_memory._front;
-        QUEX_TYPE_LEXATOM*  BufferBack   = buffer->_memory._back;
-        QUEX_TYPE_LEXATOM*  iterator     = 0x0;
-        QUEX_TYPE_LEXATOM*  end_p        = buffer->input.end_p;
-        bool                  end_p_error_f = (   end_p > buffer->_memory._back 
-                                               || end_p < buffer->_memory._front);
-
-        end_p = QUEX_MIN(end_p, buffer->_memory._front);
-        end_p = QUEX_MAX(end_p, buffer->_memory._back);
-
-        __QUEX_STD_printf("|%c", (int)QUEX_NAME(__Buffer_get_border_char)(buffer, BufferFront));
-        for(iterator = BeginP; iterator != end_p; ++iterator) {
-            __QUEX_STD_printf("%c",   *iterator == EmptyChar                      ? (int)'~' 
-                                    : *iterator == QUEX_SETTING_BUFFER_LIMIT_CODE ? (int)'*' 
-                                    : (int)*iterator);
-        }
-        __QUEX_STD_printf("%c", (int)QUEX_NAME(__Buffer_get_border_char)(buffer, end_p));
-        /**/
-        length = (buffer->input.end_p == 0x0) ? 0 : (size_t)(BufferBack - end_p);
-        for(i=0; i < length; ++i) __QUEX_STD_printf("|");
-
-        __QUEX_STD_printf("|");
-        if( end_p_error_f ) {
-            __QUEX_STD_printf("ERROR: end_of_file_p: %p; front: %p; back %p;\n", 
-                              (void*)buffer->input.end_p, (void*)buffer->_memory._front, 
-                              (void*)buffer->_memory._back);
-        }
-        __QUEX_STD_printf("\n");
-    }
-
-    QUEX_INLINE void  
-    QUEX_NAME(Buffer_show_content)(QUEX_NAME(Buffer)* buffer) 
-    /* Simple printing function for unit testing and debugging it is thought to
-     * print only ASCII characters (i.e. code points < 0xFF)                 */
-    {
-        size_t                i = 0;
-        char*                 tmp = 0;
-        const size_t          ContentSize  = QUEX_NAME(Buffer_content_size)(buffer);
-        QUEX_TYPE_LEXATOM*  BeginP       = &buffer->_memory._front[1]; 
-        QUEX_TYPE_LEXATOM*  BufferFront  = buffer->_memory._front;
-        QUEX_TYPE_LEXATOM*  BufferBack   = buffer->_memory._back;
-
-        __quex_assert(buffer != 0x0);
-        /*__________________________________________________________________*/
-        tmp = (char*)__QUEX_STD_malloc(ContentSize + 4);
-        /* tmp[0]                 = outer border*/
-        /* tmp[1]                 = buffer limit*/
-        /* tmp[2...ContentSize+1] = BeginP[0...ContentSize-1]*/
-        /* tmp[ContentSize+2]     = buffer limit*/
-        /* tmp[ContentSize+3]     = outer border*/
-        /* tmp[ContentSize+4]     = terminating zero*/
-        for(i=2; i<ContentSize + 2 ; ++i) tmp[i] = ' ';
-        tmp[ContentSize+4] = '\0';
-        tmp[ContentSize+3] = '|';
-        tmp[ContentSize+2] = (char)QUEX_NAME(__Buffer_get_border_char)(buffer, BufferBack);
-        tmp[1]             = (char)QUEX_NAME(__Buffer_get_border_char)(buffer, BufferFront);
-        tmp[0]             = '|';
-        /* tmp[_SHOW_current_fallback_n - 1 + 2] = ':';                      */
-        tmp[buffer->_read_p - BeginP + 2] = 'C';
-        if( buffer->_lexeme_start_p >= BeginP && buffer->_lexeme_start_p <= BufferBack ) 
-            tmp[(int)(buffer->_lexeme_start_p - BeginP) + 2] = 'S';
-        /**/
-        if ( buffer->_read_p == BeginP - 2 ) {
-            __QUEX_STD_printf("%s", tmp); 
-            __QUEX_STD_printf(" <out>");
-        } else {
-            __QUEX_STD_printf(" ");
-            if( *buffer->_read_p == QUEX_SETTING_BUFFER_LIMIT_CODE ) 
-                __QUEX_STD_printf("BLC");
-            else                                  
-                __QUEX_STD_printf("'%c'", (char)(*buffer->_read_p));
-        }
-        /* std::cout << " = 0x" << std::hex << int(*buffer->_read_p) << std::dec */
-        __QUEX_STD_printf("\n");
-        QUEX_NAME(Buffer_show_content_intern)(buffer);
-        __QUEX_STD_free(tmp);
-    }
-
-    QUEX_INLINE void  
-    QUEX_NAME(Buffer_show_byte_content)(QUEX_NAME(Buffer)* buffer, const int IndentationN) 
-    {
-        QUEX_NAME(BufferMemory)*  memory = &buffer->_memory;
-
-        int      i = 0, j = 0;
-        uint8_t* byte_p      = (uint8_t*)memory->_front;
-        uint8_t* next_byte_p = (uint8_t*)memory->_front + 1;
-        uint8_t* End         = (uint8_t*)(memory->_back + 1);
-
-        __quex_assert(buffer != 0x0);
-        __quex_assert(memory != 0x0);
-
-        for(j=0; j<IndentationN; ++j) fprintf(stdout, " ");
-        for(; byte_p != End; ++byte_p, ++next_byte_p, ++i) {
-            fprintf(stdout, "%02X", (int)*byte_p);
-            if     ( next_byte_p == (uint8_t*)buffer->input.end_p ) 
-                fprintf(stdout, "[");
-            else if( byte_p      == (uint8_t*)buffer->input.end_p + sizeof(QUEX_TYPE_LEXATOM)-1) 
-                fprintf(stdout, "]");
-            else 
-                fprintf(stdout, ".");
-            if( (i+1) % 0x8  == 0 ) fprintf(stdout, " ");
-            if( (i+1) % 0x10 == 0 ) { 
-                fprintf(stdout, "\n");
-                for(j=0; j<IndentationN; ++j) fprintf(stdout, " ");
+QUEX_INLINE void  
+QUEX_NAME(Buffer_print_content_core)(const size_t   ElementSize, 
+                                     const uint8_t* Front,
+                                     const uint8_t* Back,
+                                     const uint8_t* ReadP,
+                                     const uint8_t* InputEndP,
+                                     bool           BordersF)
+{
+    const uint8_t* it;
+    __QUEX_STD_printf("[");
+    for(it=Front; it <= Back; it += ElementSize) {
+        if( it < InputEndP ) {
+            switch( ElementSize ) {
+            case 1:  __QUEX_STD_printf("%02X", it[0]); break;
+            case 2:  __QUEX_STD_printf("%04X", ((uint16_t*)it)[0]); break;
+            case 4: 
+            default: __QUEX_STD_printf("%08X", ((uint32_t*)it)[0]); break;
             }
         }
-        fprintf(stdout, "\n");
-    }
-
-    QUEX_INLINE void  
-    QUEX_NAME(Buffer_show_debug_print_lines)(QUEX_TYPE_LEXATOM** iterator, 
-                                             QUEX_TYPE_LEXATOM*  Begin, 
-                                             QUEX_TYPE_LEXATOM*  TotalEnd, 
-                                             QUEX_NAME(Buffer)*    buffer)
-    {
-        int                   length = 0;
-        QUEX_TYPE_LEXATOM*  end = Begin + 5 > TotalEnd ? TotalEnd : Begin + 5;
-
-        if( Begin > *iterator ) {
-            *iterator = Begin;
-            __QUEX_STD_fprintf(stderr, "                                           ...\n");
-        } else if( *iterator >= end ) {
-            return;
+        else {
+            __QUEX_STD_printf("--");
         }
 
-        for(; *iterator < end; ++*iterator) {
-            length = 0;
-            __QUEX_STD_fprintf(stderr, "   ");
-
-            if( *iterator == buffer->_memory._front ) {
-                __QUEX_STD_fprintf(stderr, "buffer front");
-                length += 12;
-            }
-            if( *iterator == buffer->_lexeme_start_p ) {
-                if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
-                __QUEX_STD_fprintf(stderr, "lexeme start");
-                length += 12;
-            }
-            if( *iterator == buffer->_read_p ) {
-                if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
-                __QUEX_STD_fprintf(stderr, "input");
-                length += 5;
-            }
-            if( *iterator == buffer->input.end_p ) {
-                if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
-                __QUEX_STD_fprintf(stderr, "end of file");
-                length += 11;
-            }
-            if( *iterator == buffer->_memory._back ) {
-                if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
-                __QUEX_STD_fprintf(stderr, "buffer back");
-                length += 11;
-            }
-            if( length ) {
-                for(; length < 39; ++length)
-                    __QUEX_STD_fprintf(stderr, "-");
-                __QUEX_STD_fprintf(stderr, ">");
-            } else {
-                __QUEX_STD_fprintf(stderr, "                                        ");
-            }
-
-            /* Print the character information */
-            __QUEX_STD_fprintf(stderr, "[%04X] 0x%04X\n", 
-                               (int)(*iterator - buffer->_memory._front),
-                               (int)(**iterator));
+        if( &it[ElementSize] == ReadP ) {
+            __QUEX_STD_printf(">");
+        }
+        else if( BordersF && (it == Front || &it[1] == Back ) ) {
+            __QUEX_STD_printf("|");
+        }
+        else if( it != Back && &it[ElementSize] != ReadP ) {
+            __QUEX_STD_printf(".");
         }
     }
+    __QUEX_STD_printf("]");
+}
 
-    QUEX_INLINE void  
-    QUEX_NAME(Buffer_show_debug_content)(QUEX_NAME(Buffer)* buffer) 
-    {
-        /* Assumptions: 
-         *    (1) width of terminal     = 80 chars
-         *    (2) border right and left = 3 chars
-         *    (3) display at least the last 5 chars at the begin of buffer.
-         *                                  5 chars around input_p.
-         *                                  5 chars from lexeme_start.
-         *                                  5 chars to the end of buffer.
-         *
-         *    |12345 ...      12345  ....       12345      ....    12345|
-         *    Begin           lexeme start        input_p               buffer end     */ 
-        QUEX_TYPE_LEXATOM*  iterator  = buffer->_memory._front;
-        QUEX_TYPE_LEXATOM*  total_end = buffer->_memory._back + 1;
+QUEX_INLINE void  
+QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
+{
+    __QUEX_STD_printf("  buffer: {\n");
+    QUEX_NAME(BufferMemory_print_this)(&me->_memory);
 
-        __quex_assert(buffer != 0x0);
-        __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
-        QUEX_NAME(Buffer_show_debug_print_lines)(&iterator, buffer->_memory._front,      total_end, buffer);
-        QUEX_NAME(Buffer_show_debug_print_lines)(&iterator, buffer->_lexeme_start_p - 2, total_end, buffer);
-        QUEX_NAME(Buffer_show_debug_print_lines)(&iterator, buffer->_read_p        - 2, total_end, buffer);
-        if( buffer->input.end_p != 0x0 ) {
-            QUEX_NAME(Buffer_show_debug_print_lines)(&iterator, buffer->input.end_p - 4, total_end, buffer);
-        }
-        QUEX_NAME(Buffer_show_debug_print_lines)(&iterator, buffer->_memory._back   - 4, total_end, buffer);
-        __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
-    }
+    __QUEX_STD_printf("    _read_p:                      ");
+    QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
+                                     sizeof(QUEX_TYPE_LEXATOM), me->_read_p);
+    __QUEX_STD_printf("\n");
+    __QUEX_STD_printf("    _lexeme_start_p:              ");
+    QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
+                                     sizeof(QUEX_TYPE_LEXATOM), me->_lexeme_start_p);
+    __QUEX_STD_printf("\n");
 
-    QUEX_INLINE void  
-    QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
-    {
-        __QUEX_STD_printf("  buffer: {\n");
-        QUEX_NAME(BufferMemory_print_this)(&me->_memory);
-
-        __QUEX_STD_printf("    _read_p:                      ");
-        QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
-                                         sizeof(QUEX_TYPE_LEXATOM), me->_read_p);
-        __QUEX_STD_printf("\n");
-        __QUEX_STD_printf("    _lexeme_start_p:              ");
-        QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
-                                         sizeof(QUEX_TYPE_LEXATOM), me->_lexeme_start_p);
-        __QUEX_STD_printf("\n");
-
-        __QUEX_STD_printf("    _lexatom_at_lexeme_start:     0x%X;\n", (int)me->_lexatom_at_lexeme_start);
+    __QUEX_STD_printf("    _lexatom_at_lexeme_start:     0x%X;\n", (int)me->_lexatom_at_lexeme_start);
 #       ifdef __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
-        __QUEX_STD_printf("    _lexatom_before_lexeme_start: 0x%X;\n", (int)me->_lexatom_before_lexeme_start);
+    __QUEX_STD_printf("    _lexatom_before_lexeme_start: 0x%X;\n", (int)me->_lexatom_before_lexeme_start);
 #       endif
 
-        QUEX_NAME(LexatomLoader_print_this)(me->filler);
+    QUEX_NAME(LexatomLoader_print_this)(me->filler);
 
-        __QUEX_STD_printf("    input: {\n");
-        __QUEX_STD_printf("      lexatom_index_begin: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_begin)(me));
-        __QUEX_STD_printf("      end_character_index: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_end)(me));
-        __QUEX_STD_printf("      end_p:               ");
-        QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
-                                         sizeof(QUEX_TYPE_LEXATOM), me->input.end_p);
-        __QUEX_STD_printf("\n");
-        __QUEX_STD_printf("    }\n");
-        __QUEX_STD_printf("  }\n");
+    __QUEX_STD_printf("    input: {\n");
+    __QUEX_STD_printf("      lexatom_index_begin: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_begin)(me));
+    __QUEX_STD_printf("      end_character_index: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_end)(me));
+    __QUEX_STD_printf("      end_p:               ");
+    QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
+                                     sizeof(QUEX_TYPE_LEXATOM), me->input.end_p);
+    __QUEX_STD_printf("\n");
+    __QUEX_STD_printf("    }\n");
+    __QUEX_STD_printf("  }\n");
+}
+
+
+QUEX_INLINE void  
+QUEX_NAME(Buffer_print_content_detailed_lines)(QUEX_TYPE_LEXATOM** iterator, 
+                                               QUEX_TYPE_LEXATOM*  Begin, 
+                                               QUEX_TYPE_LEXATOM*  TotalEnd, 
+                                               QUEX_NAME(Buffer)*  buffer)
+{
+    int                 length = 0;
+    QUEX_TYPE_LEXATOM*  end    = Begin + 5 > TotalEnd ? TotalEnd : Begin + 5;
+
+    if( Begin > *iterator ) {
+        *iterator = Begin;
+        __QUEX_STD_fprintf(stderr, "                                           ...\n");
+    } else if( *iterator >= end ) {
+        return;
     }
 
-    QUEX_INLINE void  
-    QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)* me)
-    {
-        QUEX_NAME(Buffer_print_content_core)(sizeof(QUEX_TYPE_LEXATOM),
-                                             (const uint8_t*)me->_memory._front,
-                                             (const uint8_t*)me->_memory._back, 
-                                             (const uint8_t*)me->_read_p, 
-                                             (const uint8_t*)me->input.end_p,
-                                             /* BordersF */ true);
+    for(; *iterator < end; ++*iterator) {
+        length = 0;
+        __QUEX_STD_fprintf(stderr, "   ");
 
-    }
-
-    QUEX_INLINE void  
-    QUEX_NAME(Buffer_print_content_core)(const size_t   ElementSize, 
-                                         const uint8_t* Front,
-                                         const uint8_t* Back,
-                                         const uint8_t* ReadP,
-                                         const uint8_t* InputEndP,
-                                         bool           BordersF)
-    {
-        const uint8_t* it;
-        __QUEX_STD_printf("[");
-        for(it=Front; it <= Back; it += ElementSize) {
-            if( it < InputEndP ) {
-                switch( ElementSize ) {
-                case 1:  __QUEX_STD_printf("%02X", it[0]); break;
-                case 2:  __QUEX_STD_printf("%04X", ((uint16_t*)it)[0]); break;
-                case 4: 
-                default: __QUEX_STD_printf("%08X", ((uint32_t*)it)[0]); break;
-                }
-            }
-            else {
-                __QUEX_STD_printf("--");
-            }
-
-            if( &it[ElementSize] == ReadP ) {
-                __QUEX_STD_printf(">");
-            }
-            else if( BordersF && (it == Front || &it[1] == Back ) ) {
-                __QUEX_STD_printf("|");
-            }
-            else if( it != Back && &it[ElementSize] != ReadP ) {
-                __QUEX_STD_printf(".");
-            }
+        if( *iterator == buffer->_memory._front ) {
+            __QUEX_STD_fprintf(stderr, "buffer front");
+            length += 12;
         }
-        __QUEX_STD_printf("]");
-    }
+        if( *iterator == buffer->_lexeme_start_p ) {
+            if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
+            __QUEX_STD_fprintf(stderr, "lexeme start");
+            length += 12;
+        }
+        if( *iterator == buffer->_read_p ) {
+            if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
+            __QUEX_STD_fprintf(stderr, "input");
+            length += 5;
+        }
+        if( *iterator == buffer->input.end_p ) {
+            if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
+            __QUEX_STD_fprintf(stderr, "end of file");
+            length += 11;
+        }
+        if( *iterator == buffer->_memory._back ) {
+            if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
+            __QUEX_STD_fprintf(stderr, "buffer back");
+            length += 11;
+        }
+        if( length ) {
+            for(; length < 39; ++length)
+                __QUEX_STD_fprintf(stderr, "-");
+            __QUEX_STD_fprintf(stderr, ">");
+        } else {
+            __QUEX_STD_fprintf(stderr, "                                        ");
+        }
 
+        /* Print the character information */
+        __QUEX_STD_fprintf(stderr, "[%04X] 0x%04X\n", 
+                           (int)(*iterator - buffer->_memory._front),
+                           (int)(**iterator));
+    }
+}
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

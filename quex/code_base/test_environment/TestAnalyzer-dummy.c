@@ -435,11 +435,9 @@ _3:
     __quex_debug("* TERMINAL BAD_LEXATOM\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': Bad lexatom (character encoding error) detected!\n"
-                "The 'on_bad_lexatom' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnBadLexatom;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
     /* Bad lexatom detection FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
@@ -449,11 +447,9 @@ _4:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': General failure while loading buffer.\n"
-                "The 'on_load_failure' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnLoadFailure;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
     /* Load failure FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
@@ -462,13 +458,10 @@ goto _2;
 _5:
     __quex_debug("* TERMINAL OVERFLOW\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
-QUEX_LEXEME_TERMINATING_ZERO_SET(&me->buffer);
 {
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': Lexeme exceeds buffer size.\n"
-                "The 'on_overflow' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnOverflow;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
     /* Lexeme size exceeds buffer size. No further buffer load possible.
      */
@@ -488,11 +481,9 @@ _8:
     __quex_debug("* TERMINAL FAILURE\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': Match failure, no pattern matched!\n"
-                "The 'on_failure' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnFailure;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
 goto _7;
 _9:
@@ -500,11 +491,9 @@ _9:
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
-__QUEX_STD_printf("\n");
-QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
-__QUEX_STD_printf("\n");
-QUEX_ERROR_EXIT("\nMode 'M': End of file occurred before closing skip range delimiter!\n"
-                "The 'on_skip_range_open' handler has not been specified.\n");
+self.error_code = E_Error_NoHandler_OnSkipRangeOpen;
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+
 }
     /* End of Stream appeared, while scanning for end of skip-range.
      */
@@ -520,7 +509,7 @@ self_send(QUEX_TKN_X);
 QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
 
 
-#   line 524 "TestAnalyzer.c"
+#   line 513 "TestAnalyzer.c"
 
 }
 goto _0;
@@ -811,7 +800,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 815 "TestAnalyzer.c"
+#   line 804 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -842,7 +831,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 846 "TestAnalyzer.c"
+#   line 835 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -883,7 +872,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 887 "TestAnalyzer.c"
+#   line 876 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -974,7 +963,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 978 "TestAnalyzer.c"
+#   line 967 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -996,7 +985,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 1000 "TestAnalyzer.c"
+#   line 989 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1015,7 +1004,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1019 "TestAnalyzer.c"
+#   line 1008 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1071,7 +1060,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             const char*                 DrainEnd  = buffer + BufferSize;
 
             const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (size_t)(QUEX_NAME(strlen)(source)) + 1;
-            QUEX_CONVERTER_STRING(identical,char)(&source, SourceEnd, &drain, DrainEnd);
+            QUEX_CONVERTER_STRING(unicode,char)(&source, SourceEnd, &drain, DrainEnd);
             return buffer;
         }
 
@@ -1084,15 +1073,15 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             const QUEX_TYPE_LEXATOM*  source    = me->text;
             const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (ptrdiff_t)(QUEX_NAME(strlen)(source)) + 1;
 
-            QUEX_CONVERTER_STRING(identical,wchar)(&source, SourceEnd, &drain, DrainEnd);
+            QUEX_CONVERTER_STRING(unicode,wchar)(&source, SourceEnd, &drain, DrainEnd);
             return buffer;
         }
 #       endif
 
-#include <quex/code_base/converter_helper/identity.i>
+#include <quex/code_base/converter_helper/from-unicode-buffer.i>
    
 
-#   line 1096 "TestAnalyzer.c"
+#   line 1085 "TestAnalyzer.c"
 
 
 

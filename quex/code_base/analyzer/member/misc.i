@@ -8,7 +8,7 @@
 #   include <quex/code_base/analyzer/Counter>
 #endif
 #include <quex/code_base/token/TokenPolicy>
-#include <quex/code_base/buffer/Buffer_debug>
+#include <quex/code_base/buffer/Buffer_print>
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -139,7 +139,7 @@ QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
         if( handler_name ) {
             __QUEX_STD_printf("  (* '%s' has not been specified for mode*)\n", handler_name);
         }
-        QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
+        QUEX_NAME(Buffer_print_content_detailed)(&me->buffer);
         __QUEX_STD_printf("\\n\\n");
     }
 

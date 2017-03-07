@@ -9,7 +9,7 @@
 #endif
 
 #include "quex/code_base/analyzer/adaptors/Gavager.i"
-#include "quex/code_base/buffer/Buffer_debug"
+#include "quex/code_base/buffer/Buffer_print"
 
 #include "receiver.h"
 

@@ -40,7 +40,7 @@ QUEX_NAMESPACE_LEXEME_NULL_CLOSE
        quex_Token_pretty_wchar_text(struct quex_Token_tag* me, wchar_t*  buffer, size_t BufferSize); 
 #      endif
 
-#include <quex/code_base/converter_helper/identity>
+#include <quex/code_base/converter_helper/from-unicode-buffer>
    
 
 #   line 47 "TestAnalyzer-token.h"

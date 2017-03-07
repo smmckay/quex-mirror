@@ -6,7 +6,7 @@
 #include <quex/code_base/buffer/asserts>
 #include <quex/code_base/definitions>
 #include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/buffer/Buffer_debug.i>
+#include <quex/code_base/buffer/Buffer_print.i>
 #include <quex/code_base/buffer/lexatoms/LexatomLoader>
 #include <quex/code_base/MemoryManager>
 

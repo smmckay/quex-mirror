@@ -3,7 +3,7 @@
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include <quex/code_base/buffer/bytes/ByteLoader_Memory>
 #include <quex/code_base/buffer/bytes/ByteLoader_Memory.i>
-#include <quex/code_base/buffer/Buffer_debug.i>
+#include <quex/code_base/buffer/Buffer_print.i>
 #include <quex/code_base/buffer/Buffer.i>
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>

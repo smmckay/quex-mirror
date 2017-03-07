@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.66.6-pre"
-#define QUEX_SETTING_BUILD_DATE        "Sat Feb 25 22:35:27 2017"
+#define QUEX_SETTING_BUILD_DATE        "Tue Mar  7 21:37:11 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -248,10 +248,10 @@
 
 /* Following switch is also set, if a user defined converter is defined.     */
 #ifndef    __QUEX_OPTION_CONVERTER
-/* #define __QUEX_OPTION_CONVERTER */
+#define    __QUEX_OPTION_CONVERTER
 #endif
 #ifndef    __QUEX_OPTION_CONVERTER_HELPER
-/* #define __QUEX_OPTION_CONVERTER_HELPER */
+#define    __QUEX_OPTION_CONVERTER_HELPER
 #endif
 
 /* Type Definitions 

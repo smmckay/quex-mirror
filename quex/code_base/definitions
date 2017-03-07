@@ -399,18 +399,18 @@ typedef enum {
 
 #if  defined(QUEX_OPTION_DEBUG_SHOW_LOADS)
 
-#   include <quex/code_base/buffer/Buffer_debug>
-#   define __quex_debug_buffer_load(BUFFER, Msg)         \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);              \
-           QUEX_NAME(Buffer_show_debug_content)(BUFFER); \
+#   include <quex/code_base/buffer/Buffer_print>
+#   define __quex_debug_buffer_load(BUFFER, Msg)                        \
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);  \
+           QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
 
 #elif  defined(__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS) 
 
-#   include <quex/code_base/buffer/Buffer_debug>
-#   define __quex_debug_buffer_load(BUFFER, Msg)         \
-           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);              \
-           QUEX_NAME(Buffer_show_content)(BUFFER);       \
+#   include <quex/code_base/buffer/Buffer_print>
+#   define __quex_debug_buffer_load(BUFFER, Msg)                        \
+           __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);  \
+           QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
 #else
 

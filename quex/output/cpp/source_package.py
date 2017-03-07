@@ -47,8 +47,8 @@ base_buffer = """
 /buffer/asserts
 /buffer/asserts.i
 /buffer/Buffer
-/buffer/Buffer_debug
-/buffer/Buffer_debug.i
+/buffer/Buffer_print
+/buffer/Buffer_print.i
 /buffer/Buffer.i
 /buffer/BufferMemory.i
 /buffer/Buffer_navigation.i
