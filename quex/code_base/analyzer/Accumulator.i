@@ -207,7 +207,7 @@ QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
 
     *(me->text.end) = (QUEX_TYPE_LEXATOM)0; /* see above '__quex_assert()' */
 
-    __QUEX_STD_printf("   Accumulator = '%s'\n", (const char*)me->text.begin);
+    __QUEX_STD_printf("  accumulator: '%s'\n", (const char*)me->text.begin);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

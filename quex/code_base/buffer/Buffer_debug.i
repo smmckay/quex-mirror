@@ -262,25 +262,34 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE void  
     QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
     {
+        __QUEX_STD_printf("  buffer: {\n");
         QUEX_NAME(BufferMemory_print_this)(&me->_memory);
-        QUEX_NAME(LexatomLoader_print_this)(me->filler);
 
-        __QUEX_STD_printf("   _read_p         = ");
+        __QUEX_STD_printf("    _read_p:                      ");
         QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
                                          sizeof(QUEX_TYPE_LEXATOM), me->_read_p);
-        __QUEX_STD_printf("   _lexeme_start_p = ");
+        __QUEX_STD_printf("\n");
+        __QUEX_STD_printf("    _lexeme_start_p:              ");
         QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
                                          sizeof(QUEX_TYPE_LEXATOM), me->_lexeme_start_p);
+        __QUEX_STD_printf("\n");
 
-        __QUEX_STD_printf("   _lexatom_at_lexeme_start     = 0x%X;\n", (int)me->_lexatom_at_lexeme_start);
+        __QUEX_STD_printf("    _lexatom_at_lexeme_start:     0x%X;\n", (int)me->_lexatom_at_lexeme_start);
 #       ifdef __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
-        __QUEX_STD_printf("   _lexatom_before_lexeme_start = 0x%X;\n", (int)me->_lexatom_before_lexeme_start);
+        __QUEX_STD_printf("    _lexatom_before_lexeme_start: 0x%X;\n", (int)me->_lexatom_before_lexeme_start);
 #       endif
-        __QUEX_STD_printf("   input.lexatom_index_begin = %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_begin)(me));
-        __QUEX_STD_printf("   input.end_character_index = %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_end)(me));
-        __QUEX_STD_printf("   input.end_p               = ");
+
+        QUEX_NAME(LexatomLoader_print_this)(me->filler);
+
+        __QUEX_STD_printf("    input: {\n");
+        __QUEX_STD_printf("      lexatom_index_begin: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_begin)(me));
+        __QUEX_STD_printf("      end_character_index: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_end)(me));
+        __QUEX_STD_printf("      end_p:               ");
         QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
                                          sizeof(QUEX_TYPE_LEXATOM), me->input.end_p);
+        __QUEX_STD_printf("\n");
+        __QUEX_STD_printf("    }\n");
+        __QUEX_STD_printf("  }\n");
     }
 
     QUEX_INLINE void  

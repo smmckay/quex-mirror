@@ -128,42 +128,39 @@ QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(Mode)** iterator = 0x0;
     const char*       handler_name = (const char*)0;
 
-    __QUEX_STD_printf("   CurrentMode = %s; ", 
+    __QUEX_STD_printf("  mode:       %s;\n", 
                       me->__current_mode_p == 0x0 ? "0x0" : me->__current_mode_p->name);
+    __QUEX_STD_printf("  error_code: %s;\n", E_Error_NAME(me->error_code));
 
-    if( me->error_code == E_Error_None ) {
-        __QUEX_STD_printf("<no error>\\n");
-        QUEX_NAME(Buffer_print_this)(&me->buffer);
-    } 
-    else {
-        __QUEX_STD_printf("%s\\n", E_Error_NAME(me->error_code));
+    QUEX_NAME(Buffer_print_this)(&me->buffer);
+
+    if( me->error_code != E_Error_None ) {
         handler_name = E_Error_MISSING_HANDLER_NAME(me->error_code);
         if( handler_name ) {
-            __QUEX_STD_printf("'%s' has not been specified for mode.\n", handler_name);
+            __QUEX_STD_printf("  (* '%s' has not been specified for mode*)\n", handler_name);
         }
         QUEX_NAME(Buffer_show_debug_content)(&me->buffer);
         __QUEX_STD_printf("\\n\\n");
     }
 
+    __QUEX_IF_COUNT(QUEX_NAME(Counter_print_this)(&me->counter));
+
 #   ifdef QUEX_OPTION_STRING_ACCUMULATOR
     QUEX_NAME(Accumulator_print_this)(&me->accumulator);
 #   endif
-
-    __QUEX_IF_COUNT( QUEX_NAME(Counter_print_this)(&me->counter); )
 
 #   ifdef QUEX_OPTION_POST_CATEGORIZER
     QUEX_NAME(PostCategorizer_print_this)(&me->post_categorizer);
 #   endif
 
-    __QUEX_STD_printf("   Mode Stack (%i/%i) = [", 
-                      (int)(me->_mode_stack.end        - me->_mode_stack.begin),
+    __QUEX_STD_printf("  _mode_stack: {\n");
+    __QUEX_STD_printf("    size:    %i;\n",
                       (int)(me->_mode_stack.memory_end - me->_mode_stack.begin));
+    __QUEX_STD_printf("    content: [");
     for(iterator=me->_mode_stack.end-1; iterator >= me->_mode_stack.begin; --iterator)
         __QUEX_STD_printf("%s, ", (*iterator)->name);
-
     __QUEX_STD_printf("]\n");
-    __QUEX_STD_printf("   ByteOrderInversion = %s;\n", 
-                      QUEX_NAME(byte_order_reversion)(me) ? "true" : "false");
+    __QUEX_STD_printf("  }\n");
 }
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)

@@ -201,7 +201,7 @@ QUEX_INLINE void
 QUEX_NAME(LexatomLoader_Plain_print_this)(QUEX_NAME(LexatomLoader)* alter_ego)
 {
     (void)alter_ego;
-    __QUEX_STD_printf("  type: plain;\n");
+    __QUEX_STD_printf("      type:                           plain;\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

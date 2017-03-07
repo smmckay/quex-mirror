@@ -1,23 +1,36 @@
 AFTER Reset:
-   CurrentMode = SIMPLE;
-   Buffer:
-      Memory:
-      _front         =  0;
-      _back          = +0xD;
-      input.end_p = +0x1;
-      _external_owner_f = false;
-   _read_p        = +0x1;
-   _lexeme_start_p = +0x1;
-   _character_at_lexeme_start = 0;
-   _character_before_lexeme_start = A;
-   _content_character_index_begin = 0;
-   input.end_character_index   = 0;
-   _byte_order_reversion_active_f = true;
-   Accumulator = ''
-   Counter:
-   _line_number_at_begin = 1;
-   _line_number_at_end   = 1;
-   _column_number_at_begin = 1;
-   _column_number_at_end   = 1;
-   Mode Stack (0/8) = []
-   ByteOrderInversion = true;
+  mode:       SIMPLE;
+  error_code: None;
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x561cf8b7ff50)) (== _front);
+      end:       begin + 14 (== _back + 1);
+    }
+    _read_p:                      begin + 1, end - 13;
+    _lexeme_start_p:              begin + 1, end - 13;
+    _lexatom_at_lexeme_start:     0x0;
+    _lexatom_before_lexeme_start: 0xA;
+    filler: {
+      type:                           plain;
+      lexatom_index_next_to_fill:     0;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: true;
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 0;
+      end_p:               begin + 1, end - 13;
+    }
+  }
+  counter: {
+    _line_number_at_begin:   1;
+    _line_number_at_end:     1;
+    _column_number_at_begin: 1;
+    _column_number_at_end:   1;
+  }
+  accumulator: ''
+  _mode_stack: {
+    size:    8;
+    content: []
+  }

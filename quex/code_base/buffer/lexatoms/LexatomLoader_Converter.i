@@ -425,7 +425,7 @@ QUEX_NAME(LexatomLoader_Converter_print_this)(QUEX_NAME(LexatomLoader)* alter_eg
 {
     QUEX_NAME(LexatomLoader_Converter)* me  = (QUEX_NAME(LexatomLoader_Converter)*)alter_ego;
 
-    __QUEX_STD_printf("  type: converter;\n");
+    __QUEX_STD_printf("    type: converter;\n");
     QUEX_NAME(RawBuffer_print_this)(&me->raw_buffer);
     QUEX_NAME(Converter_print_this)(me->converter);
 }

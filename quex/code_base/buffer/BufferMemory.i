@@ -97,10 +97,10 @@ QUEX_NAME(BufferMemory_check_chunk)(const QUEX_TYPE_LEXATOM* Front,
 QUEX_INLINE void
 QUEX_NAME(BufferMemory_print_this)(QUEX_NAME(BufferMemory)* me)
 {
-    __QUEX_STD_printf("    memory: { \n");
-    __QUEX_STD_printf("      ownership = %s;\n", E_Ownership_NAME(me->ownership));
-    __QUEX_STD_printf("      _front    =  0;\n");
-    __QUEX_STD_printf("      _back     = +0x%X (== end - 1);\n", (int)(me->_back - me->_front));
+    __QUEX_STD_printf("    memory: {\n");
+    __QUEX_STD_printf("      ownership: %s;\n", E_Ownership_NAME(me->ownership));
+    __QUEX_STD_printf("      begin:     ((%p)) (== _front);\n",       (void*)me->_front);
+    __QUEX_STD_printf("      end:       begin + %i (== _back + 1);\n", (int)(me->_back + 1 - me->_front));
     __QUEX_STD_printf("    }\n");
 }
 
