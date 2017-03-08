@@ -228,9 +228,7 @@ QUEX_NAME(LexatomLoader_print_this)(QUEX_NAME(LexatomLoader)* me)
         __QUEX_STD_printf("      type: <none>\n");
     }
     else {
-        if( me->derived.print_this ) {
-            me->derived.print_this(me);
-        }
+        __QUEX_STD_printf("      type:                           converter;\n");
         __QUEX_STD_printf("      lexatom_index_next_to_fill:     %i;\n", 
                           (int)me->lexatom_index_next_to_fill);
         __QUEX_STD_printf("      byte_n_per_lexatom:             %i;\n", 
@@ -238,7 +236,9 @@ QUEX_NAME(LexatomLoader_print_this)(QUEX_NAME(LexatomLoader)* me)
         __QUEX_STD_printf("      _byte_order_reversion_active_f: %s;\n", 
                           me->_byte_order_reversion_active_f ? "true" : "false");
         /* me->byte_loader->print_this(me->byte_loader); */
-
+        if( me->derived.print_this ) {
+            me->derived.print_this(me);
+        }
     }
     __QUEX_STD_printf("    }\n");
 }

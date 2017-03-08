@@ -74,19 +74,19 @@ QUEX_NAME(Converter_reset)(QUEX_NAME(Converter)* me)
 QUEX_INLINE void
 QUEX_NAME(Converter_print_this)(QUEX_NAME(Converter)* me)
 {
-    __QUEX_STD_printf("    converter: ");
+    __QUEX_STD_printf("      converter: ");
     if( ! me ) {
         __QUEX_STD_printf("<none>\n");
         return;
     }
     __QUEX_STD_printf("{\n");
+    __QUEX_STD_printf("        virginity_f:          %s;\n", me->virginity_f ? "true" : "false");
+    __QUEX_STD_printf("        byte_n_per_lexatom:   %i;\n", (int)me->byte_n_per_lexatom);
+    __QUEX_STD_printf("        input_code_unit_size: %i;\n", (int)me->input_code_unit_size);
     if( me->print_this ) {
         me->print_this(me);
     }
-    __QUEX_STD_printf("    virginity_f:          %s;\n", me->virginity_f ? "true" : "false");
-    __QUEX_STD_printf("    byte_n_per_lexatom:   %i;\n", (int)me->byte_n_per_lexatom);
-    __QUEX_STD_printf("    input_code_unit_size: %i;\n", (int)me->input_code_unit_size);
-    __QUEX_STD_printf("  }\n");
+    __QUEX_STD_printf("      }\n");
 }
 
 

@@ -77,6 +77,10 @@ int main(int argc, char** argv)
     } while( token_p->_id != QUEX_TKN_TERMINATION );
 #   endif
 
+    if( qlex->error_code != E_Error_None ) {
+        qlex->print_this();
+    }
+
     TEST_EPILOG
 
     delete qlex;

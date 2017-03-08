@@ -261,8 +261,8 @@ QUEX_NAME(Converter_IConv_print_this)(QUEX_NAME(Converter)* alter_ego)
 {
     QUEX_NAME(Converter_IConv)* me = (QUEX_NAME(Converter_IConv)*)alter_ego;
 
-    __QUEX_STD_printf("   type:    IConv, GNU;\n");
-    __QUEX_STD_printf("   handle:  ((%p));\n", (const void*)(me->handle));
+    __QUEX_STD_printf("        type:                 IConv, GNU;\n");
+    __QUEX_STD_printf("        handle:               ((%p));\n", (const void*)(me->handle));
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

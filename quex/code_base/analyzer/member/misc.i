@@ -132,15 +132,12 @@ QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
                       me->__current_mode_p == 0x0 ? "0x0" : me->__current_mode_p->name);
     __QUEX_STD_printf("  error_code: %s;\n", E_Error_NAME(me->error_code));
 
-    QUEX_NAME(Buffer_print_this)(&me->buffer);
-
     if( me->error_code != E_Error_None ) {
         handler_name = E_Error_MISSING_HANDLER_NAME(me->error_code);
         if( handler_name ) {
-            __QUEX_STD_printf("  (* '%s' has not been specified for mode*)\n", handler_name);
+            __QUEX_STD_printf("              (* '%s' has not been specified for mode*)\n", 
+                              handler_name);
         }
-        QUEX_NAME(Buffer_print_content_detailed)(&me->buffer);
-        __QUEX_STD_printf("\\n\\n");
     }
 
     __QUEX_IF_COUNT(QUEX_NAME(Counter_print_this)(&me->counter));
@@ -161,6 +158,12 @@ QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
         __QUEX_STD_printf("%s, ", (*iterator)->name);
     __QUEX_STD_printf("]\n");
     __QUEX_STD_printf("  }\n");
+    QUEX_NAME(Buffer_print_this)(&me->buffer);
+
+    if( me->error_code != E_Error_None ) {
+        QUEX_NAME(Buffer_print_content_detailed)(&me->buffer);
+        __QUEX_STD_printf("\n\n");
+    }
 }
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)
