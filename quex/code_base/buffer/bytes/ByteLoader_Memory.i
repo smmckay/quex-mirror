@@ -172,11 +172,11 @@ QUEX_NAME(ByteLoader_Memory_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 {
     QUEX_NAME(ByteLoader_Memory)* me = (QUEX_NAME(ByteLoader_Memory)*)(alter_ego);
 
-    __QUEX_STD_printf("      type:             memory;\n");
-    __QUEX_STD_printf("      memory_ownership: %s;\n", E_Ownership_NAME(me->memory_ownership));
-    __QUEX_STD_printf("      byte_array: { begin: ((%p)) end: ((%p)) size: %i; }\n",
+    __QUEX_STD_printf("        type:             memory;\n");
+    __QUEX_STD_printf("        memory_ownership: %s;\n", E_Ownership_NAME(me->memory_ownership));
+    __QUEX_STD_printf("        byte_array:       { begin: ((%p)) end: ((%p)) size: %i; }\n",
                       begin_p, end_p, (int)(me->end_p - me->begin_p));
-    __QUEX_STD_printf("      input_position: ");
+    __QUEX_STD_printf("        input_position:   ");
     QUEXED(print_relative_positions)(me->begin_p, me->end_p, 1, (void*)me->position);
     __QUEX_STD_printf("\n");
 }

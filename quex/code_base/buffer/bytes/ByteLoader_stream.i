@@ -15,6 +15,7 @@ template <class StreamType> QUEX_INLINE void                       QUEX_NAME(Byt
                                                                                           QUEX_TYPE_STREAM_POSITION Pos);
 template <class StreamType> QUEX_INLINE size_t                     QUEX_NAME(ByteLoader_stream_load)(QUEX_NAME(ByteLoader)* me, void* buffer, const size_t ByteN, bool*);
 template <class StreamType> QUEX_INLINE void                       QUEX_NAME(ByteLoader_stream_delete_self)(QUEX_NAME(ByteLoader)* me);
+template <class StreamType> QUEX_INLINE void                       QUEX_NAME(ByteLoader_stream_print_this)(QUEX_NAME(ByteLoader)* alter_ego);
 template <class StreamType> QUEX_INLINE bool                       QUEX_NAME(ByteLoader_stream_compare_handle)(const QUEX_NAME(ByteLoader)* alter_ego_A, 
                                                                                                                const QUEX_NAME(ByteLoader)* alter_ego_B);
 
@@ -42,7 +43,7 @@ QUEX_NAME(ByteLoader_stream_new_from_file_name)(const char* FileName)
     if( ! sh || ! *sh ) {
         return (QUEX_NAME(ByteLoader)*)0;
     }
-    alter_ego = QUEX_NAME(ByteLoader_stream_new)(sh);
+    alter_ego = QUEX_NAME(ByteLoader_stream_new)<std::ifstream>(sh);
     if( ! alter_ego ) {
         return (QUEX_NAME(ByteLoader)*)0;
     }
@@ -66,6 +67,7 @@ QUEX_NAME(ByteLoader_stream_construct)(QUEX_NAME(ByteLoader_stream)<StreamType>*
                          QUEX_NAME(ByteLoader_stream_seek)<StreamType>,
                          QUEX_NAME(ByteLoader_stream_load)<StreamType>,
                          QUEX_NAME(ByteLoader_stream_delete_self)<StreamType>,
+                         QUEX_NAME(ByteLoader_stream_print_this)<StreamType>,
                          QUEX_NAME(ByteLoader_stream_compare_handle)<StreamType>);
     me->base.element_size = sizeof(typename StreamType::char_type);
 }
@@ -148,14 +150,14 @@ QUEX_NAME(ByteLoader_stream_compare_handle)(const QUEX_NAME(ByteLoader)* alter_e
 }
 
 template <class StreamType> void
-QUEX_NAME(ByteLoader_stream_print_this)(QUEX_NAME(ByteLoader)* me)
+QUEX_NAME(ByteLoader_stream_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 {
     QUEX_NAME(ByteLoader_stream)<StreamType>*    me = (QUEX_NAME(ByteLoader_stream)<StreamType>*)alter_ego;
 
-    __QUEX_STD_printf("      type:          istream;\n");
-    __QUEX_STD_printf("      stream:        ((%p));\n", (const void*)me->input_handle);
+    __QUEX_STD_printf("        type:             istream;\n");
+    __QUEX_STD_printf("        stream:           ((%p));\n", (const void*)me->input_handle);
     if( me->input_handle ) {
-        __QUEX_STD_printf("      end_of_stream: %s;\n", E_Boolean_NAME(me->input_handle->eof()));
+        __QUEX_STD_printf("        end_of_stream:    %s;\n", E_Boolean_NAME(me->input_handle->eof()));
     }
 }
 

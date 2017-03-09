@@ -235,8 +235,12 @@ QUEX_NAME(LexatomLoader_print_this)(QUEX_NAME(LexatomLoader)* me)
         __QUEX_STD_printf("      _byte_order_reversion_active_f: %s;\n", 
                           E_Boolean_NAME(me->_byte_order_reversion_active_f)); 
         /* me->byte_loader->print_this(me->byte_loader); */
-        if( me->derived.print_this ) {
-            me->derived.print_this(me);
+        if( me->derived.print_this ) me->derived.print_this(me);
+        if( ! me->byte_loader ) {
+            __QUEX_STD_printf("      byte_loader: <none>\n");
+        }
+        else {
+            if( me->byte_loader->print_this ) me->byte_loader->print_this(me->byte_loader); 
         }
     }
     __QUEX_STD_printf("    }\n");

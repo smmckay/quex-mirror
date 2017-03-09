@@ -131,10 +131,10 @@ QUEX_NAME(ByteLoader_FILE_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 {
     QUEX_NAME(ByteLoader_FILE)* me = (QUEX_NAME(ByteLoader_FILE)*)(alter_ego);
 
-    __QUEX_STD_printf("      type:        FILE;\n");
-    __QUEX_STD_printf("      file_handle: ((%p));\n", (const void*)me->input_handle);
+    __QUEX_STD_printf("        type:             FILE;\n");
+    __QUEX_STD_printf("        file_handle:      ((%p));\n", (const void*)me->input_handle);
     if( me->input_handle ) {
-        __QUEX_STD_printf("      end_of_stream: %s;\n", E_Boolean_NAME(feof(me->input_handle)));
+        __QUEX_STD_printf("        end_of_stream:    %s;\n", E_Boolean_NAME(feof(me->input_handle)));
     }
 }
 

@@ -130,9 +130,9 @@ QUEX_NAME(ByteLoader_POSIX_print_this)(QUEX_NAME(ByteLoader_POSIX)* me)
 {
     QUEX_NAME(ByteLoader_POSIX)* me = (QUEX_NAME(ByteLoader_POSIX)*)(alter_ego);
 
-    __QUEX_STD_printf("      type:            POSIX;\n");
-    __QUEX_STD_printf("      file_descriptor: ((%i));\n", (const void*)me->fd);
-    __QUEX_STD_printf("      end_of_stream_f: <no means to detect>;\n");
+    __QUEX_STD_printf("        type:             POSIX;\n");
+    __QUEX_STD_printf("        file_descriptor:  ((%i));\n", (const void*)me->fd);
+    __QUEX_STD_printf("        end_of_stream_f:  <no means to detect>;\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

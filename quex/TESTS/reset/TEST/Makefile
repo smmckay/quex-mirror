@@ -3,9 +3,9 @@ FILES = lexer codec-lexer iconv-lexer icu-lexer lexer-x
 
 CC = g++ -I$(QUEX_PATH) \
 	 -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-	 -ggdb 
+	 -ggdb -Wall -fsanitize=address
      # -DQUEX_OPTION_DEBUG_SHOW 
-	 # -fsanitize=address
+	 # 
 
 all: $(FILES)
 
