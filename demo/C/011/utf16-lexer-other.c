@@ -26,7 +26,7 @@ main(int argc, char** argv)
     QUEX_NAME(byte_order_reversion_set)(&qlex, byte_order_reversion_f);
 
     printf("## input file           = %s\n", file_name);
-    printf("## byte order reversion = %s\n", QUEX_NAME(byte_order_reversion)(&qlex) ? "true" : "false");
+    printf("## byte order reversion = %s\n", E_Boolean_NAME(QUEX_NAME(byte_order_reversion)(&qlex)));
     
     do {
         QUEX_NAME(receive)(&qlex, &token_p);

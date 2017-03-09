@@ -16,6 +16,7 @@ QUEX_INLINE size_t                     QUEX_NAME(ByteLoader_POSIX_load)(QUEX_NAM
                                                                         void* buffer, const size_t ByteN, 
                                                                         bool*);
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_POSIX_delete_self)(QUEX_NAME(ByteLoader)* me);
+QUEX_INLINE void                       QUEX_NAME(ByteLoader_POSIX_print_this)(QUEX_NAME(ByteLoader_POSIX)* me);
 QUEX_INLINE bool                       QUEX_NAME(ByteLoader_POSIX_compare_handle)(const QUEX_NAME(ByteLoader)* alter_ego_A, 
                                                                        const QUEX_NAME(ByteLoader)* alter_ego_B);
 
@@ -64,6 +65,7 @@ QUEX_NAME(ByteLoader_POSIX_construct)(QUEX_NAME(ByteLoader_POSIX)* me, int fd)
                                     QUEX_NAME(ByteLoader_POSIX_seek),
                                     QUEX_NAME(ByteLoader_POSIX_load),
                                     QUEX_NAME(ByteLoader_POSIX_delete_self),
+                                    QUEX_NAME(ByteLoader_POSIX_print_this),
                                     QUEX_NAME(ByteLoader_POSIX_compare_handle));
 
     /* A POSIX file handle is always in binary mode.                         */
@@ -121,6 +123,16 @@ QUEX_NAME(ByteLoader_POSIX_compare_handle)(const QUEX_NAME(ByteLoader)* alter_eg
     const QUEX_NAME(ByteLoader_POSIX)* B = (QUEX_NAME(ByteLoader_POSIX)*)(alter_ego_B);
 
     return A->fd == B->fd;
+}
+
+QUEX_INLINE void                       
+QUEX_NAME(ByteLoader_POSIX_print_this)(QUEX_NAME(ByteLoader_POSIX)* me)
+{
+    QUEX_NAME(ByteLoader_POSIX)* me = (QUEX_NAME(ByteLoader_POSIX)*)(alter_ego);
+
+    __QUEX_STD_printf("      type:            POSIX;\n");
+    __QUEX_STD_printf("      file_descriptor: ((%i));\n", (const void*)me->fd);
+    __QUEX_STD_printf("      end_of_stream_f: <no means to detect>;\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

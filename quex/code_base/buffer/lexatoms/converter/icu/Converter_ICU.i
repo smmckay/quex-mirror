@@ -323,25 +323,25 @@ QUEX_NAME(Converter_ICU_print_this)(QUEX_NAME(Converter)* alter_ego)
     const void*  PivotBegin = (const void*)&me->pivot.buffer[0];
     const void*  PivotEnd   = (const void*)&me->pivot.buffer[QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE];
 
-    __QUEX_STD_printf("   type:                         ICU, IBM (tm);\n");
-    __QUEX_STD_printf("   from_handle:                  ((%p));\n", (void*)me->from_handle);
-    __QUEX_STD_printf("   to_handle:                    ((%p));\n", (void*)me->to_handle);
-    __QUEX_STD_printf("   status:                       %s;\n",     u_errorName(me->status));
-    __QUEX_STD_printf("   reset_upon_next_conversion_f: %s;\n",
-                      me->reset_upon_next_conversion_f ? "true" : "false");
+    __QUEX_STD_printf("        type:                         ICU, IBM (tm);\n");
+    __QUEX_STD_printf("        from_handle:                  ((%p));\n", (void*)me->from_handle);
+    __QUEX_STD_printf("        to_handle:                    ((%p));\n", (void*)me->to_handle);
+    __QUEX_STD_printf("        status:                       %s;\n",     u_errorName(me->status));
+    __QUEX_STD_printf("        reset_upon_next_conversion_f: %s;\n",
+                      E_Boolean_NAME(me->reset_upon_next_conversion_f));
 
-    __QUEX_STD_printf("   pivot: {\n");
-    __QUEX_STD_printf("      buffer: { begin: ((%p)) end: ((%p)) size: %i; }\n",
+    __QUEX_STD_printf("        pivot: {\n");
+    __QUEX_STD_printf("           buffer: { begin: ((%p)) end: ((%p)) size: %i; }\n",
                       PivotBegin, PivotEnd, (int)QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE);
-    __QUEX_STD_printf("      source: ");
-    __QUEX_STD_printf("\n");
+    __QUEX_STD_printf("           source: ");
     QUEXED(print_relative_positions)(PivotBegin, PivotEnd, sizeof(UChar),
                                      (void*)me->pivot.source);
-    __QUEX_STD_printf("      target: ");
+    __QUEX_STD_printf("\n");
+    __QUEX_STD_printf("           target: ");
     QUEXED(print_relative_positions)(PivotBegin, PivotEnd, sizeof(UChar),
                                      me->pivot.target);
     __QUEX_STD_printf("\n");
-    __QUEX_STD_printf("    }\n");
+    __QUEX_STD_printf("        }\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

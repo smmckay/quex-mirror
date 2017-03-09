@@ -194,6 +194,7 @@ typedef enum {
       : (E) == E_Error_NoHandler_OnSkipRangeOpen  ? "on_skip_range_open" \
       :                                             (const char*)0)
 
+#define E_Boolean_NAME(B) ((B == 0) ? "false" : "true")
 #endif
 
 /* Define the QUEX_TYPE_STREAM_POSITION at a central place, so that it is the

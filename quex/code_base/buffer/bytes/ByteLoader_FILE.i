@@ -12,6 +12,7 @@ QUEX_INLINE QUEX_TYPE_STREAM_POSITION  QUEX_NAME(ByteLoader_FILE_tell)(QUEX_NAME
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_FILE_seek)(QUEX_NAME(ByteLoader)* me, QUEX_TYPE_STREAM_POSITION Pos);
 QUEX_INLINE size_t                     QUEX_NAME(ByteLoader_FILE_load)(QUEX_NAME(ByteLoader)* me, void* buffer, const size_t ByteN, bool*);
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_FILE_delete_self)(QUEX_NAME(ByteLoader)* me);
+QUEX_INLINE void                       QUEX_NAME(ByteLoader_FILE_print_this)(QUEX_NAME(ByteLoader)* me);
 QUEX_INLINE bool                       QUEX_NAME(ByteLoader_FILE_compare_handle)(const QUEX_NAME(ByteLoader)* alter_ego_A, 
                                                                                  const QUEX_NAME(ByteLoader)* alter_ego_B);
 
@@ -65,6 +66,7 @@ QUEX_NAME(ByteLoader_FILE_construct)(QUEX_NAME(ByteLoader_FILE)* me, __QUEX_STD_
                          QUEX_NAME(ByteLoader_FILE_seek),
                          QUEX_NAME(ByteLoader_FILE_load),
                          QUEX_NAME(ByteLoader_FILE_delete_self),
+                         QUEX_NAME(ByteLoader_FILE_print_this),
                          QUEX_NAME(ByteLoader_FILE_compare_handle));
 }
 
@@ -122,6 +124,18 @@ QUEX_NAME(ByteLoader_FILE_compare_handle)(const QUEX_NAME(ByteLoader)* alter_ego
     const QUEX_NAME(ByteLoader_FILE)* B = (QUEX_NAME(ByteLoader_FILE)*)(alter_ego_B);
 
     return A->input_handle == B->input_handle;
+}
+
+QUEX_INLINE void                       
+QUEX_NAME(ByteLoader_FILE_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
+{
+    QUEX_NAME(ByteLoader_FILE)* me = (QUEX_NAME(ByteLoader_FILE)*)(alter_ego);
+
+    __QUEX_STD_printf("      type:        FILE;\n");
+    __QUEX_STD_printf("      file_handle: ((%p));\n", (const void*)me->input_handle);
+    if( me->input_handle ) {
+        __QUEX_STD_printf("      end_of_stream: %s;\n", E_Boolean_NAME(feof(me->input_handle)));
+    }
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

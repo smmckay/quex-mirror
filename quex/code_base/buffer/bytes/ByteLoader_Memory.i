@@ -19,6 +19,7 @@ QUEX_INLINE size_t                     QUEX_NAME(ByteLoader_Memory_load)(QUEX_NA
                                                                          const size_t           ByteN, 
                                                                          bool*                  end_of_stream_f);
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_Memory_delete_self)(QUEX_NAME(ByteLoader)* me);
+QUEX_INLINE void                       QUEX_NAME(ByteLoader_Memory_print_this)(QUEX_NAME(ByteLoader)* me);
 QUEX_INLINE bool                       QUEX_NAME(ByteLoader_Memory_compare_handle)(const QUEX_NAME(ByteLoader)* alter_ego_A, 
                                                                                    const QUEX_NAME(ByteLoader)* alter_ego_B);
 
@@ -95,6 +96,7 @@ QUEX_NAME(ByteLoader_Memory_construct)(QUEX_NAME(ByteLoader_Memory)* me,
                          QUEX_NAME(ByteLoader_Memory_seek),
                          QUEX_NAME(ByteLoader_Memory_load),
                          QUEX_NAME(ByteLoader_Memory_delete_self),
+                         QUEX_NAME(ByteLoader_Memory_print_this),
                          QUEX_NAME(ByteLoader_Memory_compare_handle));
     me->base.binary_mode_f = true;
     me->memory_ownership   = E_Ownership_EXTERNAL; /* Default */
@@ -163,6 +165,20 @@ QUEX_NAME(ByteLoader_Memory_compare_handle)(const QUEX_NAME(ByteLoader)* alter_e
     return    A->byte_array.begin_p  == B->byte_array.begin_p
            && A->byte_array.end_p    == B->byte_array.end_p
            && A->byte_array.position == B->byte_array.position;
+}
+
+QUEX_INLINE void                       
+QUEX_NAME(ByteLoader_Memory_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
+{
+    QUEX_NAME(ByteLoader_Memory)* me = (QUEX_NAME(ByteLoader_Memory)*)(alter_ego);
+
+    __QUEX_STD_printf("      type:             memory;\n");
+    __QUEX_STD_printf("      memory_ownership: %s;\n", E_Ownership_NAME(me->memory_ownership));
+    __QUEX_STD_printf("      byte_array: { begin: ((%p)) end: ((%p)) size: %i; }\n",
+                      begin_p, end_p, (int)(me->end_p - me->begin_p));
+    __QUEX_STD_printf("      input_position: ");
+    QUEXED(print_relative_positions)(me->begin_p, me->end_p, 1, (void*)me->position);
+    __QUEX_STD_printf("\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

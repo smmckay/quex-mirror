@@ -20,6 +20,7 @@ QUEX_INLINE size_t                     QUEX_NAME(ByteLoader_wstream_load)(QUEX_N
                                                                           const size_t           ByteN, 
                                                                           bool*                  end_of_stream_f);
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_wstream_delete_self)(QUEX_NAME(ByteLoader)* me);
+QUEX_INLINE void                       QUEX_NAME(ByteLoader_wstream_print_this)(QUEX_NAME(ByteLoader)* me);
 QUEX_INLINE bool                       QUEX_NAME(ByteLoader_wstream_compare_handle)(const QUEX_NAME(ByteLoader)* alter_ego_A, 
                                                                                     const QUEX_NAME(ByteLoader)* alter_ego_B);
 
@@ -72,6 +73,7 @@ QUEX_NAME(ByteLoader_wstream_construct)(QUEX_NAME(ByteLoader_wstream)* me,
                          QUEX_NAME(ByteLoader_wstream_seek),
                          QUEX_NAME(ByteLoader_wstream_load),
                          QUEX_NAME(ByteLoader_wstream_delete_self),
+                         QUEX_NAME(ByteLoader_wstream_print_this),
                          QUEX_NAME(ByteLoader_wstream_compare_handle));
     me->base.element_size = sizeof(wchar_t);
 }
@@ -148,6 +150,17 @@ QUEX_NAME(ByteLoader_wstream_compare_handle)(const QUEX_NAME(ByteLoader)* alter_
     return A->input_handle == B->input_handle;
 }
 
+QUEX_INLINE void
+QUEX_NAME(ByteLoader_wstream_print_this)(QUEX_NAME(ByteLoader)* me)
+{
+    QUEX_NAME(ByteLoader_wstream)   me = (QUEX_NAME(ByteLoader_stream)<StreamType>*)alter_ego;
+
+    __QUEX_STD_printf("      type:          wistream;\n");
+    __QUEX_STD_printf("      stream:        ((%p));\n", (const void*)me->input_handle);
+    if( me->input_handle ) {
+        __QUEX_STD_printf("      end_of_stream: %s;\n", E_Boolean_NAME(me->input_handle->eof()));
+    }
+}
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_OPTION_PLAIN_C                                               */

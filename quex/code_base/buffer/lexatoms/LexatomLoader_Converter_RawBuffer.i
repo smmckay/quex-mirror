@@ -117,7 +117,7 @@ QUEX_INLINE void
 QUEX_NAME(RawBuffer_print_this)(QUEX_NAME(RawBuffer)*  me)
 {
     __QUEX_STD_printf("      raw_buffer: {\n");
-    __QUEX_STD_printf("        ownership:         %s;\n", E_Ownership_NAME(me->ownership));
+    // __QUEX_STD_printf("        ownership:         %s;\n", E_Ownership_NAME(me->ownership));
     __QUEX_STD_printf("        buffer:            { begin: ((%p)) end: ((%p)) size: %i; }\n",
                       (void*)me->begin, (void*)me->memory_end, 
                       (int)(me->memory_end - me->begin));

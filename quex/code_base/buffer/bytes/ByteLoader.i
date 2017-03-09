@@ -14,21 +14,27 @@ QUEX_NAME(ByteLoader_seek)(QUEX_NAME(ByteLoader)* me, QUEX_TYPE_STREAM_POSITION 
 QUEX_INLINE size_t                    
 QUEX_NAME(ByteLoader_load)(QUEX_NAME(ByteLoader)* me, void* begin_p, const size_t N, bool* end_of_stream_f);
 
+QUEX_INLINE size_t                    
+QUEX_NAME(ByteLoader_print_this)(QUEX_NAME(ByteLoader)* me);
+
 QUEX_INLINE void
 QUEX_NAME(ByteLoader_construct)(QUEX_NAME(ByteLoader)* me, 
                      QUEX_TYPE_STREAM_POSITION  (*tell)(QUEX_NAME(ByteLoader)* me),
                      void                       (*seek)(QUEX_NAME(ByteLoader)* me, QUEX_TYPE_STREAM_POSITION Pos),
                      size_t                     (*load)(QUEX_NAME(ByteLoader)*, void*, const size_t, bool*),
                      void                       (*delete_self)(QUEX_NAME(ByteLoader)*),
+                     void                       (*print_this)(QUEX_NAME(ByteLoader)*),
                      bool                       (*compare_handle)(const QUEX_NAME(ByteLoader)*, 
                                                                   const QUEX_NAME(ByteLoader)*))
 {
     me->tell           = QUEX_NAME(ByteLoader_tell);
     me->seek           = QUEX_NAME(ByteLoader_seek);
     me->load           = QUEX_NAME(ByteLoader_load);
+    me->print_this     = QUEX_NAME(ByteLoader_print_this);
     me->derived.tell   = tell;
     me->derived.seek   = seek;
     me->derived.load   = load;
+    me->derived.load   = print_this;
     me->delete_self    = delete_self;
     me->compare_handle = compare_handle;
     me->on_nothing     = (bool  (*)(struct QUEX_NAME(ByteLoader_tag)*, size_t, size_t))0;
@@ -146,6 +152,21 @@ QUEX_NAME(ByteLoader_delete)(QUEX_NAME(ByteLoader)** me)
     if( ! *me )                   return;
     else if( (*me)->delete_self ) (*me)->delete_self(*me);
     (*me) = (QUEX_NAME(ByteLoader)*)0;
+}
+
+QUEX_INLINE size_t                    
+QUEX_NAME(ByteLoader_print_this)(QUEX_NAME(ByteLoader)* me)
+{
+    __QUEX_STD_printf("    byte_loader: {\n");
+    __QUEX_STD_printf("      handle_ownership: %s;\n", E_Ownership_NAME(me->handle_ownership));
+    __QUEX_STD_printf("      binary_mode_f:    %s;\n", E_Boolean_NAME(me->binary_mode_f));
+    __QUEX_STD_printf("      element_size:     %i;\n", me->element_size); 
+    __QUEX_STD_printf("      initial_position: %i;\n", (int)me->initial_position); 
+    __QUEX_STD_printf("      current_position: %i;\n", (int)me->tell(me)); 
+    if( me->derived.print_this ) {
+        me->derived.print_this(me);
+    }
+    __QUEX_STD_printf("    }\n");
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

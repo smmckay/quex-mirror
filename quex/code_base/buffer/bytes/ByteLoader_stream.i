@@ -147,6 +147,18 @@ QUEX_NAME(ByteLoader_stream_compare_handle)(const QUEX_NAME(ByteLoader)* alter_e
     return A->input_handle == B->input_handle;
 }
 
+template <class StreamType> void
+QUEX_NAME(ByteLoader_stream_print_this)(QUEX_NAME(ByteLoader)* me)
+{
+    QUEX_NAME(ByteLoader_stream)<StreamType>*    me = (QUEX_NAME(ByteLoader_stream)<StreamType>*)alter_ego;
+
+    __QUEX_STD_printf("      type:          istream;\n");
+    __QUEX_STD_printf("      stream:        ((%p));\n", (const void*)me->input_handle);
+    if( me->input_handle ) {
+        __QUEX_STD_printf("      end_of_stream: %s;\n", E_Boolean_NAME(me->input_handle->eof()));
+    }
+}
+
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_OPTION_PLAIN_C                                     */

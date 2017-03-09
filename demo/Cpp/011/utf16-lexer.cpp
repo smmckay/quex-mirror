@@ -28,7 +28,7 @@ main(int argc, char** argv)
                                    BigEndianF : ! BigEndianF);
 
     printf("## input file           = %s\n", file_name);
-    printf("## byte order reversion = %s\n", qlex->byte_order_reversion() ? "true" : "false");
+    printf("## byte order reversion = %s\n", E_Boolean_NAME(qlex->byte_order_reversion()));
     
     do {
         qlex->receive(&token);
