@@ -109,14 +109,6 @@
 #   define QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN() RETURN
 #endif
 
-#ifndef    __QUEX_OPTION_CONVERTER_HELPER
-#   if    defined(QUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE) \
-       || defined(QUEX_OPTION_CONVERTER_ICU)                       \
-       || defined(QUEX_OPTION_CONVERTER_ICONV) 
-#   define __QUEX_OPTION_CONVERTER_HELPER
-#   endif
-#endif
-
 #if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)   \
     || defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING) \
     || defined(QUEX_OPTION_INDENTATION_TRIGGER)       

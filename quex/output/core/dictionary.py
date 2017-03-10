@@ -927,7 +927,8 @@ class Lng_Cpp(dict):
             
         return [
             'self.error_code = %s;\n' % error_code,
-            'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n'
+            'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n',
+            'RETURN;\n'
         ]
 
     def EXIT_ON_TERMINATION(self):

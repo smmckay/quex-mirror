@@ -76,14 +76,6 @@ def prepare(command_line, argv):
                   + "Quex can continue, but the result is questionable.\n", \
                   DontExitF=True)
 
-    Setup.converter_f = True
-
-    # The only case where no converter helper is required is where ASCII 
-    # (Unicode restricted to [0, FF] is used.
-    Setup.converter_helper_required_f = True
-    if Setup.converter_f == False and Setup.buffer_lexatom_size_in_byte == 1 and Setup.buffer_codec.name == "unicode":
-        Setup.converter_helper_required_f = False
-
     validation.do(Setup, command_line, argv)
 
     if Setup.converter_ucs_coding_name == "": 

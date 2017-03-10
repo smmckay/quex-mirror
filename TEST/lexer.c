@@ -99,6 +99,9 @@ main(int argc, char** argv)
     } while( token_p->_id != QUEX_TKN_TERMINATION );
 #   endif
 
+    if( qlex.error_code != E_Error_None ) {
+        QUEX_NAME(print_this)(&qlex);
+    }
     TEST_EPILOG
 
     QUEX_NAME(destruct)(&qlex);

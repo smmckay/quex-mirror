@@ -10,7 +10,7 @@ tmp=`pwd`
 cd $bug/ 
 
 quex -i simple.qx -o Simple --language C
-gcc ../lexer.c Simple.c -I. -I$QUEX_PATH -o lexer
+gcc ../lexer.c Simple.c -I. -I$QUEX_PATH -o lexer -Wall -Werror
 ./lexer example.txt 2> tmp.txt
 cat tmp.txt
 rm -f tmp.txt

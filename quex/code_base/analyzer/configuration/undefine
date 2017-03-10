@@ -81,12 +81,6 @@
 #ifdef    __QUEX_OPTION_BIG_ENDIAN
 #   undef __QUEX_OPTION_BIG_ENDIAN
 #endif
-#ifdef    __QUEX_OPTION_CONVERTER
-#   undef __QUEX_OPTION_CONVERTER
-#endif
-#ifdef    __QUEX_OPTION_CONVERTER
-#   undef __QUEX_OPTION_CONVERTER
-#endif
 #ifdef    __QUEX_OPTION_COUNTER
 #   undef __QUEX_OPTION_COUNTER
 #endif
@@ -296,9 +290,6 @@
 #endif
 #ifdef    QUEX_CONVERTER_STRING
 #   undef QUEX_CONVERTER_STRING
-#endif
-#ifdef    __QUEX_OPTION_CONVERTER_HELPER
-#   undef __QUEX_OPTION_CONVERTER_HELPER
 #endif
 #ifdef    QUEX_SETTING_CHARACTER_SIZE
 #   undef QUEX_SETTING_CHARACTER_SIZE

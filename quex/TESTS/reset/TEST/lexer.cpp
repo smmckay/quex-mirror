@@ -67,7 +67,7 @@ main(int argc, char** argv)
         assert(qlex.buffer.filler);
         (void)qlex.receive();
 
-#       if defined (__QUEX_OPTION_CONVERTER)
+#       if defined (__QUEX_SETTING_TEST_UTF8)
         printf("(%2i, %2i)   \t%s '%s' \n", (int)qlex.line_number(), (int)qlex.column_number(),
                token_p->type_id_name().c_str(), token_p->pretty_char_text().c_str());
 #       else

@@ -1,0 +1,99 @@
+** Please note, that '.' in an RE stands for 'anything but newline'   **
+** Thus, it does not match newline, and the lexer triggers on newline **
+** to the default terminal.                                           **
+URL 'http://www.dog.com/get?q=food'
+<TERMINATION> 'http://www.dog.com/get?q=food'
+  mode:       ONE_AND_ONLY;
+  error_code: NoHandler_OnFailure;
+              (* 'on_failure' has not been specified for mode*)
+  counter: {
+    _line_number_at_begin:   1;
+    _line_number_at_end:     2;
+    _column_number_at_begin: 30;
+    _column_number_at_end:   1;
+  }
+  accumulator: ''
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x7f7cbb584010)) (== _front);
+      end:       begin + 65536 (== _back + 1);
+    }
+    _read_p:                      begin + 31, end - 65505;
+    _lexeme_start_p:              begin + 30, end - 65506;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     37;
+      byte_n_per_lexatom:             -1;
+      _byte_order_reversion_active_f: false;
+      type:                           converter;
+      raw_buffer: {
+        buffer:            { begin: ((0x55f5358ea520)) end: ((0x55f5358fa520)) size: 65536; }
+        fill_end_p:        begin + 37, end - 65499;
+        next_to_convert_p: begin + 37, end - 65499;
+      }
+      converter: {
+        virginity_f:          false;
+        byte_n_per_lexatom:   -1;
+        input_code_unit_size: 1;
+        type:                         ICU, IBM (tm);
+        from_handle:                  ((0x55f5358e9d20));
+        to_handle:                    ((0x55f5358e9ed0));
+        status:                       U_ZERO_ERROR;
+        reset_upon_next_conversion_f: false;
+        pivot: {
+           buffer: { begin: ((0x55f5358e9c80)) end: ((0x55f5358e9d00)) size: 64; }
+           source: begin + 0, end - 64;
+           target: begin + 0, end - 64;
+        }
+      }
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 37;
+        type:             FILE;
+        file_handle:      ((0x55f5358ea1b0));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 37;
+      end_p:               begin + 38, end - 65498;
+    }
+  }
+
+
+| [END] number of token = 2
+`------------------------------------------------------------------------------------
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x0068
+                                           [0002] 0x0074
+                                           [0003] 0x0074
+                                           [0004] 0x0070
+                                           ...
+                                           [001C] 0x006F
+                                           [001D] 0x0064
+   lexeme start--------------------------->[001E] 0x000A
+   input---------------------------------->[001F] 0x002A
+                                           [0020] 0x002A
+                                           [0021] 0x002A
+                                           [0022] 0x002A
+                                           [0023] 0x002A
+                                           [0024] 0x000A
+                                           [0025] 0x000A
+   end of file---------------------------->[0026] 0x0000
+                                           ...
+                                           [FFFB] 0xFFFFFFFF
+                                           [FFFC] 0xFFFFFFFF
+                                           [FFFD] 0xFFFFFFFF
+                                           [FFFE] 0xFFFFFFFF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________

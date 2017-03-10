@@ -63,6 +63,9 @@ main(int argc, char** argv)
         cout.flush();
     } while( token_p->type_id() != QUEX_TKN_TERMINATION );
 
+    if( qlex.error_code != E_Error_None ) {
+        qlex.print_this();
+    }
     return 0;
 }
 

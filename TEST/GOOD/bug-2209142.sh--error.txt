@@ -1,16 +1,3 @@
-## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
-##
-## Asserts activated! Lexical analyzer is 'paranoid'!
-## => Even smallest misbehavior causes program exit.
-##    This helps to find subtile errors.
-##
-## Note however: the paranoia is a heavy load on performance!
-##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
-##
-## Report any bug at
-##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 ## An Assert-Abortion might be an intended element of the experiment.
 (1, 1)  	IDENTIFIER 'eins'
 (1, 5)  	WHITESPACE ''
@@ -26,6 +13,52 @@
 (1, 90)  	WHITESPACE ''
 (1, 91)  	IDENTIFIER 'sechs'
 (1, 96)  	WHITESPACE ''
+(1, 97)  	<TERMINATION>
+  mode:       ALL;
+  error_code: NoHandler_OnFailure;
+              (* 'on_failure' has not been specified for mode*)
+  counter: {
+    _line_number_at_begin:   1;
+    _line_number_at_end:     1;
+    _column_number_at_begin: 97;
+    _column_number_at_end:   98;
+  }
+  accumulator: ''
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x562d2f0f6f60)) (== _front);
+      end:       begin + 131072 (== _back + 1);
+    }
+    _read_p:                      begin + 98, end - 130974;
+    _lexeme_start_p:              begin + 97, end - 130975;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     115;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 115;
+        type:             FILE;
+        file_handle:      ((0x562d2f0f6c20));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 115;
+      end_p:               begin + 116, end - 130956;
+    }
+  }
 
 
 _________________________________________________________________
@@ -54,9 +87,4 @@ _________________________________________________________________
                                            [1FFFE] 0x00FF
    buffer back---------------------------->[1FFFF] 0x0000
 _________________________________________________________________
-Simple.cpp:734:	terminate called after throwing an instance of 'std::runtime_error'
-  what():  
-Mode 'ALL': Match failure, no pattern matched!
-The 'on_failure' handler has not been specified.
-
 clean

@@ -336,7 +336,7 @@ def get_quick_setters(Descr):
 def __get_converter_configuration(IncludeGuardExtension):
     token_descr = blackboard.token_type_definition
 
-    if not Setup.converter_helper_required_f:
+    if False and not Setup.converter_helper_required_f:
         declaration_include    = "#include <quex/code_base/converter_helper/identity>"
         implementation_include = "#include <quex/code_base/converter_helper/identity.i>"
         from_codec = "identical"

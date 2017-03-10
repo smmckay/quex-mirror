@@ -2,12 +2,66 @@
 ** Thus, it does not match newline, and the lexer triggers on newline **
 ** to the default terminal.                                           **
 URL 'http://www.dog.com/get?q=food'
-
-
-
-Mode 'ONE_AND_ONLY': Match failure, no pattern matched!
-The 'on_failure' handler has not been specified.
 <TERMINATION> 'http://www.dog.com/get?q=food'
+  mode:       ONE_AND_ONLY;
+  error_code: NoHandler_OnFailure;
+              (* 'on_failure' has not been specified for mode*)
+  counter: {
+    _line_number_at_begin:   1;
+    _line_number_at_end:     2;
+    _column_number_at_begin: 30;
+    _column_number_at_end:   1;
+  }
+  accumulator: ''
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x7f1a0d23b010)) (== _front);
+      end:       begin + 65536 (== _back + 1);
+    }
+    _read_p:                      begin + 31, end - 65505;
+    _lexeme_start_p:              begin + 30, end - 65506;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     37;
+      byte_n_per_lexatom:             -1;
+      _byte_order_reversion_active_f: false;
+      type:                           converter;
+      raw_buffer: {
+        buffer:            { begin: ((0x560568abe290)) end: ((0x560568ace290)) size: 65536; }
+        fill_end_p:        begin + 37, end - 65499;
+        next_to_convert_p: begin + 37, end - 65499;
+      }
+      converter: {
+        virginity_f:          false;
+        byte_n_per_lexatom:   -1;
+        input_code_unit_size: 1;
+        type:                 IConv, GNU;
+        handle:               ((0x560568ab5d60));
+      }
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 37;
+        type:             FILE;
+        file_handle:      ((0x560568abdf20));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 37;
+      end_p:               begin + 38, end - 65498;
+    }
+  }
+
+
 | [END] number of token = 2
 `------------------------------------------------------------------------------------
 _________________________________________________________________

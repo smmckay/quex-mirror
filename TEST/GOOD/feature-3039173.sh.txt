@@ -13,8 +13,58 @@
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 ,------------------------------------------------------------------------------------
 | [START]
+A
+A
+<TERMINATION>
+  mode:       X;
+  error_code: NoHandler_OnFailure;
+              (* 'on_failure' has not been specified for mode*)
+  counter: {
+    _line_number_at_begin:   1;
+    _line_number_at_end:     1;
+    _column_number_at_begin: 3;
+    _column_number_at_end:   4;
+  }
+  accumulator: ''
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x55a928cf2350)) (== _front);
+      end:       begin + 131072 (== _back + 1);
+    }
+    _read_p:                      begin + 4, end - 131068;
+    _lexeme_start_p:              begin + 3, end - 131069;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     5;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 5;
+        type:             FILE;
+        file_handle:      ((0x55a928cf2010));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 5;
+      end_p:               begin + 6, end - 131066;
+    }
+  }
 
 
+| [END] number of token = 3
+`------------------------------------------------------------------------------------
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
                                            [0001] 0x0061
@@ -30,6 +80,3 @@ _________________________________________________________________
                                            [1FFFE] 0x00FF
    buffer back---------------------------->[1FFFF] 0x0000
 _________________________________________________________________
-Simple.c:495:	
-Mode 'X': Match failure, no pattern matched!
-The 'on_failure' handler has not been specified.

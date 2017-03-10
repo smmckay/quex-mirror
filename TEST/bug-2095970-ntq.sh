@@ -40,11 +40,11 @@ if [[ $1 == "NoModeDetection_ErrorCase" ]]; then
     ./lexer >& tmp.txt
     cat tmp.txt
     rm  -f tmp.txt
+    make clean
     exit
 fi
 bash ../valgrindi.sh tmp.txt ./lexer 
 cat tmp.txt
 rm tmp.txt
-# cleansening
 make clean
 cd $tmp

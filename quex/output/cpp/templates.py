@@ -341,11 +341,7 @@ def get_implementation_header(Setup):
     if Setup.language != "C":
         return ""
 
-    if Setup.converter_helper_required_f:
-        result = "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header_i)
-    else:
-        result = "#include \"quex/code_base/converter_helper/from-unicode-buffer.i\"\n"
-    result += "#include <quex/code_base/analyzer/headers.i>\n"
+    result  = "#include <quex/code_base/analyzer/headers.i>\n"
     result += "#include <quex/code_base/analyzer/C-adaptions.h>\n"
     return result
 

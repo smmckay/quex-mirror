@@ -27,10 +27,6 @@
 #include    <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include    <quex/code_base/buffer/bytes/ByteLoader>
 
-#if defined(__QUEX_OPTION_CONVERTER)
-#   include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter.i>
-#endif
-
 #ifdef      __QUEX_OPTION_COUNTER
 #   include <quex/code_base/analyzer/Counter.i>
 #endif

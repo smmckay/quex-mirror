@@ -221,7 +221,6 @@ SETUP_INFO = {
     "output_token_class_file":                   None,
     "language_db":                               None,
     "extension_db":                              None,
-    "converter_helper_required_f":               True,
     "compression_type_list":                     None,
     #______________________________________________________________________________________________________
     #

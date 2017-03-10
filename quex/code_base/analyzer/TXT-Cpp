@@ -57,11 +57,6 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 $$USER_DEFINED_HEADER$$
 /* END: _______________________________________________________________________*/
 
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "$$CONVERTER_HELPER$$"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer"
-#endif
 #include <quex/code_base/analyzer/headers>
 
 #include "$$TOKEN_ID_DEFINITION_FILE$$"
@@ -343,11 +338,6 @@ public:
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "$$CONVERTER_HELPER_I$$"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
-#endif
 #include <quex/code_base/analyzer/headers.i>
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */

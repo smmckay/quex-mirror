@@ -246,14 +246,6 @@ $$SWITCH$$ __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
  * if no begin of line pre-condition is required.                            */
 $$SWITCH$$ __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 
-/* Following switch is also set, if a user defined converter is defined.     */
-#ifndef    __QUEX_OPTION_CONVERTER
-$$SWITCH$$ __QUEX_OPTION_CONVERTER
-#endif
-#ifndef    __QUEX_OPTION_CONVERTER_HELPER
-$$SWITCH$$ __QUEX_OPTION_CONVERTER_HELPER
-#endif
-
 /* Type Definitions 
  *
  * CHARACTER TYPE: Type that represents the number of bytes used in the engine
