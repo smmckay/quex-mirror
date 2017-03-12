@@ -336,27 +336,9 @@ def get_quick_setters(Descr):
 def __get_converter_configuration(IncludeGuardExtension):
     token_descr = blackboard.token_type_definition
 
-    if False and not Setup.converter_helper_required_f:
-        declaration_include    = "#include <quex/code_base/converter_helper/identity>"
-        implementation_include = "#include <quex/code_base/converter_helper/identity.i>"
-        from_codec = "identical"
-
-    elif Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
-        declaration_include    = "#include <quex/code_base/converter_helper/from-%s>"   % Setup.buffer_codec.name
-        implementation_include = "#include <quex/code_base/converter_helper/from-%s.i>" % Setup.buffer_codec.name
-        from_codec = Setup.buffer_codec.name
-
-    elif Setup.buffer_codec.name == "unicode":
-        declaration_include    = "#include <quex/code_base/converter_helper/from-unicode-buffer>"
-        implementation_include = "#include <quex/code_base/converter_helper/from-unicode-buffer.i>"
-        from_codec = Setup.buffer_codec.name
-
-    else:
-        declaration_include    = "#include \"%s\"" % \
-                                           Setup.get_file_reference(Setup.output_buffer_codec_header)
-        implementation_include = "#include \"%s\"" % \
-                                           Setup.get_file_reference(Setup.output_buffer_codec_header_i)
-        from_codec = Setup.buffer_codec.name
+    declaration_include    = Lng.CONVERTER_HELPER_DECLARATION()
+    implementation_include = Lng.CONVERTER_HELPER_IMLEMENTATION()
+    from_codec             = Setup.buffer_codec.name
 
     if not Setup.token_class_only_f:
         string  = "QUEX_CONVERTER_STRING(%s,char)"  % from_codec
@@ -401,12 +383,12 @@ def __get_converter_configuration(IncludeGuardExtension):
     return declaration_include, implementation_include, string, wstring
 
 QUEX_strlen_re                = re.compile("QUEX_NAME\\(strlen\\)", re.UNICODE)
-QUEX_TYPE_LEXATOM_re        = re.compile("\\bQUEX_TYPE_LEXATOM\\b", re.UNICODE)
+QUEX_TYPE_LEXATOM_re          = re.compile("\\bQUEX_TYPE_LEXATOM\\b", re.UNICODE)
 QUEX_LEXEME_NULL_re           = re.compile("\\bQUEX_LEXEME_NULL\\b", re.UNICODE)
 QUEX_TYPE_ANALYZER_re         = re.compile("\\bQUEX_TYPE_ANALYZER\\b", re.UNICODE)
 QUEX_TYPE_TOKEN_ID_re         = re.compile("\\bQUEX_TYPE_TOKEN_ID\\b", re.UNICODE)
 QUEX_LexemeNullDeclaration_re = re.compile("QUEX_NAME\\(LexemeNullObject\\)", re.UNICODE)
-QUEX_TYPE_LEXATOM_safe_re   = re.compile("\\$\\$quex_type_character\\$\\$", re.UNICODE)
+QUEX_TYPE_LEXATOM_safe_re     = re.compile("\\$\\$quex_type_character\\$\\$", re.UNICODE)
 
 def clean_for_independence(txt):
     token_descr = blackboard.token_type_definition

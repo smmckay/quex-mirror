@@ -1,8 +1,8 @@
 /* -*- C++ -*-  vim: set syntax=cpp:
  *
  * (C) 2008 Frank-Rene Schaefer */
-#ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_DEBUG_I
-#define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_DEBUG_I
+#ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT_I
+#define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT_I
 
 #include <quex/code_base/definitions>
 #include <quex/code_base/buffer/Buffer>
@@ -191,4 +191,4 @@ QUEX_NAME(Buffer_print_content_detailed_lines)(QUEX_TYPE_LEXATOM** iterator,
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_DEBUG_I */
+#endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT_I */

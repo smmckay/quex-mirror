@@ -1,5 +1,6 @@
 from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 from   quex.engine.misc.tools                     import typed
+from   quex.blackboard                            import Lng
 
 #
 
@@ -341,9 +342,11 @@ def get_implementation_header(Setup):
     if Setup.language != "C":
         return ""
 
-    result  = "#include <quex/code_base/analyzer/headers.i>\n"
-    result += "#include <quex/code_base/analyzer/C-adaptions.h>\n"
-    return result
+    return "\n".join([
+        Lng.CONVERTER_HELPER_IMLEMENTATION(),
+        "#include <quex/code_base/analyzer/headers.i>",
+        "#include <quex/code_base/analyzer/C-adaptions.h>"
+    ])
 
 def __frame_of_all(Code, Setup):
     # namespace_ref   = Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space)

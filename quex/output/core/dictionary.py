@@ -146,6 +146,22 @@ class Lng_Cpp(dict):
     def UNDEFINE(self, NAME):
         return "\n#undef %s\n" % NAME
 
+    def CONVERTER_HELPER_DECLARATION(self):
+        if Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
+            return "#include <quex/code_base/converter_helper/from-%s>" % Setup.buffer_codec.name
+        elif Setup.buffer_codec.name == "unicode":
+            return "#include <quex/code_base/converter_helper/from-unicode-buffer>"
+        else:
+            return "#include \"%s\"" % Setup.get_file_reference(Setup.output_buffer_codec_header)
+
+    def CONVERTER_HELPER_IMLEMENTATION(self):
+        if Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
+            return "#include <quex/code_base/converter_helper/from-%s.i>" % Setup.buffer_codec.name
+        elif Setup.buffer_codec.name == "unicode":
+            return "#include <quex/code_base/converter_helper/from-unicode-buffer.i>"
+        else:
+            return "#include \"%s\"" % Setup.get_file_reference(Setup.output_buffer_codec_header_i)
+                                                                                                                                
     @typed(Txt=(CodeFragment))
     def SOURCE_REFERENCED(self, Cf, PrettyF=False):
         if Cf is None:    return ""

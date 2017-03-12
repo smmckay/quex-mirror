@@ -57,8 +57,8 @@ def do(ModeDB):
             [
                 ["$$___SPACE___$$",                      " " * (len(LexerClassName) + 1)],
                 ["$$CLASS_BODY_EXTENSION$$",             Lng.SOURCE_REFERENCED(blackboard.class_body_extension)],
-                ["$$CONVERTER_HELPER$$",                 Setup.get_file_reference(Setup.output_buffer_codec_header)],
-                ["$$CONVERTER_HELPER_I$$",               Setup.get_file_reference(Setup.output_buffer_codec_header_i)],
+                ["$$CONVERTER_HELPER$$",                 Lng.CONVERTER_HELPER_DECLARATION()],
+                ["$$CONVERTER_HELPER_I$$",               Lng.CONVERTER_HELPER_IMLEMENTATION()],
                 ["$$INCLUDE_GUARD_EXTENSION$$",          include_guard_ext],
                 ["$$LEXER_CLASS_NAME$$",                 LexerClassName],
                 ["$$LEXER_NAME_SPACE$$",                 lexer_name_space_safe],

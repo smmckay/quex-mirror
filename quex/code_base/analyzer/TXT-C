@@ -51,6 +51,7 @@ QUEX_TYPE0_TOKEN;
  *        might rely on contents of the header.                                */
 $$USER_DEFINED_HEADER$$
 /* END: _______________________________________________________________________*/
+$$CONVERTER_HELPER$$
 #include <quex/code_base/analyzer/headers>
 
 #include "$$TOKEN_ID_DEFINITION_FILE$$"
