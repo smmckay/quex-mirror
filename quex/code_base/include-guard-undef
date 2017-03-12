@@ -34,11 +34,11 @@
 #ifdef    __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I                                    
 #   undef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I                                    
 #endif
-#ifdef    __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_DEBUG                              
-#   undef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_DEBUG                            
+#ifdef    __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT  
+#   undef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT  
 #endif
-#ifdef    __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_DEBUG_I                              
-#   undef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_DEBUG_I                              
+#ifdef    __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT_I
+#   undef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT_I
 #endif
 #ifdef    __QUEX_INCLUDE_GUARD__BUFFER__ASSERTS                                     
 #   undef __QUEX_INCLUDE_GUARD__BUFFER__ASSERTS                                     
