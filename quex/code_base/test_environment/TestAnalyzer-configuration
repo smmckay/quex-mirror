@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.66.6-pre"
-#define QUEX_SETTING_BUILD_DATE        "Tue Mar  7 21:37:15 2017"
+#define QUEX_SETTING_BUILD_DATE        "Mon Mar 13 00:02:34 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -245,14 +245,6 @@
  * structure. Only out-comment this in case of tough memory restrictions,
  * if no begin of line pre-condition is required.                            */
 /* #define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
-
-/* Following switch is also set, if a user defined converter is defined.     */
-#ifndef    __QUEX_OPTION_CONVERTER
-#define    __QUEX_OPTION_CONVERTER
-#endif
-#ifndef    __QUEX_OPTION_CONVERTER_HELPER
-#define    __QUEX_OPTION_CONVERTER_HELPER
-#endif
 
 /* Type Definitions 
  *

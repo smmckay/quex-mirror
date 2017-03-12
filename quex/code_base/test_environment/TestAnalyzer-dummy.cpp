@@ -434,6 +434,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnBadLexatom;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
     /* Bad lexatom detection FORCES a return from the lexical analyzer, so that no
@@ -446,6 +447,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnLoadFailure;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
     /* Load failure FORCES a return from the lexical analyzer, so that no
@@ -458,6 +460,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnOverflow;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
     /* Lexeme size exceeds buffer size. No further buffer load possible.
@@ -480,6 +483,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnFailure;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
 goto _7;
@@ -490,6 +494,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 #define Counter counter
 self.error_code = E_Error_NoHandler_OnSkipRangeOpen;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
     /* End of Stream appeared, while scanning for end of skip-range.
@@ -506,7 +511,7 @@ self_send(QUEX_TKN_X);
 QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
 
 
-#   line 510 "TestAnalyzer.cpp"
+#   line 515 "TestAnalyzer.cpp"
 
 }
 goto _0;
@@ -754,6 +759,7 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 #endif /* QUEX_OPTION_INCLUDE_STACK */
 
 QUEX_NAMESPACE_MAIN_CLOSE
+
 
 
 

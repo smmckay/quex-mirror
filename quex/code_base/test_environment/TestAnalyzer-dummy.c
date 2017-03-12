@@ -107,10 +107,10 @@ QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
 QUEX_NAMESPACE_MAIN_CLOSE
 
 /* #include "TestAnalyzer.h"*/
-#include "quex/code_base/converter_helper/from-unicode-buffer.i"
+#include <quex/code_base/converter_helper/from-unicode-buffer.i>
+
 #include <quex/code_base/analyzer/headers.i>
-#include <quex/code_base/analyzer/C-adaptions.h>
-QUEX_NAMESPACE_MAIN_OPEN
+#include <quex/code_base/analyzer/C-adaptions.h>QUEX_NAMESPACE_MAIN_OPEN
 QUEX_TYPE_LEXATOM  QUEX_LEXEME_NULL_IN_ITS_NAMESPACE = (QUEX_TYPE_LEXATOM)0;
 #ifdef      __QUEX_COUNT_VOID
 #   undef   __QUEX_COUNT_VOID
@@ -437,6 +437,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnBadLexatom;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
     /* Bad lexatom detection FORCES a return from the lexical analyzer, so that no
@@ -449,6 +450,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnLoadFailure;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
     /* Load failure FORCES a return from the lexical analyzer, so that no
@@ -461,6 +463,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnOverflow;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
     /* Lexeme size exceeds buffer size. No further buffer load possible.
@@ -483,6 +486,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnFailure;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
 goto _7;
@@ -493,6 +497,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 #define Counter counter
 self.error_code = E_Error_NoHandler_OnSkipRangeOpen;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+RETURN;
 
 }
     /* End of Stream appeared, while scanning for end of skip-range.
@@ -509,7 +514,7 @@ self_send(QUEX_TKN_X);
 QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
 
 
-#   line 513 "TestAnalyzer.c"
+#   line 518 "TestAnalyzer.c"
 
 }
 goto _0;
@@ -800,7 +805,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 804 "TestAnalyzer.c"
+#   line 809 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -831,7 +836,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 835 "TestAnalyzer.c"
+#   line 840 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -872,7 +877,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 876 "TestAnalyzer.c"
+#   line 881 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -963,7 +968,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 967 "TestAnalyzer.c"
+#   line 972 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -985,7 +990,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 989 "TestAnalyzer.c"
+#   line 994 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1004,7 +1009,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1008 "TestAnalyzer.c"
+#   line 1013 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1079,14 +1084,16 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #       endif
 
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
+
    
 
-#   line 1085 "TestAnalyzer.c"
+#   line 1091 "TestAnalyzer.c"
 
 
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
+
 bool UserConstructor_UnitTest_return_value = true;
 bool UserReset_UnitTest_return_value       = true;
 bool UserMementoPack_UnitTest_return_value = true;

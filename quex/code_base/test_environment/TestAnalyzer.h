@@ -56,11 +56,8 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 
 /* END: _______________________________________________________________________*/
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "quex/code_base/converter_helper/from-unicode-buffer"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer"
-#endif
+#include <quex/code_base/converter_helper/from-unicode-buffer>
+
 #include <quex/code_base/analyzer/headers>
 
 #include "TestAnalyzer-token_ids.h"
@@ -195,7 +192,8 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 QUEX_NAMESPACE_MAIN_CLOSE
 
 
-#include "quex/code_base/converter_helper/from-unicode-buffer.i"
+#include <quex/code_base/converter_helper/from-unicode-buffer.i>
+
 #include <quex/code_base/analyzer/headers.i>
 #include <quex/code_base/analyzer/C-adaptions.h>
 bool UserConstructor_UnitTest_return_value = true;
@@ -243,7 +241,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 247 "TestAnalyzer.h"
+#   line 245 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -274,7 +272,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 278 "TestAnalyzer.h"
+#   line 276 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -315,7 +313,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 319 "TestAnalyzer.h"
+#   line 317 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -406,7 +404,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 410 "TestAnalyzer.h"
+#   line 408 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -428,7 +426,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 432 "TestAnalyzer.h"
+#   line 430 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -447,7 +445,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 451 "TestAnalyzer.h"
+#   line 449 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -522,9 +520,10 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #       endif
 
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
+
    
 
-#   line 528 "TestAnalyzer.h"
+#   line 527 "TestAnalyzer.h"
 
 
 

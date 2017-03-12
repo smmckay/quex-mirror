@@ -978,7 +978,7 @@ quex/input/TEST                                                      <no date>
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Check if the default configuration has been updated.
-        check-default-configuration.sh .............................[FAIL]
+        check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
@@ -1010,7 +1010,6 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] check-default-configuration.sh
     [FAIL] svn-status.sh
 ===============================================================================
                                                                                
@@ -3196,7 +3195,7 @@ SUMMARY:
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-        2  14    [FAIL] quex/TESTS/code/TEST                                          
+        1  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3248,11 +3247,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _           ___            
-    |  ___|_ _(_) |___      ( _ )     __  __
-    | |_ / _` | | / __|     / _ \     \ \/ /
-    |  _| (_| | | \__ \    | (_) |     >  < 
-    |_|  \__,_|_|_|___/     \___/     /_/\_\
+     _____     _ _          _____           
+    |  ___|_ _(_) |___     |___  |    __  __
+    | |_ / _` | | / __|       / /     \ \/ /
+    |  _| (_| | | \__ \      / /       >  < 
+    |_|  \__,_|_|_|___/     /_/       /_/\_\
                                                                    (1639 tests)
 
 ===============================================================================

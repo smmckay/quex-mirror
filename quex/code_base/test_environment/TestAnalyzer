@@ -62,11 +62,8 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 /* END: _______________________________________________________________________*/
 
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "quex/code_base/converter_helper/from-unicode-buffer"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer"
-#endif
+#include <quex/code_base/converter_helper/from-unicode-buffer>
+
 #include <quex/code_base/analyzer/headers>
 
 #include "TestAnalyzer-token_ids"
@@ -363,11 +360,8 @@ public:
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#if defined(__QUEX_OPTION_CONVERTER_HELPER)
-#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
-#else
-#   include "quex/code_base/converter_helper/from-unicode-buffer.i"
-#endif
+#include <quex/code_base/converter_helper/from-unicode-buffer.i>
+
 #include <quex/code_base/analyzer/headers.i>
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED____QUEX____TESTANALYZER */
@@ -448,6 +442,7 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 #endif /* QUEX_OPTION_INCLUDE_STACK */
 
 QUEX_NAMESPACE_MAIN_CLOSE
+
 
 
 bool UserConstructor_UnitTest_return_value = true;

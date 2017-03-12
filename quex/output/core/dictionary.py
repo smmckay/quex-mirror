@@ -148,19 +148,19 @@ class Lng_Cpp(dict):
 
     def CONVERTER_HELPER_DECLARATION(self):
         if Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
-            return "#include <quex/code_base/converter_helper/from-%s>" % Setup.buffer_codec.name
+            return "#include <quex/code_base/converter_helper/from-%s>\n" % Setup.buffer_codec.name
         elif Setup.buffer_codec.name == "unicode":
-            return "#include <quex/code_base/converter_helper/from-unicode-buffer>"
+            return "#include <quex/code_base/converter_helper/from-unicode-buffer>\n"
         else:
-            return "#include \"%s\"" % Setup.get_file_reference(Setup.output_buffer_codec_header)
+            return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header)
 
     def CONVERTER_HELPER_IMLEMENTATION(self):
         if Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
-            return "#include <quex/code_base/converter_helper/from-%s.i>" % Setup.buffer_codec.name
+            return "#include <quex/code_base/converter_helper/from-%s.i>\n" % Setup.buffer_codec.name
         elif Setup.buffer_codec.name == "unicode":
-            return "#include <quex/code_base/converter_helper/from-unicode-buffer.i>"
+            return "#include <quex/code_base/converter_helper/from-unicode-buffer.i>\n"
         else:
-            return "#include \"%s\"" % Setup.get_file_reference(Setup.output_buffer_codec_header_i)
+            return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header_i)
                                                                                                                                 
     @typed(Txt=(CodeFragment))
     def SOURCE_REFERENCED(self, Cf, PrettyF=False):

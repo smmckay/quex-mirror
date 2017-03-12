@@ -41,9 +41,10 @@ QUEX_NAMESPACE_LEXEME_NULL_CLOSE
 #      endif
 
 #include <quex/code_base/converter_helper/from-unicode-buffer>
+
    
 
-#   line 47 "TestAnalyzer-token.h"
+#   line 48 "TestAnalyzer-token.h"
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
@@ -52,12 +53,12 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #   line 27 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 56 "TestAnalyzer-token.h"
+#   line 57 "TestAnalyzer-token.h"
 
 #   line 28 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
-#   line 61 "TestAnalyzer-token.h"
+#   line 62 "TestAnalyzer-token.h"
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -75,7 +76,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
         */
    
 
-#   line 79 "TestAnalyzer-token.h"
+#   line 80 "TestAnalyzer-token.h"
 
 } quex_Token;
 

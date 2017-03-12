@@ -40,6 +40,7 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     analyzer_class_implementation  = "#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n"
     analyzer_class_implementation += analyzer_class.do_implementation(mode_db)
     analyzer_class_implementation += templates.get_implementation_header(Setup)
+    analyzer_class_implementation += "\n"
     analyzer_class_implementation += "bool UserConstructor_UnitTest_return_value = true;\n"
     analyzer_class_implementation += "bool UserReset_UnitTest_return_value       = true;\n"
     analyzer_class_implementation += "bool UserMementoPack_UnitTest_return_value = true;\n"
@@ -78,6 +79,7 @@ def append_variable_definitions(FileName):
     fh.close()
     fh = open(FileName, "wb")
     fh.write(content)
+    fh.write("\n")
     fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
     fh.write("bool UserReset_UnitTest_return_value       = true;\n")
     fh.write("bool UserMementoPack_UnitTest_return_value = true;\n")
