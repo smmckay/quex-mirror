@@ -13,10 +13,10 @@ else
 fi
 
 quex -i src/bad-$1.qx -o EasyLexer --language C --debug-exception
-gcc -I$QUEX_PATH -I. \
+gcc -I$QUEX_PATH -I. -Wall -Werror                   \
     EasyLexer.c $QUEX_PATH/demo/C/example.c -o lexer \
-    -DPRINT_TOKEN \
-    -DQUEX_SETTING_BUFFER_SIZE=$buffer_size \
+    -DPRINT_TOKEN                                    \
+    -DQUEX_SETTING_BUFFER_SIZE=$buffer_size          \
     -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE -ggdb
 
 #     -DQUEX_OPTION_DEBUG_SHOW 

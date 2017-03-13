@@ -17,17 +17,77 @@ src/bad-default.qx:8:warning: ('--suppress 11' to avoid this message)
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 ,-----------------------------------------------------------------
 | [START]
+A 'otto' 
+A 'war' 
+A 'ein' 
+A 'kaise' 
+A 'r' 
+<INDENT>
+A 'heise' 
+A 'r' 
+A 'manch' 
+A 'mal' 
+<INDENT>
+A 'leise' 
+A 'selte' 
+A 'n' 
+<TERMINATION>
+| [END] number of token = 15
+`-----------------------------------------------------------------
+  mode:       X;
+  error_code: NoHandler_OnIndentationBad;
+              (* 'on_indentation_bad' has not been specified for mode*)
+  counter: {
+    _line_number_at_begin:   1;
+    _line_number_at_end:     1;
+    _column_number_at_begin: 55;
+    _column_number_at_end:   60;
+    _indentation_stack: [1, 24, 43, ]
+  }
+  accumulator: ''
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x563ba3db7350)) (== _front);
+      end:       begin + 7 (== _back + 1);
+    }
+    _read_p:                      begin + 2, end - 5;
+    _lexeme_start_p:              begin + 1, end - 6;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     63;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 63;
+        type:             FILE;
+        file_handle:      ((0x563ba3db7010));
+        end_of_stream:    false;
+      }
+    }
+    input: {
+      lexatom_index_begin: 58;
+      end_character_index: 63;
+      end_p:               begin + 6, end - 1;
+    }
+  }
 
 
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
-   lexeme start--------------------------->[0001] 0x0020
-                                           [0002] 0x0020
-                                           [0003] 0x0020
-                                           [0004] 0x003A
-   input---------------------------------->[0005] 0x0020
+   lexeme start--------------------------->[0001] 0x003A
+   input---------------------------------->[0002] 0x0020
+                                           [0003] 0x0068
+                                           [0004] 0x006F
+                                           [0005] 0x0068
    end of file, buffer back--------------->[0006] 0x0000
 _________________________________________________________________
-EasyLexer.c:572:	
-Mode 'X': Bad indentation character detected!
-The 'on_indentation_bad' handler has not been specified.

@@ -15,5 +15,5 @@ mode X :
 >
 <skip: [ \t] >
 {
-    [a-z] => QUEX_TKN_A;
+    [a-z]{1,5} => QUEX_TKN_A(Lexeme);
 }

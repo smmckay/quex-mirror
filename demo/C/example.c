@@ -38,6 +38,9 @@ main(int argc, char** argv)
     printf("| [END] number of token = %i\n", (int)number_of_tokens);
     printf("`-----------------------------------------------------------------\n");
 
+    if( qlex.error_code != E_Error_None ) {
+        QUEX_NAME(print_this)(&qlex);
+    }
     quex_EasyLexer_destruct(&qlex);
 
     return 0;

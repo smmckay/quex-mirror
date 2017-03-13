@@ -39,6 +39,7 @@ main(int argc, char** argv)
     cout << "| [END] number of token = " << number_of_tokens << "\n";
     cout << "`-----------------------------------------------------------------\n";
 
+    if( qlex.error_code != E_Error_None ) qlex.print_this(); 
     return 0;
 }
 
