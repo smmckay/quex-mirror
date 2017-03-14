@@ -43,15 +43,22 @@ def do(ModePrepList):
 
     # (*) If a conversion or a codec engine is specified, then the 
     #     'on_bad_lexatom' handler must be specified in every mode.
-    if False and (Setup.buffer_codec.name != "unicode" or Setup.converter_f):
-        for mode in ModePrepList:
-            # Later ... 
-            if False and E_IncidenceIDs.BAD_LEXATOM not in mode.incidence_db:
-                error.warning("Missing 'on_bad_lexatom' handler in mode '%s' (or its base modes).\n" % mode.name + \
-                              "This is dangerous while using a codec engine or a converter (iconv, icu, ...).\n" + \
-                              "The feature is not yet supported, but the infrastructure is currently setup for it.",
-                              mode.sr, 
-                              SuppressCode=NotificationDB.warning_codec_error_with_non_unicode)
+    lexatom_range = Setup.buffer_codec.lexatom_range
+    if not Setup.buffer_codec.drain_set.covers_range(lexatom_range.begin, 
+                                                     lexatom_range.end):
+        bad_mode_name_list = [ 
+            mode.name for mode in ModePrepList
+            if E_IncidenceIDs.BAD_LEXATOM not in mode.incidence_db
+        ]
+        if bad_mode_name_list:
+            modes_str = ", ".join(name for name in bad_mode_name_list)
+            error.warning("Missing 'on_bad_lexatom' handler in mode(s) %s.\n" \
+                          % modes_str + \
+                          "The range of values in buffer elements is [%i:%i].\n" \
+                          % (lexatom_range.begin, lexatom_range.end-1) + \
+                          "Not all of those contain representations in the buffer's encoding '%s'." % Setup.buffer_codec.name,
+                          mode.sr, 
+                          SuppressCode=NotificationDB.warning_codec_error_with_non_unicode)
 
     # (*) Start mode specified?
     __start_mode(implemented_mode_name_list, mode_name_list)

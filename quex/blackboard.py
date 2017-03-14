@@ -80,11 +80,6 @@ standard_incidence_db = {
     "on_end_of_stream":     (E_IncidenceIDs.END_OF_STREAM,       "On end of file/stream."),
 }
 
-def standard_incidence_db_get_name(IncidenceId):
-    for name, info in standard_incidence_db.iteritems():
-        if info[0] == IncidenceId: return name
-    return None
-
 def standard_incidence_db_is_mandatory(IncidenceId):
     return IncidenceId in [
         E_IncidenceIDs.MATCH_FAILURE, 

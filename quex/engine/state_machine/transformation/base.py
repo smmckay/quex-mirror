@@ -105,7 +105,8 @@ class EncodingTrafo:
 
         assert lexatom_max_value > lexatom_min_value
 
-        self.lexatom_range = Interval(lexatom_min_value, lexatom_max_value + 1)
+        self.lexatom_range = Interval(lexatom_min_value, 
+                                      lexatom_max_value + 1)
         self.drain_set.mask_interval(self.lexatom_range)
         # Source can only be adapted if the codec is known.
 

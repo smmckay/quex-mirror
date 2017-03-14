@@ -5,7 +5,6 @@ from   quex.input.code.base                  import CodeFragment, \
                                                     SourceRef_DEFAULT
 from   quex.input.code.core                  import CodeTerminal
 from   quex.blackboard import standard_incidence_db, \
-                              standard_incidence_db_get_name, \
                               standard_incidence_db_is_mandatory, \
                               standard_incidence_db_get_terminal_type, \
                               E_IncidenceIDs, \
