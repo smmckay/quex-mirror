@@ -61,16 +61,13 @@ class MiniAnalyzer:
 
 Analyzer = MiniAnalyzer()
 
-def __prepare(Language, TokenQueueF=False):
+def __prepare(Language):
     global dial_db
     end_str  = '    printf("end\\n");\n'
-    if not TokenQueueF:
-        end_str += '    return false;\n'
-    else:
-        end_str += "#   define self (*me)\n"
-        end_str += "    self_send(QUEX_TKN_TERMINATION);\n"
-        end_str += "    return;\n"
-        end_str += "#   undef self\n"
+    end_str += "#   define self (*me)\n"
+    end_str += "    self_send(QUEX_TKN_TERMINATION);\n"
+    end_str += "    return;\n"
+    end_str += "#   undef self\n"
 
     __Setup_init_language_database(Language)
     dial_db = DialDB()
@@ -215,9 +212,9 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
                                                DoorIdOnSkipRangeOpenF=True, 
                                                CounterPrintF="short") 
 
-def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, TokenQueueF):
+def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
                                 
-    end_str = __prepare(Language, TokenQueueF)
+    end_str = __prepare(Language)
                                 
     class MiniIncidenceDb(dict) :
         def __init__(self):
@@ -264,7 +261,6 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize, Token
                                                SkipUntilMarkerSet="behind newline",
                                                LocalVariableDB=deepcopy(variable_db.get()), 
                                                IndentationSupportF=True,
-                                               TokenQueueF=TokenQueueF, 
                                                ReloadF=True, 
                                                CounterPrintF=False,
                                                BeforeCode=counter_code)
@@ -273,14 +269,13 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
                                         QuexBufferSize, CommentTestStrF, ShowPositionF, 
                                         EndStr, SkipUntilMarkerSet,
                                         LocalVariableDB, IndentationSupportF=False, 
-                                        TokenQueueF=False, ReloadF=False, OnePassOnlyF=False, 
+                                        ReloadF=False, OnePassOnlyF=False, 
                                         DoorIdOnSkipRangeOpenF=False, 
                                         CounterPrintF=True,
                                         BeforeCode=None):
 
     txt  = create_common_declarations(Language, QuexBufferSize,
                                       IndentationSupportF = IndentationSupportF, 
-                                      TokenQueueF         = TokenQueueF,  
                                       QuexBufferFallbackN = 0)
 
     if BeforeCode is not None:

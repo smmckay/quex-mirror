@@ -17,7 +17,6 @@ next letter: <4> column_n: 8
 next letter: <2> column_n: 6
 next letter: <0> column_n: 1
 end
----
 INDENT
 INDENT
 DEDENT

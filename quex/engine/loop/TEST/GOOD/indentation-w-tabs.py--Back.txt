@@ -25,7 +25,6 @@ next letter: <2> column_n: 5
 next letter: <1> column_n: 5
 next letter: <0> column_n: 1
 end
----
 INDENT
 NODENT
 NODENT

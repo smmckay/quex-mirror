@@ -31,7 +31,6 @@ next letter: <3> column_n: 4
 next letter: <4> column_n: 5
 next letter: <0> column_n: 1
 end
----
 NODENT
 INDENT
 INDENT

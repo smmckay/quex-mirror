@@ -30,7 +30,7 @@ if len(sys.argv) < 2:
 def build(ISetup):
     Language = "ANSI-C"
     txt = create_indentation_handler_code(Language, "<by command line>", 
-                                          ISetup, BufferSize=4, TokenQueueF=True)
+                                          ISetup, BufferSize=4)
     executable_name, \
     source           = compile(Language, txt, AssertsActionvation_str = "") 
     return executable_name, source

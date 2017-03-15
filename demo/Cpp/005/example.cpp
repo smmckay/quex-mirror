@@ -14,47 +14,46 @@ main(int argc, char** argv)
 {        
     using namespace quex;
 
-    // (*) create token
-    Token*     token;
-    // (*) create the lexical analyser
-    //     if no command line argument is specified user file 'example.txt'
+    Token*     token_p;
+    int        number_of_tokens  = 0;
+    bool       continue_lexing_f = true;
+    char       file_name[256];
     EasyLexer  qlex(argc == 1 ? "example.txt" : argv[1], NULL);
 
     cout << ",------------------------------------------------------------------------------------\n";
     cout << "| [START]\n";
 
-    int   number_of_tokens = 0;
-    bool  continue_lexing_f = true;
-    char  file_name[256];
     // (*) loop until the 'termination' token arrives
-    token = qlex.token_p();
     do {
         // (*) get next token from the token stream
-        QUEX_TYPE_TOKEN_ID token_id = qlex.receive();
+        qlex.receive(&token_p);
 
         // (*) print out token information
-        print_token(&qlex, token, true);
+        print_token(&qlex, token_p, true);
 
-        if( token_id == QUEX_TKN_INCLUDE ) { 
-            token_id = qlex.receive();
-            print_token(&qlex, token, true);
-            if( token_id != QUEX_TKN_IDENTIFIER ) {
+        if( token_p->_id == QUEX_TKN_INCLUDE ) { 
+            token_p->_id = qlex.receive();
+            print_token(&qlex, token_p, true);
+            if( token_p->_id != QUEX_TKN_IDENTIFIER ) {
                 continue_lexing_f = false;
                 print(&qlex, "Found 'include' without a subsequent filename: '%s' hm?\n",
                       (char*)QUEX_NAME_TOKEN(map_id_to_name)(token_id));
                 break;
             }
-            if( token->get_text().copy((uint8_t*)&file_name[0], (size_t)255) == token->get_text().length() ) {
-                file_name[token->get_text().length()] = (char)0;
+            if( token_p->get_text().copy((uint8_t*)&file_name[0], (size_t)255) == token->get_text().length() ) {
+                file_name[token_p->get_text().length()] = (char)0;
                 print(&qlex, ">> including: ", (const char*)&file_name[0]);
                 qlex.include_push(&file_name[0], NULL);
             }
         }
         else if( token_id == QUEX_TKN_TERMINATION ) {
+            space(qlex.include_depth);
+            printf("Per File Letter Count = %i\n", (int)qlex.letter_count);
             if( qlex.include_pop() == false ) 
                 continue_lexing_f = false;
-            else 
-                print(&qlex, "<< return from include\n");
+            else {
+                print(&qlex, "<< return from include");
+            }
         }
 
         ++number_of_tokens;
@@ -68,11 +67,11 @@ main(int argc, char** argv)
     return 0;
 }
 
-void  
+static void  
 space(size_t N)
 { size_t i = 0; for(i=0; i<N; ++i) printf("    "); }
 
-void  
+static void  
 print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p, bool TextF /* = false */)
 { 
     space(qlex->include_depth);
@@ -82,7 +81,7 @@ print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p, bool TextF /* = 
     printf("\n");
 }
 
-void 
+static void 
 print(QUEX_TYPE_ANALYZER* qlex, const char* Str1, 
       const char* Str2 /* = 0x0 */, const char* Str3 /* = 0x0*/)
 {
