@@ -114,10 +114,9 @@ accept_and_lex(int listen_fd)
 
     qlex = LEXER_CLASS::from_ByteLoader(loader, converter);
 
-    token = qlex->token;
     continue_f = true;
     do {
-        qlex->receive(); 
+        qlex->receive(&token); 
         printf("   Token: %s\n", token->get_string().c_str()); 
 
         if( token->_id == QUEX_TKN_BYE ) {

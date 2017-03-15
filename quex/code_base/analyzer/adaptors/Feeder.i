@@ -109,20 +109,22 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
  *          Pointer to token, that has been identified 
  *          (This may be the 'BYE' token).                                   */
 {
+    QUEX_TYPE_TOKEN* token_p = NULL;
+
     if( ! me->last_incomplete_lexeme_p ) {
         me->last_incomplete_lexeme_p = me->lexer->buffer._read_p;
     }
-
-    if( me->stream_terminating_token_id == QUEX_NAME(receive)(me->lexer) ) {
+    QUEX_NAME(receive)(me->lexer, &token_p);
+    if( ! token_p || me->stream_terminating_token_id == token_p->_id ) {
         /* This was the very last token to be received.                      */
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
-        return me->lexer->token;
+        return token_p;
     }
     else if( me->lexer->buffer._read_p < me->lexer->buffer.input.end_p ) {
         /* Lexeme is completely inside the boundaries of the content.
          * => Return it, there is no previous (see entry of function).       */
         me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
-        return me->lexer->token;
+        return token_p;
     }
     else if(    me->lexer->buffer._lexeme_start_p == &me->lexer->buffer._memory._front[1] 
              && me->lexer->buffer._read_p         == &me->lexer->buffer._memory._back[0] )  {

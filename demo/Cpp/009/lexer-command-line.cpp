@@ -90,9 +90,8 @@ main(int argc, char** argv)
          *                                                                   */
         qlex->buffer.fill(&qlex->buffer, &buffer[0], &buffer[received_n-1]);
 
-        token = qlex->token;
         do {
-            qlex->receive();
+            qlex->receive(&token);
             printf("   Token: %s\n", token->get_string().c_str()); 
         } while( token->_id != QUEX_TKN_TERMINATION && token->_id != QUEX_TKN_BYE );
     }

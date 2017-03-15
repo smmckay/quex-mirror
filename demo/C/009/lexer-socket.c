@@ -113,10 +113,9 @@ accept_and_lex(int listen_fd)
 
     QUEX_NAME(from_ByteLoader)(&qlex, loader, converter);
 
-    token = qlex.token;
     continue_f = true;
     do {
-        (void)QUEX_NAME(receive)(&qlex);
+        (void)QUEX_NAME(receive)(&qlex, &token);
 
         print_token(token);
 
