@@ -126,8 +126,7 @@ def __Setup_init_language_database(Language):
 def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
        SecondPatternActionPairList=[], QuexBufferFallbackN=0, ShowBufferLoadsF=False,
-       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS",
-       TokenQueueF=False):
+       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
 
     assert QuexBufferFallbackN >= 0
 
@@ -190,8 +189,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     state_machine_code = create_state_machine_function(PatternActionPairList, 
                                                        adapted_dict, 
-                                                       BufferLimitCode,
-                                                       TokenQueueF=TokenQueueF)
+                                                       BufferLimitCode)
 
     if len(SecondPatternActionPairList) != 0:
         dial_db = DialDB()
@@ -199,8 +197,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
         state_machine_code += create_state_machine_function(SecondPatternActionPairList, 
                                                             PatternDictionary, 
                                                             BufferLimitCode,
-                                                            SecondModeF=True, 
-                                                            TokenQueueF=TokenQueueF)
+                                                            SecondModeF=True)
 
     if ShowBufferLoadsF:
         state_machine_code = "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS\n" + \
@@ -210,8 +207,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     source_code =   create_common_declarations(Language, QuexBufferSize, 
                                                QuexBufferFallbackN, BufferLimitCode, 
-                                               ComputedGotoF=computed_goto_f,
-                                               TokenQueueF=TokenQueueF) \
+                                               ComputedGotoF=computed_goto_f) \
                   + state_machine_code \
                   + test_program
 
@@ -342,7 +338,7 @@ def create_main_function(Language, TestStr, QuexBufferSize, CommentTestStrF=Fals
 
 def create_common_declarations(Language, QuexBufferSize, 
                                QuexBufferFallbackN=0, BufferLimitCode=0, 
-                               IndentationSupportF=False, TokenQueueF=False,
+                               IndentationSupportF=False, 
                                ComputedGotoF=False):
     assert QuexBufferFallbackN >= 0
 
@@ -379,7 +375,6 @@ def create_common_declarations(Language, QuexBufferSize,
        
     replace_str = "#define QUEX_OPTION_TOKEN_POLICY_SINGLE_DISABLED\n" + \
                   "#define QUEX_OPTION_TOKEN_POLICY_QUEUE"
-    if not TokenQueueF: replace_str = "/* %s */" % replace_str.replace("\n", "\n * ")
     txt = txt.replace("$$__QUEX_OPTION_TOKEN_QUEUE$$", replace_str)
 
 
@@ -390,7 +385,7 @@ def create_common_declarations(Language, QuexBufferSize,
     return txt
 
 def create_state_machine_function(PatternActionPairList, PatternDictionary, 
-                                  BufferLimitCode, SecondModeF=False, TokenQueueF=False):
+                                  BufferLimitCode, SecondModeF=False):
     global dial_db
     incidence_db = IncidenceDB()
 
@@ -422,15 +417,9 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
         if   "->1" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mr_analyzer_function);\n")
         elif "->2" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mrs_analyzer_function);\n")
 
-        if TokenQueueF:
-            if "CONTINUE" in PatternName: txt.append("")
-            elif "STOP" in PatternName:   txt.append("me->error_code = E_Error_UnitTest_Termination; return;\n")
-            else:                         txt.append("return;\n")
-        else:
-            if "CONTINUE" in PatternName: txt.append("")
-            elif "STOP" in PatternName:   txt.append("return false;\n")
-            else:                         txt.append("return true;\n")
-
+        if "CONTINUE" in PatternName: txt.append("")
+        elif "STOP" in PatternName:   txt.append("me->error_code = E_Error_UnitTest_Termination; return;\n")
+        else:                         txt.append("return;\n")
 
         txt.append("%s\n" % Lng.GOTO(DoorID.continue_with_on_after_match(dial_db), dial_db))
         ## print "#", txt
@@ -456,10 +445,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     # -- PatternList/TerminalDb
     #    (Terminals can only be generated after the 'mount procedure', because, 
     #     the bipd_sm is generated through mounting.)
-    if TokenQueueF:
-        on_failure = CodeTerminal(["me->error_code = E_Error_UnitTest_Termination; return;\n"])
-    else:
-        on_failure = CodeTerminal(["return false;\n"])
+    on_failure = CodeTerminal(["me->error_code = E_Error_UnitTest_Termination; return;\n"])
     terminal_db.update({
         E_IncidenceIDs.MATCH_FAILURE: Terminal(on_failure, "FAILURE", 
                                                E_IncidenceIDs.MATCH_FAILURE,
@@ -654,15 +640,9 @@ run_test(const char* TestString, const char* Comment)
         return -1;
     }
 
-#   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
-
-    while( lexer_state->current_analyzer_function(lexer_state) == true );
-
-#   else
-
     while( lexer_state->error_code == E_Error_None ) {
         lexer_state->current_analyzer_function(lexer_state);
-        printf("---\\n");
+        /* printf("---\\n"); */
 
         /* Print the token queue */
         while( QUEX_NAME(TokenQueue_is_empty)(&lexer_state->_token_queue) == false ) {        
@@ -676,8 +656,6 @@ run_test(const char* TestString, const char* Comment)
         }
         QUEX_NAME(TokenQueue_reset)(&lexer_state->_token_queue);
     }
-
-#   endif
 
     printf("  ''\\n");
     return 0;

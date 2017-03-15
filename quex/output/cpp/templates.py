@@ -131,10 +131,6 @@ QUEX_NAME($$STATE_MACHINE_NAME$$_analyzer_function)(QUEX_TYPE_ANALYZER* me)
      *       functions. That means, they are something like 'globals'. They 
      *       receive a pointer to the lexical analyzer, since static members do
      *       not have access to the 'this' pointer.                          */
-#   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
-    register QUEX_TYPE_TOKEN_ID __self_result_token_id 
-           = (QUEX_TYPE_TOKEN_ID)__QUEX_SETTING_TOKEN_ID_UNINITIALIZED;
-#   endif
 """
 
 comment_on_post_context_position_init_str = """
@@ -277,15 +273,9 @@ lexeme_macro_clean_up = """
 
 __return_if_queue_full_or_simple_analyzer = """
 #   ifndef __QUEX_OPTION_PLAIN_ANALYZER_OBJECT
-#   ifdef  QUEX_OPTION_TOKEN_POLICY_QUEUE
     if( QUEX_NAME(TokenQueue_is_full)(&self._token_queue) ) {
         return;
     }
-#   else
-    if( self_token_get_id() != __QUEX_SETTING_TOKEN_ID_UNINITIALIZED) {
-        return __self_result_token_id;
-    }
-#   endif
 #   endif
 """
 __return_if_mode_changed = """

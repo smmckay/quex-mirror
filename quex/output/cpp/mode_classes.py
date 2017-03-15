@@ -189,15 +189,11 @@ def get_IsOneOfThoseCode(ThoseModes, Indentation="    ",
     return txt.replace("\n", "\n" + Indentation)
 
 on_indentation_str = """
-#   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
-#      define __QUEX_RETURN return __self_result_token_id
-#   else
-#      define __QUEX_RETURN return
-#   endif
-#   define RETURN    __QUEX_RETURN
-#   define CONTINUE  __QUEX_RETURN
-#   define Lexeme    LexemeBegin
-#   define LexemeEnd (me->buffer._read_p)
+#   define __QUEX_RETURN return
+#   define RETURN        return
+#   define CONTINUE      return
+#   define Lexeme        LexemeBegin
+#   define LexemeEnd     (me->buffer._read_p)
 
     QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
     QUEX_TYPE_INDENTATION*        start = 0x0;

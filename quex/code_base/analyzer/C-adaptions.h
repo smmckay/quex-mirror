@@ -60,22 +60,12 @@
 #define self_current_mode_name()  /* const char* */      QUEX_NAME(mode_name)(&self)
 
 /* Map: mode id to mode and vice versa */
-#define self_map_mode_id_to_mode_p(ID)    QUEX_NAME(map_mode_id_to_mode)(&self, (ID))
-#define self_map_mode_p_to_mode_id(ModeP) QUEX_NAME(map_mode_to_mode_id)(&self, (ModeP))
+#define self_map_mode_id_to_mode_p(ID)       QUEX_NAME(map_mode_id_to_mode)(&self, (ID))
+#define self_map_mode_p_to_mode_id(ModeP)    QUEX_NAME(map_mode_to_mode_id)(&self, (ModeP))
 
 /* Changing Modes */
-#define self_set_mode_brutally(ModeP)     QUEX_NAME(set_mode_brutally)(&self, (ModeP))
-
-#ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
-#define self_enter_mode(ModeP) \
-           QUEX_NAME(enter_mode)(&self, (ModeP))
-#else
-#define self_enter_mode(ModeP) \
-        do {                                             \
-           QUEX_NAME(enter_mode)(&self, (ModeP));        \
-           __self_result_token_id = self_write_token_p()->_id; \
-        } while(0)
-#endif
+#define self_set_mode_brutally(ModeP)        QUEX_NAME(set_mode_brutally)(&self, (ModeP))
+#define self_enter_mode(ModeP)               QUEX_NAME(enter_mode)(&self, (ModeP))
 
 /* Changing Modes with stack */ 
 #define self_pop_mode()                      QUEX_NAME(pop_mode)(&self)

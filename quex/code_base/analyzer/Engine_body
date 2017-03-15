@@ -12,18 +12,10 @@
          *  to lower addresses. It is assumed that it is most likely only filled
          *  at the top, and thus the addresses close to the buffer shall be used
          *  more often than the addresses far from it.                            */
-#       ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
-            QUEX_NAME(TokenQueue)  _token_queue;  
-#           if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-            /* Avoid constructor call to Token() => define plain memory.          */
-            uint8_t            __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
-#           endif
-#       else
-            QUEX_TYPE_TOKEN*   token;         
-#           if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-            /* Avoid constructor call to Token() => define plain memory.          */
-            uint8_t            __memory_token[sizeof(QUEX_TYPE_TOKEN)];
-#           endif
+        QUEX_NAME(TokenQueue)  _token_queue;  
+#       if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+        /* Avoid constructor call to Token() => define plain memory.          */
+        uint8_t            __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
 #       endif
 
         E_Error            error_code;

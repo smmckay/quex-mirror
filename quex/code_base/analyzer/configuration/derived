@@ -41,11 +41,7 @@
 #   undef QUEX_OPTION_LINE_NUMBER_COUNTING
 #endif
 
-#if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
-#   define __QUEX_PURE_RETURN   do { return; } while(0)
-#else
-#   define __QUEX_PURE_RETURN   do { return __self_result_token_id; } while(0)
-#endif
+#define __QUEX_PURE_RETURN   do { return; } while(0)
 
 #if  ! defined (QUEX_SETTING_BUFFER_MIN_FALLBACK_N)
 #   if ! defined (QUEX_SETTING_BUFFER_SIZE) 
@@ -99,15 +95,9 @@
 #   define __QUEX_IF_TOKEN_REPETITION_SUPPORT_DISABLED(EXPRESSION) EXPRESSION
 #endif
 
-#if defined (QUEX_OPTION_TOKEN_POLICY_QUEUE)
-#   define __QUEX_TYPE_ANALYZER_RETURN_VALUE            void
-#   define __QUEX_RETURN                                return
-#   define QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN() CONTINUE
-#else 
-#   define __QUEX_TYPE_ANALYZER_RETURN_VALUE            QUEX_TYPE_TOKEN_ID
-#   define __QUEX_RETURN                                return __self_result_token_id
-#   define QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN() RETURN
-#endif
+#define __QUEX_TYPE_ANALYZER_RETURN_VALUE            void
+#define __QUEX_RETURN                                return
+#define QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN() CONTINUE
 
 #if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)   \
     || defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING) \

@@ -19,7 +19,8 @@
 
 #include    <quex/code_base/MemoryManager>
 #include    <quex/code_base/analyzer/Mode>
-#
+#include    <quex/code_base/token/TokenQueue>
+
 #ifdef      __QUEX_OPTION_COUNTER
 #include    <quex/code_base/analyzer/Counter>
 #endif
@@ -28,9 +29,6 @@
 #endif
 #ifdef      QUEX_OPTION_STRING_ACCUMULATOR
 #   include <quex/code_base/analyzer/Accumulator>
-#endif
-#ifdef      QUEX_OPTION_TOKEN_POLICY_QUEUE
-#   include <quex/code_base/token/TokenQueue>
 #endif
 #ifdef      QUEX_OPTION_POST_CATEGORIZER
 #   include <quex/code_base/analyzer/PostCategorizer>

@@ -284,12 +284,6 @@ run_test(const char* TestString, const char* Comment, QUEX_TYPE_ANALYZER* lexer)
     printf("(*) test string: \\n'%s'%s\\n", TestString, Comment);
     printf("(*) result:\\n");
 
-#   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
-
-    while( lexer->current_analyzer_function(lexer) == true );
-
-#   else
-
     while( 1 + 1 == 2 ) {
         lexer->current_analyzer_function(lexer);
         printf("---\\n");
@@ -306,8 +300,6 @@ run_test(const char* TestString, const char* Comment, QUEX_TYPE_ANALYZER* lexer)
         }
         QUEX_NAME(TokenQueue_reset)(&lexer->_token_queue);
     }
-
-#   endif
 
     printf("  ''\\n");
     return 0;

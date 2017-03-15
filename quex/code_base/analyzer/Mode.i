@@ -14,11 +14,7 @@ QUEX_NAMESPACE_MAIN_OPEN
     { 
         __quex_assert(0); 
         (void)me;
-#       if defined (QUEX_OPTION_TOKEN_POLICY_QUEUE)
         return; 
-#       else
-        return (__QUEX_TYPE_ANALYZER_RETURN_VALUE)0;
-#       endif
     }
 
 #   if ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)

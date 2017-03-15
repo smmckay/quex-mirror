@@ -300,11 +300,7 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 {
     /* NOTE: 'memset()' will destroy the v-table in case that the analyzer 
      *       is a c++ class object.                                           */
-#   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
-#   else
-    me->token = (QUEX_TYPE_TOKEN*)0;
-#   endif 
 #   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
     QUEX_NAME(Accumulator_resources_absent_mark)(&me->accumulator);
 #   endif
@@ -341,15 +337,9 @@ QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me)
 /* RETURNS: 'true' if all resources are marked absent.
  *          'false' if at least one is not marked absent.                     */
 {
-#   if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
     if( ! QUEX_NAME(TokenQueue_resources_absent)(&me->_token_queue) ) {
         return false;
     }
-#   else
-    if( me->token ) {
-        return false;
-    }
-#   endif 
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     else if( me->_parent_memento != (QUEX_NAME(Memento)*)0 ) {
         return false;
@@ -457,7 +447,6 @@ QUEX_NAME(Asserts_construct)()
 QUEX_INLINE bool
 QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
 {
-#if defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
 #   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     /* Assume that the user will pass us a constructed token queue */
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
@@ -466,13 +455,6 @@ QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
                                     (QUEX_TYPE_TOKEN*)&me->__memory_token_queue,
                                     QUEX_SETTING_TOKEN_QUEUE_SIZE);
 #   endif
-#elif defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    /* Assume that the user will pass us a constructed token                  */
-    me->token = (QUEX_TYPE_TOKEN*)0x0;     
-#   else
-    me->token = (QUEX_TYPE_TOKEN*)&me->__memory_token;     
-    QUEX_NAME_TOKEN(construct)(me->token);
-#endif
     return true;
 }
 
@@ -481,25 +463,13 @@ QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me)
 {
     /* Even if the token memory is user managed, the destruction (not the
      * freeing of memory) must happen at this place.                          */
-#ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE 
     QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
-#else
-#   if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    QUEX_NAME_TOKEN(destruct)(me->token);
-    me->token = (QUEX_TYPE_TOKEN*)0;
-#   endif
-#endif
 }
 
 QUEX_INLINE void 
 QUEX_NAME(Tokens_reset)(QUEX_TYPE_ANALYZER* me)
 {
-#ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
     QUEX_NAME(TokenQueue_reset)(&me->_token_queue);
-#else
-    QUEX_NAME(Tokens_destruct(me));
-    (void)QUEX_NAME(Tokens_construct(me));
-#endif
 }
 
 QUEX_INLINE const char*

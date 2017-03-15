@@ -332,10 +332,6 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
      *       functions. That means, they are something like 'globals'. They 
      *       receive a pointer to the lexical analyzer, since static members do
      *       not have access to the 'this' pointer.                          */
-#   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
-    register QUEX_TYPE_TOKEN_ID __self_result_token_id 
-           = (QUEX_TYPE_TOKEN_ID)__QUEX_SETTING_TOKEN_ID_UNINITIALIZED;
-#   endif
 #   ifdef     self
 #       undef self
 #   endif
@@ -514,7 +510,7 @@ self_send(QUEX_TKN_X);
 QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
 
 
-#   line 518 "TestAnalyzer.c"
+#   line 514 "TestAnalyzer.c"
 
 }
 goto _0;
@@ -805,7 +801,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 809 "TestAnalyzer.c"
+#   line 805 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -836,7 +832,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 840 "TestAnalyzer.c"
+#   line 836 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -877,7 +873,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 881 "TestAnalyzer.c"
+#   line 877 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -968,7 +964,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 972 "TestAnalyzer.c"
+#   line 968 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -990,7 +986,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 994 "TestAnalyzer.c"
+#   line 990 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1009,7 +1005,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1013 "TestAnalyzer.c"
+#   line 1009 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1087,7 +1083,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 
    
 
-#   line 1091 "TestAnalyzer.c"
+#   line 1087 "TestAnalyzer.c"
 
 
 

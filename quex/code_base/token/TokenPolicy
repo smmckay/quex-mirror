@@ -29,40 +29,18 @@
 #endif
 /*_______________________________________________________________________*/
 
-#ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
+#define __QUEX_CURRENT_TOKEN_P  (self._token_queue.write_iterator)
 
-#   define __QUEX_CURRENT_TOKEN_P  (self._token_queue.write_iterator)
+#define QUEX_TOKEN_POLICY_PREPARE_NEXT() \
+        ++(self._token_queue.write_iterator); 
 
-#   define QUEX_TOKEN_POLICY_PREPARE_NEXT() \
-           ++(self._token_queue.write_iterator); 
-
-#   if        defined(__QUEX_OPTION_PLAIN_C)
-#      define self_token_get_id()   __QUEX_CURRENT_TOKEN_P->_id
-#   else
-#      define self_token_get_id()   __QUEX_CURRENT_TOKEN_P->type_id()
-#   endif
-#   define self_token_set_id(ID)    __QUEX_TOKEN_POLICY_SET_ID(ID)
-
+#if defined(__QUEX_OPTION_PLAIN_C)
+#   define self_token_get_id()   __QUEX_CURRENT_TOKEN_P->_id
 #else
-
-#   define __QUEX_CURRENT_TOKEN_P  (self.token)
-
-#   define QUEX_TOKEN_POLICY_PREPARE_NEXT() \
-           /* empty */
-
-/*  Important: Currently the token class needs to contain a token identifier.
- *             When this changes, the 'get_id' function can rely solely on 
- *             __self_result_token_id. HOWEVER, then 'on_entry', 'on_exit', 
- *             and 'on_indent', 'on_dedent' need to be revised-->test then carefully. */
-/* #   define self_token_get_id()    (__self_result_token_id) */
-#   if        defined(__QUEX_OPTION_PLAIN_C)
-#      define self_token_get_id()   __QUEX_CURRENT_TOKEN_P->_id
-#   else
-#      define self_token_get_id()   __QUEX_CURRENT_TOKEN_P->type_id()
-#   endif
-#   define self_token_set_id(ID)  do { __self_result_token_id = ID; __QUEX_TOKEN_POLICY_SET_ID(ID); } while( 0 )
-
+#   define self_token_get_id()   __QUEX_CURRENT_TOKEN_P->type_id()
 #endif
+#define    self_token_set_id(ID) __QUEX_TOKEN_POLICY_SET_ID(ID)
+
 
 /* Option: QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
  *
@@ -115,27 +93,21 @@
            } while(0)
 #endif
 
-#ifdef     QUEX_OPTION_TOKEN_POLICY_QUEUE
-    /* -- Assert consistency of the token queue
-     * -- Assert no token is sent after token 'TERMINATION'. 
-     *    If files are included the token queue is reset.   */
-#   if ! defined(QUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE)
-#       define __QUEX_ASSERT_SEND_ENTRY()                                                                   \
-               do {                                                                                         \
-                   QUEX_TOKEN_QUEUE_ASSERT(&self._token_queue);                                             \
-                   if(   self._token_queue.write_iterator != self._token_queue.begin                        \
-                      && (self._token_queue.write_iterator-1)->_id == __QUEX_SETTING_TOKEN_ID_TERMINATION ) \
-                       QUEX_ERROR_EXIT("Detected attempt to send a token after 'TERMINATION'.\n"            \
-                                       "If this is intended, compile with -DQUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE'.\n"); \
-               } while( 0 )
-#   else
-#       define __QUEX_ASSERT_SEND_ENTRY()                   \
-               QUEX_TOKEN_QUEUE_ASSERT(&self._token_queue) 
-#   endif
+/* -- Assert consistency of the token queue
+ * -- Assert no token is sent after token 'TERMINATION'. 
+ *    If files are included the token queue is reset.                         */
+#if ! defined(QUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE)
+#    define __QUEX_ASSERT_SEND_ENTRY()                                                                   \
+            do {                                                                                         \
+                QUEX_TOKEN_QUEUE_ASSERT(&self._token_queue);                                             \
+                if(   self._token_queue.write_iterator != self._token_queue.begin                        \
+                   && (self._token_queue.write_iterator-1)->_id == __QUEX_SETTING_TOKEN_ID_TERMINATION ) \
+                    QUEX_ERROR_EXIT("Detected attempt to send a token after 'TERMINATION'.\n"            \
+                                    "If this is intended, compile with -DQUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE'.\n"); \
+            } while( 0 )
 #else
-    /* No assert about token object                         */
-    /* No assert on not __QUEX_SETTING_TOKEN_ID_TERMINATION */
-#   define __QUEX_ASSERT_SEND_ENTRY()              /* EMPTY */
+#    define __QUEX_ASSERT_SEND_ENTRY()                   \
+            QUEX_TOKEN_QUEUE_ASSERT(&self._token_queue) 
 #endif
 
 #ifdef  QUEX_OPTION_TOKEN_REPETITION_SUPPORT

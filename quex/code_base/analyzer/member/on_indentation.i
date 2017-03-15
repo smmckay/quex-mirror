@@ -15,10 +15,6 @@ QUEX_NAME(on_indentation)(QUEX_TYPE_ANALYZER*    me,
 {
 #   define self  (*me)
     QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
-#   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
-    register QUEX_TYPE_TOKEN_ID __self_result_token_id 
-           = (QUEX_TYPE_TOKEN_ID)__QUEX_SETTING_TOKEN_ID_UNINITIALIZED;
-#   endif
     __QUEX_IF_TOKEN_REPETITION_SUPPORT(QUEX_TYPE_INDENTATION* start = 0);
     (void)Begin;
 

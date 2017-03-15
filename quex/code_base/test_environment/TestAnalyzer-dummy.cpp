@@ -307,9 +307,7 @@ _18:
 #endif /* __QUEX_OPTION_COUNTER */
 
 #include <quex/code_base/buffer/Buffer>
-#ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
-#   include <quex/code_base/token/TokenQueue>
-#endif
+#include <quex/code_base/token/TokenQueue>
 
 #ifdef    CONTINUE
 #   undef CONTINUE
@@ -329,10 +327,6 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
      *       functions. That means, they are something like 'globals'. They 
      *       receive a pointer to the lexical analyzer, since static members do
      *       not have access to the 'this' pointer.                          */
-#   if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
-    register QUEX_TYPE_TOKEN_ID __self_result_token_id 
-           = (QUEX_TYPE_TOKEN_ID)__QUEX_SETTING_TOKEN_ID_UNINITIALIZED;
-#   endif
 #   ifdef     self
 #       undef self
 #   endif
@@ -511,7 +505,7 @@ self_send(QUEX_TKN_X);
 QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
 
 
-#   line 515 "TestAnalyzer.cpp"
+#   line 511 "TestAnalyzer.cpp"
 
 }
 goto _0;
@@ -576,15 +570,9 @@ _7:
 
 
 #   ifndef __QUEX_OPTION_PLAIN_ANALYZER_OBJECT
-#   ifdef  QUEX_OPTION_TOKEN_POLICY_QUEUE
     if( QUEX_NAME(TokenQueue_is_full)(&self._token_queue) ) {
         return;
     }
-#   else
-    if( self_token_get_id() != __QUEX_SETTING_TOKEN_ID_UNINITIALIZED) {
-        return __self_result_token_id;
-    }
-#   endif
 #   endif
 
 

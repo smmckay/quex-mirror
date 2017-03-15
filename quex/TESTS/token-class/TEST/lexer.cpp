@@ -11,13 +11,7 @@ int
 main(int argc, char** argv) 
 {        
     if( argc > 1 && strcmp("--hwut-info", argv[1]) == 0 ) {
-#       if   defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
-        printf("With token policy 'simple'.\n");
-#       elif defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
         printf("With token policy 'queue'.\n");
-#       else
-        printf("ERROR - unreviewed compilation - ERROR.\n");
-#       endif
         return 0;
     }
     quex::Simple           qlex("example.txt");
