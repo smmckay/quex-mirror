@@ -9,11 +9,8 @@ gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPT
 'x x'
 (*) result:
                   X  'x'
----
 WHITESPACE CONTINUE  ' '
                   X  'x'
----
----
   ''
 
 

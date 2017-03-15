@@ -1,3 +1,17 @@
+## make lexer    
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 ,------------------------------------------------------------------------------------
 | [START]
 1: (1)IDENTIFIER	'Avant'
@@ -22,39 +36,34 @@
             2: (9)IDENTIFIER	'auxiliary/hallo.txt'
             >> including: auxiliary/hallo.txt
                 1: (1)IDENTIFIER	'Hallo'
-                Per File Letter Count = 5
                 2: (1)<TERMINATION>	''
+                Per File Letter Count = 5
             << return from include
-
             3: (1)IDENTIFIER	'Tschuess'
-            Per File Letter Count = 42
             4: (1)<TERMINATION>	''
+            Per File Letter Count = 42
         << return from include
-
         3: (1)INCLUDE	''
         3: (9)IDENTIFIER	'auxiliary/hallo.txt'
         >> including: auxiliary/hallo.txt
             1: (1)IDENTIFIER	'Hallo'
-            Per File Letter Count = 5
             2: (1)<TERMINATION>	''
+            Per File Letter Count = 5
         << return from include
-
-        Per File Letter Count = 65
         5: (1)<TERMINATION>	''
+        Per File Letter Count = 65
     << return from include
-
     2: (1)IDENTIFIER	'Hello'
     2: (7)IDENTIFIER	'World'
-    Per File Letter Count = 38
     4: (1)<TERMINATION>	''
+    Per File Letter Count = 38
 << return from include
-
 3: (1)IDENTIFIER	'Apres'
 3: (7)IDENTIFIER	'la'
 3: (10)IDENTIFIER	'premiere'
 3: (19)IDENTIFIER	''include''
-Per File Letter Count = 74
 4: (1)<TERMINATION>	''
+Per File Letter Count = 74
 | [END] number of token = 29
 `------------------------------------------------------------------------------------
 VALGRIND:   All heap blocks were freed -- no leaks are possible

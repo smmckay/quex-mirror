@@ -52,10 +52,9 @@ main(int argc, char** argv)
     int N = atoi(argv[1]);
 
     /* Read 'N' tokens before doing the reset. */
-    token_p = qlex.token_p();
     for(int i=0; i < N; ++i) {
         assert(qlex.buffer.filler);
-        (void)qlex.receive();
+        (void)qlex.receive(&token_p);
     } 
 
     assert(qlex.buffer.filler);
@@ -65,7 +64,7 @@ main(int argc, char** argv)
 
     do {
         assert(qlex.buffer.filler);
-        (void)qlex.receive();
+        (void)qlex.receive(&token_p);
 
 #       if defined (__QUEX_SETTING_TEST_UTF8)
         printf("(%2i, %2i)   \t%s '%s' \n", (int)qlex.line_number(), (int)qlex.column_number(),

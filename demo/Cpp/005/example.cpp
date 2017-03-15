@@ -7,17 +7,20 @@
 
 using namespace std;
 
-QUEX_TYPE_LEXATOM  EmptyLexeme = 0x0000;  /* Only the terminating zero */
+static void  space(size_t N);
+static void  print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p, 
+                         bool TextF /* = false */);
+static void  print(QUEX_TYPE_ANALYZER* qlex, const char* Str1, 
+                   const char* Str2 = 0, const char* Str3 = 0);
 
 int 
 main(int argc, char** argv) 
 {        
     using namespace quex;
-
-    Token*     token_p;
-    int        number_of_tokens  = 0;
-    bool       continue_lexing_f = true;
-    char       file_name[256];
+    QUEX_TYPE_TOKEN*      token_p;
+    int                   number_of_tokens = 0;
+    bool                  continue_lexing_f = true;
+    char                  included_file_name[256];
     EasyLexer  qlex(argc == 1 ? "example.txt" : argv[1], NULL);
 
     cout << ",------------------------------------------------------------------------------------\n";
@@ -32,21 +35,21 @@ main(int argc, char** argv)
         print_token(&qlex, token_p, true);
 
         if( token_p->_id == QUEX_TKN_INCLUDE ) { 
-            token_p->_id = qlex.receive();
+            qlex.receive(&token_p);
             print_token(&qlex, token_p, true);
             if( token_p->_id != QUEX_TKN_IDENTIFIER ) {
                 continue_lexing_f = false;
                 print(&qlex, "Found 'include' without a subsequent filename: '%s' hm?\n",
-                      (char*)QUEX_NAME_TOKEN(map_id_to_name)(token_id));
+                      (char*)QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
                 break;
             }
-            if( token_p->get_text().copy((uint8_t*)&file_name[0], (size_t)255) == token->get_text().length() ) {
-                file_name[token_p->get_text().length()] = (char)0;
-                print(&qlex, ">> including: ", (const char*)&file_name[0]);
-                qlex.include_push(&file_name[0], NULL);
+            if( token_p->get_text().copy((uint8_t*)&included_file_name[0], (size_t)255) == token_p->get_text().length() ) {
+                included_file_name[token_p->get_text().length()] = (char)0;
+                print(&qlex, ">> including: ", (const char*)&included_file_name[0]);
+                qlex.include_push(&included_file_name[0], NULL);
             }
         }
-        else if( token_id == QUEX_TKN_TERMINATION ) {
+        else if( token_p->_id == QUEX_TKN_TERMINATION ) {
             space(qlex.include_depth);
             printf("Per File Letter Count = %i\n", (int)qlex.letter_count);
             if( qlex.include_pop() == false ) 

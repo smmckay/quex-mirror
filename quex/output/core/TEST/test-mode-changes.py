@@ -27,5 +27,4 @@ pattern_action_pair_list_2 = [
 test_str = "\" \""
 
 generator_test.do(pattern_action_pair_list, test_str, {}, choice, 
-                  SecondPatternActionPairList=pattern_action_pair_list_2,
-                  TokenQueueF=True)    
+                  SecondPatternActionPairList=pattern_action_pair_list_2)    

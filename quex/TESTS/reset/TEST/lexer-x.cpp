@@ -9,6 +9,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
+    quex::Token*   token_p;
     quex::Simple   qlex("example.txt", NULL);
 
     if( argc < 2 ) {
@@ -28,7 +29,7 @@ main(int argc, char** argv)
 
     /* Read 'N' tokens before doing the reset. */
     for(int i=0; i < N; ++i) {
-        (void)qlex.receive();
+        (void)qlex.receive(&token_p);
     } 
 
     // printf("BEFORE Reset:\n");
