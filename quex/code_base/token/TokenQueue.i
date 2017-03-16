@@ -150,7 +150,32 @@ QUEX_INLINE bool QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me)
 { return me->read_iterator == me->write_iterator; }
 
 QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
-{ return me->read_iterator++; }
+{
+#   if defined(QUEX_OPTION_ASSERTS) && defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+    if( QUEX_NAME(TokenQueue_begin)(&me->_token_queue) == 0x0 ) {
+        QUEX_ERROR_EXIT("Token queue has not been set before call to .receive().\n"
+                        "Please, consider function 'token_queue_memory_set()'.");
+    }
+#   endif
+
+#   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
+    while( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(self_token_p()->_id) ) {
+        if( QUEX_NAME_TOKEN(repetition_n_get)(self_token_p()) != 0 ) { 
+            __QUEX_REPEATED_TOKEN_DECREMENT_N(self_token_p());
+            return self_token_p();  
+        } 
+        /* Pop the repeated token from the queue                          */
+        ++(me->read_iterator);
+    }
+#   endif
+    /* Tokens are in queue --> take next token from queue */ 
+    if( QUEX_NAME(TokenQueue_is_empty)(me) ) {        
+        return (QUEX_TYPE_TOKEN*)0;
+    }
+    else {
+        return me->read_iterator++;
+    } 
+}
 
 QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_begin)(QUEX_NAME(TokenQueue)* me)
 { return me->begin; }

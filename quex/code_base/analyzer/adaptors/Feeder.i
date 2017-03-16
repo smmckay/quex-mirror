@@ -42,6 +42,9 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me);
 
+QUEX_INLINE QUEX_TYPE_TOKEN*
+QUEX_NAME(FeederBase_check_if_token_complete)(QUEX_NAME(FeederBase)* me);
+
 #if ! defined( __QUEX_OPTION_PLAIN_C)
 
 QUEX_INLINE
@@ -109,36 +112,34 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
  *          Pointer to token, that has been identified 
  *          (This may be the 'BYE' token).                                   */
 {
-    QUEX_TYPE_TOKEN* token_p = NULL;
+    QUEX_TYPE_TOKEN* token_p      = NULL;
+    QUEX_TYPE_TOKEN* token_next_p = NULL;
 
-    if( ! me->last_incomplete_lexeme_p ) {
-        me->last_incomplete_lexeme_p = me->lexer->buffer._read_p;
-    }
-    QUEX_NAME(receive)(me->lexer, &token_p);
-    if( ! token_p || me->stream_terminating_token_id == token_p->_id ) {
-        /* This was the very last token to be received.                      */
-        me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
-        return token_p;
-    }
-    else if( me->lexer->buffer._read_p < me->lexer->buffer.input.end_p ) {
-        /* Lexeme is completely inside the boundaries of the content.
-         * => Return it, there is no previous (see entry of function).       */
-        me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
-        return token_p;
-    }
-    else if(    me->lexer->buffer._lexeme_start_p == &me->lexer->buffer._memory._front[1] 
-             && me->lexer->buffer._read_p         == &me->lexer->buffer._memory._back[0] )  {
-        me->lexer->buffer.on_overflow(&me->lexer->buffer, /* ForwardF */true);
-        return (QUEX_TYPE_TOKEN*)0;                         /* There's more! */
+    token_p      = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
+    token_next_p = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
+    if( token_p ) {
+        if( ! token_next_p || token_next_p->_id != __QUEX_SETTING_TOKEN_ID_TERMINATION ) {
+            return token_p;
+        }
+        /* HERE: token_next_p != 0 && token_next_p == TERMINATION             */
     }
     else {
-        /* Detected 'Termination'
-         * => Previous token may be incomplete.
-         * => 'last_incomplete_lexeme_p' at position of last token.          */
-        me->lexer->buffer._read_p = me->lexer->buffer._lexeme_start_p; 
-        me->last_incomplete_lexeme_p = (QUEX_TYPE_LEXATOM*)0;
-        return (QUEX_TYPE_TOKEN*)0;                         /* There's more! */
+        /* HERE: There is no token in the queue.                              */
     }
+
+    me->last_incomplete_lexeme_p = me->lexer->buffer._read_p;
+
+    /* Analyze until there is some content in the queue                       */
+    do {
+        me->current_analyzer_function(me);
+        QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
+#   if defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE)
+    } while( QUEX_NAME(TokenQueue_is_empty)(&self._token_queue) );
+#   else
+    } while( false );
+#   endif
+    
+    return QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

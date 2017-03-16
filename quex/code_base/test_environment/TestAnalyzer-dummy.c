@@ -310,9 +310,7 @@ _18:
 #endif /* __QUEX_OPTION_COUNTER */
 
 #include <quex/code_base/buffer/Buffer>
-#ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
-#   include <quex/code_base/token/TokenQueue>
-#endif
+#include <quex/code_base/token/TokenQueue>
 
 #ifdef    CONTINUE
 #   undef CONTINUE
@@ -510,7 +508,7 @@ self_send(QUEX_TKN_X);
 QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
 
 
-#   line 514 "TestAnalyzer.c"
+#   line 512 "TestAnalyzer.c"
 
 }
 goto _0;
@@ -575,15 +573,9 @@ _7:
 
 
 #   ifndef __QUEX_OPTION_PLAIN_ANALYZER_OBJECT
-#   ifdef  QUEX_OPTION_TOKEN_POLICY_QUEUE
     if( QUEX_NAME(TokenQueue_is_full)(&self._token_queue) ) {
         return;
     }
-#   else
-    if( self_token_get_id() != __QUEX_SETTING_TOKEN_ID_UNINITIALIZED) {
-        return __self_result_token_id;
-    }
-#   endif
 #   endif
 
 
@@ -801,7 +793,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 805 "TestAnalyzer.c"
+#   line 797 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -832,7 +824,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 836 "TestAnalyzer.c"
+#   line 828 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -873,7 +865,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 877 "TestAnalyzer.c"
+#   line 869 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -964,7 +956,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 968 "TestAnalyzer.c"
+#   line 960 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -986,7 +978,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 990 "TestAnalyzer.c"
+#   line 982 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1005,7 +997,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1009 "TestAnalyzer.c"
+#   line 1001 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1083,7 +1075,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 
    
 
-#   line 1087 "TestAnalyzer.c"
+#   line 1079 "TestAnalyzer.c"
 
 
 
