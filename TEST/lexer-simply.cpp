@@ -41,15 +41,9 @@ main(int argc, char** argv)
     Simple                   qlex(byte_loader, converter); 
 
     cout << "## An Assert-Abortion might be an intended element of the experiment.\n";
-#   ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE
-    token_p = qlex.token_p();
-#   endif
     do {
-#       ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE
-        qlex.receive();
-#       else
         qlex.receive(&token_p);
-#       endif
+
         if( token_p->type_id() == QUEX_TKN_TERMINATION ) {
             token_p->text = (QUEX_TYPE_LEXATOM*)"";
         }

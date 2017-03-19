@@ -1,9 +1,6 @@
 
-TESTS = \
-		queue.exe \
-		queue-real.exe \
-		users_token.exe \
-		users_token-real.exe \
+TESTS = queue.exe \
+		queue-real.exe 
 
 ENGINE = TPLex.cpp
 
@@ -27,14 +24,6 @@ queue.exe:            lexer.cpp
 
 queue-real.exe:       lexer.cpp  
 	quex -i real.qx -o TPLex --token-policy queue
-	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -lefence -o $@
-
-users_token.exe:      lexer.cpp  
-	quex -i simple.qx -o TPLex --token-policy single
-	$(CC) -I$(QUEX_PATH) -D__QUEX_OPTION_TEST_PSEUDO_ANALYSIS lexer.cpp $(ENGINE) -lefence -o $@
-
-users_token-real.exe: lexer.cpp  
-	quex -i real.qx -o TPLex --token-policy single
 	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -lefence -o $@
 
 ## users_queue.exe:      lexer.cpp  

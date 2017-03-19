@@ -28,6 +28,7 @@ main(int argc, char** argv)
 
     do {
         quex_EasyLexer_receive(&qlex, &token_p);
+        if( ! token_p ) break;
 
         print_token(token_p);
 

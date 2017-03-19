@@ -1,6 +1,5 @@
-// This file implements a lexer while relying on the internal ability of the 
-// lexer to detect mode changes and re-dive into analysis when a mode change has
-// been detected.
+// This lexer relies on the implicit mode change.
+// It relies on implicit RETURN and re-entry of the analyzer.
 token {
    STRING_LITERAL;
 }
@@ -11,6 +10,9 @@ mode MODULE {
     <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
     "\"" { 
         self << STRING; 
+        /* CONTRARY: 'without detection':
+         *    -- send a token 'MODE_CHANGE'
+         *    -- explicitly RETURN.          */
     }
     [ \t\n] {}
 }
@@ -20,13 +22,15 @@ mode STRING {
         self_accumulator_clear(); 
     }
     on_exit {
-        self_accumulator_flush(QUEX_TKN_STRING_LITERAL);
+       self_accumulator_flush(QUEX_TKN_STRING_LITERAL);
+       // the \" pattern will catch the token id and return it to the user.
     }
     <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
     "\"" { 
         self << MODULE; 
+        /* CONTRARY: 'without detection':
+         *       -- send a token 'MODE_CHANGE'
+         *       -- explicitly RETURN. */
     }
-    .    { 
-        self_accumulator_add(Lexeme, LexemeEnd); 
-    }
+    .    { self_accumulator_add(Lexeme, LexemeEnd); CONTINUE; }
 }

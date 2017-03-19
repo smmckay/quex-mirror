@@ -12,16 +12,7 @@ QUEX_TYPE_LEXATOM  EmptyLexeme = 0x0000;  /* Only the terminating zero */
 void    print(quex::Simple& qlex, quex::Token& Token, bool TextF = false);
 void    print(quex::Simple& qlex, const char* Str1, const char* Str2=0x0, const char* Str3=0x0);
 
-#if 0 && QUEX_OPTION_TOKEN_POLICY_USERS_QUEUE
-//     Policy 'users_queue' has been deprecated.
-//     void get_token_from_users_queue(quex::Simple&, quex::Token&);
-//#    define RECEIVE(Token)   get_token_from_users_queue(qlex, Token)
-#endif
-#ifdef  QUEX_OPTION_TOKEN_POLICY_QUEUE
-#    define RECEIVE(TokenP)   (void)qlex.receive(&TokenP)
-#else
-#    define RECEIVE(TokenP)   (void)qlex.receive()
-#endif
+#define RECEIVE(TokenP)   (void)qlex.receive(&TokenP)
 
 static void
 self_test(const char* CharFilename);
@@ -49,12 +40,7 @@ self_test(const char* CharFilename)
     string         Filename(CharFilename);
     ifstream       istr((Directory + Filename + ".txt").c_str());
     quex::Simple   qlex(quex::QUEX_NAME(ByteLoader_stream_new)(&istr), NULL);
-
-#   ifdef  QUEX_OPTION_TOKEN_POLICY_QUEUE
-    quex::Token*  token_p = 0x0;
-#   else
-    quex::Token*  token_p = qlex.token_p();
-#   endif
+    quex::Token*   token_p = 0x0;
 
 
     qlex.input_name_set((Directory + Filename + ".txt").c_str());

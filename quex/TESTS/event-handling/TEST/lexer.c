@@ -30,9 +30,9 @@ main(int argc, char** argv)
     fprintf(stderr, "| [START]\n");
     FLUSH();
 
-    token_p = QUEX_NAME(token_p)(&qlex);
     do {
-        token_id = QUEX_NAME(receive)(&qlex);
+        QUEX_NAME(receive)(&qlex, &token_p);
+        token_id = token_p->_id;
         FLUSH();
         printf("TOKEN: %s\n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
         FLUSH();

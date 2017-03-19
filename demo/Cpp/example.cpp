@@ -29,6 +29,7 @@ main(int argc, char** argv)
     int number_of_tokens = 0;
     do {
         qlex.receive(&token_p);
+        if( ! token_p ) break;
 
         print_token(token_p);
 

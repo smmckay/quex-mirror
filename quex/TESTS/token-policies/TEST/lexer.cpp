@@ -56,7 +56,6 @@ main(int argc, char** argv)
     delete qlex;
 }
 
-#if   defined( QUEX_OPTION_TOKEN_POLICY_QUEUE )
 QUEX_TYPE_TOKEN_ID test_core(TPLex& qlex, const char* Choice)
 {
     QUEX_TYPE_TOKEN*  token_p;
@@ -78,21 +77,6 @@ QUEX_TYPE_TOKEN_ID test_core(TPLex& qlex, const char* Choice)
 
     return token_id;
 }
-#else 
-QUEX_TYPE_TOKEN_ID test_core(TPLex& qlex, const char* Choice)
-{        
-    QUEX_TYPE_TOKEN   token;
-    QUEX_TYPE_TOKEN*  token_p;
-    token_p = qlex.token_p();
-
-    (void)qlex.receive();
-
-    printf("received: %s\n", token_p->type_id_name().c_str());
-    QUEX_TYPE_TOKEN_ID token_id = token_p->type_id();
-
-    return token_id;
-}
-#endif
 
 #if defined(__QUEX_OPTION_TEST_PSEUDO_ANALYSIS)
 __QUEX_TYPE_ANALYZER_RETURN_VALUE  pseudo_analysis(QUEX_TYPE_ANALYZER* me)

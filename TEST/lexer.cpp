@@ -32,9 +32,7 @@ int main(int argc, char** argv)
     // (*) create token
     Token*                token_p = 0;
     long                  token_n = 0;
-#   ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE
-    QUEX_TYPE_TOKEN_ID    token_id = (QUEX_TYPE_TOKEN_ID)0x0;
-#   endif
+    //
     // (*) create the lexical analyser
 #   if defined(QUEX_OPTION_CONVERTER_ICONV)
     QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
@@ -48,12 +46,7 @@ int main(int argc, char** argv)
     // (*) loop until the 'termination' token arrives
     do {
         // (*) get next token from the token stream
-#       ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE
-        token_id = qlex->receive();
-        token_p  = qlex->token;
-#       else
         qlex->receive(&token_p);
-#       endif
 
         // (*) print out token information
         cerr.flush();
@@ -71,11 +64,7 @@ int main(int argc, char** argv)
         ++token_n;
 
         // (*) check against 'termination'
-#   ifdef QUEX_OPTION_TOKEN_POLICY_SINGLE
-    } while( token_id != QUEX_TKN_TERMINATION );
-#   else
     } while( token_p->_id != QUEX_TKN_TERMINATION );
-#   endif
 
     if( qlex->error_code != E_Error_None ) {
         qlex->print_this();

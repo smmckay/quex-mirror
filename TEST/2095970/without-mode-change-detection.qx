@@ -1,5 +1,5 @@
-// This file implements a lexer that does not rely on implicit mode change
-// detection. Rather, it ensures **itself**, that the lexer returns on mode change.
+// This lexer does not rely on implicit mode change.
+// It does not rely on implicit RETURN and re-entry of the analyzer.
 token {
    STRING_LITERAL;
    EVENT_MODE_CHANGE;
@@ -25,12 +25,10 @@ mode STRING {
        self_accumulator_flush(QUEX_TKN_STRING_LITERAL);
        // the \" pattern will catch the token id and return it to the user.
     }
-    <<EOF>> => QUEX_TKN_TERMINATION;
+    <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
     "\"" { 
         self << MODULE; 
-#       ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
         self_send1(QUEX_TKN_EVENT_MODE_CHANGE, LexemeNull); 
-#       endif
         RETURN;                          
     }
     .    { self_accumulator_add(Lexeme, LexemeEnd); CONTINUE; }
