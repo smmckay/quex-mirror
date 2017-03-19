@@ -86,7 +86,7 @@ class TerminalFactory:
             #
             adorned_code,
             #
-            Lng.GOTO(DoorID.continue_with_on_after_match(self.dial_db), self.dial_db)
+            Lng.RETURN # 'RETURN' since mode change may have occurred
         ])
         t = self.__terminal(text, Code, 
                             ThePattern.pattern_string(),
@@ -116,7 +116,7 @@ class TerminalFactory:
             #
             adorned_code,
             #
-            Lng.GOTO(DoorID.continue_without_on_after_match(self.dial_db), self.dial_db),
+            Lng.RETURN # 'RETURN' since mode change may have occurred
         ]
         return self.__terminal(text, Code, "FAILURE")
 

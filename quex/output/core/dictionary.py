@@ -99,10 +99,11 @@ class Lng_Cpp(dict):
         try:             return self[Attr] 
         except KeyError: raise AttributeError
 
-    PURE_RETURN             = "__QUEX_PURE_RETURN;"
-    UNREACHABLE             = "__quex_assert_no_passage();"
-    ELSE                    = "} else {\n"
-    ELSE_SIMPLE             = "else"
+    RETURN      = "RETURN;"
+    PURE_RETURN = "__QUEX_PURE_RETURN;"
+    UNREACHABLE = "__quex_assert_no_passage();"
+    ELSE        = "} else {\n"
+    ELSE_SIMPLE = "else"
 
     PATH_ITERATOR_INCREMENT  = "++(path_iterator);"
     def LEXEME_START_SET(self, PositionStorage=None):

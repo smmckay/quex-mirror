@@ -312,12 +312,12 @@ _18:
 #ifdef    CONTINUE
 #   undef CONTINUE
 #endif
-#define   CONTINUE do { goto _0; } while(0)
+#define   CONTINUE do { goto _18; } while(0)
 
 #ifdef    RETURN
 #   undef RETURN
 #endif
-#define   RETURN   do { goto _2; } while(0)
+#define   RETURN   do { goto _1; } while(0)
 
 __QUEX_TYPE_ANALYZER_RETURN_VALUE  
 QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me) 
@@ -379,7 +379,7 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 _20:
     me->buffer._lexeme_start_p = me->buffer._read_p;
     QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);
-_10:
+_8:
     /* (18 from BEFORE_ENTRY) (18 from RELOAD_FORWARD)  */
 
     input = *(me->buffer._read_p);
@@ -387,29 +387,28 @@ _10:
 
     __quex_debug("Init State\n");
     __quex_debug_state(18);
-if     ( input == 0x58 )  goto _11;
-else if( input == 0x0 )   goto _14;
-else                      goto _12;
+if     ( input == 0x58 )  goto _9;
+else if( input == 0x0 )   goto _12;
+else                      goto _10;
 
 
     __quex_assert_no_passage();
-_13:
-    /* (DROP_OUT from 19)  */
-    goto _1;
-_17:
+_10:
+    /* (DROP_OUT from 18)  */
+        me->buffer._read_p = me->buffer._lexeme_start_p + 1;
+goto _6;
+
     __quex_debug("Drop-Out Catcher\n");
 
 
     __quex_assert_no_passage();
-_12:
-    /* (DROP_OUT from 18)  */
-        me->buffer._read_p = me->buffer._lexeme_start_p + 1;
-goto _8;
-    goto _17;
+_11:
+    /* (DROP_OUT from 19)  */
+    goto _0;
 
 
     __quex_assert_no_passage();
-_11:
+_9:
     /* (19 from 18)  */
     ++(me->buffer._read_p);
 
@@ -417,12 +416,12 @@ _11:
 
 
     __quex_debug_state(19);
-goto _13;
+goto _11;
 
     /* (*) Terminal states _______________________________________________________
      *
      * States that implement actions of the 'winner patterns.                     */
-_3:
+_2:
     __quex_debug("* TERMINAL BAD_LEXATOM\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
@@ -434,8 +433,8 @@ RETURN;
     /* Bad lexatom detection FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-goto _2;
-_4:
+goto _1;
+_3:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
@@ -447,8 +446,8 @@ RETURN;
     /* Load failure FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-goto _2;
-_5:
+goto _1;
+_4:
     __quex_debug("* TERMINAL OVERFLOW\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
@@ -459,8 +458,8 @@ RETURN;
 }
     /* Lexeme size exceeds buffer size. No further buffer load possible.
      */
-goto _2;
-_6:
+goto _1;
+_5:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
@@ -470,8 +469,8 @@ self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
     /* End of Stream FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-goto _2;
-_8:
+goto _1;
+_6:
     __quex_debug("* TERMINAL FAILURE\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
@@ -480,8 +479,8 @@ self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
 RETURN;
 
 }
-goto _7;
-_9:
+RETURN;
+_7:
     __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
@@ -493,8 +492,8 @@ RETURN;
 }
     /* End of Stream appeared, while scanning for end of skip-range.
      */
-goto _2;
-_1:
+goto _1;
+_0:
     __quex_debug("* TERMINAL X\n");
 __QUEX_IF_COUNT_SHIFT_VALUES();
 __QUEX_IF_COUNT_COLUMNS_ADD(1);
@@ -502,29 +501,30 @@ __QUEX_IF_COUNT_COLUMNS_ADD(1);
 
 #   line 2 "nothing.qx"
 self_send(QUEX_TKN_X);
-QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();
+
+RETURN;
 
 
 #   line 509 "TestAnalyzer.cpp"
 
 }
-goto _0;
+RETURN;
 if(0) {
     /* Avoid unreferenced labels. */
+    goto _2;
     goto _3;
     goto _4;
     goto _5;
     goto _6;
-    goto _8;
-    goto _9;
-    goto _1;
+    goto _7;
+    goto _0;
 }
 #   ifndef QUEX_OPTION_COMPUTED_GOTOS
     __quex_assert_no_passage();
 _21:
     switch( target_state_index ) {
-        case 6: { goto _6;}
-        case 10: { goto _10;}
+        case 5: { goto _5;}
+        case 8: { goto _8;}
 
         default:
             __QUEX_STD_fprintf(stderr, "State router: index = %i\n", (int)target_state_index);
@@ -534,9 +534,9 @@ _21:
 
 
     __quex_assert_no_passage();
-_14:
+_12:
     /* (RELOAD_FORWARD from 18)  */
-    target_state_index = QUEX_LABEL(10); target_state_else_index = QUEX_LABEL(6);
+    target_state_index = QUEX_LABEL(8); target_state_else_index = QUEX_LABEL(5);
 
 
 
@@ -550,52 +550,34 @@ _14:
 
     switch( load_result ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_BAD_LEXATOM:       goto _3;
-    case E_LoadResult_FAILURE:           goto _4;
-    case E_LoadResult_NO_SPACE_FOR_LOAD: goto _5;
+    case E_LoadResult_BAD_LEXATOM:       goto _2;
+    case E_LoadResult_FAILURE:           goto _3;
+    case E_LoadResult_NO_SPACE_FOR_LOAD: goto _4;
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
     }
 
-_2:
+_1:
 /* RETURN -- after executing 'on_after_match' code. */
     __QUEX_PURE_RETURN;
 
 
-_0:
+_18:
 /* CONTINUE -- after executing 'on_after_match' code. */
 
-_7:
+_19:
 /* CONTINUE -- without executing 'on_after_match' (e.g. on FAILURE). */
 
 
-#   ifndef __QUEX_OPTION_PLAIN_ANALYZER_OBJECT
+    /* Mode change = another function takes over the analysis.
+     * => After mode change the analyzer function needs to be quit!
+     * ASSERT: 'CONTINUE' after mode change is not allowed.                   */
+    __quex_assert(   me->DEBUG_analyzer_function_at_entry 
+                  == me->current_analyzer_function);
+
+
     if( QUEX_NAME(TokenQueue_is_full)(&self._token_queue) ) {
         return;
-    }
-#   endif
-
-
-    /*  If a mode change happened, then the function must first return and
-     *  indicate that another mode function is to be called. At this point, 
-     *  we to force a 'return' on a mode change. 
-     *
-     *  Pseudo Code: if( previous_mode != current_mode ) {
-     *                   return 0;
-     *               }
-     *
-     *  When the analyzer returns, the caller function has to watch if a mode 
-     *  change occurred. If not it can call this function again.             */
-#   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE)        || defined(QUEX_OPTION_ASSERTS)
-    if( me->DEBUG_analyzer_function_at_entry != me->current_analyzer_function ) 
-#   endif
-    { 
-#       if defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE)
-        self_token_set_id(__QUEX_SETTING_TOKEN_ID_UNINITIALIZED);
-        __QUEX_PURE_RETURN;
-#       elif defined(QUEX_OPTION_ASSERTS)
-        QUEX_ERROR_EXIT("Mode change without immediate return from the lexical analyzer.");
-#       endif
     }
 
 
@@ -606,9 +588,9 @@ goto _20;
     /* Following labels are referenced in macros. It cannot be detected
      * whether the macros are applied in user code or not. To avoid compiler.
      * warnings of unused labels, they are referenced in unreachable code.   */
-    goto _2; /* in RETURN                */
-    goto _0; /* in CONTINUE              */
-    goto _7; /* in CONTINUE and skippers */
+    goto _1; /* in RETURN                */
+    goto _18; /* in CONTINUE              */
+    goto _19; /* in CONTINUE and skippers */
 #   if ! defined(QUEX_OPTION_COMPUTED_GOTOS)
     goto _21; /* in QUEX_GOTO_STATE       */
 #   endif

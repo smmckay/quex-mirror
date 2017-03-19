@@ -37,14 +37,10 @@ main(int argc, char** argv)
      * is always the same.                                                   */
     printf("                Max:        Moritz:      Boeck:\n");
 
-    max_token    = max_Lexer_token_p(&max_lex);
-    moritz_token = moritz_Lexer_token_p(&moritz_lex);
-    boeck_token  = boeck_Lexer_token_p(&boeck_lex);
-
     do {
-        (void)max_Lexer_receive(&max_lex);
-        (void)moritz_Lexer_receive(&moritz_lex);
-        (void)boeck_Lexer_receive(&boeck_lex);
+        (void)max_Lexer_receive(&max_lex, &max_token);
+        (void)moritz_Lexer_receive(&moritz_lex, &moritz_token);
+        (void)boeck_Lexer_receive(&boeck_lex, &boeck_token);
 
         /* Lexeme is same for all three. */
         size_t      preL   = (size_t)strlen((const char*)boeck_token->text);

@@ -2,7 +2,7 @@
 bug=3495127
 if [[ $1 == "--hwut-info" ]]; then
     echo "clemwang: $bug Event Handler on_after_match"
-    echo "CHOICES: single, queue;"
+    echo "CHOICES: queue;"
     exit
 fi
 

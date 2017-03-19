@@ -136,7 +136,6 @@ SOMETHING 'b'
 SOMETHING 'a'
 SOMETHING 'r'
 NEWLINE ''
-<TERMINATION> 'b'
+<TERMINATION> ''
 | [END] number of token = 137
 `------------------------------------------------------------------------------------
-

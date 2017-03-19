@@ -50,18 +50,6 @@ QUEX_NAME(token_queue_remainder_get)(QUEX_TYPE_ANALYZER*  me,
                                      QUEX_TYPE_TOKEN**    end)
 { QUEX_NAME(TokenQueue_remainder_get)(&me->_token_queue, begin, end); }
 
-QUEX_INLINE void
-QUEX_NAME(token_queue_swap)(QUEX_TYPE_ANALYZER* me, 
-                              QUEX_TYPE_TOKEN**   memory, size_t* n)
-{ 
-    QUEX_TYPE_TOKEN*  prev_memory = 0x0;
-    size_t            prev_n      = (size_t)-1;
-    QUEX_NAME(TokenQueue_memory_get)(&me->_token_queue, &prev_memory, &prev_n); 
-    QUEX_NAME(TokenQueue_init)(&me->_token_queue, *memory, *memory + *n); 
-    *memory = prev_memory;
-    *n      = prev_n;
-}
-
 #if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
 QUEX_INLINE void    QUEX_NAME(token_queue_get)(QUEX_TYPE_ANALYZER*  me, 
                                                QUEX_TYPE_TOKEN** begin, size_t* size)
@@ -157,35 +145,23 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_MEMBER(token_p)()
 { return QUEX_NAME(token_p)(this); }
 
-#if defined(QUEX_OPTION_TOKEN_POLICY_SINGLE)
+QUEX_INLINE bool
+QUEX_MEMBER(token_queue_is_empty)()
+{ return QUEX_NAME(token_queue_is_empty)(this); }
 
-    QUEX_INLINE QUEX_TYPE_TOKEN*
-    QUEX_MEMBER(token_p_swap)(QUEX_TYPE_TOKEN* TokenP)
-    { return QUEX_NAME(token_p_swap)(this, TokenP); }
+QUEX_INLINE void
+QUEX_MEMBER(token_queue_remainder_get)(QUEX_TYPE_TOKEN**  begin, 
+                                       QUEX_TYPE_TOKEN**  end)
+{ QUEX_NAME(token_queue_remainder_get)(this, begin, end); }
 
-#else
-    QUEX_INLINE bool
-    QUEX_MEMBER(token_queue_is_empty)()
-    { return QUEX_NAME(token_queue_is_empty)(this); }
+#if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
+QUEX_INLINE void
+QUEX_MEMBER(token_queue_get)(QUEX_TYPE_TOKEN** begin, size_t* size)
+{ QUEX_NAME(token_queue_get)(this, begin, size); }
 
-    QUEX_INLINE void
-    QUEX_MEMBER(token_queue_remainder_get)(QUEX_TYPE_TOKEN**  begin, 
-                                           QUEX_TYPE_TOKEN**  end)
-    { QUEX_NAME(token_queue_remainder_get)(this, begin, end); }
-
-    QUEX_INLINE void
-    QUEX_MEMBER(token_queue_swap)(QUEX_TYPE_TOKEN** memory, size_t* n)
-    { QUEX_NAME(token_queue_swap)(this, memory, n); }
-
-#   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    QUEX_INLINE void
-    QUEX_MEMBER(token_queue_get)(QUEX_TYPE_TOKEN** begin, size_t* size)
-    { QUEX_NAME(token_queue_get)(this, begin, size); }
-
-    QUEX_INLINE void
-    QUEX_MEMBER(token_queue_set)(QUEX_TYPE_TOKEN* Begin, size_t Size)
-    { QUEX_NAME(token_queue_set)(this, Begin, Size); }
-#   endif
+QUEX_INLINE void
+QUEX_MEMBER(token_queue_set)(QUEX_TYPE_TOKEN* Begin, size_t Size)
+{ QUEX_NAME(token_queue_set)(this, Begin, Size); }
 #endif
 
 QUEX_INLINE const char* 

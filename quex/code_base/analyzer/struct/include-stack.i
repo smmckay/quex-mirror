@@ -212,8 +212,7 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     memento->_parent_memento           = me->_parent_memento;
     memento->__current_mode_p          = me->__current_mode_p; 
     memento->current_analyzer_function = me->current_analyzer_function;
-#   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
-       || defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS)
     memento->DEBUG_analyzer_function_at_entry = me->DEBUG_analyzer_function_at_entry;
 #   endif
 #   ifdef __QUEX_OPTION_COUNTER
@@ -305,8 +304,7 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
     me->buffer                           = memento->buffer;
     me->__current_mode_p                 = memento->__current_mode_p; 
     me->current_analyzer_function        = memento->current_analyzer_function;
-#   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
-       || defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS)
     me->DEBUG_analyzer_function_at_entry = memento->DEBUG_analyzer_function_at_entry;
 #   endif
     __QUEX_IF_COUNT(me->counter          = memento->counter);

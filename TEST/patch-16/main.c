@@ -9,14 +9,13 @@ char file_buffer[BUFFER_SIZE];
 #endif
 
 int main(int argc, char** argv) {
-	quex_simple qlex;
-	QUEX_TYPE_TOKEN token_p;
-	char* file_name = argc == 1 ? "example.txt" : argv[1];
-	QUEX_NAME_TOKEN(construct)(&token_p);
+    quex_simple      qlex;
+    QUEX_TYPE_TOKEN* token_p;
+    char*            file_name = argc    ==   1    ?   "example.txt"    :   argv[1];
+
 	QUEX_NAME(from_file_name)(&qlex, file_name, ENCODING_NAME);
-	QUEX_NAME(token_p_swap)(&qlex, &token_p);
 	do {
-		QUEX_NAME(receive)(&qlex);
+		QUEX_NAME(receive)(&qlex, &token_p);
 		/* Print out token information            */
 #       ifdef PRINT_LINE_COLUMN_NUMBER
 		printf("(%i, %i)  \t", (int)token_p._line_n, (int)token_p._column_n);
@@ -24,12 +23,11 @@ int main(int argc, char** argv) {
 #       ifdef PRINT_TOKEN
 		printf("%s \n", QUEX_NAME_TOKEN(get_string)(&token_p, buffer, BufferSize));
 #       else
-		printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p._id));
+		printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
 #       endif
-	} while(token_p._id != QUEX_TKN_TERMINATION);
+	} while(token_p->_id != QUEX_TKN_TERMINATION);
 
 	QUEX_NAME(destruct)(&qlex);
-	QUEX_NAME_TOKEN(destruct)(&token_p);
 	return 0;
 }
 

@@ -8,14 +8,13 @@ int main(int argc, char** argv)
 	using namespace std;
 	using namespace quex;
 
-	quex::Token              token;
+	quex::Token*             token_p;
     QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
 	quex::tokenizer_it       qlex((QUEX_NAME(ByteLoader)*)NULL, converter); 
     uint8_t*                 begin_p;
     const uint8_t*           end_p;
     size_t                   received_n;
 
-	qlex.token_p_swap(&token);
 	while (cin) {
 		qlex.buffer.fill_prepare(&qlex.buffer, (void**)&begin_p, (const void**)&end_p);
         // printf("#fr: %p (%i)\n", begin_p, (size_t)(end_p - begin_p));
@@ -38,15 +37,16 @@ int main(int argc, char** argv)
 		qlex.buffer.fill_finish(&qlex.buffer, &begin_p[received_n]);
 
 		while (true) {
-			const QUEX_TYPE_TOKEN_ID TokenID = qlex.receive();
+			qlex.receive(&token_p);
+            const QUEX_TYPE_TOKEN_ID TokenID = token_p->_id;
 
 			if (TokenID == QUEX_TKN_TERMINATION)
 				break;
 			else if (TokenID == QUEX_TKN_EOS) {
 				cout << endl;
 			} else {
-				int offset = qlex.tell() - token.text.size();
-				cout << offset << '\t' << quex::unicode_to_char(token.text) << endl;
+				int offset = qlex.tell() - token_p->text.size();
+				cout << offset << '\t' << quex::unicode_to_char(token_p->text) << endl;
 			}
 		}
 	}

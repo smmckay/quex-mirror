@@ -143,26 +143,29 @@ QUEX_NAME(TokenQueue_access_write_p)(QUEX_NAME(TokenQueue)* me)
     return me->write_iterator; 
 }
 
-QUEX_INLINE bool QUEX_NAME(TokenQueue_is_full)(QUEX_NAME(TokenQueue)* me) 
+QUEX_INLINE bool 
+QUEX_NAME(TokenQueue_is_full)(QUEX_NAME(TokenQueue)* me) 
 { return me->write_iterator >= me->end_minus_safety_border; }
 
-QUEX_INLINE bool QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me)
+QUEX_INLINE bool 
+QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me)
 { return me->read_iterator == me->write_iterator; }
 
-QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
+QUEX_INLINE QUEX_TYPE_TOKEN* 
+QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
 {
 #   if defined(QUEX_OPTION_ASSERTS) && defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    if( QUEX_NAME(TokenQueue_begin)(&me->_token_queue) == 0x0 ) {
+    if( QUEX_NAME(TokenQueue_begin)(me) == 0x0 ) {
         QUEX_ERROR_EXIT("Token queue has not been set before call to .receive().\n"
                         "Please, consider function 'token_queue_memory_set()'.");
     }
 #   endif
 
 #   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-    while( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(self_token_p()->_id) ) {
-        if( QUEX_NAME_TOKEN(repetition_n_get)(self_token_p()) != 0 ) { 
-            __QUEX_REPEATED_TOKEN_DECREMENT_N(self_token_p());
-            return self_token_p();  
+    while( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->_id) ) {
+        if( QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator) != 0 ) { 
+            __QUEX_REPEATED_TOKEN_DECREMENT_N(me->read_iterator);
+            return me->read_iterator;  
         } 
         /* Pop the repeated token from the queue                          */
         ++(me->read_iterator);
@@ -185,38 +188,6 @@ QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_back)(QUEX_NAME(TokenQueue)* m
 
 QUEX_INLINE size_t QUEX_NAME(TokenQueue_available_n)(QUEX_NAME(TokenQueue)* me) 
 { return (size_t)(me->end - me->write_iterator); }
-
-#ifdef QUEX_OPTION_ASSERTS
-QUEX_INLINE void  
-QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(QUEX_NAME(TokenQueue)* me)
-{
-    __quex_assert(me->begin != 0x0);
-    __quex_assert(me->read_iterator  >= me->begin);
-    __quex_assert(me->write_iterator >= me->read_iterator);
-    /* If the following breaks, it means that the given queue size was to small */
-    __quex_assert(me->begin == 0x0 || me->end_minus_safety_border >= me->begin + 1);
-    if( me->write_iterator > me->end ) { 
-        QUEX_ERROR_EXIT("Error: Token queue overflow. This happens if too many tokens are sent\n"
-                        "       as a reaction to one single pattern match. Use quex's command line\n"
-                        "       option --token-queue-safety-border, or define the macro\n"
-                        "       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.\n"); 
-    }
-}
-QUEX_INLINE void  
-QUEX_TOKEN_QUEUE_ASSERT(QUEX_NAME(TokenQueue)* me)
-{
-    QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me);
-    if( me->write_iterator == me->end ) { 
-        QUEX_ERROR_EXIT("Error: Token queue overflow. This happens if too many tokens are sent\n"
-                        "       as a reaction to one single pattern match. Use quex's command line\n"
-                        "       option --token-queue-safety-border, or define the macro\n"
-                        "       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.\n"); 
-    }
-}
-#else
-#   define QUEX_TOKEN_QUEUE_ASSERT(me)             /* empty */
-#   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me) /* empty */
-#endif
 
 #if 1
 QUEX_INLINE void

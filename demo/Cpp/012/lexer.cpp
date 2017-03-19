@@ -31,13 +31,10 @@ main(int argc, char** argv)
     // is always the same.                                                    
     printf("                Max:        Moritz:      Boeck:\n");
 
-    max_token    = max_lex.token_p();
-    moritz_token = moritz_lex.token_p();
-    boeck_token  = boeck_lex.token_p();
     do {
-        (void)max_lex.receive();
-        (void)moritz_lex.receive();
-        (void)boeck_lex.receive();
+        (void)max_lex.receive(&max_token);
+        (void)moritz_lex.receive(&moritz_token);
+        (void)boeck_lex.receive(&boeck_token);
 
         /* Lexeme is same for all three. */
         int   L = (int)max_token->text.length();

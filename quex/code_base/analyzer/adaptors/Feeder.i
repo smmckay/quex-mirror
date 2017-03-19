@@ -115,8 +115,8 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
     QUEX_TYPE_TOKEN* token_p      = NULL;
     QUEX_TYPE_TOKEN* token_next_p = NULL;
 
-    token_p      = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
-    token_next_p = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
+    token_p      = QUEX_NAME(TokenQueue_pop)(&me->lexer._token_queue);
+    token_next_p = QUEX_NAME(TokenQueue_pop)(&me->lexer._token_queue);
     if( token_p ) {
         if( ! token_next_p || token_next_p->_id != __QUEX_SETTING_TOKEN_ID_TERMINATION ) {
             return token_p;
@@ -133,11 +133,7 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
     do {
         me->current_analyzer_function(me);
         QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
-#   if defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE)
     } while( QUEX_NAME(TokenQueue_is_empty)(&self._token_queue) );
-#   else
-    } while( false );
-#   endif
     
     return QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
 }

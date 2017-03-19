@@ -27,16 +27,13 @@ QUEX_NAME(receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
 
     /* Restart filling the queue from begin                                   */
     __quex_assert(QUEX_NAME(TokenQueue_is_empty(&me->_token_queue)));
+    QUEX_NAME(TokenQueue_reset)(&me->_token_queue); /* Use 1st token of queue */
 
     /* Analyze until there is some content in the queue                       */
     do {
         me->current_analyzer_function(me);
         QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
-#   if defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE)
-    } while( QUEX_NAME(TokenQueue_is_empty)(&me->_token_queue) );
-#   else
-    } while( false );
-#   endif
+    } while( me->_token_queue.read_iterator == me->_token_queue.write_iterator );
     
     *result_pp = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
 }

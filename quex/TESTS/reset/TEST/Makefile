@@ -41,6 +41,7 @@ lexer: lexer.cpp
 
 lexer-x: lexer-x.cpp
 	quex -i simple.qx -o Simple --token-policy single --debug-exception
+	echo Must call quex here
 	$(CC) lexer-x.cpp Simple.cpp  -o $@ \
 		 -DQUEX_SETTING_BUFFER_SIZE=14                      \
 		 -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=9           

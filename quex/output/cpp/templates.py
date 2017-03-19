@@ -272,35 +272,16 @@ lexeme_macro_clean_up = """
 """
 
 __return_if_queue_full_or_simple_analyzer = """
-#   ifndef __QUEX_OPTION_PLAIN_ANALYZER_OBJECT
     if( QUEX_NAME(TokenQueue_is_full)(&self._token_queue) ) {
         return;
     }
-#   endif
 """
-__return_if_mode_changed = """
-    /*  If a mode change happened, then the function must first return and
-     *  indicate that another mode function is to be called. At this point, 
-     *  we to force a 'return' on a mode change. 
-     *
-     *  Pseudo Code: if( previous_mode != current_mode ) {
-     *                   return 0;
-     *               }
-     *
-     *  When the analyzer returns, the caller function has to watch if a mode 
-     *  change occurred. If not it can call this function again.             */
-#   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
-       || defined(QUEX_OPTION_ASSERTS)
-    if( me->DEBUG_analyzer_function_at_entry != me->current_analyzer_function ) 
-#   endif
-    { 
-#       if defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE)
-        self_token_set_id(__QUEX_SETTING_TOKEN_ID_UNINITIALIZED);
-        __QUEX_PURE_RETURN;
-#       elif defined(QUEX_OPTION_ASSERTS)
-        QUEX_ERROR_EXIT("Mode change without immediate return from the lexical analyzer.");
-#       endif
-    }
+__assert_no_mode_change = """
+    /* Mode change = another function takes over the analysis.
+     * => After mode change the analyzer function needs to be quit!
+     * ASSERT: 'CONTINUE' after mode change is not allowed.                   */
+    __quex_assert(   me->DEBUG_analyzer_function_at_entry 
+                  == me->current_analyzer_function);
 """
 
 def reentry_preparation(Lng, PreConditionIDList, OnAfterMatchCode, dial_db):
@@ -321,9 +302,8 @@ def reentry_preparation(Lng, PreConditionIDList, OnAfterMatchCode, dial_db):
         "\n%s\n" % Lng.LABEL(DoorID.continue_without_on_after_match(dial_db)),
         Lng.COMMENT("CONTINUE -- without executing 'on_after_match' (e.g. on FAILURE)."), "\n",
         #
+        __assert_no_mode_change, "\n",
         __return_if_queue_full_or_simple_analyzer, "\n",
-        __return_if_mode_changed, "\n",
-        #
         unset_pre_context_flags_str,
         "\n%s\n" % Lng.GOTO(DoorID.global_reentry(dial_db), dial_db), 
     ]

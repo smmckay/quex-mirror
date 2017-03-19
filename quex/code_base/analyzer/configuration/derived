@@ -25,9 +25,6 @@
 #ifdef    QUEX_OPTION_DEBUG_TOKEN_SENDING_DISABLED
 #   undef QUEX_OPTION_DEBUG_TOKEN_SENDING
 #endif
-#if    ! defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE_DISABLED) 
-#        define QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE
-#endif
 #ifdef    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_DISABLED
 #   undef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #endif
@@ -46,14 +43,13 @@
 #if  ! defined (QUEX_SETTING_BUFFER_MIN_FALLBACK_N)
 #   if ! defined (QUEX_SETTING_BUFFER_SIZE) 
 #      error "QUEX_SETTING_BUFFER_SIZE not defined at this place."
-    /* If your compiler brings you here to this position, then this may be because
-     * you defined the QUEX_SETTING_BUFFER_SIZE with something different than just
-     * an integer number. Indeed something like
-     *
-     *   #define QUEX_SETTING_BUFFER_SIZE  (size_t)4096
-     *
-     * would be propper, but does not allow to do some math. So, please erase whatever
-     * is not a number in the definition (e.g. delete the '(size_t)' type cast.        */
+/* If compiler complains here, then 'QUEX_SETTING_BUFFER_SIZE' has probably
+ * be defined as something different than an integer. Definitions like
+ *
+ *   #define QUEX_SETTING_BUFFER_SIZE  (size_t)4096
+ *
+ * would be proper, but disables some math operations. Anything not-a-number
+ * must be deleted from the QUEX_SETTING_BUFFER_SIZE definition.              */
 #   elif      QUEX_SETTING_BUFFER_SIZE >= 1024
 #      define QUEX_SETTING_BUFFER_MIN_FALLBACK_N  (256)
 #   elif      QUEX_SETTING_BUFFER_SIZE >= 16
@@ -97,7 +93,6 @@
 
 #define __QUEX_TYPE_ANALYZER_RETURN_VALUE            void
 #define __QUEX_RETURN                                return
-#define QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN() CONTINUE
 
 #if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)   \
     || defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING) \

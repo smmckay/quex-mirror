@@ -53,16 +53,35 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE size_t           QUEX_NAME(TokenQueue_available_n)(QUEX_NAME(TokenQueue)* me); 
 
 
-#   ifdef QUEX_OPTION_ASSERTS
-    QUEX_INLINE void  
-    QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(QUEX_NAME(TokenQueue)* me);
-
-    QUEX_INLINE void  
-    QUEX_TOKEN_QUEUE_ASSERT(QUEX_NAME(TokenQueue)* me);
-#   else
+#ifdef QUEX_OPTION_ASSERTS
+#   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me) \
+        do { \
+            __quex_assert((me)->begin != 0x0); \
+            __quex_assert((me)->read_iterator  >= (me)->begin); \
+            __quex_assert((me)->write_iterator >= (me)->read_iterator); \
+            /* If the following breaks, it (me)ans that the given queue size was to small */ \
+            __quex_assert((me)->begin == 0x0 || (me)->end_minus_safety_border >= (me)->begin + 1); \
+            if( (me)->write_iterator > (me)->end ) {  \
+                QUEX_ERROR_EXIT("Error: Token queue overflow. This happens if too many tokens are sent\n" \
+                                "       as a reaction to one single pattern match. Use quex's command line\n" \
+                                "       option --token-queue-safety-border, or define the macro\n" \
+                                "       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.\n");  \
+            } \
+        } while(0)
+#   define QUEX_TOKEN_QUEUE_ASSERT(me) \
+        do { \
+            QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE((me)); \
+            if( (me)->write_iterator == (me)->end ) {  \
+                QUEX_ERROR_EXIT("Error: Token queue overflow. This happens if too many tokens are sent\n" \
+                                "       as a reaction to one single pattern match. Use quex's command line\n" \
+                                "       option --token-queue-safety-border, or define the macro\n" \
+                                "       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.\n");  \
+            } \
+        } while(0)
+#else
 #   define QUEX_TOKEN_QUEUE_ASSERT(me)             /* empty */
 #   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me) /* empty */
-#   endif
+#endif
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
     QUEX_TYPE_TOKEN*   token_list;

@@ -1,25 +1,25 @@
-import quex.engine.misc.error            as     error
-from   quex.engine.misc.file_in          import EndOfStreamException, \
-                                                check, \
-                                                check_or_die, \
-                                                read_integer, \
-                                                read_namespaced_name, \
-                                                read_until_closing_bracket, \
-                                                skip_whitespace
-from   quex.output.cpp.token_id_maker    import TokenInfo 
-from   quex.input.files.token_id_file    import cut_token_id_prefix
-import quex.blackboard                   as     blackboard
-from   quex.blackboard                   import setup as Setup, \
-                                                Lng
-from   quex.input.code.base   import SourceRef
-from   quex.input.setup                  import NotificationDB
+import quex.engine.misc.error                     as     error
+from   quex.engine.misc.file_in                   import EndOfStreamException, \
+                                                         check, \
+                                                         check_or_die, \
+                                                         read_integer, \
+                                                         read_namespaced_name, \
+                                                         read_until_closing_bracket, \
+                                                         skip_whitespace
+from   quex.output.cpp.token_id_maker             import TokenInfo 
+from   quex.input.files.token_id_file             import cut_token_id_prefix
+import quex.blackboard                            as     blackboard
+from   quex.blackboard                            import setup as Setup, \
+                                                         Lng
+from   quex.input.code.base                       import SourceRef
+from   quex.input.setup                           import NotificationDB
 import quex.input.regular_expression.snap_backslashed_character as snap_backslashed_character
-from   quex.engine.codec_db.unicode.parser     import ucs_property_db
-from   quex.engine.misc.utf8                  import __read_one_utf8_code_from_stream
-from   quex.input.code.core   import CodeUser 
+from   quex.engine.codec_db.unicode.parser        import ucs_property_db
+from   quex.engine.misc.utf8                      import __read_one_utf8_code_from_stream
+from   quex.input.code.core                       import CodeUser 
 
 def parse(fh, CodeFragmentName, 
-          ErrorOnFailureF=True, AllowBriefTokenSenderF=True, ContinueF=True):
+          ErrorOnFailureF=True, AllowBriefTokenSenderF=True):
     """RETURNS: An object of class CodeUser containing
                 line number, filename, and the code fragment.
 
@@ -36,7 +36,7 @@ def parse(fh, CodeFragmentName,
         return __parse_normal(fh, CodeFragmentName)
 
     elif AllowBriefTokenSenderF and word == "=>":
-        return __parse_brief_token_sender(fh, ContinueF)
+        return __parse_brief_token_sender(fh)
 
     elif not ErrorOnFailureF:
         fh.seek(-2,1)
@@ -60,9 +60,8 @@ def __read_token_identifier(fh):
     if len(name_space_list) == 0: return identifier
     return reduce(lambda x, y: x + "::" + y, name_space_list + [identifier])
 
-def __parse_brief_token_sender(fh, ContinueF):
-    # shorthand for { self.send(TKN_SOMETHING); QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN(); }
-    
+def __parse_brief_token_sender(fh):
+    # shorthand for { self.send(TKN_SOMETHING); RETURN; }
     
     position = fh.tell()
     try: 
@@ -82,8 +81,14 @@ def __parse_brief_token_sender(fh, ContinueF):
                 code = __create_token_sender_by_token_name(fh, identifier)
                 check_or_die(fh, ";")
 
-        if len(code) != 0: 
-            if ContinueF: code += "QUEX_SETTING_AFTER_SEND_CONTINUE_OR_RETURN();\n"
+        if code: 
+            # IMPORTANT: For handlers 'on_end_of_stream' and 'on_failure', 
+            #            => CONTINUE would be desastrous!
+            # -- When a termination token is sent, no other token shall follow. 
+            #    Return MUST be enforced               => Do not allow CONTINUE!
+            # -- When an 'on_failure' is detected allow immediate action of the
+            #    receiver.                             => Do not allow CONTINUE!
+            code += "\n%s\n" % Lng.RETURN # Immediate RETURN after token sending
             return CodeUser(code, SourceRef.from_FileHandle(fh, BeginPos=position))
         else:
             return None
@@ -331,7 +336,7 @@ def __create_mode_transition_and_token_sender(fh, Op):
 
     position     = fh.tell()
     target_mode  = ""
-    token_sender = ""
+    token_sender = Lng.RETURN
     if check(fh, "("):
         skip_whitespace(fh)
         if Op != "GOUP":
@@ -373,7 +378,7 @@ def __create_mode_transition_and_token_sender(fh, Op):
     # Code for mode change
     if   Op == "GOTO":  txt = Lng.MODE_GOTO(target_mode)
     elif Op == "GOSUB": txt = Lng.MODE_GOSUB(target_mode)
-    else:                    txt = Lng.MODE_GOUP()
+    else:               txt = Lng.MODE_GOUP()
 
     # Code for token sending
     txt += token_sender
