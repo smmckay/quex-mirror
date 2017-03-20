@@ -944,14 +944,14 @@ class Lng_Cpp(dict):
             
         return [
             'self.error_code = %s;\n' % error_code,
-            'self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);\n',
+            'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n',
             'RETURN;\n'
         ]
 
     def EXIT_ON_TERMINATION(self):
         # NOT: "Lng.PURE_RETURN" because the terminal end of stream 
         #      exits anyway immediately--after 'on_after_match'.
-        return 'self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);\n'
+        return 'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n'
 
     @typed(dial_db=DialDB)
     def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):

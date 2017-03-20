@@ -241,8 +241,8 @@ def __create_token_sender_by_token_name(fh, TokenName):
 
     # Parse the token argument list
     argument_list = __parse_function_argument_list(fh, TokenName)
-    if cut_token_id_prefix(TokenName, fh) == "TERMINATION" and not argument_list:
-        argument_list.append("LexemeNull")
+    #if cut_token_id_prefix(TokenName, fh) == "TERMINATION" and not argument_list:
+    #    argument_list.append("LexemeNull")
 
     # Create the token sender
     explicit_member_names_f = any(arg.find("=") != -1 for arg in argument_list)

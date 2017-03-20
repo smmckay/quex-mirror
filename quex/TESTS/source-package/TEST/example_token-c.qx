@@ -195,10 +195,10 @@ $INCLUDE_CONVERTER_DECLARATION
                                            wchar_t*                buffer, 
                                            size_t                  BufferSize) 
         {
-            wchar_t*                    drain     = buffer;
-            const wchar_t*              DrainEnd  = buffer + (ptrdiff_t)BufferSize;
+            wchar_t*                  drain     = buffer;
+            const wchar_t*            DrainEnd  = buffer + (ptrdiff_t)BufferSize;
             const QUEX_TYPE_LEXATOM*  source    = me->text;
-            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (ptrdiff_t)(QUEX_NAME(strlen)(source)) + 1;
+            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (ptrdiff_t)(QUEX_NAME(lexeme_length)(source)) + 1;
 
             $CONVERTER_WSTRING(&source, SourceEnd, &drain, DrainEnd);
             return buffer;

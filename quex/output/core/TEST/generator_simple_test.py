@@ -116,12 +116,6 @@ def create_common_declarations(Language,
     replace_str = "#define QUEX_OPTION_INDENTATION_TRIGGER"
     if not IndentationSupportF: replace_str = "/* %s */" % replace_str
     txt = txt.replace("$$QUEX_OPTION_INDENTATION_TRIGGER$$", replace_str)
-       
-    replace_str = "#define QUEX_OPTION_TOKEN_POLICY_SINGLE_DISABLED\n" + \
-                  "#define QUEX_OPTION_TOKEN_POLICY_QUEUE"
-    if not TokenQueueF: replace_str = "/* %s */" % replace_str.replace("\n", "\n * ")
-    txt = txt.replace("$$__QUEX_OPTION_TOKEN_QUEUE$$", replace_str)
-
 
     replace_str = "#define __QUEX_OPTION_PLAIN_C"
     if Language not in ["ANSI-C", "ANSI-C-PlainMemory", "ANSI-C-from-file"]: replace_str = "/* %s */" % replace_str
@@ -230,7 +224,6 @@ test_program_common_declarations = """
 
 $$__QUEX_OPTION_PLAIN_C$$
 $$QUEX_OPTION_INDENTATION_TRIGGER$$
-$$__QUEX_OPTION_TOKEN_QUEUE$$
 #define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED
 #define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
 #define QUEX_OPTION_INCLUDE_STACK_DISABLED
@@ -247,9 +240,7 @@ $$__QUEX_OPTION_TOKEN_QUEUE$$
 #include <quex/code_base/test_environment/TestAnalyzer>
 #include <quex/code_base/analyzer/asserts.i>
 #include <quex/code_base/analyzer/member/mode-handling.i>
-#ifdef QUEX_OPTION_TOKEN_POLICY_QUEUE
-#   include <quex/code_base/token/TokenQueue.i>
-#endif
+#include <quex/code_base/token/TokenQueue.i>
 
 #include <quex/code_base/single.i>
 
@@ -266,12 +257,7 @@ static QUEX_TYPE_TOKEN_ID  QUEX_NAME_TOKEN(DumpedTokenIdObject) = (QUEX_TYPE_TOK
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #ifndef RETURN
-#   if ! defined(QUEX_OPTION_TOKEN_POLICY_QUEUE)
-       QUEX_TYPE_TOKEN_ID    __self_result_token_id;
-#      define RETURN    do { return __self_result_token_id; } while(0)
-#   else                
-#      define RETURN    return
-#   endif
+#    define RETURN    return
 #endif
 
 static __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER*);
