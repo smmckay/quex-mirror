@@ -71,12 +71,11 @@ TEST                                                                 <no date>
     3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once
         bug-3486388.sh ...............................................[OK]
     3495127 Event Handler on_after_match
-        feature-3495127.sh queue .....................................[OK]
-                           single ..................................[FAIL]
+        feature-3495127.sh queue ...................................[FAIL]
     3503831 0.61.2 Missleading error message in anti-pattern A{foo$}
         bug-3503831.sh ...............................................[OK]
     3504730 0.61.2 Post condition with OR causes crash
-        bug-3504730.sh more ........................................[FAIL]
+        bug-3504730.sh more ..........................................[OK]
                        simple ........................................[OK]
 
  * denkfix:
@@ -184,8 +183,8 @@ TEST                                                                 <no date>
     0.58.2 history effect in UCS database interface: 3235790
         bug-3235790.sh ...............................................[OK]
     3115741 0.55.4 move_backward triggers assert
-        bug-3115741.sh general .....................................[FAIL]
-                       undo-line-colum-count .......................[FAIL]
+        bug-3115741.sh general .......................................[OK]
+                       undo-line-colum-count .........................[OK]
     3307919 Support for more general Unicode categories
         feature-3307919.sh C .........................................[OK]
                            L .........................................[OK]
@@ -244,7 +243,7 @@ TEST                                                                 <no date>
  * nobody:
 
     2395200 assert  in QuexLexatomLoader_load_forward (The StrangeStream Issue)
-        bug-2395200.sh lexer .......................................[FAIL]
+        bug-2395200.sh lexer .........................................[OK]
     2841726 0.44.2 Unknown exception on unicode properties
         bug-2841726.sh ...............................................[OK]
     2891125 0.45.1 bug in -- version
@@ -279,7 +278,7 @@ TEST                                                                 <no date>
  * petulda:
 
     3178600 0.58.1 Last appeared char not stored when switching modes
-        bug-3178600.sh .............................................[FAIL]
+        bug-3178600.sh ...............................................[OK]
 
  * prade2p:
 
@@ -388,14 +387,14 @@ TEST                                                                 <no date>
     1902175 invalid escape in character set expression crashes 0.21.12
         bug-1902175.sh ...............................................[OK]
     1905768 0.22.9 doesn't create analyzer function for event only modes
-        bug-1905768.sh .............................................[FAIL]
+        bug-1905768.sh ...............................................[OK]
     1908092 0.23.5 uses --token-class without --token-class-file
         bug-1908092.sh ...............................................[OK]
     1908436 0.23.6 rule precedence reversed for identical patterns
         bug-1908436.sh ...............................................[OK]
-    1935701 - 0.24.7 buffer handling size mismatch
-        bug-1935701.exe FILE .........................................[OK]
-                        fstream ......................................[OK]
+    1935701 0.24.7 buffer handling size mismatch
+        bug-1935701.sh FILE ..........................................[OK]
+                       fstream .......................................[OK]
     1936707 0.24.10 --plot flag doesnt seem to work
         bug-1936707.sh ...............................................[OK]
     1969629 0.25.4 token list with just TERMINATION treated empty
@@ -403,8 +402,8 @@ TEST                                                                 <no date>
     2087087 0.31.1 --set-by switches suppress command error diagnostics
         bug-2087087.sh ...............................................[OK]
     2095970 0.31.3 Mode change without immediate return
-        bug-2095970.sh NoModeDetection .............................[FAIL]
-                       NoModeDetectionNoAsserts ....................[FAIL]
+        bug-2095970.sh NoModeDetection ...............................[OK]
+                       NoModeDetectionNoAsserts ......................[OK]
                        NoModeDetection_ErrorCase ...................[FAIL]
                        Normal ........................................[OK]
                        NormalNoAsserts ...............................[OK]
@@ -485,17 +484,9 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] feature-3495127.sh _ single
-    [FAIL] bug-3504730.sh _ more
-    [FAIL] bug-3115741.sh _ general
-                        \__ undo-line-colum-count
-    [FAIL] bug-2395200.sh _ lexer
-    [FAIL] bug-3178600.sh
+    [FAIL] feature-3495127.sh _ queue
     [FAIL] bug-1900391.sh
-    [FAIL] bug-1905768.sh
-    [FAIL] bug-2095970.sh _ NoModeDetection
-                        \__ NoModeDetectionNoAsserts
-                        \__ NoModeDetection_ErrorCase
+    [FAIL] bug-2095970.sh _ NoModeDetection_ErrorCase
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -600,8 +591,8 @@ demo/C/TEST                                                          <no date>
  * demo/008:
 
     Interface to Bison/Yacc (Contributed by Marco Antonelli)
-        008.sh DEBUG .................................................[OK]
-               NDEBUG ................................................[OK]
+        008.sh DEBUG ...............................................[FAIL]
+               NDEBUG ..............................................[FAIL]
 
  * demo/009:
 
@@ -652,6 +643,8 @@ demo/C/TEST                                                          <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] 008.sh _ DEBUG
+                \__ NDEBUG
     [FAIL] 010.sh _ feeder-converter
                 \__ feeder-plain
                 \__ gavager-converter
@@ -994,13 +987,13 @@ quex/input/TEST                                                      <no date>
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Check if the default configuration has been updated.
-        check-default-configuration.sh .............................[FAIL]
+        check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
@@ -1021,13 +1014,10 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] check-default-configuration.sh
-    [FAIL] svn-status.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1105,40 +1095,56 @@ quex/TESTS/errors-warnings/TEST                                      <no date>
                                                                                
 quex/TESTS/event-handling/TEST                                       <no date>
 -------------------------------------------------------------------------------
- * 
-        on_skip_range_open-customized.sh ...........................[FAIL]
- * 
-        on_skip_range_open.sh ......................................[FAIL]
- * 
-        transition-x.sh ............................................[FAIL]
- * 
-        transition.sh ..............................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] on_skip_range_open-customized.sh
-    [FAIL] on_skip_range_open.sh
-    [FAIL] transition-x.sh
-    [FAIL] transition.sh
+ * Customized on_skip_range_open event.
+        on_skip_range_open-customized.sh customized ..................[OK]
+ * Default on_skip_range_open event.
+        on_skip_range_open.sh default ................................[OK]
+
+ * Mode Transitions:
+
+    transition-x.qx
+        transition-x.sh 1 ............................................[OK]
+                        2 ............................................[OK]
+                        3 ............................................[OK]
+                        error ........................................[OK]
+    transition.qx
+        transition.sh 1 ..............................................[OK]
+                      2 ..............................................[OK]
+                      3 ..............................................[OK]
+                      error ..........................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Include Stack                                 
                                                                                
 quex/TESTS/include-stack/TEST                                        <no date>
 -------------------------------------------------------------------------------
- * 
-        queue.exe ..................................................[FAIL]
- * 
-        users_token.exe ............................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] queue.exe
-    [FAIL] users_token.exe
+
+ * Include Stack:
+
+    Misc Scenarios
+        queue.exe 1 ..................................................[OK]
+                  2 ..................................................[OK]
+                  20 .................................................[OK]
+                  3 ..................................................[OK]
+                  4 ..................................................[OK]
+                  5 ..................................................[OK]
+                  empty ..............................................[OK]
+    Misc Scenarios
+        users_token.exe 1 ............................................[OK]
+                        2 ............................................[OK]
+                        20 ...........................................[OK]
+                        3 ............................................[OK]
+                        4 ............................................[OK]
+                        5 ............................................[OK]
+                        empty ........................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Indentation Counter / Birds View                        
@@ -1162,10 +1168,10 @@ quex/TESTS/indentation_count/TEST                                    <no date>
                    c .................................................[OK]
                    mix ...............................................[OK]
  * Customized Event Handlers
-        handlers.sh check-eof ......................................[FAIL]
+        handlers.sh check-eof ........................................[OK]
                     empty-lines ....................................[FAIL]
                     on_dedent ........................................[OK]
-                    on_indentation_error ...........................[FAIL]
+                    on_indentation_error .............................[OK]
                     on_n_dedent ....................................[FAIL]
  * Indentation Counting and Range Skipper
         with-skip-range.sh nested_range ..............................[OK]
@@ -1176,9 +1182,7 @@ quex/TESTS/indentation_count/TEST                                    <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] handlers.sh _ check-eof
-                     \__ empty-lines
-                     \__ on_indentation_error
+    [FAIL] handlers.sh _ empty-lines
                      \__ on_n_dedent
 ===============================================================================
                                                                                
@@ -1401,57 +1405,42 @@ quex/TESTS/source-package/TEST                                       <no date>
 quex/TESTS/token-class/TEST                                          <no date>
 -------------------------------------------------------------------------------
  * With token policy 'queue'.
-        simple-queue.exe ....................................[MAKE FAILED]
- * With token policy 'queue'.
-        simple.exe ..........................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] simple-queue.exe
-    [FAIL] simple.exe
+        simple-queue.exe .............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
                                                                                
 quex/TESTS/token-policies/TEST                                       <no date>
 -------------------------------------------------------------------------------
- * 
-        queue-real.exe .............................................[FAIL]
- * 
-        queue.exe ..................................................[FAIL]
- * 
-        users_token-real.exe .......................................[FAIL]
- * 
-        users_token.exe ............................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] queue-real.exe
-    [FAIL] queue.exe
-    [FAIL] users_token-real.exe
-    [FAIL] users_token.exe
+
+ * Token Policy 'single':
+
+    Pseudo Analysis
+        queue.exe ....................................................[OK]
+    Real Analysis
+        queue-real.exe ...............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Analyzer Code Base                               
                                                                                
 quex/code_base/analyzer/TEST                                         <no date>
 -------------------------------------------------------------------------------
- * 
-        post-categorizer-find.exe ...........................[MAKE FAILED]
- * 
-        post-categorizer-remove-total.exe ...................[MAKE FAILED]
- * 
-        statistics.exe ......................................[MAKE FAILED]
  * Accumulator
         accumulator.exe Character ....................................[OK]
                         Mix ..........................................[OK]
                         N-Character ..................................[OK]
                         N-String .....................................[OK]
                         String .......................................[OK]
+ * Statistics Module
+        statistics.exe ...............................................[OK]
 
  * Post Categorizer:
 
@@ -1463,6 +1452,14 @@ quex/code_base/analyzer/TEST                                         <no date>
                                    4 .................................[OK]
                                    5 .................................[OK]
                                    6 .................................[OK]
+    Enter
+        post-categorizer-find.exe 0 ..................................[OK]
+                                  1 ..................................[OK]
+                                  2 ..................................[OK]
+                                  3 ..................................[OK]
+                                  4 ..................................[OK]
+                                  5 ..................................[OK]
+                                  6 ..................................[OK]
     Remove Existent Node
         post-categorizer-remove-2.exe Ab .............................[OK]
                                       Ad .............................[OK]
@@ -1480,14 +1477,18 @@ quex/code_base/analyzer/TEST                                         <no date>
                                     Ba ...............................[OK]
                                     Bc ...............................[OK]
                                     Be ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] post-categorizer-find.exe
-    [FAIL] post-categorizer-remove-total.exe
-    [FAIL] statistics.exe
+    Remove Total
+        post-categorizer-remove-total.exe 1 ..........................[OK]
+                                          2 ..........................[OK]
+                                          3 ..........................[OK]
+                                          4 ..........................[OK]
+                                          5 ..........................[OK]
+                                          6 ..........................[OK]
+                                          7 ..........................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       Encoding Converter Helper Functions                      
@@ -3190,28 +3191,28 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       11  235   [FAIL] TEST                                                          
-        5  56    [FAIL] demo/C/TEST                                                   
+        3  234   [FAIL] TEST                                                          
+        7  56    [FAIL] demo/C/TEST                                                   
         6  56    [FAIL] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-        2  14    [FAIL] quex/TESTS/code/TEST                                          
+           14      [OK] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        4  4     [FAIL] ........../event-handling/TEST                                
-        2  2     [FAIL] ........../include-stack/TEST                                 
-        4  21    [FAIL] ........../indentation_count/TEST                             
+           10      [OK] ........../event-handling/TEST                                
+           14      [OK] ........../include-stack/TEST                                 
+        2  21    [FAIL] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
            12      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            20      [OK] ........../source-package/TEST                                
-        2  2     [FAIL] ........../token-class/TEST                                   
-        4  4     [FAIL] ........../token-policies/TEST                                
+           1       [OK] ........../token-class/TEST                                   
+           2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
-        3  30    [FAIL] ............../analyzer/TEST                                  
+           42      [OK] ............../analyzer/TEST                                  
            11      [OK] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            2       [OK] .........................../misc/TEST                         
@@ -3246,11 +3247,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _   _____           
-    |  ___|_ _(_) |___     | || | |___ /     __  __
-    | |_ / _` | | / __|    | || |_  |_ \     \ \/ /
-    |  _| (_| | | \__ \    |__   _ ___) |     >  < 
-    |_|  \__,_|_|_|___/       |_| |____/     /_/\_\
-                                                                   (1610 tests)
+     _____     _ _          _   ___            
+    |  ___|_ _(_) |___     / | ( _ )     __  __
+    | |_ / _` | | / __|    | | / _ \     \ \/ /
+    |  _| (_| | | \__ \    | || (_) |     >  < 
+    |_|  \__,_|_|_|___/    |_| \___/     /_/\_\
+                                                                   (1636 tests)
 
 ===============================================================================

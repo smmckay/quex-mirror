@@ -6,13 +6,6 @@
 
 #include <quex/code_base/definitions>
 
-#ifndef  QUEX_CHARACTER_CONVERTER_DECLARED
-#   error "A character converter must have been included *before* this file. Quex should have generated code that includes the converter from the buffer's encoding to unicode." 
-/* Consider: -- Quex generated converter file, or
- *           -- one of the headers in quex/code_base/converter_helper/
- *                                                                            */
-#endif
-
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE size_t 
@@ -42,7 +35,9 @@ QUEX_NAME(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0,
  *
  *                 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED                          
  *                                                                            */
-#if ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
+#if      defined(QUEX_OPTION_LEXEME_CONVERTERS) \
+    && ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
+
 
 QUEX_INLINE void
 QUEX_NAME(lexeme_to_utf8)(const QUEX_TYPE_LEXATOM** source_p, 
