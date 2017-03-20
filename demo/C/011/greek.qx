@@ -22,6 +22,8 @@ token {
 mode X :
 <skip: [ \t\n] >
 {
+    on_end_of_stream => TKN_TERMINATION(LexemeNull);
+
     {WORD}   => TKN_WORD(Lexeme);
     {NUMBER} => TKN_NUMBER(Lexeme);
     {UNIT}   => TKN_UNIT(Lexeme);

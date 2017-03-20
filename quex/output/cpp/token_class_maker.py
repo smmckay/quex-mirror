@@ -110,6 +110,9 @@ def _do(Descr):
               ["$TOKEN_CLASS",                      token_class_name],
     ]
 
+    if Setup.language.upper() != "C++" and Setup.token_class_only_f:
+        extra_at_begin_str += local_lexeme_length_declaration_str % (Descr.class_name_safe, 
+                                                                     Setup.buffer_lexatom_type) 
     txt = blue_print(template_str, 
             [
               ["$$EXTRA_AT_BEGIN$$",  extra_at_begin_str],
@@ -139,14 +142,19 @@ def _do(Descr):
 
     txt   = blue_print(txt, helper_variable_replacements)
 
+    # Local 'lexeme_length' is required to avoid dependency on 'lexeme.i' 
+    # => QUEX_NAME, etc. does not have to be defined.
     if Setup.language.upper() != "C++" and Setup.token_class_only_f:
-        extra_at_begin_str += local_strlen_str % (Descr.class_name_safe, Setup.buffer_lexatom_type, Setup.buffer_lexatom_type)
+        extra_at_begin_str += local_lexeme_length_str % (Descr.class_name_safe, 
+                                                         Setup.buffer_lexatom_type, 
+                                                         Setup.buffer_lexatom_type)
 
     txt_i = blue_print(template_i_str, 
             [
               ["$$EXTRA_AT_BEGIN$$",  extra_at_begin_str],
               ["$$EXTRA_AT_END$$",    extra_at_end_str],
             ])
+    print "#txt_i:", txt_i
     txt_i = blue_print(txt_i, 
                        [
                         ["$$CONSTRUCTOR$$",             Lng.SOURCE_REFERENCED(Descr.constructor)],
@@ -382,7 +390,7 @@ def __get_converter_configuration(IncludeGuardExtension):
 
     return declaration_include, implementation_include, string, wstring
 
-QUEX_strlen_re                = re.compile("QUEX_NAME\\(strlen\\)", re.UNICODE)
+QUEX_lexeme_length_re         = re.compile("QUEX_NAME\\(lexeme_length\\)", re.UNICODE)
 QUEX_TYPE_LEXATOM_re          = re.compile("\\bQUEX_TYPE_LEXATOM\\b", re.UNICODE)
 QUEX_LEXEME_NULL_re           = re.compile("\\bQUEX_LEXEME_NULL\\b", re.UNICODE)
 QUEX_TYPE_ANALYZER_re         = re.compile("\\bQUEX_TYPE_ANALYZER\\b", re.UNICODE)
@@ -395,7 +403,7 @@ def clean_for_independence(txt):
 
     global QUEX_MEMORY_FREE_re
     global QUEX_MEMORY_ALLOC_re
-    global QUEX_strlen_re
+    global QUEX_lexeme_length_re
     global QUEX_TYPE_LEXATOM_re
     global QUEX_TYPE_ANALYZER_re
     global QUEX_TYPE_TOKEN_ID_re
@@ -410,7 +418,7 @@ def clean_for_independence(txt):
     # txt = QUEX_MEMORY_ALLOC_re.sub("malloc", txt)
     # txt = QUEX_MEMORY_FREE_re.sub("free", txt)
     txt = QUEX_TYPE_LEXATOM_safe_re.sub("QUEX_TYPE_LEXATOM", txt)
-    txt = QUEX_strlen_re.sub("%s_strlen" % token_descr.class_name_safe, txt)
+    txt = QUEX_lexeme_length_re.sub("%s_lexeme_length" % token_descr.class_name_safe, txt)
     txt = QUEX_LEXEME_NULL_re.sub(common_lexeme_null_str(), txt)
 
     # Delete any line references
@@ -471,9 +479,14 @@ def lexeme_null_implementation():
                 "%s\n\n" % namespace_close,
               ])
 
-local_strlen_str = """
+local_lexeme_length_declaration_str = """
 QUEX_INLINE size_t 
-%s_strlen(const %s* Str)
+%s_lexeme_length(const %s* Str);
+"""
+
+local_lexeme_length_str = """
+QUEX_INLINE size_t 
+%s_lexeme_length(const %s* Str)
 {
     const %s* iterator = Str;
     while( *iterator != 0 ) ++iterator; 

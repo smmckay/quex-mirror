@@ -17,6 +17,7 @@
 
 /* LexemeNull object may be used for 'take_text'. */
 $$EXTRA_AT_BEGIN$$
+/****/
 
 $$HEADER$$
  
