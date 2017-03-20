@@ -12,11 +12,11 @@ all: lexer
 
 lexer: lexer.cpp IConv_Lexer.cpp Codec_Lexer.cpp
 	@$(CC) $^ -o $@ -I$(QUEX_PATH) \
-		 -DQUEX_OPTION_AUX_STRING_DISABLED
+		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED
 
 %.E: %.cpp # IConvLexer.cpp CodecLexer.cpp
 	$(CC) -c $< -o $@ -I$(QUEX_PATH) \
-		 -DQUEX_OPTION_AUX_STRING_DISABLED \
+		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED \
 		 -E
 	
 # quex -i 

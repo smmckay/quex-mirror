@@ -17,9 +17,9 @@ mode CODE:
 
 
       /* Add \r for DOS/Windows compliance. */
-      \r?\n           => QUEX_TKN_NEWLINE();
+      \r?\n           => QUEX_TKN_NEWLINE(LexemeNull);
       /* fschaef: Add Empty Line */ 
-      ^[ \t]*\r?\n    => QUEX_TKN_EMPTY_LINE;
+      ^[ \t]*\r?\n    => QUEX_TKN_EMPTY_LINE(LexemeNull);
 
       <<FAIL>>        => QUEX_TKN_FAILURE(Lexeme);
       <<EOF>>         => QUEX_TKN_TERMINATION(LexemeNull);

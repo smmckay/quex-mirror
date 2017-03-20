@@ -14,6 +14,6 @@
 #undef  QUEX_OPTION_INCLUDE_STACK
 #include <quex/code_base/analyzer/PostCategorizer.i>
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
-#include <quex/code_base/aux-string.i>
+#include <quex/code_base/lexeme.i>
 
 #endif /* __INCLUDE_GUARD__QUEX__ANALYZER__TEST__POST_CATEGORIZER__COMMON_H */

@@ -56,8 +56,8 @@ def __read_token_identifier(fh):
        Returns "", if no valid specification could be found.
     """
     identifier, name_space_list, dummy = read_namespaced_name(fh, "token identifier")
-    if identifier == "": return ""
-    if len(name_space_list) == 0: return identifier
+    if   identifier == "":    return ""
+    elif not name_space_list: return identifier
     return reduce(lambda x, y: x + "::" + y, name_space_list + [identifier])
 
 def __parse_brief_token_sender(fh):
@@ -234,18 +234,18 @@ def token_id_db_verify_or_enter_token_id(fh, TokenName):
                           SourceRef.from_FileHandle(fh)) 
 
 def __create_token_sender_by_token_name(fh, TokenName):
-    assert type(TokenName) in [str, unicode]
+    assert type(TokenName) in (str, unicode)
 
     # Enter token_id into database, if it is not yet defined.
     token_id_db_verify_or_enter_token_id(fh, TokenName)
 
     # Parse the token argument list
     argument_list = __parse_function_argument_list(fh, TokenName)
+    if cut_token_id_prefix(TokenName, fh) == "TERMINATION" and not argument_list:
+        argument_list.append("LexemeNull")
 
     # Create the token sender
-    explicit_member_names_f = False
-    for arg in argument_list:
-        if arg.find("=") != -1: explicit_member_names_f = True
+    explicit_member_names_f = any(arg.find("=") != -1 for arg in argument_list)
 
     assert blackboard.token_type_definition is not None, \
            "A valid token_type_definition must have been parsed at this point."

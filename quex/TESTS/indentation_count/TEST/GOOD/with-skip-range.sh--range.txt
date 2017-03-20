@@ -1,17 +1,17 @@
 ,-----------------------------------------------------------------
 | [START]
-[[INDENT]] 5
-[[INDENT]] 5
-[[INDENT]] 9
-[[INDENT]] 9
 WORD 'one' 
+[[INDENT]] 5
 <INDENT>
 WORD 'two' 
+[[INDENT]] 5
 <DEDENT>
 <INDENT>
 WORD 'three' 
+[[INDENT]] 9
 <INDENT>
 WORD 'four' 
+[[INDENT]] 9
 <DEDENT>
 <NODENT>
 <INDENT>

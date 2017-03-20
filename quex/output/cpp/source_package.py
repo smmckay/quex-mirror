@@ -1,11 +1,11 @@
 from quex.engine.misc.file_operations import open_file_or_die, \
                                              write_safely_and_close 
-from quex.blackboard          import setup as Setup, \
-                                     Lng
+from quex.blackboard   import setup as Setup, \
+                              Lng
+from quex.DEFINITIONS  import QUEX_PATH
 
 import os.path as path
 import os
-from   quex.DEFINITIONS  import QUEX_PATH
 
 # Search for related files by:
 dummy = """
@@ -21,8 +21,8 @@ find quex/code_base \
 
 base = """
 /asserts
-/aux-string
-/aux-string.i
+/lexeme
+/lexeme.i
 /definitions
 /include-guard-undef
 /bom

@@ -8,7 +8,7 @@
 #   error "No configuration header included before this header."
 #endif
 
-#include    <quex/code_base/aux-string.i>
+#include    <quex/code_base/lexeme.i>
 
 #include    <quex/code_base/analyzer/asserts.i>
 #include    <quex/code_base/buffer/asserts.i>

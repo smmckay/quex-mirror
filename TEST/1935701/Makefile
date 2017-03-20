@@ -1,4 +1,4 @@
-include Makefile.lexer
+include ../Makefile.lexer
 
 TEST_FILES = bug-1935701.exe
 

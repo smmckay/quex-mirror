@@ -48,7 +48,7 @@ WORD 'who'
 WORD 'claws' 
 WORD 'the' 
 WORD 'dog' 
-NEWLINE 'one' 
+NEWLINE '' 
 <TERMINATION>
 | [END] number of token = 50
 `-----------------------------------------------------------------

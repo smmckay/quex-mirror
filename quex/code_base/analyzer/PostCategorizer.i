@@ -5,7 +5,7 @@
 
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/analyzer/PostCategorizer>
-#include <quex/code_base/aux-string>
+#include <quex/code_base/lexeme>
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -49,7 +49,7 @@ QUEX_NAME(DictionaryNode_new)(QUEX_TYPE_LEXATOM         FirstCharacter,
                               const QUEX_TYPE_LEXATOM*  Remainder,
                               QUEX_TYPE_TOKEN_ID          TokenID)
 {
-    QUEX_NAME(DictionaryNode)* me = QUEX_NAME(PostCategorizer_allocate_node)(QUEX_NAME(strlen)(Remainder));
+    QUEX_NAME(DictionaryNode)* me = QUEX_NAME(PostCategorizer_allocate_node)(QUEX_NAME(lexeme_length)(Remainder));
     me->name_first_character = FirstCharacter;
     me->name_remainder       = Remainder;
     me->token_id             = TokenID;
@@ -291,15 +291,15 @@ QUEX_NAME(PostCategorizer_print_tree)(QUEX_NAME(DictionaryNode)* node, int Depth
         const QUEX_TYPE_LEXATOM* source_end_p = &source_p[1];
 
         /* Convert the first character                                       */
-        QUEX_NAME(to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
+        QUEX_NAME(lexeme_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
 
         *drain_p++   = '\0';
         remainder_p  = drain_p;
         source_p     = node->name_remainder;
-        source_end_p = source_p + QUEX_NAME(strlen)(source_p) + 1;
+        source_end_p = source_p + QUEX_NAME(lexeme_length)(source_p) + 1;
 
         /* Convert the remainder                                             */
-        QUEX_NAME(to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
+        QUEX_NAME(lexeme_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
 
         __QUEX_STD_printf("[%s]%s: %i\n", &drain[0], remainder_p, 
                           (int)node->token_id);
@@ -344,7 +344,7 @@ QUEX_NAME(Dictionary)::print_this()
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/aux-string.i>
+#include <quex/code_base/lexeme.i>
 
 #endif /* QUEX_OPTION_POST_CATEGORIZER */
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__POST_CATEGORIZER_I */

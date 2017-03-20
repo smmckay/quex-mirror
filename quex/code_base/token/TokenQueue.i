@@ -164,7 +164,8 @@ QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
 #   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
     while( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->_id) ) {
         if( QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator) != 0 ) { 
-            __QUEX_REPEATED_TOKEN_DECREMENT_N(me->read_iterator);
+            QUEX_NAME_TOKEN(repetition_n_set)(me->read_iterator, 
+                      (QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator) - 1));
             return me->read_iterator;  
         } 
         /* Pop the repeated token from the queue                          */

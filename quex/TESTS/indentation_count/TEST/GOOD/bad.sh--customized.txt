@@ -13,7 +13,6 @@
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 ,-----------------------------------------------------------------
 | [START]
-Bad Char: ':'
 WORD 'otto' 
 WORD 'war' 
 WORD 'ein' 
@@ -24,6 +23,7 @@ WORD 'manchmal'
 <NODENT>
 WORD 'leise' 
 WORD 'selten' 
+Bad Char: ':'
 WORD 'hoho' 
 <DEDENT>
 <TERMINATION>

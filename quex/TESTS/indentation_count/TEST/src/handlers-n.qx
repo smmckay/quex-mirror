@@ -12,9 +12,9 @@ mode X :
 <indentation: >
 <skip: [ \t] >
 {
-    on_indent   { self_send(QUEX_TKN_NEWLINE, LexemeNull); self_send(QUEX_TKN_INDENT); }
-    on_n_dedent { self_send(QUEX_TKN_NEWLINE, LexemeNull); self_send_n(ClosedN, QUEX_TKN_DEDENT); }
-    on_nodent   { self_send(QUEX_TKN_NEWLINE, LexemeNull); }
+    on_indent   { self_send1(QUEX_TKN_NEWLINE, LexemeNull); self_send1(QUEX_TKN_INDENT, LexemeNull); }
+    on_n_dedent { self_send1(QUEX_TKN_NEWLINE, LexemeNull); self_send_n(ClosedN, QUEX_TKN_DEDENT); }
+    on_nodent   { self_send1(QUEX_TKN_NEWLINE, LexemeNull); }
 
     [a-z]+ => QUEX_TKN_WORD(Lexeme);
 }

@@ -194,6 +194,7 @@ on_indentation_str = """
 #   define CONTINUE      return
 #   define Lexeme        LexemeBegin
 #   define LexemeEnd     (me->buffer._read_p)
+#   define LexemeNull    (&QUEX_LEXEME_NULL)
 
     QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
     QUEX_TYPE_INDENTATION*        start = 0x0;
@@ -250,6 +251,7 @@ $$INDENTATION-ERROR-PROCEDURE$$
 
 #   undef Lexeme    
 #   undef LexemeEnd 
+#   undef LexemeNull 
 """
 
 def get_on_indentation_handler(Mode):

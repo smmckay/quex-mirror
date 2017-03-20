@@ -5,6 +5,7 @@
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__TOKEN_SENDING
 
 #include <quex/code_base/token/TokenPolicy>
+#include <quex/code_base/lexeme>
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -15,24 +16,24 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 #define self_send(ID)                         \
         do {                                  \
-            __QUEX_ASSERT_SEND_ENTRY();       \
+            QUEX_TOKEN_POLICY_ASSERT_READY_TO_SEND();       \
             self_token_set_id(ID);            \
             QUEX_TOKEN_POLICY_PREPARE_NEXT(); \
         } while ( 0 )
 
 #define self_send1(ID, Str)                                             \
         do {                                                            \
-            __QUEX_ASSERT_SEND_ENTRY();                                 \
+            QUEX_TOKEN_POLICY_ASSERT_READY_TO_SEND();                                 \
             self_token_set_id(ID);                                      \
             QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self,     \
                                        (Str),                           \
-                                       (Str) + QUEX_NAME(strlen)(Str)); \
+                                       (Str) + QUEX_NAME(lexeme_length)(Str)); \
             QUEX_TOKEN_POLICY_PREPARE_NEXT();                           \
         } while ( 0 )
 
 #define self_send2(ID, StrBegin, StrEnd)          \
         do {                                      \
-            __QUEX_ASSERT_SEND_ENTRY();           \
+            QUEX_TOKEN_POLICY_ASSERT_READY_TO_SEND();           \
             self_token_set_id(ID);                                   \
             QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self,  \
                                        (StrBegin), (StrEnd));        \

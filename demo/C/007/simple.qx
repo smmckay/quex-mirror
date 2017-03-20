@@ -20,12 +20,12 @@ mode BASE :
 <inheritable: only>  
 {    
     <<EOF>>     => QUEX_TKN_TERMINATION(LexemeNull);
-    "."         => QUEX_TKN_PERIOD;
-    ","         => QUEX_TKN_PERIOD;
+    "."         => QUEX_TKN_PERIOD(LexemeNull);
+    ","         => QUEX_TKN_PERIOD(LexemeNull);
     "Fischer's" => QUEX_TKN_FISCHERS(Lexeme);
     [a-z]+      => QUEX_TKN_FISCHES(Lexeme);
     "Fritz"     => QUEX_TKN_FRITZ(Lexeme);
-    "Nothing"   => QUEX_TKN_NOTHING;
+    "Nothing"   => QUEX_TKN_NOTHING(LexemeNull);
     [A-Z][a-z]+ => QUEX_TKN_FISCH(Lexeme);
 }
 

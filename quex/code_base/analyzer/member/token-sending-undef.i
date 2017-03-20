@@ -2,7 +2,7 @@
  * (C) 2005-2009 Frank-Rene Schaefer                                */
 QUEX_NAMESPACE_MAIN_OPEN
 
-#undef __QUEX_ASSERT_SEND_ENTRY 
+#undef QUEX_TOKEN_POLICY_ASSERT_READY_TO_SEND 
 
 #undef  self_write_token_p
 #undef  self_token_p

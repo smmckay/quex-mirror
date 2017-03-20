@@ -11,7 +11,7 @@ token {
 
 mode ONE_AND_ONLY
 {
-    <<EOF>>    => QUEX_TKN_TERMINATION;
+    <<EOF>>    => QUEX_TKN_TERMINATION(LexemeNull);
     on_failure => QUEX_TKN_FAILURE(Lexeme);
 
     {P_WORD}   => QUEX_TKN_WORD(Lexeme);

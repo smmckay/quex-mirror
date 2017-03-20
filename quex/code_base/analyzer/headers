@@ -4,7 +4,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS
 #define __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS
 
-#include    <quex/code_base/aux-string>
+#include    <quex/code_base/lexeme>
 #include    <quex/code_base/analyzer/asserts>
 
 #include    <quex/code_base/definitions>
