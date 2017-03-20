@@ -300,11 +300,11 @@ quex_Token_copy(quex_Token*       __this,
             self.text = \
                (QUEX_TYPE_LEXATOM*)
                QUEXED(MemoryManager_allocate)(
-                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME(strlen)(Other.text) + 1),
+                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME(lexeme_length)(Other.text) + 1),
                       E_MemoryObjectType_TEXT);
             __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
                                 sizeof(QUEX_TYPE_LEXATOM) 
-                              * (QUEX_NAME(strlen)(Other.text) + 1));
+                              * (QUEX_NAME(lexeme_length)(Other.text) + 1));
         }
         self.number = Other.number;
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -500,7 +500,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             char*                       drain     = buffer;
             const char*                 DrainEnd  = buffer + BufferSize;
 
-            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (size_t)(QUEX_NAME(strlen)(source)) + 1;
+            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (size_t)(QUEX_NAME(lexeme_length)(source)) + 1;
             QUEX_CONVERTER_STRING(unicode,char)(&source, SourceEnd, &drain, DrainEnd);
             return buffer;
         }
@@ -512,7 +512,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             wchar_t*                    drain     = buffer;
             const wchar_t*              DrainEnd  = buffer + (ptrdiff_t)BufferSize;
             const QUEX_TYPE_LEXATOM*  source    = me->text;
-            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (ptrdiff_t)(QUEX_NAME(strlen)(source)) + 1;
+            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (ptrdiff_t)(QUEX_NAME(lexeme_length)(source)) + 1;
 
             QUEX_CONVERTER_STRING(unicode,wchar)(&source, SourceEnd, &drain, DrainEnd);
             return buffer;

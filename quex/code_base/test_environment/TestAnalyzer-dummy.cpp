@@ -426,7 +426,7 @@ _2:
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnBadLexatom;
-self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
 RETURN;
 
 }
@@ -439,7 +439,7 @@ _3:
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnLoadFailure;
-self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
 RETURN;
 
 }
@@ -452,7 +452,7 @@ _4:
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnOverflow;
-self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
 RETURN;
 
 }
@@ -463,7 +463,7 @@ _5:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
-self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
 
 }
     /* End of Stream FORCES a return from the lexical analyzer, so that no
@@ -475,7 +475,7 @@ _6:
 __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnFailure;
-self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
 RETURN;
 
 }
@@ -486,7 +486,7 @@ __QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
 self.error_code = E_Error_NoHandler_OnSkipRangeOpen;
-self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
+self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
 RETURN;
 
 }

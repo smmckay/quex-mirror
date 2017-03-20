@@ -70,6 +70,7 @@ num:	TKN_NUM
 		YYABORT;
 	}
 	$$ = val;
+    printf("#%p -- free\n", str);
 	free((void*)$1);
 }
         
@@ -92,6 +93,7 @@ int Calc_yylex(YYSTYPE *yylval, struct quex_Calc_lexer_tag *qlex)
 	{
 
 		yylval->str = (char*)malloc((size_t)(strlen((char*)token->text)+1));
+        printf("#%p -- alloc for %32s\n", yylval->str, token->text);
         memcpy((void*)yylval->str, (void*)token->text, (size_t)(strlen((char*)token->text) + 1));
 	}
 	return (int)token->_id;
