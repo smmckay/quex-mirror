@@ -14,7 +14,7 @@ THING;
 mode ONE_AND_ONLY
 {
 // Order is relevant
-<<EOF>> => QUEX_TKN_TERMINATION;
+<<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
 
 [ \t\r\n]+ { }
 {P_THING}      => QUEX_TKN_THING(Lexeme);

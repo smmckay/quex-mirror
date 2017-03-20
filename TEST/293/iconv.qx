@@ -1,2 +1,2 @@
 token { ID; } mode X : <skip: [ ]> { [a-z]+ => ICONV_TKN_ID(Lexeme); 
-                                     <<EOF>> => CODEC_TKN_TERMINATION(LexemeNull); }
+                                     <<EOF>> => ICONV_TKN_TERMINATION(LexemeNull); }
