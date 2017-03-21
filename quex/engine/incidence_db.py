@@ -4,6 +4,7 @@ import quex.engine.misc.error                as     error
 from   quex.input.code.base                  import CodeFragment, \
                                                     SourceRef_DEFAULT
 from   quex.input.code.core                  import CodeTerminal
+from   quex.input.setup                      import NotificationDB
 from   quex.blackboard import standard_incidence_db, \
                               standard_incidence_db_is_mandatory, \
                               standard_incidence_db_get_terminal_type, \
@@ -45,12 +46,11 @@ class IncidenceDB(dict):
                 if code_fragment is None:         
                     continue
                 elif found is not None:
-                    error.log("Second definition of incidence handler '%s' in mode '%s'." \
-                              % (incidence_name, mode_descr.name), code_fragment.sr, DontExitF=True)
-                    error.log("First, defined in mode '%s'." % found_mode, found.sr)
-                else:
-                    found = code_fragment
-                    found_mode = mode_descr.name
+                    error.warning("Handler '%s' in mode '%s' overwrites previous in mode '%s'." \
+                                  % (incidence_name, mode_descr.name, found_mode), code_fragment.sr,
+                                  SuppressCode=NotificationDB.warning_incidence_handler_overwrite)
+                found      = code_fragment
+                found_mode = mode_descr.name
             return found
 
         def ensure_implementation_of_mandatory(IncidenceId, Code, ModeName):

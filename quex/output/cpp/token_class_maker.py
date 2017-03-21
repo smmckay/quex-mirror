@@ -154,7 +154,6 @@ def _do(Descr):
               ["$$EXTRA_AT_BEGIN$$",  extra_at_begin_str],
               ["$$EXTRA_AT_END$$",    extra_at_end_str],
             ])
-    print "#txt_i:", txt_i
     txt_i = blue_print(txt_i, 
                        [
                         ["$$CONSTRUCTOR$$",             Lng.SOURCE_REFERENCED(Descr.constructor)],

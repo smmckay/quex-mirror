@@ -1,3 +1,21 @@
+data/large-tree.qx:29:warning: Handler 'on_end_of_stream' in mode 'I' overwrites previous in mode 'H'.
+data/large-tree.qx:29:warning: ('--suppress 19' to avoid this message)
+data/large-tree.qx:26:warning: Handler 'on_end_of_stream' in mode 'F' overwrites previous in mode 'I'.
+data/large-tree.qx:26:warning: ('--suppress 19' to avoid this message)
+data/large-tree.qx:25:warning: Handler 'on_end_of_stream' in mode 'G' overwrites previous in mode 'F'.
+data/large-tree.qx:25:warning: ('--suppress 19' to avoid this message)
+data/large-tree.qx:29:warning: Handler 'on_end_of_stream' in mode 'I' overwrites previous in mode 'H'.
+data/large-tree.qx:29:warning: ('--suppress 19' to avoid this message)
+data/large-tree.qx:26:warning: Handler 'on_end_of_stream' in mode 'F' overwrites previous in mode 'I'.
+data/large-tree.qx:26:warning: ('--suppress 19' to avoid this message)
+data/large-tree.qx:25:warning: Handler 'on_end_of_stream' in mode 'G' overwrites previous in mode 'F'.
+data/large-tree.qx:25:warning: ('--suppress 19' to avoid this message)
+data/large-tree.qx:26:warning: Handler 'on_end_of_stream' in mode 'F' overwrites previous in mode 'I'.
+data/large-tree.qx:26:warning: ('--suppress 19' to avoid this message)
+data/large-tree.qx:25:warning: Handler 'on_end_of_stream' in mode 'G' overwrites previous in mode 'F'.
+data/large-tree.qx:25:warning: ('--suppress 19' to avoid this message)
+data/large-tree.qx:29:warning: Handler 'on_end_of_stream' in mode 'I' overwrites previous in mode 'H'.
+data/large-tree.qx:29:warning: ('--suppress 19' to avoid this message)
 ,------------------------------------------------------------------------------------
 | [START]
 (1, 1)  	H 'a'
@@ -12,5 +30,21 @@
 (10, 1)  	<TERMINATION> ''
 | [END] number of token = 10
 `------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

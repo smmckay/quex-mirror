@@ -6,6 +6,7 @@ token {
 start = BEGIN;
 
 mode BASE : <inheritable: only> {
+    <<EOF>>    => QUEX_TKN_TERMINATION(LexemeNull);
     on_failure => QUEX_TKN_FAILURE(Lexeme);
 }
 
