@@ -58,9 +58,10 @@ exp:      num                { $$ = $1;         }
 
 num:	TKN_NUM
 {
-	char *endptr;
-	const char *str = $1;
-	double val;
+	char*       endptr;
+	const char* str = $1;
+	double      val;
+
 	val = strtod(str, &endptr);
 	
 	/* Check for various possible errors */
@@ -70,7 +71,6 @@ num:	TKN_NUM
 		YYABORT;
 	}
 	$$ = val;
-    printf("#%p -- free\n", str);
 	free((void*)$1);
 }
         
@@ -89,11 +89,12 @@ int Calc_yylex(YYSTYPE *yylval, struct quex_Calc_lexer_tag *qlex)
 
 	QUEX_NAME(receive)(qlex, &token);
 
-	if (strlen((char*)token->text) > 0 )
+    if( ! token ) {
+        return TKN_TERMINATION;
+    }
+	else if( token->_id == TKN_NUM )
 	{
-
 		yylval->str = (char*)malloc((size_t)(strlen((char*)token->text)+1));
-        printf("#%p -- alloc for %32s\n", yylval->str, token->text);
         memcpy((void*)yylval->str, (void*)token->text, (size_t)(strlen((char*)token->text) + 1));
 	}
 	return (int)token->_id;

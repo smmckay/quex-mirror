@@ -86,7 +86,10 @@ int Calc_yylex(YYSTYPE *yylval, quex::Calc_lexer *qlex)
 {
 	quex::Token* token;
 	qlex->receive(&token);
-	if (token->get_text().length()>0)
+    if( ! token ) {
+        return TKN_TERMINATION;
+    }
+	else if( token->_id == TKN_NUM )
 	{
 		yylval->str = new std::string((const char *)token->get_text().c_str());
 		//printit(yylval->str);

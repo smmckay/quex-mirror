@@ -46,7 +46,8 @@ main(int argc, char** argv)
 static void  
 test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
 {
-    char      buffer[256];
+    char             buffer[256];
+    QUEX_TYPE_TOKEN* token_p;
 
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */
@@ -56,12 +57,12 @@ test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
 
     /* Loop until the 'termination' token arrives                            */
     do {
-        QUEX_NAME(receive)(lexer);
+        QUEX_NAME(receive)(lexer, &token_p);
 
-        printf("   Token: %s\n", QUEX_NAME_TOKEN(get_string)(lexer->token, 
+        printf("   Token: %s\n", QUEX_NAME_TOKEN(get_string)(token_p,
                                                              &buffer[0], sizeof(buffer)));
         
-    } while( lexer->token->_id != QUEX_TKN_TERMINATION );
+    } while( token_p->_id != QUEX_TKN_TERMINATION );
 
     printf("<terminated>\n");
 }
