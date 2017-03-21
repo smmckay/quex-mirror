@@ -53,6 +53,10 @@ main(int argc, char** argv)
         token = feeder.deliver(&feeder);
         /* token == NULL, if the feeder only requires more content.
          * else,          if a valid token that has been returned.       */
+        if( lexer.error_code != E_Error_None ) {
+            lexer.print_this(&lexer);
+            break;
+        }
 
         if( token ) {
             printf("   TOKEN: %s\n", QUEX_NAME_TOKEN(get_string)(token, &buffer[0], sizeof(buffer)));

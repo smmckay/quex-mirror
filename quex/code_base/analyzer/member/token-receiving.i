@@ -32,18 +32,27 @@ QUEX_NAME(receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
     /* Analyze until there is some content in the queue                       */
     do {
         me->current_analyzer_function(me);
+
         QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
-    } while( me->_token_queue.read_iterator == me->_token_queue.write_iterator );
+
+        if( QUEX_NAME(receive_TERMINATION_on_error)(me, result_pp) ) {
+            return;
+        }
+
+    } while( QUEX_NAME(TokenQueue_is_empty)(&me->_token_queue) );
     
     *result_pp = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
 }
 
 QUEX_INLINE bool
-QUEX_NAME(receive_TERMINATION_on_error)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
+QUEX_NAME(receive_TERMINATION_on_error)(QUEX_TYPE_ANALYZER* me, 
+                                        QUEX_TYPE_TOKEN**   result_pp)
 {
     if( me->error_code == E_Error_None ) {
         return false;
     }
+    QUEX_NAME(TokenQueue_reset)(&me->_token_queue);
+
     /* This should never happen. But, in case
      * => Set 'TERMINATION' and return.                                       */
     *result_pp = me->_token_queue.read_iterator;

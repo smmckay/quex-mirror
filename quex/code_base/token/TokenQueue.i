@@ -187,6 +187,9 @@ QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_begin)(QUEX_NAME(TokenQueue)* 
 QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_back)(QUEX_NAME(TokenQueue)* me)
 { return me->end - 1; }
 
+QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_last_token)(QUEX_NAME(TokenQueue)* me)
+{ return me->write_iterator == me->begin ? (QUEX_TYPE_TOKEN*)0 : &me->write_iterator[-1]; }
+
 QUEX_INLINE size_t QUEX_NAME(TokenQueue_available_n)(QUEX_NAME(TokenQueue)* me) 
 { return (size_t)(me->end - me->write_iterator); }
 

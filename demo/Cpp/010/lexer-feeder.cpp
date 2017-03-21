@@ -50,6 +50,10 @@ main(int argc, char** argv)
         token = feeder.deliver();
         /* token == NULL, if the feeder only requires more content.
          * else,          if a valid token that has been returned.       */
+        if( lexer.error_code != E_Error_None ) {
+            lexer.print_this();
+            break;
+        }
 
         if( token ) {
             printf("   TOKEN: %s\n", token->get_string().c_str());
