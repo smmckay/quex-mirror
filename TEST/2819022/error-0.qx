@@ -6,7 +6,7 @@ WHITESPACE [ \r\t]+
  
 mode standard 
 {  
-<<EOF>>      => QUEX_TKN_TERMINATION; 
+<<EOF>>      => QUEX_TKN_TERMINATION(LexemeNull); 
 {WHITESPACE} {} 
 {WORD}/'s    => QUEX_TKN_WORD_POST_COND(Lexeme); 
 {WORD}/'s/   => QUEX_TKN_QUOTE_S_PRE_COND(Lexeme); 

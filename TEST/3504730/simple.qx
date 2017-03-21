@@ -11,6 +11,7 @@ token {
 
 mode ONE_AND_ONLY
 {
+    <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
   [^@]+  => QUEX_TKN_SOMETHING(Lexeme);
   @/(foo|bar|baz|quux)  => QUEX_TKN_SPECIAL(Lexeme);
   [@,] => QUEX_TKN_ATSIGN(Lexeme);
