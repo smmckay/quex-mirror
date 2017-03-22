@@ -14,7 +14,7 @@
 #endif
 
 /* Content size without the implicit terminating zero.                       */
-#define CONTENT_SIZE   ((sizeof(receiver_data)/sizeof(receiver_data[0])) - 1)
+static const ptrdiff_t CONTENT_SIZE = ((sizeof(receiver_data)/sizeof(receiver_data[0]))-1);
 
 size_t 
 receiver_get_pointer_to_received(ELEMENT_TYPE** rx_buffer)
@@ -35,7 +35,7 @@ receiver_get_pointer_to_received(ELEMENT_TYPE** rx_buffer)
     if( size != 0 ) {
         __quex_assert(iterator <= receiver_data + CONTENT_SIZE);
     } else {
-        __quex_assert(iterator == receiver_data + CONTENT_SIZE + 1);
+        __quex_assert(iterator == receiver_data + CONTENT_SIZE);
     }
 
     return size;

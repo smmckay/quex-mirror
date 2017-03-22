@@ -25,7 +25,7 @@ typedef struct {
 } QUEX_NAME(FeederBase);
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me);
+QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me, bool EndOfChunkF);
 
 #define QUEX_TYPE_FEEDER      QUEX_NAME(Feeder) 
 

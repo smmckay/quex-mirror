@@ -39,16 +39,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me);
-
-QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(FeederBase_check_if_token_complete)(QUEX_NAME(FeederBase)* me);
-
-QUEX_INLINE bool
-QUEX_NAME(receive_TERMINATION_on_error_2nd_implementation)(QUEX_TYPE_ANALYZER* me, 
-                                                           QUEX_TYPE_TOKEN**   result_pp);
-
 #if ! defined( __QUEX_OPTION_PLAIN_C)
 
 QUEX_INLINE
@@ -97,7 +87,8 @@ QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me, const void* BeginP, const void* End
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
 {
-    QUEX_TYPE_TOKEN*  token = QUEX_NAME(FeederBase_deliver)(&me->base);
+    QUEX_TYPE_TOKEN*  token = QUEX_NAME(FeederBase_deliver)(&me->base, 
+                                                            me->external_chunk.begin_p == me->external_chunk.end_p);
     const void*       previous_begin_p;
 
     while( ! token && me->external_chunk.begin_p != me->external_chunk.end_p ) {
@@ -115,19 +106,21 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
             return (QUEX_TYPE_TOKEN*)0;
         }
 
-        token = QUEX_NAME(FeederBase_deliver)(&me->base);
+        token = QUEX_NAME(FeederBase_deliver)(&me->base, 
+                                              me->external_chunk.begin_p == me->external_chunk.end_p);
     }
     return token;
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
+QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me, bool EndOfChunkF)
 /* RETURNS: NULL, requires refill.
  *          Pointer to token, that has been identified 
  *          (This may be the 'BYE' token).                                    */
 {
-    QUEX_TYPE_TOKEN*   token_p;
-    QUEX_TYPE_LEXATOM* start_p;
+    QUEX_TYPE_TOKEN*       token_p;
+    QUEX_TYPE_LEXATOM*     start_p;
+    const QUEX_TYPE_TOKEN* last_token_in_queue_p;
 
     /* If token queue is not empty => it has been ensured that all tokens are
      * generated well inside the buffer's boundaries.                         */
@@ -135,8 +128,9 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
     if( token_p ) {
         return token_p;
     }
-    else if( QUEX_NAME(receive_TERMINATION_on_error_2nd_implementation)(me->lexer, &token_p) ) {
-        return token_p;
+    else if( me->lexer->error_code != E_Error_None ) {
+        QUEX_NAME(TokenQueue_set_token_TERMINATION)(&me->lexer->_token_queue);
+        return QUEX_NAME(TokenQueue_pop)(&me->lexer->_token_queue);
     }
 
     /* Token queue is empty. A new step begins. 
@@ -158,35 +152,22 @@ QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me)
         /* Complete token queue is generated without reaching buffer boarders.*/
         return token_p;
     }
-    else if( QUEX_NAME(TokenQueue_last_token)(&me->lexer->_token_queue)->_id 
-             == me->stream_terminating_token_id ) {
-        return token_p;
-    }
     else {
-        /* All generated tokens are in doubt. 
-         * Reset token queue. Restart analysis with more content.             */
-        QUEX_NAME(TokenQueue_reset)(&me->lexer->_token_queue);
-        me->lexer->buffer._read_p = start_p;
-        return (QUEX_TYPE_TOKEN*)0; 
+        last_token_in_queue_p = QUEX_NAME(TokenQueue_last_token)(&me->lexer->_token_queue); 
+        __quex_assert(last_token_in_queue_p); /* not empty => last token.     */
+        if(    last_token_in_queue_p->_id == me->stream_terminating_token_id 
+            && EndOfChunkF ) {
+            /* The 'good bye' token may stand very well on the border.        */
+            return token_p;
+        }
+        else {
+            /* All generated tokens are in doubt. 
+             * Reset token queue. Restart analysis with more content.         */
+            QUEX_NAME(TokenQueue_reset)(&me->lexer->_token_queue);
+            me->lexer->buffer._read_p = start_p;
+            return (QUEX_TYPE_TOKEN*)0; 
+        }
     }
-}
-
-QUEX_INLINE bool
-QUEX_NAME(receive_TERMINATION_on_error_2nd_implementation)(QUEX_TYPE_ANALYZER* me, 
-                                                           QUEX_TYPE_TOKEN**   result_pp)
-{
-    if( me->error_code == E_Error_None ) {
-        return false;
-    }
-    QUEX_NAME(TokenQueue_reset)(&me->_token_queue);
-
-    /* This should never happen. But, in case
-     * => Set 'TERMINATION' and return.                                       */
-    *result_pp = me->_token_queue.read_iterator;
-    if( *result_pp ) { 
-        (*result_pp)->_id = __QUEX_SETTING_TOKEN_ID_TERMINATION;
-    }
-    return true;
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

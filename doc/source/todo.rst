@@ -45,3 +45,10 @@ for the 'buffer._memory.ownership' before reload!
    + error_code
 
 -- if( lexer->error_code ) lexer->print_this();
+
+-- feeder/gavager: 'GoodBye' token may trigger on border of given chunk, even 
+                   if there might be more data.
+                   => Trick: check whether last element fits last of 'bye'
+                             => deliver a little less.
+
+                   

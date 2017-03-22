@@ -119,7 +119,7 @@ QUEX_NAME(Gavager_gavage)(QUEX_TYPE_GAVAGER* me, ptrdiff_t ReceivedN)
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Gavager_deliver)(QUEX_TYPE_GAVAGER* me)
 {
-    return QUEX_NAME(FeederBase_deliver)(&me->base);
+    return QUEX_NAME(FeederBase_deliver)(&me->base, true);
 }
 
 

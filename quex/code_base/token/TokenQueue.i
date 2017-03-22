@@ -154,12 +154,7 @@ QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me)
 QUEX_INLINE QUEX_TYPE_TOKEN* 
 QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
 {
-#   if defined(QUEX_OPTION_ASSERTS) && defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    if( QUEX_NAME(TokenQueue_begin)(me) == 0x0 ) {
-        QUEX_ERROR_EXIT("Token queue has not been set before call to .receive().\n"
-                        "Please, consider function 'token_queue_memory_set()'.");
-    }
-#   endif
+    __quex_assert(QUEX_NAME(TokenQueue_begin)(me) != 0x0);
 
 #   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
     while( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->_id) ) {
@@ -192,6 +187,15 @@ QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_last_token)(QUEX_NAME(TokenQue
 
 QUEX_INLINE size_t QUEX_NAME(TokenQueue_available_n)(QUEX_NAME(TokenQueue)* me) 
 { return (size_t)(me->end - me->write_iterator); }
+
+QUEX_INLINE void
+QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me) 
+/* Reset entire token queue and set the token 'TERMINATION'. This should
+ * only be called in case of a detected error.                                */
+{
+    QUEX_NAME(TokenQueue_reset)(me);
+    (me->write_iterator++)->_id =  __QUEX_SETTING_TOKEN_ID_TERMINATION;
+}
 
 #if 1
 QUEX_INLINE void
@@ -321,6 +325,8 @@ QUEX_NAME(TokenQueueRemainder_restore)(QUEX_NAME(TokenQueueRemainder)* me, QUEX_
 
     QUEX_TOKEN_QUEUE_ASSERT(token_queue);
 }
+
+
 #endif
 
 QUEX_NAMESPACE_MAIN_CLOSE

@@ -9,6 +9,7 @@ function run {
     echo
 }
 
+rm $(find -name chache.fly) -f
 hwut make clean
 
 run TEST

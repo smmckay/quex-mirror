@@ -54,7 +54,7 @@ main(int argc, char** argv)
         /* token == NULL, if the feeder only requires more content.
          * else,          if a valid token that has been returned.       */
         if( lexer.error_code != E_Error_None ) {
-            lexer.print_this(&lexer);
+            QUEX_NAME(print_this)(&lexer);
             break;
         }
 

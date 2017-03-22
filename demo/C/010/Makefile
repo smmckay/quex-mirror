@@ -23,7 +23,7 @@ COMPILER     := gcc -ggdb -Wall -Werror -pedantic # -std=c89
 # Buffer size is chosen to something tiny. This way, the effect of reaching
 # borders can be observed.
 CC_PLAIN     := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
-	              -DQUEX_SETTING_BUFFER_SIZE=12 
+	              -DQUEX_SETTING_BUFFER_SIZE=13 
 
 CC_CONVERTER := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
 	              -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=6        \
