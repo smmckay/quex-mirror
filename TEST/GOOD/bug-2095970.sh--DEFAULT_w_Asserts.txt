@@ -1,6 +1,11 @@
 ## An Assert-Abortion might be an intended element of the experiment.
-EVENT_MODE_CHANGE ''
+EVENT_MODE_CHANGE_TO_STRING ''
+MODE_MODULE_EXIT ''
+MODE_STRING_ENTER ''
+EVENT_MODE_CHANGE_TO_MODULE ''
 STRING_LITERAL 'hello world'
-EVENT_MODE_CHANGE ''
+MODE_STRING_EXIT ''
+MODE_MODULE_ENTER ''
+MODULE_EATS '\n\n'
 <TERMINATION>
 VALGRIND:   All heap blocks were freed -- no leaks are possible

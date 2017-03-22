@@ -9,7 +9,7 @@ function run {
     echo
 }
 
-rm $(find -name chache.fly) -f
+rm $(find -name cache.fly) -f
 hwut make clean
 
 run TEST

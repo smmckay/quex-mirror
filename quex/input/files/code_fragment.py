@@ -18,6 +18,9 @@ from   quex.engine.codec_db.unicode.parser        import ucs_property_db
 from   quex.engine.misc.utf8                      import __read_one_utf8_code_from_stream
 from   quex.input.code.core                       import CodeUser 
 
+import re
+lexeme_re = re.compile("^Lexeme\b")
+
 def parse(fh, CodeFragmentName, 
           ErrorOnFailureF=True, AllowBriefTokenSenderF=True):
     """RETURNS: An object of class CodeUser containing
@@ -204,7 +207,7 @@ def __create_token_sender_by_character_code(fh, CharacterCode):
     blackboard.token_id_db["--" + prefix_less_token_name] = \
             TokenInfo(prefix_less_token_name, CharacterCode, None, 
                       SourceRef.from_FileHandle(fh)) 
-    return "self_send(%s);\n" % token_id_str
+    return "%s\n" % Lng.TOKEN_SEND(token_id_str)
 
 def token_id_db_verify_or_enter_token_id(fh, TokenName):
     global Setup
@@ -245,98 +248,102 @@ def __create_token_sender_by_token_name(fh, TokenName):
     #    argument_list.append("LexemeNull")
 
     # Create the token sender
-    explicit_member_names_f = any(arg.find("=") != -1 for arg in argument_list)
 
     assert blackboard.token_type_definition is not None, \
            "A valid token_type_definition must have been parsed at this point."
 
+    explicit_member_names_f = any(arg.find("=") != -1 for arg in argument_list)
     if not explicit_member_names_f:
-        # There are only two allowed cases for implicit token member names:
-        #  QUEX_TKN_XYZ(Lexeme)     --> call take_text(Lexeme, LexemeEnd)
-        #  QUEX_TKN_XYZ(Begin, End) --> call to take_text(Begin, End)
-        if   len(argument_list) == 2:
-            return "QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, (%s), (%s));\n" % \
-                   (argument_list[0], argument_list[1]) + \
-                   "self_send(%s);\n" % (TokenName)
+        return __token_sender_with_implicit_member_names(TokenName, argument_list)
+    elif Setup.token_class_file:
+        error.log("Member assignments in brief token senders are inadmissible\n" + \
+                  "with manually written token classes. User provided file '%s'.\n" % Setup.token_class_file,
+                  fh)
 
-        elif len(argument_list) == 1:
-            if argument_list[0] == "Lexeme":
-                return "QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, self.buffer._lexeme_start_p, self.buffer._read_p);\n" \
-                       "self_send(%s);\n" % (TokenName)
-            elif argument_list[0] == "LexemeNull":
-                return "QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, LexemeNull, LexemeNull);\n" \
-                       "self_send(%s);\n" % (TokenName)
-            else:
-                error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
-                          "or 'LexemeNull'. Found '%s'.\n" % argument_list[0]                     + \
-                          "To cut parts of the lexeme, please, use the 2 argument sender, e.g.\n" + \
-                          "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
-                          "Alternatively, use named parameters such as 'number=...'.", 
-                          fh)
+    member_value_pairs = [ arg.split("=") for arg in argument_list ]
+    member_value_pairs = [ (m.strip(), v.strip()) for m, v in member_value_pairs ]
 
-        elif len(argument_list) == 0:
-            return "self_send(%s);\n" % TokenName
+    if any(not value for member, value in member_value_pairs):
+        error.log("One explicit argument name mentioned requires all arguments to\n"  + \
+                  "be mentioned explicitly. Value '%s' mentioned without argument.\n"   \
+                  % member, fh)
 
-        else:
-            error.log("Since 0.49.1, there are only the following brief token senders that can take\n"
-                      "unnamed token arguments:\n"
-                      "     one argument:   'Lexeme'   =>  token.take_text(..., LexemeBegin, LexemeEnd);\n"
-                      "     two arguments:  Begin, End =>  token.take_text(..., Begin, End);\n"
-                      + "Found: " + repr(argument_list)[1:-1] + ".", fh)
+    global lexeme_re
+    if any(lexeme_re.search(value) is not None for member, value in member_value_pairs):
+        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
+                  "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
+                  "\n"
+                  "Proposals:\n\n"
+                  "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"
+                  "       that you are aware of the danger. Do this, if at the end of the\n"
+                  "       process, the member can be assumed to relate to an object that\n"
+                  "       is not directly dependent anymore on 'Lexeme'. This is particularly\n"
+                  "       true if the member is of type 'std::string'. Its constructor\n"
+                  "       creates a copy of the zero terminated string.\n\n"
+                  "   (2) Use token senders without named arguments, for example\n"
+                  "          \"%s(Lexeme+1, LexemeEnd-2)\"\n" % TokenName + 
+                  "          \"%s(Lexeme)\"\n" % TokenName + 
+                  "       These token senders create a copy of the lexeme and let the token\n"
+                  "       own it.", fh)
 
-        # Returned from Function if implicit member names
-
-    member_value_pairs = map(lambda x: x.split("="), argument_list)
-    txt = ""
     for member, value in member_value_pairs:
-        if value == "":
-            error.log("One explicit argument name mentioned requires all arguments to\n"  + \
-                      "be mentioned explicitly. Value '%s' mentioned without argument.\n"   \
-                      % member, fh)
+        error.verify_word_in_list(member, blackboard.token_type_definition.get_member_db(), 
+                                  "No member:   '%s' in token type description." % member, fh)
 
-        if Setup.token_class_file != "":
-            error.log("Member assignments in brief token senders are inadmissible\n" + \
-                      "with manually written token classes. User provided file '%s'.\n" % Setup.token_class_file + \
-                      "Found member assignment: '%s' = '%s'." % (member, value), fh)
-        else:
-            member_name = member.strip()
-            error.verify_word_in_list(member_name, blackboard.token_type_definition.get_member_db(), 
-                                      "No member:   '%s' in token type description." % member_name, fh)
-            idx = value.find("Lexeme")
-            if idx != -1:
-                if idx != 0 and value[idx-1] == "(":
-                    pass
-                else:
-                    error.log("Assignment of token member '%s' with 'Lexeme' directly being involved. The\n" % member_name + 
-                              "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
-                              "\n"
-                              "Proposals:\n\n"
-                              "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"
-                              "       that you are aware of the danger. Do this, if at the end of the\n"
-                              "       process, the member can be assumed to relate to an object that\n"
-                              "       is not directly dependent anymore on 'Lexeme'. This is particularly\n"
-                              "       true if the member is of type 'std::string'. Its constructor\n"
-                              "       creates a copy of the zero terminated string.\n\n"
-                              "   (2) Use token senders without named arguments, for example\n"
-                              "          \"%s(Lexeme+1, LexemeEnd-2)\"\n" % TokenName + 
-                              "          \"%s(Lexeme)\"\n" % TokenName + 
-                              "       These token senders create a copy of the lexeme and let the token\n"
-                              "       own it.", fh)
-
-            access = blackboard.token_type_definition.get_member_access(member_name)
-            txt += "self_write_token_p()->%s = %s;\n" % (access, value.strip())
-
+    txt = [
+        Lng.TOKEN_SET_MEMBER(blackboard.token_type_definition.get_member_access(member), 
+                             value)
+        for member, value in member_value_pairs
+    ]
 
     # Box the token, stamp it with an id and 'send' it
-    txt += "self_send(%s);\n" % TokenName
-    return txt
+    txt.append(Lng.TOKEN_SEND(TokenName))
+
+    return "\n".join(txt)
+
+def __token_sender_with_implicit_member_names(TokenName, argument_list):
+    # There are only three allowed cases for implicit token member names:
+    #  QUEX_TKN_XYZ()           --> call take_text(Lexeme, LexemeEnd)
+    #  QUEX_TKN_XYZ(Lexeme)     --> call take_text(Lexeme, LexemeEnd)
+    #  QUEX_TKN_XYZ(Begin, End) --> call to take_text(Begin, End)
+    L = len(argument_list)
+    if L == 3:
+        error.log("Since 0.49.1, there are only the following brief token senders that can take\n"
+                  "unnamed token arguments:\n"
+                  "     one argument:   'Lexeme'   =>  token.take_text(..., LexemeBegin, LexemeEnd);\n"
+                  "     two arguments:  Begin, End =>  token.take_text(..., Begin, End);\n"
+                  + "Found: " + repr(argument_list)[1:-1] + ".", fh)
+
+    elif L == 2:
+        take_lexeme_str = Lng.TOKEN_INTAKE_LEXEME(argument_list[0], argument_list[1]) 
+
+    elif L == 1:
+        if argument_list[0] == "Lexeme":
+            take_lexeme_str = Lng.TOKEN_INTAKE_LEXEME(Lng.LEXEME_START_P(), Lng.INPUT_P())
+        elif argument_list[0] == "LexemeNull":
+            take_lexeme_str = Lng.TOKEN_INTAKE_LEXEME(Lng.LEXEME_NULL(), Lng.LEXEME_NULL())
+        else:
+            error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
+                      "or 'LexemeNull'. Found '%s'.\n" % argument_list[0]                     + \
+                      "To cut parts of the lexeme, please, use the 2 argument sender, e.g.\n" + \
+                      "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
+                      "Alternatively, use named parameters such as 'number=...'.", 
+                      fh)
+
+    elif L == 0:
+        take_lexeme_str = ""
+
+    return "%sself_send(%s);\n" % (take_lexeme_str, TokenName)
+
+    # Returned from Function if implicit member names
+
 
 def __create_mode_transition_and_token_sender(fh, Op):
     assert Op in ["GOTO", "GOSUB", "GOUP"]
 
     position     = fh.tell()
     target_mode  = ""
-    token_sender = Lng.RETURN
+    token_sender = "" # Lng.RETURN
     if check(fh, "("):
         skip_whitespace(fh)
         if Op != "GOUP":

@@ -10,23 +10,23 @@ Following lines are suppossed to be accepted:
 ./constants.py:81:                      "OVERFLOW",        # Lexeme too long, reload impossible
 ./engine/analyzer/terminal/factory.py:161:        """Overflow: Lexeme size exceeds buffer size.
 ./engine/analyzer/terminal/factory.py:165:        comment_txt = "Lexeme size exceeds buffer size. No further buffer load possible."
-./input/files/code_fragment.py:258:            if argument_list[0] == "Lexeme":
-./input/files/code_fragment.py:265:                error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
-./input/files/code_fragment.py:268:                          "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
-./input/files/code_fragment.py:278:                      "     one argument:   'Lexeme'   =>  token.take_text(..., LexemeBegin, LexemeEnd);\n"
-./input/files/code_fragment.py:300:            idx = value.find("Lexeme")
-./input/files/code_fragment.py:305:                    error.log("Assignment of token member '%s' with 'Lexeme' directly being involved. The\n" % member_name + 
-./input/files/code_fragment.py:306:                              "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
-./input/files/code_fragment.py:309:                              "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"
-./input/files/code_fragment.py:312:                              "       is not directly dependent anymore on 'Lexeme'. This is particularly\n"
-./input/files/code_fragment.py:316:                              "          \"%s(Lexeme+1, LexemeEnd-2)\"\n" % TokenName + 
-./input/files/code_fragment.py:317:                              "          \"%s(Lexeme)\"\n" % TokenName + 
-./output/core/dictionary.py:221:        return "__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);\n"
+./input/files/code_fragment.py:22:lexeme_re = re.compile("^Lexeme\b")
+./input/files/code_fragment.py:273:        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
+./input/files/code_fragment.py:274:                  "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
+./input/files/code_fragment.py:277:                  "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"
+./input/files/code_fragment.py:280:                  "       is not directly dependent anymore on 'Lexeme'. This is particularly\n"
+./input/files/code_fragment.py:284:                  "          \"%s(Lexeme+1, LexemeEnd-2)\"\n" % TokenName + 
+./input/files/code_fragment.py:285:                  "          \"%s(Lexeme)\"\n" % TokenName + 
+./input/files/code_fragment.py:313:                  "     one argument:   'Lexeme'   =>  token.take_text(..., LexemeBegin, LexemeEnd);\n"
+./input/files/code_fragment.py:321:        if argument_list[0] == "Lexeme":
+./input/files/code_fragment.py:326:            error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
+./input/files/code_fragment.py:329:                      "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
+./output/core/dictionary.py:252:        return "__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);\n"
 ./output/core/run_time_counter.py:101:        "    %s = LexemeBegin;\n" % IteratorName
 ./output/core/run_time_counter.py:120:       + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
 ./output/core/run_time_counter.py:81:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" \
 ./output/core/run_time_counter.py:94:        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
 ./output/core/run_time_counter.py:97:        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
 ./output/core/run_time_counter.py:98:        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
-./output/cpp/templates.py:249:    /* Lexeme setup: 
+./output/cpp/templates.py:246:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST

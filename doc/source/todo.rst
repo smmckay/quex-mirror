@@ -52,3 +52,7 @@ for the 'buffer._memory.ownership' before reload!
                              => deliver a little less.
 
                    
+-- not 'CONTINUE' after mode change. Assert triggers, otherwise resume same mode.
+    on_entry => QUEX_TKN_MODE_STRING_ENTER(LexemeNull);
+    on_exit  => QUEX_TKN_MODE_STRING_EXIT(LexemeNull);
+   May be extremely confusing! 'on_entry' is executed, but old mode is working.

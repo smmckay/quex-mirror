@@ -1,0 +1,3 @@
+The sequence of tokens is supposed to be messed up!
+Assertion is supposed to trigger!
+## An Assert-Abortion might be an intended element of the experiment.

@@ -1,0 +1,34 @@
+// RETURN explictly from mode after mode change.
+start = MODULE;
+
+mode MODULE {
+    on_entry => QUEX_TKN_MODE_MODULE_ENTER(LexemeNull);
+    on_exit  => QUEX_TKN_MODE_MODULE_EXIT(LexemeNull);
+
+    <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
+    "\"" { 
+        self_send1(QUEX_TKN_EVENT_MODE_CHANGE_TO_STRING, LexemeNull); 
+        self << STRING; 
+        RETURN; 
+    }
+    [ \t\n] {}
+    [^\"]+  => QUEX_TKN_MODULE_EATS(Lexeme);
+}
+
+mode STRING {
+    <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
+    on_entry { 
+        self_send1(QUEX_TKN_MODE_STRING_ENTER, LexemeNull);
+        self_accumulator_clear(); 
+    }
+    on_exit {
+       self_accumulator_flush(QUEX_TKN_STRING_LITERAL);
+       self_send1(QUEX_TKN_MODE_STRING_EXIT, LexemeNull);
+    }
+    "\"" { 
+        self_send1(QUEX_TKN_EVENT_MODE_CHANGE_TO_MODULE, LexemeNull); 
+        self << MODULE; 
+        RETURN;                          
+    }
+    [^\"] { self_accumulator_add(Lexeme, LexemeEnd); CONTINUE; }
+}

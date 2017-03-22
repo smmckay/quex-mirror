@@ -110,6 +110,7 @@ class Lng_Cpp(dict):
         if PositionStorage is None: return "me->buffer._lexeme_start_p = me->buffer._read_p;"
         else:                       return "me->buffer._lexeme_start_p = %s;" % PositionStorage
     def LEXEME_START_P(self):                      return "me->buffer._lexeme_start_p"
+    def LEXEME_NULL(self):                         return "LexemeNull"
     def LEXEME_LENGTH(self):                       return "((size_t)(me->buffer._read_p - me->buffer._lexeme_start_p))"
 
     def LEXEME_MACRO_SETUP(self):
@@ -230,6 +231,19 @@ class Lng_Cpp(dict):
                         "BEGIN: STATE MACHINE\n"        + \
                         SM.get_string(NormalizeF=False) + \
                         "END: STATE MACHINE")) 
+
+    def TOKEN_INTAKE_LEXEME(self, BeginP, EndP):
+        return "QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, %s, %s);\n" \
+                % (BeginP, EndP)
+
+    def TOKEN_SET_MEMBER(self, Member, Value):
+        return "self_write_token_p()->%s = %s;" % (Member, Value)
+
+    def TOKEN_SEND(self, TokenName):
+        return "self_send(%s);" % TokenName
+
+    def TOKEN_SEND_N(self, N, TokenName):
+        return "self_send_n(ClosedN, __QUEX_SETTING_TOKEN_ID_DEDENT);\n"
 
     def DEFAULT_COUNTER_FUNCTION_NAME(self, ModeName):
         return "QUEX_NAME(%s_counter)" % ModeName
@@ -944,14 +958,14 @@ class Lng_Cpp(dict):
             
         return [
             'self.error_code = %s;\n' % error_code,
-            'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n',
+            "%s\n" % self.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_TERMINATION"),
             'RETURN;\n'
         ]
 
     def EXIT_ON_TERMINATION(self):
         # NOT: "Lng.PURE_RETURN" because the terminal end of stream 
         #      exits anyway immediately--after 'on_after_match'.
-        return 'self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);\n'
+        return "%s\n" % self.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_TERMINATION")
 
     @typed(dial_db=DialDB)
     def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):

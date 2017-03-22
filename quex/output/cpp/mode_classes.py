@@ -28,18 +28,26 @@ def do(ModeDb):
 def write_member_functions(Modes):
     # -- get the implementation of mode class functions
     #    (on_entry, on_exit, on_indent, on_dedent, has_base, has_entry, has_exit, ...)
-    txt  = ""
-    txt += "#ifndef __QUEX_INDICATOR_DUMPED_TOKEN_ID_DEFINED\n"
-    txt += "    static QUEX_TYPE_TOKEN_ID    QUEX_NAME_TOKEN(DumpedTokenIdObject);\n"
-    txt += "#endif\n"
-    txt += "#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)\n"
-    txt += "#define __self_result_token_id    QUEX_NAME_TOKEN(DumpedTokenIdObject)\n"
-    for mode in Modes:        
-        txt += get_implementation_of_mode_functions(mode, Modes)
-
-    txt += "#undef self\n"
-    txt += "#undef __self_result_token_id\n"
-    return txt
+    txt  = [
+        "#ifndef __QUEX_INDICATOR_DUMPED_TOKEN_ID_DEFINED\n",
+        "    static QUEX_TYPE_TOKEN_ID  QUEX_NAME_TOKEN(DumpedTokenIdObject);\n",
+        "#endif\n",
+        "#define self                   (*(QUEX_TYPE_DERIVED_ANALYZER*)me)\n",
+        "#define __self_result_token_id QUEX_NAME_TOKEN(DumpedTokenIdObject)\n",
+        "#define LexemeNull             (&QUEX_LEXEME_NULL)\n"
+        "#define RETURN                 return\n"
+    ]
+    txt.extend(
+        get_implementation_of_mode_functions(mode, Modes)
+        for mode in Modes        
+    )
+    txt.extend([
+        "#undef self\n",
+        "#undef __self_result_token_id\n",
+        "#undef LexemeNull\n",
+        "#undef RETURN\n",
+    ])
+    return "".join(txt)
 
 mode_function_implementation_str = \
 """
@@ -194,7 +202,6 @@ on_indentation_str = """
 #   define CONTINUE      return
 #   define Lexeme        LexemeBegin
 #   define LexemeEnd     (me->buffer._read_p)
-#   define LexemeNull    (&QUEX_LEXEME_NULL)
 
     QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
     QUEX_TYPE_INDENTATION*        start = 0x0;
@@ -251,7 +258,6 @@ $$INDENTATION-ERROR-PROCEDURE$$
 
 #   undef Lexeme    
 #   undef LexemeEnd 
-#   undef LexemeNull 
 """
 
 def get_on_indentation_handler(Mode):
@@ -268,13 +274,13 @@ def get_on_indentation_handler(Mode):
     if code_fragment is not None:
         on_indent_str   = Lng.SOURCE_REFERENCED(code_fragment)
     else:
-        on_indent_str   = "self_send(__QUEX_SETTING_TOKEN_ID_INDENT);"
+        on_indent_str   = Lng.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_INDENT")
 
     code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_NODENT)
     if code_fragment is not None:
         on_nodent_str   = Lng.SOURCE_REFERENCED(code_fragment)
     else:
-        on_nodent_str   = "self_send(__QUEX_SETTING_TOKEN_ID_NODENT);"
+        on_nodent_str   = Lng.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_NODENT")
 
     on_dedent_str   = ""
     on_n_dedent_str = ""
@@ -290,9 +296,9 @@ def get_on_indentation_handler(Mode):
         # If no 'on_dedent' and no 'on_n_dedent' is defined ... 
         on_dedent_str    = ""
         on_n_dedent_str  = "#if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)\n"
-        on_n_dedent_str += "    self_send_n(ClosedN, __QUEX_SETTING_TOKEN_ID_DEDENT);\n"
+        on_n_dedent_str += "    %s\n" % Lng.TOKEN_SEND_N("ClosedN", "__QUEX_SETTING_TOKEN_ID_DEDENT")
         on_n_dedent_str += "#else\n"
-        on_n_dedent_str += "    while( start-- != stack->back ) self_send(__QUEX_SETTING_TOKEN_ID_DEDENT);\n"
+        on_n_dedent_str += "    while( start-- != stack->back ) %s\n" % Lng.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_DEDENT")
         on_n_dedent_str += "#endif\n"
 
     code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_ERROR)
