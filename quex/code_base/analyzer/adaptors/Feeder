@@ -24,9 +24,6 @@ typedef struct {
     QUEX_TYPE_TOKEN_ID  stream_terminating_token_id;
 } QUEX_NAME(FeederBase);
 
-QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me, bool EndOfChunkF);
-
 #define QUEX_TYPE_FEEDER      QUEX_NAME(Feeder) 
 
 #ifndef __QUEX_OPTION_PLAIN_C

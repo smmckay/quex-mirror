@@ -96,30 +96,31 @@ QUEX_NAME(Gavager_access)(QUEX_TYPE_GAVAGER* me,
  *           [1] 'end_p' pointing to the end of the buffer's region, i.e. to
  *                the first element behind it.                               */
 {
-    me->base.lexer->buffer.fill_prepare(&me->base.lexer->buffer, begin_p, end_p);
+    QUEX_NAME(Buffer)* buffer = &me->base.lexer->buffer;
+    buffer->fill_prepare(&me->base.lexer->buffer, begin_p, end_p);
 }
 
 QUEX_INLINE bool
 QUEX_NAME(Gavager_gavage)(QUEX_TYPE_GAVAGER* me, ptrdiff_t ReceivedN)
 {
-    void*       begin_p;
-    const void* end_p;
+    void*              begin_p;
+    const void*        end_p;
+    QUEX_NAME(Buffer)* buffer = &me->base.lexer->buffer;
 
-    me->base.lexer->buffer.filler->derived.get_fill_boundaries(me->base.lexer->buffer.filler,
-                                                               &me->base.lexer->buffer, 
-                                                               &begin_p, &end_p);
+    buffer->filler->derived.get_fill_boundaries(buffer->filler, buffer,
+                                                &begin_p, &end_p);
     if( ReceivedN > (const uint8_t*)end_p - (uint8_t*)begin_p ) {
         return false;
     }
-    me->base.lexer->buffer.fill_finish(&me->base.lexer->buffer, 
-                                       &((uint8_t*)begin_p)[ReceivedN]);
+    buffer->fill_finish(buffer, &((uint8_t*)begin_p)[ReceivedN]);
     return true;
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Gavager_deliver)(QUEX_TYPE_GAVAGER* me)
 {
-    return QUEX_NAME(FeederBase_deliver)(&me->base, true);
+    return QUEX_NAME(receive_from_chunk)(me->base.lexer, true, 
+                                         me->base.stream_terminating_token_id);
 }
 
 

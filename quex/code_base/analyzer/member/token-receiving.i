@@ -11,42 +11,112 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE void
-QUEX_NAME(receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
-{ 
-    *result_pp = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
-    if( *result_pp ) {
-        return;
-    }
-    else if( me->error_code != E_Error_None ) {
-        QUEX_NAME(TokenQueue_set_token_TERMINATION)(&me->_token_queue);
-    }
-    else {
-        /* Restart filling the queue from begin                                   */
-        QUEX_NAME(TokenQueue_reset)(&me->_token_queue); /* Use 1st token of queue */
-
-        /* Analyze until there is some content in the queue                       */
-        do {
-            me->current_analyzer_function(me);
-
-            QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
-
-            if( me->error_code != E_Error_None ) {
-                QUEX_NAME(TokenQueue_set_token_TERMINATION)(&me->_token_queue);
-                break;
-            }
-
-        } while( QUEX_NAME(TokenQueue_is_empty)(&me->_token_queue) );
-    }
-    
-    *result_pp = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
-}
-
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE void QUEX_MEMBER(receive)(QUEX_TYPE_TOKEN** token_pp) 
 { QUEX_NAME(receive)(this, token_pp); }
 #endif
 
+QUEX_INLINE QUEX_TYPE_TOKEN*
+QUEX_NAME(pop_remaining_token_from_token_queue)(QUEX_TYPE_ANALYZER*);
+
+QUEX_INLINE void
+QUEX_NAME(receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
+{ 
+    *result_pp = QUEX_NAME(pop_remaining_token_from_token_queue)(me);
+    if( *result_pp ) return; 
+
+    /* Restart filling the queue from begin                                   */
+    QUEX_NAME(TokenQueue_reset)(&me->_token_queue); /* Use 1st token of queue */
+
+    /* Analyze until there is some content in the queue                       */
+    do {
+        me->current_analyzer_function(me);
+
+        QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
+
+        if( me->error_code != E_Error_None ) {
+            QUEX_NAME(TokenQueue_set_token_TERMINATION)(&me->_token_queue);
+            break;
+        }
+
+    } while( QUEX_NAME(TokenQueue_is_empty)(&me->_token_queue) );
+    
+    *result_pp = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
+}
+
+QUEX_INLINE QUEX_TYPE_TOKEN*
+QUEX_NAME(receive_from_chunk)(QUEX_TYPE_ANALYZER*    me, 
+                              bool                   EndOfChunkF, 
+                              QUEX_TYPE_TOKEN_ID     StreamTerminatingTokenId)
+/* RETURNS: NULL, requires refill.
+ *          Pointer to token, that has been identified 
+ *          (This may be the 'BYE' token).                                    */
+{
+    QUEX_TYPE_TOKEN*       token_p;
+    QUEX_TYPE_LEXATOM*     start_p;
+    const QUEX_TYPE_TOKEN* last_token_in_queue_p;
+
+    /* If token queue is not empty => it has been ensured that all tokens are
+     * generated well inside the buffer's boundaries.                         */
+    token_p = QUEX_NAME(pop_remaining_token_from_token_queue)(me);
+    if( token_p ) return token_p;
+
+    /* Restart filling the queue from begin                                   */
+    QUEX_NAME(TokenQueue_reset)(&me->_token_queue); /* Use 1st token of queue */
+
+    /* Token queue is empty. A new step begins. 
+     * Backup read position. It may be reset in case of reaching boundaries.  */
+    do {
+        start_p = me->buffer._read_p;
+
+        me->current_analyzer_function(me);
+        QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
+
+        if( me->error_code != E_Error_None ) {
+            QUEX_NAME(TokenQueue_reset)(&me->_token_queue);
+            return (QUEX_TYPE_TOKEN*)0; 
+        }
+    } while( QUEX_NAME(TokenQueue_is_empty)(&me->_token_queue) );
+
+    if( me->buffer._read_p < me->buffer.input.end_p ) {
+        /* Complete token queue is generated without reaching buffer boarders.*/
+        return token_p;
+    }
+
+    /* Last token ended on the content's border. 
+     * Last token id 'stream end' => token queue is ok. 
+     * Else                       => must refill and restart from 'start_p'.  */
+    last_token_in_queue_p = QUEX_NAME(TokenQueue_last_token)(&me->_token_queue); 
+    __quex_assert(last_token_in_queue_p); /* not empty => last token exists.  */
+    if( EndOfChunkF && last_token_in_queue_p->_id == StreamTerminatingTokenId ) {
+        /* The 'good bye' token may stand very well on the border.            */
+        return token_p;                                                       
+    }                                                                         
+    else {                                                                    
+        /* All generated tokens are in doubt.                                 
+         * Reset token queue. Restart analysis with more content.             */
+        QUEX_NAME(TokenQueue_reset)(&me->_token_queue);
+        me->buffer._read_p = start_p;
+        return (QUEX_TYPE_TOKEN*)0; 
+    }
+}
+
+QUEX_INLINE QUEX_TYPE_TOKEN*
+QUEX_NAME(pop_remaining_token_from_token_queue)(QUEX_TYPE_ANALYZER* me)
+{
+    QUEX_TYPE_TOKEN* token_p = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
+
+    if( token_p ) {
+        return token_p;
+    }
+    else if( me->error_code != E_Error_None ) {
+        QUEX_NAME(TokenQueue_set_token_TERMINATION)(&me->_token_queue);
+        return QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
+    }
+    else {
+        return (QUEX_TYPE_TOKEN*)0;
+    }
+}
 
 QUEX_NAMESPACE_MAIN_CLOSE
 #endif

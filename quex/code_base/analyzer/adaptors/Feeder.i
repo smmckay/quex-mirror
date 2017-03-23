@@ -87,8 +87,10 @@ QUEX_NAME(Feeder_feed)(QUEX_TYPE_FEEDER* me, const void* BeginP, const void* End
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
 {
-    QUEX_TYPE_TOKEN*  token = QUEX_NAME(FeederBase_deliver)(&me->base, 
-                                                            me->external_chunk.begin_p == me->external_chunk.end_p);
+    const bool        EndOfChunkF = me->external_chunk.begin_p == me->external_chunk.end_p ? true : false;
+    QUEX_TYPE_TOKEN*  token = QUEX_NAME(receive_from_chunk)(me->base.lexer, 
+                                                            EndOfChunkF,
+                                                            me->base.stream_terminating_token_id);
     const void*       previous_begin_p;
 
     while( ! token && me->external_chunk.begin_p != me->external_chunk.end_p ) {
@@ -106,68 +108,10 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
             return (QUEX_TYPE_TOKEN*)0;
         }
 
-        token = QUEX_NAME(FeederBase_deliver)(&me->base, 
-                                              me->external_chunk.begin_p == me->external_chunk.end_p);
+        token = QUEX_NAME(receive_from_chunk)(me->base.lexer, EndOfChunkF,
+                                              me->base.stream_terminating_token_id);
     }
     return token;
-}
-
-QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(FeederBase_deliver)(QUEX_NAME(FeederBase)* me, bool EndOfChunkF)
-/* RETURNS: NULL, requires refill.
- *          Pointer to token, that has been identified 
- *          (This may be the 'BYE' token).                                    */
-{
-    QUEX_TYPE_TOKEN*       token_p;
-    QUEX_TYPE_LEXATOM*     start_p;
-    const QUEX_TYPE_TOKEN* last_token_in_queue_p;
-
-    /* If token queue is not empty => it has been ensured that all tokens are
-     * generated well inside the buffer's boundaries.                         */
-    token_p = QUEX_NAME(TokenQueue_pop)(&me->lexer->_token_queue);
-    if( token_p ) {
-        return token_p;
-    }
-    else if( me->lexer->error_code != E_Error_None ) {
-        QUEX_NAME(TokenQueue_set_token_TERMINATION)(&me->lexer->_token_queue);
-        return QUEX_NAME(TokenQueue_pop)(&me->lexer->_token_queue);
-    }
-
-    /* Token queue is empty. A new step begins. 
-     * Backup read position. It may be reset in case of reaching boundaries.  */
-    do {
-        start_p = me->lexer->buffer._read_p;
-
-        me->lexer->current_analyzer_function(me->lexer);
-        QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->lexer->_token_queue);
-
-        if( me->lexer->error_code != E_Error_None ) {
-            QUEX_NAME(TokenQueue_reset)(&me->lexer->_token_queue);
-            return (QUEX_TYPE_TOKEN*)0; 
-        }
-
-    } while( QUEX_NAME(TokenQueue_is_empty)(&me->lexer->_token_queue) );
-
-    if( me->lexer->buffer._read_p < me->lexer->buffer.input.end_p ) {
-        /* Complete token queue is generated without reaching buffer boarders.*/
-        return token_p;
-    }
-    else {
-        last_token_in_queue_p = QUEX_NAME(TokenQueue_last_token)(&me->lexer->_token_queue); 
-        __quex_assert(last_token_in_queue_p); /* not empty => last token.     */
-        if(    last_token_in_queue_p->_id == me->stream_terminating_token_id 
-            && EndOfChunkF ) {
-            /* The 'good bye' token may stand very well on the border.        */
-            return token_p;
-        }
-        else {
-            /* All generated tokens are in doubt. 
-             * Reset token queue. Restart analysis with more content.         */
-            QUEX_NAME(TokenQueue_reset)(&me->lexer->_token_queue);
-            me->lexer->buffer._read_p = start_p;
-            return (QUEX_TYPE_TOKEN*)0; 
-        }
-    }
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE
