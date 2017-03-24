@@ -1,6 +1,6 @@
 #include <data/check.h>
 
-#ifdef __QUEX_OPTION_COUNTER
+#ifdef QUEX_OPTION_COUNTER
 void
 QUEX_NAME(TEST_MODE_counter)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)
 {
@@ -450,4 +450,4 @@ _62:
     (void)target_state_index;
     (void)target_state_else_index;
 }
-#endif /* __QUEX_OPTION_COUNTER */
+#endif /* QUEX_OPTION_COUNTER */

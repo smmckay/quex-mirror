@@ -28,7 +28,7 @@
 #include    <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include    <quex/code_base/buffer/bytes/ByteLoader>
 
-#ifdef      __QUEX_OPTION_COUNTER
+#ifdef      QUEX_OPTION_COUNTER
 #   include <quex/code_base/analyzer/Counter.i>
 #endif
 #ifdef      QUEX_OPTION_INCLUDE_STACK

@@ -4,7 +4,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC_I
 
-#if defined(__QUEX_OPTION_COUNTER)
+#if defined(QUEX_OPTION_COUNTER)
 #   include <quex/code_base/analyzer/Counter>
 #endif
 #include <quex/code_base/token/TokenPolicy>
@@ -94,7 +94,6 @@ QUEX_NAME(byte_order_reversion_set)(QUEX_TYPE_ANALYZER* me, bool Value)
 QUEX_INLINE void
 QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
 {
-    QUEX_NAME(Mode)** iterator = 0x0;
     const char*       handler_name = (const char*)0;
 
     __QUEX_STD_printf("  mode:       %s;\n", 
@@ -119,14 +118,9 @@ QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(PostCategorizer_print_this)(&me->post_categorizer);
 #   endif
 
-    __QUEX_STD_printf("  _mode_stack: {\n");
-    __QUEX_STD_printf("    size:    %i;\n",
-                      (int)(me->_mode_stack.memory_end - me->_mode_stack.begin));
-    __QUEX_STD_printf("    content: [");
-    for(iterator=me->_mode_stack.end-1; iterator >= me->_mode_stack.begin; --iterator)
-        __QUEX_STD_printf("%s, ", (*iterator)->name);
-    __QUEX_STD_printf("]\n");
-    __QUEX_STD_printf("  }\n");
+    __QUEX_STD_printf("  _mode_stack: ");
+    QUEX_NAME(ModeStack_print)(&me->_mode_stack);
+
     QUEX_NAME(Buffer_print_this)(&me->buffer);
 
     if( me->error_code != E_Error_None ) {

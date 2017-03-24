@@ -21,7 +21,7 @@
 #include    <quex/code_base/analyzer/Mode>
 #include    <quex/code_base/token/TokenQueue>
 
-#ifdef      __QUEX_OPTION_COUNTER
+#ifdef      QUEX_OPTION_COUNTER
 #include    <quex/code_base/analyzer/Counter>
 #endif
 #ifdef      QUEX_OPTION_INCLUDE_STACK

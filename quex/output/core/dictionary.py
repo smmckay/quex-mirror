@@ -249,20 +249,20 @@ class Lng_Cpp(dict):
         return "QUEX_NAME(%s_counter)" % ModeName
 
     def DEFAULT_COUNTER_CALL(self):
-        return "__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);\n"
+        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
 
     def RUN_TIME_COUNTER_PROLOG(self, FunctionName):
-        return "#ifdef      __QUEX_COUNT_VOID\n"                             \
-               "#   undef   __QUEX_COUNT_VOID\n"                             \
+        return "#ifdef      QUEX_FUNCTION_COUNT_ARBITRARY\n"                             \
+               "#   undef   QUEX_FUNCTION_COUNT_ARBITRARY\n"                             \
                "#endif\n"                                                    \
-               "#ifdef      __QUEX_OPTION_COUNTER\n"                         \
-               "#    define __QUEX_COUNT_VOID(ME, BEGIN, END) \\\n"          \
+               "#ifdef      QUEX_OPTION_COUNTER\n"                         \
+               "#    define QUEX_FUNCTION_COUNT_ARBITRARY(ME, BEGIN, END) \\\n"          \
                "            do {                              \\\n"          \
                "                %s((ME), (BEGIN), (END));     \\\n"          \
                "                __quex_debug_counter();       \\\n"          \
                "            } while(0)\n"                                    \
                "#else\n"                                                     \
-               "#    define __QUEX_COUNT_VOID(ME, BEGIN, END) /* empty */\n" \
+               "#    define QUEX_FUNCTION_COUNT_ARBITRARY(ME, BEGIN, END) /* empty */\n" \
                "#endif\n"                                                    \
                % FunctionName
 

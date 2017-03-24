@@ -33,7 +33,7 @@ QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)* me)
 }
 
 QUEX_INLINE void  
-QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* buffer) 
+QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* me) 
 {
     /* Assumptions: 
      *    (1) width of terminal     = 80 chars
@@ -45,18 +45,23 @@ QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* buffer)
      *
      *    |12345 ...      12345  ....       12345      ....    12345|
      *    Begin           lexeme start        input_p               buffer end     */ 
-    QUEX_TYPE_LEXATOM*  iterator  = buffer->_memory._front;
-    QUEX_TYPE_LEXATOM*  total_end = buffer->_memory._back + 1;
+    QUEX_TYPE_LEXATOM*  iterator  = me->_memory._front;
+    QUEX_TYPE_LEXATOM*  total_end = me->_memory._back + 1;
+    __quex_assert(me != 0x0);
 
-    __quex_assert(buffer != 0x0);
-    __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
-    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->_memory._front,      total_end, buffer);
-    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->_lexeme_start_p - 2, total_end, buffer);
-    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->_read_p        - 2, total_end, buffer);
-    if( buffer->input.end_p != 0x0 ) {
-        QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->input.end_p - 4, total_end, buffer);
+    if( QUEX_NAME(Buffer_resources_absent)(me) ) {
+        __QUEX_STD_printf("  <detailed buffer content cannot be displayed>\n");
+        return;
     }
-    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, buffer->_memory._back   - 4, total_end, buffer);
+
+    __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_memory._front,      total_end, me);
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_lexeme_start_p - 2, total_end, me);
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_read_p        - 2, total_end, me);
+    if( me->input.end_p != 0x0 ) {
+        QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->input.end_p - 4, total_end, me);
+    }
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_memory._back   - 4, total_end, me);
     __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
 }
 
@@ -99,7 +104,12 @@ QUEX_NAME(Buffer_print_content_core)(const size_t   ElementSize,
 QUEX_INLINE void  
 QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
 {
-    __QUEX_STD_printf("  buffer: {\n");
+    __QUEX_STD_printf("  buffer: ");
+    if( QUEX_NAME(Buffer_resources_absent)(me) ) {
+        __QUEX_STD_printf("<uninitialized>\n");
+        return;
+    }
+    __QUEX_STD_printf("{\n");
     QUEX_NAME(BufferMemory_print_this)(&me->_memory);
 
     __QUEX_STD_printf("    _read_p:                      ");

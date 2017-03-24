@@ -26,7 +26,7 @@ main(int argc, char** argv)
     printf(",-----------------------------------------------------------------\n");
     printf("| [START]\n");
 
-    do {
+    while( qlex.error_code == E_Error_None ) {
         quex_EasyLexer_receive(&qlex, &token_p);
         if( ! token_p ) break;
 
@@ -34,7 +34,8 @@ main(int argc, char** argv)
 
         ++number_of_tokens;
 
-    } while( token_p->_id != QUEX_TKN_TERMINATION );
+        if( token_p->_id == QUEX_TKN_TERMINATION ) break;
+    } 
 
     printf("| [END] number of token = %i\n", (int)number_of_tokens);
     printf("`-----------------------------------------------------------------\n");

@@ -27,7 +27,7 @@ main(int argc, char** argv)
     cout << "| [START]\n";
 
     int number_of_tokens = 0;
-    do {
+    while( qlex.error_code == E_Error_None ) {
         qlex.receive(&token_p);
         if( ! token_p ) break;
 
@@ -35,7 +35,8 @@ main(int argc, char** argv)
 
         ++number_of_tokens;
 
-    } while( token_p->type_id() != QUEX_TKN_TERMINATION );
+        if( token_p->type_id() == QUEX_TKN_TERMINATION ) break;
+    }
 
     cout << "| [END] number of token = " << number_of_tokens << "\n";
     cout << "`-----------------------------------------------------------------\n";

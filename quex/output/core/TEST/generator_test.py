@@ -471,7 +471,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 
     function_body, \
     variable_definitions = cpp_generator.do_core(mode)
-    function_body += "if(0) { __QUEX_COUNT_VOID((QUEX_TYPE_ANALYZER*)0, (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0); }\n"
+    function_body += "if(0) { QUEX_FUNCTION_COUNT_ARBITRARY((QUEX_TYPE_ANALYZER*)0, (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0); }\n"
     function_txt  = cpp_generator.wrap_up(sm_name, function_body, 
                                           variable_definitions, 
                                           ModeNameList=[], dial_db=dial_db)
@@ -485,7 +485,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 def nonsense_default_counter(FirstModeF):
     if FirstModeF:
         return   "static void\n" \
-               + "__QUEX_COUNT_VOID(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd) {}\n" 
+               + "QUEX_FUNCTION_COUNT_ARBITRARY(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd) {}\n" 
     else:
         return "" # Definition done before
 

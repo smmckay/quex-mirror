@@ -76,7 +76,7 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, dial_db):
     state_router_adr   = DoorID.global_state_router(dial_db).related_address
     state_router_label = Lng.LABEL_STR_BY_ADR(state_router_adr)
     txt = [  \
-          "#ifdef __QUEX_OPTION_COUNTER\n" \
+          "#ifdef QUEX_OPTION_COUNTER\n" \
         + "static void\n" \
         + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" \
           % FunctionName \
@@ -134,7 +134,7 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, dial_db):
        + "    (void)target_state_index;\n"
        + "    (void)target_state_else_index;\n"
        + "}\n" \
-       + "#endif /* __QUEX_OPTION_COUNTER */\n" 
+       + "#endif /* QUEX_OPTION_COUNTER */\n" 
     )
 
     return "".join(Lng.GET_PLAIN_STRINGS(txt, dial_db))

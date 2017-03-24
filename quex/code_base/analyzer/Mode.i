@@ -52,6 +52,26 @@ QUEX_NAMESPACE_MAIN_OPEN
                && me->memory_end == (QUEX_NAME(Mode)**)0;
     }
 
+    QUEX_INLINE void
+    QUEX_NAME(ModeStack_print)(QUEX_NAME(ModeStack)* me)
+    {
+        QUEX_NAME(Mode)** iterator = 0x0;
+        if( QUEX_NAME(ModeStack_resources_absent)(me) ) {
+            __QUEX_STD_printf("<uninitialized>\n");
+        }
+        else {
+            __QUEX_STD_printf("{\n");
+            __QUEX_STD_printf("    size:    %i;\n",
+                              (int)(me->memory_end - me->begin));
+            __QUEX_STD_printf("    content: [");
+            for(iterator=me->end-1; iterator >= me->begin; --iterator) {
+                __QUEX_STD_printf("%s, ", (*iterator)->name);
+            }
+            __QUEX_STD_printf("]\n");
+            __QUEX_STD_printf("  }\n");
+        }
+    }
+
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__MODE_I */

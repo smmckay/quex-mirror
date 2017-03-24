@@ -122,7 +122,7 @@ QUEX_NAME(Accumulator_add)(QUEX_NAME(Accumulator)* me,
     __quex_assert(End > Begin);
 
     /* If it is the first string to be appended, the store the location */
-#   ifdef __QUEX_OPTION_COUNTER
+#   ifdef QUEX_OPTION_COUNTER
     if( me->text.begin == me->text.end ) {
         __QUEX_IF_COUNT_COLUMNS(me->_begin_column = me->the_lexer->counter._column_number_at_begin);
         __QUEX_IF_COUNT_LINES(me->_begin_line     = me->the_lexer->counter._line_number_at_begin);
@@ -148,7 +148,7 @@ QUEX_NAME(Accumulator_add_character)(QUEX_NAME(Accumulator)*     me,
                                      const QUEX_TYPE_LEXATOM  Character)
 { 
     /* If it is the first string to be appended, the store the location */
-#   ifdef __QUEX_OPTION_COUNTER
+#   ifdef QUEX_OPTION_COUNTER
     if( me->text.begin == me->text.end ) {
         __QUEX_IF_COUNT_COLUMNS(me->_begin_column = me->the_lexer->counter._column_number_at_begin);
         __QUEX_IF_COUNT_LINES(me->_begin_line     = me->the_lexer->counter._line_number_at_begin);
@@ -203,11 +203,17 @@ QUEX_INLINE void
 QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
 {
     /* All functions must ensure that there is one cell left to store the terminating zero. */
-    __quex_assert(me->text.end < me->text.memory_end);
 
-    *(me->text.end) = (QUEX_TYPE_LEXATOM)0; /* see above '__quex_assert()' */
 
-    __QUEX_STD_printf("  accumulator: '%s'\n", (const char*)me->text.begin);
+    __QUEX_STD_printf("  accumulator: ");
+    if( ! me->text.end || ! me->text.begin ) {
+        __QUEX_STD_printf("<uninitialized>\n");
+    }
+    else {
+        __quex_assert(me->text.end < me->text.memory_end);
+        *(me->text.end) = (QUEX_TYPE_LEXATOM)0; /* see above '__quex_assert()' */
+        __QUEX_STD_printf("'%s'\n", (const char*)me->text.begin);
+    }
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

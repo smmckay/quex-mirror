@@ -41,6 +41,8 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE bool  QUEX_NAME(Counter_construct)(QUEX_NAME(Counter)*  me); 
     QUEX_INLINE void  QUEX_NAME(Counter_copy_construct)(QUEX_NAME(Counter)*      me, 
                                                        const QUEX_NAME(Counter)* That);
+    QUEX_INLINE void  QUEX_NAME(Counter_resources_absent_mark)(QUEX_NAME(Counter)* me);
+    QUEX_INLINE bool  QUEX_NAME(Counter_resources_absent)(QUEX_NAME(Counter)* me);
 
 #if 0
     /* General Count: All involved characters for column counting do have the same width. */

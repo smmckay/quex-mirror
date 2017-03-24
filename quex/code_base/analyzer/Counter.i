@@ -13,11 +13,34 @@ QUEX_NAMESPACE_MAIN_OPEN
         /* Set all to '0xFF' in order to catch easily a lack of initialization. */
         __QUEX_IF_ASSERTS(memset((void*)me, 0xFF, sizeof(QUEX_NAME(Counter))));
 
-        __QUEX_IF_COUNT_LINES(me->_line_number_at_begin = (size_t)1);
-        __QUEX_IF_COUNT_LINES(me->_line_number_at_end   = (size_t)1);
+        __QUEX_IF_COUNT_LINES(me->_line_number_at_begin     = (size_t)1);
+        __QUEX_IF_COUNT_LINES(me->_line_number_at_end       = (size_t)1);
         __QUEX_IF_COUNT_COLUMNS(me->_column_number_at_begin = (size_t)1);
         __QUEX_IF_COUNT_COLUMNS(me->_column_number_at_end   = (size_t)1); 
         __QUEX_IF_COUNT_INDENTATION(QUEX_NAME(IndentationStack_init)(&me->_indentation_stack));
+        return true;
+    }
+
+    QUEX_INLINE void
+    QUEX_NAME(Counter_resources_absent_mark)(QUEX_NAME(Counter)* me)
+    {
+        __QUEX_IF_COUNT_LINES(me->_line_number_at_begin               = (size_t)0);
+        __QUEX_IF_COUNT_LINES(me->_line_number_at_end                 = (size_t)0);
+        __QUEX_IF_COUNT_COLUMNS(me->_column_number_at_begin           = (size_t)0);
+        __QUEX_IF_COUNT_COLUMNS(me->_column_number_at_end             = (size_t)0); 
+        __QUEX_IF_COUNT_INDENTATION(me->_indentation_stack.back       = (QUEX_TYPE_INDENTATION*)0);
+        __QUEX_IF_COUNT_INDENTATION(me->_indentation_stack.memory_end = (QUEX_TYPE_INDENTATION*)0);
+    }
+
+    QUEX_INLINE bool
+    QUEX_NAME(Counter_resources_absent)(QUEX_NAME(Counter)* me)
+    {
+        __QUEX_IF_COUNT_LINES(if( me->_line_number_at_begin               != (size_t)0) return false);
+        __QUEX_IF_COUNT_LINES(if( me->_line_number_at_end                 != (size_t)0) return false);
+        __QUEX_IF_COUNT_COLUMNS(if( me->_column_number_at_begin           != (size_t)0) return false);
+        __QUEX_IF_COUNT_COLUMNS(if( me->_column_number_at_end             != (size_t)0) return false); 
+        __QUEX_IF_COUNT_INDENTATION(if( me->_indentation_stack.back       != (QUEX_TYPE_INDENTATION*)0) return false);
+        __QUEX_IF_COUNT_INDENTATION(if( me->_indentation_stack.memory_end != (QUEX_TYPE_INDENTATION*)0) return false);
         return true;
     }
 
@@ -69,7 +92,13 @@ QUEX_NAMESPACE_MAIN_OPEN
     {
         __QUEX_IF_COUNT_INDENTATION(size_t* it = 0x0);
 
-        __QUEX_STD_printf("  counter: {\n");
+        __QUEX_STD_printf("  counter: ");
+        if( QUEX_NAME(Counter_resources_absent)(me) ) {
+            __QUEX_STD_printf("<unitialized>\n");
+            return;
+        }
+        __QUEX_STD_printf("\n");
+
 #       ifdef  QUEX_OPTION_LINE_NUMBER_COUNTING
         __QUEX_STD_printf("    _line_number_at_begin:   %i;\n", (int)me->_line_number_at_begin);
         __QUEX_STD_printf("    _line_number_at_end:     %i;\n", (int)me->_line_number_at_end);
@@ -80,7 +109,10 @@ QUEX_NAMESPACE_MAIN_OPEN
 #       endif
 #       ifdef  QUEX_OPTION_INDENTATION_TRIGGER
         __QUEX_STD_printf("    _indentation_stack: [");
-        for(it = me->_indentation_stack.front; it != me->_indentation_stack.back + 1; ++it) {
+        for(it  = me->_indentation_stack.front; 
+               it != &me->_indentation_stack.back[1] 
+            && it != &me->_indentation_stack.front[QUEX_SETTING_INDENTATION_STACK_SIZE]; 
+            ++it) {
             __QUEX_STD_printf("%i, ", (int)*it);
         }
         __QUEX_STD_printf("]\n");
@@ -94,7 +126,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 	{
         *(me->front)   = 1;          /* first indentation at column = 1 */
         me->back       = me->front;
-        me->memory_end = me->front + QUEX_SETTING_INDENTATION_STACK_SIZE;
+        me->memory_end = &me->front[QUEX_SETTING_INDENTATION_STACK_SIZE];
 	}
 #endif
 

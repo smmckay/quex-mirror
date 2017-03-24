@@ -207,7 +207,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 
     pattern_list = [ pattern for pattern, action_str in pattern_action_list ]
     function_body, variable_definitions = cpp_generator.do_core(pattern_list, terminal_db)
-    function_body += "if(0) { __QUEX_COUNT_VOID((QUEX_TYPE_ANALYZER*)0, (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0); }\n"
+    function_body += "if(0) { QUEX_FUNCTION_COUNT_ARBITRARY((QUEX_TYPE_ANALYZER*)0, (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0); }\n"
     function_txt                        = cpp_generator.wrap_up(sm_name, function_body, 
                                                                 variable_definitions, 
                                                                 ModeNameList=[])

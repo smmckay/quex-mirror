@@ -169,7 +169,7 @@ def get_test_application(ca_map, ReferenceP, CT):
     # (*) Compile
     os.system("rm -f test")
     compile_str =   "gcc -Wall -Werror -I. -ggdb ./data/check.c ./data/test.c "     \
-                  + " -D__QUEX_OPTION_COUNTER"                              \
+                  + " -DQUEX_OPTION_COUNTER"                              \
                   + " -DDEF_COUNTER_FUNCTION='%s' " % counter_function_name \
                   + " -DDEF_FILE_NAME='\"data/input.txt\"' "                \
                   + " -DDEF_CHARACTER_TYPE=%s " % CT                        \

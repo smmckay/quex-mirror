@@ -297,7 +297,7 @@ def __create_token_sender_by_token_name(fh, TokenName):
     ]
 
     # Box the token, stamp it with an id and 'send' it
-    txt.append(Lng.TOKEN_SEND(TokenName))
+    txt.append("%s\n" % Lng.TOKEN_SEND(TokenName))
 
     return "\n".join(txt)
 

@@ -30,10 +30,12 @@ QUEX_NAME(Mode)* (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {
     &QUEX_NAME(M)
 };
 #ifndef __QUEX_INDICATOR_DUMPED_TOKEN_ID_DEFINED
-    static QUEX_TYPE_TOKEN_ID    QUEX_NAME_TOKEN(DumpedTokenIdObject);
+    static QUEX_TYPE_TOKEN_ID  QUEX_NAME_TOKEN(DumpedTokenIdObject);
 #endif
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
-#define __self_result_token_id    QUEX_NAME_TOKEN(DumpedTokenIdObject)
+#define self                   (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#define __self_result_token_id QUEX_NAME_TOKEN(DumpedTokenIdObject)
+#define LexemeNull             (&QUEX_LEXEME_NULL)
+#define RETURN                 return
 
 void
 QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* FromMode) {
@@ -104,24 +106,26 @@ QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
 #endif    
 #undef self
 #undef __self_result_token_id
+#undef LexemeNull
+#undef RETURN
 QUEX_NAMESPACE_MAIN_CLOSE
 
 /* #include "TestAnalyzer"*/
 QUEX_NAMESPACE_MAIN_OPEN
 QUEX_TYPE_LEXATOM  QUEX_LEXEME_NULL_IN_ITS_NAMESPACE = (QUEX_TYPE_LEXATOM)0;
-#ifdef      __QUEX_COUNT_VOID
-#   undef   __QUEX_COUNT_VOID
+#ifdef      QUEX_FUNCTION_COUNT_ARBITRARY
+#   undef   QUEX_FUNCTION_COUNT_ARBITRARY
 #endif
-#ifdef      __QUEX_OPTION_COUNTER
-#    define __QUEX_COUNT_VOID(ME, BEGIN, END) \
+#ifdef      QUEX_OPTION_COUNTER
+#    define QUEX_FUNCTION_COUNT_ARBITRARY(ME, BEGIN, END) \
             do {                              \
                 QUEX_NAME(M_counter)((ME), (BEGIN), (END));     \
                 __quex_debug_counter();       \
             } while(0)
 #else
-#    define __QUEX_COUNT_VOID(ME, BEGIN, END) /* empty */
+#    define QUEX_FUNCTION_COUNT_ARBITRARY(ME, BEGIN, END) /* empty */
 #endif
-#ifdef __QUEX_OPTION_COUNTER
+#ifdef QUEX_OPTION_COUNTER
 static void
 QUEX_NAME(M_counter)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)
 {
@@ -304,7 +308,7 @@ _18:
     (void)target_state_index;
     (void)target_state_else_index;
 }
-#endif /* __QUEX_OPTION_COUNTER */
+#endif /* QUEX_OPTION_COUNTER */
 
 #include <quex/code_base/buffer/Buffer>
 #include <quex/code_base/token/TokenQueue>
@@ -423,10 +427,10 @@ goto _11;
      * States that implement actions of the 'winner patterns.                     */
 _2:
     __quex_debug("* TERMINAL BAD_LEXATOM\n");
-__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
+QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnBadLexatom;
-self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
 RETURN;
 
 }
@@ -436,10 +440,10 @@ RETURN;
 goto _1;
 _3:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
-__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
+QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnLoadFailure;
-self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
 RETURN;
 
 }
@@ -449,10 +453,10 @@ RETURN;
 goto _1;
 _4:
     __quex_debug("* TERMINAL OVERFLOW\n");
-__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
+QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnOverflow;
-self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
 RETURN;
 
 }
@@ -461,9 +465,9 @@ RETURN;
 goto _1;
 _5:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
-__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
+QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
 
 }
     /* End of Stream FORCES a return from the lexical analyzer, so that no
@@ -472,21 +476,21 @@ self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
 goto _1;
 _6:
     __quex_debug("* TERMINAL FAILURE\n");
-__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
+QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnFailure;
-self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
 RETURN;
 
 }
 RETURN;
 _7:
     __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
-__QUEX_COUNT_VOID(&self, LexemeBegin, LexemeEnd);
+QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
 self.error_code = E_Error_NoHandler_OnSkipRangeOpen;
-self_send1(__QUEX_SETTING_TOKEN_ID_TERMINATION, LexemeNull);
+self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
 RETURN;
 
 }
@@ -505,7 +509,7 @@ self_send(QUEX_TKN_X);
 RETURN;
 
 
-#   line 509 "TestAnalyzer.cpp"
+#   line 513 "TestAnalyzer.cpp"
 
 }
 RETURN;
@@ -729,6 +733,8 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 #endif /* QUEX_OPTION_INCLUDE_STACK */
 
 QUEX_NAMESPACE_MAIN_CLOSE
+
+
 
 
 

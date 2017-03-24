@@ -179,7 +179,7 @@ def _prepare_all(mode_db, class_token_implementation,
                             function_analyzers_implementation,
                             func_map_token_id_to_name_implementation,
                             analyzer_implementation,
-                            class_token_implementation])
+                            class_token_implementation, "\n"])
 
     return configuration_header, \
            analyzer_header, \

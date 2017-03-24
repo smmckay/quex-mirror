@@ -205,7 +205,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
         goto ERROR_3;
     }
 #   endif
-#   ifdef __QUEX_OPTION_COUNTER
+#   ifdef QUEX_OPTION_COUNTER
     else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
         me->error_code = E_Error_Constructor_Counter_Failed;
         goto ERROR_4;
@@ -229,7 +229,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_5:
     /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
-#   ifdef __QUEX_OPTION_COUNTER
+#   ifdef QUEX_OPTION_COUNTER
 ERROR_4:
 #   endif
     __QUEX_IF_POST_CATEGORIZER(QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
@@ -306,6 +306,9 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 #   endif
 #   if defined(QUEX_OPTION_POST_CATEGORIZER)
     QUEX_NAME(PostCategorizer_resources_absent_mark)(&me->post_categorizer);
+#   endif
+#   ifdef QUEX_OPTION_COUNTER
+    QUEX_NAME(Counter_resources_absent_mark)(&me->counter);
 #   endif
 
     QUEX_NAME(Buffer_resources_absent_mark)(&me->buffer);

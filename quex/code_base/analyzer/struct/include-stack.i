@@ -215,7 +215,7 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 #   if defined(QUEX_OPTION_ASSERTS)
     memento->DEBUG_analyzer_function_at_entry = me->DEBUG_analyzer_function_at_entry;
 #   endif
-#   ifdef __QUEX_OPTION_COUNTER
+#   ifdef QUEX_OPTION_COUNTER
     __QUEX_IF_COUNT(memento->counter = me->counter); /* Plain copy is ok.     */ 
 #   endif
 

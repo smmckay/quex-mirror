@@ -192,10 +192,13 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 QUEX_NAMESPACE_MAIN_CLOSE
 
 
+
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
 
 #include <quex/code_base/analyzer/headers.i>
 #include <quex/code_base/analyzer/C-adaptions.h>
+
+
 bool UserConstructor_UnitTest_return_value = true;
 bool UserReset_UnitTest_return_value       = true;
 bool UserMementoPack_UnitTest_return_value = true;
@@ -241,7 +244,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 245 "TestAnalyzer.h"
+#   line 248 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -272,7 +275,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 276 "TestAnalyzer.h"
+#   line 279 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -313,7 +316,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 317 "TestAnalyzer.h"
+#   line 320 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -404,7 +407,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 408 "TestAnalyzer.h"
+#   line 411 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -426,7 +429,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 430 "TestAnalyzer.h"
+#   line 433 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -445,7 +448,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 449 "TestAnalyzer.h"
+#   line 452 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -523,7 +526,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 
    
 
-#   line 527 "TestAnalyzer.h"
+#   line 530 "TestAnalyzer.h"
 
 
 

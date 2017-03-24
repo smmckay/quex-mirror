@@ -1,4 +1,4 @@
-#ifdef __QUEX_OPTION_COUNTER
+#ifdef QUEX_OPTION_COUNTER
 void
 QUEX_NAME(TEST_MODE_counter)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)
 {
@@ -270,7 +270,7 @@ _1:
    return;
 #  undef self
 }
-#endif /* __QUEX_OPTION_COUNTER */
+#endif /* QUEX_OPTION_COUNTER */
 
 _____________________________________________________________________________
 file:     './data/example.utf16le';
@@ -278,4 +278,4 @@ char_size: 2;
 byte_n:    809;
 column_n:  544;
 line_n:    1;
-## gcc -Wall -Werror -I. -ggdb ./data/check.c ./data/test.c  -D__QUEX_OPTION_COUNTER -DDEF_COUNTER_FUNCTION='QUEX_NAME(TEST_MODE_counter)'  -DDEF_FILE_NAME='"./data/example.utf16le"'  -DDEF_CHARACTER_TYPE=uint16_t  -o test
+## gcc -Wall -Werror -I. -ggdb ./data/check.c ./data/test.c  -DQUEX_OPTION_COUNTER -DDEF_COUNTER_FUNCTION='QUEX_NAME(TEST_MODE_counter)'  -DDEF_FILE_NAME='"./data/example.utf16le"'  -DDEF_CHARACTER_TYPE=uint16_t  -o test

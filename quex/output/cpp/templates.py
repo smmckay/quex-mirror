@@ -315,7 +315,8 @@ def get_implementation_header(Setup):
     return "\n".join([
         Lng.CONVERTER_HELPER_IMLEMENTATION(),
         "#include <quex/code_base/analyzer/headers.i>",
-        "#include <quex/code_base/analyzer/C-adaptions.h>"
+        "#include <quex/code_base/analyzer/C-adaptions.h>",
+        "\n"
     ])
 
 def __frame_of_all(Code, Setup):

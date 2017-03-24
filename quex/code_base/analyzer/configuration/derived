@@ -97,15 +97,15 @@
 #if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)   \
     || defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING) \
     || defined(QUEX_OPTION_INDENTATION_TRIGGER)       
-#     define  __QUEX_OPTION_COUNTER
+#     define  QUEX_OPTION_COUNTER
 #     define  __QUEX_IF_COUNT(EXPRESSION)             EXPRESSION
 #     define  __QUEX_IF_COUNT_IF(EXPRESSION)          if( EXPRESSION )
 #     define  __QUEX_IF_COUNT_SHIFT_VALUES()  \
               __QUEX_COUNTER_SHIFT_COLUMNS(); \
               __QUEX_COUNTER_SHIFT_LINES();
 #else
-#     if defined(__QUEX_OPTION_COUNTER)  
-#        undef   __QUEX_OPTION_COUNTER
+#     if defined(QUEX_OPTION_COUNTER)  
+#        undef   QUEX_OPTION_COUNTER
 #     endif
 #     define  __QUEX_IF_COUNT(EXPRESSION)             /* empty */
 #     define  __QUEX_IF_COUNT_IF(EXPRESSION)          /* empty */

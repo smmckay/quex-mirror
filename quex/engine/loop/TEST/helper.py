@@ -194,7 +194,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
     if run_time_counter_f:
         function_name, \
         counter_code   = run_time_counter.get(ca_map, "UNIT_TEST")
-        code.append("#define __QUEX_COUNT_VOID %s\n" % function_name)
+        code.append("#define QUEX_FUNCTION_COUNT_ARBITRARY %s\n" % function_name)
         code.extend(counter_code)                       
 
     code.extend(
@@ -227,7 +227,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     
     function_name, \
     counter_code   = run_time_counter.get(ca_map, "UNIT_TEST")
-    counter_code   = "#define __QUEX_COUNT_VOID %s\n" % function_name \
+    counter_code   = "#define QUEX_FUNCTION_COUNT_ARBITRARY %s\n" % function_name \
                      + counter_code
 
     code = [] # [ "%s\n" % Lng.LABEL(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)) ]
