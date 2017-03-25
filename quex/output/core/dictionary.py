@@ -80,6 +80,9 @@ class Lng_Cpp(dict):
         # analyzer on something unrelated.
         self.__analyzer = None
 
+    def EQUAL(self, X, Y):
+        return "%s == %s" % (X, Y)
+
     @property
     def analyzer(self):
         return self.__analyzer

@@ -29,13 +29,13 @@ def do(Mode_PrepPrepDB):
         exit_handler_active_f  |= mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT)
 
     # Token repetition support
-    token_repeat_test_txt = ""
-    for token_id_str in blackboard.token_repetition_token_id_list:
-        token_repeat_test_txt += "TokenID == %s || " % token_id_str
-    if token_repeat_test_txt != "":
-        token_repeat_test_txt = token_repeat_test_txt[:-3]
-    else:
+    if not blackboard.token_repetition_token_id_list:
         token_repeat_test_txt = "false"
+    else:
+        token_repeat_test_txt = " || ".join(
+            Lng.EQUAL("TokenID", token_id_str)
+            for token_id_str in blackboard.token_repetition_token_id_list
+        )
 
     if Setup.analyzer_derived_class_name != "":
         analyzer_derived_class_name = Setup.analyzer_derived_class_name

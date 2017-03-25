@@ -154,26 +154,40 @@ QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me)
 QUEX_INLINE QUEX_TYPE_TOKEN* 
 QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
 {
+#   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
+    size_t           repetition_count;
+    QUEX_TYPE_TOKEN* token_p;
+#   endif
+
     __quex_assert(QUEX_NAME(TokenQueue_begin)(me) != 0x0);
 
+    if( QUEX_NAME(TokenQueue_is_empty)(me) ) {        
+        return (QUEX_TYPE_TOKEN*)0;
+    }
 #   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-    while( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->_id) ) {
-        if( QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator) != 0 ) { 
+    else if( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->_id) ) {
+        repetition_count = QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator);
+        if( repetition_count == 0 ) { 
+            /* This case should never occurr!                                 */
+            /* Repetition count == 0 => pop repeated token from queue.        */
+            ++(me->read_iterator);
+            if( QUEX_NAME(TokenQueue_is_empty)(me) ) {        
+                return (QUEX_TYPE_TOKEN*)0;
+            }
+        }
+        else if( repetition_count == 1 ) { 
+            /* Repetition will be 0, so remove token from the queue.          */
+            return me->read_iterator++;
+        }
+        else {
             QUEX_NAME_TOKEN(repetition_n_set)(me->read_iterator, 
                       (QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator) - 1));
             return me->read_iterator;  
         } 
-        /* Pop the repeated token from the queue                          */
-        ++(me->read_iterator);
     }
 #   endif
-    /* Tokens are in queue --> take next token from queue */ 
-    if( QUEX_NAME(TokenQueue_is_empty)(me) ) {        
-        return (QUEX_TYPE_TOKEN*)0;
-    }
-    else {
-        return me->read_iterator++;
-    } 
+    /* Tokens are in queue --> take next token from queue                    */ 
+    return me->read_iterator++;
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_begin)(QUEX_NAME(TokenQueue)* me)
@@ -296,7 +310,7 @@ QUEX_NAME(TokenQueueRemainder_restore)(QUEX_NAME(TokenQueueRemainder)* me, QUEX_
      *       token, the read_iterator == write_iterator, which means that the
      *       token queue is empty. => Thus, the 'refill' can start from the beginning.  
      *       THIS IS TRUE WHEN THE INLCUDE_PUSH, INCLUDE_POP HAPPENS FROM OUTSIDE
-     *       THE LEXICAL ANALYZER ENGINE.                                            */
+     *       THE LEXICAL ANALYZER ENGINE.                                     */
     if( ! QUEX_NAME(TokenQueue_is_empty)(token_queue) ) {
         QUEX_ERROR_EXIT("Token queue not empty on return from included file. This can\n"
                         "only happen if include handling was done from inside analyzer\n"
