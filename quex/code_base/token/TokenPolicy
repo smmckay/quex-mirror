@@ -15,11 +15,10 @@
  * defined macros are undefined right at the beginning, so they can be 
  * safely redefined.                                                     */
 #ifdef __QUEX_INCLUDE_INDICATOR__TOKEN_POLICY__
-#    undef __QUEX_CURRENT_TOKEN_P
+#    undef self_write_token_p
 #    undef __QUEX_STAMP_COLUMN_NUMBER
 #    undef __QUEX_STAMP_LINE_NUMBER
 #    undef QUEX_TOKEN_POLICY_PREPARE_NEXT
-#    undef QUEX_TOKEN_POLICY_ASSERT_READY_TO_SEND
 #    undef self_token_get_id
 #    undef self_token_set_id
 #else
@@ -27,12 +26,8 @@
 #endif
 /*_______________________________________________________________________*/
 
-#define __QUEX_CURRENT_TOKEN_P           (self._token_queue.write_iterator)
-
+#define self_write_token_p()             (self._token_queue.write_iterator)
 #define QUEX_TOKEN_POLICY_PREPARE_NEXT() ++(self._token_queue.write_iterator) 
-
-#define self_token_get_id()   \
-        __QUEX_CURRENT_TOKEN_P->_id
 
 /* Setting a token value. 
  *  
@@ -42,11 +37,22 @@
  *  the current token. This access depends on whether the token policy 'users
  *  token' or a queue policy is used.                                         */
                                     
+#define self_token_get_id()                                  \
+        (self_write_token_p()->_id)
+
 #define self_token_set_id(ID)                                \
         do {                                                 \
-            QUEX_ACTION_TOKEN_STAMP(__QUEX_CURRENT_TOKEN_P); \
-            (__QUEX_CURRENT_TOKEN_P)->_id = (ID);            \
+            QUEX_ACTION_TOKEN_STAMP(self_write_token_p());   \
+            self_write_token_p()->_id = (ID);                \
         } while(0)
+
+#define self_token_take_text(Begin, End) \
+        QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, (Begin), (End))
+
+#if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
+#  define self_token_repetition_n_set() \
+          QUEX_NAME_TOKEN(repetition_n_set)(self_write_token_p(), RepetitionN); 
+#endif
 
 /* Option: QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
  *
@@ -60,7 +66,7 @@
 #if    defined(QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN) \
     && defined(QUEX_OPTION_LINE_NUMBER_COUNTING)
 #       define __QUEX_STAMP_LINE_NUMBER(TOKEN)                  \
-               TOKEN->_line_n = self.counter._line_number_at_begin;
+               (TOKEN)->_line_n = self.counter._line_number_at_begin;
 #else
 #       define __QUEX_STAMP_LINE_NUMBER(TOKEN)    /* empty */
 #endif
@@ -68,7 +74,7 @@
 #if    defined(QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN) \
     && defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)
 #       define __QUEX_STAMP_COLUMN_NUMBER(TOKEN)                \
-               TOKEN->_column_n = self.counter._column_number_at_begin;
+               (TOKEN)->_column_n = self.counter._column_number_at_begin;
 #else
 #       define __QUEX_STAMP_COLUMN_NUMBER(TOKEN)  /* empty */
 #endif
@@ -81,16 +87,4 @@
               __QUEX_STAMP_LINE_NUMBER(TOKEN_P)  \
               __QUEX_STAMP_COLUMN_NUMBER(TOKEN_P) 
 #endif
-
-/* -- Assert consistency of the token queue
- * -- Assert no token is sent after token 'TERMINATION'. 
- *    If files are included the token queue is reset.                         */
-#define QUEX_TOKEN_POLICY_ASSERT_READY_TO_SEND()                                                                  \
-        do {                                                                                         \
-            QUEX_TOKEN_QUEUE_ASSERT(&self._token_queue);                                             \
-            if(   self._token_queue.write_iterator != self._token_queue.begin                        \
-               && (self._token_queue.write_iterator-1)->_id == __QUEX_SETTING_TOKEN_ID_TERMINATION ) \
-                QUEX_ERROR_EXIT("Detected attempt to send a token after 'TERMINATION'.\n"            \
-                                "If this is intended, compile with -DQUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE'.\n"); \
-        } while( 0 )
 

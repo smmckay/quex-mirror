@@ -1,7 +1,5 @@
 
-TESTS = \
-		queue.exe \
-		users_token.exe \
+TESTS = queue.exe 
 
 ENGINE = Simple.cpp
 
@@ -16,16 +14,14 @@ CC =  \
 	 -DQUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER=1 #
 	 #-DQUEX_OPTION_DEBUG_SHOW
 
+all: queue.exe
+
 hwut-info:
 	@echo $(TESTS)
 
 queue.exe:       lexer.cpp simple.qx 
 	quex -i simple.qx -o Simple --token-policy queue
 	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -lefence -o $@
-
-users_token.exe: lexer.cpp simple.qx 
-	quex -i simple.qx -o Simple --token-policy single
-	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -o $@
 
 ## User's queue has been deprecated
 ##
@@ -39,6 +35,7 @@ users_token.exe: lexer.cpp simple.qx
 %.o: %.cpp
 
 clean:
+	rm -rf *.exe
 	rm -rf Simple*
 	rm -rf $(TESTS)
 	rm -rf *.o

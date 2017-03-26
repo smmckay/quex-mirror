@@ -48,7 +48,6 @@ QUEX_NAMESPACE_MAIN_OPEN
                                                                   size_t*                n);
     QUEX_INLINE bool             QUEX_NAME(TokenQueue_is_full)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE bool             QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me);
-    QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_access_write_p)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_begin)(QUEX_NAME(TokenQueue)* me);
     QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_back)(QUEX_NAME(TokenQueue)* me);
@@ -57,48 +56,48 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 
 #ifdef QUEX_OPTION_ASSERTS
-#   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me) \
-        do { \
-            __quex_assert((me)->begin != 0x0); \
-            __quex_assert((me)->read_iterator  >= (me)->begin); \
-            __quex_assert((me)->write_iterator >= (me)->read_iterator); \
-            /* If the following breaks, it (me)ans that the given queue size was to small */ \
-            __quex_assert((me)->begin == 0x0 || (me)->end_minus_safety_border >= (me)->begin + 1); \
-            if( (me)->write_iterator > (me)->end ) {  \
-                QUEX_ERROR_EXIT("Error: Token queue overflow. This happens if too many tokens are sent\n" \
-                                "       as a reaction to one single pattern match. Use quex's command line\n" \
-                                "       option --token-queue-safety-border, or define the macro\n" \
-                                "       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.\n");  \
-            } \
-        } while(0)
 #   define QUEX_TOKEN_QUEUE_ASSERT(me) \
-        do { \
-            QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE((me)); \
-            if( (me)->write_iterator == (me)->end ) {  \
-                QUEX_ERROR_EXIT("Error: Token queue overflow. This happens if too many tokens are sent\n" \
+        do {                                                                                                  \
+            QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE((me));                                                        \
+            if( (me)->write_iterator == (me)->end ) {                                                         \
+                QUEX_ERROR_EXIT("Error: Token queue overflow. This happens if too many tokens are sent\n"     \
                                 "       as a reaction to one single pattern match. Use quex's command line\n" \
-                                "       option --token-queue-safety-border, or define the macro\n" \
-                                "       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.\n");  \
-            } \
+                                "       option --token-queue-safety-border, or define the macro\n"            \
+                                "       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.\n");     \
+            }                                                                                                 \
         } while(0)
+
+#   define QUEX_ASSERT_TOKEN_QUEUE_READY_TO_SEND(me)                                                \
+        do {                                                                                        \
+            QUEX_TOKEN_QUEUE_ASSERT(me);                                                            \
+            /* End of token queue has not been reached.                       */                    \
+            __quex_assert((me)->write_iterator != (me)->end);                                       \
+            /* No token sending after 'TERMINATION'.                          */                    \
+            __quex_assert(   (me)->write_iterator         == (me)->begin                            \
+                          || (me)->write_iterator[-1]._id != __QUEX_SETTING_TOKEN_ID_TERMINATION ); \
+        } while( 0 )
+
+#   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me) \
+        do {                                                                                       \
+            __quex_assert((me)->begin != 0x0);                                                     \
+            __quex_assert((me)->read_iterator  >= (me)->begin);                                    \
+            __quex_assert((me)->write_iterator >= (me)->read_iterator);                            \
+            /* If the following breaks, then the given queue size was to small*/                   \
+            __quex_assert((me)->begin == 0x0 || (me)->end_minus_safety_border >= (me)->begin + 1); \
+            if( (me)->write_iterator > (me)->end ) {                                               \
+                QUEX_ERROR_EXIT("Error: Token queue overflow. This happens if too many tokens are sent\n"     \
+                                "       as a reaction to one single pattern match. Use quex's command line\n" \
+                                "       option --token-queue-safety-border, or define the macro\n"            \
+                                "       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.\n");     \
+            }                                                                                                 \
+        } while(0)
+
 #else
-#   define QUEX_TOKEN_QUEUE_ASSERT(me)             /* empty */
-#   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me) /* empty */
-#endif
-
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
-    QUEX_TYPE_TOKEN*   token_list;
-    size_t             size;
-} QUEX_NAME(TokenQueueRemainder);
-
-#if 1
-QUEX_INLINE void  QUEX_NAME(TokenQueueRemainder_save)(QUEX_NAME(TokenQueueRemainder)*  me, 
-                                                      QUEX_NAME(TokenQueue)*           token_queue);
-
-QUEX_INLINE void  QUEX_NAME(TokenQueueRemainder_restore)(QUEX_NAME(TokenQueueRemainder)*  me, 
-                                                         QUEX_NAME(TokenQueue)*           token_queue);
+#   define QUEX_TOKEN_QUEUE_ASSERT(me)               /* empty */
+#   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(me)   /* empty */
+#   define QUEX_ASSERT_TOKEN_QUEUE_READY_TO_SEND(me) /* empty */
 #endif
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__TOKENQUEUE */
+#endif /* __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE */

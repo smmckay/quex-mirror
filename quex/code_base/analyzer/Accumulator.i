@@ -169,6 +169,7 @@ QUEX_NAME(Accumulator_add_character)(QUEX_NAME(Accumulator)*     me,
 }
 
 #if 0
+/* See: define self_accumulator_flush(TokenID) */
 QUEX_INLINE void
 QUEX_NAME(Accumulator_flush)(QUEX_NAME(Accumulator)*    me,
                              const QUEX_TYPE_TOKEN_ID  TokenID)
@@ -184,7 +185,7 @@ QUEX_NAME(Accumulator_flush)(QUEX_NAME(Accumulator)*    me,
 
 #   define self (*me->the_lexer)
     self_token_set_id(TokenID);
-    if( QUEX_NAME_TOKEN(take_text)(__QUEX_CURRENT_TOKEN_P, 
+    if( QUEX_NAME_TOKEN(take_text)(self_write_token_p(), 
                                    me->the_lexer, 
                                    me->text.begin, 
                                    me->text.end) == false ) {

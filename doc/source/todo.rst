@@ -56,3 +56,7 @@ for the 'buffer._memory.ownership' before reload!
     on_entry => QUEX_TKN_MODE_STRING_ENTER(LexemeNull);
     on_exit  => QUEX_TKN_MODE_STRING_EXIT(LexemeNull);
    May be extremely confusing! 'on_entry' is executed, but old mode is working.
+
+-- upon 'include': Token queue must be empty! Otherwise, tokens are lost!
+   => something like 'INCLUDE' 'FILE_NAME' is ok, if the inclusion happens
+      after 'FILE_NAME'.

@@ -33,7 +33,13 @@ main(int argc, char** argv)
 
         if( token_p->_id == QUEX_TKN_INCLUDE ) { 
             QUEX_NAME(receive)(&qlex, &token_p);
+
             print_token(&qlex, token_p, true);
+
+            /* The token queue *must* be empty, otherwise, the remaining tokens
+             * get lost upon the event of 'include_push'.                     */
+            __quex_assert(QUEX_NAME(TokenQueue_is_empty(&qlex._token_queue)));
+
             if( token_p->_id != QUEX_TKN_IDENTIFIER ) {
                 continue_lexing_f = false;
                 print(&qlex, "Found 'include' without a subsequent filename: '%s' hm?\n",

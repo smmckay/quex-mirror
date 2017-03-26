@@ -34,7 +34,7 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(token_p)(QUEX_TYPE_ANALYZER* me)
 {
 #   define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
-    return __QUEX_CURRENT_TOKEN_P;
+    return self_write_token_p();
 #   undef self
 }
 

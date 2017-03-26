@@ -48,12 +48,6 @@
 #   endif
 #endif
 
-/* Token / Token Policy 
- * (NOTE: Macros for token sending are defined separately in file 'member/token-sending'.
- *        Those macros have to perform a little 'type loose').                            */
-#define self_token_take_text(Begin, End) \
-        QUEX_NAME_TOKEN(take_text)(__QUEX_CURRENT_TOKEN_P, &self, (Begin), (End))
-
 /* Modes */
 #define self_current_mode_p()     /* QUEX_NAME(Mode)* */ QUEX_NAME(mode)(&self)
 #define self_current_mode_id()    /* int */              QUEX_NAME(mode_id)(&self)
@@ -93,35 +87,32 @@
 #   define self_accumulator_add_character(Char)  QUEX_NAME(Accumulator_add_character)(&self.accumulator, Char)
 #   define self_accumulator_clear()              QUEX_NAME(Accumulator_clear)(&self.accumulator)
 #   define self_accumulator_is_empty()           (self.accumulator.text.begin == self.accumulator.text.end)
-#   define self_accumulator_flush(TokenID)                                                \
-    do {                                                                                  \
-        /* All functions must ensure: there is one cell to store terminating zero. */     \
-        __quex_assert(self.accumulator.text.end < self.accumulator.text.memory_end);      \
-                                                                                          \
-        /* If no text is to be flushed, behave the same as self_send    */                \
-        /* That is: self_token_set_id(ID);                              */                \
-        /*          QUEX_TOKEN_POLICY_PREPARE_NEXT();                   */                \
-        /*          BUT: We clear the text of the otherwise void token. */                \
-        self_token_set_id(TokenID) ;                                                      \
-        if( self.accumulator.text.begin == self.accumulator.text.end ) {                  \
-            QUEX_NAME_TOKEN(take_text)(__QUEX_CURRENT_TOKEN_P, &self,                     \
-                                       &QUEX_LEXEME_NULL,                                 \
-                                       (&QUEX_LEXEME_NULL) + 1);                          \
-        }                                                                                 \
-        else {                                                                            \
-            *(self.accumulator.text.end) = (QUEX_TYPE_LEXATOM)0; /* see above */        \
-                                                                                          \
-            if( QUEX_NAME_TOKEN(take_text)(__QUEX_CURRENT_TOKEN_P, &self,                 \
-                                           self.accumulator.text.begin,                   \
-                                           self.accumulator.text.end) == false ) {        \
-                /* The called function does not need the memory chunk, we reuse it. */    \
-                QUEX_NAME(Accumulator_clear)(&self.accumulator);                          \
-            } else {                                                                      \
-                /* The called function wants to use the memory, so we get some new. */    \
-                QUEX_NAME(Accumulator_init_memory)(&self.accumulator);                    \
-            }                                                                             \
-        }                                                                                 \
-        QUEX_TOKEN_POLICY_PREPARE_NEXT();                                                 \
+#   define self_accumulator_flush(TokenID)                                             \
+    do {                                                                               \
+        /* All functions must ensure: there is one cell to store terminating zero. */  \
+        __quex_assert(self.accumulator.text.end < self.accumulator.text.memory_end);   \
+                                                                                       \
+        /* If no text is to be flushed, behave the same as self_send    */             \
+        /* That is: self_token_set_id(ID);                              */             \
+        /*          QUEX_TOKEN_POLICY_PREPARE_NEXT();                   */             \
+        /*          BUT: We clear the text of the otherwise void token. */             \
+        self_token_set_id(TokenID) ;                                                   \
+        if( self.accumulator.text.begin == self.accumulator.text.end ) {               \
+            self_token_take_text)(&QUEX_LEXEME_NULL, (&QUEX_LEXEME_NULL) + 1);         \
+        }                                                                              \
+        else {                                                                         \
+            *(self.accumulator.text.end) = (QUEX_TYPE_LEXATOM)0; /* see above */       \
+                                                                                       \
+            if( self_token_take_text(self.accumulator.text.begin,                      \
+                                     self.accumulator.text.end) == false ) {           \
+                /* The called function does not need the memory chunk, we reuse it. */ \
+                QUEX_NAME(Accumulator_clear)(&self.accumulator);                       \
+            } else {                                                                   \
+                /* The called function wants to use the memory, so we get some new. */ \
+                QUEX_NAME(Accumulator_init_memory)(&self.accumulator);                 \
+            }                                                                          \
+        }                                                                              \
+        QUEX_TOKEN_POLICY_PREPARE_NEXT();                                              \
     } while(0)
 
 /* Undo lexeme match */

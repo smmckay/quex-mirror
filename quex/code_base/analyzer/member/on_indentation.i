@@ -3,10 +3,10 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__ON_INDENTATION_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__ON_INDENTATION_I
 
-QUEX_NAMESPACE_MAIN_OPEN
-
 #include <quex/code_base/analyzer/member/token-sending>
 #include <quex/code_base/analyzer/Counter>
+
+QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE __QUEX_TYPE_ANALYZER_RETURN_VALUE  
 QUEX_NAME(on_indentation)(QUEX_TYPE_ANALYZER*    me, 
