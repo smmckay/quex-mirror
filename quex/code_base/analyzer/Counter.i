@@ -97,7 +97,7 @@ QUEX_NAMESPACE_MAIN_OPEN
             __QUEX_STD_printf("<unitialized>\n");
             return;
         }
-        __QUEX_STD_printf("\n");
+        __QUEX_STD_printf("{\n");
 
 #       ifdef  QUEX_OPTION_LINE_NUMBER_COUNTING
         __QUEX_STD_printf("    _line_number_at_begin:   %i;\n", (int)me->_line_number_at_begin);

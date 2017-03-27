@@ -1,46 +1,9 @@
 /* -*- C++ -*- vim: set syntax=cpp:
+ *
  * (C) 2005-2010 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                     */
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__TOKEN_SENDING
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__TOKEN_SENDING
-
-#include <quex/code_base/token/TokenQueue>
-#include <quex/code_base/token/TokenPolicy>
-#include <quex/code_base/lexeme>
-
-QUEX_NAMESPACE_MAIN_OPEN
-
-#define self_send(ID)                                                  \
-        do {                                                           \
-            QUEX_ASSERT_TOKEN_QUEUE_READY_TO_SEND(&self._token_queue); \
-            self_token_set_id(ID);                                     \
-            QUEX_TOKEN_POLICY_PREPARE_NEXT();                          \
-        } while ( 0 )
-
-#define self_send1(ID, Str)                                            \
-        self_send2((ID), (Str), (Str) + QUEX_NAME(lexeme_length)(Str));
-
-#define self_send2(ID, StrBegin, StrEnd)                               \
-        do {                                                           \
-            QUEX_ASSERT_TOKEN_QUEUE_READY_TO_SEND(&self._token_queue); \
-            self_token_set_id(ID);                                     \
-            self_token_take_text((StrBegin), (StrEnd));                \
-            QUEX_TOKEN_POLICY_PREPARE_NEXT();                          \
-        } while ( 0 )
-
-#if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-#  define self_send_n(RepetitionN, ID)                                   \
-        do {                                                             \
-             __quex_assert(RepetitionN != 0);                            \
-             __quex_assert(__QUEX_SETTING_TOKEN_ID_REPETITION_TEST(ID)); \
-             self_token_set_id(ID);                                      \
-             self_token_repetition_n_set(RepetitionN);                   \
-             QUEX_TOKEN_POLICY_PREPARE_NEXT();                           \
-        } while ( 0 )
-
-#endif
-
-QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__TOKEN_SENDING */
 

@@ -30,17 +30,17 @@
 #   undef self_accumulator_flush
 #   undef self_accumulator_is_empty
 /* Indentation/Counter _____________________________________________________*/
-#   ifdef  QUEX_OPTION_LINE_NUMBER_COUNTING
-#   undef  self_line_number            
-#   undef  self_line_number_at_begin 
-#   undef  self_line_number_at_begin_set
-#   undef  self_line_number_at_end   
+#   ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+#   undef self_line_number            
+#   undef self_line_number_at_begin 
+#   undef self_line_number_at_begin_set
+#   undef self_line_number_at_end   
 #   endif
-#   ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
-#   undef  self_column_number          
-#   undef  self_column_number_at_begin 
-#   undef  self_column_number_at_begin_set
-#   undef  self_column_number_at_end   
+#   ifdef QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#   undef self_column_number          
+#   undef self_column_number_at_begin 
+#   undef self_column_number_at_begin_set
+#   undef self_column_number_at_end   
 #   endif
 #   ifdef QUEX_OPTION_INDENTATION_TRIGGER
 #   undef self_indentation                    
@@ -54,23 +54,23 @@
 #define self_current_mode_name()  /* const char* */      QUEX_NAME(mode_name)(&self)
 
 /* Map: mode id to mode and vice versa */
-#define self_map_mode_id_to_mode_p(ID)       QUEX_NAME(map_mode_id_to_mode)(&self, (ID))
-#define self_map_mode_p_to_mode_id(ModeP)    QUEX_NAME(map_mode_to_mode_id)(&self, (ModeP))
-
-/* Changing Modes */
-#define self_set_mode_brutally(ModeP)        QUEX_NAME(set_mode_brutally)(&self, (ModeP))
-#define self_enter_mode(ModeP)               QUEX_NAME(enter_mode)(&self, (ModeP))
-
-/* Changing Modes with stack */ 
-#define self_pop_mode()                      QUEX_NAME(pop_mode)(&self)
-#define self_pop_drop_mode()                 QUEX_NAME(pop_drop_mode)(&self)
-#define self_push_mode(ModeP)                QUEX_NAME(push_mode)(&self, (ModeP))
+#define self_map_mode_id_to_mode_p(ID)         QUEX_NAME(map_mode_id_to_mode)(&self, (ID))
+#define self_map_mode_p_to_mode_id(ModeP)      QUEX_NAME(map_mode_to_mode_id)(&self, (ModeP))
+                                               
+/* Changing Modes */                           
+#define self_set_mode_brutally(ModeP)          QUEX_NAME(set_mode_brutally)(&self, (ModeP))
+#define self_enter_mode(ModeP)                 QUEX_NAME(enter_mode)(&self, (ModeP))
+                                               
+/* Changing Modes with stack */                
+#define self_pop_mode()                        QUEX_NAME(pop_mode)(&self)
+#define self_pop_drop_mode()                   QUEX_NAME(pop_drop_mode)(&self)
+#define self_push_mode(ModeP)                  QUEX_NAME(push_mode)(&self, (ModeP))
 
 #ifdef      QUEX_OPTION_LINE_NUMBER_COUNTING
-#   define  self_line_number_at_begin()      (self.counter._line_number_at_begin)
-#   define  self_line_number_at_begin_set(X) do { self.counter._line_number_at_begin = (X); } while(0)
-#   define  self_line_number_at_end()        (self.counter._line_number_at_end)
-#   define  self_line_number()               (self_line_number_at_begin())
+#   define  self_line_number_at_begin()        (self.counter._line_number_at_begin)
+#   define  self_line_number_at_begin_set(X)   do { self.counter._line_number_at_begin = (X); } while(0)
+#   define  self_line_number_at_end()          (self.counter._line_number_at_end)
+#   define  self_line_number()                 (self_line_number_at_begin())
 #endif
 #ifdef      QUEX_OPTION_COLUMN_NUMBER_COUNTING
 #   define  self_column_number_at_begin()      (self.counter._column_number_at_begin)

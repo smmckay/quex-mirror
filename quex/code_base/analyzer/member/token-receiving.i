@@ -17,12 +17,12 @@ QUEX_INLINE void QUEX_MEMBER(receive)(QUEX_TYPE_TOKEN** token_pp)
 #endif
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(pop_remaining_token_from_token_queue)(QUEX_TYPE_ANALYZER*);
+QUEX_NAME(remaining_token_pop)(QUEX_TYPE_ANALYZER*);
 
 QUEX_INLINE void
 QUEX_NAME(receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
 { 
-    *result_pp = QUEX_NAME(pop_remaining_token_from_token_queue)(me);
+    *result_pp = QUEX_NAME(remaining_token_pop)(me);
     if( *result_pp ) return; 
 
     /* Restart filling the queue from begin                                   */
@@ -32,7 +32,7 @@ QUEX_NAME(receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
     do {
         me->current_analyzer_function(me);
 
-        QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
+        QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING(&me->_token_queue);
 
         if( me->error_code != E_Error_None ) {
             QUEX_NAME(TokenQueue_set_token_TERMINATION)(&me->_token_queue);
@@ -48,7 +48,10 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(receive_from_chunk)(QUEX_TYPE_ANALYZER*    me, 
                               bool                   EndOfChunkF, 
                               QUEX_TYPE_TOKEN_ID     StreamTerminatingTokenId)
-/* RETURNS: NULL, requires refill.
+/* Receives tokens from memory chunks. This function is only to be used by the
+ * Feeder and the Gavager adapters.
+ * 
+ * RETURNS: NULL, requires refill.
  *          Pointer to token, that has been identified 
  *          (This may be the 'BYE' token).                                    */
 {
@@ -58,7 +61,7 @@ QUEX_NAME(receive_from_chunk)(QUEX_TYPE_ANALYZER*    me,
 
     /* If token queue is not empty => it has been ensured that all tokens are
      * generated well inside the buffer's boundaries.                         */
-    token_p = QUEX_NAME(pop_remaining_token_from_token_queue)(me);
+    token_p = QUEX_NAME(remaining_token_pop)(me);
     if( token_p ) return token_p;
 
     /* Restart filling the queue from begin                                   */
@@ -70,7 +73,7 @@ QUEX_NAME(receive_from_chunk)(QUEX_TYPE_ANALYZER*    me,
         start_p = me->buffer._read_p;
 
         me->current_analyzer_function(me);
-        QUEX_ASSERT_TOKEN_QUEUE_AFTER_WRITE(&me->_token_queue);
+        QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING(&me->_token_queue);
 
         if( me->error_code != E_Error_None ) {
             QUEX_NAME(TokenQueue_reset)(&me->_token_queue);
@@ -102,8 +105,17 @@ QUEX_NAME(receive_from_chunk)(QUEX_TYPE_ANALYZER*    me,
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(pop_remaining_token_from_token_queue)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(remaining_token_pop)(QUEX_TYPE_ANALYZER* me)
+/* Considers the current 'error_code' and the remaining token queue. If the 
+ * current state is 'error', then the complete token queue is deleted and the
+ * TERMINATION token is setup. Else, it is tried to take a token which remained
+ * in the token queue.
+ *
+ * RETURNS: Pointer to token, if a token could be found (without analysis).
+ *          Null, else.                                                       */
 {
+    /* Make sure that all remaining tokens are passed to the receiver, before
+     * notifying about error.                                                 */
     QUEX_TYPE_TOKEN* token_p = QUEX_NAME(TokenQueue_pop)(&me->_token_queue);
 
     if( token_p ) {
