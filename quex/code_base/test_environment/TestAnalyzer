@@ -26,7 +26,6 @@
 #      error "Multiple lexical analyzers detected. QUEX_OPTION_MULTI must be defined and 'quex/code_base/multi.i' must be included in one single file!"
 #   endif
 #   include <quex/code_base/include-guard-undef>
-#   include <quex/code_base/analyzer/member/token-sending-undef.i>
 #   undef   __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION____QUEX____TESTANALYZER
 #else
 #   define  __QUEX_INCLUDE_INDICATOR__ANALYZER__MAIN

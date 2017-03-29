@@ -40,6 +40,5 @@
 #include    <quex/code_base/analyzer/member/navigation>
 #include    <quex/code_base/analyzer/member/mode-handling>
 #include    <quex/code_base/analyzer/member/token-receiving>
-#include    <quex/code_base/analyzer/member/token-sending>
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS */

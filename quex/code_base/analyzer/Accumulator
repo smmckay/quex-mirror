@@ -22,7 +22,7 @@ class QUEX_TYPE0_ANALYZER;
 
 /* (*) pure text accumulation and flushing */
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
-    __QUEX_IF_COUNT_LINES(size_t  _begin_line;)
+    __QUEX_IF_COUNT_LINES(size_t    _begin_line;)
     __QUEX_IF_COUNT_COLUMNS(size_t  _begin_column;)
 
     struct { 
@@ -56,11 +56,12 @@ QUEX_INLINE bool
 QUEX_NAME(Accumulator_resources_absent)(QUEX_NAME(Accumulator)* me);
 
 QUEX_INLINE void 
-QUEX_NAME(Accumulator_add)(QUEX_NAME(Accumulator)*    me,
-                           const QUEX_TYPE_LEXATOM* Begin, const QUEX_TYPE_LEXATOM* End);
+QUEX_NAME(Accumulator_add)(QUEX_NAME(Accumulator)*  me,
+                           const QUEX_TYPE_LEXATOM* Begin, 
+                           const QUEX_TYPE_LEXATOM* End);
 
 QUEX_INLINE void 
-QUEX_NAME(Accumulator_add_character)(QUEX_NAME(Accumulator)*     me,
+QUEX_NAME(Accumulator_add_character)(QUEX_NAME(Accumulator)*  me,
                                      const QUEX_TYPE_LEXATOM  Character);
 
 QUEX_INLINE void  

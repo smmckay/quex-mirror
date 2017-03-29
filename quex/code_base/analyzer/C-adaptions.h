@@ -1,6 +1,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H
 #define __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H
 
+#include <quex/code_base/token/TokenPolicy>
+
 #ifdef self_accumulator_add
 /* Token / Token Policy _____________________________________________________*/
 #   undef self_token_take_text
@@ -98,7 +100,7 @@
         /*          BUT: We clear the text of the otherwise void token. */             \
         self_token_set_id(TokenID) ;                                                   \
         if( self.accumulator.text.begin == self.accumulator.text.end ) {               \
-            self_token_take_text)(&QUEX_LEXEME_NULL, (&QUEX_LEXEME_NULL) + 1);         \
+            self_token_take_text(&QUEX_LEXEME_NULL, (&QUEX_LEXEME_NULL) + 1);          \
         }                                                                              \
         else {                                                                         \
             *(self.accumulator.text.end) = (QUEX_TYPE_LEXATOM)0; /* see above */       \
@@ -112,7 +114,7 @@
                 QUEX_NAME(Accumulator_init_memory)(&self.accumulator);                 \
             }                                                                          \
         }                                                                              \
-        QUEX_TOKEN_POLICY_PREPARE_NEXT();                                              \
+        QUEX_TOKEN_QUEUE_PREPARE_NEXT();                                               \
     } while(0)
 
 /* Undo lexeme match */

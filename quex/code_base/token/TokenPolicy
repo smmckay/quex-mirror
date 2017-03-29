@@ -1,7 +1,21 @@
 /* -*- C++ -*- vim: set syntax=cpp: 
- * (C) 2005-2017 Frank-Rene Schaefer
  *
- * NO INCLUDE GUARDS -- THIS FILE MIGHT BE INCLUDED TWICE FOR MULTIPLE
+ * PURPOSE: 'self-ishnes' for TokenQueue operations:
+ *
+ * Implement macros to facilitate implementation of operations as re-action to
+ * mode-related events.
+ *
+ * REQUIRES: The macros only work in environments where:
+ * 
+ *      (i)  'self'              refers to the lexical analyzer object.
+ *      (ii) 'self._token_queue' refers to the TokenQueue object of
+ *                               the lexical analyzer.
+ *
+ * (C) 2005-2017 Frank-Rene Schaefer                                          */
+#include <quex/code_base/token/TokenQueue>
+#include <quex/code_base/lexeme>
+
+/* NO INCLUDE GUARDS -- THIS FILE MIGHT BE INCLUDED TWICE FOR MULTIPLE
  *                      LEXICAL ANALYZERS
  *
  * NOT: #ifndef  __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_POLICY
@@ -14,9 +28,6 @@
  * If the indicator is defined at the entry of this file, all internally 
  * defined macros are undefined right at the beginning, so they can be 
  * safely redefined.                                                         */
-#include <quex/code_base/token/TokenQueue>
-#include <quex/code_base/lexeme>
-
 #ifdef __QUEX_INCLUDE_INDICATOR__TOKEN_POLICY__
 #    undef self_write_token_p
 #    undef self_token_get_id
@@ -25,8 +36,8 @@
 #    undef self_token_repetition_n_set
 #    undef self_send
 #    undef self_send1
-#    undef QUEX_send2
-#    undef QUEX_send_n
+#    undef self_send2
+#    undef self_send_n
 
 #    undef QUEX_TOKEN_QUEUE_PREPARE_NEXT
 #    undef QUEX_ACTION_TOKEN_STAMP
@@ -119,18 +130,26 @@
  * In the default token class the members '_line_n' and '_column_n' only 
  * exist if the corresponding stamping is active.                             */
 #if defined(QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN) 
-#  if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING) \
+#  if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)                             \
       && defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)
-#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)   \
-               (TOKEN)->_line_n   = self.counter._line_number_at_begin;   \
+
+#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)                                   \
+               (TOKEN)->_line_n   = self.counter._line_number_at_begin;        \
                (TOKEN)->_column_n = self.counter._column_number_at_begin;
-#  elif  defined(QUEX_OPTION_LINE_NUMBER_COUNTING) \
-#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)   \
+
+#  elif  defined(QUEX_OPTION_LINE_NUMBER_COUNTING)                             
+
+#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)                                   \
                (TOKEN)->_line_n   = self.counter._line_number_at_begin;   
-#  elif  defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING) \
+
+#  elif  defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)                           
+
+#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)                                   \
                (TOKEN)->_column_n = self.counter._column_number_at_begin;   
 #  else 
+
 #     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)                         /* empty */
+
 #  endif
 #endif
 
