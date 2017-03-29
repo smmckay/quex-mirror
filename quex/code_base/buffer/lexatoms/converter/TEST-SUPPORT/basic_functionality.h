@@ -1,4 +1,4 @@
-#include <quex/code_base/test_environment/TestAnalyzer-configuration>
+#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #include <quex/code_base/buffer/lexatoms/converter/Converter>
 #include <stdint.h>
 

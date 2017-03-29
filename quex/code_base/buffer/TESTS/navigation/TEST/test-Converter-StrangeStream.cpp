@@ -31,7 +31,7 @@
  * (C) Frank-Rene Schaefer                                                   */
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-#include <quex/code_base/test_environment/StrangeStream>
+#include <quex/code_base/extra/test_environment/StrangeStream>
 #include <quex/code_base/buffer/Buffer.i>
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>

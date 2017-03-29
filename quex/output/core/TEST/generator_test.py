@@ -511,9 +511,9 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #  define __QUEX_SETTING_MAX_MODE_CLASS_N 2
 #endif
 #ifdef __cplusplus
-#include <quex/code_base/test_environment/TestAnalyzer>
+#include <quex/code_base/extra/test_environment/TestAnalyzer>
 #else
-#include <quex/code_base/test_environment/TestAnalyzer.h>
+#include <quex/code_base/extra/test_environment/TestAnalyzer.h>
 #endif
 #include <quex/code_base/analyzer/asserts.i>
 #include <quex/code_base/analyzer/struct/constructor.i>
@@ -731,7 +731,7 @@ test_program_db = {
     #include <cstring>
     #include <sstream>
     #include <quex/code_base/buffer/lexatoms/LexatomLoader_Plain>
-    #include <quex/code_base/test_environment/StrangeStream>
+    #include <quex/code_base/extra/test_environment/StrangeStream>
 
 
     int main(int argc, char** argv)

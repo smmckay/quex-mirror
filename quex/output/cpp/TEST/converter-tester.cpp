@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <quex/code_base/test_environment/TestAnalyzer-configuration>
+#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #include "converter-tester.h"
 
 #define __MY_STRING(X)   # X

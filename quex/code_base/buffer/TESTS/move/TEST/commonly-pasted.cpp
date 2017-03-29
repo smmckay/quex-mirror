@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H
 #define INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H
 
-#include <quex/code_base/test_environment/TestAnalyzer-configuration>
+#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include <quex/code_base/buffer/Buffer_print.i>
 #include <quex/code_base/buffer/Buffer.i>

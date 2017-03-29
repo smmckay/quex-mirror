@@ -27,7 +27,7 @@ No output is good output
 ## FILE: /home/fschaef/prj/quex/trunk/quex/input/regular_expression/traditional_character_set.py
 ## FILE: /home/fschaef/prj/quex/trunk/quex/input/__init__.py
 ## FILE: /home/fschaef/prj/quex/trunk/quex/input/setup.py
-## FILE: /home/fschaef/prj/quex/trunk/quex/code_base/test_environment/generate-TestAnalyzer-configuration.py
+## FILE: /home/fschaef/prj/quex/trunk/quex/code_base/extra/test_environment/generate-TestAnalyzer-configuration.py
 ## FILE: /home/fschaef/prj/quex/trunk/quex/output/__init__.py
 ## FILE: /home/fschaef/prj/quex/trunk/quex/output/graphviz/core.py
 ## FILE: /home/fschaef/prj/quex/trunk/quex/output/graphviz/__init__.py

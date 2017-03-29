@@ -12,7 +12,7 @@ namespace quex {
     //typedef struct {} Token;
     typedef int       CounterLineColumnIndentation;
 }
-#include <quex/code_base/test_environment/TestAnalyzer>
+#include <quex/code_base/extra/test_environment/TestAnalyzer>
 //#include <quex/code_base/analyzer/Counter>
 //#include <quex/code_base/analyzer/Mode>
 #undef   QUEX_TYPE_ANALYZER

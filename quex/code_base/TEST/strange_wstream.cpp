@@ -1,5 +1,5 @@
-#include <quex/code_base/test_environment/TestAnalyzer-configuration>
-#include <quex/code_base/test_environment/StrangeStream>
+#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
+#include <quex/code_base/extra/test_environment/StrangeStream>
 #include <sstream>
 #include <iostream>
 #include <cstdlib>

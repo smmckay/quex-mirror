@@ -93,8 +93,6 @@ base_analyzer = """
 /analyzer/member/on_indentation.i
 /analyzer/member/token-receiving
 /analyzer/member/token-receiving.i
-/analyzer/member/token-sending
-/analyzer/member/token-sending-undef.i
 """
 
 analyzer_accumulator = """

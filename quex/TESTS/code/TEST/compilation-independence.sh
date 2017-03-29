@@ -18,7 +18,7 @@ for file in `find -path "*.svn*" -or -path "*TEST*" -or -name tags -or -name "TX
 
         *)
             echo "COMPILE: $file ____________________________________________"
-            cat  $QUEX_PATH/quex/code_base/test_environment/TestAnalyzer-configuration > $here/tmp.cpp
+            cat  $QUEX_PATH/quex/code_base/extra/test_environment/TestAnalyzer-configuration > $here/tmp.cpp
             cat  $file >> $here/tmp.cpp
             g++  $here/tmp.cpp -I$QUEX_PATH -c 
         ;;

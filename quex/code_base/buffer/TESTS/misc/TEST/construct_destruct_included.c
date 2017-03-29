@@ -15,7 +15,7 @@
  * (C) Frank-Rene Schaefer.                                                   */
 #define  __QUEX_OPTION_PLAIN_C
 
-#include <quex/code_base/test_environment/TestAnalyzer-configuration>
+#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #include <quex/code_base/buffer/TESTS/MemoryManager_UnitTest.i>
 #include <quex/code_base/definitions>
 #include <quex/code_base/buffer/Buffer>

@@ -7,7 +7,7 @@
 #define QUEX_TYPE_LEXATOM char
 #define QUEX_OPTION_POST_CATEGORIZER
 #define QUEX_TKN_UNINITIALIZED   1
-#include <quex/code_base/test_environment/TestAnalyzer-configuration>
+#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #include <quex/code_base/converter_helper/from-unicode-buffer>
 #undef  QUEX_TYPE_TOKEN_ID
 #define QUEX_TYPE_TOKEN_ID  int

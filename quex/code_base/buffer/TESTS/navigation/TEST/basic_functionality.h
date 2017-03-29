@@ -1,7 +1,7 @@
 #ifndef QUEX_INCLUDE_GUARD_BUFFER_BASIC_FUNCTIONALITY
 #define QUEX_INCLUDE_GUARD_BUFFER_BASIC_FUNCTIONALITY
 
-#include <quex/code_base/test_environment/TestAnalyzer-configuration>
+#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #include <quex/code_base/definitions>
 #include <quex/code_base/buffer/Buffer>
 #include <quex/code_base/MemoryManager>

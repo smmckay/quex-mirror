@@ -6,7 +6,7 @@
 #define  QUEX_OPTION_TOKEN_POLICY_QUEUE
 #define  QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE       0
 #define  QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR 1
-#include <quex/code_base/test_environment/TestAnalyzer-configuration>
+#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #   undef  QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #   define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED
