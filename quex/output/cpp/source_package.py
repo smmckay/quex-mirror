@@ -96,8 +96,8 @@ base_analyzer = """
 """
 
 analyzer_accumulator = """
-/analyzer/Accumulator
-/analyzer/Accumulator.i
+/extra/accumulator/Accumulator
+/extra/accumulator/Accumulator.i
 """
 
 analyzer_counter = """
@@ -106,8 +106,8 @@ analyzer_counter = """
 """
 
 analyzer_post_categorizer = """
-/analyzer/PostCategorizer
-/analyzer/PostCategorizer.i
+/extra/post_categorizer/PostCategorizer
+/extra/post_categorizer/PostCategorizer.i
 """
 
 analyzer_include_stack = """

@@ -25,7 +25,7 @@ for file in `find -path "*.svn*" -or -path "*TEST*" -or -name tags -or -name "TX
 
     esac
 
-    if [[ $file == "X./analyzer/Accumulator.i" ]]; then
+    if [[ $file == "X./extra/accumulator/Accumulator.i" ]]; then
         break
     fi
 done

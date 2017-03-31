@@ -28,66 +28,44 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(DictionaryNo
 
 } QUEX_NAME(DictionaryNode);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
-    QUEX_NAME(DictionaryNode)*  root;
+#ifndef __QUEX_OPTION_PLAIN_C
+    typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Dictionary_tag) {
+        QUEX_NAME(DictionaryNode)*  root;
 
-#   ifndef __QUEX_OPTION_PLAIN_C
-    void                enter(const QUEX_TYPE_LEXATOM* Lexeme, 
-                              const QUEX_TYPE_TOKEN_ID TokenID);
-    void                remove(const QUEX_TYPE_LEXATOM* Lexeme);
-    QUEX_TYPE_TOKEN_ID  get_token_id(const QUEX_TYPE_LEXATOM* Lexeme) const;
-    void                clear();
-    void                print_this();
-#   endif
+        void                (*enter)(struct QUEX_NAME(Dictionary_tag)* me,
+                                     const QUEX_TYPE_LEXATOM*          Lexeme, 
+                                     const QUEX_TYPE_TOKEN_ID          TokenID);
+        void                (*remove)(struct QUEX_NAME(Dictionary_tag)* me,
+                                      const QUEX_TYPE_LEXATOM*          Lexeme);
+        QUEX_TYPE_TOKEN_ID  (*get_token_id)(struct QUEX_NAME(Dictionary_tag)* me,
+                                            const QUEX_TYPE_LEXATOM*          Lexeme);
+        void                (*clear)(struct QUEX_NAME(Dictionary_tag)* me);
+        void                (*print_this)(struct QUEX_NAME(Dictionary_tag)* me);
+        void                (*destruct_self)(QUEX_NAME(Dictionary_tag)* me);
 
-} QUEX_NAME(Dictionary);
+    } QUEX_NAME(Dictionary);
+#else
+    class QUEX_NAME(Dictionary) {
+        QUEX_NAME(DictionaryNode)*  root;
 
-QUEX_INLINE  QUEX_NAME(DictionaryNode)*  
-QUEX_NAME(PostCategorizer_allocate_node)(size_t RemainderL);
-
-QUEX_INLINE  void 
-QUEX_NAME(PostCategorizer_free_node)(QUEX_NAME(DictionaryNode)* node);
+        void                enter(const QUEX_TYPE_LEXATOM* Lexeme, 
+                                  const QUEX_TYPE_TOKEN_ID TokenID);
+        void                remove(const QUEX_TYPE_LEXATOM* Lexeme);
+        QUEX_TYPE_TOKEN_ID  get_token_id(const QUEX_TYPE_LEXATOM* Lexeme) const;
+        void                clear();
+        void                print_this();
+        void                (*destruct_self)(QUEX_NAME(Dictionary_tag)* me);
+    };
+#endif
 
 QUEX_INLINE bool
 QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me);
-
-QUEX_INLINE void
-QUEX_NAME(PostCategorizer_destruct)(QUEX_NAME(Dictionary)* me);
-
-QUEX_INLINE int
-QUEX_NAME(PostCategorizer_compare)(QUEX_NAME(DictionaryNode)*  me, 
-                                   QUEX_TYPE_LEXATOM         FirstCharacter, 
-                                   const QUEX_TYPE_LEXATOM*  Remainder);
-
-QUEX_INLINE void
-QUEX_NAME(PostCategorizer_enter)(QUEX_NAME(Dictionary)*  me, 
-                                 const QUEX_TYPE_LEXATOM*   EntryName, 
-                                 QUEX_TYPE_TOKEN_ID           TokenID);
-
-QUEX_INLINE QUEX_NAME(DictionaryNode)*
-QUEX_NAME(PostCategorizer_find)(const QUEX_NAME(Dictionary)* me, 
-                                const QUEX_TYPE_LEXATOM*   EntryName);
-
-QUEX_INLINE void
-QUEX_NAME(PostCategorizer_insert)(QUEX_NAME(Dictionary)* me, 
-                                  const QUEX_TYPE_LEXATOM*  EntryName, 
-                                  QUEX_TYPE_TOKEN_ID          TokenID);
-
-QUEX_INLINE void
-QUEX_NAME(PostCategorizer_remove)(QUEX_NAME(Dictionary)* me, 
-                                  const QUEX_TYPE_LEXATOM*  EntryName);
-
-QUEX_INLINE void
-QUEX_NAME(PostCategorizer_clear)(QUEX_NAME(Dictionary)* me);
 
 QUEX_INLINE void
 QUEX_NAME(PostCategorizer_resources_absent_mark)(QUEX_NAME(Dictionary)* me);
 
 QUEX_INLINE bool
 QUEX_NAME(PostCategorizer_resources_absent)(QUEX_NAME(Dictionary)* me);
-
-QUEX_INLINE void
-QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

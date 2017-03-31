@@ -1,5 +1,12 @@
 
-PROGRAMS = statistics.exe
+PROGRAMS = \
+		   post-categorizer-enter.exe \
+		   post-categorizer-remove.exe \
+		   post-categorizer-remove-2.exe \
+		   post-categorizer-remove-total.exe \
+		   post-categorizer-find.exe \
+		   accumulator.exe \
+	       statistics.exe
 
 all:       $(PROGRAMS) 
 
@@ -16,7 +23,13 @@ MYFLAGS = \
 
 CC = g++ $(MYFLAGS)
 
+post-categorizer-%.exe:   post-categorizer-%.cpp 
+	$(CC) -I./. $< post-categorizer-common.cpp -o $@ 
+	
 counter-%.exe:   counter-%.cpp 
+	$(CC) -I./. $< -o $@ 
+
+accumulator.exe: accumulator.cpp 
 	$(CC) -I./. $< -o $@ 
 
 nonsense.exe: nonsense.cpp 

@@ -6,9 +6,11 @@ if [[ $3 != "--my-tmp-txt" ]]; then
 fi
 echo "Files:"
 rm -f tmp.sh
+source=$(echo $1 | sed -e 's/\//\\\//g' | sed -e 's/\./\\./g' | sed -e 's/\-/\\-/g')
+replacement=$(echo $2 | sed -e 's/\//\\\//g' | sed -e 's/\./\\./g' | sed -e 's/\-/\\-/g')
 for file in `cat tmp.txt`; do 
     echo "   $file";  
-    echo "perl -pi.bak -e 's/$1/$2/g' $file" \
+    echo "perl -pi.bak -e 's/$source/$replacement/g' $file" \
          | sed -e 's/(/\\(/g'                \
          | sed -e 's/)/\\)/g' >> tmp.sh
 done

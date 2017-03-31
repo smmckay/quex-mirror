@@ -5,14 +5,14 @@
 #define __QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR_I
 
 #include <quex/code_base/definitions>
-#include <quex/code_base/analyzer/Accumulator>
+#include <quex/code_base/extra/accumulator/Accumulator>
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/token/TokenPolicy>
 
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE void
-QUEX_NAME(Accumulator__destruct)(QUEX_NAME(Accumulator)* me);
+QUEX_NAME(Accumulator_destruct)(QUEX_NAME(Accumulator)* me);
                       
 QUEX_INLINE void      
 QUEX_NAME(Accumulator__clear)(QUEX_NAME(Accumulator)* me);
@@ -30,16 +30,22 @@ QUEX_INLINE bool
 QUEX_NAME(Accumulator__extend)(QUEX_NAME(Accumulator)* me, size_t MinAddSize);
                       
 QUEX_INLINE void      
-QUEX_NAME(Accumulator__print_this)(QUEX_NAME(Accumulator)* me);
+QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me);
                       
+QUEX_INLINE bool
+QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
+                              const QUEX_TYPE_TOKEN_ID  TokenID);
                       
+QUEX_INLINE bool
+QUEX_NAME(Accumulator__init_memory)(QUEX_NAME(Accumulator)*   me);
+
 QUEX_INLINE bool      
 QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me, 
                                  QUEX_TYPE_ANALYZER*       lexer)
 {
     me->the_lexer = lexer;
 
-    if( ! QUEX_NAME(Accumulator_init_memory)(me) ) {
+    if( ! QUEX_NAME(Accumulator__init_memory)(me) ) {
         QUEX_NAME(Accumulator_resources_absent_mark)(me);
         return false;
     }
@@ -48,12 +54,13 @@ QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me,
     __QUEX_IF_COUNT_COLUMNS(me->_begin_column = 0);
 
 #   ifdef __QUEX_OPTION_PLAIN_C
-    me->destruct      = QUEX_NAME(Accumulator__destruct);
+    me->destruct      = QUEX_NAME(Accumulator_destruct);
     me->clear         = QUEX_NAME(Accumulator__clear);
     me->add           = QUEX_NAME(Accumulator__add);
     me->add_character = QUEX_NAME(Accumulator__add_character);
     me->extend        = QUEX_NAME(Accumulator__extend);
-    me->print_this    = QUEX_NAME(Accumulator__print_this);
+    me->flush         = QUEX_NAME(Accumulator__flush);
+    me->print_this    = QUEX_NAME(Accumulator_print_this);
 #   endif
 
     return true;
@@ -88,7 +95,7 @@ QUEX_NAME(Accumulator_resources_absent)(QUEX_NAME(Accumulator)* me)
 
 
 QUEX_INLINE bool
-QUEX_NAME(Accumulator_init_memory)(QUEX_NAME(Accumulator)*   me) 
+QUEX_NAME(Accumulator__init_memory)(QUEX_NAME(Accumulator)*   me) 
 {
     QUEX_TYPE_LEXATOM* chunk = (QUEX_TYPE_LEXATOM*)0;
 
@@ -142,8 +149,8 @@ QUEX_NAME(Accumulator__clear)(QUEX_NAME(Accumulator)* me)
 }
 
 QUEX_INLINE void 
-QUEX_NAME(Accumulatori__add)(QUEX_NAME(Accumulator)* me,
-                            const QUEX_TYPE_LEXATOM* Begin, const QUEX_TYPE_LEXATOM* End)
+QUEX_NAME(Accumulator__add)(QUEX_NAME(Accumulator)* me,
+                           const QUEX_TYPE_LEXATOM* Begin, const QUEX_TYPE_LEXATOM* End)
 { 
     const size_t L = (size_t)(End - Begin);
     __quex_assert(End > Begin);
@@ -160,7 +167,7 @@ QUEX_NAME(Accumulatori__add)(QUEX_NAME(Accumulator)* me,
      * the terminating zero for flushing or printing.                           */
     if( me->text.memory_end <= me->text.end + L ) {
         /* L + 1 we need space for the string + the terminating zero */
-        if( QUEX_NAME(Accumulator_extend)(me, L + 1) == false ) {
+        if( QUEX_NAME(Accumulator__extend)(me, L + 1) == false ) {
             QUEX_ERROR_EXIT("Quex Engine: Out of Memory. Accumulator could not be further extended.\n");
         }
     }
@@ -186,7 +193,7 @@ QUEX_NAME(Accumulator__add_character)(QUEX_NAME(Accumulator)*     me,
      * the terminating zero for flushing or printing.                           */
     if( me->text.memory_end <= me->text.end + 1 ) {
         /* 1 + 1 we need space for the character + the terminating zero */
-        if( QUEX_NAME(Accumulator_extend)(me, 2) == false ) {
+        if( QUEX_NAME(Accumulator__extend)(me, 2) == false ) {
             QUEX_ERROR_EXIT("Quex Engine: Out of Memory. Accumulator could not be further extended.\n");
         }
     }
@@ -195,40 +202,52 @@ QUEX_NAME(Accumulator__add_character)(QUEX_NAME(Accumulator)*     me,
     ++(me->text.end);
 }
 
-#if 0
-/* See: define self_accumulator_flush(TokenID) */
-QUEX_INLINE void
-QUEX_NAME(Accumulator_flush)(QUEX_NAME(Accumulator)*    me,
-                             const QUEX_TYPE_TOKEN_ID  TokenID)
+QUEX_INLINE bool
+QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
+                              const QUEX_TYPE_TOKEN_ID  TokenID)
 {
-    /* All functions must ensure that there is one cell left to store the terminating zero. */
-    __quex_assert(me->text.end < me->text.memory_end);
-
-
-    /* If no text is to be flushed, return undone */
-    if( me->text.begin == me->text.end ) return;
-
-    *(me->text.end) = (QUEX_TYPE_LEXATOM)0; /* see above '__quex_assert()' */
-
-#   define self (*me->the_lexer)
-    self_token_set_id(TokenID);
-    if( QUEX_NAME_TOKEN(take_text)(self_write_token_p(), 
-                                   me->the_lexer, 
-                                   me->text.begin, 
-                                   me->text.end) == false ) {
-        /* The called function does not need the memory chunk, we reuse it. */
-        QUEX_NAME(Accumulator_clear)(me);
-    } else {
-        /* The called function wants to use the memory, so we get some new. */
-        QUEX_NAME(Accumulator_init_memory)(me);
+    QUEX_TYPE_TOKEN* token_p = QUEX_TOKEN_QUEUE_GET_CURRENT(me->the_lexer->_token_queue);
+    if( ! token_p ) {
+        me->the_lexer->error_code = E_Error_TokenQueueNoMoreTokensAvailable;
+        return false;
     }
-    QUEX_TOKEN_POLICY_PREPARE_NEXT();            
-#   undef  self
+
+    /* All functions must ensure: there is one cell to store terminating zero.*/  
+    __quex_assert(me->text.end < me->text.memory_end);   
+
+    /* If no text is to be flushed, behave the same as self_send              */             
+    /* That is: self_token_set_id(ID);                                        */             
+    /*          QUEX_TOKEN_POLICY_PREPARE_NEXT();                             */             
+    /*          BUT: We clear the text of the otherwise void token.           */             
+    QUEX_ACTION_TOKEN_STAMP(*(me->the_lexer));   
+    token_p->_id = TokenID;
+    if( me->text.begin == me->text.end ) {               
+        if( ! QUEX_NAME_TOKEN(take_text)(token_p, me->the_lexer, 
+                                         &QUEX_LEXEME_NULL, (&QUEX_LEXEME_NULL) + 1) ) {          
+            QUEX_NAME(Accumulator__clear)(me);                       
+            return false;
+        }
+    }                                                                              
+    else {                                                                         
+        *(me->text.end) = (QUEX_TYPE_LEXATOM)0;                  /* see above */       
+
+        if( ! QUEX_NAME_TOKEN(take_text)(token_p, me->the_lexer, 
+                                         &QUEX_LEXEME_NULL, (&QUEX_LEXEME_NULL) + 1) ) {
+            /* The called function does not need the memory chunk, we reuse it*/ 
+            QUEX_NAME(Accumulator__clear)(me);                       
+            return false;
+        }          
+        else {                                                                   
+            /* The called function wants to use the memory, so we get some new*/ 
+            QUEX_NAME(Accumulator__init_memory)(me);                 
+        }                                                                          
+    }                                                                              
+    QUEX_TOKEN_QUEUE_PREPARE_NEXT(me->the_lexer->_token_queue);                                               
+    return true;
 }
-#endif
 
 QUEX_INLINE void  
-QUEX_NAME(Accumulator__print_this)(QUEX_NAME(Accumulator)* me)
+QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
 {
     /* All functions must ensure that there is one cell left to store the terminating zero. */
 
@@ -245,31 +264,35 @@ QUEX_NAME(Accumulator__print_this)(QUEX_NAME(Accumulator)* me)
 }
 
 #ifndef __QUEX_OPTION_PLAIN_C
-QUEX_INLINE void
-QUEX_NAME(Accumulator)::destruct()
-{ QUEX_NAME(Accumulator__destruct)(me); }
+QUEX_INLINE 
+QUEX_NAME(Accumulator)::~QUEX_NAME(Accumulator)()
+{ QUEX_NAME(Accumulator_destruct)(this); }
                       
 QUEX_INLINE void      
 QUEX_NAME(Accumulator)::clear()
-{ QUEX_NAME(Accumulator__clear)(me); }
+{ QUEX_NAME(Accumulator__clear)(this); }
                       
 QUEX_INLINE void      
 QUEX_NAME(Accumulator)::add(const QUEX_TYPE_LEXATOM* Begin, 
                             const QUEX_TYPE_LEXATOM* End)
-{ QUEX_NAME(Accumulator__add)(me, Begin, End); }
+{ QUEX_NAME(Accumulator__add)(this, Begin, End); }
                       
 QUEX_INLINE void      
-QUEX_NAME(Accumulator)::add_character(QUEX_NAME(Accumulator)*  me,
-                                      const QUEX_TYPE_LEXATOM  Lexatom)
-{ QUEX_NAME(Accumulator__add_character)(me, Lexatom); }
+QUEX_NAME(Accumulator)::add_character(const QUEX_TYPE_LEXATOM  Lexatom)
+{ QUEX_NAME(Accumulator__add_character)(this, Lexatom); }
                       
 QUEX_INLINE bool      
 QUEX_NAME(Accumulator)::extend(size_t MinAddSize)
-{ return QUEX_NAME(Accumulator__extend)(me, MinAddSize); }
+{ return QUEX_NAME(Accumulator__extend)(this, MinAddSize); }
+
+QUEX_INLINE bool      
+QUEX_NAME(Accumulator)::flush(const QUEX_TYPE_TOKEN_ID TokenID)
+{ return QUEX_NAME(Accumulator__flush)(this, TokenID); }
                       
 QUEX_INLINE void      
 QUEX_NAME(Accumulator)::print_this()
-{ QUEX_NAME(Accumulator__print_this)(me); }
+{ QUEX_NAME(Accumulator_print_this)(this); }
+
 #endif
 
 QUEX_NAMESPACE_MAIN_CLOSE

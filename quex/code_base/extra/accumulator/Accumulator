@@ -15,12 +15,8 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 #ifdef __QUEX_OPTION_PLAIN_C
-QUEX_TYPE0_ANALYZER;   
-#else
-class QUEX_TYPE0_ANALYZER;
-#endif
-
-#ifdef __QUEX_OPTION_PLAIN_C
+    QUEX_TYPE0_ANALYZER;   
+ewewe
     typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
         __QUEX_IF_COUNT_LINES(size_t    _begin_line;)
         __QUEX_IF_COUNT_COLUMNS(size_t  _begin_column;)
@@ -42,11 +38,15 @@ class QUEX_TYPE0_ANALYZER;
 
         bool   (*extend)(struct QUEX_NAME(Accumulator_tag)* me, 
                          size_t                             MinAddSize);
+        bool   (*flush)(QUEX_TYPE_TOKEN_ID TokenID);
         void   (*print_this)(struct QUEX_NAME(Accumulator_tag)* me);
     } QUEX_NAME(Accumulator);
 
 #else
+    class QUEX_TYPE0_ANALYZER;
+
     class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Accumulator) {
+    public:
         __QUEX_IF_COUNT_LINES(size_t    _begin_line;)
         __QUEX_IF_COUNT_COLUMNS(size_t  _begin_column;)
 
@@ -57,14 +57,15 @@ class QUEX_TYPE0_ANALYZER;
         }                   text;
         QUEX_TYPE_ANALYZER* the_lexer;     
 
-        QUEX_NAME(Accumulator);
-        ~QUEX_NAME(Accumulator);
+        QUEX_NAME(Accumulator)();
+        ~QUEX_NAME(Accumulator)();
 
         void   clear();
         void   add(const QUEX_TYPE_LEXATOM* Begin, 
                    const QUEX_TYPE_LEXATOM* End);
         void   add_character(const QUEX_TYPE_LEXATOM Character);
         bool   extend(size_t MinAddSize);
+        bool   flush(QUEX_TYPE_TOKEN_ID);
         void   print_this();
     };
 #endif
@@ -72,6 +73,9 @@ class QUEX_TYPE0_ANALYZER;
 QUEX_INLINE bool
 QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*, QUEX_TYPE_ANALYZER*);
 
+QUEX_INLINE void
+QUEX_NAME(Accumulator_destruct)(QUEX_NAME(Accumulator)* me);
+                      
 QUEX_INLINE void
 QUEX_NAME(Accumulator_resources_absent_mark)(QUEX_NAME(Accumulator)* me);
 
@@ -81,6 +85,9 @@ QUEX_NAME(Accumulator_resources_absent)(QUEX_NAME(Accumulator)* me);
 QUEX_INLINE bool
 QUEX_NAME(Accumulator_init_memory)(QUEX_NAME(Accumulator)*   me);
 
+QUEX_INLINE void      
+QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me);
+                      
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

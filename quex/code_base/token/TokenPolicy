@@ -40,6 +40,7 @@
 #    undef self_send_n
 
 #    undef QUEX_TOKEN_QUEUE_PREPARE_NEXT
+#    undef QUEX_TOKEN_QUEUE_GET_CURRENT
 #    undef QUEX_ACTION_TOKEN_STAMP
 #else
 #    define __QUEX_INCLUDE_INDICATOR__TOKEN_POLICY__
@@ -61,7 +62,7 @@
 
 #define self_token_set_id(ID)                                \
         do {                                                 \
-            QUEX_ACTION_TOKEN_STAMP(self_write_token_p());   \
+            QUEX_ACTION_TOKEN_STAMP(self);                   \
             self_write_token_p()->_id = (ID);                \
         } while(0)
 
@@ -88,22 +89,22 @@
  *
  * Assertions ensure that at each token being send the state of the analyzer
  * and its token queue is sane.                                               */
-#define self_send(ID)                                                   \
-        do {                                                            \
-            QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(&self._token_queue); \
-            self_token_set_id(ID);                                      \
-            QUEX_TOKEN_QUEUE_PREPARE_NEXT();                            \
+#define self_send(ID)                                                    \
+        do {                                                             \
+            QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(&self._token_queue);  \
+            self_token_set_id(ID);                                       \
+            QUEX_TOKEN_QUEUE_PREPARE_NEXT(self._token_queue);            \
         } while ( 0 )
 
-#define self_send1(ID, Str)                                             \
-        self_send2((ID), (Str), (Str) + QUEX_NAME(lexeme_length)(Str));
-
-#define self_send2(ID, StrBegin, StrEnd)                                \
-        do {                                                            \
-            QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(&self._token_queue); \
-            self_token_set_id(ID);                                      \
-            self_token_take_text((StrBegin), (StrEnd));                 \
-            QUEX_TOKEN_QUEUE_PREPARE_NEXT();                            \
+#define self_send1(ID, Str)                                              \
+        self_send2((ID), (Str), (Str) + QUEX_NAME(lexeme_length)(Str)); 
+                                                                         
+#define self_send2(ID, StrBegin, StrEnd)                                 \
+        do {                                                             \
+            QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(&self._token_queue);  \
+            self_token_set_id(ID);                                       \
+            self_token_take_text((StrBegin), (StrEnd));                  \
+            QUEX_TOKEN_QUEUE_PREPARE_NEXT(self._token_queue);            \
         } while ( 0 )
 
 #if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
@@ -113,7 +114,7 @@
              __quex_assert(__QUEX_SETTING_TOKEN_ID_REPETITION_TEST(ID)); \
              self_token_set_id(ID);                                      \
              self_token_repetition_n_set(RepetitionN);                   \
-             QUEX_TOKEN_QUEUE_PREPARE_NEXT();                            \
+             QUEX_TOKEN_QUEUE_PREPARE_NEXT(self._token_queue);           \
         } while ( 0 )
 
 #endif
@@ -130,28 +131,33 @@
  * In the default token class the members '_line_n' and '_column_n' only 
  * exist if the corresponding stamping is active.                             */
 #if defined(QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN) 
-#  if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)                             \
+#  if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)  \
       && defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)
 
-#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)                                   \
-               (TOKEN)->_line_n   = self.counter._line_number_at_begin;        \
-               (TOKEN)->_column_n = self.counter._column_number_at_begin;
+#     define  QUEX_ACTION_TOKEN_STAMP(ME) \
+              QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_line_n   = (ME).counter._line_number_at_begin;        \
+              QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_column_n = (ME).counter._column_number_at_begin;
 
 #  elif  defined(QUEX_OPTION_LINE_NUMBER_COUNTING)                             
 
-#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)                                   \
-               (TOKEN)->_line_n   = self.counter._line_number_at_begin;   
+#     define  QUEX_ACTION_TOKEN_STAMP(ME) \
+              QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_line_n   = (ME).counter._line_number_at_begin;   
 
 #  elif  defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)                           
 
-#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)                                   \
-               (TOKEN)->_column_n = self.counter._column_number_at_begin;   
+#     define  QUEX_ACTION_TOKEN_STAMP(ME) \
+              QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_column_n = (ME).counter._column_number_at_begin;   
 #  else 
 
-#     define  QUEX_ACTION_TOKEN_STAMP(TOKEN)                         /* empty */
+#     define  QUEX_ACTION_TOKEN_STAMP(ME)                         /* empty */
 
 #  endif
+#else
+
+#     define  QUEX_ACTION_TOKEN_STAMP(ME)                         /* empty */
+
 #endif
 
-#define QUEX_TOKEN_QUEUE_PREPARE_NEXT()  ++(self._token_queue.write_iterator) 
+#define QUEX_TOKEN_QUEUE_GET_CURRENT(ME)  ((ME).write_iterator != (ME).end ? (ME).write_iterator : (QUEX_TYPE_TOKEN*)0)
+#define QUEX_TOKEN_QUEUE_PREPARE_NEXT(ME) (++(ME).write_iterator) 
 

@@ -12,7 +12,7 @@
 #undef  QUEX_TYPE_TOKEN_ID
 #define QUEX_TYPE_TOKEN_ID  int
 #undef  QUEX_OPTION_INCLUDE_STACK
-#include <quex/code_base/analyzer/PostCategorizer.i>
+#include <quex/code_base/extra/post_categorizer/PostCategorizer.i>
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
 #include <quex/code_base/lexeme.i>
 
