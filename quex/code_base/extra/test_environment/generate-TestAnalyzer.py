@@ -25,8 +25,8 @@ blackboard.memento_pack_extension      = CodeFragment("return UserMementoPack_Un
 
 def code(Language):
     global tail_str
-    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", "--token-policy", 
-                     "single", "--no-include-stack", "--language", Language])
+    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer",
+                     "--no-include-stack", "--language", Language])
     mode_db = quex_file_parser.do(Setup.input_mode_files)
 
     core._generate(mode_db)

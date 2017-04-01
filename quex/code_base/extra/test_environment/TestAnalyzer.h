@@ -243,7 +243,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 248 "TestAnalyzer.h"
+#   line 247 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -274,7 +274,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 279 "TestAnalyzer.h"
+#   line 278 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -315,7 +315,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 320 "TestAnalyzer.h"
+#   line 319 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -406,7 +406,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 411 "TestAnalyzer.h"
+#   line 410 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -428,7 +428,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 433 "TestAnalyzer.h"
+#   line 432 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -447,7 +447,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 452 "TestAnalyzer.h"
+#   line 451 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -525,7 +525,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 
    
 
-#   line 530 "TestAnalyzer.h"
+#   line 529 "TestAnalyzer.h"
 
 
 

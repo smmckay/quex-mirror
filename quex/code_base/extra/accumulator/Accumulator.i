@@ -265,6 +265,10 @@ QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
 
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE 
+QUEX_NAME(Accumulator)::QUEX_NAME(Accumulator)()
+{ /* Accumulator_construct() still needs to be called. */ }
+                      
+QUEX_INLINE 
 QUEX_NAME(Accumulator)::~QUEX_NAME(Accumulator)()
 { QUEX_NAME(Accumulator_destruct)(this); }
                       

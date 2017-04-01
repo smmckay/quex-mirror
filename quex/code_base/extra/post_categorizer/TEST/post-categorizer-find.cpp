@@ -1,4 +1,4 @@
-#include <quex/code_base/analyzer/TEST/post-categorizer-common.h>
+#include <quex/code_base/extra/post_categorizer/TEST/post-categorizer-common.h>
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
 
 using namespace quex;
@@ -45,7 +45,7 @@ main(int argc, char** argv)
 void test(QUEX_NAME(Dictionary)* pc, const char* Name)
 {
     using namespace quex;
-    QUEX_NAME(DictionaryNode)* found = QUEX_NAME(PostCategorizer_find)(pc, Name);
+    QUEX_NAME(DictionaryNode)* found = QUEX_NAME(PostCategorizer__find)(pc, Name);
     printf("%s: ", Name);
     if( found != 0x0 ) {
         printf("[%c]%s, %i\n", found->name_first_character, found->name_remainder, found->token_id); 

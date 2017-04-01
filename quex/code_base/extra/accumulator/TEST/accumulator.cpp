@@ -3,11 +3,6 @@
 #include <cstring>
 
 #include <quex/code_base/extra/test_environment/TestAnalyzer>
-#include <quex/code_base/single.i>
-
-QUEX_NAMESPACE_LEXEME_NULL_OPEN
-QUEX_TYPE_LEXATOM  QUEX_LEXEME_NULL_IN_ITS_NAMESPACE = (QUEX_TYPE_LEXATOM)0;
-QUEX_NAMESPACE_LEXEME_NULL_CLOSE
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -28,9 +23,6 @@ QUEX_NAME_TOKEN(take_text)(QUEX_TYPE_TOKEN*         __this,
 #endif
 
 QUEX_NAMESPACE_MAIN_CLOSE
-
-#include <quex/code_base/analyzer/C-adaptions.h>
-#include <quex/code_base/analyzer/Counter.i>
 
 int
 main(int argc, char** argv)

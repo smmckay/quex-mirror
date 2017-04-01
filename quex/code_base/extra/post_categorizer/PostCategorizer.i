@@ -27,7 +27,7 @@ QUEX_INLINE void
 QUEX_NAME(PostCategorizer__clear)(QUEX_NAME(Dictionary)* me);
                           
 QUEX_INLINE void          
-QUEX_NAME(PostCategorizer__print_this)(QUEX_NAME(Dictionary)* me);
+QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me);
                           
 QUEX_INLINE void          
 QUEX_NAME(PostCategorizer__clear_recursively)(QUEX_NAME(Dictionary)*      me, 
@@ -52,7 +52,7 @@ QUEX_NAME(PostCategorizer__find)(const QUEX_NAME(Dictionary)* me,
 QUEX_INLINE  QUEX_NAME(DictionaryNode)*  
 QUEX_NAME(PostCategorizer__allocate_node)(const QUEX_TYPE_LEXATOM* Remainder)
 {
-    const sizet_t  RemainderL = QUEX_NAME(lexeme_length)(Remainder);
+    const size_t  RemainderL = QUEX_NAME(lexeme_length)(Remainder);
     /* Allocate in one beat: base and remainder: 
      *
      *   [Base   |Remainder             ]
@@ -106,7 +106,7 @@ QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me)
     me->remove        = QUEX_NAME(PostCategorizer__remove);
     me->get_token_id  = QUEX_NAME(PostCategorizer__get_token_id);
     me->clear         = QUEX_NAME(PostCategorizer__clear);
-    me->print_this    = QUEX_NAME(PostCategorizer__print_this);
+    me->print_this    = QUEX_NAME(PostCategorizer_print_this);
     me->destruct_self = QUEX_NAME(PostCategorizer__clear);
 #   endif
     return true;
@@ -258,7 +258,7 @@ QUEX_NAME(PostCategorizer__find)(const QUEX_NAME(Dictionary)*  me,
     QUEX_NAME(DictionaryNode)*  node           = me->root;
 
     while( node != 0x0 ) {
-        int result = QUEX_NAME(PostCategorizer_compare)(node, FirstCharacter, Remainder);
+        int result = QUEX_NAME(PostCategorizer__compare)(node, FirstCharacter, Remainder);
 
         if     ( result > 0 ) node = node->greater;
         else if( result < 0 ) node = node->lesser;
@@ -288,7 +288,7 @@ QUEX_NAME(PostCategorizer__get_token_id)(const QUEX_NAME(Dictionary)*  me,
 }
 
 QUEX_INLINE void
-QUEX_NAME(PostCategorizer_clear)(QUEX_NAME(Dictionary)* me)
+QUEX_NAME(PostCategorizer__clear)(QUEX_NAME(Dictionary)* me)
 {
     if( ! me->root ) return;
     QUEX_NAME(PostCategorizer__clear_recursively)(me, me->root);
@@ -353,18 +353,18 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
 }
 
 QUEX_INLINE void
-QUEX_NAME(PostCategorizer__print_this)(QUEX_NAME(Dictionary)* me)
+QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me)
 {
     QUEX_NAME(PostCategorizer__print_tree)(me->root, 0);
 }
 
 
 #ifndef __QUEX_OPTION_PLAIN_C
-QUEX_INLINE void
+QUEX_INLINE 
 QUEX_NAME(Dictionary)::QUEX_NAME(Dictionary)()
 { QUEX_NAME(PostCategorizer_construct)(this); }
 
-QUEX_INLINE void
+QUEX_INLINE
 QUEX_NAME(Dictionary)::~QUEX_NAME(Dictionary)()
 { QUEX_NAME(PostCategorizer__clear)(this); }
 
@@ -387,7 +387,7 @@ QUEX_NAME(Dictionary)::enter(const QUEX_TYPE_LEXATOM*  EntryName,
 
 QUEX_INLINE void
 QUEX_NAME(Dictionary)::print_this()
-{ QUEX_NAME(PostCategorizer__print_this)(this); }
+{ QUEX_NAME(PostCategorizer_print_this)(this); }
 
 #endif 
 
