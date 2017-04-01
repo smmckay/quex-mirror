@@ -14,7 +14,7 @@ DEFINES  := \
             -DQUEX_OPTION_POST_CATEGORIZER 
 
 INCLUDES := -I$(QUEX_PATH) \
- 		    -I$(QUEX_PATH)/quex/code_base/test_environment \
+ 		    -I$(QUEX_PATH)/quex/code_base/extra/test_environment \
 			-I$(HWUT_PATH)/support/C
 
 CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address

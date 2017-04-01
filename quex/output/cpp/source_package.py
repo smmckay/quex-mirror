@@ -221,9 +221,9 @@ def do():
         elif Setup.language == "C++": txt += token_default_Cpp
 
 
-    if Setup.string_accumulator_f:                               txt += analyzer_accumulator
+    txt += analyzer_accumulator
     if Setup.count_column_number_f or Setup.count_line_number_f: txt += analyzer_counter 
-    if Setup.post_categorizer_f:                                 txt += analyzer_post_categorizer 
+    txt += analyzer_post_categorizer 
     if Setup.include_stack_support_f:                            txt += analyzer_include_stack
 
     __copy_files(txt)

@@ -19,15 +19,16 @@ QUEX_NAME(PostCategorizer__insert)(QUEX_NAME(Dictionary)*    me,
                                    const QUEX_TYPE_LEXATOM*  EntryName, 
                                    QUEX_TYPE_TOKEN_ID        TokenID);
                           
+QUEX_INLINE QUEX_TYPE_TOKEN_ID 
+QUEX_NAME(PostCategorizer__get_token_id)(const QUEX_NAME(Dictionary)*  me,
+                                         const QUEX_TYPE_LEXATOM*      Lexeme);
+
 QUEX_INLINE void          
 QUEX_NAME(PostCategorizer__remove)(QUEX_NAME(Dictionary)*    me, 
                                    const QUEX_TYPE_LEXATOM*  EntryName);
                           
 QUEX_INLINE void          
 QUEX_NAME(PostCategorizer__clear)(QUEX_NAME(Dictionary)* me);
-                          
-QUEX_INLINE void          
-QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me);
                           
 QUEX_INLINE void          
 QUEX_NAME(PostCategorizer__clear_recursively)(QUEX_NAME(Dictionary)*      me, 
@@ -110,6 +111,12 @@ QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me)
     me->destruct_self = QUEX_NAME(PostCategorizer__clear);
 #   endif
     return true;
+}
+
+QUEX_INLINE void
+QUEX_NAME(PostCategorizer_destruct)(QUEX_NAME(Dictionary)* me)
+{
+    QUEX_NAME(PostCategorizer__clear)(me);
 }
 
 QUEX_INLINE int
@@ -296,13 +303,13 @@ QUEX_NAME(PostCategorizer__clear)(QUEX_NAME(Dictionary)* me)
 }
 
 QUEX_INLINE void
-QUEX_NAME(PostCategorizer__resources_absent_mark)(QUEX_NAME(Dictionary)* me)
+QUEX_NAME(PostCategorizer_resources_absent_mark)(QUEX_NAME(Dictionary)* me)
 { 
     me->root = (QUEX_NAME(DictionaryNode)*)0;
 }
 
 QUEX_INLINE bool
-QUEX_NAME(PostCategorizer__resources_absent)(QUEX_NAME(Dictionary)* me)
+QUEX_NAME(PostCategorizer_resources_absent)(QUEX_NAME(Dictionary)* me)
 { 
     return me->root == (QUEX_NAME(DictionaryNode)*)0;
 }
@@ -362,11 +369,11 @@ QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me)
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE 
 QUEX_NAME(Dictionary)::QUEX_NAME(Dictionary)()
-{ QUEX_NAME(PostCategorizer_construct)(this); }
+{ /* C/C++ Compability: Constructors/Destructors do nothing. */ }
 
 QUEX_INLINE
 QUEX_NAME(Dictionary)::~QUEX_NAME(Dictionary)()
-{ QUEX_NAME(PostCategorizer__clear)(this); }
+{ /* C/C++ Compability: Constructors/Destructors do nothing. */ }
 
 QUEX_INLINE void
 QUEX_NAME(Dictionary)::clear()

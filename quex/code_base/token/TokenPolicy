@@ -130,32 +130,34 @@
  *
  * In the default token class the members '_line_n' and '_column_n' only 
  * exist if the corresponding stamping is active.                             */
-#if defined(QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN) 
-#  if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)  \
-      && defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)
+#if ! defined(QUEX_ACTION_TOKEN_STAMP)
+#   if      defined(QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN) 
+#     if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)  \
+         && defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)
 
-#     define  QUEX_ACTION_TOKEN_STAMP(ME) \
-              QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_line_n   = (ME).counter._line_number_at_begin;        \
-              QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_column_n = (ME).counter._column_number_at_begin;
+#        define  QUEX_ACTION_TOKEN_STAMP(ME) \
+                 QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_line_n   = (ME).counter._line_number_at_begin;        \
+                 QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_column_n = (ME).counter._column_number_at_begin;
 
-#  elif  defined(QUEX_OPTION_LINE_NUMBER_COUNTING)                             
+#     elif  defined(QUEX_OPTION_LINE_NUMBER_COUNTING)                             
 
-#     define  QUEX_ACTION_TOKEN_STAMP(ME) \
-              QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_line_n   = (ME).counter._line_number_at_begin;   
+#        define  QUEX_ACTION_TOKEN_STAMP(ME) \
+                 QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_line_n   = (ME).counter._line_number_at_begin;   
 
-#  elif  defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)                           
+#     elif  defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)                           
 
-#     define  QUEX_ACTION_TOKEN_STAMP(ME) \
-              QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_column_n = (ME).counter._column_number_at_begin;   
-#  else 
+#        define  QUEX_ACTION_TOKEN_STAMP(ME) \
+                 QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_column_n = (ME).counter._column_number_at_begin;   
+#     else 
 
-#     define  QUEX_ACTION_TOKEN_STAMP(ME)                         /* empty */
+#        define  QUEX_ACTION_TOKEN_STAMP(ME)                         /* empty */
 
-#  endif
-#else
+#     endif
+#   else
 
-#     define  QUEX_ACTION_TOKEN_STAMP(ME)                         /* empty */
+#        define  QUEX_ACTION_TOKEN_STAMP(ME)                         /* empty */
 
+#   endif
 #endif
 
 #define QUEX_TOKEN_QUEUE_GET_CURRENT(ME)  ((ME).write_iterator != (ME).end ? (ME).write_iterator : (QUEX_TYPE_TOKEN*)0)

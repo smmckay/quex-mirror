@@ -14,18 +14,6 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_INLINE void
 QUEX_NAME(Accumulator_destruct)(QUEX_NAME(Accumulator)* me);
                       
-QUEX_INLINE void      
-QUEX_NAME(Accumulator__clear)(QUEX_NAME(Accumulator)* me);
-                      
-QUEX_INLINE void      
-QUEX_NAME(Accumulator__add)(QUEX_NAME(Accumulator)*  me,
-                            const QUEX_TYPE_LEXATOM* Begin, 
-                            const QUEX_TYPE_LEXATOM* End);
-                      
-QUEX_INLINE void      
-QUEX_NAME(Accumulator__add_character)(QUEX_NAME(Accumulator)*  me,
-                                      const QUEX_TYPE_LEXATOM  Character);
-                      
 QUEX_INLINE bool      
 QUEX_NAME(Accumulator__extend)(QUEX_NAME(Accumulator)* me, size_t MinAddSize);
                       
@@ -223,7 +211,7 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     token_p->_id = TokenID;
     if( me->text.begin == me->text.end ) {               
         if( ! QUEX_NAME_TOKEN(take_text)(token_p, me->the_lexer, 
-                                         &QUEX_LEXEME_NULL, (&QUEX_LEXEME_NULL) + 1) ) {          
+                                         &QUEX_LEXEME_NULL_IN_ITS_NAMESPACE, (&QUEX_LEXEME_NULL_IN_ITS_NAMESPACE) + 1) ) {          
             QUEX_NAME(Accumulator__clear)(me);                       
             return false;
         }
@@ -232,7 +220,7 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
         *(me->text.end) = (QUEX_TYPE_LEXATOM)0;                  /* see above */       
 
         if( ! QUEX_NAME_TOKEN(take_text)(token_p, me->the_lexer, 
-                                         &QUEX_LEXEME_NULL, (&QUEX_LEXEME_NULL) + 1) ) {
+                                         &QUEX_LEXEME_NULL_IN_ITS_NAMESPACE, (&QUEX_LEXEME_NULL_IN_ITS_NAMESPACE) + 1) ) {
             /* The called function does not need the memory chunk, we reuse it*/ 
             QUEX_NAME(Accumulator__clear)(me);                       
             return false;
@@ -266,11 +254,11 @@ QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE 
 QUEX_NAME(Accumulator)::QUEX_NAME(Accumulator)()
-{ /* Accumulator_construct() still needs to be called. */ }
+{ /* C/C++ Compability: Constructors/Destructors do nothing. */ }
                       
 QUEX_INLINE 
 QUEX_NAME(Accumulator)::~QUEX_NAME(Accumulator)()
-{ QUEX_NAME(Accumulator_destruct)(this); }
+{ /* C/C++ Compability: Constructors/Destructors do nothing. */ }
                       
 QUEX_INLINE void      
 QUEX_NAME(Accumulator)::clear()
