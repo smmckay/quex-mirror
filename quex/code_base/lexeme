@@ -49,12 +49,26 @@ QUEX_NAME(lexeme_to_char)(const QUEX_TYPE_LEXATOM** source_p,
                           char**                    drain_p,  
                           const char*               DrainEnd);
 
+QUEX_INLINE const char* 
+QUEX_NAME(lexeme_to_pretty_char)(const char* Lexeme, char*   buffer, size_t  BufferSize); 
+
+#ifndef __QUEX_OPTION_PLAIN_C
+QUEX_INLINE const std::string 
+QUEX_NAME(lexeme_to_pretty_std_string)(const std::basic_string<QUEX_TYPE_LEXATOM>& Text);
+#endif
+
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
 QUEX_INLINE void
 QUEX_NAME(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM** source_p, 
                            const QUEX_TYPE_LEXATOM*  SourceEnd,
                            wchar_t**                 drain_p,  
                            const wchar_t*            DrainEnd);
+
+#ifndef __QUEX_OPTION_PLAIN_C
+QUEX_INLINE const std::string 
+QUEX_NAME(wlexeme_to_pretty_std_string)(std::wstring Text);
+#endif
+
 #endif
 #endif /* ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED) */
 

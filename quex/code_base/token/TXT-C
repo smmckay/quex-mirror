@@ -14,6 +14,7 @@
 #include <quex/code_base/asserts>
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/MemoryManager>
+#include <quex/code_base/lexeme>
 
 /* LexemeNull object may be used for 'take_text'. */
 $$EXTRA_AT_BEGIN$$

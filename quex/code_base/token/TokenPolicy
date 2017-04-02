@@ -72,10 +72,10 @@
         QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, (Begin), (End))
 
 #if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-#  define self_token_repetition_n_set() \
-          QUEX_NAME_TOKEN(repetition_n_set)(self_write_token_p(), RepetitionN) 
+#  define self_token_repetition_n_set(N) \
+          QUEX_NAME_TOKEN(repetition_n_set)(self_write_token_p(), (N)) 
 #else 
-#  define self_token_repetition_n_set()                                                    \
+#  define self_token_repetition_n_set(N)                                                   \
           do {                                                                             \
               self.error_code = E_Error_TokenRepetitionNSetButNotSupportedByGeneratedCode; \
               QUEX_NAME(TokenQueue_set_token_TERMINATION)(&self._token_queue);             \

@@ -710,29 +710,6 @@ Special Variables in Token Class Definitions
 A set of special variables support the usage of converters from the buffer's
 encoding to some output encoding, as they are
 
-.. describe:: $INCLUDE_CONVERTER_DECLARATION
-
-   Is replaced in the generated code by an include statement which includes
-   the appropriate converters towards utf8, utf16, utf32 and the default 
-   converters for 'char' and 'wchar_t'. See section 'conveter_helpers'.
-   
-.. describe:: $INCLUDE_CONVERTER_IMPLEMENTATION
-
-   Is replaced in the code by an include statement that catches the file 
-   with the implementation of the aforementioned converter functions.
-
-.. describe:: $CONVERTER_STRING 
-
-   Is replaced by the exact name of the function that converts a string 
-   in the buffer's encoding into the default encoding for 'char' (e.g. UTF8).
-   In C, this is the name of the function that converts memory chunks. In Cpp
-   the same name is shared by the converter for memory chunks and the 
-   std::string based converter.
-   
-.. describe:: $CONVERTER_WSTRING
-
-   Is the pendant to ``$CONVERTER_STRING`` for 'wchar_t' strings.
-
 .. describe:: $NAMESPACE_OPEN
 
    Expands to namespace openers according to the token's name space. If the

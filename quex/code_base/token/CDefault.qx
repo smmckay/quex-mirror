@@ -16,7 +16,6 @@ token_type {
        $TOKEN_CLASS_pretty_wchar_text(struct $TOKEN_CLASS_tag* me, wchar_t*  buffer, size_t BufferSize); 
 #      endif
 
-$INCLUDE_CONVERTER_DECLARATION
    }
    standard {
         id            : uint32_t;
@@ -159,7 +158,7 @@ $INCLUDE_CONVERTER_DECLARATION
             }
 
             /* The String */
-            $TOKEN_CLASS_pretty_char_text(me, writerator, (size_t)(BufferEnd - writerator));
+            QUEX_NAME(lexeme_to_pretty_char)(me, writerator, (size_t)(BufferEnd - writerator));
 
             while( *writerator ) {
                 ++writerator;
@@ -172,36 +171,6 @@ $INCLUDE_CONVERTER_DECLARATION
             *writerator = '\0';
             return buffer;
         }
-
-        const char* 
-        $TOKEN_CLASS_pretty_char_text($TOKEN_CLASS* me, char*   buffer, size_t  BufferSize) 
-        /* Provides a somehow pretty-print of the text in the token. Note, that the buffer
-         * in case of UTF8 should be 4bytes longer than the longest expected string.       */
-        {
-            const QUEX_TYPE_LEXATOM*  source    = me->text;
-            char*                       drain     = buffer;
-            const char*                 DrainEnd  = buffer + BufferSize;
-
-            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (size_t)(QUEX_NAME(lexeme_length)(source)) + 1;
-            $CONVERTER_STRING(&source, SourceEnd, &drain, DrainEnd);
-            return buffer;
-        }
-
-#       if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
-        const wchar_t* 
-        $TOKEN_CLASS_pretty_wchar_text($TOKEN_CLASS* me, wchar_t*  buffer, size_t    BufferSize) 
-        {
-            wchar_t*                    drain     = buffer;
-            const wchar_t*              DrainEnd  = buffer + (ptrdiff_t)BufferSize;
-            const QUEX_TYPE_LEXATOM*  source    = me->text;
-            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (ptrdiff_t)(QUEX_NAME(lexeme_length)(source)) + 1;
-
-            $CONVERTER_WSTRING(&source, SourceEnd, &drain, DrainEnd);
-            return buffer;
-        }
-#       endif
-
-$INCLUDE_CONVERTER_IMPLEMENTATION
    }
 }
 

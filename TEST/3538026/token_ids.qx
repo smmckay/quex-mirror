@@ -3,7 +3,6 @@ token_type {
 #       include <iostream>
 #       include <string>
 
-$INCLUDE_CONVERTER_DECLARATION
    }
    standard {
         id            : uint32_t;
@@ -45,38 +44,10 @@ $INCLUDE_CONVERTER_DECLARATION
 
             tmp = map_id_to_name(self._id);
 
-            tmp += " '" + pretty_char_text() + "' ";
+            tmp += " '" + QUEX_NAME(lexeme_to_pretty_std_string)(self.text) + "' ";
 
             return tmp;
         }
-    
-        const std::string 
-        pretty_char_text() const
-        {
-            std::string             tmp = $CONVERTER_STRING(self.text);
-            std::string::size_type  pos = 0;
-
-            while( (pos = tmp.find("\n") ) != __string::npos ) tmp.replace(pos, (size_t)1, "\\n");
-            while( (pos = tmp.find("\t") ) != __string::npos ) tmp.replace(pos, (size_t)1, "\\t");
-            while( (pos = tmp.find("\r") ) != __string::npos ) tmp.replace(pos, (size_t)1, "\\r");
-
-            return tmp;
-        }
-
-#       if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
-        const std::wstring 
-        pretty_wchar_text() const
-        {
-            std::wstring             tmp = $CONVERTER_WSTRING(self.text);
-            std::wstring::size_type  pos = 0;
-
-            while( (pos = tmp.find(L"\n") ) != __string::npos ) tmp.replace(pos, (size_t)1, L"\\n");
-            while( (pos = tmp.find(L"\t") ) != __string::npos ) tmp.replace(pos, (size_t)1, L"\\t");
-            while( (pos = tmp.find(L"\r") ) != __string::npos ) tmp.replace(pos, (size_t)1, L"\\r");
-
-            return tmp;
-        }
-#       endif
    }
 
    take_text {
@@ -127,7 +98,6 @@ $INCLUDE_CONVERTER_DECLARATION
         { ostr << std::string(Tok); return ostr; }
         $NAMESPACE_CLOSE
 
-$INCLUDE_CONVERTER_IMPLEMENTATION
    }
 }
 

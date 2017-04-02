@@ -2,27 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <quex/code_base/extra/test_environment/TestAnalyzer>
-
-QUEX_NAMESPACE_MAIN_OPEN
-
-//#define QUEX_TOKEN_POLICY_SET_ID()       /* empty */
-//#define QUEX_TOKEN_POLICY_PREPARE_NEXT() /* empty */
-
-#if 0
-bool 
-QUEX_NAME_TOKEN(take_text)(QUEX_TYPE_TOKEN*         __this, 
-                           QUEX_TYPE_ANALYZER*      analyzer, 
-                           const QUEX_TYPE_LEXATOM* Begin, 
-                           const QUEX_TYPE_LEXATOM* End)
-{
-    printf("Lexical Analyzer Receives:\n");
-    printf("   '%s'\n", Begin);
-    return true;
-}
-#endif
-
-QUEX_NAMESPACE_MAIN_CLOSE
+#include <tmp_dir/TestAnalyzer>
 
 int
 main(int argc, char** argv)
@@ -43,7 +23,7 @@ main(int argc, char** argv)
         printf("CHOICES: String, Character, N-Character, N-String, Mix;\n");
         return 0;
     }
-    TestAnalyzer            analyzer;
+    TestAnalyzer            analyzer((QUEX_NAME(ByteLoader)*)0, NULL);
     QUEX_NAME(Accumulator)& accumulator = analyzer.accumulator;
 
 #   define self analyzer

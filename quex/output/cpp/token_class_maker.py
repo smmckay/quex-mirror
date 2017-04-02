@@ -87,9 +87,7 @@ def _do(Descr):
         token_class_name = Setup.token_class_name_safe
 
     converter_declaration_include,   \
-    converter_implementation_include, \
-    converter_string,                 \
-    converter_wstring                 = __get_converter_configuration(include_guard_extension_str)
+    converter_implementation_include = __get_converter_configuration(include_guard_extension_str)
 
     extra_at_begin_str = lexeme_null_declaration()
     extra_at_end_str   = ""
@@ -101,10 +99,6 @@ def _do(Descr):
 
     namespace_open, namespace_close = __namespace_brackets()
     helper_variable_replacements = [
-              ["$INCLUDE_CONVERTER_DECLARATION",    converter_declaration_include],
-              ["$INCLUDE_CONVERTER_IMPLEMENTATION", converter_implementation_include],
-              ["$CONVERTER_STRING",                 converter_string],
-              ["$CONVERTER_WSTRING",                converter_wstring],
               ["$NAMESPACE_CLOSE",                  namespace_close],
               ["$NAMESPACE_OPEN",                   namespace_open],
               ["$TOKEN_CLASS",                      token_class_name],
@@ -384,10 +378,7 @@ def __get_converter_configuration(IncludeGuardExtension):
 
     # In C:   Function call and def prefix is the same
     # In C++: We are in the same namespace, no prefix, function_def_prefix is empty anyway.
-    string  = "%s%s_to_char"  % (function_def_prefix_0, from_codec)
-    wstring = "%s%s_to_wchar" % (function_def_prefix_0, from_codec)
-
-    return declaration_include, implementation_include, string, wstring
+    return declaration_include, implementation_include
 
 QUEX_lexeme_length_re         = re.compile("QUEX_NAME\\(lexeme_length\\)", re.UNICODE)
 QUEX_TYPE_LEXATOM_re          = re.compile("\\bQUEX_TYPE_LEXATOM\\b", re.UNICODE)
@@ -538,11 +529,9 @@ frame_begin = """
 #define    QUEX_NAMESPACE_MAIN_CLOSE              %s
 #define    $$quex_type_character$$                %s
 
-#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED
 """
 
 frame_end = """
-#undef  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED
 
 #undef     __QUEX_CONVERTER_CHAR_DEF
 #undef     __QUEX_CONVERTER_STRING_DEF

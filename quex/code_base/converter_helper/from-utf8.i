@@ -38,6 +38,7 @@
  * ABSOLUTELY NO WARRANTY                                                    */
 #if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8_I) \
     ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
+
 #if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
 #        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8_I
 #endif
