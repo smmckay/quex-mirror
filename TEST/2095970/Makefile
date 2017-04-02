@@ -27,7 +27,7 @@ all: lexer
 
 # -- application
 lexer: ../lexer-simply.cpp $(ENGINE_SOURCES)
-	$(CC) $< $(ENGINE_NAME).cpp -o $@ 
+	$(CC) $< $(ENGINE_NAME).cpp -o $@  -ggdb
 
 Simple.E: Simple.cpp
 	$(CC) -E $< -o $@ 

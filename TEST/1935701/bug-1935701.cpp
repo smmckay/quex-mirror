@@ -3,7 +3,7 @@
 #include<fstream>
 #include<cstring>
 
-#include<quex/code_base/test_environment/TestAnalyzer-configuration>
+#include<quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #include<quex/code_base/buffer/lexatoms/LexatomLoader>
 #include<quex/code_base/buffer/lexatoms/LexatomLoader_Plain>
 #include<quex/code_base/buffer/lexatoms/LexatomLoader_Plain.i>

@@ -3,7 +3,7 @@
 
 #include <Simple>
 #include "quex/code_base/buffer/bytes/ByteLoader_FILE.i"
-#include <quex/code_base/test_environment/StrangeStream>
+#include <quex/code_base/extra/test_environment/StrangeStream>
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>

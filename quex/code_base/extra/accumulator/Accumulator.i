@@ -25,7 +25,7 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
                               const QUEX_TYPE_TOKEN_ID  TokenID);
                       
 QUEX_INLINE bool
-QUEX_NAME(Accumulator__init_memory)(QUEX_NAME(Accumulator)*   me);
+QUEX_NAME(Accumulator__memory_resources_allocate)(QUEX_NAME(Accumulator)*   me);
 
 QUEX_INLINE bool      
 QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me, 
@@ -33,7 +33,7 @@ QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me,
 {
     me->the_lexer = lexer;
 
-    if( ! QUEX_NAME(Accumulator__init_memory)(me) ) {
+    if( ! QUEX_NAME(Accumulator__memory_resources_allocate)(me) ) {
         QUEX_NAME(Accumulator_resources_absent_mark)(me);
         return false;
     }
@@ -83,7 +83,7 @@ QUEX_NAME(Accumulator_resources_absent)(QUEX_NAME(Accumulator)* me)
 
 
 QUEX_INLINE bool
-QUEX_NAME(Accumulator__init_memory)(QUEX_NAME(Accumulator)*   me) 
+QUEX_NAME(Accumulator__memory_resources_allocate)(QUEX_NAME(Accumulator)*   me) 
 {
     QUEX_TYPE_LEXATOM* chunk = (QUEX_TYPE_LEXATOM*)0;
 
@@ -131,8 +131,6 @@ QUEX_NAME(Accumulator__extend)(QUEX_NAME(Accumulator)* me, size_t MinAddSize)
 QUEX_INLINE void
 QUEX_NAME(Accumulator__clear)(QUEX_NAME(Accumulator)* me)
 {
-    /* If no text is to be flushed, return undone */
-    if( me->text.begin == me->text.end ) return;
     me->text.end = me->text.begin;
 }
 
@@ -194,7 +192,10 @@ QUEX_INLINE bool
 QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
                               const QUEX_TYPE_TOKEN_ID  TokenID)
 {
-    QUEX_TYPE_TOKEN* token_p = QUEX_TOKEN_QUEUE_GET_CURRENT(me->the_lexer->_token_queue);
+    QUEX_TYPE_TOKEN*   token_p = QUEX_TOKEN_QUEUE_GET_CURRENT(me->the_lexer->_token_queue);
+    QUEX_TYPE_LEXATOM* begin_p;
+    QUEX_TYPE_LEXATOM* end_p;
+
     if( ! token_p ) {
         me->the_lexer->error_code = E_Error_TokenQueueNoMoreTokensAvailable;
         return false;
@@ -210,26 +211,24 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     QUEX_ACTION_TOKEN_STAMP(*(me->the_lexer));   
     token_p->_id = TokenID;
     if( me->text.begin == me->text.end ) {               
-        if( ! QUEX_NAME_TOKEN(take_text)(token_p, me->the_lexer, 
-                                         &QUEX_LEXEME_NULL_IN_ITS_NAMESPACE, (&QUEX_LEXEME_NULL_IN_ITS_NAMESPACE) + 1) ) {          
-            QUEX_NAME(Accumulator__clear)(me);                       
-            return false;
-        }
+        begin_p = &QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;
+        end_p   = &QUEX_LEXEME_NULL_IN_ITS_NAMESPACE; /* -> terminating zero. */
+    }
+    else {
+        begin_p  = me->text.begin;
+        end_p    = me->text.end;
+        end_p[0] = (QUEX_TYPE_LEXATOM)0;              /* -> terminating zero. */
     }                                                                              
-    else {                                                                         
-        *(me->text.end) = (QUEX_TYPE_LEXATOM)0;                  /* see above */       
+    /* 'end_p' points *to* terminating zero, *not* behind it.                 */
 
-        if( ! QUEX_NAME_TOKEN(take_text)(token_p, me->the_lexer, 
-                                         &QUEX_LEXEME_NULL_IN_ITS_NAMESPACE, (&QUEX_LEXEME_NULL_IN_ITS_NAMESPACE) + 1) ) {
-            /* The called function does not need the memory chunk, we reuse it*/ 
-            QUEX_NAME(Accumulator__clear)(me);                       
-            return false;
-        }          
-        else {                                                                   
-            /* The called function wants to use the memory, so we get some new*/ 
-            QUEX_NAME(Accumulator__init_memory)(me);                 
-        }                                                                          
-    }                                                                              
+    if( ! QUEX_NAME_TOKEN(take_text)(token_p, me->the_lexer, begin_p, end_p) ) {
+        /* MEMORY OWNERSHIP *not* transferred to token. Reuse current memory. */
+        QUEX_NAME(Accumulator__clear)(me);                       
+    }          
+    else {                                                                   
+        /* MEMORY OWNERSHIP transferred to token. => Access new memory.       */
+        QUEX_NAME(Accumulator__memory_resources_allocate)(me);                 
+    }                                                                          
     QUEX_TOKEN_QUEUE_PREPARE_NEXT(me->the_lexer->_token_queue);                                               
     return true;
 }

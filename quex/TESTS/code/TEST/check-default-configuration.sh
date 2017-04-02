@@ -4,7 +4,7 @@ if [[ "$1" == "--hwut-info" ]]; then
     echo "Check if the default configuration has been updated."
     # Use "generate-TestAnalyzer-configuration.py" in directory
     #
-    #  $QUEX_PATH/quex/code_base/test_environment
+    #  $QUEX_PATH/quex/code_base/extra/test_environment
     #
     # to generate a new default configuration
 else

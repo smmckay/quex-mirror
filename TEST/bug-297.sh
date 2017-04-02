@@ -10,15 +10,15 @@ fi
 tmp=`pwd`
 cd $bug/ 
 
-includes="-I$QUEX_PATH/quex/code_base/test_environment/ -I$QUEX_PATH"
+includes="-I$QUEX_PATH/quex/code_base/extra/test_environment/ -I$QUEX_PATH"
 defines="-DQUEX_OPTION_TOKEN_POLICY_SINGLE -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER"
 case $1 in
     Cpp)
-        sources="lexer.cpp $QUEX_PATH/quex/code_base/test_environment/TestAnalyzer-dummy.cpp"
+        sources="lexer.cpp $QUEX_PATH/quex/code_base/extra/test_environment/TestAnalyzer-dummy.cpp"
         g++ $includes $defines $sources -o lexer  
         ;;
     C)
-        sources="lexer.c $QUEX_PATH/quex/code_base/test_environment/TestAnalyzer-dummy.c"
+        sources="lexer.c $QUEX_PATH/quex/code_base/extra/test_environment/TestAnalyzer-dummy.c"
         gcc $includes $defines -D__QUEX_OPTION_PLAIN_C $sources -o lexer  
         ;;
 esac
