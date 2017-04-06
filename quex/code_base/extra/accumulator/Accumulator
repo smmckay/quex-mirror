@@ -5,12 +5,11 @@
  * __QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR may be undefined in case
  *    that multiple lexical analyzers are used. Then, the name of the
  *    QUEX_NAME(Accumulator) must be different.                             */
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR
-#define __QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR
+#ifndef __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR
+#define __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR
 
 
 #include <quex/code_base/definitions>
-
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -108,4 +107,4 @@ QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR */
+#endif /*  __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR */

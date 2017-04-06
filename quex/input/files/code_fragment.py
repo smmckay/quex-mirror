@@ -254,7 +254,7 @@ def __create_token_sender_by_token_name(fh, TokenName):
 
     explicit_member_names_f = any(arg.find("=") != -1 for arg in argument_list)
     if not explicit_member_names_f:
-        return __token_sender_with_implicit_member_names(TokenName, argument_list)
+        return __token_sender_with_implicit_member_names(TokenName, argument_list, fh)
     elif Setup.token_class_file:
         error.log("Member assignments in brief token senders are inadmissible\n" + \
                   "with manually written token classes. User provided file '%s'.\n" % Setup.token_class_file,
@@ -265,8 +265,7 @@ def __create_token_sender_by_token_name(fh, TokenName):
 
     if any(not value for member, value in member_value_pairs):
         error.log("One explicit argument name mentioned requires all arguments to\n"  + \
-                  "be mentioned explicitly. Value '%s' mentioned without argument.\n"   \
-                  % member, fh)
+                  "be mentioned explicitly.\n", fh)
 
     global lexeme_re
     if any(lexeme_re.search(value) is not None for member, value in member_value_pairs):
@@ -301,7 +300,7 @@ def __create_token_sender_by_token_name(fh, TokenName):
 
     return "\n".join(txt)
 
-def __token_sender_with_implicit_member_names(TokenName, argument_list):
+def __token_sender_with_implicit_member_names(TokenName, argument_list, fh):
     # There are only three allowed cases for implicit token member names:
     #  QUEX_TKN_XYZ()           --> call take_text(Lexeme, LexemeEnd)
     #  QUEX_TKN_XYZ(Lexeme)     --> call take_text(Lexeme, LexemeEnd)

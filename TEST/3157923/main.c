@@ -12,9 +12,9 @@ main(int argc, char** argv)
     /* Run this program with valgrind to see whether memory leak occurs. */
     QUEX_NAME(from_memory)(&qlex, 0x0, 0, 0x0);
 
-    QUEX_NAME(Accumulator_add)(&qlex.accumulator, dummy_str, dummy_str_end);
+    qlex.accumulator.add(&qlex.accumulator, dummy_str, dummy_str_end);
 
-    QUEX_NAME(PostCategorizer_enter)(&qlex.post_categorizer, (QUEX_TYPE_LEXATOM*)"Otto", 12); 
+    qlex.post_categorizer.enter(&qlex.post_categorizer, (QUEX_TYPE_LEXATOM*)"Otto", 12); 
 
     QUEX_NAME(include_push_file_name)(&qlex, "main.c", NULL);
 

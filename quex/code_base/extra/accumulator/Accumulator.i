@@ -1,13 +1,26 @@
 /* -*- C++ -*- vim:set syntax=cpp:
  *
  * (C) 2005-2009 Frank-Rene Schaefer                                        */
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR_I
-#define __QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR_I
+#ifndef __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
+#define __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
 
 #include <quex/code_base/definitions>
-#include <quex/code_base/extra/accumulator/Accumulator>
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/token/TokenPolicy>
+#include <quex/code_base/extra/accumulator/Accumulator>
+
+#ifndef    QUEX_TYPE_LEXATOM
+#   error "QUEX_TYPE_LEXATOM definition missing."
+#endif
+#ifndef    QUEX_TYPE_TOKEN_ID
+#   error "QUEX_TYPE_TOKEN_ID definition missing."
+#endif
+#ifndef    QUEX_TYPE_ANALYZER
+#   error "QUEX_TYPE_ANALYZER definition missing."
+#endif
+#ifndef    QUEX_LEXEME_NULL_IN_ITS_NAMESPACE
+#   error "QUEX_LEXEME_NULL_IN_ITS_NAMESPACE definition missing."
+#endif
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -288,4 +301,4 @@ QUEX_NAME(Accumulator)::print_this()
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR_I */
+#endif /* __QUEX_INCLUDE_GUARD_EXTRA__ACCUMULATOR__ACCUMULATOR_I */

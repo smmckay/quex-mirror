@@ -81,7 +81,7 @@ QUEX_CONVERTER_CHAR_DEF(unicode, utf16)(const QUEX_TYPE_LEXATOM**  input_pp,
 
 QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF(unicode, utf32)(const QUEX_TYPE_LEXATOM**  input_pp, 
-                                        uint32_t**                   output_pp)
+                                        uint32_t**                 output_pp)
 { 
     switch( sizeof(QUEX_TYPE_LEXATOM) )
     {

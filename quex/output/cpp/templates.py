@@ -313,6 +313,7 @@ def get_implementation_header(Setup):
         return ""
 
     return "\n".join([
+        Lng.CONVERTER_HELPER_IMLEMENTATION(),
         "#include <quex/code_base/analyzer/headers.i>",
         "#include <quex/code_base/analyzer/C-adaptions.h>",
         "\n"

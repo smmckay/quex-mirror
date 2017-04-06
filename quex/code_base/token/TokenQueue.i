@@ -139,8 +139,7 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
 {
 #   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-    size_t           repetition_count;
-    QUEX_TYPE_TOKEN* token_p;
+    size_t    repetition_count;
 #   endif
 
     __quex_assert(QUEX_NAME(TokenQueue_begin)(me) != 0x0);

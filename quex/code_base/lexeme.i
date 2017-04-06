@@ -6,6 +6,10 @@
 
 #include <quex/code_base/definitions>
 
+#ifndef    QUEX_TYPE_LEXATOM
+#   error "QUEX_TYPE_LEXATOM definition missing."
+#endif
+
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE size_t 
@@ -37,7 +41,6 @@ QUEX_NAME(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0,
  *                                                                            */
 #if      defined(QUEX_OPTION_LEXEME_CONVERTERS) \
     && ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
-
 
 QUEX_INLINE void
 QUEX_NAME(lexeme_to_utf8)(const QUEX_TYPE_LEXATOM** source_p, 
@@ -86,32 +89,29 @@ QUEX_NAME(lexeme_to_char)(const QUEX_TYPE_LEXATOM** source_p,
 }
 
 QUEX_INLINE const char* 
-QUEX_NAME(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme, char*   buffer, size_t  BufferSize) 
+QUEX_NAME(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme, 
+                                 char*                    buffer, 
+                                 size_t                   BufferSize) 
 /* Provides a somehow pretty-print of the text in the token. Note, that the buffer
  * in case of UTF8 should be 4bytes longer than the longest expected string.       */
 {
-    const QUEX_TYPE_LEXATOM*  LexemeEnd = Lexeme + (size_t)(QUEX_NAME(lexeme_length)(Lexeme)) + 1;
+    const QUEX_TYPE_LEXATOM** source_pp = &Lexeme;
+    const QUEX_TYPE_LEXATOM*  SourceEnd = &Lexeme[QUEX_NAME(lexeme_length)(Lexeme) + (size_t)1];
+    char**                    drain_pp  = &buffer;
+    const char*               DrainEnd  = &buffer[BufferSize];
 
-    QUEX_NAME(lexeme_to_char)(&Lexeme, LexemeEnd, &buffer, &buffer[BufferSize]);
+    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, pretty_char)(
+                          source_pp, SourceEnd, drain_pp, DrainEnd);
+
     return buffer;
 }
 
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE const std::string 
-QUEX_NAME(lexeme_to_pretty_std_string)(const std::basic_string<QUEX_TYPE_LEXATOM>& Text) 
+QUEX_NAME(lexeme_to_pretty_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Text) 
 /* Provides a somehow pretty-print of the text in the token.          */
 {
-    /* Compiler complains => Are you using 'wchar_t' or 'wistream' ? 
-     * => Add file '$QUEX_PATH/quex/code_base/token/CppWChar.qx' to 
-     *    the list of quex input files.                               */
-    std::string             tmp = QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,char)(Text);
-    std::string::size_type  pos = 0;
-
-    while( (pos = tmp.find("\n") ) != std::string::npos ) tmp.replace(pos, (size_t)1, "\\n");
-    while( (pos = tmp.find("\t") ) != std::string::npos ) tmp.replace(pos, (size_t)1, "\\t");
-    while( (pos = tmp.find("\r") ) != std::string::npos ) tmp.replace(pos, (size_t)1, "\\r");
-
-    return tmp;
+    return QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, pretty_char)(Text);
 }
 
 #endif

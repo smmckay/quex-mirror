@@ -1,5 +1,5 @@
 /* -*- C++ -*-   vim: set syntax=cpp: 
- * (C) 2004-2009 Frank-Rene Schaefer
+ * (C) 2004-2017 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY
  */
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
@@ -14,7 +14,6 @@
 #include <quex/code_base/asserts>
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/MemoryManager>
-#include <quex/code_base/lexeme>
 
 /* LexemeNull object may be used for 'take_text'. */
 $$EXTRA_AT_BEGIN$$

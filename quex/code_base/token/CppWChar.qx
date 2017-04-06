@@ -7,6 +7,9 @@ token_type {
 #       include <iostream>
 #       include <string>
 
+$INCLUDE_CONVERTER_DECLARATION
+#include <quex/code_base/lexeme>
+
    }
    standard {
         id            : uint32_t;
@@ -49,7 +52,7 @@ token_type {
 
             std::wstring    tmp(drain);
 
-            tmp += std::wstring(L" '") + QUEX_FUNCTION_PREFIX QUEX_NAME(wlexeme_to_pretty_std_string)(self.text) + std::wstring(L"'");
+            tmp += std::wstring(L" '") + QUEX_FUNCTION_PREFIX QUEX_NAME(lexeme_to_pretty_char)(self.text) + std::wstring(L"'");
 
             return tmp;
         }
@@ -103,6 +106,9 @@ token_type {
         operator<<(std::wostream& wostr, const $TOKEN_CLASS& Tok)
         { wostr << Tok.get_string(); return wostr; }
         $NAMESPACE_CLOSE
+
+$INCLUDE_CONVERTER_IMPLEMENTATION
+#include <quex/code_base/lexeme.i>
    }
 }
 

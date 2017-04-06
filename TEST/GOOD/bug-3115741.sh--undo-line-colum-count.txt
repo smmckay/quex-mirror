@@ -6,14 +6,8 @@
 (1, 12)  	UNDO_THIS 'efgh'
 (1, 12)  	STEP_OVER 'efgh'
 (1, 17)  	NUMBER '4711'
-(1, 22)  	UNDO_THIS 'z
-ab
-d
-e'
-(1, 22)  	STEP_OVER 'z
-ab
-d
-e'
+(1, 22)  	UNDO_THIS 'z\nab\nd\ne'
+(1, 22)  	STEP_OVER 'z\nab\nd\ne'
 (4, 3)  	NUMBER '0123'
 (5, 1)  	<TERMINATION> ''
 | [END] number of token = 10

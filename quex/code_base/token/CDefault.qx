@@ -16,6 +16,9 @@ token_type {
        $TOKEN_CLASS_pretty_wchar_text(struct $TOKEN_CLASS_tag* me, wchar_t*  buffer, size_t BufferSize); 
 #      endif
 
+$INCLUDE_CONVERTER_DECLARATION
+#include <quex/code_base/lexeme>
+
    }
    standard {
         id            : uint32_t;
@@ -145,7 +148,7 @@ token_type {
             char*        writerator = 0;
 
             /* Token Type */
-            iterator = token_type_str;
+            iterator   = token_type_str;
             writerator = buffer; 
             while( (*iterator) && writerator != BufferEnd ) {
                 *writerator++ = *iterator++;
@@ -158,7 +161,8 @@ token_type {
             }
 
             /* The String */
-            QUEX_NAME(lexeme_to_pretty_char)(me, writerator, (size_t)(BufferEnd - writerator));
+            QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, 
+                                             (size_t)(BufferEnd - writerator));
 
             while( *writerator ) {
                 ++writerator;
@@ -171,6 +175,9 @@ token_type {
             *writerator = '\0';
             return buffer;
         }
+
+$INCLUDE_CONVERTER_IMPLEMENTATION
+#include <quex/code_base/lexeme.i>
    }
 }
 

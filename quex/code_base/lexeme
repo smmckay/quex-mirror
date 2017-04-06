@@ -1,8 +1,18 @@
 /* -*- C++ -*- vim:set syntax=cpp: 
- * (C) 2010 Frank-Rene Schaefer    
- * ABSOLUTELY NO WARRANTY                    */
+ * (C) 2010-2017 Frank-Rene Schaefer    
+ * ABSOLUTELY NO WARRANTY                                                     */
 #ifndef __QUEX_INCLUDE_GUARD__LEXEME
 #define __QUEX_INCLUDE_GUARD__LEXEME
+
+#ifndef    QUEX_NAMESPACE_MAIN_OPEN
+#   error "QUEX_NAMESPACE_MAIN_OPEN definition missing!"
+#endif
+#ifndef    QUEX_NAMESPACE_MAIN_CLOSE
+#   error "QUEX_NAMESPACE_MAIN_CLOSE definition missing!"
+#endif
+#ifndef    QUEX_TYPE_LEXATOM
+#   error "QUEX_TYPE_LEXATOM definition missing!"
+#endif
 
 #include <quex/code_base/definitions>
 
@@ -50,11 +60,13 @@ QUEX_NAME(lexeme_to_char)(const QUEX_TYPE_LEXATOM** source_p,
                           const char*               DrainEnd);
 
 QUEX_INLINE const char* 
-QUEX_NAME(lexeme_to_pretty_char)(const char* Lexeme, char*   buffer, size_t  BufferSize); 
+QUEX_NAME(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme, 
+                                 char*                    buffer, 
+                                 size_t                   BufferSize); 
 
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE const std::string 
-QUEX_NAME(lexeme_to_pretty_std_string)(const std::basic_string<QUEX_TYPE_LEXATOM>& Text);
+QUEX_NAME(lexeme_to_pretty_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Text);
 #endif
 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
@@ -63,11 +75,6 @@ QUEX_NAME(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM** source_p,
                            const QUEX_TYPE_LEXATOM*  SourceEnd,
                            wchar_t**                 drain_p,  
                            const wchar_t*            DrainEnd);
-
-#ifndef __QUEX_OPTION_PLAIN_C
-QUEX_INLINE const std::string 
-QUEX_NAME(wlexeme_to_pretty_std_string)(std::wstring Text);
-#endif
 
 #endif
 #endif /* ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED) */

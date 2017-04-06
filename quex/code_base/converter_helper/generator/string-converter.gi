@@ -27,13 +27,13 @@
  * (C) 2010-2012 Frank-Rene Schaefer 
  * ABSOLUTELY NO WARRANTY                                                    */
 #if   ! defined(__QUEX_FROM)
-#   error "__QUEX_FROM must be defined!"
+#   error      "__QUEX_FROM definition missing!"
 #elif ! defined(__QUEX_FROM_TYPE)
-#   error "__QUEX_FROM_TYPE must be defined!"
+#   error      "__QUEX_FROM_TYPE definition missing!"
 #elif ! defined(__QUEX_TO_TYPE)
-#   error "__QUEX_TO_TYPE must be defined!"
+#   error      "__QUEX_TO_TYPE definition missing!"
 #elif ! defined(__QUEX_TO)
-#   error "__QUEX_TO must be defined!"
+#   error      "__QUEX_TO definition missing!"
 #endif
 
 /* UTF8 element = 1 byte. UCS character range => max. 4 chunks / char.   */
@@ -44,8 +44,9 @@
 #define __QUEX_TO_MAX_LENGTH_utf32 1
 /* Assume the worst case for 'char' and 'wchar_t': Both are encoded in 
  * UTF8 (!?). Thus, we would need 4 elements per character for UCS.      */
-#define __QUEX_TO_MAX_LENGTH_char  __QUEX_TO_MAX_LENGTH_utf8
-#define __QUEX_TO_MAX_LENGTH_wchar __QUEX_TO_MAX_LENGTH_utf8
+#define __QUEX_TO_MAX_LENGTH_char        __QUEX_TO_MAX_LENGTH_utf8
+#define __QUEX_TO_MAX_LENGTH_pretty_char __QUEX_TO_MAX_LENGTH_char
+#define __QUEX_TO_MAX_LENGTH_wchar       __QUEX_TO_MAX_LENGTH_utf8
 
 /* Define max. length in terms of the given output codec.                */
 #define ____QUEX_TO_MAX_LENGTH(X)  __QUEX_TO_MAX_LENGTH_ ## X

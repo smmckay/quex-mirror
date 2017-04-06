@@ -39,7 +39,7 @@ main(int argc, char** argv)
         /* Lexeme is same for all three. */
         int   L = (int)max_token->text.length();
 
-        printf("%s", (char*)max_token->pretty_char_text().c_str());
+        printf("%s", (char*)max::Lexer_lexeme_to_pretty_std_string(max_token->text).c_str());
 
         for(int i=0; i < 10 - L ; ++i) printf(" ");
         printf("\t");

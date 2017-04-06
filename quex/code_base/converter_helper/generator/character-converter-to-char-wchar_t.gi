@@ -16,15 +16,15 @@
  * ABSOLUTELY NO WARRANTY                                                    */
 
 #if   ! defined(__QUEX_FROM)
-#   error "__QUEX_FROM must be defined!"
+#   error      "__QUEX_FROM definition missing!"
 #elif ! defined(__QUEX_FROM_TYPE)
-#   error "__QUEX_FROM_TYPE must be defined!"
+#   error      "__QUEX_FROM_TYPE definition missing!"
 #elif   defined(__QUEX_TO_TYPE) 
-#   error "__QUEX_TO_TYPE must NOT be defined!"
+#   error      "__QUEX_TO_TYPE definition missing!"
 #elif   defined(__QUEX_TO) 
-#   error "__QUEX_TO must NOT be defined!"
+#   error      "__QUEX_TO definition missing!"
 #elif   defined(__QUEX_TO_CODEC)
-#   error "__QUEX_TO_CODEC must NOT be defined!"
+#   error      "__QUEX_TO_CODEC definition missing!"
 #endif
 
 QUEX_INLINE void
@@ -46,6 +46,29 @@ QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, char)(const __QUEX_FROM_TYPE**  source_pp,
         __quex_assert(false); /* Cannot be handled */
     }
 }
+
+QUEX_INLINE void
+QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, pretty_char)(const __QUEX_FROM_TYPE**  source_pp, 
+                                                  char**                    drain_pp)  
+{
+    char* write_p = *drain_pp;
+
+    QUEX_CONVERTER_CHAR(__QUEX_FROM,char)(source_pp, drain_pp);
+   
+    switch( *write_p ) { 
+    case (int)'\n': *write_p++ = (char)'\\'; *write_p = (char)'n'; break;
+    case (int)'\t': *write_p++ = (char)'\\'; *write_p = (char)'t'; break;
+    case (int)'\r': *write_p++ = (char)'\\'; *write_p = (char)'r'; break;
+    case (int)'\a': *write_p++ = (char)'\\'; *write_p = (char)'a'; break;
+    case (int)'\b': *write_p++ = (char)'\\'; *write_p = (char)'b'; break;
+    case (int)'\f': *write_p++ = (char)'\\'; *write_p = (char)'f'; break;
+    case (int)'\v': *write_p++ = (char)'\\'; *write_p = (char)'v'; break;
+    default: /* 'drain_pp' has been adapted by converter!       */ return;
+    }
+    /* 'drain_pp' is set to the post-adapted position.          */
+    *drain_pp = &write_p[1];
+}
+
 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
     QUEX_INLINE void

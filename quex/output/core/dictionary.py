@@ -48,11 +48,6 @@ import re
 CppBase = {
     "$frame":                   cpp.__frame_of_all,
     "$code_base":               "/quex/code_base/",
-    "$token-default-file":      "/token/CppDefault.qx",
-    "$token_template_file":     "/token/TXT-Cpp",
-    "$token_template_i_file":   "/token/TXT-Cpp.i",
-    "$analyzer_template_file":  "/analyzer/TXT-Cpp",
-    "$file_extension":          ".cpp",
 }
 
 class Lng_Cpp(dict):
@@ -65,6 +60,11 @@ class Lng_Cpp(dict):
     Match_vector                = re.compile("\\bvector\\b", re.UNICODE) 
     Match_map                   = re.compile("\\bmap\\b", re.UNICODE)
 
+    def code_base_directory(self):    return "/quex/code_base/"
+    def token_template_file(self):    return "%s/token/TXT-Cpp"       % self.code_base_directory()
+    def token_template_i_file(self):  return "%s/token/TXT-Cpp.i"     % self.code_base_directory()
+    def token_default_file(self):     return "%s/token/CppDefault.qx" % self.code_base_directory()  
+    def analyzer_template_file(self): return "%s/analyzer/TXT-Cpp"  % self.code_base_directory()
 
     def __init__(self, DB):      
         self.update(DB)
@@ -1101,45 +1101,32 @@ db["C++"] = Lng_Cpp(CppBase)
 class Lng_C(Lng_Cpp):
     def __init__(self, DB):      
         Lng_Cpp.__init__(self, DB)
+
     def NAMESPACE_REFERENCE(self, NameList, TrailingDelimiterF=True):
         result = "".join("%s_" % name for name in NameList)
         if TrailingDelimiterF: return result
         else:                  return result[:-1]
+    def token_template_file(self):    return "%s/token/TXT-C"       % self.code_base_directory()
+    def token_template_i_file(self):  return "%s/token/TXT-C.i"     % self.code_base_directory()
+    def token_default_file(self):     return "%s/token/CDefault.qx" % self.code_base_directory()  
+    def analyzer_template_file(self): return "%s/analyzer/TXT-C"    % self.code_base_directory()
 
 db["C"] = Lng_C(CppBase)
-db["C"].update([
-    ("$token-default-file", "/token/CDefault.qx"),
-    ("$token_template_file",    "/token/TXT-C"),
-    ("$token_template_i_file",  "/token/TXT-C.i"),
-    ("$analyzer_template_file", "/analyzer/TXT-C"),
-    ("$file_extension",         ".c")
-])
 
 #________________________________________________________________________________
 # Perl
 #    
-db["Perl"] = {
-}
+db["Perl"] = {}
 
 #________________________________________________________________________________
 # Python
 #    
-db["Python"] = {
-}
+db["Python"] = {}
 
 #________________________________________________________________________________
 # Visual Basic 6
 #    
-db["VisualBasic6"] = {
-    }
+db["VisualBasic6"] = {}
 
 db["DOT"] = copy(db["C++"])
-db["C"].update([
-    ("$token-default-file", "/token/CDefault.qx"),
-    ("$token_template_file",    "/token/TXT-C"),
-    ("$token_template_i_file",  "/token/TXT-C.i"),
-    ("$analyzer_template_file", "/analyzer/TXT-C"),
-    ("$file_extension",         ".c"),
-    ("$comment-delimiters", [["/*", "*/", ""], ["//", "\n", ""], ["\"", "\"", "\\\""]]),
-])
 

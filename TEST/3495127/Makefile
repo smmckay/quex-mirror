@@ -11,9 +11,9 @@ all: Simple.c
 Simple.E: Simple.c
 	$(LDC) -E -I./ -I$(QUEX_PATH) Simple.c -o Simple.E
 
-Simple.c: $(TOKEN_POLICY).qx
+Simple.c: queue.qx
 	@echo "Call to quex"
-	quex -i $(TOKEN_POLICY).qx -o Simple --language C --debug-exception --token-policy $(TOKEN_POLICY) ##
+	quex -i queue.qx -o Simple --language C --debug-exception ##
 
 clean:
 	rm -rf Simple*

@@ -14,9 +14,8 @@ def do(ModeDB):
     assert blackboard.token_type_definition is not None
     
 
-    QuexClassHeaderFileTemplate = os.path.normpath(  QUEX_PATH
-                                                   + Lng["$code_base"] 
-                                                   + Lng["$analyzer_template_file"]).replace("//","/")
+    QuexClassHeaderFileTemplate = os.path.normpath(  
+            QUEX_PATH + Lng.analyzer_template_file()).replace("//","/")
     LexerClassName = Setup.analyzer_class_name
 
     quex_converter_coding_name_str = Setup.converter_ucs_coding_name

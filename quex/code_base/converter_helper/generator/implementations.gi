@@ -36,6 +36,9 @@
 #define  __QUEX_TO         char
 #define  __QUEX_TO_TYPE    char
 #include <quex/code_base/converter_helper/generator/string-converter.gi>
+#define  __QUEX_TO         pretty_char
+#define  __QUEX_TO_TYPE    char
+#include <quex/code_base/converter_helper/generator/string-converter.gi>
 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
 #   define  __QUEX_TO         wchar

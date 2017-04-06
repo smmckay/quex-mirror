@@ -24,11 +24,11 @@ def do(MapTokenIDToNameFunctionStr):
 
     # Return declaration and implementation as two strings
     if Setup.token_class_only_f:
-        txt   = clean_for_independence(txt)
-        txt_i = clean_for_independence(txt_i)
+        txt   = _clean_for_independence(txt)
+        txt_i = _clean_for_independence(txt_i)
         map_token_id_to_name_function_str =   \
                   get_helper_definitions() \
-                + clean_for_independence(MapTokenIDToNameFunctionStr) \
+                + _clean_for_independence(MapTokenIDToNameFunctionStr) \
 
     if Setup.language.upper() == "C++":
         # In C++ we do inline, so we can do everything in the header file
@@ -52,13 +52,8 @@ def _do(Descr):
 
     ## ALLOW: Descr.get_member_db().keys() == empty
 
-    TemplateFile = QUEX_PATH \
-                   + Lng["$code_base"] \
-                   + Lng["$token_template_file"]
-
-    TemplateIFile = QUEX_PATH \
-                   + Lng["$code_base"] \
-                   + Lng["$token_template_i_file"]
+    TemplateFile   = QUEX_PATH + Lng.token_template_file()
+    TemplateIFile  = QUEX_PATH + Lng.token_template_i_file()
 
     template_str   = open_file_or_die(TemplateFile, Mode="rb").read()
     template_i_str = open_file_or_die(TemplateIFile, Mode="rb").read()
@@ -99,6 +94,8 @@ def _do(Descr):
 
     namespace_open, namespace_close = __namespace_brackets()
     helper_variable_replacements = [
+              ["$INCLUDE_CONVERTER_DECLARATION",    converter_declaration_include],
+              ["$INCLUDE_CONVERTER_IMPLEMENTATION", converter_implementation_include],
               ["$NAMESPACE_CLOSE",                  namespace_close],
               ["$NAMESPACE_OPEN",                   namespace_open],
               ["$TOKEN_CLASS",                      token_class_name],
@@ -339,33 +336,26 @@ def __get_converter_configuration(IncludeGuardExtension):
 
     declaration_include    = Lng.CONVERTER_HELPER_DECLARATION()
     implementation_include = Lng.CONVERTER_HELPER_IMLEMENTATION()
-    from_codec             = Setup.buffer_codec.name
 
     if not Setup.token_class_only_f:
-        string  = "QUEX_CONVERTER_STRING(%s,char)"  % from_codec
-        wstring = "QUEX_CONVERTER_STRING(%s,wchar)" % from_codec
-
-        return declaration_include, implementation_include, string, wstring
+        return declaration_include, implementation_include
 
     # From Here One: 'Sharable Token Class Generation'
     if Setup.language.upper() == "C++":
         function_prefix       = Lng.NAMESPACE_REFERENCE(token_descr.name_space) 
         function_def_prefix   = ""
-        function_def_prefix_0 = ""
         namespace_token_open  = Lng.NAMESPACE_OPEN(token_descr.name_space).replace("\n", " ")
         namespace_token_close = Lng.NAMESPACE_CLOSE(token_descr.name_space).replace("\n", " ")
     else:
         function_prefix       = token_descr.class_name_safe + " ##"
         function_def_prefix   = token_descr.class_name_safe + " ##"
-        function_def_prefix_0 = token_descr.class_name_safe 
         namespace_token_open  = ""
         namespace_token_close = ""
 
-
     before = frame_begin                                    \
              % (IncludeGuardExtension,                      \
-                function_def_prefix, function_def_prefix,   \
-                function_prefix,     function_prefix,       \
+                function_def_prefix,  function_def_prefix,  \
+                function_prefix,      function_prefix,      \
                 namespace_token_open, namespace_token_close,\
                 Setup.buffer_lexatom_type)
     after  = frame_end \
@@ -380,15 +370,16 @@ def __get_converter_configuration(IncludeGuardExtension):
     # In C++: We are in the same namespace, no prefix, function_def_prefix is empty anyway.
     return declaration_include, implementation_include
 
-QUEX_lexeme_length_re         = re.compile("QUEX_NAME\\(lexeme_length\\)", re.UNICODE)
+QUEX_lexeme_length_re         = re.compile("\\bQUEX_NAME\\(lexeme_length\\)", re.UNICODE)
 QUEX_TYPE_LEXATOM_re          = re.compile("\\bQUEX_TYPE_LEXATOM\\b", re.UNICODE)
 QUEX_LEXEME_NULL_re           = re.compile("\\bQUEX_LEXEME_NULL\\b", re.UNICODE)
 QUEX_TYPE_ANALYZER_re         = re.compile("\\bQUEX_TYPE_ANALYZER\\b", re.UNICODE)
 QUEX_TYPE_TOKEN_ID_re         = re.compile("\\bQUEX_TYPE_TOKEN_ID\\b", re.UNICODE)
-QUEX_LexemeNullDeclaration_re = re.compile("QUEX_NAME\\(LexemeNullObject\\)", re.UNICODE)
+QUEX_LexemeNullDeclaration_re = re.compile("\\bQUEX_NAME\\(LexemeNullObject\\)", re.UNICODE)
 QUEX_TYPE_LEXATOM_safe_re     = re.compile("\\$\\$quex_type_character\\$\\$", re.UNICODE)
+PRAGMA_LINE                   = re.compile("^# *line\\b", re.UNICODE)
 
-def clean_for_independence(txt):
+def _clean_for_independence(txt):
     token_descr = blackboard.token_type_definition
 
     global QUEX_MEMORY_FREE_re
@@ -412,24 +403,12 @@ def clean_for_independence(txt):
     txt = QUEX_LEXEME_NULL_re.sub(common_lexeme_null_str(), txt)
 
     # Delete any line references
-    result = []
-    for line in txt.splitlines():
-        x = line.strip()
-        if len(x) != 0 and x[0] == "#":
-            x = x[1:].strip()
-            if x.find("line") == 0: 
-                continue
-        result.append(line + "\n")
+    result = [
+        "%s\n" % line
+        for line in txt.splitlines()
+        if PRAGMA_LINE.match(line) is None
+    ]
     return "".join(result)
-
-def common_lexeme_null_str():
-    token_descr = blackboard.token_type_definition
-    if Setup.language.upper() == "C++": 
-        # LexemeNull's namespace == token namespace, no explicit naming.
-        return "LexemeNullObject"
-    else:                               
-        namespace_prefix = Lng.NAMESPACE_REFERENCE(token_descr.name_space) 
-        return "%sLexemeNullObject" % namespace_prefix
 
 def __namespace_brackets(DefineF=False):
     token_descr = blackboard.token_type_definition
@@ -443,6 +422,15 @@ def __namespace_brackets(DefineF=False):
         return open_str, close_str
     else:
         return "", ""
+
+def common_lexeme_null_str():
+    token_descr = blackboard.token_type_definition
+    if Setup.language.upper() == "C++": 
+        # LexemeNull's namespace == token namespace, no explicit naming.
+        return "LexemeNullObject"
+    else:                               
+        namespace_prefix = Lng.NAMESPACE_REFERENCE(token_descr.name_space) 
+        return "%sLexemeNullObject" % namespace_prefix
 
 def lexeme_null_declaration():
     if Setup.token_class_only_f:
@@ -514,7 +502,7 @@ frame_begin = """
 #   undef  QUEX_CONVERTER_STRING
 #   undef  QUEX_NAMESPACE_MAIN_OPEN               
 #   undef  QUEX_NAMESPACE_MAIN_CLOSE              
-#   undef  $$quex_type_character$$
+#   undef  QUEX_TYPE_LEXATOM
 #   define __QUEX_SIGNAL_UNDEFINED_CONVERTER_MACROS_%s
 #endif
 #define    __QUEX_CONVERTER_CHAR_DEF(FROM, TO)    %sFROM ## _to_ ## TO ## _character
@@ -527,7 +515,7 @@ frame_begin = """
 #define    QUEX_CONVERTER_STRING(FROM, TO)        __QUEX_CONVERTER_STRING(FROM, TO)
 #define    QUEX_NAMESPACE_MAIN_OPEN               %s
 #define    QUEX_NAMESPACE_MAIN_CLOSE              %s
-#define    $$quex_type_character$$                %s
+#define    QUEX_TYPE_LEXATOM                      %s
 
 """
 

@@ -66,13 +66,9 @@ main(int argc, char** argv)
         assert(qlex.buffer.filler);
         (void)qlex.receive(&token_p);
 
-#       if defined (__QUEX_SETTING_TEST_UTF8)
         printf("(%2i, %2i)   \t%s '%s' \n", (int)qlex.line_number(), (int)qlex.column_number(),
-               token_p->type_id_name().c_str(), token_p->pretty_char_text().c_str());
-#       else
-        printf("(%2i, %2i)   \t%s '%s' \n", (int)qlex.line_number(), (int)qlex.column_number(),
-               token_p->type_id_name().c_str(), (const char*)token_p->text.c_str());
-#       endif
+               token_p->type_id_name().c_str(), 
+               QUEX_NAME(lexeme_to_pretty_char)(token_p->text).c_str());
 
     } while( token_p->type_id() != QUEX_TKN_TERMINATION );
 
