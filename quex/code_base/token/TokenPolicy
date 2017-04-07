@@ -99,7 +99,7 @@
         } while ( 0 )
 
 #define self_send1(ID, Str)                                              \
-        self_send2((ID), (Str), (Str) + QUEX_NAME(lexeme_length)(Str)); 
+        self_send2((ID), (Str), (Str) + QUEX_NAME_TOKEN(lexeme_length)(Str)); 
                                                                          
 #define self_send2(ID, StrBegin, StrEnd)                                 \
         do {                                                             \

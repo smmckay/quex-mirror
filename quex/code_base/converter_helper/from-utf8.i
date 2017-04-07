@@ -34,21 +34,17 @@
  *                  segments of the utf8 conversion library of Alexey Vatchenko 
  *                  <av@bsdua.org>.    
  *
- * 2010 (C) Frank-Rene Schaefer; 
+ * (C) 2010-2017 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                    */
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8_I) \
-    ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8_I
-#endif
+#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8_I
+#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8_I
 
 #include <quex/code_base/converter_helper/from-utf8>
 
 #define __QUEX_FROM       utf8
 #define __QUEX_FROM_TYPE  uint8_t
 
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
 /* (1) Implement the character converters utf8 to utf8, utf16, utf32.
  *     (Note, that character converters are generated into namespace 'quex'.)*/
@@ -177,6 +173,6 @@ QUEX_CONVERTER_CHAR_DEF(utf8, utf32)(const uint8_t** input_pp, uint32_t** output
  *     definitions of the character converters.                             */
 #include <quex/code_base/converter_helper/generator/implementations.gi>
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8_I */

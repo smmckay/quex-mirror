@@ -52,7 +52,7 @@ $INCLUDE_CONVERTER_DECLARATION
 
             std::wstring    tmp(drain);
 
-            tmp += std::wstring(L" '") + QUEX_FUNCTION_PREFIX QUEX_NAME(lexeme_to_pretty_char)(self.text) + std::wstring(L"'");
+            tmp += std::wstring(L" '") + QUEX_NAMESPACE_TOKEN :: QUEX_TOKEN_NAME(lexeme_to_pretty_char)(self.text) + std::wstring(L"'");
 
             return tmp;
         }

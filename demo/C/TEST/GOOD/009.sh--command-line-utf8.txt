@@ -1,16 +1,66 @@
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 type here:     read: 22 [byte]
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
    Token: MESSAGE 'Сообщение'
    Token: WHITESPACE ' '
    Token: SOMETHING 'о'
-   Token: WHITESPACE '
-'
+   Token: WHITESPACE '\n'
    Token: <TERMINATION> ''
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 type here:     read: 38 [byte]
    Token: KILOBYTE 'килобайт'
    Token: WHITESPACE ' '
    Token: STARTS 'начинается'
-   Token: WHITESPACE '
-'
+   Token: WHITESPACE '\n'
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
    Token: <TERMINATION> ''
 type here:     read: 26 [byte]
    Token: SOMETHING 'с'
@@ -19,11 +69,39 @@ type here:     read: 26 [byte]
    Token: WHITESPACE ' '
    Token: BIT 'бита'
    Token: SOMETHING '.'
-   Token: WHITESPACE '
+   Token: WHITESPACE '\n'
+   Token: <TERMINATION> ''
+type here:     read: 20 [byte]
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
 '
    Token: <TERMINATION> ''
 type here:     read: 20 [byte]
    Token: MESSAGE 'Ένα μήνυμα'
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
    Token: WHITESPACE '
 '
    Token: <TERMINATION> ''
@@ -33,6 +111,19 @@ type here:     read: 18 [byte]
    Token: SOMETHING 'ό'
    Token: SOMETHING 'ς'
    Token: WHITESPACE ' '
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
    Token: KILOBYTE 'kilobyte'
    Token: WHITESPACE '
 '
@@ -44,8 +135,7 @@ type here:     read: 39 [byte]
    Token: WHITESPACE ' '
    Token: BIT 'bit'
    Token: SOMETHING '.'
-   Token: WHITESPACE '
-'
+   Token: WHITESPACE '\n'
    Token: <TERMINATION> ''
 type here: <terminated>
 VALGRIND:  All heap blocks were freed -- no leaks are possible

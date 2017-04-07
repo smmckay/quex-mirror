@@ -31,19 +31,16 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__$$CODEC$$_I) \
-    ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__$$CODEC$$_I
-#endif
+#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__$$CODEC$$_I
+#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__$$CODEC$$_I
 
 #include "$$CODEC_HEADER$$"
 
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF($$CODEC$$, utf32)(const QUEX_TYPE_LEXATOM** input_pp,
-                                          uint32_t**                  output_pp)
+                                          uint32_t**                output_pp)
 {
     uint16_t             unicode = (uint32_t)0;
     QUEX_TYPE_LEXATOM  input   = *(*input_pp)++;
@@ -52,7 +49,7 @@ $$BODY_UTF32$$
 
 QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF($$CODEC$$, utf16)(const QUEX_TYPE_LEXATOM** input_pp,
-                                          uint16_t**                  output_pp)
+                                          uint16_t**                output_pp)
 {
     uint32_t   unicode   = (uint32_t)0;
     uint32_t*  unicode_p = &unicode;
@@ -63,9 +60,9 @@ $$BODY_UTF16$$
 
 QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF($$CODEC$$, utf8)(const QUEX_TYPE_LEXATOM**  input_pp, 
-                                         uint8_t**                    output_pp)
+                                         uint8_t**                  output_pp)
 {
-    uint32_t            unicode = (uint32_t)-1;
+    uint32_t          unicode = (uint32_t)-1;
     QUEX_TYPE_LEXATOM input   = *(*input_pp)++;
     
 $$BODY_UTF8$$
@@ -84,7 +81,7 @@ $$EPILOG$$
  *     definitions of the character converters.                             */
 #include <quex/code_base/converter_helper/generator/implementations.gi>
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__$$CODEC$$_I */
 

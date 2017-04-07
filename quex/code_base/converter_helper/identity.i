@@ -15,15 +15,12 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I) \
-    ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I
-#endif
+#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I
+#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I
 
 #include <quex/code_base/converter_helper/identity>
 
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_INLINE void
 QUEX_CONVERTER_STRING_DEF(identical, char)(const QUEX_TYPE_LEXATOM**  source_pp, 
@@ -73,6 +70,6 @@ QUEX_CONVERTER_STRING_DEF(identical, wchar)(const QUEX_TYPE_LEXATOM**  source_pp
 #   endif
 #endif
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I */

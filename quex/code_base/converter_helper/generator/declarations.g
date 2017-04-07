@@ -22,6 +22,10 @@
 #   error      "__QUEX_FROM_TYPE definition missing!"
 #elif ! defined(QUEX_INLINE)
 #   error      "QUEX_INLINE definition missing!"
+#elif ! defined(QUEX_CONVERTER_CHAR_DEF)
+#   error      "QUEX_CONVERTER_CHAR_DEF definition missing!"
+#elif ! defined(QUEX_CONVERTER_STRING_DEF)
+#   error      "QUEX_CONVERTER_STRING_DEF definition missing!"
 #endif
 
 /* (1) Character converters */

@@ -1,7 +1,8 @@
 # (C) 2005-2010 Frank-Rene Schaefer
 # ABSOLUTELY NO WARANTY
 from   quex.DEFINITIONS                   import QUEX_PATH
-from   quex.engine.misc.file_in           import get_include_guard_extension
+from   quex.engine.misc.file_in           import get_include_guard_extension, \
+                                                 make_safe_identifier
 from   quex.engine.misc.file_operations   import open_file_or_die
 from   quex.engine.misc.string_handling   import blue_print
 import quex.blackboard                    as     blackboard
@@ -27,8 +28,7 @@ def do(MapTokenIDToNameFunctionStr):
         txt   = _clean_for_independence(txt)
         txt_i = _clean_for_independence(txt_i)
         map_token_id_to_name_function_str =   \
-                  get_helper_definitions() \
-                + _clean_for_independence(MapTokenIDToNameFunctionStr) \
+                _clean_for_independence(MapTokenIDToNameFunctionStr) 
 
     if Setup.language.upper() == "C++":
         # In C++ we do inline, so we can do everything in the header file
@@ -86,11 +86,6 @@ def _do(Descr):
 
     extra_at_begin_str = lexeme_null_declaration()
     extra_at_end_str   = ""
-    if Setup.token_class_only_f:
-        extra_at_begin_str = QUEX_NAME_TOKEN_define_str % include_guard_extension_str \
-                             + extra_at_begin_str
-        extra_at_end_str   = QUEX_NAME_TOKEN_undef_str % include_guard_extension_str \
-                             + extra_at_end_str
 
     namespace_open, namespace_close = __namespace_brackets()
     helper_variable_replacements = [
@@ -101,9 +96,9 @@ def _do(Descr):
               ["$TOKEN_CLASS",                      token_class_name],
     ]
 
-    if Setup.language.upper() != "C++" and Setup.token_class_only_f:
-        extra_at_begin_str += local_lexeme_length_declaration_str % (Descr.class_name_safe, 
-                                                                     Setup.buffer_lexatom_type) 
+    if Setup.token_class_only_f:
+        extra_at_begin_str += get_helper_definitions() 
+
     txt = blue_print(template_str, 
             [
               ["$$EXTRA_AT_BEGIN$$",  extra_at_begin_str],
@@ -132,13 +127,6 @@ def _do(Descr):
              ])
 
     txt   = blue_print(txt, helper_variable_replacements)
-
-    # Local 'lexeme_length' is required to avoid dependency on 'lexeme.i' 
-    # => QUEX_NAME, etc. does not have to be defined.
-    if Setup.language.upper() != "C++" and Setup.token_class_only_f:
-        extra_at_begin_str += local_lexeme_length_str % (Descr.class_name_safe, 
-                                                         Setup.buffer_lexatom_type, 
-                                                         Setup.buffer_lexatom_type)
 
     txt_i = blue_print(template_i_str, 
             [
@@ -346,20 +334,16 @@ def __get_converter_configuration(IncludeGuardExtension):
         function_def_prefix   = ""
         namespace_token_open  = Lng.NAMESPACE_OPEN(token_descr.name_space).replace("\n", " ")
         namespace_token_close = Lng.NAMESPACE_CLOSE(token_descr.name_space).replace("\n", " ")
+        quex_name_prefix      = Setup.analyzer_class_name
     else:
         function_prefix       = token_descr.class_name_safe + " ##"
         function_def_prefix   = token_descr.class_name_safe + " ##"
         namespace_token_open  = ""
         namespace_token_close = ""
+        quex_name_prefix      = Setup.analyzer_name_safe
 
-    before = frame_begin                                    \
-             % (IncludeGuardExtension,                      \
-                function_def_prefix,  function_def_prefix,  \
-                function_prefix,      function_prefix,      \
-                namespace_token_open, namespace_token_close,\
-                Setup.buffer_lexatom_type)
-    after  = frame_end \
-             % IncludeGuardExtension
+    before = "" 
+    after  = "" 
 
     declaration_include    = "%s%s\n%s" \
                              % (before, declaration_include, after)
@@ -374,7 +358,6 @@ QUEX_lexeme_length_re         = re.compile("\\bQUEX_NAME\\(lexeme_length\\)", re
 QUEX_TYPE_LEXATOM_re          = re.compile("\\bQUEX_TYPE_LEXATOM\\b", re.UNICODE)
 QUEX_LEXEME_NULL_re           = re.compile("\\bQUEX_LEXEME_NULL\\b", re.UNICODE)
 QUEX_TYPE_ANALYZER_re         = re.compile("\\bQUEX_TYPE_ANALYZER\\b", re.UNICODE)
-QUEX_TYPE_TOKEN_ID_re         = re.compile("\\bQUEX_TYPE_TOKEN_ID\\b", re.UNICODE)
 QUEX_LexemeNullDeclaration_re = re.compile("\\bQUEX_NAME\\(LexemeNullObject\\)", re.UNICODE)
 QUEX_TYPE_LEXATOM_safe_re     = re.compile("\\$\\$quex_type_character\\$\\$", re.UNICODE)
 PRAGMA_LINE                   = re.compile("^# *line\\b", re.UNICODE)
@@ -387,17 +370,13 @@ def _clean_for_independence(txt):
     global QUEX_lexeme_length_re
     global QUEX_TYPE_LEXATOM_re
     global QUEX_TYPE_ANALYZER_re
-    global QUEX_TYPE_TOKEN_ID_re
     global QUEX_LexemeNullDeclaration_re
     global QUEX_TYPE_LEXATOM_safe_re
     global QUEX_LEXEME_NULL_re
 
-    txt = QUEX_TYPE_LEXATOM_re.sub(Setup.buffer_lexatom_type, txt)
+    #txt = QUEX_TYPE_LEXATOM_re.sub(Setup.buffer_lexatom_type, txt)
     txt = QUEX_TYPE_ANALYZER_re.sub("void", txt)
-    txt = QUEX_TYPE_TOKEN_ID_re.sub(Setup.token_id_type, txt)
     txt = QUEX_LexemeNullDeclaration_re.sub(common_lexeme_null_str(), txt)
-    # txt = QUEX_MEMORY_ALLOC_re.sub("malloc", txt)
-    # txt = QUEX_MEMORY_FREE_re.sub("free", txt)
     txt = QUEX_TYPE_LEXATOM_safe_re.sub("QUEX_TYPE_LEXATOM", txt)
     txt = QUEX_lexeme_length_re.sub("%s_lexeme_length" % token_descr.class_name_safe, txt)
     txt = QUEX_LEXEME_NULL_re.sub(common_lexeme_null_str(), txt)
@@ -457,115 +436,30 @@ def lexeme_null_implementation():
                 "%s\n\n" % namespace_close,
               ])
 
-local_lexeme_length_declaration_str = """
-QUEX_INLINE size_t 
-%s_lexeme_length(const %s* Str);
+helper_definitions_Cpp = """
+#define QUEX_NAME_TOKEN(NAME)              %s_ ## NAME
+#define QUEX_NAMESPACE_TOKEN_OPEN          %s
+#define QUEX_NAMESPACE_TOKEN_CLOSE         %s
+#define QUEX_NAMESPACE_LEXEME_NULL_OPEN    %s
+#define QUEX_NAMESPACE_LEXEME_NULL_CLOSE   %s
 """
 
-local_lexeme_length_str = """
-QUEX_INLINE size_t 
-%s_lexeme_length(const %s* Str)
-{
-    const %s* iterator = Str;
-    while( *iterator != 0 ) ++iterator; 
-    return (size_t)(iterator - Str);
-}
-
+helper_definitions_C = """
+#define QUEX_NAME_TOKEN(NAME)              %s_ ## NAME
+#define QUEX_NAMESPACE_TOKEN_OPEN  
+#define QUEX_NAMESPACE_TOKEN_CLOSE 
+#define QUEX_NAMESPACE_LEXEME_NULL_OPEN     
+#define QUEX_NAMESPACE_LEXEME_NULL_CLOSE    
 """
 
-QUEX_NAME_TOKEN_define_str = """
-#if ! defined(QUEX_NAME_TOKEN)
-#   if defined(__QUEX_OPTION_PLAIN_C)
-#      define QUEX_NAME_TOKEN(NAME)   $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
-#   else
-#      define QUEX_NAME_TOKEN(NAME)   $TOKEN_CLASS_ ## NAME
-#   endif
-#   define __QUEX_SIGNAL_DEFINED_QUEX_NAME_TOKEN_%s
-#endif
-"""
+helper_definitions_common = """
+#define QUEX_TYPE_LEXATOM                  %s
+#define QUEX_TYPE_TOKEN_ID                 %s
+#define QUEX_SETTING_CHARACTER_CODEC       %s
 
-QUEX_NAME_TOKEN_undef_str = """
-#if defined(__QUEX_SIGNAL_DEFINED_QUEX_NAME_TOKEN_%s)
-#   undef QUEX_NAME_TOKEN
-#endif
-"""
-
-frame_begin = """
-#if defined(QUEX_CONVERTER_CHAR_DEF)
-#   undef  __QUEX_CONVERTER_CHAR_DEF
-#   undef  __QUEX_CONVERTER_STRING_DEF
-#   undef  QUEX_CONVERTER_CHAR_DEF
-#   undef  QUEX_CONVERTER_STRING_DEF
-#   undef  __QUEX_CONVERTER_CHAR
-#   undef  __QUEX_CONVERTER_STRING
-#   undef  QUEX_CONVERTER_CHAR
-#   undef  QUEX_CONVERTER_STRING
-#   undef  QUEX_NAMESPACE_MAIN_OPEN               
-#   undef  QUEX_NAMESPACE_MAIN_CLOSE              
-#   undef  QUEX_TYPE_LEXATOM
-#   define __QUEX_SIGNAL_UNDEFINED_CONVERTER_MACROS_%s
-#endif
-#define    __QUEX_CONVERTER_CHAR_DEF(FROM, TO)    %sFROM ## _to_ ## TO ## _character
-#define    __QUEX_CONVERTER_STRING_DEF(FROM, TO)  %sFROM ## _to_ ## TO
-#define    QUEX_CONVERTER_CHAR_DEF(FROM, TO)      __QUEX_CONVERTER_CHAR_DEF(FROM, TO)
-#define    QUEX_CONVERTER_STRING_DEF(FROM, TO)    __QUEX_CONVERTER_STRING_DEF(FROM, TO)
-#define    __QUEX_CONVERTER_CHAR(FROM, TO)        %sFROM ## _to_ ## TO ## _character
-#define    __QUEX_CONVERTER_STRING(FROM, TO)      %sFROM ## _to_ ## TO
-#define    QUEX_CONVERTER_CHAR(FROM, TO)          __QUEX_CONVERTER_CHAR(FROM, TO)
-#define    QUEX_CONVERTER_STRING(FROM, TO)        __QUEX_CONVERTER_STRING(FROM, TO)
-#define    QUEX_NAMESPACE_MAIN_OPEN               %s
-#define    QUEX_NAMESPACE_MAIN_CLOSE              %s
-#define    QUEX_TYPE_LEXATOM                      %s
-
-"""
-
-frame_end = """
-
-#undef     __QUEX_CONVERTER_CHAR_DEF
-#undef     __QUEX_CONVERTER_STRING_DEF
-#undef     QUEX_CONVERTER_CHAR_DEF
-#undef     QUEX_CONVERTER_STRING_DEF
-#undef     __QUEX_CONVERTER_CHAR
-#undef     __QUEX_CONVERTER_STRING
-#undef     QUEX_CONVERTER_CHAR
-#undef     QUEX_CONVERTER_STRING
-#undef     QUEX_NAMESPACE_MAIN_OPEN               
-#undef     QUEX_NAMESPACE_MAIN_CLOSE              
-#undef     $$quex_type_character$$
-#if defined(__QUEX_SIGNAL_UNDEFINED_CONVERTER_MACROS_%s)
-#   define __QUEX_CONVERTER_CHAR_DEF    __QUEX_CONVERTER_CHAR_DEF_BACKUP
-#   define __QUEX_CONVERTER_STRING_DEF  __QUEX_CONVERTER_STRING_DEF_BACKUP
-#   define QUEX_CONVERTER_CHAR_DEF      QUEX_CONVERTER_CHAR_DEF_BACKUP
-#   define QUEX_CONVERTER_STRING_DEF    QUEX_CONVERTER_STRING_DEF_BACKUP
-#   define __QUEX_CONVERTER_CHAR        __QUEX_CONVERTER_CHAR_BACKUP
-#   define __QUEX_CONVERTER_STRING      __QUEX_CONVERTER_STRING_BACKUP
-#   define QUEX_CONVERTER_CHAR          QUEX_CONVERTER_CHAR_BACKUP
-#   define QUEX_CONVERTER_STRING        QUEX_CONVERTER_STRING_BACKUP
-#   define QUEX_NAMESPACE_MAIN_OPEN     QUEX_NAMESPACE_MAIN_OPEN_BACKUP               
-#   define QUEX_NAMESPACE_MAIN_CLOSE    QUEX_NAMESPACE_MAIN_CLOSE_BACKUP              
-#   define $$quex_type_character$$          $$quex_type_character$$_BACKUP
-#endif
-"""
-
-helper_definitions = """
-#if ! defined(__QUEX_OPTION_PLAIN_C)
-#   define QUEX_NAME_TOKEN(NAME)       %s_ ## NAME
-#   define QUEX_NAMESPACE_TOKEN_OPEN   %s
-#   define QUEX_NAMESPACE_TOKEN_CLOSE  %s
-#   define QUEX_NAMESPACE_LEXEME_NULL_OPEN    %s
-#   define QUEX_NAMESPACE_LEXEME_NULL_CLOSE   %s
-#else
-#   define QUEX_NAME_TOKEN(NAME)       %s_ ## NAME
-#   define QUEX_NAMESPACE_TOKEN_OPEN  
-#   define QUEX_NAMESPACE_TOKEN_CLOSE 
-#   define QUEX_NAMESPACE_LEXEME_NULL_OPEN     
-#   define QUEX_NAMESPACE_LEXEME_NULL_CLOSE    
-#endif
-#define QUEX_TYPE_TOKEN_ID             %s
-
-#include "%s"
 #include "%s" 
 """
+
 def get_helper_definitions():
     namespace_open, namespace_close = __namespace_brackets(DefineF=True)
     token_descr                     = blackboard.token_type_definition
@@ -577,15 +471,20 @@ def get_helper_definitions():
     ln_namespace_open  = Lng.NAMESPACE_OPEN(Setup.lexeme_null_namespace).replace("\n", "\\\n")
     ln_namespace_close = Lng.NAMESPACE_CLOSE(Setup.lexeme_null_namespace).replace("\n", "\\\n")
 
-    return helper_definitions \
-           % (token_descr.class_name, 
-              namespace_open,         
-              namespace_close,        
-              ln_namespace_open,      
-              ln_namespace_close,      
-              token_descr.class_name_safe, 
+    if Setup.language.upper() == "C++":
+        txt = helper_definitions_Cpp \
+               % (token_descr.class_name, 
+                  namespace_open,    namespace_close,        
+                  ln_namespace_open, ln_namespace_close)
+    else:
+        txt = helper_definitions_C % token_descr.class_name_safe
+
+    txt += helper_definitions_common \
+           % (Setup.buffer_lexatom_type,
               Setup.token_id_type,
-              Setup.get_file_reference(Setup.output_token_class_file),
+              make_safe_identifier(Setup.buffer_codec.name).lower(),
               token_id_definition_file)
-                       
+
+    return txt
+
 

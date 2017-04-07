@@ -36,11 +36,8 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UNICODE_BUFFER_I) \
-    ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UNICODE_BUFFER_I
-#endif
+#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UNICODE_BUFFER_I
+#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UNICODE_BUFFER_I
 
 #include <quex/code_base/converter_helper/from-unicode-buffer>
 
@@ -50,7 +47,7 @@
 #include <quex/code_base/converter_helper/from-utf16.i>
 #include <quex/code_base/converter_helper/from-utf32.i>
 
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
 /* (2) Route the converters from 'unicode' to the implementing converter.    */
 QUEX_INLINE void
@@ -103,6 +100,6 @@ QUEX_CONVERTER_CHAR_DEF(unicode, utf32)(const QUEX_TYPE_LEXATOM**  input_pp,
  *     definitions of the character converters.                             */
 #include <quex/code_base/converter_helper/generator/implementations.gi>
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UNICODE_BUFFER_I */

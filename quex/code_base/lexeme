@@ -4,11 +4,14 @@
 #ifndef __QUEX_INCLUDE_GUARD__LEXEME
 #define __QUEX_INCLUDE_GUARD__LEXEME
 
-#ifndef    QUEX_NAMESPACE_MAIN_OPEN
-#   error "QUEX_NAMESPACE_MAIN_OPEN definition missing!"
+#ifndef    QUEX_NAMESPACE_TOKEN_OPEN
+#   error "QUEX_NAMESPACE_TOKEN_OPEN definition missing!"
 #endif
-#ifndef    QUEX_NAMESPACE_MAIN_CLOSE
-#   error "QUEX_NAMESPACE_MAIN_CLOSE definition missing!"
+#ifndef    QUEX_NAMESPACE_TOKEN_CLOSE
+#   error "QUEX_NAMESPACE_TOKEN_CLOSE definition missing!"
+#endif
+#ifndef    QUEX_NAME_TOKEN
+#   error "QUEX_NAME_TOKEN definition missing!"
 #endif
 #ifndef    QUEX_TYPE_LEXATOM
 #   error "QUEX_TYPE_LEXATOM definition missing!"
@@ -16,15 +19,15 @@
 
 #include <quex/code_base/definitions>
 
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_INLINE size_t 
-QUEX_NAME(lexeme_length)(const QUEX_TYPE_LEXATOM* Str);
+QUEX_NAME_TOKEN(lexeme_length)(const QUEX_TYPE_LEXATOM* Str);
 
 
 QUEX_INLINE size_t 
-QUEX_NAME(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0, 
-                          const QUEX_TYPE_LEXATOM* it1);
+QUEX_NAME_TOKEN(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0, 
+                                const QUEX_TYPE_LEXATOM* it1);
 
 /* If QUEX_TYPE_LEXATOM is chosen inappropriately with respect to the
  * character encoding ('wchar_t' carrying 'utf8')
@@ -36,49 +39,49 @@ QUEX_NAME(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0,
 #if      defined(QUEX_OPTION_LEXEME_CONVERTERS) \
     && ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
 QUEX_INLINE void
-QUEX_NAME(lexeme_to_utf8)(const QUEX_TYPE_LEXATOM** source_p, 
-                          const QUEX_TYPE_LEXATOM*  SourceEnd,
-                          uint8_t**                 drain_p,  
-                          const uint8_t*            DrainEnd);
+QUEX_NAME_TOKEN(lexeme_to_utf8)(const QUEX_TYPE_LEXATOM** source_p, 
+                                const QUEX_TYPE_LEXATOM*  SourceEnd,
+                                uint8_t**                 drain_p,  
+                                const uint8_t*            DrainEnd);
 
 QUEX_INLINE void
-QUEX_NAME(lexeme_to_utf16)(const QUEX_TYPE_LEXATOM** source_p, 
-                           const QUEX_TYPE_LEXATOM*  SourceEnd,
-                           uint16_t**                drain_p,  
-                           const uint16_t*           DrainEnd);
+QUEX_NAME_TOKEN(lexeme_to_utf16)(const QUEX_TYPE_LEXATOM** source_p, 
+                                 const QUEX_TYPE_LEXATOM*  SourceEnd,
+                                 uint16_t**                drain_p,  
+                                 const uint16_t*           DrainEnd);
 
 QUEX_INLINE void
-QUEX_NAME(lexeme_to_utf32)(const QUEX_TYPE_LEXATOM** source_p, 
-                           const QUEX_TYPE_LEXATOM*  SourceEnd,
-                           uint32_t**                drain_p,  
-                           const uint32_t*           DrainEnd);
+QUEX_NAME_TOKEN(lexeme_to_utf32)(const QUEX_TYPE_LEXATOM** source_p, 
+                                 const QUEX_TYPE_LEXATOM*  SourceEnd,
+                                 uint32_t**                drain_p,  
+                                 const uint32_t*           DrainEnd);
 
 QUEX_INLINE void
-QUEX_NAME(lexeme_to_char)(const QUEX_TYPE_LEXATOM** source_p, 
-                          const QUEX_TYPE_LEXATOM*  SourceEnd,
-                          char**                    drain_p,  
-                          const char*               DrainEnd);
+QUEX_NAME_TOKEN(lexeme_to_char)(const QUEX_TYPE_LEXATOM** source_p, 
+                                const QUEX_TYPE_LEXATOM*  SourceEnd,
+                                char**                    drain_p,  
+                                const char*               DrainEnd);
 
 QUEX_INLINE const char* 
-QUEX_NAME(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme, 
-                                 char*                    buffer, 
-                                 size_t                   BufferSize); 
+QUEX_NAME_TOKEN(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme, 
+                                       char*                    buffer, 
+                                       size_t                   BufferSize); 
 
 #ifndef __QUEX_OPTION_PLAIN_C
 QUEX_INLINE const std::string 
-QUEX_NAME(lexeme_to_pretty_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Text);
+QUEX_NAME_TOKEN(lexeme_to_pretty_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Text);
 #endif
 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
 QUEX_INLINE void
-QUEX_NAME(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM** source_p, 
-                           const QUEX_TYPE_LEXATOM*  SourceEnd,
-                           wchar_t**                 drain_p,  
-                           const wchar_t*            DrainEnd);
+QUEX_NAME_TOKEN(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM** source_p, 
+                                 const QUEX_TYPE_LEXATOM*  SourceEnd,
+                                 wchar_t**                 drain_p,  
+                                 const wchar_t*            DrainEnd);
 
 #endif
 #endif /* ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED) */
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__LEXEME */

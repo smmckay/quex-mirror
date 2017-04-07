@@ -32,11 +32,8 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF16_I) \
-    ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF16_I
-#endif
+#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF16_I
+#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF16_I
 
 #include <quex/code_base/converter_helper/from-utf16>
 
@@ -45,7 +42,7 @@
 
 /* (1) Implement the character converters utf8, utf16, utf32.
  *     (Note, that character converters are generated into namespace 'quex'.)*/
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF(utf16, utf8)(const uint16_t** input_pp, uint8_t** output_pp)
@@ -128,6 +125,6 @@ QUEX_CONVERTER_CHAR_DEF(utf16, utf32)(const uint16_t**  input_pp,
  *     definitions of the character converters.                             */
 #include <quex/code_base/converter_helper/generator/implementations.gi>
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF16_I */

@@ -13,16 +13,16 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE QUEX_TYPE_LEXATOM*  
-QUEX_MEMBER_FUNCTIONO(lexeme_start_pointer_get) 
-{ QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) return me->buffer._lexeme_start_p; }
+QUEX_NAME(lexeme_start_pointer_get)(QUEX_TYPE_ANALYZER* me) 
+{ return me->buffer._lexeme_start_p; }
 
 QUEX_INLINE QUEX_TYPE_LEXATOM* 
-QUEX_MEMBER_FUNCTIONO(input_pointer_get)
-{ QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) return me->buffer._read_p; }
+QUEX_NAME(input_pointer_get)(QUEX_TYPE_ANALYZER* me)
+{ return me->buffer._read_p; }
 
 QUEX_INLINE void
-QUEX_MEMBER_FUNCTIONO1(input_pointer_set, QUEX_TYPE_LEXATOM* Adr)
-{ QUEX_MAP_THIS_TO_ME(QUEX_TYPE_ANALYZER) me->buffer._read_p = Adr; }
+QUEX_NAME(input_pointer_set)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* Adr)
+{ me->buffer._read_p = Adr; }
 
 QUEX_INLINE void        
 QUEX_NAME(set_callback_on_buffer_content_change)(QUEX_TYPE_ANALYZER*  me,

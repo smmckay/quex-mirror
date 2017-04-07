@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.67.2"
-#define QUEX_SETTING_BUILD_DATE        "Sat Apr  1 13:45:52 2017"
+#define QUEX_SETTING_BUILD_DATE        "Fri Apr  7 00:32:05 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -116,8 +116,6 @@
 #ifndef    QUEX_OPTION_COLUMN_NUMBER_COUNTING          
 #define    QUEX_OPTION_COLUMN_NUMBER_COUNTING       
 #endif
-
-#define    QUEX_IF_IS_NEWLINE(X)    if( X == '\n' )
 
 #ifndef QUEX_OPTION_POST_CATEGORIZER
 /* #define QUEX_OPTION_POST_CATEGORIZER */

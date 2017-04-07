@@ -1,5 +1,5 @@
 /* -*- C++ -*-   vim: set syntax=cpp: 
- * (C) 2004-2009 Frank-Rene Schaefer
+ * (C) 2004-2017 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY
  */
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN
@@ -43,23 +43,25 @@ QUEX_NAMESPACE_LEXEME_NULL_CLOSE
 
 #include <quex/code_base/converter_helper/from-unicode-buffer>
 
+#include <quex/code_base/lexeme>
+
    
 
-#   line 49 "TestAnalyzer-token.h"
+#   line 51 "TestAnalyzer-token.h"
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
     QUEX_TYPE_TOKEN_ID    _id;
 
-#   line 27 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 29 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 58 "TestAnalyzer-token.h"
+#   line 60 "TestAnalyzer-token.h"
 
-#   line 28 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 30 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
-#   line 63 "TestAnalyzer-token.h"
+#   line 65 "TestAnalyzer-token.h"
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -71,13 +73,13 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #       endif
 #   endif
 
-#   line 126 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 128 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        /*
         */
    
 
-#   line 81 "TestAnalyzer-token.h"
+#   line 83 "TestAnalyzer-token.h"
 
 } quex_Token;
 

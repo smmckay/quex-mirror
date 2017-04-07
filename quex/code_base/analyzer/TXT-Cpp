@@ -184,9 +184,14 @@ public:
             { return QUEX_NAME(include_detect_recursion)(this, InputName); }
 #   endif
 
-    QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get();
+    QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get()
+            { return QUEX_NAME(lexeme_start_pointer_get)(this); }
+
     QUEX_TYPE_LEXATOM*    input_pointer_get();
-    void                  input_pointer_set(QUEX_TYPE_LEXATOM*);
+            { return QUEX_NAME(input_pointer_get)(this); }
+
+    void                  input_pointer_set(QUEX_TYPE_LEXATOM* InputP);
+            { return QUEX_NAME(input_pointer_set)(this, InputP); }
 
     /* -- activate/deactivate byte order reversion (big-/little-endian)      */
     bool                  byte_order_reversion()

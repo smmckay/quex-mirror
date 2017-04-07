@@ -23,22 +23,19 @@
  *
  * (C) 2012 Frank-Rene Schaefer. 
  *     ABSOLUTELY NO WARRANTY                                                */
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8) \
-    ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8
-#endif
+#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8
+#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8
 
 #include <quex/code_base/converter_helper/common.h>
 
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
 #define __QUEX_FROM                utf8
 #define __QUEX_FROM_TYPE           uint8_t
 
 #include <quex/code_base/converter_helper/generator/declarations.g>
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF8 */
 

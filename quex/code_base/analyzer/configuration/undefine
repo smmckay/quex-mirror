@@ -279,68 +279,8 @@
 #ifdef    QUEX_FUNCTION
 #   undef QUEX_FUNCTION
 #endif
-#ifdef    QUEX_MEMBERF
-#   undef QUEX_MEMBERF
-#endif
-#ifdef    QUEX_MEMBERF1
-#   undef QUEX_MEMBERF1
-#endif
-#ifdef    QUEX_MEMBERF2
-#   undef QUEX_MEMBERF2
-#endif
-#ifdef    QUEX_MEMBERF3
-#   undef QUEX_MEMBERF3
-#endif
-#ifdef    QUEX_MEMBERF4
-#   undef QUEX_MEMBERF4
-#endif
 #ifdef    QUEX_FUNCTION
 #   undef QUEX_FUNCTION
-#endif
-#ifdef    QUEX_MEMBERF
-#   undef QUEX_MEMBERF
-#endif
-#ifdef    QUEX_MEMBERF1
-#   undef QUEX_MEMBERF1
-#endif
-#ifdef    QUEX_MEMBERF2
-#   undef QUEX_MEMBERF2
-#endif
-#ifdef    QUEX_MEMBERF3
-#   undef QUEX_MEMBERF3
-#endif
-#ifdef    QUEX_MEMBERF4
-#   undef QUEX_MEMBERF4
-#endif
-#ifdef    QUEX_A_MEMBERF
-#   undef QUEX_A_MEMBERF
-#endif
-#ifdef    QUEX_A_MEMBERF1
-#   undef QUEX_A_MEMBERF1
-#endif
-#ifdef    QUEX_A_MEMBERF2
-#   undef QUEX_A_MEMBERF2
-#endif
-#ifdef    QUEX_A_MEMBERF3
-#   undef QUEX_A_MEMBERF3
-#endif
-#ifdef    QUEX_A_MEMBERF4
-#   undef QUEX_A_MEMBERF4
-#endif
-#ifdef    QUEX_T_MEMBERF
-#   undef QUEX_T_MEMBERF
-#endif
-#ifdef    QUEX_T_MEMBERF1
-#   undef QUEX_T_MEMBERF1
-#endif
-#ifdef    QUEX_T_MEMBERF2
-#   undef QUEX_T_MEMBERF2
-#endif
-#ifdef    QUEX_T_MEMBERF3
-#   undef QUEX_T_MEMBERF3
-#endif
-#ifdef    QUEX_T_MEMBERF4
-#   undef QUEX_T_MEMBERF4
 #endif
 #ifdef    QUEX_CONVERTER_CHAR_DEF
 #   undef QUEX_CONVERTER_CHAR_DEF
@@ -354,33 +294,6 @@
 #ifdef    QUEX_NAME_COMPLETE_TOKEN
 #   undef QUEX_NAME_COMPLETE_TOKEN
 #endif
-#ifdef    QUEX_FUNCTION_PREFIX
-#   undef QUEX_FUNCTION_PREFIX
-#endif
-#ifdef    QUEX_FUNCTION_DEF_PREFIX
-#   undef QUEX_FUNCTION_DEF_PREFIX
-#endif
-#ifdef    QUEX_FUNCTION_PREFIX_BACKUP
-#   undef QUEX_FUNCTION_PREFIX_BACKUP
-#endif
-#ifdef    QUEX_FUNCTION_DEF_PREFIX_BACKUP
-#   undef QUEX_FUNCTION_DEF_PREFIX_BACKUP
-#endif
-#ifdef    QUEX_NAMESPACE_MAIN_OPEN_BACKUP
-#   undef QUEX_NAMESPACE_MAIN_OPEN_BACKUP
-#endif
-#ifdef    QUEX_NAMESPACE_MAIN_CLOSE_BACKUP
-#   undef QUEX_NAMESPACE_MAIN_CLOSE_BACKUP
-#endif
-#ifdef    QUEX_FUNCTION_DEF
-#   undef QUEX_FUNCTION_DEF
-#endif
-#ifdef    QUEX_SIGNATURE
-#   undef QUEX_SIGNATURE
-#endif
-#ifdef    QUEX_THIS_IS_ME
-#   undef QUEX_THIS_IS_ME
-#endif
 #ifdef    QUEX_FUNCTION_DEF
 #   undef QUEX_FUNCTION_DEF
 #endif
@@ -389,9 +302,6 @@
 #endif
 #ifdef    QUEX_THIS
 #   undef QUEX_THIS
-#endif
-#ifdef    QUEX_THIS_IS_ME
-#   undef QUEX_THIS_IS_ME
 #endif
 #ifdef    __QUEX_CONVERTER_CHAR_DEF
 #   undef __QUEX_CONVERTER_CHAR_DEF
@@ -476,54 +386,6 @@
 #endif
 #ifdef    QUEX_DESTRUCTOR
 #   undef QUEX_DESTRUCTOR
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION
-#   undef QUEX_MEMBER_FUNCTION
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION1
-#   undef QUEX_MEMBER_FUNCTION1
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION2
-#   undef QUEX_MEMBER_FUNCTION2
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION3
-#   undef QUEX_MEMBER_FUNCTION3
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION4
-#   undef QUEX_MEMBER_FUNCTION4
-#endif
-#ifdef    QUEX_MEMBER_FUNCTIONO
-#   undef QUEX_MEMBER_FUNCTIONO
-#endif
-#ifdef    QUEX_MEMBER_FUNCTIONO1
-#   undef QUEX_MEMBER_FUNCTIONO1
-#endif
-#ifdef    QUEX_MEMBER_FUNCTIONO2
-#   undef QUEX_MEMBER_FUNCTIONO2
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION_CALL
-#   undef QUEX_MEMBER_FUNCTION_CALL
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION_CALL1
-#   undef QUEX_MEMBER_FUNCTION_CALL1
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION_CALL2
-#   undef QUEX_MEMBER_FUNCTION_CALL2
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION_CALL3
-#   undef QUEX_MEMBER_FUNCTION_CALL3
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION_CALL4
-#   undef QUEX_MEMBER_FUNCTION_CALL4
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION_CALLO
-#   undef QUEX_MEMBER_FUNCTION_CALLO
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION_CALLO1
-#   undef QUEX_MEMBER_FUNCTION_CALLO1
-#endif
-#ifdef    QUEX_MEMBER_FUNCTION_CALLO2
-#   undef QUEX_MEMBER_FUNCTION_CALLO2
 #endif
 #ifdef    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC
 #   undef QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC

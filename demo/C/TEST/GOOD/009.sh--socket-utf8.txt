@@ -54,6 +54,19 @@ flush: 1: [y]
 flush: 1: [e]
 flush: 1: []
 <done>
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
    Token: MESSAGE 'Сообщение'
    Token: WHITESPACE ' '
    Token: SOMETHING 'о'
@@ -68,10 +81,8 @@ flush: 1: []
    Token: WHITESPACE ' '
    Token: BIT 'бита'
    Token: SOMETHING '.'
-   Token: WHITESPACE '
-'
-   Token: WHITESPACE '
-'
+   Token: WHITESPACE '\n'
+   Token: WHITESPACE '\n'
    Token: MESSAGE 'Ένα μήνυμα'
    Token: WHITESPACE ' '
    Token: SOMETHING 'ε'
@@ -87,10 +98,21 @@ flush: 1: []
    Token: WHITESPACE ' '
    Token: BIT 'bit'
    Token: SOMETHING '.'
-   Token: WHITESPACE '
-'
-   Token: WHITESPACE '
-'
+   Token: WHITESPACE '\n'
+   Token: WHITESPACE '\n'
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
    Token: <TERMINATION> ''
 <terminated>
    Token: BYE 'bye'

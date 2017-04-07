@@ -1,3 +1,16 @@
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
    Token: MESSAGE 'Сообщение'
    Token: WHITESPACE ' '
    Token: SOMETHING 'о'
@@ -12,10 +25,8 @@
    Token: WHITESPACE ' '
    Token: BIT 'бита'
    Token: SOMETHING '.'
-   Token: WHITESPACE '
-'
-   Token: WHITESPACE '
-'
+   Token: WHITESPACE '\n'
+   Token: WHITESPACE '\n'
    Token: MESSAGE 'Ένα μήνυμα'
    Token: WHITESPACE ' '
    Token: SOMETHING 'ε'
@@ -31,9 +42,7 @@
    Token: WHITESPACE ' '
    Token: BIT 'bit'
    Token: SOMETHING '.'
-   Token: WHITESPACE '
-'
-   Token: WHITESPACE '
-'
+   Token: WHITESPACE '\n'
+   Token: WHITESPACE '\n'
    Token: <TERMINATION> ''
 VALGRIND:   All heap blocks were freed -- no leaks are possible

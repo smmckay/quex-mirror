@@ -117,8 +117,6 @@ $$SWITCH$$ QUEX_OPTION_LINE_NUMBER_COUNTING
 $$SWITCH$$ QUEX_OPTION_COLUMN_NUMBER_COUNTING       
 #endif
 
-#define    QUEX_IF_IS_NEWLINE(X)    if( X == '\n' )
-
 #ifndef QUEX_OPTION_POST_CATEGORIZER
 $$SWITCH$$ QUEX_OPTION_POST_CATEGORIZER
 #endif
@@ -278,8 +276,6 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 /* QUEX_TYPE_X  --> Type of X in global namespace 
  * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)         */
 #if defined(__QUEX_OPTION_PLAIN_C)
-#   define QUEX_FUNCTION_PREFIX        $$LEXER_CLASS_NAME_SAFE$$_
-#   define QUEX_FUNCTION_DEF_PREFIX    $$LEXER_CLASS_NAME_SAFE$$_
     /* In 'C' there are no namespaces, so namespaces are coded directly
      * into the type name. Both, global and local names are equal.           */
 #   define QUEX_TYPE0_ANALYZER         struct $$LEXER_CLASS_NAME_SAFE$$_tag
@@ -312,13 +308,8 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
      * that, the original macros need to be restored. Thus: Backup!          */  
 #   define QUEX_NAMESPACE_MAIN_OPEN_BACKUP   
 #   define QUEX_NAMESPACE_MAIN_CLOSE_BACKUP  
-#   define QUEX_FUNCTION_PREFIX_BACKUP       $$LEXER_CLASS_NAME_SAFE$$_
-#   define QUEX_FUNCTION_DEF_PREFIX_BACKUP   $$LEXER_CLASS_NAME_SAFE$$_
 
 #else
-    /* Assumption: here is IN the namespace for definition.                  */
-#   define QUEX_FUNCTION_DEF_PREFIX    
-#   define QUEX_FUNCTION_PREFIX        $$NAMESPACE_MAIN$$::
     /* Add namespaces for the global names of the classes of analyzer
      * and token.                                                            */
 #   define QUEX_TYPE0_ANALYZER         $$LEXER_CLASS_NAME$$
@@ -351,8 +342,6 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
      * that, the original macros need to be restored. Thus: Backup!          */  
 #   define QUEX_NAMESPACE_MAIN_OPEN_BACKUP   $$NAMESPACE_MAIN_OPEN$$
 #   define QUEX_NAMESPACE_MAIN_CLOSE_BACKUP  $$NAMESPACE_MAIN_CLOSE$$
-#   define QUEX_FUNCTION_PREFIX_BACKUP        
-#   define QUEX_FUNCTION_DEF_PREFIX_BACKUP   $$NAMESPACE_MAIN$$::
 #endif
 
 #ifndef    QUEX_TYPE_TOKEN_ID

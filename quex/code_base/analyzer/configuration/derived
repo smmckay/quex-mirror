@@ -257,108 +257,18 @@
 #endif
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)
-    /* Cannot/must not go through '__QUEX_APPEND'. QUEX_FUNCTION_PREFIX ends 
-     * with '::'. No '##' is required for concatination.                     */
-#   define QUEX_FUNCTION_DEF(NAME)                      NAME
-#   define QUEX_FUNCTION(NAME)                          QUEX_FUNCTION_PREFIX NAME
-
     /* Avoid __VA_ARGS__ because some compilers still cannot handle it
      * properly.                                                             */
-#   define QUEX_SIGNATURE(CLASS, FUNCTION)              CLASS  ## :: ## FUNCTION
-#   define QUEX_THIS_IS_ME(C)                           C* me = this;
-#   define QUEX_MEMBERF(C, F)                           QUEX_SIGNATURE(C, F)()
-#   define QUEX_MEMBERF1(C, F, ARG0)                    QUEX_SIGNATURE(C, F)(ARG0)
-#   define QUEX_MEMBERF2(C, F, ARG0, ARG1)              QUEX_SIGNATURE(C, F)(ARG0, ARG1)
-#   define QUEX_MEMBERF3(C, F, ARG0, ARG1, ARG2)        QUEX_SIGNATURE(C, F)(ARG0, ARG1, ARG2)
-#   define QUEX_MEMBERF4(C, F, ARG0, ARG1, ARG2, ARG3)  QUEX_SIGNATURE(C, F)(ARG0, ARG1, ARG2, ARG3)
 
 #   define QUEX_DESTRUCTOR()                            QUEX_MEMBER(~QUEX_TYPE0_ANALYZER)()
-#   define QUEX_MEMBER_FUNCTION(N, SFX)                 QUEX_MEMBER(N)()
-#   define QUEX_MEMBER_FUNCTIONO(N)                     QUEX_MEMBER(N)()
-#   define QUEX_MEMBER_FUNCTION1(N, SFX, A)             QUEX_MEMBER(N)(A)      
-#   define QUEX_MEMBER_FUNCTIONO1(N, A)                 QUEX_MEMBER(N)(A)      
-#   define QUEX_MEMBER_FUNCTION2(N, SFX, A, B)          QUEX_MEMBER(N)(A, B)   
-#   define QUEX_MEMBER_FUNCTIONO2(N, A, B)              QUEX_MEMBER(N)(A, B)      
-#   define QUEX_MEMBER_FUNCTION3(N, SFX, A, B, C)       QUEX_MEMBER(N)(A, B, C)
-#   define QUEX_MEMBER_FUNCTION4(N, SFX, A, B, C, D)    QUEX_MEMBER(N)(A, B, C, D)
-#   define QUEX_MEMBER_FUNCTION_CALL(N, SFX)            this->N()
-#   define QUEX_MEMBER_FUNCTION_CALLO(N)                me->N()
-#   define QUEX_MEMBER_FUNCTION_CALL1(N, SFX, A)        this->N(A)      
-#   define QUEX_MEMBER_FUNCTION_CALLO1(N, A)            me->N(A)      
-#   define QUEX_MEMBER_FUNCTION_CALL2(N, SFX, A, B)     this->N(A, B)   
-#   define QUEX_MEMBER_FUNCTION_CALLO2(N, A, B)         me->N(A, B)      
-#   define QUEX_MEMBER_FUNCTION_CALL3(N, SFX, A, B, C)  this->N(A, B, C)
-#   define QUEX_MEMBER_FUNCTION_CALL4(N, SFX, A, B, C, D)  this->N(A, B, C, D)
 
 #else
-    /* Go through '__QUEX_APPEND' to ensure macro expansion, before concatination. */
-#   define QUEX_FUNCTION_DEF(NAME)                      __QUEX_APPEND(QUEX_FUNCTION_DEF_PREFIX, NAME)
-#   define QUEX_FUNCTION(NAME)                          __QUEX_APPEND(QUEX_FUNCTION_PREFIX, NAME)
-
-#   define QUEX_SIGNATURE(CLASS, FUNCTION)              CLASS    ## _ ## FUNCTION
 #   define QUEX_THIS(C)                                 struct C ## _tag* me
-#   define QUEX_THIS_IS_ME(C)                           /* Nothing To Do */
-#   define QUEX_MEMBERF(C, F)                           QUEX_SIGNATURE(C, F)(QUEX_THIS(C))
-#   define QUEX_MEMBERF1(C, F, ARG0)                    QUEX_SIGNATURE(C, F)(QUEX_THIS(C), ARG0)
-#   define QUEX_MEMBERF2(C, F, ARG0, ARG1)              QUEX_SIGNATURE(C, F)(QUEX_THIS(C), ARG0, ARG1)
-#   define QUEX_MEMBERF3(C, F, ARG0, ARG1, ARG2)        QUEX_SIGNATURE(C, F)(QUEX_THIS(C), ARG0, ARG1, ARG2)
-#   define QUEX_MEMBERF4(C, F, ARG0, ARG1, ARG2, ARG3)  QUEX_SIGNATURE(C, F)(QUEX_THIS(C), ARG0, ARG1, ARG2, ARG3)
 
     /* Avoid __VA_ARGS__ because some compilers still cannot handle it
      * properly.                                                             */
 #   define QUEX_DESTRUCTOR()                            void QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
-#   define QUEX_MEMBER_FUNCTION(N, SFX)                 QUEX_NAME(N ## _ ## SFX)(QUEX_TYPE_ANALYZER* me)
-#   define QUEX_MEMBER_FUNCTIONO(N)                     QUEX_NAME(N)(QUEX_TYPE_ANALYZER* me)
-#   define QUEX_MEMBER_FUNCTION1(N, SFX, A)             QUEX_NAME(N ## _ ## SFX)(QUEX_TYPE_ANALYZER* me, A)      
-#   define QUEX_MEMBER_FUNCTIONO1(N, A)                 QUEX_NAME(N)(QUEX_TYPE_ANALYZER* me, A)      
-#   define QUEX_MEMBER_FUNCTION2(N, SFX, A, B)          QUEX_NAME(N ## _ ## SFX)(QUEX_TYPE_ANALYZER* me, A, B)   
-#   define QUEX_MEMBER_FUNCTIONO2(N, A, B)              QUEX_NAME(N)(QUEX_TYPE_ANALYZER* me, A, B)      
-#   define QUEX_MEMBER_FUNCTION3(N, SFX, A, B, C)       QUEX_NAME(N ## _ ## SFX)(QUEX_TYPE_ANALYZER* me, A, B, C)
-#   define QUEX_MEMBER_FUNCTION4(N, SFX, A, B, C, D)    QUEX_NAME(N ## _ ## SFX)(QUEX_TYPE_ANALYZER* me, A, B, C, D)
-#   define QUEX_MEMBER_FUNCTION_CALL(N, SFX)            QUEX_NAME(N ## _ ## SFX)(me)
-#   define QUEX_MEMBER_FUNCTION_CALLO(N)                QUEX_NAME(N)(me)
-#   define QUEX_MEMBER_FUNCTION_CALL1(N, SFX, A)        QUEX_NAME(N ## _ ## SFX)(me, A)      
-#   define QUEX_MEMBER_FUNCTION_CALLO1(N, A)            QUEX_NAME(N)(me, A)      
-#   define QUEX_MEMBER_FUNCTION_CALL2(N, SFX, A, B)     QUEX_NAME(N ## _ ## SFX)(me, A, B)   
-#   define QUEX_MEMBER_FUNCTION_CALLO2(N, A, B)         QUEX_NAME(N)(me, A, B)      
-#   define QUEX_MEMBER_FUNCTION_CALL3(N, SFX, A, B, C)  QUEX_NAME(N ## _ ## SFX)(me, A, B, C)
-#   define QUEX_MEMBER_FUNCTION_CALL4(N, SFX, A, B, C, D)  QUEX_NAME(N ## _ ## SFX)(me, A, B, C, D)
-
 #endif
-
-#define QUEX_A_MEMBERF (FUNCTION)                          QUEX_MEMBERF(QUEX_TYPE0_ANALYZER, FUNCTION)
-#define QUEX_A_MEMBERF1(FUNCTION, ARG0)                    QUEX_MEMBERF1(QUEX_TYPE0_ANALYZER, FUNCTION, ARG0)
-#define QUEX_A_MEMBERF2(FUNCTION, ARG0, ARG1)              QUEX_MEMBERF2(QUEX_TYPE0_ANALYZER, FUNCTION, ARG0, ARG1)
-#define QUEX_A_MEMBERF3(FUNCTION, ARG0, ARG1, ARG2)        QUEX_MEMBERF3(QUEX_TYPE0_ANALYZER, FUNCTION, ARG0, ARG1, ARG2)
-#define QUEX_A_MEMBERF4(FUNCTION, ARG0, ARG1, ARG2, ARG3)  QUEX_MEMBERF4(QUEX_TYPE0_ANALYZER, FUNCTION, ARG0, ARG1, ARG2, ARG3)
-                                                           
-#define QUEX_T_MEMBERF (FUNCTION)                          QUEX_MEMBERF(QUEX_NAME_COMPLETE_TOKEN, FUNCTION)
-#define QUEX_T_MEMBERF1(FUNCTION, ARG0)                    QUEX_MEMBERF1(QUEX_NAME_COMPLETE_TOKEN, FUNCTION, ARG0)
-#define QUEX_T_MEMBERF2(FUNCTION, ARG0, ARG1)              QUEX_MEMBERF2(QUEX_NAME_COMPLETE_TOKEN, FUNCTION, ARG0, ARG1)
-#define QUEX_T_MEMBERF3(FUNCTION, ARG0, ARG1, ARG2)        QUEX_MEMBERF3(QUEX_NAME_COMPLETE_TOKEN, FUNCTION, ARG0, ARG1, ARG2)
-#define QUEX_T_MEMBERF4(FUNCTION, ARG0, ARG1, ARG2, ARG3)  QUEX_MEMBERF4(QUEX_NAME_COMPLETE_TOKEN, FUNCTION, ARG0, ARG1, ARG2, ARG3)
-
-/* For function definitions, the 'namespace::' is not required. => QUEX_FUNCTION0 */
-#define __QUEX_CONVERTER_CHAR_DEF(FROM, TO)    QUEX_FUNCTION_DEF(FROM ## _to_ ## TO ## _character)
-#define __QUEX_CONVERTER_STRING_DEF(FROM, TO)  QUEX_FUNCTION_DEF(FROM ## _to_ ## TO)
-#define QUEX_CONVERTER_CHAR_DEF(FROM, TO)      __QUEX_CONVERTER_CHAR_DEF(FROM, TO)
-#define QUEX_CONVERTER_STRING_DEF(FROM, TO)    __QUEX_CONVERTER_STRING_DEF(FROM, TO)
-
-/* For function calls, the 'namespace::' IS required. => QUEX_FUNCTION */
-#define __QUEX_CONVERTER_CHAR(FROM, TO)    QUEX_FUNCTION(FROM ## _to_ ## TO ## _character)
-#define __QUEX_CONVERTER_STRING(FROM, TO)  QUEX_FUNCTION(FROM ## _to_ ## TO)
-#define QUEX_CONVERTER_CHAR(FROM, TO)      __QUEX_CONVERTER_CHAR(FROM, TO)
-#define QUEX_CONVERTER_STRING(FROM, TO)    __QUEX_CONVERTER_STRING(FROM, TO)
-
-/* If '--token-class-only' we need to restore overwritten macros. */
-#define __QUEX_CONVERTER_CHAR_DEF_BACKUP(FROM, TO)    QUEX_FUNCTION_DEF(FROM ## _to_ ## TO ## _character)
-#define __QUEX_CONVERTER_STRING_DEF_BACKUP(FROM, TO)  QUEX_FUNCTION_DEF(FROM ## _to_ ## TO)
-#define QUEX_CONVERTER_CHAR_DEF_BACKUP(FROM, TO)      __QUEX_CONVERTER_CHAR_DEF(FROM, TO)
-#define QUEX_CONVERTER_STRING_DEF_BACKUP(FROM, TO)    __QUEX_CONVERTER_STRING_DEF(FROM, TO)
-#define __QUEX_CONVERTER_CHAR_BACKUP(FROM, TO)        QUEX_FUNCTION(FROM ## _to_ ## TO ## _character)
-#define __QUEX_CONVERTER_STRING_BACKUP(FROM, TO)      QUEX_FUNCTION(FROM ## _to_ ## TO)
-#define QUEX_CONVERTER_CHAR_BACKUP(FROM, TO)          __QUEX_CONVERTER_CHAR(FROM, TO)
-#define QUEX_CONVERTER_STRING_BACKUP(FROM, TO)        __QUEX_CONVERTER_STRING(FROM, TO)
 
 #if defined (QUEX_OPTION_ASSERTS) 
 #   define __QUEX_IF_ASSERT(X)  X

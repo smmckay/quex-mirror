@@ -775,7 +775,7 @@ quex_Token_construct(quex_Token* __this)
 #   define LexemeNull  &QUEX_LEXEME_NULL
     (void)__this;
 
-#   line 33 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 35 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = 0;
        self.text   = LexemeNull;
@@ -803,7 +803,7 @@ quex_Token_destruct(quex_Token* __this)
     if( ! __this ) return;
 
 
-#   line 38 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 40 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        if( self.text != LexemeNull ) {
            QUEXED(MemoryManager_free)((void*)self.text,
@@ -828,7 +828,7 @@ quex_Token_copy(quex_Token*       __this,
     (void)__this;
     (void)__That;
 
-#   line 46 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 48 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
         self._id  = Other._id;
 
@@ -887,7 +887,7 @@ quex_Token_take_text(quex_Token*              __this,
     (void)Begin;
     (void)End;
 
-#   line 70 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 72 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 
 #       if 0
@@ -961,7 +961,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
 #   define LexemeNull  &QUEX_LEXEME_NULL
     (void)__this;
     
-#   line 135 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 137 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        return self.number;
    
@@ -980,7 +980,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
     (void)__this;
     (void)N;
     
-#   line 131 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 133 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = N;
    
@@ -993,7 +993,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 
-#   line 139 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 141 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
         const char* 
         quex_Token_get_string(quex_Token* me, char*   buffer, size_t  BufferSize) 
@@ -1004,7 +1004,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             char*        writerator = 0;
 
             /* Token Type */
-            iterator = token_type_str;
+            iterator   = token_type_str;
             writerator = buffer; 
             while( (*iterator) && writerator != BufferEnd ) {
                 *writerator++ = *iterator++;
@@ -1017,7 +1017,8 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             }
 
             /* The String */
-            quex_Token_pretty_char_text(me, writerator, (size_t)(BufferEnd - writerator));
+            QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, 
+                                             (size_t)(BufferEnd - writerator));
 
             while( *writerator ) {
                 ++writerator;
@@ -1031,39 +1032,12 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             return buffer;
         }
 
-        const char* 
-        quex_Token_pretty_char_text(quex_Token* me, char*   buffer, size_t  BufferSize) 
-        /* Provides a somehow pretty-print of the text in the token. Note, that the buffer
-         * in case of UTF8 should be 4bytes longer than the longest expected string.       */
-        {
-            const QUEX_TYPE_LEXATOM*  source    = me->text;
-            char*                       drain     = buffer;
-            const char*                 DrainEnd  = buffer + BufferSize;
-
-            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (size_t)(QUEX_NAME(lexeme_length)(source)) + 1;
-            QUEX_CONVERTER_STRING(unicode,char)(&source, SourceEnd, &drain, DrainEnd);
-            return buffer;
-        }
-
-#       if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
-        const wchar_t* 
-        quex_Token_pretty_wchar_text(quex_Token* me, wchar_t*  buffer, size_t    BufferSize) 
-        {
-            wchar_t*                    drain     = buffer;
-            const wchar_t*              DrainEnd  = buffer + (ptrdiff_t)BufferSize;
-            const QUEX_TYPE_LEXATOM*  source    = me->text;
-            const QUEX_TYPE_LEXATOM*  SourceEnd = me->text + (ptrdiff_t)(QUEX_NAME(lexeme_length)(source)) + 1;
-
-            QUEX_CONVERTER_STRING(unicode,wchar)(&source, SourceEnd, &drain, DrainEnd);
-            return buffer;
-        }
-#       endif
-
 #include <quex/code_base/converter_helper/from-unicode-buffer.i>
 
+#include <quex/code_base/lexeme.i>
    
 
-#   line 1067 "TestAnalyzer.c"
+#   line 1041 "TestAnalyzer.c"
 
 
 

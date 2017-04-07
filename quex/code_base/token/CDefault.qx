@@ -56,11 +56,11 @@ $INCLUDE_CONVERTER_DECLARATION
             self.text = \
                (QUEX_TYPE_LEXATOM*)
                QUEXED(MemoryManager_allocate)(
-                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME(lexeme_length)(Other.text) + 1),
+                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1),
                       E_MemoryObjectType_TEXT);
             __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
                                 sizeof(QUEX_TYPE_LEXATOM) 
-                              * (QUEX_NAME(lexeme_length)(Other.text) + 1));
+                              * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1));
         }
         self.number = Other.number;
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -161,8 +161,8 @@ $INCLUDE_CONVERTER_DECLARATION
             }
 
             /* The String */
-            QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, 
-                                             (size_t)(BufferEnd - writerator));
+            QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
+                                                   (size_t)(BufferEnd - writerator));
 
             while( *writerator ) {
                 ++writerator;
