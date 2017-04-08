@@ -31,7 +31,7 @@ def prepare(command_line, argv):
     __setup_analyzer_class(Setup)
     __setup_token_class(Setup)
     __setup_token_id_prefix(Setup)
-    __setup_lexeme_null(Setup)       # Requires 'token_class_name_space'
+    # __setup_lexeme_null(Setup)       # Requires 'token_class_name_space'
 
     # (*) Output programming language        
     Setup.language = Setup.language.upper()
@@ -158,10 +158,7 @@ def __setup_analyzer_class(Setup):
                               AllowEmptyF=True)
 
 def __setup_lexeme_null(Setup):
-    if len(Setup.external_lexeme_null_object) != 0:
-        lexeme_null_object = Setup.external_lexeme_null_object
-        default_name_space = Setup.analyzer_name_space
-    elif Setup.token_class_only_f:
+    if Setup.token_class_only_f:
         lexeme_null_object = "LexemeNullObject"
         default_name_space = Setup.token_class_name_space
     else:

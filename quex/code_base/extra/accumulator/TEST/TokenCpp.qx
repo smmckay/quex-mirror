@@ -3,6 +3,9 @@ token_type {
 #       include <iostream>
 #       include <string>
 
+$INCLUDE_CONVERTER_DECLARATION
+#include <quex/code_base/lexeme>
+
    }
    standard {
         id            : uint32_t;
@@ -40,7 +43,7 @@ token_type {
 
             tmp = map_id_to_name(self._id);
 
-            tmp += " '" + QUEX_FUNCTION_PREFIX QUEX_NAME(lexeme_to_pretty_std_string)(self.text) + "'";
+            tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
 
             return tmp;
         }
@@ -70,6 +73,9 @@ token_type {
         operator<<(std::ostream& ostr, const $TOKEN_CLASS& Tok)
         { ostr << Tok.get_string(); return ostr; }
         $NAMESPACE_CLOSE
+
+$INCLUDE_CONVERTER_IMPLEMENTATION
+#include <quex/code_base/lexeme.i>
    }
 }
 

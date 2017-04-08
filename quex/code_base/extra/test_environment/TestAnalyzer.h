@@ -213,9 +213,9 @@ bool UserMementoPack_UnitTest_return_value = true;
 #include "TestAnalyzer-token.h"
 #include <quex/code_base/definitions>
 
-QUEX_NAMESPACE_LEXEME_NULL_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 extern QUEX_TYPE_LEXATOM   QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;
-QUEX_NAMESPACE_LEXEME_NULL_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 QUEX_INLINE void 

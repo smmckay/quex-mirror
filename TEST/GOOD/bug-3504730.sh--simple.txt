@@ -1,18 +1,13 @@
 ,------------------------------------------------------------------------------------
 | [START]
 SPECIAL '@'
-SOMETHING 'quux
-'
+SOMETHING 'quux\n'
 SPECIAL '@'
-SOMETHING 'baz
-'
+SOMETHING 'baz\n'
 SPECIAL '@'
-SOMETHING 'bar
-'
+SOMETHING 'bar\n'
 SPECIAL '@'
-SOMETHING 'foo
-'
+SOMETHING 'foo\n'
 <TERMINATION> ''
 | [END] number of token = 9
 `------------------------------------------------------------------------------------
-

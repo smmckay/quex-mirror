@@ -111,7 +111,7 @@ QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
 QUEX_NAMESPACE_MAIN_CLOSE
 
 /* #include "TestAnalyzer"*/
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 QUEX_TYPE_LEXATOM  QUEX_LEXEME_NULL_IN_ITS_NAMESPACE = (QUEX_TYPE_LEXATOM)0;
 #ifdef      QUEX_FUNCTION_COUNT_ARBITRARY
 #   undef   QUEX_FUNCTION_COUNT_ARBITRARY
@@ -616,7 +616,7 @@ goto _20;
 #   undef self
 #   undef QUEX_LABEL_STATE_ROUTER
 }
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -736,18 +736,6 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
-
-#define QUEX_NAME_TOKEN(NAME)              Token_ ## NAME
-#define QUEX_NAMESPACE_TOKEN_OPEN          namespace quex {
-#define QUEX_NAMESPACE_TOKEN_CLOSE         } /* close quex */
-#define QUEX_NAMESPACE_LEXEME_NULL_OPEN    namespace quex {
-#define QUEX_NAMESPACE_LEXEME_NULL_CLOSE   } /* close quex */
-
-#define QUEX_TYPE_LEXATOM                  uint8_t
-#define QUEX_TYPE_TOKEN_ID                 uint32_t
-#define QUEX_SETTING_CHARACTER_CODEC       unicode
-
-#include "TestAnalyzer-token_ids" 
 
 
 

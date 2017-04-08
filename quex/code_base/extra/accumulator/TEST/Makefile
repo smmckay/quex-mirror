@@ -26,7 +26,6 @@ $(DUMMY_CPP):
 
 	# Generate a 'TestAnalyzer-token' class just for the experiment
 	# => print out on 'take_text'
-	sleep 2
 	quex -i TokenCpp.qx --token-class-only -o TestAnalyzer --odir ./tmp_dir
 
 accumulator.exe: accumulator.cpp $(DUMMY_CPP)

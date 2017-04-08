@@ -12,9 +12,9 @@
 #include <quex/code_base/lexeme>
 
 /* LexemeNull object may be used for 'take_text'. */
-QUEX_NAMESPACE_LEXEME_NULL_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 extern QUEX_TYPE_LEXATOM   QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;
-QUEX_NAMESPACE_LEXEME_NULL_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 
@@ -137,7 +137,7 @@ public:
 
             tmp = map_id_to_name(self._id);
 
-            tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
+            tmp += " '" + QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
 
             return tmp;
         }
@@ -188,9 +188,9 @@ public:
 
 #include <quex/code_base/definitions>
 
-QUEX_NAMESPACE_LEXEME_NULL_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 extern QUEX_TYPE_LEXATOM   QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;
-QUEX_NAMESPACE_LEXEME_NULL_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 namespace quex {

@@ -60,3 +60,6 @@ for the 'buffer._memory.ownership' before reload!
 -- upon 'include': Token queue must be empty! Otherwise, tokens are lost!
    => something like 'INCLUDE' 'FILE_NAME' is ok, if the inclusion happens
       after 'FILE_NAME'.
+
+-- self_token_p --> self_write_token_p
+

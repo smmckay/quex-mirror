@@ -169,7 +169,6 @@ SETUP_INFO = {
     "mode_transition_check_f":        [["--no-mode-transition-check"],       SetupParTypes.NEGATED_FLAG],
     "language":                       [["--language", "-l"],                 "C++"],
     "normalize_f":                    [["--normalize"],                      SetupParTypes.FLAG],
-    "external_lexeme_null_object":    [["--lexeme-null-object", "--lno"],      ""],
     "output_file_naming_scheme":      [["--file-extension-scheme", "--fes"], ""],
     "post_categorizer_f":             [["--post-categorizer"],               SetupParTypes.FLAG],
     "output_directory":               [["--output-directory", "--odir"],     ""],
@@ -268,6 +267,7 @@ SETUP_INFO = {
     "XX_converter_user_new_func":        [["--converter-new", "--cn"],            ""],
     "XX_converter_iconv_f":              [["--iconv"],                            SetupParTypes.FLAG],
     "XX_converter_icu_f":                [["--icu"],                              SetupParTypes.FLAG],
+    "XX_external_lexeme_null_object":    [["--lexeme-null-object", "--lno"],      ""],
 }
 
 class NotificationDB:
@@ -457,6 +457,10 @@ DEPRECATED = {
     ("Option '--icu' no longer supported. Converters are passed created by\n"
      "user and passed to constructor. See demo examples or documentation.",
      "0.67.2"),
+    "XX_external_lexeme_null_object":    
+    ("Options '--lexeme-null-object' and '--lno' are no longer supported.\n"
+     "The lexeme null is now located in the token class' namespace.\n",
+     "0.67.3"),
 }
  
 global_character_type_db = {

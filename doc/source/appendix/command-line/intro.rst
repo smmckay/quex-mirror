@@ -449,16 +449,6 @@ Default: uint32_t
 
 Default: false (disabled)
 
-.. cmdoption:: --lexeme-null-object, --lno name [:: name]+
-
-    This option specifies the name and name space of the ``LexemeNull`` object. If the option is 
-    not specified, then this object is created along with the analyzer automatically. When using 
-    a shared token class, then this object must have been created along with the token class. 
-    Announcing the name of the lexeme null object prevents quex from generating a lexeme 
-    null inside the engine itself.  
-
-    
-
 There may be cases where the characters used to indicate buffer limit needs to be redefined, because 
 the default value appear in a pattern. For most codecs, such as ASCII and Unicode, the buffer 
 limit codes do not intersect with valid used code points of characters. Theoretically however, 

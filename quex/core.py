@@ -101,7 +101,6 @@ def do_token_class_info():
         "  --token-class           %s" % Setup.token_class,
         "  --token-id-type         %s" % Setup.token_id_type,
         "  --buffer-element-type   %s" % Setup.buffer_lexatom_type,
-        "  --lexeme-null-object    %s" % Setup.lexeme_null_full_name_cpp,
         "  --foreign-token-id-file %s" % Setup.output_token_id_file,
     ]
     print "info: Analyzers using this token class must be generated with"
@@ -138,8 +137,7 @@ def _prepare_token_class():
     # (*) Generate the token ids
     #     (This needs to happen after the parsing of mode_db, since during that
     #      the token_id_db is developed.)
-    if    Setup.external_lexeme_null_object \
-       or (Setup.token_class_only_f and not token_id_maker.has_specific_token_ids()): 
+    if Setup.token_class_only_f and not token_id_maker.has_specific_token_ids(): 
         # Assume external implementation
         token_id_header                          = None
         func_map_token_id_to_name_implementation = ""

@@ -328,15 +328,6 @@ Option("token_class_only_f", None,
      shall define \\v{--lexeme-null-object} according the token name space.
      """),
 ),
-Option("external_lexeme_null_object", "name [:: name]+", 
-     """
-     This option specifies the name and name space of the \\v{LexemeNull} object. If the option is
-     not specified, then this object is created along with the analyzer
-     automatically. When using a shared token class, then this object must
-     have been created along with the token class. Announcing the name of
-     the lexeme null object prevents quex from generating a lexeme null
-     inside the engine itself.
-     """),
 """
 There may be cases where the characters used to indicate buffer limit needs to
 be redefined, because the default value appear in a pattern.  For most codecs,

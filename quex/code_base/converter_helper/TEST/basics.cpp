@@ -100,7 +100,7 @@ test_this(const SOURCE_TYPE* Source,
           const uint32_t*    UTF32_Expected, const size_t  UTF32_DrainSize, 
           bool               SourceEmptyF=false)
 {
-    using namespace Tester;
+    using namespace TesterToken;
 
     const SOURCE_TYPE*  source_end = Source;
     if( SourceEmptyF ) {

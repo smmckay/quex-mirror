@@ -234,7 +234,7 @@ mode COMMENT {
 				self << INITIAL;
 
 				// Send token to the caller.
-                self_token_p()->stringValue = self.textAccumulator;
+                self_write_token_p()->stringValue = self.textAccumulator;
 				self_send(QUEX_UUID_COMMENT);
 
 				// Return to the caller.
@@ -251,7 +251,7 @@ mode COMMENT {
 		if(!self.comment.isBlock) {
 			self << INITIAL;
 
-            self_token_p()->stringValue = self.textAccumulator;
+            self_write_token_p()->stringValue = self.textAccumulator;
 			self_send(QUEX_UUID_COMMENT);
 			self_send(QUEX_UUID_NL);
 
@@ -271,7 +271,7 @@ mode COMMENT {
 			self << INITIAL;
 
 			// Send token to the caller.
-            self_token_p()->stringValue = self.textAccumulator;
+            self_write_token_p()->stringValue = self.textAccumulator;
 			self_send(QUEX_UUID_COMMENT);
 		}
 

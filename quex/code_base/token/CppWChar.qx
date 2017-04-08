@@ -40,19 +40,14 @@ $INCLUDE_CONVERTER_DECLARATION
         const std::wstring() const
         { return get_string(); }
 
-        const std::wstring
+        const std::string
         get_string() const 
         {
-            const uint8_t*  id_str = (const uint8_t*)map_id_to_name(self._id);
-            size_t          N      = __QUEX_STD_strlen((const char*)id_str) + 1;
-            wchar_t         drain[64];
-            wchar_t*        drain_p = &drain[0];
-            QUEX_CONVERTER_STRING(utf8,wchar)(&id_str, &id_str[N], &drain_p, &drain[64]);
-            drain[64-1] = (wchar_t)0;
+            std::string             tmp;
 
-            std::wstring    tmp(drain);
+            tmp = map_id_to_name(self._id);
 
-            tmp += std::wstring(L" '") + QUEX_NAMESPACE_TOKEN :: QUEX_TOKEN_NAME(lexeme_to_pretty_char)(self.text) + std::wstring(L"'");
+            tmp += " '" + QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
 
             return tmp;
         }

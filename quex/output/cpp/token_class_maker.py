@@ -32,14 +32,16 @@ def do(MapTokenIDToNameFunctionStr):
 
     if Setup.language.upper() == "C++":
         # In C++ we do inline, so we can do everything in the header file
-        header_txt         = "".join([txt, "\n", txt_i])
-        implementation_txt = get_helper_definitions()
+        header_txt         = "\n".join([txt, txt_i])
+        implementation_txt = ""
     else:
         # In C, there's a separate file in any case
         header_txt         = txt
         implementation_txt = txt_i 
 
     if Setup.token_class_only_f: 
+        if Setup.language.upper() == "C++":
+            implementation_txt += get_helper_definitions()
         implementation_txt +=  map_token_id_to_name_function_str \
                              + lexeme_null_implementation() 
 
@@ -84,7 +86,7 @@ def _do(Descr):
     converter_declaration_include,   \
     converter_implementation_include = __get_converter_configuration(include_guard_extension_str)
 
-    extra_at_begin_str = lexeme_null_declaration()
+    extra_at_begin_str = ""
     extra_at_end_str   = ""
 
     namespace_open, namespace_close = __namespace_brackets()
@@ -98,6 +100,7 @@ def _do(Descr):
 
     if Setup.token_class_only_f:
         extra_at_begin_str += get_helper_definitions() 
+    extra_at_begin_str += lexeme_null_declaration()
 
     txt = blue_print(template_str, 
             [
@@ -415,16 +418,16 @@ def lexeme_null_declaration():
     if Setup.token_class_only_f:
         namespace_open, namespace_close = __namespace_brackets()
         return "".join([
-                    "QUEX_NAMESPACE_LEXEME_NULL_OPEN\n",
-                    "extern %s  %s;\n" % (Setup.buffer_lexatom_type, common_lexeme_null_str()),
-                    "QUEX_NAMESPACE_LEXEME_NULL_CLOSE\n",
+                    "QUEX_NAMESPACE_TOKEN_OPEN\n",
+                    "extern QUEX_TYPE_LEXATOM   QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;\n" 
+                    "QUEX_NAMESPACE_TOKEN_CLOSE\n",
                   ])
     else:
         # The following should hold in any both cases:
         return "".join([
-                    "QUEX_NAMESPACE_LEXEME_NULL_OPEN\n",
+                    "QUEX_NAMESPACE_TOKEN_OPEN\n",
                     "extern QUEX_TYPE_LEXATOM   QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;\n" 
-                    "QUEX_NAMESPACE_LEXEME_NULL_CLOSE\n",
+                    "QUEX_NAMESPACE_TOKEN_CLOSE\n",
                   ])
 
 def lexeme_null_implementation():
@@ -440,16 +443,12 @@ helper_definitions_Cpp = """
 #define QUEX_NAME_TOKEN(NAME)              %s_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN          %s
 #define QUEX_NAMESPACE_TOKEN_CLOSE         %s
-#define QUEX_NAMESPACE_LEXEME_NULL_OPEN    %s
-#define QUEX_NAMESPACE_LEXEME_NULL_CLOSE   %s
 """
 
 helper_definitions_C = """
 #define QUEX_NAME_TOKEN(NAME)              %s_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN  
 #define QUEX_NAMESPACE_TOKEN_CLOSE 
-#define QUEX_NAMESPACE_LEXEME_NULL_OPEN     
-#define QUEX_NAMESPACE_LEXEME_NULL_CLOSE    
 """
 
 helper_definitions_common = """
@@ -468,14 +467,10 @@ def get_helper_definitions():
     else:
         token_id_definition_file = Setup.output_token_id_file
 
-    ln_namespace_open  = Lng.NAMESPACE_OPEN(Setup.lexeme_null_namespace).replace("\n", "\\\n")
-    ln_namespace_close = Lng.NAMESPACE_CLOSE(Setup.lexeme_null_namespace).replace("\n", "\\\n")
-
     if Setup.language.upper() == "C++":
         txt = helper_definitions_Cpp \
                % (token_descr.class_name, 
-                  namespace_open,    namespace_close,        
-                  ln_namespace_open, ln_namespace_close)
+                  namespace_open,    namespace_close)        
     else:
         txt = helper_definitions_C % token_descr.class_name_safe
 

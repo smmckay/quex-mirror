@@ -45,8 +45,7 @@ QUEX_NAME_TOKEN(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0,
  *
  *                 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED                          
  *                                                                            */
-#if      defined(QUEX_OPTION_LEXEME_CONVERTERS) \
-    && ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
+#if ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
 
 QUEX_INLINE void
 QUEX_NAME_TOKEN(lexeme_to_utf8)(const QUEX_TYPE_LEXATOM** source_p, 

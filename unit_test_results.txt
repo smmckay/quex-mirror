@@ -48,7 +48,7 @@ TEST                                                                 <no date>
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
         bug-2619679.sh ...............................................[OK]
     286 Maintaining character index during manual buffer filling.
-        bug-286.sh ...................................................[OK]
+        bug-286.sh ............................................[NO OUTPUT]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
         bug-2937342.sh 1 .............................................[OK]
                        2 .............................................[OK]
@@ -76,7 +76,7 @@ TEST                                                                 <no date>
         bug-3503831.sh ...............................................[OK]
     3504730 0.61.2 Post condition with OR causes crash
         bug-3504730.sh more ..........................................[OK]
-                       simple ......................................[FAIL]
+                       simple ........................................[OK]
 
  * denkfix:
 
@@ -166,7 +166,7 @@ TEST                                                                 <no date>
     3157923 Memory Leak by Components
         bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
-        bug-3513568.sh ...............................................[OK]
+        bug-3513568.sh .............................................[FAIL]
 
  * inhenriksen:
 
@@ -184,7 +184,7 @@ TEST                                                                 <no date>
         bug-3235790.sh .............................................[FAIL]
     3115741 0.55.4 move_backward triggers assert
         bug-3115741.sh general .......................................[OK]
-                       undo-line-colum-count .......................[FAIL]
+                       undo-line-colum-count .........................[OK]
     3307919 Support for more general Unicode categories
         feature-3307919.sh C .........................................[OK]
                            L .........................................[OK]
@@ -238,7 +238,7 @@ TEST                                                                 <no date>
  * nazim-can-bedir:
 
     2896732 0.46.2 - Memory leak
-        bug-2896732.sh .............................................[FAIL]
+        bug-2896732.sh ...............................................[OK]
 
  * nobody:
 
@@ -293,7 +293,7 @@ TEST                                                                 <no date>
  * raphamiard:
 
     185 0.66.5 Stable output for distinct token fields
-        feature-185.sh ...............................................[OK]
+        feature-185.sh .............................................[FAIL]
 
  * rayhayes:
 
@@ -321,7 +321,7 @@ TEST                                                                 <no date>
  * sbellon:
 
     265 Modification time change on input file.
-        bug-265.sh ...................................................[OK]
+        bug-265.sh .................................................[FAIL]
     3524729 0.62.4 token_type distinct members cause overloading error
         bug-3524729.sh .............................................[FAIL]
     3538026 Handling of spurious transition in PathWalkerState
@@ -488,13 +488,14 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3025173.sh
+    [FAIL] bug-286.sh
     [FAIL] feature-3495127.sh _ queue
-    [FAIL] bug-3504730.sh _ simple
     [FAIL] bug-3102035.sh _ 4
                         \__ 5
+    [FAIL] bug-3513568.sh
     [FAIL] bug-3235790.sh
-    [FAIL] bug-3115741.sh _ undo-line-colum-count
-    [FAIL] bug-2896732.sh
+    [FAIL] feature-185.sh
+    [FAIL] bug-265.sh
     [FAIL] bug-3524729.sh
     [FAIL] bug-2163753.sh
 ===============================================================================
@@ -504,7 +505,7 @@ TEST                                                                 <no date>
 demo/TEST                                                            <no date>
 -------------------------------------------------------------------------------
  * List all GOOD files which are identical
-        good-files-identity.sh .......................................[OK]
+        good-files-identity.sh .....................................[FAIL]
  * Makefile Differences to C++ Version
         makefile-diff.sh 000 .........................................[OK]
                          001 .........................................[OK]
@@ -519,10 +520,12 @@ demo/TEST                                                            <no date>
                          011 .........................................[OK]
                          012 .........................................[OK]
                          012b ........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] good-files-identity.sh
 ===============================================================================
                                                                                
                                   Demos for C                                  
@@ -610,9 +613,9 @@ demo/C/TEST                                                          <no date>
         009.sh command-line ..........................................[OK]
                command-line-utf8 ...................................[FAIL]
                socket ................................................[OK]
-               socket-utf8 .........................................[FAIL]
+               socket-utf8 ...........................................[OK]
                stdin .................................................[OK]
-               stdin-utf8 ..........................................[FAIL]
+               stdin-utf8 ............................................[OK]
 
  * demo/010:
 
@@ -654,8 +657,6 @@ demo/C/TEST                                                          <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] 009.sh _ command-line-utf8
-                \__ socket-utf8
-                \__ stdin-utf8
     [FAIL] 012b.sh _ DEBUG
                  \__ NDEBUG
 ===============================================================================
@@ -742,8 +743,8 @@ demo/Cpp/TEST                                                        <no date>
  * demo/009:
 
     Lexers on pipes, sockets, and the command line.
-        009.sh command-line ..........................................[OK]
-               command-line-utf8 .....................................[OK]
+        009.sh command-line ........................................[FAIL]
+               command-line-utf8 ...................................[FAIL]
                socket ................................................[OK]
                socket-utf8 ...........................................[OK]
                stdin .................................................[OK]
@@ -788,6 +789,8 @@ demo/Cpp/TEST                                                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] 009.sh _ command-line
+                \__ command-line-utf8
     [FAIL] 012.sh _ DEBUG
                 \__ NDEBUG
     [FAIL] 012b.sh _ DEBUG
@@ -993,28 +996,28 @@ quex/input/TEST                                                      <no date>
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Check if the default configuration has been updated.
-        check-default-configuration.sh ...............................[OK]
+        check-default-configuration.sh .............................[FAIL]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ................................................[OK]
+        svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .......................................[OK]
+                          real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................................[OK]
+        pyflakes-check.sh ..........................................[FAIL]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .......................[OK]
-                                           sphinx ....................[OK]
+        command_line_options-verify-doc.py man .....................[FAIL]
+                                           sphinx ..................[FAIL]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
         include_guard.py convention ................................[FAIL]
                          undefinition ................................[OK]
  * Propper undefinition of configuration parameters.
-        macro-check.py ...............................................[OK]
+        macro-check.py .............................................[FAIL]
 
  * User defined token id file:
 
@@ -1025,7 +1028,14 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] check-default-configuration.sh
+    [FAIL] svn-status.sh
+    [FAIL] function-check.sh _ real
+    [FAIL] pyflakes-check.sh
+    [FAIL] command_line_options-verify-doc.py _ man
+                                            \__ sphinx
     [FAIL] include_guard.py _ convention
+    [FAIL] macro-check.py
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1268,7 +1278,7 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Analyzer State Tracer
         debug_show.sh ................................................[OK]
  * Customized codec files (option --codec-file)
-        customized_codec.sh ..........................................[OK]
+        customized_codec.sh ........................................[FAIL]
  * Inadmissible commonalities
         commonality.sh indentation-newline ...........................[OK]
                        mix ...........................................[OK]
@@ -1283,10 +1293,12 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Testing the implementation of line number pragmas
         line-number-pragma.sh qx .....................................[OK]
                               source .................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] customized_codec.sh
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -1407,11 +1419,13 @@ quex/TESTS/source-package/TEST                                       <no date>
 quex/TESTS/token-class/TEST                                          <no date>
 -------------------------------------------------------------------------------
  * With token policy 'queue'.
-        simple-queue.exe .............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        simple-queue.exe ....................................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] simple-queue.exe
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -2204,15 +2218,19 @@ quex/output/core/TEST                                                <no date>
 
     Transition Code Generation
         test-single-state-transitions.py A ...........................[OK]
-                                         A-UTF8 ......................[OK]
+                                         A-UTF8 ...............[NO OUTPUT]
                                          B ...........................[OK]
-                                         B-UTF8 ......................[OK]
+                                         B-UTF8 ...............[NO OUTPUT]
                                          C ...........................[OK]
-                                         C-UTF8 ......................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                         C-UTF8 ...............[NO OUTPUT]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] test-single-state-transitions.py _ A-UTF8
+                                          \__ B-UTF8
+                                          \__ C-UTF8
 ===============================================================================
                                                                                
                                   Output Cpp                                   
@@ -2348,21 +2366,15 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ...........................[MAKE FAILED]
-                        Mix .................................[MAKE FAILED]
-                        N-Character .........................[MAKE FAILED]
-                        N-String ............................[MAKE FAILED]
-                        String ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] accumulator.exe _ Character
-                         \__ Mix
-                         \__ N-Character
-                         \__ N-String
-                         \__ String
+        accumulator.exe Character ....................................[OK]
+                        Mix ..........................................[OK]
+                        N-Character ..................................[OK]
+                        N-String .....................................[OK]
+                        String .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3221,11 +3233,11 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       12  235   [FAIL] TEST                                                          
-        5  56    [FAIL] demo/C/TEST                                                   
-        4  56    [FAIL] ..../Cpp/TEST                                                 
-           14      [OK] ..../TEST                                                     
-        1  14    [FAIL] quex/TESTS/code/TEST                                          
+       13  235   [FAIL] TEST                                                          
+        3  56    [FAIL] demo/C/TEST                                                   
+        6  56    [FAIL] ..../Cpp/TEST                                                 
+        1  14    [FAIL] ..../TEST                                                     
+        8  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3236,10 +3248,10 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-           12      [OK] ........../misc/TEST                                          
+        1  12    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
         4  20    [FAIL] ........../source-package/TEST                                
-           1       [OK] ........../token-class/TEST                                   
+        1  1     [FAIL] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
            1       [OK] ............../analyzer/TEST                                  
@@ -3252,7 +3264,7 @@ SUMMARY:
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
            10      [OK] ............../converter_helper/TEST                          
-        5  5     [FAIL] ............../extra/accumulator/TEST                         
+           5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
@@ -3273,17 +3285,17 @@ SUMMARY:
            53      [OK] ........................./transformation/TEST                 
            58      [OK] ..../input/TEST                                               
            27      [OK] ........../regular_expression/TEST                            
-           196     [OK] ..../output/core/TEST                                         
+        3  196   [FAIL] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
         1  30    [FAIL] .........../cpp/TEST                                          
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  ____            
-    |  ___|_ _(_) |___     |___ / |___ \     __  __
-    | |_ / _` | | / __|      |_ \   __) |    \ \/ /
-    |  _| (_| | | \__ \     ___) | / __/      >  < 
-    |_|  \__,_|_|_|___/    |____/ |_____|    /_/\_\
+     _____     _ _          _  _   _           
+    |  ___|_ _(_) |___     | || | / |    __  __
+    | |_ / _` | | / __|    | || |_| |    \ \/ /
+    |  _| (_| | | \__ \    |__   _| |     >  < 
+    |_|  \__,_|_|_|___/       |_| |_|    /_/\_\
                                                                    (1630 tests)
 
 ===============================================================================

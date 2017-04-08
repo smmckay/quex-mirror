@@ -142,12 +142,6 @@ def do(setup, command_line, argv):
         # BECAUSE: Code unit size is one. No type has a size of less than one byte!
         __codec_vs_buffer_lexatom_size_in_byte("utf16", 2)
 
-    if setup.external_lexeme_null_object and setup.token_class_only_f:
-        error.log("Specifying an external lexeme null object signalizes an\n"
-                  "external token class implementation. The 'token class only\n"
-                  "flag' generates a token class considered to be externally\n"
-                  "shared. Both flags are mutually exclusive.")
-
     if setup.string_accumulator_f:
         error_n = NotificationDB.warning_on_no_token_class_take_text
         if error_n in setup.suppressed_notification_list: 

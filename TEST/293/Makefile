@@ -27,7 +27,7 @@ IConv_Lexer.cpp:    iconv.qx
 		 --token-id-prefix ICONV_TKN_
 
 Codec_Lexer.cpp:    codec.qx
-	quex -i ~/prj/quex/trunk/quex/code_base/token/CppWChar.qx \
+	quex -i $(QUEX_PATH)/quex/code_base/token/CppWChar.qx \
 		 $< -o Codec::Lexer --codec utf8 --bet wchar_t  \
 		 --token-id-prefix CODEC_TKN_
 

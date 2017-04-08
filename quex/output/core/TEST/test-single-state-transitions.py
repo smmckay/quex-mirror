@@ -151,6 +151,9 @@ main_template = """
 #define __QUEX_OPTION_PLAIN_C
 #define QUEX_NAMESPACE_MAIN_OPEN
 #define QUEX_NAMESPACE_MAIN_CLOSE
+#define QUEX_NAME_TOKEN(NAME)            Token_ ## NAME
+#define QUEX_NAMESPACE_TOKEN_OPEN        
+#define QUEX_NAMESPACE_TOKEN_CLOSE      
 #define QUEX_CONVERTER_CHAR_DEFi(X, Y)   convert_ ## X ## _to_ ## Y
 #define QUEX_CONVERTER_CHAR_DEF(X, Y)    QUEX_CONVERTER_CHAR_DEFi(X, Y)
 #define QUEX_CONVERTER_CHAR(X, Y)        QUEX_CONVERTER_CHAR_DEFi(X, Y)
@@ -261,7 +264,7 @@ def get_read_preparation(Codec):
         txt = [
             "{\n"
             "    QUEX_TYPE_LEXATOM* buffer_p = &buffer[0];\n"
-            "    const uint32_t*      input_p = &input;\n"
+            "    const uint32_t*    input_p = &input;\n"
             "    convert_utf32_to_utf8(&input_p, &buffer_p);\n"
             "}\n"
         ]

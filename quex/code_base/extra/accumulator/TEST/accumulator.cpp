@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include <tmp_dir/TestAnalyzer>
+#include <quex/code_base/lexeme.i>
 
 int
 main(int argc, char** argv)
