@@ -8,7 +8,11 @@
 #   error "No configuration header included before this header."
 #endif
 
-#include    <quex/code_base/lexeme.i>
+/* NOT: "#include    <quex/code_base/lexeme.i>"
+ *
+ * Converters and helpers of 'lexeme.i' are only to be included from inside the
+ * token class header.  Otherwise, it may occur multiple times when same token
+ * class is used for multiple lexical analyzers.                              */
 
 #include    <quex/code_base/analyzer/asserts.i>
 #include    <quex/code_base/buffer/asserts.i>

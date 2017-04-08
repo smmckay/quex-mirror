@@ -224,8 +224,8 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     QUEX_ACTION_TOKEN_STAMP(*(me->the_lexer));   
     token_p->_id = TokenID;
     if( me->text.begin == me->text.end ) {               
-        begin_p = &QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;
-        end_p   = &QUEX_LEXEME_NULL_IN_ITS_NAMESPACE; /* -> terminating zero. */
+        begin_p = &QUEX_LEXEME_NULL;
+        end_p   = &QUEX_LEXEME_NULL;                  /* -> terminating zero. */
     }
     else {
         begin_p  = me->text.begin;

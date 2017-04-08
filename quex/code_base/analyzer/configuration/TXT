@@ -303,11 +303,6 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 #   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME_SAFE$$_ ## NAME
 #   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
 #   define QUEX_MEMBER(NAME)           void /* Undefined, not required */
-    /* When creating a 'shared token class', macros are temporarily redefined.
-     * This happens to generate converters in the token's namespace. After 
-     * that, the original macros need to be restored. Thus: Backup!          */  
-#   define QUEX_NAMESPACE_MAIN_OPEN_BACKUP   
-#   define QUEX_NAMESPACE_MAIN_CLOSE_BACKUP  
 
 #else
     /* Add namespaces for the global names of the classes of analyzer
@@ -337,11 +332,7 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 #   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME$$_ ## NAME
 #   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS$$_ ## NAME
 #   define QUEX_MEMBER(NAME)           $$LEXER_CLASS_NAME$$::NAME                
-    /* When creating a 'shared token class', macros are temporarily redefined.
-     * This happens to generate converters in the token's namespace. After 
-     * that, the original macros need to be restored. Thus: Backup!          */  
-#   define QUEX_NAMESPACE_MAIN_OPEN_BACKUP   $$NAMESPACE_MAIN_OPEN$$
-#   define QUEX_NAMESPACE_MAIN_CLOSE_BACKUP  $$NAMESPACE_MAIN_CLOSE$$
+
 #endif
 
 #ifndef    QUEX_TYPE_TOKEN_ID

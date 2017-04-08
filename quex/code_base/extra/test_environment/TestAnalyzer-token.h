@@ -31,15 +31,7 @@ QUEX_NAMESPACE_LEXEME_NULL_CLOSE
        struct quex_Token_tag;
 
        extern const char* 
-       quex_Token_get_string(struct quex_Token_tag* me,  char*  buffer, size_t   BufferSize); 
-
-       extern const char* 
-       quex_Token_pretty_char_text(struct quex_Token_tag* me, char*   buffer, size_t  BufferSize); 
-
-#      if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
-       extern const wchar_t* 
-       quex_Token_pretty_wchar_text(struct quex_Token_tag* me, wchar_t*  buffer, size_t BufferSize); 
-#      endif
+       QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   BufferSize); 
 
 #include <quex/code_base/converter_helper/from-unicode-buffer>
 
@@ -47,21 +39,21 @@ QUEX_NAMESPACE_LEXEME_NULL_CLOSE
 
    
 
-#   line 51 "TestAnalyzer-token.h"
+#   line 43 "TestAnalyzer-token.h"
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
     QUEX_TYPE_TOKEN_ID    _id;
 
-#   line 29 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 60 "TestAnalyzer-token.h"
+#   line 52 "TestAnalyzer-token.h"
 
-#   line 30 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 22 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
-#   line 65 "TestAnalyzer-token.h"
+#   line 57 "TestAnalyzer-token.h"
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -73,13 +65,13 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #       endif
 #   endif
 
-#   line 128 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 120 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        /*
         */
    
 
-#   line 83 "TestAnalyzer-token.h"
+#   line 75 "TestAnalyzer-token.h"
 
 } quex_Token;
 

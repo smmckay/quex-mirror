@@ -400,8 +400,6 @@ QUEX_NAME(Dictionary)::print_this()
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/lexeme.i>
-
 #endif /* QUEX_OPTION_POST_CATEGORIZER */
 
 #endif /* __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I */

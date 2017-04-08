@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.67.2"
-#define QUEX_SETTING_BUILD_DATE        "Fri Apr  7 00:32:05 2017"
+#define QUEX_SETTING_BUILD_DATE        "Sat Apr  8 11:34:35 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -276,8 +276,6 @@
 /* QUEX_TYPE_X  --> Type of X in global namespace 
  * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)         */
 #if defined(__QUEX_OPTION_PLAIN_C)
-#   define QUEX_FUNCTION_PREFIX        quex_TestAnalyzer_
-#   define QUEX_FUNCTION_DEF_PREFIX    quex_TestAnalyzer_
     /* In 'C' there are no namespaces, so namespaces are coded directly
      * into the type name. Both, global and local names are equal.           */
 #   define QUEX_TYPE0_ANALYZER         struct quex_TestAnalyzer_tag
@@ -305,18 +303,8 @@
 #   define QUEX_NAME(NAME)             quex_TestAnalyzer_ ## NAME
 #   define QUEX_NAME_TOKEN(NAME)       quex_Token_ ## NAME
 #   define QUEX_MEMBER(NAME)           void /* Undefined, not required */
-    /* When creating a 'shared token class', macros are temporarily redefined.
-     * This happens to generate converters in the token's namespace. After 
-     * that, the original macros need to be restored. Thus: Backup!          */  
-#   define QUEX_NAMESPACE_MAIN_OPEN_BACKUP   
-#   define QUEX_NAMESPACE_MAIN_CLOSE_BACKUP  
-#   define QUEX_FUNCTION_PREFIX_BACKUP       quex_TestAnalyzer_
-#   define QUEX_FUNCTION_DEF_PREFIX_BACKUP   quex_TestAnalyzer_
 
 #else
-    /* Assumption: here is IN the namespace for definition.                  */
-#   define QUEX_FUNCTION_DEF_PREFIX    
-#   define QUEX_FUNCTION_PREFIX        quex::
     /* Add namespaces for the global names of the classes of analyzer
      * and token.                                                            */
 #   define QUEX_TYPE0_ANALYZER         TestAnalyzer
@@ -329,36 +317,22 @@
 #   define QUEX_NAME_COMPLETE_TOKEN    quex::Token
 
 #   define QUEX_NAMESPACE_MAIN         quex
-#   define QUEX_NAMESPACE_MAIN_OPEN    namespace quex {\
-
-#   define QUEX_NAMESPACE_MAIN_CLOSE   } /* Closing Namespace 'quex' */\
-
+#   define QUEX_NAMESPACE_MAIN_OPEN    namespace quex {
+#   define QUEX_NAMESPACE_MAIN_CLOSE   } /* close quex */
 
 #   define QUEX_NAMESPACE_TOKEN        quex
-#   define QUEX_NAMESPACE_TOKEN_OPEN   namespace quex {\
+#   define QUEX_NAMESPACE_TOKEN_OPEN   namespace quex {
+#   define QUEX_NAMESPACE_TOKEN_CLOSE  } /* close quex */
 
-#   define QUEX_NAMESPACE_TOKEN_CLOSE  } /* Closing Namespace 'quex' */\
-
-
-#   define QUEX_NAMESPACE_LEXEME_NULL_OPEN     namespace quex {\
-
-#   define QUEX_NAMESPACE_LEXEME_NULL_CLOSE    } /* Closing Namespace 'quex' */\
-
+#   define QUEX_NAMESPACE_LEXEME_NULL_OPEN     namespace quex {
+#   define QUEX_NAMESPACE_LEXEME_NULL_CLOSE    } /* close quex */
 #   define QUEX_LEXEME_NULL_IN_ITS_NAMESPACE   LexemeNullObject
 #   define QUEX_LEXEME_NULL                    ::quex::LexemeNullObject
 
 #   define QUEX_NAME(NAME)             TestAnalyzer_ ## NAME
 #   define QUEX_NAME_TOKEN(NAME)       Token_ ## NAME
 #   define QUEX_MEMBER(NAME)           TestAnalyzer::NAME                
-    /* When creating a 'shared token class', macros are temporarily redefined.
-     * This happens to generate converters in the token's namespace. After 
-     * that, the original macros need to be restored. Thus: Backup!          */  
-#   define QUEX_NAMESPACE_MAIN_OPEN_BACKUP   namespace quex {\
 
-#   define QUEX_NAMESPACE_MAIN_CLOSE_BACKUP  } /* Closing Namespace 'quex' */\
-
-#   define QUEX_FUNCTION_PREFIX_BACKUP        
-#   define QUEX_FUNCTION_DEF_PREFIX_BACKUP   quex::
 #endif
 
 #ifndef    QUEX_TYPE_TOKEN_ID

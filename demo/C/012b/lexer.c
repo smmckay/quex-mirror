@@ -48,8 +48,8 @@ main(int argc, char** argv)
         (void)boeck_Lexer_receive(&boeck_lex, &boeck_token);
 
         /* Lexeme is same for all three.                                     */
-        printf("%s", A_B_C_Token_pretty_char_text(boeck_token, buffer, 
-                                                  BufferSize));
+        (void)QUEX_NAME_TOKEN(lexeme_to_pretty_char)(boeck_token->text, buffer, BufferSize);
+        printf("%s", &buffer[0]);
 
         size_t      preL   = (size_t)strlen((const char*)boeck_token->text);
         size_t      L      = preL < 10 ? preL : 10;

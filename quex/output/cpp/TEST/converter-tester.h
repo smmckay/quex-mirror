@@ -25,22 +25,19 @@
  * (C) 2012 Frank-Rene Schaefer. 
  *     ABSOLUTELY NO WARRANTY                                                */
 /* 2010 (C) Frank-Rene Schaefer; ABSOLUTELY NO WARRANTY */
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866__) \
-    ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866__
-#endif
+#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866__
+#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866__
 
 #include <quex/code_base/converter_helper/common.h>
 
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
-#define __QUEX_FROM                cp866
-#define __QUEX_FROM_TYPE           QUEX_TYPE_LEXATOM
+#define __QUEX_FROM      cp866
+#define __QUEX_FROM_TYPE QUEX_TYPE_LEXATOM
 
 #include <quex/code_base/converter_helper/generator/declarations.g>
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866__                */
 
@@ -77,19 +74,16 @@ QUEX_NAMESPACE_MAIN_CLOSE
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866_I) \
-    ||   defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#if    ! defined(__QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED)
-#        define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866_I
-#endif
+#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866_I
+#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866_I
 
 #include "converter-tester.h"
 
-QUEX_NAMESPACE_MAIN_OPEN
+QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF(cp866, utf32)(const QUEX_TYPE_LEXATOM** input_pp,
-                                          uint32_t**                  output_pp)
+                                          uint32_t**                output_pp)
 {
     uint16_t             unicode = (uint32_t)0;
     QUEX_TYPE_LEXATOM  input   = *(*input_pp)++;
@@ -395,7 +389,7 @@ QUEX_CONVERTER_CHAR_DEF(cp866, utf32)(const QUEX_TYPE_LEXATOM** input_pp,
 
 QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF(cp866, utf16)(const QUEX_TYPE_LEXATOM** input_pp,
-                                          uint16_t**                  output_pp)
+                                          uint16_t**                output_pp)
 {
     uint32_t   unicode   = (uint32_t)0;
     uint32_t*  unicode_p = &unicode;
@@ -407,9 +401,9 @@ QUEX_CONVERTER_CHAR_DEF(cp866, utf16)(const QUEX_TYPE_LEXATOM** input_pp,
 
 QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF(cp866, utf8)(const QUEX_TYPE_LEXATOM**  input_pp, 
-                                         uint8_t**                    output_pp)
+                                         uint8_t**                  output_pp)
 {
-    uint32_t            unicode = (uint32_t)-1;
+    uint32_t          unicode = (uint32_t)-1;
     QUEX_TYPE_LEXATOM input   = *(*input_pp)++;
     
     if( input < 0x0000D1 ) {
@@ -747,7 +741,7 @@ return;
  *     definitions of the character converters.                             */
 #include <quex/code_base/converter_helper/generator/implementations.gi>
 
-QUEX_NAMESPACE_MAIN_CLOSE
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__cp866_I */
 

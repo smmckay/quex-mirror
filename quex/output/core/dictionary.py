@@ -208,9 +208,9 @@ class Lng_Cpp(dict):
             return ""
 
     def NAMESPACE_OPEN(self, NameList):
-        return "".join(("    " * i + "namespace %s {\n" % name) for i, name in enumerate(NameList))
+        return " ".join(("    " * i + "namespace %s {" % name) for i, name in enumerate(NameList))
     def NAMESPACE_CLOSE(self, NameList):
-        return "".join("} /* Closing Namespace '%s' */\n" % name for name in NameList)
+        return " ".join("} /* close %s */" % name for name in NameList)
     def NAMESPACE_REFERENCE(self, NameList, TrailingDelimiterF=True):
         result = reduce(lambda x, y: x + "::" + y, [""] + NameList) + "::"
         if TrailingDelimiterF: return result

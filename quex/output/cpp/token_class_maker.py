@@ -27,13 +27,13 @@ def do(MapTokenIDToNameFunctionStr):
     if Setup.token_class_only_f:
         txt   = _clean_for_independence(txt)
         txt_i = _clean_for_independence(txt_i)
-        map_token_id_to_name_function_str =   \
+        map_token_id_to_name_function_str = \
                 _clean_for_independence(MapTokenIDToNameFunctionStr) 
 
     if Setup.language.upper() == "C++":
         # In C++ we do inline, so we can do everything in the header file
         header_txt         = "".join([txt, "\n", txt_i])
-        implementation_txt = ""
+        implementation_txt = get_helper_definitions()
     else:
         # In C, there's a separate file in any case
         header_txt         = txt
@@ -91,8 +91,8 @@ def _do(Descr):
     helper_variable_replacements = [
               ["$INCLUDE_CONVERTER_DECLARATION",    converter_declaration_include],
               ["$INCLUDE_CONVERTER_IMPLEMENTATION", converter_implementation_include],
-              ["$NAMESPACE_CLOSE",                  namespace_close],
-              ["$NAMESPACE_OPEN",                   namespace_open],
+              ["$NAMESPACE_OPEN",                   "QUEX_NAMESPACE_TOKEN_OPEN"],
+              ["$NAMESPACE_CLOSE",                  "QUEX_NAMESPACE_TOKEN_CLOSE"],
               ["$TOKEN_CLASS",                      token_class_name],
     ]
 
@@ -415,9 +415,9 @@ def lexeme_null_declaration():
     if Setup.token_class_only_f:
         namespace_open, namespace_close = __namespace_brackets()
         return "".join([
-                    "%s\n" % namespace_open,
+                    "QUEX_NAMESPACE_LEXEME_NULL_OPEN\n",
                     "extern %s  %s;\n" % (Setup.buffer_lexatom_type, common_lexeme_null_str()),
-                    "%s\n\n" % namespace_close,
+                    "QUEX_NAMESPACE_LEXEME_NULL_CLOSE\n",
                   ])
     else:
         # The following should hold in any both cases:

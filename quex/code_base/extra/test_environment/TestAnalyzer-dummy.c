@@ -111,8 +111,6 @@ QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
 QUEX_NAMESPACE_MAIN_CLOSE
 
 /* #include "TestAnalyzer.h"*/
-#include <quex/code_base/converter_helper/from-unicode-buffer.i>
-
 #include <quex/code_base/analyzer/headers.i>
 #include <quex/code_base/analyzer/C-adaptions.h>
 
@@ -514,7 +512,7 @@ self_send(QUEX_TKN_X);
 RETURN;
 
 
-#   line 518 "TestAnalyzer.c"
+#   line 516 "TestAnalyzer.c"
 
 }
 RETURN;
@@ -775,13 +773,13 @@ quex_Token_construct(quex_Token* __this)
 #   define LexemeNull  &QUEX_LEXEME_NULL
     (void)__this;
 
-#   line 35 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 27 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = 0;
        self.text   = LexemeNull;
    
 
-#   line 785 "TestAnalyzer.c"
+#   line 783 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -803,16 +801,16 @@ quex_Token_destruct(quex_Token* __this)
     if( ! __this ) return;
 
 
-#   line 40 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 32 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        if( self.text != LexemeNull ) {
            QUEXED(MemoryManager_free)((void*)self.text,
-                                          E_MemoryObjectType_TEXT);
+                                      E_MemoryObjectType_TEXT);
            self.text = LexemeNull;
        }
    
 
-#   line 816 "TestAnalyzer.c"
+#   line 814 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -828,7 +826,7 @@ quex_Token_copy(quex_Token*       __this,
     (void)__this;
     (void)__That;
 
-#   line 48 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 40 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
         self._id  = Other._id;
 
@@ -840,11 +838,11 @@ quex_Token_copy(quex_Token*       __this,
             self.text = \
                (QUEX_TYPE_LEXATOM*)
                QUEXED(MemoryManager_allocate)(
-                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME(lexeme_length)(Other.text) + 1),
+                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1),
                       E_MemoryObjectType_TEXT);
             __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
                                 sizeof(QUEX_TYPE_LEXATOM) 
-                              * (QUEX_NAME(lexeme_length)(Other.text) + 1));
+                              * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1));
         }
         self.number = Other.number;
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -853,7 +851,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 857 "TestAnalyzer.c"
+#   line 855 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -887,7 +885,7 @@ quex_Token_take_text(quex_Token*              __this,
     (void)Begin;
     (void)End;
 
-#   line 72 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 64 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 
 #       if 0
@@ -944,7 +942,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 948 "TestAnalyzer.c"
+#   line 946 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -961,12 +959,12 @@ quex_Token_repetition_n_get(quex_Token* __this)
 #   define LexemeNull  &QUEX_LEXEME_NULL
     (void)__this;
     
-#   line 137 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 129 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        return self.number;
    
 
-#   line 970 "TestAnalyzer.c"
+#   line 968 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -980,12 +978,12 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
     (void)__this;
     (void)N;
     
-#   line 133 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 125 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = N;
    
 
-#   line 989 "TestAnalyzer.c"
+#   line 987 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -993,7 +991,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 
-#   line 141 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 133 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
         const char* 
         quex_Token_get_string(quex_Token* me, char*   buffer, size_t  BufferSize) 
@@ -1017,8 +1015,8 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
             }
 
             /* The String */
-            QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, 
-                                             (size_t)(BufferEnd - writerator));
+            QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
+                                                   (size_t)(BufferEnd - writerator));
 
             while( *writerator ) {
                 ++writerator;
@@ -1037,7 +1035,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1041 "TestAnalyzer.c"
+#   line 1039 "TestAnalyzer.c"
 
 
 

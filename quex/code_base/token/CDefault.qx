@@ -6,15 +6,7 @@ token_type {
        struct $TOKEN_CLASS_tag;
 
        extern const char* 
-       $TOKEN_CLASS_get_string(struct $TOKEN_CLASS_tag* me,  char*  buffer, size_t   BufferSize); 
-
-       extern const char* 
-       $TOKEN_CLASS_pretty_char_text(struct $TOKEN_CLASS_tag* me, char*   buffer, size_t  BufferSize); 
-
-#      if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
-       extern const wchar_t* 
-       $TOKEN_CLASS_pretty_wchar_text(struct $TOKEN_CLASS_tag* me, wchar_t*  buffer, size_t BufferSize); 
-#      endif
+       QUEX_NAME_TOKEN(get_string)(struct $TOKEN_CLASS_tag* me,  char*  buffer, size_t   BufferSize); 
 
 $INCLUDE_CONVERTER_DECLARATION
 #include <quex/code_base/lexeme>
@@ -40,7 +32,7 @@ $INCLUDE_CONVERTER_DECLARATION
    destructor {
        if( self.text != LexemeNull ) {
            QUEXED(MemoryManager_free)((void*)self.text,
-                                          E_MemoryObjectType_TEXT);
+                                      E_MemoryObjectType_TEXT);
            self.text = LexemeNull;
        }
    }

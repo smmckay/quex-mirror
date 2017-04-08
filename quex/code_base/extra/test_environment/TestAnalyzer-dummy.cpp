@@ -737,6 +737,18 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
+#define QUEX_NAME_TOKEN(NAME)              Token_ ## NAME
+#define QUEX_NAMESPACE_TOKEN_OPEN          namespace quex {
+#define QUEX_NAMESPACE_TOKEN_CLOSE         } /* close quex */
+#define QUEX_NAMESPACE_LEXEME_NULL_OPEN    namespace quex {
+#define QUEX_NAMESPACE_LEXEME_NULL_CLOSE   } /* close quex */
+
+#define QUEX_TYPE_LEXATOM                  uint8_t
+#define QUEX_TYPE_TOKEN_ID                 uint32_t
+#define QUEX_SETTING_CHARACTER_CODEC       unicode
+
+#include "TestAnalyzer-token_ids" 
+
 
 
 bool UserConstructor_UnitTest_return_value = true;
