@@ -326,14 +326,11 @@ def __frame_of_all(Code, Setup):
 
     implementation_header_str = get_implementation_header(Setup)
 
-    lexeme_null_definition = "QUEX_TYPE_LEXATOM  QUEX_LEXEME_NULL_IN_ITS_NAMESPACE = (QUEX_TYPE_LEXATOM)0;\n"
-
     return "".join(["/* #include \"%s\"*/\n" % Setup.get_file_reference(Setup.output_header_file),
                     implementation_header_str,
-                    "QUEX_NAMESPACE_TOKEN_OPEN\n",
-                    lexeme_null_definition,
+                    "QUEX_NAMESPACE_MAIN_OPEN\n",
                     Code,
-                    "QUEX_NAMESPACE_TOKEN_CLOSE\n"])                     
+                    "QUEX_NAMESPACE_MAIN_CLOSE\n"])                     
 
 def __condition(txt, CharSet):
     first_f = True

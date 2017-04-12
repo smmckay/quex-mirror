@@ -33,10 +33,10 @@ def do():
     _generate(mode_db)
 
 def _generate(mode_db):
-    token_id_header,                          \
-    func_map_token_id_to_name_implementation, \
-    class_token_header,                       \
-    class_token_implementation                = _prepare_token_class()
+    token_id_header,                \
+    global_lexeme_null_declaration, \
+    class_token_header,             \
+    class_token_implementation      = token_class_maker.do()
 
     if Setup.token_class_only_f:
         class_token_header =   do_token_class_info() \
@@ -52,7 +52,7 @@ def _generate(mode_db):
     codec_converter_helper_header,        \
     codec_converter_helper_implementation = _prepare_all(mode_db, 
                                                          class_token_implementation,
-                                                         func_map_token_id_to_name_implementation)
+                                                         global_lexeme_null_declaration)
 
     _write_all(configuration_header, analyzer_header, engine_txt, 
                class_token_header, token_id_header,
@@ -133,29 +133,10 @@ def do_comment_pattern_action_pairs(ModeIterable):
                              "\nEND: MODE PATTERNS")
     return comment 
 
-def _prepare_token_class():
-    # (*) Generate the token ids
-    #     (This needs to happen after the parsing of mode_db, since during that
-    #      the token_id_db is developed.)
-    if Setup.token_class_only_f and not token_id_maker.has_specific_token_ids(): 
-        # Assume external implementation
-        token_id_header                          = None
-        func_map_token_id_to_name_implementation = ""
-    else:
-        token_id_header                          = token_id_maker.do(Setup) 
-        func_map_token_id_to_name_implementation = token_id_maker.do_map_id_to_name_function()
-
     # (*) [Optional] Make a customized token class
-    class_token_header, \
-    class_token_implementation = token_class_maker.do(func_map_token_id_to_name_implementation)
-
-    return token_id_header, \
-           func_map_token_id_to_name_implementation, \
-           class_token_header, \
-           class_token_implementation
 
 def _prepare_all(mode_db, class_token_implementation, 
-                 func_map_token_id_to_name_implementation):
+                 global_lexeme_null_declaration): 
     # (*) implement the lexer mode-specific analyser functions
     function_analyzers_implementation \
                             = analyzer_functions_get(mode_db)
@@ -163,7 +144,8 @@ def _prepare_all(mode_db, class_token_implementation,
     # (*) Implement the 'quex' core class from a template
     # -- do the coding of the class framework
     configuration_header    = configuration.do(mode_db)
-    analyzer_header         = analyzer_class.do(mode_db)
+    analyzer_header         = analyzer_class.do(mode_db, 
+                                                Epilog=global_lexeme_null_declaration) 
     analyzer_implementation = analyzer_class.do_implementation(mode_db) 
     mode_implementation     = mode_classes.do(mode_db)
 
@@ -175,7 +157,6 @@ def _prepare_all(mode_db, class_token_implementation,
     engine_txt = "\n".join([Lng.ENGINE_TEXT_EPILOG(),
                             mode_implementation,
                             function_analyzers_implementation,
-                            func_map_token_id_to_name_implementation,
                             analyzer_implementation,
                             class_token_implementation, "\n"])
 

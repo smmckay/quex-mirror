@@ -16,9 +16,16 @@
 #include <quex/code_base/MemoryManager>
 
 /* LexemeNull object may be used for 'take_text'. */
-QUEX_NAMESPACE_TOKEN_OPEN
-extern QUEX_TYPE_LEXATOM   QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;
-QUEX_NAMESPACE_TOKEN_CLOSE
+
+#define QUEX_NAME_TOKEN(NAME)              quex_Token_ ## NAME
+#define QUEX_NAMESPACE_TOKEN_OPEN  
+#define QUEX_NAMESPACE_TOKEN_CLOSE 
+
+#define QUEX_TYPE_LEXATOM                  uint8_t
+#define QUEX_TYPE_TOKEN_ID                 uint32_t
+#define QUEX_SETTING_CHARACTER_CODEC       unicode
+
+#include "TestAnalyzer-token_ids.h" 
 
 /****/
 
@@ -39,7 +46,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 
    
 
-#   line 43 "TestAnalyzer-token.h"
+#   line 50 "TestAnalyzer-token.h"
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
@@ -48,12 +55,12 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 52 "TestAnalyzer-token.h"
+#   line 59 "TestAnalyzer-token.h"
 
 #   line 22 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
-#   line 57 "TestAnalyzer-token.h"
+#   line 64 "TestAnalyzer-token.h"
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -71,35 +78,37 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
         */
    
 
-#   line 75 "TestAnalyzer-token.h"
+#   line 82 "TestAnalyzer-token.h"
 
 } quex_Token;
 
-QUEX_INLINE void quex_Token_construct(quex_Token*);
-QUEX_INLINE void quex_Token_copy_construct(quex_Token*, 
-                                             const quex_Token*);
-QUEX_INLINE void quex_Token_copy(quex_Token*, const quex_Token*);
-QUEX_INLINE void quex_Token_destruct(quex_Token*);
+QUEX_INLINE void         quex_Token_construct(quex_Token*);
+QUEX_INLINE void         quex_Token_copy_construct(quex_Token*, 
+                                                     const quex_Token*);
+QUEX_INLINE void         quex_Token_copy(quex_Token*, const quex_Token*);
+QUEX_INLINE void         quex_Token_destruct(quex_Token*);
 
 /* NOTE: Setters and getters as in the C++ version of the token class are not
  *       necessary, since the members are accessed directly.                   */
 
-QUEX_INLINE void 
-quex_Token_set(quex_Token*            __this, 
-                 const QUEX_TYPE_TOKEN_ID ID);
+QUEX_INLINE void         quex_Token_set(quex_Token*            __this, 
+                                          const QUEX_TYPE_TOKEN_ID ID);
 
-extern const char*  quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
+QUEX_INLINE const char*  quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
 
-QUEX_INLINE bool 
-quex_Token_take_text(quex_Token*              __this, 
-                       QUEX_TYPE_ANALYZER*        analyzer, 
-                       const QUEX_TYPE_LEXATOM* Begin, const QUEX_TYPE_LEXATOM* End);
+QUEX_INLINE bool         quex_Token_take_text(quex_Token*            __this, 
+                                                QUEX_TYPE_ANALYZER*      analyzer, 
+                                                const QUEX_TYPE_LEXATOM* Begin, 
+                                                const QUEX_TYPE_LEXATOM* End);
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-QUEX_INLINE size_t quex_Token_repetition_n_get(quex_Token*);
-QUEX_INLINE void   quex_Token_repetition_n_set(quex_Token*, size_t);
+QUEX_INLINE size_t       quex_Token_repetition_n_get(quex_Token*);
+QUEX_INLINE void         quex_Token_repetition_n_set(quex_Token*, size_t);
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
+QUEX_NAMESPACE_TOKEN_OPEN
+extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN */

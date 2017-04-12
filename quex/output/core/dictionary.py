@@ -125,6 +125,17 @@ class Lng_Cpp(dict):
     def LEXEME_MACRO_CLEAN_UP(self):
         return cpp.lexeme_macro_clean_up
 
+    def LEXEME_NULL_DECLARATION(self):
+        return "QUEX_NAMESPACE_TOKEN_OPEN\n" \
+               "extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);\n" \
+               "QUEX_NAMESPACE_TOKEN_CLOSE\n"
+
+    def LEXEME_NULL_IMPLEMENTATION(self):
+        return "QUEX_NAMESPACE_TOKEN_OPEN\n" \
+               "QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;\n" \
+               "QUEX_NAMESPACE_TOKEN_CLOSE\n"
+
+
     def INPUT_P(self):                             return "me->buffer._read_p"
     def INPUT_P_TO_LEXEME_START(self):             return "me->buffer._read_p = me->buffer._lexeme_start_p;"
     def INPUT_P_DEREFERENCE(self, Offset=0): 
@@ -236,7 +247,7 @@ class Lng_Cpp(dict):
                         "END: STATE MACHINE")) 
 
     def TOKEN_INTAKE_LEXEME(self, BeginP, EndP):
-        return "QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, %s, %s);\n" \
+        return "QUEX_NAME_TOKEN(take_text)(self_write_token_p(), %s, %s);\n" \
                 % (BeginP, EndP)
 
     def TOKEN_SET_MEMBER(self, Member, Value):
@@ -1110,6 +1121,9 @@ class Lng_C(Lng_Cpp):
     def token_template_i_file(self):  return "%s/token/TXT-C.i"     % self.code_base_directory()
     def token_default_file(self):     return "%s/token/CDefault.qx" % self.code_base_directory()  
     def analyzer_template_file(self): return "%s/analyzer/TXT-C"    % self.code_base_directory()
+
+    def NAMESPACE_OPEN(self, NameList):  return ""
+    def NAMESPACE_CLOSE(self, NameList): return ""
 
 db["C"] = Lng_C(CppBase)
 

@@ -7,6 +7,7 @@ import quex.input.command_line.core     as command_line
 import quex.input.files.core            as quex_file_parser
 import quex.output.cpp.templates        as templates
 import quex.output.cpp.analyzer_class   as analyzer_class
+import quex.output.cpp.token_class_maker as token_class_maker
 import quex.core                        as core
 
 from   quex.blackboard                  import Lng, setup as Setup
@@ -54,17 +55,14 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     if not TokenClassImplementationF:
         return
 
-    # Token class implementation (In C++ it is pasted into header)
-    #
-    dummy,                                 \
-    map_token_id_to_string_implementation, \
-    dummy,                                 \
-    token_class_implementation             = core._prepare_token_class()
+    dummy,                     \
+    dummy,                     \
+    dummy,                     \
+    token_class_implementation = token_class_maker.do()
 
     with open(FileName, "a") as fh:
         fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")
-        fh.write("%s\n%s" % (token_class_implementation,
-                             map_token_id_to_string_implementation))
+        fh.write(token_class_implementation)
 
         # fh.write("#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
         # fh.write("bool UserConstructor_UnitTest_return_value = true;\n")

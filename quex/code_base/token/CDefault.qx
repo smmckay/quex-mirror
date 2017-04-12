@@ -1,16 +1,15 @@
 token_type {
    header {
-       #include <stdio.h>
-       #include <string.h>
+#include <stdio.h>
+#include <string.h>
 
-       struct $TOKEN_CLASS_tag;
+struct $TOKEN_CLASS_tag;
 
-       extern const char* 
-       QUEX_NAME_TOKEN(get_string)(struct $TOKEN_CLASS_tag* me,  char*  buffer, size_t   BufferSize); 
+extern const char* 
+QUEX_NAME_TOKEN(get_string)(struct $TOKEN_CLASS_tag* me,  char*  buffer, size_t   BufferSize); 
 
 $INCLUDE_CONVERTER_DECLARATION
 #include <quex/code_base/lexeme>
-
    }
    standard {
         id            : uint32_t;

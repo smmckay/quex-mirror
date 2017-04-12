@@ -1,11 +1,10 @@
 token_type {
    header {
-#       include <iostream>
-#       include <string>
+#include <iostream>
+#include <string>
 
 $INCLUDE_CONVERTER_DECLARATION
 #include <quex/code_base/lexeme>
-
    }
    standard {
         id            : uint32_t;
@@ -43,7 +42,7 @@ $INCLUDE_CONVERTER_DECLARATION
 
             tmp = map_id_to_name(self._id);
 
-            tmp += " '" + QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
+            tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
 
             return tmp;
         }
@@ -93,11 +92,11 @@ $INCLUDE_CONVERTER_DECLARATION
    }
 
    footer {
-        $NAMESPACE_OPEN
-        inline std::ostream&
-        operator<<(std::ostream& ostr, const $TOKEN_CLASS& Tok)
-        { ostr << Tok.get_string(); return ostr; }
-        $NAMESPACE_CLOSE
+$NAMESPACE_OPEN
+inline std::ostream&
+operator<<(std::ostream& ostr, const $TOKEN_CLASS& Tok)
+{ ostr << Tok.get_string(); return ostr; }
+$NAMESPACE_CLOSE
 
 $INCLUDE_CONVERTER_IMPLEMENTATION
 #include <quex/code_base/lexeme.i>

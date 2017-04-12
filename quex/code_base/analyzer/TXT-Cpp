@@ -323,6 +323,8 @@ public:
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
+$$EPILOG$$
+
 #include <quex/code_base/analyzer/headers.i>
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */

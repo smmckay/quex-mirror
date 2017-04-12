@@ -63,3 +63,5 @@ for the 'buffer._memory.ownership' before reload!
 
 -- self_token_p --> self_write_token_p
 
+-- token::take_text does no longer take analyzer as argument, otherwise
+                    it could not be shared between analyzers

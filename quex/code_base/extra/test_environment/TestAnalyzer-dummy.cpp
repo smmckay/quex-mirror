@@ -111,8 +111,7 @@ QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
 QUEX_NAMESPACE_MAIN_CLOSE
 
 /* #include "TestAnalyzer"*/
-QUEX_NAMESPACE_TOKEN_OPEN
-QUEX_TYPE_LEXATOM  QUEX_LEXEME_NULL_IN_ITS_NAMESPACE = (QUEX_TYPE_LEXATOM)0;
+QUEX_NAMESPACE_MAIN_OPEN
 #ifdef      QUEX_FUNCTION_COUNT_ARBITRARY
 #   undef   QUEX_FUNCTION_COUNT_ARBITRARY
 #endif
@@ -509,7 +508,7 @@ self_send(QUEX_TKN_X);
 RETURN;
 
 
-#   line 513 "TestAnalyzer.cpp"
+#   line 512 "TestAnalyzer.cpp"
 
 }
 RETURN;
@@ -616,46 +615,7 @@ goto _20;
 #   undef self
 #   undef QUEX_LABEL_STATE_ROUTER
 }
-QUEX_NAMESPACE_TOKEN_CLOSE
-
-
-QUEX_NAMESPACE_TOKEN_OPEN
-
-const char*
-QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
-{
-   static char  error_string[64];
-   static const char  uninitialized_string[] = "<UNINITIALIZED>";
-   static const char  termination_string[]   = "<TERMINATION>";
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   static const char  indent_string[]        = "<INDENT>";
-   static const char  dedent_string[]        = "<DEDENT>";
-   static const char  nodent_string[]        = "<NODENT>";
-#  endif
-   static const char  token_id_str_X[]             = "X";
-       
-
-   /* NOTE: This implementation works only for token id types that are 
-    *       some type of integer or enum. In case an alien type is to
-    *       used, this function needs to be redefined.                  */
-   switch( TokenID ) {
-   default: {
-       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
-       return error_string;
-   }
-   case QUEX_TKN_TERMINATION:    return termination_string;
-   case QUEX_TKN_UNINITIALIZED:  return uninitialized_string;
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   case QUEX_TKN_INDENT:         return indent_string;
-   case QUEX_TKN_DEDENT:         return dedent_string;
-   case QUEX_TKN_NODENT:         return nodent_string;
-#  endif
-   case QUEX_TKN_X:             return token_id_str_X;
-
-   }
-}
-
-QUEX_NAMESPACE_TOKEN_CLOSE
+QUEX_NAMESPACE_MAIN_CLOSE
 
 
 QUEX_NAMESPACE_MAIN_OPEN
@@ -736,6 +696,9 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
+QUEX_NAMESPACE_TOKEN_OPEN
+QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 

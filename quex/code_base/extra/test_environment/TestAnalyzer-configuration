@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.67.2"
-#define QUEX_SETTING_BUILD_DATE        "Sat Apr  8 23:00:22 2017"
+#define QUEX_SETTING_BUILD_DATE        "Wed Apr 12 03:42:34 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -295,8 +295,7 @@
 #   define QUEX_NAMESPACE_TOKEN_OPEN  
 #   define QUEX_NAMESPACE_TOKEN_CLOSE 
 
-#   define QUEX_LEXEME_NULL_IN_ITS_NAMESPACE   QUEX_NAME_TOKEN(LexemeNull)
-#   define QUEX_LEXEME_NULL                    QUEX_NAME_TOKEN(LexemeNull)
+#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
 
 #   define QUEX_NAME(NAME)             quex_TestAnalyzer_ ## NAME
 #   define QUEX_NAME_TOKEN(NAME)       quex_Token_ ## NAME
@@ -322,8 +321,7 @@
 #   define QUEX_NAMESPACE_TOKEN_OPEN   namespace quex {
 #   define QUEX_NAMESPACE_TOKEN_CLOSE  } /* close quex */
 
-#   define QUEX_LEXEME_NULL_IN_ITS_NAMESPACE   QUEX_NAME_TOKEN(LexemeNull)
-#   define QUEX_LEXEME_NULL                    QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
+#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
 
 #   define QUEX_NAME(NAME)             TestAnalyzer_ ## NAME
 #   define QUEX_NAME_TOKEN(NAME)       Token_ ## NAME

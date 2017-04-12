@@ -10,9 +10,8 @@ import quex.blackboard                  as     blackboard
 from   quex.blackboard                  import setup as Setup, \
                                                Lng
 
-def do(ModeDB):
+def do(ModeDB, Epilog):
     assert blackboard.token_type_definition is not None
-    
 
     QuexClassHeaderFileTemplate = os.path.normpath(  
             QUEX_PATH + Lng.analyzer_template_file()).replace("//","/")
@@ -45,11 +44,6 @@ def do(ModeDB):
             Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
             + "__" + Setup.analyzer_class_name)
 
-    if len(Setup.token_id_foreign_definition_file) != 0:
-        token_id_definition_file = Setup.token_id_foreign_definition_file
-    else:
-        token_id_definition_file = Setup.output_token_id_file
-
     lexer_name_space_safe = get_include_guard_extension(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space))
 
     txt = blue_print(template_code_txt,
@@ -75,9 +69,10 @@ def do(ModeDB):
                 ["$$TOKEN_CLASS_DEFINITION_FILE$$",      Setup.get_file_reference(token_class_file_name)],
                 ["$$TOKEN_CLASS$$",                      token_class_name],
                 ["$$TOKEN_CLASS_NAME_SAFE$$",            token_class_name_safe],
-                ["$$TOKEN_ID_DEFINITION_FILE$$",         Setup.get_file_reference(token_id_definition_file)],
+                ["$$TOKEN_ID_DEFINITION_FILE$$",         Setup.output_token_id_file_ref],
                 ["$$CORE_ENGINE_CHARACTER_CODING$$",     quex_converter_coding_name_str],
                 ["$$USER_DEFINED_HEADER$$",              Lng.SOURCE_REFERENCED(blackboard.header) + "\n"],
+                ["$$EPILOG$$",                           Epilog],
              ])
 
     return txt

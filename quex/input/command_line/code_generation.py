@@ -214,7 +214,7 @@ def __setup_token_class(Setup):
         print "     name_prefix: %s;" % Setup.token_class_name_safe   
         print "}"
 
-    if Setup.token_class_file != "":
+    if Setup.token_class_file:
         blackboard.token_type_definition = \
                 TokenTypeDescriptorManual(Setup.token_class_file,
                                           Setup.token_class_name,
@@ -258,6 +258,11 @@ def prepare_file_names(Setup):
     Setup.output_header_file        = __prepare_file_name("",               E_Files.HEADER)
     Setup.output_configuration_file = __prepare_file_name("-configuration", E_Files.HEADER)
     Setup.output_token_id_file      = __prepare_file_name("-token_ids",     E_Files.HEADER)
+    if Setup.token_id_foreign_definition_file:
+        Setup.output_token_id_file_ref = Setup.token_id_foreign_definition_file
+    else:
+        Setup.output_token_id_file_ref  = __prepare_file_name("-token_ids",     E_Files.HEADER, 
+                                                              BaseNameF=True)
     Setup.output_token_class_file   = __prepare_file_name("-token",         E_Files.HEADER)
     if Setup.token_class_only_f == False:
         Setup.output_token_class_file_implementation = __prepare_file_name("-token",     E_Files.HEADER_IMPLEMTATION)
@@ -287,7 +292,7 @@ def prepare_file_names(Setup):
         Setup.output_buffer_codec_header   = "quex/code_base/converter_helper/from-unicode-buffer"
         Setup.output_buffer_codec_header_i = "quex/code_base/converter_helper/from-unicode-buffer.i"
 
-def __prepare_file_name(Suffix, ContentType):
+def __prepare_file_name(Suffix, ContentType, BaseNameF=False):
     global Setup
     assert ContentType in E_Files
 
@@ -296,8 +301,10 @@ def __prepare_file_name(Suffix, ContentType):
 
     file_name = Setup.output_file_stem + Suffix + ext
 
-    if not Setup.output_directory: return file_name
-    else:                          return os.path.normpath(Setup.output_directory + "/" + file_name)
+    if not Setup.output_directory or BaseNameF:       
+        return file_name
+    else:                                
+        return os.path.normpath(Setup.output_directory + "/" + file_name)
 
 def __prepare_buffer_element_specification(setup):
     global global_character_type_db

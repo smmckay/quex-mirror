@@ -1,15 +1,15 @@
 #! /usr/bin/env python
-from   quex.input.setup                 import NotificationDB
-from   quex.input.files.token_id_file   import TokenInfo, \
-                                               space
-from   quex.engine.misc.file_in         import get_include_guard_extension
-import quex.engine.misc.error           as     error
-from   quex.engine.misc.string_handling import blue_print
-from   quex.blackboard                  import setup as Setup, \
-                                               Lng, \
-                                               token_id_db, \
-                                               get_used_token_id_set
-import quex.blackboard                  as     blackboard
+from   quex.input.setup                  import NotificationDB
+from   quex.input.files.token_id_file    import TokenInfo, \
+                                                space
+from   quex.engine.misc.file_in          import get_include_guard_extension
+import quex.engine.misc.error            as     error
+from   quex.engine.misc.string_handling  import blue_print
+from   quex.blackboard                   import setup as Setup, \
+                                                Lng, \
+                                                token_id_db, \
+                                                get_used_token_id_set
+import quex.blackboard                   as     blackboard
 
 from   collections import defaultdict
 import time
@@ -61,42 +61,37 @@ def do(setup):
     content = blue_print(file_str,
                          [["$$TOKEN_ID_DEFINITIONS$$",        "".join(token_id_txt)],
                           ["$$DATE$$",                        time.asctime()],
-                          ["$$TOKEN_CLASS_DEFINITION_FILE$$", Setup.get_file_reference(blackboard.token_type_definition.get_file_name())],
                           ["$$TOKEN_PREFIX$$",                Setup.token_id_prefix], 
                           ["$$INCLUDE_GUARD_EXT$$",           include_guard_ext], 
                          ])
 
     return content
 
-def do_map_id_to_name_function():
+def do_map_id_to_name_cases():
     """Generate function which maps from token-id to string with the 
     name of the token id.
     """
-    L = max(map(lambda name: len(name), token_id_db.keys()))
+    L = max(len(name) for name in token_id_db.keys())
 
     # -- define the function for token names
     switch_cases = []
-    token_names  = []
     for token_name in sorted(token_id_db.keys()):
         if token_name in standard_token_id_list: continue
 
         # UCS codepoints are coded directly as pure numbers
         if len(token_name) > 2 and token_name[:2] == "--":
             token = token_id_db[token_name]
-            switch_cases.append("   case 0x%06X: return token_id_str_%s;\n" % \
+            switch_cases.append("   case 0x%06X: return \"%s\";\n" % \
                                 (token.number, token.name))
-            token_names.append("   static const char  token_id_str_%s[]%s = \"%s\";\n" % \
-                               (token.name, space(L, token.name), token.name))
         else:
-            switch_cases.append("   case %s%s:%s return token_id_str_%s;\n" % \
+            switch_cases.append("   case %s%s:%s return \"%s\";\n" % \
                                 (Setup.token_id_prefix, token_name, space(L, token_name), token_name))
-            token_names.append("   static const char  token_id_str_%s[]%s = \"%s\";\n" % \
-                               (token_name, space(L, token_name), token_name))
 
-    return blue_print(func_str,
+    txt = blue_print(map_id_to_name_cases,
                       [["$$TOKEN_ID_CASES$$", "".join(switch_cases)],
-                       ["$$TOKEN_PREFIX$$",   Setup.token_id_prefix], 
-                       ["$$TOKEN_NAMES$$",    "".join(token_names)], ])
+                       ["$$TOKEN_PREFIX$$",   Setup.token_id_prefix]]) 
+
+    return txt
 
 def prepare_default_standard_token_ids():
     """Prepare the standard token ids automatically. This shall only happen if
@@ -137,59 +132,23 @@ file_str = \
 #   include<stdio.h> 
 #endif
 
-/* The token class definition file can only be included after 
- * the definition of TERMINATION and UNINITIALIZED.          
- * (fschaef 12y03m24d: "I do not rememember why I wrote this.")               */
-#include "$$TOKEN_CLASS_DEFINITION_FILE$$"
-
 /* Note: When multiple lexical analyzers are included, then their
  *       token prefix must differ! Use '--token-id-prefix'.                   */
 $$TOKEN_ID_DEFINITIONS$$
 
-QUEX_NAMESPACE_TOKEN_OPEN
-extern const char* QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID);
-QUEX_NAMESPACE_TOKEN_CLOSE
-
 #endif /* __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__        */
 """
 
-func_str = \
+map_id_to_name_cases = \
 """
-QUEX_NAMESPACE_TOKEN_OPEN
-
-const char*
-QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
-{
-   static char  error_string[64];
-   static const char  uninitialized_string[] = "<UNINITIALIZED>";
-   static const char  termination_string[]   = "<TERMINATION>";
+   case $$TOKEN_PREFIX$$TERMINATION:    return "<TERMINATION>";
+   case $$TOKEN_PREFIX$$UNINITIALIZED:  return "<UNINITIALIZED>";
 #  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   static const char  indent_string[]        = "<INDENT>";
-   static const char  dedent_string[]        = "<DEDENT>";
-   static const char  nodent_string[]        = "<NODENT>";
-#  endif
-$$TOKEN_NAMES$$       
-
-   /* NOTE: This implementation works only for token id types that are 
-    *       some type of integer or enum. In case an alien type is to
-    *       used, this function needs to be redefined.                  */
-   switch( TokenID ) {
-   default: {
-       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
-       return error_string;
-   }
-   case $$TOKEN_PREFIX$$TERMINATION:    return termination_string;
-   case $$TOKEN_PREFIX$$UNINITIALIZED:  return uninitialized_string;
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   case $$TOKEN_PREFIX$$INDENT:         return indent_string;
-   case $$TOKEN_PREFIX$$DEDENT:         return dedent_string;
-   case $$TOKEN_PREFIX$$NODENT:         return nodent_string;
+   case $$TOKEN_PREFIX$$INDENT:         return "<INDENT>";
+   case $$TOKEN_PREFIX$$DEDENT:         return "<DEDENT>";
+   case $$TOKEN_PREFIX$$NODENT:         return "<NODENT>";
 #  endif
 $$TOKEN_ID_CASES$$
-   }
-}
-
-QUEX_NAMESPACE_TOKEN_CLOSE
 """
 
 def __warn_on_double_definition():
@@ -264,6 +223,10 @@ def __warn_implicit_token_definitions():
                       % Setup.token_id_foreign_definition_file, sr)
 
 def has_specific_token_ids():
+    """RETURNS: True, if there are token ids other than the standard
+                      ones like 'TERMINATION', 'UNINITIALIZED', etc.
+                False, else.
+    """
     all_token_id_set = set(token_id_db.iterkeys())
     all_token_id_set.difference_update(standard_token_id_list)
     if all_token_id_set: return True

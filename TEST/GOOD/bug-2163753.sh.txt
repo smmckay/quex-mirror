@@ -8,8 +8,7 @@ FAILED '-'
 WORD 'with'
 FAILED '-'
 WORD 'dashes'
-FAILED '
-'
+FAILED '\n'
 <TERMINATION> ''
 | [END] number of token = 7
 `------------------------------------------------------------------------------------

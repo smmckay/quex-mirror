@@ -57,7 +57,7 @@ $INCLUDE_CONVERTER_DECLARATION
         if( Other.text != LexemeNull ) {
             self.text = QUEXED(MemoryManager_allocate)(
                                     sizeof(QUEX_TYPE_LEXATOM) 
-                                  * (QUEX_NAME(lexeme_length)(Other.text) + 1), 
+                                  * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1), 
                                   E_MemoryObjectType_TEXT);
             __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
                                 sizeof(QUEX_TYPE_LEXATOM) 

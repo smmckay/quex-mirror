@@ -9,17 +9,12 @@
 #include <quex/code_base/token/TokenPolicy>
 #include <quex/code_base/extra/accumulator/Accumulator>
 
-#ifndef    QUEX_TYPE_LEXATOM
-#   error "QUEX_TYPE_LEXATOM definition missing."
-#endif
-#ifndef    QUEX_TYPE_TOKEN_ID
-#   error "QUEX_TYPE_TOKEN_ID definition missing."
-#endif
-#ifndef    QUEX_TYPE_ANALYZER
-#   error "QUEX_TYPE_ANALYZER definition missing."
-#endif
-#ifndef    QUEX_LEXEME_NULL_IN_ITS_NAMESPACE
-#   error "QUEX_LEXEME_NULL_IN_ITS_NAMESPACE definition missing."
+#if   ! defined(QUEX_TYPE_LEXATOM)
+#        error "QUEX_TYPE_LEXATOM definition missing."
+#elif ! defined(QUEX_TYPE_TOKEN_ID)
+#        error "QUEX_TYPE_TOKEN_ID definition missing."
+#elif ! defined(QUEX_TYPE_ANALYZER)
+#        error "QUEX_TYPE_ANALYZER definition missing."
 #endif
 
 QUEX_NAMESPACE_MAIN_OPEN
@@ -234,7 +229,7 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     }                                                                              
     /* 'end_p' points *to* terminating zero, *not* behind it.                 */
 
-    if( ! QUEX_NAME_TOKEN(take_text)(token_p, me->the_lexer, begin_p, end_p) ) {
+    if( ! QUEX_NAME_TOKEN(take_text)(token_p, begin_p, end_p) ) {
         /* MEMORY OWNERSHIP *not* transferred to token. Reuse current memory. */
         QUEX_NAME(Accumulator__clear)(me);                       
     }          

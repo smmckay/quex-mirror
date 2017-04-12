@@ -107,6 +107,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 
 } quex_TestAnalyzer;
 
+
+
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__QUEX___TESTANALYZER */
@@ -213,10 +215,7 @@ bool UserMementoPack_UnitTest_return_value = true;
 #include "TestAnalyzer-token.h"
 #include <quex/code_base/definitions>
 
-QUEX_NAMESPACE_TOKEN_OPEN
-extern QUEX_TYPE_LEXATOM   QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;
-QUEX_NAMESPACE_TOKEN_CLOSE
-
+#include "TestAnalyzer-token.h"
 
 QUEX_INLINE void 
 quex_Token_set(quex_Token*            __this, 
@@ -239,7 +238,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 243 "TestAnalyzer.h"
+#   line 242 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -270,7 +269,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 274 "TestAnalyzer.h"
+#   line 273 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -311,7 +310,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 315 "TestAnalyzer.h"
+#   line 314 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -402,7 +401,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 406 "TestAnalyzer.h"
+#   line 405 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  analyzer
@@ -418,13 +417,13 @@ quex_Token_repetition_n_get(quex_Token* __this)
 #   define self        (*__this)
 #   define LexemeNull  &QUEX_LEXEME_NULL
     (void)__this;
-    
+
 #   line 129 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        return self.number;
    
 
-#   line 428 "TestAnalyzer.h"
+#   line 427 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -437,18 +436,45 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #   define LexemeNull  &QUEX_LEXEME_NULL
     (void)__this;
     (void)N;
-    
+
 #   line 125 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = N;
    
 
-#   line 447 "TestAnalyzer.h"
+#   line 446 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
 }
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+
+QUEX_INLINE const char*
+quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
+{
+   static char  error_string[64];
+
+   /* NOTE: This implementation works only for token id types that are 
+    *       some type of integer or enum. In case an alien type is to
+    *       used, this function needs to be redefined.                  */
+   switch( TokenID ) {
+   default: {
+       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
+       return error_string;
+   }
+
+   case QUEX_TKN_TERMINATION:    return "<TERMINATION>";
+   case QUEX_TKN_UNINITIALIZED:  return "<UNINITIALIZED>";
+#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
+   case QUEX_TKN_INDENT:         return "<INDENT>";
+   case QUEX_TKN_DEDENT:         return "<DEDENT>";
+   case QUEX_TKN_NODENT:         return "<NODENT>";
+#  endif
+   case QUEX_TKN_X:             return "X";
+
+
+   }
+}
 
 
 #   line 133 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
@@ -495,49 +521,13 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 499 "TestAnalyzer.h"
+#   line 525 "TestAnalyzer.h"
 
 
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
-
-
 QUEX_NAMESPACE_TOKEN_OPEN
-
-const char*
-QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
-{
-   static char  error_string[64];
-   static const char  uninitialized_string[] = "<UNINITIALIZED>";
-   static const char  termination_string[]   = "<TERMINATION>";
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   static const char  indent_string[]        = "<INDENT>";
-   static const char  dedent_string[]        = "<DEDENT>";
-   static const char  nodent_string[]        = "<NODENT>";
-#  endif
-   static const char  token_id_str_X[]             = "X";
-       
-
-   /* NOTE: This implementation works only for token id types that are 
-    *       some type of integer or enum. In case an alien type is to
-    *       used, this function needs to be redefined.                  */
-   switch( TokenID ) {
-   default: {
-       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
-       return error_string;
-   }
-   case QUEX_TKN_TERMINATION:    return termination_string;
-   case QUEX_TKN_UNINITIALIZED:  return uninitialized_string;
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   case QUEX_TKN_INDENT:         return indent_string;
-   case QUEX_TKN_DEDENT:         return dedent_string;
-   case QUEX_TKN_NODENT:         return nodent_string;
-#  endif
-   case QUEX_TKN_X:             return token_id_str_X;
-
-   }
-}
-
+QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
 QUEX_NAMESPACE_TOKEN_CLOSE
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
