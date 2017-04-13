@@ -7,9 +7,8 @@
 ## would appear. If they do not, then everything is fine.
 ,------------------------------------------------------------------------------------
 | [START]
-(1, 1)  	FAILURE ''
-(1, 2)  	FAILURE '
-'
+(1, 1)  	FAILURE '\r'
+(1, 2)  	FAILURE '\n'
 (2, 1)  	FAILURE ';'
 (2, 2)  	FAILURE ' '
 (2, 3)  	FAILURE 'm'
@@ -22,13 +21,11 @@
 (2, 10)  	FAILURE 's'
 (2, 11)  	FAILURE 'm'
 (2, 12)  	FAILURE ' '
-(2, 13)  	FAILURE ''
-(2, 14)  	FAILURE '
-'
+(2, 13)  	FAILURE '\r'
+(2, 14)  	FAILURE '\n'
 (3, 1)  	FAILURE ';'
-(3, 2)  	FAILURE ''
-(3, 3)  	FAILURE '
-'
+(3, 2)  	FAILURE '\r'
+(3, 3)  	FAILURE '\n'
 (4, 1)  	<TERMINATION> ''
 | [END] number of token = 20
 `------------------------------------------------------------------------------------

@@ -36,7 +36,7 @@ $TOKEN_CLASS::~$TOKEN_CLASS()
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
 $$DESTRUCTOR$$
-#   undef
+#   undef  LexemeNull
 #   undef  self
 }
 

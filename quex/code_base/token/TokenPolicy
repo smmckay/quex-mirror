@@ -69,7 +69,7 @@
         } while(0)
 
 #define self_token_take_text(Begin, End) \
-        QUEX_NAME_TOKEN(take_text)(self_write_token_p(), &self, (Begin), (End))
+        QUEX_NAME_TOKEN(take_text)(self_write_token_p(), (Begin), (End))
 
 #if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #  define self_token_repetition_n_set(N) \

@@ -38,7 +38,7 @@ main(int argc, char** argv)
             printf("%i\n", (int)token_p->number); 
             break;
         default:
-            printf("%s\n", QUEX_NAME(lexeme_to_pretty_char)(token_p->text, buffer, BufferSize)); 
+            printf("%s\n", QUEX_NAME_TOKEN(lexeme_to_pretty_char)(token_p->text, buffer, BufferSize)); 
             break;
         }
         fflush(stdout);

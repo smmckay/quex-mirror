@@ -9,7 +9,6 @@
 #include <quex/code_base/asserts>
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/MemoryManager>
-#include <quex/code_base/lexeme>
 
 /* LexemeNull object may be used for 'take_text'. */
 $$EXTRA_AT_BEGIN$$
@@ -85,9 +84,9 @@ $$BODY$$
 #   undef  self
 
     private:
-        friend void QUEX_NAME_TOKEN(copy)($TOKEN_CLASS* me, const $TOKEN_CLASS* That);
-        friend bool QUEX_NAME_TOKEN(take_text)($TOKEN_CLASS*               __this, 
-                                               QUEX_TYPE_ANALYZER*         analyzer, 
+        friend void QUEX_NAME_TOKEN(copy)($TOKEN_CLASS*       __this, 
+                                          const $TOKEN_CLASS* That);
+        friend bool QUEX_NAME_TOKEN(take_text)($TOKEN_CLASS*             __this, 
                                                const QUEX_TYPE_LEXATOM*  Begin, 
                                                const QUEX_TYPE_LEXATOM*  End);
 };

@@ -43,11 +43,6 @@ def do():
         header_txt,        \
         implementation_txt = _do(blackboard.token_type_definition)
 
-    # The 'lexeme null' definition *must be* in the implementation file!
-    # Except that the token class comes from outside
-    if not Setup.token_class_file:
-        implementation_txt += Lng.LEXEME_NULL_IMPLEMENTATION()
-
     return token_id_header, \
            global_lexeme_null_declaration, \
            header_txt, \
@@ -64,6 +59,13 @@ def _do(Descr):
         # C: declaration in header, implementation in source file.
         header_txt         = txt
         implementation_txt = txt_i 
+
+    # The 'lexeme null' definition *must be* in the implementation file!
+    # Except that the token class comes from outside
+    if not Setup.token_class_file:
+        if not implementation_txt:
+            implementation_txt = "%s\n" % _include_token_class_header()
+        implementation_txt += Lng.LEXEME_NULL_IMPLEMENTATION()
 
     return header_txt, implementation_txt
 

@@ -65,3 +65,6 @@ for the 'buffer._memory.ownership' before reload!
 
 -- token::take_text does no longer take analyzer as argument, otherwise
                     it could not be shared between analyzers
+
+-- include 'lexeme' in token type definition requires INCLUDE_CONVERTER_DECLARATION
+
