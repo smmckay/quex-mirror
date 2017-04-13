@@ -7,12 +7,15 @@ import quex.input.command_line.core     as command_line
 import quex.input.files.core            as quex_file_parser
 import quex.output.cpp.templates        as templates
 import quex.output.cpp.analyzer_class   as analyzer_class
-import quex.output.cpp.token_class_maker as token_class_maker
+import quex.output.cpp.token_class      as token_class
+from   quex.TESTS.code.TEST.include_guard import better_name
 import quex.core                        as core
 
 from   quex.blackboard                  import Lng, setup as Setup
 import quex.blackboard                  as     blackboard
 from   quex.input.code.base             import CodeFragment
+
+# re_include_guard = re.compile("__QUEX_INCLUDE_[A-Z_a-z0-9]*")
 
 blackboard.header = CodeFragment(
 """
@@ -58,7 +61,7 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     dummy,                     \
     dummy,                     \
     dummy,                     \
-    token_class_implementation = token_class_maker.do()
+    token_class_implementation = token_class.do()
 
     with open(FileName, "a") as fh:
         fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")

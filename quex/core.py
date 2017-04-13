@@ -8,8 +8,7 @@ from   quex.engine.misc.tools                   import flatten_list_of_lists
 from   quex.engine.misc.file_operations         import write_safely_and_close
 #
 import quex.output.cpp.core                     as cpp_generator
-import quex.output.cpp.token_id_maker           as token_id_maker
-import quex.output.cpp.token_class_maker        as token_class_maker
+import quex.output.cpp.token_class              as token_class
 import quex.output.cpp.analyzer_class           as analyzer_class
 import quex.output.cpp.configuration            as configuration 
 import quex.output.cpp.mode_classes             as mode_classes
@@ -36,7 +35,7 @@ def _generate(mode_db):
     token_id_header,                \
     global_lexeme_null_declaration, \
     class_token_header,             \
-    class_token_implementation      = token_class_maker.do()
+    class_token_implementation      = token_class.do()
 
     if Setup.token_class_only_f:
         class_token_header =   do_token_class_info() \

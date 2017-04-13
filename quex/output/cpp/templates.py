@@ -1,6 +1,5 @@
 from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 from   quex.engine.misc.tools                     import typed
-from   quex.blackboard                            import Lng
 
 #
 

@@ -157,32 +157,6 @@ def __setup_analyzer_class(Setup):
                               "derived analyzer class (options --derived-class, --dc)",
                               AllowEmptyF=True)
 
-def __setup_lexeme_null(Setup):
-    if Setup.token_class_only_f:
-        lexeme_null_object = "LexemeNullObject"
-        default_name_space = Setup.token_class_name_space
-    else:
-        lexeme_null_object = "LexemeNullObject"
-        default_name_space = Setup.analyzer_name_space
-
-    if lexeme_null_object.find("::") == -1:
-        # By default, Setup the token in the analyzer's namespace
-        if len(Setup.analyzer_name_space) != 0:
-            name_space = reduce(lambda x, y: "%s::%s" % (x, y), default_name_space)
-        else:
-            name_space = ""
-        lexeme_null_object = "%s::%s" % (name_space, lexeme_null_object)
-
-    Setup.lexeme_null_name,        \
-    Setup.lexeme_null_namespace,   \
-    Setup.lexeme_null_name_safe  = \
-         read_namespaced_name(lexeme_null_object, 
-                              "lexeme null object (options --lexeme-null-object, --lno)")
-    Setup.lexeme_null_full_name_cpp = "::" 
-    for name in Setup.lexeme_null_namespace:
-        Setup.lexeme_null_full_name_cpp += name + "::"
-    Setup.lexeme_null_full_name_cpp += Setup.lexeme_null_name
-
 def __setup_token_class(Setup):
     """ X0::X1::X2::ClassName --> token_class_name = ClassName
                                   token_name_space = ["X0", "X1", "X2"]

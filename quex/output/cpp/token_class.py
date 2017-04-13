@@ -9,7 +9,6 @@ import quex.output.cpp.token_id_maker     as     token_id_maker
 import quex.blackboard                    as     blackboard
 from   quex.blackboard                    import setup as Setup, Lng
 
-import re
 from   collections import OrderedDict
 
 def do():
