@@ -108,10 +108,10 @@ def parse(ForeignTokenIdFile, CommentDelimiterList):
             elif normed_included_file not in done_list:
                 work_list.append(included_file)
 
-    if Setup.token_id_foreign_definition_file_show_f:
+    if Setup.extern_token_id_file_show_f:
         if len(found_db) == 0:
             error.log(  "No token ids with prefix '%s' found in" % Setup.token_id_prefix
-                      + "'%s' or included files." % Setup.token_id_foreign_definition_file, 
+                      + "'%s' or included files." % Setup.extern_token_id_file, 
                      NoteF=True)
         else:
             txt = [] 

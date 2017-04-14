@@ -62,7 +62,7 @@ def _do(Descr):
 
     # The 'lexeme null' definition *must be* in the implementation file!
     # Except that the token class comes from outside
-    if not Setup.token_class_file:
+    if not Setup.extern_token_class_file:
         if not implementation_txt:
             implementation_txt = "%s\n" % _include_token_class_header()
         implementation_txt += Lng.LEXEME_NULL_IMPLEMENTATION()

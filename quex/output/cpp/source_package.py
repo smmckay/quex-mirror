@@ -216,7 +216,7 @@ def do():
     if Setup.token_policy == "queue":
         txt += token_queue
 
-    if Setup.token_class_file != "":
+    if Setup.extern_token_class_file != "":
         if   Setup.language == "C":   txt += token_default_C
         elif Setup.language == "C++": txt += token_default_Cpp
 

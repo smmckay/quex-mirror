@@ -255,9 +255,9 @@ def __create_token_sender_by_token_name(fh, TokenName):
     explicit_member_names_f = any(arg.find("=") != -1 for arg in argument_list)
     if not explicit_member_names_f:
         return __token_sender_with_implicit_member_names(TokenName, argument_list, fh)
-    elif Setup.token_class_file:
+    elif Setup.extern_token_class_file:
         error.log("Member assignments in brief token senders are inadmissible\n" + \
-                  "with manually written token classes. User provided file '%s'.\n" % Setup.token_class_file,
+                  "with manually written token classes. User provided file '%s'.\n" % Setup.extern_token_class_file,
                   fh)
 
     member_value_pairs = [ arg.split("=") for arg in argument_list ]

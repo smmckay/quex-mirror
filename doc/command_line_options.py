@@ -270,7 +270,7 @@ Block("""
 """
 A file with token ids can be provided by the option
 """,
-Option("token_id_foreign_definition", "file name [[begin-str] end-str]",
+Option("extern_token_id_file", "file name [[begin-str] end-str]",
        """
        \\v{file-name} = Name of the file that contains an alternative definition
        of the numerical values for the token-ids.
@@ -289,7 +289,7 @@ Option("token_id_foreign_definition", "file name [[begin-str] end-str]",
        """
        reads only the token ids from the enum in the code fragment \\v{yytokentype}.
        """),
-Option("token_id_foreign_definition_file_show_f", None,
+Option("extern_token_id_file_show_f", None,
      """
      If this option is specified, then Quex prints out the token ids which have
      been found in a foreign token id file.
@@ -297,7 +297,7 @@ Option("token_id_foreign_definition_file_show_f", None,
 """
 The following options support the definition of a independently customized token class:
 """,
-Option("token_class_file", "file name",
+Option("extern_token_class_file", "file name",
      """
      \\v{file name} = Name of file that contains the definition of the
      token class. The setting provided here is possibly 

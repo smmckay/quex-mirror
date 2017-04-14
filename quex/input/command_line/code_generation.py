@@ -84,21 +84,22 @@ def prepare(command_line, argv):
             else:                                   index = 2
             Setup.converter_ucs_coding_name = global_character_type_db[Setup.buffer_lexatom_type][index]
 
-    if len(Setup.token_id_foreign_definition) != 0: 
-        if len(Setup.token_id_foreign_definition) > 3: 
+    if Setup.extern_token_id_specification: 
+        if len(Setup.extern_token_id_specification) > 3: 
             error.log("Option '--foreign-token-id-file' received > 3 followers.\n"
-                      "Found: %s" % str(Setup.token_id_foreign_definition)[1:-1])
-        if len(Setup.token_id_foreign_definition) > 1:
+                      "Found: %s" % str(Setup.extern_token_id_specification)[1:-1])
+        if len(Setup.extern_token_id_specification) > 1:
             Setup.token_id_foreign_definition_file_region_begin_re = \
-                    __compile_regular_expression(Setup.token_id_foreign_definition[1], "token id region begin")
-        if len(Setup.token_id_foreign_definition) > 2:
+                    __compile_regular_expression(Setup.extern_token_id_specification[1], "token id region begin")
+        if len(Setup.extern_token_id_specification) > 2:
             Setup.token_id_foreign_definition_file_region_end_re = \
-                    __compile_regular_expression(Setup.token_id_foreign_definition[2], "token id region end")
-        Setup.token_id_foreign_definition_file = \
-                Setup.token_id_foreign_definition[0]
+                    __compile_regular_expression(Setup.extern_token_id_specification[2], "token id region end")
+        Setup.extern_token_id_file = \
+                Setup.extern_token_id_specification[0]
+        print "#extern_token_id_file-0:", Setup.extern_token_id_file
 
         CommentDelimiterList = [["//", "\n"], ["/*", "*/"]]
-        token_id_file_parse(Setup.token_id_foreign_definition_file, 
+        token_id_file_parse(Setup.extern_token_id_file, 
                             CommentDelimiterList)
 
     # (*) Compression Types
@@ -188,9 +189,9 @@ def __setup_token_class(Setup):
         print "     name_prefix: %s;" % Setup.token_class_name_safe   
         print "}"
 
-    if Setup.token_class_file:
+    if Setup.extern_token_class_file:
         blackboard.token_type_definition = \
-                TokenTypeDescriptorManual(Setup.token_class_file,
+                TokenTypeDescriptorManual(Setup.extern_token_class_file,
                                           Setup.token_class_name,
                                           Setup.token_class_name_space,
                                           Setup.token_class_name_safe,
@@ -232,11 +233,12 @@ def prepare_file_names(Setup):
     Setup.output_header_file        = __prepare_file_name("",               E_Files.HEADER)
     Setup.output_configuration_file = __prepare_file_name("-configuration", E_Files.HEADER)
     Setup.output_token_id_file      = __prepare_file_name("-token_ids",     E_Files.HEADER)
-    if Setup.token_id_foreign_definition_file:
-        Setup.output_token_id_file_ref = Setup.token_id_foreign_definition_file
+    if Setup.extern_token_id_file:
+        Setup.output_token_id_file_ref = Setup.extern_token_id_file
+        print "#extern_token_id_file-T:", Setup.extern_token_id_file
     else:
-        Setup.output_token_id_file_ref  = __prepare_file_name("-token_ids",     E_Files.HEADER, 
-                                                              BaseNameF=True)
+        Setup.output_token_id_file_ref = __prepare_file_name("-token_ids",     E_Files.HEADER, 
+                                                             BaseNameF=True)
     Setup.output_token_class_file   = __prepare_file_name("-token",         E_Files.HEADER)
     if Setup.token_class_only_f == False:
         Setup.output_token_class_file_implementation = __prepare_file_name("-token",     E_Files.HEADER_IMPLEMTATION)

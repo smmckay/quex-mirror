@@ -80,7 +80,7 @@ def do(setup, command_line, argv):
                   "By default, quex automatically chooses the endian type of your system.")
 
     # Manually written token class requires token class name to be specified
-    if setup.token_class_file != "" and command_line.search("--token-class", "--tc") == False:
+    if setup.extern_token_class_file != "" and command_line.search("--token-class", "--tc") == False:
         error.log("The use of a manually written token class requires that the name of the class\n"
                   "is specified on the command line via the '--token-class' option.")
     
@@ -102,10 +102,10 @@ def do(setup, command_line, argv):
     if setup.analyzer_derived_class_name != "": 
         __check_identifier(setup, "analyzer_derived_class_name", "Derived class name")
     
-    __check_file_name(setup, "token_class_file",                 "file containing token class definition")
+    __check_file_name(setup, "extern_token_class_file",                 "file containing token class definition")
     __check_file_name(setup, "analyzer_derived_class_file",      "file containing user derived lexer class")
-    __check_file_name(setup, "token_id_foreign_definition_file", "file containing user token ids", 0,
-                      CommandLineOption=SETUP_INFO["token_id_foreign_definition"][0])
+    __check_file_name(setup, "extern_token_id_file", "file containing user token ids", 0,
+                      CommandLineOption=SETUP_INFO["extern_token_id_file"])
     __check_file_name(setup, "input_mode_files", "quex source file")
 
     # Token transmission policy

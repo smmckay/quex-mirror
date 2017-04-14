@@ -43,7 +43,7 @@ def do(file_list):
 
     # If a foreign token-id file was presented even the standard token ids
     # must be defined there.
-    if not Setup.token_id_foreign_definition:
+    if not Setup.extern_token_id_file:
         prepare_default_standard_token_ids()
 
     for file_name in file_list:
@@ -136,9 +136,9 @@ def parse_section(fh):
             return
 
         elif word == "token":       
-            if Setup.token_id_foreign_definition:
+            if Setup.extern_token_id_file:
                 error.log("Token id file '%s' has been specified.\n" \
-                          % Setup.token_id_foreign_definition_file \
+                          % Setup.extern_token_id_file \
                           + "All token ids must be specified there. Section 'token'\n" \
                           + "is not allowed.", fh)
 
@@ -147,10 +147,10 @@ def parse_section(fh):
 
         elif word == "token_type":       
 
-            if Setup.token_class_file != "":
+            if Setup.extern_token_class_file != "":
                 error.log("Section 'token_type' is intended to generate a token class.\n" \
                           + "However, the manually written token class file '%s'" \
-                          % repr(Setup.token_class_file) \
+                          % repr(Setup.extern_token_class_file) \
                           + "has been specified on the command line.", 
                           fh)
        

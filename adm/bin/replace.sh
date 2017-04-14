@@ -10,7 +10,7 @@ source=$(echo $1 | sed -e 's/\//\\\//g' | sed -e 's/\./\\./g' | sed -e 's/\-/\\-
 replacement=$(echo $2 | sed -e 's/\//\\\//g' | sed -e 's/\./\\./g' | sed -e 's/\-/\\-/g')
 for file in `cat tmp.txt`; do 
     echo "   $file";  
-    echo "perl -pi.bak -e 's/$source/$replacement/g' $file" \
+    echo "perl -pi.bak -e 's/\b$source\b/$replacement/g' $file" \
          | sed -e 's/(/\\(/g'                \
          | sed -e 's/)/\\)/g' >> tmp.sh
 done

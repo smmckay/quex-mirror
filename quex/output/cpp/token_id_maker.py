@@ -35,7 +35,7 @@ def do(setup):
     # (1) Error Check
     #
     __warn_implicit_token_definitions()
-    if not Setup.token_id_foreign_definition_file:
+    if not Setup.extern_token_id_file:
         __autogenerate_token_id_numbers()
         __warn_on_double_definition()
         # If a mandatory token id is missing, this means that Quex did not
@@ -48,11 +48,11 @@ def do(setup):
 
     # (2) Generate token id file (if not specified outside)
     #
-    if not Setup.token_id_foreign_definition_file:
+    if not Setup.extern_token_id_file:
         token_id_txt = __get_token_id_definition_txt()
     else:
-        # Content of file = inclusion of 'Setup.token_id_foreign_definition_file'.
-        token_id_txt = ["#include \"%s\"\n" % Setup.get_file_reference(Setup.token_id_foreign_definition_file)]
+        # Content of file = inclusion of 'Setup.extern_token_id_file'.
+        token_id_txt = ["#include \"%s\"\n" % Setup.get_file_reference(Setup.extern_token_id_file)]
 
     include_guard_ext = get_include_guard_extension(Setup.analyzer_name_safe.upper()     \
                                                     + "__"                               \
@@ -101,7 +101,7 @@ def prepare_default_standard_token_ids():
     section.
     """
     global standard_token_id_list
-    assert len(Setup.token_id_foreign_definition_file) == 0
+    assert len(Setup.extern_token_id_file) == 0
 
     # 'TERMINATION' is often expected to be zero. The user may still overwrite
     # it, if required differently.
@@ -158,7 +158,7 @@ def __warn_on_double_definition():
     If the token ids come from outside, Quex does not know the numeric value. It 
     cannot warn about double definitions.
     """
-    assert len(Setup.token_id_foreign_definition_file) == 0
+    assert len(Setup.extern_token_id_file) == 0
 
     if NotificationDB.message_on_extra_options in blackboard.setup.suppressed_notification_list:
         return
@@ -208,7 +208,7 @@ def __warn_implicit_token_definitions():
 
     sr  = blackboard.token_id_implicit_list[0][1]
     msg = "Detected implicit token identifier definitions."
-    if len(Setup.token_id_foreign_definition_file) == 0:
+    if len(Setup.extern_token_id_file) == 0:
         msg += " Proposal:\n"
         msg += "   token {"
         error.warning(msg, sr)
@@ -220,7 +220,7 @@ def __warn_implicit_token_definitions():
         for token_name, sr in blackboard.token_id_implicit_list:
             error.warning("     %s;" % (Setup.token_id_prefix + token_name), sr)
         error.warning("Above token ids must be defined in '%s'" \
-                      % Setup.token_id_foreign_definition_file, sr)
+                      % Setup.extern_token_id_file, sr)
 
 def has_specific_token_ids():
     """RETURNS: True, if there are token ids other than the standard
@@ -266,7 +266,7 @@ def __autogenerate_token_id_numbers():
 
 def __get_token_id_definition_txt():
     
-    assert len(Setup.token_id_foreign_definition_file) == 0
+    assert len(Setup.extern_token_id_file) == 0
 
     def define_this(txt, token, L):
         assert token.number is not None
