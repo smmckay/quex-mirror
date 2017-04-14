@@ -14,6 +14,7 @@ command line:      TKN_NODENT        => 'NODENT'
 command line:      TKN_OK            => 'OK'
 command line:      TKN_PREDICATE_    => 'PREDICATE_'
 command line:      TKN_SCALLYWAG_    => 'SCALLYWAG_'
+command line:      TKN_SIMILAR       => 'SIMILAR'
 command line:      TKN_SUBJECT___    => 'SUBJECT___'
 command line:      TKN_TERMINATION   => 'TERMINATION'
 command line:      TKN_UKNOWN____    => 'UKNOWN____'
@@ -22,14 +23,17 @@ command line:      TKN_VERB______    => 'VERB______'
 command line: }
 nonsense.qx:1:warning: Detected implicit token identifier definitions.
 nonsense.qx:1:warning:      TKN_UK; /* did you mean 'TKN_OK'? */
+nonsense.qx:1:warning:      TKN_SIMULA; /* did you mean 'TKN_SIMILAR'? */
 nonsense.qx:1:warning: Above token ids must be defined in 'token_ids.h'
-
-
 Generated Files:
 EasyLexer
+
+
 EasyLexer-configuration
 EasyLexer-converter-codec
 EasyLexer-converter-codec.i
 EasyLexer.cpp
-
 Compare time stamps before and after (No Output is Good output)
+
+
+

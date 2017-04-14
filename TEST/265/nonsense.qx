@@ -1,1 +1,1 @@
-/* token { A; } */ mode X { a => TKN_UK; }
+/* token { A; } */ mode X { a => TKN_UK; b => TKN_SIMULA; }

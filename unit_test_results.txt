@@ -48,7 +48,7 @@ TEST                                                                 <no date>
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
         bug-2619679.sh ...............................................[OK]
     286 Maintaining character index during manual buffer filling.
-        bug-286.sh ............................................[NO OUTPUT]
+        bug-286.sh ...................................................[OK]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
         bug-2937342.sh 1 .............................................[OK]
                        2 .............................................[OK]
@@ -149,8 +149,8 @@ TEST                                                                 <no date>
     2635012 0.36.4 Include Stack Disablement
         bug-2635012.sh ...............................................[OK]
     297 r4678(trunk): Memory leak in Token Class
-        bug-297.sh C ...............................................[FAIL]
-                   Cpp .............................................[FAIL]
+        bug-297.sh C .................................................[OK]
+                   Cpp ...............................................[OK]
     3038088 token_id = numeric value
         feature-3038088.sh ...........................................[OK]
     3039173 On Mismatch: abort()
@@ -229,7 +229,7 @@ TEST                                                                 <no date>
                            4 .........................................[OK]
                            5 .........................................[OK]
                            6 .........................................[OK]
-                           good ....................................[FAIL]
+                           good ......................................[OK]
     2257908 Quex does not terminate lexer generation
         bug-2257908.sh ...............................................[OK]
     2262537 (feature) Allow Nothing is fine in define section
@@ -321,7 +321,7 @@ TEST                                                                 <no date>
  * sbellon:
 
     265 Modification time change on input file.
-        bug-265.sh .................................................[FAIL]
+        bug-265.sh ...................................................[OK]
     3524729 0.62.4 token_type distinct members cause overloading error
         bug-3524729.sh ...............................................[OK]
     3538026 Handling of spurious transition in PathWalkerState
@@ -419,7 +419,7 @@ TEST                                                                 <no date>
     2799244 0.39.5 attempts to call unimplemented token set() function
         bug-2799244.sh error .........................................[OK]
                        good-1 ........................................[OK]
-                       good-2 ......................................[FAIL]
+                       good-2 ........................................[OK]
 
  * the-user-k:
 
@@ -488,13 +488,7 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3025173.sh
-    [FAIL] bug-286.sh
     [FAIL] feature-3495127.sh _ queue
-    [FAIL] bug-297.sh _ C
-                    \__ Cpp
-    [FAIL] feature-2251359.sh _ good
-    [FAIL] bug-265.sh
-    [FAIL] bug-2799244.sh _ good-2
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -995,7 +989,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
@@ -1021,7 +1015,6 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] svn-status.sh
     [FAIL] command_line_options-verify-doc.py _ man
                                             \__ sphinx
 ===============================================================================
@@ -3219,11 +3212,11 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       10  235   [FAIL] TEST                                                          
+        4  235   [FAIL] TEST                                                          
         1  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  14    [FAIL] ..../TEST                                                     
-        3  14    [FAIL] quex/TESTS/code/TEST                                          
+        2  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3277,11 +3270,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____    ___            
-    |  ___|_ _(_) |___     |___ \  ( _ )     __  __
-    | |_ / _` | | / __|      __) | / _ \     \ \/ /
-    |  _| (_| | | \__ \     / __/ | (_) |     >  < 
-    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
+     _____     _ _          ____   _           
+    |  ___|_ _(_) |___     |___ \ / |    __  __
+    | |_ / _` | | / __|      __) || |    \ \/ /
+    |  _| (_| | | \__ \     / __/ | |     >  < 
+    |_|  \__,_|_|_|___/    |_____||_|    /_/\_\
                                                                    (1630 tests)
 
 ===============================================================================
