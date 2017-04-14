@@ -96,7 +96,6 @@ def prepare(command_line, argv):
                     __compile_regular_expression(Setup.extern_token_id_specification[2], "token id region end")
         Setup.extern_token_id_file = \
                 Setup.extern_token_id_specification[0]
-        print "#extern_token_id_file-0:", Setup.extern_token_id_file
 
         CommentDelimiterList = [["//", "\n"], ["/*", "*/"]]
         token_id_file_parse(Setup.extern_token_id_file, 
@@ -235,7 +234,6 @@ def prepare_file_names(Setup):
     Setup.output_token_id_file      = __prepare_file_name("-token_ids",     E_Files.HEADER)
     if Setup.extern_token_id_file:
         Setup.output_token_id_file_ref = Setup.extern_token_id_file
-        print "#extern_token_id_file-T:", Setup.extern_token_id_file
     else:
         Setup.output_token_id_file_ref = __prepare_file_name("-token_ids",     E_Files.HEADER, 
                                                              BaseNameF=True)

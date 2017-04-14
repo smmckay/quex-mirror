@@ -62,7 +62,7 @@ def get_codecs_for_language(Language):
             result.append(record[0])
     if len(result) == 0:
         error.verify_word_in_list(Language, get_supported_language_list(),
-                            "No codec found for language '%s'." % Language)
+                                  "No codec found for language '%s'." % Language)
     return result
 
 def get_supported_unicode_character_set(CodecAlias=None, FileName=None):

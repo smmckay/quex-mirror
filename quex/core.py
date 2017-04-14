@@ -177,6 +177,7 @@ def _write_all(configuration_header, analyzer_header, engine_txt,
                                codec_converter_helper_implementation) 
 
     if token_id_header is not None:
+        assert not Setup.extern_token_id_file
         write_safely_and_close(Setup.output_token_id_file, token_id_header)
 
     write_safely_and_close(Setup.output_configuration_file, configuration_header)

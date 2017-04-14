@@ -4,6 +4,7 @@ from   quex.input.files.token_id_file    import TokenInfo, \
                                                 space
 from   quex.engine.misc.file_in          import get_include_guard_extension
 import quex.engine.misc.error            as     error
+import quex.engine.misc.similarity       as     similarity
 from   quex.engine.misc.string_handling  import blue_print
 from   quex.blackboard                   import setup as Setup, \
                                                 Lng, \
@@ -35,16 +36,17 @@ def do(setup):
     # (1) Error Check
     #
     __warn_implicit_token_definitions()
-    if not Setup.extern_token_id_file:
-        __autogenerate_token_id_numbers()
-        __warn_on_double_definition()
-        # If a mandatory token id is missing, this means that Quex did not
-        # properly do implicit token definitions. Program error-abort.
-        __error_on_mandatory_token_id_missing(AssertF=True)
-    else:
-        __error_on_mandatory_token_id_missing()
-
     __error_on_no_specific_token_ids()
+
+    if Setup.extern_token_id_file:
+        __error_on_mandatory_token_id_missing()
+        return None
+
+    __autogenerate_token_id_numbers()
+    __warn_on_double_definition()
+    # If a mandatory token id is missing, this means that Quex did not
+    # properly do implicit token definitions. Program error-abort.
+    __error_on_mandatory_token_id_missing(AssertF=True)
 
     # (2) Generate token id file (if not specified outside)
     #
@@ -58,14 +60,12 @@ def do(setup):
                                                     + "__"                               \
                                                     + Setup.token_class_name_safe.upper())
 
-    content = blue_print(file_str,
-                         [["$$TOKEN_ID_DEFINITIONS$$",        "".join(token_id_txt)],
-                          ["$$DATE$$",                        time.asctime()],
-                          ["$$TOKEN_PREFIX$$",                Setup.token_id_prefix], 
-                          ["$$INCLUDE_GUARD_EXT$$",           include_guard_ext], 
-                         ])
-
-    return content
+    return blue_print(file_str, [
+        ["$$TOKEN_ID_DEFINITIONS$$",        "".join(token_id_txt)],
+        ["$$DATE$$",                        time.asctime()],
+        ["$$TOKEN_PREFIX$$",                Setup.token_id_prefix], 
+        ["$$INCLUDE_GUARD_EXT$$",           include_guard_ext], 
+    ])
 
 def do_map_id_to_name_cases():
     """Generate function which maps from token-id to string with the 
@@ -101,7 +101,7 @@ def prepare_default_standard_token_ids():
     section.
     """
     global standard_token_id_list
-    assert len(Setup.extern_token_id_file) == 0
+    assert not Setup.extern_token_id_file
 
     # 'TERMINATION' is often expected to be zero. The user may still overwrite
     # it, if required differently.
@@ -158,7 +158,7 @@ def __warn_on_double_definition():
     If the token ids come from outside, Quex does not know the numeric value. It 
     cannot warn about double definitions.
     """
-    assert len(Setup.extern_token_id_file) == 0
+    assert not Setup.extern_token_id_file
 
     if NotificationDB.message_on_extra_options in blackboard.setup.suppressed_notification_list:
         return
@@ -203,22 +203,43 @@ def __warn_implicit_token_definitions():
     """Output a message on token_ids which have been generated automatically.
     That means, that the user may have made a typo.
     """
-    if len(blackboard.token_id_implicit_list) == 0: 
+    if not blackboard.token_id_implicit_list: 
         return
 
-    sr  = blackboard.token_id_implicit_list[0][1]
-    msg = "Detected implicit token identifier definitions."
-    if len(Setup.extern_token_id_file) == 0:
+    def warn(TokenName, ExistingList, PrefixAddF=False):
+        similar_i = similarity.get(TokenName, ExistingList)
+        if similar_i is None: 
+            similar_str = ""
+        else:
+            similar_str = " /* did you mean '%s%s'? */" \
+                          % (Setup.token_id_prefix, ExistingList[similar_i])
+        if PrefixAddF: prefix = Setup.token_id_prefix
+        else:          prefix = ""
+        error.warning("     %s%s;%s" % (prefix, TokenName, similar_str), sr)
+
+    sr            = blackboard.token_id_implicit_list[0][1]
+    msg           = "Detected implicit token identifier definitions."
+    prefix_length = len(Setup.token_id_prefix)
+
+    implicit_list = [
+        tid[0] for tid in blackboard.token_id_implicit_list
+    ]
+    defined_list = [
+        tid.name for tid in blackboard.token_id_db.values()
+        if tid.name not in implicit_list
+    ]
+
+    if not Setup.extern_token_id_file:
         msg += " Proposal:\n"
         msg += "   token {"
         error.warning(msg, sr)
         for token_name, sr in blackboard.token_id_implicit_list:
-            error.warning("     %s;" % token_name, sr)
+            warn(token_name, defined_list)
         error.warning("   }", sr)
     else:
         error.warning(msg, sr)
         for token_name, sr in blackboard.token_id_implicit_list:
-            error.warning("     %s;" % (Setup.token_id_prefix + token_name), sr)
+            warn(token_name, defined_list, PrefixAddF=True)
         error.warning("Above token ids must be defined in '%s'" \
                       % Setup.extern_token_id_file, sr)
 

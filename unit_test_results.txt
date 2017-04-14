@@ -8,8 +8,8 @@ TEST                                                                 <no date>
  * Dizzzy:
 
     293 0.66.5: Encoding running on wchar_t
-        bug-293.sh bad .............................................[FAIL]
-                   good ............................................[FAIL]
+        bug-293.sh bad ...............................[KEYBOARD_INTERRUPT]
+                   good ..............................[KEYBOARD_INTERRUPT]
                    invokation ........................................[OK]
 
  * alexeevm:
@@ -149,8 +149,8 @@ TEST                                                                 <no date>
     2635012 0.36.4 Include Stack Disablement
         bug-2635012.sh ...............................................[OK]
     297 r4678(trunk): Memory leak in Token Class
-        bug-297.sh C .................................................[OK]
-                   Cpp ...............................................[OK]
+        bug-297.sh C ...............................................[FAIL]
+                   Cpp .............................................[FAIL]
     3038088 token_id = numeric value
         feature-3038088.sh ...........................................[OK]
     3039173 On Mismatch: abort()
@@ -419,7 +419,7 @@ TEST                                                                 <no date>
     2799244 0.39.5 attempts to call unimplemented token set() function
         bug-2799244.sh error .........................................[OK]
                        good-1 ........................................[OK]
-                       good-2 ........................................[OK]
+                       good-2 ......................................[FAIL]
 
  * the-user-k:
 
@@ -490,8 +490,11 @@ TEST                                                                 <no date>
     [FAIL] bug-3025173.sh
     [FAIL] bug-286.sh
     [FAIL] feature-3495127.sh _ queue
+    [FAIL] bug-297.sh _ C
+                    \__ Cpp
     [FAIL] feature-2251359.sh _ good
     [FAIL] bug-265.sh
+    [FAIL] bug-2799244.sh _ good-2
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -774,8 +777,8 @@ demo/Cpp/TEST                                                        <no date>
  * demo/012b:
 
     Multiple Lexical Analyzers -- shared token
-        012b.sh DEBUG ..............................................[FAIL]
-                NDEBUG .............................................[FAIL]
+        012b.sh DEBUG ..........................................[TIME_OUT]
+                NDEBUG .........................................[TIME_OUT]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
@@ -992,7 +995,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ................................................[OK]
+        svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
@@ -1018,6 +1021,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] svn-status.sh
     [FAIL] command_line_options-verify-doc.py _ man
                                             \__ sphinx
 ===============================================================================
@@ -1403,13 +1407,11 @@ quex/TESTS/source-package/TEST                                       <no date>
 quex/TESTS/token-class/TEST                                          <no date>
 -------------------------------------------------------------------------------
  * With token policy 'queue'.
-        simple-queue.exe ....................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] simple-queue.exe
+        simple-queue.exe .............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -2206,7 +2208,7 @@ quex/output/core/TEST                                                <no date>
                                          B ...........................[OK]
                                          B-UTF8 ...............[NO OUTPUT]
                                          C ...........................[OK]
-                                         C-UTF8 ...............[NO OUTPUT]
+                                         C-UTF8 ......[KEYBOARD_INTERRUPT]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
@@ -2298,29 +2300,20 @@ quex/code_base/analyzer/struct/TEST                                  <no date>
                              file-name ...............................[OK]
                              memory ..................................[OK]
  * Include Push/Pop
-        test-include_push.exe byte-loader ...................[MAKE FAILED]
-                              file-name .....................[MAKE FAILED]
-                              memory ........................[MAKE FAILED]
+        test-include_push.exe byte-loader ............................[OK]
+                              file-name ..............................[OK]
+                              memory .................................[OK]
  * Include Push/Pop Deep
-        test-include-deep.exe ...............................[MAKE FAILED]
+        test-include-deep.exe ........................................[OK]
  * Reset
-        test-reset.exe byte-loader ..........................[MAKE FAILED]
-                       file-name ............................[MAKE FAILED]
-                       memory ...............................[MAKE FAILED]
-                       plain ................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-include_push.exe _ byte-loader
-                               \__ file-name
-                               \__ memory
-    [FAIL] test-include-deep.exe
-    [FAIL] test-reset.exe _ byte-loader
-                        \__ file-name
-                        \__ memory
-                        \__ plain
+        test-reset.exe byte-loader ...................................[OK]
+                       file-name .....................................[OK]
+                       memory ........................................[OK]
+                       plain .........................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   ByteLoaders                                  
@@ -2359,21 +2352,15 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ...........................[MAKE FAILED]
-                        Mix .................................[MAKE FAILED]
-                        N-Character .........................[MAKE FAILED]
-                        N-String ............................[MAKE FAILED]
-                        String ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] accumulator.exe _ Character
-                         \__ Mix
-                         \__ N-Character
-                         \__ N-String
-                         \__ String
+        accumulator.exe Character ....................................[OK]
+                        Mix ..........................................[OK]
+                        N-Character ..................................[OK]
+                        N-String .....................................[OK]
+                        String .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3232,11 +3219,11 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        7  235   [FAIL] TEST                                                          
+       10  235   [FAIL] TEST                                                          
         1  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  14    [FAIL] ..../TEST                                                     
-        2  14    [FAIL] quex/TESTS/code/TEST                                          
+        3  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3250,11 +3237,11 @@ SUMMARY:
         1  12    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
         4  20    [FAIL] ........../source-package/TEST                                
-        1  1     [FAIL] ........../token-class/TEST                                   
+           1       [OK] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
            1       [OK] ............../analyzer/TEST                                  
-        8  11    [FAIL] ......................./struct/TEST                           
+           11      [OK] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            2       [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
@@ -3263,7 +3250,7 @@ SUMMARY:
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
            10      [OK] ............../converter_helper/TEST                          
-        5  5     [FAIL] ............../extra/accumulator/TEST                         
+           5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
@@ -3290,11 +3277,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____   ___            
-    |  ___|_ _(_) |___     |___ /  ( _ )     __  __
-    | |_ / _` | | / __|      |_ \  / _ \     \ \/ /
-    |  _| (_| | | \__ \     ___) || (_) |     >  < 
-    |_|  \__,_|_|_|___/    |____/  \___/     /_/\_\
+     _____     _ _          ____    ___            
+    |  ___|_ _(_) |___     |___ \  ( _ )     __  __
+    | |_ / _` | | / __|      __) | / _ \     \ \/ /
+    |  _| (_| | | \__ \     / __/ | (_) |     >  < 
+    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
                                                                    (1630 tests)
 
 ===============================================================================

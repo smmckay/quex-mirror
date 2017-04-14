@@ -19,12 +19,7 @@ def do():
     """
     assert blackboard.token_type_definition is not None
 
-    if     Setup.token_class_only_f \
-       and not token_id_maker.has_specific_token_ids(): 
-        # Assume external implementation
-        token_id_header = None
-    else:
-        token_id_header = token_id_maker.do(Setup) 
+    token_id_header = token_id_maker.do(Setup) 
 
     if blackboard.token_type_definition.manually_written():
         # User has specified a manually written token class
