@@ -19,7 +19,8 @@ def do():
     """
     assert blackboard.token_type_definition is not None
 
-    if Setup.token_class_only_f and not token_id_maker.has_specific_token_ids(): 
+    if     Setup.token_class_only_f \
+       and not token_id_maker.has_specific_token_ids(): 
         # Assume external implementation
         token_id_header = None
     else:
@@ -72,8 +73,6 @@ def _do_core(Descr):
     # The following things must be ensured before the function is called
     assert Descr is not None
     assert Descr.__class__.__name__ == "TokenTypeDescriptor"
-
-    ## ALLOW: Descr.get_member_db().keys() == empty
 
     TemplateFile   = QUEX_PATH + Lng.token_template_file()
     TemplateIFile  = QUEX_PATH + Lng.token_template_i_file()

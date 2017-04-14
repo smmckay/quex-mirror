@@ -20,13 +20,22 @@ command line:      TKN_UKNOWN____    => 'UKNOWN____'
 command line:      TKN_UNINITIALIZED => 'UNINITIALIZED'
 command line:      TKN_VERB______    => 'VERB______'
 command line: }
+nonsense.qx:1:warning: Detected implicit token identifier definitions.
+nonsense.qx:1:warning:      TKN_A;
+nonsense.qx:1:warning: Above token ids must be defined in 'token_ids.h'
 
 
 Generated Files:
 EasyLexer
 EasyLexer-configuration
+
+
 EasyLexer-converter-codec
 EasyLexer-converter-codec.i
 EasyLexer.cpp
-
 Compare time stamps before and after (No Output is Good output)
+
+
+
+
+

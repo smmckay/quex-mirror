@@ -3,7 +3,6 @@
  *   --token-class           Common::Token
  *   --token-id-type         uint32_t
  *   --buffer-element-type   uint32_t
- *   --lexeme-null-object    ::Common::LexemeNullObject
  * <<<QUEX-OPTIONS>>>
  */
 /* -*- C++ -*-   vim: set syntax=cpp: 

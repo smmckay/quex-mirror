@@ -720,23 +720,20 @@ quex_Token_set(quex_Token*            __this,
                  const QUEX_TYPE_TOKEN_ID ID) 
 { __this->_id = ID; }
 
-QUEX_INLINE const char*    
-quex_Token_map_id_to_name(QUEX_TYPE_TOKEN_ID);
-
 QUEX_INLINE void 
 quex_Token_construct(quex_Token* __this)
 {
 #   define self (*__this)
-#   define LexemeNull  &QUEX_LEXEME_NULL
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
 
-#   line 27 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 26 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = 0;
        self.text   = LexemeNull;
    
 
-#   line 740 "TestAnalyzer.c"
+#   line 737 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -754,11 +751,11 @@ QUEX_INLINE void
 quex_Token_destruct(quex_Token* __this)
 {
 #   define self (*__this)
-#   define LexemeNull  &QUEX_LEXEME_NULL
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     if( ! __this ) return;
 
 
-#   line 32 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 31 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        if( self.text != LexemeNull ) {
            QUEXED(MemoryManager_free)((void*)self.text,
@@ -767,7 +764,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 771 "TestAnalyzer.c"
+#   line 768 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -779,11 +776,11 @@ quex_Token_copy(quex_Token*       __this,
 {
 #   define self  (*__this)
 #   define Other (*__That)
-#   define LexemeNull  &QUEX_LEXEME_NULL
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
     (void)__That;
 
-#   line 40 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 39 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
         self._id  = Other._id;
 
@@ -808,7 +805,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 812 "TestAnalyzer.c"
+#   line 809 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -825,24 +822,21 @@ quex_Token_copy(quex_Token*       __this,
 
 QUEX_INLINE bool 
 quex_Token_take_text(quex_Token*              __this, 
-                       QUEX_TYPE_ANALYZER*        __analyzer, 
                        const QUEX_TYPE_LEXATOM* Begin, 
                        const QUEX_TYPE_LEXATOM* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
  *          false -- if no ownership is claimed.                             */
 {
 #   define self       (*__this)
-#   define analyzer   (*__analyzer)
 #   ifdef  LexemeNull
 #   error  "Error LexemeNull shall not be defined here."
 #   endif
-#   define LexemeNull  &QUEX_LEXEME_NULL
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
-    (void)__analyzer;
     (void)Begin;
     (void)End;
 
-#   line 64 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 63 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 
 #       if 0
@@ -899,10 +893,9 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 903 "TestAnalyzer.c"
+#   line 897 "TestAnalyzer.c"
 
 #   undef  LexemeNull
-#   undef  analyzer
 #   undef  self
     /* Default: no ownership.                                                */
     return false;
@@ -913,15 +906,15 @@ QUEX_INLINE size_t
 quex_Token_repetition_n_get(quex_Token* __this)
 {
 #   define self        (*__this)
-#   define LexemeNull  &QUEX_LEXEME_NULL
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
 
-#   line 129 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 128 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        return self.number;
    
 
-#   line 925 "TestAnalyzer.c"
+#   line 918 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -931,16 +924,16 @@ QUEX_INLINE void
 quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 {
 #   define self        (*__this)
-#   define LexemeNull  &QUEX_LEXEME_NULL
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
     (void)N;
 
-#   line 125 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 124 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = N;
    
 
-#   line 944 "TestAnalyzer.c"
+#   line 937 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -975,7 +968,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 
-#   line 133 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 132 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
         const char* 
         quex_Token_get_string(quex_Token* me, char*   buffer, size_t  BufferSize) 
@@ -1019,7 +1012,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1023 "TestAnalyzer.c"
+#   line 1016 "TestAnalyzer.c"
 
 
 

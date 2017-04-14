@@ -8,7 +8,7 @@ import quex.input.files.core            as quex_file_parser
 import quex.output.cpp.templates        as templates
 import quex.output.cpp.analyzer_class   as analyzer_class
 import quex.output.cpp.token_class      as token_class
-from   quex.TESTS.code.TEST.include_guard import better_name
+# from   quex.TESTS.code.TEST.include_guard import better_name
 import quex.core                        as core
 
 from   quex.blackboard                  import Lng, setup as Setup

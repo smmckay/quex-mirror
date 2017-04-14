@@ -435,6 +435,7 @@ bool UserReset_UnitTest_return_value       = true;
 bool UserMementoPack_UnitTest_return_value = true;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
+#include "TestAnalyzer-token"
 QUEX_NAMESPACE_TOKEN_OPEN
 QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
 QUEX_NAMESPACE_TOKEN_CLOSE

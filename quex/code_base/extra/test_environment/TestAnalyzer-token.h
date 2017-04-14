@@ -17,50 +17,39 @@
 
 /* LexemeNull object may be used for 'take_text'. */
 
-#define QUEX_NAME_TOKEN(NAME)              quex_Token_ ## NAME
-#define QUEX_NAMESPACE_TOKEN_OPEN  
-#define QUEX_NAMESPACE_TOKEN_CLOSE 
-
-#define QUEX_TYPE_LEXATOM                  uint8_t
-#define QUEX_TYPE_TOKEN_ID                 uint32_t
-#define QUEX_SETTING_CHARACTER_CODEC       unicode
-
-#include "TestAnalyzer-token_ids.h" 
-
 /****/
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
-       #include <stdio.h>
-       #include <string.h>
+#include <stdio.h>
+#include <string.h>
 
-       struct quex_Token_tag;
+struct quex_Token_tag;
 
-       extern const char* 
-       QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   BufferSize); 
+extern const char* 
+QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   BufferSize); 
 
 #include <quex/code_base/converter_helper/from-unicode-buffer>
 
 #include <quex/code_base/lexeme>
-
    
 
-#   line 50 "TestAnalyzer-token.h"
+#   line 39 "TestAnalyzer-token.h"
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
     QUEX_TYPE_TOKEN_ID    _id;
 
-#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 59 "TestAnalyzer-token.h"
+#   line 48 "TestAnalyzer-token.h"
 
-#   line 22 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
-#   line 64 "TestAnalyzer-token.h"
+#   line 53 "TestAnalyzer-token.h"
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -72,13 +61,13 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #       endif
 #   endif
 
-#   line 120 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 119 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        /*
         */
    
 
-#   line 82 "TestAnalyzer-token.h"
+#   line 71 "TestAnalyzer-token.h"
 
 } quex_Token;
 
@@ -97,7 +86,6 @@ QUEX_INLINE void         quex_Token_set(quex_Token*            __this,
 QUEX_INLINE const char*  quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
 
 QUEX_INLINE bool         quex_Token_take_text(quex_Token*            __this, 
-                                                QUEX_TYPE_ANALYZER*      analyzer, 
                                                 const QUEX_TYPE_LEXATOM* Begin, 
                                                 const QUEX_TYPE_LEXATOM* End);
 
