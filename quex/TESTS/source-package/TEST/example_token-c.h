@@ -15,9 +15,9 @@ typedef struct quex_Token_tag {
 extern void QUEX_NAME_TOKEN(copy)(quex_Token* me, const quex_Token* Other);
 extern void QUEX_NAME_TOKEN(construct)(quex_Token* __this);
 extern void QUEX_NAME_TOKEN(destruct)(quex_Token* __this);
-
-
-
+extern bool QUEX_NAME_TOKEN(take_text)(quex_Token*             __this, 
+                                       const QUEX_TYPE_LEXATOM* Begin, 
+                                       const QUEX_TYPE_LEXATOM* End);
 #endif
 
  	  	 
