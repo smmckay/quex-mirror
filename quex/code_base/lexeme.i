@@ -13,7 +13,9 @@
 #elif ! defined(QUEX_TYPE_LEXATOM)
 #   error      "QUEX_TYPE_LEXATOM definition missing."
 #elif ! defined(QUEX_SETTING_CHARACTER_CODEC)
-#   error      "QUEX_SETTING_CHARACTER_CODEC definition is missing."
+#   error      "QUEX_SETTING_CHARACTER_CODEC definition missing."
+#elif ! defined(QUEX_CONVERTER_STRING)
+#   error      "QUEX_CONVERTER_STRING definition missing."
 #endif
 
 QUEX_NAMESPACE_TOKEN_OPEN

@@ -154,12 +154,7 @@ main_template = """
 #define QUEX_NAME_TOKEN(NAME)            Token_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN        
 #define QUEX_NAMESPACE_TOKEN_CLOSE      
-#define QUEX_CONVERTER_CHAR_DEFi(X, Y)   convert_ ## X ## _to_ ## Y
-#define QUEX_CONVERTER_CHAR_DEF(X, Y)    QUEX_CONVERTER_CHAR_DEFi(X, Y)
-#define QUEX_CONVERTER_CHAR(X, Y)        QUEX_CONVERTER_CHAR_DEFi(X, Y)
-#define QUEX_CONVERTER_STRING_DEFi(X, Y) convertstring_ ## X ## _to_ ## Y
-#define QUEX_CONVERTER_STRING_DEF(X, Y)  QUEX_CONVERTER_STRING_DEFi(X, Y)
-#define QUEX_CONVERTER_STRING(X, Y)      QUEX_CONVERTER_STRING_DEFi(X, Y)
+#include <quex/code_base/converter_helper/from-utf32>
 #include <quex/code_base/converter_helper/from-utf32.i>
 #include <quex/code_base/single.i>
 
@@ -265,7 +260,7 @@ def get_read_preparation(Codec):
             "{\n"
             "    QUEX_TYPE_LEXATOM* buffer_p = &buffer[0];\n"
             "    const uint32_t*    input_p = &input;\n"
-            "    convert_utf32_to_utf8(&input_p, &buffer_p);\n"
+            "    QUEX_CONVERTER_CHAR(utf32, utf8)(&input_p, &buffer_p);\n"
             "}\n"
         ]
     else:
