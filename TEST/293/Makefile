@@ -19,9 +19,6 @@ lexer: lexer.cpp IConv_Lexer.cpp Codec_Lexer.cpp
 		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED \
 		 -E
 	
-# quex -i 
-	#
-
 IConv_Lexer.cpp:    iconv.qx
 	quex -i $< -o IConv::Lexer -b 4 \
 		 --token-id-prefix ICONV_TKN_

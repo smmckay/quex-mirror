@@ -14,7 +14,7 @@ quex -i nonsense.qx --foreign-token-id-file include_me.h 2>&1 -o EasyLexer --for
 echo
 echo Generated Files:
 echo "||||"
-ls EasyLexer* 
+ls EasyLexer* | cut -f 1
 echo "||||"
 rm EasyLexer*
 # cleansening

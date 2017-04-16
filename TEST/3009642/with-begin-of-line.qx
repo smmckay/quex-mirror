@@ -42,6 +42,5 @@ mode END_OF_FILE :
 {
 	<<EOF>> {
 		self_send(QUEX_TKN_TERMINATION);
-		RETURN;
 	}
 }

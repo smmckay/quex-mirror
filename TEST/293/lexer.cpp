@@ -38,9 +38,9 @@ int main(int argc, char** argv)
         do {
             (void)lex.receive(&token);
 
-            wcout << L"Token: ";
-            wcout << token->get_string();
-            wcout << L"\n";
+            cout << "Token: ";
+            cout << token.get_string();
+            cout << "\n";
 
         } while( token->type_id() != CODEC_TKN_TERMINATION );
     }

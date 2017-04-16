@@ -266,7 +266,16 @@ class TerminalFactory:
             adorned_code,
             #
             Lng.ML_COMMENT(Comment),
-            Lng.GOTO(DoorID.return_with_on_after_match(self.dial_db), self.dial_db),
+            Lng.PURE_RETURN # RETURN without on after match
+            #__________________________________________________________________
+            #
+            # NOT: The following might include that something is sent after 
+            #      the TERMINATION token. Also, the above code has *NOTHING'*
+            #      to do with pattern match actions. It handles events.
+            #
+            # Lng.GOTO(DoorID.return_with_on_after_match(self.dial_db), self.dial_db)
+            #
+            #__________________________________________________________________
         ]
         return self.__terminal(text, Code, Name)
 

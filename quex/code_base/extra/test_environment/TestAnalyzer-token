@@ -127,18 +127,15 @@ public:
         const std::string
         get_string() const 
         {
-            std::string             tmp;
-
-            tmp = map_id_to_name(self._id);
-
+            std::string  tmp;
+            tmp  = map_id_to_name(self._id);
             tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
-
             return tmp;
         }
     
    
 
-#   line 142 "TestAnalyzer-token"
+#   line 139 "TestAnalyzer-token"
 
 #   undef  self
 
@@ -153,7 +150,7 @@ public:
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 
-#   line 94 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 91 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 QUEX_NAMESPACE_TOKEN_OPEN
 inline std::ostream&
@@ -166,7 +163,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 #include <quex/code_base/lexeme.i>
    
 
-#   line 170 "TestAnalyzer-token"
+#   line 167 "TestAnalyzer-token"
 
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -252,7 +249,7 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
 #       endif
    
 
-#   line 256 "TestAnalyzer-token"
+#   line 253 "TestAnalyzer-token"
 
 #   undef LexemeNull
 #   undef Other
@@ -279,7 +276,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
 
-#   line 52 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 49 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 #       if 0
         {
@@ -314,7 +311,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
         return false;      
    
 
-#   line 318 "TestAnalyzer-token"
+#   line 315 "TestAnalyzer-token"
 
 #   undef  LexemeNull
 #   undef  self
@@ -329,12 +326,12 @@ QUEX_NAME_TOKEN(repetition_n_get)(Token* __this)
 #   define self (*__this)
     (void)__this;
 
-#   line 90 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 87 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
        return self.number;
    
 
-#   line 338 "TestAnalyzer-token"
+#   line 335 "TestAnalyzer-token"
 
 #   undef self
 }
@@ -346,12 +343,12 @@ QUEX_NAME_TOKEN(repetition_n_set)(Token* __this, size_t N)
     (void)__this;
     (void)N;
 
-#   line 86 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 83 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
        self.number = N;
    
 
-#   line 355 "TestAnalyzer-token"
+#   line 352 "TestAnalyzer-token"
 
 #   undef  self
 }

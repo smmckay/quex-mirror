@@ -79,3 +79,6 @@ $INCLUDE_CONVERTER_IMPLEMENTATION
    }
 }
 
+token { 
+    X; /* Must be consistent with the TestAnalyzer's 'nothing.qx' */
+}

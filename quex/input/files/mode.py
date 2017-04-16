@@ -18,6 +18,7 @@ from   quex.engine.misc.file_in           import EndOfStreamException, \
                                                  skip_whitespace
 import quex.blackboard as blackboard
 from   quex.blackboard import setup as Setup, \
+                              Lng, \
                               standard_incidence_db
 
 def parse(fh):
@@ -259,8 +260,14 @@ def __parse_event(new_mode, fh, word):
                               fh)
     __validate_required_token_policy_queue(word, fh, pos)
 
-    new_mode.incidence_db[word] = \
-            code_fragment.parse(fh, "%s::%s event handler" % (new_mode.name, word))
+    code         = code_fragment.parse(fh, "%s::%s event handler" % (new_mode.name, word))
+    incidence_id = standard_incidence_db[word][0]
+    if Lng.suspicious_RETURN_in_event_handler(incidence_id, code.get_text()):
+        error.warning("Suspicious 'RETURN' in event handler '%s'.\n" % incidence_id \
+                      + "This statement will trigger 'on_after_match' handler.\n" \
+                      + "May be, use plain return instead.", code.sr)
+
+    new_mode.incidence_db[word] = code
 
     return True
 

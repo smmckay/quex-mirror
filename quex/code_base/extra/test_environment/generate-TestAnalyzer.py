@@ -15,7 +15,7 @@ from   quex.blackboard                  import Lng, setup as Setup
 import quex.blackboard                  as     blackboard
 from   quex.input.code.base             import CodeFragment
 
-# re_include_guard = re.compile("__QUEX_INCLUDE_[A-Z_a-z0-9]*")
+# re_include_guard = re.compile(r"__QUEX_INCLUDE_[A-Z_a-z0-9]*")
 
 blackboard.header = CodeFragment(
 """

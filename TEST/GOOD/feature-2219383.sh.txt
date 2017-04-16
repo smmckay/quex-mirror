@@ -4,6 +4,6 @@ command line:      TKN_TERMINATION   => 'TERMINATION'
 command line:      TKN_UNINITIALIZED => 'UNINITIALIZED'
 command line: }
 simple.qx:2:warning: Detected implicit token identifier definitions.
-simple.qx:2:warning:      TKN_1;
-simple.qx:3:warning:      TKN_2;
+simple.qx:2:warning:      TKN_1; /* did you mean 'TKN_DUMMY'? */
+simple.qx:3:warning:      TKN_2; /* did you mean 'TKN_DUMMY'? */
 simple.qx:3:warning: Above token ids must be defined in 'Calc_token-ids.h'

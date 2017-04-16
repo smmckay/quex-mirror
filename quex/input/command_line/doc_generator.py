@@ -31,7 +31,13 @@ class Option:
         self.call_str       = CallStr
         self.paragraph_list = list(Paragraphs)
     def do(self, visitor):
-        info = SETUP_INFO[self.name]
+        info = SETUP_INFO.get(self.name)
+        if info is None:
+            print "Error: '%s' is not related to any option." % self.name
+            sys.exit()
+        if not info or len(info) != 2:
+            print "Error: '%s' deliver useless info '%s'." % (self.name, info)
+            sys.exit()
         option_list = info[0]
         default     = info[1]
         return visitor.do_Option(option_list, self.call_str, default, self.paragraph_list)

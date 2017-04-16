@@ -14,7 +14,7 @@ import fnmatch
 from   copy import deepcopy
 
 unicode_db_directory = QUEX_PATH + "/quex/engine/codec_db/unicode/database"
-comment_deleter_re   = re.compile("#[^\n]*")
+comment_deleter_re   = re.compile(r"#[^\n]*")
 
 def open_data_base_file(Filename):
     try: 

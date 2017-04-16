@@ -10,7 +10,7 @@ Following lines are suppossed to be accepted:
 ./constants.py:81:                      "OVERFLOW",        # Lexeme too long, reload impossible
 ./engine/analyzer/terminal/factory.py:161:        """Overflow: Lexeme size exceeds buffer size.
 ./engine/analyzer/terminal/factory.py:165:        comment_txt = "Lexeme size exceeds buffer size. No further buffer load possible."
-./input/files/code_fragment.py:22:lexeme_re = re.compile("^Lexeme\b")
+./input/files/code_fragment.py:22:lexeme_re = re.compile(r"^Lexeme\b")
 ./input/files/code_fragment.py:273:        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
 ./input/files/code_fragment.py:274:                  "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
 ./input/files/code_fragment.py:277:                  "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"

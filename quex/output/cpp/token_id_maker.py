@@ -36,7 +36,8 @@ def do(setup):
     # (1) Error Check
     #
     __warn_implicit_token_definitions()
-    __error_on_no_specific_token_ids()
+    if not Setup.token_class_only_f:
+        __error_on_no_specific_token_ids()
 
     if Setup.extern_token_id_file:
         __error_on_mandatory_token_id_missing()
@@ -71,6 +72,7 @@ def do_map_id_to_name_cases():
     """Generate function which maps from token-id to string with the 
     name of the token id.
     """
+    if not token_id_db: return ""
     L = max(len(name) for name in token_id_db.keys())
 
     # -- define the function for token names
@@ -219,8 +221,6 @@ def __warn_implicit_token_definitions():
 
     sr            = blackboard.token_id_implicit_list[0][1]
     msg           = "Detected implicit token identifier definitions."
-    prefix_length = len(Setup.token_id_prefix)
-
     implicit_list = [
         tid[0] for tid in blackboard.token_id_implicit_list
     ]

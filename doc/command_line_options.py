@@ -254,12 +254,14 @@ Option("token_id_counter_offset", "number",
      to count. Note, that this does not include the standard token ids
      for termination, uninitialized, and indentation error.
      """),
+#
 """
 Certain token ids are standard, in a sense that they are required for a
 functioning lexical analyzer. Namely they are \\v{TERMINATION} and
 \\v{UNINITIALIZED}. The default values of those do not follow the token id
 offset, but are 0 and 1. If they need to be different, they must be defined
 in the \\v{token { ... }} section, e.g.""",
+#
 Block("""
     token {
         TERMINATION   = 10001;
@@ -267,10 +269,12 @@ Block("""
         ...
     }
 """),
+#
 """
 A file with token ids can be provided by the option
 """,
-Option("extern_token_id_file", "file name [[begin-str] end-str]",
+#
+Option("extern_token_id_specification", "file name [[begin-str] end-str]",
        """
        \\v{file-name} = Name of the file that contains an alternative definition
        of the numerical values for the token-ids.

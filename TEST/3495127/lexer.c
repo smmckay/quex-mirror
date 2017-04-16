@@ -15,6 +15,7 @@ main(int argc, char** argv)
     int                token_n = 0;
     quex_Simple        qlex;
     const char*        file_name = argc > 1 ? argv[1] : "example.txt";
+
     QUEX_NAME(from_file_name)(&qlex, file_name, CHARACTER_ENCODING_NAME);
 
     printf(",------------------------------------------------------------------------------------\n");

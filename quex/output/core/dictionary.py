@@ -68,9 +68,21 @@ class Lng_Cpp(dict):
 
     def __init__(self, DB):      
         self.update(DB)
-        self.__analyzer                                   = None
-        self.__code_generation_reload_label               = None
-        self.__code_generation_on_reload_fail_adr         = None
+        self.__analyzer                           = None
+        self.__code_generation_reload_label       = None
+        self.__code_generation_on_reload_fail_adr = None
+        assert self.RETURN[-1] == ";"
+        self.__re_RETURN                          = re.compile(r"\b%s\b" % self.RETURN[:-1])
+        self.__error_code_db = {
+            E_IncidenceIDs.END_OF_STREAM:   "E_Error_NoHandler_OnEndOfStream",
+            E_IncidenceIDs.MATCH_FAILURE:   "E_Error_NoHandler_OnFailure",
+            E_IncidenceIDs.SKIP_RANGE_OPEN: "E_Error_NoHandler_OnSkipRangeOpen",
+            E_IncidenceIDs.INDENTATION_BAD: "E_Error_NoHandler_OnIndentationBad",
+            E_IncidenceIDs.BAD_LEXATOM:     "E_Error_NoHandler_OnBadLexatom",
+            E_IncidenceIDs.LOAD_FAILURE:    "E_Error_NoHandler_OnLoadFailure",
+            E_IncidenceIDs.OVERFLOW:        "E_Error_NoHandler_OnOverflow",
+        }
+            
 
     def register_analyzer(self, TheAnalyzer):
         self.__analyzer = TheAnalyzer
@@ -961,20 +973,15 @@ class Lng_Cpp(dict):
         return cpp._local_variable_definitions(VariableDB.get()) 
 
     def EXIT_ON_MISSING_HANDLER(self, IncidenceId):
-        error_code = {
-            E_IncidenceIDs.MATCH_FAILURE:   "E_Error_NoHandler_OnFailure",
-            E_IncidenceIDs.SKIP_RANGE_OPEN: "E_Error_NoHandler_OnSkipRangeOpen",
-            E_IncidenceIDs.INDENTATION_BAD: "E_Error_NoHandler_OnIndentationBad",
-            E_IncidenceIDs.BAD_LEXATOM:     "E_Error_NoHandler_OnBadLexatom",
-            E_IncidenceIDs.LOAD_FAILURE:    "E_Error_NoHandler_OnLoadFailure",
-            E_IncidenceIDs.OVERFLOW:        "E_Error_NoHandler_OnOverflow",
-        }[IncidenceId]
-            
         return [
-            'self.error_code = %s;\n' % error_code,
-            "%s\n" % self.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_TERMINATION"),
-            'RETURN;\n'
+            'self.error_code = %s;\n' % self.__error_code_db[IncidenceId],
+            "%s\n"  % self.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_TERMINATION"),
+            '%s;\n' % self.PURE_RETURN
         ]
+
+    def suspicious_RETURN_in_event_handler(self, IncidenceId, EventHandlerTxt):
+        if IncidenceId not in self.__error_code_db: return False
+        return self.__re_RETURN.search(EventHandlerTxt) is not None
 
     def EXIT_ON_TERMINATION(self):
         # NOT: "Lng.PURE_RETURN" because the terminal end of stream 

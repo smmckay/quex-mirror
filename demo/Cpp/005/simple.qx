@@ -42,7 +42,6 @@ mode MAIN
 {
     <<EOF>> {
 	    self_send1(QUEX_TKN_TERMINATION, LexemeNull);
-        RETURN;
     }
 
     "(" => QUEX_TKN_BRACKET_OPEN(LexemeNull);

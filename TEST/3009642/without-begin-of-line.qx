@@ -42,6 +42,6 @@ mode END_OF_FILE :
 {
 	<<EOF>> {
 		self_send(QUEX_TKN_TERMINATION);
-		RETURN;
+		RETURN; /* Trigger the warning--deliberately ONCE. */
 	}
 }

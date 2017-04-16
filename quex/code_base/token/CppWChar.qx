@@ -7,6 +7,7 @@ token_type {
 #include <iostream>
 #include <string>
 
+       static int DEBUG_nonsense;
 $INCLUDE_CONVERTER_DECLARATION
 #include <quex/code_base/lexeme>
    }
@@ -35,19 +36,12 @@ $INCLUDE_CONVERTER_DECLARATION
    body {
         typedef std::basic_string<QUEX_TYPE_LEXATOM> __string;
 
-        operator 
-        const std::wstring() const
-        { return get_string(); }
-
         const std::string
         get_string() const 
         {
             std::string             tmp;
-
             tmp = map_id_to_name(self._id);
-
             tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
-
             return tmp;
         }
    }
@@ -96,9 +90,9 @@ $INCLUDE_CONVERTER_DECLARATION
 
    footer {
 $NAMESPACE_OPEN
-inline std::wostream&
-operator<<(std::wostream& wostr, const $TOKEN_CLASS& Tok)
-{ wostr << Tok.get_string(); return wostr; }
+inline std::ostream&
+operator<<(std::ostream& ostr, const $TOKEN_CLASS& Tok)
+{ ostr << Tok.get_string(); return ostr; }
 $NAMESPACE_CLOSE
 
 $INCLUDE_CONVERTER_IMPLEMENTATION

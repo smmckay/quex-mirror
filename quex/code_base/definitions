@@ -145,6 +145,7 @@ typedef enum {
     E_Error_IncludePush_OnError,
     E_Error_InputName_Set_Failed,
     E_Error_NoHandler_OnBadLexatom,
+    E_Error_NoHandler_OnEndOfStream,
     E_Error_NoHandler_OnFailure,
     E_Error_NoHandler_OnIndentationBad,
     E_Error_NoHandler_OnLoadFailure,
@@ -174,6 +175,7 @@ typedef enum {
      : (E) == E_Error_IncludePush_OnError                ? "IncludePush_OnError"                \
      : (E) == E_Error_InputName_Set_Failed               ? "InputName_Set_Failed"               \
      : (E) == E_Error_NoHandler_OnBadLexatom             ? "NoHandler_OnBadLexatom"             \
+     : (E) == E_Error_NoHandler_OnEndOfStream            ? "NoHandler_OnEndOfStream"            \
      : (E) == E_Error_NoHandler_OnFailure                ? "NoHandler_OnFailure"                \
      : (E) == E_Error_NoHandler_OnIndentationBad         ? "NoHandler_OnIndentationBad"         \
      : (E) == E_Error_NoHandler_OnLoadFailure            ? "NoHandler_OnLoadFailure"            \

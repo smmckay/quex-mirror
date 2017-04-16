@@ -8,8 +8,8 @@ TEST                                                                 <no date>
  * Dizzzy:
 
     293 0.66.5: Encoding running on wchar_t
-        bug-293.sh bad ...............................[KEYBOARD_INTERRUPT]
-                   good ..............................[KEYBOARD_INTERRUPT]
+        bug-293.sh bad .............................................[FAIL]
+                   good ............................................[FAIL]
                    invokation ........................................[OK]
 
  * alexeevm:
@@ -771,8 +771,8 @@ demo/Cpp/TEST                                                        <no date>
  * demo/012b:
 
     Multiple Lexical Analyzers -- shared token
-        012b.sh DEBUG ..........................................[TIME_OUT]
-                NDEBUG .........................................[TIME_OUT]
+        012b.sh DEBUG ................................................[OK]
+                NDEBUG ...............................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
@@ -780,8 +780,6 @@ demo/Cpp/TEST                                                        <no date>
 -------------------------------------------------------------------------------
     [FAIL] 009.sh _ command-line
                 \__ command-line-utf8
-    [FAIL] 012b.sh _ DEBUG
-                 \__ NDEBUG
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -989,15 +987,15 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ................................................[OK]
+        svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
         pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .....................[FAIL]
-                                           sphinx ..................[FAIL]
+        command_line_options-verify-doc.py man .......................[OK]
+                                           sphinx ....................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1015,8 +1013,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] command_line_options-verify-doc.py _ man
-                                            \__ sphinx
+    [FAIL] svn-status.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -2208,7 +2205,7 @@ quex/output/core/TEST                                                <no date>
 quex/output/cpp/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Token Class Template
-        test-token_class.py ...................................[NO OUTPUT]
+        test-token_class.py ..........................................[OK]
 
  * Character Counter:
 
@@ -2248,12 +2245,10 @@ quex/output/cpp/TEST                                                 <no date>
                           2 ..........................................[OK]
                           3 ..........................................[OK]
                           4 ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-token_class.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3205,9 +3200,9 @@ SUMMARY:
 
         4  235   [FAIL] TEST                                                          
         1  56    [FAIL] demo/C/TEST                                                   
-        4  56    [FAIL] ..../Cpp/TEST                                                 
+        2  56    [FAIL] ..../Cpp/TEST                                                 
         1  14    [FAIL] ..../TEST                                                     
-        2  14    [FAIL] quex/TESTS/code/TEST                                          
+        1  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3257,15 +3252,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            196     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        1  30    [FAIL] .........../cpp/TEST                                          
+           30      [OK] .........../cpp/TEST                                          
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _  _            
-    |  ___|_ _(_) |___     / || || |     __  __
-    | |_ / _` | | / __|    | || || |_    \ \/ /
-    |  _| (_| | | \__ \    | ||__   _     >  < 
-    |_|  \__,_|_|_|___/    |_|   |_|     /_/\_\
+     _____     _ _          _   ___            
+    |  ___|_ _(_) |___     / | / _ \     __  __
+    | |_ / _` | | / __|    | || | | |    \ \/ /
+    |  _| (_| | | \__ \    | || |_| |     >  < 
+    |_|  \__,_|_|_|___/    |_| \___/     /_/\_\
                                                                    (1630 tests)
 
 ===============================================================================

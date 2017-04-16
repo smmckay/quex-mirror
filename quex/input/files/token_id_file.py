@@ -34,7 +34,7 @@ def parse(ForeignTokenIdFile, CommentDelimiterList):
     """
     # Regular expression to find '#include <something>' and extract the 'something'
     # in a 'group'. Note that '(' ')' cause the storage of parts of the match.
-    IncludeRE = "#[ \t]*include[ \t]*[\"<]([^\">]+)[\">]"
+    IncludeRE = r"#[ \t]*include[ \t]*[\"<]([^\">]+)[\">]"
 
     include_re_obj = re.compile(IncludeRE)
 
@@ -171,10 +171,10 @@ def __delete_comments(Content, CommentDelimiterList):
 def __extract_token_ids(PlainContent, FileName):
     """PlainContent     -- File content without comments.
     """
-    DefineRE      = "#[ \t]*define[ \t]+([^ \t\n\r]+)[ \t]+[^ \t\n]+"
-    AssignRE      = "([^ \t]+)[ \t]*=[ \t]*[^ \t]+"
-    EnumRE        = "enum[^{]*{([^}]*)}"
-    EnumConst     = "([^=, \n\t]+)"
+    DefineRE      = r"#[ \t]*define[ \t]+([^ \t\n\r]+)[ \t]+[^ \t\n]+"
+    AssignRE      = r"([^ \t]+)[ \t]*=[ \t]*[^ \t]+"
+    EnumRE        = r"enum[^{]*{([^}]*)}"
+    EnumConst     = r"([^=, \n\t]+)"
     define_re_obj = re.compile(DefineRE)
     assign_re_obj = re.compile(AssignRE)
     enum_re_obj   = re.compile(EnumRE)

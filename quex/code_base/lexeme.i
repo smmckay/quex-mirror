@@ -104,13 +104,14 @@ QUEX_NAME_TOKEN(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme,
 {
     const QUEX_TYPE_LEXATOM** source_pp = &Lexeme;
     const QUEX_TYPE_LEXATOM*  SourceEnd = &Lexeme[QUEX_NAME_TOKEN(lexeme_length)(Lexeme) + (size_t)1];
-    char**                    drain_pp  = &buffer;
+    char*                     original  = buffer;  /* Maintain original pointer    */
+    char**                    drain_pp  = &buffer; /* Conv. changes buffer pointer */
     const char*               DrainEnd  = &buffer[BufferSize];
 
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, pretty_char)(
                           source_pp, SourceEnd, drain_pp, DrainEnd);
 
-    return buffer;
+    return original;
 }
 
 #ifndef __QUEX_OPTION_PLAIN_C

@@ -16,6 +16,7 @@ constructor {
 }
 
 mode MINE {
+    on_end_of_stream => QUEX_TKN_TERMINATION(LexemeNull);
     on_failure => QUEX_TKN_ON_FAILURE____(Lexeme);
     on_match {
         self_write_token_p()->number = self.my_number;

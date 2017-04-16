@@ -19,7 +19,7 @@ from   quex.engine.misc.utf8                      import __read_one_utf8_code_fr
 from   quex.input.code.core                       import CodeUser 
 
 import re
-lexeme_re = re.compile("^Lexeme\b")
+lexeme_re = re.compile(r"^Lexeme\b")
 
 def parse(fh, CodeFragmentName, 
           ErrorOnFailureF=True, AllowBriefTokenSenderF=True):
@@ -91,7 +91,7 @@ def __parse_brief_token_sender(fh):
             #    Return MUST be enforced               => Do not allow CONTINUE!
             # -- When an 'on_failure' is detected allow immediate action of the
             #    receiver.                             => Do not allow CONTINUE!
-            code += "\n%s\n" % Lng.RETURN # Immediate RETURN after token sending
+            code += "\n%s\n" % Lng.PURE_RETURN # Immediate RETURN after token sending
             return CodeUser(code, SourceRef.from_FileHandle(fh, BeginPos=position))
         else:
             return None

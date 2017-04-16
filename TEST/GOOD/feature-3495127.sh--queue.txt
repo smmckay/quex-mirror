@@ -90,14 +90,10 @@ after:  Lexeme: b; LexemeBegin: b; LexemeEnd - LexemeBegin: 1; LexemeL: 1
 (1, 18)  	ON_MATCH______: 9
 (1, 18)  	ELSE__________: b
 (1, 18)  	ON_AFTER_MATCH: 10
+(1, 19)  	ON_FAILURE____: \n
 before: Lexeme: ; LexemeBegin: ; LexemeEnd - LexemeBegin: 0; LexemeL: 0
        at begin: line_n = 2; column_n = 1;
        at end:   line_n = 2; column_n = 1;
-after:  Lexeme: ; LexemeBegin: ; LexemeEnd - LexemeBegin: 0; LexemeL: 0
-       at begin: line_n = 2; column_n = 1;
-       at end:   line_n = 2; column_n = 1;
-
-(1, 19)  	ON_FAILURE____: 
 (2, 1)  	ON_MATCH______: 10
 (2, 1)  	<TERMINATION>: 
 | [END] number of token = 33

@@ -9,42 +9,35 @@
 #include <quex/code_base/asserts>
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/MemoryManager>
-#include <quex/code_base/lexeme>
 
 /* LexemeNull object may be used for 'take_text'. */
-QUEX_NAMESPACE_LEXEME_NULL_OPEN
-extern QUEX_TYPE_LEXATOM   QUEX_LEXEME_NULL_IN_ITS_NAMESPACE;
-QUEX_NAMESPACE_LEXEME_NULL_CLOSE
 
 
 
  
-namespace europa {
-    namespace deutschland {
-        namespace baden_wuertemberg {
-            namespace ispringen {
-
+QUEX_NAMESPACE_TOKEN_OPEN
 
 class MeinToken;
 
-/* NOTE: The following function might have to be defined by the user if one
- *       does not rely on quex's function generation.                        */
-extern const char*  QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID);
-
 inline void    QUEX_NAME_TOKEN(construct)(MeinToken* __this);
 inline void    QUEX_NAME_TOKEN(destruct)(MeinToken* __this);
-inline void    QUEX_NAME_TOKEN(copy)(MeinToken* me, const MeinToken* That);
-inline bool    QUEX_NAME_TOKEN(take_text)(MeinToken*            __this, 
-                                          QUEX_TYPE_ANALYZER*         analyzer, 
+inline void    QUEX_NAME_TOKEN(copy)(MeinToken*       me, 
+                                     const MeinToken* That);
+inline bool    QUEX_NAME_TOKEN(take_text)(MeinToken*             __this, 
                                           const QUEX_TYPE_LEXATOM*  Begin, 
                                           const QUEX_TYPE_LEXATOM*  End);
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 inline size_t  QUEX_NAME_TOKEN(repetition_n_get)(MeinToken* __this);
-inline void    QUEX_NAME_TOKEN(repetition_n_set)(MeinToken* __this, size_t N);
+inline void    QUEX_NAME_TOKEN(repetition_n_set)(MeinToken* __this, 
+                                                 size_t        N);
 #endif 
 
-class MeinToken {
+inline const char*  
+               QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID);
+
+
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG MeinToken {
 public:
     MeinToken();
     MeinToken(const MeinToken& That);
@@ -177,22 +170,191 @@ public:
 #   undef  self
 
     private:
-        friend void QUEX_NAME_TOKEN(copy)(MeinToken* me, const MeinToken* That);
-        friend bool QUEX_NAME_TOKEN(take_text)(MeinToken*               __this, 
-                                               QUEX_TYPE_ANALYZER*         analyzer, 
+        friend void QUEX_NAME_TOKEN(copy)(MeinToken*       __this, 
+                                          const MeinToken* That);
+        friend bool QUEX_NAME_TOKEN(take_text)(MeinToken*             __this, 
                                                const QUEX_TYPE_LEXATOM*  Begin, 
                                                const QUEX_TYPE_LEXATOM*  End);
 };
 
-} /* Closing Namespace 'europa' */
-} /* Closing Namespace 'deutschland' */
-} /* Closing Namespace 'baden_wuertemberg' */
-} /* Closing Namespace 'ispringen' */
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 
-
+QUEX_NAMESPACE_TOKEN_OPEN
+extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);
+QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN */
+
+/* This content is pasted into header, so the include guard is superfluous. 
+ * It is left in place, so that if some time later the code generator is 
+ * adapted to generate independent files, it will still work safely.          */
+#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN_I
+#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN_I
+
+#include <quex/code_base/definitions>
+#include ""
+
+QUEX_NAMESPACE_TOKEN_OPEN
+
+QUEX_INLINE
+MeinToken::MeinToken()
+{
+#   define self (*this)
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+
+#   line 20 "a string"
+
+       this = is = a = constructor;
+   
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
+#   undef  LexemeNull
+#   undef  self
+}
+
+QUEX_INLINE
+MeinToken::MeinToken(const MeinToken& Other)
+{
+   QUEX_NAME_TOKEN(copy)(this, &Other);
+#   define self (*this)
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+
+#   line 20 "a string"
+
+       this = is = a = constructor;
+   
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
+#   undef  LexemeNull
+#   undef  self
+}
+
+QUEX_INLINE
+MeinToken::~MeinToken()
+{
+#   define self (*this)
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+
+#   line 24 "a string"
+
+       this = is = a = destructor;
+   
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
+#   undef  LexemeNull
+#   undef  self
+}
+
+QUEX_INLINE void
+QUEX_NAME_TOKEN(construct)(MeinToken* __this)
+{
+    /* Explicit constructor call by 'placement new' */
+    new ((void*)__this) MeinToken;
+}
+
+QUEX_INLINE void
+QUEX_NAME_TOKEN(destruct)(MeinToken* __this)
+{
+    if( ! __this ) return;
+    __this->MeinToken::~MeinToken();  
+}
+
+QUEX_INLINE void
+QUEX_NAME_TOKEN(copy)(MeinToken* __this, const MeinToken* __That)
+{
+#   define self  (*__this)
+#   define Other (*__That)
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+    (void)__this;
+    (void)__That;
+
+#   line 30 "a string"
+
+       this = is = a = copy-code;
+   
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
+#   undef LexemeNull
+#   undef Other
+#   undef self
+   /* If the user even misses to copy the token id, then there's
+    * something seriously wrong.                                 */
+   __quex_assert(__this->_id == __That->_id);
+#ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
+#   ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
+    __QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));
+    __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
+#   endif
+#endif
+}
+
+QUEX_INLINE bool 
+QUEX_NAME_TOKEN(take_text)(MeinToken*              __this, 
+                           const QUEX_TYPE_LEXATOM* Begin, 
+                           const QUEX_TYPE_LEXATOM* End)
+/* RETURNS: true -- if the token claims ownership over the given memory.
+ *          false -- if no ownership is claimed.                             */
+{
+#   define self      (*__this)
+#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+    (void)__this;
+
+#   line 27 "a string"
+
+       return true;
+   
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
+#   undef  LexemeNull
+#   undef  self
+    /* Default: no ownership.                                                */
+    return false;
+}
+
+#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+QUEX_INLINE size_t 
+QUEX_NAME_TOKEN(repetition_n_get)(MeinToken* __this)
+{
+#   define self (*__this)
+    (void)__this;
+
+#   undef self
+}
+
+QUEX_INLINE void 
+QUEX_NAME_TOKEN(repetition_n_set)(MeinToken* __this, size_t N)
+{
+#   define self (*__this)
+    (void)__this;
+    (void)N;
+
+#   undef  self
+}
+#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+
+QUEX_INLINE const char*
+QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
+{
+   static char  error_string[64];
+
+   /* NOTE: This implementation works only for token id types that are 
+    *       some type of integer or enum. In case an alien type is to
+    *       used, this function needs to be redefined.                  */
+   switch( TokenID ) {
+   default: {
+       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
+       return error_string;
+   }
+
+   }
+}
+
+QUEX_NAMESPACE_TOKEN_CLOSE
+
+
+
+#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN_I */
 

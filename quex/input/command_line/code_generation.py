@@ -59,10 +59,6 @@ def prepare(command_line, argv):
                                  Setup.buffer_codec_file)
     Setup.buffer_codec_set(buffer_codec, lexatom_size_in_byte)
 
-    # AFTER: Setup.buffer_codec_prepare() !!!
-    if Setup.language not in ["DOT"]:
-        prepare_file_names(Setup)
-
     type_info = global_character_type_db.get(Setup.buffer_lexatom_type)
     if     type_info is not None and len(type_info) >= 4 \
        and type_info[3] != -1 and Setup.buffer_lexatom_size_in_byte != -1 \
@@ -75,8 +71,6 @@ def prepare(command_line, argv):
                   % Setup.buffer_lexatom_size_in_byte \
                   + "Quex can continue, but the result is questionable.\n", \
                   DontExitF=True)
-
-    validation.do(Setup, command_line, argv)
 
     if Setup.converter_ucs_coding_name == "": 
         if global_character_type_db.has_key(Setup.buffer_lexatom_type):
@@ -101,6 +95,10 @@ def prepare(command_line, argv):
         token_id_file_parse(Setup.extern_token_id_file, 
                             CommentDelimiterList)
 
+    # AFTER: Setup.extern_token_id_file !!!
+    if Setup.language not in ["DOT"]:
+        prepare_file_names(Setup)
+
     # (*) Compression Types
     compression_type_list = []
     for name, ctype in [("compression_template_f",         E_Compression.TEMPLATE),
@@ -112,6 +110,8 @@ def prepare(command_line, argv):
 
     compression_type_list.sort(key=itemgetter(0))
     Setup.compression_type_list = map(lambda x: x[1], compression_type_list)
+
+    validation.do(Setup, command_line, argv)
 
     # (*) return Setup ___________________________________________________________________
     return True

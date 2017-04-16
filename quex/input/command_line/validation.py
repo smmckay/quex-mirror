@@ -96,7 +96,7 @@ def do(setup, command_line, argv):
                   "Set appropriate values with --token-queue-size and --token-queue-safety-border.")
 
     # Check that names are valid identifiers
-    if len(setup.token_id_prefix_plain) != 0:
+    if setup.token_id_prefix_plain:
         __check_identifier(setup, "token_id_prefix_plain", "Token prefix")
     __check_identifier(setup, "analyzer_class_name", "Engine name")
     if setup.analyzer_derived_class_name != "": 

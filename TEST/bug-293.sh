@@ -3,6 +3,7 @@ bug=293
 if [[ $1 == "--hwut-info" ]]; then
     echo "Dizzzy:  $bug 0.66.5: Encoding running on wchar_t;"
     echo "CHOICES: good, bad, invokation;"
+    echo "HAPPY: [0-9]+;"
     exit
 fi
 

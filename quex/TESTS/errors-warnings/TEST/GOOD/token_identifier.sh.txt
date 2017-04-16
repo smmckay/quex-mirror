@@ -8,5 +8,5 @@ qx/token-id.qx:11:warning: Token ids in the token { ... } section are automatica
 qx/token-id.qx:11:warning: ('--suppress 7' to avoid this message)
 qx/token-id.qx:14:warning: Detected implicit token identifier definitions. Proposal:
 qx/token-id.qx:14:warning:    token {
-qx/token-id.qx:14:warning:      OK;
+qx/token-id.qx:14:warning:      OK; /* did you mean 'QUEX_TKN_TERMINATION'? */
 qx/token-id.qx:14:warning:    }

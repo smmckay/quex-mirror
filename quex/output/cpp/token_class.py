@@ -1,6 +1,7 @@
 # (C) 2005-2010 Frank-Rene Schaefer
 # ABSOLUTELY NO WARANTY
 from   quex.DEFINITIONS                   import QUEX_PATH
+from   quex.input.files.token_type        import TokenTypeDescriptor
 from   quex.engine.misc.file_in           import get_include_guard_extension, \
                                                  make_safe_identifier
 from   quex.engine.misc.file_operations   import open_file_or_die
@@ -67,7 +68,7 @@ def _do(Descr):
 def _do_core(Descr):
     # The following things must be ensured before the function is called
     assert Descr is not None
-    assert Descr.__class__.__name__ == "TokenTypeDescriptor"
+    assert isinstance(Descr, TokenTypeDescriptor)
 
     TemplateFile   = QUEX_PATH + Lng.token_template_file()
     TemplateIFile  = QUEX_PATH + Lng.token_template_i_file()

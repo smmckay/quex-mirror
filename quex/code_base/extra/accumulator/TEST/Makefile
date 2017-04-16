@@ -36,7 +36,7 @@ accumulator.exe: accumulator.cpp $(DUMMY_CPP)
 
 clean: 
 	rm -f *.o
-	rm -f *.E
+	rm -f *.E tmp.*
 	rm -f tmp_dir/*
 	rm -f $(PROGRAMS)
 
