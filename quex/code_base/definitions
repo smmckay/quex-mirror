@@ -69,7 +69,6 @@
 #   define __QUEX_STD_strcmp   std::strcmp
 #   define __QUEX_STD_strcpy   std::strcpy
 #   define __QUEX_STD_strlen   std::strlen
-#   define __QUEX_STD_strncat  std::strncat
 #   define __QUEX_STD_malloc   std::malloc
 #   define __QUEX_STD_free     std::free  
 
@@ -98,7 +97,6 @@
 #   define __QUEX_STD_strcpy   strcpy
 #   define __QUEX_STD_strlen   strlen
 #   define __QUEX_STD_sprintf  sprintf
-#   define __QUEX_STD_strncat  strncat
 #   define __QUEX_STD_malloc   malloc
 #   define __QUEX_STD_free     free  
 
@@ -106,6 +104,8 @@
 #   define QUEX_INPUT_HANDLE_TYPE  /* stdio.h's */ FILE 
 #endif
 
+#define __QUEX_STD_strlcpy(DEST, SRC, MAX) QUEXED(strlcpy)((DEST), (SRC), (size_t)(MAX))
+           
 #ifndef QUEX_TYPE_DEFINITIONS_E_LOAD_RESULT
 #define QUEX_TYPE_DEFINITIONS_E_LOAD_RESULT
 typedef enum {

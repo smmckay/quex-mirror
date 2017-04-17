@@ -7,7 +7,6 @@ token_type {
 #include <iostream>
 #include <string>
 
-       static int DEBUG_nonsense;
 $INCLUDE_CONVERTER_DECLARATION
 #include <quex/code_base/lexeme>
    }
@@ -41,7 +40,11 @@ $INCLUDE_CONVERTER_DECLARATION
         {
             std::string             tmp;
             tmp = map_id_to_name(self._id);
+#           if ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
             tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
+#           else
+            tmp += " '<converters of .text to pretty char disabled>'";
+#           endif
             return tmp;
         }
    }

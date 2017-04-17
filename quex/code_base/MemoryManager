@@ -58,6 +58,9 @@ extern void
 QUEXED_DEF(print_relative_positions)(const void* Begin,       const void* End, 
                                      size_t      ElementSize, const void* P);
 
+extern ptrdiff_t
+QUEXED_DEF(strlcpy)(char* Dest, const char* Src, size_t MaxN);
+
 QUEX_NAMESPACE_QUEX_CLOSE
  
 #endif /* __INCLUDE_GUARD_QUEX__CODE_BASE__MEMORY_MANAGER__ */

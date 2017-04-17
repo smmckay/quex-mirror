@@ -1,4 +1,13 @@
 (1) Generate 'OK-Sources' and Compile
+quex -i scan.qx -o br_scan \
+	 --token-class-file token.h --token-id-prefix BR_TKN_ \
+	 --foreign-token-id-file gramma.h --token-class blackray::Token \
+	 --no-string-accumulator \
+	 --debug-exception 
+g++ -Wall -Werror br_scan.cpp example.cpp \
+	-I/home/fschaef/prj/quex/trunk -I. \
+	-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
+	-o check 
 0
 1
 2
@@ -6,11 +15,17 @@
 4
 5
 (2) Mix member assignments with manually written token class.
+quex -i scan-error.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
 scan-error.qx:5:error: Member assignments in brief token senders are inadmissible
 scan-error.qx:5:error: with manually written token classes. User provided file 'token.h'.
+Makefile:16: recipe for target 'mixMemberAssignWithManualTokenClass' failed
 (3) Provide a 'token_type' definition together with a manually written class.
+quex -i CppDefault.qx scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
 CppDefault.qx:1:error: Section 'token_type' is intended to generate a token class.
 CppDefault.qx:1:error: However, the manually written token class file ''token.h''has been specified on the command line.
+Makefile:19: recipe for target 'tokenTypeAlongWithManualTokenClass' failed
 (4) Manually written token class without '--token-class' definition
+quex -i scan.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h  
 command line: The use of a manually written token class requires that the name of the class
 command line: is specified on the command line via the '--token-class' option.
+Makefile:22: recipe for target 'tokenTypeWithoutTokenClassSpecification' failed

@@ -1038,11 +1038,12 @@ QUEX_NAME(Buffer_on_overflow_DEFAULT)(QUEX_NAME(Buffer)* me, bool ForwardF)
 #   ifdef QUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE
     uint8_t                   utf8_encoded_str[512]; 
     char                      message[1024];
-    const size_t              MessageSize = (size_t)1024;
-    uint8_t*                  WEnd        = 0x0;
-    uint8_t*                  witerator   = 0x0; 
-    QUEX_TYPE_LEXATOM*        End         = 0x0; 
-    const QUEX_TYPE_LEXATOM*  iterator    = 0x0; 
+    char*                     it         = &message[0];
+    const char*               MessageEnd = &message[1024];
+    uint8_t*                  WEnd       = 0x0;
+    uint8_t*                  witerator  = 0x0;
+    QUEX_TYPE_LEXATOM*        End        = 0x0;
+    const QUEX_TYPE_LEXATOM*  iterator   = 0x0;
 
     /* Print out the lexeme start, so that the user has a hint. */
     WEnd        = utf8_encoded_str + 512 - 7;
@@ -1052,16 +1053,17 @@ QUEX_NAME(Buffer_on_overflow_DEFAULT)(QUEX_NAME(Buffer)* me, bool ForwardF)
 
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, utf8)(&iterator, End, &witerator, WEnd);
 
-    message[0] = '\0';
     /* No use of 'snprintf()' because not all systems seem to support it propperly. */
-    __QUEX_STD_strncat(message, 
-                       "Distance between lexeme start and current pointer exceeds buffer size.\n"
-                       "(tried to load buffer",
-                       MessageSize);
-    __QUEX_STD_strncat(message, ForwardF ? "forward)" : "backward)",                   MessageSize);
-    __QUEX_STD_strncat(message, "As a hint consider the beginning of the lexeme:\n[[", MessageSize);
-    __QUEX_STD_strncat(message, (char*)utf8_encoded_str,                               MessageSize);
-    __QUEX_STD_strncat(message, "]]\n",                                                MessageSize);
+    it += __QUEX_STD_strlcpy(it, 
+              "Distance between lexeme start and current pointer exceeds buffer size.\n"
+              "(tried to load buffer",
+              MessageEnd - it);
+    it += __QUEX_STD_strlcpy(it, ForwardF ? "forward)" : "backward)",                   
+                             MessageEnd - it);
+    it += __QUEX_STD_strlcpy(it, "As a hint consider the beginning of the lexeme:\n[[", 
+                             MessageEnd - it);
+    it += __QUEX_STD_strlcpy(it, (char*)utf8_encoded_str, MessageEnd - it);
+    it += __QUEX_STD_strlcpy(it, "]]\n", MessageEnd - it);
 
     QUEX_ERROR_EXIT(message);
 #   else

@@ -133,17 +133,16 @@ $INCLUDE_CONVERTER_DECLARATION
         const char* 
         $TOKEN_CLASS_get_string($TOKEN_CLASS* me, char*   buffer, size_t  BufferSize) 
         {
-            const char*  token_type_str = $TOKEN_CLASS_map_id_to_name(me->_id);
-            const char*  BufferEnd  = buffer + BufferSize;
-            const char*  iterator   = 0;
-            char*        writerator = 0;
+            const char*  token_id_str = $TOKEN_CLASS_map_id_to_name(me->_id);
+            const char*  BufferEnd    = buffer + BufferSize;
+            char*        writerator   = 0;
+
+            if( ! BufferSize ) return NULL;
 
             /* Token Type */
-            iterator   = token_type_str;
             writerator = buffer; 
-            while( (*iterator) && writerator != BufferEnd ) {
-                *writerator++ = *iterator++;
-            }
+            writerator += __QUEX_STD_strlcpy(writerator, token_id_str, 
+                                             BufferEnd - writerator);
 
             /* Opening Quote */
             if( BufferEnd - writerator > 2 ) {
@@ -152,12 +151,15 @@ $INCLUDE_CONVERTER_DECLARATION
             }
 
             /* The String */
+#           if ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
             QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
                                                    (size_t)(BufferEnd - writerator));
-
-            while( *writerator ) {
-                ++writerator;
-            }
+            while( *writerator ) ++writerator;
+#           else
+            writerator += __QUEX_STD_strlcpy(writerator, 
+                                             "<converters of .text to pretty char disabled>",
+                                             BufferEnd - writerator);
+#           endif
 
             /* Closing Quote */
             if( BufferEnd - writerator > 1 ) {

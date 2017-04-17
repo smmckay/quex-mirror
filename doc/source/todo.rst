@@ -68,3 +68,9 @@ for the 'buffer._memory.ownership' before reload!
 
 -- include 'lexeme' in token type definition requires INCLUDE_CONVERTER_DECLARATION
 
+-- token stamping:
+
+    #define QUEX_ACTION_TOKEN_STAMP(ME)                 \
+            QUEX_ACTION_TOKEN_STAMP_LINE_NUMBER(ME);    \
+            QUEX_ACTION_TOKEN_STAMP_COLUMN_NUMBER(ME);  \
+            self_write_token_p()->number_ = self.my_counter++;   
