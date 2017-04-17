@@ -18,10 +18,16 @@
 005.sh--2_NDEBUG.txt
 005.sh--2.txt
 006.sh.txt
+009.sh--socket.txt
+009.sh--socket-utf8.txt
 009.sh--stdin.txt
+009.sh--stdin-utf8.txt
 010.sh--feeder-converter.txt
 010.sh--feeder-plain.txt
 010.sh--gavager-converter.txt
 010.sh--gavager-plain.txt
 010.sh--point-plain.txt
 011b.sh.txt
+
+
+

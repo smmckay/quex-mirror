@@ -11,7 +11,7 @@ function make_silent() {
 }
 
 function observe() {
-    $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$1 
+    $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$1  | grep -v '^\#\#'
 }
 
 if [[ "$2" == "FIRST" ]]; then
@@ -63,6 +63,6 @@ case $1 in
     ;;
 esac
 
-cat tmp.txt
+cat tmp.txt | grep -v '^\#\#'
 
 make_silent clean 
