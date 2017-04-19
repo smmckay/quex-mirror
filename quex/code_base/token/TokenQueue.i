@@ -29,20 +29,16 @@ QUEX_NAME(TokenQueue_construct)(QUEX_NAME(TokenQueue)* me,
  * Memory: Pointer to memory of token queue, 0x0 --> no initial memory.
  * N:      Number of token objects that the array can carry.                  */
 {
-#   if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     QUEX_TYPE_TOKEN* iterator   = 0x0;
-#   endif
     QUEX_TYPE_TOKEN* memory_end = &Memory[N];
 
     __quex_assert(Memory != 0x0);
     __quex_assert(N > (size_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);
 
-#   if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     /* Call placement new (plain constructor) for all tokens in chunk.        */
     for(iterator = Memory; iterator != memory_end; ++iterator) {
         QUEX_NAME_TOKEN(construct)(iterator);
     }
-#   endif
     QUEX_NAME(TokenQueue_init)(me, Memory, memory_end); 
 }
 
@@ -94,7 +90,6 @@ QUEX_NAME(TokenQueue_resources_absent)(QUEX_NAME(TokenQueue)* me)
 QUEX_INLINE void
 QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me)
 {
-#   if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
     QUEX_TYPE_TOKEN* iterator = 0x0;
     /* Call explicit destructors for all tokens in array                      */
     for(iterator = me->begin; iterator != me->end; ++iterator) {
@@ -105,7 +100,6 @@ QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me)
      * analyzer object. Thus, no explicit free is necessary. In case of user
      * managed token queue memory the user takes care of the deletion.        */
     QUEX_NAME(TokenQueue_resources_absent_mark)(me);
-#   endif
 }
 
 QUEX_INLINE void   

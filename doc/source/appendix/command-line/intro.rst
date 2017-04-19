@@ -296,32 +296,6 @@ options can be used.
 
 Default: QUEX_TKN_
 
-.. cmdoption:: --token-policy, --tp single|queue
-
-    Determines the policy for passing tokens from the analyzer to the user. It can be either 'single' 
-    or 'queue'.  
-
-    
-
-Default: queue
-
-.. cmdoption:: --token-memory-management-by-user, --tmmbu 
-
-    Enables the token memory management by the user. This command line option is equivalent to the 
-    compile option  
-
-        .. code-block:: plain
-
-            QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY
-
-
-    It provides the functions ``token_queue_memory_switch(...)`` for token policy 'queue' 
-    and ``token_p_swap(...)`` for token policy 'single'.  
-
-    
-
-Default: false (disabled)
-
 .. cmdoption:: --token-queue-size number
 
     In conjunction with token passing policy 'queue', ``number`` specifies the number of tokens 

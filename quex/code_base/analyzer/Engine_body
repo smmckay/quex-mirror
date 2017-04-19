@@ -13,10 +13,8 @@
          *  at the top, and thus the addresses close to the buffer shall be used
          *  more often than the addresses far from it.                            */
         QUEX_NAME(TokenQueue)  _token_queue;  
-#       if ! defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
         /* Avoid constructor call to Token() => define plain memory.          */
         uint8_t            __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
-#       endif
 
         E_Error            error_code;
         char*              __input_name;
@@ -39,7 +37,5 @@
         QUEX_NAME(ModeStack)                                    _mode_stack;
 
         __QUEX_IF_COUNT(QUEX_NAME(Counter)                      counter;)
-        __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator)     accumulator;)
-        __QUEX_IF_POST_CATEGORIZER(QUEX_NAME(Dictionary)        post_categorizer;)
         __QUEX_IF_INCLUDE_STACK(struct QUEX_NAME(Memento_tag)*  _parent_memento;)
 

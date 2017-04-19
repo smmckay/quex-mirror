@@ -15,7 +15,7 @@ test: Simple.o lexer.o
 		-DPRINT_TOKEN                  
 
 Simple.c: test.qx
-	$(QUEX_PATH)/quex-exe.py --token-policy single \
+	$(QUEX_PATH)/quex-exe.py \
 		                     --codec utf8          \
 							 -b 1                  \
 							 -i $<                 \

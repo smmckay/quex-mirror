@@ -1,7 +1,6 @@
 /* -*- C++ -*- vim: set syntax=cpp: */
 #ifndef __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I
 #define __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I
-#ifdef  QUEX_OPTION_POST_CATEGORIZER
 
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/extra/post_categorizer/PostCategorizer>
@@ -399,7 +398,5 @@ QUEX_NAME(Dictionary)::print_this()
 #endif 
 
 QUEX_NAMESPACE_MAIN_CLOSE
-
-#endif /* QUEX_OPTION_POST_CATEGORIZER */
 
 #endif /* __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I */

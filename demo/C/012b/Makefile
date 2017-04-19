@@ -24,7 +24,7 @@ lexer: $(ENGINE:.c=.o) lexer.o A_B_C-token.o
 
 COMMON_TOKEN_OPTIONS = \
 	 --token-class-file A_B_C-token.h \
-     --token-policy     single \
+     \
 	 --suppress         0 1 6
 		 # --no-message-on-extra-options \
 

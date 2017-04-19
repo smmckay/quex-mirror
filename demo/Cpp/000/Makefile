@@ -49,7 +49,6 @@ source-package:
 	quex -i                 simple.qx  \
 	     -o                 EasyLexer  \
 		 --token-id-offset  0x1000     \
-		 --post-categorizer            \
 		 --source-package   lexer_mine
 
 # Macro expansions (only for debugging):

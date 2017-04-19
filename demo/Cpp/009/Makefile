@@ -65,12 +65,12 @@ LexUtf8 LexUtf8.cpp: utf8.qx
 	quex -i             utf8.qx \
 	     -o             LexUtf8 \
 		 --bet          wchar_t \
-		 --token-policy single       
+		 
 	
 LexAscii LexAscii.cpp: ascii.qx 
 	quex -i             ascii.qx \
 		 -o             LexAscii \
-		 --token-policy single
+		 
 
 %.E: %.cpp
 	$(CC) -E $< -o $@ 

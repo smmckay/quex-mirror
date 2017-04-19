@@ -128,10 +128,15 @@ mode_db = {}
 initial_mode = CodeFragment_NULL
 
 #-----------------------------------------------------------------------------------------
-# header: code fragment that is to be pasted before mode transitions
-#         and pattern action pairs (e.g. '#include<something>'
+# footer: code fragment that is to be pasted BEFORE all class definitions.
+#         basic macro definitons are available
 #-----------------------------------------------------------------------------------------
 header = CodeFragment_NULL
+
+#-----------------------------------------------------------------------------------------
+# footer: code fragment that is to be pasted AFTER all class definitions.
+#-----------------------------------------------------------------------------------------
+footer = CodeFragment_NULL
 
 #-----------------------------------------------------------------------------------------
 # class_body_extension: code fragment that is to be pasted inside the class definition
@@ -148,6 +153,11 @@ class_constructor_extension = CodeFragment_NULL
 # class_destructor_extension: code fragment that is to be pasted inside the lexer class constructor
 #-----------------------------------------------------------------------------------------
 class_destructor_extension = CodeFragment_NULL
+
+#-----------------------------------------------------------------------------------------
+# class_print_extension: code fragment that extends the class' print function
+#-----------------------------------------------------------------------------------------
+class_print_extension = CodeFragment_NULL
 
 # reset_extension: code fragment for user defined reset actions
 #-----------------------------------------------------------------------------------------
@@ -170,9 +180,11 @@ memento_unpack_extension = CodeFragment_NULL
 
 fragment_db = {
     "header":         "header",
+    "footer":         "footer",                     # -> in 'header' after all definitions.
     "body":           "class_body_extension",
     "constructor":    "class_constructor_extension",
     "destructor":     "class_destructor_extension",
+    "print":          "class_print_extension",
     "reset":          "reset_extension",
     "memento":        "memento_class_extension",
     "memento_pack":   "memento_pack_extension",

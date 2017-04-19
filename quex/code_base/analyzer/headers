@@ -31,12 +31,6 @@
 #ifdef      QUEX_OPTION_INCLUDE_STACK
 #   include <quex/code_base/analyzer/struct/include-stack>
 #endif
-#ifdef      QUEX_OPTION_STRING_ACCUMULATOR
-#   include <quex/code_base/extra/accumulator/Accumulator>
-#endif
-#ifdef      QUEX_OPTION_POST_CATEGORIZER
-#   include <quex/code_base/extra/post_categorizer/PostCategorizer>
-#endif
 
 #include    <quex/code_base/analyzer/struct/constructor>
 #include    <quex/code_base/analyzer/struct/reset>

@@ -19,7 +19,7 @@ lexer-icu: Simple.cpp
 
 
 Simple.cpp: simple.qx
-	@quex -i $< -o Simple --bet wchar_t --token-policy single --debug-exception
+	@quex -i $< -o Simple --bet wchar_t --debug-exception
 
 
 clean:

@@ -91,6 +91,8 @@ def parse_section(fh):
         #                              of the engine (e.g. "my_member = -1;")
         #     -- 'destructor { ... }' => define code that is to be pasted in the class' destructor
         #                              of the engine (e.g. "my_member = -1;")
+        #     -- 'print { ... }' => define code that is to be pasted in the class' print function.
+        #                              of the engine (e.g. "my_member = -1;")
         #     -- 'define { ... }'   => define patterns shorthands such as IDENTIFIER for [a-z]+
         #     -- 'repeated_token_id = QUEX_TKN_ ...;' => enables token repetition, defines
         #                                                the token id to be repeated.

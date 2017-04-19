@@ -258,7 +258,6 @@ def __parse_event(new_mode, fh, word):
     __general_validate(fh, new_mode, word, pos)
     error.verify_word_in_list(word, standard_incidence_db.keys(), comment, 
                               fh)
-    __validate_required_token_policy_queue(word, fh, pos)
 
     code         = code_fragment.parse(fh, "%s::%s event handler" % (new_mode.name, word))
     incidence_id = standard_incidence_db[word][0]
@@ -298,22 +297,3 @@ def __general_validate(fh, Mode, Name, pos):
         if not code.is_whitespace():
             error_dedent_and_ndedent(code, "on_n_dedent", "on_dedent")
                       
-def __validate_required_token_policy_queue(Name, fh, pos):
-    """Some handlers are better only used with token policy 'queue'."""
-
-    if Name not in ["on_entry", "on_exit", 
-                    "on_indent", "on_n_dedent", "on_dedent", "on_nodent", 
-                    "on_indentation_bad", "on_indentation_error", 
-                    "on_indentation"]: 
-        return
-    if Setup.token_policy == "queue":
-        return
-
-    pos_before = fh.tell()
-    fh.seek(pos)
-    error.warning("Using '%s' event handler, while the token queue is disabled.\n" % Name + \
-                  "Use '--token-policy queue', so then tokens can be sent safer\n" + \
-                  "from inside this event handler.", fh,
-                  SuppressCode=NotificationDB.warning_on_no_token_queue) 
-    fh.seek(pos_before)
-

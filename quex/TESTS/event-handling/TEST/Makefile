@@ -51,7 +51,7 @@ on_skip_range_open-customized.sh: on_skip_range_open-customized.exe
 
 
 transit%.exe: transit%.qx lexer.c 
-	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --token-policy single --debug-exception --language C
+	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --debug-exception --language C
 	$(LD) ./lexer.c EHLexer.c -o $@ \
 		-D__TEST_DESCRIPTION='"Mode Transitions: $<"' \
 		`icu-config --ldflags`      \
@@ -59,7 +59,7 @@ transit%.exe: transit%.qx lexer.c
 
 on_skip_range_open.exe: on_skip_range_open.qx 
 	echo $<
-	$(QUEX) -i $< -o EHLexer --token-policy single --token-id-prefix TK_ --debug-exception --language C
+	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --debug-exception --language C
 	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
 		-D__TEST_DESCRIPTION='"Default 'on_skip_range_open' event."' \
 		`icu-config --ldflags`      \
@@ -67,7 +67,7 @@ on_skip_range_open.exe: on_skip_range_open.qx
           -DQUEX_SETTING_BUFFER_SIZE=4 \
 
 on_skip_range_open-customized.exe: on_skip_range_open-customized.qx 
-	$(QUEX) -i $< -o EHLexer --token-policy single --token-id-prefix TK_ --debug-exception --language C
+	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --debug-exception --language C
 	$(LD) ./lexer.c EHLexer.c -o $@ \
 		-D__TEST_DESCRIPTION='"Customized 'on_skip_range_open' event."' \
 		`icu-config --ldflags`      \

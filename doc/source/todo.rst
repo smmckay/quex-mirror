@@ -74,3 +74,52 @@ for the 'buffer._memory.ownership' before reload!
             QUEX_ACTION_TOKEN_STAMP_LINE_NUMBER(ME);    \
             QUEX_ACTION_TOKEN_STAMP_COLUMN_NUMBER(ME);  \
             self_write_token_p()->number_ = self.my_counter++;   
+
+-- String Accu:
+
+   print {
+        QUEX_NAME(Accumulator_print_this)(&me->accumulator);
+   }
+   header {
+       include <quex/code_base/extra/accumulator/Accumulator>
+    }
+    footer {
+       include <quex/code_base/extra/accumulator/Accumulator.i>
+   }
+   body {
+        QUEX_NAME(Accumulator)          accumulator;
+   }
+   constructor {
+        if( ! QUEX_NAME(Accumulator_construct)(&me->accumulator, me) ) {
+            return false;
+        }
+   }
+   destructor {
+    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator));
+    }
+
+-- Post Categorizer
+
+    print {
+    QUEX_NAME(PostCategorizer_print_this)(&me->post_categorizer);
+
+    }
+    header {
+#   include <quex/code_base/extra/post_categorizer/PostCategorizer>
+    }
+    footer {
+#   include <quex/code_base/extra/post_categorizer/PostCategorizer.i>
+    }
+    body {
+    }
+    constructor {
+    if( ! QUEX_NAME(PostCategorizer_construct)(&me->post_categorizer) ) {
+        return false;
+    }
+    }
+    destructor {
+    }
+
+-- 'print' and 'footer' sections
+    "print":          "class_print_extension",
+    "footer":         "class_footer_extension",          # -> in 'header' after all definitions.

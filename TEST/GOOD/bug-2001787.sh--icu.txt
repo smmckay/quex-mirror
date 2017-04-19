@@ -12,7 +12,6 @@ URL 'http://www.dog.com/get?q=food'
     _column_number_at_begin: 30;
     _column_number_at_end:   1;
   }
-  accumulator: ''
   _mode_stack: {
     size:    8;
     content: []
@@ -68,6 +67,7 @@ URL 'http://www.dog.com/get?q=food'
       end_p:               begin + 38, end - 65498;
     }
   }
+  accumulator: ''
 
 
 | [END] number of token = 2

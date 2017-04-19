@@ -2,7 +2,6 @@ br_scan:
 	quex -i scan.qx -o br_scan \
 		 --token-class-file token.h --token-id-prefix BR_TKN_ \
 		 --foreign-token-id-file gramma.h --token-class blackray::Token \
-		 --no-string-accumulator \
 		 --debug-exception 
 
 all \

@@ -66,13 +66,13 @@ LexUtf8.h LexUtf8.c: utf8.qx
 	     -o             LexUtf8 \
 		 --language     C       \
 		 --bet          wchar_t \
-		 --token-policy single       
+		 
 	
 LexAscii.h LexAscii.c: ascii.qx 
 	quex -i             ascii.qx \
 		 -o             LexAscii \
 	     --language     C        \
-		 --token-policy single
+		 
 
 %.E: %.cpp
 	$(CC) -E $< -o $@ 

@@ -7,7 +7,7 @@ all: $(INPUT)
 # -DQUEX_OPTION_DEBUG_SHOW
 
 newline-skipper: 
-	@quex -i token.qx newline-skipper.qx -o Simple --token-policy single --debug-exception
+	@quex -i token.qx newline-skipper.qx -o Simple --debug-exception
 	@$(LDCPP) Simple*.cpp ../lexer-simply.cpp -o lexer \
 		-DPRINT_LINE_COLUMN \
 		-DQUEX_OPTION_LINE_NUMBER_COUNTING \
@@ -15,7 +15,7 @@ newline-skipper:
 		-DQUEX_SETTING_BUFFER_SIZE=4
 
 newline-skipper-utf8: 
-	@quex -i token.qx newline-skipper-utf8.qx -o Simple  -b 2 --token-policy single --debug-exception
+	@quex -i token.qx newline-skipper-utf8.qx -o Simple  -b 2 --debug-exception
 	@$(LDCPP_ICONV) ../lexer-simply.cpp Simple*.cpp -o lexer \
 		-DPRINT_LINE_COLUMN \
 		-DCONVERTER_ENCODING='"UTF-8"' \
@@ -25,7 +25,7 @@ newline-skipper-utf8:
 		-DQUEX_SETTING_BUFFER_SIZE=1000 
 
 non-newline-skipper: 
-	@quex -i token.qx non-newline-skipper.qx -o Simple --token-policy single --debug-exception
+	@quex -i token.qx non-newline-skipper.qx -o Simple --debug-exception
 	@$(LDCPP) Simple*.cpp ../lexer-simply.cpp -o lexer \
 		-DPRINT_LINE_COLUMN \
 		-DPRINT_TOKEN \

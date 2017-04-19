@@ -35,21 +35,21 @@ lexer.o: lexer.c max_Lexer.h moritz_Lexer.h boeck_Lexer.h
 max_Lexer.h \
 max_Lexer.c: max.qx
 	quex -i token.qx $< -o max::Lexer -b 4                \
-		 --token-id-prefix MAX_TKN_ --token-policy single \
+		 --token-id-prefix MAX_TKN_ \
 		 --language C                                     \
 		 --suppress 6
 
 moritz_Lexer.h \
 moritz_Lexer.c: moritz.qx
 	quex -i token.qx $< -o moritz::Lexer -b 2                \
-		 --token-id-prefix MORITZ_TKN_ --token-policy single \
+		 --token-id-prefix MORITZ_TKN_ \
 		 --language C                                        \
 		 --suppress 6
 
 boeck_Lexer.h \
 boeck_Lexer.c: boeck.qx
 	quex -i token.qx $< -o boeck::Lexer --codec utf8 \
-		 --token-id-prefix TKN_ --token-policy single   \
+		 --token-id-prefix TKN_ \
 		 --language C                                \
 		 --suppress 6
 

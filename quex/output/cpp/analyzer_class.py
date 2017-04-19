@@ -72,6 +72,7 @@ def do(ModeDB, Epilog):
                 ["$$TOKEN_ID_DEFINITION_FILE$$",         Setup.output_token_id_file_ref],
                 ["$$CORE_ENGINE_CHARACTER_CODING$$",     quex_converter_coding_name_str],
                 ["$$USER_DEFINED_HEADER$$",              Lng.SOURCE_REFERENCED(blackboard.header) + "\n"],
+                ["$$USER_DEFINED_FOOTER$$",              Lng.SOURCE_REFERENCED(blackboard.footer) + "\n"],
                 ["$$EPILOG$$",                           Epilog],
              ])
 
@@ -87,6 +88,7 @@ def do_implementation(ModeDB):
     func_txt = blue_print(func_txt, [
         ["$$CONSTRUCTOR_EXTENSTION$$",                  Lng.SOURCE_REFERENCED(blackboard.class_constructor_extension)],
         ["$$DESTRUCTOR_EXTENSTION$$",                   Lng.SOURCE_REFERENCED(blackboard.class_destructor_extension)],
+        ["$$USER_DEFINED_PRINT$$",                      Lng.SOURCE_REFERENCED(blackboard.class_print_extension)],
         ["$$CONSTRUCTOR_MODE_DB_INITIALIZATION_CODE$$", get_constructor_code(ModeDB)],
         ["$$RESET_EXTENSIONS$$",                        Lng.SOURCE_REFERENCED(blackboard.reset_extension)],
         ["$$MEMENTO_EXTENSIONS_PACK$$",                 Lng.SOURCE_REFERENCED(blackboard.memento_pack_extension)],

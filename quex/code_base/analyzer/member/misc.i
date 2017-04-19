@@ -50,22 +50,6 @@ QUEX_NAME(token_queue_remainder_get)(QUEX_TYPE_ANALYZER*  me,
                                      QUEX_TYPE_TOKEN**    end)
 { QUEX_NAME(TokenQueue_remainder_get)(&me->_token_queue, begin, end); }
 
-#if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-QUEX_INLINE void    QUEX_NAME(token_queue_get)(QUEX_TYPE_ANALYZER*  me, 
-                                               QUEX_TYPE_TOKEN** begin, size_t* size)
-{
-    QUEX_NAME(TokenQueue_memory_get)(&me->_token_queue, begin, size); 
-}
-
-QUEX_INLINE void    QUEX_NAME(token_queue_set)(QUEX_TYPE_ANALYZER*  me, 
-                                               QUEX_TYPE_TOKEN*     Begin, 
-                                               size_t               Size)
-{
-    QUEX_NAME(TokenQueue_init)(&me->_token_queue, Begin, Begin + Size); 
-}
-#endif
-
-
 QUEX_INLINE const char* 
 QUEX_NAME(version)(QUEX_TYPE_ANALYZER* me)
 { 
@@ -110,18 +94,12 @@ QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
 
     __QUEX_IF_COUNT(QUEX_NAME(Counter_print_this)(&me->counter));
 
-#   ifdef QUEX_OPTION_STRING_ACCUMULATOR
-    QUEX_NAME(Accumulator_print_this)(&me->accumulator);
-#   endif
-
-#   ifdef QUEX_OPTION_POST_CATEGORIZER
-    QUEX_NAME(PostCategorizer_print_this)(&me->post_categorizer);
-#   endif
-
     __QUEX_STD_printf("  _mode_stack: ");
     QUEX_NAME(ModeStack_print)(&me->_mode_stack);
 
     QUEX_NAME(Buffer_print_this)(&me->buffer);
+
+    QUEX_NAME(user_print)(me);
 
     if( me->error_code != E_Error_None ) {
         QUEX_NAME(Buffer_print_content_detailed)(&me->buffer);
@@ -147,16 +125,6 @@ QUEX_INLINE void
 QUEX_MEMBER(token_queue_remainder_get)(QUEX_TYPE_TOKEN**  begin, 
                                        QUEX_TYPE_TOKEN**  end)
 { QUEX_NAME(token_queue_remainder_get)(this, begin, end); }
-
-#if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-QUEX_INLINE void
-QUEX_MEMBER(token_queue_get)(QUEX_TYPE_TOKEN** begin, size_t* size)
-{ QUEX_NAME(token_queue_get)(this, begin, size); }
-
-QUEX_INLINE void
-QUEX_MEMBER(token_queue_set)(QUEX_TYPE_TOKEN* Begin, size_t Size)
-{ QUEX_NAME(token_queue_set)(this, Begin, Size); }
-#endif
 
 QUEX_INLINE const char* 
 QUEX_MEMBER(version)() const

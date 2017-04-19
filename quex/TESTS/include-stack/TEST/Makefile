@@ -20,13 +20,13 @@ hwut-info:
 	@echo $(TESTS)
 
 queue.exe:       lexer.cpp simple.qx 
-	quex -i simple.qx -o Simple --token-policy queue
+	quex -i simple.qx -o Simple 
 	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -lefence -o $@
 
 ## User's queue has been deprecated
 ##
 ## users_queue.exe: lexer.cpp simple.qx 
-##	quex -i simple.qx -o Simple --token-policy users_queue
+##	quex -i simple.qx -o Simple 
 ##	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -o $@
 
 %.E: %.cpp

@@ -40,6 +40,18 @@ $$RESET_EXTENSIONS$$
     return true;
 }
 
+void
+QUEX_NAME(user_print)(QUEX_TYPE_ANALYZER* me)
+{
+    (void)me;
+
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+/* START: User's constructor extensions _______________________________________*/
+$$USER_DEFINED_PRINT$$
+/* END: _______________________________________________________________________*/
+#undef self
+}
+
 #ifdef QUEX_OPTION_INCLUDE_STACK
 
 bool

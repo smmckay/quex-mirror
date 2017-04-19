@@ -12,7 +12,7 @@ CFLAGS = \
 	 #-DQUEX_OPTION_DEBUG_SHOW
 
 lexer:
-	quex -i simple.qx -o Simple --token-policy single --debug-exception
+	quex -i simple.qx -o Simple --debug-exception
 	$(LDCPP) $(CFLAGS) ../lexer-simply.cpp Simple.cpp -o lexer
 
 clean:

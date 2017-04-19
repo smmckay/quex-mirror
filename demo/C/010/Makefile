@@ -63,13 +63,13 @@ point-converter.exe:    lexer-point.c lexConverter.c
 lexPlain.c: lexPlain.qx 
 	quex -i             lexPlain.qx  \
 		 -o             lexPlain     \
-		 --token-policy single       \
+		 \
 		 --language     C            
 
 lexConverter.c: lexConverter.qx 
 	quex -i                    lexConverter.qx   \
 		 -o                    lexConverter      \
-		 --token-policy        single            \
+		 \
 		 --buffer-element-type wchar_t           \
 		 --language            C            
 

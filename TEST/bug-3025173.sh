@@ -2,6 +2,7 @@
 bug=3025173
 if [[ $1 == "--hwut-info" ]]; then
     echo "alexeevm: $bug 0.49.2 Custom Token struct for quex"
+    echo "HAPPY: :[0-9]+:"
     exit
 fi
 

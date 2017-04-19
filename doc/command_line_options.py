@@ -215,30 +215,6 @@ Option("token_id_prefix", "prefix",
      The token prefix can contain name space delimiters, i.e. \\v{::}. In
      the brief token senders the name space specifier can be left out.
      """),
-Option("token_policy", "single|queue",
-     """
-     Determines the policy for passing tokens from the analyzer to the user. 
-     It can be either 'single' or 'queue'.
-     """), 
-
-Option("token_memory_management_by_user_f", None,
-     """
-     Enables the token memory management by the user. This command line
-     option is equivalent to the compile option
-     """,
-     Block("QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY"),
-     """
-     It provides the functions \\v{token_queue_memory_switch(...)} for
-     token policy 'queue' and \\v{token_p_swap(...)} for token policy
-     'single'.
-     """),
-Option("token_queue_size", "number", 
-     """
-     In conjunction with token passing policy 'queue', \\v{number} specifies
-     the number of tokens in the token queue. This determines the maximum
-     number of tokens that can be send without returning from the analyzer
-     function.
-     """), 
 
 Option("token_queue_safety_border", "number", 
      """

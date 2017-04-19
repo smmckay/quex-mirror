@@ -8,9 +8,7 @@ QUEX_PARAMS:=-DQUEX_OPTION_ASSERTS_DISABLED -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N
 
 %.c: %.qx Makefile
 	quex -i $< \
-		 --token-policy single \
 		 --language C \
-		 --token-memory-management-by-user \
 		 --debug-exception \
 		-o $(basename $@)
 

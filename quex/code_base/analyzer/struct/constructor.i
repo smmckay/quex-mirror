@@ -193,18 +193,6 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     else if( ! QUEX_NAME(ModeStack_construct)(&me->_mode_stack) ) {
         goto ERROR_1;
     }
-#   ifdef QUEX_OPTION_STRING_ACCUMULATOR
-    else if( ! QUEX_NAME(Accumulator_construct)(&me->accumulator, me) ) {
-        me->error_code = E_Error_Constructor_Accumulator_Failed;
-        goto ERROR_2;
-    }
-#   endif
-#   ifdef QUEX_OPTION_POST_CATEGORIZER
-    else if( ! QUEX_NAME(PostCategorizer_construct)(&me->post_categorizer) ) {
-        me->error_code = E_Error_Constructor_PostCategorizer_Failed;
-        goto ERROR_3;
-    }
-#   endif
 #   ifdef QUEX_OPTION_COUNTER
     else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
         me->error_code = E_Error_Constructor_Counter_Failed;
@@ -231,14 +219,6 @@ ERROR_5:
     /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
 #   ifdef QUEX_OPTION_COUNTER
 ERROR_4:
-#   endif
-    __QUEX_IF_POST_CATEGORIZER(QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
-#   ifdef QUEX_OPTION_POST_CATEGORIZER
-ERROR_3:
-#   endif
-    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator));
-#   ifdef QUEX_OPTION_STRING_ACCUMULATOR
-ERROR_2:
 #   endif
     /* NO ALLOCATED RESOURCES IN: 'me->mode_stack'                            */
 ERROR_1:
@@ -273,9 +253,6 @@ QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
      * popped and destructed, until only the outest state remains. This
      * is then the state that is destructed here.                             */
     QUEX_NAME(Tokens_destruct)(me);
-    __QUEX_IF_STRING_ACCUMULATOR(QUEX_NAME(Accumulator_destruct)(&me->accumulator));
-    __QUEX_IF_POST_CATEGORIZER(  QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer));
-
 
     if( me->__input_name ) {
         QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
@@ -301,12 +278,6 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
     /* NOTE: 'memset()' will destroy the v-table in case that the analyzer 
      *       is a c++ class object.                                           */
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
-#   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
-    QUEX_NAME(Accumulator_resources_absent_mark)(&me->accumulator);
-#   endif
-#   if defined(QUEX_OPTION_POST_CATEGORIZER)
-    QUEX_NAME(PostCategorizer_resources_absent_mark)(&me->post_categorizer);
-#   endif
 #   ifdef QUEX_OPTION_COUNTER
     QUEX_NAME(Counter_resources_absent_mark)(&me->counter);
 #   endif
@@ -345,16 +316,6 @@ QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me)
     }
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     else if( me->_parent_memento != (QUEX_NAME(Memento)*)0 ) {
-        return false;
-    }
-#   endif
-#   if defined(QUEX_OPTION_STRING_ACCUMULATOR)
-    else if( ! QUEX_NAME(Accumulator_resources_absent)(&me->accumulator) ) {
-        return false;
-    }
-#   endif
-#   if defined(QUEX_OPTION_POST_CATEGORIZER)
-    else if( ! QUEX_NAME(PostCategorizer_resources_absent)(&me->post_categorizer) ) {
         return false;
     }
 #   endif
@@ -450,14 +411,9 @@ QUEX_NAME(Asserts_construct)()
 QUEX_INLINE bool
 QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
 {
-#   if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-    /* Assume that the user will pass us a constructed token queue */
-    QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
-#   else
     QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
                                     (QUEX_TYPE_TOKEN*)&me->__memory_token_queue,
                                     QUEX_SETTING_TOKEN_QUEUE_SIZE);
-#   endif
     return true;
 }
 

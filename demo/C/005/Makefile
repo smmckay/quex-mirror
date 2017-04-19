@@ -46,7 +46,7 @@ lexer:          example.o EasyLexer.o
 
 EasyLexer EasyLexer.c: simple.qx 
 	quex -i simple.qx -o EasyLexer \
-		 --token-policy single           \
+		 \
 		 --language C
 
 # (*) HELPERS __________________________________________________________________

@@ -1,6 +1,8 @@
 from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 from   quex.engine.misc.tools                     import typed
 
+import quex.blackboard as blackboard
+
 #
 
 def __nice(SM_ID): 
@@ -311,11 +313,16 @@ def get_implementation_header(Setup):
     if Setup.language != "C":
         return ""
 
-    return "\n".join([
+    result = [
         "#include <quex/code_base/analyzer/headers.i>",
         "#include <quex/code_base/analyzer/C-adaptions.h>",
-        "\n"
-    ])
+        "\n",
+        "/* START: User defined header content _________________________________________",
+        " *        The 'footer' content relies on class definitions made above.        */",
+    ]
+    result.append(blackboard.Lng.SOURCE_REFERENCED(blackboard.footer))
+    result.append("\n")
+    return "\n".join(result)
 
 def __frame_of_all(Code, Setup):
     # namespace_ref   = Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space)

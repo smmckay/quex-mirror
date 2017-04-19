@@ -9,9 +9,9 @@ CFLAGS = \
 	 #-DQUEX_OPTION_DEBUG_SHOW
 
 lexer:
-	quex -i $(INPUT) -o Simple --token-policy single --language C --debug-exception
+	quex -i $(INPUT) -o Simple --language C --debug-exception
 	$(LDC_ICONV) -DPRINT_TOKEN $(CFLAGS) ../lexer.c Simple*.c -o lexer
 
 lexer.E:
-	quex -i $(INPUT) -o Simple --token-policy single --language C --debug-exception
+	quex -i $(INPUT) -o Simple --language C --debug-exception
 	$(LDC) -I$(QUEX_PATH) -I. -Wall -E $(CFLAGS) ../lexer.c -o lexer.E

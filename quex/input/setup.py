@@ -148,7 +148,6 @@ SETUP_INFO = {
     "character_display":              [["--character-display"],                "utf8"],
     "path_limit_code":                [["--path-termination"],                 0x1],
     "dos_carriage_return_newline_f":  [["--no-DOS"],                           SetupParTypes.NEGATED_FLAG],
-    "string_accumulator_f":           [["--no-string-accumulator", "--nsacc"], SetupParTypes.NEGATED_FLAG],
     "insight_f":                      [["--insight"],                              SetupParTypes.FLAG],
     "converter_ucs_coding_name":      [["--converter-ucs-coding-name", "--cucn"], ""],
     "include_stack_support_f":        [["--no-include-stack", "--nois"],       SetupParTypes.NEGATED_FLAG],
@@ -164,13 +163,10 @@ SETUP_INFO = {
     "token_id_prefix":                [["--token-id-prefix"],                "QUEX_TKN_"],
     "token_queue_size":               [["--token-queue-size"],               64],
     "token_queue_safety_border":      [["--token-queue-safety-border"],      16],
-    "token_policy":                   [["--token-policy", "--tp"],           "queue"],                
-    "token_memory_management_by_user_f": [["--token-memory-management-by-user", "--tmmbu"], SetupParTypes.FLAG],
     "mode_transition_check_f":        [["--no-mode-transition-check"],       SetupParTypes.NEGATED_FLAG],
     "language":                       [["--language", "-l"],                 "C++"],
     "normalize_f":                    [["--normalize"],                      SetupParTypes.FLAG],
     "output_file_naming_scheme":      [["--file-extension-scheme", "--fes"], ""],
-    "post_categorizer_f":             [["--post-categorizer"],               SetupParTypes.FLAG],
     "output_directory":               [["--output-directory", "--odir"],     ""],
     "source_package_directory":       [["--source-package", "--sp"],         ""],
     "show_name_spaces_f":             [["--show-name-spaces", "--sns"],      SetupParTypes.FLAG],
@@ -225,6 +221,10 @@ SETUP_INFO = {
     #
     # DEPRECATED
     #______________________________________________________________________________________________________
+    "XX_token_memory_management_by_user_f": [["--token-memory-management-by-user", "--tmmbu"], SetupParTypes.FLAG],
+    "XX_post_categorizer_f":             [["--post-categorizer"],               SetupParTypes.FLAG],
+    "XX_string_accumulator_f":           [["--no-string-accumulator", "--nsacc"], SetupParTypes.NEGATED_FLAG],
+    "XX_token_policy":                   [["--token-policy", "--tp"],           "queue"],                
     "XX_begin_of_stream_code":           [["--begin-of-stream"],                "0x19"],                  
     "XX_buffer_element_size":            [["--bytes-per-ucs-code-point"],       "1"],                  
     "XX_buffer_element_size2":           [["--bytes-per-trigger"],              -1],                  
@@ -298,6 +298,21 @@ class NotificationDB:
     warning_incidence_handler_overwrite              = 19
 
 DEPRECATED = { 
+  "XX_token_memory_management_by_user_f": 
+     ("User token memory management option no longer available.",
+      "0.67.4"), 
+  "XX_post_categorizer_f": 
+     ("The post categorizer  has been pulled out of the generator. It's header\n"
+      "can be included anyway.",
+      "0.67.3"),
+  "XX_string_accumulator_f":
+     ("The string accumulator has been pulled out of the generator. It's header\n"
+      "can be included anyway.",
+      "0.67.3"),
+  "XX_token_policy": 
+     ("There is only one token policy 'queue' in recent versions of Quex.\n" + \
+      "Option '--token-policy' or '--tp' are considered superfluous."
+      "0.67.3"),
   "XX_read_pattern_file": 
      ("Write a 'pattern { ... }' section inside the mode files instead.\n" + \
       "Syntax of the 'pattern { ... }' section and the previous file syntax\n" + \

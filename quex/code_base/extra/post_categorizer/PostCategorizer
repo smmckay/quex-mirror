@@ -4,8 +4,6 @@
 #ifndef __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER
 #define __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER
 
-#ifdef  QUEX_OPTION_POST_CATEGORIZER
-
 QUEX_NAMESPACE_MAIN_OPEN
 
 /*________________________________________________________________________________
@@ -78,7 +76,5 @@ QUEX_INLINE void
 QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me);
                           
 QUEX_NAMESPACE_MAIN_CLOSE
-
-#endif /* QUEX_OPTION_POST_CATEGORIZER */
 
 #endif /* __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POSTCATEGORIZER */

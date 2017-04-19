@@ -62,13 +62,11 @@ point-converter.exe:    lexer-point.cpp lexConverter.cpp
           
 lexPlain.cpp: lexPlain.qx 
 	quex -i             lexPlain.qx  \
-		 -o             lexPlain     \
-		 --token-policy single       \
+		 -o             lexPlain     
 
 lexConverter.cpp: lexConverter.qx 
 	quex -i                    lexConverter.qx   \
 		 -o                    lexConverter      \
-		 --token-policy        single            \
 		 --buffer-element-type wchar_t           
 
 # (*) HELPERS __________________________________________________________________

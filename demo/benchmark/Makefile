@@ -104,8 +104,7 @@ out/quex_scan.cpp: in/quex/c.qx
 		 -o                 quex_scan      \
 		 --token-id-offset        3              \
 		 --token-id-prefix           TKN_           \
-	     --token-policy           single         \
-		 --no-string-accumulator                 \
+	     \
 	     --no-mode-transition-check              \
 		 --single-mode-analyzer
 
@@ -113,10 +112,9 @@ out/quex_hey_scan.cpp: in/quex/hey.qx
 	quex -i $< \
 	     --output-directory       out            \
 		 -o                 quex_scan      \
-		 --no-string-accumulator                 \
 		 --token-id-offset        3              \
 		 --token-id-prefix        TKN_           \
-	     --token-policy           single         
+	     
 	mv out/quex_scan.cpp out/quex_hey_scan.cpp
 	# ./move_it.sh hey
 

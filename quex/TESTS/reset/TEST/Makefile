@@ -10,13 +10,13 @@ CC = g++ -I$(QUEX_PATH) \
 all: $(FILES)
 
 codec-lexer: lexer.cpp 
-	quex -i simple-hindi.qx -o Simple --token-policy single --codec utf8 --debug-exception
+	quex -i simple-hindi.qx -o Simple --codec utf8 --debug-exception
 	$(CC) lexer.cpp Simple.cpp  -o $@ \
 		  -DQUEX_SETTING_BUFFER_SIZE=39                     \
 	      -D__QUEX_SETTING_TEST_UTF8 
 
 iconv-lexer: lexer.cpp 
-	quex -i simple-hindi.qx -o Simple --token-policy single --bet wchar_t --debug-exception
+	quex -i simple-hindi.qx -o Simple --bet wchar_t --debug-exception
 	$(CC) lexer.cpp Simple.cpp  -o $@ \
 		  -DQUEX_SETTING_BUFFER_SIZE=20                     \
 		  -DQUEX_OPTION_CONVERTER_ICONV                     \
@@ -24,7 +24,7 @@ iconv-lexer: lexer.cpp
 		  -D__QUEX_SETTING_TEST_UTF8           
 
 icu-lexer: lexer.cpp 
-	quex -i simple-hindi.qx -o Simple --token-policy single --bet wchar_t --debug-exception
+	quex -i simple-hindi.qx -o Simple --bet wchar_t --debug-exception
 	$(CC) lexer.cpp Simple.cpp  -o $@ \
 		  `icu-config --ldflags`                            \
 		  -DQUEX_SETTING_BUFFER_SIZE=20                     \
@@ -33,14 +33,14 @@ icu-lexer: lexer.cpp
 		  -D__QUEX_SETTING_TEST_UTF8           
 
 lexer: lexer.cpp 
-	quex -i simple.qx -o Simple --token-policy single --debug-exception
+	quex -i simple.qx -o Simple --debug-exception
 	$(CC) lexer.cpp Simple.cpp  -o $@ \
 		 -DQUEX_SETTING_BUFFER_SIZE=14                 \
 		 -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=9           
 		 #-DQUEX_OPTION_DEBUG_SHOW                      \
 
 lexer-x: lexer-x.cpp
-	quex -i simple.qx -o Simple --token-policy single --debug-exception
+	quex -i simple.qx -o Simple --debug-exception
 	echo Must call quex here
 	$(CC) lexer-x.cpp Simple.cpp  -o $@ \
 		 -DQUEX_SETTING_BUFFER_SIZE=14                      \

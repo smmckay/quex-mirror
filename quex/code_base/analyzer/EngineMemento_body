@@ -16,10 +16,6 @@
         QUEX_NAME(Counter)              counter;
 #       endif
 
-#       if defined(QUEX_OPTION_STRING_ACCUMULATOR)
-        QUEX_NAME(Accumulator)          accumulator;
-#       endif
-
         /* Deriberately not subject to include handling:
          *    -- Mode stack.
          *    -- Token and token queues.

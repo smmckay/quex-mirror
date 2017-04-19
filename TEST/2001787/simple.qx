@@ -15,3 +15,24 @@ mode ONE_AND_ONLY
    {P_URL} => QUEX_TKN_URL(Lexeme);
    .       => QUEX_TKN_NONE(Lexeme);
 }
+
+header {
+#include <quex/code_base/extra/accumulator/Accumulator>
+}
+footer {
+#include <quex/code_base/extra/accumulator/Accumulator.i>
+}
+body {
+    QUEX_NAME(Accumulator)          accumulator;
+}
+constructor {
+    if( ! QUEX_NAME(Accumulator_construct)(&me->accumulator, me) ) {
+        return false;
+    }
+}
+destructor {
+    QUEX_NAME(Accumulator_destruct)(&me->accumulator);
+}
+print {
+    QUEX_NAME(Accumulator_print_this)(&me->accumulator);
+}

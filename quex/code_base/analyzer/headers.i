@@ -38,12 +38,6 @@
 #ifdef      QUEX_OPTION_INCLUDE_STACK
 #   include <quex/code_base/analyzer/struct/include-stack.i>
 #endif
-#ifdef      QUEX_OPTION_STRING_ACCUMULATOR
-#   include <quex/code_base/extra/accumulator/Accumulator.i>
-#endif
-#ifdef      QUEX_OPTION_POST_CATEGORIZER
-#   include <quex/code_base/extra/post_categorizer/PostCategorizer.i>
-#endif
 #ifdef      QUEX_OPTION_INDENTATION_TRIGGER
 #   include <quex/code_base/analyzer/member/on_indentation.i>
 #endif

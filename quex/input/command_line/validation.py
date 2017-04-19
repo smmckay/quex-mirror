@@ -85,9 +85,6 @@ def do(setup, command_line, argv):
                   "is specified on the command line via the '--token-class' option.")
     
     # Token queue
-    if setup.token_policy != "queue" and command_line.search("--token-queue-size"):
-        error.log("Option --token-queue-size determines a fixed token queue size. This makes\n" + \
-                  "only sense in conjunction with '--token-policy queue'.\n")
     if setup.token_queue_size <= setup.token_queue_safety_border + 1:
         if setup.token_queue_size == setup.token_queue_safety_border: cmp_str = "equal to"
         else:                                                         cmp_str = "less than"
@@ -107,17 +104,6 @@ def do(setup, command_line, argv):
     __check_file_name(setup, "extern_token_id_file", "file containing user token ids", 0,
                       CommandLineOption=SETUP_INFO["extern_token_id_file"])
     __check_file_name(setup, "input_mode_files", "quex source file")
-
-    # Token transmission policy
-    token_policy_list = ["queue", "single", "users_token", "users_queue"]
-    if setup.token_policy not in token_policy_list:
-        error.log("Token policy '%s' not supported. Use one of the following:\n" % setup.token_policy + \
-                  repr(token_policy_list)[1:-1])
-    elif setup.token_policy == "users_token":
-        error.log("Token policy 'users_queue' has be deprecated since 0.49.1. Use\n"
-                  "equivalent policy 'single'.")
-    elif setup.token_policy == "users_queue":
-        error.log("Token policy 'users_queue' has be deprecated since 0.49.1\n")
 
     # Internal engine character encoding
     def __codec_vs_buffer_lexatom_size_in_byte(CodecName, RequiredBufferElementSize):
@@ -141,14 +127,6 @@ def do(setup, command_line, argv):
         # NOT: __codec_vs_buffer_lexatom_size_in_byte("utf8", 1)
         # BECAUSE: Code unit size is one. No type has a size of less than one byte!
         __codec_vs_buffer_lexatom_size_in_byte("utf16", 2)
-
-    if setup.string_accumulator_f:
-        error_n = NotificationDB.warning_on_no_token_class_take_text
-        if error_n in setup.suppressed_notification_list: 
-           error.warning("The warning upon missing 'take_text' in token type definition is de-\n"
-                     + "activated by '--suppress %i'. This is dangerous, if there is a string\n" % error_n
-                     + "accumulator. May be, use '--no-string-accumulator'.", -1,
-                    SuppressCode=NotificationDB.warning_on_no_warning_on_missing_take_text)
 
 def __check_identifier(setup, Candidate, Name):
     value = setup.__dict__[Candidate]

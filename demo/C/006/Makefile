@@ -53,8 +53,7 @@ EasyLexer.c: simple.qx
 	quex -i                 simple.qx  \
 	     -o           EasyLexer  \
 		 --token-id-offset  0x1000     \
-		 --language         C          \
-		 --post-categorizer
+		 --language         C          
 
 # (*) HELPERS __________________________________________________________________
 clean:	
