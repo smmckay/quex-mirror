@@ -4,6 +4,8 @@
 
 #include <tmp_dir/TestAnalyzer>
 #include <quex/code_base/lexeme.i>
+#include <quex/code_base/extra/accumulator/Accumulator>
+#include <quex/code_base/extra/accumulator/Accumulator.i>
 
 int
 main(int argc, char** argv)
@@ -25,7 +27,7 @@ main(int argc, char** argv)
         return 0;
     }
     TestAnalyzer            analyzer((QUEX_NAME(ByteLoader)*)0, NULL);
-    QUEX_NAME(Accumulator)& accumulator = analyzer.accumulator;
+    QUEX_NAME(Accumulator)  accumulator;
 
 #   define self analyzer
 

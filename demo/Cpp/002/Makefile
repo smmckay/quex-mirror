@@ -35,7 +35,7 @@ CC := $(COMPILER) -I./ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) \
 all:   lexer lexer2
 
 lexer: simple.qx
-	quex -i patterns.qx tokens.qx simple.qx -o EasyLexer
+	quex -i patterns.qx tokens.qx simple.qx common.qx -o EasyLexer
 	$(CC) -o $@ ../example.cpp EasyLexer.cpp 
          
 lexer2: simple2.qx

@@ -48,7 +48,7 @@ example.o: ../example.c EasyLexer.c
 	$(CC) -E $< -o $@ 
 
 EasyLexer.c: simple.qx 
-	quex -i                 simple.qx  \
+	quex -i                 simple.qx  common.qx \
 	     -o                 EasyLexer  \
 		 --token-id-offset  0x1000     \
 		 --language         C          

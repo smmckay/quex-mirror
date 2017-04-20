@@ -48,7 +48,7 @@ example.o: ../example.cpp  EasyLexer.cpp
 	$(CC) -E $< -o $@ 
 
 EasyLexer.cpp: simple.qx 
-	quex -i                 simple.qx  \
+	quex -i                 simple.qx  common.qx \
 	     -o                 EasyLexer  \
 		 --token-id-offset  0x1000     \
 
