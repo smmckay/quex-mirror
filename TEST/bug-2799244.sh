@@ -15,7 +15,7 @@ quex -i $1.qx -o Simple
 if [[ $1 == "error" ]]; then
     echo "(*) No String Accumulator"
     echo
-    quex -i $1.qx -o Simple --nsacc --debug-exception
+    quex -i $1.qx -o Simple --debug-exception
 else
     echo "(*) perform compilation"
     if [[ $1 == "good-2" ]]; then 

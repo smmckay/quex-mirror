@@ -1,0 +1,31 @@
+
+header {
+#include <quex/code_base/extra/accumulator/Accumulator>
+#include <quex/code_base/extra/post_categorizer/PostCategorizer>
+}
+
+footer {
+#include <quex/code_base/extra/accumulator/Accumulator.i>
+#include <quex/code_base/extra/post_categorizer/PostCategorizer.i>
+}
+body {
+    QUEX_NAME(Accumulator)     accumulator;
+    QUEX_NAME(Dictionary)      post_categorizer;
+}
+constructor {
+    if( ! QUEX_NAME(Accumulator_construct)(&me->accumulator, me) ) {
+        return false;
+    }
+    else if( ! QUEX_NAME(PostCategorizer_construct)(&me->post_categorizer) ) {
+        return false;
+    }
+    return true;
+}
+destructor {
+    QUEX_NAME(Accumulator_destruct)(&me->accumulator);
+    QUEX_NAME(PostCategorizer_destruct)(&me->post_categorizer);
+}
+print {
+    QUEX_NAME(Accumulator_print_this)(&me->accumulator);
+    QUEX_NAME(PostCategorizer_print_this)(&me->post_categorizer);
+}

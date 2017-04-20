@@ -23,7 +23,6 @@
     _column_number_at_begin: 97;
     _column_number_at_end:   98;
   }
-  accumulator: ''
   _mode_stack: {
     size:    8;
     content: []
@@ -58,9 +57,9 @@
       end_character_index: 115;
       end_p:               begin + 116, end - 130956;
     }
+
+
   }
-
-
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
                                            [0001] 0x0065

@@ -1,7 +1,7 @@
 include ../Makefile.lexer
 
 lexer: simple.qx main.c
-	quex -i  simple.qx -o Simple --post-categorizer --language C --debug-exception
+	quex -i  simple.qx common.qx -o Simple --language C --debug-exception
 	$(LDC) main.c Simple.c -o lexer 
 
 clean: 
