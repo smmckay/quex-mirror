@@ -39,8 +39,9 @@
  *
  * /                   
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME_TOKEN(Strexemo_tag) {
-    QUEX_TYPE_LEXATOM* begin;
-    QUEX_TYPE_LEXATOM* end;
+    QUEX_TYPE_LEXATOM*             begin;
+    QUEX_TYPE_LEXATOM*             end;
+    QUEX_NAME_TOKEN(Strexemo_tag)* __next;
 } QUEX_NAME_TOKEN(Strexemo); 
 
 Strexemo_construct(Strexemo*, ...);
@@ -57,7 +58,46 @@ Strexemo_crc32(Strexemo*);
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
    StrexemoPool  head;
-} StrexemoObserver;
+} StrexemoHabitat;
+    
+StrexemoHabitat_emigrate() {
+    // Compute required space
+    sum = 0;
+    for(it = me->begin; it ; it->__next) {
+        sum += (it->end - it->begin);
+    }
+
+    drain_p = QUEXED(MemoryManager_allocate)(sum, E_Habitat);
+    if( ! drain_p ) {
+        return false;
+    }
+    for(it = me->begin; it ; it->__next) {
+        element_n = it->end - it->begin;
+        drain_p   = mempcpy(drain_p, it->begin, 
+                            element_n * sizeof(QUEX_TYPE_LEXATOM));
+        it->begin = drain_p_before;
+        it->end   = &it->begin[element_n];
+    }
+}
+
+StrexemoHabitat_new_Strexeme(const QUEX_TYPE_LEXATOM* Begin,
+                             const QUEX_TYPE_LEXATOM* End)
+{
+    if( ! me->__first_free ) {
+        me->__first_free = QUEXED(MemoryManager_allocate)(some);
+        if( ! me->__first_free ) {
+            return (QUEX_NAME_TOKEN(Strexeme)*)0;
+        }
+    }
+    result           = me->__first_free;
+    me->__first_free = result.__next;
+    result.__next    = me->__first_used;
+    me->__first_used = result;       
+
+    result->begin = Begin;
+    result->end   = End;
+    return result;
+}
 
 Strexemo*
 StrexemoObserver_new(StrexemoObserver*,       

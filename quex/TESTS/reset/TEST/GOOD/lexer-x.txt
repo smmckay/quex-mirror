@@ -7,7 +7,7 @@ AFTER Reset:
     _column_number_at_begin: 1;
     _column_number_at_end:   1;
   }
-  accumulator: ''
+
   _mode_stack: {
     size:    8;
     content: []
@@ -43,4 +43,5 @@ AFTER Reset:
       end_character_index: 0;
       end_p:               begin + 1, end - 13;
     }
-  }
+  }  
+  accumulator: ''

@@ -33,14 +33,14 @@ icu-lexer: lexer.cpp
 		  -D__QUEX_SETTING_TEST_UTF8           
 
 lexer: lexer.cpp 
-	quex -i simple.qx -o Simple --debug-exception
+	quex -i simple.qx common.qx -o Simple --debug-exception
 	$(CC) lexer.cpp Simple.cpp  -o $@ \
 		 -DQUEX_SETTING_BUFFER_SIZE=14                 \
 		 -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=9           
 		 #-DQUEX_OPTION_DEBUG_SHOW                      \
 
 lexer-x: lexer-x.cpp
-	quex -i simple.qx -o Simple --debug-exception
+	quex -i simple.qx common.qx -o Simple --debug-exception
 	echo Must call quex here
 	$(CC) lexer-x.cpp Simple.cpp  -o $@ \
 		 -DQUEX_SETTING_BUFFER_SIZE=14                      \
