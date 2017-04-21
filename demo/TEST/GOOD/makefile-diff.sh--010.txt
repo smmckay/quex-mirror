@@ -23,15 +23,17 @@
 ---
 > %.E: %.c  
 < lexPlain.cpp: lexPlain.qx 
+< 	quex -i lexPlain.qx  -o lexPlain
+< 
+< lexConverter.cpp: lexConverter.qx 
+< 	quex -i lexConverter.qx -o lexConverter --buffer-element-type wchar_t 
 ---
 > lexPlain.c: lexPlain.qx 
-> 		 --language     C            
-< lexConverter.cpp: lexConverter.qx 
----
+> 	quex -i lexPlain.qx -o lexPlain \
+> 		 --language C            
+> 
 > lexConverter.c: lexConverter.qx 
-< 		 --buffer-element-type wchar_t           
----
-> 		 --buffer-element-type wchar_t           \
+> 	quex -i lexConverter.qx -o lexConverter --buffer-element-type wchar_t \
 > 		 --language            C            
 < 	rm -f lexPlain-*     lexPlain.cpp     lexPlain
 < 	rm -f lexConverter-* lexConverter.cpp lexConverter

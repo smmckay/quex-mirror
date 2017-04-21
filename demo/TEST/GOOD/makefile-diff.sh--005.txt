@@ -10,7 +10,7 @@
 < EasyLexer EasyLexer.cpp: simple.qx 
 ---
 > EasyLexer EasyLexer.c: simple.qx 
-< 		 --token-policy single
+< 		 
 ---
-> 		 --token-policy single           \
+> 		 \
 > 		 --language C

@@ -39,7 +39,7 @@ lexer: simple.qx
 	$(CC) -o $@ ../example.cpp EasyLexer.cpp 
          
 lexer2: simple2.qx
-	quex -i patterns.qx tokens.qx simple2.qx -o EasyLexer
+	quex -i patterns.qx tokens.qx simple2.qx common.qx -o EasyLexer
 	$(CC) -o $@ ../example.cpp EasyLexer.cpp 
 
 # (*) HELPERS __________________________________________________________________

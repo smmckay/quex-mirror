@@ -61,16 +61,11 @@ point-converter.exe:    lexer-point.c lexConverter.c
 	$(COMPILER) -E $< -o $@  
           
 lexPlain.c: lexPlain.qx 
-	quex -i             lexPlain.qx  \
-		 -o             lexPlain     \
-		 \
-		 --language     C            
+	quex -i lexPlain.qx -o lexPlain \
+		 --language C            
 
 lexConverter.c: lexConverter.qx 
-	quex -i                    lexConverter.qx   \
-		 -o                    lexConverter      \
-		 \
-		 --buffer-element-type wchar_t           \
+	quex -i lexConverter.qx -o lexConverter --buffer-element-type wchar_t \
 		 --language            C            
 
 # (*) HELPERS __________________________________________________________________

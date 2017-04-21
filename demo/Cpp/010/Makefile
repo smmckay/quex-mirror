@@ -61,13 +61,10 @@ point-converter.exe:    lexer-point.cpp lexConverter.cpp
 	$(COMPILER) -E $< -o $@  
           
 lexPlain.cpp: lexPlain.qx 
-	quex -i             lexPlain.qx  \
-		 -o             lexPlain     
+	quex -i lexPlain.qx  -o lexPlain
 
 lexConverter.cpp: lexConverter.qx 
-	quex -i                    lexConverter.qx   \
-		 -o                    lexConverter      \
-		 --buffer-element-type wchar_t           
+	quex -i lexConverter.qx -o lexConverter --buffer-element-type wchar_t 
 
 # (*) HELPERS __________________________________________________________________
 clean:	
