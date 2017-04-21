@@ -984,8 +984,8 @@ quex/TESTS/code/TEST                                                 <no date>
  * Code Check with pyflakes
         pyflakes-check.sh ......................................[TIME_OUT]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .....................[FAIL]
-                                           sphinx ..................[FAIL]
+        command_line_options-verify-doc.py man .......................[OK]
+                                           sphinx ....................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1006,8 +1006,6 @@ quex/TESTS/code/TEST                                                 <no date>
     [FAIL] check-default-configuration.sh
     [FAIL] svn-status.sh
     [FAIL] pyflakes-check.sh
-    [FAIL] command_line_options-verify-doc.py _ man
-                                            \__ sphinx
     [FAIL] macro-check.py
 ===============================================================================
                                                                                
@@ -1370,9 +1368,7 @@ quex/TESTS/source-package/TEST                                       <no date>
                   manual-token-class .................................[OK]
                   no-counter .........................................[OK]
                   no-include-stack ...................................[OK]
-                  no-string-accumulator ............................[FAIL]
                   plain ..............................................[OK]
-                  post-categorizer .................................[FAIL]
     C++
         test-cpp.sh codec ............................................[OK]
                     codec-utf16 ......................................[OK]
@@ -1381,18 +1377,11 @@ quex/TESTS/source-package/TEST                                       <no date>
                     manual-token-class ...............................[OK]
                     no-counter .......................................[OK]
                     no-include-stack .................................[OK]
-                    no-string-accumulator ..........................[FAIL]
                     plain ............................................[OK]
-                    post-categorizer ...............................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-c.sh _ no-string-accumulator
-                   \__ post-categorizer
-    [FAIL] test-cpp.sh _ no-string-accumulator
-                     \__ post-categorizer
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Token Class                                  
@@ -3212,7 +3201,7 @@ SUMMARY:
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-        6  14    [FAIL] quex/TESTS/code/TEST                                          
+        4  14    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
         1  2     [FAIL] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3225,7 +3214,7 @@ SUMMARY:
         1  45    [FAIL] ........../match-precedence/TEST                              
         1  12    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
-        4  20    [FAIL] ........../source-package/TEST                                
+           16      [OK] ........../source-package/TEST                                
            1       [OK] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
@@ -3266,11 +3255,11 @@ SUMMARY:
            3       [OK] .........../graphviz/TEST                                     
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _____           
-    |  ___|_ _(_) |___     / ||___  |    __  __
-    | |_ / _` | | / __|    | |   / /     \ \/ /
-    |  _| (_| | | \__ \    | |  / /       >  < 
-    |_|  \__,_|_|_|___/    |_| /_/       /_/\_\
-                                                                   (1630 tests)
+     _____     _ _          _  _           
+    |  ___|_ _(_) |___     / |/ |    __  __
+    | |_ / _` | | / __|    | || |    \ \/ /
+    |  _| (_| | | \__ \    | || |     >  < 
+    |_|  \__,_|_|_|___/    |_||_|    /_/\_\
+                                                                   (1626 tests)
 
 ===============================================================================

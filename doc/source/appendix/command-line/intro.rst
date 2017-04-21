@@ -203,15 +203,6 @@ Default: true (not disabled)
 
 Default: false (disabled)
 
-.. cmdoption:: --no-string-accumulator, --nsacc 
-
-    Turns the string accumulator option off. This disables the use of the string accumulator to 
-    accumulate lexemes.  
-
-    
-
-Default: true (not disabled)
-
 .. cmdoption:: --no-include-stack, --nois 
 
     Disables the support of include stacks where the state of the lexical analyzer can be saved and 
@@ -221,15 +212,6 @@ Default: true (not disabled)
     
 
 Default: true (not disabled)
-
-.. cmdoption:: --post-categorizer 
-
-    Turns the post categorizer option on. This allows a 'secondary' mapping from lexemes to token 
-    ids based on their name. See ':ref:`PostCategorizer`'.  
-
-    
-
-Default: false (disabled)
 
 .. cmdoption:: --no-count-columns 
 

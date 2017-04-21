@@ -362,20 +362,6 @@ Default: false (disabled)
 
 
 .TP
-.BI "--no-string-accumulator, --nsacc "
-
-.RS
-Turns the string accumulator option off. This disables the use of the string accumulator to accumulate lexemes. 
-
-
-.RE
-
-\.RS
-Default: true (not disabled)
-.RE
-
-
-.TP
 .BI "--no-include-stack, --nois "
 
 .RS
@@ -386,20 +372,6 @@ Disables the support of include stacks where the state of the lexical analyzer c
 
 \.RS
 Default: true (not disabled)
-.RE
-
-
-.TP
-.BI "--post-categorizer "
-
-.RS
-Turns the post categorizer option on. This allows a 'secondary' mapping from lexemes to token ids based on their name. See ':ref:`PostCategorizer`'. 
-
-
-.RE
-
-\.RS
-Default: false (disabled)
 .RE
 
 
@@ -496,48 +468,6 @@ In the brief token senders the name space specifier can be left out.
 
 \.RS
 Default: QUEX_TKN_
-.RE
-
-
-.TP
-.BI "--token-policy, --tp single|queue"
-
-.RS
-Determines the policy for passing tokens from the analyzer to the user. It can be either 'single' or 'queue'. 
-
-
-.RE
-
-\.RS
-Default: queue
-.RE
-
-
-.TP
-.BI "--token-memory-management-by-user, --tmmbu "
-
-.RS
-Enables the token memory management by the user. This command line option is equivalent to the compile option 
-
-
-.nf
-
-            QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY
-
-
-
-.fi
-It provides the functions 
-.B "token_queue_memory_switch(...)"
-for token policy 'queue' and 
-.B "token_p_swap(...)"
-for token policy 'single'. 
-
-
-.RE
-
-\.RS
-Default: false (disabled)
 .RE
 
 

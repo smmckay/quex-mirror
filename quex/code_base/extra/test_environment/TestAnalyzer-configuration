@@ -23,8 +23,8 @@
 #   define __QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION
 #endif
 
-#define QUEX_SETTING_VERSION           "0.67.2"
-#define QUEX_SETTING_BUILD_DATE        "Sat Apr 15 12:08:46 2017"
+#define QUEX_SETTING_VERSION           "0.67.3"
+#define QUEX_SETTING_BUILD_DATE        "Fri Apr 21 08:11:56 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -86,10 +86,6 @@
 #define    __QUEX_OPTION_SYSTEM_ENDIAN
 #endif
 
-#ifndef QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY
-/* #define QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY */
-#endif
-
 #ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
 #   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)64)
 #endif
@@ -115,10 +111,6 @@
 #endif
 #ifndef    QUEX_OPTION_COLUMN_NUMBER_COUNTING          
 #define    QUEX_OPTION_COLUMN_NUMBER_COUNTING       
-#endif
-
-#ifndef QUEX_OPTION_POST_CATEGORIZER
-/* #define QUEX_OPTION_POST_CATEGORIZER */
 #endif
 
 /* Mode Transitions:
@@ -187,9 +179,6 @@
 #   define QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE                (64)
 #endif
 
-#ifndef  QUEX_OPTION_STRING_ACCUMULATOR
-#define    QUEX_OPTION_STRING_ACCUMULATOR
-#endif 
 /* Initial size of the character accumulator.                                */
 #ifndef     QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE
 #   define  QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE        (256)

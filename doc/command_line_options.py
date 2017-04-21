@@ -147,22 +147,11 @@ Option("single_mode_analyzer_f",  None,
     instance of the mode is going to be implemented. This reduces memory 
     consumption a little and may possibly increase performance slightly.
     """),
-Option("string_accumulator_f",  None,
-     """
-     Turns the string accumulator option off. This disables the use of the string 
-     accumulator to accumulate lexemes.
-     """),
 Option("include_stack_support_f", None,
      """
      Disables the support of include stacks where the state of the lexical 
      analyzer can be saved and restored before diving into included files.
      Setting this flag may speed up a bit compile time
-     """),
-Option("post_categorizer_f", None, 
-     """
-     Turns the post categorizer option on. This allows a 'secondary'
-     mapping from lexemes to token ids based on their name. See 
-     ':ref:`PostCategorizer`'.
      """),
 Option("count_line_number_f", None,
      """
@@ -215,6 +204,13 @@ Option("token_id_prefix", "prefix",
      The token prefix can contain name space delimiters, i.e. \\v{::}. In
      the brief token senders the name space specifier can be left out.
      """),
+Option("token_queue_size", "number", 
+     """
+     In conjunction with token passing policy 'queue', \\v{number} specifies
+     the number of tokens in the token queue. This determines the maximum
+     number of tokens that can be send without returning from the analyzer
+     function.
+     """), 
 
 Option("token_queue_safety_border", "number", 
      """

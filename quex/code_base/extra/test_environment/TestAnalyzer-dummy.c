@@ -114,6 +114,11 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #include <quex/code_base/analyzer/headers.i>
 #include <quex/code_base/analyzer/C-adaptions.h>
 
+
+/* START: User defined header content _________________________________________
+ *        The 'footer' content relies on class definitions made above.        */
+
+
 QUEX_NAMESPACE_MAIN_OPEN
 #ifdef      QUEX_FUNCTION_COUNT_ARBITRARY
 #   undef   QUEX_FUNCTION_COUNT_ARBITRARY
@@ -323,7 +328,7 @@ _18:
 #ifdef    RETURN
 #   undef RETURN
 #endif
-#define   RETURN   do { goto _1; } while(0)
+#define   RETURN   do { goto _17; } while(0)
 
 __QUEX_TYPE_ANALYZER_RETURN_VALUE  
 QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me) 
@@ -385,7 +390,7 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 _20:
     me->buffer._lexeme_start_p = me->buffer._read_p;
     QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);
-_8:
+_7:
     /* (18 from BEFORE_ENTRY) (18 from RELOAD_FORWARD)  */
 
     input = *(me->buffer._read_p);
@@ -393,28 +398,29 @@ _8:
 
     __quex_debug("Init State\n");
     __quex_debug_state(18);
-if     ( input == 0x58 )  goto _9;
-else if( input == 0x0 )   goto _12;
-else                      goto _10;
+if     ( input == 0x58 )  goto _8;
+else if( input == 0x0 )   goto _11;
+else                      goto _9;
 
 
     __quex_assert_no_passage();
 _10:
-    /* (DROP_OUT from 18)  */
-        me->buffer._read_p = me->buffer._lexeme_start_p + 1;
-goto _6;
-
+    /* (DROP_OUT from 19)  */
+    goto _0;
+_14:
     __quex_debug("Drop-Out Catcher\n");
 
 
     __quex_assert_no_passage();
-_11:
-    /* (DROP_OUT from 19)  */
-    goto _0;
+_9:
+    /* (DROP_OUT from 18)  */
+        me->buffer._read_p = me->buffer._lexeme_start_p + 1;
+goto _5;
+    goto _14;
 
 
     __quex_assert_no_passage();
-_9:
+_8:
     /* (19 from 18)  */
     ++(me->buffer._read_p);
 
@@ -422,50 +428,50 @@ _9:
 
 
     __quex_debug_state(19);
-goto _11;
+goto _10;
 
     /* (*) Terminal states _______________________________________________________
      *
      * States that implement actions of the 'winner patterns.                     */
-_2:
+_1:
     __quex_debug("* TERMINAL BAD_LEXATOM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnBadLexatom;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
-RETURN;
+__QUEX_PURE_RETURN;;
 
 }
     /* Bad lexatom detection FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-goto _1;
-_3:
+__QUEX_PURE_RETURN;
+_2:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnLoadFailure;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
-RETURN;
+__QUEX_PURE_RETURN;;
 
 }
     /* Load failure FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-goto _1;
-_4:
+__QUEX_PURE_RETURN;
+_3:
     __quex_debug("* TERMINAL OVERFLOW\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnOverflow;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
-RETURN;
+__QUEX_PURE_RETURN;;
 
 }
     /* Lexeme size exceeds buffer size. No further buffer load possible.
      */
-goto _1;
-_5:
+__QUEX_PURE_RETURN;
+_4:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
@@ -475,30 +481,30 @@ self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
     /* End of Stream FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-goto _1;
-_6:
+__QUEX_PURE_RETURN;
+_5:
     __quex_debug("* TERMINAL FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code = E_Error_NoHandler_OnFailure;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
-RETURN;
+__QUEX_PURE_RETURN;;
 
 }
 RETURN;
-_7:
+_6:
     __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
 self.error_code = E_Error_NoHandler_OnSkipRangeOpen;
 self_send(__QUEX_SETTING_TOKEN_ID_TERMINATION);
-RETURN;
+__QUEX_PURE_RETURN;;
 
 }
     /* End of Stream appeared, while scanning for end of skip-range.
      */
-goto _1;
+__QUEX_PURE_RETURN;
 _0:
     __quex_debug("* TERMINAL X\n");
 __QUEX_IF_COUNT_SHIFT_VALUES();
@@ -508,29 +514,29 @@ __QUEX_IF_COUNT_COLUMNS_ADD(1);
 #   line 2 "nothing.qx"
 self_send(QUEX_TKN_X);
 
-RETURN;
+__QUEX_PURE_RETURN;
 
 
-#   line 515 "TestAnalyzer.c"
+#   line 521 "TestAnalyzer.c"
 
 }
 RETURN;
 if(0) {
     /* Avoid unreferenced labels. */
+    goto _1;
     goto _2;
     goto _3;
     goto _4;
     goto _5;
     goto _6;
-    goto _7;
     goto _0;
 }
 #   ifndef QUEX_OPTION_COMPUTED_GOTOS
     __quex_assert_no_passage();
 _21:
     switch( target_state_index ) {
-        case 5: { goto _5;}
-        case 8: { goto _8;}
+        case 4: { goto _4;}
+        case 7: { goto _7;}
 
         default:
             __QUEX_STD_fprintf(stderr, "State router: index = %i\n", (int)target_state_index);
@@ -540,9 +546,9 @@ _21:
 
 
     __quex_assert_no_passage();
-_12:
+_11:
     /* (RELOAD_FORWARD from 18)  */
-    target_state_index = QUEX_LABEL(8); target_state_else_index = QUEX_LABEL(5);
+    target_state_index = QUEX_LABEL(7); target_state_else_index = QUEX_LABEL(4);
 
 
 
@@ -556,14 +562,14 @@ _12:
 
     switch( load_result ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_BAD_LEXATOM:       goto _2;
-    case E_LoadResult_FAILURE:           goto _3;
-    case E_LoadResult_NO_SPACE_FOR_LOAD: goto _4;
+    case E_LoadResult_BAD_LEXATOM:       goto _1;
+    case E_LoadResult_FAILURE:           goto _2;
+    case E_LoadResult_NO_SPACE_FOR_LOAD: goto _3;
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
     }
 
-_1:
+_17:
 /* RETURN -- after executing 'on_after_match' code. */
     __QUEX_PURE_RETURN;
 
@@ -594,7 +600,7 @@ goto _20;
     /* Following labels are referenced in macros. It cannot be detected
      * whether the macros are applied in user code or not. To avoid compiler.
      * warnings of unused labels, they are referenced in unreachable code.   */
-    goto _1; /* in RETURN                */
+    goto _17; /* in RETURN                */
     goto _18; /* in CONTINUE              */
     goto _19; /* in CONTINUE and skippers */
 #   if ! defined(QUEX_OPTION_COMPUTED_GOTOS)
@@ -662,6 +668,18 @@ return UserReset_UnitTest_return_value;
 /* END: _______________________________________________________________________*/
 #undef self
     return true;
+}
+
+void
+QUEX_NAME(user_print)(QUEX_TYPE_ANALYZER* me)
+{
+    (void)me;
+
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+/* START: User's constructor extensions _______________________________________*/
+
+/* END: _______________________________________________________________________*/
+#undef self
 }
 
 #ifdef QUEX_OPTION_INCLUDE_STACK
@@ -733,7 +751,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 737 "TestAnalyzer.c"
+#   line 755 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -764,7 +782,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 768 "TestAnalyzer.c"
+#   line 786 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -805,7 +823,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 809 "TestAnalyzer.c"
+#   line 827 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -893,7 +911,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 897 "TestAnalyzer.c"
+#   line 915 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -914,7 +932,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 918 "TestAnalyzer.c"
+#   line 936 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -933,7 +951,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 937 "TestAnalyzer.c"
+#   line 955 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -973,17 +991,16 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
         const char* 
         quex_Token_get_string(quex_Token* me, char*   buffer, size_t  BufferSize) 
         {
-            const char*  token_type_str = quex_Token_map_id_to_name(me->_id);
-            const char*  BufferEnd  = buffer + BufferSize;
-            const char*  iterator   = 0;
-            char*        writerator = 0;
+            const char*  token_id_str = quex_Token_map_id_to_name(me->_id);
+            const char*  BufferEnd    = buffer + BufferSize;
+            char*        writerator   = 0;
+
+            if( ! BufferSize ) return NULL;
 
             /* Token Type */
-            iterator   = token_type_str;
             writerator = buffer; 
-            while( (*iterator) && writerator != BufferEnd ) {
-                *writerator++ = *iterator++;
-            }
+            writerator += __QUEX_STD_strlcpy(writerator, token_id_str, 
+                                             BufferEnd - writerator);
 
             /* Opening Quote */
             if( BufferEnd - writerator > 2 ) {
@@ -992,12 +1009,15 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
             }
 
             /* The String */
+#           if ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
             QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
                                                    (size_t)(BufferEnd - writerator));
-
-            while( *writerator ) {
-                ++writerator;
-            }
+            while( *writerator ) ++writerator;
+#           else
+            writerator += __QUEX_STD_strlcpy(writerator, 
+                                             "<converters of .text to pretty char disabled>",
+                                             BufferEnd - writerator);
+#           endif
 
             /* Closing Quote */
             if( BufferEnd - writerator > 1 ) {
@@ -1012,7 +1032,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1016 "TestAnalyzer.c"
+#   line 1036 "TestAnalyzer.c"
 
 
 
