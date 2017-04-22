@@ -3,7 +3,7 @@ if [[ $1 == "--hwut-info" ]]; then
     echo "Precedence: Derived before Base;"
     exit
 fi
-quex -i data/derived-before-base.qx -o Simple --token-id-prefix T_  --token-policy single --debug-exception
+quex -i data/derived-before-base.qx -o Simple --token-id-prefix T_  --debug-exception
 g++ -I$QUEX_PATH -I. \
     -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
     $QUEX_PATH/TEST/lexer-simply.cpp Simple.cpp -o lexer  \

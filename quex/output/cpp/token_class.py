@@ -90,6 +90,9 @@ def _do_core(Descr):
     converter_declaration_include    = Lng.CONVERTER_HELPER_DECLARATION()
     converter_implementation_include = Lng.CONVERTER_HELPER_IMLEMENTATION()
 
+    # ------------
+    # TODO: Following should be always placed in front of footer/header:
+    # ------------
     helper_variable_replacements = [
         ["$INCLUDE_CONVERTER_DECLARATION",    converter_declaration_include],
         ["$INCLUDE_CONVERTER_IMPLEMENTATION", converter_implementation_include],

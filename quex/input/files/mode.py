@@ -1,5 +1,4 @@
 
-from   quex.input.setup                   import NotificationDB
 import quex.input.regular_expression.core as     regular_expression
 import quex.input.files.mode_option       as     mode_option
 import quex.input.files.consistency_check as     consistency_check

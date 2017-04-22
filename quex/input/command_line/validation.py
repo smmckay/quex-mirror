@@ -3,8 +3,7 @@ import quex.input.command_line.query as     query
 from   quex.input.setup              import SETUP_INFO, DEPRECATED, \
                                             command_line_args_string, \
                                             command_line_args, \
-                                            SetupParTypes, \
-                                            NotificationDB
+                                            SetupParTypes
 import quex.engine.codec_db.core     as     codec_db
 import quex.engine.misc.error        as     error
 from   quex.engine.misc.file_in      import is_identifier

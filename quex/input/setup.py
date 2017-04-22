@@ -223,20 +223,20 @@ SETUP_INFO = {
     #______________________________________________________________________________________________________
     "XX_token_memory_management_by_user_f": [["--token-memory-management-by-user", "--tmmbu"], SetupParTypes.FLAG],
     "XX_post_categorizer_f":             [["--post-categorizer"],               SetupParTypes.FLAG],
-    "XX_string_accumulator_f":           [["--no-string-accumulator", "--nsacc"], SetupParTypes.NEGATED_FLAG],
     "XX_token_policy":                   [["--token-policy", "--tp"],           "queue"],                
     "XX_begin_of_stream_code":           [["--begin-of-stream"],                "0x19"],                  
     "XX_buffer_element_size":            [["--bytes-per-ucs-code-point"],       "1"],                  
     "XX_buffer_element_size2":           [["--bytes-per-trigger"],              -1],                  
     "XX_end_of_stream_code":             [["--end-of-stream"],                  "0x1A"],                  
     "XX_flex_engine_f":                  [["--flex-engine"],                    SetupParTypes.FLAG],      
-    "XX_read_pattern_file":             [["-p", "--pattern-file"],             ""],                      
+    "XX_read_pattern_file":              [["-p", "--pattern-file"],             ""],                      
     "XX_input_token_id_db":              [["-t", "--token-id-db"],              SetupParTypes.LIST],
     "XX_leave_temporary_files_f":        [["--leave-tmp-files"],                SetupParTypes.FLAG],      
     "XX_plain_memory_f":                 [["--plain-memory"],                   SetupParTypes.FLAG],           
     "XX_std_istream_support_f":          [["--istream-support"],                SetupParTypes.FLAG],           
     "XX_yywrap_is_ok_f":                 [["--yywrap-is-ok"],                   SetupParTypes.FLAG],           
     "XX_input_token_sending_via_queue_f":[["--token-queue"],                    SetupParTypes.FLAG],           
+    "XX_no_string_accumulator_f":        [["--no-string-accumulator", "--nsacc"], SetupParTypes.NEGATED_FLAG],
     "XX_string_accumulator_f":           [["--string-accumulator", "--sacc"],   SetupParTypes.FLAG],  
     "XX_disable_token_queue_f":          [["--no-token-queue", "--ntq"],        SetupParTypes.FLAG],       
     "XX_disable_return_token_id_f":      [["--no-return-token-id"],             SetupParTypes.FLAG],  
@@ -305,7 +305,7 @@ DEPRECATED = {
      ("The post categorizer  has been pulled out of the generator. It's header\n"
       "can be included anyway.",
       "0.67.3"),
-  "XX_string_accumulator_f":
+  "XX_no_string_accumulator_f":
      ("The string accumulator has been pulled out of the generator. It's header\n"
       "can be included anyway.",
       "0.67.3"),

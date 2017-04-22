@@ -44,7 +44,6 @@ A 'n'
     _column_number_at_end:   60;
     _indentation_stack: [1, 24, 43, ]
   }
-  accumulator: ''
   _mode_stack: {
     size:    8;
     content: []
@@ -79,9 +78,9 @@ A 'n'
       end_character_index: 63;
       end_p:               begin + 6, end - 1;
     }
+
+
   }
-
-
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
    lexeme start--------------------------->[0001] 0x003A
