@@ -103,8 +103,8 @@
 #ifdef    __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H
 #   undef __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H
 #endif
-#ifdef    __QUEX_INCLUDE_GUARD__OBSERVED_STRING__QUEX_STRING
-#   undef __QUEX_INCLUDE_GUARD__OBSERVED_STRING__QUEX_STRING
+#ifdef    __QUEX_INCLUDE_GUARD__OBSERVED_STRING__STREXEME
+#   undef __QUEX_INCLUDE_GUARD__OBSERVED_STRING__STREXEME
 #endif
 /* TODO: No 'UNDO' for universal converters UTF8, UTF16, and UTF32. 
  * Currently the converters are generated into the lexical analyzer's
