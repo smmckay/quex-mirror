@@ -13,7 +13,7 @@
 #ifdef    QUEX_OPTION_INCLUDE_STACK_DISABLED
 #   undef QUEX_OPTION_INCLUDE_STACK
 #endif
-#ifdef QUEX_OPTION_DEBUG_QUEX_PATTERN_MATCHES_DISABLED
+#ifdef    QUEX_OPTION_DEBUG_QUEX_PATTERN_MATCHES_DISABLED
 #   undef QUEX_OPTION_DEBUG_QUEX_PATTERN_MATCHES
 #endif
 #ifdef    QUEX_OPTION_DEBUG_SHOW_MODES_DISABLED
@@ -250,20 +250,6 @@
 #   define    QUEX_SETTING_CHAR_CODEC   utf8
 #endif
 
-#if ! defined(__QUEX_OPTION_PLAIN_C)
-    /* Avoid __VA_ARGS__ because some compilers still cannot handle it
-     * properly.                                                             */
-
-#   define QUEX_DESTRUCTOR()                            QUEX_MEMBER(~QUEX_TYPE0_ANALYZER)()
-
-#else
-#   define QUEX_THIS(C)                                 struct C ## _tag* me
-
-    /* Avoid __VA_ARGS__ because some compilers still cannot handle it
-     * properly.                                                             */
-#   define QUEX_DESTRUCTOR()                            void QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
-#endif
-
 #if defined (QUEX_OPTION_ASSERTS) 
 #   define __QUEX_IF_ASSERT(X)  X
 #else
@@ -277,7 +263,7 @@
 #endif
 
 /* If the user does not define a class declaration epilog, 
- * define it as empty.                                        */
+ * define it as empty.                                                        */
 #ifndef     QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG
 #    define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG
 #endif

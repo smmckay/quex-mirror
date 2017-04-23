@@ -1,0 +1,5 @@
+(*) Check: extracted content != 0  (else verdict 'same' is meaningless)
+22
+22
+(*) Check: content same?
+identical

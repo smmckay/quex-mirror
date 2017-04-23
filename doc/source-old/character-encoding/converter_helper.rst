@@ -30,7 +30,6 @@ and::
 These headers depend on the definitions of::
 
      QUEX_TYPE_LEXATOM
-     QUEX_SETTING_CHARACTER_SIZE
      QUEX_SETTING_CHARACTER_CODEC
 
 and are thus analyzer specific. The are placed in the analyzer's namespace.

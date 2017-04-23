@@ -51,37 +51,37 @@
 #endif
 
 /* Modes */
-#define self_current_mode_p()     /* QUEX_NAME(Mode)* */ QUEX_NAME(mode)(&self)
-#define self_current_mode_id()    /* int */              QUEX_NAME(mode_id)(&self)
-#define self_current_mode_name()  /* const char* */      QUEX_NAME(mode_name)(&self)
+#define self_current_mode_p()     /* QUEX_NAME(Mode)* */ QUEX_NAME(get_mode)(&self)
+#define self_current_mode_id()    /* int */              QUEX_NAME(get_mode_id)(&self)
+#define self_current_mode_name()  /* const char* */      QUEX_NAME(get_mode_name)(&self)
 
 /* Map: mode id to mode and vice versa */
-#define self_map_mode_id_to_mode_p(ID)         QUEX_NAME(map_mode_id_to_mode)(&self, (ID))
-#define self_map_mode_p_to_mode_id(ModeP)      QUEX_NAME(map_mode_to_mode_id)(&self, (ModeP))
-                                               
-/* Changing Modes */                           
-#define self_set_mode_brutally(ModeP)          QUEX_NAME(set_mode_brutally)(&self, (ModeP))
-#define self_enter_mode(ModeP)                 QUEX_NAME(enter_mode)(&self, (ModeP))
-                                               
-/* Changing Modes with stack */                
-#define self_pop_mode()                        QUEX_NAME(pop_mode)(&self)
-#define self_pop_drop_mode()                   QUEX_NAME(pop_drop_mode)(&self)
-#define self_push_mode(ModeP)                  QUEX_NAME(push_mode)(&self, (ModeP))
-
-#ifdef      QUEX_OPTION_LINE_NUMBER_COUNTING
-#   define  self_line_number_at_begin()        (self.counter._line_number_at_begin)
-#   define  self_line_number_at_begin_set(X)   do { self.counter._line_number_at_begin = (X); } while(0)
-#   define  self_line_number_at_end()          (self.counter._line_number_at_end)
-#   define  self_line_number()                 (self_line_number_at_begin())
-#endif
-#ifdef      QUEX_OPTION_COLUMN_NUMBER_COUNTING
-#   define  self_column_number_at_begin()      (self.counter._column_number_at_begin)
-#   define  self_column_number_at_begin_set(X) do { self.counter._column_number_at_begin = (X); } while(0)
-#   define  self_column_number_at_end()        (self.counter._column_number_at_end)
-#   define  self_column_number()               (self_column_number_at_begin())
-#endif
-#ifdef      QUEX_OPTION_INDENTATION_TRIGGER
-#   define  self_indentation()                 (counter._indentation_stack.back - counter._indentation_stack.front + 1)
+#define self_map_mode_id_to_mode_p(ID)           QUEX_NAME(map_mode_id_to_mode)(&self, (ID))
+#define self_map_mode_p_to_mode_id(ModeP)        QUEX_NAME(map_mode_to_mode_id)(&self, (ModeP))
+                                                 
+/* Changing Modes */                             
+#define self_set_mode_brutally(ModeP)            QUEX_NAME(set_mode_brutally)(&self, (ModeP))
+#define self_enter_mode(ModeP)                   QUEX_NAME(enter_mode)(&self, (ModeP))
+                                                 
+/* Changing Modes with stack */                  
+#define self_pop_mode()                          QUEX_NAME(pop_mode)(&self)
+#define self_pop_drop_mode()                     QUEX_NAME(pop_drop_mode)(&self)
+#define self_push_mode(ModeP)                    QUEX_NAME(push_mode)(&self, (ModeP))
+                                                 
+#ifdef      QUEX_OPTION_LINE_NUMBER_COUNTING     
+#   define  self_line_number_at_begin()          (self.counter._line_number_at_begin)
+#   define  self_line_number_at_begin_set(X)     do { self.counter._line_number_at_begin = (X); } while(0)
+#   define  self_line_number_at_end()            (self.counter._line_number_at_end)
+#   define  self_line_number()                   (self_line_number_at_begin())
+#endif                                           
+#ifdef      QUEX_OPTION_COLUMN_NUMBER_COUNTING  
+#   define  self_column_number_at_begin()        (self.counter._column_number_at_begin)
+#   define  self_column_number_at_begin_set(X)   do { self.counter._column_number_at_begin = (X); } while(0)
+#   define  self_column_number_at_end()          (self.counter._column_number_at_end)
+#   define  self_column_number()                 (self_column_number_at_begin())
+#endif                                           
+#ifdef      QUEX_OPTION_INDENTATION_TRIGGER      
+#   define  self_indentation()                   (counter._indentation_stack.back - counter._indentation_stack.front + 1)
 #endif
 
 /* Accumulator ______________________________________________________________*/
@@ -92,7 +92,7 @@
 #   define self_accumulator_flush(TokenID)       QUEX_NAME(Accumulator__flush)(&self.accumulator, TokenID)
 
 /* Undo lexeme match */
-#   define self_undo()       QUEX_NAME(undo)(&self)
-#   define self_undo_n(N)    QUEX_NAME(undo_n)(&self, N)
+#   define self_undo()                           QUEX_NAME(undo)(&self)
+#   define self_undo_n(N)                        QUEX_NAME(undo_n)(&self, N)
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H */

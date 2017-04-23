@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.67.3"
-#define QUEX_SETTING_BUILD_DATE        "Sat Apr 22 03:11:46 2017"
+#define QUEX_SETTING_BUILD_DATE        "Sun Apr 23 10:56:48 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -68,13 +68,6 @@
 #ifndef    __QUEX_SETTING_INITIAL_LEXER_MODE_ID
 #   define __QUEX_SETTING_INITIAL_LEXER_MODE_ID    (QUEX_NAME(ModeID_M))
 #endif
-/* QUEX_TYPE_TOKEN_ID is later on defined inside the token class header.      */
-#define    __QUEX_SETTING_TOKEN_ID_TERMINATION       ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_TERMINATION)
-#define    __QUEX_SETTING_TOKEN_ID_UNINITIALIZED     ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_UNINITIALIZED)
-#define    __QUEX_SETTING_TOKEN_ID_INDENT            ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_INDENT)
-#define    __QUEX_SETTING_TOKEN_ID_DEDENT            ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_DEDENT)
-#define    __QUEX_SETTING_TOKEN_ID_NODENT            ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_NODENT)
-#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
 
 #ifndef    __QUEX_OPTION_LITTLE_ENDIAN
 #define    __QUEX_OPTION_LITTLE_ENDIAN
@@ -84,17 +77,6 @@
 #endif
 #ifndef    __QUEX_OPTION_SYSTEM_ENDIAN
 #define    __QUEX_OPTION_SYSTEM_ENDIAN
-#endif
-
-#ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
-#   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)64)
-#endif
-#ifndef    QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER
-#   define QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER ((size_t)16)
-#endif
-
-#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-/* #define QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 #endif
 
 /* OPTIONS: ___________________________________________________________________
@@ -122,7 +104,7 @@
 #endif
 
 #ifndef    QUEX_SETTING_MODE_STACK_SIZE 
-#   define QUEX_SETTING_MODE_STACK_SIZE   (size_t)8
+#   define QUEX_SETTING_MODE_STACK_SIZE                                (size_t)8
 #endif
 
 /* Verbosity (uncomment the following, if you want it verbose.)               */
@@ -162,26 +144,26 @@
 #ifndef     QUEX_SETTING_BUFFER_SIZE
      /* This setting must be defined as plain number, since there might
       * be some pre-processor comparison operations depending on it.          */
-#    define QUEX_SETTING_BUFFER_SIZE             131072
+#    define QUEX_SETTING_BUFFER_SIZE                                      131072
 #endif
 
 /* Upon 'include_push' the current buffer may be split to contain data of an
  * included stream. If the remaining space is less than the following macro,
  * a new buffer is allocated.                                                 */
 #ifndef     QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE 
-#    define QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE 32768
+#    define QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE                           32768
 #endif
 
 #ifndef    QUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE
-#   define QUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE  (512)
+#   define QUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE                (512)
 #endif
 #ifndef    QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE
-#   define QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE                (64)
+#   define QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE                               (64)
 #endif
 
 /* Initial size of the character accumulator.                                */
 #ifndef     QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE
-#   define  QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE        (256)
+#   define  QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE                         (256)
 #endif
 
 /* Granularity, if new memory has to be allocated. The new memory will be by
@@ -191,7 +173,7 @@
  * new memory of size (384 + 192) = 576 characters.                          */
 
 #ifndef     QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR
-#   define  QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR  (0.8)
+#   define  QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR                   (0.8)
 #endif
 
 /* If one mode requires indentation support, then the lexical analyser class
@@ -200,10 +182,10 @@
 /* #define QUEX_OPTION_INDENTATION_TRIGGER */
 #if    defined(QUEX_OPTION_INDENTATION_TRIGGER)
 #   ifndef    QUEX_SETTING_INDENTATION_STACK_SIZE
-#      define QUEX_SETTING_INDENTATION_STACK_SIZE  (64)
+#      define QUEX_SETTING_INDENTATION_STACK_SIZE                         (64)
 #   endif
 #   ifndef    QUEX_TYPE_INDENTATION
-#      define QUEX_TYPE_INDENTATION  size_t
+#      define QUEX_TYPE_INDENTATION                                     size_t
 #   endif
 #endif
   
@@ -243,14 +225,7 @@
  *                                                                           */
 #ifndef    QUEX_TYPE_LEXATOM
 #   define QUEX_TYPE_LEXATOM          uint8_t
-#   define QUEX_TYPE_LEXATOM_BACKUP   uint8_t
 #endif 
-#ifndef    QUEX_SETTING_CHARACTER_SIZE
-    /* Size of a QUEX_TYPE_LEXATOM in bytes. A numeric value is required
-     * here!  '-1' stands for 'Cannot be determined at code generation time'.
-     * In this case, it must be relied upon 'sizeof(QUEX_TYPE_LEXATOM)'.   */
-#   define QUEX_SETTING_CHARACTER_SIZE  1
-#endif
 #ifndef    QUEX_SETTING_CHARACTER_CODEC   
 #   define QUEX_SETTING_CHARACTER_CODEC unicode
 #endif
@@ -272,23 +247,10 @@
 #   define QUEX_NAME_COMPLETE_ANALYZER quex_TestAnalyzer
 #   define QUEX_TYPE_DERIVED_ANALYZER  struct quex_TestAnalyzer_tag
 
-#   define QUEX_TYPE0_TOKEN            struct quex_Token_tag
-#   define QUEX_TYPE_TOKEN             struct quex_Token_tag
-#   define QUEX_NAME_COMPLETE_TOKEN    quex_Token
-
 #   define QUEX_NAMESPACE_MAIN         quex_TestAnalyzer
 #   define QUEX_NAMESPACE_MAIN_OPEN   
 #   define QUEX_NAMESPACE_MAIN_CLOSE  
-
-#   define QUEX_NAMESPACE_TOKEN   
-#   define QUEX_NAMESPACE_TOKEN_OPEN  
-#   define QUEX_NAMESPACE_TOKEN_CLOSE 
-
-#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
-
 #   define QUEX_NAME(NAME)             quex_TestAnalyzer_ ## NAME
-#   define QUEX_NAME_TOKEN(NAME)       quex_Token_ ## NAME
-#   define QUEX_MEMBER(NAME)           void /* Undefined, not required */
 
 #else
     /* Add namespaces for the global names of the classes of analyzer
@@ -298,13 +260,29 @@
 #   define QUEX_NAME_COMPLETE_ANALYZER quex::TestAnalyzer
 #   define QUEX_TYPE_DERIVED_ANALYZER  TestAnalyzer
 
-#   define QUEX_TYPE0_TOKEN            Token
-#   define QUEX_TYPE_TOKEN             quex::Token
-#   define QUEX_NAME_COMPLETE_TOKEN    quex::Token
-
 #   define QUEX_NAMESPACE_MAIN         quex
 #   define QUEX_NAMESPACE_MAIN_OPEN    
 #   define QUEX_NAMESPACE_MAIN_CLOSE   
+#   define QUEX_NAME(NAME)             TestAnalyzer_ ## NAME
+#endif
+
+#if defined(__QUEX_OPTION_PLAIN_C)
+#   define QUEX_TYPE0_TOKEN            struct quex_Token_tag
+#   define QUEX_TYPE_TOKEN             struct quex_Token_tag
+#   define QUEX_NAME_COMPLETE_TOKEN    quex_Token
+
+#   define QUEX_NAMESPACE_TOKEN   
+#   define QUEX_NAMESPACE_TOKEN_OPEN  
+#   define QUEX_NAMESPACE_TOKEN_CLOSE 
+
+#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
+
+#   define QUEX_NAME_TOKEN(NAME)       quex_Token_ ## NAME
+
+#else
+#   define QUEX_TYPE0_TOKEN            Token
+#   define QUEX_TYPE_TOKEN             quex::Token
+#   define QUEX_NAME_COMPLETE_TOKEN    quex::Token
 
 #   define QUEX_NAMESPACE_TOKEN        quex
 #   define QUEX_NAMESPACE_TOKEN_OPEN   
@@ -312,15 +290,27 @@
 
 #   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
 
-#   define QUEX_NAME(NAME)             TestAnalyzer_ ## NAME
 #   define QUEX_NAME_TOKEN(NAME)       Token_ ## NAME
-#   define QUEX_MEMBER(NAME)           TestAnalyzer::NAME                
 
+#endif
+
+#ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
+#   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)64)
+#endif
+#ifndef    QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER
+#   define QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER ((size_t)16)
+#endif
+
+#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+/* #define QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 #endif
 
 #ifndef    QUEX_TYPE_TOKEN_ID
-#   define QUEX_TYPE_TOKEN_ID        uint32_t
+#   define QUEX_TYPE_TOKEN_ID                               uint32_t
 #endif
+#define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_ ## BRIEF)
+#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
+
 #ifndef    QUEX_TYPE_TOKEN_LINE_N
 #   define QUEX_TYPE_TOKEN_LINE_N    size_t
 #endif

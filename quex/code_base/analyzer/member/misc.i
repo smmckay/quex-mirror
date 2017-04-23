@@ -107,35 +107,6 @@ QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
     }
 }
 
-#if ! defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE void        
-QUEX_MEMBER(set_callback_on_buffer_content_change)(void (*callback)(const QUEX_TYPE_LEXATOM*, 
-                                                                    const QUEX_TYPE_LEXATOM*))
-{ QUEX_NAME(set_callback_on_buffer_content_change)(this, callback); }
-
-QUEX_INLINE QUEX_TYPE_TOKEN*  
-QUEX_MEMBER(token_p)()
-{ return QUEX_NAME(token_p)(this); }
-
-QUEX_INLINE bool
-QUEX_MEMBER(token_queue_is_empty)()
-{ return QUEX_NAME(token_queue_is_empty)(this); }
-
-QUEX_INLINE void
-QUEX_MEMBER(token_queue_remainder_get)(QUEX_TYPE_TOKEN**  begin, 
-                                       QUEX_TYPE_TOKEN**  end)
-{ QUEX_NAME(token_queue_remainder_get)(this, begin, end); }
-
-QUEX_INLINE const char* 
-QUEX_MEMBER(version)() const
-{ return QUEX_NAME(version)((QUEX_TYPE_ANALYZER*)this); }
-
-QUEX_INLINE void
-QUEX_MEMBER(print_this)()
-{ QUEX_NAME(print_this)(this); }
-
-#endif
-
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC_I */

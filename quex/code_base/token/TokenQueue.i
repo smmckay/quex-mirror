@@ -185,7 +185,7 @@ QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me)
  * only be called in case of a detected error.                                */
 {
     QUEX_NAME(TokenQueue_reset)(me);
-    (me->write_iterator++)->_id =  __QUEX_SETTING_TOKEN_ID_TERMINATION;
+    (me->write_iterator++)->_id =  QUEX_TOKEN_ID(TERMINATION);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

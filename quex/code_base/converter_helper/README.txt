@@ -123,7 +123,6 @@ separate namespaces.
     in the 'from' field. In particular their implementation depends on 
     
         QUEX_TYPE_LEXATOM
-        QUEX_SETTING_CHARACTER_SIZE 
         QUEX_SETTING_CHARACTER_CODEC
 
 NOTE: The include guard undo happens in file: 'quex/code_base/include-guard-undef'

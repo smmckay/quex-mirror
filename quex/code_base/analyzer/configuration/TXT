@@ -68,13 +68,6 @@ $$SWITCH$$ QUEX_OPTION_COMPUTED_GOTOS
 #ifndef    __QUEX_SETTING_INITIAL_LEXER_MODE_ID
 #   define __QUEX_SETTING_INITIAL_LEXER_MODE_ID    ($$INITIAL_LEXER_MODE_ID$$)
 #endif
-/* QUEX_TYPE_TOKEN_ID is later on defined inside the token class header.      */
-#define    __QUEX_SETTING_TOKEN_ID_TERMINATION       ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$TERMINATION)
-#define    __QUEX_SETTING_TOKEN_ID_UNINITIALIZED     ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$UNINITIALIZED)
-#define    __QUEX_SETTING_TOKEN_ID_INDENT            ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$INDENT)
-#define    __QUEX_SETTING_TOKEN_ID_DEDENT            ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$DEDENT)
-#define    __QUEX_SETTING_TOKEN_ID_NODENT            ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$NODENT)
-#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
 
 #ifndef    __QUEX_OPTION_LITTLE_ENDIAN
 $$SWITCH$$ __QUEX_OPTION_LITTLE_ENDIAN
@@ -84,17 +77,6 @@ $$SWITCH$$ __QUEX_OPTION_BIG_ENDIAN
 #endif
 #ifndef    __QUEX_OPTION_SYSTEM_ENDIAN
 $$SWITCH$$ __QUEX_OPTION_SYSTEM_ENDIAN
-#endif
-
-#ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
-#   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)$$TOKEN_QUEUE_SIZE$$)
-#endif
-#ifndef    QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER
-#   define QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER ((size_t)$$TOKEN_QUEUE_SAFETY_BORDER$$)
-#endif
-
-#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-$$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 #endif
 
 /* OPTIONS: ___________________________________________________________________
@@ -122,7 +104,7 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #endif
 
 #ifndef    QUEX_SETTING_MODE_STACK_SIZE 
-#   define QUEX_SETTING_MODE_STACK_SIZE   (size_t)8
+#   define QUEX_SETTING_MODE_STACK_SIZE                                (size_t)8
 #endif
 
 /* Verbosity (uncomment the following, if you want it verbose.)               */
@@ -162,26 +144,26 @@ $$SWITCH$$ QUEX_OPTION_INCLUDE_STACK
 #ifndef     QUEX_SETTING_BUFFER_SIZE
      /* This setting must be defined as plain number, since there might
       * be some pre-processor comparison operations depending on it.          */
-#    define QUEX_SETTING_BUFFER_SIZE             131072
+#    define QUEX_SETTING_BUFFER_SIZE                                      131072
 #endif
 
 /* Upon 'include_push' the current buffer may be split to contain data of an
  * included stream. If the remaining space is less than the following macro,
  * a new buffer is allocated.                                                 */
 #ifndef     QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE 
-#    define QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE 32768
+#    define QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE                           32768
 #endif
 
 #ifndef    QUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE
-#   define QUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE  (512)
+#   define QUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE                (512)
 #endif
 #ifndef    QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE
-#   define QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE                (64)
+#   define QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE                               (64)
 #endif
 
 /* Initial size of the character accumulator.                                */
 #ifndef     QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE
-#   define  QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE        (256)
+#   define  QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE                         (256)
 #endif
 
 /* Granularity, if new memory has to be allocated. The new memory will be by
@@ -191,7 +173,7 @@ $$SWITCH$$ QUEX_OPTION_INCLUDE_STACK
  * new memory of size (384 + 192) = 576 characters.                          */
 
 #ifndef     QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR
-#   define  QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR  (0.8)
+#   define  QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR                   (0.8)
 #endif
 
 /* If one mode requires indentation support, then the lexical analyser class
@@ -200,10 +182,10 @@ $$SWITCH$$ QUEX_OPTION_INCLUDE_STACK
 $$SWITCH$$ QUEX_OPTION_INDENTATION_TRIGGER
 #if    defined(QUEX_OPTION_INDENTATION_TRIGGER)
 #   ifndef    QUEX_SETTING_INDENTATION_STACK_SIZE
-#      define QUEX_SETTING_INDENTATION_STACK_SIZE  (64)
+#      define QUEX_SETTING_INDENTATION_STACK_SIZE                         (64)
 #   endif
 #   ifndef    QUEX_TYPE_INDENTATION
-#      define QUEX_TYPE_INDENTATION  size_t
+#      define QUEX_TYPE_INDENTATION                                     size_t
 #   endif
 #endif
   
@@ -243,14 +225,7 @@ $$SWITCH$$ __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
  *                                                                           */
 #ifndef    QUEX_TYPE_LEXATOM
 #   define QUEX_TYPE_LEXATOM          $$QUEX_TYPE_LEXATOM$$
-#   define QUEX_TYPE_LEXATOM_BACKUP   $$QUEX_TYPE_LEXATOM$$
 #endif 
-#ifndef    QUEX_SETTING_CHARACTER_SIZE
-    /* Size of a QUEX_TYPE_LEXATOM in bytes. A numeric value is required
-     * here!  '-1' stands for 'Cannot be determined at code generation time'.
-     * In this case, it must be relied upon 'sizeof(QUEX_TYPE_LEXATOM)'.   */
-#   define QUEX_SETTING_CHARACTER_SIZE  $$QUEX_SETTING_CHARACTER_SIZE$$
-#endif
 #ifndef    QUEX_SETTING_CHARACTER_CODEC   
 #   define QUEX_SETTING_CHARACTER_CODEC $$QUEX_SETTING_CHARACTER_CODEC$$
 #endif
@@ -272,23 +247,10 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 #   define QUEX_NAME_COMPLETE_ANALYZER $$LEXER_CLASS_NAME_SAFE$$
 #   define QUEX_TYPE_DERIVED_ANALYZER  struct $$LEXER_CLASS_NAME_SAFE$$_tag
 
-#   define QUEX_TYPE0_TOKEN            struct $$TOKEN_CLASS_NAME_SAFE$$_tag
-#   define QUEX_TYPE_TOKEN             struct $$TOKEN_CLASS_NAME_SAFE$$_tag
-#   define QUEX_NAME_COMPLETE_TOKEN    $$TOKEN_CLASS_NAME_SAFE$$
-
 #   define QUEX_NAMESPACE_MAIN         $$LEXER_CLASS_NAME_SAFE$$
 #   define QUEX_NAMESPACE_MAIN_OPEN   
 #   define QUEX_NAMESPACE_MAIN_CLOSE  
-
-#   define QUEX_NAMESPACE_TOKEN   
-#   define QUEX_NAMESPACE_TOKEN_OPEN  
-#   define QUEX_NAMESPACE_TOKEN_CLOSE 
-
-#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
-
 #   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME_SAFE$$_ ## NAME
-#   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
-#   define QUEX_MEMBER(NAME)           void /* Undefined, not required */
 
 #else
     /* Add namespaces for the global names of the classes of analyzer
@@ -298,13 +260,29 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 #   define QUEX_NAME_COMPLETE_ANALYZER $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$
 #   define QUEX_TYPE_DERIVED_ANALYZER  $$LEXER_DERIVED_CLASS_NAME$$
 
-#   define QUEX_TYPE0_TOKEN            $$TOKEN_CLASS$$
-#   define QUEX_TYPE_TOKEN             $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
-#   define QUEX_NAME_COMPLETE_TOKEN    $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
-
 #   define QUEX_NAMESPACE_MAIN         $$NAMESPACE_MAIN$$
 #   define QUEX_NAMESPACE_MAIN_OPEN    $$NAMESPACE_MAIN_OPEN$$
 #   define QUEX_NAMESPACE_MAIN_CLOSE   $$NAMESPACE_MAIN_CLOSE$$
+#   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME$$_ ## NAME
+#endif
+
+#if defined(__QUEX_OPTION_PLAIN_C)
+#   define QUEX_TYPE0_TOKEN            struct $$TOKEN_CLASS_NAME_SAFE$$_tag
+#   define QUEX_TYPE_TOKEN             struct $$TOKEN_CLASS_NAME_SAFE$$_tag
+#   define QUEX_NAME_COMPLETE_TOKEN    $$TOKEN_CLASS_NAME_SAFE$$
+
+#   define QUEX_NAMESPACE_TOKEN   
+#   define QUEX_NAMESPACE_TOKEN_OPEN  
+#   define QUEX_NAMESPACE_TOKEN_CLOSE 
+
+#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
+
+#   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
+
+#else
+#   define QUEX_TYPE0_TOKEN            $$TOKEN_CLASS$$
+#   define QUEX_TYPE_TOKEN             $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
+#   define QUEX_NAME_COMPLETE_TOKEN    $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
 
 #   define QUEX_NAMESPACE_TOKEN        $$NAMESPACE_TOKEN$$
 #   define QUEX_NAMESPACE_TOKEN_OPEN   $$NAMESPACE_TOKEN_OPEN$$
@@ -312,15 +290,27 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 
 #   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
 
-#   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME$$_ ## NAME
 #   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS$$_ ## NAME
-#   define QUEX_MEMBER(NAME)           $$LEXER_CLASS_NAME$$::NAME                
 
+#endif
+
+#ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
+#   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)$$TOKEN_QUEUE_SIZE$$)
+#endif
+#ifndef    QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER
+#   define QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER ((size_t)$$TOKEN_QUEUE_SAFETY_BORDER$$)
+#endif
+
+#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+$$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 #endif
 
 #ifndef    QUEX_TYPE_TOKEN_ID
-#   define QUEX_TYPE_TOKEN_ID        $$TOKEN_ID_TYPE$$
+#   define QUEX_TYPE_TOKEN_ID                               $$TOKEN_ID_TYPE$$
 #endif
+#define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$ ## BRIEF)
+#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
+
 #ifndef    QUEX_TYPE_TOKEN_LINE_N
 #   define QUEX_TYPE_TOKEN_LINE_N    $$TOKEN_LINE_N_TYPE$$
 #endif

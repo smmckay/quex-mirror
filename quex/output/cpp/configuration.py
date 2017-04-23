@@ -64,11 +64,6 @@ def do(Mode_PrepPrepDB):
     # -- name of the character codec
     codec_name = make_safe_identifier(Setup.buffer_codec.name).lower()
 
-    # Setup.buffer_lexatom_size_in_byte can be '-1'. This signals then that 
-    # sizeof(QUEX_TYPE_LEXATOM) needs to be used. A numeric value 
-    # is required here.
-    character_size_str = "%i" % Setup.buffer_lexatom_size_in_byte
-
     def namespace(NameSpaceList):
         result = Lng.NAMESPACE_REFERENCE(NameSpaceList, TrailingDelimiterF=False)
 
@@ -98,7 +93,6 @@ def do(Mode_PrepPrepDB):
              ["$$NAMESPACE_TOKEN_OPEN$$",       Lng.NAMESPACE_OPEN(token_descr.name_space).replace("\n", "\\\n")],
              ["$$PATH_TERMINATION_CODE$$",      "0x%X" % Setup.path_limit_code],
              ["$$QUEX_TYPE_LEXATOM$$",        Setup.buffer_lexatom_type],
-             ["$$QUEX_SETTING_CHARACTER_SIZE$$", character_size_str],
              ["$$QUEX_VERSION$$",               QUEX_VERSION],
              ["$$TOKEN_CLASS$$",                token_descr.class_name],
              ["$$TOKEN_CLASS_NAME_SAFE$$",      token_descr.class_name_safe],

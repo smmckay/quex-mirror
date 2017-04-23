@@ -14,11 +14,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#ifndef __QUEX_OPTION_PLAIN_C
-QUEX_INLINE void QUEX_MEMBER(receive)(QUEX_TYPE_TOKEN** token_pp) 
-{ QUEX_NAME(receive)(this, token_pp); }
-#endif
-
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(remaining_token_pop)(QUEX_TYPE_ANALYZER*);
 

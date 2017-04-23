@@ -9,9 +9,9 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 /* Read Access */
-QUEX_INLINE QUEX_NAME(Mode)*   QUEX_NAME(mode)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE int                QUEX_NAME(mode_id)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE const char*        QUEX_NAME(mode_name)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE QUEX_NAME(Mode)*   QUEX_NAME(get_mode)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE int                QUEX_NAME(get_mode_id)(const QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE const char*        QUEX_NAME(get_mode_name)(const QUEX_TYPE_ANALYZER* me);
 
 /* Map: mode id to mode and vice versa */
 QUEX_INLINE QUEX_NAME(Mode)*   QUEX_NAME(map_mode_id_to_mode)(QUEX_TYPE_ANALYZER*  me,

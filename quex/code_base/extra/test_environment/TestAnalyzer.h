@@ -97,12 +97,33 @@ QUEX_NAMESPACE_MAIN_OPEN
 extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag {
+    /* __( Data Members )_______________________________________________________
+     *                                                                        */
+    QUEX_NAME(TokenQueue) _token_queue;  
+    /* Avoid constructor call to Token() => define plain memory. (C++ only)   */
+    uint8_t               __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
 
-#include <quex/code_base/analyzer/Engine_body>
+    E_Error               error_code;
+    char*                 __input_name;
+    QUEX_NAME(Buffer)     buffer;
+
+    QUEX_NAME(Mode)*      __current_mode_p; 
+    QUEX_NAME(ModeStack)  _mode_stack;
+
+    /* Shortcut to current mode's analyzer function.                          */
+    QUEX_NAME(AnalyzerFunctionP)  current_analyzer_function;
+#   if defined(QUEX_OPTION_ASSERTS)
+    /* Backup of analyzer's function pointer => mode change detection.        */
+    QUEX_NAME(AnalyzerFunctionP)  DEBUG_analyzer_function_at_entry;
+#   endif
+
+    __QUEX_IF_COUNT(QUEX_NAME(Counter)                      counter;)
+    __QUEX_IF_INCLUDE_STACK(struct QUEX_NAME(Memento_tag)*  _parent_memento;)
+    /* __( END: Data Members )________________________________________________*/
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
-/* START: User's class body extensions _____________________________________________*/
+/* START: User's class body extensions _______________________________________*/
 
-/* END: ____________________________________________________________________________*/
+/* END: ______________________________________________________________________*/
 #undef  self
 
 } quex_TestAnalyzer;
@@ -252,7 +273,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 256 "TestAnalyzer.h"
+#   line 277 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -283,7 +304,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 287 "TestAnalyzer.h"
+#   line 308 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -324,7 +345,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 328 "TestAnalyzer.h"
+#   line 349 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -412,7 +433,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 416 "TestAnalyzer.h"
+#   line 437 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -433,7 +454,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 437 "TestAnalyzer.h"
+#   line 458 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -452,7 +473,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 456 "TestAnalyzer.h"
+#   line 477 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -533,7 +554,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 537 "TestAnalyzer.h"
+#   line 558 "TestAnalyzer.h"
 
 
 

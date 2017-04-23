@@ -989,6 +989,8 @@ quex/TESTS/code/TEST                                                 <no date>
  * Include Guards for C/C++
         include_guard.py convention ..................................[OK]
                          undefinition ................................[OK]
+ * Main data member consistency for C and C++
+        class-data-member-consistency.sh .............................[OK]
  * Propper undefinition of configuration parameters.
         macro-check.py ...............................................[OK]
 
@@ -3182,7 +3184,7 @@ SUMMARY:
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-           14      [OK] quex/TESTS/code/TEST                                          
+           15      [OK] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3241,6 +3243,6 @@ SUMMARY:
    | | | | | | | ' // _ \| '__| '__/ _ \/ __| __|  | |
    | |_| | | | | . \ (_) | |  | | |  __/ (__| |_   |_|
     \___/|_|_| |_|\_\___/|_|  |_|  \___|\___|\__|  (_)
-                                                                   (1626 tests)
+                                                                   (1627 tests)
 
 ===============================================================================

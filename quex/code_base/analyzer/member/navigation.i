@@ -64,34 +64,6 @@ QUEX_NAME(undo_n)(QUEX_TYPE_ANALYZER* me, size_t DeltaN_Backward)
     __quex_assert(me->buffer._read_p >= me->buffer._lexeme_start_p);
 }
 
-
-#if ! defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE size_t  
-QUEX_MEMBER(tell)()
-{ return QUEX_NAME(tell)(this); }
-
-QUEX_INLINE void    
-QUEX_MEMBER(seek)(const size_t CharacterIndex)
-{ QUEX_NAME(seek)(this, CharacterIndex); }
-
-QUEX_INLINE void    
-QUEX_MEMBER(seek_forward)(const size_t CharacterN)
-{ QUEX_NAME(seek_forward)(this, CharacterN); }
-
-QUEX_INLINE void    
-QUEX_MEMBER(seek_backward)(const size_t CharacterN)
-{ QUEX_NAME(seek_backward)(this, CharacterN); }
-
-QUEX_INLINE void  
-QUEX_MEMBER(undo)()
-{ return QUEX_NAME(undo)(this); }
-
-QUEX_INLINE void  
-QUEX_MEMBER(undo)(size_t DeltaN_Backward)
-{ return QUEX_NAME(undo_n)(this, DeltaN_Backward); }
-
-#endif
-
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__NAVIGATION_I */

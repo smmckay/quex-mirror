@@ -274,13 +274,13 @@ def get_on_indentation_handler(Mode):
     if code_fragment is not None:
         on_indent_str   = Lng.SOURCE_REFERENCED(code_fragment)
     else:
-        on_indent_str   = Lng.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_INDENT")
+        on_indent_str   = Lng.TOKEN_SEND("QUEX_TOKEN_ID(INDENT)")
 
     code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_NODENT)
     if code_fragment is not None:
         on_nodent_str   = Lng.SOURCE_REFERENCED(code_fragment)
     else:
-        on_nodent_str   = Lng.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_NODENT")
+        on_nodent_str   = Lng.TOKEN_SEND("QUEX_TOKEN_ID(NODENT)")
 
     on_dedent_str   = ""
     on_n_dedent_str = ""
@@ -296,9 +296,9 @@ def get_on_indentation_handler(Mode):
         # If no 'on_dedent' and no 'on_n_dedent' is defined ... 
         on_dedent_str    = ""
         on_n_dedent_str  = "#if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)\n"
-        on_n_dedent_str += "    %s\n" % Lng.TOKEN_SEND_N("ClosedN", "__QUEX_SETTING_TOKEN_ID_DEDENT")
+        on_n_dedent_str += "    %s\n" % Lng.TOKEN_SEND_N("ClosedN", "QUEX_TOKEN_ID(DEDENT)")
         on_n_dedent_str += "#else\n"
-        on_n_dedent_str += "    while( start-- != stack->back ) %s\n" % Lng.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_DEDENT")
+        on_n_dedent_str += "    while( start-- != stack->back ) %s\n" % Lng.TOKEN_SEND("QUEX_TOKEN_ID(DEDENT)")
         on_n_dedent_str += "#endif\n"
 
     code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_ERROR)

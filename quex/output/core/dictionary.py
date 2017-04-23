@@ -269,7 +269,7 @@ class Lng_Cpp(dict):
         return "self_send(%s);" % TokenName
 
     def TOKEN_SEND_N(self, N, TokenName):
-        return "self_send_n(ClosedN, __QUEX_SETTING_TOKEN_ID_DEDENT);\n"
+        return "self_send_n(ClosedN, QUEX_TOKEN_ID(DEDENT));\n"
 
     def DEFAULT_COUNTER_FUNCTION_NAME(self, ModeName):
         return "QUEX_NAME(%s_counter)" % ModeName
@@ -975,7 +975,7 @@ class Lng_Cpp(dict):
     def EXIT_ON_MISSING_HANDLER(self, IncidenceId):
         return [
             'self.error_code = %s;\n' % self.__error_code_db[IncidenceId],
-            "%s\n"  % self.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_TERMINATION"),
+            "%s\n"  % self.TOKEN_SEND("QUEX_TOKEN_ID(TERMINATION)"),
             '%s;\n' % self.PURE_RETURN
         ]
 
@@ -986,7 +986,7 @@ class Lng_Cpp(dict):
     def EXIT_ON_TERMINATION(self):
         # NOT: "Lng.PURE_RETURN" because the terminal end of stream 
         #      exits anyway immediately--after 'on_after_match'.
-        return "%s\n" % self.TOKEN_SEND("__QUEX_SETTING_TOKEN_ID_TERMINATION")
+        return "%s\n" % self.TOKEN_SEND("QUEX_TOKEN_ID(TERMINATION)")
 
     @typed(dial_db=DialDB)
     def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):
