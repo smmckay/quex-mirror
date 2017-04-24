@@ -4,9 +4,9 @@ import os
 from StringIO import StringIO
 sys.path.append(os.environ["QUEX_PATH"])
 from   quex.input.files.token_type        import TokenTypeDescriptor
-import quex.output.cpp.token_class          as token_class
+import quex.output.languages.cpp.token_class          as token_class
 import quex.input.files.token_type          as parser
-import quex.output.core.dictionary as languages
+import quex.output.languages.core as languages
 import quex.blackboard         as blackboard
 
 blackboard.setup.buffer_element_size     = 1
@@ -14,7 +14,7 @@ blackboard.setup.output_token_class_file = ""
 blackboard.setup.token_class_name        = ""
 blackboard.setup.token_class_name_space  = ""
 blackboard.setup.token_class_name_safe   = ""
-blackboard.setup.language_db             = languages.db["C++"]
+blackboard.setup.language_db             = languages.db["C++"]()
 
 if "--hwut-info" in sys.argv:
     print "Token Class Template"

@@ -123,3 +123,6 @@ for the 'buffer._memory.ownership' before reload!
 -- 'print' and 'footer' sections
     "print":          "class_print_extension",
     "footer":         "class_footer_extension",          # -> in 'header' after all definitions.
+
+-- mentions QUEX_TOKEN_ID(BRIEF)
+

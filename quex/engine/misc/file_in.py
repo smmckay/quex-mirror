@@ -495,24 +495,6 @@ def clean_up():
     for file in temporary_files:
         os.system("rm %s" % file)
 
-def make_safe_identifier(String, NoCodeF=True):
-    txt = ""
-    for letter in String:
-        if len(letter) != 1:
-            # It is theoretically possible that a character > 0x10000 arrives on a python
-            # narrow build.
-            error.log("The underlying python build cannot handle character '%s'." % letter)
-
-        if letter.isalpha() or letter.isdigit() or letter == "_": txt += letter.upper()
-        elif letter == ":":                                       txt += "_"
-        elif NoCodeF:                                             txt += "_" 
-        else:                                                     txt += "_x%x_" % ord(letter)
-    return txt
-
-def get_include_guard_extension(Filename):
-    """Transforms the letters of a filename, so that they can appear in a C-macro."""
-    return make_safe_identifier(Filename, NoCodeF=False)
-
 def check_whitespace(fh):
     pos = fh.tell()
     skip_whitespace(fh)

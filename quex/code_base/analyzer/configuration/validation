@@ -7,10 +7,10 @@
  * (C) 2009-2017 Frank-Rene Schaefer                                          */
 
 /* Validate */
-#if defined(__QUEX_OPTION_BIG_ENDIAN) && defined(__QUEX_OPTION_LITTLE_ENDIAN)
+#if defined(QUEX_OPTION_ENDIAN_BIG) && defined(QUEX_OPTION_ENDIAN_LITTLE)
 #   error "Cannot define little endian and big endian at the same time."
 #endif
-#if ! defined(__QUEX_OPTION_BIG_ENDIAN) && ! defined(__QUEX_OPTION_LITTLE_ENDIAN) && ! defined(__QUEX_OPTION_SYSTEM_ENDIAN)
+#if ! defined(QUEX_OPTION_ENDIAN_BIG) && ! defined(QUEX_OPTION_ENDIAN_LITTLE) && ! defined(QUEX_OPTION_ENDIAN_SYSTEM)
 #   error "Either little endian or big endian must be defined."
 #endif
 

@@ -196,8 +196,7 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         variable_definitions,
         #
         comment_on_post_context_position_init_str,
-        "#   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \\\n",
-        "       || defined(QUEX_OPTION_ASSERTS)\n",
+        "#   if defined(QUEX_OPTION_ASSERTS)\n",
         "    me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;\n",
         "#   endif\n",
         #
@@ -324,7 +323,7 @@ def get_implementation_header(Setup):
     result.append("\n")
     return "\n".join(result)
 
-def __frame_of_all(Code, Setup):
+def frame_of_all(Code, Setup):
     # namespace_ref   = Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space)
     # if len(namespace_ref) > 2 and namespace_ref[:2] == "::":  namespace_ref = namespace_ref[2:]
     # if len(namespace_ref) > 2 and namespace_ref[-2:] == "::": namespace_ref = namespace_ref[:-2]

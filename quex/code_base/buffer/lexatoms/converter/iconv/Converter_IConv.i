@@ -89,11 +89,11 @@ QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* alter_ego,
         me->handle = (iconv_t)-1;               /* mark 'not-initialized'.    */
         return true;                            /* still, nothing went wrong. */
     }
-#   if   defined(__QUEX_OPTION_LITTLE_ENDIAN)
+#   if   defined(QUEX_OPTION_ENDIAN_LITTLE)
     const bool little_endian_f = true;
-#   elif defined(__QUEX_OPTION_BIG_ENDIAN)
+#   elif defined(QUEX_OPTION_ENDIAN_BIG)
     const bool little_endian_f = false;
-#   elif defined(__QUEX_OPTION_SYSTEM_ENDIAN) 
+#   elif defined(QUEX_OPTION_ENDIAN_SYSTEM) 
     const bool little_endian_f = QUEXED(system_is_little_endian)();
 #   endif
 

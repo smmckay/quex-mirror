@@ -80,11 +80,11 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego,
  * RETURNS: true, if success. false, else.                                    */
 {
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
-#   if   defined(__QUEX_OPTION_LITTLE_ENDIAN)
+#   if   defined(QUEX_OPTION_ENDIAN_LITTLE)
     const bool little_endian_f = true;
-#   elif defined(__QUEX_OPTION_BIG_ENDIAN)
+#   elif defined(QUEX_OPTION_ENDIAN_BIG)
     const bool little_endian_f = false;
-#   elif defined(__QUEX_OPTION_SYSTEM_ENDIAN) 
+#   elif defined(QUEX_OPTION_ENDIAN_SYSTEM) 
     const bool little_endian_f = QUEXED(system_is_little_endian)();
 #   endif
     me->from_handle = 0x0;

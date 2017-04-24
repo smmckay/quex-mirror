@@ -3,9 +3,7 @@ include ../Makefile.lexer
 TEST_FILES = bug-1935701.exe
 
 
-DEBUGF = -ggdb \
-         -D__QUEX_OPTION_UNIT_TEST \
-         -D__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER \
+DEBUGF = -ggdb -D__QUEX_OPTION_UNIT_TEST 
 
 INCLUDE_DIRS = -I./ -I$(QUEX_PATH)
 

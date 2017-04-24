@@ -469,15 +469,15 @@ Option("buffer_byte_order", "little|big|<system>",
         in the header files:
         """,
         List(
-        "__QUEX_OPTION_SYSTEM_ENDIAN",
-        "__QUEX_OPTION_LITTLE_ENDIAN",
-        "__QUEX_OPTION_BIG_ENDIAN",
+        "QUEX_OPTION_ENDIAN_SYSTEM",
+        "QUEX_OPTION_ENDIAN_LITTLE",
+        "QUEX_OPTION_ENDIAN_BIG",
         ),
         """
         Those macros are of primary use for character code converters. The
         converters need to know what the analyser engines number representation
         is. However, the user might want to use them for his own special
-        purposes (using \\v{#ifdef __QUEX_OPTION_BIG_ENDIAN ... #endif}).
+        purposes (using \\v{#ifdef QUEX_OPTION_ENDIAN_BIG ... #endif}).
         """),
 """
 The implementation of customized converters is supported by the following options.

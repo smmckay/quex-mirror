@@ -20,19 +20,11 @@ hwut-info:
 
 queue.exe:            lexer.cpp 
 	quex -i simple.qx -o TPLex 
-	$(CC) -I$(QUEX_PATH) -D__QUEX_OPTION_TEST_PSEUDO_ANALYSIS lexer.cpp $(ENGINE) -lefence -o $@
+	$(CC) -I$(QUEX_PATH) -DUNIT_TEST_PSEUDO_ANALYSIS lexer.cpp $(ENGINE) -lefence -o $@
 
 queue-real.exe:       lexer.cpp  
 	quex -i real.qx -o TPLex 
 	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -lefence -o $@
-
-## users_queue.exe:      lexer.cpp  
-##	quex -i simple.qx -o TPLex 
-##	$(CC) -I$(QUEX_PATH) -D__QUEX_OPTION_TEST_PSEUDO_ANALYSIS lexer.cpp $(ENGINE) -lefence -o $@
-
-## users_queue-real.exe: lexer.cpp  
-##	quex -i real.qx -o TPLex 
-##	$(CCX) -I$(QUEX_PATH) -DQUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER=1 lexer.cpp $(ENGINE) -lefence -o $@
 
 %.E: %.cpp
 	$(CC) -E -I$(QUEX_PATH) $< -o $@

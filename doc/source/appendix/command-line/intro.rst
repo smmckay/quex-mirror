@@ -589,14 +589,14 @@ Default: -1
      
 
     
-        * __QUEX_OPTION_SYSTEM_ENDIAN 
-        * __QUEX_OPTION_LITTLE_ENDIAN 
-        * __QUEX_OPTION_BIG_ENDIAN 
+        * QUEX_OPTION_ENDIAN_SYSTEM 
+        * QUEX_OPTION_ENDIAN_LITTLE 
+        * QUEX_OPTION_ENDIAN_BIG 
 
     Those macros are of primary use for character code converters. The converters need to know what 
     the analyser engines number representation is. However, the user might want to use them 
-    for his own special purposes (using ``#ifdef __QUEX_OPTION_BIG_ENDIAN ... #endif`` 
-    ).  
+    for his own special purposes (using ``#ifdef QUEX_OPTION_ENDIAN_BIG ... #endif`` ). 
+     
 
     
 

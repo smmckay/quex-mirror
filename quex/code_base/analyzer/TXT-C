@@ -55,58 +55,71 @@ $$USER_DEFINED_HEADER$$
 #include "$$TOKEN_ID_DEFINITION_FILE$$"
 #include "$$TOKEN_CLASS_DEFINITION_FILE$$"
 
-
-QUEX_NAMESPACE_MAIN_OPEN 
-
 enum {
 $$QUEX_MODE_ID_DEFINITIONS$$
 };
     
 $$MODE_OBJECTS$$
 
+extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
+
 $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
-#   include <quex/code_base/analyzer/EngineMemento_body>
+    /* __( Data Members )_______________________________________________________
+     *                                                                        */
+    char*                           __input_name;
+    QUEX_NAME(Buffer)               buffer;
+
+    struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
+    QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
+#   if defined(QUEX_OPTION_ASSERTS)
+    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
+#   endif
+#   if defined(QUEX_OPTION_COUNTER)
+    QUEX_NAME(Counter)              counter;
+#   endif
+#   if defined(QUEX_OPTION_INCLUDE_STACK)
+    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+#   endif
+    /* __( END: Data Members )________________________________________________*/
 
     /* Con- and Destruction are **not** necessary in C. No con- or de-
-     * structors of members need to be triggered.                              */
+     * structors of members need to be triggered.                             */
 
-/* START: User's memento extentions ___________________________________________*/
+/* START: User's memento extentions __________________________________________*/
 $$MEMENTO_EXTENSIONS$$
-/* END: _______________________________________________________________________*/
+/* END: ______________________________________________________________________*/
 } QUEX_NAME(Memento);
-
-QUEX_NAMESPACE_MAIN_CLOSE 
-
-QUEX_NAMESPACE_MAIN_OPEN 
-
-extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAFE$$_tag {
     /* __( Data Members )_______________________________________________________
      *                                                                        */
     QUEX_NAME(TokenQueue) _token_queue;  
     /* Avoid constructor call to Token() => define plain memory. (C++ only)   */
-    uint8_t               __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
+    uint8_t __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
 
-    E_Error               error_code;
-    char*                 __input_name;
-    QUEX_NAME(Buffer)     buffer;
+    E_Error                         error_code;
+    char*                           __input_name;
+    QUEX_NAME(Buffer)               buffer;
 
-    QUEX_NAME(Mode)*      __current_mode_p; 
-    QUEX_NAME(ModeStack)  _mode_stack;
+    QUEX_NAME(Mode)*                __current_mode_p; 
+    QUEX_NAME(ModeStack)            _mode_stack;
 
     /* Shortcut to current mode's analyzer function.                          */
-    QUEX_NAME(AnalyzerFunctionP)  current_analyzer_function;
+    QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     /* Backup of analyzer's function pointer => mode change detection.        */
-    QUEX_NAME(AnalyzerFunctionP)  DEBUG_analyzer_function_at_entry;
+    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif
-
-    __QUEX_IF_COUNT(QUEX_NAME(Counter)                      counter;)
-    __QUEX_IF_INCLUDE_STACK(struct QUEX_NAME(Memento_tag)*  _parent_memento;)
+#   if defined(QUEX_OPTION_COUNTER)
+    QUEX_NAME(Counter)              counter;
+#   endif
+#   if defined(QUEX_OPTION_INCLUDE_STACK)
+    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+#   endif
     /* __( END: Data Members )________________________________________________*/
+
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
 /* START: User's class body extensions _______________________________________*/
 $$CLASS_BODY_EXTENSION$$
@@ -116,7 +129,5 @@ $$CLASS_BODY_EXTENSION$$
 } $$LEXER_CLASS_NAME_SAFE$$;
 
 $$EPILOG$$
-
-QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */

@@ -76,8 +76,6 @@ base_analyzer = """
 /analyzer/configuration/validation
 /analyzer/headers
 /analyzer/headers.i
-/analyzer/EngineMemento_body
-/analyzer/Engine_body
 /analyzer/struct/constructor
 /analyzer/struct/constructor.i
 /analyzer/struct/reset
@@ -232,7 +230,7 @@ def __copy_files(FileTxt):
     input_directory  = QUEX_PATH               
     output_directory = Setup.output_directory 
 
-    file_list = map(lambda x: Lng["$code_base"] + x.strip(), FileTxt.split())
+    file_list = [ Lng.CODE_BASE + x.strip() for x in FileTxt.split() ]
 
     # Ensure that all directories exist
     directory_list = []

@@ -2,7 +2,6 @@
 from   quex.input.setup                  import NotificationDB
 from   quex.input.files.token_id_file    import TokenInfo, \
                                                 space
-from   quex.engine.misc.file_in          import get_include_guard_extension
 import quex.engine.misc.error            as     error
 import quex.engine.misc.similarity       as     similarity
 from   quex.engine.misc.string_handling  import blue_print
@@ -57,9 +56,8 @@ def do(setup):
         # Content of file = inclusion of 'Setup.extern_token_id_file'.
         token_id_txt = ["#include \"%s\"\n" % Setup.get_file_reference(Setup.extern_token_id_file)]
 
-    include_guard_ext = get_include_guard_extension(Setup.analyzer_name_safe.upper()     \
-                                                    + "__"                               \
-                                                    + Setup.token_class_name_safe.upper())
+    include_guard_ext = Lng.INCLUDE_GUARD(Setup.analyzer_name_safe.upper() \
+                                          + "__" + Setup.token_class_name_safe.upper())
 
     return blue_print(file_str, [
         ["$$TOKEN_ID_DEFINITIONS$$",        "".join(token_id_txt)],

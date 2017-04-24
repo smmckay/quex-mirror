@@ -25,14 +25,14 @@ from   quex.engine.generator.action_info           import CodeFragment, \
                                                           PatternActionPair
 from   quex.engine.analyzer.door_id_address_label  import Label
 from   quex.blackboard                             import setup as Setup, E_IncidenceIDs
-import quex.output.cpp.counter_for_pattern         as     counter_for_pattern
+import quex.output.languages.cpp.counter_for_pattern         as     counter_for_pattern
 from   quex.engine.analyzer.state.core             import ReloadState, \
                                                           TerminalState
 
 
 Lng   = None
 def do(Mode, IndentationSupportF, BeginOfLineSupportF):
-    """The module 'quex.output.cpp.core' produces the code for the 
+    """The module 'quex.output.languages.cpp.core' produces the code for the 
    state machine. However, it requires a certain data format. This function
    adapts the mode information to this format. Additional code is added 
 

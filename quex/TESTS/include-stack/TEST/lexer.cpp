@@ -75,7 +75,7 @@ void print(quex::Simple& qlex, const char* Str1, const char* Str2 /* = 0x0 */, c
     cout << endl;
 }
 
-#if 0 && QUEX_OPTION_TOKEN_POLICY_USERS_QUEUE
+#if 0 
 // Policy 'users_queue' deprecated.
 void get_token_from_users_queue(quex::Simple& qlex, quex::Token& Token)
 {

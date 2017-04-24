@@ -37,7 +37,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.regular_expression.engine           as     core
 import quex.input.files.specifier.counter             as     counter
 import quex.engine.state_machine.transformation.core  as     bc_factory
-import quex.output.core.dictionary                    as     languages
+import quex.output.languages.core                    as     languages
 import quex.output.core.run_time_counter              as     run_time_counter
 
 from   quex.blackboard  import setup as Setup, Lng
@@ -48,7 +48,7 @@ import codecs
 import subprocess
 from   StringIO  import StringIO
 
-Setup.language_db = languages.db["C"]
+Setup.language_db = languages.db["C"]()
 
 
 if "--hwut-info" in sys.argv:

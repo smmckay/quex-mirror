@@ -7,3 +7,11 @@ popd
 pushd doc
 python command_line_options.py
 popd
+
+rm -f $(find -name "*.pyc")
+pushd doc
+make clean
+popd
+pushd demo
+bash make_clean.sh > /dev/null 2>&1
+popd

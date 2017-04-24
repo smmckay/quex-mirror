@@ -52,9 +52,9 @@ from   quex.engine.mode                            import Mode
 from   quex.engine.incidence_db                    import IncidenceDB
 import quex.output.core.variable_db                as     variable_db
 from   quex.output.core.variable_db                import VariableDB
-from   quex.output.core.dictionary                 import db
+from   quex.output.languages.core                 import db
 import quex.output.core.state_router               as     state_router_generator
-import quex.output.cpp.core                        as     cpp_generator
+import quex.output.languages.cpp.core                        as     cpp_generator
 #
 import quex.blackboard as blackboard
 from   quex.constants  import E_Compression, \
@@ -121,7 +121,7 @@ def __Setup_init_language_database(Language):
         print "Error: missing language specifier: %s" % Language
         sys.exit()
 
-    Setup.language_db = db[Setup.language]
+    Setup.language_db = db[Setup.language]()
 
 def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
@@ -202,7 +202,6 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     if ShowBufferLoadsF:
         state_machine_code = "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS\n" + \
                              "#define __QUEX_OPTION_UNIT_TEST\n"                   + \
-                             "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER\n"       + \
                              state_machine_code
 
     source_code =   create_common_declarations(Language, QuexBufferSize, 

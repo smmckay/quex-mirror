@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.67.3"
-#define QUEX_SETTING_BUILD_DATE        "Sun Apr 23 10:56:48 2017"
+#define QUEX_SETTING_BUILD_DATE        "Mon Apr 24 05:31:53 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -69,14 +69,14 @@
 #   define __QUEX_SETTING_INITIAL_LEXER_MODE_ID    (QUEX_NAME(ModeID_M))
 #endif
 
-#ifndef    __QUEX_OPTION_LITTLE_ENDIAN
-#define    __QUEX_OPTION_LITTLE_ENDIAN
+#ifndef    QUEX_OPTION_ENDIAN_LITTLE
+#define    QUEX_OPTION_ENDIAN_LITTLE
 #endif
-#ifndef    __QUEX_OPTION_BIG_ENDIAN
-/* #define __QUEX_OPTION_BIG_ENDIAN */
+#ifndef    QUEX_OPTION_ENDIAN_BIG
+/* #define QUEX_OPTION_ENDIAN_BIG */
 #endif
-#ifndef    __QUEX_OPTION_SYSTEM_ENDIAN
-#define    __QUEX_OPTION_SYSTEM_ENDIAN
+#ifndef    QUEX_OPTION_ENDIAN_SYSTEM
+#define    QUEX_OPTION_ENDIAN_SYSTEM
 #endif
 
 /* OPTIONS: ___________________________________________________________________
@@ -123,7 +123,7 @@
  *
  * IT IS NOT SUPPOSED TO APPEAR IN THE NORMAL CHARACTER STREAM.               */
 #ifndef    QUEX_SETTING_BUFFER_LIMIT_CODE
-#   define QUEX_SETTING_BUFFER_LIMIT_CODE  ((QUEX_TYPE_LEXATOM)0x0)
+#   define QUEX_SETTING_BUFFER_LIMIT_CODE  ((QUEX_TYPE_LEXATOM)0)
 #endif
 
 /* PTC -- Path Termination code:
@@ -136,7 +136,7 @@
  *
  * IT IS NOT SUPPOSED TO APPEAR IN THE NORMAL CHARACTER STREAM.               */
 #ifndef    QUEX_SETTING_PATH_TERMINATION_CODE
-#   define QUEX_SETTING_PATH_TERMINATION_CODE  ((QUEX_TYPE_LEXATOM)0x1)
+#   define QUEX_SETTING_PATH_TERMINATION_CODE  ((QUEX_TYPE_LEXATOM)1)
 #endif
 
 /* NOTE: A cast to 'size_t' would it make impossible to use the macro in 
@@ -309,7 +309,7 @@
 #   define QUEX_TYPE_TOKEN_ID                               uint32_t
 #endif
 #define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_ ## BRIEF)
-#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
+#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ()
 
 #ifndef    QUEX_TYPE_TOKEN_LINE_N
 #   define QUEX_TYPE_TOKEN_LINE_N    size_t

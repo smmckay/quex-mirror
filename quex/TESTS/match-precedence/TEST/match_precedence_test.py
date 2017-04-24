@@ -3,16 +3,14 @@ import sys
 sys.path.append(os.environ["QUEX_PATH"])
 sys.path.insert(0, os.getcwd())
 
+import quex.input.files.mode       as     mode
+from   quex.input.code.base        import SourceRef
+from   quex.input.code.core        import CodeUser
+import quex.output.languages.core  as     languages
 
-#from   quex.core                        import blackboard_mode_db_setup
-import quex.input.files.mode        as     mode
-from   quex.input.code.base         import SourceRef
-from   quex.input.code.core         import CodeUser
-import quex.output.core.dictionary  as     languages
+import quex.blackboard             as     blackboard
 
-import quex.blackboard              as     blackboard
-
-blackboard.setup.language_db = languages.db["C++"]
+blackboard.setup.language_db = languages.db["C++"]()
 
 from   StringIO import StringIO
 

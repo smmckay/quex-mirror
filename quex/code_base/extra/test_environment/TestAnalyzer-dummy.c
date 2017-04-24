@@ -383,8 +383,7 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
      * (3)   when a terminal state of the post context is reached (which can only be reached
      *       for that particular post context), then the post context position is used
      *       to reset the input position.                                              */
-#   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
-       || defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS)
     me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
 #   endif
 _20:
@@ -517,7 +516,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 521 "TestAnalyzer.c"
+#   line 520 "TestAnalyzer.c"
 
 }
 RETURN;
@@ -751,7 +750,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 755 "TestAnalyzer.c"
+#   line 754 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -782,7 +781,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 786 "TestAnalyzer.c"
+#   line 785 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -823,7 +822,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 827 "TestAnalyzer.c"
+#   line 826 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -911,7 +910,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 915 "TestAnalyzer.c"
+#   line 914 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -932,7 +931,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 936 "TestAnalyzer.c"
+#   line 935 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -951,7 +950,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 955 "TestAnalyzer.c"
+#   line 954 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1032,7 +1031,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1036 "TestAnalyzer.c"
+#   line 1035 "TestAnalyzer.c"
 
 
 

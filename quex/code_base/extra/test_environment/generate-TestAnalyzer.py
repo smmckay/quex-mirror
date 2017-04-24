@@ -3,15 +3,16 @@ import sys
 
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-import quex.input.command_line.core     as command_line
-import quex.input.files.core            as quex_file_parser
-import quex.output.cpp.templates        as templates
-import quex.output.cpp.analyzer_class   as analyzer_class
-import quex.output.cpp.token_class      as token_class
+import quex.input.command_line.core              as command_line
+import quex.input.files.core                     as quex_file_parser
+import quex.output.languages.cpp.templates       as templates
+import quex.output.languages.cpp.analyzer_class  as analyzer_class
+import quex.output.languages.cpp.token_class     as token_class
 # from   quex.TESTS.code.TEST.include_guard import better_name
 import quex.core                        as core
 
-from   quex.blackboard                  import Lng, setup as Setup
+from   quex.blackboard                  import Lng, \
+                                               setup as Setup
 import quex.blackboard                  as     blackboard
 from   quex.input.code.base             import CodeFragment
 

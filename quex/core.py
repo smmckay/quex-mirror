@@ -1,19 +1,19 @@
 from   quex.blackboard                          import setup as Setup, \
                                                        Lng
-import quex.output.cpp.source_package           as     source_package
+import quex.output.languages.cpp.source_package           as     source_package
 #
 import quex.input.files.core                    as     quex_file_parser
 #
 from   quex.engine.misc.tools                   import flatten_list_of_lists
 from   quex.engine.misc.file_operations         import write_safely_and_close
 #
-import quex.output.cpp.core                     as cpp_generator
-import quex.output.cpp.token_class              as token_class
-import quex.output.cpp.analyzer_class           as analyzer_class
-import quex.output.cpp.configuration            as configuration 
-import quex.output.cpp.mode_classes             as mode_classes
-import quex.output.cpp.codec_converter_helper   as codec_converter_helper 
-import quex.output.graphviz.core                as grapviz_generator
+import quex.output.languages.cpp.core                     as cpp_generator
+import quex.output.languages.cpp.token_class              as token_class
+import quex.output.languages.cpp.analyzer_class           as analyzer_class
+import quex.output.languages.cpp.configuration            as configuration 
+import quex.output.languages.cpp.mode_classes             as mode_classes
+import quex.output.languages.cpp.codec_converter_helper   as codec_converter_helper 
+import quex.output.languages.graphviz.core                as grapviz_generator
 
 import quex.blackboard                          as blackboard
 

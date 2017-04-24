@@ -10,21 +10,13 @@ using namespace quex;
 __QUEX_TYPE_ANALYZER_RETURN_VALUE  pseudo_analysis(QUEX_TYPE_ANALYZER* me);
 QUEX_TYPE_TOKEN_ID  test_core(TPLex&, const char*);
 
-#if defined(QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY)
-#   define UMM_NAME "(User Memory Manag.)"
-#else
-#   define UMM_NAME ""
-#endif
-#if defined(__QUEX_OPTION_TEST_PSEUDO_ANALYSIS)
+#define UMM_NAME ""
+#if defined(UNIT_TEST_PSEUDO_ANALYSIS)
 #   define NAME "Pseudo Analysis;\n"
 #else
 #   define NAME "Real Analysis;\n"
 #endif
-#if   defined( QUEX_OPTION_TOKEN_POLICY_QUEUE )
-#   define POLICY_NAME "queue"
-#else
-#   define POLICY_NAME "single"
-#endif
+#define POLICY_NAME "queue"
 
 int 
 main(int argc, char** argv) 
@@ -38,14 +30,10 @@ main(int argc, char** argv)
     printf("---------------------------------------------------------------------\n");
     stderr = stdout;
 
-#   if defined(  __QUEX_OPTION_TOKEN_POLICY_IS_QUEUE_BASE)
-    if( argc < 2 ) return 0;
-#   endif
-
     /* Allocating on 'heap' allows for easier memory violation detection via 'efence' */
     TPLex*     qlex = new TPLex("real.txt");  /* In case of pseudo_analysis the file  *
                                                * does not matter.                     */
-#   if defined(__QUEX_OPTION_TEST_PSEUDO_ANALYSIS)
+#   if defined(UNIT_TEST_PSEUDO_ANALYSIS)
     printf("Pseudo Analysis: Replace analysis pointer with own function.\n");
     printf("Queue Size: %i\n", QUEX_SETTING_TOKEN_QUEUE_SIZE);
     qlex->current_analyzer_function = pseudo_analysis;
@@ -60,16 +48,6 @@ QUEX_TYPE_TOKEN_ID test_core(TPLex& qlex, const char* Choice)
 {
     QUEX_TYPE_TOKEN*  token_p;
 
-#   if QUEX_OPTION_USER_MANAGED_TOKEN_MEMORY
-    if( qlex.token_queue_is_empty() ) {
-        QUEX_TYPE_TOKEN*  begin new QUEX_TYPE_TOKEN[32];
-        size_t            n     = 32;
-
-        qley.token_queue_swap(&begin, &n);
-        if( begin != 0x0 ) delete [] begin;
-    }
-#   endif
-
     qlex.receive(&token_p);
 
     printf("received: %s\n", token_p->type_id_name().c_str());
@@ -78,7 +56,7 @@ QUEX_TYPE_TOKEN_ID test_core(TPLex& qlex, const char* Choice)
     return token_id;
 }
 
-#if defined(__QUEX_OPTION_TEST_PSEUDO_ANALYSIS)
+#if defined(UNIT_TEST_PSEUDO_ANALYSIS)
 __QUEX_TYPE_ANALYZER_RETURN_VALUE  pseudo_analysis(QUEX_TYPE_ANALYZER* me)
 {
     TPLex&     self = *((TPLex*)me);

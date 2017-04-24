@@ -6,7 +6,7 @@ from   quex.engine.misc.file_in                   import EndOfStreamException, \
                                                          read_namespaced_name, \
                                                          read_until_closing_bracket, \
                                                          skip_whitespace
-from   quex.output.cpp.token_id_maker             import TokenInfo 
+from   quex.output.languages.cpp.token_id_maker             import TokenInfo 
 from   quex.input.files.token_id_file             import cut_token_id_prefix
 import quex.blackboard                            as     blackboard
 from   quex.blackboard                            import setup as Setup, \

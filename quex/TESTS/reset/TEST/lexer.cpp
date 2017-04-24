@@ -36,9 +36,9 @@ main(int argc, char** argv)
         return 0;
     }
     if( strcmp(argv[1], "--hwut-info") == 0 ) {
-#       if   defined(QUEX_OPTION_ENABLED_ICONV)
+#       if   defined(QUEX_OPTION_CONVERTER_ICONV)
         printf("Reset w/ QuexLexatomLoader: Converter_IConv;\n");
-#       elif defined(QUEX_OPTION_ENABLED_ICU)
+#       elif defined(QUEX_OPTION_CONVERTER_ICU)
         printf("Reset w/ QuexLexatomLoader: Converter_ICU;\n");
 #       elif defined(__QUEX_SETTING_TEST_UTF8)
         printf("Reset w/ QuexLexatomLoader: Plain w/ Engine Codec;\n");

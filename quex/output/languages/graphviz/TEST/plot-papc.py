@@ -5,7 +5,7 @@ import os
 sys.path.append(os.environ["QUEX_PATH"])
 
 from   quex.engine.mode                        import BasicMode
-import quex.output.graphviz.core               as     plotter
+import quex.output.languages.graphviz.core               as     plotter
 import quex.input.regular_expression.engine    as     regex
 from   quex.input.files.specifier.mode         import PatternActionPair
 from   quex.input.code.base                    import CodeFragment

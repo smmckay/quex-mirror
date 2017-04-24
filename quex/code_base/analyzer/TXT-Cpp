@@ -75,7 +75,24 @@ extern QUEX_NAME(Mode)*   (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);
 $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
-#   include <quex/code_base/analyzer/EngineMemento_body>
+    /* __( Data Members )_______________________________________________________
+     *                                                                        */
+    char*                           __input_name;
+    QUEX_NAME(Buffer)               buffer;
+
+    struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
+    QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
+#   if defined(QUEX_OPTION_ASSERTS)
+    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
+#   endif
+
+#   if defined(QUEX_OPTION_COUNTER)
+    QUEX_NAME(Counter)              counter;
+#   endif
+#   if defined(QUEX_OPTION_INCLUDE_STACK)
+    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+#   endif
+    /* __( END: Data Members )________________________________________________*/
 
     QUEX_NAME(Memento_tag)()  {} /* Con- and Destruction necessary to trigger */
     ~QUEX_NAME(Memento_tag)() {} /* con- and destruction of user members.     */
@@ -91,24 +108,26 @@ public:
      *                                                                        */
     QUEX_NAME(TokenQueue) _token_queue;  
     /* Avoid constructor call to Token() => define plain memory. (C++ only)   */
-    uint8_t               __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
+    uint8_t __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
 
-    E_Error               error_code;
-    char*                 __input_name;
-    QUEX_NAME(Buffer)     buffer;
+    E_Error                         error_code;
+    char*                           __input_name;
+    QUEX_NAME(Buffer)               buffer;
 
-    QUEX_NAME(Mode)*      __current_mode_p; 
-    QUEX_NAME(ModeStack)  _mode_stack;
-
+    QUEX_NAME(ModeStack)            _mode_stack;
+    QUEX_NAME(Mode)*                __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
-    QUEX_NAME(AnalyzerFunctionP)  current_analyzer_function;
+    QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     /* Backup of analyzer's function pointer => mode change detection.        */
-    QUEX_NAME(AnalyzerFunctionP)  DEBUG_analyzer_function_at_entry;
+    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif
-
-    __QUEX_IF_COUNT(QUEX_NAME(Counter)                      counter;)
-    __QUEX_IF_INCLUDE_STACK(struct QUEX_NAME(Memento_tag)*  _parent_memento;)
+#   if defined(QUEX_OPTION_COUNTER)
+    QUEX_NAME(Counter)              counter;
+#   endif
+#   if defined(QUEX_OPTION_INCLUDE_STACK)
+    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+#   endif
     /* __( END: Data Members )________________________________________________*/
 private:
     $$LEXER_CLASS_NAME$$(const $$LEXER_CLASS_NAME$$&) {}

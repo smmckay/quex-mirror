@@ -103,8 +103,7 @@ def create_common_declarations(Language,
     txt = ""
     if ShowBufferLoadsF:
         txt += "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS\n" \
-               "#define __QUEX_OPTION_UNIT_TEST\n"                   \
-               "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER\n"       
+               "#define __QUEX_OPTION_UNIT_TEST\n"                   
 
     # Parameterize the common declarations
     txt += test_program_common_declarations.replace("$$BUFFER_FALLBACK_N$$", 

@@ -11,24 +11,6 @@ the suffix enables something, the option with the suffix disables the 'something
    More of use is the sibling ``QUEX_OPTION_ASSERTS_DISABLED``. Disabling
    asserts is key for getting reasonable performance.
 
-.. cmacro:: QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE
-
-   If defined (as by default) mode changes may happen without a token being
-   returned. Then, the analysis process continues until the first valid token is
-   returned. However, if::
-   
-        QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE_DISABLED
-
-   is defined, then the ``.receive()`` function returns always without 
-   checking that a token has actually been sent. This option is only
-   effective for the token policy 'single'. With the 'queue' token 
-   policy, the analyzer never returns with an empty token queue.
-
-.. cmacro:: QUEX_OPTION_BUFFER_BASED_ANALYZIS
-
-   Turn on buffer based analysis. In particular automatic buffer reload is
-   disabled. Also some consistency checks are disabled if asserts were enabled.
-
 .. cmacro:: QUEX_OPTION_COLUMN_NUMBER_COUNTING
 
    Enables column number counting. Respectively, 
@@ -57,11 +39,6 @@ the suffix enables something, the option with the suffix disables the 'something
 .. cmacro:: QUEX_OPTION_DEBUG_SHOW_LOADS
 
    Enables/disables the output of details about reloads of the buffer.
-
-.. cmacro:: QUEX_OPTION_ENABLE_PINARD_RECODE
-
-   Enables/disables Francois Pinards Recode library. At the time of this writing the 
-   converter is not yet implemented.
 
 .. cmacro:: QUEX_OPTION_ERROR_OUTPUT_ON_MODE_CHANGE_ERROR
 
@@ -107,15 +84,6 @@ the suffix enables something, the option with the suffix disables the 'something
 .. cmacro:: QUEX_OPTION_STRING_ACCUMULATOR
 
    Enables/disables an optional accumulator which can collect some longer string.
-
-.. cmacro:: QUEX_OPTION_TOKEN_POLICY_QUEUE
-
-   Enables/disables the token sending via a token queue. With the current version of quex (0.36.4)
-   some performance increase can be achieved if the token queue is disabled.
-
-.. cmacro:: QUEX_OPTION_TOKEN_POLICY_SINGLE
-
-   Enables/disables the token sending via a token object owned by the user. 
 
 .. cmacro:: QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 

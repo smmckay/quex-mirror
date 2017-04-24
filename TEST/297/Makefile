@@ -1,8 +1,7 @@
 INCLUDES := -I$(QUEX_PATH)/quex/code_base/extra/test_environment/ \
 		    -I$(QUEX_PATH)
 
-DEFINES  := -DQUEX_OPTION_TOKEN_POLICY_SINGLE \
-	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
+DEFINES  := -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 
 SRC_CPP  := lexer.cpp \
 	        $(QUEX_PATH)/quex/code_base/extra/test_environment/TestAnalyzer-dummy.cpp

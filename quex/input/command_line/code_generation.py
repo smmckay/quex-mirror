@@ -6,7 +6,7 @@ from   quex.input.setup                              import global_extension_db,
                                                             E_Files
 from   quex.input.files.token_type                   import TokenTypeDescriptorManual
 from   quex.input.files.token_id_file                import parse as token_id_file_parse
-from   quex.output.core.dictionary                   import db as output_language_db
+from   quex.output.languages.core                   import db as output_language_db
 from   quex.engine.misc.file_in                      import read_namespaced_name
 import quex.engine.misc.error                        as     error 
 import quex.engine.state_machine.transformation.core as     bc_factory
@@ -37,7 +37,7 @@ def prepare(command_line, argv):
     Setup.language = Setup.language.upper()
     error.verify_word_in_list(Setup.language, output_language_db.keys(),
                               "Programming language '%s' is not supported." % Setup.language)
-    Setup.language_db  = output_language_db[Setup.language]
+    Setup.language_db  = output_language_db[Setup.language]()
     Setup.extension_db = global_extension_db[Setup.language]
 
     # Is the output file naming scheme provided by the extension database

@@ -144,5 +144,5 @@ def do_run_time_counter(Mode):
     return txt
 
 def frame_this(Code):
-    return Lng["$frame"](Code, Setup)
+    return Lng.frame_all(Code, Setup)
 

@@ -375,8 +375,7 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
      * (3)   when a terminal state of the post context is reached (which can only be reached
      *       for that particular post context), then the post context position is used
      *       to reset the input position.                                              */
-#   if    defined(QUEX_OPTION_AUTOMATIC_ANALYSIS_CONTINUATION_ON_MODE_CHANGE) \
-       || defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS)
     me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
 #   endif
 _20:
@@ -509,7 +508,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 513 "TestAnalyzer.cpp"
+#   line 512 "TestAnalyzer.cpp"
 
 }
 RETURN;

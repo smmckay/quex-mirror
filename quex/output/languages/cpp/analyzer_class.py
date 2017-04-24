@@ -1,10 +1,9 @@
 #! /usr/bin/env python
 import os
 
-import quex.output.cpp.mode_classes     as     mode_classes
+import quex.output.languages.cpp.mode_classes     as     mode_classes
 from   quex.engine.misc.string_handling import blue_print
 from   quex.engine.misc.file_operations import get_file_content_or_die
-from   quex.engine.misc.file_in         import get_include_guard_extension
 from   quex.DEFINITIONS                 import QUEX_PATH, QUEX_VERSION
 import quex.blackboard                  as     blackboard
 from   quex.blackboard                  import setup as Setup, \
@@ -40,11 +39,11 @@ def do(ModeDB, Epilog):
 
     template_code_txt = get_file_content_or_die(QuexClassHeaderFileTemplate)
 
-    include_guard_ext = get_include_guard_extension(
+    include_guard_ext = Lng.INCLUDE_GUARD(
             Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
             + "__" + Setup.analyzer_class_name)
 
-    lexer_name_space_safe = get_include_guard_extension(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space))
+    lexer_name_space_safe = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space))
 
     txt = blue_print(template_code_txt,
             [
@@ -64,7 +63,7 @@ def do(ModeDB, Epilog):
                 ["$$MODE_OBJECTS$$",                     mode_object_members_txt],
                 ["$$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$", mode_specific_functions_txt],
                 ["$$PRETTY_INDENTATION$$",               "     " + " " * (len(LexerClassName)*2 + 2)],
-                ["$$QUEX_TEMPLATE_DIR$$",                QUEX_PATH + Lng["$code_base"]],
+                ["$$QUEX_TEMPLATE_DIR$$",                QUEX_PATH + Lng.CODE_BASE],
                 ["$$QUEX_VERSION$$",                     QUEX_VERSION],
                 ["$$TOKEN_CLASS_DEFINITION_FILE$$",      Setup.get_file_reference(token_class_file_name)],
                 ["$$TOKEN_CLASS$$",                      token_class_name],
@@ -81,7 +80,7 @@ def do(ModeDB, Epilog):
 def do_implementation(ModeDB):
 
     FileTemplate = os.path.normpath(QUEX_PATH
-                                    + Lng["$code_base"] 
+                                    + Lng.CODE_BASE 
                                     + "/analyzer/TXT-Cpp.i")
     func_txt = get_file_content_or_die(FileTemplate)
 

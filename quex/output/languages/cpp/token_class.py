@@ -2,11 +2,9 @@
 # ABSOLUTELY NO WARANTY
 from   quex.DEFINITIONS                   import QUEX_PATH
 from   quex.input.files.token_type        import TokenTypeDescriptor
-from   quex.engine.misc.file_in           import get_include_guard_extension, \
-                                                 make_safe_identifier
 from   quex.engine.misc.file_operations   import open_file_or_die
 from   quex.engine.misc.string_handling   import blue_print
-import quex.output.cpp.token_id_maker     as     token_id_maker
+import quex.output.languages.cpp.token_id_maker     as     token_id_maker
 import quex.blackboard                    as     blackboard
 from   quex.blackboard                    import setup as Setup, Lng
 
@@ -353,7 +351,7 @@ def _helper_definitions():
     txt += helper_definitions_common \
            % (Setup.buffer_lexatom_type,
               Setup.token_id_type,
-              make_safe_identifier(Setup.buffer_codec.name).lower(),
+              Lng.SAFE_IDENTIFIER(Setup.buffer_codec.name),
               Setup.output_token_id_file_ref)
 
     return txt
@@ -364,9 +362,8 @@ def _some_standard_stuff(Descr):
                 [2] body of the 'copy' function
                 [3] body of the 'take_text' function
     """
-    include_guard_extension_str = get_include_guard_extension(
-                                      Lng.NAMESPACE_REFERENCE(Descr.name_space) 
-                                    + "__" + Descr.class_name)
+    include_guard_extension_str = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Descr.name_space) 
+                                                    + "__" + Descr.class_name)
 
     virtual_destructor_str = ""
     if Descr.open_for_derivation_f: virtual_destructor_str = "virtual "

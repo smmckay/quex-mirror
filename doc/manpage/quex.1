@@ -845,13 +845,13 @@ According to the setting of this option one of the three macros is defined in th
 
 
 .Bl -bullet
- * __QUEX_OPTION_SYSTEM_ENDIAN 
- * __QUEX_OPTION_LITTLE_ENDIAN 
- * __QUEX_OPTION_BIG_ENDIAN 
+ * QUEX_OPTION_ENDIAN_SYSTEM 
+ * QUEX_OPTION_ENDIAN_LITTLE 
+ * QUEX_OPTION_ENDIAN_BIG 
 
 .El
 Those macros are of primary use for character code converters. The converters need to know what the analyser engines number representation is. However, the user might want to use them for his own special purposes (using 
-.B "#ifdef __QUEX_OPTION_BIG_ENDIAN ... #endif"
+.B "#ifdef QUEX_OPTION_ENDIAN_BIG ... #endif"
 ). 
 
 

@@ -4,10 +4,6 @@
 // (*) include lexical analyser header
 #include "EasyLexer"
 
-#ifndef QUEX_OPTION_TOKEN_POLICY_SINGLE
-#   error "This example has been designed for token passing policy 'single'."
-#endif
-
 #ifndef    ENCODING_NAME
 #   define ENCODING_NAME 0
 #endif

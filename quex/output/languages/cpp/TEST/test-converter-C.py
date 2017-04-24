@@ -2,8 +2,8 @@
 import os
 import sys
 sys.path.append(os.environ["QUEX_PATH"])
-import quex.output.cpp.codec_converter_helper as codec_converter_helper
-import quex.output.core.dictionary as languages
+import quex.output.languages.cpp.codec_converter_helper as codec_converter_helper
+import quex.output.languages.core as languages
 from   quex.engine.state_machine.transformation.table import EncodingTrafoByTable
 import quex.blackboard
 
@@ -31,7 +31,7 @@ def test(CodecName):
     #os.remove("./converter-tester.h")
     #os.remove("./converter-tester")
 
-quex.blackboard.setup.language_db = languages.db["C"]
+quex.blackboard.setup.language_db = languages.db["C"]()
 quex.blackboard.setup.output_buffer_codec_header = "converter-tester.h"
 
 test(sys.argv[1])

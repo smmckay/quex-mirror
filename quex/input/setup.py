@@ -75,9 +75,9 @@ class QuexSetup:
         def clean(X):
             return get_propperly_slash_based_file_name(X)
 
-        code_base_directory = self.language_db["$code_base"]
         # The starting backslash must be assumed for many things ...
-        assert code_base_directory[0] == "/"
+        code_base_dir = self.language_db.CODE_BASE[0]
+        assert code_base_dir == "/"
 
         # If the source packager is active, then everything becomes relative
         # to the new source package directory.
@@ -87,7 +87,7 @@ class QuexSetup:
         full_file_name          = clean(os.path.realpath(FileName))
         # Ensure that all directories end with '/'. The 'clean' will omit double slashes.
         full_source_package_dir = clean(os.path.realpath(self.source_package_directory) + "/")
-        full_code_base_dir      = clean(os.path.realpath(QUEX_PATH + code_base_directory) + "/")
+        full_code_base_dir      = clean(os.path.realpath(QUEX_PATH + code_base_dir) + "/")
 
         ##if FileName.find("CppDefault.qx") != -1:
         ##    print "## filename           = ", FileName
@@ -99,14 +99,13 @@ class QuexSetup:
         if idx != -1:
             ## print "##Found"
             ## print "## source package directory = ", self.source_package_directory
-            ## print "## languages' code_base     = ", self.language_db["$code_base"]
+            ## print "## languages' code_base     = ", self.language_db.CODE_BASE
             ## print "## local file               = ", idx, len(full_code_base_dir), \
             ##                                        full_file_name[idx + len(full_code_base_dir):]
 
             # The starting '/' must be deleted from codebase, since otherwise
             # it will be considered as an absolute path under Unix.
-            result = clean(   code_base_directory[1:]
-                           + "/" + full_file_name[idx + len(full_code_base_dir):])
+            result = clean(code_base_dir + "/" + full_file_name[idx + len(full_code_base_dir):])
             ## print "## result = ", result
             return result
 

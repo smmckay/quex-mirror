@@ -18,7 +18,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
                                                    
 import quex.engine.analyzer.engine_supply_factory         as     engine
 from   quex.engine.misc.interval_handling                 import Interval, NumberSet
-import quex.output.core.dictionary                        as     languages
+import quex.output.languages.core                        as     languages
 from   quex.output.core.base                              import do_analyzer
 from   quex.engine.state_machine.core                     import StateMachine
 from   quex.engine.analyzer.door_id_address_label         import DoorID
@@ -33,7 +33,7 @@ from   collections import defaultdict
 
 dial_db = DialDB()
 
-Setup.language_db = languages.db["C++"]
+Setup.language_db = languages.db["C++"]()
 Setup.buffer_lexatom_type = "uint32_t"
 Setup.buffer_codec_set(bc_factory.do("unicode", None), -1)
 

@@ -60,15 +60,14 @@ extern bool UserMementoPack_UnitTest_return_value;
 #include "TestAnalyzer-token_ids.h"
 #include "TestAnalyzer-token.h"
 
-
-QUEX_NAMESPACE_MAIN_OPEN 
-
 enum {
     QUEX_NAME(ModeID_M) = 0
 };
     
         extern QUEX_NAME(Mode)  QUEX_NAME(M);
 
+
+extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 extern     __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER*);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -80,46 +79,60 @@ extern     bool QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)*);
 
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
-#   include <quex/code_base/analyzer/EngineMemento_body>
+    /* __( Data Members )_______________________________________________________
+     *                                                                        */
+    char*                           __input_name;
+    QUEX_NAME(Buffer)               buffer;
+
+    struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
+    QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
+#   if defined(QUEX_OPTION_ASSERTS)
+    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
+#   endif
+#   if defined(QUEX_OPTION_COUNTER)
+    QUEX_NAME(Counter)              counter;
+#   endif
+#   if defined(QUEX_OPTION_INCLUDE_STACK)
+    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+#   endif
+    /* __( END: Data Members )________________________________________________*/
 
     /* Con- and Destruction are **not** necessary in C. No con- or de-
-     * structors of members need to be triggered.                              */
+     * structors of members need to be triggered.                             */
 
-/* START: User's memento extentions ___________________________________________*/
+/* START: User's memento extentions __________________________________________*/
 
-/* END: _______________________________________________________________________*/
+/* END: ______________________________________________________________________*/
 } QUEX_NAME(Memento);
-
-QUEX_NAMESPACE_MAIN_CLOSE 
-
-QUEX_NAMESPACE_MAIN_OPEN 
-
-extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag {
     /* __( Data Members )_______________________________________________________
      *                                                                        */
     QUEX_NAME(TokenQueue) _token_queue;  
     /* Avoid constructor call to Token() => define plain memory. (C++ only)   */
-    uint8_t               __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
+    uint8_t __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
 
-    E_Error               error_code;
-    char*                 __input_name;
-    QUEX_NAME(Buffer)     buffer;
+    E_Error                         error_code;
+    char*                           __input_name;
+    QUEX_NAME(Buffer)               buffer;
 
-    QUEX_NAME(Mode)*      __current_mode_p; 
-    QUEX_NAME(ModeStack)  _mode_stack;
+    QUEX_NAME(Mode)*                __current_mode_p; 
+    QUEX_NAME(ModeStack)            _mode_stack;
 
     /* Shortcut to current mode's analyzer function.                          */
-    QUEX_NAME(AnalyzerFunctionP)  current_analyzer_function;
+    QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     /* Backup of analyzer's function pointer => mode change detection.        */
-    QUEX_NAME(AnalyzerFunctionP)  DEBUG_analyzer_function_at_entry;
+    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif
-
-    __QUEX_IF_COUNT(QUEX_NAME(Counter)                      counter;)
-    __QUEX_IF_INCLUDE_STACK(struct QUEX_NAME(Memento_tag)*  _parent_memento;)
+#   if defined(QUEX_OPTION_COUNTER)
+    QUEX_NAME(Counter)              counter;
+#   endif
+#   if defined(QUEX_OPTION_INCLUDE_STACK)
+    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+#   endif
     /* __( END: Data Members )________________________________________________*/
+
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
 /* START: User's class body extensions _______________________________________*/
 
@@ -129,8 +142,6 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 } quex_TestAnalyzer;
 
 
-
-QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__QUEX___TESTANALYZER */
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
@@ -273,7 +284,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 277 "TestAnalyzer.h"
+#   line 288 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -304,7 +315,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 308 "TestAnalyzer.h"
+#   line 319 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -345,7 +356,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 349 "TestAnalyzer.h"
+#   line 360 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -433,7 +444,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 437 "TestAnalyzer.h"
+#   line 448 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -454,7 +465,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 458 "TestAnalyzer.h"
+#   line 469 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -473,7 +484,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 477 "TestAnalyzer.h"
+#   line 488 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -554,7 +565,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 558 "TestAnalyzer.h"
+#   line 569 "TestAnalyzer.h"
 
 
 

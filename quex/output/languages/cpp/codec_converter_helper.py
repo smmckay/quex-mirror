@@ -4,7 +4,6 @@ sys.path.append(os.environ["QUEX_PATH"])
 from copy import copy
 from quex.DEFINITIONS                                     import QUEX_PATH
 from quex.engine.misc.string_handling                     import blue_print
-from quex.engine.misc.file_in                             import make_safe_identifier
 from quex.engine.misc.file_operations                     import get_file_content_or_die
 from quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 
@@ -36,14 +35,14 @@ def _do(UnicodeTrafoInfo):
          ... 
        ]
     """
-    codec_name = make_safe_identifier(UnicodeTrafoInfo.name).lower()
+    codec_name = Lng.SAFE_IDENTIFIER(UnicodeTrafoInfo.name)
     utf8_epilog,  utf8_function_body  = ConverterWriterUTF8().do(UnicodeTrafoInfo)
     utf16_prolog, utf16_function_body = ConverterWriterUTF16().do(UnicodeTrafoInfo)
     dummy,        utf32_function_body = ConverterWriterUTF32().do(UnicodeTrafoInfo)
 
     # Provide only the constant which are necessary
     FileName = os.path.normpath(  QUEX_PATH
-                                + Lng["$code_base"] 
+                                + Lng.CODE_BASE 
                                 + "/converter_helper/TXT-from-codec-buffer.i")
     codec_header = Setup.get_file_reference(Setup.output_buffer_codec_header)
 
@@ -57,7 +56,7 @@ def _do(UnicodeTrafoInfo):
 
     # A separate declaration header is required
     FileName = os.path.normpath(  QUEX_PATH
-                                + Lng["$code_base"] 
+                                + Lng.CODE_BASE 
                                 + "/converter_helper/TXT-from-codec-buffer")
     template_h_txt = get_file_content_or_die(FileName)
     txt_h = template_h_txt.replace("$$CODEC$$", codec_name)
