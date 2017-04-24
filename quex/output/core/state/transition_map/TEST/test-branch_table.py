@@ -35,7 +35,7 @@ if len(sys.argv) < 2:
 
 Lang, N = sys.argv[1].split("-")
 
-Setup.language_db = db[Lang]
+Setup.language_db = db[Lang]()
 N = int(N)
 
 dial_db = DialDB()

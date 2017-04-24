@@ -1,6 +1,4 @@
 Following include guards do not follow convention:
-<<No INCLUDE_GUARD directive found>>                                       --> __QUEX_INCLUDE_GUARD__ANALYZER__ENGINE_MEMENTO_BODY
-<<No INCLUDE_GUARD directive found>>                                       --> __QUEX_INCLUDE_GUARD__ANALYZER__ENGINE_BODY
 __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$     --> __QUEX_INCLUDE_GUARD__ANALYZER__TXT_C
 __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$     --> __QUEX_INCLUDE_GUARD__ANALYZER__TXT_CPP
 <<No INCLUDE_GUARD directive found>>                                       --> __QUEX_INCLUDE_GUARD__ANALYZER__TXT_CPP_I

@@ -37,7 +37,7 @@ dial_db = DialDB()
 Lang = "C"
 N    = 0x3
 
-Setup.language_db = db[Lang]
+Setup.language_db = db[Lang]()
 N = int(N)
 
 interval_begin = 0

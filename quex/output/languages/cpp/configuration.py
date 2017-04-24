@@ -66,6 +66,9 @@ def do(Mode_PrepPrepDB):
     def namespace(NameSpaceList):
         return Lng.NAMESPACE_REFERENCE(NameSpaceList, TrailingDelimiterF=False)
 
+    if not token_repetition_support_txt:
+        token_repetition_support_txt = Lng.FALSE
+
     txt = blue_print(txt, 
             [
              ["$$BUFFER_LIMIT_CODE$$",          "%s" % Setup.buffer_limit_code],

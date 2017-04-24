@@ -76,8 +76,8 @@ class QuexSetup:
             return get_propperly_slash_based_file_name(X)
 
         # The starting backslash must be assumed for many things ...
-        code_base_dir = self.language_db.CODE_BASE[0]
-        assert code_base_dir == "/"
+        code_base_dir = self.language_db.CODE_BASE
+        assert code_base_dir[0] == "/"
 
         # If the source packager is active, then everything becomes relative
         # to the new source package directory.

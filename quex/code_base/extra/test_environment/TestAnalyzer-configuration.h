@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.67.3"
-#define QUEX_SETTING_BUILD_DATE        "Mon Apr 24 05:31:53 2017"
+#define QUEX_SETTING_BUILD_DATE        "Tue Apr 25 00:15:45 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -309,7 +309,7 @@
 #   define QUEX_TYPE_TOKEN_ID                               uint32_t
 #endif
 #define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_ ## BRIEF)
-#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ()
+#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
 
 #ifndef    QUEX_TYPE_TOKEN_LINE_N
 #   define QUEX_TYPE_TOKEN_LINE_N    size_t

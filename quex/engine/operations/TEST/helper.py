@@ -19,7 +19,7 @@ from   random      import shuffle
 
 
 dial_db           = DialDB()
-Setup.language_db = db[Setup.language]
+Setup.language_db = db[Setup.language]()
 
 example_db = {
     #

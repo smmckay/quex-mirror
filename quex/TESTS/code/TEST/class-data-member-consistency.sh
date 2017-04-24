@@ -24,7 +24,7 @@ tmpC=$(mktemp)
 tmpCpp=$(mktemp)
 
 awk -e 'BEGIN{ok=0} / Data Members \)/ { ok = !ok; } { if(ok) { print; } }'  \
-    $QUEX_PATH/quex/code_base/analyzer/TXT-C > $tmpC
+    $QUEX_PATH/quex/code_base/analyzer/TXT-C   > $tmpC
 
 awk -e 'BEGIN{ok=0} / Data Members \)/ { ok = !ok; } { if(ok) { print; } }'  \
     $QUEX_PATH/quex/code_base/analyzer/TXT-Cpp > $tmpCpp
@@ -36,3 +36,6 @@ wc $tmpCpp -l | cut -f 1 -d ' '
 echo "(*) Check: content same?"
 diff -srq $tmpC $tmpCpp \
      | awk '/identical/ { print "identical"; } ! /identical/ { print "differ"; }'
+
+# vimdiff $tmpC $tmpCpp
+rm $tmpC $tmpCpp -f

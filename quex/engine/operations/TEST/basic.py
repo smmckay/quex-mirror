@@ -34,7 +34,7 @@ from   quex.blackboard import setup as Setup, \
 from   collections import defaultdict
 from   copy        import deepcopy
 
-Setup.language_db = db[Setup.language]
+Setup.language_db = db[Setup.language]()
 
 if "--hwut-info" in sys.argv:
     print "Command: Basic;"

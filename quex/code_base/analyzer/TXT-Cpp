@@ -85,7 +85,6 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
 #   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif
-
 #   if defined(QUEX_OPTION_COUNTER)
     QUEX_NAME(Counter)              counter;
 #   endif

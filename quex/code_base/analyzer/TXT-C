@@ -103,9 +103,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
-    QUEX_NAME(Mode)*                __current_mode_p; 
     QUEX_NAME(ModeStack)            _mode_stack;
-
+    QUEX_NAME(Mode)*                __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
