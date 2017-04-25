@@ -8,10 +8,10 @@ class Language(LanguageCpp):
         result = "".join("%s_" % name for name in NameList)
         if TrailingDelimiterF: return result
         else:                  return result[:-1]
-    def token_template_file(self):    return "%s/token/TXT-C"       % self.CODE_BASE
-    def token_template_i_file(self):  return "%s/token/TXT-C.i"     % self.CODE_BASE
-    def token_default_file(self):     return "%s/token/CDefault.qx" % self.CODE_BASE
-    def analyzer_template_file(self): return "%s/analyzer/TXT-C"    % self.CODE_BASE
+    def token_template_file(self):    return "/token/TXT-C"     
+    def token_template_i_file(self):  return "/token/TXT-C.i"    
+    def token_default_file(self):     return "/token/CDefault.qx" 
+    def analyzer_template_file(self): return "/analyzer/TXT-C"   
 
     def NAMESPACE_OPEN(self, NameList):  return ""
     def NAMESPACE_CLOSE(self, NameList): return ""

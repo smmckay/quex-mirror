@@ -1,4 +1,3 @@
-from   quex.engine.misc.file_operations import get_file_content_or_die
 
 from   quex.engine.misc.string_handling import blue_print
 
@@ -15,11 +14,7 @@ def do(Mode_PrepPrepDB):
 
     LexerClassName = Setup.analyzer_class_name
 
-    ConfigurationTemplateFile =(  QUEX_PATH \
-                                + Lng.CODE_BASE \
-                                + "/analyzer/configuration/TXT").replace("//","/")
-
-    txt = get_file_content_or_die(ConfigurationTemplateFile)
+    txt = Lng.open_template(Lng.analyzer_configuration_file())
 
     # -- check if exit/entry handlers have to be active
     entry_handler_active_f = any(
@@ -74,7 +69,7 @@ def do(Mode_PrepPrepDB):
              ["$$BUFFER_LIMIT_CODE$$",          "%s" % Setup.buffer_limit_code],
              ["$$QUEX_SETTING_CHARACTER_CODEC$$", codec_name],
              ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension],
-             ["$$INITIAL_LEXER_MODE_ID$$",      "QUEX_NAME(ModeID_%s)" % blackboard.initial_mode.get_pure_text()],
+             ["$$INITIAL_LEXER_MODE_ID$$",      Lng.NAME_IN_NAMESPACE_MAIN("ModeID_%s" % blackboard.initial_mode.get_pure_text())],
              ["$$LEXER_BUILD_DATE$$",           time.asctime()],
              ["$$LEXER_CLASS_NAME$$",           LexerClassName],
              ["$$LEXER_CLASS_NAME_SAFE$$",      Setup.analyzer_name_safe],

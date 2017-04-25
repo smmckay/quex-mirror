@@ -1,12 +1,11 @@
 # (C) 2005-2010 Frank-Rene Schaefer
 # ABSOLUTELY NO WARANTY
-from   quex.DEFINITIONS                   import QUEX_PATH
-from   quex.input.files.token_type        import TokenTypeDescriptor
-from   quex.engine.misc.file_operations   import open_file_or_die
-from   quex.engine.misc.string_handling   import blue_print
-import quex.output.languages.cpp.token_id_maker     as     token_id_maker
-import quex.blackboard                    as     blackboard
-from   quex.blackboard                    import setup as Setup, Lng
+from   quex.DEFINITIONS                         import QUEX_PATH
+from   quex.input.files.token_type              import TokenTypeDescriptor
+from   quex.engine.misc.string_handling         import blue_print
+import quex.output.languages.cpp.token_id_maker as     token_id_maker
+import quex.blackboard                          as     blackboard
+from   quex.blackboard                          import setup as Setup, Lng
 
 from   collections import OrderedDict
 
@@ -68,12 +67,6 @@ def _do_core(Descr):
     assert Descr is not None
     assert isinstance(Descr, TokenTypeDescriptor)
 
-    TemplateFile   = QUEX_PATH + Lng.token_template_file()
-    TemplateIFile  = QUEX_PATH + Lng.token_template_i_file()
-
-    template_str   = open_file_or_die(TemplateFile, Mode="rb").read()
-    template_i_str = open_file_or_die(TemplateIFile, Mode="rb").read()
-    
     include_guard_extension_str, \
     virtual_destructor_str,      \
     copy_str,                    \
@@ -102,6 +95,7 @@ def _do_core(Descr):
     if Setup.token_class_only_f: helper_definitions = _helper_definitions() 
     else:                        helper_definitions = ""
 
+    template_str = Lng.open_template(Lng.token_template_file())
     txt = blue_print(template_str, [
         ["$$EXTRA_AT_BEGIN$$",          helper_definitions],
         ["$$EXTRA_AT_END$$",            Lng.LEXEME_NULL_DECLARATION()],
@@ -126,6 +120,7 @@ def _do_core(Descr):
     ])
     txt = blue_print(txt, helper_variable_replacements)
 
+    template_i_str = Lng.open_template(Lng.token_template_i_file())
     txt_i = blue_print(template_i_str, [
         ["$$EXTRA_AT_BEGIN$$",          _include_token_class_header()],
         ["$$EXTRA_AT_END$$",            ""],

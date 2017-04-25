@@ -11,6 +11,7 @@ from   quex.engine.analyzer.door_id_address_label        import DoorID, \
 from   quex.engine.misc.string_handling                  import blue_print, \
                                                                 pretty_code
 from   quex.engine.misc.file_operations                  import open_file_or_die, \
+                                                                get_file_content_or_die, \
                                                                 write_safely_and_close
 import quex.engine.misc.error                            as     error
 from   quex.engine.misc.tools                            import typed, \
@@ -18,6 +19,7 @@ from   quex.engine.misc.tools                            import typed, \
                                                                 flatten_list_of_lists
 import quex.output.languages.cpp.templates               as     templates
 
+from   quex.DEFINITIONS  import QUEX_PATH
 from   quex.blackboard   import setup as Setup
 from   quex.constants    import E_StateIndices,  \
                                 E_IncidenceIDs, \
@@ -85,12 +87,24 @@ class Language(dict):
         else:       txt = txt.replace("$$SWITCH$$ %s" % Name, "/* #define %s */" % Name)
         return txt
 
-    def frame_all(self, Code, Setup): return templates.frame_of_all(Code, Setup)
-    def token_template_file(self):    return "%s/token/TXT-Cpp"       % self.CODE_BASE
-    def token_template_i_file(self):  return "%s/token/TXT-Cpp.i"     % self.CODE_BASE
-    def token_default_file(self):     return "%s/token/CppDefault.qx" % self.CODE_BASE
-    def analyzer_template_file(self): return "%s/analyzer/TXT-Cpp"    % self.CODE_BASE
+    def frame_all(self, Code, Setup):      return templates.frame_of_all(Code, Setup)
 
+    def open_template(self, PathTail):
+        full_path = QUEX_PATH + self.CODE_BASE + PathTail
+        return get_file_content_or_die(full_path.replace("//", "/"))
+
+    def open_template_fh(self, PathTail):
+        full_path = QUEX_PATH + self.CODE_BASE + PathTail
+        return open_file_or_die(full_path.replace("//", "/"))
+
+    def token_template_file(self):         return "/token/TXT-Cpp"       
+    def token_template_i_file(self):       return "/token/TXT-Cpp.i"    
+    def token_default_file(self):          return "/token/CppDefault.qx" 
+    def analyzer_template_file(self):      return "/analyzer/TXT-Cpp"  
+    def analyzer_template_i_file(self):    return "/analyzer/TXT-Cpp.i"  
+    def converter_helper_i_file(self):     return "/converter_helper/TXT-from-codec-buffer.i"
+    def converter_helper_file(self):       return "/converter_helper/TXT-from-codec-buffer"
+    def analyzer_configuration_file(self): return "/analyzer/configuration/TXT"
 
     def register_analyzer(self, TheAnalyzer):
         self.__analyzer = TheAnalyzer
@@ -161,7 +175,8 @@ class Language(dict):
     def INDENTATION_HANDLER_CALL(self, DefaultF, ModeName):
         if DefaultF: prefix = ""
         else:        prefix = "%s_" % ModeName
-        return "    QUEX_NAME(%son_indentation)(me, me->counter._column_number_at_end, LexemeNull);\n" % prefix
+        return "    %s(me, me->counter._column_number_at_end, LexemeNull);\n" \
+               % self.NAME_IN_NAMESPACE_MAIN("%son_indentation" % prefix)
     def STORE_LAST_CHARACTER(self, BeginOfLineSupportF):
         if not BeginOfLineSupportF: return ""
         # TODO: The character before lexeme start does not have to be written
@@ -273,7 +288,7 @@ class Language(dict):
         return "self_send_n(ClosedN, QUEX_TOKEN_ID(DEDENT));\n"
 
     def DEFAULT_COUNTER_FUNCTION_NAME(self, ModeName):
-        return "QUEX_NAME(%s_counter)" % ModeName
+        return self.NAME_IN_NAMESPACE_MAIN("%s_counter" % ModeName)
 
     def DEFAULT_COUNTER_CALL(self):
         return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
@@ -449,8 +464,7 @@ class Language(dict):
             return "__QUEX_IF_COUNT_COLUMNS_ADD((size_t)%s);\n" % self.VALUE_STRING(Op.content.value) 
 
         elif Op.id == E_Op.ColumnCountGridAdd:
-            return "".join(self.GRID_STEP("self.counter._column_number_at_end", "size_t",
-                           Op.content.grid_size, IfMacro="__QUEX_IF_COUNT_COLUMNS"))
+            return "".join(self.COUNTER_COLUMN_GRID_STEP(Op.content.grid_size))
 
         elif Op.id == E_Op.ColumnCountReferencePSet:
             pointer_name = self.REGISTER_NAME(Op.content.pointer)
@@ -600,7 +614,19 @@ class Language(dict):
         dial_db.mark_address_as_gotoed(Address)
         return "goto %s;" % self.LABEL_STR_BY_ADR(Address)
 
-    def GRID_STEP(self, VariableName, TypeName, GridWidth, StepN=1, IfMacro=None):
+    def COUNTER_SHIFT_VALUES(self):
+        return "__QUEX_IF_COUNT_SHIFT_VALUES();\n" 
+
+    def COUNTER_LINE_ADD(self, Arg):
+        return "__QUEX_IF_COUNT_LINES_ADD(%s);\n" % Arg
+
+    def COUNTER_COLUM_ADD(self, Arg):
+        return "__QUEX_IF_COUNT_COLUMNS_ADD(%s);\n" % Arg
+
+    def COUNTER_COLUM_SET(self, Value):
+        return "__QUEX_IF_COUNT_COLUMNS_SET(%i);\n" % Value
+
+    def COUNTER_COLUMN_GRID_STEP(self, GridWidth, StepN=1):
         """A grid step is an addition which depends on the current value 
         of a variable. It sets the value to the next valid value on a grid
         with a given width. The general solution is 
@@ -612,6 +638,9 @@ class Language(dict):
         efficient solution.
         """
         assert GridWidth > 0
+        TypeName     = "size_t"
+        VariableName = "self.counter._column_number_at_end"
+        IfMacro      = "__QUEX_IF_COUNT_COLUMNS"
 
         grid_with_str = self.VALUE_STRING(GridWidth)
         log2          = self._get_log2_if_power_of_2(GridWidth)
@@ -703,13 +732,16 @@ class Language(dict):
         return cpp_include_Multi_i_str.replace("$$HEADER$$", header)
     
     def MODE_GOTO(self, Mode):
-        return "QUEX_NAME(enter_mode)(&self, &%s);" % Mode
+        return "%s(&self, &%s);" % (self.NAME_IN_NAMESPACE_MAIN("enter_mode"), Mode)
 
     def MODE_GOSUB(self, Mode):
-        return "QUEX_NAME(push_mode)(&self, &%s);" % Mode
+        return "%s(&self, &%s);" % (self.NAME_IN_NAMESPACE_MAIN("push_mode"), Mode)
 
     def MODE_GOUP(self):
-        return "QUEX_NAME(pop_mode)(&self);"
+        return "%s(&self);"      % self.NAME_IN_NAMESPACE_MAIN("pop_mode")
+
+    def NAME_IN_NAMESPACE_MAIN(self, Name):
+        return "QUEX_NAME(%s)" % Name
 
     def ACCEPTANCE(self, AcceptanceID):
         if   AcceptanceID == E_IncidenceIDs.MATCH_FAILURE: return "((QUEX_TYPE_ACCEPTANCE_ID)-1)"
@@ -1008,6 +1040,8 @@ class Language(dict):
         txt = txt.replace("$$ON_LOAD_FAILURE$$",      self.LABEL_STR_BY_ADR(adr_load_failure))
         txt = txt.replace("$$ON_NO_SPACE_FOR_LOAD$$", self.LABEL_STR_BY_ADR(adr_overflow))
         txt = txt.replace("$$LOAD_RESULT$$",          self.REGISTER_NAME(E_R.LoadResult))
+        txt = txt.replace("$$BUFFER_LOAD_FW$$",       self.NAME_IN_NAMESPACE_MAIN("Buffer_load_forward"))
+        txt = txt.replace("$$BUFFER_LOAD_BW$$",       self.NAME_IN_NAMESPACE_MAIN("Buffer_load_backward"))
 
         dial_db.mark_address_as_gotoed(adr_bad_lexatom)
         dial_db.mark_address_as_gotoed(adr_load_failure)
@@ -1063,7 +1097,7 @@ cpp_reload_forward_str = """
     __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
     
     __quex_debug_reload_before();                 
-    $$LOAD_RESULT$$ = QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
+    $$LOAD_RESULT$$ = $$BUFFER_LOAD_FW$$(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
     switch( $$LOAD_RESULT$$ ) {
@@ -1082,7 +1116,7 @@ cpp_reload_backward_str = """
     __quex_assert(input == QUEX_SETTING_BUFFER_LIMIT_CODE);
 
     __quex_debug_reload_before();                 
-    $$LOAD_RESULT$$ = QUEX_NAME(Buffer_load_backward)(&me->buffer);
+    $$LOAD_RESULT$$ = $$BUFFER_LOAD_BW$$(&me->buffer);
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
     switch( $$LOAD_RESULT$$ ) {

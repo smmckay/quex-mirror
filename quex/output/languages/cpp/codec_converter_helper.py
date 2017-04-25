@@ -4,7 +4,6 @@ sys.path.append(os.environ["QUEX_PATH"])
 from copy import copy
 from quex.DEFINITIONS                                     import QUEX_PATH
 from quex.engine.misc.string_handling                     import blue_print
-from quex.engine.misc.file_operations                     import get_file_content_or_die
 from quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 
 from quex.blackboard import setup as Setup, \
@@ -41,12 +40,10 @@ def _do(UnicodeTrafoInfo):
     dummy,        utf32_function_body = ConverterWriterUTF32().do(UnicodeTrafoInfo)
 
     # Provide only the constant which are necessary
-    FileName = os.path.normpath(  QUEX_PATH
-                                + Lng.CODE_BASE 
-                                + "/converter_helper/TXT-from-codec-buffer.i")
     codec_header = Setup.get_file_reference(Setup.output_buffer_codec_header)
 
-    txt_i = blue_print(get_file_content_or_die(FileName), 
+    template_txt_i = Lng.open_template(Lng.converter_helper_i_file())
+    txt_i = blue_print(template_txt_i,
                        [["$$CODEC$$",        codec_name],
                         ["$$EPILOG$$",       utf8_epilog],
                         ["$$CODEC_HEADER$$", codec_header],
@@ -55,10 +52,7 @@ def _do(UnicodeTrafoInfo):
                         ["$$BODY_UTF32$$",   utf32_function_body]])
 
     # A separate declaration header is required
-    FileName = os.path.normpath(  QUEX_PATH
-                                + Lng.CODE_BASE 
-                                + "/converter_helper/TXT-from-codec-buffer")
-    template_h_txt = get_file_content_or_die(FileName)
+    template_h_txt = Lng.open_template(Lng.converter_helper_file())
     txt_h = template_h_txt.replace("$$CODEC$$", codec_name)
     return txt_h, txt_i
 

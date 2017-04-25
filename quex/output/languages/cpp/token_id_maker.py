@@ -60,10 +60,10 @@ def do(setup):
                                           + "__" + Setup.token_class_name_safe.upper())
 
     return blue_print(file_str, [
-        ["$$TOKEN_ID_DEFINITIONS$$",        "".join(token_id_txt)],
-        ["$$DATE$$",                        time.asctime()],
-        ["$$TOKEN_PREFIX$$",                Setup.token_id_prefix], 
-        ["$$INCLUDE_GUARD_EXT$$",           include_guard_ext], 
+        ["$$TOKEN_ID_DEFINITIONS$$", "".join(token_id_txt)],
+        ["$$DATE$$",                 time.asctime()],
+        ["$$TOKEN_PREFIX$$",         Setup.token_id_prefix], 
+        ["$$INCLUDE_GUARD_EXT$$",    include_guard_ext], 
     ])
 
 def do_map_id_to_name_cases():
@@ -110,6 +110,36 @@ def prepare_default_standard_token_ids():
         if name == "TERMINATION": continue 
         token_id_db[name] = TokenInfo(name, ID=__get_free_token_id())
 
+def __get_token_id_definition_txt():
+    
+    assert len(Setup.extern_token_id_file) == 0
+
+    def define_this(txt, token, L):
+        assert token.number is not None
+        if Setup.language == "C":
+            txt.append("#define %s%s %s((QUEX_TYPE_TOKEN_ID)%i)\n" \
+                       % (Setup.token_id_prefix_plain, token.name, space(L, token.name), token.number))
+        else:
+            txt.append("const QUEX_TYPE_TOKEN_ID %s%s%s = ((QUEX_TYPE_TOKEN_ID)%i);\n" \
+                       % (Setup.token_id_prefix_plain, token.name, space(L, token.name), token.number))
+
+    if Setup.language == "C": 
+        prolog = ""
+        epilog = ""
+    else:
+        prolog = Lng.NAMESPACE_OPEN(Setup.token_id_prefix_name_space)
+        epilog = Lng.NAMESPACE_CLOSE(Setup.token_id_prefix_name_space)
+
+    # Considering 'items' allows to sort by name. The name is the 'key' in 
+    # the dictionary 'token_id_db'.
+    L      = max(map(len, token_id_db.iterkeys()))
+    result = [prolog]
+    for dummy, token in sorted(token_id_db.iteritems()):
+        define_this(result, token, L)
+    result.append(epilog)
+
+    return result
+
 file_str = \
 """/* -*- C++ -*- vim: set syntax=cpp:
  * PURPOSE: File containing definition of token-identifier and
@@ -150,6 +180,29 @@ map_id_to_name_cases = \
 #  endif
 $$TOKEN_ID_CASES$$
 """
+
+def __autogenerate_token_id_numbers():
+    # Automatically assign numeric token id to token id name
+    for dummy, token in sorted(token_id_db.iteritems()):
+        if token.number is not None: continue
+        token.number = __get_free_token_id()
+
+def __get_free_token_id():
+    used_token_id_set = get_used_token_id_set()
+    candidate = Setup.token_id_counter_offset
+    while candidate in used_token_id_set:
+        candidate += 1
+    return candidate
+
+def has_specific_token_ids():
+    """RETURNS: True, if there are token ids other than the standard
+                      ones like 'TERMINATION', 'UNINITIALIZED', etc.
+                False, else.
+    """
+    all_token_id_set = set(token_id_db.iterkeys())
+    all_token_id_set.difference_update(standard_token_id_list)
+    if all_token_id_set: return True
+    else:                return False
 
 def __warn_on_double_definition():
     """Double check that no token id appears twice. Again, this can only happen,
@@ -241,16 +294,6 @@ def __warn_implicit_token_definitions():
         error.warning("Above token ids must be defined in '%s'" \
                       % Setup.extern_token_id_file, sr)
 
-def has_specific_token_ids():
-    """RETURNS: True, if there are token ids other than the standard
-                      ones like 'TERMINATION', 'UNINITIALIZED', etc.
-                False, else.
-    """
-    all_token_id_set = set(token_id_db.iterkeys())
-    all_token_id_set.difference_update(standard_token_id_list)
-    if all_token_id_set: return True
-    else:                return False
-
 def __error_on_no_specific_token_ids():
     if has_specific_token_ids(): return
 
@@ -276,47 +319,4 @@ def __error_on_mandatory_token_id_missing(AssertF=False):
         check(AssertF, "INDENT")
         check(AssertF, "DEDENT")
         check(AssertF, "NODENT")
-
-def __autogenerate_token_id_numbers():
-    # Automatically assign numeric token id to token id name
-    for dummy, token in sorted(token_id_db.iteritems()):
-        if token.number is not None: continue
-        token.number = __get_free_token_id()
-
-def __get_token_id_definition_txt():
-    
-    assert len(Setup.extern_token_id_file) == 0
-
-    def define_this(txt, token, L):
-        assert token.number is not None
-        if Setup.language == "C":
-            txt.append("#define %s%s %s((QUEX_TYPE_TOKEN_ID)%i)\n" \
-                       % (Setup.token_id_prefix_plain, token.name, space(L, token.name), token.number))
-        else:
-            txt.append("const QUEX_TYPE_TOKEN_ID %s%s%s = ((QUEX_TYPE_TOKEN_ID)%i);\n" \
-                       % (Setup.token_id_prefix_plain, token.name, space(L, token.name), token.number))
-
-    if Setup.language == "C": 
-        prolog = ""
-        epilog = ""
-    else:
-        prolog = Lng.NAMESPACE_OPEN(Setup.token_id_prefix_name_space)
-        epilog = Lng.NAMESPACE_CLOSE(Setup.token_id_prefix_name_space)
-
-    # Considering 'items' allows to sort by name. The name is the 'key' in 
-    # the dictionary 'token_id_db'.
-    L      = max(map(len, token_id_db.iterkeys()))
-    result = [prolog]
-    for dummy, token in sorted(token_id_db.iteritems()):
-        define_this(result, token, L)
-    result.append(epilog)
-
-    return result
-
-def __get_free_token_id():
-    used_token_id_set = get_used_token_id_set()
-    candidate = Setup.token_id_counter_offset
-    while candidate in used_token_id_set:
-        candidate += 1
-    return candidate
 

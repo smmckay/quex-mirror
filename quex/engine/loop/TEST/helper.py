@@ -326,7 +326,7 @@ def my_own_mr_unit_test_function(SourceCode, EndStr,
     if CounterPrintF == "short":
         counter_print_str = 'printf("column_number_at_end(real): %i;\\n", (int)self.counter._column_number_at_end);\n'
     elif CounterPrintF:
-        counter_print_str = "QUEX_NAME(Counter_print_this)(&self.counter);"
+        counter_print_str = "%s(&self.counter);" % Lng.NAME_IN_NAMESPACE_MAIN("Counter_print_this")
     else:
         counter_print_str = ""
 

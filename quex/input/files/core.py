@@ -317,6 +317,7 @@ def parse_token_id_definitions(fh, NamesOnlyF=False):
         return # Changes are applied to 'blackboard.token_id_db'
 
 def parse_default_token_definition():
-    sub_fh = open_file_or_die(os.environ["QUEX_PATH"] + Lng.token_default_file())
+    sub_fh = Lng.open_template_fh(Lng.token_default_file())
     parse_section(sub_fh)
     sub_fh.close()
+

@@ -3,7 +3,6 @@ import os
 
 import quex.output.languages.cpp.mode_classes     as     mode_classes
 from   quex.engine.misc.string_handling import blue_print
-from   quex.engine.misc.file_operations import get_file_content_or_die
 from   quex.DEFINITIONS                 import QUEX_PATH, QUEX_VERSION
 import quex.blackboard                  as     blackboard
 from   quex.blackboard                  import setup as Setup, \
@@ -12,8 +11,6 @@ from   quex.blackboard                  import setup as Setup, \
 def do(ModeDB, Epilog):
     assert blackboard.token_type_definition is not None
 
-    QuexClassHeaderFileTemplate = os.path.normpath(  
-            QUEX_PATH + Lng.analyzer_template_file()).replace("//","/")
     LexerClassName = Setup.analyzer_class_name
 
     quex_converter_coding_name_str = Setup.converter_ucs_coding_name
@@ -37,7 +34,7 @@ def do(ModeDB, Epilog):
     token_class_name      = blackboard.token_type_definition.class_name
     token_class_name_safe = blackboard.token_type_definition.class_name_safe
 
-    template_code_txt = get_file_content_or_die(QuexClassHeaderFileTemplate)
+    template_code_txt = Lng.open_template(Lng.analyzer_template_file())
 
     include_guard_ext = Lng.INCLUDE_GUARD(
             Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
@@ -79,10 +76,7 @@ def do(ModeDB, Epilog):
 
 def do_implementation(ModeDB):
 
-    FileTemplate = os.path.normpath(QUEX_PATH
-                                    + Lng.CODE_BASE 
-                                    + "/analyzer/TXT-Cpp.i")
-    func_txt = get_file_content_or_die(FileTemplate)
+    func_txt = Lng.open_template(Lng.analyzer_template_i_file())
 
     func_txt = blue_print(func_txt, [
         ["$$CONSTRUCTOR_EXTENSTION$$",                  Lng.SOURCE_REFERENCED(blackboard.class_constructor_extension)],
@@ -99,8 +93,10 @@ def get_constructor_code(ModeDb):
     L = max(map(lambda m: len(m.name), ModeDb.itervalues()))
 
     return "".join(
-        "    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_%s)] %s== &QUEX_NAME(%s));\n" % \
-        (mode.name, " " * (L-len(mode.name)), mode.name)
+        "    __quex_assert(%s[%s] %s== &QUEX_NAME(%s));\n" % \
+        (Lng.NAME_IN_NAMESPACE_MAIN("mode_db"), 
+         Lng.NAME_IN_NAMESPACE_MAIN("ModeID_%s" % mode.name),
+         " " * (L-len(mode.name)), mode.name)
         for mode in ModeDb.itervalues() 
     )
 

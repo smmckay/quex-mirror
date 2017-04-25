@@ -35,7 +35,7 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):
     #     Both, for line and column number considerations the same rules hold.
     #     Those rules are defined in 'get_increment()' as shown below.
     #
-    def get_increment(txt, Increment, IncrementByLexemeLength, HelpStr):
+    def get_increment(txt, Increment, IncrementByLexemeLength, AddFunction):
         if IncrementByLexemeLength == 0 or Increment == 0:
             return 
         elif Increment != E_Count.VOID:
@@ -43,27 +43,27 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):
         else:
             arg = Lng.MULTIPLY_WITH("LexemeL", IncrementByLexemeLength)
 
-        txt.append("__QUEX_IF_COUNT_%s_ADD(%s);\n" % (HelpStr, arg))
+        txt.append(AddFunction(arg))
 
     # Column and line counts must be shifted (begin=end) even if only
     # columns are counted. For example, even if only columns are modified
     # the old line_number_at_begin must be adapted to the current.
-    if ShiftF: txt = ["__QUEX_IF_COUNT_SHIFT_VALUES();\n" ]
+    if ShiftF: txt = [ Lng.COUNTER_SHIFT_VALUES() ]
     else:      txt = []
 
     # -- Line Number Count
     get_increment(txt, lcci.line_n_increment, 
                   lcci.line_n_increment_by_lexeme_length, 
-                  "LINES")
+                  Lng.COUNTER_COLUM_ADD)
 
     # -- Column Number Count
     if  lcci.column_index != E_Count.VOID:
-        txt.append("__QUEX_IF_COUNT_COLUMNS_SET(%i);\n" % (lcci.column_index + 1))
+        txt.append(Lng.COUNTER_COLUM_SET(lcci.column_index + 1))
 
     elif lcci.column_n_increment_by_lexeme_length != E_Count.VOID:
         get_increment(txt, lcci.column_n_increment, 
                       lcci.column_n_increment_by_lexeme_length, 
-                      "COLUMNS")
+                      Lng.COUNTER_COLUM_ADD)
 
     else:
         # Following assert results from entry check against 'VOID'
@@ -77,9 +77,8 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):
             grid_step_n = None
 
         if grid_step_n is not None:
-            txt.extend(Lng.GRID_STEP("self.counter._column_number_at_end", "size_t",
-                                     lcci.grid_step_size_by_lexeme_length, 
-                                     grid_step_n, IfMacro="__QUEX_IF_COUNT_COLUMNS"))
+            txt.extend(Lng.COUNTER_COLUMN_GRID_STEP(lcci.grid_step_size_by_lexeme_length, 
+                                                    grid_step_n)) 
             txt.append("\n")
 
     return False, txt
