@@ -54,7 +54,7 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):
     # -- Line Number Count
     get_increment(txt, lcci.line_n_increment, 
                   lcci.line_n_increment_by_lexeme_length, 
-                  Lng.COUNTER_COLUM_ADD)
+                  Lng.COUNTER_LINE_ADD)
 
     # -- Column Number Count
     if  lcci.column_index != E_Count.VOID:

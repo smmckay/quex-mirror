@@ -200,7 +200,7 @@ TEST                                                                 <no date>
  * kromaks:
 
     2971198 0.48.1 Parsing long REs
-        bug-2971198.sh .........................................[TIME_OUT]
+        bug-2971198.sh ...............................................[OK]
 
  * liancheng:
 
@@ -303,7 +303,7 @@ TEST                                                                 <no date>
  * remcobloemen1:
 
     3295781 Duplicate label with Template and Path Compression
-        bug-3295781.sh .............................................[FAIL]
+        bug-3295781.sh ...............................................[OK]
 
  * rmanoj-oss:
 
@@ -480,13 +480,10 @@ TEST                                                                 <no date>
 
     2974074 0.48.1 union modifies its arguments
         bug-2974074.sh ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] bug-2971198.sh
-    [FAIL] bug-3295781.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -537,9 +534,9 @@ demo/C/TEST                                                          <no date>
  * demo/002:
 
     Indentation Based Scopes
-        002.sh DEBUG ...............................................[FAIL]
-               NDEBUG ..............................................[FAIL]
-               customized ..........................................[FAIL]
+        002.sh DEBUG .................................................[OK]
+               NDEBUG ................................................[OK]
+               customized ............................................[OK]
 
  * demo/003:
 
@@ -638,14 +635,10 @@ demo/C/TEST                                                          <no date>
     Multiple Lexical Analyzers -- shared token
         012b.sh DEBUG ................................................[OK]
                 NDEBUG ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] 002.sh _ DEBUG
-                \__ NDEBUG
-                \__ customized
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Demos for Cpp                                 
@@ -670,9 +663,9 @@ demo/Cpp/TEST                                                        <no date>
  * demo/002:
 
     Indentation Based Scopes
-        002.sh DEBUG ...............................................[FAIL]
-               NDEBUG ..............................................[FAIL]
-               customized ..........................................[FAIL]
+        002.sh DEBUG .................................................[OK]
+               NDEBUG ................................................[OK]
+               customized ............................................[OK]
 
  * demo/003:
 
@@ -771,14 +764,10 @@ demo/Cpp/TEST                                                        <no date>
     Multiple Lexical Analyzers -- shared token
         012b.sh DEBUG ................................................[OK]
                 NDEBUG ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] 002.sh _ DEBUG
-                \__ NDEBUG
-                \__ customized
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -991,7 +980,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................[KEYBOARD_INTERRUPT]
+        pyflakes-check.sh ..........................................[FAIL]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1723,7 +1712,7 @@ quex/engine/operations/TEST                                          <no date>
  * Command:
 
     Basic
-        basic.py ...................................................[FAIL]
+        basic.py .....................................................[OK]
 
  * Op:
 
@@ -1747,12 +1736,10 @@ quex/engine/operations/TEST                                          <no date>
                             one-or-none ..............................[OK]
                             two ......................................[OK]
                             two-bad ..................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] basic.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               State Machine Tests                              
@@ -2772,70 +2759,45 @@ quex/code_base/buffer/TESTS/navigation/TEST                          <no date>
                                              ICU-stepping-cls ........[OK]
                                              IConv-linear ............[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=0)
-        test-Plain-1-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=1)
-        test-Plain-1-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=2)
-        test-Plain-1-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=0)
-        test-Plain-2-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=1)
-        test-Plain-2-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=2)
-        test-Plain-2-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=0)
-        test-Plain-4-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=1)
-        test-Plain-4-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=2)
-        test-Plain-4-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=0)
-        test-Plain-wiostream-wchar_t-0.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
+        test-Plain-wiostream-wchar_t-0.exe linear ....................[OK]
+                                           stepping ..................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=1)
-        test-Plain-wiostream-wchar_t-1.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
+        test-Plain-wiostream-wchar_t-1.exe linear ....................[OK]
+                                           stepping ..................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=2)
-        test-Plain-wiostream-wchar_t-2.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-Plain-1-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-1-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-1-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-0.exe _ linear
-                                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-1.exe _ linear
-                                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-2.exe _ linear
-                                            \__ stepping
+        test-Plain-wiostream-wchar_t-2.exe linear ....................[OK]
+                                           stepping ..................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Pathwalker State Construction                         
@@ -3221,9 +3183,9 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        2  235   [FAIL] TEST                                                          
-        3  56    [FAIL] demo/C/TEST                                                   
-        3  56    [FAIL] ..../Cpp/TEST                                                 
+           235     [OK] TEST                                                          
+           56      [OK] demo/C/TEST                                                   
+           56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
         2  15    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
@@ -3247,7 +3209,7 @@ SUMMARY:
            18      [OK] ............../buffer/TESTS/load/TEST                         
            2       [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
-       24  96    [FAIL] .........................../navigation/TEST                   
+           96      [OK] .........................../navigation/TEST                   
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
@@ -3260,7 +3222,7 @@ SUMMARY:
            27      [OK] .............................../template/TEST                 
            38      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
-        1  17    [FAIL] .........../operations/TEST                                   
+           17      [OK] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
@@ -3279,11 +3241,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  ____             
-    |  ___|_ _(_) |___     |___ / | ___|      __  __
-    | |_ / _` | | / __|      |_ \ |___ \      \ \/ /
-    |  _| (_| | | \__ \     ___) | ___) |      >  < 
-    |_|  \__,_|_|_|___/    |____/ |____/      /_/\_\
+     _____     _ _       _____          _          
+    |  ___|_ _(_) |___  |_   _|_      _(_) ___ ___ 
+    | |_ / _` | | / __|   | | \ \ /\ / / |/ __/ _ \
+    |  _| (_| | | \__ \   | |  \ V  V /| | (__| __/
+    |_|  \__,_|_|_|___/   |_|   \_/\_/ |_|\___\___|
                                                                    (1627 tests)
 
 ===============================================================================
