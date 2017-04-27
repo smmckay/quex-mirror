@@ -6,7 +6,7 @@ from   quex.engine.analyzer.terminal.core          import Terminal
 from   quex.engine.analyzer.door_id_address_label  import DoorID
 from   quex.engine.misc.tools                      import typed
 
-from   quex.output.languages.cpp.counter_for_pattern         import map_SmLineColumnCountInfo_to_code
+from   quex.output.core.counter_for_pattern        import map_SmLineColumnCountInfo_to_code
 
 import quex.blackboard as blackboard
 from   quex.blackboard import Lng

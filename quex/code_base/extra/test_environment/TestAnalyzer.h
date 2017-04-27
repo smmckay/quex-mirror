@@ -116,9 +116,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
-    QUEX_NAME(Mode)*                __current_mode_p; 
     QUEX_NAME(ModeStack)            _mode_stack;
-
+    QUEX_NAME(Mode)*                __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
@@ -284,7 +283,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 288 "TestAnalyzer.h"
+#   line 287 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -315,7 +314,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 319 "TestAnalyzer.h"
+#   line 318 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -356,7 +355,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 360 "TestAnalyzer.h"
+#   line 359 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -444,7 +443,7 @@ quex_Token_take_text(quex_Token*              __this,
         return false;
    
 
-#   line 448 "TestAnalyzer.h"
+#   line 447 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -465,7 +464,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 469 "TestAnalyzer.h"
+#   line 468 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -484,7 +483,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 488 "TestAnalyzer.h"
+#   line 487 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -565,7 +564,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 569 "TestAnalyzer.h"
+#   line 568 "TestAnalyzer.h"
 
 
 

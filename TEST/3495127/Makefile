@@ -2,9 +2,7 @@ include ../Makefile.lexer
 
 all: Simple.c 
 	@echo "Compiling"
-	@$(LDC) Simple.c lexer.c  \
-			-DPRINT_TOKEN                                  \
-	        -DQUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE -ggdb
+	@$(LDC) Simple.c lexer.c -DPRINT_TOKEN -ggdb
 		
 # -DQUEX_OPTION_DEBUG_SHOW  
 

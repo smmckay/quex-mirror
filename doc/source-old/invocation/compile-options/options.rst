@@ -11,10 +11,10 @@ the suffix enables something, the option with the suffix disables the 'something
    More of use is the sibling ``QUEX_OPTION_ASSERTS_DISABLED``. Disabling
    asserts is key for getting reasonable performance.
 
-.. cmacro:: QUEX_OPTION_COLUMN_NUMBER_COUNTING
+.. cmacro:: QUEX_OPTION_COUNTER_COLUMN
 
    Enables column number counting. Respectively, 
-   ``QUEX_OPTION_COLUMN_NUMBER_COUNTING_DISABLED`` 
+   ``QUEX_OPTION_COUNTER_COLUMN_DISABLED`` 
    disables it.
 
 .. cmacro:: QUEX_OPTION_COMPUTED_GOTOS
@@ -40,10 +40,6 @@ the suffix enables something, the option with the suffix disables the 'something
 
    Enables/disables the output of details about reloads of the buffer.
 
-.. cmacro:: QUEX_OPTION_ERROR_OUTPUT_ON_MODE_CHANGE_ERROR
-
-   Enables/disables error messages on disallows mode transitions.
-
 .. cmacro:: QUEX_OPTION_INCLUDE_STACK
 
    Enables/disables the feature of an intelligent include stack. 
@@ -53,15 +49,11 @@ the suffix enables something, the option with the suffix disables the 'something
    Enables/disables informative buffer overflow messages. If set it prints the lexeme
    on which the buffer overflow happened.
 
-.. cmacro:: QUEX_OPTION_LINE_NUMBER_COUNTING
+.. cmacro:: QUEX_OPTION_COUNTER_LINE
 
    Enables/disables line number counting. Line and column number counting
    are implemented very efficiently. Most probably no performance decrease
    will be measurable by deactivating this feature.
-
-.. cmacro:: QUEX_OPTION_POST_CATEGORIZER
-
-   Enables/disables an optional 'post categorizer' that maps from a lexeme to a token-id.
 
 .. cmacro:: QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 
@@ -81,10 +73,6 @@ the suffix enables something, the option with the suffix disables the 'something
    a lexeme is disabled. This may cause some speed-up, but it is necessary
    in order to run the lexical analyzer on read-only memory.
 
-.. cmacro:: QUEX_OPTION_STRING_ACCUMULATOR
-
-   Enables/disables an optional accumulator which can collect some longer string.
-
 .. cmacro:: QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 
    Enables/disables the stamping of tokens with the line and column number.
@@ -93,16 +81,4 @@ the suffix enables something, the option with the suffix disables the 'something
    line counting is disabled the corresponding stamping is also disabled,
    anyway.
 
-.. cmacro:: QUEX_OPTION_WARNING_ON_PLAIN_FILLER_DISABLED
-
-   Disable the warning message that is printed if a analyzer is used without
-   a character encoding while it was created for a converter interface such
-   as IConv or ICU.
-
-.. cmacro:: QUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE 
-
-   If asserts are enabled, then quex triggers an error message whenever
-   a token is sent after the 'TERMINATION' token. In some cases, this 
-   might just be convenient, so that one might want to allow it by
-   defining this macro.
 

@@ -88,11 +88,11 @@ $$SWITCH$$ QUEX_OPTION_ENDIAN_SYSTEM
  *
  * -- Line Number / Column Number Counting:
  *    Turning counting off may result in engine speed-up.                     */
-#ifndef    QUEX_OPTION_LINE_NUMBER_COUNTING            
-$$SWITCH$$ QUEX_OPTION_LINE_NUMBER_COUNTING         
+#ifndef    QUEX_OPTION_COUNTER_LINE            
+$$SWITCH$$ QUEX_OPTION_COUNTER_LINE         
 #endif
-#ifndef    QUEX_OPTION_COLUMN_NUMBER_COUNTING          
-$$SWITCH$$ QUEX_OPTION_COLUMN_NUMBER_COUNTING       
+#ifndef    QUEX_OPTION_COUNTER_COLUMN          
+$$SWITCH$$ QUEX_OPTION_COUNTER_COLUMN       
 #endif
 
 /* Mode Transitions:

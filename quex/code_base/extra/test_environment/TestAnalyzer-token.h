@@ -53,10 +53,10 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-#       ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+#       ifdef QUEX_OPTION_COUNTER_LINE
         QUEX_TYPE_TOKEN_LINE_N    _line_n;
 #       endif
-#       ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#       ifdef  QUEX_OPTION_COUNTER_COLUMN
         QUEX_TYPE_TOKEN_COLUMN_N  _column_n;
 #       endif
 #   endif

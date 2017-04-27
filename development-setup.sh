@@ -15,3 +15,5 @@ popd
 pushd demo
 bash make_clean.sh > /dev/null 2>&1
 popd
+
+hwut make clean > /dev/null 2>&1

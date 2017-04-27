@@ -19,7 +19,7 @@
     /* In case that multiple lexical analyzers are used the same header
      * files are compiled with a different setting of the macros. The
      * undef of the include guards happens in the following file.              */
-#   ifdef   __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_$$LEXER_NAME_SPACE$$
+#   ifdef   __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_$$LEXER_NAME_SPACE_EXT$$
 #      error "More than one lexical analyzer have been generated in the same name space. Read documentation on command line option '-o'."
 #   endif
 #   ifndef  QUEX_OPTION_MULTI
@@ -30,7 +30,7 @@
 #else
 #   define  __QUEX_INCLUDE_INDICATOR__ANALYZER__MAIN
 #endif
-#define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_$$LEXER_NAME_SPACE$$
+#define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_$$LEXER_NAME_SPACE_EXT$$
 
 #include "$$LEXER_CONFIG_FILE$$"
 
@@ -294,14 +294,14 @@ public:
          { QUEX_NAME(set_callback_on_buffer_content_change)(this, callback); }
     /*__( Line/Column Counter )________________________________________________
      *                                                                       */
-#   ifdef  QUEX_OPTION_LINE_NUMBER_COUNTING
+#   ifdef  QUEX_OPTION_COUNTER_LINE
     size_t      line_number() const            { return line_number_at_begin(); }
     size_t      line_number_at_begin() const   { return counter._line_number_at_begin; }
     size_t      line_number_at_end() const     { return counter._line_number_at_end; }
     /*          line_number_set(...) defines the column number of the next pattern match. */
     void        line_number_set(size_t Y)      { counter._line_number_at_end = Y; }
 #   endif
-#   ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#   ifdef  QUEX_OPTION_COUNTER_COLUMN
     size_t      column_number() const          { return column_number_at_begin(); }
     size_t      column_number_at_begin() const { return counter._column_number_at_begin; }
     size_t      column_number_at_end() const   { return counter._column_number_at_end; }

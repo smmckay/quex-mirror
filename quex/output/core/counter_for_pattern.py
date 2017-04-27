@@ -41,7 +41,7 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):
         elif Increment != E_Count.VOID:
             arg = Lng.VALUE_STRING(Increment)
         else:
-            arg = Lng.MULTIPLY_WITH("LexemeL", IncrementByLexemeLength)
+            arg = Lng.MULTIPLY_WITH(Lng.LEXEME_LENGTH(), IncrementByLexemeLength)
 
         txt.append(AddFunction(arg))
 
@@ -70,7 +70,7 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):
         assert lcci.grid_step_size_by_lexeme_length != E_Count.VOID
 
         if   lcci.grid_step_n == E_Count.VOID: 
-            grid_step_n = "LexemeL"
+            grid_step_n = Lng.LEXEME_LENGTH()
         elif lcci.grid_step_n != 0:
             grid_step_n = lcci.grid_step_n
         else:

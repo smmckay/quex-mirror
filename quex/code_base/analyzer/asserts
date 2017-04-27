@@ -5,7 +5,7 @@
 #if ! defined(QUEX_OPTION_ASSERTS)
 #   define __QUEX_ASSERT_COUNTER_CONSISTENCY(ME) /* empty */
 #else
-#   if defined(QUEX_OPTION_LINE_NUMBER_COUNTING) && defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)
+#   if defined(QUEX_OPTION_COUNTER_LINE) && defined(QUEX_OPTION_COUNTER_COLUMN)
 #      define __QUEX_ASSERT_COUNTER_CONSISTENCY(ME)                                           \
        {                                                                                      \
           /* The line number can never decrease.                                           */ \
@@ -16,7 +16,7 @@
               __quex_assert((ME)->_column_number_at_begin < (ME)->_column_number_at_end);     \
           }                                                                                   \
        } 
-#   elif defined(QUEX_OPTION_LINE_NUMBER_COUNTING) && ! defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)
+#   elif defined(QUEX_OPTION_COUNTER_LINE) && ! defined(QUEX_OPTION_COUNTER_COLUMN)
 #      define __QUEX_ASSERT_COUNTER_CONSISTENCY(ME)                                           \
        {                                                                                      \
            __quex_assert((ME)->_line_number_at_begin   <= (ME)->_line_number_at_end);         \

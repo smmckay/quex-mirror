@@ -133,13 +133,13 @@
  * In the default token class the members '_line_n' and '_column_n' only 
  * exist if the corresponding stamping is active.                             */
 #if    defined(QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN) 
-#   if defined(QUEX_OPTION_LINE_NUMBER_COUNTING)
+#   if defined(QUEX_OPTION_COUNTER_LINE)
 #       define QUEX_ACTION_TOKEN_STAMP_LINE_NUMBER(ME) \
                do { QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_line_n = (ME).counter._line_number_at_begin; } while(0)
 #   else
 #       define QUEX_ACTION_TOKEN_STAMP_LINE_NUMBER(ME)               /* empty */
 #   endif
-#   if defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)
+#   if defined(QUEX_OPTION_COUNTER_COLUMN)
 #       define QUEX_ACTION_TOKEN_STAMP_COLUMN_NUMBER(ME) \
                do { QUEX_TOKEN_QUEUE_GET_CURRENT((ME)._token_queue)->_column_n = (ME).counter._column_number_at_begin; } while(0)  
 #   else

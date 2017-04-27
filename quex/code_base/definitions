@@ -414,7 +414,7 @@ typedef enum {
            QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "\n");
 
-#elif  defined(__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS) 
+#elif  defined(QUEX_OPTION_DEBUG_SHOW_LOADS) 
 
 #   include <quex/code_base/buffer/Buffer_print>
 #   define __quex_debug_buffer_load(BUFFER, Msg)                        \
@@ -425,7 +425,7 @@ typedef enum {
 
 #   define __quex_debug_buffer_load(BUFFER, Msg) /* empty */
 
-#endif /* __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS */
+#endif /* QUEX_OPTION_DEBUG_SHOW_LOADS */
 
 #ifdef QUEX_OPTION_STATISTICS
 #    define __quex_optional_statistics(StateIdx) \

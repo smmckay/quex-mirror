@@ -2,7 +2,6 @@ import os
 import sys
 sys.path.append(os.environ["QUEX_PATH"])
 from copy import copy
-from quex.DEFINITIONS                                     import QUEX_PATH
 from quex.engine.misc.string_handling                     import blue_print
 from quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 

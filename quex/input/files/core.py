@@ -19,7 +19,6 @@ import quex.engine.misc.error                   as     error
 from   quex.engine.misc.file_operations         import open_file_or_die
 from   quex.engine.misc.file_in                 import EndOfStreamException, \
                                                        check, \
-                                                       os, \
                                                        parse_identifier_assignment, \
                                                        read_identifier, \
                                                        read_integer, \

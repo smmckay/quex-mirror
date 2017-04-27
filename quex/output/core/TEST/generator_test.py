@@ -54,7 +54,7 @@ import quex.output.core.variable_db                as     variable_db
 from   quex.output.core.variable_db                import VariableDB
 from   quex.output.languages.core                 import db
 import quex.output.core.state_router               as     state_router_generator
-import quex.output.languages.cpp.core                        as     cpp_generator
+import quex.output.core.engine                     as     engine_generator
 #
 import quex.blackboard as blackboard
 from   quex.constants  import E_Compression, \
@@ -200,7 +200,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
                                                             SecondModeF=True)
 
     if ShowBufferLoadsF:
-        state_machine_code = "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS\n" + \
+        state_machine_code = "#define QUEX_OPTION_DEBUG_SHOW_LOADS\n" + \
                              "#define __QUEX_OPTION_UNIT_TEST\n"                   + \
                              state_machine_code
 
@@ -469,9 +469,9 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     print "## (1) code generation"    
 
     function_body, \
-    variable_definitions = cpp_generator.do_core(mode)
+    variable_definitions = engine_generator.do_core(mode)
     function_body += "if(0) { QUEX_FUNCTION_COUNT_ARBITRARY((QUEX_TYPE_ANALYZER*)0, (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0); }\n"
-    function_txt  = cpp_generator.wrap_up(sm_name, function_body, 
+    function_txt  = engine_generator.wrap_up(sm_name, function_body, 
                                           variable_definitions, 
                                           ModeNameList=[], dial_db=dial_db)
 
@@ -496,7 +496,6 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_SETTING_BUFFER_MIN_FALLBACK_N     ((size_t)$$BUFFER_FALLBACK_N$$)
 #define QUEX_SETTING_BUFFER_LIMIT_CODE         ((QUEX_TYPE_LEXATOM)$$BUFFER_LIMIT_CODE$$)
 #define QUEX_OPTION_INCLUDE_STACK_DISABLED
-#define QUEX_OPTION_STRING_ACCUMULATOR_DISABLED
 
 #if 0
 #define QUEX_TKN_TERMINATION       0

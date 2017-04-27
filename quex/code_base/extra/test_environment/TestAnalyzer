@@ -99,7 +99,6 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
 #   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif
-
 #   if defined(QUEX_OPTION_COUNTER)
     QUEX_NAME(Counter)              counter;
 #   endif
@@ -316,14 +315,14 @@ public:
          { QUEX_NAME(set_callback_on_buffer_content_change)(this, callback); }
     /*__( Line/Column Counter )________________________________________________
      *                                                                       */
-#   ifdef  QUEX_OPTION_LINE_NUMBER_COUNTING
+#   ifdef  QUEX_OPTION_COUNTER_LINE
     size_t      line_number() const            { return line_number_at_begin(); }
     size_t      line_number_at_begin() const   { return counter._line_number_at_begin; }
     size_t      line_number_at_end() const     { return counter._line_number_at_end; }
     /*          line_number_set(...) defines the column number of the next pattern match. */
     void        line_number_set(size_t Y)      { counter._line_number_at_end = Y; }
 #   endif
-#   ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#   ifdef  QUEX_OPTION_COUNTER_COLUMN
     size_t      column_number() const          { return column_number_at_begin(); }
     size_t      column_number_at_begin() const { return counter._column_number_at_begin; }
     size_t      column_number_at_end() const   { return counter._column_number_at_end; }

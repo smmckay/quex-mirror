@@ -37,10 +37,10 @@ token_type {
        /* Copy core elements: id, line, and column number */
        self._id         = Other._id;
 #      ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-#      ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+#      ifdef QUEX_OPTION_COUNTER_LINE
               self._line_n = Other._line_n;
 #      endif
-#      ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#      ifdef  QUEX_OPTION_COUNTER_COLUMN
               self._column_n = Other._column_n;
 #      endif
 #      endif

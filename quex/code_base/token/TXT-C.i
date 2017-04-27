@@ -12,7 +12,7 @@
 #include "$$TOKEN_CLASS_HEADER$$"
 #include <quex/code_base/definitions>
 
-$$EXTRA_AT_BEGIN$$
+$$INCLUDE_TOKEN_CLASS_HEADER$$
 
 QUEX_INLINE void 
 $TOKEN_CLASS_set($TOKEN_CLASS*            __this, 
@@ -138,7 +138,5 @@ $$MAP_ID_TO_NAME_CASES$$
 }
 
 $$FOOTER$$
-
-$$EXTRA_AT_END$$
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I */

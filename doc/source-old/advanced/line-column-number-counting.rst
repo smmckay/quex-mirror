@@ -80,9 +80,9 @@ column number actively. Then the following member functions may be used:
 Line and column counting can be turned off individually by pre-processor
 switches. 
 
-.. cmacro:: QUEX_OPTION_COLUMN_NUMBER_COUNTING_DISABLED
+.. cmacro:: QUEX_OPTION_COUNTER_COLUMN_DISABLED
 
-.. cmacro:: QUEX_OPTION_LINE_NUMBER_COUNTING_DISABLED
+.. cmacro:: QUEX_OPTION_COUNTER_LINE_DISABLED
 
 These switches turn the related counting mechanisms off.  It is possible that
 it runs a little faster[#f3]_. For serious applications, though, at least line

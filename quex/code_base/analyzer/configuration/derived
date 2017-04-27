@@ -13,23 +13,17 @@
 #ifdef    QUEX_OPTION_INCLUDE_STACK_DISABLED
 #   undef QUEX_OPTION_INCLUDE_STACK
 #endif
-#ifdef    QUEX_OPTION_DEBUG_QUEX_PATTERN_MATCHES_DISABLED
-#   undef QUEX_OPTION_DEBUG_QUEX_PATTERN_MATCHES
-#endif
 #ifdef    QUEX_OPTION_DEBUG_SHOW_MODES_DISABLED
 #   undef QUEX_OPTION_DEBUG_SHOW_MODES
-#endif
-#ifdef    QUEX_OPTION_DEBUG_TOKEN_SENDING_DISABLED
-#   undef QUEX_OPTION_DEBUG_TOKEN_SENDING
 #endif
 #ifdef    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_DISABLED
 #   undef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #endif
-#ifdef    QUEX_OPTION_COLUMN_NUMBER_COUNTING_DISABLED
-#   undef QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#ifdef    QUEX_OPTION_COUNTER_COLUMN_DISABLED
+#   undef QUEX_OPTION_COUNTER_COLUMN
 #endif
-#ifdef    QUEX_OPTION_LINE_NUMBER_COUNTING_DISABLED
-#   undef QUEX_OPTION_LINE_NUMBER_COUNTING
+#ifdef    QUEX_OPTION_COUNTER_LINE_DISABLED
+#   undef QUEX_OPTION_COUNTER_LINE
 #endif
 
 #define __QUEX_PURE_RETURN   do { return; } while(0)
@@ -88,8 +82,8 @@
 #define __QUEX_TYPE_ANALYZER_RETURN_VALUE            void
 #define __QUEX_RETURN                                return
 
-#if    defined(QUEX_OPTION_LINE_NUMBER_COUNTING)   \
-    || defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING) \
+#if    defined(QUEX_OPTION_COUNTER_LINE)   \
+    || defined(QUEX_OPTION_COUNTER_COLUMN) \
     || defined(QUEX_OPTION_INDENTATION_TRIGGER)       
 #     define  QUEX_OPTION_COUNTER
 #     define  __QUEX_IF_COUNT(EXPRESSION)             EXPRESSION
@@ -106,7 +100,7 @@
 #     define  __QUEX_IF_COUNT_SHIFT_VALUES()          /* empty */
 #endif
 
-#if defined(QUEX_OPTION_LINE_NUMBER_COUNTING)   
+#if defined(QUEX_OPTION_COUNTER_LINE)   
 #   define     __QUEX_IF_COUNT_LINES(EXPRESSION)      EXPRESSION
 #   define     __QUEX_IF_COUNT_LINES_IF(EXPRESSION)   if( EXPRESSION )
 #   define     __QUEX_IF_COUNT_LINES_ADD(X)                      \
@@ -124,7 +118,7 @@
 #   define     __QUEX_COUNTER_SHIFT_LINES()           /* empty */
 #endif
 
-#if defined(QUEX_OPTION_COLUMN_NUMBER_COUNTING)   
+#if defined(QUEX_OPTION_COUNTER_COLUMN)   
 #   define     __QUEX_IF_COUNT_COLUMNS(EXPRESSION)    EXPRESSION
 #   define     __QUEX_IF_COUNT_COLUMNS_SET(X) \
                do {                                              \

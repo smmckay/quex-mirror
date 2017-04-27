@@ -32,13 +32,13 @@
 #   undef self_accumulator_flush
 #   undef self_accumulator_is_empty
 /* Indentation/Counter _____________________________________________________*/
-#   ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+#   ifdef QUEX_OPTION_COUNTER_LINE
 #   undef self_line_number            
 #   undef self_line_number_at_begin 
 #   undef self_line_number_at_begin_set
 #   undef self_line_number_at_end   
 #   endif
-#   ifdef QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#   ifdef QUEX_OPTION_COUNTER_COLUMN
 #   undef self_column_number          
 #   undef self_column_number_at_begin 
 #   undef self_column_number_at_begin_set
@@ -68,13 +68,13 @@
 #define self_pop_drop_mode()                     QUEX_NAME(pop_drop_mode)(&self)
 #define self_push_mode(ModeP)                    QUEX_NAME(push_mode)(&self, (ModeP))
                                                  
-#ifdef      QUEX_OPTION_LINE_NUMBER_COUNTING     
+#ifdef      QUEX_OPTION_COUNTER_LINE     
 #   define  self_line_number_at_begin()          (self.counter._line_number_at_begin)
 #   define  self_line_number_at_begin_set(X)     do { self.counter._line_number_at_begin = (X); } while(0)
 #   define  self_line_number_at_end()            (self.counter._line_number_at_end)
 #   define  self_line_number()                   (self_line_number_at_begin())
 #endif                                           
-#ifdef      QUEX_OPTION_COLUMN_NUMBER_COUNTING  
+#ifdef      QUEX_OPTION_COUNTER_COLUMN  
 #   define  self_column_number_at_begin()        (self.counter._column_number_at_begin)
 #   define  self_column_number_at_begin_set(X)   do { self.counter._column_number_at_begin = (X); } while(0)
 #   define  self_column_number_at_end()          (self.counter._column_number_at_end)

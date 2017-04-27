@@ -47,8 +47,8 @@ typedef struct {
         me->counter._line_number_at_begin = me->counter._line_number_at_end;    \
         me->counter._column_number_at_begin = me->counter._column_number_at_end;
 
-#define QUEX_OPTION_COLUMN_NUMBER_COUNTING
-#define QUEX_OPTION_LINE_NUMBER_COUNTING
+#define QUEX_OPTION_COUNTER_COLUMN
+#define QUEX_OPTION_COUNTER_LINE
 
 void
 DEF_COUNTER_FUNCTION(QUEX_TYPE_ANALYZER*  me, 

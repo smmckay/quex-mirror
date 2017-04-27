@@ -52,7 +52,8 @@ class Language(dict):
     TRUE                     = "true"
     OR                       = "||"
 
-    PATH_ITERATOR_INCREMENT  = "++(path_iterator);"
+    PATH_ITERATOR_INCREMENT   = "++(path_iterator);"
+    VIRTUAL_DESTRUCTOR_PREFIX = "virtual "
 
     def __init__(self):      
         self.__analyzer                           = None
@@ -70,6 +71,12 @@ class Language(dict):
             E_IncidenceIDs.OVERFLOW:        "E_Error_NoHandler_OnOverflow",
         }
             
+    def ASSERT(self, Condition):
+        return "__quex_assert(%s);" % Condition
+
+    def FORWARD_DECLARATION(self, ClassName): 
+        return "class %s;" % ClassName
+
     def SAFE_IDENTIFIER(self, String):
         def _safe(L):
             if len(L) != 1:
@@ -162,6 +169,8 @@ class Language(dict):
                "QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;\n" \
                "QUEX_NAMESPACE_TOKEN_CLOSE\n"
 
+    def DEFAULT_TOKEN_COPY(self, X, Y):
+        return "__QUEX_STD_memcpy((void*)%s, (void*)%s, sizeof(QUEX_TYPE_TOKEN));\n" % (X, Y)
 
     def INPUT_P(self):                             return "me->buffer._read_p"
     def INPUT_P_TO_LEXEME_START(self):             return "me->buffer._read_p = me->buffer._lexeme_start_p;"
@@ -186,6 +195,13 @@ class Language(dict):
         # content is loaded. Not so easy; must be carefully approached.
         return "    %s\n" % self.ASSIGN("me->buffer._lexatom_before_lexeme_start", 
                                         self.INPUT_P_DEREFERENCE(-1))
+
+    def MODE_BY_ID(self, ModeName):
+        return "%s[%s]" % (self.NAME_IN_NAMESPACE_MAIN("mode_db"), 
+                           self.NAME_IN_NAMESPACE_MAIN("ModeID_%s" % ModeName))
+
+    def ADDRESS_OF(self, Variable):
+        return "&(%s)" % Variable
 
     def UNDEFINE(self, NAME):
         return "\n#undef %s\n" % NAME
@@ -588,6 +604,9 @@ class Language(dict):
             ("$$CONTINUE_WITH_ON_AFTER_MATCH$$", self.LABEL_STR_BY_ADR(DoorID.continue_with_on_after_match(dial_db).related_address)),
             ("$$RETURN_WITH_ON_AFTER_MATCH$$",   self.LABEL_STR_BY_ADR(DoorID.return_with_on_after_match(dial_db).related_address)),
         ])
+
+    def RETURN_THIS(self, Value):
+        return "return %s;" % Value
 
     @typed(DoorId=DoorID)
     def LABEL(self, DoorId):

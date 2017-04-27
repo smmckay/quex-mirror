@@ -168,7 +168,7 @@ class Pattern_Prep(object):
 
             elif not AllowNothingIsNecessaryF:
                 # 'Nothing is necessary' cannot be accepted. 
-                # See the discussion in the module "quex.output.languages.cpp.core".
+                # See the discussion in the module "quex.output.core.engine".
                 Pattern_Prep.detect_path_of_nothing_is_necessary(Sm,  Name.strip(),  post_context_f, Sr)
 
         post_context_f = (post_context is not None)

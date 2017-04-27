@@ -134,9 +134,9 @@ QUEX_NAME(M_counter)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUE
     QUEX_TYPE_LEXATOM              input                          = (QUEX_TYPE_LEXATOM)(0x00);
     QUEX_TYPE_GOTO_LABEL           target_state_else_index        = QUEX_GOTO_LABEL_VOID;
     QUEX_TYPE_GOTO_LABEL           target_state_index             = QUEX_GOTO_LABEL_VOID;
-#   ifdef QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#   ifdef QUEX_OPTION_COUNTER_COLUMN
     QUEX_TYPE_LEXATOM*             count_reference_p              = (QUEX_TYPE_LEXATOM*)0x0;
-#   endif /* QUEX_OPTION_COLUMN_NUMBER_COUNTING */
+#   endif /* QUEX_OPTION_COUNTER_COLUMN */
     (void)me;
     __QUEX_IF_COUNT_SHIFT_VALUES();
     /* Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)

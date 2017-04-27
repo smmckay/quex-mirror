@@ -120,35 +120,23 @@ token_queue = """
 /token/TokenQueue.i
 """
 
-token_default_C = "/token/CDefault.qx"
+token_default_C   = "/token/CDefault.qx"
 token_default_Cpp = "/token/CppDefault.qx"
 
 buffer_filler = """
 /buffer/lexatoms/LexatomLoader
 /buffer/lexatoms/LexatomLoader.i
 /buffer/lexatoms/LexatomLoader_navigation.i
-"""
-
-buffer_filler_plain = """
 /buffer/lexatoms/LexatomLoader_Plain
 /buffer/lexatoms/LexatomLoader_Plain.i
-"""
-
-buffer_filler_converter = """
 /buffer/lexatoms/LexatomLoader_Converter
 /buffer/lexatoms/LexatomLoader_Converter.i
 /buffer/lexatoms/LexatomLoader_Converter_RawBuffer.i
 /buffer/lexatoms/converter/Converter
 /buffer/lexatoms/converter/Converter.i
-"""
-
-buffer_filler_iconv = """
 /buffer/lexatoms/converter/iconv/Converter_IConv
 /buffer/lexatoms/converter/iconv/Converter_IConv.i
 /buffer/lexatoms/converter/iconv/special_headers.h
-"""
-
-buffer_filler_icu = """
 /buffer/lexatoms/converter/icu/Converter_ICU
 /buffer/lexatoms/converter/icu/Converter_ICU.i
 /buffer/lexatoms/converter/icu/special_headers.h
@@ -162,22 +150,12 @@ converter_helper = """
 /converter_helper/generator/implementations.gi
 /converter_helper/generator/string-converter.gi
 /converter_helper/generator/character-converter-to-char-wchar_t.gi
-"""
-
-converter_helper_unicode = """
 /converter_helper/from-unicode-buffer
 /converter_helper/from-unicode-buffer.i
-"""
-
-converter_helper_utf8 = """
 /converter_helper/from-utf8
 /converter_helper/from-utf8.i
-"""
-converter_helper_utf16 = """
 /converter_helper/from-utf16
 /converter_helper/from-utf16.i
-"""
-converter_helper_utf32 = """
 /converter_helper/from-utf32
 /converter_helper/from-utf32.i
 """
@@ -188,35 +166,16 @@ def do():
           + base_compatibility     \
           + base_buffer            \
           + base_analyzer          \
-          + token_policy           
+          + token_policy           \
+          + token_queue
 
-    # Buffer Filler ___________________________________________________________
-    # 
-    # The instance that is responsible for filling a buffer with content
-    LexatomLoaderF = True # Change this once we have 'buffer only' modes
+    txt += buffer_filler
 
-    if LexatomLoaderF:
-        txt += buffer_filler
-        txt += buffer_filler_converter
-        txt += buffer_filler_icu
-        txt += buffer_filler_iconv
-        txt += buffer_filler_plain
-
-    # if Setup.converter_helper_required_f:
-    txt +=   converter_helper       \
-           + converter_helper_utf8  \
-           + converter_helper_utf16 \
-           + converter_helper_utf32 
-
-    # if Setup.buffer_codec.name == "unicode": 
-    txt += converter_helper_unicode
-
-    txt += token_queue
+    txt += converter_helper       
 
     if Setup.extern_token_class_file != "":
         if   Setup.language == "C":   txt += token_default_C
         elif Setup.language == "C++": txt += token_default_Cpp
-
 
     txt += analyzer_accumulator
     if Setup.count_column_number_f or Setup.count_line_number_f: txt += analyzer_counter 

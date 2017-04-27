@@ -15,9 +15,7 @@
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/MemoryManager>
 
-/* LexemeNull object may be used for 'take_text'. */
-$$EXTRA_AT_BEGIN$$
-/****/
+$$HELPER_DEFINITIONS$$
 
 $$HEADER$$
  
@@ -26,10 +24,10 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $TOKEN_CLASS_tag {
 $$DISTINCT_MEMBERS$$
 $$UNION_MEMBERS$$
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-#       ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+#       ifdef QUEX_OPTION_COUNTER_LINE
         QUEX_TYPE_TOKEN_LINE_N    _line_n;
 #       endif
-#       ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#       ifdef  QUEX_OPTION_COUNTER_COLUMN
         QUEX_TYPE_TOKEN_COLUMN_N  _column_n;
 #       endif
 #   endif
@@ -59,6 +57,6 @@ QUEX_INLINE size_t       $TOKEN_CLASS_repetition_n_get($TOKEN_CLASS*);
 QUEX_INLINE void         $TOKEN_CLASS_repetition_n_set($TOKEN_CLASS*, size_t);
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
-$$EXTRA_AT_END$$
+$$LEXEME_NULL_DECLARATION$$
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */

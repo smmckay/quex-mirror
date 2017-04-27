@@ -94,15 +94,6 @@ executed before and after the match specific actions.
         command line option ``--token-policy-queue-safety-border`` followed by the
         specific number.
 
-    .. note::
-
-       Since ``on_after_match`` is executed after pattern actions have been done.
-       This includes a possible sending of the termination token. When asserts
-       are enabled, any token sending after the termination token may trigger 
-       an error. This can be disabled by the definition of the macro::
-       
-                QUEX_OPTION_SEND_AFTER_TERMINATION_ADMISSIBLE 
-
 If a pattern matches, the following sequence of execution takes place. First,
 ``on_match`` of the mode is executed independently on what pattern matched.
 Second, the pattern-specific action is executed. Third, the ``on_after_match``
@@ -235,8 +226,8 @@ appears, and encoding error is issued even if at the same time no pattern
 matches. ``on_bad_lexatom`` also detects non-complient buffer loads--a little
 late, hower. If a load procuder loads the buffer with data that contains the
 buffer limit code, this this is detected upon the next attempt to reload[#f2]_.
-When ``QUEX_OPTION_DEBUG_LOAD`` is defined, such situations are detected
-directly after reload.
+When ``QUEX_OPTION_ON_LOAD_DETECT_BUFFER_LIMIT_CODE_IN_CONTENT`` is defined,
+such situations are detected directly after reload.
 
 
 Skippers

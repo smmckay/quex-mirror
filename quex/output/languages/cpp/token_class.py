@@ -1,6 +1,5 @@
-# (C) 2005-2010 Frank-Rene Schaefer
+# (C) 2005-2017 Frank-Rene Schaefer
 # ABSOLUTELY NO WARANTY
-from   quex.DEFINITIONS                         import QUEX_PATH
 from   quex.input.files.token_type              import TokenTypeDescriptor
 from   quex.engine.misc.string_handling         import blue_print
 import quex.output.languages.cpp.token_id_maker as     token_id_maker
@@ -97,8 +96,8 @@ def _do_core(Descr):
 
     template_str = Lng.open_template(Lng.token_template_file())
     txt = blue_print(template_str, [
-        ["$$EXTRA_AT_BEGIN$$",          helper_definitions],
-        ["$$EXTRA_AT_END$$",            Lng.LEXEME_NULL_DECLARATION()],
+        ["$$HELPER_DEFINITIONS$$",      helper_definitions],
+        ["$$LEXEME_NULL_DECLARATION$$", Lng.LEXEME_NULL_DECLARATION()],
         ["$$BODY$$",                    Lng.SOURCE_REFERENCED(Descr.body)],
         ["$$CONSTRUCTOR$$",             Lng.SOURCE_REFERENCED(Descr.constructor)],
         ["$$COPY$$",                    copy_str],
@@ -122,21 +121,20 @@ def _do_core(Descr):
 
     template_i_str = Lng.open_template(Lng.token_template_i_file())
     txt_i = blue_print(template_i_str, [
-        ["$$EXTRA_AT_BEGIN$$",          _include_token_class_header()],
-        ["$$EXTRA_AT_END$$",            ""],
-        ["$$CONSTRUCTOR$$",             Lng.SOURCE_REFERENCED(Descr.constructor)],
-        ["$$COPY$$",                    copy_str],
-        ["$$DESTRUCTOR$$",              Lng.SOURCE_REFERENCED(Descr.destructor)],
-        ["$$FOOTER$$",                  Lng.SOURCE_REFERENCED(Descr.footer)],
-        ["$$FUNC_TAKE_TEXT$$",          take_text_str],
-        ["$$TOKEN_CLASS_HEADER$$",      Setup.get_file_reference(blackboard.token_type_definition.get_file_name())],
-        ["$$INCLUDE_GUARD_EXTENSION$$", include_guard_extension_str],
-        ["$$NAMESPACE_OPEN$$",          Lng.NAMESPACE_OPEN(Descr.name_space)],
-        ["$$NAMESPACE_CLOSE$$",         Lng.NAMESPACE_CLOSE(Descr.name_space)],
-        ["$$TOKEN_REPETITION_N_GET$$",  Lng.SOURCE_REFERENCED(Descr.repetition_get)],
-        ["$$TOKEN_REPETITION_N_SET$$",  Lng.SOURCE_REFERENCED(Descr.repetition_set)],
-        ["$$TOKEN_CLASS_NAME_SAFE$$",   Descr.class_name_safe],
-        ["$$MAP_ID_TO_NAME_CASES$$",    token_id_maker.do_map_id_to_name_cases()],
+        ["$$INCLUDE_TOKEN_CLASS_HEADER$$", _include_token_class_header()],
+        ["$$CONSTRUCTOR$$",                Lng.SOURCE_REFERENCED(Descr.constructor)],
+        ["$$COPY$$",                       copy_str],
+        ["$$DESTRUCTOR$$",                 Lng.SOURCE_REFERENCED(Descr.destructor)],
+        ["$$FOOTER$$",                     Lng.SOURCE_REFERENCED(Descr.footer)],
+        ["$$FUNC_TAKE_TEXT$$",             take_text_str],
+        ["$$TOKEN_CLASS_HEADER$$",         Setup.get_file_reference(blackboard.token_type_definition.get_file_name())],
+        ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension_str],
+        ["$$NAMESPACE_OPEN$$",             Lng.NAMESPACE_OPEN(Descr.name_space)],
+        ["$$NAMESPACE_CLOSE$$",            Lng.NAMESPACE_CLOSE(Descr.name_space)],
+        ["$$TOKEN_REPETITION_N_GET$$",     Lng.SOURCE_REFERENCED(Descr.repetition_get)],
+        ["$$TOKEN_REPETITION_N_SET$$",     Lng.SOURCE_REFERENCED(Descr.repetition_set)],
+        ["$$TOKEN_CLASS_NAME_SAFE$$",      Descr.class_name_safe],
+        ["$$MAP_ID_TO_NAME_CASES$$",       token_id_maker.do_map_id_to_name_cases()],
     ])
     txt_i = blue_print(txt_i, helper_variable_replacements)
 
@@ -361,16 +359,17 @@ def _some_standard_stuff(Descr):
                                                     + "__" + Descr.class_name)
 
     virtual_destructor_str = ""
-    if Descr.open_for_derivation_f: virtual_destructor_str = "virtual "
+    if Descr.open_for_derivation_f: 
+        virtual_destructor_str = Lng.VIRTUAL_DESTRUCTOR_PREFIX
 
     if Descr.copy is None:
         # Default copy operation: Plain Copy of token memory
-        copy_str = "__QUEX_STD_memcpy((void*)__this, (void*)__That, sizeof(QUEX_TYPE_TOKEN));\n"
+        copy_str = Lng.DEFAULT_TOKEN_COPY("__this", "__That")
     else:
         copy_str = Lng.SOURCE_REFERENCED(Descr.copy)
 
     if Descr.take_text is None:
-        take_text_str = "return true;\n" 
+        take_text_str = "%s\n" % Lng.RETURN_THIS(Lng.TRUE)
     else:
         take_text_str = Lng.SOURCE_REFERENCED(Descr.take_text)
 

@@ -112,7 +112,7 @@ from   quex.engine.counter                                import CountAction, \
 from   quex.engine.misc.interval_handling                 import NumberSet
 from   quex.engine.misc.tools                             import typed
 import quex.engine.misc.error                             as     error
-from   quex.output.languages.cpp.counter_for_pattern                import map_SmLineColumnCountInfo_to_code
+from   quex.output.core.counter_for_pattern               import map_SmLineColumnCountInfo_to_code
 
 from   quex.blackboard import setup as Setup, Lng
 from   quex.constants  import E_CharacterCountType, \
@@ -490,7 +490,7 @@ class LoopEventHandlers:
     def __get_required_register_set(self, AppendixSmExistF):
         result = set()
         if self.column_number_per_code_unit is not None:
-            result.add((E_R.CountReferenceP, "QUEX_OPTION_COLUMN_NUMBER_COUNTING"))
+            result.add((E_R.CountReferenceP, "QUEX_OPTION_COUNTER_COLUMN"))
         if AppendixSmExistF:
             result.add(E_R.LoopRestartP)
         if Setup.buffer_codec.variable_character_sizes_f():

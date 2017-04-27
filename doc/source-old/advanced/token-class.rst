@@ -113,8 +113,8 @@ followed by ``}``.
    becomes ``_line_number`` and ``column_number`` becomes ``_column_number``.
    Depending on the setting of the macros::
 
-        QUEX_OPTION_COLUMN_NUMBER_COUNTING
-        QUEX_OPTION_LINE_NUMBER_COUNTING
+        QUEX_OPTION_COUNTER_COLUMN
+        QUEX_OPTION_COUNTER_LINE
 
    the members ``_line_number`` and ``_column_number`` are are enabled or 
    disabled.
@@ -263,10 +263,10 @@ sections. The variable ``self`` is a reference to the token object itself.
            // Copy core elements: id, line, and column number
            self._id = Other._id;
        #      ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-       #      ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+       #      ifdef QUEX_OPTION_COUNTER_LINE
                   self._line_n = Other._line_n;
        #      endif
-       #      ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+       #      ifdef  QUEX_OPTION_COUNTER_COLUMN
                   self._column_n = Other._column_n;
        #      endif
        #      endif
@@ -583,10 +583,10 @@ can be specified. The following shows a sample definition of a ``token_type`` se
            /* Copy core elements: id, line, and column number */
            _id         = Other._id;
     #      ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-    #      ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+    #      ifdef QUEX_OPTION_COUNTER_LINE
                   _line_n = Other._line_n;
     #      endif
-    #      ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+    #      ifdef  QUEX_OPTION_COUNTER_COLUMN
                   _column_n = Other._column_n;
     #      endif
     #      endif
@@ -682,14 +682,14 @@ which results in a generated token class in C++:
             const std::string     type_id_name() const { return map_id_to_name(_id); }
 
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-    #       ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+    #       ifdef QUEX_OPTION_COUNTER_LINE
         private:
             QUEX_TYPE_TOKEN_LINE_N  _line_n;
         public:
             QUEX_TYPE_TOKEN_LINE_N    line_number() const                                 { return _line_n; }
             void                      set_line_number(const QUEX_TYPE_TOKEN_LINE_N Value) { _line_n = Value; }
     #       endif
-    #       ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+    #       ifdef  QUEX_OPTION_COUNTER_COLUMN
         private:
             QUEX_TYPE_TOKEN_COLUMN_N  _column_n;
         public:
@@ -917,8 +917,7 @@ A hand written token class must comply to the following constraints:
       in the token's namespace which copies the content of token ``Other`` to the
       content of token ``me``.
 
-    * If a text accumulator is to be used, i.e. ``QUEX_OPTION_STRING_ACCUMULATOR`` is 
-      defined, then there must be a function 
+    * If a text accumulator is to be used is defined, then there must be a function 
     
       .. cfunction:: bool QUEX_NAME_TOKEN(take_text)(QUEX_TYPE_TOKEN*     me, 
                                                      QUEX_TYPE_ANALYZER*  analyzer, 
@@ -936,13 +935,13 @@ A hand written token class must comply to the following constraints:
       .. code-block:: cpp
 
          #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-         #       ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+         #       ifdef QUEX_OPTION_COUNTER_LINE
                 public:
                     size_t  _line_n;
                     size_t  line_number() const                 { return _line_n; }
                     void    set_line_number(const size_t Value) { _line_n = Value; }
          #       endif
-         #       ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+         #       ifdef  QUEX_OPTION_COUNTER_COLUMN
                 public:
                     size_t  _column_n;
                     size_t  column_number() const                 { return _column_n; }

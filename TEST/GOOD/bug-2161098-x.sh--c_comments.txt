@@ -1,6 +1,6 @@
 quex -i token.qx nested-c_comments.qx     -o Simple --debug-exception
 g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        -o lexer Simple*.cpp ../lexer-simply.cpp \
-	-DPRINT_LINE_COLUMN -DQUEX_OPTION_LINE_NUMBER_COUNTING -DQUEX_OPTION_COLUMN_NUMBER_COUNTING  -DQUEX_SETTING_BUFFER_SIZE=4
+	-DPRINT_LINE_COLUMN -DQUEX_OPTION_COUNTER_LINE -DQUEX_OPTION_COUNTER_COLUMN  -DQUEX_SETTING_BUFFER_SIZE=4
 ## An Assert-Abortion might be an intended element of the experiment.
 (1, 1)  	1 ''
 (1, 6)  	6 ''

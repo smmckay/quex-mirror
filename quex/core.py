@@ -1,21 +1,21 @@
-from   quex.blackboard                          import setup as Setup, \
-                                                       Lng
-import quex.output.languages.cpp.source_package           as     source_package
+import quex.output.languages.cpp.source_package          as     source_package
 #
-import quex.input.files.core                    as     quex_file_parser
+import quex.input.files.core                             as     quex_file_parser
+#                                                        
+from   quex.engine.misc.tools                            import flatten_list_of_lists
+from   quex.engine.misc.file_operations                  import write_safely_and_close
 #
-from   quex.engine.misc.tools                   import flatten_list_of_lists
-from   quex.engine.misc.file_operations         import write_safely_and_close
-#
-import quex.output.core.configuration                     as configuration 
-import quex.output.languages.cpp.core                     as cpp_generator
-import quex.output.languages.cpp.token_class              as token_class
-import quex.output.languages.cpp.analyzer_class           as analyzer_class
-import quex.output.languages.cpp.mode_classes             as mode_classes
-import quex.output.languages.cpp.codec_converter_helper   as codec_converter_helper 
-import quex.output.languages.graphviz.core                as grapviz_generator
+import quex.output.core.configuration                    as     configuration 
+import quex.output.core.engine                           as     engine_generator
+import quex.output.core.analyzer_class                   as     analyzer_class
+import quex.output.languages.cpp.token_class             as     token_class
+import quex.output.languages.cpp.mode_classes            as     mode_classes
+import quex.output.languages.cpp.codec_converter_helper  as     codec_converter_helper 
+import quex.output.languages.graphviz.core               as     grapviz_generator
 
-import quex.blackboard                          as blackboard
+import quex.blackboard as     blackboard
+from   quex.blackboard import setup as Setup, \
+                              Lng
 
 from   operator import attrgetter
 
@@ -68,11 +68,11 @@ def analyzer_functions_get(ModeDB):
 
     def code_for_mode(mode):
         if mode.run_time_counter_db is not None:
-            txt = cpp_generator.do_run_time_counter(mode) 
+            txt = engine_generator.do_run_time_counter(mode) 
         else:
             txt = []
 
-        txt.extend(cpp_generator.do(mode, mode_name_list))
+        txt.extend(engine_generator.do(mode, mode_name_list))
         return txt
 
     code = flatten_list_of_lists( 
@@ -84,7 +84,7 @@ def analyzer_functions_get(ModeDB):
     )
 
     # generate frame for analyser code
-    return cpp_generator.frame_this("".join(code))
+    return engine_generator.frame_this("".join(code))
 
 def do_plot():
     mode_db = quex_file_parser.do(Setup.input_mode_files)

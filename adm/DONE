@@ -141,8 +141,8 @@ ENTRY_INTO_MACHINE:
     this allows switches to be defined on the compiler line
     and enable at the same time default values
 
-    #if  ! defined(QUEX_OPTION__BLAH_OFF) && ! defined(QUEX_OPTION__BLAH_ON)
-    #    define QUEX_OPTION__BLAH  ON
+    #if  ! defined(QUEX_OPTION __BLAH_OFF) && ! defined(QUEX_OPTION __BLAH_ON)
+    #    define QUEX_OPTION __BLAH  ON
     #endif
 
    straighten out the QUEX_OPTION definitions for virtual functions.

@@ -4,7 +4,7 @@ from   quex.engine.misc.string_handling import blue_print
 from   quex.blackboard  import setup as Setup, Lng
 import quex.blackboard  as     blackboard
 from   quex.constants   import E_IncidenceIDs
-from   quex.DEFINITIONS import QUEX_PATH, QUEX_VERSION
+from   quex.DEFINITIONS import QUEX_VERSION
 
 import time
 
@@ -37,10 +37,10 @@ def do(Mode_PrepPrepDB):
     else:
         analyzer_derived_class_name = Setup.analyzer_class_name
 
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_COLUMN_NUMBER_COUNTING",        Setup.count_column_number_f)        
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_COLUMN",        Setup.count_column_number_f)        
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COMPUTED_GOTOS",                False)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_INCLUDE_STACK",                 Setup.include_stack_support_f)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_LINE_NUMBER_COUNTING",          Setup.count_line_number_f)      
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_LINE",          Setup.count_line_number_f)      
     txt = Lng.SWITCH(txt, "QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK", Setup.mode_transition_check_f)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT",      token_repetition_support_txt) 
     txt = Lng.SWITCH(txt, "QUEX_OPTION_INDENTATION_TRIGGER",           IndentationSupportF)     

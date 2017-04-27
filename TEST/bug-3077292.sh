@@ -8,7 +8,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i simple.qx --language C --debug-exception
-gcc -c Lexer.c -I$QUEX_PATH -DQUEX_OPTION_DEBUG_SHOW -DQUEX_OPTION_LINE_NUMBER_COUNTING -DQUEX_OPTION_COLUMN_NUMBER_COUNTING >& tmp.txt
+gcc -c Lexer.c -I$QUEX_PATH -DQUEX_OPTION_DEBUG_SHOW -DQUEX_OPTION_COUNTER_LINE -DQUEX_OPTION_COUNTER_COLUMN >& tmp.txt
 cat tmp.txt
 
 echo "Confirm lexer has been created"

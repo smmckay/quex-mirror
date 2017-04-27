@@ -102,7 +102,7 @@ def create_common_declarations(Language,
     #    QuexBufferFallbackN = max(0, len(TestStr) - 3) 
     txt = ""
     if ShowBufferLoadsF:
-        txt += "#define __QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS\n" \
+        txt += "#define QUEX_OPTION_DEBUG_SHOW_LOADS\n" \
                "#define __QUEX_OPTION_UNIT_TEST\n"                   
 
     # Parameterize the common declarations
@@ -226,7 +226,6 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED
 #define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
 #define QUEX_OPTION_INCLUDE_STACK_DISABLED
-#define QUEX_OPTION_STRING_ACCUMULATOR_DISABLED
 #define QUEX_SETTING_BUFFER_MIN_FALLBACK_N     ((size_t)$$BUFFER_FALLBACK_N$$)
 #define QUEX_SETTING_BUFFER_LIMIT_CODE         ((QUEX_TYPE_LEXATOM)$$BUFFER_LIMIT_CODE$$)
 

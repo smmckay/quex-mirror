@@ -23,7 +23,6 @@ CC := $(CC) -fPIC $(NDEBUG_F) \
 	 -DTEST_EPILOG='printf("Buffer Size = %i\n", QUEX_SETTING_BUFFER_SIZE);'
 	 # -D__QUEX_OPTION_UNIT_TEST \
      # -DQUEX_OPTION_DEBUG_SHOW \
-     # -D__QUEX_OPTION_UNIT_TEST_QUEX_BUFFER_LOADS \
 
 LD = $(LDC)
 

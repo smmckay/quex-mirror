@@ -64,12 +64,12 @@ final_report(double      TimePerRun,              double      RefTimePerRun,
     printf("   file_size    = {%i},\n", FileSize);
     printf("   char_size    = {%i},\n", (int)CHARACTER_SIZE);
     printf("   buffer_size  = {%i},\n", (int)QUEX_SETTING_BUFFER_SIZE);
-#       ifdef QUEX_OPTION_LINE_NUMBER_COUNTING
+#       ifdef QUEX_OPTION_COUNTER_LINE
     printf("   line_count   = {true},\n");
 #       else
     printf("   line_count   = {false},\n");
 #       endif
-#       ifdef QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#       ifdef QUEX_OPTION_COUNTER_COLUMN
     printf("   column_count = {true},\n");
 #       else
     printf("   column_count = {false},\n");

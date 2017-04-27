@@ -24,11 +24,11 @@ QUEX_NAMESPACE_MAIN_OPEN
 #   endif
 
     typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
-#       ifdef  QUEX_OPTION_LINE_NUMBER_COUNTING
+#       ifdef  QUEX_OPTION_COUNTER_LINE
         size_t  _line_number_at_begin;    /* line where current pattern starts   */
         size_t  _line_number_at_end;      /* line after current pattern          */
 #       endif
-#       ifdef  QUEX_OPTION_COLUMN_NUMBER_COUNTING
+#       ifdef  QUEX_OPTION_COUNTER_COLUMN
         size_t  _column_number_at_begin;  /* column where current pattern starts */
         size_t  _column_number_at_end;    /* column after current pattern        */
 #       endif
