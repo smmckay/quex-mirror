@@ -1,32 +1,55 @@
 
 (*) 4 Intervals
 
-    [0] at 00000000: Codec Interval [100000,100010)
-    [1] at 00000080: Codec Interval [200000,200010)
-    [2] at 00000800: Codec Interval [300000,300010)
-    [3] at 00010000: Codec Interval [400000,400010)
+    [1] at 00000000: Codec Interval [100000,100010)
+    [2] at 00000080: Codec Interval [200000,200010)
+    [3] at 00000800: Codec Interval [300000,300010)
+    [4] at 00010000: Codec Interval [400000,400010)
 
-    if( input < 0x300000 ) {
-        if( input < 0x200000 ) {
-            unicode = (uint32_t)input - (uint32_t)0x100000;
-            goto one_byte;
-        } else {
-        
-            unicode = (uint32_t)input - (uint32_t)0x1FFF80;
-            goto two_bytes;
-        
-        }
-    } else {
-    
-        if( input < 0x400000 ) {
-            unicode = (uint32_t)input - (uint32_t)0x2FF800;
-            goto three_bytes;
-        } else {
-        
-            unicode = (uint32_t)input - (uint32_t)0x3F0000;
-            goto four_bytes;
-        
-        }
-    
-    }
+switch( input ) {
 
+case 0x100000: case 0x100001: case 0x100002: case 0x100003: case 0x100004: case 0x100005: case 0x100006: case 0x100007: 
+
+case 0x100008: case 0x100009: case 0x10000A: case 0x10000B: case 0x10000C: case 0x10000D: case 0x10000E: case 0x10000F: 
+offset = (int32_t)(-1048576);
+ goto code_unit_n_1;
+
+case 0x200000: case 0x200001: case 0x200002: case 0x200003: case 0x200004: case 0x200005: case 0x200006: case 0x200007: 
+
+case 0x200008: case 0x200009: case 0x20000A: case 0x20000B: case 0x20000C: case 0x20000D: case 0x20000E: case 0x20000F: 
+offset = (int32_t)(-2097024);
+ goto code_unit_n_2;
+
+case 0x300000: case 0x300001: case 0x300002: case 0x300003: case 0x300004: case 0x300005: case 0x300006: case 0x300007: 
+
+case 0x300008: case 0x300009: case 0x30000A: case 0x30000B: case 0x30000C: case 0x30000D: case 0x30000E: case 0x30000F: 
+offset = (int32_t)(-3143680);
+ goto code_unit_n_3;
+
+default: offset = (int32_t)(-4128768);
+ goto code_unit_n_4;
+
+}
+
+code_unit_n_1:
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(unicode);
+    __QUEX_PURE_RETURN;
+code_unit_n_2:
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xC0 | (unicode >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;
+code_unit_n_3:
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xE0 | (unicode >> 12));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;
+code_unit_n_4:
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xF0 | (unicode >> 18));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0x3FFFF) >> 12));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;

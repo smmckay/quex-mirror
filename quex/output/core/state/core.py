@@ -14,7 +14,9 @@ def do(code, TheState, TheAnalyzer):
     txt, post_txt = entry.do(TheState)
 
     # (*) Transition Map ______________________________________________________
-    tm = relate_to_TransitionCode(TheState.transition_map, TheState.entry.dial_db)
+    tm = relate_to_TransitionCode(TheState.transition_map, 
+                                  TheState.entry.dial_db)
+
     transition_block.do(txt, tm)
 
     # (*) Post-state entry to init state (if necessary)

@@ -1,56 +1,97 @@
 
 (*) Intervals over borders (all)
 
-    [3] at 00010001: Codec Interval [1,F0001)
-    [1] at 00000081: Codec Interval [10081,10800)
-    [2] at 00000800: Codec Interval [10800,10801)
-    [2] at 00000801: Codec Interval [20000,2F7FF)
-    [3] at 00010000: Codec Interval [2F7FF,2F800)
-    [0] at 00000000: Codec Interval [110000,110080)
-    [1] at 00000080: Codec Interval [110080,110081)
+    [4] at 00010001: Codec Interval [1,F0001)
+    [2] at 00000081: Codec Interval [10081,10800)
+    [3] at 00000800: Codec Interval [10800,10801)
+    [3] at 00000801: Codec Interval [20000,2F7FF)
+    [4] at 00010000: Codec Interval [2F7FF,2F800)
+    [1] at 00000000: Codec Interval [110000,110080)
+    [2] at 00000080: Codec Interval [110080,110081)
 
-    if( input < 0x020000 ) {
-        if( input < 0x010081 ) {
-            unicode = (uint32_t)input + (uint32_t)0x010000;
-            goto four_bytes;
-        } else {
-        
-            if( input < 0x010800 ) {
-                unicode = (uint32_t)input - (uint32_t)0x010000;
-                goto two_bytes;
-            } else {
-            
-                unicode = (uint32_t)input - (uint32_t)0x010000;
-                goto three_bytes;
-            
-            }
-        
-        }
-    } else {
-    
-        if( input < 0x110000 ) {
-            if( input < 0x02F7FF ) {
-                unicode = (uint32_t)input - (uint32_t)0x01F7FF;
-                goto three_bytes;
-            } else {
-            
-                unicode = (uint32_t)input - (uint32_t)0x01F7FF;
-                goto four_bytes;
-            
-            }
-        } else {
-        
-            if( input < 0x110080 ) {
-                unicode = (uint32_t)input - (uint32_t)0x110000;
-                goto one_byte;
-            } else {
-            
-                unicode = (uint32_t)input - (uint32_t)0x110000;
-                goto two_bytes;
-              
-            }
-           
-        }
-      
-    }
+if( input < 0x10801 ) {
 
+if     ( input < 0xF0001 )  offset = (int32_t)(65536);
+ goto code_unit_n_4;
+
+else if( input < 0x10800 )  offset = (int32_t)(-65536);
+ goto code_unit_n_2;
+
+else                        offset = (int32_t)(-65536);
+ goto code_unit_n_3;
+
+} else {
+
+switch( input ) {
+
+case 0x2F7FF: 
+offset = (int32_t)(-129023);
+ goto code_unit_n_4;
+
+case 0x110000: case 0x110001: case 0x110002: case 0x110003: case 0x110004: case 0x110005: case 0x110006: case 0x110007: 
+
+case 0x110008: case 0x110009: case 0x11000A: case 0x11000B: case 0x11000C: case 0x11000D: case 0x11000E: case 0x11000F: 
+
+case 0x110010: case 0x110011: case 0x110012: case 0x110013: case 0x110014: case 0x110015: case 0x110016: case 0x110017: 
+
+case 0x110018: case 0x110019: case 0x11001A: case 0x11001B: case 0x11001C: case 0x11001D: case 0x11001E: case 0x11001F: 
+
+case 0x110020: case 0x110021: case 0x110022: case 0x110023: case 0x110024: case 0x110025: case 0x110026: case 0x110027: 
+
+case 0x110028: case 0x110029: case 0x11002A: case 0x11002B: case 0x11002C: case 0x11002D: case 0x11002E: case 0x11002F: 
+
+case 0x110030: case 0x110031: case 0x110032: case 0x110033: case 0x110034: case 0x110035: case 0x110036: case 0x110037: 
+
+case 0x110038: case 0x110039: case 0x11003A: case 0x11003B: case 0x11003C: case 0x11003D: case 0x11003E: case 0x11003F: 
+
+case 0x110040: case 0x110041: case 0x110042: case 0x110043: case 0x110044: case 0x110045: case 0x110046: case 0x110047: 
+
+case 0x110048: case 0x110049: case 0x11004A: case 0x11004B: case 0x11004C: case 0x11004D: case 0x11004E: case 0x11004F: 
+
+case 0x110050: case 0x110051: case 0x110052: case 0x110053: case 0x110054: case 0x110055: case 0x110056: case 0x110057: 
+
+case 0x110058: case 0x110059: case 0x11005A: case 0x11005B: case 0x11005C: case 0x11005D: case 0x11005E: case 0x11005F: 
+
+case 0x110060: case 0x110061: case 0x110062: case 0x110063: case 0x110064: case 0x110065: case 0x110066: case 0x110067: 
+
+case 0x110068: case 0x110069: case 0x11006A: case 0x11006B: case 0x11006C: case 0x11006D: case 0x11006E: case 0x11006F: 
+
+case 0x110070: case 0x110071: case 0x110072: case 0x110073: case 0x110074: case 0x110075: case 0x110076: case 0x110077: 
+
+case 0x110078: case 0x110079: case 0x11007A: case 0x11007B: case 0x11007C: case 0x11007D: case 0x11007E: case 0x11007F: 
+offset = (int32_t)(-1114112);
+ goto code_unit_n_1;
+
+case 0x110080: 
+offset = (int32_t)(-1114112);
+ goto code_unit_n_2;
+
+default: offset = (int32_t)(-129023);
+ goto code_unit_n_3;
+
+}
+
+}
+
+code_unit_n_1:
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(unicode);
+    __QUEX_PURE_RETURN;
+code_unit_n_2:
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xC0 | (unicode >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;
+code_unit_n_3:
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xE0 | (unicode >> 12));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;
+code_unit_n_4:
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xF0 | (unicode >> 18));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0x3FFFF) >> 12));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;

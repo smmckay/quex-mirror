@@ -28,8 +28,11 @@ def test(CodecName):
     os.system(compile_str)
 
     os.system("./converter-tester")
-    #os.remove("./converter-tester.h")
-    #os.remove("./converter-tester")
+    if True:
+        os.remove("./converter-tester.h")
+        os.remove("./converter-tester")
+    else:
+        print "#TODO delete temporary files"
 
 quex.blackboard.setup.language_db = languages.db["C"]()
 quex.blackboard.setup.output_buffer_codec_header = "converter-tester.h"

@@ -42,8 +42,10 @@ QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF($$CODEC$$, utf32)(const QUEX_TYPE_LEXATOM** input_pp,
                                           uint32_t**                output_pp)
 {
-    uint16_t             unicode = (uint32_t)0;
-    QUEX_TYPE_LEXATOM  input   = *(*input_pp)++;
+    uint32_t          unicode;
+    int32_t           offset;
+    QUEX_TYPE_LEXATOM input = *(*input_pp)++;
+
 $$BODY_UTF32$$
 }
 
@@ -51,10 +53,10 @@ QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF($$CODEC$$, utf16)(const QUEX_TYPE_LEXATOM** input_pp,
                                           uint16_t**                output_pp)
 {
-    uint32_t   unicode   = (uint32_t)0;
-    uint32_t*  unicode_p = &unicode;
+    uint32_t          unicode;
+    int32_t           offset;
+    QUEX_TYPE_LEXATOM input = *(*input_pp)++;
 
-    QUEX_CONVERTER_CHAR($$CODEC$$, utf32)(input_pp, &unicode_p);
 $$BODY_UTF16$$
 }
 
@@ -62,12 +64,11 @@ QUEX_INLINE void
 QUEX_CONVERTER_CHAR_DEF($$CODEC$$, utf8)(const QUEX_TYPE_LEXATOM**  input_pp, 
                                          uint8_t**                  output_pp)
 {
-    uint32_t          unicode = (uint32_t)-1;
-    QUEX_TYPE_LEXATOM input   = *(*input_pp)++;
+    uint32_t          unicode;
+    int32_t           offset;
+    QUEX_TYPE_LEXATOM input = *(*input_pp)++;
     
 $$BODY_UTF8$$
-
-$$EPILOG$$
 }
 
 #define __QUEX_FROM           $$CODEC$$

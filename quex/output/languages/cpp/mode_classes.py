@@ -105,9 +105,7 @@ def get_implementation_of_mode_functions(mode, Modes):
     'quex::lexer' is the lexical analysis class.
     """
     # (*) on enter 
-    on_entry_str  = "#   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n"
-    on_entry_str += "    QUEX_NAME(%s).has_entry_from(FromMode);\n" % mode.name
-    on_entry_str += "#   endif\n"
+    on_entry_str  = Lng.CALL_MODE_HAS_ENTRY_FROM(mode.name)
 
     code_fragment = mode.incidence_db.get(E_IncidenceIDs.MODE_ENTRY)
     if code_fragment is not None:
@@ -115,9 +113,8 @@ def get_implementation_of_mode_functions(mode, Modes):
         if on_entry_str[-1] == "\n": on_entry_str = on_entry_str[:-1]
 
     # (*) on exit
-    on_exit_str  = "#   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n"
-    on_exit_str += "    QUEX_NAME(%s).has_exit_to(ToMode);\n" % mode.name
-    on_exit_str += "#   endif\n"
+    on_exit_str   = Lng.CALL_MODE_HAS_EXIT_TO(mode.name)
+
     code_fragment = mode.incidence_db.get(E_IncidenceIDs.MODE_EXIT)
     if code_fragment is not None:
         on_exit_str += Lng.SOURCE_REFERENCED(code_fragment)
@@ -165,7 +162,7 @@ def get_IsOneOfThoseCode(ThoseModes, Indentation="    ",
                          CheckBaseModeF = False,
                          ConsiderDerivedClassesF=False):
     txt = Indentation
-    if len(ThoseModes) == 0:
+    if not ThoseModes:
         return Indentation + "return false;"
     
 
@@ -446,7 +443,8 @@ def initialization(mode):
 
     return txt
 
-mode_setup_str = """QUEX_NAME(Mode) QUEX_NAME($$MN$$) = {
+mode_setup_str = \
+"""QUEX_NAME(Mode) QUEX_NAME($$MN$$) = {
     /* id                */ QUEX_NAME(ModeID_$$MN$$),
     /* name              */ "$$MN$$",
 #   if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \\

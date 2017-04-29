@@ -1,14 +1,19 @@
 import quex.output.core.state.transition_map.solution as     solution
 from   quex.blackboard                                import setup as Setup
 
-def do(txt, TM):
-    """Implement the given transition map 'TM'. That is for a given 'input' 
-    determine in what interval it lies. Depending on that interval execute
-    associated code. 
+def do(txt, TM, AssertBorderF=False):
+    """Generate code for transition map 'TM'.
 
-                TM = list of (interval, effect)
+                    TM = list of pairs (interval, string)
 
-    In particular, the 'effect' describes the transition to another state.
+    where 'string' is the code to be executed when a value falls inside the
+    given 'interval'. The variable that carries the value which is compared
+    agains the intervals is (implicitly) given as 
+
+                                    'input'
+
+    For state machines, the 'string' must be the code to transit to another
+    state.
     
     RETURNS: Code that implements the map.
     """
@@ -20,27 +25,11 @@ def do(txt, TM):
     # cut. As a consequence whole branches of the the state machine may be 
     # unreachable! Such things must have been clarified before!
     #__________________________________________________________________________
-    _assert_consistency(TM)
+    if AssertBorderF: _assert_consistency(TM)
 
     structure = solution.do(TM)
-    # (*) Bisection until other solution is more suitable.
-    #     (This may include 'no bisectioning')
-    _implement(txt, structure)
 
-def _implement(txt, structure):
-    """Creates code for state transitions from this state. This function is very
-       similar to the function creating code for a 'NumberSet' condition 
-       (see 'interval_handling').
-    
-       Writes code that does a mapping according to 'binary search' by
-       means of if-else-blocks.
-    """
-    global Lng
-
-    # Potentially Recursive
-    #txt.append(E_TextOp.INDENT)
     txt.extend(structure.implement())
-    #txt.append(E_TextOp.DEDENT)
 
 def _assert_consistency(TM):
     """Check consistency of the given transition map.

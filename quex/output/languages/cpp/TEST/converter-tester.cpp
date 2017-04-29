@@ -10,13 +10,13 @@ main(int argc, char** argv)
 {
     using namespace quex;
 
-    const size_t               Start      = 0x0;
-    const size_t               CharacterN = 255;
+    const size_t             Start      = 0x0;
+    const size_t             CharacterN = 255;
     QUEX_TYPE_LEXATOM        source[256];
     const QUEX_TYPE_LEXATOM* source_p = source;
-    uint8_t                    drain[4096];
-    uint8_t*                   drain_p = drain;
-    uint8_t                    drain_ref[4096];
+    uint8_t                  drain[4096];
+    uint8_t*                 drain_p = drain;
+    uint8_t                  drain_ref[4096];
 
     /* Fill source buffer with all available characters */
     for(int i=Start; i < Start + CharacterN; ++i) source[i-Start] = i;
@@ -36,11 +36,13 @@ main(int argc, char** argv)
     printf("\n");
     
 #   if 0
-    FILE* fhi = fopen("for-reference.txt", "wb");
+    /* Source/Drain write to files for debugging. */
+    printf("#TODO remove #if 1\n");
+    FILE* fhi = fopen("tmp-source.txt", "wb");
     fwrite(source, 1, CharacterN, fhi);
     fclose(fhi);
   
-    FILE* fh_out  = fopen("tmp.txt", "wb");
+    FILE* fh_out  = fopen("tmp.drain.txt", "wb");
     fwrite(drain, 1, Size, fh_out);
     fclose(fh_out);
 #   endif

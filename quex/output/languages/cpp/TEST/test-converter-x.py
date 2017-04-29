@@ -22,27 +22,27 @@ def test(Msg, ConversionInfoList):
         print "    " + repr(info)
         conversion_info.append(info)
     print
-    dummy, txt = codec_converter_helper.ConverterWriterUTF8().do(conversion_info, ProvidedConversionInfoF=True)
+    txt = codec_converter_helper.ConverterWriterUTF8().do(conversion_info, ProvidedConversionInfoF=True)
     print txt
 
 
 if "1" in sys.argv:
     #             RangeIndex  CI_Begin_in_Unicode  CI_Begin   CI_Size
-    ConvInfo = [ [0,          0x00000,             0x1000000, 20]] 
+    ConvInfo = [ [1,          0x00000,             0x1000000, 20]] 
     test("Single Interval A", ConvInfo)
-    ConvInfo = [ [1,          0x00080,             0x1000000, 20]] 
+    ConvInfo = [ [2,          0x00080,             0x1000000, 20]] 
     test("Single Interval B", ConvInfo)
-    ConvInfo = [ [2,          0x00800,             0x1000000, 20]] 
+    ConvInfo = [ [3,          0x00800,             0x1000000, 20]] 
     test("Single Interval C", ConvInfo)
-    ConvInfo = [ [3,          0x10000,             0x1000000, 20]] 
+    ConvInfo = [ [4,          0x10000,             0x1000000, 20]] 
     test("Single Interval E", ConvInfo)
 
 elif "2" in sys.argv:
     #             RangeIndex  CI_Begin_in_Unicode  CI_Begin   CI_Size
-    ConvInfo = [ [0,          0,                   0x100000,  0x10], 
-                 [1,          0x80,                0x200000,  0x10],
-                 [2,          0x800,               0x300000,  0x10],
-                 [3,          0x10000,             0x400000,  0x10] ]
+    ConvInfo = [ [1,          0,                   0x100000,  0x10], 
+                 [2,          0x80,                0x200000,  0x10],
+                 [3,          0x800,               0x300000,  0x10],
+                 [4,          0x10000,             0x400000,  0x10] ]
     test("4 Intervals", ConvInfo)
 
 elif "3" in sys.argv:
@@ -51,7 +51,7 @@ elif "3" in sys.argv:
                   [0x801,   0x10001,  0x020000], 
                   [0x10001, 0x100001, 0x000001] ]
     ConvInfo = codec_converter_helper.ConverterWriterUTF8().get_conversion_table(TrafoInfo)
-    ConvInfo = map(lambda x: [x.byte_format_range_index, 
+    ConvInfo = map(lambda x: [x.code_unit_n, 
                               x.codec_interval_begin_unicode, 
                               x.codec_interval_begin,
                               x.codec_interval_size], ConvInfo)

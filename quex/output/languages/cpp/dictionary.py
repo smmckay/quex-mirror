@@ -90,7 +90,7 @@ class Language(dict):
         return self.SAFE_IDENTIFIER(Filename).upper()
 
     def INCREMENT_ITERATOR_THEN_ASSIGN(self, Iterator, Value):
-        return "*(%s)++ = %s;\n" % (Iterator, Value)
+        return "*(%s)++ = %s;" % (Iterator, Value)
 
     def OP(self, Big, Op, Small):
         return "%s %s %s" % (Big, Op, Small)
@@ -614,6 +614,19 @@ class Language(dict):
     def RETURN_THIS(self, Value):
         return "return %s;" % Value
 
+    def CALL_MODE_HAS_ENTRY_FROM(self, ModeName):
+        return   "#   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n" \
+               + "    QUEX_NAME(%s).has_entry_from(FromMode);\n" % ModeName \
+               + "#   endif\n"
+
+    def CALL_MODE_HAS_EXIT_TO(self, ModeName):
+        return   "#   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n" \
+               + "    QUEX_NAME(%s).has_exit_to(ToMode);\n" % ModeName \
+               + "#   endif\n"
+
+    def LABEL_PLAIN(self, Label):
+        return "%s:" % Label.strip()
+
     @typed(DoorId=DoorID)
     def LABEL(self, DoorId):
         return "%s:" % self.LABEL_STR_BY_ADR(DoorId.related_address)
@@ -633,6 +646,9 @@ class Language(dict):
 
     def GOTO_BY_VARIABLE(self, VariableName):
         return "QUEX_GOTO_STATE(%s);" % VariableName 
+
+    def GOTO_STRING(self, LabelStr):
+        return "goto %s;" % LabelStr
 
     @typed(dial_db=DialDB)
     def GOTO_ADDRESS(self, Address, dial_db):
@@ -941,7 +957,8 @@ class Language(dict):
 
         return self._branch_table_core(Selector, CaseList, case_string)
 
-    def BRANCH_TABLE_ON_INTERVALS(self, Selector, CaseList, CaseFormat="hex", DefaultConsequence=None):
+    def BRANCH_TABLE_ON_INTERVALS(self, Selector, CaseList, CaseFormat="hex", 
+                                  DefaultConsequence=None):
         case_str = self.CASE_STR(CaseFormat)
 
         def case_list(From, To):
@@ -975,14 +992,20 @@ class Language(dict):
             txt.append("%s\n" % get_content(C))
             return txt
 
-        return self._branch_table_core(Selector, CaseList, case_interval, DefaultConsequence)
+        return self._branch_table_core(Selector, CaseList, case_interval, 
+                                       DefaultConsequence)
 
     def _branch_table_core(self, Selector, CaseList, get_case, DefaultConsequence=None):
+
         def get_content(C):
             if type(C) == list: return "".join(C)
             else:               return C
 
         def iterable(CaseList, DefaultConsequence):
+            if not CaseList:
+                yield None, DefaultConsequence
+                return
+
             item, effect = CaseList[0]
             for item_ahead, effect_ahead in CaseList[1:]:
                 if effect_ahead == effect: 

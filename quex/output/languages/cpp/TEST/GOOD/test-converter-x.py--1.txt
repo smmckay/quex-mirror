@@ -1,32 +1,46 @@
 
 (*) Single Interval A
 
-    [0] at 00000000: Codec Interval [1000000,1000014)
+    [1] at 00000000: Codec Interval [1000000,1000014)
 
-    unicode = (uint32_t)input - (uint32_t)0x1000000;
-    goto one_byte;
+    offset = (int32_t)(-16777216);
 
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(unicode);
+    __QUEX_PURE_RETURN;
 
 (*) Single Interval B
 
-    [1] at 00000080: Codec Interval [1000000,1000014)
+    [2] at 00000080: Codec Interval [1000000,1000014)
 
-    unicode = (uint32_t)input - (uint32_t)0xFFFF80;
-    goto two_bytes;
+    offset = (int32_t)(-16777088);
 
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xC0 | (unicode >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;
 
 (*) Single Interval C
 
-    [2] at 00000800: Codec Interval [1000000,1000014)
+    [3] at 00000800: Codec Interval [1000000,1000014)
 
-    unicode = (uint32_t)input - (uint32_t)0xFFF800;
-    goto three_bytes;
+    offset = (int32_t)(-16775168);
 
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xE0 | (unicode >> 12));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;
 
 (*) Single Interval E
 
-    [3] at 00010000: Codec Interval [1000000,1000014)
+    [4] at 00010000: Codec Interval [1000000,1000014)
 
-    unicode = (uint32_t)input - (uint32_t)0xFF0000;
-    goto four_bytes;
+    offset = (int32_t)(-16711680);
 
+    unicode = (uint32_t)(input + offset);
+    *(*output_pp)++ = (uint8_t)(0xF0 | (unicode >> 18));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0x3FFFF) >> 12));
+    *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
+    *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
+    __QUEX_PURE_RETURN;
