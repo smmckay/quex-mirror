@@ -73,7 +73,7 @@ class ConverterWriter:
         # Make sure that the conversion table is sorted
         conversion_table.sort(lambda a, b: cmp(a.codec_interval_begin, b.codec_interval_begin))
 
-        # Implement a binary bracketing of conversion domains
+        # Implement a bisectioning of conversion domains
         def __bracket(conversion_list, CallerRangeIndex):
             txt = ""
             L   = len(conversion_list)
@@ -83,7 +83,8 @@ class ConverterWriter:
                 if CallerRangeIndex != conversion_list[0].byte_format_range_index:
                     txt += self.get_byte_formatter(conversion_list[0].byte_format_range_index)
             else:
-                # Determine whether all sub-ranges belong to the same utf8-range
+                # Determine whether all sub-ranges belong to the same codec-range
+                # => same number of code units for one character
                 range_index = self.same_byte_format_range(conversion_list)
 
                 # Bracket interval in the middle
@@ -95,29 +96,31 @@ class ConverterWriter:
                     # same byte formatting, then there is no need to bracket further:
                     if not __rely_on_ucs4_conversion_f:
                         txt += __bracket(conversion_list[:mid_index], range_index)
-                        txt += Lng.ELSE + "\n"   
+                        txt += "%s\n" % Lng.ELSE
                         txt += __bracket(conversion_list[mid_index:], range_index)
                         txt += Lng.END_IF() 
                     if CallerRangeIndex != range_index:
                         txt += self.get_byte_formatter(range_index)
                 else:
                     txt += __bracket(conversion_list[:mid_index], range_index)
-                    txt += Lng.ELSE + "\n"   
+                    txt += "%s\n" % Lng.ELSE
                     txt += __bracket(conversion_list[mid_index:], range_index)
                     txt += Lng.END_IF() 
 
-            if len(txt) != 0 and txt[-1] == "\n": txt = txt[:-1]
+            if txt and txt[-1] == "\n": txt = txt[:-1]
             return "    " + txt.replace("\n", "\n    ") + "\n"
 
         range_index = self.same_byte_format_range(conversion_table)
-        txt         = __bracket(conversion_table, range_index)
         if range_index != -1: 
             # All codec ranges belong to the same byte format range.
             formatter_txt = "    " + self.get_byte_formatter(range_index)
             if __rely_on_ucs4_conversion_f:
                 txt = formatter_txt
             else:
+                txt =  __bracket(conversion_table, range_index)
                 txt += formatter_txt[:-1].replace("\n", "\n    ") + "\n"
+        else:
+            txt = __bracket(conversion_table, range_index)
 
         return self.get_epilog(), txt
 
@@ -126,14 +129,17 @@ class ConverterWriter:
 
         # Conversion to Unicode
         offset = Info.codec_interval_begin_unicode - Info.codec_interval_begin
-        if offset > 0:   return "unicode = (uint32_t)input + (uint32_t)0x%06X;\n" % offset
-        elif offset < 0: return "unicode = (uint32_t)input - (uint32_t)0x%06X;\n" % (-offset)
-        else:            return "unicode = (uint32_t)input;\n"
-               
+        if   offset > 0: rvalue = Lng.OP("(uint32_t)input", "+", "(uint32_t)0x%06X" % offset)
+        elif offset < 0: rvalue = Lng.OP("(uint32_t)input", "-", "(uint32_t)0x%06X" % (-offset))
+        else:            rvalue = "(uint32_t)input"
+
+        return "%s\n" % Lng.ASSIGN("unicode", rvalue)
 
     def same_byte_format_range(self, ConvInfoList):
         """RETURNS: >= 0   the common byte format range index.
                     == -1  not all infos belong to the same byte format range.
+
+        'range_index' <=> number of bytes that constitute a character.
         """
         range_i = ConvInfoList[0].byte_format_range_index
         for info in ConvInfoList[1:]:
@@ -204,38 +210,55 @@ class ConverterWriterUTF8(ConverterWriter):
         self.range_index_set = set([])
 
     def get_epilog(self):
-        txt = ""
+        txt = []
         if 0 in self.range_index_set:
-            txt += "one_byte:\n"
-            txt += "*((*output_pp)++) = (uint8_t)unicode;\n"
-            txt += "return;\n"
+            txt.extend([
+                "one_byte:",
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", "(uint8_t)unicode"),
+                Lng.PURE_RETURN,
+            ])
     
         if 1 in self.range_index_set:
-            txt += "two_bytes:\n"
-            txt += "*((*output_pp)++) = (uint8_t)(0xC0 | (unicode >> 6)); \n"
-            txt += "*((*output_pp)++) = (uint8_t)(0x80 | (unicode & (uint32_t)0x3f));\n"
-            txt += "return;\n"
+            txt.extend([
+                "two_bytes:",
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", 
+                    "(uint8_t)(%s)" % Lng.OP("0xC0", "|", "(unicode>>6)")),
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", 
+                    "(uint8_t)(%s)" % Lng.OP("0x80", "|", "(unicode & (uint32_t)0x3f)")),
+                Lng.PURE_RETURN,
+            ])
 
         if 2 in self.range_index_set:
-            txt += "three_bytes:\n"
-            txt += "*((*output_pp)++) = (uint8_t)(0xE0 | unicode           >> 12);\n"
-            txt += "*((*output_pp)++) = (uint8_t)(0x80 | (unicode & (uint32_t)0xFFF) >> 6);\n"
-            txt += "*((*output_pp)++) = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));\n"
-            txt += "return;\n"
+            txt.extend([
+                "three_bytes:",
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", 
+                    "(uint8_t)(%s)" % Lng.OP("0xE0", "|", "unicode >> 12")),
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", 
+                    "(uint8_t)(%s)" % Lng.OP("0x80", "|", "(unicode & (uint32_t)0xFFF) >> 6")),
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", 
+                    "(uint8_t)(%s)" % Lng.OP("0x80", "|", "(unicode & (uint32_t)0x3F)")),
+                Lng.PURE_RETURN,
+            ])
 
         if 3 in self.range_index_set:
-            txt += "four_bytes:\n"
-            txt += "/* Assume that only character appear, that are defined in unicode. */\n"
-            txt += "__quex_assert(unicode <= (uint32_t)0x1FFFFF);\n"
-            txt += "/* No surrogate pairs (They are reserved even in non-utf16).       */\n"
-            txt += "__quex_assert(! (unicode >= 0xd800 && unicode <= 0xdfff) );\n"
+            txt.extend([
+                "four_bytes:",
+                "/* Assume that only character appear, that are defined in unicode. */",
+                "__quex_assert(unicode <= (uint32_t)0x1FFFFF);",
+                "/* No surrogate pairs (They are reserved even in non-utf16).       */",
+                "__quex_assert(! (unicode >= 0xd800 && unicode <= 0xdfff) );",
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", 
+                    "(uint8_t)(%s)" % Lng.OP("0xF0", "|", "unicode >> 18")),
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp",
+                    "(uint8_t)(%s)" % Lng.OP("0x80", "|", "(unicode & (uint32_t)0x3FFFF) >> 12")),
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp",
+                    "(uint8_t)(%s)" % Lng.OP("0x80", "|", "(unicode & (uint32_t)0xFFF)   >> 6")),
+                Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp",
+                    "(uint8_t)(%s)" % Lng.OP("0x80", "|", "(unicode & (uint32_t)0x3F)")),
+                Lng.PURE_RETURN,
+            ])
 
-            txt += "*((*output_pp)++) = (uint8_t)(0xF0 | unicode >> 18);\n"
-            txt += "*((*output_pp)++) = (uint8_t)(0x80 | (unicode & (uint32_t)0x3FFFF) >> 12);\n"
-            txt += "*((*output_pp)++) = (uint8_t)(0x80 | (unicode & (uint32_t)0xFFF)   >> 6);\n"
-            txt += "*((*output_pp)++) = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));\n"
-
-        return txt
+        return "%s\n" % "\n".join(txt) 
 
     def get_byte_formatter(self, RangeIndex):
         assert RangeIndex >= 0 
@@ -268,12 +291,13 @@ class ConverterWriterUTF16(ConverterWriter):
         return ""
 
     def get_byte_formatter(self, RangeIndex):
-        return { 0: "*(*output_pp)++ = unicode;\n",
-                 1: "const uint16_t Offset_10bit_high = (uint16_t)((unicode - 0x10000) >> 10);\n"  + \
-                    "const uint16_t Offset_10bit_low  = (uint16_t)((unicode - 0x10000) & 0x3FF);\n" + \
-                    "*(*output_pp)++ = 0xD800 | offset_10bit_high;\n"
-                    "*(*output_pp)++ = 0xDC00 | offset_10bit_low;\n",
-                    }[RangeIndex]
+        return { 
+            0: "*(*output_pp)++ = unicode;\n",
+            1: "const uint16_t Offset_10bit_high = (uint16_t)((unicode - 0x10000) >> 10);\n"  + \
+               "const uint16_t Offset_10bit_low  = (uint16_t)((unicode - 0x10000) & 0x3FF);\n" + \
+               "*(*output_pp)++ = 0xD800 | offset_10bit_high;\n"
+               "*(*output_pp)++ = 0xDC00 | offset_10bit_low;\n",
+            }[RangeIndex]
 
     def get_byte_format_range_border_list(self):
         """UCS4 covers the whole range of unicode (extend 0x10FFFF to INTEGER_MAX to be nice)."""
@@ -288,7 +312,7 @@ class ConverterWriterUTF32(ConverterWriter):
         return ""
 
     def get_byte_formatter(self, RangeIndex):
-        return "*(*output_pp)++ = unicode;\n"
+        return Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", "unicode") 
 
     def get_byte_format_range_border_list(self):
         """UCS4 covers the whole range of unicode (extend 0x10FFFF to INTEGER_MAX to be nice)."""

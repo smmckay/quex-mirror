@@ -89,6 +89,12 @@ class Language(dict):
     def INCLUDE_GUARD(self, Filename):
         return self.SAFE_IDENTIFIER(Filename).upper()
 
+    def INCREMENT_ITERATOR_THEN_ASSIGN(self, Iterator, Value):
+        return "*(%s)++ = %s;\n" % (Iterator, Value)
+
+    def OP(self, Big, Op, Small):
+        return "%s %s %s" % (Big, Op, Small)
+
     def SWITCH(self, txt, Name, SwitchF):
         if SwitchF: txt = txt.replace("$$SWITCH$$ %s" % Name, "#define    %s" % Name)
         else:       txt = txt.replace("$$SWITCH$$ %s" % Name, "/* #define %s */" % Name)

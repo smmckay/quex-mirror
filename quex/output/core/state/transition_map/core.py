@@ -1,5 +1,5 @@
-import quex.output.core.state.transition_map.solution            as     solution
-from   quex.blackboard                                                import setup as Setup
+import quex.output.core.state.transition_map.solution as     solution
+from   quex.blackboard                                import setup as Setup
 
 def do(txt, TM):
     """Implement the given transition map 'TM'. That is for a given 'input' 
