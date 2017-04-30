@@ -1,3 +1,24 @@
+"""PURPOSE: Converters: Lexemes towards encodings UTF8/UTF16/UTF32.
+
+During exical analysis matches delivers lexemes in the encoding of the buffer.
+The functions develops converters of those lexemes to standard encodings, so 
+that they can easily be reflected.
+
+Let 'Character' be a character in the buffer's encoding, 'Unicode' its 
+correspondance in UCS, and 'Code Sequence' be 'Unicode'-s representation
+in the target encoding (be it UTF8, UTF16, or UTF32). Then the process
+of conversion of a 'Character' to the target encoding can be described 
+by two steps
+
+        (1) Unicode = Character +/- offset.
+        (2) Code Sequence = f(Unicode)
+
+Where the range of 'Character' is split into contigous regions where 'offset'
+and the 'f(Unicode)' is the same. Thus, the character conversion is preceeded
+by a search of the range in which it belong.
+
+(C) 2006-2017 Frank-Rene Schaefer
+"""
 import os
 import sys
 sys.path.append(os.environ["QUEX_PATH"])
@@ -39,7 +60,7 @@ def _do(UnicodeTrafoInfo):
                ]
 
     """
-    codec_name = Lng.SAFE_IDENTIFIER(UnicodeTrafoInfo.name)
+    codec_name          = Lng.SAFE_IDENTIFIER(UnicodeTrafoInfo.name)
     utf8_function_body  = ConverterWriterUTF8().do(UnicodeTrafoInfo)
     utf16_function_body = ConverterWriterUTF16().do(UnicodeTrafoInfo)
     utf32_function_body = ConverterWriterUTF32().do(UnicodeTrafoInfo)
@@ -57,7 +78,7 @@ def _do(UnicodeTrafoInfo):
 
     # A separate declaration header is required
     template_h_txt = Lng.open_template(Lng.converter_helper_file())
-    txt_h = template_h_txt.replace("$$CODEC$$", codec_name)
+    txt_h          = template_h_txt.replace("$$CODEC$$", codec_name)
     return txt_h, txt_i
 
 class ConversionInfo:
