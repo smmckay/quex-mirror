@@ -1700,29 +1700,43 @@ quex/engine/misc/TEST                                                <no date>
                                                                                
 quex/engine/operations/TEST                                          <no date>
 -------------------------------------------------------------------------------
- * 
-        basic.py .....................................................[OK]
- * 
-        can_be_moved_to_tail.py ............................[NO GOOD FILE]
- * 
-        find_last_common.py ................................[NO GOOD FILE]
- * 
-        is_switchable.py .............................................[OK]
- * 
-        test-SharedTailDB.py ...............................[NO GOOD FILE]
- * 
-        test-shared_tail.py ................................[NO GOOD FILE]
  * Check that there are no trailing unused Ops
         no-unused-ops.py .............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] can_be_moved_to_tail.py
-    [FAIL] find_last_common.py
-    [FAIL] test-SharedTailDB.py
-    [FAIL] test-shared_tail.py
+ * SharedTailDB
+        test-SharedTailDB.py init ....................................[OK]
+                             pop_best ................................[OK]
+
+ * Command:
+
+    Basic
+        basic.py .....................................................[OK]
+
+ * Op:
+
+    is_switchable
+        is_switchable.py .............................................[OK]
+
+ * Op.shared_tail:
+
+    can_be_moved_to_tail
+        can_be_moved_to_tail.py no-exceptions ........................[OK]
+                                with-exceptions ......................[OK]
+    find_last_common
+        find_last_common.py 1-common .................................[OK]
+                            2-common .................................[OK]
+                            3-common .................................[OK]
+                            EqualOp ..................................[OK]
+                            no-common ................................[OK]
+                            start-indices ............................[OK]
+    find_last_common
+        test-shared_tail.py multiple .................................[OK]
+                            one-or-none ..............................[OK]
+                            two ......................................[OK]
+                            two-bad ..................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               State Machine Tests                              
@@ -2229,21 +2243,15 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ..................................[FAIL]
-                        Mix ........................................[FAIL]
-                        N-Character ................................[FAIL]
-                        N-String ...................................[FAIL]
-                        String .....................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] accumulator.exe _ Character
-                         \__ Mix
-                         \__ N-Character
-                         \__ N-String
-                         \__ String
+        accumulator.exe Character ....................................[OK]
+                        Mix ..........................................[OK]
+                        N-Character ..................................[OK]
+                        N-String .....................................[OK]
+                        String .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2885,22 +2893,39 @@ quex/engine/analyzer/mega_state/template/TEST                        <no date>
                                                                                
 quex/output/core/state/transition_map/TEST                           <no date>
 -------------------------------------------------------------------------------
- * 
+
+ * Code generation:
+
+    Bisection
         test-bisection.py ............................................[OK]
- * 
-        test-branch_table-2.py .............................[NO GOOD FILE]
- * 
-        test-branch_table.py ...............................[NO GOOD FILE]
- * 
-        test-comparison_sequence.py ........................[NO GOOD FILE]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-branch_table-2.py
-    [FAIL] test-branch_table.py
-    [FAIL] test-comparison_sequence.py
+    Branch Table (switch-case)
+        test-branch_table.py C-2 .....................................[OK]
+                             C-3 .....................................[OK]
+                             C-4 .....................................[OK]
+                             C-5 .....................................[OK]
+    Branch Table (switch-case) II
+        test-branch_table-2.py C-15 ..................................[OK]
+                               C-16 ..................................[OK]
+                               C-17 ..................................[OK]
+                               C-31 ..................................[OK]
+                               C-32 ..................................[OK]
+                               C-33 ..................................[OK]
+                               C-7 ...................................[OK]
+                               C-8 ...................................[OK]
+                               C-9 ...................................[OK]
+    Comparison Sequence
+        test-comparison_sequence.py C-2-bw ...........................[OK]
+                                    C-2-fw ...........................[OK]
+                                    C-3-bw ...........................[OK]
+                                    C-3-fw ...........................[OK]
+                                    C-4-bw ...........................[OK]
+                                    C-4-fw ...........................[OK]
+                                    C-5-bw ...........................[OK]
+                                    C-5-fw ...........................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                            IConv Converter Interface                           
@@ -3149,13 +3174,6 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] test-branch_table-2.py
-    [NO GOOD FILE] test-branch_table.py
-    [NO GOOD FILE] test-comparison_sequence.py
-    [NO GOOD FILE] can_be_moved_to_tail.py
-    [NO GOOD FILE] find_last_common.py
-    [NO GOOD FILE] test-SharedTailDB.py
-    [NO GOOD FILE] test-shared_tail.py
 ===============================================================================
 
 SUMMARY:
@@ -3193,7 +3211,7 @@ SUMMARY:
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
            10      [OK] ............../converter_helper/TEST                          
-        5  5     [FAIL] ............../extra/accumulator/TEST                         
+           5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
@@ -3201,7 +3219,7 @@ SUMMARY:
            27      [OK] .............................../template/TEST                 
            38      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
-        4  7     [FAIL] .........../operations/TEST                                   
+           17      [OK] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
@@ -3215,16 +3233,16 @@ SUMMARY:
            58      [OK] ..../input/TEST                                               
            27      [OK] ........../regular_expression/TEST                            
            196     [OK] ..../output/core/TEST                                         
-        3  4     [FAIL] ................/state/transition_map/TEST                    
+           22      [OK] ................/state/transition_map/TEST                    
            30      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  ____            
-    |  ___|_ _(_) |___     / ||___ \     __  __
-    | |_ / _` | | / __|    | |  __) |    \ \/ /
-    |  _| (_| | | \__ \    | | / __/      >  < 
-    |_|  \__,_|_|_|___/    |_||_____|    /_/\_\
-                                                                   (1599 tests)
+     ___  _ _   _  __                        _      _ 
+    / _ \| | | | |/ /___  _ __ _ __ ___  ___| |_   | |
+   | | | | | | | ' // _ \| '__| '__/ _ \/ __| __|  | |
+   | |_| | | | | . \ (_) | |  | | |  __/ (__| |_   |_|
+    \___/|_|_| |_|\_\___/|_|  |_|  \___|\___|\__|  (_)
+                                                                   (1627 tests)
 
 ===============================================================================
