@@ -29,13 +29,9 @@ def write_member_functions(Modes):
     # -- get the implementation of mode class functions
     #    (on_entry, on_exit, on_indent, on_dedent, has_base, has_entry, has_exit, ...)
     txt  = [
-        "#ifndef __QUEX_INDICATOR_DUMPED_TOKEN_ID_DEFINED\n",
-        "    static QUEX_TYPE_TOKEN_ID  QUEX_NAME_TOKEN(DumpedTokenIdObject);\n",
-        "#endif\n",
-        "#define self                   (*(QUEX_TYPE_DERIVED_ANALYZER*)me)\n",
-        "#define __self_result_token_id QUEX_NAME_TOKEN(DumpedTokenIdObject)\n",
-        "#define LexemeNull             (&QUEX_LEXEME_NULL)\n"
-        "#define RETURN                 return\n"
+        "#define self        (*(QUEX_TYPE_DERIVED_ANALYZER*)me)\n",
+        "#define LexemeNull  (&QUEX_LEXEME_NULL)\n"
+        "#define RETURN      return\n"
     ]
     txt.extend(
         get_implementation_of_mode_functions(mode, Modes)
@@ -43,7 +39,6 @@ def write_member_functions(Modes):
     )
     txt.extend([
         "#undef self\n",
-        "#undef __self_result_token_id\n",
         "#undef LexemeNull\n",
         "#undef RETURN\n",
     ])
@@ -126,72 +121,61 @@ def get_implementation_of_mode_functions(mode, Modes):
     base_mode_sequence = mode.implemented_base_mode_name_sequence() 
     if len(base_mode_sequence) == 1:
         assert base_mode_sequence[-1] == mode.name
-        has_base_mode_str = "    return false;" # mode has no base mode!
+        has_base_mode_str = "    %s" % Lng.RETURN_THIS(Lng.FALSE)
     else:
         base_mode_list    = base_mode_sequence
-        has_base_mode_str = get_IsOneOfThoseCode(base_mode_list, CheckBaseModeF=True)
+        has_base_mode_str = "\n    ".join(
+            get_IsOneOfThoseCode(base_mode_list, CheckBaseModeF=True)
+        )
         
     # (*) has entry from
     #     check whether the source mode is a permissible 'entry' mode
     entry_list         = mode.entry_mode_name_list() # (only implemented ones are listed)
-    has_entry_from_str = get_IsOneOfThoseCode(entry_list,
-                                              ConsiderDerivedClassesF=True)
+    has_entry_from_str = "\n    ".join(
+        get_IsOneOfThoseCode(entry_list, ConsiderDerivedClassesF=True)
+    )
 
     # (*) has exit to
     #     check whether the target mode is a permissible 'exit' mode
     exit_list       = mode.exit_mode_name_list() # (only implemented ones are listed)
-    has_exit_to_str = get_IsOneOfThoseCode(exit_list,
-                                           ConsiderDerivedClassesF=True)
+    has_exit_to_str = "\n    ".join(
+        get_IsOneOfThoseCode(exit_list, ConsiderDerivedClassesF=True)
+    )
     
-    txt = blue_print(mode_function_implementation_str,
-                     [
-                      ["$$ENTER-PROCEDURE$$",      on_entry_str],
-                      ["$$EXIT-PROCEDURE$$",       on_exit_str],
-                      #
-                      ["$$ON_INDENTATION-PROCEDURE$$", on_indentation_str],
-                      #
-                      ["$$HAS_BASE_MODE$$",        has_base_mode_str],
-                      ["$$HAS_ENTRANCE_FROM$$",    has_entry_from_str],
-                      ["$$HAS_EXIT_TO$$",          has_exit_to_str],
-                      #
-                      ["$$MODE_NAME$$",            mode.name],
-                      ])
-    return txt
+    return blue_print(mode_function_implementation_str, [
+        ["$$ENTER-PROCEDURE$$",      on_entry_str],
+        ["$$EXIT-PROCEDURE$$",       on_exit_str],
+        #
+        ["$$ON_INDENTATION-PROCEDURE$$", on_indentation_str],
+        #
+        ["$$HAS_BASE_MODE$$",        has_base_mode_str],
+        ["$$HAS_ENTRANCE_FROM$$",    has_entry_from_str],
+        ["$$HAS_EXIT_TO$$",          has_exit_to_str],
+        #
+        ["$$MODE_NAME$$",            mode.name],
+    ])
 
-def get_IsOneOfThoseCode(ThoseModes, Indentation="    ",
-                         CheckBaseModeF = False,
+def get_IsOneOfThoseCode(ThoseModes, CheckBaseModeF = False,
                          ConsiderDerivedClassesF=False):
-    txt = Indentation
     if not ThoseModes:
-        return Indentation + "return false;"
-    
+        return [ Lng.RETURN_THIS(Lng.FALSE) ]
 
     # NOTE: Usually, switch commands do a binary bracketting.
     #       (Cannot be faster here ... is not critical anyway since this is debug code)
-    txt  = "\n"
-    txt += "switch( Mode->id ) {\n"
-    for mode_name in ThoseModes:
-        txt += "case QUEX_NAME(ModeID_%s): return true;\n" % mode_name
-    txt += "default:\n"
-    if ConsiderDerivedClassesF:
-        for mode_name in ThoseModes:
-            txt += "    if( Mode->has_base(&QUEX_NAME(%s)) ) return true;\n" % mode_name
-    else:
-        txt += ";\n"
-    txt += "}\n"
 
-    txt += "__QUEX_STD_fprintf(stderr, "
-    if ConsiderDerivedClassesF or CheckBaseModeF:
-        txt += "\"mode '%s' is not one of (and not a derived mode of): " 
+    case_code_list = [
+        (Lng.NAME_IN_NAMESPACE_MAIN("ModeID_%s" % mode_name), Lng.RETURN_THIS(Lng.TRUE))
+        for mode_name in ThoseModes
+    ]
+    if ConsiderDerivedClassesF and mode_name in ThoseModes:
+        default = "if( Mode->has_base(&QUEX_NAME(%s)) ) %s\n" % (mode_name, Lng.RETURN_THIS(Lng.TRUE))
     else:
-        txt += "\"mode '%s' is not one of: " 
-    for mode_name in ThoseModes:
-        txt += "%s, " % mode_name
-    txt += "\\n\", Mode->name);\n"
-    txt += "__quex_assert(false);\n"
-    txt += "return false;\n"
+        default = Lng.RETURN_THIS(Lng.FALSE)
 
-    return txt.replace("\n", "\n" + Indentation)
+    txt = Lng.CASE_SELECT("Mode->id", case_code_list, default)
+
+
+    return txt
 
 on_indentation_str = """
 #   define __QUEX_RETURN return
@@ -309,12 +293,13 @@ def get_on_indentation_handler(Mode):
 
     # Note: 'on_indentation_bad' is applied in code generation for 
     #       indentation counter in 'indentation_counter.py'.
-    txt = blue_print(on_indentation_str,
-                     [["$$INDENT-PROCEDURE$$",            on_indent_str],
-                      ["$$NODENT-PROCEDURE$$",            on_nodent_str],
-                      ["$$DEDENT-PROCEDURE$$",            on_dedent_str],
-                      ["$$N-DEDENT-PROCEDURE$$",          on_n_dedent_str],
-                      ["$$INDENTATION-ERROR-PROCEDURE$$", on_indentation_error]])
+    txt = blue_print(on_indentation_str, [
+        ["$$INDENT-PROCEDURE$$",            on_indent_str],
+        ["$$NODENT-PROCEDURE$$",            on_nodent_str],
+        ["$$DEDENT-PROCEDURE$$",            on_dedent_str],
+        ["$$N-DEDENT-PROCEDURE$$",          on_n_dedent_str],
+        ["$$INDENTATION-ERROR-PROCEDURE$$", on_indentation_error]
+    ])
     return txt
 
 def get_related_code_fragments(ModeDb):
@@ -414,34 +399,33 @@ def __setup(ModeDb):
     return "".join(txt)
 
 def initialization(mode):
-    analyzer_function = "QUEX_NAME(%s_analyzer_function)" % mode.name
-    on_indentation    = "QUEX_NAME(%s_on_indentation)"    % mode.name
-    on_entry          = "QUEX_NAME(%s_on_entry)"          % mode.name
-    on_exit           = "QUEX_NAME(%s_on_exit)"           % mode.name
-    has_base          = "QUEX_NAME(%s_has_base)"          % mode.name
-    has_entry_from    = "QUEX_NAME(%s_has_entry_from)"    % mode.name
-    has_exit_to       = "QUEX_NAME(%s_has_exit_to)"       % mode.name
+    analyzer_function = Lng.NAME_IN_NAMESPACE_MAIN("%s_analyzer_function" % mode.name)
+    on_indentation    = Lng.NAME_IN_NAMESPACE_MAIN("%s_on_indentation"    % mode.name)
+    on_entry          = Lng.NAME_IN_NAMESPACE_MAIN("%s_on_entry"          % mode.name)
+    on_exit           = Lng.NAME_IN_NAMESPACE_MAIN("%s_on_exit"           % mode.name)
+    has_base          = Lng.NAME_IN_NAMESPACE_MAIN("%s_has_base"          % mode.name)
+    has_entry_from    = Lng.NAME_IN_NAMESPACE_MAIN("%s_has_entry_from"    % mode.name)
+    has_exit_to       = Lng.NAME_IN_NAMESPACE_MAIN("%s_has_exit_to"       % mode.name)
 
     if not mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY):
-        on_entry = "QUEX_NAME(Mode_on_entry_exit_null_function)"
+        on_entry = Lng.NAME_IN_NAMESPACE_MAIN("Mode_on_entry_exit_null_function")
 
     if not mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT):
-        on_exit = "QUEX_NAME(Mode_on_entry_exit_null_function)"
+        on_exit = Lng.NAME_IN_NAMESPACE_MAIN("Mode_on_entry_exit_null_function")
 
     if not mode.incidence_db.has_key(E_IncidenceIDs.INDENTATION_HANDLER):
-        on_indentation = "QUEX_NAME(Mode_on_indentation_null_function)"
+        on_indentation = Lng.NAME_IN_NAMESPACE_MAIN("Mode_on_indentation_null_function")
 
-    txt = blue_print(mode_setup_str,
-                [["$$MN$$",             mode.name],
-                 ["$analyzer_function", analyzer_function],
-                 ["$on_indentation",    on_indentation],
-                 ["$on_entry",          on_entry],
-                 ["$on_exit",           on_exit],
-                 ["$has_base",          has_base],
-                 ["$has_entry_from",    has_entry_from],
-                 ["$has_exit_to",       has_exit_to]])
-
-    return txt
+    return blue_print(mode_setup_str, [
+        ["$$MN$$",             mode.name],
+        ["$analyzer_function", analyzer_function],
+        ["$on_indentation",    on_indentation],
+        ["$on_entry",          on_entry],
+        ["$on_exit",           on_exit],
+        ["$has_base",          has_base],
+        ["$has_entry_from",    has_entry_from],
+        ["$has_exit_to",       has_exit_to]
+    ])
 
 mode_setup_str = \
 """QUEX_NAME(Mode) QUEX_NAME($$MN$$) = {

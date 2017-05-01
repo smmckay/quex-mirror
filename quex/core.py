@@ -5,12 +5,12 @@ import quex.input.files.core                             as     quex_file_parser
 from   quex.engine.misc.tools                            import flatten_list_of_lists
 from   quex.engine.misc.file_operations                  import write_safely_and_close
 #
-import quex.output.core.configuration                    as     configuration 
 import quex.output.core.engine                           as     engine_generator
-import quex.output.core.analyzer_class                   as     analyzer_class
+import quex.output.analyzer.core                         as     analyzer_class
+import quex.output.analyzer.configuration                as     configuration 
+import quex.output.analyzer.lexeme_converter             as     lexeme_converter 
 import quex.output.languages.cpp.token_class             as     token_class
 import quex.output.languages.cpp.mode_classes            as     mode_classes
-import quex.output.languages.cpp.codec_converter_helper  as     codec_converter_helper 
 import quex.output.languages.graphviz.core               as     grapviz_generator
 
 import quex.blackboard as     blackboard
@@ -48,15 +48,15 @@ def _generate(mode_db):
     configuration_header,                 \
     analyzer_header,                      \
     engine_txt,                           \
-    codec_converter_helper_header,        \
-    codec_converter_helper_implementation = _prepare_all(mode_db, 
+    lexeme_converter_header,        \
+    lexeme_converter_implementation = _prepare_all(mode_db, 
                                                          class_token_implementation,
                                                          global_lexeme_null_declaration)
 
     _write_all(configuration_header, analyzer_header, engine_txt, 
                class_token_header, token_id_header,
-               codec_converter_helper_header, 
-               codec_converter_helper_implementation)
+               lexeme_converter_header, 
+               lexeme_converter_implementation)
 
     if Setup.source_package_directory != "":
         source_package.do()
@@ -149,8 +149,8 @@ def _prepare_all(mode_db, class_token_implementation,
     mode_implementation     = mode_classes.do(mode_db)
 
     # (*) [Optional] Generate a converter helper
-    codec_converter_helper_header, \
-    codec_converter_helper_implementation = codec_converter_helper.do()
+    lexeme_converter_header, \
+    lexeme_converter_implementation = lexeme_converter.do()
     
     # Engine (Source Code)
     engine_txt = "\n".join([Lng.ENGINE_TEXT_EPILOG(),
@@ -162,19 +162,19 @@ def _prepare_all(mode_db, class_token_implementation,
     return configuration_header, \
            analyzer_header, \
            engine_txt, \
-           codec_converter_helper_header, \
-           codec_converter_helper_implementation
+           lexeme_converter_header, \
+           lexeme_converter_implementation
 
 def _write_all(configuration_header, analyzer_header, engine_txt, 
                class_token_header, token_id_header, 
-               codec_converter_helper_header, 
-               codec_converter_helper_implementation):
+               lexeme_converter_header, 
+               lexeme_converter_implementation):
 
-    if codec_converter_helper_header is not None:
+    if lexeme_converter_header is not None:
         write_safely_and_close(Setup.output_buffer_codec_header,   
-                               codec_converter_helper_header) 
+                               lexeme_converter_header) 
         write_safely_and_close(Setup.output_buffer_codec_header_i, 
-                               codec_converter_helper_implementation) 
+                               lexeme_converter_implementation) 
 
     if token_id_header is not None:
         assert not Setup.extern_token_id_file

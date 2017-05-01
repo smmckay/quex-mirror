@@ -152,7 +152,7 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
 
-    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_M)] == &QUEX_NAME(M));
+    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_M)]  == &(QUEX_NAME(M)));
 
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
@@ -565,8 +565,6 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
    
 
 #   line 568 "TestAnalyzer.h"
-
-
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

@@ -16,7 +16,7 @@ import quex.engine.state_machine.transformation.core as     bc_factory
 from   quex.output.core.TEST.generator_test          import *
 from   quex.output.core.TEST.generator_test          import __Setup_init_language_database
 from   quex.output.core.variable_db                  import variable_db
-import quex.output.core.run_time_counter             as     run_time_counter
+import quex.output.counter.run_time                  as     run_time_counter
 import quex.output.core.base                         as     generator
 from   quex.output.core.base                         import do_state_router
 
@@ -431,7 +431,6 @@ $$END_STR$$
         QUEX_GOTO_STATE(0);
 #       endif
         /* Avoid unused variable error */
-        (void)QUEX_NAME_TOKEN(DumpedTokenIdObject);
         (void)target_state_else_index;
         (void)target_state_index;
     }

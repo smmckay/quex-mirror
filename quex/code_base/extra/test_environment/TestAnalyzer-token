@@ -10,7 +10,6 @@
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/MemoryManager>
 
-/* LexemeNull object may be used for 'take_text'. */
 
 
 
@@ -24,7 +23,7 @@
 #include <quex/code_base/lexeme>
    
 
-#   line 28 "TestAnalyzer-token"
+#   line 27 "TestAnalyzer-token"
 
  
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -63,12 +62,12 @@ public:
 #   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     std::basic_string<QUEX_TYPE_LEXATOM> text;
 
-#   line 67 "TestAnalyzer-token"
+#   line 66 "TestAnalyzer-token"
 
 #   line 16 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     size_t                               number;
 
-#   line 72 "TestAnalyzer-token"
+#   line 71 "TestAnalyzer-token"
 
 
 public:
@@ -82,7 +81,7 @@ public:
 #   line 16 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     void                                 set_number(size_t Value)                               { number = Value; }
 
-#   line 86 "TestAnalyzer-token"
+#   line 85 "TestAnalyzer-token"
 
     void set(const QUEX_TYPE_TOKEN_ID ID) { _id = ID; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const std::basic_string<QUEX_TYPE_LEXATOM>& Value0, const size_t& Value1)
@@ -139,7 +138,7 @@ public:
     
    
 
-#   line 143 "TestAnalyzer-token"
+#   line 142 "TestAnalyzer-token"
 
 #   undef  self
 
@@ -167,7 +166,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 #include <quex/code_base/lexeme.i>
    
 
-#   line 171 "TestAnalyzer-token"
+#   line 170 "TestAnalyzer-token"
 
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -253,7 +252,7 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
 #       endif
    
 
-#   line 257 "TestAnalyzer-token"
+#   line 256 "TestAnalyzer-token"
 
 #   undef LexemeNull
 #   undef Other
@@ -315,7 +314,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
         return false;      
    
 
-#   line 319 "TestAnalyzer-token"
+#   line 318 "TestAnalyzer-token"
 
 #   undef  LexemeNull
 #   undef  self
@@ -335,7 +334,7 @@ QUEX_NAME_TOKEN(repetition_n_get)(Token* __this)
        return self.number;
    
 
-#   line 339 "TestAnalyzer-token"
+#   line 338 "TestAnalyzer-token"
 
 #   undef self
 }
@@ -352,7 +351,7 @@ QUEX_NAME_TOKEN(repetition_n_set)(Token* __this, size_t N)
        self.number = N;
    
 
-#   line 356 "TestAnalyzer-token"
+#   line 355 "TestAnalyzer-token"
 
 #   undef  self
 }
@@ -386,7 +385,6 @@ QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
-
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I */

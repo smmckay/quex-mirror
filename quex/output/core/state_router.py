@@ -32,22 +32,15 @@ def __get_code(StateRouterInfoList):
     if len(StateRouterInfoList) == 0:
         return ["    QUEX_ERROR_EXIT(\"Entered section of empty state router.\");\n"]
 
-    txt = ["    switch( target_state_index ) {\n" ]
-
-    done_set = set([])
-    for index, code in sorted(StateRouterInfoList, key=itemgetter(0)):
-        if index in done_set: continue
-        done_set.add(index)
-        txt.append("        case %i: { " % index)
-        if type(code) == list: txt.extend(code)
-        else:                  txt.append(code)
-        txt.append("}\n")
-
-    txt.append("\n")
-    txt.append("        default:\n")
-    txt.append("            __QUEX_STD_fprintf(stderr, \"State router: index = %i\\n\", (int)target_state_index);\n")
-    txt.append("            QUEX_ERROR_EXIT(\"State router: unknown index.\\n\");\n")
-    txt.append("    }\n")
+    variable = "target_state_index"
+    case_code_list = sorted(StateRouterInfoList, key=itemgetter(0))
+    default  = [
+        "        default:\n"
+        "            __QUEX_STD_fprintf(stderr, \"State router: index = %i\\n\", (int)target_state_index);\n"
+        "            QUEX_ERROR_EXIT(\"State router: unknown index.\\n\");\n"
+        "    }\n"
+    ]
+    txt = Lng.CASE_SELECT(variable, case_code_list, default)
 
     return txt
 

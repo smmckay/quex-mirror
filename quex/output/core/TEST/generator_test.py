@@ -229,10 +229,6 @@ def run_this(Str, filter_result_db=None, FilterFunc=None):
         # In the current version we forgive unused static functions
         postponed_list = []
         for line in txt.splitlines():
-            if    line.find("DumpedTokenIdObject") != -1:
-                postponed_list.append("## IGNORED: " + line.replace(os.environ["QUEX_PATH"] + "/quex/", ""))
-                continue
-
             if    line.find("defined but not used") != -1 \
                or line.find("but never defined") != -1 \
                or line.find("unused variable") != -1 \
@@ -530,10 +526,6 @@ QUEX_NAMESPACE_TOKEN_OPEN
 QUEX_TYPE_LEXATOM   LexemeNull = (QUEX_TYPE_LEXATOM)0;
 QUEX_NAMESPACE_TOKEN_CLOSE     
 
-QUEX_NAMESPACE_MAIN_OPEN
-static QUEX_TYPE_TOKEN_ID  QUEX_NAME_TOKEN(DumpedTokenIdObject) = (QUEX_TYPE_TOKEN_ID)0;
-QUEX_NAMESPACE_MAIN_CLOSE
-
 #ifndef RETURN
 #   define RETURN    return
 #endif
@@ -607,7 +599,6 @@ static int
 run_test(const char* TestString, const char* Comment)
 {
     ptrdiff_t  real_buffer_size;
-    (void)QUEX_NAME_TOKEN(DumpedTokenIdObject);
             
     if( strlen(TestString) > 256 ) {
         printf("(*) test string: \\n'%.256s...'%s\\n", TestString, Comment);

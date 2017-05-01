@@ -941,6 +941,28 @@ class Language(dict):
             "dec": "case %i: "
         }[Format]
 
+    def CASE_SELECT(self, Variable, CaseCodeList, Default):
+        txt = ["switch( %s ) {\n" % Variable ]
+
+        done_set = set([])
+        for case, code in CaseCodeList:
+            if case in done_set: continue
+            done_set.add(case)
+            txt.append("case %s: {\n" % case)
+            if type(code) == list: txt.extend(code)
+            else:                  txt.append(code)
+            txt.append("}\n")
+
+        txt.append("default: {\n")
+        if type(code) == list: txt.extend(code)
+        else:                  txt.append(code)
+        txt.append("}\n")
+
+
+        txt.append("}\n")
+
+        return txt
+
     def BRANCH_TABLE(self, Selector, CaseList, CaseFormat="hex", DefaultConsequence=None):
         case_str = self.CASE_STR(CaseFormat)
 
@@ -1018,6 +1040,7 @@ class Language(dict):
             if DefaultConsequence is not None:
                 yield None, DefaultConsequence
 
+        # TODO: Express as 'CASE_SELECT'
         txt = [ "switch( %s ) {\n" % Selector ]
         txt.extend(
             flatten_list_of_lists(

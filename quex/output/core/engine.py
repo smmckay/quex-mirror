@@ -7,7 +7,7 @@ from   quex.engine.counter                                import CountActionMap
 from   quex.engine.misc.tools                             import all_isinstance, \
                                                                  typed, \
                                                                  flatten_list_of_lists
-import quex.output.core.run_time_counter                  as     run_time_counter
+import quex.output.counter.run_time                       as     run_time_counter
 
 from   quex.blackboard import setup as Setup, \
                               Lng
@@ -49,10 +49,10 @@ def do_core(Mode):
 
     # (*) Pre Context State Machine
     #     (If present: All pre-context combined in single backward analyzer.)
-    pre_context, \
-    pre_analyzer = generator.do_pre_context(Mode.pre_context_sm,
-                                            Mode.pre_context_sm_id_list,
-                                            dial_db)
+    pre_context,         \
+    pre_analyzer         = generator.do_pre_context(Mode.pre_context_sm,
+                                                    Mode.pre_context_sm_id_list,
+                                                    dial_db)
     # assert all_isinstance(pre_context, (IfDoorIdReferencedCode, int, str, unicode))
 
     # (*) Backward input position detection

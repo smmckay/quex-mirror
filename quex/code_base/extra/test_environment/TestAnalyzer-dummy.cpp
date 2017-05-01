@@ -29,13 +29,9 @@ QUEX_NAME(Mode) QUEX_NAME(M) = {
 QUEX_NAME(Mode)* (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {
     &QUEX_NAME(M)
 };
-#ifndef __QUEX_INDICATOR_DUMPED_TOKEN_ID_DEFINED
-    static QUEX_TYPE_TOKEN_ID  QUEX_NAME_TOKEN(DumpedTokenIdObject);
-#endif
-#define self                   (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
-#define __self_result_token_id QUEX_NAME_TOKEN(DumpedTokenIdObject)
-#define LexemeNull             (&QUEX_LEXEME_NULL)
-#define RETURN                 return
+#define self        (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#define LexemeNull  (&QUEX_LEXEME_NULL)
+#define RETURN      return
 
 void
 QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* FromMode) {
@@ -78,34 +74,41 @@ QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)* Mode) {
 bool
 QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
+switch( Mode->id ) {
 
-    switch( Mode->id ) {
-    case QUEX_NAME(ModeID_M): return true;
-    default:
-        if( Mode->has_base(&QUEX_NAME(M)) ) return true;
+    case QUEX_NAME(ModeID_M): {
+
+    return true;
     }
-    __QUEX_STD_fprintf(stderr, "mode '%s' is not one of (and not a derived mode of): M, \n", Mode->name);
-    __quex_assert(false);
-    return false;
-    
+
+    default: {
+
+    return true;
+    }
+
+    }
+
 }
 bool
 QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
+switch( Mode->id ) {
 
-    switch( Mode->id ) {
-    case QUEX_NAME(ModeID_M): return true;
-    default:
-        if( Mode->has_base(&QUEX_NAME(M)) ) return true;
+    case QUEX_NAME(ModeID_M): {
+
+    return true;
     }
-    __QUEX_STD_fprintf(stderr, "mode '%s' is not one of (and not a derived mode of): M, \n", Mode->name);
-    __quex_assert(false);
-    return false;
-    
+
+    default: {
+
+    return true;
+    }
+
+    }
+
 }
 #endif    
 #undef self
-#undef __self_result_token_id
 #undef LexemeNull
 #undef RETURN
 QUEX_NAMESPACE_MAIN_CLOSE
@@ -508,7 +511,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 512 "TestAnalyzer.cpp"
+#   line 515 "TestAnalyzer.cpp"
 
 }
 RETURN;
@@ -525,14 +528,14 @@ if(0) {
 #   ifndef QUEX_OPTION_COMPUTED_GOTOS
     __quex_assert_no_passage();
 _21:
-    switch( target_state_index ) {
-        case 4: { goto _4;}
-        case 7: { goto _7;}
-
-        default:
-            __QUEX_STD_fprintf(stderr, "State router: index = %i\n", (int)target_state_index);
-            QUEX_ERROR_EXIT("State router: unknown index.\n");
-    }
+switch( target_state_index ) {
+case 4: {
+goto _4;}
+case 7: {
+goto _7;}
+default: {
+goto _7;}
+}
 #   endif /* QUEX_OPTION_COMPUTED_GOTOS */
 
 
@@ -600,7 +603,6 @@ goto _20;
 
     /* Prevent compiler warning 'unused variable'.                           */
     (void)QUEX_LEXEME_NULL;
-    (void)QUEX_NAME_TOKEN(DumpedTokenIdObject);
     /* target_state_index and target_state_else_index appear when 
      * QUEX_GOTO_STATE is used without computed goto-s.                      */
     (void)target_state_index;
@@ -625,7 +627,7 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
 
-    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_M)] == &QUEX_NAME(M));
+    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_M)]  == &(QUEX_NAME(M)));
 
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)

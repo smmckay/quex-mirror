@@ -15,9 +15,7 @@
 #include <quex/code_base/compatibility/stdint.h>
 #include <quex/code_base/MemoryManager>
 
-/* LexemeNull object may be used for 'take_text'. */
 
-/****/
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
@@ -35,7 +33,7 @@ QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   
 #include <quex/code_base/lexeme>
    
 
-#   line 39 "TestAnalyzer-token.h"
+#   line 37 "TestAnalyzer-token.h"
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
@@ -44,12 +42,12 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 48 "TestAnalyzer-token.h"
+#   line 46 "TestAnalyzer-token.h"
 
 #   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
-#   line 53 "TestAnalyzer-token.h"
+#   line 51 "TestAnalyzer-token.h"
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -67,7 +65,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
         */
    
 
-#   line 71 "TestAnalyzer-token.h"
+#   line 69 "TestAnalyzer-token.h"
 
 } quex_Token;
 

@@ -112,7 +112,7 @@ from   quex.engine.counter                                import CountAction, \
 from   quex.engine.misc.interval_handling                 import NumberSet
 from   quex.engine.misc.tools                             import typed
 import quex.engine.misc.error                             as     error
-from   quex.output.core.counter_for_pattern               import map_SmLineColumnCountInfo_to_code
+from   quex.output.counter.pattern                        import map_SmLineColumnCountInfo_to_code
 
 from   quex.blackboard import setup as Setup, Lng
 from   quex.constants  import E_CharacterCountType, \

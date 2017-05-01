@@ -4,7 +4,6 @@ g++ -Wall -Werror   ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.
 ## IGNORED: ./tmp.cpp: In function ‘void TestAnalyzer_Mr_UnitTest_analyzer_function(quex::TestAnalyzer*)’:
 ## IGNORED: ./tmp.cpp:182: warning: label ‘STATE_0_DROP_OUT_DIRECT’ defined but not used
 ## IGNORED: ./tmp.cpp: At global scope:
-## IGNORED: ./tmp.cpp:32: warning: ‘quex::Token_DumpedTokenIdObject’ defined but not used
 ## (*) running the test
 (*) test string: 
 '

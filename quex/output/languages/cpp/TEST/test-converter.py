@@ -2,8 +2,8 @@
 import os
 import sys
 sys.path.append(os.environ["QUEX_PATH"])
-import quex.output.languages.cpp.codec_converter_helper    as codec_converter_helper
-import quex.output.languages.core as languages
+import quex.output.analyzer.lexeme_converter as lexeme_converter
+import quex.output.languages.core            as languages
 import quex.blackboard
 
 quex.blackboard.setup.language_db = languages.db["C++"]()
@@ -19,7 +19,7 @@ def test(Msg, TrafoInfo):
     for record in TrafoInfo:
         print "    [%06X,%06X) --> %06X" % (record[0], record[1], record[2])
     print
-    for record in codec_converter_helper.ConverterWriterUTF8().get_conversion_table(TrafoInfo):
+    for record in lexeme_converter.ConverterWriterUTF8().get_conversion_table(TrafoInfo):
         print "    " + repr(record)
 
 if "1" in sys.argv:

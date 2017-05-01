@@ -2,7 +2,7 @@
 import os
 import sys
 sys.path.append(os.environ["QUEX_PATH"])
-import quex.output.languages.cpp.codec_converter_helper as codec_converter_helper
+import quex.output.analyzer.lexeme_converter as lexeme_converter
 import quex.output.languages.core as languages
 from   quex.engine.state_machine.transformation.table import EncodingTrafoByTable
 import quex.blackboard
@@ -14,7 +14,7 @@ if "--hwut-info" in sys.argv:
 
 def test(CodecName):
     trafo_info          = EncodingTrafoByTable(CodecName)
-    code_str, code0_str = codec_converter_helper._do(trafo_info)
+    code_str, code0_str = lexeme_converter._do(trafo_info)
     fh = open("converter-tester.h", "w")
     fh.write(code_str + "\n" + code0_str)
     fh.close()

@@ -2,7 +2,7 @@
 import os
 import sys
 sys.path.append(os.environ["QUEX_PATH"])
-import quex.output.languages.cpp.codec_converter_helper as codec_converter_helper
+import quex.output.analyzer.lexeme_converter as lexeme_converter
 import quex.output.languages.core as languages
 import quex.blackboard
 
@@ -18,11 +18,11 @@ def test(Msg, ConversionInfoList):
     print 
     conversion_info = []
     for x in ConversionInfoList:
-        info = codec_converter_helper.ConversionInfo(x[0], x[1], x[2], x[3])
+        info = lexeme_converter.ConversionInfo(x[0], x[1], x[2], x[3])
         print "    " + repr(info)
         conversion_info.append(info)
     print
-    txt = codec_converter_helper.ConverterWriterUTF8().do(conversion_info, ProvidedConversionInfoF=True)
+    txt = lexeme_converter.ConverterWriterUTF8().do(conversion_info, ProvidedConversionInfoF=True)
     print txt
 
 
@@ -50,7 +50,7 @@ elif "3" in sys.argv:
                   [0x81,    0x801,    0x010081], 
                   [0x801,   0x10001,  0x020000], 
                   [0x10001, 0x100001, 0x000001] ]
-    ConvInfo = codec_converter_helper.ConverterWriterUTF8().get_conversion_table(TrafoInfo)
+    ConvInfo = lexeme_converter.ConverterWriterUTF8().get_conversion_table(TrafoInfo)
     ConvInfo = map(lambda x: [x.code_unit_n, 
                               x.codec_interval_begin_unicode, 
                               x.codec_interval_begin,
