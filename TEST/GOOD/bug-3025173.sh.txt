@@ -4,7 +4,7 @@ quex -i scan.qx -o br_scan \
 	 --foreign-token-id-file gramma.h --token-class blackray::Token \
 	 --debug-exception 
 g++ -Wall -Werror br_scan.cpp example.cpp \
-	-I/home/fschaef/prj/quex/trunk -I. \
+	-I<<QUEX_PATH>> -I. \
 	-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 	-o check 
 0

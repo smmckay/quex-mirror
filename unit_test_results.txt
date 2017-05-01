@@ -17,7 +17,7 @@ TEST                                                                 <no date>
     3022603 0.49.2 Using external buffer with Quex lexer
         bug-3022603.sh ...............................................[OK]
     3025173 0.49.2 Custom Token struct for quex
-        bug-3025173.sh ...............................................[OK]
+        bug-3025173.sh .............................................[FAIL]
     3032877 -b, --buffer-element-size enhancement
         feature-3032877.sh codec .....................................[OK]
                            normal ....................................[OK]
@@ -147,7 +147,7 @@ TEST                                                                 <no date>
                        newline-skipper-utf8 ..........................[OK]
                        non-newline-skipper ...........................[OK]
     2635012 0.36.4 Include Stack Disablement
-        bug-2635012.sh ...............................................[OK]
+        bug-2635012.sh .............................................[FAIL]
     297 r4678(trunk): Memory leak in Token Class
         bug-297.sh C .................................................[OK]
                    Cpp ...............................................[OK]
@@ -323,7 +323,7 @@ TEST                                                                 <no date>
     265 Modification time change on input file.
         bug-265.sh ...................................................[OK]
     3524729 0.62.4 token_type distinct members cause overloading error
-        bug-3524729.sh ...............................................[OK]
+        bug-3524729.sh .............................................[FAIL]
     3538026 Handling of spurious transition in PathWalkerState
         bug-3538026.sh ...............................................[OK]
 
@@ -480,10 +480,14 @@ TEST                                                                 <no date>
 
     2974074 0.48.1 union modifies its arguments
         bug-2974074.sh ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] bug-3025173.sh
+    [FAIL] bug-2635012.sh
+    [FAIL] bug-3524729.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -971,7 +975,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ....................................[OK]
+        no-use-of-lexeme-macro.sh ..................................[FAIL]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -998,10 +1002,12 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] no-use-of-lexeme-macro.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -3180,11 +3186,11 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-           235     [OK] TEST                                                          
+        3  235   [FAIL] TEST                                                          
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-           15      [OK] quex/TESTS/code/TEST                                          
+        1  15    [FAIL] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3238,11 +3244,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     ___  _ _   _  __                        _      _ 
-    / _ \| | | | |/ /___  _ __ _ __ ___  ___| |_   | |
-   | | | | | | | ' // _ \| '__| '__/ _ \/ __| __|  | |
-   | |_| | | | | . \ (_) | |  | | |  __/ (__| |_   |_|
-    \___/|_|_| |_|\_\___/|_|  |_|  \___|\___|\__|  (_)
+     _____     _ _          _  _            
+    |  ___|_ _(_) |___     | || |     __  __
+    | |_ / _` | | / __|    | || |_    \ \/ /
+    |  _| (_| | | \__ \    |__   _     >  < 
+    |_|  \__,_|_|_|___/       |_|     /_/\_\
                                                                    (1627 tests)
 
 ===============================================================================

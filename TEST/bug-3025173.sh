@@ -12,7 +12,7 @@ cd $bug/
 make clean >& /dev/null
 
 echo "(1) Generate 'OK-Sources' and Compile"
-make check
+make check | bash ../quex_pathify.sh
 
 ./check
 

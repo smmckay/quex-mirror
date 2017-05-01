@@ -12,5 +12,5 @@ info:
 info: Header: "Lexer-token"
 info: Source: "Lexer-token.cpp"
 Compile -- No output is good output ________________________________
-g++ -I/home/fschaef/prj/quex/trunk Lexer-token.cpp -c 2>&1
+g++ -I<<QUEX_PATH>> Lexer-token.cpp -c 2>&1
 <terminated>
