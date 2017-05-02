@@ -91,7 +91,7 @@ int Calc_yylex(YYSTYPE *yylval, quex::Calc_lexer *qlex)
     }
 	else if( token->_id == TKN_NUM )
 	{
-		yylval->str = new std::string((const char *)token->get_text().c_str());
+		yylval->str = new std::string((const char *)token->get_text());
 		//printit(yylval->str);
 	}
 	return (int)token->type_id();

@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 #           else
             cout << (const char*)(token_p->type_id_name().c_str());
             cout << " '";
-            cout << (const char*)(token_p->get_text().c_str());
+            cout << (const char*)(token_p->get_text());
             cout << "' " << endl;
 #           endif
             cout.flush();

@@ -37,7 +37,7 @@ main(int argc, char** argv)
         (void)boeck_lex.receive(&boeck_token);
 
         /* Lexeme is same for all three. */
-        int   L = (int)max_token->text.length();
+        int   L = max::Token_lexeme_length(max_token->text);
 
         printf("%s", (char*)max::Token_lexeme_to_pretty_char(max_token->text).c_str());
 

@@ -12,7 +12,6 @@ main(int argc, char** argv)
     using namespace quex;
 
     Token*           token_p;
-    Token::__string  tmp;
     ISO8859_7_Lex    qlex("example-iso8859-7.txt");
     
 
@@ -23,12 +22,6 @@ main(int argc, char** argv)
 
         // (*) print out token information
         cout << string(*token_p) << endl;
-#       if 0
-        cout << "\t\t plain bytes: ";
-        for(QUEX_TYPE_LEXATOM* iterator = (uint8_t*)tmp.c_str(); *iterator ; ++iterator) {
-            printf("%02X.", (int)*iterator);
-        }
-#       endif
 
         // (*) check against 'termination'
     } while( token_p->type_id() != TKN_TERMINATION );

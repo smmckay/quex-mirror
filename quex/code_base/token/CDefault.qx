@@ -116,8 +116,7 @@ $INCLUDE_CONVERTER_DECLARATION
    }
 
    body {
-       /*
-        */
+       /* Nothing here. */
    }
 
    repetition_set {

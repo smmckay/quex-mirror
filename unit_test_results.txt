@@ -17,7 +17,7 @@ TEST                                                                 <no date>
     3022603 0.49.2 Using external buffer with Quex lexer
         bug-3022603.sh ...............................................[OK]
     3025173 0.49.2 Custom Token struct for quex
-        bug-3025173.sh .............................................[FAIL]
+        bug-3025173.sh ...............................................[OK]
     3032877 -b, --buffer-element-size enhancement
         feature-3032877.sh codec .....................................[OK]
                            normal ....................................[OK]
@@ -138,7 +138,7 @@ TEST                                                                 <no date>
                        funny_comments ................................[OK]
                        shell_comments ................................[OK]
     2209142 0.33.1-pre-release: RE not suited for comment elimination
-        bug-2209142.sh error .........................................[OK]
+        bug-2209142.sh error .......................................[FAIL]
                        good ..........................................[OK]
     2277660 character count pre-determination
         bug-2277660.sh ...............................................[OK]
@@ -147,7 +147,7 @@ TEST                                                                 <no date>
                        newline-skipper-utf8 ..........................[OK]
                        non-newline-skipper ...........................[OK]
     2635012 0.36.4 Include Stack Disablement
-        bug-2635012.sh .............................................[FAIL]
+        bug-2635012.sh ...............................................[OK]
     297 r4678(trunk): Memory leak in Token Class
         bug-297.sh C .................................................[OK]
                    Cpp ...............................................[OK]
@@ -323,7 +323,7 @@ TEST                                                                 <no date>
     265 Modification time change on input file.
         bug-265.sh ...................................................[OK]
     3524729 0.62.4 token_type distinct members cause overloading error
-        bug-3524729.sh .............................................[FAIL]
+        bug-3524729.sh ...............................................[OK]
     3538026 Handling of spurious transition in PathWalkerState
         bug-3538026.sh ...............................................[OK]
 
@@ -485,9 +485,7 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-3025173.sh
-    [FAIL] bug-2635012.sh
-    [FAIL] bug-3524729.sh
+    [FAIL] bug-2209142.sh _ error
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -975,7 +973,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -991,7 +989,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ..................................[OK]
+        include_guard.py convention ................................[FAIL]
                          undefinition ................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
@@ -1007,7 +1005,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] no-use-of-lexeme-macro.sh
+    [FAIL] include_guard.py _ convention
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -3186,7 +3184,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        3  235   [FAIL] TEST                                                          
+        1  235   [FAIL] TEST                                                          
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
@@ -3216,9 +3214,9 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-           10      [OK] ............../lexeme_converter/TEST                          
            5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
+           10      [OK] ............../lexeme_converter/TEST                          
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
@@ -3244,11 +3242,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _            
-    |  ___|_ _(_) |___     | || |     __  __
-    | |_ / _` | | / __|    | || |_    \ \/ /
-    |  _| (_| | | \__ \    |__   _     >  < 
-    |_|  \__,_|_|_|___/       |_|     /_/\_\
+     _____     _ _       _____          _          
+    |  ___|_ _(_) |___  |_   _|_      _(_) ___ ___ 
+    | |_ / _` | | / __|   | | \ \ /\ / / |/ __/ _ \
+    |  _| (_| | | \__ \   | |  \ V  V /| | (__| __/
+    |_|  \__,_|_|_|___/   |_|   \_/\_/ |_|\___\___|
                                                                    (1627 tests)
 
 ===============================================================================

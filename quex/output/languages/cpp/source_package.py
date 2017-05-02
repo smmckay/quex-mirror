@@ -171,7 +171,8 @@ def do():
 
     txt += buffer_filler
 
-    txt += "".join("/lexeme_converter/%s" % line for line in converter_helper)
+    txt += " ".join("/lexeme_converter/%s" % line for line in converter_helper)
+    txt += "\n"
 
     if Setup.extern_token_class_file != "":
         if   Setup.language == "C":   txt += token_default_C

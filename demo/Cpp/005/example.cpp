@@ -20,7 +20,6 @@ main(int argc, char** argv)
     QUEX_TYPE_TOKEN*      token_p;
     int                   number_of_tokens = 0;
     bool                  continue_lexing_f = true;
-    char                  included_file_name[256];
     EasyLexer  qlex(argc == 1 ? "example.txt" : argv[1], NULL);
 
     cout << ",------------------------------------------------------------------------------------\n";
@@ -49,11 +48,8 @@ main(int argc, char** argv)
                       (char*)QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
                 break;
             }
-            if( token_p->get_text().copy((uint8_t*)&included_file_name[0], (size_t)255) == token_p->get_text().length() ) {
-                included_file_name[token_p->get_text().length()] = (char)0;
-                print(&qlex, ">> including: ", (const char*)&included_file_name[0]);
-                qlex.include_push(&included_file_name[0], NULL);
-            }
+            print(&qlex, ">> including: ", (const char*)token_p->get_text());
+            qlex.include_push((const char*)token_p->get_text(), NULL);
         }
         else if( token_p->_id == QUEX_TKN_TERMINATION ) {
             space(qlex.include_depth);
@@ -86,7 +82,7 @@ print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p, bool TextF /* = 
     space(qlex->include_depth);
     printf("%i: (%i)", (int)token_p->line_number(), (int)token_p->column_number());
     printf("%s", token_p->type_id_name().c_str());
-    if( TextF ) printf("\t'%s'", (char*)token_p->text.c_str());
+    if( TextF ) printf("\t'%s'", (char*)token_p->text);
     printf("\n");
 }
 
