@@ -22,9 +22,9 @@
 #define QUEX_SETTING_CHAR_CODEC    8
 #define QUEX_SETTING_WCHAR_CODEC   32
 
-#include <quex/code_base/converter_helper/from-utf8.i>
-#include <quex/code_base/converter_helper/from-utf16.i>
-#include <quex/code_base/converter_helper/from-utf32.i>
+#include <quex/code_base/lexeme_converter/from-utf8.i>
+#include <quex/code_base/lexeme_converter/from-utf16.i>
+#include <quex/code_base/lexeme_converter/from-utf32.i>
 
 using namespace std;
 

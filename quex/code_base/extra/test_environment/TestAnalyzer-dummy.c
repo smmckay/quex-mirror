@@ -1028,7 +1028,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
             return buffer;
         }
 
-#include <quex/code_base/converter_helper/from-unicode-buffer.i>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
 
 #include <quex/code_base/lexeme.i>
    

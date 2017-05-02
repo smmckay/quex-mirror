@@ -39,13 +39,13 @@
 #ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UNICODE_BUFFER_I
 #define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UNICODE_BUFFER_I
 
-#include <quex/code_base/converter_helper/from-unicode-buffer>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer>
 
 /* (1) Access the implementation of the converter that will implement
  *     the unicode conversion.                                               */
-#include <quex/code_base/converter_helper/from-utf8.i>
-#include <quex/code_base/converter_helper/from-utf16.i>
-#include <quex/code_base/converter_helper/from-utf32.i>
+#include <quex/code_base/lexeme_converter/from-utf8.i>
+#include <quex/code_base/lexeme_converter/from-utf16.i>
+#include <quex/code_base/lexeme_converter/from-utf32.i>
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
@@ -94,11 +94,11 @@ QUEX_CONVERTER_CHAR_DEF(unicode, utf32)(const QUEX_TYPE_LEXATOM**  input_pp,
  *      of converters. (Generator uses __QUEX_FROM and QUEX_FROM_TYPE)      */
 #define  __QUEX_FROM       unicode
 #define  __QUEX_FROM_TYPE  QUEX_TYPE_LEXATOM
-#include <quex/code_base/converter_helper/generator/character-converter-to-char-wchar_t.gi>
+#include <quex/code_base/lexeme_converter/generator/character-converter-to-char-wchar_t.gi>
 
 /* (3) Generate string converters to utf8, utf16, utf32 based on the
  *     definitions of the character converters.                             */
-#include <quex/code_base/converter_helper/generator/implementations.gi>
+#include <quex/code_base/lexeme_converter/generator/implementations.gi>
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

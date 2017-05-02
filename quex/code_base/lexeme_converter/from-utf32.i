@@ -35,7 +35,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF32_I
 #define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF32_I
 
-#include <quex/code_base/converter_helper/from-utf32>
+#include <quex/code_base/lexeme_converter/from-utf32>
 
 #define __QUEX_FROM       utf32
 #define __QUEX_FROM_TYPE  uint32_t
@@ -112,11 +112,11 @@ QUEX_CONVERTER_CHAR_DEF(utf32, utf32)(const uint32_t**  input_pp,
 
 /* (1b) Derive converters to char and wchar_t from the given set 
  *      of converters. (Generator uses __QUEX_FROM and QUEX_FROM_TYPE)      */
-#include <quex/code_base/converter_helper/generator/character-converter-to-char-wchar_t.gi>
+#include <quex/code_base/lexeme_converter/generator/character-converter-to-char-wchar_t.gi>
 
 /* (2) Generate string converters to utf8, utf16, utf32 based on the
  *     definitions of the character converters.                             */
-#include <quex/code_base/converter_helper/generator/implementations.gi>
+#include <quex/code_base/lexeme_converter/generator/implementations.gi>
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

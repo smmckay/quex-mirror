@@ -80,8 +80,7 @@ $INCLUDE_CONVERTER_DECLARATION
 #       endif
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text,
-                                          E_MemoryObjectType_TEXT);
+            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);

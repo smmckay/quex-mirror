@@ -28,7 +28,7 @@ struct quex_Token_tag;
 extern const char* 
 QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   BufferSize); 
 
-#include <quex/code_base/converter_helper/from-unicode-buffer>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer>
 
 #include <quex/code_base/lexeme>
    

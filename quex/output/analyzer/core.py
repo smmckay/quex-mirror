@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-import quex.output.languages.cpp.mode_classes as     mode_classes
+import quex.output.analyzer.modes as     mode_classes
 from   quex.engine.misc.string_handling       import blue_print
 
 from   quex.DEFINITIONS import QUEX_PATH, \

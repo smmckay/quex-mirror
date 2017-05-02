@@ -7,7 +7,7 @@ import quex.input.command_line.core              as command_line
 import quex.input.files.core                     as quex_file_parser
 import quex.output.analyzer.core                 as analyzer_class
 import quex.output.languages.cpp.templates       as templates
-import quex.output.languages.cpp.token_class     as token_class
+import quex.output.token.core     as token_class
 # from   quex.TESTS.code.TEST.include_guard import better_name
 import quex.core                        as core
 

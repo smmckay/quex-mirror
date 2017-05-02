@@ -9,8 +9,8 @@ import quex.output.core.engine                           as     engine_generator
 import quex.output.analyzer.core                         as     analyzer_class
 import quex.output.analyzer.configuration                as     configuration 
 import quex.output.analyzer.lexeme_converter             as     lexeme_converter 
-import quex.output.languages.cpp.token_class             as     token_class
-import quex.output.languages.cpp.mode_classes            as     mode_classes
+import quex.output.token.core             as     token_class
+import quex.output.analyzer.modes            as     mode_classes
 import quex.output.languages.graphviz.core               as     grapviz_generator
 
 import quex.blackboard as     blackboard

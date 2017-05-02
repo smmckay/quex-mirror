@@ -61,7 +61,7 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 /* END: _______________________________________________________________________*/
 
-#include <quex/code_base/converter_helper/from-unicode-buffer>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer>
 
 #include <quex/code_base/analyzer/headers>
 

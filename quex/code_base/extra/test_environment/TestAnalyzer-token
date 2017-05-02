@@ -18,7 +18,7 @@
 #include <iostream>
 #include <string>
 
-#include <quex/code_base/converter_helper/from-unicode-buffer>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer>
 
 #include <quex/code_base/lexeme>
    
@@ -161,7 +161,7 @@ operator<<(std::ostream& ostr, const Token& Tok)
 { ostr << Tok.get_string(); return ostr; }
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#include <quex/code_base/converter_helper/from-unicode-buffer.i>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
 
 #include <quex/code_base/lexeme.i>
    

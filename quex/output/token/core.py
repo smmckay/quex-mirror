@@ -2,7 +2,7 @@
 # ABSOLUTELY NO WARANTY
 from   quex.input.files.token_type              import TokenTypeDescriptor
 from   quex.engine.misc.string_handling         import blue_print
-import quex.output.languages.cpp.token_id_maker as     token_id_maker
+import quex.output.token.id_generator as     token_id_maker
 import quex.blackboard                          as     blackboard
 from   quex.blackboard                          import setup as Setup, Lng
 

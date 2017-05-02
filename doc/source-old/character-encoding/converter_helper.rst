@@ -21,11 +21,11 @@ and ``wchar_t`` are provided for each generated lexical analyzer. For Unicode
 code based buffers the required functions are declared and implemented by
 including::
 
-     #include <quex/code_base/converter_helper/from-unicode-buffer>
+     #include <quex/code_base/lexeme_converter/from-unicode-buffer>
 
 and::
 
-     #include <quex/code_base/converter_helper/from-unicode-buffer.i>
+     #include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
 
 These headers depend on the definitions of::
 
@@ -144,15 +144,15 @@ accessed by including
 
 .. code-block:: cpp
 
-     #include <quex/code_base/converter_helper/from-utf8>
-     #include <quex/code_base/converter_helper/from-utf16>
-     #include <quex/code_base/converter_helper/from-utf32>
+     #include <quex/code_base/lexeme_converter/from-utf8>
+     #include <quex/code_base/lexeme_converter/from-utf16>
+     #include <quex/code_base/lexeme_converter/from-utf32>
 
 for the declarations and::
 
-     #include <quex/code_base/converter_helper/from-utf8.i>
-     #include <quex/code_base/converter_helper/from-utf16.i>
-     #include <quex/code_base/converter_helper/from-utf32.i>
+     #include <quex/code_base/lexeme_converter/from-utf8.i>
+     #include <quex/code_base/lexeme_converter/from-utf16.i>
+     #include <quex/code_base/lexeme_converter/from-utf32.i>
 
 for the implementations. They function exactly the same way as the dedicate 
 converters for the ``--encoding`` converters do. That is, their signatures are 

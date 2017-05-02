@@ -243,17 +243,18 @@ def prepare_file_names(Setup):
     else:
         Setup.output_token_class_file_implementation = __prepare_file_name("-token",     E_Files.SOURCE)
 
+    lexeme_converter_dir = "quex/code_base/lexeme_converter"
     if   Setup.buffer_codec.name == "utf8":
-        Setup.output_buffer_codec_header   = "quex/code_base/converter_helper/from-utf8"
-        Setup.output_buffer_codec_header_i = "quex/code_base/converter_helper/from-utf8.i"
+        Setup.output_buffer_codec_header   = "%s/from-utf8"    % lexeme_converter_dir
+        Setup.output_buffer_codec_header_i = "%s/from-utf8.i"  % lexeme_converter_dir
 
     elif Setup.buffer_codec.name == "utf16":
-        Setup.output_buffer_codec_header   = "quex/code_base/converter_helper/from-utf16"
-        Setup.output_buffer_codec_header_i = "quex/code_base/converter_helper/from-utf16.i"
+        Setup.output_buffer_codec_header   = "%s/from-utf16"   % lexeme_converter_dir
+        Setup.output_buffer_codec_header_i = "%s/from-utf16.i" % lexeme_converter_dir
 
     elif Setup.buffer_codec.name == "utf32":
-        Setup.output_buffer_codec_header   = "quex/code_base/converter_helper/from-utf32"
-        Setup.output_buffer_codec_header_i = "quex/code_base/converter_helper/from-utf32.i"
+        Setup.output_buffer_codec_header   = "%s/from-utf32"   % lexeme_converter_dir
+        Setup.output_buffer_codec_header_i = "%s/from-utf32.i" % lexeme_converter_dir
 
     elif Setup.buffer_codec.name != "unicode":
         # Note, that the name may be set to 'None' if the conversion is utf8 or utf16
@@ -263,8 +264,8 @@ def prepare_file_names(Setup):
         Setup.output_buffer_codec_header_i = \
             __prepare_file_name("-converter-%s" % Setup.buffer_codec.name, E_Files.HEADER_IMPLEMTATION)
     else:
-        Setup.output_buffer_codec_header   = "quex/code_base/converter_helper/from-unicode-buffer"
-        Setup.output_buffer_codec_header_i = "quex/code_base/converter_helper/from-unicode-buffer.i"
+        Setup.output_buffer_codec_header   = "%s/from-unicode-buffer"   % lexeme_converter_dir
+        Setup.output_buffer_codec_header_i = "%s/from-unicode-buffer.i" % lexeme_converter_dir
 
 def __prepare_file_name(Suffix, ContentType, BaseNameF=False):
     global Setup

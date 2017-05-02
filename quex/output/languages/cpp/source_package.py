@@ -142,23 +142,23 @@ buffer_filler = """
 /buffer/lexatoms/converter/icu/special_headers.h
 """
 
-converter_helper = """
-/converter_helper/common.h
-/converter_helper/identity
-/converter_helper/identity.i
-/converter_helper/generator/declarations.g
-/converter_helper/generator/implementations.gi
-/converter_helper/generator/string-converter.gi
-/converter_helper/generator/character-converter-to-char-wchar_t.gi
-/converter_helper/from-unicode-buffer
-/converter_helper/from-unicode-buffer.i
-/converter_helper/from-utf8
-/converter_helper/from-utf8.i
-/converter_helper/from-utf16
-/converter_helper/from-utf16.i
-/converter_helper/from-utf32
-/converter_helper/from-utf32.i
-"""
+converter_helper = [
+    "common.h",
+    "identity",
+    "identity.i",
+    "generator/declarations.g",
+    "generator/implementations.gi",
+    "generator/string-converter.gi",
+    "generator/character-converter-to-char-wchar_t.gi",
+    "from-unicode-buffer",
+    "from-unicode-buffer.i",
+    "from-utf8",
+    "from-utf8.i",
+    "from-utf16",
+    "from-utf16.i",
+    "from-utf32",
+    "from-utf32.i",
+]
 
 def do():
     # Analyzer base file list (required by any analyzer)
@@ -171,7 +171,7 @@ def do():
 
     txt += buffer_filler
 
-    txt += converter_helper       
+    txt += "".join("/lexeme_converter/%s" % line for line in converter_helper)
 
     if Setup.extern_token_class_file != "":
         if   Setup.language == "C":   txt += token_default_C

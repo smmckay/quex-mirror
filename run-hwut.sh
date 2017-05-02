@@ -52,7 +52,7 @@ run ./quex/TESTS/entry-exit/TEST
 run ./quex/TESTS/errors-warnings/TEST
 run ./quex/TESTS/indentation_count/TEST
 run ./quex/TESTS/reset/TEST
-run ./quex/code_base/converter_helper/TEST
+run ./quex/code_base/lexeme_converter/TEST
 run ./quex/code_base/TEST
 run ./quex/code_base/buffer/lexatoms/converter/iconv/TEST
 run ./quex/code_base/buffer/lexatoms/converter/icu/TEST

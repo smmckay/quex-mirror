@@ -1418,7 +1418,7 @@ quex/code_base/analyzer/TEST                                         <no date>
                                                                                
                       Encoding Converter Helper Functions                      
                                                                                
-quex/code_base/converter_helper/TEST                                 <no date>
+quex/code_base/lexeme_converter/TEST                                 <no date>
 -------------------------------------------------------------------------------
  * Test of complete character set on base converters (utf8, utf16, utf32)
         characters ...................................................[OK]
@@ -3216,7 +3216,7 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-           10      [OK] ............../converter_helper/TEST                          
+           10      [OK] ............../lexeme_converter/TEST                          
            5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            42      [OK] ..../engine/TEST                                              

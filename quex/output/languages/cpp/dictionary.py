@@ -42,6 +42,7 @@ class Language(dict):
     Match_vector             = re.compile("\\bvector\\b", re.UNICODE) 
     Match_map                = re.compile("\\bmap\\b", re.UNICODE)
     CODE_BASE                = "/quex/code_base/"
+    LEXEME_CONVERTER_DIR     = "quex/code_base/lexeme_converter"
 
     RETURN                   = "RETURN;"
     PURE_RETURN              = "__QUEX_PURE_RETURN;"
@@ -115,8 +116,8 @@ class Language(dict):
     def token_default_file(self):          return "/token/CppDefault.qx" 
     def analyzer_template_file(self):      return "/analyzer/TXT-Cpp"  
     def analyzer_template_i_file(self):    return "/analyzer/TXT-Cpp.i"  
-    def converter_helper_i_file(self):     return "/converter_helper/TXT-from-codec-buffer.i"
-    def converter_helper_file(self):       return "/converter_helper/TXT-from-codec-buffer"
+    def converter_helper_i_file(self):     return "/lexeme_converter/TXT-from-codec-buffer.i"
+    def converter_helper_file(self):       return "/lexeme_converter/TXT-from-codec-buffer"
     def analyzer_configuration_file(self): return "/analyzer/configuration/TXT"
 
     def register_analyzer(self, TheAnalyzer):
@@ -214,17 +215,17 @@ class Language(dict):
 
     def CONVERTER_HELPER_DECLARATION(self):
         if Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
-            return "#include <quex/code_base/converter_helper/from-%s>\n" % Setup.buffer_codec.name
+            return "#include <%s/from-%s>\n" % (self.LEXEME_CONVERTER_DIR, Setup.buffer_codec.name)
         elif Setup.buffer_codec.name == "unicode":
-            return "#include <quex/code_base/converter_helper/from-unicode-buffer>\n"
+            return "#include <%s/from-unicode-buffer>\n" % self.LEXEME_CONVERTER_DIR
         else:
             return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header)
 
     def CONVERTER_HELPER_IMLEMENTATION(self):
         if Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
-            return "#include <quex/code_base/converter_helper/from-%s.i>\n" % Setup.buffer_codec.name
+            return "#include <%s/from-%s.i>\n" % (self.LEXEME_CONVERTER_DIR, Setup.buffer_codec.name)
         elif Setup.buffer_codec.name == "unicode":
-            return "#include <quex/code_base/converter_helper/from-unicode-buffer.i>\n"
+            return "#include <%s/from-unicode-buffer.i>\n" % self.LEXEME_CONVERTER_DIR
         else:
             return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header_i)
                                                                                                                                 

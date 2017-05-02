@@ -154,8 +154,8 @@ main_template = """
 #define QUEX_NAME_TOKEN(NAME)            Token_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN        
 #define QUEX_NAMESPACE_TOKEN_CLOSE      
-#include <quex/code_base/converter_helper/from-utf32>
-#include <quex/code_base/converter_helper/from-utf32.i>
+#include <quex/code_base/lexeme_converter/from-utf32>
+#include <quex/code_base/lexeme_converter/from-utf32.i>
 #include <quex/code_base/single.i>
 
 typedef struct {

@@ -83,7 +83,7 @@ extern uint32_t  Common_LexemeNullObject;
 #define    QUEX_TYPE_LEXATOM                uint32_t
 
 #define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED
-#include <quex/code_base/converter_helper/from-unicode-buffer>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer>
 
 #undef  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__TMP_DISABLED
 

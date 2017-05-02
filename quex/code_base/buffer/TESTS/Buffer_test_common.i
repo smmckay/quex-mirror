@@ -7,11 +7,11 @@
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/buffer/Buffer_print.i>
-#include <quex/code_base/converter_helper/from-utf8.i>
-#include <quex/code_base/converter_helper/from-utf16.i>
-#include <quex/code_base/converter_helper/from-utf32.i>
-#include <quex/code_base/converter_helper/from-unicode-buffer>
-#include <quex/code_base/converter_helper/from-unicode-buffer.i>
+#include <quex/code_base/lexeme_converter/from-utf8.i>
+#include <quex/code_base/lexeme_converter/from-utf16.i>
+#include <quex/code_base/lexeme_converter/from-utf32.i>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
 #include <string.h>
 #include <cstdio>
 

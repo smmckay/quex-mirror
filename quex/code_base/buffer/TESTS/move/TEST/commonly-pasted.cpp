@@ -6,7 +6,7 @@
 #include <quex/code_base/buffer/Buffer_print.i>
 #include <quex/code_base/buffer/Buffer.i>
 #include <quex/code_base/buffer/asserts.i>
-#include <quex/code_base/converter_helper/from-unicode-buffer.i>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
 #include <quex/code_base/single.i>
 #include <cstring>
 #include <hwut_unit.h>

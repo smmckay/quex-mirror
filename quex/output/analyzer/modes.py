@@ -20,10 +20,10 @@ def do(ModeDb):
         "QUEX_NAMESPACE_MAIN_CLOSE\n"
     ])
 
-    txt = blue_print(txt, [["$$LEXER_CLASS_NAME$$",         LexerClassName],
-                           ["$$LEXER_DERIVED_CLASS_NAME$$", DerivedClassName]])
-    
-    return txt
+    return blue_print(txt, [
+        ["$$LEXER_CLASS_NAME$$",         LexerClassName],
+        ["$$LEXER_DERIVED_CLASS_NAME$$", DerivedClassName]
+    ])
 
 def write_member_functions(Modes):
     # -- get the implementation of mode class functions

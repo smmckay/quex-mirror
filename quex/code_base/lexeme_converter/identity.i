@@ -18,7 +18,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I
 #define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I
 
-#include <quex/code_base/converter_helper/identity>
+#include <quex/code_base/lexeme_converter/identity>
 
 QUEX_NAMESPACE_TOKEN_OPEN
 

@@ -1,5 +1,5 @@
 #include <quex/code_base/extra/post_categorizer/TEST/post-categorizer-common.h>
-#include <quex/code_base/converter_helper/from-unicode-buffer.i>
+#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
 
 using namespace quex;
 void post_categorizer_setup(QUEX_NAME(Dictionary)* me, int Seed);
