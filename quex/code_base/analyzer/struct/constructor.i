@@ -34,6 +34,10 @@
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
 #include <quex/code_base/analyzer/struct/include-stack>
 
+#if ! defined(QUEX_TYPE_TOKEN)
+#      error "QUEX_TYPE_TOKEN definition missing!"
+#endif
+
 QUEX_NAMESPACE_MAIN_OPEN
                     
 QUEX_INLINE void   QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER*  me,
@@ -41,9 +45,6 @@ QUEX_INLINE void   QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER*  me,
                                                   size_t               BufferMemorySize,
                                                   QUEX_TYPE_LEXATOM*   BufferEndOfContentP /* = 0 */);
 QUEX_INLINE void   QUEX_NAME(Asserts_construct)();
-QUEX_INLINE bool   QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE void   QUEX_NAME(Tokens_reset)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE void   QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me);
 
 QUEX_INLINE void
 QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
@@ -187,10 +188,11 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 
     __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
 
-    if( ! QUEX_NAME(Tokens_construct)(me) ) {
-        goto ERROR_0;
-    }
-    else if( ! QUEX_NAME(ModeStack_construct)(&me->_mode_stack) ) {
+    QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
+                                    (QUEX_TYPE_TOKEN*)&me->__memory_token_queue,
+                                    QUEX_SETTING_TOKEN_QUEUE_SIZE);
+
+    if( ! QUEX_NAME(ModeStack_construct)(&me->_mode_stack) ) {
         goto ERROR_1;
     }
 #   ifdef QUEX_OPTION_COUNTER
@@ -222,8 +224,7 @@ ERROR_4:
 #   endif
     /* NO ALLOCATED RESOURCES IN: 'me->mode_stack'                            */
 ERROR_1:
-    QUEX_NAME(Tokens_destruct)(me);
-ERROR_0:
+    QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
     /* NO ALLOCATED RESOURCES IN: 'me->_parent_memento = 0'                   */
     QUEX_NAME(all_but_buffer_resources_absent_mark)(me);
     return false;
@@ -252,7 +253,7 @@ QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
      * During destruction the all previously pushed analyzer states are 
      * popped and destructed, until only the outest state remains. This
      * is then the state that is destructed here.                             */
-    QUEX_NAME(Tokens_destruct)(me);
+    QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
 
     if( me->__input_name ) {
         QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
@@ -403,32 +404,6 @@ QUEX_NAME(Asserts_construct)()
         QUEX_ERROR_EXIT("Path termination code (PTC) and buffer limit code (BLC) must be different.\n");
     }
 #   endif
-}
-
-#if ! defined(QUEX_TYPE_TOKEN)
-#      error "QUEX_TYPE_TOKEN must be defined before inclusion of this file."
-#endif
-QUEX_INLINE bool
-QUEX_NAME(Tokens_construct)(QUEX_TYPE_ANALYZER* me)
-{
-    QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
-                                    (QUEX_TYPE_TOKEN*)&me->__memory_token_queue,
-                                    QUEX_SETTING_TOKEN_QUEUE_SIZE);
-    return true;
-}
-
-QUEX_INLINE void
-QUEX_NAME(Tokens_destruct)(QUEX_TYPE_ANALYZER* me)
-{
-    /* Even if the token memory is user managed, the destruction (not the
-     * freeing of memory) must happen at this place.                          */
-    QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
-}
-
-QUEX_INLINE void 
-QUEX_NAME(Tokens_reset)(QUEX_TYPE_ANALYZER* me)
-{
-    QUEX_NAME(TokenQueue_reset)(&me->_token_queue);
 }
 
 QUEX_INLINE const char*

@@ -32,8 +32,8 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF16_I
-#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF16_I
+#ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF16_I
+#define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF16_I
 
 #include <quex/code_base/lexeme_converter/from-utf16>
 
@@ -127,4 +127,4 @@ QUEX_CONVERTER_CHAR_DEF(utf16, utf32)(const uint16_t**  input_pp,
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__FROM_UTF16_I */
+#endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF16_I */

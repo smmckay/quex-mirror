@@ -1,3 +1,6 @@
+IMPORTANT: Do never directly assign to 'token_p->text' a string constant!
+           Otherwise, quex will try to delete it!
+
 Reset: mention 'byte_order_reversion' must be reset, manually.
        user_reset: user must free any resource, in case of failure.
 

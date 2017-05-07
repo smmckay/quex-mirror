@@ -1,0 +1,18 @@
+
+No output is good output (make)
+quex -i                     ecmascript.qx    \
+	 --analyzer-class       ecmascript_lexer \
+	 --token-id-prefix      TOK_             \
+	 --template-compression                  \
+	 --codec                utf8             \
+	 -b                     1                \
+	 --debug-exception                       \
+	 2>&1
+(done)
+List of generated files:
+ecmascript_lexer-configuration
+ecmascript_lexer-token
+ecmascript_lexer-token_ids
+ecmascript_lexer.cpp
+ecmascript_lexer
+<terminated>

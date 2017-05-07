@@ -146,7 +146,7 @@ class CountAction(namedtuple("CountAction", ("cc_type", "value", "sr"))):
 
     def get_OpList(self, ColumnCountPerChunk):
         if ColumnCountPerChunk is None:
-            return count_operation_db_without_reference[self.cc_type](self.value)
+            return count_operation_db_without_reference[self.cc_type](self.value, None)
         else:
             return count_operation_db_with_reference[self.cc_type](self.value, 
                                                                    ColumnCountPerChunk)

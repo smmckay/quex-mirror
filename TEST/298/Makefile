@@ -1,0 +1,21 @@
+all:
+	quex -i                     ecmascript.qx    \
+		 --analyzer-class       ecmascript_lexer \
+		 --token-id-prefix      TOK_             \
+		 --template-compression                  \
+		 --codec                utf8             \
+		 -b                     1                \
+		 --debug-exception                       \
+		 2>&1
+
+without-debug:
+	quex -i                     ecmascript.qx    \
+		 --analyzer-class       ecmascript_lexer \
+		 --token-id-prefix      TOK_             \
+		 --template-compression                  \
+		 --codec                utf8             \
+		 -b                     1                
+
+clean:
+	rm -f ecmascript_lexer*
+	rm -f tmp.*

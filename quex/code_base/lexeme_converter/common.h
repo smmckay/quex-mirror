@@ -2,8 +2,8 @@
  *
  * (C) Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                    */
-#ifndef  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__COMMON_H
-#define  __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__COMMON_H
+#ifndef  __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__COMMON_H
+#define  __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__COMMON_H
 
 #include <quex/code_base/definitions>
 #include <quex/code_base/MemoryManager>
@@ -42,4 +42,4 @@
  * headers have been made available--by inclusion before they were included  */
 #define QUEX_OPTION_LEXEME_CONVERTERS
 
-#endif                   /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__COMMON_H */
+#endif                   /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__COMMON_H */

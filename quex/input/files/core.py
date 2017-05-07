@@ -107,7 +107,7 @@ def parse_section(fh):
         elif word == "init":
             error.log("Section 'init' is no longer supported.\n"
                       "Keyword 'constructor' is provided instead.\n"
-                      "Use 'destructor' to define destructor code.\n")
+                      "Use 'destructor' to define destructor code.\n", fh)
 
         elif word == "start":
             mode_name = parse_identifier_assignment(fh)

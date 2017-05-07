@@ -5,6 +5,6 @@ mode COMMENTATOR {
    "/*"([^*]|("*"[^/]))*"*/" => QUEX_TKN_COMMENT(LexemeNull);
 }
 mode ALL : COMMENTATOR {
-   [a-z]+                    => QUEX_TKN_IDENTIFIER(Lexeme);
-   [ \n\t]+                  => QUEX_TKN_WHITESPACE(LexemeNull);
+   [a-z]+   => QUEX_TKN_IDENTIFIER(Lexeme);
+   [ \n\t]+ => QUEX_TKN_WHITESPACE(LexemeNull);
 }

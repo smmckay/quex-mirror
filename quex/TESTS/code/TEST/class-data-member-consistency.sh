@@ -23,10 +23,10 @@ fi
 tmpC=$(mktemp)
 tmpCpp=$(mktemp)
 
-awk -e 'BEGIN{ok=0} / Data Members \)/ { ok = !ok; } { if(ok) { print; } }'  \
+awk 'BEGIN{ok=0} / Data Members \)/ { ok = !ok; } { if(ok) { print; } }'  \
     $QUEX_PATH/quex/code_base/analyzer/TXT-C   > $tmpC
 
-awk -e 'BEGIN{ok=0} / Data Members \)/ { ok = !ok; } { if(ok) { print; } }'  \
+awk 'BEGIN{ok=0} / Data Members \)/ { ok = !ok; } { if(ok) { print; } }'  \
     $QUEX_PATH/quex/code_base/analyzer/TXT-Cpp > $tmpCpp
 
 echo "(*) Check: extracted content != 0  (else verdict 'same' is meaningless)"

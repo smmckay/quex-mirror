@@ -35,8 +35,7 @@ $INCLUDE_CONVERTER_DECLARATION
         self._id  = Other._id;
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text,
-                                       E_MemoryObjectType_TEXT);
+            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
             self.text = \
@@ -44,9 +43,14 @@ $INCLUDE_CONVERTER_DECLARATION
                QUEXED(MemoryManager_allocate)(
                       sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1),
                       E_MemoryObjectType_TEXT);
-            __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
-                                sizeof(QUEX_TYPE_LEXATOM) 
-                              * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1));
+            if( self.text ) {
+                __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
+                                    sizeof(QUEX_TYPE_LEXATOM) 
+                                  * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1));
+            }
+            else {
+                self.text = LexemeNull;
+            }
         }
         self.number = Other.number;
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN

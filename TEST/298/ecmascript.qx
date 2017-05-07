@@ -1,0 +1,29 @@
+// Running Quex 0.67.3 on the following .qx file generates a Quex exception. 
+// Quex arguments used:  C:\Quex\quex-0.67.3\quex.bat -i C:/Users/Patrikj/Work/git/ecmascript/ecmascript.qx --analyzer-class ecmascript_lexer --foreign-token-id-file 
+// C:/Users/Patrikj/Work/gitecmascript_build_vc14_x64/generated/ecmascript_yacc.hpp --token-id-prefix TOK_ --template-compression --codec utf8 -b 1 
+// --odir C:/Users/Patrikj/Work/git/ecmascript_build_vc14_x64/generated
+
+token { X; }
+
+define 
+{
+	PATTERN_DIGIT		[0-9]
+
+	// En identifierare får inte börja med en siffra, och får inte innehålla meningsfulla tecken för JavaScript 
+	PATTERN_IDSTART	 [^0-9+\-<>*()\[\]?=&|~\\/\^%!{}\n\t\r"':;,. ]
+	
+	// Efter ett inledande tecken från PATTERN_IDSTART får man även använda siffror
+	PATTERN_IDPART	{PATTERN_IDSTART}|{PATTERN_DIGIT}
+	
+	// Sätt ihop ett uttryck som beskriver reglerna från IDSTART och IDPART
+	PATTERN_ID		{PATTERN_IDSTART}{PATTERN_IDPART}*
+}
+
+// Programläget är "master"-läget som svetsar ihop de tidigare lägena
+mode Program : <skip: [ \t]>	// Ignorera whitespace 
+			   <skip_range: "/*" "*/">
+{
+    {PATTERN_ID} => TOK_X;
+}
+
+start = Program;

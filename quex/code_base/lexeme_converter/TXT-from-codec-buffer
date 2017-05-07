@@ -25,8 +25,8 @@
  * (C) 2012 Frank-Rene Schaefer. 
  *     ABSOLUTELY NO WARRANTY                                                */
 /* 2010 (C) Frank-Rene Schaefer; ABSOLUTELY NO WARRANTY */
-#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__$$CODEC$$__
-#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__$$CODEC$$__
+#ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$CODEC$$__
+#define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$CODEC$$__
 
 #include <quex/code_base/lexeme_converter/common.h>
 
@@ -39,4 +39,4 @@ QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__$$CODEC$$__                */
+#endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$CODEC$$__                */

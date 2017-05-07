@@ -15,8 +15,8 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#ifndef __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I
-#define __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I
+#ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__IDENTITY_I
+#define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__IDENTITY_I
 
 #include <quex/code_base/lexeme_converter/identity>
 
@@ -72,4 +72,4 @@ QUEX_CONVERTER_STRING_DEF(identical, wchar)(const QUEX_TYPE_LEXATOM**  source_pp
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__CONVERTER_HELPER__IDENTITY_I */
+#endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__IDENTITY_I */
