@@ -761,21 +761,18 @@ demo/Cpp/TEST                                                        <no date>
  * demo/012:
 
     Single Application/Multiple Lexical Analyzers
-        012.sh DEBUG ...............................................[FAIL]
-               NDEBUG ..............................................[FAIL]
+        012.sh DEBUG .................................................[OK]
+               NDEBUG ................................................[OK]
 
  * demo/012b:
 
     Multiple Lexical Analyzers -- shared token
         012b.sh DEBUG ................................................[OK]
                 NDEBUG ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] 012.sh _ DEBUG
-                \__ NDEBUG
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -996,7 +993,7 @@ quex/TESTS/code/TEST                                                 <no date>
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
         include_guard.py convention ..................................[OK]
-                         undefinition ..............................[FAIL]
+                         undefinition ................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
  * Propper undefinition of configuration parameters.
@@ -1006,12 +1003,10 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] include_guard.py _ undefinition
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1254,7 +1249,7 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Analyzer State Tracer
         debug_show.sh ................................................[OK]
  * Customized codec files (option --codec-file)
-        customized_codec.sh ........................................[FAIL]
+        customized_codec.sh ..........................................[OK]
  * Inadmissible commonalities
         commonality.sh indentation-newline ...........................[OK]
                        mix ...........................................[OK]
@@ -1269,12 +1264,10 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Testing the implementation of line number pragmas
         line-number-pragma.sh qx .....................................[OK]
                               source .................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] customized_codec.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -3194,9 +3187,9 @@ SUMMARY:
 
            236     [OK] TEST                                                          
            56      [OK] demo/C/TEST                                                   
-        2  56    [FAIL] ..../Cpp/TEST                                                 
+           56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-        1  15    [FAIL] quex/TESTS/code/TEST                                          
+           15      [OK] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3207,7 +3200,7 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-        1  12    [FAIL] ........../misc/TEST                                          
+           12      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            16      [OK] ........../source-package/TEST                                
            1       [OK] ........../token-class/TEST                                   
@@ -3250,11 +3243,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _            
-    |  ___|_ _(_) |___     | || |     __  __
-    | |_ / _` | | / __|    | || |_    \ \/ /
-    |  _| (_| | | \__ \    |__   _     >  < 
-    |_|  \__,_|_|_|___/       |_|     /_/\_\
+     ___  _ _   _  __                        _      _ 
+    / _ \| | | | |/ /___  _ __ _ __ ___  ___| |_   | |
+   | | | | | | | ' // _ \| '__| '__/ _ \/ __| __|  | |
+   | |_| | | | | . \ (_) | |  | | |  __/ (__| |_   |_|
+    \___/|_|_| |_|\_\___/|_|  |_|  \___|\___|\__|  (_)
                                                                    (1628 tests)
 
 ===============================================================================
