@@ -51,10 +51,10 @@ def do(Mode_PrepPrepDB):
     txt = Lng.SWITCH(txt, "__QUEX_OPTION_PLAIN_C",                     Setup.language.upper() == "C")
     txt = Lng.SWITCH(txt, "__QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION", BeginOfLineSupportF)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_SYSTEM",               Setup.byte_order_is_that_of_current_system_f)
-    txt = Lng.SWITCH(txt, "__QUEX_OPTION_ENGINE_RUNNING_ON_CODEC",     Setup.buffer_codec.name != "unicode")
+    txt = Lng.SWITCH(txt, "__QUEX_OPTION_ENGINE_RUNNING_ON_CODEC",     Setup.buffer_encoding.name != "unicode")
 
     token_descr = blackboard.token_type_definition
-    codec_name  = Lng.SAFE_IDENTIFIER(Setup.buffer_codec.name)
+    codec_name  = Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
     include_guard_extension = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
                                                 + "__" + Setup.analyzer_class_name)
 

@@ -50,7 +50,7 @@ def do(BufferCodecName, BufferCodecFileName=""):
         try: 
            os.path.splitext(os.path.basename(BufferCodecFileName))
         except:
-            error.log("cannot interpret string following '--codec-file'")
+            error.log("cannot interpret string following '--encoding-file'")
         return EncodingTrafoByTable(FileName=BufferCodecFileName)
 
     elif BufferCodecName == "unicode":

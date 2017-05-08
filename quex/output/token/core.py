@@ -344,7 +344,7 @@ def _helper_definitions():
     txt += helper_definitions_common \
            % (Setup.buffer_lexatom_type,
               Setup.token_id_type,
-              Lng.SAFE_IDENTIFIER(Setup.buffer_codec.name),
+              Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
               Setup.output_token_id_file_ref)
 
     return txt

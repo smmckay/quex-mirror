@@ -3,7 +3,7 @@ all:
 		 --analyzer-class       ecmascript_lexer \
 		 --token-id-prefix      TOK_             \
 		 --template-compression                  \
-		 --codec                utf8             \
+		 --encoding                utf8             \
 		 -b                     1                \
 		 --debug-exception                       \
 		 2>&1
@@ -13,7 +13,7 @@ without-debug:
 		 --analyzer-class       ecmascript_lexer \
 		 --token-id-prefix      TOK_             \
 		 --template-compression                  \
-		 --codec                utf8             \
+		 --encoding                utf8             \
 		 -b                     1                
 
 clean:

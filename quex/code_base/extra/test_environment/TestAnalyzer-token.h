@@ -59,13 +59,12 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #       endif
 #   endif
 
-#   line 119 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 123 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
-       /*
-        */
+       /* Nothing here. */
    
 
-#   line 69 "TestAnalyzer-token.h"
+#   line 68 "TestAnalyzer-token.h"
 
 } quex_Token;
 

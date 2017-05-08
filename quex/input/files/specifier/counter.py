@@ -94,8 +94,8 @@ class LineColumnCount_Prep(CountBase_Prep):
         # Finalize / Produce 'LineColumnCount' object.
         # 
         ca_map = self._ca_map_specifier.finalize(
-                              Setup.buffer_codec.source_set.minimum(), 
-                              Setup.buffer_codec.source_set.least_greater_bound(), 
+                              Setup.buffer_encoding.source_set.minimum(), 
+                              Setup.buffer_encoding.source_set.least_greater_bound(), 
                               self.sr)
         check_grid_values_integer_multiples(ca_map)
         check_defined(ca_map, self.sr, E_CharacterCountType.LINE)
@@ -448,7 +448,7 @@ class CountActionMap_Prep(object):
         for character_set, info in self.__map:
             if info.cc_type in ignored: continue
             result.unite_with(character_set)
-        return result.get_complement(Setup.buffer_codec.source_set)
+        return result.get_complement(Setup.buffer_encoding.source_set)
 
     def check_grid_specification(self, Value, sr):
         if   Value == 0: 
@@ -520,8 +520,8 @@ def LineColumnCount_Default():
         specifier.add(NumberSet(ord('\n')), E_CharacterCountType.LINE, 1, SourceRef_DEFAULT)
         specifier.add(NumberSet(ord('\t')), E_CharacterCountType.GRID, 4, SourceRef_DEFAULT)
         specifier.define_else(E_CharacterCountType.COLUMN,   1, SourceRef_DEFAULT)     # Define: "\else"
-        _ca_map_default = specifier.finalize(Setup.buffer_codec.source_set.minimum(), 
-                                             Setup.buffer_codec.source_set.least_greater_bound(), # Apply:  "\else"
+        _ca_map_default = specifier.finalize(Setup.buffer_encoding.source_set.minimum(), 
+                                             Setup.buffer_encoding.source_set.least_greater_bound(), # Apply:  "\else"
                                              SourceRef_DEFAULT) 
     return _ca_map_default
 

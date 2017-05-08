@@ -1,6 +1,6 @@
 // Running Quex 0.67.3 on the following .qx file generates a Quex exception. 
 // Quex arguments used:  C:\Quex\quex-0.67.3\quex.bat -i C:/Users/Patrikj/Work/git/ecmascript/ecmascript.qx --analyzer-class ecmascript_lexer --foreign-token-id-file 
-// C:/Users/Patrikj/Work/gitecmascript_build_vc14_x64/generated/ecmascript_yacc.hpp --token-id-prefix TOK_ --template-compression --codec utf8 -b 1 
+// C:/Users/Patrikj/Work/gitecmascript_build_vc14_x64/generated/ecmascript_yacc.hpp --token-id-prefix TOK_ --template-compression --encoding utf8 -b 1 
 // --odir C:/Users/Patrikj/Work/git/ecmascript_build_vc14_x64/generated
 
 token { X; }

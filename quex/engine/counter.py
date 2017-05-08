@@ -251,11 +251,11 @@ class CountActionMap(list):
         # the character set 'number_set'. If the character set is represented
         # by the same number of chunks, than the column number per chunk is
         # found.
-        if not Setup.buffer_codec.variable_character_sizes_f():
+        if not Setup.buffer_encoding.variable_character_sizes_f():
             return column_incr_per_character
 
         chunk_n_per_character = \
-            Setup.buffer_codec.lexatom_n_per_character(number_set) 
+            Setup.buffer_encoding.lexatom_n_per_character(number_set) 
         if chunk_n_per_character is None:
             return None
         else:

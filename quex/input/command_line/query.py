@@ -14,9 +14,9 @@ import quex.engine.codec_db.core                as codec_db
 from   quex.blackboard import setup as Setup
 
 OPTION_DB = {
-        "--codec-info":         ["Information about supported characters of a codec."],
-        "--codec-file-info":    ["Information about supported characters of a codec file."],
-        "--codec-for-language": ["Lists possible codecs for a given language."],
+        "--encoding-info":         ["Information about supported characters of a codec."],
+        "--encoding-file-info":    ["Information about supported characters of a codec file."],
+        "--encoding-for-language": ["Lists possible codecs for a given language."],
         "--property":           ["Querying properties"],
         "--set-by-property":    ["Determining character set by property"],
         "--set-by-expression":  ["Determining character set by property"],
@@ -39,10 +39,10 @@ def run(cl, Argv):
     Setup.path_limit_code   = -1
 
     try: 
-        if   Setup.query_codec:                __handle_codec(cl)
-        elif Setup.query_codec_list:           __handle_codec_list(cl)
-        elif Setup.query_codec_file:           __handle_codec_file(cl)
-        elif Setup.query_codec_language:       __handle_codec_for_language(cl)
+        if   Setup.query_encoding:                __handle_codec(cl)
+        elif Setup.query_encoding_list:           __handle_codec_list(cl)
+        elif Setup.query_encoding_file:           __handle_codec_file(cl)
+        elif Setup.query_encoding_language:       __handle_codec_for_language(cl)
         elif Setup.query_property is not None: __handle_property(cl)
         elif Setup.query_set_by_property:      __handle_set_by_property(cl)
         elif Setup.query_set_by_expression:    __handle_set_by_expression(cl)
@@ -68,7 +68,7 @@ def get_supported_command_line_option_description():
     return txt
 
 def __handle_codec(cl):
-    codec_name = Setup.query_codec
+    codec_name = Setup.query_encoding
 
     character_set = codec_db.get_supported_unicode_character_set(CodecAlias=codec_name)
     __display_set(character_set, cl)
@@ -99,17 +99,17 @@ def __handle_codec_list(cl):
     print "".join(txt)
 
 def __handle_codec_file(cl):
-    file_name = cl.follow("", "--codec-file-info")
+    file_name = cl.follow("", "--encoding-file-info")
     character_set = codec_db.get_supported_unicode_character_set(FileName=file_name)
     __display_set(character_set, cl)
 
 def __handle_codec_for_language(cl):
-    language_name = cl.follow("", "--codec-for-language")
+    language_name = cl.follow("", "--encoding-for-language")
 
     supported_language_list = codec_db.get_supported_language_list()
 
     if language_name == "":
-        txt      = "Missing argument after '--codec-for-language'. Supported languages are:\n\n"
+        txt      = "Missing argument after '--encoding-for-language'. Supported languages are:\n\n"
         line_txt = ""
         for name in supported_language_list:
             line_txt += name + ", "
@@ -364,13 +364,13 @@ QUERY MODE (selected options):
 
   --help, -h            Brief help.
   --version, -v         Version information.
-  --codec-info, 
+  --encoding-info, 
   --ci                  Display Unicode characters of codec. 
-  --codec-list, 
+  --encoding-list, 
   --cl                  Display all fixed size character encodings that can be 
                         implemented in a state machine without a converter.
                         (Additionally, 'utf8' and 'utf16' are supported)
-  --codec-for-language, 
+  --encoding-for-language, 
   --cil                 Lists Unicode codecs supported human language. If no
                         language is specified, all available languages are 
                         listed.

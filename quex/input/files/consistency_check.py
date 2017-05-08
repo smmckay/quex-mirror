@@ -43,8 +43,8 @@ def do(ModePrepList):
 
     # (*) If a conversion or a codec engine is specified, then the 
     #     'on_bad_lexatom' handler must be specified in every mode.
-    lexatom_range = Setup.buffer_codec.lexatom_range
-    if not Setup.buffer_codec.drain_set.covers_range(lexatom_range.begin, 
+    lexatom_range = Setup.buffer_encoding.lexatom_range
+    if not Setup.buffer_encoding.drain_set.covers_range(lexatom_range.begin, 
                                                      lexatom_range.end):
         bad_mode_name_list = [ 
             mode.name for mode in ModePrepList
@@ -56,7 +56,7 @@ def do(ModePrepList):
                           % modes_str + \
                           "The range of values in buffer elements is [%i:%i].\n" \
                           % (lexatom_range.begin, lexatom_range.end-1) + \
-                          "Not all of those contain representations in the buffer's encoding '%s'." % Setup.buffer_codec.name,
+                          "Not all of those contain representations in the buffer's encoding '%s'." % Setup.buffer_encoding.name,
                           mode.sr, 
                           SuppressCode=NotificationDB.warning_codec_error_with_non_unicode)
 

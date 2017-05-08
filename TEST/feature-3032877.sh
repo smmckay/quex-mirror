@@ -9,7 +9,7 @@ fi
 
 case $1 in
     normal) converter="";;
-    codec)  converter="--codec utf8";;
+    codec)  converter="--encoding utf8";;
 esac
 
 tmp=`pwd`

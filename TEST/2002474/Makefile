@@ -23,7 +23,7 @@ lex_icu:
 
 lex_codec: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) --codec utf8  
+	@quex -i simple.qx -o $(X) --encoding utf8  
 	@echo "Compiling"
 	$(LDCPP) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
 
@@ -43,7 +43,7 @@ lex_icu_c:
 
 lex_codec_c: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) --codec utf8  --language C
+	@quex -i simple.qx -o $(X) --encoding utf8  --language C
 	@echo "Compiling"
 	$(LDC) $(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@ 
 

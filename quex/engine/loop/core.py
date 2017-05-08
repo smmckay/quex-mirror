@@ -244,7 +244,7 @@ class LoopEventHandlers:
     def __prepare_count_actions(ColumnNPerCodeUnit):
         # Variable character sizes: store the begin of character in 
         # 'LoopRestartP'. Loop start and character start are the same position.
-        if Setup.buffer_codec.variable_character_sizes_f():
+        if Setup.buffer_encoding.variable_character_sizes_f():
             pointer = E_R.LoopRestartP
         else:                                            
             pointer = E_R.InputP
@@ -264,7 +264,7 @@ class LoopEventHandlers:
         first letter is stored in 'character_begin_p'. To reset the input 
         pointer 'input_p = character_begin_p' is applied.  
         """
-        if Setup.buffer_codec.variable_character_sizes_f():
+        if Setup.buffer_encoding.variable_character_sizes_f():
             # 1 character == variable number of code units
             # => Begin of character must be stored upon entry 
             #    and restored upon exit.
@@ -310,7 +310,7 @@ class LoopEventHandlers:
         RETURNS: [0] on_before_reload
                  [1] on_after_reload
         """
-        if Setup.buffer_codec.variable_character_sizes_f():
+        if Setup.buffer_encoding.variable_character_sizes_f():
             maintain_loop_restart_p = True
         elif AppendixSmF:
             maintain_loop_restart_p = True
@@ -493,7 +493,7 @@ class LoopEventHandlers:
             result.add((E_R.CountReferenceP, "QUEX_OPTION_COUNTER_COLUMN"))
         if AppendixSmExistF:
             result.add(E_R.LoopRestartP)
-        if Setup.buffer_codec.variable_character_sizes_f():
+        if Setup.buffer_encoding.variable_character_sizes_f():
             result.add(E_R.LoopRestartP)
         if     E_R.LoopRestartP in result \
            and self.engine_type.subject_to_reload():
@@ -718,7 +718,7 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
     L_loop = NumberSet.from_union_of_iterable(
         x.character_set for x in chain(couple_list, plain_list)
     )
-    universal_set = Setup.buffer_codec.source_set
+    universal_set = Setup.buffer_encoding.source_set
     L_exit        = L_loop.get_complement(universal_set)
     if not L_exit.is_empty():
         exit_list = [ LoopMapEntry(L_exit, None, IidLoopExit, None) ]
@@ -810,7 +810,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
             if not appendix_sm.get_init_state().has_transitions(): continue
             lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, appendix_sm, 
                                                            False,
-                                                           Setup.buffer_codec)
+                                                           Setup.buffer_encoding)
             result[appendix_sm.get_id()] = lcci
         return result
 
@@ -852,7 +852,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
             appendix_sm_id = appendix_sm.get_id()
 
         if CA.cc_type == E_CharacterCountType.COLUMN:
-            if Setup.buffer_codec.variable_character_sizes_f(): pointer = E_R.LoopRestartP
+            if Setup.buffer_encoding.variable_character_sizes_f(): pointer = E_R.LoopRestartP
             else:                                               pointer = E_R.InputP
             ca = CountAction(E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM,
                              pointer, CA.sr)
@@ -917,7 +917,7 @@ def _get_analyzer_for_loop(loop_map, EventHandler):
     )
 
     # Code Transformation
-    verdict_f, sm = Setup.buffer_codec.do_state_machine(sm)
+    verdict_f, sm = Setup.buffer_encoding.do_state_machine(sm)
 
     # Loop Analyzer
     analyzer = analyzer_generator.do(sm, 
@@ -1022,7 +1022,7 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
     # Codec Transformation
     def transform(sm):
         verdict_f, \
-        sm_transformed = Setup.buffer_codec.do_state_machine(sm) 
+        sm_transformed = Setup.buffer_encoding.do_state_machine(sm) 
         if not verdict_f:
             error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
                       "contained character not suited for given character encoding.")

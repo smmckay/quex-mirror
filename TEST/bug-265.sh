@@ -20,7 +20,7 @@ for file in $file_list; do
 done
 
 quex -i nonsense.qx --foreign-token-id-file token_ids.h --token-class-file token.h \
-    --derived-class-file derived.h --dc Derived --codec-file codec.dat \
+    --derived-class-file derived.h --dc Derived --encoding-file codec.dat \
      -o EasyLexer --suppress 1 0 2>&1 --foreign-token-id-file-show --debug-exception 
 
 echo

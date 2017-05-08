@@ -12,7 +12,7 @@ Setup.buffer_limit_code = -1
 Setup.path_limit_code   = -1
 # Setup.buffer_element_specification_prepare()
 Setup.bad_lexatom_detection_f = False
-Setup.buffer_codec_set(bc_factory.do("utf8"), 1)
+Setup.buffer_encoding_set(bc_factory.do("utf8"), 1)
 
 if "--hwut-info" in sys.argv:
     print "Transformations"
@@ -23,7 +23,7 @@ def test(TestString):
     print "expression    = \"" + TestString + "\""
     pattern = core.do(TestString, {}).finalize(None)
 
-    # During 'finalize()': pattern.transform(Setup.buffer_codec)
+    # During 'finalize()': pattern.transform(Setup.buffer_encoding)
     # During 'finalize()': pattern.mount_post_context_sm()
     # During 'finalize()': pattern.mount_pre_context_sm()
     print "pattern\n" 

@@ -214,20 +214,20 @@ class Language(dict):
         return "\n#undef %s\n" % NAME
 
     def CONVERTER_HELPER_DECLARATION(self):
-        if Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
-            return "#include <%s/from-%s>\n" % (self.LEXEME_CONVERTER_DIR, Setup.buffer_codec.name)
-        elif Setup.buffer_codec.name == "unicode":
+        if Setup.buffer_encoding.name in ["utf8", "utf16", "utf32"]:
+            return "#include <%s/from-%s>\n" % (self.LEXEME_CONVERTER_DIR, Setup.buffer_encoding.name)
+        elif Setup.buffer_encoding.name == "unicode":
             return "#include <%s/from-unicode-buffer>\n" % self.LEXEME_CONVERTER_DIR
         else:
-            return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header)
+            return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_encoding_header)
 
     def CONVERTER_HELPER_IMLEMENTATION(self):
-        if Setup.buffer_codec.name in ["utf8", "utf16", "utf32"]:
-            return "#include <%s/from-%s.i>\n" % (self.LEXEME_CONVERTER_DIR, Setup.buffer_codec.name)
-        elif Setup.buffer_codec.name == "unicode":
+        if Setup.buffer_encoding.name in ["utf8", "utf16", "utf32"]:
+            return "#include <%s/from-%s.i>\n" % (self.LEXEME_CONVERTER_DIR, Setup.buffer_encoding.name)
+        elif Setup.buffer_encoding.name == "unicode":
             return "#include <%s/from-unicode-buffer.i>\n" % self.LEXEME_CONVERTER_DIR
         else:
-            return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_codec_header_i)
+            return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_encoding_header_i)
                                                                                                                                 
     @typed(Txt=(CodeFragment))
     def SOURCE_REFERENCED(self, Cf, PrettyF=False):

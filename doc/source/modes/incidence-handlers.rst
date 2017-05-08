@@ -221,7 +221,7 @@ the three handlers shown below.
    ``--no-bad-lexatom-detection`` or ``--nbld``.
    
 The ``on_bad_lexatom`` has always precedence over ``on_failure``. That is, if
-'--codec ASCII' is specified as engine encoding and a value greater than 0x7F
+'--encoding ASCII' is specified as engine encoding and a value greater than 0x7F
 appears, and encoding error is issued even if at the same time no pattern
 matches. ``on_bad_lexatom`` also detects non-complient buffer loads--a little
 late, hower. If a load procuder loads the buffer with data that contains the

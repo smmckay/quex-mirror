@@ -25,7 +25,7 @@
 # Variations: Column Number per CodeUnit = const. or not.
 #             Number of CodeUnits per Character = const. or not.
 #
-# Both variations are played through by the 'buffer_codec' being plain Unicode
+# Both variations are played through by the 'buffer_encoding' being plain Unicode
 # or UTF8, thus the choices: 'Unicode' and 'UTF8'. Additionally, two loop maps
 # are presented: One with all the same ratios for 'ColumnN/CodeUnit' for all 
 # characters and one with differing ratios.
@@ -58,13 +58,13 @@ if "--hwut-info" in sys.argv:
     sys.exit()
 
 dial_db = DialDB()
-Setup.buffer_codec_set(bc_factory.do("utf8"), 1) 
+Setup.buffer_encoding_set(bc_factory.do("utf8"), 1) 
 
 def test(LoopMap, ColumnNPerCodeUnit):
     global loop_map
     global dial_db
 
-    Setup.buffer_codec.source_set = NumberSet_All()
+    Setup.buffer_encoding.source_set = NumberSet_All()
 
     # Generate sample state machines from what the loop map tells.
     appendix_sm_list = _get_appendix_sm_list(loop_map)

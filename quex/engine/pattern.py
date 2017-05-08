@@ -5,7 +5,7 @@ import quex.engine.state_machine.algebra.reverse   as     reverse
 from   quex.engine.misc.tools                      import typed
 
 class Pattern:
-    """ALL STATE MACHINES ARE GIVEN IN THE CODEC OF 'Setup.buffer_codec'!
+    """ALL STATE MACHINES ARE GIVEN IN THE CODEC OF 'Setup.buffer_encoding'!
 
     .sm:
             Main state machine to match in forward direction for 

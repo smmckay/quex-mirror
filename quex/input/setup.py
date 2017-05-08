@@ -19,12 +19,12 @@ class QuexSetup:
         self.init(SetupInfo)
         range_max    = NumberSet_All()
         unit_test_bc = EncodingTrafoUnicode(range_max, range_max)
-        self.buffer_codec_set(unit_test_bc, -1)
+        self.buffer_encoding_set(unit_test_bc, -1)
 
-    def buffer_codec_set(self, BufferCodec, LexatomSizeInBytes): 
-        self.buffer_codec = BufferCodec
+    def buffer_encoding_set(self, BufferCodec, LexatomSizeInBytes): 
+        self.buffer_encoding = BufferCodec
         self.buffer_lexatom_size_in_byte = LexatomSizeInBytes
-        self.buffer_codec.adapt_source_and_drain_range(LexatomSizeInBytes)
+        self.buffer_encoding.adapt_source_and_drain_range(LexatomSizeInBytes)
 
     def init(self, SetupInfo):
         for key, entry in SetupInfo.items():
@@ -48,7 +48,7 @@ class QuexSetup:
         # Default values, maybe overiden later on.
         self.language_db  = None
         self.extension_db = None
-        self.buffer_codec = None
+        self.buffer_encoding = None
         self.compression_type_list = []
 
         file_in.specify_setup_object(self)
@@ -62,7 +62,7 @@ class QuexSetup:
             self.__dict__[Name] = Value
 
     def set_all_character_set_UNIT_TEST(self, Begin, End):
-        self.buffer_codec.source_set = NumberSet.from_range(Begin, End)
+        self.buffer_encoding.source_set = NumberSet.from_range(Begin, End)
 
     def get_file_reference(self, FileName):
         """When a source package is specified, then it must be given
@@ -128,10 +128,10 @@ SETUP_INFO = {
     "analyzer_derived_class_file":    [["--derived-class-file"],               ""],
     "analyzer_derived_class_name":    [["--derived-class", "--dc"],            ""],
     "bad_lexatom_detection_f":        [["--no-bad-lexatom-detection", "--nbld"], SetupParTypes.NEGATED_FLAG],
-    "buffer_codec_name":              [["--codec"],                            "unicode"],
-    "buffer_codec_file":              [["--codec-file"],                       ""],
+    "buffer_encoding_name":              [["--encoding"],                         "unicode"],
+    "buffer_encoding_file":              [["--encoding-file"],                    ""],
     "buffer_limit_code":              [["--buffer-limit"],                     0x0],
-    "buffer_lexatom_size_in_byte":            [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes]
+    "buffer_lexatom_size_in_byte":    [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes]
     "buffer_lexatom_type":            [["--buffer-element-type", "--bet"],     ""],
     "buffer_byte_order":              [["--endian"],                           "<system>"],
     "comment_state_machine_f":        [["--comment-state-machine"],            SetupParTypes.FLAG],
@@ -178,10 +178,10 @@ SETUP_INFO = {
     #
     "query_version_f":                [["--version", "-v"],               SetupParTypes.FLAG],
     "query_help_f":                   [["--help", "-h"],                  SetupParTypes.FLAG],
-    "query_codec":                    [["--codec-info", "--ci"],          ""],
-    "query_codec_list":               [["--codec-list", "--cl"],          SetupParTypes.FLAG],
-    "query_codec_file":               [["--codec-info-file", "--cif"],    ""], 
-    "query_codec_language":           [["--codec-for-language", "--cil"], ""],
+    "query_encoding":                    [["--encoding-info",         "--ei"],  ""],
+    "query_encoding_list":               [["--encoding-list",         "--el"],  SetupParTypes.FLAG],
+    "query_encoding_file":               [["--encoding-info-file",    "--eif"], ""], 
+    "query_encoding_language":           [["--encoding-for-language", "--eil"], ""],
     "query_property":                 [["--property", "--pr"],            SetupParTypes.OPTIONAL_STRING],
     "query_set_by_property":          [["--set-by-property", "--sbpr"],   ""], 
     "query_set_by_expression":        [["--set-by-expression", "--sbe"],  ""],
@@ -206,7 +206,7 @@ SETUP_INFO = {
     "extern_token_id_file":                      "",
     "token_id_foreign_definition_file_region_begin_re":  None,
     "token_id_foreign_definition_file_region_end_re":    None,
-    "output_buffer_codec_header_file":           None,
+    "output_buffer_encoding_header_file":           None,
     "output_header_file":                        None,
     "output_configuration_file":                 None,
     "output_code_file":                          None,
@@ -220,6 +220,12 @@ SETUP_INFO = {
     #
     # DEPRECATED
     #______________________________________________________________________________________________________
+    "XX_OLD_query_codec":                [["--codec-info", "--ci"],          ""],
+    "XX_OLD_query_codec_list":           [["--codec-list", "--cl"],          SetupParTypes.FLAG],
+    "XX_OLD_query_codec_file":           [["--codec-info-file", "--cif"],    ""], 
+    "XX_OLD_query_codec_language":       [["--codec-for-language", "--cil"], ""],
+    "XX_OLD_buffer_codec_name":          [["--codec"],                            "unicode"],
+    "XX_OLD_buffer_codec_file":          [["--codec-file"],                       ""],
     "XX_token_memory_management_by_user_f": [["--token-memory-management-by-user", "--tmmbu"], SetupParTypes.FLAG],
     "XX_post_categorizer_f":             [["--post-categorizer"],               SetupParTypes.FLAG],
     "XX_token_policy":                   [["--token-policy", "--tp"],           "queue"],                
@@ -297,6 +303,25 @@ class NotificationDB:
     warning_incidence_handler_overwrite              = 19
 
 DEPRECATED = { 
+  "XX_OLD_query_codec": 
+    ("Use '--encoding-info' or '--ei' instead of '--codec-info', '--ci'",
+     "0.67.5"),
+  "XX_OLD_query_codec_list":           
+    ("Use '--encoding-list' or '--el' instead of '--codec-list' or '--cl'",        
+     "0.67.5"),
+  "XX_OLD_query_codec_file":           
+    ("Use '--encoding-info-file' or '--eif' instead of '--codec-info-file' or '--cif'",  
+     "0.67.5"),
+  "XX_OLD_query_codec_language":       
+    ("User of '--encoding-for-language' or '--eil' instead of '--codec-for-language' or '--cil'", 
+     "0.67.5"),
+  "XX_OLD_buffer_codec_name": 
+    ("Buffer encoding is no longer specified via '--codec' use '--encoding'.",
+     "0.67.5"), 
+  "XX_OLD_buffer_codec_file":          
+    ("Buffer encoding specification file is no longer specified via\n"
+     "'--codec-file' use '--encoding-file'.",
+     "0.67.5"), 
   "XX_token_memory_management_by_user_f": 
      ("User token memory management option no longer available.",
       "0.67.4"), 
@@ -371,7 +396,7 @@ DEPRECATED = {
   "XX_buffer_element_size": 
       ("The command line option '--bytes-per-ucs-code-point' has been renamed to\n"
        "'--buffer-element-size'. The old name causes heavy confusion when it was\n"
-       "used in combination with dynamic length codecs (option --codec).", "0.49.1"),
+       "used in combination with dynamic length codecs (option --encoding).", "0.49.1"),
   "XX_buffer_element_size2": 
       ("The command line option '--bytes-per-trigger' has been renamed to\n"
        "'--buffer-element-size'. This naming was chose to harmonize with the\n"  
@@ -542,8 +567,8 @@ DOC = {
     "analyzer_class":                 ("Specify analyzer class with optional namespace.", ""),
     "analyzer_derived_class_file":    ("Name of file containing derived class.", ""),
     "analyzer_derived_class_name":    ("Name of derived class with optional namespace.", ""),
-    "buffer_codec_name":              ("Buffer internal codec.", ""),
-    "buffer_codec_file":              ("Codec file describing mapping to unicode code points.", ""),
+    "buffer_encoding_name":              ("Buffer internal codec.", ""),
+    "buffer_encoding_file":              ("Codec file describing mapping to unicode code points.", ""),
     "buffer_limit_code":              ("Buffer limit code.", ""),
     "buffer_lexatom_size_in_byte":    ("Buffer element size.", ""),
     "buffer_lexatom_type":            ("Buffer element type.", ""),

@@ -272,7 +272,7 @@ def test_plug_sequence(ByteSequenceDB):
     sm.states[end_index] = State()
 
     trafo = EncodingTrafoUTF8() 
-    Setup.buffer_codec_set(trafo, 1)
+    Setup.buffer_encoding_set(trafo, 1)
     trafo._plug_interval_sequences(sm, sm.init_state_index, end_index, ByteSequenceDB)
 
     sm = beautifier.do(sm)

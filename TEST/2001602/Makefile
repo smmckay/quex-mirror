@@ -23,7 +23,7 @@ lex_icu:
 
 lex_codec: 
 	@echo "Call to quex"
-	@quex -i simple.qx -o $(X) --codec utf8 --debug-exception
+	@quex -i simple.qx -o $(X) --encoding utf8 --debug-exception
 	@echo "Compiling"
 	$(LDCPP) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
 

@@ -1,61 +1,61 @@
 _____________________________________________________________________
-ARGUMENT_LIST: --bet u8 --codec utf8
+ARGUMENT_LIST: --bet u8 --encoding utf8
 
 #   define QUEX_TYPE_LEXATOM          u8
 
 _____________________________________________________________________
 
-ARGUMENT_LIST: --bet u16 --codec utf8
+ARGUMENT_LIST: --bet u16 --encoding utf8
 
 #   define QUEX_TYPE_LEXATOM          u16
 
 _____________________________________________________________________
 
-ARGUMENT_LIST: --bet u32 --codec utf8
+ARGUMENT_LIST: --bet u32 --encoding utf8
 #   define QUEX_TYPE_LEXATOM          u32
 
 
 _____________________________________________________________________
-ARGUMENT_LIST: --bet uint8_t --codec utf8
+ARGUMENT_LIST: --bet uint8_t --encoding utf8
 
 #   define QUEX_TYPE_LEXATOM          uint8_t
 
 _____________________________________________________________________
 
-ARGUMENT_LIST: --bet uint16_t --codec utf8
+ARGUMENT_LIST: --bet uint16_t --encoding utf8
 
 #   define QUEX_TYPE_LEXATOM          uint16_t
 
 _____________________________________________________________________
 
-ARGUMENT_LIST: --bet uint32_t --codec utf8
+ARGUMENT_LIST: --bet uint32_t --encoding utf8
 #   define QUEX_TYPE_LEXATOM          uint32_t
 
 
 _____________________________________________________________________
-ARGUMENT_LIST: --bet wchar_t --codec utf8
+ARGUMENT_LIST: --bet wchar_t --encoding utf8
 
 #   define QUEX_TYPE_LEXATOM          wchar_t
 
 _____________________________________________________________________
 
-ARGUMENT_LIST: --bet UChar --codec utf8
+ARGUMENT_LIST: --bet UChar --encoding utf8
 
 #   define QUEX_TYPE_LEXATOM          UChar
 
 _____________________________________________________________________
 
-ARGUMENT_LIST: --bet UChar --codec utf8 --converter-ucs-coding-name ASCII
+ARGUMENT_LIST: --bet UChar --encoding utf8 --converter-ucs-coding-name ASCII
 
 #   define QUEX_TYPE_LEXATOM          UChar
 
 _____________________________________________________________________
-ARGUMENT_LIST: --bet UChar --codec utf8 -b 1
+ARGUMENT_LIST: --bet UChar --encoding utf8 -b 1
 
 #   define QUEX_TYPE_LEXATOM          UChar
 
 _____________________________________________________________________
-ARGUMENT_LIST: --bet UChar --codec utf8 -b 2
+ARGUMENT_LIST: --bet UChar --encoding utf8 -b 2
 
 #   define QUEX_TYPE_LEXATOM          UChar
 

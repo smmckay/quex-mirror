@@ -35,7 +35,7 @@ def test(CodecName):
         print "#TODO delete temporary files"
 
 quex.blackboard.setup.language_db = languages.db["C"]()
-quex.blackboard.setup.output_buffer_codec_header = "converter-tester.h"
+quex.blackboard.setup.output_buffer_encoding_header = "converter-tester.h"
 
 test(sys.argv[1])
 

@@ -4,7 +4,7 @@ quex -i                     ecmascript.qx    \
 	 --analyzer-class       ecmascript_lexer \
 	 --token-id-prefix      TOK_             \
 	 --template-compression                  \
-	 --codec                utf8             \
+	 --encoding                utf8             \
 	 -b                     1                \
 	 --debug-exception                       \
 	 2>&1

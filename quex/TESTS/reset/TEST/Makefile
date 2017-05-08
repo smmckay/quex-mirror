@@ -10,7 +10,7 @@ CC = g++ -I$(QUEX_PATH) \
 all: $(FILES)
 
 codec-lexer: lexer.cpp 
-	quex -i simple-hindi.qx -o Simple --codec utf8 --debug-exception
+	quex -i simple-hindi.qx -o Simple --encoding utf8 --debug-exception
 	$(CC) lexer.cpp Simple.cpp  -o $@ \
 		  -DQUEX_SETTING_BUFFER_SIZE=39                     \
 	      -D__QUEX_SETTING_TEST_UTF8 

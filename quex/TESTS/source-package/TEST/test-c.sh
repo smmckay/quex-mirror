@@ -20,13 +20,13 @@ case $1 in
         option='-i simple.qx '
         ;;
     codec)
-        option='-i simple.qx --codec iso8859_7'
+        option='-i simple.qx --encoding iso8859_7'
         ;;
     codec-utf8)
-        option='-i simple.qx --codec utf8'
+        option='-i simple.qx --encoding utf8'
         ;;
     codec-utf16)
-        option='-i simple.qx --codec utf16 --bes 2'
+        option='-i simple.qx --encoding utf16 --bes 2'
         ;;
     no-include-stack)
         option='-i simple.qx -b 2 --no-include-stack'

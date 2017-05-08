@@ -16,7 +16,7 @@ test: Simple.o lexer.o
 
 Simple.c: test.qx
 	$(QUEX_PATH)/quex-exe.py \
-		                     --codec utf8          \
+		                     --encoding utf8          \
 							 -b 1                  \
 							 -i $<                 \
 							 -o $*                 \

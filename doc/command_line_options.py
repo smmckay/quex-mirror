@@ -306,10 +306,10 @@ Option("token_class_only_f", None,
 ),
 """
 There may be cases where the characters used to indicate buffer limit needs to
-be redefined, because the default value appear in a pattern.  For most codecs,
+be redefined, because the default value appear in a pattern.  For most encodings,
 such as ASCII and Unicode, the buffer limit codes do not intersect with valid
 used code points of characters. Theoretically however, the user may define 
-buffer codecs that require a different definition of the limiting codes.
+buffer encodings that require a different definition of the limiting codes.
 The following option allows modification of the buffer limit code:
 """,
 Option("buffer_limit_code", "number", 
@@ -328,10 +328,10 @@ Option("dos_carriage_return_newline_f", None,
      """If specified, the DOS newline (0x0D, 0x0A) is not considered whenever
      newline is required."""),
 """
-Input codecs other than ASCII or UTF32 (which map 1:1 to Unicode code points)
+Input encodings other than ASCII or UTF32 (which map 1:1 to Unicode code points)
 can be used in two ways. Either on uses a converter that converts the file
 content into Unicode and the engine still runs on Unicode, or the engine itself
-is adapted to the require codec. 
+is adapted to the require encoding. 
 
 Currently quex-generated lexers can interact with GNU IConv and IBM's ICU
 library as input converters. Using one of those requires, of course, that  the
@@ -340,37 +340,37 @@ library is usually present. ICU is likely required to be installed but also
 freely available. Using input converters, such as IConv or ICU is a flexible
 solution.  The converter can be adapted dynamically while the internal engine
 remains running on Unicode.  Alternatively, the engine can run directly on a
-specific codec, i.e. without a conversion to Unicode. This approach is less
+specific encoding, i.e. without a conversion to Unicode. This approach is less
 flexible, but may be faster.
 """,
 
-Option("buffer_codec_name", "codec name",
+Option("buffer_encoding_name", "encoding name",
      """
-     Specifies a codec for the generated engine. The codec name specifies
-     the codec of the internal analyzer engine. An engine generated for 
-     a specific codec can only analyze input of this particular codec. 
+     Specifies a encoding for the generated engine. The encoding name specifies
+     the encoding of the internal analyzer engine. An engine generated for 
+     a specific encoding can only analyze input of this particular encoding. 
      """,
      Note("""
-     When \\v{--codec} is specified the command line flag \\v{-b} or
+     When \\v{--encoding} is specified the command line flag \\v{-b} or
      \\v{--buffer-element-size} does not represent the number of bytes
      per character, but *the number of bytes per code element*. The
-     codec UTF8, for example, is of dynamic length and its code elements
+     encoding UTF8, for example, is of dynamic length and its code elements
      are bytes, thus only \\v{-b 1} makes sense. UTF16 triggers on elements
      of two bytes, while the length of an encoding for a character varies.
      For UTF16, only \\v{-b 2} makes sense.
      """),
 ),
-Option("buffer_codec_file", "file name", 
+Option("buffer_encoding_file", "file name", 
      """
-     By means of this option a freely customized codec can be defined. The
+     By means of this option a freely customized encoding can be defined. The
      \\v{file name} determines at the same time the file where
-     the codec mapping is described and the codec's name. The codec's name
+     the encoding mapping is described and the encoding's name. The encoding's name
      is the directory-stripped and extension-less part of the given
      follower.  Each line of such a file must consist of three numbers, that
      specify 'source interval begin', 'source interval length', and 'target
      interval end. Such a line specifies how a cohesive Unicode character
-     range is mapped to the number range of the customized codec. For
-     example, the mapping for codec iso8859-6 looks like the following.
+     range is mapped to the number range of the customized encoding. For
+     example, the mapping for encoding iso8859-6 looks like the following.
      """,
      Block("""
                     0x000 0xA1 0x00
@@ -384,15 +384,15 @@ Option("buffer_codec_file", "file name",
      """),
      """
      Here, the Unicode range from 0 to 0xA1 is mapped one to one from Unicode to 
-     the codec. 0xA4 and 0xAD are also the same as in Unicode. The remaining
+     the encoding. 0xA4 and 0xAD are also the same as in Unicode. The remaining
      lines describe how Unicode characters from the 0x600-er page are mapped 
      inside the range somewhere from 0xAC to 0xFF.
      """,
      Note("""
-     This option is only to be used, if quex does not support the codec
-     directly. The options \\v{--codec-info} and \\v{--codec-for-language} help to
-     find out whether Quex directly supports a specific codec. If a \\v{--codec-file}
-     is required, it is advisable to use \\v{--codec-file-info  file-name.dat} to
+     This option is only to be used, if quex does not support the encoding
+     directly. The options \\v{--encoding-info} and \\v{--encoding-for-language} help to
+     find out whether Quex directly supports a specific encoding. If a \\v{--encoding-file}
+     is required, it is advisable to use \\v{--encoding-file-info  file-name.dat} to
      see if the mapping is in fact as desired.""")),
 Option("bad_lexatom_detection_f", None, 
        """If present, the encoding error detection is turned off. That also 
@@ -409,7 +409,7 @@ runs on plain Unicode. Here also, a character occupies a fixed number
 of bytes. The check mark in 4 byte Unicode is coded as as 0x00001327.
 It is treated as one chunk and causes a single state transition.
 
-If the internal engine runs on a specific codec (\\v{--codec}) which is
+If the internal engine runs on a specific encoding (\\v{--encoding}) which is
 dynamic, e.g. UTF8, then state transitions happen on parts of a character.
 The check mark sign is coded in three bytes 0xE2, 0x9C, and 0x93. Each
 byte is read separately and causes a separate state transition.
@@ -425,8 +425,8 @@ Option("buffer_lexatom_size_in_byte", "1|2|4",
      it is inconceivable that any code point beyond 0xFFFF ever appears. In
      this case '-b 2' is enough.
 
-     When using dynamic sized codecs, this option is better not used. The
-     codecs define their chunks themselves. For example, UTF8 is built upon
+     When using dynamic sized encodings, this option is better not used. The
+     encodings define their chunks themselves. For example, UTF8 is built upon
      one byte chunks and UTF16 is built upon chunks of two bytes. 
      """,
      Note("""
@@ -446,10 +446,10 @@ Option("buffer_lexatom_type", "type name",
      automatically.
 
      Quex tries to determine the size of the buffer element type. This size is
-     important to determine the target codec when converters are used. That
-     is, if the size is 4 byte a different Unicode codec is used then if it
+     important to determine the target encoding when converters are used. That
+     is, if the size is 4 byte a different Unicode encoding is used then if it
      was 2 byte. If quex fails to determine the size of a buffer element from
-     the given name of the buffer element type, then the Unicode codec must
+     the given name of the buffer element type, then the Unicode encoding must
      be specified explicitly by '--converter-ucs-coding-name'.
 
      By default, the buffer element type is determined by the buffer element 
@@ -485,7 +485,7 @@ The implementation of customized converters is supported by the following option
 Option("converter_ucs_coding_name", "name", 
      """
      Determines what string is passed to the converter so that it converters
-     a codec into Unicode. In general, this is not necessary. But, if a 
+     a encoding into Unicode. In general, this is not necessary. But, if a 
      unknown user defined type is specified via '--buffer-element-type' then
      this option must be specified.
 
@@ -713,7 +713,7 @@ Item("9",
 Item("10",
      """
     Warning if there is no 'on_bad_lexatom' handler while a   
-    codec different from Unicode is used.                     
+    encoding different from Unicode is used.                     
      """),
 Item("11",
      """
@@ -762,26 +762,26 @@ Option("query_version_f", None,
 The following options allow to query on character sets and the result
 of regular expressions.
 """,
-Option("query_codec", "name",
+Option("query_encoding", "name",
        """
-   Displays the characters that are covered by the given codec's name. If the
-   name is omitted, a list of all supported codecs is printed. 
+   Displays the characters that are covered by the given encoding's name. If the
+   name is omitted, a list of all supported encodings is printed. 
        """),
-Option("query_codec_list", None,
+Option("query_encoding_list", None,
        """
    Displays all character encodings that can be implemented directly in the
    analyzer state machine without using a converter. Additionally, the encodings 
    'utf8' and 'utf16' are always supported.
        """),
-Option("query_codec_file", "file name", 
+Option("query_encoding_file", "file name", 
        """
-   Displays the characters that are covered by the codec provided in the
-   given file. This makes sense in conjunction with \\v{--codec-file} where 
-   customized codecs can be defined.
+   Displays the characters that are covered by the encoding provided in the
+   given file. This makes sense in conjunction with \\v{--encoding-file} where 
+   customized encodings can be defined.
        """),
-Option("query_codec_language", "language", 
+Option("query_encoding_language", "language", 
        """
-   Displays the codecs that quex supports for the given human language. If the
+   Displays the encodings that quex supports for the given human language. If the
    language argument is omitted, all available languages are listed.
        """),
 Option("query_property", "property", 

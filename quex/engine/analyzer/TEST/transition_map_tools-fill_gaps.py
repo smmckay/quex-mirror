@@ -27,7 +27,9 @@ def test(TM, Target="X"):
     print "____________________________________________________________________"
     print "BEFORE:"
     show(tm)
-    tm.fill_gaps(Target, Setup.buffer_codec.source_set.minimum(), Setup.buffer_codec.source_set.least_greater_bound())
+    tm.fill_gaps(Target, 
+                 Setup.buffer_encoding.source_set.minimum(), 
+                 Setup.buffer_encoding.source_set.least_greater_bound())
     tm.assert_adjacency(ChangeF=True)
     print "AFTER:"
     show(tm)

@@ -15,7 +15,7 @@ test: Simple.o lexer.o
 		-DPRINT_TOKEN                  
 
 Simple.c: test.qx
-	quex -i $< -o $* --language C --codec utf8
+	quex -i $< -o $* --language C --encoding utf8
 
 clean:
 	rm -f Simple*

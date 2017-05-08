@@ -478,7 +478,7 @@ def create_ALL_BUT_NEWLINE_state_machine(stream):
     result = StateMachine()
     # NOTE: Buffer control characters are supposed to be filtered out by the code
     #       generator.
-    trigger_set = NumberSet(Interval(ord("\n"))).get_complement(Setup.buffer_codec.source_set)
+    trigger_set = NumberSet(Interval(ord("\n"))).get_complement(Setup.buffer_encoding.source_set)
     if trigger_set.is_empty():
         error.log("The set of admissible characters contains only newline.\n"
                   "The '.' for 'all but newline' is an empty set.",
@@ -809,7 +809,7 @@ def snap_set_term(stream, PatternDict):
             if L > 1:
                 for character_set in set_list[1:]:
                     result.unite_with(character_set)
-            return __debug_exit(result.get_complement(Setup.buffer_codec.source_set), stream)
+            return __debug_exit(result.get_complement(Setup.buffer_encoding.source_set), stream)
 
         if L < 2:
             raise RegularExpressionException("Regular Expression: A %s operation needs at least\n" % word + \

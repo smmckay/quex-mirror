@@ -132,7 +132,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     BufferLimitCode = 0
     Setup.buffer_limit_code = BufferLimitCode
-    Setup.buffer_codec_set(bc_factory.do("unicode", None), LexatomSizeInBytes=1)
+    Setup.buffer_encoding_set(bc_factory.do("unicode", None), LexatomSizeInBytes=1)
 
     __Setup_init_language_database(Language)
 

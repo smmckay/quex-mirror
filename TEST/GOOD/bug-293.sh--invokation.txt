@@ -1,10 +1,10 @@
-quex -i codec.qx -o X --codec utf16 --bet u8  # => Error u8 cannot hold utf16
+quex -i codec.qx -o X --encoding utf16 --bet u8  # => Error u8 cannot hold utf16
 command line: Using encoding 'utf16' while buffer element size is is not 2 (found 1).
 command line: Consult command line argument --buffer-element-size, -b, or --bes
 Makefile:35: recipe for target 'Message0' failed
-quex -i codec.qx -o X --codec utf16 --bet u16 --token-id-prefix CODEC_TKN_ # => Ok, 'u16' can hold utf16
-quex -i codec.qx -o X --codec utf16 --bet u32 --token-id-prefix CODEC_TKN_  # => Ok, 'u32' can hold utf32
-quex -i codec.qx -o X --codec utf16 --bet int16_t --token-id-prefix CODEC_TKN_  # => Error, range 'i16' = 32768
+quex -i codec.qx -o X --encoding utf16 --bet u16 --token-id-prefix CODEC_TKN_ # => Ok, 'u16' can hold utf16
+quex -i codec.qx -o X --encoding utf16 --bet u32 --token-id-prefix CODEC_TKN_  # => Ok, 'u32' can hold utf32
+quex -i codec.qx -o X --encoding utf16 --bet int16_t --token-id-prefix CODEC_TKN_  # => Error, range 'i16' = 32768
 command line: Using encoding 'utf16' while buffer element size is undetermined (found type 'int16_t').
 command line: Consult command line argument --buffer-element-size, -b, or --bes
 Makefile:44: recipe for target 'Message3' failed

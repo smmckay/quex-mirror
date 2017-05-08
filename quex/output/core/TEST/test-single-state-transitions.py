@@ -35,7 +35,7 @@ dial_db = DialDB()
 
 Setup.language_db = languages.db["C++"]()
 Setup.buffer_lexatom_type = "uint32_t"
-Setup.buffer_codec_set(bc_factory.do("unicode", None), -1)
+Setup.buffer_encoding_set(bc_factory.do("unicode", None), -1)
 
 
 if "--hwut-info" in sys.argv:
@@ -114,8 +114,8 @@ elif choice == "C":
 def prepare(tm):
     tm.sort()
     tm.fill_gaps(E_IncidenceIDs.MATCH_FAILURE, 
-                 Setup.buffer_codec.drain_set.minimum(), 
-                 Setup.buffer_codec.drain_set.least_greater_bound())
+                 Setup.buffer_encoding.drain_set.minimum(), 
+                 Setup.buffer_encoding.drain_set.least_greater_bound())
 
     iid_db = defaultdict(NumberSet)
     for interval, iid in tm:
@@ -125,11 +125,11 @@ def prepare(tm):
 
 def get_transition_function(iid_map, Codec):
     global dial_db
-    if Codec == "UTF8": Setup.buffer_codec_set(bc_factory.do("utf8"), 1)
-    else:               Setup.buffer_codec_set(bc_factory.do("unicode"), -1)
+    if Codec == "UTF8": Setup.buffer_encoding_set(bc_factory.do("utf8"), 1)
+    else:               Setup.buffer_encoding_set(bc_factory.do("unicode"), -1)
 
     sm        = StateMachine.from_IncidenceIdMap(iid_map)
-    dummy, sm = Setup.buffer_codec.do_state_machine(sm)
+    dummy, sm = Setup.buffer_encoding.do_state_machine(sm)
     analyzer  = analyzer_generator.do(sm, engine.CHARACTER_COUNTER, dial_db=dial_db)
     tm_txt    = do_analyzer(analyzer)
     tm_txt    = Lng.GET_PLAIN_STRINGS(tm_txt, dial_db=dial_db)

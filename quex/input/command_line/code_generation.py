@@ -55,9 +55,9 @@ def prepare(command_line, argv):
 
     lexatom_size_in_byte = __prepare_buffer_element_specification(Setup)
 
-    buffer_codec = bc_factory.do(Setup.buffer_codec_name, 
-                                 Setup.buffer_codec_file)
-    Setup.buffer_codec_set(buffer_codec, lexatom_size_in_byte)
+    buffer_encoding      = bc_factory.do(Setup.buffer_encoding_name, 
+                                         Setup.buffer_encoding_file)
+    Setup.buffer_encoding_set(buffer_encoding, lexatom_size_in_byte)
 
     type_info = global_character_type_db.get(Setup.buffer_lexatom_type)
     if     type_info is not None and len(type_info) >= 4 \
@@ -244,28 +244,28 @@ def prepare_file_names(Setup):
         Setup.output_token_class_file_implementation = __prepare_file_name("-token",     E_Files.SOURCE)
 
     lexeme_converter_dir = "quex/code_base/lexeme_converter"
-    if   Setup.buffer_codec.name == "utf8":
-        Setup.output_buffer_codec_header   = "%s/from-utf8"    % lexeme_converter_dir
-        Setup.output_buffer_codec_header_i = "%s/from-utf8.i"  % lexeme_converter_dir
+    if   Setup.buffer_encoding.name == "utf8":
+        Setup.output_buffer_encoding_header   = "%s/from-utf8"    % lexeme_converter_dir
+        Setup.output_buffer_encoding_header_i = "%s/from-utf8.i"  % lexeme_converter_dir
 
-    elif Setup.buffer_codec.name == "utf16":
-        Setup.output_buffer_codec_header   = "%s/from-utf16"   % lexeme_converter_dir
-        Setup.output_buffer_codec_header_i = "%s/from-utf16.i" % lexeme_converter_dir
+    elif Setup.buffer_encoding.name == "utf16":
+        Setup.output_buffer_encoding_header   = "%s/from-utf16"   % lexeme_converter_dir
+        Setup.output_buffer_encoding_header_i = "%s/from-utf16.i" % lexeme_converter_dir
 
-    elif Setup.buffer_codec.name == "utf32":
-        Setup.output_buffer_codec_header   = "%s/from-utf32"   % lexeme_converter_dir
-        Setup.output_buffer_codec_header_i = "%s/from-utf32.i" % lexeme_converter_dir
+    elif Setup.buffer_encoding.name == "utf32":
+        Setup.output_buffer_encoding_header   = "%s/from-utf32"   % lexeme_converter_dir
+        Setup.output_buffer_encoding_header_i = "%s/from-utf32.i" % lexeme_converter_dir
 
-    elif Setup.buffer_codec.name != "unicode":
+    elif Setup.buffer_encoding.name != "unicode":
         # Note, that the name may be set to 'None' if the conversion is utf8 or utf16
         # See Internal engine character encoding'
-        Setup.output_buffer_codec_header = \
-            __prepare_file_name("-converter-%s" % Setup.buffer_codec.name, E_Files.HEADER)
-        Setup.output_buffer_codec_header_i = \
-            __prepare_file_name("-converter-%s" % Setup.buffer_codec.name, E_Files.HEADER_IMPLEMTATION)
+        Setup.output_buffer_encoding_header = \
+            __prepare_file_name("-converter-%s" % Setup.buffer_encoding.name, E_Files.HEADER)
+        Setup.output_buffer_encoding_header_i = \
+            __prepare_file_name("-converter-%s" % Setup.buffer_encoding.name, E_Files.HEADER_IMPLEMTATION)
     else:
-        Setup.output_buffer_codec_header   = "%s/from-unicode-buffer"   % lexeme_converter_dir
-        Setup.output_buffer_codec_header_i = "%s/from-unicode-buffer.i" % lexeme_converter_dir
+        Setup.output_buffer_encoding_header   = "%s/from-unicode-buffer"   % lexeme_converter_dir
+        Setup.output_buffer_encoding_header_i = "%s/from-unicode-buffer.i" % lexeme_converter_dir
 
 def __prepare_file_name(Suffix, ContentType, BaseNameF=False):
     global Setup

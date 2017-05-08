@@ -48,7 +48,7 @@ moritz_Lexer.cpp: moritz.qx
 
 boeck_Lexer \
 boeck_Lexer.cpp:  boeck.qx
-	quex -i token.qx $< -o boeck::Lexer --codec utf8 \
+	quex -i token.qx $< -o boeck::Lexer --encoding utf8 \
 		 --token-id-prefix TKN_ \
 		 --suppress 6
 

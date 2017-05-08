@@ -25,13 +25,13 @@ QUERY MODE (selected options):
 
   --help, -h            Brief help.
   --version, -v         Version information.
-  --codec-info, 
+  --encoding-info, 
   --ci                  Display Unicode characters of codec. 
-  --codec-list, 
+  --encoding-list, 
   --cl                  Display all fixed size character encodings that can be 
                         implemented in a state machine without a converter.
                         (Additionally, 'utf8' and 'utf16' are supported)
-  --codec-for-language, 
+  --encoding-for-language, 
   --cil                 Lists Unicode codecs supported human language. If no
                         language is specified, all available languages are 
                         listed.

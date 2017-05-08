@@ -43,7 +43,7 @@ if "--hwut-info" in sys.argv:
     print "CHOICES: Plain, AppendixNoI, AppendixI, Split;"
 
 def test(NsCaList, SM_list=[]):
-    Setup.buffer_codec.source_set = NumberSet_All()
+    Setup.buffer_encoding.source_set = NumberSet_All()
     ca_map        = CountActionMap.from_list(NsCaList)
     iid_loop_exit = dial.new_incidence_id()
 

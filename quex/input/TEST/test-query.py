@@ -29,15 +29,15 @@ if sys.argv[1] == "PropertyList":
     do(simulated_argv)
 
 elif sys.argv[1] == "CodecList":
-    simulated_argv = [ "", "--codec-list" ]
+    simulated_argv = [ "", "--encoding-list" ]
     do(simulated_argv)
-    simulated_argv = [ "", "--cl" ]
+    simulated_argv = [ "", "--el" ]
     do(simulated_argv)
 
 elif sys.argv[1] == "CodecInfo":
-    simulated_argv = [ "", "--codec-info", "cp037" ]
+    simulated_argv = [ "", "--encoding-info", "cp037" ]
     do(simulated_argv)
-    simulated_argv = [ "", "--ci", "cp037" ]
+    simulated_argv = [ "", "--ei", "cp037" ]
     do(simulated_argv)
 
 else:

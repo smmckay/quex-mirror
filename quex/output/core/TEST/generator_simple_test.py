@@ -37,7 +37,7 @@ def setup_buffer(BufferLimitCode):
     BufferLimitCode = 0
     Setup.buffer_limit_code = BufferLimitCode
     Setup.buffer_element_specification_prepare()
-    Setup.buffer_codec_set(bc_factory.do("unicode", None))
+    Setup.buffer_encoding_set(bc_factory.do("unicode", None))
 
 def setup_language(Language):
     __Setup_init_language_database(Language)

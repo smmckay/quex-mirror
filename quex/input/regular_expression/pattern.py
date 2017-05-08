@@ -221,7 +221,7 @@ class Pattern_Prep(object):
         if CaMap is not None:
             lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, self.sm, 
                                                            self.pre_context_trivial_begin_of_line_f, 
-                                                           Setup.buffer_codec)
+                                                           Setup.buffer_encoding)
         else: 
             lcci = None
 
@@ -233,9 +233,9 @@ class Pattern_Prep(object):
         verdict_f,      \
         sm_main,                       \
         sm_pre_context_to_be_inverted, \
-        sm_post_context                = self.__finalize_transform(Setup.buffer_codec)
+        sm_post_context                = self.__finalize_transform(Setup.buffer_encoding)
         if not verdict_f:
-            error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_codec.name \
+            error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
                           + "(Buffer element size is %s [byte])" % Setup.buffer_lexatom_size_in_byte,
                           self.sr)
 
@@ -328,9 +328,9 @@ class Pattern_Prep(object):
         # However: Transformation may generate a new state machine.
         # => To maintain incidence id, store the original one and restore it
         #    after transformation. 
-        c0, sm                            = Setup.buffer_codec.do_state_machine(self.__sm) 
-        c1, pre_context_sm_to_be_inverted = Setup.buffer_codec.do_state_machine(self.__pre_context_sm_to_be_inverted) 
-        c2, post_context_sm               = Setup.buffer_codec.do_state_machine(self.__post_context_sm) 
+        c0, sm                            = Setup.buffer_encoding.do_state_machine(self.__sm) 
+        c1, pre_context_sm_to_be_inverted = Setup.buffer_encoding.do_state_machine(self.__pre_context_sm_to_be_inverted) 
+        c2, post_context_sm               = Setup.buffer_encoding.do_state_machine(self.__post_context_sm) 
         verdict = c0 and c1 and c2
 
         # Only if all transformations have been complete, then the transformation

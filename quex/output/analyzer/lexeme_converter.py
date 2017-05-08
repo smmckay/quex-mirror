@@ -35,12 +35,12 @@ from quex.constants  import INTEGER_MAX
 from copy import copy
 
 def do():
-    if Setup.buffer_codec.name == "unicode": 
+    if Setup.buffer_encoding.name == "unicode": 
         return None, None
-    elif isinstance(Setup.buffer_codec, EncodingTrafoBySplit):
+    elif isinstance(Setup.buffer_encoding, EncodingTrafoBySplit):
         return None, None
 
-    return _do(Setup.buffer_codec) 
+    return _do(Setup.buffer_encoding) 
 
 def _do(UnicodeTrafoInfo):
     """
@@ -66,7 +66,7 @@ def _do(UnicodeTrafoInfo):
     utf32_function_body = ConverterWriterUTF32().do(UnicodeTrafoInfo)
 
     # Provide only the constant which are necessary
-    codec_header = Setup.get_file_reference(Setup.output_buffer_codec_header)
+    codec_header = Setup.get_file_reference(Setup.output_buffer_encoding_header)
 
     template_txt_i = Lng.open_template(Lng.converter_helper_i_file())
     txt_i = blue_print(template_txt_i,

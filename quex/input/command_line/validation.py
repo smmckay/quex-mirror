@@ -106,7 +106,7 @@ def do(setup, command_line, argv):
 
     # Internal engine character encoding
     def __codec_vs_buffer_lexatom_size_in_byte(CodecName, RequiredBufferElementSize):
-        if   setup.buffer_codec.name           != CodecName:                 return
+        if   setup.buffer_encoding.name           != CodecName:                 return
         elif setup.buffer_lexatom_size_in_byte >=  RequiredBufferElementSize: return
 
         if setup.buffer_lexatom_size_in_byte == -1: 
@@ -118,11 +118,11 @@ def do(setup, command_line, argv):
                   "Consult command line argument %s" \
                   % command_line_args_string("buffer_lexatom_size_in_byte"))
 
-    if setup.buffer_codec.name != "unicode":
-        if not setup.buffer_codec_file:
-            error.verify_word_in_list(setup.buffer_codec_name,
+    if setup.buffer_encoding.name != "unicode":
+        if not setup.buffer_encoding_file:
+            error.verify_word_in_list(setup.buffer_encoding_name,
                                       codec_db.get_supported_codec_list() + ["utf8", "utf16"],
-                                      "Codec '%s' is not supported." % setup.buffer_codec.name)
+                                      "Codec '%s' is not supported." % setup.buffer_encoding.name)
         # NOT: __codec_vs_buffer_lexatom_size_in_byte("utf8", 1)
         # BECAUSE: Code unit size is one. No type has a size of less than one byte!
         __codec_vs_buffer_lexatom_size_in_byte("utf16", 2)
