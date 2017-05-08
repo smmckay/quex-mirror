@@ -15,7 +15,7 @@ if "--hwut-info" in sys.argv:
     
 print "_______________________________________________________________________________"
 print "Example A:"
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 sm = repeat.do(sm, 1)
@@ -24,7 +24,7 @@ print dfa
 
 print "_______________________________________________________________________________"
 print "Example B:"
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 sm = repeat.do(sm)
@@ -46,7 +46,7 @@ print "Example C:"
 #
 #    ((9)) is the acceptance state.
 #
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index
 n1 = sm.add_transition(n0, ord('a'))
 n2 = sm.add_epsilon_transition(n1)

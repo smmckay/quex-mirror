@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
-from quex.engine.state_machine.core                 import StateMachine
+from quex.engine.state_machine.core                 import DFA
 from quex.engine.state_machine.algebra.TESTS.helper import test1, \
                                                            union, \
                                                            intersection, \
@@ -20,8 +20,8 @@ count = 0
 
 def least_and_greatest(A):
     global count
-    assert superset(A, StateMachine.Empty())
-    assert superset(StateMachine.Universal(), A)
+    assert superset(A, DFA.Empty())
+    assert superset(DFA.Universal(), A)
 
     count += 1
 

@@ -90,7 +90,7 @@ def test(SM, EngineType = engine.FORWARD, PrintPRM_F = False):
     
     print SM.get_string(NormalizeF=True, OriginalStatesF=False)
 
-    plain = core.Analyzer.from_StateMachine(SM, EngineType, dial_db=DialDB())
+    plain = core.FSM.from_DFA(SM, EngineType, dial_db=DialDB())
 
     # Print plain analyzer, note down what changed during optimization
     states_txt_db = print_analyzer(plain)

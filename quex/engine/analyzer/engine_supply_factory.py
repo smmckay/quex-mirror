@@ -29,7 +29,7 @@ class Class_FORWARD(Base):
         return True
     def requires_detailed_track_analysis(self):
         """DropOut and Entry require construction beyond what is accomplished 
-           by constructor of 'AnalyzerState'. Storing of positions need to be
+           by constructor of 'FSM_State'. Storing of positions need to be
            optimized.
         """
         return True
@@ -49,7 +49,7 @@ class Class_FORWARD(Base):
 
     def create_DropOut(self, SM_State, dial_db):                          
         # DropOut and Entry interact and require sophisticated analysis
-        # => See "Analyzer.get_drop_out_object(...)"
+        # => See "FSM.get_drop_out_object(...)"
         return None 
 
 class Class_CHARACTER_COUNTER(Class_FORWARD):

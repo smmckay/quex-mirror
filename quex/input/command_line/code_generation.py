@@ -144,7 +144,7 @@ def __setup_analyzer_class(Setup):
                               "analyzer class (options -o, --analyzer-class)")
 
     if Setup.show_name_spaces_f:
-        print "Analyzer: {"
+        print "FSM: {"
         print "     class_name:  %s;" % Setup.analyzer_class_name
         print "     name_space:  %s;" % repr(Setup.analyzer_name_space)[1:-1]
         print "     name_prefix: %s;" % Setup.analyzer_name_safe   

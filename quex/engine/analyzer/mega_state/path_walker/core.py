@@ -33,7 +33,7 @@ As shown in the above figure, a PathWalkerState implements the states on the
 path by 'path walking'.  That is, it compares the current input with the
 current character on the path.  If it fits, it continues on the path.  If it
 does not, then it enters the PathWalkerState's transition map.  The transition 
-map of all AnalyzerState-s absorbed by a PathWalkerState must be the same.
+map of all FSM_State-s absorbed by a PathWalkerState must be the same.
 
 EXPLANATION: __________________________________________________________________
 
@@ -126,7 +126,7 @@ def do(TheAnalyzer, CompressionType, AvailableStateIndexSet):
 
           Inheritance:
 
-                 AnalyzerState <----- MegaState <------- PathWalkerState
+                 FSM_State <----- MegaState <------- PathWalkerState
 
     A MegaState contains the '.implemented_state_index_set' which tells about
     what states have actually been implemented by the PathWalkerState.

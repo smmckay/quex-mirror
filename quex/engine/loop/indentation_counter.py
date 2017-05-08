@@ -1,5 +1,5 @@
 from   quex.input.code.core                         import CodeTerminal
-from   quex.engine.state_machine.core               import StateMachine
+from   quex.engine.state_machine.core               import DFA
 from   quex.engine.analyzer.door_id_address_label   import DoorID
 from   quex.engine.operations.operation_list        import Op
 import quex.engine.analyzer.door_id_address_label   as     dial
@@ -52,7 +52,7 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
                        +-------- whitspace -->---'
                        |
                    Re-Enter 
-                   Analyzer
+                   FSM
                                             
     An indentation counter is a single state that iterates to itself as long
     as whitespace occurs. During that iteration the column counter is adapted.
@@ -176,7 +176,7 @@ def _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
              [1] terminal
     """
 
-    sm = StateMachine.from_character_set(BadSpaceCharacterSet,
+    sm = DFA.from_character_set(BadSpaceCharacterSet,
                                          E_IncidenceIDs.INDENTATION_BAD)
 
     on_bad_indentation_txt = Lng.SOURCE_REFERENCED(

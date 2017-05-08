@@ -25,7 +25,7 @@ if "--hwut-info" in sys.argv:
 #
 #    ((9)) is the acceptance state.
 #
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index
 n1 = sm.add_transition(n0, ord('a'))
 n2 = sm.add_epsilon_transition(n1)

@@ -168,8 +168,8 @@ def mount(the_state_machine, PostConditionSM):
              a reference is stored that points to the backward detecting
              state machine.
     """
-    assert the_state_machine.__class__.__name__ == "StateMachine"
-    assert PostConditionSM.__class__.__name__ == "StateMachine"
+    assert the_state_machine.__class__.__name__ == "DFA"
+    assert PostConditionSM.__class__.__name__ == "DFA"
     # -- state machines with no states are senseless here. 
     assert not the_state_machine.is_Empty() 
     assert not PostConditionSM.is_Empty()
@@ -274,6 +274,6 @@ def __dive_to_cut_iteration(SM0, sm0_state, SM1, sm1_state, SM1_Path):
     return 
 
 def __assert_state_machines(SM0, SM1):
-    assert SM0.__class__.__name__ == "StateMachine"
-    assert SM1.__class__.__name__ == "StateMachine"
+    assert SM0.__class__.__name__ == "DFA"
+    assert SM1.__class__.__name__ == "DFA"
 

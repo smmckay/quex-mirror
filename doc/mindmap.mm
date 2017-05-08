@@ -8,7 +8,7 @@
 </node>
 <node CREATED="1234536236208" ID="Freemind_Link_36571826" MODIFIED="1234536266184" TEXT="Features of Quex">
 <node CREATED="1234536352116" ID="Freemind_Link_154933604" MODIFIED="1234536359558" TEXT="Generating Lexical Analysers"/>
-<node CREATED="1234536367802" ID="Freemind_Link_458380402" MODIFIED="1234536378122" TEXT="Generate State Machine Plots"/>
+<node CREATED="1234536367802" ID="Freemind_Link_458380402" MODIFIED="1234536378122" TEXT="Generate DFA Plots"/>
 </node>
 <node CREATED="1234536958987" ID="Freemind_Link_115425247" MODIFIED="1234536978033" TEXT="Installation"/>
 </node>

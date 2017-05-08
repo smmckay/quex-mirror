@@ -16,7 +16,7 @@ from test_state_machines import *
 # -- setup
 paralellize.state_machines       = [ sm0, sm1, sm2 ]
 paralellize.state_machine_n      = len(paralellize.state_machines)
-paralellize.result_state_machine = StateMachine()
+paralellize.result_state_machine = DFA()
 
 # -- test
 def test(combination_0):

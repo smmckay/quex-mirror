@@ -8,7 +8,7 @@ import quex.engine.loop.skip_range                   as     range_skipper
 import quex.engine.loop.skip_nested_range            as     nested_range_skipper
 import quex.engine.loop.indentation_counter          as     indentation_counter
 from   quex.engine.misc.interval_handling            import NumberSet
-from   quex.engine.state_machine.core                import StateMachine
+from   quex.engine.state_machine.core                import DFA
 from   quex.engine.analyzer.door_id_address_label    import get_plain_strings
 from   quex.engine.pattern                           import Pattern
 import quex.engine.analyzer.engine_supply_factory    as     engine
@@ -59,7 +59,7 @@ class MiniAnalyzer:
         self.reload_state = None
         self.engine_type  = engine.FORWARD
 
-Analyzer = MiniAnalyzer()
+FSM = MiniAnalyzer()
 
 def __prepare(Language):
     global dial_db
@@ -93,7 +93,7 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
     terminal_list, \
     loop_map,      \
     required_register_set = character_set_skipper.do(LineColumnCount_Default(), 
-                                                     TriggerSet, Analyzer.reload_state,
+                                                     TriggerSet, FSM.reload_state,
                                                      dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
 
@@ -123,7 +123,7 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
 
     end_str        = __prepare(Language)
 
-    sm_close       = StateMachine.from_sequence(CloserSequence)  
+    sm_close       = DFA.from_sequence(CloserSequence)  
     closer_pattern = Pattern(sm_close.get_id(), sm_close,
                              None, None, None,
                              PatternString="<skip range closer>",
@@ -137,7 +137,7 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
                                               CaMap         = LineColumnCount_Default(), 
                                               CloserPattern = closer_pattern, 
                                               DoorIdExit    = door_id_exit, 
-                                              ReloadState   = Analyzer.reload_state, 
+                                              ReloadState   = FSM.reload_state, 
                                               dial_db       = dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
     assert not run_time_counter_f
@@ -160,8 +160,8 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
 
     end_str = __prepare(Language)
 
-    sm_close = StateMachine.from_sequence(CloserSequence)  
-    sm_open  = StateMachine.from_sequence(OpenerSequence)  
+    sm_close = DFA.from_sequence(CloserSequence)  
+    sm_open  = DFA.from_sequence(OpenerSequence)  
     ca_map   = LineColumnCount_Default()
 
     closer_pattern = Pattern(sm_close.get_id(), sm_close,
@@ -181,7 +181,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
                                                      OpenerPattern = opener_pattern,
                                                      CloserPattern = closer_pattern, 
                                                      DoorIdExit    = door_id_exit, 
-                                                     ReloadState   = Analyzer.reload_state, 
+                                                     ReloadState   = FSM.reload_state, 
                                                      dial_db       = dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
     assert not run_time_counter_f
@@ -237,7 +237,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     terminal_list,         \
     required_register_set, \
     run_time_counter_f     = indentation_counter.do("Test", ca_map, ISetup, 
-                                                    mini_incidence_db, Analyzer.reload_state, 
+                                                    mini_incidence_db, FSM.reload_state, 
                                                     dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
 

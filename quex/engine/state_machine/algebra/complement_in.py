@@ -1,4 +1,4 @@
-from   quex.engine.state_machine.core                       import StateMachine
+from   quex.engine.state_machine.core                       import DFA
 import quex.engine.state_machine.algorithm.beautifier       as beautifier
 import quex.engine.state_machine.construction.sequentialize as sequentialize
 import quex.engine.state_machine.construction.repeat        as repeat
@@ -7,7 +7,7 @@ import quex.engine.state_machine.algebra.complement_begin   as complement_begin
 def do(SM_A, SM_B):
     """\NotIn{P Q} = \NotBegin{P \Any*(Q+)}
     """
-    all_star      = repeat.do(StateMachine.Any(), min_repetition_n=0)
+    all_star      = repeat.do(DFA.Any(), min_repetition_n=0)
     sm_b_repeated = repeat.do(SM_B, min_repetition_n=1)
 
     tmp = sequentialize.do([all_star, sm_b_repeated], 
@@ -32,7 +32,7 @@ def do(SM_A, SM_B):
 #
 #            debug_clone = deepcopy(starting_sm)
 #            link_si = index.map_state_combination_to_index((state_index, SM_B.init_state_index))
-#            debug_clone.states[link_si] = State()
+#            debug_clone.states[link_si] = DFA_State()
 #            print "#starting_sm:", debug_clone
 #        else:
 #            print "#starting_sm:", None
@@ -53,7 +53,7 @@ def do(SM_A, SM_B):
 #    to it propperly.
 #    """
 #    done_set             = set([StateIndex])
-#    result               = StateMachine(AcceptanceF=SM.get_init_state().is_acceptance())
+#    result               = DFA(AcceptanceF=SM.get_init_state().is_acceptance())
 #    replacement_db       = { 
 #        SM.init_state_index: result.init_state_index,
 #        StateIndex:          index.map_state_combination_to_index((StateIndex, CorrespondentInitStateIndex)), 
@@ -73,7 +73,7 @@ def do(SM_A, SM_B):
 #
 #        state                          = SM.states[state_index]
 #        new_state_index                = get_new_index(replacement_db, state_index)
-#        new_state                      = State(AcceptanceF = state.is_acceptance())
+#        new_state                      = DFA_State(AcceptanceF = state.is_acceptance())
 #        result.states[new_state_index] = new_state
 #
 #        tm = state.target_map.get_map()

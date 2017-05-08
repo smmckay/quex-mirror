@@ -20,7 +20,7 @@ import quex.engine.analyzer.engine_supply_factory         as     engine
 from   quex.engine.misc.interval_handling                 import Interval, NumberSet
 import quex.output.languages.core                        as     languages
 from   quex.output.core.base                              import do_analyzer
-from   quex.engine.state_machine.core                     import StateMachine
+from   quex.engine.state_machine.core                     import DFA
 from   quex.engine.analyzer.door_id_address_label         import DoorID
 import quex.engine.analyzer.core                          as     analyzer_generator
 from   quex.engine.analyzer.door_id_address_label         import DialDB
@@ -39,7 +39,7 @@ Setup.buffer_encoding_set(bc_factory.do("unicode", None), -1)
 
 
 if "--hwut-info" in sys.argv:
-    print "Single State: Transition Code Generation;"
+    print "Single DFA_State: Transition Code Generation;"
     print "CHOICES: A, B, C, A-UTF8, B-UTF8, C-UTF8;"
     sys.exit(0)
 
@@ -128,7 +128,7 @@ def get_transition_function(iid_map, Codec):
     if Codec == "UTF8": Setup.buffer_encoding_set(bc_factory.do("utf8"), 1)
     else:               Setup.buffer_encoding_set(bc_factory.do("unicode"), -1)
 
-    sm        = StateMachine.from_IncidenceIdMap(iid_map)
+    sm        = DFA.from_IncidenceIdMap(iid_map)
     dummy, sm = Setup.buffer_encoding.do_state_machine(sm)
     analyzer  = analyzer_generator.do(sm, engine.CHARACTER_COUNTER, dial_db=dial_db)
     tm_txt    = do_analyzer(analyzer)

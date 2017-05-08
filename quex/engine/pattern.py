@@ -1,5 +1,5 @@
 from   quex.input.code.base                        import SourceRef
-from   quex.engine.state_machine.core              import StateMachine
+from   quex.engine.state_machine.core              import DFA
 from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
 import quex.engine.state_machine.algebra.reverse   as     reverse
 from   quex.engine.misc.tools                      import typed
@@ -19,7 +19,7 @@ class Pattern:
 
     .sm_bipd:
 
-            State machine to detect the input position in backward 
+            DFA to detect the input position in backward 
             direction. This is necessary to deal with the trailing 
             post context problem.
 
@@ -43,7 +43,7 @@ class Pattern:
     @staticmethod
     def from_character_set(CharacterSet, StateMachineId, Sr, LCCI=None, PatternString="<character set>"):
         return Pattern(StateMachineId, 
-                       StateMachine.from_character_set(CharacterSet, StateMachineId), 
+                       DFA.from_character_set(CharacterSet, StateMachineId), 
                        PreContextSm  = None,
                        BipdSm        = None, 
                        LCCI          = LCCI,
@@ -61,14 +61,14 @@ class Pattern:
         return self.sm.has_pre_context_begin_of_line_f()
 
     def get_pre_context_generalized(self):
-        """RETURNS: StateMachine implementing the pre-context. If the pre-
+        """RETURNS: DFA implementing the pre-context. If the pre-
                     context is 'begin-of-line', an according state machine 
                     is provided.
         """
         if self.sm_pre_context is not None: 
             return self.sm_pre_context
         elif self.sm.has_pre_context_begin_of_line_f():
-            return reverse.do(StateMachine.from_sequence([ord("\n")]), EnsureDFA_f=False)
+            return reverse.do(DFA.from_sequence([ord("\n")]), EnsureDFA_f=False)
         else:
             return None
 

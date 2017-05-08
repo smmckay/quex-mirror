@@ -1,5 +1,5 @@
 Last Acceptance / Post-Context-ID 'None'
-State Machine _____________________________________
+DFA _____________________________________
 init-state = 0L
 00000 
      == 'a' ==> 00001

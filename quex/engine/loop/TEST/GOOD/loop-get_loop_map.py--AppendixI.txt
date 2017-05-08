@@ -16,7 +16,7 @@ exit character set exits: [True]
 [0040, 004F]  18 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 16>
 [0050, 005F]  25 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 4>
 
-#_[ Appendix State Machines ]________________________________
+#_[ Appendix DFAs ]________________________________
 
 IncidenceId: 0
 init-state = 0L

@@ -1,4 +1,4 @@
-# TEST: Generate all Analyzer-s based on a given LoopMap
+# TEST: Generate all FSM-s based on a given LoopMap
 #
 # This test calls '_get_analyzer_list()' to generate a list of analyzers
 # related to a loop map. 
@@ -38,7 +38,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from   quex.engine.counter                        import CountAction, \
                                                          CountActionMap
-from   quex.engine.state_machine.core             import StateMachine  
+from   quex.engine.state_machine.core             import DFA  
 from   quex.engine.misc.interval_handling         import NumberSet, \
                                                          NumberSet_All
 import quex.engine.analyzer.door_id_address_label as     dial
@@ -89,7 +89,7 @@ def test(LoopMap, ColumnNPerCodeUnit):
 
 def _get_appendix_sm_list(LoopMap):
     def get_sm(SmId, Trigger):
-        sm = StateMachine.from_IncidenceIdMap([
+        sm = DFA.from_IncidenceIdMap([
             (NumberSet.from_range(Trigger, Trigger + 1), SmId)
         ])
         sm.set_id(SmId)

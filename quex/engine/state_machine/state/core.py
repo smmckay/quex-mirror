@@ -6,7 +6,7 @@ from   quex.engine.misc.tools import typed
 from   quex.constants         import E_PreContextIDs, \
                                      E_IncidenceIDs
 
-class State:
+class DFA_State:
     """A state consisting of ONE entry and multiple transitions to other
     states.  One entry means that the exact same actions are applied upon state
     entry, independent from where the state is entered.
@@ -22,7 +22,7 @@ class State:
      -- normal transitions: Happen when an input character fits a trigger set.
      -- epsilon transition: Happen without any input.
     
-    Collections of states connected by transitions build a StateMachine. States 
+    Collections of states connected by transitions build a DFA. States 
     may be used in NFA-s (non-deterministic finite state automatons) and DFA-s
     (deterministic finite state automatons). Where NFA-s put no restrictions on
     transitions, DFA-s do. A state in a DFA has the following properties:
@@ -35,7 +35,7 @@ class State:
     """
     @typed(AcceptanceF=bool, CloneF=bool)
     def __init__(self, AcceptanceF=False, CloneF=False):
-        """Contructor of a State, i.e. a aggregation of transitions.
+        """Contructor of a DFA_State, i.e. a aggregation of transitions.
         """
         if CloneF: return
 
@@ -47,7 +47,7 @@ class State:
         """Creates a copy of all transitions, but replaces any state index with the ones 
            determined in the ReplDbStateIndex."""
         assert ReplDbStateIndex is None or isinstance(ReplDbStateIndex, dict)
-        result = State(CloneF=True)
+        result = DFA_State(CloneF=True)
         result.__target_map   = self.__target_map.clone(ReplDbStateIndex)
         result.__single_entry = self.__single_entry.clone(ReplDbPreContext=ReplDbPreContext,
                                                           ReplDbAcceptance=ReplDbAcceptance)
@@ -58,7 +58,7 @@ class State:
     def from_state_iterable(StateList):
         """Does not set '.__target_map'
         """
-        result = State()
+        result = DFA_State()
         result.__target_map   = TargetMap()
         result.__single_entry = SingleEntry() 
         result.__single_entry.merge_list(state.single_entry for state in StateList)

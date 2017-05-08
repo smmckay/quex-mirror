@@ -17,8 +17,8 @@ def get_dfas():
     # Error while reading, or pickle to old => regenerate pickled DFAs
     if generate_new_f or pickle_time - now_in_sec > day_in_sec:
         dfa_list = [
-            StateMachine.Universal(),  # Matches all lexemes
-            StateMachine.Empty(),      # Matches the lexeme of zero length
+            DFA.Universal(),  # Matches all lexemes
+            DFA.Empty(),      # Matches the lexeme of zero length
             #
             dfa('a'),
             dfa('ab'),

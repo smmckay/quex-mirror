@@ -9,10 +9,10 @@ import quex.engine.state_machine.construction.sequentialize as sequentialize
 from quex.engine.state_machine.TEST.test_state_machines import *
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine Operations: Sequence"
+    print "DFA Operations: Sequence"
     sys.exit(0)
    
-empty_state_machine = StateMachine(7777)    
+empty_state_machine = DFA(7777)    
 print "##sm0", sm0
 print "##sm1", sm1
 print "##sm2", sm2

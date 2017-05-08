@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
-from quex.engine.state_machine.core                 import StateMachine
+from quex.engine.state_machine.core                 import DFA
 from quex.engine.state_machine.algebra.TESTS.helper import test2, test1, test3, union, \
                                                            intersection, \
                                                            identity, \
@@ -19,11 +19,11 @@ count = 0
 
 def one(A):
     global count
-    assert identity(difference(A, A), StateMachine.Empty())
-    assert identity(difference(StateMachine.Empty(), A), StateMachine.Empty())
-    assert identity(difference(A, StateMachine.Empty()), A) 
-    assert identity(difference(StateMachine.Universal(), A), complement(A))
-    assert identity(difference(A, StateMachine.Universal()), StateMachine.Empty()) 
+    assert identity(difference(A, A), DFA.Empty())
+    assert identity(difference(DFA.Empty(), A), DFA.Empty())
+    assert identity(difference(A, DFA.Empty()), A) 
+    assert identity(difference(DFA.Universal(), A), complement(A))
+    assert identity(difference(A, DFA.Universal()), DFA.Empty()) 
     count += 1
 
 def two(A, B):

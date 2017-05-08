@@ -3,7 +3,7 @@
 <source><![CDATA[memento3:Server[a]   "Memento3"
 memento2:Server[a]   "Memento2"
 memento1:Server[a]   "Memento1"
-analyzer:Lexer[p]    "Lexical Analyzer"
+analyzer:Lexer[p]    "Lexical FSM"
 fileA:main_c[a]      "A"
 fileB:Database[a]    "B"
 fileC:Database[a]    "C"

@@ -1,13 +1,13 @@
 from   quex.output.core.state.transition_map.code  import relate_to_TransitionCode
 import quex.output.core.state.transition_map.core  as     transition_block
 import quex.output.core.state.entry                as     entry
-from   quex.engine.analyzer.core                   import Analyzer
-from   quex.engine.analyzer.state.core             import AnalyzerState
+from   quex.engine.analyzer.core                   import FSM
+from   quex.engine.analyzer.state.core             import FSM_State
 from   quex.engine.misc.tools                      import typed, \
                                                           none_isinstance, \
                                                           none_is_None
 
-@typed(TheState=AnalyzerState, TheAnalyzer=Analyzer)
+@typed(TheState=FSM_State, TheAnalyzer=FSM)
 def do(code, TheState, TheAnalyzer):
 
     # (*) Entry _______________________________________________________________

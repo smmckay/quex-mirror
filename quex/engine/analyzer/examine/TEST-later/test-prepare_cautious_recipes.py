@@ -51,8 +51,8 @@ import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from quex.engine.state_machine.core                             import StateMachine
-from quex.engine.state_machine.state.core                       import State
+from quex.engine.state_machine.core                             import DFA
+from quex.engine.state_machine.state.core                       import DFA_State
 from quex.engine.state_machine.state.single_entry               import SingleEntry
 from quex.engine.state_machine.TEST.helper_state_machine_shapes import *
 from quex.engine.analyzer.examine.TEST.helper                   import *
@@ -80,13 +80,13 @@ def setup_mouth_with_undetermined_entries(examiner, EntryN, SomeRecipe0, SomeRec
     return mouth
 
 def setup_state_operation(sm, CmdList, StateIndex):
-    state = State()
+    state = DFA_State()
     for cmd in CmdList:
         state.single_entry.add(cmd)
     sm.states[StateIndex] = state
 
 def setup(EntryN, StateOperation):
-    sm        = StateMachine()
+    sm        = DFA()
     examiner  = Examiner(sm, RecipeAcceptance)
 
     si = 1111L

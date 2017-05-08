@@ -47,7 +47,7 @@ def do_core(Mode):
         for terminal in TerminalDb.itervalues()
     ))
 
-    # (*) Pre Context State Machine
+    # (*) Pre Context DFA
     #     (If present: All pre-context combined in single backward analyzer.)
     pre_context,         \
     pre_analyzer         = generator.do_pre_context(Mode.pre_context_sm,
@@ -61,7 +61,7 @@ def do_core(Mode):
                                                                          dial_db)
     # assert all_isinstance(bipd, (IfDoorIdReferencedCode, int, str, unicode))
 
-    # (*) Main State Machine -- try to match core patterns
+    # (*) Main DFA -- try to match core patterns
     #     Post-context handling is webbed into the main state machine.
     main, \
     main_analyzer        = generator.do_main(Mode.sm, ReloadStateForward, 

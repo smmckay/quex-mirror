@@ -40,7 +40,7 @@ def map_state_combination_to_index(cc_combination):
 __internal_state_machine_id_counter = long(-1)
 def get_state_machine_id():
     """Produces a unique id for the state machine. This function is only to be called
-       from inside the constructor of class StateMachine."""
+       from inside the constructor of class DFA."""
     global __internal_state_machine_id_counter
     # import sys
     # try:    

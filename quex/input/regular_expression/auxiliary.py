@@ -2,7 +2,7 @@ import quex.engine.misc.error        as     error
 from quex.engine.misc.file_in        import skip_whitespace, \
                                             check, \
                                             read_identifier
-from quex.engine.state_machine.core  import StateMachine
+from quex.engine.state_machine.core  import DFA
 from quex.input.code.base import SourceRef
 from quex.input.regular_expression.exception                  import RegularExpressionException
 
@@ -12,11 +12,11 @@ __debug_recursion_depth  = -1
 __debug_output_enabled_f = False # True / False 
 
 class PatternShorthand:
-    def __init__(self, Name="", StateMachine="", SourceReference=None, RE=""):
-        assert StateMachine.__class__.__name__ == "StateMachine"
+    def __init__(self, Name="", DFA="", SourceReference=None, RE=""):
+        assert DFA.__class__.__name__ == "DFA"
 
         self.name               = Name
-        self.__state_machine    = StateMachine
+        self.__state_machine    = DFA
         if SourceReference is None: SourceReference = SourceRef()
         self.sr                 = SourceReference
         self.regular_expression = RE
@@ -120,7 +120,7 @@ def snap_replacement(stream, PatternDict, StateMachineF=True):
     if StateMachineF:
         # Get a cloned version of state machine
         state_machine = reference.get_state_machine()
-        assert isinstance(state_machine, StateMachine)
+        assert isinstance(state_machine, DFA)
 
         # It is essential that state machines defined as patterns do not 
         # have origins. Otherwise, the optimization of patterns that

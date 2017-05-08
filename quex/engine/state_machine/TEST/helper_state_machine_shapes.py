@@ -1,4 +1,4 @@
-from quex.engine.state_machine.core import StateMachine
+from quex.engine.state_machine.core import DFA
 
 def line(sm, *StateIndexSequence):
     prev_si = long(StateIndexSequence[0])
@@ -261,7 +261,7 @@ def get_sm_shape_by_name_with_acceptance(Name):
     return sm
 
 def get_sm_shape_by_name(Name):
-    sm = StateMachine(InitStateIndex=0L)
+    sm = DFA(InitStateIndex=0L)
     if   Name == "linear":      sm, state_n, pic = get_linear(sm)
     elif Name == "butterfly":   sm, state_n, pic = get_butterfly(sm)
     elif Name == "long_loop":   sm, state_n, pic = get_long_loop(sm)

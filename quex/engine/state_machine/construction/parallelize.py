@@ -1,12 +1,12 @@
 # (C) 2005-2016 Frank-Rene Schaefer
 # ABSOLUTELY NO WARRANTY
 ###############################################################################
-from   quex.engine.state_machine.core          import StateMachine
-from   quex.engine.state_machine.state.core    import State
+from   quex.engine.state_machine.core          import DFA
+from   quex.engine.state_machine.state.core    import DFA_State
 import quex.engine.state_machine.algorithm.nfa_to_dfa as nfa_to_dfa
 from   quex.engine.misc.tools import typed
 
-@typed(StateMachineList=[StateMachine])
+@typed(StateMachineList=[DFA])
 def do(StateMachineList, CommonTerminalStateF=True):
     """Connect state machines paralell.
 
@@ -27,13 +27,13 @@ def do(StateMachineList, CommonTerminalStateF=True):
     empty_sm_list = [ sm for sm in StateMachineList if not consider(sm) ]
 
     if len(sm_list) < 2:
-        if len(sm_list) < 1: result = StateMachine()
+        if len(sm_list) < 1: result = DFA()
         else:                result = sm_list[0]
 
         return __consider_empty_state_machines(result, empty_sm_list)
 
     # (*) collect all transitions from both state machines into a single one
-    result     = StateMachine()
+    result     = DFA()
     init_state = result.get_init_state()
 
     # Connect from the new initial state to the initial states of the
@@ -77,7 +77,7 @@ def __nfa_to_dfa_required(SmList):
     are transitions to the init state so that the state machines
     have to be considered seperatedly.
     """
-    if State.interference([sm.get_init_state() for sm in SmList]):
+    if DFA_State.interference([sm.get_init_state() for sm in SmList]):
         return True
     return any(sm.has_transition_to(sm.init_state_index) for sm in SmList)
 

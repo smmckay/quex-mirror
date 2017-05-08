@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram>
 <source><![CDATA[server:Server[a] "Memento"
-user:Lexer[p]    "Lexical Analyzer"
+user:Lexer[p]    "Lexical FSM"
 job:main_c[a]    "main.c"
 db:Database[a]   "my_header.h"
       

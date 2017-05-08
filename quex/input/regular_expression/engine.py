@@ -28,7 +28,7 @@
 #
 #########################################################################################       
 import quex.engine.codec_db.core                              as codec_db
-from   quex.engine.state_machine.core                         import StateMachine
+from   quex.engine.state_machine.core                         import DFA
 import quex.engine.state_machine.algorithm.beautifier         as beautifier
 import quex.engine.state_machine.algorithm.nfa_to_dfa         as nfa_to_dfa
 import quex.engine.state_machine.algebra.sanitizer            as sanitizer
@@ -294,7 +294,7 @@ def snap_primary(stream, PatternDict):
                 if char_code is None:
                     raise RegularExpressionException("Backslash followed by unrecognized character code.")
                 trigger_set = char_code
-            result = StateMachine()
+            result = DFA()
             result.add_transition(result.init_state_index, trigger_set, AcceptanceF=True)
 
     elif x not in CONTROL_CHARACTERS and x != SPECIAL_TERMINATOR:
@@ -392,7 +392,7 @@ def  snap_case_folded_pattern(sh, PatternDict, NumberSetF=False):
         result = trigger_set
 
     else:
-        # -- perform the case fold for State Machines!
+        # -- perform the case fold for DFAs!
         for state_idx, state in result.states.items():
             for target_state_idx, trigger_set in state.target_map.get_map().items():
                 __add_case_fold(result, flag_txt, trigger_set, state_idx, target_state_idx)
@@ -416,7 +416,7 @@ def snap_non_control_character(stream, PatternDict):
     if char_code is None:
         error.log("Character could not be interpreted as UTF8 code or End of File reached prematurely.", 
                   stream)
-    result = StateMachine()
+    result = DFA()
     result.add_transition(result.init_state_index, char_code, AcceptanceF=True)
     return __debug_exit(result, stream)
     
@@ -430,7 +430,7 @@ def __snap_repetition_range(the_state_machine, stream):
            '{m,n}'  from 'm' to 'n' repetitions
            '{n,}'   arbitrary, but at least 'n' repetitions
     """       
-    assert the_state_machine.__class__.__name__ == "StateMachine", \
+    assert the_state_machine.__class__.__name__ == "DFA", \
            "received object of type '%s'" % the_state_machine.__class__.__name__ + "\n" + \
            repr(the_state_machine)
 
@@ -475,7 +475,7 @@ def __snap_repetition_range(the_state_machine, stream):
 
 def create_ALL_BUT_NEWLINE_state_machine(stream):
     global Setup
-    result = StateMachine()
+    result = DFA()
     # NOTE: Buffer control characters are supposed to be filtered out by the code
     #       generator.
     trigger_set = NumberSet(Interval(ord("\n"))).get_complement(Setup.buffer_encoding.source_set)
@@ -505,10 +505,10 @@ def snap_bracketed_expression(stream, PatternDict):
     return result
 
 def snap_any(stream, PatternDict):
-    return StateMachine.Any()
+    return DFA.Any()
 
 def snap_none(stream, PatternDict):
-    return StateMachine.Empty()
+    return DFA.Empty()
 
 def snap_reverse(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "reverse operator", "R")[0]
@@ -720,7 +720,7 @@ def snap_character_set_expression(stream, PatternDict):
 
     # Create state machine that triggers with the trigger set to SUCCESS
     # NOTE: The default for the ELSE transition is FAIL.
-    sm = StateMachine()
+    sm = DFA()
     sm.add_transition(sm.init_state_index, trigger_set, AcceptanceF=True)
 
     return __debug_exit(sm, stream)

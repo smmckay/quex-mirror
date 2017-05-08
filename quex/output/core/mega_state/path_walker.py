@@ -240,7 +240,7 @@ def require_data(PWState, TheAnalyzer):
                               Initial  = character_sequence_str,
                               Index    = PWState.index)
     
-    # (*) The State Information for each path step
+    # (*) The DFA_State Information for each path step
     if PWState.uniform_door_id is None:
         element_n, door_adr_sequence_str = __door_adr_sequences(PWState)
         variable_db.require_array("path_walker_%i_state_base", 

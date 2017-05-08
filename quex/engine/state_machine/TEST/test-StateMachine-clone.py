@@ -9,7 +9,7 @@ import quex.engine.state_machine.construction.sequentialize as sequentialize
 from quex.engine.state_machine.TEST.test_state_machines import *
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine: Cloning"
+    print "DFA: Cloning"
     sys.exit(0)
     
 print "------------------------------------------"

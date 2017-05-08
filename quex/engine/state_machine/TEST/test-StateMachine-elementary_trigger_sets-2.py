@@ -14,7 +14,7 @@ if "--hwut-info" in sys.argv:
 
 # (*) Special case that caused trouble before: two states
 #     trigger on the same trigger to the same target state.
-sm = StateMachine()
+sm = DFA()
 sm.add_transition(36L, 98, 100L)
 sm.add_transition(37L, 98, 100L)
 
@@ -38,7 +38,7 @@ for target_indices, trigger_set in ets:
 
 
 # (*) Another special case
-sm = StateMachine()
+sm = DFA()
 sm.add_transition(36L, Interval(98, 100), 100L)
 sm.add_transition(37L, 98, 100L)
 

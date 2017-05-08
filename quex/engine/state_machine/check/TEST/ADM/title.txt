@@ -1,1 +1,1 @@
-State Machine Checks
+DFA Checks

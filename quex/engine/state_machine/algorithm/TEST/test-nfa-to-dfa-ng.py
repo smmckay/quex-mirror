@@ -28,9 +28,9 @@ plot_txt = """
 The epsilon closures depend on the direction:
     * from 3: epsilon closure (3, 5)
     * from 1: epsilon closure (1, 5)
-=> State '5' is merged into two resulting states.
+=> DFA_State '5' is merged into two resulting states.
 """
-sm = StateMachine()
+sm = DFA()
 sms.line(sm, sm.init_state_index, (0x11, 1), (0x22, 2))
 sms.line(sm, sm.init_state_index, (0x33, 3), (0x44, 4))
 sms.line(sm, 5,                              (0x66, 6))
@@ -49,11 +49,11 @@ plot_txt = """
           | .--'           
         ( 0 )-- eps -->( 4 )-- 66 --->( 6 )
 
-State '4' is be joined into epsilon closure with '0' from beginning.  Later,
+DFA_State '4' is be joined into epsilon closure with '0' from beginning.  Later,
 when it is detected that '2' triggers on the same trigger set to '0' and '3',
 '0' joined with '3'.
 """
-sm = StateMachine()
+sm = DFA()
 sms.line(sm, sm.init_state_index, (0x11, 1), (0x22, 2), (0x33, 3), (0x55, 5))
 sms.line(sm, sm.init_state_index, (None, 4))
 sms.line(sm, 2, (0x33, sm.init_state_index))

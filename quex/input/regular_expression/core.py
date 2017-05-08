@@ -1,6 +1,6 @@
 import quex.engine.misc.error               as     error
 from   quex.engine.misc.file_in             import EndOfStreamException 
-from   quex.engine.state_machine.core       import StateMachine 
+from   quex.engine.state_machine.core       import DFA 
 from   quex.input.regular_expression.exception                       import RegularExpressionException
 import quex.blackboard                      as     blackboard
 import quex.input.regular_expression.engine as     regex
@@ -25,7 +25,7 @@ def parse_non_precontexted_pattern(Txt_or_File, Name, Terminator, AllowNothingIs
     return pattern
 
 def parse_character_set(Txt_or_File, Terminator=None):
-    return __parse(Txt_or_File, StateMachine.get_number_set, "character set", Terminator)
+    return __parse(Txt_or_File, DFA.get_number_set, "character set", Terminator)
 
 def __stream(Txt_or_File):
     if Txt_or_File.__class__ in [file, StringIO]: return Txt_or_File

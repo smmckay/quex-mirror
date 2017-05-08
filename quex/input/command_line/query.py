@@ -342,7 +342,7 @@ def __print_set_single_characters(CharSet, Display, ScreenWidth):
         last_horizontal_offset       = horizontal_offset
         
 def print_version():
-    print "Quex - Fast Universal Lexical Analyzer Generator"
+    print "Quex - Fast Universal Lexical FSM Generator"
     print "Version " + QUEX_VERSION
     print "(C) Frank-Rene Schaefer"
     print "ABSOLUTELY NO WARRANTY"

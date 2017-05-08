@@ -10,7 +10,7 @@ Setup.buffer_limit_code = -1
 Setup.path_limit_code   = -1
 
 if "--hwut-info" in sys.argv:
-    print "State Machine Pattern Matching"
+    print "DFA Pattern Matching"
     sys.exit(0)
 
 def test(the_state_machine, string_to_match):

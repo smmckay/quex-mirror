@@ -4,7 +4,7 @@ import quex.engine.state_machine.algorithm.beautifier            as     beautifi
 import quex.engine.state_machine.algorithm.acceptance_pruning    as     acceptance_pruning
 import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.state_machine.construction.sequentialize      as     sequentialize
-from   quex.engine.state_machine.construction.setup_post_context import StateMachine_Newline
+from   quex.engine.state_machine.construction.setup_post_context import DFA_Newline
 from   quex.constants                                            import E_PreContextIDs
 
 def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF):
@@ -46,7 +46,7 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF):
         
     if BeginOfLinePreContextF:
         # Extend the existing pre-context with a preceeding 'begin-of-line'.
-        reverse_newline_sm  = reverse.do(StateMachine_Newline(), EnsureDFA_f=False)
+        reverse_newline_sm  = reverse.do(DFA_Newline(), EnsureDFA_f=False)
         reverse_pre_context = sequentialize.do([reverse_pre_context, 
                                                 reverse_newline_sm])
 

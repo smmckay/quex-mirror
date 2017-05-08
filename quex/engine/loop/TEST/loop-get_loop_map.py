@@ -22,7 +22,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from   quex.engine.counter                        import CountAction, \
                                                          CountActionMap
-from   quex.engine.state_machine.core             import StateMachine  
+from   quex.engine.state_machine.core             import DFA  
 from   quex.engine.misc.interval_handling         import NumberSet, \
                                                          NumberSet_All
 import quex.engine.analyzer.door_id_address_label as     dial
@@ -110,7 +110,7 @@ def print_this(loop_map, appendix_sm_list):
     if not appendix_sm_list: return
 
     print
-    print "#_[ Appendix State Machines ]________________________________"
+    print "#_[ Appendix DFAs ]________________________________"
     print
     for sm in sorted(appendix_sm_list, key=lambda sm: sm.get_id()):
         print "IncidenceId: %s" % sm.get_id()
@@ -122,14 +122,14 @@ def get_sm_list(FSM0, FSM1, FSM2):
     #                  transition.
     #               -- sm1 transits further upon acceptance.
     #               -- sm2 has only one transition.
-    # Generate State Machine that does not have any intersection with 
+    # Generate DFA that does not have any intersection with 
     # the loop transitions.
-    sm0 = StateMachine()
+    sm0 = DFA()
     si = sm0.add_transition(sm0.init_state_index, FSM0)
     si = sm0.add_transition(si, NS_A, AcceptanceF=True)
     sm0.states[si].mark_acceptance_id(dial.new_incidence_id())
 
-    sm1 = StateMachine()
+    sm1 = DFA()
     si0 = sm1.add_transition(sm1.init_state_index, FSM1)
     si  = sm1.add_transition(si0, NS_A, AcceptanceF=True)
     iid1 = dial.new_incidence_id()
@@ -137,7 +137,7 @@ def get_sm_list(FSM0, FSM1, FSM2):
     si  = sm1.add_transition(si, NS_B, si0)
     sm1.states[si].mark_acceptance_id(iid1)
 
-    sm2 = StateMachine()
+    sm2 = DFA()
     si = sm2.add_transition(sm2.init_state_index, FSM2, AcceptanceF=True)
     sm2.states[si].mark_acceptance_id(dial.new_incidence_id())
 
@@ -207,7 +207,7 @@ elif "Split" in sys.argv:
         (NS4, CountAction(E_CharacterCountType.COLUMN, 4)),
     ]
 
-    sm  = StateMachine()
+    sm  = DFA()
     si  = sm.init_state_index
     iid = dial.new_incidence_id()
     ti0 = sm.add_transition(si, NumberSet.from_range(0x1A, 0x4B))

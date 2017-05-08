@@ -17,7 +17,7 @@ def test(RE):
     print "-------------------------------------------------------------------------------"
     print "## RE:", RE
     result = core.do(RE, {}).sm
-    ## print "## State Machine:", result
+    ## print "## DFA:", result
     ## result = repeat.do(result, 1)
     print "## RE+ (repetition):", result.get_string(NormalizeF=True)
     ## print result.get_graphviz_string(NormalizeF=False) 

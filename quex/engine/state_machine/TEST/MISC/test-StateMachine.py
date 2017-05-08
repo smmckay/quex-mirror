@@ -11,7 +11,7 @@ from core import *
 #      |            |            |            |            |
 #      FAIL         FAIL         FAIL         FAIL         FAIL
 #
-sm = StateMachine()
+sm = DFA()
 
 state_idx = sm.init_state_index
 state_idx = sm.add_transition(state_idx, ord('h')) # return created target_idx

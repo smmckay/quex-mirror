@@ -14,7 +14,7 @@ if "--hwut-info" in sys.argv:
 
 # (*) create a couple of number sets and put them as triggers to four 
 #     different target states
-sm = StateMachine()
+sm = DFA()
 sm.add_transition(10L,
                   NumberSet(Interval(0, 10)).union(Interval(20, 30)).union(Interval(40, 50)),
                   1L)

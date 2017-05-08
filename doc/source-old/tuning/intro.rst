@@ -89,7 +89,7 @@ shall represent state 0, 1, and 2 from figure
 :ref:`fig-template-compression-before`. Every state is replaced by a small stub
 that defines a 'state key'. The role of the state key is to define the behavior
 of the template state.  In particular, it defines the target states that belong
-to certain trigger sets.  State 0, 1, and 2 differ with respect to the
+to certain trigger sets.  DFA_State 0, 1, and 2 differ with respect to the
 character ranges ``[f-m]`` and ``[o-s]``. For these ranges the transitions
 differ. The target states for these ranges are stored in the arrays ``X0`` and
 ``X1``.  ``X0[i]`` represents the target state for ``[f-m]`` if the template
@@ -159,13 +159,13 @@ Principle of Path Compression
 
 .. figure:: ../figures/path-compression-before.*
 
-   State sequence to be compressed by path compression.
+   DFA_State sequence to be compressed by path compression.
 
 .. _fig-path-compression-after:
 
 .. figure:: ../figures/path-compression-after.*
 
-    State sequence from figure :ref:`fig-path-compression-before` 
+    DFA_State sequence from figure :ref:`fig-path-compression-before` 
     implemented by pathwalker.
 
 Combining Multiple Compression Types

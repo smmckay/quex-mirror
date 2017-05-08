@@ -12,7 +12,7 @@ TargetByStateKey_Element = namedtuple("TargetByStateKey_Element_tuple", ("transi
 class TargetByStateKey(object):
     """________________________________________________________________________
     
-    Where an AnalyzerState's transition map associates a character interval
+    Where an FSM_State's transition map associates a character interval
     with a DoorID, a MegaState's transition map associates a character interval 
     with a TargetByStateKey.
 

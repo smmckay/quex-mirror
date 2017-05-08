@@ -13,7 +13,7 @@ Setup.buffer_limit_code = -1
 Setup.path_limit_code   = -1
 
 if "--hwut-info" in sys.argv:
-    print "Replacement: Regular Expression State Machines"
+    print "Replacement: Regular Expression DFAs"
     sys.exit(0)
 
 def test(TestString, PatternDict):

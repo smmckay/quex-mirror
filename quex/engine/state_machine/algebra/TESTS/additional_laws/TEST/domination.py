@@ -2,7 +2,7 @@
 import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
-from quex.engine.state_machine.core                 import StateMachine
+from quex.engine.state_machine.core                 import DFA
 from quex.engine.state_machine.algebra.TESTS.helper import test1, \
                                                            union, \
                                                            intersection, \
@@ -20,11 +20,11 @@ count = 0
 
 def domination(A):
     global count
-    first  = union([A, StateMachine.Universal()])
-    assert identity(first, StateMachine.Universal())
+    first  = union([A, DFA.Universal()])
+    assert identity(first, DFA.Universal())
 
-    first  = intersection([A, StateMachine.Empty()]) 
-    assert identity(first, StateMachine.Empty())
+    first  = intersection([A, DFA.Empty()]) 
+    assert identity(first, DFA.Empty())
 
     count += 1
 

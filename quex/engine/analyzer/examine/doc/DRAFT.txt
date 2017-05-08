@@ -161,7 +161,7 @@ LINEAR STATES AND MOUTH STATES:
 Two central concepts are required for the further discussion: 'linear states' and 'mouth
 states'.  They are defined in the paragraphs to follow. 
 
-DEFINITION: Linear State
+DEFINITION: Linear DFA_State
 
     A linear state is a state that is entered only from one predecessor state.
 
@@ -179,7 +179,7 @@ may have transitions to multiple successor states, but only on predecessor state
                     Figure 3: The concept of a linear state.
 
 
-DEFINITION: Mouth State
+DEFINITION: Mouth DFA_State
 
     A mouth state is a state that is entered from more than one predecessor 
     state. 
@@ -589,7 +589,7 @@ interference, because they are missing an entry recipe.
 
            Figure 8: A dead-lock in mouth states 1 and 2.
 
-DEFINITION: Dead-Lock State
+DEFINITION: Dead-Lock DFA_State
 
    A dead-lock state is a mouth state that contains at least one undetermined
    entry. Due to the missing entry recipe interference may not be performed

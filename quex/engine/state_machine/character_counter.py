@@ -87,7 +87,7 @@ class SmLineColumnCountInfo:
 
     @staticmethod
     @typed(CaMap=CountActionMap)
-    def from_StateMachine(CaMap, SM, BeginOfLineF=False, CodecTrafoInfo=None):
+    def from_DFA(CaMap, SM, BeginOfLineF=False, CodecTrafoInfo=None):
         """LINE AND COLUMN NUMBER ANALYSIS ________________________________________
         
         Given a pattern as a state machine 'SM' this function analyses the 
@@ -97,7 +97,7 @@ class SmLineColumnCountInfo:
         
         NOTES _____________________________________________________________________
 
-        State machine shall not contain pre- or post-contexts.
+        DFA shall not contain pre- or post-contexts.
         
         DEPENDS ON: CaMap providing three databases:
 

@@ -57,7 +57,7 @@ def recursive_tm(Trigger, StateIndex):
 def basic_setup(Triggers):
     state_index_list = [ index.get() for i in xrange(2) ]
 
-    # AnalyzerState-s: The base.
+    # FSM_State-s: The base.
     setup_list = [   
         # StateIndex, TransitionMap
         (long(state_index), recursive_tm(Triggers[i], long(state_index)))

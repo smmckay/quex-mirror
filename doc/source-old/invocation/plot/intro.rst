@@ -1,4 +1,4 @@
-State Machine Plots
+DFA Plots
 ===================
 
 Quex has the ability to produce transition graphs for the state machines that

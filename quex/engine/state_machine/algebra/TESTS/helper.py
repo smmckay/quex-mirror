@@ -4,7 +4,7 @@ from   quex.engine.state_machine.algebra.complement   import do as complement
 from   quex.engine.state_machine.algebra.difference   import do as difference 
 from   quex.engine.state_machine.check.identity       import do as identity 
 from   quex.engine.state_machine.check.superset       import do as superset 
-from   quex.engine.state_machine.core                 import StateMachine
+from   quex.engine.state_machine.core                 import DFA
 
 import quex.input.regular_expression.engine           as     regex
 
@@ -16,8 +16,8 @@ def dfa(Str):
     return regex.do(Str, {}, AllowNothingIsNecessaryF=True).sm
 
 __dfa_list = [
-        StateMachine.Universal(),  # Matches all lexemes
-        StateMachine.Empty(),      # Matches the lexeme of zero length
+        DFA.Universal(),  # Matches all lexemes
+        DFA.Empty(),      # Matches the lexeme of zero length
         #
         dfa('a'),
         dfa('ab'),
@@ -57,7 +57,7 @@ def sample_DFAs(Factor):
     __dfa_list = [ dfa for i, dfa in enumerate(__dfa_list)
                    if i % Factor == 0 ]
 
-assert all(isinstance(dfa, StateMachine) for dfa in __dfa_list)
+assert all(isinstance(dfa, DFA) for dfa in __dfa_list)
 
 def iterate1():
     global __dfa_list

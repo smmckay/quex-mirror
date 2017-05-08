@@ -6,8 +6,8 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 from   quex.engine.misc.interval_handling                        import NumberSet, Interval
 from   quex.engine.state_machine.transformation.utf8_state_split import EncodingTrafoUTF8
 from   quex.engine.state_machine.transformation.TEST.helper      import test_plug_sequence as test
-from   quex.engine.state_machine.core                            import StateMachine
-from   quex.engine.state_machine.state.core                      import State
+from   quex.engine.state_machine.core                            import DFA
+from   quex.engine.state_machine.state.core                      import DFA_State
 import quex.engine.state_machine                                 as     state_machine
 import quex.engine.state_machine.algorithm.beautifier            as     beautifier
 

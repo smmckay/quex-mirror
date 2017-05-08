@@ -77,13 +77,13 @@ else:
 
 sm = help.prepare(pattern_list)
 
-print "State Machine _____________________________________"
+print "DFA _____________________________________"
 print sm.get_string(OriginalStatesF=False)
 
 # For DEBUG purposes: specify 'DRAW' on command line (in sys.argv)
 help.if_DRAW_in_sys_argv(sm)
 
-analyzer = core.Analyzer.from_StateMachine(sm, engine.FORWARD, dial_db=DialDB())
+analyzer = core.FSM.from_DFA(sm, engine.FORWARD, dial_db=DialDB())
 
 print "Positioning Info __________________________________"
 position_register_map.print_this(analyzer)

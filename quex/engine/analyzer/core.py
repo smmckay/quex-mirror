@@ -1,16 +1,16 @@
 """
 _______________________________________________________________________________
 
-This module produces an object of class Analyzer. It is a representation of an
-analyzer state machine (object of class StateMachine) that is suited for code
+This module produces an object of class FSM. It is a representation of an
+analyzer state machine (object of class DFA) that is suited for code
 generation. In particular, track analysis results in 'decorations' for states
 which help to implement efficient code.
 
 _______________________________________________________________________________
 EXPLANATION:
 
-Formally an Analyzer consists of a set of states that are related by their
-transitions. Each state is an object of class AnalyzerState and has the
+Formally an FSM consists of a set of states that are related by their
+transitions. Each state is an object of class FSM_State and has the
 following components:
 
     * entry:          actions to be performed at the entry of the state.
@@ -25,7 +25,7 @@ represents what happens if a state's transition mape fails to match any input
 character.
 
 For administrative purposes, other data such as the 'state_index' is stored
-along with the AnalyzerState object.
+along with the FSM_State object.
 
 The goal of track analysis is to reduce the run-time effort of the lexical
 analyzer. In particular, acceptance and input position storages may be spared
@@ -43,7 +43,7 @@ from   quex.engine.analyzer.paths_to_state          import PathsToState
 import quex.engine.analyzer.optimizer               as     optimizer
 from   quex.engine.analyzer.state.entry             import Entry
 from   quex.engine.analyzer.state.core              import Processor, \
-                                                           AnalyzerState, \
+                                                           FSM_State, \
                                                            ReloadState
 import quex.engine.analyzer.state.drop_out          as     drop_out
 from   quex.engine.analyzer.state.entry_action      import TransitionAction
@@ -53,7 +53,7 @@ import quex.engine.analyzer.mega_state.analyzer     as     mega_state_analyzer
 import quex.engine.analyzer.position_register_map   as     position_register_map
 import quex.engine.analyzer.engine_supply_factory   as     engine
 
-from   quex.engine.state_machine.core               import StateMachine
+from   quex.engine.state_machine.core               import DFA
 from   quex.engine.state_machine.state.single_entry import SeAccept      
 
 from   quex.engine.misc.tools                            import typed
@@ -76,11 +76,11 @@ def do(SM, EngineType=engine.FORWARD,
        dial_db=None, OnReloadFailureDoorId=None):
     assert dial_db is not None
 
-    # Generate Analyzer from StateMachine
-    analyzer = Analyzer.from_StateMachine(SM, EngineType, ReloadStateExtern, 
+    # Generate FSM from DFA
+    analyzer = FSM.from_DFA(SM, EngineType, ReloadStateExtern, 
                                           OnBeforeEntry, 
                                           dial_db=dial_db)
-    # Optimize the Analyzer
+    # Optimize the FSM
     analyzer = optimizer.do(analyzer)
 
     # DoorID-s required by '.prepare_for_reload()'
@@ -107,14 +107,24 @@ def do(SM, EngineType=engine.FORWARD,
         for state in analyzer.mega_state_list:
             state.prepare_again_for_reload(analyzer) 
 
-    # AnalyzerState.transition_map:    Interval --> DoorID
+    # FSM_State.transition_map:    Interval --> DoorID
     # MegaState.transition_map:        Interval --> TargetByStateKey
     #                               or Interval --> DoorID
     return analyzer
 
-class Analyzer:
-    """A representation of a pattern analyzing StateMachine suitable for
-       effective code generation.
+class FSM:
+    """A 'FSM', in Quex-Lingo, is a finite state automaton where entries 
+    from different transitions are each associated with dedicated actions.
+
+                  events
+           ...   ----->---[ Action 0 ]---.               .--->   ...
+                                          \     .-----.-'
+           ...   ----->---[ Action 1 ]-----+---( State )----->   ...
+                                          /     '-----'
+           ...   ----->---[ Action 2 ]---'        
+
+    A 'FSM' must be considered in contrast to a 'DFA', a finite state machine
+    where all transitions into a state trigger the same action.
     """
     def __init__(self, EngineType, InitStateIndex, dial_db):
         self.__engine_type      = EngineType
@@ -125,8 +135,8 @@ class Analyzer:
         self.__state_machine_id = None
 
     @classmethod
-    @typed(SM=StateMachine, EngineType=engine.Base, OnBeforeEntry=(OpList, None))
-    def from_StateMachine(cls, SM, EngineType, ReloadStateExtern=None, OnBeforeEntry=None, dial_db=None):
+    @typed(SM=DFA, EngineType=engine.Base, OnBeforeEntry=(OpList, None))
+    def from_DFA(cls, SM, EngineType, ReloadStateExtern=None, OnBeforeEntry=None, dial_db=None):
         """ReloadStateExtern is only to be specified if the analyzer needs
         to be embedded in another one.
         """
@@ -141,7 +151,7 @@ class Analyzer:
             result._prepare_entries_and_drop_out_withou_analysis(EngineType, SM)
         return result
 
-    @typed(SM=StateMachine, OnBeforeEntry=OpList)
+    @typed(SM=DFA, OnBeforeEntry=OpList)
     def _prepare_state_information(self, SM, OnBeforeEntry):
         self.__acceptance_state_index_list = SM.get_acceptance_state_index_list()
         self.__state_machine_id            = SM.get_id()
@@ -154,7 +164,7 @@ class Analyzer:
         self.__to_db   = SM.get_to_db()
         self.__from_db = SM.get_from_db()
 
-        # (*) Prepare AnalyzerState Objects
+        # (*) Prepare FSM_State Objects
         self.__state_db.update(
             (state_index, self.prepare_state(state, state_index, OnBeforeEntry))
             for state_index, state in sorted(SM.states.iteritems(), key=itemgetter(0))
@@ -258,7 +268,7 @@ class Analyzer:
     def prepare_state(self, OldState, StateIndex, OnBeforeEntry):
         """REQUIRES: 'self.init_state_forward_f', 'self.engine_type', 'self.__from_db'.
         """
-        state = AnalyzerState.from_State(OldState, StateIndex, self.engine_type, 
+        state = FSM_State.from_State(OldState, StateIndex, self.engine_type, 
                                          self.dial_db)
 
         cmd_list = []

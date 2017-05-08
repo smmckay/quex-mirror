@@ -20,8 +20,8 @@ class SameDetector(TreeWalker):
 
     """
     def __init__(self, A, B):
-        self.sm_a     = A # State Machine of the higher priority pattern
-        self.sm_b     = B  # State Machine of the lower priority pattern
+        self.sm_a     = A # DFA of the higher priority pattern
+        self.sm_b     = B  # DFA of the lower priority pattern
         self.result   = []
         self.done_set = set()
         TreeWalker.__init__(self)

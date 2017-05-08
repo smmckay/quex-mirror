@@ -1,5 +1,5 @@
 12 Cases store at 4 places => 4 registers.
-State Machine _____________________________________
+DFA _____________________________________
 init-state = 0L
 00000 
      == 'c' ==> 00001

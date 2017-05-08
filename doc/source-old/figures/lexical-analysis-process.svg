@@ -854,7 +854,7 @@
          height="67.14286"
          width="132.85715" /></flowRegion><flowPara
        id="flowPara2917">Lexical</flowPara><flowPara
-       id="flowPara2919">Analyzer</flowPara></flowRoot>  <path
+       id="flowPara2919">FSM</flowPara></flowRoot>  <path
      inkscape:connector-curvature="0"
      style="fill:none;stroke:#000000;stroke-width:0.9861083px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      id="path4140"

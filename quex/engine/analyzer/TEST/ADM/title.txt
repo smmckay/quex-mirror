@@ -1,1 +1,1 @@
-State Machine Trace Analysis
+DFA Trace Analysis

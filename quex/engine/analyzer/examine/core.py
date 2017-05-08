@@ -16,11 +16,11 @@ ABSOLUTELY NO WARRANTY
 ________________________________________________________________________________
 """
 from   quex.engine.analyzer.examine.examiner     import Examiner
-from   quex.engine.state_machine.core            import StateMachine
+from   quex.engine.state_machine.core            import DFA
 from   quex.engine.analyzer.examine.recipe_base  import Recipe
 from   quex.engine.misc.tools                    import typed
 
-@typed(SM=StateMachine)
+@typed(SM=DFA)
 def do(SM, RecipeType):
     """Takes a 'single-entry state machine' and derives an optimized 'multi-
     entry state machine' that behaves identical from an outside view [DOC].

@@ -204,7 +204,7 @@ def do_analyzer_list(analyzer_list):
 
     Also, it requests variable definitions as they are required.
     """
-    # Analyzer Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
+    # FSM Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
     assert len(set(a.state_machine_id for a in analyzer_list)) == len(analyzer_list)
     if not analyzer_list: return []
 

@@ -1,3 +1,3 @@
   accumulator: 'AsSalaamu Alaikum b  j AsSalaamu AlaikumAsSalaamu Alaikum x  j AsSalaamu AlaikumAsSalaamu Alaikum r '
-Lexical Analyzer Receives:
+Lexical FSM Receives:
    'AsSalaamu Alaikum b  j AsSalaamu AlaikumAsSalaamu Alaikum x  j AsSalaamu AlaikumAsSalaamu Alaikum r '

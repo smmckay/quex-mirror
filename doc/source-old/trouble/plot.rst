@@ -1,4 +1,4 @@
-Plotting State Machine Graphs
+Plotting DFA Graphs
 =============================
 
 For plotting graphs, the graphviz utility must be installed. It can

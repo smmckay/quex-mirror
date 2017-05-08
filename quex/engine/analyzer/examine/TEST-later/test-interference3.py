@@ -3,7 +3,7 @@ import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from quex.engine.state_machine.core                             import StateMachine
+from quex.engine.state_machine.core                             import DFA
 from quex.engine.operations.se_operations                       import SeAccept
 from quex.engine.state_machine.TEST.helper_state_machine_shapes import *
 from quex.engine.analyzer.examine.TEST.helper                   import *
@@ -28,7 +28,7 @@ scheme_2 = { 0: -1, 1: -2 }
 scheme_3 = { 0: -1, 1: -2, 2: -3 }
 
 
-examiner = Examiner(StateMachine(), RecipeAcceptance)
+examiner = Examiner(DFA(), RecipeAcceptance)
 
 # For the test, only 'examiner.mouth_db' and 'examiner.recipe_type'
 # are important.

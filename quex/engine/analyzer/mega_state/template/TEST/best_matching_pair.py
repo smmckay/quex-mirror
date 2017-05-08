@@ -4,11 +4,11 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 
-from   quex.engine.analyzer.core                        import Analyzer
+from   quex.engine.analyzer.core                        import FSM
 import quex.engine.analyzer.mega_state.template.core    as     templates 
 from   quex.engine.analyzer.mega_state.template.state   import TemplateState
 from   quex.engine.analyzer.mega_state.template.TEST.templates_aux import *
-from   quex.engine.state_machine.core                   import StateMachine
+from   quex.engine.state_machine.core                   import DFA
 import quex.engine.analyzer.engine_supply_factory       as     engine
 from   quex.constants                                   import E_Compression
 from   quex.engine.misc.interval_handling                    import *

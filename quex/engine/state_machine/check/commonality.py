@@ -1,4 +1,4 @@
-from quex.engine.state_machine.core import StateMachine
+from quex.engine.state_machine.core import DFA
 from quex.constants                 import E_Commonality
 
 class Checker:
@@ -16,8 +16,8 @@ class Checker:
     """
 
     def __init__(self, A, B):
-        assert isinstance(A, StateMachine)
-        assert isinstance(B, StateMachine)
+        assert isinstance(A, DFA)
+        assert isinstance(B, DFA)
 
         self.a_sm = A
         self.a_visited_state_indices = set([])
@@ -58,11 +58,11 @@ class Checker:
         return E_Commonality.NONE
 
 def do(A, B):
-    if isinstance(A, StateMachine):
-        assert isinstance(B, StateMachine)
+    if isinstance(A, DFA):
+        assert isinstance(B, DFA)
         return Checker(A, B).do()
 
-    assert not isinstance(B, StateMachine)
+    assert not isinstance(B, DFA)
 
     # If pre-conditions differ, they cannot have any commonality
     pre_result = E_Commonality.NONE

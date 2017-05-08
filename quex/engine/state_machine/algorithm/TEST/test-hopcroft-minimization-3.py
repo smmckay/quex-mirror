@@ -53,7 +53,7 @@ txt = """
       == 'Z' ==> 00004
 00004(A, P18)  
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index
 n1 = sm.add_transition(n0, ord('X'))
 sm.add_transition(n1, ord('X'), n1)

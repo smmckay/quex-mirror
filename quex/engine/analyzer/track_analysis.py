@@ -159,12 +159,12 @@ def do(SM, ToDB):
             StateIndex    = Args[1]
 
             # (*) Update the information about the 'trace of acceptances'
-            State = self.sm.states[StateIndex]
+            dfa_state = self.sm.states[StateIndex]
 
             if len(self.path) == 0: 
-                trace = _Trace(self.sm.init_state_index, State)
+                trace = _Trace(self.sm.init_state_index, dfa_state)
             else:                   
-                trace = PreviousTrace.next_step(StateIndex, State) 
+                trace = PreviousTrace.next_step(StateIndex, dfa_state) 
 
             target_index_list = self.to_db[StateIndex]
             for state_index in self.path:
@@ -349,7 +349,7 @@ class _Trace(object):
         result.__compute_equivalence_hash()
         return result
 
-    def next_step(self, StateIndex, State):
+    def next_step(self, StateIndex, dfa_state):
         """The present object of _Trace represents the history of events 
         along a path from the init state to the state BEFORE 'this state'.
 
@@ -370,12 +370,12 @@ class _Trace(object):
         #     acceptances and store-input-position events.
         #     Origins must be sorted with the highest priority LAST, so that they will
         #     appear on top of the acceptance trace list.
-        for cmd in sorted(State.single_entry.get_iterable(SeAccept), 
+        for cmd in sorted(dfa_state.single_entry.get_iterable(SeAccept), 
                           key=lambda x: x.acceptance_id(), reverse=True):
             # Acceptance 
             result.__acceptance_trace_add_at_front(cmd, StateIndex)
 
-        for cmd in sorted(State.single_entry.get_iterable(SeStoreInputPosition), 
+        for cmd in sorted(dfa_state.single_entry.get_iterable(SeStoreInputPosition), 
                           key=lambda x: x.acceptance_id(), reverse=True):
             # Store Input Position Information
             result.__storage_db[cmd.acceptance_id()] = _StoreInfo([StateIndex], 0)

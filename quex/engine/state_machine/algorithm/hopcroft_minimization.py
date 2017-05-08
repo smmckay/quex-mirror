@@ -66,8 +66,8 @@ class HopcroftMinization:
                  (2) Split all states in the current to do list.
                  Repeat
     """
-    def __init__(self, StateMachine):
-        self.sm = StateMachine
+    def __init__(self, DFA):
+        self.sm = DFA
 
         # (*) Helper Mappings:
         #     map: state index --> index of the state set that contains it
@@ -202,7 +202,7 @@ class HopcroftMinization:
         state_set = self.state_set_list[StateSetIndex]
         #
         N         = len(state_set)
-        pass#assert N != 0, "State set of size '0'. List = " + repr(self.state_set_list)
+        pass#assert N != 0, "DFA_State set of size '0'. List = " + repr(self.state_set_list)
         # only one state in state set => no change possible
         if N == 1: 
             self.todo_remove(StateSetIndex)

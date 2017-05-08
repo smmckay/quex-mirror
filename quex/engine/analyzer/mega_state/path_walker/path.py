@@ -1,4 +1,4 @@
-from   quex.engine.analyzer.state.core            import AnalyzerState
+from   quex.engine.analyzer.state.core            import FSM_State
 from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.analyzer.transition_map        import TransitionMap       
 from   quex.engine.misc.tools                     import UniformObject
@@ -139,7 +139,7 @@ class CharacterPath(object):
     def __init__(self, StartState, TheTransitionMap, TransitionCharacter):
         if StartState is None: return # Only for Clone
 
-        assert isinstance(StartState,          AnalyzerState)
+        assert isinstance(StartState,          FSM_State)
         assert isinstance(TransitionCharacter, (int, long)), "Found '%s'" % TransitionCharacter
         assert isinstance(TheTransitionMap,    TransitionMap)
 
@@ -213,7 +213,7 @@ class CharacterPath(object):
         #                     one state to the next on the path).
         prev_step    = self.__step_list[-1]
         command_list = State.entry.get_command_list(State.index, prev_step.state_index, 
-                                                              TriggerId=0)
+                                                    TriggerId=0)
         assert command_list is not None
 
         if not self.uniform_entry_OpList.fit(command_list): 

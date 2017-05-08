@@ -6,7 +6,7 @@ from StringIO import StringIO
 from quex.input.regular_expression.exception import RegularExpressionException
 
 import quex.input.regular_expression.traditional_character_set as character_set
-from   quex.engine.state_machine.core import StateMachine
+from   quex.engine.state_machine.core import DFA
 from   quex.blackboard import setup as Setup
 from   quex.constants  import INTEGER_MAX
 
@@ -18,7 +18,7 @@ if "--hwut-info" in sys.argv:
     
 def test(TestString):
     print "expression    = \"" + TestString + "\""
-    sm = StateMachine()
+    sm = DFA()
     try:
         trigger_set = character_set.do(StringIO(TestString + "]"))
         sm.add_transition(sm.init_state_index, trigger_set, AcceptanceF=True)

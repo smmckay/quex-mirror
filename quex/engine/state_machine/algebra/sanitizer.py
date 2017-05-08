@@ -1,4 +1,4 @@
-from   quex.engine.state_machine.core import StateMachine
+from   quex.engine.state_machine.core import DFA
 
 def do(sm):
     """Sanitization: 
@@ -39,7 +39,7 @@ def do(sm):
 
     # (ii) Infinite iteration on any input => remove transition to itself.
     for state_index, state in sm.states.iteritems():
-        if StateMachine.is_AcceptAllState(sm, state_index): 
+        if DFA.is_AcceptAllState(sm, state_index): 
             state.target_map.clear()   
 
     sm.delete_hopeless_states()

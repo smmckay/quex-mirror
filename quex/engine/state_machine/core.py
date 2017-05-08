@@ -3,7 +3,7 @@ from   quex.engine.misc.string_handling             import blue_print
 from   quex.engine.misc.interval_handling           import NumberSet, Interval, \
                                                            NumberSet_All
 import quex.engine.state_machine.index              as     state_machine_index
-from   quex.engine.state_machine.state.core         import State
+from   quex.engine.state_machine.state.core         import DFA_State
 from   quex.engine.state_machine.state.single_entry import SeAccept
 
 from   quex.engine.misc.tools  import typed
@@ -17,7 +17,29 @@ from   operator    import itemgetter
 from   itertools   import ifilter, imap
 from   collections import defaultdict
 
-class StateMachine(object):
+class DFA(object):
+    """A 'DFA', in Quex-Lingo, is a finite state automaton where all entries 
+    into a state are subject to the same entry action. 
+
+                  events
+           ...   ----->---.                              .--->   ...
+                           \                    .-----.-'
+           ...   ----->-----+--->[ Action ]----( State )----->   ...
+                           /                    '-----'
+           ...   ----->---'        
+
+    A 'DFA' must be considered in contrast to a 'FSM', a finite state machine
+    where every transition into a state triggers its dedicated action.
+
+    The term DFA comes from its closeness to the scientific definition of a
+    DFA which "is a finite-state machine that accepts and rejects strings of
+    symbols and only produces a unique computation of the automaton for each
+    input string." (en.wikipedia.org/wiki/Deterministic_finite_automaton)
+
+    However, a Quex-DFA-s can do more than just accept or reject patterns. They
+    may count colum and line numbers, set jump positions for post-context
+    pattern, or compute CRCs on the fly.
+    """
     def __init__(self, InitStateIndex=None, AcceptanceF=False, InitState=None, DoNothingF=False):
         # Get a unique state machine id 
         self.set_id(state_machine_index.get_state_machine_id())
@@ -27,8 +49,8 @@ class StateMachine(object):
         if InitStateIndex is None: InitStateIndex = state_machine_index.get()
         self.init_state_index = InitStateIndex
             
-        # State Index => State (information about what triggers transition to what target state).
-        if InitState is None: InitState = State(AcceptanceF=AcceptanceF)
+        # DFA_State Index => DFA_State (information about what triggers transition to what target state).
+        if InitState is None: InitState = DFA_State(AcceptanceF=AcceptanceF)
         self.states = { self.init_state_index: InitState }        
 
     @staticmethod
@@ -38,7 +60,7 @@ class StateMachine(object):
                                                  |   |
                                                  '---'
         """
-        return StateMachine()
+        return DFA()
 
     def is_Empty(self):
         if   len(self.states) != 1:                 return False
@@ -52,7 +74,7 @@ class StateMachine(object):
                                                  | A |--- any char ---'
                                                  '==='                 
         """
-        result = StateMachine(AcceptanceF=True)
+        result = DFA(AcceptanceF=True)
         result.add_transition(result.init_state_index, NumberSet_All(), 
                               result.init_state_index)
         return result
@@ -71,7 +93,7 @@ class StateMachine(object):
                                                  '---'                 '==='
 
         """
-        result = StateMachine()
+        result = DFA()
         result.add_transition(result.init_state_index, NumberSet_All(), AcceptanceF=True)
         return result
 
@@ -79,7 +101,7 @@ class StateMachine(object):
     def from_iterable(InitStateIndex, IterableStateIndexStatePairs):
         """IterableStateIndexStatePairs = list of (state_index, state) 
         """
-        result = StateMachine(DoNothingF=True)
+        result = DFA(DoNothingF=True)
         result.init_state_index = InitStateIndex
         result.states = dict(IterableStateIndexStatePairs)
         return result
@@ -92,7 +114,7 @@ class StateMachine(object):
             -- Character
         """
         assert type(Sequence) == list
-        result = StateMachine()
+        result = DFA()
         result.add_transition_sequence(result.init_state_index, Sequence)
         return result
 
@@ -117,7 +139,7 @@ class StateMachine(object):
         # This can be extended to consider later states also! Already, this
         # trick reduced *overall* computation time by about 20%!
         #-----------------------------------------------------------------------
-        result         = StateMachine()
+        result         = DFA()
         init_si        = result.init_state_index
         first_state_db = {}
         end_si         = None # It is set upon first '.add_transition()'
@@ -142,7 +164,7 @@ class StateMachine(object):
 
     @staticmethod
     def from_character_set(CharacterSet, StateMachineId=None):
-        result = StateMachine()
+        result = DFA()
         result.add_transition(result.init_state_index, CharacterSet, AcceptanceF=True)
         if StateMachineId is not None: result.__id = StateMachineId
         return result
@@ -153,9 +175,9 @@ class StateMachine(object):
         incidence ids. That is from a list of (NumberSet, IncidenceId) pairs
         a state machine as the following is generated:
 
-                        .----- set0 ---->( State 0: Accept Incidence0 )
+                        .----- set0 ---->( DFA_State 0: Accept Incidence0 )
                 .-------.
-                | init  |----- set1 ---->( State 1: Accept Incidence1 )
+                | init  |----- set1 ---->( DFA_State 1: Accept Incidence1 )
                 | state |    
                 '-------'                 ...
 
@@ -170,7 +192,7 @@ class StateMachine(object):
             target_state.set_acceptance()
             target_state.mark_acceptance_id(IncidenceId)
 
-        sm = StateMachine()
+        sm = DFA()
         if IncidenceIdMap:
             for character_set, incidence_id in IncidenceIdMap:
                 add(sm, sm.init_state_index, character_set, incidence_id)
@@ -222,7 +244,7 @@ class StateMachine(object):
             for si, state in self.states.iteritems()
         )
         
-        result = StateMachine.from_iterable(ReplDbStateIndex[self.init_state_index], 
+        result = DFA.from_iterable(ReplDbStateIndex[self.init_state_index], 
                                             iterable)
         if StateMachineId is not None: result.set_id(StateMachineId)
         return result
@@ -250,7 +272,7 @@ class StateMachine(object):
 
         # Generate state machine consisting of the cloned successor states
         # of 'target_si'.
-        result = StateMachine.from_iterable(replacement_db[InitStateIndex], iterable)
+        result = DFA.from_iterable(replacement_db[InitStateIndex], iterable)
         for state in result.states.itervalues():
             state.target_map.replace_target_indices(replacement_db)
 
@@ -268,7 +290,7 @@ class StateMachine(object):
                 return si
 
         si    = state_machine_index.get()
-        state = State(AcceptanceF=True)
+        state = DFA_State(AcceptanceF=True)
         state.mark_acceptance_id(IncidenceId)
         self.states[si] = state
         return si
@@ -311,8 +333,8 @@ class StateMachine(object):
             work_set.update((i for i in state.target_map.get_target_state_index_list()
                              if  i not in connected_set))
 
-        # State indices in 'connected_set' have a connection to the init state.
-        # State indice not in 'connected_set' do not. => Those are the orphans.
+        # indices in 'connected_set' have a connection to the init state.
+        # indice not in 'connected_set' do not. => Those are the orphans.
 
         return [ i for i in self.states.iterkeys() if i not in connected_set ]
 
@@ -338,8 +360,8 @@ class StateMachine(object):
 
             work_set.update((i for i in from_db[state_index] if  i not in reaching_set))
 
-        # State indices in 'reaching_set' have a connection to an acceptance state.
-        # State indice not in 'reaching_set' do not. => Those are the hopeless.
+        # indices in 'reaching_set' have a connection to an acceptance state.
+        # indice not in 'reaching_set' do not. => Those are the hopeless.
         return [ i for i in self.states.iterkeys() if i not in reaching_set ]
 
     def get_epsilon_closure_db(self):
@@ -480,7 +502,7 @@ class StateMachine(object):
         If the state machine cannot be represented by a plain NumberSet,
         then it returns 'None'.
 
-        Assumes: State machine is 'beautified'.
+        Assumes: DFA is 'beautified'.
         """
         if len(self.states) != 2:
             return None
@@ -746,12 +768,12 @@ class StateMachine(object):
 
     def create_new_state(self, AcceptanceF=False, StateIdx=None, RestoreInputPositionF=False, 
                          MarkAcceptanceId=None):
-        """RETURNS: State index of the new state.
+        """RETURNS: DFA_State index of the new state.
         """
         if StateIdx is None: new_si = state_machine_index.get()
         else:                new_si = StateIdx
 
-        new_state = State(AcceptanceF or MarkAcceptanceId is not None)
+        new_state = DFA_State(AcceptanceF or MarkAcceptanceId is not None)
         if MarkAcceptanceId is not None:
             new_state.mark_acceptance_id(MarkAcceptanceId)
             if RestoreInputPositionF:
@@ -766,7 +788,7 @@ class StateMachine(object):
 
            TriggerSet can be of different types: ... see add_transition()
            
-           (see comment on 'State::add_transition)
+           (see comment on 'DFA_State::add_transition)
 
            RETURNS: The target state index.
         """
@@ -776,8 +798,8 @@ class StateMachine(object):
 
         # If target state is undefined (None) then a new one has to be created
         if TargetStateIdx is None:                       TargetStateIdx = state_machine_index.get()
-        if self.states.has_key(StartStateIdx) == False:  self.states[StartStateIdx]  = State()        
-        if self.states.has_key(TargetStateIdx) == False: self.states[TargetStateIdx] = State()
+        if self.states.has_key(StartStateIdx) == False:  self.states[StartStateIdx]  = DFA_State()        
+        if self.states.has_key(TargetStateIdx) == False: self.states[TargetStateIdx] = DFA_State()
         if AcceptanceF:                                  self.states[TargetStateIdx].set_acceptance(True)
 
         self.states[StartStateIdx].add_transition(TriggerSet, TargetStateIdx)
@@ -798,11 +820,11 @@ class StateMachine(object):
 
         # create new state if index does not exist
         if not self.states.has_key(StartStateIdx):
-            self.states[StartStateIdx] = State()
+            self.states[StartStateIdx] = DFA_State()
         if TargetStateIdx is None:
             TargetStateIdx = self.create_new_state(AcceptanceF=RaiseAcceptanceF)
         elif not self.states.has_key(TargetStateIdx):
-            self.states[TargetStateIdx] = State()
+            self.states[TargetStateIdx] = DFA_State()
 
         # add the epsilon target state
         self.states[StartStateIdx].target_map.add_epsilon_target_state(TargetStateIdx)     
@@ -852,7 +874,7 @@ class StateMachine(object):
         to 'OtherEndIndex'. If 'OtherEndIndex' is None, then it ends when there's no further
         path to go. 
 
-        State indices of the cloned states are generated by pairs of (other_i, OperationIndex).
+        DFA_State indices of the cloned states are generated by pairs of (other_i, OperationIndex).
         This makes it possible to refer to those states, even before they are generated.
         """
         assert OtherStartIndex is not None
@@ -871,7 +893,7 @@ class StateMachine(object):
 
             state = self.states.get(state_i)
             if state is None:
-                state = State(AcceptanceF=other_state.is_acceptance())
+                state = DFA_State(AcceptanceF=other_state.is_acceptance())
                 self.states[state_i] = state
 
             for other_ti, other_trigger_set in other_state.target_map.get_map().iteritems():

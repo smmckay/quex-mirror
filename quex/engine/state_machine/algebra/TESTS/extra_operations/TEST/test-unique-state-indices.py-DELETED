@@ -20,7 +20,7 @@ import quex.engine.state_machine.check.superset               as     superset
 from   itertools import islice
 
 if "--hwut-info" in sys.argv:
-    print "Unique State Indices;"
+    print "Unique DFA_State Indices;"
     sys.exit()
 
 def test(Name, function, ExprStrX, ExprStrY, ExprStrZ):

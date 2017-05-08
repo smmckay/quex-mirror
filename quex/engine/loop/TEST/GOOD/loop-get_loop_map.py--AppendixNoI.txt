@@ -13,7 +13,7 @@ exit character set exits: [True]
 [0010, 001F]  8 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 0>
 [0020, 003F]  9 CountAction(cc_type=COLUMN, value=0, sr=None)
 
-#_[ Appendix State Machines ]________________________________
+#_[ Appendix DFAs ]________________________________
 
 IncidenceId: 0
 init-state = 0L
@@ -39,7 +39,7 @@ exit character set exits: [True]
 [0010, 001F] [0030, 003F]  13 CountAction(cc_type=COLUMN, value=0, sr=None)
 [0020, 002F]  12 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 2>
 
-#_[ Appendix State Machines ]________________________________
+#_[ Appendix DFAs ]________________________________
 
 IncidenceId: 2
 init-state = 0L
@@ -80,7 +80,7 @@ exit character set exits: [True]
 [0010, 001F]  22 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 0>
 [0020, 002F]  23 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 2>
 [0030, 003F]  24 CountAction(cc_type=COLUMN_BEFORE_APPENDIX_SM, value=InputP, sr=None) <appendix: 4>
-#_[ Appendix State Machines ]________________________________
+#_[ Appendix DFAs ]________________________________
     
 IncidenceId: 0
     

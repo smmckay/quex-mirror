@@ -21,7 +21,7 @@ import quex.engine.state_machine.algebra.intersection     as     intersection
 import quex.engine.state_machine.algebra.complement       as     complement
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine Operations: Mount Paralell"
+    print "DFA Operations: Mount Paralell"
     sys.exit(0)
 
 def test(SmList):
@@ -35,7 +35,7 @@ def test(SmList):
     complement_sm = complement.do(sm)
     assert all(superset.do(sm, tsm) == True
                for tsm in SmList)
-    assert all(StateMachine.is_Empty(intersection.do([complement_sm, tsm]))
+    assert all(DFA.is_Empty(intersection.do([complement_sm, tsm]))
                for tsm in SmList)
 
 tsm0 = trivial_sm('a')
@@ -46,7 +46,7 @@ test([tsm0, tsm1, tsm2])
 test([sm0, sm1, sm2])
 
 print "-------------------------------------------------------------------------------"
-empty_state_machine = StateMachine(7777)    
+empty_state_machine = DFA(7777)    
 empty_state_machine.get_init_state().set_acceptance(True)
 test([empty_state_machine, sm0, 
       empty_state_machine, sm1, 

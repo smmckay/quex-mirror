@@ -244,7 +244,7 @@ typedef enum {
 
 
 #else
-    typedef  int32_t  QUEX_TYPE_GOTO_LABEL;          /* > 0: State index
+    typedef  int32_t  QUEX_TYPE_GOTO_LABEL;          /* > 0: DFA_State index
                                                       * < 0: Drop Out of a state abs(Label). */
 #   define QUEX_GOTO_LABEL_VOID                      (QUEX_TYPE_GOTO_LABEL)(-1)
 #   define QUEX_LABEL(StateIndex)                    StateIndex 

@@ -1,4 +1,4 @@
-Parallel and Sequential Mounting of State Machines.
+Parallel and Sequential Mounting of DFAs.
 -------------------------------------------
 python *.py
 --not NOT-YET-SUPPORTED-test-count_character_n_since_newline.py 

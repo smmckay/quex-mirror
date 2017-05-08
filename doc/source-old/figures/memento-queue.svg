@@ -51,7 +51,7 @@
 	<rect fill="#808080" stroke="none" stroke-opacity="1" x="819" y="41" width="3" height="35" />
 	<rect fill="#808080" stroke="none" stroke-opacity="1" x="761" y="73" width="61" height="3" />
 	<rect fill="#ffffc0" stroke="black" stroke-width="1" stroke-opacity="1" x="757" y="37" width="62" height="36" />
-	<text font-family="Helvetica" font-size="10" fill="#000000" xml:space="preserve" font-weight="bold" text-anchor="middle" x="788" y="49">Analyzer</text>
+	<text font-family="Helvetica" font-size="10" fill="#000000" xml:space="preserve" font-weight="bold" text-anchor="middle" x="788" y="49">FSM</text>
 	<line stroke="black" stroke-opacity="1" x1="757" y1="58" x2="819" y2="58" />
 	<line stroke="black" stroke-opacity="1" x1="757" y1="66" x2="819" y2="66" />
 </g>

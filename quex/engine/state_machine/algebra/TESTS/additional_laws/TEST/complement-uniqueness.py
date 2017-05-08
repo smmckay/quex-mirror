@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.insert(0, os.environ["QUEX_PATH"])
-from quex.engine.state_machine.core                 import StateMachine
+from quex.engine.state_machine.core                 import DFA
 from quex.engine.state_machine.algebra.TESTS.helper import test1, union, \
                                                            intersection, \
                                                            identity, \
@@ -29,10 +29,10 @@ def uniqueness(A):
     """
     global count
 
-    B = difference(StateMachine.Universal(), A)
+    B = difference(DFA.Universal(), A)
     # => A u B = Universal   and    A n B = Empty
-    assert identity(union([A, B]), StateMachine.Universal())
-    assert identity(intersection([A, B]), StateMachine.Empty())
+    assert identity(union([A, B]), DFA.Universal())
+    assert identity(intersection([A, B]), DFA.Empty())
 
     # Uniqueness of complement
     assert identity(A, complement(B))

@@ -1,4 +1,4 @@
-State Machine Algebra
+DFA Algebra
 -------------------------------
 python *.py
 --not test-cut_in.py __init__.py helper.py

@@ -1,7 +1,7 @@
 import quex.engine.state_machine.index                      as index
-from   quex.engine.analyzer.core                            import Analyzer
+from   quex.engine.analyzer.core                            import FSM
 from   quex.engine.analyzer.transition_map                  import TransitionMap
-from   quex.engine.analyzer.state.core                      import AnalyzerState, Processor
+from   quex.engine.analyzer.state.core                      import FSM_State, Processor
 from   quex.engine.analyzer.state.entry                     import Entry
 from   quex.engine.analyzer.state.entry_action              import TransitionAction, \
                                                                    TransitionID
@@ -15,8 +15,8 @@ from   quex.engine.analyzer.mega_state.template.state       import TemplateState
                                                                    PseudoTemplateState
 from   quex.engine.analyzer.mega_state.template.candidate   import TemplateStateCandidate
 from   quex.engine.operations.operation_list                            import OpList
-from   quex.engine.operations.tree                            import CommandTree
-from   quex.engine.state_machine.state.core                 import State
+from   quex.engine.operations.tree                          import CommandTree
+from   quex.engine.state_machine.state.core                 import DFA_State
 from   quex.engine.misc.interval_handling                   import NumberSet, Interval
 from   quex.engine.misc.tools                               import typed
 
@@ -34,7 +34,7 @@ dial_db = DialDB()
 
 def get_AnalyzerState(StateIndex, TM):
     global dial_db
-    return AnalyzerState(StateIndex, TM, dial_db=dial_db)
+    return FSM_State(StateIndex, TM, dial_db=dial_db)
 
 def get_AnalyzerState_Init(InitStateIndex, StateIndexList):
     init_tm = TransitionMap.from_iterable( 
@@ -68,7 +68,7 @@ def get_Analyzer(StatesDescription):
     # Use 'BACKWARD_PRE_CONTEXT' so that the drop-out objects are created
     # without larger analysis.
     init_state_index = 7777L
-    analyzer = Analyzer(engine.BACKWARD_PRE_CONTEXT, init_state_index, dial_db=dial_db)
+    analyzer = FSM(engine.BACKWARD_PRE_CONTEXT, init_state_index, dial_db=dial_db)
     all_state_index_set = set()
     for state_index, transition_map in StatesDescription:
         assert isinstance(state_index, long)
@@ -163,9 +163,9 @@ def configure_States(TriggerMapA, StateN_A, TriggerMapB, StateN_B):
     ])
 
     analyzer = get_Analyzer(state_setup)
-    if StateN_A == 1: state_a = analyzer.state_db[StateListA[0]] # Normal AnalyzerState
+    if StateN_A == 1: state_a = analyzer.state_db[StateListA[0]] # Normal FSM_State
     else:             state_a = setup_TemplateState(analyzer, StateListA)
-    if StateN_B == 1: state_b = analyzer.state_db[StateListB[0]] # Normal AnalyzerState
+    if StateN_B == 1: state_b = analyzer.state_db[StateListB[0]] # Normal FSM_State
     else:             state_b = setup_TemplateState(analyzer, StateListB)
 
     return analyzer, state_a, state_b

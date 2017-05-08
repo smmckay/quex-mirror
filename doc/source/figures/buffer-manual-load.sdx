@@ -3,7 +3,7 @@
 <source><![CDATA[source:A[a] "Data Source"
 user:A[a]   "User"
 filler:C[a] "LexatomLoader"
-lex:B[a]    "Lexical Analyzer"
+lex:B[a]    "Lexical FSM"
 
       
 user:token=TERMINATION=lex.receive()

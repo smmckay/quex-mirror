@@ -1,25 +1,25 @@
 """MEGA STATES _________________________________________________________________
 
-A 'MegaState' is a state which absorbs and implements multiple AnalyzerState-s
+A 'MegaState' is a state which absorbs and implements multiple FSM_State-s
 in a manner that is beneficial in terms of code size, computational speed, or
 both. All MegaState-s shall be derived from class MegaState, and thus are
 committed to the described interface. The final product of a MegaState is a
-piece of code which can act on behalf of its absorbed AnalyzerState-s. 
+piece of code which can act on behalf of its absorbed FSM_State-s. 
 
-A 'state_key' indicates for any point in time the AnalyzerState which the
+A 'state_key' indicates for any point in time the FSM_State which the
 MegaState represents. 
 
 The following scheme displays the general idea of a class hierarchy with a
 MegaState involved. At the time of this writing there are two derived classes
 'TemplateState' and 'PathWalkerState'--each represent a compression algorith: 
 
-    AnalyzerState <------- MegaState <----+---- TemplateState
+    FSM_State <------- MegaState <----+---- TemplateState
                                           |
                                           '---- PathWalkerState
 
 
-Analogous to the AnalyzerState, a MegaState has special classes to implement
-'Entry', namely 'MegaState_Entry'.  Where an AnalyzerState's transition_map
+Analogous to the FSM_State, a MegaState has special classes to implement
+'Entry', namely 'MegaState_Entry'.  Where an FSM_State's transition_map
 associates a character interval with a target state index, the MegaState's
 transition_map associates a character interval with a 'TargetByStateKey'. Given
 a state_key, the TargetByStateKey provides the target state index for the given
@@ -43,14 +43,14 @@ The following pinpoints the general idea of a MegaState.
 _______________________________________________________________________________
 
 This file provides two special classes for to represent 'normal' 
-AnalyzerState-s:
+FSM_State-s:
 
--- PseudoTemplateState: represents an AnalyzerState as if it was a 
+-- PseudoTemplateState: represents an FSM_State as if it was a 
                     MegaState. This way, it may act homogeneously in 
-                    algorithms that work on MegaState-s and AnalyzerState-s
+                    algorithms that work on MegaState-s and FSM_State-s
                     at the same time.
  
--- AbsorbedState:   represent an AnalyzerState in the original state database,
+-- AbsorbedState:   represent an FSM_State in the original state database,
                     even though it is absorbed by a MegaState.
 
 _______________________________________________________________________________
@@ -59,7 +59,7 @@ _______________________________________________________________________________
 from quex.engine.operations.operation_list                  import Op, \
                                                        OpList
 from quex.engine.analyzer.door_id_address_label import DialDB
-from quex.engine.analyzer.state.core            import AnalyzerState
+from quex.engine.analyzer.state.core            import FSM_State
 from quex.engine.analyzer.state.entry           import Entry
 from quex.engine.analyzer.transition_map        import TransitionMap
 from quex.engine.misc.interval_handling         import Interval
@@ -76,9 +76,9 @@ class MegaState_Entry(Entry):
     
     Implements a common base class for Entry classes of MegaState-s. Entries of
     MegaState-s are special in a sense that they implement transitions to more
-    than one state. The database of an Entry of an AnalyzerState contains
+    than one state. The database of an Entry of an FSM_State contains
     only transitions (from_index, to_index) where 'to_index == state_index'. A
-    MegaState implements two or more AnalyzerState-s, so the 'to_index' may
+    MegaState implements two or more FSM_State-s, so the 'to_index' may
     have more than one value in keys of the entry's database.
     
     PRELIMINARY: Documentation of class 'Entry'.
@@ -260,14 +260,14 @@ class StateKeyIndexDB(dict):
         """
         return self.implemented_state_index_set.isdisjoint(StateIndexSet)
 
-class MegaState(AnalyzerState):
+class MegaState(FSM_State):
     """________________________________________________________________________
     
     Interface for all derived MegaState-s:
 
        .implemented_state_index_set():
        
-          Set of indices of AnalyzerState-s which have been absorbed by the 
+          Set of indices of FSM_State-s which have been absorbed by the 
           MegaState.
 
        .state_index_sequence()
@@ -287,7 +287,7 @@ class MegaState(AnalyzerState):
 
        '.bad_company'
 
-          Keeps track of indices of AnalyzerState-s which are not good company.
+          Keeps track of indices of FSM_State-s which are not good company.
           Algorithms that try to combine multiple MegaState-s into one (e.g.
           'Template Compression') profit from avoiding to combine MegaStates
           where its elements are bad company to each other.
@@ -310,8 +310,8 @@ class MegaState(AnalyzerState):
         assert isinstance(StateIndex, long)
 
         self.__entry    = MegaState_Entry(dial_db)
-        AnalyzerState.set_index(self, StateIndex)
-        # AnalyzerState.__init__(StateIndex, InitStateF, EngineType, TheTransitionMap):
+        FSM_State.set_index(self, StateIndex)
+        # FSM_State.__init__(StateIndex, InitStateF, EngineType, TheTransitionMap):
 
         self.ski_db         = SkiDb
         self.transition_map = TheTransitionMap

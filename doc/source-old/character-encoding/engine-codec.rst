@@ -1,6 +1,6 @@
 .. _sec-engine-encoding:
 
-Analyzer Engine Codec
+FSM Engine Codec
 =====================
 
 Adapting the internal encoding of the generated lexical analyzer engine happens by
@@ -87,7 +87,7 @@ the translation of a lexical analyzer to this encoding cannot rely on an adaptio
 transition maps, but instead, must reconstruct a new state machine that triggers
 on the byte sequences. 
 
-Figure :ref:`UTF8 State Machine <fig-utf8-encoding-state-machine>` shows the state
+Figure :ref:`UTF8 DFA <fig-utf8-encoding-state-machine>` shows the state
 machine that results from a utf8 state split transformation of the state
 machine displayed in figure :ref:`fig-encoding-unicode`.  While the encoding
 adaptations happen on transition level, the main structure of the state machine

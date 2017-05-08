@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 import quex.engine.misc.error                           as     error
-from   quex.engine.state_machine.core                   import StateMachine
+from   quex.engine.state_machine.core                   import DFA
 from   quex.engine.state_machine.state.single_entry     import SeAccept
 import quex.engine.state_machine.construction.sequentialize          as     sequentialize
 import quex.engine.state_machine.algorithm.beautifier   as     beautifier
@@ -62,13 +62,13 @@ def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReferen
     if post_context_sm is None and EndOfLinePostContextF == False:
         return the_state_machine, None
 
-    # State machines with no states are senseless here. 
+    # DFAs with no states are senseless here. 
     assert not the_state_machine.is_Empty(), \
            "empty state machine can have no post context."
     assert post_context_sm is None or not post_context_sm.is_Empty(), \
            "empty state machine cannot be a post-context."
 
-    # State machines involved with post condition building are part of a pattern, 
+    # DFAs involved with post condition building are part of a pattern, 
     # but not configured out of multiple patterns. Thus there should be no origins.
     assert the_state_machine.has_origins() == False
     assert post_context_sm is None or not post_context_sm.has_origins()
@@ -81,12 +81,12 @@ def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReferen
     if post_context_sm is None:
         assert EndOfLinePostContextF
         # Generate a new post context that just contains the 'newline'
-        post_context_sm = StateMachine_Newline() 
+        post_context_sm = DFA_Newline() 
 
     elif EndOfLinePostContextF: 
         # Mount 'newline' to existing post context
         post_context_sm = sequentialize.do([post_context_sm, 
-                                            StateMachine_Newline()]) 
+                                            DFA_Newline()]) 
 
     # A post context with an initial state that is acceptance is not really a
     # 'context' since it accepts anything. The state machine remains un-post context.
@@ -161,7 +161,7 @@ def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReferen
     # No input position backward search required
     return beautifier.do(the_state_machine), None
 
-def StateMachine_Newline():
+def DFA_Newline():
     """Creates a state machine matching newline according to what has been 
     specified in the setup (Setup.dos_carriage_return_newline_f). 
 
@@ -169,7 +169,7 @@ def StateMachine_Newline():
     if it is unix only, then it represents '\n'. If both is required they 
     are implemented in parallel.
 
-    RETURNS: StateMachine
+    RETURNS: DFA
     """
     UnixF = True
     DosF  = Setup.dos_carriage_return_newline_f
@@ -177,7 +177,7 @@ def StateMachine_Newline():
     NL = ord('\n')  # (pure) newline, i.e. line feed
     CR = ord('\r')  # carriage return
 
-    sm = StateMachine()
+    sm = DFA()
     if UnixF:
         sm.add_transition(sm.init_state_index, NL, AcceptanceF=True)
     if DosF:

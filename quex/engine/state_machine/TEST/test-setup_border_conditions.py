@@ -19,7 +19,7 @@ Setup.dos_carriage_return_newline_f = False
 
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine Operations: Append Post Condition"
+    print "DFA Operations: Append Post Condition"
     sys.exit(0)
 
 
@@ -62,11 +62,11 @@ def test(Idx, sm_pre, sm, sm_post, BOF_F, EOF_F):
 
     ## if Idx == 1: sys.exit(-1)
 
-tiny0 = StateMachine()
+tiny0 = DFA()
 tiny0.add_transition(tiny0.init_state_index, ord('0'), AcceptanceF=True)
-tiny1 = StateMachine()
+tiny1 = DFA()
 tiny1.add_transition(tiny1.init_state_index, ord('1'), AcceptanceF=True)
-tiny2 = StateMachine()
+tiny2 = DFA()
 tiny2.add_transition(tiny2.init_state_index, ord('2'), AcceptanceF=True)
 
 backup0 = deepcopy(tiny0)

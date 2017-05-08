@@ -54,7 +54,7 @@ def set_cmd_list(sm, StateIndex, *TheList):
 # SM0:   (0)--- 'a' --->(1)--- 'b' --->(2)--- 'c' --->(3)--- 'e' ---> SUCCESS
 #                        |                             ^ 
 #                        `------------ 'd' ------------'
-sm0 = StateMachine()
+sm0 = DFA()
 si0_0 = sm0.init_state_index
 si0_1 = sm0.add_transition(si0_0, ord('a'))
 si0_2 = sm0.add_transition(si0_1, ord('b'))
@@ -67,7 +67,7 @@ sm0.add_transition(si0_3, ord('e'), AcceptanceF=True)
 #                      /   \
 #                     /     \
 #                     ` else'
-sm1 = StateMachine()
+sm1 = DFA()
 si1_0 = sm1.init_state_index
 si1_1 = sm1.add_transition(si1_0, Interval(ord('a'), ord('g')+1))
 sm1.add_transition(si1_0, ord('g'), si1_1)
@@ -79,7 +79,7 @@ si1_3 = sm1.add_transition(si1_2, ord('f'), AcceptanceF=True)
 #                        ^                             |
 #                        `------------ 'g' ------------'
 #
-sm2 = StateMachine()
+sm2 = DFA()
 si2_0 = sm2.init_state_index
 si2_1 = sm2.add_transition(si2_0, ord('g'))
 si2_2 = sm2.add_transition(si2_1, ord('e'))
@@ -90,7 +90,7 @@ si2_4 = sm2.add_transition(si2_3, ord('e'), AcceptanceF=True)
 #
 # SM3:   (10)--- 'a' --->(11)--- 'b' --->(12)--- 'c' ---> SUCCESS
 #
-sm3 = StateMachine()
+sm3 = DFA()
 si3_0 = sm3.init_state_index
 si3_1 = sm3.add_transition(si3_0, ord('a'))
 si3_2 = sm3.add_transition(si3_1, ord('b'))
@@ -98,7 +98,7 @@ si3_3 = sm3.add_transition(si3_2, ord('c'), AcceptanceF=True)
 
 
 def trivial_sm(Character):
-    result = StateMachine()
+    result = DFA()
     result.add_transition(result.init_state_index, ord(Character), AcceptanceF=True)
     return result
 

@@ -12,11 +12,11 @@ from   quex.engine.misc.tools                       import typed, \
 class TemplateState(MegaState):
     """_________________________________________________________________________
 
-     Implements multiple AnalyzerState-s in one single state. Its transition
+     Implements multiple FSM_State-s in one single state. Its transition
      map, its entry and drop-out sections function are based on a 'state_key'. 
-     That is, when a 'state_key' of an implemented AnalyzerState is set, the
+     That is, when a 'state_key' of an implemented FSM_State is set, the
      transition map, the entry and drop-out sections act the same as the
-     correspondent sections in the original AnalyzerState.
+     correspondent sections in the original FSM_State.
     ____________________________________________________________________________
     """
     def __init__(self, Candidate):
@@ -86,7 +86,7 @@ class TemplateState(MegaState):
 class PseudoTemplateState(MegaState): 
     """________________________________________________________________________
     
-    Represents an AnalyzerState in a way to that it acts homogeneously with
+    Represents an FSM_State in a way to that it acts homogeneously with
     other MegaState-s. That is, the transition_map is adapted so that it maps
     from a character interval to a TargetByStateKey.
 
@@ -155,7 +155,7 @@ def combine_maps(TransitionMap_A, TransitionMap_B):
             ]
 
        Each tuple tells about a character range [interval.begin, interval.end)
-       where the state triggers to the given target. In a normal AnalyzerState
+       where the state triggers to the given target. In a normal FSM_State
        the target is the index of the target state. In a TemplateState, though,
        multiple states are combined. A TemplateState operates on behalf of a
        state which is identified by its 'state_key'. 

@@ -9,7 +9,7 @@ import quex.engine.state_machine.construction.repeat as repeat
 from quex.engine.state_machine.TEST.test_state_machines import *
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine Operations: Repetition with min and max repetition numbers"
+    print "DFA Operations: Repetition with min and max repetition numbers"
     sys.exit(0)
     
 print "-------------------------------------------------------------------------------"

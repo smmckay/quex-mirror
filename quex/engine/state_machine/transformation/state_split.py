@@ -90,7 +90,7 @@ PROCESS:
 (2) The interval sequences are plugged in between the state A and B
     of the state machine.
 """
-from   quex.engine.state_machine.core                import StateMachine
+from   quex.engine.state_machine.core                import DFA
 import quex.engine.state_machine.transformation.base as     base
 from   quex.engine.misc.interval_handling            import NumberSet
 
@@ -155,11 +155,11 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
         return True
 
     def _plug_interval_sequences(self, sm, BeginIndex, EndIndex, IntervalSequenceList):
-        sub_sm = StateMachine.from_interval_sequences(IntervalSequenceList)
+        sub_sm = DFA.from_interval_sequences(IntervalSequenceList)
         if Setup.bad_lexatom_detection_f: 
             self._plug_encoding_error_detectors(sub_sm)
 
-        # The 'End State' is the state where there are no further transitions.
+        # The 'End DFA_State' is the state where there are no further transitions.
         new_end_si = None
         for state_index, state in sub_sm.states.iteritems():
             if state.target_map.is_empty() and not state.accepts_incidence(): 

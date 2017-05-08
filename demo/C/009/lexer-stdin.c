@@ -1,4 +1,4 @@
-/* Stdandard-Input-Based Lexical Analyzer
+/* Stdandard-Input-Based Lexical FSM
  * --------------------------------------
  *
  * This application implements a lexical analyzer that reads from the Standard

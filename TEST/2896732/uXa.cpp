@@ -1,5 +1,5 @@
 /*
-	Queχ Lexical Analyzer
+	Queχ Lexical FSM
 */
 #include "Lexer"
 

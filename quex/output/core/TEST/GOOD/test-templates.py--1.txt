@@ -56,7 +56,7 @@ _1:
 _2:
 goto __TERMINAL_ROUTER;
 
---(State Router)--------------------------------------------------------
+--(DFA_State Router)--------------------------------------------------------
 
 #   ifndef QUEX_OPTION_COMPUTED_GOTOS
     __quex_assert_no_passage();
@@ -67,8 +67,8 @@ __STATE_ROUTER:
         case 202: { goto _202; }
 
         default:
-            __QUEX_STD_fprintf(stderr, "State router: index = %i\n", (int)target_state_index);
-            QUEX_ERROR_EXIT("State router: unknown index.");
+            __QUEX_STD_fprintf(stderr, "DFA_State router: index = %i\n", (int)target_state_index);
+            QUEX_ERROR_EXIT("DFA_State router: unknown index.");
     }
 #   endif /* QUEX_OPTION_COMPUTED_GOTOS */
 

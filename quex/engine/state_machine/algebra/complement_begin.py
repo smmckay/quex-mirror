@@ -1,7 +1,7 @@
 import quex.engine.state_machine.algorithm.beautifier as     beautifier
 import quex.engine.state_machine.index                as     index
-from   quex.engine.state_machine.core                 import StateMachine
-from   quex.engine.state_machine.state.core           import State
+from   quex.engine.state_machine.core                 import DFA
+from   quex.engine.state_machine.state.core           import DFA_State
 from   quex.engine.misc.tree_walker                   import TreeWalker
 
 
@@ -35,7 +35,7 @@ def do(SM_A, SM_B):
     """
     cutter = WalkAlong(SM_A, SM_B)
     if SM_B.get_init_state().is_acceptance():
-        return StateMachine.Empty()
+        return DFA.Empty()
 
     cutter.do((SM_A.init_state_index, SM_B.init_state_index))
 
@@ -51,7 +51,7 @@ class WalkAlong(TreeWalker):
         self.admissible = SM_B
 
         if StartingSM is None:
-            self.result = StateMachine(InitStateIndex = index.map_state_combination_to_index((SM_A.init_state_index, 
+            self.result = DFA(InitStateIndex = index.map_state_combination_to_index((SM_A.init_state_index, 
                                                                                               SM_B.init_state_index)), 
                                        InitState      = self.get_state_core(SM_A.init_state_index, 
                                                                             SM_B.init_state_index))
@@ -117,7 +117,7 @@ class WalkAlong(TreeWalker):
 
     def get_state_core(self, AStateIndex, BStateIndex):
         acceptance_f = self.original.states[AStateIndex].is_acceptance() 
-        return State(AcceptanceF=acceptance_f)
+        return DFA_State(AcceptanceF=acceptance_f)
 
     def get_state(self, Args):
         state_index = index.map_state_combination_to_index(Args)

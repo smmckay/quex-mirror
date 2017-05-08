@@ -8,7 +8,7 @@ import quex.engine.state_machine.construction.setup_pre_context as setup_pre_con
 from quex.engine.state_machine.TEST.test_state_machines import *
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine Operations: Setup Pre-Condition"
+    print "DFA Operations: Setup Pre-Condition"
     sys.exit(0)
 
 def test(sm, pre_sm):    
@@ -20,9 +20,9 @@ def test(sm, pre_sm):
     print "inverse pre-context = ", inverse_pre_context_sm
 
 print "-------------------------------------------------------------------------------"
-tiny0 = StateMachine()
+tiny0 = DFA()
 tiny0.add_transition(tiny0.init_state_index, ord('a'), AcceptanceF=True)
-tiny1 = StateMachine()
+tiny1 = DFA()
 tiny1.add_transition(tiny1.init_state_index, ord(';'), AcceptanceF=True)
 
 test(tiny0, tiny1)    

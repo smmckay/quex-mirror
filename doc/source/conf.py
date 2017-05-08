@@ -39,7 +39,7 @@ source_encoding = 'utf-8'
 master_doc = 'main'
 
 # General information about the project.
-project = u'Quex Lexical Analyzer Generator'
+project = u'Quex Lexical FSM Generator'
 copyright = u'2009-2013, Frank-Rene Schaefer'
 
 # The version info for the project you're documenting, acts as replacement for

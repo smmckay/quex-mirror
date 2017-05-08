@@ -58,8 +58,8 @@ class DiversionWalker(TreeWalker):
           Set 'result = True' and abort.
     """
     def __init__(self, High, Low):
-        self.high     = High  # State Machine of the higher priority pattern
-        self.low      = Low   # State Machine of the lower priority pattern
+        self.high     = High  # DFA of the higher priority pattern
+        self.low      = Low   # DFA of the lower priority pattern
         self.result   = False # Low cannot outrun High
         self.done_set = set()
         TreeWalker.__init__(self)

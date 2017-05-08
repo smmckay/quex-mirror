@@ -77,12 +77,12 @@ def do(TheAnalyzer, MinGain, CompressionType, AvailableStateIndexList):
     Not necessarily all states can be combined efficiently with each other.
     This class supports an algorithm which finds successively best combinations
     and stops when no further useful combinations can be found. That is, it
-    combines always pairs of states, where a state may be an AnalyzerState or a
+    combines always pairs of states, where a state may be an FSM_State or a
     TemplateState. The algorithm works on two containers:
 
     elect_db
 
-       The list of 'elects', i.e. AnalyzerState-s and TemplateState-s which
+       The list of 'elects', i.e. FSM_State-s and TemplateState-s which
        survived the selection process so far.
 
     candidate_list
@@ -92,7 +92,7 @@ def do(TheAnalyzer, MinGain, CompressionType, AvailableStateIndexList):
        information about the possible gain which could be expected from
        combining two particular states from the 'elect_db'.
 
-    To support the homogeneity of the algorithm all AnalyzerState-s are
+    To support the homogeneity of the algorithm all FSM_State-s are
     translated into PseudoTemplateState-s prior the analysis procedure.
 
     COMBINATION GAIN VALUE ____________________________________________________
@@ -135,7 +135,7 @@ class CandidateList(list):
     """________________________________________________________________________
 
     Maintain list of possible state combinations into a TemplateState. States
-    to be combined can be AnalyzerState-s (i.e. PseudoTemplateState-s) or 
+    to be combined can be FSM_State-s (i.e. PseudoTemplateState-s) or 
     TemplateState-s. For each possible combination a 'gain' needs to be computed.
     This happens during the construction of a 'TemplateStateCandidate'. This
     list maintains all candidates that provide a minimum gain in a sorted 
@@ -258,7 +258,7 @@ class CandidateList(list):
         #     are now implemented by 'best'. No other candidate that combines
         #     'i' and 'k' shall get a chance.
         # 
-        # If 'i' or 'k' refer to an AnalyzerState, then any combination where 'i'
+        # If 'i' or 'k' refer to an FSM_State, then any combination where 'i'
         # or 'k' is involved is removed from the candidate list. The 'best', let it 
         # have state index 'p', is the only state that contains now 'i' and 'k'. Any
         # state, with index 'q', that combines with it does not contain 'i' and 
@@ -291,9 +291,9 @@ class CandidateList(list):
 class ElectDB(dict):
     """________________________________________________________________________
 
-    Database of states which are either AnalyzerState-s (i.e.
+    Database of states which are either FSM_State-s (i.e.
     PseudoTemplateState-s) from the original state machine, or TemplateState-s
-    which implement two or more of such AnalyzerState-s. 
+    which implement two or more of such FSM_State-s. 
     
     Whenever two states are combined into one TemplateState, the two
     implemented states themselves are removed from the ElectDB and the
@@ -301,7 +301,7 @@ class ElectDB(dict):
     ___________________________________________________________________________
     """
     def __init__(self, TheAnalyzer, AvailableStateIndexList):
-        """At the beginning all AnalyzerState-s are elected (and they remain
+        """At the beginning all FSM_State-s are elected (and they remain
         elected if they cannot be efficiently combined). However, some states
         may NOT be considered as they are:
         
@@ -317,7 +317,7 @@ class ElectDB(dict):
                               and len(x[1].transition_map) != 0   \
                               and x[1].index != InitStateIndex 
 
-        # Represent AnalyzerState-s by PseudoTemplateState-s so they behave
+        # Represent FSM_State-s by PseudoTemplateState-s so they behave
         # uniformly with TemplateState-s.
         result = dict((state_index, PseudoTemplateState(state, TheAnalyzer.drop_out)) \
                       for state_index, state in ifilter(condition, StateDB.iteritems()) )

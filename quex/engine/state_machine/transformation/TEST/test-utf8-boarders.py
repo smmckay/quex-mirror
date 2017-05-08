@@ -32,7 +32,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.regular_expression.engine                       as     regex
 from   quex.engine.misc.interval_handling                         import NumberSet, Interval
 from   quex.engine.state_machine.transformation.utf8_state_split  import EncodingTrafoUTF8
-from   quex.engine.state_machine.core                             import StateMachine
+from   quex.engine.state_machine.core                             import DFA
 from   quex.engine.misc.utf8                                      import unicode_to_utf8
 import quex.engine.state_machine.transformation.TEST.helper       as     helper
 

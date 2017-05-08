@@ -107,7 +107,7 @@ to type on the command line::
 
 and get a result similar to::
 
-    Quex - Fast Universal Lexical Analyzer Generator
+    Quex - Fast Universal Lexical FSM Generator
     Version 0.57.1
     (C) 2006-2011 Frank-Rene Schaefer
     ABSOLUTELY NO WARRANTY

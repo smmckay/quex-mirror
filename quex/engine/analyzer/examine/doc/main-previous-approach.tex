@@ -33,7 +33,7 @@
 \begin{document}
 
 \begin{center}
-{\large State Machine Optimization by Recipes} \\ 
+{\large DFA Optimization by Recipes} \\ 
 \copyright 2015 by Frank-Rene Schaefer         \\
 January, 2015
 \end{center}
@@ -235,7 +235,7 @@ Two central concepts are required for the further discussion: 'linear states'
 and 'mouth states'.  They are defined in the paragraphs to follow. 
 
 \begin{definition}
-Linear State
+Linear DFA_State
 
 A state $i$ is a linear state, if the number of the immediate predecessor states is
 1, i.e. 
@@ -275,7 +275,7 @@ deterministic mapping is not possible for so called 'mouth states'.
 \end{figure}
 
 \begin{definition}
-Mouth State
+Mouth DFA_State
 
 A mouth state is a state that is entered from more than one predecessor 
 state, i.e.
@@ -706,7 +706,7 @@ determined without relying on the intermediate operations $\{ v\coloneqq v+1 \}$
 was shown in figure \ref{fig:two-state-machines}.b. 
 %%
 The repeated accumulation of recipes along linear states comes to an end at
-mouth states. State $e$ in figure \ref{fig:interference-example} is such a
+mouth states. DFA_State $e$ in figure \ref{fig:interference-example} is such a
 mouth state. Its entry recipes $R_E(e,b)$ and $R_E(e,d)$ are an example of two
 identical entry procedures. However, both rely on stored values for $v$ and the
 place where those values where stored differ. That is $S^v(R_E(e,b))=a$ and

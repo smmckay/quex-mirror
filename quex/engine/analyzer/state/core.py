@@ -1,4 +1,4 @@
-from   quex.engine.state_machine.state.core        import State
+from   quex.engine.state_machine.state.core        import DFA_State
 from   quex.engine.analyzer.door_id_address_label  import DialDB
 from   quex.engine.analyzer.transition_map         import TransitionMap
 from   quex.engine.analyzer.state.entry            import Entry
@@ -23,9 +23,9 @@ class Processor(object):
 
 #__________________________________________________________________________
 #
-# AnalyzerState:
+# FSM_State:
 # 
-#                  AnalyzerState
+#                  FSM_State
 #                  .--------------------------------------------.
 #  .-----.         |                                  .---------|
 #  | 341 |--'load'--> Entry  ----->-----.             |tm(input)| 
@@ -46,7 +46,7 @@ class Processor(object):
 # between 'input' and the target state is given by the 'TransitionMap'.
 # If no state transition is possible, then 'drop out actions' are executed.
 #__________________________________________________________________________
-class AnalyzerState(Processor):
+class FSM_State(Processor):
     __slots__ = ("map_target_index_to_character_set", 
                  "transition_map") 
 
@@ -75,11 +75,11 @@ class AnalyzerState(Processor):
 
     @staticmethod
     def from_State(SM_State, StateIndex, EngineType, dial_db):
-        assert isinstance(SM_State, State)
+        assert isinstance(SM_State, DFA_State)
         assert SM_State.target_map.is_DFA_compliant()
         assert isinstance(StateIndex, (int, long))
 
-        x = AnalyzerState(StateIndex, TransitionMap.from_TargetMap(SM_State.target_map), dial_db)
+        x = FSM_State(StateIndex, TransitionMap.from_TargetMap(SM_State.target_map), dial_db)
 
         # (*) Transition
         # Currently, the following is only used for path compression. If the alternative

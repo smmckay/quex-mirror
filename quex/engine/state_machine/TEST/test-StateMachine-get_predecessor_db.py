@@ -17,7 +17,7 @@ from quex.engine.state_machine.TEST.helper_state_machine_shapes import *
 from itertools                                                  import permutations
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine: get_predecessor_db;"
+    print "DFA: get_predecessor_db;"
     print "CHOICES: %s;" % get_sm_shape_names()
     sys.exit(0)
 

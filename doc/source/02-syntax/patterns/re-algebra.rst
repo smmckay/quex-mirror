@@ -270,13 +270,13 @@ the operator categories.  Following are the regular expression operators.
  
      .. figure:: ../../figures/anti-pattern-0.png
  
-        State machine matching the pattern ``for``.
+        DFA matching the pattern ``for``.
  
      .. _fig-anti-pattern-1:
  
      .. figure:: ../../figures/anti-pattern-1.png
  
-        State machine implementing the match of pattern ``\A{for}``.
+        DFA implementing the match of pattern ``\A{for}``.
 
      Figures :ref:`fig-anti-pattern-0` and :ref:`fig-anti-pattern-1` show the 
      state machines for matching the pattern ``for`` and ``\A{for}``. These 

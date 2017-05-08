@@ -161,7 +161,7 @@ converter_helper = [
 ]
 
 def do():
-    # Analyzer base file list (required by any analyzer)
+    # FSM base file list (required by any analyzer)
     txt =   base                   \
           + base_compatibility     \
           + base_buffer            \

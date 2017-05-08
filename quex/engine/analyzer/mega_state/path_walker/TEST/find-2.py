@@ -7,7 +7,7 @@ from   quex.engine.misc.interval_handling   import *
 import quex.engine.state_machine.core  as core
 import quex.engine.analyzer.mega_state.path_walker.core  as paths 
 import quex.engine.analyzer.engine_supply_factory      as     engine
-from   quex.engine.analyzer.core       import Analyzer
+from   quex.engine.analyzer.core       import FSM
 from   quex.constants                  import E_Compression
 
 from   helper import find_core
@@ -41,7 +41,7 @@ def test(sm, SelectF=False):
 #          > dot tmp.dot -Tfig -o tmp.fig       # produce .fig graph file 
 #          > xfig tmp.fig                       # use xfig to view
 
-sm = core.StateMachine()
+sm = core.DFA()
 if "1" in sys.argv: 
     """
     00007() <~ 

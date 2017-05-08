@@ -41,7 +41,7 @@ filter_f = False
 def test(Skeleton, *StringPaths):
     global filter_f
 
-    sm = core.StateMachine()
+    sm = core.DFA()
 
     idx0 = sm.init_state_index
     for character_sequence in StringPaths:

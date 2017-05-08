@@ -31,7 +31,7 @@ def test(state):
 if "1" in sys.argv:
     # (*) create a couple of number sets and put them as triggers to four 
     #     different target states
-    s = State()
+    s = DFA_State()
     s.add_transition(NumberSet(Interval(0, 10)).union(Interval(20, 30)).union(Interval(40, 50)), 1L)
     s.add_transition(NumberSet(Interval(10, 15)).union(Interval(31, 40)), 2L)
     s.add_transition(NumberSet(Interval(15, 16)).union(Interval(17, 18)), 2L)
@@ -42,40 +42,40 @@ if "1" in sys.argv:
 elif "2" in sys.argv:
     # (*) special case that appeared during other unit test: only two intervals
     #     are intermediate 'empty intervals' propperly dealt with?    
-    s = State()
+    s = DFA_State()
     s.add_transition(NumberSet([Interval(45, 46), Interval(47, 48)]), 1L)
     test(s)
 
 elif "3" in sys.argv:
-    s = State()
+    s = DFA_State()
     s.add_transition(NumberSet(Interval(46, 47)), 1L)
     s.add_transition(NumberSet(Interval(48, 49)), 1L)
     test(s)
         
 elif "4" in sys.argv:
-    s = State()
+    s = DFA_State()
     s.add_transition(NumberSet(Interval(46, 47)), 1L)
     test(s)
 
     
 elif "5" in sys.argv:
     # (*) Intervals with INTEGER_MAX
-    s = State()
+    s = DFA_State()
     s.add_transition(NumberSet(Interval(-INTEGER_MAX, INTEGER_MAX)), 1L)
     test(s)
 
 elif "6" in sys.argv:
-    s = State()
+    s = DFA_State()
     s.add_transition(NumberSet(Interval(-INTEGER_MAX, 0)), 1L)
     test(s)
 
 elif "7" in sys.argv:
-    s = State()
+    s = DFA_State()
     s.add_transition(NumberSet(Interval(0, INTEGER_MAX)), 1L)
     test(s)
 
 elif "8" in sys.argv:
-    s = State()
+    s = DFA_State()
     s.add_transition(NumberSet([Interval(-INTEGER_MAX, 50), Interval(60, INTEGER_MAX)]), 1L)
     test(s)
 

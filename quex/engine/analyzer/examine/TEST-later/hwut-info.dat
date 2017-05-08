@@ -1,4 +1,4 @@
-Test the State Machine Examination
+Test the DFA Examination
 ------------------------------------------------
 python    test-*.py
 python -O no-assert-test-*.py

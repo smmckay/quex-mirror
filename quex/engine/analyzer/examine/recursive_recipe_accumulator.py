@@ -23,9 +23,9 @@ class RecursiveRecipeAccumulator(TreeWalker):
         curr_state = self.examiner._sm.states[CurrStateIndex]
 
         # Termination Criteria:
-        # * State  = Terminal: no transitions, no further recursion. 
+        # * DFA_State  = Terminal: no transitions, no further recursion. 
         #                      (Nothing needs to be done to guarantee that)
-        # * Target is Mouth State => No entry!
+        # * Target is Mouth DFA_State => No entry!
         # * Target is Spring      => No entry!
         todo = []
         for target_index in curr_state.target_map.iterable_target_state_indices():

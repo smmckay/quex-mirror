@@ -157,7 +157,7 @@ TEST                                                                 <no date>
         feature-3039173.sh ...........................................[OK]
     3082041 0.52.4 Buffer Memory Size not Accepted
         bug-3082041.sh ...............................................[OK]
-    3102035 0.55.1 Weird Setup causes Duplicate State Label
+    3102035 0.55.1 Weird Setup causes Duplicate DFA_State Label
         bug-3102035.sh 1 .............................................[OK]
                        2 .............................................[OK]
                        3 .............................................[OK]
@@ -980,15 +980,15 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
         pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .....................[FAIL]
-                                           sphinx ..................[FAIL]
+        command_line_options-verify-doc.py man .......................[OK]
+                                           sphinx ....................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1003,14 +1003,10 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] svn-status.sh
-    [FAIL] command_line_options-verify-doc.py _ man
-                                            \__ sphinx
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1027,7 +1023,7 @@ quex/TESTS/command-line/TEST                                         <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                       Check Lexical Similarity Analyzer                       
+                         Check Lexical Similarity FSM                          
                                                                                
 quex/TESTS/did-you-mean/TEST                                         <no date>
 -------------------------------------------------------------------------------
@@ -1250,10 +1246,10 @@ quex/TESTS/match-precedence/TEST                                     <no date>
                                                                                
 quex/TESTS/misc/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * Analyzer State Tracer
-        debug_show.sh ................................................[OK]
  * Customized codec files (option --encoding-file)
         customized_codec.sh ..........................................[OK]
+ * FSM DFA_State Tracer
+        debug_show.sh ................................................[OK]
  * Inadmissible commonalities
         commonality.sh indentation-newline ...........................[OK]
                        mix ...........................................[OK]
@@ -1407,7 +1403,7 @@ quex/TESTS/token-policies/TEST                                       <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                              Analyzer Code Base                               
+                                 FSM Code Base                                 
                                                                                
 quex/code_base/analyzer/TEST                                         <no date>
 -------------------------------------------------------------------------------
@@ -1622,10 +1618,10 @@ quex/engine/loop/TEST                                                <no date>
  * Loop:
 
     Get All Analyzers.
-        loop-get_analazer_list.py appendix ...........................[OK]
-                                  appendix-wot .......................[OK]
-                                  loop ...............................[OK]
-                                  non-const ..........................[OK]
+        loop-get_analazer_list.py appendix .........................[FAIL]
+                                  appendix-wot .....................[FAIL]
+                                  loop .............................[FAIL]
+                                  non-const ........................[FAIL]
     Get Loop Map.
         loop-get_loop_map.py AppendixI ...............................[OK]
                              AppendixNoI .............................[OK]
@@ -1662,10 +1658,15 @@ quex/engine/loop/TEST                                                <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       4 ..............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] loop-get_analazer_list.py _ appendix
+                                   \__ appendix-wot
+                                   \__ loop
+                                   \__ non-const
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -1705,7 +1706,7 @@ quex/engine/misc/TEST                                                <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                         Operations on State Machines                          
+                              Operations on DFAs                               
                                                                                
 quex/engine/operations/TEST                                          <no date>
 -------------------------------------------------------------------------------
@@ -1748,13 +1749,15 @@ quex/engine/operations/TEST                                          <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                              State Machine Tests                              
+                                   DFA Tests                                   
                                                                                
 quex/engine/state_machine/TEST                                       <no date>
 -------------------------------------------------------------------------------
 
  * DFA:
 
+    Cloning
+        test-StateMachine-clone.py ...................................[OK]
     Get Trigger Map (intervals --> target states)
         test-StateInfo-trigger-map.py ................................[OK]
     Get Trigger Map (intervals --> target states)
@@ -1766,6 +1769,30 @@ quex/engine/state_machine/TEST                                       <no date>
                                 6 ....................................[OK]
                                 7 ....................................[OK]
                                 8 ....................................[OK]
+    get_predecessor_db
+        test-StateMachine-get_predecessor_db.py bubble ...............[OK]
+                                                bubble2 ..............[OK]
+                                                bubble2b .............[OK]
+                                                bubble3 ..............[OK]
+                                                bubble4 ..............[OK]
+                                                butterfly ............[OK]
+                                                fork .................[OK]
+                                                fork2 ................[OK]
+                                                fork3 ................[OK]
+                                                fork4 ................[OK]
+                                                linear ...............[OK]
+                                                long_loop ............[OK]
+                                                mini_bubble ..........[OK]
+                                                mini_loop ............[OK]
+                                                nested_loop ..........[OK]
+                                                tree .................[OK]
+
+ * DFA Operations:
+
+    Append Post Condition
+        test-setup_border_conditions.py ..............................[OK]
+    Inverse
+        test-StateMachine-inverse.py .................................[OK]
 
  * NFA:
 
@@ -1808,35 +1835,6 @@ quex/engine/state_machine/TEST                                       <no date>
     The Philosophical Cut
         test-ambiguous_post_condition-philosophical_cut.py ...........[OK]
 
- * StateMachine:
-
-    Cloning
-        test-StateMachine-clone.py ...................................[OK]
-    get_predecessor_db
-        test-StateMachine-get_predecessor_db.py bubble ...............[OK]
-                                                bubble2 ..............[OK]
-                                                bubble2b .............[OK]
-                                                bubble3 ..............[OK]
-                                                bubble4 ..............[OK]
-                                                butterfly ............[OK]
-                                                fork .................[OK]
-                                                fork2 ................[OK]
-                                                fork3 ................[OK]
-                                                fork4 ................[OK]
-                                                linear ...............[OK]
-                                                long_loop ............[OK]
-                                                mini_bubble ..........[OK]
-                                                mini_loop ............[OK]
-                                                nested_loop ..........[OK]
-                                                tree .................[OK]
-
- * StateMachine Operations:
-
-    Append Post Condition
-        test-setup_border_conditions.py ..............................[OK]
-    Inverse
-        test-StateMachine-inverse.py .................................[OK]
-
  * Tracing origin:
 
     Cloning
@@ -1867,14 +1865,14 @@ quex/input/regular_expression/TEST                                   <no date>
  * Case Folding
         test-case_fold.py pattern ....................................[OK]
                           set ........................................[OK]
+ * DFA Pattern Matching
+        test-pattern-matching.py .....................................[OK]
  * Operations
         test-operations.py 0 .........................................[OK]
                            1 .........................................[OK]
                            2 .........................................[OK]
                            3 .........................................[OK]
                            special ...................................[OK]
- * State Machine Pattern Matching
-        test-pattern-matching.py .....................................[OK]
  * Transformations
         test-transformation.py .......................................[OK]
 
@@ -1920,7 +1918,7 @@ quex/input/regular_expression/TEST                                   <no date>
 
     Character Sets
         test-replacement-2.py ........................................[OK]
-    Regular Expression State Machines
+    Regular Expression DFAs
         test-replacement.py ..........................................[OK]
 
  * Unicode properties:
@@ -2176,7 +2174,7 @@ quex/output/core/TEST                                                <no date>
                        Cpp-Template-CG ...............................[OK]
                        Cpp_StrangeStream .............................[OK]
 
- * Single State:
+ * Single DFA_State:
 
     Transition Code Generation
         test-single-state-transitions.py A ...........................[OK]
@@ -2317,7 +2315,7 @@ quex/code_base/extra/post_categorizer/TEST                           <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                       State Machine related Algorithms                        
+                            DFA related Algorithms                             
                                                                                
 quex/engine/state_machine/algorithm/TEST                             <no date>
 -------------------------------------------------------------------------------
@@ -2348,7 +2346,7 @@ quex/engine/state_machine/algorithm/TEST                             <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                             State Machine Checks                              
+                                  DFA Checks                                   
                                                                                
 quex/engine/state_machine/check/TEST                                 <no date>
 -------------------------------------------------------------------------------
@@ -2377,12 +2375,12 @@ quex/engine/state_machine/check/TEST                                 <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-              Parallel and Sequential Mounting of State Machines.              
+                   Parallel and Sequential Mounting of DFAs.                   
                                                                                
 quex/engine/state_machine/construction/TEST                          <no date>
 -------------------------------------------------------------------------------
 
- * StateMachine Operations:
+ * DFA Operations:
 
     Append Post Condition
         test-setup_post_condition.py .................................[OK]
@@ -2407,7 +2405,7 @@ quex/engine/state_machine/construction/TEST                          <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                         State Machine Transformations                         
+                              DFA Transformations                              
                                                                                
 quex/engine/state_machine/transformation/TEST                        <no date>
 -------------------------------------------------------------------------------
@@ -2806,7 +2804,7 @@ quex/code_base/buffer/TESTS/navigation/TEST                          <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                         Pathwalker State Construction                         
+                       Pathwalker DFA_State Construction                       
                                                                                
 quex/engine/analyzer/mega_state/path_walker/TEST                     <no date>
 -------------------------------------------------------------------------------
@@ -2852,7 +2850,7 @@ quex/engine/analyzer/mega_state/path_walker/TEST                     <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                          Template State Construction                          
+                        Template DFA_State Construction                        
                                                                                
 quex/engine/analyzer/mega_state/template/TEST                        <no date>
 -------------------------------------------------------------------------------
@@ -2863,21 +2861,21 @@ quex/engine/analyzer/mega_state/template/TEST                        <no date>
                         3 ............................................[OK]
                         4 ............................................[OK]
  * Combine Simple
-        combine-simple.py distinguished ..............................[OK]
-                          plain ......................................[OK]
-                          recursive ..................................[OK]
+        combine-simple.py distinguished ............................[FAIL]
+                          plain ....................................[FAIL]
+                          recursive ................................[FAIL]
  * Template states handling recursion
-        recursion.py 0 ...............................................[OK]
-                     0b ..............................................[OK]
-                     1 ...............................................[OK]
-                     1b ..............................................[OK]
-                     1c ..............................................[OK]
+        recursion.py 0 .............................................[FAIL]
+                     0b ............................................[FAIL]
+                     1 .............................................[FAIL]
+                     1b ............................................[FAIL]
+                     1c ............................................[FAIL]
 
  * Transition Map Templates:
 
     Combine Combined Trigger Maps
-        combine-maps-2.py 1 ..........................................[OK]
-                          2 ..........................................[OK]
+        combine-maps-2.py 1 ........................................[FAIL]
+                          2 ........................................[FAIL]
     Get Best Matching Pair
         best_matching_pair.py 0 ......................................[OK]
                               1 ......................................[OK]
@@ -2892,10 +2890,21 @@ quex/engine/analyzer/mega_state/template/TEST                        <no date>
                   3b .................................................[OK]
                   4 ..................................................[OK]
                   recursive ..........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] combine-simple.py _ distinguished
+                           \__ plain
+                           \__ recursive
+    [FAIL] recursion.py _ 0
+                      \__ 0b
+                      \__ 1
+                      \__ 1b
+                      \__ 1c
+    [FAIL] combine-maps-2.py _ 1
+                           \__ 2
 ===============================================================================
                                                                                
                       Code Generation for Transition Map                       
@@ -3023,7 +3032,7 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                             State Machine Algebra                             
+                                  DFA Algebra                                  
                                                                                
 quex/engine/state_machine/algebra/TESTS/additional_laws/TEST         <no date>
 -------------------------------------------------------------------------------
@@ -3052,11 +3061,11 @@ quex/engine/state_machine/algebra/TESTS/additional_laws/TEST         <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                             State Machine Algebra                             
+                                  DFA Algebra                                  
                                                                                
 quex/engine/state_machine/algebra/TESTS/basics/TEST                  <no date>
 -------------------------------------------------------------------------------
- * Complementary State Machines
+ * Complementary DFAs
         test-complement.py Branches ..................................[OK]
                            BranchesLoops .............................[OK]
                            Loops .....................................[OK]
@@ -3087,7 +3096,7 @@ quex/engine/state_machine/algebra/TESTS/basics/TEST                  <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                             State Machine Algebra                             
+                                  DFA Algebra                                  
                                                                                
 quex/engine/state_machine/algebra/TESTS/extra_operations/TEST        <no date>
 -------------------------------------------------------------------------------
@@ -3144,7 +3153,7 @@ quex/engine/state_machine/algebra/TESTS/extra_operations/TEST        <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                             State Machine Algebra                             
+                                  DFA Algebra                                  
                                                                                
 quex/engine/state_machine/algebra/TESTS/fundamental_laws/TEST        <no date>
 -------------------------------------------------------------------------------
@@ -3164,7 +3173,7 @@ quex/engine/state_machine/algebra/TESTS/fundamental_laws/TEST        <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                             State Machine Algebra                             
+                                  DFA Algebra                                  
                                                                                
 quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
 -------------------------------------------------------------------------------
@@ -3193,7 +3202,7 @@ SUMMARY:
            56      [OK] demo/C/TEST                                                   
            56      [OK] ..../Cpp/TEST                                                 
            14      [OK] ..../TEST                                                     
-        3  15    [FAIL] quex/TESTS/code/TEST                                          
+           15      [OK] quex/TESTS/code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3225,8 +3234,8 @@ SUMMARY:
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
-           27      [OK] .............................../template/TEST                 
-           38      [OK] .........../loop/TEST                                         
+       10  27    [FAIL] .............................../template/TEST                 
+        4  38    [FAIL] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
            17      [OK] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
@@ -3247,11 +3256,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _       _____     _          
-    |  ___|_ _(_) |___  |_   _| __(_) ___ ___ 
-    | |_ / _` | | / __|   | || '__| |/ __/ _ \
-    |  _| (_| | | \__ \   | || |  | | (_|  __/
-    |_|  \__,_|_|_|___/   |_||_|  |_|\___\___|
+     _____     _ _          _  _  _            
+    |  ___|_ _(_) |___     / || || |     __  __
+    | |_ / _` | | / __|    | || || |_    \ \/ /
+    |  _| (_| | | \__ \    | ||__   _     >  < 
+    |_|  \__,_|_|_|___/    |_|   |_|     /_/\_\
                                                                    (1628 tests)
 
 ===============================================================================

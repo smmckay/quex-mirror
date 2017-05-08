@@ -40,7 +40,7 @@ def code(Language):
 
 def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
 
-    # Analyzer class implementation
+    # FSM class implementation
     #
     analyzer_class_implementation  = "#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n"
     analyzer_class_implementation += analyzer_class.do_implementation(mode_db)

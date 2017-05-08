@@ -1,5 +1,5 @@
-from   quex.engine.state_machine.core                 import StateMachine
-from   quex.engine.state_machine.state.core           import State
+from   quex.engine.state_machine.core                 import DFA
+from   quex.engine.state_machine.state.core           import DFA_State
 import quex.engine.state_machine.algorithm.beautifier as     beautifier
 import quex.engine.state_machine.index                as     index
 from   quex.engine.misc.tree_walker                   import TreeWalker
@@ -69,7 +69,7 @@ class WalkAlong(TreeWalker):
             init_state_index = index.map_state_combination_to_index((SM_A.init_state_index, 
                                                                      SM_B.init_state_index))
             state            = self.get_state_core(SM_A.init_state_index)
-            self.result      = StateMachine(InitStateIndex = init_state_index,
+            self.result      = DFA(InitStateIndex = init_state_index,
                                             InitState      = state)
         else:
             self.result      = result
@@ -184,7 +184,7 @@ class WalkAlong(TreeWalker):
             
     def get_state_core(self, AStateIndex):
         acceptance_f = self.original.states[AStateIndex].is_acceptance() 
-        return State(AcceptanceF=acceptance_f)
+        return DFA_State(AcceptanceF=acceptance_f)
 
     def get_state(self, a_state_index, b_state_index):
         state_index = index.map_state_combination_to_index((a_state_index, b_state_index))

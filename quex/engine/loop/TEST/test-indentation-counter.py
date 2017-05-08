@@ -5,7 +5,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 from   quex.input.regular_expression.pattern       import Pattern
 from   quex.input.code.base                        import SourceRef_VOID
 from   quex.engine.pattern                         import Pattern
-from   quex.engine.state_machine.core              import StateMachine
+from   quex.engine.state_machine.core              import DFA
 from   quex.engine.misc.interval_handling          import NumberSet, Interval
 from   quex.engine.counter                         import IndentationCount
 import quex.engine.analyzer.door_id_address_label  as     dial
@@ -36,7 +36,7 @@ def build(ISetup):
     return executable_name, source
 
 def get_Pattern(ValueList):
-    sm = StateMachine.from_character_set(NumberSet([ Interval(ord(x)) for x in ValueList ]))
+    sm = DFA.from_character_set(NumberSet([ Interval(ord(x)) for x in ValueList ]))
     return Pattern(sm.get_id(), sm, None, None, None, "", SourceRef_VOID)
 
 if "WithoutTab" in sys.argv:

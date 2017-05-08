@@ -54,7 +54,7 @@ $INCLUDE_CONVERTER_DECLARATION
         __quex_assert(End >= Begin);
         self.text.assign(Begin, (size_t)(End-Begin));
 
-        printf("Lexical Analyzer Receives:\n");
+        printf("Lexical FSM Receives:\n");
         printf("   '%s'\n", Begin);
         return true;
    }

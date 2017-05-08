@@ -232,7 +232,7 @@ QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me)
     QUEX_TYPE_LEXATOM*  BeginP = &me->_memory._front[1];
 
     if( ! me->_memory._front ) {
-        /* No memory => Analyzer is put into a non-functional state.         */
+        /* No memory => FSM is put into a non-functional state.         */
         me->_read_p                      = (QUEX_TYPE_LEXATOM*)0;
         me->_lexeme_start_p              = (QUEX_TYPE_LEXATOM*)0;
         me->_lexatom_at_lexeme_start     = (QUEX_TYPE_LEXATOM)0;                                   

@@ -23,12 +23,12 @@ def test(TestString, NumbersF=False):
         result = snap_character_set_expression(stream, {})
         result = result.get_number_set()
         if NumbersF == False:
-            if result.__class__.__name__ == "StateMachine":
+            if result.__class__.__name__ == "DFA":
                 print "result     = " + result.get_string(NormalizeF=True) 
             else:
                 print "result     = " + result.get_utf8_string() 
         else:
-            if result.__class__.__name__ == "StateMachine":
+            if result.__class__.__name__ == "DFA":
                 print "result     = " + result.get_string(NormalizeF=True) 
             else:
                 print "result     = " + result.get_string()

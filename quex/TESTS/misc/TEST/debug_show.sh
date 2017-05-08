@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 case $1 in
     --hwut-info)
-        echo "Analyzer State Tracer;"
+        echo "FSM DFA_State Tracer;"
         echo "HAPPY: [0-9]+;"
         ;;
 

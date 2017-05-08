@@ -1,5 +1,5 @@
 from quex.constants  import E_PreContextIDs
-from quex.engine.state_machine.core import StateMachine
+from quex.engine.state_machine.core import DFA
 
 class Checker:
     def __init__(self, SM0, SM1):
@@ -100,11 +100,11 @@ class Checker:
 def do(A, B):
     """Assumption: post context are already mounted on core state machines.
     """
-    if isinstance(A, StateMachine):
-        assert isinstance(B, StateMachine)
+    if isinstance(A, DFA):
+        assert isinstance(B, DFA)
         return Checker(A, B).do()
 
-    assert not isinstance(B, StateMachine)
+    assert not isinstance(B, DFA)
 
     # Check whether A and B are identical, i.e they match 
     # exactly the same patterns and provide exactly the same behavior of the 

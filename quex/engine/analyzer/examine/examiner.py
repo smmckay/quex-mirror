@@ -300,7 +300,7 @@ class Examiner:
 
         An accumulated action is determined on each step by
 
-                recipe = self._accumulate(recipe, State)
+                recipe = self._accumulate(recipe, DFA_State)
 
         """
         walker = RecursiveRecipeAccumulator(self)

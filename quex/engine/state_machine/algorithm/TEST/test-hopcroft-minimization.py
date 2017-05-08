@@ -37,7 +37,7 @@ def test(sm):
 
 print "_______________________________________________________________________________"
 print "Example A:"
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 sm = repeat.do(sm, 1)
@@ -46,7 +46,7 @@ test(dfa)
 
 print "_______________________________________________________________________________"
 print "Example B:"
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 sm = repeat.do(sm)
@@ -55,7 +55,7 @@ test(dfa)
 
 print "_______________________________________________________________________________"
 print "Example C:"
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 sm = repeat.do(sm, 0, 1)
@@ -64,7 +64,7 @@ test(dfa)
 
 print "_______________________________________________________________________________"
 print "Example D:"
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 sm = repeat.do(sm, 3, 5)
@@ -86,7 +86,7 @@ print "Example E:"
 #
 #    ((1)), ((2)), and ((3))  are the acceptance states.
 #
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 n2 = sm.add_transition(n1, ord('b'), AcceptanceF=True)

@@ -1,9 +1,9 @@
 #! /usr/bin/env python
-from quex.engine.state_machine.core import StateMachine
+from quex.engine.state_machine.core import DFA
 from quex.engine.misc.tools import typed
 
 
-@typed(the_state_machine_list=[StateMachine])
+@typed(the_state_machine_list=[DFA])
 def do(the_state_machine_list, 
        LeaveIntermediateAcceptanceStatesF = False, 
        MountToFirstStateMachineF          = False, 
@@ -28,7 +28,7 @@ def do(the_state_machine_list,
     state_machine_list = filter(lambda sm: not sm.is_Empty(), the_state_machine_list)         
    
     if len(state_machine_list) < 2:
-        if len(state_machine_list) < 1: return StateMachine()
+        if len(state_machine_list) < 1: return DFA()
         else:                           return state_machine_list[0]
 
     # (*) collect all transitions from both state machines into a single one

@@ -31,7 +31,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.regular_expression.engine                       as     regex
 from   quex.engine.misc.interval_handling                         import NumberSet, Interval
 from   quex.engine.state_machine.transformation.utf16_state_split import EncodingTrafoUTF16
-from   quex.engine.state_machine.core                             import StateMachine
+from   quex.engine.state_machine.core                             import DFA
 from   quex.engine.misc.utf16                                     import unicode_to_utf16
 import quex.engine.state_machine.index                            as     index
 import quex.engine.state_machine.TEST.helper_state_machine_shapes as     sms

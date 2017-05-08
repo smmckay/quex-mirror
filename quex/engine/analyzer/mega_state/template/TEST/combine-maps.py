@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.engine.state_machine.index                             as     sm_index
-from   quex.engine.analyzer.state.core                             import AnalyzerState
+from   quex.engine.analyzer.state.core                             import FSM_State
 import quex.engine.analyzer.door_id_address_label                  as     DialDB
 from   quex.engine.analyzer.transition_map                         import TransitionMap
 import quex.engine.analyzer.mega_state.template.core               as     templates
@@ -50,7 +50,7 @@ def test(TMa, TMb, InvolvedStateListA=[10L], InvolvedStateListB=[20L], DrawF=Fal
 def get_transition_map(TM, StateIndex, DropOutCatcher=None):
     global dial_db
     if DropOutCatcher is None:
-        DropOutCatcher = AnalyzerState(sm_index.get(), TransitionMap(), dial_db=dial_db)
+        DropOutCatcher = FSM_State(sm_index.get(), TransitionMap(), dial_db=dial_db)
 
     def get_door_id(Target):
         return DoorID(Target, 0, dial_db)

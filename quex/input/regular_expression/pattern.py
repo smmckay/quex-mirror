@@ -1,7 +1,7 @@
 # (C) Frank-Rene Schaefer
 from   quex.input.code.base                                      import SourceRef_VOID, \
                                                                         SourceRef
-from   quex.engine.state_machine.core                            import StateMachine
+from   quex.engine.state_machine.core                            import DFA
 from   quex.engine.state_machine.character_counter               import SmLineColumnCountInfo
 import quex.engine.state_machine.construction.setup_post_context as     setup_post_context
 import quex.engine.state_machine.construction.setup_pre_context  as     setup_pre_context
@@ -25,7 +25,7 @@ class Pattern_Prep(object):
                  "__post_context_end_of_line_f", 
                  "__pattern_string",
                  "__finalized_self")
-    @typed(CoreSM=StateMachine, BeginOfLineF=bool, EndOfLineF=bool, 
+    @typed(CoreSM=DFA, BeginOfLineF=bool, EndOfLineF=bool, 
            AllowNothingIsNecessaryF=bool, Sr=SourceRef)
     def __init__(self, CoreSM, PreContextSM=None, PostContextSM=None, 
                  BeginOfLineF=False, EndOfLineF=False, Sr=SourceRef_VOID, 
@@ -33,7 +33,7 @@ class Pattern_Prep(object):
                  AllowNothingIsNecessaryF=False):
         def assert_sm(sm):
             if sm is None: return
-            assert isinstance(sm, StateMachine)
+            assert isinstance(sm, DFA)
             assert sm.is_DFA_compliant()
         assert CoreSM is not None
         assert_sm(CoreSM)
@@ -219,7 +219,7 @@ class Pattern_Prep(object):
 
         # Count information must be determined BEFORE transformation!
         if CaMap is not None:
-            lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, self.sm, 
+            lcci = SmLineColumnCountInfo.from_DFA(CaMap, self.sm, 
                                                            self.pre_context_trivial_begin_of_line_f, 
                                                            Setup.buffer_encoding)
         else: 
@@ -324,7 +324,7 @@ class Pattern_Prep(object):
         # Transformation MUST be called before any pre-context or bipd
         # is mounted.
 
-        # IncidenceId == StateMachine's id. 
+        # IncidenceId == DFA's id. 
         # However: Transformation may generate a new state machine.
         # => To maintain incidence id, store the original one and restore it
         #    after transformation. 

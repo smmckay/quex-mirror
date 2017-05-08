@@ -1,4 +1,4 @@
-/* Lexical Analyzer fed from a Command Line
+/* Lexical FSM fed from a Command Line
  * -----------------------------------------
  *
  * In this example, user interaction results in a command line which is then

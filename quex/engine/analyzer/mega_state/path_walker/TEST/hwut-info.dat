@@ -1,4 +1,4 @@
-Pathwalker State Construction
+Pathwalker DFA_State Construction
 ------------------------
 *.py
 --not __init__.py

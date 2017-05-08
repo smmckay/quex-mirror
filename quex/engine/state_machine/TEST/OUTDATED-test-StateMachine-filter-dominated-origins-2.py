@@ -7,11 +7,12 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from quex.engine.state_machine.index import get_state_machine_by_id, \
                                             state_machine_ranking_db_register
-from quex.engine.state_machine.core        import StateMachine
-from quex.engine.state_machine.state.core  import State, StateOriginInfo
+from quex.engine.state_machine.core        import DFA
+from quex.engine.state_machine.state.core  import DFA_State, \
+                                                  StateOriginInfo
 
 if "--hwut-info" in sys.argv:
-    print "Ranking of State Machines: Filter Dominated Origins - Part 2"
+    print "Ranking of DFAs: Filter Dominated Origins - Part 2"
     sys.exit(0)
 
 def add_origin(StateMachineIdx, StoreInputPositionF,
@@ -45,27 +46,27 @@ def print_this(Title):
 #
 # -- the function 'filter dominated origins searches for the original acceptance
 #    in the state machine => need to create to dummy state machines
-StateMachine(InitStateIndex=0L, AcceptanceF=True)
-StateMachine(InitStateIndex=1L, AcceptanceF=True)
-StateMachine(InitStateIndex=2L, AcceptanceF=True)
-StateMachine(InitStateIndex=3L, AcceptanceF=True)
-StateMachine(InitStateIndex=4L, AcceptanceF=True)
-StateMachine(InitStateIndex=5L, AcceptanceF=True)
-StateMachine(InitStateIndex=6L, AcceptanceF=True)
-StateMachine(InitStateIndex=100L, AcceptanceF=False)
-StateMachine(InitStateIndex=101L, AcceptanceF=False)
-StateMachine(InitStateIndex=102L, AcceptanceF=False)
-StateMachine(InitStateIndex=103L, AcceptanceF=False)
-StateMachine(InitStateIndex=104L, AcceptanceF=False)
-StateMachine(InitStateIndex=105L, AcceptanceF=False)
-StateMachine(InitStateIndex=106L, AcceptanceF=False)
+DFA(InitStateIndex=0L, AcceptanceF=True)
+DFA(InitStateIndex=1L, AcceptanceF=True)
+DFA(InitStateIndex=2L, AcceptanceF=True)
+DFA(InitStateIndex=3L, AcceptanceF=True)
+DFA(InitStateIndex=4L, AcceptanceF=True)
+DFA(InitStateIndex=5L, AcceptanceF=True)
+DFA(InitStateIndex=6L, AcceptanceF=True)
+DFA(InitStateIndex=100L, AcceptanceF=False)
+DFA(InitStateIndex=101L, AcceptanceF=False)
+DFA(InitStateIndex=102L, AcceptanceF=False)
+DFA(InitStateIndex=103L, AcceptanceF=False)
+DFA(InitStateIndex=104L, AcceptanceF=False)
+DFA(InitStateIndex=105L, AcceptanceF=False)
+DFA(InitStateIndex=106L, AcceptanceF=False)
     
 # (*) add priviledges
 # add_priority(4L, 0L)   
 # add_priority(6L, 3L)   
 
 # (1) only acceptance and non-acceptance states    
-si = State()    
+si = DFA_State()    
 add_origin(1, True)    
 add_origin(4, True)    
 add_origin(0, True)    
@@ -86,7 +87,7 @@ si.single_entry.filter_dominated()
 print_this("Only Acceptance/Non-Acceptance - After")
 
 # (2) acceptance and pre-conditioned states
-si = State()    
+si = DFA_State()    
 add_origin(1, True, PreConditionedStateMachineID=1L)    
 add_origin(4, True)    
 add_origin(0, True, PreConditionedStateMachineID=1L)    
@@ -109,7 +110,7 @@ si.single_entry.filter_dominated()
 print_this("Acceptance and Pre-Conditioned Acceptance - After")
 
 # (3) acceptance and post-conditioned states
-si = State()    
+si = DFA_State()    
 add_origin(1, True, PostConditionedAcceptanceF=1L)    
 add_origin(4, True)    
 add_origin(0, True, PostConditionedAcceptanceF=1L)    

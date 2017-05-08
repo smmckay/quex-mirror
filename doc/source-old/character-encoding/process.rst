@@ -74,7 +74,7 @@ discussion:
   streams are to be used, then a string must be passed to the buffer filler that
   tells from what encoding it has to convert.
 
-* Lexical Analyzer Codec
+* Lexical FSM Codec
 
   This is the character encoding of the analyzer engine. The encoding determines
   what numeric value represents what character. For example, the greek letter α has a

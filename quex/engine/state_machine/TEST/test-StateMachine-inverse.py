@@ -10,7 +10,7 @@ from quex.engine.state_machine.TEST.test_state_machines import *
 import quex.engine.state_machine.algebra.reverse         as reverse
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine Operations: Inverse"
+    print "DFA Operations: Inverse"
     sys.exit(0)
 
 def test(sm):

@@ -9,7 +9,7 @@ import quex.engine.state_machine.construction.repeat as repeat
 from   quex.engine.state_machine.TEST.test_state_machines import *
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine Operations: Repetitions Kleene closure 0 or arbitrary repetitions"
+    print "DFA Operations: Repetitions Kleene closure 0 or arbitrary repetitions"
     sys.exit(0)
     
 print "-------------------------------------------------------------------------------"

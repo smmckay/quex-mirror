@@ -61,12 +61,12 @@ def CharacterPathList_find(analyzer, StateIndex, CompressionType, AvailableState
     """
     result_list = []
 
-    State          = analyzer.state_db[StateIndex]
-    target_map     = State.map_target_index_to_character_set
-    transition_map = State.transition_map 
+    fsm_state      = analyzer.state_db[StateIndex]
+    target_map     = fsm_state.map_target_index_to_character_set
+    transition_map = fsm_state.transition_map 
 
     for target_idx, trigger_set in target_map.iteritems():
-        if   target_idx not in AvailableStateIndexSet: continue # State is not an option.
+        if   target_idx not in AvailableStateIndexSet: continue # fsm_state is not an option.
         elif target_idx == StateIndex:                 continue # Recursion! Do not go further!
 
         # Only single character transitions can be element of a path.
@@ -75,7 +75,7 @@ def CharacterPathList_find(analyzer, StateIndex, CompressionType, AvailableState
 
         path_finder  = PathFinder(analyzer, CompressionType, AvailableStateIndexSet)
         target_state = analyzer.state_db[target_idx]
-        path         = CharacterPath(State, transition_map, transition_char)
+        path         = CharacterPath(fsm_state, transition_map, transition_char)
         path_finder.do((path, target_state))
 
         result_list.extend(path_finder.result)
@@ -119,24 +119,24 @@ class PathFinder(TreeWalker):
 
     def on_enter(self, Args):
         path           = Args[0]  # 'CharacterPath'
-        State          = Args[1]  # 'AnalyzerState'
-        transition_map = State.transition_map 
+        fsm_state      = Args[1]  # 'fsm_state' reached by path
+        transition_map = fsm_state.transition_map 
 
-        # We are searching on follow states of this 'State'. 
-        # => 'State' will becomes an element of the path.
+        # We are searching on follow states of this 'fsm_state'. 
+        # => 'fsm_state' will becomes an element of the path.
         #    (Its target state still will remain an external 'Terminal')
-        # => Entry and DropOut of 'State' are implemented as part of the 
+        # => Entry and DropOut of 'fsm_state' are implemented as part of the 
         #    path walker.
         
         # If uniformity is required, then this is the place to check for it.
-        if self.uniform_f and not path.uniformity_with_predecessor(State):
+        if self.uniform_f and not path.uniformity_with_predecessor(fsm_state):
             # TERMINATION _________________________________________________
-            self.result_add(path, State.index)
+            self.result_add(path, fsm_state.index)
             return None
 
         # BRANCH __________________________________________________________
         sub_list = []
-        for target_index, trigger_set in State.map_target_index_to_character_set.iteritems():
+        for target_index, trigger_set in fsm_state.map_target_index_to_character_set.iteritems():
             if target_index not in self.available_set: continue
 
             # Only single character transitions can be element of a path.
@@ -154,7 +154,7 @@ class PathFinder(TreeWalker):
                 continue # No match possible 
             elif plug > 0  and not path.has_wildcard(): 
                 continue # Wilcard required for match, but there is no wildcard open.
-            new_path = path.extended_clone(State, transition_char, plug) 
+            new_path = path.extended_clone(fsm_state, transition_char, plug) 
 
             # RECURSION STEP ______________________________________________
             # Clone the current state and append the new terminal.
@@ -162,7 +162,7 @@ class PathFinder(TreeWalker):
 
         # TERMINATION _____________________________________________________
         if len(sub_list) == 0:
-            self.result_add(path, State.index)
+            self.result_add(path, fsm_state.index)
             return None
 
         return sub_list

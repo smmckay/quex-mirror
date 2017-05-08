@@ -80,7 +80,7 @@ def get_elementary_trigger_sets(StateIdxList, sm=None, epsilon_closure_db=None):
     ##                
     ##    return combination_list
 
-    ## Special Case -- Quickly Done: One State, One Target State
+    ## Special Case -- Quickly Done: One DFA_State, One Target DFA_State
     ##  (Improvement is merely measurable).
     ##  if len(StateIdxList) == 1:
     ##      state_idx = list(StateIdxList)[0]
@@ -209,7 +209,7 @@ def _enter(result, begin, end, target_state_setup):
 
 # NO USES YET: 'MultiOccurrenceNumberList'
 # Candidate to support list based-indexing for caches.
-# in "StateMachine.get_elementary_trigger_sets(self, StateIdxList, ...)"
+# in "DFA.get_elementary_trigger_sets(self, StateIdxList, ...)"
 class MultiOccurrenceNumberList(object):
     __slots__ = ("db", "hash_value")
 

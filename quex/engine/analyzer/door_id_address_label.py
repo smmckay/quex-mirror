@@ -40,7 +40,7 @@ from   collections import namedtuple
 #
 # DoorID:
 #
-# Marks an entrance into a 'Processor', an AnalyzerState for example.  A
+# Marks an entrance into a 'Processor', an FSM_State for example.  A
 # Processor can have multiple entries, each entry has a different DoorID. A
 # DoorID identifies distinctly a OpList to be executed upon entry.
 # No two OpList-s
@@ -122,7 +122,7 @@ class DoorID(namedtuple("DoorID_tuple", ("state_index", "door_index", "related_a
 # (For ease: make it globally unique, not only mode-unique)
 #
 def new_incidence_id():
-    """Incidence ids are used as StateMachine-ids => they MUST be aligned.
+    """Incidence ids are used as DFA-ids => they MUST be aligned.
     TODO: They are actually the same. 
           Replace 'state_machine_id' by 'incidence_id'.
     """

@@ -93,7 +93,7 @@ The core pattern of 'x/a/b' is reached once 'a' has been detected. Thus, the
 input position for pattern 0 is stored. When the state 2 is entered, the
 sequence "ab" must have occurred. Thus pattern 0 wins if 'pre0' is fulfilled.
 If not, then "ab" matches pattern 1. The input position for pattern 1 is the
-current input position, so it is stored in 'reg[1]'. State 3 is only entered of
+current input position, so it is stored in 'reg[1]'. DFA_State 3 is only entered of
 "abc" has occurred. Then, if 'pre2' is fulfilled, pattern 2 wins.
 
 Let now the recipe in state 4 be determined. If pre-context 2 is fulfilled,

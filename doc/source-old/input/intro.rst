@@ -17,7 +17,7 @@ so that it directly runs on a encoding different from Unicode.
 Input Procedure
 ===============
 
-Lexical analysis happens by means of a state machine. State transitions in the
+Lexical analysis happens by means of a state machine. DFA_State transitions in the
 state machine are triggered by events. In lexical analysis those events are
 characters from an input stream. To efficiently handle input streams, quex
 loads them into a chunk in memory. An input pointer points to the currently

@@ -4,7 +4,7 @@ import quex.input.regular_expression.core             as     regular_expression
 from   quex.input.code.base                           import SourceRef, \
                                                              SourceRef_DEFAULT, \
                                                              SourceRefObject
-from   quex.engine.state_machine.core                 import StateMachine  
+from   quex.engine.state_machine.core                 import DFA  
 import quex.engine.state_machine.construction.sequentialize as sequentialize
 import quex.engine.state_machine.algorithm.beautifier as     beautifier    
 import quex.engine.state_machine.check.identity       as     identity
@@ -297,7 +297,7 @@ class IndentationCount_Prep(CountBase_Prep):
                       "Indentation handlers without newline are unfeasible."
                       % cc_type_name_db[before.cc_type], before.sr) 
 
-        sm = StateMachine.from_character_set(newline_set)
+        sm = DFA.from_character_set(newline_set)
 
         if Setup.dos_carriage_return_newline_f:
             before = self._ca_map_specifier.find_occupier(retour_set, set())

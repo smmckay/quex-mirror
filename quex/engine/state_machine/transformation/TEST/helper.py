@@ -3,8 +3,8 @@ from   quex.engine.misc.interval_handling                         import NumberS
 from   quex.engine.state_machine.state.single_entry               import SeAccept     
 import quex.engine.state_machine.construction.combination         as     combination
 import quex.engine.state_machine.algorithm.beautifier             as     beautifier
-from   quex.engine.state_machine.core                             import StateMachine
-from   quex.engine.state_machine.state.core                       import State
+from   quex.engine.state_machine.core                             import DFA
+from   quex.engine.state_machine.state.core                       import DFA_State
 import quex.engine.state_machine                                  as     state_machine
 from   quex.engine.state_machine.transformation.utf8_state_split  import EncodingTrafoUTF8
 import quex.engine.state_machine.TEST.helper_state_machine_shapes as     sms
@@ -20,7 +20,7 @@ class X:
         sh = StringIO("[:\\P{Script=%s}:]" % Name)
         self.name = Name
         self.charset = regex.snap_set_expression(sh, {})
-        self.sm = StateMachine()
+        self.sm = DFA()
         self.sm.add_transition(self.sm.init_state_index, self.charset, AcceptanceF=True)
         self.id = self.sm.get_id()
 
@@ -122,7 +122,7 @@ def transform(Trafo, orig):
 
 def test_on_UCS_range(Trafo, Source, Drain, CharacterBackwardTrafo):
 
-    sm     = StateMachine()
+    sm     = DFA()
     acc_db = {}
     for x in range(Source.begin, Source.end):
         ti = sm.add_transition(sm.init_state_index, x, AcceptanceF=True)
@@ -170,7 +170,7 @@ def assert_only_acceptance_id(states, TargetIndex, AcceptanceDb, FromChar, ToCha
                 (FromChar, ToChar, expected_acceptance_id, acceptance_id_list)
 
 def generate_sm_for_boarders(Boarders, Trafo):
-    sm = StateMachine()
+    sm = DFA()
     for ucs_char in Boarders:
         target_idx = index.get() 
         sms.line(sm, sm.init_state_index, 
@@ -267,9 +267,9 @@ def test_plug_sequence(ByteSequenceDB):
     print "#    L    = %i" % L
     print "#    DIdx = %i" % first_different_byte_index
 
-    sm = StateMachine()
+    sm = DFA()
     end_index = state_machine.index.get()
-    sm.states[end_index] = State()
+    sm.states[end_index] = DFA_State()
 
     trafo = EncodingTrafoUTF8() 
     Setup.buffer_encoding_set(trafo, 1)

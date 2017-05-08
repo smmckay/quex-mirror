@@ -1,11 +1,11 @@
-from   quex.engine.state_machine.core            import StateMachine
+from   quex.engine.state_machine.core            import DFA
 from   quex.engine.pattern                       import Pattern
 from   quex.engine.misc.tools                    import typed
 
 class Checker:
     def __init__(self, SuperSM, CandidateSM):
-        assert isinstance(SuperSM, StateMachine),     SuperSM.__class__.__name__
-        assert isinstance(CandidateSM, StateMachine), CandidateSM.__class__.__name__
+        assert isinstance(SuperSM, DFA),     SuperSM.__class__.__name__
+        assert isinstance(CandidateSM, DFA), CandidateSM.__class__.__name__
 
         self.sub   = CandidateSM
         self.super = SuperSM
@@ -18,7 +18,7 @@ class Checker:
                      can match. 
              False - if not 
 
-           In other words, SuperSM is a 'Super StateMachine' of Candidate, if
+           In other words, SuperSM is a 'Super DFA' of Candidate, if
            the set of patterns matched by 'CandidateSM' a subset of the set of
            patterns matched by 'SuperSM'.                            
         """
@@ -93,16 +93,16 @@ class Checker:
         # sub set state machine of 'super sm'.
         return True
 
-@typed(A=(StateMachine, Pattern), B=(StateMachine, Pattern))
+@typed(A=(DFA, Pattern), B=(DFA, Pattern))
 def do(A, B):
     """RETURNS: True  - if A == SUPERSET of B
                 False - if not
     """
-    if isinstance(A, StateMachine):
-        assert isinstance(B, StateMachine)
+    if isinstance(A, DFA):
+        assert isinstance(B, DFA)
         return Checker(A, B).do()
 
-    assert not isinstance(B, StateMachine)
+    assert not isinstance(B, DFA)
     # (*) Core Pattern ________________________________________________________
     #
     #     (including the mounted post context, if there is one).

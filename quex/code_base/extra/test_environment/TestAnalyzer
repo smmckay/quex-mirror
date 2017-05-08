@@ -4,7 +4,7 @@
  * (1) Includes for required standard headers.
  * (2) Definitions of options and settings for the particular application.
  * (3) #include <quex/code_base/definitions> for default settings.
- * (4) Lexical Analyzer class TestAnalyzer and its memento class.
+ * (4) Lexical FSM class TestAnalyzer and its memento class.
  * (5) Constructor and init core of TestAnalyzer.
  * (6) Memento pack and unpack functions.
  *

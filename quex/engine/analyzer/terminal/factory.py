@@ -195,7 +195,7 @@ class TerminalFactory:
 
               TERMINAL 
                    '----------.
-                       (goto) '---------> BIPD State Machine
+                       (goto) '---------> BIPD DFA
                                                ...
                                           (determine _read_p)
                                                |

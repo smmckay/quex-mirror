@@ -2,8 +2,8 @@
 #       "https://en.wikipedia.org/wiki/Powerset_construction"
 #
 # (C) Frank-Rene Schaefer
-#from   quex.engine.state_machine.core                 import StateMachine
-#from   quex.engine.state_machine.state.core           import State
+#from   quex.engine.state_machine.core                 import DFA
+#from   quex.engine.state_machine.state.core           import DFA_State
 from   quex.engine.state_machine.state.target_map_ops import get_elementary_trigger_sets
 from   quex.engine.state_machine.index                import map_state_combination_to_index
 
@@ -29,7 +29,7 @@ def do(SM, Class_StateMachine=None, Class_State=None):
                            SM.states[i] for i in initial_state_epsilon_closure)
 
     # NOTE: 
-    # State machines with an initial acceptance state are conceivable!  In a
+    # DFAs with an initial acceptance state are conceivable!  In a
     # 'define' section building bricks of patterns may be defined that 'accept
     # nothing'. Those 'building bricks' may use nfa_to_dfa here, too.  
     #
@@ -44,7 +44,7 @@ def do(SM, Class_StateMachine=None, Class_State=None):
 
     while worklist:
         # 'start_state_index' is the index of an **existing** state in the state machine.
-        # It was either created above, in StateMachine's constructor, or as a target
+        # It was either created above, in DFA's constructor, or as a target
         # state index.
         start_state_index, start_state_combination = worklist.pop()
  
@@ -52,7 +52,7 @@ def do(SM, Class_StateMachine=None, Class_State=None):
         #     epsilon closure of target state combinations that they trigger to.
         #     In other words: find the ranges of characters where the state triggers to
         #     a unique state combination. E.g:
-        #                Range        Target State Combination 
+        #                Range        Target DFA_State Combination 
         #                [0:23]   --> [ State1, State2, State10 ]
         #                [24:60]  --> [ State1 ]
         #                [61:123] --> [ State2, State10 ]
@@ -96,7 +96,7 @@ if False:
     #       => No epsilon transition in states and/or state machines.
     #
     def new_do(StateDb, EpsilonTranstionDb):
-        """StateDb:             state index --> State
+        """StateDb:             state index --> DFA_State
         
                Describes DFA states and their indices.
 

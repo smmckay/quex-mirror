@@ -9,7 +9,7 @@
 (C) 2013 Frank-Rene Schaefer
 ___________________________________________________________________________
 """
-from   quex.engine.state_machine.core                 import StateMachine
+from   quex.engine.state_machine.core                 import DFA
 from   quex.engine.state_machine.state.target_map_ops import get_intersection_line_up
 import quex.engine.state_machine.index                as     index
 
@@ -18,10 +18,10 @@ def do(SM_List):
         sm.assert_consistency() 
 
     if any(sm.is_Empty() for sm in SM_List): # If one state machine is '\Empty',
-        return StateMachine.Empty()          # the intersection is '\Empty'
+        return DFA.Empty()          # the intersection is '\Empty'
 
     init_state_setup = tuple(sm.init_state_index for sm in SM_List)
-    result           = StateMachine(AcceptanceF=intersect_acceptance(init_state_setup, SM_List))
+    result           = DFA(AcceptanceF=intersect_acceptance(init_state_setup, SM_List))
 
     # Result state setup: A result state is setup out of a state from each DFA.
     #                     state_setup[i] is the state from DFA 'SM_List[i]'.
@@ -33,7 +33,7 @@ def do(SM_List):
 
         # Generate Map that shows what lexatoms trigger to what state combination.
         #
-        #       NumberSet    Target State Combination 
+        #       NumberSet    Target DFA_State Combination 
         #       [0:23]   --> [ State1, State24, State56 ]
         #       [0:23]   --> [ State5, State21, State55 ]
         #       [24:60]  --> [ State1, State23, State51 ]

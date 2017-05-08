@@ -8,7 +8,7 @@
        reverse(intersection(P, Q)) == intersection(reverse(P), reverse(Q))
 """
 from   quex.engine.state_machine.state.single_entry   import SeAccept
-from   quex.engine.state_machine.core                 import StateMachine
+from   quex.engine.state_machine.core                 import DFA
 import quex.engine.state_machine.algorithm.beautifier as beautifier
 
 def do(SM, EnsureDFA_f=True):
@@ -19,14 +19,14 @@ def do(SM, EnsureDFA_f=True):
 def __do(SM):
     """Creates a state machine that matches the reverse of what 'SM' matches.
     """
-    result                               = StateMachine(InitStateIndex=SM.init_state_index)
+    result                               = DFA(InitStateIndex=SM.init_state_index)
     original_acceptance_state_index_list = SM.get_acceptance_state_index_list()
 
     if len(original_acceptance_state_index_list) == 0:
         # If there is no acceptance state in a state machine, the state machine
         # cannot match any pattern, it is equivalent to '\None'. The reverse
         # of \None is \None.
-        return StateMachine.Empty()
+        return DFA.Empty()
        
     # Ensure that each target state index has a state inside the state machine
     for state_index in SM.states.keys():

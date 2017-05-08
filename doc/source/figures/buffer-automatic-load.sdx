@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram>
 <source><![CDATA[user:A[a]   "User"
-lex:B[a]    "Lexical Analyzer"
+lex:B[a]    "Lexical FSM"
 filler:C[a] "LexatomLoader"
 loader:D[a] "ByteLoader"
 file:E[a]   "Data Source"

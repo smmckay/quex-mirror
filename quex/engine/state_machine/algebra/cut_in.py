@@ -3,8 +3,8 @@ def do(SM_A, SM_B):
 
 #    init_state_index = index.map_state_combination_to_index((SM_A.init_state_index, 
 #                                                             SM_B.init_state_index))
-#    result           = StateMachine(InitStateIndex = init_state_index,
-#                                    InitState      = State(AcceptanceF=SM_A.get_init_state().is_acceptance()))
+#    result           = DFA(InitStateIndex = init_state_index,
+#                                    InitState      = DFA_State(AcceptanceF=SM_A.get_init_state().is_acceptance()))
 #
 #    backup_init_state_index = SM_A.init_state_index
 #
@@ -21,7 +21,7 @@ def do(SM_A, SM_B):
 #
 #
 #    for state_index, state in SM_A.iter
-#    all_star      = repeat.do(StateMachine.Any(), min_repetition_n=0)
+#    all_star      = repeat.do(DFA.Any(), min_repetition_n=0)
 #    sm_b_repeated = repeat.do(SM_B, min_repetition_n=1)
 #
 #    tmp = sequentialize.do([all_star, sm_b_repeated], 

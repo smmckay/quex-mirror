@@ -8,12 +8,12 @@ import quex.engine.state_machine.algorithm.beautifier as beautifier
 import quex.engine.state_machine.algebra.complement as complement
 import quex.engine.state_machine.algebra.intersection  as intersection
 import quex.engine.state_machine.algebra.union   as union
-from   quex.engine.state_machine.core            import StateMachine
+from   quex.engine.state_machine.core            import DFA
 import quex.engine.state_machine.check.identity  as identity
 import quex.engine.state_machine.check.superset  as superset
 
 if "--hwut-info" in sys.argv:
-    print "Complementary State Machines"
+    print "Complementary DFAs"
     print "CHOICES: Sequence, Branches, Loops, BranchesLoops, Misc;"
     sys.exit(0)
 
@@ -35,8 +35,8 @@ def test(A_str):
     result_2nd    = complement.do(result_1st)
     ## print "##2nd:", result_2nd.get_string(NormalizeF=False)
     print
-    print "union(A, complement(A)):            All  =", StateMachine.is_Universal(union.do([sm, result_1st]))
-    print "intersection(A, complement(A)):     None =", StateMachine.is_Empty(intersection.do([sm, result_1st]))
+    print "union(A, complement(A)):            All  =", DFA.is_Universal(union.do([sm, result_1st]))
+    print "intersection(A, complement(A)):     None =", DFA.is_Empty(intersection.do([sm, result_1st]))
     print "identity(A, complement(complement(A)):",     identity.do(sm, result_2nd)
     assert not commonality(sm, result_1st)
     assert not commonality(result_1st, result_2nd)
@@ -77,9 +77,9 @@ elif "Misc" in sys.argv:
     test('(((((((((p+)r)+i)+)p)+r)+i)+n)+|(priprin|riprin|iprin|prin|rin|in|n)+)x?')
 
 elif "Special" in sys.argv:
-    test(StateMachine.Empty())
-    test(StateMachine.Universal())
-    sm = StateMachine.Universal()
+    test(DFA.Empty())
+    test(DFA.Universal())
+    sm = DFA.Universal()
     sm.get_init_state().set_acceptance(True)
     sm = beautifier.do(sm)
     test(sm)

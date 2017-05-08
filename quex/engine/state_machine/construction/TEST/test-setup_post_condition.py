@@ -10,7 +10,7 @@ import quex.engine.state_machine.algorithm.nfa_to_dfa as nfa_to_dfa
 import quex.engine.state_machine.algorithm.hopcroft_minimization as hopcroft
 
 if "--hwut-info" in sys.argv:
-    print "StateMachine Operations: Append Post Condition"
+    print "DFA Operations: Append Post Condition"
     sys.exit(0)
 
 def test(sm, post_sm):    
@@ -24,10 +24,10 @@ def test(sm, post_sm):
     print "HOPCROFT = ", sm
 
 print "-------------------------------------------------------------------------------"
-tiny0 = StateMachine()
+tiny0 = DFA()
 tiny0.add_transition(tiny0.init_state_index, ord('a'), AcceptanceF=True)
 
-tiny1 = StateMachine()
+tiny1 = DFA()
 tiny1.add_transition(tiny1.init_state_index, ord(';'), AcceptanceF=True)
 
 test(tiny0, tiny1)    

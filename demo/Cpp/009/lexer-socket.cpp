@@ -1,4 +1,4 @@
-/* Socket-Based Lexical Analyzer
+/* Socket-Based Lexical FSM
  * -----------------------------
  *
  * This application implements a lexical analyzer that directly reads content

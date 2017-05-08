@@ -40,7 +40,7 @@ _7:
 _8:
 goto __TERMINAL_ROUTER; 
 
---(Involved State Indices)----------------------------------------------
+--(Involved DFA_State Indices)----------------------------------------------
 
 set([1L, 2L, 3L, 4L, 5L])
 

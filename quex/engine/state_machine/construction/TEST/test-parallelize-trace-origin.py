@@ -54,7 +54,7 @@ output(sm)
 complement_sm = complement.do(sm)
 assert all(superset.do(sm, tsm) == True
            for tsm in sm_list)
-assert all(StateMachine.is_Empty(intersection.do([complement_sm, tsm]))
+assert all(DFA.is_Empty(intersection.do([complement_sm, tsm]))
            for tsm in sm_list)
 
 print "<terminated>"

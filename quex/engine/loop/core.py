@@ -99,7 +99,7 @@ from   quex.engine.analyzer.terminal.core                 import Terminal
 from   quex.engine.analyzer.door_id_address_label         import DialDB, DoorID
 import quex.engine.analyzer.door_id_address_label         as     dial
 import quex.engine.analyzer.engine_supply_factory         as     engine
-from   quex.engine.state_machine.core                     import StateMachine  
+from   quex.engine.state_machine.core                     import DFA  
 import quex.engine.state_machine.construction.combination as     combination
 from   quex.engine.state_machine.character_counter        import SmLineColumnCountInfo
 import quex.engine.state_machine.index                    as     index
@@ -521,7 +521,7 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
              |      |                                  ( i = ir )  
              | LaF  |-->[ Terminals A ]-->-.               | drop-out     
              |      |-->[ Terminals B ]-->. \              | 
-             |      |-->[ Terminals C ]-->( ir = i )--[ StateMachine ]-->[ Terminals X ]
+             |      |-->[ Terminals C ]-->( ir = i )--[ DFA ]-->[ Terminals X ]
              |      |                                               \
              +------+                                                '-->[ Terminals Y ]
              | Else |----> Exit
@@ -573,7 +573,7 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
                                       dial_db=dial_db,
                                       OnReloadFailureDoorId=OnReloadFailureDoorId) 
 
-    # Loop represented by Analyzer-s and Terminal-s ___________________________
+    # Loop represented by FSM-s and Terminal-s ___________________________
     #
     analyzer_list,      \
     door_id_loop,       \
@@ -627,12 +627,12 @@ def _get_analyzer_list(loop_map, EventHandler, AppendixSmList,
     """An appendix state machine is a parallel state machine that is pruned by
     its first transition. The first transition is absorbed into the 'loop_map'.
     
-    RETURNS: list of Analyzer-s.
+    RETURNS: list of FSM-s.
     """
     # AppendixSm Ids MUST be unique!
     assert len(set([sm.get_id() for sm in AppendixSmList])) == len(AppendixSmList)
 
-    # Core Loop Analyzer 
+    # Core Loop FSM 
     loop_analyzer,         \
     door_id_loop           = _get_analyzer_for_loop(loop_map, EventHandler)
 
@@ -643,7 +643,7 @@ def _get_analyzer_list(loop_map, EventHandler, AppendixSmList,
     
     analyzer_list          = [ loop_analyzer ] + appendix_analyzer_list
 
-    # Analyzer Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
+    # FSM Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
     assert len(set(a.state_machine_id for a in analyzer_list)) == len(analyzer_list)
 
     return analyzer_list, \
@@ -808,7 +808,7 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
         result = {} # map: appendix state machine id --> LCCI
         for character_set, appendix_sm in first_vs_appendix_sm:
             if not appendix_sm.get_init_state().has_transitions(): continue
-            lcci = SmLineColumnCountInfo.from_StateMachine(CaMap, appendix_sm, 
+            lcci = SmLineColumnCountInfo.from_DFA(CaMap, appendix_sm, 
                                                            False,
                                                            Setup.buffer_encoding)
             result[appendix_sm.get_id()] = lcci
@@ -911,15 +911,15 @@ def _get_analyzer_for_loop(loop_map, EventHandler):
     RETURNS: [0] Loop analyzer (prepared state machine)
              [1] DoorID of loop entry
     """
-    # Loop StateMachine
-    sm = StateMachine.from_IncidenceIdMap(
+    # Loop DFA
+    sm = DFA.from_IncidenceIdMap(
          (lei.character_set, lei.incidence_id) for lei in loop_map
     )
 
     # Code Transformation
     verdict_f, sm = Setup.buffer_encoding.do_state_machine(sm)
 
-    # Loop Analyzer
+    # Loop FSM
     analyzer = analyzer_generator.do(sm, 
                                      EventHandler.engine_type, 
                                      EventHandler.reload_state_extern, 
@@ -1043,7 +1043,7 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
         init_state.set_acceptance()
         init_state.set_specific_acceptance_id(IidLoopAfterAppendixDropOut)
 
-    # Appendix Analyzer List
+    # Appendix FSM List
     return [
         analyzer_generator.do(sm, 
                               EventHandler.engine_type, 

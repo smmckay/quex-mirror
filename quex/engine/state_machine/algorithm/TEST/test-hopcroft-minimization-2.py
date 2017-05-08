@@ -51,7 +51,7 @@ txt = """
 
           where 'a' and 'b' are different origins
 """
-sm = StateMachine()
+sm = DFA()
 
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
@@ -63,7 +63,7 @@ test(sm, txt)
 txt = """
           (0)---a--->((1[a]))---a--->((2[a]))
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 set_cmd_list(sm, n1, (5555, 1, True))
@@ -77,7 +77,7 @@ txt = """
                                          \\       \\
                                          `----a--'
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 add_origin(sm.states[n1], 5555L, 1L)
@@ -94,7 +94,7 @@ txt = """
                           \\              `----a--'
                            `--b----->((3[b]))
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 set_cmd_list(sm, n1, (5555L, 1L, True))
@@ -114,7 +114,7 @@ txt = """
                                          \\        \\
                                           `----a--'
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'), AcceptanceF=True)
 set_cmd_list(sm, n1, (5555L, 1L, True))
@@ -137,7 +137,7 @@ txt = """
                                       |
                                    ((4[a]))
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 n1 = sm.add_transition(n0, ord('a'),     AcceptanceF=True)
 set_cmd_list(sm, n1, (5555L, 1L, True))
@@ -157,7 +157,7 @@ txt = """
                           \\                              `----a--'
                            `--b----->((4[b]))
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 n1 = sm.add_transition(n0, ord('a'),     AcceptanceF=True)
@@ -180,7 +180,7 @@ txt = """
                           \\                              `----a--'
                            `--b----->((4[a]))
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 n1 = sm.add_transition(n0, ord('a'),     AcceptanceF=True)
@@ -203,7 +203,7 @@ txt = """
                                           \\              `----a--'
                                            `--b----->((4[b]))
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 n1 = sm.add_transition(n0, ord('a'),     AcceptanceF=True)
@@ -226,7 +226,7 @@ txt = """
                                           \\              `----a--'
                                            `--b----->((4[b]))
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 n1 = sm.add_transition(n0, ord('a'),     AcceptanceF=True)
@@ -257,7 +257,7 @@ txt = """
                         \\        \\
                          `----a--'
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 # branch 1
@@ -300,7 +300,7 @@ txt = """
                       \\     \\
                        `--a--'
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 # branch 1
@@ -338,7 +338,7 @@ txt = """
                        `--b--'             
                                     
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 # branch 1
@@ -363,7 +363,7 @@ txt = """
                       \\      \\
                        `--b--'
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 # branch 1
@@ -387,7 +387,7 @@ txt = """
              \\            '-------\\
               '-->( 3 )-- [ab] --> (( 4 )) 
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index     
 
 # branch 1
@@ -416,7 +416,7 @@ txt = """
               == 'z' ==> 00003
         00003(A, P1)  
 """
-sm = StateMachine()
+sm = DFA()
 n0 = sm.init_state_index
 n1 = sm.add_transition(n0, ord('x'))
 n2 = sm.add_transition(n1, ord('y'))
