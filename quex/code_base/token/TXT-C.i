@@ -74,7 +74,7 @@ $$COPY$$
 
 
 QUEX_INLINE bool 
-$TOKEN_CLASS_take_text($TOKEN_CLASS*              __this, 
+$TOKEN_CLASS_take_text($TOKEN_CLASS*            __this, 
                        const QUEX_TYPE_LEXATOM* Begin, 
                        const QUEX_TYPE_LEXATOM* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.

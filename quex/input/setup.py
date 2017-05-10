@@ -128,8 +128,8 @@ SETUP_INFO = {
     "analyzer_derived_class_file":    [["--derived-class-file"],               ""],
     "analyzer_derived_class_name":    [["--derived-class", "--dc"],            ""],
     "bad_lexatom_detection_f":        [["--no-bad-lexatom-detection", "--nbld"], SetupParTypes.NEGATED_FLAG],
-    "buffer_encoding_name":              [["--encoding"],                         "unicode"],
-    "buffer_encoding_file":              [["--encoding-file"],                    ""],
+    "buffer_encoding_name":           [["--encoding"],                         "unicode"],
+    "buffer_encoding_file":           [["--encoding-file"],                    ""],
     "buffer_limit_code":              [["--buffer-limit"],                     0x0],
     "buffer_lexatom_size_in_byte":    [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes]
     "buffer_lexatom_type":            [["--buffer-element-type", "--bet"],     ""],

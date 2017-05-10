@@ -37,6 +37,9 @@ def do(Mode_PrepPrepDB):
     else:
         analyzer_derived_class_name = Setup.analyzer_class_name
 
+    # Is there a 'standard type' correspondent the lexatom type.
+    # (Relevant only if a user defined lexatom type has been specified)
+
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_COLUMN",        Setup.count_column_number_f)        
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COMPUTED_GOTOS",                False)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_INCLUDE_STACK",                 Setup.include_stack_support_f)
@@ -64,6 +67,12 @@ def do(Mode_PrepPrepDB):
     if not token_repetition_support_txt:
         token_repetition_support_txt = Lng.FALSE
 
+    if Setup.buffer_lexatom_size_in_byte in Lng.STANDARD_TYPE_DB:
+        buffer_lexatom_standard_type = \
+            Lng.STANDARD_TYPE_DB[Setup.buffer_lexatom_size_in_byte]
+    else:
+        buffer_lexatom_standard_type = "STANDARD_TYPE_UNKNOWN"
+        
     txt = blue_print(txt, 
             [
              ["$$BUFFER_LIMIT_CODE$$",          "%s" % Setup.buffer_limit_code],

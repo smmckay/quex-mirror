@@ -1,0 +1,3 @@
+ecmascript.qx:19:error: mode 'Program' inherits from a mode 'ThisModeDoesntExist'
+ecmascript.qx:19:error: but no such mode exists.
+ecmascript.qx:19:error: Acceptable: Program, Variables.

@@ -48,57 +48,57 @@ cc_type_db = {
 cc_type_name_db = dict((value, key) for key, value in cc_type_db.iteritems())
 
 count_operation_db_without_reference = {
-    E_CharacterCountType.BAD:    lambda Parameter, Dummy=None: [ 
+    E_CharacterCountType.BAD:    lambda Parameter, Dummy=None, Dummy2=None: [ 
         Op.GotoDoorId(Parameter)
     ],
-    E_CharacterCountType.COLUMN: lambda Parameter, Dummy=None: [
+    E_CharacterCountType.COLUMN: lambda Parameter, Dummy=None, Dummy2=None: [
         Op.ColumnCountAdd(Parameter)
     ],
-    E_CharacterCountType.GRID:   lambda Parameter, Dummy=None: [
+    E_CharacterCountType.GRID:   lambda Parameter, Dummy=None, Dummy2=None: [
         Op.ColumnCountGridAdd(Parameter)
     ],
-    E_CharacterCountType.LINE:   lambda Parameter, Dummy=None: [
+    E_CharacterCountType.LINE:   lambda Parameter, Dummy=None, Dummy2=None: [
         Op.LineCountAdd(Parameter),
         Op.AssignConstant(E_R.Column, 1),
     ],
-    E_CharacterCountType.LOOP_ENTRY: lambda Parameter, Dummy=None: [ 
+    E_CharacterCountType.LOOP_ENTRY: lambda Parameter, Dummy=None, Dummy2=None: [ 
     ],
-    E_CharacterCountType.LOOP_EXIT: lambda Parameter, Dummy=None: [ 
+    E_CharacterCountType.LOOP_EXIT: lambda Parameter, Dummy=None, Dummy2=None: [ 
     ],
-    E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM: lambda Parameter, ColumnNPerCodeUnit: [
-        Op.ColumnCountAdd(Parameter)
+    E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM: lambda Parameter, ColumnNPerCodeUnit, ColumnAdd: [
+        Op.ColumnCountAdd(ColumnAdd)
     ],
-    E_CharacterCountType.BEFORE_RELOAD: lambda Parameter, Dummy=None: [ 
+    E_CharacterCountType.BEFORE_RELOAD: lambda Parameter, Dummy=None, Dummy2=None: [ 
     ],
-    E_CharacterCountType.AFTER_RELOAD: lambda Parameter, Dummy=None: [ 
+    E_CharacterCountType.AFTER_RELOAD: lambda Parameter, Dummy=None, Dummy2=None: [ 
     ],
 }
 
 count_operation_db_with_reference = {
-    E_CharacterCountType.BAD:    lambda Parameter, ColumnNPerCodeUnit: [
+    E_CharacterCountType.BAD:    lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [
         Op.ColumnCountReferencePDeltaAdd(E_R.InputP, ColumnNPerCodeUnit, False),
         Op.ColumnCountReferencePSet(E_R.InputP),
         Op.GotoDoorId(Parameter) 
     ],
-    E_CharacterCountType.COLUMN: lambda Parameter, ColumnNPerCodeUnit: [
+    E_CharacterCountType.COLUMN: lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [
     ],
-    E_CharacterCountType.GRID:   lambda Parameter, ColumnNPerCodeUnit: [
+    E_CharacterCountType.GRID:   lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [
         Op.ColumnCountReferencePDeltaAdd(E_R.InputP, ColumnNPerCodeUnit, True),
         Op.ColumnCountGridAdd(Parameter),
         Op.ColumnCountReferencePSet(E_R.InputP)
     ],
-    E_CharacterCountType.LINE:   lambda Parameter, ColumnNPerCodeUnit: [
+    E_CharacterCountType.LINE:   lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [
         Op.LineCountAdd(Parameter),
         Op.AssignConstant(E_R.Column, 1),
         Op.ColumnCountReferencePSet(E_R.InputP)
     ],
-    E_CharacterCountType.LOOP_ENTRY: lambda Parameter, ColumnNPerCodeUnit: [ 
+    E_CharacterCountType.LOOP_ENTRY: lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [ 
         Op.ColumnCountReferencePSet(Parameter) 
     ],
-    E_CharacterCountType.LOOP_EXIT: lambda Parameter, ColumnNPerCodeUnit: [ 
+    E_CharacterCountType.LOOP_EXIT: lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [ 
         Op.ColumnCountReferencePDeltaAdd(Parameter, ColumnNPerCodeUnit, False) 
     ],
-    E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM: lambda Parameter, ColumnNPerCodeUnit: [
+    E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM: lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [
         Op.ColumnCountReferencePDeltaAdd(Parameter, ColumnNPerCodeUnit, False),
         Op.ColumnCountReferencePSet(E_R.InputP)
     ],
@@ -116,17 +116,17 @@ count_operation_db_with_reference = {
     #                 |
     #                 reference_p                                   
     #       
-    E_CharacterCountType.BEFORE_RELOAD: lambda Parameter, ColumnNPerCodeUnit: [ 
+    E_CharacterCountType.BEFORE_RELOAD: lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [ 
         Op.ColumnCountReferencePDeltaAdd(Parameter, ColumnNPerCodeUnit, False) 
     ],
-    E_CharacterCountType.AFTER_RELOAD: lambda Parameter, ColumnNPerCodeUnit: [ 
+    E_CharacterCountType.AFTER_RELOAD: lambda Parameter, ColumnNPerCodeUnit, Dummy=None: [ 
         Op.ColumnCountReferencePSet(Parameter) 
     ],
 }
 
-class CountAction(namedtuple("CountAction", ("cc_type", "value", "sr"))):
-    def __new__(self, CCType, Value, sr=None):
-        return super(CountAction, self).__new__(self, CCType, Value, sr)
+class CountAction(namedtuple("CountAction", ("cc_type", "value", "extra_value", "sr"))):
+    def __new__(self, CCType, Value, sr=None, ExtraValue=None):
+        return super(CountAction, self).__new__(self, CCType, Value, ExtraValue, sr)
 
     incidence_id_db = {}
     @classmethod
@@ -146,10 +146,11 @@ class CountAction(namedtuple("CountAction", ("cc_type", "value", "sr"))):
 
     def get_OpList(self, ColumnCountPerChunk):
         if ColumnCountPerChunk is None:
-            return count_operation_db_without_reference[self.cc_type](self.value, None)
+            db = count_operation_db_without_reference
         else:
-            return count_operation_db_with_reference[self.cc_type](self.value, 
-                                                                   ColumnCountPerChunk)
+            db = count_operation_db_with_reference
+
+        return db[self.cc_type](self.value, ColumnCountPerChunk, self.extra_value)
 
     def is_equal(self, Other):
         """Two Count Actions are equal, if the CC-Type and the Parameter are

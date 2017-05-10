@@ -15,6 +15,7 @@ from   quex.engine.misc.file_operations                  import open_file_or_die
                                                                 write_safely_and_close
 import quex.engine.misc.error                            as     error
 from   quex.engine.misc.tools                            import typed, \
+                                                                print_callstack, \
                                                                 none_isinstance, \
                                                                 flatten_list_of_lists
 import quex.output.languages.cpp.templates               as     templates
@@ -36,25 +37,29 @@ class Language(dict):
     #------------------------------------------------------------------------------
     # Define Regular Expressions
     #------------------------------------------------------------------------------
-    Match_Lexeme             = re.compile("\\bLexeme\\b", re.UNICODE)
-    Match_LexemeBegin        = re.compile("\\bLexemeBegin\\b", re.UNICODE)
-    Match_string             = re.compile("\\bstring\\b", re.UNICODE) 
-    Match_vector             = re.compile("\\bvector\\b", re.UNICODE) 
-    Match_map                = re.compile("\\bmap\\b", re.UNICODE)
-    CODE_BASE                = "/quex/code_base/"
-    LEXEME_CONVERTER_DIR     = "quex/code_base/lexeme_converter"
-
-    RETURN                   = "RETURN;"
-    PURE_RETURN              = "__QUEX_PURE_RETURN;"
-    UNREACHABLE              = "__quex_assert_no_passage();"
-    ELSE                     = "} else {\n"
-    ELSE_SIMPLE              = "else"
-    FALSE                    = "false"
-    TRUE                     = "true"
-    OR                       = "||"
+    Match_Lexeme              = re.compile("\\bLexeme\\b", re.UNICODE)
+    Match_LexemeBegin         = re.compile("\\bLexemeBegin\\b", re.UNICODE)
+    Match_string              = re.compile("\\bstring\\b", re.UNICODE) 
+    Match_vector              = re.compile("\\bvector\\b", re.UNICODE) 
+    Match_map                 = re.compile("\\bmap\\b", re.UNICODE)
+    CODE_BASE                 = "/quex/code_base/"
+    LEXEME_CONVERTER_DIR      = "quex/code_base/lexeme_converter"
+                              
+    RETURN                    = "RETURN;"
+    PURE_RETURN               = "__QUEX_PURE_RETURN;"
+    UNREACHABLE               = "__quex_assert_no_passage();"
+    ELSE                      = "} else {\n"
+    ELSE_SIMPLE               = "else"
+    FALSE                     = "false"
+    TRUE                      = "true"
+    OR                        = "||"
 
     PATH_ITERATOR_INCREMENT   = "++(path_iterator);"
     VIRTUAL_DESTRUCTOR_PREFIX = "virtual "
+
+    STANDARD_TYPE_DB          = {
+        1: "uint8_t", 2: "uint16_t", 4: "uint32_t", 8: "uint64_t",
+    }
 
     def __init__(self):      
         self.__analyzer                           = None
@@ -484,6 +489,7 @@ class Language(dict):
             return "    %s;\n" % txt
 
         elif Op.id == E_Op.ColumnCountAdd:
+            if "%s" % Op.content.value == "LoopRestartP": print_callstack()
             return "__QUEX_IF_COUNT_COLUMNS_ADD((size_t)%s);\n" % self.VALUE_STRING(Op.content.value) 
 
         elif Op.id == E_Op.ColumnCountGridAdd:

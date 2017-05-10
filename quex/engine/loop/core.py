@@ -656,9 +656,9 @@ def _get_terminal_list(loop_map, EventHandler,
                        IidLoopExit, IidLoopAfterAppendixDropOut):
     """RETURNS: list of all Terminal-s.
     """
-    loop_terminal_list     = _get_terminal_list_for_loop(loop_map, EventHandler,
-                                                         IidLoopAfterAppendixDropOut, 
-                                                         DoorIdLoop, IidLoopExit) 
+    loop_terminal_list = _get_terminal_list_for_loop(loop_map, EventHandler,
+                                                     IidLoopAfterAppendixDropOut, 
+                                                     DoorIdLoop, IidLoopExit) 
 
     run_time_counter_required_f, \
     parallel_terminal_list       = _get_terminal_list_for_appendices(EventHandler, 
@@ -853,9 +853,9 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
 
         if CA.cc_type == E_CharacterCountType.COLUMN:
             if Setup.buffer_encoding.variable_character_sizes_f(): pointer = E_R.LoopRestartP
-            else:                                               pointer = E_R.InputP
+            else:                                                  pointer = E_R.InputP
             ca = CountAction(E_CharacterCountType.COLUMN_BEFORE_APPENDIX_SM,
-                             pointer, CA.sr)
+                             pointer, CA.sr, ExtraValue=CA.value)
         else:
             ca = CA
 

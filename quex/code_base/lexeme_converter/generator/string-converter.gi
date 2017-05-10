@@ -13,13 +13,8 @@
  * PARAMETERS (must be defined macros):
  *
  *      __QUEX_FROM            -- Name of the source character encoding.
- *      __QUEX_FROM_TYPE       -- Type of characters that carry the source.
- *      __QUEX_TO_MAX_LENGTH   -- Maximum number of 'chunks' which a character
- *                                may occupy. A 'chunk' is a 'unit' in which
- *                                a codec is interpreted. See below for 
- *                                the definition of chunks per codec.
- *
- *                                of a code element (== sizeof(__QUEX_FROM_TYPE)). 
+ *      __QUEX_TO_MAX_LENGTH   -- Maximum number of 'code units' which a character
+ *                                may occupy. 
  *                                This is important to maintain a safety margin.
  *      __QUEX_TO              -- Name of the target encoding.
  *      __QUEX_TO_TYPE         -- Type of characters that carry the drain.            
@@ -28,8 +23,6 @@
  * ABSOLUTELY NO WARRANTY                                                    */
 #if   ! defined(__QUEX_FROM)
 #   error      "__QUEX_FROM definition missing!"
-#elif ! defined(__QUEX_FROM_TYPE)
-#   error      "__QUEX_FROM_TYPE definition missing!"
 #elif ! defined(__QUEX_TO_TYPE)
 #   error      "__QUEX_TO_TYPE definition missing!"
 #elif ! defined(__QUEX_TO)
@@ -49,16 +42,16 @@
 #define __QUEX_TO_MAX_LENGTH_wchar       __QUEX_TO_MAX_LENGTH_utf8
 
 /* Define max. length in terms of the given output codec.                */
-#define ____QUEX_TO_MAX_LENGTH(X)  __QUEX_TO_MAX_LENGTH_ ## X
-#define __QUEX_TO_MAX_LENGTH(X)    ____QUEX_TO_MAX_LENGTH(X)
+#define ____QUEX_TO_MAX_LENGTH(X)        __QUEX_TO_MAX_LENGTH_ ## X
+#define __QUEX_TO_MAX_LENGTH(X)          ____QUEX_TO_MAX_LENGTH(X)
 
 QUEX_INLINE void
-QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const __QUEX_FROM_TYPE**  source_pp, 
-                                                  const __QUEX_FROM_TYPE*   SourceEnd, 
+QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const QUEX_TYPE_LEXATOM**  source_pp, 
+                                                  const QUEX_TYPE_LEXATOM*   SourceEnd, 
                                                   __QUEX_TO_TYPE**          drain_pp,  
                                                   const __QUEX_TO_TYPE*     DrainEnd)
 {
-    const __QUEX_FROM_TYPE*  source_iterator; 
+    const QUEX_TYPE_LEXATOM*  source_iterator; 
     __QUEX_TO_TYPE*          drain_iterator;
 
     __quex_assert(source_pp != 0x0);
@@ -83,16 +76,16 @@ QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const __QUEX_FROM_TYPE**  sour
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE std::basic_string<__QUEX_TO_TYPE>
-QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const std::basic_string<__QUEX_FROM_TYPE>& Source)
+QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
 {
     /* Avoiding the mess with 'c_str()' and 'begin()' in 'std::string()'
      * => copy string to a temporary array.                                   */
-    __QUEX_FROM_TYPE*                  source = (__QUEX_FROM_TYPE*)
+    QUEX_TYPE_LEXATOM*                 source = (QUEX_TYPE_LEXATOM*)
                                                 QUEXED(MemoryManager_allocate)(
-                                                sizeof(__QUEX_FROM_TYPE) * (Source.length() + 1),
+                                                sizeof(QUEX_TYPE_LEXATOM) * (Source.length() + 1),
                                                 E_MemoryObjectType_TEXT);
-    const __QUEX_FROM_TYPE*            source_iterator;
-    const __QUEX_FROM_TYPE*            SourceEnd = &source[Source.length()];
+    const QUEX_TYPE_LEXATOM*           source_iterator;
+    const QUEX_TYPE_LEXATOM*           SourceEnd = &source[Source.length()];
     __QUEX_TO_TYPE                     drain[__QUEX_TO_MAX_LENGTH(__QUEX_TO)];
     __QUEX_TO_TYPE*                    drain_iterator  = 0;
     std::basic_string<__QUEX_TO_TYPE>  result;

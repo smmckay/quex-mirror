@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.67.4"
-#define QUEX_SETTING_BUILD_DATE        "Mon May  8 14:34:18 2017"
+#define QUEX_SETTING_BUILD_DATE        "Wed May 10 22:09:45 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -222,7 +222,7 @@
  * Templatifying the lexer would be possible, but the author has in mind to
  * bring out a 'pure C' version of the quex generated engine. Thus templating
  * would make this goal harder achievable.
- *                                                                           */
+ *                                                                            */
 #ifndef    QUEX_TYPE_LEXATOM
 #   define QUEX_TYPE_LEXATOM          uint8_t
 #endif 
@@ -230,7 +230,7 @@
 #   define QUEX_SETTING_CHARACTER_CODEC unicode
 #endif
 /* The following flag indicates that the engine is running on a specific
- * codec. Thus no converter is necessary. Use the flag to detect misuse.     */
+ * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
 /* #define __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC */
 
 #ifndef    QUEX_TYPE_ACCEPTANCE_ID
@@ -238,10 +238,10 @@
 #endif
 
 /* QUEX_TYPE_X  --> Type of X in global namespace 
- * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)         */
+ * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
 #if defined(__QUEX_OPTION_PLAIN_C)
     /* In 'C' there are no namespaces, so namespaces are coded directly
-     * into the type name. Both, global and local names are equal.           */
+     * into the type name. Both, global and local names are equal.            */
 #   define QUEX_TYPE0_ANALYZER         struct quex_TestAnalyzer_tag
 #   define QUEX_TYPE_ANALYZER          struct quex_TestAnalyzer_tag
 #   define QUEX_NAME_COMPLETE_ANALYZER quex_TestAnalyzer
@@ -254,7 +254,7 @@
 
 #else
     /* Add namespaces for the global names of the classes of analyzer
-     * and token.                                                            */
+     * and token.                                                             */
 #   define QUEX_TYPE0_ANALYZER         TestAnalyzer
 #   define QUEX_TYPE_ANALYZER          quex::TestAnalyzer
 #   define QUEX_NAME_COMPLETE_ANALYZER quex::TestAnalyzer

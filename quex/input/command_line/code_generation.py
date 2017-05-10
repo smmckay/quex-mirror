@@ -6,7 +6,7 @@ from   quex.input.setup                              import global_extension_db,
                                                             E_Files
 from   quex.input.files.token_type                   import TokenTypeDescriptorManual
 from   quex.input.files.token_id_file                import parse as token_id_file_parse
-from   quex.output.languages.core                   import db as output_language_db
+from   quex.output.languages.core                    import db as output_language_db
 from   quex.engine.misc.file_in                      import read_namespaced_name
 import quex.engine.misc.error                        as     error 
 import quex.engine.state_machine.transformation.core as     bc_factory
@@ -283,6 +283,8 @@ def __prepare_file_name(Suffix, ContentType, BaseNameF=False):
 
 def __prepare_buffer_element_specification(setup):
     global global_character_type_db
+    Lng = Setup.language_db
+
     if Setup.buffer_lexatom_size_in_byte == "wchar_t":
         error.log("Since Quex version 0.53.5, 'wchar_t' can no longer be specified\n"
                   "with option '--buffer-element-size' or '-bes'. Please, specify\n"
@@ -304,10 +306,8 @@ def __prepare_buffer_element_specification(setup):
             lexatom_size_in_byte = -1
 
     if Setup.buffer_lexatom_type == "":
-        if lexatom_size_in_byte in [1, 2, 4]:
-            Setup.buffer_lexatom_type = { 
-                1: "uint8_t", 2: "uint16_t", 4: "uint32_t",
-            }[lexatom_size_in_byte]
+        if lexatom_size_in_byte in Lng.STANDARD_TYPE_DB:
+            Setup.buffer_lexatom_type = Lng.STANDARD_TYPE_DB[lexatom_size_in_byte] 
         elif lexatom_size_in_byte == -1:
             pass
         else:

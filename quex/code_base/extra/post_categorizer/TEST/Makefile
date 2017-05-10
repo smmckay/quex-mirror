@@ -21,7 +21,7 @@ MYFLAGS = \
 
 CC = g++ $(MYFLAGS)
 
-post-categorizer-%.exe:   post-categorizer-%.cpp 
+post-categorizer-%.exe: post-categorizer-%.cpp 
 	$(CC) -I./. $< post-categorizer-common.cpp -o $@ 
 
 %.E:   %.cpp 

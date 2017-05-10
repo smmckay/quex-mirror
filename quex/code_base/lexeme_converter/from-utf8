@@ -30,8 +30,7 @@
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
-#define __QUEX_FROM                utf8
-#define __QUEX_FROM_TYPE           uint8_t
+#define __QUEX_FROM  utf8
 
 #include <quex/code_base/lexeme_converter/generator/declarations.g>
 

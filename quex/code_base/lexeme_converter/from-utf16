@@ -31,7 +31,6 @@
 QUEX_NAMESPACE_TOKEN_OPEN
 
 #define __QUEX_FROM                utf16
-#define __QUEX_FROM_TYPE           uint16_t
 
 #include <quex/code_base/lexeme_converter/generator/declarations.g>
 

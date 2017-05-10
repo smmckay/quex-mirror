@@ -72,7 +72,6 @@ $$BODY_UTF8$$
 }
 
 #define __QUEX_FROM           $$CODEC$$
-#define __QUEX_FROM_TYPE      QUEX_TYPE_LEXATOM
 
 /* (1b) Derive converters to char and wchar_t from the given set 
  *      of converters. (Generator uses __QUEX_FROM and QUEX_FROM_TYPE)      */

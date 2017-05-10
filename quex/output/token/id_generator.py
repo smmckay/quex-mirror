@@ -261,7 +261,7 @@ def __warn_implicit_token_definitions():
 
     def warn(TokenName, ExistingList, PrefixAddF=False):
         similar_i = similarity.get(TokenName, ExistingList)
-        if similar_i is None: 
+        if similar_i == -1: 
             similar_str = ""
         else:
             similar_str = " /* did you mean '%s%s'? */" \

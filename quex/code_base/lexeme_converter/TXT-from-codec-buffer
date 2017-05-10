@@ -33,7 +33,6 @@
 QUEX_NAMESPACE_TOKEN_OPEN
 
 #define __QUEX_FROM      $$CODEC$$
-#define __QUEX_FROM_TYPE QUEX_TYPE_LEXATOM
 
 #include <quex/code_base/lexeme_converter/generator/declarations.g>
 

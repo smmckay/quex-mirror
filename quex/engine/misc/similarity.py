@@ -39,8 +39,6 @@ def is_quite_close(A, B):
         if x == a and y == b: return True
     return False
 
-
-
 def get_motion(Letter, Word, i):
     """Only consider 'motions' of one character. If a letter
        only needs to be move by one position, this is 1/2 an error."""

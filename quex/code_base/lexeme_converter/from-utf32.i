@@ -37,16 +37,13 @@
 
 #include <quex/code_base/lexeme_converter/from-utf32>
 
-#define __QUEX_FROM       utf32
-#define __QUEX_FROM_TYPE  uint32_t
-
 QUEX_NAMESPACE_TOKEN_OPEN
 
 /* (1) Implement the character converters utf8, utf16, utf32.
  *     (Note, that character converters are generated into namespace 'quex'.)*/
 QUEX_INLINE void
-QUEX_CONVERTER_CHAR_DEF(utf32, utf8)(const uint32_t**  input_pp, 
-                                     uint8_t**         output_pp)
+QUEX_CONVERTER_CHAR_DEF(utf32, utf8)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                     uint8_t**                  output_pp)
 {
     /* PURPOSE: This function converts the specified unicode character
      *          into its utf8 representation. The result is stored
@@ -87,15 +84,15 @@ QUEX_CONVERTER_CHAR_DEF(utf32, utf8)(const uint32_t**  input_pp,
 }
 
 QUEX_INLINE void
-QUEX_CONVERTER_CHAR_DEF(utf32, utf16)(const uint32_t**  input_pp, 
-                                      uint16_t**        output_pp)
+QUEX_CONVERTER_CHAR_DEF(utf32, utf16)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                      uint16_t**                 output_pp)
 {
     uint32_t   tmp = 0;
 
-    if( **input_pp < 0x10000 ) {
+    if( (uint32_t)0x10000 - (uint32_t)(**input_pp) > 0 ) {
         *((*output_pp)++) = (uint16_t)**input_pp;
     } else { 
-        tmp             = (uint32_t)(**input_pp - (uint32_t)0x10000);
+        tmp = (uint32_t)(**input_pp) - (uint32_t)0x10000;
 
         *(((*output_pp)++)) = (uint16_t)((tmp >> 10)             | (uint16_t)0xD800);
         *(((*output_pp)++)) = (uint16_t)((tmp & (uint32_t)0x3FF) | (uint16_t)0xDC00);
@@ -104,11 +101,13 @@ QUEX_CONVERTER_CHAR_DEF(utf32, utf16)(const uint32_t**  input_pp,
 }
 
 QUEX_INLINE void
-QUEX_CONVERTER_CHAR_DEF(utf32, utf32)(const uint32_t**  input_pp, 
-                                      uint32_t**        output_pp)
+QUEX_CONVERTER_CHAR_DEF(utf32, utf32)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                      uint32_t**                 output_pp)
 {
     *((*output_pp)++) = (uint32_t)(*(*input_pp)++);
 }
+
+#define __QUEX_FROM       utf32
 
 /* (1b) Derive converters to char and wchar_t from the given set 
  *      of converters. (Generator uses __QUEX_FROM and QUEX_FROM_TYPE)      */

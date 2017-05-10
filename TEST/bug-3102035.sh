@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 bug=3102035
 if [[ $1 == "--hwut-info" ]]; then
-    echo "fschaef: $bug 0.55.1 Weird Setup causes Duplicate DFA_State Label"
+    echo "fschaef: $bug 0.55.1 Weird Setup causes Duplicate State Label"
     echo "CHOICES: 1, 2, 3, 4, 5;"
     exit
 fi

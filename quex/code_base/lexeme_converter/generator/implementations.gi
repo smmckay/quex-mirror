@@ -15,13 +15,10 @@
  * PARAMETERS:
  *
  *   __QUEX_FROM        Name of the input character codec.
- *   __QUEX_FROM_TYPE   Type of the input characters.
  *
  * (C) 2012 Frank-Rene Schaefer; ABSOLUTELY NO WARRANTY                      */ 
 #if ! defined(__QUEX_FROM)
 #    error "__QUEX_FROM must be defined!"
-#elif ! defined(__QUEX_FROM_TYPE)
-#    error "__QUEX_FROM_TYPE must be defined!"
 #endif
 
 #define  __QUEX_TO         utf8
@@ -49,5 +46,4 @@
 #endif
 
 #undef __QUEX_FROM
-#undef __QUEX_FROM_TYPE
 

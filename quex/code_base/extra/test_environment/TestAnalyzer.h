@@ -376,7 +376,7 @@ quex_Token_copy(quex_Token*       __this,
 
 
 QUEX_INLINE bool 
-quex_Token_take_text(quex_Token*              __this, 
+quex_Token_take_text(quex_Token*            __this, 
                        const QUEX_TYPE_LEXATOM* Begin, 
                        const QUEX_TYPE_LEXATOM* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
@@ -545,15 +545,9 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
             }
 
             /* The String */
-#           if ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
             QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
                                                    (size_t)(BufferEnd - writerator));
             while( *writerator ) ++writerator;
-#           else
-            writerator += __QUEX_STD_strlcpy(writerator, 
-                                             "<converters of .text to pretty char disabled>",
-                                             BufferEnd - writerator);
-#           endif
 
             /* Closing Quote */
             if( BufferEnd - writerator > 1 ) {
@@ -568,7 +562,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 572 "TestAnalyzer.h"
+#   line 566 "TestAnalyzer.h"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

@@ -41,52 +41,51 @@
 
 #include <quex/code_base/lexeme_converter/from-utf8>
 
-#define __QUEX_FROM       utf8
-#define __QUEX_FROM_TYPE  uint8_t
-
 QUEX_NAMESPACE_TOKEN_OPEN
 
 /* (1) Implement the character converters utf8 to utf8, utf16, utf32.
  *     (Note, that character converters are generated into namespace 'quex'.)*/
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_CONVERTER_CHAR_DEF(utf8, utf8)(const uint8_t** input_pp, uint8_t** output_pp)
+QUEX_CONVERTER_CHAR_DEF(utf8, utf8)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                    uint8_t**                 output_pp)
 {
     /* Just for comformity with other encodings: Do nothing but copying. */
-    if( (**input_pp & (uint8_t)0x80) == (uint8_t)0 ) {
-        *((*output_pp)++) = *(*input_pp)++;
+    if( ((uint8_t)**input_pp & (uint8_t)0x80) == (uint8_t)0 ) {
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++;
     }
-    else if( **input_pp < (uint8_t)0xE0 ) { 
-        *((*output_pp)++) = *(*input_pp)++;
-        *((*output_pp)++) = *(*input_pp)++;
+    else if( **input_pp < (QUEX_TYPE_LEXATOM)0xE0 ) { 
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++;
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++;
     }
-    else if( **input_pp < (uint8_t)0xF0 ) { 
-        *((*output_pp)++) = *(*input_pp)++;
-        *((*output_pp)++) = *(*input_pp)++; 
-        *((*output_pp)++) = *(*input_pp)++;
+    else if( **input_pp < (QUEX_TYPE_LEXATOM)0xF0 ) { 
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++;
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++; 
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++;
     }
     else {
-        *((*output_pp)++) = *(*input_pp)++; 
-        *((*output_pp)++) = *(*input_pp)++; 
-        *((*output_pp)++) = *(*input_pp)++; 
-        *((*output_pp)++) = *(*input_pp)++;
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++; 
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++; 
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++; 
+        *((*output_pp)++) = (uint8_t)*(*input_pp)++;
     }
 }
 
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_CONVERTER_CHAR_DEF(utf8, utf16)(const uint8_t** input_pp, uint16_t** output_pp)
+QUEX_CONVERTER_CHAR_DEF(utf8, utf16)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                     uint16_t**                output_pp)
 {
-    const uint8_t*  iterator = *input_pp;
-    uint32_t        tmp = 0;
+    const QUEX_TYPE_LEXATOM*  iterator = *input_pp;
+    uint32_t                  tmp = 0;
 
-    if( (*iterator & (uint8_t)0x80) == (uint8_t)0 ) {
+    if( ((uint8_t)*iterator & (uint8_t)0x80) == (uint8_t)0 ) {
         /* Header: 0xxx.xxxx */
         **output_pp = (uint16_t)*(iterator++);
 
         ++(*output_pp);
     }
-    else if( *iterator < (uint8_t)0xE0 ) { /* ... max: 1101.1111 --> 0xDF, next: 0xE0               */
+    else if( *iterator < (QUEX_TYPE_LEXATOM)0xE0 ) { /* ... max: 1101.1111 --> 0xDF, next: 0xE0               */
         /*    110x.xxxx 10yy.yyyy 
          * => 0000.0xxx:xxyy.yyyy                                                          */
         **output_pp = (uint16_t)(( ((uint16_t)*(iterator++)) & (uint16_t)0x1F ) << 6);
@@ -94,7 +93,7 @@ QUEX_CONVERTER_CHAR_DEF(utf8, utf16)(const uint8_t** input_pp, uint16_t** output
 
         ++(*output_pp);
     }
-    else if( *iterator < (uint8_t)0xF0 ) { /* ... max: 1110.1111 --> 0xEF, next: 0xF0               */
+    else if( *iterator < (QUEX_TYPE_LEXATOM)0xF0 ) { /* ... max: 1110.1111 --> 0xEF, next: 0xF0               */
         /*    1110.xxxx 10yy.yyyy 10zz.zzzz
          * => xxxx.yyyy:yyzz.zzzz                                                          */
         **output_pp = (uint16_t)(( ((uint16_t)*(iterator++)) & (uint16_t)0x0F ) << 12);
@@ -127,21 +126,22 @@ QUEX_CONVERTER_CHAR_DEF(utf8, utf16)(const uint8_t** input_pp, uint16_t** output
 
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_CONVERTER_CHAR_DEF(utf8, utf32)(const uint8_t** input_pp, uint32_t** output_pp)
+QUEX_CONVERTER_CHAR_DEF(utf8, utf32)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                     uint32_t**                output_pp)
 {
-    const uint8_t*  iterator = *input_pp;
+    const QUEX_TYPE_LEXATOM*  iterator = *input_pp;
 
-    if( (*iterator & (uint8_t)0x80) == (uint8_t)0 ) {
+    if( ((uint8_t)*iterator & (uint8_t)0x80) == (uint8_t)0 ) {
         /* Header: 0xxx.xxxx */
         **output_pp = (uint32_t)*(iterator++);
     }
-    else if( *iterator < (uint8_t)0xE0 ) { /* ... max: 1101.1111 --> 0xDF, next: 0xE0               */
+    else if( *iterator < (QUEX_TYPE_LEXATOM)0xE0 ) { /* ... max: 1101.1111 --> 0xDF, next: 0xE0               */
         /*    110x.xxxx 10yy.yyyy 
          * => 0000.0xxx:xxyy.yyyy                                                          */
         **output_pp = (                          ( ((uint32_t)*(iterator++)) & (uint32_t)0x1F ) << 6);
         **output_pp = (uint32_t)((**output_pp) | ( ((uint32_t)*(iterator++)) & (uint32_t)0x3F ));
     }
-    else if( *iterator < (uint8_t)0xF0 ) { /* ... max: 1110.1111 --> 0xEF, next: 0xF0               */
+    else if( *iterator < (QUEX_TYPE_LEXATOM)0xF0 ) { /* ... max: 1110.1111 --> 0xEF, next: 0xF0               */
         /*    1110.xxxx 10yy.yyyy 10zz.zzzz
          * => xxxx.yyyy:yyzz.zzzz                                                          */
         **output_pp = (                          ( ((uint32_t)*(iterator++)) & (uint32_t)0x0F ) << 12);
@@ -164,6 +164,8 @@ QUEX_CONVERTER_CHAR_DEF(utf8, utf32)(const uint8_t** input_pp, uint32_t** output
     *input_pp = iterator;
 }
 
+
+#define __QUEX_FROM       utf8
 
 /* (1b) Derive converters to char and wchar_t from the given set 
  *      of converters. (Generator uses __QUEX_FROM and QUEX_FROM_TYPE)      */

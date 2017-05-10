@@ -1,66 +1,66 @@
 test.qx:6:warning: Detected implicit token identifier definitions. Proposal:
 test.qx:6:warning:    token {
-test.qx:6:warning:      WORLD; /* did you mean 'QUEX_TKN_TERMINATION'? */
+test.qx:6:warning:      WORLD;
 test.qx:6:warning:    }
     /* BEGIN: STATE MACHINE
-     * init-state = 157L
+     * init-state = 145L
+     * 00145 
+     *      == ['a', 'z'] ==> 00146
+     *     
+     * 00146 
+     *      == ['0', '9'] ==> 00147
+     *     
+     * 00147 A(17)
+     *     
+     * END: STATE MACHINE
+    /* BEGIN: STATE MACHINE
+     * init-state = 148L
+     * 00148 
+     *      == 'w' ==> 00149
+     *     
+     * 00149 
+     *      == 'o' ==> 00150
+     *     
+     * 00150 
+     *      == 'r' ==> 00151
+     *     
+     * 00151 
+     *      == 'l' ==> 00152
+     *     
+     * 00152 
+     *      == 'd' ==> 00153
+     *     
+     * 00153 A(11)
+     *     
+     * END: STATE MACHINE
+    /* BEGIN: STATE MACHINE
+     * init-state = 154L
+     * 00154 
+     *      == 'A' ==> 00155
+     *     
+     * 00155 
+     *      == 'c' ==> 00156
+     *     
+     * 00156 
+     *      == 'b' ==> 00157
+     *     
      * 00157 
-     *      == ['a', 'z'] ==> 00158
+     *      == 'a' ==> 00158
      *     
      * 00158 
-     *      == ['0', '9'] ==> 00159
+     *      == 'Z' ==> 00159
      *     
-     * 00159 A(0)
-     *     
-     * END: STATE MACHINE
-    /* BEGIN: STATE MACHINE
-     * init-state = 201L
-     * 00201 
-     *      == 'w' ==> 00202
-     *     
-     * 00202 
-     *      == 'o' ==> 00203
-     *     
-     * 00203 
-     *      == 'r' ==> 00204
-     *     
-     * 00204 
-     *      == 'l' ==> 00205
-     *     
-     * 00205 
-     *      == 'd' ==> 00206
-     *     
-     * 00206 A(0)
+     * 00159 A(26)
      *     
      * END: STATE MACHINE
     /* BEGIN: STATE MACHINE
-     * init-state = 232L
-     * 00232 
-     *      == 'A' ==> 00233
+     * init-state = 160L
+     * 00160 
+     *      == 'h' ==> 00161
      *     
-     * 00233 
-     *      == 'c' ==> 00234
+     * 00161 
+     *      == 'i' ==> 00162
      *     
-     * 00234 
-     *      == 'b' ==> 00235
-     *     
-     * 00235 
-     *      == 'a' ==> 00236
-     *     
-     * 00236 
-     *      == 'Z' ==> 00237
-     *     
-     * 00237 A(0)
-     *     
-     * END: STATE MACHINE
-    /* BEGIN: STATE MACHINE
-     * init-state = 257L
-     * 00257 
-     *      == 'h' ==> 00258
-     *     
-     * 00258 
-     *      == 'i' ==> 00259
-     *     
-     * 00259 A(0)
+     * 00162 A(30)
      *     
      * END: STATE MACHINE

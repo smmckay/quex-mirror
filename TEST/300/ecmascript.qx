@@ -1,0 +1,27 @@
+header 
+{
+	#include "ecmascript_yacc.hpp"
+}
+
+// Definiera vilka typer av teckenkombinationer vi ska identifiera
+define 
+{
+	PATTERN_DIGIT		[0-9]
+}
+
+// Läge som kan hålla reda på variabelnamn och heltalskonstanter
+mode Variables : <inheritable: only>
+{
+	{PATTERN_DIGIT} => TOK_DECLIT(Lexeme);
+}
+
+// Programläget är "master"-läget som svetsar ihop de tidigare lägena
+mode Program : Variables,
+			   ThisModeDoesntExist
+			   <skip: [ \t]>	// Ignorera whitespace 
+			   <skip_range: "/*" "*/">
+{
+
+}
+
+start = Program;

@@ -222,7 +222,7 @@ $$SWITCH$$ __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
  * Templatifying the lexer would be possible, but the author has in mind to
  * bring out a 'pure C' version of the quex generated engine. Thus templating
  * would make this goal harder achievable.
- *                                                                           */
+ *                                                                            */
 #ifndef    QUEX_TYPE_LEXATOM
 #   define QUEX_TYPE_LEXATOM          $$QUEX_TYPE_LEXATOM$$
 #endif 
@@ -230,7 +230,7 @@ $$SWITCH$$ __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 #   define QUEX_SETTING_CHARACTER_CODEC $$QUEX_SETTING_CHARACTER_CODEC$$
 #endif
 /* The following flag indicates that the engine is running on a specific
- * codec. Thus no converter is necessary. Use the flag to detect misuse.     */
+ * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
 $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 
 #ifndef    QUEX_TYPE_ACCEPTANCE_ID
@@ -238,10 +238,10 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 #endif
 
 /* QUEX_TYPE_X  --> Type of X in global namespace 
- * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)         */
+ * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
 #if defined(__QUEX_OPTION_PLAIN_C)
     /* In 'C' there are no namespaces, so namespaces are coded directly
-     * into the type name. Both, global and local names are equal.           */
+     * into the type name. Both, global and local names are equal.            */
 #   define QUEX_TYPE0_ANALYZER         struct $$LEXER_CLASS_NAME_SAFE$$_tag
 #   define QUEX_TYPE_ANALYZER          struct $$LEXER_CLASS_NAME_SAFE$$_tag
 #   define QUEX_NAME_COMPLETE_ANALYZER $$LEXER_CLASS_NAME_SAFE$$
@@ -254,7 +254,7 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 
 #else
     /* Add namespaces for the global names of the classes of analyzer
-     * and token.                                                            */
+     * and token.                                                             */
 #   define QUEX_TYPE0_ANALYZER         $$LEXER_CLASS_NAME$$
 #   define QUEX_TYPE_ANALYZER          $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$
 #   define QUEX_NAME_COMPLETE_ANALYZER $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$

@@ -39,10 +39,10 @@ def do(ModeDB, Epilog):
     lexer_name_space_safe = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space))
 
     template_code_txt = Lng.open_template(Lng.analyzer_template_file())
+
     txt = blue_print(template_code_txt, [
         ["$$___SPACE___$$",                      " " * (len(LexerClassName) + 1)],
         ["$$CLASS_BODY_EXTENSION$$",             Lng.SOURCE_REFERENCED(blackboard.class_body_extension)],
-        ["$$CONVERTER_HELPER$$",                 Lng.CONVERTER_HELPER_DECLARATION()],
         ["$$INCLUDE_GUARD_EXTENSION$$",          include_guard_ext],
         ["$$LEXER_CLASS_NAME$$",                 LexerClassName],
         ["$$LEXER_NAME_SPACE_EXT$$",             lexer_name_space_safe],

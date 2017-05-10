@@ -1,4 +1,4 @@
-Token: ID '<converters of .text to pretty char disabled>'
-Token: ID '<converters of .text to pretty char disabled>'
-Token: ID '<converters of .text to pretty char disabled>'
-Token: <TERMINATION> '<converters of .text to pretty char disabled>'
+Token: ID 'max'
+Token: ID 'und'
+Token: ID 'moritz'
+Token: <TERMINATION> ''

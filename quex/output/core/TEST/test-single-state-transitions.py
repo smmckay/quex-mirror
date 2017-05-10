@@ -144,14 +144,14 @@ def get_transition_function(iid_map, Codec):
 
 main_template = """
 /* From '.begin' the target map targets to '.target' until the next '.begin' is
- * reached.                                                                  */
+ * reached.                                                                   */
 #include <quex/code_base/compatibility/stdint.h> 
 #include <stdio.h>
 #define QUEX_TYPE_LEXATOM              $$QUEX_TYPE_LEXATOM$$
 #define __QUEX_OPTION_PLAIN_C
 #define QUEX_NAMESPACE_MAIN_OPEN
 #define QUEX_NAMESPACE_MAIN_CLOSE
-#define QUEX_NAME_TOKEN(NAME)            Token_ ## NAME
+#define QUEX_NAME_TOKEN(NAME)          Token_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN        
 #define QUEX_NAMESPACE_TOKEN_CLOSE      
 #include <quex/code_base/lexeme_converter/from-utf32>
@@ -238,15 +238,21 @@ def get_main_function(tm0, TranstionTxt, Codec):
 
     input_preperation = get_read_preparation(codec)
 
-    entry_list = [ (0 if interval.begin < 0 else interval.begin, target) for interval, target in tm0 ]
+    entry_list = [ 
+        (0 if interval.begin < 0 else interval.begin, target) 
+        for interval, target in tm0 
+    ]
     entry_list.append((tm0[-1][0].begin, -1))
     entry_list.append((0x1FFFF, -1))
-    expected_array = [ "        { 0x%06X, %s },\n" % (begin, target) for begin, target in entry_list ]
+    expected_array = [ 
+        "        { 0x%06X, %s },\n" % (begin, target) 
+        for begin, target in entry_list 
+    ]
 
-    txt = main_template.replace("$$ENTRY_LIST$$", "".join(expected_array))
-    txt = txt.replace("$$QUEX_TYPE_LEXATOM$$", qtc_str)
-    txt = txt.replace("$$TRANSITION$$",    indent(TranstionTxt, 4))
-    txt = txt.replace("$$PREPARE_INPUT$$", input_preperation)
+    txt = main_template.replace("$$ENTRY_LIST$$",     "".join(expected_array))
+    txt = txt.replace("$$QUEX_TYPE_LEXATOM$$",        qtc_str)
+    txt = txt.replace("$$TRANSITION$$",               indent(TranstionTxt, 4))
+    txt = txt.replace("$$PREPARE_INPUT$$",            input_preperation)
 
     door_id = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db)
     txt = txt.replace("$$ON_BAD_LEXATOM$$", Lng.LABEL_STR(door_id, dial_db))

@@ -154,15 +154,9 @@ $INCLUDE_CONVERTER_DECLARATION
             }
 
             /* The String */
-#           if ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
             QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
                                                    (size_t)(BufferEnd - writerator));
             while( *writerator ) ++writerator;
-#           else
-            writerator += __QUEX_STD_strlcpy(writerator, 
-                                             "<converters of .text to pretty char disabled>",
-                                             BufferEnd - writerator);
-#           endif
 
             /* Closing Quote */
             if( BufferEnd - writerator > 1 ) {

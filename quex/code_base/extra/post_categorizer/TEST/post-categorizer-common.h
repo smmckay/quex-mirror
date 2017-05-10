@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#define QUEX_TYPE_LEXATOM char
+#define QUEX_TYPE_LEXATOM        char
 #define QUEX_TKN_UNINITIALIZED   1
 #include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
 #include <quex/code_base/lexeme_converter/from-unicode-buffer>

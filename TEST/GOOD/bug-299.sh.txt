@@ -1,0 +1,11 @@
+## An Assert-Abortion might be an intended element of the experiment.
+(1, 1)  	DECLIT '1'
+(1, 3)  	DECLIT '2'
+(1, 5)  	DECLIT '3'
+(1, 6)  	NEWLINE '\n'
+(2, 6)  	DECLIT '1'
+(2, 16)  	DECLIT '2'
+(2, 26)  	DECLIT '3'
+(2, 27)  	NEWLINE '\n'
+(3, 1)  	<TERMINATION>
+VALGRIND:   All heap blocks were freed -- no leaks are possible

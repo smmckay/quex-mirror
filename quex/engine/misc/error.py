@@ -116,6 +116,8 @@ def verify_word_in_list(Word, WordList, Comment, Fh_or_Sr=-1, ExitF=True, Suppre
             SuppressCode=SuppressCode)
         return
 
+    if type(WordList) == set: WordList = sorted(WordList)
+
     position_known_f = False
     if type(WordList) == dict:
         word_list = WordList.keys()

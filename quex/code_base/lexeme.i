@@ -40,27 +40,12 @@ QUEX_NAME_TOKEN(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0,
     return (size_t)(*it0) - (size_t)(*it1);
 }
 
-/* If QUEX_TYPE_LEXATOM is chosen inappropriately with respect to the
- * character encoding ('wchar_t' carrying 'utf8')
- * => Lexeme helper functions may cause trouble.  
- * => Disable below functions with compile option:
- *
- *                 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED                          
- *                                                                            */
-#if ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED)
-
 QUEX_INLINE void
 QUEX_NAME_TOKEN(lexeme_to_utf8)(const QUEX_TYPE_LEXATOM** source_p, 
                                 const QUEX_TYPE_LEXATOM*  SourceEnd,
                                 uint8_t**                 drain_p,  
                                 const uint8_t*            DrainEnd)
 {
-    /* If this causes an error, you might carry an encoding in chunks of 
-     * inappropriate size (e.g. 'utf8' in a 'wchar_t'). Use the command line
-     * option 
-     *                '-DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED'
-     *
-     * to disable this file completely!                                       */
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,utf8)(
                           source_p, SourceEnd, drain_p, DrainEnd);
 }
@@ -99,17 +84,18 @@ QUEX_INLINE const char*
 QUEX_NAME_TOKEN(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme, 
                                        char*                    buffer, 
                                        size_t                   BufferSize) 
-/* Provides a somehow pretty-print of the text in the token. Note, that the buffer
- * in case of UTF8 should be 4bytes longer than the longest expected string.       */
+/* Provides a somehow pretty-print of the text in the token. Note, that the 
+ * buffer in case of UTF8 should be 4bytes longer than the longest expected 
+ * string.                                                                    */
 {
-    const QUEX_TYPE_LEXATOM** source_pp = &Lexeme;
+    const QUEX_TYPE_LEXATOM** source_p  = &Lexeme;
     const QUEX_TYPE_LEXATOM*  SourceEnd = &Lexeme[QUEX_NAME_TOKEN(lexeme_length)(Lexeme) + (size_t)1];
     char*                     original  = buffer;  /* Maintain original pointer    */
     char**                    drain_pp  = &buffer; /* Conv. changes buffer pointer */
     const char*               DrainEnd  = &buffer[BufferSize];
 
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, pretty_char)(
-                          source_pp, SourceEnd, drain_pp, DrainEnd);
+                          source_p, SourceEnd, drain_pp, DrainEnd);
 
     return original;
 }
@@ -132,12 +118,10 @@ QUEX_NAME_TOKEN(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM** source_p,
                                  const wchar_t*            DrainEnd)
 {
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,wchar)(
-                          source_p, SourceEnd, drain_p, DrainEnd);
+                          source_p, SourceEnd, drain_p,  DrainEnd);
 }
 #endif
 
-#endif /* ! defined(QUEX_OPTION_LEXEME_CONVERTERS_DISABLED) */
-
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__LEXEME_I */
+#endif /* __QUEX_INCLUDE_GUARD__LEXEME_I                                      */

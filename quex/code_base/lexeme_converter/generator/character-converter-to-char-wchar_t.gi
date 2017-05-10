@@ -17,8 +17,6 @@
 
 #if   ! defined(__QUEX_FROM)
 #   error      "__QUEX_FROM definition missing!"
-#elif ! defined(__QUEX_FROM_TYPE)
-#   error      "__QUEX_FROM_TYPE definition missing!"
 #elif   defined(__QUEX_TO_TYPE) 
 #   error      "__QUEX_TO_TYPE definition missing!"
 #elif   defined(__QUEX_TO) 
@@ -28,7 +26,7 @@
 #endif
 
 QUEX_INLINE void
-QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, char)(const __QUEX_FROM_TYPE**  source_pp, 
+QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, char)(const QUEX_TYPE_LEXATOM** source_pp, 
                                            char**                    drain_pp)  
 {
     switch( sizeof(char) )
@@ -48,7 +46,7 @@ QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, char)(const __QUEX_FROM_TYPE**  source_pp,
 }
 
 QUEX_INLINE void
-QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, pretty_char)(const __QUEX_FROM_TYPE**  source_pp, 
+QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, pretty_char)(const QUEX_TYPE_LEXATOM** source_pp, 
                                                   char**                    drain_pp)  
 {
     char* write_p = *drain_pp;
@@ -72,7 +70,7 @@ QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, pretty_char)(const __QUEX_FROM_TYPE**  sour
 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
     QUEX_INLINE void
-    QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, wchar)(const __QUEX_FROM_TYPE**  source_pp, 
+    QUEX_CONVERTER_CHAR_DEF(__QUEX_FROM, wchar)(const QUEX_TYPE_LEXATOM** source_pp, 
                                                 wchar_t**                 drain_pp)  
     {
         switch( sizeof(wchar_t) )
