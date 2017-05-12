@@ -18,6 +18,8 @@
  * (C) 2012 Frank-Rene Schaefer, ABSOLUTELY NO WARRANTY                      */
 #if   ! defined(__QUEX_FROM)
 #   error      "__QUEX_FROM definition missing!"
+#elif ! defined(QUEX_TYPE_LEXATOM)
+#   error      "QUEX_TYPE_LEXATOM definition missing!"
 #elif ! defined(QUEX_INLINE)
 #   error      "QUEX_INLINE definition missing!"
 #elif ! defined(QUEX_CONVERTER_CHAR_DEF)

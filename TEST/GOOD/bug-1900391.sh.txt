@@ -1,2 +1,1 @@
-command line:1:error: Regular expression parsing:
-command line:1:error: Missing set expression list after 'intersection' operation.
+command line:1:error: End of file reached while parsing 'regular expression' section.

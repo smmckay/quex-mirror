@@ -22,8 +22,13 @@
 #define QUEX_SETTING_CHAR_CODEC    8
 #define QUEX_SETTING_WCHAR_CODEC   32
 
+#define QUEX_TYPE_LEXATOM uint8_t
 #include <quex/code_base/lexeme_converter/from-utf8.i>
+#undef  QUEX_TYPE_LEXATOM
+#define QUEX_TYPE_LEXATOM uint16_t
 #include <quex/code_base/lexeme_converter/from-utf16.i>
+#undef  QUEX_TYPE_LEXATOM
+#define QUEX_TYPE_LEXATOM uint32_t
 #include <quex/code_base/lexeme_converter/from-utf32.i>
 
 using namespace std;

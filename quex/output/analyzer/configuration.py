@@ -67,12 +67,6 @@ def do(Mode_PrepPrepDB):
     if not token_repetition_support_txt:
         token_repetition_support_txt = Lng.FALSE
 
-    if Setup.buffer_lexatom_size_in_byte in Lng.STANDARD_TYPE_DB:
-        buffer_lexatom_standard_type = \
-            Lng.STANDARD_TYPE_DB[Setup.buffer_lexatom_size_in_byte]
-    else:
-        buffer_lexatom_standard_type = "STANDARD_TYPE_UNKNOWN"
-        
     txt = blue_print(txt, 
             [
              ["$$BUFFER_LIMIT_CODE$$",          "%s" % Setup.buffer_limit_code],

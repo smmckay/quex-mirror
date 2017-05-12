@@ -44,9 +44,9 @@ if "--hwut-info" in sys.argv:
     sys.exit(0)
 
 choice, codec = {
-        "A": ("A", ""),
-        "B": ("B", ""),
-        "C": ("C", ""),
+        "A":      ("A", ""),
+        "B":      ("B", ""),
+        "C":      ("C", ""),
         "A-UTF8": ("A", "UTF8"),
         "B-UTF8": ("B", "UTF8"),
         "C-UTF8": ("C", "UTF8"),
@@ -147,8 +147,8 @@ main_template = """
  * reached.                                                                   */
 #include <quex/code_base/compatibility/stdint.h> 
 #include <stdio.h>
-#define QUEX_TYPE_LEXATOM              $$QUEX_TYPE_LEXATOM$$
 #define __QUEX_OPTION_PLAIN_C
+#define QUEX_TYPE_LEXATOM              uint32_t
 #define QUEX_NAMESPACE_MAIN_OPEN
 #define QUEX_NAMESPACE_MAIN_CLOSE
 #define QUEX_NAME_TOKEN(NAME)          Token_ ## NAME
@@ -156,6 +156,8 @@ main_template = """
 #define QUEX_NAMESPACE_TOKEN_CLOSE      
 #include <quex/code_base/lexeme_converter/from-utf32>
 #include <quex/code_base/lexeme_converter/from-utf32.i>
+#undef  QUEX_TYPE_LEXATOM
+#define QUEX_TYPE_LEXATOM              $$QUEX_TYPE_LEXATOM$$
 #include <quex/code_base/single.i>
 
 typedef struct {
@@ -177,42 +179,39 @@ main(int argc, char** argv) {
     const entry_t db[]      = {
 $$ENTRY_LIST$$
     };
-    const entry_t*       db_last  = &db[sizeof(db)/sizeof(entry_t) - 1];
+    const entry_t*       db_last  = &db[sizeof(db)/sizeof(entry_t)] - 1;
     const entry_t*       iterator = &db[0];
-    const entry_t*       next     = (void*)0;
 
     int                  output          = -1;
     int                  output_expected = -1;
-    uint32_t             input;
-    QUEX_TYPE_LEXATOM  buffer[8];
+    uint32_t             unicode_input;
+    QUEX_TYPE_LEXATOM    buffer[8];
     
     printf("No output is good output!\\n");
-    for(iterator=&db[0]; iterator != db_last; iterator = next) {
-        input           = iterator->begin;
+    for(iterator=&db[0]; iterator != db_last; ++iterator) {
         output_expected = iterator->target;
-        next            = iterator + 1;
-        for(input  = iterator->begin; input != next->begin; ++input) {
+        for(unicode_input = iterator->begin; unicode_input != iterator[1].begin ; ++unicode_input) {
             $$PREPARE_INPUT$$
 
             output = transition(&buffer[0]);
 
             if( output != output_expected ) {
-                printf("input: 0x%06X; output: %i; expected: %i;   ERROR\\n",
-                       (int)input, (int)output, (int)output_expected);
+                printf("unicode_input: 0x%06X; output: %i; expected: %i;   ERROR\\n",
+                       (int)unicode_input, (int)output, (int)output_expected);
                 return 0;
             }
         }
     }
     printf("Intervals:  %i\\n", (int)(iterator - &db[0]));
-    printf("Characters: %i\\n", (int)input);
+    printf("Characters: %i\\n", (int)unicode_input);
     printf("Oll Korrekt\\n");
 }
 
 int 
 transition(QUEX_TYPE_LEXATOM* buffer)
 {
-    MiniAnalyzer         self;
-    MiniAnalyzer*        me = &self;
+    MiniAnalyzer       self;
+    MiniAnalyzer*      me = &self;
     QUEX_TYPE_LEXATOM  input = 0;
 
     me->buffer._read_p = buffer;
@@ -221,6 +220,8 @@ $$TRANSITION$$
 
     if( 0 ) {
         goto $$ON_BAD_LEXATOM$$; /* Avoid unreferenced label */
+        goto $$ON_BAD_LEXATOM$$;    /* Avoid unreferenced label */
+        goto $$DROP_OUT_MINUS_1$$;
     }
     return 0;
 
@@ -256,6 +257,7 @@ def get_main_function(tm0, TranstionTxt, Codec):
 
     door_id = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db)
     txt = txt.replace("$$ON_BAD_LEXATOM$$", Lng.LABEL_STR(door_id, dial_db))
+    txt = txt.replace("$$DROP_OUT_MINUS_1$$", Lng.LABEL_STR(DoorID.drop_out(-1, dial_db)))
 
     txt = txt.replace("MATCH_FAILURE", "((int)-1)")
     return txt
@@ -264,14 +266,14 @@ def get_read_preparation(Codec):
     if Codec == "UTF8":
         txt = [
             "{\n"
-            "    QUEX_TYPE_LEXATOM* buffer_p = &buffer[0];\n"
-            "    const uint32_t*    input_p = &input;\n"
-            "    QUEX_CONVERTER_CHAR(utf32, utf8)(&input_p, &buffer_p);\n"
+            "    QUEX_TYPE_LEXATOM*  buffer_p    = &buffer[0];\n"
+            "    const uint32_t*     u32_input_p = &unicode_input;\n"
+            "    QUEX_CONVERTER_CHAR(utf32, utf8)(&u32_input_p, &buffer_p);\n"
             "}\n"
         ]
     else:
         txt = [
-            "buffer[0] = input;\n"
+            "buffer[0] = unicode_input;\n"
         ]
     return "".join("        %s" % line for line in txt)
 
@@ -286,12 +288,16 @@ fh.write("".join(txt))
 fh.close()
 try:    os.remove("./test")
 except: pass
-os.system("gcc -I$QUEX_PATH test.c -o test")
+os.system("gcc -I$QUEX_PATH -Wall -Werror test.c -o test -ggdb")
 os.system("./test")
-try:    os.remove("./test.c")
-except: pass
-try:    os.remove("./test")
-except: pass
+
+if True:
+    try:    os.remove("./test.c")
+    except: pass
+    try:    os.remove("./test")
+    except: pass
+else:
+    print "re-install 'remove files'"
 
 
 
