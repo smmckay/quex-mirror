@@ -270,7 +270,7 @@ run_test(const char* TestString, const char* Comment, QUEX_TYPE_ANALYZER* lexer)
 
         /* Print the token queue */
         while( QUEX_NAME(TokenQueue_is_empty)(&lexer->_token_queue) == false ) {        
-            switch( QUEX_NAME(TokenQueue_pop)(&lexer->_token_queue)->_id ) {
+            switch( QUEX_NAME(TokenQueue_pop)(&lexer->_token_queue)->id ) {
             case QUEX_TKN_INDENT:      printf("INDENT\\n"); break;
             case QUEX_TKN_DEDENT:      printf("DEDENT\\n"); break;
             case QUEX_TKN_NODENT:      printf("NODENT\\n"); break;

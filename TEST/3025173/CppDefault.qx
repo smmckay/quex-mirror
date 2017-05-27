@@ -32,7 +32,7 @@ token_type {
    inheritable;
 
    copy {
-        self._id    = Other._id;
+        self.id    = Other.id;
         self.text   = Other.text;
         self.number = Other.number;
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -54,7 +54,7 @@ token_type {
             std::string             tmp;
             std::string::size_type  pos  = 0;
 
-            tmp = map_id_to_name(self._id);
+            tmp = map_id_to_name(self.id);
 
             tmp += " '" + utf8_text() + "' ";
 

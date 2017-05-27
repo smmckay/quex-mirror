@@ -42,7 +42,7 @@ main(int argc, char** argv)
     QUEX_NAME(Gavager_construct)(&gavager, &lexer, QUEX_TKN_BYE);
 
     token = (CToken*)0;
-    while( ! token || token->_id != QUEX_TKN_BYE ) {
+    while( ! token || token->id != QUEX_TKN_BYE ) {
 
         if( ! token ) {
             gavager.access(&gavager, (void**)&begin_p, (const void**)&end_p); 

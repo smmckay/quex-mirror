@@ -9,14 +9,14 @@ namespace quex {
     struct Token {
 
     public:
-        void set(const QUEX_TYPE_TOKEN_ID ID)  { _id = ID; }
+        void set(const QUEX_TYPE_TOKEN_ID ID)  { id = ID; }
 
-        QUEX_TYPE_TOKEN_ID    _id;
+        QUEX_TYPE_TOKEN_ID    id;
 
-        QUEX_TYPE_TOKEN_ID    type_id() const                       { return _id; }
+        QUEX_TYPE_TOKEN_ID    type_id() const                       { return id; }
         static const char*    map_id_to_name(QUEX_TYPE_TOKEN_ID ID) { (void)ID; return ""; } 
 
-        const std::string     type_id_name() const { return map_id_to_name(_id); }
+        const std::string     type_id_name() const { return map_id_to_name(id); }
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE

@@ -54,7 +54,7 @@ main(int argc, char** argv)
     do {
         qlex->receive(&token); 
         printf("   Token: %s\n", token->get_string().c_str()); 
-    } while( token->_id != QUEX_TKN_TERMINATION && token->_id != QUEX_TKN_BYE );
+    } while( token->id != QUEX_TKN_TERMINATION && token->id != QUEX_TKN_BYE );
         
     delete qlex;
     return 0;

@@ -54,7 +54,7 @@ main(int argc, char** argv)
     do {
         (void)QUEX_NAME(receive)(&qlex, &token);
         print_token(token);
-    } while( token->_id != QUEX_TKN_TERMINATION && token->_id != QUEX_TKN_BYE );
+    } while( token->id != QUEX_TKN_TERMINATION && token->id != QUEX_TKN_BYE );
         
     QUEX_NAME(destruct)(&qlex);
     return 0;

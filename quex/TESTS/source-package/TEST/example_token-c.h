@@ -6,7 +6,7 @@
 #endif
 
 typedef struct quex_Token_tag {
-    QUEX_TYPE_TOKEN_ID    _id;
+    QUEX_TYPE_TOKEN_ID    id;
 
     size_t _line_n;
     size_t _column_n;

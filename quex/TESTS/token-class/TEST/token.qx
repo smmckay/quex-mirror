@@ -35,7 +35,7 @@ token_type {
    copy        { 
        std::cout << "Copy\n"; 
        /* Copy core elements: id, line, and column number */
-       self._id         = Other._id;
+       self.id         = Other.id;
 #      ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #      ifdef QUEX_OPTION_COUNTER_LINE
               self._line_n = Other._line_n;

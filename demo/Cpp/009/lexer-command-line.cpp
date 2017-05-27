@@ -67,7 +67,7 @@ main(int argc, char** argv)
 
     qlex = LEXER_CLASS::from_ByteLoader(NULL, converter);
 
-    while( ! token || token->_id != QUEX_TKN_BYE ) {
+    while( ! token || token->id != QUEX_TKN_BYE ) {
         printf("type here: ");
 
 		cin.getline((std::basic_istream<char>::char_type*)&buffer[0], sizeof(buffer)-1);
@@ -93,7 +93,7 @@ main(int argc, char** argv)
         do {
             qlex->receive(&token);
             printf("   Token: %s\n", token->get_string().c_str()); 
-        } while( token->_id != QUEX_TKN_TERMINATION && token->_id != QUEX_TKN_BYE );
+        } while( token->id != QUEX_TKN_TERMINATION && token->id != QUEX_TKN_BYE );
     }
         
     delete qlex; 

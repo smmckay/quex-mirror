@@ -54,7 +54,7 @@ print_token(quex::Token* token_p)
     cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
 #   endif
 #   ifdef PRINT_TOKEN
-    switch( token_p->_id ) {
+    switch( token_p->id ) {
     case QUEX_TKN_INDENT: 
     case QUEX_TKN_DEDENT: 
     case QUEX_TKN_NODENT: 

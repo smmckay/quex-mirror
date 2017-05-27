@@ -20,9 +20,9 @@
     int8_t      get_mini_y() const                 { return content.data_0.mini_y; }
     void        set_mini_y(int8_t Value)           { content.data_0.mini_y = Value; }
     void        set_mini_y(int8_t Value)           { content.data_0.mini_y = Value; }
-    { _id = ID; content.data_0.mini_x = Value0; content.data_0.mini_y = Value1; }
-    { _id = ID; content.data_1.big_x = Value0; content.data_1.big_y = Value1; }
-    { _id = ID; content.who_is_that = Value0; }
+    { id = ID; content.data_0.mini_x = Value0; content.data_0.mini_y = Value1; }
+    { id = ID; content.data_1.big_x = Value0; content.data_1.big_y = Value1; }
+    { id = ID; content.who_is_that = Value0; }
         void                      set_line_number(const QUEX_TYPE_TOKEN_LINE_N Value) { _line_n = Value; }
         void                      set_column_number(const QUEX_TYPE_TOKEN_COLUMN_N Value) { _column_n = Value; }
 /* This content is pasted into header, so the include guard is superfluous. 

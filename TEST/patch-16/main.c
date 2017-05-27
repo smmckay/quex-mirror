@@ -23,9 +23,9 @@ int main(int argc, char** argv) {
 #       ifdef PRINT_TOKEN
 		printf("%s \n", QUEX_NAME_TOKEN(get_string)(&token_p, buffer, BufferSize));
 #       else
-		printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
+		printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
 #       endif
-	} while(token_p->_id != QUEX_TKN_TERMINATION);
+	} while(token_p->id != QUEX_TKN_TERMINATION);
 
 	QUEX_NAME(destruct)(&qlex);
 	return 0;

@@ -17,7 +17,7 @@ $$INCLUDE_TOKEN_CLASS_HEADER$$
 QUEX_INLINE void 
 $TOKEN_CLASS_set($TOKEN_CLASS*            __this, 
                  const QUEX_TYPE_TOKEN_ID ID) 
-{ __this->_id = ID; }
+{ __this->id = ID; }
 
 QUEX_INLINE void 
 $TOKEN_CLASS_construct($TOKEN_CLASS* __this)
@@ -65,7 +65,7 @@ $$COPY$$
 #   undef  self
     /* If the user even misses to copy the token id, then there's
      * something seriously wrong.                                 */
-    __quex_assert(__this->_id == __That->_id);
+    __quex_assert(__this->id == __That->id);
 #   ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
     __QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));
     __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));

@@ -217,7 +217,7 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     /*          QUEX_TOKEN_POLICY_PREPARE_NEXT();                             */             
     /*          BUT: We clear the text of the otherwise void token.           */             
     QUEX_ACTION_TOKEN_STAMP(*(me->the_lexer));   
-    token_p->_id = TokenID;
+    token_p->id = TokenID;
     if( me->text.begin == me->text.end ) {               
         begin_p = &QUEX_LEXEME_NULL;
         end_p   = &QUEX_LEXEME_NULL;                  /* -> terminating zero. */

@@ -25,7 +25,7 @@ main(int argc, char** argv)
         printf("%s \n", QUEX_NAME_TOKEN(get_string)(qlex.token, buffer, BufferSize));
  
         ++number_of_tokens;
-    } while( qlex.token->_id != QUEX_TKN_TERMINATION );
+    } while( qlex.token->id != QUEX_TKN_TERMINATION );
 
     printf("| [END] number of token = %i\n", number_of_tokens);
     printf("`-----------------------------------------------------------------\n");

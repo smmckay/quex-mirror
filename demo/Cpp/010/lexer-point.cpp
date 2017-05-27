@@ -56,7 +56,7 @@ test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
 
         printf("   Token: %s\n", token_p->get_string().c_str());
         
-    } while( token_p->_id != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     printf("<terminated>\n");
 }

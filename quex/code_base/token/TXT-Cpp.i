@@ -68,7 +68,7 @@ $$COPY$$
 #   undef self
    /* If the user even misses to copy the token id, then there's
     * something seriously wrong.                                 */
-   __quex_assert(__this->_id == __That->_id);
+   __quex_assert(__this->id == __That->id);
 #ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #   ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
     __QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));

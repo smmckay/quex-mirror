@@ -49,7 +49,7 @@ $INCLUDE_CONVERTER_DECLARATION
    }
 
    copy {
-        self._id  = Other._id;
+        self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
             QUEXED(MemoryManager_free)((QUEX_TYPE_LEXATOM*)self.text, 
@@ -143,7 +143,7 @@ $INCLUDE_CONVERTER_DECLARATION
                                     char*                   buffer, 
                                     size_t                  BufferSize) 
         {
-            const char*  token_type_str = QUEX_NAME_TOKEN(map_id_to_name)(me->_id);
+            const char*  token_type_str = QUEX_NAME_TOKEN(map_id_to_name)(me->id);
             const char*  BufferEnd  = buffer + BufferSize;
             const char*  iterator   = 0;
             char*        writerator = 0;

@@ -31,7 +31,7 @@ main(int argc, char** argv)
         /* (*) print out token information */
         print_token(&qlex, token_p, true);
 
-        if( token_p->_id == QUEX_TKN_INCLUDE ) { 
+        if( token_p->id == QUEX_TKN_INCLUDE ) { 
             QUEX_NAME(receive)(&qlex, &token_p);
 
             print_token(&qlex, token_p, true);
@@ -40,17 +40,17 @@ main(int argc, char** argv)
              * get lost upon the event of 'include_push'.                     */
             __quex_assert(QUEX_NAME(TokenQueue_is_empty(&qlex._token_queue)));
 
-            if( token_p->_id != QUEX_TKN_IDENTIFIER ) {
+            if( token_p->id != QUEX_TKN_IDENTIFIER ) {
                 continue_lexing_f = false;
                 print(&qlex, "Found 'include' without a subsequent filename: '%s' hm?\n",
-                      (char*)QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id), 0x0);
+                      (char*)QUEX_NAME_TOKEN(map_id_to_name)(token_p->id), 0x0);
                 break;
             }
             print(&qlex, ">> including: ", (const char*)token_p->text, 0x0);
             included_file_name = ((const char*)token_p->text);
             QUEX_NAME(include_push_file_name)(&qlex, included_file_name, 0x0);
         }
-        else if( token_p->_id == QUEX_TKN_TERMINATION ) {
+        else if( token_p->id == QUEX_TKN_TERMINATION ) {
             space(qlex.include_depth);
             printf("Per File Letter Count = %i\n", (int)qlex.letter_count);
             if( QUEX_NAME(include_pop)(&qlex) == false ) 
@@ -81,7 +81,7 @@ print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p, bool TextF /* = 
 { 
     space(qlex->include_depth);
     printf("%i: (%i)", (int)token_p->_line_n, (int)token_p->_column_n);
-    printf("%s", QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
+    printf("%s", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
     if( TextF ) printf("\t'%s'", (char*)token_p->text);
     printf("\n");
 }

@@ -118,7 +118,7 @@ extern uint32_t  Common_LexemeNullObject;
 
  
 typedef struct Common_Token_tag {
-    uint32_t    _id;
+    uint32_t    id;
 
     const uint32_t* text;
     size_t                     number;

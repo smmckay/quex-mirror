@@ -37,7 +37,7 @@ QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
-    QUEX_TYPE_TOKEN_ID    _id;
+    QUEX_TYPE_TOKEN_ID    id;
 
 #   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;

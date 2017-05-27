@@ -32,8 +32,8 @@ main(int argc, char** argv)
         printf("(%i, %i)  \t", (int)token_p->_line_n, (int)token_p->_column_n);
         /* Print out token information            */
         fflush(stderr);
-        printf("%s: ", QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
-        switch( token_p->_id ) {
+        printf("%s: ", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        switch( token_p->id ) {
         case QUEX_TKN_ON_AFTER_MATCH:
         case QUEX_TKN_ON_MATCH______:
             printf("%i\n", (int)token_p->number); 
@@ -46,7 +46,7 @@ main(int argc, char** argv)
 
         ++token_n;
         /* Check against 'termination'            */
-    } while( token_p->_id != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     printf("| [END] number of token = %i\n", token_n);
     printf("`------------------------------------------------------------------------------------\n");

@@ -125,29 +125,29 @@ public:
     void             set_x(int16_t Value)                        { content.data_1.x = Value; }
 
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
-    void set(const QUEX_TYPE_TOKEN_ID ID) { _id = ID; }
+    void set(const QUEX_TYPE_TOKEN_ID ID) { id = ID; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const std::string& Value0, const std::vector<int>& Value1)
-    { _id = ID; my_name = Value0; numbers = Value1; }
+    { id = ID; my_name = Value0; numbers = Value1; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const float& Value0, const short& Value1)
-    { _id = ID; content.data_0.number = Value0; content.data_0.index = Value1; }
+    { id = ID; content.data_0.number = Value0; content.data_0.index = Value1; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const int16_t& Value0, const int16_t& Value1)
-    { _id = ID; content.data_1.x = Value0; content.data_1.y = Value1; }
+    { id = ID; content.data_1.x = Value0; content.data_1.y = Value1; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const uint32_t& Value0)
-    { _id = ID; content.stream_position = Value0; }
+    { id = ID; content.stream_position = Value0; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const uint16_t& Value0)
 
 
-    { _id = ID; content.who_is_that = Value0; }
+    { id = ID; content.who_is_that = Value0; }
     public:
-        /* _line_n, _column_n, and _id are public, so that the token policy 
+        /* _line_n, _column_n, and id are public, so that the token policy 
          * can access it. making it private would imply complications for 
          * user customized token classes. The token policies should be the
          * same for C and Cpp.                                               */
-        QUEX_TYPE_TOKEN_ID    _id;
-        QUEX_TYPE_TOKEN_ID    type_id() const                             { return _id; }
+        QUEX_TYPE_TOKEN_ID    id;
+        QUEX_TYPE_TOKEN_ID    type_id() const                             { return id; }
         const char*           map_id_to_name(QUEX_TYPE_TOKEN_ID ID) const { return QUEX_NAME_TOKEN(map_id_to_name)(ID); }
 
-        const std::string     type_id_name() const                        { return map_id_to_name(_id); }
+        const std::string     type_id_name() const                        { return map_id_to_name(id); }
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE
     public:
@@ -280,7 +280,7 @@ QUEX_NAME_TOKEN(copy)(MeinToken* __this, const MeinToken* __That)
 #   undef self
    /* If the user even misses to copy the token id, then there's
     * something seriously wrong.                                 */
-   __quex_assert(__this->_id == __That->_id);
+   __quex_assert(__this->id == __That->id);
 #ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #   ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
     __QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));

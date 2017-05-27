@@ -119,12 +119,12 @@ accept_and_lex(int listen_fd)
 
         print_token(token);
 
-        if( token->_id == QUEX_TKN_BYE ) {
+        if( token->id == QUEX_TKN_BYE ) {
              continue_f = false;
              break;
         }
 
-    } while( token->_id != QUEX_TKN_TERMINATION );
+    } while( token->id != QUEX_TKN_TERMINATION );
         
     QUEX_NAME(destruct)(&qlex);
     printf("<terminated>\n");

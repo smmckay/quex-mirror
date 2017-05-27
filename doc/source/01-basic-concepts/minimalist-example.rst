@@ -15,7 +15,7 @@ Let us start with a .qx file as input to the lexical analyser generator:
 
     header {
     #ifdef __cplusplus
-    #  include <cstdlib>  // for: atoi()
+    #  include <cstdlib>   // for: atoi()
     #else
     #  include <stdlib.h>  // for: atoi()
     #endif
@@ -148,7 +148,7 @@ the ``--source-package`` option[#f1]_. That is,
 
 .. code-block:: bash
 
-   > quex -i simple.qx -o tiny_lexer --source-package my-package
+   > quex -i simple.qx -o tiny --source-package my-package
 
 The source package and the generated lexical analyzer are then located in
 directory ``my-package``. Now, for compilation the include path of the
@@ -157,7 +157,7 @@ example
 
 .. code-block:: bash
 
-   > $CC  lexer.cpp  tiny_lexer.cpp -Imy-package -o lexer 
+   > $CC  lexer.cpp tiny.cpp -Imy-package -o lexer 
 
 Further Playing
 ###############
@@ -181,7 +181,7 @@ familiarize oneself with these features.
     .. code-block:: bash
 
        > cat lexer.cpp >> tiny.cpp
-       > g++ tiny_lexer.cpp -I$QUEX_PATH -I. -E -o my-packaged-lexer.cpp
+       > g++ tiny.cpp -I$QUEX_PATH -I. -E -o my-packaged-lexer.cpp
 
     The first line generates a single source code file by pasting one at the
     end of the other.  The second line uses the C-preprocessor to expand all

@@ -264,7 +264,7 @@ def get_quick_setters(Descr):
                 _get_arg(info, i) for i, info in enumerate(ArgList)
             ),
             ")\n    { ",
-            "_id = ID; "
+            "id = ID; "
         ]
         txt.extend(
             _get_assignment(info, i)

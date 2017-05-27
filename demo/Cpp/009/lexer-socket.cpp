@@ -119,12 +119,12 @@ accept_and_lex(int listen_fd)
         qlex->receive(&token); 
         printf("   Token: %s\n", token->get_string().c_str()); 
 
-        if( token->_id == QUEX_TKN_BYE ) {
+        if( token->id == QUEX_TKN_BYE ) {
              continue_f = false;
              break;
         }
 
-    } while( token->_id != QUEX_TKN_TERMINATION );
+    } while( token->id != QUEX_TKN_TERMINATION );
         
     delete qlex;
     printf("<terminated>\n");

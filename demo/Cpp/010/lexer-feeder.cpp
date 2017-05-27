@@ -37,7 +37,7 @@ main(int argc, char** argv)
     uint8_t*  rx_content_p;
 
     token = (CToken*)0;
-    while( ! token || token->_id != QUEX_TKN_BYE ) {
+    while( ! token || token->id != QUEX_TKN_BYE ) {
 
         if( ! token ) {
             received_n = receiver_get_pointer_to_received(&rx_content_p);

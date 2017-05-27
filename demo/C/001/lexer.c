@@ -19,10 +19,10 @@ main(int argc, char** argv)
         /* Get next token from the token stream   */
         QUEX_NAME(receive_p)(&qlex, &token);
         /* Print out token information            */
-        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token._id));
+        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token.id));
         ++token_n;
         /* Check against 'termination'            */
-    } while( token._id != QUEX_TKN_TERMINATION );
+    } while( token.id != QUEX_TKN_TERMINATION );
 
     printf("| [END] number of token = %i\n", token_n);
     printf("`------------------------------------------------------------------------------------\n");

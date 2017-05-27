@@ -89,7 +89,7 @@ QUEX_NAME(receive_from_chunk)(QUEX_TYPE_ANALYZER*    me,
      * Else                       => must refill and restart from 'start_p'.  */
     last_token_in_queue_p = QUEX_NAME(TokenQueue_last_token)(&me->_token_queue); 
     __quex_assert(last_token_in_queue_p); /* not empty => last token exists.  */
-    if( EndOfChunkF && last_token_in_queue_p->_id == StreamTerminatingTokenId ) {
+    if( EndOfChunkF && last_token_in_queue_p->id == StreamTerminatingTokenId ) {
         /* The 'good bye' token may stand very well on the border.            */
         return token_p;                                                       
     }                                                                         

@@ -109,7 +109,7 @@ followed by ``}``.
        }
 
    The standard members are implemented in the actual token class with a
-   preceding underscore.  That means, ``id`` becomes ``_id``, ``line_number``
+   preceding underscore.  That means, ``id`` becomes ``id``, ``line_number``
    becomes ``_line_number`` and ``column_number`` becomes ``_column_number``.
    Depending on the setting of the macros::
 
@@ -261,7 +261,7 @@ sections. The variable ``self`` is a reference to the token object itself.
        copy { 
            std::cout << "Copy\n"; 
            // Copy core elements: id, line, and column number
-           self._id = Other._id;
+           self.id = Other.id;
        #      ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
        #      ifdef QUEX_OPTION_COUNTER_LINE
                   self._line_n = Other._line_n;
@@ -581,7 +581,7 @@ can be specified. The following shows a sample definition of a ``token_type`` se
        copy        { 
            std::cout << "Copy\n"; 
            /* Copy core elements: id, line, and column number */
-           _id         = Other._id;
+           id         = Other.id;
     #      ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
     #      ifdef QUEX_OPTION_COUNTER_LINE
                   _line_n = Other._line_n;
@@ -660,26 +660,26 @@ which results in a generated token class in C++:
 
 
         void set(const QUEX_TYPE_TOKEN_ID ID) 
-        { _id = ID; }
+        { id = ID; }
         void set(const QUEX_TYPE_TOKEN_ID ID, const std::basic_string<QUEX_TYPE_LEXATOM>& Value0)
-        { _id = ID; name = Value0; }
+        { id = ID; name = Value0; }
         void set(const QUEX_TYPE_TOKEN_ID ID, const std::vector<int>& Value0)
-        { _id = ID; number_list = Value0; }
+        { id = ID; number_list = Value0; }
         void set(const QUEX_TYPE_TOKEN_ID ID, const std::basic_string<QUEX_TYPE_LEXATOM>& Value0, const std::vector<int>& Value1)
-        { _id = ID; name = Value0; number_list = Value1; }
+        { id = ID; name = Value0; number_list = Value1; }
         void set(const QUEX_TYPE_TOKEN_ID ID, const int16_t& Value0, const int16_t& Value1)
-        { _id = ID; content.data_1.big_x = Value0; content.data_1.big_y = Value1; }
+        { id = ID; content.data_1.big_x = Value0; content.data_1.big_y = Value1; }
         void set(const QUEX_TYPE_TOKEN_ID ID, const int8_t& Value0, const int8_t& Value1)
-        { _id = ID; content.data_0.mini_x = Value0; content.data_0.mini_y = Value1; }
+        { id = ID; content.data_0.mini_x = Value0; content.data_0.mini_y = Value1; }
         void set(const QUEX_TYPE_TOKEN_ID ID, const uint16_t& Value0)
-        { _id = ID; content.who_is_that = Value0; }
+        { id = ID; content.who_is_that = Value0; }
 
 
-            QUEX_TYPE_TOKEN_ID    _id;
+            QUEX_TYPE_TOKEN_ID    id;
         public:
-            QUEX_TYPE_TOKEN_ID    type_id() const      { return _id; }
+            QUEX_TYPE_TOKEN_ID    type_id() const      { return id; }
             static const char*    map_id_to_name(QUEX_TYPE_TOKEN_ID);
-            const std::string     type_id_name() const { return map_id_to_name(_id); }
+            const std::string     type_id_name() const { return map_id_to_name(id); }
 
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
     #       ifdef QUEX_OPTION_COUNTER_LINE
@@ -898,9 +898,9 @@ A hand written token class must comply to the following constraints:
           self_send2(TKN_SOMETHING, LexemeL, tmp); 
           return; 
 
-    * It must provide a member ``_id`` token's identifier 
+    * It must provide a member ``id`` token's identifier 
       
-      .. cfunction:: QUEX_TYPE_TOKEN_ID   _id
+      .. cfunction:: QUEX_TYPE_TOKEN_ID   id
 
     * The following function must be defined. Even an empty definition will do.
     

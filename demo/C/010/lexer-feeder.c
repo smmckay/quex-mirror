@@ -40,7 +40,7 @@ main(int argc, char** argv)
     QUEX_NAME(Feeder_construct)(&feeder, &lexer, QUEX_TKN_BYE);
 
     token = (CToken*)0;
-    while( ! token || token->_id != QUEX_TKN_BYE ) {
+    while( ! token || token->id != QUEX_TKN_BYE ) {
 
         if( ! token ) {
             received_n = receiver_get_pointer_to_received(&rx_content_p);

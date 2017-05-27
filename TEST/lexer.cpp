@@ -64,7 +64,7 @@ int main(int argc, char** argv)
         ++token_n;
 
         // (*) check against 'termination'
-    } while( token_p->_id != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     if( qlex->error_code != E_Error_None ) {
         qlex->print_this();

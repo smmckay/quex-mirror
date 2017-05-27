@@ -11,11 +11,11 @@ int main(int argc, char* argv[])
         QUEX_TYPE_TOKEN* t = NULL;
         QUEX_NAME(receive)(&lex, &t);
 
-        if (QUEX_TKN_TERMINATION == t->_id)
+        if (QUEX_TKN_TERMINATION == t->id)
             break;
 
         printf("id=%s text=[%s]\n",
-               QUEX_NAME_TOKEN(map_id_to_name)(t->_id),
+               QUEX_NAME_TOKEN(map_id_to_name)(t->id),
                t->text);
     }
 

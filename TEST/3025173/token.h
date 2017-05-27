@@ -28,18 +28,18 @@ public:
 
 
     void set(const QUEX_TYPE_TOKEN_ID ID)
-    { _id = ID; }
+    { id = ID; }
     void set(const QUEX_TYPE_TOKEN_ID ID, int Value0)
-    { _id = ID; number_ = Value0; }
+    { id = ID; number_ = Value0; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const std::basic_string<QUEX_TYPE_LEXATOM>& Value0)
-    { _id = ID; text_ = Value0; }
+    { id = ID; text_ = Value0; }
     void set(const QUEX_TYPE_TOKEN_ID ID, int Value0, const std::basic_string<QUEX_TYPE_LEXATOM>& Value1)
-    { _id = ID; number_ = Value0; text_ = Value1; }
+    { id = ID; number_ = Value0; text_ = Value1; }
 
 
-        QUEX_TYPE_TOKEN_ID    _id;
+        QUEX_TYPE_TOKEN_ID    id;
 
-        QUEX_TYPE_TOKEN_ID    type_id() const      { return _id; }
+        QUEX_TYPE_TOKEN_ID    type_id() const      { return id; }
         static const char*    map_id_to_name(QUEX_TYPE_TOKEN_ID ID) {
           switch (ID) {
             case BR_TKN_DOT           : return "BR_TKN_DOT";
@@ -60,7 +60,7 @@ public:
           }
         } 
         
-        const std::string     type_id_name() const { return map_id_to_name(_id); }
+        const std::string     type_id_name() const { return map_id_to_name(id); }
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE

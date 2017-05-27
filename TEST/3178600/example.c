@@ -19,7 +19,7 @@ main(int argc, char** argv)
 
         printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
 
-    } while( token_p->_id != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     QUEX_NAME(destruct)(&qlex);
 

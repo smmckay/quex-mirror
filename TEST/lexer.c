@@ -75,14 +75,14 @@ main(int argc, char** argv)
             printf("\n");
         }
 #       else
-        printf("%s", QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
+        printf("%s", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
         printf("\n");
 #       endif
         fflush(stdout);
 
         ++token_n;
         /* Check against 'termination'            */
-    } while( token_p->_id != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     if( qlex.error_code != E_Error_None ) {
         QUEX_NAME(print_this)(&qlex);

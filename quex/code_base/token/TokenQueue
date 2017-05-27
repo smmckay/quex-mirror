@@ -74,7 +74,7 @@ QUEX_NAMESPACE_MAIN_OPEN
             __quex_assert((me)->write_iterator != (me)->end);                                       \
             /* No token sending after 'TERMINATION'.                          */                    \
             __quex_assert(   (me)->write_iterator         == (me)->begin                            \
-                          || (me)->write_iterator[-1]._id != QUEX_TOKEN_ID(TERMINATION) ); \
+                          || (me)->write_iterator[-1].id != QUEX_TOKEN_ID(TERMINATION) ); \
         } while( 0 )
 
 #   define QUEX_ASSERT_TOKEN_QUEUE_AFTER_SENDING(me) \

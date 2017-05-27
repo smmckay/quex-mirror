@@ -737,7 +737,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 QUEX_INLINE void 
 quex_Token_set(quex_Token*            __this, 
                  const QUEX_TYPE_TOKEN_ID ID) 
-{ __this->_id = ID; }
+{ __this->id = ID; }
 
 QUEX_INLINE void 
 quex_Token_construct(quex_Token* __this)
@@ -801,7 +801,7 @@ quex_Token_copy(quex_Token*       __this,
 
 #   line 39 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
-        self._id  = Other._id;
+        self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
             QUEXED(MemoryManager_free)((void*)self.text,
@@ -836,7 +836,7 @@ quex_Token_copy(quex_Token*       __this,
 #   undef  self
     /* If the user even misses to copy the token id, then there's
      * something seriously wrong.                                 */
-    __quex_assert(__this->_id == __That->_id);
+    __quex_assert(__this->id == __That->id);
 #   ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
     __QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));
     __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
@@ -996,7 +996,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
         const char* 
         quex_Token_get_string(quex_Token* me, char*   buffer, size_t  BufferSize) 
         {
-            const char*  token_id_str = quex_Token_map_id_to_name(me->_id);
+            const char*  token_id_str = quex_Token_map_id_to_name(me->id);
             const char*  BufferEnd    = buffer + BufferSize;
             char*        writerator   = 0;
 

@@ -92,10 +92,10 @@ int Calc_yylex(YYSTYPE *yylval, struct quex_Calc_lexer_tag *qlex)
     if( ! token ) {
         return TKN_TERMINATION;
     }
-	else if( token->_id == TKN_NUM )
+	else if( token->id == TKN_NUM )
 	{
 		yylval->str = (char*)malloc((size_t)(strlen((char*)token->text)+1));
         memcpy((void*)yylval->str, (void*)token->text, (size_t)(strlen((char*)token->text) + 1));
 	}
-	return (int)token->_id;
+	return (int)token->id;
 }

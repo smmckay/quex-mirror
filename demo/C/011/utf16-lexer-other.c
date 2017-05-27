@@ -31,14 +31,14 @@ main(int argc, char** argv)
     do {
         QUEX_NAME(receive)(&qlex, &token_p);
 
-        printf("%s\t", QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
+        printf("%s\t", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
         for(iterator = token_p->text; *iterator; ++iterator) {
             printf("%04X.", (int)*iterator);
         }
         printf("\n");
 
         // (*) check against 'termination'
-    } while( token_p->_id != TKN_TERMINATION );
+    } while( token_p->id != TKN_TERMINATION );
 
     QUEX_NAME(destruct)(&qlex);
 

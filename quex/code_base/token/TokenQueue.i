@@ -142,7 +142,7 @@ QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
         return (QUEX_TYPE_TOKEN*)0;
     }
 #   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-    else if( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->_id) ) {
+    else if( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->id) ) {
         repetition_count = QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator);
         if( repetition_count == 0 ) { 
             /* This case should never occurr!                                 */
@@ -185,7 +185,7 @@ QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me)
  * only be called in case of a detected error.                                */
 {
     QUEX_NAME(TokenQueue_reset)(me);
-    (me->write_iterator++)->_id =  QUEX_TOKEN_ID(TERMINATION);
+    (me->write_iterator++)->id =  QUEX_TOKEN_ID(TERMINATION);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

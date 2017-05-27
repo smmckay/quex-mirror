@@ -89,7 +89,7 @@ int Calc_yylex(YYSTYPE *yylval, quex::Calc_lexer *qlex)
     if( ! token ) {
         return TKN_TERMINATION;
     }
-	else if( token->_id == TKN_NUM )
+	else if( token->id == TKN_NUM )
 	{
 		yylval->str = new std::string((const char *)token->get_text());
 		//printit(yylval->str);

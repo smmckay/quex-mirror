@@ -34,7 +34,7 @@ main(int argc, char** argv)
 
         ++number_of_tokens;
 
-        if( token_p->_id == QUEX_TKN_TERMINATION ) break;
+        if( token_p->id == QUEX_TKN_TERMINATION ) break;
     } 
 
     printf("| [END] number of token = %i\n", (int)number_of_tokens);
@@ -61,20 +61,20 @@ print_token(quex_Token* token_p)
 #   endif
 
 #   ifdef PRINT_TOKEN
-    switch( token_p->_id ) {
+    switch( token_p->id ) {
     case QUEX_TKN_INDENT: 
     case QUEX_TKN_DEDENT: 
     case QUEX_TKN_NODENT: 
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still carries an old lexeme; Printing it
          * would be confusing.                                               */
-        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
+        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
         break;
     default:
         printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
         break;
     }
 #   else
-    printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->_id));
+    printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
 #   endif
 }

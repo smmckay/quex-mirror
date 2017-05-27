@@ -154,7 +154,7 @@ token_type {
 	}
 	copy {
 		// Copy the core element: Token ID...
-		self._id = Other._id;
+		self.id = Other.id;
 
 /*
 		// Plain copy of the union content...

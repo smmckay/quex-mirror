@@ -37,7 +37,7 @@ main(int argc, char** argv)
     const uint8_t*           end_p;
 
     token = (CToken*)0;
-    while( ! token || token->_id != QUEX_TKN_BYE ) {
+    while( ! token || token->id != QUEX_TKN_BYE ) {
 
         if( ! token ) {
             gavager.access((void**)&begin_p, (const void**)&end_p); 

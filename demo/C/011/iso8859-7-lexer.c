@@ -29,7 +29,7 @@ main(int argc, char** argv)
 #       endif
 
         // (*) check against 'termination'
-    } while( token_p->_id != TKN_TERMINATION );
+    } while( token_p->id != TKN_TERMINATION );
 
     QUEX_NAME(destruct)(&qlex);
     return 0;

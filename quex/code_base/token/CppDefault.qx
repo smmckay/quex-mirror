@@ -32,7 +32,7 @@ $INCLUDE_CONVERTER_DECLARATION
    }
 
    copy {
-        self._id  = Other._id;
+        self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
             QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
@@ -123,7 +123,7 @@ $INCLUDE_CONVERTER_DECLARATION
         get_string() const 
         {
             std::string  tmp;
-            tmp  = map_id_to_name(self._id);
+            tmp  = map_id_to_name(self.id);
             tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
             return tmp;
         }

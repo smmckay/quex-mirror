@@ -32,7 +32,7 @@ main(int argc, char** argv)
 
     do {
         QUEX_NAME(receive)(&qlex, &token_p);
-        token_id = token_p->_id;
+        token_id = token_p->id;
         FLUSH();
         printf("TOKEN: %s\n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
         FLUSH();

@@ -37,7 +37,7 @@ $INCLUDE_CONVERTER_DECLARATION
    }
 
    copy {
-        self._id  = Other._id;
+        self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
             QUEXED(MemoryManager_free)((void*)self.text,
@@ -136,7 +136,7 @@ $INCLUDE_CONVERTER_DECLARATION
         const char* 
         $TOKEN_CLASS_get_string($TOKEN_CLASS* me, char*   buffer, size_t  BufferSize) 
         {
-            const char*  token_id_str = $TOKEN_CLASS_map_id_to_name(me->_id);
+            const char*  token_id_str = $TOKEN_CLASS_map_id_to_name(me->id);
             const char*  BufferEnd    = buffer + BufferSize;
             char*        writerator   = 0;
 
