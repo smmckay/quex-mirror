@@ -1,10 +1,11 @@
+.. _sec:top-level:
+
 Top Level
 =========
 
-In this section 'top-level' syntax elements are presented, i.e. the syntax
-elements which are not nested inside others. There are two types of top level
-syntax elements. There are those which *configure functionality* and others
-which plainly *paste source* code into locations of the generated code. 
+There are two types of top level syntax elements. There are those which
+*configure functionality* and others which plainly *paste source code* into
+locations of the generated code. 
 
 .. _sec:top-level-configuration:
 
@@ -27,6 +28,7 @@ of functionality.
            pattern-1    action-1
            incidence-1  incidence-handler-1
            incidence-2  incidence-handler-2
+           ...
            pattern-2    action-2
            pattern-3    action-3
            ...
@@ -36,15 +38,18 @@ of functionality.
    specified.  Optional base modes and additional options, or 'tags', can be
    specified after a colon. A base mode list consists of a list of one or more
    white space separated names. Optional tags are bracketed in ``<`` and ``>``
-   brackets. Mandatory is the section in curly brackets which follows. It
-   defines pattern-action pairs and incidence handlers. Modes in itself are a
-   subject described in a dedicated chapter :ref:`sec:modes`.
+   brackets. The section in curly brackets which follows is mandatory. It
+   defines pattern-action pairs and incidence handlers. Patterns need to be
+   described as regular expressions following the POSIX Standard [#f1] (section
+   :reg:`sec:regular-expressions`). Modes in itself are a subject described in
+   a dedicated chapter :ref:`sec:modes`.
 
 .. data:: define
 
-   The ``define`` keyword is followed by a section in curly brackets.  In there,
-   shorthands for patterns are defined in terms of regular expressions
-   [#f1] :reg:`sec:regular-expressions`.  
+   The ``define`` keyword is followed by a section in curly brackets.  In this
+   section patterns may be associated with identifiers, i.e. shorthands. Such
+   shorthands may then be used to define other patterns.
+     
 
    .. code-block:: cpp
 
@@ -54,16 +59,20 @@ of functionality.
           ...
       }
 
-   This section is there for convenience. Regular expressions can get lengthy
-   and hard to read. A pattern name ``my_pattern`` defined in this section can
-   expands in any other regular expression to its definition by
-   ``{my_pattern}``, i.e. by putting it into curly brackets.  The pattern
-   names, themselves, do not enter any name space of the generated source code.
-   They are only known inside the mode definitions. 
+   In ``define`` and ``mode`` sections, specified a pattern defined as ``NAME``
+   can be referenced by ``{NAME}``. The pattern names, themselves, do not enter
+   any name space of the generated source code.  They are only known inside the
+   mode definitions. 
+
+   Regular expressions tend to get lengthy and hard to read. Being able to
+   split them into named sub-patterns is *essential* for the readability. As
+   any program code, regular expression which are hard to reflect upon are
+   likely to show unintended behavior. Thus, defining meaningful sub-patterns
+   is the basis for robust lexer construction. 
 
 .. data:: token
 
-   In this section token identifier can be specified. The definition of token
+   In this section token identifiers can be specified. The definition of token
    identifiers is optional. The fact that Quex warns about undefined token-ids
    helps to avoid dubious effects of typos, where the analyzer sends token ids
    that no one catches.
@@ -91,9 +100,11 @@ of functionality.
 
 .. data:: repeated_token
 
-      Specifies those token types which are subject to token repetition
-      in notified through a repetition number inside the token itself.  It
-      is discussed in section :ref:`sec:token-repetition`.
+      Repeated tokens may be send from the lexer efficiently by setting a
+      repetion number inside a token, instead of sending a sequence of token
+      objects (section :ref:`sec:token-repetition`). The token ids subject
+      to this type of repetition must be specified in the ``repeated_token``
+      section.
 
       .. code-block:: cpp
 
@@ -103,18 +114,17 @@ of functionality.
                   ...
               }
 
-      Inside this section the token names are listed that may be sent via
-      implicit repetition using ``self_send_n(...)``. That is, inside the token
-      a repetition number is stored and the ``receive()`` function keeps
+      Only token identifiers mentioned this section may be sent via implicit
+      repetition using ``self_send_n(...)``. That is, inside the token a
+      repetition number is stored and the ``receive()`` function keeps
       returning the same token identifier until the repetition number is zero.
-      Only tokens, that appear inside the ``repeated_token`` section may be
-      subject to this mechanism.
 
 .. data:: token_type
 
-      In case the default token class/type is not enough, inside this section a
-      customized token type can be defined. This feature is explained later in
-      chapter :ref:`sec:token`.
+      Quex generates a default token class/struct for the lexical analyzer 
+      containing a 'text' and a 'number' member. If this is not sufficient,
+      customized token classes/structs may be defined in the ``token_type``
+      section (chapter :ref:`sec:token`).
 
 .. data:: start
 

@@ -530,7 +530,7 @@ class TransitionMap(list):
         if len(self) == 0:
             return 
 
-        iterable                   = self.__iter__()
+        iterable                   = iter(self)
         prev_interval, prev_target = iterable.next()
         # No 'empty' intervals
         assert prev_interval.end > prev_interval.begin
@@ -557,7 +557,7 @@ class TransitionMap(list):
             assert self[0][0].begin == Setup.buffer_encoding.drain_set.minimum()
             assert self[-1][0].end  == Setup.buffer_encoding.drain_set.least_greater_bound()
 
-        iterable    = self.__iter__()
+        iterable    = iter(self)
         info        = iterable.next()
         prev_end    = info[0].end
         prev_target = info[1]

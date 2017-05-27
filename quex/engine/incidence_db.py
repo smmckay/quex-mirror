@@ -39,7 +39,8 @@ class IncidenceDB(dict):
             """Find incidence handler in the mode hierarchy. An incidence handler
             can only be defined once. If none is found 'None' is returned.
             """
-            found      = None
+            found      = None # Note on style: 'for-else' does not make sense,
+            #                 # because multi-definitions need to be detected.
             found_mode = None
             for mode_descr in BaseModeSequence:
                 code_fragment = mode_descr.incidence_db.get(incidence_name)

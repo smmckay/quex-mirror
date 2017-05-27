@@ -6,6 +6,8 @@ from   quex.constants  import E_IncidenceIDs, \
                               E_StateIndices, \
                               E_DoorIdIndex
 from   collections import namedtuple
+import itertools 
+
 #______________________________________________________________________________
 #
 # Address:
@@ -146,7 +148,7 @@ class DialDB(object):
         self.__routed_address_set = TypedSet(long)
 
         # Address counter to generate unique addresses
-        self.__address_i = long(-1)
+        self.__address_i = itertools.count(start=0)
 
         # Mapping from incidence_id to terminal state index
         self.__map_incidence_id_to_state_index = {}
@@ -190,8 +192,7 @@ class DialDB(object):
         return DoorID(state_index, door_sub_index, dial_db=self)
 
     def new_address(self):
-        self.__address_i += 1
-        return self.__address_i
+        return long(next(self.__address_i))
 
     def max_door_sub_index(self, StateIndex):
         """RETURN: The greatest door sub index for a given StateIndex. 

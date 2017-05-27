@@ -167,7 +167,7 @@ def _check_all(Iterable, Condition):
         return False
 
     last_things = deque()
-    if isinstance(Iterable, (tuple, list)): iterable = Iterable.__iter__()
+    if isinstance(Iterable, (tuple, list)): iterable = iter(Iterable)
     else:                                   iterable = Iterable
     i = -1
     while 1 + 1 == 2:
@@ -331,7 +331,7 @@ class TypedDict(dict):
     def update(self, Iterable):
         # Need to iterate twice: 'list()' may be faster here then 'tee()'.
         if isinstance(Iterable, dict): iterable2 = Iterable.iteritems()
-        else:                          Iterable = list(Iterable); iterable2 = Iterable.__iter__()
+        else:                          Iterable = list(Iterable); iterable2 = iter(Iterable)
 
         for x in iterable2:
             assert isinstance(x, tuple)

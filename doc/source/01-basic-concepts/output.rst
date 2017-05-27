@@ -19,8 +19,8 @@ numeric value related to it.
 
 A Quex-generated lexer is aware of the token class. The pattern matching syntax
 provides 'token send' commands, where a token is prepared and sent to the
-receiver. Also, when line and column numbers are computed they are entered into
-the token directly from inside the lexer's engine. For the majority of
+receiver. Also, when line and column numbers are computed they are assigned to
+token member variables directly from inside the lexer's engine. For the majority of
 applications, the default token class may do. However, there is a dedicated
 mini-language to describe customized token classes. Even free-style manual
 token classes may be passed to the lexer engine.
@@ -46,12 +46,14 @@ TODO:
    implemented which reacts on the buffer's content change. On this event the
    callback must saveguard all related strings.
 
-Tokens may either be communicated one-by-one, or in a queue. A token queue is
-required, in cases where one lexical unit may cause multiple tokens.  For
-example, a newline in indentation based lexical analysis (see 'offside rule'
-:cite:`todo`) may cause multiple scopes to be closed. While there is only one
-match, multiple tokens must be sent. Without a token queue such scenarios
-cannot be handled.
+Quex lexers react to pattern matches, mode changes, and several other events.
+A single match may result in the processing of multiple handlers, where each
+handler may send one or more tokens. That means, that multiple tokens may be
+produced before the user is able to receive them. To cope with this situation,
+tokens are queued in an internal token queue. The 'receive' function of the
+generated lexer's API pops those tokens from the queue and only initiates the
+next analysis step when the queue is exhausted.
 
+ 
 .. rubric: Footnotes
 

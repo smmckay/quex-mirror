@@ -36,7 +36,7 @@ class AcceptSequence:
         return True
 
     def __iter__(self):
-        return self.__sequence.__iter__()
+        return iter(self.__sequence)
 
     def get_string(self, Indent=0):
         txt = [ " " * (Indent*4) + "p-id           pre-id   as-i     ps-i     tnsp\n"]
@@ -282,5 +282,5 @@ class PathsToState:
         return result
 
     def __iter__(self):
-        return self.__list.__iter__()
+        return iter(self.__list)
 

@@ -4,16 +4,19 @@ Modes
 A lexer does everything it does in a mode.  A lexer mode is similar to human
 moods in the sense that it relates to specific behavior [#f1]_, but differs in
 a way that a lexer is is only in one distinct mode at a time. A lexer's
-behavior is primarily determined by the patterns for which it is lurking. All
-patterns of a mode are melted into one single state machine. The fewer patterns
-a lexer is trying to detect, the smaller its state machine and the more
-effective it can operate.  Thus, it may be more efficient to separate patterns
-into different modes according the circumstances under which patterns may
-trigger. Also, it may be that the language changes. For example, in a
-programming language, when suddenly a phrase is to be parsed, then numbers may
-no longer be considered as numbers but just as strings. 
+behavior is primarily determined by the patterns for which it is lurking and
+how it reacts to matches. Grouping patterns and event handlers has several
+advantages.
 
-Modes can be changed in two ways: *history independent*, using `GOTO`  and
+The exact same pattern may have different meanings dependent on the context in
+which it appears. Patterns which are redundant in some contexts might be
+removed from the detection state machine--thus improving efficiency. The same
+analyzer might have to deal with different languages such 'math' and 'text
+markup'. These are practical reasons for having lexical analyzer modes. Last
+but not least common behavior of different modes may be placed in a common base
+mode, thus ensuring homogeneity across multiple modes.
+
+A lexer's mode can be changed in two ways: *history independent*, using `GOTO`  and
 *history denpendent* using `GOSUB` and `GOUP`.  Using `GOTO` a current mode is
 forgotten as soon as the target mode is entered.  Using `GOSUB` the current
 mode is pushed on top of a stack before the new mode is entered. Upon `GOUP` the last
@@ -22,7 +25,7 @@ functionality allows for a mode to be entered from more than one mode, and
 return without knowing the mode from where it entered. Its mechanics are
 similar to function calls in many programming languages.
 
-For example, a 'mark up mode' and a 'math mode' may both use the 'string mode'
+For example, a 'test mark up' mode and a 'math' mode may both use the 'string'
 mode to detect strings. As soon as a quote arrives each one enters the 'string
 mode' via 'GOSUB'. The string mode returns upon the closing quote to the mode
 from where is was activated applying a 'GOUP'.

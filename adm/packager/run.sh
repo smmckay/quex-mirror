@@ -16,7 +16,8 @@ mkdir -p /tmp/quex-packages
 orig_directory=$PWD
 export QUEX_PATH=$PWD
 
-DIR_INSTALLBUILDER=$HOME/bin/installbuilder-9.5.5/
+# DIR_INSTALLBUILDER=$HOME/bin/installbuilder-9.5.5/
+DIR_INSTALLBUILDER=/opt/installbuilder-9.5.5/
 INSTALLBUILDER=$DIR_INSTALLBUILDER/bin/builder
 INSTALLBUILDER_OUT=$DIR_INSTALLBUILDER/output
 

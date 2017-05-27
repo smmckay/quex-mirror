@@ -1,56 +1,41 @@
 Lexical Analyzers
 =================
 
-The following paragraphs elaborate on sequential data streams and their
-application in communication. They provide a rationale for the state machine
-approach as a basis for lexical analysis and the reason why Quex implements
-'greedy match'.  Finally, a very essential definition is done, namely that of a
-'lexatom'.
+Information transfer either relies on writing or pictures. Pictures, are known
+to convey information very efficiently--quasy in parallel [#f3]_. In general,
+the image oriented human mind experiences pictures as something very tangible.
+However, the range of possible statements merely extends the range of known
+objects. The efficiency of pictures as means of communication depends on the
+intuitive understanding of their graphical elements. Since intuition is
+relative this imposes restrictions on the precision of a picture's statement.
+Further, a picture tends to loose all of its information, as soon as the
+cultural context changes in which it has been developed [#f4]_.
 
-Pictures may convey complex ideas very efficiently. They require, however, that
-the content is imaginable and that the relations between objects and their
-graphical representation are properly understood.  The information of a picture
-is perceived in quasi-parallel--all at once. For the image oriented human mind
-pictures are something very tangible.
+Writing is a form of sequential data transfer. It requires knowledge of the
+language being used.  However, the range of describable things extends beyond
+the set of known objects. New concepts may be associated with new words relying
+on known objects and their relations in a formal and distinct manner.  The
+range of possible statements  even exceeds what is imaginable. The distinct and
+precise nature of a formal sequential language makes it the prime candidate for
+information transfer over space and time. Quex supports this type of
+communication by the generation of interpreters of sequential data streams.
 
-Words and phrases are a means of sequential communication. They require
-knowledge of the language being used.  However, the range of describable things
-extends beyond the set of known objects and their representation. New words and
-constructions may be defined.  The range of describable objects even exceeds
-what is imaginable. 
+Writing, i.e. sequential data streams is traditionally associated with a stream
+of letters.  In phonemic writing systems :cite:`CoulmanFlorian1989`, such as
+Latin, Arabic, Hebrew, etc., letters correspond to graphemes representing
+sounds. The 'letters' of DNA are the four nucleotide bases A (adenine), C
+(cytosine), G (guanine), and T (thymine) :cite:`pevsner2015bioinformatics`.
+Letters in digital transmission frames are bytes or bits. Lexical analysis
+detects configurations of letters and reports accordingly atomic meanings.
+How can this be accomplished by an automated system?
 
-In pictures, two dimensional cohesive patterns such as circles, pyramids, or
-arrows identify basic elements. Precise definitions of such elements are
-generally  difficult and prone to misunderstandings. For example, consider the
-effort to describe precisely how to distinguish between a triangle to mean
-pyramid or to mean a hat. In sequential communication, the only possible
-cohesive structure is a subsequence. If the set of elements in the stream is
-finite, short precise formal definitions can be accomplished. A number, for
-example, can be defined as "an aggregation of digits"  and a word can be
-defined as "an aggregation of letters". With such atomic categories of meaning,
-grammars can be build--grammars which can be recursive. Similar to the way that
-recursive formulas allow the definition of the set of rational numbers,
-grammars allow for an arbitrary descriptive precision.  This is the strength of
-sequential communication [#f0]_.
-
-.. note::
-
-    Arbitrary precision through grammar together with the ability to desribe
-    new patterns effectively and precisely make sequential communication the
-    natural choice for the transportation of information over space and time.
-
-The present text deals with automatic text analysis.  The ability to describe
-patterns in brief formal terms is essential for developing algorithms to
-accomplish the task. In the following paragraphs, it is shown how state
-machines are used as formal expressions for pattern matching behavior.
-
-Figure :ref:`fig:state-machine-students-life` may be considered as an informal
-introduction to state machines. It displays a (slightly idealized) state
-machine description of a student's daily life. His states are 'study', 'eat',
-and 'sleep' as they are shown as names framed by ellipses. The transitions
-between those states are triggered by him becoming hungry, replete, tired, and
-an alarm clock that buzzes. The events are shown as annotations to the arrows
-indicating state transitions.
+An example *state machine* may be considered in figure
+:ref:`fig:state-machine-students-life`.  It displays the slightly idealized
+state machine description of a student's daily life. His states are 'study',
+'eat', and 'sleep' as they are shown as names framed by ellipses. The
+transitions between those states are triggered by finite set of events, namely
+him becoming 'hungry', 'replete', 'tired', and an alarm clock that 'buzzes'.
+The events are shown as annotations to the arrows indicating state transitions.
 
 .. _fig:state-machine-students-life:
 
@@ -60,30 +45,47 @@ indicating state transitions.
 
 
 A state machine consists of a set of *states*, *state transition rules*, and
-*actions* that are applied upon transitions :cite:`todo`.  A state in the
-state machine can be either *active* or *inactive* indicating its ability to react
-to incoming events. A state's transition behavior is specified in terms of a
-transition map.
+*actions* that are applied upon transitions :cite:`Arbib1972`.  A state in the
+state machine can be either *active* or *inactive* indicating its ability to
+react to incoming events. A state's transition behavior is specified in terms
+of a transition map.
 
 Transition Map
-   A transition map is related to a single state. It associates an event with a
+   A transition map is belongs to a state. It associates an event with a
    successor state (or states). That is, when the event arrives and the state is
    active, it causes the current state to become *inactive* and the successor
    state (or states) to become *active*. 
    
 If a state is active, then its transition map determines what state becomes
 active as reaction to the next incoming event.  A special state machine is the
-'finite state machine' :cite:`todo` FSM.  In a FSM there is only one state
-active at a time, called the *current state*. This implies that there is no
-transition on the 'no event' and the transition maps associate an event with a
-distinct successor state. Quex generates FSMs [#f1]_. 
+FSM, i.e. the finite state machine :cite:`Roche1997`.  In a
+FSM there is only one state active at a time, called the *current state*. This
+implies that there is no transition on the 'no event' and the transition maps
+associate an event with a distinct successor state. Quex generates FSMs [#f1]_. 
+Let the term 'current state' denote the one and only active state of the FSM.
 
-A simplified view in the frame of pattern matching is expressed in terms of a
-'deterministic finite automaton' DFA :cite:`todo`. In a DFA, there is one
+Finite state machines receive events sequentially.  Thus, the current state is
+the deterministic result of the *sequence of events* that has occurred. Here is
+were the concepts of a state machine and the interpretation of sequential data
+meet. The letters of a sequential data stream satisfy the requirement of
+sequentiality and that they originate in a closed set, namely the 'alphabet'.
+Thus, letters may play the role of events in the FSM. A state machine may now
+be designed in a way so that a paths along the graph represents a specific
+letter sequences to be detected. When the state at the end of that paths
+becomes active, this indicates that a certain input pattern has occurred. A
+simple example of a state machine detecting the word 'fun' can be viewed in
+:ref:'fig-state-machine-simple.png'.
+
+.. _fig:state-machine-simple:
+
+.. figure:: ../figures/state-machine-simple.png
+   
+   Paths in state machine for letter sequence detection.
+
+Pattern-matching state machines are called DFA-s, so called *deterministic
+finite automatons* :cite:`Hopcroft2006automata`. In a DFA, there is one
 category of states which are special: acceptance states. The entry action of an
-acceptance state accepts a pattern, i.e. it signalizes a match. Quex generated
-analyzers can be imagined as DFAs. Internally however, the transition actions
-are more than just about accepting.
+acceptance is to signalize a match.  
 
 .. _fig:state-machine-for-pattern-matching:
 
@@ -91,120 +93,53 @@ are more than just about accepting.
    
    Pattern matching via DFA.
 
-For pattern matching a sequential stream feeds data acting as events into the
-state machine.  Figure :ref:`fig:state-machine-for-pattern-matching` shows a
-state machine graph where a circle represents a state and the arrows possible
-state transitions. A double circle indicates an acceptance state.  The depicted
-state machine can detect the word 'fun'. Any aggregation of two or more
-lowercase letters is identified as a 'WORD'.  A sequence of characters 'f',
-'u', and 'n' guides from the initial state to state 3. Any non-letter in that
-state would cause an else transition, notifying that 'FUN' has been found.  A
-longer sequence such as 'fund' would be considered a 'WORD' because the
-transitions continue to state 4.  A sequence of less than two characters drops
-out either at state 0 or state 1.  The 'else' path says that in that case a
-'FAILURE' would be notified. 
+Figure :ref:`fig:state-machine-for-pattern-matching` shows a state machine
+where a circle represents a state and the arrows possible state transitions. A
+double circle indicates an acceptance state.  The depicted state machine can
+detect the word 'fun'. Any aggregation of two or more lowercase letters is
+identified as a 'WORD'.  A sequence of characters 'f', 'u', and 'n' guides from
+the initial state to state 3. Any non-letter in that state would cause an else
+transition, notifying that 'FUN' has been found.  A longer sequence such as
+'fund' would be considered a 'WORD' because the transitions continue to state
+4.  A sequence of less than two characters drops out either at state 0 or state
+    1.  The 'else' path says that in that case a 'FAILURE' would be notified. 
 
-Quex's engines do 'greedy match' or longest match, that is the lexer tries
-to 'eat' a maximum of letters until it fails. It walks along the state machine
-graph according to the incoming characters, marks the acceptance of the last
-acceptance state that it passed by, and eventually drops-out. Upon drop-out, it
-recalls the last acceptance indicating the longest match. 
+There are two approaches of pattern matching:  *greedy/longest match* and
+*shortest match*.  For greedy match, a lexer tries to 'eat' a maximum of
+letters until it fails.  It walks along the state machine graph according to
+the incoming letters, marks the acceptance of the last acceptance state that
+it passed by, and eventually drops-out. Upon drop-out, it recalls the last
+acceptance *indicating the longest possible match*. 
 
-Contrary to that, the 'shortest match' terminates upon hitting the first
-acceptance state. That approach, however, can only match a subset of pattern
-configurations of what the longest match approach may match. Whenever a 
-pattern matches a superset of another, the approach fails in favor of the 
-shorter pattern. Thus, when 'for' and 'forest' were keywords to be detected, 
-the analyzer would always stop at 'for' and never recognize a 'forest'. It
-follows that the 'greedy match' approach is obligatory for a general
-pattern match solution.
+Contrary to that, shortest match terminates upon hitting the first acceptance
+state. In this way, though, only a subset of pattern configurations can be
+matched of the longest match approach may match.  Whenever a pattern matches a
+superset of another, the approach fails in favor of the shorter pattern. Thus,
+when 'for' and 'forest' were keywords to be detected, the analyzer would always
+stop at 'for' and never recognize a 'forest'. It follows that the greedy match
+approach is obligatory for a general pattern match solution. Greedy match
+is what Quex implements.
 
-In times of prevalent ASCII encoding, there never was a problem calling the
-events that cause state transitions 'characters'. However, things become
-difficult with encodings such as UTF8 and UTF16 where characters are composed
-of varying number of bytes. There, the term 'code unit' :cite:`Unicode2015`
-must be considered.
-
-Code Unit
-    A code unit is a bit sequence used to encode each single character unit
-    of a repertoire within an encoding form.
-
-For UTF8, the code unit is a byte. To encode a 'A' one single byte, i.e.  one
-code unit, is required. To encode the Egyptian Hieroglyph P002 four bytes, four
-code units are required. A code unit in UTF16 is two byte large and characters
-are represented by one or two code units. Lexical analyzers might run in
-Unicode with converted input. Further, the lexical analyzers might be fed with
-streams that have nothing to do with character encodings [#f2]_. To clarify the
-entities on which a lexer's state machine triggers, the term 'lexatom' is
-introduced.
-
-Lexatom
-   A lexatom is one element in a sequence of data that make up the
-   representation of a character. It is an integer value that describes an
-   event in a pattern matching state machine. 
-
-
-.. _fig:lexatom-explanation:
-
-.. figure:: ../figures/lexatom-explanation.png
-   
-   Egyptian Hieroglyph P002 and lexatoms/code units according to UTF32, 
-   UTF16, and UTF8.
-
-In an ASCII text, every character is made up out of a single byte which carries
-a single character. In that case, a lexatom is the ASCII value of a character.
-When dealing with Unicode and its encodings things are not that trivial.
-Figure :ref:`fig:lexatom-explanation` shows the example of a Unicode character:
-the Egyptian Hieroglyph P002. When the state machine runs on Unicode (UTF32)
-there is only one lexatom given as '0x1329D'. The cells that carry lexatoms may
-be 4 byte wide. When the dynamic length encoding UTF16 is used, the character
-is represented by two lexatoms '0xD80C' followed by '0xDE9E'. Then, a cell
-carrying a lexatom must be at least 2 byte wide. In UTF8, the same character is
-represented by a sequences of lexatoms namely '0xF0',  '0x93', '0x8A', and
-'0x9D' which can be carried in bytes. 
-
-The term 'lexatom' has been introduced by the author of this text. Its name,
-though, is derived from an established term in computer science: the lexeme
-[#f2]_ . Following the definition in :cite:`Aho2007compilers` (p. 111), let
-this term be defined more precisely. 
-
-Lexeme
-    A lexeme is a sequence of lexatoms that matches a pattern associated 
-    with a category of meaning.
-
-If the input into an analyzer state machine is text and it is not converted,
-then the lexatom is equivalent to the established term 'code unit'. If further,
-the input encoding describes characters by a code unit each, then the term
-lexatom is equivalent to 'character' in its very traditional meaning. Under
-all circumstances, a 'lexatom' denotes what triggers state transitions in
-the analyzer's state machine.
-
-Lexatoms are stored as a sequence in a buffer, so that they can be accessed
-quickly by the analyzer. Loading greater chunks of lexatoms into a buffer is
-likely always faster than loading each lexatom on its own. Given a pointer
-``p`` to a lexatom-carrying cell of a buffer and a variable ``v`` to carry the
-value, a state machine event is implemented as a sequence of the following
-instructions:
-
-   #. Increment ``p``, if current state ≠ initial state.
-
-   #. Set ``v`` = content of cell to where ``p`` points. 
-
-With the value of the stored in ``v`` the transition map determines the
-successor state.  In this section it has been discussed how lexical analysis is
-established.  The term lexatom was introduced because not all state machines
-trigger on characters. Eventually, the necessity of of a buffer was
-discussed which holds lexatoms ready for analysis. The next section discusses
-how lexatoms are filled into that buffer.
 
 .. rubric:: Footnotes
 
-.. [#f0] For the mentioned reason, every computer scientist is better 
-         advised to familiarize with the command line, rather than 
-         relying on GUIs.
 .. [#f1] Indeed, Quex first produces a so called NFA that combines all
          concurrent pattern matches in one single state machine. Then, 
          it applies powerset construction :cite:`Rabin:1959:FAD` to generate 
          a state machine where only one state is active at a time.
+
 .. [#f2] The computer science expression 'lexeme' corresponds to a 'form of
          a lexeme' in linguistics.
+
+.. [#f3] The popularity of the phrase 'A picture is worth a thousand words' 
+         :cite:`TessFlanders1911` documents the human's comfort conveying 
+         information in pictures.
+
+.. [#f4] The buttons in graphical user interfaces are a good example. At the
+         time of this writing, the 'save' button is often symbolized by a 
+         storage diskette. The generation of our kids might not be able to
+         associate this symbol with any meaning, simply because diskettes
+         are no longer in use at all.
+
+.. [#f5] Since the Unicode standard does not assign characters beyond 
+         0x10ffff, in real life, the maximum amount of bytes in UTF8 is four.

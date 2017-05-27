@@ -62,7 +62,7 @@ class Loopers:
         """
         assert self.__finalized_f
 
-        iterable           = self.skip.__iter__()
+        iterable           = iter(self.skip)
         pattern, total_set = iterable.next()
         pattern_str        = pattern.pattern_string()
         source_reference   = pattern.sr

@@ -19,9 +19,7 @@ if "--hwut-info" in sys.argv:
 
 def construct_path(sm, StartStateIdx, String, Skeleton):
     state_idx = StartStateIdx
-    i = 0
-    for letter in String:
-        i += 1
+    for i, letter in enumerate(String):
         char = int(ord(letter))
         for target_idx, trigger_set in Skeleton.items():
             adapted_trigger_set = trigger_set.difference(NumberSet(char))

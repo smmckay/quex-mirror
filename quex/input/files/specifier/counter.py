@@ -581,7 +581,7 @@ def extract_trigger_set(sr, Keyword, Pattern):
         else:
             tmp = set(SM.states.keys())
             tmp.remove(SM.init_state_index)
-            other_state_index = tmp.__iter__().next()
+            other_state_index = next(iter(tmp))
             if len(SM.states[other_state_index].target_map.get_target_state_index_list()) != 0:
                 bad_f = True
 

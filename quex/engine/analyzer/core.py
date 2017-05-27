@@ -66,7 +66,7 @@ from   quex.constants   import E_IncidenceIDs, \
                                E_StateIndices
 
 from   collections      import defaultdict
-from   itertools        import imap
+import itertools
 from   operator         import attrgetter, itemgetter
 
 @typed(dial_db=DialDB)
@@ -359,8 +359,9 @@ class FSM:
         work_set   = set(self.__state_db.keys())
         work_set.remove(self.__init_state_index)
         last_level = set([ self.__init_state_index ])
-        level_i    = 1
+        level_it   = itertools.count(start=1)
         while len(work_set):
+            level_i    = next(level_it)
             len_before = len(work_set)
             this_level = set()
             for state_index in last_level:
@@ -372,7 +373,6 @@ class FSM:
                     work_set.remove(i)
             assert len_before != len(work_set), "There are orphaned states!" 
             last_level = this_level
-            level_i += 1
 
         return depth_db
 
@@ -382,7 +382,7 @@ class FSM:
         """
         if not self.__engine_type.is_FORWARD(): 
             return False
-        for entry in imap(lambda x: x.entry, self.__state_db.itervalues()):
+        for entry in itertools.imap(lambda x: x.entry, self.__state_db.itervalues()):
             if entry.has_command(E_Op.Accepter): return True
         return False
 
