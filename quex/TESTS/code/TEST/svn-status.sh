@@ -24,7 +24,7 @@ cd $QUEX_PATH
 echo "Almost no output is good output:"
 svn status \
 | grep '^?' \
-| awk ' ! /quex\/engine\/analyzer\/examine\/doc\// && ! /demo\/C\/000\/CMakeLists.txt/'
+| awk ' ! /quex\/engine\/analyzer\/examine\/doc\// && ! /demo\/C\/01-Trivial\/CMakeLists.txt/'
 
 cd $original_dir
 rm -f $example

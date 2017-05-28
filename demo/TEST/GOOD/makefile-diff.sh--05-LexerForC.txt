@@ -1,0 +1,22 @@
+< COMPILER = g++ -ggdb 
+---
+> COMPILER = gcc -ggdb 
+> # Note, when using '-pedantic' add '-std=c99' otherwise gcc defaults to 'c89'.
+< 	 -Wall -Werror -Wconversion               \
+---
+> 	 -Wall -Werror -Wconversion -pedantic -std=c99 \
+< EasyLexer.o: EasyLexer.cpp 
+---
+> EasyLexer.o: EasyLexer.c 
+< example.o: ../example.cpp  EasyLexer.cpp
+---
+> example.o: ../example.c  EasyLexer.c
+< %.E: %.cpp    
+---
+> %.E: %.c    
+< EasyLexer.cpp: c.qx 
+< 	quex -i c.qx -o EasyLexer
+---
+> EasyLexer.c: c.qx 
+> 	quex -i c.qx -o EasyLexer \
+> 		 --language C

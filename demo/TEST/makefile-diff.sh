@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 if [[ $1 == "--hwut-info" ]]; then
     echo "Makefile Differences to C++ Version;"
-    echo "CHOICES:  000, 001, 002, 003, 005, 006, 007, 008, 009, 010, 011, 012, 012b;"
+    echo "CHOICES:  00-Minimalist, 01-Trivial, 02-ModesAndStuff, 03-Indentation, 04-ConvertersAndBOM, 05-LexerForC, 06-Include, 07-TrailingPostContext, 08-DeletionAndPriorityMark, 09-WithBisonParser, 10-SocketsAndTerminal, 11-ManualBufferFilling, 12-EngineEncoding, 13-MultipleLexers, 14-MultipleLexersSameToken;"
     exit
 fi
 diff --ignore-tab-expansion \

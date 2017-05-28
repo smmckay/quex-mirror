@@ -1,0 +1,17 @@
+< tiny.cpp:
+---
+> tiny.c:
+< 	quex -i tiny.qx -o tiny
+---
+> 	quex -i tiny.qx -o tiny --language C
+< lexer: lexer.cpp tiny.cpp
+---
+> lexer: lexer.c tiny.c
+< 	g++ lexer.cpp tiny.cpp -I$(QUEX_PATH) \
+---
+> 	gcc lexer.c tiny.c -I$(QUEX_PATH) \
+< 		  tiny tiny-configuration tiny.cpp \
+< 		  tiny-token tiny-token_ids
+---
+> 		  tiny.h tiny-configuration.h tiny.c \
+> 		  tiny-token.h tiny-token_ids.h
