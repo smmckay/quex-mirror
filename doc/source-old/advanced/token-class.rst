@@ -110,13 +110,13 @@ followed by ``}``.
 
    The standard members are implemented in the actual token class with a
    preceding underscore.  That means, ``id`` becomes ``id``, ``line_number``
-   becomes ``_line_number`` and ``column_number`` becomes ``_column_number``.
+   becomes ``line_number`` and ``column_number`` becomes ``column_number``.
    Depending on the setting of the macros::
 
         QUEX_OPTION_COUNTER_COLUMN
         QUEX_OPTION_COUNTER_LINE
 
-   the members ``_line_number`` and ``_column_number`` are are enabled or 
+   the members ``line_number`` and ``column_number`` are are enabled or 
    disabled.
 
 .. data:: distinct
