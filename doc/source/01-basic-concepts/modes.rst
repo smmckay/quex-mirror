@@ -4,31 +4,34 @@ Modes
 A lexer does everything it does in a mode.  A lexer mode is similar to human
 moods in the sense that it relates to specific behavior [#f1]_, but differs in
 a way that a lexer is is only in one distinct mode at a time. A lexer's
-behavior is primarily determined by the patterns for which it is lurking and
-how it reacts to matches. Grouping patterns and event handlers has several
-advantages.
+behavior is primarily determined by its reactions to pattern matches and its
+reactions to events such as 'failure' or 'termination.  Lexer modes are a
+syntactic means to describe a lexer's different behaviors with respect to their
+*diversity* and *commonality*.
 
-The exact same pattern may have different meanings dependent on the context in
-which it appears. Patterns which are redundant in some contexts might be
-removed from the detection state machine--thus improving efficiency. The same
-analyzer might have to deal with different languages such 'math' and 'text
-markup'. These are practical reasons for having lexical analyzer modes. Last
-but not least common behavior of different modes may be placed in a common base
-mode, thus ensuring homogeneity across multiple modes.
+Behavioral diversity occurs when analysis depends on 'context'.  That is
+pattern in the input stream may have different meanings dependent on the
+context in which they appear. An input language may have a 'math mode', for
+example where the backslash '\' sign stands for set-subtraction, and a 'TeX
+markup' :cite:`Knuth1986texbook` mode where the '\' prefixes a command.
+Patterns which are redundant in some contexts might be removed from the
+detection state machine--thus improving efficiency.  
 
-A lexer's mode can be changed in two ways: *history independent*, using `GOTO`  and
-*history denpendent* using `GOSUB` and `GOUP`.  Using `GOTO` a current mode is
-forgotten as soon as the target mode is entered.  Using `GOSUB` the current
-mode is pushed on top of a stack before the new mode is entered. Upon `GOUP` the last
-top-most moded is popped from the stack and re-entered.  The `GOSUB/GOUP`
-functionality allows for a mode to be entered from more than one mode, and
-return without knowing the mode from where it entered. Its mechanics are
-similar to function calls in many programming languages.
+Behavioral commonality can be expressed by inheritance. That is, if two modes
+behave the same in some aspects, the may share a common base mode that
+implements this common behavior. This helps, for example, to specify the common
+behavior upon 'termination' in one single mode. All modes that inherit it
+behave the same with that respect.
 
-For example, a 'test mark up' mode and a 'math' mode may both use the 'string'
-mode to detect strings. As soon as a quote arrives each one enters the 'string
-mode' via 'GOSUB'. The string mode returns upon the closing quote to the mode
-from where is was activated applying a 'GOUP'.
+A lexer's mode can be changed in two ways: *history independent*, using ``GOTO
+target`` and *history dependent* using ``GOSUB sub_mode`` and ``GOUP``.  Using
+``GOTO target`` a current mode is forgotten as soon as the ``target`` mode is
+entered.  Using ``GOSUB sub_mode`` the current mode is pushed on top of a stack
+before the ``sub_mode`` mode is entered. Upon ``GOUP`` the top-most mode is
+popped from the stack and re-entered. No ``current`` mode needs to be specified
+for ``GOUP`` to return. This functionality enables the definition of a mode in
+independently of the caller mode. Its mechanics are similar to function calls
+in many programming languages.
 
 The behavior of a lexer is determined by more than just the set of lurking
 patterns and their related actions. The following enumeration lists all types
@@ -65,12 +68,11 @@ of behavior and the syntactic means that is used to specify them:
   #. On-Incidence definitions for 'on_failure', 'on_end_of_stream', 
      etc.
 
-In terms of software design patterns :cite:`Gamma1994design` modes are
-implemented applying the *strategy pattern*. All behavior of a mode is
-controlled by a set of function pointers. Changing a mode means changing the
-set of function pointers. One of those function pointers is the *lexer
-function* which runs the state machine that detects lexemes in incoming data
-streams.
+It is the ``mode`` sections in a Quex input file that define the procedure of
+lexical analysis. Upon start-up, the lexical analyzer is setup in an initial
+mode which is given by ``start = mode name;`` somewhere in the input files.
+With this background the next section demonstrates a minimalist working example
+which may be used to get into hands-on coding.
 
 .. rubric:: Footnotes
 

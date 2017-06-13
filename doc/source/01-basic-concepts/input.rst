@@ -5,9 +5,9 @@ Input data may be provided in a variety of different ways.  First, data may be
 delivered through different file handling interfaces, through network or any
 other customized protocol. Second, the translation of bytes into lexatoms may
 vary dependent on the state machine engine's internal encoding and the prefixed
-decoders. Accordingly, the load process has been designed to happen in two
-steps as shown in :ref:`fig:byte-lexatom-buffer` implemented by a ``ByteLoader``
-and a ``LexatomLoader``:
+decoders. To account for this, the load process happens in
+two steps as shown in :ref:`fig:byte-lexatom-buffer` implemented by a
+``ByteLoader`` and a ``LexatomLoader``:
 
     #. ByteLoader: Loading raw bytes from some raw byte source. 
            

@@ -3,9 +3,9 @@
 Top Level
 =========
 
-There are two types of top level syntax elements. There are those which
-*configure functionality* and others which plainly *paste source code* into
-locations of the generated code. 
+There are two types of top level syntax elements: those which *configure
+functionality* and others which plainly *paste source code* into locations of
+the generated code. 
 
 .. _sec:top-level-configuration:
 
@@ -41,16 +41,15 @@ of functionality.
    brackets. The section in curly brackets which follows is mandatory. It
    defines pattern-action pairs and incidence handlers. Patterns need to be
    described as regular expressions following the POSIX Standard [#f1] (section
-   :reg:`sec:regular-expressions`). Modes in itself are a subject described in
-   a dedicated chapter :ref:`sec:modes`.
+   :reg:`sec:regular-expressions`). A complete description of modes is
+   delivered in a chapter :ref:`sec:modes`.
 
 .. data:: define
 
    The ``define`` keyword is followed by a section in curly brackets.  In this
-   section patterns may be associated with identifiers, i.e. shorthands. Such
+   section patterns are associated with identifiers, i.e. shorthands. Such
    shorthands may then be used to define other patterns.
      
-
    .. code-block:: cpp
 
       define {
@@ -59,25 +58,25 @@ of functionality.
           ...
       }
 
-   In ``define`` and ``mode`` sections, specified a pattern defined as ``NAME``
-   can be referenced by ``{NAME}``. The pattern names, themselves, do not enter
-   any name space of the generated source code.  They are only known inside the
-   mode definitions. 
+   Once defined, a pattern may be referenced in ``define`` and ``mode``
+   sections by putting the name in curly brackets, such as ``{PATTERN_NAME}``.
+   Pattern names, themselves, do not enter any name space of the generated
+   source code.  They are only known inside the mode definitions. 
 
-   Regular expressions tend to get lengthy and hard to read. Being able to
-   split them into named sub-patterns is *essential* for the readability. As
-   any program code, regular expression which are hard to reflect upon are
-   likely to show unintended behavior. Thus, defining meaningful sub-patterns
-   is the basis for robust lexer construction. 
+   Regular expressions tend to get lengthy, complex, and hard to read. Being
+   able to split them into named sub-patterns is *essential* for the
+   readability.  The limited ability of humans to treat complexity
+   :cite:`Marois2005capacity` implies that error susceptibility of regular
+   expressions increases with their complexity.  Thus, defining meaningful
+   sub-patterns is the basis for a robust lexer construction--divide and 
+   conquer. 
 
 .. data:: token
 
-   In this section token identifiers can be specified. The definition of token
-   identifiers is optional. The fact that Quex warns about undefined token-ids
-   helps to avoid dubious effects of typos, where the analyzer sends token ids
-   that no one catches.
-
-   The syntax of this section is 
+   The keyword ``token`` opens a token identifier definition section. It is
+   *optional*.  Nevertheless, Quex warns about undefined token-ids in order to
+   help to avoid dubious effects of typos, where the analyzer sends token ids
+   that no one catches.  The syntax of this section is 
 
        .. code-block:: cpp
 
@@ -88,23 +87,31 @@ of functionality.
                   ...
               }
       
-      The token identifiers need to be separated by semi-colons. Optional
-      assignments may set specific values for tokens. If a token is used but
-      not defined in a token section, a warning is issued. 
+      The token identifiers need to be separated by semi-colons. Adding a ``=``
+      and a numeric value to the token definition sets a specific value as
+      token identifier.  If a token is used but not defined in a token section,
+      a warning is issued. The names of the defined token idenfiers enter the
+      global namespace with `token prefix` + `name`.
 
    .. note:: 
 
-      The token identifier in this section are prefix-less. The token prefix,
-      e.g. defined by comand line option ``--token-id-prefix`` is automatically
-      pasted in front of the identifier.
+      The token identifiers in the token section are specified without prefix.
+      The token prefix, is defined by the comand line option
+      ``--token-id-prefix``.
 
 .. data:: repeated_token
 
-      Repeated tokens may be send from the lexer efficiently by setting a
-      repetion number inside a token, instead of sending a sequence of token
-      objects (section :ref:`sec:token-repetition`). The token ids subject
-      to this type of repetition must be specified in the ``repeated_token``
-      section.
+      The ``repeated_token`` section selects some token ids for the usage of
+      efficient token repetition.  Instead of multiple token objects being
+      produced, the same token object is sent multiple times until the
+      repetition count is achieved.  A practical application of this can be
+      considered in indentation based lexical analysis (off-side rule).  There,
+      a single less indented line may cause multiple closing scopes. Each
+      closed scope is notified by a ``DEDENT`` token. Instead of putting `n`
+      ``DEDENT`` tokens into the queue, a single token can now be prepared with
+      the repetition count of `n`. The content of the ``repeated_token``
+      section are the names of token identifiers which are subject to
+      repetition.
 
       .. code-block:: cpp
 
@@ -114,17 +121,12 @@ of functionality.
                   ...
               }
 
-      Only token identifiers mentioned this section may be sent via implicit
-      repetition using ``self_send_n(...)``. That is, inside the token a
-      repetition number is stored and the ``receive()`` function keeps
-      returning the same token identifier until the repetition number is zero.
-
 .. data:: token_type
 
-      Quex generates a default token class/struct for the lexical analyzer 
+      Quex generates a default token class/struct for the lexical analyzer
       containing a 'text' and a 'number' member. If this is not sufficient,
-      customized token classes/structs may be defined in the ``token_type``
-      section (chapter :ref:`sec:token`).
+      customized token classes (C++) or structs (C) may be defined in the
+      ``token_type`` section (chapter :ref:`sec:token`).
 
 .. data:: start
 
@@ -154,7 +156,7 @@ for the given section-name. The available sections are the following:
 .. data:: header
 
    Content of this section is pasted into the header of the generated files. Here, 
-   additional include files may be specified or constants may be specified. 
+   additional include files or constants may be specified. 
 
 .. data:: body
 
@@ -187,15 +189,17 @@ for the given section-name. The available sections are the following:
 
    Initializes a self declared member of the analyzer ``my_counter`` to 4711.
 
-   May return a ``bool`` indicating that the initialization succeeded
-   (``true``) or failed (``false``). By default, it returns ``true``.
+   The constructor may return a ``bool`` value indicating the success
+   (``true``) or failure (``false``) of the construction. By default, it
+   returns ``true``.
 
 .. data:: destructor
 
-   Extensions to the lexer's destructor. In there, resources may be freed.
-   Also, it is good practice to mark absence of resources. The destructor
-   may also be used in places, where it is expected that the lexer is made
-   safe againt double destruction.
+   Extensions to the lexer's destructor. This is the place to free or
+   de-initialize customized resources.  Also, it is good practice to *mark the
+   absence* of resources. This makes it more stable against unintended double-
+   destruction. It is also necessary to safely handle ``reset`` and
+   ``include_push`` requests.
 
    .. code-block:: cpp
 

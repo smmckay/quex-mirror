@@ -1,15 +1,32 @@
 Lexical Analyzers
 =================
 
-Information transfer either relies on writing or pictures. Pictures, are known
-to convey information very efficiently--quasy in parallel [#f3]_. In general,
-the image oriented human mind experiences pictures as something very tangible.
-However, the range of possible statements merely extends the range of known
-objects. The efficiency of pictures as means of communication depends on the
-intuitive understanding of their graphical elements. Since intuition is
+This section elaborates on the scientific context of lexical analysis. The 
+terms 'information' and 'information transfer' are reflected briefly. Then 
+two means of information representation, namely 'pcitures' and 'writing' 
+are discussed. Writing as it refers to a sequential data stream is what
+lexical analysis is about. The remainder of this section presents a common
+approach to find patterns in sequential data streams, i.e. state machines.
+
+Information is that what informs :cite:`wiki:Information`. It contains
+knowledge, to be observed by a conscious observer, or data. In particular, an
+automated system may receive data containing instructions to be implemented.
+Information is always conveyed as content of a message.  Information, as we
+know it, only exists in the context of information transfer over space and
+time.
+
+Information transfer either relies on 'writing' or 'pictures'. Pictures, are
+known to convey information very efficiently--quasy in parallel [#f3]_. In
+general, the image oriented human mind experiences pictures as something very
+tangible.  However, the range of possible statements merely extends the range
+of known objects. The efficiency of pictures as means of communication depends
+on the intuitive understanding of their graphical elements. Since intuition is
 relative this imposes restrictions on the precision of a picture's statement.
 Further, a picture tends to loose all of its information, as soon as the
-cultural context changes in which it has been developed [#f4]_.
+cultural context changes in which it has been developed [#f4]_. While
+'pictures' are a powerful means to reflect over configurations of physical
+objects :cite:`Szeliski2010computer`, they are not optimal for transport of
+information over space and time.
 
 Writing is a form of sequential data transfer. It requires knowledge of the
 language being used.  However, the range of describable things extends beyond
@@ -20,14 +37,15 @@ precise nature of a formal sequential language makes it the prime candidate for
 information transfer over space and time. Quex supports this type of
 communication by the generation of interpreters of sequential data streams.
 
-Writing, i.e. sequential data streams is traditionally associated with a stream
-of letters.  In phonemic writing systems :cite:`CoulmanFlorian1989`, such as
-Latin, Arabic, Hebrew, etc., letters correspond to graphemes representing
-sounds. The 'letters' of DNA are the four nucleotide bases A (adenine), C
-(cytosine), G (guanine), and T (thymine) :cite:`pevsner2015bioinformatics`.
-Letters in digital transmission frames are bytes or bits. Lexical analysis
-detects configurations of letters and reports accordingly atomic meanings.
-How can this be accomplished by an automated system?
+Writing, i.e. sequential data streams are traditionally associated with a
+stream of letters.  In phonemic writing systems :cite:`CoulmanFlorian1989`,
+such as Latin, Arabic, Hebrew, etc., letters correspond to graphemes
+representing sounds. The 'letters' of DNA are the four nucleotide bases A
+(adenine), C (cytosine), G (guanine), and T (thymine)
+:cite:`pevsner2015bioinformatics`.  Letters in digital transmission frames are
+bytes or bits. In general terms, lexical analysis detects configurations of
+letters and reports accordingly atomic meanings.  How can this be accomplished
+by an automated system?
 
 An example *state machine* may be considered in figure
 :ref:`fig:state-machine-students-life`.  It displays the slightly idealized
@@ -51,7 +69,7 @@ react to incoming events. A state's transition behavior is specified in terms
 of a transition map.
 
 Transition Map
-   A transition map is belongs to a state. It associates an event with a
+   A transition map belongs to a state. It associates an event with a
    successor state (or states). That is, when the event arrives and the state is
    active, it causes the current state to become *inactive* and the successor
    state (or states) to become *active*. 
@@ -64,17 +82,17 @@ implies that there is no transition on the 'no event' and the transition maps
 associate an event with a distinct successor state. Quex generates FSMs [#f1]_. 
 Let the term 'current state' denote the one and only active state of the FSM.
 
-Finite state machines receive events sequentially.  Thus, the current state is
-the deterministic result of the *sequence of events* that has occurred. Here is
-were the concepts of a state machine and the interpretation of sequential data
-meet. The letters of a sequential data stream satisfy the requirement of
-sequentiality and that they originate in a closed set, namely the 'alphabet'.
-Thus, letters may play the role of events in the FSM. A state machine may now
-be designed in a way so that a paths along the graph represents a specific
-letter sequences to be detected. When the state at the end of that paths
-becomes active, this indicates that a certain input pattern has occurred. A
-simple example of a state machine detecting the word 'fun' can be viewed in
-:ref:'fig-state-machine-simple.png'.
+Finite state machines receive events at descrete times, i.e. sequentially.
+Thus, the current state is the deterministic result of the *sequence of events*
+that has occurred. Here is were the concepts of a state machine and the
+interpretation of sequential data meet. The letters of a sequential data stream
+satisfy the requirement of sequentiality and that they originate in a closed
+set, namely the 'alphabet'.  Thus, letters may play the role of events in the
+FSM. A state machine may now be designed in a way so that a paths along the
+graph represents a specific letter sequences to be detected. When the state at
+the end of that paths becomes active, this indicates that a certain input
+pattern has occurred. A simple example of a state machine detecting the word
+'fun' can be viewed in :ref:'fig-state-machine-simple.png'.
 
 .. _fig:state-machine-simple:
 
@@ -84,8 +102,8 @@ simple example of a state machine detecting the word 'fun' can be viewed in
 
 Pattern-matching state machines are called DFA-s, so called *deterministic
 finite automatons* :cite:`Hopcroft2006automata`. In a DFA, there is one
-category of states which are special: acceptance states. The entry action of an
-acceptance is to signalize a match.  
+category of states which are special: *acceptance states*. The entry action of
+an acceptance state is to signalize a match.  
 
 .. _fig:state-machine-for-pattern-matching:
 
@@ -112,13 +130,13 @@ it passed by, and eventually drops-out. Upon drop-out, it recalls the last
 acceptance *indicating the longest possible match*. 
 
 Contrary to that, shortest match terminates upon hitting the first acceptance
-state. In this way, though, only a subset of pattern configurations can be
-matched of the longest match approach may match.  Whenever a pattern matches a
-superset of another, the approach fails in favor of the shorter pattern. Thus,
-when 'for' and 'forest' were keywords to be detected, the analyzer would always
-stop at 'for' and never recognize a 'forest'. It follows that the greedy match
-approach is obligatory for a general pattern match solution. Greedy match
-is what Quex implements.
+state. In this way, though, only a subset of all possible pattern
+configurations can be matched.  Whenever a pattern matches a superset of
+another, the approach fails in favor of the shorter pattern. Thus, when 'for'
+and 'forest' were keywords to be detected, the analyzer would always stop at
+'for' and never recognize a 'forest'. It follows that the shortest match
+approach is not suited for a general solution. The previously mentioned greedy
+match approach does. Greedy match is what Quex implements.
 
 
 .. rubric:: Footnotes
