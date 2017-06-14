@@ -7,8 +7,9 @@ Context free regular expressions match  against an input independent on what
 comes before or after it.  Pre- and post-contexts for pattern matching are
 explained in the subsequent section. Context-free-ness means, for example, that
 the regular expression ``for`` will match against the letter sequence `f`, `o`,
-and `r` independent of what comes before or after it.  All quex input files
-must be UTF8 encoded.
+and `r` independent of what comes before or after it.  All input files must be
+UTF8 encoded. The syntax of context-free regular expressions in many aspects
+identical to that of the popular tool 'lex'.
 
 .. describe:: x 
 
