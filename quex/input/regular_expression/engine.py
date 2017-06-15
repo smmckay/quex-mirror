@@ -707,7 +707,7 @@ def snap_character_set_expression(stream, PatternDict):
     #                 "union"        '(' set_term [ ',' set_term ]+ ')'
     #                 "intersection" '(' set_term [ ',' set_term ]+ ')'
     #                 "difference"   '(' set_term [ ',' set_term ]+ ')'
-    #                 "inverse"      '(' set_term ')'
+    #                 "complement"   '(' set_term ')'
     #                 set_expression
     # 
     trigger_set = snap_set_expression(stream, PatternDict)
@@ -788,7 +788,10 @@ def snap_set_term(stream, PatternDict):
 
     __debug_entry("set_term", stream)    
 
-    operation_list     = [ "union", "intersection", "difference", "inverse"]
+    operation_list     = [ 
+        "union", "intersection", "difference", "complement",
+        "inverse"  # => Detect deprecated "inverse" instead of "complement".
+    ]
     character_set_list = special_character_set_db.keys()
 
     skip_whitespace(stream)
@@ -805,6 +808,9 @@ def snap_set_term(stream, PatternDict):
         result = set_list[0]
 
         if word == "inverse":
+            error.log("Usage of 'inverse' instead of 'complement'", stream)
+
+        if word == "complement":
             # The inverse of multiple sets, is to be the inverse of the union of these sets.
             if L > 1:
                 for character_set in set_list[1:]:

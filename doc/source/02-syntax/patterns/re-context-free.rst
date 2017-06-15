@@ -5,22 +5,19 @@ Context Free Regular Expressions
 
 Context free regular expressions match  against an input independent on what
 comes before or after it.  Pre- and post-contexts for pattern matching are
-explained in the subsequent section. Context-free-ness means, for example, that
-the regular expression ``for`` will match against the letter sequence `f`, `o`,
-and `r` independent of what comes before or after it.  All input files must be
-UTF8 encoded. The syntax of context-free regular expressions in many aspects
-identical to that of the popular tool 'lex'.
+explained in the subsequent section. All input files must be UTF8 encoded. The
+syntax of context-free regular expressions in many aspects identical to that of
+the popular tool 'lex' :cite:`Lesk1975lex`.
 
 .. describe:: x 
 
-     matches the character 'x'.  That means, characters match simply the
-     character that they represent.  This is true, as long as those characters
-     are not part of the set of syntactic operators--such as ``.``, ``[``, 
-     and  ``]``.
+     matches the character 'x'.  Characters match simply the character that
+     they represent.  This is true, as long as those characters are not part of
+     the set of syntactic operators--such as ``.``, ``[``, and  ``]``.
 
 .. describe:: . 
 
-     (is a syntactic operator) The dot matches any character in the current
+     The dot is a syntactic operator. It matches any character in the current
      encoding except for the buffer limit code and '0x0A' for newline.  On
      systems where newline is coded as '0x0D, 0x0A' this does match the '0x0D'
      character whenever a newline occurs.
@@ -31,7 +28,7 @@ identical to that of the popular tool 'lex'.
 
 .. describe:: [xyz]
 
-     a "character class" or "character set"; in this case, the pattern matches
+     a 'character class' or 'character set'; in this case, the pattern matches
      either an ``x``, a ``y``, or a ``z``.  Character sets specify an
      *alternative* expression for a single character.  If the brackets ``[``
      and ``]`` are to be matched quotes or backslashes have to be used.
@@ -96,11 +93,11 @@ identical to that of the popular tool 'lex'.
                [:\C{union([a-z], [ﬀİ])}:]       // wrong
                [:\C{a-z}:]                      // wrong
 
-     The algorithm for case folding follows Unicode Standard Annex #21 
-     "CASE MAPPINGS", Section 1.3. That is for example, the character 'k'
-     is not only folded to 'k' (0x6B) and 'K' (0x4B) but also to 'K' (0x212A). 
-     Additionally, Unicode defines case foldings to multi character sequences,
-     such as::
+     The algorithm for case folding follows Unicode Standard Annex #21 "CASE
+     MAPPINGS", Section 1.3 :cite:`Unicode2015`. That is for example, the
+     character 'k' is not only folded to 'k' (0x6B) and 'K' (0x4B) but also to
+     'K' (0x212A).  Additionally, Unicode defines case foldings to multi
+     character sequences, such as::
 
             ΐ   (0390) --> ι(03B9)̈(0308)́(0301)
             ŉ   (0149) --> ʼ(02BC)n(006E)
@@ -120,14 +117,14 @@ identical to that of the popular tool 'lex'.
 
      As a speciality of the Turkish language, the 'i' with and without the dot
      are not the same. That is, a dot-less lowercase 'i' is folded to a dot-less 
-     uppercase 'I' and a dotted 'i' is mapped to a dotted uppercase 'I'. This 
+     uppercase 'I' and a dotted 'i' is mapped to a dotted uppercase 'İ'. This 
      mapping, though, is mutually exclusive with the 'normal' case folding and 
      is not active by default. The following flags can be set in order to
      control the detailed case folding behavior:
 
      .. describe:: s
 
-        This flag enables simple case folding disabling the generation 
+        The *s* flag enables simple case folding disabling the generation 
         of multi-character sequences.
 
      .. describe:: m
@@ -175,8 +172,8 @@ identical to that of the popular tool 'lex'.
      six digits must either be followed by a non-hex-digit, a delimiter such as
      ``"``, ``[``, or ``(``, or specified with leading zeroes (i.e. use
      \\U00071F, for hexadecimal 71F). The latter choice is probably the best
-     candidate for an 'established habit'. Hexadecimal digits can contain be
-     uppercase or lowercase letters (from A to F).
+     candidate for an 'established habit'. Hexadecimal may can contain be
+     uppercase or lowercase letters from A to F.
 
 .. describe:: \\X7A27 
 
@@ -214,7 +211,7 @@ identical to that of the popular tool 'lex'.
 
 .. describe:: \\G{ X }
 
-     the code of the character with the given *General Category* \cite{}. This is 
+     the code of the character with the given *General Category*. This is 
      a shortcut for ``\P{General_Category=X}``. Note, that these expressions 
      cannot be used inside quoted strings. For possible settings of the 
      ``General_Category`` property, see section :ref:`sec-formal-unicode-properties`.
@@ -303,9 +300,10 @@ regular expressions.
 
 .. describe:: (R) 
 
-    match an ``R``; parentheses are used to *group* operations, i.e. to override
-    precedence, in the same way as the brackets in ``(a + b) * c``
-    override the precedence of multiplication over addition.
+    match an ``R``; parentheses are used to *group* operations, i.e. to
+    override precedence, in the same way as the brackets in ``(a + b) * c``
+    override the precedence of multiplication over addition in algebraic
+    expressions.
 
 .. describe:: RS 
 
@@ -331,16 +329,21 @@ means to model the matching behavior. However, with these operations it
 becomes more challenging to define the exact desired regular expression.
 In particular, patterns may be *admissible* and *inadmissible*.
 
-The admissibility of a patterns is related to its behavior.  A pattern that
-matches on an empty sequence is inadmissible, because it accepts without
-continuing reading the input.  The lexer then stalls. A pattern that does not
-accept anything is also inadmissible, because it cannot be related to a match
-action. If such an inadmissible pattern is detected, Quex reports an error. Any
-pattern that is not inadmissible is admissible. However, even for admissible
-patterns there remains an issue with *sanity*. If pattern contains a state that
+An *inadmissible* pattern has one ore more of the following properties.
+
+    * It matches an empty sequence. This would make the lexer accept on no
+      input. The lexer would not proceed and stall on accepting nothing.
+
+    * It does not match anything. A pattern that never matches cannot 
+      be related to a reaction.
+
+Any pattern which is not *inadmissible* in the above sense is *admissible*.
+Whenever an inadmissible pattern is detected, an error is reported. Any pattern
+that is not inadmissible is admissible. However, even for admissible patterns
+there remains an issue with *sanity*. If a pattern contains a state that
 iterates on any lexatom to itself, then this state would eat anything until the
-end of input. As a shorthand to transform any pattern into a *sane* pattern
-the following command may be used.
+end of input. As a shorthand to transform any pattern into a *sane* pattern the
+following command may be used.
 
 .. describe:: \\Sanitize{P}
 
@@ -350,11 +353,11 @@ the following command may be used.
      be produced by DFA algrebraic expressions--so this command helps to
      sanitize.
 
-     The command line option ``--language dot`` allows to print state machine
-     graphs. It is advisable to print graphs for the sanitized state machine
-     in order to see whether it conforms the expectations.
+ The command line option ``--language dot`` allows to print state machine
+ graphs. It is advisable to print graphs for the sanitized state machine
+ in order to see whether it conforms the expectations.
 
-     Notably, this command cannot sanitize patterns that do not accept anything
-     or accept everything as discussed in the frame of DFA algebra.
+ Notably, this command cannot sanitize patterns that do not accept anything
+ or accept everything as discussed in the frame of DFA algebra.
 
 

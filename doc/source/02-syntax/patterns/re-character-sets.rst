@@ -11,7 +11,7 @@ character set expression ``[:alpha:]``, for example matches all characters that
 are letters, i.e. anything from `a` to `z` and `A` to `Z`. It belongs to the
 POSIX bracket expressions :ref:`Burns2001real` which are explained below.
 Further, this section explains how sets can be generated from other sets via
-the operations *union*, *intersection*, *difference*, and *inverse*.
+the operations *union*, *intersection*, *difference*, and *complement*.
 
 POSIX bracket expressions are basically shortcuts for some more regular
 expressions that would formally look a bit more clumsy. The expressions and
@@ -33,26 +33,19 @@ what they stand for are shown in table :ref:`table:bracket-expressions`.
     ``[:lower:]``    Lowercase letters                 ``[a-z]``                                
     ``[:print:]``    Visible characters and spaces     ``[\x20-\x7E]``                          
     ``[:punct:]``    Punctuation characters            ``[!"#$%&'()*+,-./:;?@[\\\]_`{|}~]`` 
-    ``[:space:]``    White space characters             ``[ \t\r\n\v\f]``                        
+    ``[:space:]``    White space characters            ``[ \t\r\n\v\f]``                        
     ``[:upper:]``    Uppercase letters                 ``[A-Z]``                                
     ``[:xdigit:]``   Hexadecimal digits                ``[A-Fa-f0-9]``                          
     ==============  =================================  =====================================
 
-Caution has to be taken if these expressions are used for non-english
-character encodings. They are *solely* concerned with the ASCII character set. For more
+Caution has to be taken if these expressions are used for non-English character
+encodings. They are *solely* concerned with the ASCII character set. For more
 sophisticated property processing it is advisable to use Unicode property
 expressions as explained in section :ref:`sec:ucs-properties`. In particular,
 it is advisable to use ``\P{ID_Start}``, ``\P{ID_Continue}``,
 ``\P{Hex_Digit}``, ``\P{White_Space}``, and ``\G{Nd}``.
 
-.. note::
-
-   If it is intended to use codings different from ASCII, e.g. UTF-8 or
-   other Unicode character encodings, then the '--iconv' flag or '--icu'
-   flag must be specified to enable the appropriate converter. See
-   section :ref:`sec:character-encodings`.
-
-Character sets do not related to state machines such as patterns do.
+Character sets do not relate to state machines such as patterns do.
 Nevertheless, they might be defined and expanded in ``define`` sections the
 same way as regular expressions. Character set operations may then be applied
 to sequentially described complex set descriptions. The available operations
@@ -68,22 +61,21 @@ table :ref:`table:character-set-operations`.
     ===============================  =====================================================
     ``union(A0, A1, ...)``            ``union([a-z], [A-Z]) = [a-zA-Z]``
     ``intersection(A0, A1, ...)``     ``intersection([0-9], [4-5]) = [4-5]`` 
+    ``complement(A0, A1, ...)``       ``complement([\x40-\5A]) = [\x00-\x3F\x5B-\U12FFFF]`` 
     ``difference(A, B0, B1, ...)``    ``difference([0-9], [4-5]) = [0-36-9]``
-    ``inverse(A0, A1, ...)``          ``inverse([\x40-\5A]) = [\x00-\x3F\x5B-\U12FFFF]`` 
     ===============================  =====================================================
 
 A ``union`` expression allows to create the union of all sets mentioned inside
 the brackets.  The ``intersection`` expression results in the intersection of
-all sets mentioned. The difference between one set and another can be computed
-via the ``difference`` function. Note, that ``difference(A, B)`` is not equal
-to ``difference(B, A)``. This function takes more than one set to be
-subtracted. In fact, it subtracts the union of all sets mentioned after the
-first one. This is for the sake of convenience, so that one has to build the
-union first and then subtract it. The ``inverse`` function builds the
-complementary set. That is, the result is the set of characters which are not
-in the given set but in the set of the currently considered encoding.  This
-function also takes more than one set, so one does not have to build the union
-first.
+all sets mentioned. The ``complement`` function builds the complementary set. That
+is, the result is the set of characters which are not in the given set but in
+the set of the currently considered encoding.  The difference between one set
+and another can be computed via the ``difference`` function. Contrary to the
+``union`` and ``intersection`` expressions, the arguments to ``difference`` may
+not be listed arbitrarily-- ``difference(A, B)`` is not equal to
+``difference(B, A)``.  The ``difference`` determines the difference between the
+first mentioned set and all following arguments.  This is for the sake of
+convenience, so that one has to build the union first and then subtract it.
 
 .. note::
 
@@ -104,16 +96,17 @@ first.
 
 The result of character set expressions is not always easy to foresee. Quex,
 however, provides a command line functionality to display the results of
-regular expressions. For example, the following command line displays what
-characters remain if the numbers and lowercase letters are taken out of the set
-of Greek letters.
+regular expressions. For example, giving the following command line displays
+what characters remain if the numbers and lowercase letters are taken out of
+the set of Greek letters.
 
 .. code-block:: bash
 
    quex --set-by-expression 'difference(\P{Script=Greek}, \G{Nd}, \G{Lowercase_Letter})'
 
-The command line query feature is discussed in a later chapter.  The subsequent
-section elaborates on the concept of Unicode properties and how they may be
-used to produce character sets.
+The command line query feature is discussed in chapter
+:ref:`sec:command-line-queries`.  The subsequent section elaborates on the
+concept of Unicode properties and how they may be used to produce character
+sets.
 
 

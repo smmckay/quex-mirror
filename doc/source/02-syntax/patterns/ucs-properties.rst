@@ -10,7 +10,7 @@ analyzer is the 'code point', i.e. the integer value that represents a
 character. However, there are other interesting properties that simplify the
 description of regular expressions.
 
-Unicode Standard Properties can be accessed through the ``\P{..}`` expressions,
+Unicode Standard Properties can be accessed through ``\P{..}`` expressions,
 where the ``P`` stands for property. Properties can be divided into two
 categories: 
 
@@ -42,14 +42,6 @@ This property also contains names of control functions according to ISO 6429
 :cite:`ISO1992_6429`.  Section :ref:`sec:appendix-property-general-category`
 provides detailed information about the property ``General_Category``. At this
 place, information about likely-to-be-used properties is listed. 
-
-.. note:: 
-
-    When writing lexical analyzers using a wider range of Unicode characters
-    the reliance on properties becomes almost unavoidable. However, the huge
-    volume of characters requires some sophisticated tool to browse through
-    properties and related character sets. Here again, Quex's command line
-    query comes handy. 
 
 As an option to facilitate the specification of property values, wildcards may
 be used inside the property expressions. The ``*``, ``?`` and simple character
@@ -85,7 +77,7 @@ The supported values for each non-binary property are the following:
 
 .. describe:: Age
 
-    ``1.1``, ``2.0``, ``2.1``, ``3.0``, ``3.1``, ``3.2``, ``4.0``, ``4.1``, ``5.0``.
+    ``1.1``, ``2.0``, ``2.1``, ``3.0``, ``3.1``, ``3.2``, ``4.0``, ``4.1``, ``5.0``...
 
 .. describe:: Bidi_Class
 

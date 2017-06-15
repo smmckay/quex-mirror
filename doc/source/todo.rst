@@ -1,3 +1,9 @@
+-- Anti-pattern: Investigate the behavior of the anti-pattern '\A{...}'
+   documentation in 're-algebraic-expressions'.
+
+-- Other RE-operations: review how far they are already implemented
+                        through algebraic elements.
+
 IMPORTANT: Do never directly assign to 'token_p->text' a string constant!
            Otherwise, quex will try to delete it!
 
