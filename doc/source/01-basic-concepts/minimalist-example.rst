@@ -169,7 +169,12 @@ Unicode, inclusion of other files, lexical engines running on other encodings
 directly, input from command line and sockets, and the combination of multiple
 lexical analyzers. In each subdirectory of the ``demo``-s there is a Makefile,
 so ``make`` will produce the application to play with. Eventually, playing is
-one of the best ways to familiarize oneself with these features.
+one of the best ways to familiarize oneself with these features. 
+
+Copying the content of ``00-Minimalist`` subdirectory to some testing place
+provides also a good starting point for trying things quickly in isolation.
+The directory contains a Makefile, so typing ``make`` delivers for anything
+specified in `tiny.qx' a working lexical analyzer application `lexer`.
 
 .. rubric:: Footnotes
 

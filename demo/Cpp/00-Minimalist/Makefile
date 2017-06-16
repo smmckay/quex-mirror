@@ -2,7 +2,7 @@
 
 all: lexer
 
-tiny.cpp:
+tiny.cpp: tiny.qx
 	# (1) Generate the lexical analyzer
 	quex -i tiny.qx -o tiny
 

@@ -2,7 +2,7 @@
 
 all: lexer
 
-tiny.c:
+tiny.c: tiny.qx
 	# (1) Generate the lexical analyzer
 	quex -i tiny.qx -o tiny --language C
 

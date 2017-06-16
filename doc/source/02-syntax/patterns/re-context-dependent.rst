@@ -1,14 +1,17 @@
 .. _sec:pre-and-post-contexts:
 
-Pre- and Post- Contexts
+Pre- and Post-Contexts
 #######################
 
-This section discusses pre- and post-Contexts restricting the ability of a
-pattern to match based on what comes before or after it.  The characters which
-match the pre- and post-contexts are themselves not part of the matching
-lexeme.  Pre-context trigger investigations backwards on content that has
-already been passed. Post-context match behind the core pattern without
-consuming anything.
+Patterns may require a restricted context. Modes and mode transitions model
+larger contexts such as *languages*. A more concise type of context is the
+*border*, i.e. to what comes before or after the pattern. Relying on regular
+expressions pre- and post-contexts provide a means to specify such constraints.
+
+A pre-context matches backwards on content before the start position of the
+current analyzer step. A post-context matches behind the pattern's lexeme.
+Lexatoms matching the pre- and post-contexts are not part of the matching
+pattern's lexeme.  
 
 Figure :ref:`pre-and-post-context` shows the example of a core pattern
 ``[a-z]+`` which may only match if specific pre and post contexts are met. 

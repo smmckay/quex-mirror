@@ -90,10 +90,10 @@ laws:
 Union and intersection of a given pattern `A` with 'Empty' and the 'Universal' obey
 the *identity* and the *complement laws*:
 
-    .* \Union{A \Empty} = A
+    .* \Union{A \Empty}            = A
     .* \Intersection{A \Universal} = A
-    .* \Union{A \Not{A}} = \Universal
-    .* \Intersection{A \Not{A}} = \Empty
+    .* \Union{A \Not{A}}           = \Universal
+    .* \Intersection{A \Not{A}}    = \Empty
 
 All of the above laws follow the principle of *symmetric duality*, in that if
 ``\Union`` and ``\Intersection`` as well as ``\Empty`` and ``\Universal`` are
@@ -104,14 +104,16 @@ The Anti-Pattern
 
 .. describe:: \\A{P}
 
-    The 'anti-pattern' is a short form of a sanitized complement, i.e.
-    ``\Sanitize{\Not{P}}``. The complement operation on admissible
-    patterns may generate acceptance on the zero-length lexeme and iterations
-    on arbitrary lexatoms.
-
-For a given pattern `P` that matches a set of lexemes `L`, the anti-pattern
-``\A{P}`` matches any lexeme which is not in `L` but is at most one lexatom
-longer than any lexeme in `L`.
+    The 'anti-pattern' of a pattern ``P`` is the sanitized complement, i.e.
+    the result of ``\Sanitize{\Not{P}}``. 
+    
+    
+The complement operation alone generate patterns with acceptance on the
+zero-length lexeme and iterations on arbitrary lexatoms. The sanitization of
+the complement delivers a pattern that behaves as follows.  For a given pattern
+`P` that matches a set of lexemes `L`, the anti-pattern ``\A{P}`` matches any
+lexeme which is not in `L` but is at most one lexatom longer than any lexeme in
+`L`.
 
  .. _fig-anti-pattern-0:
 
@@ -146,16 +148,31 @@ explicitly to the final expression.::
 
     \Sanitize{\Intersection{\Not{print} [a-z]+}}
 
-    
+Anti patterns may also be used to *match until* a specific pattern arrives.
+For example, the following mode reads in anything until the C-comment
+delimiter ``*/`` is found.
+
+.. code:: cpp
+
+        mode COMMENT {
+            "*/"           => GOUP();   // Return to caller mode
+            \A{"*/"}+/"*/" => QUEX_TKN_COMMENT_BODY(Lexeme);
+        }
+
+Vice verso, it may also be used to *match until no more* of a specific pattern
+occurs. The following mode skips a semi-colon sperated list of numbers.
+
+.. code:: cpp
+
+        define {
+            NUMBER    [0-9]+
+            DELIMITER [ \t]*;[ \t]*
+            ELEMENT   {NUMBER}{DELIMITER}
+        }
+
+        mode COMMENT {
+            "*/"                    => GOUP();   // Return to caller mode
+            {ELEMENT}/\A{{ELEMENT}} => QUEX_TKN_COMMENT_BODY(Lexeme);
+        }
 
 
- Anti-patterns are especially useful for post contexts 
- (section :ref:`sec-pre-and-post-conditions`) and to implement shortest 
- match behavior with a greedy match analyzer engine 
- (section :ref:`usage-context-free-pitfalls`).
-
-     .. note::
-
-        If it is necessary to ensure that only one character is matched in 
-        case of failure of all other patterns, then it is best to rely on the
-        '.' specifier--as explained above.

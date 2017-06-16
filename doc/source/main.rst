@@ -12,7 +12,7 @@ Contents:
 
    01-basic-concepts/main.rst
 
-   quex-syntax/main.rst
+   02-syntax/main.rst
 
    modes/main.rst
 
