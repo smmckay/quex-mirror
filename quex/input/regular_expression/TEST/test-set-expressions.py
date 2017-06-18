@@ -44,7 +44,7 @@ test("[: [\\U10-\\U40] :]", NumbersF=True)
 test("[: difference([0-9], [1,3,5,7,9]) :]")    
 test("[: union([0-9], [a-z0-5]) :]")    
 test("[: intersection([0-9], [a-z0-5]) :]")    
-test("[: inverse([0-9]) :]")    
+test("[: complement([0-9]) :]")    
 
 print 
 print "And know something completely different ..."
@@ -63,4 +63,4 @@ print
 print "Check the range cut ..."
 
 test2("[^a]")
-test2("[:inverse([a]):]")
+test2("[:complement([a]):]")

@@ -24,7 +24,7 @@ result     = ['0', '9'], ['a', 'z']
 expression = "[: intersection([0-9], [a-z0-5]) :]"
 result     = ['0', '5']
 
-expression = "[: inverse([0-9]) :]"
+expression = "[: complement([0-9]) :]"
 result     = [-oo, '/'], [':', oo]
 
 And know something completely different ...
@@ -44,7 +44,7 @@ result     = init-state = 0L
 00001 A
     
 
-expression = "[:inverse([a]):]"
+expression = "[:complement([a]):]"
 result     = init-state = 0L
 00000 
      == [-oo, 0060] [0062, oo]  ==> 00001
