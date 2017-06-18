@@ -20,8 +20,10 @@ E_StateIndices = Enum("DROP_OUT",
                       "BEFORE_ENTRY", 
                       "VOID") 
 
-E_PreContextIDs  = Enum("NONE",    
+E_AcceptanceCondition  = Enum("NONE",    
                         "BEGIN_OF_LINE", 
+                        "BEGIN_OF_STREAM", 
+                        "END_OF_STREAM", 
                         "_DEBUG_NAME_PreContextIDs")
 
 E_PostContextIDs = Enum("NONE", 

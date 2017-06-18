@@ -10,7 +10,7 @@ from quex.engine.analyzer.examine.TEST.helper                   import *
 from quex.engine.analyzer.examine.state_info                    import *
 from quex.engine.analyzer.examine.acceptance                    import RecipeAcceptance
 from quex.engine.analyzer.examine.core                          import Examiner
-from quex.constants import E_PreContextIDs, E_R, E_IncidenceIDs
+from quex.constants import E_AcceptanceCondition, E_R, E_IncidenceIDs
 from copy import deepcopy
 
 if "--hwut-info" in sys.argv:

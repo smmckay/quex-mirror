@@ -15,7 +15,7 @@ def get_OpList(TheAccepter, TheTerminalRouter):
     Such a configuration is considered trivial. No restore is involved.
 
     RETURNS: None                                          -- if not trivial
-             list((pre_context_id, TerminalRouterElement)) -- if trivial
+             list((acceptance_condition_id, TerminalRouterElement)) -- if trivial
     """
     # If the 'last_acceptance' is not determined in this state, then it
     # must bee derived from previous storages. We cannot simplify here.
@@ -35,7 +35,7 @@ def get_OpList(TheAccepter, TheTerminalRouter):
     router = TheTerminalRouter.content
 
     return OpList.from_iterable(
-        Op.IfPreContextSetPositionAndGoto(check.pre_context_id, 
+        Op.IfPreContextSetPositionAndGoto(check.acceptance_condition_id, 
                                           router_element(router, check.acceptance_id))
         for check in TheAccepter.content
     )

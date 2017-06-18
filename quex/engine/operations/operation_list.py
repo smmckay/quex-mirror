@@ -48,12 +48,12 @@
 # function. For clarity, dedicated functions may be used, do provide a more
 # beautiful call to the factory, for example:
 #
-#     cmd = Op.StoreInputPosition(PreContextID, PositionRegister, Offset)
+#     cmd = Op.StoreInputPosition(AccConditionID, PositionRegister, Offset)
 #
 # is equivalent to
 #
 #     cmd = CommandFactory.do(E_Op.StoreInputPosition, 
-#                             (PreContextID, PositionRegister, Offset))
+#                             (AccConditionID, PositionRegister, Offset))
 #
 # where, undoubtedly the first is much easier to read. 
 #
@@ -76,7 +76,7 @@ from   quex.engine.operations.content_terminal_router     import RouterContent, 
 from   quex.engine.misc.tools import delete_if
 from   quex.constants import E_Op, \
                              E_R, \
-                             E_PreContextIDs
+                             E_AcceptanceCondition
 
 from   collections import namedtuple
 import types
@@ -156,12 +156,12 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         else:        assert False
 
     @staticmethod
-    def StoreInputPosition(PreContextID, PositionRegister, Offset):
-        return Op(E_Op.StoreInputPosition, PreContextID, PositionRegister, Offset)
+    def StoreInputPosition(AccConditionID, PositionRegister, Offset):
+        return Op(E_Op.StoreInputPosition, AccConditionID, PositionRegister, Offset)
     
     @staticmethod
-    def PreContextOK(PreContextID):
-        return Op(E_Op.PreContextOK, PreContextID)
+    def PreContextOK(AccConditionID):
+        return Op(E_Op.PreContextOK, AccConditionID)
     
     @staticmethod
     def TemplateStateKeySet(StateKey):
@@ -208,12 +208,12 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.IndentationHandlerCall, DefaultIhF, ModeName)
     
     @staticmethod
-    def IfPreContextSetPositionAndGoto(PreContextId, RouterElement):
-        #if     PreContextId == E_PreContextIDs.NONE \
+    def IfPreContextSetPositionAndGoto(AccConditionId, RouterElement):
+        #if     AccConditionId == E_AcceptanceCondition.NONE \
         #   and RouterElement.positioning == 0:
         #    return GotoDoorId(DoorID.incidence(RouterElement.acceptance_id))
             
-        return Op(E_Op.IfPreContextSetPositionAndGoto,PreContextId, RouterElement)
+        return Op(E_Op.IfPreContextSetPositionAndGoto,AccConditionId, RouterElement)
     
     @staticmethod
     def ColumnCountGridAdd(GridSize):
@@ -288,7 +288,7 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         if self.id == E_Op.GotoDoorId: 
             return True
         elif self.id == E_Op.IfPreContextSetPositionAndGoto:
-            return     self.content.pre_context_id == E_PreContextIDs.NONE \
+            return     self.content.acceptance_condition_id == E_AcceptanceCondition.NONE \
                    and self.content.router_element.positioning == 0
         return False
     
@@ -350,8 +350,8 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         elif self.id == E_Op.StoreInputPosition:
             x = self.content
             txt = ""
-            if x.pre_context_id != E_PreContextIDs.NONE:
-                txt = "if '%s': " % repr_pre_context_id(x.pre_context_id)
+            if x.acceptance_condition_id != E_AcceptanceCondition.NONE:
+                txt = "if '%s': " % repr_pre_context_id(x.acceptance_condition_id)
             pos_str = repr_position_register(x.position_register)
             if x.offset == 0:
                 txt += "%s = input_p;" % pos_str
@@ -369,7 +369,7 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
             return str(self.content)
 
         elif self.id == E_Op.PreContextOK:
-            return "pre-context-fulfilled = %s;" % self.content.pre_context_id
+            return "pre-context-fulfilled = %s;" % self.content.acceptance_condition_id
 
         else:
             def get_string(member, value):
@@ -480,7 +480,7 @@ def __configure():
                                               (0,w),    (1, r), (2, r))
     c(E_Op.PointerAdd,                       ("pointer", "offset", "condition"),
                                               (0, w+r), (1, r))
-    c(E_Op.PreContextOK,                     ("pre_context_id",), 
+    c(E_Op.PreContextOK,                     ("acceptance_condition_id",), 
                                               (E_R.PreContextFlags,w))
     #
     c(E_Op.GotoDoorId,                        ("door_id",), 
@@ -490,9 +490,9 @@ def __configure():
     c(E_Op.GotoDoorIdIfCounterEqualZero,      ("door_id",),
                                                (E_R.ThreadOfControl,w), (E_R.Counter,r))
     #
-    c(E_Op.StoreInputPosition,               (               "pre_context_id",        "position_register",       "offset"),
+    c(E_Op.StoreInputPosition,               (               "acceptance_condition_id",        "position_register",       "offset"),
                                               (E_R.InputP,r), (E_R.PreContextFlags,r), (E_R.PositionRegister,w,1)) # Argument '1' --> sub_id_reference
-    c(E_Op.IfPreContextSetPositionAndGoto,   ("pre_context_id", "router_element"),
+    c(E_Op.IfPreContextSetPositionAndGoto,   ("acceptance_condition_id", "router_element"),
                                               (E_R.PreContextFlags, r), (E_R.PositionRegister, r), (E_R.ThreadOfControl, w), 
                                               (E_R.InputP, r+w))
     c(E_Op.InputPDereference,                None, (E_R.InputP,r), (E_R.Input,w))
@@ -615,7 +615,7 @@ class OpList(list):
             cmd = self[i]
             if cmd.id == E_Op.StoreInputPosition:
                 # Commands are immutable, so create a new one.
-                new_command = Op.StoreInputPosition(cmd.content.pre_context_id, 
+                new_command = Op.StoreInputPosition(cmd.content.acceptance_condition_id, 
                                                  PositionRegisterMap[cmd.content.position_register],
                                                  cmd.content.offset)
                 self[i] = new_command
@@ -639,13 +639,13 @@ class OpList(list):
             cmd.content.position_register
             for cmd in self \
                 if     cmd.id == E_Op.StoreInputPosition \
-                   and cmd.content.pre_context_id == E_PreContextIDs.NONE
+                   and cmd.content.acceptance_condition_id == E_AcceptanceCondition.NONE
         )
         delete_if(self,
                   lambda cmd:
                        cmd.id == E_Op.StoreInputPosition \
                    and cmd.content.position_register in unconditional_position_register_set \
-                   and cmd.content.pre_context_id != E_PreContextIDs.NONE)
+                   and cmd.content.acceptance_condition_id != E_AcceptanceCondition.NONE)
 
         # (2) Storage command does not appear twice. Keep first.
         #     (May occur due to optimizations!)

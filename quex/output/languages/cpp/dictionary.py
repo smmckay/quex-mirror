@@ -25,7 +25,7 @@ from   quex.blackboard   import setup as Setup
 from   quex.constants    import E_StateIndices,  \
                                 E_IncidenceIDs, \
                                 E_TransitionN,   \
-                                E_PreContextIDs, \
+                                E_AcceptanceCondition, \
                                 E_Op
 from   itertools import islice
 from   math      import log
@@ -367,18 +367,11 @@ class Language(dict):
     @typed(dial_db=DialDB)
     def COMMAND(self, Op, dial_db=None):
         if Op.id == E_Op.Accepter:
-            else_str = ""
-            txt      = []
-            for element in Op.content:
-                if element.pre_context_id == E_PreContextIDs.BEGIN_OF_LINE:
-                    txt.append("    %sif( me->buffer._lexatom_before_lexeme_start == '\\n' )" % else_str)
-                elif element.pre_context_id != E_PreContextIDs.NONE:
-                    txt.append("    %sif( pre_context_%i_fulfilled_f ) " % (else_str, element.pre_context_id))
-                else:
-                    txt.append("    %s" % else_str)
-                txt.append("{ last_acceptance = %s; __quex_debug(\"last_acceptance = %s\\n\"); }\n" \
-                           % (self.ACCEPTANCE(element.acceptance_id), self.ACCEPTANCE(element.acceptance_id)))
-                else_str = "else "
+            txt = []
+            for i, element in enumerate(Op.content):
+                block = "{ last_acceptance = %s; __quex_debug(\"last_acceptance = %s\\n\"); }\n" \
+                        % (self.ACCEPTANCE(element.acceptance_id), self.ACCEPTANCE(element.acceptance_id))
+                self.IF_ACCEPTANCE_CONDITION(txt, i == 0, element.acceptance_condition_id, block)
             return "".join(txt)
 
         elif Op.id == E_Op.RouterByLastAcceptance:
@@ -396,7 +389,7 @@ class Language(dict):
         #            else_str = ""
         #            txt      = []
         #            for element in Op.content:
-        #                txt.append(self.if_pre_context(x.pre_context_id, else_str))
+        #                txt.append(self.if_pre_context(x.acceptance_condition_id, else_str))
         #                txt.extend(self.position_and_goto(x.router_element))
         #            return "".join(txt)
 
@@ -416,10 +409,10 @@ class Language(dict):
             return result
 
         elif Op.id == E_Op.IfPreContextSetPositionAndGoto:
-            pre_context_id = Op.content.pre_context_id
+            acceptance_condition_id = Op.content.acceptance_condition_id
             block = self.position_and_goto(Op.content.router_element, dial_db)
             txt = []
-            self.IF_PRE_CONTEXT(txt, True, pre_context_id, block)
+            self.IF_ACCEPTANCE_CONDITION(txt, True, acceptance_condition_id, block)
             return "".join(txt)
 
         elif Op.id == E_Op.QuexDebug:
@@ -523,9 +516,9 @@ class Language(dict):
 
         elif Op.id == E_Op.PreContextOK:
             return   "    pre_context_%i_fulfilled_f = 1;\n"                         \
-                   % Op.content.pre_context_id                                      \
+                   % Op.content.acceptance_condition_id                                      \
                    + "    __quex_debug(\"pre_context_%i_fulfilled_f = true\\n\");\n" \
-                   % Op.content.pre_context_id
+                   % Op.content.acceptance_condition_id
 
         elif Op.id == E_Op.TemplateStateKeySet:
             return   "    state_key = %i;\n"                      \
@@ -821,13 +814,13 @@ class Language(dict):
         """
         return self.IF("input", Condition, Value, Index==0, SimpleF=True, SpaceF=(Length>2))
 
-    def IF_PRE_CONTEXT(self, txt, FirstF, PreContextID, Consequence):
+    def IF_ACCEPTANCE_CONDITION(self, txt, FirstF, AccConditionId, Consequence):
 
-        if PreContextID == E_PreContextIDs.NONE:
+        if AccConditionId == E_AcceptanceCondition.NONE:
             if FirstF: opening = [];           closing = []
             else:      opening = ["else {\n"]; closing = ["    }\n"]
         else:
-            condition = self.PRE_CONTEXT_CONDITION(PreContextID) 
+            condition = self.ACCEPTANCE_CONDITION(AccConditionId) 
             if FirstF: opening = ["if( %s ) {\n" % condition]
             else:      opening = ["else if( %s ) {\n" % condition]
             closing = ["}\n"]
@@ -842,21 +835,25 @@ class Language(dict):
     def END_IF(self):
         return "}"
 
-    def PRE_CONTEXT_CONDITION(self, PreContextID):
-        if PreContextID == E_PreContextIDs.BEGIN_OF_LINE: 
+    def ACCEPTANCE_CONDITION(self, AccConditionId):
+        if   AccConditionId == E_AcceptanceCondition.BEGIN_OF_LINE: 
             return "me->buffer._lexatom_before_lexeme_start == '\\n'"
-        elif PreContextID == E_PreContextIDs.NONE:
+        elif AccConditionId == E_AcceptanceCondition.BEGIN_OF_STREAM: 
+            return "QUEX_NAME(Buffer_is_begin_of_file)(&me->buffer))"
+        elif AccConditionId == E_AcceptanceCondition.END_OF_STREAM: 
+            return "QUEX_NAME(Buffer_is_begin_of_stream)(&me->buffer))"
+        elif AccConditionId == E_AcceptanceCondition.NONE:
             return "true"
-        elif isinstance(PreContextID, (int, long)):
-            return "pre_context_%i_fulfilled_f" % PreContextID
+        elif isinstance(AccConditionId, (int, long)):
+            return "pre_context_%i_fulfilled_f" % AccConditionId
         else:
             assert False
 
     def PRE_CONTEXT_RESET(self, PreConditionIDList):
         if PreConditionIDList is None: return ""
         return "".join([
-            "    %s\n" % self.ASSIGN("pre_context_%s_fulfilled_f" % pre_context_id, 0)
-            for pre_context_id in PreConditionIDList
+            "    %s\n" % self.ASSIGN("pre_context_%s_fulfilled_f" % acceptance_condition_id, 0)
+            for acceptance_condition_id in PreConditionIDList
         ])
 
     def ON_BAD_INDENTATION(self, OnBadIndentationTxt, BadIndentationIid, dial_db):

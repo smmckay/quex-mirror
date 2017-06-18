@@ -1,10 +1,10 @@
 from  collections    import namedtuple
-from  quex.constants import E_PreContextIDs, \
+from  quex.constants import E_AcceptanceCondition, \
                             E_IncidenceIDs
 from copy     import deepcopy
 from operator import attrgetter
 
-class AccepterContentElement(namedtuple("AccepterContentElement_tuple", ("pre_context_id", "acceptance_id"))):
+class AccepterContentElement(namedtuple("AccepterContentElement_tuple", ("acceptance_condition_id", "acceptance_id"))):
     """Objects of this class shall describe a check sequence such as
 
             if     ( pre_condition_5_f ) last_acceptance = 34;
@@ -16,10 +16,10 @@ class AccepterContentElement(namedtuple("AccepterContentElement_tuple", ("pre_co
        the prioritization is not necessarily by acceptance_id. This is so, since
        the whole trace is considered and length precedes acceptance_id.
     
-       The values for .pre_context_id and .acceptance_id are carry the 
+       The values for .acceptance_condition_id and .acceptance_id are carry the 
        following meaning:
 
-       .pre_context_id   PreContextID of concern. 
+       .acceptance_condition_id   AccConditionID of concern. 
 
                          is None --> no pre-context (normal pattern)
                          is -1   --> pre-context 'begin-of-line'
@@ -33,12 +33,12 @@ class AccepterContentElement(namedtuple("AccepterContentElement_tuple", ("pre_co
                          >= 0    --> goto terminal given by '.terminal_id'
 
     """
-    def __new__(self, PreContextId, AcceptanceID):
-        return super(AccepterContentElement, self).__new__(self, PreContextId, AcceptanceID)
+    def __new__(self, AccConditionId, AcceptanceID):
+        return super(AccepterContentElement, self).__new__(self, AccConditionId, AcceptanceID)
 
     def __str__(self):
         txt = []
-        txt.append("%s: accept = %s" % (repr_pre_context_id(self.pre_context_id),
+        txt.append("%s: accept = %s" % (repr_pre_context_id(self.acceptance_condition_id),
                                         repr_acceptance_id(self.acceptance_id)))
         return "".join(txt)
 
@@ -56,7 +56,7 @@ class AccepterContent:
               of the list.
 
     An element in the sorted list of test/accept commands.  It contains the
-    'pre_context_id' of the condition to be checked and the 'acceptance_id' to
+    'acceptance_condition_id' of the condition to be checked and the 'acceptance_id' to
     be accepted if the condition is true.
     ___________________________________________________________________________
     """
@@ -68,8 +68,8 @@ class AccepterContent:
     def from_iterable(PreContext_AcceptanceId_Iterable):
         result = AccepterContent()
         result.__list = [
-            AccepterContentElement(pre_context_id, acceptance_id)
-            for pre_context_id, acceptance_id in PreContext_AcceptanceId_Iterable
+            AccepterContentElement(acceptance_condition_id, acceptance_id)
+            for acceptance_condition_id, acceptance_id in PreContext_AcceptanceId_Iterable
         ]
         return result
 
@@ -78,29 +78,29 @@ class AccepterContent:
         result.__list = [ deepcopy(x) for x in self.__list ]
         return result
     
-    def add(self, PreContextID, AcceptanceID):
-        self.__list.append(AccepterContentElement(PreContextID, AcceptanceID))
+    def add(self, AccConditionID, AcceptanceID):
+        self.__list.append(AccepterContentElement(AccConditionID, AcceptanceID))
 
     def clean_up(self):
         """Ensure that nothing follows and unconditional acceptance."""
         self.__list.sort(key=attrgetter("acceptance_id"))
         for i, x in enumerate(self.__list):
-            if x.pre_context_id == E_PreContextIDs.NONE:
+            if x.acceptance_condition_id == E_AcceptanceCondition.NONE:
                 break
         if i != len(self.__list) - 1:
             del self.__list[i+1:]
 
     def has_acceptance_without_pre_context(self):
         for x in self.__list:
-            if x.pre_context_id == E_PreContextIDs.NONE: return True
+            if x.acceptance_condition_id == E_AcceptanceCondition.NONE: return True
         return False
 
     def get_pretty_string(self):
         txt    = []
         if_str = "if     "
         for x in self.__list:
-            if x.pre_context_id != E_PreContextIDs.NONE:
-                txt.append("%s %s: " % (if_str, repr_pre_context_id(x.pre_context_id)))
+            if x.acceptance_condition_id != E_AcceptanceCondition.NONE:
+                txt.append("%s %s: " % (if_str, repr_pre_context_id(x.acceptance_condition_id)))
             else:
                 if if_str == "else if": txt.append("else: ")
             txt.append("last_acceptance = %s\n" % repr_acceptance_id(x.acceptance_id))
@@ -119,7 +119,7 @@ class AccepterContent:
         elif len(self.__list) != len(Other.__list):     return False
 
         for x, y in zip(self.__list, Other.__list):
-            if   x.pre_context_id != y.pre_context_id:  return False
+            if   x.acceptance_condition_id != y.acceptance_condition_id:  return False
             elif x.acceptance_id  != y.acceptance_id:   return False
 
         return True
@@ -134,10 +134,10 @@ class AccepterContent:
     def __str__(self):
         def to_string(X, FirstF):
             acc_str = "last_acceptance = %s" % repr_acceptance_id(X.acceptance_id)
-            if X.pre_context_id == E_PreContextIDs.NONE:
+            if X.acceptance_condition_id == E_AcceptanceCondition.NONE:
                 return acc_str
 
-            cond_str = "%s" % repr_pre_context_id(X.pre_context_id)
+            cond_str = "%s" % repr_pre_context_id(X.acceptance_condition_id)
             if FirstF:
                 return "if %s:  %s" % (cond_str, acc_str)
             else:
@@ -151,10 +151,11 @@ class AccepterContent:
         return len(self.__list)
     
 def repr_pre_context_id(Value):
-    if   Value == E_PreContextIDs.NONE:          return "Always"
-    elif Value == E_PreContextIDs.BEGIN_OF_LINE: return "BeginOfLine"
-    elif Value >= 0:                             return "PreContext_%i" % Value
-    else:                                        assert False
+    if   Value == E_AcceptanceCondition.NONE:            return "Always"
+    elif Value == E_AcceptanceCondition.BEGIN_OF_LINE:   return "BeginOfLine"
+    elif Value == E_AcceptanceCondition.BEGIN_OF_STREAM: return "BeginOfStream"
+    elif Value >= 0:                               return "PreContext_%i" % Value
+    else:                                          assert False
 
 def repr_acceptance_id(Value, PatternStrF=True):
     if   Value == E_IncidenceIDs.VOID:          return "last_acceptance"

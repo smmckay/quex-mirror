@@ -2,7 +2,7 @@ from quex.engine.misc.tools               import typed
 from quex.engine.operations.se_operations import SeOp, \
                                                  SeAccept, \
                                                  SeStoreInputPosition
-from quex.constants  import E_PreContextIDs, \
+from quex.constants  import E_AcceptanceCondition, \
                             E_IncidenceIDs
 
 from itertools import izip
@@ -94,7 +94,13 @@ class SingleEntry(object):
 
     def has_begin_of_line_pre_context(self):
         for cmd in self.get_iterable(SeAccept):
-            if cmd.pre_context_id() == E_PreContextIDs.BEGIN_OF_LINE:
+            if cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE:
+                return True
+        return False
+
+    def has_begin_of_stream_pre_context(self):
+        for cmd in self.get_iterable(SeAccept):
+            if cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM:
                 return True
         return False
 
@@ -109,7 +115,7 @@ class SingleEntry(object):
         # Find the first unconditional acceptance
         unconditional_acceptance_i = None
         for i, cmd in self.get_enumerated_iterable(SeAccept):
-            if cmd.pre_context_id() != E_PreContextIDs.NONE:
+            if cmd.acceptance_condition_id() != E_AcceptanceCondition.NONE:
                 unconditional_acceptance_i = i
                 break
 
@@ -175,7 +181,7 @@ class SingleEntry(object):
 
         def key(X):
             if   X.__class__ == SeAccept:              
-                return (0, X.acceptance_id(), X.pre_context_id(), X.restore_position_register_f())
+                return (0, X.acceptance_id(), X.acceptance_condition_id(), X.restore_position_register_f())
             elif X.__class__ == SeStoreInputPosition: 
                 return (1, X.acceptance_id())
             else:

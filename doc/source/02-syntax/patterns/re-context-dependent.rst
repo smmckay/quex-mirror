@@ -7,6 +7,10 @@ Patterns may require a restricted context. Modes and mode transitions model
 larger contexts such as *languages*. A more concise type of context is the
 *border*, i.e. to what comes before or after the pattern. Relying on regular
 expressions pre- and post-contexts provide a means to specify such constraints.
+Typical border conditions that can be expressed are 'begin of line' or
+'end of line'. However, relying on regular expressions implies that no events
+such as 'begin of stream' or 'end of stream' can be considered as context
+constraints.
 
 A pre-context matches backwards on content before the start position of the
 current analyzer step. A post-context matches behind the pattern's lexeme.

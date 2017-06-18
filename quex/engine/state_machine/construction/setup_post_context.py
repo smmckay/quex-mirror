@@ -6,14 +6,15 @@ import quex.engine.state_machine.construction.sequentialize          as     sequ
 import quex.engine.state_machine.algorithm.beautifier   as     beautifier
 import quex.engine.state_machine.construction.ambiguous_post_context as     ambiguous_post_context
 
-from   quex.constants  import E_PreContextIDs
+from   quex.constants  import E_AcceptanceCondition
 from   quex.blackboard import setup as Setup
 
-
-def do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReference):
+def do(the_state_machine, post_context_sm, EndOfLinePostContextF, EndOfStreamPostContext, 
+       SourceReference):
     acceptance_id = the_state_machine.get_id()
     result, bipd_sm = _do(the_state_machine, post_context_sm, 
-                          EndOfLinePostContextF, SourceReference)
+                          EndOfLinePostContextF, EndOfLinePostContextF, 
+                          SourceReference)
 
     # Make sure that the resulting state machine has the same state machine index
     # as 'the_state_machine'. This is important, since otherwise the precedence get
@@ -21,7 +22,8 @@ def do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReferenc
     result.set_id(acceptance_id)
     return result, bipd_sm
 
-def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReference):
+def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, EndOfStreamPostContextF, 
+        SourceReference):
     """Appends a post context to the given state machine and changes 
        state infos as required. 
 
@@ -62,21 +64,7 @@ def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReferen
     if post_context_sm is None and EndOfLinePostContextF == False:
         return the_state_machine, None
 
-    # DFAs with no states are senseless here. 
-    assert not the_state_machine.is_Empty(), \
-           "empty state machine can have no post context."
-    assert post_context_sm is None or not post_context_sm.is_Empty(), \
-           "empty state machine cannot be a post-context."
-
-    # DFAs involved with post condition building are part of a pattern, 
-    # but not configured out of multiple patterns. Thus there should be no origins.
-    assert the_state_machine.has_origins() == False
-    assert post_context_sm is None or not post_context_sm.has_origins()
-
-    for state in the_state_machine.get_acceptance_state_list():
-        for cmd in state.single_entry.get_iterable(SeAccept): 
-            assert cmd.pre_context_id() == E_PreContextIDs.NONE, \
-                   "Post Contexts MUST be mounted BEFORE pre-contexts."
+    __entry_asserts(the_state_machine, post_context_sm)
 
     if post_context_sm is None:
         assert EndOfLinePostContextF
@@ -87,6 +75,10 @@ def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, SourceReferen
         # Mount 'newline' to existing post context
         post_context_sm = sequentialize.do([post_context_sm, 
                                             DFA_Newline()]) 
+    elif EndOfStreamPostContextF:
+        # Set acceptance condition: 'end of stream'.
+        for state in the_state_machine.get_acceptance_state_list():
+            state.set_pre_context_id(E_AcceptanceCondition.END_OF_STREAM)
 
     # A post context with an initial state that is acceptance is not really a
     # 'context' since it accepts anything. The state machine remains un-post context.
@@ -185,4 +177,21 @@ def DFA_Newline():
         sm.add_transition(idx, NL, AcceptanceF=True)
 
     return beautifier.do(sm)
+
+def __entry_asserts(the_state_machine, post_context_sm):
+    # DFAs with no states are senseless here. 
+    assert not the_state_machine.is_Empty(), \
+           "empty state machine can have no post context."
+    assert post_context_sm is None or not post_context_sm.is_Empty(), \
+           "empty state machine cannot be a post-context."
+
+    # DFAs involved with post condition building are part of a pattern, 
+    # but not configured out of multiple patterns. Thus there should be no origins.
+    assert the_state_machine.has_origins() == False
+    assert post_context_sm is None or not post_context_sm.has_origins()
+
+    for state in the_state_machine.get_acceptance_state_list():
+        for cmd in state.single_entry.get_iterable(SeAccept): 
+            assert cmd.acceptance_condition_id() == E_AcceptanceCondition.NONE, \
+                   "Post Contexts MUST be mounted BEFORE pre-contexts."
 

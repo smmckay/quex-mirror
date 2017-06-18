@@ -137,20 +137,20 @@ class Entry(object):
     def size(self):
         return len(self.__db)
 
-    def add_Accepter_on_all(self, PreContextID, AcceptanceID):
+    def add_Accepter_on_all(self, AccConditionID, AcceptanceID):
         """Add an acceptance at the top of each accepter at every door. If there
            is no accepter in a door it is created.
         """
         for ta in self.__db.itervalues():
             # Catch the accepter, if there is already one, if not create one.
-            ta.command_list.access_accepter().add(PreContextID, AcceptanceID)
+            ta.command_list.access_accepter().add(AccConditionID, AcceptanceID)
 
-    def add_StoreInputPosition(self, StateIndex, FromStateIndex, PreContextID, PositionRegister, Offset):
+    def add_StoreInputPosition(self, StateIndex, FromStateIndex, AccConditionID, PositionRegister, Offset):
         """Add 'store input position' to specific door. See 'SeStoreInputPosition'
            comment for the reason why we do not store pre-context-id.
         """
         command_list = self.__db[TransitionID(StateIndex, FromStateIndex, 0)].command_list
-        cmd          = Op.StoreInputPosition(PreContextID, PositionRegister, Offset)
+        cmd          = Op.StoreInputPosition(AccConditionID, PositionRegister, Offset)
         # Make sure it is the first!
         command_list.insert(0, cmd)
         # Never store twice in the same position register! 
@@ -335,14 +335,14 @@ class Entry(object):
         def get_storers(StorerList):
             txt = [ 
                 str(cmd)
-                for cmd in sorted(StorerList, key=lambda cmd: (cmd.content.pre_context_id, cmd.content.position_register))
+                for cmd in sorted(StorerList, key=lambda cmd: (cmd.content.acceptance_condition_id, cmd.content.position_register))
             ]
             return txt
 
         def get_pre_context_oks(PCOKList):
             txt = [
                 str(cmd)
-                for cmd in sorted(PCOKList, key=lambda cmd: cmd.content.pre_context_id)
+                for cmd in sorted(PCOKList, key=lambda cmd: cmd.content.acceptance_condition_id)
             ]
             return txt
 

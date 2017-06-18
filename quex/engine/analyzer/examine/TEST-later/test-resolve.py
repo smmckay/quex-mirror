@@ -8,7 +8,7 @@ from quex.engine.state_machine.TEST.helper_state_machine_shapes import *
 from quex.engine.analyzer.examine.TEST.helper                   import *
 from quex.engine.analyzer.examine.acceptance                    import RecipeAcceptance
 from quex.engine.analyzer.examine.core                          import Examiner
-from quex.constants import E_IncidenceIDs, E_PreContextIDs
+from quex.constants import E_IncidenceIDs, E_AcceptanceCondition
 
 if "--hwut-info" in sys.argv:
     print "Resolve Without Dead-Lock Resolution;"
@@ -27,7 +27,7 @@ add_SeAccept(sm, 3L, 33L, 333L)
 add_SeAccept(sm, 4L, 44L)
 add_SeAccept(sm, 6L, 66L, 666L)
 # Post-Context: Store in '1', restore in '7'
-add_SeAccept(sm, 7L, 77L, E_PreContextIDs.NONE, True)
+add_SeAccept(sm, 7L, 77L, E_AcceptanceCondition.NONE, True)
 print
 
 examiner        = Examiner(sm, RecipeAcceptance)

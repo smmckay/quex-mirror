@@ -8,7 +8,7 @@ from   quex.engine.state_machine.state.single_entry import SeAccept
 
 from   quex.engine.misc.tools  import typed
 from   quex.constants          import E_IncidenceIDs, \
-                                      E_PreContextIDs, \
+                                      E_AcceptanceCondition, \
                                       E_StateIndices, \
                                       INTEGER_MAX
 
@@ -555,7 +555,7 @@ class DFA(object):
         acceptance_id_set  = set()
         for state in self.states.itervalues():
             for cmd in state.single_entry.get_iterable(SeAccept):
-                pre_context_id_set.add(cmd.pre_context_id())
+                pre_context_id_set.add(cmd.acceptance_condition_id())
                 acceptance_id_set.add(cmd.acceptance_id())
                 
         def enter(db, Value, TheEnum, NewId):
@@ -564,8 +564,8 @@ class DFA(object):
 
         i = 1L
         repl_db_pre_context_id = {}
-        for pre_context_id in sorted(pre_context_id_set):
-            i = enter(repl_db_pre_context_id, pre_context_id, E_PreContextIDs, i)
+        for acceptance_condition_id in sorted(pre_context_id_set):
+            i = enter(repl_db_pre_context_id, acceptance_condition_id, E_AcceptanceCondition, i)
 
         i = 1L
         repl_db_acceptance_id  = {}
@@ -756,7 +756,11 @@ class DFA(object):
                    for state_index in self.states.iterkeys())
 
     def has_pre_context_begin_of_line_f(self):
-        return any(state.pre_context_id() == E_PreContextIDs.BEGIN_OF_LINE
+        return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE
+                   for state in self.states.itervalues())
+
+    def has_pre_context_begin_of_tream_f(self):
+        return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
                    for state in self.states.itervalues())
 
     def has_origins(self):
@@ -866,7 +870,7 @@ class DFA(object):
             # if required (e.g. for sequentialization) cancel the acceptance status
             if CancelStartAcceptanceStateF: 
                 # If there was a condition to acceptance => Cancel it first
-                state.set_pre_context_id(E_PreContextIDs.NONE) 
+                state.set_pre_context_id(E_AcceptanceCondition.NONE) 
                 state.set_acceptance(False)
 
     def mount_cloned(self, OtherSM, OperationIndex, OtherStartIndex, OtherEndIndex):

@@ -3,7 +3,7 @@ from   quex.engine.state_machine.state.single_entry import SingleEntry, \
                                                            SeStoreInputPosition
 from   quex.engine.state_machine.state.target_map   import TargetMap
 from   quex.engine.misc.tools import typed 
-from   quex.constants         import E_PreContextIDs, \
+from   quex.constants         import E_AcceptanceCondition, \
                                      E_IncidenceIDs
 
 class DFA_State:
@@ -125,10 +125,10 @@ class DFA_State:
             elif cmd.restore_position_register_f(): return True
         return False
 
-    def pre_context_id(self):
+    def acceptance_condition_id(self):
         cmd = self.single_entry.find(SeAccept)
-        if cmd is None: return E_PreContextIDs.NONE
-        else:           return cmd.pre_context_id()
+        if cmd is None: return E_AcceptanceCondition.NONE
+        else:           return cmd.acceptance_condition_id()
 
     def set_pre_context_id(self, Value=True):
         accept_cmd = self.single_entry.find(SeAccept)

@@ -11,7 +11,7 @@ from itertools       import islice, izip
 # 
 AcceptCondition = namedtuple("AcceptCondition", 
                              ("acceptance_id", 
-                              "pre_context_id", 
+                              "acceptance_condition_id", 
                               "accepting_state_index", 
                               "positioning_state_index",
                               "transition_n_since_positioning"))
@@ -20,7 +20,7 @@ class AcceptSequence:
     def __init__(self, AcceptanceTrace):
         self.__sequence = [
            AcceptCondition(x.acceptance_id, 
-                           x.pre_context_id, 
+                           x.acceptance_condition_id, 
                            x.accepting_state_index, 
                            x.positioning_state_index, 
                            x.transition_n_since_positioning)
@@ -31,7 +31,7 @@ class AcceptSequence:
         if len(self.__sequence) != len(Other.__sequence):    
             return False
         for x, y in izip(self.__sequence, Other.__sequence):
-            if   x.pre_context_id != y.pre_context_id: return False
+            if   x.acceptance_condition_id != y.acceptance_condition_id: return False
             elif x.acceptance_id  != y.acceptance_id:  return False
         return True
 
@@ -43,7 +43,7 @@ class AcceptSequence:
         for x in self.__sequence:
             #012345678012345678012345678012345678012345678
             txt.append(" " * (Indent*4) + "%-15s%-9s%-9s%-9s%-9s\n" % ( \
-                        x.acceptance_id, x.pre_context_id,
+                        x.acceptance_id, x.acceptance_condition_id,
                         x.accepting_state_index, x.positioning_state_index,
                         x.transition_n_since_positioning))
         return "".join(txt)
@@ -52,12 +52,12 @@ class AcceptSequence:
         return self.get_string()
 
 class PositioningInfo(object):
-    __slots__ = ("pre_context_id", 
+    __slots__ = ("acceptance_condition_id", 
                  "acceptance_id",
                  "transition_n_since_positioning", 
                  "positioning_state_index_set")
     def __init__(self, TheAcceptCondition):
-        self.pre_context_id                 = TheAcceptCondition.pre_context_id
+        self.acceptance_condition_id                 = TheAcceptCondition.acceptance_condition_id
         self.acceptance_id                     = TheAcceptCondition.acceptance_id
         self.transition_n_since_positioning = TheAcceptCondition.transition_n_since_positioning
         self.positioning_state_index_set    = set([ TheAcceptCondition.positioning_state_index ])
@@ -70,7 +70,7 @@ class PositioningInfo(object):
 
     def __repr__(self):
         txt  = ".acceptance_id                     = %s\n" % repr(self.acceptance_id) 
-        txt += ".pre_context_id                 = %s\n" % repr(self.pre_context_id) 
+        txt += ".acceptance_condition_id                 = %s\n" % repr(self.acceptance_condition_id) 
         txt += ".transition_n_since_positioning = %s\n" % repr(self.transition_n_since_positioning)
         txt += ".positioning_state_index_set    = %s\n" % repr(self.positioning_state_index_set) 
         return txt

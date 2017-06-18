@@ -2,24 +2,24 @@ from quex.engine.analyzer.examine.state_info import *
 from quex.engine.analyzer.examine.acceptance import *
 from quex.engine.operations.se_operations    import SeAccept, SeStoreInputPosition
 from quex.engine.misc.tools                  import flatten_list_of_lists
-from quex.constants                         import E_PreContextIDs, E_R, E_IncidenceIDs
+from quex.constants                         import E_AcceptanceCondition, E_R, E_IncidenceIDs
 
 from copy import deepcopy, copy
 from itertools import izip
 
-def get_SeAccept(AcceptanceId, PreContextId=E_PreContextIDs.NONE, RestorePositionF=False):
+def get_SeAccept(AcceptanceId, AccConditionId=E_AcceptanceCondition.NONE, RestorePositionF=False):
     cmd = SeAccept()
     cmd.set_acceptance_id(AcceptanceId)
-    cmd.set_pre_context_id(PreContextId)
+    cmd.set_pre_context_id(AccConditionId)
     if RestorePositionF:
         cmd.set_restore_position_register_f()
     return cmd
 
-def add_SeAccept(sm, StateIndex, AcceptanceId, PreContextId=E_PreContextIDs.NONE, RestorePositionF=False):
+def add_SeAccept(sm, StateIndex, AcceptanceId, AccConditionId=E_AcceptanceCondition.NONE, RestorePositionF=False):
     if StateIndex not in sm.states: return
-    sm.states[StateIndex].single_entry.add(get_SeAccept(AcceptanceId, PreContextId, RestorePositionF))
+    sm.states[StateIndex].single_entry.add(get_SeAccept(AcceptanceId, AccConditionId, RestorePositionF))
     accept_str  = "%s" % AcceptanceId
-    pre_str     = "%s/" % PreContextId if PreContextId != E_PreContextIDs.NONE else ""
+    pre_str     = "%s/" % AccConditionId if AccConditionId != E_AcceptanceCondition.NONE else ""
     restore_str = "R" if RestorePositionF else ""
     print "(%i) Accept %s%s%s" % (StateIndex, pre_str, accept_str, restore_str)
 

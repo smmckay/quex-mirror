@@ -25,7 +25,7 @@ AcceptCondition consists of the following main members:
 
     .acceptance_id           -- Pattern that can be accepted.
     
-    .pre_context_id          -- PreContext required for acceptance.
+    .acceptance_condition_id          -- PreContext required for acceptance.
     
     .accepting_state_index   -- State where the last acceptance of 'acceptance_id' 
                                 appeared.
@@ -56,7 +56,7 @@ objects. It behaves like a list where sorting order tells the precedence
 of winners. The first pattern where the pre_context is fulfilled wins.
 
      AcceptSequence: [ 
-          #               length       acceptance_id   pre_context_id   ...
+          #               length       acceptance_id   acceptance_condition_id   ...
           AcceptCondition(67,          2,               ...)
           AcceptCondition(32,          1,               ...)
           AcceptCondition(7,           None,            ...)
@@ -95,7 +95,7 @@ from   quex.engine.operations.se_operations         import SeAccept, \
 from   quex.engine.misc.tree_walker                 import TreeWalker
 from   quex.engine.analyzer.paths_to_state          import PathsToState
 from   quex.constants                               import E_IncidenceIDs, \
-                                                           E_PreContextIDs, \
+                                                           E_AcceptanceCondition, \
                                                            E_TransitionN
 
 from   itertools   import izip
@@ -319,7 +319,7 @@ class _Trace(object):
             if initial_acceptance_id is None:
                 initial_acceptance_id = E_IncidenceIDs.MATCH_FAILURE
             self.__acceptance_trace.append(
-                  _AcceptInfo(PreContextID         = E_PreContextIDs.NONE, 
+                  _AcceptInfo(AccConditionID         = E_AcceptanceCondition.NONE, 
                               AcceptanceID         = initial_acceptance_id,
                               AcceptingStateIndex  = InitStateIndex, 
                               PathSincePositioning = [InitStateIndex], 
@@ -391,7 +391,7 @@ class _Trace(object):
         """
         # If there is an unconditional acceptance, it dominates all previous 
         # occurred acceptances (philosophy of longest match).
-        if Op.pre_context_id() == E_PreContextIDs.NONE:
+        if Op.acceptance_condition_id() == E_AcceptanceCondition.NONE:
             del self.__acceptance_trace[:]
 
         # Input Position Store/Restore
@@ -415,7 +415,7 @@ class _Trace(object):
             # From the above rule, it follows that there is only one entry per acceptance_id.
             break
 
-        entry = _AcceptInfo(Op.pre_context_id(), acceptance_id,
+        entry = _AcceptInfo(Op.acceptance_condition_id(), acceptance_id,
                             AcceptingStateIndex         = StateIndex, 
                             PathSincePositioning        = path_since_positioning, 
                             TransitionNSincePositioning = transition_n_since_positioning) 
@@ -445,10 +445,10 @@ class _Trace(object):
     def acceptance_trace(self):
         return self.__acceptance_trace
 
-    def get(self, PreContextID):
-        """RETURNS: _AcceptInfo object for a given PreContextID."""
+    def get(self, AccConditionID):
+        """RETURNS: _AcceptInfo object for a given AccConditionID."""
         for entry in self.__acceptance_trace:
-            if entry.pre_context_id == PreContextID: return entry
+            if entry.acceptance_condition_id == AccConditionID: return entry
         return None
 
     def __compute_equivalence_hash(self):
@@ -677,7 +677,7 @@ class _AcceptInfo(_StoreInfo):
     
     .acceptance_id              -- Identifies the pattern that is concerned.
                              
-    .pre_context_id          -- if E_PreContextIDs.NONE, then '.acceptance_id' is
+    .acceptance_condition_id          -- if E_AcceptanceCondition.NONE, then '.acceptance_id' is
                                 always accepted. If not, then the pre-context
                                 must be checked before the pattern can be 
                                 accepted.
@@ -693,14 +693,14 @@ class _AcceptInfo(_StoreInfo):
                                 to this state.
     ___________________________________________________________________________
     """
-    __slots__ = ("pre_context_id", 
+    __slots__ = ("acceptance_condition_id", 
                  "acceptance_id", 
                  "accepting_state_index") 
 
-    def __init__(self, PreContextID, AcceptanceID, 
+    def __init__(self, AccConditionID, AcceptanceID, 
                  AcceptingStateIndex, PathSincePositioning, 
                  TransitionNSincePositioning): 
-        self.pre_context_id        = PreContextID
+        self.acceptance_condition_id        = AccConditionID
         self.acceptance_id            = AcceptanceID
         self.accepting_state_index = AcceptingStateIndex
 
@@ -716,7 +716,7 @@ class _AcceptInfo(_StoreInfo):
         path_since_positioning         = copy(self.path_since_positioning)
         transition_n_since_positioning = self.get_transition_n_since_positioning_update(StateIndex)
         path_since_positioning.append(StateIndex)
-        result = _AcceptInfo(self.pre_context_id, 
+        result = _AcceptInfo(self.acceptance_condition_id, 
                             self.acceptance_id, 
                             self.accepting_state_index, 
                             path_since_positioning, 
@@ -728,7 +728,7 @@ class _AcceptInfo(_StoreInfo):
         return self.path_since_positioning[0]
 
     def is_equal(self, Other):
-        if   self.pre_context_id                 != Other.pre_context_id:                 return False
+        if   self.acceptance_condition_id                 != Other.acceptance_condition_id:                 return False
         elif self.acceptance_id                     != Other.acceptance_id:                     return False
         elif self.accepting_state_index          != Other.accepting_state_index:          return False
         elif self.transition_n_since_positioning != Other.transition_n_since_positioning: return False
@@ -740,7 +740,7 @@ class _AcceptInfo(_StoreInfo):
 
     def __repr__(self):
         txt = ["---\n"]
-        txt.append("    .pre_context_id                 = %s\n" % repr(self.pre_context_id))
+        txt.append("    .acceptance_condition_id                 = %s\n" % repr(self.acceptance_condition_id))
         txt.append("    .acceptance_id                     = %s\n" % repr(self.acceptance_id))
         txt.append("    .transition_n_since_positioning = %s\n" % repr(self.transition_n_since_positioning))
         txt.append("    .accepting_state_index          = %s\n" % repr(self.accepting_state_index))

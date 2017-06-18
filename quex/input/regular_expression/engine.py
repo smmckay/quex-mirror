@@ -107,8 +107,8 @@ def do(UTF8_String_or_Stream, PatternDict,
     initial_position = stream.tell()
 
     # -- check for the begin of line condition (BOL)
-    if check(stream, '^'): begin_of_line_f = True
-    else:                  begin_of_line_f = False
+    begin_of_line_f   = check(stream, '^')
+    begin_of_stream_f = check(stream, '<<BOS>>')
     
     # -- MAIN: transform the pattern into a state machine
     pre, core, post = snap_conditional_expression(stream, PatternDict)
@@ -119,18 +119,20 @@ def do(UTF8_String_or_Stream, PatternDict,
 
     # -- check for end of line condition (EOL) 
     # -- check for terminating whitespace
-    end_of_line_f = False
-    if check(stream, '$'): end_of_line_f = True
+    end_of_line_f   = check(stream, "$")
+    end_of_stream_f = check(stream, "<<EOS>>")
 
     __ensure_whitespace_follows(initial_position, stream)
     
-    pattern = Pattern_Prep(CoreSM        = core, 
-                           BeginOfLineF  = begin_of_line_f,
-                           PreContextSM  = pre,
-                           EndOfLineF    = end_of_line_f,
-                           PostContextSM = post,
-                           Sr            = SourceRef.from_FileHandle(stream),
-                           PatternString = read_pattern_string(stream, initial_position),
+    pattern = Pattern_Prep(CoreSM         = core, 
+                           BeginOfLineF   = begin_of_line_f,
+                           BeginOfStreamF = begin_of_stream_f,
+                           PreContextSM   = pre,
+                           EndOfLineF     = end_of_line_f,
+                           EndOfStreamF   = end_of_stream_f,
+                           PostContextSM  = post,
+                           Sr             = SourceRef.from_FileHandle(stream),
+                           PatternString  = read_pattern_string(stream, initial_position),
                            AllowNothingIsNecessaryF = AllowNothingIsNecessaryF)
     
     return pattern

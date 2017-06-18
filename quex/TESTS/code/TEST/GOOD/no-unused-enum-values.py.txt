@@ -4,7 +4,7 @@
 -- E_Op.Accepter: No output is good output --
 -- E_PostContextIDs.IRRELEVANT: No output is good output --
 -- E_TransitionN.IRRELEVANT: No output is good output --
--- E_PreContextIDs.BEGIN_OF_LINE: No output is good output --
+-- E_AcceptanceCondition.BEGIN_OF_LINE: No output is good output --
 -- E_Count.NONE: No output is good output --
 -- E_Compression.PATH: No output is good output --
 -- E_Commonality.A_IN_B: No output is good output --

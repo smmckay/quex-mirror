@@ -5,11 +5,11 @@ import quex.engine.state_machine.algorithm.acceptance_pruning    as     acceptan
 import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.state_machine.construction.sequentialize      as     sequentialize
 from   quex.engine.state_machine.construction.setup_post_context import DFA_Newline
-from   quex.constants                                            import E_PreContextIDs
+from   quex.constants                                            import E_AcceptanceCondition
 
-def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF):
+def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamPreContextF):
     """Sets up a pre-condition to the given state machine. This process
-       is entirely different from any sequentializing or parallelization
+       is entirely different from any concatenation or parallelization
        of state machines. Here, the state machine representing the pre-
        condition is **not** webbed into the original state machine!
 
@@ -36,9 +36,13 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF):
     if pre_context_sm is None:
         # NOT: 'and ...' !
         if BeginOfLinePreContextF:
-            # Mark all acceptance states with the 'trivial pre-context BeginOfLine' flag
+            # Set acceptance condition: 'begin of line'.
             for state in the_state_machine.get_acceptance_state_list():
-                state.set_pre_context_id(E_PreContextIDs.BEGIN_OF_LINE)
+                state.set_pre_context_id(E_AcceptanceCondition.BEGIN_OF_LINE)
+        elif BeginOfStreamPreContextF:
+            # Set acceptance condition: 'begin of stream'.
+            for state in the_state_machine.get_acceptance_state_list():
+                state.set_pre_context_id(E_AcceptanceCondition.BEGIN_OF_STREAM)
         return None
 
     # (*) Reverse the state machine of the pre-condition 

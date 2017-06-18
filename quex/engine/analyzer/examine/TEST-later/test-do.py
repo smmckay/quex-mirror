@@ -8,7 +8,7 @@ from quex.engine.state_machine.TEST.helper_state_machine_shapes import *
 from quex.engine.analyzer.examine.TEST.helper                   import *
 from quex.engine.analyzer.examine.acceptance                    import RecipeAcceptance
 import quex.engine.analyzer.examine.core                        as     examination
-from quex.constants import E_IncidenceIDs, E_PreContextIDs
+from quex.constants import E_IncidenceIDs, E_AcceptanceCondition
 
 if "--hwut-info" in sys.argv:
     print "Complete Process;"
@@ -30,7 +30,7 @@ add_SeAccept(sm, 5L, 55L)
 # Post-Context: Store in '0', restore in '6'
 add_SeAccept(sm, 6L, 66L, 666L, True)
 # Post-Context: Store in '1', restore in '7'
-add_SeAccept(sm, 7L, 77L, E_PreContextIDs.NONE, True)
+add_SeAccept(sm, 7L, 77L, E_AcceptanceCondition.NONE, True)
 print
 
 linear_db, mouth_db = examination.do(sm, RecipeAcceptance)

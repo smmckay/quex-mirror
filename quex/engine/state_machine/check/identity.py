@@ -1,4 +1,4 @@
-from quex.constants  import E_PreContextIDs
+from quex.constants  import E_AcceptanceCondition
 from quex.engine.state_machine.core import DFA
 
 class Checker:
@@ -86,10 +86,12 @@ class Checker:
 
             if       S0.is_acceptance() \
                  !=  S1.is_acceptance():                                      return False
-            elif    (S0.pre_context_id() == E_PreContextIDs.NONE) \
-                 != (S1.pre_context_id() == E_PreContextIDs.NONE):            return False
-            elif    (S0.pre_context_id() == E_PreContextIDs.BEGIN_OF_LINE) \
-                 != (S1.pre_context_id() == E_PreContextIDs.BEGIN_OF_LINE):   return False
+            elif    (S0.acceptance_condition_id() == E_AcceptanceCondition.NONE) \
+                 != (S1.acceptance_condition_id() == E_AcceptanceCondition.NONE):            return False
+            elif    (S0.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE) \
+                 != (S1.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE):   return False
+            elif    (S0.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM) \
+                 != (S1.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM): return False
             elif     S0.input_position_store_f() \
                  !=  S1.input_position_store_f():                             return False
             elif     S0.input_position_restore_f() \

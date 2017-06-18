@@ -35,8 +35,8 @@ def test(Idx, sm_pre, sm, sm_post, BOF_F, EOF_F):
     print " -- begin of line  = ", BOF_F
     print " -- end of line    = ", EOF_F
 
-    ipsb_sm                = setup_post_context.do(result, sm_post, EOF_F, SourceRef_VOID)
-    inverse_pre_context_sm = setup_pre_context.do(result, sm_pre, BOF_F)
+    ipsb_sm                = setup_post_context.do(result, sm_post, EOF_F, False, SourceRef_VOID)
+    inverse_pre_context_sm = setup_pre_context.do(result, sm_pre, BOF_F, False)
     #
     # print "EXPRESSION = ", result
     # print "POST CONDITION = ", post_sm

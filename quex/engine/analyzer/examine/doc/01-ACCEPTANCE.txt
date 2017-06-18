@@ -287,9 +287,9 @@ The sorting order is given by the acceptance id (higher priority = lower
 acceptance id). The first 'Accept' or 'AcceptWithPostContext' wins. After
 an unconditional accept action, no further may follow--of course.
 
-  * StoreInputPosition(AcceptanceID, PreContextId):
+  * StoreInputPosition(AcceptanceID, AccConditionId):
 
-    if PreContextId:
+    if AccConditionId:
         position_register[by(AcceptanceID)] = input position  
 
     + writes: 'position_register[by(AcceptanceID)]'
@@ -360,11 +360,11 @@ The two registers used in 'history()' are the 'last_acceptance' and
 'position_register[i]'. From the discussion on actions the following can be
 summarized:
 
-    Accept(PreContextId, Pattern):
+    Accept(AccConditionId, Pattern):
         + writes: last_acceptance
         + writes: position_register[0]
 
-    AcceptWithPostContext(PreContextId, Pattern):
+    AcceptWithPostContext(AccConditionId, Pattern):
         + writes: last_acceptance
 
     StoreInputPosition(PositionRegisterId):

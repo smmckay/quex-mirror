@@ -3,7 +3,7 @@ from quex.engine.operations.se_operations     import SeAccept, \
                                                      SeStoreInputPosition
 from quex.engine.misc.tools                   import E_Values
 
-from quex.constants  import E_PreContextIDs, \
+from quex.constants  import E_AcceptanceCondition, \
                             E_IncidenceIDs, \
                             E_R
 
@@ -45,7 +45,7 @@ class RecipeAcceptance(Recipe):
     The 'aux_register' values are set during interference in mouth states.
     """
     __slots__         = ("accepter", "ip_offset_db", "snapshot_set_db")
-    RestoreAcceptance = SeAccept(E_IncidenceIDs.RESTORE_ACCEPTANCE, E_PreContextIDs.NONE)
+    RestoreAcceptance = SeAccept(E_IncidenceIDs.RESTORE_ACCEPTANCE, E_AcceptanceCondition.NONE)
 
     def __init__(self, Accepter, IpOffsetDb, SnapshotSetDb):
         assert type(IpOffsetDb) == dict

@@ -59,7 +59,7 @@ from quex.engine.analyzer.examine.TEST.helper                   import *
 from quex.engine.analyzer.examine.acceptance                    import RecipeAcceptance
 from quex.engine.analyzer.examine.core                          import Examiner
 from quex.engine.misc.tools                                     import E_Values
-from quex.constants import E_IncidenceIDs, E_PreContextIDs
+from quex.constants import E_IncidenceIDs, E_AcceptanceCondition
 
 if "--hwut-info" in sys.argv:
     print "Prepare Cautious Recipes;"

@@ -8,7 +8,7 @@ commands of multi-entry state machines.
 """
 from quex.engine.misc.tools import typed
 
-from quex.constants import E_PreContextIDs, \
+from quex.constants import E_AcceptanceCondition, \
                            E_IncidenceIDs, \
                            E_PostContextIDs, \
                            E_R
@@ -48,12 +48,12 @@ class SeOp:
 class SeAccept(SeOp):
     def __init__(self, 
                  AcceptanceId             = E_IncidenceIDs.MATCH_FAILURE, 
-                 PreContextId             = E_PreContextIDs.NONE, 
+                 AccConditionId             = E_AcceptanceCondition.NONE, 
                  RestorePositionRegisterF = False):
 
         SeOp.__init__(self, AcceptanceId)
 
-        self.__pre_context_id              = PreContextId
+        self.__pre_context_id              = AccConditionId
         self.__restore_position_register_f = False
 
     def clone(self, ReplDbPreContext=None, ReplDbAcceptance=None):
@@ -68,7 +68,7 @@ class SeAccept(SeOp):
     def set_pre_context_id(self, PatternId):
         self.__pre_context_id = PatternId
 
-    def pre_context_id(self):
+    def acceptance_condition_id(self):
         return self.__pre_context_id
 
     def set_restore_position_register_f(self):
@@ -78,7 +78,7 @@ class SeAccept(SeOp):
         return self.__restore_position_register_f
     
     def position_register_id(self):
-        if self.restore_position_register_f() or self.pre_context_id() != E_PreContextIDs.NONE: 
+        if self.restore_position_register_f() or self.acceptance_condition_id() != E_AcceptanceCondition.NONE: 
             return self.acceptance_id()
         else:
             return E_IncidenceIDs.CONTEXT_FREE_MATCH
@@ -90,7 +90,7 @@ class SeAccept(SeOp):
         )
 
     def required_variable_ids(self):
-        if self.__pre_context_id == E_PreContextIDs.NONE: 
+        if self.__pre_context_id == E_AcceptanceCondition.NONE: 
             return ()
         else:
             return (E_R.PreContextVerdict, self.__pre_context_id)
@@ -107,8 +107,10 @@ class SeAccept(SeOp):
         restore_txt       = ""
         if self.acceptance_id() != E_IncidenceIDs.MATCH_FAILURE:
             acceptance_id_txt = repr(self.acceptance_id()).replace("L", "")
-        if self.__pre_context_id != E_PreContextIDs.NONE:            
-            if self.__pre_context_id == E_PreContextIDs.BEGIN_OF_LINE:
+        if self.__pre_context_id != E_AcceptanceCondition.NONE:            
+            if self.__pre_context_id == E_AcceptanceCondition.BEGIN_OF_LINE:
+                pre_txt = "pre=bol"
+            elif self.__pre_context_id == E_AcceptanceCondition.BEGIN_OF_STREAM:
                 pre_txt = "pre=bol"
             else: 
                 pre_txt = "pre=%s" % repr(self.__pre_context_id).replace("L", "")

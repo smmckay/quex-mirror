@@ -6,7 +6,7 @@ import quex.engine.analyzer.track_analysis         as     track_analysis
 from   quex.engine.analyzer.position_register_map  import print_this
 import quex.engine.analyzer.engine_supply_factory  as     engine
 import quex.engine.state_machine.construction.combination  as     combination
-from   quex.constants  import E_InputActions, E_StateIndices, E_PreContextIDs, E_Op
+from   quex.constants  import E_InputActions, E_StateIndices, E_AcceptanceCondition, E_Op
 from   quex.blackboard import setup as Setup
 
 import sys
@@ -58,10 +58,12 @@ def get_drop_out_string(analyzer, StateIndex):
     if_str = "if"
     for cmd in analyzer.drop_out.entry.get_command_list(E_StateIndices.DROP_OUT, StateIndex):
         if cmd.id == E_Op.IfPreContextSetPositionAndGoto:
-            if cmd.content.pre_context_id == E_PreContextIDs.BEGIN_OF_LINE: 
+            if   cmd.content.acceptance_condition_id == E_AcceptanceCondition.BEGIN_OF_LINE: 
                 txt += "%s BeginOfLine: " % (if_str)
-            elif cmd.content.pre_context_id != E_PreContextIDs.NONE: 
-                txt += "%s PreContext_%s: " % (if_str, cmd.content.pre_context_id)
+            elif cmd.content.acceptance_condition_id == E_AcceptanceCondition.BEGIN_OF_STREAM: 
+                txt += "%s BeginOfLine: " % (if_str)
+            elif cmd.content.acceptance_condition_id != E_AcceptanceCondition.NONE: 
+                txt += "%s PreContext_%s: " % (if_str, cmd.content.acceptance_condition_id)
 
             if if_str == "if": if_str = "else if"
             txt += cmd.content.router_element.get_string() + "\n"

@@ -10,7 +10,7 @@ from quex.engine.analyzer.examine.TEST.helper                   import *
 from quex.engine.analyzer.examine.state_info                    import *
 from quex.engine.analyzer.examine.acceptance                    import RecipeAcceptance
 from quex.engine.analyzer.examine.core                          import Examiner
-from quex.constants import E_PreContextIDs, E_R, E_IncidenceIDs
+from quex.constants import E_AcceptanceCondition, E_R, E_IncidenceIDs
 from copy import deepcopy
 
 if "--hwut-info" in sys.argv:
@@ -31,15 +31,15 @@ acceptance_scheme_0 = [
     RecipeAcceptance.RestoreAcceptance 
 ]
 acceptance_scheme_1 = [ 
-    SeAccept(1111L, E_PreContextIDs.NONE, False) 
+    SeAccept(1111L, E_AcceptanceCondition.NONE, False) 
 ]
 acceptance_scheme_2 = [ 
-    SeAccept(2222L, E_PreContextIDs.NONE, True) 
+    SeAccept(2222L, E_AcceptanceCondition.NONE, True) 
 ]
 acceptance_scheme_3 = [ 
     SeAccept(3333L, 33L, True), 
     SeAccept(4444L, 44L, True), 
-    SeAccept(5555L, E_PreContextIDs.NONE, True) 
+    SeAccept(5555L, E_AcceptanceCondition.NONE, True) 
 ]
 
 

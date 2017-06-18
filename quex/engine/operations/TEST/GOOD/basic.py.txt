@@ -155,7 +155,7 @@ GotoDoorIdIfInputPNotEqualPointer
    }
 IfPreContextSetPositionAndGoto
 
-   <IfPreContextSetPositionAndGoto: { pre_context_id=24, router_element=case 66: pos -= 1;  goto Pattern66;,  }>
+   <IfPreContextSetPositionAndGoto: { acceptance_condition_id=24, router_element=case 66: pos -= 1;  goto Pattern66;,  }>
    Registers:    InputP(wr),  PreContextFlags(r),  PositionRegister(r),  ThreadOfControl(w), 
    IsBranching: True
    Cost:         1
