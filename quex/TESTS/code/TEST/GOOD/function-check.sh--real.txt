@@ -7,6 +7,7 @@ from_MouthState
 get_outstanding_character
 get_pretty_string
 get_property_value_matches
+has_pre_context_begin_of_stream
 __iadd__
 __invert__
 __missing__

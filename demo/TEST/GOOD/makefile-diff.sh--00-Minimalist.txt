@@ -1,6 +1,6 @@
-< tiny.cpp:
+< tiny.cpp: tiny.qx
 ---
-> tiny.c:
+> tiny.c: tiny.qx
 < 	quex -i tiny.qx -o tiny
 ---
 > 	quex -i tiny.qx -o tiny --language C

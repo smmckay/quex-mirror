@@ -92,17 +92,17 @@ class SingleEntry(object):
         return any(cmd.acceptance_id() == AcceptanceID
                    for cmd in self.get_iterable(SeAccept))
 
-    def has_begin_of_line_pre_context(self):
-        for cmd in self.get_iterable(SeAccept):
-            if cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE:
-                return True
-        return False
+    def has_pre_context_begin_of_line(self):
+        return any(
+            cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE
+            for cmd in self.get_iterable(SeAccept)
+        )
 
-    def has_begin_of_stream_pre_context(self):
-        for cmd in self.get_iterable(SeAccept):
-            if cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM:
-                return True
-        return False
+    def has_pre_context_begin_of_stream(self):
+        return any(
+            cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
+            for cmd in self.get_iterable(SeAccept)
+        )
 
     def clear(self):
         del self.__list[:]

@@ -7,8 +7,8 @@ token {
 
 mode PREPROCESS {
     \P{White_Space}+	               => QUEX_TKN_WHITE_SPACE(Lexeme);
-    [:inverse(\P{White_Space},[&]):]+  => QUEX_TKN_NON_WHITE_SPACE_NO_AMP(Lexeme);
-    [:inverse(\P{White_Space}):]	   => QUEX_TKN_NON_WHITE_SPACE_ANY_ONE(Lexeme);
+    [:complement(\P{White_Space},[&]):]+  => QUEX_TKN_NON_WHITE_SPACE_NO_AMP(Lexeme);
+    [:complement(\P{White_Space}):]	   => QUEX_TKN_NON_WHITE_SPACE_ANY_ONE(Lexeme);
     <<FAIL>>	                       => QUEX_TKN_FAIL(Lexeme);
     <<EOF>>                            => QUEX_TKN_TERMINATION(LexemeNull);
 }

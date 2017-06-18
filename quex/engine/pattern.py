@@ -55,10 +55,14 @@ class Pattern:
 
     def has_pre_context(self): 
         return    self.sm_pre_context is not None \
-               or self.sm.has_pre_context_begin_of_line_f()
+               or self.sm.has_pre_context_begin_of_line_f() \
+               or self.sm.has_pre_context_begin_of_stream_f()
 
     def has_pre_context_begin_of_line_f(self):
         return self.sm.has_pre_context_begin_of_line_f()
+
+    def has_pre_context_begin_of_stream_f(self):
+        return self.sm.has_pre_context_begin_of_stream_f()
 
     def get_pre_context_generalized(self):
         """RETURNS: DFA implementing the pre-context. If the pre-

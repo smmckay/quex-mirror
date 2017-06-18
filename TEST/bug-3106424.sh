@@ -31,6 +31,6 @@ echo
 quex --set-by-property Script=Greek 
 
 echo "--------------------------------------------------------------------"
-echo quex --set-by-expression '[:inverse([\1-\U10FFFE]):]' --intervals --numeric
+echo quex --set-by-expression '[:complement([\1-\U10FFFE]):]' --intervals --numeric
 echo
-quex --set-by-expression '[:inverse([\4-\U10FFFE]):]' --intervals --numeric
+quex --set-by-expression '[:complement([\4-\U10FFFE]):]' --intervals --numeric

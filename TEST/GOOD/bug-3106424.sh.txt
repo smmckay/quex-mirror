@@ -77,7 +77,7 @@ Characters:
 1D220: 𝈠 𝈡 𝈢 𝈣 𝈤 𝈥 𝈦 𝈧 𝈨 𝈩 𝈪 𝈫 𝈬 𝈭 𝈮 𝈯 𝈰 𝈱 𝈲 𝈳 𝈴 𝈵 𝈶 𝈷 𝈸 𝈹 𝈺 𝈻 𝈼 𝈽 𝈾 𝈿 
 1D240: 𝉀 𝉁 𝉂 𝉃 𝉄 𝉅 
 --------------------------------------------------------------------
-quex --set-by-expression [:inverse([\1-\U10FFFE]):] --intervals --numeric
+quex --set-by-expression [:complement([\1-\U10FFFE]):] --intervals --numeric
 
 Characters:
 

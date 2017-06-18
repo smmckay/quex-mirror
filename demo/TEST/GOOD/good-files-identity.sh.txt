@@ -1,3 +1,4 @@
+00-Minimalist.sh.txt
 01-Trivial.sh.txt
 02-ModesAndStuff.sh--DEBUG.txt
 02-ModesAndStuff.sh--NDEBUG.txt
@@ -28,3 +29,4 @@
 11-ManualBufferFilling.sh--gavager-plain.txt
 11-ManualBufferFilling.sh--point-plain.txt
 12-EngineEncoding-2nd.sh.txt
+

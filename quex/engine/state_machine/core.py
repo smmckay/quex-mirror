@@ -759,7 +759,7 @@ class DFA(object):
         return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE
                    for state in self.states.itervalues())
 
-    def has_pre_context_begin_of_tream_f(self):
+    def has_pre_context_begin_of_stream_f(self):
         return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
                    for state in self.states.itervalues())
 

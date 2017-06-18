@@ -369,7 +369,7 @@ class Language(dict):
         if Op.id == E_Op.Accepter:
             txt = []
             for i, element in enumerate(Op.content):
-                block = "{ last_acceptance = %s; __quex_debug(\"last_acceptance = %s\\n\"); }\n" \
+                block = "last_acceptance = %s; __quex_debug(\"last_acceptance = %s\\n\");\n" \
                         % (self.ACCEPTANCE(element.acceptance_id), self.ACCEPTANCE(element.acceptance_id))
                 self.IF_ACCEPTANCE_CONDITION(txt, i == 0, element.acceptance_condition_id, block)
             return "".join(txt)
