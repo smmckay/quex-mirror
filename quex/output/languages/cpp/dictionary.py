@@ -839,9 +839,10 @@ class Language(dict):
         if   AccConditionId == E_AcceptanceCondition.BEGIN_OF_LINE: 
             return "me->buffer._lexatom_before_lexeme_start == '\\n'"
         elif AccConditionId == E_AcceptanceCondition.BEGIN_OF_STREAM: 
-            return "QUEX_NAME(Buffer_is_begin_of_file)(&me->buffer))"
+            return "QUEX_NAME(Buffer_is_begin_of_stream)(&me->buffer)"
         elif AccConditionId == E_AcceptanceCondition.END_OF_STREAM: 
-            return "QUEX_NAME(Buffer_is_begin_of_stream)(&me->buffer))"
+            print "#Code: END_OF_STREAM"
+            return "QUEX_NAME(Buffer_is_end_of_stream)(&me->buffer)"
         elif AccConditionId == E_AcceptanceCondition.NONE:
             return "true"
         elif isinstance(AccConditionId, (int, long)):

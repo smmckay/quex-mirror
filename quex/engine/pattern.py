@@ -58,10 +58,15 @@ class Pattern:
                or self.sm.has_pre_context_begin_of_line_f() \
                or self.sm.has_pre_context_begin_of_stream_f()
 
+    def has_post_context_end_of_stream_f(self):
+        return self.sm.has_post_context_end_of_stream_f()
+
     def has_pre_context_begin_of_line_f(self):
         return self.sm.has_pre_context_begin_of_line_f()
 
     def has_pre_context_begin_of_stream_f(self):
+        # 'begin of line' includes 'begin of stream'.
+        if self.has_pre_context_begin_of_line_f(): return True
         return self.sm.has_pre_context_begin_of_stream_f()
 
     def get_pre_context_generalized(self):

@@ -50,6 +50,7 @@ final section introduces *regular expression algebra*.
     ucs-properties.rst
     re-context-dependent.rst
     re-algebra.rst
+    anti-pattern.rst
     re-other-operations.rst
     summary.rst
    

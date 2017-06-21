@@ -57,7 +57,8 @@ class Pattern_Prep(object):
         self.__sm                           = CoreSM
         self.__post_context_sm              = PostContextSM
         self.__post_context_end_of_line_f   = EndOfLineF
-        self.__post_context_end_of_stream_f = EndOfStreamF
+        # EndOfLine shall encompass EndOfStreamF
+        self.__post_context_end_of_stream_f = EndOfStreamF | EndOfLineF
 
         # -- [optional] pre contexts
         #
@@ -106,6 +107,7 @@ class Pattern_Prep(object):
         return    self.__post_context_sm is not None \
                or self.__post_context_end_of_line_f  \
                or self.__post_context_end_of_stream_f
+
     def has_pre_or_post_context(self):
         return self.has_pre_context() or self.has_post_context()
 
@@ -257,13 +259,9 @@ class Pattern_Prep(object):
 
         # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
         sm_main, sm_bipd = self.__finalize_mount_post_context_sm(sm_main, 
-                                                                 sm_post_context,
-                                                                 self.__post_context_end_of_line_f, 
-                                                                 self.__post_context_end_of_stream_f)
+                                                                 sm_post_context)
         sm_pre_context = self.__finalize_mount_pre_context_sm(sm_main, 
-                                                              sm_pre_context_to_be_inverted,
-                                                              self.__pre_context_begin_of_line_f, 
-                                                              self.__pre_context_begin_of_stream_f)
+                                                              sm_pre_context_to_be_inverted)
 
         # Store finalized self
         if self.__pattern_string is not None: pattern_string = self.__pattern_string
@@ -290,21 +288,19 @@ class Pattern_Prep(object):
 
         return self.__finalized_self
 
-    def __finalize_mount_pre_context_sm(self, Sm, SmPreContextToBeInverted, 
-                                        BeginOfLineF, BeginOfStreamF):
-        if SmPreContextToBeInverted is None and BeginOfLineF == False:
-            return None
-
+    def __finalize_mount_pre_context_sm(self, Sm, SmPreContextToBeInverted): 
         return setup_pre_context.do(Sm, SmPreContextToBeInverted, 
-                                    BeginOfLineF, BeginOfStreamF)
+                                    self.__pre_context_begin_of_line_f, 
+                                    self.__pre_context_begin_of_stream_f)
 
-    def __finalize_mount_post_context_sm(self, Sm, SmPostContext, EndOfLineF, EndOfStreamF):
+    def __finalize_mount_post_context_sm(self, Sm, SmPostContext):
         # In case of a 'trailing post context' a 'bipd_sm' may be provided
         # to detect the input position after match in backward direction.
         # BIPD = backward input position detection.
         sm,     \
         bipd_sm_to_be_inverted = setup_post_context.do(Sm, SmPostContext, 
-                                                       EndOfLineF, EndOfStreamF,
+                                                       self.__post_context_end_of_line_f, 
+                                                       self.__post_context_end_of_stream_f,
                                                        self.__sr)
 
         if bipd_sm_to_be_inverted is None: 

@@ -43,6 +43,7 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
             # Set acceptance condition: 'begin of stream'.
             for state in the_state_machine.get_acceptance_state_list():
                 state.set_pre_context_id(E_AcceptanceCondition.BEGIN_OF_STREAM)
+                print "#set_pre_context_id: STREAM"
         return None
 
     # (*) Reverse the state machine of the pre-condition 

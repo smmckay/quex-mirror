@@ -755,11 +755,18 @@ class DFA(object):
         return any(state_index not in unique and state_index != self.init_state_index
                    for state_index in self.states.iterkeys())
 
+    def has_post_context_end_of_stream_f(self):
+        return any(state.acceptance_condition_id() == E_AcceptanceCondition.END_OF_STREAM
+                   for state in self.states.itervalues())
+
     def has_pre_context_begin_of_line_f(self):
         return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE
                    for state in self.states.itervalues())
 
     def has_pre_context_begin_of_stream_f(self):
+        # 'begin of line' includes 'begin of stream'.
+        if self.has_pre_context_begin_of_line_f(): return True
+
         return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
                    for state in self.states.itervalues())
 

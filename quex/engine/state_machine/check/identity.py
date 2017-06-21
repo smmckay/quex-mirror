@@ -113,18 +113,16 @@ def do(A, B):
     # lexical analyzer.
     if not Checker(A.sm, B.sm).do(): return False
 
-    A_pre_context = A.get_pre_context_generalized()
-    B_pre_context = B.get_pre_context_generalized()
+    if      A.sm.has_pre_context_begin_of_line_f() \
+         != B.sm.has_pre_context_begin_of_line_f():   return False
+    elif    A.sm.has_pre_context_begin_of_stream_f() \
+         != B.sm.has_pre_context_begin_of_stream_f(): return False
+    elif    (A.sm_pre_context is None) \
+         != (B.sm_pre_context is None):               return False
 
-    if A_pre_context is None:
-        if B_pre_context is None: 
-            return True
-        else:
-            return False # One depends on pre-context, the other not
+    # Both either have pre-context, or none.
+    if A.sm_pre_context is None:                    
+        return True
     else:
-        if B_pre_context is None: 
-            return False # One depends on pre-context, the other not
-        else:
-            return Checker(A_pre_context, B_pre_context).do()
-
+        return Checker(A.pre_context, B.pre_context).do()
 

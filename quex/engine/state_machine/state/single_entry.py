@@ -99,6 +99,9 @@ class SingleEntry(object):
         )
 
     def has_pre_context_begin_of_stream(self):
+        # 'begin of line' includes 'begin of stream'.
+        if self.has_pre_context_begin_of_line_f(): return True
+
         return any(
             cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
             for cmd in self.get_iterable(SeAccept)

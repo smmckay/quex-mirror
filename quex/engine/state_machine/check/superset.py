@@ -122,16 +122,23 @@ def do(A, B):
 
     # (*) Pre-Condition _______________________________________________________
     #
-    A_pre_context = A.get_pre_context_generalized()
-    B_pre_context = B.get_pre_context_generalized()
+    # If 'A' has a restriction that 'B' has not, 
+    # => 'A' cannot be a superset of 'B'.
+    if       A.has_post_context_end_of_stream_f() \
+         and not B.has_post_context_end_of_stream_f():  return False
+    elif     A.has_pre_context_begin_of_line_f() \
+         and not B.has_pre_context_begin_of_line_f():   return False
+    # here: not(A) or B => Either A does not have the condition or B has it too.
+    elif     A.has_pre_context_begin_of_stream_f() \
+         and not B.has_pre_context_begin_of_stream_f(): return False
+    # here: not(A) or B => Either A does not have the condition or B has it too.
+    elif     (A.sm_pre_context is not None) \
+         and (B.sm_pre_context is None):                return False
+    # here: not(A) or B => Either A does not have the condition or B has it too.
+    elif     (A.sm_pre_context is None) \
+         and (B.sm_pre_context is not None):            return True
 
-    # ANYWAY (see before): core(A) is a superset of core(B). 
-    if A_pre_context is None:   # A is not restricted. B may be (who cares).
-        return True             # => A can match more than B.
-
-    elif B_pre_context is None: # A is restricted by pre-context, B is not.
-        return False            # => B can match things that A cannot. 
-    else:
-        # 'B.sm_pre_context' matches super set of 'A.sm_pre_context'? 
-        return Checker(B_pre_context, A_pre_context).do()
+    # 'A' and be either have both pre-context, or none.
+    if A.sm_pre_context is None: return True
+    else:                        return Checker(B.pre_context, A.pre_context).do()
 

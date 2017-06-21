@@ -9,11 +9,11 @@ import quex.engine.state_machine.construction.ambiguous_post_context as     ambi
 from   quex.constants  import E_AcceptanceCondition
 from   quex.blackboard import setup as Setup
 
-def do(the_state_machine, post_context_sm, EndOfLinePostContextF, EndOfStreamPostContext, 
+def do(the_state_machine, post_context_sm, EndOfLinePostContextF, EndOfStreamPostContextF, 
        SourceReference):
     acceptance_id = the_state_machine.get_id()
     result, bipd_sm = _do(the_state_machine, post_context_sm, 
-                          EndOfLinePostContextF, EndOfLinePostContextF, 
+                          EndOfLinePostContextF, EndOfStreamPostContextF, 
                           SourceReference)
 
     # Make sure that the resulting state machine has the same state machine index
@@ -61,24 +61,19 @@ def _do(the_state_machine, post_context_sm, EndOfLinePostContextF, EndOfStreamPo
        X stopped, even though Ym is required to state acceptance.    
        
     """
-    if post_context_sm is None and EndOfLinePostContextF == False:
-        return the_state_machine, None
-
     __entry_asserts(the_state_machine, post_context_sm)
 
     if post_context_sm is None:
-        assert EndOfLinePostContextF
-        # Generate a new post context that just contains the 'newline'
-        post_context_sm = DFA_Newline() 
+        if EndOfLinePostContextF: 
+            # Mount 'newline' to existing post context
+            post_context_sm = sequentialize.do([the_state_machine, 
+                                                DFA_Newline()]) 
+        if EndOfStreamPostContextF:
+            # Set acceptance condition: 'end of stream'.
+            for state in the_state_machine.get_acceptance_state_list():
+                state.set_pre_context_id(E_AcceptanceCondition.END_OF_STREAM)
 
-    elif EndOfLinePostContextF: 
-        # Mount 'newline' to existing post context
-        post_context_sm = sequentialize.do([post_context_sm, 
-                                            DFA_Newline()]) 
-    elif EndOfStreamPostContextF:
-        # Set acceptance condition: 'end of stream'.
-        for state in the_state_machine.get_acceptance_state_list():
-            state.set_pre_context_id(E_AcceptanceCondition.END_OF_STREAM)
+        return the_state_machine, None
 
     # A post context with an initial state that is acceptance is not really a
     # 'context' since it accepts anything. The state machine remains un-post context.

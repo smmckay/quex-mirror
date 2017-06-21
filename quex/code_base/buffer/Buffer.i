@@ -387,21 +387,6 @@ QUEX_NAME(Buffer_content_size)(QUEX_NAME(Buffer)* me)
 }
 
 QUEX_INLINE bool 
-QUEX_NAME(Buffer_is_end_of_file)(QUEX_NAME(Buffer)* me)
-{ 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    if( me->input.lexatom_index_end_of_stream == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-        return false;
-    }
-    else if( me->_read_p != me->input.end_p ) {
-        return false;
-    }
-
-    return    QUEX_NAME(Buffer_input_lexatom_index_end)(me) 
-           == me->input.lexatom_index_end_of_stream;
-}
-
-QUEX_INLINE bool 
 QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me)
 { 
     const ptrdiff_t ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
@@ -416,13 +401,28 @@ QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me)
     return me->input.lexatom_index_end_of_stream - me->input.lexatom_index_begin < ContentSize;
 }
 
+QUEX_INLINE bool 
+QUEX_NAME(Buffer_is_end_of_stream)(QUEX_NAME(Buffer)* me)
+{ 
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    if( me->input.lexatom_index_end_of_stream == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        return false;
+    }
+    else if( me->_read_p != me->input.end_p ) {
+        return false;
+    }
+
+    return    QUEX_NAME(Buffer_input_lexatom_index_end)(me) 
+           == me->input.lexatom_index_end_of_stream;
+}
+
 QUEX_INLINE bool                  
-QUEX_NAME(Buffer_is_begin_of_file)(QUEX_NAME(Buffer)* buffer)
+QUEX_NAME(Buffer_is_begin_of_stream)(QUEX_NAME(Buffer)* buffer)
 { 
     QUEX_BUFFER_ASSERT_CONSISTENCY(buffer);
-    if     ( buffer->_read_p != buffer->_memory._front )           return false;
-    else if( QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer) ) return false;
-    else                                                           return true;
+    if     ( buffer->_lexeme_start_p != &buffer->_memory._front[1] ) return false;
+    else if( QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer) )   return false;
+    else                                                             return true;
 }
 
 QUEX_INLINE bool

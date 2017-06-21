@@ -1,0 +1,13 @@
+Acceptance Conditions: Begin/End of Stream
+-----------------------------------------------
+plain.exe
+implicit.exe
+-----------------------------------------------
+Begin and End of stream conditions may be set 
+
+explicitly: using <<BOS>> and <<EOS>>
+implicitly: using begin of line '^' and end of line '$'.
+
+The tests in this directory tests both cases.
+
+

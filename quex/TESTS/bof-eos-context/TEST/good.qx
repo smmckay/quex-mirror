@@ -1,7 +1,0 @@
-
-mode X {
-    <<BOS>>X => QUEX_TKN_BEGIN_OF_STREAM_X();
-    X<<EOS>> => QUEX_TKN_END_OF_STREAM_X();
-    X        => QUEX_TKN_X();
-    [^X]     => QUEX_TKN_NOT_X();
-}

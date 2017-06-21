@@ -7,24 +7,49 @@ Patterns may require a restricted context. Modes and mode transitions model
 larger contexts such as *languages*. A more concise type of context is the
 *border*, i.e. to what comes before or after the pattern. Relying on regular
 expressions pre- and post-contexts provide a means to specify such constraints.
-Typical border conditions that can be expressed are 'begin of line' or
-'end of line'. However, relying on regular expressions implies that no events
-such as 'begin of stream' or 'end of stream' can be considered as context
-constraints.
+Typical border conditions are 'begin-of-line' or 'end-of-line'. Those can 
+be caught by matching regular expressions. 
 
-A pre-context matches backwards on content before the start position of the
-current analyzer step. A post-context matches behind the pattern's lexeme.
-Lexatoms matching the pre- and post-contexts are not part of the matching
-pattern's lexeme.  
+The reliance on regular expressions implies that only the data stream context
+can be considered for matching. The lexer's state or that of any external
+component cannot be considered that way. There is an exception though: the
+conditions 'begin-of-stream' and 'end-of-stream'. Precisely, they are
+conditions on the lexer's current input pointer and the byte loader.  For the
+sake of convenience syntax is provided to deal with the two conditions.
 
-Figure :ref:`pre-and-post-context` shows the example of a core pattern
-``[a-z]+`` which may only match if specific pre and post contexts are met. 
-The pre-context in that example could be ``(hi|hello)[ ]+``, i.e. some greeting
-followed by white space. The post-context could be ``"."|"!"``. If the lexical
-analysis step starts at the "h", then the pre-context is met by "hi " ,
-the core pattern is matched by "world", and the post-context is matched by
-".". The lexeme, in that case is solely "world" and the next step will
-start at the ".", not behind it.
+.. describe:: <<BOS>> P
+
+    Defines the pre-context 'begin-of-stream'. The pattern ``P`` only matches
+    at the beginning of the input stream. 
+
+.. describe:: P <<EOS>>
+
+    Defines the post-context 'end-of-stream'. The pattern ``P`` only matches at
+    the end of the input stream. This post context must be considered with care
+    in situations where there might be no explicit end-of-stream condition,
+    such as byte loaders based on socket connections.
+
+Notably, there must be *white space* between the ``<<BOS>>`` and the pattern as well
+as after a pattern which is followed by ``<<EOS>>``.  Any other dependency on
+object states must be expressed by mode transitions.  The rest of this section
+deals with context dependencies on the input stream itself, i.e. those which
+can be expressed by regular expressions.  
+
+A pre-context matches backwards before the start position of the current
+analyzer step. A post-context matches after what is matched by the core
+pattern.  Lexatoms matching the pre- and post-contexts are not part of the
+matching pattern's lexeme.  The example in figure :ref:`pre-and-post-context`
+shows the example of a matching pattern::
+
+    "hello "/"world"/"!"
+
+That is, ``world`` is only matched if it appears after ``"hello "`` and before
+``"!"``. The lexatoms before and after the sequence ``world`` are considered,
+but are they do not contribute to the resulting lexeme which is solely what
+matched the regular expression ``"world"``. The first lexatom to be considered
+in the next analysis step is the exclamation mark. That is, the input pointer
+is set to the position right after where the core pattern matches, even though
+further content has been considered already as a post-context.
 
 .. _fig:pre-and-post-context:
 
@@ -32,45 +57,37 @@ start at the ".", not behind it.
 
    Pre- and post context around a core pattern.
  
-To begin with,  the trivial conditions for begin of line and end of
-line are discussed.  Then it is shown how to specify regular expressions
-may be used to specify the surroundings of the pattern to be matched. The
-traditional characters to condition begin and end of line are ``^`` and 
-``$``.
+The following syntax elements are available for the specification of
+context rules.
 
 .. describe:: ^R 
 
    a  regular expression ``R``, but only at the beginning of a line. This
-   condition holds whenever the scan starts at the beginning of the character
-   stream or right after a newline character. It scans only for a single
-   newline character (hexadecimal 0A) backwards, independent on how the
-   particular operating system codes the newline. 
+   condition holds whenever the scan starts *right after a newline character*
+   or at the *beginning of the character stream* (i.e. ``<<BOS>>`` is implied).
+   It scans only for a single newline character 0x0A '\\n' backwards,
+   independent on how the particular operating system codes the newline. 
 
 .. describe:: R$ 
 
-    a regular expression R, but only at the end of a line and *not* at the end
-    of the file. The meaning of this shortcut can be adapted according to the
-    target operating system. Some operating systems, such as DOS and Windows,
-    code a newline as a sequence '\r\n' (hexadecimal 0D, 0A), i.e.  as two
-    characters. If you want to use this feature on those systems, you need to
-    specify the ``--DOS`` option on the command line (or in your makefile).
-    Otherwise, ``$`` will scan only for the newline character (hexadecimal 0A).
-    Consequently, if newline is then coded as 0D, 0A, then the first 0D would
-    discard a pattern that was supposed to be followed by 0A only.
+    a regular expression R, but only at the *end of a line* or at *the end of
+    the input stream* (i.e. <<EOS>> is implied). Traditionally, a newline can
+    be coded in two ways: the Unix-way with a plain 0x0A '\\n' or the DOS-way
+    with the sequence 0x0D 0x0A '\\r\\n'. By default both are considered as
+    post-context.  The command line option ``--no-DOS`` allows one to waive the
+    consideration of DOS newlines.
 
-    If the ``$`` shall trigger at the end of the file, it might be advantageous
-    to add a newline at the end of the file by default.
-
-For more sophisticated cases regular expressions can be defined.  Let ``R`` be
-the core regular expression, ``Q`` the regular expression of the pre-condition,
-and ``S`` the regular expression for the post-condition.
+For other cases than the aforementioned regular expressions can be defined.  In
+the following, ``R``, ``S``, and ``Q`` represent regular expressions. ``R``
+represents the core pattern of what is relevant for the matching lexeme. ``Q``
+is the pre-context and ``S`` is the post-context.  The following means allow to
+specify pre- and post-contexts based on regular expressions.
 
 .. describe:: R/S
 
-   matches an ``R``, but only if it is followed by an ``S``. If the pattern
-   matches the input is set to the place where ``R``. The part that is
-   matched by ``S`` is available for the next pattern to be matched.  ``R``
-   is post-conditioned.  
+   matches an ``R``, but only if it is followed by an ``S``. Upon match the
+   input is set right after where ``R`` matched.  ``S`` is the post-context of
+   ``R``.  
    
    The case where the repeated or optional end of ``R`` matches the beginning
    of ``S`` is handled by a *philosophical cut* to avoid the 'dangerous
@@ -83,55 +100,35 @@ and ``S`` the regular expression for the post-condition.
 
     matches ``R`` from the current position, but only if it is preceded by a
     ``Q``. Practically, this means the analyzer goes backwards in order to
-    determine if the pre-condition ``Q`` has matched and then forward to see if
-    ``R`` has matched. ``R`` is pre-conditioned.  With pre-conditions there is
-    no trailing context problem as with post-conditions above.
+    determine the condition.  ``Q`` is the pre-context of ``R``.
                   
 .. describe:: Q/R/S 
 
-    matches ``R`` from the current position, but only if the preceding
-    stream matches a ``Q`` and the following stream matches an ``S``.
-    ``R`` is pre- and post-conditioned.
+    matches ``R`` from the current position, but only if the preceding matches
+    a ``Q`` and the following matches an ``S``.  ``Q`` is the pre-context of
+    ``R`` and ``S`` is its post-context.
 
-A post context should never contain an empty path, i.e. match without any
-input. This would mean that if there is nothing specific following it is
-acceptable--which happens to be always true. Then, the remaining definition of
-the post context is redundant.  
+Neither pre- nor post-context should contain an empty path. An empty path means
+that even no lexatom satisfies the condition. Such a condition is always
+fulfilled and, therefore, such a pre- or post-context is not really a
+constraint.  Pre- and post contexts are the utmost syntactical unit. This means
+that they cannot be logically or-ed.   The following specification
+is *dysfunctional*.::
 
-Pre- and post contexts are the utmost syntactical unit. This means that they
-cannot be logically 'or-ed'.  That is, the match rule::
+   (A/B)|(C/D) => QUEX_TKN_SOME();   // WRONG!
+
+However, the functionality of it can be achieved by splitting the or-ed
+condition and associating it with the same action as follows.::
 
    A/B  => QUEX_TKN_SOME();          // OK!
    C/D  => QUEX_TKN_SOME();          // OK!
 
-*cannot* be written shortly as
-
-   (A/N)|(C/D) => QUEX_TKN_SOME();   // WRONG!
-
-The reason for that lies in the grammar that is defined internally for regular
-expressions. 
-
-
-.. note::
-
-    There is no syntactic means to catch the post-context 'end-of-stream'.  The
-    markers ``<<EOF>>`` and ``<<FAIL>>`` are not available as post context and
-    ``$`` does not catch an end of file post context either. 
-    
-    The only way to catch a pattern at the end of a file is the following. Let
-    'X' be the pattern that matches if it is followed by 'end-of-stream.
-    Any token read from the stream must be kept delayed by one before it is
-    treated. If the current token is not ``TERMINATION``, then the previous
-    token may be processed.  Else, if the previous token corresponds to the 'X'
-    the according token must be generated manually.
-
-
 .. rubric:: Footnotes
 
-.. [#f1] The POSIX draft :cite:`ISO1993posix` mentions that text matched by those patterns is
-    undefined. The origin of this problem lies in the way state machines are
-    treated.  To avoid this a 'stepping backward from the end of the post-condition
-    to the end of the core pattern' must be implemented. Quex does exactly
-    that, but it needs to modify the state machines sometimes (in which case
-    a warning message is issued).
+.. [#f1] The POSIX draft :cite:`ISO1993posix` mentions that text matched by
+    those patterns is undefined. The origin of this problem lies in the way state
+    machines are treated.  To avoid this a 'stepping backward from the end of the
+    post-condition to the end of the core pattern' must be implemented. Quex does
+    exactly that, but it needs to modify the state machines sometimes (in which
+    case a warning message is issued).
           

@@ -109,6 +109,8 @@ def do(UTF8_String_or_Stream, PatternDict,
     # -- check for the begin of line condition (BOL)
     begin_of_line_f   = check(stream, '^')
     begin_of_stream_f = check(stream, '<<BOS>>')
+    if begin_of_stream_f:
+        skip_whitespace(stream)
     
     # -- MAIN: transform the pattern into a state machine
     pre, core, post = snap_conditional_expression(stream, PatternDict)
@@ -121,6 +123,9 @@ def do(UTF8_String_or_Stream, PatternDict,
     # -- check for terminating whitespace
     end_of_line_f   = check(stream, "$")
     end_of_stream_f = check(stream, "<<EOS>>")
+
+    __error_check(begin_of_line_f, begin_of_stream_f, pre, stream, "pre-context")
+    __error_check(end_of_line_f, end_of_stream_f, post, stream, "post-context")
 
     __ensure_whitespace_follows(initial_position, stream)
     
@@ -870,3 +875,12 @@ def snap_set_list(stream, set_operation_name, PatternDict):
 
 
    
+
+def __error_check(ConditionLine, ConditionStream, Sm, stream, Name):
+    condition_n = 0
+    if   ConditionLine:   condition_n += 1
+    elif ConditionStream: condition_n += 1
+    elif Sm is not None:  condition_n += 1
+
+    if condition_n > 1:
+        error.log("More than one %s." % Name, stream)

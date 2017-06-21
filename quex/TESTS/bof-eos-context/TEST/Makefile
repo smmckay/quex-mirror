@@ -1,17 +1,21 @@
 # Two lines to generate and compile the lexer:
 
-all: lexer
+all: plain.exe implicit.exe
 
-tiny.c: good.qx
-	# (1) Generate the lexical analyzer
-	quex -i good.qx -o tiny --language C
+hwut-info: 
+	@echo plain.exe implicit.exe
 
-lexer: lexer.c tiny.c
-	# (2) Compile the lexical analyzer
-	gcc lexer.c tiny.c -I$(QUEX_PATH) \
-		-Wall -Werror -o lexer 
+%.c: %.qx
+	quex -i $< -o $* --language C
+
+%.exe: %.c lexer.c 
+	gcc lexer.c $< -I$(QUEX_PATH) -I$(HWUT_PATH) \
+		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
+		-DHEADER_FILE='"$*.h"' -DLEXER_TYPE=quex_$* -DTITLE='"$*"' \
+		-Wall -Werror \
+		-o $@ -ggdb 
 
 clean:
-	rm -f lexer \
-		  tiny.h tiny-configuration.h tiny.c \
-		  tiny-token.h tiny-token_ids.h
+	rm -f plain.exe plain.c \
+	      implicit.exe implicit.c \
+		  *.h *-configuration.h *-token.h *-token_ids.h \
