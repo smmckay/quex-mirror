@@ -124,5 +124,5 @@ def do(A, B):
     if A.sm_pre_context is None:                    
         return True
     else:
-        return Checker(A.pre_context, B.pre_context).do()
+        return Checker(A.sm_pre_context, B.sm_pre_context).do()
 

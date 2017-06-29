@@ -917,7 +917,8 @@ def _get_analyzer_for_loop(loop_map, EventHandler):
     )
 
     # Code Transformation
-    verdict_f, sm = Setup.buffer_encoding.do_state_machine(sm)
+    verdict_f, sm = Setup.buffer_encoding.do_state_machine(sm,
+                                                           BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
 
     # Loop FSM
     analyzer = analyzer_generator.do(sm, 
@@ -1022,7 +1023,8 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
     # Codec Transformation
     def transform(sm):
         verdict_f, \
-        sm_transformed = Setup.buffer_encoding.do_state_machine(sm) 
+        sm_transformed = Setup.buffer_encoding.do_state_machine(sm, 
+                                                                BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
         if not verdict_f:
             error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
                       "contained character not suited for given character encoding.")

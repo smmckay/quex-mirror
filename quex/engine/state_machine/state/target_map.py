@@ -1,7 +1,8 @@
-from   quex.engine.misc.interval_handling import NumberSet, Interval
+from   quex.engine.misc.interval_handling             import NumberSet, Interval
 from   quex.engine.state_machine.state.target_map_ops import E_Border
-from   quex.constants                     import E_StateIndices
-from   quex.blackboard                    import setup as Setup
+from   quex.constants                                 import E_StateIndices
+from   quex.blackboard                                import setup as Setup
+
 from   operator import attrgetter
 
 class TargetMap:
@@ -106,6 +107,11 @@ class TargetMap:
     def delete_epsilon_target_state(self, TargetStateIdx):
         if TargetStateIdx in self.__epsilon_target_index_list:
             del self.__epsilon_target_index_list[self.__epsilon_target_index_list.index(TargetStateIdx)]
+
+    def delete_trigger_set(self, TriggerSet):
+        for si, trigger_set in self.__db.items():
+            trigger_set.subtract(TriggerSet)
+            if trigger_set.is_empty(): del self.__db[si]
 
     def delete_transitions_on_empty_trigger_sets(self):
         for target_index, trigger_set in self.__db.items():

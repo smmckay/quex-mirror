@@ -22,7 +22,8 @@ class EncodingTrafoByTable(EncodingTrafo, list):
 
         if FileName is not None:
             file_name  = os.path.basename(FileName)
-            file_name, dumped_ext = os.path.splitext(file_name)
+            file_name, \
+            dumped_ext = os.path.splitext(file_name)
             codec_name = file_name.replace(" ", "_").replace("\t", "_").replace("\n", "_")
             file_name  = FileName
         else:
@@ -32,27 +33,31 @@ class EncodingTrafoByTable(EncodingTrafo, list):
         source_set, drain_set = codec_db.load(self, file_name, ExitOnErrorF)
         EncodingTrafo.__init__(self, codec_name, source_set, drain_set)
 
-        self.BadLexatomSet = drain_set.complement(Setup.buffer_encoding.lexatom_range)
+        self._code_unit_error_range_db[0] = \
+                drain_set.complement(Setup.buffer_encoding.lexatom_range)
 
     def do_transition(self, sm, FromSi, from_target_map, ToSi):
-        """RETURNS: [0] True if complete, False else.
-                    [1] True if orphan states possibly generated, False else.
+        """Translates to transition 'FromSi' --> 'ToSi' inside the state
+        machine according to the translation table.
+
+        If setup, the transition to 'BAD_LEXATOM' is added for invalid
+        values of code units. 
+
+        RETURNS: [0] True if complete, False else.
+                 [1] True if transition needs to be removed from map.
         """
         number_set = from_target_map[ToSi]
 
         if number_set.transform_by_table(self): 
-            assert not number_set.is_empty()
+            assert not number_set.is_empty() # because .transform_by_table() -> True
             return True, False
 
-        if self.BadLexatomSet:
-            bad_lexatom_state_index = sm.access_bad_lexatom_state()
-            from_target_map[bad_lexatom_state_index] = self.BadLexatomSet
+        # 'FromSi' is a state that handles code unit '0'.
+        # (With tables, there is actually only one code unit)
+        self._code_unit_to_state_list_db[0].add(FromSi)
+        print "#add2:", FromSi
 
-        if number_set.is_empty(): 
-            del from_target_map[ToSi]
-            return False, True
-        else:
-            return False, False
+        return False, number_set.is_empty()
 
     def do_NumberSet(self, number_set):
         """RETURNS: List of interval sequences that implement the number set.

@@ -91,9 +91,7 @@ def prepare(command_line, argv):
         Setup.extern_token_id_file = \
                 Setup.extern_token_id_specification[0]
 
-        CommentDelimiterList = [["//", "\n"], ["/*", "*/"]]
-        token_id_file_parse(Setup.extern_token_id_file, 
-                            CommentDelimiterList)
+        token_id_file_parse(Setup.extern_token_id_file)
 
     # AFTER: Setup.extern_token_id_file !!!
     if Setup.language not in ["DOT"]:

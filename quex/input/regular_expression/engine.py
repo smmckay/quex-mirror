@@ -126,6 +126,9 @@ def do(UTF8_String_or_Stream, PatternDict,
 
     __error_check(begin_of_line_f, begin_of_stream_f, pre, stream, "pre-context")
     __error_check(end_of_line_f, end_of_stream_f, post, stream, "post-context")
+    if end_of_stream_f and post is not None:
+        error.log("The shorthand '$' cannot be specified with regular expression\n"
+                  "post context.", stream)
 
     __ensure_whitespace_follows(initial_position, stream)
     

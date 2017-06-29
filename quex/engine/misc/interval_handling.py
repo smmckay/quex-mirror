@@ -712,6 +712,10 @@ class NumberSet(object):
         if len(self.__intervals) == 0:
             return
 
+        if id(self.__intervals) == id(Other.__intervals):
+            self.__intervals = []
+            return
+
         Begin = self.__intervals[0].begin
         End   = self.__intervals[-1].end
         for interval in Other.__intervals:

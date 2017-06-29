@@ -1,4 +1,4 @@
-.. _sec-basics-number-format:
+.. _sec:basics-number-format:
 
 Number Format
 =============

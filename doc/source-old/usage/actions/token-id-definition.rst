@@ -1,7 +1,7 @@
 .. _sec-token-id-definition:
 
-Token ID Definition
-=====================
+Token Identifiers
+=================
 
 A token identifier is an integer that tells what type of lexeme has been
 identified in the input stream. Those identifiers can either be referred to a

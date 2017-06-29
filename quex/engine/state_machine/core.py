@@ -123,6 +123,15 @@ class DFA(object):
         """Build state machine that consists of transitions defined by interval
         sequences. The interval sequences start all at the init state and end at
         a common end state.
+
+        RETURNS: [0] dfa
+                 [1] State index where everything ends.
+                 [2] CodeUnitDb: map: position in sequence --> state index
+        
+        Begin and End state indices are *not* included in 'CodeUnitDb'. The begin
+        state is supposed to be mounted to another real state, so that the
+        index must be marked as '0' manually. The end state does not implement
+        a transition on a code unit, so it is not concered of the positions.
         """
         # Trick to facilitate later NFA-to-DFA procedure: ----------------------
         # (Reduce number of states)
@@ -139,28 +148,43 @@ class DFA(object):
         # This can be extended to consider later states also! Already, this
         # trick reduced *overall* computation time by about 20%!
         #-----------------------------------------------------------------------
-        result         = DFA()
-        init_si        = result.init_state_index
-        first_state_db = {}
-        end_si         = None # It is set upon first '.add_transition()'
-        for sequence in IntervalSequenceList:
-            if not sequence: continue
+        def treat(result, sequence, code_unit_db, first_state_db, end_si):
+            init_si  = dfa.init_state_index
             interval = sequence[0]
+            L        = len(sequence)
             first_si = first_state_db.get(interval)
             if first_si is not None: 
                 si = first_si
-            elif len(sequence) == 1: 
-                end_si = result.add_transition(init_si, interval, end_si)
-                continue
+                if L == 1: return end_si
+            elif L == 1: 
+                # NOT: code_unit_db[L-1].add(si), because the end state is *not*
+                #      a state that implements a transition on a code unit.
+                return result.add_transition(init_si, interval, end_si)
             else:
                 si = result.add_transition(init_si, interval)
                 first_state_db[interval] = si
 
-            for interval in sequence[1:-1]:
+            for i, interval in enumerate(sequence[1:-1], start=1):
+                code_unit_db[i].add(si)
+                print "#code_unit_db[%i] = %i" % (i, si)
                 si = result.add_transition(si, interval)
-            end_si = result.add_transition(si, sequence[-1], end_si)
 
-        return result
+            # Last transition is to 'end_si'
+            # NOT: code_unit_db[L-1].add(si), because the end state is *not*
+            #      a state that implements a transition on a code unit.
+            return result.add_transition(si, sequence[-1], end_si)
+        
+        dfa            = DFA()
+        code_unit_db   = defaultdict(set)
+        first_state_db = {}
+
+        end_si         = None # It is set upon first '.add_transition()'
+
+        for sequence in IntervalSequenceList:
+            if not sequence: continue
+            end_si = treat(dfa, sequence, code_unit_db, first_state_db, end_si)
+
+        return dfa, end_si, code_unit_db
 
     @staticmethod
     def from_character_set(CharacterSet, StateMachineId=None):

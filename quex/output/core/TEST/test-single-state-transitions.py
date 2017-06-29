@@ -129,7 +129,8 @@ def get_transition_function(iid_map, Codec):
     else:               Setup.buffer_encoding_set(bc_factory.do("unicode"), -1)
 
     sm        = DFA.from_IncidenceIdMap(iid_map)
-    dummy, sm = Setup.buffer_encoding.do_state_machine(sm)
+    dummy, sm = Setup.buffer_encoding.do_state_machine(sm,
+                                                       BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
     analyzer  = analyzer_generator.do(sm, engine.CHARACTER_COUNTER, dial_db=dial_db)
     tm_txt    = do_analyzer(analyzer)
     tm_txt    = Lng.GET_PLAIN_STRINGS(tm_txt, dial_db=dial_db)

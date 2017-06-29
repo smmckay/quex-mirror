@@ -8,10 +8,10 @@ sys.path.append(os.environ["QUEX_PATH"])
 
 from   quex.engine.misc.utf8                                import utf8_to_unicode, \
                                                                    unicode_to_utf8, \
-                                                                   UTF8_MAX, \
+                                                                   UTF8_MAX,        \
                                                                    UTF8_BORDERS
-from   quex.engine.misc.interval_handling                   import Interval, \
-                                                                   NumberSet, \
+from   quex.engine.misc.interval_handling                   import Interval,        \
+                                                                   NumberSet,       \
                                                                    NumberSet_All
 from   quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 
@@ -21,20 +21,21 @@ class EncodingTrafoUTF8(EncodingTrafoBySplit):
         EncodingTrafoBySplit.__init__(self, "utf8", CodeUnitRange=drain_set)
         self.UnchangedRange = 0x7F
 
-        self.error_range_byte0 = NumberSet([
+        self._code_unit_error_range_db[0] = NumberSet([
             Interval(0b00000000, 0b01111111+1), Interval(0b11000000, 0b11011111+1),
             Interval(0b11100000, 0b11101111+1), Interval(0b11110000, 0b11110111+1),
             Interval(0b11111000, 0b11111011+1), Interval(0b11111100, 0b11111101+1),
         ]).get_complement(NumberSet_All())
 
-        self.error_range_byteN = NumberSet(
-            Interval(0b10000000, 0b10111111+1)
-        ).get_complement(NumberSet_All())
+        for code_unit in range(1, 6):
+            self._code_unit_error_range_db[code_unit] = NumberSet(
+                Interval(0b10000000, 0b10111111+1)
+            ).get_complement(NumberSet_All())
 
     def adapt_source_and_drain_range(self, LexatomByteN):
         EncodingTrafoBySplit.adapt_source_and_drain_range(self, LexatomByteN)
-        self.error_range_byte0.mask_interval(self.lexatom_range)
-        self.error_range_byteN.mask_interval(self.lexatom_range)
+        for error_range in self._code_unit_error_range_db.itervalues():
+            error_range.mask_interval(self.lexatom_range)
 
     def prune(self, X):
         pass
@@ -78,57 +79,6 @@ class EncodingTrafoUTF8(EncodingTrafoBySplit):
         back_chunk_n  = len(unicode_to_utf8(back))
         if front_chunk_n != back_chunk_n: return None
         else:                             return front_chunk_n
-
-    def _plug_encoding_error_detectors(self, sm):
-        """Adorn states with transitions to the 'on_encoding_error' handler if the 
-        input value lies beyond the limits. The state machine is an implementation
-        of linear sequences of intervals. Thus, the 'byte position' can be 
-        be determined by the number of transitions from the init state.
-
-        sm = mini state machine that implements the transition sequences.
-
-        UTF8 Encodings in binary look like the following (see 'man utf8').
-
-            1 byte: 0xxxxxxx
-            2 byte: 110xxxxx 10xxxxxx
-            3 byte: 1110xxxx 10xxxxxx 10xxxxxx
-            4 byte: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-            5 byte: 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-            6 byte: 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxxx
-
-        The resulting byte ranges can be observed in 'error_range_byte0' for Byte[0]
-        and 'error_range_byteN' for Byte[>0].
-        """
-        # 'Byte[0]' appears at the init state
-        # (Adapt trigger map before entering the 'on bad lexatom state'
-        init_tm = sm.get_init_state().target_map.get_map()
-        workset = set(init_tm.iterkeys()) 
-        for si, trigger_set in init_tm.iteritems():
-            assert not trigger_set.has_intersection(self.error_range_byte0)
-
-        bad_lexatom_state_index = self._plug_encoding_error_detector_single_state(sm, init_tm)
-
-        # 'Byte[>0]' appear all at later states
-        done = set([bad_lexatom_state_index])
-        while workset:
-            si = workset.pop()
-            tm = sm.states[si].target_map.get_map()
-            done.add(si)
-
-            # Only add bad lexatom detection to state that transit on lexatoms
-            # (Bad lexatom states, btw. do not have transitions)
-            if not tm: continue
-
-            for trigger_set in tm.itervalues():
-                assert not trigger_set.has_intersection(self.error_range_byteN)
-            workset.update(new_si for new_si in tm.iterkeys() if new_si not in done) 
-            tm[bad_lexatom_state_index] = self.error_range_byteN
-
-    def _plug_encoding_error_detector_single_state(self, sm, target_map):
-        bad_lexatom_state_index = sm.access_bad_lexatom_state()
-        if target_map: 
-            target_map[bad_lexatom_state_index] = self.error_range_byte0
-        return bad_lexatom_state_index
 
 def _split_by_transformed_sequence_length(X):
     """Split Unicode interval into intervals where all values have the same 

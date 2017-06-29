@@ -116,7 +116,8 @@ def transform(Trafo, orig):
     print "# Number of states in state machine:"
     print "#   Unicode:       %i" % len(orig.states)
     state_n_before = len(orig.states)
-    verdict_f, result = Trafo.do_state_machine(orig)
+    verdict_f, result = Trafo.do_state_machine(orig,
+                                               BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
     print "#   %s:            %i" % (Trafo.name, len(result.states))
     return state_n_before, result
 
@@ -178,7 +179,8 @@ def generate_sm_for_boarders(Boarders, Trafo):
         sm.states[target_idx].set_acceptance()
 
     Trafo.adapt_source_and_drain_range(-1)
-    verdict_f, result = Trafo.do_state_machine(sm)
+    verdict_f, result = Trafo.do_state_machine(sm,
+                                               BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
     assert verdict_f
     return result
 

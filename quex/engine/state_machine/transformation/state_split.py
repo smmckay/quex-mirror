@@ -95,7 +95,6 @@ import quex.engine.state_machine.transformation.base as     base
 from   quex.engine.misc.interval_handling            import NumberSet
 
 from   quex.engine.misc.tools import flatten_list_of_lists
-from   quex.blackboard        import setup as Setup
 
 class EncodingTrafoBySplit(base.EncodingTrafo):
     """Transformation that takes a lexatom and produces a lexatom sequence.
@@ -105,25 +104,34 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
                                     CodeUnitRange)
 
     def do_transition(self, sm, FromSi, from_target_map, ToSi):
-        """RETURNS: [0] True if complete, False else.
-                    [1] True if orphan states possibly generated, False else.
+        """Translates to transition 'FromSi' --> 'ToSi' inside the state
+        machine according to the specific coding (see derived class, i.e.
+        UTF8 or UTF16).
+
+        If setup, the transition to 'BAD_LEXATOM' is added for invalid
+        values of code units. 
+
+        RETURNS: [0] True if complete, False else.
+                 [1] True if transition needs to be removed from map.
         """
         number_set = from_target_map[ToSi]
 
+        # 'FromSi' is a state that handles code unit '0'.
+        self._code_unit_to_state_list_db[0].add(FromSi)
+        print "#add0:", FromSi
+
         # Check whether a modification is necessary
         if number_set.least_greater_bound() <= self.UnchangedRange: 
-            if Setup.bad_lexatom_detection_f: 
-                self._plug_encoding_error_detector_single_state(sm, from_target_map)
+            # 'UnchangedRange' => No change to numerical values.
             return True, False
 
-        # Cut out any forbiddin range. Assume, that is has been checked
+        # Cut out any forbidden range. Assume, that is has been checked
         # before, or is tolerated to be omitted.
         self.prune(number_set)
+        if number_set.is_empty():
+            return False, True
 
         transformed_interval_sequence_list = self.do_NumberSet(number_set)
-
-        # First, remove the original transition.
-        del from_target_map[ToSi]
 
         # Second, enter the new transitions.
         self._plug_interval_sequences(sm, FromSi, ToSi, 
@@ -154,27 +162,26 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
     def hopcroft_minimization_always_makes_sense(self): 
         return True
 
-    def _plug_interval_sequences(self, sm, BeginIndex, EndIndex, IntervalSequenceList):
-        sub_sm = DFA.from_interval_sequences(IntervalSequenceList)
-        if Setup.bad_lexatom_detection_f: 
-            self._plug_encoding_error_detectors(sub_sm)
+    def _plug_interval_sequences(self, sm, BeginIndex, EndIndex, 
+                                 IntervalSequenceList):
+        sub_sm,      \
+        new_end_si,  \
+        code_unit_db = DFA.from_interval_sequences(IntervalSequenceList)
+        # The init state index is not supposed to be mentioned
+        # It is to be replaced by 'BeginIndex' once the 'sub_sm' is mounted.
+        assert 0 not in code_unit_db
 
-        # The 'End DFA_State' is the state where there are no further transitions.
-        new_end_si = None
-        for state_index, state in sub_sm.states.iteritems():
-            if state.target_map.is_empty() and not state.accepts_incidence(): 
-                new_end_si = state_index
-        assert new_end_si is not None
+        for code_unit, state_index_set in code_unit_db.iteritems():
+            print "#xx - code_unit_db[%i] = %s" % (code_unit, repr(state_index_set))
+            self._code_unit_to_state_list_db[code_unit].update(state_index_set)
+        code_unit_db[0].add(BeginIndex)
+        print "#code_unit_db[%i] = %i" % (0, BeginIndex)
+        
 
         # Mount the states inside the state machine
         sm.mount_absorbed_states_between(BeginIndex, EndIndex, 
-                                         sub_sm.states, sub_sm.init_state_index, new_end_si)
-
-    def _plug_encoding_error_detector_single_state(self, sm, target_map):
-        assert False # --> derived class
-
-    def _plug_encoding_error_detectors(self, sm):
-        assert False # --> derived class
+                                         sub_sm.states, sub_sm.init_state_index, 
+                                         new_end_si)
 
 
 

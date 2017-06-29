@@ -16,5 +16,6 @@ the Unicode database.
    top-level.rst
    number-format.rst
    patterns/main.rst
+   token-id-definition.rst
    summary.rst
 

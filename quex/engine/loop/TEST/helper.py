@@ -446,7 +446,7 @@ show_next_character(QUEX_TYPE_ANALYZER* me)
 
     if( me->buffer._read_p == me->buffer.input.end_p ) {
         buffer->_lexeme_start_p = buffer->_read_p;
-        if( QUEX_NAME(Buffer_is_end_of_file)(buffer) ) {
+        if( QUEX_NAME(Buffer_is_end_of_stream)(buffer) ) {
             return false;
         }
         QUEX_NAME(Buffer_load_forward)(buffer, (QUEX_TYPE_LEXATOM**)0x0, 0);
@@ -480,7 +480,7 @@ skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me)
 $$MARKER_LIST$$
         if( me->buffer._read_p == me->buffer.input.end_p ) {
             me->buffer._lexeme_start_p = me->buffer._read_p;
-            if( QUEX_NAME(Buffer_is_end_of_file)(&me->buffer) ) {
+            if( QUEX_NAME(Buffer_is_end_of_stream)(&me->buffer) ) {
                 return false;
             }
             QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)0x0, 0);

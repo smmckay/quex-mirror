@@ -23,7 +23,7 @@ if "--hwut-info" in sys.argv:
     sys.exit(0)
 
 
-def test(Idx, sm_pre, sm, sm_post, BOF_F, EOF_F):    
+def test(Idx, sm_pre, sm, sm_post, BOL_F, EOL_F):    
     result = sm.clone()
     print "##-- %i -----------------------------------------------------------------------" % Idx
 
@@ -32,11 +32,11 @@ def test(Idx, sm_pre, sm, sm_post, BOF_F, EOF_F):
         
     if sm_post is not None: print " -- post-condition = True"
     else:                   print " -- post-condition = False"
-    print " -- begin of line  = ", BOF_F
-    print " -- end of line    = ", EOF_F
+    print " -- begin of line  = ", BOL_F
+    print " -- end of line    = ", EOL_F
 
-    ipsb_sm                = setup_post_context.do(result, sm_post, EOF_F, False, SourceRef_VOID)
-    inverse_pre_context_sm = setup_pre_context.do(result, sm_pre, BOF_F, False)
+    ipsb_sm                = setup_post_context.do(result, sm_post, EOL_F, False, SourceRef_VOID)
+    inverse_pre_context_sm = setup_pre_context.do(result, sm_pre, BOL_F, False)
     #
     # print "EXPRESSION = ", result
     # print "POST CONDITION = ", post_sm

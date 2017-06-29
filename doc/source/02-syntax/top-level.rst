@@ -89,15 +89,16 @@ of functionality.
       
       The token identifiers need to be separated by semi-colons. Adding a ``=``
       and a numeric value to the token definition sets a specific value as
-      token identifier.  If a token is used but not defined in a token section,
-      a warning is issued. The names of the defined token idenfiers enter the
-      global namespace with `token prefix` + `name`.
+      token identifier. Token identifiers enter the global namespace of the
+      generated code as 'token prefix' + 'name'. The default token prefix
+      is ``QUEX_TKN_``.  More on token identifiers is delivered in 
+      section :ref:`sec:token-id-definition`.
 
    .. note:: 
 
-      The token identifiers in the token section are specified without prefix.
-      The token prefix, is defined by the comand line option
-      ``--token-id-prefix``.
+      Token identifiers in the ``token`` section are specified without prefix.
+      By default the prefix is ``QUEX_TKN_``. It can be adapted with the 
+      command line option ``--token-id-prefix``.
 
 .. data:: repeated_token
 

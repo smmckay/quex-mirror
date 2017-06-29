@@ -231,8 +231,8 @@ class Pattern_Prep(object):
         # Count information must be determined BEFORE transformation!
         if CaMap is not None:
             lcci = SmLineColumnCountInfo.from_DFA(CaMap, self.sm, 
-                                                           self.pre_context_trivial_begin_of_line_f, 
-                                                           Setup.buffer_encoding)
+                                                  self.pre_context_trivial_begin_of_line_f, 
+                                                  Setup.buffer_encoding)
         else: 
             lcci = None
 
@@ -339,10 +339,14 @@ class Pattern_Prep(object):
         # However: Transformation may generate a new state machine.
         # => To maintain incidence id, store the original one and restore it
         #    after transformation. 
-        c0, sm                            = Setup.buffer_encoding.do_state_machine(self.__sm) 
-        c1, pre_context_sm_to_be_inverted = Setup.buffer_encoding.do_state_machine(self.__pre_context_sm_to_be_inverted) 
-        c2, post_context_sm               = Setup.buffer_encoding.do_state_machine(self.__post_context_sm) 
+        c0, sm                            = Setup.buffer_encoding.do_state_machine(self.__sm, 
+                                               BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
+        c1, pre_context_sm_to_be_inverted = Setup.buffer_encoding.do_state_machine(self.__pre_context_sm_to_be_inverted, 
+                                               BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
+        c2, post_context_sm               = Setup.buffer_encoding.do_state_machine(self.__post_context_sm, 
+                                               BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
         verdict = c0 and c1 and c2
+
 
         # Only if all transformations have been complete, then the transformation
         # can be considered complete.

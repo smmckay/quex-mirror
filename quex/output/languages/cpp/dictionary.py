@@ -31,8 +31,6 @@ from   itertools import islice
 from   math      import log
 import re
 
-
-
 class Language(dict):
     #------------------------------------------------------------------------------
     # Define Regular Expressions
@@ -42,6 +40,10 @@ class Language(dict):
     Match_string              = re.compile("\\bstring\\b", re.UNICODE) 
     Match_vector              = re.compile("\\bvector\\b", re.UNICODE) 
     Match_map                 = re.compile("\\bmap\\b", re.UNICODE)
+    Match_include             = re.compile(r"#[ \t]*include[ \t]*[\"<]([^\">]+)[\">]")
+
+    CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
+    
     CODE_BASE                 = "/quex/code_base/"
     LEXEME_CONVERTER_DIR      = "quex/code_base/lexeme_converter"
                               

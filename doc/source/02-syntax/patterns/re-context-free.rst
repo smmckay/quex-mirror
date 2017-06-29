@@ -149,7 +149,7 @@ the popular tool 'lex' :cite:`Lesk1975lex`.
      Reverses the pattern specified in brackets. If for example, it is
      specified::
 
-            \R{dlroW} => QUEX_TKN_HELLO_WORD(Lexeme)
+            \R{dlroW} => QUEX_TKN_WORD(Lexeme)
 
      then the token ``WORLD`` would be sent upon the appearance of 'World' in
      the input stream. This feature is mainly useful for definitions of

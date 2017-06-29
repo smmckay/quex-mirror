@@ -69,18 +69,6 @@ class Pattern:
         if self.has_pre_context_begin_of_line_f(): return True
         return self.sm.has_pre_context_begin_of_stream_f()
 
-    def get_pre_context_generalized(self):
-        """RETURNS: DFA implementing the pre-context. If the pre-
-                    context is 'begin-of-line', an according state machine 
-                    is provided.
-        """
-        if self.sm_pre_context is not None: 
-            return self.sm_pre_context
-        elif self.sm.has_pre_context_begin_of_line_f():
-            return reverse.do(DFA.from_sequence([ord("\n")]), EnsureDFA_f=False)
-        else:
-            return None
-
     def clone_with_new_incidence_id(self, NewIncidenceId=None, PatternString=None):
         """Nothing needs to be done, except the main pattern must be associated
         with the NewIncidenceId.
