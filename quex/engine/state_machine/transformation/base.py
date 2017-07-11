@@ -2,6 +2,8 @@ import quex.engine.misc.error                                    as     error
 from   quex.engine.misc.interval_handling                        import NumberSet, Interval_All, Interval
 import quex.engine.state_machine.algorithm.nfa_to_dfa            as     nfa_to_dfa
 import quex.engine.state_machine.algorithm.hopcroft_minimization as     hopcroft_minimization
+import quex.engine.state_machine.index                           as     state_machine_index
+from   quex.engine.state_machine.state.core                      import DFA_State
 from   quex.engine.misc.tools                                    import typed
 from   quex.constants                                            import INTEGER_MAX
 
@@ -25,9 +27,6 @@ class EncodingTrafo:
         # To be adapted later by 'adapt_source_and_drain_range()'
         self.lexatom_range = Interval_All()
 
-        self._code_unit_error_range_db   = {}
-        self._code_unit_to_state_list_db = defaultdict(set)
-
     def do_state_machine(self, sm, BadLexatomDetectionF):
         """Transforms a given state machine from 'Unicode Driven' to another
         character encoding type.
@@ -44,30 +43,39 @@ class EncodingTrafo:
         assert sm.is_DFA_compliant()
 
         all_complete_f = True
+        if BadLexatomDetectionF: bad_lexatom_si = state_machine_index.get()
+        else:                    bad_lexatom_si = None
+
+        # NOTE: Not 'iteritems()', for some encodings intermediate states are 
+        #       generated. Those shall not be subject to transformation.
         for from_si, state in sm.states.items():
             target_map = state.target_map.get_map()
-            for to_si in target_map.keys():
-                complete_f,         \
-                remove_transition_f = self.do_transition(sm, from_si, target_map, to_si) 
-                if remove_transition_f: del target_map[to_si]
+
+            for to_si, trigger_set in target_map.items():
+
+                complete_f,  \
+                new_state_db = self.do_transition(from_tm, from_si, to_si, 
+                                                  bad_lexatom_si) 
+                # Assume that the 'target_map' has been adapted if changes were
+                # necessary.
+
+                if new_state_db is not None:
+                    sm.states.update(new_state_db)
+
                 all_complete_f &= complete_f
 
-        if BadLexatomDetectionF: 
-            for code_unit, si_list in self._code_unit_to_state_list_db.iteritems():
-                # If 'code_unit not in _code_unit_error_range_db'
-                # => Construction of '_code_unit_to_state_list_db' is erroneous!
-                error_range = self._code_unit_error_range_db[code_unit]
-                if error_range.is_empty(): continue
+            # Transition to 'bad lexatom acceptor' on first code unit is best
+            # to happen here, after all transitions have been adapted.
+            if bad_lexatom_si is not None:
+                target_map[bad_lexatom_si] = self._error_range_by_code_unit_db[0]
 
-                bad_lexatom_state_index = None
-                for tm in (sm.states[si].target_map for si in si_list):
-                    tm.delete_trigger_set(error_range)
-                    bad_lexatom_state_index = tm.add_transition(error_range, 
-                                                                bad_lexatom_state_index)
-                if bad_lexatom_state_index is not None:
-                    state = sm.states[bad_lexatom_state_index]
-                    state.single_entry.set_acceptance()
-                    state.mark_acceptance_id(E_IncidenceIDs.BAD_LEXATOM)
+            # If there were intermediate states being generated, the error
+            # error detection must have been implemented right then.
+
+        # Generate the 'bad lexatom accepter'.
+        bad_lexatom_state = DFA_State(AcceptanceF=True)
+        bad_lexatom_state.mark_acceptance_id(E_IncidenceIDs.BAD_LEXATOM)
+        self.states[bad_lexatom_si] = bad_lexatom_state
 
         for from_si, state in sm.states.items():
             target_map = state.target_map.get_map()
@@ -83,9 +91,6 @@ class EncodingTrafo:
             sm = nfa_to_dfa.do(sm)
         sm = hopcroft_minimization.do(sm, CreateNewStateMachineF=False)
         return all_complete_f, sm
-
-    def do_NumberSet(self, number_set):              
-        assert False, "Must be implemented by derived class"
 
     def lexatom_n_per_character(self, CharacterSet):
         return 1     # Default behavior (e.g. UTF8 differs here)
@@ -141,30 +146,26 @@ class EncodingTrafoUnicode(EncodingTrafo):
     def __init__(self, SourceSet, DrainSet):
         EncodingTrafo.__init__(self, "unicode", SourceSet, DrainSet)
 
-    def do_transition(self, sm, FromSi, from_target_map, ToSi):
+    def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
         """Translates to transition 'FromSi' --> 'ToSi' inside the state
         machine according to 'Unicode'.
 
-        If setup, the transition to 'BAD_LEXATOM' is added for invalid
-        values of code units. 
+        'BadLexatomSi' is ignored. This argument is only of interest if
+        intermediate states are to be generated. This it not the case for this
+        type of transformation.
 
         RETURNS: [0] True if complete, False else.
-                 [1] True if transition needs to be removed from map.
+                 [1] StateDb of newly generated states (always None, here)
         """
         number_set = from_target_map[ToSi]
 
         if self.drain_set.is_superset(number_set): 
-            return True, False
-
-        number_set.intersect_with(self.drain_set)
-        return False, number_set.is_empty()
-
-    def do_NumberSet(self, number_set):
-        transformed = self.drain_set.intersection(number_set)
-        return [ 
-            [ interval ]
-            for interval in transformed.get_intervals(PromiseToTreatWellF=True) 
-        ]
+            return True, None
+        else:
+            # Adapt 'number_set' in 'from_target_map' according to addmissible
+            # range.
+            number_set.intersect_with(self.drain_set)
+            return False, None
 
     def adapt_source_and_drain_range(self, LexatomByteN):
         EncodingTrafo.adapt_source_and_drain_range(self, LexatomByteN)

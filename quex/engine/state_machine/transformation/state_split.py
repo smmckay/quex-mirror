@@ -92,9 +92,11 @@ PROCESS:
 """
 from   quex.engine.state_machine.core                import DFA
 import quex.engine.state_machine.transformation.base as     base
+import quex.engine.state_machine.index               as     state_machine_index
 from   quex.engine.misc.interval_handling            import NumberSet
 
 from   quex.engine.misc.tools import flatten_list_of_lists
+from   collections import defaultdict
 
 class EncodingTrafoBySplit(base.EncodingTrafo):
     """Transformation that takes a lexatom and produces a lexatom sequence.
@@ -102,49 +104,51 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
     def __init__(self, Name, CodeUnitRange):
         base.EncodingTrafo.__init__(self, Name, NumberSet.from_range(0, 0x110000),
                                     CodeUnitRange)
+        # For every position in a code unit sequence, there might be a different
+        # error range (see UTF8 or UTF16 for example).
+        self._error_range_by_code_unit_db = {}
 
-    def do_transition(self, sm, FromSi, from_target_map, ToSi):
+    def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
         """Translates to transition 'FromSi' --> 'ToSi' inside the state
         machine according to the specific coding (see derived class, i.e.
         UTF8 or UTF16).
 
-        If setup, the transition to 'BAD_LEXATOM' is added for invalid
-        values of code units. 
+        'BadLexatomSi' is None => no bad lexatom detection.
+                       else, transitions to 'bad lexatom state' are added
+                       on invalid code units.
 
         RETURNS: [0] True if complete, False else.
-                 [1] True if transition needs to be removed from map.
+                 [1] StateDb of newly generated states.
         """
         number_set = from_target_map[ToSi]
-
-        # 'FromSi' is a state that handles code unit '0'.
-        self._code_unit_to_state_list_db[0].add(FromSi)
-        print "#add0:", FromSi
 
         # Check whether a modification is necessary
         if number_set.least_greater_bound() <= self.UnchangedRange: 
             # 'UnchangedRange' => No change to numerical values.
-            return True, False
+            from_target_map[BadLexatomSi] = self.error_range_by_code_unit_db[0]
+            return True, None
 
-        # Cut out any forbidden range. Assume, that is has been checked
-        # before, or is tolerated to be omitted.
-        self.prune(number_set)
-        if number_set.is_empty():
-            return False, True
+        if not self.cut_forbidden_range(number_set):
+            # 'number_set' solely contains forbidden elements.
+            del from_target_map[ToSi]
+            return False, None
 
-        transformed_interval_sequence_list = self.do_NumberSet(number_set)
+        transformed_interval_sequence_list = flatten_list_of_lists(
+            self.get_interval_sequences(interval)
+            for interval in number_set.get_intervals(PromiseToTreatWellF=True)
+        )
 
         # Second, enter the new transitions.
-        self._plug_interval_sequences(sm, FromSi, ToSi, 
-                                      transformed_interval_sequence_list)
-        return True, False
+        new_target_map, \
+        new_state_db    = self.plug_interval_sequences(FromSi, ToSi, 
+                                                       transformed_interval_sequence_list, 
+                                                       BadLexatomSi)
 
-    def do_NumberSet(self, NSet):
-        """RETURNS: List of interval sequences that implement the number set.
-        """
-        return flatten_list_of_lists(
-            self.get_interval_sequences(interval)
-            for interval in NSet.get_intervals(PromiseToTreatWellF=True)
-        )
+        # Absorb new transitions into the target map of the 'from state'.
+        del from_target_map[ToSi]
+        from_target_map.update(new_target_map)
+
+        return True, new_state_db
 
     def variable_character_sizes_f(self):
         return True
@@ -162,26 +166,210 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
     def hopcroft_minimization_always_makes_sense(self): 
         return True
 
-    def _plug_interval_sequences(self, sm, BeginIndex, EndIndex, 
-                                 IntervalSequenceList):
-        sub_sm,      \
-        new_end_si,  \
-        code_unit_db = DFA.from_interval_sequences(IntervalSequenceList)
-        # The init state index is not supposed to be mentioned
-        # It is to be replaced by 'BeginIndex' once the 'sub_sm' is mounted.
-        assert 0 not in code_unit_db
-
-        for code_unit, state_index_set in code_unit_db.iteritems():
-            print "#xx - code_unit_db[%i] = %s" % (code_unit, repr(state_index_set))
-            self._code_unit_to_state_list_db[code_unit].update(state_index_set)
-        code_unit_db[0].add(BeginIndex)
-        print "#code_unit_db[%i] = %i" % (0, BeginIndex)
+    def plug_interval_sequences(self, FromSi, ToSi, IntervalSequenceList,
+                                BadLexatomSi):
+        """Transform the list of interval sequences into intermediate state
+        transitions. 
         
+        'BadLexatomSi' is None => no bad lexatom detection.
+                       else, transitions to 'bad lexatom state' are added
+                       on invalid code units.
+        
+        RETURN: [0] Target map update for the first state.
+                [1] State Db update for intermediate states.
 
-        # Mount the states inside the state machine
-        sm.mount_absorbed_states_between(BeginIndex, EndIndex, 
-                                         sub_sm.states, sub_sm.init_state_index, 
-                                         new_end_si)
+        """
+        def simplify(tm_db, tm_end_inv, ToSi):
+            """Those states which trigger on the same intervals to 'ToSi' are
+            equivalent, i.e. can replaced by one state.
+            """
+            # Find the states that trigger on the same interval list to the 
+            # terminal 'ToSi'.
+            equivalence_db = {}
+            replacement_db = {}
+            for from_si, interval_list in tm_end_inv.iteritems():
+                key           = tuple(sorted(interval_list))
+                equivalent_si = equivalence_db.get(key)
+                if equivalent_si is None: equivalence_db[key]     = from_si
+                else:                     replacement_db[from_si] = equivalent_si
 
+            # Replace target states which are equivalent
+            result = {}
+            for from_si, tm in tm_db.iteritems():
+                new_tm = defaultdict(NumberSet)
+                for target_si, interval in tm.iteritems():
+                    replacement_si = replacement_db.get(target_si)
+                    if replacement_si is not None: target_si = replacement_si
+                    new_tm[target_si].quick_append_interval(interval)
 
+                if from_si in tm_end_inv:
+                    for interval in tm_end_inv[from_si]:
+                        new_tm[ToSi].quick_append_interval(interval)
+
+                result[from_si] = new_tm
+
+            return result
+
+        tm_db,      \
+        tm_end_inv, \
+        position_db = _get_intermediate_transition_maps(FromSi, ToSi, 
+                                                        IntervalSequenceList)
+
+        result_tm_db = simplify(tm_db, tm_end_inv, ToSi)
+
+        if BadLexatomSi is not None:
+            for si, position in position_db.iteritems():
+                # The 'positon 0' is done by 'do_state_machine'. It is concerned
+                # with the first state's transition.
+                assert position != 0
+                result_tm_db[si][BadLexatomSi] = self._error_range_by_code_unit_db[position]
+
+        # Generate the target map to be inserted into state 'FromSi'.
+        # Generate list of intermediate states that implement the sequence
+        # of intervals.
+        first_tm     = result_tm_db.pop(FromSi)
+        new_state_db = dict(
+            (si, DFA_State.from_TargetMap(tm)) for si, tm in result_tm_db.iteritems()
+        )
+        return first_tm, new_state_db
+
+def __bunch_iterable(IntervalSequenceList, Index):
+    """Iterate over sub-bunches of sequence in 'IntervalSequenceList' which are
+    the same at the given 'Position'. The 'IntervalSequenceList' must be sorted!
+    That is, same intervals must be adjacent. 
+
+    EXAMPLE: 
+               Index                = 1
+               IntervalSequenceList = [
+                  [ interval01, interval12, interval21, ], 
+                  [ interval01, interval12, interval21, ], 
+                  [ interval02, interval12, interval22, interval30 ], 
+                  [ interval02, interval13, interval22, interval30 ], 
+                  [ interval02, interval13, interval23, ] ]
+
+    That is, the interval sequences are grouped according to groups where the
+    second interval (Index=1) is equal, the yields are as follows:
+
+         (1)    [ [ interval01, interval12, interval21, ], 
+                  [ interval01, interval12, interval21, ] ]
+
+         (2)    [ [ interval02, interval12, interval22, interval30 ] ]
+
+         (3)    [ [ interval02, interval13, interval22, interval30 ], 
+                  [ interval02, interval13, interval23, ] ]
+
+    NOTE: Two sequences of different lengths are *never* grouped together
+          -- by purpose.
+
+    The index is provided in order to avoid the creation of shorted sub-
+    sequences. Instead, the caller focusses on sub-sequences behind 'Index'.
+    Obviously, this function only makes sense if the intervals before 'Index'
+    are all the same.
+
+    YIELDS: [0] Interval which is the same for group of sequenes at 'Index'.
+            [1] Group of sequences.
+            [2] 'LastF' -- telling whether the interval is the last in the 
+                sequence.
+            
+    """
+    prev_interval = None
+    prev_i        = -1
+    prev_last_f   = False
+    for i, sequence in enumerate(IntervalSequenceList):
+        interval = sequence[Index]
+        L        = len(sequence)
+        last_f   = L == Index + 1
+        if interval != prev_interval or last_f != prev_last_f:
+            if prev_i != -1:
+                yield prev_interval, IntervalSequenceList[prev_i:i], prev_last_f
+            prev_i        = i 
+            prev_interval = interval
+            prev_last_f   = last_f
+
+    yield prev_interval, IntervalSequenceList[prev_i:], prev_last_f
+
+def _get_intermediate_transition_maps(FromSi, ToSi, interval_sequence_list):
+    """Several transitions are to be inserted in between state 'FromSi' and 
+    'ToSi'. The transitions result from the list of sequences in 
+    'interval_sequence_list'. This function develops the transition maps
+    of the states involved. Also, it notifies about the 'position' of each
+    state in the code unit sequence. Thus, the caller may insert error-detectors
+    on invalid code units.
+
+    FORBIDDEN: There cannot be a sequence that starts with the exact intervals
+               as a shorter sequences. Example:
+
+           [ (0, 1), (0, 2), (0, 3) ]   # 
+           [ (0, 1), (0, 2) ]           # Bad, very bad!
+
+    This would mean that after (0, 1), (0, 2) the 'ToSi' is reached, but then
+    after (0, 3) again. The result is an *iteration* on 'ToSi'
+
+           --(0, 1)-->( A )--(0, 2)-->( ToSi )---->
+                                    |           |
+                                    '-<-(0, 3)--'
+
+    Consequently, such a list of interval sequences cannot represent a linear
+    transition.
+
+    RETURNS: [0] Transition Map DB:  state_index --> 'TransitionMap' 
+
+                 with TransitionMap: target_state_index --> Interval
+
+                 That is 'TransitionMap[target_state_index]' tells through which
+                 intervals the 'state_index' triggers to 'target_states'
+
+                 The 'Transition Map DB' does not contain transitions to the
+                 'ToSi'--the end state.
+     
+             [1] Inverse End Transition Map:
+
+                 Transitions to the end state are stored inversely:
+
+                        from_state_index --> list of Interval-s
+
+                 The end state can be reached by more than one interval, so a
+                 list of Interval-s is associated with the transition
+                 'from_state_index' to 'ToSi'.
+
+             [1] PositionDB:    state_index --> position in code unit sequence.
+    """
+    # Sort the list of sequences, so that adjacent intervals are listed one
+    # after the other. This is necessary for '__bunch_iterable()' to function.
+    interval_sequence_list.sort()
+
+    worklist = [
+        # The state at 'BeginStateIndex' is concerned with the intervals
+        # at position '0' in the 'interval_sequence_list'. The list needs to
+        # be grouped according to the first interval, and for each distinct
+        # interval a transition to another state must be generated.
+        (FromSi, interval_sequence_list, 0)
+    ]
+    tm_db       = defaultdict(dict)
+    tm_end_inv  = defaultdict(list)
+    position_db = {}
+    while worklist:
+        si, sequence_group, index = worklist.pop()
+        # -- State 'si' triggers on intervals at 'index' in 'sequence_group'.
+        tm              = tm_db[si]
+        # -- State 'si' comes at position 'index' in a sequence of code units.
+        # (position of 'FromSi' shall not appear in the 'position_db' since
+        #  the error detection of the first state is done in the caller.)
+        if si != FromSi: position_db[si] = index
+
+        # Group the sequences according to the interval at position 'index'.
+        for interval, sub_group, last_f in __bunch_iterable(sequence_group, index):
+            # Transit to new state for the given sub-group of sequences.
+            if not last_f:
+                # For each 'interval' a deliberate target state is generated.
+                # => each target state is only reached by a single Interval.
+                new_si = state_machine_index.get()
+                tm[new_si] = interval
+                worklist.append((new_si, sub_group, index+1))
+            else:
+                # If the 'interval' is the last in the sequence, the 'ToSi' is 
+                # reached. Obviously this may/should happen more than once. 
+                tm_end_inv[si].append(interval)
+
+    return tm_db, tm_end_inv, position_db
 

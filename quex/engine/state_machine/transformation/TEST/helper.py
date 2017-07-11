@@ -275,7 +275,27 @@ def test_plug_sequence(ByteSequenceDB):
 
     trafo = EncodingTrafoUTF8() 
     Setup.buffer_encoding_set(trafo, 1)
-    trafo._plug_interval_sequences(sm, sm.init_state_index, end_index, ByteSequenceDB)
+
+    bad_lexatom_si = index.get()
+
+    new_first_tm,    \
+    new_state_db = trafo.plug_interval_sequences(sm.init_state_index, end_index, 
+                                                 ByteSequenceDB,
+                                                 BadLexatomSi=bad_lexatom_si)
+
+    if bad_lexatom_si is not None:
+        new_first_tm[bad_lexatom_si] = trafo._error_range_by_code_unit_db[0]
+
+    # Generate the 'bad lexatom accepter'.
+    bad_lexatom_state = DFA_State(AcceptanceF=True)
+    bad_lexatom_state.mark_acceptance_id(E_IncidenceIDs.BAD_LEXATOM)
+    sm.states[bad_lexatom_si] = bad_lexatom_state
+
+    first_tm = sm.get_init_state().target_map.get_map() 
+    if end_index in first_tm: del first_tm[end_index]
+    first_tm.update(new_first_tm)
+
+    sm.states.update(new_state_db)
 
     sm = beautifier.do(sm)
     if len(sm.get_orphaned_state_index_list()) != 0:

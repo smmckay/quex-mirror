@@ -4,7 +4,6 @@ from   quex.engine.misc.file_operations              import get_propperly_slash_
 from   quex.engine.misc.enum                         import Enum
 from   quex.engine.misc.interval_handling            import NumberSet, NumberSet_All
 from   quex.DEFINITIONS                              import QUEX_PATH
-from   quex.engine.state_machine.transformation.base import EncodingTrafoUnicode
 
 import os  
 import sys
@@ -18,13 +17,29 @@ class QuexSetup:
     def __init__(self, SetupInfo, BcFactory):
         self.init(SetupInfo)
         range_max    = NumberSet_All()
-        unit_test_bc = EncodingTrafoUnicode(range_max, range_max)
-        self.buffer_encoding_set(unit_test_bc, -1)
+        
+        # Prevent import-dependencies in general.
+
+    @property
+    def buffer_encoding(self):
+        if self.__buffer_encoding is None:
+            from quex.engine.state_machine.transformation.base import EncodingTrafoUnicode
+            unit_test_bc = EncodingTrafoUnicode(range_max, range_max)
+            self.buffer_encoding_set(unit_test_bc, -1)
+        return self.__buffer_encoding
+
+    @property 
+    def buffer_lexatom_size_in_byte(self):
+        if self.__buffer_lexatom_size_in_byte is None:
+            from quex.engine.state_machine.transformation.base import EncodingTrafoUnicode
+            unit_test_bc = EncodingTrafoUnicode(range_max, range_max)
+            self.buffer_encoding_set(unit_test_bc, -1)
+        return self.__buffer_lexatom_size_in_byte
 
     def buffer_encoding_set(self, BufferCodec, LexatomSizeInBytes): 
-        self.buffer_encoding = BufferCodec
-        self.buffer_lexatom_size_in_byte = LexatomSizeInBytes
-        self.buffer_encoding.adapt_source_and_drain_range(LexatomSizeInBytes)
+        self.__buffer_encoding = BufferCodec
+        self.__buffer_lexatom_size_in_byte = LexatomSizeInBytes
+        self.__buffer_encoding.adapt_source_and_drain_range(LexatomSizeInBytes)
 
     def init(self, SetupInfo):
         for key, entry in SetupInfo.items():

@@ -21,24 +21,31 @@ class EncodingTrafoUTF8(EncodingTrafoBySplit):
         EncodingTrafoBySplit.__init__(self, "utf8", CodeUnitRange=drain_set)
         self.UnchangedRange = 0x7F
 
-        self._code_unit_error_range_db[0] = NumberSet([
+        self._error_range_by_code_unit_db[0] = NumberSet([
             Interval(0b00000000, 0b01111111+1), Interval(0b11000000, 0b11011111+1),
             Interval(0b11100000, 0b11101111+1), Interval(0b11110000, 0b11110111+1),
             Interval(0b11111000, 0b11111011+1), Interval(0b11111100, 0b11111101+1),
         ]).get_complement(NumberSet_All())
 
-        for code_unit in range(1, 6):
-            self._code_unit_error_range_db[code_unit] = NumberSet(
-                Interval(0b10000000, 0b10111111+1)
-            ).get_complement(NumberSet_All())
+        # All bytes after the first are subject to the same error range.
+        error_range = NumberSet(Interval(0b10000000, 0b10111111+1)) \
+                      .get_complement(NumberSet_All())
+
+        self._error_range_by_code_unit_db.update(
+            (code_unit_i, error_range) for code_unit_i in range(1, 8)
+        )
 
     def adapt_source_and_drain_range(self, LexatomByteN):
         EncodingTrafoBySplit.adapt_source_and_drain_range(self, LexatomByteN)
-        for error_range in self._code_unit_error_range_db.itervalues():
+        for error_range in self._error_range_by_code_unit_db.itervalues():
             error_range.mask_interval(self.lexatom_range)
 
-    def prune(self, X):
-        pass
+    def cut_forbidden_range(self, X):
+        """Cuts the 'forbidden range' from the given number set.
+
+        RETURNS: True, if number set is not empty. False, else.
+        """
+        return True
 
     def get_interval_sequences(self, Orig):
         """Orig = Unicode Trigger Set. It is transformed into a sequence of intervals

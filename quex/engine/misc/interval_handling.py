@@ -164,10 +164,11 @@ class Interval(object):
                     return [ Interval(self.begin, Other.begin) ]
 
     def transform_by_table(self, TrafoInfo):
-        """RETURNS: verdict, list
+        """RETURNS: [0] True, if every element in 'self' as been transformed.
+                        False, if not.
+                    [1] list of resulting Intervals.
 
-           where 'verdict' indicates whether the interval has been completely
-           transformed. 'list' is the resulting list of intervals.
+        transformed. 'list' is the resulting list of intervals.
         """
         transformed_n = 0
         result        = []
@@ -940,18 +941,20 @@ class NumberSet(object):
     @typed(TrafoInfo=list)
     def transform_by_table(self, TrafoInfo):
         """Transforms the given NumberSet from into a new NumberSet according 
-           to the given TransformationInfo. The TransformationInfo is a list of
-           elements consisting of 
+       to the given TransformationInfo. The TransformationInfo is a list of
+       elements consisting of 
 
-           [ SourceInterval_Begin, SourceInterval_End, TargetInterval_Begin ]
+       [ SourceInterval_Begin, SourceInterval_End, TargetInterval_Begin ]
 
-           For example an element '[ 32, 49, 256 ]' means that all characters 
-           from 32 to 48 are transformed into 256 to 372. The function assumes
-           that the entries are sorted with respect to SourceInterval_Begin.
+       For example an element '[ 32, 49, 256 ]' means that all characters from
+       32 to 48 are transformed into 256 to 372. The function assumes that the
+       entries are sorted with respect to SourceInterval_Begin.
 
-           RETURNS: True  transformation successful
-                    False transformation failed, number set possibly in inconsistent state!
+        RETURNS: True  transformation is complete.
+                 False transformation failed, number set possibly in 
+                       inconsistent state!
         """
+
         total_verdict = True
         result        = []
         for interval in self.__intervals:

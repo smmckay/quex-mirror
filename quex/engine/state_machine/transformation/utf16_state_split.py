@@ -48,17 +48,22 @@ class EncodingTrafoUTF16(EncodingTrafoBySplit):
         EncodingTrafoBySplit.__init__(self, "utf16", 
                                       CodeUnitRange=NumberSet.from_range(0, 0x10000))
 
-        self._code_unit_error_range_db[0] = NumberSet([
+        self._error_range_by_code_unit_db[0] = NumberSet([
             Interval(0x0000, 0xDC00), Interval(0xE000, 0x10000)
         ]).get_complement(NumberSet_All())
-        self._code_unit_error_range_db[1] = NumberSet([
+        self._error_range_by_code_unit_db[1] = NumberSet([
             Interval(0xDC00, 0xE000)
         ]).get_complement(NumberSet_All())
 
-    def prune(self, number_set):
+    def cut_forbidden_range(self, number_set):
+        """Cuts the 'forbidden range' from the given number set.
+
+        RETURNS: True, if number set is not empty. False, else.
+        """
         global ForbiddenRange
         number_set.subtract(ForbiddenRange)
         number_set.mask(0, 0x110000)
+        return not number_set.is_empty()
 
     def get_interval_sequences(self, Orig):
         interval_1word, intervals_2word = _get_contigous_intervals(Orig)

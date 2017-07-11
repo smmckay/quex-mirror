@@ -36,36 +36,20 @@ class EncodingTrafoByTable(EncodingTrafo, list):
         self._code_unit_error_range_db[0] = \
                 drain_set.complement(Setup.buffer_encoding.lexatom_range)
 
-    def do_transition(self, sm, FromSi, from_target_map, ToSi):
+    def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
         """Translates to transition 'FromSi' --> 'ToSi' inside the state
         machine according to the translation table.
 
-        If setup, the transition to 'BAD_LEXATOM' is added for invalid
-        values of code units. 
+        'BadLexatomSi' is ignored. This argument is only of interest if
+        intermediate states are to be generated. This it not the case for this
+        type of transformation.
 
         RETURNS: [0] True if complete, False else.
-                 [1] True if transition needs to be removed from map.
+                 [1] StateDb to be added (always None, here)
         """
         number_set = from_target_map[ToSi]
 
-        if number_set.transform_by_table(self): 
-            assert not number_set.is_empty() # because .transform_by_table() -> True
-            return True, False
-
-        # 'FromSi' is a state that handles code unit '0'.
-        # (With tables, there is actually only one code unit)
-        self._code_unit_to_state_list_db[0].add(FromSi)
-        print "#add2:", FromSi
-
-        return False, number_set.is_empty()
-
-    def do_NumberSet(self, number_set):
-        """RETURNS: List of interval sequences that implement the number set.
-        """
-        transformed = number_set.transform_by_table(self)
-        return [ 
-            [ interval ]
-            for interval in transformed.get_intervals(PromiseToTreatWellF=True) 
-        ]
-
+        # 'transform_by_table' adapts the 'number_set' in the 'from_target_map'
+        # and returns 'True' if and only if the transformation was complete.
+        return number_set.transform_by_table(self), None
 
