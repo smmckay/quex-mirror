@@ -16,13 +16,13 @@ E_Files = Enum("HEADER",
 class QuexSetup:
     def __init__(self, SetupInfo, BcFactory):
         self.init(SetupInfo)
-        range_max = NumberSet_All()
         # Prevent import-dependencies in general.
 
     @property
     def buffer_encoding(self):
         if self.__buffer_encoding is None:
             from quex.engine.state_machine.transformation.base import EncodingTrafoUnicode
+            range_max    = NumberSet_All()
             unit_test_bc = EncodingTrafoUnicode(range_max, range_max)
             self.buffer_encoding_set(unit_test_bc, -1)
         return self.__buffer_encoding
@@ -31,6 +31,7 @@ class QuexSetup:
     def buffer_lexatom_size_in_byte(self):
         if self.__buffer_lexatom_size_in_byte is None:
             from quex.engine.state_machine.transformation.base import EncodingTrafoUnicode
+            range_max    = NumberSet_All()
             unit_test_bc = EncodingTrafoUnicode(range_max, range_max)
             self.buffer_encoding_set(unit_test_bc, -1)
         return self.__buffer_lexatom_size_in_byte

@@ -125,7 +125,7 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
         # Check whether a modification is necessary
         if number_set.least_greater_bound() <= self.UnchangedRange: 
             # 'UnchangedRange' => No change to numerical values.
-            from_target_map[BadLexatomSi] = self.error_range_by_code_unit_db[0]
+            from_target_map[BadLexatomSi] = self._error_range_by_code_unit_db[0]
             return True, None
 
         if not self.cut_forbidden_range(number_set):
