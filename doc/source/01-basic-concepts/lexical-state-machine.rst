@@ -42,10 +42,10 @@ stream of letters.  In phonemic writing systems :cite:`CoulmanFlorian1989`,
 such as Latin, Arabic, Hebrew, etc., letters correspond to graphemes
 representing sounds. The 'letters' of DNA are the four nucleotide bases A
 (adenine), C (cytosine), G (guanine), and T (thymine)
-:cite:`pevsner2015bioinformatics`.  Letters in digital transmission frames are
-bytes or bits. In general terms, lexical analysis detects configurations of
-letters and reports accordingly atomic meanings.  How can this be accomplished
-by an automated system?
+:cite:`pevsner2015bioinformatics` :cite:`searls1992linguistics`.  Letters in
+digital transmission frames are bytes or bits. In general terms, lexical
+analysis detects configurations of letters and reports accordingly atomic
+meanings.  How can this be accomplished by an automated system?
 
 An example *state machine* may be considered in figure
 :ref:`fig:state-machine-students-life`.  It displays the slightly idealized

@@ -35,7 +35,7 @@ class EncodingTrafoByTable(EncodingTrafo, list):
         # With 'table' translation a code point is translated into a single 
         # unit. Thus, only the error range for code unit '0' is determined.
         error_range_by_code_unit_db = {
-           0: drain_set.complement(Setup.buffer_encoding.lexatom_range)
+           0: drain_set.get_complement(Setup.buffer_encoding.lexatom_range)
         }
 
         EncodingTrafo.__init__(self, codec_name, source_set, drain_set,

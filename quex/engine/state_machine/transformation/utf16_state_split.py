@@ -50,7 +50,7 @@ class EncodingTrafoUTF16(EncodingTrafoBySplit):
         # => Two error ranges.
         error_range_0 = NumberSet([
             Interval(0x0000, 0xDC00), Interval(0xE000, 0x10000)
-        ]).get_complement(NumberSet_All()),
+        ]).get_complement(NumberSet_All())
 
         error_range_1 = NumberSet([
             Interval(0xDC00, 0xE000)
@@ -116,8 +116,8 @@ class EncodingTrafoUTF16(EncodingTrafoBySplit):
 
     def adapt_source_and_drain_range(self, LexatomByteN):
         EncodingTrafoBySplit.adapt_source_and_drain_range(self, LexatomByteN)
-        self.error_range_code_unit0.mask_interval(self.lexatom_range)
-        self.error_range_code_unit1.mask_interval(self.lexatom_range)
+        self._error_range_by_code_unit_db[0].mask_interval(self.lexatom_range)
+        self._error_range_by_code_unit_db[1].mask_interval(self.lexatom_range)
         if LexatomByteN == -1:
             return
         elif LexatomByteN >= 2: 

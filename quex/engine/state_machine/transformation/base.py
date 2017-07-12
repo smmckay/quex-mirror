@@ -20,6 +20,7 @@ class EncodingTrafo:
                       the given codec.
         .drain_set  = NumberSet of available code points in the given codec.
     """
+    @typed(Name=str, SourceSet=NumberSet, DrainSet=NumberSet, ErrorRangeByCodeUnitDb={int:NumberSet})
     def __init__(self, Name, SourceSet, DrainSet, ErrorRangeByCodeUnitDb):
         self.name       = Name
         self.source_set = SourceSet   # 'Unicode input'
