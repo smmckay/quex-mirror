@@ -17,23 +17,29 @@ from   quex.engine.state_machine.transformation.state_split import EncodingTrafo
 
 class EncodingTrafoUTF8(EncodingTrafoBySplit):
     def __init__(self):
-        drain_set = NumberSet.from_range(0, 0x100)
-        EncodingTrafoBySplit.__init__(self, "utf8", CodeUnitRange=drain_set)
-        self.UnchangedRange = 0x7F
+        range_of_each_code_unit = NumberSet.from_range(0, 0x100)
 
-        self._error_range_by_code_unit_db[0] = NumberSet([
+        error_range_0 = NumberSet([
             Interval(0b00000000, 0b01111111+1), Interval(0b11000000, 0b11011111+1),
             Interval(0b11100000, 0b11101111+1), Interval(0b11110000, 0b11110111+1),
             Interval(0b11111000, 0b11111011+1), Interval(0b11111100, 0b11111101+1),
         ]).get_complement(NumberSet_All())
 
-        # All bytes after the first are subject to the same error range.
-        error_range = NumberSet(Interval(0b10000000, 0b10111111+1)) \
-                      .get_complement(NumberSet_All())
+        error_range_N = NumberSet(Interval(0b10000000, 0b10111111+1)) \
+                        .get_complement(NumberSet_All())
 
-        self._error_range_by_code_unit_db.update(
-            (code_unit_i, error_range) for code_unit_i in range(1, 8)
-        )
+        error_range_by_code_unit_db = {
+            0: error_range_0,
+            1: error_range_N, 2: error_range_N, 3: error_range_N,
+            4: error_range_N, 5: error_range_N, 6: error_range_N,
+            7: error_range_N, 8: error_range_N
+        }
+
+        EncodingTrafoBySplit.__init__(self, "utf8", 
+                                      range_of_each_code_unit,
+                                      error_range_by_code_unit_db)
+        self.UnchangedRange = 0x7F
+
 
     def adapt_source_and_drain_range(self, LexatomByteN):
         EncodingTrafoBySplit.adapt_source_and_drain_range(self, LexatomByteN)

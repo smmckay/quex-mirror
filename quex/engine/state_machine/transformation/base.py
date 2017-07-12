@@ -5,7 +5,8 @@ import quex.engine.state_machine.algorithm.hopcroft_minimization as     hopcroft
 import quex.engine.state_machine.index                           as     state_machine_index
 from   quex.engine.state_machine.state.core                      import DFA_State
 from   quex.engine.misc.tools                                    import typed
-from   quex.constants                                            import INTEGER_MAX
+from   quex.constants                                            import INTEGER_MAX, \
+                                                                        E_IncidenceIDs
 
 from   collections     import defaultdict
 
@@ -19,13 +20,16 @@ class EncodingTrafo:
                       the given codec.
         .drain_set  = NumberSet of available code points in the given codec.
     """
-    def __init__(self, Name, SourceSet, DrainSet):
+    def __init__(self, Name, SourceSet, DrainSet, ErrorRangeByCodeUnitDb):
         self.name       = Name
         self.source_set = SourceSet   # 'Unicode input'
         self.drain_set  = DrainSet    # 'Range of all code units'.
 
         # To be adapted later by 'adapt_source_and_drain_range()'
         self.lexatom_range = Interval_All()
+        # For every position in a code unit sequence, there might be a different
+        # error range (see UTF8 or UTF16 for example).
+        self._error_range_by_code_unit_db = ErrorRangeByCodeUnitDb
 
     def do_state_machine(self, sm, BadLexatomDetectionF):
         """Transforms a given state machine from 'Unicode Driven' to another
@@ -54,11 +58,10 @@ class EncodingTrafo:
             for to_si, trigger_set in target_map.items():
 
                 complete_f,  \
-                new_state_db = self.do_transition(from_tm, from_si, to_si, 
+                new_state_db = self.do_transition(target_map, from_si, to_si, 
                                                   bad_lexatom_si) 
                 # Assume that the 'target_map' has been adapted if changes were
                 # necessary.
-
                 if new_state_db is not None:
                     sm.states.update(new_state_db)
 
@@ -66,8 +69,7 @@ class EncodingTrafo:
 
             # Transition to 'bad lexatom acceptor' on first code unit is best
             # to happen here, after all transitions have been adapted.
-            if bad_lexatom_si is not None:
-                target_map[bad_lexatom_si] = self._error_range_by_code_unit_db[0]
+            self._add_transition_to_bad_lexatom_detector(target_map, bad_lexatom_si, 0)
 
             # If there were intermediate states being generated, the error
             # error detection must have been implemented right then.
@@ -75,7 +77,7 @@ class EncodingTrafo:
         # Generate the 'bad lexatom accepter'.
         bad_lexatom_state = DFA_State(AcceptanceF=True)
         bad_lexatom_state.mark_acceptance_id(E_IncidenceIDs.BAD_LEXATOM)
-        self.states[bad_lexatom_si] = bad_lexatom_state
+        sm.states[bad_lexatom_si] = bad_lexatom_state
 
         for from_si, state in sm.states.items():
             target_map = state.target_map.get_map()
@@ -91,6 +93,12 @@ class EncodingTrafo:
             sm = nfa_to_dfa.do(sm)
         sm = hopcroft_minimization.do(sm, CreateNewStateMachineF=False)
         return all_complete_f, sm
+
+    def _add_transition_to_bad_lexatom_detector(self, target_map, BadLexatomSi, CodeUnitIndex):
+        if BadLexatomSi is None: return
+        error_range = self._error_range_by_code_unit_db[CodeUnitIndex]
+        if error_range.is_empty(): return
+        target_map[BadLexatomSi] = error_range
 
     def lexatom_n_per_character(self, CharacterSet):
         return 1     # Default behavior (e.g. UTF8 differs here)
@@ -144,7 +152,14 @@ class EncodingTrafo:
 class EncodingTrafoUnicode(EncodingTrafo):
     @typed(SourceSet=NumberSet, DrainSet=NumberSet)
     def __init__(self, SourceSet, DrainSet):
-        EncodingTrafo.__init__(self, "unicode", SourceSet, DrainSet)
+        # Plain 'Unicode' associates a character with a single code unit, i.e.
+        # its 'code point'. 
+        # => Only code unit '0' is specified and everything is allowed.
+        #    ('everything allowed' is disputable, since certain ranges are
+        #     disallowed.)
+        error_range_by_code_unit_db = { 0: NumberSet() }
+        EncodingTrafo.__init__(self, "unicode", SourceSet, DrainSet, 
+                               error_range_by_code_unit_db)
 
     def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
         """Translates to transition 'FromSi' --> 'ToSi' inside the state

@@ -91,6 +91,7 @@ PROCESS:
     of the state machine.
 """
 from   quex.engine.state_machine.core                import DFA
+from   quex.engine.state_machine.state.core          import DFA_State
 import quex.engine.state_machine.transformation.base as     base
 import quex.engine.state_machine.index               as     state_machine_index
 from   quex.engine.misc.interval_handling            import NumberSet
@@ -101,12 +102,11 @@ from   collections import defaultdict
 class EncodingTrafoBySplit(base.EncodingTrafo):
     """Transformation that takes a lexatom and produces a lexatom sequence.
     """
-    def __init__(self, Name, CodeUnitRange):
-        base.EncodingTrafo.__init__(self, Name, NumberSet.from_range(0, 0x110000),
-                                    CodeUnitRange)
-        # For every position in a code unit sequence, there might be a different
-        # error range (see UTF8 or UTF16 for example).
-        self._error_range_by_code_unit_db = {}
+    def __init__(self, Name, CodeUnitRange, ErrorRangeByCodeUnitDb):
+        base.EncodingTrafo.__init__(self, Name, 
+                                    NumberSet.from_range(0, 0x110000),
+                                    CodeUnitRange,
+                                    ErrorRangeByCodeUnitDb)
 
     def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
         """Translates to transition 'FromSi' --> 'ToSi' inside the state
@@ -222,7 +222,12 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
                 # The 'positon 0' is done by 'do_state_machine'. It is concerned
                 # with the first state's transition.
                 assert position != 0
-                result_tm_db[si][BadLexatomSi] = self._error_range_by_code_unit_db[position]
+                self._add_transition_to_bad_lexatom_detector(result_tm_db[si],
+                                                             BadLexatomSi,
+                                                             position)
+
+        for tm in result_tm_db.itervalues():
+            assert not any(number_set.is_empty() for number_set in tm.itervalues())
 
         # Generate the target map to be inserted into state 'FromSi'.
         # Generate list of intermediate states that implement the sequence

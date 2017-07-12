@@ -276,7 +276,8 @@ def test_plug_sequence(ByteSequenceDB):
     trafo = EncodingTrafoUTF8() 
     Setup.buffer_encoding_set(trafo, 1)
 
-    bad_lexatom_si = index.get()
+    if Setup.bad_lexatom_detection_f: bad_lexatom_si = index.get()
+    else:                             bad_lexatom_si = None
 
     new_first_tm,    \
     new_state_db = trafo.plug_interval_sequences(sm.init_state_index, end_index, 

@@ -16,8 +16,7 @@ E_Files = Enum("HEADER",
 class QuexSetup:
     def __init__(self, SetupInfo, BcFactory):
         self.init(SetupInfo)
-        range_max    = NumberSet_All()
-        
+        range_max = NumberSet_All()
         # Prevent import-dependencies in general.
 
     @property
@@ -63,8 +62,9 @@ class QuexSetup:
         # Default values, maybe overiden later on.
         self.language_db  = None
         self.extension_db = None
-        self.buffer_encoding = None
         self.compression_type_list = []
+        self.__buffer_encoding = None
+        self.__buffer_lexatom_size_in_byte = None
 
         file_in.specify_setup_object(self)
 

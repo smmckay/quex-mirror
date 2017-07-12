@@ -64,6 +64,13 @@ class DFA_State:
         result.__single_entry.merge_list(state.single_entry for state in StateList)
         return result
 
+    @staticmethod
+    def from_TargetMap(Db):
+        result = DFA_State(CloneF=True)
+        result.__target_map   = TargetMap(Db)
+        result.__single_entry = SingleEntry()
+        return result
+
     @property
     def single_entry(self):
         return self.__single_entry

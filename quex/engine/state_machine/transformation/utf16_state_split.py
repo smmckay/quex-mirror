@@ -45,15 +45,27 @@ ForbiddenRange = Interval(0xD800, 0xE000)
 class EncodingTrafoUTF16(EncodingTrafoBySplit):
     UnchangedRange = 0x10000
     def __init__(self):
-        EncodingTrafoBySplit.__init__(self, "utf16", 
-                                      CodeUnitRange=NumberSet.from_range(0, 0x10000))
 
-        self._error_range_by_code_unit_db[0] = NumberSet([
+        # A character in UTF16 is at maximum represented by two code units.
+        # => Two error ranges.
+        error_range_0 = NumberSet([
             Interval(0x0000, 0xDC00), Interval(0xE000, 0x10000)
-        ]).get_complement(NumberSet_All())
-        self._error_range_by_code_unit_db[1] = NumberSet([
+        ]).get_complement(NumberSet_All()),
+
+        error_range_1 = NumberSet([
             Interval(0xDC00, 0xE000)
         ]).get_complement(NumberSet_All())
+
+        error_range_by_code_unit_db = {
+            0: error_range_0,
+            1: error_range_1
+        }
+
+        range_of_each_code_unit = NumberSet.from_range(0, 0x10000)
+
+        EncodingTrafoBySplit.__init__(self, "utf16", 
+                                      range_of_each_code_unit,
+                                      error_range_by_code_unit_db)
 
     def cut_forbidden_range(self, number_set):
         """Cuts the 'forbidden range' from the given number set.

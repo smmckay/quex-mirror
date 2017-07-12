@@ -31,10 +31,16 @@ class EncodingTrafoByTable(EncodingTrafo, list):
             file_name   = codec_db.get_file_name_for_codec_alias(Codec)
 
         source_set, drain_set = codec_db.load(self, file_name, ExitOnErrorF)
-        EncodingTrafo.__init__(self, codec_name, source_set, drain_set)
 
-        self._code_unit_error_range_db[0] = \
-                drain_set.complement(Setup.buffer_encoding.lexatom_range)
+        # With 'table' translation a code point is translated into a single 
+        # unit. Thus, only the error range for code unit '0' is determined.
+        error_range_by_code_unit_db = {
+           0: drain_set.complement(Setup.buffer_encoding.lexatom_range)
+        }
+
+        EncodingTrafo.__init__(self, codec_name, source_set, drain_set,
+                               error_range_by_code_unit_db)
+
 
     def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
         """Translates to transition 'FromSi' --> 'ToSi' inside the state
