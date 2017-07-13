@@ -233,7 +233,8 @@ def _get_contiguous_interval_sequences(X, L):
         byte_sequence[q] = max_byte_value(L, q)
         current_end      = utf8_to_unicode(byte_sequence) + 1
         assert current_end <= X.end
-        result.append(Interval(current_begin, current_end))
+        if current_begin != current_end:
+            result.append(Interval(current_begin, current_end))
         current_begin    = current_end
 
     if front_sequence[p] + 1 != back_sequence[p]:
@@ -241,7 +242,8 @@ def _get_contiguous_interval_sequences(X, L):
         else:          byte_sequence[p] = back_sequence[p] - 1 
         current_end      = utf8_to_unicode(byte_sequence) + 1
         assert current_end <= X.end
-        result.append(Interval(current_begin, current_end))
+        if current_begin != current_end:
+            result.append(Interval(current_begin, current_end))
         current_begin    = current_end
 
     byte_sequence[p] = back_sequence[p]
@@ -253,7 +255,8 @@ def _get_contiguous_interval_sequences(X, L):
             else:          byte_sequence[q] = back_sequence[q] - 1
             current_end      = utf8_to_unicode(byte_sequence) + 1
             assert current_end <= X.end
-            result.append(Interval(current_begin, current_end))
+            if current_begin != current_end:
+                result.append(Interval(current_begin, current_end))
             if current_begin == X.end: break
             current_begin    = current_end
             byte_sequence[q] = back_sequence[q]

@@ -202,6 +202,10 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
                     if replacement_si is not None: target_si = replacement_si
                     new_tm[target_si].quick_append_interval(interval)
 
+                if any(number_set.is_empty() for si, number_set in new_tm.items()):
+                    for si, number_set in new_tm.iteritems():
+                        print "#sim", si, number_set
+
                 if from_si in tm_end_inv:
                     for interval in tm_end_inv[from_si]:
                         new_tm[ToSi].quick_append_interval(interval)
@@ -282,6 +286,7 @@ def __bunch_iterable(IntervalSequenceList, Index):
     prev_last_f   = False
     for i, sequence in enumerate(IntervalSequenceList):
         interval = sequence[Index]
+        if interval.is_empty(): print "#bu:", interval; assert False
         L        = len(sequence)
         last_f   = L == Index + 1
         if interval != prev_interval or last_f != prev_last_f:
@@ -364,6 +369,8 @@ def _get_intermediate_transition_maps(FromSi, ToSi, interval_sequence_list):
 
         # Group the sequences according to the interval at position 'index'.
         for interval, sub_group, last_f in __bunch_iterable(sequence_group, index):
+            if interval.is_empty():
+                print "#target_si:", new_si, interval, len(sub_group)
             # Transit to new state for the given sub-group of sequences.
             if not last_f:
                 # For each 'interval' a deliberate target state is generated.
