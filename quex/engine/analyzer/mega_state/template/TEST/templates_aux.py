@@ -75,8 +75,8 @@ def get_Analyzer(StatesDescription):
         assert isinstance(transition_map, list)
         tm = TransitionMap.from_iterable(transition_map)
         tm.fill_gaps(E_StateIndices.DROP_OUT,
-                     Setup.buffer_encoding.drain_set.minimum(), 
-                     Setup.buffer_encoding.drain_set.least_greater_bound())
+                     Setup.lexatom.type_range.begin, 
+                     Setup.lexatom.type_range.end)
         analyzer.state_db[state_index] = get_AnalyzerState(state_index, tm)
         all_state_index_set.update(x[1] for x in transition_map)
 

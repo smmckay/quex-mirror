@@ -85,7 +85,7 @@ def do(Mode_PrepPrepDB):
              ["$$NAMESPACE_TOKEN_CLOSE$$",      Lng.NAMESPACE_CLOSE(token_descr.name_space)],
              ["$$NAMESPACE_TOKEN_OPEN$$",       Lng.NAMESPACE_OPEN(token_descr.name_space)],
              ["$$PATH_TERMINATION_CODE$$",      "%s" % Setup.path_limit_code],
-             ["$$QUEX_TYPE_LEXATOM$$",          Setup.buffer_lexatom_type],
+             ["$$QUEX_TYPE_LEXATOM$$",          Setup.lexatom.type],
              ["$$QUEX_VERSION$$",               QUEX_VERSION],
              ["$$TOKEN_CLASS$$",                token_descr.class_name],
              ["$$TOKEN_CLASS_NAME_SAFE$$",      token_descr.class_name_safe],

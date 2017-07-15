@@ -342,7 +342,7 @@ def _helper_definitions():
         txt = helper_definitions_C % token_descr.class_name_safe
 
     txt += helper_definitions_common \
-           % (Setup.buffer_lexatom_type,
+           % (Setup.lexatom.type,
               Setup.token_id_type,
               Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
               Setup.output_token_id_file_ref)

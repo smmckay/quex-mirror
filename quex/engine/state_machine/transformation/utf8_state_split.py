@@ -40,11 +40,8 @@ class EncodingTrafoUTF8(EncodingTrafoBySplit):
                                       error_range_by_code_unit_db)
         self.UnchangedRange = 0x7F
 
-
-    def adapt_source_and_drain_range(self, LexatomByteN):
-        EncodingTrafoBySplit.adapt_source_and_drain_range(self, LexatomByteN)
-        for error_range in self._error_range_by_code_unit_db.itervalues():
-            error_range.mask_interval(self.lexatom_range)
+    def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
+        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)
 
     def cut_forbidden_range(self, X):
         """Cuts the 'forbidden range' from the given number set.

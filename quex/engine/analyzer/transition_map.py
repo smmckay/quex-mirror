@@ -40,8 +40,8 @@ class TransitionMap(list):
             assert len(result) != 0 # Empty target maps have been handled before
             result.sort()
 
-        begin = Setup.buffer_encoding.lexatom_range.begin
-        end   = Setup.buffer_encoding.lexatom_range.end
+        begin = Setup.lexatom.type_range.begin
+        end   = Setup.lexatom.type_range.end
         result.fill_gaps(E_StateIndices.DROP_OUT, begin, end)
         result.assert_boundary(begin, end)
         result.assert_continuity()
@@ -554,8 +554,8 @@ class TransitionMap(list):
             return
 
         if TotalRangeF: 
-            assert self[0][0].begin == Setup.buffer_encoding.drain_set.minimum()
-            assert self[-1][0].end  == Setup.buffer_encoding.drain_set.least_greater_bound()
+            assert self[0][0].begin == Setup.lexatom.type_range.begin
+            assert self[-1][0].end  == Setup.lexatom.type_range.end
 
         iterable    = iter(self)
         info        = iterable.next()

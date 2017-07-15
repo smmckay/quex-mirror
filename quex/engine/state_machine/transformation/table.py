@@ -1,7 +1,7 @@
 import quex.engine.codec_db.core as codec_db
 from   quex.engine.state_machine.transformation.base import EncodingTrafo
+from   quex.engine.misc.interval_handling            import NumberSet_All
 
-from   quex.blackboard import setup as Setup
 import os
 
 class EncodingTrafoByTable(EncodingTrafo, list):
@@ -35,12 +35,11 @@ class EncodingTrafoByTable(EncodingTrafo, list):
         # With 'table' translation a code point is translated into a single 
         # unit. Thus, only the error range for code unit '0' is determined.
         error_range_by_code_unit_db = {
-           0: drain_set.get_complement(Setup.buffer_encoding.lexatom_range)
+           0: drain_set.get_complement(NumberSet_All())
         }
 
         EncodingTrafo.__init__(self, codec_name, source_set, drain_set,
                                error_range_by_code_unit_db)
-
 
     def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
         """Translates to transition 'FromSi' --> 'ToSi' inside the state
@@ -57,5 +56,12 @@ class EncodingTrafoByTable(EncodingTrafo, list):
 
         # 'transform_by_table' adapts the 'number_set' in the 'from_target_map'
         # and returns 'True' if and only if the transformation was complete.
-        return number_set.transform_by_table(self), None
+        verdict_f = number_set.transform_by_table(self)
 
+        if number_set.is_empty():
+            del from_target_map[ToSi]
+
+        return verdict_f, None
+
+    def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
+        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)

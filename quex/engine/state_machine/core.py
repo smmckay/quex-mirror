@@ -670,6 +670,15 @@ class DFA(object):
 
         return
 
+    def delete_transitions_beyond_interval(self, MaskInterval):
+        """Removes any transitions beyond the specified 'MaskInterval' from the DFA.
+        """
+        for from_si, state in self.states.items():
+            target_map = state.target_map.get_map()
+            for to_si, number_set in target_map.items():
+                number_set.mask_interval(MaskInterval)
+                if number_set.is_empty(): del target_map[to_si]
+
     def __dive_for_epsilon_closure(self, state_index, result):
         index_list = self.states[state_index].target_map.get_epsilon_target_state_index_list()
         for target_index in ifilter(lambda x: x not in result, index_list):

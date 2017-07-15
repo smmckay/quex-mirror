@@ -69,9 +69,9 @@ def do(setup, command_line, argv):
                       "specified which file contains the definition of it.\n" + \
                       "use command line option '--derived-class-file'.\n")
 
-    if setup.buffer_lexatom_size_in_byte not in [-1, 1, 2, 4]:
+    if setup.lexatom.size_in_byte not in [-1, 1, 2, 4]:
         error.log("The setting of '--buffer-element-size' (or '-b') can only be\n" 
-                  "1, 2, or 4 (found %s)." % repr(setup.buffer_lexatom_size_in_byte))
+                  "1, 2, or 4 (found %s)." % repr(setup.lexatom.size_in_byte))
 
     if setup.buffer_byte_order not in ["<system>", "little", "big"]:
         error.log("Byte order (option --endian) must be 'little', 'big', or '<system>'.\n" + \
@@ -106,17 +106,17 @@ def do(setup, command_line, argv):
 
     # Internal engine character encoding
     def __codec_vs_buffer_lexatom_size_in_byte(CodecName, RequiredBufferElementSize):
-        if   setup.buffer_encoding.name           != CodecName:                 return
-        elif setup.buffer_lexatom_size_in_byte >=  RequiredBufferElementSize: return
+        if   setup.buffer_encoding.name != CodecName:                  return
+        elif setup.lexatom.size_in_byte >=  RequiredBufferElementSize: return
 
-        if setup.buffer_lexatom_size_in_byte == -1: 
-            msg_str = "undetermined (found type '%s')" % setup.buffer_lexatom_type
+        if setup.lexatom.size_in_byte == -1: 
+            msg_str = "undetermined (found type '%s')" % setup.lexatom.type
         else:
-            msg_str = "is not %i (found %i)" % (RequiredBufferElementSize, setup.buffer_lexatom_size_in_byte)
+            msg_str = "is not %i (found %i)" % (RequiredBufferElementSize, setup.lexatom.size_in_byte)
 
         error.log("Using encoding '%s' while buffer element size is %s.\n" % (CodecName, msg_str) + 
                   "Consult command line argument %s" \
-                  % command_line_args_string("buffer_lexatom_size_in_byte"))
+                  % command_line_args_string("__buffer_lexatom_size_in_byte"))
 
     if setup.buffer_encoding.name != "unicode":
         if not setup.buffer_encoding_file:

@@ -43,15 +43,14 @@ def do(ModePrepList):
 
     # (*) If a conversion or a codec engine is specified, then the 
     #     'on_bad_lexatom' handler must be specified in every mode.
-    lexatom_range = Setup.buffer_encoding.lexatom_range
-    if not Setup.buffer_encoding.drain_set.covers_range(lexatom_range.begin, 
-                                                     lexatom_range.end):
+    if Setup.buffer_encoding.bad_lexatom_possible():
         bad_mode_name_list = [ 
             mode.name for mode in ModePrepList
             if E_IncidenceIDs.BAD_LEXATOM not in mode.incidence_db
         ]
         if bad_mode_name_list:
-            modes_str = ", ".join(name for name in bad_mode_name_list)
+            lexatom_range = Setup.lexatom.type_range
+            modes_str     = ", ".join(name for name in bad_mode_name_list)
             error.warning("Missing 'on_bad_lexatom' handler in mode(s) %s.\n" \
                           % modes_str + \
                           "The range of values in buffer elements is [%i:%i].\n" \

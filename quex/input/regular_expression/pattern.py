@@ -247,7 +247,7 @@ class Pattern_Prep(object):
         sm_post_context                = self.__finalize_transform(Setup.buffer_encoding)
         if not verdict_f:
             error.warning("Pattern contains elements not found in engine codec '%s'.\n" % Setup.buffer_encoding.name \
-                          + "(Buffer element size is %s [byte])" % Setup.buffer_lexatom_size_in_byte,
+                          + "(Buffer element size is %s [byte])" % Setup.lexatom.size_in_byte,
                           self.sr)
 
         sm_main.set_id(original_incidence_id)

@@ -1,8 +1,11 @@
 #! /usr/bin/env python
+import quex.engine.misc.error                        as     error
 import quex.engine.misc.file_in                      as     file_in
 from   quex.engine.misc.file_operations              import get_propperly_slash_based_file_name
 from   quex.engine.misc.enum                         import Enum
-from   quex.engine.misc.interval_handling            import NumberSet, NumberSet_All
+from   quex.engine.misc.interval_handling            import NumberSet, NumberSet_All, \
+                                                            Interval, Interval_All
+from   quex.constants                                import INTEGER_MAX
 from   quex.DEFINITIONS                              import QUEX_PATH
 
 import os  
@@ -12,6 +15,57 @@ E_Files = Enum("HEADER",
                "HEADER_IMPLEMTATION", 
                "SOURCE", 
                "_DEBUG_Files")
+
+class Lexatom:
+    def __init__(self, Lng, TypeName=None, SizeInByte=None):
+        self.type         = TypeName
+        self.size_in_byte = self.__get_size_in_byte(Lng, TypeName, SizeInByte)
+        self.type_range   = self.__get_type_range(SizeInByte)
+
+    def __get_size_in_byte(self, Lng, TypeName, SizeInByte):
+        global global_character_type_db
+
+        # (*) Determine buffer element type and size (in bytes)
+        lexatom_size_in_byte = SizeInByte
+        if lexatom_size_in_byte == -1:
+            if global_character_type_db.has_key(TypeName):
+                lexatom_size_in_byte = global_character_type_db[TypeName][3]
+            elif not TypeName:
+                lexatom_size_in_byte = 1
+            else:
+                # Buffer element type is not identified in 'global_character_type_db'.
+                # => here Quex cannot know its size on its own.
+                lexatom_size_in_byte = -1
+
+        if not TypeName:
+            if lexatom_size_in_byte in Lng.STANDARD_TYPE_DB:
+                TypeName = Lng.STANDARD_TYPE_DB[lexatom_size_in_byte] 
+            elif lexatom_size_in_byte == -1:
+                pass
+            else:
+                error.log("Buffer element type cannot be determined for size '%i' which\n" \
+                          % lexatom_size_in_byte + 
+                          "has been specified by '-b' or '--buffer-element-size'.")
+
+        return lexatom_size_in_byte
+
+    def __get_type_range(self, LexatomByteN):
+        if LexatomByteN == -1: 
+            result = Interval_All()
+        else:
+            assert LexatomByteN >= 1
+
+            try:    
+                value_n = 256 ** LexatomByteN
+            except:
+                error.log("Error while trying to compute 256 power the 'lexatom-size' (%i bytes)\n"   \
+                          % LexatomByteN + \
+                          "Adapt \"--buffer-element-size\" or \"--buffer-element-type\",\n"       + \
+                          "or specify '--buffer-element-size-irrelevant' to ignore the issue.")
+
+            result = Interval(0, min(value_n, INTEGER_MAX + 1))
+
+        return result
 
 class QuexSetup:
     def __init__(self, SetupInfo, BcFactory):
@@ -27,19 +81,19 @@ class QuexSetup:
             self.buffer_encoding_set(unit_test_bc, -1)
         return self.__buffer_encoding
 
-    @property 
-    def buffer_lexatom_size_in_byte(self):
-        if self.__buffer_lexatom_size_in_byte is None:
-            from quex.engine.state_machine.transformation.base import EncodingTrafoUnicode
-            range_max    = NumberSet_All()
-            unit_test_bc = EncodingTrafoUnicode(range_max, range_max)
-            self.buffer_encoding_set(unit_test_bc, -1)
-        return self.__buffer_lexatom_size_in_byte
-
-    def buffer_encoding_set(self, BufferCodec, LexatomSizeInBytes): 
+    def buffer_encoding_set(self, BufferCodec): 
+        assert self.lexatom is not None
         self.__buffer_encoding = BufferCodec
-        self.__buffer_lexatom_size_in_byte = LexatomSizeInBytes
-        self.__buffer_encoding.adapt_source_and_drain_range(LexatomSizeInBytes)
+        self.__buffer_encoding.adapt_ranges_to_lexatom_type_range(self.lexatom.type_range)
+
+    @property
+    def lexatom(self):
+        if self.__lexatom is None:
+            self.lexatom_set(Lexatom("uint8_t", 8))
+        return self.__lexatom
+
+    def lexatom_set(self, LexatomInfo):
+        self.__lexatom = LexatomInfo
 
     def init(self, SetupInfo):
         for key, entry in SetupInfo.items():
@@ -64,8 +118,8 @@ class QuexSetup:
         self.language_db  = None
         self.extension_db = None
         self.compression_type_list = []
-        self.__buffer_encoding = None
-        self.__buffer_lexatom_size_in_byte = None
+        self.__buffer_encoding     = None
+        self.__lexatom             = None
 
         file_in.specify_setup_object(self)
 
@@ -147,8 +201,8 @@ SETUP_INFO = {
     "buffer_encoding_name":           [["--encoding"],                         "unicode"],
     "buffer_encoding_file":           [["--encoding-file"],                    ""],
     "buffer_limit_code":              [["--buffer-limit"],                     0x0],
-    "buffer_lexatom_size_in_byte":    [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes]
-    "buffer_lexatom_type":            [["--buffer-element-type", "--bet"],     ""],
+    "__buffer_lexatom_size_in_byte":  [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes]
+    "__buffer_lexatom_type":          [["--buffer-element-type", "--bet"],     "uint8_t"],
     "buffer_byte_order":              [["--endian"],                           "<system>"],
     "comment_state_machine_f":        [["--comment-state-machine"],            SetupParTypes.FLAG],
     "comment_transitions_f":          [["--comment-transitions"],              SetupParTypes.FLAG],
@@ -214,6 +268,7 @@ SETUP_INFO = {
     "analyzer_name_safe":                        None,
     "analyzer_derived_class_name_space":         None,
     "analyzer_derived_class_name_safe":          None,
+    "__lexatom":                                 None,
     "token_class_name":                          None,
     "token_class_name_space":                    None,
     "token_class_name_safe":                     None,
@@ -586,8 +641,8 @@ DOC = {
     "buffer_encoding_name":              ("Buffer internal codec.", ""),
     "buffer_encoding_file":              ("Codec file describing mapping to unicode code points.", ""),
     "buffer_limit_code":              ("Buffer limit code.", ""),
-    "buffer_lexatom_size_in_byte":    ("Buffer element size.", ""),
-    "buffer_lexatom_type":            ("Buffer element type.", ""),
+    "__buffer_lexatom_size_in_byte":  ("Buffer element size.", ""),
+    "__buffer_lexatom_type":          ("Buffer element type.", ""),
     "buffer_byte_order":              ("Byte order of buffer elements.", ""),
     "comment_state_machine_f":        ("Provide state machine description in comment of generated code.", ""),
     "comment_transitions_f":          ("Provided UTF8 representation of transition characters in comments of generated code.", ""),

@@ -99,7 +99,7 @@ def do_token_class_info():
         "  --token-class-file      %s" % Setup.output_token_class_file,
         "  --token-class           %s" % Setup.token_class,
         "  --token-id-type         %s" % Setup.token_id_type,
-        "  --buffer-element-type   %s" % Setup.buffer_lexatom_type,
+        "  --buffer-element-type   %s" % Setup.lexatom.type,
         "  --foreign-token-id-file %s" % Setup.output_token_id_file,
     ]
     print "info: Analyzers using this token class must be generated with"

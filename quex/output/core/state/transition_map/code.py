@@ -9,8 +9,8 @@ def relate_to_TransitionCode(tm, dial_db):
     assert tm is not None
     tm.assert_continuity()
     tm.assert_adjacency()
-    tm.assert_boundary(Setup.buffer_encoding.lexatom_range.begin,
-                       Setup.buffer_encoding.lexatom_range.end) 
+    tm.assert_boundary(Setup.lexatom.type_range.begin,
+                       Setup.lexatom.type_range.end) 
 
     def make_str(X):
         txt = X.code()

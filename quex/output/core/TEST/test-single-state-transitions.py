@@ -34,7 +34,7 @@ from   collections import defaultdict
 dial_db = DialDB()
 
 Setup.language_db = languages.db["C++"]()
-Setup.buffer_lexatom_type = "uint32_t"
+Setup.lexatom.type = "uint32_t"
 Setup.buffer_encoding_set(bc_factory.do("unicode", None), -1)
 
 
@@ -114,8 +114,8 @@ elif choice == "C":
 def prepare(tm):
     tm.sort()
     tm.fill_gaps(E_IncidenceIDs.MATCH_FAILURE, 
-                 Setup.buffer_encoding.drain_set.minimum(), 
-                 Setup.buffer_encoding.drain_set.least_greater_bound())
+                 Setup.lexatom.type_range.begin, 
+                 Setup.lexatom.type_range.end)
 
     iid_db = defaultdict(NumberSet)
     for interval, iid in tm:

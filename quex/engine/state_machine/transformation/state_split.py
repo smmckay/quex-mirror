@@ -90,7 +90,6 @@ PROCESS:
 (2) The interval sequences are plugged in between the state A and B
     of the state machine.
 """
-from   quex.engine.state_machine.core                import DFA
 from   quex.engine.state_machine.state.core          import DFA_State
 import quex.engine.state_machine.transformation.base as     base
 import quex.engine.state_machine.index               as     state_machine_index
@@ -125,7 +124,6 @@ class EncodingTrafoBySplit(base.EncodingTrafo):
         # Check whether a modification is necessary
         if number_set.least_greater_bound() <= self.UnchangedRange: 
             # 'UnchangedRange' => No change to numerical values.
-            from_target_map[BadLexatomSi] = self._error_range_by_code_unit_db[0]
             return True, None
 
         if not self.cut_forbidden_range(number_set):
@@ -369,8 +367,6 @@ def _get_intermediate_transition_maps(FromSi, ToSi, interval_sequence_list):
 
         # Group the sequences according to the interval at position 'index'.
         for interval, sub_group, last_f in __bunch_iterable(sequence_group, index):
-            if interval.is_empty():
-                print "#target_si:", new_si, interval, len(sub_group)
             # Transit to new state for the given sub-group of sequences.
             if not last_f:
                 # For each 'interval' a deliberate target state is generated.

@@ -178,7 +178,7 @@ else                      goto _30;
 
     __quex_assert_no_passage();
 _6:
-    /* (18 from 52) (18 from 31) (18 from 32) (18 from 47) (18 from 22) (18 from 27) (18 from 38) (18 from 17) (18 from 28) (18 from 23) (18 from 34) (18 from 13) (18 from 24) (18 from 14) (18 from 29) (18 from 40) (18 from 19) (18 from 30) (18 from 56) (18 from 25) (18 from 36) (18 from 15) (18 from 26) (18 from 16)  */
+    /* (18 from 52) (18 from 31) (18 from 32) (18 from 47) (18 from 22) (18 from 27) (18 from 38) (18 from 17) (18 from 28) (18 from 18) (18 from 23) (18 from 34) (18 from 13) (18 from 24) (18 from 14) (18 from 29) (18 from 40) (18 from 19) (18 from 30) (18 from 56) (18 from 25) (18 from 36) (18 from 15) (18 from 26) (18 from 16)  */
 
     ++(me->buffer._read_p);
 
@@ -186,7 +186,10 @@ _6:
 
 
     __quex_debug_state(18);
-goto _31;
+if     ( input >= 0xFE )  goto _6;
+else if( input >= 0xC0 )  goto _31;
+else if( input >= 0x80 )  goto _6;
+else                      goto _31;
 
 
     __quex_assert_no_passage();

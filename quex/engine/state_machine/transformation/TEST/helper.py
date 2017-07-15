@@ -122,6 +122,7 @@ def transform(Trafo, orig):
     return state_n_before, result
 
 def test_on_UCS_range(Trafo, Source, Drain, CharacterBackwardTrafo):
+    Setup.lexatom_type_range_set(-1)
 
     sm     = DFA()
     acc_db = {}
@@ -178,7 +179,8 @@ def generate_sm_for_boarders(Boarders, Trafo):
                  (ucs_char, target_idx), (ucs_char, target_idx))
         sm.states[target_idx].set_acceptance()
 
-    Trafo.adapt_source_and_drain_range(-1)
+    Setup.lexatom_type_range_set(-1)
+    Trafo.adapt_ranges_to_lexatom_type_range(Setup.lexatom_type_range_set)
     verdict_f, result = Trafo.do_state_machine(sm,
                                                BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
     assert verdict_f

@@ -114,18 +114,12 @@ class EncodingTrafoUTF16(EncodingTrafoBySplit):
         if front_chunk_n != back_chunk_n: return None
         else:                             return front_chunk_n
 
-    def adapt_source_and_drain_range(self, LexatomByteN):
-        EncodingTrafoBySplit.adapt_source_and_drain_range(self, LexatomByteN)
-        self._error_range_by_code_unit_db[0].mask_interval(self.lexatom_range)
-        self._error_range_by_code_unit_db[1].mask_interval(self.lexatom_range)
-        if LexatomByteN == -1:
-            return
-        elif LexatomByteN >= 2: 
-            return
-        else:
-            # if there are less than 2 byte for the lexatoms, then only the 
-            # unicode range from 0x00 to 0xFF can be treated.
-            self.source_set.mask(0x00, 0x100)
+    def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
+        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)
+        # UTF16 requires at least 2 byte for a 'normal code unit'. Anything else
+        # requires to cut on the addmissible set of code points.
+        if LexatomTypeRange.end < 0x10000:
+            self.source_set.mask_interval(0, LexatomTypeRange.end)
 
 def _get_contigous_intervals(X):
     """Split Unicode interval into intervals where all values

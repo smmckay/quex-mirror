@@ -75,7 +75,8 @@ good_sequences = [
 ]
 
 trafo = EncodingTrafoUTF16()
-trafo.adapt_source_and_drain_range(LexatomByteN=4)
+Setup.lexatom_type_range_set(LexatomByteN=4)
+trafo.adapt_ranges_to_lexatom_type_range(Setup.lexatom_type_range_set)
 sm = helper.generate_sm_for_boarders(boarders, EncodingTrafoUTF16())
 
 bad_sequence_list = helper.get_bad_sequences(good_sequences, bad_1st_s, bad_2nd_s)

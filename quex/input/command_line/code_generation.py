@@ -1,5 +1,6 @@
 import quex.input.command_line.validation            as     validation
-from   quex.input.setup                              import global_extension_db,      \
+from   quex.input.setup                              import Lexatom, \
+                                                            global_extension_db,      \
                                                             global_character_type_db, \
                                                             command_line_args_defined, \
                                                             command_line_arg_position, \
@@ -53,30 +54,38 @@ def prepare(command_line, argv):
     else:
         Setup.byte_order_is_that_of_current_system_f = False
 
-    lexatom_size_in_byte = __prepare_buffer_element_specification(Setup)
+    if Setup.__buffer_lexatom_size_in_byte == "wchar_t":
+        error.log("Since Quex version 0.53.5, 'wchar_t' can no longer be specified\n"
+                  "with option '--buffer-element-size' or '-bes'. Please, specify\n"
+                  "'--buffer-element-type wchar_t' or '--bet'.")
 
-    buffer_encoding      = bc_factory.do(Setup.buffer_encoding_name, 
-                                         Setup.buffer_encoding_file)
-    Setup.buffer_encoding_set(buffer_encoding, lexatom_size_in_byte)
+    if Setup.__buffer_lexatom_type == "wchar_t":
+        Setup.converter_ucs_coding_name = "WCHAR_T"
 
-    type_info = global_character_type_db.get(Setup.buffer_lexatom_type)
+    Setup.lexatom_set(Lexatom(Setup.language_db, 
+                              Setup.__buffer_lexatom_type,
+                              Setup.__buffer_lexatom_size_in_byte))
+    Setup.buffer_encoding_set(bc_factory.do(Setup.buffer_encoding_name, 
+                                            Setup.buffer_encoding_file)) 
+
+    type_info = global_character_type_db.get(Setup.lexatom.type)
     if     type_info is not None and len(type_info) >= 4 \
-       and type_info[3] != -1 and Setup.buffer_lexatom_size_in_byte != -1 \
-       and type_info[3] != Setup.buffer_lexatom_size_in_byte:
+       and type_info[3] != -1 and Setup.lexatom.size_in_byte != -1 \
+       and type_info[3] != Setup.lexatom.size_in_byte:
         error.log("\nBuffer element type ('--bet' or '--buffer-element-type') was set to '%s'.\n" \
-                  % Setup.buffer_lexatom_type \
+                  % Setup.lexatom.type \
                   + "It is well known to be of size %s[byte]. However, the buffer element size\n" \
                   % type_info[3] \
                   + "('-b' or '--buffer-element-type') was specified as '%s'.\n\n" \
-                  % Setup.buffer_lexatom_size_in_byte \
+                  % Setup.lexatom.size_in_byte \
                   + "Quex can continue, but the result is questionable.\n", \
                   DontExitF=True)
 
     if Setup.converter_ucs_coding_name == "": 
-        if global_character_type_db.has_key(Setup.buffer_lexatom_type):
+        if global_character_type_db.has_key(Setup.lexatom.type):
             if Setup.buffer_byte_order == "little": index = 1
             else:                                   index = 2
-            Setup.converter_ucs_coding_name = global_character_type_db[Setup.buffer_lexatom_type][index]
+            Setup.converter_ucs_coding_name = global_character_type_db[Setup.lexatom.type][index]
 
     if Setup.extern_token_id_specification: 
         if len(Setup.extern_token_id_specification) > 3: 
@@ -278,40 +287,4 @@ def __prepare_file_name(Suffix, ContentType, BaseNameF=False):
         return file_name
     else:                                
         return os.path.normpath(Setup.output_directory + "/" + file_name)
-
-def __prepare_buffer_element_specification(setup):
-    global global_character_type_db
-    Lng = Setup.language_db
-
-    if Setup.buffer_lexatom_size_in_byte == "wchar_t":
-        error.log("Since Quex version 0.53.5, 'wchar_t' can no longer be specified\n"
-                  "with option '--buffer-element-size' or '-bes'. Please, specify\n"
-                  "'--buffer-element-type wchar_t' or '--bet'.")
-
-    if Setup.buffer_lexatom_type == "wchar_t":
-        Setup.converter_ucs_coding_name = "WCHAR_T"
-
-    # (*) Determine buffer element type and size (in bytes)
-    lexatom_size_in_byte = Setup.buffer_lexatom_size_in_byte
-    if lexatom_size_in_byte == -1:
-        if global_character_type_db.has_key(Setup.buffer_lexatom_type):
-            lexatom_size_in_byte = global_character_type_db[Setup.buffer_lexatom_type][3]
-        elif Setup.buffer_lexatom_type == "":
-            lexatom_size_in_byte = 1
-        else:
-            # Buffer element type is not identified in 'global_character_type_db'.
-            # => here Quex cannot know its size on its own.
-            lexatom_size_in_byte = -1
-
-    if Setup.buffer_lexatom_type == "":
-        if lexatom_size_in_byte in Lng.STANDARD_TYPE_DB:
-            Setup.buffer_lexatom_type = Lng.STANDARD_TYPE_DB[lexatom_size_in_byte] 
-        elif lexatom_size_in_byte == -1:
-            pass
-        else:
-            error.log("Buffer element type cannot be determined for size '%i' which\n" \
-                      % lexatom_size_in_byte + 
-                      "has been specified by '-b' or '--buffer-element-size'.")
-
-    return lexatom_size_in_byte
 
