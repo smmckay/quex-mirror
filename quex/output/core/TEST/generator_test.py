@@ -36,6 +36,7 @@ from tempfile import mkstemp
 sys.path.insert(0, os.environ["QUEX_PATH"])
 #
 from   quex.input.code.base                        import SourceRef_VOID
+from   quex.input.setup                            import Lexatom
 from   quex.input.files.specifier.mode             import ModeDocumentation
 from   quex.input.regular_expression.auxiliary     import PatternShorthand
 import quex.input.regular_expression.engine        as     regex
@@ -52,7 +53,7 @@ from   quex.engine.mode                            import Mode
 from   quex.engine.incidence_db                    import IncidenceDB
 import quex.output.core.variable_db                as     variable_db
 from   quex.output.core.variable_db                import VariableDB
-from   quex.output.languages.core                 import db
+from   quex.output.languages.core                  import db
 import quex.output.core.state_router               as     state_router_generator
 import quex.output.core.engine                     as     engine_generator
 #
@@ -129,12 +130,11 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
        AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
 
     assert QuexBufferFallbackN >= 0
+    __Setup_init_language_database(Language)
 
     BufferLimitCode = 0
     Setup.buffer_limit_code = BufferLimitCode
-    Setup.buffer_encoding_set(bc_factory.do("unicode", None), LexatomSizeInBytes=1)
-
-    __Setup_init_language_database(Language)
+    Setup.buffer_setup("", 1, "unicode")
 
     CompileOptionStr = ""
     computed_goto_f  = False

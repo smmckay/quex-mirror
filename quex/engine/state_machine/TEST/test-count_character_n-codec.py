@@ -33,10 +33,8 @@ def test(TestString):
 
     # Prepare transformation info according to choice.
     #  Setup.buffer_element_specification_prepare()
-    if "UTF8" in sys.argv: 
-        Setup.buffer_encoding_set(bc_factory.do("utf8"), 1)
-    else:                  
-        Setup.buffer_encoding_set(bc_factory.do("utf16"), 2)
+    if "UTF8" in sys.argv: Setup.buffer_setup("", 1, "utf8")
+    else:                  Setup.buffer_setup("", 2, "utf16")
 
     # Count
     pattern = pattern.finalize(ca_map)

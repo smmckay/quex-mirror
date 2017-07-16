@@ -141,7 +141,7 @@ TEST                                                                 <no date>
         bug-2209142.sh error .........................................[OK]
                        good ..........................................[OK]
     2277660 character count pre-determination
-        bug-2277660.sh .............................................[FAIL]
+        bug-2277660.sh ...............................................[OK]
     2349109 0.33.5 Line and Column number counts with Set skippers
         bug-2349109.sh newline-skipper ...............................[OK]
                        newline-skipper-utf8 ..........................[OK]
@@ -171,7 +171,7 @@ TEST                                                                 <no date>
  * inhenriksen:
 
     3164355 C with whitespace character gives bad exception
-        bug-3164355.sh .............................................[FAIL]
+        bug-3164355.sh ...............................................[OK]
 
  * jdavidberger:
 
@@ -181,7 +181,7 @@ TEST                                                                 <no date>
  * jmarsik:
 
     0.58.2 history effect in UCS database interface: 3235790
-        bug-3235790.sh .............................................[FAIL]
+        bug-3235790.sh ...............................................[OK]
     3115741 0.55.4 move_backward triggers assert
         bug-3115741.sh general .......................................[OK]
                        undo-line-colum-count .........................[OK]
@@ -330,7 +330,7 @@ TEST                                                                 <no date>
  * sbellon:
 
     265 Modification time change on input file.
-        bug-265.sh .................................................[FAIL]
+        bug-265.sh ...................................................[OK]
     3524729 0.62.4 token_type distinct members cause overloading error
         bug-3524729.sh ...............................................[OK]
     3538026 Handling of spurious transition in PathWalkerState
@@ -343,7 +343,7 @@ TEST                                                                 <no date>
     1885846 Empty RE in define section
         bug-1885846.sh ...............................................[OK]
     1885855 P{ ...} syntax does not work outside of [:...:]
-        bug-1885855.sh .............................................[FAIL]
+        bug-1885855.sh ...............................................[OK]
     1887163 Single state mode causes quex to crash
         bug-1887163.sh ...............................................[OK]
     1889086 Single state mode causes quex to crash
@@ -438,7 +438,7 @@ TEST                                                                 <no date>
  * timdawborn:
 
     3106424 0.55.2 --set-by-expression with inverse fails
-        bug-3106424.sh ...............................................[OK]
+        bug-3106424.sh .............................................[FAIL]
 
  * wryun:
 
@@ -496,11 +496,7 @@ TEST                                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] bug-293.sh _ invokation
     [FAIL] bug-3474524.sh
-    [FAIL] bug-2277660.sh
-    [FAIL] bug-3164355.sh
-    [FAIL] bug-3235790.sh
-    [FAIL] bug-265.sh
-    [FAIL] bug-1885855.sh
+    [FAIL] bug-3106424.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -905,6 +901,8 @@ quex/engine/TEST                                                     <no date>
                                                                                
 quex/input/TEST                                                      <no date>
 -------------------------------------------------------------------------------
+ * 
+        counter_setup.py ...................................[NO GOOD FILE]
  * Case Folding based on Unicode Database
         case_fold.py m_multi .........................................[OK]
                      m_multi_turkish .................................[OK]
@@ -912,12 +910,6 @@ quex/input/TEST                                                      <no date>
                      s_simple_turkish ................................[OK]
                      sm ..............................................[OK]
                      smt .............................................[OK]
- * Parse Counter Setup
-        counter_setup.py basic .......................................[OK]
-                         intersection ................................[OK]
-                         intersection-2 ..............................[OK]
-                         non-numeric .................................[OK]
-                         twice .......................................[OK]
  * Parse Indentation Setup
         indentation_setup.py basic ...................................[OK]
                              intersection ............................[OK]
@@ -981,10 +973,12 @@ quex/input/TEST                                                      <no date>
                         Some-2 .......................................[OK]
                         Twice ........................................[OK]
                         Twice-2 ......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] counter_setup.py
 ===============================================================================
                                                                                
                   Acceptance Conditions: Begin/End of Stream                   
@@ -992,8 +986,8 @@ quex/input/TEST                                                      <no date>
 quex/TESTS/bof-eos-context/TEST                                      <no date>
 -------------------------------------------------------------------------------
  * implicit
-        implicit.exe 1 ......................................[MAKE FAILED]
-                     2 ......................................[MAKE FAILED]
+        implicit.exe 1 .............................................[FAIL]
+                     2 .............................................[FAIL]
  * plain
         plain.exe 1 ..................................................[OK]
                   2 ..................................................[OK]
@@ -1288,7 +1282,7 @@ quex/TESTS/match-precedence/TEST                                     <no date>
 quex/TESTS/misc/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Customized codec files (option --encoding-file)
-        customized_codec.sh ........................................[FAIL]
+        customized_codec.sh ..........................................[OK]
  * FSM DFA_State Tracer
         debug_show.sh ..............................................[FAIL]
  * Inadmissible commonalities
@@ -1310,7 +1304,6 @@ quex/TESTS/misc/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] customized_codec.sh
     [FAIL] debug_show.sh
 ===============================================================================
                                                                                
@@ -1370,33 +1363,21 @@ quex/TESTS/reset/TEST                                                <no date>
               30 .....................................................[OK]
               50 .....................................................[OK]
     Plain w/ Engine Codec
-        codec-lexer 0 .......................................[MAKE FAILED]
-                    1 .......................................[MAKE FAILED]
-                    1000 ....................................[MAKE FAILED]
-                    134 .....................................[MAKE FAILED]
-                    135 .....................................[MAKE FAILED]
-                    136 .....................................[MAKE FAILED]
-                    2 .......................................[MAKE FAILED]
-                    20 ......................................[MAKE FAILED]
-                    3 .......................................[MAKE FAILED]
-                    30 ......................................[MAKE FAILED]
-                    50 ......................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] codec-lexer _ 0
-                     \__ 1
-                     \__ 1000
-                     \__ 134
-                     \__ 135
-                     \__ 136
-                     \__ 2
-                     \__ 20
-                     \__ 3
-                     \__ 30
-                     \__ 50
+        codec-lexer 0 ................................................[OK]
+                    1 ................................................[OK]
+                    1000 .............................................[OK]
+                    134 ..............................................[OK]
+                    135 ..............................................[OK]
+                    136 ..............................................[OK]
+                    2 ................................................[OK]
+                    20 ...............................................[OK]
+                    3 ................................................[OK]
+                    30 ...............................................[OK]
+                    50 ...............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                           Source Package Distribution                          
@@ -1627,11 +1608,11 @@ quex/engine/analyzer/TEST                                            <no date>
                                                  3-diff ..............[OK]
                                                  3-same ..............[OK]
     fill_gaps
-        transition_map_tools-fill_gaps.py 1 ..........................[OK]
-                                          2-diff .....................[OK]
-                                          2-same .....................[OK]
-                                          3-diff .....................[OK]
-                                          3-same .....................[OK]
+        transition_map_tools-fill_gaps.py 1 ........................[FAIL]
+                                          2-diff ...................[FAIL]
+                                          2-same ...................[FAIL]
+                                          3-diff ...................[FAIL]
+                                          3-same ...................[FAIL]
     prune
         transition_map_tools-prune.py 1 ..............................[OK]
                                       2 ..............................[OK]
@@ -1642,10 +1623,16 @@ quex/engine/analyzer/TEST                                            <no date>
                                 AbsorbC ..............................[OK]
                                 Apart ................................[OK]
                                 Normal ...............................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] transition_map_tools-fill_gaps.py _ 1
+                                           \__ 2-diff
+                                           \__ 2-same
+                                           \__ 3-diff
+                                           \__ 3-same
 ===============================================================================
                                                                                
                        Loop Generation and Applications                        
@@ -1674,10 +1661,10 @@ quex/engine/loop/TEST                                                <no date>
  * Loop:
 
     Get All Analyzers.
-        loop-get_analazer_list.py appendix .........................[FAIL]
-                                  appendix-wot .....................[FAIL]
-                                  loop .............................[FAIL]
-                                  non-const ........................[FAIL]
+        loop-get_analazer_list.py appendix ....................[NO OUTPUT]
+                                  appendix-wot ................[NO OUTPUT]
+                                  loop ........................[NO OUTPUT]
+                                  non-const ...................[NO OUTPUT]
     Get Loop Map.
         loop-get_loop_map.py AppendixI ...............................[OK]
                              AppendixNoI .............................[OK]
@@ -1813,34 +1800,22 @@ quex/engine/operations/TEST                                          <no date>
                                                                                
 quex/engine/state_machine/TEST                                       <no date>
 -------------------------------------------------------------------------------
- * 
-        test-StateMachine-clone.py ...................................[OK]
- * 
-        test-StateMachine-epsilon-closure.py .........................[OK]
- * 
-        test-StateMachine-inverse.py .................................[OK]
- * 
-        test-StateMachine-trace-origin-clone.py ......................[OK]
- * 
-        test-StateMachine-trace-origin-create-DFA.py .................[OK]
- * 
-        test-StateMachine-trace-origin-hopcroft-optimization.py ......[OK]
- * 
-        test-setup_border_conditions.py ............................[FAIL]
 
  * DFA:
 
+    Cloning
+        test-StateMachine-clone.py .................................[FAIL]
     Get Trigger Map (intervals --> target states)
-        test-StateInfo-trigger-map.py ................................[OK]
+        test-StateInfo-trigger-map.py ..............................[FAIL]
     Get Trigger Map (intervals --> target states)
-        test-get_trigger_map.py 1 ....................................[OK]
-                                2 ....................................[OK]
-                                3 ....................................[OK]
-                                4 ....................................[OK]
-                                5 ....................................[OK]
-                                6 ....................................[OK]
-                                7 ....................................[OK]
-                                8 ....................................[OK]
+        test-get_trigger_map.py 1 ..................................[FAIL]
+                                2 ..................................[FAIL]
+                                3 ..................................[FAIL]
+                                4 ..................................[FAIL]
+                                5 ..................................[FAIL]
+                                6 ..................................[FAIL]
+                                7 ..................................[FAIL]
+                                8 ..................................[FAIL]
     get_predecessor_db
         test-StateMachine-get_predecessor_db.py bubble ...............[OK]
                                                 bubble2 ..............[OK]
@@ -1859,8 +1834,17 @@ quex/engine/state_machine/TEST                                       <no date>
                                                 nested_loop ..........[OK]
                                                 tree .................[OK]
 
+ * DFA Operations:
+
+    Append Post Condition
+        test-setup_border_conditions.py ............................[FAIL]
+    Inverse
+        test-StateMachine-inverse.py ...............................[FAIL]
+
  * NFA:
 
+    Epsilon closure (single state)
+        test-StateMachine-epsilon-closure.py .........................[OK]
     Get elementary trigger sets (target index --> trigger sets)
         test-StateMachine-elementary_trigger_sets.py .................[OK]
     Get elementary trigger sets II
@@ -1875,8 +1859,8 @@ quex/engine/state_machine/TEST                                       <no date>
  * Predetermined Character Count:
 
     Characters
-        test-count_character_n.py BeginOfLine ........................[OK]
-                                  Normal .............................[OK]
+        test-count_character_n.py BeginOfLine ......................[FAIL]
+                                  Normal ...........................[FAIL]
     Characters of different horizontal sizes.
         test-count_character_n-2.py Different ........................[OK]
                                     Grid .............................[OK]
@@ -1885,7 +1869,7 @@ quex/engine/state_machine/TEST                                       <no date>
                                     TwoSet ...........................[OK]
     Codec Engine
         test-count_character_n-codec.py UTF16 ......................[FAIL]
-                                        UTF8 .........................[OK]
+                                        UTF8 .......................[FAIL]
     Newlines
         test-count_newline_n.py ......................................[OK]
 
@@ -1894,12 +1878,18 @@ quex/engine/state_machine/TEST                                       <no date>
     Detection
         test-ambiguous_post_condition-detect.py ......................[OK]
     Mounting
-        test-ambiguous_post_condition-mount_pseudo.py ................[OK]
+        test-ambiguous_post_condition-mount_pseudo.py ..............[FAIL]
     The Philosophical Cut
-        test-ambiguous_post_condition-philosophical_cut.py ...........[OK]
+        test-ambiguous_post_condition-philosophical_cut.py .........[FAIL]
 
  * Tracing origin:
 
+    Cloning
+        test-StateMachine-trace-origin-clone.py ....................[FAIL]
+    Hopcroft optimization (minimize state set)
+        test-StateMachine-trace-origin-hopcroft-optimization.py ......[OK]
+    NFA to DFA (subset construction)
+        test-StateMachine-trace-origin-create-DFA.py .................[OK]
     NFA to DFA (subset construction) II
         test-StateMachine-trace-origin-create-DFA-2.py ...............[OK]
 
@@ -1912,8 +1902,25 @@ quex/engine/state_machine/TEST                                       <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] test-StateMachine-clone.py
+    [FAIL] test-StateInfo-trigger-map.py
+    [FAIL] test-get_trigger_map.py _ 1
+                                 \__ 2
+                                 \__ 3
+                                 \__ 4
+                                 \__ 5
+                                 \__ 6
+                                 \__ 7
+                                 \__ 8
     [FAIL] test-setup_border_conditions.py
+    [FAIL] test-StateMachine-inverse.py
+    [FAIL] test-count_character_n.py _ BeginOfLine
+                                   \__ Normal
     [FAIL] test-count_character_n-codec.py _ UTF16
+                                         \__ UTF8
+    [FAIL] test-ambiguous_post_condition-mount_pseudo.py
+    [FAIL] test-ambiguous_post_condition-philosophical_cut.py
+    [FAIL] test-StateMachine-trace-origin-clone.py
 ===============================================================================
                                                                                
                           Regular Expression Parsing                           
@@ -1921,22 +1928,20 @@ quex/engine/state_machine/TEST                                       <no date>
 quex/input/regular_expression/TEST                                   <no date>
 -------------------------------------------------------------------------------
  * 
+        test-transformation.py ................................[NO OUTPUT]
+ * Anti-Patterns
         anti-pattern.py ..............................................[OK]
- * 
-        test-lonely-characters.py ....................................[OK]
- * 
-        test-operations.py .................................[NO GOOD FILE]
- * 
-        test-set-expressions.py ......................................[OK]
- * 
-        test-set.py ..................................................[OK]
  * Case Folding
         test-case_fold.py pattern ....................................[OK]
                           set ........................................[OK]
  * DFA Pattern Matching
         test-pattern-matching.py .....................................[OK]
- * Transformations
-        test-transformation.py .....................................[FAIL]
+ * Operations
+        test-operations.py 0 .........................................[OK]
+                           1 .........................................[OK]
+                           2 .........................................[OK]
+                           3 .........................................[OK]
+                           special ...................................[OK]
 
  * Backslashed Characters:
 
@@ -1945,6 +1950,10 @@ quex/input/regular_expression/TEST                                   <no date>
 
  * Basics:
 
+    Lonestanding characters
+        test-lonely-characters.py ....................................[OK]
+    Map character *range* to state machine
+        test-set.py ..................................................[OK]
     Map character *string* to state machine
         test-string.py ...............................................[OK]
     Snap string until (low level function)
@@ -1954,6 +1963,8 @@ quex/input/regular_expression/TEST                                   <no date>
 
     Alternative Expressions
         test-alternatives.py .........................................[OK]
+    Alternative Expressions
+        test-set-expressions.py ......................................[OK]
     Simple repeated expressions
         test-repeated-expressions.py .................................[OK]
 
@@ -1988,7 +1999,6 @@ quex/input/regular_expression/TEST                                   <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-operations.py
     [FAIL] test-transformation.py
     [FAIL] test-eol-carriage-return-newline.py
 ===============================================================================
@@ -2238,9 +2248,9 @@ quex/output/core/TEST                                                <no date>
 
     Transition Code Generation
         test-single-state-transitions.py A ...........................[OK]
-                                         A-UTF8 ......................[OK]
+                                         A-UTF8 ....................[FAIL]
                                          B ...........................[OK]
-                                         B-UTF8 ...............[NO OUTPUT]
+                                         B-UTF8 ......................[OK]
                                          C ...........................[OK]
                                          C-UTF8 ......................[OK]
                                                            ___   _    _   _    
@@ -2248,7 +2258,7 @@ quex/output/core/TEST                                                <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-single-state-transitions.py _ B-UTF8
+    [FAIL] test-single-state-transitions.py _ A-UTF8
 ===============================================================================
                                                                                
             Resource Scenarios for Constructor, Include, and Reset             
@@ -2381,29 +2391,31 @@ quex/code_base/extra/post_categorizer/TEST                           <no date>
                                                                                
 quex/engine/state_machine/algorithm/TEST                             <no date>
 -------------------------------------------------------------------------------
- * 
-        test-hopcroft-minimization-2.py ............................[FAIL]
- * 
-        test-hopcroft-minimization-3.py ....................[NO GOOD FILE]
- * 
-        test-hopcroft-minimization.py ..............................[FAIL]
- * 
-        test-nfa-to-dfa-ng.py ........................................[OK]
- * 
-        test-nfa-to-dfa.py ...........................................[OK]
+
+ * DFA:
+
+    Hopcroft optimization (minimize state set)
+        test-hopcroft-minimization.py ADAPT ..........................[OK]
+                                      NEW ............................[OK]
+    Hopcroft optimization (minimize state set) II
+        test-hopcroft-minimization-2.py ADAPT ........................[OK]
+                                        NEW ..........................[OK]
+    Hopcroft optimization III (state machine combination)
+        test-hopcroft-minimization-3.py ADAPT ........................[OK]
+                                        NEW ..........................[OK]
 
  * NFA:
 
+    Conversion to DFA (subset construction)
+        test-nfa-to-dfa-ng.py ........................................[OK]
+    Conversion to DFA (subset construction)
+        test-nfa-to-dfa.py ...........................................[OK]
     Conversion to DFA - Special Case
         test-nfa-to-dfa-special.py ...................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-hopcroft-minimization-2.py
-    [FAIL] test-hopcroft-minimization-3.py
-    [FAIL] test-hopcroft-minimization.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   DFA Checks                                   
@@ -2439,24 +2451,37 @@ quex/engine/state_machine/check/TEST                                 <no date>
                                                                                
 quex/engine/state_machine/construction/TEST                          <no date>
 -------------------------------------------------------------------------------
- * 
-        test-parallelize-trace-origin.py .............................[OK]
- * 
-        test-parallelize.py ..........................................[OK]
- * 
-        test-repeat-pure.py ..........................................[OK]
- * 
+
+ * DFA Operations:
+
+    Append Post Condition
+        test-setup_post_condition.py ...............................[FAIL]
+    Mount Paralell
+        test-parallelize.py ........................................[FAIL]
+    Repetition with min and max repetition numbers
         test-repeat.py ...............................................[OK]
- * 
-        test-sequentialize.py ........................................[OK]
- * 
-        test-setup_post_condition.py .................................[OK]
- * 
-        test-setup_pre_condition.py ..................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+    Repetitions Kleene closure 0 or arbitrary repetitions
+        test-repeat-pure.py ........................................[FAIL]
+    Sequence
+        test-sequentialize.py ......................................[FAIL]
+    Setup Pre-Condition
+        test-setup_pre_condition.py ................................[FAIL]
+
+ * Tracing origin:
+
+    Paralellization
+        test-parallelize-trace-origin.py ...........................[FAIL]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] test-setup_post_condition.py
+    [FAIL] test-parallelize.py
+    [FAIL] test-repeat-pure.py
+    [FAIL] test-sequentialize.py
+    [FAIL] test-setup_pre_condition.py
+    [FAIL] test-parallelize-trace-origin.py
 ===============================================================================
                                                                                
                               DFA Transformations                              
@@ -2478,43 +2503,43 @@ quex/engine/state_machine/transformation/TEST                        <no date>
  * State Split:
 
     Plug Interval Sequence
-        test-plug-interval-sequence.py 1.1 ...........................[OK]
-                                       1.2 ...........................[OK]
-                                       2.1 ...........................[OK]
-                                       2.2 ...........................[OK]
+        test-plug-interval-sequence.py 1.1 .........................[FAIL]
+                                       1.2 .........................[FAIL]
+                                       2.1 .........................[FAIL]
+                                       2.2 .........................[FAIL]
                                        2.3 .........................[FAIL]
-                                       3.1 ...........................[OK]
-                                       3.2 ...........................[OK]
+                                       3.1 .........................[FAIL]
+                                       3.2 .........................[FAIL]
                                        3.3 .........................[FAIL]
                                        4.1 .........................[FAIL]
                                        4.2 .........................[FAIL]
                                        4.3 .........................[FAIL]
                                        4.4 .........................[FAIL]
     Plug Interval Sequence - With BL Detection
-        test-plug-interval-sequence-with-bad-lexatom-detection.py 1.1 [OK]
-                                                                  1.2 [OK]
-                                                                  2.1 [OK]
-                                                                  2.2 [OK]
+        test-plug-interval-sequence-with-bad-lexatom-detection.py 1.1 [FAIL]
+                                                                  1.2 [FAIL]
+                                                                  2.1 [FAIL]
+                                                                  2.2 [FAIL]
                                                                   2.3 [FAIL]
-                                                                  3.1 [OK]
-                                                                  3.2 [OK]
-                                                                  3.3 [OK]
-                                                                  4.1 [OK]
-                                                                  4.2 [OK]
+                                                                  3.1 [FAIL]
+                                                                  3.2 [FAIL]
+                                                                  3.3 [FAIL]
+                                                                  4.1 [FAIL]
+                                                                  4.2 [FAIL]
                                                                   4.3 [FAIL]
-                                                                  4.4 [OK]
+                                                                  4.4 [FAIL]
 
  * Table-Based Transformations (fixed size):
 
     Examplary Unicode Ranges
-        test-codec-on-ucs-range.py EBCDIC-CP-BE ....................[FAIL]
-                                   arabic ..........................[FAIL]
-                                   ascii ...........................[FAIL]
-                                   cp037 ...........................[FAIL]
-                                   cp1140 ..........................[FAIL]
-                                   hebrew ..........................[FAIL]
-                                   iso8859_10 ......................[FAIL]
-                                   macgreek ........................[FAIL]
+        test-codec-on-ucs-range.py EBCDIC-CP-BE ...............[NO OUTPUT]
+                                   arabic .....................[NO OUTPUT]
+                                   ascii ......................[NO OUTPUT]
+                                   cp037 ......................[NO OUTPUT]
+                                   cp1140 .....................[NO OUTPUT]
+                                   hebrew .....................[NO OUTPUT]
+                                   iso8859_10 .................[NO OUTPUT]
+                                   macgreek ...................[NO OUTPUT]
 
  * UTF16 Split:
 
@@ -2525,7 +2550,7 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                      4 ...............................[OK]
                                      5 ...............................[OK]
     Unicode Language-Scripts as Examplary Ranges
-        test-utf16-on-unicode-script-ranges.py .......................[OK]
+        test-utf16-on-unicode-script-ranges.py .....................[FAIL]
 
  * UTF8 Split:
 
@@ -2542,11 +2567,11 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                                 Overlap1 .............[OK]
                                                 Overlap2 .............[OK]
     Repetition at Codec Boarders
-        test-utf16-boarders.py error-detect ..........................[OK]
-                               plain .................................[OK]
+        test-utf16-boarders.py error-detect ...................[NO OUTPUT]
+                               plain ..........................[NO OUTPUT]
     Repetition at Codec Boarders
-        test-utf8-boarders.py error-detect ...........................[OK]
-                              plain ..................................[OK]
+        test-utf8-boarders.py error-detect ....................[NO OUTPUT]
+                              plain ...........................[NO OUTPUT]
     Unicode Language-Scripts as Examplary Ranges
         test-utf8-on-unicode-script-ranges.py ........................[OK]
                                                            ___   _    _   _    
@@ -2555,14 +2580,30 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] test-get_intermediate_transition_maps.py
-    [FAIL] test-plug-interval-sequence.py _ 2.3
+    [FAIL] test-plug-interval-sequence.py _ 1.1
+                                        \__ 1.2
+                                        \__ 2.1
+                                        \__ 2.2
+                                        \__ 2.3
+                                        \__ 3.1
+                                        \__ 3.2
                                         \__ 3.3
                                         \__ 4.1
                                         \__ 4.2
                                         \__ 4.3
                                         \__ 4.4
-    [FAIL] test-plug-interval-sequence-with-bad-lexatom-detection.py _ 2.3
+    [FAIL] test-plug-interval-sequence-with-bad-lexatom-detection.py _ 1.1
+                                                                   \__ 1.2
+                                                                   \__ 2.1
+                                                                   \__ 2.2
+                                                                   \__ 2.3
+                                                                   \__ 3.1
+                                                                   \__ 3.2
+                                                                   \__ 3.3
+                                                                   \__ 4.1
+                                                                   \__ 4.2
                                                                    \__ 4.3
+                                                                   \__ 4.4
     [FAIL] test-codec-on-ucs-range.py _ EBCDIC-CP-BE
                                     \__ arabic
                                     \__ ascii
@@ -2571,6 +2612,11 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                     \__ hebrew
                                     \__ iso8859_10
                                     \__ macgreek
+    [FAIL] test-utf16-on-unicode-script-ranges.py
+    [FAIL] test-utf16-boarders.py _ error-detect
+                                \__ plain
+    [FAIL] test-utf8-boarders.py _ error-detect
+                               \__ plain
 ===============================================================================
                                                                                
                                   Output Cpp                                   
@@ -2585,22 +2631,22 @@ quex/output/languages/cpp/TEST                                       <no date>
     Default Implementation
         test-counter.py ascii-1 ......................................[OK]
                         ascii-1-wo-ReferenceP ........................[OK]
-                        cp737-1 ...............................[NO OUTPUT]
-                        cp737-1-wo-ReferenceP .................[NO OUTPUT]
-                        utf_16_le-1 ..................................[OK]
+                        cp737-1 ......................................[OK]
+                        cp737-1-wo-ReferenceP ........................[OK]
+                        utf_16_le-1 ...........................[NO OUTPUT]
                         utf_16_le-1-wo-ReferenceP ....................[OK]
-                        utf_16_le-2 ..................................[OK]
-                        utf_16_le-2-wo-ReferenceP ....................[OK]
+                        utf_16_le-2 ...........................[NO OUTPUT]
+                        utf_16_le-2-wo-ReferenceP ..................[FAIL]
                         utf_32_le-1 ..................................[OK]
                         utf_32_le-1-wo-ReferenceP ....................[OK]
                         utf_8-1 ......................................[OK]
                         utf_8-1-wo-ReferenceP ........................[OK]
-                        utf_8-2 ......................................[OK]
-                        utf_8-2-wo-ReferenceP ........................[OK]
-                        utf_8-3 ......................................[OK]
-                        utf_8-3-wo-ReferenceP ........................[OK]
-                        utf_8-4 ......................................[OK]
-                        utf_8-4-wo-ReferenceP ........................[OK]
+                        utf_8-2 ....................................[FAIL]
+                        utf_8-2-wo-ReferenceP ......................[FAIL]
+                        utf_8-3 ....................................[FAIL]
+                        utf_8-3-wo-ReferenceP ......................[FAIL]
+                        utf_8-4 ....................................[FAIL]
+                        utf_8-4-wo-ReferenceP ......................[FAIL]
 
  * Converter:
 
@@ -2623,8 +2669,15 @@ quex/output/languages/cpp/TEST                                       <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-counter.py _ cp737-1
-                         \__ cp737-1-wo-ReferenceP
+    [FAIL] test-counter.py _ utf_16_le-1
+                         \__ utf_16_le-2
+                         \__ utf_16_le-2-wo-ReferenceP
+                         \__ utf_8-2
+                         \__ utf_8-2-wo-ReferenceP
+                         \__ utf_8-3
+                         \__ utf_8-3-wo-ReferenceP
+                         \__ utf_8-4
+                         \__ utf_8-4-wo-ReferenceP
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -2898,23 +2951,23 @@ quex/engine/analyzer/mega_state/path_walker/TEST                     <no date>
  * Paths:
 
     Plugging Wild Cards
-        find-3.py 1 ..................................................[OK]
-                  2 ..................................................[OK]
-                  3 ..................................................[OK]
-                  4 ..................................................[OK]
+        find-3.py 1 ................................................[FAIL]
+                  2 ................................................[FAIL]
+                  3 ................................................[FAIL]
+                  4 ................................................[FAIL]
     collect
-        find.py 1 ....................................................[OK]
-                2 ....................................................[OK]
-                3 ....................................................[OK]
-                4 ....................................................[OK]
-                5 ....................................................[OK]
-                6 ....................................................[OK]
+        find.py 1 ..................................................[FAIL]
+                2 ..................................................[FAIL]
+                3 ..................................................[FAIL]
+                4 ..................................................[FAIL]
+                5 ..................................................[FAIL]
+                6 ..................................................[FAIL]
     find_path (mean tests)
-        find-2.py 1 ..................................................[OK]
-                  2 ..................................................[OK]
-                  3 ..................................................[OK]
-                  4a .................................................[OK]
-                  4b .................................................[OK]
+        find-2.py 1 ................................................[FAIL]
+                  2 ................................................[FAIL]
+                  3 ................................................[FAIL]
+                  4a ...............................................[FAIL]
+                  4b ...............................................[FAIL]
     select
         select_longest_paths.py 0 ....................................[OK]
                                 1 ....................................[OK]
@@ -2930,10 +2983,26 @@ quex/engine/analyzer/mega_state/path_walker/TEST                     <no date>
                                 7 ....................................[OK]
                                 8 ....................................[OK]
                                 9 ....................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] find-3.py _ 1
+                   \__ 2
+                   \__ 3
+                   \__ 4
+    [FAIL] find.py _ 1
+                 \__ 2
+                 \__ 3
+                 \__ 4
+                 \__ 5
+                 \__ 6
+    [FAIL] find-2.py _ 1
+                   \__ 2
+                   \__ 3
+                   \__ 4a
+                   \__ 4b
 ===============================================================================
                                                                                
                           Template State Construction                          
@@ -2941,27 +3010,27 @@ quex/engine/analyzer/mega_state/path_walker/TEST                     <no date>
 quex/engine/analyzer/mega_state/template/TEST                        <no date>
 -------------------------------------------------------------------------------
  * Combination of Two Transition Maps
-        combine-maps.py 1 ............................................[OK]
-                        2 ............................................[OK]
-                        2b ...........................................[OK]
-                        3 ............................................[OK]
-                        4 ............................................[OK]
+        combine-maps.py 1 ..........................................[FAIL]
+                        2 ..........................................[FAIL]
+                        2b .........................................[FAIL]
+                        3 ..........................................[FAIL]
+                        4 ..........................................[FAIL]
  * Combine Simple
-        combine-simple.py distinguished ..............................[OK]
-                          plain ......................................[OK]
-                          recursive ..................................[OK]
+        combine-simple.py distinguished ............................[FAIL]
+                          plain ....................................[FAIL]
+                          recursive ................................[FAIL]
  * Template states handling recursion
-        recursion.py 0 ...............................................[OK]
-                     0b ..............................................[OK]
-                     1 ...............................................[OK]
-                     1b ..............................................[OK]
-                     1c ..............................................[OK]
+        recursion.py 0 .............................................[FAIL]
+                     0b ............................................[FAIL]
+                     1 .............................................[FAIL]
+                     1b ............................................[FAIL]
+                     1c ............................................[FAIL]
 
  * Transition Map Templates:
 
     Combine Combined Trigger Maps
-        combine-maps-2.py 1 ..........................................[OK]
-                          2 ..........................................[OK]
+        combine-maps-2.py 1 ...................................[NO OUTPUT]
+                          2 ...................................[NO OUTPUT]
     Get Best Matching Pair
         best_matching_pair.py 0 ......................................[OK]
                               1 ......................................[OK]
@@ -2969,17 +3038,40 @@ quex/engine/analyzer/mega_state/template/TEST                        <no date>
                               3 ......................................[OK]
                               recursive ..............................[OK]
     Target Idx Combination Metric
-        metric.py 1 ..................................................[OK]
-                  2 ..................................................[OK]
-                  2b .................................................[OK]
-                  3 ..................................................[OK]
-                  3b .................................................[OK]
-                  4 ..................................................[OK]
-                  recursive ..........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        metric.py 1 ................................................[FAIL]
+                  2 ................................................[FAIL]
+                  2b ...............................................[FAIL]
+                  3 ................................................[FAIL]
+                  3b ...............................................[FAIL]
+                  4 ................................................[FAIL]
+                  recursive ........................................[FAIL]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] combine-maps.py _ 1
+                         \__ 2
+                         \__ 2b
+                         \__ 3
+                         \__ 4
+    [FAIL] combine-simple.py _ distinguished
+                           \__ plain
+                           \__ recursive
+    [FAIL] recursion.py _ 0
+                      \__ 0b
+                      \__ 1
+                      \__ 1b
+                      \__ 1c
+    [FAIL] combine-maps-2.py _ 1
+                           \__ 2
+    [FAIL] metric.py _ 1
+                   \__ 2
+                   \__ 2b
+                   \__ 3
+                   \__ 3b
+                   \__ 4
+                   \__ recursive
 ===============================================================================
                                                                                
                       Code Generation for Transition Map                       
@@ -3118,22 +3210,29 @@ quex/engine/state_machine/algebra/TESTS/additional_laws/TEST         <no date>
  * Idempotency
         idempotency.py ...............................................[OK]
  * Intersection by Difference
-        intersection_by_difference.py ................................[OK]
+        intersection_by_difference.py .........................[NO OUTPUT]
 
  * Complement:
 
     DeMorgan's Law
-        complement-de-morgan.py ......................................[OK]
+        complement-de-morgan.py ...............................[NO OUTPUT]
     Relativity in difference operations
-        complement-relative.py 1 .....................................[OK]
-                               2 .....................................[OK]
-                               3 .....................................[OK]
+        complement-relative.py 1 ..............................[NO OUTPUT]
+                               2 ..............................[NO OUTPUT]
+                               3 ..............................[NO OUTPUT]
     Uniqueness and Involution
-        complement-uniqueness.py .....................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        complement-uniqueness.py ..............................[NO OUTPUT]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] intersection_by_difference.py
+    [FAIL] complement-de-morgan.py
+    [FAIL] complement-relative.py _ 1
+                                \__ 2
+                                \__ 3
+    [FAIL] complement-uniqueness.py
 ===============================================================================
                                                                                
                                   DFA Algebra                                  
@@ -3141,11 +3240,11 @@ quex/engine/state_machine/algebra/TESTS/additional_laws/TEST         <no date>
 quex/engine/state_machine/algebra/TESTS/basics/TEST                  <no date>
 -------------------------------------------------------------------------------
  * Complementary DFAs
-        test-complement.py Branches ..................................[OK]
-                           BranchesLoops .............................[OK]
-                           Loops .....................................[OK]
-                           Misc ......................................[OK]
-                           Sequence ..................................[OK]
+        test-complement.py Branches ................................[FAIL]
+                           BranchesLoops ...........................[FAIL]
+                           Loops ...................................[FAIL]
+                           Misc ....................................[FAIL]
+                           Sequence ................................[FAIL]
  * Difference Operation
         test-difference.py Easy ......................................[OK]
                            FalseCases ................................[OK]
@@ -3165,10 +3264,16 @@ quex/engine/state_machine/algebra/TESTS/basics/TEST                  <no date>
                       SequenceAndLoop ................................[OK]
                       SequenceAndOptional ............................[OK]
                       Sequences ......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] test-complement.py _ Branches
+                            \__ BranchesLoops
+                            \__ Loops
+                            \__ Misc
+                            \__ Sequence
 ===============================================================================
                                                                                
                                   DFA Algebra                                  
@@ -3237,15 +3342,17 @@ quex/engine/state_machine/algebra/TESTS/fundamental_laws/TEST        <no date>
  * Commutativity
         commutativity.py .............................................[OK]
  * Complement laws producing Empty and Universal
-        complement.py ................................................[OK]
+        complement.py .........................................[NO OUTPUT]
  * Distributivity
         distributivity.py ............................................[OK]
  * Identity with. Empty and Universal
         identity.py ..................................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] complement.py
 ===============================================================================
                                                                                
                                   DFA Algebra                                  
@@ -3268,15 +3375,14 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
     [NO GOOD FILE] test-get_intermediate_transition_maps.py
-    [NO GOOD FILE] test-hopcroft-minimization-3.py
-    [NO GOOD FILE] test-operations.py
+    [NO GOOD FILE] counter_setup.py
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        7  238   [FAIL] TEST                                                          
+        3  238   [FAIL] TEST                                                          
            57      [OK] demo/C/TEST                                                   
            57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
@@ -3292,8 +3398,8 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-        2  12    [FAIL] ........../misc/TEST                                          
-       11  55    [FAIL] ........../reset/TEST                                         
+        1  12    [FAIL] ........../misc/TEST                                          
+           55      [OK] ........../reset/TEST                                         
            16      [OK] ........../source-package/TEST                                
            1       [OK] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
@@ -3311,35 +3417,35 @@ SUMMARY:
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
            42      [OK] ..../engine/TEST                                              
-           112     [OK] .........../analyzer/TEST                                     
-           29      [OK] ..................../mega_state/path_walker/TEST              
-           27      [OK] .............................../template/TEST                 
+        5  112   [FAIL] .........../analyzer/TEST                                     
+       15  29    [FAIL] ..................../mega_state/path_walker/TEST              
+       22  27    [FAIL] .............................../template/TEST                 
         8  38    [FAIL] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
            17      [OK] .........../operations/TEST                                   
-        2  51    [FAIL] .........../state_machine/TEST                                
-           9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
-           21      [OK] ......................................./basics/TEST           
+       19  51    [FAIL] .........../state_machine/TEST                                
+        6  9     [FAIL] ........................./algebra/TESTS/additional_laws/TEST  
+        5  21    [FAIL] ......................................./basics/TEST           
            30      [OK] ......................................./extra_operations/TEST 
-           5       [OK] ......................................./fundamental_laws/TEST 
+        1  5     [FAIL] ......................................./fundamental_laws/TEST 
            4       [OK] ......................................./subset/TEST           
-        3  6     [FAIL] ........................./algorithm/TEST                      
+           9       [OK] ........................./algorithm/TEST                      
            14      [OK] ........................./check/TEST                          
-           7       [OK] ........................./construction/TEST                   
-       17  59    [FAIL] ........................./transformation/TEST                 
-           58      [OK] ..../input/TEST                                               
-        3  23    [FAIL] ........../regular_expression/TEST                            
+        6  7     [FAIL] ........................./construction/TEST                   
+       38  59    [FAIL] ........................./transformation/TEST                 
+        1  54    [FAIL] ..../input/TEST                                               
+        2  27    [FAIL] ........../regular_expression/TEST                            
         1  196   [FAIL] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        2  30    [FAIL] .........../languages/cpp/TEST                                
+        9  30    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           __    _           
-    |  ___|_ _(_) |___      / /_  / |    __  __
-    | |_ / _` | | / __|    | '_ \ | |    \ \/ /
-    |  _| (_| | | \__ \    | (_) || |     >  < 
-    |_|  \__,_|_|_|___/     \___/ |_|    /_/\_\
-                                                                   (1637 tests)
+     _____     _ _          _  _  _   _____           
+    |  ___|_ _(_) |___     / || || | |___  |    __  __
+    | |_ / _` | | / __|    | || || |_   / /     \ \/ /
+    |  _| (_| | | \__ \    | ||__   _  / /       >  < 
+    |_|  \__,_|_|_|___/    |_|   |_|  /_/       /_/\_\
+                                                                   (1640 tests)
 
 ===============================================================================

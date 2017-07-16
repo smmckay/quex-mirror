@@ -17,37 +17,37 @@ E_Files = Enum("HEADER",
                "_DEBUG_Files")
 
 class Lexatom:
-    def __init__(self, Lng, TypeName=None, SizeInByte=None):
-        self.type         = TypeName
+    def __init__(self, Lng, TypeName, SizeInByte):
         self.size_in_byte = self.__get_size_in_byte(Lng, TypeName, SizeInByte)
-        self.type_range   = self.__get_type_range(SizeInByte)
+        self.type         = self.__get_type_name(Lng, TypeName, self.size_in_byte)
+        self.type_range   = self.__get_type_range(self.size_in_byte)
 
     def __get_size_in_byte(self, Lng, TypeName, SizeInByte):
         global global_character_type_db
 
         # (*) Determine buffer element type and size (in bytes)
-        lexatom_size_in_byte = SizeInByte
-        if lexatom_size_in_byte == -1:
-            if global_character_type_db.has_key(TypeName):
-                lexatom_size_in_byte = global_character_type_db[TypeName][3]
-            elif not TypeName:
-                lexatom_size_in_byte = 1
-            else:
-                # Buffer element type is not identified in 'global_character_type_db'.
-                # => here Quex cannot know its size on its own.
-                lexatom_size_in_byte = -1
+        if SizeInByte != -1: 
+            return SizeInByte
+        elif global_character_type_db.has_key(TypeName):
+            return global_character_type_db[TypeName][3]
+        elif not TypeName:
+            return 1
+        else:
+            # Buffer element type is not identified in 'global_character_type_db'.
+            # => here Quex cannot know its size on its own.
+            return -1
 
-        if not TypeName:
-            if lexatom_size_in_byte in Lng.STANDARD_TYPE_DB:
-                TypeName = Lng.STANDARD_TYPE_DB[lexatom_size_in_byte] 
-            elif lexatom_size_in_byte == -1:
-                pass
-            else:
-                error.log("Buffer element type cannot be determined for size '%i' which\n" \
-                          % lexatom_size_in_byte + 
-                          "has been specified by '-b' or '--buffer-element-size'.")
-
-        return lexatom_size_in_byte
+    def __get_type_name(self, Lng, TypeName, SizeInByte):
+        if TypeName: 
+            return TypeName
+        elif SizeInByte in Lng.STANDARD_TYPE_DB:
+            return Lng.STANDARD_TYPE_DB[SizeInByte] 
+        elif SizeInByte == -1:
+            return TypeName
+        else:
+            error.log("Buffer element type cannot be determined for size '%i' which\n" \
+                      % SizeInByte + 
+                      "has been specified by '-b' or '--buffer-element-size'.")
 
     def __get_type_range(self, LexatomByteN):
         if LexatomByteN == -1: 
@@ -72,13 +72,22 @@ class QuexSetup:
         self.init(SetupInfo)
         # Prevent import-dependencies in general.
 
+    def buffer_setup(self, LexatomTypeName, LexatomSizeInType, 
+                     BufferEncoding, BufferEncodingFileName=""):
+        self.lexatom_set(Lexatom(self.language_db, 
+                                 LexatomTypeName,
+                                 LexatomSizeInType))
+        import quex.engine.state_machine.transformation.core as bc_factory
+        self.buffer_encoding_set(bc_factory.do(BufferEncoding, 
+                                               BufferEncodingFileName))
+
     @property
     def buffer_encoding(self):
         if self.__buffer_encoding is None:
-            from quex.engine.state_machine.transformation.base import EncodingTrafoUnicode
             range_max    = NumberSet_All()
-            unit_test_bc = EncodingTrafoUnicode(range_max, range_max)
-            self.buffer_encoding_set(unit_test_bc, -1)
+            import quex.engine.state_machine.transformation.core as bc_factory
+            unit_test_bc = bc_factory.do("unicode")
+            self.buffer_encoding_set(unit_test_bc)
         return self.__buffer_encoding
 
     def buffer_encoding_set(self, BufferCodec): 
@@ -89,7 +98,7 @@ class QuexSetup:
     @property
     def lexatom(self):
         if self.__lexatom is None:
-            self.lexatom_set(Lexatom("uint8_t", 8))
+            self.lexatom_set(Lexatom(self.language_db, "uint8_t", 1))
         return self.__lexatom
 
     def lexatom_set(self, LexatomInfo):
@@ -202,7 +211,7 @@ SETUP_INFO = {
     "buffer_encoding_file":           [["--encoding-file"],                    ""],
     "buffer_limit_code":              [["--buffer-limit"],                     0x0],
     "__buffer_lexatom_size_in_byte":  [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes]
-    "__buffer_lexatom_type":          [["--buffer-element-type", "--bet"],     "uint8_t"],
+    "__buffer_lexatom_type":          [["--buffer-element-type", "--bet"],     ""],
     "buffer_byte_order":              [["--endian"],                           "<system>"],
     "comment_state_machine_f":        [["--comment-state-machine"],            SetupParTypes.FLAG],
     "comment_transitions_f":          [["--comment-transitions"],              SetupParTypes.FLAG],

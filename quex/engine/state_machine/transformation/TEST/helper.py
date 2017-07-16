@@ -275,8 +275,7 @@ def test_plug_sequence(ByteSequenceDB):
     end_index = state_machine.index.get()
     sm.states[end_index] = DFA_State()
 
-    trafo = EncodingTrafoUTF8() 
-    Setup.buffer_encoding_set(trafo, 1)
+    Setup.buffer_setup("", 1, "utf8")
 
     if Setup.bad_lexatom_detection_f: bad_lexatom_si = index.get()
     else:                             bad_lexatom_si = None

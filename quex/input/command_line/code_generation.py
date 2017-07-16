@@ -62,11 +62,10 @@ def prepare(command_line, argv):
     if Setup.__buffer_lexatom_type == "wchar_t":
         Setup.converter_ucs_coding_name = "WCHAR_T"
 
-    Setup.lexatom_set(Lexatom(Setup.language_db, 
-                              Setup.__buffer_lexatom_type,
-                              Setup.__buffer_lexatom_size_in_byte))
-    Setup.buffer_encoding_set(bc_factory.do(Setup.buffer_encoding_name, 
-                                            Setup.buffer_encoding_file)) 
+    Setup.buffer_setup(Setup.__buffer_lexatom_type,
+                       Setup.__buffer_lexatom_size_in_byte,
+                       Setup.buffer_encoding_name, 
+                       Setup.buffer_encoding_file) 
 
     type_info = global_character_type_db.get(Setup.lexatom.type)
     if     type_info is not None and len(type_info) >= 4 \

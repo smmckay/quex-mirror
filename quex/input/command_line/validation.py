@@ -105,27 +105,14 @@ def do(setup, command_line, argv):
     __check_file_name(setup, "input_mode_files", "quex source file")
 
     # Internal engine character encoding
-    def __codec_vs_buffer_lexatom_size_in_byte(CodecName, RequiredBufferElementSize):
-        if   setup.buffer_encoding.name != CodecName:                  return
-        elif setup.lexatom.size_in_byte >=  RequiredBufferElementSize: return
-
-        if setup.lexatom.size_in_byte == -1: 
-            msg_str = "undetermined (found type '%s')" % setup.lexatom.type
-        else:
-            msg_str = "is not %i (found %i)" % (RequiredBufferElementSize, setup.lexatom.size_in_byte)
-
-        error.log("Using encoding '%s' while buffer element size is %s.\n" % (CodecName, msg_str) + 
-                  "Consult command line argument %s" \
-                  % command_line_args_string("__buffer_lexatom_size_in_byte"))
-
     if setup.buffer_encoding.name != "unicode":
         if not setup.buffer_encoding_file:
             error.verify_word_in_list(setup.buffer_encoding_name,
                                       codec_db.get_supported_codec_list() + ["utf8", "utf16"],
                                       "Codec '%s' is not supported." % setup.buffer_encoding.name)
-        # NOT: __codec_vs_buffer_lexatom_size_in_byte("utf8", 1)
+        # NOT: __check_codec_vs_buffer_lexatom_size_in_byte("utf8", 1)
         # BECAUSE: Code unit size is one. No type has a size of less than one byte!
-        __codec_vs_buffer_lexatom_size_in_byte("utf16", 2)
+        __check_codec_vs_buffer_lexatom_size_in_byte(setup, "utf16", 2)
 
 def __check_identifier(setup, Candidate, Name):
     value = setup.__dict__[Candidate]
@@ -177,4 +164,17 @@ def __check_file_name(setup, Candidate, Name, Index=None, CommandLineOption=None
                       "'%s'. No such directories exist." % \
                       (QUEX_PATH + "/" + os.path.dirname(value)))
         error.log_file_not_found(value, Name)
+
+def __check_codec_vs_buffer_lexatom_size_in_byte(setup, CodecName, RequiredBufferElementSize):
+    if   setup.buffer_encoding.name != CodecName:                  return
+    elif setup.lexatom.size_in_byte >=  RequiredBufferElementSize: return
+
+    if setup.lexatom.size_in_byte == -1: 
+        msg_str = "undetermined (found type '%s')" % setup.lexatom.type
+    else:
+        msg_str = "is not %i (found %i)" % (RequiredBufferElementSize, setup.lexatom.size_in_byte)
+
+    error.log("Using encoding '%s' while buffer element size is %s.\n" % (CodecName, msg_str) + 
+              "Consult command line argument %s" \
+              % command_line_args_string("__buffer_lexatom_size_in_byte"))
 

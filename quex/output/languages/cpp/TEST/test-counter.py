@@ -134,14 +134,10 @@ def prepare_test_input_file(TestStr, Codec, ChunkN):
 
 def get_test_application(ca_map, ReferenceP, CT):
     # Setup.buffer_element_specification_prepare()
-    if   codec == "utf_32_le" or codec == "ascii":  
-        Setup.buffer_encoding_set(bc_factory.do("unicode"), LexatomSizeInBytes=4)
-    elif codec == "utf_8": 
-        Setup.buffer_encoding_set(bc_factory.do("utf8"), LexatomSizeInBytes=1)
-    elif codec == "utf_16_le":
-        Setup.buffer_encoding_set(bc_factory.do("utf16"), LexatomSizeInBytes=2)
-    else:                 
-        Setup.buffer_encoding_set(bc_factory.do(codec), LexatomSizeInBytes=1)
+    if   codec == "utf_32_le" or codec == "ascii":  Setup.buffer_setup("", 4, "unicode")
+    elif codec == "utf_8":                          Setup.buffer_setup("", 1, "utf8")
+    elif codec == "utf_16_le":                      Setup.buffer_setup("", 2, "utf16")
+    else:                                           Setup.buffer_setup("", 1, codec)
 
     # (*) Generate Code 
     counter_function_name, \

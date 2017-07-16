@@ -16,26 +16,26 @@ import os
 import random
 sys.path.insert(0, os.environ["QUEX_PATH"])
                                                    
-import quex.engine.analyzer.engine_supply_factory         as     engine
-from   quex.engine.misc.interval_handling                 import Interval, NumberSet
-import quex.output.languages.core                        as     languages
-from   quex.output.core.base                              import do_analyzer
-from   quex.engine.state_machine.core                     import DFA
-from   quex.engine.analyzer.door_id_address_label         import DoorID
-import quex.engine.analyzer.core                          as     analyzer_generator
-from   quex.engine.analyzer.door_id_address_label         import DialDB
-from   quex.engine.analyzer.transition_map                import TransitionMap  
-import quex.engine.state_machine.transformation.core      as     bc_factory
-from   quex.blackboard                                    import setup as Setup, \
-                                                                 E_IncidenceIDs, \
-                                                                 Lng
+from   quex.input.setup                              import Lexatom
+import quex.engine.analyzer.engine_supply_factory    as     engine
+from   quex.engine.misc.interval_handling            import Interval, NumberSet
+import quex.output.languages.core                    as     languages
+from   quex.output.core.base                         import do_analyzer
+from   quex.engine.state_machine.core                import DFA
+from   quex.engine.analyzer.door_id_address_label    import DoorID
+import quex.engine.analyzer.core                     as     analyzer_generator
+from   quex.engine.analyzer.door_id_address_label    import DialDB
+from   quex.engine.analyzer.transition_map           import TransitionMap  
+import quex.engine.state_machine.transformation.core as     bc_factory
+from   quex.blackboard                               import setup as Setup, \
+                                                            E_IncidenceIDs, \
+                                                            Lng
 from   collections import defaultdict
 
 dial_db = DialDB()
 
 Setup.language_db = languages.db["C++"]()
-Setup.lexatom.type = "uint32_t"
-Setup.buffer_encoding_set(bc_factory.do("unicode", None), -1)
+Setup.buffer_setup("uint32_t", 4, "unicode")
 
 
 if "--hwut-info" in sys.argv:
@@ -125,8 +125,8 @@ def prepare(tm):
 
 def get_transition_function(iid_map, Codec):
     global dial_db
-    if Codec == "UTF8": Setup.buffer_encoding_set(bc_factory.do("utf8"), 1)
-    else:               Setup.buffer_encoding_set(bc_factory.do("unicode"), -1)
+    if Codec == "UTF8": Setup.buffer_setup("uint8_t", 1, "utf8")
+    else:               Setup.buffer_setup("uint32_t", 4, "unicode")
 
     sm        = DFA.from_IncidenceIdMap(iid_map)
     dummy, sm = Setup.buffer_encoding.do_state_machine(sm,

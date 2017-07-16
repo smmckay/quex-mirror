@@ -36,8 +36,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={},
 def setup_buffer(BufferLimitCode):
     BufferLimitCode = 0
     Setup.buffer_limit_code = BufferLimitCode
-    Setup.buffer_element_specification_prepare()
-    Setup.buffer_encoding_set(bc_factory.do("unicode", None))
+    Setup.DELETED_buffer_element_specification_prepare()
+    Setup.DELETED_buffer_encoding_set(bc_factory.do("unicode", None))
 
 def setup_language(Language):
     __Setup_init_language_database(Language)

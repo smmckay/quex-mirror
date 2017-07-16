@@ -58,7 +58,7 @@ if "--hwut-info" in sys.argv:
     sys.exit()
 
 dial_db = DialDB()
-Setup.buffer_encoding_set(bc_factory.do("utf8"), 1) 
+Setup.buffer_setup("", 1, "utf8") 
 
 def test(LoopMap, ColumnNPerCodeUnit):
     global loop_map
