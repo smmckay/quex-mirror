@@ -29,6 +29,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine                       as     regex
+from   quex.input.setup                                           import Lexatom
 from   quex.engine.misc.interval_handling                         import NumberSet, Interval
 from   quex.engine.state_machine.transformation.utf16_state_split import EncodingTrafoUTF16
 from   quex.engine.state_machine.core                             import DFA
@@ -75,8 +76,8 @@ good_sequences = [
 ]
 
 trafo = EncodingTrafoUTF16()
-Setup.lexatom_type_range_set(LexatomByteN=4)
-trafo.adapt_ranges_to_lexatom_type_range(Setup.lexatom_type_range_set)
+Setup.lexatom_set(Lexatom(Setup.language_db, "utf16", 4))
+trafo.adapt_ranges_to_lexatom_type_range(Setup.lexatom.type_range)
 sm = helper.generate_sm_for_boarders(boarders, EncodingTrafoUTF16())
 
 bad_sequence_list = helper.get_bad_sequences(good_sequences, bad_1st_s, bad_2nd_s)

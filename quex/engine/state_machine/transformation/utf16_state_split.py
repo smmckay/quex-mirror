@@ -119,7 +119,7 @@ class EncodingTrafoUTF16(EncodingTrafoBySplit):
         # UTF16 requires at least 2 byte for a 'normal code unit'. Anything else
         # requires to cut on the addmissible set of code points.
         if LexatomTypeRange.end < 0x10000:
-            self.source_set.mask_interval(0, LexatomTypeRange.end)
+            self.source_set.mask(0, LexatomTypeRange.end)
 
 def _get_contigous_intervals(X):
     """Split Unicode interval into intervals where all values

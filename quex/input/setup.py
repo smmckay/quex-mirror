@@ -98,11 +98,13 @@ class QuexSetup:
     @property
     def lexatom(self):
         if self.__lexatom is None:
-            self.lexatom_set(Lexatom(self.language_db, "uint8_t", 1))
+            self.lexatom_set(Lexatom(self.language_db, "unicode", -1))
         return self.__lexatom
 
     def lexatom_set(self, LexatomInfo):
         self.__lexatom = LexatomInfo
+        if self.__buffer_encoding:
+            self.__buffer_encoding.adapt_ranges_to_lexatom_type_range(self.lexatom.type_range)
 
     def init(self, SetupInfo):
         for key, entry in SetupInfo.items():

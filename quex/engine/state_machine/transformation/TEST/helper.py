@@ -1,4 +1,5 @@
 import quex.input.regular_expression.engine                       as     regex
+import quex.output.languages.core                                 as     languages
 from   quex.engine.misc.interval_handling                         import NumberSet, Interval
 from   quex.engine.state_machine.state.single_entry               import SeAccept     
 import quex.engine.state_machine.construction.combination         as     combination
@@ -14,6 +15,8 @@ from   quex.blackboard import setup as Setup, \
 from   StringIO import StringIO
 import sys
 from   copy            import copy
+
+Setup.language_db = languages.db["C++"]()
 
 class X:
     def __init__(self, Name):
@@ -122,8 +125,6 @@ def transform(Trafo, orig):
     return state_n_before, result
 
 def test_on_UCS_range(Trafo, Source, Drain, CharacterBackwardTrafo):
-    Setup.lexatom_type_range_set(-1)
-
     sm     = DFA()
     acc_db = {}
     for x in range(Source.begin, Source.end):
@@ -179,8 +180,7 @@ def generate_sm_for_boarders(Boarders, Trafo):
                  (ucs_char, target_idx), (ucs_char, target_idx))
         sm.states[target_idx].set_acceptance()
 
-    Setup.lexatom_type_range_set(-1)
-    Trafo.adapt_ranges_to_lexatom_type_range(Setup.lexatom_type_range_set)
+    Trafo.adapt_ranges_to_lexatom_type_range(Setup.lexatom.type_range)
     verdict_f, result = Trafo.do_state_machine(sm,
                                                BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
     assert verdict_f
@@ -279,6 +279,8 @@ def test_plug_sequence(ByteSequenceDB):
 
     if Setup.bad_lexatom_detection_f: bad_lexatom_si = index.get()
     else:                             bad_lexatom_si = None
+
+    trafo = Setup.buffer_encoding
 
     new_first_tm,    \
     new_state_db = trafo.plug_interval_sequences(sm.init_state_index, end_index, 
