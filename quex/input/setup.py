@@ -84,10 +84,7 @@ class QuexSetup:
     @property
     def buffer_encoding(self):
         if self.__buffer_encoding is None:
-            range_max    = NumberSet_All()
-            import quex.engine.state_machine.transformation.core as bc_factory
-            unit_test_bc = bc_factory.do("unicode")
-            self.buffer_encoding_set(unit_test_bc)
+            self.set_all_character_set_UNIT_TEST()
         return self.__buffer_encoding
 
     def buffer_encoding_set(self, BufferCodec): 
@@ -98,13 +95,19 @@ class QuexSetup:
     @property
     def lexatom(self):
         if self.__lexatom is None:
-            self.lexatom_set(Lexatom(self.language_db, "unicode", -1))
+            self.set_all_character_set_UNIT_TEST()
         return self.__lexatom
 
     def lexatom_set(self, LexatomInfo):
         self.__lexatom = LexatomInfo
         if self.__buffer_encoding:
             self.__buffer_encoding.adapt_ranges_to_lexatom_type_range(self.lexatom.type_range)
+
+    def set_all_character_set_UNIT_TEST(self):
+        self.lexatom_set(Lexatom(self.language_db, "unicode", -1))
+        import quex.engine.state_machine.transformation.core as bc_factory
+        unit_test_bc = bc_factory.do("unicode")
+        self.buffer_encoding_set(unit_test_bc)
 
     def init(self, SetupInfo):
         for key, entry in SetupInfo.items():
@@ -141,9 +144,6 @@ class QuexSetup:
             else:                     prev.extend(Value)
         else:
             self.__dict__[Name] = Value
-
-    def set_all_character_set_UNIT_TEST(self, Begin, End):
-        self.buffer_encoding.source_set = NumberSet.from_range(Begin, End)
 
     def get_file_reference(self, FileName):
         """When a source package is specified, then it must be given

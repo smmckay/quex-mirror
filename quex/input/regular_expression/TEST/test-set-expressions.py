@@ -8,7 +8,7 @@ import quex.input.regular_expression.exception as exception
 from   quex.input.regular_expression.engine import snap_character_set_expression
 from   quex.blackboard import setup as Setup
 from   quex.constants  import INTEGER_MAX
-Setup.set_all_character_set_UNIT_TEST(-INTEGER_MAX, INTEGER_MAX)
+Setup.set_all_character_set_UNIT_TEST()
 
 if "--hwut-info" in sys.argv:
     print "Combination: Alternative Expressions"

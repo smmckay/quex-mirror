@@ -18,8 +18,8 @@ class EncodingTrafo:
     """
     @typed(Name=str, SourceSet=NumberSet, DrainSet=NumberSet, ErrorRangeByCodeUnitDb={int:NumberSet})
     def __init__(self, Name, SourceSet, DrainSet, ErrorRangeByCodeUnitDb):
-        self.name               = Name
-        self.source_set         = SourceSet   # 'Unicode input'
+        self.name       = Name
+        self.source_set = SourceSet   
 
         # For every position in a code unit sequence, there might be a different
         # error range (see UTF8 or UTF16 for example).

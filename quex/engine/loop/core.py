@@ -109,7 +109,8 @@ from   quex.engine.counter                                import CountAction, \
                                                                  CountActionMap, \
                                                                  count_operation_db_with_reference, \
                                                                  count_operation_db_without_reference
-from   quex.engine.misc.interval_handling                 import NumberSet
+from   quex.engine.misc.interval_handling                 import NumberSet, \
+                                                                 NumberSet_All
 from   quex.engine.misc.tools                             import typed
 import quex.engine.misc.error                             as     error
 from   quex.output.counter.pattern                        import map_SmLineColumnCountInfo_to_code
@@ -718,8 +719,7 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
     L_loop = NumberSet.from_union_of_iterable(
         x.character_set for x in chain(couple_list, plain_list)
     )
-    universal_set = Setup.buffer_encoding.source_set
-    L_exit        = L_loop.get_complement(universal_set)
+    L_exit        = L_loop.get_complement(NumberSet_All())
     if not L_exit.is_empty():
         exit_list = [ LoopMapEntry(L_exit, None, IidLoopExit, None) ]
     else:

@@ -1,6 +1,7 @@
 import quex.input.regular_expression.snap_backslashed_character as     snap_backslashed_character
-from   quex.engine.misc.interval_handling                            import Interval, \
-                                                                       NumberSet
+from   quex.engine.misc.interval_handling                       import Interval, \
+                                                                       NumberSet, \
+                                                                       NumberSet_All
 
 import quex.engine.misc.utf8 as utf8
 from   quex.input.regular_expression.exception  import RegularExpressionException
@@ -98,7 +99,7 @@ def do(sh):
         if char_code is None: break
 
     if tracker.negation_f: 
-        return tracker.match_set.get_complement(Setup.buffer_encoding.source_set)
+        return tracker.match_set.get_complement(NumberSet_All())
     else:                  
         return tracker.match_set
 

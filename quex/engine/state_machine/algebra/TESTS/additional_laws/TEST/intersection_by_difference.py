@@ -17,6 +17,7 @@ count = 0
 
 def intersection_by_difference(A, B):
     global count
+
     assert identity(intersection([A, B]), 
                     difference(A, difference(A, B)))
 

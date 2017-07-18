@@ -3,10 +3,11 @@ import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
+from   quex.engine.state_machine.core                       import *
+import quex.engine.state_machine.construction.sequentialize as     sequentialize 
+from   quex.engine.state_machine.TEST.test_state_machines   import *
 
-from quex.engine.state_machine.core import *
-import quex.engine.state_machine.construction.sequentialize as sequentialize 
-from quex.engine.state_machine.TEST.test_state_machines import *
+from   quex.blackboard import setup 
 
 if "--hwut-info" in sys.argv:
     print "DFA: Cloning"
@@ -31,3 +32,4 @@ print sm3.clone()
 
 
 # print Interval(ord('a'), ord('g')+1).inverse()
+
