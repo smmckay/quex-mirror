@@ -173,6 +173,28 @@ class CountActionMap(list):
     def pruned_clone(self, SubSet):
         return CountActionMap.from_list(self.iterable_in_sub_set(SubSet))
 
+    def prune(self, SuperSet):
+        """Prune all NumberSets in the CountActionMap, so that they fit in the 
+        'SuperSet'. If a NumberSets is not a subset of 'SuperSet' at all, then the
+        according action is removed.
+        """
+        for i in xrange(len(self)-1, -1, -1):
+            character_set, count_action = self[i]
+            character_set.intersect_with(SuperSet)
+            if character_set.is_empty(): del self[i]
+
+    def iterable_in_sub_set(self, SubSet):
+        """Searches for CountInfo objects where the character set intersects
+        with the 'SubSet' given as arguments. 
+
+        YIELDS: [0] NumberSet where the trigger set intersects with SubSet
+                [1] Related 'CountAction' object.
+        """
+        for character_set, count_action in self:
+            intersection = SubSet.intersection(character_set)
+            if intersection.is_empty(): continue
+            yield intersection, count_action
+
     def get_count_commands(self, CharacterSet):
         """Finds the count command for column, grid, and newline. This does NOT
         consider 'chunk number per character'. The consideration is on pure 
@@ -266,18 +288,6 @@ class CountActionMap(list):
         return NumberSet.from_union_of_iterable(
             number_set for number_set, ca in self
         )
-
-    def iterable_in_sub_set(self, SubSet):
-        """Searches for CountInfo objects where the character set intersects
-        with the 'SubSet' given as arguments. 
-
-        YIELDS: [0] NumberSet where the trigger set intersects with SubSet
-                [1] Related 'CountAction' object.
-        """
-        for character_set, count_action in self:
-            intersection = SubSet.intersection(character_set)
-            if intersection.is_empty(): continue
-            yield intersection, count_action
 
     def is_equal(self, Other):
         if len(self) != len(Other):

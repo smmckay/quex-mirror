@@ -92,6 +92,10 @@ class SingleEntry(object):
         return any(cmd.acceptance_id() == AcceptanceID
                    for cmd in self.get_iterable(SeAccept))
 
+    def has_specific_acceptance_id(self):
+        return any(cmd.acceptance_id_is_specific()
+                   for cmd in self.get_iterable(SeAccept))
+
     def has_pre_context_begin_of_line(self):
         return any(
             cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE

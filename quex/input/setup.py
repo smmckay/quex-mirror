@@ -3,8 +3,7 @@ import quex.engine.misc.error                        as     error
 import quex.engine.misc.file_in                      as     file_in
 from   quex.engine.misc.file_operations              import get_propperly_slash_based_file_name
 from   quex.engine.misc.enum                         import Enum
-from   quex.engine.misc.interval_handling            import NumberSet, NumberSet_All, \
-                                                            Interval, Interval_All
+from   quex.engine.misc.interval_handling            import Interval, Interval_All
 from   quex.constants                                import INTEGER_MAX
 from   quex.DEFINITIONS                              import QUEX_PATH
 
@@ -17,37 +16,44 @@ E_Files = Enum("HEADER",
                "_DEBUG_Files")
 
 class Lexatom:
-    def __init__(self, Lng, TypeName, SizeInByte):
-        self.size_in_byte = self.__get_size_in_byte(Lng, TypeName, SizeInByte)
-        self.type         = self.__get_type_name(Lng, TypeName, self.size_in_byte)
-        self.type_range   = self.__get_type_range(self.size_in_byte)
-
-    def __get_size_in_byte(self, Lng, TypeName, SizeInByte):
-        global global_character_type_db
-
-        # (*) Determine buffer element type and size (in bytes)
-        if SizeInByte != -1: 
-            return SizeInByte
-        elif global_character_type_db.has_key(TypeName):
-            return global_character_type_db[TypeName][3]
-        elif not TypeName:
-            return 1
-        else:
-            # Buffer element type is not identified in 'global_character_type_db'.
-            # => here Quex cannot know its size on its own.
-            return -1
-
-    def __get_type_name(self, Lng, TypeName, SizeInByte):
-        if TypeName: 
-            return TypeName
+    def __init__(self, Lng, encoding, TypeName, SizeInByte):
+        # SizeInByte  TypeName   => .size_in_byte  .type
+        #    -1        ""        =>   encoding.DEFAULT_LEXATOM_TYPE_SIZE db[size]
+        #    -1        "known"   =>   known size   "known"
+        #    -1        "unknown" =>   -1           "unknown"
+        # KnownN       ""        =>   KnownN       known type
+        # KnownN       "any"     =>   KnownN       "any"
+        # UnknownN     "any"     =>   UnknownN     "any"
+        # UnknownN     ""        =>   << error >> 
+        if SizeInByte == -1:
+            if not TypeName:
+                sib = encoding.DEFAULT_LEXATOM_TYPE_SIZE
+                tn  = Lng.STANDARD_TYPE_DB[sib]
+            elif TypeName in global_character_type_db:
+                sib = global_character_type_db[TypeName][3]
+                tn  = TypeName
+            else:
+                sib = -1
+                tn = TypeName
         elif SizeInByte in Lng.STANDARD_TYPE_DB:
-            return Lng.STANDARD_TYPE_DB[SizeInByte] 
-        elif SizeInByte == -1:
-            return TypeName
+            if not TypeName:
+                sib = SizeInByte
+                tn  = Lng.STANDARD_TYPE_DB[sib]
+            else:
+                sib = SizeInByte
+                tn  = TypeName
         else:
-            error.log("Buffer element type cannot be determined for size '%i' which\n" \
-                      % SizeInByte + 
-                      "has been specified by '-b' or '--buffer-element-size'.")
+            if TypeName:
+                sib = SizeInByte
+                tn  = TypeName
+            else:
+                error.log("Buffer element type cannot be determined for size '%i' which\n" \
+                          % SizeInByte + 
+                          "has been specified by '-b' or '--buffer-element-size'.")
+
+        self.size_in_byte = sib
+        self.type         = tn
+        self.type_range   = self.__get_type_range(self.size_in_byte)
 
     def __get_type_range(self, LexatomByteN):
         if LexatomByteN == -1: 
@@ -70,27 +76,30 @@ class Lexatom:
 class QuexSetup:
     def __init__(self, SetupInfo, BcFactory):
         self.init(SetupInfo)
-        # Prevent import-dependencies in general.
 
     def buffer_setup(self, LexatomTypeName, LexatomSizeInType, 
                      BufferEncoding, BufferEncodingFileName=""):
-        self.lexatom_set(Lexatom(self.language_db, 
+        import quex.engine.state_machine.transformation.core as bc_factory
+        encoding = bc_factory.do(BufferEncoding, BufferEncodingFileName)
+
+        self.lexatom_set(Lexatom(self.language_db, encoding,
                                  LexatomTypeName,
                                  LexatomSizeInType))
-        import quex.engine.state_machine.transformation.core as bc_factory
-        self.buffer_encoding_set(bc_factory.do(BufferEncoding, 
-                                               BufferEncodingFileName))
+
+        encoding.adapt_ranges_to_lexatom_type_range(self.lexatom.type_range)
+        self.__buffer_encoding = encoding
+
+    def set_all_character_set_UNIT_TEST(self):
+        if self.language_db is None:
+            import quex.output.languages.core as languages
+            self.language_db = languages.db["C++"]()
+        self.buffer_setup("<no-type>", -1, "none")
 
     @property
     def buffer_encoding(self):
         if self.__buffer_encoding is None:
             self.set_all_character_set_UNIT_TEST()
         return self.__buffer_encoding
-
-    def buffer_encoding_set(self, BufferCodec): 
-        assert self.lexatom is not None
-        self.__buffer_encoding = BufferCodec
-        self.__buffer_encoding.adapt_ranges_to_lexatom_type_range(self.lexatom.type_range)
 
     @property
     def lexatom(self):
@@ -102,12 +111,6 @@ class QuexSetup:
         self.__lexatom = LexatomInfo
         if self.__buffer_encoding:
             self.__buffer_encoding.adapt_ranges_to_lexatom_type_range(self.lexatom.type_range)
-
-    def set_all_character_set_UNIT_TEST(self):
-        self.lexatom_set(Lexatom(self.language_db, "unicode", -1))
-        import quex.engine.state_machine.transformation.core as bc_factory
-        unit_test_bc = bc_factory.do("unicode")
-        self.buffer_encoding_set(unit_test_bc)
 
     def init(self, SetupInfo):
         for key, entry in SetupInfo.items():

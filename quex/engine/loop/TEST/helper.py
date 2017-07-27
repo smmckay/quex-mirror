@@ -21,7 +21,7 @@ import quex.output.core.base                         as     generator
 from   quex.output.core.base                         import do_state_router
 
 # Setup.buffer_element_specification_prepare()
-Setup.buffer_setup("uint8_t", 1, "unicode")
+Setup.set_all_character_set_UNIT_TEST()
 
 def run(Executable, TestStr, FilterF=False, NextLetter="X"):
     if FilterF:

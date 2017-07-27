@@ -554,7 +554,7 @@ class TransitionMap(list):
             return
 
         if TotalRangeF: 
-            assert self[0][0].begin == Setup.lexatom.type_range.begin
+            assert self[0][0].begin == Setup.lexatom.type_range.begin, "%s %s" % (self[0][0], Setup.lexatom.type_range)
             assert self[-1][0].end  == Setup.lexatom.type_range.end
 
         iterable    = iter(self)

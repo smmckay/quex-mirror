@@ -1,7 +1,6 @@
 import quex.input.command_line.validation            as     validation
-from   quex.input.setup                              import Lexatom, \
-                                                            global_extension_db,      \
-                                                            global_character_type_db, \
+from   quex.input.setup                              import global_extension_db,       \
+                                                            global_character_type_db,  \
                                                             command_line_args_defined, \
                                                             command_line_arg_position, \
                                                             E_Files
@@ -10,11 +9,9 @@ from   quex.input.files.token_id_file                import parse as token_id_fi
 from   quex.output.languages.core                    import db as output_language_db
 from   quex.engine.misc.file_in                      import read_namespaced_name
 import quex.engine.misc.error                        as     error 
-import quex.engine.state_machine.transformation.core as     bc_factory
 
-
-from   quex.blackboard import setup as Setup
 import quex.blackboard as     blackboard
+from   quex.blackboard import setup as Setup
 from   quex.constants  import E_Compression
 
 from   operator import itemgetter
@@ -22,11 +19,11 @@ import re
 import sys
 import os
 
+
 def prepare(command_line, argv):
     """RETURN:  True, if process needs to be started.
                 False, if job is done.
     """
-    global Setup
 
     # (*) Classes and their namespace
     __setup_analyzer_class(Setup)
@@ -249,29 +246,32 @@ def prepare_file_names(Setup):
     else:
         Setup.output_token_class_file_implementation = __prepare_file_name("-token",     E_Files.SOURCE)
 
+    Setup.output_buffer_encoding_header,  \
+    Setup.output_buffer_encoding_header_i = __buffer_encoding_header(Setup.buffer_encoding.name)
+
+def __buffer_encoding_header(EncodingName):
     lexeme_converter_dir = "quex/code_base/lexeme_converter"
-    if   Setup.buffer_encoding.name == "utf8":
-        Setup.output_buffer_encoding_header   = "%s/from-utf8"    % lexeme_converter_dir
-        Setup.output_buffer_encoding_header_i = "%s/from-utf8.i"  % lexeme_converter_dir
+    if   EncodingName == "utf8":
+        return "%s/from-utf8"    % lexeme_converter_dir, \
+               "%s/from-utf8.i"  % lexeme_converter_dir
 
-    elif Setup.buffer_encoding.name == "utf16":
-        Setup.output_buffer_encoding_header   = "%s/from-utf16"   % lexeme_converter_dir
-        Setup.output_buffer_encoding_header_i = "%s/from-utf16.i" % lexeme_converter_dir
+    elif EncodingName == "utf16":
+        return "%s/from-utf16"   % lexeme_converter_dir, \
+               "%s/from-utf16.i" % lexeme_converter_dir
 
-    elif Setup.buffer_encoding.name == "utf32":
-        Setup.output_buffer_encoding_header   = "%s/from-utf32"   % lexeme_converter_dir
-        Setup.output_buffer_encoding_header_i = "%s/from-utf32.i" % lexeme_converter_dir
+    elif EncodingName == "utf32":
+        return "%s/from-utf32"   % lexeme_converter_dir, \
+               "%s/from-utf32.i" % lexeme_converter_dir
 
-    elif Setup.buffer_encoding.name != "unicode":
+    elif EncodingName != "unicode":
         # Note, that the name may be set to 'None' if the conversion is utf8 or utf16
         # See Internal engine character encoding'
-        Setup.output_buffer_encoding_header = \
-            __prepare_file_name("-converter-%s" % Setup.buffer_encoding.name, E_Files.HEADER)
-        Setup.output_buffer_encoding_header_i = \
-            __prepare_file_name("-converter-%s" % Setup.buffer_encoding.name, E_Files.HEADER_IMPLEMTATION)
+        return __prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER), \
+               __prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER_IMPLEMTATION)
+
     else:
-        Setup.output_buffer_encoding_header   = "%s/from-unicode-buffer"   % lexeme_converter_dir
-        Setup.output_buffer_encoding_header_i = "%s/from-unicode-buffer.i" % lexeme_converter_dir
+        return "%s/from-unicode-buffer"   % lexeme_converter_dir, \
+               "%s/from-unicode-buffer.i" % lexeme_converter_dir
 
 def __prepare_file_name(Suffix, ContentType, BaseNameF=False):
     global Setup

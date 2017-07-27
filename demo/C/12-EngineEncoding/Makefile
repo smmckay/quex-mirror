@@ -16,14 +16,15 @@ endif
 #   -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
 #   -DQUEX_OPTION_DEBUG_SHOW 
 
-CC := gcc -ggdb -Wall -Werror -I$(QUEX_PATH) -I. $(CCFLAG_ASSERTS)
+CC := gcc -ggdb -Wall -Werror -I$(QUEX_PATH) -I. $(CCFLAG_ASSERTS) 
+
 
 all: $(APPS)
 
 iso8859-7-lexer: iso8859-7-lexer.c greek.qx
 	quex -i                greek.qx  \
 		 --language        C         \
-		 --encoding           iso8859_7 \
+		 --encoding        iso8859_7 \
 		 --token-id-prefix TKN_      \
 		 -o                ISO8859_7_Lex 
 	$(CC) -D__QUEX_TEST_OPTION_ISO8859_7 $< ISO8859_7_Lex.c -o $@

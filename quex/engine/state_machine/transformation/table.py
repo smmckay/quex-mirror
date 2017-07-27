@@ -3,8 +3,11 @@ from   quex.engine.state_machine.transformation.base import EncodingTrafo
 from   quex.engine.misc.interval_handling            import NumberSet_All
 
 import os
+import math
 
 class EncodingTrafoByTable(EncodingTrafo, list):
+    DEFAULT_LEXATOM_TYPE_SIZE = None # Byte
+
     """Provides the information about the relation of character codes in a 
     particular coding to unicode character codes. It is provided in the 
     following form:
@@ -35,10 +38,12 @@ class EncodingTrafoByTable(EncodingTrafo, list):
         # With 'table' translation a code point is translated into a single 
         # unit. Thus, only the error range for code unit '0' is determined.
         error_range_by_code_unit_db = {
-           0: drain_set.get_complement(NumberSet_All())
+           0: drain_set.get_complement(NumberSet_All()) # Adapted later
         }
 
-        EncodingTrafo.__init__(self, codec_name, source_set, drain_set,
+        self.DEFAULT_LEXATOM_TYPE_SIZE = int(math.log(drain_set.least_greater_bound(), 256) + 1.0)
+
+        EncodingTrafo.__init__(self, codec_name, source_set, 
                                error_range_by_code_unit_db)
 
     def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
@@ -63,5 +68,3 @@ class EncodingTrafoByTable(EncodingTrafo, list):
 
         return verdict_f, None
 
-    def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
-        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)

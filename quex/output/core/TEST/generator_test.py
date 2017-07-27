@@ -175,7 +175,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
             # have origins! Actually, there are not more than patterns waiting
             # to be applied in regular expressions. The regular expressions 
             # can later be origins.
-            assert pattern.sm.has_origins() == False
+            assert not pattern.sm.has_specific_acceptance_id()
 
             adapted_dict[key] = PatternShorthand(key, pattern.sm)
 

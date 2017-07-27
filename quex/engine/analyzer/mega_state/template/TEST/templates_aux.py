@@ -28,6 +28,8 @@ from   collections import defaultdict
 from   quex.blackboard import setup as Setup
 from   quex.constants  import E_StateIndices, E_Compression
 
+Setup.set_all_character_set_UNIT_TEST()
+
 import sys
 
 dial_db = DialDB()

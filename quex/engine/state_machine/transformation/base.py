@@ -4,6 +4,7 @@ import quex.engine.state_machine.algorithm.hopcroft_minimization as     hopcroft
 import quex.engine.state_machine.index                           as     state_machine_index
 from   quex.engine.state_machine.state.core                      import DFA_State
 from   quex.engine.misc.tools                                    import typed
+from   quex.engine.misc.interval_handling                        import NumberSet_All
 from   quex.constants                                            import E_IncidenceIDs
 from   quex.blackboard import setup as Setup
 
@@ -16,8 +17,10 @@ class EncodingTrafo:
         .source_set = NumberSet of unicode code points which have a representation 
                       the given codec.
     """
-    @typed(Name=str, SourceSet=NumberSet, DrainSet=NumberSet, ErrorRangeByCodeUnitDb={int:NumberSet})
-    def __init__(self, Name, SourceSet, DrainSet, ErrorRangeByCodeUnitDb):
+    DEFAULT_LEXATOM_TYPE_SIZE = 4 # Byte
+
+    @typed(Name=str, SourceSet=NumberSet, ErrorRangeByCodeUnitDb={int:NumberSet})
+    def __init__(self, Name, SourceSet, ErrorRangeByCodeUnitDb):
         self.name       = Name
         self.source_set = SourceSet   
 
@@ -111,7 +114,7 @@ class EncodingTrafo:
         return False # Default behavior (e.g. UTF8 differs here)
 
     def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
-        raise MustBeImplementedInDerivedClass
+        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)
 
     def _adapt_error_ranges_to_lexatom_type_range(self, LexatomTypeRange):
         for error_range in self._error_range_by_code_unit_db.itervalues():
@@ -122,16 +125,42 @@ class EncodingTrafo:
         # => hopcroft minimization does not make sense.
         return False
 
+class EncodingTrafoNone(EncodingTrafo):
+    DEFAULT_LEXATOM_TYPE_SIZE = 4 # Byte
+
+    def __init__(self):
+        error_range_by_code_unit_db = { 
+            0: NumberSet()  # No errors
+        }
+        EncodingTrafo.__init__(self, "none", NumberSet_All(), 
+                               error_range_by_code_unit_db)
+
+    def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
+        """Translates to transition 'FromSi' --> 'ToSi' inside the state
+        machine according to 'Unicode'.
+
+        'BadLexatomSi' is ignored. This argument is only of interest if
+        intermediate states are to be generated. This it not the case for this
+        type of transformation.
+
+        RETURNS: [0] True if complete, False else.
+                 [1] StateDb of newly generated states (always None, here)
+        """
+        # Do nothing
+        return True, None
+
 class EncodingTrafoUnicode(EncodingTrafo):
-    @typed(SourceSet=NumberSet, DrainSet=NumberSet)
-    def __init__(self, SourceSet, DrainSet):
+    DEFAULT_LEXATOM_TYPE_SIZE = 1 # Byte
+
+    @typed(SourceSet=NumberSet)
+    def __init__(self, SourceSet):
         # Plain 'Unicode' associates a character with a single code unit, i.e.
         # its 'code point'. 
         # => Only code unit '0' is specified and everything is allowed.
         #    ('everything allowed' is disputable, since certain ranges are
         #     disallowed.)
         error_range_by_code_unit_db = { 0: NumberSet() }
-        EncodingTrafo.__init__(self, "unicode", SourceSet, DrainSet, 
+        EncodingTrafo.__init__(self, "unicode", SourceSet, 
                                error_range_by_code_unit_db)
 
     def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):
@@ -156,5 +185,6 @@ class EncodingTrafoUnicode(EncodingTrafo):
             return False, None
 
     def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
-        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)
         self.source_set.mask_interval(LexatomTypeRange)
+        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)
+

@@ -16,17 +16,17 @@ from   quex.engine.misc.interval_handling                   import Interval,    
 from   quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 
 class EncodingTrafoUTF8(EncodingTrafoBySplit):
-    def __init__(self):
-        range_of_each_code_unit = NumberSet.from_range(0, 0x100)
+    DEFAULT_LEXATOM_TYPE_SIZE = 1 # [Byte]
 
+    def __init__(self):
         error_range_0 = NumberSet([
             Interval(0b00000000, 0b01111111+1), Interval(0b11000000, 0b11011111+1),
             Interval(0b11100000, 0b11101111+1), Interval(0b11110000, 0b11110111+1),
             Interval(0b11111000, 0b11111011+1), Interval(0b11111100, 0b11111101+1),
-        ]).get_complement(NumberSet_All())
+        ]).get_complement(NumberSet_All()) # Adapted later
 
         error_range_N = NumberSet(Interval(0b10000000, 0b10111111+1)) \
-                        .get_complement(NumberSet_All())
+                        .get_complement(NumberSet_All()) # Adapted later
 
         error_range_by_code_unit_db = {
             0: error_range_0,
@@ -36,12 +36,8 @@ class EncodingTrafoUTF8(EncodingTrafoBySplit):
         }
 
         EncodingTrafoBySplit.__init__(self, "utf8", 
-                                      range_of_each_code_unit,
                                       error_range_by_code_unit_db)
         self.UnchangedRange = 0x7F
-
-    def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
-        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)
 
     def cut_forbidden_range(self, X):
         """Cuts the 'forbidden range' from the given number set.

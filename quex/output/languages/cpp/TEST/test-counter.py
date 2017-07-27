@@ -132,17 +132,17 @@ def prepare_test_input_file(TestStr, Codec, ChunkN):
     assert len(content) == chunk_n * chunk_size, "%s <-> %s" % (len(content), chunk_n * chunk_size)
     fh.close()
 
-def get_test_application(ca_map, ReferenceP, CT):
+def get_test_application(codec, ca_map, ReferenceP, CT, ChunkN):
     # Setup.buffer_element_specification_prepare()
-    if   codec == "utf_32_le" or codec == "ascii":  Setup.buffer_setup("", 4, "unicode")
-    elif codec == "utf_8":                          Setup.buffer_setup("", 1, "utf8")
-    elif codec == "utf_16_le":                      Setup.buffer_setup("", 2, "utf16")
-    else:                                           Setup.buffer_setup("", 1, codec)
+    if   codec == "utf_32_le" or codec == "ascii":  Setup.buffer_setup("", ChunkN, "unicode")
+    elif codec == "utf_8":                          Setup.buffer_setup("", ChunkN, "utf8")
+    elif codec == "utf_16_le":                      Setup.buffer_setup("", ChunkN, "utf16")
+    else:                                           Setup.buffer_setup("", ChunkN, codec)
 
     # (*) Generate Code 
     counter_function_name, \
     counter_str            = run_time_counter.get(ca_map, "TEST_MODE")
-    counter_str = counter_str.replace("static void", "void")
+    counter_str            = counter_str.replace("static void", "void")
 
     # Make sure that the counter is implemented using reference pointer
     found_n = 0
@@ -214,14 +214,13 @@ else:
     else:                               reference_p = True
 
 character_type = {
-    "ascii":      "uint8_t",
-    "utf_8":      "uint8_t",
-    "utf_16_le":  "uint16_t",
-    "utf_32_le":  "uint32_t",
-    "cp737":      "uint8_t",
-}[codec]
+    1:  "uint8_t",
+    2:  "uint16_t",
+    3:  "uint32_t",
+    4:  "uint32_t",
+}[chunk_n]
 
-get_test_application(ca_map, reference_p, character_type)
+get_test_application(codec, ca_map, reference_p, character_type, chunk_n)
 run(codec, chunk_n)
     
 os.remove("data/input.txt")

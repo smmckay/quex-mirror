@@ -3,7 +3,9 @@
 _______________________________________________________________________________
 """
 import quex.output.core.base                        as     generator
-import quex.engine.loop.action_map                  as     action_map
+import quex.engine.loop.core                        as     loop
+import quex.engine.analyzer.engine_supply_factory   as     engine
+
 from   quex.output.core.variable_db                 import variable_db
 from   quex.engine.analyzer.door_id_address_label   import DoorID, DialDB
 from   quex.engine.misc.tools                       import typed
@@ -50,12 +52,16 @@ def get(CaMap, Name):
 
     door_id_return = dial_db.new_door_id()
 
-    analyzer_list,        \
-    terminal_list,        \
-    required_register_set = action_map.do(CaMap, 
-                                          DoorIdLoopExit  = door_id_return, 
-                                          LexemeEndCheckF = True,
-                                          dial_db         = dial_db)
+    analyzer_list,           \
+    terminal_list,           \
+    dummy_loop_map,          \
+    dummy_door_id_loop,      \
+    required_register_set,   \
+    dummy_run_time_counter_f = loop.do(CaMap, 
+                                       OnLoopExitDoorId = door_id_return,
+                                       LexemeEndCheckF  = True,
+                                       EngineType       = engine.CHARACTER_COUNTER, 
+                                       dial_db          = dial_db)
 
     code = generator.do_analyzer_list(analyzer_list)
 

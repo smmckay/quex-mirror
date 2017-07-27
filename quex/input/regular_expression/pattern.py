@@ -39,6 +39,8 @@ class Pattern_Prep(object):
             if sm is None: return
             assert isinstance(sm, DFA)
             assert sm.is_DFA_compliant()
+            assert not sm.has_specific_acceptance_id()
+
         assert CoreSM is not None
         assert_sm(CoreSM)
         assert_sm(PreContextSM)
@@ -112,12 +114,6 @@ class Pattern_Prep(object):
         return self.has_pre_context() or self.has_post_context()
 
     def __validate(self, Sr):
-        # (*) It is essential that state machines defined as patterns do not 
-        #     have origins.
-        if self.__sm.has_origins():
-            error.log("Regular expression parsing resulted in state machine with origins.\n" + \
-                      "Please, log a defect at the projects website quex.sourceforge.net.\n", Sr)
-
         # (*) Acceptance states shall not store the input position when they are 'normally'
         #     post-conditioned. Post-conditioning via the backward search is a different 
         #     ball-game.
@@ -131,7 +127,7 @@ class Pattern_Prep(object):
                           "(end of normal post-contexted core pattern is an acceptance state)\n" 
                           "Please, log a defect at the projects website quex.sourceforge.net.", Sr)
 
-        if acceptance_f == False:
+        if not acceptance_f:
             error.log("Pattern has no acceptance state and can never match.\n" + \
                       "Aborting generation process.", Sr)
 
@@ -258,8 +254,9 @@ class Pattern_Prep(object):
                                                    sm_post_context])
 
         # (*) Pre-contexts and BIPD can only be mounted, after the transformation.
-        sm_main, sm_bipd = self.__finalize_mount_post_context_sm(sm_main, 
-                                                                 sm_post_context)
+        sm_main, \
+        sm_bipd  = self.__finalize_mount_post_context_sm(sm_main, 
+                                                         sm_post_context)
         sm_pre_context = self.__finalize_mount_pre_context_sm(sm_main, 
                                                               sm_pre_context_to_be_inverted)
 

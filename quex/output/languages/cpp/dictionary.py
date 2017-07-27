@@ -843,7 +843,6 @@ class Language(dict):
         elif AccConditionId == E_AcceptanceCondition.BEGIN_OF_STREAM: 
             return "QUEX_NAME(Buffer_is_begin_of_stream)(&me->buffer)"
         elif AccConditionId == E_AcceptanceCondition.END_OF_STREAM: 
-            print "#Code: END_OF_STREAM"
             return "QUEX_NAME(Buffer_is_end_of_stream)(&me->buffer)"
         elif AccConditionId == E_AcceptanceCondition.NONE:
             return "true"

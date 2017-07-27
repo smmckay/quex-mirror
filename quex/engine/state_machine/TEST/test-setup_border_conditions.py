@@ -16,6 +16,7 @@ from   quex.blackboard import setup as Setup
 
 
 Setup.dos_carriage_return_newline_f = False
+Setup.set_all_character_set_UNIT_TEST()
 
 
 if "--hwut-info" in sys.argv:

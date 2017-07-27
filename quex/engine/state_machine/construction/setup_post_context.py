@@ -62,23 +62,22 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
     """
     __entry_asserts(dfa, post_context_dfa)
 
-    if EndOfStreamPostContextF:
-        # Set acceptance condition: 'end of stream'.
-        for state in dfa.get_acceptance_state_list():
-            state.set_pre_context_id(E_AcceptanceCondition.END_OF_STREAM)
-            
     if post_context_dfa is None:
         if EndOfLinePostContextF: 
             post_context_dfa = DFA_Newline() 
 
-    if post_context_dfa is None:
-        return dfa, None
-
     # A post context with an initial state that is acceptance is not really a
     # 'context' since it accepts anything. The state machine remains un-post context.
-    if post_context_dfa.get_init_state().is_acceptance():
+    if     post_context_dfa is not None \
+       and post_context_dfa.get_init_state().is_acceptance():
         error.warning("Post context accepts anything--replaced by no post context.",
                       SourceReference)
+        post_context_dfa = None
+
+    if post_context_dfa is None:
+        if EndOfStreamPostContextF:
+            for state in dfa.get_acceptance_state_list():
+                state.set_pre_context_id(E_AcceptanceCondition.END_OF_STREAM)
         return dfa, None
     
     # (*) Two ways of handling post-contexts:
@@ -93,8 +92,8 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
             # -- for post contexts that are forward and backward ambiguous
             #    a philosophical cut is necessary.
             error.warning("Post context requires philosophical cut--handle with care!\n"
-                      "Proposal: Isolate pattern and ensure results are as expected!", 
-                      SourceReference) 
+                          "Proposal: Isolate pattern and ensure results are as expected!", 
+                          SourceReference) 
             post_context_dfa = ambiguous_post_context.philosophical_cut(dfa, post_context_dfa)
         
         # NOTE: May be, dfa does contain now an epsilon transition. See
@@ -128,7 +127,8 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
     # -- mount on every acceptance state the initial state of the following state
     #    machine via epsilon transition
     dfa.mount_to_acceptance_states(post_clone.init_state_index, 
-                                                 CancelStartAcceptanceStateF=True)
+                                   CancelStartAcceptanceStateF=True)
+
     for start_state_index, state in post_clone.states.iteritems():        
         dfa.states[start_state_index] = state # states are already cloned
 
@@ -143,6 +143,12 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
     for state in dfa.get_acceptance_state_list():
         state.set_read_position_store_f(False)
         state.set_read_position_restore_f(True)
+
+    if EndOfStreamPostContextF:
+        for state_idx in orig_acceptance_state_id_list:
+            state = dfa.states[state_idx]
+            state.set_acceptance()
+            state.set_pre_context_id(E_AcceptanceCondition.END_OF_STREAM)
 
     # No input position backward search required
     return beautifier.do(dfa), None
@@ -181,8 +187,9 @@ def __entry_asserts(dfa, post_context_dfa):
 
     # DFAs involved with post condition building are part of a pattern, 
     # but not configured out of multiple patterns. Thus there should be no origins.
-    assert dfa.has_origins() == False
-    assert post_context_dfa is None or not post_context_dfa.has_origins()
+    assert not dfa.has_specific_acceptance_id()
+    assert    post_context_dfa is None \
+           or not post_context_dfa.has_specific_acceptance_id()
 
     for state in dfa.get_acceptance_state_list():
         for cmd in state.single_entry.get_iterable(SeAccept): 

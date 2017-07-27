@@ -101,10 +101,9 @@ from   collections import defaultdict
 class EncodingTrafoBySplit(base.EncodingTrafo):
     """Transformation that takes a lexatom and produces a lexatom sequence.
     """
-    def __init__(self, Name, CodeUnitRange, ErrorRangeByCodeUnitDb):
+    def __init__(self, Name, ErrorRangeByCodeUnitDb):
         base.EncodingTrafo.__init__(self, Name, 
                                     NumberSet.from_range(0, 0x110000),
-                                    CodeUnitRange,
                                     ErrorRangeByCodeUnitDb)
 
     def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):

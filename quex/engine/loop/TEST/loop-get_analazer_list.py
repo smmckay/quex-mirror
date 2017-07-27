@@ -48,6 +48,7 @@ import quex.engine.loop.core                      as     loop
 import quex.engine.analyzer.engine_supply_factory as     engine
 from   quex.blackboard                            import setup as Setup
 from   quex.constants                             import E_CharacterCountType
+import quex.output.languages.core                 as     languages
                                                          
 
 from   operator import attrgetter
@@ -58,6 +59,7 @@ if "--hwut-info" in sys.argv:
     sys.exit()
 
 dial_db = DialDB()
+Setup.language_db = languages.db["C++"]()
 Setup.buffer_setup("", 1, "utf8") 
 
 def test(LoopMap, ColumnNPerCodeUnit):
@@ -79,11 +81,16 @@ def test(LoopMap, ColumnNPerCodeUnit):
                                               dial_db               = dial_db, 
                                               OnReloadFailureDoorId = None) 
 
-    analyzer_list,      \
-    door_id_loop,       \
-    appendix_sm_exist_f = loop._get_analyzer_list(loop_map, event_handler, 
-                                                  appendix_sm_list,
-                                                  dial.new_incidence_id()) 
+    loop_sm = DFA.from_IncidenceIdMap(
+         (lei.character_set, lei.incidence_id) for lei in LoopMap
+    )
+
+    loop_sm,         \
+    appendix_sm_list = loop._transform(loop_sm, appendix_sm_list)
+
+    analyzer_list,   \
+    door_id_loop     = loop._get_analyzer_list(loop_sm, appendix_sm_list, 
+                                               event_handler, dial.new_incidence_id()) 
 
     print_this(analyzer_list)
 
@@ -154,6 +161,5 @@ elif "non-const" in sys.argv:
     column_n_per_code_unit = None
 else:
     assert False
-
 
 test(loop_map, column_n_per_code_unit)

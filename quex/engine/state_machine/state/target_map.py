@@ -1,5 +1,4 @@
 from   quex.engine.misc.interval_handling             import NumberSet, \
-                                                             NumberSet_All, \
                                                              Interval
 from   quex.engine.state_machine.state.target_map_ops import E_Border
 from   quex.constants                                 import E_StateIndices
@@ -83,7 +82,7 @@ class TargetMap:
         assert Trigger.__class__ in (int, long, list, Interval, NumberSet) or Trigger is None
 
         if Trigger is None: # This is a shorthand to trigger via the remaining triggers
-            Trigger = self.get_trigger_set_union().get_complement(NumberSet_All())
+            Trigger = self.get_trigger_set_union().get_complement(Setup.buffer_encoding.source_set)
         elif type(Trigger) == long: Trigger = Interval(int(Trigger), int(Trigger+1))
         elif type(Trigger) == int:  Trigger = Interval(Trigger, Trigger+1)
         elif type(Trigger) == list: Trigger = NumberSet(Trigger, ArgumentIsYoursF=True)
@@ -110,11 +109,6 @@ class TargetMap:
         if TargetStateIdx in self.__epsilon_target_index_list:
             del self.__epsilon_target_index_list[self.__epsilon_target_index_list.index(TargetStateIdx)]
 
-    def delete_trigger_set(self, TriggerSet):
-        for si, trigger_set in self.__db.items():
-            trigger_set.subtract(TriggerSet)
-            if trigger_set.is_empty(): del self.__db[si]
-
     def delete_transitions_on_empty_trigger_sets(self):
         for target_index, trigger_set in self.__db.items():
             if trigger_set.is_empty(): del self.__db[target_index]
@@ -132,7 +126,7 @@ class TargetMap:
         """This function returns the union of all trigger sets that do not
            transit to any target.
         """
-        return self.get_trigger_set_union().get_complement(NumberSet_All())
+        return self.get_trigger_set_union().get_complement(Setup.buffer_encoding.source_set)
 
     def get_epsilon_target_state_index_list(self):
         return self.__epsilon_target_index_list

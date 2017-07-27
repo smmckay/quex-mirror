@@ -34,12 +34,16 @@ import os
 
 
 def do(BufferCodecName, BufferCodecFileName=""):
-    from   quex.engine.state_machine.transformation.base              import EncodingTrafoUnicode
+    from   quex.engine.state_machine.transformation.base              import EncodingTrafoUnicode, \
+                                                                             EncodingTrafoNone
     from   quex.engine.state_machine.transformation.table             import EncodingTrafoByTable
     from   quex.engine.state_machine.transformation.utf8_state_split  import EncodingTrafoUTF8
     from   quex.engine.state_machine.transformation.utf16_state_split import EncodingTrafoUTF16
 
-    if   BufferCodecName == "utf8":
+    if   BufferCodecName == "none":
+        return EncodingTrafoNone()
+
+    elif BufferCodecName == "utf8":
         return EncodingTrafoUTF8()
 
     elif BufferCodecName == "utf16":
@@ -58,8 +62,7 @@ def do(BufferCodecName, BufferCodecFileName=""):
         # If the internal buffer is 'unicode', then the pattern's state 
         # machines are not converted. The requirement for the pattern's
         # range is the same as for the 'buffer element chunks'.
-        return EncodingTrafoUnicode(NumberSet(Interval(0, 0x110000)), 
-                                    NumberSet(Interval(0, 0x110000))) 
+        return EncodingTrafoUnicode(NumberSet(Interval(0, 0x110000))) 
 
     elif BufferCodecName == "unit-test":
         return EncodingTrafoUnicode(NumberSet_All(), NumberSet_All())

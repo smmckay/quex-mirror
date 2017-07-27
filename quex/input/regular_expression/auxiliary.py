@@ -126,7 +126,7 @@ def snap_replacement(stream, PatternDict, StateMachineF=True):
         # have origins. Otherwise, the optimization of patterns that
         # contain pattern replacements might get confused and can
         # not find all optimizations.
-        assert state_machine.has_origins() == False
+        assert not state_machine.has_specific_acceptance_id()
             
         # A state machine, that contains pre- or post- conditions cannot be part
         # of a replacement. The addition of new post-contexts would mess up the pattern.

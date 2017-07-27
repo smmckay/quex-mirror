@@ -109,8 +109,7 @@ from   quex.engine.counter                                import CountAction, \
                                                                  CountActionMap, \
                                                                  count_operation_db_with_reference, \
                                                                  count_operation_db_without_reference
-from   quex.engine.misc.interval_handling                 import NumberSet, \
-                                                                 NumberSet_All
+from   quex.engine.misc.interval_handling                 import NumberSet
 from   quex.engine.misc.tools                             import typed
 import quex.engine.misc.error                             as     error
 from   quex.output.counter.pattern                        import map_SmLineColumnCountInfo_to_code
@@ -564,6 +563,10 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
     appendix_sm_list, \
     appendix_lcci_db  = _get_loop_map(CaMap, parallel_sm_list, iid_loop_exit, 
                                       dial_db, LoopCharacterSet)
+    # Loop DFA
+    loop_sm = DFA.from_IncidenceIdMap(
+         (lei.character_set, lei.incidence_id) for lei in loop_map
+    )
 
     event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
                                       LexemeEndCheckF, 
@@ -576,13 +579,15 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
 
     # Loop represented by FSM-s and Terminal-s ___________________________
     #
-    analyzer_list,      \
-    door_id_loop,       \
-    appendix_sm_exist_f = _get_analyzer_list(loop_map, event_handler, appendix_sm_list,
-                                             iid_loop_after_appendix_drop_out)
+    loop_sm,         \
+    appendix_sm_list = _transform(loop_sm, appendix_sm_list)
+
+    analyzer_list,   \
+    door_id_loop     = _get_analyzer_list(loop_sm, appendix_sm_list, event_handler, 
+                                          iid_loop_after_appendix_drop_out)
     event_handler.loop_state_machine_id_set(analyzer_list[0].state_machine_id)
 
-    if not appendix_sm_exist_f:
+    if not any(lei.appendix_sm_has_transitions_f for lei in loop_map):
         iid_loop_after_appendix_drop_out = None
 
     terminal_list, \
@@ -622,8 +627,8 @@ def _sm_terminal_pair_list_assert(SmTerminalList):
         assert isinstance(terminal, MiniTerminal)
         assert sm.get_id() == terminal.incidence_id
 
-@typed(loop_map=LoopMap)
-def _get_analyzer_list(loop_map, EventHandler, AppendixSmList, 
+@typed(loop_sm=DFA, AppendixSmList=[DFA])
+def _get_analyzer_list(loop_sm, AppendixSmList, EventHandler,
                        IidLoopAfterAppendixDropOut): 
     """An appendix state machine is a parallel state machine that is pruned by
     its first transition. The first transition is absorbed into the 'loop_map'.
@@ -635,11 +640,11 @@ def _get_analyzer_list(loop_map, EventHandler, AppendixSmList,
 
     # Core Loop FSM 
     loop_analyzer,         \
-    door_id_loop           = _get_analyzer_for_loop(loop_map, EventHandler)
+    door_id_loop           = _get_analyzer_for_loop(loop_sm, EventHandler)
 
     # Appendix Analyzers 
-    appendix_analyzer_list = _get_analyzer_list_for_appendices(loop_map, EventHandler, 
-                                                               AppendixSmList,
+    appendix_analyzer_list = _get_analyzer_list_for_appendices(AppendixSmList, 
+                                                               EventHandler, 
                                                                IidLoopAfterAppendixDropOut) 
     
     analyzer_list          = [ loop_analyzer ] + appendix_analyzer_list
@@ -647,9 +652,7 @@ def _get_analyzer_list(loop_map, EventHandler, AppendixSmList,
     # FSM Ids MUST be unique (LEAVE THIS ASSERT IN PLACE!)
     assert len(set(a.state_machine_id for a in analyzer_list)) == len(analyzer_list)
 
-    return analyzer_list, \
-           door_id_loop, \
-           any(lei.appendix_sm_has_transitions_f for lei in loop_map)
+    return analyzer_list, door_id_loop
 
 def _get_terminal_list(loop_map, EventHandler, 
                        appendix_lcci_db, ParallelMiniTerminalList, 
@@ -694,6 +697,7 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
                        -- combined appendix state machines, or
                        -- None, indicating that there is none.
     """
+    CaMap.prune(Setup.buffer_encoding.source_set)
     L = CaMap.union_of_all()
 
     # 'couple_list': Transitions to 'couple terminals' 
@@ -719,7 +723,7 @@ def _get_loop_map(CaMap, SmList, IidLoopExit, dial_db, L_subset):
     L_loop = NumberSet.from_union_of_iterable(
         x.character_set for x in chain(couple_list, plain_list)
     )
-    L_exit        = L_loop.get_complement(NumberSet_All())
+    L_exit = L_loop.get_complement(Setup.buffer_encoding.source_set)
     if not L_exit.is_empty():
         exit_list = [ LoopMapEntry(L_exit, None, IidLoopExit, None) ]
     else:
@@ -889,8 +893,8 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
 
     return loop_map, appendix_sm_list, appendix_lcci_db
 
-@typed(loop_map=LoopMap)
-def _get_analyzer_for_loop(loop_map, EventHandler):
+@typed(loop_sm=DFA)
+def _get_analyzer_for_loop(loop_sm, EventHandler):
     """Construct a state machine that triggers only on one character. Actions
     according the the triggered character are implemented using terminals which
     are entered upon acceptance.
@@ -911,17 +915,9 @@ def _get_analyzer_for_loop(loop_map, EventHandler):
     RETURNS: [0] Loop analyzer (prepared state machine)
              [1] DoorID of loop entry
     """
-    # Loop DFA
-    sm = DFA.from_IncidenceIdMap(
-         (lei.character_set, lei.incidence_id) for lei in loop_map
-    )
-
-    # Code Transformation
-    verdict_f, sm = Setup.buffer_encoding.do_state_machine(sm,
-                                                           BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
 
     # Loop FSM
-    analyzer = analyzer_generator.do(sm, 
+    analyzer = analyzer_generator.do(loop_sm, 
                                      EventHandler.engine_type, 
                                      EventHandler.reload_state_extern, 
                                      OnBeforeReload = EventHandler.on_before_reload, 
@@ -1010,8 +1006,7 @@ def _get_terminal_list_for_appendices(EventHandler, appendix_lcci_db,
 
     return run_time_counter_required_f, terminal_list
 
-@typed(loop_map=LoopMap)
-def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList, 
+def _get_analyzer_list_for_appendices(AppendixSmList, EventHandler, 
                                       IidLoopAfterAppendixDropOut): 
     """Parallel state machines are mounted to the loop by cutting the first
     transition and implementing it in the loop. Upon acceptance of the first
@@ -1020,27 +1015,12 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
     RETURNS: [0] List of appendix state machines in terms of analyzers.
              [1] Appendix terminals.
     """
-    # Codec Transformation
-    def transform(sm):
-        verdict_f, \
-        sm_transformed = Setup.buffer_encoding.do_state_machine(sm, 
-                                                                BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
-        if not verdict_f:
-            error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
-                      "contained character not suited for given character encoding.")
-        return sm_transformed
-
-    appendix_sm_list = [
-        transform(sm) for sm in AppendixSmList
-                      if sm.get_init_state().has_transitions()
-    ]
-
     # Appendix Sm Drop Out => Restore position of last loop character.
     # (i)  Couple terminal stored input position in 'LoopRestartP'.
     # (ii) Terminal 'LoopAfterAppendixDropOut' restores that position.
     # Accepting on the initial state of an appendix state machine ensures
     # that any drop-out ends in this restore terminal.
-    for init_state in (sm.get_init_state() for sm in appendix_sm_list):
+    for init_state in (sm.get_init_state() for sm in AppendixSmList):
         if init_state.has_specific_acceptance_id(): continue
         init_state.set_acceptance()
         init_state.set_specific_acceptance_id(IidLoopAfterAppendixDropOut)
@@ -1053,7 +1033,7 @@ def _get_analyzer_list_for_appendices(loop_map, EventHandler, AppendixSmList,
                               OnBeforeReload = EventHandler.on_before_reload_in_appendix, 
                               OnAfterReload  = EventHandler.on_after_reload_in_appendix, 
                               dial_db        = EventHandler.dial_db)
-        for sm in appendix_sm_list
+        for sm in AppendixSmList
     ]
 
 
@@ -1095,3 +1075,29 @@ def _cut_first_transition(sm, CloneStateMachineId=False):
         for target_si, trigger_set in sm.iterable_init_state_transitions()
     ]
         
+def _transform(loop_sm, AppendixSmList):
+    """Transform the given state machines into the buffer's encoding.
+
+    RETURNS: [0] LoopSm in the buffer's encoding.
+             [1] AppendixSm-list in the buffer's encoding.
+    """
+
+    def transform(sm):
+        verdict_f, \
+        sm_transformed = Setup.buffer_encoding.do_state_machine(sm, 
+                                                                BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
+        if not verdict_f:
+            error.log("Deep error: loop (skip range, skip nested range, indentation, ...)\n"
+                      "contained character not suited for given character encoding.")
+        return sm_transformed
+
+    loop_sm = transform(loop_sm)
+
+    appendix_sm_list = [
+        transform(sm) for sm in AppendixSmList
+                      if sm.get_init_state().has_transitions()
+    ]
+
+    return loop_sm, appendix_sm_list
+
+

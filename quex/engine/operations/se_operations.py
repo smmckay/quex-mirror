@@ -17,12 +17,17 @@ class SeOp:
     def __init__(self, AcceptanceId):
         self.__acceptance_id = AcceptanceId
 
-    def set_acceptance_id(self, PatternId):
+    def set_acceptance_id(self, AcceptanceId):
         if self.__acceptance_id == E_IncidenceIDs.BAD_LEXATOM: return
-        self.__acceptance_id = PatternId
+        self.__acceptance_id = AcceptanceId
 
     def acceptance_id(self):
         return self.__acceptance_id
+
+    def acceptance_id_is_specific(self):
+        if   self.__acceptance_id == E_IncidenceIDs.MATCH_FAILURE: return False
+        elif self.__acceptance_id == E_IncidenceIDs.BAD_LEXATOM:   return False
+        else:                                                      return True
 
     def _string_annotate(self, Str):
         if self.__acceptance_id == E_PostContextIDs.NONE: return Str
@@ -48,7 +53,7 @@ class SeOp:
 class SeAccept(SeOp):
     def __init__(self, 
                  AcceptanceId             = E_IncidenceIDs.MATCH_FAILURE, 
-                 AccConditionId             = E_AcceptanceCondition.NONE, 
+                 AccConditionId           = E_AcceptanceCondition.NONE, 
                  RestorePositionRegisterF = False):
 
         SeOp.__init__(self, AcceptanceId)

@@ -3,19 +3,25 @@ Pattern Definition
 
 Patterns are specified by means of regular expressions
 :cite:`Friedl2006mastering`.  The syntax follows a scheme that has been
-popularized by the tool 'lex' :cite:`Lesk1975lex`, includes elements of
+popularized by the tool 'lex' :cite:`Lesk1975lex`. It includes elements of
 *extended POSIX regular expressions* :cite:`Spencer1994regex` and POSIX bracket
 expressions. This facilitates the migration from and to other lexical analyzer
-generators and test environments.  Several additional non-standard 'commands'
-access the *Unicode Properties* database to define character sets [#f1]_.
+generators and test environments.  Additionally, some non-standard commands for
+the definition of character sets are provided which access the *Unicode
+Properties* database [#f1]_.
 
 .. note::
 
-    The ``define`` section is a great tool to specify clean regular expressions
-    out of smaller ones. Further, it helps to keep mode definitions clean, so
-    that pattern action pairs may be expressed by the pattern's name and the
-    action. An example may be seen below for the patterns ``WHITESPACE`` and
-    ``IDENTIFIER``.
+    In a ``define`` section regular expressions are associated with
+    identifiers. These identifiers may then be used in other regular
+    expressions by embracing them in curly brackets. This way, it becomes
+    possible to define larger expressions as a composition of smaller regular
+    expressions in a clear fashion. 
+    
+    The usage of references can be applied to the extend that modes only
+    contain references to regular expressions. Thus, the pattern-action pairs
+    become very readable.  An example usage of definition and references may be
+    seen below for the patterns ``WHITESPACE`` and ``IDENTIFIER``.
          
     .. code-block:: cpp
 

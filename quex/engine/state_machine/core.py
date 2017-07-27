@@ -362,12 +362,16 @@ class DFA(object):
         return result
  
     def acceptance_state_iterable(self):
-        return [ (si, state) 
-                 for si, state in self.states.iteritems() if state.is_acceptance() 
+        return [ 
+            (si, state) 
+            for si, state in self.states.iteritems() if state.is_acceptance() 
         ]
 
     def get_acceptance_state_list(self):
-        return [ state for state in self.states.itervalues() if state.is_acceptance() ]
+        return [ 
+            state 
+            for state in self.states.itervalues() if state.is_acceptance() 
+        ]
 
     def get_acceptance_state_index_list(self, AcceptanceID=None):
         if AcceptanceID is None:
@@ -735,8 +739,9 @@ class DFA(object):
         return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
                    for state in self.states.itervalues())
 
-    def has_origins(self):
-        return any(len(state.single_entry) > 1 for state in self.states.itervalues())
+    def has_specific_acceptance_id(self):
+        return any(state.single_entry.has_specific_acceptance_id()
+                   for state in self.states.itervalues())
 
     def create_new_init_state(self, AcceptanceF=False):
         self.init_state_index = self.create_new_state()
@@ -832,11 +837,10 @@ class DFA(object):
                                    CancelStartAcceptanceStateF=True):
         """Mount on any acceptance state the MountedStateIdx via epsilon transition.
         """
-        for state_idx, state in self.states.iteritems():
+        for state_idx, state in self.acceptance_state_iterable():
             # -- only handle only acceptance states
             # -- only consider state other than the state to be mounted
-            if not state.is_acceptance():                             continue
-            elif state_idx == MountedStateIdx:                        continue
+            if state_idx == MountedStateIdx: continue
             # add the MountedStateIdx to the list of epsilon transition targets
             state.target_map.add_epsilon_target_state(MountedStateIdx)
             # if required (e.g. for sequentialization) cancel the acceptance status
