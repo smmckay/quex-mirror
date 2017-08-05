@@ -1,6 +1,6 @@
 # Two lines to generate and compile the lexer:
 
-all: plain.exe implicit.exe
+all: plain.exe implicit.exe plain_more.exe
 
 hwut-info: 
 	@echo plain.exe implicit.exe
@@ -17,5 +17,6 @@ hwut-info:
 
 clean:
 	rm -f plain.exe plain.c \
+	      plain_more.exe plain_more.c \
 	      implicit.exe implicit.c \
 		  *.h *-configuration.h *-token.h *-token_ids.h \

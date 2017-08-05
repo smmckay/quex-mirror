@@ -77,7 +77,7 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
     if post_context_dfa is None:
         if EndOfStreamPostContextF:
             for state in dfa.get_acceptance_state_list():
-                state.set_pre_context_id(E_AcceptanceCondition.END_OF_STREAM)
+                state.set_acceptance_condition_id(E_AcceptanceCondition.END_OF_STREAM)
         return dfa, None
     
     # (*) Two ways of handling post-contexts:
@@ -148,7 +148,7 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
         for state_idx in orig_acceptance_state_id_list:
             state = dfa.states[state_idx]
             state.set_acceptance()
-            state.set_pre_context_id(E_AcceptanceCondition.END_OF_STREAM)
+            state.set_acceptance_condition_id(E_AcceptanceCondition.END_OF_STREAM)
 
     # No input position backward search required
     return beautifier.do(dfa), None
@@ -193,6 +193,6 @@ def __entry_asserts(dfa, post_context_dfa):
 
     for state in dfa.get_acceptance_state_list():
         for cmd in state.single_entry.get_iterable(SeAccept): 
-            assert cmd.acceptance_condition_id() == E_AcceptanceCondition.NONE, \
+            assert not cmd.acceptance_condition_set(), \
                    "Post Contexts MUST be mounted BEFORE pre-contexts."
 

@@ -7,12 +7,14 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.regular_expression.engine          as     core
 import quex.engine.state_machine.transformation.core as     bc_factory
 from   quex.blackboard                               import setup as Setup
+import quex.output.languages.core                    as     languages
 
 Setup.buffer_limit_code = -1
 Setup.path_limit_code   = -1
 # Setup.buffer_element_specification_prepare()
 Setup.bad_lexatom_detection_f = False
-Setup.set_all_character_set_UNIT_TEST()
+Setup.language_db = languages.db["C++"]()
+Setup.buffer_setup("<no-type>", -1, "utf8")
 
 if "--hwut-info" in sys.argv:
     print "Transformations"

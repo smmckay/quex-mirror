@@ -45,7 +45,7 @@ class RecipeAcceptance(Recipe):
     The 'aux_register' values are set during interference in mouth states.
     """
     __slots__         = ("accepter", "ip_offset_db", "snapshot_set_db")
-    RestoreAcceptance = SeAccept(E_IncidenceIDs.RESTORE_ACCEPTANCE, E_AcceptanceCondition.NONE)
+    RestoreAcceptance = SeAccept(E_IncidenceIDs.RESTORE_ACCEPTANCE, None)
 
     def __init__(self, Accepter, IpOffsetDb, SnapshotSetDb):
         assert type(IpOffsetDb) == dict

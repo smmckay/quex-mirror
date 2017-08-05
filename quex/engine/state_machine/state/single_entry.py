@@ -98,16 +98,16 @@ class SingleEntry(object):
 
     def has_pre_context_begin_of_line(self):
         return any(
-            cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE
+            E_AcceptanceCondition.BEGIN_OF_LINE in cmd.acceptance_condition_set() 
             for cmd in self.get_iterable(SeAccept)
         )
 
     def has_pre_context_begin_of_stream(self):
         # 'begin of line' includes 'begin of stream'.
-        if self.has_pre_context_begin_of_line_f(): return True
+        if self.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE): return True
 
         return any(
-            cmd.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
+            E_AcceptanceCondition.BEGIN_OF_STREAM in cmd.acceptance_condition_set() 
             for cmd in self.get_iterable(SeAccept)
         )
 
@@ -122,7 +122,7 @@ class SingleEntry(object):
         # Find the first unconditional acceptance
         unconditional_acceptance_i = None
         for i, cmd in self.get_enumerated_iterable(SeAccept):
-            if cmd.acceptance_condition_id() != E_AcceptanceCondition.NONE:
+            if cmd.acceptance_condition_set(): # Hae? <fschaef 17y08m>
                 unconditional_acceptance_i = i
                 break
 
@@ -188,7 +188,8 @@ class SingleEntry(object):
 
         def key(X):
             if   X.__class__ == SeAccept:              
-                return (0, X.acceptance_id(), X.acceptance_condition_id(), X.restore_position_register_f())
+                acc_condition_str = ", ".join("%s" % ac for ac in X.acceptance_condition_set())
+                return (0, X.acceptance_id(), acc_condition_str, X.restore_position_register_f())
             elif X.__class__ == SeStoreInputPosition: 
                 return (1, X.acceptance_id())
             else:

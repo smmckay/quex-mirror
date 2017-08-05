@@ -1,3 +1,10 @@
+@article{donnelly2004bison,
+    title={Bison. the yacc-compatible parser generator},
+    author={Donnelly, Charles and Stallman, Richard},
+    year={2004},
+    publisher={Free Software Foundation}
+}
+
 -- Anti-pattern: Investigate the behavior of the anti-pattern '\A{...}'
    documentation in 're-algebraic-expressions'.
 

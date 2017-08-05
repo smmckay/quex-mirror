@@ -31,15 +31,15 @@ acceptance_scheme_0 = [
     RecipeAcceptance.RestoreAcceptance 
 ]
 acceptance_scheme_1 = [ 
-    SeAccept(1111L, E_AcceptanceCondition.NONE, False) 
+    SeAccept(1111L, None, False) 
 ]
 acceptance_scheme_2 = [ 
-    SeAccept(2222L, E_AcceptanceCondition.NONE, True) 
+    SeAccept(2222L, None, True) 
 ]
 acceptance_scheme_3 = [ 
     SeAccept(3333L, 33L, True), 
     SeAccept(4444L, 44L, True), 
-    SeAccept(5555L, E_AcceptanceCondition.NONE, True) 
+    SeAccept(5555L, None, True) 
 ]
 
 

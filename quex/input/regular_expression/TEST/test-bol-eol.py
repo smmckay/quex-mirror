@@ -32,7 +32,7 @@ def test_core(TestString):
         print pattern.sm
         if pattern.sm_pre_context:
             print "pre-context = ", pattern.sm_pre_context
-        print "begin of line = ", pattern.has_pre_context_begin_of_line_f()
+        print "begin of line = ", pattern.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE)
 
 test('[a-z]+')
 test('[a-z]*')

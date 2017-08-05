@@ -53,28 +53,41 @@ class SeOp:
 class SeAccept(SeOp):
     def __init__(self, 
                  AcceptanceId             = E_IncidenceIDs.MATCH_FAILURE, 
-                 AccConditionId           = E_AcceptanceCondition.NONE, 
+                 AccConditionId           = None, 
                  RestorePositionRegisterF = False):
 
         SeOp.__init__(self, AcceptanceId)
 
-        self.__pre_context_id              = AccConditionId
+        if AccConditionId is None: 
+            self.__acceptance_condition_set = set()
+        else:
+            self.__acceptance_condition_set = set([AccConditionId])
+
         self.__restore_position_register_f = False
 
     def clone(self, ReplDbPreContext=None, ReplDbAcceptance=None):
         result = SeAccept()
         if ReplDbAcceptance is None: result.set_acceptance_id(self.acceptance_id())
         else:                        result.set_acceptance_id(ReplDbAcceptance[self.acceptance_id()])
-        if ReplDbPreContext is None: result.__pre_context_id = self.__pre_context_id
-        else:                        result.__pre_context_id = ReplDbPreContext[self.__pre_context_id]
+        # Acceptance conditions *must* be copied upon cloning!
+        if ReplDbPreContext is None: result.__acceptance_condition_set = set(self.__acceptance_condition_set)
+        else:                        
+            if self.__acceptance_condition_set:
+                # '.acceptance_condition_set()' returns a tuple which can serve 
+                # as a key for the dict.
+                print "#key:", ReplDbPreContext.keys()
+                result.__acceptance_condition_set = ReplDbPreContext[self.acceptance_condition_set()]
         result.__restore_position_register_f = self.__restore_position_register_f
         return result
 
-    def set_pre_context_id(self, PatternId):
-        self.__pre_context_id = PatternId
+    def set_acceptance_condition_id(self, PatternId):
+        if PatternId is None:
+            self.__acceptance_condition_set.clear()
+        else:
+            self.__acceptance_condition_set.add(PatternId)
 
-    def acceptance_condition_id(self):
-        return self.__pre_context_id
+    def acceptance_condition_set(self):
+        return tuple(sorted(self.__acceptance_condition_set))
 
     def set_restore_position_register_f(self):
         self.__restore_position_register_f = True
@@ -83,7 +96,7 @@ class SeAccept(SeOp):
         return self.__restore_position_register_f
     
     def position_register_id(self):
-        if self.restore_position_register_f() or self.acceptance_condition_id() != E_AcceptanceCondition.NONE: 
+        if self.restore_position_register_f() or self.__acceptance_condition_set: 
             return self.acceptance_id()
         else:
             return E_IncidenceIDs.CONTEXT_FREE_MATCH
@@ -95,15 +108,15 @@ class SeAccept(SeOp):
         )
 
     def required_variable_ids(self):
-        if self.__pre_context_id == E_AcceptanceCondition.NONE: 
+        if not self.__acceptance_condition_set: 
             return ()
         else:
-            return (E_R.PreContextVerdict, self.__pre_context_id)
+            return (E_R.PreContextVerdict, self.acceptance_condition_set())
 
     def __eq__(self, Other):
         if   not Other.__class__ == SeAccept:                     return False
         elif not SeOp.__eq__(self, Other):                        return False
-        elif not self.__pre_context_id == Other.__pre_context_id: return False
+        elif not self.__acceptance_condition_set == Other.__acceptance_condition_set: return False
         return self.__restore_position_register_f == Other.__restore_position_register_f
 
     def __str__(self):
@@ -112,13 +125,16 @@ class SeAccept(SeOp):
         restore_txt       = ""
         if self.acceptance_id() != E_IncidenceIDs.MATCH_FAILURE:
             acceptance_id_txt = repr(self.acceptance_id()).replace("L", "")
-        if self.__pre_context_id != E_AcceptanceCondition.NONE:            
-            if self.__pre_context_id == E_AcceptanceCondition.BEGIN_OF_LINE:
+        if self.__acceptance_condition_set:            
+            if   E_AcceptanceCondition.BEGIN_OF_LINE   in self.__acceptance_condition_set:
                 pre_txt = "pre=bol"
-            elif self.__pre_context_id == E_AcceptanceCondition.BEGIN_OF_STREAM:
+            elif E_AcceptanceCondition.BEGIN_OF_STREAM in self.__acceptance_condition_set:
                 pre_txt = "pre=bol"
             else: 
-                pre_txt = "pre=%s" % repr(self.__pre_context_id).replace("L", "")
+                acc_condition_str = ", ".join("%s" % ac for ac in self.__acceptance_condition_set)
+                if acc_condition_str:
+                    pre_txt = "pre=%s" % acc_condition_str.replace("L", "")
+
         if self.__restore_position_register_f: 
             restore_txt = self._string_annotate("R")
 

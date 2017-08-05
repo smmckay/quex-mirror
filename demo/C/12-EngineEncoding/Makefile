@@ -23,36 +23,36 @@ all: $(APPS)
 
 iso8859-7-lexer: iso8859-7-lexer.c greek.qx
 	quex -i                greek.qx  \
-		 --language        C         \
 		 --encoding        iso8859_7 \
 		 --token-id-prefix TKN_      \
-		 -o                ISO8859_7_Lex 
+		 -o                ISO8859_7_Lex \
+		 --language        C         
 	$(CC) -D__QUEX_TEST_OPTION_ISO8859_7 $< ISO8859_7_Lex.c -o $@
 
 utf8-lexer: utf8-lexer.c greek.qx
 	quex -i greek.qx            \
-		 --language        C    \
-		 --encoding utf8           \
+		 --encoding utf8        \
 		 --token-id-prefix TKN_ \
-		 -o UTF8Lex 
+		 -o UTF8Lex             \
+		 --language        C
 	$(CC) $< UTF8Lex.c -o $@
 	
 utf16-lexer: utf16-lexer.c greek.qx
 	quex -i                greek.qx  \
-		 --language        C         \
-		 --encoding           utf16     \
+		 --encoding        utf16     \
 		 --token-id-prefix TKN_      \
+	     -b                2         \
 		 -o                UTF16Lex  \
-	     -b                2
+		 --language        C
 	$(CC) -D__QUEX_TEST_OPTION_UTF16BE $< UTF16Lex.c -o $@
 
 utf16-lexer-other: utf16-lexer-other.c greek-other.qx
 	quex -i                greek-other.qx  \
-		 --language        C               \
-		 --encoding           utf16           \
+		 --encoding        utf16           \
 		 --token-id-prefix TKN_            \
+	     -b                2               \
 		 -o                UTF16Lex        \
-	     -b                2
+		 --language        C
 	$(CC) -D__QUEX_TEST_OPTION_UTF16BE $< UTF16Lex.c -o $@
 
 %.E: %.c

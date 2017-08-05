@@ -18,7 +18,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from   quex.engine.misc.interval_handling                   import Interval
-from   quex.engine.state_machine.transformation.state_split import __get_intermediate_transition_maps
+from   quex.engine.state_machine.transformation.state_split import _get_intermediate_transition_maps
 import quex.engine.state_machine.algorithm.beautifier       as     beautifier
 
 from   quex.blackboard import setup as Setup
@@ -51,8 +51,8 @@ def test(Input, Index=0):
 
     tm_db,      \
     tm_end_inv, \
-    position_db =  __get_intermediate_transition_maps(from_si, to_si, 
-                                                      interval_sequence_list)
+    position_db =  _get_intermediate_transition_maps(from_si, to_si, 
+                                                     interval_sequence_list)
 
     # Insert the 'inverse end transition map' into the 'tm_db'.
     for from_state_index, interval_list in tm_end_inv.iteritems():

@@ -38,12 +38,11 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
         if BeginOfLinePreContextF:
             # Set acceptance condition: 'begin of line'.
             for state in the_state_machine.get_acceptance_state_list():
-                state.set_pre_context_id(E_AcceptanceCondition.BEGIN_OF_LINE)
+                state.set_acceptance_condition_id(E_AcceptanceCondition.BEGIN_OF_LINE)
         elif BeginOfStreamPreContextF:
             # Set acceptance condition: 'begin of stream'.
             for state in the_state_machine.get_acceptance_state_list():
-                state.set_pre_context_id(E_AcceptanceCondition.BEGIN_OF_STREAM)
-                print "#set_pre_context_id: STREAM"
+                state.set_acceptance_condition_id(E_AcceptanceCondition.BEGIN_OF_STREAM)
         return None
 
     # (*) Reverse the state machine of the pre-condition 
@@ -68,7 +67,7 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
 
     # (*) Associate acceptance with pre-context id. 
     for state in the_state_machine.get_acceptance_state_list():
-        state.set_pre_context_id(pre_context_sm_id)
+        state.set_acceptance_condition_id(pre_context_sm_id)
     
     return reverse_pre_context
 

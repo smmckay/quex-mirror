@@ -61,7 +61,7 @@ example_db = {
         Op.AssignConstant(E_R.Column, 2), 
     ],
     E_Op.IfPreContextSetPositionAndGoto: [
-        Op.IfPreContextSetPositionAndGoto(24, RouterContentElement(66, 1)),
+        Op.IfPreContextSetPositionAndGoto(set([24]), RouterContentElement(66, 1)),
     ],
     E_Op.IndentationHandlerCall: [ 
         Op.IndentationHandlerCall(True, "SLEEPY"),

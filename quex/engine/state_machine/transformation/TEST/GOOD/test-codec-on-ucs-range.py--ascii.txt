@@ -1,4 +1,4 @@
 # Number of states in state machine:
 #   Unicode:       257
-#   ascii:            129
+#   ascii:            130
 <terminated: 256 transitions ok>

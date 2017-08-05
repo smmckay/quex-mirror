@@ -171,10 +171,10 @@ def _write_all(configuration_header, analyzer_header, engine_txt,
                lexeme_converter_implementation):
 
     if lexeme_converter_header is not None:
-        write_safely_and_close(Setup.output_buffer_encoding_header,   
-                               lexeme_converter_header) 
-        write_safely_and_close(Setup.output_buffer_encoding_header_i, 
-                               lexeme_converter_implementation) 
+        header, \
+        header_i = Lng.buffer_encoding_headers(Setup.buffer_encoding.name)
+        write_safely_and_close(header, lexeme_converter_header) 
+        write_safely_and_close(header_i, lexeme_converter_implementation) 
 
     if token_id_header is not None:
         assert not Setup.extern_token_id_file

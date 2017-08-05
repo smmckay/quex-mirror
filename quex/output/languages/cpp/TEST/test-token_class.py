@@ -15,6 +15,7 @@ blackboard.setup.token_class_name        = ""
 blackboard.setup.token_class_name_space  = ""
 blackboard.setup.token_class_name_safe   = ""
 blackboard.setup.language_db             = languages.db["C++"]()
+blackboard.setup.language_db.extension_db = blackboard.setup.language_db.all_extension_db[""]
 
 if "--hwut-info" in sys.argv:
     print "Token Class Template"

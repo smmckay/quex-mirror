@@ -200,9 +200,9 @@ class DFA(object):
             for si, state in self.states.iteritems()
         )
         
-        result = DFA.from_iterable(ReplDbStateIndex[self.init_state_index], 
-                                            iterable)
+        result = DFA.from_iterable(ReplDbStateIndex[self.init_state_index], iterable)
         if StateMachineId is not None: result.set_id(StateMachineId)
+
         return result
 
     def normalized_clone(self, ReplDbPreContext=None):
@@ -235,30 +235,6 @@ class DFA(object):
         if StateMachineId is not None: result.__id = StateMachineId
 
         return result
-
-    def access_state_by_incidence_id(self, IncidenceId):
-        """Find or create a state that accepts 'IncidenceId'.
-
-        RETURNS: Index of the found or created state.
-        """
-        for si, state in self.states.iteritems():
-            if state.has_acceptance_id(IncidenceId):
-                return si
-
-        si    = state_machine_index.get()
-        state = DFA_State(AcceptanceF=True)
-        state.mark_acceptance_id(IncidenceId)
-        self.states[si] = state
-        return si
-
-    def access_bad_lexatom_state(self):
-        """Find or create a 'bad lexatom' state in the state machine. Such a
-        state 'accepts' the incidence 'BAD_LEXATOM' and causes an immediate
-        transition to the 'on_bad_lexatom' handler.
-
-        RETURNS: Index of the 'bad lexatom state'.
-        """
-        return self.access_state_by_incidence_id(E_IncidenceIDs.BAD_LEXATOM)
 
     def get_id(self):
         assert isinstance(self.__id, long) or self.__id in E_IncidenceIDs
@@ -515,7 +491,7 @@ class DFA(object):
         acceptance_id_set  = set()
         for state in self.states.itervalues():
             for cmd in state.single_entry.get_iterable(SeAccept):
-                pre_context_id_set.add(cmd.acceptance_condition_id())
+                pre_context_id_set.update(cmd.acceptance_condition_set())
                 acceptance_id_set.add(cmd.acceptance_id())
                 
         def enter(db, Value, TheEnum, NewId):
@@ -724,17 +700,13 @@ class DFA(object):
         return any(state_index not in unique and state_index != self.init_state_index
                    for state_index in self.states.iterkeys())
 
-    def has_post_context_end_of_stream_f(self):
-        return any(state.acceptance_condition_id() == E_AcceptanceCondition.END_OF_STREAM
-                   for state in self.states.itervalues())
-
-    def has_pre_context_begin_of_line_f(self):
-        return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE
+    def has_acceptance_condition(self, AccConditionId):
+        return any(AccConditionId in state.acceptance_condition_set()
                    for state in self.states.itervalues())
 
     def has_pre_context_begin_of_stream_f(self):
         # 'begin of line' includes 'begin of stream'.
-        if self.has_pre_context_begin_of_line_f(): return True
+        if self.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE): return True
 
         return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
                    for state in self.states.itervalues())
@@ -846,7 +818,7 @@ class DFA(object):
             # if required (e.g. for sequentialization) cancel the acceptance status
             if CancelStartAcceptanceStateF: 
                 # If there was a condition to acceptance => Cancel it first
-                state.set_pre_context_id(E_AcceptanceCondition.NONE) 
+                state.set_acceptance_condition_id(None) 
                 state.set_acceptance(False)
 
     def mount_cloned(self, OtherSM, OperationIndex, OtherStartIndex, OtherEndIndex):
@@ -902,56 +874,6 @@ class DFA(object):
     def replace_target_indices(self, ReplacementDict):
         for state in self.states.itervalues():
             state.target_map.replace_target_indices(ReplacementDict)
-
-    def mount_absorbed_states_between(self, BeginIndex, EndIndex, 
-                                      state_db, ASBeginIndex, ASEndIndex):
-        """Absorb the states from 'state_db' into this state machine and
-        plug them between 'BeginIndex' and 'EndIndex'. The absorbed state's
-        begin 'ASBeginIndex' is placed in the state 'BeginIndex' and all
-        transitions to 'ASEndIndex' end in 'EndIndex'.
-
-        The result is not necessarily a DFA!
-
-        EXAMPLE: 
-            
-            To-be-absorbed state machine:
-
-                      [ 0 ]---( a )--->[ 1 ]---( b )--->[ 2 ]
-
-            which is to be mounted between state '8' and '10' in
-
-                      [ 8 ]---( c )--->[ 9 ]---( d )--->[ 10 ]
-
-            becomes
-
-                      [ 8 ]---( c )--->[ 9 ]---( d )--->[ 10 ]
-                         \                               /
-                          '---( a )--->[ 1 ]---( b )-->-'
-
-        Note, that the globally unique state indices makes it possible to 
-        absorb the states without having to clone them.
-        """
-        assert not self.states[BeginIndex].has_acceptance_id(E_IncidenceIDs.BAD_LEXATOM)
-        assert not self.states[EndIndex].has_acceptance_id(E_IncidenceIDs.BAD_LEXATOM)
-        assert not state_db[ASBeginIndex].has_acceptance_id(E_IncidenceIDs.BAD_LEXATOM)
-        assert not state_db[ASEndIndex].has_acceptance_id(E_IncidenceIDs.BAD_LEXATOM)
-
-        # Replace the 'end_index' in the 'to-be-absorbed' states
-        # with the 'EndIndex' of this state machine.
-        for state in state_db.itervalues():
-            state.target_map.replace_target_index(ASEndIndex, EndIndex)
-
-        # Mount the first state's transitions to the first 'begin state'
-        # of this state machine, i.e. absorb its transitions.
-        self.states[BeginIndex].target_map.get_map().update(
-            state_db[ASBeginIndex].target_map.get_map()
-        )
-
-        # Absorb states from 'state_db'
-        for si, state in state_db.iteritems():
-            if   si == ASBeginIndex: continue
-            elif si == ASEndIndex:   continue
-            self.states[si] = state
 
     def filter_dominated_origins(self):
         for state in self.states.values(): 

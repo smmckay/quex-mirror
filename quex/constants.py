@@ -10,6 +10,11 @@ class E_Border:
     BEGIN = 1   # BEGIN > END is essential for comparison!
     END   = 0
 
+E_Files = Enum("HEADER", 
+               "HEADER_IMPLEMTATION", 
+               "SOURCE", 
+               "_DEBUG_Files")
+
 #------------------------------------------------------------------------------
 # StateIndices: Values to be used as target states for transitions
 #------------------------------------------------------------------------------

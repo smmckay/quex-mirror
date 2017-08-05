@@ -84,18 +84,10 @@ class Checker:
         for index in S0List:
             S0 = self.sm0.states[index] # core of the 'sm0' state
 
-            if       S0.is_acceptance() \
-                 !=  S1.is_acceptance():                                      return False
-            elif    (S0.acceptance_condition_id() == E_AcceptanceCondition.NONE) \
-                 != (S1.acceptance_condition_id() == E_AcceptanceCondition.NONE):            return False
-            elif    (S0.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE) \
-                 != (S1.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_LINE):   return False
-            elif    (S0.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM) \
-                 != (S1.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM): return False
-            elif     S0.input_position_store_f() \
-                 !=  S1.input_position_store_f():                             return False
-            elif     S0.input_position_restore_f() \
-                 !=  S1.input_position_restore_f():                           return False
+            if   S0.is_acceptance()            != S1.is_acceptance():            return False
+            elif S0.acceptance_condition_set() != S1.acceptance_condition_set(): return False
+            elif S0.input_position_store_f()   != S1.input_position_store_f():   return False
+            elif S0.input_position_restore_f() != S1.input_position_restore_f(): return False
 
         return True
 
@@ -113,10 +105,10 @@ def do(A, B):
     # lexical analyzer.
     if not Checker(A.sm, B.sm).do(): return False
 
-    if      A.sm.has_pre_context_begin_of_line_f() \
-         != B.sm.has_pre_context_begin_of_line_f():   return False
-    elif    A.sm.has_pre_context_begin_of_stream_f() \
-         != B.sm.has_pre_context_begin_of_stream_f(): return False
+    if      A.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE) \
+         != B.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE):   return False
+    elif    A.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM) \
+         != B.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM): return False
     elif    (A.sm_pre_context is None) \
          != (B.sm_pre_context is None):               return False
 

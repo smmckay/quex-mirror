@@ -22,7 +22,8 @@ import quex.output.languages.cpp.templates               as     templates
 
 from   quex.DEFINITIONS  import QUEX_PATH
 from   quex.blackboard   import setup as Setup
-from   quex.constants    import E_StateIndices,  \
+from   quex.constants    import E_Files, \
+                                E_StateIndices,  \
                                 E_IncidenceIDs, \
                                 E_TransitionN,   \
                                 E_AcceptanceCondition, \
@@ -62,6 +63,36 @@ class Language(dict):
     STANDARD_TYPE_DB          = {
         1: "uint8_t", 2: "uint16_t", 4: "uint32_t", 8: "uint64_t",
     }
+
+    all_extension_db = {
+        "": { 
+              E_Files.SOURCE:              ".cpp",
+              E_Files.HEADER:              "",
+              E_Files.HEADER_IMPLEMTATION: ".i",
+        },
+        "++": { 
+              E_Files.SOURCE:              ".c++",
+              E_Files.HEADER:              ".h++",
+              E_Files.HEADER_IMPLEMTATION: ".h++",
+        },
+        "pp": { 
+              E_Files.SOURCE:              ".cpp",
+              E_Files.HEADER:              ".hpp",
+              E_Files.HEADER_IMPLEMTATION: ".hpp",
+        },
+        "cc": { 
+              E_Files.SOURCE:              ".cc",
+              E_Files.HEADER:              ".hh",
+              E_Files.HEADER_IMPLEMTATION: ".hh",
+        },
+        "xx": { 
+              E_Files.SOURCE:              ".cxx",
+              E_Files.HEADER:              ".hxx",
+              E_Files.HEADER_IMPLEMTATION: ".hxx",
+        },
+    }
+    extension_db = None # To be set by 'setup' to one of 'all_extension_db'
+
 
     def __init__(self):      
         self.__analyzer                           = None
@@ -126,6 +157,32 @@ class Language(dict):
     def converter_helper_i_file(self):     return "/lexeme_converter/TXT-from-codec-buffer.i"
     def converter_helper_file(self):       return "/lexeme_converter/TXT-from-codec-buffer"
     def analyzer_configuration_file(self): return "/analyzer/configuration/TXT"
+
+
+    def buffer_encoding_headers(self, EncodingName):
+        lexeme_converter_dir = "quex/code_base/lexeme_converter"
+        if   EncodingName == "utf8":
+            return "%s/from-utf8"    % lexeme_converter_dir, \
+                   "%s/from-utf8.i"  % lexeme_converter_dir
+
+        elif EncodingName == "utf16":
+            return "%s/from-utf16"   % lexeme_converter_dir, \
+                   "%s/from-utf16.i" % lexeme_converter_dir
+
+        elif EncodingName == "utf32":
+            return "%s/from-utf32"   % lexeme_converter_dir, \
+                   "%s/from-utf32.i" % lexeme_converter_dir
+
+        elif EncodingName != "unicode":
+            # Note, that the name may be set to 'None' if the conversion is utf8 or utf16
+            # See Internal engine character encoding'
+            return Setup.prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER), \
+                   Setup.prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER_IMPLEMTATION)
+
+        else:
+            return "%s/from-unicode-buffer"   % lexeme_converter_dir, \
+                   "%s/from-unicode-buffer.i" % lexeme_converter_dir
+
 
     def register_analyzer(self, TheAnalyzer):
         self.__analyzer = TheAnalyzer
@@ -226,7 +283,9 @@ class Language(dict):
         elif Setup.buffer_encoding.name == "unicode":
             return "#include <%s/from-unicode-buffer>\n" % self.LEXEME_CONVERTER_DIR
         else:
-            return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_encoding_header)
+            header, \
+            dummy   = self.buffer_encoding_headers(Setup.buffer_encoding.name)
+            return "#include \"%s\"\n" % Setup.get_file_reference(header)
 
     def CONVERTER_HELPER_IMLEMENTATION(self):
         if Setup.buffer_encoding.name in ["utf8", "utf16", "utf32"]:
@@ -234,7 +293,9 @@ class Language(dict):
         elif Setup.buffer_encoding.name == "unicode":
             return "#include <%s/from-unicode-buffer.i>\n" % self.LEXEME_CONVERTER_DIR
         else:
-            return "#include \"%s\"\n" % Setup.get_file_reference(Setup.output_buffer_encoding_header_i)
+            dummy,   \
+            header_i = self.buffer_encoding_headers(Setup.buffer_encoding.name)
+            return "#include \"%s\"\n" % Setup.get_file_reference(header_i)
                                                                                                                                 
     @typed(Txt=(CodeFragment))
     def SOURCE_REFERENCED(self, Cf, PrettyF=False):
@@ -373,7 +434,9 @@ class Language(dict):
             for i, element in enumerate(Op.content):
                 block = "last_acceptance = %s; __quex_debug(\"last_acceptance = %s\\n\");\n" \
                         % (self.ACCEPTANCE(element.acceptance_id), self.ACCEPTANCE(element.acceptance_id))
-                self.IF_ACCEPTANCE_CONDITION(txt, i == 0, element.acceptance_condition_id, block)
+                txt.extend(
+                    self.IF_ACCEPTANCE_CONDITION_SET(element.acceptance_condition_set, block)
+                )
             return "".join(txt)
 
         elif Op.id == E_Op.RouterByLastAcceptance:
@@ -385,15 +448,6 @@ class Language(dict):
             txt = self.BRANCH_TABLE_ON_STRING("last_acceptance", case_list)
             result = "".join(self.GET_PLAIN_STRINGS(txt, dial_db))
             return result
-
-        #        elif Op.id == E_Op.AccepterAndRouter:
-        #
-        #            else_str = ""
-        #            txt      = []
-        #            for element in Op.content:
-        #                txt.append(self.if_pre_context(x.acceptance_condition_id, else_str))
-        #                txt.extend(self.position_and_goto(x.router_element))
-        #            return "".join(txt)
 
         elif Op.id == E_Op.RouterOnStateKey:
             case_list = [
@@ -411,10 +465,9 @@ class Language(dict):
             return result
 
         elif Op.id == E_Op.IfPreContextSetPositionAndGoto:
-            acceptance_condition_id = Op.content.acceptance_condition_id
             block = self.position_and_goto(Op.content.router_element, dial_db)
-            txt = []
-            self.IF_ACCEPTANCE_CONDITION(txt, True, acceptance_condition_id, block)
+            txt   = self.IF_ACCEPTANCE_CONDITION_SET(Op.content.acceptance_condition_set,
+                                                     block)
             return "".join(txt)
 
         elif Op.id == E_Op.QuexDebug:
@@ -517,24 +570,22 @@ class Language(dict):
                        % (Op.content.position_register, Op.content.offset, Op.content.position_register, Op.content.offset)
 
         elif Op.id == E_Op.PreContextOK:
-            return   "    pre_context_%i_fulfilled_f = 1;\n"                         \
-                   % Op.content.acceptance_condition_id                                      \
-                   + "    __quex_debug(\"pre_context_%i_fulfilled_f = true\\n\");\n" \
-                   % Op.content.acceptance_condition_id
+            value = Op.content.acceptance_condition_id 
+            return   "    pre_context_%i_fulfilled_f = 1;\n"                         % value \
+                   + "    __quex_debug(\"pre_context_%i_fulfilled_f = true\\n\");\n" % value
 
         elif Op.id == E_Op.TemplateStateKeySet:
-            return   "    state_key = %i;\n"                      \
-                   % Op.content.state_key                        \
-                   + "    __quex_debug(\"state_key = %i\\n\");\n" \
-                   % Op.content.state_key
+            value = Op.content.state_key
+            return   "    state_key = %i;\n"                      % value \
+                   + "    __quex_debug(\"state_key = %i\\n\");\n" % value
 
         elif Op.id == E_Op.PathIteratorSet:
             offset_str = ""
             if Op.content.offset != 0: offset_str = " + %i" % Op.content.offset
             txt =   "    path_iterator  = path_walker_%i_path_%i%s;\n"                   \
                   % (Op.content.path_walker_id, Op.content.path_id, offset_str)        \
-                  + "    __quex_debug(\"path_iterator = (Pathwalker: %i, Path: %i, Offset: %i)\\n\");\n" \
-                  % (Op.content.path_walker_id, Op.content.path_id, Op.content.offset)
+                  + "    __quex_debug(\"path_iterator = (Pathwalker: %i, Path: %i, Offset: %s)\\n\");\n" \
+                  % (Op.content.path_walker_id, Op.content.path_id, offset_str)
             return txt
 
         elif Op.id == E_Op.PrepareAfterReload:
@@ -816,9 +867,21 @@ class Language(dict):
         """
         return self.IF("input", Condition, Value, Index==0, SimpleF=True, SpaceF=(Length>2))
 
+    def IF_ACCEPTANCE_CONDITION_SET(self, AccConditionSet, Consequence):
+        """NEEDS REWORK!
+        """
+        txt = []
+        first_f = True
+        if not AccConditionSet:
+            self.IF_ACCEPTANCE_CONDITION(txt, first_f, None, Consequence)
+        else:
+            for acceptance_condition_id in AccConditionSet:
+                self.IF_ACCEPTANCE_CONDITION(txt, first_f, acceptance_condition_id, Consequence)
+        return txt
+
     def IF_ACCEPTANCE_CONDITION(self, txt, FirstF, AccConditionId, Consequence):
 
-        if AccConditionId == E_AcceptanceCondition.NONE:
+        if AccConditionId == None:
             if FirstF: opening = [];           closing = []
             else:      opening = ["else {\n"]; closing = ["    }\n"]
         else:
@@ -834,9 +897,6 @@ class Language(dict):
         txt.extend(closing)
         return
 
-    def END_IF(self):
-        return "}"
-
     def ACCEPTANCE_CONDITION(self, AccConditionId):
         if   AccConditionId == E_AcceptanceCondition.BEGIN_OF_LINE: 
             return "me->buffer._lexatom_before_lexeme_start == '\\n'"
@@ -844,12 +904,15 @@ class Language(dict):
             return "QUEX_NAME(Buffer_is_begin_of_stream)(&me->buffer)"
         elif AccConditionId == E_AcceptanceCondition.END_OF_STREAM: 
             return "QUEX_NAME(Buffer_is_end_of_stream)(&me->buffer)"
-        elif AccConditionId == E_AcceptanceCondition.NONE:
+        elif AccConditionId is None:
             return "true"
         elif isinstance(AccConditionId, (int, long)):
             return "pre_context_%i_fulfilled_f" % AccConditionId
         else:
             assert False
+
+    def END_IF(self):
+        return "}"
 
     def PRE_CONTEXT_RESET(self, PreConditionIDList):
         if PreConditionIDList is None: return ""

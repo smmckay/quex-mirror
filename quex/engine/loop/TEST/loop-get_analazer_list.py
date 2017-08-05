@@ -60,7 +60,7 @@ if "--hwut-info" in sys.argv:
 
 dial_db = DialDB()
 Setup.language_db = languages.db["C++"]()
-Setup.buffer_setup("", 1, "utf8") 
+Setup.buffer_setup("none", 1, "utf8") 
 
 def test(LoopMap, ColumnNPerCodeUnit):
     global loop_map

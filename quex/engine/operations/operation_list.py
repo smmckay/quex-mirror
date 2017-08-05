@@ -73,7 +73,7 @@ from   quex.engine.operations.content_accepter            import AccepterContent
                                                                  repr_pre_context_id
 from   quex.engine.operations.content_terminal_router     import RouterContent, \
                                                                  repr_position_register
-from   quex.engine.misc.tools import delete_if
+from   quex.engine.misc.tools import delete_if, typed
 from   quex.constants import E_Op, \
                              E_R, \
                              E_AcceptanceCondition
@@ -156,11 +156,14 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         else:        assert False
 
     @staticmethod
-    def StoreInputPosition(AccConditionID, PositionRegister, Offset):
-        return Op(E_Op.StoreInputPosition, AccConditionID, PositionRegister, Offset)
+    @typed(AccConditionSet=tuple)
+    def StoreInputPosition(AccConditionSet, PositionRegister, Offset):
+        return Op(E_Op.StoreInputPosition, AccConditionSet, PositionRegister, Offset)
     
     @staticmethod
+    @typed(AccConditionID=long)
     def PreContextOK(AccConditionID):
+        # 'PreContextOK' can only take one acceptance_condtion_id
         return Op(E_Op.PreContextOK, AccConditionID)
     
     @staticmethod
@@ -208,12 +211,11 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.IndentationHandlerCall, DefaultIhF, ModeName)
     
     @staticmethod
-    def IfPreContextSetPositionAndGoto(AccConditionId, RouterElement):
-        #if     AccConditionId == E_AcceptanceCondition.NONE \
-        #   and RouterElement.positioning == 0:
+    def IfPreContextSetPositionAndGoto(AccConditionSet, RouterElement):
+        #if AccConditionSet empty and RouterElement.positioning == 0:
         #    return GotoDoorId(DoorID.incidence(RouterElement.acceptance_id))
             
-        return Op(E_Op.IfPreContextSetPositionAndGoto,AccConditionId, RouterElement)
+        return Op(E_Op.IfPreContextSetPositionAndGoto, AccConditionSet, RouterElement)
     
     @staticmethod
     def ColumnCountGridAdd(GridSize):
@@ -288,7 +290,7 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         if self.id == E_Op.GotoDoorId: 
             return True
         elif self.id == E_Op.IfPreContextSetPositionAndGoto:
-            return     self.content.acceptance_condition_id == E_AcceptanceCondition.NONE \
+            return     not self.content.acceptance_condition_set \
                    and self.content.router_element.positioning == 0
         return False
     
@@ -350,8 +352,9 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         elif self.id == E_Op.StoreInputPosition:
             x = self.content
             txt = ""
-            if x.acceptance_condition_id != E_AcceptanceCondition.NONE:
-                txt = "if '%s': " % repr_pre_context_id(x.acceptance_condition_id)
+            if x.acceptance_condition_set:
+                for acceptance_condition_id in x.acceptance_condition_set:
+                    txt += "if '%s': " % repr_pre_context_id(acceptance_condition_id)
             pos_str = repr_position_register(x.position_register)
             if x.offset == 0:
                 txt += "%s = input_p;" % pos_str
@@ -490,9 +493,9 @@ def __configure():
     c(E_Op.GotoDoorIdIfCounterEqualZero,      ("door_id",),
                                                (E_R.ThreadOfControl,w), (E_R.Counter,r))
     #
-    c(E_Op.StoreInputPosition,               (               "acceptance_condition_id",        "position_register",       "offset"),
+    c(E_Op.StoreInputPosition,               (               "acceptance_condition_set",        "position_register",       "offset"),
                                               (E_R.InputP,r), (E_R.PreContextFlags,r), (E_R.PositionRegister,w,1)) # Argument '1' --> sub_id_reference
-    c(E_Op.IfPreContextSetPositionAndGoto,   ("acceptance_condition_id", "router_element"),
+    c(E_Op.IfPreContextSetPositionAndGoto,   ("acceptance_condition_set", "router_element"),
                                               (E_R.PreContextFlags, r), (E_R.PositionRegister, r), (E_R.ThreadOfControl, w), 
                                               (E_R.InputP, r+w))
     c(E_Op.InputPDereference,                None, (E_R.InputP,r), (E_R.Input,w))
@@ -615,9 +618,9 @@ class OpList(list):
             cmd = self[i]
             if cmd.id == E_Op.StoreInputPosition:
                 # Commands are immutable, so create a new one.
-                new_command = Op.StoreInputPosition(cmd.content.acceptance_condition_id, 
-                                                 PositionRegisterMap[cmd.content.position_register],
-                                                 cmd.content.offset)
+                new_command = Op.StoreInputPosition(cmd.content.acceptance_condition_set, 
+                                                    PositionRegisterMap[cmd.content.position_register],
+                                                    cmd.content.offset)
                 self[i] = new_command
             elif cmd.id == E_Op.IfPreContextSetPositionAndGoto:
                 cmd.content.router_element.replace(PositionRegisterMap)
@@ -639,13 +642,13 @@ class OpList(list):
             cmd.content.position_register
             for cmd in self \
                 if     cmd.id == E_Op.StoreInputPosition \
-                   and cmd.content.acceptance_condition_id == E_AcceptanceCondition.NONE
+                   and not cmd.content.acceptance_condition_set
         )
         delete_if(self,
                   lambda cmd:
                        cmd.id == E_Op.StoreInputPosition \
                    and cmd.content.position_register in unconditional_position_register_set \
-                   and cmd.content.acceptance_condition_id != E_AcceptanceCondition.NONE)
+                   and cmd.content.acceptance_condition_set)
 
         # (2) Storage command does not appear twice. Keep first.
         #     (May occur due to optimizations!)

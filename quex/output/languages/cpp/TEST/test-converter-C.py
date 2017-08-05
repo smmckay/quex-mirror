@@ -35,7 +35,10 @@ def test(CodecName):
         print "#TODO delete temporary files"
 
 quex.blackboard.setup.language_db = languages.db["C"]()
-quex.blackboard.setup.output_buffer_encoding_header = "converter-tester.h"
+def tiny(miniSelf):
+    return "converter-tester.h", "" 
+
+quex.blackboard.setup.language_db.buffer_encoding_headers = tiny
 
 test(sys.argv[1])
 

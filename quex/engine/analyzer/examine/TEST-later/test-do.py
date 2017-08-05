@@ -30,7 +30,7 @@ add_SeAccept(sm, 5L, 55L)
 # Post-Context: Store in '0', restore in '6'
 add_SeAccept(sm, 6L, 66L, 666L, True)
 # Post-Context: Store in '1', restore in '7'
-add_SeAccept(sm, 7L, 77L, E_AcceptanceCondition.NONE, True)
+add_SeAccept(sm, 7L, 77L, None, True)
 print
 
 linear_db, mouth_db = examination.do(sm, RecipeAcceptance)

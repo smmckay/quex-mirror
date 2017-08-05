@@ -132,15 +132,15 @@ class DFA_State:
             elif cmd.restore_position_register_f(): return True
         return False
 
-    def acceptance_condition_id(self):
+    def acceptance_condition_set(self):
         cmd = self.single_entry.find(SeAccept)
-        if cmd is None: return E_AcceptanceCondition.NONE
-        else:           return cmd.acceptance_condition_id()
+        if cmd is None: return set()
+        else:           return cmd.acceptance_condition_set()
 
-    def set_pre_context_id(self, Value=True):
+    def set_acceptance_condition_id(self, Value=True):
         accept_cmd = self.single_entry.find(SeAccept)
         assert accept_cmd is not None
-        accept_cmd.set_pre_context_id(Value)
+        accept_cmd.set_acceptance_condition_id(Value)
 
     def set_acceptance(self, Value=True):
         if Value: self.single_entry.add_Op(SeAccept)
@@ -167,10 +167,6 @@ class DFA_State:
 
     def has_acceptance_id(self, AcceptanceID):
         return any(cmd.acceptance_id() == AcceptanceID 
-                   for cmd in self.single_entry)
-
-    def accepts_incidence(self):
-        return any(cmd.acceptance_id() in E_IncidenceIDs
                    for cmd in self.single_entry)
 
     def set_read_position_restore_f(self, Value=True):

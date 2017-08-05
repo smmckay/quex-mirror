@@ -1,6 +1,7 @@
 from   quex.engine.state_machine.core            import DFA
 from   quex.engine.pattern                       import Pattern
 from   quex.engine.misc.tools                    import typed
+from   quex.constants                            import E_AcceptanceCondition
 
 class Checker:
     def __init__(self, SuperSM, CandidateSM):
@@ -124,13 +125,13 @@ def do(A, B):
     #
     # If 'A' has a restriction that 'B' has not, 
     # => 'A' cannot be a superset of 'B'.
-    if       A.has_post_context_end_of_stream_f() \
-         and not B.has_post_context_end_of_stream_f():  return False
-    elif     A.has_pre_context_begin_of_line_f() \
-         and not B.has_pre_context_begin_of_line_f():   return False
+    if           A.sm.has_acceptance_condition(E_AcceptanceCondition.END_OF_STREAM) \
+         and not B.sm.has_acceptance_condition(E_AcceptanceCondition.END_OF_STREAM):  return False
+    elif         A.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE) \
+         and not B.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE):   return False
     # here: not(A) or B => Either A does not have the condition or B has it too.
-    elif     A.has_pre_context_begin_of_stream_f() \
-         and not B.has_pre_context_begin_of_stream_f(): return False
+    elif         A.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM) \
+         and not B.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM): return False
     # here: not(A) or B => Either A does not have the condition or B has it too.
     elif     (A.sm_pre_context is not None) \
          and (B.sm_pre_context is None):                return False

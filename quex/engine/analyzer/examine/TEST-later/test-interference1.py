@@ -26,15 +26,15 @@ scheme_restore  = [
     RecipeAcceptance.RestoreAcceptance 
 ]
 scheme_simple   = [ 
-    SeAccept(1111L, E_AcceptanceCondition.NONE, False) 
+    SeAccept(1111L, None, False) 
 ]
 scheme_simple2  = [ 
-    SeAccept(2222L, E_AcceptanceCondition.NONE, True) 
+    SeAccept(2222L, None, True) 
 ]
 scheme_list     = [ 
     SeAccept(3333L, 33L, True), 
     SeAccept(4444L, 44L, True), 
-    SeAccept(5555L, E_AcceptanceCondition.NONE, True) 
+    SeAccept(5555L, None, True) 
 ]
 
 examiner = Examiner(DFA(), RecipeAcceptance)

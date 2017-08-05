@@ -1,6 +1,5 @@
 import quex.input.command_line.validation            as     validation
-from   quex.input.setup                              import global_extension_db,       \
-                                                            global_character_type_db,  \
+from   quex.input.setup                              import global_character_type_db,  \
                                                             command_line_args_defined, \
                                                             command_line_arg_position, \
                                                             E_Files
@@ -36,14 +35,14 @@ def prepare(command_line, argv):
     error.verify_word_in_list(Setup.language, output_language_db.keys(),
                               "Programming language '%s' is not supported." % Setup.language)
     Setup.language_db  = output_language_db[Setup.language]()
-    Setup.extension_db = global_extension_db[Setup.language]
 
     # Is the output file naming scheme provided by the extension database
     # (Validation must happen immediately)
-    if Setup.extension_db.has_key(Setup.output_file_naming_scheme) == False:
+    Setup.language_db.extension_db = Setup.language_db.all_extension_db.get(Setup.output_file_naming_scheme)
+    if Setup.language_db.extension_db is None:
         error.log("File extension scheme '%s' is not provided for language '%s'.\n" \
                   % (Setup.output_file_naming_scheme, Setup.language) + \
-                  "Available schemes are: %s." % repr(Setup.extension_db.keys())[1:-1])
+                  "Available schemes are: %s." % repr(sorted(Setup.language_db.all_extension_db.keys()))[1:-1])
 
     if Setup.buffer_byte_order == "<system>": 
         Setup.buffer_byte_order                      = sys.byteorder 
@@ -99,8 +98,7 @@ def prepare(command_line, argv):
         token_id_file_parse(Setup.extern_token_id_file)
 
     # AFTER: Setup.extern_token_id_file !!!
-    if Setup.language not in ["DOT"]:
-        prepare_file_names(Setup)
+    if Setup.language not in ["DOT"]: Setup.prepare_all_file_names()
 
     # (*) Compression Types
     compression_type_list = []
@@ -212,78 +210,4 @@ def __setup_token_id_prefix(Setup):
 
     if len(Setup.token_id_prefix_name_space) != 0 and Setup.language.upper() == "C":
          error.log("Token id prefix cannot contain a namespaces if '--language' is set to 'C'.")
-
-def prepare_file_names(Setup):
-    # BEFORE file names can be prepared, determine the output directory!
-    #
-    # If 'source packaging' is enabled and no output directory is specified
-    # then take the directory of the source packaging.
-    if Setup.source_package_directory and not Setup.output_directory:
-        Setup.output_directory = Setup.source_package_directory
-
-    #__________________________________________________________________________
-    if Setup.language in ["DOT"]:
-        return
-
-    Setup.output_file_stem = ""
-    if Setup.analyzer_name_space != ["quex"]:
-        for name in Setup.analyzer_name_space:
-            Setup.output_file_stem += name + "_"
-    Setup.output_file_stem += Setup.analyzer_class_name
-
-    Setup.output_code_file          = __prepare_file_name("",               E_Files.SOURCE) 
-    Setup.output_header_file        = __prepare_file_name("",               E_Files.HEADER)
-    Setup.output_configuration_file = __prepare_file_name("-configuration", E_Files.HEADER)
-    Setup.output_token_id_file      = __prepare_file_name("-token_ids",     E_Files.HEADER)
-    if Setup.extern_token_id_file:
-        Setup.output_token_id_file_ref = Setup.extern_token_id_file
-    else:
-        Setup.output_token_id_file_ref = __prepare_file_name("-token_ids",     E_Files.HEADER, 
-                                                             BaseNameF=True)
-    Setup.output_token_class_file   = __prepare_file_name("-token",         E_Files.HEADER)
-    if Setup.token_class_only_f == False:
-        Setup.output_token_class_file_implementation = __prepare_file_name("-token",     E_Files.HEADER_IMPLEMTATION)
-    else:
-        Setup.output_token_class_file_implementation = __prepare_file_name("-token",     E_Files.SOURCE)
-
-    Setup.output_buffer_encoding_header,  \
-    Setup.output_buffer_encoding_header_i = __buffer_encoding_header(Setup.buffer_encoding.name)
-
-def __buffer_encoding_header(EncodingName):
-    lexeme_converter_dir = "quex/code_base/lexeme_converter"
-    if   EncodingName == "utf8":
-        return "%s/from-utf8"    % lexeme_converter_dir, \
-               "%s/from-utf8.i"  % lexeme_converter_dir
-
-    elif EncodingName == "utf16":
-        return "%s/from-utf16"   % lexeme_converter_dir, \
-               "%s/from-utf16.i" % lexeme_converter_dir
-
-    elif EncodingName == "utf32":
-        return "%s/from-utf32"   % lexeme_converter_dir, \
-               "%s/from-utf32.i" % lexeme_converter_dir
-
-    elif EncodingName != "unicode":
-        # Note, that the name may be set to 'None' if the conversion is utf8 or utf16
-        # See Internal engine character encoding'
-        return __prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER), \
-               __prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER_IMPLEMTATION)
-
-    else:
-        return "%s/from-unicode-buffer"   % lexeme_converter_dir, \
-               "%s/from-unicode-buffer.i" % lexeme_converter_dir
-
-def __prepare_file_name(Suffix, ContentType, BaseNameF=False):
-    global Setup
-    assert ContentType in E_Files
-
-    # Language + Extenstion Scheme + ContentType --> name of extension
-    ext = Setup.extension_db[Setup.output_file_naming_scheme][ContentType]
-
-    file_name = Setup.output_file_stem + Suffix + ext
-
-    if not Setup.output_directory or BaseNameF:       
-        return file_name
-    else:                                
-        return os.path.normpath(Setup.output_directory + "/" + file_name)
 

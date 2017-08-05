@@ -305,6 +305,10 @@ def test_plug_sequence(ByteSequenceDB):
     if len(sm.get_orphaned_state_index_list()) != 0:
         print "Error: Orphaned States Detected!"
 
+    # Double check, that there are no 'circles'
+    predecessor_db = sm.get_predecessor_db()
+    assert not any(si in predecessor_db[si] for si in sm.states)
+
     show_graphviz(sm)
 
 def show_graphviz(sm):

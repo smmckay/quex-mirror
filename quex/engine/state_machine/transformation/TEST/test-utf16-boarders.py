@@ -76,7 +76,7 @@ good_sequences = [
 ]
 
 trafo = EncodingTrafoUTF16()
-Setup.lexatom_set(Lexatom(Setup.language_db, "utf16", 4))
+Setup.buffer_setup("none", 2, "utf16")
 trafo.adapt_ranges_to_lexatom_type_range(Setup.lexatom.type_range)
 sm = helper.generate_sm_for_boarders(boarders, EncodingTrafoUTF16())
 

@@ -1,6 +1,15 @@
 from   quex.output.languages.cpp.dictionary import Language as LanguageCpp
+from   quex.constants                       import E_Files
 
 class Language(LanguageCpp):
+    all_extension_db = {
+        "": {
+              E_Files.SOURCE:              ".c",
+              E_Files.HEADER:              ".h",
+              E_Files.HEADER_IMPLEMTATION: ".c",
+        },
+    }
+
     def __init__(self):      
         LanguageCpp.__init__(self)
 

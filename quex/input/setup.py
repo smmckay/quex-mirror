@@ -4,16 +4,11 @@ import quex.engine.misc.file_in                      as     file_in
 from   quex.engine.misc.file_operations              import get_propperly_slash_based_file_name
 from   quex.engine.misc.enum                         import Enum
 from   quex.engine.misc.interval_handling            import Interval, Interval_All
-from   quex.constants                                import INTEGER_MAX
+from   quex.constants                                import INTEGER_MAX, E_Files
 from   quex.DEFINITIONS                              import QUEX_PATH
 
 import os  
 import sys
-
-E_Files = Enum("HEADER", 
-               "HEADER_IMPLEMTATION", 
-               "SOURCE", 
-               "_DEBUG_Files")
 
 class Lexatom:
     def __init__(self, Lng, encoding, TypeName, SizeInByte):
@@ -133,7 +128,6 @@ class QuexSetup:
 
         # Default values, maybe overiden later on.
         self.language_db  = None
-        self.extension_db = None
         self.compression_type_list = []
         self.__buffer_encoding     = None
         self.__lexatom             = None
@@ -201,6 +195,57 @@ class QuexSetup:
                 return clean(full_file_name[len(full_source_package_dir):])
 
         return clean(FileName)
+
+    def prepare_file_name(self, Suffix, ContentType, BaseNameF=False):
+        assert ContentType in E_Files
+
+        # Language + Extenstion Scheme + ContentType --> name of extension
+        ext = self.language_db.extension_db[ContentType]
+
+        file_name = self.output_file_stem + Suffix + ext
+
+        if not self.output_directory or BaseNameF:       
+            return file_name
+        else:                                
+            return os.path.normpath(self.output_directory + "/" + file_name)
+
+    def prepare_all_file_names(self):
+        # BEFORE file names can be prepared, determine the output directory!
+        #
+        # If 'source packaging' is enabled and no output directory is specified
+        # then take the directory of the source packaging.
+        if self.source_package_directory and not self.output_directory:
+            self.output_directory = self.source_package_directory
+
+        #__________________________________________________________________________
+        if self.language in ["DOT"]:
+            return
+
+        if self.analyzer_name_space != ["quex"]:
+            for name in self.analyzer_name_space:
+                self.output_file_stem += name + "_"
+        self.output_file_stem += self.analyzer_class_name
+
+        self.output_code_file          = self.prepare_file_name("",               E_Files.SOURCE) 
+        self.output_header_file        = self.prepare_file_name("",               E_Files.HEADER)
+        self.output_configuration_file = self.prepare_file_name("-configuration", E_Files.HEADER)
+        self.output_token_id_file      = self.prepare_file_name("-token_ids",     E_Files.HEADER)
+        if self.extern_token_id_file:
+            self.output_token_id_file_ref = self.extern_token_id_file
+        else:
+            self.output_token_id_file_ref = self.prepare_file_name("-token_ids",     
+                                                                   E_Files.HEADER, 
+                                                                   BaseNameF=True)
+        self.output_token_class_file   = self.prepare_file_name("-token",         
+                                                                E_Files.HEADER)
+
+        if self.token_class_only_f == False: implementation_type = E_Files.HEADER_IMPLEMTATION
+        else:                                implementation_type = E_Files.SOURCE
+
+        self.output_token_class_file_implementation = self.prepare_file_name("-token",     
+                                                                             implementation_type)
+
+
 
 SetupParTypes = Enum("LIST", "INT_LIST", "FLAG", "NEGATED_FLAG", "STRING", "OPTIONAL_STRING")
 
@@ -291,15 +336,14 @@ SETUP_INFO = {
     "extern_token_id_file":                      "",
     "token_id_foreign_definition_file_region_begin_re":  None,
     "token_id_foreign_definition_file_region_end_re":    None,
-    "output_buffer_encoding_header_file":           None,
     "output_header_file":                        None,
     "output_configuration_file":                 None,
     "output_code_file":                          None,
+    "output_file_stem":                          "",
     "output_token_id_file":                      None,
     "output_token_class_file_implementation":    None,
     "output_token_class_file":                   None,
     "language_db":                               None,
-    "extension_db":                              None,
     "compression_type_list":                     None,
     #______________________________________________________________________________________________________
     #
@@ -601,50 +645,6 @@ global_character_type_db = {
         "unsigned16": [ "unsigned16", "UCS-2LE",       "UCS-2BE",       2],
         "unsigned32": [ "unsigned32", "UCS-4LE",       "UCS-4BE",       4],
         "wchar_t":    [ "wchar_t",    "WCHAR_T",       "WCHAR_T",       -1],
-}
-
-global_extension_db = {
-    "C++": {
-        "": { 
-              E_Files.SOURCE:              ".cpp",
-              E_Files.HEADER:              "",
-              E_Files.HEADER_IMPLEMTATION: ".i",
-        },
-        "++": { 
-              E_Files.SOURCE:              ".c++",
-              E_Files.HEADER:              ".h++",
-              E_Files.HEADER_IMPLEMTATION: ".h++",
-        },
-        "pp": { 
-              E_Files.SOURCE:              ".cpp",
-              E_Files.HEADER:              ".hpp",
-              E_Files.HEADER_IMPLEMTATION: ".hpp",
-        },
-        "cc": { 
-              E_Files.SOURCE:              ".cc",
-              E_Files.HEADER:              ".hh",
-              E_Files.HEADER_IMPLEMTATION: ".hh",
-        },
-        "xx": { 
-              E_Files.SOURCE:              ".cxx",
-              E_Files.HEADER:              ".hxx",
-              E_Files.HEADER_IMPLEMTATION: ".hxx",
-        },
-   },
-    "C": {
-        "": {
-              E_Files.SOURCE:              ".c",
-              E_Files.HEADER:              ".h",
-              E_Files.HEADER_IMPLEMTATION: ".c",
-        },
-   },
-    "DOT": {
-        "": {
-              E_Files.SOURCE:              ".dot",
-              E_Files.HEADER:              None,
-              E_Files.HEADER_IMPLEMTATION: None,
-        }
-   }
 }
 
 DOC = {

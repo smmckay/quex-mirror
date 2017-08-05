@@ -151,10 +151,10 @@ def get_test_application(codec, ca_map, ReferenceP, CT, ChunkN):
             found_n += 1
             if found_n == 3: break
 
-
-    # [RP] Verify that a reference pointer has been used or not used according 
-    #      to what was specified.
-    #      1. place: definition, 2. place: reference pointer set, 3. place: add.
+    # [RP] If 'ReferenceP' is expected to be used, it must appear 3 times at least:
+    #      1. at variable definition, 
+    #      2. at reference pointer set
+    #      3. at reference pointer addition.
     if ReferenceP:
         assert found_n >= 3, "Counter has not been setup using a reference pointer."
     else:
@@ -210,8 +210,14 @@ else:
     ca_map      = counter.LineColumnCount_Default()
     # UTF16 and UTF8 are dynamic length codecs. reference pointer based 
     # is impossible.
-    if codec in ("utf_8", "utf_16_le"): reference_p = False
-    else:                               reference_p = True
+    if codec == "utf_8":
+        # More than 1 byte/char => no reference pointer
+        reference_p = (chunk_n == 1) 
+    if "utf_16_le": 
+        # More than 2 byte/char => no reference pointer
+        reference_p = (chunk_n <= 2) 
+    else:                               
+        reference_p = True
 
 character_type = {
     1:  "uint8_t",

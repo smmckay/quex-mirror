@@ -190,6 +190,8 @@ def print_this(TheAnalyzer):
                 txt += "    (*) "
             else: 
                 txt += "        "
-            txt += "[%7s]: %s/%s\n" % (x.acceptance_id, x.acceptance_condition_id, x.positioning_state_index_set)
+            for acceptance_condition_id in x.acceptance_condition_set:
+                txt += "[%7s]: %s/%s\n" % (x.acceptance_id, acceptance_condition_id, 
+                                           x.positioning_state_index_set)
         print txt
 

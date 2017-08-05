@@ -145,12 +145,13 @@ class Entry(object):
             # Catch the accepter, if there is already one, if not create one.
             ta.command_list.access_accepter().add(AccConditionID, AcceptanceID)
 
-    def add_StoreInputPosition(self, StateIndex, FromStateIndex, AccConditionID, PositionRegister, Offset):
+    @typed(AccConditionSet=tuple)
+    def add_StoreInputPosition(self, StateIndex, FromStateIndex, AccConditionSet, PositionRegister, Offset):
         """Add 'store input position' to specific door. See 'SeStoreInputPosition'
            comment for the reason why we do not store pre-context-id.
         """
         command_list = self.__db[TransitionID(StateIndex, FromStateIndex, 0)].command_list
-        cmd          = Op.StoreInputPosition(AccConditionID, PositionRegister, Offset)
+        cmd          = Op.StoreInputPosition(AccConditionSet, PositionRegister, Offset)
         # Make sure it is the first!
         command_list.insert(0, cmd)
         # Never store twice in the same position register! 
@@ -335,14 +336,14 @@ class Entry(object):
         def get_storers(StorerList):
             txt = [ 
                 str(cmd)
-                for cmd in sorted(StorerList, key=lambda cmd: (cmd.content.acceptance_condition_id, cmd.content.position_register))
+                for cmd in sorted(StorerList, key=lambda cmd: (cmd.content.acceptance_condition_set, cmd.content.position_register))
             ]
             return txt
 
         def get_pre_context_oks(PCOKList):
             txt = [
                 str(cmd)
-                for cmd in sorted(PCOKList, key=lambda cmd: cmd.content.acceptance_condition_id)
+                for cmd in sorted(PCOKList, key=lambda cmd: cmd.content.acceptance_condition_set)
             ]
             return txt
 

@@ -1004,14 +1004,14 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .....................................[FAIL]
+                          real .......................................[OK]
  * Code Check with pyflakes
         pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
@@ -1031,14 +1031,10 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] no-use-of-lexeme-macro.sh
-    [FAIL] svn-status.sh
-    [FAIL] function-check.sh _ real
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -2218,17 +2214,15 @@ quex/output/core/TEST                                                <no date>
 
     Transition Code Generation
         test-single-state-transitions.py A ...........................[OK]
-                                         A-UTF8 ....................[FAIL]
+                                         A-UTF8 ......................[OK]
                                          B ...........................[OK]
                                          B-UTF8 ......................[OK]
                                          C ...........................[OK]
                                          C-UTF8 ......................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-single-state-transitions.py _ A-UTF8
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
             Resource Scenarios for Constructor, Include, and Reset             
@@ -2470,12 +2464,12 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                        1.2 ...........................[OK]
                                        2.1 ...........................[OK]
                                        2.2 ...........................[OK]
-                                       2.3 .........................[FAIL]
+                                       2.3 ...........................[OK]
                                        3.1 ...........................[OK]
                                        3.2 ...........................[OK]
-                                       3.3 .........................[FAIL]
-                                       4.1 .........................[FAIL]
-                                       4.2 .........................[FAIL]
+                                       3.3 ...........................[OK]
+                                       4.1 ...........................[OK]
+                                       4.2 ...........................[OK]
                                        4.3 .........................[FAIL]
                                        4.4 .........................[FAIL]
     Plug Interval Sequence - With BL Detection
@@ -2530,8 +2524,8 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                                 Overlap1 .............[OK]
                                                 Overlap2 .............[OK]
     Repetition at Codec Boarders
-        test-utf16-boarders.py error-detect ...................[NO OUTPUT]
-                               plain ..........................[NO OUTPUT]
+        test-utf16-boarders.py error-detect ........................[FAIL]
+                               plain .................................[OK]
     Repetition at Codec Boarders
         test-utf8-boarders.py error-detect ...........................[OK]
                               plain ..................................[OK]
@@ -2543,11 +2537,7 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] test-get_intermediate_transition_maps.py
-    [FAIL] test-plug-interval-sequence.py _ 2.3
-                                        \__ 3.3
-                                        \__ 4.1
-                                        \__ 4.2
-                                        \__ 4.3
+    [FAIL] test-plug-interval-sequence.py _ 4.3
                                         \__ 4.4
     [FAIL] test-plug-interval-sequence-with-bad-lexatom-detection.py _ 2.3
                                                                    \__ 4.3
@@ -2560,7 +2550,6 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                     \__ iso8859_10
                                     \__ macgreek
     [FAIL] test-utf16-boarders.py _ error-detect
-                                \__ plain
 ===============================================================================
                                                                                
                                   Output Cpp                                   
@@ -2568,7 +2557,7 @@ quex/engine/state_machine/transformation/TEST                        <no date>
 quex/output/languages/cpp/TEST                                       <no date>
 -------------------------------------------------------------------------------
  * Token Class Template
-        test-token_class.py ...................................[NO OUTPUT]
+        test-token_class.py ..........................................[OK]
 
  * Character Counter:
 
@@ -2613,7 +2602,6 @@ quex/output/languages/cpp/TEST                                       <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] test-token_class.py
     [FAIL] test-counter.py _ utf_16_le-1
                          \__ utf_16_le-1-wo-ReferenceP
                          \__ utf_32_le-1
@@ -3278,7 +3266,7 @@ SUMMARY:
            57      [OK] ..../Cpp/TEST                                                 
         1  16    [FAIL] ..../TEST                                                     
            4       [OK] quex/TESTS/bof-eos-context/TEST                               
-        3  15    [FAIL] ........../code/TEST                                          
+           15      [OK] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3323,20 +3311,20 @@ SUMMARY:
            9       [OK] ........................./algorithm/TEST                      
            14      [OK] ........................./check/TEST                          
            7       [OK] ........................./construction/TEST                   
-       19  59    [FAIL] ........................./transformation/TEST                 
+       14  59    [FAIL] ........................./transformation/TEST                 
            58      [OK] ..../input/TEST                                               
         1  27    [FAIL] ........../regular_expression/TEST                            
-        1  196   [FAIL] ..../output/core/TEST                                         
+           196     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-       11  30    [FAIL] .........../languages/cpp/TEST                                
+       10  30    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _   ____             
-    |  ___|_ _(_) |___     | || | | ___|      __  __
-    | |_ / _` | | / __|    | || |_|___ \      \ \/ /
-    |  _| (_| | | \__ \    |__   _ ___) |      >  < 
-    |_|  \__,_|_|_|___/       |_| |____/      /_/\_\
+     _____     _ _          _____  ____             
+    |  ___|_ _(_) |___     |___ / | ___|      __  __
+    | |_ / _` | | / __|      |_ \ |___ \      \ \/ /
+    |  _| (_| | | \__ \     ___) | ___) |      >  < 
+    |_|  \__,_|_|_|___/    |____/ |____/      /_/\_\
                                                                    (1644 tests)
 
 ===============================================================================

@@ -1,4 +1,4 @@
 # Number of states in state machine:
 #   Unicode:       257
-#   cp1140:            256
+#   cp1140:            257
 <terminated: 256 transitions ok>

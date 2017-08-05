@@ -27,7 +27,7 @@ add_SeAccept(sm, 3L, 33L, 333L)
 add_SeAccept(sm, 4L, 44L)
 add_SeAccept(sm, 6L, 66L, 666L)
 # Post-Context: Store in '1', restore in '7'
-add_SeAccept(sm, 7L, 77L, E_AcceptanceCondition.NONE, True)
+add_SeAccept(sm, 7L, 77L, None, True)
 print
 
 examiner        = Examiner(sm, RecipeAcceptance)

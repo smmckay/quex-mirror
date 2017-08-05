@@ -269,7 +269,7 @@ class FSM:
         """REQUIRES: 'self.init_state_forward_f', 'self.engine_type', 'self.__from_db'.
         """
         state = FSM_State.from_State(OldState, StateIndex, self.engine_type, 
-                                         self.dial_db)
+                                     self.dial_db)
 
         cmd_list = []
         if self.engine_type.is_BACKWARD_PRE_CONTEXT():
@@ -428,9 +428,9 @@ class FSM:
             #     acceptance at entry. 
             accepter = Op.Accepter() # Accepter content
             for x in accept_sequence:
-                accepter.content.add(x.acceptance_condition_id, x.acceptance_id)
+                accepter.content.add(x.acceptance_condition_set, x.acceptance_id)
                 # No further checks necessary after unconditional acceptance
-                if     x.acceptance_condition_id == E_AcceptanceCondition.NONE \
+                if     not x.acceptance_condition_set \
                    and x.acceptance_id  != E_IncidenceIDs.MATCH_FAILURE: break
         else:
             # (ii) Non-Uniform Acceptance Patterns
@@ -460,7 +460,7 @@ class FSM:
             # Request the storage of the position from related states.
             for state_index in x.positioning_state_index_set:
                 position_storage_db[state_index].append(
-                        (StateIndex, x.acceptance_condition_id, x.acceptance_id))
+                        (StateIndex, x.acceptance_condition_set, x.acceptance_id))
 
             # Later, a function will use the 'position_storage_db' to implement
             # the position storage.
@@ -555,10 +555,10 @@ class FSM:
             # Only the trace content that concerns the current state is filtered out.
             # It should be the same for all traces through 'state_index'
             prototype = self.__trace_db[state_index].get_any_one()
-            for x in sorted(prototype, key=attrgetter("acceptance_id", "acceptance_condition_id")):
+            for x in sorted(prototype, key=attrgetter("acceptance_id", "acceptance_condition_set")):
                 if x.accepting_state_index != state_index: 
                     continue
-                entry.add_Accepter_on_all(x.acceptance_condition_id, x.acceptance_id)
+                entry.add_Accepter_on_all(x.acceptance_condition_set, x.acceptance_id)
 
     def implement_required_position_storage(self, position_storage_db, PathElementDb):
         """
@@ -576,10 +576,10 @@ class FSM:
         """
         for state_index, info_list in sorted(position_storage_db.iteritems(), key=itemgetter(0)):
             target_state_index_list = self.__to_db[state_index]
-            for end_state_index, acceptance_condition_id, acceptance_id in info_list:
+            for end_state_index, acceptance_condition_set, acceptance_id in info_list:
                 # state_index      --> state that stores the input position
                 # end_state_index  --> state that stores the input position
-                # acceptance_condition_id   --> pre_context which is concerned
+                # acceptance_condition_set --> conditions for acceptance 
                 # acceptance_id       --> pattern which is concerned
                 # Only consider target states which guide to the 'end_state_index'.
                 index_iterable = (i for i in target_state_index_list 
@@ -591,7 +591,7 @@ class FSM:
 
                     entry.add_StoreInputPosition(StateIndex       = target_index, 
                                                  FromStateIndex   = state_index, 
-                                                 AccConditionID     = acceptance_condition_id, 
+                                                 AccConditionSet  = acceptance_condition_set, 
                                                  PositionRegister = acceptance_id, 
                                                  Offset           = 0)
 
