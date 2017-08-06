@@ -343,7 +343,7 @@ class Entry(object):
         def get_pre_context_oks(PCOKList):
             txt = [
                 str(cmd)
-                for cmd in sorted(PCOKList, key=lambda cmd: cmd.content.acceptance_condition_set)
+                for cmd in sorted(PCOKList, key=lambda cmd: cmd.content.acceptance_condition_id)
             ]
             return txt
 

@@ -69,14 +69,21 @@ class SeAccept(SeOp):
         result = SeAccept()
         if ReplDbAcceptance is None: result.set_acceptance_id(self.acceptance_id())
         else:                        result.set_acceptance_id(ReplDbAcceptance[self.acceptance_id()])
-        # Acceptance conditions *must* be copied upon cloning!
-        if ReplDbPreContext is None: result.__acceptance_condition_set = set(self.__acceptance_condition_set)
+        if ReplDbPreContext is None: 
+            # Acceptance conditions *must* be copied upon cloning!
+            result.__acceptance_condition_set = set(self.__acceptance_condition_set)
         else:                        
             if self.__acceptance_condition_set:
                 # '.acceptance_condition_set()' returns a tuple which can serve 
                 # as a key for the dict.
-                print "#key:", ReplDbPreContext.keys()
-                result.__acceptance_condition_set = ReplDbPreContext[self.acceptance_condition_set()]
+                result.__acceptance_condition_set = set()
+                for acceptance_condition_id in self.__acceptance_condition_set:
+                    replacement = ReplDbPreContext.get(acceptance_condition_id)
+                    assert    acceptance_condition_id in E_AcceptanceCondition \
+                           or replacement is not None
+                    if replacement is not None: acceptance_condition_id = replacement
+                    result.__acceptance_condition_set.add(acceptance_condition_id)
+
         result.__restore_position_register_f = self.__restore_position_register_f
         return result
 

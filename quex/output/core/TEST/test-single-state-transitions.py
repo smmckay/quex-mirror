@@ -35,7 +35,7 @@ from   collections import defaultdict
 dial_db = DialDB()
 
 Setup.language_db = languages.db["C++"]()
-Setup.buffer_setup("uint32_t", 4, "unicode")
+Setup.buffer_setup("uint32_t", 4, "none")
 
 
 if "--hwut-info" in sys.argv:

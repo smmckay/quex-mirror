@@ -211,6 +211,7 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.IndentationHandlerCall, DefaultIhF, ModeName)
     
     @staticmethod
+    @typed(AccConditionSet=tuple)
     def IfPreContextSetPositionAndGoto(AccConditionSet, RouterElement):
         #if AccConditionSet empty and RouterElement.positioning == 0:
         #    return GotoDoorId(DoorID.incidence(RouterElement.acceptance_id))

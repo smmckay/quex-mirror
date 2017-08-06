@@ -44,7 +44,7 @@ class AcceptSequence:
             #012345678012345678012345678012345678012345678
             acc_condition_str = "NONE"
             if x.acceptance_condition_set:
-                acc_condition_str = ", ".join("%s" % ac for ac in self.acceptance_condition_set)
+                acc_condition_str = ", ".join("%s" % ac for ac in x.acceptance_condition_set)
             txt.append(" " * (Indent*4) + "%-15s%-9s%-9s%-9s%-9s\n" % ( \
                         x.acceptance_id, acc_condition_str,
                         x.accepting_state_index, x.positioning_state_index,
@@ -72,8 +72,11 @@ class PositioningInfo(object):
             self.transition_n_since_positioning = E_TransitionN.VOID
 
     def __repr__(self):
+        acc_condition_str = "NONE"
+        if self.acceptance_condition_set:
+            acc_condition_str = ", ".join("%s" % ac for ac in self.acceptance_condition_set)
         txt  = ".acceptance_id                  = %s\n" % repr(self.acceptance_id) 
-        txt += ".acceptance_condition_set       = %s\n" % repr(self.acceptance_condition_set) 
+        txt += ".acceptance_condition_set       = %s\n" % acc_condition_str
         txt += ".transition_n_since_positioning = %s\n" % repr(self.transition_n_since_positioning)
         txt += ".positioning_state_index_set    = %s\n" % repr(self.positioning_state_index_set) 
         return txt

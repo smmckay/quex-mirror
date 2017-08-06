@@ -26,10 +26,10 @@ example_db = {
     # ANY NEW ENTRY MUST BE STORED IN 'NEW_ENTRIES'
     #  
     E_Op.StoreInputPosition: [ 
-        Op.StoreInputPosition(4711, 7777, 0),
-        Op.StoreInputPosition(4711, 7777, 1000) 
+        Op.StoreInputPosition((4711L,), 7777, 0),
+        Op.StoreInputPosition((4711L,), 7777, 1000) 
     ],
-    E_Op.PreContextOK:                     [ Op.PreContextOK(4711) ],
+    E_Op.PreContextOK:                     [ Op.PreContextOK(4711L) ],
     E_Op.TemplateStateKeySet:              [ Op.TemplateStateKeySet(66) ],
     E_Op.PathIteratorSet:                  [ Op.PathIteratorSet(11, 22, 1000) ],
     E_Op.PrepareAfterReload:               [ Op.PrepareAfterReload(DoorID(33, 44, dial_db), 
@@ -61,7 +61,7 @@ example_db = {
         Op.AssignConstant(E_R.Column, 2), 
     ],
     E_Op.IfPreContextSetPositionAndGoto: [
-        Op.IfPreContextSetPositionAndGoto(set([24]), RouterContentElement(66, 1)),
+        Op.IfPreContextSetPositionAndGoto((24L,), RouterContentElement(66, 1)),
     ],
     E_Op.IndentationHandlerCall: [ 
         Op.IndentationHandlerCall(True, "SLEEPY"),
@@ -101,7 +101,7 @@ NEW_ENTRIES = set([
 ])
 
 accepter = Op.Accepter()
-accepter.content.add(55L, 66L)
+accepter.content.add((55L,), 66L)
 example_db[E_Op.Accepter] = [ accepter ]
 
 router = Op.RouterByLastAcceptance()

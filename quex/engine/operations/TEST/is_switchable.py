@@ -44,8 +44,8 @@ print "(1) Non-branchers: ______________________________________________________
 print
 print "(1.1) Commands with no interferring access to registers ______________________"
 print
-test(Op.StoreInputPosition(0, 0, 0), 
-     Op.StoreInputPosition(0, 1, 0))
+test(Op.StoreInputPosition((0,), 0, 0), 
+     Op.StoreInputPosition((0,), 1, 0))
 test(Op.Assign(E_R.InputP, E_R.LoopRestartP), 
      Op.Assign(E_R.LexemeStartP, E_R.CountReferenceP))
 test(Op.ColumnCountAdd(2), 
@@ -53,7 +53,7 @@ test(Op.ColumnCountAdd(2),
 print "(1.2) Commands with interferring access to registers, solely read ____________"
 print
 test(Op.InputPDereference(), 
-     Op.StoreInputPosition(0, 1, 0))
+     Op.StoreInputPosition((0,), 1, 0))
 test(Op.Assign(E_R.InputP,       E_R.CountReferenceP), 
      Op.Assign(E_R.LexemeStartP, E_R.CountReferenceP))
 test(Op.ColumnCountReferencePDeltaAdd(E_R.InputP, 5, False), 
@@ -61,15 +61,15 @@ test(Op.ColumnCountReferencePDeltaAdd(E_R.InputP, 5, False),
 print "(1.3) Commands with interferring access to registers, one read other write ___"
 print
 test(Op.Assign(E_R.InputP, E_R.LoopRestartP),    
-     Op.StoreInputPosition(0, 1, 0))                
+     Op.StoreInputPosition((0,), 1, 0))                
 test(Op.Assign(E_R.InputP,       E_R.CountReferenceP), 
      Op.Assign(E_R.LexemeStartP, E_R.InputP))
 test(Op.ColumnCountReferencePDeltaAdd(E_R.CountReferenceP, 5, False), 
      Op.Assign(E_R.CountReferenceP, E_R.InputP))
 print "(1.4) Commands with interferring access to registers, both write _____________"
 print
-test(Op.StoreInputPosition(0, 1, 0),
-     Op.StoreInputPosition(0, 1, 0))                
+test(Op.StoreInputPosition((0,), 1, 0),
+     Op.StoreInputPosition((0,), 1, 0))                
 test(Op.Assign(E_R.InputP, E_R.CountReferenceP), 
      Op.Assign(E_R.InputP, E_R.InputP))
 test(Op.ColumnCountReferencePDeltaAdd(E_R.CountReferenceP, 5, False), 

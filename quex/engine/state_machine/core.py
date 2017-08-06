@@ -206,11 +206,12 @@ class DFA(object):
         return result
 
     def normalized_clone(self, ReplDbPreContext=None):
-        index_map, dummy, dummy         = self.get_state_index_normalization()
-        pre_context_map, pattern_id_map = self.get_pattern_and_pre_context_normalization()
+        index_map, dummy, dummy  = self.get_state_index_normalization()
+        acceptance_condition_db, \
+        pattern_id_map           = self.get_pattern_and_pre_context_normalization()
         
         return self.clone(index_map, 
-                          ReplDbPreContext=pre_context_map, 
+                          ReplDbPreContext=acceptance_condition_db, 
                           ReplDbAcceptance=pattern_id_map)
 
     def clone_from_state_subset(self, InitStateIndex, StateIndexSet, StateMachineId=None):
@@ -485,13 +486,14 @@ class DFA(object):
 
         return index_map, inverse_index_map, index_sequence
 
-    def get_pattern_and_pre_context_normalization(self, PreContextID_Offset=None, AcceptanceID_Offset=None):
+    def get_pattern_and_pre_context_normalization(self, PreContextID_Offset=None, 
+                                                  AcceptanceID_Offset=None):
 
-        pre_context_id_set = set()
-        acceptance_id_set  = set()
+        acceptance_condition_set_set = set()
+        acceptance_id_set            = set()
         for state in self.states.itervalues():
             for cmd in state.single_entry.get_iterable(SeAccept):
-                pre_context_id_set.update(cmd.acceptance_condition_set())
+                acceptance_condition_set_set.add(cmd.acceptance_condition_set())
                 acceptance_id_set.add(cmd.acceptance_id())
                 
         def enter(db, Value, TheEnum, NewId):
@@ -499,16 +501,18 @@ class DFA(object):
             else:                db[Value] = NewId; return NewId + 1
 
         i = 1L
-        repl_db_pre_context_id = {}
-        for acceptance_condition_id in sorted(pre_context_id_set):
-            i = enter(repl_db_pre_context_id, acceptance_condition_id, E_AcceptanceCondition, i)
+        repl_db_acceptance_condition_id = {}
+        for acceptance_condition_set in sorted(acceptance_condition_set_set):
+            for acceptance_condition_id in acceptance_condition_set:
+                i = enter(repl_db_acceptance_condition_id, acceptance_condition_id, E_AcceptanceCondition, i)
 
         i = 1L
         repl_db_acceptance_id  = {}
         for acceptance_id in sorted(acceptance_id_set):
             i = enter(repl_db_acceptance_id, acceptance_id, E_IncidenceIDs, i)
 
-        return repl_db_pre_context_id, repl_db_acceptance_id
+        return repl_db_acceptance_condition_id, \
+               repl_db_acceptance_id
 
     def get_string(self, NormalizeF=False, Option="utf8", OriginalStatesF=True):
         assert Option in ["utf8", "hex"]
