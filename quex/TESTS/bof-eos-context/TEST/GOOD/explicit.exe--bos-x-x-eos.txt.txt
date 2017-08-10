@@ -1,0 +1,4 @@
+BOS_LETTER_X__ 'a';
+NOT_LETTER____ 'x';
+X___LETTER_EOS 'a';
+<TERMINATION> '';

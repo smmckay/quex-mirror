@@ -1,0 +1,4 @@
+BOL_LETTER_X__ 'a';
+NOT_LETTER____ 'x';
+X___LETTER_EOL 'a';
+<TERMINATION> '';

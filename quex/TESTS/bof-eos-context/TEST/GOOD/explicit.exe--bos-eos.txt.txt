@@ -1,0 +1,2 @@
+BOS_LETTER_EOS 'a';
+<TERMINATION> '';

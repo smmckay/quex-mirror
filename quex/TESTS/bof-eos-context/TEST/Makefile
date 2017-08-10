@@ -1,13 +1,14 @@
 # Two lines to generate and compile the lexer:
 
-all: plain.exe implicit.exe plain_more.exe
+all: explicit.exe implicit.exe 
 
 hwut-info: 
-	@echo plain.exe implicit.exe
+	@echo explicit.exe implicit.exe
 
 %.c: %.qx
 	quex -i $< -o $* --language C
 
+# -DQUEX_OPTION_DEBUG_SHOW 
 %.exe: %.c lexer.c 
 	gcc lexer.c $< -I$(QUEX_PATH) -I$(HWUT_PATH) \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
@@ -16,7 +17,5 @@ hwut-info:
 		-o $@ -ggdb 
 
 clean:
-	rm -f plain.exe plain.c \
-	      plain_more.exe plain_more.c \
-	      implicit.exe implicit.c \
+	rm -f *.exe implicit.c explicit.c \
 		  *.h *-configuration.h *-token.h *-token_ids.h \

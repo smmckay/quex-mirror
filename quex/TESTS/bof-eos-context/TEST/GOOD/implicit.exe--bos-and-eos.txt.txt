@@ -1,0 +1,16 @@
+BOL_LETTER_EOL 'a';
+NOT_LETTER____ '\n';
+BOL_LETTER_EOL 'a';
+NOT_LETTER____ '\n';
+NOT_LETTER____ 'x';
+X___LETTER_EOL 'a';
+NOT_LETTER____ '\n';
+BOL_LETTER_X__ 'a';
+NOT_LETTER____ 'x';
+NOT_LETTER____ '\n';
+NOT_LETTER____ 'x';
+X___LETTER_X__ 'a';
+NOT_LETTER____ 'x';
+NOT_LETTER____ '\n';
+BOL_LETTER_EOL 'a';
+<TERMINATION> '';

@@ -1,0 +1,4 @@
+NOT_LETTER____ 'x';
+NOT_LETTER____ '\n';
+NOT_LETTER____ 'x';
+<TERMINATION> '';

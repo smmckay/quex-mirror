@@ -1,0 +1,17 @@
+define {
+    LETTER     [abcd]
+    NOT_LETTER [:complement({LETTER}):]
+}
+mode X {
+    on_end_of_stream         => QUEX_TKN_TERMINATION(LexemeNull);
+    <<BOS>> {LETTER} <<EOS>> => QUEX_TKN_BOS_LETTER_EOS(Lexeme);
+    <<BOS>> {LETTER}/x       => QUEX_TKN_BOS_LETTER_X__(Lexeme);
+    <<BOS>> {LETTER}         => QUEX_TKN_BOS_LETTER____(Lexeme);
+    x/{LETTER}/ <<EOS>>      => QUEX_TKN_X___LETTER_EOS(Lexeme);
+    {LETTER} <<EOS>>         => QUEX_TKN_____LETTER_EOS(Lexeme);
+    x/{LETTER}/x             => QUEX_TKN_X___LETTER_X__(Lexeme);
+    x/{LETTER}/              => QUEX_TKN_X___LETTER____(Lexeme);
+    {LETTER}/x               => QUEX_TKN_____LETTER_X__(Lexeme);
+    {LETTER}                 => QUEX_TKN_____LETTER____(Lexeme);
+    {NOT_LETTER}             => QUEX_TKN_NOT_LETTER____(Lexeme);
+}
