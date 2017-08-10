@@ -2,6 +2,7 @@ Acceptance Conditions: Begin/End of Stream
 -----------------------------------------------
 plain.exe
 implicit.exe
+--not make.py
 -----------------------------------------------
 Begin and End of stream conditions may be set 
 
