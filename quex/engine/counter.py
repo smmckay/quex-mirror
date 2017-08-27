@@ -21,8 +21,8 @@
 from   quex.input.code.base                        import SourceRef
 import quex.engine.analyzer.door_id_address_label  as     dial
 from   quex.engine.operations.operation_list       import Op
-from   quex.engine.misc.tools                      import typed
-from   quex.engine.misc.interval_handling          import NumberSet, NumberSet_All
+from   quex.engine.misc.tools                      import typed, do_and_delete_if
+from   quex.engine.misc.interval_handling          import NumberSet
 import quex.engine.misc.error                      as     error
 
 from   quex.blackboard import setup as Setup
@@ -178,10 +178,12 @@ class CountActionMap(list):
         'SuperSet'. If a NumberSets is not a subset of 'SuperSet' at all, then the
         according action is removed.
         """
-        for i in xrange(len(self)-1, -1, -1):
-            character_set, count_action = self[i]
+        def do(element, SuperSet):
+            character_set, count_action = element
             character_set.intersect_with(SuperSet)
-            if character_set.is_empty(): del self[i]
+            return character_set.is_empty()
+
+        do_and_delete_if(self, do, SuperSet)
 
     def iterable_in_sub_set(self, SubSet):
         """Searches for CountInfo objects where the character set intersects
@@ -242,8 +244,7 @@ class CountActionMap(list):
                 if info.cc_type not in considered_set: continue
                 yield character_set.intersection(CharacterSet), info
 
-    @typed(CharacterSet=(NumberSet, None))
-    def get_column_number_per_code_unit(self, CharacterSet=None):
+    def get_column_number_per_code_unit(self):
         """Considers the counter database which tells what character causes
         what increment in line and column numbers. However, only those characters
         are considered which appear in the CharacterSet. 
@@ -252,8 +253,7 @@ class CountActionMap(list):
                  >= 0 -- The increment of column number for every character
                          from CharacterSet.
         """
-        # MOST LIKELEY: CharacterSet is None always
-        if CharacterSet is None: CharacterSet = NumberSet_All()
+        CharacterSet = Setup.buffer_encoding.source_set
         column_incr_per_character = None
         number_set                = None
         for character_set, info in self.column_grid_line_iterable_pruned(CharacterSet):

@@ -8,9 +8,9 @@ TEST                                                                 <no date>
  * Dizzzy:
 
     293 0.66.5: Encoding running on wchar_t
-        bug-293.sh bad ...............................................[OK]
-                   good ..............................................[OK]
-                   invokation ........................................[OK]
+        bug-293.sh bad .............................................[FAIL]
+                   good ............................................[FAIL]
+                   invokation ......................................[FAIL]
 
  * alexeevm:
 
@@ -19,7 +19,7 @@ TEST                                                                 <no date>
     3025173 0.49.2 Custom Token struct for quex
         bug-3025173.sh ...............................................[OK]
     3032877 -b, --buffer-element-size enhancement
-        feature-3032877.sh codec .....................................[OK]
+        feature-3032877.sh codec ...................................[FAIL]
                            normal ....................................[OK]
 
  * attardi:
@@ -476,7 +476,7 @@ TEST                                                                 <no date>
     3030640 0.50.1 Adding .hpp extension to generated headers
         feature-3030640.sh ++ ........................................[OK]
                            ErrorC ....................................[OK]
-                           ErrorCpp ................................[FAIL]
+                           ErrorCpp ..................................[OK]
                            PlainC ....................................[OK]
                            PlainCpp ..................................[OK]
                            cc ........................................[OK]
@@ -494,7 +494,10 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] feature-3030640.sh _ ErrorCpp
+    [FAIL] bug-293.sh _ bad
+                    \__ good
+                    \__ invokation
+    [FAIL] feature-3032877.sh _ codec
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -985,19 +988,20 @@ quex/input/TEST                                                      <no date>
                                                                                
 quex/TESTS/bof-eos-context/TEST                                      <no date>
 -------------------------------------------------------------------------------
+ * explicit
+        explicit.exe bos-and-eos.txt .................................[OK]
+                     bos-eos.txt .....................................[OK]
+                     bos-x-x-eos.txt .................................[OK]
+                     not-bos-eos.txt .................................[OK]
  * implicit
-        implicit.exe 1 .............................................[FAIL]
-                     2 ...............................................[OK]
- * plain
-        plain.exe 1 ................................................[FAIL]
-                  2 ..................................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] implicit.exe _ 1
-    [FAIL] plain.exe _ 1
+        implicit.exe bos-and-eos.txt .................................[OK]
+                     bos-eos.txt .....................................[OK]
+                     bos-x-x-eos.txt .................................[OK]
+                     not-bos-eos.txt .................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                         Test Collection on Source Code                         
@@ -1009,14 +1013,14 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
-        no-unused-enum-values.py ...................................[FAIL]
+        no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1039,10 +1043,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] no-unused-enum-values.py
-    [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
-    [FAIL] pyflakes-check.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1285,7 +1286,7 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Customized codec files (option --encoding-file)
         customized_codec.sh ..........................................[OK]
  * FSM DFA_State Tracer
-        debug_show.sh ..............................................[FAIL]
+        debug_show.sh ................................................[OK]
  * Inadmissible commonalities
         commonality.sh indentation-newline ...........................[OK]
                        mix ...........................................[OK]
@@ -1300,12 +1301,10 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Testing the implementation of line number pragmas
         line-number-pragma.sh qx .....................................[OK]
                               source .................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] debug_show.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -1482,12 +1481,12 @@ quex/code_base/lexeme_converter/TEST                                 <no date>
 quex/engine/analyzer/TEST                                            <no date>
 -------------------------------------------------------------------------------
  * Position Register vs. Post-Context and Last Acceptance
-        test-position_register_map.py 0 ............................[FAIL]
-                                      1 ............................[FAIL]
-                                      2 ............................[FAIL]
-                                      3 ............................[FAIL]
-                                      4 ............................[FAIL]
-                                      5 ............................[FAIL]
+        test-position_register_map.py 0 ..............................[OK]
+                                      1 ..............................[OK]
+                                      2 ..............................[OK]
+                                      3 ..............................[OK]
+                                      4 ..............................[OK]
+                                      5 ..............................[OK]
 
  * Paths Analysis:
 
@@ -1497,8 +1496,8 @@ quex/engine/analyzer/TEST                                            <no date>
                                          10 ..........................[OK]
                                          2 ...........................[OK]
                                          3 ...........................[OK]
-                                         4 .........................[FAIL]
-                                         5 .........................[FAIL]
+                                         4 ...........................[OK]
+                                         5 ...........................[OK]
                                          6 ...........................[OK]
                                          7 ...........................[OK]
                                          8 ...........................[OK]
@@ -1527,8 +1526,8 @@ quex/engine/analyzer/TEST                                            <no date>
                                          10 ..........................[OK]
                                          2 ...........................[OK]
                                          3 ...........................[OK]
-                                         4 .........................[FAIL]
-                                         5 .........................[FAIL]
+                                         4 ...........................[OK]
+                                         5 ...........................[OK]
                                          6 ...........................[OK]
                                          7 ...........................[OK]
                                          8 ...........................[OK]
@@ -1539,17 +1538,17 @@ quex/engine/analyzer/TEST                                            <no date>
     Backward Input Position Detection
         paths_analysis-backward-input-position-detection.py ..........[OK]
     Backwards - For Pre-Context
-        paths_analysis-backwards.py 0 ..............................[FAIL]
-                                    1 ..............................[FAIL]
+        paths_analysis-backwards.py 0 ................................[OK]
+                                    1 ................................[OK]
     Special Loops and Forks
-        paths_analysis-loops.py 0 ..................................[FAIL]
-                                1 ..................................[FAIL]
-                                2 ..................................[FAIL]
-                                3 ..................................[FAIL]
-                                4 ..................................[FAIL]
-                                5 ..................................[FAIL]
-                                6 ..................................[FAIL]
-                                7 ..................................[FAIL]
+        paths_analysis-loops.py 0 ....................................[OK]
+                                1 ....................................[OK]
+                                2 ....................................[OK]
+                                3 ....................................[OK]
+                                4 ....................................[OK]
+                                5 ....................................[OK]
+                                6 ....................................[OK]
+                                7 ....................................[OK]
     With Post-Contexts
         paths_analysis-post.py 10 ....................................[OK]
                                3 .....................................[OK]
@@ -1560,31 +1559,31 @@ quex/engine/analyzer/TEST                                            <no date>
                                8 .....................................[OK]
                                9 .....................................[OK]
     With Pre- and Post-Contexts
-        paths_analysis-pre-post.py 1 ...............................[FAIL]
-                                   2 ...............................[FAIL]
-                                   3 ...............................[FAIL]
-                                   4 ...............................[FAIL]
-                                   5 ...............................[FAIL]
-                                   6 ...............................[FAIL]
-                                   7 ...............................[FAIL]
-                                   8 ...............................[FAIL]
-                                   9 ...............................[FAIL]
+        paths_analysis-pre-post.py 1 .................................[OK]
+                                   2 .................................[OK]
+                                   3 .................................[OK]
+                                   4 .................................[OK]
+                                   5 .................................[OK]
+                                   6 .................................[OK]
+                                   7 .................................[OK]
+                                   8 .................................[OK]
+                                   9 .................................[OK]
     With Pre-Contexts
-        paths_analysis-pre.py 0 ....................................[FAIL]
-                              1 ....................................[FAIL]
-                              10 ...................................[FAIL]
-                              11 ...................................[FAIL]
-                              12 ...................................[FAIL]
-                              13 ...................................[FAIL]
-                              14 ...................................[FAIL]
-                              2 ....................................[FAIL]
-                              3 ....................................[FAIL]
-                              4 ....................................[FAIL]
-                              5 ....................................[FAIL]
-                              6 ....................................[FAIL]
-                              7 ....................................[FAIL]
-                              8 ....................................[FAIL]
-                              9 ....................................[FAIL]
+        paths_analysis-pre.py 0 ......................................[OK]
+                              1 ......................................[OK]
+                              10 .....................................[OK]
+                              11 .....................................[OK]
+                              12 .....................................[OK]
+                              13 .....................................[OK]
+                              14 .....................................[OK]
+                              2 ......................................[OK]
+                              3 ......................................[OK]
+                              4 ......................................[OK]
+                              5 ......................................[OK]
+                              6 ......................................[OK]
+                              7 ......................................[OK]
+                              8 ......................................[OK]
+                              9 ......................................[OK]
     Without Pre- and Post-Contexts
         track_analysis.py 0 ..........................................[OK]
                           1 ..........................................[OK]
@@ -1624,55 +1623,10 @@ quex/engine/analyzer/TEST                                            <no date>
                                 AbsorbC ..............................[OK]
                                 Apart ................................[OK]
                                 Normal ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-position_register_map.py _ 0
-                                       \__ 1
-                                       \__ 2
-                                       \__ 3
-                                       \__ 4
-                                       \__ 5
-    [FAIL] paths_analysis-single-pattern.py _ 4
-                                          \__ 5
-    [FAIL] track_analysis_single_pattern.py _ 4
-                                          \__ 5
-    [FAIL] paths_analysis-backwards.py _ 0
-                                     \__ 1
-    [FAIL] paths_analysis-loops.py _ 0
-                                 \__ 1
-                                 \__ 2
-                                 \__ 3
-                                 \__ 4
-                                 \__ 5
-                                 \__ 6
-                                 \__ 7
-    [FAIL] paths_analysis-pre-post.py _ 1
-                                    \__ 2
-                                    \__ 3
-                                    \__ 4
-                                    \__ 5
-                                    \__ 6
-                                    \__ 7
-                                    \__ 8
-                                    \__ 9
-    [FAIL] paths_analysis-pre.py _ 0
-                               \__ 1
-                               \__ 10
-                               \__ 11
-                               \__ 12
-                               \__ 13
-                               \__ 14
-                               \__ 2
-                               \__ 3
-                               \__ 4
-                               \__ 5
-                               \__ 6
-                               \__ 7
-                               \__ 8
-                               \__ 9
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Loop Generation and Applications                        
@@ -1701,10 +1655,10 @@ quex/engine/loop/TEST                                                <no date>
  * Loop:
 
     Get All Analyzers.
-        loop-get_analazer_list.py appendix .........................[FAIL]
-                                  appendix-wot .....................[FAIL]
-                                  loop .............................[FAIL]
-                                  non-const ........................[FAIL]
+        loop-get_analazer_list.py appendix ...........................[OK]
+                                  appendix-wot .......................[OK]
+                                  loop ...............................[OK]
+                                  non-const ..........................[OK]
     Get Loop Map.
         loop-get_loop_map.py AppendixI ...............................[OK]
                              AppendixNoI .............................[OK]
@@ -1714,10 +1668,10 @@ quex/engine/loop/TEST                                                <no date>
  * Skip-Characters:
 
     UTF8 Engine -- Varrying Buffer Size
-        skip-utf8.py 5 .............................................[FAIL]
-                     6 .............................................[FAIL]
-                     7 .............................................[FAIL]
-                     8 .............................................[FAIL]
+        skip-utf8.py 5 ...............................................[OK]
+                     6 ...............................................[OK]
+                     7 ...............................................[OK]
+                     8 ...............................................[OK]
     Varrying Buffer Size
         skip.py 3 ....................................................[OK]
                 4 ....................................................[OK]
@@ -1741,19 +1695,10 @@ quex/engine/loop/TEST                                                <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       4 ..............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] loop-get_analazer_list.py _ appendix
-                                   \__ appendix-wot
-                                   \__ loop
-                                   \__ non-const
-    [FAIL] skip-utf8.py _ 5
-                      \__ 6
-                      \__ 7
-                      \__ 8
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -1797,31 +1742,43 @@ quex/engine/misc/TEST                                                <no date>
                                                                                
 quex/engine/operations/TEST                                          <no date>
 -------------------------------------------------------------------------------
- * 
-        basic.py ..............................................[NO OUTPUT]
- * 
-        can_be_moved_to_tail.py ............................[NO GOOD FILE]
- * 
-        find_last_common.py ................................[NO GOOD FILE]
- * 
-        is_switchable.py ......................................[NO OUTPUT]
- * 
-        test-SharedTailDB.py ...............................[NO GOOD FILE]
- * 
-        test-shared_tail.py ................................[NO GOOD FILE]
  * Check that there are no trailing unused Ops
         no-unused-ops.py .............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] basic.py
-    [FAIL] can_be_moved_to_tail.py
-    [FAIL] find_last_common.py
-    [FAIL] is_switchable.py
-    [FAIL] test-SharedTailDB.py
-    [FAIL] test-shared_tail.py
+ * SharedTailDB
+        test-SharedTailDB.py init ....................................[OK]
+                             pop_best ................................[OK]
+
+ * Command:
+
+    Basic
+        basic.py .....................................................[OK]
+
+ * Op:
+
+    is_switchable
+        is_switchable.py .............................................[OK]
+
+ * Op.shared_tail:
+
+    can_be_moved_to_tail
+        can_be_moved_to_tail.py no-exceptions ........................[OK]
+                                with-exceptions ......................[OK]
+    find_last_common
+        find_last_common.py 1-common .................................[OK]
+                            2-common .................................[OK]
+                            3-common .................................[OK]
+                            EqualOp ..................................[OK]
+                            no-common ................................[OK]
+                            start-indices ............................[OK]
+    find_last_common
+        test-shared_tail.py multiple .................................[OK]
+                            one-or-none ..............................[OK]
+                            two ......................................[OK]
+                            two-bad ..................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    DFA Tests                                   
@@ -1864,8 +1821,6 @@ quex/engine/state_machine/TEST                                       <no date>
 
  * DFA Operations:
 
-    Append Post Condition
-        test-setup_border_conditions.py ............................[FAIL]
     Inverse
         test-StateMachine-inverse.py .................................[OK]
 
@@ -1925,12 +1880,10 @@ quex/engine/state_machine/TEST                                       <no date>
 
     Has Trigger
         test-StateInfo-has_trigger.py ................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-setup_border_conditions.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                           Regular Expression Parsing                           
@@ -1981,9 +1934,9 @@ quex/input/regular_expression/TEST                                   <no date>
  * Conditional Analysis:
 
     Begin of Line '^', End of Line '$'
-        test-bol-eol.py ............................................[FAIL]
+        test-bol-eol.py ..............................................[OK]
     End of Line '$' (with DOS/Windows '\r\n')
-        test-eol-carriage-return-newline.py ........................[FAIL]
+        test-eol-carriage-return-newline.py ..........................[OK]
     post conditions
         test-post-condition.py .......................................[OK]
     pre conditions
@@ -2004,13 +1957,10 @@ quex/input/regular_expression/TEST                                   <no date>
         test-properties-2.py .........................................[OK]
     Simple
         test-properties.py ...........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-bol-eol.py
-    [FAIL] test-eol-carriage-return-newline.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                              Output Core Generator                             
@@ -2157,9 +2107,9 @@ quex/output/core/TEST                                                <no date>
  * Pre-conditions:
 
     The forth test
-        test-pre-conditions-4.py ANSI-C ............................[FAIL]
-                                 Cpp-Path-CG .......................[FAIL]
-                                 Cpp-Template ......................[FAIL]
+        test-pre-conditions-4.py ANSI-C ..............................[OK]
+                                 Cpp-Path-CG .........................[OK]
+                                 Cpp-Template ........................[OK]
 
  * Pseudo Ambgiguous Post Condition:
 
@@ -2260,19 +2210,13 @@ quex/output/core/TEST                                                <no date>
         test-single-state-transitions.py A ...........................[OK]
                                          A-UTF8 ......................[OK]
                                          B ...........................[OK]
-                                         B-UTF8 ....................[FAIL]
+                                         B-UTF8 ......................[OK]
                                          C ...........................[OK]
-                                         C-UTF8 ....................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-pre-conditions-4.py _ ANSI-C
-                                  \__ Cpp-Path-CG
-                                  \__ Cpp-Template
-    [FAIL] test-single-state-transitions.py _ B-UTF8
-                                          \__ C-UTF8
+                                         C-UTF8 ......................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
             Resource Scenarios for Constructor, Include, and Reset             
@@ -2443,7 +2387,7 @@ quex/engine/state_machine/check/TEST                                 <no date>
  * Pattern Identity Determination
         test-identity_checker.py False ...............................[OK]
                                  Pre-Post-Contexts-False .............[OK]
-                                 Pre-Post-Contexts-True ............[FAIL]
+                                 Pre-Post-Contexts-True ..............[OK]
                                  True ................................[OK]
  * Pattern Superset/Subset Determination
         test-subset_checker.py Easy ..................................[OK]
@@ -2455,12 +2399,10 @@ quex/engine/state_machine/check/TEST                                 <no date>
                                Pre-Post-Conditions ...................[OK]
  * Tail Checker
         test-tail.py .................................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-identity_checker.py _ Pre-Post-Contexts-True
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Parallel and Sequential Mounting of DFAs.                   
@@ -2470,6 +2412,8 @@ quex/engine/state_machine/construction/TEST                          <no date>
 
  * DFA Operations:
 
+    Append Post Condition
+        test-setup_border_conditions.py ..............................[OK]
     Append Post Condition
         test-setup_post_condition.py .................................[OK]
     Mount Paralell
@@ -2579,19 +2523,17 @@ quex/engine/state_machine/transformation/TEST                        <no date>
                                                 Overlap1 .............[OK]
                                                 Overlap2 .............[OK]
     Repetition at Codec Boarders
-        test-utf16-boarders.py error-detect ........................[FAIL]
+        test-utf16-boarders.py error-detect ..........................[OK]
                                plain .................................[OK]
     Repetition at Codec Boarders
         test-utf8-boarders.py error-detect ...........................[OK]
                               plain ..................................[OK]
     Unicode Language-Scripts as Examplary Ranges
         test-utf8-on-unicode-script-ranges.py ........................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-utf16-boarders.py _ error-detect
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Output Cpp                                   
@@ -2608,20 +2550,20 @@ quex/output/languages/cpp/TEST                                       <no date>
                         ascii-1-wo-ReferenceP ........................[OK]
                         cp737-1 ......................................[OK]
                         cp737-1-wo-ReferenceP ........................[OK]
-                        utf_16_le-1 ................................[FAIL]
-                        utf_16_le-1-wo-ReferenceP ..................[FAIL]
-                        utf_16_le-2 ...........................[NO OUTPUT]
+                        utf_16_le-1 ..................................[OK]
+                        utf_16_le-1-wo-ReferenceP ....................[OK]
+                        utf_16_le-2 ..................................[OK]
                         utf_16_le-2-wo-ReferenceP ....................[OK]
-                        utf_32_le-1 ................................[FAIL]
-                        utf_32_le-1-wo-ReferenceP ..................[FAIL]
-                        utf_8-1 ...............................[NO OUTPUT]
+                        utf_32_le-1 ..................................[OK]
+                        utf_32_le-1-wo-ReferenceP ....................[OK]
+                        utf_8-1 ......................................[OK]
                         utf_8-1-wo-ReferenceP ........................[OK]
-                        utf_8-2 ...............................[NO OUTPUT]
-                        utf_8-2-wo-ReferenceP ......................[FAIL]
-                        utf_8-3 ....................................[FAIL]
-                        utf_8-3-wo-ReferenceP ......................[FAIL]
-                        utf_8-4 ....................................[FAIL]
-                        utf_8-4-wo-ReferenceP ......................[FAIL]
+                        utf_8-2 ......................................[OK]
+                        utf_8-2-wo-ReferenceP ........................[OK]
+                        utf_8-3 ......................................[OK]
+                        utf_8-3-wo-ReferenceP ........................[OK]
+                        utf_8-4 ......................................[OK]
+                        utf_8-4-wo-ReferenceP ........................[OK]
 
  * Converter:
 
@@ -2639,23 +2581,10 @@ quex/output/languages/cpp/TEST                                       <no date>
                           2 ..........................................[OK]
                           3 ..........................................[OK]
                           4 ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-counter.py _ utf_16_le-1
-                         \__ utf_16_le-1-wo-ReferenceP
-                         \__ utf_16_le-2
-                         \__ utf_32_le-1
-                         \__ utf_32_le-1-wo-ReferenceP
-                         \__ utf_8-1
-                         \__ utf_8-2
-                         \__ utf_8-2-wo-ReferenceP
-                         \__ utf_8-3
-                         \__ utf_8-3-wo-ReferenceP
-                         \__ utf_8-4
-                         \__ utf_8-4-wo-ReferenceP
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3298,22 +3227,18 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] can_be_moved_to_tail.py
-    [NO GOOD FILE] find_last_common.py
-    [NO GOOD FILE] test-SharedTailDB.py
-    [NO GOOD FILE] test-shared_tail.py
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        1  238   [FAIL] TEST                                                          
+        4  238   [FAIL] TEST                                                          
            57      [OK] demo/C/TEST                                                   
            57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
-        2  4     [FAIL] quex/TESTS/bof-eos-context/TEST                               
-        4  15    [FAIL] ........../code/TEST                                          
+           8       [OK] quex/TESTS/bof-eos-context/TEST                               
+        1  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3324,7 +3249,7 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-        1  12    [FAIL] ........../misc/TEST                                          
+           12      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            16      [OK] ........../source-package/TEST                                
            1       [OK] ........../token-class/TEST                                   
@@ -3343,35 +3268,35 @@ SUMMARY:
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
            42      [OK] ..../engine/TEST                                              
-       44  112   [FAIL] .........../analyzer/TEST                                     
+           112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-        8  38    [FAIL] .........../loop/TEST                                         
+           38      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
-        6  7     [FAIL] .........../operations/TEST                                   
-        1  51    [FAIL] .........../state_machine/TEST                                
+           17      [OK] .........../operations/TEST                                   
+           50      [OK] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
            30      [OK] ......................................./extra_operations/TEST 
            5       [OK] ......................................./fundamental_laws/TEST 
            4       [OK] ......................................./subset/TEST           
            9       [OK] ........................./algorithm/TEST                      
-        1  14    [FAIL] ........................./check/TEST                          
-           7       [OK] ........................./construction/TEST                   
-        1  62    [FAIL] ........................./transformation/TEST                 
+           14      [OK] ........................./check/TEST                          
+           8       [OK] ........................./construction/TEST                   
+           62      [OK] ........................./transformation/TEST                 
            58      [OK] ..../input/TEST                                               
-        2  27    [FAIL] ........../regular_expression/TEST                            
-        5  196   [FAIL] ..../output/core/TEST                                         
+           27      [OK] ........../regular_expression/TEST                            
+           196     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-       12  30    [FAIL] .........../languages/cpp/TEST                                
+           30      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           ___    ___            
-    |  ___|_ _(_) |___      ( _ )  ( _ )     __  __
-    | |_ / _` | | / __|     / _ \  / _ \     \ \/ /
-    |  _| (_| | | \__ \    | (_) || (_) |     >  < 
-    |_|  \__,_|_|_|___/     \___/  \___/     /_/\_\
-                                                                   (1637 tests)
+     _____     _ _          ____             
+    |  ___|_ _(_) |___     | ___|      __  __
+    | |_ / _` | | / __|    |___ \      \ \/ /
+    |  _| (_| | | \__ \     ___) |      >  < 
+    |_|  \__,_|_|_|___/    |____/      /_/\_\
+                                                                   (1651 tests)
 
 ===============================================================================

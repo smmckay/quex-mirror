@@ -1,4 +1,5 @@
-from quex.constants  import E_AcceptanceCondition
+from quex.constants  import E_AcceptanceCondition, \
+                            E_AcceptanceConditionSet_corresponance
 from quex.engine.state_machine.core import DFA
 
 class Checker:
@@ -85,7 +86,8 @@ class Checker:
             S0 = self.sm0.states[index] # core of the 'sm0' state
 
             if   S0.is_acceptance()            != S1.is_acceptance():            return False
-            elif S0.acceptance_condition_set() != S1.acceptance_condition_set(): return False
+            elif not E_AcceptanceConditionSet_corresponance(S0.acceptance_condition_set(),
+                                                            S1.acceptance_condition_set()): return False
             elif S0.input_position_store_f()   != S1.input_position_store_f():   return False
             elif S0.input_position_restore_f() != S1.input_position_restore_f(): return False
 

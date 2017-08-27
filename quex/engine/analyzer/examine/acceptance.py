@@ -3,8 +3,7 @@ from quex.engine.operations.se_operations     import SeAccept, \
                                                      SeStoreInputPosition
 from quex.engine.misc.tools                   import E_Values
 
-from quex.constants  import E_AcceptanceCondition, \
-                            E_IncidenceIDs, \
+from quex.constants  import E_IncidenceIDs, \
                             E_R
 
 # from copy import copy

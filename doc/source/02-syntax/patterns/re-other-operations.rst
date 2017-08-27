@@ -1,19 +1,13 @@
+TODO:: Review and Rewrite this section
+======================================
 
-.. describe:: \\R{ P } -- Reverse (UT)
 
-   Matches the reverse of what P matches.  For any lexeme Lp = { x0, x1, ...
-   xn } which matches P, there is a reverse lexeme Lrp = { xn, ...  x1, x0 }
-   which matches \\R{ P }. Examples:
+.. intersection({Pattern} \Any*{Pattern})  # => patterns Q that end with Q
+.. intersection({Pattern} {Pattern}\Any*)  # => patterns Q that start with Q
 
-.. describe:: \\Sequence{ P Q } -- Sequentialize (BT)
+.. intersection({Pattern} \Any*\Not{Pattern})  # => patterns Q that do not end with Q
+.. intersection({Pattern} \Not{Pattern}\Any*)  # => patterns Q that do not start with Q
 
-   Matches the concatination of P and Q. For any to lexemes Lp = { x0, x1, ... xn }
-   matched by P and Lq = { y1, y2, ... ym } matched by Q, any lexeme 
-   matched by \\Sequence{ P Q } consists of a lexeme from Lp followed by
-   a lexeme from Lq.
-
-   This operator is an explicit implementation of ``PQ`` which does
-   exactly the same.
 
 .. describe:: \\CutBegin{ P Q } -- Cut Beginning (BL)
 
@@ -56,28 +50,18 @@
 
               \CutEnd{"otto_mueller" "mueller"} --> "otto_"
 
-.. describe:: \\Union{ P Q } -- Union (BS)
-
-   Matches all lexemes which are matched by P and all lexemes which are
-   matched by Q.
-
-.. describe:: \\Intersection{ P Q } -- Intersection (BS)
-
-   Matches only those lexemes which are matched by both P and Q.
-
+\\CutBegin{P \Not{Q}}
+\\CutBegin{P \Not{Q}}
 .. describe:: \\NotBegin{ P Q } -- Complement Begin (BS)
 
-   Matches those lexemes of P which do not start with lexemes that
-   match Q.
+   Matches those lexemes of P which do not start with lexemes that match Q.
 
 .. describe:: \\NotEnd{ P Q } -- Complement End (BS)
 
-   Matches those lexemes of P which do not end with lexemes that
-   match Q.
+   Matches those lexemes of P which do not end with lexemes that match Q.
 
 .. describe:: \\NotIn{ P Q } -- Complement End (BS)
 
-   Matches those lexemes of P which do not contain lexemes that
-   match Q.
+   Matches those lexemes of P which do not contain lexemes that match Q.
 
 -----------------------

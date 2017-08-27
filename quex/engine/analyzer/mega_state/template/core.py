@@ -2,6 +2,7 @@
 from   quex.engine.analyzer.mega_state.template.state     import TemplateState, \
                                                                  PseudoTemplateState
 from   quex.engine.analyzer.mega_state.template.candidate import TemplateStateCandidate
+from   quex.engine.misc.tools import delete_if
 
 from   quex.constants  import E_Compression
 
@@ -279,13 +280,9 @@ class CandidateList(list):
         """
 
         done_set = (I, K)
-        i        = len(self) - 1
-        while i >= 0:
-            entry = self[i]
-            if entry.state_a.index in done_set or entry.state_b.index in done_set:
-                del self[i]
-            i -= 1
 
+        delete_if(self, 
+                  lambda entry: entry.state_a.index in done_set or entry.state_b.index in done_set)
         return 
 
 class ElectDB(dict):

@@ -341,6 +341,15 @@ typedef enum {
            __quex_debug_core(StateIdx, "__________");  \
            __quex_debug_input(StateIdx)
 
+#   if __STDC_VERSION__ >= 199901L
+#   define __quex_debug_init_state(StateIdx)           \
+           __quex_debug_core(StateIdx, "__________");  \
+           __quex_debug2("Init State: %s", __func__)
+#   else
+#   define __quex_debug_init_state(StateIdx)           \
+           __quex_debug_core(StateIdx, "__________ Init State:")
+#   endif
+
 #   define __quex_debug_path_walker_state(PathWalkerIdx, PathBase, PathIterator)               \
            __quex_debug_path_walker_core(PathWalkerIdx, PathBase, PathIterator, "__________"); \
            __quex_debug_input(__QUEX_DEBUG_MAP_STATE_KEY_TO_STATE(PathIterator-PathBase))
@@ -390,6 +399,8 @@ typedef enum {
 #   define __quex_debug3(FormatStr, Arg0, Arg1)   /* empty */
 
 #   define __quex_debug_state(StateIdx)           \
+           __quex_optional_statistics(StateIdx)
+#   define __quex_debug_init_state(StateIdx)      \
            __quex_optional_statistics(StateIdx)
 #   define __quex_debug_path_walker_state(PathWalkerIdx, PathBase, PathIterator) \
            __quex_optional_statistics(StateIdx)

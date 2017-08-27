@@ -72,14 +72,14 @@ class QuexSetup:
     def __init__(self, SetupInfo, BcFactory):
         self.init(SetupInfo)
 
-    def buffer_setup(self, LexatomTypeName, LexatomSizeInType, 
+    def buffer_setup(self, LexatomTypeName, LexatomSizeInByte, 
                      BufferEncoding, BufferEncodingFileName=""):
         import quex.engine.state_machine.transformation.core as bc_factory
         encoding = bc_factory.do(BufferEncoding, BufferEncodingFileName)
 
         self.lexatom_set(Lexatom(self.language_db, encoding,
                                  LexatomTypeName,
-                                 LexatomSizeInType))
+                                 LexatomSizeInByte))
 
         encoding.adapt_ranges_to_lexatom_type_range(self.lexatom.type_range)
         self.__buffer_encoding = encoding

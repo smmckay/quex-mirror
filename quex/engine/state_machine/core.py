@@ -708,13 +708,6 @@ class DFA(object):
         return any(AccConditionId in state.acceptance_condition_set()
                    for state in self.states.itervalues())
 
-    def has_pre_context_begin_of_stream_f(self):
-        # 'begin of line' includes 'begin of stream'.
-        if self.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE): return True
-
-        return any(state.acceptance_condition_id() == E_AcceptanceCondition.BEGIN_OF_STREAM
-                   for state in self.states.itervalues())
-
     def has_specific_acceptance_id(self):
         return any(state.single_entry.has_specific_acceptance_id()
                    for state in self.states.itervalues())

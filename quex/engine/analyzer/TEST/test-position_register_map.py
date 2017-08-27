@@ -87,6 +87,5 @@ analyzer = core.FSM.from_DFA(sm, engine.FORWARD, dial_db=DialDB())
 
 print "Positioning Info __________________________________"
 position_register_map.print_this(analyzer)
-
 for post_context_id, array_index in sorted(analyzer.position_register_map.iteritems()):
     print "   %s: %i" % (repr(post_context_id), array_index)

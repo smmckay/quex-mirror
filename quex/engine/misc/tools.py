@@ -11,8 +11,18 @@ def r_enumerate(x):
     return izip(reversed(xrange(len(x))), reversed(x))
 
 def delete_if(the_list, condition):
+    """Delete element from the list if and only if 'condition(element)' 
+    returns True.
+    """
     for i in xrange(len(the_list)-1, -1, -1):
         if condition(the_list[i]): del the_list[i]
+
+def do_and_delete_if(the_list, do, result):
+    """'do()' operates on each element of the list and the 'result'. If
+    it returns 'True' the element is deleted from 'the_list'.
+    """
+    for i in xrange(len(the_list)-1, -1, -1):
+        if do(the_list[i], result): del the_list[i]
 
 def print_callstack(BaseNameF=False):
     try:

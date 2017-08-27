@@ -12,6 +12,7 @@ database is extracted.
 """
 from   quex.input.code.core                         import CodeTerminal
 from   quex.engine.counter                          import CountActionMap
+from   quex.engine.misc.tools                       import do_and_delete_if
 from   quex.engine.pattern                          import Pattern
 import quex.engine.state_machine.check.tail         as     tail
 import quex.engine.state_machine.check.superset     as     superset_check
@@ -240,14 +241,16 @@ class PPT_List(list):
         """Delete all patterns that match entries in 'deletion_info_list'.
         """
         def delete(MHI, Info, self, ModeName, history):
-            size = len(self)
-            for i in range(size-1, -1, -1):
-                priority, pattern, terminal = self[i]
-                if   priority.mode_hierarchy_index > MHI:          continue
-                elif priority.pattern_index >= Info.pattern_index: continue
-                elif not superset_check.do(Info.pattern, pattern): continue
-                del self[i]
+            def do(element, history):
+                priority, pattern, terminal = element
+                if   priority.mode_hierarchy_index > MHI:          return False
+                elif priority.pattern_index >= Info.pattern_index: return False
+                elif not superset_check.do(Info.pattern, pattern): return False
                 history.append([ModeName, pattern.pattern_string(), pattern.sr.mode_name])
+                return True
+
+            size = len(self)
+            do_and_delete_if(self, do, history)
 
             if size == len(self) and Info.sr.mode_name == ModeName:
                 error.warning("DELETION mark does not have any effect.", Info.sr)

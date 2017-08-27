@@ -99,7 +99,10 @@ class EncodingTrafo:
         return all_complete_f, sm
 
     def _add_transition_to_bad_lexatom_detector(self, target_map, BadLexatomSi, CodeUnitIndex):
-        if BadLexatomSi is None: return
+        # A state with an empty target map is not supposed to handle input.
+        # => drop-out without bad-lexatom check.
+        if   not target_map:       return
+        elif BadLexatomSi is None: return
         error_range = self._error_range_by_code_unit_db[CodeUnitIndex]
         if error_range.is_empty(): return
         target_map[BadLexatomSi] = error_range

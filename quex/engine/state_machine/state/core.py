@@ -3,8 +3,7 @@ from   quex.engine.state_machine.state.single_entry import SingleEntry, \
                                                            SeStoreInputPosition
 from   quex.engine.state_machine.state.target_map   import TargetMap
 from   quex.engine.misc.tools import typed 
-from   quex.constants         import E_AcceptanceCondition, \
-                                     E_IncidenceIDs
+from   quex.constants         import E_IncidenceIDs
 
 class DFA_State:
     """A state consisting of ONE entry and multiple transitions to other

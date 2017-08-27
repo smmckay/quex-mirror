@@ -3,19 +3,20 @@
 Pre- and Post-Contexts
 #######################
 
-Patterns may require a restricted context. Modes and mode transitions model
-larger contexts such as *languages*. A more concise type of context is the
-*border*, i.e. to what comes before or after the pattern. Relying on regular
-expressions pre- and post-contexts provide a means to specify such constraints.
-Typical border conditions are 'begin-of-line' or 'end-of-line'. Those can 
-be caught by matching regular expressions. 
+To this point, only patterns have been discussed that match absolutely,
+independent of their context.  Modes and mode transitions model change the
+complete matching behavior of a lexer, they change the *language*. A more
+concise type of context is the *border* around a pattern, i.e. to what comes
+before or after the pattern. This section elaborates on conditional matching
+based such bordering contexts namely *pre-* and *post-contexts*. 
 
-The reliance on regular expressions implies that only the data stream context
-can be considered for matching. The lexer's state or that of any external
-component cannot be considered that way. There is an exception though: the
-conditions 'begin-of-stream' and 'end-of-stream'. Precisely, they are
-conditions on the lexer's current input pointer and the byte loader.  For the
-sake of convenience syntax is provided to deal with the two conditions.
+Pre- and post-contexts are conditions on the data stream. Strictly, the lexer's
+state is not subject to this type of constraint.  There is an exception though:
+the conditions 'begin-of-stream' and 'end-of-stream'. Precisely, they are
+conditions on the lexer's current input pointer and the byte loader. In the frame
+of 'begin-of-line' and 'end-of-line' it would be counter-intuitive not to 
+provide those conditions, though. Consequently, conditions on stream boundaries
+can be specified as pre- and post-contexts.
 
 .. describe:: <<BOS>> P
 
@@ -29,17 +30,13 @@ sake of convenience syntax is provided to deal with the two conditions.
     in situations where there might be no explicit end-of-stream condition,
     such as byte loaders based on socket connections.
 
-Notably, there must be *white space* between the ``<<BOS>>`` and the pattern as well
-as after a pattern which is followed by ``<<EOS>>``.  Any other dependency on
-object states must be expressed by mode transitions.  The rest of this section
-deals with context dependencies on the input stream itself, i.e. those which
-can be expressed by regular expressions.  
-
-A pre-context matches backwards before the start position of the current
-analyzer step. A post-context matches after what is matched by the core
-pattern.  Lexatoms matching the pre- and post-contexts are not part of the
-matching pattern's lexeme.  The example in figure :ref:`pre-and-post-context`
-shows the example of a matching pattern::
+Notably, there must be *white space* between the ``<<BOS>>`` and the pattern as
+well as after a pattern which is followed by ``<<EOS>>``.  A pre-context
+matches backwards before the start position of the current analyzer step. A
+post-context matches after what is matched by the core pattern.  Lexatoms
+matching the pre- and post-contexts are not part of the matching pattern's
+lexeme.  The example in figure :ref:`pre-and-post-context` shows the example of
+a matching pattern::
 
     "hello "/"world"/"!"
 
@@ -57,8 +54,8 @@ further content has been considered already as a post-context.
 
    Pre- and post context around a core pattern.
  
-The following syntax elements are available for the specification of
-context rules.
+The following syntax elements are available for the specification of line
+border context rules.
 
 .. describe:: ^R 
 
@@ -72,16 +69,24 @@ context rules.
 
     a regular expression R, but only at the *end of a line* or at *the end of
     the input stream* (i.e. <<EOS>> is implied). Traditionally, a newline can
-    be coded in two ways: the Unix-way with a plain 0x0A '\\n' or the DOS-way
-    with the sequence 0x0D 0x0A '\\r\\n'. By default both are considered as
+    be coded in two ways: the Unix-way with a plain 0x0A `\n` or the DOS-way
+    with the sequence 0x0D 0x0A `\r\n`. By default both are considered as
     post-context.  The command line option ``--no-DOS`` allows one to waive the
     consideration of DOS newlines.
 
-For other cases than the aforementioned regular expressions can be defined.  In
-the following, ``R``, ``S``, and ``Q`` represent regular expressions. ``R``
-represents the core pattern of what is relevant for the matching lexeme. ``Q``
-is the pre-context and ``S`` is the post-context.  The following means allow to
-specify pre- and post-contexts based on regular expressions.
+.. note:: 
+
+    Quex tolerates the shorthand `$` at the end of an explicit post
+    context. It is then translated into a newline. Thus, the pattern `core/pc$` is
+    equivalent to `core/pc(\n|\r\n)`. In that case, however, *end of input stream*
+    is not implied.
+
+General border conditions can be defined in terms of regular expressions.  In
+the following, Let ``R`` represent the regular expression of the core pattern.
+The matching lexeme does only consist of those elements of the input stream
+that match ``R``. Let ``Q`` represent pre-context and ``S`` the post-context.
+The following means allow to specify pre- and post-contexts based on regular
+expressions.
 
 .. describe:: R/S
 
@@ -89,10 +94,11 @@ specify pre- and post-contexts based on regular expressions.
    input is set right after where ``R`` matched.  ``S`` is the post-context of
    ``R``.  
    
-   The case where the repeated or optional end of ``R`` matches the beginning
-   of ``S`` is handled by a *philosophical cut* to avoid the 'dangerous
-   trailing context' :cite:`Paxson1995flex` problem [#f1]_. The 'philosophical
-   cut' modifies the post context, so that the core pattern matches as long as
+   There is a special circumstance where post-contexts are problematic: the
+   'dangerous trailing context' :cite:`Paxson1995flex` problem [#f1]_. This is
+   the case where a repeated or optional end of ``R`` matches the beginning of
+   ``S``. Quex handles this case by a *philosophical cut*.  This procedure
+   modifies the post context, so that the core pattern matches as long as
    possible. This is in accordance with the longest match, which is Quex's
    philosophy of analysis.
 		 
@@ -108,12 +114,12 @@ specify pre- and post-contexts based on regular expressions.
     a ``Q`` and the following matches an ``S``.  ``Q`` is the pre-context of
     ``R`` and ``S`` is its post-context.
 
-Neither pre- nor post-context should contain an empty path. An empty path means
-that even no lexatom satisfies the condition. Such a condition is always
-fulfilled and, therefore, such a pre- or post-context is not really a
-constraint.  Pre- and post contexts are the utmost syntactical unit. This means
-that they cannot be logically or-ed.   The following specification
-is *dysfunctional*.::
+Neither pre- nor post-context must match a lexeme of length zero. The condition
+to match lexeme of length zero is always fulfilled.  Therefore, such a pre- or
+post-context is not really a constraint.  
+
+Pre- and post contexts are the utmost syntactical unit. This means that they
+cannot be logically or-ed.   The following specification is *dysfunctional*.::
 
    (A/B)|(C/D) => QUEX_TKN_SOME();   // WRONG!
 

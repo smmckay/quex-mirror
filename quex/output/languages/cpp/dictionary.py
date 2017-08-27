@@ -16,6 +16,7 @@ from   quex.engine.misc.file_operations                  import open_file_or_die
 import quex.engine.misc.error                            as     error
 from   quex.engine.misc.tools                            import typed, \
                                                                 print_callstack, \
+                                                                do_and_delete_if, \
                                                                 none_isinstance, \
                                                                 flatten_list_of_lists
 import quex.output.languages.cpp.templates               as     templates
@@ -56,6 +57,7 @@ class Language(dict):
     FALSE                     = "false"
     TRUE                      = "true"
     OR                        = "||"
+    AND                       = "&&"
 
     PATH_ITERATOR_INCREMENT   = "++(path_iterator);"
     VIRTUAL_DESTRUCTOR_PREFIX = "virtual "
@@ -194,6 +196,19 @@ class Language(dict):
 
     def EQUAL(self, X, Y):
         return "%s == %s" % (X, Y)
+
+    def BINARY_OPERATION_LIST(self, Operator, ConditionList):
+        condition_list = [ c for c in ConditionList if c ]
+        if not condition_list: 
+            return []
+        elif len(condition_list) == 1: 
+            return [ condition_list[0] ]
+        else:
+            result = [ "(%s)" % condition_list[0] ]
+            for condition in condition_list[1:]:
+                result.append(" %s " % Operator)
+                result.append("(%s)" % condition)
+            return result
 
     @property
     def analyzer(self):
@@ -435,7 +450,9 @@ class Language(dict):
                 block = "last_acceptance = %s; __quex_debug(\"last_acceptance = %s\\n\");\n" \
                         % (self.ACCEPTANCE(element.acceptance_id), self.ACCEPTANCE(element.acceptance_id))
                 txt.extend(
-                    self.IF_ACCEPTANCE_CONDITION_SET(element.acceptance_condition_set, block)
+                    self.IF_ACCEPTANCE_CONDITION_SET(i==0, 
+                                                     element.acceptance_condition_set, 
+                                                     block)
                 )
             return "".join(txt)
 
@@ -466,7 +483,8 @@ class Language(dict):
 
         elif Op.id == E_Op.IfPreContextSetPositionAndGoto:
             block = self.position_and_goto(Op.content.router_element, dial_db)
-            txt   = self.IF_ACCEPTANCE_CONDITION_SET(Op.content.acceptance_condition_set,
+            txt   = self.IF_ACCEPTANCE_CONDITION_SET(True, 
+                                                     Op.content.acceptance_condition_set,
                                                      block)
             return "".join(txt)
 
@@ -842,6 +860,20 @@ class Language(dict):
         elif AcceptanceID == E_IncidenceIDs.BAD_LEXATOM:   return "((QUEX_TYPE_ACCEPTANCE_ID)-2)"
         else:                                              return "%i" % AcceptanceID
 
+    @typed(Condition=list)
+    def IF_PLAIN(self, FirstF, Condition, Consequence):
+        if not Condition:
+            if FirstF: return "%s\n" % "".join(Consequence)
+            else:      return "else { %s }\n" % "".join(Consequence)
+        else:
+            if not FirstF: else_str = "else "
+            else:          else_str = ""
+            return [ 
+                "%sif( %s ) {\n" % (else_str, "".join(Condition)),
+                "%s\n" % "".join(Consequence), 
+                "}\n" 
+            ]
+
     def IF(self, LValue, Operator, RValue, FirstF=True, SimpleF=False, SpaceF=False):
         if isinstance(RValue, (str,unicode)): condition = "%s %s %s"   % (LValue, Operator, RValue)
         else:                                 condition = "%s %s 0x%X" % (LValue, Operator, RValue)
@@ -867,49 +899,40 @@ class Language(dict):
         """
         return self.IF("input", Condition, Value, Index==0, SimpleF=True, SpaceF=(Length>2))
 
-    def IF_ACCEPTANCE_CONDITION_SET(self, AccConditionSet, Consequence):
-        """NEEDS REWORK!
-        """
-        txt = []
-        first_f = True
-        if not AccConditionSet:
-            self.IF_ACCEPTANCE_CONDITION(txt, first_f, None, Consequence)
-        else:
-            for acceptance_condition_id in AccConditionSet:
-                self.IF_ACCEPTANCE_CONDITION(txt, first_f, acceptance_condition_id, Consequence)
-        return txt
+    def IF_ACCEPTANCE_CONDITION_SET(self, FirstF, AccConditionSet, Consequence):
+        def append_if_pre_context(acc_condition_id, result):
+            if acc_condition_id == E_AcceptanceCondition.BEGIN_OF_LINE:
+                code = "me->buffer._lexatom_before_lexeme_start == '\\n'"
+            elif acc_condition_id == E_AcceptanceCondition.BEGIN_OF_STREAM:
+                code = "QUEX_NAME(Buffer_is_begin_of_stream)(&me->buffer)"
+            elif isinstance(acc_condition_id, (int, long)):
+                code = "pre_context_%i_fulfilled_f" % acc_condition_id
+            else:
+                return False
+            result.append(code)
+            return True
 
-    def IF_ACCEPTANCE_CONDITION(self, txt, FirstF, AccConditionId, Consequence):
+        def append_if_post_context(acc_condition_id, result):
+            if acc_condition_id == E_AcceptanceCondition.END_OF_STREAM:
+                code = "QUEX_NAME(Buffer_is_end_of_stream)(&me->buffer)"
+            else:
+                return False
+            result.append(code)
+            return True
 
-        if AccConditionId == None:
-            if FirstF: opening = [];           closing = []
-            else:      opening = ["else {\n"]; closing = ["    }\n"]
-        else:
-            condition = self.ACCEPTANCE_CONDITION(AccConditionId) 
-            if FirstF: opening = ["if( %s ) {\n" % condition]
-            else:      opening = ["else if( %s ) {\n" % condition]
-            closing = ["}\n"]
+        remainder = list(AccConditionSet)
+        pre_condition_list = []
+        do_and_delete_if(remainder, append_if_pre_context, pre_condition_list)
+        post_condition_list = []
+        do_and_delete_if(remainder, append_if_post_context, post_condition_list)
 
-        txt.extend(opening)
-        txt.append("    ")
-        if isinstance(Consequence, (str, unicode)): txt.append(Consequence)
-        else:                                       txt.extend(Consequence)
-        txt.extend(closing)
-        return
+        # Combinate logically: Or(pre-contexts) And Or(post-contexts)
+        pre_combined  = self.BINARY_OPERATION_LIST(self.OR, pre_condition_list)
+        post_combined = self.BINARY_OPERATION_LIST(self.OR, post_condition_list)
+        all_combined  = self.BINARY_OPERATION_LIST(self.AND, ["".join(pre_combined), 
+                                                              "".join(post_combined)])
 
-    def ACCEPTANCE_CONDITION(self, AccConditionId):
-        if   AccConditionId == E_AcceptanceCondition.BEGIN_OF_LINE: 
-            return "me->buffer._lexatom_before_lexeme_start == '\\n'"
-        elif AccConditionId == E_AcceptanceCondition.BEGIN_OF_STREAM: 
-            return "QUEX_NAME(Buffer_is_begin_of_stream)(&me->buffer)"
-        elif AccConditionId == E_AcceptanceCondition.END_OF_STREAM: 
-            return "QUEX_NAME(Buffer_is_end_of_stream)(&me->buffer)"
-        elif AccConditionId is None:
-            return "true"
-        elif isinstance(AccConditionId, (int, long)):
-            return "pre_context_%i_fulfilled_f" % AccConditionId
-        else:
-            assert False
+        return self.IF_PLAIN(FirstF, all_combined, Consequence)
 
     def END_IF(self):
         return "}"
@@ -949,8 +972,7 @@ class Language(dict):
             return "    __quex_debug_path_walker_state(%i, path_walker_%s_path_base, path_iterator);\n" \
                    % (TheState.index, TheState.index)
         elif GlobalEntryF: 
-            return "    __quex_debug(\"Init State\\n\");\n" \
-                   "    __quex_debug_state(%i);\n" % TheState.index
+            return "    __quex_debug_init_state(%i);\n" % TheState.index
         elif TheState.index == E_StateIndices.DROP_OUT:
             return "    __quex_debug(\"Drop-Out Catcher\\n\");\n"
         elif isinstance(TheState.index, (int, long)):

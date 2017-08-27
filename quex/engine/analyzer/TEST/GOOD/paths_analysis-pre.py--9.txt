@@ -3,7 +3,7 @@ init-state = 0L
      == 'a' ==> 00001
      == 'b' ==> 00005
     
-00001 A(1,pre=bol)
+00001 A(1,pre=bol, pre=bos)
      == 'b' ==> 00002
     
 00002 
@@ -27,10 +27,10 @@ pos = lexeme_start_p + 1;  goto Failure;
 
 State 1:
   .entry:
-    .from 0: if BeginOfLine:  last_acceptance = Pattern1
+    .from 0: if BeginOfLineBeginOfStream:  last_acceptance = Pattern1
 
 .drop_out:
-if BeginOfLine: goto Pattern1;
+if BEGIN_OF_LINE: if BEGIN_OF_STREAM: goto Pattern1;
 pos = lexeme_start_p + 1;  goto Failure;
 
 State 2:
@@ -38,7 +38,7 @@ State 2:
     .from 1: 
 
 .drop_out:
-if BeginOfLine: pos -= 1;  goto Pattern1;
+if BEGIN_OF_LINE: if BEGIN_OF_STREAM: pos -= 1;  goto Pattern1;
 pos = lexeme_start_p + 1;  goto Failure;
 
 State 3:
@@ -73,14 +73,17 @@ State 0:
 State 1:
         [MATCH_FAILURE]: NONE/set([0L])
         [      1]: BEGIN_OF_LINE/set([1L])
+[      1]: BEGIN_OF_STREAM/set([1L])
 
 State 2:
         [MATCH_FAILURE]: NONE/set([0L])
         [      1]: BEGIN_OF_LINE/set([1L])
+[      1]: BEGIN_OF_STREAM/set([1L])
 
 State 3:
         [MATCH_FAILURE]: NONE/set([0L])
         [      1]: BEGIN_OF_LINE/set([1L])
+[      1]: BEGIN_OF_STREAM/set([1L])
         [      2]: NONE/set([5L])
 
 State 4:

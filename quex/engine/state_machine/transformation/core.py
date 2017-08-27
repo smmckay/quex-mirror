@@ -57,7 +57,7 @@ def do(BufferCodecName, BufferCodecFileName=""):
             error.log("cannot interpret string following '--encoding-file'")
         return EncodingTrafoByTable(FileName=BufferCodecFileName)
 
-    elif BufferCodecName == "unicode":
+    elif BufferCodecName in ("unicode", "utf32"):
         # (Still, 'icu' or 'iconv' may provide converted content, but ...) 
         # If the internal buffer is 'unicode', then the pattern's state 
         # machines are not converted. The requirement for the pattern's

@@ -25,11 +25,32 @@ E_StateIndices = Enum("DROP_OUT",
                       "BEFORE_ENTRY", 
                       "VOID") 
 
-E_AcceptanceCondition  = Enum("NONE",    
-                        "BEGIN_OF_LINE", 
-                        "BEGIN_OF_STREAM", 
-                        "END_OF_STREAM", 
-                        "_DEBUG_NAME_PreContextIDs")
+E_AcceptanceCondition  = Enum("BEGIN_OF_LINE", 
+                              "BEGIN_OF_STREAM", 
+                              "END_OF_STREAM", 
+                              "_DEBUG_NAME_E_AcceptanceCondition")
+
+def E_AcceptanceConditionSet_string(ACSet):
+    if not ACSet: return ""
+    result = []
+    for acc_condition_id in sorted(ACSet):
+        if   acc_condition_id == E_AcceptanceCondition.BEGIN_OF_LINE:
+            result.append("pre=bol")
+        elif acc_condition_id == E_AcceptanceCondition.BEGIN_OF_STREAM:
+            result.append("pre=bos")
+        elif acc_condition_id == E_AcceptanceCondition.END_OF_STREAM:
+            result.append("pre=eos")
+        else: 
+            result.append(("pre=%s" % acc_condition_id).replace("L", ""))
+    return ", ".join(result)
+
+def E_AcceptanceConditionSet_corresponance(AC0, AC1):
+    for acc_condition_id in E_AcceptanceCondition:
+        if acc_condition_id in AC0 and acc_condition_id not in AC1:
+            return False
+        elif acc_condition_id in AC0 and acc_condition_id not in AC1:
+            return False
+    return True
 
 E_PostContextIDs = Enum("NONE", 
                         "IRRELEVANT",

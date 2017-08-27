@@ -13,6 +13,7 @@ enum_list = [ x for x in dir(constants) if x.startswith("E_") ]
 enum_db = dict(
     (enum_name, [ x for x in dir(constants.__dict__[enum_name]) if x[0] != "_" ])
     for enum_name in enum_list
+    if not enum_name.endswith("_string") and not enum_name.endswith("_corresponance")
 )
 
 for enum_name, value_list in enum_db.iteritems():

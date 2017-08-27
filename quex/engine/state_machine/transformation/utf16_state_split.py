@@ -36,7 +36,8 @@ sys.path.append(os.environ["QUEX_PATH"])
 from   quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 from   quex.engine.misc.utf16                               import utf16_to_unicode, \
                                                                    unicode_to_utf16
-from   quex.engine.misc.interval_handling                   import Interval, NumberSet, NumberSet_All
+from   quex.engine.misc.interval_handling                   import Interval, NumberSet, \
+                                                                   NumberSet_All
 from   quex.constants import INTEGER_MAX
 
 
@@ -46,7 +47,6 @@ class EncodingTrafoUTF16(EncodingTrafoBySplit):
     DEFAULT_LEXATOM_TYPE_SIZE = 2 # [Byte]
     UnchangedRange            = 0x10000
     def __init__(self):
-
         # A character in UTF16 is at maximum represented by two code units.
         # => Two error ranges.
         error_range_0 = NumberSet([
@@ -118,6 +118,11 @@ class EncodingTrafoUTF16(EncodingTrafoBySplit):
         # requires to cut on the addmissible set of code points.
         if LexatomTypeRange.end < 0x10000:
             self.source_set.mask(0, LexatomTypeRange.end)
+        else:
+            self.source_set.mask(0, 0x110000)
+        if LexatomTypeRange.end > 0x10000:
+            self._error_range_by_code_unit_db[0].unite_with(Interval(0x10000, LexatomTypeRange.end))
+            self._error_range_by_code_unit_db[1].unite_with(Interval(0x10000, LexatomTypeRange.end))
 
 def _get_contigous_intervals(X):
     """Split Unicode interval into intervals where all values

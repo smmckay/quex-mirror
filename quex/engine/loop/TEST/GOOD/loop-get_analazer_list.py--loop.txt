@@ -8,7 +8,7 @@ State 2:
  -- .transition_map:
     [0, 255]: DoorID(s=DROP_OUT, d=1)
 
-State 6:
+State 3:
   .entry:
     .from 1: 
     .from 4: 
@@ -21,24 +21,24 @@ State 4:
     .from 1: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=1)
-    [1, 127]: DoorID(s=6, d=0)
+    [1, 127]: DoorID(s=3, d=0)
     [128]: DoorID(s=2, d=0)
     [129, 191]: DoorID(s=DROP_OUT, d=0)
-    [192, 255]: DoorID(s=6, d=0)
+    [192, 255]: DoorID(s=3, d=0)
 
 State 1:
   .entry:
     .from REOAD_FORWARD: 
     .from BEFORE_ENTRY: 
-    .from 8: 
+    .from 6: 
  -- .transition_map:
     [0]: DoorID(s=RELOAD_FORWARD, d=0)
     [1, 127]: DoorID(s=DROP_OUT, d=0)
-    [128, 191]: DoorID(s=6, d=0)
+    [128, 191]: DoorID(s=3, d=0)
     [192, 215]: DoorID(s=DROP_OUT, d=0)
     [216]: DoorID(s=4, d=0)
     [217, 253]: DoorID(s=DROP_OUT, d=0)
-    [254, 255]: DoorID(s=6, d=0)
+    [254, 255]: DoorID(s=3, d=0)
 
 
 DoorID(s=DROP_OUT, d=0) => case Failure: pos = lexeme_start_p + 1;  goto Failure;

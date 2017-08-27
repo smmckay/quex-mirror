@@ -441,7 +441,7 @@ class TransitionMap(list):
             assert interval.begin >= prev_end, \
                    "tm: %s\n" % self.get_string() + \
                    "i: %i\n" % i + \
-                   "int,target: %s, %s\n" % (interval, target) + \
+                   "int,target:            %s, %s, %s\n" % (interval.begin, interval.end, target) + \
                    "prev_end, prev_target: %s, %s\n" % (prev_end, prev_target)
 
             if prev_end == interval.begin: 

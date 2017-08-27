@@ -75,8 +75,7 @@ from   quex.engine.operations.content_terminal_router     import RouterContent, 
                                                                  repr_position_register
 from   quex.engine.misc.tools import delete_if, typed
 from   quex.constants import E_Op, \
-                             E_R, \
-                             E_AcceptanceCondition
+                             E_R
 
 from   collections import namedtuple
 import types

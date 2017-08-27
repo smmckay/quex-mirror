@@ -1,3 +1,5 @@
+.. _sec:algebra-of-dfas:
+
 Algebra of DFAs
 ===============
 
@@ -6,8 +8,8 @@ state machines and properties that is equivalent to the algebra of sets.  In
 fact, the operations on DFAs directly correspond to set operations in the *set
 of lexemes* which they match. For example, the union of two DFAs is defined as
 an operation that produces a DFA which matches the union of the lexemes which
-are matched by the two operand DFAs.  Let the regular
-expressions P and Q be defined as below::
+are matched by the two operand DFAs.  Let the regular expressions P and Q be
+defined as below::
 
        P    [0-9]
        Q    fred

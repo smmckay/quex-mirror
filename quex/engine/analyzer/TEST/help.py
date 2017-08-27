@@ -58,12 +58,11 @@ def get_drop_out_string(analyzer, StateIndex):
     if_str = "if"
     for cmd in analyzer.drop_out.entry.get_command_list(E_StateIndices.DROP_OUT, StateIndex):
         if cmd.id == E_Op.IfPreContextSetPositionAndGoto:
-            if   E_AcceptanceCondition.BEGIN_OF_LINE in cmd.content.acceptance_condition_set: 
-                txt += "%s BeginOfLine: " % (if_str)
-            if E_AcceptanceCondition.BEGIN_OF_STREAM in cmd.content.acceptance_condition_set: 
-                txt += "%s BeginOfLine: " % (if_str)
             for acceptance_condition_id in cmd.content.acceptance_condition_set:
-                txt += "%s PreContext_%s: " % (if_str, acceptance_condition_id)
+                if acceptance_condition_id in E_AcceptanceCondition:
+                    txt += "%s %s: " % (if_str, acceptance_condition_id)
+                else:
+                    txt += "%s PreContext_%s: " % (if_str, acceptance_condition_id)
 
             if if_str == "if": if_str = "else if"
             txt += cmd.content.router_element.get_string() + "\n"

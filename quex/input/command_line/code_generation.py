@@ -1,8 +1,7 @@
 import quex.input.command_line.validation            as     validation
 from   quex.input.setup                              import global_character_type_db,  \
                                                             command_line_args_defined, \
-                                                            command_line_arg_position, \
-                                                            E_Files
+                                                            command_line_arg_position
 from   quex.input.files.token_type                   import TokenTypeDescriptorManual
 from   quex.input.files.token_id_file                import parse as token_id_file_parse
 from   quex.output.languages.core                    import db as output_language_db
@@ -16,7 +15,6 @@ from   quex.constants  import E_Compression
 from   operator import itemgetter
 import re
 import sys
-import os
 
 
 def prepare(command_line, argv):

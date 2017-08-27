@@ -96,7 +96,6 @@ from   quex.engine.misc.tree_walker                 import TreeWalker
 from   quex.engine.misc.tools                       import typed
 from   quex.engine.analyzer.paths_to_state          import PathsToState
 from   quex.constants                               import E_IncidenceIDs, \
-                                                           E_AcceptanceCondition, \
                                                            E_TransitionN
 
 from   itertools   import izip
@@ -387,8 +386,8 @@ class _Trace(object):
 
     def __acceptance_trace_add_at_front(self, Op, StateIndex):
         """Assume that the 'Op' belongs to a state with index 'StateIndex' that
-           comes after all states on the before considered path.
-           Assume that the 'Op' talks about 'acceptance'.
+        comes after all states on the path before considered path.  Assume that 
+        the 'Op' talks about 'acceptance'.
         """
         # If there is an unconditional acceptance, it dominates all previous 
         # occurred acceptances (philosophy of longest match).
@@ -718,11 +717,11 @@ class _AcceptInfo(_StoreInfo):
         path_since_positioning         = copy(self.path_since_positioning)
         transition_n_since_positioning = self.get_transition_n_since_positioning_update(StateIndex)
         path_since_positioning.append(StateIndex)
-        result = _AcceptInfo(self.acceptance_condition_set, 
-                            self.acceptance_id, 
-                            self.accepting_state_index, 
-                            path_since_positioning, 
-                            transition_n_since_positioning) 
+        result = _AcceptInfo(copy(self.acceptance_condition_set), 
+                             self.acceptance_id, 
+                             self.accepting_state_index, 
+                             path_since_positioning, 
+                             transition_n_since_positioning) 
         return result
 
     @property
@@ -730,8 +729,8 @@ class _AcceptInfo(_StoreInfo):
         return self.path_since_positioning[0]
 
     def is_equal(self, Other):
-        if   self.acceptance_condition_set                 != Other.acceptance_condition_set:                 return False
-        elif self.acceptance_id                     != Other.acceptance_id:                     return False
+        if   self.acceptance_condition_set       != Other.acceptance_condition_set:       return False
+        elif self.acceptance_id                  != Other.acceptance_id:                  return False
         elif self.accepting_state_index          != Other.accepting_state_index:          return False
         elif self.transition_n_since_positioning != Other.transition_n_since_positioning: return False
         elif self.positioning_state_index        != Other.positioning_state_index:        return False

@@ -21,7 +21,8 @@ def test_core(TestString):
 
     Setup.dos_carriage_return_newline_f = True
 
-    pattern = core.do(TestString, {}).finalize(None)
+    pattern_raw = core.do(TestString, {})
+    pattern     = pattern_raw.finalize(None)
     if pattern is None: 
         print "pattern syntax error"
     else:

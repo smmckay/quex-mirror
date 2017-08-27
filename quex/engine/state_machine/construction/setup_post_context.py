@@ -4,6 +4,7 @@ from   quex.engine.state_machine.core                   import DFA
 from   quex.engine.state_machine.state.single_entry     import SeAccept
 import quex.engine.state_machine.algorithm.beautifier   as     beautifier
 import quex.engine.state_machine.construction.ambiguous_post_context as     ambiguous_post_context
+import quex.engine.state_machine.construction.sequentialize          as     sequentialize
 
 from   quex.constants  import E_AcceptanceCondition
 from   quex.blackboard import setup as Setup
@@ -62,9 +63,8 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
     """
     __entry_asserts(dfa, post_context_dfa)
 
-    if post_context_dfa is None:
-        if EndOfLinePostContextF: 
-            post_context_dfa = DFA_Newline() 
+    if post_context_dfa is None: post_context_dfa = None
+    else:                        post_context_dfa = post_context_dfa.clone() 
 
     # A post context with an initial state that is acceptance is not really a
     # 'context' since it accepts anything. The state machine remains un-post context.
@@ -74,20 +74,29 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
                       SourceReference)
         post_context_dfa = None
 
+    if EndOfLinePostContextF: 
+        if post_context_dfa is None:
+            where_to_setup_eos_state_index_list = dfa.get_acceptance_state_index_list()
+            post_context_dfa                    = DFA_Newline() 
+        else:
+            where_to_setup_eos_state_index_list = post_context_dfa.get_acceptance_state_index_list()
+            post_context_dfa                    = sequentialize.do([post_context_dfa, 
+                                                                    DFA_Newline()],
+                                                                   MountToFirstStateMachineF=True)
+    else:
+        where_to_setup_eos_state_index_list = dfa.get_acceptance_state_index_list()
+
     if post_context_dfa is None:
-        if EndOfStreamPostContextF:
-            for state in dfa.get_acceptance_state_list():
-                state.set_acceptance_condition_id(E_AcceptanceCondition.END_OF_STREAM)
-        return dfa, None
+        # -- Solely 'End-Of-Stream' post contexts (done at end of function)
+        #
+        bipd_sm_to_be_inverted = None
     
-    # (*) Two ways of handling post-contexts:
-    #
-    #     -- Seldom Exception: 
-    #        Pseudo-Ambiguous Post Conditions (x+/x) -- detecting the end of the 
-    #        core pattern after the end of the post context
-    #        has been reached.
-    #
-    if ambiguous_post_context.detect_forward(dfa, post_context_dfa):
+    elif ambiguous_post_context.detect_forward(dfa, post_context_dfa):
+        # -- Seldom Exception: 
+        #    Pseudo-Ambiguous Post Conditions (x+/x) -- detecting the end of the 
+        #    core pattern after the end of the post context
+        #    has been reached.
+        #
         if ambiguous_post_context.detect_backward(dfa, post_context_dfa):
             # -- for post contexts that are forward and backward ambiguous
             #    a philosophical cut is necessary.
@@ -99,59 +108,55 @@ def _do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF,
         # NOTE: May be, dfa does contain now an epsilon transition. See
         #       comment at entry of this function.
         bipd_sm_to_be_inverted = ambiguous_post_context.mount(dfa, post_context_dfa)
-        dfa      = beautifier.do(dfa)
-        return dfa, bipd_sm_to_be_inverted
 
-    # -- The 'normal' way: storing the input position at the end of the core
-    #    pattern.
-    #
-    # (*) Need to clone the state machines, i.e. provide their internal
-    #     states with new ids, but the 'behavior' remains. This allows
-    #     state machines to appear twice, or being used in 'larger'
-    #     conglomerates.
-    post_clone = post_context_dfa.clone() 
+    else:
+        # -- The 'normal' way: storing the input position at the end of the core
+        #    pattern.
+        #
+        # (*) Need to clone the state machines, i.e. provide their internal
+        #     states with new ids, but the 'behavior' remains. This allows
+        #     state machines to appear twice, or being used in 'larger'
+        #     conglomerates.
 
-    # -- Once an acceptance state is reached no further analysis is necessary.
-    ## NO: acceptance_pruning.do(post_clone)
-    ## BECAUSE: it may have to compete with a pseudo-ambiguous post context
+        # (*) collect all transitions from both state machines into a single one
+        #
+        #     NOTE: The start index is unique. Therefore, one can assume that each
+        #           clone_list '.states' dictionary has different keys. One can simply
+        #           take over all transitions of a start index into the result without
+        #           considering interferences (see below)
+        #
+        orig_acceptance_state_id_list = dfa.get_acceptance_state_index_list()
 
-    # (*) collect all transitions from both state machines into a single one
-    #
-    #     NOTE: The start index is unique. Therefore, one can assume that each
-    #           clone_list '.states' dictionary has different keys. One can simply
-    #           take over all transitions of a start index into the result without
-    #           considering interferences (see below)
-    #
-    orig_acceptance_state_id_list = dfa.get_acceptance_state_index_list()
+        # -- mount on every acceptance state the initial state of the following state
+        #    machine via epsilon transition
+        dfa.mount_to_acceptance_states(post_context_dfa.init_state_index, 
+                                       CancelStartAcceptanceStateF=True)
 
-    # -- mount on every acceptance state the initial state of the following state
-    #    machine via epsilon transition
-    dfa.mount_to_acceptance_states(post_clone.init_state_index, 
-                                   CancelStartAcceptanceStateF=True)
 
-    for start_state_index, state in post_clone.states.iteritems():        
-        dfa.states[start_state_index] = state # states are already cloned
+        dfa.states.update(post_context_dfa.states) # states are already cloned
 
-    # -- raise at each old acceptance state the 'store input position flag'
-    # -- set the post context flag for all acceptance states
-    for state_idx in orig_acceptance_state_id_list:
-        state = dfa.states[state_idx]
-        state.set_read_position_store_f(True)
-    
-    # -- no acceptance state shall store the input position
-    # -- set the post context flag for all acceptance states
-    for state in dfa.get_acceptance_state_list():
-        state.set_read_position_store_f(False)
-        state.set_read_position_restore_f(True)
-
-    if EndOfStreamPostContextF:
+        # -- raise at each old acceptance state the 'store input position flag'
+        # -- set the post context flag for all acceptance states
         for state_idx in orig_acceptance_state_id_list:
             state = dfa.states[state_idx]
+            state.set_read_position_store_f(True)
+        
+        # -- no acceptance state shall store the input position
+        # -- set the post context flag for all acceptance states
+        for state in dfa.get_acceptance_state_list():
+            state.set_read_position_store_f(False)
+            state.set_read_position_restore_f(True)
+
+        bipd_sm_to_be_inverted = None
+
+    if EndOfStreamPostContextF:
+        for si in where_to_setup_eos_state_index_list:
+            state = dfa.states[si] 
             state.set_acceptance()
             state.set_acceptance_condition_id(E_AcceptanceCondition.END_OF_STREAM)
 
     # No input position backward search required
-    return beautifier.do(dfa), None
+    return beautifier.do(dfa), bipd_sm_to_be_inverted
 
 def DFA_Newline():
     """Creates a state machine matching newline according to what has been 

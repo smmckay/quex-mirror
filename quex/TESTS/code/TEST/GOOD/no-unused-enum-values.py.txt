@@ -2,6 +2,7 @@
 -- E_Border.BEGIN: No output is good output --
 -- E_IncidenceIDs.AFTER_MATCH: No output is good output --
 -- E_AcceptanceCondition.BEGIN_OF_LINE: No output is good output --
+-- E_Files.HEADER: No output is good output --
 -- E_PostContextIDs.IRRELEVANT: No output is good output --
 -- E_TransitionN.IRRELEVANT: No output is good output --
 -- E_Count.NONE: No output is good output --
@@ -15,3 +16,4 @@
 -- E_TerminalType.BAD_LEXATOM: No output is good output --
 -- E_TriggerIDs.NONE: No output is good output --
 <terminated>
+

@@ -1,19 +1,23 @@
-.. _sec:re-context-free:
+_sec:re-context-free:
 
 Context Free Regular Expressions
 ==================================
 
-Context free regular expressions match  against an input independent on what
-comes before or after it.  Pre- and post-contexts for pattern matching are
-explained in the subsequent section. All input files must be UTF8 encoded. The
-syntax of context-free regular expressions in many aspects identical to that of
-the popular tool 'lex' :cite:`Lesk1975lex`.
+Context free regular expressions match  against an input independent on the
+context of what preceeds or follows it.  The contrary, pre- and post-context
+dependent pattern matching is explained in the subsequent section.  The syntax
+of Quex's regular expressions is in many aspects identical to that of the popular
+tools 'lex' and 'flex' :cite:`Lesk1975lex`. Accordingly, the explanation of
+basic syntax follows the scheme of flex's man page.
 
 .. describe:: x 
 
      matches the character 'x'.  Characters match simply the character that
      they represent.  This is true, as long as those characters are not part of
-     the set of syntactic operators--such as ``.``, ``[``, and  ``]``.
+     the set of syntactic operators--such as ``.``, ``[``, and  ``]``. All
+     input files must be UTF8 encoded. Consequently, any byte sequence that
+     represents a Unicode character may be specified that way--as long as it does
+     not represent a syntactic operator.
 
 .. describe:: . 
 
@@ -54,36 +58,87 @@ the popular tool 'lex' :cite:`Lesk1975lex`.
 .. describe:: [^A-Z\\n]
 
      a "negated character class", i.e., any character but those in the class.
-     The ``^`` character indicates *negation* at this point.  This expression
-     matches any character *except* an uppercase letter or newline.
+     The ``^`` character indicates *negation* at this point.  The example
+     expression matches any character *except* any latin uppercase letter or
+     newline.
 
 .. describe:: "[xyz]\\"foo"
 
      matches the literal string: ``[xyz]"foo``.  Any character, that is not
      backslash or backslash proceeded is applied in its original sense. A ``[``
      stands for code point 91 (hex.  5B), matches against a ``[`` and does not
-     mean 'open character set'. Inside strings ANSI-C backslash-ed characters
-     ``\n``, ``\t``, etc. can be used. The quote can be specified by ``\"``.
+     mean 'open character set'. 
+     
+     Several characters inside a string may be specified by a preceeding
+     backslash. In particular the ANSI-C escape characters are available via
+     backslash, as they are `\\a`, `\\b`, `\\f`, `\\n`, `\\r`, `\\t`, `\\v`,
+     `\\\\`, and `\\"`. 
+     
      The Unicode property ``\N{...}`` is also available since it results in a
      *single character*. However, other operators such as ``\P{....}`` result
      in *character sets*. They cannot be used inside strings.
       
+.. describe:: \\a \\b \\f \\n \\r \\t \\v \\\\ \\"
+
+    the ANSI-C escape characters can also be applied outside a quoted string.
+
+.. describe:: \\+ \\* \\? \\/ \\: \\| \\$ \\^ \\- \\. \\[ \\] \\( \\) \\{ \\} 
+
+    that is, backslashed syntactic operators represent the syntactic operator's
+    character itself. For example `\\+` represents a '+' and does not trigger a
+    syntax operation.
+
+.. describe:: \\0 
+
+     a NULL character (ASCII/Unicode code point 0). This is to be used with
+     *extreme caution*!  The NULL character is also used a buffer delimiter!
+     See section :ref:`sec:formal-command-line-options` for specifying a different
+     value for the buffer limit code.
+
+.. describe:: \\U11A0FF 
+
+     the character with hexadecimal value 11A0FF. A maximum of *six*
+     hexadecimal digits can be specified.  Hexadecimal numbers with less than
+     six digits must either be followed by a non-hex-digit, a delimiter such as
+     ``"``, ``[``, or ``(``, or specified with leading zeroes (i.e. use
+     \\U00071F, for hexadecimal 71F). The latter choice is probably the best
+     candidate for an 'established habit'. Hexadecimal may can contain be
+     uppercase or lowercase letters from A to F.
+
+.. describe:: \\X7A27 
+
+     the character with hexadecimal value 7A27. A maximum of *four* hexadecimal
+     digits can be specified. The delimiting rules are are analogous to the
+     rules for `\U`. 
+
+.. describe:: \\x27 
+
+    the character with hexadecimal value 27. A maximum of *two* hexadecimal
+    digits can be specified. The delimiting rules are are analogous to the
+    rules for `\U`. 
+
+.. describe:: \\123 
+
+    the character with octal value 123, a maximum of three digits less than 8
+    can follow the backslash. The delimiting rules are analogous to the rules
+    for `\U`. 
+
 .. describe:: \\C{ R } or \\C(flags){ R }
 
-     Applies case folding for the given regular expression or character set 'R'.
-     This basically provides a shorthand for writing regular expressions that
-     need to map upper and lower case patterns, i.e.::
+    Applies case folding for the given regular expression or character set 'R'.
+    This basically provides a shorthand for writing regular expressions that
+    need to map upper and lower case patterns, i.e.::
 
            \C{select} 
 
-     matches for example:: 
+    matches for example:: 
 
            "SELECT", "select", "sElEcT", ...
 
-     The expression ``R`` passed to the case folding operation needs to fit 
-     the environment in which it was called. If the case folding is applied
-     in a character set expression, then its content must be a character
-     set expression, i.e.::
+    The expression ``R`` passed to the case folding operation needs to fit 
+    the environment in which it was called. If the case folding is applied
+    in a character set expression, then its content must be a character
+    set expression, i.e.::
 
                [:\C{[:union([a-z], [ﬀİ]):]}:]   // correct
                [:\C{[a-z]}:]                    // correct
@@ -151,52 +206,11 @@ the popular tool 'lex' :cite:`Lesk1975lex`.
 
             \R{dlroW} => QUEX_TKN_WORD(Lexeme)
 
-     then the token ``WORLD`` would be sent upon the appearance of 'World' in
+     then the token ``WORLD`` is sent upon the appearance of 'World' in
      the input stream. This feature is mainly useful for definitions of
      patterns of right-to-left writing systems such as Arabic, Binti and
      Hebrew. Chinese, Japanese, as well as ancient Greek, ancient Latin,
      Egyptian, and Etruscan can be written in both directions.
-
-
-.. describe:: \\0 
-
-     a NULL character (ASCII/Unicode code point 0). This is to be used with
-     *extreme caution*!  The NULL character is also used a buffer delimiter!
-     See section :ref:`sec:formal-command-line-options` for specifying a different
-     value for the buffer limit code.
-
-.. describe:: \\U11A0FF 
-
-     the character with hexadecimal value 11A0FF. A maximum of *six*
-     hexadecimal digits can be specified.  Hexadecimal numbers with less than
-     six digits must either be followed by a non-hex-digit, a delimiter such as
-     ``"``, ``[``, or ``(``, or specified with leading zeroes (i.e. use
-     \\U00071F, for hexadecimal 71F). The latter choice is probably the best
-     candidate for an 'established habit'. Hexadecimal may can contain be
-     uppercase or lowercase letters from A to F.
-
-.. describe:: \\X7A27 
-
-     the character with hexadecimal value 7A27. A maximum of *four* hexadecimal
-     digits can be specified. The delimiting rules are are analogous to the
-     rules for `\U`. 
-
-.. describe:: \\x27 
-
-    the character with hexadecimal value 27. A maximum of *two* hexadecimal
-    digits can be specified. The delimiting rules are are analogous to the
-    rules for `\U`. 
-
-.. describe:: \\123 
-
-    the character with octal value 123, a maximum of three digits less than 8
-    can follow the backslash. The delimiting rules are analogous to the rules
-    for `\U`. 
-
-
-.. describe:: \\a, \\b, \\f, \\n, \\r, \\t, \\r, or \\v
-
-    the ANSI-C interpretation of the backslash-ed character.
 
 .. describe:: \\P{ Unicode Property Expression }
 
@@ -323,11 +337,11 @@ regular expressions.
 
 *Sanity*
 
-This section presented a short summary on regular expression syntax. While
-the following sections go into more detail, they also provide more powerful
-means to model the matching behavior. However, with these operations it
-becomes more challenging to define the exact desired regular expression.
-In particular, patterns may be *admissible* and *inadmissible*.
+The previous section presented a short summary on regular expression syntax.
+While the following sections go into more detail, they also provide more
+powerful means to model the matching behavior. However, with these operations
+it becomes more challenging to define the exact desired regular expression.  In
+particular, patterns may be *admissible* and *inadmissible*.
 
 An *inadmissible* pattern has one ore more of the following properties.
 
@@ -338,12 +352,12 @@ An *inadmissible* pattern has one ore more of the following properties.
       be related to a reaction.
 
 Any pattern which is not *inadmissible* in the above sense is *admissible*.
-Whenever an inadmissible pattern is detected, an error is reported. Any pattern
-that is not inadmissible is admissible. However, even for admissible patterns
-there remains an issue with *sanity*. If a pattern contains a state that
-iterates on any lexatom to itself, then this state would eat anything until the
-end of input. As a shorthand to transform any pattern into a *sane* pattern the
-following command may be used.
+Any pattern that is not inadmissible is admissible. Whenever an inadmissible
+pattern is detected, an error is reported. However, even for admissible
+patterns there remains an issue with *sanity*. If a pattern contains a state
+that iterates on any lexatom to itself, then this state would eat anything
+until the end of input. As a shorthand to transform any pattern into a *sane*
+pattern the following command may be used.
 
 .. describe:: \\Sanitize{P}
 
@@ -357,7 +371,8 @@ following command may be used.
  graphs. It is advisable to print graphs for the sanitized state machine
  in order to see whether it conforms the expectations.
 
- Notably, this command cannot sanitize patterns that do not accept anything
- or accept everything as discussed in the frame of DFA algebra.
+ Notably, this command cannot sanitize patterns that do not accept anything or
+ accept everything. This subject is discussed further in the section on on DFA
+ Algebra (section :ref:`sec:algebra-of-dfas`).
 
 

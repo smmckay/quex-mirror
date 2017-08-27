@@ -39,7 +39,7 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
             # Set acceptance condition: 'begin of line'.
             for state in the_state_machine.get_acceptance_state_list():
                 state.set_acceptance_condition_id(E_AcceptanceCondition.BEGIN_OF_LINE)
-        elif BeginOfStreamPreContextF:
+        if BeginOfStreamPreContextF:
             # Set acceptance condition: 'begin of stream'.
             for state in the_state_machine.get_acceptance_state_list():
                 state.set_acceptance_condition_id(E_AcceptanceCondition.BEGIN_OF_STREAM)

@@ -2,6 +2,7 @@ from   quex.input.code.base                        import SourceRef
 from   quex.engine.state_machine.core              import DFA
 from   quex.engine.state_machine.character_counter import SmLineColumnCountInfo
 from   quex.engine.misc.tools                      import typed
+from   quex.constants                              import E_AcceptanceCondition
 
 class Pattern:
     """ALL STATE MACHINES ARE GIVEN IN THE CODEC OF 'Setup.buffer_encoding'!
@@ -56,17 +57,6 @@ class Pattern:
         return    self.sm_pre_context is not None \
                or self.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE) \
                or self.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM)
-
-    def has_post_context_end_of_stream_f(self):
-        return self.sm.has_acceptance_condition(E_AcceptanceCondition.END_OF_STREAM)
-
-    def has_pre_context_begin_of_line_f(self):
-        return self.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE)
-
-    def has_pre_context_begin_of_stream_f(self):
-        # 'begin of line' includes 'begin of stream'.
-        if self.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_LINE): return True
-        return self.sm.has_acceptance_condition(E_AcceptanceCondition.BEGIN_OF_STREAM)
 
     def clone_with_new_incidence_id(self, NewIncidenceId=None, PatternString=None):
         """Nothing needs to be done, except the main pattern must be associated

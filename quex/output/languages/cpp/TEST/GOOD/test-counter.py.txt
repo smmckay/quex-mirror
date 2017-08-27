@@ -1,141 +1,169 @@
-## gcc -Wall -Werror -I. -ggdb ./data/check.c ./data/test.c  -DQUEX_OPTION_COUNTER -DDEF_COUNTER_FUNCTION='QUEX_NAME(TEST_MODE_counter)'  -DDEF_FILE_NAME='"data/input.txt"'  -DDEF_CHARACTER_TYPE=uint8_t  -o test
+## gcc -Wall -Werror -I. -ggdb ./data/check.c ./data/test.c  -DQUEX_OPTION_COUNTER -DDEF_COUNTER_FUNCTION='QUEX_NAME(TEST_MODE_counter)'  -DDEF_FILE_NAME='"data/input.txt"'  -DDEF_CHARACTER_TYPE=uint8_t -o test
 -------------------------------------------------
-( 0) Test String: []
+( 0) Test String (template): []
+## 
 
 column_n:  1;
 line_n:    1;
 -------------------------------------------------
-( 1) Test String: [a]
+( 1) Test String (template): [a]
+## ا
 
 column_n:  2;
 line_n:    1;
 -------------------------------------------------
-( 2) Test String: [ab]
+( 2) Test String (template): [ab]
+## اب
 
 column_n:  3;
 line_n:    1;
 -------------------------------------------------
-( 3) Test String: [abc]
+( 3) Test String (template): [abc]
+## ابت
 
 column_n:  4;
 line_n:    1;
 -------------------------------------------------
-( 4) Test String: [abcd]
+( 4) Test String (template): [abcd]
+## ابتى
 
 column_n:  5;
 line_n:    1;
 -------------------------------------------------
-( 5) Test String: [\t]
+( 5) Test String (template): [\t]
+## \t
 
 column_n:  5;
 line_n:    1;
 -------------------------------------------------
-( 6) Test String: [a\t]
+( 6) Test String (template): [a\t]
+## ا\t
 
 column_n:  5;
 line_n:    1;
 -------------------------------------------------
-( 7) Test String: [ab\t]
+( 7) Test String (template): [ab\t]
+## اب\t
 
 column_n:  5;
 line_n:    1;
 -------------------------------------------------
-( 8) Test String: [abc\t]
+( 8) Test String (template): [abc\t]
+## ابت\t
 
 column_n:  5;
 line_n:    1;
 -------------------------------------------------
-( 9) Test String: [abcd\t]
+( 9) Test String (template): [abcd\t]
+## ابتى\t
 
 column_n:  9;
 line_n:    1;
 -------------------------------------------------
-(10) Test String: [\t]
+(10) Test String (template): [\t]
+## \t
 
 column_n:  5;
 line_n:    1;
 -------------------------------------------------
-(11) Test String: [a\ta]
+(11) Test String (template): [a\ta]
+## ا\tا
 
 column_n:  6;
 line_n:    1;
 -------------------------------------------------
-(12) Test String: [ab\ta]
+(12) Test String (template): [ab\ta]
+## اب\tا
 
 column_n:  6;
 line_n:    1;
 -------------------------------------------------
-(13) Test String: [abc\ta]
+(13) Test String (template): [abc\ta]
+## ابت\tا
 
 column_n:  6;
 line_n:    1;
 -------------------------------------------------
-(14) Test String: [abcd\ta]
+(14) Test String (template): [abcd\ta]
+## ابتى\tا
 
 column_n:  10;
 line_n:    1;
 -------------------------------------------------
-(15) Test String: [\n]
+(15) Test String (template): [\n]
+## \n
 
 column_n:  1;
 line_n:    2;
 -------------------------------------------------
-(16) Test String: [a\n]
+(16) Test String (template): [a\n]
+## ا\n
 
 column_n:  1;
 line_n:    2;
 -------------------------------------------------
-(17) Test String: [\na]
+(17) Test String (template): [\na]
+## \nا
 
 column_n:  2;
 line_n:    2;
 -------------------------------------------------
-(18) Test String: [b\nb]
+(18) Test String (template): [b\nb]
+## ب\nب
 
 column_n:  2;
 line_n:    2;
 -------------------------------------------------
-(19) Test String: [c\nc]
+(19) Test String (template): [c\nc]
+## ت\nت
 
 column_n:  2;
 line_n:    2;
 -------------------------------------------------
-(20) Test String: [\t\n]
+(20) Test String (template): [\t\n]
+## \t\n
 
 column_n:  1;
 line_n:    2;
 -------------------------------------------------
-(21) Test String: [\n\t]
+(21) Test String (template): [\n\t]
+## \n\t
 
 column_n:  5;
 line_n:    2;
 -------------------------------------------------
-(22) Test String: [\t\n\t]
+(22) Test String (template): [\t\n\t]
+## \t\n\t
 
 column_n:  5;
 line_n:    2;
 -------------------------------------------------
-(23) Test String: [\t\n\t]
+(23) Test String (template): [\t\n\t]
+## \t\n\t
 
 column_n:  5;
 line_n:    2;
 -------------------------------------------------
-(24) Test String: [\t\na]
+(24) Test String (template): [\t\na]
+## \t\nا
 
 column_n:  2;
 line_n:    2;
 -------------------------------------------------
-(25) Test String: [\n\tb]
+(25) Test String (template): [\n\tb]
+## \n\tب
 
 column_n:  6;
 line_n:    2;
 -------------------------------------------------
-(26) Test String: [\t\n\tc]
+(26) Test String (template): [\t\n\tc]
+## \t\n\tت
 
 column_n:  6;
 line_n:    2;
 -------------------------------------------------
-(27) Test String: [\t\n\td]
+(27) Test String (template): [\t\n\td]
+## \t\n\tى
 
 column_n:  6;
 line_n:    2;

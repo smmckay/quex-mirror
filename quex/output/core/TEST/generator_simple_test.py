@@ -217,8 +217,8 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
            + "".join(function_txt)
 
 test_program_common_declarations = """
-#define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 #define __QUEX_OPTION_UNIT_TEST
+#define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 #define QUEX_TYPE_LEXATOM unsigned char
 
 $$__QUEX_OPTION_PLAIN_C$$

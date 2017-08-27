@@ -39,6 +39,16 @@ class EncodingTrafoUTF8(EncodingTrafoBySplit):
                                       error_range_by_code_unit_db)
         self.UnchangedRange = 0x7F
 
+    def adapt_ranges_to_lexatom_type_range(self, LexatomTypeRange):
+        self._adapt_error_ranges_to_lexatom_type_range(LexatomTypeRange)
+        # UTF16 requires at least 2 byte for a 'normal code unit'. Anything else
+        # requires to cut on the addmissible set of code points.
+        self.source_set.mask(0, 0x110000)
+
+        if LexatomTypeRange.end > 0x100:
+            for error_range in self._error_range_by_code_unit_db.itervalues():
+                error_range.unite_with(Interval(0x100, LexatomTypeRange.end))
+
     def cut_forbidden_range(self, X):
         """Cuts the 'forbidden range' from the given number set.
 

@@ -37,7 +37,6 @@ dial_db = DialDB()
 Setup.language_db = languages.db["C++"]()
 Setup.buffer_setup("uint32_t", 4, "none")
 
-
 if "--hwut-info" in sys.argv:
     print "Single DFA_State: Transition Code Generation;"
     print "CHOICES: A, B, C, A-UTF8, B-UTF8, C-UTF8;"
@@ -125,9 +124,10 @@ def prepare(tm):
 
 def get_transition_function(iid_map, Codec):
     global dial_db
-    if Codec == "UTF8": Setup.buffer_setup("uint8_t", 1, "utf8")
+    if Codec == "UTF8": Setup.buffer_setup("uint8_t", 1,  "utf8")
     else:               Setup.buffer_setup("uint32_t", 4, "unicode")
 
+    Setup.bad_lexatom_detection_f = False
     sm        = DFA.from_IncidenceIdMap(iid_map)
     dummy, sm = Setup.buffer_encoding.do_state_machine(sm,
                                                        BadLexatomDetectionF=Setup.bad_lexatom_detection_f)
@@ -206,6 +206,7 @@ $$ENTRY_LIST$$
     printf("Intervals:  %i\\n", (int)(iterator - &db[0]));
     printf("Characters: %i\\n", (int)unicode_input);
     printf("Oll Korrekt\\n");
+    return 0;
 }
 
 int 
@@ -289,7 +290,7 @@ fh.write("".join(txt))
 fh.close()
 try:    os.remove("./test")
 except: pass
-os.system("gcc -I$QUEX_PATH -Wall -Werror test.c -o test -ggdb")
+os.system("gcc -I$QUEX_PATH -Wall -Werror test.c -o test -ggdb -std=c89")
 os.system("./test")
 
 if True:

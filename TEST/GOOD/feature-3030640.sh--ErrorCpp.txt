@@ -1,4 +1,5 @@
 command line: File extension scheme 'foo' is not provided for language 'C++'.
-command line: Available schemes are: '', '++', 'pp', 'xx', 'cc'.
+command line: Available schemes are: '', '++', 'cc', 'pp', 'xx'.
 ||||
+
 ||||

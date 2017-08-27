@@ -190,8 +190,12 @@ def print_this(TheAnalyzer):
                 txt += "    (*) "
             else: 
                 txt += "        "
-            for acceptance_condition_id in x.acceptance_condition_set:
-                txt += "[%7s]: %s/%s\n" % (x.acceptance_id, acceptance_condition_id, 
+            if not x.acceptance_condition_set:
+                txt += "[%7s]: %s/%s\n" % (x.acceptance_id, "NONE", 
                                            x.positioning_state_index_set)
+            else:
+                for acceptance_condition_id in x.acceptance_condition_set:
+                    txt += "[%7s]: %s/%s\n" % (x.acceptance_id, acceptance_condition_id, 
+                                               x.positioning_state_index_set)
         print txt
 

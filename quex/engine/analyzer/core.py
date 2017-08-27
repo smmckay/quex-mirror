@@ -60,7 +60,6 @@ from   quex.engine.misc.tools                            import typed
 from   quex.blackboard  import setup as Setup
 from   quex.constants   import E_IncidenceIDs, \
                                E_TransitionN, \
-                               E_AcceptanceCondition, \
                                E_Op, \
                                E_R, \
                                E_StateIndices

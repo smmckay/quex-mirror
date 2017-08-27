@@ -347,8 +347,8 @@ def create_common_declarations(Language, QuexBufferSize,
     txt += "#    define QUEX_SETTING_BUFFER_SIZE  %s\n" % QuexBufferSize
 
     # Parameterize the common declarations
-    txt += "#define   __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n"
     # txt += "#define QUEX_TYPE_LEXATOM unsigned char\n" 
+    txt += "#define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n" 
     txt += "#define __QUEX_OPTION_UNIT_TEST\n" 
 
     txt += test_program_common_declarations.replace("$$BUFFER_FALLBACK_N$$", 

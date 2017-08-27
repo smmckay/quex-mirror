@@ -76,8 +76,7 @@ good_sequences = [
 ]
 
 trafo = EncodingTrafoUTF16()
-Setup.buffer_setup("none", 2, "utf16")
-trafo.adapt_ranges_to_lexatom_type_range(Setup.lexatom.type_range)
+Setup.buffer_setup("none", 4, "utf16")
 sm = helper.generate_sm_for_boarders(boarders, EncodingTrafoUTF16())
 
 bad_sequence_list = helper.get_bad_sequences(good_sequences, bad_1st_s, bad_2nd_s)
@@ -88,14 +87,14 @@ if True:
 
 else:
     # Check on isolated sequence (debugging)
-    sequence = [ 0x80, 0x80 ]
+    sequence = [ 0xD800, 0x11000 ]
     si       = sm.init_state_index
-    print "#si:", si, sm.states[si]
+    print "#si:", si, sm.states[si].get_string(Option="hex")
     for lexatom in sequence:
-        print "#tm:", sm.states[si].target_map
+        print "#tm:", sm.states[si].target_map.get_string("", None, Option="hex")
         si = sm.states[si].target_map.get_resulting_target_state_index(lexatom)
         if si is None: break
-        print "#si:", si, sm.states[si]
+        print "#si:", si, sm.states[si].get_string(Option="hex")
 
 
 # helper.show_graphviz(sm)

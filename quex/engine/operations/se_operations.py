@@ -9,6 +9,7 @@ commands of multi-entry state machines.
 from quex.engine.misc.tools import typed
 
 from quex.constants import E_AcceptanceCondition, \
+                           E_AcceptanceConditionSet_string, \
                            E_IncidenceIDs, \
                            E_PostContextIDs, \
                            E_R
@@ -132,15 +133,8 @@ class SeAccept(SeOp):
         restore_txt       = ""
         if self.acceptance_id() != E_IncidenceIDs.MATCH_FAILURE:
             acceptance_id_txt = repr(self.acceptance_id()).replace("L", "")
-        if self.__acceptance_condition_set:            
-            if   E_AcceptanceCondition.BEGIN_OF_LINE   in self.__acceptance_condition_set:
-                pre_txt = "pre=bol"
-            elif E_AcceptanceCondition.BEGIN_OF_STREAM in self.__acceptance_condition_set:
-                pre_txt = "pre=bol"
-            else: 
-                acc_condition_str = ", ".join("%s" % ac for ac in self.__acceptance_condition_set)
-                if acc_condition_str:
-                    pre_txt = "pre=%s" % acc_condition_str.replace("L", "")
+
+        pre_txt = E_AcceptanceConditionSet_string(self.__acceptance_condition_set)
 
         if self.__restore_position_register_f: 
             restore_txt = self._string_annotate("R")

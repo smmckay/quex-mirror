@@ -60,7 +60,7 @@ class Pattern_Prep(object):
         self.__post_context_sm              = PostContextSM
         self.__post_context_end_of_line_f   = EndOfLineF
         # EndOfLine shall encompass EndOfStreamF
-        self.__post_context_end_of_stream_f = EndOfStreamF | EndOfLineF
+        self.__post_context_end_of_stream_f = EndOfStreamF 
 
         # -- [optional] pre contexts
         #

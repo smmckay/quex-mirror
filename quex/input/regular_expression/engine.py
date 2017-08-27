@@ -109,8 +109,9 @@ def do(UTF8_String_or_Stream, PatternDict,
     # -- check for the begin of line condition (BOL)
     begin_of_line_f   = check(stream, '^')
     begin_of_stream_f = check(stream, '<<BOS>>')
-    if begin_of_stream_f:
-        skip_whitespace(stream)
+    if begin_of_stream_f: skip_whitespace(stream)
+
+    if begin_of_line_f: begin_of_stream_f = True
     
     # -- MAIN: transform the pattern into a state machine
     pre, core, post = snap_conditional_expression(stream, PatternDict)
@@ -124,11 +125,10 @@ def do(UTF8_String_or_Stream, PatternDict,
     end_of_line_f   = check(stream, "$")
     end_of_stream_f = check(stream, "<<EOS>>")
 
+    if end_of_line_f: end_of_stream_f = True
+
     __error_check(begin_of_line_f, begin_of_stream_f, pre, stream, "pre-context")
     __error_check(end_of_line_f, end_of_stream_f, post, stream, "post-context")
-    if end_of_stream_f and post is not None:
-        error.log("The shorthand '$' or '<<EOS>>' cannot be specified with regular expression\n"
-                  "post context.", stream)
 
     __ensure_whitespace_follows(initial_position, stream)
     
@@ -540,17 +540,6 @@ def snap_complement(stream, PatternDict):
         tmp = union.do(pattern_list)
     return complement.do(tmp)
 
-def snap_tie(stream, PatternDict):
-    assert False, "Not yet implemented"
-    #result = snap_curly_bracketed_expression(stream, PatternDict, "Tie operator", "Tie")
-    #return tie.do(result)
-
-def snap_untie(stream, PatternDict):
-    assert False, "Not yet implemented"
-    # result = snap_curly_bracketed_expression(stream, PatternDict, "Tie operator", "Tie")
-    # result = snap_curly_bracketed_expression(stream, PatternDict, "Untie operator", "Untie")
-    # return tie.do(result)
-
 def snap_union(stream, PatternDict):
     pattern_list = snap_curly_bracketed_expression(stream, PatternDict, "union operator", "Union", 
                                                    MinN=2, MaxN=INTEGER_MAX)
@@ -560,14 +549,6 @@ def snap_intersection(stream, PatternDict):
     pattern_list = snap_curly_bracketed_expression(stream, PatternDict, "intersection operator", "Intersection", 
                                                    MinN=2, MaxN=INTEGER_MAX)
     return intersection.do(pattern_list)
-
-def snap_not_in(stream, PatternDict):
-    sm_list = snap_curly_bracketed_expression(stream, PatternDict, "not-in operator", "NotIn", 
-                                              MinN=2, MaxN=INTEGER_MAX)
-    if len(sm_list) == 2:
-        return complement_in.do(sm_list[0], sm_list[1])
-    else:
-        return complement_in.do(sm_list[0], union.do(sm_list[1:]))
 
 def snap_not_begin(stream, PatternDict):
     sm_list = snap_curly_bracketed_expression(stream, PatternDict, "not-begin operator", "NotBegin", 
@@ -657,22 +638,23 @@ CommandDB = sorted([
    # Note, that there are backlashed elements that may appear also in strings.
    # \a, \X, ... those are not treated here. They are treated in 
    # 'snap_backslashed_character()'.
-   ("A",            snap_anti_pattern),          # OK
-   ("Sanitize",     snap_sanitizer),             # 
-   ("Any",          snap_any),                   # OK
    ("C",            snap_case_folded_pattern),   # OK
-   ("Diff",         snap_difference),            # OK
+   #
    ("Intersection", snap_intersection),          # OK
-   ("None",         snap_none),                  # OK
+   ("Union",        snap_union),                 # OK
    ("Not",          snap_complement),            # OK
-   ("NotIn",        snap_not_in),                # OK
+   ("Diff",         snap_difference),            # OK
+   ("SymDiff",      snap_symmetric_difference),  # OK
+   #
+   ("Any",          snap_any),                   # OK
+   ("None",         snap_none),                  # OK
+   ("Sanitize",     snap_sanitizer),             # 
+   ("A",            snap_anti_pattern),          # OK
+   #
    ("NotBegin",     snap_not_begin),             # OK
    ("NotEnd",       snap_not_end),               # OK
    ("R",            snap_reverse),               # OK
-   ("SymDiff",      snap_symmetric_difference),  # OK
-   ("Tie",          snap_tie),                   # OK 'repeat'
-   ("Union",        snap_union),                 # OK
-   ("Untie",        snap_untie),                 # OK 'untie the repetition'
+
    # Sort by length (longest first), then sort by name
 ], key=lambda x: (-len(x[0]), x[0]))
 

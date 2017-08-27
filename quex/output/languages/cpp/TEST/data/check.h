@@ -31,6 +31,7 @@ typedef struct {
 #else
 #   define __quex_debug(X) 
 #   define __quex_debug_state(X)
+#   define __quex_debug_init_state(X)
 #   define __quex_debug_drop_out(X)
 #endif
 #define __quex_assert(X)   assert(X)

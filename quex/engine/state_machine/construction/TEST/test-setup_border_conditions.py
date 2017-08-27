@@ -25,6 +25,7 @@ if "--hwut-info" in sys.argv:
 
 
 def test(Idx, sm_pre, sm, sm_post, BOL_F, EOL_F):    
+    ## if Idx != 5: return
     result = sm.clone()
     print "##-- %i -----------------------------------------------------------------------" % Idx
 

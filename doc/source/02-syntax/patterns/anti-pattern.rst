@@ -6,12 +6,12 @@ The Anti-Pattern
     The 'anti-pattern' of a pattern ``P`` is the sanitized complement, i.e.
     the result of ``\Sanitize{\Not{P}}``. 
     
-The complement operation alone generates patterns with acceptance on the
-zero-length lexeme and iterations on arbitrary lexatoms. The sanitization of
-the complement delivers a pattern that behaves as follows.  For a given pattern
-`P` that matches a set of lexemes `L`, the anti-pattern ``\A{P}`` matches any
-lexeme which is not in `L` but is at most one lexatom longer than any lexeme in
-`L`.
+The complement operation ``\Not{...}`` alone generates patterns with acceptance
+on the zero-length lexeme and iterations on arbitrary lexatoms. The
+sanitization of the complement delivers a pattern that behaves as follows.  For
+a given pattern `P` that matches a set of lexemes `L`, the anti-pattern
+``\A{P}`` matches any lexeme which is not in `L` but is at most one lexatom
+longer than any lexeme in `L`.
 
  .. _fig-anti-pattern-0:
 
@@ -39,10 +39,10 @@ should not be imposed to early. For example,::
 
     \Intersection{\A{print} [a-z]+}
 
-will not match against any identifier except ``print``. It will only match
-against those which are not ``print`` and no longer than six lexatoms. To 
-achieve the probably desired behavior, the sanitization must be applied
-explicitly to the final expression.::
+does not match any identifier except ``print``. It will only match against
+those which are not ``print`` and no longer than six lexatoms. To achieve the
+probably desired behavior, the sanitization must be applied explicitly to the
+final expression.::
 
     \Sanitize{\Intersection{\Not{print} [a-z]+}}
 

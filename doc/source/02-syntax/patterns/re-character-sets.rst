@@ -1,17 +1,16 @@
-
 .. _sec:re-character-sets:
 
 Character Set Expressions
 ==========================
 
 Character set expressions are a tool to combine, filter and or select character
-ranges conveniently. A resulting set of characters can then be used to express
-that any of them may occur at a given position of the input stream. The
-character set expression ``[:alpha:]``, for example matches all characters that
-are letters, i.e. anything from `a` to `z` and `A` to `Z`. It belongs to the
-POSIX bracket expressions :ref:`Burns2001real` which are explained below.
-Further, this section explains how sets can be generated from other sets via
-the operations *union*, *intersection*, *difference*, and *complement*.
+ranges conveniently. A resulting set of characters expresses that if any
+character of that set appears in the input, it causes a *match*. The character
+set expression ``[:alpha:]``, for example matches all characters that are
+letters, i.e.  anything from `a` to `z` and `A` to `Z`. It belongs to the POSIX
+bracket expressions :ref:`Burns2001real` which are explained below.  Further,
+this section explains how sets can be generated from other sets via the
+operations *union*, *intersection*, *difference*, and *complement*.
 
 POSIX bracket expressions are basically shortcuts for some more regular
 expressions that would formally look a bit more clumsy. The expressions and
@@ -45,10 +44,9 @@ expressions as explained in section :ref:`sec:ucs-properties`. In particular,
 it is advisable to use ``\P{ID_Start}``, ``\P{ID_Continue}``,
 ``\P{Hex_Digit}``, ``\P{White_Space}``, and ``\G{Nd}``.
 
-Character sets do not relate to state machines such as patterns do.
-Nevertheless, they might be defined and expanded in ``define`` sections the
-same way as regular expressions. Character set operations may then be applied
-to sequentially described complex set descriptions. The available operations
+Character sets can be defined and expanded in ``define`` sections the same way
+as regular expressions. Character set operations may then be applied to
+sequentially described complex set descriptions. The available operations
 correspond to those of *algebra of sets* :cite:`Quine1969set` and are listed in
 table :ref:`table:character-set-operations`.
 
@@ -65,22 +63,26 @@ table :ref:`table:character-set-operations`.
     ``difference(A, B0, B1, ...)``    ``difference([0-9], [4-5]) = [0-36-9]``
     ===============================  =====================================================
 
-A ``union`` expression allows to create the union of all sets mentioned inside
-the brackets.  The ``intersection`` expression results in the intersection of
-all sets mentioned. The ``complement`` function builds the complementary set. That
-is, the result is the set of characters which are not in the given set but in
-the set of the currently considered encoding.  The difference between one set
-and another can be computed via the ``difference`` function. Contrary to the
-``union`` and ``intersection`` expressions, the arguments to ``difference`` may
-not be listed arbitrarily-- ``difference(A, B)`` is not equal to
-``difference(B, A)``.  The ``difference`` determines the difference between the
-first mentioned set and all following arguments.  This is for the sake of
-convenience, so that one has to build the union first and then subtract it.
+A ``union`` expression generates the union of all sets mentioned inside the
+brackets.  An ``intersection`` expression results in the intersection of all
+sets mentioned. The ``complement`` builds the complementary set of the union of
+all mentioned sets. That is, the result is a set of characters which do not
+occur in any the given set.  The difference between one set and another can be
+computed via the ``difference`` function. Contrary to the ``union`` and
+``intersection`` expressions, the arguments to ``difference`` may not be listed
+arbitrarily-- ``difference(A, B)`` is not equal to ``difference(B, A)``.  The
+``difference`` determines the difference between the first mentioned set and
+all following arguments.  
+
+At first glance, it seems unnatural to allow list of arbitrary size as
+arguments to ``complement`` and ``difference``. This choice, though, has been
+made for the sake of convenience, to spare the user a ``union`` expression,
+in case that multiple sets are concerned.
 
 .. note::
 
     The ``difference`` and ``intersection`` operation can be used conveniently
-    to filter different sets. For example
+    for filtering. For example
 
     .. code-block:: cpp
 
@@ -96,9 +98,9 @@ convenience, so that one has to build the union first and then subtract it.
 
 The result of character set expressions is not always easy to foresee. Quex,
 however, provides a command line functionality to display the results of
-regular expressions. For example, giving the following command line displays
-what characters remain if the numbers and lowercase letters are taken out of
-the set of Greek letters.
+regular expressions. For example, the following command line displays what
+characters remain if the numbers and lowercase letters are taken out of the set
+of Greek letters.
 
 .. code-block:: bash
 

@@ -19,9 +19,9 @@ Properties* database [#f1]_.
     expressions in a clear fashion. 
     
     The usage of references can be applied to the extend that modes only
-    contain references to regular expressions. Thus, the pattern-action pairs
-    become very readable.  An example usage of definition and references may be
-    seen below for the patterns ``WHITESPACE`` and ``IDENTIFIER``.
+    contain references to regular expressions. As a consequence, the
+    pattern-action pairs become very readable.  Below, a boxed definition of
+    two example patterns ``WHITESPACE`` and ``IDENTIFIER`` displays the idea.
          
     .. code-block:: cpp
 
@@ -43,7 +43,7 @@ Properties* database [#f1]_.
     *pattern definitions* and *pattern matching behavior*. 
 
 The following sections describe the formal language used to specify patterns.
-First, syntactic means to specify context free regular expressions are
+First, the syntactic means to specify context free regular expressions are
 introduced. Second, two sections elaborate on the specification of character
 sets and the use of queries into the Unicode database. Third, a section
 elaborates on pre- and post-contexts for regular expressions. Eventually, a
@@ -63,5 +63,6 @@ final section introduces *regular expression algebra*.
 
 .. rubric:: Footnotes
 
-.. [#f1] The syntax used follows *Unicode Regular Expressions* (Unicode UTR #18) only partly.
+.. [#f1] The syntax used follows *Unicode Regular Expressions* (Unicode UTR #18) 
+   only partly.
 
