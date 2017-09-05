@@ -46,7 +46,7 @@ class TargetMap:
         self.__epsilon_target_index_list = [] # array.array("l", [])
 
     def is_empty(self):
-        return len(self.__db) == 0 and len(self.__epsilon_target_index_list) == 0
+        return not self.__db and not self.__epsilon_target_index_list
 
     def is_DFA_compliant(self):
         """Checks if the current state transitions are DFA compliant, i.e. it
@@ -104,6 +104,11 @@ class TargetMap:
         if self.__db.has_key(TargetIdx):
             del self.__db[TargetIdx]
         self.delete_epsilon_target_state(TargetIdx)
+
+    def cut_trigger_set(self, TriggerSet):
+        for target_si, trigger_set in self.__db.items():
+            trigger_set.subtract(TriggerSet)
+            if trigger_set.is_empty(): del self.__db[target_si]
 
     def delete_epsilon_target_state(self, TargetStateIdx):
         if TargetStateIdx in self.__epsilon_target_index_list:

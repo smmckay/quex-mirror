@@ -31,16 +31,15 @@ import quex.engine.codec_db.core                              as codec_db
 from   quex.engine.state_machine.core                         import DFA
 import quex.engine.state_machine.algorithm.beautifier         as beautifier
 import quex.engine.state_machine.algorithm.nfa_to_dfa         as nfa_to_dfa
+import quex.engine.state_machine.algebra.cut                  as cut
 import quex.engine.state_machine.algebra.sanitizer            as sanitizer
 import quex.engine.state_machine.algebra.complement           as complement
 import quex.engine.state_machine.algebra.reverse              as reverse
 import quex.engine.state_machine.algebra.intersection         as intersection
 import quex.engine.state_machine.algebra.difference           as difference
 import quex.engine.state_machine.algebra.symmetric_difference as symmetric_difference
-import quex.engine.state_machine.algebra.complement_begin     as complement_begin
-import quex.engine.state_machine.algebra.complement_end       as complement_end  
-import quex.engine.state_machine.algebra.complement_in        as complement_in   
 import quex.engine.state_machine.algebra.union                as union
+import quex.engine.state_machine.algebra.derived              as derived
 from   quex.input.code.base                                   import SourceRef
 
 import quex.input.regular_expression.traditional_character_set  as traditional_character_set
@@ -517,7 +516,10 @@ def snap_bracketed_expression(stream, PatternDict):
 def snap_any(stream, PatternDict):
     return DFA.Any()
 
-def snap_none(stream, PatternDict):
+def snap_universal(stream, PatternDict):
+    return DFA.Universal()
+
+def snap_empty(stream, PatternDict):
     return DFA.Empty()
 
 def snap_reverse(stream, PatternDict):
@@ -534,10 +536,8 @@ def snap_anti_pattern(stream, PatternDict):
 
 def snap_complement(stream, PatternDict):
     pattern_list = snap_curly_bracketed_expression(stream, PatternDict, "complement operator", "Co")
-    if len(pattern_list) == 1:
-        tmp = pattern_list[0]
-    else:
-        tmp = union.do(pattern_list)
+    if len(pattern_list) == 1: tmp = pattern_list[0]
+    else:                      tmp = union.do(pattern_list)
     return complement.do(tmp)
 
 def snap_union(stream, PatternDict):
@@ -550,21 +550,74 @@ def snap_intersection(stream, PatternDict):
                                                    MinN=2, MaxN=INTEGER_MAX)
     return intersection.do(pattern_list)
 
-def snap_not_begin(stream, PatternDict):
-    sm_list = snap_curly_bracketed_expression(stream, PatternDict, "not-begin operator", "NotBegin", 
+def snap_two_or_union_of_more_state_machines(Func, stream, PatternDict, Name, Cmd):
+    sm_list = snap_curly_bracketed_expression(stream, PatternDict, Name, Cmd, 
                                               MinN=2, MaxN=INTEGER_MAX)
-    if len(sm_list) == 2:
-        return complement_begin.do(sm_list[0], sm_list[1])
-    else:
-        return complement_begin.do(sm_list[0], union.do(sm_list[1:]))
+    sm0 = sm_list[0]
+    if len(sm_list) == 2: sm1 = sm_list[1]
+    else:                 sm1 = union.do(sm_list[1:])
+
+    return Func(sm0, sm1)
+
+def snap_cut_begin(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(cut.cut_begin,
+                                                    stream, PatternDict,
+                                                    "cut-begin", "CutBegin")
+
+def snap_cut_end(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(cut.cut_end,
+                                                    stream, PatternDict,
+                                                    "cut-end", "CutEnd")
+
+def snap_cut_in(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(cut.cut_in,
+                                                    stream, PatternDict,
+                                                    "cut-in", "CutIn")
+
+def snap_leave_begin(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(cut.leave_begin,
+                                                    stream, PatternDict,
+                                                    "leave-begin", "LeaveBegin")
+
+def snap_leave_end(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(cut.leave_end,
+                                                    stream, PatternDict,
+                                                    "leave-end", "LeaveEnd")
+
+def snap_leave_in(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(cut.leave_in,
+                                                    stream, PatternDict,
+                                                    "leave-in", "LeaveIn")
+
+def snap_begin(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(derived.is_begin, 
+                                                    stream, PatternDict, 
+                                                    "begin operator", "Begin") 
+
+def snap_end(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(derived.is_end, 
+                                                    stream, PatternDict, 
+                                                    "end operator", "End") 
+
+def snap_in(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(derived.is_in, 
+                                                    stream, PatternDict, 
+                                                    "in operator", "In") 
+
+def snap_not_begin(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(derived.not_begin, 
+                                                    stream, PatternDict, 
+                                                    "not-begin operator", "NotBegin") 
 
 def snap_not_end(stream, PatternDict):
-    sm_list = snap_curly_bracketed_expression(stream, PatternDict, "not-end operator", "NotEnd", 
-                                              MinN=2, MaxN=INTEGER_MAX)
-    if len(sm_list) == 2:
-        return complement_end.do(sm_list[0], sm_list[1])
-    else:
-        return complement_end.do(sm_list[0], union.do(sm_list[1:]))
+    return snap_two_or_union_of_more_state_machines(derived.not_end, 
+                                                    stream, PatternDict, 
+                                                    "not-end operator", "NotEnd") 
+
+def snap_not_in(stream, PatternDict):
+    return snap_two_or_union_of_more_state_machines(derived.not_in, 
+                                                    stream, PatternDict, 
+                                                    "not-in operator", "NotIn") 
 
 def snap_difference(stream, PatternDict):
     sm_list = snap_curly_bracketed_expression(stream, PatternDict, "difference operator", "Intersection",
@@ -639,21 +692,33 @@ CommandDB = sorted([
    # \a, \X, ... those are not treated here. They are treated in 
    # 'snap_backslashed_character()'.
    ("C",            snap_case_folded_pattern),   # OK
+   ("R",            snap_reverse),               # OK
    #
    ("Intersection", snap_intersection),          # OK
    ("Union",        snap_union),                 # OK
    ("Not",          snap_complement),            # OK
    ("Diff",         snap_difference),            # OK
    ("SymDiff",      snap_symmetric_difference),  # OK
+   ("Universal",    snap_universal),             #
+   ("Empty",        snap_empty),                 # 
    #
    ("Any",          snap_any),                   # OK
-   ("None",         snap_none),                  # OK
    ("Sanitize",     snap_sanitizer),             # 
    ("A",            snap_anti_pattern),          # OK
    #
+   ("Begin",        snap_begin),                 # OK
+   ("End",          snap_end),                   # OK
+   ("In",           snap_in),                    # OK
    ("NotBegin",     snap_not_begin),             # OK
    ("NotEnd",       snap_not_end),               # OK
-   ("R",            snap_reverse),               # OK
+   ("NotIn",        snap_not_in),                # OK
+   #
+   ("CutBegin",     snap_cut_begin),             # OK
+   ("CutEnd",       snap_cut_end),               # OK
+   ("CutIn",        snap_cut_in),                # OK
+   ("LeaveBegin",   snap_leave_begin),           # OK
+   ("LeaveEnd",     snap_leave_end),             # OK
+   ("LeaveIn",      snap_leave_in),              # OK
 
    # Sort by length (longest first), then sort by name
 ], key=lambda x: (-len(x[0]), x[0]))

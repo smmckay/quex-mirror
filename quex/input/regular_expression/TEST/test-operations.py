@@ -34,8 +34,8 @@ if "special" in sys.argv:
     test("\\Any+")
     test("x\\Any*")
     test("\\Any*")
-    test("x\\None")
-    test("\\None")
+    test("x\\Empty")
+    test("\\Empty")
     sys.exit()
 elif   "0" in sys.argv:
     args = ""

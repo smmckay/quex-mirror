@@ -4,8 +4,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine               as regex
-import quex.engine.state_machine.algebra.complement_begin as complement_begin
-import quex.engine.state_machine.algebra.complement_in    as complement_in
+import quex.engine.state_machine.algebra.derived          as derived
 import quex.engine.state_machine.algebra.union            as union
 import quex.engine.state_machine.algebra.intersection     as intersection
 import quex.engine.state_machine.check.identity           as identity
@@ -30,7 +29,7 @@ def test(A, B):
         cutter = regex.do(Cutter, {}).sm
         #print orig.get_string(NormalizeF=False)
         #print cutter.get_string(NormalizeF=False)
-        result = clean(complement_in.do(orig, cutter))
+        result = clean(derived.not_in(orig, cutter))
         print
         if False:
             if not result.is_Empty():

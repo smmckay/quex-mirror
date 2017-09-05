@@ -114,3 +114,145 @@ All of the above laws follow the principle of *symmetric duality*, in that if
 ``\Union`` and ``\Intersection`` as well as ``\Empty`` and ``\Universal`` are
 interchanged, one set of rules translates into another.
 
+Derived Matching Operations
+===========================
+
+Based on the fundamental algebraic operations further operations may be derived
+which have a specific application in lexical analysis. The following list shows
+operations that prune the space of matched lexemes by a pattern `P` by
+constraints on the lexeme's beginning or ending. The functions ``\NotBegin``
+and ``\NotEnd`` are defined as follows.
+
+.. describe:: ``\NotBegin{P Q}``: 
+
+      All lexemes that match `P`, except for those that *begin* with something
+      that matches `Q`.  The corresponding regular expression is::
+
+          \Diff{P (\Universal)Q}  
+
+.. describe:: ``\NotEnd{P Q}`` 
+
+      All lexemes that match `P`, except for those that *end* with something
+      that matches `Q`.  The corresponding regular expression is::
+
+          \Diff{P (\Universal)Q}  
+
+.. describe:: ``\NotIn{P Q}`` 
+
+      All lexemes that match `P`, except for those that *contain* a subsequence 
+      that matches `Q`.  The corresponding regular expression is::
+
+          \Diff{P (\Universal)Q(\Universal)}  
+
+
+The possitive cases are:
+
+.. describe:: ``\Begin{P Q}``: 
+
+      Only those lexemes that match `P` which *begin* with something
+      that matches `Q`.  The corresponding regular expression is::
+
+          \Intersection{P (\Universal)Q}  
+
+.. describe:: ``\End{P Q}`` 
+
+      Only those lexemes that match `P` which *end* with something
+      that matches `Q`.  The corresponding regular expression is::
+
+          \Intersection{P (\Universal)Q}  
+
+.. describe:: ``\In{P Q}`` 
+
+      Only lexemes that match `P` which *contain* a subsequence 
+      that matches `Q`.  The corresponding regular expression is::
+
+          \Intersection{P (\Universal)Q(\Universal)}  
+
+While ``\Diff`` and ``\Intersection`` proved above to produce meaningful
+operations, no meaningful according operation based on ``\Union`` is known to
+to the author Quex. Consequently, no shorthand for such operations exists.
+
+Algebraic expressions may *prune the set of matching lexemes*. However, they
+*may not produce sets of pruned lexemes*. For example, for given string
+patterns such as `Mr. Bone` it is not possible to find an generic algebraic
+expression that cuts the characters `Mr.` from the front so that only the last
+name is matched. In order to prune the lexemes at the beginning or the end the
+following functions may be used.
+
+.. describe:: \\CutBegin{P Q}
+
+   Matches the set of lexemes:
+   
+   * lexemes matched by `P` which *do not start* with something that matches `Q`. 
+
+   * the 'tail' of lexemes matched by `P` which start with something `Q`. The
+     'tail' of a lexeme is what comes after what is matched by `Q`.
+   
+   For example, let `P` be defined as `("Mr. "|"Mrs. ")"Bone"` which matches
+   `Mr. Bone` and `Mrs. Bone`. Then, the pruned pattern `\\CutBegin{{P} "Mr. "}
+   matches `Bone` and `Mrs. Bone`.
+
+.. describe:: \\CutEnd{P Q}
+
+   Matches the set of lexemes:
+   
+   * lexemes matched by `P` which *do not end* with something that matches `Q`. 
+
+   * the 'head' of lexemes matched by `P` which end with something `Q`. The
+     'head' of a lexeme is what comes before what is matched by `Q`.
+
+   With `P` defined as `("Mr. "|"Mrs. ")"Bone"` the resulting pattern of
+   `\\CutEnd{{P} " Bone"} matches `Mr.` and `Mrs.`.
+
+.. describe:: \\CutIn{P Q}
+
+   Matches the set of lexemes:
+
+   * lexemes matched by `P` which *do not contain* with something that matches
+     `Q`. 
+
+   * the 'tail' and 'head' of lexemes matched by `P` which contain something
+     matching `Q`.  The 'tail' and 'head' of a lexeme are the borders around
+     what is matched by `Q` inside the pattern.
+
+   With `P` defined as `"car(pet)?"` matching `car` and `carpet`. Then, 
+   `\\CutIn{{P} "rpe"} matches `car`  and `cat``.
+
+Figure :ref:`fig:cut-in` displays the effect of the ``\CutIn`` operation
+applied on the pattern ``"fun"|"for"|"sun"`` cut by ``"o"|"un"``. No path
+matching containing an ``"o"`` or ``"un"`` is left in the result.
+
+.. describe:: \\LeaveBegin{P Q}
+
+   Matches the 'head' of lexemes of `P`, where the 'head' is the beginning
+   of the lexeme that matches Q.
+   
+   For example, let `P` be defined as `("Mr. "|"Mrs. ")"Bone"` which matches
+   `Mr. Bone` and `Mrs. Bone`. Then, `\\LeaveBegin{{P} "Mr."|"Mrs."}`
+   matches `Mr.` and `Mrs`.
+
+.. describe:: \\LeaveEnd{P Q}
+
+   Matches the 'tail' of lexemes of `P`, where the 'tail' is the end 
+   of the lexeme that matches Q.
+   
+   With `P` defined as `("Mr. "|"Mrs. ")"Bone"` the expression
+   `\\LeaveEnd{{P} "Bone"} matches `Bone`.
+
+.. describe:: \\LeaveIn{P Q}
+
+   Matches the 'stomach' of lexemes of `P`, where the 'stomach' is the part 
+   of the lexeme that matches Q.
+
+   With `P` defined as `"carpenter"` the result of `\\LeaveIn{{P} "pent"}
+   matches `pent`.
+
+Figure :ref:`fig:leave-in` displays the effect of the ``\LeaveIn`` operation
+applied on the pattern ``"fun"|"for"|"sun"`` leave by ``"o"|"un"``. No path
+matching containing an ``"o"`` or ``"un"`` is left in the result. The
+operations seem to be trivial enough to perform manually. However, consider the
+case where general DNA patterns given by ``[ATD]+`` are to be matched that do
+not contain a certain sequence ``"ATAT"`` as shown in Figure
+:ref:`fig-dna-cut-in`. The ``CutIn`` operation results in a massively 
+modified state machine.
+

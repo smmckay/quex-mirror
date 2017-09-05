@@ -181,12 +181,31 @@ def get_intersection_line_up(TargetMapList):
 
     return result
 
+def get_intersection_line_up_2(TargetMapList):
+    """Same as 'get_intersection_line_up()' only that 'None' is setup for 
+    targets that do not transit on an interval.
+
+    RETURNS: map: target_state_setup --> NumberSet
+    """
+    result = {}
+    for begin, end, target_state_setup in _line_up_iterable(TargetMapList):
+        _enter(result, begin, end, target_state_setup)
+
+    return result
+
 def _get_plain_line_up(TargetMapList):
     return sorted(flatten_list_of_lists(target_map.get_trigger_set_line_up(Key=i)
                                         for i, target_map in enumerate(TargetMapList)), 
                   key=lambda x: (x.position, x.change, x.target_idx))
 
 def _line_up_iterable(TargetMapList):
+    """YIELDS: (begin, end, target_state_setup)
+
+    where 'begin' and 'end' define the interval for which a target state 
+    combination is triggered. 
+    'target_state_setup[i]' tells where 'TargetMapList[i]' is targetting
+    for the given interval.
+    """
     line_up = _get_plain_line_up(TargetMapList)
 
     target_state_setup = [None] * len(TargetMapList)

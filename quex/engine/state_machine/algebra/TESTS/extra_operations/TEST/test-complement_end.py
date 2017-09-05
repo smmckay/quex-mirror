@@ -4,12 +4,17 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine             as regex
-import quex.engine.state_machine.algebra.complement_end as complement_end
+import quex.engine.state_machine.algebra.derived        as derived
+import quex.engine.state_machine.algebra.complement       as     complement
+import quex.engine.state_machine.algebra.difference       as     difference 
+import quex.engine.state_machine.construction.sequentialize as   sequentialize
 import quex.engine.state_machine.algebra.union          as union
 import quex.engine.state_machine.algebra.intersection   as intersection
 import quex.engine.state_machine.check.identity         as identity
 import quex.engine.state_machine.check.superset         as superset
 import quex.engine.state_machine.algorithm.beautifier   as beautifier
+import quex.engine.state_machine.algebra.derived        as     derived
+from   quex.engine.state_machine.core                   import DFA
 
 if "--hwut-info" in sys.argv:
     print "Complement End: Cut patterns from P that end with Q."
@@ -29,7 +34,9 @@ def test(A, B):
         cutter = regex.do(Cutter, {}).sm
         #print orig.get_string(NormalizeF=False)
         #print cutter.get_string(NormalizeF=False)
-        result = clean(complement_end.do(orig, cutter))
+        # result = clean(complement_end.do(orig, cutter))
+
+        result = derived.not_end(orig, cutter)
         print
         if not result.is_Empty():
             print "superset(Original, result):           %s" % superset.do(orig, result)

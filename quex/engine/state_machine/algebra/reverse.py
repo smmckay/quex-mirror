@@ -1,8 +1,8 @@
 """Algebraic relations:
 
        reverse(reverse(P)) == P
-       reverse(\Any*)      == \Any*
-       reverse(\None)      == \None
+       reverse(\Universal) == \Universal
+       reverse(\Empty)     == \Empty
 
        reverse(union(P, Q))        == union(reverse(P), reverse(Q))
        reverse(intersection(P, Q)) == intersection(reverse(P), reverse(Q))
@@ -24,8 +24,8 @@ def __do(SM):
 
     if len(original_acceptance_state_index_list) == 0:
         # If there is no acceptance state in a state machine, the state machine
-        # cannot match any pattern, it is equivalent to '\None'. The reverse
-        # of \None is \None.
+        # cannot match any pattern, it is equivalent to '\Empty'. The reverse
+        # of \Empty is \Empty.
         return DFA.Empty()
        
     # Ensure that each target state index has a state inside the state machine

@@ -4,8 +4,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine               as regex
-import quex.engine.state_machine.algebra.cut_end          as cut_end   
-import quex.engine.state_machine.algebra.complement_begin as complement_begin
+import quex.engine.state_machine.algebra.cut              as cut
 import quex.engine.state_machine.algebra.union            as union
 import quex.engine.state_machine.algebra.intersection     as intersection
 import quex.engine.state_machine.check.identity           as identity
@@ -30,7 +29,7 @@ def test(A, B):
         cutter = regex.do(Cutter, {}).sm
         #print orig.get_string(NormalizeF=False)
         #print cutter.get_string(NormalizeF=False)
-        result = clean(cut_end.do(orig, cutter))
+        result = clean(cut.cut_end(orig, cutter))
         print
         if False:
             if not result.is_Empty():
@@ -109,8 +108,4 @@ elif "5" in sys.argv:
     test('"a"|"x"+|"e"|"g"',    'x{5}')
     test('X("a"|"x"*|"e"|"g")', 'X')
     test('X("a"|"x"*|"e"|"g")', 'Xx{5}')
-    #test('ab("12"|("AB"|"XY")+)+"12"("AA"|"BB"|"CC")?yz', 'ab12AB12AAyz')
-    #test('(((a+)b)+c)+', 'abcbc')
-    #test('(pri|ri|i)+',  'priri')
-    #test('(pri|ri|i)+',  '(((p+)r)+i)+')
 

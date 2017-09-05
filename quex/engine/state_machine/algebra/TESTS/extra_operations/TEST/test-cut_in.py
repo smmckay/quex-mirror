@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine               as regex
-import quex.engine.state_machine.algebra.cut_in           as cut_in
+import quex.engine.state_machine.algebra.cut              as cut
 import quex.engine.state_machine.algebra.union            as union
 import quex.engine.state_machine.algebra.intersection     as intersection
 import quex.engine.state_machine.check.identity           as identity
@@ -29,7 +29,7 @@ def test(A, B):
         cutter = regex.do(Cutter, {}).sm
         #print orig.get_string(NormalizeF=False)
         #print cutter.get_string(NormalizeF=False)
-        result = clean(cut_in.do(orig, cutter))
+        result = clean(cut.cut_in(orig, cutter))
         print
         if False:
             if not result.is_Empty():
@@ -48,45 +48,48 @@ def test(A, B):
     print
     __core(B, A)
 
-test('xabcx', 'abc')
-# test('xabcx("abc"+)x("abc"?)', 'abc')
-
 if "0" in sys.argv:
-    test('xabcx("abc"+)x("abc"?)', 'abc')
-    test('[01]+', '0')
-    test('1[01]*', '0')
-    test('print|integer|ente', 'int')
-    test('[0-9]+',    '[0-9]')
-    test('[0-9]+',    '0')
-    test('[0-9]+',    '01')
-    test('[0-9]{2,}', '01')
-    test('123', '123(4?)')
-    test('12', '1(2?)')
-    test('1', '1(2?)')
-    test('"123"|"ABC"', '"123"')
-    test('\\n', '(\\r\\n)|\\n')
+    test('otto_mueller', 'mueller')
+    test('otto',         'otto')
+    test('otto|fritz',   'otto')
+    test('[01]{1,3}',    '0')
+    test('[01]{1,3}',    '0+')
+    test('[01]+',        '0')
+    test('[01]+',        '0+')
+    test('1[01]*',       '10')
+    test('1[01]*',       '10+')
+    test('[0-9]{2,}',    '01')
+    test('123',          '123(4?)')
+    test('12',           '1(2?)')
+    test('1',            '1(2?)')
+    test('"123"|"ABC"',  '"123"')
+    test('\\n',          '(\\r\\n)|\\n')
 
 elif "1" in sys.argv:
-    test('[a-n]', '[m-z]')
-    test('"1234"|"ABC"', '"123"')
-    test('"12"|"A"', '"1"')
-    test('12', '1')
-    test('"1BAC"|"1BBC"', '"1ABC"')
-    test('alb|albertikus', 'bert')
+    test('[a-n]',          '[m-z]')
+    test('"1234"|"ABC"',   '123')
+    test('"12"|"A"',       '2')
+    test('12',             '2')
+    test('"1BAC"|"1BBC"',  '1ABC')
+    test('alb|albertikus', 'albertiku')
 
 elif "2" in sys.argv:
     test('"123"+',  '"123"')
     test('X"123"?', 'X"123"')
     test('"123"?X', '"123"X')
+    test('1*X',     '1X')
     test('"123"*X', '"123"X')
     test('X"123"*', 'X"123"')
 
 elif "3" in sys.argv:
     test('ab("12"+)yz',      'abz')
-    test('ab("12"|"AB")yz',  'ab1B3yz')
+    test('a("12"|"AB")z',    'a1Bz')
+    test('ab("12"|"AB")yz',  'ab1Byz')
     test('ab("12"|"ABD")yz', 'abAByc')
 
 elif "4" in sys.argv:
+    test('ab"12"+',          '1212')
+    test('ab"12"+',          'ab1212')
     test('ab("12"+)yz',      'ab1212yz')
     test('ab("12"?)yz',      'abyz')
     test('ab("12"*)yz',      'abyz')
