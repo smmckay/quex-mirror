@@ -155,6 +155,17 @@ class DFA(object):
 
         return sm
 
+    def clone_and_get_correspondance_db(self, ReplDbPreContext=None, ReplDbAcceptance=None, 
+                                        StateMachineId=None):
+        si_correspondance_db = dict(
+            (si, state_machine_index.get()) for si in self.states
+        )
+        result = self.clone(ReplDbStateIndex = si_correspondance_db,
+                            ReplDbPreContext = ReplDbPreContext,
+                            ReplDbAcceptance = ReplDbAcceptance,
+                            StateMachineId   = StateMachineId)
+        return result, si_correspondance_db
+         
     def clone(self, ReplDbStateIndex=None, ReplDbPreContext=None, ReplDbAcceptance=None, 
               StateMachineId=None):
         """Clone state machine, i.e. create a new one with the same behavior,

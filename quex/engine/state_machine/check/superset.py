@@ -46,18 +46,18 @@ class Checker:
             for index in SuperSM_StateIndexList
         )
 
-        # (*) Here comes the condition:
+        # (*) CONDITION:
         #
-        #     For every trigger (event) in the 'sub sm state' that triggers to a follow-up state
-        #     there must be pendant triggering from the shadowing 'super sm states'.
+        # For every trigger (event) in the 'sub sm state' that triggers to a follow-up state
+        # there must be pendant triggering from the shadowing 'super sm states'.
         #
-        #     If a trigger set triggers to an 'acceptance' state, then all shadowing 'super sm states' 
-        #     must trigger to an 'acceptance' state. Thus, saying that the 'super sm' also recognizes
-        #     the pattern that was reached until here can be matched by the 'super set sm'. If not
-        #     all shadowing state machines would trigger on the trigger set to an acceptance state,
-        #     this means that there is a path to an acceptance state in 'subset sm' that the 'super
-        #     sm' has no correspondance. Thus, then the claim to be a super set state machine can
-        #     be denied.
+        # If a trigger set triggers to an 'acceptance' state, then all shadowing 'super sm states' 
+        # must trigger to an 'acceptance' state. Thus, saying that the 'super sm' also recognizes
+        # the pattern that was reached until here can be matched by the 'super set sm'. If not
+        # all shadowing state machines would trigger on the trigger set to an acceptance state,
+        # this means that there is a path to an acceptance state in 'subset sm' that the 'super
+        # sm' has no correspondance. Thus, then the claim to be a super set state machine can
+        # be denied.
         #
         for target_index, trigger_set in sub_state.target_map.get_map().iteritems():
             target_state = self.sub.states[target_index]

@@ -6,6 +6,8 @@ def do(A, B):
        RETURNS: True, if they do.
                 False, else.
     """
+    if A.is_Empty() and B.is_Empty(): return True
+
     detector = SameDetector(A, B)
     detector.do((A.init_state_index, B.init_state_index))
 

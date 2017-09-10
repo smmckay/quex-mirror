@@ -1,66 +1,12 @@
 from quex.engine.state_machine.core import DFA
 from quex.constants                 import E_Commonality
+from quex.engine.state_machine.state.target_map_ops import get_intersection_line_up
 
-class Checker:
-    """Checks whether one state machine may match a lexeme that is the START of
-    a lexeme that is matched by the other state machine. For example:
-
-          A:  [a-z]{5}
-          B:  otto
-
-    B matches 'otto', A does not. However, A would match 'ottoy' would which
-    contains the pattern that B can match.
-
-    A is not a superset, since it does not match everything that B matches. It
-    happens only that A and B have a commonality.  
-    """
-
-    def __init__(self, A, B):
-        assert isinstance(A, DFA)
-        assert isinstance(B, DFA)
-
-        self.a_sm = A
-        self.a_visited_state_indices = set([])
-        self.b_sm = B
-        self.b_visited_state_indices = set([])
-
-    def do(self):
-        """RETURNS:  
-                     NONE    if no commonalities exist.
-                     BOTH    if both ACCEPT a common lexeme.
-                     A_IN_B  if A has a pattern that lies inside the state machine of B.
-                     B_IN_A  if B has a pattern that lies inside the state machine of A.
-        """
-        return self.__dive(self.a_sm.init_state_index, self.b_sm.init_state_index)
-
-    def __dive(self, ATargetIdx, BTargetIdx):
-        a_state = self.a_sm.states[ATargetIdx]
-        b_state = self.b_sm.states[BTargetIdx]
-        if a_state.is_acceptance(): 
-            if b_state.is_acceptance(): return E_Commonality.BOTH    # both share a commonality
-            else:                       return E_Commonality.A_IN_B  # path in A is a path in B
-        elif b_state.is_acceptance():   return E_Commonality.B_IN_A  # path in B is a path in A
-
-        # Follow the path of common trigger sets
-        for a_target, a_trigger_set in a_state.target_map.get_map().iteritems():
-            for b_target, b_trigger_set in b_state.target_map.get_map().iteritems():
-                if   a_trigger_set.has_intersection(b_trigger_set) == False: continue
-
-                if     a_target in self.a_visited_state_indices \
-                   and b_target in self.b_visited_state_indices: continue
-
-                self.a_visited_state_indices.add(ATargetIdx)
-                self.b_visited_state_indices.add(BTargetIdx)
-
-                result = self.__dive(a_target, b_target)
-                if result != 0: return result
-
-        return E_Commonality.NONE
 
 def do(A, B):
     if isinstance(A, DFA):
         assert isinstance(B, DFA)
-        return Checker(A, B).do()
+        return __core(A, B)
 
     assert not isinstance(B, DFA)
 
@@ -77,7 +23,7 @@ def do(A, B):
     elif A.pre_context_sm_to_be_inverted is not None:
         assert B.pre_context_sm_to_be_inverted is not None
         # Both depend on pre-conditions: Are there commonalities in the pre-conditions?
-        pre_result = Checker(A.pre_context_sm_to_be_inverted, B.pre_context_sm_to_be_inverted)
+        pre_result = __core(A.pre_context_sm_to_be_inverted, B.pre_context_sm_to_be_inverted)
     else:
         pre_result = E_Commonality.BOTH
 
@@ -86,7 +32,7 @@ def do(A, B):
     # NOTE: Post-conditions do not change anything, since they match only when the whole
     #       lexeme has matched (from begin to end of post condition). Post-conditions only
     #       tell something about the place where the analyzer returns after the match.
-    result = Checker(A.sm, B.sm).do()
+    result = __core(A.sm, B.sm)
 
     if result == E_Commonality.NONE: return E_Commonality.NONE
 
@@ -94,4 +40,48 @@ def do(A, B):
     elif pre_result == result: return result 
     else:                      return E_Commonality.NONE
 
+def __core(A, B):
+    """Checks whether one state machine may match a lexeme that is the START of
+    a lexeme that is matched by the other state machine. For example:
+
+          A:  [a-z]{5}
+          B:  otto
+
+    B matches 'otto', A does not. However, A would match 'ottoy' would which
+    contains the pattern that B can match.
+
+    A is not a superset, since it does not match everything that B matches. It
+    happens only that A and B have a commonality.  
+
+    RETURNS:  NONE    if no commonalities exist.
+              BOTH    if both ACCEPT a common lexeme.
+              A_IN_B  if A has a pattern that lies inside the state machine of B.
+              B_IN_A  if B has a pattern that lies inside the state machine of A.
+    """
+    work_list = [(A.init_state_index, B.init_state_index)]
+    a_done_set = set()
+    b_done_set = set()
+    while work_list:
+        A_si, B_si = work_list.pop()
+
+        A_state = A.states[A_si]
+        B_state = B.states[B_si]
+
+        if A_state.is_acceptance(): 
+            if B_state.is_acceptance(): return E_Commonality.BOTH    # both share a commonality
+            else:                       return E_Commonality.A_IN_B  # path in A is a path in B
+        elif B_state.is_acceptance():   return E_Commonality.B_IN_A  # path in B is a path in A
+
+        # Follow the path of common trigger sets
+        line_up = get_intersection_line_up((A_state.target_map, B_state.target_map))
+        for target_state_setup, trigger_set in line_up.iteritems():
+            A_target_si, B_target_si = target_state_setup
+            if A_target_si in a_done_set and B_target_si in b_done_set: continue
+
+            work_list.append((A_target_si, B_target_si))
+
+        a_done_set.add(A_si)
+        b_done_set.add(B_si)
+
+    return E_Commonality.NONE
 

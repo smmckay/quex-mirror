@@ -218,6 +218,21 @@ following functions may be used.
    With `P` defined as `"car(pet)?"` matching `car` and `carpet`. Then, 
    `\\CutIn{{P} "rpe"} matches `car`  and `cat``.
 
+
+.. note::
+
+   The operations ``\CutBegin{P Q}``, ``\CutEnd{P Q}``, and ``\CutEnd{P Q}``
+   ensure that the resulting pattern does not begin, end or contain the second
+   pattern.  Since, the cut-out expression may contain the pattern ``Q`` again,
+   these operations iterate. Consequently, the following equivalences hold::
+
+        \CutBegin{P Q}  = \CutBegin{P Q+}
+        \CutEnd{P Q}    = \CutEnd{P Q+}
+        \CutIn{P Q}     = \CutIn{P Q+}
+
+   This is, cutting a pattern ``Q`` is equivalent to cutting ``Q+``.
+        
+
 Figure :ref:`fig:cut-in` displays the effect of the ``\CutIn`` operation
 applied on the pattern ``"fun"|"for"|"sun"`` cut by ``"o"|"un"``. No path
 matching containing an ``"o"`` or ``"un"`` is left in the result.
