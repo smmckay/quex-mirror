@@ -12,14 +12,6 @@ result =  init-state = 0L
 00002 A
     
 
-
-Original = X
-Cutter   = X("a"|"x"?|"e"|"g")
-
-result =  init-state = 0L
-00000 
-    
-
 ---------------------------
 Original = X("a"|"x"?|"e"|"g")
 Cutter   = Xx
@@ -34,14 +26,6 @@ result =  init-state = 0L
 00002 A
     
 
-
-Original = Xx
-Cutter   = X("a"|"x"?|"e"|"g")
-
-result =  init-state = 0L
-00000 
-    
-
 ---------------------------
 Original = "a"|"x"+|"e"|"g"
 Cutter   = x{5}
@@ -54,61 +38,53 @@ result =  init-state = 0L
 00001 A
     
 00002 A
-     == 'x' ==> 00002
-    
-
-
-Original = x{5}
-Cutter   = "a"|"x"+|"e"|"g"
-
-result =  init-state = 0L
-00000 
-    
-
----------------------------
-Original = X("a"|"x"*|"e"|"g")
-Cutter   = X
-
-result =  init-state = 0L
-00000 
-     == 'X' ==> 00001
-    
-00001 
-     == 'a', 'e', 'g' ==> 00002
      == 'x' ==> 00003
-    
-00002 A
-    
-00003 A
-     == 'x' ==> 00003
-    
-
-
-Original = X
-Cutter   = X("a"|"x"*|"e"|"g")
-
-result =  init-state = 0L
-00000 
-    
-
----------------------------
-Original = X("a"|"x"*|"e"|"g")
-Cutter   = Xx{5}
-
-result =  init-state = 0L
-00000 
-     == 'X' ==> 00001
-    
-00001 A
-     == 'a', 'e', 'g' ==> 00002
-     == 'x' ==> 00003
-    
-00002 A
     
 00003 A
      == 'x' ==> 00004
     
 00004 A
+     == 'x' ==> 00001
+    
+
+    
+---------------------------
+Original = X("a"|"x"*|"e"|"g")
+    
+Cutter   = X
+result =  init-state = 0L
+    
+
+00000 
+     == 'X' ==> 00001
+00001 
+
+     == 'a', 'e', 'g' ==> 00002
+     == 'x' ==> 00003
+00002 A
+    
+00003 A
+     == 'x' ==> 00003
+---------------------------
+    
+Original = X("a"|"x"*|"e"|"g")
+    
+Cutter   = Xx{5}
+result =  init-state = 0L
+    
+
+00000 
+     == 'X' ==> 00001
+00001 A
+
+     == 'a', 'e', 'g' ==> 00002
+     == 'x' ==> 00003
+00002 A
+    
+00003 A
+     == 'x' ==> 00004
+00004 A
+    
      == 'x' ==> 00005
     
 00005 A
@@ -125,10 +101,8 @@ result =  init-state = 0L
     
 
 
-Original = Xx{5}
-Cutter   = X("a"|"x"*|"e"|"g")
 
-result =  init-state = 0L
-00000 
-    
+
+
+
 

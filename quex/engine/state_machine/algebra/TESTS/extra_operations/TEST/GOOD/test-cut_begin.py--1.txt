@@ -8,18 +8,6 @@ result =  init-state = 0L
     
 00001 A
     
-
-
-Original = [m-z]
-Cutter   = [a-n]
-
-result =  init-state = 0L
-00000 
-     == ['o', 'z'] ==> 00001
-    
-00001 A
-    
-
 ---------------------------
 Original = "1234"|"ABC"
 Cutter   = "123"
@@ -39,22 +27,6 @@ result =  init-state = 0L
     
 
 
-Original = "123"
-Cutter   = "1234"|"ABC"
-
-result =  init-state = 0L
-00000 
-     == '1' ==> 00001
-    
-00001 
-     == '2' ==> 00002
-    
-00002 
-     == '3' ==> 00003
-    
-00003 A
-    
-
 ---------------------------
 Original = "12"|"A"
 Cutter   = "1"
@@ -67,16 +39,6 @@ result =  init-state = 0L
     
 
 
-Original = "1"
-Cutter   = "12"|"A"
-
-result =  init-state = 0L
-00000 
-     == '1' ==> 00001
-    
-00001 A
-    
-
 ---------------------------
 Original = 12
 Cutter   = 1
@@ -88,16 +50,6 @@ result =  init-state = 0L
 00001 A
     
 
-
-Original = 1
-Cutter   = 12
-
-result =  init-state = 0L
-00000 
-     == '1' ==> 00001
-    
-00001 A
-    
 
 ---------------------------
 Original = "1BAC"|"1BBC"
@@ -119,25 +71,6 @@ result =  init-state = 0L
 00004 A
     
 
-
-Original = "1ABC"
-Cutter   = "1BAC"|"1BBC"
-
-result =  init-state = 0L
-00000 
-     == '1' ==> 00001
-    
-00001 
-     == 'A' ==> 00002
-    
-00002 
-     == 'B' ==> 00003
-    
-00003 
-     == 'C' ==> 00004
-    
-00004 A
-    
 
 ---------------------------
 Original = alb|albertikus
@@ -166,20 +99,4 @@ result =  init-state = 0L
      == 's' ==> 00003
     
 
-
-Original = albert
-Cutter   = alb|albertikus
-
-result =  init-state = 0L
-00000 
-     == 'e' ==> 00001
-    
-00001 
-     == 'r' ==> 00002
-    
-00002 
-     == 't' ==> 00003
-    
-00003 A
-    
 

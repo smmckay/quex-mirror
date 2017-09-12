@@ -231,7 +231,42 @@ following functions may be used.
         \CutIn{P Q}     = \CutIn{P Q+}
 
    This is, cutting a pattern ``Q`` is equivalent to cutting ``Q+``.
+
+The equivalence of pruning ``Q`` and pruning ``Q+`` is not an arbitrary design
+decision. While it may be intuitive to make the pruning operations the inverse
+of the concatenation, it must be stated that there is no general solution to
+the inverse of concatenation! If a lexeme of ``Q`` appended by the begin of a
+lexeme of ``P`` is again a lexeme of ``Q``, then it is impossible to separate
+``Q`` out of the concatenation ``QP``.  For example, let ``Q`` be ``ab|abcd``.
+Then, let ``P`` be ``cd|zz``.  The concatenation ``QP`` namely
+``(ab|abcd)(cd|zz)`` is equivalent to ``abcd|abzz|abcdcd|abcdzz``.  In order to
+reverse the concatenation, the ``ab`` must be cut from ``abcd`` but ``abcd``
+must be cut from ``abcdcd`` and ``abcdzz``. Paths in DFAs are indifferent.
+There is no way to derive such a behavior logically. Thus, the inverse
+operation of concatenation is impossible for the general case.
+
+.. note::
+
+   Cutting *does not undo* concatenation! From the previous rule, it follows
+   that cutting operations prune potentially more than what has been
+   concatenated.  The same holds for ``\CutEnd``, i.e.
         
+        \CutBegin{QP Q} does not match necessarily a subset of ``P``.
+
+        \CutEnd{PQ Q} does not match necessarily a subset of ``P``.
+
+Cutting at the beginning, however prevents match interference. Similar 
+statements can be made for ``\CutEnd`` and ``\CutIn`` as summarized below.
+
+      \Intersection{\CutBegin{P Q} Q} = \Empty
+      \Intersection{\CutEnd{P Q}   (\Universal)Q} = \Empty
+      \Intersection{\CutIn{P Q}    (\Universal)Q(\Universal)} = \Empty
+
+The operations ``\CutBegin`` and ``\CutEnd`` are related through the following
+relationship::
+
+      \CutEnd   = \R{\CutBegin{\R{P} \R{Q}}}
+      \CutBegin = \R{\CutEnd{\R{P}   \R{Q}}}
 
 Figure :ref:`fig:cut-in` displays the effect of the ``\CutIn`` operation
 applied on the pattern ``"fun"|"for"|"sun"`` cut by ``"o"|"un"``. No path

@@ -28,34 +28,7 @@ def cut_in(DfaA, DfaB):
     Any lexeme that matches 'A' and contains a lexeme matching 'B' is 
     pruned by what matched 'B'.
     """
-    # si_correspondance_db: A's state index --> result's state index
-    si_correspondance_db = dict((si,si) for si in DfaA.states)
-
-    result = DfaA
-    for si in DfaA.states:
-        result_si = si_correspondance_db.get(si)
-        if result_si is None: continue # Already cut out?
-        
-        result, state_setup_db = __cut_begin_core(result, DfaB, result_si)
-
-        # -- Derive the state index correspondance from 'state_setup_db'.
-        update_db = dict(
-            # 'si_info[0]' => state index of previous result
-            # 'result_si'  => correspondant state index of new result
-            (si_info[0], result_si) 
-            for si_info, result_si in state_setup_db.iteritems()
-        )
-
-        # -- Update the 'si_correspondance_db'
-        si_correspondance_db = dict(
-            (si, update_db[prev_result_si])
-            for si, prev_result_si in si_correspondance_db.iteritems()
-            if prev_result_si in result.states
-        )
-
-    # Delete orphaned and hopeless states in result
-    result.clean_up()
-    return beautifier.do(result)
+    return __cut_begin_core(DfaA, DfaB, AllStatesConsideredF=True)
 
 def cut_end(DfaA, DfaB):
     """Cut End:
@@ -78,36 +51,38 @@ def cut_begin(A, B):
           something that matches 'B'. The 'tail' is the lexeme without the 
           'head' that matches 'B'.
     """
-    result, _ = __cut_begin_core(A, B, None)
+    result = __cut_begin_core(A, B)
     return result
 
-def __cut_begin_core(A, B, A_begin_state_index):
-    """RETURN: [0] Resulting DFA
-               [1] state_setup_db:  state index combination --> state index in result
+def __cut_begin_core(A, B, AllStatesConsideredF=False):
+    """RETURN: Resulting DFA
     """
     A.assert_consistency() 
     B.assert_consistency() 
 
     if B.is_Empty(): 
         result, si_correspondance_db = A.clone_and_get_correspondance_db()
-        return result, \
-               dict(((si,), result_si) 
-                    for si, result_si in si_correspondance_db.iteritems())
-
-    elif A_begin_state_index is None: 
-        A_begin_state_index = A.init_state_index
+        return result
 
     state_setup_db    = {}
     result_init_si, _ = state_index_for_combination(state_setup_db,
-                                                    (A_begin_state_index, B.init_state_index))
-    result   = DFA(InitStateIndex = result_init_si, 
-                   AcceptanceF    = A.states[A_begin_state_index].is_acceptance())
-
+                                                    (A.init_state_index, B.init_state_index))
+    result = DFA(InitStateIndex = result_init_si, 
+                 AcceptanceF    = A.states[A.init_state_index].is_acceptance())
     worklist = [ 
-        (result.init_state_index, A_begin_state_index, B.init_state_index) 
+        (result.init_state_index, A.init_state_index, B.init_state_index) 
     ]
-    # print "A:", A.get_string(NormalizeF=False)
-    # print "B:", B.get_string(NormalizeF=False)
+
+    if AllStatesConsideredF:
+        for A_si, A_state in A.states.iteritems():
+            if A_si == A.init_state_index: continue
+            result_si, _ = state_index_for_combination(state_setup_db,
+                                                       (A_si, B.init_state_index))
+            result.states[result_si] = DFA_State(AcceptanceF=A_state.is_acceptance())
+            worklist.append((result_si, A_si, B.init_state_index))
+
+
+    print "#worklist:", worklist
     epsilon_transition_list = []
     while worklist:
         result_si, A_si, B_si = worklist.pop()
@@ -130,12 +105,12 @@ def __cut_begin_core(A, B, A_begin_state_index):
         # print "State (%s, %s):" % (A_si, B_si)
         # for si_tuple, trigger_set in line_up.iteritems():
         #    print "   %s --> %s" % (trigger_set, si_tuple)
+                # print "EPSILON --> (%s, %s)" % (A_target_si, B_target_si)
             
         for si_tuple, trigger_set in line_up.iteritems():
             A_target_si, B_target_si = si_tuple
             
-            if A_target_si is None:
-                continue
+            if A_target_si is None: continue
 
             result_target_si, \
             new_f             = state_index_for_combination(state_setup_db,
@@ -154,10 +129,6 @@ def __cut_begin_core(A, B, A_begin_state_index):
                     worklist.insert(0, (new_result_target_si, A_target_si, B.init_state_index))
 
                 epsilon_transition_list.append(new_result_target_si)
-                # print "EPSILON --> (%s, %s)" % (A_target_si, B_target_si)
-
-                # result.add_transition(result_si, trigger_set, result_target_si,
-                #                       AcceptanceF = acceptance_f)
 
             else:
                 acceptance_f = A.states[A_target_si].is_acceptance()
@@ -172,7 +143,8 @@ def __cut_begin_core(A, B, A_begin_state_index):
 
     for si in epsilon_transition_list:
         result.add_epsilon_transition(result.init_state_index, si)
+
     result.delete_hopeless_states()
 
-    return beautifier.do(result), state_setup_db
+    return beautifier.do(result)
 
