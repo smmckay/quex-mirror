@@ -23,6 +23,8 @@ E_StateIndices = Enum("DROP_OUT",
                       "RELOAD_BACKWARD",
                       "ALL", 
                       "BEFORE_ENTRY", 
+                      "BEFORE_PATH_WALK",
+                      "AFTER_PATH_WALK",
                       "VOID") 
 
 E_AcceptanceCondition  = Enum("BEGIN_OF_LINE", 
