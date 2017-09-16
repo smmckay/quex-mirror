@@ -154,9 +154,9 @@ def __cut_begin_core(A, B, A_begin_state_index=None):
         assert B_si is not None
         # print "#B_si", B_si
 
-        print "#result, etc:", result_si, A_si, B_si
+        # print "#result, etc:", result_si, A_si, B_si
         for A_target_si, B_target_si, trigger_set in target_map_line_up(A, A_si, B, B_si):
-            print "   %s --> %s %s" % (trigger_set, A_target_si, B_target_si)
+            # print "   %s --> %s %s" % (trigger_set, A_target_si, B_target_si)
             # State index = 'None' => state does not transit on 'trigger_set'.
             if A_target_si is None: 
                 continue
@@ -177,7 +177,7 @@ def __cut_begin_core(A, B, A_begin_state_index=None):
                                                      FirstF=True)
                 epsilon_transition_list.append(new_result_target_si)
                 cut_f = True
-                print "   cut"
+                # print "   cut"
                 continue
 
             result_target_si = work_list.add(A_target_si, B_target_si)
@@ -185,12 +185,12 @@ def __cut_begin_core(A, B, A_begin_state_index=None):
 
             result.add_transition(result_si, trigger_set, result_target_si,
                                   AcceptanceF = acceptance_f)
-            print "   add", A_target_si, B_target_si
+            # print "   add", A_target_si, B_target_si
 
     result_begin_state_index,_ = work_list.get_result_state_index(A_begin_state_index, 
                                                                   B.init_state_index)
     for si in epsilon_transition_list:
-        print "#eps:", result_begin_state_index, si
+        # print "#eps:", result_begin_state_index, si
         result.add_epsilon_transition(result_begin_state_index, si)
 
     result.delete_hopeless_states()
