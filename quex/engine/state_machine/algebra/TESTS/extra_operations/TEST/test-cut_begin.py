@@ -19,8 +19,10 @@ NOTE: The operation ensures that no lexeme starts with `Q`. Thus, the any cut
 
 ADDITIONAL TESTS: 
 
-    * Check: \CutBegin{P Q}                  = \CutBegin{P Q+} 
-    * Check: \Intersection{Q \CutBegin{P Q}} = \Empty
+    (1) \CutBegin{P Q}                  = \CutBegin{P Q+} 
+    (2) \Intersection{Q \CutBegin{P Q}} = \Empty
+    (3) \NotBegin{\CutBegin{P Q}} Q}    = \CutBegin{P Q} 
+    (4) \IsBegin{\CutBegin{P Q}} Q}     = \Empty
 
 AUTHOR: Frank-Rene Schaefer
 """
@@ -30,17 +32,19 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine               as regex
 import quex.engine.state_machine.construction.repeat      as repeat
+from   quex.engine.state_machine.TEST.helper_state_machine_shapes import get_sm_list
+
 import quex.engine.state_machine.algebra.cut              as cut      
 import quex.engine.state_machine.algebra.union            as union
 import quex.engine.state_machine.algebra.intersection     as intersection
-import quex.engine.state_machine.check.same               as same_check
+import quex.engine.state_machine.algebra.derived          as derived
 import quex.engine.state_machine.check.identity           as identity
 import quex.engine.state_machine.check.superset           as superset
 import quex.engine.state_machine.algorithm.beautifier     as beautifier
 
 if "--hwut-info" in sys.argv:
     print "Cut Begin: Cut P so that it does not start with Q."
-    print "CHOICES: 0, 0b, 1, 2, 3, 4, 5;"
+    print "CHOICES: 0, 0b, 1, 2, 3, 4, 5, wild;"
     sys.exit(0)
 
 def clean(SM):
@@ -48,11 +52,17 @@ def clean(SM):
     result.clean_up()
     return result
 
-def __core(P, Q):
+def __operation(P, Q):
     return clean(cut.cut_begin(P, Q))
 
     # NOT: complement_begin(cut_begin(P Q) Q) == cut_begin(P Q))
     #      assert identity.do(complement_begin.do(result, cutter), result)
+
+def core(A, B):
+    result_0  = __operation(A, B)
+    Brepeated = repeat.do(B, min_repetition_n=1)
+    result_1  = __operation(A, B)
+    return result_0, result_1
 
 def test(A_txt, B_txt):
     """Performs: \CutBegin{P Q} and prints the result!
@@ -60,30 +70,38 @@ def test(A_txt, B_txt):
     """
     print "---------------------------"
 
-    print ("Original = " + A_txt).replace("\n", "\\n").replace("\t", "\\t")
-    print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
+    A, B = parse_REs(A_txt, B_txt)
 
-    A        = regex.do(A_txt, {}).sm
-    B        = regex.do(B_txt, {}).sm
-    result_0 = __core(A, B)
+    result_0, result_1 = core(A, B)
+
     print
     print "result = ", result_0.get_string(NormalizeF=True)
 
-    Brepeated = repeat.do(B, min_repetition_n=1)
-    result_1  = __core(A, B)
+    assertion_checks(result_0, result_1, B)
 
+def parse_REs(A_txt, B_txt):
+    print ("Original = " + A_txt).replace("\n", "\\n").replace("\t", "\\t")
+    print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
+    A = regex.do(A_txt, {}).sm
+    B = regex.do(B_txt, {}).sm
+    return A, B
+
+def assertion_checks(result_0, result_1, B):
     # \CutBegin{P Q} == \CutBegin{P Q+}
-    assert same_check.do(result_0, result_1)
+    assert identity.do(result_0, result_1)
 
     # \Intersection{Q \CutBegin{P Q}} == \Empty
     assert intersection.do([result_0, B]).is_Empty()
 
-def quick(A, B):
-    print "---------------------------"
-    __core(A, B)
+    # \NotBegin{\CutBegin{P Q} Q} == \CutBegin{P Q}
+    assert identity.do(derived.not_begin(result_0, B), result_0)
+
+    # \IsBegin{\CutBegin{P Q} Q} == \CutBegin{P Q}
+    assert derived.is_begin(result_0, B).is_Empty()
 
 if False: # Selected Test
-    quick('[01][0][01]', '0')
+    # test('A(11|22|33|44|55|66|77|88|99|AA|BB|CC|DD|EE|FF|GG|HH|II|JJ|KK|LL|MM|NN|OO|PP|QQ|RR|SS)C', 'ABBC')
+    test('1*01*',          '0')
     sys.exit()
 
 if "0b" in sys.argv:
@@ -154,9 +172,21 @@ elif "5" in sys.argv:
     test('"a"|"x"+|"e"|"g"',    'x{5}')
     test('X("a"|"x"*|"e"|"g")', 'X')
     test('X("a"|"x"*|"e"|"g")', 'Xx{5}')
-    # test('abc("123"|("ABC"|"XYZ")+)+"123"("AAA"|"BBB"|"CCC")?xyz', 'abc123ABC123AAAxyz')
-    #test('ab("12"|("AB"|"XY")+)+"12"("AA"|"BB"|"CC")?yz', 'ab12AB12AAyz')
-    #test('(((a+)b)+c)+', 'abcbc')
-    #test('(pri|ri|i)+',  'priri')
-    #test('(pri|ri|i)+',  '(((p+)r)+i)+')
+
+elif "wild" in sys.argv:
+    def iterable():
+        sm_list = get_sm_list()
+        for i, sm_0 in enumerate(sm_list):
+            for k, sm_1 in enumerate(sm_list):
+                if i == k: continue
+                yield sm_0, sm_1
+
+    count = 0
+    for a_sm, b_sm in iterable():
+        result_0, result_1 = core(a_sm, b_sm)
+        assertion_checks(result_0, result_1, b_sm)
+        count += 1
+
+    print "<terminated: %i>" % count
+
 

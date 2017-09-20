@@ -3,7 +3,7 @@ from   quex.input.regular_expression.pattern             import Pattern_Prep
 from   quex.input.files.mode_option                      import OptionDB
 from   quex.input.code.core                              import CodeUser
 from   quex.input.code.base                              import SourceRef
-import quex.engine.state_machine.check.same              as     same_check
+import quex.engine.state_machine.algebra.is_disjoint     as     is_disjoint
 import quex.engine.state_machine.check.outrun            as     outrun_checker
 import quex.engine.state_machine.check.superset          as     superset_check
 from   quex.engine.analyzer.door_id_address_label        import DialDB
@@ -469,7 +469,7 @@ class Mode_Prep:
                and low.pattern_string() not in Mode_Prep.focus: continue
 
             # A superset of B, or B superset of A => there are common matches.
-            if not same_check.do(high.sm, low.sm): continue
+            if is_disjoint.do(high.sm, low.sm): continue
 
             # The 'match what remains' is exempted from check.
             if high.pattern_string() == "." or low.pattern_string() == ".":

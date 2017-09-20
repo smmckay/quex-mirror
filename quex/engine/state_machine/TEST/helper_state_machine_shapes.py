@@ -280,6 +280,17 @@ def get_sm_shape_by_name(Name):
     else:                       sm, state_n, pic = get_tree(sm)
     return sm, state_n, pic
 
+def get_sm_list():
+    global __value
+
+    set_unique_transition_f()
+    result  = []
+    for name in get_sm_shape_names_list():
+        __value = 1
+        result.append( 
+            get_sm_shape_by_name_with_acceptance(name)
+        )
+    return result
 
 __unique_transition_f = [ False ]
 

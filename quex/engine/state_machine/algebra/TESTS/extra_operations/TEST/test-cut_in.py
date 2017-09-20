@@ -33,14 +33,13 @@ import quex.engine.state_machine.construction.repeat      as repeat
 import quex.engine.state_machine.algebra.cut              as cut      
 import quex.engine.state_machine.algebra.union            as union
 import quex.engine.state_machine.algebra.intersection     as intersection
-import quex.engine.state_machine.check.same               as same_check
 import quex.engine.state_machine.check.identity           as identity
 import quex.engine.state_machine.check.superset           as superset
 import quex.engine.state_machine.algorithm.beautifier     as beautifier
 
 if "--hwut-info" in sys.argv:
     print "Cut In: Cut P so that it does not contain anything matching Q."
-    print "CHOICES: 0, 0b, 1, 2, 3, 4, 5;"
+    print "CHOICES: 0;" # , 0b, 1, 2, 3, 4, 5;"
     sys.exit(0)
 
 def clean(SM):
@@ -65,32 +64,59 @@ def test(A_txt, B_txt):
 
     A        = regex.do(A_txt, {}).sm
     B        = regex.do(B_txt, {}).sm
+    print "#A.sm:", A
     result_0 = __core(A, B)
     print
     print "result = ", result_0.get_string(NormalizeF=True)
 
-    print "DEBUG: remove following line:"
-    sys.exit()
+    # print "DEBUG: remove following line:"
+    # sys.exit()
 
     Brepeated = repeat.do(B, min_repetition_n=1)
     result_1  = __core(A, B)
 
     # \CutIn{P Q} == \CutIn{P Q+}
-    assert same_check.do(result_0, result_1)
+    assert identity.do(result_0, result_1)
 
     # \Intersection{Q \CutIn{P Q}} == \Empty
     assert intersection.do([result_0, B]).is_Empty()
 
 if True:
-    test('10',            '0')
+    test('1*01',          '0')  
+    # test('01+0',          '0')  # OK
+    # test('001+',          '0')  # OK
+    # test('01+',           '0')  # OK
+    # test('1+0',           '0')  # OK
+    # test('1+',            '0')  # OK
     sys.exit()
 
-if "0b" in sys.argv:
-    test('0',            '0')
-    test('10',            '0')
-    test('01',            '0')
-    test('101',            '0')
+if "0" in sys.argv:
+    test('0',            '0')  # OK
+    test('1',            '0')  # OK
+    test('10',           '0')  # OK
+    test('01',           '0')  # OK
+    test('000',          '0')  # OK
+    test('001',          '0')  # OK
+    test('010',          '0')  # OK
+    test('011',          '0')  # OK
+    test('100',          '0')  # OK
+    test('101',          '0')  # OK
+    test('110',          '0')  # OK
+    test('111',          '0')  # OK
+
+elif "0b" in sys.argv:
+    test('1+',            '0')  # OK
+    test('1+0',           '0')  # OK
+    test('01+',           '0')  # OK
+    test('001+',          '0')  # OK
+    test('01+0',          '0')  # OK
+    test('01+1+',          '0')  
+    test('1+00',          '0')  
+    test('1+01+',          '0')  
+    test('1+1+0',          '0')  
+    test('1+1+1+',          '0') 
     sys.exit()
+    test('101',            '0')
     test('[1]',          '0')
     test('[0]',          '0')
     test('[01]',         '0')

@@ -1,7 +1,7 @@
 from quex.engine.misc.tree_walker   import TreeWalker
 
 def do(A, B): 
-    """Check whether A and B match on same lexemes.
+    """Detect if 'A' and 'B' match on common lexemes.
 
        RETURNS: True, if they do.
                 False, else.
@@ -22,9 +22,9 @@ class SameDetector(TreeWalker):
 
     """
     def __init__(self, A, B):
-        self.sm_a     = A # DFA of the higher priority pattern
+        self.sm_a     = A  # DFA of the higher priority pattern
         self.sm_b     = B  # DFA of the lower priority pattern
-        self.result   = []
+        self.result   = False
         self.done_set = set()
         TreeWalker.__init__(self)
 
