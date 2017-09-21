@@ -36,19 +36,18 @@ state machine
 init-state = 0L
 00000 A
      == [-oo, oo] ==> 00000
--------------------------------------------------------------------
     
 
-expression    = "x\None"
+-------------------------------------------------------------------
+expression    = "x\Empty"
 state machine
 init-state = 0L
 00000 
      == 'x' ==> 00001
+    
 00001 A
     
+
 -------------------------------------------------------------------
-    
-
-expression    = "\None"
+expression    = "\Empty"
 command line:1:error: Empty pattern.
-

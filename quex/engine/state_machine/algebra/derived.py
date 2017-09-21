@@ -1,8 +1,6 @@
-import quex.engine.state_machine.algebra.complement         as     complement
 import quex.engine.state_machine.algebra.difference         as     difference 
 import quex.engine.state_machine.algebra.intersection       as     intersection
 import quex.engine.state_machine.construction.sequentialize as     sequentialize
-import quex.engine.state_machine.construction.repeat        as     repeat       
 import quex.engine.state_machine.algorithm.beautifier       as     beautifier
 from   quex.engine.state_machine.core                       import DFA
 

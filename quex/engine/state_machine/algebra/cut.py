@@ -1,25 +1,18 @@
 from   quex.engine.state_machine.core                 import DFA
-from   quex.engine.state_machine.state.core           import DFA_State
+import quex.engine.state_machine.algebra.complement   as     complement
+import quex.engine.state_machine.algebra.derived      as     derived
 import quex.engine.state_machine.algebra.reverse      as     reverse
 from   quex.engine.state_machine.algebra.intersection import state_index_for_combination
 from   quex.engine.state_machine.state.target_map_ops import get_intersection_line_up_2
 import quex.engine.state_machine.algorithm.beautifier as     beautifier
-import quex.engine.state_machine.index                as     index
-from   quex.engine.misc.tree_walker                   import TreeWalker
-from   quex.engine.misc.tools                         import r_enumerate
-
-from   itertools import islice
 
 def leave_begin(DfaA, DfaB):
-    dfa_b_complement = complement.do(DfaB)
     return cut_begin(DfaA, complement.do(DfaB))
 
 def leave_end(DfaA, DfaB):
-    dfa_b_complement = complement.do(DfaB)
     return cut_end(DfaA, complement.do(DfaB))
 
 def leave_in(DfaA, DfaB):
-    dfa_b_complement = complement.do(DfaB)
     return cut_in(DfaA, complement.do(DfaB))
 
 def cut_in(DfaA, DfaB):
@@ -28,25 +21,22 @@ def cut_in(DfaA, DfaB):
     Any lexeme that matches 'A' and contains a lexeme matching 'B' is 
     pruned by what matched 'B'.
 
-    NOTE: The '__cut_begin_core()' cannot be used in case that the end has to 
-          be pruned. It has no means to determined when to raise the acceptance
-          of the connected epsilon state. For that, it would need to know, if
-          it was *really* and end state.
-
-          => Before pruning forward, prune any possible end pattern.
     """
-    result = DfaA
-    cut_f  = True
-    while cut_f:
-        cut_f = False
-        for si in result.states:
-            result_backup = result
-            result, cut_f = __cut_end_core(result, DfaB)
-            if cut_f: break
-            result, cut_f = __cut_begin_core(result, DfaB, A_begin_state_index=si)
-            if cut_f: break
-            result = result_backup
-    return result
+    uni_B     = sequentialize.do([DFA.Universal(), DfaB])
+    B_uni     = sequentialize.do([DfaB, DFA.Universal()])
+
+    C_begin   = derived.is_begin(DfaA, uni_B)     # only exemes starting with 'B'
+    remainder = difference.do(A, C_begin)
+    C_end     = derived.is_end(remainder, B_uni)  # Lexemes starting with 'B'
+    remainder = difference.do(remainder, C_end)
+    
+    DfaC_head = cut_begin(C_begin, uni_B)
+    DfaC_tail = cut_end(C_end, B_uni)
+
+    DfaC_cut  = sequentialize.do([DfaC_head, DfaC_tail])
+    
+    return union.do([remainder, DfaC_cut])
+
 
 def cut_end(DfaA, DfaB):
     """Cut End:
@@ -149,7 +139,6 @@ def __cut_begin_core(A, B):
                          AcceptanceF    = A.states[A.init_state_index].is_acceptance())
 
     epsilon_transition_list = []
-    cut_f                   = False
     while not work_list.done():
         result_si, A_si, B_si = work_list.pop()
         assert A_si is not None
@@ -168,53 +157,6 @@ def __cut_begin_core(A, B):
                 new_result_target_si = work_list.add(A_target_si, B.init_state_index,
                                                      FirstF=True)
                 epsilon_transition_list.append(new_result_target_si)
-                cut_f = True
-            else:
-                A_acceptance_f = A.states[A_target_si].is_acceptance()
-                result.add_transition(result_si, trigger_set, result_target_si,
-                                      AcceptanceF = A_acceptance_f)
-
-    return __implement_epsilon_transitions(result, A, epsilon_transition_list)
-
-def __cut_in_core(A, B):
-    """RETURN: [0] Resulting DFA
-               [1] True, if cut has been performed; False else.
-
-    If no cut has been performed, then 'A' is returned as is.
-    """
-    A.assert_consistency() 
-    B.assert_consistency() 
-
-    if B.is_Empty(): return A, False
-
-    work_list      = WorkList()
-    result_init_si = work_list.add(A.init_state_index, None)
-    result         = DFA(InitStateIndex = result_init_si, 
-                         AcceptanceF    = A.states[A.init_state_index].is_acceptance())
-
-    epsilon_transition_list = []
-    cut_f                   = False
-    while not work_list.done():
-        result_si, result_begin_path_si, A_si, B_si = work_list.pop()
-        assert A_si is not None
-
-        if matches_B_start_tm(A, A_si, B):
-            work_list.add(A_si, B.init_state_index, ResultBeginPathSi=None)
-
-        for A_target_si, B_target_si, trigger_set in target_map_line_up(A, A_si, B, B_si):
-            # State index = 'None' => state does not transit on 'trigger_set'.
-            if A_target_si is None: continue
-
-            result_target_si = work_list.add(A_target_si, B_target_si, 
-                                             ResultBeginPathSi=result_begin_path_si)
-
-            if B_target_si is not None and B.states[B_target_si].is_acceptance():
-                # Transition in 'B' to acceptance => result *must* drop-out!
-                # Cutting = lexemes starting at the target are acceptable.
-                #           => merge with init state.
-                #           => must again consider cutting matches with 'B'.
-                epsilon_transition_list.append((result_begin_path_si, new_result_target_si))
-                cut_f = True
             else:
                 A_acceptance_f = A.states[A_target_si].is_acceptance()
                 result.add_transition(result_si, trigger_set, result_target_si,

@@ -1,4 +1,21 @@
 #! /usr/bin/env python
+"""PURPOSE: Test the '\NotBegin' operations.
+
+NotBegin{P Q} operates on the level of lexemes sets. The result of this operation
+consists of:
+
+   * lexemes matched by `P` which *do not start* with something that matches `Q`. 
+
+There is a not-so-subtle difference to 'CutIn'. The latter prunes lexemes of the
+matching set. The present prunes the set.
+
+ADDITIONAL TESTS: 
+
+    (1) \Intersection{\NotBegin{P Q} Q} = \Empty
+    (2) \Union{\NotBegin{P Q}} P}       = P
+
+AUTHOR: Frank-Rene Schaefer
+"""
 import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
@@ -16,7 +33,7 @@ import quex.engine.state_machine.algorithm.beautifier     as     beautifier
 from   quex.engine.state_machine.core                     import DFA
 
 if "--hwut-info" in sys.argv:
-    print "Complement Begin: Cut patterns from P that begin with Q."
+    print "NotBegin: Cut patterns from P that begin with Q."
     print "CHOICES: 0, 1, 2, 3, 4, 5;"
     sys.exit(0)
 
@@ -52,7 +69,13 @@ def test(A, B):
     __core(B, A)
     #sys.exit()
 
-#test('"1BAC"|"1BBC"', '"1ABC"')
+    assert_considerations(A, B, result)
+
+def assert_considerations(A, B, result):
+    """Set of rules which must hold in case the '\NotBegin' has been applied.
+    """
+    assert intersection.do([result, B]).is_Empty()
+    assert identity.do(union.do([result, A]), A)
 
 if "0" in sys.argv:
     test('otto_mueller', 'otto')

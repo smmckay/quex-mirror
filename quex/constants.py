@@ -21,9 +21,7 @@ E_Files = Enum("HEADER",
 E_StateIndices = Enum("DROP_OUT", 
                       "RELOAD_FORWARD",
                       "RELOAD_BACKWARD",
-                      "ALL", 
                       "BEFORE_ENTRY", 
-                      "BEFORE_PATH_WALK",
                       "AFTER_PATH_WALK",
                       "VOID") 
 

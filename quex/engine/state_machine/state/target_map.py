@@ -105,11 +105,6 @@ class TargetMap:
             del self.__db[TargetIdx]
         self.delete_epsilon_target_state(TargetIdx)
 
-    def cut_trigger_set(self, TriggerSet):
-        for target_si, trigger_set in self.__db.items():
-            trigger_set.subtract(TriggerSet)
-            if trigger_set.is_empty(): del self.__db[target_si]
-
     def delete_epsilon_target_state(self, TargetStateIdx):
         if TargetStateIdx in self.__epsilon_target_index_list:
             del self.__epsilon_target_index_list[self.__epsilon_target_index_list.index(TargetStateIdx)]

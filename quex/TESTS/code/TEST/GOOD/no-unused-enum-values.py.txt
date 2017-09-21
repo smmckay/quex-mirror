@@ -10,10 +10,9 @@
 -- E_Commonality.A_IN_B: No output is good output --
 -- E_CharacterCountType.AFTER_RELOAD: No output is good output --
 -- E_Op.Accepter: No output is good output --
--- E_StateIndices.ALL: No output is good output --
+-- E_StateIndices.AFTER_PATH_WALK: No output is good output --
 -- E_InputActions.DECREMENT: No output is good output --
 -- E_DoorIdIndex.ACCEPTANCE: No output is good output --
 -- E_TerminalType.BAD_LEXATOM: No output is good output --
 -- E_TriggerIDs.NONE: No output is good output --
 <terminated>
-
