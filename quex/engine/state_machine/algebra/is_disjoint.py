@@ -6,12 +6,12 @@ def do(A, B):
        RETURNS: True, if they do.
                 False, else.
     """
-    if A.is_Empty() and B.is_Empty(): return True
+    if A.is_Empty() or B.is_Empty(): return True
 
     detector = SameDetector(A, B)
     detector.do((A.init_state_index, B.init_state_index))
 
-    return detector.result
+    return not detector.result
 
 class SameDetector(TreeWalker):
     """Find acceptance states of 'A' which are reachable by walking along 
