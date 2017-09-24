@@ -64,7 +64,7 @@ def test(A_txt, B_txt):
 
     A        = regex.do(A_txt, {}).sm
     B        = regex.do(B_txt, {}).sm
-    print "#A.sm:", A
+    print "A:", A.get_string(NormalizeF=False)
     result_0 = __core(A, B)
     print
     print "result = ", result_0.get_string(NormalizeF=True)
@@ -82,7 +82,7 @@ def test(A_txt, B_txt):
     assert intersection.do([result_0, B]).is_Empty()
 
 if True:
-    test('1*01',          '0')  
+    test('10',          '0')  
     # test('01+0',          '0')  # OK
     # test('001+',          '0')  # OK
     # test('01+',           '0')  # OK

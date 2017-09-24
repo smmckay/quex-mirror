@@ -3,6 +3,7 @@ from   quex.engine.misc.interval_handling             import NumberSet, \
 from   quex.engine.state_machine.state.target_map_ops import E_Border
 from   quex.constants                                 import E_StateIndices
 from   quex.blackboard                                import setup as Setup
+from   quex.engine.misc.tools                         import typed
 
 from   operator import attrgetter
 
@@ -255,12 +256,6 @@ class TargetMap:
             if new_idx is None: continue
             self.__epsilon_target_index_list[i] = new_idx
             
-    def has_one_of_triggers(self, CharacterCodeList):
-        assert type(CharacterCodeList) == list
-        for code in CharacterCodeList:
-            if self.has_trigger(code): return True
-        return False
-
     def minimum(self):
         if not self.__db: return None
         return min(trigger_set.minimum() for trigger_set in self.__db.itervalues())
@@ -269,15 +264,26 @@ class TargetMap:
         if not self.__db: return None
         return max(trigger_set.least_greater_bound() for trigger_set in self.__db.itervalues())
 
+    @typed(CharCode=(int,long))
     def has_trigger(self, CharCode):
-        assert type(CharCode) == int
         if self.get_resulting_target_state_index(CharCode) is None: return False
         else:                                                       return True
+
+    @typed(TriggerSet=NumberSet)
+    def has_intersection(self, TriggerSet):
+        return any(trigger_set.has_intersection(TriggerSet)
+                   for trigger_set in self.__db.itervalues())
 
     def has_target(self, TargetState):
         if self.__db.has_key(TargetState):                    return True
         elif TargetState in self.__epsilon_target_index_list: return True
         else:                                                 return False
+
+    def has_one_of_triggers(self, CharacterCodeList):
+        assert type(CharacterCodeList) == list
+        for code in CharacterCodeList:
+            if self.has_trigger(code): return True
+        return False
 
     def get_string(self, FillStr, StateIndexMap, Option="utf8"):
         # print out transitionts

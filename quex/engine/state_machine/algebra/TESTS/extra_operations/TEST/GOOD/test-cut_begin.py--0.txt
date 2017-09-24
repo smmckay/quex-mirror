@@ -80,16 +80,16 @@ result =  init-state = 0L
 
 ---------------------------
 Original = [01]+
-
 Cutter   = 0
+
 result =  init-state = 0L
 00000 
-    
      == '1' ==> 00001
+    
 00001 A
+     == ['0', '1'] ==> 00001
     
 
-     == ['0', '1'] ==> 00001
 ---------------------------
 Original = 1[01]*
 Cutter   = 10
@@ -131,72 +131,71 @@ result =  init-state = 0L
     
 
 ---------------------------
-    
 Original = 12
 Cutter   = 1(2?)
 
 result =  init-state = 0L
 00000 
-     == '2' ==> 00001
     
-00001 A
-    
-
 ---------------------------
+
 Original = 1
 Cutter   = 1(2?)
+    
 
 result =  init-state = 0L
 00000 
-    
-
 ---------------------------
+
 Original = "123"|"ABC"
 Cutter   = "123"
-
 result =  init-state = 0L
+    
 00000 
      == 'A' ==> 00001
     
 00001 
      == 'B' ==> 00002
+    
 00002 
+    
+
      == 'C' ==> 00003
 00003 A
 ---------------------------
-    
 
 Original = \n
 Cutter   = (\r\n)|\n
-result =  init-state = 0L
+    
 
+result =  init-state = 0L
 00000 
 ---------------------------
+
 Original = [ab]+
-    
 Cutter   = "b"
 result =  init-state = 0L
     
 00000 
      == 'a' ==> 00001
     
-00001 A
-    
 
+00001 A
      == ['a', 'b'] ==> 00001
 ---------------------------
-Original = [ab]+
 
+Original = [ab]+
 Cutter   = "bb"
 result =  init-state = 0L
-    
-
 00000 
+    
      == 'a' ==> 00001
      == 'b' ==> 00002
-
+    
 00001 A
      == ['a', 'b'] ==> 00001
+    
+
 00002 A
     
      == 'a' ==> 00001

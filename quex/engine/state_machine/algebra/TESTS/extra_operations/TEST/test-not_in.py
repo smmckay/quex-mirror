@@ -42,12 +42,20 @@ def test(A, B):
             print
         print "result = ", result.get_string(NormalizeF=True)
 
+        assert_considerations(orig, cutter, result)
+
     print "---------------------------"
     __core(A, B)
     #sys.exit()
     print
     __core(B, A)
 
+def assert_considerations(A, B, result):
+    assert superset.do(A, result)
+    assert intersection.do([result, B]).is_Empty()
+    assert identity.do(union.do([result, A]), A)
+    assert intersection.do([result, derived.is_in(A, B)]).is_Empty()
+    assert identity.do(union.do([result, derived.is_in(A, B)]), A)
 
 if "0" in sys.argv:
     test('[01]+', '0')

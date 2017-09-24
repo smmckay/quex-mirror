@@ -67,7 +67,7 @@ def test(A_txt, B_txt):
     print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
 
     A = regex.do(A_txt, {}).sm
-    B = regex.do(B_txt, {}).sm
+    B = regex.do("(%s)+" % B_txt, {}).sm
 
     result_0, result_1 = core(A, B)
 
@@ -78,23 +78,26 @@ def test(A_txt, B_txt):
 
 def assertion_checks(result_0, result_1, B):
     # \CutEnd{P Q} == \CutEnd{P Q+}
-    assert identity.do(result_0, result_1)
+    # assert identity.do(result_0, result_1)
 
-    # \Intersection{Q \CutEnd{P Q}} == \Empty
-    assert intersection.do([result_0, B]).is_Empty()
+    # \Intersection{Q \CutEnd{P Q+}} == \Empty
+    assert intersection.do([result_1, B]).is_Empty()
 
-    # \NotEnd{\CutEnd{P Q} Q} == \CutEnd{P Q}
-    assert identity.do(derived.not_end(result_0, B), result_0)
+    # \NotEnd{\CutEnd{P Q+} Q} == \CutEnd{P Q+}
+    assert identity.do(derived.not_end(result_1, B), result_1)
 
-    # \IsEnd{\CutEnd{P Q} Q} == \CutEnd{P Q}
-    assert derived.is_end(result_0, B).is_Empty()
-
+    # \IsEnd{\CutEnd{P Q+} Q} == \CutEnd{P Q}
+    assert derived.is_end(result_1, B).is_Empty()
 
 def core(A, B):
     result_0  = operation(A, B)
     Brepeated = repeat.do(B, min_repetition_n=1)
-    result_1  = operation(A, B)
+    result_1  = operation(A, Brepeated)
     return result_0, result_1
+
+if False:
+    test('1(23)+', '123')
+    sys.exit(-1)
 
 if "0" in sys.argv:
     test('otto_mueller', 'mueller')
@@ -164,6 +167,10 @@ elif "wild" in sys.argv:
     count = 0
     for a_sm, b_sm in iterable():
         result_0, result_1 = core(a_sm, b_sm)
+        if False:
+            print "#A", a_sm
+            print "#B", b_sm
+            print "#cut B+", result_1
         assertion_checks(result_0, result_1, b_sm)
         count += 1
 

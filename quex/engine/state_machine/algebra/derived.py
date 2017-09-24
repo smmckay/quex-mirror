@@ -5,32 +5,32 @@ import quex.engine.state_machine.algorithm.beautifier       as     beautifier
 from   quex.engine.state_machine.core                       import DFA
 
 def not_begin(P, Q):
-    tmp = sequentialize.do([Q, DFA.Universal()])
-    tmp = beautifier.do(tmp)
-    return beautifier.do(difference.do(P, tmp))
+    return beautifier.do(difference.do(P, anything_beginning_with(Q)))
 
 def not_end(P, Q):
-    tmp = sequentialize.do([DFA.Universal(), Q])
-    tmp = beautifier.do(tmp)
-    return beautifier.do(difference.do(P, tmp))
+    return beautifier.do(difference.do(P, anything_ending_with(Q)))
 
 def not_in(P, Q):
-    tmp        = sequentialize.do([DFA.Universal(), 
-                                   Q, 
-                                   DFA.Universal()])
-    tmp = beautifier.do(tmp)
-    return beautifier.do(difference.do(P, tmp))
+    return beautifier.do(difference.do(P, anything_containing(Q)))
 
 def is_begin(P, Q):
-    tmp = sequentialize.do([Q, DFA.Universal()])
-    tmp = beautifier.do(tmp)
-    return beautifier.do(intersection.do([P, tmp]))
+    return beautifier.do(intersection.do([P, anything_beginning_with(Q)]))
 
 def is_end(P, Q):
-    tmp = sequentialize.do([DFA.Universal(), Q])
-    tmp = beautifier.do(tmp)
-    return beautifier.do(intersection.do([P, tmp]))
+    return beautifier.do(intersection.do([P, anything_ending_with(Q)]))
 
 def is_in(P, Q):
+    return beautifier.do(intersection.do([P, anything_containing(Q)]))
+
+def anything_beginning_with(Q):
+    tmp = sequentialize.do([Q, DFA.Universal()])
+    return beautifier.do(tmp)
+
+def anything_ending_with(Q):
+    tmp = sequentialize.do([DFA.Universal(), Q])
+    return beautifier.do(tmp)
+
+def anything_containing(Q):
     tmp = sequentialize.do([DFA.Universal(), Q, DFA.Universal()])
-    return beautifier.do(intersection.do([P, tmp]))
+    return beautifier.do(tmp)
+

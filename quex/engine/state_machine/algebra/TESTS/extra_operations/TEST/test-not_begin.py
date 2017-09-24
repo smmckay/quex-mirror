@@ -63,19 +63,23 @@ def test(A, B):
         print
         print "result = ", result.get_string(NormalizeF=True)
 
+        assert_considerations(orig, cutter, result)
+
+        return result
+
     print "---------------------------"
     __core(A, B)
     print
     __core(B, A)
-    #sys.exit()
-
-    assert_considerations(A, B, result)
 
 def assert_considerations(A, B, result):
     """Set of rules which must hold in case the '\NotBegin' has been applied.
     """
+    assert superset.do(A, result)
     assert intersection.do([result, B]).is_Empty()
     assert identity.do(union.do([result, A]), A)
+    assert intersection.do([result, derived.is_begin(A, B)]).is_Empty()
+    assert identity.do(union.do([result, derived.is_begin(A, B)]), A)
 
 if "0" in sys.argv:
     test('otto_mueller', 'otto')

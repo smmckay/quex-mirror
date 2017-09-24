@@ -19,10 +19,9 @@ NOTE: The operation ensures that no lexeme starts with `Q`. Thus, the any cut
 
 ADDITIONAL TESTS: 
 
-    (1) \CutBegin{P Q}                  = \CutBegin{P Q+} 
-    (2) \Intersection{Q \CutBegin{P Q}} = \Empty
-    (3) \NotBegin{\CutBegin{P Q}} Q}    = \CutBegin{P Q} 
-    (4) \IsBegin{\CutBegin{P Q}} Q}     = \Empty
+    (1) \Intersection{Q \CutBegin{P Q+}} = \Empty
+    (2) \NotBegin{\CutBegin{P Q}} Q}     = \CutBegin{P Q} 
+    (3) \IsBegin{\CutBegin{P Q}} Q}      = \Empty
 
 AUTHOR: Frank-Rene Schaefer
 """
@@ -60,8 +59,8 @@ def __operation(P, Q):
 
 def core(A, B):
     result_0  = __operation(A, B)
-    Brepeated = repeat.do(B, min_repetition_n=1)
-    result_1  = __operation(A, B)
+    Brepeated = beautifier.do(repeat.do(B, min_repetition_n=1))
+    result_1  = __operation(A, Brepeated)
     return result_0, result_1
 
 def test(A_txt, B_txt):
@@ -83,25 +82,26 @@ def parse_REs(A_txt, B_txt):
     print ("Original = " + A_txt).replace("\n", "\\n").replace("\t", "\\t")
     print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
     A = regex.do(A_txt, {}).sm
-    B = regex.do(B_txt, {}).sm
+    B = regex.do("(%s)+" % B_txt, {}).sm
     return A, B
 
 def assertion_checks(result_0, result_1, B):
     # \CutBegin{P Q} == \CutBegin{P Q+}
-    assert identity.do(result_0, result_1)
+    # assert identity.do(result_1, result_1)
 
-    # \Intersection{Q \CutBegin{P Q}} == \Empty
-    assert intersection.do([result_0, B]).is_Empty()
+    # \Intersection{Q \CutBegin{P Q+}} == \Empty
+    assert intersection.do([result_1, B]).is_Empty()
 
-    # \NotBegin{\CutBegin{P Q} Q} == \CutBegin{P Q}
-    assert identity.do(derived.not_begin(result_0, B), result_0)
+    # \NotBegin{\CutBegin{P Q+} Q} == \CutBegin{P Q+}
+    assert identity.do(derived.not_begin(result_1, B), result_1)
 
-    # \IsBegin{\CutBegin{P Q} Q} == \CutBegin{P Q}
-    assert derived.is_begin(result_0, B).is_Empty()
+    # \IsBegin{\CutBegin{P Q+} Q} == \CutBegin{P Q+}
+    assert derived.is_begin(result_1, B).is_Empty()
 
 if False: # Selected Test
     # test('A(11|22|33|44|55|66|77|88|99|AA|BB|CC|DD|EE|FF|GG|HH|II|JJ|KK|LL|MM|NN|OO|PP|QQ|RR|SS)C', 'ABBC')
-    test('1*01*',          '0')
+    # test('1*01',          '0')
+    test('12',           '1(2?)')
     sys.exit()
 
 if "0b" in sys.argv:
