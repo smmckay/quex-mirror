@@ -19,10 +19,15 @@ NOTE: The operation ensures that no lexeme starts with `Q`. Thus, the any cut
 
 ADDITIONAL TESTS: 
 
-    * \CutEnd{P Q}                  = \CutEnd{P Q+} 
-    * \Intersection{Q \CutEnd{P Q}} = \Empty
-    * \NotEnd{\CutEnd{P Q}} Q}      = \CutEnd{P Q} 
-    * \IsEnd{\CutEnd{P Q}} Q}       = \Empty
+    () \CutEnd{Q Q}                   = \Empty
+    () \CutEnd{P          \Empty}     = P
+    () \CutEnd{P          \Universal} = \Empty
+    () \CutEnd{\Empty     P}          = \Empty
+
+    () \CutEnd{P Q}                  = \CutEnd{P Q+} 
+    () \Intersection{Q \CutEnd{P Q}} = \Empty
+    () \NotEnd{\CutEnd{P Q}} Q}      = \CutEnd{P Q} 
+    () \IsEnd{\CutEnd{P Q}} Q}       = \Empty
 
 AUTHOR: Frank-Rene Schaefer
 """
@@ -31,7 +36,9 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine               as regex
+from   quex.engine.state_machine.core                     import DFA
 import quex.engine.state_machine.construction.repeat      as repeat
+import quex.engine.state_machine.construction.sequentialize as sequentialize
 import quex.engine.state_machine.algebra.cut              as cut
 import quex.engine.state_machine.algebra.union            as union
 import quex.engine.state_machine.algebra.intersection     as intersection
@@ -46,13 +53,11 @@ if "--hwut-info" in sys.argv:
     print "CHOICES: 0, 1, 2, 3, 4, 5, wild;"
     sys.exit(0)
 
-def clean(SM):
-    result = beautifier.do(SM)
+def __operation(P, Q):
+    result = cut.cut_end(P, Q)
+    result = beautifier.do(result)
     result.clean_up()
     return result
-
-def operation(P, Q):
-    return clean(cut.cut_end(P, Q))
 
     # NOT: complement_begin(cut_begin(P Q) Q) == cut_begin(P Q))
     #      assert identity.do(complement_begin.do(result, cutter), result)
@@ -63,37 +68,59 @@ def test(A_txt, B_txt):
     """
     print "---------------------------"
 
-    print ("Original = " + A_txt).replace("\n", "\\n").replace("\t", "\\t")
-    print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
+    A, B                     = parse_REs(A_txt, B_txt)
+    B_repeated, B_repeated_A = more_DFAs(A, B)
 
-    A = regex.do(A_txt, {}).sm
-    B = regex.do("(%s)+" % B_txt, {}).sm
-
-    result_0, result_1 = core(A, B)
+    result = core(A, B, B_repeated, B_repeated_A)
 
     print
-    print "result = ", result_0.get_string(NormalizeF=True)
+    print "result = ", result.get_string(NormalizeF=True)
 
-    assertion_checks(result_0, result_1, B)
+def core(P, Q, Q_repeated, Q_repeated_P):
+    cut_P_Q         = __operation(P, Q)
+    cut_Q_Q         = __operation(Q, Q)
+    cut_P_Empty     = __operation(P, DFA.Empty())
+    cut_P_Universal = __operation(P, DFA.Universal())
+    cut_Empty_P     = __operation(DFA.Empty(), P)
+    cut_Universal_P = __operation(DFA.Universal(), P)
+    cut_P_Qp        = __operation(P, Q_repeated)
+    cut_QpP_Q       = __operation(Q_repeated_P, Q)
 
-def assertion_checks(result_0, result_1, B):
-    # \CutEnd{P Q} == \CutEnd{P Q+}
-    # assert identity.do(result_0, result_1)
+    # \CutEnd{Q          Q}          = \Empty
+    assert cut_Q_Q.is_Empty()
+
+    # \CutEnd{P          \Empty}     = P
+    assert identity.do(cut_P_Empty, P)
+
+    # \CutEnd{P          \Universal} = \Empty
+    assert cut_P_Universal.is_Empty()
+
+    # \CutEnd{\Empty     P}          = \Empty
+    assert cut_Empty_P.is_Empty()
 
     # \Intersection{Q \CutEnd{P Q+}} == \Empty
-    assert intersection.do([result_1, B]).is_Empty()
+    assert intersection.do([Q, cut_P_Qp]).is_Empty()
 
     # \NotEnd{\CutEnd{P Q+} Q} == \CutEnd{P Q+}
-    assert identity.do(derived.not_end(result_1, B), result_1)
+    assert identity.do(derived.not_end(cut_P_Qp, Q), cut_P_Qp)
 
-    # \IsEnd{\CutEnd{P Q+} Q} == \CutEnd{P Q}
-    assert derived.is_end(result_1, B).is_Empty()
+    # \IsEnd{\CutEnd{P Q+} Q} == \Empty
+    assert derived.is_end(cut_P_Qp, Q).is_Empty()
 
-def core(A, B):
-    result_0  = operation(A, B)
-    Brepeated = repeat.do(B, min_repetition_n=1)
-    result_1  = operation(A, Brepeated)
-    return result_0, result_1
+    return cut_P_Qp
+
+def parse_REs(A_txt, B_txt):
+    print ("Original = " + A_txt).replace("\n", "\\n").replace("\t", "\\t")
+    print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
+    A = regex.do(A_txt, {}).sm
+    B = regex.do("%s" % B_txt, {}).sm
+    return A, B
+
+def more_DFAs(A, B):
+    B_repeated   = repeat.do(B)
+    B_repeated0  = repeat.do(B, min_repetition_n=0)
+    B_repeated_A = beautifier.do(sequentialize.do([B_repeated0, A]))
+    return beautifier.do(B_repeated), B_repeated_A
 
 if False:
     test('1(23)+', '123')
@@ -166,12 +193,8 @@ elif "wild" in sys.argv:
 
     count = 0
     for a_sm, b_sm in iterable():
-        result_0, result_1 = core(a_sm, b_sm)
-        if False:
-            print "#A", a_sm
-            print "#B", b_sm
-            print "#cut B+", result_1
-        assertion_checks(result_0, result_1, b_sm)
+        b_repeated, b_repeated_a = more_DFAs(a_sm, b_sm)
+        result = core(a_sm, b_sm, b_repeated, b_repeated_a)
         count += 1
 
     print "<terminated: %i>" % count

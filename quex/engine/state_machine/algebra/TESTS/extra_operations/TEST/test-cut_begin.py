@@ -19,9 +19,18 @@ NOTE: The operation ensures that no lexeme starts with `Q`. Thus, the any cut
 
 ADDITIONAL TESTS: 
 
-    (1) \Intersection{Q \CutBegin{P Q+}} = \Empty
-    (2) \NotBegin{\CutBegin{P Q}} Q}     = \CutBegin{P Q} 
-    (3) \IsBegin{\CutBegin{P Q}} Q}      = \Empty
+    () \CutBegin{Q Q}                   = \Empty
+    () \CutBegin{P          \Empty}     = P
+    () \CutBegin{P          \Universal} = \Empty
+    () \CutBegin{\Empty     P}          = \Empty
+
+    (not) \CutBegin{\Universal P}          = \Universal  # Does not hold 'p = 1+'
+    (not) \CutBegin{Q*P Q}                 = Q*P    => Does not hold if P starts with Q
+                                                    and 
+
+    () \Intersection{Q \CutBegin{P Q+}} = \Empty
+    () \NotBegin{\CutBegin{P Q+}} Q}    = \CutBegin{P Q+} 
+    () \IsBegin{\CutBegin{P Q+}} Q}     = \Empty
 
 AUTHOR: Frank-Rene Schaefer
 """
@@ -30,7 +39,9 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine               as regex
+from   quex.engine.state_machine.core                     import DFA
 import quex.engine.state_machine.construction.repeat      as repeat
+import quex.engine.state_machine.construction.sequentialize as sequentialize
 from   quex.engine.state_machine.TEST.helper_state_machine_shapes import get_sm_list
 
 import quex.engine.state_machine.algebra.cut              as cut      
@@ -46,22 +57,47 @@ if "--hwut-info" in sys.argv:
     print "CHOICES: 0, 0b, 1, 2, 3, 4, 5, wild;"
     sys.exit(0)
 
-def clean(SM):
-    result = beautifier.do(SM)
+def __operation(P, Q):
+    result = cut.cut_begin(P, Q)
+    result = beautifier.do(result)
     result.clean_up()
     return result
-
-def __operation(P, Q):
-    return clean(cut.cut_begin(P, Q))
 
     # NOT: complement_begin(cut_begin(P Q) Q) == cut_begin(P Q))
     #      assert identity.do(complement_begin.do(result, cutter), result)
 
-def core(A, B):
-    result_0  = __operation(A, B)
-    Brepeated = beautifier.do(repeat.do(B, min_repetition_n=1))
-    result_1  = __operation(A, Brepeated)
-    return result_0, result_1
+def core(P, Q, Q_repeated, Q_repeated_P):
+    cut_P_Q         = __operation(P, Q)
+    cut_Q_Q         = __operation(Q, Q)
+    cut_P_Empty     = __operation(P, DFA.Empty())
+    cut_P_Universal = __operation(P, DFA.Universal())
+    cut_Empty_P     = __operation(DFA.Empty(), P)
+    cut_Universal_P = __operation(DFA.Universal(), P)
+    cut_P_Qp        = __operation(P, Q_repeated)
+    cut_QpP_Q       = __operation(Q_repeated_P, Q)
+
+    # \CutBegin{Q          Q}          = \Empty
+    assert cut_Q_Q.is_Empty()
+
+    # \CutBegin{P          \Empty}     = P
+    assert identity.do(cut_P_Empty, P)
+
+    # \CutBegin{P          \Universal} = \Empty
+    assert cut_P_Universal.is_Empty()
+
+    # \CutBegin{\Empty     P}          = \Empty
+    assert cut_Empty_P.is_Empty()
+
+    # \Intersection{Q \CutBegin{P Q+}} == \Empty
+    assert intersection.do([Q, cut_P_Qp]).is_Empty()
+
+    # \NotBegin{\CutBegin{P Q+} Q} == \CutBegin{P Q+}
+    assert identity.do(derived.not_begin(cut_P_Qp, Q), cut_P_Qp)
+
+    # \IsBegin{\CutBegin{P Q+} Q} == \Empty
+    assert derived.is_begin(cut_P_Qp, Q).is_Empty()
+
+    return cut_P_Qp
 
 def test(A_txt, B_txt):
     """Performs: \CutBegin{P Q} and prints the result!
@@ -69,39 +105,39 @@ def test(A_txt, B_txt):
     """
     print "---------------------------"
 
-    A, B = parse_REs(A_txt, B_txt)
+    A, B                     = parse_REs(A_txt, B_txt)
+    B_repeated, B_repeated_A = more_DFAs(A, B)
 
-    result_0, result_1 = core(A, B)
+    result = core(A, B, B_repeated, B_repeated_A)
 
     print
-    print "result = ", result_0.get_string(NormalizeF=True)
-
-    assertion_checks(result_0, result_1, B)
+    print "result = ", result.get_string(NormalizeF=True)
 
 def parse_REs(A_txt, B_txt):
     print ("Original = " + A_txt).replace("\n", "\\n").replace("\t", "\\t")
     print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
     A = regex.do(A_txt, {}).sm
-    B = regex.do("(%s)+" % B_txt, {}).sm
+    B = regex.do("%s" % B_txt, {}).sm
     return A, B
 
-def assertion_checks(result_0, result_1, B):
-    # \CutBegin{P Q} == \CutBegin{P Q+}
-    # assert identity.do(result_1, result_1)
-
-    # \Intersection{Q \CutBegin{P Q+}} == \Empty
-    assert intersection.do([result_1, B]).is_Empty()
-
-    # \NotBegin{\CutBegin{P Q+} Q} == \CutBegin{P Q+}
-    assert identity.do(derived.not_begin(result_1, B), result_1)
-
-    # \IsBegin{\CutBegin{P Q+} Q} == \CutBegin{P Q+}
-    assert derived.is_begin(result_1, B).is_Empty()
+def more_DFAs(A, B):
+    B_repeated   = repeat.do(B)
+    B_repeated0  = repeat.do(B, min_repetition_n=0)
+    B_repeated_A = beautifier.do(sequentialize.do([B_repeated0, A]))
+    return beautifier.do(B_repeated), B_repeated_A
 
 if False: # Selected Test
-    # test('A(11|22|33|44|55|66|77|88|99|AA|BB|CC|DD|EE|FF|GG|HH|II|JJ|KK|LL|MM|NN|OO|PP|QQ|RR|SS)C', 'ABBC')
+    test('1*X',     '1X')
+    sys.exit()
+    # test('\Universal', '1')
+    # test('A(11|22|33|44|55|66|77|88|99|AA|BB|CC|DD|EE|FF|GG|HH|II|JJ|KK|LL|MM|NN|OO|PP|QQ|RR|SS)+C', 'ABBC')
     # test('1*01',          '0')
-    test('12',           '1(2?)')
+    # A = regex.do("1+2", {}).sm
+    # B = regex.do("1", {}).sm
+    A = DFA.Universal()
+    B = regex.do("1+", {}).sm
+    print __operation(A, B)
+    # print "#result:", result.get_string("hex")
     sys.exit()
 
 if "0b" in sys.argv:
@@ -183,8 +219,8 @@ elif "wild" in sys.argv:
 
     count = 0
     for a_sm, b_sm in iterable():
-        result_0, result_1 = core(a_sm, b_sm)
-        assertion_checks(result_0, result_1, b_sm)
+        B_repeated, B_repeated_A = more_DFAs(a_sm, b_sm)
+        core(a_sm, b_sm, B_repeated, B_repeated_A)
         count += 1
 
     print "<terminated: %i>" % count
