@@ -14,7 +14,7 @@ Original = [0]
 Cutter   = 0
 
 result =  init-state = 0L
-00000 
+00000 A
     
 
 ---------------------------
@@ -22,7 +22,7 @@ Original = [01]
 Cutter   = 0
 
 result =  init-state = 0L
-00000 
+00000 A
      == '1' ==> 00001
     
 00001 A
@@ -47,7 +47,7 @@ Original = [0][01]
 Cutter   = 0
 
 result =  init-state = 0L
-00000 
+00000 A
      == '1' ==> 00001
     
 00001 A
@@ -58,7 +58,7 @@ Original = [01][01]
 Cutter   = 0
 
 result =  init-state = 0L
-00000 
+00000 A
      == '1' ==> 00001
     
 00001 A
@@ -89,7 +89,7 @@ Original = [0][01][01]
 Cutter   = 0
 
 result =  init-state = 0L
-00000 
+00000 A
      == '1' ==> 00001
     
 00001 A
@@ -103,7 +103,7 @@ Original = [01][01][01]
 Cutter   = 0
 
 result =  init-state = 0L
-00000 
+00000 A
      == '1' ==> 00001
     
 00001 A
@@ -138,7 +138,7 @@ Original = [01][0][01]
 Cutter   = 0
 
 result =  init-state = 0L
-00000 
+00000 A
      == '1' ==> 00001
     
 00001 A

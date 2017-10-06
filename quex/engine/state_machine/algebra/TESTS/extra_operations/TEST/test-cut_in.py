@@ -70,7 +70,7 @@ def test(A_txt, B_txt):
     print "result = ", result_0.get_string(NormalizeF=True)
 
     # print "DEBUG: remove following line:"
-    # sys.exit()
+    sys.exit()
 
     Brepeated = repeat.do(B, min_repetition_n=1)
     result_1  = __core(A, B)

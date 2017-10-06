@@ -102,6 +102,29 @@ def get_fork4(sm):
     line(sm, 0, 5, 6, 7)
     return sm, 8, pic
 
+def get_mini_join(sm):
+    pic = """
+                (0)---->(1)
+                 |       |
+                 '--<----'
+    """
+    line(sm, 1, 0)
+    line(sm, 0, 1)
+    return sm, 7, pic
+
+def get_DEBUG(sm):
+    pic = """
+                 .--------->(5)---->-----.
+                 |                       |
+                (0)------------>(2)---->(6)
+                 |               |
+                 '--<------------' 
+    """
+    line(sm, 0, 1, 3)
+    line(sm, 1, 0)
+    line(sm, 0, 2, 3)
+    return sm, 7, pic
+
 def get_long_loop(sm):
     """Build a linear state machine, so that the predecessor states
     are simply all states with lower indices.
@@ -230,7 +253,7 @@ def get_tree(sm):
     return sm, 8, pic
 
 def get_sm_shape_names():
-    return "linear, butterfly, long_loop, nested_loop, mini_loop, fork, fork2, fork3, fork4, tree, mini_bubble, bubble, bubble2, bubble2b, bubble3, bubble4;"
+    return "linear, butterfly, long_loop, nested_loop, mini_loop, fork, fork2, fork3, fork4, tree, mini_bubble, bubble, bubble2, bubble2b, bubble3, bubble4, mini_join;"
 
 def get_sm_shape_names_list():
     return get_sm_shape_names().replace(",", " ").replace(";", "").split()
@@ -241,6 +264,7 @@ def get_sm_shape_by_name_with_acceptance(Name):
         "linear":      [6],
         "butterfly":   [7],
         "long_loop":   [6],
+        "DEBUG":       [3],
         "nested_loop": [4],
         "mini_loop":   [3],
         "fork":        [6],
@@ -254,6 +278,7 @@ def get_sm_shape_by_name_with_acceptance(Name):
         "bubble3":     [2, 3],
         "bubble4":     [3, 2],
         "tree":        [3, 4, 6, 7],
+        "mini_join":   [1],
     }
 
     for si in acceptance_state_list_db[Name]:
@@ -277,6 +302,8 @@ def get_sm_shape_by_name(Name):
     elif Name == "bubble2b":    sm, state_n, pic = get_bubble2b(sm)
     elif Name == "bubble3":     sm, state_n, pic = get_bubble3(sm)
     elif Name == "bubble4":     sm, state_n, pic = get_bubble4(sm)
+    elif Name == "mini_join":   sm, state_n, pic = get_mini_join(sm)
+    elif Name == "DEBUG":       sm, state_n, pic = get_DEBUG(sm)
     else:                       sm, state_n, pic = get_tree(sm)
     return sm, state_n, pic
 

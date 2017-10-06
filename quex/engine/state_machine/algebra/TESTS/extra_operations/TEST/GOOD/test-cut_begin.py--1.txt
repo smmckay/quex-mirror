@@ -3,11 +3,12 @@ Original = [a-n]
 Cutter   = [m-z]
 
 result =  init-state = 0L
-00000 
+00000 A
      == ['a', 'l'] ==> 00001
     
 00001 A
     
+
 ---------------------------
 Original = "1234"|"ABC"
 Cutter   = "123"
@@ -26,7 +27,6 @@ result =  init-state = 0L
      == 'C' ==> 00001
     
 
-
 ---------------------------
 Original = "12"|"A"
 Cutter   = "1"
@@ -38,7 +38,6 @@ result =  init-state = 0L
 00001 A
     
 
-
 ---------------------------
 Original = 12
 Cutter   = 1
@@ -49,7 +48,6 @@ result =  init-state = 0L
     
 00001 A
     
-
 
 ---------------------------
 Original = "1BAC"|"1BBC"
@@ -70,7 +68,6 @@ result =  init-state = 0L
     
 00004 A
     
-
 
 ---------------------------
 Original = alb|albertikus
@@ -98,5 +95,4 @@ result =  init-state = 0L
 00006 
      == 's' ==> 00003
     
-
 

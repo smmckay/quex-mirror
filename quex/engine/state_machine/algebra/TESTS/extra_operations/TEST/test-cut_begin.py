@@ -24,9 +24,8 @@ ADDITIONAL TESTS:
     () \CutBegin{P          \Universal} = \Empty
     () \CutBegin{\Empty     P}          = \Empty
 
-    (not) \CutBegin{\Universal P}          = \Universal  # Does not hold 'p = 1+'
-    (not) \CutBegin{Q*P Q}                 = Q*P    => Does not hold if P starts with Q
-                                                    and 
+    (not) \CutBegin{\Universal P}       = \Universal  # Does not hold 'p = 1+'
+    (not) \CutBegin{Q*P Q}              = Q*P        => Does not hold if P starts with Q
 
     () \Intersection{Q \CutBegin{P Q+}} = \Empty
     () \NotBegin{\CutBegin{P Q+}} Q}    = \CutBegin{P Q+} 
@@ -42,7 +41,10 @@ import quex.input.regular_expression.engine               as regex
 from   quex.engine.state_machine.core                     import DFA
 import quex.engine.state_machine.construction.repeat      as repeat
 import quex.engine.state_machine.construction.sequentialize as sequentialize
-from   quex.engine.state_machine.TEST.helper_state_machine_shapes import get_sm_list
+from   quex.engine.state_machine.TEST.helper_state_machine_shapes import get_sm_list, \
+                                                                         get_sm_shape_by_name_with_acceptance, \
+                                                                         set_unique_transition_f, \
+                                                                         get_sm_shape_names_list
 
 import quex.engine.state_machine.algebra.cut              as cut      
 import quex.engine.state_machine.algebra.union            as union
@@ -77,13 +79,13 @@ def core(P, Q, Q_repeated, Q_repeated_P):
     cut_QpP_Q       = __operation(Q_repeated_P, Q)
 
     # \CutBegin{Q          Q}          = \Empty
-    assert cut_Q_Q.is_Empty()
+    assert cut_Q_Q.is_Nothing()
 
     # \CutBegin{P          \Empty}     = P
     assert identity.do(cut_P_Empty, P)
 
     # \CutBegin{P          \Universal} = \Empty
-    assert cut_P_Universal.is_Empty()
+    assert cut_P_Universal.is_Nothing()
 
     # \CutBegin{\Empty     P}          = \Empty
     assert cut_Empty_P.is_Empty()
@@ -127,18 +129,22 @@ def more_DFAs(A, B):
     return beautifier.do(B_repeated), B_repeated_A
 
 if False: # Selected Test
-    test('1*X',     '1X')
-    sys.exit()
-    # test('\Universal', '1')
-    # test('A(11|22|33|44|55|66|77|88|99|AA|BB|CC|DD|EE|FF|GG|HH|II|JJ|KK|LL|MM|NN|OO|PP|QQ|RR|SS)+C', 'ABBC')
-    # test('1*01',          '0')
-    # A = regex.do("1+2", {}).sm
-    # B = regex.do("1", {}).sm
-    A = DFA.Universal()
-    B = regex.do("1+", {}).sm
-    print __operation(A, B)
-    # print "#result:", result.get_string("hex")
-    sys.exit()
+    set_unique_transition_f()
+
+    # for name in get_sm_shape_names_list():
+    if True:
+        name = "DEBUG"
+        Q = get_sm_shape_by_name_with_acceptance(name) 
+        print "# %s" % name, Q
+        cut_Q_Q = __operation(Q, Q)
+        # \CutBegin{Q          Q}          = \Empty
+        print "#cut_Q_Q:", cut_Q_Q
+        print "#verdict:", cut_Q_Q.is_Nothing()
+        try:    assert cut_Q_Q.is_Nothing()
+        except: print "#bad:", name
+
+
+    sys.exit(-1)
 
 if "0b" in sys.argv:
     test('[1]',          '0')
@@ -219,9 +225,9 @@ elif "wild" in sys.argv:
 
     count = 0
     for a_sm, b_sm in iterable():
+        count += 1
         B_repeated, B_repeated_A = more_DFAs(a_sm, b_sm)
         core(a_sm, b_sm, B_repeated, B_repeated_A)
-        count += 1
 
     print "<terminated: %i>" % count
 

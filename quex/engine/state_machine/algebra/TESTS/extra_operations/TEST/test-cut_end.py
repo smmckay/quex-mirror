@@ -87,13 +87,13 @@ def core(P, Q, Q_repeated, Q_repeated_P):
     cut_QpP_Q       = __operation(Q_repeated_P, Q)
 
     # \CutEnd{Q          Q}          = \Empty
-    assert cut_Q_Q.is_Empty()
+    assert cut_Q_Q.is_Nothing()
 
     # \CutEnd{P          \Empty}     = P
     assert identity.do(cut_P_Empty, P)
 
     # \CutEnd{P          \Universal} = \Empty
-    assert cut_P_Universal.is_Empty()
+    assert cut_P_Universal.is_Nothing()
 
     # \CutEnd{\Empty     P}          = \Empty
     assert cut_Empty_P.is_Empty()

@@ -12,6 +12,7 @@ from   quex.engine.state_machine.state.target_map_ops import get_intersection_li
 import quex.engine.state_machine.algorithm.beautifier as     beautifier
 
 from   collections import defaultdict
+from   copy        import copy
 
 def cut_begin(A, B):
     """PURPOSE: Generate a modified DFA based on A:
@@ -54,7 +55,6 @@ def cut_in(A, B):
         for si, state in A.states.iteritems()
         if state.target_map.has_intersection(union_tm_B)
     ]
-    # print "#search_begin_list:", search_begin_list
 
     cut_A_B, cut_f = __cut_begin_core(A, B, search_begin_list)
 
@@ -77,42 +77,46 @@ class WorkList:
            SearchBeginList = list of A state indices to start the search.
         """
         self.work_list       = []
+        self.tail_list       = []
         self.done_set        = set()
         self.state_setup_db  = {}
         self.A_init_si       = A_init_si
-        # self.result_init_si  = result_init_si
 
     def pop(self):
         return self.work_list.pop()
 
+    def tail_pop(self):
+        return self.tail_list.pop()
+
     def add_begin(self, A_begin_si, B_init_state_index):
-        self.result_begin_si = self.add(A_begin_si, B_init_state_index)
-        return self.result_begin_si
+        return self.add(A_begin_si, B_init_state_index, BridgeSet=set())
 
+    def add(self, A_si, B_si, BridgeSet):
+        result_target_si = self.get_result_state_index(A_si, B_si, BridgeSet)
 
-    def add(self, A_si, B_si):
-        result_target_si = self.get_result_state_index(A_si, B_si)
+        if result_target_si in self.done_set: return result_target_si
+        self.done_set.add(result_target_si)
 
-        if result_target_si not in self.done_set:
-            self.done_set.add(result_target_si)
-            if B_si is not None:
-                self.work_list.append((result_target_si, A_si, B_si))
-            else:
-                self.work_list.insert(0, (result_target_si, A_si, B_si))
-
-        return result_target_si
-
-    def get_result_state_index(self, A_si, B_si):
-        result_target_si, _ = state_index_for_combination(self.state_setup_db,
-                                                          (A_si, B_si))
+        if B_si is not None:
+            self.work_list.append((result_target_si, A_si, B_si, copy(BridgeSet)))
+        else:
+            self.tail_list.append((result_target_si, A_si, B_si, copy(BridgeSet)))
 
         return result_target_si
+
+    def get_result_state_index(self, A_si, B_si, BridgeSet):
+        key = (A_si, B_si, tuple(sorted(BridgeSet)))
+        result_si = self.state_setup_db.get(key)
+        if result_si is None: 
+            result_si = state_index.get()
+            self.state_setup_db[key] = result_si
+        return result_si
 
     def done_together(self):
-        return not self.work_list or self.work_list[-1][2] is None
+        return not self.work_list
 
     def late_done(self):
-        return not self.work_list
+        return not self.tail_list
 
 def __cut_begin_core(A, B, SearchBeginList=None):
     """RETURN: [0] Resulting DFA
@@ -123,37 +127,39 @@ def __cut_begin_core(A, B, SearchBeginList=None):
     A.assert_consistency() 
     B.assert_consistency() 
 
-    # print "#A:", A.get_string(NormalizeF=False)
-    # print "#B:", B.get_string(NormalizeF=False)
-
     if   B.is_Empty(): 
         return A, False
     elif SearchBeginList is None: 
         SearchBeginList = [ A.init_state_index ]
 
-    epsilon_transition_list = []
-    work_list               = WorkList(A.init_state_index)
     plain_si_db             = {
        A.init_state_index: state_index.get() 
     }
     plain_si_db.update(
-        (A_si, state_index.get()) for A_si in SearchBeginList
+        (A_si, state_index.get()) 
+        for A_si in SearchBeginList
+        if A_si != A.init_state_index
     )
 
     result = DFA(InitStateIndex = plain_si_db[A.init_state_index], 
                  AcceptanceF    = A.states[A.init_state_index].is_acceptance())
 
+    epsilon_transition_list = []
+    work_list               = WorkList(A.init_state_index)
+    inadmissible_tm_db      = defaultdict(NumberSet)
     for A_begin_si in SearchBeginList:
-        result_begin_si = work_list.add_begin(A_begin_si, B.init_state_index)
+        result_begin_si = __together_walk(work_list, A, A_begin_si, B, result, 
+                                          epsilon_transition_list, inadmissible_tm_db)
 
-        result.add_epsilon_transition(plain_si_db[A_begin_si], result_begin_si)
-        __together_walk(work_list, A, B, result, epsilon_transition_list)
+        epsilon_transition_list.append((plain_si_db[A_begin_si], 
+                                        result_begin_si,
+                                        A.states[A_begin_si].is_acceptance()))
 
     # The late 'lonely None' walk ...
-    __lonely_walk(work_list, A, result)
+    __tail_walk(work_list, A, result)
 
-    if False and work_list.init_state_virgin_f:
-        __virgin_walk(work_list, A, result, inadmissible_tm_db, plain_si_db)
+    # if A.init_state_index not in SearchBeginList:
+    #    __virgin_walk(A, result, plain_si_db, epsilon_transition_list, inadmissible_tm_db)
 
     # The 'lonely None' walk from the initial state:
     # => forbidden transitions cannot be walked along.
@@ -162,12 +168,38 @@ def __cut_begin_core(A, B, SearchBeginList=None):
     # are absolute. Now, the 'cut' made in the 'together walk' must be 
     # respected.
 
+    result.delete_hopeless_states()
+
     return __implement_epsilon_transitions(result, A, epsilon_transition_list)
 
-def __together_walk(work_list, A, B, result, epsilon_transition_list):
-    inadmissible_tm_db      = defaultdict(NumberSet)
+def __together_walk(work_list, A, A_begin_si, B, result, epsilon_transition_list, 
+                    inadmissible_tm_db):
+    """Walk along 'A' and 'B' starting at 'A_begin_si' and 'B.init_state_index'
+    as long as 'B' matches the path. For each matching state a new state in 
+    'result' is generated based on the key '(A_si, B_si)' of the path.
+
+    Whenever 'B' cannot walk any further along a path in 'A' a 'tail state'
+    is introduced. It is produced based on the key '(A_si, None)'. Tail states
+    are not handled in this function.
+
+      (*) Beginning state of together walk:
+
+          (A_begin_si, B.init_state_index) <--> result_begin_si
+
+      (*) Tail state, where 'B' does not match any longer:
+
+          (A_si, None)                     <--> tail state index in result
+
+      (*) State that is obstructed by last transition:
+
+          (A_si, B_acceptance_state_si)    <--> hanging result state index
+
+    RETURNS: 'result' state index corresponding to 'A_begin_si'.
+    """
+    result_begin_si = work_list.add_begin(A_begin_si, B.init_state_index)
+
     while not work_list.done_together():
-        result_si, A_si, B_si = work_list.pop()
+        result_si, A_si, B_si, bridge_set = work_list.pop()
         assert A_si is not None
         assert B_si is not None
 
@@ -185,72 +217,72 @@ def __together_walk(work_list, A, B, result, epsilon_transition_list):
             # State index = 'None' => state does not transit on 'trigger_set'.
             if A_target_si is None: continue
 
-            result_target_si = work_list.add(A_target_si, B_target_si)
-            # print "#AB", A_si, "--", trigger_set.get_string("hex"), "-->", A_target_si
-
             if B_target_si is not None and B.states[B_target_si].is_acceptance():
                 # Transition in 'B' to acceptance => result *must* drop-out!
                 # Cutting = lexemes starting at the target are acceptable.
                 #           => merge with init state.
                 #           => must again consider cutting matches with 'B'.
-                new_result_target_si = work_list.add(A_target_si, B_target_si)
-                epsilon_transition_list.append((work_list.result_begin_si, 
-                                                new_result_target_si))
+                bridge_set.add((A_si, A_target_si))
+                result_target_si = work_list.add(A_target_si, B_target_si, bridge_set)
+                epsilon_transition_list.append((result_begin_si, result_target_si, 
+                                                A.states[A_target_si].is_acceptance()))
                 inadmissible_tm_db[A_si].unite_with(trigger_set)
-                # print "   cut"
             else:
-                A_acceptance_f = A.states[A_target_si].is_acceptance()
+                # if B_target_si is None => append to 'tail'
+                result_target_si = work_list.add(A_target_si, B_target_si, bridge_set)
+
                 result.add_transition(result_si, trigger_set, result_target_si,
-                                      AcceptanceF = A_acceptance_f)
+                                      AcceptanceF = A.states[A_target_si].is_acceptance())
 
-    return epsilon_transition_list
+    return result_begin_si
 
-def __lonely_walk(work_list, A, result):
-    # print "#entry 'lonely' A:", A.get_string(Option="hex", NormalizeF=False)
-    # print "#entry 'lonely' result", result.get_string(Option="hex", NormalizeF=False)
-
+def __tail_walk(work_list, A, result):
     while not work_list.late_done():
-        result_si, A_si, B_si = work_list.pop()
-        assert A_si is not None
-        assert B_si is None
-        # print "   A_si,result_si:", A_si, result_si
-
-        A_map = A.states[A_si].target_map
-        for A_target_si, trigger_set in A_map.get_map().iteritems():
-            result_target_si = work_list.add(A_target_si, None)
-            # print "   %s -> %s %s" % (trigger_set.get_string("hex"), A_target_si, result_target_si)
-            A_acceptance_f   = A.states[A_target_si].is_acceptance()
-            result.add_transition(result_si, trigger_set, result_target_si,
-                                  AcceptanceF = A_acceptance_f)
-
-def __virgin_walk(work_list, A, result, inadmissible_tm_db=None):
-    while not work_list.late_done():
-        result_si, A_si, B_si = work_list.pop()
+        result_si, A_si, B_si, bridge_set = work_list.tail_pop()
         assert A_si is not None
         assert B_si is None
 
-        if    inadmissible_tm_db is None or A_si not in inadmissible_tm_db:
-            inadmissible_trigger_set = None
-        else:
-            inadmissible_trigger_set = inadmissible_tm_db[A_si]
-
-        # print "#A_si,tm:", A_si, inadmissible_trigger_set
-
         A_map = A.states[A_si].target_map
         for A_target_si, trigger_set in A_map.get_map().iteritems():
-            # print "#At:", A_target_si, trigger_set
-
-            result_target_si = work_list.add(A_target_si, None)
-
-            if     inadmissible_trigger_set is not None \
-               and trigger_set.has_intersection(inadmissible_trigger_set):
-                trigger_set = trigger_set.difference(inadmissible_trigger_set)
-                # print "#remainder:", trigger_set
-                if trigger_set.is_empty(): continue
-
-            A_acceptance_f = A.states[A_target_si].is_acceptance()
+            result_target_si = work_list.add(A_target_si, None, bridge_set)
             result.add_transition(result_si, trigger_set, result_target_si,
-                                  AcceptanceF = A_acceptance_f)
+                                  AcceptanceF = A.states[A_target_si].is_acceptance())
+
+def __virgin_walk(A, result, plain_si_db, epsilon_transition_list, inadmissible_tm_db):
+    def get_result_si(plain_si_db, A_si):
+        si = plain_si_db.get(A_si)
+        if si is None: 
+            si = state_index.get()
+            plain_si_db[A_si] = si
+        return si
+
+    def adapt_trigger_set(inadmissible_trigger_set, trigger_set):
+        if inadmissible_trigger_set is None:
+            return trigger_set
+        elif trigger_set.has_intersection(inadmissible_trigger_set):
+            trigger_set = trigger_set.difference(inadmissible_trigger_set)
+
+        return trigger_set
+
+    work_list = [ 
+        (plain_si_db[A.init_state_index], A.init_state_index) 
+    ]
+    while work_list:
+        result_si, A_si = work_list.pop()
+
+        A_map                    = A.states[A_si].target_map
+        inadmissible_trigger_set = inadmissible_tm_db.get(A_si)
+
+        for A_target_si, trigger_set in A_map.get_map().iteritems():
+            result_target_si = get_result_si(plain_si_db, A_target_si)
+            work_list.append((result_target_si, A_target_si))
+
+            trigger_set = adapt_trigger_set(inadmissible_trigger_set, 
+                                            trigger_set)
+            if trigger_set.is_empty(): continue
+
+            result.add_transition(result_si, trigger_set, result_target_si,
+                                  AcceptanceF = A.states[A_target_si].is_acceptance())
 
 def __implement_epsilon_transitions(result, A, epsilon_transition_list):
     """RETURNS: [0] The resulting state machine, if a 'cut' has happened.
@@ -260,8 +292,11 @@ def __implement_epsilon_transitions(result, A, epsilon_transition_list):
     if not epsilon_transition_list: 
         return A, False
     else:
-        for from_si, to_si in epsilon_transition_list:
-            result.add_epsilon_transition(from_si, to_si) 
+        for from_si, to_si, acceptance_f in epsilon_transition_list:
+            if from_si == result.init_state_index:
+                result.add_epsilon_transition(from_si, to_si) 
+            else:
+                result.add_epsilon_transition(from_si, to_si, RaiseAcceptanceF=acceptance_f) 
         result.delete_hopeless_states()
         return beautifier.do(result), True
 

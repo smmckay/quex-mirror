@@ -3,7 +3,7 @@ Original = [a-n]
 Cutter   = [m-z]
 
 result =  init-state = 0L
-00000 
+00000 A
      == ['a', 'l'] ==> 00001
     
 00001 A
@@ -115,5 +115,4 @@ result =  init-state = 0L
     
 00010 A
     
-
 

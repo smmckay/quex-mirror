@@ -86,11 +86,28 @@ class DFA(object):
             return self.is_AcceptAllState(self.init_state_index)
 
     @staticmethod
+    def Nothing():
+        """'Nothing' <=> matches nothing, not having any transitions.
+           (This DFA is inadmissible)
+                                           .===.
+                                           | A |
+                                           '==='
+                                               
+        """
+        return DFA(AcceptanceF=True)
+
+    def is_Nothing(self):
+        if   len(self.states) != 1:                           return False
+        elif not self.get_init_state().target_map.is_empty(): return False
+        elif not self.get_init_state().is_acceptance():       return False
+        else:                                                 return True
+
+    @staticmethod
     def Any():
         """'Any' <=> matches any character.
-                                                 .---.                 .===. 
-                                                 |   |--- any char --->| A |
-                                                 '---'                 '==='
+                                            .---.                 .===. 
+                                            |   |--- any char --->| A |
+                                            '---'                 '==='
 
         """
         result = DFA()

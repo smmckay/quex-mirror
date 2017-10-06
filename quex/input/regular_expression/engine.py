@@ -513,6 +513,9 @@ def snap_bracketed_expression(stream, PatternDict):
                                          stream.read(length))
     return result
 
+def snap_nothing(stream, PatternDict):
+    return DFA.Nothing()
+
 def snap_any(stream, PatternDict):
     return DFA.Any()
 
@@ -702,6 +705,7 @@ CommandDB = sorted([
    ("Universal",    snap_universal),             #
    ("Empty",        snap_empty),                 # 
    #
+   ("Nothing",      snap_nothing),               # OK
    ("Any",          snap_any),                   # OK
    ("Sanitize",     snap_sanitizer),             # 
    ("A",            snap_anti_pattern),          # OK
