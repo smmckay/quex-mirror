@@ -23,7 +23,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.regular_expression.engine               as     regex
 import quex.engine.state_machine.algebra.union            as     union
 import quex.engine.state_machine.algebra.intersection     as     intersection
-import quex.engine.state_machine.algebra.derived          as     derived
+import quex.engine.state_machine.cut.operations_on_sets   as     derived
 import quex.engine.state_machine.algebra.difference       as     difference 
 import quex.engine.state_machine.construction.sequentialize as   sequentialize
 import quex.engine.state_machine.check.identity           as     identity

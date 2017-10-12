@@ -4,20 +4,15 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine             as regex
-import quex.engine.state_machine.algebra.derived        as derived
-import quex.engine.state_machine.algebra.complement       as     complement
-import quex.engine.state_machine.algebra.difference       as     difference 
-import quex.engine.state_machine.construction.sequentialize as   sequentialize
+import quex.engine.state_machine.cut.operations_on_sets as derived
 import quex.engine.state_machine.algebra.union          as union
 import quex.engine.state_machine.algebra.intersection   as intersection
 import quex.engine.state_machine.check.identity         as identity
 import quex.engine.state_machine.check.superset         as superset
 import quex.engine.state_machine.algorithm.beautifier   as beautifier
-import quex.engine.state_machine.algebra.derived        as     derived
-from   quex.engine.state_machine.core                   import DFA
 
 if "--hwut-info" in sys.argv:
-    print "Complement End: Cut patterns from P that end with Q."
+    print "Complement Begin: Cut patterns from P that contain Q."
     print "CHOICES: 0, 1, 2, 3, 4, 5;"
     sys.exit(0)
 
@@ -34,46 +29,45 @@ def test(A, B):
         cutter = regex.do(Cutter, {}).sm
         #print orig.get_string(NormalizeF=False)
         #print cutter.get_string(NormalizeF=False)
-        # result = clean(complement_end.do(orig, cutter))
-
-        result = derived.not_end(orig, cutter)
+        result = clean(derived.not_in(orig, cutter))
         print
-        if not result.is_Empty():
-            print "superset(Original, result):           %s" % superset.do(orig, result)
-        if not result.is_Empty():
-            tmp = clean(intersection.do([cutter, result]))
-            print "intersection(Cutter, result) is None: %s" % tmp.is_Empty()
-        tmp = clean(union.do([orig, result]))
-        print "union(Original, result) == Original:  %s" % identity.do(tmp, orig)
-        print
+        if False:
+            if not result.is_Empty():
+                print "superset(Original, result):           %s" % superset.do(orig, result)
+            if not result.is_Empty():
+                tmp = clean(intersection.do([cutter, result]))
+                print "intersection(Cutter, result) is None: %s" % tmp.is_Empty()
+            tmp = clean(union.do([orig, result]))
+            print "union(Original, result) == Original:  %s" % identity.do(tmp, orig)
+            print
         print "result = ", result.get_string(NormalizeF=True)
 
         assert_considerations(orig, cutter, result)
 
     print "---------------------------"
     __core(A, B)
+    #sys.exit()
     print
     __core(B, A)
 
 def assert_considerations(A, B, result):
-    """Set of rules which must hold in case the '\NotBegin' has been applied.
-    """
     assert superset.do(A, result)
     assert intersection.do([result, B]).is_Empty()
     assert identity.do(union.do([result, A]), A)
-    assert intersection.do([result, derived.is_end(A, B)]).is_Empty()
-    assert identity.do(union.do([result, derived.is_end(A, B)]), A)
-
-#test('"1BAC"|"1BBC"', '"1ABC"')
+    assert intersection.do([result, derived.is_in(A, B)]).is_Empty()
+    assert identity.do(union.do([result, derived.is_in(A, B)]), A)
 
 if "0" in sys.argv:
+    test('[01]+', '0')
+    test('1[01]*', '0')
+    test('print|integer|ente', 'int')
     test('[0-9]+',    '[0-9]')
     test('[0-9]+',    '0')
     test('[0-9]+',    '01')
     test('[0-9]{2,}', '01')
-    test('123',       '123(4?)')
-    test('12',        '1(2?)')
-    test('1',         '1(2?)')
+    test('123', '123(4?)')
+    test('12', '1(2?)')
+    test('1', '1(2?)')
     test('"123"|"ABC"', '"123"')
     test('\\n', '(\\r\\n)|\\n')
 
@@ -83,7 +77,7 @@ elif "1" in sys.argv:
     test('"12"|"A"', '"1"')
     test('12', '1')
     test('"1BAC"|"1BBC"', '"1ABC"')
-    test('alb|albertikus', 'albert')
+    test('alb|albertikus', 'bert')
 
 elif "2" in sys.argv:
     test('"123"+',  '"123"')
@@ -98,9 +92,9 @@ elif "3" in sys.argv:
     test('ab("12"|"ABD")yz', 'abAByc')
 
 elif "4" in sys.argv:
-    test('ab("12"+)yz', 'ab1212yz')
-    test('ab("12"?)yz', 'abyz')
-    test('ab("12"*)yz', 'abyz')
+    test('ab("12"+)yz',      'ab1212yz')
+    test('ab("12"?)yz',      'abyz')
+    test('ab("12"*)yz',      'abyz')
     test('ab("12"|"AB")?yz', 'abyz')
     test('ab("12"|"AB")?yz', 'abAByz')
     test('ab("12"|"AB")*yz', 'abyz')

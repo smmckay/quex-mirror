@@ -31,7 +31,6 @@ import quex.engine.codec_db.core                              as codec_db
 from   quex.engine.state_machine.core                         import DFA
 import quex.engine.state_machine.algorithm.beautifier         as beautifier
 import quex.engine.state_machine.algorithm.nfa_to_dfa         as nfa_to_dfa
-import quex.engine.state_machine.algebra.cut                  as cut
 import quex.engine.state_machine.algebra.sanitizer            as sanitizer
 import quex.engine.state_machine.algebra.complement           as complement
 import quex.engine.state_machine.algebra.reverse              as reverse
@@ -39,7 +38,8 @@ import quex.engine.state_machine.algebra.intersection         as intersection
 import quex.engine.state_machine.algebra.difference           as difference
 import quex.engine.state_machine.algebra.symmetric_difference as symmetric_difference
 import quex.engine.state_machine.algebra.union                as union
-import quex.engine.state_machine.algebra.derived              as derived
+import quex.engine.state_machine.cut.operations_on_sets       as derived
+import quex.engine.state_machine.cut.operations_on_lexemes    as cut
 from   quex.input.code.base                                   import SourceRef
 
 import quex.input.regular_expression.traditional_character_set  as traditional_character_set

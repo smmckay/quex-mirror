@@ -110,7 +110,7 @@ def get_mini_join(sm):
     """
     line(sm, 1, 0)
     line(sm, 0, 1)
-    return sm, 7, pic
+    return sm, 2, pic
 
 def get_DEBUG(sm):
     pic = """

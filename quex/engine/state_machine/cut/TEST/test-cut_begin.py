@@ -19,7 +19,7 @@ NOTE: The operation ensures that no lexeme starts with `Q`. Thus, the any cut
 
 ADDITIONAL TESTS: 
 
-    () \CutBegin{Q Q}                   = \Empty
+    () \CutBegin{Q Q}                   = \Nothing
     () \CutBegin{P          \Empty}     = P
     () \CutBegin{P          \Universal} = \Empty
     () \CutBegin{\Empty     P}          = \Empty
@@ -39,20 +39,22 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine               as regex
 from   quex.engine.state_machine.core                     import DFA
-import quex.engine.state_machine.construction.repeat      as repeat
-import quex.engine.state_machine.construction.sequentialize as sequentialize
 from   quex.engine.state_machine.TEST.helper_state_machine_shapes import get_sm_list, \
                                                                          get_sm_shape_by_name_with_acceptance, \
                                                                          set_unique_transition_f, \
                                                                          get_sm_shape_names_list
 
-import quex.engine.state_machine.algebra.cut              as cut      
-import quex.engine.state_machine.algebra.union            as union
-import quex.engine.state_machine.algebra.intersection     as intersection
-import quex.engine.state_machine.algebra.derived          as derived
-import quex.engine.state_machine.check.identity           as identity
-import quex.engine.state_machine.check.superset           as superset
-import quex.engine.state_machine.algorithm.beautifier     as beautifier
+import quex.engine.state_machine.cut.operations_on_lexemes  as cut      
+import quex.engine.state_machine.cut.operations_on_sets     as derived
+from   quex.engine.state_machine.cut.TEST.common            import more_DFAs, \
+                                                                   unary_checks, \
+                                                                  parse_REs
+import quex.engine.state_machine.algebra.union              as union
+import quex.engine.state_machine.construction.sequentialize as     sequentialize
+import quex.engine.state_machine.algebra.intersection       as intersection
+import quex.engine.state_machine.check.identity             as identity
+import quex.engine.state_machine.check.superset             as superset
+import quex.engine.state_machine.algorithm.beautifier       as beautifier
 
 if "--hwut-info" in sys.argv:
     print "Cut Begin: Cut P so that it does not start with Q."
@@ -68,27 +70,17 @@ def __operation(P, Q):
     # NOT: complement_begin(cut_begin(P Q) Q) == cut_begin(P Q))
     #      assert identity.do(complement_begin.do(result, cutter), result)
 
-def core(P, Q, Q_repeated, Q_repeated_P):
-    cut_P_Q         = __operation(P, Q)
-    cut_Q_Q         = __operation(Q, Q)
-    cut_P_Empty     = __operation(P, DFA.Empty())
-    cut_P_Universal = __operation(P, DFA.Universal())
-    cut_Empty_P     = __operation(DFA.Empty(), P)
-    cut_Universal_P = __operation(DFA.Universal(), P)
-    cut_P_Qp        = __operation(P, Q_repeated)
-    cut_QpP_Q       = __operation(Q_repeated_P, Q)
+def core(P, Q):
+    Q_star, Q_plus = unary_checks(Q, __operation)
 
-    # \CutBegin{Q          Q}          = \Empty
-    assert cut_Q_Q.is_Nothing()
+    Q_star_P = beautifier.do(sequentialize.do([Q_star, P]))
 
-    # \CutBegin{P          \Empty}     = P
-    assert identity.do(cut_P_Empty, P)
+    return __binary_checks(P, Q, Q_plus, Q_star_P)
 
-    # \CutBegin{P          \Universal} = \Empty
-    assert cut_P_Universal.is_Nothing()
-
-    # \CutBegin{\Empty     P}          = \Empty
-    assert cut_Empty_P.is_Empty()
+def __binary_checks(P, Q, Q_plus, Q_star_P):
+    cut_P_Q   = __operation(P, Q)
+    cut_P_Qp  = __operation(P, Q_plus)
+    cut_QpP_Q = __operation(Q_star_P, Q)
 
     # \Intersection{Q \CutBegin{P Q+}} == \Empty
     assert intersection.do([Q, cut_P_Qp]).is_Empty()
@@ -107,28 +99,16 @@ def test(A_txt, B_txt):
     """
     print "---------------------------"
 
-    A, B                     = parse_REs(A_txt, B_txt)
-    B_repeated, B_repeated_A = more_DFAs(A, B)
-
-    result = core(A, B, B_repeated, B_repeated_A)
+    A, B   = parse_REs(A_txt, B_txt)
+    result = core(A, B)
 
     print
     print "result = ", result.get_string(NormalizeF=True)
 
-def parse_REs(A_txt, B_txt):
-    print ("Original = " + A_txt).replace("\n", "\\n").replace("\t", "\\t")
-    print ("Cutter   = " + B_txt).replace("\n", "\\n").replace("\t", "\\t")
-    A = regex.do(A_txt, {}).sm
-    B = regex.do("%s" % B_txt, {}).sm
-    return A, B
-
-def more_DFAs(A, B):
-    B_repeated   = repeat.do(B)
-    B_repeated0  = repeat.do(B, min_repetition_n=0)
-    B_repeated_A = beautifier.do(sequentialize.do([B_repeated0, A]))
-    return beautifier.do(B_repeated), B_repeated_A
-
 if False: # Selected Test
+    dfa = DFA()
+    dfa.add_transition(dfa.init_state_index, 1, AcceptanceF=True)
+    
     set_unique_transition_f()
 
     # for name in get_sm_shape_names_list():
@@ -226,8 +206,7 @@ elif "wild" in sys.argv:
     count = 0
     for a_sm, b_sm in iterable():
         count += 1
-        B_repeated, B_repeated_A = more_DFAs(a_sm, b_sm)
-        core(a_sm, b_sm, B_repeated, B_repeated_A)
+        core(a_sm, b_sm)
 
     print "<terminated: %i>" % count
 

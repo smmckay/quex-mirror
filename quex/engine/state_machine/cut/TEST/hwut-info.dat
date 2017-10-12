@@ -1,6 +1,8 @@
-DFA Algebra
+DFA Cut Arithmetic
 -------------------------------
 *.py
 --not *-DELETED
+--not common.py
+--not __init__.py
 -------------------------------
 
