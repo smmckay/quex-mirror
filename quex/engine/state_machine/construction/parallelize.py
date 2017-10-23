@@ -112,7 +112,7 @@ def __combine_transitionless_acceptance_states(result):
 
     # Delete all equivalent acceptance states, except for the prototype.
     for si in equivalent_list:
-        del result.states[si]
+        result.states.pop(si)
 
     # Bend all transitions to removed states to transitions to the prototype.
     replacement_db = dict(

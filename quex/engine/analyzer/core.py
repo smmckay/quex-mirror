@@ -230,7 +230,7 @@ class FSM:
     def remove_state(self, StateIndex):
         if StateIndex in self.__non_mega_state_index_set:
             self.__non_mega_state_index_set.remove(StateIndex)
-        del self.__state_db[StateIndex]
+        self.__state_db.pop(StateIndex)
 
     @property
     def mega_state_list(self):             return self.__mega_state_list

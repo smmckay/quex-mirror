@@ -17,7 +17,7 @@ def do(sm):
     orphan_list = sm.get_orphaned_state_index_list()
     while len(orphan_list) != 0:
         for state_index in orphan_list:
-            del sm.states[state_index]
+            sm.states.pop(state_index)
         orphan_list = sm.get_orphaned_state_index_list()
 
 

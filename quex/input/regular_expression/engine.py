@@ -572,11 +572,6 @@ def snap_cut_end(stream, PatternDict):
                                                     stream, PatternDict,
                                                     "cut-end", "CutEnd")
 
-def snap_cut_in(stream, PatternDict):
-    return snap_two_or_union_of_more_state_machines(cut.cut_in,
-                                                    stream, PatternDict,
-                                                    "cut-in", "CutIn")
-
 def snap_leave_begin(stream, PatternDict):
     return snap_two_or_union_of_more_state_machines(cut.leave_begin,
                                                     stream, PatternDict,
@@ -586,11 +581,6 @@ def snap_leave_end(stream, PatternDict):
     return snap_two_or_union_of_more_state_machines(cut.leave_end,
                                                     stream, PatternDict,
                                                     "leave-end", "LeaveEnd")
-
-def snap_leave_in(stream, PatternDict):
-    return snap_two_or_union_of_more_state_machines(cut.leave_in,
-                                                    stream, PatternDict,
-                                                    "leave-in", "LeaveIn")
 
 def snap_begin(stream, PatternDict):
     return snap_two_or_union_of_more_state_machines(derived.is_begin, 
@@ -719,10 +709,8 @@ CommandDB = sorted([
    #
    ("CutBegin",     snap_cut_begin),             # OK
    ("CutEnd",       snap_cut_end),               # OK
-   ("CutIn",        snap_cut_in),                # OK
    ("LeaveBegin",   snap_leave_begin),           # OK
    ("LeaveEnd",     snap_leave_end),             # OK
-   ("LeaveIn",      snap_leave_in),              # OK
 
    # Sort by length (longest first), then sort by name
 ], key=lambda x: (-len(x[0]), x[0]))

@@ -32,36 +32,11 @@ def cut_end(A, B):
     if not cut_f: return A
     else:         return reverse.do(cut_Ar_Br)
 
-def cut_in(A, B):
-    """Cut In:
-
-    Any lexeme that matches 'A' and contains a lexeme matching 'B' is 
-    pruned by what matched 'B'.
-
-    """
-    # -- Find states that intersect in their transition map with the initial
-    #    transition map of 'B'.
-    union_tm_B = B.get_init_state().target_map.get_trigger_set_union()
-
-    search_begin_list = [
-        si
-        for si, state in A.states.iteritems()
-        if state.target_map.has_intersection(union_tm_B)
-    ]
-
-    cut_A_B, cut_f = __cut_begin_core(A, B, search_begin_list)
-
-    if not cut_f: return A
-    else:         return cut_A_B
-
 def leave_begin(DfaA, DfaB):
     return cut_begin(DfaA, complement.do(DfaB))
 
 def leave_end(DfaA, DfaB):
     return cut_end(DfaA, complement.do(DfaB))
-
-def leave_in(DfaA, DfaB):
-    return cut_in(DfaA, complement.do(DfaB))
 
 class WorkList:
     def __init__(self):
@@ -118,15 +93,15 @@ def __cut_begin_core(A, B, SearchBeginList=None):
     result    = DFA(InitStateIndex = work_list.get_result_si(A.init_state_index, None, None), 
                     AcceptanceF    = A.states[A.init_state_index].is_acceptance())
 
-    epsilon_transition_list = __together_walk(work_list, A, B, result) 
+    epsilon_transition_set = __together_walk(work_list, A, B, result) 
     # No cut => return original DFA
-    if epsilon_transition_list is None: return A, False
+    if epsilon_transition_set is None: return A, False
 
     __tail_walk(work_list, A, result)
 
     result.delete_hopeless_states()
 
-    return __implement_epsilon_transitions(result, A, epsilon_transition_list)
+    return __implement_epsilon_transitions(result, A, epsilon_transition_set)
 
 def __together_walk(work_list, A, B, result):
     """Walk along 'A' and 'B' starting at 'A_begin_si' and 'B.init_state_index'
@@ -155,7 +130,7 @@ def __together_walk(work_list, A, B, result):
     """
     result_begin_si = work_list.add_together(A.init_state_index, B.init_state_index, 
                                              BridgeSet=set())
-    epsilon_transition_list = []
+    epsilon_transition_set = []
     while work_list.together_list:
         result_si, A_si, B_si, bridge_set = work_list.together_list.pop()
         assert A_si is not None
@@ -195,16 +170,16 @@ def __together_walk(work_list, A, B, result):
                     #           => merge with begin state.
                     #           => must again consider cutting matches with 'B'.
                     bridge_set.add((A_si, A_target_si))
-                    epsilon_transition_list.append((result_begin_si, result_target_si, 
-                                                    A_target_acceptance_f))
+                    epsilon_transition_set.add((result_begin_si, result_target_si, 
+                                                A_target_acceptance_f))
 
-    if not epsilon_transition_list:
+    if not epsilon_transition_set:
         return None
     else:
         # The epsilon transition 'initial state' to 'begin search' is always there!
-        epsilon_transition_list.append((result.init_state_index, result_begin_si,
+        epsilon_transition_set.append((result.init_state_index, result_begin_si,
                                         A.states[A.init_state_index].is_acceptance()))
-        return epsilon_transition_list
+        return epsilon_transition_set
 
 def __tail_walk(work_list, A, result):
     while work_list.tail_list:
@@ -217,15 +192,15 @@ def __tail_walk(work_list, A, result):
             result.add_transition(result_si, trigger_set, result_target_si, 
                                   AcceptanceF = A.states[A_target_si].is_acceptance())
 
-def __implement_epsilon_transitions(result, A, epsilon_transition_list):
+def __implement_epsilon_transitions(result, A, epsilon_transition_set):
     """RETURNS: [0] The resulting state machine, if a 'cut' has happened.
                     The original state machine if no 'cut' has happened.
                 [1] True, if a cut has happened, False else.
     """
-    if not epsilon_transition_list: 
+    if not epsilon_transition_set: 
         return A, False
     else:
-        for from_si, to_si, acceptance_f in epsilon_transition_list:
+        for from_si, to_si, acceptance_f in epsilon_transition_set:
             if from_si == result.init_state_index:
                 result.add_epsilon_transition(from_si, to_si) 
             else:

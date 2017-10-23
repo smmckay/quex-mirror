@@ -24,7 +24,7 @@ if len(sys.argv) < 2:
 
 def test(sm, SelectF=False):
     for state_index in sm.get_orphaned_state_index_list():
-        del sm.states[state_index]
+        sm.states.pop(state_index)
 
     sm.add_transition(7777L, ord('0'), sm.init_state_index)
     sm.init_state_index = 7777L

@@ -464,7 +464,7 @@ def adapt_state_machine(sm, Result):
 
     # Replace the indices of the thrown out states
     for state_idx in replacement_dict.iterkeys():
-        del sm.states[state_idx]
+        sm.states.pop(state_idx)
 
     for state in sm.states.itervalues():
         state.target_map.replace_target_indices(replacement_dict)

@@ -637,7 +637,7 @@ class DFA(object):
         """
         for state_index in self.get_orphaned_state_index_list():
             if state_index == self.init_state_index: continue
-            del self.states[state_index]
+            self.states.pop(state_index)
 
     def delete_hopeless_states(self):
         """Delete all hopeless states and transitions to them.
@@ -645,11 +645,16 @@ class DFA(object):
         HOPELESS STATE: A state that cannot reach an acceptance state.
                        (There is no connection forward to an acceptance state).
         """
-        for i in self.get_hopeless_state_index_list():
-            for state in self.states.itervalues():
+        hopeless_si_set = set(self.get_hopeless_state_index_list())
+        considered_state_list = [
+            state for si, state in self.states.iteritems()
+                  if si not in hopeless_si_set
+        ]
+        for i in hopeless_si_set:
+            for state in considered_state_list:
                 state.target_map.delete_transitions_to_target(i)
             if i == self.init_state_index: continue
-            del self.states[i]
+            self.states.pop(i)
 
     def delete_transitions_on_number(self, Number):
         """This function deletes any transition on 'Value' to another
