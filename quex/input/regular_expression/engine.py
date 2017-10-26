@@ -39,6 +39,7 @@ import quex.engine.state_machine.algebra.difference           as difference
 import quex.engine.state_machine.algebra.symmetric_difference as symmetric_difference
 import quex.engine.state_machine.algebra.union                as union
 import quex.engine.state_machine.cut.operations_on_sets       as derived
+import quex.engine.state_machine.cut.head_and_tails           as head_and_tails
 import quex.engine.state_machine.cut.operations_on_lexemes    as cut
 from   quex.input.code.base                                   import SourceRef
 

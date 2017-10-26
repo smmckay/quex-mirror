@@ -646,15 +646,17 @@ class DFA(object):
                        (There is no connection forward to an acceptance state).
         """
         hopeless_si_set = set(self.get_hopeless_state_index_list())
-        considered_state_list = [
-            state for si, state in self.states.iteritems()
-                  if si not in hopeless_si_set
+        concerned_state_list = [
+            state
+            for si, state in self.states.iteritems()
+            if si not in hopeless_si_set or si == self.init_state_index
         ]
-        for i in hopeless_si_set:
-            for state in considered_state_list:
-                state.target_map.delete_transitions_to_target(i)
-            if i == self.init_state_index: continue
-            self.states.pop(i)
+        for hl_si in hopeless_si_set:
+            for state in concerned_state_list:
+                state.target_map.delete_transitions_to_target(hl_si)
+            if hl_si == self.init_state_index: continue
+            self.states.pop(hl_si)
+        return 
 
     def delete_transitions_on_number(self, Number):
         """This function deletes any transition on 'Value' to another

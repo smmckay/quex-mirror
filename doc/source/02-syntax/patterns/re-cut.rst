@@ -114,9 +114,12 @@ and
    \NotBegin{P Q} = P  => \CutBegin{P Q} = P
    \NotEnd{P Q}   = P  => \CutEnd{P Q} = P
 
-However in general, it cannot be assumed that the result of the operation ``\CutBegin{P
-Q}`` does not begin with something matching ``Q``. Respectively, ``\CutEnd{P
-Q}`` does not generally produce something which does not end with ``Q``. 
+However in general, it cannot be assumed that the result of the operation
+``\CutBegin{P Q}`` does not begin with something matching ``Q``. Respectively,
+``\CutEnd{P Q}`` does not generally produce something which does not end with
+``Q``. 
+
+     \Begin{\CutBegin{P Q} Q} =
 
 
 *Cut/Concatenate Reversibility*

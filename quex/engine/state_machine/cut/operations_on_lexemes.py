@@ -130,7 +130,7 @@ def __together_walk(work_list, A, B, result):
     """
     result_begin_si = work_list.add_together(A.init_state_index, B.init_state_index, 
                                              BridgeSet=set())
-    epsilon_transition_set = []
+    epsilon_transition_set = set()
     while work_list.together_list:
         result_si, A_si, B_si, bridge_set = work_list.together_list.pop()
         assert A_si is not None
