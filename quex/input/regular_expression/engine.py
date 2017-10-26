@@ -533,6 +533,14 @@ def snap_sanitizer(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "sanatizer operator", "A")[0]
     return sanitizer.do(result)
 
+def snap_head(stream, PatternDict):
+    result = snap_curly_bracketed_expression(stream, PatternDict, "\\Head", "A")[0]
+    return head_and_tails.head(result)
+
+def snap_tails(stream, PatternDict):
+    result = snap_curly_bracketed_expression(stream, PatternDict, "\\Head", "A")[0]
+    return head_and_tails.tails(result)
+
 def snap_anti_pattern(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "anti-pattern operator", "A")[0]
     return sanitizer.do(complement.do(result))
@@ -699,6 +707,9 @@ CommandDB = sorted([
    ("Any",          snap_any),                   # OK
    ("Sanitize",     snap_sanitizer),             # 
    ("A",            snap_anti_pattern),          # OK
+   #
+   ("Head",         snap_head),                  # OK
+   ("Tails",        snap_tails),                 # OK
    #
    ("Begin",        snap_begin),                 # OK
    ("End",          snap_end),                   # OK

@@ -114,60 +114,6 @@ All of the above laws follow the principle of *symmetric duality*, in that if
 ``\Union`` and ``\Intersection`` as well as ``\Empty`` and ``\Universal`` are
 interchanged, one set of rules translates into another.
 
-Derived Operations
-##################
-
-Based on the fundamental algebraic operations further operations may be derived
-which have a specific application in lexical analysis. The following list shows
-operations that prune the space of matched lexemes by a pattern `P` by
-constraints on the lexeme's beginning or ending. The functions ``\NotBegin``
-and ``\NotEnd`` are defined as follows.
-
-.. describe:: ``\NotBegin{P Q}``: 
-
-      All lexemes that match `P`, except for those that *begin* with something
-      that matches `Q`.  The corresponding regular expression is::
-
-          \Diff{P (\Universal)Q}  
-
-.. describe:: ``\NotEnd{P Q}`` 
-
-      All lexemes that match `P`, except for those that *end* with something
-      that matches `Q`.  The corresponding regular expression is::
-
-          \Diff{P (\Universal)Q}  
-
-.. describe:: ``\NotIn{P Q}`` 
-
-      All lexemes that match `P`, except for those that *contain* a subsequence 
-      that matches `Q`.  The corresponding regular expression is::
-
-          \Diff{P (\Universal)Q(\Universal)}  
-
-
-The positive cases are:
-
-.. describe:: ``\Begin{P Q}``: 
-
-      Only those lexemes that match `P` which *begin* with something
-      that matches `Q`.  The corresponding regular expression is::
-
-          \Intersection{P (\Universal)Q}  
-
-.. describe:: ``\End{P Q}`` 
-
-      Only those lexemes that match `P` which *end* with something
-      that matches `Q`.  The corresponding regular expression is::
-
-          \Intersection{P (\Universal)Q}  
-
-.. describe:: ``\In{P Q}`` 
-
-      Only lexemes that match `P` which *contain* a subsequence 
-      that matches `Q`.  The corresponding regular expression is::
-
-          \Intersection{P (\Universal)Q(\Universal)}  
-
 While ``\Diff`` and ``\Intersection`` proved above to produce meaningful
 operations, no meaningful according operation based on ``\Union`` is known to
 to the author Quex. Consequently, no shorthand for such operations exists.
@@ -178,8 +124,3 @@ rules of an algebraic structure, namely commutativity, associativity,
 distributivity, the identity law and complement law. The symmetric dualities of
 union and intersection as well as empty DFA and universal DFA are maintained.
 
-In the last section the derived operations ``\Begin``, ``\In``, ``\End``, 
-``\NotBegin``, ``\NotIn``, and ``\NotEnd`` were introduced that prune the
-set of matching lexemes based another 'pruning pattern'. The next section
-introduces operations that cut the lexemes of the set of matching lexemes
-itself.

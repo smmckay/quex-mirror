@@ -6,7 +6,6 @@ sys.path.insert(0, "./")
 from   track_analysis                                         import choice_str, \
                                                                      pattern_list_db, \
                                                                      choice
-import quex.engine.state_machine.algorithm.acceptance_pruning as     acceptance_pruning
 import help
 
 if "--hwut-info" in sys.argv:

@@ -1,14 +1,15 @@
 .. _sec:sub-dfa-computation:
 
-Cut Operations
-==============
+Cut/Concetenate Arithmetic
+==========================
 
-Algebraic expressions may *prune the set of matching lexemes*. However, they
-*may not produce sets of pruned lexemes*. For example, for string patterns such
-as `Mr. Bone` it is not possible to find an generic algebraic expression that
-cuts the characters `Mr.` from the front so that only the last name is matched.
-In order to prune the lexemes at the beginning or the end the following
-functions may be used.
+Algebraic expressions may *prune the set* of matching lexemes. However, they
+may not produce *sets of pruned lexemes*. This section produces DFA that
+actually prune lexemes which are matched by a DFA. Subsets of lexemes are then
+specified in which the concatenation operation can be inverted. Finally, 
+a arithmetic frame is introduced ... TODO.
+
+Cut operations to be introduced are the following:
 
 .. describe:: \\CutBegin{P Q}
 
@@ -19,10 +20,6 @@ functions may be used.
    * the 'tail' of lexemes matched by `P` which start with something `Q`. The
      'tail' of a lexeme is what comes after what is matched by `Q`.
    
-   For example, let `P` be defined as `("Mr. "|"Mrs. ")"Bone"` which matches
-   `Mr. Bone` and `Mrs. Bone`. Then, the pruned pattern `\\CutBegin{{P} "Mr. "}
-   matches `Bone` and `Mrs. Bone`.
-
 .. describe:: \\CutEnd{P Q}
 
    Matches the set of lexemes:
@@ -32,23 +29,136 @@ functions may be used.
    * the 'head' of lexemes matched by `P` which end with something `Q`. The
      'head' of a lexeme is what comes before what is matched by `Q`.
 
-   With `P` defined as `("Mr. "|"Mrs. ")"Bone"` the resulting pattern of
-   `\\CutEnd{{P} " Bone"} matches `Mr.` and `Mrs.`.
+The precise operation of these functions becomes clearer when seen in contrast
+to set-pruning operations. For example, the set-pruning operation ``\NotBegin``
+and the lexeme-pruning operation ``\CutBegin`` applied on the expressions
+``friedhelm|otto`` and ``fried`` deliver the following::
 
-.. describe:: \\CutIn{P Q}
+    \NotBegin{friedhelm|otto fried}  -> "otto"
+    \CutBegin{friedhelm|otto fried}  -> "helm", "otto"
 
-   Matches the set of lexemes:
+The expression ``friedhelm|otto`` matches two lexemes namely "friedhelm" and
+"otto". The ``\NotBegin`` operation removes any lexeme that starts with
+``fried``, so that "friedhelm" is completely taken out. The ``CutBegin``
+operation, however, cuts "fried" from the beginning of "friedhelm". What
+remains is the lexeme "helm". The lexeme "otto" is not effected, since it does
+not start with "fried".
 
-   * lexemes matched by `P` which *do not contain* with something that matches
-     `Q`. 
+*Neutral Element*
 
-   * the 'tail' and 'head' of lexemes matched by `P` which contain something
-     matching `Q`.  The 'tail' and 'head' of a lexeme are the borders around
-     what is matched by `Q` inside the pattern.
+There is a neutral element with respect to ``\CutBegin`` and ``\CutEnd`` is
+the ``\Nothing`` DFA. That is, for any pattern ``P`` it holds that::
 
-   With `P` defined as `"car(pet)?"` matching `car` and `carpet`. Then, 
-   `\\CutIn{{P} "rpe"} matches `car`  and `cat``.
+             \CutBegin{P \Nothing} = P
+             \CutEnd{P \Nothing}   = P
 
+Respectively, the neutral element acts on concatenation
+
+             (\Nothing)P = P
+             P(\Nothing) = P
+
+Cutting a DFA ``P`` from itself results in the neutral element.
+
+             \CutBegin{P P} = \Nothing
+             \CutEnd{P P}   = \Nothing
+
+In the section :ref:`self-repetitiveness` it has been discussed how a DFA
+in its repeated version is equivalent to itself. For such DFAs special rules
+apply. Obviously, if ``Q = Q{i,}`` for some ``i >= 0``, then 
+
+    \CutBegin{Q{i,} Q} = \Nothing
+
+
+*\\Empty and Emptiness*
+
+The DFA ``\Empty`` does not match any lexeme. Therefore, any pruning 
+operation results in ``\Empty`` itself, i.e.
+
+       \CutBegin{\Empty Q} = \Empty
+       \CutEnd{\Empty Q}   = \Empty
+
+for any DFA ``Q``.  Cutting never removes lexemes from the set of matching
+lexemes.  Consequently, a cutting operation on a non-empty DFA cannot result in
+``\Empty`` since at maximum all lexemes are pruned to the zero-length lexeme,
+resulting in ``\Nothing``. 
+
+``\Empty`` cannot be concatenated before a DFA, since it has no acceptance
+state to mount on. ``\Empty`` cannot be concatenated after a DFA, since the
+first DFA's acceptance states are cancelled and the suffix ``\Empty`` does not
+provide any.  Respectively, pruning ``\Empty`` must be considered
+inadmissible.::
+
+         (\Empty)R           --> inadmissible
+         R(\Empty)           --> inadmissible
+         \CutBegin{R \Empty} --> inadmissible
+         \CutEnd{R \Empty}   --> inadmissible
+
+*Symmetric Duality*
+
+The operations ``\CutBegin`` and ``\CutEnd`` are symmetrically related through
+the reverse operation::
+
+      \R{\CutEnd{P Q}}   = \CutBegin{\R{P} \R{Q}}
+      \R{\CutBegin{P Q}} = \CutEnd{\R{P}   \R{Q}}
+
+*Conditions on Beginning and Ending*
+
+Obviously, if the match filtering operations produce empty sets, then the 
+cut operations do not change anything, i.e.
+
+   \Begin{P Q} = \Empty  => \CutBegin{P Q} = P
+   \End{P Q}   = \Empty  => \CutEnd{P Q} = P
+
+and
+
+   \NotBegin{P Q} = P  => \CutBegin{P Q} = P
+   \NotEnd{P Q}   = P  => \CutEnd{P Q} = P
+
+However in general, it cannot be assumed that the result of the operation ``\CutBegin{P
+Q}`` does not begin with something matching ``Q``. Respectively, ``\CutEnd{P
+Q}`` does not generally produce something which does not end with ``Q``. 
+
+
+*Cut/Concatenate Reversibility*
+
+Intuitively, the cut operation does exactly the opposite of what concatenation
+does. This, however, is not generally true. Consider the expressions ``(pet)*``
+and ``peter`` being concatenated, i.e. ``(pet)*peter``. This expression matches::
+
+   peter
+   petpeter
+   petpetpeter
+   ...
+
+However, applying ``\CutBegin{(pet)*peter (pet)*}`` cut as many repetitions of
+``pet`` as possible. So the result would match solely the lexeme ``er``, which
+is not the original lexeme ``peter``.  Having the end of ``Q`` matching the
+beginning of ``P`` is not enough a condition, though.  Consider ``pet`` and
+``peter`` being concatenated. There, ``\CutBegin{petpeter pet}`` delivers
+correctly ``peter`` and ``\CutEnd{petpeter peter}`` delivers correctly ``pet``.
+As long as it is determined where another pattern is mounted, the matching
+ending and beginning of ``P`` and ``Q`` do not disable reversibility.
+Irreversibility is linked to a possible match in ``Q`` with a certain length
+and the possibility to walk then along the beginning of ``P`` an reach another
+match of ``Q``.  Using the ``\Tails`` function this condition can be precised 
+
+Reversibility of Concatenation
+    The concatenation ``AB`` of two DFAs A and B is reversible by the 
+    ``\CutBegin{AB A}`` operation, if and only if::
+
+      \CutBegin{A T} = \Empty for all ``T`` in ``\Tails{B}``. 
+      
+    Similarly, the concatenation is reversible by the ``\\CutEnd{AB B}``
+    operation, if and only if::
+
+      \CutBegin{\R{P} T} = \Empty for all T in \Tails{\R{Q}}.
+
+The reversibility condition for ``\CutEnd`` can be derived from the 
+dual symmetry::
+
+    \CutEnd{P Q} = \R{\CutBegin{\R{P} \R{Q}}}
+   
+Replacing P with ``AB``, Q with ``B``, and applying ``\R{\R{P}} = R``.
 
 .. note::
 
@@ -104,11 +214,6 @@ statements can be made for ``\CutEnd`` and ``\CutIn`` as summarized below.
       \Intersection{\CutEnd{P Q}   (\Universal)Q} = \Empty
       \Intersection{\CutIn{P Q}    (\Universal)Q(\Universal)} = \Empty
 
-The operations ``\CutBegin`` and ``\CutEnd`` are related through the following
-relationship::
-
-      \CutEnd   = \R{\CutBegin{\R{P} \R{Q}}}
-      \CutBegin = \R{\CutEnd{\R{P}   \R{Q}}}
 
 Figure :ref:`fig:cut-in` displays the effect of the ``\CutIn`` operation
 applied on the pattern ``"fun"|"for"|"sun"`` cut by ``"o"|"un"``. No path

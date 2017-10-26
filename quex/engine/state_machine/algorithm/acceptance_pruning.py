@@ -15,7 +15,7 @@ def do(sm):
         state.target_map.clear()
 
     orphan_list = sm.get_orphaned_state_index_list()
-    while len(orphan_list) != 0:
+    while orphan_list:
         for state_index in orphan_list:
             sm.states.pop(state_index)
         orphan_list = sm.get_orphaned_state_index_list()

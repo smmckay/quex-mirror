@@ -281,13 +281,13 @@ section :ref:`sec:incidence-handlers`.
    specified in a single line. The ``define`` section may be used to break
    down patterns into smaller ones and combine them by expansion.
 
-*Operations*    
-
 Let ``R`` and ``S`` be regular expressions, i.e. a chain of characters
 specified in the way mentioned above, or a regular expression as a result from
 the operations below.  Much of the syntax is directly based on POSIX extended
 regular expressions.
      
+*Repetition*    
+
 .. describe:: R* 
 
     *zero* or more occurrences of the regular expression ``R``.
@@ -312,12 +312,7 @@ regular expressions.
 
     exactly four repetitions of the regular expression ``R``.
 
-.. describe:: (R) 
-
-    match an ``R``; parentheses are used to *group* operations, i.e. to
-    override precedence, in the same way as the brackets in ``(a + b) * c``
-    override the precedence of multiplication over addition in algebraic
-    expressions.
+*Concatenation and Alternatives*
 
 .. describe:: RS 
 
@@ -329,11 +324,21 @@ regular expressions.
     either an ``R`` or an ``S``, i.e. ``R`` and ``S`` both match. This is usually 
     called an *alternative*.
 
+*Expansion*
+
 .. describe:: {NAME} 
 
     the expansion of the defined pattern "NAME". Pattern names can
     be defined in *define* sections (see section :ref:`sec:top-level-configuration`).
 
+*Grouping* 
+
+.. describe:: (R) 
+
+    match an ``R``; parentheses are used to *group* operations, i.e. to
+    override precedence, in the same way as the brackets in ``(a + b) * c``
+    override the precedence of multiplication over addition in algebraic
+    expressions.
 
 *Sanity*
 
@@ -375,4 +380,28 @@ pattern the following command may be used.
  accept everything. This subject is discussed further in the section on on DFA
  Algebra (section :ref:`sec:algebra-of-dfas`).
 
+*Special DFAs*
 
+There are three DFAs which exist primarily as arithmetic or algebraic
+constructs. They are not considered to serve a direct practical purpose for
+pattern matching on their own. They are the following:
+
+.. describe:: \\Nothing
+
+   matches solely the lexeme of zero-length. A lexer containing this pattern
+   will inavitably stall as it accepts without proceeding in the input stream.
+
+.. describe:: \\Empty
+
+   is a DFA where the associated set of matched lexemes is empty. It does not
+   accept any lexatom. A lexer containing only this pattern will inavitably
+   trigger a 'match failure'.
+
+.. describe:: \\Universal
+
+   is a DFA which matches absolutely everything, even the lexeme of zero 
+   length. A lexer with this pattern will consume the complete input stream
+   at once and ignore any other pattern.
+
+Figure :ref:`fig-special-dfas` displays the state machines according to the 
+three DFAs.

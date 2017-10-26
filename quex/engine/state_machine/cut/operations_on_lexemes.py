@@ -177,8 +177,8 @@ def __together_walk(work_list, A, B, result):
         return None
     else:
         # The epsilon transition 'initial state' to 'begin search' is always there!
-        epsilon_transition_set.append((result.init_state_index, result_begin_si,
-                                        A.states[A.init_state_index].is_acceptance()))
+        epsilon_transition_set.add((result.init_state_index, result_begin_si,
+                                    A.states[A.init_state_index].is_acceptance()))
         return epsilon_transition_set
 
 def __tail_walk(work_list, A, result):
