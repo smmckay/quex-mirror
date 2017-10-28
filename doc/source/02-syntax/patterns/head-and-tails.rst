@@ -17,6 +17,15 @@ The two operations are
    possible for a given DFA ``R``. Figure :ref:`fig-heads-and-tails`
    graphically displays the ``\Head`` operation for ``x+``.
 
+   If a pattern ``R`` matches the zero-length lexeme, then the first acceptance
+   state is the initial state and therefore no other acceptance state can be
+   reached. Then, the according head only matches the zero-length lexeme.  The
+   head cannot possibly contain loops, so it cannot contain a state which 
+   iterates on any lexatom. Consequently, if a head does not match the 
+   zero-length lexeme it is admissible. The contrary is trivial.
+
+            \Head{R} != \Nothing  <=> \Head{R} is admissible
+
 .. describe:: \\Tails{R}
 
    The result of this operations cuts anything before the first acceptance
@@ -28,7 +37,26 @@ The two operations are
    :ref:`fig-heads-and-tails`b graphically displays the ``\Tails`` operation
    for ``x+``. Note, that the ``\Tails`` operation provides a list of DFAs.
 
+   A tail always accepts the zero-length lexeme and is therefore always
+   inadmissible on its own.
+
+          for any T in \Tails{R}: T is inadmissible
+
+For any DFA unequal to ``\Empty``, there exists a head, even if it is
+equivalent to ``\Nothing``.  This is so, since it must contain at least one
+acceptance state which becomes the front acceptance state. Also, every DFA
+unequal to ``\Empty`` must have at least one tail, even if it is equivalent to
+``\Nothing``. This is so, because the front acceptance state is overtaken into
+the tail, even if there are no further transitions.
+
+.. note:: 
+
+   The ``\Head`` and ``\Tail`` operations for ``\Empty`` are undefined.
+
 The head's and tail's pruning operations are not reversible in general.
 Consider, for example the expression ``ab*|cd*``. The head of the expression is
 ``a|b`` and the tails are ``b*`` and ``d*``. Plain concatenation cannot produce
 the original pattern again.
+
+
+

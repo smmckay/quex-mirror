@@ -29,10 +29,10 @@ def head(Dfa):
     correspondance_db = {
         si: state_index.get() for si in overtake_set
     }
-    result = Dfa(InitStateIndex = correspondance_db[Dfa.init_state_index])
+    result = DFA(InitStateIndex = correspondance_db[Dfa.init_state_index])
     for si in overtake_set:
-        if si in front_set:
-            result_state = DFA_State.clone(correspondance_db)
+        if si not in front_set:
+            result_state = Dfa.states[si].clone(correspondance_db)
         else:
             result_state = DFA_State()
             result_state.set_acceptance()
@@ -58,7 +58,7 @@ def __clone_tail(Dfa, StartSi):
     RETURNS: DFA that contains the graph of state machine transitions starting 
              from state 'Si'.
     """
-    result            = DFA()
+    result            = DFA(AcceptanceF=Dfa.states[StartSi].is_acceptance())
     correspondance_db = { StartSi: result.init_state_index }
     work_list         = [ (StartSi, result.init_state_index) ]
     done_set          = set([StartSi])
@@ -68,17 +68,18 @@ def __clone_tail(Dfa, StartSi):
         state         = Dfa.states[si]
         for target_si, trigger_set in state.target_map.get_map().iteritems():
             result_target_si = correspondance_db.get(target_si)
-            if result_target_si is None: result_target_si = state_index.get()
+            if result_target_si is None: 
+                result_target_si = state_index.get()
+                correspondance_db[target_si] = result_target_si
 
             if target_si not in done_set: 
-                work_list.add((target_si, result_target_si))
+                work_list.append((target_si, result_target_si))
                 done_set.add(target_si)
 
             result.add_transition(result_si, trigger_set, result_target_si, 
                                   AcceptanceF = state.is_acceptance())
 
     return result
-
 
 def __find_front_acceptance_states(Dfa):
     """Finds the first acceptance states which can be reached in the given DFA
@@ -89,7 +90,11 @@ def __find_front_acceptance_states(Dfa):
     """
     front_set   = set()
     work_list   = [ (Dfa.init_state_index, Dfa.get_init_state()) ]
+
     reached_set = set([Dfa.init_state_index])
+    if Dfa.get_init_state().is_acceptance(): 
+        front_set.add(Dfa.init_state_index)
+
     while work_list:
         si, state = work_list.pop()
         for target_si in state.target_map.get_map().iterkeys():

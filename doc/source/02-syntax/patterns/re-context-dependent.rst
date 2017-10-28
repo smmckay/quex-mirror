@@ -95,12 +95,10 @@ expressions.
    ``R``.  
    
    There is a special circumstance where post-contexts are problematic: the
-   'dangerous trailing context' :cite:`Paxson1995flex` problem [#f1]_. This is
-   the case where a repeated or optional end of ``R`` matches the beginning of
-   ``S``. Quex handles this case by a *philosophical cut*.  This procedure
-   modifies the post context, so that the core pattern matches as long as
-   possible. This is in accordance with the longest match, which is Quex's
-   philosophy of analysis.
+   'dangerous trailing context' :cite:`Paxson1995flex` problem [#f1]_.  The DFA
+   Cut/Concatenate arithmetic introduced in
+   :ref:`sec-cut-contatenate-arithmetic` enables a precise definition of this
+   problem and a rational solution: the 'philosophical cut'.
 		 
 .. describe:: Q/R/ 
 

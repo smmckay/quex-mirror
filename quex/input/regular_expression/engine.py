@@ -253,8 +253,6 @@ def snap_term(stream, PatternDict):
         stream.seek(position_1)
         return __debug_exit(result, stream)
     
-    ## print "##1:", result.get_string(NormalizeF=False)
-    ## print "##2:", result_2.get_string(NormalizeF=False)
     result = sequentialize.do([result, result_2], 
                               MountToFirstStateMachineF=True, 
                               CloneRemainingStateMachinesF=False)    

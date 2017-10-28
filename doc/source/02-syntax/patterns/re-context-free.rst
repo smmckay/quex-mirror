@@ -346,32 +346,31 @@ The previous section presented a short summary on regular expression syntax.
 While the following sections go into more detail, they also provide more
 powerful means to model the matching behavior. However, with these operations
 it becomes more challenging to define the exact desired regular expression.  In
-particular, patterns may be *admissible* and *inadmissible*.
+particular, patterns may be *admissible* and *inadmissible*.  An *inadmissible*
+pattern has one ore more of the following properties.
 
-An *inadmissible* pattern has one ore more of the following properties.
+    * It matches the zero-length lexeme. This would make the lexeme accept
+      without consuming any further lexatom from  the input stream. The 
+      lexer would stall.
 
-    * It matches an empty sequence. This would make the lexer accept on no
-      input. The lexer would not proceed and stall on accepting nothing.
+    * There exists a state from where, it matches on arbitrary repetitions of 
+      any lexatom. If this state is reached the complete input stream would
+      be consumed.
 
-    * It does not match anything. A pattern that never matches cannot 
-      be related to a reaction.
+A lexer containing an inadmissible pattern must be considered unstable.
+Its functioning cannot be guaranteed.
 
 Any pattern which is not *inadmissible* in the above sense is *admissible*.
 Any pattern that is not inadmissible is admissible. Whenever an inadmissible
-pattern is detected, an error is reported. However, even for admissible
-patterns there remains an issue with *sanity*. If a pattern contains a state
-that iterates on any lexatom to itself, then this state would eat anything
-until the end of input. As a shorthand to transform any pattern into a *sane*
-pattern the following command may be used.
+pattern is detected, an error is reported.  As a shorthand to transform any
+pattern into a *sane* pattern the following command may be used.
 
 .. describe:: \\Sanitize{P}
 
      Sanitizes a pattern with regards to two issues. First, it removes
      acceptance of the zero-length lexeme. Second, it removes acceptance of
-     tails of infinite length and arbirtrary lexatoms. Such patterns may indeed
-     be produced by DFA algrebraic expressions--so this command helps to
-     sanitize.
-
+     tails of infinite length and arbirtrary lexatoms. 
+     
  The command line option ``--language dot`` allows to print state machine
  graphs. It is advisable to print graphs for the sanitized state machine
  in order to see whether it conforms the expectations.
