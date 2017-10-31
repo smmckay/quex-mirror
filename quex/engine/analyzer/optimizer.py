@@ -2,7 +2,7 @@
 
     NOTE: Acceptance Pruning of 'Pre-Contexts', 'Non-Ambigous Post Context'
           and 'Backward Input Position Detectors' happens with the original
-          state machines: Module 'state_machine/acceptance_pruning.py'
+          state machines: Module 'state_machine/cut/stem_and_branches.py'
 
     (*) Post-pone acceptance storage and position storage as much as 
         possible. This decreases the probability that a transition

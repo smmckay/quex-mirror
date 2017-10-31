@@ -1,7 +1,7 @@
 # (C) Frank-Rene Schaefer
 #     ABSOLUTELY NO WARRANTY
 import quex.engine.state_machine.algorithm.beautifier            as     beautifier
-import quex.engine.state_machine.algorithm.acceptance_pruning    as     acceptance_pruning
+import quex.engine.state_machine.cut.stem_and_branches           as     stem_and_branches
 import quex.engine.state_machine.algebra.reverse                 as     reverse
 import quex.engine.state_machine.construction.sequentialize      as     sequentialize
 from   quex.engine.state_machine.construction.setup_post_context import DFA_Newline
@@ -55,10 +55,10 @@ def do(the_state_machine, pre_context_sm, BeginOfLinePreContextF, BeginOfStreamP
                                                 reverse_newline_sm])
 
     # (*) Once an acceptance state is reached no further analysis is necessary.
-    acceptance_pruning.do(reverse_pre_context)
+    stem_and_branches.prune_branches(reverse_pre_context)
 
     # (*) Clean up what has been done by inversion (and optionally 'BeginOfLinePreContextF')
-    #     AFTER acceptance_pruning (!)
+    #     AFTER 'prune_branches' (!)
     reverse_pre_context = beautifier.do(reverse_pre_context)
 
     # (*) let the state machine refer to it 

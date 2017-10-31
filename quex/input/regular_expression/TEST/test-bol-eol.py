@@ -3,9 +3,9 @@ import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-import quex.engine.state_machine.algorithm.acceptance_pruning as acceptance_pruning
-import quex.input.regular_expression.engine         as core
-from   quex.blackboard                              import setup as Setup
+import quex.engine.state_machine.cut.stem_and_branches as     stem_and_branches
+import quex.input.regular_expression.engine            as     core
+from   quex.blackboard                                 import setup as Setup
 from   quex.constants     import E_AcceptanceCondition
 Setup.buffer_limit_code = 0
 Setup.path_limit_code   = 0
@@ -15,7 +15,7 @@ if "--hwut-info" in sys.argv:
     print "Conditional Analysis: Begin of Line '^', End of Line '$'"
     sys.exit(0)
 
-acceptance_pruning._deactivated_for_unit_test_f = True
+stem_and_branches._unit_test_deactivate_branch_pruning_f = True
 
 def test(TestString):
     test_core("^" + TestString + "$")

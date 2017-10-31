@@ -8,7 +8,7 @@ import quex.engine.state_machine.cut.head_and_tails   as head_and_tails
 import quex.engine.state_machine.algorithm.beautifier as beautifier
 
 if "--hwut-info" in sys.argv:
-    print "Head and Tails Operations;"
+    print "Stem and Branches;"
     print "CHOICES: repetition, optional;"
     sys.exit(0)
 

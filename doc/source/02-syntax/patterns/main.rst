@@ -46,8 +46,14 @@ The following sections describe the formal language used to specify patterns.
 First, the syntactic means to specify context free regular expressions are
 introduced. Second, two sections elaborate on the specification of character
 sets and the use of queries into the Unicode database. Third, a section
-elaborates on pre- and post-contexts for regular expressions. Eventually, a
-final section introduces *regular expression algebra*. 
+elaborates on pre- and post-contexts for regular expressions. 
+
+This section leaves purposely excludes the subject of *DFA algebra* and
+*cut/concatenate arithmetic*. While these subjects have their own description
+syntax, the related theory is likely beyond the scope of the praxis oriented
+user. Also, the author considers the findings on DFA algebra and
+cut/concatenation arithmetic as so important that they would the deserve a
+prominent place, such as a chapter on their own.
 
 .. toctree::
    
@@ -55,11 +61,6 @@ final section introduces *regular expression algebra*.
     re-character-sets.rst
     ucs-properties.rst
     re-context-dependent.rst
-    re-algebra.rst
-    match-filtering.rst
-    re-cut.rst
-    self-repetitiveness.rst
-    anti-pattern.rst
     re-other-operations.rst
     summary.rst
    

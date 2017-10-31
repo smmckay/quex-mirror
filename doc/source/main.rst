@@ -14,6 +14,8 @@ Contents:
 
    02-syntax/main.rst
 
+   03-algebra-and-arithmetic/main.rst
+
    modes/main.rst
 
    tokens/main.rst

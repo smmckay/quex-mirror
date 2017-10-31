@@ -3,8 +3,8 @@
 import os
 import sys
 sys.path.insert(0, "./")
-from   track_analysis_single_pattern                          import choice_str, pattern_db, choice
-import quex.engine.state_machine.algorithm.acceptance_pruning as     acceptance_pruning
+from   track_analysis_single_pattern                   import choice_str, pattern_db, choice
+import quex.engine.state_machine.cut.stem_and_branches as     stem_and_branches
 import help
 
 if "--hwut-info" in sys.argv:
@@ -12,7 +12,7 @@ if "--hwut-info" in sys.argv:
     print choice_str
     sys.exit()
 
-acceptance_pruning._deactivated_for_unit_test_f = True
+stem_and_branches._unit_test_deactivate_branch_pruning_f = True
 
 sm = help.prepare(pattern_db[choice])
 

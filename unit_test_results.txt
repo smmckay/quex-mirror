@@ -1010,12 +1010,12 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................................[OK]
+        pyflakes-check.sh ..........................................[FAIL]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1038,7 +1038,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] svn-status.sh
+    [FAIL] pyflakes-check.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -2437,9 +2437,9 @@ quex/engine/state_machine/construction/TEST                          <no date>
                                                                                
 quex/engine/state_machine/cut/TEST                                   <no date>
 -------------------------------------------------------------------------------
- * Head and Tails Operations
-        test-head_and_tails.py optional ..............................[OK]
-                               repetition ............................[OK]
+ * Stem and Branches
+        test-stem-and-branches.py optional ...........................[OK]
+                                  repetition .........................[OK]
 
  * Complement Begin:
 

@@ -15,27 +15,28 @@
 import quex.engine.state_machine.construction.sequentialize as sequentialize
 import quex.engine.state_machine.algorithm.beautifier       as beautifier
 import quex.engine.state_machine.algebra.reverse            as reverse
+from   quex.engine.misc.tools                               import print_callstack
 from   copy import deepcopy
 
 
 def detect_forward(CoreStateMachine, PostConditionStateMachine):
-    """A 'forward ambiguity' denotes a case where the quex's normal
-       post condition implementation fails. This happens if an
-       iteration in the core pattern is a valid path in the post-
-       condition pattern. In this case no decision can be be where
-       to reset the input position.
+    """A 'forward ambiguity' denotes a case where the post condition
+    implementation fails. This happens if an iteration in the core pattern is a
+    valid path in the post- condition pattern. In this case no decision can be
+    made about where to reset the input position.
 
        Example:   x+/x  At the end of the post condition an incoming
                         'x' guides through a path in the post condition
                         and the core pattern. It cannot be determined
                         by a flag where the input position ends.
 
-       NOTE: For many cases where there is a forward ambiguity quex
-       can gnerate an inverse post-condition that goes backwards from 
-       the end of the post condition (see function 'mount()'). However,
-       there are cases where even this is not possible (see function
-       'detect_backward()').
+    NOTE: For many cases where there is a forward ambiguity quex can gnerate an
+    inverse post-condition that goes backwards from the end of the post
+    condition (see function 'mount()'). However, there are cases where even
+    this is not possible (see function 'detect_backward()').  
     """
+
+    ## print_callstack()
     __assert_state_machines(CoreStateMachine, PostConditionStateMachine)
     
     core_acceptance_state_list = CoreStateMachine.get_acceptance_state_list()
@@ -49,7 +50,6 @@ def detect_forward(CoreStateMachine, PostConditionStateMachine):
     return False
 
 def detect_backward(CoreStateMachine, PostConditionStateMachine):
-
     """A 'backward ambiguity' denotes the case where it cannot be clearly be
        determined how far to go back from the end of a post-condition. 
        
@@ -184,7 +184,7 @@ def mount(the_state_machine, PostConditionSM):
     #     The inversion may depend on the input codec(!). So, it is 
     #     done just before code generation.
     backward_detector_sm_to_be_inverted = PostConditionSM.clone()
-    ## DOES NOT WORK: acceptance_pruning.do(backward_detector_sm)
+    ## DOES NOT WORK: stem_and_branches.prune_branches(backward_detector_sm)
 
     # NOTE: We do not need to mark any origins in the backward detector,
     #       since it is not concerned with acceptance states. Its only
