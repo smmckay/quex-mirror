@@ -25,7 +25,7 @@ in that context.  The condition is *insufficient*. For example, the expression
 ``xx/x`` is composed out of a first statement with an ending that matches the
 beginning of the second, but pose no problem to DFA based lexical analysis. The
 same holds for ``xx*/x`` or ``x/x*``.  On the other hand, the expression
-``0(0|1)(0|1?)/11?1`` poses a problem of dangerous trailing context, even if it
+``[a-c]+/(ab|c)`` poses a problem of dangerous trailing context, even if it
 is difficult to link it to the aforementioned condition. Due to the lack of
 precision and formal language, a detection of a dangerous trailing context must
 hit a user with surprise, a touch of mystery, and cluelessness of a corrective
@@ -40,9 +40,11 @@ patterns _[#f0]::
         yx+/x+y
         (abc)+/(abc)+
         [abc]+/(ab|c)
-        x[abc]?/(ab|c)
+        x[ab]?/(ab|b)
         yx?/x?y
         (abc)+/(abc)?d
+        u(y|x*)/x*z
+        u(yx|x+)/x+z
 
 While the mentioned holds, a dangerous trailing context does not appear in 
 the following expressions::
@@ -62,6 +64,30 @@ stores the input position when it is reached (indicated by the 'S' mark). When
 an acceptance state of the post-context is reached, a match is triggered and
 the input position must be reset to what has been stored in the core-pattern's
 acceptance state (indicated by the 'R' mark).
+
+Iteration:
+
+            x                                 x
+     ( 1 )---->(( 2 ))---.             ( 3 )----->(( 4 ))
+                  '---<--' x
+
+     => Condition for *dangerous tc*
+
+         Exists a B in branches(P) where \Begin{Q B} is not empty
+
+                         x
+                  ( 1 )---->(( 2, 3, 4 ))------. x
+                                  '--------<---'
+
+     => No way to store where first pattern ends.
+     => HEALING: backward detection.
+                              x
+                      ( 4i )----->(( 3i ))
+
+        when an acceptance state is reached, new input position is there.
+
+Backward detection must be in consistency with longest match.j
+
 
 Figure :ref:`post-context-principle-in-action` shows an example how it works on
 an input stream with the given automaton. After the "ab" in the input stream

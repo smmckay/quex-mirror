@@ -1,4 +1,4 @@
-Self-Repetitiveness
+Concatenation Rules
 ===================
 
 Repetition is a special form of concatenation where a pattern is appended to
@@ -108,3 +108,4 @@ self-repetitiveness of grade 1, i.e.::
 
 only holds if ``A`` is equal to ``B`` and ``C`` is ``\Empty`` or ``\Nothing``.
 
+TODO: Talk about concatenation 'x*' and 'x+' which results in 'x+'

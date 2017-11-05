@@ -124,3 +124,11 @@ rules of an algebraic structure, namely commutativity, associativity,
 distributivity, the identity law and complement law. The symmetric dualities of
 union and intersection as well as empty DFA and universal DFA are maintained.
 
+*Reversion (TODO and check)*
+
+Union{RRP RRQ} = RRUnion{P Q} 
+RUnion{RRP RRQ} = RUnion{P Q} 
+
+Union{\R{P} \R{Q}}        = \R{Union{P Q}}
+Intersection{\R{P} \R{Q}} = \R{Union{P Q}}
+Complement{\R{P}}         = \R{Complement{P}}

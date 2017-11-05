@@ -93,6 +93,27 @@ inadmissible.::
          \CutBegin{R \Empty} --> inadmissible
          \CutEnd{R \Empty}   --> inadmissible
 
+*Repetition*
+
+P*P*     = P*
+P{N}P{M} = P{N+M} = P{M}P{N}
+P*P{N}   = P{N}P*
+
+Let P be not self-repetitive. Then,
+
+\CutBegin{P* P*}   = \Nothing
+\CutEnd{P* P*}     = \Nothing
+
+N > M:
+\CutBegin{P{N} P{M}} = P{N-M}
+\CutEnd{P{N} P{M}}   = P{N-M}
+
+\CutBegin{P{N} P*} = \Nothing
+\CutEnd{P{N} P*}   = \Nothing
+
+\CutBegin{P* P{N}}   = \Nothing
+\CutEnd{P* P{N}}     = \Nothing
+
 *Symmetric Duality*
 
 The operations ``\CutBegin`` and ``\CutEnd`` are symmetrically related through

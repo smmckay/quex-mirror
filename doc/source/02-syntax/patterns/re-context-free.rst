@@ -199,19 +199,6 @@ basic syntax follows the scheme of flex's man page.
      character sets. Characters that are beyond the scope of the current
      encoding or input character byte width are cut out. 
 
-.. describe:: \\R{ ... }
-
-     Reverses the pattern specified in brackets. If for example, it is
-     specified::
-
-            \R{dlroW} => QUEX_TKN_WORD(Lexeme)
-
-     then the token ``WORLD`` is sent upon the appearance of 'World' in
-     the input stream. This feature is mainly useful for definitions of
-     patterns of right-to-left writing systems such as Arabic, Binti and
-     Hebrew. Chinese, Japanese, as well as ancient Greek, ancient Latin,
-     Egyptian, and Etruscan can be written in both directions.
-
 .. describe:: \\P{ Unicode Property Expression }
 
      the set of characters for which the `Unicode Property Expression` holds.
@@ -235,17 +222,6 @@ basic syntax follows the scheme of flex's man page.
      the subset of Unicode characters which is covered by the given encoding.
      Using this is particularly helpful to cut out uncovered characters when a
      encoding engine is used (see :ref:`sec:engine-encoding`).
-
- .. note:: 
-
-    The brackets for pattern substituion and the brackets required for framing
-    a command are not the same--both need to be specified. E.g.  to reverse
-    what has been defined as ``PATTERN`` it needs to to be written::
-
-                      \R{{PATTERN}} 
-
-    which reads from inside to outside: expand the pattern definition,
-    then reverse expanded pattern. 
 
 Any character specified as character code, i.e. using `\`, `\x`, `\X`, or `\U`
 are considered to be Unicode code points. For applications in English spoken
@@ -324,12 +300,46 @@ regular expressions.
     either an ``R`` or an ``S``, i.e. ``R`` and ``S`` both match. This is usually 
     called an *alternative*.
 
+*Reversion*
+
+.. describe:: \\R{ ... }
+
+     Reverses the pattern specified in brackets. If for example, it is
+     specified::
+
+            \R{dlroW} => QUEX_TKN_WORD(Lexeme)
+
+     then the token ``WORLD`` is sent upon the appearance of 'World' in the
+     input stream. 
+     
+This feature is useful for definitions of patterns of right-to-left writing
+systems such as Arabic, Binti and Hebrew. Chinese, Japanese, as well as
+ancient Greek, ancient Latin, Egyptian, and Etruscan can be written in both
+directions. Twofold reversion is equivalent to identity, i.e.::
+
+           \R{\R{P}} = P
+
+for any pattern ``P``. Reversion plays an important role in the discussion of
+DFA algebra and Cut/Concatenate Arithmetic.
+
+
 *Expansion*
 
 .. describe:: {NAME} 
 
     the expansion of the defined pattern "NAME". Pattern names can
     be defined in *define* sections (see section :ref:`sec:top-level-configuration`).
+
+.. note:: 
+
+    The brackets for pattern substituion and the brackets required for framing
+    a command are not the same--both need to be specified. E.g.  to reverse
+    what has been defined as ``PATTERN`` it needs to to be written::
+
+                      \R{{PATTERN}} 
+
+    which reads from inside to outside: expand the pattern definition,
+    then reverse expanded pattern. 
 
 *Grouping* 
 
