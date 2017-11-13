@@ -1,10 +1,72 @@
-Concatenation Rules
-===================
+.. sec:sec-concatenation-optionality-reptition
 
-Repetition is a special form of concatenation where a pattern is appended to
-itself for an arbitrary number. For the upcoming discussion on cut/concatenate
-arithmetic, the subject of self-repetitiveness needs to be discussed.  Patterns
-may be indifferent with respect to repetition operations. 
+Concatenation, Optionality, and Repetition
+==========================================
+
+Concatenation is an operation where a sequence of patterns composes a longer
+pattern. This operation, though, has some subtle characteristics when applied
+optionally on the same pattern. In particular some effects of repeated patterns
+are discussed in this section. 
+
+A DFA state cannot transit into two different states with the same trigger.
+Thus, when a DFA matching ``x?`` shall receive a tail ``xxx``, this cannot
+result in a state machine as in figure :ref:`fig-bad-concatenation`, since
+state 'X' would transit on 'x' to two different states. Instead, a DFA is
+produced that corresponds to :ref:`fig-good-concatenation`. As can be seen, the
+finite number of repetition is pulled in front of the optional two acceptance
+states, i.e. the optionality is post-poned upon concatenation::
+
+     (x|xx)xxx ---> xxx(x|xx)
+
+Both expressions have the same logical implication, i.e. they match an
+arbitrary number of repetitions, as long as there are at least ``N``.  However,
+the first expression is not practical. Repetitions with more than one number of
+possible repetitions are a special case of optionality. Thus, the same
+post-poning happens for the following cases
+
+     x{3,5}xxx ---> xxx(x{3,5})
+     x{3,}xxx  ---> xxx(x{3,})
+     x*xxx     ---> xxx(x*)
+
+Let this effect of pushing finite number of repetitions in front of the 
+optionality be called the *post-poning effect of concatenation optionality*
+as defined below.
+
+Post-poning Effect of Concatenated Optionality
+     Let ``O`` be a pattern matching against at least two different 
+     number of repetitions of ``P``, then the concatenation of ``OP``
+     is implemented as a DFA acccording to ``PO``.
+
+In particular, the arbitrary number of repetitions ``P*`` is an optionality,
+since it represents ``P|P{2}|P{3}|...``. When it is concatenated with a finite
+number of repetitions, the finite number of repetitions is pushed in front.::
+
+    P*P{N} --> P{N}P*
+
+Naturally, the concatenation of ``N`` repetitions and ``M`` repetitions results
+in ``N+M`` reptitions. This implies that the concatenation in this case is
+commutable, i.e.  ``P{N}P{M} = P{N+M} = P{M}P{N}``.  In the context of the
+post-poning effect of concatenated optionality, it follows, that if ``O``
+matches against at least two different number of repetitions of ``P``, then::
+
+    P{N}OP{M} --> P{N+M}O
+
+The post-poning effect is a direct consequence of the requirement that DFAs the
+relation between a state's target state and the trigger is distinct.  It is not
+the result of deliberate programming activities. Instead, it results from the
+application of the NFA-to-DFA transformation on the concatenated DFAs. The
+post-poning effect itself is far reaching. One consequence of it is the the
+*dangerous trailing context* (section :ref:`sec-dangerous-trailing-context`).
+
+Repeated pattern have special properties. For example the concatenation of the
+arbitrarily repeated pattern ``P*`` with itself results in ``P*``, i.e.::
+
+    P*P* = P*
+
+Another subject is that of self-repetitiveness.  Applying the repetition
+operator on any pattern results in a pattern which is self-repetitive, i.e. in
+that case ``P*`` is equal to ``P`` itself. Such a pattern is invariant under
+the repetition operation.
 
 Self Repetitiveness
     A pattern ``R`` is self-repetitive of grade 0, if and only if::
@@ -32,7 +94,8 @@ any repetition number. Thus, it matches::
         "xx"  --> "" "xx" "xxxx" "xxxxxx" ...
         ...
 
-Thus, for this case ``R`` =  ``R*``. For ``x*`` is *self-repetitive* of grade .
+There are no lexemes in ``(x*)*`` which are not in ``x*`` and vice versa.
+Hence, ``R`` =  ``R*``. For ``x*`` is *self-repetitive* of grade 0.
 For a pattern ``x+`` the set of matched lexemes is::
 
         "x"

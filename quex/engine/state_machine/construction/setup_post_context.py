@@ -11,7 +11,7 @@ from   quex.blackboard import setup as Setup
 
 def do(dfa, post_context_dfa, EndOfLinePostContextF, EndOfStreamPostContextF, 
        SourceReference):
-    acceptance_id = dfa.get_id()
+    acceptance_id   = dfa.get_id()
     result, bipd_sm = _do(dfa, post_context_dfa, 
                           EndOfLinePostContextF, EndOfStreamPostContextF, 
                           SourceReference)

@@ -95,10 +95,6 @@ inadmissible.::
 
 *Repetition*
 
-P*P*     = P*
-P{N}P{M} = P{N+M} = P{M}P{N}
-P*P{N}   = P{N}P*
-
 Let P be not self-repetitive. Then,
 
 \CutBegin{P* P*}   = \Nothing

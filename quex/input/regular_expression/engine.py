@@ -39,7 +39,7 @@ import quex.engine.state_machine.algebra.difference           as difference
 import quex.engine.state_machine.algebra.symmetric_difference as symmetric_difference
 import quex.engine.state_machine.algebra.union                as union
 import quex.engine.state_machine.cut.operations_on_sets       as derived
-import quex.engine.state_machine.cut.head_and_tails           as head_and_tails
+import quex.engine.state_machine.cut.stem_and_branches        as stem_and_branches
 import quex.engine.state_machine.cut.operations_on_lexemes    as cut
 from   quex.input.code.base                                   import SourceRef
 
@@ -534,11 +534,11 @@ def snap_sanitizer(stream, PatternDict):
 
 def snap_head(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "\\Head", "A")[0]
-    return head_and_tails.head(result)
+    return stem_and_branches.head(result)
 
 def snap_tails(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "\\Head", "A")[0]
-    return head_and_tails.tails(result)
+    return stem_and_branches.tails(result)
 
 def snap_anti_pattern(stream, PatternDict):
     result = snap_curly_bracketed_expression(stream, PatternDict, "anti-pattern operator", "A")[0]

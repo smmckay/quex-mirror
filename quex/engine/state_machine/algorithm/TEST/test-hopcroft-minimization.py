@@ -6,12 +6,12 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 from copy import deepcopy
 
 
-import quex.engine.state_machine.construction.repeat as repeat
-from   quex.engine.state_machine.core import *
-from   quex.engine.state_machine.TEST.test_state_machines import *
-import quex.engine.state_machine.algorithm.nfa_to_dfa as nfa_to_dfa
+import quex.engine.state_machine.construction.repeat             as repeat
+from   quex.engine.state_machine.core                            import *
+from   quex.engine.state_machine.TEST.test_state_machines        import *
+import quex.engine.state_machine.algorithm.nfa_to_dfa            as nfa_to_dfa
 import quex.engine.state_machine.algorithm.hopcroft_minimization as hopcroft
-import quex.engine.state_machine.check.identity as identity_checker
+import quex.engine.state_machine.check.identity                  as identity_checker
 
 if "--hwut-info" in sys.argv:
     print "DFA: Hopcroft optimization (minimize state set)"

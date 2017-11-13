@@ -1069,9 +1069,9 @@ def _cut_first_transition(sm, CloneStateMachineId=False):
     else:                   cloned_sm_id = None
 
     return [
-        (trigger_set, sm.clone_from_state_subset(target_si, 
-                                                   list(successor_db[target_si]) + [target_si],
-                                                   cloned_sm_id))
+        (trigger_set, sm.clone_subset(target_si, 
+                                      list(successor_db[target_si]) + [target_si],
+                                      cloned_sm_id))
         for target_si, trigger_set in sm.iterable_init_state_transitions()
     ]
         

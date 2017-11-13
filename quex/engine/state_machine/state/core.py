@@ -44,7 +44,11 @@ class DFA_State:
 
     def clone(self, ReplDbStateIndex=None, ReplDbPreContext=None, ReplDbAcceptance=None):
         """Creates a copy of all transitions, but replaces any state index with the ones 
-           determined in the ReplDbStateIndex."""
+        determined in the ReplDbStateIndex.
+           
+        ONLY THOSE TRANSITIONS ARE CLONED, which have a target state index from 
+        the 'ReplDbStateIndex'.
+        """
         assert ReplDbStateIndex is None or isinstance(ReplDbStateIndex, dict)
         result = DFA_State(CloneF=True)
         result.__target_map   = self.__target_map.clone(ReplDbStateIndex)

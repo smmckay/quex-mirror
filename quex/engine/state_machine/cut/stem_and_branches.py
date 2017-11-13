@@ -59,8 +59,19 @@ def branches(Dfa):
     RETURNS: List of DFAs containing a tail for each found acceptance states.
     """
     return [
-        __clone_until_acceptance(Dfa, start_si)
-        for start_si in Dfa.get_acceptance_state_index_list()
+        Dfa.clone_subset(acceptance_si, 
+                         Dfa.get_successors(acceptance_si))
+        for acceptance_si in Dfa.get_acceptance_state_index_list()
+    ]
+
+def partials(Dfa):
+    """
+    """
+    predecessor_db = Dfa.get_predecessor_db()
+    return [
+        Dfa.clone_subset(acceptance_si, 
+                         predecessor_db[acceptance_si] + [acceptance_si])
+        for acceptance_si in Dfa.get_acceptance_state_index_list()
     ]
 
 def __clone_until_acceptance(Dfa, StartSi):
@@ -71,13 +82,13 @@ def __clone_until_acceptance(Dfa, StartSi):
     RETURNS: DFA containing the graph.
     """
     correspondance_db = {
-        si: state_index.get() for si in overtake_set
+        si: state_index.get() for si in Dfa.states
     }
     result = DFA(InitStateIndex = correspondance_db[StartSi],
                  AcceptanceF    = Dfa.states[StartSi].is_acceptance())
 
-    work_set = [ StartSi ]
-    done_set  = set([StartSi])
+    work_set = set([ StartSi ])
+    done_set = set([StartSi])
     while work_set:
         si    = work_set.pop()
         state = Dfa.states[si]
@@ -100,5 +111,4 @@ def __clone_until_acceptance(Dfa, StartSi):
         result.states[correspondance_db[si]] = result_state
 
     return result
-
 

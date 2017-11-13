@@ -16,6 +16,13 @@ def cut_begin(A, B):
         * matches the 'tail' of lexemes of 'A' if their beginning matches 
           something that matches 'B'. The 'tail' is the lexeme without the 
           'head' that matches 'B'.
+
+    SCHEME:   'CutBegin bbbbbbbbbb'
+
+              lexemes before               lexemes after
+              aaaaaaaaaaaxxxxxxxxxx  --->  aaaaaaaaaaaxxxxxxxxxx
+              bbbbbbbbbbbyyyyyyyyyy                   yyyyyyyyyy
+
     """
     result, cut_f = __cut_begin_core(A, B)
     return result
@@ -25,6 +32,12 @@ def cut_end(A, B):
 
     Any lexeme that matches 'A' and ends with a lexeme matching 'B' is 
     pruned by what matches 'B'.
+
+    SCHEME:   'CutEnd yyyyyyyyyy'
+
+              lexemes before               lexemes after
+              aaaaaaaaaaaxxxxxxxxxx  --->  aaaaaaaaaaaxxxxxxxxxx
+              bbbbbbbbbbbyyyyyyyyyy        bbbbbbbbbbb
     """
     Ar        = reverse.do(A)
     Br        = reverse.do(B)
@@ -33,9 +46,36 @@ def cut_end(A, B):
     else:         return reverse.do(cut_Ar_Br)
 
 def leave_begin(DfaA, DfaB):
+    """PURPOSE: Generate a modified DFA based on A:
+
+        * matches the 'head' of lexemes of 'A' if they match 'B'. The head 
+          of a lexeme the part of 'A' which matches 'B'.
+
+    SCHEME:   'LeaveBegin bbbbbbbbbb'
+
+              lexemes before               lexemes after
+              aaaaaaaaaaaxxxxxxxxxx  --->  
+              bbbbbbbbbbbyyyyyyyyyy        bbbbbbbbbbb
+
+    """
     return cut_begin(DfaA, complement.do(DfaB))
 
 def leave_end(DfaA, DfaB):
+    return cut_begin(DfaA, complement.do(DfaB))
+
+def leave_begin(DfaA, DfaB):
+    """PURPOSE: Generate a modified DFA based on A:
+
+        * matches the 'tail' of lexemes of 'A' if they match 'B'. The tail 
+          of a lexeme the part of 'A' which matches 'B'.
+
+    SCHEME:   'LeaveEnd yyyyyyyyyy'
+
+              lexemes before               lexemes after
+              aaaaaaaaaaaxxxxxxxxxx  --->  
+              bbbbbbbbbbbyyyyyyyyyy                     yyyyyyyyyy
+
+    """
     return cut_end(DfaA, complement.do(DfaB))
 
 class WorkList:

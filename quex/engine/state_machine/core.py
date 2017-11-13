@@ -231,26 +231,23 @@ class DFA(object):
                           ReplDbPreContext=acceptance_condition_db, 
                           ReplDbAcceptance=pattern_id_map)
 
-    def clone_from_state_subset(self, InitStateIndex, StateIndexSet, StateMachineId=None):
-        # Find for all states a replacement index
-        replacement_db = dict(
-            (si, state_machine_index.get()) for si in StateIndexSet
-        )
+    def clone_subset(self, StartSi, StateSiSet, DfaId=None):
+        """Should do the same as 'clone_from_state_subset()', replacement 
+        can be made after unit tests.
+        """
+        correspondance_db = {
+            si: state_machine_index.get() for si in StateSiSet
+        }
+        result = DFA(InitStateIndex=correspondance_db[StartSi])
 
-        # Iterable over all states together with the new state index for 
-        # the cloned state.
-        iterable = [
-            (replacement_db[si], self.states[si].clone())
-            for si in StateIndexSet
-        ]
+        result.states = {
+            # '.clone(correspondance_db)' only clones transitions to target states 
+            # which are mentioned in 'correspondance_db'.
+            correspondance_db[si]: self.states[si].clone(correspondance_db)
+            for si in StateSiSet
+        }
 
-        # Generate state machine consisting of the cloned successor states
-        # of 'target_si'.
-        result = DFA.from_iterable(replacement_db[InitStateIndex], iterable)
-        for state in result.states.itervalues():
-            state.target_map.replace_target_indices(replacement_db)
-
-        if StateMachineId is not None: result.__id = StateMachineId
+        if DfaId is not None: result.__id = DfaId
 
         return result
 
@@ -398,6 +395,31 @@ class DFA(object):
             for to_index in state.target_map.get_map().iterkeys():
                 from_db[to_index].add(from_index)
         return from_db
+
+    def get_successors(self, SI):
+        """RETURNS: State indices of all successor states of 'SI' 
+                    including 'SI' itself.
+        """
+        work_set = set([SI])
+        result   = set([SI])
+        while work_set:
+            state          = self.states[work_set.pop()]
+            target_si_list = state.target_map.get_target_state_index_list()
+            work_set.update(
+                target_si 
+                for target_si in target_si_list if target_si not in result
+            )
+            result.update(target_si_list)
+        return result
+
+    def get_predecessors(self, SI):
+        """RETURNS: State indices of all predecessor states of 'SI' 
+                    including 'SI' itself.
+        HINT: If this function is to be called multiple times, better generate
+              a 'predecessor_db' and interview the database.
+        """
+        predecessor_db = self.get_predecessor_db()
+        return predecessor_db[SI] + [SI]
     
     def get_predecessor_db(self):
         """RETURNS:

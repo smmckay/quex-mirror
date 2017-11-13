@@ -25,13 +25,17 @@ class TargetMap:
         ## self.__DEBUG_trigger_map = None
 
     def clone(self, ReplDbStateIndex=None):
+        """If 'ReplDbStateIndex' is specified, then only those transitions are cloned
+        which appear in the dictionary!
+        """
         if ReplDbStateIndex is None:
             db   = dict((tsi, trigger_set.clone()) 
                         for tsi, trigger_set in self.__db.iteritems())
             etil = list(self.__epsilon_target_index_list)
         else:
             db   = dict((ReplDbStateIndex[tsi], trigger_set.clone()) 
-                        for tsi, trigger_set in self.__db.iteritems())
+                        for tsi, trigger_set in self.__db.iteritems()
+                        if tsi in ReplDbStateIndex)
             etil = list(ReplDbStateIndex[tsi] for tsi in self.__epsilon_target_index_list)
         return TargetMap(DB=db, ETIL=etil) 
 
