@@ -11,7 +11,7 @@ import quex.engine.state_machine.construction.setup_pre_context as setup_pre_con
 import quex.engine.state_machine.algorithm.beautifier as beautifier
 import quex.engine.state_machine.check.identity      as identity_checker
 
-from   quex.engine.state_machine.TEST.test_state_machines import *
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
 from   quex.blackboard import setup as Setup
 
 

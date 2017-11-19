@@ -35,7 +35,7 @@ from   quex.engine.state_machine.transformation.utf16_state_split import Encodin
 from   quex.engine.state_machine.core                             import DFA
 from   quex.engine.misc.utf16                                     import unicode_to_utf16
 import quex.engine.state_machine.index                            as     index
-import quex.engine.state_machine.TEST.helper_state_machine_shapes as     sms
+import quex.engine.state_machine.TEST_help.some_dfas              as     sms
 import quex.engine.state_machine.transformation.TEST.helper       as     helper
 
 

@@ -12,9 +12,9 @@ import os
 from copy import copy
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
-from quex.engine.state_machine.core                             import *
-from quex.engine.state_machine.TEST.helper_state_machine_shapes import *
-from itertools                                                  import permutations
+from quex.engine.state_machine.core                  import *
+from quex.engine.state_machine.TEST_help.many_shapes import *
+from itertools                                       import permutations
 
 if "--hwut-info" in sys.argv:
     print "DFA: get_predecessor_db;"

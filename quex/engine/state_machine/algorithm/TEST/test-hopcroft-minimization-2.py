@@ -10,7 +10,7 @@ import quex.engine.state_machine.construction.repeat as repeat
 from   quex.engine.state_machine.core import *
 from   quex.engine.state_machine.state.core import *
 from   quex.engine.state_machine.state.single_entry import *
-from   quex.engine.state_machine.TEST.test_state_machines import *
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
 import quex.engine.state_machine.algorithm.nfa_to_dfa as nfa_to_dfa
 import quex.engine.state_machine.algorithm.hopcroft_minimization as hopcroft
 import quex.engine.state_machine.check.identity as identity_checker

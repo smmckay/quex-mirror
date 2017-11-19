@@ -7,8 +7,9 @@ from   quex.engine.state_machine.check.superset       import do as superset
 from   quex.engine.state_machine.core                 import DFA
 
 import quex.input.regular_expression.engine           as     regex
+import   quex.engine.state_machine.TEST_help.many_shapes as shapes
 
-import quex.engine.state_machine.TEST.helper_state_machine_shapes as     shapes 
+           
 
 shapes.set_unique_transition_f()
 

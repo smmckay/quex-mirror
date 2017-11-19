@@ -6,7 +6,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 from   quex.input.code.base              import SourceRef_VOID
 import quex.engine.state_machine.construction.setup_post_context as setup_post_context
 import quex.engine.state_machine.construction.sequentialize as sequentialize
-from   quex.engine.state_machine.TEST.test_state_machines import *
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
 import quex.engine.state_machine.algorithm.nfa_to_dfa as nfa_to_dfa
 import quex.engine.state_machine.algorithm.hopcroft_minimization as hopcroft
 

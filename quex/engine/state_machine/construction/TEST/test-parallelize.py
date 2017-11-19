@@ -15,7 +15,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from   quex.engine.state_machine.core import *
 import quex.engine.state_machine.construction.parallelize as     parallelize 
-from   quex.engine.state_machine.TEST.test_state_machines import *
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
 import quex.engine.state_machine.check.superset           as     superset
 import quex.engine.state_machine.algebra.intersection     as     intersection
 import quex.output.languages.core                         as     languages

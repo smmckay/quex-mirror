@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 
-from quex.engine.state_machine.TEST.test_state_machines import *
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
 from quex.engine.state_machine.index import *
 import quex.engine.state_machine.construction.parallelize as parallelize
 import quex.engine.state_machine.construction.repeat as repeat

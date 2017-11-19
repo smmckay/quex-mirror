@@ -10,7 +10,7 @@ from core import *
 import paralellize 
 import test_machine
 
-from test_state_machines import *
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
 
 print sm0
 test_machine.do("abce", sm0)  # success of sm0

@@ -9,7 +9,7 @@ sys.path.append("../")
 from core import *
 import paralellize 
 
-from test_state_machines import *
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
 
 # (*) UNIT TEST ________________________________________________________________
 #

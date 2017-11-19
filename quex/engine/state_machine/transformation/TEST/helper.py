@@ -8,7 +8,7 @@ from   quex.engine.state_machine.core                             import DFA
 from   quex.engine.state_machine.state.core                       import DFA_State
 import quex.engine.state_machine                                  as     state_machine
 from   quex.engine.state_machine.transformation.utf8_state_split  import EncodingTrafoUTF8
-import quex.engine.state_machine.TEST.helper_state_machine_shapes as     sms
+import quex.engine.state_machine.TEST_help.many_shapes            as     sms
 import quex.engine.state_machine.index                            as     index
 from   quex.blackboard import setup as Setup, \
                               E_IncidenceIDs

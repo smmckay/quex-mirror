@@ -42,9 +42,9 @@ post-contexted pattern ``R/P`` behaves as follows:
 
 There is no reason to doubt the first characteristic, since it is built upon
 concatenation which is an well established procedure.  On the other hand, the
-second required functionality can be doubted.  The general post-context
+second required functionality might be doubted.  The general post-context
 approach implies that the input position is stored upon acceptance of the core
-pattern. Figure :ref:`fig:nice-post-context` shows the example of a lexeme
+pattern.  Figure :ref:`fig:nice-post-context` shows the example of a lexeme
 matching the expression ``ab/cd``. When state '3' is reached at time 't3' the
 input position is stored. Finally, when state '5' is reached and the
 concatenation of ``ab`` and ``cd`` matched, the input position is restored so
@@ -52,6 +52,49 @@ that the next analysis step may start at where 't3' ended. The next character
 to be considered is `c`.
 
 .. image:: fig:nice-post-context
+
+The concatenation of the two DFAs implies that an *epsilon transition* is setup
+between any acceptance state of the first DFA and the initial state of the
+second DFA. Practically, this means that in the resulting state machine an
+acceptance state of the first is 'melted' with the initial state of the second.
+Let a state where this happens be called a *mounting state*. A mounting state
+is the place where core and post-context meet and where the mark in the input
+stream needs to be set, so that it can be reset upon acceptance of the
+concatenated pattern.
+
+The graph from a mounting state to all acceptance states of the concatenation
+defines the lexemes which may appear from the reset input position to the end
+of the match. Let them be called the trailing lexemes.  If and only if there is
+at least one trailing lexeme which does not match the post context, then
+in this case the input position is set wrongly. It is in the nature of 
+powerset construction (NFA-to-DFA) that this may occur.
+
+.. image::
+
+           ... ( 4 )---->(( 5 ))
+                  '----:w!
+
+.. note::
+
+   During the construction of a DFA from a given NFA it maintained that
+   any path reaching a state 'x' in the NFA reaches any state in the 
+   resulting DFA into which 'x' is combined.
+
+During the process of power set construction the following happens to states
+which are treated as one.  Any common transition on which the combined states
+trigger lets the according target states being considered together.  A sequence
+of such combined consideration can be viewed as 'walking together' of core and
+post-context.  If during this walking together an acceptance state of the
+first pattern is reached, then the state in the result will also be reached
+by anything that reaches that acceptance state. 
+
+
+Through this walking together, an optionality (or particularly a
+loop) is post-poned after a sequence of iterated lexatoms in the core pattern
+until something different appears in the post context. As a result the exact
+cut between core and post context cannot be found in the concatenated pattern. 
+
+
 
 The post-context procedure works fine as long as the concatenation procedure
 combines acceptance states of the core pattern with the init state of the
@@ -88,27 +131,22 @@ states, and to connect them via epsilon transition to the init state of the
 post context.  An epsilon transition is a transition on no lexatom, such that
 the result becomes an NFA. The required transformation from NFA to DFA, now,
 has some problematic implications. If a state *A* reaches *B* via epsilon
-transition, then their transition maps are considered together.  Any transition
-on which the combined states trigger on a common lexatom issues the combined
-consideration of the according target states. A sequence of such combined
-consideration can be viewed as 'walking together' of core and post-context.
-Through this walking together, an optionality (or particularly a loop) is
-post-poned after a sequence of iterated lexatoms in the core pattern until
-something different appears in the post context. As a result the exact cut
-between core and post context cannot be found in the concatenated pattern. 
+transition, then their transition maps are considered together.  
+
+In figure :ref:`fig:dtc-walk-together` a) the post-context and the core 
+pattern deviate before the core pattern hits an acceptance state. This is 
+not a problem. 
+
+If the state machine moves along the post-context's path
+it can relate to the post-context's init state. If the state machine moves
+towards the core's acceptance state, it meets there again the init state
+of the post-context-as it should.
 
 Figure :ref:`fig:dtc-walk-together` shows the three cases of walking together.
 In figure :ref:`fig:dtc-walk-together` a) core and post-context walk together, but
 the core pattern hits an acceptance state at a point when the core pattern
 hits its init state. Such is not a problem, because the post-context simply
 starts freshly with an acceptance state of the core pattern-as it should.
-
-In figure :ref:`fig:dtc-walk-together` b) the post-context and the core 
-pattern deviate before the core pattern hits an acceptance state. This is 
-also not a problem. If the state machine moves along the post-context's path
-it can relate to the correct init state. If the state machine moves
-towards the core's acceptance state, it meets there again the init state
-of the post-context-as it should.
 
 A real problem arises in :ref:`fig:dtc-walk-together` c). There the core's
 acceptance state is reached during the walk-together. At this point, the init
@@ -123,11 +161,16 @@ Dangerous Trailing Context (DTC)
 
      \exists B\,\in\,\Succ{P},\,with\, \Begin{Q B} != \Empty
 
-   where 
+   and
      
-     \Intersection{\LeaveBegin{Q B} \Loops{Q}} != \Empty
+           \CutBegin{Q B} \not\subset Q
 
-Post-contexts can basically be implemented by two means:
+In other words, if there is some pattern `B` that spans a branch from
+acceptance state to another acceptance state of `P`, which matches along the
+beginning of `Q`, and if the remaining path inside `Q` is not a subset of `Q`
+itself, then there is a problem: the dangerous trailing context. 
+
+Post-contexts can basically be implemented by the following means:
 
   .# Storing the input position at specific states and restoring it
      upon the acceptance of the concatenated pattern.
@@ -136,18 +179,80 @@ Post-contexts can basically be implemented by two means:
      the concatenated pattern matched until the beginning of the post
      context.
 
-The first means is definitely impossible for cases of DTC.
+  .# Pruning of the post context.
+
+The first means is definitely impossible for cases of DTC. The second is a
+potential alternative, which is now investigated. For the case, where `xx` is
+appended to `xx?` backtracking is clearly a possibility. The number of
+positions to trace back the post-context is 2 in any case. It does not contain
+optionality. However, consider the pattern ``xx?/x*y``. The reverse
+post-context is given shown in :ref:`dtc-fig-backtracing-impossible`. As can be
+seen, the last state consumes any occurring `x` so that even the core pattern
+would be passed when stepping backwards. The problem is similar to the DTC
+in forward direction: One pattern 'eats' into the other. 
+
+Reverse Dangerous Trailing Context (RDTC)
+   Let ``P`` denote a core pattern and ``Q`` denote a desired 
+   post-context.  Then, a dangerous trailing context exists, if and only if::
+
+     \exists B\,\in\,\Succ{\R{Q}},\,with\, \Begin{\R{P} B} != \Empty
+
+That is, if `\R{Q}` contains a tail that eats into the end of `\R{P}`,
+then it eats what has been consumed in forwards direction by `P`.
+
+The first condition specifies that the progression into the core pattern in
+backward direction is ambiguous. There is nothing special, though, about the
+initial state of `\R{P}`, so there is no second condition as it is for the DTC.
+The RDTC, now, defines a condition where the DTC cannot be healed via pure
+back-tracking. 
+
+What remains is the pruning of the post-context. The concept of *longest match*
+provides a basis to perform this rationally. Since it is expected that the
+input stream proceeds as far as possible, there is no surprise  if in case that
+both, core and post-context, match the core pattern eats more than the
+post-context.  For example, the pattern `xx*/x*y` is equivalent to `xx*/y`. The
+core pattern matches as many `x` as possible and the post-context actually,
+does not need any. Thus, the RDTC is cut out of the post context's reverse.
+
+    \CutBegin{\R{Q} B'} with B' = :w!
+
+However, even that does 
+
+ 
+
+%% NOTE: Example for not a DTC:
+%%
+%%Consider, however the case of `x?y` being appended to `xx?`. The
+%%concatenated pattern ``xx?/x?y``. The according state machine is shown in
+%%:ref:`dtc-fig-backtracing-impossible`. 
+%%
+%%.. image:: fig:backtracing-impossible
+%%
+%%               x         y
+%%        ( 0 )---->( 1 )---->(( 4 ))
+%%                    '.   x         y
+%%                      '---->( 2 )---->(( 5 ))
+%%                              '.   x         y
+%%                                '---->( 3 )---->(( 6 ))
+%%
+%%Consider the following lexemes::
+%%               
+%%       ... [x][y] ...
+%%               ^
+%%       ... [x][x][y] ...
+%%                  ^
+%%       ... [x][x][x][y] ...
+%%                  ^
+
+In the first, case state 1 would have to store the input position. In the
+second case, the input position would have to be stored in state 
+
 
 However, there is the possibility of back tracking where one
 searches for the beginning of the post-context by walking backwards. This
 solution is discussed later. Before, the nature of the DTC needs to be
 explored. As a consequence pattern will be identified where even back-tracking
 does not solve the problem and the pattern combination requires adaption.
-
-In other words, if there is some pattern `B` that spans a branch from
-acceptance state to another acceptance state of `P`, which matches along the
-beginning of `Q`, and if the path that matches in `Q` is not a loop at the
-beginning of `Q`, then there is a DTC.
 
 As discussed earlier, the *matching* behavior of a post-contexted pattern is
 always guaranteed. However, the input stream cannot be reset properly in case
@@ -191,6 +296,7 @@ patterns _[#f0]::
         (abc)+/(abc)?d
         u(y|x*)/x*z
         u(yx|x+)/x+z
+        xy?/yya
 
 While the mentioned holds, a dangerous trailing context does not appear in 
 the following expressions::

@@ -39,10 +39,10 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine               as regex
 from   quex.engine.state_machine.core                     import DFA
-from   quex.engine.state_machine.TEST.helper_state_machine_shapes import get_sm_list, \
-                                                                         get_sm_shape_by_name_with_acceptance, \
-                                                                         set_unique_transition_f, \
-                                                                         get_sm_shape_names_list
+from   quex.engine.state_machine.TEST_help.many_shapes    import get_sm_list, \
+                                                                 get_sm_shape_by_name_with_acceptance, \
+                                                                 set_unique_transition_f, \
+                                                                 get_sm_shape_names_list
 
 import quex.engine.state_machine.cut.operations_on_lexemes  as cut      
 import quex.engine.state_machine.cut.operations_on_sets     as derived

@@ -5,7 +5,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 from quex.engine.state_machine.core                             import DFA
 from quex.engine.operations.se_operations                       import SeAccept
-from quex.engine.state_machine.TEST.helper_state_machine_shapes import *
+from quex.engine.state_machine.TEST_help.many_shapes import *
 from quex.engine.analyzer.examine.acceptance                    import RecipeAcceptance
 from quex.engine.analyzer.examine.core                          import Examiner
 

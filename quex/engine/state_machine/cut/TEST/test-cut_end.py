@@ -44,7 +44,7 @@ import quex.engine.state_machine.cut.operations_on_lexemes  as     cut
 import quex.engine.state_machine.cut.operations_on_sets     as     derived
 import quex.engine.state_machine.algebra.union              as     union
 import quex.engine.state_machine.algebra.intersection       as     intersection
-from   quex.engine.state_machine.TEST.helper_state_machine_shapes import get_sm_list
+from   quex.engine.state_machine.TEST_help.many_shapes      import get_sm_list
 import quex.engine.state_machine.check.identity             as     identity
 import quex.engine.state_machine.check.superset             as     superset
 import quex.engine.state_machine.algorithm.beautifier       as     beautifier

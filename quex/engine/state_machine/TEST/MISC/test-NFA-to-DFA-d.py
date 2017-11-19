@@ -10,7 +10,7 @@ from core import *
 import paralellize 
 import test_machine
 
-from test_state_machines import *
+from   quex.engine.state_machine.TEST_help.some_dfas   import *
 
 # (*) UNIT TEST ________________________________________________________________
 #
