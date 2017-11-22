@@ -7,6 +7,7 @@ import quex.input.regular_expression.engine           as regex
 import quex.engine.state_machine.algebra.union        as union
 import quex.engine.state_machine.algebra.intersection as intersection
 import quex.engine.state_machine.check.identity       as identity
+import quex.engine.state_machine.TEST_help.lexeme_set as lexeme_set
 
 if "--hwut-info" in sys.argv:
     print "Union"
@@ -21,9 +22,19 @@ def test(A_str, B_str):
     A = regex.do(A_str, {}).sm
     B = regex.do(B_str, {}).sm
 
+    # Determine lexeme set before union (possible modification)
+    set0 = lexeme_set.get(A)
+    set1 = lexeme_set.get(B)
+
     x = union.do([A, B])
     y = union.do([B, A])
     assert identity.do(x, y)
+
+    if "SequenceAndLoop" not in sys.argv:
+        result      = lexeme_set.get(x)
+        expectation = set0
+        expectation.update(set1)
+        assert result == expectation
 
     print "union = ", x
     print
