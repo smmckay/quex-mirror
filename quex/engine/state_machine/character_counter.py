@@ -363,7 +363,7 @@ class CharacterCountTracer(TreeWalker):
             self.known_db[StateIndex] = known
 
             subsequent = [ (state_index, character_set, count.clone()) \
-                           for state_index, character_set in state.target_map.get_map().iteritems() ]
+                           for state_index, character_set in state.target_map ]
 
         if state.is_acceptance():
             if not self.result.register_result(known): self.abort_f = True

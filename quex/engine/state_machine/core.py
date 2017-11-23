@@ -642,7 +642,7 @@ class DFA(object):
         return result
 
     def iterable_init_state_transitions(self):
-        for target_si, trigger_set in self.get_init_state().target_map.get_map().iteritems():
+        for target_si, trigger_set in self.get_init_state().target_map:
             yield target_si, trigger_set
 
     def clean_up(self):

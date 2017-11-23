@@ -105,8 +105,8 @@ class CommonalityWalker(TreeWalker):
         # Follow the path of common trigger sets
         Low_State     = self.low.states[Low_StateIndex]
         sub_node_list = []
-        for a_target, a_trigger_set in High_State.target_map.get_map().iteritems():
-            for b_target, b_trigger_set in Low_State.target_map.get_map().iteritems():
+        for a_target, a_trigger_set in High_State.target_map:
+            for b_target, b_trigger_set in Low_State.target_map:
                 if b_trigger_set.has_intersection(a_trigger_set): 
                     # Some of the transition in 'High' is covered by a transition in 'Low'.
                     sub_node_list.append( (a_target, b_target) )
@@ -158,9 +158,9 @@ class DiversionWalker(TreeWalker):
             return None
 
         sub_node_list = []
-        for b_target, b_trigger_set in Low_State.target_map.get_map().iteritems():
+        for b_target, b_trigger_set in Low_State.target_map:
             b_remaining_triggers = b_trigger_set.clone()
-            for a_target, a_trigger_set in High_State.target_map.get_map().iteritems():
+            for a_target, a_trigger_set in High_State.target_map:
                 if b_trigger_set.has_intersection(a_trigger_set): 
                     # The transition in 'A' is covered by a transition in 'B'.
                     sub_node_list.append( (a_target, b_target) )

@@ -32,7 +32,7 @@ class TransitionMap(list):
         """
         result = cls()
         if (TM is not None) and (not TM.is_empty()): 
-            for target, character_set in TM.get_map().iteritems():
+            for target, character_set in TM:
                 result.extend(
                     (interval.clone(), target) 
                     for interval in character_set.get_intervals(PromiseToTreatWellF=True)

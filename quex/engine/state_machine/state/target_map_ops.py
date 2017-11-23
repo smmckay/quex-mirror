@@ -69,7 +69,7 @@ def get_elementary_trigger_sets(StateIdxList, sm=None, epsilon_closure_db=None):
     ##    trigger_list = []
     ##    for state_index in StateIdxList:
     ##        state = sm.states[state_index]
-    ##        for target_index, trigger_set in state.target_map.get_map().iteritems():
+    ##        for target_index, trigger_set in state.target_map:
     ##            target_epsilon_closure = epsilon_closure_db[target_index] 
     ##            interval_list          = trigger_set.get_intervals(PromiseToTreatWellF=True)
     ##            trigger_list.extend([x, target_epsilon_closure] for x in interval_list])

@@ -176,6 +176,13 @@ class TargetMap:
 
         return result
 
+    def __iter__(self):
+        if self.__db:
+            for target_si, trigger_set in self.__db.iteritems():
+                yield target_si, trigger_set
+        for target_si in self.__epsilon_target_index_list:
+            yield target_si, None
+
     def get_map(self):
         return self.__db
 

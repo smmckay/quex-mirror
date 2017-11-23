@@ -431,7 +431,7 @@ def create_state_machine(SM, Result, Class_StateMachine, Class_State):
         representative = result.states[map_new_state_index[state_set_idx]]
 
         # The representative must have all transitions that the prototype has
-        for target_state_index, trigger_set in prototype.target_map.get_map().iteritems():
+        for target_state_index, trigger_set in prototype.target_map:
             target_state_set_index = Result.map[target_state_index]
             target_index           = map_new_state_index[target_state_set_index]
             representative.add_transition(trigger_set, target_index)

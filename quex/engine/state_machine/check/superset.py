@@ -59,7 +59,7 @@ class Checker:
         # sm' has no correspondance. Thus, then the claim to be a super set state machine can
         # be denied.
         #
-        for target_index, trigger_set in sub_state.target_map.get_map().iteritems():
+        for target_index, trigger_set in sub_state.target_map:
             target_state = self.sub.states[target_index]
 
             # (*) Require that all shadowing states in the 'super sm' trigger to a valid

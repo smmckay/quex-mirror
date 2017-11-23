@@ -227,7 +227,7 @@ def __tail_walk(work_list, A, result):
         assert A_si is not None
 
         A_map = A.states[A_si].target_map
-        for A_target_si, trigger_set in A_map.get_map().iteritems():
+        for A_target_si, trigger_set in A_map:
             result_target_si = work_list.add_tail(A_target_si, bridge_set)
             result.add_transition(result_si, trigger_set, result_target_si, 
                                   AcceptanceF = A.states[A_target_si].is_acceptance())
