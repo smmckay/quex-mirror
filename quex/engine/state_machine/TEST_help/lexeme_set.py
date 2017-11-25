@@ -2,25 +2,53 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath("../../../../"))
 
+from quex.engine.misc.interval_handling import NumberSet
+from quex.engine.misc.enum              import Enum
 from copy import copy
+from collections import defaultdict, namedtuple
 
-class SubLexeme:
-    def __init__(self, Lexeme):
-        assert type(Lexeme) == list
-        self.lexeme = Lexeme
+E_SubLexemeId = Enum("SEQUENCE", "NUMBER_SET")
 
-def get_concatenation(SubLexemeList, TriggerSet):
-    if not SubLexemeList:
-        return [ Line(TriggerSet) ]
-    else:
-        return SubLexemeList[-1].clone_concatenation(SubLexemeList, TriggerSet)
+def get_string_for_number_set(IntervalList):
+    def do_interval(I):
+        if I.end - I.begin == 1: return "%s"      % I.begin
+        else:                    return "[%s-%s]" % (I.begin, I.end-1)
+
+    txt = __representation(IntervalList, do_interval, "(", ")")
+
+    return "".join(txt)
+
+def get_immutable_for_number_set(N):
+    def do_interval(I):
+        if I.end - I.begin == 1: return I.begin
+        else:                    return (I.begin, I.end - 1)
+
+    interval_list = N.get_intervals(PromiseToTreatWellF=True)
+    return tuple(__representation(interval_list, do_interval, 
+                                  Prefix=E_SubLexemeId.NUMBER_SET)))
+
+def __representation(interval_list, do_interval, Prefix=None, Suffix=None):
+    if len(interval_list) == 1:
+        return do_interval(interval_list[0])
+
+    if Prefix is not None: result = [ Prefix ]
+    else:                  result = []
+
+    result.extend(
+        do_interval(interval)
+        for interval in N.get_intervals(PromiseToTreatWellF=True)
+    )
+
+    if Suffix is not None: result.append(Suffix)
+
+    return result
 
 class Line(SubLexeme):
     def __init__(self, TriggerSet):
         SubLexeme.__init__(self, [ TriggerSet ])
 
     def __repr__(self):
-        return "Line: %s" % self.lexeme
+        return self.get_string("Line")
 
     @classmethod
     def clone_concatenation(cls, sub_lexeme_list, TriggerSet):
@@ -28,12 +56,15 @@ class Line(SubLexeme):
         result[-1].lexeme.append(TriggerSet)
         return result
 
+    def get_immutable(self):
+        return tuple(self.lexeme)
+
 class Loop(SubLexeme):
     def __init__(self, TrigerSetList):
         SubLexeme.__init__(self, TrigerSetList)
 
     def __repr__(self):
-        return "Loop: %s" % self.lexeme
+        return self.get_string("Loop")
 
     @classmethod
     def clone_concatenation(cls, sub_lexeme_list, TriggerSet):
@@ -41,29 +72,10 @@ class Loop(SubLexeme):
         result.append(TriggerSet)
         return result
 
+    def get_immutable(self):
+        return tuple([-1] + self.lexeme)
+
 def get(Dfa):
-    """RETURNS: 'set' of lexeme which are matched by 'Dfa'.
-
-    Rather than providing a raw list of 'Intervals', lexemes are
-    represented as *immutables*, namely:  
-        
-         1) numerical value of the lexatom,
-            if the interval size is 1
-         2) tuple of the form (front, back)
-            where 'front' is the first and 'back' is 
-            the last lexatom of the interval.
-
-    * The representation provided by this function is suited for
-      quick comparison and verification of lexeme set operations.
-
-    * The 'set' container is chosen to provide 'distinctness'.
-      => Two 'Dfa' match the same set of lexemes if and only if
-         'get(Dfa, *)' returns the same set of lexemes. 
-
-    NOTE: The 'IterationMaxN' determines how many iterations in 
-          a loop are expanded. This is an element that might 
-          influence the precision of the identity condition.
-    """
     def straigthen_interval(N):
         if N.has_size_one(): return N.minimum()
         else:                return N
@@ -76,96 +88,7 @@ def get(Dfa):
 
     return set(straigthen_lexeme(lexeme) for lexeme in lexeme_list)
 
-def get_raw(Dfa, IterationMaxN):
-    """RETURNS: List of Lexemes that are matched by 'Dfa'.
-
-    The lexemes are specified in terms of 'Interval' objects.
-    """
-    def check_loop(iteration_db, target_si, IterationMaxN):
-        if target_si not in iteration_db:
-            consider_db = copy(iteration_db) # disconnect
-            consider_db[target_si] = 1
-            return consider_db, True
-        elif iteration_db[target_si] <= IterationMaxN:
-            consider_db = copy(iteration_db) # disconnect
-            consider_db[target_si] += 1
-            return consider_db, True
-        else:
-            return iteration_db, False
-
-    work_list = [ (Dfa.init_state_index, [], { Dfa.init_state_index: 1 }) ]
-    result    = []
-
-    while work_list:
-        entry = work_list.pop()
-        si, lexeme_list, iteration_db = entry
-        state = Dfa.states[si]
-        if state.is_acceptance():
-            result.extend(lexeme for lexeme in lexeme_list if lexeme)
-
-        for target_si, trigger_set in state.target_map:
-            assert target_si in Dfa.states
-            interval_list  = trigger_set.get_intervals()
-            if not lexeme_list:
-                new_lexeme_set = [ 
-                    [ interval ] for interval in interval_list 
-                ]
-            else:
-                new_lexeme_set = [
-                    lexeme + [ interval ] 
-                    for interval in interval_list
-                    for lexeme in lexeme_list
-                ]
-
-            considered_iteration_db, \
-            pass_f                   = check_loop(iteration_db, target_si,
-                                                  IterationMaxN)
-            if not pass_f: continue
-
-            work_list.append((target_si, new_lexeme_set, 
-                              considered_iteration_db))
-    return result
-
-
-    """RETURNS: List of Lexemes that are matched by 'Dfa'.
-
-    The lexemes are specified in terms of 'Interval' objects.
-    """
-    def check_loop(path, target_si):
-        """RETURNS: Number of transitions backwards so that target state 
-                           is reached.
-                    None, else; no loop.
-        """
-        for i, info in reversed(enumerate(path)):
-            si, interval = info
-            if si != target_si: continue
-            return i
-        return None
-            
-
-    work_list = [ (Dfa.init_state_index, [], [ Dfa.init_state_index ]) ] 
-    result    = []
-
-    while work_list:
-        entry    = work_list.pop()
-        si, path = entry
-        state    = Dfa.states[si]
-
-        if state.is_acceptance():
-            result.append(lexeme_from_path(path))
-
-        for target_si, trigger_set in state.target_map:
-            assert target_si in Dfa.states
-            considered_iteration_db, \
-            pass_f                   = check_loop(iteration_db, si, target_si,
-                                                  IterationMaxN)
-            if not pass_f: continue
-
-            work_list.append((target_si, new_lexeme_set, 
-                              considered_iteration_db))
-    return result
-             
-def get_raw(Dfa):
+def get_interpretation(Dfa):
     """RETURNS: List of Lexemes that are matched by 'Dfa'.
 
     The lexemes are specified in terms of 'Interval' objects.
@@ -173,62 +96,109 @@ def get_raw(Dfa):
     predecessor_db = Dfa.get_predecessor_db()
     successor_db   = Dfa.get_successor_db(HintPredecessorDb=predecessor_db)
     
-    loop_db = dict(
-        (si, find_loop_list(Dfa, si, successor_db))
-        for si in Dfa.states
-        if si in predecessor_db[si]
-    )
 
-    predecessors = set()
-    lexeme       = []
-    work_list    = [ (Dfa.init_state_index, predecessors, lexeme) ]
-    result       = []
+Step = namedtuple("Step", ("by_trigger_set", "target_si"))
 
+def get(Dfa):
+    """RETURNS: 'set' of lexeme which are matched by 'Dfa'.
+
+    The lexeme representation is suited for quick comparison. All
+    elements are *immutables*, so they may also serve as hash keys
+    or set elements.
+
+    * 'set' => provides distinctness
+               Two 'DFA's match the same set of lexemes if and only if 
+               the return values of this functions are the same
+            => set operations on the set of lexemes can directly be 
+               applied.
+    """
+    path_list, \
+    loop_db    = __find_paths(Dfa)
+
+    return set(__expand(path, loop_db) for path in path_list)
+
+def lexeme_set_to_string(LexemeSet):
+    def __beatify(sub_lexeme):
+        result = []
+        for x in sub_lexeme:
+            if type(x) == tuple:
+                if x[0] == E_SubLexemeId.NUMBER_SET: 
+                    sub_txt = get_string_for_number_set(x[1:])
+                elif x[0] == E_SubLexemeId.SEQUENCE: 
+                    sub_txt = __beatify(x[1:])
+                else:
+                    sub_txt = "[%s-%s]" % (x[0],x[1])
+            else:
+                sub_txt = "%s" % x
+
+            result.append(sub_txt)
+        return "".join(result)
+
+    return [ __beatify(lexeme) for lexeme in sorted(LexemeSet) ]
+
+def __expand(path, loop_db):
+    if not path: return []
+
+    if path[0].by_trigger_set is None: first_i = 1
+    else:                              first_i = 0
+
+    lexeme = [ E_SubLexemeId.SEQUENCE ]
+    for trigger_set, si in path[first_i:]:
+        loop_path_list = loop_db[si]
+        for loop_path in loop_path_list:
+            if len(loop_path) > 1:
+                loop_lexeme = list(__expand(loop_path[:-1], loop_db))
+            else:
+                loop_lexeme = [ E_SubLexemeId.SEQUENCE ]
+            last = get_immutable_for_number_set(loop_path[-1].by_trigger_set)
+            loop_lexeme.append(last)
+            lexeme.append(tuple(loop_lexeme))
+        lexeme.append(get_immutable_for_number_set(trigger_set))
+    return tuple(lexeme)
+
+def __find_paths(Dfa):
+    """RETURNS: [0] List of paths
+                [1] LoopDb: si --> path that comes back to 'si'
+
+    where each 'path' is a sequence of (state index, trigger), representing the
+    path through a Dfa. '(state index, trigger)' represents a transition to
+    'state index' via the 'trigger'.
+    """
+    def is_on_path(path, si):
+        """RETURNS: Index 'i' with path[i].si == si, if exists.
+                    None, if 'si' is not on path. 
+        """
+        for i, step in enumerate(path):
+            if step.target_si == si: return i
+        return None
+
+    loop_db   = defaultdict(list)
+    path_list = []
+    #             from where:  with what trigger:
+    path      = [ Step(None,       Dfa.init_state_index) ]
+    work_list = [ path ]
     while work_list:
-        si, predecessors, lexeme = work_list.pop()
-        if si in loop_db:
-            lexeme.extend(loop_db[si])
-
-        predecessors.add(si)
+        path = work_list.pop()
+        si   = path[-1].target_si
+            
         state = Dfa.states[si]
-        if state.is_acceptance():
-            result.append(lexeme)
+        if state.is_acceptance(): path_list.append(path)
 
         for target_si, trigger_set in state.target_map:
-            if target_si in predecessors: continue
-           
-            new_lexeme = get_concatenation(lexeme, trigger_set)
-
-            if target_si not in predecessors:
-                work_list.append((target_si, predecessors, new_lexeme))
-
-    return result
-
-def find_loop_list(Dfa, StartSi, successor_db):
-    work_list = [ (StartSi, []) ]
-    result    = []
-    while work_list:
-        si, lexeme = work_list.pop()
-        for target_si, trigger_set in Dfa.states[si].target_map:
-            new_lexeme = lexeme + [ trigger_set ]
-            if target_si == StartSi:
-                result.append(Loop(new_lexeme))
-            elif StartSi not in successor_db[target_si]:
-                continue
+            prev_pos = is_on_path(path, target_si)
+            if prev_pos is not None:
+                loop_db[si].append(path[prev_pos:])
             else:
-                work_list.append((target_si, new_lexeme))
+                work_list.append(path + [ Step(trigger_set, target_si) ])
 
-    return result
-
-def concatenate(Set0, Set1):
-    return set(
-        lexeme0 + lexeme1
-        for lexeme0, lexeme1 in permutate(Set0, Set1, 2)
-    )
+    print "#Dfa:", Dfa.get_string(NormalizeF=False)
+    print "#loop_db:", loop_db
+    return path_list, loop_db
 
 if "__main__" == __name__: 
     import quex.input.regular_expression.engine as regex
-    dfa = regex.do("x[cd]+z+(ab)+", {}).sm
-    lexeme_set = get_raw(dfa)
+    re_str     = "x[c-dx-z]+z+(ab)+"
+    dfa        = regex.do(re_str, {}).sm
+    lexeme_set = get_lexemes(dfa)
     for lexeme in lexeme_set:
         print lexeme
