@@ -49,10 +49,12 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath("../../../../"))
 
-from quex.engine.misc.interval_handling import NumberSet
-from quex.engine.misc.enum              import Enum
-from copy import copy
-from collections import defaultdict, namedtuple
+from   quex.engine.misc.interval_handling import NumberSet
+from   quex.engine.misc.enum              import Enum
+from   quex.engine.misc.tools             import print_callstack
+import quex.engine.state_machine.algebra.reverse as reverse
+from   copy import copy
+from   collections import defaultdict, namedtuple
 
 from itertools import tee, takewhile
 
@@ -169,8 +171,11 @@ def __beautify_sequence(SubLexeme, Interpreter):
     return txt
 
 def __expand(StartSi, path, loop_db):
-    def loop_lexeme(StartSi, loop_path, loop_db):
+    print_callstack()
+    print "#path:", path
+    def get_loop_lexeme(StartSi, loop_path, loop_db):
         loop_lexeme = [ E_SubLexemeId.LOOP ]
+        print "#loop_path:", loop_path
         if len(loop_path) > 1:
             # sub_path = loop_path[:-1]
             sub_path = __expand(StartSi, loop_path[:-1], loop_db)
@@ -186,7 +191,7 @@ def __expand(StartSi, path, loop_db):
     current_si = StartSi
     for trigger_set, target_si in path:
         lexeme.append(get_immutable_for_number_set(trigger_set))
-        lexeme.extend(sorted(loop_lexeme(StartSi, loop_path, loop_db)
+        lexeme.extend(sorted(get_loop_lexeme(StartSi, loop_path, loop_db)
                       for loop_path in loop_db[current_si]))
         current_si = target_si
 
@@ -217,6 +222,8 @@ def __find_paths(Dfa):
     work_list = [ (Step(None,   Dfa.init_state_index), []) ]
 
     print "#Dfa:", Dfa.get_string(NormalizeF=False)
+    # Starting from reverse ensures tha connection to acceptance state is given
+    reversed_dfa = reverse.do(Dfa)
     while work_list:
         step, path = work_list.pop()
             
@@ -232,12 +239,16 @@ def __find_paths(Dfa):
             prev_pos = is_on_path(path, target_si)
             if prev_pos is not None:
                 loop_db[si].append([step] + path[prev_pos+1:])
-                print "#loop_db:", loop_db
             else:
                 work_list.append((step, path))
 
-    print "#path_list:", path_list
-    return path_list, loop_db
+    new_path_list = [ tuple(reversed(path)) for path in path_list ]
+    new_loop_db = defaultdict(list)
+    
+    for si, loop_path_list in loop_db.iteritems():
+        for path in loop_path_list:
+            new_loop_db[si].append(tuple(reversed(path)))
+    return new_path_list, new_loop_db
 
 if "__main__" == __name__: 
     import quex.input.regular_expression.engine as regex

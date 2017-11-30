@@ -5,7 +5,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 
 import quex.input.regular_expression.engine     as regex
 import quex.engine.state_machine.check.identity as identity_checker
-import quex.engine.state_machine.TEST_help.lexeme_set as lexeme_set
+# import quex.engine.state_machine.TEST_help.lexeme_set as lexeme_set
 
 if "--hwut-info" in sys.argv:
     print "Pattern Identity Determination"
@@ -21,12 +21,12 @@ def test(A, B):
         verdict_f = identity_checker.do(p0, p1)
         print "claim = ", verdict_f
 
-        together = set(Pattern0 + Pattern1)
-        if together.isdisjoint(['^', '$', '/']):
-            # Identity shall only be, if the lexeme sets are equal
-            lexeme_set_0 = lexeme_set.get(p0.sm, IterationMaxN=3)
-            lexeme_set_1 = lexeme_set.get(p1.sm, IterationMaxN=3)
-            assert verdict_f == (lexeme_set_0 == lexeme_set_1)
+        ## together = set(Pattern0 + Pattern1)
+        ## if together.isdisjoint(['^', '$', '/']):
+        ##     # Identity shall only be, if the lexeme sets are equal
+        ##     lexeme_set_0 = lexeme_set.get(p0.sm, IterationMaxN=3)
+        ##     lexeme_set_1 = lexeme_set.get(p1.sm, IterationMaxN=3)
+        ##     assert verdict_f == (lexeme_set_0 == lexeme_set_1)
     print "---------------------------"
     __core(A, B)
     print
