@@ -10,6 +10,11 @@ Following lines are suppossed to be accepted:
 ./constants.py:173:           "LexemeEnd",
 ./engine/analyzer/terminal/factory.py:161:        """Overflow: Lexeme size exceeds buffer size.
 ./engine/analyzer/terminal/factory.py:165:        comment_txt = "Lexeme size exceeds buffer size. No further buffer load possible."
+./engine/state_machine/TEST_help/walk.py:14:def do(Dfa, Lexeme):
+./engine/state_machine/TEST_help/walk.py:15:    """'Lexeme' can be list of characters (string) or list of numbers.
+./engine/state_machine/TEST_help/walk.py:17:    __print(__get_step_list(Dfa, Lexeme))
+./engine/state_machine/TEST_help/walk.py:74:def __get_step_list(Dfa, Lexeme):
+./engine/state_machine/TEST_help/walk.py:77:    for input_position, lexatom in enumerate(Lexeme):
 ./input/files/code_fragment.py:22:lexeme_re = re.compile(r"^Lexeme\b")
 ./input/files/code_fragment.py:272:        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
 ./input/files/code_fragment.py:273:                  "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
@@ -30,3 +35,8 @@ Following lines are suppossed to be accepted:
 ./output/languages/cpp/dictionary.py:385:        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
 ./output/languages/cpp/templates.py:245:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST
+
+
+
+
+

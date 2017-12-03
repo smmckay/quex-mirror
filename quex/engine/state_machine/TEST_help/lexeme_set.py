@@ -60,6 +60,10 @@ E_SubLexemeId = Enum("SEQUENCE", "NUMBER_SET", "LOOP")
 
 Step = namedtuple("Step", ("by_trigger_set", "target_si"))
 
+def __unicode_char(X):
+    """Avoid problems with python's narrow build--do not use 'UNICHR()'."""
+    return eval("u'\U%08X'" % N)
+
 def get(Dfa):
     """RETURNS: 'set' of lexeme which are matched by 'Dfa'.
 
@@ -105,8 +109,8 @@ def lexeme_set_to_characters(LexemeSet):
     class Interpreter:
         @staticmethod
         def do(I):
-            if I[0] == I[1]: return "%s" % unichr(I[0])
-            else:            return "[%s-%s]" % (unichr(I[0]), unichr(I[1]))
+            if I[0] == I[1]: return "%s" % __unicode_char(I[0])
+            else:            return "[%s-%s]" % (__unicode_char(I[0]), __unicode_char(I[1]))
         seperator     = ""
         right_bracket = ""
         left_bracket  = ""

@@ -4,11 +4,11 @@ Pre- and Post-Contexts
 #######################
 
 To this point, only patterns have been discussed that match absolutely,
-independent of their context.  Modes and mode transitions model change the
-complete matching behavior of a lexer, they change the *language*. A more
-concise type of context is the *border* around a pattern, i.e. to what comes
-before or after the pattern. This section elaborates on conditional matching
-based such bordering contexts namely *pre-* and *post-contexts*. 
+independent of their context.  Modes and mode transitions change the complete
+matching behavior of a lexer, they change the *language*. A more concise type
+of context is the *border* around a pattern, i.e. to what comes before or after
+the pattern. This section elaborates on conditional matching based such
+bordering contexts namely *pre-* and *post-contexts*. 
 
 Pre- and post-contexts are conditions on the data stream. Strictly, the lexer's
 state is not subject to this type of constraint.  There is an exception though:
@@ -85,8 +85,7 @@ General border conditions can be defined in terms of regular expressions.  In
 the following, Let ``R`` represent the regular expression of the core pattern.
 The matching lexeme does only consist of those elements of the input stream
 that match ``R``. Let ``Q`` represent pre-context and ``S`` the post-context.
-The following means allow to specify pre- and post-contexts based on regular
-expressions.
+The following list shows the syntactic means to specify pre- and post-contexts.
 
 .. describe:: R/S
 

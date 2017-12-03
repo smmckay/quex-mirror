@@ -63,21 +63,6 @@ def leave_begin(DfaA, DfaB):
 def leave_end(DfaA, DfaB):
     return cut_begin(DfaA, complement.do(DfaB))
 
-def leave_begin(DfaA, DfaB):
-    """PURPOSE: Generate a modified DFA based on A:
-
-        * matches the 'tail' of lexemes of 'A' if they match 'B'. The tail 
-          of a lexeme the part of 'A' which matches 'B'.
-
-    SCHEME:   'LeaveEnd yyyyyyyyyy'
-
-              lexemes before               lexemes after
-              aaaaaaaaaaaxxxxxxxxxx  --->  
-              bbbbbbbbbbbyyyyyyyyyy                     yyyyyyyyyy
-
-    """
-    return cut_end(DfaA, complement.do(DfaB))
-
 class WorkList:
     def __init__(self):
         """A = First DFA

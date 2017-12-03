@@ -2,14 +2,15 @@
 Quex's Syntax
 **************
 
-Lexical analyser specifications are stored in files with the extension ``.qx``.
-The syntax of those files is introduced in this chapter.  The first section
-introduces syntax elements that divide an input file into main sections such as
-to define modes, token identifiers, and token types.  Two particular entities,
-namely *modes* and *tokens*, are presented in great detail in later chapters.
-A second section briefly summarizes how numbers can be specified. A larger
-third section presents the syntax of regular expressions including the use of
-the Unicode database. 
+The generation of lexical analyzers must be based on a specification of a
+nominal behavior. Quex expects those specifications to be made in a formal
+language stored in input files, usually with the extension `.qx`. The syntax of
+this formal language is now discussed in this chapter.  As a basis, the main
+sections and their related subjects are explained. This includes considerations
+of *pattern definition*, *modes*, *token identifiers*, and *token types*.  A
+great part of this chapter deals with regular expressions for the
+specification of input patterns.  Two particular entities, namely *modes* and
+*tokens*, are presented in great detail in later chapters.  
 
 .. toctree::
 

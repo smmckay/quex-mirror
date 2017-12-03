@@ -4,11 +4,11 @@ Context Free Regular Expressions
 ==================================
 
 Context free regular expressions match  against an input independent on the
-context of what preceeds or follows it.  The contrary, pre- and post-context
-dependent pattern matching is explained in the subsequent section.  The syntax
-of Quex's regular expressions is in many aspects identical to that of the popular
-tools 'lex' and 'flex' :cite:`Lesk1975lex`. Accordingly, the explanation of
-basic syntax follows the scheme of flex's man page.
+context of what precedes or follows it.  Pre- and post-context dependent
+pattern matching is explained in the subsequent section.  The syntax of Quex's
+regular expressions is in many aspects identical to that of the popular tools
+'lex' and 'flex' :cite:`Lesk1975lex`. Accordingly, the explanation of basic
+syntax follows the scheme of flex's man page.
 
 .. describe:: x 
 
@@ -28,7 +28,7 @@ basic syntax follows the scheme of flex's man page.
 
 .. describe:: \\Any
 
-     Matches absolutely any character.
+     Matches absolutely anything, but not the lexeme of zero length.
 
 .. describe:: [xyz]
 
@@ -224,7 +224,7 @@ basic syntax follows the scheme of flex's man page.
      encoding engine is used (see :ref:`sec:engine-encoding`).
 
 Any character specified as character code, i.e. using `\`, `\x`, `\X`, or `\U`
-are considered to be Unicode code points. For applications in English spoken
+is considered to be a Unicode code point. For applications in English spoken
 cultures this is identical to the ASCII encoding. For details about Unicode
 code tables consider the standard :ref:`Unicode50`. Section
 :ref:`sec:ucs-properties` gives an overview over the Unicode property system.
@@ -290,15 +290,18 @@ regular expressions.
 
 *Concatenation and Alternatives*
 
-.. describe:: RS 
-
-    the regular expression ``R`` followed by the regular expression ``S``. This
-    is usually called a *concatenation* or a *sequence*.
-
 .. describe:: R|S 
 
     either an ``R`` or an ``S``, i.e. ``R`` and ``S`` both match. This is usually 
-    called an *alternative*.
+    called an *alternative*. The union is, in fact, a set operation which is 
+    discussed in detail in the frame of DFA algebra :ref:`sec-dfa-algebra`.
+
+.. describe:: RS 
+
+    the regular expression ``R`` followed by the regular expression ``S``. This
+    is usually called a *concatenation* or a *sequence*. Concatenation on DFAs
+    together with the *empty DFA* form a *monoid* :cite:`Hazewinkel1997`. Section
+    :ref:`sec-cut-concatenate` discusses this subject in detail.
 
 *Reversion*
 
@@ -310,17 +313,16 @@ regular expressions.
             \R{dlroW} => QUEX_TKN_WORD(Lexeme)
 
      then the token ``WORLD`` is sent upon the appearance of 'World' in the
-     input stream. 
-     
-This feature is useful for definitions of patterns of right-to-left writing
-systems such as Arabic, Binti and Hebrew. Chinese, Japanese, as well as
-ancient Greek, ancient Latin, Egyptian, and Etruscan can be written in both
-directions. Twofold reversion is equivalent to identity, i.e.::
+     input stream.  This feature is useful for definitions of patterns of
+     right-to-left writing systems such as Arabic, Binti and Hebrew. Chinese,
+     Japanese, as well as ancient Greek, ancient Latin, Egyptian, and Etruscan
+     can be written in both directions. Twofold reversion is equivalent to
+     identity, i.e.::
 
            \R{\R{P}} = P
 
-for any pattern ``P``. Reversion plays an important role in the discussion of
-DFA algebra and Cut/Concatenate Arithmetic.
+    for any pattern ``P``. Reversion plays an important role in the discussion
+    of DFA algebra and Cut/Concatenate Arithmetic.
 
 
 *Expansion*
@@ -354,8 +356,8 @@ DFA algebra and Cut/Concatenate Arithmetic.
 
 The previous section presented a short summary on regular expression syntax.
 While the following sections go into more detail, they also provide more
-powerful means to model the matching behavior. However, with these operations
-it becomes more challenging to define the exact desired regular expression.  In
+powerful means to model matching behavior. However, with these operations it
+becomes more challenging to define the exact desired regular expression.  In
 particular, patterns may be *admissible* and *inadmissible*.  An *inadmissible*
 pattern has one ore more of the following properties.
 
@@ -363,17 +365,17 @@ pattern has one ore more of the following properties.
       without consuming any further lexatom from  the input stream. The 
       lexer would stall.
 
-    * There exists a state from where, it matches on arbitrary repetitions of 
+    * There exists a state from where it matches on arbitrary repetitions of 
       any lexatom. If this state is reached the complete input stream would
       be consumed.
 
 A lexer containing an inadmissible pattern must be considered unstable.
 Its functioning cannot be guaranteed.
 
-Any pattern which is not *inadmissible* in the above sense is *admissible*.
-Any pattern that is not inadmissible is admissible. Whenever an inadmissible
-pattern is detected, an error is reported.  As a shorthand to transform any
-pattern into a *sane* pattern the following command may be used.
+Any pattern which is not *inadmissible* in the above sense is *admissible* and
+vice versa.  Whenever an inadmissible pattern is detected, an error is
+reported.  As a shorthand to transform a pattern into a *sane* pattern the
+following command may be used.
 
 .. describe:: \\Sanitize{P}
 
@@ -386,8 +388,8 @@ pattern into a *sane* pattern the following command may be used.
  in order to see whether it conforms the expectations.
 
  Notably, this command cannot sanitize patterns that do not accept anything or
- accept everything. This subject is discussed further in the section on on DFA
- Algebra (section :ref:`sec:algebra-of-dfas`).
+ accept everything. 
+
 
 *Special DFAs*
 

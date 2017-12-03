@@ -3,9 +3,10 @@
 Number Format
 =============
 
-Numbers in Quex are specified in a way similar to what is common practice in
-many programming languages such as C, Python, Java, etc. -- with some convenient
-extensions. The number formats are presented in table :ref:`table:number-formats`.
+Numbers are specified in a way similar to what is common practice in many
+programming languages such as C, Python, Java, etc. -- with some convenient
+extensions. The number formats are presented in table
+:ref:`table:number-formats`.
 
  .. _table:number-formats:
 

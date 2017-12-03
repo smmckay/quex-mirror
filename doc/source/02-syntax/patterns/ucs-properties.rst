@@ -54,12 +54,14 @@ The following item list exposes some of the supported Unicode Character
 Properties.  The current version of Quex is based on Unicode 8.0. It uses the
 raw databases as provided by the Unicode Consortium and it is likely that 
 the property system of any later standard is integrated as soon as it is in a
-major state [#f2]_ . Unicode Character Properties are
-used to define *sets of characters* to be matched during lexical analysis. This
-excludes some properties from consideration, namely the properties tagged as
-`string` property types and the 'quick-check' properties (Unicode Technical
-Report UCS #15). The expressions in brackets are the aliases that may be used
-as a shorthand for the full name of the property.
+major state [#f2]_ . 
+
+Unicode Character Properties are used to define *sets of characters* to be
+matched during lexical analysis. This excludes some properties from
+consideration, namely the properties tagged as `string` property types and the
+'quick-check' properties (Unicode Technical Report UCS #15). The expressions in
+brackets are the aliases that may be used as a shorthand for the full name of
+the property.
 
 .. describe:: Binary Properties
 

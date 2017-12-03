@@ -1,23 +1,33 @@
 .. _sec:top-level:
 
-Top Level
-=========
+Main Sections
+=============
 
-There are two types of top level syntax elements: those which *configure
-functionality* and others which plainly *paste source code* into locations of
-the generated code. 
+Functionality may be provided by two types of syntactic means: This which
+*configure* functionality and those which provide functionality by *pasting*
+source code into generated code. This holds in particular for the top-level
+syntax elements, so their explanations are grouped into to according
+sub-sections.
 
 .. _sec:top-level-configuration:
 
 Configuration
 #############
 
-The following item list outlines top-level syntax elements for the configuration
-of functionality.
-
 .. data:: mode
 
-   A mode section starts with the keyword ``mode`` and has the following syntax
+   A mode section starts with the keyword ``mode``. For a specific point in
+   time the lexer is in one distinct mode. A mode defines a lexer's behavior
+   and a mode change implements a change in its behavior. 
+   
+   The core task of a mode is to define reactions for the moment when the
+   stream matches particular input patterns. Modes are subject to inheritance.
+   There are several optional 'tags' that modify its setup.  Additionally,
+   there are 'incidences' for which handlers may be specified.
+
+   The precise syntax of a mode is defined in a dedicated chapter (namely
+   :ref:`sec:modes`). The following fragment is intended to provide a rough
+   impression to be understood intuitively.
 
    .. code-block:: cpp
 
@@ -41,8 +51,7 @@ of functionality.
    brackets. The section in curly brackets which follows is mandatory. It
    defines pattern-action pairs and incidence handlers. Patterns need to be
    described as regular expressions following the POSIX Standard [#f1] (section
-   :reg:`sec:regular-expressions`). A complete description of modes is
-   delivered in a chapter :ref:`sec:modes`.
+   :reg:`sec:regular-expressions`). 
 
 .. data:: define
 
@@ -68,8 +77,8 @@ of functionality.
    readability.  The limited ability of humans to treat complexity
    :cite:`Marois2005capacity` implies that error susceptibility of regular
    expressions increases with their complexity.  Thus, defining meaningful
-   sub-patterns is the basis for a robust lexer construction--divide and 
-   conquer. 
+   sub-patterns is the basis for a robust lexer construction. Divide and 
+   conquer! 
 
 .. data:: token
 
@@ -87,52 +96,51 @@ of functionality.
                   ...
               }
       
-      The token identifiers need to be separated by semi-colons. Adding a ``=``
-      and a numeric value to the token definition sets a specific value as
-      token identifier. Token identifiers enter the global namespace of the
-      generated code as 'token prefix' + 'name'. The default token prefix
-      is ``QUEX_TKN_``.  More on token identifiers is delivered in 
-      section :ref:`sec:token-id-definition`.
+   The token identifiers need to be separated by semi-colons. Adding a ``=``
+   and a numeric value (:ref:`sec:basics-number-format:`) to the token
+   definition sets a specific value as token identifier. Token identifiers
+   enter the global namespace of the generated code as 'token prefix' + 'name'.
+   The default token prefix is ``QUEX_TKN_``.  More on token identifiers is
+   delivered in section :ref:`sec:token-id-definition`.
 
    .. note:: 
 
       Token identifiers in the ``token`` section are specified without prefix.
-      By default the prefix is ``QUEX_TKN_``. It can be adapted with the 
+      By default the prefix is ``QUEX_TKN_``. It can be adapted with the
       command line option ``--token-id-prefix``.
 
 .. data:: repeated_token
 
-      The ``repeated_token`` section selects some token ids for the usage of
-      efficient token repetition.  Instead of multiple token objects being
-      produced, the same token object is sent multiple times until the
-      repetition count is achieved.  A practical application of this can be
-      considered in indentation based lexical analysis (off-side rule).  There,
-      a single less indented line may cause multiple closing scopes. Each
-      closed scope is notified by a ``DEDENT`` token. Instead of putting `n`
-      ``DEDENT`` tokens into the queue, a single token can now be prepared with
-      the repetition count of `n`. The content of the ``repeated_token``
-      section are the names of token identifiers which are subject to
-      repetition.
+   The ``repeated_token`` section selects some token ids for the usage of
+   efficient token repetition.  Instead of multiple token objects being
+   produced, the same token object is sent multiple times until the repetition
+   count is achieved.  A practical application of this can be considered in
+   indentation based lexical analysis :ref:`sec-indentation` (off-side rule).
+   There, a single less indented line may cause multiple closing scopes. Each
+   closed scope is notified by a ``DEDENT`` token. Instead of putting `n`
+   ``DEDENT`` tokens into the queue, a single token can now be prepared with
+   the repetition count of `n`. The content of the ``repeated_token`` section
+   are the names of token identifiers which are subject to repetition.
 
-      .. code-block:: cpp
+   .. code-block:: cpp
 
-              repeated_token {
+         repeated_token {
                   ...
                   TOKEN_NAME;
                   ...
-              }
+         }
 
 .. data:: token_type
 
-      Quex generates a default token class/struct for the lexical analyzer
-      containing a 'text' and a 'number' member. If this is not sufficient,
-      customized token classes (C++) or structs (C) may be defined in the
-      ``token_type`` section (chapter :ref:`sec:token`).
+   Quex generates a default token class or struct for the lexical analyzer
+   containing a 'text' and a 'number' member. If this is not sufficient,
+   customized token classes or structs may be defined in the ``token_type``
+   section (chapter :ref:`sec:token`).
 
 .. data:: start
 
-      An initial mode ``START_MODE`` in which the lexical analyzer starts its
-      analysis can be specified via 
+   An initial mode ``START_MODE`` in which the lexical analyzer starts its
+   analysis can be specified via 
       
       .. code-block:: cpp
       
@@ -230,15 +238,18 @@ memento handling.
 
 .. data:: memento
 
-   Mementos are stored in objects of a memento class. Extensions to this
-   class may be specified in the ``memento`` section. 
+   Content of this section is pasted into the definition of the generated
+   memento class. The user may have defined customized extra data in the lexer
+   class (in the ``body`` section). If this data shall survive stream inclusion
+   and return from stream inclusion, it should be specified accordingly in this
+   section.
 
 .. data:: memento_pack
 
-   Additional code to be executed when the state of a lexical analyzer is
-   *stored* in a memento upon inclusion. The code is executed *after* the
-   default inclusion handling is performed, right before the memento is pushed
-   on the stack.
+   This section contains code to be executed when the state of a lexical
+   analyzer is *stored* in a memento upon inclusion. The code is executed
+   *after* the default inclusion handling is performed, right before the
+   memento is pushed on the stack.
 
    Implicit Variables:
 
@@ -259,7 +270,7 @@ memento handling.
 
 .. data:: memento_unpack
 
-   Additional code to be executed when the state of a lexical analyzer is
+   Code from this section is executed when the state of a lexical analyzer is
    *restored* from a memento. The code is executed *after* the default return
    from inclusion handling is performed, right before the deletion of the
    memento.
@@ -274,5 +285,5 @@ memento handling.
 
 .. [#f1] Quex's regular expressions extend the POSIX regular expressions by queries 
          for unicode properties :ref:`sec:re-unicode-properties` and regular expression 
-         algebra :ref:`sec:re-algebra`.
+         algebra :ref:`sec:pattern`.
 

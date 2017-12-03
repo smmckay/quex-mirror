@@ -4,7 +4,8 @@ import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
 
 
-from   quex.engine.state_machine.TEST_help.some_dfas   import *
+from   quex.engine.state_machine.TEST_help.some_dfas     import *
+from   quex.engine.state_machine.TEST_help.many_shapes   import *
            
 from   quex.engine.state_machine.core                     import *
 import quex.engine.state_machine.construction.repeat      as repeat
@@ -31,11 +32,11 @@ The epsilon closures depend on the direction:
 => DFA_State '5' is merged into two resulting states.
 """
 sm = DFA()
-sms.line(sm, sm.init_state_index, (0x11, 1), (0x22, 2))
-sms.line(sm, sm.init_state_index, (0x33, 3), (0x44, 4))
-sms.line(sm, 5,                              (0x66, 6))
-sms.line(sm, 1, (None, 5))
-sms.line(sm, 3, (None, 5))
+line(sm, sm.init_state_index, (0x11, 1), (0x22, 2))
+line(sm, sm.init_state_index, (0x33, 3), (0x44, 4))
+line(sm, 5,                              (0x66, 6))
+line(sm, 1, (None, 5))
+line(sm, 3, (None, 5))
 
 dfa = nfa_to_dfa.do(sm)
 print plot_txt
@@ -54,10 +55,10 @@ when it is detected that '2' triggers on the same trigger set to '0' and '3',
 '0' joined with '3'.
 """
 sm = DFA()
-sms.line(sm, sm.init_state_index, (0x11, 1), (0x22, 2), (0x33, 3), (0x55, 5))
-sms.line(sm, sm.init_state_index, (None, 4))
-sms.line(sm, 2, (0x33, sm.init_state_index))
-sms.line(sm, 4, (0x66, 6))
+line(sm, sm.init_state_index, (0x11, 1), (0x22, 2), (0x33, 3), (0x55, 5))
+line(sm, sm.init_state_index, (None, 4))
+line(sm, 2, (0x33, sm.init_state_index))
+line(sm, 4, (0x66, 6))
 
 dfa = nfa_to_dfa.do(sm)
 print plot_txt

@@ -13,10 +13,9 @@ Properties* database [#f1]_.
 .. note::
 
     In a ``define`` section regular expressions are associated with
-    identifiers. These identifiers may then be used in other regular
-    expressions by embracing them in curly brackets. This way, it becomes
-    possible to define larger expressions as a composition of smaller regular
-    expressions in a clear fashion. 
+    identifiers. These identifiers may then be expanded in other definitions.
+    This way, it becomes possible to define larger expressions as a composition
+    of smaller regular expressions in a clear fashion. 
     
     The usage of references can be applied to the extend that modes only
     contain references to regular expressions. As a consequence, the
@@ -39,21 +38,21 @@ Properties* database [#f1]_.
             {IDENTIFIER}  => QUEX_TKN_IDENTIFIER(Lexeme);
         }
 
-    In general terms, the ``define`` section supports the separation of
-    *pattern definitions* and *pattern matching behavior*. 
+    Following this strict approach supports the separation of *pattern
+    definition* and *pattern matching behavior*. 
 
-The following sections describe the formal language used to specify patterns.
-First, the syntactic means to specify context free regular expressions are
-introduced. Second, two sections elaborate on the specification of character
-sets and the use of queries into the Unicode database. Third, a section
-elaborates on pre- and post-contexts for regular expressions. 
+The following sections describe the syntax for patterns.  First, context free
+regular expressions are introduced. Second, two subsequent sections elaborate
+on the specification of character sets and the use of queries into the Unicode
+database. Third, a section elaborates on pre- and post-contexts for regular
+expressions. 
 
-This section leaves purposely excludes the subject of *DFA algebra* and
-*cut/concatenate arithmetic*. While these subjects have their own description
-syntax, the related theory is likely beyond the scope of the praxis oriented
-user. Also, the author considers the findings on DFA algebra and
-cut/concatenation arithmetic as so important that they would the deserve a
-prominent place, such as a chapter on their own.
+This section purposely excludes the syntax of operations related to *DFA
+algebra* and *cut/concatenate arithmetic*. While this chapter focusses on
+practical applications the latter two subjects require a broader discussion.
+They are separated into a dedicated chapter which sets them into a more
+prominent position and facilitates it for the application oriented reader to
+skip over them.
 
 .. toctree::
    
@@ -61,9 +60,6 @@ prominent place, such as a chapter on their own.
     re-character-sets.rst
     ucs-properties.rst
     re-context-dependent.rst
-    re-other-operations.rst
-    summary.rst
-   
 
 .. rubric:: Footnotes
 
