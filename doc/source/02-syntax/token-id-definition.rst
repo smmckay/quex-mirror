@@ -3,11 +3,14 @@
 Token Identifiers
 =================
 
-A token identifier is an integer representing the type of lexeme which is
-identified at a specific position in the input stream. Token identifiers may be
-referred to by named constants, i.e. 'token-ids', or directly with a number or
-a character code (section :ref:`mode-actions`). As mentioned earlier, token
-identifiers are specified in a ``token`` section such as the following.
+A token identifier is an integer representing the type of lexeme which matches
+a pattern at a specific position in the input stream. Token identifiers may be
+referred to by named constants. In the following, the term token identifier, or
+'token-ids', stands for both the integer representing the token type and the
+token identifier name. Which one is meant shall be clear from the context.
+
+Named constants to be used as token identifiers are specified in a ``token``
+section such as the following. 
 
 .. code:: cpp
 
@@ -15,51 +18,52 @@ identifiers are specified in a ``token`` section such as the following.
         OP_PLUS; OP_MINUS; OP_DIVISION; OP_MULTIPLICATION;
     }
 
-All token identifiers must have the same prefix. Token ids mentioned in the
-``token`` section receive the token prefix automatically. The default prefix is
-``QUEX_TKN_``. A customized token id can be specified via the command line
-option ``--token-id-prefix`` followed by the desired prefix. This option also
-provides a means to place token ids in a specific (C++-) name space.  For
-example
+The above fragment defines the token identifiers `QUEX_TKN_OP_PLUS`,
+`QUEX_TKN_OP_MINUS`, `QUEX_TKN_OP_DIVISION`, and `QUEX_TKN_MULTIPLICATION`.
+Token ids mentioned in the ``token`` section receive the token prefix
+automatically. This ensures consistency in the prefix for all tokens. The
+default prefix is ``QUEX_TKN_``. A customized token id can be specified via the
+command line option ``--token-id-prefix`` followed by the desired prefix. This
+option also provides a means to place token ids in a specific (C++-) name
+space.  For example::
 
    > quex ... --token-id-prefix example::bison::token::
 
-defines a prefix which consist of a name space reference. A call as::
+defines a prefix which consist of a name space reference. A call such as::
 
    > quex ... --token-id-prefix example::bison::token::TK_
 
 specifies further that only tokens in the given name space are considered which
-start with ``TK_``. Token identifiers which are specified without a numeric
-constant is associated automatically with a distinct integer.
+start with ``TK_``. 
 
 Token identifiers do not need to be specified explicitly. Any identifier which
 is used in a place where a token identifier is expected is added to the list of
-token identifiers.  This facilitates the quick definition of a lexical
-analyzer. However, a warning is issued if an undefined token identifier
-is used. This is because such a reliance on implicit definitions is error
-prone.  Imagine a typo in the description of pattern-action pairs:
+token identifiers (provided it starts with the correct prefix).  This
+facilitates the quick definition of a lexical analyzer. Nevertheless, a warning
+is issued if an undefined token identifier is used. This is because such a
+reliance on implicit definitions is error prone.  Assume a users drops a typo
+in a pattern-action pair such as the `V` instead of the `Y` in the following
+fragment.
 
 .. code-block:: cpp
 
     ...
-           "key"  => QUEX_TKN_KEV;   // typo: KEV instead of KEY
+    "key"  => QUEX_TKN_KEV;   // typo: KEV instead of KEY
     ...
 
-Assume that the writer of these lines intended to write ``QUEX_TKN_KEY`` and
-his code expects the token id to appear upon the detection of ``key``.  With
-the code generated from the above fragment, a compiler would compile without
-complaints--everything is properly defined. However, the lexer would send
-another token id, namely ``QUEX_TKN_KEV`` (with a capital V). The expected
-``QUEX_TKN_KEY`` would not be received open the occurrence of ``key``. The
-reported warning in such situations is intended to prevent users from long
-exhausting debugging sessions on pattern matching behavior.
+Assume it was intended to send ``QUEX_TKN_KEY`` and somewhere in the user's
+code something expects that particular token id by name. Since, the generated
+lexer sends only ``QUEX_TKN_KEV`` (with a `V` instead of `Y`) that expectation
+is always failed.  Quex's warning in such situations is intended to prevent
+users from long exhausting debugging sessions on pattern matching behavior.
 
-Numbers can be explicitly assigned to token ids relying on the number
-specification scheme shown in section :ref:`sec:basics-number-format`. This
-allows for certain tricks. For example, token id groups may be expressed in
-terms of a signalling bit. In the following example, the integers associated
-with ``DIV``, ``MULTIPLY``, ``PLUS`` and ``MINUS`` are the only ones with 
-bit zero being set.
+By default each token identifier name is associated with a unique numeric
+constant. It is possible, though, to define numeric constants explicitly.
+Relying on the number specification syntax as mentioned in
+:ref:`sec:basics-number-format` even allows one to do some tricks. For example,
+token id groups may be expressed in terms of a signalling bit. In the following
+example, the integers associated with ``DIV``, ``MULTIPLY``, ``PLUS`` and
+``MINUS`` are the only ones with bit zero being set.
 
 .. code-block:: cpp
 
@@ -85,29 +89,38 @@ the following C-code fragment.
 External Token Identifier Definitions
 #####################################
 
+
 Parser generators such as bison :cite:`donnelly2004bison` and  ANTLR
 :cite:`parr2013definitive` may provide token identifier defintions themselves.
 Assuming that the files are provided in the target language (C or C++), Quex
 may scan those files for token identifier names. This is done with the goal to
-supervise the consistency of provided token identifiers and their usage.
+*supervise the consistency* of provided token identifiers and their usage. An
+external token-id definition file may be passed on the command line 
+following the option ``--foreign-token-id-file``.
 
-Quex is not an interpreter for C or C++. So, it may fail to detect numeric
-values precisely. In order to avoid total failure, the consideration of numeric
-constants is omitted.  Consequently, the ``token`` section may no longer be
-used. *All* token ids must be defined in the external file, somewhere. This
-includes the implicit token ids for ``TERMINATION`` and ``UNINITIALIZED``. With
-indentation handling activated, the token ids for ``INDENT``, ``DEDENT``, and
-``NODENT`` must be defined. All token identifiers provided must contain the
-appropriate token prefix.  The consistency of numeric values for token ids
-remains completely in the hands of whatsoever or whosoever writes the external
-token id file.
+The parsing of external files is very rudimental and far from a semantic
+interpretation. As a result, Quex does not claim to *understand* the numeric
+values which are associated with the identifiers. Consequently, the
+functionality to generate unique numeric constants for token identifiers cannot
+be provided. Since this is an essential feature of the ``token`` section, the
+``token`` section itself becomes impossible. The usage of external token
+id definition files and the ``token`` section are *mutually exclusive*.
+
+When token ids are defined externally, *all* token ids must be defined in the
+external file, somewhere. This includes the implicit token ids for
+``TERMINATION`` and ``UNINITIALIZED``. With indentation handling activated, the
+token ids for ``INDENT``, ``DEDENT``, and ``NODENT`` must be defined. All token
+identifiers provided must contain the appropriate token prefix.  The
+consistency of numeric values for token ids remains completely in the hands of
+whatsoever or whosoever writes the external token id file.
 
 .. note::
 
-   Quex does undertand C/C++ only to some extend. It tries, for example, to
-   dive into included files since it can detect ``#include`` statements.
-   However, it does so without any understanding of circumstances such as
-   conditional preprocessor statements.
+   Quex does try to parse the external file according to the given language
+   (``-language C`` or ``--language C++``). It tries, for example, to dive into
+   included files since it can detect ``#include`` statements.  However, it
+   does so without any understanding of circumstances such as conditional
+   preprocessor statements.
 
    If Quex really fails to parse external token identifier definitions, the
    file's content must be translated into the content of a ``token`` section.
@@ -138,8 +151,9 @@ begin and end triggers as in the following example::
     > quex ... --foreign-token-id-file my-token-ids.hpp  yytokentype  '};' 
 
 Then, the scanning of token ids starts with the line where ``yytokentype``
-appears and ends with the next occurrence of '};'. In the following 
-code fragment, only ``INTEGER`` and ``STRING`` will be considered.
+appears and ends with the next occurrence of '};'. When the aforementioned
+command line is applied to a file containing the following code fragment,
+then only the token ids ``INTEGER`` and ``STRING`` will be considered.
 
 .. code-block:: cpp
 
@@ -155,8 +169,9 @@ code fragment, only ``INTEGER`` and ``STRING`` will be considered.
             ...
 
 The command line option ``--foreign-token-id-file-show`` triggers the display
-of all token identifiers that have been detected.  When applied to the
-aforementioned file, the corespondent output will be
+of all token identifiers that have been detected in the given token-id
+specification file.  When applied to the aforementioned file, the corespondent
+output will be
 
 .. code-block:: bash
 
