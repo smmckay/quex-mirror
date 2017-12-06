@@ -12,6 +12,9 @@ import os.path
 def do(setup, command_line, argv):
     """Does a consistency check for setup and the command line.
     """
+    if setup.extern_token_id_file_show_f and not setup.extern_token_id_file:
+        error.log("Option '--foreign-token-id-file-show' cannot be used without\n"
+                  "option '--foreign-token-id-file'.")
 
     setup.output_directory = os.path.normpath(setup.output_directory)
     if setup.output_directory:
