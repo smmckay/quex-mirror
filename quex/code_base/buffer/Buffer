@@ -100,7 +100,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
      *              plus the fallback region are too big for the current 
      *              buffer's size.                                            */
     void      (*on_content_change)(const QUEX_TYPE_LEXATOM*  BeginP,
-                                          const QUEX_TYPE_LEXATOM*  EndP);
+                                   const QUEX_TYPE_LEXATOM*  EndP);
     void      (*on_overflow)(struct QUEX_NAME(Buffer_tag)*, bool ForwardF);
 
 } QUEX_NAME(Buffer);

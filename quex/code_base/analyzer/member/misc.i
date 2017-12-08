@@ -26,8 +26,8 @@ QUEX_NAME(input_pointer_set)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* Adr)
 
 QUEX_INLINE void        
 QUEX_NAME(set_callback_on_buffer_content_change)(QUEX_TYPE_ANALYZER*  me,
-                                                 void               (*callback)(const QUEX_TYPE_LEXATOM*, 
-                                                                                const QUEX_TYPE_LEXATOM*))
+                                                 void  (*callback)(const QUEX_TYPE_LEXATOM*, 
+                                                                   const QUEX_TYPE_LEXATOM*))
 { me->buffer.on_content_change = callback; }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*  
