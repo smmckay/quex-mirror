@@ -51,8 +51,8 @@ which are available to access the matched lexeme. In detail they are:
 .. data:: Lexeme
 
    A pointer to the first character of the matched lexeme. The lexeme itself is
-   temporarily zero-terminated for during the pattern action. This happens *only*
-   if quex detects the identifier ``Lexeme`` inside the code fragment.
+   temporarily zero-terminated for during the pattern action. This happens
+   *only* if quex detects the identifier ``Lexeme`` inside the code fragment.
    
    .. note:: If the lexeme is to be referred to longer outside the action or incidence 
              handler, then the length or the end pointer has to be stored along with 

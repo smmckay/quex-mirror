@@ -138,6 +138,7 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     size_t                    memory_size;
     E_Ownership               ownership;
     QUEX_TYPE_STREAM_POSITION backup_ios;
+    ptrdiff_t                 move_distance;
 
     if( QUEX_NAME(Buffer_resources_absent)(including) ) {
         if( filler ) {
@@ -147,6 +148,9 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
         return false;
     }
     else if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ) {
+        /* (1) AVAILABLE SIZE too SMALL
+         *     => Try to move content, so that free space becomes available.  */                    
+
         /* Buffer_move_away_passed_content() refuses to move if end of stream
          * is inside buffer. 
          * => Trick: Backup & restore 'lexatom_index_end_of_stream'           */
@@ -155,8 +159,12 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
         /* Position registers are only relevant during lexical analyzis.
          * Inclusion happens in a 'terminal' or external to the lexer step.   
          * => Position registers = empty set.                                 */
-        (void)QUEX_NAME(Buffer_move_away_passed_content)(including, 
-                                                         (QUEX_TYPE_LEXATOM**)0, 0); 
+        move_distance = QUEX_NAME(Buffer_move_away_passed_content)(including, (QUEX_TYPE_LEXATOM**)0, 0);
+
+        /* Overflow irrelevant; The moving of content did not happen to 
+         *                      fill new content to be lexically analyzed.    */
+        move_distance = (move_distance < 0) ? 0 : move_distance;
+
         including->input.lexatom_index_end_of_stream = backup_ios;
 
         /* After 'move away' possibly:
@@ -169,6 +177,8 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     }
 
     if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ) {
+        /* (2) AVAILABLE SIZE still too SMALL
+         *     => Allocate new memory for new buffer.                         */                    
         memory_size = (size_t)(QUEX_SETTING_BUFFER_SIZE);
         memory      = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
                                 memory_size * sizeof(QUEX_TYPE_LEXATOM), 
@@ -183,6 +193,8 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
         ownership = E_Ownership_LEXICAL_ANALYZER;
     }
     else {
+        /* (2) AVAILABLE SIZE in including buffer sufficient
+         *     => Use free space for new buffer.                              */                    
         memory                   = &including->input.end_p[1];
         memory_size              = (size_t)(&including->_memory._back[1] - memory);
         including->_memory._back = &including->input.end_p[0];
@@ -578,7 +590,10 @@ QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*  me,
  *                         start. Shall help to avoid extensive backward
  *                         loading.
  *
- * RETURNS: Moved distance.                                                  */
+ * RETURNS: Moved distance >  0: OK.
+ *                         == 0: Nothing has been moved.                     
+ *                         <  0: Overflow. Nothing has been moved. 
+ *                               Lexeme fills complete buffer.                */
 { 
     QUEX_TYPE_LEXATOM*        BeginP = &me->_memory._front[1];
     const QUEX_TYPE_LEXATOM*  EndP   = me->_memory._back;
@@ -594,9 +609,8 @@ QUEX_NAME(Buffer_move_away_passed_content)(QUEX_NAME(Buffer)*  me,
 
     if( me->_read_p - me->_lexeme_start_p >= ContentSize - FallBackN ) { 
         /* OVERFLOW: If stretch from _read_p to _lexeme_start_p 
-         * spans the whole buffer, then nothing can be loaded.               */
-        me->on_overflow(me, /* Forward */ true);
-        return 0;
+         * spans the whole buffer, then nothing can be loaded.                */
+        return -1;
     }
     else if( QUEX_NAME(Buffer_is_end_of_stream_inside)(me) ) {
         /* Refuse the move, if the end of stream is inside buffer.           */
@@ -718,6 +732,10 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
      * Adapt pointers.                                                       */
     move_distance = QUEX_NAME(Buffer_move_away_passed_content)(me, position_register, 
                                                                PositionRegisterN);
+    if( move_distance < 0 ) {
+        me->on_overflow(me, /* Forward */ true);
+        move_distance = 0;
+    }
     if( ! move_distance && me->input.end_p == EndP ) {
         return E_LoadResult_NO_SPACE_FOR_LOAD;  /* No free space for loading. */
     }
@@ -759,7 +777,10 @@ QUEX_NAME(Buffer_move_away_upfront_content)(QUEX_NAME(Buffer)* me)
  *    _read_p          --> points to the lexatom that is currently used
  *                         for triggering. MUST BE INSIDE BUFFER!
  *
- * RETURNS: Distance the the buffer content has been freed to be filled.     */
+ * RETURNS: Moved distance >  0: OK.
+ *                         == 0: Nothing has been moved.                     
+ *                         <  0: Overflow. Nothing has been moved. 
+ *                               Lexeme fills complete buffer.                */
 {
     const QUEX_TYPE_LEXATOM*  BeginP      = &me->_memory._front[1];
     QUEX_TYPE_LEXATOM*        EndP        = me->_memory._back;
@@ -777,9 +798,9 @@ QUEX_NAME(Buffer_move_away_upfront_content)(QUEX_NAME(Buffer)* me)
         return 0;                        /* Begin of stream.                 */
     }
     else if( me->_lexeme_start_p >= LastP ) { 
-        /* If _lexeme_start_p at back, then no new content can be loaded.    */
-        me->on_overflow(me, /* Forward */ false);
-        return 0;
+        /* Overflow. 
+         * If _lexeme_start_p at back, then no new content can be loaded.     */
+        return -1;
     }
 
     /* Max. possible move distance: where 'read_p' or 'lexeme_start_p'
@@ -877,6 +898,13 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
     }
 
     move_distance = QUEX_NAME(Buffer_move_away_upfront_content)(me);
+
+    if( move_distance < 0 ) {
+        /* If _lexeme_start_p at back, then no new content can be loaded.    */
+        me->on_overflow(me, /* Forward */ false);
+        move_distance = 0;
+    }
+
 
     if( ! move_distance ) {
         return E_LoadResult_NO_SPACE_FOR_LOAD; /* Cannot be further back.    */
