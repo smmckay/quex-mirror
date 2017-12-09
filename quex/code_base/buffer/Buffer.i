@@ -17,9 +17,6 @@ QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_forward)(QUEX_NAME(Buffer)*  me,
 QUEX_INLINE void      QUEX_NAME(Buffer_move_forward_undo)(QUEX_NAME(Buffer)* me,
                                                           intmax_t           move_distance,
                                                           ptrdiff_t          move_size);
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_backward)(QUEX_NAME(Buffer)* me, 
-                                                      ptrdiff_t          move_distance);
-
 QUEX_INLINE void*     QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me, 
                                              const void*         ContentBegin,
                                              const void*         ContentEnd);

@@ -46,7 +46,9 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
  * The content may be filled into the engine's buffer or an intermediate 
  * 'raw' buffer which still needs to be converted.                          */
 {
-    if( QUEX_NAME(Buffer_move_away_passed_content)(me, (QUEX_TYPE_LEXATOM**)0, 0) < 0 ) {
+    const ptrdiff_t move_distance = QUEX_NAME(Buffer_move_away_passed_content)(me, (QUEX_TYPE_LEXATOM**)0, 0);
+
+    if( move_distance < 0 ) {
         me->on_overflow(me, /* Forward */ true);
     }
 
