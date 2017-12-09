@@ -15,7 +15,7 @@ QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me,
     void*          begin_p;
     const void*    end_p;
 
-    /* Prepare the buffer for the reception of new input an acquire the
+    /* Prepare the buffer for the reception of new input and acquire the
      * border pointers of where new content can be filled.                   */
     me->fill_prepare(me, &begin_p, &end_p);
 
