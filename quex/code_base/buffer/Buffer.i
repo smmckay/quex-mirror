@@ -12,11 +12,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_forward)(QUEX_NAME(Buffer)*  me, 
-                                                     ptrdiff_t           move_distance);
-QUEX_INLINE void      QUEX_NAME(Buffer_move_forward_undo)(QUEX_NAME(Buffer)* me,
-                                                          intmax_t           move_distance,
-                                                          ptrdiff_t          move_size);
 QUEX_INLINE void*     QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me, 
                                              const void*         ContentBegin,
                                              const void*         ContentEnd);
@@ -33,6 +28,7 @@ QUEX_INLINE void      QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me);
 QUEX_INLINE void      QUEX_NAME(Buffer_on_overflow_DEFAULT)(QUEX_NAME(Buffer)*, bool ForwardF);
 QUEX_INLINE void      QUEX_NAME(Buffer_on_content_change_DEFAULT)(const QUEX_TYPE_LEXATOM*, 
                                                                   const QUEX_TYPE_LEXATOM*);
+QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_to_get_free_space_at_end)(QUEX_NAME(Buffer)* me);
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me, 
@@ -134,8 +130,6 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     QUEX_TYPE_LEXATOM*        memory;
     size_t                    memory_size;
     E_Ownership               ownership;
-    QUEX_TYPE_STREAM_POSITION backup_ios;
-    ptrdiff_t                 move_distance;
 
     if( QUEX_NAME(Buffer_resources_absent)(including) ) {
         if( filler ) {
@@ -147,30 +141,7 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     else if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ) {
         /* (1) AVAILABLE SIZE too SMALL
          *     => Try to move content, so that free space becomes available.  */                    
-
-        /* Buffer_move_away_passed_content() refuses to move if end of stream
-         * is inside buffer. 
-         * => Trick: Backup & restore 'lexatom_index_end_of_stream'           */
-        backup_ios = including->input.lexatom_index_end_of_stream;
-        including->input.lexatom_index_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
-        /* Position registers are only relevant during lexical analyzis.
-         * Inclusion happens in a 'terminal' or external to the lexer step.   
-         * => Position registers = empty set.                                 */
-        move_distance = QUEX_NAME(Buffer_move_away_passed_content)(including, (QUEX_TYPE_LEXATOM**)0, 0);
-
-        /* Overflow irrelevant; The moving of content did not happen to 
-         *                      fill new content to be lexically analyzed.    */
-        move_distance = (move_distance < 0) ? 0 : move_distance;
-
-        including->input.lexatom_index_end_of_stream = backup_ios;
-
-        /* After 'move away' possibly:
-         *
-         *   size(including's buffer) < 'QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE'
-         *
-         * However, 'including' buffer is NOT used before 'included' terminates.
-         * => included is pasted back at the end of including.                */
-        available_size = including->_memory._back - including->input.end_p;
+        available_size = QUEX_NAME(Buffer_move_to_get_free_space_at_end)(including);
     }
 
     if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ) {
@@ -321,7 +292,7 @@ QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFi
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_register_content)(QUEX_NAME(Buffer)*        me,
-                                   QUEX_TYPE_LEXATOM*      EndOfInputP,
+                                   QUEX_TYPE_LEXATOM*        EndOfInputP,
                                    QUEX_TYPE_STREAM_POSITION CharacterIndexBegin)
 /* Registers information about the stream that fills the buffer and its
  * relation to the buffer. 
