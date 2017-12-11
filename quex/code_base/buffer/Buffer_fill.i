@@ -46,11 +46,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
  * The content may be filled into the engine's buffer or an intermediate 
  * 'raw' buffer which still needs to be converted.                          */
 {
-    const ptrdiff_t move_distance = QUEX_NAME(Buffer_move_away_passed_content)(me, (QUEX_TYPE_LEXATOM**)0, 0);
-
-    if( move_distance < 0 ) {
-        me->on_overflow(me, /* Forward */ true);
-    }
+    (void)QUEX_NAME(Buffer_move_away_passed_content)(me, (QUEX_TYPE_LEXATOM**)0, 0);
 
     /* Get the pointers for the border where to fill content.               */
     me->filler->derived.fill_prepare(me->filler, me, begin_p, end_p);

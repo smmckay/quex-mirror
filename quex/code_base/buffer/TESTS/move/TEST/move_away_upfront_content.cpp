@@ -119,10 +119,6 @@ main(int argc, char** argv)
 
         /* Call Function under Test _________________________________________*/
         move_distance = QUEX_NAME(Buffer_move_away_upfront_content)(&buffer);
-        if( move_distance < 0 ) {
-            buffer.on_overflow(&buffer, /* Forward */ false);
-            move_distance = 0;
-        }
 
         self_print(&buffer);
 
