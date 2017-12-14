@@ -64,8 +64,8 @@ $$EXIT-PROCEDURE$$
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
 void
 $on_indentation(QUEX_TYPE_ANALYZER*    me, 
-                                        QUEX_TYPE_INDENTATION  Indentation, 
-                                        QUEX_TYPE_LEXATOM*   Begin) {
+                QUEX_TYPE_INDENTATION  Indentation, 
+                QUEX_TYPE_LEXATOM*   Begin) {
     (void)me;
     (void)Indentation;
     (void)Begin;
@@ -99,6 +99,9 @@ $on_buffer_before_change(void* aux,
                          const QUEX_TYPE_LEXATOM*  EndP)
 {
     (void)aux; (void)BeginP; (void)EndP;
+    QUEX_TYPE_ANALYZER*      self        = (QUEX_TYPE_ANALYZER*)aux;
+    const QUEX_TYPE_LEXATOM* BufferBegin = buffer->_memory._front;
+    const QUEX_TYPE_LEXATOM* BufferEnd   = buffer->_memory._back;
 $$ON_BUFFER_BEFORE_CHANGE$$
 }
 
@@ -110,6 +113,12 @@ $on_buffer_overflow(void*  aux,
                     struct QUEX_NAME(Buffer_tag)* buffer, bool ForwardF)
 {
     (void)aux; (void)buffer; (void)ForwardF;
+    QUEX_TYPE_ANALYZER*      self        = (QUEX_TYPE_ANALYZER*)aux;
+    const QUEX_TYPE_LEXATOM* LexemeBegin = buffer->_lexeme_start_p;
+    const QUEX_TYPE_LEXATOM* LexemeEnd   = buffer->_read_p;
+    const size_t             BufferSize  =   &buffer->_memory._back[-1] 
+                                           - &buffer->_memory._front[1] 
+                                           - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
 $$ON_BUFFER_OVERFLOW$$
 }
 """                         

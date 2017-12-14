@@ -131,6 +131,18 @@ the three handlers shown below.
 
 .. data:: on_buffer_overflow
 
+   Implicit Arguments: ``self``, ``LexemeBegin``, ``LexemeEnd``, and ``BufferSize``.
+
+   The reload process always tries to maintain the current lexeme inside the
+   buffer. If the lexeme becomes as large as the buffer itself, no reload can
+   happen. In the case that the reload failed due to a lexeme being too long
+   this handler is executed. Consider enlarging the buffer or using skippers
+   which do not maintain the lexeme.
+
+.. data:: on_buffer_before_change
+
+   Implicit Arguments: ``self``, ``BufferBegin``, ``BufferEnd``.
+
    The reload process always tries to maintain the current lexeme inside the
    buffer. If the lexeme becomes as large as the buffer itself, no reload can
    happen. In the case that the reload failed due to a lexeme being too long
