@@ -14,7 +14,7 @@ two steps as shown in :ref:`fig:byte-lexatom-buffer` implemented by a
     #. LexatomLoader: Loading lexatoms derived from raw bytes.
 
     TODO: Mention the 'ByteLoader_Memory'
-    TODO: callbacks 'on_overflow', 'on_content_change'
+    TODO: callbacks 'on_buffer_overflow', 'on_content_change'
           that can load sequentially from memory.
 
 The raw byte source may be the Standard C or C++ file handling interface, or

@@ -6,10 +6,7 @@ that referes to the Lexeme macros.
 Following lines are suppossed to be accepted:
 
 ~/prj/quex/trunk/quex ~/prj/quex/trunk/quex/TESTS/code/TEST
-./constants.py:88:                      "OVERFLOW",        # Lexeme too long, reload impossible
-./constants.py:173:           "LexemeEnd",
-./engine/analyzer/terminal/factory.py:161:        """Overflow: Lexeme size exceeds buffer size.
-./engine/analyzer/terminal/factory.py:165:        comment_txt = "Lexeme size exceeds buffer size. No further buffer load possible."
+./constants.py:194:           "LexemeEnd",
 ./engine/state_machine/TEST_help/walk.py:14:def do(Dfa, Lexeme):
 ./engine/state_machine/TEST_help/walk.py:15:    """'Lexeme' can be list of characters (string) or list of numbers.
 ./engine/state_machine/TEST_help/walk.py:17:    __print(__get_step_list(Dfa, Lexeme))
@@ -26,17 +23,13 @@ Following lines are suppossed to be accepted:
 ./input/files/code_fragment.py:320:        if argument_list[0] == "Lexeme":
 ./input/files/code_fragment.py:325:            error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
 ./input/files/code_fragment.py:328:                      "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
+./output/analyzer/modes.py:258:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
 ./output/counter/run_time.py:100:        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
 ./output/counter/run_time.py:103:        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
 ./output/counter/run_time.py:104:        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
 ./output/counter/run_time.py:107:        "    %s = LexemeBegin;\n" % IteratorName
 ./output/counter/run_time.py:126:       + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
 ./output/counter/run_time.py:87:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" \
-./output/languages/cpp/dictionary.py:385:        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
+./output/languages/cpp/dictionary.py:399:        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
 ./output/languages/cpp/templates.py:245:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST
-
-
-
-
-

@@ -12,6 +12,7 @@ import quex.output.counter.run_time                       as     run_time_counte
 from   quex.blackboard import setup as Setup, \
                               Lng
 from   quex.constants  import E_IncidenceIDs
+from   operator import attrgetter
 
 @typed(ModeNameList = [(str, unicode)])
 def do(Mode, ModeNameList):
@@ -142,6 +143,20 @@ def do_run_time_counter(Mode):
         txt.append(code)
 
     return txt
+
+def comment_match_behavior(ModeIterable):
+    """Generate comment that documents the matching behavior of the
+    given mode.
+    """
+    if not Setup.comment_mode_patterns_f: return ""
+
+    txt = "".join(
+        mode.documentation.get_string()
+        for mode in sorted(ModeIterable, key=attrgetter("name"))
+    )
+    return Lng.ML_COMMENT("BEGIN: MODE PATTERNS\n" + \
+                          txt                      + \
+                          "\nEND: MODE PATTERNS")
 
 def frame_this(Code):
     return Lng.frame_all(Code, Setup)

@@ -313,7 +313,7 @@ def my_own_mr_unit_test_function(SourceCode, EndStr,
     label_failure      = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.MATCH_FAILURE, dial_db))
     label_bad_lexatom  = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db))
     label_load_failure = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE, dial_db))
-    label_overflow     = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.OVERFLOW, dial_db))
+    # label_overflow     = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.OVERFLOW, dial_db))
     label_eos          = Lng.LABEL_STR(DoorID.incidence(E_IncidenceIDs.END_OF_STREAM, dial_db))
     label_reentry      = Lng.LABEL_STR(DoorID.global_reentry(dial_db))
     label_reentry2     = Lng.LABEL_STR(DoorID.continue_without_on_after_match(dial_db))
@@ -340,7 +340,7 @@ def my_own_mr_unit_test_function(SourceCode, EndStr,
                        ("$$TERMINAL_FAILURE$$",       label_failure),
                        ("$$ON_BAD_LEXATOM$$",         label_bad_lexatom),
                        ("$$ON_LOAD_FAILURE$$",        label_load_failure),
-                       ("$$NO_MORE_SPACE$$",          label_overflow),
+                       # ("$$NO_MORE_SPACE$$",          label_overflow),
                        ("$$REENTRY$$",                label_reentry),
                        ("$$LEXEME_MACRO_SETUP$$",     Lng.LEXEME_MACRO_SETUP()),
                        ("$$LEXEME_MACRO_CLEAN_UP$$",  Lng.LEXEME_MACRO_CLEAN_UP()),
@@ -411,7 +411,6 @@ $$REENTRY2$$:
 $$TERMINAL_FAILURE$$:
 $$ON_BAD_LEXATOM$$:
 $$ON_LOAD_FAILURE$$:
-$$NO_MORE_SPACE$$:
 $$TERMINAL_END_OF_STREAM$$:
 $$SKIP_RANGE_OPEN$$: /* <skip range open> */
 $$END_STR$$
@@ -422,7 +421,6 @@ $$END_STR$$
         goto $$TERMINAL_FAILURE$$;
         goto $$ON_BAD_LEXATOM$$;
         goto $$ON_LOAD_FAILURE$$;
-        goto $$NO_MORE_SPACE$$;
         goto $$TERMINAL_END_OF_STREAM$$;
         goto $$SKIP_RANGE_OPEN$$;
         goto $$REENTRY$$;

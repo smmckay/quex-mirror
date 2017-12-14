@@ -25,9 +25,11 @@ static void instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
                                  bool EndOfStreamInBufferF,
                                  QUEX_TYPE_LEXATOM* memory, ptrdiff_t MemorySize,
                                  QUEX_TYPE_LEXATOM* content, ptrdiff_t ContentSize);
-static void self_on_content_change(const QUEX_TYPE_LEXATOM* BeginP, 
+static void self_on_content_change(void* aux,
+                                   const QUEX_TYPE_LEXATOM* BeginP, 
                                    const QUEX_TYPE_LEXATOM* EndP);
-static void self_on_overflow(QUEX_NAME(Buffer)* me, bool ForwardF);
+static void self_on_overflow(void* aux,
+                             QUEX_NAME(Buffer)* me, bool ForwardF);
 
 
 static int cl_has(int argc, char** argv, const char* What)
@@ -104,16 +106,18 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
 }
 
 static void
-self_on_content_change(const QUEX_TYPE_LEXATOM* BeginP, 
+self_on_content_change(void* aux,
+                       const QUEX_TYPE_LEXATOM* BeginP, 
                        const QUEX_TYPE_LEXATOM* EndP)
 { 
     printf("on_content_change: size: %i;\n", (int)(EndP - BeginP));
 }
 
 static void
-self_on_overflow(QUEX_NAME(Buffer)* me, bool ForwardF)
+self_on_overflow(void* aux,
+                 QUEX_NAME(Buffer)* me, bool ForwardF)
 { 
-    printf("on_overflow: %s;\n", ForwardF ? "forward" : "backward");
+    printf("on_buffer_overflow: %s;\n", ForwardF ? "forward" : "backward");
 }
 
 #endif /* INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H */

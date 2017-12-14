@@ -64,18 +64,28 @@ enum {
     QUEX_NAME(ModeID_M) = 0
 };
     
-        extern QUEX_NAME(Mode)  QUEX_NAME(M);
+extern QUEX_NAME(Mode)  QUEX_NAME(M);
 
 
 extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
-extern     __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER*);
+extern  __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-extern     bool QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)*);
-extern     bool QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)*);
-extern     bool QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)*);
+extern  bool QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)* mode);
 #endif
-
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+extern  bool QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)* mode);
+#endif
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+extern  bool QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* mode);
+#endif
+extern  void QUEX_NAME(M_on_buffer_before_change)(void* aux, const QUEX_TYPE_LEXATOM* BeginP, const QUEX_TYPE_LEXATOM* EndP);
+extern  void QUEX_NAME(M_on_buffer_overflow)(void* aux, struct QUEX_NAME(Buffer_tag)* buffer, bool ForwardF);
+extern  void QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
+extern  void QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
+#ifdef QUEX_OPTION_INDENTATION_TRIGGER
+extern  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+#endif
 
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
@@ -283,7 +293,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 287 "TestAnalyzer.h"
+#   line 297 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -314,7 +324,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 318 "TestAnalyzer.h"
+#   line 328 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -360,7 +370,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 364 "TestAnalyzer.h"
+#   line 374 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -447,7 +457,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 451 "TestAnalyzer.h"
+#   line 461 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -468,7 +478,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 472 "TestAnalyzer.h"
+#   line 482 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -487,7 +497,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 491 "TestAnalyzer.h"
+#   line 501 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -562,7 +572,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 566 "TestAnalyzer.h"
+#   line 576 "TestAnalyzer.h"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

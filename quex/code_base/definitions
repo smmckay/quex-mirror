@@ -114,7 +114,6 @@ typedef enum {
     E_LoadResult_INCOMPLETE,        /* Drain not filled completely.           */
     E_LoadResult_BAD_LEXATOM,       /* Encoding error in stream.              */
     E_LoadResult_NO_MORE_DATA,      /* No more data to fill drain.            */
-    E_LoadResult_NO_SPACE_FOR_LOAD, /* No space to load content into.         */
     E_LoadResult_FAILURE,           /* General low-level load failure.        */ 
     E_LoadResult_VOID               /* General low-level load failure.        */ 
 } E_LoadResult;
@@ -126,7 +125,6 @@ typedef enum {
              : (LR) == E_LoadResult_INCOMPLETE        ? "INCOMPLETE"        \
              : (LR) == E_LoadResult_BAD_LEXATOM       ? "BAD LEXATOM"       \
              : (LR) == E_LoadResult_NO_MORE_DATA      ? "NO MORE DATA"      \
-             : (LR) == E_LoadResult_NO_SPACE_FOR_LOAD ? "NO SPACE FOR LOAD" \
              : (LR) == E_LoadResult_FAILURE           ? "FAILURE"           \
              : (LR) == E_LoadResult_VOID              ? "VOID"              \
              :                                          "<error>")
@@ -198,7 +196,7 @@ typedef enum {
       : (E) == E_Error_NoHandler_OnFailure        ? "on_failure"         \
       : (E) == E_Error_NoHandler_OnIndentationBad ? "on_indentation_bad" \
       : (E) == E_Error_NoHandler_OnLoadFailure    ? "on_load_failure"    \
-      : (E) == E_Error_NoHandler_OnOverflow       ? "on_overflow"        \
+      : (E) == E_Error_NoHandler_OnOverflow       ? "on_buffer_overflow"        \
       : (E) == E_Error_NoHandler_OnSkipRangeOpen  ? "on_skip_range_open" \
       :                                             (const char*)0)
 
@@ -390,7 +388,6 @@ typedef enum {
 #   define __quex_debug_counter()                        \
            QUEX_NAME(Counter_print_this)(&self.counter)
 
-
 #else /* not defined(QUEX_OPTION_DEBUG_SHOW) */
 
 #   define __quex_debug(FormatStr)                /* empty */
@@ -444,6 +441,19 @@ typedef enum {
                                               *(me->buffer._read_p));
 #else
 #    define __quex_optional_statistics(StateIdx) /* empty */
+#endif
+
+#ifdef     QUEX_OPTION_DEBUG_SHOW_MODES
+#    define __quex_debug_show_mode_transition(me, ModeP)                                       \
+        if( me->__current_mode_p != 0x0 ) {                                                    \
+            __QUEX_STD_fprintf(stderr, "| Mode change from %s\n", me->__current_mode_p->name); \
+            __QUEX_STD_fprintf(stderr, "|             to   %s\n", ModeP->name);                \
+        } else {                                                                               \
+            __QUEX_STD_fprintf(stderr, "| Mode change to %s\n", ModeP->name);                  \
+        }                                                                                
+#else
+#    define __quex_debug_show_mode_transition(me, ModeP)                                       \
+        /* empty */
 #endif
 
 #define __QUEX_MESSAGE_CHARACTER_ENCODING_SPECIFIED_WITHOUT_CONVERTER \

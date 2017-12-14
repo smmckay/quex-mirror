@@ -221,11 +221,12 @@ before_check_consistency(BufferBefore_t*    me,
 
     hwut_verify(buffer->input.lexatom_index_begin - me->lexatom_index_begin == Delta);
 
-    if( Verdict == E_LoadResult_NO_SPACE_FOR_LOAD ) {
+    if( Verdict == E_LoadResult_FAILURE ) {
         /* Overflow: common_on_overflow() sets 'lexeme_start_p = read_p'.
          * => in that case it is excused.                                    */
     }
-    else {
+    else 
+    {
         hwut_verify(me->lexeme_start_p - buffer->_lexeme_start_p == Delta);
         if(    buffer->_lexeme_start_p > &buffer->_memory._front[1] 
             && me->lexeme_start_m1 != QUEX_SETTING_BUFFER_LIMIT_CODE ) {
@@ -274,15 +275,18 @@ random_between(QUEX_TYPE_LEXATOM* A, QUEX_TYPE_LEXATOM* B)
 }
 
 static void      
-common_on_content_change(const QUEX_TYPE_LEXATOM* BeginP, 
+common_on_content_change(void* aux, 
+                         const QUEX_TYPE_LEXATOM* BeginP, 
                          const QUEX_TYPE_LEXATOM* EndP)
 {
     common_on_content_change_count += 1;
 }
 
 static void
-common_on_overflow(QUEX_NAME(Buffer)* me, bool ForwardF)
+common_on_overflow(void* aux, QUEX_NAME(Buffer)* me, bool ForwardF)
 {
+    (void)aux;
+
     me->_lexeme_start_p = me->_read_p;
     common_on_overflow_count += 1;
 }

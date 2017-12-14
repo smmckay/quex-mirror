@@ -535,7 +535,7 @@ runs on a specific encoding (``--encoding`` ) which is dynamic, e.g. UTF8, then 
 happen on parts of a character. The check mark sign is coded in three bytes 0xE2, 0x9C, 
 and 0x93. Each byte is read separately and causes a separate state transition.  
 
-.. cmdoption:: --buffer-element-size, -b, --bes 1|2|4
+.. cmdoption:: --buffer-element-size, -b, --bes 1, 2, 4, ...
 
     With this option the number of bytes is specified that a buffer element occupies.  
 

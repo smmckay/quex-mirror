@@ -23,18 +23,22 @@ QUEX_NAMESPACE_MAIN_OPEN
 
     QUEX_INLINE void 
     QUEX_NAME(set_mode_brutally)(QUEX_TYPE_ANALYZER* me, QUEX_NAME(Mode)* ModeP) 
+    /* Core of all mode setting functions. 
+     *
+     * ADAPTS: -- current mode pointer.
+     *         -- current analyzer function pointer
+     *         -- setting the buffer's handlers for 'on_buffer_overflow' and 
+     *            'on_buffer_before_change'                                   */
     { 
-#       ifdef     QUEX_OPTION_DEBUG_SHOW_MODES
-        if( me->__current_mode_p != 0x0 ) {
-            __QUEX_STD_fprintf(stderr, "| Mode change from %s\n", me->__current_mode_p->name);
-            __QUEX_STD_fprintf(stderr, "|             to   %s\n", ModeP->name);
-        } else {
-            __QUEX_STD_fprintf(stderr, "| Mode change to %s\n", ModeP->name);
-        }
-#       endif
+        __quex_debug_show_mode_transition(me, ModeP);
 
         me->__current_mode_p          = ModeP;
         me->current_analyzer_function = ModeP->analyzer_function; 
+
+        QUEX_NAME(Buffer_set_event_handlers)(&me->buffer, 
+                                             me->__current_mode_p->on_buffer_before_change,
+                                             me->__current_mode_p->on_buffer_overflow,
+                                             (void*)me);
     }
 
     QUEX_INLINE void

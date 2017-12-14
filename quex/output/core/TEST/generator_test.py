@@ -446,9 +446,6 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
         E_IncidenceIDs.BAD_LEXATOM:   Terminal(on_failure, "BAD_LEXATOM", 
                                                E_IncidenceIDs.BAD_LEXATOM,
                                                dial_db=dial_db),
-        E_IncidenceIDs.OVERFLOW:      Terminal(on_failure, "NO_SPACE_TO_LOAD", 
-                                               E_IncidenceIDs.OVERFLOW,
-                                               dial_db=dial_db),
         E_IncidenceIDs.LOAD_FAILURE:  Terminal(on_failure, "LOAD_FAILURE", 
                                                E_IncidenceIDs.LOAD_FAILURE,
                                                dial_db=dial_db),
@@ -556,6 +553,9 @@ QUEX_NAME(Mode) QUEX_NAME(M) = {
       /* has_entry_from)   */ NULL,
       /* has_exit_to       */ NULL,
 #     endif
+      /* on_buffer_before_change */ (void (*)(void*, const uint8_t*, const uint8_t*))0,
+      /* on_buffer_overflow      */ (void (*)(void*, QUEX_NAME(Buffer)*, bool))0,
+
       /* analyzer_function */ QUEX_NAME(Mr_analyzer_function),
 };
 
@@ -574,6 +574,9 @@ QUEX_NAME(Mode) QUEX_NAME(M2) = {
       /* has_entry_from)   */ NULL,
       /* has_exit_to       */ NULL,
 #     endif
+      /* on_buffer_before_change */ (void (*)(void*, const uint8_t*, const uint8_t*))0,
+      /* on_buffer_overflow      */ (void (*)(void*, QUEX_NAME(Buffer)*, bool))0,
+
       /* analyzer_function */ QUEX_NAME(Mrs_analyzer_function),
 };
 #endif

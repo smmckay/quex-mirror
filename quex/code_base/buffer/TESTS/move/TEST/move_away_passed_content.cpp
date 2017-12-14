@@ -1,4 +1,4 @@
-/* PURPOSE: Test Buffer_move_away_passed_content()
+/* PURPOSE: Test Buffer_load_prepare_forward()
  *
  * The tested function shall free some space ahead inside the buffer,
  * so that new content can be loaded. Detailed comment, see function
@@ -92,8 +92,9 @@ main(int argc, char** argv)
                              end_of_stream_in_buffer_f,
                              &memory[0],  MemorySize, 
                              &content[0], ContentSize);
-        buffer.on_content_change = self_on_content_change;
-        buffer.on_overflow       = self_on_overflow;
+        buffer.event.on_buffer_before_change = self_on_content_change;
+        buffer.event.on_buffer_overflow      = self_on_overflow;
+        buffer.event.aux               = (void*)0;
 
         printf("\n-( %2i )---------------------------------------------\n", (int)G_key_get(&it));
         self_print(&buffer);
@@ -106,7 +107,7 @@ main(int argc, char** argv)
         min_p                    = QUEX_MIN(buffer._read_p, buffer._lexeme_start_p);
         memcpy(&backup[0], min_p, buffer.input.end_p - min_p);
 
-        move_distance = QUEX_NAME(Buffer_move_away_passed_content)(&buffer, (QUEX_TYPE_LEXATOM**)0, 0);
+        move_distance = QUEX_NAME(Buffer_load_prepare_forward)(&buffer, (QUEX_TYPE_LEXATOM**)0, 0);
 
         self_print(&buffer);
 

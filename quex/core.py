@@ -1,23 +1,21 @@
-import quex.output.languages.cpp.source_package          as     source_package
+import quex.output.languages.cpp.source_package  as     source_package
 #
-import quex.input.files.core                             as     quex_file_parser
-#                                                        
-from   quex.engine.misc.tools                            import flatten_list_of_lists
-from   quex.engine.misc.file_operations                  import write_safely_and_close
+import quex.input.files.core                     as     quex_file_parser
+#                                                
+from   quex.engine.misc.tools                    import flatten_list_of_lists
+from   quex.engine.misc.file_operations          import write_safely_and_close
 #
-import quex.output.core.engine                           as     engine_generator
-import quex.output.analyzer.core                         as     analyzer_class
-import quex.output.analyzer.configuration                as     configuration 
-import quex.output.analyzer.lexeme_converter             as     lexeme_converter 
-import quex.output.token.core             as     token_class
-import quex.output.analyzer.modes            as     mode_classes
-import quex.output.languages.graphviz.core               as     grapviz_generator
+import quex.output.core.engine                   as     engine_generator
+import quex.output.analyzer.core                 as     analyzer_class
+import quex.output.analyzer.configuration        as     configuration 
+import quex.output.analyzer.lexeme_converter     as     lexeme_converter 
+import quex.output.token.core                    as     token_class
+import quex.output.analyzer.modes                as     mode_classes
+import quex.output.languages.graphviz.core       as     grapviz_generator
 
 import quex.blackboard as     blackboard
 from   quex.blackboard import setup as Setup, \
                               Lng
-
-from   operator import attrgetter
 
 def do():
     """Generates state machines for all modes. Each mode results into 
@@ -80,7 +78,7 @@ def analyzer_functions_get(ModeDB):
     )
 
     code.append(
-        do_comment_pattern_action_pairs(ModeDB.itervalues())
+        engine_generator.comment_match_behavior(ModeDB.itervalues())
     )
 
     # generate frame for analyser code
@@ -116,23 +114,6 @@ def do_token_class_info():
         comment.append("%s\n" % line)
     comment.append("<<<QUEX-OPTIONS>>>")
     return Lng.ML_COMMENT("".join(comment), IndentN=0)
-
-def do_comment_pattern_action_pairs(ModeIterable):
-    """Write some comment on the pattern action pairs of all modes.
-    """
-    if not Setup.comment_mode_patterns_f:
-        return ""
-
-    txt = "".join(
-        mode.documentation.get_string()
-        for mode in sorted(ModeIterable, key=attrgetter("name"))
-    )
-    comment = Lng.ML_COMMENT("BEGIN: MODE PATTERNS\n" + \
-                             txt                      + \
-                             "\nEND: MODE PATTERNS")
-    return comment 
-
-    # (*) [Optional] Make a customized token class
 
 def _prepare_all(mode_db, class_token_implementation, 
                  global_lexeme_null_declaration): 

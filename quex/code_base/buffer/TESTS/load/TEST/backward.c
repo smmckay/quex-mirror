@@ -13,7 +13,6 @@
  * The behavior is checked with a set of 'hwut_verify' conditions on the 
  * buffer's state and its relation to its setting before.
  *
- *
  * OUTPUTS:
  *    * adapted pointers: ._read_p, ._lexeme_start_p.
  *    * buffer's content.
@@ -96,8 +95,11 @@ walk_backward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
     QUEX_NAME(Buffer_construct)(&buffer, filler,
                                 &memory[0], BufferElementN,
                                 (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL); 
-    buffer.on_overflow       = common_on_overflow;
-    buffer.on_content_change = common_on_content_change;
+
+    QUEX_NAME(Buffer_set_event_handlers)(&buffer,
+                                         common_on_content_change,
+                                         common_on_overflow,
+                                         (void*)0);
 
     load_forward_until_eos(&buffer);
 

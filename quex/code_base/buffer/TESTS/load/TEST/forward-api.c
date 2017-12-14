@@ -153,8 +153,9 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
                                 &self.memory[0], BufferElementN,
                                 (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL); 
 
-    self.buffer.on_overflow       = common_on_overflow;
-    self.buffer.on_content_change = common_on_content_change;
+    self.buffer.event.on_buffer_overflow      = common_on_overflow;
+    self.buffer.event.on_buffer_before_change = common_on_content_change;
+    self.buffer.event.aux                     = (void*)0;
 
     /* Initial load ___________________________________________________________
      *                                                                       */
@@ -267,7 +268,7 @@ self_NO_SPACE_FOR_LOAD()
                    /* EmptyFile         */ false,
                    /* LexatomLoaderType */ E_LexatomLoader_Plain,
                    /* ErrorCodePosition */ -1);
-        hwut_verify(self_load(false) == E_LoadResult_NO_SPACE_FOR_LOAD);
+        hwut_verify(self_load(false) == E_LoadResult_FAILURE);
     }
 }
 

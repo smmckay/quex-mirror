@@ -103,7 +103,7 @@ QUEX_NAME(Buffer_seek_backward)(QUEX_NAME(Buffer)* me,
  * Seeking error => Buffer is completely left as is. In particular no change
  *                  to '_read_p' or '_lexeme_start_p'. 
  * 
- * RETURNS: True -- if positioning was successful, 
+ * RETURNS: True  -- if positioning was successful, 
  *          False -- else.                                                   */
 {
     QUEX_TYPE_LEXATOM*       BeginP = &me->_memory._front[1];

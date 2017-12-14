@@ -25,9 +25,12 @@ QUEX_INLINE void      QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me,
                                                      QUEX_TYPE_LEXATOM* EndOfFileP);
 QUEX_INLINE void      QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me);
 
-QUEX_INLINE void      QUEX_NAME(Buffer_on_overflow_DEFAULT)(QUEX_NAME(Buffer)*, bool ForwardF);
-QUEX_INLINE void      QUEX_NAME(Buffer_on_content_change_DEFAULT)(const QUEX_TYPE_LEXATOM*, 
-                                                                  const QUEX_TYPE_LEXATOM*);
+QUEX_INLINE void      QUEX_NAME(Buffer_on_overflow_DEFAULT)(void*              aux, 
+                                                            QUEX_NAME(Buffer)* buffer, 
+                                                            bool               ForwardF);
+QUEX_INLINE void      QUEX_NAME(Buffer_on_before_buffer_change_DEFAULT)(void*  aux,
+                                                                        const  QUEX_TYPE_LEXATOM*, 
+                                                                        const  QUEX_TYPE_LEXATOM*);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_to_get_free_space_at_end)(QUEX_NAME(Buffer)* me);
 
 QUEX_INLINE void
@@ -50,8 +53,10 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
     me->fill_finish  = QUEX_NAME(Buffer_fill_finish);
 
     /* Event handlers.                                                       */
-    me->on_content_change = QUEX_NAME(Buffer_on_content_change_DEFAULT);
-    me->on_overflow       = QUEX_NAME(Buffer_on_overflow_DEFAULT);
+    QUEX_NAME(Buffer_set_event_handlers)(me, 
+        (void (*)(void*, const QUEX_TYPE_LEXATOM*, const QUEX_TYPE_LEXATOM*))0,
+        (void (*)(void*, QUEX_NAME(Buffer)*, bool))0,
+        (void*)0);
 
     /* Initialize.                                                           */
     QUEX_NAME(Buffer_init)(me, EndOfFileP);
@@ -77,6 +82,21 @@ QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
     QUEX_NAME(BufferMemory_destruct)(&me->_memory);
 
     QUEX_NAME(Buffer_resources_absent_mark)(me);
+}
+
+QUEX_INLINE void  
+QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
+                                     void   (*on_before_change)(void* aux,
+                                                                const QUEX_TYPE_LEXATOM*  BeginP,
+                                                                const QUEX_TYPE_LEXATOM*  EndP),
+                                     void   (*on_overflow)(void*  aux,
+                                                           struct QUEX_NAME(Buffer_tag)*, 
+                                                           bool   ForwardF),
+                                     void*  aux)
+{
+    me->event.on_buffer_before_change = on_before_change;
+    me->event.on_buffer_overflow      = on_overflow;
+    me->event.aux                     = aux;
 }
 
 QUEX_INLINE bool
@@ -403,56 +423,6 @@ QUEX_NAME(Buffer_is_begin_of_stream)(QUEX_NAME(Buffer)* buffer)
     if     ( buffer->_lexeme_start_p != &buffer->_memory._front[1] ) return false;
     else if( QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer) )   return false;
     else                                                             return true;
-}
-
-QUEX_INLINE void      
-QUEX_NAME(Buffer_on_content_change_DEFAULT)(const QUEX_TYPE_LEXATOM* BeginP, 
-                                            const QUEX_TYPE_LEXATOM* EndP)
-{ (void)BeginP; (void)EndP; }
-
-QUEX_INLINE void
-QUEX_NAME(Buffer_on_overflow_DEFAULT)(QUEX_NAME(Buffer)* me, bool ForwardF)
-{
-    (void)me; (void)ForwardF;
-#   ifdef QUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE
-    uint8_t                   utf8_encoded_str[512]; 
-    char                      message[1024];
-    char*                     it         = &message[0];
-    const char*               MessageEnd = &message[1024];
-    uint8_t*                  WEnd       = 0x0;
-    uint8_t*                  witerator  = 0x0;
-    QUEX_TYPE_LEXATOM*        End        = 0x0;
-    const QUEX_TYPE_LEXATOM*  iterator   = 0x0;
-
-    /* Print out the lexeme start, so that the user has a hint. */
-    WEnd        = utf8_encoded_str + 512 - 7;
-    witerator   = utf8_encoded_str; 
-    End         = me->_memory._back; 
-    iterator    = me->_lexeme_start_p; 
-
-    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, utf8)(&iterator, End, &witerator, WEnd);
-
-    /* No use of 'snprintf()' because not all systems seem to support it propperly. */
-    it += __QUEX_STD_strlcpy(it, 
-              "Distance between lexeme start and current pointer exceeds buffer size.\n"
-              "(tried to load buffer",
-              MessageEnd - it);
-    it += __QUEX_STD_strlcpy(it, ForwardF ? "forward)" : "backward)",                   
-                             MessageEnd - it);
-    it += __QUEX_STD_strlcpy(it, "As a hint consider the beginning of the lexeme:\n[[", 
-                             MessageEnd - it);
-    it += __QUEX_STD_strlcpy(it, (char*)utf8_encoded_str, MessageEnd - it);
-    it += __QUEX_STD_strlcpy(it, "]]\n", MessageEnd - it);
-
-    QUEX_ERROR_EXIT(message);
-#   else
-    QUEX_ERROR_EXIT("Distance between lexeme start and current pointer exceeds buffer size.\n"
-                    "(tried to load buffer forward). Please, compile with option\n\n"
-                    "    QUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE\n\n"
-                    "in order to get a more informative output. Most likely, one of your patterns\n"
-                    "eats more than you intended. Alternatively you might want to set the buffer\n"
-                    "size to a greater value or use skippers (<skip: [ \\n\\t]> for example).\n");
-#   endif /* QUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE */
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

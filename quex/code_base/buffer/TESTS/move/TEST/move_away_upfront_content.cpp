@@ -1,4 +1,4 @@
-/* PURPOSE: Test Buffer_move_away_upfront_content()
+/* PURPOSE: Test Buffer_load_prepare_backward()
  *
  * The tested function shall free some space in the rear buffer,
  * so that old content can be reloaded. Detailed comment, see function
@@ -97,8 +97,10 @@ main(int argc, char** argv)
                              &memory[0], MemorySize, 
                              &content[0], ContentSize);
         buffer.input.lexatom_index_begin = lexatom_index_at_begin;
-        buffer.on_content_change = self_on_content_change;
-        buffer.on_overflow       = self_on_overflow;
+        buffer.event.on_buffer_before_change = self_on_content_change;
+        buffer.event.on_buffer_overflow       = self_on_overflow;
+        buffer.event.aux               = (void*)0;
+
 
         printf("\n-( %2i )---------------------------------------------\n", (int)G_key_get(&it));
         self_print(&buffer);
@@ -118,7 +120,7 @@ main(int argc, char** argv)
         memcpy(&backup[0], min_p, buffer.input.end_p - min_p);
 
         /* Call Function under Test _________________________________________*/
-        move_distance = QUEX_NAME(Buffer_move_away_upfront_content)(&buffer);
+        move_distance = QUEX_NAME(Buffer_load_prepare_backward)(&buffer);
 
         self_print(&buffer);
 

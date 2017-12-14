@@ -71,20 +71,20 @@ standard_incidence_db = {
     "on_match":             (E_IncidenceIDs.MATCH,       "On each match (before pattern action)."),
 #   TODO        "on_token_stamp":            "On event of token stamping.",
 #   instead of: QUEX_ACTION_TOKEN_STAMP 
-    "on_bad_lexatom":       (E_IncidenceIDs.BAD_LEXATOM,         "On each match (after pattern action)."),
-    "on_after_match":       (E_IncidenceIDs.AFTER_MATCH,         "On each match (after pattern action)."),
-    "on_failure":           (E_IncidenceIDs.MATCH_FAILURE,       "In case that no pattern matches."),
-    "on_load_failure":      (E_IncidenceIDs.LOAD_FAILURE,        "Loading failed for some reason."),
-    "on_overflow":          (E_IncidenceIDs.OVERFLOW,            "Loading impossible; lexeme too long."),
-    "on_skip_range_open":   (E_IncidenceIDs.SKIP_RANGE_OPEN,     "On missing skip range delimiter."),
-    "on_end_of_stream":     (E_IncidenceIDs.END_OF_STREAM,       "On end of file/stream."),
+    "on_bad_lexatom":            (E_IncidenceIDs.BAD_LEXATOM,          "On each match (after pattern action)."),
+    "on_after_match":            (E_IncidenceIDs.AFTER_MATCH,          "On each match (after pattern action)."),
+    "on_failure":                (E_IncidenceIDs.MATCH_FAILURE,        "In case that no pattern matches."),
+    "on_load_failure":           (E_IncidenceIDs.LOAD_FAILURE,         "Loading failed for some reason."),
+    "on_buffer_before_change":   (E_IncidenceIDs.BUFFER_BEFORE_CHANGE, "Buffer content is about to change."),
+    "on_buffer_overflow":        (E_IncidenceIDs.BUFFER_OVERFLOW,      "Loading impossible; lexeme too long."),
+    "on_skip_range_open":        (E_IncidenceIDs.SKIP_RANGE_OPEN,      "On missing skip range delimiter."),
+    "on_end_of_stream":          (E_IncidenceIDs.END_OF_STREAM,        "On end of file/stream."),
 }
 
 def standard_incidence_db_is_mandatory(IncidenceId):
     return IncidenceId in [
         E_IncidenceIDs.MATCH_FAILURE, 
         E_IncidenceIDs.LOAD_FAILURE, 
-        E_IncidenceIDs.OVERFLOW, 
         E_IncidenceIDs.END_OF_STREAM,
         E_IncidenceIDs.BAD_LEXATOM,      # i.e. encoding error
         E_IncidenceIDs.SKIP_RANGE_OPEN,
@@ -96,7 +96,6 @@ def standard_incidence_db_get_terminal_type(IncidenceId):
         E_IncidenceIDs.MATCH_FAILURE:   E_TerminalType.MATCH_FAILURE,
         E_IncidenceIDs.END_OF_STREAM:   E_TerminalType.END_OF_STREAM,
         E_IncidenceIDs.BAD_LEXATOM:     E_TerminalType.BAD_LEXATOM,
-        E_IncidenceIDs.OVERFLOW:        E_TerminalType.OVERFLOW,
         E_IncidenceIDs.LOAD_FAILURE:    E_TerminalType.LOAD_FAILURE,
         E_IncidenceIDs.SKIP_RANGE_OPEN: E_TerminalType.SKIP_RANGE_OPEN,
         # Otherwise, it would try to make terminals for that in 'extract_terminal_db()'

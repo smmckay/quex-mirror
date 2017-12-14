@@ -23,6 +23,9 @@ QUEX_NAME(Mode) QUEX_NAME(M) = {
     /* has_entry_from    */ QUEX_NAME(M_has_entry_from),
     /* has_exit_to       */ QUEX_NAME(M_has_exit_to),
 #   endif
+    /* on_buffer_before_change */ QUEX_NAME(M_on_buffer_before_change),
+    /* on_buffer_overflow      */ QUEX_NAME(M_on_buffer_overflow),
+
     /* analyzer_function */ QUEX_NAME(M_analyzer_function)
 };
 
@@ -71,6 +74,7 @@ QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
     return false;
 }
+
 bool
 QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
@@ -89,6 +93,7 @@ switch( Mode->id ) {
     }
 
 }
+
 bool
 QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
@@ -108,6 +113,26 @@ switch( Mode->id ) {
 
 }
 #endif    
+
+void
+QUEX_NAME(M_on_buffer_before_change)(void* aux,
+                         const QUEX_TYPE_LEXATOM*  BeginP,
+                         const QUEX_TYPE_LEXATOM*  EndP)
+{
+    (void)aux; (void)BeginP; (void)EndP;
+
+}
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer, 
+                                         bool               ForwardF);
+void
+QUEX_NAME(M_on_buffer_overflow)(void*  aux,
+                    struct QUEX_NAME(Buffer_tag)* buffer, bool ForwardF)
+{
+    (void)aux; (void)buffer; (void)ForwardF;
+QUEX_NAME(Buffer_print_overflow_message)(buffer, ForwardF);
+}
 #undef self
 #undef LexemeNull
 #undef RETURN
@@ -152,7 +177,7 @@ QUEX_NAME(M_counter)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUE
     }
     me->buffer._read_p = LexemeBegin;
 
-    /* (21 from BEFORE_ENTRY)  */
+    /* (22 from BEFORE_ENTRY)  */
     __QUEX_IF_COUNT_COLUMNS(count_reference_p = (me->buffer._read_p));
 
 __QUEX_IF_COUNT_COLUMNS(count_reference_p = (me->buffer._read_p));
@@ -160,8 +185,7 @@ __QUEX_IF_COUNT_COLUMNS(count_reference_p = (me->buffer._read_p));
     input = *(me->buffer._read_p);
 
 _13:
-    __quex_debug("Init State\n");
-    __quex_debug_state(21);
+    __quex_debug_init_state(22);
 if     ( input >= 0xB )  goto _4;
 else if( input == 0xA )  goto _2;
 else if( input == 0x9 )  goto _3;
@@ -170,64 +194,67 @@ else                     goto _4;
 
     __quex_assert_no_passage();
 _8:
-    /* (21 from 25)  */
+    /* (22 from 27)  */
     goto _13;
 
 
     __quex_assert_no_passage();
 _5:
-    /* (DROP_OUT from 22)  */
-    goto _10;
+    /* (DROP_OUT from 23)  */
+goto _10;
+
 
     __quex_debug("Drop-Out Catcher\n");
 
 
     __quex_assert_no_passage();
 _6:
-    /* (DROP_OUT from 23)  */
-    goto _11;
+    /* (DROP_OUT from 24)  */
+goto _11;
+
 
 
     __quex_assert_no_passage();
 _7:
-    /* (DROP_OUT from 24)  */
-    goto _12;
+    /* (DROP_OUT from 25)  */
+goto _12;
+
 
 
     __quex_assert_no_passage();
-_4:
-    /* (24 from 21)  */
+_3:
+    /* (24 from 22)  */
     ++(me->buffer._read_p);
 
     input = *(me->buffer._read_p);
 
 
     __quex_debug_state(24);
-goto _7;
+goto _6;
 
 
     __quex_assert_no_passage();
-_2:
-    /* (22 from 21)  */
+_4:
+    /* (25 from 22)  */
     ++(me->buffer._read_p);
 
     input = *(me->buffer._read_p);
 
 
-    __quex_debug_state(22);
-goto _5;
+    __quex_debug_state(25);
+goto _7;
 
 
     __quex_assert_no_passage();
-_3:
-    /* (23 from 21)  */
+_2:
+    /* (23 from 22)  */
     ++(me->buffer._read_p);
 
     input = *(me->buffer._read_p);
 
 
     __quex_debug_state(23);
-goto _6;
+goto _5;
 
     /* (*) Terminal states _______________________________________________________
      *
@@ -241,7 +268,7 @@ __QUEX_IF_COUNT_COLUMNS_ADD((size_t)(((me->buffer._read_p) - count_reference_p))
 goto _0;
 
 _10:
-    __quex_debug("* TERMINAL <LOOP 5>\n");
+    __quex_debug("* TERMINAL <LOOP 6>\n");
 __QUEX_IF_COUNT_LINES_ADD((size_t)1);
 
     __QUEX_IF_COUNT_COLUMNS((me->counter._column_number_at_end) = (size_t)1);
@@ -253,7 +280,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _8;
 goto _0;
 
 _11:
-    __quex_debug("* TERMINAL <LOOP 6>\n");
+    __quex_debug("* TERMINAL <LOOP 7>\n");
 __QUEX_IF_COUNT_COLUMNS_ADD((size_t)(((me->buffer._read_p) - count_reference_p - 1)));
 
 __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end -= 1);
@@ -267,7 +294,7 @@ if( me->buffer._read_p != LexemeEnd ) goto _8;
 goto _0;
 
 _12:
-    __quex_debug("* TERMINAL <LOOP 7>\n");
+    __quex_debug("* TERMINAL <LOOP 8>\n");
 if( me->buffer._read_p != LexemeEnd ) goto _8;
 
 __QUEX_IF_COUNT_COLUMNS_ADD((size_t)(((me->buffer._read_p) - count_reference_p)));
@@ -318,12 +345,12 @@ _18:
 #ifdef    CONTINUE
 #   undef CONTINUE
 #endif
-#define   CONTINUE do { goto _18; } while(0)
+#define   CONTINUE do { goto _17; } while(0)
 
 #ifdef    RETURN
 #   undef RETURN
 #endif
-#define   RETURN   do { goto _17; } while(0)
+#define   RETURN   do { goto _16; } while(0)
 
 __QUEX_TYPE_ANALYZER_RETURN_VALUE  
 QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me) 
@@ -338,7 +365,7 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 #   endif
 #   define self (*((QUEX_TYPE_ANALYZER*)me))
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
-#   define QUEX_LABEL_STATE_ROUTER _21
+#   define QUEX_LABEL_STATE_ROUTER _20
 #   define M    (QUEX_NAME(M))
 
     /* Lexeme setup: 
@@ -381,48 +408,49 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 #   if defined(QUEX_OPTION_ASSERTS)
     me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
 #   endif
-_20:
+_19:
     me->buffer._lexeme_start_p = me->buffer._read_p;
     QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);
-_7:
-    /* (18 from BEFORE_ENTRY) (18 from RELOAD_FORWARD)  */
+_6:
+    /* (19 from BEFORE_ENTRY) (19 from RELOAD_FORWARD)  */
 
     input = *(me->buffer._read_p);
 
 
-    __quex_debug("Init State\n");
-    __quex_debug_state(18);
-if     ( input == 0x58 )  goto _8;
-else if( input == 0x0 )   goto _11;
-else                      goto _9;
-
-
-    __quex_assert_no_passage();
-_10:
-    /* (DROP_OUT from 19)  */
-    goto _0;
-_14:
-    __quex_debug("Drop-Out Catcher\n");
+    __quex_debug_init_state(19);
+if     ( input == 0x58 )  goto _7;
+else if( input == 0x0 )   goto _10;
+else                      goto _8;
 
 
     __quex_assert_no_passage();
 _9:
-    /* (DROP_OUT from 18)  */
-        me->buffer._read_p = me->buffer._lexeme_start_p + 1;
-goto _5;
-    goto _14;
+    /* (DROP_OUT from 20)  */
+goto _0;
+
+_13:
+    __quex_debug("Drop-Out Catcher\n");
 
 
     __quex_assert_no_passage();
 _8:
-    /* (19 from 18)  */
+    /* (DROP_OUT from 19)  */
+    me->buffer._read_p = me->buffer._lexeme_start_p + 1;
+goto _4;
+
+    goto _13;
+
+
+    __quex_assert_no_passage();
+_7:
+    /* (20 from 19)  */
     ++(me->buffer._read_p);
 
     input = *(me->buffer._read_p);
 
 
-    __quex_debug_state(19);
-goto _10;
+    __quex_debug_state(20);
+goto _9;
 
     /* (*) Terminal states _______________________________________________________
      *
@@ -454,18 +482,6 @@ __QUEX_PURE_RETURN;;
      */
 __QUEX_PURE_RETURN;
 _3:
-    __quex_debug("* TERMINAL OVERFLOW\n");
-QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
-{
-self.error_code = E_Error_NoHandler_OnOverflow;
-self_send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
-
-}
-    /* Lexeme size exceeds buffer size. No further buffer load possible.
-     */
-__QUEX_PURE_RETURN;
-_4:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
@@ -476,7 +492,7 @@ self_send(QUEX_TOKEN_ID(TERMINATION));
      * tokens can be filled after the termination token.
      */
 __QUEX_PURE_RETURN;
-_5:
+_4:
     __quex_debug("* TERMINAL FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
@@ -486,7 +502,7 @@ __QUEX_PURE_RETURN;;
 
 }
 RETURN;
-_6:
+_5:
     __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
@@ -511,7 +527,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 515 "TestAnalyzer.cpp"
+#   line 531 "TestAnalyzer.cpp"
 
 }
 RETURN;
@@ -522,27 +538,26 @@ if(0) {
     goto _3;
     goto _4;
     goto _5;
-    goto _6;
     goto _0;
 }
 #   ifndef QUEX_OPTION_COMPUTED_GOTOS
     __quex_assert_no_passage();
-_21:
+_20:
 switch( target_state_index ) {
-case 4: {
-goto _4;}
-case 7: {
-goto _7;}
+case 3: {
+goto _3;}
+case 6: {
+goto _6;}
 default: {
-goto _7;}
+goto _6;}
 }
 #   endif /* QUEX_OPTION_COMPUTED_GOTOS */
 
 
     __quex_assert_no_passage();
-_11:
-    /* (RELOAD_FORWARD from 18)  */
-    target_state_index = QUEX_LABEL(7); target_state_else_index = QUEX_LABEL(4);
+_10:
+    /* (RELOAD_FORWARD from 19)  */
+    target_state_index = QUEX_LABEL(6); target_state_else_index = QUEX_LABEL(3);
 
 
 
@@ -551,6 +566,8 @@ _11:
     __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
     
     __quex_debug_reload_before();                 
+    /* Callbacks: 'on_before_content_change()' and 'on_buffer_overflow()'
+     * are called during load process upon occurrence.                        */
     load_result = QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
     __quex_debug_reload_after(load_result);
 
@@ -558,20 +575,19 @@ _11:
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto _1;
     case E_LoadResult_FAILURE:           goto _2;
-    case E_LoadResult_NO_SPACE_FOR_LOAD: goto _3;
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
     }
 
-_17:
+_16:
 /* RETURN -- after executing 'on_after_match' code. */
     __QUEX_PURE_RETURN;
 
 
-_18:
+_17:
 /* CONTINUE -- after executing 'on_after_match' code. */
 
-_19:
+_18:
 /* CONTINUE -- without executing 'on_after_match' (e.g. on FAILURE). */
 
 
@@ -587,18 +603,18 @@ _19:
     }
 
 
-goto _20;
+goto _19;
 
     __quex_assert_no_passage();
 
     /* Following labels are referenced in macros. It cannot be detected
      * whether the macros are applied in user code or not. To avoid compiler.
      * warnings of unused labels, they are referenced in unreachable code.   */
-    goto _17; /* in RETURN                */
-    goto _18; /* in CONTINUE              */
-    goto _19; /* in CONTINUE and skippers */
+    goto _16; /* in RETURN                */
+    goto _17; /* in CONTINUE              */
+    goto _18; /* in CONTINUE and skippers */
 #   if ! defined(QUEX_OPTION_COMPUTED_GOTOS)
-    goto _21; /* in QUEX_GOTO_STATE       */
+    goto _20; /* in QUEX_GOTO_STATE       */
 #   endif
 
     /* Prevent compiler warning 'unused variable'.                           */

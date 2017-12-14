@@ -1,7 +1,8 @@
-from   quex.engine.misc.string_handling  import blue_print
-from   quex.blackboard                   import setup as Setup, \
-                                                Lng, \
-                                                E_IncidenceIDs
+import quex.output.analyzer.indentation_handler as     indentation_handler
+from   quex.engine.misc.string_handling         import blue_print
+from   quex.blackboard                          import setup as Setup, \
+                                                       Lng, \
+                                                       E_IncidenceIDs
 from   operator import attrgetter
 
 def do(ModeDb):
@@ -47,14 +48,14 @@ def write_member_functions(Modes):
 mode_function_implementation_str = \
 """
 void
-QUEX_NAME($$MODE_NAME$$_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* FromMode) {
+$on_entry(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* FromMode) {
     (void)me;
     (void)FromMode;
 $$ENTER-PROCEDURE$$
 }
 
 void
-QUEX_NAME($$MODE_NAME$$_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
+$on_exit(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
     (void)me;
     (void)ToMode;
 $$EXIT-PROCEDURE$$
@@ -62,7 +63,7 @@ $$EXIT-PROCEDURE$$
 
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
 void
-QUEX_NAME($$MODE_NAME$$_on_indentation)(QUEX_TYPE_ANALYZER*    me, 
+$on_indentation(QUEX_TYPE_ANALYZER*    me, 
                                         QUEX_TYPE_INDENTATION  Indentation, 
                                         QUEX_TYPE_LEXATOM*   Begin) {
     (void)me;
@@ -74,21 +75,43 @@ $$ON_INDENTATION-PROCEDURE$$
 
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 bool
-QUEX_NAME($$MODE_NAME$$_has_base)(const QUEX_NAME(Mode)* Mode) {
+$has_base(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
 $$HAS_BASE_MODE$$
 }
+
 bool
-QUEX_NAME($$MODE_NAME$$_has_entry_from)(const QUEX_NAME(Mode)* Mode) {
+$has_entry_from(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
 $$HAS_ENTRANCE_FROM$$
 }
+
 bool
-QUEX_NAME($$MODE_NAME$$_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
+$has_exit_to(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
 $$HAS_EXIT_TO$$
 }
 #endif    
+
+void
+$on_buffer_before_change(void* aux,
+                         const QUEX_TYPE_LEXATOM*  BeginP,
+                         const QUEX_TYPE_LEXATOM*  EndP)
+{
+    (void)aux; (void)BeginP; (void)EndP;
+$$ON_BUFFER_BEFORE_CHANGE$$
+}
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer, 
+                                         bool               ForwardF);
+void
+$on_buffer_overflow(void*  aux,
+                    struct QUEX_NAME(Buffer_tag)* buffer, bool ForwardF)
+{
+    (void)aux; (void)buffer; (void)ForwardF;
+$$ON_BUFFER_OVERFLOW$$
+}
 """                         
 
 def get_implementation_of_mode_functions(mode, Modes):
@@ -115,7 +138,7 @@ def get_implementation_of_mode_functions(mode, Modes):
         on_exit_str += Lng.SOURCE_REFERENCED(code_fragment)
 
     # (*) on indentation
-    on_indentation_str = get_on_indentation_handler(mode)
+    on_indentation_str = indentation_handler.do(mode)
 
     # (*) has base mode
     base_mode_sequence = mode.implemented_base_mode_name_sequence() 
@@ -142,7 +165,25 @@ def get_implementation_of_mode_functions(mode, Modes):
         get_IsOneOfThoseCode(exit_list, ConsiderDerivedClassesF=True)
     )
     
-    return blue_print(mode_function_implementation_str, [
+    # (*) on buffer before change
+    code_fragment = mode.incidence_db.get(E_IncidenceIDs.BUFFER_BEFORE_CHANGE)
+    if code_fragment is not None:
+        on_buffer_before_change = Lng.SOURCE_REFERENCED(code_fragment)
+    else:
+        on_buffer_before_change = Lng.ON_BUFFER_BEFORE_CHANGE_default()
+
+    # (*) on buffer overflow
+    code_fragment = mode.incidence_db.get(E_IncidenceIDs.BUFFER_OVERFLOW)
+    if code_fragment is not None:
+        on_buffer_overflow = Lng.SOURCE_REFERENCED(code_fragment)
+    else:
+        on_buffer_overflow = Lng.ON_BUFFER_OVERFLOW_default()
+
+
+    txt = __replace_function_names(mode_function_implementation_str, mode, 
+                                   NullFunctionsF=False)
+
+    return blue_print(txt, [
         ["$$ENTER-PROCEDURE$$",      on_entry_str],
         ["$$EXIT-PROCEDURE$$",       on_exit_str],
         #
@@ -151,6 +192,9 @@ def get_implementation_of_mode_functions(mode, Modes):
         ["$$HAS_BASE_MODE$$",        has_base_mode_str],
         ["$$HAS_ENTRANCE_FROM$$",    has_entry_from_str],
         ["$$HAS_EXIT_TO$$",          has_exit_to_str],
+        #
+        ["$$ON_BUFFER_BEFORE_CHANGE$$", on_buffer_before_change],
+        ["$$ON_BUFFER_OVERFLOW$$",      on_buffer_overflow],
         #
         ["$$MODE_NAME$$",            mode.name],
     ])
@@ -174,133 +218,8 @@ def get_IsOneOfThoseCode(ThoseModes, CheckBaseModeF = False,
 
     txt = Lng.CASE_SELECT("Mode->id", case_code_list, default)
 
-
     return txt
 
-on_indentation_str = """
-#   define __QUEX_RETURN return
-#   define RETURN        return
-#   define CONTINUE      return
-#   define Lexeme        LexemeBegin
-#   define LexemeEnd     (me->buffer._read_p)
-
-    QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
-    QUEX_TYPE_INDENTATION*        start = 0x0;
-
-    __quex_assert((long)Indentation >= 0);
-
-    if( Indentation > *(stack->back) ) {
-        ++(stack->back);
-        if( stack->back == stack->memory_end ) QUEX_ERROR_EXIT("Indentation stack overflow.");
-        *(stack->back) = Indentation;
-$$INDENT-PROCEDURE$$
-        __QUEX_RETURN;
-    }
-    else if( Indentation == *(stack->back) ) {
-$$NODENT-PROCEDURE$$
-    }
-    else  {
-        start = stack->back;
-        --(stack->back);
-#       if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-#       define First true
-$$DEDENT-PROCEDURE$$
-#       undef  First
-#       endif
-        while( Indentation < *(stack->back) ) {
-            --(stack->back);
-#           if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-#           define First false
-$$DEDENT-PROCEDURE$$
-#           undef  First
-#           endif
-        }
-
-        if( Indentation == *(stack->back) ) { 
-            /* 'Landing' must happen on indentation border. */
-#           define ClosedN (start - stack->back)
-$$N-DEDENT-PROCEDURE$$
-#           undef  ClosedN
-        } else { 
-#            define IndentationStackSize ((size_t)(1 + start - stack->front))
-#            define IndentationStack(I)  (*(stack->front + I))
-#            define IndentationUpper     (*(stack->back))
-#            define IndentationLower     ((stack->back == stack->front) ? *(stack->front) : *(stack->back - 1))
-#            define ClosedN              (start - stack->back)
-$$INDENTATION-ERROR-PROCEDURE$$
-#            undef IndentationStackSize 
-#            undef IndentationStack  
-#            undef IndentationUpper     
-#            undef IndentationLower     
-#            undef ClosedN
-        }
-    }
-    __QUEX_RETURN;
-
-#   undef Lexeme    
-#   undef LexemeEnd 
-"""
-
-def get_on_indentation_handler(Mode):
-    # 'on_dedent' and 'on_n_dedent cannot be defined at the same time.
-    assert not (    E_IncidenceIDs.INDENTATION_DEDENT   in Mode.incidence_db \
-                and E_IncidenceIDs.INDENTATION_N_DEDENT in Mode.incidence_db)
-
-    # A mode that deals only with the default indentation handler relies
-    # on what is defined in '$QUEX_PATH/analyzer/member/on_indentation.i'
-    if Mode.incidence_db.default_indentation_handler_f():
-        return "    return;"
-
-    code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_INDENT)
-    if code_fragment is not None:
-        on_indent_str   = Lng.SOURCE_REFERENCED(code_fragment)
-    else:
-        on_indent_str   = Lng.TOKEN_SEND("QUEX_TOKEN_ID(INDENT)")
-
-    code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_NODENT)
-    if code_fragment is not None:
-        on_nodent_str   = Lng.SOURCE_REFERENCED(code_fragment)
-    else:
-        on_nodent_str   = Lng.TOKEN_SEND("QUEX_TOKEN_ID(NODENT)")
-
-    on_dedent_str   = ""
-    on_n_dedent_str = ""
-    code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_DEDENT)
-    if code_fragment is not None:
-        on_dedent_str = Lng.SOURCE_REFERENCED(code_fragment)
-
-    code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_N_DEDENT)
-    if code_fragment is not None:
-        on_n_dedent_str = Lng.SOURCE_REFERENCED(code_fragment)
-
-    if (not on_dedent_str) and (not on_n_dedent_str):
-        # If no 'on_dedent' and no 'on_n_dedent' is defined ... 
-        on_dedent_str    = ""
-        on_n_dedent_str  = "#if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)\n"
-        on_n_dedent_str += "    %s\n" % Lng.TOKEN_SEND_N("ClosedN", "QUEX_TOKEN_ID(DEDENT)")
-        on_n_dedent_str += "#else\n"
-        on_n_dedent_str += "    while( start-- != stack->back ) %s\n" % Lng.TOKEN_SEND("QUEX_TOKEN_ID(DEDENT)")
-        on_n_dedent_str += "#endif\n"
-
-    code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_ERROR)
-    if code_fragment is not None:
-        on_indentation_error = Lng.SOURCE_REFERENCED(code_fragment) 
-    else:
-        # Default: Blow the program if there is an indentation error.
-        on_indentation_error = 'QUEX_ERROR_EXIT("Lexical analyzer mode \'%s\': indentation error detected!\\n"' \
-                               % Mode.name + \
-                               '                "No \'on_indentation_error\' handler has been specified.\\n");'
-
-    # Note: 'on_indentation_bad' is applied in code generation for 
-    #       indentation counter in 'indentation_counter.py'.
-    txt = blue_print(on_indentation_str, [
-        ["$$INDENT-PROCEDURE$$",            on_indent_str],
-        ["$$NODENT-PROCEDURE$$",            on_nodent_str],
-        ["$$DEDENT-PROCEDURE$$",            on_dedent_str],
-        ["$$N-DEDENT-PROCEDURE$$",          on_n_dedent_str],
-        ["$$INDENTATION-ERROR-PROCEDURE$$", on_indentation_error]
-    ])
-    return txt
 
 def get_related_code_fragments(ModeDb):
     """
@@ -312,9 +231,10 @@ def get_related_code_fragments(ModeDb):
 
     """
     Modes = ModeDb.values()
-    members_txt = ""    
-    for mode in Modes:
-        members_txt += "        extern QUEX_NAME(Mode)  QUEX_NAME(%s);\n" % mode.name
+    members_txt = "".join(
+        "extern QUEX_NAME(Mode)  QUEX_NAME(%s);\n" % mode.name
+        for mode in Modes
+    )
 
     mode_functions_txt = __get_function_declaration(Modes, FriendF=False)
     friends_txt        = __get_function_declaration(Modes, FriendF=True)
@@ -328,44 +248,67 @@ def __get_function_declaration(Modes, FriendF=False):
     if FriendF: prolog = "    friend "
     else:       prolog = "extern "
 
-    def functions(Prolog, ReturnType, NameList, ArgList):
-        txt = ""
-        for name in NameList:
-            function_signature = "%s QUEX_NAME(%s_%s)(%s);" % \
-                     (ReturnType, mode.name, name, ArgList)
-            txt += "%s" % Prolog + "    " + function_signature + "\n"
+    db = {
+        "analyzer_function":       [ "__QUEX_TYPE_ANALYZER_RETURN_VALUE", 
+                                     [("QUEX_TYPE_ANALYZER*", "me")]],
 
-        return txt
+        "on_indentation":          [ "void",
+                                     [("QUEX_TYPE_ANALYZER*",   "me"), 
+                                      ("QUEX_TYPE_INDENTATION", "Indentation"),
+                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
 
-    txt = ""
-    on_indentation_txt = ""
+        "on_entry":                [ "void",
+                                     [("QUEX_TYPE_ANALYZER*",    "me"),
+                                      ("const QUEX_NAME(Mode)*", "mode")]],
+        "on_exit":                 [ "void",
+                                     [("QUEX_TYPE_ANALYZER*",    "me"),
+                                      ("const QUEX_NAME(Mode)*", "mode")]],
+        "has_base":                [ "bool",
+                                     [("const QUEX_NAME(Mode)*", "mode")]],
+        "has_entry_from":          [ "bool",
+                                     [("const QUEX_NAME(Mode)*", "mode")]],
+        "has_exit_to":             [ "bool",
+                                     [("const QUEX_NAME(Mode)*", "mode")]],
+                          
+        "on_buffer_before_change": [ "void", 
+                                    [("void*",                    "aux"),
+                                     ("const QUEX_TYPE_LEXATOM*", "BeginP"),
+                                     ("const QUEX_TYPE_LEXATOM*", "EndP")]],
+
+        "on_buffer_overflow":      [ "void",
+                                    [("void*",                         "aux"),
+                                     ("struct QUEX_NAME(Buffer_tag)*", "buffer"), 
+                                     ("bool",                          "ForwardF") ]],
+    }
+    def function_name(Name, ModeName):
+        return Lng.NAME_IN_NAMESPACE_MAIN("%s_%s" % (ModeName, Name))
+
+    def prepare(name, txt):
+        if name in ("has_base", "has_entry_from", "has_exit_to"):
+            new_txt  = "#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n"
+            new_txt += txt
+            new_txt += "#endif\n"
+            return new_txt
+        elif name == "on_indentation":
+            new_txt  = "#ifdef QUEX_OPTION_INDENTATION_TRIGGER\n"
+            new_txt += txt
+            new_txt += "#endif\n"
+            return new_txt
+        else:
+            return txt
+
+    txt = []
     for mode in Modes:
-        txt += functions(prolog, "__QUEX_TYPE_ANALYZER_RETURN_VALUE", 
-                                ["analyzer_function"],
-                                "QUEX_TYPE_ANALYZER*")
 
-        # If one of the following events is specified, then we need an 'on_indentation' handler
-        if mode.incidence_db.has_key(E_IncidenceIDs.INDENTATION_HANDLER): 
-            on_indentation_txt = functions(prolog, "void", ["on_indentation"], 
-                                 "QUEX_TYPE_ANALYZER*, QUEX_TYPE_INDENTATION, QUEX_TYPE_LEXATOM*")
+        txt.extend(
+            prepare(name, 
+                    "%s;\n" % Lng.SIGNATURE(prolog, 
+                                            function_name(name, mode.name), 
+                                            ReturnType=db[name][0], ArgList=db[name][1]))
+            for name in sorted(db.iterkeys())
+        ) 
 
-        if mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY): 
-            txt += functions(prolog, "void", ["on_entry"], 
-                                    "QUEX_TYPE_ANALYZER*, const QUEX_NAME(Mode)*")
-
-        if mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT): 
-            txt += functions(prolog, "void", ["on_exit"], 
-                                    "QUEX_TYPE_ANALYZER*, const QUEX_NAME(Mode)*")
-
-        txt += "#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK\n"
-        txt += functions(prolog, "bool", ["has_base", "has_entry_from", "has_exit_to"], 
-                                "const QUEX_NAME(Mode)*")
-        txt += "#endif\n"
-
-    txt += on_indentation_txt
-    txt += "\n"
-
-    return txt
+    return "".join(txt)
 
 def mode_id_definition(ModeDb):
     if not ModeDb: return ""
@@ -399,32 +342,38 @@ def __setup(ModeDb):
     return "".join(txt)
 
 def initialization(mode):
-    analyzer_function = Lng.NAME_IN_NAMESPACE_MAIN("%s_analyzer_function" % mode.name)
-    on_indentation    = Lng.NAME_IN_NAMESPACE_MAIN("%s_on_indentation"    % mode.name)
-    on_entry          = Lng.NAME_IN_NAMESPACE_MAIN("%s_on_entry"          % mode.name)
-    on_exit           = Lng.NAME_IN_NAMESPACE_MAIN("%s_on_exit"           % mode.name)
-    has_base          = Lng.NAME_IN_NAMESPACE_MAIN("%s_has_base"          % mode.name)
-    has_entry_from    = Lng.NAME_IN_NAMESPACE_MAIN("%s_has_entry_from"    % mode.name)
-    has_exit_to       = Lng.NAME_IN_NAMESPACE_MAIN("%s_has_exit_to"       % mode.name)
+    return __replace_function_names(mode_setup_str, mode)
 
-    if not mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY):
+def __replace_function_names(txt, mode, NullFunctionsF=True):
+    def name(Name, ModeName):
+        return Lng.NAME_IN_NAMESPACE_MAIN("%s_%s" % (ModeName, Name))
+
+    if NullFunctionsF and not mode.incidence_db.has_key(E_IncidenceIDs.MODE_ENTRY):
         on_entry = Lng.NAME_IN_NAMESPACE_MAIN("Mode_on_entry_exit_null_function")
+    else:
+        on_entry = name("on_entry", mode.name)
 
-    if not mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT):
+    if NullFunctionsF and not mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT):
         on_exit = Lng.NAME_IN_NAMESPACE_MAIN("Mode_on_entry_exit_null_function")
+    else:
+        on_exit = name("on_exit", mode.name)
 
-    if not mode.incidence_db.has_key(E_IncidenceIDs.INDENTATION_HANDLER):
+    if NullFunctionsF and not mode.incidence_db.has_key(E_IncidenceIDs.INDENTATION_HANDLER):
         on_indentation = Lng.NAME_IN_NAMESPACE_MAIN("Mode_on_indentation_null_function")
+    else:
+        on_indentation = name("on_indentation", mode.name)
 
-    return blue_print(mode_setup_str, [
-        ["$$MN$$",             mode.name],
-        ["$analyzer_function", analyzer_function],
-        ["$on_indentation",    on_indentation],
-        ["$on_entry",          on_entry],
-        ["$on_exit",           on_exit],
-        ["$has_base",          has_base],
-        ["$has_entry_from",    has_entry_from],
-        ["$has_exit_to",       has_exit_to]
+    return blue_print(txt, [
+        ["$$MN$$",                   mode.name],
+        ["$analyzer_function",       name("analyzer_function", mode.name)],
+        ["$on_indentation",          on_indentation],
+        ["$on_entry",                on_entry],
+        ["$on_exit",                 on_exit],
+        ["$has_base",                name("has_base", mode.name)],
+        ["$has_entry_from",          name("has_entry_from", mode.name)],
+        ["$has_exit_to",             name("has_exit_to", mode.name)],
+        ["$on_buffer_before_change", name("on_buffer_before_change", mode.name)],
+        ["$on_buffer_overflow",      name("on_buffer_overflow", mode.name)],
     ])
 
 mode_setup_str = \
@@ -442,6 +391,9 @@ mode_setup_str = \
     /* has_entry_from    */ $has_entry_from,
     /* has_exit_to       */ $has_exit_to,
 #   endif
+    /* on_buffer_before_change */ $on_buffer_before_change,
+    /* on_buffer_overflow      */ $on_buffer_overflow,
+
     /* analyzer_function */ $analyzer_function
 };
 """

@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.67.5"
-#define QUEX_SETTING_BUILD_DATE        "Sat Jun 24 10:40:45 2017"
+#define QUEX_SETTING_BUILD_DATE        "Wed Dec 13 09:34:58 2017"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -202,6 +202,7 @@
 /* Begin of line pre-condition requires an extra flag in the buffer
  * structure. Only out-comment this in case of tough memory restrictions,
  * if no begin of line pre-condition is required.                            */
+/* #define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
 
 /* Type Definitions 
  *

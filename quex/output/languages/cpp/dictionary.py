@@ -109,7 +109,6 @@ class Language(dict):
             E_IncidenceIDs.INDENTATION_BAD: "E_Error_NoHandler_OnIndentationBad",
             E_IncidenceIDs.BAD_LEXATOM:     "E_Error_NoHandler_OnBadLexatom",
             E_IncidenceIDs.LOAD_FAILURE:    "E_Error_NoHandler_OnLoadFailure",
-            E_IncidenceIDs.OVERFLOW:        "E_Error_NoHandler_OnOverflow",
         }
             
     def ASSERT(self, Condition):
@@ -962,6 +961,10 @@ class Language(dict):
     def ASSIGN(self, X, Y):
         return "%s = %s;" % (X, Y)
 
+    def SIGNATURE(self, Prolog, FunctionName, ReturnType, ArgList):
+        return "%s %s %s(%s)" % (Prolog, ReturnType, FunctionName, 
+                                 ", ".join("%s %s" % (type_str, name_str) for type_str, name_str in ArgList))
+
     def STATE_DEBUG_INFO(self, TheState, GlobalEntryF):
         assert isinstance(TheState, Processor)
 
@@ -1183,6 +1186,12 @@ class Language(dict):
         #      exits anyway immediately--after 'on_after_match'.
         return "%s\n" % self.TOKEN_SEND("QUEX_TOKEN_ID(TERMINATION)")
 
+    def ON_BUFFER_BEFORE_CHANGE_default(self):
+        return ""
+
+    def ON_BUFFER_OVERFLOW_default(self):
+        return "QUEX_NAME(Buffer_print_overflow_message)(buffer, ForwardF);"
+
     @typed(dial_db=DialDB)
     def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):
         assert self.__code_generation_reload_label is None
@@ -1196,18 +1205,17 @@ class Language(dict):
 
         adr_bad_lexatom  = DoorID.incidence(E_IncidenceIDs.BAD_LEXATOM, dial_db).related_address
         adr_load_failure = DoorID.incidence(E_IncidenceIDs.LOAD_FAILURE, dial_db).related_address
-        adr_overflow     = DoorID.incidence(E_IncidenceIDs.OVERFLOW, dial_db).related_address
 
-        txt = txt.replace("$$ON_BAD_LEXATOM$$",       self.LABEL_STR_BY_ADR(adr_bad_lexatom))
-        txt = txt.replace("$$ON_LOAD_FAILURE$$",      self.LABEL_STR_BY_ADR(adr_load_failure))
-        txt = txt.replace("$$ON_NO_SPACE_FOR_LOAD$$", self.LABEL_STR_BY_ADR(adr_overflow))
-        txt = txt.replace("$$LOAD_RESULT$$",          self.REGISTER_NAME(E_R.LoadResult))
-        txt = txt.replace("$$BUFFER_LOAD_FW$$",       self.NAME_IN_NAMESPACE_MAIN("Buffer_load_forward"))
-        txt = txt.replace("$$BUFFER_LOAD_BW$$",       self.NAME_IN_NAMESPACE_MAIN("Buffer_load_backward"))
+        txt = blue_print(txt, [
+            ("$$ON_BAD_LEXATOM$$",  self.LABEL_STR_BY_ADR(adr_bad_lexatom)),
+            ("$$ON_LOAD_FAILURE$$", self.LABEL_STR_BY_ADR(adr_load_failure)),
+            ("$$LOAD_RESULT$$",     self.REGISTER_NAME(E_R.LoadResult)),
+            ("$$BUFFER_LOAD_FW$$",  self.NAME_IN_NAMESPACE_MAIN("Buffer_load_forward")),
+            ("$$BUFFER_LOAD_BW$$",  self.NAME_IN_NAMESPACE_MAIN("Buffer_load_backward"))
+        ])
 
         dial_db.mark_address_as_gotoed(adr_bad_lexatom)
         dial_db.mark_address_as_gotoed(adr_load_failure)
-        dial_db.mark_address_as_gotoed(adr_overflow)
 
         return txt 
 
@@ -1259,6 +1267,8 @@ cpp_reload_forward_str = """
     __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
     
     __quex_debug_reload_before();                 
+    /* Callbacks: 'on_before_content_change()' and 'on_buffer_overflow()'
+     * are called during load process upon occurrence.                        */
     $$LOAD_RESULT$$ = $$BUFFER_LOAD_FW$$(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
@@ -1266,7 +1276,6 @@ cpp_reload_forward_str = """
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto $$ON_BAD_LEXATOM$$;
     case E_LoadResult_FAILURE:           goto $$ON_LOAD_FAILURE$$;
-    case E_LoadResult_NO_SPACE_FOR_LOAD: goto $$ON_NO_SPACE_FOR_LOAD$$;
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
     }
@@ -1278,6 +1287,8 @@ cpp_reload_backward_str = """
     __quex_assert(input == QUEX_SETTING_BUFFER_LIMIT_CODE);
 
     __quex_debug_reload_before();                 
+    /* Callbacks: 'on_before_content_change()' and 'on_buffer_overflow()'
+     * are called during load process upon occurrence.                        */
     $$LOAD_RESULT$$ = $$BUFFER_LOAD_BW$$(&me->buffer);
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
@@ -1285,7 +1296,6 @@ cpp_reload_backward_str = """
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto $$ON_BAD_LEXATOM$$;
     case E_LoadResult_FAILURE:           goto $$ON_LOAD_FAILURE$$;
-    case E_LoadResult_NO_SPACE_FOR_LOAD: goto $$ON_NO_SPACE_FOR_LOAD$$;
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
     }

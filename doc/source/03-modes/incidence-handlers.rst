@@ -129,7 +129,7 @@ the three handlers shown below.
    analyzers data structures, or if a defective low-level file system driver is
    used.
 
-.. data:: on_overflow
+.. data:: on_buffer_overflow
 
    The reload process always tries to maintain the current lexeme inside the
    buffer. If the lexeme becomes as large as the buffer itself, no reload can
