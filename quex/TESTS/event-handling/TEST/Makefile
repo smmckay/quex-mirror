@@ -57,6 +57,13 @@ transit%.exe: transit%.qx lexer.c
 		`icu-config --ldflags`      \
 		-D__TEST_CHOICES='"1, 2, 3, error"'
 
+on_buffer_overflow.exe: on_buffer_overflow.qx 
+	echo $<
+	$(QUEX) -i $< -o Simple --token-id-prefix TK_ --language C
+	$(LD) ./lexer.c Simple.c -o $@ -ggdb \
+		  -D__TEST_DESCRIPTION='"Customized 'on_buffer_overflow' event."' \
+          -DQUEX_SETTING_BUFFER_SIZE=4 
+
 on_skip_range_open.exe: on_skip_range_open.qx 
 	echo $<
 	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --debug-exception --language C

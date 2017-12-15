@@ -1,15 +1,14 @@
 token { X; }
 
 mode X :
-<skip_range: "/*" "*/">
-<skip:       [ \t\n] >
 {
     [^x]+ => TK_X;
 
     on_buffer_overflow { 
-        printf("LexemeBegin: ((%p))", (const char*)LexemeBegin);
-        printf("LexemeEnd:   ((%p)) + %i", (const char*)LexemeBegin, (int)(LexemeEnd - LexemeBegin));
-        printf("BufferSize:  %i", (int)BufferSize);
+        printf("self:        ((%p))\n", &self);
+        printf("LexemeBegin: ((%p))\n", (const char*)LexemeBegin);
+        printf("LexemeEnd:   ((%p)) + %i\n", (const char*)LexemeBegin, (int)(LexemeEnd - LexemeBegin));
+        printf("BufferSize:  %i\n", (int)BufferSize);
     }
 }
 

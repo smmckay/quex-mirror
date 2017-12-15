@@ -99,9 +99,8 @@ $on_buffer_before_change(void* aux,
                          const QUEX_TYPE_LEXATOM*  EndP)
 {
     (void)aux; (void)BeginP; (void)EndP;
-    QUEX_TYPE_ANALYZER*      self        = (QUEX_TYPE_ANALYZER*)aux;
-    const QUEX_TYPE_LEXATOM* BufferBegin = buffer->_memory._front;
-    const QUEX_TYPE_LEXATOM* BufferEnd   = buffer->_memory._back;
+    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer->_memory._front;
+    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer->_memory._back;
 $$ON_BUFFER_BEFORE_CHANGE$$
 }
 
@@ -113,7 +112,6 @@ $on_buffer_overflow(void*  aux,
                     struct QUEX_NAME(Buffer_tag)* buffer, bool ForwardF)
 {
     (void)aux; (void)buffer; (void)ForwardF;
-    QUEX_TYPE_ANALYZER*      self        = (QUEX_TYPE_ANALYZER*)aux;
     const QUEX_TYPE_LEXATOM* LexemeBegin = buffer->_lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = buffer->_read_p;
     const size_t             BufferSize  =   &buffer->_memory._back[-1] 
