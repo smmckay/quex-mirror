@@ -21,9 +21,6 @@ QUEX_INLINE void      QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me, 
                                                          ptrdiff_t          move_distance);
 
-QUEX_INLINE void      QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me);
-QUEX_INLINE void      QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me,
-                                                                bool               ForwardF);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*   me, 
                                                                                 QUEX_TYPE_LEXATOM**  move_begin_p);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me);
@@ -422,6 +419,35 @@ QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
     return move_distance;
 }
 
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_move_to_get_free_space_at_end)(QUEX_NAME(Buffer)* me)
+/* Circumvent restriction of 'Buffer_load_prepare_forward()' which 
+ * refuses to move if end of stream is inside buffer. 
+ *
+ * => Trick: Backup & restore 'lexatom_index_end_of_stream'               
+ *
+ * RETURNS: Available elements at end of buffer.                              */
+{
+    QUEX_TYPE_STREAM_POSITION backup_ios;
+
+    backup_ios                            = me->input.lexatom_index_end_of_stream;
+    me->input.lexatom_index_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
+    /* Position registers are only relevant during lexical analyzis.
+     * Inclusion happens in a 'terminal' or external to the lexer step.   
+     * => Position registers = empty set.                                     */
+    (void)QUEX_NAME(Buffer_load_prepare_forward)(me, (QUEX_TYPE_LEXATOM**)0, 0);
+
+    me->input.lexatom_index_end_of_stream = backup_ios;
+
+    /* After 'move away' possibly:
+     *
+     *   size(me's buffer) < 'QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE'
+     *
+     * However, 'me' buffer is NOT used before 'included' terminates.
+     * => included is pasted back at the end of me.                           */
+    return me->_memory._back - me->input.end_p;
+}
+
 QUEX_INLINE ptrdiff_t        
 QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)
 /* Free some space in the REAR so that previous content can be re-loaded. Some 
@@ -463,25 +489,6 @@ QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
     return move_distance;
-}
-
-QUEX_INLINE void
-QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
-{
-    if( ! me->event.on_buffer_before_change ) return;
-
-    me->event.on_buffer_before_change(me->event.aux, 
-                                      &me->_memory._front[1], 
-                                      me->input.end_p);
-}
-
-QUEX_INLINE void
-QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me,
-                                          bool               ForwardF)
-{
-    if( me->event.on_buffer_overflow ) {
-        me->event.on_buffer_overflow(me->event.aux, me, ForwardF);
-    }
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

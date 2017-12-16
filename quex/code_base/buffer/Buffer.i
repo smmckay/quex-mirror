@@ -53,10 +53,8 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
     me->fill_finish  = QUEX_NAME(Buffer_fill_finish);
 
     /* Event handlers.                                                       */
-    QUEX_NAME(Buffer_set_event_handlers)(me, 
-        (void (*)(void*, const QUEX_TYPE_LEXATOM*, const QUEX_TYPE_LEXATOM*))0,
-        (void (*)(void*, QUEX_NAME(Buffer)*, bool))0,
-        (void*)0);
+    QUEX_NAME(Buffer_set_event_handlers)(me, (void (*)(void*))0,
+                                         (void (*)(void*, bool))0, (void*)0);
 
     /* Initialize.                                                           */
     QUEX_NAME(Buffer_init)(me, EndOfFileP);
@@ -75,6 +73,8 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
 /* Destruct 'me' and mark all resources as absent.                            */
 {
+    QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+
     if( me->filler ) {
         me->filler->delete_self(me->filler); 
     }
@@ -82,21 +82,6 @@ QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
     QUEX_NAME(BufferMemory_destruct)(&me->_memory);
 
     QUEX_NAME(Buffer_resources_absent_mark)(me);
-}
-
-QUEX_INLINE void  
-QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
-                                     void   (*on_before_change)(void* aux,
-                                                                const QUEX_TYPE_LEXATOM*  BeginP,
-                                                                const QUEX_TYPE_LEXATOM*  EndP),
-                                     void   (*on_overflow)(void*  aux,
-                                                           struct QUEX_NAME(Buffer_tag)*, 
-                                                           bool   ForwardF),
-                                     void*  aux)
-{
-    me->event.on_buffer_before_change = on_before_change;
-    me->event.on_buffer_overflow      = on_overflow;
-    me->event.aux                     = aux;
 }
 
 QUEX_INLINE bool
@@ -145,11 +130,11 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
      *                                         :                 :
      *                                         '--- available ---'
      *                                                                        */
-    ptrdiff_t                 available_size =   including->_memory._back 
-                                               - including->input.end_p;
-    QUEX_TYPE_LEXATOM*        memory;
-    size_t                    memory_size;
-    E_Ownership               ownership;
+    ptrdiff_t           available_size =   including->_memory._back 
+                                         - including->input.end_p;
+    QUEX_TYPE_LEXATOM*  memory;
+    size_t              memory_size;
+    E_Ownership         ownership;
 
     if( QUEX_NAME(Buffer_resources_absent)(including) ) {
         if( filler ) {
@@ -424,6 +409,35 @@ QUEX_NAME(Buffer_is_begin_of_stream)(QUEX_NAME(Buffer)* buffer)
     else if( QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer) )   return false;
     else                                                             return true;
 }
+
+QUEX_INLINE void  
+QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
+                                     void   (*on_before_change)(void* aux),
+                                     void   (*on_overflow)(void*  aux, bool   ForwardF),
+                                     void*  aux)
+{
+    me->event.on_buffer_before_change = on_before_change;
+    me->event.on_buffer_overflow      = on_overflow;
+    me->event.aux                     = aux;
+}
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
+{
+    if( me->event.on_buffer_before_change ) {
+        me->event.on_buffer_before_change(me->event.aux); 
+    }
+}
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me,
+                                          bool               ForwardF)
+{
+    if( me->event.on_buffer_overflow ) {
+        me->event.on_buffer_overflow(me->event.aux, ForwardF);
+    }
+}
+
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

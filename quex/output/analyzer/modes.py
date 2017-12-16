@@ -94,13 +94,11 @@ $$HAS_EXIT_TO$$
 #endif    
 
 void
-$on_buffer_before_change(void* aux,
-                         const QUEX_TYPE_LEXATOM*  BeginP,
-                         const QUEX_TYPE_LEXATOM*  EndP)
+$on_buffer_before_change(void* me /* 'aux' -> 'self' via 'me' */)
 {
-    (void)aux; (void)BeginP; (void)EndP;
-    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer->_memory._front;
-    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer->_memory._back;
+    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer._memory._front;
+    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer._memory._back;
+    (void)me; (void)BufferBegin; (void)BufferEnd;
 $$ON_BUFFER_BEFORE_CHANGE$$
 }
 
@@ -108,15 +106,15 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer, 
                                          bool               ForwardF);
 void
-$on_buffer_overflow(void*  aux,
-                    struct QUEX_NAME(Buffer_tag)* buffer, bool ForwardF)
+$on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */,
+                    bool   ForwardF)
 {
-    (void)aux; (void)buffer; (void)ForwardF;
-    const QUEX_TYPE_LEXATOM* LexemeBegin = buffer->_lexeme_start_p;
-    const QUEX_TYPE_LEXATOM* LexemeEnd   = buffer->_read_p;
-    const size_t             BufferSize  =   &buffer->_memory._back[-1] 
-                                           - &buffer->_memory._front[1] 
+    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
+    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
+    const size_t             BufferSize  =   &self.buffer._memory._back[-1] 
+                                           - &self.buffer._memory._front[1] 
                                            - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
+    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
 $$ON_BUFFER_OVERFLOW$$
 }
 """                         
@@ -276,16 +274,11 @@ def __get_function_declaration(Modes, FriendF=False):
                                      [("const QUEX_NAME(Mode)*", "mode")]],
         "has_exit_to":             [ "bool",
                                      [("const QUEX_NAME(Mode)*", "mode")]],
-                          
         "on_buffer_before_change": [ "void", 
-                                    [("void*",                    "aux"),
-                                     ("const QUEX_TYPE_LEXATOM*", "BeginP"),
-                                     ("const QUEX_TYPE_LEXATOM*", "EndP")]],
-
+                                    [("void*",                   "aux")]],
         "on_buffer_overflow":      [ "void",
-                                    [("void*",                         "aux"),
-                                     ("struct QUEX_NAME(Buffer_tag)*", "buffer"), 
-                                     ("bool",                          "ForwardF") ]],
+                                    [("void*",                   "aux"),
+                                     ("bool",                    "ForwardF")]],
     }
     def function_name(Name, ModeName):
         return Lng.NAME_IN_NAMESPACE_MAIN("%s_%s" % (ModeName, Name))

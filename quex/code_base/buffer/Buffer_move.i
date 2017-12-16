@@ -173,35 +173,6 @@ QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
 }
 
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_move_to_get_free_space_at_end)(QUEX_NAME(Buffer)* me)
-/* Circumvent restriction of 'Buffer_load_prepare_forward()' which 
- * refuses to move if end of stream is inside buffer. 
- *
- * => Trick: Backup & restore 'lexatom_index_end_of_stream'               
- *
- * RETURNS: Available elements at end of buffer.                              */
-{
-    QUEX_TYPE_STREAM_POSITION backup_ios;
-
-    backup_ios                            = me->input.lexatom_index_end_of_stream;
-    me->input.lexatom_index_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
-    /* Position registers are only relevant during lexical analyzis.
-     * Inclusion happens in a 'terminal' or external to the lexer step.   
-     * => Position registers = empty set.                                     */
-    (void)QUEX_NAME(Buffer_load_prepare_forward)(me, (QUEX_TYPE_LEXATOM**)0, 0);
-
-    me->input.lexatom_index_end_of_stream = backup_ios;
-
-    /* After 'move away' possibly:
-     *
-     *   size(me's buffer) < 'QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE'
-     *
-     * However, 'me' buffer is NOT used before 'included' terminates.
-     * => included is pasted back at the end of me.                           */
-    return me->_memory._back - me->input.end_p;
-}
-
-QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)* me, 
                                      ptrdiff_t          move_distance)
 /* Moves the entire (meaningful) content of the buffer by 'move_distance'

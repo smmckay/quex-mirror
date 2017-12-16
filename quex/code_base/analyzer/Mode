@@ -36,11 +36,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Mode_tag) {
     bool (*has_exit_to)(const struct QUEX_NAME(Mode_tag)* Mode);
 #   endif
 
-    void   (*on_buffer_before_change)(void* aux,
-                                      const QUEX_TYPE_LEXATOM*  BeginP,
-                                      const QUEX_TYPE_LEXATOM*  EndP);
-    void   (*on_buffer_overflow)(void*  aux,
-                                 struct QUEX_NAME(Buffer_tag)*, bool ForwardF);
+    void   (*on_buffer_before_change)(void* aux);
+    void   (*on_buffer_overflow)(void*  aux, bool ForwardF);
 
     /* Choose the analyzer function to be the last, because it has a unique
      * signature. The function pointers are assigned in a table. If the 

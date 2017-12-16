@@ -103,12 +103,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
          *     start plus the fallback region are too big for the current 
          *     buffer's size.                                                 
          *                                                                    */
-        void   (*on_buffer_before_change)(void* aux,
-                                          const QUEX_TYPE_LEXATOM*  BeginP,
-                                          const QUEX_TYPE_LEXATOM*  EndP);
-        void   (*on_buffer_overflow)(void*  aux,
-                                     struct QUEX_NAME(Buffer_tag)*, 
-                                     bool   ForwardF);
+        void   (*on_buffer_before_change)(void* aux);
+        void   (*on_buffer_overflow)(void* aux, bool ForwardF);
 
         /* Auxiliary data passed to handlers. This is probably the 'lexer'.   */
         void*  aux; 
@@ -192,12 +188,13 @@ QUEX_INLINE bool       QUEX_NAME(Buffer_seek_backward)(QUEX_NAME(Buffer)*, const
 
 /* Callbacks */
 QUEX_INLINE void       QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
-                                                            void   (*on_buffer_before_change)(void* aux,
-                                                                                              const QUEX_TYPE_LEXATOM*  BeginP,
-                                                                                              const QUEX_TYPE_LEXATOM*  EndP),
-                                                            void   (*on_buffer_overflow)(void* aux,
-                                                                                         struct QUEX_NAME(Buffer_tag)*, bool ForwardF),
+                                                            void   (*on_buffer_before_change)(void* aux),
+                                                            void   (*on_buffer_overflow)(void* aux, bool ForwardF),
                                                             void*  aux);
+QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me,
+                                                                 bool               ForwardF);
+
 
 QUEX_NAMESPACE_MAIN_CLOSE
 #include <quex/code_base/buffer/lexatoms/LexatomLoader>
