@@ -1,0 +1,13 @@
+token { X; }
+
+mode X :
+{
+    [^x] => TK_X;
+
+    on_buffer_before_change { 
+        printf("self:        ((%p))\n", &self);
+        printf("BufferBegin: ((%p))\n", (const char*)BufferBegin);
+        printf("BufferEnd:   ((%p)) + %i\n", (const char*)BufferBegin, (int)(BufferEnd - BufferBegin));
+    }
+}
+

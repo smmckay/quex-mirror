@@ -1,0 +1,67 @@
+| Mode change to X
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
+| [START]
+self:        ((0x7ffff2f56f40))
+LexemeBegin: ((0x55dc389d35a1))
+LexemeEnd:   ((0x55dc389d35a1)) + 2
+BufferSize:  1
+TOKEN: <TERMINATION> ''
+| [END]
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+   lexeme start--------------------------->[0001] 0x0064
+                                           [0002] 0x0061
+   input, end of file, buffer back-------->[0003] 0x0000
+_________________________________________________________________
+  mode:       X;
+  error_code: NoHandler_OnLoadFailure;
+              (* 'on_load_failure' has not been specified for mode*)
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x55dc389d35a0)) (== _front);
+      end:       begin + 4 (== _back + 1);
+    }
+    _read_p:                      begin + 3, end - 1;
+    _lexeme_start_p:              begin + 1, end - 3;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     2;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 2;
+        type:             FILE;
+        file_handle:      ((0x55dc389d3260));
+        end_of_stream:    false;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 2;
+      end_p:               begin + 3, end - 1;
+    }
+  }
+
+
