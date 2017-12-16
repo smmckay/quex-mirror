@@ -1,14 +1,11 @@
 .PHONY: clean 
-.SECONDARY: transition.exe \
-	        transition-x.exe \
-			on_skip_range_open.exe \
-			on_skip_range_open-customized.exe
+TEST_FILES := transition.exe \
+	          transition-x.exe \
+	          on_buffer_overflow.exe \
+	          on_buffer_before_change.exe \
+			  on_skip_range_open.exe \
+			  on_skip_range_open-customized.exe
 	 
-TEST_FILES = transition.sh \
-			 transition-x.sh \
-			 on_skip_range_open.sh \
-			 on_skip_range_open-customized.sh 
-
 ifndef QUEX_PATH
     $(error The environment variable QUEX_PATH is not defined!)
 endif
@@ -37,19 +34,6 @@ all: $(TEST_FILES)
 hwut-info:
 	@echo $(TEST_FILES)
 
-transit%.sh: transit%.exe
-	@cat template.sh | sed -e 's/EXE/$</g' > $@
-	chmod ua+rx $@
-
-on_skip_range_open.sh: on_skip_range_open.exe
-	@cat template.sh | sed -e 's/EXE/$</g' > $@
-	chmod ua+rx $@
-
-on_skip_range_open-customized.sh: on_skip_range_open-customized.exe
-	@cat template.sh | sed -e 's/EXE/$</g' > $@
-	chmod ua+rx $@
-
-
 transit%.exe: transit%.qx lexer.c 
 	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --debug-exception --language C
 	$(LD) ./lexer.c EHLexer.c -o $@ \
@@ -59,9 +43,18 @@ transit%.exe: transit%.qx lexer.c
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	echo $<
-	$(QUEX) -i $< -o Simple --token-id-prefix TK_ --language C
-	$(LD) ./lexer.c Simple.c -o $@ -ggdb \
+	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --language C
+	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
 		  -D__TEST_DESCRIPTION='"Customized 'on_buffer_overflow' event."' \
+		  -D__TEST_CHOICES='"empty, trigger"' \
+          -DQUEX_SETTING_BUFFER_SIZE=4 
+
+on_buffer_before_change.exe: on_buffer_before_change.qx 
+	echo $<
+	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --language C
+	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
+		  -D__TEST_DESCRIPTION='"Customized 'on_buffer_before_change' event."' \
+		  -D__TEST_CHOICES='"empty, twice"' \
           -DQUEX_SETTING_BUFFER_SIZE=4 
 
 on_skip_range_open.exe: on_skip_range_open.qx 

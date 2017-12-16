@@ -1,5 +1,6 @@
 Event Handling
 ---------------
-bash *.sh
+bash ./executer.sh *.exe
+
 --not template.sh
 ---------------

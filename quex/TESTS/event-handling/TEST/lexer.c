@@ -44,5 +44,8 @@ main(int argc, char** argv)
     if( qlex.error_code != E_Error_None ) {
         QUEX_NAME(print_this)(&qlex);
     }
+
+    QUEX_NAME(destruct)(&qlex);
+
     return 0;
 }
