@@ -1,6 +1,8 @@
 .PHONY: clean 
 TEST_FILES := transition.exe \
 	          transition-x.exe \
+			  on_match.exe \
+			  on_bad_lexatom.exe \
 	          on_buffer_overflow.exe \
 	          on_buffer_before_change.exe \
 			  on_skip_range_open.exe \
@@ -40,6 +42,22 @@ transit%.exe: transit%.qx lexer.c
 		-D__TEST_DESCRIPTION='"Mode Transitions: $<"' \
 		`icu-config --ldflags`      \
 		-D__TEST_CHOICES='"1, 2, 3, error"'
+
+on_match.exe: on_match.qx 
+	echo $<
+	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --language C
+	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
+		  -D__TEST_DESCRIPTION='"on_failure, on_match, on_after_match"' \
+		  -D__TEST_CHOICES='"failure, match"' \
+          -DQUEX_SETTING_BUFFER_SIZE=4 
+
+on_bad_lexatom.exe: on_bad_lexatom.qx 
+	echo $<
+	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --language C --encoding utf16
+	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
+		  -D__TEST_DESCRIPTION='"on_bad_lexatom"' \
+		  -D__TEST_CHOICES='"bad-utf16, good-utf16"' \
+          -DQUEX_SETTING_BUFFER_SIZE=65536
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	echo $<

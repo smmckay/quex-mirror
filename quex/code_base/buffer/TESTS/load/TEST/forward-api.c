@@ -52,6 +52,7 @@ static struct {
     QUEX_NAME(LexatomLoader)*     lexatom_loader;
     QUEX_NAME(Converter)*         converter;
     QUEX_TYPE_LEXATOM             memory[BufferElementN + 2]; 
+    SomethingContainingABuffer_t  the_aux;
 } self;
 
 static void         self_setup(ptrdiff_t   LexemePOffset,  /* = LexemeP - Buffer's Front */    
@@ -94,6 +95,8 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
            E_LexatomLoader LexatomLoaderType, 
            ptrdiff_t       ErrorCodePosition)
 {
+    self.the_aux.buffer = &self.buffer;
+
     /* Byte Loader on Pseudo File ______________________________________________
      *                                                                        */
     if( EmptyFileF ) {
@@ -153,9 +156,10 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
                                 &self.memory[0], BufferElementN,
                                 (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL); 
 
-    self.buffer.event.on_buffer_overflow      = common_on_overflow;
-    self.buffer.event.on_buffer_before_change = common_on_content_change;
-    self.buffer.event.aux                     = (void*)0;
+    QUEX_NAME(Buffer_set_event_handlers)(&self.buffer,
+                                         common_on_content_change,
+                                         common_on_overflow,
+                                         &self.the_aux);
 
     /* Initial load ___________________________________________________________
      *                                                                       */

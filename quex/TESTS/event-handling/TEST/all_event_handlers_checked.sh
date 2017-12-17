@@ -2,7 +2,8 @@
 handlers=$(cat /home/fschaef/prj/quex/trunk/quex/blackboard.py \
            | awk 'BEGIN { show_f=0; } /standard_incidence_db *=/ { show_f = 1; } /^}/ { if( show_f ) show_f=0; } { if( show_f ) print; }' \
            | grep E_IncidenceIDs \
-           | awk '{ a = $1; gsub(":", "", a); gsub("\"", "", a); print a; }')
+           | awk '{ a = $1; gsub(":", "", a); gsub("\"", "", a); print a; }' \
+           | sort)
 
 qx_files=$(make hwut-info | sed -e 's/\.exe/.qx/g')
 

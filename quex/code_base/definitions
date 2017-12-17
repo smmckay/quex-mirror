@@ -149,6 +149,14 @@ typedef enum {
     E_Error_NoHandler_OnLoadFailure,
     E_Error_NoHandler_OnOverflow,
     E_Error_NoHandler_OnSkipRangeOpen,
+    /* Flags to be set even if handlers are implemented. */
+    E_Error_OnBadLexatom,
+    E_Error_OnFailure,
+    E_Error_OnIndentationBad,
+    E_Error_OnLoadFailure,
+    E_Error_OnOverflow,
+    E_Error_OnSkipRangeOpen,
+    /* --------------------------------------------------*/
     E_Error_None,
     E_Error_ProvidedExternal_Memory_Corrupt,
     E_Error_Reset_OnError,
@@ -172,6 +180,12 @@ typedef enum {
      : (E) == E_Error_IncludePopOnEmptyStack             ? "IncludePopOnEmptyStack"             \
      : (E) == E_Error_IncludePush_OnError                ? "IncludePush_OnError"                \
      : (E) == E_Error_InputName_Set_Failed               ? "InputName_Set_Failed"               \
+     : (E) == E_Error_OnBadLexatom                       ? "OnBadLexatom"                       \
+     : (E) == E_Error_OnFailure                          ? "OnFailure"                          \
+     : (E) == E_Error_OnIndentationBad                   ? "OnIndentationBad"                   \
+     : (E) == E_Error_OnLoadFailure                      ? "OnLoadFailure"                      \
+     : (E) == E_Error_OnOverflow                         ? "OnOverflow"                         \
+     : (E) == E_Error_OnSkipRangeOpen                    ? "OnSkipRangeOpen"                    \
      : (E) == E_Error_NoHandler_OnBadLexatom             ? "NoHandler_OnBadLexatom"             \
      : (E) == E_Error_NoHandler_OnEndOfStream            ? "NoHandler_OnEndOfStream"            \
      : (E) == E_Error_NoHandler_OnFailure                ? "NoHandler_OnFailure"                \
@@ -183,12 +197,12 @@ typedef enum {
      : (E) == E_Error_ProvidedExternal_Memory_Corrupt    ? "ProvidedExternal_Memory_Corrupt"    \
      : (E) == E_Error_Reset_OnError                      ? "Reset_OnError"                      \
      : (E) == E_Error_TokenRepetitionNSetButNotSupportedByGeneratedCode ? "TokenRepetitionNSetButNotSupportedByGeneratedCode" \
-     : (E) == E_Error_TokenQueueNoMoreTokensAvailable    ? "TokenQueueNoMoreTokensAvailable" \
+     : (E) == E_Error_TokenQueueNoMoreTokensAvailable    ? "TokenQueueNoMoreTokensAvailable"    \
      : (E) == E_Error_Uninitialized                      ? "Uninitialized"                      \
      : (E) == E_Error_UnitTest_Termination               ? "UnitTest_Termination"               \
      : (E) == E_Error_UserConstructor_Failed             ? "UserConstructor_Failed"             \
      : (E) == E_Error_UserMementoPack_Failed             ? "UserMementoPack_Failed"             \
-     : (E) == E_Error_UserReset_Failed                   ? "E_Error_UserReset_Failed"           \
+     : (E) == E_Error_UserReset_Failed                   ? "UserReset_Failed"                   \
      :                                                     "<Error Void>")
 
 #define E_Error_MISSING_HANDLER_NAME(E) \

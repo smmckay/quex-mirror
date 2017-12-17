@@ -13,6 +13,39 @@ from   quex.blackboard import Lng
 from   quex.constants  import E_IncidenceIDs, \
                               E_TerminalType
 
+def _aux_adorn_on_skip_range_open(Lng, Code):
+    return CodeTerminal([
+        "%s\n" % Lng.DEFINE_NESTED_RANGE_COUNTER(), 
+        Lng.SOURCE_REFERENCED(Code)
+    ])
+
+aux_db = {
+    E_TerminalType.PLAIN:           (None, None, ""),
+    E_TerminalType.MATCH_PATTERN:   (None, None, ""),
+
+    E_TerminalType.MATCH_FAILURE:   (None, "FAILURE", ""),
+
+    E_TerminalType.END_OF_STREAM:   
+     (None, "END_OF_STREAM", 
+      "End of Stream FORCES a return from the lexical analyzer, so that no\n" \
+      "tokens can be filled after the termination token.",
+     ),
+    E_TerminalType.BAD_LEXATOM:     
+     (None, "BAD_LEXATOM",
+      "Bad lexatom detection FORCES a return from the lexical analyzer, so that no\n" \
+      "tokens can be filled after the termination token.",
+     ),
+    E_TerminalType.LOAD_FAILURE:    
+     (None, "LOAD_FAILURE",
+      "Load failure FORCES a return from the lexical analyzer, so that no\n" \
+      "tokens can be filled after the termination token.",
+     ),
+    E_TerminalType.SKIP_RANGE_OPEN: 
+     (_aux_adorn_on_skip_range_open, "SKIP_RANGE_OPEN",
+      "End of Stream appeared, while scanning for end of skip-range.",
+     ),
+}
+
 class TerminalFactory:
     """Factory for Terminal-s
     ___________________________________________________________________________
@@ -51,18 +84,27 @@ class TerminalFactory:
         """Construct a Terminal object based on the given TerminalType and 
         parameterize it with 'IncidenceId' and 'Code'.
         """
+        global aux_db
+
         if ThePattern is not None:
             assert ThePattern.count_info() is not None
 
-        return {
-            E_TerminalType.MATCH_PATTERN:   self.do_match_pattern,
-            E_TerminalType.MATCH_FAILURE:   self.do_match_failure,
-            E_TerminalType.END_OF_STREAM:   self.do_end_of_stream,
-            E_TerminalType.BAD_LEXATOM:     self.do_bad_lexatom,    # Treated as 'end_of_stream'
-            E_TerminalType.LOAD_FAILURE:    self.do_load_failure,   # Treated as 'end_of_stream'
-            E_TerminalType.PLAIN:           self.do_plain,
-            E_TerminalType.SKIP_RANGE_OPEN: self.do_skip_range_open,
-        }[TerminalType](Code, ThePattern)
+        if TerminalType in (E_TerminalType.END_OF_STREAM, 
+                            E_TerminalType.BAD_LEXATOM, 
+                            E_TerminalType.LOAD_FAILURE,
+                            E_TerminalType.SKIP_RANGE_OPEN):
+
+            adorn, name, comment_txt = aux_db[TerminalType]
+            if adorn: Code = adorn(Lng, Code)
+
+            return self.__terminate_analysis_step(Code, name, comment_txt)
+        else:
+            return {
+                E_TerminalType.PLAIN:           self.do_plain,
+                E_TerminalType.MATCH_PATTERN:   self.do_match_pattern,
+                # Error handlers:
+                E_TerminalType.MATCH_FAILURE:   self.do_match_failure,
+            }[TerminalType](Code, ThePattern)
 
     @typed(ThePattern=Pattern)
     def do_match_pattern(self, Code, ThePattern):
@@ -115,46 +157,9 @@ class TerminalFactory:
             #
             adorned_code,
             #
-            Lng.RETURN # 'RETURN' since mode change may have occurred
+            Lng.PURE_RETURN # 'RETURN' since mode change may have occurred
         ]
         return self.__terminal(text, Code, "FAILURE")
-
-    def do_end_of_stream(self, Code, ThePattern):
-        """End of Stream: The terminating zero has been reached and no further
-        content can be loaded.
-        """
-        comment_txt = "End of Stream FORCES a return from the lexical analyzer, so that no\n" \
-                      "tokens can be filled after the termination token."
-        return self.__terminate_analysis_step(Code, "END_OF_STREAM", comment_txt)
-
-    def do_skip_range_open(self, Code, ThePattern):
-        """End of Stream: The terminating zero has been reached and no further
-        content can be loaded.
-        """
-        code_user   = "%s\n%s" % (Lng.DEFINE_NESTED_RANGE_COUNTER(), 
-                                  Lng.SOURCE_REFERENCED(Code))
-        comment_txt = "End of Stream appeared, while scanning for end of skip-range."
-        return self.__terminate_analysis_step(CodeTerminal([code_user]), "SKIP_RANGE_OPEN", comment_txt)
-
-    def do_bad_lexatom(self, Code, ThePattern):
-        """Bad lexatom: an input appeared beyond the addmissible alphabet or the
-        an inadmissible sequence has been detected (e.g. in UTF8).
-
-        As with temination: the TERMINATION token is sent, if not defined differently.
-        """
-        comment_txt = "Bad lexatom detection FORCES a return from the lexical analyzer, so that no\n" \
-                      "tokens can be filled after the termination token."
-        return self.__terminate_analysis_step(Code, "BAD_LEXATOM", comment_txt)
-
-    def do_load_failure(self, Code, ThePattern):
-        """Load failure: loading of buffer failed due to an unspecific reason.
-        The reason could not be determined inside the Quex framework.
-
-        As with temination: the TERMINATION token is sent, if not defined differently.
-        """
-        comment_txt = "Load failure FORCES a return from the lexical analyzer, so that no\n" \
-                      "tokens can be filled after the termination token."
-        return self.__terminate_analysis_step(Code, "LOAD_FAILURE", comment_txt)
 
     def do_plain(self, Code, ThePattern, NamePrefix="", RequiredRegisterSet=None):
         """Plain source code text as generated by quex."""
@@ -167,8 +172,9 @@ class TerminalFactory:
         else:                  name = ThePattern.pattern_string() 
         name = "%s%s" % (NamePrefix, name)
 
-        return self.__terminal(text, Code, name, IncidenceId=ThePattern.incidence_id, 
-                               RequiredRegisterSet=RequiredRegisterSet)
+        return self.__terminal(text, Code, name, 
+                               IncidenceId         = ThePattern.incidence_id, 
+                               RequiredRegisterSet = RequiredRegisterSet)
 
     def __lexeme_flags(self, Code):
         lexeme_begin_f     =    self.on_match.requires_lexeme_begin_f(Lng)      \
@@ -225,7 +231,7 @@ class TerminalFactory:
         """
         code_user = Lng.SOURCE_REFERENCED(Code)
 
-        lexeme_begin_f, \
+        lexeme_begin_f,    \
         terminating_zero_f = self.__lexeme_flags(Code)
 
         txt_terminating_zero = Lng.LEXEME_TERMINATING_ZERO_SET(terminating_zero_f)

@@ -23,6 +23,10 @@ typedef struct {
     QUEX_TYPE_STREAM_POSITION lexatom_index_begin;
 } BufferBefore_t;
 
+typedef struct {
+    QUEX_NAME(Buffer)* buffer;
+} SomethingContainingABuffer_t;
+
 static const QUEX_TYPE_LEXATOM  PseudoFile[] = {
    1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 
    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
@@ -275,17 +279,15 @@ random_between(QUEX_TYPE_LEXATOM* A, QUEX_TYPE_LEXATOM* B)
 }
 
 static void      
-common_on_content_change(void* aux, 
-                         const QUEX_TYPE_LEXATOM* BeginP, 
-                         const QUEX_TYPE_LEXATOM* EndP)
+common_on_content_change(void* aux)
 {
     common_on_content_change_count += 1;
 }
 
 static void
-common_on_overflow(void* aux, QUEX_NAME(Buffer)* me, bool ForwardF)
+common_on_overflow(void* aux, bool ForwardF)
 {
-    (void)aux;
+    QUEX_NAME(Buffer)* me = ((SomethingContainingABuffer_t*)aux)->buffer;
 
     me->_lexeme_start_p = me->_read_p;
     common_on_overflow_count += 1;

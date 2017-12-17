@@ -82,6 +82,8 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
     int                           count  = 0;
     QUEX_TYPE_LEXATOM             memory[32]; /* > anything ever needed.     */
     int                           on_overflow_count_before;
+    SomethingContainingABuffer_t  theAux;
+    theAux.buffer = &buffer;
 
     QUEX_NAME(ByteLoader_Memory_construct)(&loader, 
                                            (const uint8_t*)&PseudoFile[0], 
@@ -96,7 +98,7 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
     QUEX_NAME(Buffer_set_event_handlers)(&buffer,
                                          common_on_content_change,
                                          common_on_overflow,
-                                         (void*)0);
+                                         &theAux);
 
     on_overflow_count_before = common_on_overflow_count;
     while( buffer.input.lexatom_index_end_of_stream == -1 ) {

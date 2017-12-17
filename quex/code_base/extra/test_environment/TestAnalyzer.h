@@ -79,8 +79,8 @@ extern  bool QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 extern  bool QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* mode);
 #endif
-extern  void QUEX_NAME(M_on_buffer_before_change)(void* aux, const QUEX_TYPE_LEXATOM* BeginP, const QUEX_TYPE_LEXATOM* EndP);
-extern  void QUEX_NAME(M_on_buffer_overflow)(void* aux, struct QUEX_NAME(Buffer_tag)* buffer, bool ForwardF);
+extern  void QUEX_NAME(M_on_buffer_before_change)(void* aux);
+extern  void QUEX_NAME(M_on_buffer_overflow)(void* aux, bool ForwardF);
 extern  void QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 extern  void QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER

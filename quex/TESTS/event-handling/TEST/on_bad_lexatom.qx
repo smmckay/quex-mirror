@@ -1,12 +1,13 @@
-token { X; }
+token { X; NEWLINE; }
 
 mode X :
-<skip_range: "/*" "*/">
-<skip:       [ \t\n] >
 {
-    . => TK_X;
-    on_skip_range_open { 
-        printf("We miss the '%s'\n", (const char*)Delimiter); 
+    .+ => TK_X;
+    \n => TK_NEWLINE;
+
+    on_bad_lexatom { 
+        printf("bad_lexatom!\n");
+        self_send(TK_TERMINATION);
     }
 }
 

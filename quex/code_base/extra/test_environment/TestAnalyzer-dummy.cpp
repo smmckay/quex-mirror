@@ -59,8 +59,8 @@ QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
 void
 QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me, 
-                                        QUEX_TYPE_INDENTATION  Indentation, 
-                                        QUEX_TYPE_LEXATOM*   Begin) {
+                QUEX_TYPE_INDENTATION  Indentation, 
+                QUEX_TYPE_LEXATOM*   Begin) {
     (void)me;
     (void)Indentation;
     (void)Begin;
@@ -115,11 +115,11 @@ switch( Mode->id ) {
 #endif    
 
 void
-QUEX_NAME(M_on_buffer_before_change)(void* aux,
-                         const QUEX_TYPE_LEXATOM*  BeginP,
-                         const QUEX_TYPE_LEXATOM*  EndP)
+QUEX_NAME(M_on_buffer_before_change)(void* me /* 'aux' -> 'self' via 'me' */)
 {
-    (void)aux; (void)BeginP; (void)EndP;
+    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer._memory._front;
+    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer._memory._back;
+    (void)me; (void)BufferBegin; (void)BufferEnd;
 
 }
 
@@ -127,11 +127,16 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer, 
                                          bool               ForwardF);
 void
-QUEX_NAME(M_on_buffer_overflow)(void*  aux,
-                    struct QUEX_NAME(Buffer_tag)* buffer, bool ForwardF)
+QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */,
+                    bool   ForwardF)
 {
-    (void)aux; (void)buffer; (void)ForwardF;
-QUEX_NAME(Buffer_print_overflow_message)(buffer, ForwardF);
+    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
+    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
+    const size_t             BufferSize  =   &self.buffer._memory._back[-1] 
+                                           - &self.buffer._memory._front[1] 
+                                           - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
+    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
+QUEX_NAME(Buffer_print_overflow_message)(&self.buffer, ForwardF);
 }
 #undef self
 #undef LexemeNull
@@ -501,7 +506,7 @@ self_send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
-RETURN;
+__QUEX_PURE_RETURN;
 _5:
     __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
@@ -527,7 +532,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 531 "TestAnalyzer.cpp"
+#   line 536 "TestAnalyzer.cpp"
 
 }
 RETURN;

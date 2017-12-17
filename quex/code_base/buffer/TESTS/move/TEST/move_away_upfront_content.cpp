@@ -73,6 +73,8 @@ main(int argc, char** argv)
     ptrdiff_t                 move_distance;
     QUEX_TYPE_LEXATOM         backup[MemorySize * 2];
     int                       count = 0;
+    SomethingContainingABuffer_t theAux;
+    theAux.buffer = &buffer;
 
     if( cl_has(argc, argv, "--hwut-info") ) {
         printf("move_away_upfront_content: (BPC=%i);\n", 
@@ -97,9 +99,10 @@ main(int argc, char** argv)
                              &memory[0], MemorySize, 
                              &content[0], ContentSize);
         buffer.input.lexatom_index_begin = lexatom_index_at_begin;
-        buffer.event.on_buffer_before_change = self_on_content_change;
-        buffer.event.on_buffer_overflow       = self_on_overflow;
-        buffer.event.aux               = (void*)0;
+        QUEX_NAME(Buffer_set_event_handlers)(&buffer, 
+                                             self_on_content_change,
+                                             self_on_overflow,
+                                             &theAux);
 
 
         printf("\n-( %2i )---------------------------------------------\n", (int)G_key_get(&it));

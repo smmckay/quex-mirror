@@ -16,6 +16,10 @@
  * => avoid mentioning the 'common.cpp' on each compiler command line.       */
 using namespace quex; /* One should not do this in a header ...              */
 
+typedef struct {
+    QUEX_NAME(Buffer)* buffer;
+} SomethingContainingABuffer_t;
+
 
 static void self_print(QUEX_NAME(Buffer)* buffer);
 static void memory_fill_with_content(QUEX_TYPE_LEXATOM* memory, size_t MemorySize, 
@@ -25,11 +29,8 @@ static void instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
                                  bool EndOfStreamInBufferF,
                                  QUEX_TYPE_LEXATOM* memory, ptrdiff_t MemorySize,
                                  QUEX_TYPE_LEXATOM* content, ptrdiff_t ContentSize);
-static void self_on_content_change(void* aux,
-                                   const QUEX_TYPE_LEXATOM* BeginP, 
-                                   const QUEX_TYPE_LEXATOM* EndP);
-static void self_on_overflow(void* aux,
-                             QUEX_NAME(Buffer)* me, bool ForwardF);
+static void self_on_content_change(void* aux);
+static void self_on_overflow(void* aux, bool ForwardF);
 
 
 static int cl_has(int argc, char** argv, const char* What)
@@ -106,16 +107,15 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
 }
 
 static void
-self_on_content_change(void* aux,
-                       const QUEX_TYPE_LEXATOM* BeginP, 
-                       const QUEX_TYPE_LEXATOM* EndP)
+self_on_content_change(void* aux)
 { 
+    const QUEX_TYPE_LEXATOM* BeginP = &((SomethingContainingABuffer_t*)aux)->buffer->_memory._front[1];
+    const QUEX_TYPE_LEXATOM* EndP   = ((SomethingContainingABuffer_t*)aux)->buffer->input.end_p;
     printf("on_content_change: size: %i;\n", (int)(EndP - BeginP));
 }
 
 static void
-self_on_overflow(void* aux,
-                 QUEX_NAME(Buffer)* me, bool ForwardF)
+self_on_overflow(void* aux, bool ForwardF) 
 { 
     printf("on_buffer_overflow: %s;\n", ForwardF ? "forward" : "backward");
 }

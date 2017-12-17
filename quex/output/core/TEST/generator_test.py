@@ -553,8 +553,8 @@ QUEX_NAME(Mode) QUEX_NAME(M) = {
       /* has_entry_from)   */ NULL,
       /* has_exit_to       */ NULL,
 #     endif
-      /* on_buffer_before_change */ (void (*)(void*, const uint8_t*, const uint8_t*))0,
-      /* on_buffer_overflow      */ (void (*)(void*, QUEX_NAME(Buffer)*, bool))0,
+      /* on_buffer_before_change */ (void (*)(void*))0,
+      /* on_buffer_overflow      */ (void (*)(void*, bool))0,
 
       /* analyzer_function */ QUEX_NAME(Mr_analyzer_function),
 };
@@ -574,8 +574,8 @@ QUEX_NAME(Mode) QUEX_NAME(M2) = {
       /* has_entry_from)   */ NULL,
       /* has_exit_to       */ NULL,
 #     endif
-      /* on_buffer_before_change */ (void (*)(void*, const uint8_t*, const uint8_t*))0,
-      /* on_buffer_overflow      */ (void (*)(void*, QUEX_NAME(Buffer)*, bool))0,
+      /* on_buffer_before_change */ (void (*)(void*))0,
+      /* on_buffer_overflow      */ (void (*)(void*, bool))0,
 
       /* analyzer_function */ QUEX_NAME(Mrs_analyzer_function),
 };

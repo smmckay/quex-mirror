@@ -1,0 +1,25 @@
+token { X; NEWLINE; }
+
+mode X :
+{
+    x  { printf("match:         'x';\n"); }
+    \n { printf("match:         'newline';\n"); }
+
+    on_end_of_stream {
+        printf("on_end_of_stream: {}\n");
+        self_send(TK_TERMINATION);
+    }
+
+    on_failure {
+        printf("on_failure:     {}\n");
+    }
+
+    on_match { 
+        printf("on_match:       { self: ((%p)) }\n", &self);
+    }
+
+    on_after_match {
+        printf("on_after_match: { self: ((%p)) }\n\n", &self);
+    }
+}
+

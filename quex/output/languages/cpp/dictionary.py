@@ -22,7 +22,7 @@ from   quex.engine.misc.tools                            import typed, \
 import quex.output.languages.cpp.templates               as     templates
 
 from   quex.DEFINITIONS  import QUEX_PATH
-from   quex.blackboard   import setup as Setup
+from   quex.blackboard   import setup as Setup 
 from   quex.constants    import E_Files, \
                                 E_StateIndices,  \
                                 E_IncidenceIDs, \
@@ -103,12 +103,12 @@ class Language(dict):
         assert self.RETURN[-1] == ";"
         self.__re_RETURN                          = re.compile(r"\b%s\b" % self.RETURN[:-1])
         self.__error_code_db = {
-            E_IncidenceIDs.END_OF_STREAM:   "E_Error_NoHandler_OnEndOfStream",
-            E_IncidenceIDs.MATCH_FAILURE:   "E_Error_NoHandler_OnFailure",
-            E_IncidenceIDs.SKIP_RANGE_OPEN: "E_Error_NoHandler_OnSkipRangeOpen",
-            E_IncidenceIDs.INDENTATION_BAD: "E_Error_NoHandler_OnIndentationBad",
-            E_IncidenceIDs.BAD_LEXATOM:     "E_Error_NoHandler_OnBadLexatom",
-            E_IncidenceIDs.LOAD_FAILURE:    "E_Error_NoHandler_OnLoadFailure",
+            E_IncidenceIDs.END_OF_STREAM:   ("E_Error_OnEndOfStream",    "E_Error_NoHandler_OnEndOfStream"),
+            E_IncidenceIDs.MATCH_FAILURE:   ("E_Error_OnFailure",        "E_Error_NoHandler_OnFailure"),
+            E_IncidenceIDs.SKIP_RANGE_OPEN: ("E_Error_OnSkipRangeOpen",  "E_Error_NoHandler_OnSkipRangeOpen"),
+            E_IncidenceIDs.INDENTATION_BAD: ("E_Error_OnIndentationBad", "E_Error_NoHandler_OnIndentationBad"),
+            E_IncidenceIDs.BAD_LEXATOM:     ("E_Error_OnBadLexatom",     "E_Error_NoHandler_OnBadLexatom"),
+            E_IncidenceIDs.LOAD_FAILURE:    ("E_Error_OnLoadFailure",    "E_Error_NoHandler_OnLoadFailure"),
         }
             
     def ASSERT(self, Condition):
@@ -1170,9 +1170,14 @@ class Language(dict):
         assert type(VariableDB) != dict
         return templates._local_variable_definitions(VariableDB.get()) 
 
+    def RAISE_ERROR_FLAG_BY_TERMINAL_TYPE(self, TerminalType):
+        incidence_id = standard_incidence_db_get_incidence_id(TerminalType)
+        if not incidence_id: return ""
+        return "self.error_code = %s;\n" % self.__error_code_db[incidence_id][0]
+
     def EXIT_ON_MISSING_HANDLER(self, IncidenceId):
         return [
-            'self.error_code = %s;\n' % self.__error_code_db[IncidenceId],
+            'self.error_code = %s;\n' % self.__error_code_db[IncidenceId][1],
             "%s\n"  % self.TOKEN_SEND("QUEX_TOKEN_ID(TERMINATION)"),
             '%s;\n' % self.PURE_RETURN
         ]
