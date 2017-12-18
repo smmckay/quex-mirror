@@ -15,13 +15,6 @@ main(int argc, char** argv)
     char                file_name[256];
     quex_EHLexer        qlex;
 
-    if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
-        printf(__TEST_DESCRIPTION ";\n");
-        printf("CHOICES: " __TEST_CHOICES ";\n");
-        printf("HAPPY: :[0-9]+:;");
-        return 0;
-    }
-
     snprintf(file_name, (size_t)256, "./examples/%s.txt", (const char*)argv[1]);
     /* printf("%s\n", file_name); */
     QUEX_NAME(from_file_name)(&qlex, file_name, NULL); 

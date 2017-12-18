@@ -59,26 +59,26 @@ Lng = Lng_class(setup)
 #                        as their associated values.
 #-----------------------------------------------------------------------------------------
 standard_incidence_db = {
-    "on_entry":             (E_IncidenceIDs.MODE_ENTRY,          "On entry of a mode."),
-    "on_exit":              (E_IncidenceIDs.MODE_EXIT,           "On exit of a mode."),
-    "on_indent":            (E_IncidenceIDs.INDENTATION_INDENT,  "On opening indentation."),
-    "on_nodent":            (E_IncidenceIDs.INDENTATION_NODENT,  "On same indentation."),
-    "on_dedent":            (E_IncidenceIDs.INDENTATION_DEDENT,  "On closing indentation'."),
-    "on_n_dedent":          (E_IncidenceIDs.INDENTATION_N_DEDENT, "On closing indentation'."),
-    "on_indentation_error": (E_IncidenceIDs.INDENTATION_ERROR,   "Closing indentation on non-border."),
-    "on_indentation_bad":   (E_IncidenceIDs.INDENTATION_BAD,     "On bad character in indentation."),
-    "on_indentation":       (E_IncidenceIDs.INDENTATION_HANDLER, "General Indentation Handler."),
-    "on_match":             (E_IncidenceIDs.MATCH,       "On each match (before pattern action)."),
+    "on_entry":                (E_IncidenceIDs.MODE_ENTRY,          "On entry of a mode."),
+    "on_exit":                 (E_IncidenceIDs.MODE_EXIT,           "On exit of a mode."),
+    "on_indent":               (E_IncidenceIDs.INDENTATION_INDENT,  "On opening indentation."),
+    "on_nodent":               (E_IncidenceIDs.INDENTATION_NODENT,  "On same indentation."),
+    "on_dedent":               (E_IncidenceIDs.INDENTATION_DEDENT,  "On closing indentation'."),
+    "on_n_dedent":             (E_IncidenceIDs.INDENTATION_N_DEDENT, "On closing indentation'."),
+    "on_indentation_error":    (E_IncidenceIDs.INDENTATION_ERROR,   "Closing indentation on non-border."),
+    "on_indentation_bad":      (E_IncidenceIDs.INDENTATION_BAD,     "On bad character in indentation."),
+    "on_indentation":          (E_IncidenceIDs.INDENTATION_HANDLER, "General Indentation Handler."),
+    "on_match":                (E_IncidenceIDs.MATCH,               "On each match (before pattern action)."),
 #   TODO        "on_token_stamp":            "On event of token stamping.",
 #   instead of: QUEX_ACTION_TOKEN_STAMP 
-    "on_bad_lexatom":            (E_IncidenceIDs.BAD_LEXATOM,          "On each match (after pattern action)."),
-    "on_after_match":            (E_IncidenceIDs.AFTER_MATCH,          "On each match (after pattern action)."),
-    "on_failure":                (E_IncidenceIDs.MATCH_FAILURE,        "In case that no pattern matches."),
-    "on_load_failure":           (E_IncidenceIDs.LOAD_FAILURE,         "Loading failed for some reason."),
-    "on_buffer_before_change":   (E_IncidenceIDs.BUFFER_BEFORE_CHANGE, "Buffer content is about to change."),
-    "on_buffer_overflow":        (E_IncidenceIDs.BUFFER_OVERFLOW,      "Loading impossible; lexeme too long."),
-    "on_skip_range_open":        (E_IncidenceIDs.SKIP_RANGE_OPEN,      "On missing skip range delimiter."),
-    "on_end_of_stream":          (E_IncidenceIDs.END_OF_STREAM,        "On end of file/stream."),
+    "on_bad_lexatom":          (E_IncidenceIDs.BAD_LEXATOM,          "On each match (after pattern action)."),
+    "on_after_match":          (E_IncidenceIDs.AFTER_MATCH,          "On each match (after pattern action)."),
+    "on_failure":              (E_IncidenceIDs.MATCH_FAILURE,        "In case that no pattern matches."),
+    "on_load_failure":         (E_IncidenceIDs.LOAD_FAILURE,         "Loading failed for some reason."),
+    "on_buffer_before_change": (E_IncidenceIDs.BUFFER_BEFORE_CHANGE, "Buffer content is about to change."),
+    "on_buffer_overflow":      (E_IncidenceIDs.BUFFER_OVERFLOW,      "Loading impossible; lexeme too long."),
+    "on_skip_range_open":      (E_IncidenceIDs.SKIP_RANGE_OPEN,      "On missing skip range delimiter."),
+    "on_end_of_stream":        (E_IncidenceIDs.END_OF_STREAM,        "On end of file/stream."),
 }
 
 def standard_incidence_db_is_mandatory(IncidenceId):
@@ -91,15 +91,23 @@ def standard_incidence_db_is_mandatory(IncidenceId):
         E_IncidenceIDs.INDENTATION_BAD,
     ]
 
+incidence_id_to_terminal_type_db = {
+    E_IncidenceIDs.MATCH_FAILURE:   E_TerminalType.MATCH_FAILURE,
+    E_IncidenceIDs.END_OF_STREAM:   E_TerminalType.END_OF_STREAM,
+    E_IncidenceIDs.BAD_LEXATOM:     E_TerminalType.BAD_LEXATOM,
+    E_IncidenceIDs.LOAD_FAILURE:    E_TerminalType.LOAD_FAILURE,
+    E_IncidenceIDs.SKIP_RANGE_OPEN: E_TerminalType.SKIP_RANGE_OPEN,
+    # Otherwise, it would try to make terminals for that in 'extract_terminal_db()'
+}
+
 def standard_incidence_db_get_terminal_type(IncidenceId):
-    return {
-        E_IncidenceIDs.MATCH_FAILURE:   E_TerminalType.MATCH_FAILURE,
-        E_IncidenceIDs.END_OF_STREAM:   E_TerminalType.END_OF_STREAM,
-        E_IncidenceIDs.BAD_LEXATOM:     E_TerminalType.BAD_LEXATOM,
-        E_IncidenceIDs.LOAD_FAILURE:    E_TerminalType.LOAD_FAILURE,
-        E_IncidenceIDs.SKIP_RANGE_OPEN: E_TerminalType.SKIP_RANGE_OPEN,
-        # Otherwise, it would try to make terminals for that in 'extract_terminal_db()'
-    }.get(IncidenceId)
+    global incidence_id_to_terminal_type_db
+    return incidence_id_to_terminal_type_db.get(IncidenceId)
+
+def standard_incidence_db_get_incidence_id(TerminalType):
+    for incidence_id, terminal_type in incidence_id_to_terminal_type_db.iteritems():
+        if terminal_type == TerminalType: return incidence_id
+    return None
 
 #-----------------------------------------------------------------------------------------
 # mode_prep_prep_db: storing the mode information into a dictionary:

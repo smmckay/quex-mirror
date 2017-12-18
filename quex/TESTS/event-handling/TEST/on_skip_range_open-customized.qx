@@ -1,3 +1,6 @@
+// Errors: Customized 'on_skip_range_open' event;
+// CHOICES: customized;
+
 token { X; }
 
 mode X :

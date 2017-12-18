@@ -9,6 +9,6 @@ LineNumberPragma-token
    count: 11
 LineNumberPragma.cpp
    <no output is good output/print only errors>
-   count: 48
+   count: 46
 __________________________________________________________________
 <terminated>

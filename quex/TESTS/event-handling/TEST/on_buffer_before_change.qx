@@ -1,3 +1,5 @@
+// Customized 'on_buffer_before_change' event.;
+// CHOICES: empty, twice;
 token { X; }
 
 mode X :

@@ -135,13 +135,19 @@ typedef enum {
     E_Error_Allocation_BufferMemory_Failed,
     E_Error_Allocation_ByteLoader_Failed,
     E_Error_Allocation_LexatomLoader_Failed,
-    E_Error_Buffer_CannotAbsorbMoreContent,
     E_Error_Constructor_Accumulator_Failed,
     E_Error_Constructor_Counter_Failed,
     E_Error_Constructor_PostCategorizer_Failed,
     E_Error_IncludePopOnEmptyStack,
     E_Error_IncludePush_OnError,
     E_Error_InputName_Set_Failed,
+    /* --------------------------------------------------*/
+    E_Error_Buffer_Feeder_CannotAbsorbMoreContent,
+    E_Error_Buffer_Overflow_LexemeTooLong,
+    /* --------------------------------------------------*/
+    /* --------------------------------------------------*/
+    E_Error_Accumulator_OutOfMemory,
+    /* --------------------------------------------------*/
     E_Error_NoHandler_OnBadLexatom,
     E_Error_NoHandler_OnEndOfStream,
     E_Error_NoHandler_OnFailure,
@@ -166,20 +172,25 @@ typedef enum {
     E_Error_UnitTest_Termination,
     E_Error_UserConstructor_Failed,
     E_Error_UserMementoPack_Failed,
-    E_Error_UserReset_Failed
+    E_Error_UserReset_Failed,
+    /*---------------------------------------------------*/
+    E_Error_ModeStack_PopOnTopLevel,
+    E_Error_ModeStack_Overflow,
 } E_Error;
 
 #define E_Error_NAME(E) \
     (  (E) == E_Error_Allocation_BufferMemory_Failed     ? "Allocation_BufferMemory_Failed"     \
      : (E) == E_Error_Allocation_ByteLoader_Failed       ? "Allocation_ByteLoader_Failed"       \
      : (E) == E_Error_Allocation_LexatomLoader_Failed    ? "Allocation_LexatomLoader_Failed"    \
-     : (E) == E_Error_Buffer_CannotAbsorbMoreContent     ? "Buffer_CannotAbsorbMoreContent"     \
+     : (E) == E_Error_Buffer_Feeder_CannotAbsorbMoreContent     ? "Buffer_Feeder_CannotAbsorbMoreContent"     \
+     : (E) == E_Error_Buffer_Overflow_LexemeTooLong      ? "Buffer_Overflow_LexemeTooLong"     \
      : (E) == E_Error_Constructor_Accumulator_Failed     ? "Constructor_Accumulator_Failed"     \
      : (E) == E_Error_Constructor_Counter_Failed         ? "Constructor_Counter_Failed"         \
      : (E) == E_Error_Constructor_PostCategorizer_Failed ? "Constructor_PostCategorizer_Failed" \
      : (E) == E_Error_IncludePopOnEmptyStack             ? "IncludePopOnEmptyStack"             \
      : (E) == E_Error_IncludePush_OnError                ? "IncludePush_OnError"                \
      : (E) == E_Error_InputName_Set_Failed               ? "InputName_Set_Failed"               \
+     : (E) == E_Error_Accumulator_OutOfMemory            ? "Accumulator_OutOfMemory"            \
      : (E) == E_Error_OnBadLexatom                       ? "OnBadLexatom"                       \
      : (E) == E_Error_OnFailure                          ? "OnFailure"                          \
      : (E) == E_Error_OnIndentationBad                   ? "OnIndentationBad"                   \
@@ -203,6 +214,8 @@ typedef enum {
      : (E) == E_Error_UserConstructor_Failed             ? "UserConstructor_Failed"             \
      : (E) == E_Error_UserMementoPack_Failed             ? "UserMementoPack_Failed"             \
      : (E) == E_Error_UserReset_Failed                   ? "UserReset_Failed"                   \
+     : (E) == E_Error_ModeStack_PopOnTopLevel            ? "ModeStack_PopOnTopLevel"            \
+     : (E) == E_Error_ModeStack_Overflow                 ? "ModeStack_Overflow"                 \
      :                                                     "<Error Void>")
 
 #define E_Error_MISSING_HANDLER_NAME(E) \
@@ -470,17 +483,13 @@ typedef enum {
         /* empty */
 #endif
 
-#define __QUEX_MESSAGE_CHARACTER_ENCODING_SPECIFIED_WITHOUT_CONVERTER \
-        "A character encoding name '%s' has been specified while the analyzer is not\n" \
-        "setup to run with a converter (icu or iconv).\n" 
-
 #define __QUEX_MESSAGE_ASSERTS_INFO \
         "## Disable this message by compile option\n"                               \
         "##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'\n"              \
         "##\n"                                                                      \
         "## Asserts activated! Lexical analyzer is 'paranoid'!\n"                   \
         "## => Even smallest misbehavior causes program exit.\n"                    \
-        "##    This helps to find subtile errors.\n"                                \
+        "##    This helps to find subtle errors.\n"                                 \
         "##\n"                                                                      \
         "## Note however: the paranoia is a heavy load on performance!\n"           \
         "##\n"                                                                      \
@@ -488,12 +497,6 @@ typedef enum {
         "##\n"                                                                      \
         "## Report any bug at\n"                                                    \
         "##        http://sourceforge.net/tracker/?group_id=168259&atid=846112\n" 
-
-#define __QUEX_MESSAGE_MODE_STACK_OVERFLOW \
-        "Error: Mode stack overflow. Adapt size of mode stack via the macro\n"      \
-        "Error: QUEX_SETTING_MODE_STACK_SIZE, or review mode transitions.\n"        \
-        "Error: I.e. check that for every GOSUB (push), there is a correspondent\n" \
-        "Error: GOUP (pop)."
 
 #define QUEX_ERROR_DEPRECATED(NAME, REPLACEMENT) \
         QUEX_ERROR_EXIT(NAME " has been deprecated\n"   \

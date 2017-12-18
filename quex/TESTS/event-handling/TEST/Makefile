@@ -27,70 +27,47 @@ LD = $(COMPILER) -Wno-deprecated -Wall -Werror \
      # -ggdb \
 	 # -DQUEX_OPTION_DEBUG_SHOW
 
-QUEX := $(QUEX_PATH)/quex-exe.py --suppress 3 
+LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE=4
+LD65536 := $(LD) -DQUEX_SETTING_BUFFER_SIZE=65536
+
+QUEX := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_
 
 # (*) RULES ____________________________________________________________________
 # -- application
 all: $(TEST_FILES)
 
-hwut-info:
-	@echo $(TEST_FILES)
-
-transit%.exe: transit%.qx lexer.c 
-	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --debug-exception --language C
-	$(LD) ./lexer.c EHLexer.c -o $@ \
-		-D__TEST_DESCRIPTION='"Mode Transitions: $<"' \
-		`icu-config --ldflags`      \
-		-D__TEST_CHOICES='"1, 2, 3, error"'
-
 on_match.exe: on_match.qx 
-	echo $<
-	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --language C
-	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
-		  -D__TEST_DESCRIPTION='"on_failure, on_match, on_after_match"' \
-		  -D__TEST_CHOICES='"failure, match"' \
-          -DQUEX_SETTING_BUFFER_SIZE=4 
+	$(QUEX) -i $< -o EHLexer 
+	$(LD4) ./lexer.c EHLexer.c -o $@  
 
 on_bad_lexatom.exe: on_bad_lexatom.qx 
-	echo $<
-	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --language C --encoding utf16
-	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
-		  -D__TEST_DESCRIPTION='"on_bad_lexatom"' \
-		  -D__TEST_CHOICES='"bad-utf16, good-utf16"' \
-          -DQUEX_SETTING_BUFFER_SIZE=65536
+	$(QUEX) -i $< -o EHLexer --encoding utf16
+	$(LD65536) ./lexer.c EHLexer.c -o $@ 
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
-	echo $<
-	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --language C
-	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
-		  -D__TEST_DESCRIPTION='"Customized 'on_buffer_overflow' event."' \
-		  -D__TEST_CHOICES='"empty, trigger"' \
-          -DQUEX_SETTING_BUFFER_SIZE=4 
+	$(QUEX) -i $< -o EHLexer 
+	$(LD4) ./lexer.c EHLexer.c -o $@  
 
 on_buffer_before_change.exe: on_buffer_before_change.qx 
-	echo $<
-	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --language C
-	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
-		  -D__TEST_DESCRIPTION='"Customized 'on_buffer_before_change' event."' \
-		  -D__TEST_CHOICES='"empty, twice"' \
-          -DQUEX_SETTING_BUFFER_SIZE=4 
+	$(QUEX) -i $< -o EHLexer 
+	$(LD4) ./lexer.c EHLexer.c -o $@  
 
 on_skip_range_open.exe: on_skip_range_open.qx 
-	echo $<
-	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --debug-exception --language C
-	$(LD) ./lexer.c EHLexer.c -o $@ -ggdb \
-		-D__TEST_DESCRIPTION='"Default 'on_skip_range_open' event."' \
-		`icu-config --ldflags`      \
-		-D__TEST_CHOICES='"default"' \
-          -DQUEX_SETTING_BUFFER_SIZE=4 \
+	$(QUEX) -i $< -o EHLexer 
+	$(LD4) ./lexer.c EHLexer.c -o $@ `icu-config --ldflags`   
 
 on_skip_range_open-customized.exe: on_skip_range_open-customized.qx 
-	$(QUEX) -i $< -o EHLexer --token-id-prefix TK_ --debug-exception --language C
-	$(LD) ./lexer.c EHLexer.c -o $@ \
-		-D__TEST_DESCRIPTION='"Customized 'on_skip_range_open' event."' \
-		`icu-config --ldflags`      \
-		-D__TEST_CHOICES='"customized"' \
-          -DQUEX_SETTING_BUFFER_SIZE=4 \
+	$(QUEX) -i $< -o EHLexer
+	$(LD4) ./lexer.c EHLexer.c -o $@ `icu-config --ldflags`  
+
+%.exe: %.qx 
+	$(QUEX) -i $< -o EHLexer
+	$(LD4) ./lexer.c EHLexer.c -o $@ `icu-config --ldflags`  
+
+transit%.exe: transit%.qx lexer.c 
+	$(QUEX) -i $< -o EHLexer 
+	$(LD) ./lexer.c EHLexer.c -o $@ `icu-config --ldflags`      
+
 
 # (*) HELPERS __________________________________________________________________
 clean:	

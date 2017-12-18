@@ -24,4 +24,78 @@ LETTER '4'
 |             to   TWO
 | Mode change from TWO
 |             to   ONE
-lexer: <<QUEX_PATH>>/quex/code_base/analyzer/member/mode-handling.i:81: quex_Simple_pop_mode: Assertion `me->_mode_stack.end != me->_mode_stack.begin' failed.
+<TERMINATION> '4'
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x0031
+                                           [0002] 0x0031
+                                           [0003] 0x0031
+                                           [0004] 0x000A
+                                           ...
+                                           [0018] 0x0070
+                                           [0019] 0x000A
+   lexeme start--------------------------->[001A] 0x0075
+                                           [001B] 0x0070
+   input---------------------------------->[001C] 0x000A
+   end of file---------------------------->[001D] 0x0000
+                                           [001E] 0x00FF
+                                           ...
+                                           [1FFFB] 0x00FF
+                                           [1FFFC] 0x00FF
+                                           [1FFFD] 0x00FF
+                                           [1FFFE] 0x00FF
+   buffer back---------------------------->[1FFFF] 0x0000
+_________________________________________________________________
+  mode:       ONE;
+  error_code: ModeStack_PopOnTopLevel;
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x7fecfce24010)) (== _front);
+      end:       begin + 131072 (== _back + 1);
+    }
+    _read_p:                      begin + 28, end - 131044;
+    _lexeme_start_p:              begin + 26, end - 131046;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     28;
+      byte_n_per_lexatom:             -1;
+      _byte_order_reversion_active_f: false;
+      type:                           converter;
+      raw_buffer: {
+        buffer:            { begin: ((0x555ec100f720)) end: ((0x555ec101f720)) size: 65536; }
+        fill_end_p:        begin + 28, end - 65508;
+        next_to_convert_p: begin + 28, end - 65508;
+      }
+      converter: {
+        virginity_f:          false;
+        byte_n_per_lexatom:   -1;
+        input_code_unit_size: 1;
+        type:                 IConv, GNU;
+        handle:               ((0x555ec1007660));
+      }
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 28;
+        type:             FILE;
+        file_handle:      ((0x555ec1007260));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 28;
+      end_p:               begin + 29, end - 131043;
+    }
+  }
+
+
+| [END] number of token = 10
+`------------------------------------------------------------------------------------

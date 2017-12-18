@@ -1,3 +1,5 @@
+// Errors: on_bad_lexatom;
+// CHOICES: bad-utf16, good-utf16;
 token { X; NEWLINE; }
 
 mode X :

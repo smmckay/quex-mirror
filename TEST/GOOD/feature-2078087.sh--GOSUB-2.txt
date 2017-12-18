@@ -50,4 +50,84 @@ LETTER 'one'
 | Mode change from ONE
 |             to   ONE
 LETTER 'one'
-lexer: <<QUEX_PATH>>/quex/code_base/analyzer/member/mode-handling.i:81: quex_Simple_pop_mode: Assertion `me->_mode_stack.end != me->_mode_stack.begin' failed.
+<TERMINATION> 'one'
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x0031
+                                           [0002] 0x0020
+                                           [0003] 0x006F
+                                           [0004] 0x006E
+                                           ...
+                                           [0073] 0x0065
+                                           [0074] 0x000A
+   lexeme start--------------------------->[0075] 0x0075
+                                           [0076] 0x0070
+   input---------------------------------->[0077] 0x0020
+                                           [0078] 0x0020
+                                           [0079] 0x0074
+                                           ...
+                                           [0081] 0x006F
+                                           [0082] 0x006E
+                                           [0083] 0x0065
+                                           [0084] 0x000A
+   end of file---------------------------->[0085] 0x0000
+                                           ...
+                                           [1FFFB] 0x00FF
+                                           [1FFFC] 0x00FF
+                                           [1FFFD] 0x00FF
+                                           [1FFFE] 0x00FF
+   buffer back---------------------------->[1FFFF] 0x0000
+_________________________________________________________________
+  mode:       ONE;
+  error_code: ModeStack_PopOnTopLevel;
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x7fa9fcd57010)) (== _front);
+      end:       begin + 131072 (== _back + 1);
+    }
+    _read_p:                      begin + 119, end - 130953;
+    _lexeme_start_p:              begin + 117, end - 130955;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     132;
+      byte_n_per_lexatom:             -1;
+      _byte_order_reversion_active_f: false;
+      type:                           converter;
+      raw_buffer: {
+        buffer:            { begin: ((0x55eadcb02720)) end: ((0x55eadcb12720)) size: 65536; }
+        fill_end_p:        begin + 132, end - 65404;
+        next_to_convert_p: begin + 132, end - 65404;
+      }
+      converter: {
+        virginity_f:          false;
+        byte_n_per_lexatom:   -1;
+        input_code_unit_size: 1;
+        type:                 IConv, GNU;
+        handle:               ((0x55eadcafa660));
+      }
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 132;
+        type:             FILE;
+        file_handle:      ((0x55eadcafa260));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 132;
+      end_p:               begin + 133, end - 130939;
+    }
+  }
+
+
+| [END] number of token = 18
+`------------------------------------------------------------------------------------

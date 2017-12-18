@@ -162,7 +162,10 @@ QUEX_NAME(Accumulator__add)(QUEX_NAME(Accumulator)* me,
     if( me->text.memory_end <= me->text.end + L ) {
         /* L + 1 we need space for the string + the terminating zero */
         if( QUEX_NAME(Accumulator__extend)(me, L + 1) == false ) {
-            QUEX_ERROR_EXIT("Quex Engine: Out of Memory. Accumulator could not be further extended.\n");
+            if( me->the_lexer ) {
+                me->the_lexer->error_code = E_Error_Accumulator_OutOfMemory;
+                return;
+            }
         }
     }
 
@@ -188,7 +191,10 @@ QUEX_NAME(Accumulator__add_character)(QUEX_NAME(Accumulator)*     me,
     if( me->text.memory_end <= me->text.end + 1 ) {
         /* 1 + 1 we need space for the character + the terminating zero */
         if( QUEX_NAME(Accumulator__extend)(me, 2) == false ) {
-            QUEX_ERROR_EXIT("Quex Engine: Out of Memory. Accumulator could not be further extended.\n");
+            if( me->the_lexer ) {
+                me->the_lexer->error_code = E_Error_Accumulator_OutOfMemory;
+                return;
+            }
         }
     }
 

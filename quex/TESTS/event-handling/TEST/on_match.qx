@@ -1,3 +1,5 @@
+// Matching: on_failure, on_match, on_after_match;
+// CHOICES: failure, match;
 token { X; NEWLINE; }
 
 mode X :

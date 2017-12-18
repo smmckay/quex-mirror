@@ -13,35 +13,38 @@ from   quex.blackboard import Lng
 from   quex.constants  import E_IncidenceIDs, \
                               E_TerminalType
 
-def _aux_adorn_on_skip_range_open(Lng, Code):
+def _aux_adorn_nothing(Code):
+    return Code
+
+def _aux_adorn_on_skip_range_open(Code):
     return CodeTerminal([
         "%s\n" % Lng.DEFINE_NESTED_RANGE_COUNTER(), 
         Lng.SOURCE_REFERENCED(Code)
     ])
 
 aux_db = {
-    E_TerminalType.PLAIN:           (None, None, ""),
-    E_TerminalType.MATCH_PATTERN:   (None, None, ""),
+    E_TerminalType.PLAIN:           (_aux_adorn_nothing, None, False, ""),
+    E_TerminalType.MATCH_PATTERN:   (_aux_adorn_nothing, None, False, ""),
 
-    E_TerminalType.MATCH_FAILURE:   (None, "FAILURE", ""),
+    E_TerminalType.MATCH_FAILURE:   (_aux_adorn_nothing, "FAILURE", True, ""),
 
     E_TerminalType.END_OF_STREAM:   
-     (None, "END_OF_STREAM", 
+     (_aux_adorn_nothing, "END_OF_STREAM", False,
       "End of Stream FORCES a return from the lexical analyzer, so that no\n" \
       "tokens can be filled after the termination token.",
      ),
     E_TerminalType.BAD_LEXATOM:     
-     (None, "BAD_LEXATOM",
+     (_aux_adorn_nothing, "BAD_LEXATOM", True,
       "Bad lexatom detection FORCES a return from the lexical analyzer, so that no\n" \
       "tokens can be filled after the termination token.",
      ),
     E_TerminalType.LOAD_FAILURE:    
-     (None, "LOAD_FAILURE",
+     (_aux_adorn_nothing, "LOAD_FAILURE", True,
       "Load failure FORCES a return from the lexical analyzer, so that no\n" \
       "tokens can be filled after the termination token.",
      ),
     E_TerminalType.SKIP_RANGE_OPEN: 
-     (_aux_adorn_on_skip_range_open, "SKIP_RANGE_OPEN",
+     (_aux_adorn_on_skip_range_open, "SKIP_RANGE_OPEN", True,
       "End of Stream appeared, while scanning for end of skip-range.",
      ),
 }
@@ -94,10 +97,11 @@ class TerminalFactory:
                             E_TerminalType.LOAD_FAILURE,
                             E_TerminalType.SKIP_RANGE_OPEN):
 
-            adorn, name, comment_txt = aux_db[TerminalType]
-            if adorn: Code = adorn(Lng, Code)
+            adorn, name, raise_error_f, comment_txt = aux_db[TerminalType]
+            if raise_error_f:
+                Code.insert_front(Lng.RAISE_ERROR_FLAG_BY_TERMINAL_TYPE(TerminalType))
 
-            return self.__terminate_analysis_step(Code, name, comment_txt)
+            return self.__terminate_analysis_step(adorn(Code), name, comment_txt)
         else:
             return {
                 E_TerminalType.PLAIN:           self.do_plain,

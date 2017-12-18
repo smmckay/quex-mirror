@@ -101,8 +101,9 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
                                                                PositionRegisterN);
 
     if( ! move_distance && me->input.end_p == EndP ) {
-        /* The 'on_buffer_overflow()' callback has been called already.      */
-        return E_LoadResult_FAILURE; 
+        /* Error callback 'on_buffer_overflow()' has been called already!      
+         * Report a harmless 'E_LoadResult_NO_MORE_DATA'.                    */
+        return E_LoadResult_NO_MORE_DATA; 
     }
 
     /* Load new content.                                                     */
@@ -205,8 +206,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
     if( encoding_error_f ) {
         return E_LoadResult_BAD_LEXATOM;
     }
-
-    if( loaded_n  != move_distance ) {
+    else if( loaded_n != move_distance ) {
         /* Serious: previously loaded content could not be loaded again!     
          * => Buffer has now hole: 
          *    from BeginP[loaded_n] to Begin[move_distance]                 

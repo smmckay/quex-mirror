@@ -22,7 +22,8 @@ from   quex.engine.misc.tools                            import typed, \
 import quex.output.languages.cpp.templates               as     templates
 
 from   quex.DEFINITIONS  import QUEX_PATH
-from   quex.blackboard   import setup as Setup 
+from   quex.blackboard   import setup as Setup, \
+                                standard_incidence_db_get_incidence_id
 from   quex.constants    import E_Files, \
                                 E_StateIndices,  \
                                 E_IncidenceIDs, \
@@ -102,8 +103,10 @@ class Language(dict):
         self.__code_generation_on_reload_fail_adr = None
         assert self.RETURN[-1] == ";"
         self.__re_RETURN                          = re.compile(r"\b%s\b" % self.RETURN[:-1])
+        # NOTE: 'END_OF_STREAM' is not an error, it it caught upon the 
+        #       termination token.
         self.__error_code_db = {
-            E_IncidenceIDs.END_OF_STREAM:   ("E_Error_OnEndOfStream",    "E_Error_NoHandler_OnEndOfStream"),
+            E_IncidenceIDs.END_OF_STREAM:   ("",                         "E_Error_NoHandler_OnEndOfStream"),
             E_IncidenceIDs.MATCH_FAILURE:   ("E_Error_OnFailure",        "E_Error_NoHandler_OnFailure"),
             E_IncidenceIDs.SKIP_RANGE_OPEN: ("E_Error_OnSkipRangeOpen",  "E_Error_NoHandler_OnSkipRangeOpen"),
             E_IncidenceIDs.INDENTATION_BAD: ("E_Error_OnIndentationBad", "E_Error_NoHandler_OnIndentationBad"),
@@ -1280,9 +1283,9 @@ cpp_reload_forward_str = """
     switch( $$LOAD_RESULT$$ ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto $$ON_BAD_LEXATOM$$;
-    case E_LoadResult_FAILURE:           goto $$ON_LOAD_FAILURE$$;
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
+    /* E_LoadResult_FAILURE cannot appear in forward direction.               */
     }
 """
 

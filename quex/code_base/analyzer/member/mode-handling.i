@@ -82,15 +82,21 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE void 
     QUEX_NAME(pop_mode)(QUEX_TYPE_ANALYZER* me) 
     { 
-        __quex_assert(me->_mode_stack.end != me->_mode_stack.begin);
-        --(me->_mode_stack.end);
-        QUEX_NAME(enter_mode)(me, *me->_mode_stack.end); 
+        if( me->_mode_stack.end == me->_mode_stack.begin ) {
+            me->error_code = E_Error_ModeStack_PopOnTopLevel;
+        }
+        else {
+            --(me->_mode_stack.end);
+            QUEX_NAME(enter_mode)(me, *me->_mode_stack.end); 
+        }
     }
 
     QUEX_INLINE void
     QUEX_NAME(pop_drop_mode)(QUEX_TYPE_ANALYZER* me) 
     { 
-        __quex_assert(me->_mode_stack.end != me->_mode_stack.begin);
+        if( me->_mode_stack.end == me->_mode_stack.begin ) {
+            me->error_code = E_Error_ModeStack_PopOnTopLevel;
+        }
         --(me->_mode_stack.end);
         /* do not care about what was popped */
     }
@@ -98,13 +104,14 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE void       
     QUEX_NAME(push_mode)(QUEX_TYPE_ANALYZER* me, QUEX_NAME(Mode)* new_mode) 
     { 
-#       ifdef QUEX_OPTION_ASSERTS
-        if( me->_mode_stack.end == me->_mode_stack.memory_end ) 
-            QUEX_ERROR_EXIT(__QUEX_MESSAGE_MODE_STACK_OVERFLOW);
-#       endif
-        *me->_mode_stack.end = me->__current_mode_p;
-        ++(me->_mode_stack.end);
-        QUEX_NAME(enter_mode)(me, new_mode); 
+        if( me->_mode_stack.end == me->_mode_stack.memory_end ) {
+            me->error_code = E_Error_ModeStack_Overflow;
+        }
+        else {
+            *me->_mode_stack.end = me->__current_mode_p;
+            ++(me->_mode_stack.end);
+            QUEX_NAME(enter_mode)(me, new_mode); 
+        }
     }
 
 QUEX_NAMESPACE_MAIN_CLOSE

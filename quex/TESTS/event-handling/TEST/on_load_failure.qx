@@ -1,12 +1,16 @@
-token { X; }
+// Customized 'on_load_failure' (only backward possible);
+// CHOICES: empty, twice;
+
+token { X; Y; }
 
 mode X :
 <skip_range: "/*" "*/">
 <skip:       [ \t\n] >
 {
-    . => TK_X;
-    on_skip_range_open { 
-        printf("We miss the '%s'\n", (const char*)Delimiter); 
+    abcdefghijklmnopqrst/x/ => TK_X;
+    x => TK_Y;
+    on_load_failure { 
+        printf("on_load_failure!");
     }
 }
 

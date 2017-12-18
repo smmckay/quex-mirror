@@ -115,6 +115,8 @@ $on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */,
                                                     - &self.buffer._memory._front[1] 
                                                     - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N));
     (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
+    self.error_code = E_Error_Buffer_Overflow_LexemeTooLong;
+
 $$ON_BUFFER_OVERFLOW$$
 }
 """                         

@@ -41,5 +41,8 @@ class CodeTerminal(CodeFragment):
     def get_pure_code(self):
         return self.__pure_code
 
+    def insert_front(self, Txt):
+        self.__pure_code.insert(0, Txt)
+
 CodeTerminal_NULL = CodeTerminal([])
 

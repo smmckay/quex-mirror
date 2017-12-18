@@ -1,3 +1,5 @@
+// Errors: Default 'on_skip_range_open' event;
+// CHOICES: default;
 token { X; }
 
 mode X :

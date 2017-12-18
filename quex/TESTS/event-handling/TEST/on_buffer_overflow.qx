@@ -1,3 +1,5 @@
+// Errors: 'on_buffer_overflow';
+// CHOICES: empty, trigger;
 token { X; }
 
 mode X :

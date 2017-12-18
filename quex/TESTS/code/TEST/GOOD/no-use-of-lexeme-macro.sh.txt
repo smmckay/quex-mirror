@@ -23,7 +23,10 @@ Following lines are suppossed to be accepted:
 ./input/files/code_fragment.py:320:        if argument_list[0] == "Lexeme":
 ./input/files/code_fragment.py:325:            error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
 ./input/files/code_fragment.py:328:                      "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
-./output/analyzer/modes.py:258:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
+./output/analyzer/modes.py:112:    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
+./output/analyzer/modes.py:113:    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
+./output/analyzer/modes.py:117:    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
+./output/analyzer/modes.py:263:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
 ./output/counter/run_time.py:100:        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
 ./output/counter/run_time.py:103:        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
 ./output/counter/run_time.py:104:        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
@@ -33,3 +36,6 @@ Following lines are suppossed to be accepted:
 ./output/languages/cpp/dictionary.py:399:        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
 ./output/languages/cpp/templates.py:245:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST
+
+
+

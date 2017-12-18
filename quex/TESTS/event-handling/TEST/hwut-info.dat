@@ -1,6 +1,7 @@
 Event Handling
 ---------------
-bash ./executer.sh *.exe
+bash ./executer.sh *.qx
+bash all_event_handlers_checked.sh
 
 --not template.sh
 ---------------
