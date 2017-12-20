@@ -1,0 +1,111 @@
+| Mode change to ONE
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
+| [START]
+Exit:  to   TWO
+| Mode change from ONE
+|             to   TWO
+Enter: from ONE
+TOKEN: GOSUB_TO_MODE 'sub2'
+Exit:  to   THREE
+| Mode change from TWO
+|             to   THREE
+Enter: from TWO
+TOKEN: GOSUB_TO_MODE 'sub3'
+Exit:  to   ONE
+| Mode change from THREE
+|             to   ONE
+Enter: from THREE
+TOKEN: GOSUB_TO_MODE 'sub1'
+Exit:  to   THREE
+| Mode change from ONE
+|             to   THREE
+Enter: from ONE
+TOKEN: RETURN_TO_MODE 'return'
+Exit:  to   TWO
+| Mode change from THREE
+|             to   TWO
+Enter: from THREE
+TOKEN: RETURN_TO_MODE 'return'
+Exit:  to   ONE
+| Mode change from TWO
+|             to   ONE
+Enter: from TWO
+TOKEN: RETURN_TO_MODE 'return'
+TOKEN: <TERMINATION> 'return'
+| [END]
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x0073
+                                           [0002] 0x0075
+                                           [0003] 0x0062
+                                           [0004] 0x0032
+                                           ...
+                                           [0023] 0x006E
+                                           [0024] 0x000A
+   lexeme start--------------------------->[0025] 0x0072
+                                           [0026] 0x0065
+                                           [0027] 0x0074
+                                           ...
+                                           [0029] 0x0072
+                                           [002A] 0x006E
+   input---------------------------------->[002B] 0x000A
+   end of file---------------------------->[002C] 0x0000
+                                           [002D] 0x00FF
+                                           ...
+                                           [1FFFB] 0x00FF
+                                           [1FFFC] 0x00FF
+                                           [1FFFD] 0x00FF
+                                           [1FFFE] 0x00FF
+   buffer back---------------------------->[1FFFF] 0x0000
+_________________________________________________________________
+  mode:       ONE;
+  error_code: ModeStack_PopOnTopLevel;
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x556b256c35a0)) (== _front);
+      end:       begin + 131072 (== _back + 1);
+    }
+    _read_p:                      begin + 43, end - 131029;
+    _lexeme_start_p:              begin + 37, end - 131035;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     43;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 43;
+        type:             FILE;
+        file_handle:      ((0x556b256c3260));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 43;
+      end_p:               begin + 44, end - 131028;
+    }
+  }
+
+

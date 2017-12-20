@@ -81,6 +81,11 @@
 
 #define __QUEX_RETURN                                return
 
+#if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \
+    && ! defined(QUEX_OPTION_COUNTER_COLUMN)
+#     error "QUEX_OPTION_COUNTER_COLUMN must be set for indentation handling."
+#endif
+
 #if    defined(QUEX_OPTION_COUNTER_LINE)   \
     || defined(QUEX_OPTION_COUNTER_COLUMN) \
     || defined(QUEX_OPTION_INDENTATION_TRIGGER)       

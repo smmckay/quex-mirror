@@ -110,6 +110,9 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
 #   if defined(QUEX_OPTION_COUNTER)
     QUEX_NAME(Counter)              counter;
 #   endif
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    bool                            _indentation_handler_active_f;
+#   endif
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;
 #   endif
@@ -145,6 +148,9 @@ public:
 #   endif
 #   if defined(QUEX_OPTION_COUNTER)
     QUEX_NAME(Counter)              counter;
+#   endif
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    bool                            _indentation_handler_active_f;
 #   endif
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;

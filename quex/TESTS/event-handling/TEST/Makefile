@@ -18,14 +18,14 @@ endif
 #     (change COMPILER to whatever you use as compiler on the command line,
 #     e.g. "make COMPILER=icpc" will use intel's c++ compiler)
 COMPILER = gcc
-LD = $(COMPILER) -Wno-deprecated -Wall -Werror \
-	 -I./ -I$(QUEX_PATH) \
-	 -DQUEX_OPTION_DEBUG_SHOW_MODES                \
-	 -DQUEX_OPTION_COUNTER_COLUMN_DISABLED \
+
+LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror \
+	 -I./ -I$(QUEX_PATH)                   \
+	 -DQUEX_OPTION_DEBUG_SHOW_MODES        \
 	 -DQUEX_OPTION_COUNTER_LINE_DISABLED   \
 	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK   
-     # -ggdb \
-	 # -DQUEX_OPTION_DEBUG_SHOW
+
+LD := $(LD0) -DQUEX_OPTION_COUNTER_COLUMN_DISABLED 
 
 LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE=4
 LD65536 := $(LD) -DQUEX_SETTING_BUFFER_SIZE=65536
@@ -39,6 +39,10 @@ all: $(TEST_FILES)
 on_match.exe: on_match.qx 
 	$(QUEX) -i $< -o EHLexer 
 	$(LD4) ./lexer.c EHLexer.c -o $@  
+
+on_indentation-%.exe: on_indentation-%.qx 
+	$(QUEX) -i $< -o EHLexer 
+	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=65536 ./lexer.c EHLexer.c -o $@ 
 
 on_bad_lexatom.exe: on_bad_lexatom.qx 
 	$(QUEX) -i $< -o EHLexer --encoding utf16

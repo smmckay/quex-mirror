@@ -6,7 +6,7 @@
  * NOTE: This file has been created automatically by Quex.
  *       Visit quex.org for further info.
  *
- * DATE: Tue Dec 19 16:25:06 2017
+ * DATE: Wed Dec 20 12:10:08 2017
  *
  * (C) 2005-2010 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                     */

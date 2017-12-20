@@ -1,0 +1,88 @@
+| Mode change to X
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtle errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
+| [START]
+TOKEN: X 'x'
+INDENT
+TOKEN: X 'x'
+DEDENT
+INDENTATION ERROR
+TOKEN: <TERMINATION> 'x'
+| [END]
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+                                           [0001] 0x0078
+                                           [0002] 0x000A
+                                           [0003] 0x0020
+                                           [0004] 0x0020
+                                           ...
+                                           [0006] 0x000A
+                                           [0007] 0x0020
+   lexeme start--------------------------->[0008] 0x0078
+   input---------------------------------->[0009] 0x000A
+                                           [000A] 0x0078
+                                           [000B] 0x000A
+   end of file---------------------------->[000C] 0x0000
+                                           ...
+                                           [FFFB] 0x00FF
+                                           [FFFC] 0x00FF
+                                           [FFFD] 0x00FF
+                                           [FFFE] 0x00FF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________
+  mode:       X;
+  error_code: Indentation_DedentNotOnIndentationBorder;
+  counter: {
+    _column_number_at_begin: 2;
+    _column_number_at_end:   3;
+    _indentation_stack: [1, ]
+  }
+  _indentation_handler_active_f: true;
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x564acc6735a0)) (== _front);
+      end:       begin + 65536 (== _back + 1);
+    }
+    _read_p:                      begin + 9, end - 65527;
+    _lexeme_start_p:              begin + 8, end - 65528;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     11;
+      byte_n_per_lexatom:             1;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 11;
+        type:             FILE;
+        file_handle:      ((0x564acc673260));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 11;
+      end_p:               begin + 12, end - 65524;
+    }
+  }
+
+

@@ -102,6 +102,9 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
 #   if defined(QUEX_OPTION_COUNTER)
     QUEX_NAME(Counter)              counter;
 #   endif
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    bool                            _indentation_handler_active_f;
+#   endif
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;
 #   endif
@@ -136,6 +139,9 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 #   endif
 #   if defined(QUEX_OPTION_COUNTER)
     QUEX_NAME(Counter)              counter;
+#   endif
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    bool                            _indentation_handler_active_f;
 #   endif
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;
@@ -293,7 +299,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 297 "TestAnalyzer.h"
+#   line 303 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -324,7 +330,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 328 "TestAnalyzer.h"
+#   line 334 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -370,7 +376,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 374 "TestAnalyzer.h"
+#   line 380 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -457,7 +463,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 461 "TestAnalyzer.h"
+#   line 467 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -478,7 +484,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 482 "TestAnalyzer.h"
+#   line 488 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -497,7 +503,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 501 "TestAnalyzer.h"
+#   line 507 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -572,7 +578,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 576 "TestAnalyzer.h"
+#   line 582 "TestAnalyzer.h"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

@@ -265,6 +265,9 @@ def __parse_event(new_mode, fh, word):
                       + "This statement will trigger 'on_after_match' handler.\n" \
                       + "May be, use plain return instead.", code.sr)
 
+    if word == "on_n_dedent" and not blackboard.token_repetition_token_id_list:
+        error.warning("Found 'on_n_dedent', but no single token has been specified\n" \
+                      "in a 'repeated_token' section.", code.sr)
     new_mode.incidence_db[word] = code
 
     return True

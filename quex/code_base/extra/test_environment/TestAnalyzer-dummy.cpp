@@ -56,19 +56,20 @@ QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
 
 }
 
+
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
 void
 QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me, 
                 QUEX_TYPE_INDENTATION  Indentation, 
-                QUEX_TYPE_LEXATOM*   Begin) {
+                QUEX_TYPE_LEXATOM*     Begin) 
+{
     (void)me;
     (void)Indentation;
     (void)Begin;
-
-#   define __QUEX_RETURN return
-#   define RETURN        return
-#   define CONTINUE      return
-#   define Lexeme        LexemeBegin
+#   ifndef self
+#   define self          (*me)
+#   endif
+#   define Lexeme        Begin
 #   define LexemeEnd     (me->buffer._read_p)
 
     QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
@@ -135,9 +136,9 @@ self_send_n((size_t)ClosedN, QUEX_TOKEN_ID(DEDENT));
 
 #   undef Lexeme    
 #   undef LexemeEnd 
-
 }
 #endif
+
 
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 bool
@@ -608,7 +609,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 612 "TestAnalyzer.cpp"
+#   line 613 "TestAnalyzer.cpp"
 
 }
 RETURN;

@@ -1,0 +1,22 @@
+// Indentation: With N x DEDENT;
+// CHOICES: n-dedent;
+token { X; NEWLINE; }
+
+repeated_token { DEDENT; }
+
+mode X :
+<indentation: ":" => bad; >
+{
+    .+  => TK_X(Lexeme);
+
+    on_indent            { printf("INDENT\n"); }
+    on_nodent            { printf("NODENT\n"); }
+    on_n_dedent          { printf("%i x DEDENT\n", (int)ClosedN); }
+    on_indentation_error { printf("INDENTATION ERROR\n"); }
+    on_indentation_bad   {
+        printf("INDENTATION BAD (line starts with undesired whitespace)\n");
+    }
+
+    on_end_of_stream => TK_TERMINATION(LexemeNull);
+}
+

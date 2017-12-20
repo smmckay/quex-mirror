@@ -56,19 +56,20 @@ QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
 
 }
 
+
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
 void
 QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me, 
                 QUEX_TYPE_INDENTATION  Indentation, 
-                QUEX_TYPE_LEXATOM*   Begin) {
+                QUEX_TYPE_LEXATOM*     Begin) 
+{
     (void)me;
     (void)Indentation;
     (void)Begin;
-
-#   define __QUEX_RETURN return
-#   define RETURN        return
-#   define CONTINUE      return
-#   define Lexeme        LexemeBegin
+#   ifndef self
+#   define self          (*me)
+#   endif
+#   define Lexeme        Begin
 #   define LexemeEnd     (me->buffer._read_p)
 
     QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
@@ -135,9 +136,9 @@ self_send_n((size_t)ClosedN, QUEX_TOKEN_ID(DEDENT));
 
 #   undef Lexeme    
 #   undef LexemeEnd 
-
 }
 #endif
+
 
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 bool
@@ -616,7 +617,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 620 "TestAnalyzer.c"
+#   line 621 "TestAnalyzer.c"
 
 }
 RETURN;
@@ -849,7 +850,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 853 "TestAnalyzer.c"
+#   line 854 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -880,7 +881,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 884 "TestAnalyzer.c"
+#   line 885 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -926,7 +927,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 930 "TestAnalyzer.c"
+#   line 931 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -1013,7 +1014,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 1017 "TestAnalyzer.c"
+#   line 1018 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1034,7 +1035,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 1038 "TestAnalyzer.c"
+#   line 1039 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1053,7 +1054,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1057 "TestAnalyzer.c"
+#   line 1058 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1128,7 +1129,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1132 "TestAnalyzer.c"
+#   line 1133 "TestAnalyzer.c"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

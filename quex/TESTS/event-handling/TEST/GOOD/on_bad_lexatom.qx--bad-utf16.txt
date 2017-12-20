@@ -1,0 +1,70 @@
+| Mode change to X
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtile errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
+| [START]
+bad_lexatom!
+TOKEN: <TERMINATION> ''
+| [END]
+_________________________________________________________________
+   buffer front--------------------------->[0000] 0x0000
+   lexeme start, input-------------------->[0001] 0x0000
+                                           [0002] 0xDBDB
+   end of file---------------------------->[0003] 0x0000
+                                           [0004] 0xFFFF
+                                           ...
+                                           [FFFB] 0xFFFF
+                                           [FFFC] 0xFFFF
+                                           [FFFD] 0xFFFF
+                                           [FFFE] 0xFFFF
+   buffer back---------------------------->[FFFF] 0x0000
+_________________________________________________________________
+  mode:       X;
+  error_code: OnBadLexatom;
+  _mode_stack: {
+    size:    8;
+    content: []
+  }
+  buffer: {
+    memory: {
+      ownership: LEXICAL_ANALYZER;
+      begin:     ((0x55d17275c5a0)) (== _front);
+      end:       begin + 65536 (== _back + 1);
+    }
+    _read_p:                      begin + 1, end - 65535;
+    _lexeme_start_p:              begin + 1, end - 65535;
+    _lexatom_at_lexeme_start:     0x0;
+    filler: {
+      lexatom_index_next_to_fill:     2;
+      byte_n_per_lexatom:             2;
+      _byte_order_reversion_active_f: false;
+      type:                           plain;
+      byte_loader: {
+        handle_ownership: LEXICAL_ANALYZER;
+        binary_mode_f:    true;
+        element_size:     1;
+        initial_position: 0;
+        current_position: 4;
+        type:             FILE;
+        file_handle:      ((0x55d17275c260));
+        end_of_stream:    true;
+      }
+    }
+    input: {
+      lexatom_index_begin: 0;
+      end_character_index: 2;
+      end_p:               begin + 3, end - 65533;
+    }
+  }
+
+

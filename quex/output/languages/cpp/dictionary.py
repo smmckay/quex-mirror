@@ -271,7 +271,9 @@ class Language(dict):
         return "QUEX_LEXEME_TERMINATING_ZERO_SET(&me->buffer);\n"
     def INDENTATION_HANDLER_CALL(self, ModeName):
         name = self.NAME_IN_NAMESPACE_MAIN("%s_on_indentation" % ModeName)
-        return "    %s(me, me->counter._column_number_at_end, LexemeNull);\n" % name
+        return "".join(["    if( QUEX_NAME(indentation_handler_is_active)(me) ) {\n",
+                "        %s(me, me->counter._column_number_at_end, LexemeNull);\n" % name,
+                "    }\n"])
 
     def STORE_LAST_CHARACTER(self, BeginOfLineSupportF):
         if not BeginOfLineSupportF: return ""
@@ -1170,10 +1172,13 @@ class Language(dict):
         assert type(VariableDB) != dict
         return templates._local_variable_definitions(VariableDB.get()) 
 
+    def RAISE_ERROR_FLAG_BY_INCIDENCE_ID(self, IncidenceId):
+        if not IncidenceId: return ""
+        return "QUEX_NAME(error_code_set_if_first)(&self, %s);\n" % self.__error_code_db[IncidenceId][0]
+
     def RAISE_ERROR_FLAG_BY_TERMINAL_TYPE(self, TerminalType):
         incidence_id = standard_incidence_db_get_incidence_id(TerminalType)
-        if not incidence_id: return ""
-        return "QUEX_NAME(error_code_set_if_first)(&self, %s);\n" % self.__error_code_db[incidence_id][0]
+        return self.RAISE_ERROR_FLAG_BY_INCIDENCE_ID(incidence_id)
 
     def EXIT_ON_MISSING_HANDLER(self, IncidenceId):
         return [
@@ -1280,6 +1285,7 @@ cpp_reload_forward_str = """
     switch( $$LOAD_RESULT$$ ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto $$ON_BAD_LEXATOM$$;
+    case E_LoadResult_FAILURE:           QUEX_GOTO_STATE(target_state_else_index); 
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
     /* E_LoadResult_FAILURE cannot appear in forward direction.               */
