@@ -41,10 +41,10 @@ QUEX_NAMESPACE_MAIN_OPEN
     struct QUEX_NAME(Memento_tag);
     $$LEXER_DERIVED_CLASS_DECL$$
     class  QUEX_TYPE0_ANALYZER;    /* $$LEXER_CLASS_NAME$$ */
-    typedef __QUEX_TYPE_ANALYZER_RETURN_VALUE  (*QUEX_NAME(AnalyzerFunctionP))(QUEX_TYPE_ANALYZER*);
+    typedef void  (*QUEX_NAME(AnalyzerFunctionP))(QUEX_TYPE_ANALYZER*);
 QUEX_NAMESPACE_MAIN_CLOSE
 
-/* Token Class Declaration must preceed the user's header, so that the user
+/* Token Class Declaration must precede the user's header, so that the user
  * can refer to it at ease.                                                    */
 QUEX_NAMESPACE_TOKEN_OPEN
     class  QUEX_TYPE0_TOKEN;
@@ -87,6 +87,9 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
 #   if defined(QUEX_OPTION_COUNTER)
     QUEX_NAME(Counter)              counter;
 #   endif
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    bool                            _indentation_handler_active_f;
+#   endif
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;
 #   endif
@@ -122,6 +125,9 @@ public:
 #   endif
 #   if defined(QUEX_OPTION_COUNTER)
     QUEX_NAME(Counter)              counter;
+#   endif
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    bool                            _indentation_handler_active_f;
 #   endif
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;

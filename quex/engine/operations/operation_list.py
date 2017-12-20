@@ -206,8 +206,8 @@ class Op(namedtuple("Op_tuple", ("id", "content", "my_hash", "branch_f"))):
         return Op(E_Op.ColumnCountAdd, Value)
     
     @staticmethod
-    def IndentationHandlerCall(DefaultIhF, ModeName):
-        return Op(E_Op.IndentationHandlerCall, DefaultIhF, ModeName)
+    def IndentationHandlerCall(ModeName):
+        return Op(E_Op.IndentationHandlerCall, ModeName)
     
     @staticmethod
     @typed(AccConditionSet=tuple)
@@ -504,7 +504,7 @@ def __configure():
     #
     c(E_Op.LexemeResetTerminatingZero,       None, (E_R.LexemeStartP,r), (E_R.Buffer,w), (E_R.InputP,r), (E_R.Input,w))
     #
-    c(E_Op.IndentationHandlerCall,           ("default_f", "mode_name"),
+    c(E_Op.IndentationHandlerCall,           ("mode_name",),
                                               (E_R.Column,r), (E_R.Indentation,r+w), (E_R.CountReferenceP,r))
     #
     c(E_Op.ColumnCountAdd,                   ("value",),

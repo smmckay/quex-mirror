@@ -124,7 +124,7 @@ _terminal_state_prolog  = """
 """
 
 __function_signature = """
-__QUEX_TYPE_ANALYZER_RETURN_VALUE  
+void  
 QUEX_NAME($$STATE_MACHINE_NAME$$_analyzer_function)(QUEX_TYPE_ANALYZER* me) 
 {
     /* NOTE: Different modes correspond to different analyzer functions. The 

@@ -64,8 +64,8 @@ example_db = {
         Op.IfPreContextSetPositionAndGoto((24L,), RouterContentElement(66, 1)),
     ],
     E_Op.IndentationHandlerCall: [ 
-        Op.IndentationHandlerCall(True, "SLEEPY"),
-        Op.IndentationHandlerCall(False, "EXITED"),
+        Op.IndentationHandlerCall("SLEEPY"),
+        Op.IndentationHandlerCall("EXITED"),
     ],
     E_Op.QuexAssertNoPassage: [
         Op.QuexAssertNoPassage(),

@@ -66,7 +66,7 @@ QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
 
     new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
     if( ! new_byte_loader ) {
-        me->error_code = E_Error_Allocation_ByteLoader_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_ByteLoader_Failed);
         goto ERROR_0;
     }
     else if( ! QUEX_NAME(include_push_ByteLoader)(me, FileName, new_byte_loader, new_converter) ) {
@@ -100,7 +100,7 @@ QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
 
     new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
     if( ! new_filler ) {
-        me->error_code = E_Error_Allocation_LexatomLoader_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_LexatomLoader_Failed);
         goto ERROR_0;
     }
     else if( me->buffer.filler )
@@ -154,11 +154,11 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
     QUEX_NAME(Memento)*  new_memento;
 
     if( ! QUEX_NAME(BufferMemory_check_chunk)(Memory, MemorySize, EndOfFileP) ) {
-        me->error_code = E_Error_ProvidedExternal_Memory_Corrupt;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_ProvidedExternal_Memory_Corrupt);
         goto ERROR_0;
     }
     else if( me->error_code != E_Error_None ) {
-        me->error_code = E_Error_IncludePush_OnError;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_IncludePush_OnError);
         goto ERROR_0;
     }
 
@@ -215,8 +215,9 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 #   if defined(QUEX_OPTION_ASSERTS)
     memento->DEBUG_analyzer_function_at_entry = me->DEBUG_analyzer_function_at_entry;
 #   endif
-#   ifdef QUEX_OPTION_COUNTER
     __QUEX_IF_COUNT(memento->counter = me->counter); /* Plain copy is ok.     */ 
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    memento->_indentation_handler_active_f = me->_indentation_handler_active_f;
 #   endif
 
     /* Deriberately not subject to include handling:
@@ -225,14 +226,14 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
      *    -- Post categorizer.                                                */
     new_input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
     if( ! new_input_name ) {
-        me->error_code = E_Error_InputName_Set_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_InputName_Set_Failed);
         goto ERROR_1;
     }
 
     /* When 'user_memento_pack()' is called, nothing has been done to the 
      * current lexical analyzer object, yet!                                  */
     if( ! QUEX_NAME(user_memento_pack)(me, InputNameP, memento) ) {
-        me->error_code = E_Error_UserMementoPack_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_UserMementoPack_Failed);
         goto ERROR_2;
     }
     /*_________________________________________________________________________
@@ -268,7 +269,7 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(Memento)* memento;
     /* Not included? return 'false' to indicate we're on the top level       */
     if( ! me->_parent_memento ) {
-        me->error_code = E_Error_IncludePopOnEmptyStack;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_IncludePopOnEmptyStack);
         return false;                             
     }
 
@@ -308,6 +309,9 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
     me->DEBUG_analyzer_function_at_entry = memento->DEBUG_analyzer_function_at_entry;
 #   endif
     __QUEX_IF_COUNT(me->counter          = memento->counter);
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    me->_indentation_handler_active_f    = memento->_indentation_handler_active_f;
+#   endif
 
     QUEX_NAME(user_memento_unpack)(me, memento);
 

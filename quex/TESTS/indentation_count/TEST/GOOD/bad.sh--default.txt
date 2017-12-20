@@ -7,7 +7,7 @@ src/bad-default.qx:8:warning: ('--suppress 11' to avoid this message)
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.
-##    This helps to find subtile errors.
+##    This helps to find subtle errors.
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
@@ -44,6 +44,7 @@ A 'n'
     _column_number_at_end:   60;
     _indentation_stack: [1, 24, 43, ]
   }
+  _indentation_handler_active_f: true;
   _mode_stack: {
     size:    8;
     content: []
@@ -78,10 +79,10 @@ A 'n'
       end_character_index: 63;
       end_p:               begin + 6, end - 1;
     }
-
-
   }
 _________________________________________________________________
+
+
    buffer front--------------------------->[0000] 0x0000
    lexeme start--------------------------->[0001] 0x003A
    input---------------------------------->[0002] 0x0020
@@ -90,3 +91,4 @@ _________________________________________________________________
                                            [0005] 0x0068
    end of file, buffer back--------------->[0006] 0x0000
 _________________________________________________________________
+

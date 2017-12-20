@@ -142,6 +142,7 @@ class IncidenceDB(dict):
         else:                     return "".join(code_fragment.get_code())
 
     def default_indentation_handler_f(self):
+        return False
         return not (   self.has_key(E_IncidenceIDs.INDENTATION_ERROR) \
                     or self.has_key(E_IncidenceIDs.INDENTATION_INDENT)   \
                     or self.has_key(E_IncidenceIDs.INDENTATION_DEDENT)   \

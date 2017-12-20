@@ -83,7 +83,7 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_NAME(pop_mode)(QUEX_TYPE_ANALYZER* me) 
     { 
         if( me->_mode_stack.end == me->_mode_stack.begin ) {
-            me->error_code = E_Error_ModeStack_PopOnTopLevel;
+            QUEX_NAME(error_code_set_if_first)(me, E_Error_ModeStack_PopOnTopLevel);
         }
         else {
             --(me->_mode_stack.end);
@@ -95,17 +95,19 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_NAME(pop_drop_mode)(QUEX_TYPE_ANALYZER* me) 
     { 
         if( me->_mode_stack.end == me->_mode_stack.begin ) {
-            me->error_code = E_Error_ModeStack_PopOnTopLevel;
+            QUEX_NAME(error_code_set_if_first)(me, E_Error_ModeStack_PopOnTopLevel);
         }
-        --(me->_mode_stack.end);
-        /* do not care about what was popped */
+        else {
+            --(me->_mode_stack.end);
+            /* do not care about what was popped */
+        }
     }
         
     QUEX_INLINE void       
     QUEX_NAME(push_mode)(QUEX_TYPE_ANALYZER* me, QUEX_NAME(Mode)* new_mode) 
     { 
         if( me->_mode_stack.end == me->_mode_stack.memory_end ) {
-            me->error_code = E_Error_ModeStack_Overflow;
+            QUEX_NAME(error_code_set_if_first)(me, E_Error_ModeStack_Overflow);
         }
         else {
             *me->_mode_stack.end = me->__current_mode_p;

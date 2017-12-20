@@ -27,6 +27,7 @@ def do(Mode_PrepPrepDB):
     )
 
     # token_repetition_token_id_list empty => token_repetition_support_txt = ""
+    token_repetition_support_f   = (len(blackboard.token_repetition_token_id_list) != 0)
     token_repetition_support_txt = (" %s " % Lng.OR).join(
         Lng.EQUAL("TokenID", token_id_str)
         for token_id_str in blackboard.token_repetition_token_id_list
@@ -45,7 +46,7 @@ def do(Mode_PrepPrepDB):
     txt = Lng.SWITCH(txt, "QUEX_OPTION_INCLUDE_STACK",                 Setup.include_stack_support_f)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_LINE",          Setup.count_line_number_f)      
     txt = Lng.SWITCH(txt, "QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK", Setup.mode_transition_check_f)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT",      token_repetition_support_txt) 
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT",      token_repetition_support_f) 
     txt = Lng.SWITCH(txt, "QUEX_OPTION_INDENTATION_TRIGGER",           IndentationSupportF)     
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_BIG",                  Setup.buffer_byte_order == "big")
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_LITTLE",               Setup.buffer_byte_order == "little")

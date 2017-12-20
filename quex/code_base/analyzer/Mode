@@ -47,7 +47,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Mode_tag) {
     QUEX_NAME(AnalyzerFunctionP)    analyzer_function;
 } QUEX_NAME(Mode);
 
-QUEX_INLINE __QUEX_TYPE_ANALYZER_RETURN_VALUE
+QUEX_INLINE void
 QUEX_NAME(Mode_uncallable_analyzer_function)(QUEX_TYPE_ANALYZER*);
 
 #if ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)

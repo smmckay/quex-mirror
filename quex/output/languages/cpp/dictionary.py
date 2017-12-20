@@ -269,11 +269,10 @@ class Language(dict):
     def LEXEME_TERMINATING_ZERO_SET(self, RequiredF):
         if not RequiredF: return ""
         return "QUEX_LEXEME_TERMINATING_ZERO_SET(&me->buffer);\n"
-    def INDENTATION_HANDLER_CALL(self, DefaultF, ModeName):
-        if DefaultF: prefix = ""
-        else:        prefix = "%s_" % ModeName
-        return "    %s(me, me->counter._column_number_at_end, LexemeNull);\n" \
-               % self.NAME_IN_NAMESPACE_MAIN("%son_indentation" % prefix)
+    def INDENTATION_HANDLER_CALL(self, ModeName):
+        name = self.NAME_IN_NAMESPACE_MAIN("%s_on_indentation" % ModeName)
+        return "    %s(me, me->counter._column_number_at_end, LexemeNull);\n" % name
+
     def STORE_LAST_CHARACTER(self, BeginOfLineSupportF):
         if not BeginOfLineSupportF: return ""
         # TODO: The character before lexeme start does not have to be written
@@ -393,7 +392,7 @@ class Language(dict):
         return "self_send(%s);" % TokenName
 
     def TOKEN_SEND_N(self, N, TokenName):
-        return "self_send_n(ClosedN, QUEX_TOKEN_ID(DEDENT));\n"
+        return "self_send_n((size_t)ClosedN, QUEX_TOKEN_ID(DEDENT));\n"
 
     def DEFAULT_COUNTER_FUNCTION_NAME(self, ModeName):
         return self.NAME_IN_NAMESPACE_MAIN("%s_counter" % ModeName)
@@ -509,9 +508,7 @@ class Language(dict):
                                             self.GOTO(Op.content.door_id, dial_db))
 
         elif Op.id == E_Op.IndentationHandlerCall:
-            # If mode_specific is None => General default indentation handler.
-            # else:                    => specific indentation handler.
-            return self.INDENTATION_HANDLER_CALL(Op.content.default_f, Op.content.mode_name)
+            return self.INDENTATION_HANDLER_CALL(Op.content.mode_name)
 
         elif Op.id == E_Op.Assign:
             txt = "%s = %s" % (self.REGISTER_NAME(Op.content[0]), self.REGISTER_NAME(Op.content[1]))
@@ -1176,11 +1173,11 @@ class Language(dict):
     def RAISE_ERROR_FLAG_BY_TERMINAL_TYPE(self, TerminalType):
         incidence_id = standard_incidence_db_get_incidence_id(TerminalType)
         if not incidence_id: return ""
-        return "self.error_code = %s;\n" % self.__error_code_db[incidence_id][0]
+        return "QUEX_NAME(error_code_set_if_first)(&self, %s);\n" % self.__error_code_db[incidence_id][0]
 
     def EXIT_ON_MISSING_HANDLER(self, IncidenceId):
         return [
-            'self.error_code = %s;\n' % self.__error_code_db[IncidenceId][1],
+            'QUEX_NAME(error_code_set_if_first)(&self, %s);\n' % self.__error_code_db[IncidenceId][1],
             "%s\n"  % self.TOKEN_SEND("QUEX_TOKEN_ID(TERMINATION)"),
             '%s;\n' % self.PURE_RETURN
         ]

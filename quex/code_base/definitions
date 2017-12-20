@@ -129,6 +129,7 @@ typedef enum {
              : (LR) == E_LoadResult_VOID              ? "VOID"              \
              :                                          "<error>")
 
+
 #ifndef QUEX_TYPE_DEFINITIONS_E_ERROR
 #define QUEX_TYPE_DEFINITIONS_E_ERROR
 typedef enum {
@@ -145,6 +146,11 @@ typedef enum {
     E_Error_Buffer_Feeder_CannotAbsorbMoreContent,
     E_Error_Buffer_Overflow_LexemeTooLong,
     /* --------------------------------------------------*/
+    E_Error_StateRouter_Empty,
+    E_Error_StateRouter_UnkownStateIndex,
+    /* --------------------------------------------------*/
+    E_Error_Indentation_StackOverflow,
+    E_Error_Indentation_DedentNotOnIndentationBorder,
     /* --------------------------------------------------*/
     E_Error_Accumulator_OutOfMemory,
     /* --------------------------------------------------*/
@@ -182,13 +188,17 @@ typedef enum {
     (  (E) == E_Error_Allocation_BufferMemory_Failed     ? "Allocation_BufferMemory_Failed"     \
      : (E) == E_Error_Allocation_ByteLoader_Failed       ? "Allocation_ByteLoader_Failed"       \
      : (E) == E_Error_Allocation_LexatomLoader_Failed    ? "Allocation_LexatomLoader_Failed"    \
-     : (E) == E_Error_Buffer_Feeder_CannotAbsorbMoreContent     ? "Buffer_Feeder_CannotAbsorbMoreContent"     \
-     : (E) == E_Error_Buffer_Overflow_LexemeTooLong      ? "Buffer_Overflow_LexemeTooLong"     \
+     : (E) == E_Error_Buffer_Feeder_CannotAbsorbMoreContent     ? "Buffer_Feeder_CannotAbsorbMoreContent"    \
+     : (E) == E_Error_Buffer_Overflow_LexemeTooLong      ? "Buffer_Overflow_LexemeTooLong"      \
      : (E) == E_Error_Constructor_Accumulator_Failed     ? "Constructor_Accumulator_Failed"     \
      : (E) == E_Error_Constructor_Counter_Failed         ? "Constructor_Counter_Failed"         \
      : (E) == E_Error_Constructor_PostCategorizer_Failed ? "Constructor_PostCategorizer_Failed" \
      : (E) == E_Error_IncludePopOnEmptyStack             ? "IncludePopOnEmptyStack"             \
      : (E) == E_Error_IncludePush_OnError                ? "IncludePush_OnError"                \
+     : (E) == E_Error_StateRouter_Empty                  ? "StateRouter_Empty"                  \
+     : (E) == E_Error_StateRouter_UnkownStateIndex       ? "StateRouter_UnkownStateIndex"       \
+     : (E) == E_Error_Indentation_StackOverflow          ? "Indentation_StackOverflow"                       \
+     : (E) == E_Error_Indentation_DedentNotOnIndentationBorder ? "Indentation_DedentNotOnIndentationBorder"  \
      : (E) == E_Error_InputName_Set_Failed               ? "InputName_Set_Failed"               \
      : (E) == E_Error_Accumulator_OutOfMemory            ? "Accumulator_OutOfMemory"            \
      : (E) == E_Error_OnBadLexatom                       ? "OnBadLexatom"                       \

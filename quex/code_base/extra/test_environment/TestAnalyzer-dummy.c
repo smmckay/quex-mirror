@@ -64,7 +64,78 @@ QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me,
     (void)me;
     (void)Indentation;
     (void)Begin;
-    return;
+
+#   define __QUEX_RETURN return
+#   define RETURN        return
+#   define CONTINUE      return
+#   define Lexeme        LexemeBegin
+#   define LexemeEnd     (me->buffer._read_p)
+
+    QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
+    QUEX_TYPE_INDENTATION*        start = 0x0;
+    (void)start;
+
+    __quex_assert((long)Indentation >= 0);
+
+    if( Indentation > *(stack->back) ) {
+        ++(stack->back);
+        if( stack->back == stack->memory_end ) {
+            QUEX_NAME(error_code_set_if_first)(me, E_Error_Indentation_StackOverflow);
+            return;
+        }
+        *(stack->back) = Indentation;
+self_send(QUEX_TOKEN_ID(INDENT));
+        return;
+    }
+    else if( Indentation == *(stack->back) ) {
+self_send(QUEX_TOKEN_ID(NODENT));
+    }
+    else  {
+        start = stack->back;
+        --(stack->back);
+#       if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
+#       define First true
+self_send(QUEX_TOKEN_ID(DEDENT));
+#       undef  First
+#       endif
+        while( Indentation < *(stack->back) ) {
+            --(stack->back);
+#           if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
+#           define First false
+self_send(QUEX_TOKEN_ID(DEDENT));
+#           undef  First
+#           endif
+        }
+
+        if( Indentation == *(stack->back) ) { 
+            /* 'Landing' must happen on indentation border. */
+#           if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
+#           define ClosedN (start - stack->back)
+self_send_n((size_t)ClosedN, QUEX_TOKEN_ID(DEDENT));
+
+#           undef  ClosedN
+#           endif
+        } else { 
+#            define IndentationStackSize ((size_t)(1 + start - stack->front))
+#            define IndentationStack(I)  (*(stack->front + I))
+#            define IndentationUpper     (*(stack->back))
+#            define IndentationLower     ((stack->back == stack->front) ? *(stack->front) : *(stack->back - 1))
+#            define ClosedN              (start - stack->back)
+             QUEX_NAME(error_code_set_if_first)(me,  
+                                                E_Error_Indentation_DedentNotOnIndentationBorder);
+
+#            undef IndentationStackSize 
+#            undef IndentationStack  
+#            undef IndentationUpper     
+#            undef IndentationLower     
+#            undef ClosedN
+             return;
+        }
+    }
+
+#   undef Lexeme    
+#   undef LexemeEnd 
+
 }
 #endif
 
@@ -132,10 +203,12 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */,
 {
     const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-    const size_t             BufferSize  =   &self.buffer._memory._back[-1] 
-                                           - &self.buffer._memory._front[1] 
-                                           - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
+    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[-1] 
+                                                    - &self.buffer._memory._front[1] 
+                                                    - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N));
     (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
+    QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+
 QUEX_NAME(Buffer_print_overflow_message)(&self.buffer, ForwardF);
 }
 #undef self
@@ -365,7 +438,7 @@ _18:
 #endif
 #define   RETURN   do { goto _16; } while(0)
 
-__QUEX_TYPE_ANALYZER_RETURN_VALUE  
+void  
 QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me) 
 {
     /* NOTE: Different modes correspond to different analyzer functions. The 
@@ -472,7 +545,8 @@ _1:
     __quex_debug("* TERMINAL BAD_LEXATOM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code = E_Error_NoHandler_OnBadLexatom;
+QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnBadLexatom);
+QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnBadLexatom);
 self_send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
@@ -485,7 +559,8 @@ _2:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code = E_Error_NoHandler_OnLoadFailure;
+QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnLoadFailure);
+QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnLoadFailure);
 self_send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
@@ -509,7 +584,7 @@ _4:
     __quex_debug("* TERMINAL FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code = E_Error_NoHandler_OnFailure;
+QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnFailure);
 self_send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
@@ -520,7 +595,8 @@ _5:
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
-self.error_code = E_Error_NoHandler_OnSkipRangeOpen;
+QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnSkipRangeOpen);
+QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnSkipRangeOpen);
 self_send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
@@ -540,7 +616,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 544 "TestAnalyzer.c"
+#   line 620 "TestAnalyzer.c"
 
 }
 RETURN;
@@ -587,9 +663,9 @@ _10:
     switch( load_result ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto _1;
-    case E_LoadResult_FAILURE:           goto _2;
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
+    /* E_LoadResult_FAILURE cannot appear in forward direction.               */
     }
 
 _16:
@@ -773,7 +849,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 777 "TestAnalyzer.c"
+#   line 853 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -804,7 +880,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 808 "TestAnalyzer.c"
+#   line 884 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -850,7 +926,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 854 "TestAnalyzer.c"
+#   line 930 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -937,7 +1013,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 941 "TestAnalyzer.c"
+#   line 1017 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -958,7 +1034,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 962 "TestAnalyzer.c"
+#   line 1038 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -977,7 +1053,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 981 "TestAnalyzer.c"
+#   line 1057 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1052,7 +1128,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1056 "TestAnalyzer.c"
+#   line 1132 "TestAnalyzer.c"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

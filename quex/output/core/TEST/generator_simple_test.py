@@ -254,7 +254,7 @@ QUEX_NAMESPACE_LEXEME_NULL_CLOSE
 #    define RETURN    return
 #endif
 
-static __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER*);
+static void QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER*);
 
 static int
 run_test(const char* TestString, const char* Comment, QUEX_TYPE_ANALYZER* lexer)

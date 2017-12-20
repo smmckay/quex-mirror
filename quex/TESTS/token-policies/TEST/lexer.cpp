@@ -7,7 +7,7 @@ using namespace std;
 using namespace quex;
 #endif
 
-__QUEX_TYPE_ANALYZER_RETURN_VALUE  pseudo_analysis(QUEX_TYPE_ANALYZER* me);
+void  pseudo_analysis(QUEX_TYPE_ANALYZER* me);
 QUEX_TYPE_TOKEN_ID  test_core(TPLex&, const char*);
 
 #define UMM_NAME ""
@@ -57,7 +57,7 @@ QUEX_TYPE_TOKEN_ID test_core(TPLex& qlex, const char* Choice)
 }
 
 #if defined(UNIT_TEST_PSEUDO_ANALYSIS)
-__QUEX_TYPE_ANALYZER_RETURN_VALUE  pseudo_analysis(QUEX_TYPE_ANALYZER* me)
+void  pseudo_analysis(QUEX_TYPE_ANALYZER* me)
 {
     TPLex&     self = *((TPLex*)me);
     static int i = 0;

@@ -1,6 +1,7 @@
 import sys
 import os
 sys.path.insert(0, os.environ["QUEX_PATH"])
+import quex.output.analyzer.indentation_handler      as     indentation_handler
 from   quex.input.code.base                          import CodeFragment, SourceRef_VOID
 from   quex.input.files.specifier.counter            import LineColumnCount_Default
 import quex.engine.loop.skip_character_set           as     character_set_skipper
@@ -19,6 +20,10 @@ from   quex.output.core.variable_db                  import variable_db
 import quex.output.counter.run_time                  as     run_time_counter
 import quex.output.core.base                         as     generator
 from   quex.output.core.base                         import do_state_router
+
+class AuxMode:
+    def __init__(self):
+        self.incidence_db = {}
 
 # Setup.buffer_element_specification_prepare()
 Setup.set_all_character_set_UNIT_TEST()
@@ -236,7 +241,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     analyzer_list,         \
     terminal_list,         \
     required_register_set, \
-    run_time_counter_f     = indentation_counter.do("Test", ca_map, ISetup, 
+    run_time_counter_f     = indentation_counter.do("M", ca_map, ISetup, 
                                                     mini_incidence_db, FSM.reload_state, 
                                                     dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
@@ -253,17 +258,22 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     )
 
     __require_variables(required_register_set)
-    return create_customized_analyzer_function(Language, TestStr, 
-                                               code, 
-                                               QuexBufferSize=BufferSize, 
-                                               CommentTestStrF="", ShowPositionF=True, 
-                                               EndStr=end_str, 
-                                               SkipUntilMarkerSet="behind newline",
-                                               LocalVariableDB=deepcopy(variable_db.get()), 
-                                               IndentationSupportF=True,
-                                               ReloadF=True, 
-                                               CounterPrintF=False,
-                                               BeforeCode=counter_code)
+    main_txt = create_customized_analyzer_function(Language, TestStr, 
+                                                   code, 
+                                                   QuexBufferSize=BufferSize, 
+                                                   CommentTestStrF="", ShowPositionF=True, 
+                                                   EndStr=end_str, 
+                                                   SkipUntilMarkerSet="behind newline",
+                                                   LocalVariableDB=deepcopy(variable_db.get()), 
+                                                   IndentationSupportF=True,
+                                                   ReloadF=True, 
+                                                   CounterPrintF=False,
+                                                   BeforeCode=counter_code)
+
+    on_indentation_txt = indentation_handler.do(AuxMode()).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
+
+    return main_txt + on_indentation_txt
+    
 
 def create_customized_analyzer_function(Language, TestStr, EngineSourceCode, 
                                         QuexBufferSize, CommentTestStrF, ShowPositionF, 
@@ -378,7 +388,7 @@ static bool skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me);
 
 #include <quex/code_base/single.i>
 
-__QUEX_TYPE_ANALYZER_RETURN_VALUE 
+void
 QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 {
 #   define  engine (me)

@@ -90,7 +90,6 @@ base_analyzer = """
 /analyzer/member/mode-handling.i
 /analyzer/member/navigation
 /analyzer/member/navigation.i
-/analyzer/member/on_indentation.i
 /analyzer/member/token-receiving
 /analyzer/member/token-receiving.i
 """

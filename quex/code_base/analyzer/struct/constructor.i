@@ -53,10 +53,12 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
 {
     QUEX_NAME(ByteLoader)*   new_byte_loader;
 
+    QUEX_NAME(error_code_clear)(me);
+
     new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
 
     if( ! new_byte_loader ) {
-        me->error_code = E_Error_Allocation_ByteLoader_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_ByteLoader_Failed);
         goto ERROR_2;
     }
     QUEX_NAME(from_ByteLoader)(me, new_byte_loader, converter); 
@@ -65,7 +67,7 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
         goto ERROR_1;
     }
     else if( ! QUEX_NAME(input_name_set)(me, FileName) ) {
-        me->error_code = E_Error_InputName_Set_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_InputName_Set_Failed);
         goto ERROR_0;
     }
 
@@ -98,11 +100,13 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     QUEX_NAME(LexatomLoader)* new_filler;
     QUEX_TYPE_LEXATOM*        new_memory;
 
+    QUEX_NAME(error_code_clear)(me);
+
     /* NEW: Filler.                                                           */
     new_filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
 
     if( ! new_filler ) {
-        me->error_code = E_Error_Allocation_LexatomLoader_Failed; 
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_LexatomLoader_Failed);
         goto ERROR_0;
     }
 
@@ -111,7 +115,7 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                        QUEX_SETTING_BUFFER_SIZE * sizeof(QUEX_TYPE_LEXATOM), 
                        E_MemoryObjectType_BUFFER_MEMORY);
     if( ! new_memory ) {
-        me->error_code = E_Error_Allocation_BufferMemory_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_BufferMemory_Failed);
         goto ERROR_1;
     }
 
@@ -152,8 +156,10 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
  * for filling it. There is no 'file/stream handle', no 'ByteLoader', and no
  * 'LexatomLoader'.                                                           */
 {
+    QUEX_NAME(error_code_clear)(me);
+
     if( ! QUEX_NAME(BufferMemory_check_chunk)(Memory, MemorySize, EndOfFileP) ) {
-        me->error_code = E_Error_ProvidedExternal_Memory_Corrupt;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_ProvidedExternal_Memory_Corrupt);
         goto ERROR_0;
     }
 
@@ -197,10 +203,14 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     }
 #   ifdef QUEX_OPTION_COUNTER
     else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
-        me->error_code = E_Error_Constructor_Counter_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_Constructor_Counter_Failed);
         goto ERROR_4;
     }
 #   endif
+#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    me->_indentation_handler_active_f = true;
+#   endif
+
 
     /* A user's mode change callbacks may be called as a consequence of the 
      * call to 'set_mode_brutally_by_id()'. The current mode must be set to '0'
@@ -209,11 +219,11 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     QUEX_NAME(set_mode_brutally_by_id)(me, __QUEX_SETTING_INITIAL_LEXER_MODE_ID);
 
     if( CallUserConstructorF && ! QUEX_NAME(user_constructor)(me) ) {
-        me->error_code = E_Error_UserConstructor_Failed;
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_UserConstructor_Failed);
         goto ERROR_5;
     }
 
-    me->error_code = E_Error_None;
+    QUEX_NAME(error_code_clear)(me);
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/

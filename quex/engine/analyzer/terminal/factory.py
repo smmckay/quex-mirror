@@ -71,9 +71,7 @@ class TerminalFactory:
         self.dial_db      = dial_db
 
         if blackboard.required_support_indentation_count(): 
-            self.txt_indentation_handler_call = Lng.INDENTATION_HANDLER_CALL(
-                                                    IncidenceDb.default_indentation_handler_f(),
-                                                    ModeName) 
+            self.txt_indentation_handler_call = Lng.INDENTATION_HANDLER_CALL(ModeName) 
         else:
             self.txt_indentation_handler_call = ""
 

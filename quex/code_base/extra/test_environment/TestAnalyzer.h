@@ -39,7 +39,7 @@
 struct  QUEX_NAME(Engine_tag);
 struct  QUEX_NAME(Memento_tag);
 QUEX_TYPE0_ANALYZER;    /* quex_TestAnalyzer */
-typedef __QUEX_TYPE_ANALYZER_RETURN_VALUE  (*QUEX_NAME(AnalyzerFunctionP))(QUEX_TYPE0_ANALYZER*);
+typedef void  (*QUEX_NAME(AnalyzerFunctionP))(QUEX_TYPE0_ANALYZER*);
 
 /* Token Class Declaration must preceed the user's header, so that the user
  * can refer to it at ease.                                                    */
@@ -69,7 +69,7 @@ extern QUEX_NAME(Mode)  QUEX_NAME(M);
 
 extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
-extern  __QUEX_TYPE_ANALYZER_RETURN_VALUE QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me);
+extern  void QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 extern  bool QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)* mode);
 #endif

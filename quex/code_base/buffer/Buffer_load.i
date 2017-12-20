@@ -101,9 +101,8 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
                                                                PositionRegisterN);
 
     if( ! move_distance && me->input.end_p == EndP ) {
-        /* Error callback 'on_buffer_overflow()' has been called already!      
-         * Report a harmless 'E_LoadResult_NO_MORE_DATA'.                    */
-        return E_LoadResult_NO_MORE_DATA; 
+        /* Error callback 'on_buffer_overflow()' has been called already!    */
+        return E_LoadResult_FAILURE; 
     }
 
     /* Load new content.                                                     */

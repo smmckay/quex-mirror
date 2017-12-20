@@ -61,17 +61,7 @@ $on_exit(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
 $$EXIT-PROCEDURE$$
 }
 
-#if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
-void
-$on_indentation(QUEX_TYPE_ANALYZER*    me, 
-                QUEX_TYPE_INDENTATION  Indentation, 
-                QUEX_TYPE_LEXATOM*   Begin) {
-    (void)me;
-    (void)Indentation;
-    (void)Begin;
 $$ON_INDENTATION-PROCEDURE$$
-}
-#endif
 
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 bool
@@ -115,7 +105,7 @@ $on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */,
                                                     - &self.buffer._memory._front[1] 
                                                     - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N));
     (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
-    self.error_code = E_Error_Buffer_Overflow_LexemeTooLong;
+    QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
 
 $$ON_BUFFER_OVERFLOW$$
 }
@@ -146,6 +136,8 @@ def get_implementation_of_mode_functions(mode, Modes):
 
     # (*) on indentation
     on_indentation_str = indentation_handler.do(mode)
+    on_indentation_str = __replace_function_names(on_indentation_str, mode, 
+                                                  NullFunctionsF=False)
 
     # (*) has base mode
     base_mode_sequence = mode.implemented_base_mode_name_sequence() 
@@ -256,7 +248,7 @@ def __get_function_declaration(Modes, FriendF=False):
     else:       prolog = "extern "
 
     db = {
-        "analyzer_function":       [ "__QUEX_TYPE_ANALYZER_RETURN_VALUE", 
+        "analyzer_function":       [ "void", 
                                      [("QUEX_TYPE_ANALYZER*", "me")]],
 
         "on_indentation":          [ "void",

@@ -9,7 +9,7 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-    QUEX_INLINE __QUEX_TYPE_ANALYZER_RETURN_VALUE
+    QUEX_INLINE void
     QUEX_NAME(Mode_uncallable_analyzer_function)(QUEX_TYPE_ANALYZER* me)
     { 
         __quex_assert(0); 

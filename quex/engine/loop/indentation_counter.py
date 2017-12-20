@@ -74,7 +74,6 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
     sm_newline            = IndentationSetup.get_sm_newline()
     sm_comment_list       = IndentationSetup.get_sm_comment_list()
     sm_suppressed_newline = IndentationSetup.get_sm_suppressed_newline()
-    default_ih_f          = IncidenceDb.default_indentation_handler_f()
 
     assert sm_suppressed_newline  is None or sm_suppressed_newline.is_DFA_compliant()
     assert sm_newline is None             or sm_newline.is_DFA_compliant()
@@ -83,15 +82,13 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
     # -- 'on_indentation' == 'on_beyond': 
     #     A handler is called as soon as an indentation has been detected.
     loop_exit_door_id, \
-    ih_call_terminal   = _get_indentation_handler_terminal(default_ih_f, 
-                                                           ModeName,
-                                                           dial_db)
-    sm_terminal_list    = _get_state_machine_vs_terminal_list(sm_suppressed_newline, 
-                                                              sm_newline,
-                                                              sm_comment_list, 
-                                                              bad_space_set,
-                                                              IncidenceDb, 
-                                                              dial_db) 
+    ih_call_terminal   = _get_indentation_handler_terminal(ModeName, dial_db)
+    sm_terminal_list   = _get_state_machine_vs_terminal_list(sm_suppressed_newline, 
+                                                             sm_newline,
+                                                             sm_comment_list, 
+                                                             bad_space_set,
+                                                             IncidenceDb, 
+                                                             dial_db) 
 
     # 'whitespace' --> normal counting
     # 'bad'        --> goto bad character indentation handler
@@ -121,10 +118,9 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
            required_register_set, \
            run_time_counter_f
 
-def _get_indentation_handler_terminal(DefaultIndentationHanderF,
-                                      ModeName, dial_db):
+def _get_indentation_handler_terminal(ModeName, dial_db):
     code = Lng.COMMAND_LIST([
-        Op.IndentationHandlerCall(DefaultIndentationHanderF, ModeName),
+        Op.IndentationHandlerCall(ModeName),
         Op.GotoDoorId(DoorID.continue_without_on_after_match(dial_db))
     ], dial_db)
     incidence_id = dial.new_incidence_id()
@@ -177,7 +173,7 @@ def _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
     """
 
     sm = DFA.from_character_set(BadSpaceCharacterSet,
-                                         E_IncidenceIDs.INDENTATION_BAD)
+                                E_IncidenceIDs.INDENTATION_BAD)
 
     on_bad_indentation_txt = Lng.SOURCE_REFERENCED(
         IncidenceDb[E_IncidenceIDs.INDENTATION_BAD]

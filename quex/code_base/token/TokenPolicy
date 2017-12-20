@@ -79,7 +79,7 @@
 #else 
 #  define self_token_repetition_n_set(N)                                                   \
           do {                                                                             \
-              self.error_code = E_Error_TokenRepetitionNSetButNotSupportedByGeneratedCode; \
+              QUEX_NAME(error_code_set_if_first)(&self, E_Error_TokenRepetitionNSetButNotSupportedByGeneratedCode); \
               QUEX_NAME(TokenQueue_set_token_TERMINATION)(&self._token_queue);             \
               RETURN;                                                                      \
           } while(0)

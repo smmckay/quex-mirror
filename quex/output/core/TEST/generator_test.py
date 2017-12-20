@@ -407,9 +407,9 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
         if   "->1" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mr_analyzer_function);\n")
         elif "->2" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mrs_analyzer_function);\n")
 
-        if "CONTINUE" in PatternName: txt.append("")
-        elif "STOP" in PatternName:   txt.append("me->error_code = E_Error_UnitTest_Termination; return;\n")
-        else:                         txt.append("return;\n")
+        if   "CONTINUE" in PatternName: txt.append("")
+        elif "STOP" in PatternName:     txt.append("QUEX_NAME(error_code_set_if_first)(me, E_Error_UnitTest_Termination); return;\n")
+        else:                           txt.append("return;\n")
 
         txt.append("%s\n" % Lng.GOTO(DoorID.continue_with_on_after_match(dial_db), dial_db))
         ## print "#", txt
@@ -435,7 +435,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     # -- PatternList/TerminalDb
     #    (Terminals can only be generated after the 'mount procedure', because, 
     #     the bipd_sm is generated through mounting.)
-    on_failure = CodeTerminal(["me->error_code = E_Error_UnitTest_Termination; return;\n"])
+    on_failure = CodeTerminal(["QUEX_NAME(error_code_set_if_first)(me, E_Error_UnitTest_Termination); return;\n"])
     terminal_db.update({
         E_IncidenceIDs.MATCH_FAILURE: Terminal(on_failure, "FAILURE", 
                                                E_IncidenceIDs.MATCH_FAILURE,
@@ -533,9 +533,9 @@ quex_TestAnalyzer*   lexer_state;
 TestAnalyzer*        lexer_state;
 #endif
 
-static __QUEX_TYPE_ANALYZER_RETURN_VALUE  QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER*);
+static void  QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER*);
 #ifdef QUEX_UNIT_TEST_SECOND_MODE
-static __QUEX_TYPE_ANALYZER_RETURN_VALUE  QUEX_NAME(Mrs_analyzer_function)(QUEX_TYPE_ANALYZER*);
+static void  QUEX_NAME(Mrs_analyzer_function)(QUEX_TYPE_ANALYZER*);
 #endif
 
 QUEX_NAMESPACE_MAIN_OPEN

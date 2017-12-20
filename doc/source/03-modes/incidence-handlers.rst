@@ -315,6 +315,22 @@ following incidence handlers may be used.
    the indentation on level ``I``, ``IndentationUpper`` delivers the highest
    indentation and ``IndentationLower`` the lowest.
 
+   Before this handler is called, the error flag 'Indentation_DedentNotOnIndentationBorder'
+   is set. This might stop the lexical analysis loop. In case that the indentation
+   error is to be treated by a token, the flag might have to be reset, such as
+   in the following code fragment.
+
+   .. block:: cpp
+    
+    mode MINE {
+        ...
+        on_indentation_error { 
+            self_send1(QUEX_TKN_INDENTATION_ERROR, LexemeNull); 
+            QUEX_NAME(error_code_clear)(&self); 
+        }
+        ...
+    }
+
 .. data:: on_indentation_bad
 
    Implicit Arguments: ``BadCharacter``

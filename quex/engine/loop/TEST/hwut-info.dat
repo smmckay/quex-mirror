@@ -3,5 +3,6 @@ Loop Generation and Applications
 python indentation*.py
 python skip*.py
 python loop*.py
+python test*.py
 --not tmp*.exe
 --------------------------------------

@@ -104,7 +104,7 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
         if( ! do_action(n) ) {
             /* Too many file descriptors can only occur if i >> 0 */
             hwut_verify(i > 0);
-            lx->error_code = E_Error_None;
+            QUEX_NAME(error_code_clear)(lx);
             break;
         }
     }
