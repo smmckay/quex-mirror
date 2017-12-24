@@ -13,20 +13,20 @@ Following lines are suppossed to be accepted:
 ./engine/state_machine/TEST_help/walk.py:74:def __get_step_list(Dfa, Lexeme):
 ./engine/state_machine/TEST_help/walk.py:77:    for input_position, lexatom in enumerate(Lexeme):
 ./input/files/code_fragment.py:22:lexeme_re = re.compile(r"^Lexeme\b")
-./input/files/code_fragment.py:272:        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
-./input/files/code_fragment.py:273:                  "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
-./input/files/code_fragment.py:276:                  "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"
-./input/files/code_fragment.py:279:                  "       is not directly dependent anymore on 'Lexeme'. This is particularly\n"
-./input/files/code_fragment.py:283:                  "          \"%s(Lexeme+1, LexemeEnd-2)\"\n" % TokenName + 
-./input/files/code_fragment.py:284:                  "          \"%s(Lexeme)\"\n" % TokenName + 
-./input/files/code_fragment.py:312:                  "     one argument:   'Lexeme'   =>  token.take_text(..., LexemeBegin, LexemeEnd);\n"
-./input/files/code_fragment.py:320:        if argument_list[0] == "Lexeme":
-./input/files/code_fragment.py:325:            error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
-./input/files/code_fragment.py:328:                      "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
-./output/analyzer/modes.py:112:    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
-./output/analyzer/modes.py:113:    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-./output/analyzer/modes.py:117:    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
-./output/analyzer/modes.py:263:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
+./input/files/code_fragment.py:254:        argument_list = ["Lexeme"]
+./input/files/code_fragment.py:282:        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
+./input/files/code_fragment.py:283:                  "'Lexeme' points into the text buffer and it is not owned by the token object.\n"
+./input/files/code_fragment.py:286:                  "   (1) Use '(Lexeme)', i.e. surround 'Lexeme' by brackets to indicate\n"
+./input/files/code_fragment.py:289:                  "       is not directly dependent anymore on 'Lexeme'. This is particularly\n"
+./input/files/code_fragment.py:293:                  "          \"%s(Lexeme+1, LexemeEnd-2)\"\n" % TokenName + 
+./input/files/code_fragment.py:294:                  "          \"%s(Lexeme)\"\n" % TokenName + 
+./input/files/code_fragment.py:322:                  "     one argument:   'Lexeme'   =>  token.take_text(..., LexemeBegin, LexemeEnd);\n"
+./input/files/code_fragment.py:330:        if argument_list[0] == "Lexeme":
+./input/files/code_fragment.py:335:            error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
+./input/files/code_fragment.py:338:                      "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
+./input/files/mode.py:300:                            "L": "pass Lexeme to token constructor.",
+./input/files/mode.py:348:                            "L": "pass Lexeme to token constructor.",
+./output/analyzer/modes.py:102:    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
 ./output/counter/run_time.py:100:        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
 ./output/counter/run_time.py:103:        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
 ./output/counter/run_time.py:104:        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 

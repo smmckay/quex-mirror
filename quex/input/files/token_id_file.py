@@ -1,25 +1,18 @@
 from   quex.input.setup                 import NotificationDB
-from   quex.input.code.base             import SourceRef, \
-                                               SourceRef_VOID
+from   quex.input.code.base             import SourceRef
 import quex.engine.misc.error           as     error
 from   quex.engine.misc.file_operations import get_file_content_or_die, \
                                                open_file_or_die
+
 from   quex.engine.misc.file_in         import delete_comment
 from   quex.blackboard                  import setup as Setup, \
-                                               Lng, \
-                                               token_id_db, \
+                                               Lng
+from   quex.token_db                    import token_id_db, \
+                                               token_id_db_enter, \
                                                token_id_foreign_set
 from   itertools import chain
 import re
 import os
-
-class TokenInfo:
-    def __init__(self, Name, ID, TypeName=None, SourceReference=SourceRef_VOID):
-        self.name         = Name
-        self.number       = ID
-        self.related_type = TypeName
-        self.id           = None
-        self.sr           = SourceReference
 
 def parse(ForeignTokenIdFile):
     """This function tries to interpret an externally defined token id file--if
@@ -65,9 +58,9 @@ def parse(ForeignTokenIdFile):
     __error_detection(not_found_list, recursive_list)
 
 def cut_token_id_prefix(TokenName, FH_Error=False):
-    if TokenName.find(Setup.token_id_prefix) == 0:
+    if TokenName.startswith(Setup.token_id_prefix):
         return TokenName[len(Setup.token_id_prefix):]
-    elif TokenName.find(Setup.token_id_prefix_plain) == 0:
+    elif TokenName.startswith(Setup.token_id_prefix_plain):
         return TokenName[len(Setup.token_id_prefix_plain):]
     elif not FH_Error:
         return TokenName
@@ -198,9 +191,8 @@ def __sort_token_ids(token_id_list, file_name, token_id_db, found_db, token_id_f
         # NOTE: The actual token value is not important, since the token's numeric
         #       identifier is defined in the user's header. We do not care.
         prefix_less_token_name = cut_token_id_prefix(token_name)
-        token_id_db[prefix_less_token_name] = \
-                    TokenInfo(prefix_less_token_name, None, None, 
-                              SourceRef(file_name, line_n)) 
+        token_id_db_enter(SourceRef(file_name, line_n), 
+                          prefix_less_token_name)
     
 def __get_line_n_of_include(FileName, IncludedFileName):
     fh = open_file_or_die(FileName, Mode="rb")

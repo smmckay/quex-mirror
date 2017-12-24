@@ -20,7 +20,7 @@ def do(stream):
     if len(content) == 1: property_value = None
     else:                 property_value = content[1]
 
-    result = ucs_property_db.get_character_set(property_name, property_value)
+    result = ucs_property_db.get_character_set(property_name, property_value, Fh=stream)
 
     if type(result) == str:
         raise RegularExpressionException(result)
@@ -29,18 +29,18 @@ def do(stream):
 
 def do_shortcut(stream, ShortcutLetter, PropertyAlias):
     """Name property shortcut '\ShortcutLetter{...}' which is a shortcut
-       for '\P{PropertyAlias=...}'.
+    for '\P{PropertyAlias=...}'.
     
-       Parse an expression of the form '\N{CHARACTER NAME}'
-       and return the related character set of characters that 
-       match the given name. Wildcards in are allowed.
+    Parse an expression of the form '\N{CHARACTER NAME}' and return the related
+    character set of characters that match the given name. Wildcards in are
+    allowed.
     """
     content = __parse_property_expression(stream, ShortcutLetter, EqualConditionPossibleF=False)
     # if len(content) != 1 then an exception is thrown
 
     property_value = content[0]
 
-    result = ucs_property_db.get_character_set(PropertyAlias, property_value)
+    result = ucs_property_db.get_character_set(PropertyAlias, property_value, Fh=stream)
 
     if type(result) == str:
         raise RegularExpressionException(result)

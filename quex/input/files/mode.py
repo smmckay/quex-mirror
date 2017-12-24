@@ -8,17 +8,22 @@ from   quex.input.code.core               import CodeUser
 from   quex.input.code.base               import SourceRef
                                           
 import quex.engine.misc.error             as     error
+import quex.engine.misc.similarity        as     similarity
 from   quex.engine.misc.file_in           import EndOfStreamException, \
                                                  check, \
                                                  check_or_die, \
                                                  read_identifier, \
                                                  read_until_letter, \
                                                  read_until_whitespace, \
-                                                 skip_whitespace
+                                                 skip_whitespace, \
+                                                 optional_flags
+from   quex.output.token.id_generator     import token_id_db_enter
+import quex.token_db   as token_db
 import quex.blackboard as blackboard
 from   quex.blackboard import setup as Setup, \
                               Lng, \
                               standard_incidence_db
+from   StringIO import StringIO
 
 def parse(fh):
     """This function parses a mode description and enters it into the 
@@ -141,7 +146,7 @@ def __parse_base_mode_list(fh, new_mode):
 
         skip_whitespace(fh)
         identifier = read_identifier(fh)
-        if identifier == "": break
+        if not identifier: break
 
         new_mode.direct_base_mode_name_list.append(identifier)
         trailing_comma_f = False
@@ -157,7 +162,7 @@ def __parse_base_mode_list(fh, new_mode):
         pos = fh.tell()
         skip_whitespace(fh)
         dummy_identifier = read_identifier(fh)
-        if dummy_identifier != "":
+        if dummy_identifier:
             error.log("Missing separating ',' between base modes '%s' and '%s'.\n" \
                       % (new_mode.direct_base_mode_name_list[-1], dummy_identifier) + \
                       "(The comma separator is mandatory since quex 0.53.1)", fh)
@@ -176,11 +181,23 @@ def __parse_element(new_mode, fh):
         #       whitespace, if a regular expression is to be parsed.
         position = fh.tell()
 
-        word = read_until_whitespace(fh)
-        if word == "}": return False
+        identifier = read_identifier(fh)
+        if identifier == "keyword_list":
+            return __parse_keyword_list(new_mode, fh)
+        elif similarity.get(identifier, ["keyword_list", "key words"]) != -1:
+            error.warning("'%s' is similar to keyword 'keyword_list'.\n" 
+                          "For clarity, use quotes." % identifier, fh)
+        elif identifier == "abridgement":
+            return __parse_abridgement(new_mode, fh)
+        elif similarity.get(identifier, ["abridge", "abridgment"]) != -1:
+            error.warning("'%s' is similar to keyword 'abridgement'.\n"
+                          "For clarity, use quotes." % identifier, fh)
 
+        fh.seek(position)
+        word = read_until_whitespace(fh)
+        if word == "}":                   return False
         # -- check for 'on_entry', 'on_exit', ...
-        if __parse_event(new_mode, fh, word): return True
+        elif __parse_event(new_mode, fh, word): return True
 
         fh.seek(position)
         description = "start of mode element: regular expression"
@@ -255,7 +272,7 @@ def __parse_event(new_mode, fh, word):
               "use double quotes to bracket patterns that start with 'on_'."
 
     __general_validate(fh, new_mode, word, pos)
-    error.verify_word_in_list(word, standard_incidence_db.keys(), comment, 
+    error.verify_word_in_list(word, standard_incidence_db.keys() + ["keyword_list"], comment, 
                               fh)
 
     code         = code_fragment.parse(fh, "%s::%s event handler" % (new_mode.name, word))
@@ -265,11 +282,103 @@ def __parse_event(new_mode, fh, word):
                       + "This statement will trigger 'on_after_match' handler.\n" \
                       + "May be, use plain return instead.", code.sr)
 
-    if word == "on_n_dedent" and not blackboard.token_repetition_token_id_list:
+    if word == "on_n_dedent" and not token_db.token_repetition_token_id_list:
         error.warning("Found 'on_n_dedent', but no single token has been specified\n" \
                       "in a 'repeated_token' section.", code.sr)
     new_mode.incidence_db[word] = code
 
+    return True
+
+def __parse_abridgement(new_mode, fh):
+    """ADAPTS: new_mode.pattern_action_list where new pattern action pairs 
+                                            are entered.
+    RETURNS: True, in case of success.
+    EXITS:   in case of syntax errors.
+    """
+    flags = optional_flags(fh, "abridgement", "", 
+                           {"N": "pass LexemeNull to token contructor.",
+                            "L": "pass Lexeme to token constructor.",
+                            "i": "implicit token identifier definition."},
+                           ["NL"])
+
+    skip_whitespace(fh)
+    prefix = read_identifier(fh)
+    skip_whitespace(fh)
+
+    lexeme_null_f  = "N" in flags
+    lexeme_f       = "L" in flags
+    implicit_tid_f = "i" in flags
+
+    check_or_die(fh, "{", "Opening bracket required after 'abridgement'.")
+    while not check(fh, "}"):
+        skip_whitespace(fh)
+
+        pattern    = regular_expression.parse(fh)
+        skip_whitespace(fh)
+        
+        position   = fh.tell()
+        identifier = read_identifier(fh)
+        if not identifier: 
+            error.log("Missing identifier after regular expression.", fh)
+
+        identifier = "%s%s" % (prefix, identifier)
+        
+        check_or_die(fh, ";", 
+                     "Semincolon required after brief token identifier '%s'." % identifier)
+
+        if implicit_tid_f: token_id_db_enter(fh, identifier)
+
+        code = code_fragment.get_CodeUser_for_token_sending(fh, identifier, position,
+                                                            LexemeNullF = lexeme_null_f,
+                                                            LexemeF     = lexeme_f)
+        new_mode.add_pattern_action_pair(pattern, code, fh)
+
+    return True
+
+def __parse_keyword_list(new_mode, fh):
+    """ADAPTS: new_mode.pattern_action_list where new pattern action pairs 
+                                            are entered.
+    RETURNS: True, in case of success.
+    EXITS:   in case of syntax errors.
+    """
+    flags = optional_flags(fh, "keyword_list", "", 
+                           {"u": "make correspondent token identifiers uppercase.",
+                            "l": "make correspondent token identifiers lowercase.",
+                            "N": "pass LexemeNull to token contructor.",
+                            "L": "pass Lexeme to token constructor.",
+                            "i": "implicit token identifier definition."},
+                           ["ul", "NL"])
+
+    lexeme_null_f  = "N" in flags
+    lexeme_f       = "L" in flags
+    implicit_tid_f = "i" in flags
+    lowercase_f    = "l" in flags
+    uppercase_f    = "u" in flags
+
+    skip_whitespace(fh)
+    prefix = read_identifier(fh)
+    skip_whitespace(fh)
+
+    check_or_die(fh, "{", "Opening bracket required after 'keyword_list'.")
+    while not check(fh, "}"):
+        skip_whitespace(fh)
+        position   = fh.tell()
+        identifier = read_identifier(fh)
+        pattern    = regular_expression.parse(StringIO("%s " % identifier))
+
+        check_or_die(fh, ";", "Semincolon required after keyword '%s'." % identifier)
+        if not identifier: continue
+        if   uppercase_f: identifier = identifier.upper()
+        elif lowercase_f: identifier = identifier.lower()
+
+        identifier = "%s%s" % (prefix, identifier)
+
+        if implicit_tid_f: token_id_db_enter(fh, identifier)
+
+        code    = code_fragment.get_CodeUser_for_token_sending(fh, identifier, position,
+                                                               LexemeNullF = lexeme_null_f,
+                                                               LexemeF     = lexeme_f)
+        new_mode.add_pattern_action_pair(pattern, code, fh)
     return True
 
 def __general_validate(fh, Mode, Name, pos):

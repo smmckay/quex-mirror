@@ -2,11 +2,11 @@ simple.qx:13:warning: Detected implicit token identifier definitions. Proposal:
 simple.qx:13:warning:    token {
 simple.qx:13:warning:      Z; /* did you mean 'QUEX_TKN_C'? */
 simple.qx:13:warning:    }
-<default>:0:warning: Token ids with same numeric value 111 fuond:
+<default>:0:warning: Token ids with same numeric value 111 found:
 <default>:0:warning:   DEDENT
-simple.qx:2:warning:   UNINITIALIZED
 simple.qx:8:warning:   F
-simple.qx:5:warning: Token ids with same numeric value 115 fuond:
+simple.qx:2:warning:   UNINITIALIZED
+simple.qx:5:warning: Token ids with same numeric value 115 found:
 simple.qx:5:warning:   C
 simple.qx:7:warning:   E
 simple.qx:7:warning: ('--suppress 18' to avoid this message)

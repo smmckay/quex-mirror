@@ -1,0 +1,44 @@
+________________________________________________________
+
+abridgement{ "+" PLUS; }
+
+    '"+"' -> self_send(TOKEN_PLUS);
+
+    Token Identifiers: 'PLUS'
+    Token Identifiers(implicit): 'PLUS'
+
+________________________________________________________
+
+abridgement(N) { "+" PLUS; "-" MINUS; }
+
+    '"+"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), LexemeNull, LexemeNull);
+self_send(TOKEN_PLUS);
+
+    '"-"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), LexemeNull, LexemeNull);
+self_send(TOKEN_MINUS);
+
+    Token Identifiers: 'MINUS', 'PLUS'
+    Token Identifiers(implicit): 'PLUS', 'MINUS'
+
+________________________________________________________
+
+abridgement(L) { "+" PLUS; "-" MINUS; }
+
+    '"+"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), me->buffer._lexeme_start_p, me->buffer._read_p);
+self_send(TOKEN_PLUS);
+
+    '"-"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), me->buffer._lexeme_start_p, me->buffer._read_p);
+self_send(TOKEN_MINUS);
+
+    Token Identifiers: 'MINUS', 'PLUS'
+    Token Identifiers(implicit): 'PLUS', 'MINUS'
+
+________________________________________________________
+
+abridgement(i)  { "+"+ MANY_PLUS; }
+
+    '"+"+' -> self_send(TOKEN_MANY_PLUS);
+
+    Token Identifiers: 'MANY_PLUS'
+    Token Identifiers(implicit): 
+

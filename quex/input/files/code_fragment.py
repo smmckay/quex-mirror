@@ -6,17 +6,17 @@ from   quex.engine.misc.file_in                   import EndOfStreamException, \
                                                          read_namespaced_name, \
                                                          read_until_closing_bracket, \
                                                          skip_whitespace
-from   quex.output.token.id_generator             import TokenInfo 
 from   quex.input.files.token_id_file             import cut_token_id_prefix
-import quex.blackboard                            as     blackboard
 from   quex.blackboard                            import setup as Setup, \
                                                          Lng
 from   quex.input.code.base                       import SourceRef
 from   quex.input.setup                           import NotificationDB
 import quex.input.regular_expression.snap_backslashed_character as snap_backslashed_character
+from   quex.input.code.core                       import CodeUser 
 from   quex.engine.codec_db.unicode.parser        import ucs_property_db
 from   quex.engine.misc.utf8                      import __read_one_utf8_code_from_stream
-from   quex.input.code.core                       import CodeUser 
+import quex.token_db                              as     token_db
+from   quex.token_db                              import token_id_db_enter
 
 import re
 lexeme_re = re.compile(r"^Lexeme\b")
@@ -47,6 +47,13 @@ def parse(fh, CodeFragmentName,
     else:
         error.log("Missing code fragment after %s definition." % CodeFragmentName, 
                   fh)
+
+def get_CodeUser_for_token_sending(fh, Identifier, Position, LexemeNullF, LexemeF):
+    token_name = "%s%s" % (Setup.token_id_prefix_plain, Identifier)
+    code_raw   = __create_token_sender_by_token_name(fh, token_name, 
+                                                     LexemeNullOnlyF = LexemeNullF,
+                                                     LexemeOnlyF     = LexemeF)
+    return CodeUser(code_raw, SourceRef.from_FileHandle(fh, BeginPos=Position))
 
 def __parse_normal(fh, code_fragment_name):
     position = fh.tell()
@@ -137,7 +144,7 @@ def read_character_code(fh):
         if ucs_name == "": fh.seek(pos); return -1
         # Get the character set related to the given name. Note, the size of the set
         # is supposed to be one.
-        character_code = ucs_property_db.get_character_set("Name", ucs_name)
+        character_code = ucs_property_db.get_character_set("Name", ucs_name, Fh=fh)
         if type(character_code) in [str, unicode]:
             error.verify_word_in_list(ucs_name, ucs_property_db["Name"].code_point_db,
                                       "The string %s\ndoes not identify a known unicode character." % ucs_name, 
@@ -204,9 +211,8 @@ def __create_token_sender_by_character_code(fh, CharacterCode):
     # The '--' will prevent the token name from being printed
     prefix_less_token_name = "UCS_0x%06X" % CharacterCode
     token_id_str           = "0x%06X" % CharacterCode 
-    blackboard.token_id_db["--" + prefix_less_token_name] = \
-            TokenInfo(prefix_less_token_name, CharacterCode, None, 
-                      SourceRef.from_FileHandle(fh)) 
+    token_id_name          = "--%s" % prefix_less_token_name
+    token_id_db_enter(fh, token_id_name, CharacterCode)
     return "%s\n" % Lng.TOKEN_SEND(token_id_str)
 
 def token_id_db_verify_or_enter_token_id(fh, TokenName):
@@ -215,10 +221,10 @@ def token_id_db_verify_or_enter_token_id(fh, TokenName):
     prefix_less_TokenName = cut_token_id_prefix(TokenName, fh)
 
     # Occasionally add token id automatically to database
-    if not blackboard.token_id_db.has_key(prefix_less_TokenName):
+    if not token_db.token_id_db.has_key(prefix_less_TokenName):
         # DO NOT ENFORCE THE TOKEN ID TO BE DEFINED, BECAUSE WHEN THE TOKEN ID
         # IS DEFINED IN C-CODE, THE IDENTIFICATION IS NOT 100% SAFE.
-        if TokenName in blackboard.token_id_db.keys():
+        if TokenName in token_db.token_id_db.keys():
             msg  = "Token id '%s' defined implicitly.\n" % TokenName
             msg += "'%s' has been defined in a token { ... } section!\n" % \
                    (Setup.token_id_prefix + TokenName)
@@ -228,28 +234,32 @@ def token_id_db_verify_or_enter_token_id(fh, TokenName):
         else:
             # Warning is posted later when all implicit tokens have been
             # collected. See "token_id_maker.__propose_implicit_token_definitions()"
-            blackboard.token_id_implicit_list.append((prefix_less_TokenName, 
-                                                      SourceRef.from_FileHandle(fh)))
+            token_db.token_id_implicit_list.append((prefix_less_TokenName, 
+                                                   SourceRef.from_FileHandle(fh)))
 
         # Enter the implicit token id definition in the database
-        blackboard.token_id_db[prefix_less_TokenName] = \
-                TokenInfo(prefix_less_TokenName, None, None, 
-                          SourceRef.from_FileHandle(fh)) 
+        token_id_db_enter(fh, prefix_less_TokenName)
 
-def __create_token_sender_by_token_name(fh, TokenName):
+def __create_token_sender_by_token_name(fh, TokenName, LexemeNullOnlyF=False, LexemeOnlyF=False):
     assert type(TokenName) in (str, unicode)
+    assert not(LexemeNullOnlyF and LexemeOnlyF)
 
     # Enter token_id into database, if it is not yet defined.
     token_id_db_verify_or_enter_token_id(fh, TokenName)
 
     # Parse the token argument list
-    argument_list = __parse_function_argument_list(fh, TokenName)
+    if LexemeNullOnlyF:
+        argument_list = ["LexemeNull"]
+    elif LexemeOnlyF:
+        argument_list = ["Lexeme"]
+    else:
+        argument_list = __parse_function_argument_list(fh, TokenName)
     #if cut_token_id_prefix(TokenName, fh) == "TERMINATION" and not argument_list:
     #    argument_list.append("LexemeNull")
 
     # Create the token sender
 
-    assert blackboard.token_type_definition is not None, \
+    assert token_db.token_type_definition is not None, \
            "A valid token_type_definition must have been parsed at this point."
 
     explicit_member_names_f = any(arg.find("=") != -1 for arg in argument_list)
@@ -286,11 +296,11 @@ def __create_token_sender_by_token_name(fh, TokenName):
                   "       own it.", fh)
 
     for member, value in member_value_pairs:
-        error.verify_word_in_list(member, blackboard.token_type_definition.get_member_db(), 
+        error.verify_word_in_list(member, token_db.token_type_definition.get_member_db(), 
                                   "No member:   '%s' in token type description." % member, fh)
 
     txt = [
-        Lng.TOKEN_SET_MEMBER(blackboard.token_type_definition.get_member_access(member), 
+        Lng.TOKEN_SET_MEMBER(token_db.token_type_definition.get_member_access(member), 
                              value)
         for member, value in member_value_pairs
     ]

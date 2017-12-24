@@ -8,8 +8,6 @@ patterns matching adjacent lexatoms in the input stream. For a given position
 in the input stream a *distinct* pattern matches the best and determines the
 action to be performed.  
 
-
-
 .. toctree::
 
     pattern-action-pairs.rst

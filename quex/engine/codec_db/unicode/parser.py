@@ -11,7 +11,7 @@ from   quex.constants import INTEGER_MAX
 
 import re
 import fnmatch
-from   copy import deepcopy
+from   copy import deepcopy, copy
 
 unicode_db_directory = QUEX_PATH + "/quex/engine/codec_db/unicode/database"
 comment_deleter_re   = re.compile(r"#[^\n]*")
@@ -400,7 +400,7 @@ class PropertyInfoDB:
 
         return property.get_wildcard_value_matches(Value)
 
-    def get_character_set(self, PropertyName, Value=None):
+    def get_character_set(self, PropertyName, Value=None, Fh=-1):
         """Returns the character set that corresponds to 'Property==Value'.
 
            'Property' can be a property name or a property alias.
@@ -412,12 +412,9 @@ class PropertyInfoDB:
         """
         if self.db == {}: self.init_db()
 
+        error.verify_word_in_list(PropertyName, self.get_property_name_list(), 
+                                  "Unknown Unicode property '%s'" % PropertyName, Fh, ExitF=True)
         property = self[PropertyName]
-
-        if not isinstance(property, PropertyInfo):
-            txt  = "Unicode property '%s' does not exist.\n" % PropertyName
-            txt += "Properties: " + self.get_property_names()
-            return txt
 
         if property.type == "Binary":
             if Value is not None:
@@ -613,6 +610,20 @@ class PropertyInfoDB:
             txt.append(", ")
         if txt: txt = txt[:-1] # Remove trailing ", "
         return "".join(txt)
+
+    def get_property_name_list(self, BinaryOnlyF=False):
+        if self.db == {}: self.init_db()
+
+        alias_list = self.db.keys()
+        alias_list.sort(lambda a, b: cmp(self.db[a], self.db[b]))
+
+        result = copy(alias_list)
+        result.extend(
+            self.db[alias].name
+            for alias in alias_list
+            if self.db[alias].type != "Binary" or not BinaryOnlyF
+        )
+        return sorted(result)
 
     def get_documentation(self):
         binary_property_list     = []

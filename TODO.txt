@@ -1,0 +1,25 @@
+Normalization: 
+
+    Define a unique representation for an equivalence
+
+    Many representations --> single representation
+                             (1) composition: single character
+                             (2) decomposition: multiple characters
+
+    \CompatComp
+    \CannonComp
+    \CompatDecomp
+    \CannonDecomp
+
+Expansion: 
+
+    Define a all representation which are equivalent
+
+    \CompatExp
+    \CannonExp
+
+--------------------------------
+Vowelization
+    \WoVow    --> also match without vowels
+    \WoVow(p) --> also match partly without vowels
+

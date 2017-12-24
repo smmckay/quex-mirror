@@ -8,7 +8,7 @@ from   quex.output.languages.core                    import db as output_languag
 from   quex.engine.misc.file_in                      import read_namespaced_name
 import quex.engine.misc.error                        as     error 
 
-import quex.blackboard as     blackboard
+import quex.token_db   as     token_db
 from   quex.blackboard import setup as Setup
 from   quex.constants  import E_Compression
 
@@ -188,7 +188,7 @@ def __setup_token_class(Setup):
         print "}"
 
     if Setup.extern_token_class_file:
-        blackboard.token_type_definition = \
+        token_db.token_type_definition = \
                 TokenTypeDescriptorManual(Setup.extern_token_class_file,
                                           Setup.token_class_name,
                                           Setup.token_class_name_space,

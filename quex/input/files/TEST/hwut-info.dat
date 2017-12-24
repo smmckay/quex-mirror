@@ -1,0 +1,6 @@
+Testing Mode Parsing
+--------------------
+python *.py
+--not __init__.py
+--not helper.py
+

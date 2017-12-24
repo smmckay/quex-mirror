@@ -86,6 +86,8 @@ def get_fold_set(CharacterCode, Flags):
              mappings do not maintain canonical equivalence without additional
              processing. See the discussions of case mapping in the Unicode
              Standard for more information.
+
+    RETURNS: List of character codes.
     """
     s_flag = "s" in Flags   # simple case fold
     m_flag = "m" in Flags   # multi character case fold
@@ -96,35 +98,36 @@ def get_fold_set(CharacterCode, Flags):
     worklist = [ CharacterCode ]
     result   = []
 
-    # Turkish case folding is different
-    forbidden_fold_db = {}
     if t_flag: 
-        forbidden_fold_db = {}.fromkeys(db_T.upper_to_lower.keys() \
-                                        + db_T.lower_to_upper.keys())
+        # Turkish case folding is different
+        forbidden_fold_set = set(  db_T.upper_to_lower.keys() \
+                                 + db_T.lower_to_upper.keys())
+    else:
+        forbidden_fold_set = set()
 
-    while len(worklist) != 0:
+    while worklist:
         character_code = worklist.pop()
 
         if type(character_code) == list: continue
 
         partner_list = []
-        if s_flag and not forbidden_fold_db.has_key(character_code):
-            # Collect the 'pairing' characters
-            partner_list += db_CS.get_upper_and_lower_partners(character_code)
-        if m_flag and not forbidden_fold_db.has_key(character_code):
-            partner_list += db_F.get_upper_and_lower_partners(character_code)
+        if character_code not in forbidden_fold_set:
+            if s_flag:
+                # Collect the 'pairing' characters
+                partner_list += db_CS.get_upper_and_lower_partners(character_code)
+            if m_flag:
+                partner_list += db_F.get_upper_and_lower_partners(character_code)
         if t_flag:
             partner_list += db_T.get_upper_and_lower_partners(character_code)
 
         # All 'partners' that are not yet treated need to be added
         # to the 'todo list'. All partners that are not yet in result
         # need to be added.
-        for x in partner_list:
-            if x not in result: 
-                worklist.append(x)
-                result.append(x)
+        new_list = [ x for x in partner_list if x not in result ]
+        worklist.extend(new_list)
+        result.extend(new_list)
 
         if character_code not in result:
             result.append(character_code)
        
-    return result
+    return sorted(result)

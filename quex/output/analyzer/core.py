@@ -4,12 +4,13 @@ from   quex.engine.misc.string_handling       import blue_print
 
 from   quex.DEFINITIONS import QUEX_PATH, \
                                QUEX_VERSION
+import quex.token_db    as     token_db
 import quex.blackboard  as     blackboard
 from   quex.blackboard  import setup as Setup, \
                                Lng
 
 def do(ModeDB, Epilog):
-    assert blackboard.token_type_definition is not None
+    assert token_db.token_type_definition is not None
 
     LexerClassName                 = Setup.analyzer_class_name
     quex_converter_coding_name_str = Setup.converter_ucs_coding_name
@@ -28,9 +29,9 @@ def do(ModeDB, Epilog):
         analyzer_derived_class_name    = Setup.analyzer_class_name
         derived_class_type_declaration = ""
 
-    token_class_file_name = blackboard.token_type_definition.get_file_name()
-    token_class_name      = blackboard.token_type_definition.class_name
-    token_class_name_safe = blackboard.token_type_definition.class_name_safe
+    token_class_file_name = token_db.token_type_definition.get_file_name()
+    token_class_name      = token_db.token_type_definition.class_name
+    token_class_name_safe = token_db.token_type_definition.class_name_safe
 
     include_guard_ext = Lng.INCLUDE_GUARD(
             Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 

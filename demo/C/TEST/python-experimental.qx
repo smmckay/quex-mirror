@@ -1,0 +1,228 @@
+// -*- C++ -*- vim: set syntax=cpp:
+start = PROGRAM;
+
+token {
+    HASH;
+    DOUBLE_HASH;
+    QUESTION_MARK;
+    TILDE;
+    FAILURE;
+    BRACKET_O;
+    BRACKET_C;
+    CORNER_BRACKET_O;
+    CORNER_BRACKET_C;
+    CURLY_BRACKET_O;
+    CURLY_BRACKET_C;
+    OP_ASSIGNMENT;
+    PLUS;
+    MINUS;
+    MULT;
+    DIV;
+    MODULO;
+    ASSIGN_PLUS;
+    ASSIGN_MINUS;
+    ASSIGN_MULT;
+    ASSIGN_DIV;
+    EQ;
+    NOT_EQ;
+    GREATER;
+    GR_EQ;
+    LESS;
+    LE_EQ;
+    NOT;
+    LOGICAL_OR;
+    EXCLUSIVE_OR;
+    OR;
+    AMPERSANT;
+    AND;
+    COLON;
+    STRUCT;
+    CONST;
+    IF;
+    ELSE;
+    SWITCH;
+    FOR;
+    DO;
+    WHILE;
+    BREAK;
+    CONTINUE;
+    SEMICOLON;
+    DOT;
+    COMMA;
+    IDENTIFIER;
+    NUMBER;
+    STRING;
+    QUOTED_CHAR;
+}
+
+
+define {
+    // Pattern definitions for example application
+    P_WHITESPACE          [ \t\n]+
+
+    // Section 2.3 'Identifiers and Keywords' _________________________________
+    //
+    ID_START     [: union(\G{Lu}, \G{Ll}, \G{Lt}, \G{Lm}, \G{Lo}, \G{Nl}, [_], \P{Other_Idstart}) :]
+    ID_CONTINUE  [: union(\P{ID_START}, \G{Mn}, \G{Mc}, \G{Nd}, \G{Pc}, \P{OTHER_ID_CONTINUE})   :]
+    // NOT YET:
+    //  xid_start    ::=  <all characters in id_start whose NFKC normalization is in "id_start xid_continue*">
+    //  xid_continue ::=  <all characters in id_continue whose NFKC normalization is in "id_continue*">
+    P_IDENTIFIER          {ID_START}{ID_CONTINUE}*
+    P_NUMBER              [0-9]+
+
+    // 2.4.1 String and Byte Literals _______________________________
+    //
+    STRINGESCAPESEQ   "\"\Any
+    LONGSTRINGCHAR    [^\\]
+    SHORTSTRINGCHAR   [^\\\N"]
+    LONGSTRINGITEM    {LONGSTRINGCHAR}|{STRINGESCAPESEQ}
+    SHORTSTRINGITEM   {SHORTSTRINGCHAR}|{STRINGESCAPESEQ}
+    LONGSTRING        ("'''"{LONGSTRINGITEM}*"'''")|('"""'{LONGSTRINGITEM}*'"""')
+    SHORTSTRING       ("'"{SHORTSTRINGITEM}*"'")|('"'{SHORTSTRINGITEM}*'"')
+    STRINGPREFIX      "r"|"u"|"R"|"U"|"f"|"F"|"fr"|"Fr"|"fR"|"FR"|"rf"|"rF"|"Rf"|"RF"
+    STRINGLITERAL     {STRINGPREFIX}?({SHORTSTRING}|{LONGSTRING})
+
+    ASCII             [\x00-\xFF]
+    BYTESESCAPESEQ   "\"{ASCII}
+    LONGBYTESCHAR    [:difference({ASCII} ["]):]
+    SHORTBYTESCHAR   [:difference({ASCII} ["'\n]):]
+    LONGBYTESITEM    {LONGBYTESCHAR}|{LONGBYTESCHAR}
+    SHORTBYTESITEM   {LONGBYTESCHAR}|{LONGBYTESCHAR}
+    LONGBYTES        "'''"{LONGBYTESCHAR}*"'''"|'"""'{LONGBYTESCHAR}*'"""'
+    SHORTBYTES       "'"{LONGBYTESCHAR}*"'"|'"'{LONGBYTESCHAR}*'"'
+    BYTESPREFIX      "b"|"B"|"br"|"Br"|"bR"|"BR"|"rb"|"rB"|"Rb"|"RB"
+    BYTESLITERAL     {LONGBYTESCHAR}({LONGBYTESCHAR}|{LONGBYTESCHAR})
+
+    // 2.4.5. Integer literals
+    integer      ::=  decinteger | bininteger | octinteger | hexinteger
+    decinteger   ::=  nonzerodigit (["_"] digit)* | "0"+ (["_"] "0")*
+    bininteger   ::=  "0" ("b" | "B") (["_"] bindigit)+
+    octinteger   ::=  "0" ("o" | "O") (["_"] octdigit)+
+    hexinteger   ::=  "0" ("x" | "X") (["_"] hexdigit)+
+    nonzerodigit ::=  "1"..."9"
+    digit        ::=  "0"..."9"
+    bindigit     ::=  "0" | "1"
+    octdigit     ::=  "0"..."7"
+    hexdigit     ::=  digit | "a"..."f" | "A"..."F"
+
+    // 2.4.6. Floating point literals
+    floatnumber   ::=  pointfloat | exponentfloat
+    pointfloat    ::=  [digitpart] fraction | digitpart "."
+    exponentfloat ::=  (digitpart | pointfloat) exponent
+    digitpart     ::=  digit (["_"] digit)*
+    fraction      ::=  "." digitpart
+    exponent      ::=  ("e" | "E") ["+" | "-"] digitpart
+
+    // 2.4.7. Imaginary literals
+    imagnumber ::=  (floatnumber | digitpart) ("j" | "J")
+}
+
+body {
+    size_t open_bracket_n;
+}
+
+constructor {
+    open_bracket_n = 0;
+}
+
+mode PROGRAM :
+<skip:       [ \r\n\t] >
+<skip_range: "#" "\n">
+{
+    <<EOF>>   => QUEX_TKN_TERMINATION(LexemeNull);
+
+    "\\\n"    => QUEX_TKN_BACKLASHED_NEWLINE(Lexeme);
+
+    "?"           => QUEX_TKN_QUESTION_MARK(Lexeme);
+    "~"           => QUEX_TKN_TILDE(Lexeme);
+
+    "("           { self.open_bracket_n++; self_send1(QUEX_TKN_BRACKET_O, Lexeme); }
+    ")"           { self.open_bracket_n++; self_send1(QUEX_TKN_BRACKET_C, Lexeme); }
+    "["           { self.open_bracket_n++; self_send1(QUEX_TKN_CORNER_BRACKET_O, Lexeme); }
+    "]"           { self.open_bracket_n--; self_send1(QUEX_TKN_CORNER_BRACKET_C, Lexeme); }
+    "{"           { self.open_bracket_n--; self_send1(QUEX_TKN_CURLY_BRACKET_O, Lexeme); }
+    "}"           { self.open_bracket_n--; self_send1(QUEX_TKN_CURLY_BRACKET_C, Lexeme); }
+
+    "="           => QUEX_TKN_OP_ASSIGNMENT(Lexeme);
+    "+"           => QUEX_TKN_PLUS(Lexeme);
+    "-"           => QUEX_TKN_MINUS(Lexeme);
+    "*"           => QUEX_TKN_MULT(Lexeme);
+    "/"           => QUEX_TKN_DIV(Lexeme);
+    "%"           => QUEX_TKN_MODULO(Lexeme);
+    "+="          => QUEX_TKN_ASSIGN_PLUS(Lexeme);
+    "-="          => QUEX_TKN_ASSIGN_MINUS(Lexeme);
+    "*="          => QUEX_TKN_ASSIGN_MULT(Lexeme);
+    "/="          => QUEX_TKN_ASSIGN_DIV(Lexeme);
+    "=="          => QUEX_TKN_EQ(Lexeme);
+    "!="          => QUEX_TKN_NOT_EQ(Lexeme);
+    ">"           => QUEX_TKN_GREATER(Lexeme);
+    ">="          => QUEX_TKN_GR_EQ(Lexeme);
+    "<"           => QUEX_TKN_LESS(Lexeme);
+    "<="          => QUEX_TKN_LE_EQ(Lexeme);
+    "!"           => QUEX_TKN_NOT(Lexeme);
+    "|"           => QUEX_TKN_LOGICAL_OR(Lexeme);
+    "^"           => QUEX_TKN_EXCLUSIVE_OR(Lexeme);
+    "||"          => QUEX_TKN_OR(Lexeme);
+    "&"           => QUEX_TKN_AMPERSANT(Lexeme);
+    "&&"          => QUEX_TKN_AND(Lexeme);
+    ":"           => QUEX_TKN_COLON(Lexeme);
+    ";"           => QUEX_TKN_SEMICOLON(Lexeme);
+    "."           => QUEX_TKN_DOT(Lexeme);
+    ","           => QUEX_TKN_COMMA(Lexeme);
+
+    "="           => QUEX_TKN_OP_ASSIGNMENT(Lexeme);
+    "+"           => QUEX_TKN_PLUS(Lexeme);
+    "-"           => QUEX_TKN_MINUS(Lexeme);
+    "*"           => QUEX_TKN_MULT(Lexeme);
+    "/"           => QUEX_TKN_DIV(Lexeme);
+    "%"           => QUEX_TKN_MODULO(Lexeme);
+    "+="          => QUEX_TKN_ASSIGN_PLUS(Lexeme);
+    "-="          => QUEX_TKN_ASSIGN_MINUS(Lexeme);
+    "*="          => QUEX_TKN_ASSIGN_MULT(Lexeme);
+    "/="          => QUEX_TKN_ASSIGN_DIV(Lexeme);
+    "=="          => QUEX_TKN_EQ(Lexeme);
+    "!="          => QUEX_TKN_NOT_EQ(Lexeme);
+    ">"           => QUEX_TKN_GREATER(Lexeme);
+    ">="          => QUEX_TKN_GR_EQ(Lexeme);
+    "<"           => QUEX_TKN_LESS(Lexeme);
+    "<="          => QUEX_TKN_LE_EQ(Lexeme);
+    "!"           => QUEX_TKN_NOT(Lexeme);
+    "|"           => QUEX_TKN_LOGICAL_OR(Lexeme);
+    "^"           => QUEX_TKN_EXCLUSIVE_OR(Lexeme);
+    "||"          => QUEX_TKN_OR(Lexeme);
+    "&"           => QUEX_TKN_AMPERSANT(Lexeme);
+    "&&"          => QUEX_TKN_AND(Lexeme);
+    ":"           => QUEX_TKN_COLON(Lexeme);
+    ";"           => QUEX_TKN_SEMICOLON(Lexeme);
+    "."           => QUEX_TKN_DOT(Lexeme);
+    ","           => QUEX_TKN_COMMA(Lexeme);
+
+    shot_list {
+        "+"  PLUS; "*"  MULT;  "**" MULT_2;
+        "/"  DIV;  "//" DIV_2; "%"  PERCENT;
+    }
+
+    // Keyword according to Section 2.3.1
+    // => Send QUEX_TK_name where 'name' is a keyword.
+    keyword_list(uni) {
+       False;      class;      finally;    is;         return;
+       None;       continue;   for;        lambda;     try;
+       True;       def;        from;       nonlocal;   while;
+       and;        del;        global;     not;        with;
+       as;         elif;       if;         or;         yield;
+       assert;     else;       import;     pass;
+       break;      except;     in;         raise;
+    }
+
+    {P_IDENTIFIER}  => QUEX_TKN_IDENTIFIER(Lexeme);
+    {P_NUMBER}      => QUEX_TKN_NUMBER(Lexeme);
+    {P_STRING}      => QUEX_TKN_STRING(Lexeme);
+    {P_QUOTED_CHAR} => QUEX_TKN_QUOTED_CHAR(Lexeme);
+
+    // {P_WHITESPACE}           { }
+    //"/*"([^*]|[\r\n]|("*"+([^*/]|[\r\n])))*"*"+"/" { } // => QUEX_TKN_COMMENT(Lexeme);
+    // "//"[^\n]*"\n"           { } // => QUEX_TKN_COMMENT(Lexeme);
+
+    on_failure => QUEX_TKN_FAILURE(Lexeme);
+}
+

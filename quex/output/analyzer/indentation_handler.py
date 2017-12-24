@@ -1,7 +1,7 @@
 from   quex.engine.misc.string_handling  import blue_print
 from   quex.blackboard                   import Lng, \
-                                                E_IncidenceIDs, \
-                                                token_repetition_token_id_list
+                                                E_IncidenceIDs
+from   quex.token_db                     import token_repetition_token_id_list
 
 def do(Mode):
     # 'on_dedent' and 'on_n_dedent cannot be defined at the same time.
@@ -19,8 +19,6 @@ def do(Mode):
         on_nodent_str   = Lng.SOURCE_REFERENCED(code_fragment)
     else:
         on_nodent_str   = Lng.TOKEN_SEND("QUEX_TOKEN_ID(NODENT)")
-
-    token_repetition_support_f = (len(token_repetition_token_id_list) != 0)
 
     code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_DEDENT)
     if code_fragment is not None:

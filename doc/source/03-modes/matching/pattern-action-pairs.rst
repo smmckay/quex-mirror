@@ -238,6 +238,167 @@ Then, whenever a token id is used in the program text, it becomes obvious
 from the name what members may be safely accessed or what members need to 
 be assigned.
 
+'abridgement' and `keyword_list`
+--------------------------------
+
+The two commands `abridgement` and `keyword_list` are designed to minimize
+the effort to describe matching behavior. In an abridgement section, a list
+of regular expression an brief token identifier pairs are listed. The brief
+token identifiers are expanded to complete token identifiers, their identifiers
+might be implicitly defined, and the `LexemeNull` might be passed automatically
+to the token constructor. That is a lengthy section of operators such as
+
+.. code-block:: cpp
+
+    ...
+    "="  => QUEX_TKN_OP_ASSIGNMENT;
+    "+"  => QUEX_TKN_PLUS;
+    "-"  => QUEX_TKN_MINUS;
+    "*"  => QUEX_TKN_MULT;
+    "/"  => QUEX_TKN_DIV;
+    ...
+    ...
+    ";"  => QUEX_TKN_SEMICOLON;
+    "."  => QUEX_TKN_DOT;
+    ","  => QUEX_TKN_COMMA;
+    ...
+
+might be written more concisely as
+
+.. code-block:: cpp
+    ...
+    abridgement {
+        "=" OP_ASSIGNMENT; 
+        "+" PLUS; "-" MINUS; "*" MULT; "/" DIV;
+        ...
+        ...
+        ";" SEMICOLON; "." DOT; "," COMMA;
+    }
+
+In the case of *keywords* it is rational to choose the according token
+identifier as something derived from the keyword it self. For example the
+keyword 'while' might be reported as `QUEX_TKN_WHILE`. For such cases, an ever
+more concise description than `abridgement` can be used, namely the
+`keyword_list`. For example the following specification
+
+.. code-block:: cpp
+
+   token {
+       FOR;
+       WHILE;
+       UNTIL;
+       PERHAPS;
+   }
+   mode X {
+       ...
+       for     => QUEX_TKN_FOR(LexemeNull);
+       while   => QUEX_TKN_WHILE(LexemeNull);
+       until   => QUEX_TKN_UNTIL(LexemeNull);
+       perhaps => QUEX_TKN_PERHAPS(LexemeNull);
+       ...
+   }
+
+is equivalent to 
+
+.. code-block:: cpp
+
+   ...
+   keyword_list(uNi) { 
+      for; while; until; perhaps; 
+   }
+   ...
+
+The following item list describes those two commands and their flags in 
+detail.
+
+.. describe:: abridgement ['(' flags ')'] '{' list of (re, brief) '}'
+    
+   Definition of a list of pattern-action pairs solely by a list of pairs of
+   regular expressions ``re`` and ``brief`` token identifiers. A brief token
+   identifier is an identifier without any token identifier prefix such as
+   `QUEX_TKN_`.  Any pair of a regular expression and a brief token sender as
+   in
+
+   .. code-block:: cpp
+
+      re  BRIEF;
+
+   is equivalent to a line
+    
+      re => QUEX_TKN_BRIEF;
+
+   .. describe:: L
+
+      lets the `Lexeme` be passed to the token's constructor. That is,
+      the according pattern-action pair is
+
+       .. code-block:: cpp
+
+          key => QUEX_TKN_key(Lexeme);
+
+   .. describe:: N
+
+      lets the `LexemeNull` be passed to the token's constructor. That is,
+      the according pattern-action pair is
+
+       .. code-block:: cpp
+
+          key => QUEX_TKN_key(LexemeNull);
+
+   .. describe:: i
+
+      defines token identifies implicitly, such that they do not need to
+      be mentioned in the ``token`` definition section.
+   
+
+.. describe:: keyword_list ['(' flags ')'] '{' keywords '}'
+
+   Definition of a list of pattern-action pairs solely by a list of keywords.
+   Any keyword `key` mentioned in list specifies a pattern action pair equivalent
+   to 
+
+   .. code-block:: cpp
+
+      key => QUEX_TKN_key;
+
+   The optional flags modify the token sending as follows.
+
+   .. describe:: u
+
+      lets the according token identifier by specified in uppercase of the
+      original. That is, a keyword `key` is then reported as `QUEX_TKN_KEY`.
+
+   .. describe:: l
+
+      lets the according token identifier by specified in lowercase of the
+      original. That is, a keyword `Key` is then reported as `QUEX_TKN_key`.
+
+   .. describe:: L
+
+      lets the `Lexeme` be passed to the token's constructor. That is,
+      the according pattern-action pair is
+
+       .. code-block:: cpp
+
+          key => QUEX_TKN_key(Lexeme);
+
+   .. describe:: N
+
+      lets the `LexemeNull` be passed to the token's constructor. That is,
+      the according pattern-action pair is
+
+       .. code-block:: cpp
+
+          key => QUEX_TKN_key(LexemeNull);
+
+   .. describe:: i
+
+      defines token identifies implicitly, such that they do not need to
+      be mentioned in the ``token`` definition section.
+
+
+
+
 Analyzis Continuation
 ---------------------
 

@@ -8,6 +8,4 @@
 ./engine/misc/exception_checker.py:LineN:    sys.exit(-1)
 ./input/command_line/doc_generator.py:LineN:            sys.exit()
 ./input/command_line/doc_generator.py:LineN:            sys.exit()
-./input/regular_expression/engine.py:LineN:                if not, the function sys.exit()-s.
-
-
+./input/regular_expression/engine.py:LineN:             else, the function sys.exit()-s.

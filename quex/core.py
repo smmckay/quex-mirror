@@ -13,7 +13,7 @@ import quex.output.token.core                    as     token_class
 import quex.output.analyzer.modes                as     mode_classes
 import quex.output.languages.graphviz.core       as     grapviz_generator
 
-import quex.blackboard as     blackboard
+import quex.token_db   as     token_db
 from   quex.blackboard import setup as Setup, \
                               Lng
 
@@ -105,7 +105,7 @@ def do_token_class_info():
     for line in info_list:
         print "info:    %s" % line
     print "info:"
-    print "info: Header: \"%s\"" % blackboard.token_type_definition.get_file_name() 
+    print "info: Header: \"%s\"" % token_db.token_type_definition.get_file_name() 
     print "info: Source: \"%s\"" % Setup.output_token_class_file_implementation
 
     comment = ["<<<QUEX-OPTIONS>>>\n"]
@@ -168,16 +168,16 @@ def _write_all(configuration_header, analyzer_header, engine_txt,
     write_safely_and_close(Setup.output_code_file,   engine_txt)
 
     if class_token_header:
-        write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
+        write_safely_and_close(token_db.token_type_definition.get_file_name(), 
                                class_token_header)
 
     _straighten_open_line_pragmas_all()
 
 def _write_token_class(class_token_header, class_token_implementation, 
                        token_id_header):
-    write_safely_and_close(blackboard.token_type_definition.get_file_name(), 
+    write_safely_and_close(token_db.token_type_definition.get_file_name(), 
                            class_token_header) 
-    Lng.straighten_open_line_pragmas(blackboard.token_type_definition.get_file_name())
+    Lng.straighten_open_line_pragmas(token_db.token_type_definition.get_file_name())
     write_safely_and_close(Setup.output_token_class_file_implementation,
                            class_token_implementation)
     Lng.straighten_open_line_pragmas(Setup.output_token_class_file_implementation)
@@ -189,7 +189,7 @@ def _write_token_class(class_token_header, class_token_implementation,
 def _straighten_open_line_pragmas_all():
     Lng.straighten_open_line_pragmas(Setup.output_header_file)
     Lng.straighten_open_line_pragmas(Setup.output_code_file)
-    if not blackboard.token_type_definition.manually_written():
-        Lng.straighten_open_line_pragmas(blackboard.token_type_definition.get_file_name())
+    if not token_db.token_type_definition.manually_written():
+        Lng.straighten_open_line_pragmas(token_db.token_type_definition.get_file_name())
 
 

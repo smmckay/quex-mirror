@@ -1,5 +1,5 @@
 (*) Check: extracted content != 0  (else verdict 'same' is meaningless)
-40
-40
+46
+46
 (*) Check: content same?
 identical

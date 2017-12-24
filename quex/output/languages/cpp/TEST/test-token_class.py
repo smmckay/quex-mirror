@@ -7,7 +7,8 @@ from   quex.input.files.token_type        import TokenTypeDescriptor
 import quex.output.token.core          as token_class
 import quex.input.files.token_type          as parser
 import quex.output.languages.core as languages
-import quex.blackboard         as blackboard
+import quex.token_db              as token_db
+import quex.blackboard            as blackboard
 
 blackboard.setup.buffer_element_size     = 1
 blackboard.setup.output_token_class_file = ""
@@ -26,7 +27,7 @@ def test(Txt):
     sh = StringIO(Txt)
     sh.name = "a string"
     descriptor = parser.parse(sh)
-    blackboard.token_type_definition = descriptor
+    token_db.token_type_definition = descriptor
     txt, txt_i = token_class._do(descriptor)
     print txt
 

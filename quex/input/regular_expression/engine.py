@@ -65,7 +65,7 @@ from   quex.engine.misc.file_in            import check, \
                                                   check_whitespace, \
                                                   skip_whitespace, \
                                                   read_identifier, \
-                                                  read_until_character
+                                                  optional_flags
 import quex.engine.misc.utf8               as utf8
 from   quex.blackboard import setup as Setup
 from   quex.constants  import INTEGER_MAX
@@ -326,7 +326,7 @@ def snap_primary(stream, PatternDict):
 
     return __debug_exit(result, stream)
 
-def  snap_case_folded_pattern(sh, PatternDict, NumberSetF=False):
+def snap_case_folded_pattern(sh, PatternDict, NumberSetF=False):
     """Parse a case fold expression of the form \C(..){ R } or \C{ R }.
        Assume that '\C' has been snapped already from the stream.
 
@@ -353,36 +353,25 @@ def  snap_case_folded_pattern(sh, PatternDict, NumberSetF=False):
     pos = sh.tell()
     skip_whitespace(sh)
     # -- parse the optional options in '(' ')' brackets
-    if not check(sh, "("):
-        # By default 'single' and 'multi' character case folds are active
-        if NumberSetF: flag_txt = "s"
-        else:          flag_txt = "sm"
-    else:
-        flag_txt = read_until_character(sh, ")")
+    if NumberSetF: default_flag_txt = "s"
+    else:          default_flag_txt = "sm"
 
-        if flag_txt == "":
-            sh.seek(pos)
-            error.log("Missing closing ')' in case fold expression.", sh)
+    flag_txt = optional_flags(sh, "case fold",
+                              default_flag_txt,
+                              { "s": "simple case fold",
+                                "m": "multi character sequence case fold",
+                                "t": "special turkish case fold rules", },
+                              [])
 
-        flag_txt = flag_txt.replace(" ", "").replace("\t", "").replace("\n", "")
+    if NumberSetF and "m" in flag_txt:
+        sh.seek(pos)
+        error.log("Option 'm' not permitted as case fold option in set expression.\n" + \
+                  "Set expressions cannot absorb multi character sequences.", sh)
 
-        for letter in flag_txt:
-            if letter not in "smt":
-                sh.seek(pos)
-                error.log("Letter '%s' not permitted as case fold option.\n" % letter + \
-                          "Options are:  's' for simple case fold.\n" + \
-                          "              'm' for multi character sequence case fold.\n" + \
-                          "              't' for special turkish case fold rules.", sh)
-
-            if NumberSetF and letter == "m":
-                sh.seek(pos)
-                error.log("Option 'm' not permitted as case fold option in set expression.\n" + \
-                          "Set expressions cannot absorb multi character sequences.", sh)
-
-        skip_whitespace(sh)
-
+    skip_whitespace(sh)
 
     result = snap_curly_bracketed_expression(sh, PatternDict, "case fold operator", "C")[0]
+
     if NumberSetF:
         trigger_set = result.get_number_set()
         if trigger_set is None or trigger_set.is_empty():
@@ -630,19 +619,12 @@ def snap_symmetric_difference(stream, PatternDict):
     return symmetric_difference.do(sm_list)
 
 def snap_curly_bracketed_expression(stream, PatternDict, Name, TriggerChar, MinN=1, MaxN=1):
-    """Snaps a list of RE's in '{' and '}'. The separator between the patterns is 
-       whitespace. 'MinN' and 'MaxN' determine the number of expected patterns.
-       Set 'MaxN=INTEGER_MAX' for an arbitrary number of patterns.
+    """Snaps a list of RE's in '{' and '}'. The separator between the patterns 
+    is whitespace. 'MinN' and 'MaxN' determine the number of expected patterns.
+    Set 'MaxN=INTEGER_MAX' for an arbitrary number of patterns.
 
-
-
-       RETURNS: result = list of patterns. 
-
-                it holds: len(result) >= MinN  
-                          len(result) <= MaxN
-
-                if not, the function sys.exit()-s.
-       
+    RETURNS: result = list of patterns, if MinN <= len(result) <= MaxN 
+             else, the function sys.exit()-s.
     """
     assert MinN <= MaxN
     assert MinN > 0
@@ -869,32 +851,33 @@ def snap_set_term(stream, PatternDict):
         if word == "inverse":
             error.log("Usage of 'inverse' instead of 'complement'", stream)
 
-        if word == "complement":
+        elif word == "complement":
             # The inverse of multiple sets, is to be the inverse of the union of these sets.
             if L > 1:
                 for character_set in set_list[1:]:
                     result.unite_with(character_set)
             return __debug_exit(result.get_complement(Setup.buffer_encoding.source_set), stream)
 
-        if L < 2:
-            raise RegularExpressionException("Regular Expression: A %s operation needs at least\n" % word + \
-                                             "two sets to operate on them.")
+        elif L < 2:
+            error.log("Regular Expression: A %s operation needs at least\n" % word + \
+                      "two sets to operate on them.",
+                      stream)
             
-        if   word == "union":
-            for set in set_list[1:]:
-                result.unite_with(set)
+        elif   word == "union":
+            for sub_set in set_list[1:]:
+                result.unite_with(sub_set)
         elif word == "intersection":
-            for set in set_list[1:]:
-                result.intersect_with(set)
+            for sub_set in set_list[1:]:
+                result.intersect_with(sub_set)
         elif word == "difference":
-            for set in set_list[1:]:
-                result.subtract(set)
+            for sub_set in set_list[1:]:
+                result.subtract(sub_set)
 
     elif word in character_set_list:
         reg_expr = special_character_set_db[word]
         result   = traditional_character_set.do_string(reg_expr)
 
-    elif word != "":
+    elif word:
         error.verify_word_in_list(word, character_set_list + operation_list, 
                                   "Unknown keyword '%s'." % word, stream)
     else:
@@ -908,21 +891,24 @@ def snap_set_list(stream, set_operation_name, PatternDict):
 
     skip_whitespace(stream)
     if stream.read(1) != "(": 
-        raise RegularExpressionException("Missing opening bracket '%s' operation." % set_operation_name)
+        error.log("Missing opening bracket '%s' operation." % set_operation_name,
+                  stream)
 
     set_list = []
     while 1 + 1 == 2:
         skip_whitespace(stream)
         result = snap_set_term(stream, PatternDict)
         if result is None: 
-            raise RegularExpressionException("Missing set expression list after '%s' operation." % set_operation_name)
+            error.log("Missing set expression list after %s operation." % set_operation_name,
+                      stream)
         set_list.append(result)
         skip_whitespace(stream)
         tmp = stream.read(1)
         if tmp != ",": 
             if tmp != ")":
                 stream.seek(-1, 1)
-                raise RegularExpressionException("Missing closing ')' after after '%s' operation." % set_operation_name)
+                error.log("Missing closing ')' or argument seperator ',' in %s operation." % set_operation_name,
+                          stream)
             return __debug_exit(set_list, stream)
 
 

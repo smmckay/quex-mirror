@@ -29,11 +29,12 @@ import quex.input.files.code_fragment           as     code_fragment
 import quex.input.regular_expression.core       as     regular_expression
 from   quex.input.regular_expression.auxiliary  import PatternShorthand
 from   quex.input.setup                         import NotificationDB
-from   quex.output.token.id_generator           import TokenInfo, prepare_default_standard_token_ids
+from   quex.output.token.id_generator           import token_id_db_enter, prepare_default_standard_token_ids
 from   quex.input.code.base                     import SourceRef
 from   quex.input.code.core                     import CodeUser
 from   quex.blackboard                          import setup as Setup, Lng
 import quex.blackboard                          as     blackboard
+import quex.token_db                            as     token_db
 from   quex.input.regular_expression.exception  import RegularExpressionException
 
 def do(file_list):
@@ -58,7 +59,7 @@ def do(file_list):
         except RegularExpressionException, x:
             error.log(x.message, fh)
         
-    if blackboard.token_type_definition is None:
+    if token_db.token_type_definition is None:
         parse_default_token_definition()
 
     return mode.finalize_modes(blackboard.mode_prep_prep_db)
@@ -75,7 +76,7 @@ def parse_section(fh):
     word = read_identifier(fh, OnMissingStr="Missing section title")
 
     error.verify_word_in_list(word, blackboard.all_section_title_list, 
-                        "Unknown quex section '%s'" % word, fh)
+                              "Unknown quex section '%s'" % word, fh)
 
     try:
         # (*) determine what is defined
@@ -122,10 +123,10 @@ def parse_section(fh):
             return
 
         elif word == "repeated_token":
-            blackboard.token_repetition_token_id_list = parse_token_id_definitions(fh, NamesOnlyF=True)
-            for token_name in blackboard.token_repetition_token_id_list:
+            token_db.token_repetition_token_id_list = parse_token_id_definitions(fh, NamesOnlyF=True)
+            for token_name in token_db.token_repetition_token_id_list:
                 error.verify_word_in_list(token_name[len(Setup.token_id_prefix):],
-                                    blackboard.token_id_db.keys(),
+                                    token_db.token_id_db.keys(),
                                     "Token ID '%s' not yet defined." % token_name, fh,
                                     ExitF=False, 
                                     SuppressCode=NotificationDB.warning_repeated_token_not_yet_defined)
@@ -147,16 +148,15 @@ def parse_section(fh):
             return
 
         elif word == "token_type":       
-
-            if Setup.extern_token_class_file != "":
+            if Setup.extern_token_class_file:
                 error.log("Section 'token_type' is intended to generate a token class.\n" \
                           + "However, the manually written token class file '%s'" \
                           % repr(Setup.extern_token_class_file) \
                           + "has been specified on the command line.", 
                           fh)
        
-            if blackboard.token_type_definition is None:
-                blackboard.token_type_definition = token_type.parse(fh)
+            if token_db.token_type_definition is None:
+                token_db.token_type_definition = token_type.parse(fh)
                 return
 
             # Error case:
@@ -167,13 +167,13 @@ def parse_section(fh):
                 error.log("Section 'token_type' has been defined twice.", 
                           fh, DontExitF=True)
                 error.log("Previously defined here.",
-                          blackboard.token_type_definition.sr)
+                          token_db.token_type_definition.sr)
             return
 
         elif word == "mode":
             # When the first mode is parsed then a token_type definition must be 
             # present. If not, the default token type definition is considered.
-            if blackboard.token_type_definition is None:
+            if token_db.token_type_definition is None:
                 parse_default_token_definition()
                 default_token_type_definition_triggered_by_mode_definition_f = True
 
@@ -306,14 +306,12 @@ def parse_token_id_definitions(fh, NamesOnlyF=False):
                       fh)
 
         if not NamesOnlyF:
-            ti = TokenInfo(candidate, numeric_value, 
-                           SourceReference=SourceRef.from_FileHandle(fh))
-            blackboard.token_id_db[candidate] = ti
+            token_id_db_enter(fh, candidate, numeric_value) 
 
     if NamesOnlyF:
         return sorted(list(result))
     else:
-        return # Changes are applied to 'blackboard.token_id_db'
+        return # Changes are applied to 'token_db.token_id_db'
 
 def parse_default_token_definition():
     sub_fh = Lng.open_template_fh(Lng.token_default_file())

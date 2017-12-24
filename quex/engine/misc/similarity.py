@@ -45,12 +45,12 @@ def get_motion(Letter, Word, i):
     LWord = len(Word)
     if i >= LWord - 1:    return 0
 
-    if Word[i] == Letter: return 0
+    if Word[i].lower() == Letter.lower(): return 0
 
     if i > 0: 
-        if Word[i - 1] == Letter: return  -1
+        if Word[i - 1].lower() == Letter.lower(): return  -1
     if i < LWord:
-        if Word[i + 1] == Letter: return 1
+        if Word[i + 1].lower() == Letter.lower(): return 1
     return 0
 
 def compute_motion_vector(A, B):

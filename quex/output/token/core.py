@@ -3,7 +3,7 @@
 from   quex.input.files.token_type              import TokenTypeDescriptor
 from   quex.engine.misc.string_handling         import blue_print
 import quex.output.token.id_generator as     token_id_maker
-import quex.blackboard                          as     blackboard
+import quex.token_db                            as     token_db
 from   quex.blackboard                          import setup as Setup, Lng
 
 from   collections import OrderedDict
@@ -14,11 +14,11 @@ def do():
                 [2] Header text of the token class definition.
                 [3] Implementation of the token class.
     """
-    assert blackboard.token_type_definition is not None
+    assert token_db.token_type_definition is not None
 
     token_id_header = token_id_maker.do(Setup) 
 
-    if blackboard.token_type_definition.manually_written():
+    if token_db.token_type_definition.manually_written():
         # User has specified a manually written token class
         # (LexemeNull must be declared in global header)
         global_lexeme_null_declaration = \
@@ -33,7 +33,7 @@ def do():
         # (LexemeNull is declared in token class header)
         global_lexeme_null_declaration = ""
         header_txt,        \
-        implementation_txt = _do(blackboard.token_type_definition)
+        implementation_txt = _do(token_db.token_type_definition)
 
     return token_id_header, \
            global_lexeme_null_declaration, \
@@ -41,7 +41,7 @@ def do():
            implementation_txt
 
 def _do(Descr):
-    txt, txt_i = _do_core(blackboard.token_type_definition)
+    txt, txt_i = _do_core(token_db.token_type_definition)
 
     if Setup.language.upper() == "C++":
         # C++: declaration and (inline) implementation in header.
@@ -127,7 +127,7 @@ def _do_core(Descr):
         ["$$DESTRUCTOR$$",                 Lng.SOURCE_REFERENCED(Descr.destructor)],
         ["$$FOOTER$$",                     Lng.SOURCE_REFERENCED(Descr.footer)],
         ["$$FUNC_TAKE_TEXT$$",             take_text_str],
-        ["$$TOKEN_CLASS_HEADER$$",         Setup.get_file_reference(blackboard.token_type_definition.get_file_name())],
+        ["$$TOKEN_CLASS_HEADER$$",         Setup.get_file_reference(token_db.token_type_definition.get_file_name())],
         ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension_str],
         ["$$NAMESPACE_OPEN$$",             Lng.NAMESPACE_OPEN(Descr.name_space)],
         ["$$NAMESPACE_CLOSE$$",            Lng.NAMESPACE_CLOSE(Descr.name_space)],
@@ -330,7 +330,7 @@ def _include_token_class_header():
            Setup.get_file_reference(Setup.output_token_class_file)
 
 def _helper_definitions():
-    token_descr = blackboard.token_type_definition
+    token_descr = token_db.token_type_definition
 
     if Setup.language.upper() == "C++":
         namespace_open  = Lng.NAMESPACE_OPEN(token_descr.name_space)

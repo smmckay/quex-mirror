@@ -2,6 +2,7 @@
 from   quex.engine.misc.string_handling import blue_print
 
 from   quex.blackboard  import setup as Setup, Lng
+import quex.token_db    as     token_db
 import quex.blackboard  as     blackboard
 from   quex.constants   import E_IncidenceIDs
 from   quex.DEFINITIONS import QUEX_VERSION
@@ -27,10 +28,10 @@ def do(Mode_PrepPrepDB):
     )
 
     # token_repetition_token_id_list empty => token_repetition_support_txt = ""
-    token_repetition_support_f   = (len(blackboard.token_repetition_token_id_list) != 0)
+    token_repetition_support_f   = (len(token_db.token_repetition_token_id_list) != 0)
     token_repetition_support_txt = (" %s " % Lng.OR).join(
         Lng.EQUAL("TokenID", token_id_str)
-        for token_id_str in blackboard.token_repetition_token_id_list
+        for token_id_str in token_db.token_repetition_token_id_list
     )
 
     if Setup.analyzer_derived_class_name != "":
@@ -57,7 +58,7 @@ def do(Mode_PrepPrepDB):
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_SYSTEM",               Setup.byte_order_is_that_of_current_system_f)
     txt = Lng.SWITCH(txt, "__QUEX_OPTION_ENGINE_RUNNING_ON_CODEC",     Setup.buffer_encoding.name != "unicode")
 
-    token_descr = blackboard.token_type_definition
+    token_descr = token_db.token_type_definition
     codec_name  = Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
     include_guard_extension = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
                                                 + "__" + Setup.analyzer_class_name)

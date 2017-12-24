@@ -103,6 +103,36 @@ def is_identifier(identifier, TolerantF=False):
 
     return True
 
+def optional_flags(fh, SectionName, Default, AdmissibleDb, BadCombinationList):
+    pos = fh.tell()
+    if not check(fh, "("): return Default
+
+    flag_txt = read_until_character(fh, ")").strip().replace(" ", "").replace("\t", "").replace("\n", "").replace("\r", "")
+    for letter in flag_txt:
+        if letter in AdmissibleDb: continue
+
+        fh.seek(pos)
+        explanation_txt = [
+            "'%s' for %s." % (flag, explanation)
+            for flag, explanation in AdmissibleDb.iteritems()
+        ]
+        explanation_str = "Options are: "\
+                          + "\n             ".join(explanation_txt)
+        error.log("Flag '%s' not permitted for %s.\n" % (letter, SectionName) + \
+                  explanation_str, fh)
+
+    # Bad combination check:
+    for bad_combination in BadCombinationList:
+        suspect_list = [
+            flag for flag in bad_combination if flag in flag_txt
+        ]
+        if len(suspect_list) > 1:
+            suspect_list.sort()
+            error.log("Flag '%s' and '%s' cannot be used\n"
+                      "at the same time in %s." % (suspect_list[0], suspect_list[1], SectionName), fh)
+
+    return flag_txt
+
 def read_identifier(fh, TolerantF=False, OnMissingStr=None):
     def __read(fh, TolerantF):
         txt = fh.read(1)
@@ -130,10 +160,6 @@ def find_end_of_identifier(Txt, StartIdx, L):
         if not is_identifier_continue(Txt[i]): return i
     else:
         return L
-
-def check_or_die(fh, What, Comment = "."):
-    if not check(fh, What):
-        error.log("Missing '%s'" % What + Comment, fh)
 
 def parse_identifier_assignment(fh):
     # NOTE: Catching of EOF happens in caller
@@ -500,6 +526,10 @@ def check_whitespace(fh):
     skip_whitespace(fh)
     if pos == fh.tell(): return False
     else:                return True
+
+def check_or_die(fh, What, Comment = "."):
+    if not check(fh, What):
+        error.log("Missing '%s'" % What + Comment, fh)
 
 def check(fh, Word):
     position = fh.tell()

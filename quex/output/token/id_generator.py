@@ -1,15 +1,16 @@
 #! /usr/bin/env python
 from   quex.input.setup                  import NotificationDB
-from   quex.input.files.token_id_file    import TokenInfo, \
-                                                space
+from   quex.input.code.base              import SourceRef_VOID
+from   quex.input.files.token_id_file    import space
 import quex.engine.misc.error            as     error
 import quex.engine.misc.similarity       as     similarity
 from   quex.engine.misc.string_handling  import blue_print
 from   quex.blackboard                   import setup as Setup, \
-                                                Lng, \
-                                                token_id_db, \
-                                                get_used_token_id_set
+                                                Lng
 import quex.blackboard                   as     blackboard
+import quex.token_db                     as     token_db
+from   quex.token_db                     import token_id_db_enter, \
+                                                get_used_token_id_set
 
 from   collections import defaultdict
 import time
@@ -30,7 +31,7 @@ def do(setup):
     """
     global file_str
     # At this point, assume that the token type has been generated.
-    assert blackboard.token_type_definition is not None
+    assert token_db.token_type_definition is not None
 
     # (1) Error Check
     #
@@ -70,17 +71,17 @@ def do_map_id_to_name_cases():
     """Generate function which maps from token-id to string with the 
     name of the token id.
     """
-    if not token_id_db: return ""
-    L = max(len(name) for name in token_id_db.keys())
+    if not token_db.token_id_db: return ""
+    L = max(len(name) for name in token_db.token_id_db.keys())
 
     # -- define the function for token names
     switch_cases = []
-    for token_name in sorted(token_id_db.keys()):
+    for token_name in sorted(token_db.token_id_db.keys()):
         if token_name in standard_token_id_list: continue
 
         # UCS codepoints are coded directly as pure numbers
         if len(token_name) > 2 and token_name[:2] == "--":
-            token = token_id_db[token_name]
+            token = token_db.token_id_db[token_name]
             switch_cases.append("   case 0x%06X: return \"%s\";\n" % \
                                 (token.number, token.name))
         else:
@@ -105,10 +106,11 @@ def prepare_default_standard_token_ids():
 
     # 'TERMINATION' is often expected to be zero. The user may still overwrite
     # it, if required differently.
-    token_id_db["TERMINATION"] = TokenInfo("TERMINATION", ID=0)
+    token_id_db_enter(None, "TERMINATION", NumericValue=0)
+
     for name in sorted(standard_token_id_list):
         if name == "TERMINATION": continue 
-        token_id_db[name] = TokenInfo(name, ID=__get_free_token_id())
+        token_id_db_enter(None, name, NumericValue=__get_free_token_id())
 
 def __get_token_id_definition_txt():
     
@@ -132,9 +134,9 @@ def __get_token_id_definition_txt():
 
     # Considering 'items' allows to sort by name. The name is the 'key' in 
     # the dictionary 'token_id_db'.
-    L      = max(map(len, token_id_db.iterkeys()))
+    L      = max(map(len, token_db.token_id_db.iterkeys()))
     result = [prolog]
-    for dummy, token in sorted(token_id_db.iteritems()):
+    for dummy, token in sorted(token_db.token_id_db.iteritems()):
         define_this(result, token, L)
     result.append(epilog)
 
@@ -183,7 +185,7 @@ $$TOKEN_ID_CASES$$
 
 def __autogenerate_token_id_numbers():
     # Automatically assign numeric token id to token id name
-    for dummy, token in sorted(token_id_db.iteritems()):
+    for dummy, token in sorted(token_db.token_id_db.iteritems()):
         if token.number is not None: continue
         token.number = __get_free_token_id()
 
@@ -199,7 +201,7 @@ def has_specific_token_ids():
                       ones like 'TERMINATION', 'UNINITIALIZED', etc.
                 False, else.
     """
-    all_token_id_set = set(token_id_db.iterkeys())
+    all_token_id_set = set(token_db.token_id_db.iterkeys())
     all_token_id_set.difference_update(standard_token_id_list)
     if all_token_id_set: return True
     else:                return False
@@ -218,19 +220,18 @@ def __warn_on_double_definition():
 
     clash_db = defaultdict(list)
 
-    token_list = token_id_db.values()
+    token_list = token_db.token_id_db.values()
     for i, x in enumerate(token_list):
         for y in token_list[i+1:]:
             if x.number != y.number: continue
             clash_db[x.number].append(x)
             clash_db[x.number].append(y)
 
-    if not clash_db: 
-        return
+    if not clash_db: return
 
+    sr        = None
     item_list = clash_db.items()
     item_list.sort()
-    sr = None
     for x, token_id_list in item_list:
         done = set()
         new_token_id_list = []
@@ -240,13 +241,16 @@ def __warn_on_double_definition():
             new_token_id_list.append(token_id)
 
         subitem_list = sorted([ 
-            (token_id.sr.line_n, token_id.name, token_id.sr) 
+            (token_id.name, token_id.sr) 
             for token_id in new_token_id_list 
         ])
         if not subitem_list: continue
-        dummy, dummy, sr = subitem_list[0]
-        error.warning("Token ids with same numeric value %i fuond:" % x, sr) 
-        for dummy, name, sr in subitem_list:
+
+        dummy, sr = subitem_list[0]
+        if sr is None: sr = SourceRef_VOID
+        error.warning("Token ids with same numeric value %i found:" % x, sr) 
+        for name, sr in subitem_list:
+            if sr is None: sr = SourceRef_VOID
             error.warning("  %s" % name, sr)
 
     if sr is not None:
@@ -256,7 +260,7 @@ def __warn_implicit_token_definitions():
     """Output a message on token_ids which have been generated automatically.
     That means, that the user may have made a typo.
     """
-    if not blackboard.token_id_implicit_list: 
+    if not token_db.token_id_implicit_list: 
         return
 
     def warn(TokenName, ExistingList, PrefixAddF=False):
@@ -270,13 +274,13 @@ def __warn_implicit_token_definitions():
         else:          prefix = ""
         error.warning("     %s%s;%s" % (prefix, TokenName, similar_str), sr)
 
-    sr            = blackboard.token_id_implicit_list[0][1]
+    sr            = token_db.token_id_implicit_list[0][1]
     msg           = "Detected implicit token identifier definitions."
     implicit_list = [
-        tid[0] for tid in blackboard.token_id_implicit_list
+        tid[0] for tid in token_db.token_id_implicit_list
     ]
     defined_list = [
-        tid.name for tid in blackboard.token_id_db.values()
+        tid.name for tid in token_db.token_id_db.values()
         if tid.name not in implicit_list
     ]
 
@@ -284,12 +288,12 @@ def __warn_implicit_token_definitions():
         msg += " Proposal:\n"
         msg += "   token {"
         error.warning(msg, sr)
-        for token_name, sr in blackboard.token_id_implicit_list:
+        for token_name, sr in token_db.token_id_implicit_list:
             warn(token_name, defined_list)
         error.warning("   }", sr)
     else:
         error.warning(msg, sr)
-        for token_name, sr in blackboard.token_id_implicit_list:
+        for token_name, sr in token_db.token_id_implicit_list:
             warn(token_name, defined_list, PrefixAddF=True)
         error.warning("Above token ids must be defined in '%s'" \
                       % Setup.extern_token_id_file, sr)
@@ -299,7 +303,7 @@ def __error_on_no_specific_token_ids():
 
     token_id_str = [
         "    %s%s\n" % (Setup.token_id_prefix, name)
-        for name in sorted(token_id_db.iterkeys())
+        for name in sorted(token_db.token_id_db.iterkeys())
     ]
 
     error.log("No token id beyond the standard token ids are defined. Found:\n" \
@@ -309,8 +313,8 @@ def __error_on_no_specific_token_ids():
 def __error_on_mandatory_token_id_missing(AssertF=False):
     def check(AssertF, TokenID_Name):
         if AssertF:
-            assert TokenID_Name in token_id_db
-        elif TokenID_Name not in token_id_db:
+            assert TokenID_Name in token_db.token_id_db
+        elif TokenID_Name not in token_db.token_id_db:
             error.log("Definition of token id '%s' is mandatory!" % (Setup.token_id_prefix + TokenID_Name))
 
     check(AssertF, "TERMINATION")

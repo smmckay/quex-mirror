@@ -4,6 +4,7 @@ import os
 
 sys.path.append(os.environ["QUEX_PATH"])
 
+import quex.token_db                  as token_db
 import quex.blackboard                as blackboard
 import quex.input.command_line.core   as command_line
 import quex.input.setup               as setup
@@ -18,7 +19,7 @@ CommentDelimiterList = [["//", "\n"], ["/*", "*/"]]
 def test(TokenIDFile, TokenPrefix):
     print "##-----------------------------------------------------------------"
     blackboard.setup.init(setup.SETUP_INFO)
-    blackboard.token_id_db.clear()
+    token_db.token_id_db.clear()
     command_line.do(["--foreign-token-id-file", "data/%s" % TokenIDFile, 
                      "--token-id-prefix", TokenPrefix,
                      "--foreign-token-id-file-show"])

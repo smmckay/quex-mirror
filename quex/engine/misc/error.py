@@ -104,9 +104,10 @@ def log_file_not_found(FileName, Comment="", FH=-1):
     verify_word_in_list(FileName, files_in_directory, 
                         "File '%s' %snot found%s" % (FileName, comment, suffix), FH)
     
-@typed(Fh_or_Sr=(types.IntType, SourceRef, types.FileType, StringIO))
+@typed(Fh_or_Sr=(types.IntType, SourceRef, types.FileType, StringIO), WordList=(dict, list, tuple, set))
 def verify_word_in_list(Word, WordList, Comment, Fh_or_Sr=-1, ExitF=True, SuppressCode=None):
     """FH, and LineN work exactly the same as for error.log(...)"""
+
     if     __reference_to_setup is not None \
        and SuppressCode in __reference_to_setup.suppressed_notification_list:
         return
@@ -127,6 +128,7 @@ def verify_word_in_list(Word, WordList, Comment, Fh_or_Sr=-1, ExitF=True, Suppre
     else:
         word_list        = WordList
 
+    # Word is there. All korrect.
     if Word in word_list: return True
 
     # Word was not in list
