@@ -10,7 +10,7 @@ if "--hwut-info" in sys.argv:
     sys.exit()
 
 def test(Txt):
-    helper.test("abridgement", Txt)
+    helper.test("brief", Txt)
 
 test('{ "+" PLUS; }')
 test('(N) { "+" PLUS; "-" MINUS; }')

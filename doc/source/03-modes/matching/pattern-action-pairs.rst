@@ -238,11 +238,11 @@ Then, whenever a token id is used in the program text, it becomes obvious
 from the name what members may be safely accessed or what members need to 
 be assigned.
 
-'abridgement' and `keyword_list`
+'brief' and `keywords`
 --------------------------------
 
-The two commands `abridgement` and `keyword_list` are designed to minimize
-the effort to describe matching behavior. In an abridgement section, a list
+The two commands `brief` and `keywords` are designed to minimize
+the effort to describe matching behavior. In an brief section, a list
 of regular expression an brief token identifier pairs are listed. The brief
 token identifiers are expanded to complete token identifiers, their identifiers
 might be implicitly defined, and the `LexemeNull` might be passed automatically
@@ -267,7 +267,7 @@ might be written more concisely as
 
 .. code-block:: cpp
     ...
-    abridgement {
+    brief {
         "=" OP_ASSIGNMENT; 
         "+" PLUS; "-" MINUS; "*" MULT; "/" DIV;
         ...
@@ -278,8 +278,8 @@ might be written more concisely as
 In the case of *keywords* it is rational to choose the according token
 identifier as something derived from the keyword it self. For example the
 keyword 'while' might be reported as `QUEX_TKN_WHILE`. For such cases, an ever
-more concise description than `abridgement` can be used, namely the
-`keyword_list`. For example the following specification
+more concise description than `brief` can be used, namely the
+`keywords`. For example the following specification
 
 .. code-block:: cpp
 
@@ -303,7 +303,7 @@ is equivalent to
 .. code-block:: cpp
 
    ...
-   keyword_list(uNi) { 
+   keywords(uNi) { 
       for; while; until; perhaps; 
    }
    ...
@@ -311,13 +311,13 @@ is equivalent to
 The following item list describes those two commands and their flags in 
 detail.
 
-.. describe:: abridgement ['(' flags ')'] '{' list of (re, brief) '}'
+.. describe:: brief ['(' flags ')'] [prefix] '{' list of(re identifier ';') '}'
     
    Definition of a list of pattern-action pairs solely by a list of pairs of
-   regular expressions ``re`` and ``brief`` token identifiers. A brief token
-   identifier is an identifier without any token identifier prefix such as
-   `QUEX_TKN_`.  Any pair of a regular expression and a brief token sender as
-   in
+   regular expressions ``re`` and ``identifier``, i.e. token identifiers. A
+   brief token identifier is an identifier without the token identifier prefix
+   such as `QUEX_TKN_`.  Any pair of a regular expression and a brief token
+   sender as in
 
    .. code-block:: cpp
 
@@ -326,6 +326,9 @@ detail.
    is equivalent to a line
     
       re => QUEX_TKN_BRIEF;
+
+   In optional brackets the one or more of the flags ``L``, ``N``, or ``ì`` may
+   be provided. They are explained below.
 
    .. describe:: L
 
@@ -349,9 +352,23 @@ detail.
 
       defines token identifies implicitly, such that they do not need to
       be mentioned in the ``token`` definition section.
-   
 
-.. describe:: keyword_list ['(' flags ')'] '{' keywords '}'
+
+   The *prefix* may optionally be used to define a string to be pasted
+   at front of the token identifier, such as in 
+
+       .. code-block:: cpp
+
+         brief TYPE_ { int INT; float FLOAT; }
+
+   is equivalent to 
+
+       .. code-block:: cpp
+
+          "int"   => QUEX_TKN_TYPE_INT;
+          "float" => QUEX_TKN_TYPE_FLOAT;
+
+.. describe:: keywords ['(' flags ')'] [prefix] '{' list of (identifier ';') '}'
 
    Definition of a list of pattern-action pairs solely by a list of keywords.
    Any keyword `key` mentioned in list specifies a pattern action pair equivalent
@@ -361,7 +378,8 @@ detail.
 
       key => QUEX_TKN_key;
 
-   The optional flags modify the token sending as follows.
+   The optional flags ``u``, ``l``, ``L``, ``N``, and ``ì`` may be specified in
+   brackets to modify the token sending as follows.
 
    .. describe:: u
 
@@ -396,7 +414,7 @@ detail.
       defines token identifies implicitly, such that they do not need to
       be mentioned in the ``token`` definition section.
 
-
+   The optional *prefix* works in exact the same way as in ``brief``.
 
 
 Analyzis Continuation

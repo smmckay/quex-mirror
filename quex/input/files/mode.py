@@ -187,10 +187,10 @@ def __parse_element(new_mode, fh):
         elif similarity.get(identifier, ["keyword_list", "key words"]) != -1:
             error.warning("'%s' is similar to keyword 'keyword_list'.\n" 
                           "For clarity, use quotes." % identifier, fh)
-        elif identifier == "abridgement":
-            return __parse_abridgement(new_mode, fh)
-        elif similarity.get(identifier, ["abridge", "abridgment"]) != -1:
-            error.warning("'%s' is similar to keyword 'abridgement'.\n"
+        elif identifier == "brief":
+            return __parse_brief(new_mode, fh)
+        elif similarity.get(identifier, ["brief", "briefing", "briefly"]) != -1:
+            error.warning("'%s' is similar to keyword 'brief'.\n"
                           "For clarity, use quotes." % identifier, fh)
 
         fh.seek(position)
@@ -289,13 +289,13 @@ def __parse_event(new_mode, fh, word):
 
     return True
 
-def __parse_abridgement(new_mode, fh):
+def __parse_brief(new_mode, fh):
     """ADAPTS: new_mode.pattern_action_list where new pattern action pairs 
                                             are entered.
     RETURNS: True, in case of success.
     EXITS:   in case of syntax errors.
     """
-    flags = optional_flags(fh, "abridgement", "", 
+    flags = optional_flags(fh, "brief pattern action pair list", "", 
                            {"N": "pass LexemeNull to token contructor.",
                             "L": "pass Lexeme to token constructor.",
                             "i": "implicit token identifier definition."},
@@ -309,7 +309,7 @@ def __parse_abridgement(new_mode, fh):
     lexeme_f       = "L" in flags
     implicit_tid_f = "i" in flags
 
-    check_or_die(fh, "{", "Opening bracket required after 'abridgement'.")
+    check_or_die(fh, "{", "Opening bracket required after 'brief'.")
     while not check(fh, "}"):
         skip_whitespace(fh)
 

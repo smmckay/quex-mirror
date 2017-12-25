@@ -1,7 +1,6 @@
 from   quex.engine.misc.string_handling  import blue_print
 from   quex.blackboard                   import Lng, \
                                                 E_IncidenceIDs
-from   quex.token_db                     import token_repetition_token_id_list
 
 def do(Mode):
     # 'on_dedent' and 'on_n_dedent cannot be defined at the same time.

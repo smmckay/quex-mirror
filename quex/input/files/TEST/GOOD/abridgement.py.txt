@@ -1,6 +1,6 @@
 ________________________________________________________
 
-abridgement{ "+" PLUS; }
+brief{ "+" PLUS; }
 
     '"+"' -> self_send(TOKEN_PLUS);
 
@@ -9,7 +9,7 @@ abridgement{ "+" PLUS; }
 
 ________________________________________________________
 
-abridgement(N) { "+" PLUS; "-" MINUS; }
+brief(N) { "+" PLUS; "-" MINUS; }
 
     '"+"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), LexemeNull, LexemeNull);
 self_send(TOKEN_PLUS);
@@ -22,7 +22,7 @@ self_send(TOKEN_MINUS);
 
 ________________________________________________________
 
-abridgement(L) { "+" PLUS; "-" MINUS; }
+brief(L) { "+" PLUS; "-" MINUS; }
 
     '"+"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), me->buffer._lexeme_start_p, me->buffer._read_p);
 self_send(TOKEN_PLUS);
@@ -35,7 +35,7 @@ self_send(TOKEN_MINUS);
 
 ________________________________________________________
 
-abridgement(i)  { "+"+ MANY_PLUS; }
+brief(i)  { "+"+ MANY_PLUS; }
 
     '"+"+' -> self_send(TOKEN_MANY_PLUS);
 

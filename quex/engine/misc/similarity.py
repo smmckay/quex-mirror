@@ -1,6 +1,10 @@
-
+from math import log
 
 def get(Word, WordList):
+    L = len(Word)
+    if L == 0: return -1
+
+    required_n   = log(float(len(Word)), 3)
     min_distance = None
     min_i        = -1
 
@@ -10,8 +14,8 @@ def get(Word, WordList):
             min_i        = i
             min_distance = distance
     
-    if min_distance < 3: return min_i
-    else:                return -1
+    if min_distance < required_n: return min_i
+    else:                         return -1
 
 def compute_distance(A, B):
     vector = compute_motion_vector(A, B)
@@ -27,14 +31,15 @@ def compute_distance(A, B):
         else:                                  sum += 1.0
         prev_move = move
 
-    if len(B) > len(A): sum += ( len(B) - len(A) ) * 2.0 / 3.0
+    delta_L = abs(len(B) - len(A))
+    sum += delta_L * 2.0 / 3.0
     return sum
 
 def is_quite_close(A, B):
     aux = [A.lower(), B.lower()]
     aux.sort()
     x = aux[0]; y = aux[1]
-    tolerated = [ ["s", "z"], ["f", "w"], ["m", "n"], ["o", "u"], ["c", "k"], ["c", "z"], ["d", "t"], ["b", "p"] ]
+    tolerated = [ ["s", "z"], ["f", "w"], ["m", "n"], ["o", "u"], ["c", "k"], ["c", "z"], ["d", "t"], ["b", "p"], ["i", "u"], ["e", "i"] ]
     for a, b in tolerated:
         if x == a and y == b: return True
     return False

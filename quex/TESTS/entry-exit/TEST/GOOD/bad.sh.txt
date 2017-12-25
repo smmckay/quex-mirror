@@ -59,14 +59,14 @@
     File: 'good-8.qx': {
         bad-8.qx:3:error: Mode 'A' permits the exit to mode 'X'
         bad-8.qx:3:error: but no such mode exists.
-        bad-8.qx:3:error: Did you mean 'A'?
+        bad-8.qx:3:error: Acceptable: A.
     }
 
 (9) Entry mode does not exist
     File: 'good-9.qx': {
         bad-9.qx:3:error: Mode 'A' permits the entry from mode 'X'
         bad-9.qx:3:error: but no such mode exists.
-        bad-9.qx:3:error: Did you mean 'A'?
+        bad-9.qx:3:error: Acceptable: A.
     }
 
 <terminated>

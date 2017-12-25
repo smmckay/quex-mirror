@@ -176,8 +176,8 @@ def _get_state_machine_vs_terminal_bad_indentation(BadSpaceCharacterSet,
                                 E_IncidenceIDs.INDENTATION_BAD)
 
     on_bad_indentation_txt = "".join([ 
-        Lng.SOURCE_REFERENCED(IncidenceDb[E_IncidenceIDs.INDENTATION_BAD]),
-        "%s\n" % Lng.RAISE_ERROR_FLAG_BY_INCIDENCE_ID(E_IncidenceIDs.INDENTATION_BAD)
+        "%s\n" % Lng.RAISE_ERROR_FLAG_BY_INCIDENCE_ID(E_IncidenceIDs.INDENTATION_BAD),
+        Lng.SOURCE_REFERENCED(IncidenceDb[E_IncidenceIDs.INDENTATION_BAD])
      ])
 
     code = Lng.ON_BAD_INDENTATION(on_bad_indentation_txt, 

@@ -8,6 +8,10 @@ body {
     { printf("((A)) 8"); }
 }
 
+repeated_token {
+    DEDENT;
+}
+
 constructor    { printf("((A)) 3"); }
 reset          { printf("((A)) 4"); }
 memento        { printf("((A)) 5"); }

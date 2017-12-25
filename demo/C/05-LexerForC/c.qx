@@ -32,7 +32,7 @@ mode PROGRAM :
     on_end_of_stream => QUEX_TKN_TERMINATION(LexemeNull);
     on_failure       => QUEX_TKN_FAILURE(Lexeme);
 
-    abridgement(iL) PP_ {
+    brief(iL) PP_ {
         "#"[ \t]*"include"[ \t]*{P_INCLUDE_FILE2} INCLUDE;
         "#"[ \t]*"include"[ \t]*{P_INCLUDE_FILE1} INCLUDE;
         "#"[ \t]*"define"                         DEFINE;
@@ -53,7 +53,7 @@ mode PROGRAM :
         unsigned; int; long; float; double; char;
     }
 
-    abridgement(iL) {
+    brief(iL) {
         "#"   HASH;
         "##"  DOUBLE_HASH;
         "?"   QUESTION_MARK;
@@ -89,7 +89,7 @@ mode PROGRAM :
         do; while; break; continue;
     }
 
-    abridgement(iL) {
+    brief(iL) {
         {P_IDENTIFIER}  IDENTIFIER;
         {P_NUMBER}      NUMBER;
         {P_STRING}      STRING;

@@ -335,7 +335,7 @@ public:
     const char* version() const
     { return QUEX_NAME(version)((QUEX_TYPE_ANALYZER*)this); }
 
-    void    print_this()
+    void        print_this()
     { QUEX_NAME(print_this)(this); }
 
 public:
@@ -347,8 +347,6 @@ $$CLASS_BODY_EXTENSION$$
 
 public:
     // Token sending happens only via 'self_send*(...)' macros
-    void   send(const QUEX_TYPE_TOKEN_ID TokenID)
-    { (void)TokenID; QUEX_ERROR_DEPRECATED("Member functions .send()", "macros: self_send*()"); }
 };
 
 QUEX_NAMESPACE_MAIN_CLOSE
