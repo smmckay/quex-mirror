@@ -229,7 +229,7 @@ TEST                                                                 <no date>
                            4 .........................................[OK]
                            5 .........................................[OK]
                            6 .........................................[OK]
-                           good ......................................[OK]
+                           good ....................................[FAIL]
     2257908 Quex does not terminate lexer generation
         bug-2257908.sh ...............................................[OK]
     2262537 (feature) Allow Nothing is fine in define section
@@ -489,10 +489,12 @@ TEST                                                                 <no date>
 
     2974074 0.48.1 union modifies its arguments
         bug-2974074.sh ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] feature-2251359.sh _ good
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1006,16 +1008,16 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ....................................[OK]
+        no-use-of-lexeme-macro.sh ..................................[FAIL]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
         svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .......................................[OK]
+                          real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1038,7 +1040,8 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] pyflakes-check.sh
+    [FAIL] no-use-of-lexeme-macro.sh
+    [FAIL] function-check.sh _ real
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1110,33 +1113,72 @@ quex/TESTS/errors-warnings/TEST                                      <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
+Error: Directory: /home/fschaef/prj/quex/trunk/quex/TESTS/event-handling/TEST
+Error:
+Error:     Makefile: no response on 'make hwut-info'.
+Error:
 ===============================================================================
                                                                                
                                 Event Handling                                 
                                                                                
 quex/TESTS/event-handling/TEST                                       <no date>
 -------------------------------------------------------------------------------
- * Customized on_skip_range_open event.
-        on_skip_range_open-customized.sh customized ..................[OK]
- * Default on_skip_range_open event.
-        on_skip_range_open.sh default ................................[OK]
+ * Check whether all event handlers from 'blackboard.py' are tested.
+        all_event_handlers_checked.sh ................................[OK]
+ * Customized 'on_buffer_before_change' event.
+        on_buffer_before_change.qx empty .............................[OK]
+                                   twice .............................[OK]
+ * Customized 'on_load_failure' (only backward possible)
+        on_load_failure.qx empty ...........................[NO GOOD FILE]
+                           twice ...........................[NO GOOD FILE]
+
+ * Errors:
+
+    'on_buffer_overflow'
+        on_buffer_overflow.qx empty ..................................[OK]
+                              trigger ................................[OK]
+    Customized 'on_skip_range_open' event
+        on_skip_range_open-customized.qx customized ..................[OK]
+    Default 'on_skip_range_open' event
+        on_skip_range_open.qx default ................................[OK]
+    on_bad_lexatom
+        on_bad_lexatom.qx bad-utf16 ..................................[OK]
+                          good-utf16 .................................[OK]
+
+ * Indentation:
+
+    With N x DEDENT
+        on_indentation-2.qx n-dedent .................................[OK]
+    Without N x DEDENT
+        on_indentation-1.qx ind-bad ..................................[OK]
+                            ind-bad-dedent ...........................[OK]
+                            ind-good .................................[OK]
+
+ * Matching:
+
+    on_failure, on_match, on_after_match
+        on_match.qx failure ..........................................[OK]
+                    match ............................................[OK]
 
  * Mode Transitions:
 
-    transition-x.qx
-        transition-x.sh 1 ............................................[OK]
+    more on on_entry, on_exit
+        transition-x.qx 1 ............................................[OK]
                         2 ............................................[OK]
                         3 ............................................[OK]
                         error ........................................[OK]
-    transition.qx
-        transition.sh 1 ..............................................[OK]
+    on_entry, on_exit
+        transition.qx 1 ..............................................[OK]
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       error ..........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] on_load_failure.qx _ empty
+                            \__ twice
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1294,12 +1336,14 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Test code comments
         comment.sh ...................................................[OK]
  * Testing the implementation of line number pragmas
-        line-number-pragma.sh qx .....................................[OK]
+        line-number-pragma.sh qx ...................................[FAIL]
                               source .................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] line-number-pragma.sh _ qx
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -1882,6 +1926,23 @@ quex/engine/state_machine/TEST                                       <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
+                             Testing Mode Parsing                              
+                                                                               
+quex/input/files/TEST                                                <no date>
+-------------------------------------------------------------------------------
+
+ * Pattern-Action Pairs:
+
+    abridgement
+        abridgement.py ...............................................[OK]
+    keyword_list
+        keyword_list.py ..............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
+===============================================================================
+                                                                               
                           Regular Expression Parsing                           
                                                                                
 quex/input/regular_expression/TEST                                   <no date>
@@ -2419,7 +2480,7 @@ quex/engine/state_machine/construction/TEST                          <no date>
     Repetitions Kleene closure 0 or arbitrary repetitions
         test-repeat-pure.py ..........................................[OK]
     Sequence
-        test-sequentialize.py ........................................[OK]
+        test-sequentialize.py simply-three ...........................[OK]
     Setup Pre-Condition
         test-setup_pre_condition.py ..................................[OK]
 
@@ -2438,8 +2499,8 @@ quex/engine/state_machine/construction/TEST                          <no date>
 quex/engine/state_machine/cut/TEST                                   <no date>
 -------------------------------------------------------------------------------
  * Stem and Branches
-        test-stem-and-branches.py optional ...........................[OK]
-                                  repetition .........................[OK]
+        test-stem-and-branches.py optional .........................[FAIL]
+                                  repetition ...................[TIME_OUT]
 
  * Complement Begin:
 
@@ -2493,10 +2554,13 @@ quex/engine/state_machine/cut/TEST                                   <no date>
                           3 ..........................................[OK]
                           4 ..........................................[OK]
                           5 ..........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] test-stem-and-branches.py _ optional
+                                   \__ repetition
 ===============================================================================
                                                                                
                               DFA Transformations                              
@@ -3232,29 +3296,31 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
+    [NO GOOD FILE] on_load_failure.qx _ empty
+                                    \__ twice
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-           238     [OK] TEST                                                          
+        1  238   [FAIL] TEST                                                          
            57      [OK] demo/C/TEST                                                   
            57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        1  15    [FAIL] ........../code/TEST                                          
+        2  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-           10      [OK] ........../event-handling/TEST                                
+        2  25    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-           12      [OK] ........../misc/TEST                                          
+        1  12    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            16      [OK] ........../source-package/TEST                                
            1       [OK] ........../token-class/TEST                                   
@@ -3287,9 +3353,10 @@ SUMMARY:
            9       [OK] ........................./algorithm/TEST                      
            14      [OK] ........................./check/TEST                          
            8       [OK] ........................./construction/TEST                   
-           35      [OK] ........................./cut/TEST                            
+        2  35    [FAIL] ........................./cut/TEST                            
            62      [OK] ........................./transformation/TEST                 
            58      [OK] ..../input/TEST                                               
+           2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
            196     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
@@ -3297,11 +3364,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _        ___                 
-    |  ___|_ _(_) |___   / _ \ _ __   ___ ___ 
-    | |_ / _` | | / __| | | | | '_ \ / __/ _ \
-    |  _| (_| | | \__ \ | |_| | | | | (_|  __/
-    |_|  \__,_|_|_|___/  \___/|_| |_|\___\___|
-                                                                   (1657 tests)
+     _____     _ _           ___            
+    |  ___|_ _(_) |___      ( _ )     __  __
+    | |_ / _` | | / __|     / _ \     \ \/ /
+    |  _| (_| | | \__ \    | (_) |     >  < 
+    |_|  \__,_|_|_|___/     \___/     /_/\_\
+                                                                   (1674 tests)
 
 ===============================================================================
