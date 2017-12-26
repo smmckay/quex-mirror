@@ -1,0 +1,6 @@
+CutBegin, etc.
+brief, keywords, 
+removal of exceptions
+on_buffer_before_change
+on_buffer_overflow
+error flag handling.

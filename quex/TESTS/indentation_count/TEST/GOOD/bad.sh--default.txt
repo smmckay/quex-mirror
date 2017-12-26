@@ -35,8 +35,7 @@ A 'n'
 | [END] number of token = 15
 `-----------------------------------------------------------------
   mode:       X;
-  error_code: NoHandler_OnIndentationBad;
-              (* 'on_indentation_bad' has not been specified for mode*)
+  error_code: OnIndentationBad;
   counter: {
     _line_number_at_begin:   1;
     _line_number_at_end:     1;
@@ -79,10 +78,10 @@ A 'n'
       end_character_index: 63;
       end_p:               begin + 6, end - 1;
     }
+
+
   }
 _________________________________________________________________
-
-
    buffer front--------------------------->[0000] 0x0000
    lexeme start--------------------------->[0001] 0x003A
    input---------------------------------->[0002] 0x0020

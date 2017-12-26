@@ -324,8 +324,8 @@ def get_implementation_header(Setup):
 
 def frame_of_all(Code, Setup):
     # namespace_ref   = Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space)
-    # if len(namespace_ref) > 2 and namespace_ref[:2] == "::":  namespace_ref = namespace_ref[2:]
-    # if len(namespace_ref) > 2 and namespace_ref[-2:] == "::": namespace_ref = namespace_ref[:-2]
+    # if namespace_ref.startswith("::"):  namespace_ref = namespace_ref[2:]
+    # if namespace_ref.endswith("::"): namespace_ref = namespace_ref[:-2]
     # "using namespace " + namespace_ref + ";\n"       + \
 
     implementation_header_str = get_implementation_header(Setup)

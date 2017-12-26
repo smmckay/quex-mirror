@@ -23,7 +23,10 @@ def token_id_db_enter(fh, TokenIdName, NumericValue=None):
     if isinstance(fh, SourceRef): sr = fh
     elif fh is not None:          sr = SourceRef.from_FileHandle(fh)
     else:                         sr = None
-    ti = TokenInfo(TokenIdName, NumericValue, SourceReference=sr)
+    if TokenIdName.startswith("--"): pretty_token_id_name = TokenIdName[2:]
+    else:                            pretty_token_id_name = TokenIdName
+    
+    ti = TokenInfo(pretty_token_id_name, NumericValue, SourceReference=sr)
     token_id_db[TokenIdName] = ti
 
 #-----------------------------------------------------------------------------------------

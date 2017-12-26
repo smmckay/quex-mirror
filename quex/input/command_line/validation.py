@@ -150,7 +150,7 @@ def __check_file_name(setup, Candidate, Name, Index=None, CommandLineOption=None
 
     if type(value) == list:
         for name in value:
-            if name != "" and name[0] == "-": 
+            if name.startswith("-"):
                 error.log("Quex refuses to work with file names that start with '-' (minus).\n"  + \
                           "Received '%s' for %s (%s)" % (value, name, repr(CommandLineOption)[1:-1]))
             if os.access(name, os.F_OK) == False:

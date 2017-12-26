@@ -101,7 +101,7 @@ class Language(dict):
         self.__analyzer                           = None
         self.__code_generation_reload_label       = None
         self.__code_generation_on_reload_fail_adr = None
-        assert self.RETURN[-1] == ";"
+        assert self.RETURN.endswith(";")
         self.__re_RETURN                          = re.compile(r"\b%s\b" % self.RETURN[:-1])
         # NOTE: 'END_OF_STREAM' is not an error, it it caught upon the 
         #       termination token.

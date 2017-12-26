@@ -1,6 +1,6 @@
 simple.qx:13:warning: Detected implicit token identifier definitions. Proposal:
 simple.qx:13:warning:    token {
-simple.qx:13:warning:      Z; /* did you mean 'QUEX_TKN_C'? */
+simple.qx:13:warning:      Z;
 simple.qx:13:warning:    }
 <default>:0:warning: Token ids with same numeric value 111 found:
 <default>:0:warning:   DEDENT

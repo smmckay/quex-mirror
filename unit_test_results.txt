@@ -229,7 +229,7 @@ TEST                                                                 <no date>
                            4 .........................................[OK]
                            5 .........................................[OK]
                            6 .........................................[OK]
-                           good ....................................[FAIL]
+                           good ......................................[OK]
     2257908 Quex does not terminate lexer generation
         bug-2257908.sh ...............................................[OK]
     2262537 (feature) Allow Nothing is fine in define section
@@ -489,12 +489,10 @@ TEST                                                                 <no date>
 
     2974074 0.48.1 union modifies its arguments
         bug-2974074.sh ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] feature-2251359.sh _ good
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1008,7 +1006,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -1040,7 +1038,6 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] no-use-of-lexeme-macro.sh
     [FAIL] function-check.sh _ real
 ===============================================================================
                                                                                
@@ -3304,12 +3301,12 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        1  238   [FAIL] TEST                                                          
+           238     [OK] TEST                                                          
            57      [OK] demo/C/TEST                                                   
            57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        2  15    [FAIL] ........../code/TEST                                          
+        1  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3364,9 +3361,9 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           ___            
-    |  ___|_ _(_) |___      ( _ )     __  __
-    | |_ / _` | | / __|     / _ \     \ \/ /
+     _____     _ _           __             
+    |  ___|_ _(_) |___      / /_      __  __
+    | |_ / _` | | / __|    | '_ \     \ \/ /
     |  _| (_| | | \__ \    | (_) |     >  < 
     |_|  \__,_|_|_|___/     \___/     /_/\_\
                                                                    (1674 tests)

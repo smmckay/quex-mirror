@@ -93,8 +93,8 @@ def pretty_code(Code, Base=4):
             else:                                     no_real_line_yet_f = False
 
             content     = line.lstrip()
-            if len(content) != 0 and content[0] == "#": indentation = 0
-            else:                                       indentation = len(line) - len(content) + Base
+            if content.startswith("#"): indentation = 0
+            else:                       indentation = len(line) - len(content) + Base
             info_list.append(Info(indentation, content))
             indentation_set.add(indentation)
 

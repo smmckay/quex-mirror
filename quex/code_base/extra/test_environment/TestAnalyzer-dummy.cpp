@@ -656,6 +656,7 @@ _10:
     switch( load_result ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto _1;
+    case E_LoadResult_FAILURE:           QUEX_GOTO_STATE(target_state_else_index); 
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
     /* E_LoadResult_FAILURE cannot appear in forward direction.               */

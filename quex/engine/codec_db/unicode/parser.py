@@ -445,7 +445,7 @@ class PropertyInfoDB:
         property_type = "none"
         for line in fh.readlines():
             line = line.strip()
-            if line != "" and line[0] == "#" and line.find("Properties") != -1:
+            if line.startswith("#") and line.find("Properties") != -1:
                 property_type = line.split()[1]
                 continue
             

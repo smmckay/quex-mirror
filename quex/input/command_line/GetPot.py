@@ -230,13 +230,13 @@ class GetPot:
 
     def __process_section_label(self, label, section_stack):                    
         #  1) subsection of actual section ('./' prefix)
-        if len(label) >= 2 and label[:2] == "./":
+        if label.startswith("./"):
             label = label[2:]
             # a single [./] means 'the same section'                    
         #  2) subsection of parent section ('../' prefix)
-        elif label[0:3] == "../":
-            while label[0:3] == "../":
-                if len(section_stack) != 0: section_stack.pop()
+        elif label.startswith("../"):
+            while label.startswith("../"):
+                if section_stack: section_stack.pop()
                 label = label[3:]
         # 3) subsection of the root-section
         else:
@@ -273,8 +273,8 @@ class GetPot:
             except: return Default
         elif type(Default) == type(0):
             # integer
-            if  len(String) >= 2 and String[0:2] == "0x":  start_i = 2
-            elif len(String) >=3 and String[0:3] == "-0x": start_i = 3
+            if   String.startswith("0x"):  start_i = 2
+            elif String.startswith("-0x"): start_i = 3
             else:
                 # normal integer, not a hexadecimal
                 try:    return int(String)

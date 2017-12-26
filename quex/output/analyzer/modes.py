@@ -125,7 +125,7 @@ def get_implementation_of_mode_functions(mode, Modes):
     code_fragment = mode.incidence_db.get(E_IncidenceIDs.MODE_ENTRY)
     if code_fragment is not None:
         on_entry_str += Lng.SOURCE_REFERENCED(code_fragment)
-        if on_entry_str[-1] == "\n": on_entry_str = on_entry_str[:-1]
+        if on_entry_str.endswith("\n"): on_entry_str = on_entry_str[:-1]
 
     # (*) on exit
     on_exit_str   = Lng.CALL_MODE_HAS_EXIT_TO(mode.name)

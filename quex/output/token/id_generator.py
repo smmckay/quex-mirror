@@ -74,19 +74,21 @@ def do_map_id_to_name_cases():
     if not token_db.token_id_db: return ""
     L = max(len(name) for name in token_db.token_id_db.keys())
 
-    # -- define the function for token names
-    switch_cases = []
-    for token_name in sorted(token_db.token_id_db.keys()):
-        if token_name in standard_token_id_list: continue
-
-        # UCS codepoints are coded directly as pure numbers
-        if len(token_name) > 2 and token_name[:2] == "--":
-            token = token_db.token_id_db[token_name]
-            switch_cases.append("   case 0x%06X: return \"%s\";\n" % \
-                                (token.number, token.name))
+    def get_case(token_name, token):
+        if token_name.startswith("--"):
+            # UCS codepoints are coded directly as pure numbers
+            return "   case 0x%06X: return \"%s\";\n" % \
+                   (token.number, token.name)
         else:
-            switch_cases.append("   case %s%s:%s return \"%s\";\n" % \
-                                (Setup.token_id_prefix, token_name, space(L, token_name), token_name))
+            return "   case %s%s:%s return \"%s\";\n" % \
+                   (Setup.token_id_prefix, token_name, space(L, token_name), token_name)
+
+    # -- define the function for token names
+    switch_cases = [
+        get_case(token_name, token)
+        for token_name, token in sorted(token_db.token_id_db.iteritems())
+        if token_name not in standard_token_id_list
+    ]
 
     txt = blue_print(map_id_to_name_cases,
                       [["$$TOKEN_ID_CASES$$", "".join(switch_cases)],

@@ -34,7 +34,7 @@ def parse(fh, CodeFragmentName,
     skip_whitespace(fh)
 
     word = fh.read(2)
-    if len(word) >= 1 and word[0] == "{":
+    if word.startswith("{"):
         if len(word) > 1: fh.seek(-1, 1) # unput the second character
         return __parse_normal(fh, CodeFragmentName)
 
