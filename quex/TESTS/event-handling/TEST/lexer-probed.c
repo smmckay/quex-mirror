@@ -2,8 +2,8 @@
 #include<stdio.h>
 
 #include "EHLexer.h"
-#include "quex/code_base/buffer/bytes/ByteLoader_Probe"
-#include "quex/code_base/buffer/bytes/ByteLoader_Memory"
+#include "quex/code_base/buffer/bytes/ByteLoader_Probe.i"
+#include "quex/code_base/buffer/bytes/ByteLoader_Memory.i"
 
 #define FLUSH() do { fflush(stdout); fflush(stderr); } while(0)
 
@@ -18,6 +18,10 @@ static size_t self_on_after_load_backward(struct QUEX_NAME(ByteLoader_Probe_tag)
                                           void*        buffer, 
                                           const size_t LoadedN, 
                                           bool*        end_of_stream_f);
+typedef struct {
+    quex_EHLexer* lexer;
+    bool          seek_backward_f;
+} extra_t;
 
 int 
 main(int argc, char** argv) 
@@ -28,14 +32,19 @@ main(int argc, char** argv)
     QUEX_TYPE_TOKEN_ID  token_id = 0;
     char                file_name[256];
     quex_EHLexer        qlex;
-    char*               memory = "abcde";
+    char*               memory = "abcx";
     const uint8_t*      BeginP = (uint8_t*)&memory[0];
     const uint8_t*      EndP   = (uint8_t*)&memory[strlen(memory)+1];
+    extra_t             extra;
 
-    QUEX_NAME(ByteLoader_Memory)* blm = QUEX_NAME(ByteLoader_Memory_new)(BeginP, EndP);
-    QUEX_NAME(ByteLoader_Probe)*  blp = QUEX_NAME(ByteLoader_Probe_new)((QUEX_NAME(ByteLoader)*)blm);
+    QUEX_NAME(ByteLoader_Memory)* blm = (QUEX_NAME(ByteLoader_Memory)*)QUEX_NAME(ByteLoader_Memory_new)(BeginP, EndP);
+    QUEX_NAME(ByteLoader_Probe)*  blp = (QUEX_NAME(ByteLoader_Probe)*)QUEX_NAME(ByteLoader_Probe_new)((QUEX_NAME(ByteLoader)*)blm, 
+                                                                                                      (void*)&extra);
 
-    if( strcmp(argv[0], "forward") == 0 ) {
+    extra.lexer           = &qlex;
+    extra.seek_backward_f = false;
+
+    if( strcmp(argv[1], "forward") == 0 ) {
         blp->on_after_load = self_on_after_load_forward;
     }
     else {
@@ -46,6 +55,7 @@ main(int argc, char** argv)
     snprintf(file_name, (size_t)256, "./examples/%s.txt", (const char*)argv[1]);
     /* printf("%s\n", file_name); */
     QUEX_NAME(from_file_name)(&qlex, file_name, NULL); 
+    QUEX_NAME(from_ByteLoader)(&qlex, &blp->base, NULL);
     FLUSH();
 
     fprintf(stderr, "| [START]\n");
@@ -79,6 +89,10 @@ self_on_after_load_forward(struct QUEX_NAME(ByteLoader_Probe_tag)* me,
                            const size_t LoadedN, 
                            bool*        end_of_stream_f)
 {
+    extra_t*  x = (extra_t*)(me->reference_object);
+    /* CRITERIA for LOAD_FAILURE: -- 'end_p = end of memory'
+     *                            -- return move_distance == 0                */
+    x->lexer->buffer.input.end_p = x->lexer->buffer._memory._back;
     return 0; 
 }
 
@@ -87,9 +101,10 @@ self_on_seek_backward(struct QUEX_NAME(ByteLoader_Probe_tag)* me,
                       QUEX_TYPE_STREAM_POSITION               Position)
 {
     QUEX_TYPE_STREAM_POSITION current_position = me->source->tell((QUEX_NAME(ByteLoader)*)me);
-    bool*                     seek_backward_f = (bool*)(me->reference_object);
+    extra_t*                  x = (extra_t*)(me->reference_object);
+
     if( Position < current_position ) {
-        *seek_backward_f = true;
+        x->seek_backward_f = true;
     }
     return Position;
 }
@@ -100,6 +115,6 @@ self_on_after_load_backward(struct QUEX_NAME(ByteLoader_Probe_tag)* me,
                             const size_t LoadedN, 
                             bool*        end_of_stream_f)
 {
-    bool*                     seek_backward_f = (bool*)(me->reference_object);
-    return (*seek_backward_f) ? 0 : LoadedN;
+    extra_t*  x = (extra_t*)(me->reference_object);
+    return (x->seek_backward_f) ? 0 : LoadedN;
 }

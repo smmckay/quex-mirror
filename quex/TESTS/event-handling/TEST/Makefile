@@ -19,7 +19,7 @@ endif
 #     e.g. "make COMPILER=icpc" will use intel's c++ compiler)
 COMPILER = gcc
 
-LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror \
+LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
 	 -I./ -I$(QUEX_PATH)                   \
 	 -DQUEX_OPTION_DEBUG_SHOW_MODES        \
 	 -DQUEX_OPTION_COUNTER_LINE_DISABLED   \
@@ -46,7 +46,7 @@ on_indentation-%.exe: on_indentation-%.qx
 
 on_load_failure.exe: on_load_failure.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=65536 ./lexer-probed.c EHLexer.c -o $@ 
+	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=6 ./lexer-probed.c EHLexer.c -o $@ 
 
 on_bad_lexatom.exe: on_bad_lexatom.qx 
 	$(QUEX) -i $< -o EHLexer --encoding utf16

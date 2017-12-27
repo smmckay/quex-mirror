@@ -4,16 +4,17 @@
 #define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_PROBE_I
 
 #include <quex/code_base/MemoryManager>
+#include "quex/code_base/buffer/bytes/ByteLoader_Probe"
 #include <malloc.h> // DEBUG
 
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_Probe_construct)(QUEX_NAME(ByteLoader_Probe)* me,
-                                                                             const uint8_t*               BeginP,
-                                                                             const uint8_t*               EndP);
+                                                                             QUEX_NAME(ByteLoader)*       source,
+                                                                             void*                        reference_object);
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION  QUEX_NAME(ByteLoader_Probe_tell)(QUEX_NAME(ByteLoader)* me);
 QUEX_INLINE void                       QUEX_NAME(ByteLoader_Probe_seek)(QUEX_NAME(ByteLoader)*     me, 
-                                                                         QUEX_TYPE_STREAM_POSITION Pos);
+                                                                        QUEX_TYPE_STREAM_POSITION  Pos);
 QUEX_INLINE size_t                     QUEX_NAME(ByteLoader_Probe_load)(QUEX_NAME(ByteLoader)* me, 
                                                                         void*                  buffer, 
                                                                         const size_t           ByteN, 
@@ -24,7 +25,8 @@ QUEX_INLINE bool                       QUEX_NAME(ByteLoader_Probe_compare_handle
                                                                                   const QUEX_NAME(ByteLoader)* alter_ego_B);
 
 QUEX_INLINE QUEX_NAME(ByteLoader)*    
-QUEX_NAME(ByteLoader_Probe_new)(QUEX_NAME(ByteLoader)* source)
+QUEX_NAME(ByteLoader_Probe_new)(QUEX_NAME(ByteLoader)* source,
+                                void*                  reference_object)
     /* ByteLoader takes over ownership over 'source' */
 {
     QUEX_NAME(ByteLoader_Probe)* me;
@@ -35,18 +37,20 @@ QUEX_NAME(ByteLoader_Probe_new)(QUEX_NAME(ByteLoader)* source)
 
     if( ! me ) return (QUEX_NAME(ByteLoader)*)0;
 
-    QUEX_NAME(ByteLoader_Probe_construct)(me, source);
+    QUEX_NAME(ByteLoader_Probe_construct)(me, source, reference_object);
 
     return &me->base;
 }
 
 QUEX_INLINE void
 QUEX_NAME(ByteLoader_Probe_construct)(QUEX_NAME(ByteLoader_Probe)* me, 
-                                      QUEX_NAME(ByteLoader)*       source)
+                                      QUEX_NAME(ByteLoader)*       source,
+                                      void*                        reference_object)
 {
     __QUEX_STD_memset((void*)me, 0, sizeof(*me));
 
-    me->source = source;
+    me->source           = source;
+    me->reference_object = reference_object;
 
     QUEX_NAME(ByteLoader_construct)(&me->base,
                          QUEX_NAME(ByteLoader_Probe_tell),
@@ -75,10 +79,10 @@ QUEX_NAME(ByteLoader_Probe_delete_self)(QUEX_NAME(ByteLoader)* alter_ego)
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION    
 QUEX_NAME(ByteLoader_Probe_tell)(QUEX_NAME(ByteLoader)* alter_ego)            
 { 
-    const QUEX_NAME(ByteLoader_Probe)* me = (QUEX_NAME(ByteLoader_Probe)*)(alter_ego);
-    QUEX_TYPE_STREAM_POSITION          position;
+    QUEX_NAME(ByteLoader_Probe)* me = (QUEX_NAME(ByteLoader_Probe)*)(alter_ego);
+    QUEX_TYPE_STREAM_POSITION    position;
 
-    position = me->source->tell((QUEX_NAME(ByteLoader)*)(me->source));
+    position = me->source->tell(me->source);
 
     ++(me->tell_n);
     me->position_last_tell = position;
@@ -103,7 +107,7 @@ QUEX_NAME(ByteLoader_Probe_seek)(QUEX_NAME(ByteLoader)* alter_ego, QUEX_TYPE_STR
         position = Pos;
     }
 
-    me->source->seek((QUEX_NAME(ByteLoader)*)(me->source), position);
+    me->source->seek(me->source, position);
 
     ++(me->seek_n);
     me->position_last_seek = position;
@@ -126,10 +130,10 @@ QUEX_NAME(ByteLoader_Probe_load)(QUEX_NAME(ByteLoader)*   alter_ego,
         byte_n = ByteN;
     }
 
-    loaded_byte_n = me->source->load((QUEX_NAME(ByteLoader)*)(me->source), buffer, ByteN, end_of_stream_f);
+    loaded_byte_n = me->source->load(me->source, buffer, byte_n, end_of_stream_f);
 
     if( me->on_after_load ) {
-        loaded_byte_n = me->on_after_load(buffer, loaded_byte_n, end_of_stream_f);
+        loaded_byte_n = me->on_after_load(me, buffer, loaded_byte_n, end_of_stream_f);
     }
 
     ++(me->load_n);
@@ -147,7 +151,7 @@ QUEX_NAME(ByteLoader_Probe_compare_handle)(const QUEX_NAME(ByteLoader)* alter_eg
     const QUEX_NAME(ByteLoader_Probe)* me = (QUEX_NAME(ByteLoader_Probe)*)(alter_ego_A);
     bool                                          result;
 
-    result = me->source->compare_handle((QUEX_NAME(ByteLoader)*)(me->source), alter_ego_B);
+    result = me->source->compare_handle(me->source, alter_ego_B);
 
     return result;
 }
@@ -158,7 +162,7 @@ QUEX_NAME(ByteLoader_Probe_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
     QUEX_NAME(ByteLoader_Probe)* me = (QUEX_NAME(ByteLoader_Probe)*)(alter_ego);
 
     __QUEX_STD_printf("        remote_controlled: {\n");
-    me->print(alter_ego);
+    me->source->print_this(me->source);
     __QUEX_STD_printf("        }\n");
 }
 

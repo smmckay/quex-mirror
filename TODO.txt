@@ -20,6 +20,27 @@ Expansion:
 
 --------------------------------
 Vowelization
-    \WoVow    --> also match without vowels
-    \WoVow(p) --> also match partly without vowels
+    \Vowel      --> also match without vowels
+    \Devowel(p) --> also match partly without vowels
+
+
+--------------------------------
+Backward lexical analysis: decouple from 'lexeme start pointer'.
+
+analysis_step_begin_lexatom_index =   QUEX_NAME(Buffer_tell)(me)
+                                    + (me->_lexeme_start_p - me->_read_p)
+
+if( analysis_step_begin_lexatom_index >= 0 ) {
+    QUEX_NAME(Buffer_seek)(me, analysis_step_begin_lexatom_index);
+    me->_lexeme_start_p = me->_read_p;
+}
+--------------------------------
+
+\Stem and \Brancher Unit Tests and checks
+
+--------------------------------
+
+OnLoadFailure handler Unit Tests
+
+in TESTS/event_handling/TEST
 

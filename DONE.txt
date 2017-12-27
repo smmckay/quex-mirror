@@ -3,4 +3,5 @@ brief, keywords,
 removal of exceptions
 on_buffer_before_change
 on_buffer_overflow
-error flag handling.
+error flag handling -> towards no 'QUEX_ERROR_EXIT'
+ByteLoader_Probe

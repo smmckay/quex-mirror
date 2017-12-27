@@ -4,4 +4,5 @@ bash ./executer.sh *.qx
 bash all_event_handlers_checked.sh
 
 --not template.sh
+--not on_load_failure.qx
 ---------------

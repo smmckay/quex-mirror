@@ -101,6 +101,8 @@ function collect_distribution_file_list()
          && ! /\.so$/     \
          && ! /\.exrc$/   \
          && ! /tmp?.txt$/ \
+         && ! /DONE\.txt$/ \
+         && ! /TODO\.txt$/ \
          && ! /tmp.txt$/  \
          && ! /\.log$/    \
          && ! /\/quex\/engine\/analyzer\/examine\/doc\// \

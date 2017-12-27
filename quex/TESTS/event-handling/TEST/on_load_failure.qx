@@ -7,8 +7,8 @@ mode X :
 <skip_range: "/*" "*/">
 <skip:       [ \t\n] >
 {
-    abcdefghijklmnopqrst/x/ => TK_X;
-    x => TK_Y;
+    abc/xyz/    => TK_X(Lexeme);
+    [^x \t\n\/] => TK_Y(Lexeme);
     on_load_failure { 
         printf("on_load_failure!");
     }

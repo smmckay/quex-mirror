@@ -90,7 +90,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(ByteLoader_P
 
 } QUEX_NAME(ByteLoader_Probe);
 
-QUEX_INLINE QUEX_NAME(ByteLoader)*    QUEX_NAME(ByteLoader_Probe_new)(QUEX_NAME(ByteLoader)* source);
+QUEX_INLINE QUEX_NAME(ByteLoader)*    QUEX_NAME(ByteLoader_Probe_new)(QUEX_NAME(ByteLoader)* source,
+                                                                      void*                  reference_object);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

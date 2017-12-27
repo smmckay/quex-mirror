@@ -4,5 +4,6 @@ DFA Cut Arithmetic
 --not *-DELETED
 --not common.py
 --not __init__.py
+--not test-stem-and-branches.py
 -------------------------------
 

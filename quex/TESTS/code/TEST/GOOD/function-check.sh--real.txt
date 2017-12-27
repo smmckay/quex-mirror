@@ -1,5 +1,4 @@
 ||||
-
 __combine_transitionless_acceptance_states
 from_LinearState
 from_mouth
@@ -8,7 +7,6 @@ get_outstanding_character
 get_predecessors
 get_pretty_string
 get_property_value_matches
-get_successors
 has_pre_context_begin_of_stream
 __iadd__
 __invert__
@@ -18,11 +16,7 @@ NewFaster_Enum
 new_get_epsilon_closure_db
 __nonzero__
 pair_combinations
-|  ??  |
+partials
 print_mouth
 ||||
-
-|  ??  |
-|  ??  |
-|  ??  |
 <terminated>
