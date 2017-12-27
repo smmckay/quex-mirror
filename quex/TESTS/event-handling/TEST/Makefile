@@ -44,6 +44,10 @@ on_indentation-%.exe: on_indentation-%.qx
 	$(QUEX) -i $< -o EHLexer 
 	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=65536 ./lexer.c EHLexer.c -o $@ 
 
+on_load_failure.exe: on_load_failure.qx 
+	$(QUEX) -i $< -o EHLexer 
+	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=65536 ./lexer-probed.c EHLexer.c -o $@ 
+
 on_bad_lexatom.exe: on_bad_lexatom.qx 
 	$(QUEX) -i $< -o EHLexer --encoding utf16
 	$(LD65536) ./lexer.c EHLexer.c -o $@ 
