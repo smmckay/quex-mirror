@@ -143,6 +143,9 @@ class Language(dict):
         else:       txt = txt.replace("$$SWITCH$$ %s" % Name, "/* #define %s */" % Name)
         return txt
 
+    def BUFFER_SEEK(self, Position):
+        return "QUEX_NAME(Buffer_seek)(&me->buffer, %s);" % Position
+
     def frame_all(self, Code, Setup):      return templates.frame_of_all(Code, Setup)
 
     def open_template(self, PathTail):
@@ -429,6 +432,7 @@ class Language(dict):
             E_R.Column:          "(me->counter._column_number_at_end)",
             E_R.Line:            "(me->counter._line_number_at_end)",
             E_R.LexemeStartP:    "(me->buffer._lexeme_start_p)",
+            E_R.BackupStreamPositionOfInputP: "(me->buffer._backup_lexatom_index_of_read_p)",
             E_R.LexemeStartBeforeReload: "lexeme_start_before_reload_p)",
             E_R.CountReferenceP: "count_reference_p",
             E_R.LexemeEnd:       "LexemeEnd",

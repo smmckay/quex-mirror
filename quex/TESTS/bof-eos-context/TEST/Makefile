@@ -12,6 +12,7 @@ hwut-info:
 %.exe: %.c lexer.c 
 	gcc lexer.c $< -I$(QUEX_PATH) -I$(HWUT_PATH) \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
+		-DQUEX_SETTING_BUFFER_SIZE=4 \
 		-DHEADER_FILE='"$*.h"' -DLEXER_TYPE=quex_$* -DTITLE='"$*"' \
 		-Wall -Werror \
 		-o $@ -ggdb 

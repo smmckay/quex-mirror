@@ -29,6 +29,6 @@ test_str = "   0xxxxxxalola 0xxxxxxxa"
 
 
 generator_test.do(pattern_action_pair_list, test_str, {}, Language=choice, 
-                  QuexBufferSize=11, QuexBufferFallbackN=2, ShowBufferLoadsF=True,
+                  QuexBufferSize=6, QuexBufferFallbackN=2, ShowBufferLoadsF=True,
                   AssertsActionvation_str=ASSERT_str)
     

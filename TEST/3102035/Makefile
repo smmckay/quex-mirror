@@ -13,6 +13,7 @@ endif
 LDC := $(LDC) \
 	 -I./ -I$(QUEX_PATH)                             \
 	 -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -W -Wconversion -pedantic                 \
+	 # -DQUEX_SETTING_BUFFER_SIZE=3 \
 	 $(CCFLAG_ASSERTS)                               \
 	 -DPRINT_TOKEN                                   \
 	 -DPRINT_LINE_COLUMN_NUMBER

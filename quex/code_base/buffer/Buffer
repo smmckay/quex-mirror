@@ -67,13 +67,19 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
     /* (*) Iterator positions for lexical analysis                            */
     QUEX_TYPE_LEXATOM*       _read_p;                                        
     QUEX_TYPE_LEXATOM*       _lexeme_start_p;                                
+
+    /* (*) When data from a different stream position is loaded than what is 
+     *     required for the current analysis step, the current position is 
+     *     stored in '_backup_lexatom_index_of_read_p', so that it can be 
+     *     restored before the analysis forward step starts.                  */
+    QUEX_TYPE_STREAM_POSITION _backup_lexatom_index_of_read_p;
                                                                              
     /* (*) Information about previous content:
      *
      * _lexatom_at_lexeme_start: lexatom that has been covered by a 
-     *                             terminating zero. Reset upon restart of 
-     *                             analysis.
-     * _lexatom_at_lexeme_start: Used to check whether the lexeme's 
+     *                           terminating zero. Reset upon restart of 
+     *                           analysis.
+     * _lexatom_before_lexeme_start: Used to check whether the lexeme's 
      *                             preceeding lexatom was newline. 
      *                             (i.e. for begin-of-line pre-context).      */
     QUEX_TYPE_LEXATOM      _lexatom_at_lexeme_start;      

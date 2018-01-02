@@ -23,13 +23,14 @@ pattern_action_pair_list = [
     #    patterns, since they are always longer.
     #
     # repetition of 'x' (one or more) **preceded** by 'good' + whitespace
-    ('[ \\t]+/"x"+/',        "WHITESPACE / X+ /"),
-    ('[ \\t]+/"xz"/',        "WHITESPACE / XZ /"),
+    ('x[ \\t]+/"x"+/',        "WHITESPACE / X+ /"),
+    ('x[ \\t]+/"xz"/',        "WHITESPACE / XZ /"),
     # normal repetition (one or more) of 'x'
     ('"x"+',                 "X+"),
     # whitespace
     ('[ \\t\\n]+',           "WHITESPACE")
 ]
-test_str = "x  xxxxx xxx x"
+test_str = "x                            xxxxx xz x"
 
-generator_test.do(pattern_action_pair_list, test_str, {}, choice)    
+generator_test.do(pattern_action_pair_list, test_str, {}, choice, 
+                  QuexBufferSize=7)    

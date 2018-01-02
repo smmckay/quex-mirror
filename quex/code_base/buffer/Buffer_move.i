@@ -12,8 +12,8 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
                                                            ptrdiff_t           move_distance);
 QUEX_INLINE void      QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)* me,
-                                                          intmax_t           move_distance,
-                                                          ptrdiff_t          move_size);
+                                                                intmax_t           move_distance,
+                                                                ptrdiff_t          move_size);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me, 
                                                       ptrdiff_t          move_distance);
 QUEX_INLINE bool      QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me);
@@ -157,12 +157,18 @@ QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
  * ADAPTS: _read_p, _lexeme_start_p, position registers, end_p, 
  *         input.end_lexatom_index                                            */
 {
-    QUEX_TYPE_LEXATOM*  EndP   = me->_memory._back;
+    __quex_assert(move_distance <= me->input.lexatom_index_begin);
+
+    QUEX_TYPE_LEXATOM*  EndP = me->_memory._back;
     QUEX_TYPE_LEXATOM*  end_p;
 
     /* Pointer Adaption: _read_p, _lexeme_start_p.                           */
     me->_read_p += move_distance;
-    if( me->_lexeme_start_p ) me->_lexeme_start_p += move_distance;
+    if( me->_lexeme_start_p ) {
+        me->_lexeme_start_p = EndP - me->_lexeme_start_p > move_distance ?
+                                  &me->_lexeme_start_p[move_distance]
+                                : &EndP[-1];
+    }
 
     /* Adapt and of content pointer and new lexatom index at begin.          */
     end_p = EndP - me->input.end_p < move_distance ? EndP

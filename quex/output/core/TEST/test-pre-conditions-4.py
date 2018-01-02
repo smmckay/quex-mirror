@@ -33,4 +33,4 @@ pattern_action_pair_list = map(lambda re: (re, re.replace("\\t", "\\\\t").replac
                                pattern_list)
 
 test_str = """Xhello XhellohelloX Xhelloworld helloworld"""
-generator_test.do(pattern_action_pair_list, test_str, {}, choice, QuexBufferSize=60)    
+generator_test.do(pattern_action_pair_list, test_str, {}, choice, QuexBufferSize=13)    

@@ -212,12 +212,12 @@ QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me)
 /* Initialize:  _read_p                          
  *              _lexeme_start_p                 
  *              _lexatom_at_lexeme_start     
- *              _lexatom_before_lexeme_start                                 */
+ *              _lexatom_before_lexeme_start                                  */
 {
     QUEX_TYPE_LEXATOM*  BeginP = &me->_memory._front[1];
 
     if( ! me->_memory._front ) {
-        /* No memory => FSM is put into a non-functional state.         */
+        /* No memory => FSM is put into a non-functional state.               */
         me->_read_p                      = (QUEX_TYPE_LEXATOM*)0;
         me->_lexeme_start_p              = (QUEX_TYPE_LEXATOM*)0;
         me->_lexatom_at_lexeme_start     = (QUEX_TYPE_LEXATOM)0;                                   
@@ -227,22 +227,23 @@ QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me)
     }
     else {
         /* The first state in the state machine does not increment. 
-         * => input pointer is set to the first position, not before.        */
+         * => input pointer is set to the first position, not before.         */
         me->_read_p                      = BeginP;                                
         me->_lexeme_start_p              = BeginP;                                
-        me->_lexatom_at_lexeme_start     = '\0';  /* Nothing covered. */
+        me->_lexatom_at_lexeme_start     = '\0';          /* Nothing covered. */
 #       ifdef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                     
-        /* When the buffer is initialized, a line begins. Set 'newline'.     */
+        /* When the buffer is initialized, a line begins. Set 'newline'.      */
         me->_lexatom_before_lexeme_start = QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC;
 #       endif
     }
+    me->_backup_lexatom_index_of_read_p = (QUEX_TYPE_STREAM_POSITION)-1;
 }
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFileP)
 /*  Initialize: input.lexatom_index_begin
  *              input.lexatom_index_end_of_stream                         
- *              input.end_p                                                  */
+ *              input.end_p                                                   */
 {
     QUEX_TYPE_LEXATOM*        BeginP           = &me->_memory._front[1];
     QUEX_TYPE_LEXATOM*        EndP             = me->_memory._back;

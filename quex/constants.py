@@ -183,6 +183,7 @@ E_Op  = Enum("Accepter",
 
 E_R = Enum("AcceptanceRegister",
            "Buffer",
+           "BackupStreamPositionOfInputP",
            "Counter",
            "Column",
            "Input",

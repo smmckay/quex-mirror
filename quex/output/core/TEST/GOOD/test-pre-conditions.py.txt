@@ -1,22 +1,25 @@
 (*) Lexical Analyser Patterns:
-        [ \t]+/"x"+/ --> WHITESPACE / X+ /
-        [ \t]+/"xz"/ --> WHITESPACE / XZ /
+       x[ \t]+/"x"+/ --> WHITESPACE / X+ /
+       x[ \t]+/"xz"/ --> WHITESPACE / XZ /
                 "x"+ --> X+
             [ \t\n]+ --> WHITESPACE
 ## (1) code generation
 ## (2) compiling generated engine code and test
-g++  ./tmp.cpp -I./. -I$QUEX_PATH -o ./tmp.cpp.exe -D__QUEX_OPTION_UNIT_TEST_ISOLATED_CODE_GENERATION -ggdb ##
-## (3) running the test
+g++ -Wall -Werror -Wno-error=unused-function  -DQUEX_OPTION_ASSERTS ./tmp.cpp -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.cpp.exe  ##
+## (*) running the test
 (*) test string: 
-'x  xxxxx xxx x'
+'x                            xxxxx xz x'
 (*) result:
                  X+  'x'
-         WHITESPACE  '  '
+         WHITESPACE  '     '
+         WHITESPACE  '     '
+         WHITESPACE  '     '
+         WHITESPACE  '     '
+         WHITESPACE  '     '
+         WHITESPACE  '   '
   WHITESPACE / X+ /  'xxxxx'
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'xxx'
+  WHITESPACE / XZ /  'xz'
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'x'
+                 X+  'x'
   ''
-
-## (4) cleaning up

@@ -11,7 +11,7 @@ import quex.engine.analyzer.core                  as     analyzer_generator
 
 from   quex.engine.misc.tools import typed
 
-from   quex.constants  import E_IncidenceIDs
+from   quex.constants  import E_IncidenceIDs, E_R
 from   quex.blackboard import setup as Setup, \
                               Lng
 
@@ -78,10 +78,23 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
 
     txt, analyzer = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT, dial_db) 
 
-    txt.append("\n%s" % Lng.LABEL(DoorID.global_end_of_pre_context_check(dial_db)))
-    # -- set the input stream back to the real current position.
-    #    during backward lexing the analyzer went backwards, so it needs to be reset.
-    txt.append("    %s\n" % Lng.INPUT_P_TO_LEXEME_START())
+    backup_position = Lng.REGISTER_NAME(E_R.BackupStreamPositionOfInputP)
+
+    txt.append("\n".join([
+        Lng.LABEL(DoorID.global_end_of_pre_context_check(dial_db)),
+        #-------------------
+        Lng.IF(backup_position, "!=", "((QUEX_TYPE_STREAM_POSITION)-1)"),
+            Lng.BUFFER_SEEK(backup_position),
+            Lng.LEXEME_START_SET(PositionStorage=None), # use '_read_p'
+            Lng.ASSIGN(backup_position, "((QUEX_TYPE_STREAM_POSITION)-1)"),
+        Lng.END_IF(),
+        #-----------------------
+
+        # -- set the input stream back to the real current position.
+        #    during backward lexing the analyzer went backwards, so it needs to be reset.
+        Lng.INPUT_P_TO_LEXEME_START()
+    ]))
+    txt.append("\n")
 
     for sm_id in PreContextSmIdList:
         variable_db.require("pre_context_%i_fulfilled_f", Index = sm_id)
