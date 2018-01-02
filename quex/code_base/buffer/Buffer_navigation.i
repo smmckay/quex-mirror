@@ -177,8 +177,9 @@ QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
         verdict_f = false;
     }
 
-    me->_lexeme_start_p                = me->_read_p;
-    me->_lexatom_at_lexeme_start     = me->_read_p[0];
+    me->_lexeme_start_p          = me->_read_p;
+#   if 0
+    me->_lexatom_at_lexeme_start = me->_read_p[0];
 #   ifdef __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
     /* Seek was towards 'target - 1'
      * => Now, there must be at least one lexatom before '_read_p'.
@@ -186,6 +187,7 @@ QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
      *    stands on the buffer's content front.                              */
     me->_lexatom_before_lexeme_start = me->_read_p > BeginP ? me->_read_p[-1]
                                          : QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC;
+#   endif
 #   endif
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
     return verdict_f;

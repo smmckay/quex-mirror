@@ -235,9 +235,9 @@ QUEX_NAME(LexatomLoader_Converter_load_lexatoms)(QUEX_NAME(LexatomLoader)* alter
     (void)encoding_error_f;
     (void)raw;
 
-    __quex_assert(me->converter);
-    __quex_assert(alter_ego); 
-    __quex_assert(RegionBeginP); 
+    __quex_assert(0 != me->converter);
+    __quex_assert(0 != alter_ego); 
+    __quex_assert(0 != RegionBeginP); 
     QUEX_ASSERT_RAW_BUFFER(raw);
 
     /* NOT: QUEX_IF_ASSERTS_poison(RegionBeginP, &RegionBeginP[N]);

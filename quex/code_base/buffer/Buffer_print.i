@@ -54,7 +54,7 @@ QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* me)
         return;
     }
 
-    __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
+    __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "_________________________________________________________________\n");
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_memory._front,      total_end, me);
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_lexeme_start_p - 2, total_end, me);
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_read_p        - 2, total_end, me);
@@ -62,7 +62,7 @@ QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* me)
         QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->input.end_p - 4, total_end, me);
     }
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_memory._back   - 4, total_end, me);
-    __QUEX_STD_fprintf(stderr, "_________________________________________________________________\n");
+    __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "_________________________________________________________________\n");
 }
 
 QUEX_INLINE void  
@@ -151,49 +151,49 @@ QUEX_NAME(Buffer_print_content_detailed_lines)(QUEX_TYPE_LEXATOM** iterator,
 
     if( Begin > *iterator ) {
         *iterator = Begin;
-        __QUEX_STD_fprintf(stderr, "                                           ...\n");
+        __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "                                           ...\n");
     } else if( *iterator >= end ) {
         return;
     }
 
     for(; *iterator < end; ++*iterator) {
         length = 0;
-        __QUEX_STD_fprintf(stderr, "   ");
+        __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "   ");
 
         if( *iterator == buffer->_memory._front ) {
-            __QUEX_STD_fprintf(stderr, "buffer front");
+            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "buffer front");
             length += 12;
         }
         if( *iterator == buffer->_lexeme_start_p ) {
-            if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
-            __QUEX_STD_fprintf(stderr, "lexeme start");
+            if( length ) { __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, ", "); length += 2; }
+            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "lexeme start");
             length += 12;
         }
         if( *iterator == buffer->_read_p ) {
-            if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
-            __QUEX_STD_fprintf(stderr, "input");
+            if( length ) { __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, ", "); length += 2; }
+            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "input");
             length += 5;
         }
         if( *iterator == buffer->input.end_p ) {
-            if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
-            __QUEX_STD_fprintf(stderr, "end of file");
+            if( length ) { __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, ", "); length += 2; }
+            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "end of file");
             length += 11;
         }
         if( *iterator == buffer->_memory._back ) {
-            if( length ) { __QUEX_STD_fprintf(stderr, ", "); length += 2; }
-            __QUEX_STD_fprintf(stderr, "buffer back");
+            if( length ) { __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, ", "); length += 2; }
+            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "buffer back");
             length += 11;
         }
         if( length ) {
             for(; length < 39; ++length)
-                __QUEX_STD_fprintf(stderr, "-");
-            __QUEX_STD_fprintf(stderr, ">");
+                __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "-");
+            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, ">");
         } else {
-            __QUEX_STD_fprintf(stderr, "                                        ");
+            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "                                        ");
         }
 
         /* Print the character information */
-        __QUEX_STD_fprintf(stderr, "[%04X] 0x%04X\n", 
+        __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "[%04X] 0x%04X\n", 
                            (int)(*iterator - buffer->_memory._front),
                            (int)(**iterator));
     }

@@ -171,7 +171,7 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
         memory                   = &including->input.end_p[1];
         memory_size              = (size_t)(&including->_memory._back[1] - memory);
         including->_memory._back = &including->input.end_p[0];
-        __quex_assert(memory);
+        __quex_assert(0 != memory);
         ownership = E_Ownership_INCLUDING_BUFFER;
     }
 
@@ -258,7 +258,7 @@ QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFi
         ci_begin         = (QUEX_TYPE_STREAM_POSITION)-1;
     }
     else if( me->filler && me->filler->byte_loader ) {
-        __quex_assert(! EndOfFileP);
+        __quex_assert(0 == EndOfFileP);
 
 #       if 0
         loaded_n         = QUEX_NAME(LexatomLoader_load)(me->filler, BeginP, ContentSize,
@@ -274,7 +274,7 @@ QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFi
         end_p            = &BeginP[0];
     } 
     else {
-        __quex_assert(me->_memory._front);           /* See first condition. */
+        __quex_assert(0 != me->_memory._front);           /* See first condition. */
         __quex_assert(! EndOfFileP || (EndOfFileP >= BeginP && EndOfFileP <= EndP));
 
         if( EndOfFileP ) {

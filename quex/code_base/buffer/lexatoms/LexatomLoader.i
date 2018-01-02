@@ -112,9 +112,9 @@ QUEX_NAME(LexatomLoader_setup)(QUEX_NAME(LexatomLoader)*   me,
                                QUEX_NAME(ByteLoader)*  byte_loader,
                                ptrdiff_t    ByteNPerCharacter)
 {
-    __quex_assert(me);
-    __quex_assert(derived_load_lexatoms);
-    __quex_assert(derived_destruct_self);
+    __quex_assert(0 != me);
+    __quex_assert(0 != derived_load_lexatoms);
+    __quex_assert(0 != derived_destruct_self);
 
     /* Support for buffer filling without user interaction                   */
     me->stomach_byte_n        = stomach_byte_n;

@@ -519,15 +519,21 @@ typedef enum {
 
 #if ! defined(QUEX_OPTION_TERMINATION_ZERO_DISABLED)
 
-#   define QUEX_LEXEME_TERMINATING_ZERO_SET(BUFFER)        \
-        (BUFFER)->_lexatom_at_lexeme_start = *((BUFFER)->_read_p); \
-        *((BUFFER)->_read_p) = '\0';
+#   define QUEX_LEXEME_TERMINATING_ZERO_SET(BUFFER)                \
+        (BUFFER)->_lexatom_at_lexeme_start = (BUFFER)->_read_p[0]; \
+        (BUFFER)->_read_p[0]               = (QUEX_TYPE_LEXATOM)0;
 
-#   define QUEX_LEXEME_TERMINATING_ZERO_UNDO(BUFFER)                   \
-        /* only need to reset, in case that the terminating zero was set*/        \
-        if( (BUFFER)->_lexatom_at_lexeme_start != (QUEX_TYPE_LEXATOM)'\0' ) { \
-            *((BUFFER)->_read_p) = (BUFFER)->_lexatom_at_lexeme_start;         \
-            (BUFFER)->_lexatom_at_lexeme_start = (QUEX_TYPE_LEXATOM)'\0';     \
+#   define QUEX_LEXEME_TERMINATING_ZERO_UNDO(BUFFER)                                 \
+        /* only need to reset, in case that the terminating zero was set*/           \
+        if( (BUFFER)->_lexatom_at_lexeme_start != (QUEX_TYPE_LEXATOM)0 ) {           \
+            /* NOTE:                                                              */ \
+            /*                                                                    */ \
+            /*    __quex_assert(*((BUFFER)->_read_p) == (QUEX_TYPE_LEXATOM)0);    */ \
+            /*                                                                    */ \
+            /* CANNOT hold, since by 'seeking' during backward lexing the read_p  */ \
+            /* might actually be loaded out and in again without setting zero.    */ \
+            (BUFFER)->_read_p[0]               = (BUFFER)->_lexatom_at_lexeme_start; \
+            (BUFFER)->_lexatom_at_lexeme_start = (QUEX_TYPE_LEXATOM)0;               \
         }
 #else
 

@@ -12,5 +12,5 @@ case2.qx:10:error: This means, that without reading a character the analyzer dro
 case2.qx:10:error: an acceptance state. E.g., pattern 'x*/y/' means that zero or more 'x' are a pre-
 case2.qx:10:error: condition for 'y'. If zero appearances of 'x' are enough, then obviously
 case2.qx:10:error: there is no pre-context for 'y'! Most likely the author intended 'x+/y/'.
-Makefile:42: recipe for target 'Case2.c' failed
+Makefile:43: recipe for target 'Case2.c' failed
 make: *** [Case2.c] Error 255

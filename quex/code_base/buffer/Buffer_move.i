@@ -157,10 +157,10 @@ QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
  * ADAPTS: _read_p, _lexeme_start_p, position registers, end_p, 
  *         input.end_lexatom_index                                            */
 {
-    __quex_assert(move_distance <= me->input.lexatom_index_begin);
-
     QUEX_TYPE_LEXATOM*  EndP = me->_memory._back;
     QUEX_TYPE_LEXATOM*  end_p;
+
+    __quex_assert(move_distance <= me->input.lexatom_index_begin);
 
     /* Pointer Adaption: _read_p, _lexeme_start_p.                           */
     me->_read_p += move_distance;

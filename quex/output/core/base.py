@@ -84,8 +84,14 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
         Lng.LABEL(DoorID.global_end_of_pre_context_check(dial_db)),
         #-------------------
         Lng.IF(backup_position, "!=", "((QUEX_TYPE_STREAM_POSITION)-1)"),
+            # "QUEX_NAME(Buffer_print_content)(&me->buffer);\n",
+            # "std::cout << std::endl;\n",
             Lng.BUFFER_SEEK(backup_position),
             Lng.LEXEME_START_SET(PositionStorage=None), # use '_read_p'
+            # "std::cout << \"lexst \" << me->buffer._lexeme_start_p[0] << std::endl;",
+            # "std::cout << \"readp \" << me->buffer._read_p[0] << std::endl;",
+            # "QUEX_NAME(Buffer_print_content)(&me->buffer);\n",
+            # "std::cout << std::endl;\n",
             Lng.ASSIGN(backup_position, "((QUEX_TYPE_STREAM_POSITION)-1)"),
         Lng.END_IF(),
         #-----------------------
