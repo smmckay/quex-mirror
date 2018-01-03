@@ -75,7 +75,7 @@ function collect_distribution_file_list()
          -type f       > $file_list0
 
     echo "$sub_dir/doc/manpage/quex.1"    >> $file_list0
-    echo "$sub_dir/LGPL.txt"              >> $file_list0
+    echo "$sub_dir/MIT-License.txt"       >> $file_list0
     echo "$sub_dir/COPYRIGHT.txt"         >> $file_list0
     echo "$sub_dir/README"                >> $file_list0
     echo "$sub_dir/unit_test_results.txt" >> $file_list0

@@ -129,13 +129,15 @@ main(int argc, char** argv)
 
         /* Verification _____________________________________________________*/
         if( buffer._memory._back - before.end_p > move_distance ) {
-            hwut_verify(buffer.input.end_p      == &before.end_p[move_distance]);
-        } else {
-            hwut_verify(buffer.input.end_p      == buffer._memory._back);
+            hwut_verify(buffer.input.end_p == &before.end_p[move_distance]);
+        } 
+        else {
+            hwut_verify(buffer.input.end_p == buffer._memory._back);
         }
-        hwut_verify(buffer._read_p          == &before.read_p[move_distance]);
-        hwut_verify(*buffer._read_p         == before.read_char);
-        if( before.lexeme_start_p ) {
+        hwut_verify(buffer._read_p  == &before.read_p[move_distance]);
+        hwut_verify(*buffer._read_p == before.read_char);
+        if(    before.lexeme_start_p 
+            && buffer._backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
             hwut_verify(buffer._lexeme_start_p  == &before.lexeme_start_p[move_distance]);
             hwut_verify(*buffer._lexeme_start_p == before.lexeme_start_char);
             min_p = QUEX_MIN(buffer._read_p, buffer._lexeme_start_p);

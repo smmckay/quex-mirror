@@ -8,6 +8,8 @@ TEST_FILES = \
 		   move_away_upfront_content-16.exe \
 		   move_away_upfront_content-32.exe \
 
+.SECONDARY: $(TEST_FILES)
+
 DEFS = \
 	   \
 	   -DQUEX_OPTION_DEBUG_SHOW_LOADS \

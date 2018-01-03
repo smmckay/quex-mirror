@@ -1,6 +1,6 @@
 /* -*- C++ -*- vim: set syntax=cpp: 
  * (C) 2008 Frank-Rene Schaefer 
- * LGPL -- ABSOLUTELY NO WARRANTY */
+ * MIT License -- ABSOLUTELY NO WARRANTY */
 #ifndef __QUEX_INCLUDE_GUARD__TEST_ENVIRONMENT__STRANGE_STREAM
 #define __QUEX_INCLUDE_GUARD__TEST_ENVIRONMENT__STRANGE_STREAM
 #ifdef __cplusplus

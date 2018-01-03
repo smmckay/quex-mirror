@@ -229,8 +229,7 @@ before_check_consistency(BufferBefore_t*    me,
         /* Overflow: common_on_overflow() sets 'lexeme_start_p = read_p'.
          * => in that case it is excused.                                    */
     }
-    else 
-    {
+    else if( buffer->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         hwut_verify(me->lexeme_start_p - buffer->_lexeme_start_p == Delta);
         if(    buffer->_lexeme_start_p > &buffer->_memory._front[1] 
             && me->lexeme_start_m1 != QUEX_SETTING_BUFFER_LIMIT_CODE ) {

@@ -464,9 +464,11 @@ QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)
  *                               Lexeme fills complete buffer.                */
 {
     const QUEX_TYPE_LEXATOM*  LastP  = &me->_memory._back[-1];
-    ptrdiff_t                 distance_to_lexeme_start;  
+    const QUEX_TYPE_LEXATOM*  FrontP = &me->_memory._front[1];
+    ptrdiff_t                 backward_walk_distance;  
     ptrdiff_t                 move_distance_max;
     ptrdiff_t                 move_distance_nominal;
+    ptrdiff_t                 move_distance_reasonable;
     ptrdiff_t                 move_distance;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -475,29 +477,46 @@ QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)
         return 0;
     }
     
-    if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+    /* Move distance restrict by: -- begin of stream (lexatom_index_begin == 0)
+     *                            -- '_read_p' must remain in buffer.         */
+    move_distance_max = QUEX_MIN(me->input.lexatom_index_begin, 
+                                 LastP - me->_read_p);
+
+    {
+        if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+            /* There is still content in the buffer that might be useful for
+             * forward lexical analyis. Load only a decent amount backward.   */
+            move_distance_reasonable = QUEX_MAX((ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 256), 
+                                                (ptrdiff_t)((LastP - FrontP) / 4));
+            if( me->_lexeme_start_p ) {
+                backward_walk_distance = me->_lexeme_start_p ? 
+                                            me->_lexeme_start_p - me->_read_p : 0;
+            }
+            /* Provide backward data so that lexer might go backward twice as 
+             * far as it already went.                                        */
+            move_distance_nominal = QUEX_MAX(move_distance_reasonable, 
+                                             backward_walk_distance * 2);
+        }
+        else {
+            /* Next step forward requires a total reload anyway.
+             * Go forward as much as possible.                                */
+            move_distance_nominal = move_distance_max;
+        }
+    }
+    move_distance = QUEX_MIN(move_distance_max, move_distance_nominal);
+
+    if( ! move_distance ) {
+        return 0;
+    }
+    else if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
     }
     else {
         /* Content has already been completely moved. No notification.        */
     }
 
-    move_distance_max = QUEX_MIN(me->input.lexatom_index_begin, 
-                                 LastP - me->_read_p);
-
-    {
-        distance_to_lexeme_start = me->_lexeme_start_p - me->_read_p;
-        if( me->_backup_lexatom_index_of_read_p != (QUEX_TYPE_STREAM_POSITION)-1 ) {
-            distance_to_lexeme_start += (  me->_backup_lexatom_index_of_read_p 
-                                         - me->input.lexatom_index_begin);
-        }
-        /* Provide backward data so that lexer might go backward twice as far 
-         * as it already went.                                                */
-        move_distance_nominal = QUEX_MAX(1, distance_to_lexeme_start * 2);
-    }
-    move_distance = QUEX_MIN(move_distance_max, move_distance_nominal);
-
-    if(    me->_lexeme_start_p + move_distance > LastP 
+    if(    me->_lexeme_start_p
+        && me->_lexeme_start_p + move_distance > LastP 
         && me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         /* Lexeme start will be out of buffer. Store the position to be
          * reloaded when lexing forward restarts.                             */

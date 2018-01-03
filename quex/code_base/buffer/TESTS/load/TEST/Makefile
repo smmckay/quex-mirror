@@ -3,6 +3,7 @@ TESTS := $(foreach DIRECTION, backward forward,             \
 			 $(DIRECTION)-fb2-32.exe                        \
 	     ) \
 		 forward-api.exe
+.SECONDARY: $(TESTS)
 
 FALLBACK_0 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 
 FALLBACK_1 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1 

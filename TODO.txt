@@ -1,14 +1,9 @@
 Purify the concept of 'content size' in Buffer
 ---
-Backward lexical analysis: decouple from 'lexeme start pointer'.
+OnLoadFailure handler Unit Tests -- check the ONFAILURE handling.
 
-analysis_step_begin_lexatom_index =   QUEX_NAME(Buffer_tell)(me)
-                                    + (me->_lexeme_start_p - me->_read_p)
+in TESTS/event_handling/TEST
 
-if( analysis_step_begin_lexatom_index >= 0 ) {
-    QUEX_NAME(Buffer_seek)(me, analysis_step_begin_lexatom_index);
-    me->_lexeme_start_p = me->_read_p;
-}
 --------------------------------
 Normalization: 
 
@@ -42,9 +37,4 @@ Vowelization
 
 --------------------------------
 
-OnLoadFailure handler Unit Tests
-
-in TESTS/event_handling/TEST
-
---------------------------------
 Remove QUEX_ERROR_EXIT and ASSERT!

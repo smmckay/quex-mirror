@@ -1,6 +1,6 @@
-Quex - Mode Oriented Directly Coded Lexical Analyser Generator
+Quex - Lexical Analyser Generator
 
-All Files and Contents of the Subdirectories are Subject to
-the Following Copyright Notice:
+If not stated explicitly differently, all files and contents of this directory
+and its subdirectories are subject to the following copyright notice.
 
 (C) Frank-Rene Schaefer

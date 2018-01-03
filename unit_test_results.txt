@@ -160,9 +160,9 @@ TEST                                                                 <no date>
     3102035 0.55.1 Weird Setup causes Duplicate State Label
         bug-3102035.sh 1 .............................................[OK]
                        2 .............................................[OK]
-                       3 ...........................................[FAIL]
-                       4 ...........................................[FAIL]
-                       5 ...........................................[FAIL]
+                       3 .............................................[OK]
+                       4 .............................................[OK]
+                       5 .............................................[OK]
     3157923 Memory Leak by Components
         bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
@@ -272,8 +272,8 @@ TEST                                                                 <no date>
  * otsakiridis:
 
     3075601 0.52.1 Pre-Context with Codec utf8
-        bug-3075601.sh utf16 .......................................[FAIL]
-                       utf8 ........................................[FAIL]
+        bug-3075601.sh utf16 .........................................[OK]
+                       utf8 ..........................................[OK]
 
  * patrikj-kt:
 
@@ -443,14 +443,14 @@ TEST                                                                 <no date>
  * wryun:
 
     2819022 0.41.2 Pre-condition match causes issues
-        bug-2819022.sh 0 ...........................................[FAIL]
-                       1 ...........................................[FAIL]
-                       2 ...........................................[FAIL]
-                       3 ...........................................[FAIL]
+        bug-2819022.sh 0 .............................................[OK]
+                       1 .............................................[OK]
+                       2 .............................................[OK]
+                       3 .............................................[OK]
     2819023 0.41.2 Valid pattern definition fails
         bug-2819023.sh ...............................................[OK]
     2819043 0.41.2 Infinite recursion error
-        bug-2819043.sh .............................................[FAIL]
+        bug-2819043.sh ...............................................[OK]
     2819045 0.41.2 Some internal assertion fails on...
         bug-2819045.sh 0 .............................................[OK]
                        1 .............................................[OK]
@@ -489,21 +489,10 @@ TEST                                                                 <no date>
 
     2974074 0.48.1 union modifies its arguments
         bug-2974074.sh ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] bug-3102035.sh _ 3
-                        \__ 4
-                        \__ 5
-    [FAIL] bug-3075601.sh _ utf16
-                        \__ utf8
-    [FAIL] bug-2819022.sh _ 0
-                        \__ 1
-                        \__ 2
-                        \__ 3
-    [FAIL] bug-2819043.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -995,28 +984,19 @@ quex/input/TEST                                                      <no date>
 quex/TESTS/bof-eos-context/TEST                                      <no date>
 -------------------------------------------------------------------------------
  * explicit
-        explicit.exe bos-and-eos.txt ........................[MAKE FAILED]
-                     bos-eos.txt ............................[MAKE FAILED]
-                     bos-x-x-eos.txt ........................[MAKE FAILED]
-                     not-bos-eos.txt ........................[MAKE FAILED]
+        explicit.exe bos-and-eos.txt .................................[OK]
+                     bos-eos.txt .....................................[OK]
+                     bos-x-x-eos.txt .................................[OK]
+                     not-bos-eos.txt .................................[OK]
  * implicit
-        implicit.exe bos-and-eos.txt ........................[MAKE FAILED]
-                     bos-eos.txt ............................[MAKE FAILED]
-                     bos-x-x-eos.txt ........................[MAKE FAILED]
-                     not-bos-eos.txt ........................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] explicit.exe _ bos-and-eos.txt
-                      \__ bos-eos.txt
-                      \__ bos-x-x-eos.txt
-                      \__ not-bos-eos.txt
-    [FAIL] implicit.exe _ bos-and-eos.txt
-                      \__ bos-eos.txt
-                      \__ bos-x-x-eos.txt
-                      \__ not-bos-eos.txt
+        implicit.exe bos-and-eos.txt .................................[OK]
+                     bos-eos.txt .....................................[OK]
+                     bos-x-x-eos.txt .................................[OK]
+                     not-bos-eos.txt .................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                         Test Collection on Source Code                         
@@ -1329,9 +1309,6 @@ quex/TESTS/match-precedence/TEST                                     <no date>
                                                                                
 quex/TESTS/misc/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * Assertion error -- please report a bug under
-        line-number-pragma.sh qx ...................................[FAIL]
-                              source ...............................[FAIL]
  * Customized codec files (option --encoding-file)
         customized_codec.sh ..........................................[OK]
  * FSM DFA_State Tracer
@@ -1347,13 +1324,13 @@ quex/TESTS/misc/TEST                                                 <no date>
         huge-inheritance.sh ..........................................[OK]
  * Test code comments
         comment.sh ...................................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] line-number-pragma.sh _ qx
-                               \__ source
+ * Testing the implementation of line number pragmas
+        line-number-pragma.sh qx .....................................[OK]
+                              source .................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -2042,19 +2019,19 @@ quex/output/core/TEST                                                <no date>
  * Buffer Reload:
 
     Backwards
-        test-backward_loading.py ANSI-C ............................[FAIL]
-                                 ANSI-C-ASSERTS ....................[FAIL]
-                                 ANSI-C-CG .........................[FAIL]
-                                 ANSI-C-PathTemplate ...............[FAIL]
-                                 ANSI-C-PlainMemory ................[FAIL]
-                                 Cpp ...............................[FAIL]
-                                 Cpp-ASSERTS .......................[FAIL]
-                                 Cpp-Path ..........................[FAIL]
-                                 Cpp-Path-CG .......................[FAIL]
-                                 Cpp-PathUniform ...................[FAIL]
-                                 Cpp-PathUniform-CG ................[FAIL]
-                                 Cpp-Template ......................[FAIL]
-                                 Cpp-Template-CG ...................[FAIL]
+        test-backward_loading.py ANSI-C ..............................[OK]
+                                 ANSI-C-ASSERTS ......................[OK]
+                                 ANSI-C-CG ...........................[OK]
+                                 ANSI-C-PathTemplate .................[OK]
+                                 ANSI-C-PlainMemory ..................[OK]
+                                 Cpp .................................[OK]
+                                 Cpp-ASSERTS .........................[OK]
+                                 Cpp-Path ............................[OK]
+                                 Cpp-Path-CG .........................[OK]
+                                 Cpp-PathUniform .....................[OK]
+                                 Cpp-PathUniform-CG ..................[OK]
+                                 Cpp-Template ........................[OK]
+                                 Cpp-Template-CG .....................[OK]
     Forward Position Adaption
         test-position_adaption.py ANSI-C .............................[OK]
                                   ANSI-C-ASSERTS .....................[OK]
@@ -2071,20 +2048,20 @@ quex/output/core/TEST                                                <no date>
                                   Cpp-Template-CG ....................[OK]
                                   Cpp_StrangeStream ..................[OK]
     No Backward Reload -- Precondition at Border
-        test-no-backward-reloading.py ANSI-C .......................[FAIL]
-                                      ANSI-C-ASSERTS ...............[FAIL]
-                                      ANSI-C-CG ....................[FAIL]
-                                      ANSI-C-PathTemplate ..........[FAIL]
-                                      ANSI-C-PlainMemory ...........[FAIL]
-                                      Cpp ..........................[FAIL]
-                                      Cpp-ASSERTS ..................[FAIL]
-                                      Cpp-Path .....................[FAIL]
-                                      Cpp-Path-CG ..................[FAIL]
-                                      Cpp-PathUniform ..............[FAIL]
-                                      Cpp-PathUniform-CG ...........[FAIL]
-                                      Cpp-Template .................[FAIL]
-                                      Cpp-Template-CG ..............[FAIL]
-                                      Cpp_StrangeStream ............[FAIL]
+        test-no-backward-reloading.py ANSI-C .........................[OK]
+                                      ANSI-C-ASSERTS .................[OK]
+                                      ANSI-C-CG ......................[OK]
+                                      ANSI-C-PathTemplate ............[OK]
+                                      ANSI-C-PlainMemory .............[OK]
+                                      Cpp ............................[OK]
+                                      Cpp-ASSERTS ....................[OK]
+                                      Cpp-Path .......................[OK]
+                                      Cpp-Path-CG ....................[OK]
+                                      Cpp-PathUniform ................[OK]
+                                      Cpp-PathUniform-CG .............[OK]
+                                      Cpp-Template ...................[OK]
+                                      Cpp-Template-CG ................[OK]
+                                      Cpp_StrangeStream ..............[OK]
 
  * CONTINUE:
 
@@ -2129,54 +2106,54 @@ quex/output/core/TEST                                                <no date>
  * Pre Conditions:
 
     Multiple Identical Pre-Conditions
-        test-pre-conditions-3.py ANSI-C ............................[FAIL]
-                                 ANSI-C-CG .........................[FAIL]
-                                 ANSI-C-PathTemplate ...............[FAIL]
-                                 ANSI-C-PlainMemory ................[FAIL]
-                                 Cpp ...............................[FAIL]
-                                 Cpp-Path ..........................[FAIL]
-                                 Cpp-Path-CG .......................[FAIL]
-                                 Cpp-PathUniform ...................[FAIL]
-                                 Cpp-PathUniform-CG ................[FAIL]
-                                 Cpp-Template ......................[FAIL]
-                                 Cpp-Template-CG ...................[FAIL]
-                                 Cpp_StrangeStream .................[FAIL]
+        test-pre-conditions-3.py ANSI-C ..............................[OK]
+                                 ANSI-C-CG ...........................[OK]
+                                 ANSI-C-PathTemplate .................[OK]
+                                 ANSI-C-PlainMemory ..................[OK]
+                                 Cpp .................................[OK]
+                                 Cpp-Path ............................[OK]
+                                 Cpp-Path-CG .........................[OK]
+                                 Cpp-PathUniform .....................[OK]
+                                 Cpp-PathUniform-CG ..................[OK]
+                                 Cpp-Template ........................[OK]
+                                 Cpp-Template-CG .....................[OK]
+                                 Cpp_StrangeStream ...................[OK]
     Part 2
-        test-pre-conditions-2.py ANSI-C ............................[FAIL]
-                                 ANSI-C-CG .........................[FAIL]
-                                 ANSI-C-PathTemplate ...............[FAIL]
-                                 ANSI-C-PlainMemory ................[FAIL]
-                                 Cpp ...............................[FAIL]
-                                 Cpp-Path ..........................[FAIL]
-                                 Cpp-Path-CG .......................[FAIL]
-                                 Cpp-PathUniform ...................[FAIL]
-                                 Cpp-PathUniform-CG ................[FAIL]
-                                 Cpp-Template ......................[FAIL]
-                                 Cpp-Template-CG ...................[FAIL]
-                                 Cpp_StrangeStream .................[FAIL]
+        test-pre-conditions-2.py ANSI-C ..............................[OK]
+                                 ANSI-C-CG ...........................[OK]
+                                 ANSI-C-PathTemplate .................[OK]
+                                 ANSI-C-PlainMemory ..................[OK]
+                                 Cpp .................................[OK]
+                                 Cpp-Path ............................[OK]
+                                 Cpp-Path-CG .........................[OK]
+                                 Cpp-PathUniform .....................[OK]
+                                 Cpp-PathUniform-CG ..................[OK]
+                                 Cpp-Template ........................[OK]
+                                 Cpp-Template-CG .....................[OK]
+                                 Cpp_StrangeStream ...................[OK]
 
  * Pre- and Post- Conditions:
 
     Simple
-        test-pre-post-condition.py ANSI-C ..........................[FAIL]
-                                   ANSI-C-CG .......................[FAIL]
-                                   ANSI-C-PathTemplate .............[FAIL]
-                                   ANSI-C-PlainMemory ..............[FAIL]
-                                   Cpp .............................[FAIL]
-                                   Cpp-Path ........................[FAIL]
-                                   Cpp-Path-CG .....................[FAIL]
-                                   Cpp-PathUniform .................[FAIL]
-                                   Cpp-PathUniform-CG ..............[FAIL]
-                                   Cpp-Template ....................[FAIL]
-                                   Cpp-Template-CG .................[FAIL]
-                                   Cpp_StrangeStream ...............[FAIL]
+        test-pre-post-condition.py ANSI-C ............................[OK]
+                                   ANSI-C-CG .........................[OK]
+                                   ANSI-C-PathTemplate ...............[OK]
+                                   ANSI-C-PlainMemory ................[OK]
+                                   Cpp ...............................[OK]
+                                   Cpp-Path ..........................[OK]
+                                   Cpp-Path-CG .......................[OK]
+                                   Cpp-PathUniform ...................[OK]
+                                   Cpp-PathUniform-CG ................[OK]
+                                   Cpp-Template ......................[OK]
+                                   Cpp-Template-CG ...................[OK]
+                                   Cpp_StrangeStream .................[OK]
 
  * Pre-conditions:
 
     The forth test
-        test-pre-conditions-4.py ANSI-C ............................[FAIL]
-                                 Cpp-Path-CG .......................[FAIL]
-                                 Cpp-Template ......................[FAIL]
+        test-pre-conditions-4.py ANSI-C ..............................[OK]
+                                 Cpp-Path-CG .........................[OK]
+                                 Cpp-Template ........................[OK]
 
  * Pseudo Ambgiguous Post Condition:
 
@@ -2247,9 +2224,9 @@ quex/output/core/TEST                                                <no date>
                                           ANSI-C-CG ..................[OK]
                                           Cpp ........................[OK]
     Reload Init State
-        test-pre-conditions.py ANSI-C ..............................[FAIL]
-                               ANSI-C-CG ...........................[FAIL]
-                               Cpp .................................[FAIL]
+        test-pre-conditions.py ANSI-C ................................[OK]
+                               ANSI-C-CG .............................[OK]
+                               Cpp ...................................[OK]
     Reload Init State
         test-simple-3.py ANSI-C ......................................[OK]
                          ANSI-C-CG ...................................[OK]
@@ -2280,80 +2257,10 @@ quex/output/core/TEST                                                <no date>
                                          B-UTF8 ......................[OK]
                                          C ...........................[OK]
                                          C-UTF8 ......................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-backward_loading.py _ ANSI-C
-                                  \__ ANSI-C-ASSERTS
-                                  \__ ANSI-C-CG
-                                  \__ ANSI-C-PathTemplate
-                                  \__ ANSI-C-PlainMemory
-                                  \__ Cpp
-                                  \__ Cpp-ASSERTS
-                                  \__ Cpp-Path
-                                  \__ Cpp-Path-CG
-                                  \__ Cpp-PathUniform
-                                  \__ Cpp-PathUniform-CG
-                                  \__ Cpp-Template
-                                  \__ Cpp-Template-CG
-    [FAIL] test-no-backward-reloading.py _ ANSI-C
-                                       \__ ANSI-C-ASSERTS
-                                       \__ ANSI-C-CG
-                                       \__ ANSI-C-PathTemplate
-                                       \__ ANSI-C-PlainMemory
-                                       \__ Cpp
-                                       \__ Cpp-ASSERTS
-                                       \__ Cpp-Path
-                                       \__ Cpp-Path-CG
-                                       \__ Cpp-PathUniform
-                                       \__ Cpp-PathUniform-CG
-                                       \__ Cpp-Template
-                                       \__ Cpp-Template-CG
-                                       \__ Cpp_StrangeStream
-    [FAIL] test-pre-conditions-3.py _ ANSI-C
-                                  \__ ANSI-C-CG
-                                  \__ ANSI-C-PathTemplate
-                                  \__ ANSI-C-PlainMemory
-                                  \__ Cpp
-                                  \__ Cpp-Path
-                                  \__ Cpp-Path-CG
-                                  \__ Cpp-PathUniform
-                                  \__ Cpp-PathUniform-CG
-                                  \__ Cpp-Template
-                                  \__ Cpp-Template-CG
-                                  \__ Cpp_StrangeStream
-    [FAIL] test-pre-conditions-2.py _ ANSI-C
-                                  \__ ANSI-C-CG
-                                  \__ ANSI-C-PathTemplate
-                                  \__ ANSI-C-PlainMemory
-                                  \__ Cpp
-                                  \__ Cpp-Path
-                                  \__ Cpp-Path-CG
-                                  \__ Cpp-PathUniform
-                                  \__ Cpp-PathUniform-CG
-                                  \__ Cpp-Template
-                                  \__ Cpp-Template-CG
-                                  \__ Cpp_StrangeStream
-    [FAIL] test-pre-post-condition.py _ ANSI-C
-                                    \__ ANSI-C-CG
-                                    \__ ANSI-C-PathTemplate
-                                    \__ ANSI-C-PlainMemory
-                                    \__ Cpp
-                                    \__ Cpp-Path
-                                    \__ Cpp-Path-CG
-                                    \__ Cpp-PathUniform
-                                    \__ Cpp-PathUniform-CG
-                                    \__ Cpp-Template
-                                    \__ Cpp-Template-CG
-                                    \__ Cpp_StrangeStream
-    [FAIL] test-pre-conditions-4.py _ ANSI-C
-                                  \__ Cpp-Path-CG
-                                  \__ Cpp-Template
-    [FAIL] test-pre-conditions.py _ ANSI-C
-                                \__ ANSI-C-CG
-                                \__ Cpp
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
             Resource Scenarios for Constructor, Include, and Reset             
@@ -2822,16 +2729,16 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * Buffer_load_backward:
 
     (BPC=1, FB=0)
-        backward-fb0.exe BufferSize-3 ..............................[FAIL]
-                         BufferSize-4 ..............................[FAIL]
-                         BufferSize-5 ..............................[FAIL]
+        backward-fb0.exe BufferSize-3 ................................[OK]
+                         BufferSize-4 ................................[OK]
+                         BufferSize-5 ................................[OK]
     (BPC=1, FB=1)
-        backward-fb1.exe BufferSize-4 ..............................[FAIL]
-                         BufferSize-5 ..............................[FAIL]
+        backward-fb1.exe BufferSize-4 ................................[OK]
+                         BufferSize-5 ................................[OK]
     (BPC=1, FB=2)
-        backward-fb2.exe BufferSize-5 ..............................[FAIL]
+        backward-fb2.exe BufferSize-5 ................................[OK]
     (BPC=4, FB=2)
-        backward-fb2-32.exe BufferSize-5 ...........................[FAIL]
+        backward-fb2-32.exe BufferSize-5 .............................[OK]
 
  * Buffer_load_forward:
 
@@ -2846,18 +2753,10 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
         forward-fb2.exe BufferSize-5 .................................[OK]
     (BPC=4, FB=2)
         forward-fb2-32.exe BufferSize-5 ..............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] backward-fb0.exe _ BufferSize-3
-                          \__ BufferSize-4
-                          \__ BufferSize-5
-    [FAIL] backward-fb1.exe _ BufferSize-4
-                          \__ BufferSize-5
-    [FAIL] backward-fb2.exe _ BufferSize-5
-    [FAIL] backward-fb2-32.exe _ BufferSize-5
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2896,46 +2795,30 @@ quex/code_base/buffer/TESTS/move/TEST                                <no date>
  * move_away_upfront_content:
 
     (BPC=1)
-        move_away_upfront_content-8.exe cib=0 ......................[FAIL]
+        move_away_upfront_content-8.exe cib=0 ........................[OK]
                                         cib=0:EOS ....................[OK]
-                                        cib=1 ......................[FAIL]
-                                        cib=1:EOS ..................[FAIL]
-                                        cib=2 ......................[FAIL]
-                                        cib=2:EOS ..................[FAIL]
+                                        cib=1 ........................[OK]
+                                        cib=1:EOS ....................[OK]
+                                        cib=2 ........................[OK]
+                                        cib=2:EOS ....................[OK]
     (BPC=2)
-        move_away_upfront_content-16.exe cib=0 .....................[FAIL]
+        move_away_upfront_content-16.exe cib=0 .......................[OK]
                                          cib=0:EOS ...................[OK]
-                                         cib=1 .....................[FAIL]
-                                         cib=1:EOS .................[FAIL]
-                                         cib=2 .....................[FAIL]
-                                         cib=2:EOS .................[FAIL]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
     (BPC=4)
-        move_away_upfront_content-32.exe cib=0 .....................[FAIL]
+        move_away_upfront_content-32.exe cib=0 .......................[OK]
                                          cib=0:EOS ...................[OK]
-                                         cib=1 .....................[FAIL]
-                                         cib=1:EOS .................[FAIL]
-                                         cib=2 .....................[FAIL]
-                                         cib=2:EOS .................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] move_away_upfront_content-8.exe _ cib=0
-                                         \__ cib=1
-                                         \__ cib=1:EOS
-                                         \__ cib=2
-                                         \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-16.exe _ cib=0
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-32.exe _ cib=0
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       Extensive Tests on Buffer Seek&Tell                      
@@ -3400,11 +3283,11 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       10  238   [FAIL] TEST                                                          
+           238     [OK] TEST                                                          
            57      [OK] demo/C/TEST                                                   
            57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
-        8  8     [FAIL] quex/TESTS/bof-eos-context/TEST                               
+           8       [OK] quex/TESTS/bof-eos-context/TEST                               
            15      [OK] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
@@ -3416,7 +3299,7 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-        2  12    [FAIL] ........../misc/TEST                                          
+           12      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            16      [OK] ........../source-package/TEST                                
            1       [OK] ........../token-class/TEST                                   
@@ -3424,9 +3307,9 @@ SUMMARY:
            10      [OK] ..../code_base/TEST                                           
            1       [OK] ............../analyzer/TEST                                  
            11      [OK] ......................./struct/TEST                           
-        7  18    [FAIL] ............../buffer/TESTS/load/TEST                         
+           18      [OK] ............../buffer/TESTS/load/TEST                         
            2       [OK] .........................../misc/TEST                         
-       15  26    [FAIL] .........................../move/TEST                         
+           26      [OK] .........................../move/TEST                         
            96      [OK] .........................../navigation/TEST                   
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
@@ -3454,17 +3337,17 @@ SUMMARY:
            58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
-       69  196   [FAIL] ..../output/core/TEST                                         
+           196     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
            30      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _  _           
-    |  ___|_ _(_) |___     / |/ |/ |    __  __
-    | |_ / _` | | / __|    | || || |    \ \/ /
-    |  _| (_| | | \__ \    | || || |     >  < 
-    |_|  \__,_|_|_|___/    |_||_||_|    /_/\_\
+     ___  _ _   _  __                        _      _ 
+    / _ \| | | | |/ /___  _ __ _ __ ___  ___| |_   | |
+   | | | | | | | ' // _ \| '__| '__/ _ \/ __| __|  | |
+   | |_| | | | | . \ (_) | |  | | |  __/ (__| |_   |_|
+    \___/|_|_| |_|\_\___/|_|  |_|  \___|\___|\__|  (_)
                                                                    (1670 tests)
 
 ===============================================================================
