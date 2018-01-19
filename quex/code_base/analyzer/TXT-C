@@ -107,6 +107,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
     QUEX_NAME(Buffer)               buffer;
 
     QUEX_NAME(ModeStack)            _mode_stack;
+    QUEX_NAME(Mode)* (__memory_mode_stack[sizeof(QUEX_NAME(Mode)*)*QUEX_SETTING_MODE_STACK_SIZE]);
     QUEX_NAME(Mode)*                __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;

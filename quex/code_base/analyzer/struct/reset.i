@@ -211,7 +211,8 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
     QUEX_NAME(Buffer_construct)(&me->buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
-                                E_Ownership_EXTERNAL);
+                                E_Ownership_EXTERNAL,
+                                (QUEX_NAME(Buffer)*)0);
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/

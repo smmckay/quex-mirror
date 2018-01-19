@@ -142,7 +142,7 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
     __quex_assert(filler); 
 
     QUEX_NAME(Buffer_construct)(&buffer, filler, &memory[0], MemorySize, 0, 
-                                E_Ownership_EXTERNAL);
+                                E_Ownership_EXTERNAL, (QUEX_NAME(Buffer)*)0);
     __quex_assert(filler->byte_n_per_lexatom == -1);
 
     /* REFERENCE file and INPUT file are the SAME.                           */

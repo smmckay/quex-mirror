@@ -93,11 +93,10 @@ $$ON_BUFFER_BEFORE_CHANGE$$
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer, 
-                                         bool               ForwardF);
+QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer); 
+
 void
-$on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */,
-                    bool   ForwardF)
+$on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */)
 {
     const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
@@ -219,7 +218,6 @@ def get_IsOneOfThoseCode(ThoseModes, CheckBaseModeF = False,
 
     return txt
 
-
 def get_related_code_fragments(ModeDb):
     """
        RETURNS:  -- members of the lexical analyzer class for the mode classes
@@ -271,8 +269,7 @@ def __get_function_declaration(Modes, FriendF=False):
         "on_buffer_before_change": [ "void", 
                                     [("void*",                   "aux")]],
         "on_buffer_overflow":      [ "void",
-                                    [("void*",                   "aux"),
-                                     ("bool",                    "ForwardF")]],
+                                    [("void*",                   "aux")]],
     }
     def function_name(Name, ModeName):
         return Lng.NAME_IN_NAMESPACE_MAIN("%s_%s" % (ModeName, Name))
@@ -385,8 +382,11 @@ mode_setup_str = \
     /* has_entry_from    */ $has_entry_from,
     /* has_exit_to       */ $has_exit_to,
 #   endif
+    {
     /* on_buffer_before_change */ $on_buffer_before_change,
     /* on_buffer_overflow      */ $on_buffer_overflow,
+    /* aux                     */ (void*)0,
+    },
 
     /* analyzer_function */ $analyzer_function
 };

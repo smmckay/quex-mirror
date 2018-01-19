@@ -49,7 +49,8 @@ test(bool BinaryF, size_t BPC)
     filler = QUEX_NAME(LexatomLoader_Plain_new)(byte_loader);
     hwut_verify(filler);
 
-    QUEX_NAME(Buffer_construct)(&buffer, filler, &memory[0], MemorySize, 0, E_Ownership_EXTERNAL);
+    QUEX_NAME(Buffer_construct)(&buffer, filler, &memory[0], MemorySize, 0, 
+                                E_Ownership_EXTERNAL, (QUEX_NAME(Buffer)*)0);
 
     /* REFERENCE file and INPUT file are the SAME.                           */
     hwut_verify(basic_functionality(&buffer, find_reference("examples/festgemauert")));

@@ -148,7 +148,7 @@ QUEX_NAME(LexatomLoader_load)(QUEX_NAME(LexatomLoader)*  me,
 /* Seeks the input position StartLexatomIndex and loads 'LoadN' 
  * lexatoms into the engine's buffer starting from 'LoadP'.
  *
- * RETURNS: Number of loaded lexatoms.                                     */
+ * RETURNS: Number of loaded lexatoms.                                       */
 {
     ptrdiff_t                loaded_n;
 

@@ -93,7 +93,8 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
 
     QUEX_NAME(Buffer_construct)(&buffer, filler,
                                 &memory[0], BufferElementN,
-                                (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL); 
+                                (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL,
+                                (QUEX_NAME(Buffer)*)0); 
 
     QUEX_NAME(Buffer_set_event_handlers)(&buffer,
                                          common_on_content_change,

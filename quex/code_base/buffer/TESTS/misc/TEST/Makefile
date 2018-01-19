@@ -1,14 +1,21 @@
 TESTS := construct_destruct_included.exe \
-	     extend_and_migrate.c
+	     extend_and_migrate.exe
+
+CC    := gcc -ggdb -Wall -Werror \
+		     -I$(QUEX_PATH) -I$(HWUT_PATH)/support/C  \
+		     -DQUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE=4 \
+		     -DQUEX_SETTING_BUFFER_SIZE=11            \
 
 all: $(TESTS)
 
-%.exe: %.c
-	gcc $< -ggdb \
-		-I$(QUEX_PATH) -I$(HWUT_PATH)/support/C -o $@ \
-		-DQUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE=4      \
-		-DQUEX_SETTING_BUFFER_SIZE=11                 \
-	    -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1
+construct_destruct_included.exe: construct_destruct_included.c
+	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1 \
+		  $< -o $@
+
+extend_and_migrate.exe: extend_and_migrate.c
+	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
+		  $< -o $@
+	    
 
 hwut-info:
 	@echo $(TESTS)

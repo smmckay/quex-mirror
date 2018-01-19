@@ -30,7 +30,7 @@ static void instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
                                  QUEX_TYPE_LEXATOM* memory, ptrdiff_t MemorySize,
                                  QUEX_TYPE_LEXATOM* content, ptrdiff_t ContentSize);
 static void self_on_content_change(void* aux);
-static void self_on_overflow(void* aux, bool ForwardF);
+static void self_on_overflow(void* aux);
 
 
 static int cl_has(int argc, char** argv, const char* What)
@@ -85,7 +85,8 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
     QUEX_NAME(Buffer_construct)(buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0x0, 
                                 &memory[0], memory_size, end_p, 
-                                E_Ownership_EXTERNAL);
+                                E_Ownership_EXTERNAL,
+                                (QUEX_NAME(Buffer)*)0);
 
     memory_fill_with_content(&memory[0], MemorySize, 
                              &content[0], ContentSize);
@@ -115,9 +116,9 @@ self_on_content_change(void* aux)
 }
 
 static void
-self_on_overflow(void* aux, bool ForwardF) 
+self_on_overflow(void* aux) 
 { 
-    printf("on_buffer_overflow: %s;\n", ForwardF ? "forward" : "backward");
+    printf("on_buffer_overflow: %s;\n", "forward");
 }
 
 #endif /* INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H */

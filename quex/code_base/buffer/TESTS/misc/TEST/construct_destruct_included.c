@@ -75,7 +75,8 @@ main(int argc, char** argv)
             /* Construct including ___________________________________________*/
             QUEX_NAME(Buffer_construct)(&including, (QUEX_NAME(LexatomLoader)*)0,
                                         memory, MemorySize, end_p,
-                                        E_Ownership_LEXICAL_ANALYZER);
+                                        E_Ownership_LEXICAL_ANALYZER,
+                                        (QUEX_NAME(Buffer)*)0);
 
             including.input.end_p  = end_p;
             including._read_p = read_p;
@@ -94,7 +95,7 @@ main(int argc, char** argv)
                                                end_i - read_i, verdict);
 
             /* Destruct Included _____________________________________________*/
-            QUEX_NAME(Buffer_destruct_included)(&including, &included);
+            QUEX_NAME(Buffer_destruct)(&included);
 
             self_check_destruction(&including, MemorySize);
 
@@ -121,7 +122,6 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
                         bool               Verdict)
 {
     QUEX_TYPE_LEXATOM* p;
-    bool               split_f;
     ptrdiff_t          i;
     /*         front           read_p      end_p
      *           |               |           |
@@ -140,11 +140,6 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
      * From 'front' to 'read_p' everything has been processed. The including
      * buffer only requires 'end_p - read_p + 2'. '+2' for the boarders of the
      * buffer. Additionally, the 'fallback_n' needs to be considered.        */
-    ptrdiff_t   occupied =   including->input.end_p - including->_read_p + 2
-                           + (including->_read_p > &including->_memory._front[1]) ? 
-                                   QUEX_SETTING_BUFFER_MIN_FALLBACK_N : 0;
-    ptrdiff_t   free     =   MemoryEnd - &including->_memory._front[0]
-                           - occupied;
 
     if( included->_memory.ownership == E_Ownership_INCLUDING_BUFFER ) {
         /* Intermediate dummy alloction prevents adjacent buffers. 

@@ -23,8 +23,8 @@
 #   define __QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION
 #endif
 
-#define QUEX_SETTING_VERSION           "0.67.5"
-#define QUEX_SETTING_BUILD_DATE        "Wed Dec 27 12:03:25 2017"
+#define QUEX_SETTING_VERSION           "0.68.1"
+#define QUEX_SETTING_BUILD_DATE        "Fri Jan 19 00:16:59 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C

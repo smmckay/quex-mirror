@@ -154,7 +154,8 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
      *                                                                        */
     QUEX_NAME(Buffer_construct)(&self.buffer, self.lexatom_loader,
                                 &self.memory[0], BufferElementN,
-                                (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL); 
+                                (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL,
+                                (QUEX_NAME(Buffer)*)0); 
 
     QUEX_NAME(Buffer_set_event_handlers)(&self.buffer,
                                          common_on_content_change,

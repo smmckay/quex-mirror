@@ -71,12 +71,9 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
  * to chew on.                                                               */
 {
     QUEX_TYPE_LEXATOM*          BeginP      = &me->_memory._front[1];
-    QUEX_TYPE_LEXATOM*          EndP        = me->_memory._back;
-    const ptrdiff_t             ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
     QUEX_TYPE_STREAM_POSITION   ci_begin    = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
     QUEX_TYPE_STREAM_POSITION   ci_load_begin;
-    ptrdiff_t                   move_distance;
-    ptrdiff_t                   load_request_n;
+    ptrdiff_t                   free_space;
     ptrdiff_t                   loaded_n;
     bool                        end_of_stream_f  = false;
     bool                        encoding_error_f = false;
@@ -97,22 +94,25 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
     /* Move remaining content.
      * Maintain lexeme and fallback.                 
      * Adapt pointers.                                                       */
-    move_distance = QUEX_NAME(Buffer_load_prepare_forward)(me, position_register, 
-                                                               PositionRegisterN);
+    free_space = QUEX_NAME(Buffer_load_prepare_forward)(me, position_register, 
+                                                        PositionRegisterN);
 
-    if( ! move_distance && me->input.end_p == EndP ) {
+    if( free_space == 0 ) {
         /* Error callback 'on_buffer_overflow()' has been called already!    */
         return E_LoadResult_FAILURE; 
     }
 
-    /* Load new content.                                                     */
+    /* Load new content.                                                     
+     * 'input.end_p' has been MOVED towards the begin of buffer!             */
     ci_load_begin  = me->input.lexatom_index_begin + (me->input.end_p - BeginP);
-    load_request_n = ContentSize                   - (me->input.end_p - BeginP);
+
     loaded_n       = QUEX_NAME(LexatomLoader_load)(me->filler, 
-                                                   me->input.end_p, load_request_n,
+                                                   me->input.end_p, 
+                                                   /* LoadRequestN */free_space,
                                                    ci_load_begin, 
                                                    &end_of_stream_f,
                                                    &encoding_error_f);
+
     QUEX_NAME(Buffer_register_content)(me, &me->input.end_p[loaded_n], -1);
 
     if( ! loaded_n ) {
@@ -329,7 +329,7 @@ QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)*        me,
     ptrdiff_t                  loaded_n;
     ptrdiff_t                  move_distance;
     QUEX_TYPE_LEXATOM*         end_p;
-    bool                       end_of_stream_f = false;
+    bool                       end_of_stream_f  = false;
     bool                       encoding_error_f = false;
 
     __quex_assert(NewCharacterIndexBegin >= 0);
@@ -377,49 +377,59 @@ QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
  *                         start. Shall help to avoid extensive backward
  *                         loading.
  *
- * RETURNS: Moved distance >  0: OK.
- *                         == 0: Nothing has been moved.                     
- *                         <  0: Overflow. Nothing has been moved. 
- *                               Lexeme fills complete buffer.                */
+ * RETURNS: Free space at end of buffer to fill new data.
+ *          0, if there is none.                                              */
 { 
-    const QUEX_TYPE_LEXATOM*  EndP   = me->_memory._back;
+    const QUEX_TYPE_LEXATOM*  EndP = me->_memory._back;
     QUEX_TYPE_LEXATOM*        move_begin_p;
     ptrdiff_t                 move_size;
+    ptrdiff_t                 free_space;
     ptrdiff_t                 move_distance;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
     move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(me, &move_begin_p);
 
-    if( move_distance < 0 ) {
-        QUEX_NAME(Buffer_call_on_buffer_overflow)(me, /* ForwardF */ true);
-        return 0;
+    if( ! move_distance ) {
+        if(    me->input.end_p >= me->_memory._back 
+            && me->_read_p     == me->input.end_p ) {
+            /* No free space can be provided for loading new content. This is 
+             * a buffer overflow situation. The lexeme spans complete buffer. */
+            QUEX_NAME(Buffer_call_on_buffer_overflow)(me);
+
+            /* 'on_buffer_overflow' may have extended the buffer's memory.
+             * => second chance!                                              */
+            move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(me, &move_begin_p);
+            if( me->input.end_p >= me->_memory._back ) {
+                return 0;                                         /* Give up! */
+            }
+        }
     }
-    else if( ! move_distance ) {
-        return 0;
-    }
-    else {
+    /* NOT else if */
+    if( move_distance) {
         QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+
+        move_size = QUEX_NAME(Buffer_move_towards_begin)(me, move_distance);
+
+        QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(me, move_distance, 
+                                                            position_register,
+                                                            PositionRegisterN);
+        __quex_assert(me->input.end_p == &move_begin_p[move_size - move_distance]);
+        (void)move_size;
     }
 
-    move_size = QUEX_NAME(Buffer_move_towards_begin)(me, move_distance);
+    free_space = me->_memory._back - me->input.end_p;
 
-    QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(me, move_distance, 
-                                                        position_register,
-                                                        PositionRegisterN);
-
-    /*_______________________________________________________________________*/
-    __quex_assert(me->input.end_p == &move_begin_p[move_size - move_distance]);
-    (void)move_size;
+    /*________________________________________________________________________*/
     QUEX_IF_ASSERTS_poison(&EndP[- move_distance + 1], EndP);
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
     (void)EndP;
 
-    return move_distance;
+    return free_space;
 }
 
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_move_to_get_free_space_at_end)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me)
 /* Circumvent restriction of 'Buffer_load_prepare_forward()' which 
  * refuses to move if end of stream is inside buffer. 
  *
@@ -428,13 +438,14 @@ QUEX_NAME(Buffer_move_to_get_free_space_at_end)(QUEX_NAME(Buffer)* me)
  * RETURNS: Available elements at end of buffer.                              */
 {
     QUEX_TYPE_STREAM_POSITION backup_ios;
+    ptrdiff_t                 free_space;
 
     backup_ios                            = me->input.lexatom_index_end_of_stream;
     me->input.lexatom_index_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
     /* Position registers are only relevant during lexical analyzis.
      * Inclusion happens in a 'terminal' or external to the lexer step.   
      * => Position registers = empty set.                                     */
-    (void)QUEX_NAME(Buffer_load_prepare_forward)(me, (QUEX_TYPE_LEXATOM**)0, 0);
+    free_space = QUEX_NAME(Buffer_load_prepare_forward)(me, (QUEX_TYPE_LEXATOM**)0, 0);
 
     me->input.lexatom_index_end_of_stream = backup_ios;
 
@@ -444,7 +455,7 @@ QUEX_NAME(Buffer_move_to_get_free_space_at_end)(QUEX_NAME(Buffer)* me)
      *
      * However, 'me' buffer is NOT used before 'included' terminates.
      * => included is pasted back at the end of me.                           */
-    return me->_memory._back - me->input.end_p;
+    return free_space;
 }
 
 QUEX_INLINE ptrdiff_t        
@@ -464,11 +475,6 @@ QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)
  *                               Lexeme fills complete buffer.                */
 {
     const QUEX_TYPE_LEXATOM*  LastP  = &me->_memory._back[-1];
-    const QUEX_TYPE_LEXATOM*  FrontP = &me->_memory._front[1];
-    ptrdiff_t                 backward_walk_distance;  
-    ptrdiff_t                 move_distance_max;
-    ptrdiff_t                 move_distance_nominal;
-    ptrdiff_t                 move_distance_reasonable;
     ptrdiff_t                 move_distance;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -477,33 +483,7 @@ QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)
         return 0;
     }
     
-    /* Move distance restrict by: -- begin of stream (lexatom_index_begin == 0)
-     *                            -- '_read_p' must remain in buffer.         */
-    move_distance_max = QUEX_MIN(me->input.lexatom_index_begin, 
-                                 LastP - me->_read_p);
-
-    {
-        if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-            /* There is still content in the buffer that might be useful for
-             * forward lexical analyis. Load only a decent amount backward.   */
-            move_distance_reasonable = QUEX_MAX((ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 256), 
-                                                (ptrdiff_t)((LastP - FrontP) / 4));
-            if( me->_lexeme_start_p ) {
-                backward_walk_distance = me->_lexeme_start_p ? 
-                                            me->_lexeme_start_p - me->_read_p : 0;
-            }
-            /* Provide backward data so that lexer might go backward twice as 
-             * far as it already went.                                        */
-            move_distance_nominal = QUEX_MAX(move_distance_reasonable, 
-                                             backward_walk_distance * 2);
-        }
-        else {
-            /* Next step forward requires a total reload anyway.
-             * Go forward as much as possible.                                */
-            move_distance_nominal = move_distance_max;
-        }
-    }
-    move_distance = QUEX_MIN(move_distance_max, move_distance_nominal);
+    move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(me);
 
     if( ! move_distance ) {
         return 0;

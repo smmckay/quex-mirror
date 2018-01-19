@@ -122,7 +122,8 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     QUEX_NAME(Buffer_construct)(&me->buffer, new_filler,
                                 new_memory, QUEX_SETTING_BUFFER_SIZE, 
                                 (QUEX_TYPE_LEXATOM*)0,
-                                E_Ownership_LEXICAL_ANALYZER);
+                                E_Ownership_LEXICAL_ANALYZER,
+                                (QUEX_NAME(Buffer)*)0);
 
     QUEX_NAME(construct_all_but_buffer)(me, true);
     if( me->error_code != E_Error_None ) {
@@ -166,7 +167,8 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
     QUEX_NAME(Buffer_construct)(&me->buffer, 
                                 (QUEX_NAME(LexatomLoader)*)0,
                                 Memory, MemorySize, EndOfFileP,
-                                E_Ownership_EXTERNAL);
+                                E_Ownership_EXTERNAL,
+                                (QUEX_NAME(Buffer)*)0);
 
     if( ! QUEX_NAME(construct_all_but_buffer)(me, true) ) {
         goto ERROR_1;
@@ -194,17 +196,18 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 
     __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
 
-    QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
-                                    (QUEX_TYPE_TOKEN*)&me->__memory_token_queue,
-                                    QUEX_SETTING_TOKEN_QUEUE_SIZE);
-
-    if( ! QUEX_NAME(ModeStack_construct)(&me->_mode_stack) ) {
+    if( ! QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
+                                          QUEX_SETTING_TOKEN_QUEUE_SIZE) ) {
+        goto ERROR_0;
+    }
+    else if( ! QUEX_NAME(ModeStack_construct)(&me->_mode_stack, 
+                                              QUEX_SETTING_MODE_STACK_SIZE) ) {
         goto ERROR_1;
     }
 #   ifdef QUEX_OPTION_COUNTER
     else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
         QUEX_NAME(error_code_set_if_first)(me, E_Error_Constructor_Counter_Failed);
-        goto ERROR_4;
+        goto ERROR_2;
     }
 #   endif
 #   ifdef QUEX_OPTION_INDENTATION_TRIGGER
@@ -220,22 +223,22 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 
     if( CallUserConstructorF && ! QUEX_NAME(user_constructor)(me) ) {
         QUEX_NAME(error_code_set_if_first)(me, E_Error_UserConstructor_Failed);
-        goto ERROR_5;
+        goto ERROR_3;
     }
 
     QUEX_NAME(error_code_clear)(me);
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
-ERROR_5:
+ERROR_3:
     /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
 #   ifdef QUEX_OPTION_COUNTER
-ERROR_4:
+ERROR_2:
 #   endif
-    /* NO ALLOCATED RESOURCES IN: 'me->mode_stack'                            */
+    QUEX_NAME(ModeStack_destruct)(&me->_mode_stack);
 ERROR_1:
     QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
-    /* NO ALLOCATED RESOURCES IN: 'me->_parent_memento = 0'                   */
+ERROR_0:
     QUEX_NAME(all_but_buffer_resources_absent_mark)(me);
     return false;
 }
@@ -264,6 +267,7 @@ QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
      * popped and destructed, until only the outest state remains. This
      * is then the state that is destructed here.                             */
     QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
+    QUEX_NAME(ModeStack_destruct)(&me->_mode_stack);
 
     if( me->__input_name ) {
         QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);

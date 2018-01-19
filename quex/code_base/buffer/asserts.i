@@ -42,6 +42,7 @@ QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)(QUEX_NAME(Buffer)* B)
 QUEX_INLINE void
 QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)(QUEX_NAME(Buffer)* B)                                            
 {                                                                                    
+    QUEX_NAME(Buffer)* focus;
     if( ! B ) return;
     __quex_assert(   B->input.lexatom_index_begin == -1
                   || B->input.lexatom_index_begin >= 0);
@@ -49,6 +50,20 @@ QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)(QUEX_NAME(Buffer)* B)
                   || B->input.lexatom_index_end_of_stream >= B->input.lexatom_index_begin);
     QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)(B);                                              
     QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)(B);
+
+    if( B->_memory.ownership == E_Ownership_INCLUDING_BUFFER ) {
+        __quex_assert(0 != B->_memory.including_buffer);
+        /* No cyclic nesting of buffers.                                      */
+        focus = B;
+        while( 0 != focus->_memory.including_buffer ) { 
+            focus = focus->_memory.including_buffer;
+            __quex_assert(focus != B);
+        }
+        __quex_assert(&B->_memory.including_buffer->_memory._back[1] == &B->_memory._front[0]);
+    }
+    else {
+        __quex_assert(0 == B->_memory.including_buffer);
+    }
 }
 
 QUEX_INLINE void

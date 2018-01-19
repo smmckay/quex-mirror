@@ -7,8 +7,14 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+struct QUEX_NAME(Buffer_tag);
+
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG { 
-    E_Ownership           ownership;
+    E_Ownership                    ownership;
+    /* ownership == E_Ownership_INCLUDING_BUFFER means that the memory is 
+     *              split from an including buffer.                          
+     * else:        including_buffer = 0.                                    */
+    struct QUEX_NAME(Buffer_tag)*  including_buffer;  
 
     /* (*) Buffer Memory Setup:
      *      memory[0]             = lower buffer limit code lexatom
@@ -22,14 +28,39 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
 } QUEX_NAME(BufferMemory);
 
 QUEX_INLINE size_t  QUEX_NAME(BufferMemory_size)(QUEX_NAME(BufferMemory)*);
-QUEX_INLINE void    QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  me, 
-                                                      QUEX_TYPE_LEXATOM*      Memory, 
-                                                      const size_t              Size,
-                                                      E_Ownership               Ownership);
+QUEX_INLINE void    QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*      me, 
+                                                      QUEX_TYPE_LEXATOM*            Memory, 
+                                                      const size_t                  Size,
+                                                      E_Ownership                   Ownership,
+                                                      struct QUEX_NAME(Buffer_tag)* IncludingBuffer);
 QUEX_INLINE void    QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me);
+QUEX_INLINE void    QUEX_NAME(BufferMemory_adapt_to_new_memory)(QUEX_NAME(BufferMemory)*  me, 
+                                                                QUEX_TYPE_LEXATOM*        NewMemoryP, 
+                                                                E_Ownership               Ownership);
 QUEX_INLINE void    QUEX_NAME(BufferMemory_resources_absent_mark)(QUEX_NAME(BufferMemory)* me);
 QUEX_INLINE bool    QUEX_NAME(BufferMemory_resources_absent)(QUEX_NAME(BufferMemory)* me); 
+QUEX_INLINE bool    QUEX_NAME(BufferMemory_check_chunk)(const QUEX_TYPE_LEXATOM* Front, 
+                                                        size_t                   Size, 
+                                                        const QUEX_TYPE_LEXATOM* EndOfFileP);
 QUEX_INLINE void    QUEX_NAME(BufferMemory_print_this)(QUEX_NAME(BufferMemory)* me);
+
+typedef struct {
+    /* Event handlers:                                          
+     *
+     * on_buffer_before_change: If the user maintained pointers into the 
+     *     buffer, this callback indicates that everything from 'BeginP' to 
+     *     'EndP' needs to be copied somewhere else.
+     *
+     * on_buffer_overflow: Distance between current '_read_p' and the lexeme 
+     *     start plus the fallback region are too big for the current 
+     *     buffer's size.                                                 
+     *                                                                    */
+    void   (*on_buffer_before_change)(void* aux);
+    void   (*on_buffer_overflow)(void* aux);
+
+    /* Auxiliary data passed to handlers. This is probably the 'lexer'.   */
+    void*  aux; 
+} QUEX_NAME(Buffer_event_callbacks);
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) { 
 /* Buffer of lexatoms on which the analyzer runs. 
@@ -98,34 +129,21 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
     void      (*fill_finish)(struct QUEX_NAME(Buffer_tag)* me,
                              const void*                   FilledEndP);
 
-    struct {
-        /* Event handlers:                                          
-         *
-         * on_buffer_before_change: If the user maintained pointers into the 
-         *     buffer, this callback indicates that everything from 'BeginP' to 
-         *     'EndP' needs to be copied somewhere else.
-         *
-         * on_buffer_overflow: Distance between current '_read_p' and the lexeme 
-         *     start plus the fallback region are too big for the current 
-         *     buffer's size.                                                 
-         *                                                                    */
-        void   (*on_buffer_before_change)(void* aux);
-        void   (*on_buffer_overflow)(void* aux, bool ForwardF);
-
-        /* Auxiliary data passed to handlers. This is probably the 'lexer'.   */
-        void*  aux; 
-    } event;
+    QUEX_NAME(Buffer_event_callbacks) event;
 
 } QUEX_NAME(Buffer);
 
-QUEX_INLINE void    QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*                    me, 
-                                                struct QUEX_NAME(LexatomLoader_tag)*  filler,
-                                                QUEX_TYPE_LEXATOM*                    memory,
-                                                const size_t                          MemorySize,
-                                                QUEX_TYPE_LEXATOM*                    EndOfFileP,
-                                                E_Ownership                           Ownership);
-
 /* Constructor, destructor, reset. */
+QUEX_INLINE void  QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*                    me, 
+                                              struct QUEX_NAME(LexatomLoader_tag)*  filler,
+                                              QUEX_TYPE_LEXATOM*                    memory,
+                                              const size_t                          MemorySize,
+                                              QUEX_TYPE_LEXATOM*                    EndOfFileP,
+                                              E_Ownership                           Ownership,
+                                              QUEX_NAME(Buffer)*                    IncludingBuffer);
+
+QUEX_INLINE void  QUEX_NAME(Buffer_shallow_copy)(QUEX_NAME(Buffer)*       drain, 
+                                                 const QUEX_NAME(Buffer)* source);
 QUEX_INLINE void  QUEX_NAME(Buffer_init)(QUEX_NAME(Buffer)* me,
                                          QUEX_TYPE_LEXATOM* EndOfFileP); 
 
@@ -133,9 +151,19 @@ QUEX_INLINE void  QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void  QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE bool  QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me);
 
-QUEX_INLINE bool  QUEX_NAME(BufferMemory_check_chunk)(const QUEX_TYPE_LEXATOM* Front, 
-                                                      size_t                   Size, 
-                                                      const QUEX_TYPE_LEXATOM* EndOfFileP);
+QUEX_INLINE void  QUEX_NAME(Buffer_adapt_to_new_memory)(QUEX_NAME(Buffer)* me,
+                                                        QUEX_TYPE_LEXATOM* new_memory,
+                                                        E_Ownership        Ownership);
+
+/* Memory extend and migrate. */
+QUEX_INLINE bool  QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me,
+                                                ptrdiff_t           SizeAdd);
+QUEX_INLINE bool  QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
+                                                 QUEX_TYPE_LEXATOM*  memory,
+                                                 const size_t        MemoryLexatomN,
+                                                 E_Ownership         Ownership);
+QUEX_INLINE QUEX_NAME(Buffer)*
+                  QUEX_NAME(Buffer_find_root)(QUEX_NAME(Buffer)* me);
 
 /* Automatic loading of buffer content (during analysis). */
 QUEX_INLINE E_LoadResult 
@@ -151,8 +179,8 @@ QUEX_INLINE bool       QUEX_NAME(Buffer_move_and_load_forward)(QUEX_NAME(Buffer)
                                                                QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin,
                                                                QUEX_TYPE_STREAM_POSITION MinCharacterIndexInBuffer);
 QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
-                                                                  QUEX_TYPE_LEXATOM** position_register,
-                                                                  const size_t        PositionRegisterN);
+                                                              QUEX_TYPE_LEXATOM** position_register,
+                                                              const size_t        PositionRegisterN);
 QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me);
 
 /* User's manual buffer filling. */
@@ -195,11 +223,10 @@ QUEX_INLINE bool       QUEX_NAME(Buffer_seek_backward)(QUEX_NAME(Buffer)*, const
 /* Callbacks */
 QUEX_INLINE void       QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
                                                             void   (*on_buffer_before_change)(void* aux),
-                                                            void   (*on_buffer_overflow)(void* aux, bool ForwardF),
+                                                            void   (*on_buffer_overflow)(void* aux),
                                                             void*  aux);
 QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me);
-QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me,
-                                                                 bool               ForwardF);
+QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me);
 
 
 QUEX_NAMESPACE_MAIN_CLOSE

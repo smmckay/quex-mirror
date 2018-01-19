@@ -68,10 +68,12 @@ main(int argc, char** argv)
         QUEX_TYPE_LEXATOM  lexeme_start_char;
     } before;
     QUEX_TYPE_LEXATOM* min_p;     
-    bool                 end_of_stream_in_buffer_f;
-    ptrdiff_t            move_distance;
+    bool               end_of_stream_in_buffer_f;
+    ptrdiff_t          move_distance;
+    ptrdiff_t          free_space;
     QUEX_TYPE_LEXATOM  backup[MemorySize*2];
-    int                  count = 0;
+    int                count = 0;
+
     SomethingContainingABuffer_t theAux;
     theAux.buffer = &buffer;
 
@@ -110,7 +112,9 @@ main(int argc, char** argv)
         min_p                    = QUEX_MIN(buffer._read_p, buffer._lexeme_start_p);
         memcpy(&backup[0], min_p, buffer.input.end_p - min_p);
 
-        move_distance = QUEX_NAME(Buffer_load_prepare_forward)(&buffer, (QUEX_TYPE_LEXATOM**)0, 0);
+        free_space = QUEX_NAME(Buffer_load_prepare_forward)(&buffer, (QUEX_TYPE_LEXATOM**)0, 0);
+        (void)free_space;
+        move_distance = before.end_p - buffer.input.end_p;
 
         self_print(&buffer);
 

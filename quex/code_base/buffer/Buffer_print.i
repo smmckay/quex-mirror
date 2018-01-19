@@ -200,9 +200,9 @@ QUEX_NAME(Buffer_print_content_detailed_lines)(QUEX_TYPE_LEXATOM** iterator,
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* me, bool ForwardF)
+QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* me)
 {
-    (void)me; (void)ForwardF;
+    (void)me; 
 #   ifdef QUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE
     uint8_t                   utf8_encoded_str[512]; 
     char                      message[1024];
@@ -226,8 +226,7 @@ QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* me, bool ForwardF)
               "Distance between lexeme start and current pointer exceeds buffer size.\n"
               "(tried to load buffer",
               MessageEnd - it);
-    it += __QUEX_STD_strlcpy(it, ForwardF ? "forward)" : "backward)",                   
-                             MessageEnd - it);
+    it += __QUEX_STD_strlcpy(it, "forward)", MessageEnd - it);
     it += __QUEX_STD_strlcpy(it, "As a hint consider the beginning of the lexeme:\n[[", 
                              MessageEnd - it);
     it += __QUEX_STD_strlcpy(it, (char*)utf8_encoded_str, MessageEnd - it);

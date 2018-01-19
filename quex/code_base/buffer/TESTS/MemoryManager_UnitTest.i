@@ -71,6 +71,10 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
 
     MemoryManager_UnitTest.allocation_n     += 1;
     MemoryManager_UnitTest.allocated_byte_n += ByteN;
+
+#   ifdef QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE
+    __QUEX_STD_printf("allocate: { adr: ((%p)); size: %i; }\n", (void*)me, (int)ByteN);
+#   endif
     return me;
 }
        
@@ -80,6 +84,11 @@ QUEXED_DEF(MemoryManager_free)(void*              alter_ego,
 { 
     void* me = (void*)alter_ego;
     (void)Type;
+
+#   ifdef QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE
+    __QUEX_STD_printf("free:     { adr: ((%p)); }\n", (void*)me);
+#   endif
+
     /* The de-allocator shall never be called for LexemeNull object.         */
     if( me ) {
         __QUEX_STD_free(me); 

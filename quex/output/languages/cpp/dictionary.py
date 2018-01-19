@@ -1204,7 +1204,7 @@ class Language(dict):
         return ""
 
     def ON_BUFFER_OVERFLOW_default(self):
-        return "QUEX_NAME(Buffer_print_overflow_message)(&self.buffer, ForwardF);"
+        return "QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);"
 
     @typed(dial_db=DialDB)
     def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):
@@ -1281,7 +1281,7 @@ cpp_reload_forward_str = """
     __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
     
     __quex_debug_reload_before();                 
-    /* Callbacks: 'on_before_content_change()' and 'on_buffer_overflow()'
+    /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'
      * are called during load process upon occurrence.                        */
     $$LOAD_RESULT$$ = $$BUFFER_LOAD_FW$$(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
     __quex_debug_reload_after($$LOAD_RESULT$$);
@@ -1290,9 +1290,9 @@ cpp_reload_forward_str = """
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto $$ON_BAD_LEXATOM$$;
     case E_LoadResult_FAILURE:           QUEX_GOTO_STATE(target_state_else_index); 
+    /* case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(E_LoadResult_FAILURE); return; */
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
-    /* E_LoadResult_FAILURE cannot appear in forward direction.               */
     }
 """
 
@@ -1302,7 +1302,7 @@ cpp_reload_backward_str = """
     __quex_assert(input == QUEX_SETTING_BUFFER_LIMIT_CODE);
 
     __quex_debug_reload_before();                 
-    /* Callbacks: 'on_before_content_change()' and 'on_buffer_overflow()'
+    /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'
      * are called during load process upon occurrence.                        */
     $$LOAD_RESULT$$ = $$BUFFER_LOAD_BW$$(&me->buffer);
     __quex_debug_reload_after($$LOAD_RESULT$$);
@@ -1311,6 +1311,7 @@ cpp_reload_backward_str = """
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto $$ON_BAD_LEXATOM$$;
     case E_LoadResult_FAILURE:           goto $$ON_LOAD_FAILURE$$;
+    /* case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(E_LoadResult_FAILURE); return; */
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
     }

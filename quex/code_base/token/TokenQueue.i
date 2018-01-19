@@ -21,25 +21,33 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(TokenQueue_construct)(QUEX_NAME(TokenQueue)* me, 
-                                QUEX_TYPE_TOKEN*       Memory, 
                                 const size_t           N)
 /* me:     The token queue.
  * Memory: Pointer to memory of token queue, 0x0 --> no initial memory.
  * N:      Number of token objects that the array can carry.                  */
 {
-    QUEX_TYPE_TOKEN* iterator   = 0x0;
-    QUEX_TYPE_TOKEN* memory_end = &Memory[N];
+    QUEX_TYPE_TOKEN*   iterator   = 0x0;
+    QUEX_TYPE_TOKEN*   memory     = (QUEX_TYPE_TOKEN*)QUEXED(MemoryManager_allocate)(
+                                             N * sizeof(QUEX_TYPE_TOKEN),
+                                             E_MemoryObjectType_TOKEN_ARRAY);
+    QUEX_TYPE_TOKEN*   memory_end = &memory[N];
 
-    __quex_assert(Memory != 0x0);
+    if( ! memory ) {
+        QUEX_NAME(TokenQueue_resources_absent_mark)(me);
+        return false;
+    }
+
+    __quex_assert(memory != 0x0);
     __quex_assert(N > (size_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);
 
     /* Call placement new (plain constructor) for all tokens in chunk.        */
-    for(iterator = Memory; iterator != memory_end; ++iterator) {
+    for(iterator = memory; iterator != memory_end; ++iterator) {
         QUEX_NAME_TOKEN(construct)(iterator);
     }
-    QUEX_NAME(TokenQueue_init)(me, Memory, memory_end); 
+    QUEX_NAME(TokenQueue_init)(me, memory, memory_end); 
+    return true;
 }
 
 QUEX_INLINE void
@@ -95,6 +103,9 @@ QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me)
     for(iterator = me->begin; iterator != me->end; ++iterator) {
         QUEX_NAME_TOKEN(destruct)(iterator);
     }
+
+    QUEXED(MemoryManager_free)((void*)&me->begin[0],
+                               E_MemoryObjectType_TOKEN_ARRAY);
 
     /* The memory chunk for the token queue itself is located inside the
      * analyzer object. Thus, no explicit free is necessary. In case of user

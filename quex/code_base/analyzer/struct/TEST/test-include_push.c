@@ -107,7 +107,7 @@ self_include_push_on_loader(int argc, char** argv, bool PopF)
 
     /* Destruct safely all lexers. */
     if( PopF ) self_pop(&lexer[0], lexerEnd - &lexer[0]);
-    self_destruct(&lexer[0], lexerEnd - &lexer[0]);
+    self_destruct(&lexer[0], lexerEnd - &lexer[0]); 
     printf("<terminated 'byte loader': %i>\n", (int)(lx- &lexer[0]));
 }
 
@@ -304,6 +304,7 @@ self_memory()
         QUEX_NAME(include_push_memory)(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
+
     ++lx;
     backup = *lx;
     {
@@ -361,15 +362,26 @@ self_pop(quex_TestAnalyzer* lexer, size_t N)
 static void 
 self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
 {
+    hwut_verify(backup._mode_stack.end == backup._mode_stack.begin);
+    hwut_verify(backup._mode_stack.memory_end - backup._mode_stack.begin == QUEX_SETTING_MODE_STACK_SIZE);
+
     hwut_verify(lx->error_code == ExpectedError);
 
     /* Resources are *never* absent.                                          */
     hwut_verify(! QUEX_NAME(resources_absent)(lx));
 
-    if( ExpectedError == E_Error_None ) return;
+    hwut_verify(lx->_mode_stack.memory_end - lx->_mode_stack.begin == QUEX_SETTING_MODE_STACK_SIZE);
+    hwut_verify(lx->_mode_stack.end        - lx->_mode_stack.begin == 0);
 
-    /* Error => lexical analyzer as in the exact state as before.
-     *          --except that the error code may have been set.               */
-    backup.error_code = lexer->error_code;
-    hwut_verify(memcmp((void*)lexer, (void*)&backup, sizeof(backup)) == 0);
+    backup.buffer._memory.including_buffer = lx->buffer._memory.including_buffer;
+    //hwut_verify(0 == memcmp((void*)&backup.buffer,               (void*)&lx->buffer, 1));
+    hwut_verify(0 == memcmp((void*)&backup._token_queue,         (void*)&lx->_token_queue, 1));
+    hwut_verify(0 == memcmp((void*)&backup.__memory_token_queue, (void*)&lx->__memory_token_queue, 1));
+    hwut_verify(0 == memcmp((void*)&backup.counter,              (void*)&lx->counter, 1));
+    hwut_verify(backup.current_analyzer_function == lx->current_analyzer_function);
+    hwut_verify(backup.__current_mode_p          == lx->__current_mode_p);
+
+    if( ExpectedError != E_Error_None ) {
+        hwut_verify(lx->error_code == ExpectedError);
+    }
 }

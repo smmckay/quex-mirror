@@ -1,0 +1,1 @@
+<terminated: 40; shrinked: 10; allocated_byte_n: 164; allocate_n: 41; free_n: 41;>

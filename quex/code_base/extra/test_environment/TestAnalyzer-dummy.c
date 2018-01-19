@@ -23,8 +23,11 @@ QUEX_NAME(Mode) QUEX_NAME(M) = {
     /* has_entry_from    */ QUEX_NAME(M_has_entry_from),
     /* has_exit_to       */ QUEX_NAME(M_has_exit_to),
 #   endif
+    {
     /* on_buffer_before_change */ QUEX_NAME(M_on_buffer_before_change),
     /* on_buffer_overflow      */ QUEX_NAME(M_on_buffer_overflow),
+    /* aux                     */ (void*)0,
+    },
 
     /* analyzer_function */ QUEX_NAME(M_analyzer_function)
 };
@@ -196,11 +199,10 @@ QUEX_NAME(M_on_buffer_before_change)(void* me /* 'aux' -> 'self' via 'me' */)
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer, 
-                                         bool               ForwardF);
+QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer); 
+
 void
-QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */,
-                    bool   ForwardF)
+QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 {
     const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
@@ -210,7 +212,7 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */,
     (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
     QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
 
-QUEX_NAME(Buffer_print_overflow_message)(&self.buffer, ForwardF);
+QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
 }
 #undef self
 #undef LexemeNull
@@ -617,7 +619,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 621 "TestAnalyzer.c"
+#   line 623 "TestAnalyzer.c"
 
 }
 RETURN;
@@ -656,7 +658,7 @@ _10:
     __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
     
     __quex_debug_reload_before();                 
-    /* Callbacks: 'on_before_content_change()' and 'on_buffer_overflow()'
+    /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'
      * are called during load process upon occurrence.                        */
     load_result = QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
     __quex_debug_reload_after(load_result);
@@ -665,9 +667,9 @@ _10:
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_BAD_LEXATOM:       goto _1;
     case E_LoadResult_FAILURE:           QUEX_GOTO_STATE(target_state_else_index); 
+    /* case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(E_LoadResult_FAILURE); return; */
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);
-    /* E_LoadResult_FAILURE cannot appear in forward direction.               */
     }
 
 _16:
@@ -851,7 +853,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 855 "TestAnalyzer.c"
+#   line 857 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -882,7 +884,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 886 "TestAnalyzer.c"
+#   line 888 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -928,7 +930,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 932 "TestAnalyzer.c"
+#   line 934 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -1015,7 +1017,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 1019 "TestAnalyzer.c"
+#   line 1021 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1036,7 +1038,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 1040 "TestAnalyzer.c"
+#   line 1042 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1055,7 +1057,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1059 "TestAnalyzer.c"
+#   line 1061 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1130,7 +1132,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1134 "TestAnalyzer.c"
+#   line 1136 "TestAnalyzer.c"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

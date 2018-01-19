@@ -284,7 +284,7 @@ common_on_content_change(void* aux)
 }
 
 static void
-common_on_overflow(void* aux, bool ForwardF)
+common_on_overflow(void* aux)
 {
     QUEX_NAME(Buffer)* me = ((SomethingContainingABuffer_t*)aux)->buffer;
 

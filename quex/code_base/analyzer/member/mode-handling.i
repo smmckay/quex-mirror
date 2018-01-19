@@ -36,8 +36,8 @@ QUEX_NAMESPACE_MAIN_OPEN
         me->current_analyzer_function = ModeP->analyzer_function; 
 
         QUEX_NAME(Buffer_set_event_handlers)(&me->buffer, 
-                                             me->__current_mode_p->on_buffer_before_change,
-                                             me->__current_mode_p->on_buffer_overflow,
+                                             me->__current_mode_p->buffer_callbacks.on_buffer_before_change,
+                                             me->__current_mode_p->buffer_callbacks.on_buffer_overflow,
                                              (void*)me);
     }
 
