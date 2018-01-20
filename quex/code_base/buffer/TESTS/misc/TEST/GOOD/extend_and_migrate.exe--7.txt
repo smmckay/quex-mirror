@@ -1,1 +1,1 @@
-<terminated: 112; shrinked: 28; allocated_byte_n: 791; allocate_n: 113; free_n: 113;>
+<terminated: ((112)); shrinked: ((28)); allocated_byte_n: ((791)); allocate_n: ((113)); free_n: ((113));>
