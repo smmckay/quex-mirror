@@ -34,9 +34,8 @@ QUEX_INLINE void    QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  
                                                       E_Ownership                   Ownership,
                                                       struct QUEX_NAME(Buffer_tag)* IncludingBuffer);
 QUEX_INLINE void    QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me);
-QUEX_INLINE void    QUEX_NAME(BufferMemory_adapt_to_new_memory)(QUEX_NAME(BufferMemory)*  me, 
-                                                                QUEX_TYPE_LEXATOM*        NewMemoryP, 
-                                                                E_Ownership               Ownership);
+QUEX_INLINE void    QUEX_NAME(BufferMemory_adapt_to_new_memory_location)(QUEX_NAME(BufferMemory)*  me, 
+                                                                         QUEX_TYPE_LEXATOM*        NewMemoryP); 
 QUEX_INLINE void    QUEX_NAME(BufferMemory_resources_absent_mark)(QUEX_NAME(BufferMemory)* me);
 QUEX_INLINE bool    QUEX_NAME(BufferMemory_resources_absent)(QUEX_NAME(BufferMemory)* me); 
 QUEX_INLINE bool    QUEX_NAME(BufferMemory_check_chunk)(const QUEX_TYPE_LEXATOM* Front, 
@@ -151,9 +150,9 @@ QUEX_INLINE void  QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void  QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE bool  QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me);
 
-QUEX_INLINE void  QUEX_NAME(Buffer_adapt_to_new_memory)(QUEX_NAME(Buffer)* me,
-                                                        QUEX_TYPE_LEXATOM* new_memory,
-                                                        E_Ownership        Ownership);
+QUEX_INLINE void  QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
+                                                                 QUEX_TYPE_LEXATOM* new_memory,
+                                                                 size_t             NewSize);
 
 /* Memory extend and migrate. */
 QUEX_INLINE bool  QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me,

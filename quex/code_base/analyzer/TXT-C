@@ -98,16 +98,13 @@ $$MEMENTO_EXTENSIONS$$
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAFE$$_tag {
     /* __( Data Members )_______________________________________________________
      *                                                                        */
-    QUEX_NAME(TokenQueue) _token_queue;  
-    /* Avoid constructor call to Token() => define plain memory. (C++ only)   */
-    uint8_t __memory_token_queue[sizeof(QUEX_TYPE_TOKEN)*QUEX_SETTING_TOKEN_QUEUE_SIZE];
+    QUEX_NAME(Buffer)               buffer;
+    QUEX_NAME(TokenQueue)           _token_queue;  
+    QUEX_NAME(ModeStack)            _mode_stack;
 
     E_Error                         error_code;
     char*                           __input_name;
-    QUEX_NAME(Buffer)               buffer;
 
-    QUEX_NAME(ModeStack)            _mode_stack;
-    QUEX_NAME(Mode)* (__memory_mode_stack[sizeof(QUEX_NAME(Mode)*)*QUEX_SETTING_MODE_STACK_SIZE]);
     QUEX_NAME(Mode)*                __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;

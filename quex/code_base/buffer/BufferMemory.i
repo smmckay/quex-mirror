@@ -22,11 +22,11 @@ QUEX_NAME(BufferMemory_construct)(QUEX_NAME(BufferMemory)*  me,
     __quex_assert(E_Ownership_is_valid(Ownership));    
 
     if( Memory ) {
-        /* "Memory size > QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 2" is reqired.
-         * Maybe, define '-DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0' for 
-         * compilation (assumed no pre-contexts.)                             */
-        __quex_assert(Size > QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 2);
-
+        /* If following assertion fails.
+         * =>  May, define '-DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0'           */
+        __quex_assert(Size >= QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 2);
+        /* '>=' to allow a totally empty buffer, too.                         */
+        
         me->_front    = Memory;
         me->_back     = &Memory[Size-1];
         me->ownership = Ownership;
@@ -71,18 +71,6 @@ QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me)
     }
     QUEX_NAME(BufferMemory_resources_absent_mark)(me);
 }
-
-QUEX_INLINE void 
-QUEX_NAME(BufferMemory_adapt_to_new_memory)(QUEX_NAME(BufferMemory)*  me, 
-                                            QUEX_TYPE_LEXATOM*        NewMemoryP, 
-                                            E_Ownership               NewOwnership) 
-{
-    size_t Size = (size_t)(&me->_back[1] - me->_front);  /* newSize = oldSize */
-    QUEX_NAME(BufferMemory_destruct)(me);
-    QUEX_NAME(BufferMemory_construct)(me, NewMemoryP, Size, NewOwnership,
-                                      (QUEX_NAME(Buffer)*)0); 
-}
-
 
 QUEX_INLINE void 
 QUEX_NAME(BufferMemory_resources_absent_mark)(QUEX_NAME(BufferMemory)* me) 

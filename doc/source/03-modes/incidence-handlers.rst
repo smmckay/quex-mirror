@@ -134,10 +134,54 @@ the three handlers shown below.
    Implicit Arguments: ``self``, ``LexemeBegin``, ``LexemeEnd``, and ``BufferSize``.
 
    The reload process always tries to maintain the current lexeme inside the
-   buffer. If the lexeme becomes as large as the buffer itself, no reload can
-   happen. In the case that the reload failed due to a lexeme being too long
-   this handler is executed. Consider enlarging the buffer or using skippers
-   which do not maintain the lexeme.
+   buffer. If the lexeme becomes as large as the buffer itself no new content
+   can be loaded into the buffer. So, either new content must be provided,
+   or an error handling must be triggered.
+
+   By default, the buffer's memory is tried to be extended in a specific
+   manner. Starting with a new size `s` as twice the size of the current buffer,
+   an extension is tried. If that fails `s` is set to the average of `s`
+   and the current size. This procedure is repeated until the allocation
+   succeeds or `s` becomes equal to the current size. In the latter case
+   an error code is set ('overflow') and a debug message is printed.
+
+   One scenerio that necessitates a customized ``on_buffer_overflow`` handler
+   is in an embedded environment, where dynamic allocation needs to be 
+   prevented. In that case, setting an error code might be sufficient, 
+   as in the example below.
+
+   .. block:: cpp
+
+      on_buffer_overflow {
+          self.error_code = E_Error_Buffer_Overflow_LexemeTooLong;
+      }
+
+   The current buffer is available via ``self.buffer``. In particular the
+   following two functions might be used to assing new memory or to extend it.
+
+   .. function:: bool QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
+
+      Attempts to allocate new memory for the buffer and migrates the
+      content to the new memory. Returns ``false`` if and only if that
+      attempt fails.
+
+   .. function:: bool QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
+                                QUEX_TYPE_LEXATOM*  memory,
+                                const size_t        MemoryLexatomN,
+                                E_Ownership         Ownership) 
+
+      Migrates the current buffer's content to the specified memory chunk.
+      Returns ``false`` if and only if that attempt fails.
+
+   The two functions operate on the ``root`` of nested buffers. This accounts
+   for the fact that a buffer may be nested into an *including* buffer due to
+   an include operation. When buffers are extended, the root of all nesting 
+   is extended.
+
+   .. warning::
+
+       In case of error, an error code *must* be set in the ``on_buffer_overflow``
+       handler. Otherwise, the lexer has no way to know that it has to stop. 
 
 .. data:: on_buffer_before_change
 

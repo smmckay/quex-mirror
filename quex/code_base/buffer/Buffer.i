@@ -42,6 +42,10 @@ QUEX_INLINE void      QUEX_NAME(Buffer_on_before_buffer_change_DEFAULT)(void*  a
                                                                         const  QUEX_TYPE_LEXATOM*, 
                                                                         const  QUEX_TYPE_LEXATOM*);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE void      QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
+                                                                          QUEX_TYPE_LEXATOM* old_memory_root,
+                                                                          QUEX_TYPE_LEXATOM* new_memory_root,
+                                                                          size_t             NewRootSize);
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me, 
@@ -133,6 +137,8 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     E_Ownership         ownership;
     QUEX_NAME(Buffer)*  including_buffer_p = (QUEX_NAME(Buffer)*)0;
 
+    QUEX_BUFFER_ASSERT_CONSISTENCY(including);
+
     if( QUEX_NAME(Buffer_resources_absent)(including) ) {
         if( filler ) {
             filler->delete_self(filler); 
@@ -201,6 +207,21 @@ QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_shallow_copy)(QUEX_NAME(Buffer)* drain, const QUEX_NAME(Buffer)* source)
+/*    ,.
+ *   /  \   DANGER: Do not use this function, except that you totally 
+ *  /    \                understand its implications!
+ *  '----'
+ * Copy indices and references *as is*. The purpose of this function is solely
+ * to copy the setup of a buffer to a safe place and restore it. 
+ *
+ *           NOT TO BE USED AS A REPLACEMENT FOR COPYING/CLONING!
+ *
+ * At the time of this writing, the only propper application is when a backup 
+ * is generated in a memento. When it is restored in the 'real' buffer object 
+ * the pointers point to the right places and the ownership is handled propperly.
+ *
+ * The caller of this function MUST determine whether 'drain' or 'source'
+ * maintains ownership.                                                       */
 {
     *drain = *source;
 }
@@ -256,6 +277,65 @@ QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     }
 }
 
+#if 0
+QUEX_INLINE bool
+QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
+/* Allocates a chunk of memory that is 'SizeAdd' greater than the current size.
+ * If 'SizeAdd' is negative a smaller chunk is allocated. However, if the 
+ * resulting size is insufficient to hold the buffer's content, the function
+ * refuses to operate. 
+ *
+ * The new chunk is allocated with 'E_Ownership_LEXICAL_ANALYZER', such that 
+ * the memory is de-allocated upon destruction.
+ *
+ * RETURNS: true, in case of success.
+ *          false, else.                                                      */
+{
+    QUEX_TYPE_LEXATOM*  memory;
+    QUEX_TYPE_LEXATOM*  old_memory_root_p;
+    size_t              required_size;
+    size_t              new_size;
+    QUEX_NAME(Buffer)*  root = me;
+    QUEX_TYPE_LEXATOM*  old_content_end_p = me->input.end_p ? me->input.end_p : me->_memory._back;
+    
+    /* The 'Buffer_extend()' function cannot be called for an buffer which is
+     * currently including, i.e. has dependent buffers! It can only be called
+     * for the currently working buffer.                                      */
+    root              = QUEX_NAME(Buffer_find_root)(me);
+    old_memory_root_p = root->_memory._front;
+    required_size     = (size_t)(old_content_end_p - old_memory_root_p);
+    new_size          = (size_t)(&me->_memory._back[1] - old_memory_root_p + SizeAdd);
+
+    if( required_size <= new_size ) {
+        return false;
+    }
+    else if( SizeAdd <= 0 ) {
+        return false;
+    }
+
+    new_memory_root_p = QUEX_NAME(MemoryManager_reallocate)((void*)old_memory_root_p,
+                                                            sizeof(QUEX_TYPE_LEXATOM) * new_size);
+
+    if( ! new_memory_root_p ) {
+        /* Old memory object IS NOT DE-ALLOCATED.                             */
+        return false;
+    }
+    else if( new_memory_root_p == old_memory_root_p ) {
+        /* Old memory object IS NOT REPLACED--CONTENT AT SAME ADDRESS.        */
+        me->_memory._back = &new_memory_root_p[new_size-1];
+        return true;
+    }
+
+    QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(me, 
+                                                        old_memory_root_p,
+                                                        new_memory_root_p, 
+                                                        new_size);
+
+    root->_memory.ownership = E_Ownership_LEXICAL_ANALYZER;
+    return true;
+}
+#endif 
+
 QUEX_INLINE bool
 QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
                                QUEX_TYPE_LEXATOM*  memory,
@@ -275,11 +355,8 @@ QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
  *          false, if newly allocated memory is too small.                    */
 {
     size_t             required_size;
-    QUEX_NAME(Buffer)* focus;
     QUEX_NAME(Buffer)* root;
     QUEX_TYPE_LEXATOM* old_memory_root_p;
-    QUEX_TYPE_LEXATOM* new_memory;
-    E_Ownership        ownership;
     QUEX_TYPE_LEXATOM* old_content_end_p = me->input.end_p ? me->input.end_p : me->_memory._back;
     size_t             copy_size;
 
@@ -302,19 +379,38 @@ QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
                       copy_size * sizeof(QUEX_TYPE_LEXATOM));
 
     /* Adapt this and all nesting buffers to new memory location.             */
+    QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(me, old_memory_root_p,
+                                                        &memory[0], MemoryLexatomN);
+
+    if( root->_memory.ownership == E_Ownership_LEXICAL_ANALYZER ) {
+        QUEXED(MemoryManager_free)(old_memory_root_p, E_MemoryObjectType_BUFFER_MEMORY);
+    }
+    root->_memory.ownership = Ownership;
+
+    return true;
+}
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
+                                                    QUEX_TYPE_LEXATOM* old_memory_root,
+                                                    QUEX_TYPE_LEXATOM* new_memory_root,
+                                                    size_t             NewRootSize)
+{
+    QUEX_NAME(Buffer)* focus;
+    QUEX_TYPE_LEXATOM* new_memory;
+    size_t             new_size;
+
+    /* Adapt this and all nesting buffers to new memory location.             */
     for(focus = me; focus ; focus = focus->_memory.including_buffer) {
 
         QUEX_NAME(Buffer_call_on_buffer_before_change)(focus);
 
-        new_memory = &memory[focus->_memory._front - old_memory_root_p];
-        ownership  = focus->_memory.including_buffer ? E_Ownership_INCLUDING_BUFFER 
-                                                     : Ownership;
-        QUEX_NAME(Buffer_adapt_to_new_memory)(focus, new_memory, ownership);
+        new_memory = &new_memory_root[focus->_memory._front - old_memory_root];
+        new_size   = (size_t)(&focus->_memory._back[1]      - focus->_memory._front);
+        QUEX_NAME(Buffer_adapt_to_new_memory_location)(focus, new_memory, new_size);
     }
 
-    me->_memory._back = &memory[MemoryLexatomN - 1];
-
-    return true;
+    me->_memory._back = &new_memory_root[NewRootSize - 1];
 }
 
 QUEX_INLINE QUEX_NAME(Buffer)*
@@ -334,12 +430,17 @@ QUEX_NAME(Buffer_find_root)(QUEX_NAME(Buffer)* me)
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_adapt_to_new_memory)(QUEX_NAME(Buffer)* me,
-                                      QUEX_TYPE_LEXATOM* new_memory_base,
-                                      E_Ownership        Ownership)
+QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
+                                               QUEX_TYPE_LEXATOM* new_memory_base,
+                                               size_t             NewSize)
 /* Adapt all content to a new memory base and ownership. 
+ *
+ * -- This function is not concerned with memory management, etc. everything is
+ *    supposed to be setup/destructed previously.
+ *
  * -- This function does not consider the buffer nesting. It solely treats 
  *    the memory of 'me' itself.
+ *
  * -- It is assumed, that new memory has the SAME size as the current.
  *                                                                            */
 {
@@ -347,7 +448,11 @@ QUEX_NAME(Buffer_adapt_to_new_memory)(QUEX_NAME(Buffer)* me,
     ptrdiff_t  offset_read_p         = me->_read_p         - me->_memory._front;
     ptrdiff_t  offset_lexeme_start_p = me->_lexeme_start_p - me->_memory._front;
 
-    QUEX_NAME(BufferMemory_adapt_to_new_memory)(&me->_memory, new_memory_base, Ownership);
+    __quex_assert(   (0                            != me->_memory.including_buffer) 
+                  == (E_Ownership_INCLUDING_BUFFER == me->_memory.ownership));
+
+    QUEX_NAME(BufferMemory_construct)(&me->_memory, new_memory_base, NewSize,
+                                      me->_memory.ownership, me->_memory.including_buffer); 
 
     QUEX_NAME(Buffer_init_content_core)(me, 
                                         me->input.lexatom_index_begin,

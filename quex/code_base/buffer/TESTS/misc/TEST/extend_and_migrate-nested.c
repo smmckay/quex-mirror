@@ -35,10 +35,17 @@
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
-QUEX_NAME(Buffer) self_array[1024];
+QUEX_NAME(Buffer) self_reference[1024];
+QUEX_NAME(Buffer) self_subject[1024];
 
-static QUEX_NAME(Buffer)* self_construct_reference(size_t TotalSize, size_t Depth);
-static void               self_destruct_reference(size_t Depth);
+static QUEX_NAME(Buffer)* self_construct_setup(QUEX_NAME(Buffer)* array, 
+                                               size_t TotalSize, size_t Depth);
+static void               self_destruct_setup(QUEX_NAME(Buffer)* array,
+                                              size_t Depth);
+static void               self_test_single_migration(QUEX_NAME(Buffer)* reference, 
+                                                     QUEX_NAME(Buffer)* subject, 
+                                                     size_t             NewSize,
+                                                     ptrdiff_t*         shrink_n);
 
 QUEX_INLINE bool
 QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
@@ -49,62 +56,154 @@ int
 main(int argc, char** argv)
 {
     QUEX_NAME(Buffer)* reference;
+    QUEX_NAME(Buffer)* subject;
     size_t             new_size;
-    ptrdiff_t          count;
-    ptrdiff_t          shrink_n;
-    size_t             total_size;
-    size_t             single_size;
+    ptrdiff_t          count = 0;
+    ptrdiff_t          shrink_n = 0;
+    ptrdiff_t          end_offset;
+    ptrdiff_t          offset;
+    size_t             total_size = 0;
+    size_t             single_size = 0;
     size_t             depth = atoi(argv[1]);
 
     hwut_info("Extend/Migrate Memory: Nested;"
-              "CHOICES: 2, 3, 997;");
+              "CHOICES: 2, 3, 51;");
 
     memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest));
     MemoryManager_UnitTest.allocation_addmissible_f = true;
 
-    count = 0;
-
     for(single_size = 4; single_size < 7; ++single_size) {
         total_size = depth * single_size;
 
-        reference = self_construct_reference(total_size, depth);
+        reference = self_construct_setup(&self_reference[0], total_size, depth);
+
+        __quex_assert(single_size <= &reference->_memory._back[1] - reference->_memory._front);
 
         for(new_size = QUEX_MAX(3, total_size - 1); 
             new_size <= total_size + 2 ; ++new_size) {
+            /* Varry the offsets of '_read_p', '_lexeme_start_p', and 'input.end_p'.  */
+            for(end_offset = 0; end_offset != single_size; ++end_offset) {
+                for(offset = 0; offset <= end_offset ; ++offset) {
 
-            count += common_iterate(reference, new_size, &shrink_n);
+                    /* Prepare                                                        */
+                    reference->input.end_p     = &reference->_memory._front[end_offset];
+                    reference->_read_p         = &reference->_memory._front[offset + 1];
+                    reference->_lexeme_start_p = &reference->_memory._front[offset + 1];
+
+                    subject = self_construct_setup(&self_subject[0], total_size, depth);
+                    subject->input.end_p       = &subject->_memory._front[end_offset];
+                    subject->_read_p           = &subject->_memory._front[offset + 1];
+                    subject->_lexeme_start_p   = &subject->_memory._front[offset + 1];
+
+                    self_test_single_migration(reference, subject, new_size, &shrink_n);
+                    self_destruct_setup(&self_subject[0], depth);
+#if 0
+                    self_destruct_setup(&self_subject, depth);
+
+                    subject = self_construct_setup(&self_subject, total_size, depth);
+                    subject->input.end_p       = &subject->_memory._front[end_offset];
+                    subject->_read_p           = &subject->_memory._front[offset + 1];
+                    subject->_lexeme_start_p   = &subject->_memory._front[offset + 1];
+
+                    self_test_single_extension(subject, NewSize);
+
+                    self_destruct_setup(&self_subject, depth);
+#endif
+
+                    count += 1;
+                }
+            }
         }
 
-        self_destruct_reference(depth);
+        self_destruct_setup(&self_reference[0], depth);
     }
 
-    printf("<terminated: ((%i)); shrinked: ((%i)); allocated_byte_n: ((%i)); allocate_n: ((%i)); free_n: ((%i));>\n", 
+    printf("<terminated: ((%i)); shrinked: ((%i)); allocated_byte_n: ((%i)); allocate_n: ((%i)); free_n: ((%i)); recursion_n: ((%i))>\n", 
            (int)count, (int)shrink_n,
            (int)MemoryManager_UnitTest.allocated_byte_n, 
            (int)MemoryManager_UnitTest.allocation_n, 
-           (int)MemoryManager_UnitTest.free_n); 
+           (int)MemoryManager_UnitTest.free_n,
+           (int)common_recursion_count_n); 
 }
 
 static QUEX_NAME(Buffer)*
-self_construct_reference(size_t TotalSize, size_t Depth)
+self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t Depth)
 {
-    ptrdiff_t i=0;
-    common_construct_reference_base(&self_array[0], TotalSize);
-    for(i=0; i<Depth-1 ; ++i) {
-        QUEX_NAME(Buffer_construct_included)(&self_array[i], 
-                                             &self_array[i+1], 
-                                             (QUEX_NAME(LexatomLoader)*)0);
+    ptrdiff_t          i           = 0;
+    bool               success_f   = false;
+    ptrdiff_t          single_size = TotalSize / Depth;
+    QUEX_TYPE_LEXATOM* p;
+
+    QUEX_TYPE_LEXATOM* memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
+                                      TotalSize * sizeof(QUEX_TYPE_LEXATOM), 
+                                      E_MemoryObjectType_BUFFER_MEMORY);
+
+    QUEX_NAME(Buffer_construct)(&array[0], (QUEX_NAME(LexatomLoader)*)0,
+                                memory, TotalSize, 
+                                &memory[single_size-1],
+                                E_Ownership_LEXICAL_ANALYZER,
+                                (QUEX_NAME(Buffer)*)0);
+
+    for(p =  &array[0]._memory._front[1]; p != array[0].input.end_p; ++p) {
+        *p = (QUEX_TYPE_LEXATOM)('a' + i);
     }
 
-    return &self_array[Depth-1];
+    /* Ensure, that all buffers are split from the root buffer. */
+    MemoryManager_UnitTest.allocation_addmissible_f = false;
+
+    for(i=0; i<Depth-1 ; ++i) {
+        success_f = QUEX_NAME(Buffer_construct_included)(&array[i], 
+                                                         &array[i+1], 
+                                                         (QUEX_NAME(LexatomLoader)*)0);
+        hwut_verify(success_f);
+
+        array[i+1].input.end_p    = &array[i+1]._memory._front[single_size-1];
+        *(array[i+1].input.end_p) = (QUEX_TYPE_LEXATOM)0;
+
+        for(p =  &array[i+1]._memory._front[1]; p != array[i+1].input.end_p; ++p) {
+            *p = (QUEX_TYPE_LEXATOM)('a' + i);
+        }
+    }
+
+    MemoryManager_UnitTest.allocation_addmissible_f = true;
+
+    return &array[Depth-1];
 }
 
 static void
-self_destruct_reference(size_t Depth)
+self_destruct_setup(QUEX_NAME(Buffer)* array, size_t Depth)
 {
     ptrdiff_t i=0;
     for(i=Depth-1; i>=0 ; --i) {
-        QUEX_NAME(Buffer_destruct)(&self_array[i]);
+        QUEX_NAME(Buffer_destruct)(&array[i]);
     }
 }
-            
+
+static void
+self_test_single_migration(QUEX_NAME(Buffer)* reference, 
+                           QUEX_NAME(Buffer)* subject, 
+                           size_t             NewSize,
+                           ptrdiff_t*         shrink_n)
+{
+    //  QUEX_NAME(Buffer)*  root      = &self_reference[0];
+    // bool                verdict_f = (subject->input.end_p - root->_memory._front <= NewSize) ? true : false;
+    // E_Ownership         ownership = verdict_f ? E_Ownership_EXTERNAL : E_Ownership_LEXICAL_ANALYZER;
+    QUEX_TYPE_LEXATOM   new_memory[8192];
+
+    hwut_verify(NewSize < 8192);
+
+    MemoryManager_UnitTest.allocation_addmissible_f = false;
+
+    __quex_assert(subject->input.end_p >= subject->_memory._front);
+    __quex_assert(subject->input.end_p <= subject->_memory._back);
+
+    QUEX_NAME(Buffer_migrate_root)(subject, new_memory, NewSize, 
+                                   E_Ownership_EXTERNAL);
+
+    MemoryManager_UnitTest.allocation_addmissible_f = true;
+
+    /* hwut_verify(ownership == subject->_memory.ownership); */
+
+    if( common_verify(reference, subject) ) { *shrink_n += 1; }
+}
+

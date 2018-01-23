@@ -1,0 +1,1 @@
+<terminated: ((184)); shrinked: ((46)); allocated_byte_n: ((2937)); allocate_n: ((187)); free_n: ((187)); recursion_n: ((368))>
