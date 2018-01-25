@@ -227,57 +227,36 @@ QUEX_NAME(Buffer_shallow_copy)(QUEX_NAME(Buffer)* drain, const QUEX_NAME(Buffer)
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
-/* Allocates a chunk of memory that is 'SizeAdd' greater than the current size.
- * If 'SizeAdd' is negative a smaller chunk is allocated. However, if the 
- * resulting size is insufficient to hold the buffer's content, the function
- * refuses to operate. 
+QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me, 
+                                        float               Factor)
+/* Attempt to resize the current buffer to a size 's = Factor * current size'.
+ * If that fails, try to access memory that of a sizes in between the 's' and 
+ * the current sizes, i.e. 's = (s + current_size) / 2'. This is repeated until
+ * either memory can be allocated or 's == current_size'. The latter indicates
+ * failure. 
  *
- * The new chunk is allocated with 'E_Ownership_LEXICAL_ANALYZER', such that 
- * the memory is de-allocated upon destruction.
- *
- * RETURNS: true, in case of success.
+ * RETURNS: true, in case if a chunk of size 's' with 
+ *                'current_size < s <= Factor*current sizes'
+ *                could be found.
  *          false, else.                                                      */
 {
-    QUEX_TYPE_LEXATOM*  memory;
-    QUEX_TYPE_LEXATOM*  old_memory_root_p;
-    size_t              required_size;
-    size_t              new_size;
-    QUEX_NAME(Buffer)*  root = me;
-    QUEX_TYPE_LEXATOM*  old_content_end_p = me->input.end_p ? me->input.end_p : me->_memory._back;
-    
-    /* The 'Buffer_extend()' function cannot be called for an buffer which is
-     * currently including, i.e. has dependent buffers! It can only be called
-     * for the currently working buffer.                                      */
-    root              = QUEX_NAME(Buffer_find_root)(me);
-    old_memory_root_p = root->_memory._front;
-    required_size     = (size_t)(old_content_end_p - old_memory_root_p);
-    new_size          = (size_t)(&me->_memory._back[1] - old_memory_root_p + SizeAdd);
+    QUEX_NAME(Buffer)*  root         = QUEX_NAME(Buffer_find_root)(me);
+    ptrdiff_t           current_size = &me->_memory._back[1] - root->_memory._front;
+    /* Refuse negotiations where the requested amount of memory is greater
+     * than the total addressable space divided by 16.
+     * Addressable space = PTRDIFF_MAX * 2 => Max. size = PTRDIFF_MAX / 8     */
+    const ptrdiff_t     MaxSize      = PTRDIFF_MAX >> 3;
+    ptrdiff_t           new_size     = (ptrdiff_t)((float)(QUEX_MIN(current_size, MaxSize)) * Factor);
 
-    if( required_size <= new_size ) {
-        return false;
+    while( ! QUEX_NAME(Buffer_extend_root)(me, new_size - current_size) ) {
+        new_size = (current_size + new_size) >> 1;
+        if( new_size <= current_size ) {
+            return false;
+        }
     }
-    else if( SizeAdd <= 0 ) {
-        return false;
-    }
-
-    memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(new_size, 
-                                                                E_MemoryObjectType_BUFFER_MEMORY);
-    if( ! memory ) {
-        return false;
-    }
-    else if( ! QUEX_NAME(Buffer_migrate_root)(me, &memory[0], new_size, 
-                                              E_Ownership_LEXICAL_ANALYZER) ) {
-        (void)QUEXED(MemoryManager_free)(memory, 
-                                         E_MemoryObjectType_BUFFER_MEMORY);
-        return false;
-    }
-    else {
-        return true;
-    }
+    return true;
 }
 
-#if 0
 QUEX_INLINE bool
 QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
 /* Allocates a chunk of memory that is 'SizeAdd' greater than the current size.
@@ -291,8 +270,8 @@ QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
  * RETURNS: true, in case of success.
  *          false, else.                                                      */
 {
-    QUEX_TYPE_LEXATOM*  memory;
     QUEX_TYPE_LEXATOM*  old_memory_root_p;
+    QUEX_TYPE_LEXATOM*  new_memory_root_p;
     size_t              required_size;
     size_t              new_size;
     QUEX_NAME(Buffer)*  root = me;
@@ -306,15 +285,17 @@ QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     required_size     = (size_t)(old_content_end_p - old_memory_root_p);
     new_size          = (size_t)(&me->_memory._back[1] - old_memory_root_p + SizeAdd);
 
-    if( required_size <= new_size ) {
+    if( SizeAdd <= 0 ) {
         return false;
     }
-    else if( SizeAdd <= 0 ) {
+    else if( required_size >= new_size ) {
         return false;
     }
 
-    new_memory_root_p = QUEX_NAME(MemoryManager_reallocate)((void*)old_memory_root_p,
-                                                            sizeof(QUEX_TYPE_LEXATOM) * new_size);
+    new_memory_root_p = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_reallocate)(
+                                                (void*)old_memory_root_p,
+                                                sizeof(QUEX_TYPE_LEXATOM) * new_size,
+                                                E_MemoryObjectType_BUFFER_MEMORY);
 
     if( ! new_memory_root_p ) {
         /* Old memory object IS NOT DE-ALLOCATED.                             */
@@ -334,7 +315,6 @@ QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     root->_memory.ownership = E_Ownership_LEXICAL_ANALYZER;
     return true;
 }
-#endif 
 
 QUEX_INLINE bool
 QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,

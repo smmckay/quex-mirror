@@ -47,6 +47,11 @@ QUEX_NAMESPACE_QUEX_OPEN
 extern uint8_t*
 QUEXED_DEF(MemoryManager_allocate)(const size_t ByteN, E_MemoryObjectType);
 
+extern uint8_t*
+QUEXED_DEF(MemoryManager_reallocate)(void*              old_memory,
+                                     const size_t       NewByteN, 
+                                     E_MemoryObjectType Type);
+
 extern void 
 QUEXED_DEF(MemoryManager_free)(void* Obj, E_MemoryObjectType);
 

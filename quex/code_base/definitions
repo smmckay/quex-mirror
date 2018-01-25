@@ -70,6 +70,7 @@
 #   define __QUEX_STD_strcpy   std::strcpy
 #   define __QUEX_STD_strlen   std::strlen
 #   define __QUEX_STD_malloc   std::malloc
+#   define __QUEX_STD_realloc  std::realloc
 #   define __QUEX_STD_free     std::free  
 
 #   define QUEX_INLINE     inline
@@ -98,6 +99,7 @@
 #   define __QUEX_STD_strlen   strlen
 #   define __QUEX_STD_sprintf  sprintf
 #   define __QUEX_STD_malloc   malloc
+#   define __QUEX_STD_realloc  realloc
 #   define __QUEX_STD_free     free  
 
 #   define QUEX_INLINE             /* static */

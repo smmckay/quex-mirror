@@ -157,6 +157,8 @@ QUEX_INLINE void  QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffe
 /* Memory extend and migrate. */
 QUEX_INLINE bool  QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me,
                                                 ptrdiff_t           SizeAdd);
+QUEX_INLINE bool  QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me, 
+                                                          float               Factor);
 QUEX_INLINE bool  QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
                                                  QUEX_TYPE_LEXATOM*  memory,
                                                  const size_t        MemoryLexatomN,

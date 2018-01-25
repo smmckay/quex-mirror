@@ -1,0 +1,151 @@
+## COMMENT: The end state of the reallocation is checked via asserts.
+## COMMENT: The particular sequence of accept/refusal sizes is indifferent.
+## COMMENT: Important is the final 'verdict'.
+
+---( initial size: 4; target size: 8; reallocation limit: 0 [byte]; )---
+Reallocate: refuse 8;
+Reallocate: refuse 6;
+Reallocate: refuse 5;
+verdict: false;
+
+---( initial size: 4; target size: 8; reallocation limit: 1 [byte]; )---
+Reallocate: refuse 8;
+Reallocate: refuse 6;
+Reallocate: refuse 5;
+verdict: false;
+
+---( initial size: 4; target size: 8; reallocation limit: 3 [byte]; )---
+Reallocate: refuse 8;
+Reallocate: refuse 6;
+Reallocate: refuse 5;
+verdict: false;
+
+---( initial size: 4; target size: 8; reallocation limit: 4 [byte]; )---
+Reallocate: refuse 8;
+Reallocate: refuse 6;
+Reallocate: refuse 5;
+verdict: false;
+
+---( initial size: 4; target size: 8; reallocation limit: 5 [byte]; )---
+Reallocate: refuse 8;
+Reallocate: refuse 6;
+Reallocate: done 5;
+verdict: true;
+
+---( initial size: 4; target size: 8; reallocation limit: 7 [byte]; )---
+Reallocate: refuse 8;
+Reallocate: done 6;
+verdict: true;
+
+---( initial size: 4; target size: 8; reallocation limit: 8 [byte]; )---
+Reallocate: done 8;
+verdict: true;
+
+---( initial size: 4; target size: 8; reallocation limit: 9 [byte]; )---
+Reallocate: done 8;
+verdict: true;
+
+---( initial size: 4; target size: 8; reallocation limit: -1 [byte]; )---
+Reallocate: done 8;
+verdict: true;
+
+---( initial size: 5; target size: 10; reallocation limit: 0 [byte]; )---
+Reallocate: refuse 10;
+Reallocate: refuse 7;
+Reallocate: refuse 6;
+verdict: false;
+
+---( initial size: 5; target size: 10; reallocation limit: 1 [byte]; )---
+Reallocate: refuse 10;
+Reallocate: refuse 7;
+Reallocate: refuse 6;
+verdict: false;
+
+---( initial size: 5; target size: 10; reallocation limit: 4 [byte]; )---
+Reallocate: refuse 10;
+Reallocate: refuse 7;
+Reallocate: refuse 6;
+verdict: false;
+
+---( initial size: 5; target size: 10; reallocation limit: 5 [byte]; )---
+Reallocate: refuse 10;
+Reallocate: refuse 7;
+Reallocate: refuse 6;
+verdict: false;
+
+---( initial size: 5; target size: 10; reallocation limit: 6 [byte]; )---
+Reallocate: refuse 10;
+Reallocate: refuse 7;
+Reallocate: done 6;
+verdict: true;
+
+---( initial size: 5; target size: 10; reallocation limit: 9 [byte]; )---
+Reallocate: refuse 10;
+Reallocate: done 7;
+verdict: true;
+
+---( initial size: 5; target size: 10; reallocation limit: 10 [byte]; )---
+Reallocate: done 10;
+verdict: true;
+
+---( initial size: 5; target size: 10; reallocation limit: 11 [byte]; )---
+Reallocate: done 10;
+verdict: true;
+
+---( initial size: 5; target size: 10; reallocation limit: -1 [byte]; )---
+Reallocate: done 10;
+verdict: true;
+
+---( initial size: 6; target size: 12; reallocation limit: 0 [byte]; )---
+Reallocate: refuse 12;
+Reallocate: refuse 9;
+Reallocate: refuse 7;
+verdict: false;
+
+---( initial size: 6; target size: 12; reallocation limit: 1 [byte]; )---
+Reallocate: refuse 12;
+Reallocate: refuse 9;
+Reallocate: refuse 7;
+verdict: false;
+
+---( initial size: 6; target size: 12; reallocation limit: 5 [byte]; )---
+Reallocate: refuse 12;
+Reallocate: refuse 9;
+Reallocate: refuse 7;
+verdict: false;
+
+---( initial size: 6; target size: 12; reallocation limit: 6 [byte]; )---
+Reallocate: refuse 12;
+Reallocate: refuse 9;
+Reallocate: refuse 7;
+verdict: false;
+
+---( initial size: 6; target size: 12; reallocation limit: 7 [byte]; )---
+Reallocate: refuse 12;
+Reallocate: refuse 9;
+Reallocate: done 7;
+verdict: true;
+
+---( initial size: 6; target size: 12; reallocation limit: 11 [byte]; )---
+Reallocate: refuse 12;
+Reallocate: done 9;
+verdict: true;
+
+---( initial size: 6; target size: 12; reallocation limit: 12 [byte]; )---
+Reallocate: done 12;
+verdict: true;
+
+---( initial size: 6; target size: 12; reallocation limit: 13 [byte]; )---
+Reallocate: done 12;
+verdict: true;
+
+---( initial size: 6; target size: 12; reallocation limit: -1 [byte]; )---
+Reallocate: done 12;
+verdict: true;
+
+shrinked:              ((0));
+allocated_byte_n:      ((135));
+allocate_n:            ((27));
+free_n:                ((27));
+reallocated_byte_n:    ((130));
+reallocated_refusal_n: ((45));

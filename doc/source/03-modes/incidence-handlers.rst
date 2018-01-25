@@ -183,6 +183,9 @@ the three handlers shown below.
        In case of error, an error code *must* be set in the ``on_buffer_overflow``
        handler. Otherwise, the lexer has no way to know that it has to stop. 
 
+   TODO: elaborate: "In particular, when filling the buffer manually, a re-allocation may
+   not be wanted"
+
 .. data:: on_buffer_before_change
 
    Implicit Arguments: ``self``, ``BufferBegin``, ``BufferEnd``.
@@ -229,6 +232,9 @@ the three handlers shown below.
 
              If ``undo()`` is not used, the letter consumed by ``on_failure``
              is not available to the patterns of mode ``NEW_MODE``. 
+
+      TODO: Raising of the 'E_Error_OnFailure' flag in case of manual 
+            provision of the handler.
 
    .. note::
 

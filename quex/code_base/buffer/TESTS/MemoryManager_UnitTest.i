@@ -18,9 +18,17 @@ QUEX_NAMESPACE_QUEX_OPEN
 typedef struct {
     int allocation_n;
     int allocated_byte_n;
+
+    int reallocated_byte_n;
+    int reallocated_refusal_n;
+
     int free_n;
 
     int allocation_addmissible_f;
+
+    int reallocate_limit_byte_n;
+    int reallocate_verbose_f;
+
     int forbid_ByteLoader_f;
     int forbid_LexatomLoader_f;
     int forbid_BufferMemory_f;
@@ -76,6 +84,30 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
     __QUEX_STD_printf("allocate: { adr: ((%p)); size: %i; }\n", (void*)me, (int)ByteN);
 #   endif
     return me;
+}
+
+uint8_t*
+QUEXED_DEF(MemoryManager_reallocate)(void*              old_memory,
+                                     const size_t       NewByteN, 
+                                     E_MemoryObjectType Type)
+{
+    void* result_p;
+
+    if( NewByteN > MemoryManager_UnitTest.reallocate_limit_byte_n ) {
+        MemoryManager_UnitTest.reallocated_refusal_n += 1;
+        if( MemoryManager_UnitTest.reallocate_verbose_f ) {
+            __QUEX_STD_printf("Reallocate: refuse %i;\n", (int)NewByteN);
+        }
+        return (uint8_t*)0;
+    }
+    else {
+        MemoryManager_UnitTest.reallocated_byte_n += NewByteN;
+        result_p = __QUEX_STD_realloc(old_memory, NewByteN);
+        if( MemoryManager_UnitTest.reallocate_verbose_f ) {
+            __QUEX_STD_printf("Reallocate: done %i;\n", (int)NewByteN);
+        }
+        return (uint8_t*)result_p;
+    }
 }
        
 void 

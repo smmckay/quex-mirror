@@ -168,7 +168,7 @@ common_verify(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
                     == subject->_memory.including_buffer->_memory._back   - subject->_memory.including_buffer->_memory._front);
 
         common_verify(reference->_memory.including_buffer, 
-                    subject->_memory.including_buffer);
+                      subject->_memory.including_buffer);
 
     }
     else {

@@ -109,24 +109,10 @@ $$ON_BUFFER_OVERFLOW$$
 """                         
 
 on_buffer_overflow_DEFAULT = """
-    /* DEFAULT: Try to assign a buffer that is twice as large as the current.
-     *          If that fails, try a buffer that lies in between the double size
-     *          and the current sizes, etc. in a bisectioning way. 
-     * 
-     * Only if the new size reaches the current size, the re-allocation is 
-     * considered to have failed and an error code is set.                    */
-
-    QUEX_NAME(Buffer)*  root         = QUEX_NAME(Buffer_find_root)(&self.buffer);
-    ptrdiff_t           current_size = self.buffer._memory._back - root->_memory._front;
-    ptrdiff_t           new_size     = QUEX_MAX(current_size, PTRDIFF_MAX>>1) << 1;
-
-    while( ! QUEX_NAME(Buffer_extend_root)(&self.buffer, new_size - current_size) ) {
-        new_size = (current_size + new_size) >> 1;
-        if( new_size <= current_size ) {
-            QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
-            QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
-            break;
-        }
+    /* Try to double the size of the buffer, by default.                      */
+    if( ! QUEX_NAME(Buffer_negotiate_extend_root)(&self.buffer, 2.0) ) {
+        QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+        QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
     }
 """                         
 

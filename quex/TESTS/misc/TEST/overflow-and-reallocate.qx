@@ -1,0 +1,27 @@
+token { A; }
+mode X : <skip: [\n]> { 
+
+    [abc]+ { 
+        printf("number of digits: %i (buffer size: %i)\n", 
+               (int)strlen(Lexeme),
+               (int)(&self.buffer._memory._back[1] - self.buffer._memory._front)); 
+    }
+
+    @[a-z\-\.012]+ {
+        printf(">> include %s;\n", &Lexeme[1]);
+        QUEX_NAME(include_push_file_name)(&self, &Lexeme[1], 0x0);
+    }
+
+    on_failure {
+        printf("failed: '%s'\n", Lexeme);
+        QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnFailure);
+    }
+
+    on_end_of_stream {
+        if( QUEX_NAME(include_pop)(&self) == false ) 
+           self_send(QUEX_TKN_TERMINATION);
+        else 
+           printf("<< include");
+    }
+
+} 
