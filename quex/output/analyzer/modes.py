@@ -100,9 +100,8 @@ $on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */)
 {
     const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[-1] 
-                                                    - &self.buffer._memory._front[1] 
-                                                    - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N));
+    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[1] 
+                                                    - self.buffer._memory._front);
 $$ON_BUFFER_OVERFLOW$$
     (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
 }

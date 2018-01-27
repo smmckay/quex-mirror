@@ -658,6 +658,8 @@ demo/C/TEST                                                          <no date>
                                                                                
 demo/Cpp/TEST                                                        <no date>
 -------------------------------------------------------------------------------
+ * --hwut-info:
+        tmp.sh .............................................[NO GOOD FILE]
  * 00-Minimalist
         00-Minimalist.sh .............................................[OK]
  * No references to C demos
@@ -779,10 +781,12 @@ demo/Cpp/TEST                                                        <no date>
     Multiple Lexical Analyzers -- shared token
         14-MultipleLexersSameToken.sh DEBUG ..........................[OK]
                                       NDEBUG .........................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] tmp.sh
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -1010,7 +1014,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ................................[KEYBOARD_INTERRUPT]
+        svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
@@ -1022,7 +1026,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ..................[KEYBOARD_INTERRUPT]
+        include_guard.py convention ................................[FAIL]
                          undefinition ................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
@@ -1327,8 +1331,8 @@ quex/TESTS/misc/TEST                                                 <no date>
                        skip_nested_range .............................[OK]
                        skip_range ....................................[OK]
  * Provoque overflow and automatic buffer resize
-        overflow-and-reallocate.sh included ................[NO GOOD FILE]
-                                   plain ...................[NO GOOD FILE]
+        overflow-and-reallocate.sh included ..........................[OK]
+                                   plain .............................[OK]
  * Respect max. recursion depth upon base mode inclusion.
         huge-inheritance.sh ..........................................[OK]
  * Test code comments
@@ -1336,13 +1340,10 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Testing the implementation of line number pragmas
         line-number-pragma.sh qx .....................................[OK]
                               source .................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] overflow-and-reallocate.sh _ included
-                                    \__ plain
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -3304,8 +3305,7 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] overflow-and-reallocate.sh _ included
-                                            \__ plain
+    [NO GOOD FILE] tmp.sh
 ===============================================================================
 
 SUMMARY:
@@ -3314,7 +3314,7 @@ SUMMARY:
 
            238     [OK] TEST                                                          
            57      [OK] demo/C/TEST                                                   
-           57      [OK] ..../Cpp/TEST                                                 
+        1  58    [FAIL] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
         3  15    [FAIL] ........../code/TEST                                          
@@ -3328,7 +3328,7 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-        2  14    [FAIL] ........../misc/TEST                                          
+           14      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            16      [OK] ........../source-package/TEST                                
            1       [OK] ........../token-class/TEST                                   
@@ -3372,11 +3372,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           __             
-    |  ___|_ _(_) |___      / /_      __  __
-    | |_ / _` | | / __|    | '_ \     \ \/ /
-    |  _| (_| | | \__ \    | (_) |     >  < 
-    |_|  \__,_|_|_|___/     \___/     /_/\_\
-                                                                   (1681 tests)
+     _____     _ _          ____             
+    |  ___|_ _(_) |___     | ___|      __  __
+    | |_ / _` | | / __|    |___ \      \ \/ /
+    |  _| (_| | | \__ \     ___) |      >  < 
+    |_|  \__,_|_|_|___/    |____/      /_/\_\
+                                                                   (1682 tests)
 
 ===============================================================================

@@ -9,7 +9,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 
-if [[ $2 == "FIRST" ]]; then
+if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
     make clean >& /dev/null
 fi
 
@@ -20,7 +20,7 @@ rm tmp.txt
 ./bug-1935701.exe $1
 
 # cleansening
-if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
+if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
     make clean >& /dev/null
 fi
 cd $tmp

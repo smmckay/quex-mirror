@@ -1,3 +1,19 @@
+-- Easy include pattern:
+
+    @[a-z/\-\.012]+ {
+        printf(">> include %s;\n", &Lexeme[1]);
+        QUEX_NAME(include_push_file_name)(&self, &Lexeme[1], 0x0);
+    }
+    on_end_of_stream {
+        if( QUEX_NAME(include_pop)(&self) == false ) {
+           QUEX_NAME(error_code_clear)(&self);
+           self_send(QUEX_TKN_TERMINATION);
+        }
+        else { 
+           printf("<< include\n");
+        }
+    }
+
 @article{donnelly2004bison,
     title={Bison. the yacc-compatible parser generator},
     author={Donnelly, Charles and Stallman, Richard},

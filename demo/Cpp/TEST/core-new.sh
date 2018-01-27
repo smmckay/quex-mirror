@@ -15,7 +15,7 @@ current_dir=`pwd`
 
 cd $test_dir
 
-if [[ "$first_f" == "FIRST" ]]; then
+if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
     make clean >& /dev/null
 fi
 # In any case delete existing object files, and executables
@@ -56,7 +56,7 @@ rm -f tmp-stdout.txt tmp-stdout0.txt
 rm -f tmp-make.txt   tmp-make0.txt
 
 # Clean up ____________________________________________________________________
-if [[ $last_f == "LAST" ]]; then
+if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
     make clean >& /dev/null
 fi
 

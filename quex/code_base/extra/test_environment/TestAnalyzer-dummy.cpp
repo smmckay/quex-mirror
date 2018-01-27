@@ -206,13 +206,16 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 {
     const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[-1] 
-                                                    - &self.buffer._memory._front[1] 
-                                                    - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N));
-    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
-    QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[1] 
+                                                    - self.buffer._memory._front);
 
-QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
+    /* Try to double the size of the buffer, by default.                      */
+    if( ! QUEX_NAME(Buffer_negotiate_extend_root)(&self.buffer, 2.0) ) {
+        QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+        QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
+    }
+
+    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
 }
 #undef self
 #undef LexemeNull
@@ -611,7 +614,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 615 "TestAnalyzer.cpp"
+#   line 618 "TestAnalyzer.cpp"
 
 }
 RETURN;

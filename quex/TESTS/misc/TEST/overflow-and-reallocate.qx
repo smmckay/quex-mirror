@@ -7,7 +7,7 @@ mode X : <skip: [\n]> {
                (int)(&self.buffer._memory._back[1] - self.buffer._memory._front)); 
     }
 
-    @[a-z\-\.012]+ {
+    @[a-z/\-\.012]+ {
         printf(">> include %s;\n", &Lexeme[1]);
         QUEX_NAME(include_push_file_name)(&self, &Lexeme[1], 0x0);
     }
@@ -18,10 +18,13 @@ mode X : <skip: [\n]> {
     }
 
     on_end_of_stream {
-        if( QUEX_NAME(include_pop)(&self) == false ) 
+        if( QUEX_NAME(include_pop)(&self) == false ) {
+           QUEX_NAME(error_code_clear)(&self);
            self_send(QUEX_TKN_TERMINATION);
-        else 
-           printf("<< include");
+        }
+        else { 
+           printf("<< include\n");
+        }
     }
 
 } 

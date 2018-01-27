@@ -1,0 +1,35 @@
+## Disable this message by compile option
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##
+## Asserts activated! Lexical analyzer is 'paranoid'!
+## => Even smallest misbehavior causes program exit.
+##    This helps to find subtle errors.
+##
+## Note however: the paranoia is a heavy load on performance!
+##
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+##
+## Report any bug at
+##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
+,-----------------------------------------------------------------
+| [START]
+number of digits: 1 (buffer size: 4)
+>> include data/overflow-and-reallocate-include-1.txt;
+number of digits: 1 (buffer size: 4)
+>> include data/overflow-and-reallocate-include-0-very-very-very-very-long-file-name.txt;
+number of digits: 1 (buffer size: 4)
+number of digits: 2 (buffer size: 8)
+number of digits: 3 (buffer size: 8)
+number of digits: 4 (buffer size: 8)
+<< include
+<< include
+number of digits: 2 (buffer size: 64)
+>> include data/overflow-and-reallocate-include-0-very-very-very-very-long-file-name.txt;
+number of digits: 1 (buffer size: 4)
+number of digits: 2 (buffer size: 8)
+number of digits: 3 (buffer size: 8)
+number of digits: 4 (buffer size: 8)
+<< include
+<TERMINATION>
+| [END] number of token = 1
+`-----------------------------------------------------------------

@@ -197,7 +197,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
 
     move_distance = QUEX_NAME(Buffer_load_prepare_backward)(me);
 
-    if( ! move_distance ) {
+    if( 0 == move_distance ) {
         return E_LoadResult_FAILURE;
     }
 
@@ -410,7 +410,7 @@ QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
 
     move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(me, &move_begin_p);
 
-    if( ! move_distance ) {
+    if( 0 == move_distance ) {
         if(    me->input.end_p >= me->_memory._back 
             && me->_read_p     == me->input.end_p ) {
             /* No free space can be provided for loading new content. This is 
@@ -501,13 +501,13 @@ QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
-    if( me->input.lexatom_index_begin == 0 ) {
+    if( 0 == me->input.lexatom_index_begin ) {
         return 0;
     }
     
     move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(me);
 
-    if( ! move_distance ) {
+    if( 0 == move_distance ) {
         return 0;
     }
     else if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {

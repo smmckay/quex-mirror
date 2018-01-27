@@ -14,7 +14,7 @@ case $1 in
              --language C --debug-exception 
         gcc -I$QUEX_PATH Simple.c $q/TEST/lexer.c -I. \
             -DQUEX_OPTION_DEBUG_SHOW -DQUEX_SETTING_BUFFER_SIZE=15 -o debug_show
-        ./debug_show debug_show.txt 2>&1 \
+        ./debug_show data/debug_show.txt 2>&1 \
             | sed -e 's/:[0-9]\+:/:LineNumber:/g' > tmp.txt
         # cat tmp.txt | awk '! (/state_key/ || /template/ || /path/) { print $0; }'
         echo "____________________________________________________________________"

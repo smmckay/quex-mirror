@@ -14,7 +14,7 @@ function observe() {
     $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$1  | grep -v '^\#\#'
 }
 
-if [[ "$2" == "FIRST" ]]; then
+if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
     make_silent clean
 fi
 
@@ -65,4 +65,6 @@ esac
 
 cat tmp.txt | grep -v '^\#\#'
 
-make_silent clean 
+if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
+    make_silent clean 
+fi

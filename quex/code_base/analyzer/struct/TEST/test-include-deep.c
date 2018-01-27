@@ -26,7 +26,8 @@ int                    self_total_n = 0;
 
 static void      self_run(ptrdiff_t Depth);
 static void      self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN);
-static bool      do_action(uint32_t n);
+static bool      self_include_push(uint32_t n);
+static void      self_include_pop(quex_TestAnalyzer* lx);
 static void      self_setup_pointers(uint32_t n);
 static ptrdiff_t self_find_include_depth();
 
@@ -101,7 +102,7 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
 
     for(i=0; i<MaxDepth; ++i) {
         n = hwut_random_next(n);
-        if( ! do_action(n) ) {
+        if( ! self_include_push(n) ) {
             /* Too many file descriptors can only occur if i >> 0 */
             hwut_verify(i > 0);
             QUEX_NAME(error_code_clear)(lx);
@@ -112,7 +113,7 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
     hwut_verify(self_find_include_depth() == depth);
 
     for(i=0; i<PopN; ++i) {
-        QUEX_NAME(include_pop)(lx);
+        self_include_pop(lx);
         if( i < depth ) hwut_verify(lx->error_code == E_Error_None);
         else            hwut_verify(lx->error_code == E_Error_IncludePopOnEmptyStack);
     }
@@ -121,10 +122,11 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
 }
 
 static bool 
-do_action(uint32_t n)
+self_include_push(uint32_t n)
 {
     QUEX_NAME(ByteLoader)* byte_loader;
     QUEX_NAME(Converter)*  converter;
+    QUEX_NAME(Buffer_event_callbacks) backup_callbacks = lx->buffer.event; 
 
     /* Setup the pointers, so that the inclusion type varries.
      * => usage of current buffer for the included buffer.                    */
@@ -156,6 +158,9 @@ do_action(uint32_t n)
         break;
     }
 
+    /* Ensure, that event handlers are copied around propperly.                      */
+    hwut_verify(memcmp((void*)&backup_callbacks, (void*)&lx->buffer.event, sizeof(backup_callbacks)) == 0);
+
     if( lx->buffer._memory.ownership == E_Ownership_INCLUDING_BUFFER ) self_split_n += 1;
     self_total_n += 1;
 
@@ -164,6 +169,18 @@ do_action(uint32_t n)
     case E_Error_Allocation_ByteLoader_Failed: return false; /* Too many file descr. */
     default:                                   hwut_verify(false); return false;
     }
+}
+
+
+static void      
+self_include_pop(quex_TestAnalyzer* lx)
+{
+    QUEX_NAME(Buffer_event_callbacks)  backup_callbacks = lx->buffer.event;
+
+    QUEX_NAME(include_pop)(lx);
+
+    /* Ensure, that event handlers are copied around propperly.                      */
+    hwut_verify(memcmp((void*)&backup_callbacks, (void*)&lx->buffer.event, sizeof(backup_callbacks)) == 0);
 }
 
 static void

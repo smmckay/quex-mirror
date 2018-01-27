@@ -183,6 +183,8 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     QUEX_NAME(Buffer_construct)(included, filler, memory, memory_size, 
                                 (QUEX_TYPE_LEXATOM*)0, ownership, 
                                 including_buffer_p);
+    
+    included->event = including->event;               /* Plain copy suffices. */
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(included);
     QUEX_BUFFER_ASSERT_CONSISTENCY(including);
@@ -246,7 +248,8 @@ QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me,
      * than the total addressable space divided by 16.
      * Addressable space = PTRDIFF_MAX * 2 => Max. size = PTRDIFF_MAX / 8     */
     const ptrdiff_t     MaxSize      = PTRDIFF_MAX >> 3;
-    ptrdiff_t           new_size     = (ptrdiff_t)((float)(QUEX_MIN(current_size, MaxSize)) * Factor);
+    const ptrdiff_t     MinSize      = 4;
+    ptrdiff_t           new_size     = (ptrdiff_t)((float)(QUEX_MAX(MinSize, QUEX_MIN(MaxSize, current_size))) * Factor);
 
     while( ! QUEX_NAME(Buffer_extend_root)(me, new_size - current_size) ) {
         new_size = (current_size + new_size) >> 1;

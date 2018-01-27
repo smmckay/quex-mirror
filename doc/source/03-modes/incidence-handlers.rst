@@ -1,10 +1,10 @@
 Incidence Handlers
 ==================
 
-Several incidences [#f1]_ may occur during lexical analysis. The user may
-react to those incidences with hand written code in so called 'incidence
-handlers'. They are specified inside a mode definition and follow the
-example of ``on_some_incidence`` shown below in the mode 'EXAMPLE'.::
+In order to customize a lexer's reaction to incidences so called incidence
+handlers may be specified [#f1]_. They are specified inside a mode definition
+and follow the example of ``on_some_incidence`` shown below in the mode
+'EXAMPLE'.::
 
     mode EXAMPLE {
         on_some_incidence {
@@ -12,43 +12,46 @@ example of ``on_some_incidence`` shown below in the mode 'EXAMPLE'.::
         }
     }
 
-Some incidence handlers receive additional information delivered as 'implicit
-arguments'. Those are accessible variables are prepared without being
-explicitly defined in the source code fragment itself.  In the documentation
-below implicit variables are explained once at their first occurrence. An
-implicit argument of a distinct name has the same meaning in all incidence
-handlers where it appears. 
+The following subsections group the explanations of incidence handlers by
+subject.  Some incidence handlers receive additional 'implicit arguments'.  The
+are specified as if they were function arguments. The meaning of names used as
+implicit arguments is given at the entry of each subsection. 
 
 Mode Entry and Exit
 ^^^^^^^^^^^^^^^^^^^
 
-Upon mode entry and exit the following two incidence handlers are executed.
+Upon mode entry and exit the incidence handlers ``on_entry`` and ``on_exit``
+are executed. The following implicit arguments may be passed along.
 
-.. data:: on_entry
+.. variable:: QUEX_NAME(Mode)* FromMode
 
-    Implicit Argument: ``FromMode``
+   A pointer to the mode object of the mode *from* where the current mode is
+   entered.
+
+.. variable:: QUEX_NAME(Mode)* ToMode
+
+   A pointer to the mode object of the mode *to* where the current mode leaves.
+
+The incidence handlers for entry and exit are:
+
+.. function:: on_entry(FromMode)
 
     Incidence handler to be executed on entrance of the mode. This happens as a
-    reaction to mode transitions. ``FromMode`` is the mode from which the
-    current mode is entered.
+    reaction to mode transitions. 
 
-.. data:: on_exit
-
-    Implicit Argument: ``ToMode``
+.. function:: on_exit(ToMode)
 
     Incidence handler to be executed on exit of the mode. This happens as a
-    reaction to mode transitions. The variable ``ToMode`` contains the mode to
-    which the mode is left.
+    reaction to mode transitions. 
 
-The incidence handlers are called from inside the member function
-``self_enter_mode()``. ``on_exit`` is called before the mode transition is
-accomplished. ``on_entry`` is called when the new mode has been set. Sending
-tokens from inside the entry/exit handlers is is possible. However, the lexical
-analyzer does not return immediately. If the 'single token' policy is used, a
-token being sent might be overwritten if another sending occurs before return
-from the token-receive function.  If the 'token queue' policy is used, it must
-be chosen large enough to store tokens of all possible transition scenarios.
-
+The incidence handlers are triggered whenever the user triggers a mode
+transition. This may happen by explicit function calls to such
+``self_enter_mode()``, or one of the commands ``GOTO``. ``GOSUB``, or ``GOUP``.
+``on_exit`` is called before the mode transition is accomplished. ``on_entry``
+is called when the new mode has been set. Sending tokens from inside the
+entry/exit handlers is is possible. However, the lexical analyzer does not
+return immediately as it does when pattern matched. Tokens which are sent from
+inside these handlers are stacked in the token queue. 
 
 Pattern Matching
 ^^^^^^^^^^^^^^^^
@@ -56,14 +59,16 @@ Pattern Matching
 The following two incidence handlers make it possible to specify actions to be
 executed before and after the match specific actions. 
 
-.. data:: on_match
+.. variable:: QUEX_TYPE_LEXATOM* Lexeme
+.. variable:: size_t             LexemeL
+.. variable:: QUEX_TYPE_LEXATOM* LexemeBegin
+.. variable:: QUEX_TYPE_LEXATOM* LexemeEnd
 
-    Implicit Arguments: ``Lexeme``, ``LexemeL``, ``LexemeBegin``, ``LexemeEnd``.
+.. function:: on_match(Lexeme, LexemeBegin, LexemeEnd, LexemeL)
 
-    This incidence handler is executed on every match.  It is executed *before*
-    the pattern-action is executed that is related to the matching pattern. The
-    implicit arguments allow access to the matched lexeme and correspond to
-    what is passed to pattern-actions.
+    This incidence handler is executed on every match *before* the pattern's
+    action is executed.  Implicit arguments allow access to the matched lexeme
+    and correspond to what is passed to pattern-actions.
 
     ``Lexeme`` gives a pointer to a zero-terminated string that carries the
     matching lexeme. ``LexemeL`` is the lexeme's length. ``LexemeBegin`` gives
@@ -71,9 +76,7 @@ executed before and after the match specific actions.
     zero-terminated.  ``LexemeEnd`` points to the first lexatom after the last
     lexatom in the lexeme.
 
-.. data:: on_after_match
-
-    Implicit Arguments: ``Lexeme``, ``LexemeL``, ``LexemeBegin``, ``LexemeEnd``.
+.. function:: on_after_match(Lexeme, LexemeBegin, LexemeEnd, LexemeL)
 
     The ``on_after_match`` handler is executed at every pattern match.
     Contrary to ``on_match`` it is executed *after* the action of the winning
@@ -108,30 +111,15 @@ Using ``RETURN`` or ``CONTINUE`` triggers a direct jump to the
    executed in that case.
 
 
-Matching and Buffer Loading
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Buffer Handling
+^^^^^^^^^^^^^^^
 
-The incident of a input stream termination or a match failure can be handled by
-the three handlers shown below.
+.. variables:: self
+.. variables:: LexemeBegin
+.. variables:: LexemeEnd
+.. variables:: BufferSize
 
-.. data:: on_end_of_stream
-
-   Incidence handler for the case that the end of file, or end of stream is reached.
-   By means of this handler the termination of lexical analysis, or the return
-   to an including file can be handled. This is equivalent to the ``<<EOF>>`` 
-   pattern.
-
-.. data:: on_load_failure
-
-   Buffer loading failed for some unspecific reason. Under 'normal' conditions,
-   this error must never occurr. However, it may occurr for example if a file
-   is changed in the background, or someone inadvertedly tempered with the
-   analyzers data structures, or if a defective low-level file system driver is
-   used.
-
-.. data:: on_buffer_overflow
-
-   Implicit Arguments: ``self``, ``LexemeBegin``, ``LexemeEnd``, and ``BufferSize``.
+.. function:: on_buffer_overflow(self, LexemeBegin, LexemeEnd, BufferSize, BufferBegin, BufferEnd)
 
    The reload process always tries to maintain the current lexeme inside the
    buffer. If the lexeme becomes as large as the buffer itself no new content
@@ -159,7 +147,8 @@ the three handlers shown below.
    The current buffer is available via ``self.buffer``. In particular the
    following two functions might be used to assing new memory or to extend it.
 
-   .. function:: bool QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
+   .. function:: bool QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, 
+                                                    ptrdiff_t           SizeAdd)
 
       Attempts to allocate new memory for the buffer and migrates the
       content to the new memory. Returns ``false`` if and only if that
@@ -186,15 +175,30 @@ the three handlers shown below.
    TODO: elaborate: "In particular, when filling the buffer manually, a re-allocation may
    not be wanted"
 
-.. data:: on_buffer_before_change
 
-   Implicit Arguments: ``self``, ``BufferBegin``, ``BufferEnd``.
+.. function:: on_buffer_before_change(self, BufferBegin, BufferEnd)
 
    The reload process always tries to maintain the current lexeme inside the
    buffer. If the lexeme becomes as large as the buffer itself, no reload can
    happen. In the case that the reload failed due to a lexeme being too long
    this handler is executed. Consider enlarging the buffer or using skippers
    which do not maintain the lexeme.
+
+
+Failures and End of Stream
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When it is impossible to match at a given position, when a lexatom appears that
+is unknown to the current encoding, and when the input stream terminates, then
+it lexer is in a state where it cannot continue. To handle these cases, the
+following incidence handlers may be provided.
+
+.. data:: on_end_of_stream
+
+   Incidence handler for the case that the end of file, or end of stream is reached.
+   By means of this handler the termination of lexical analysis, or the return
+   to an including file can be handled. This is equivalent to the ``<<EOF>>`` 
+   pattern.
 
 .. data:: on_failure
 
@@ -268,6 +272,14 @@ the three handlers shown below.
          my_lexer.receive(&token);
          if( my_lexer.on_failure_exception_f ) abort();
          ...
+
+.. data:: on_load_failure
+
+   Buffer loading failed for some unspecific reason. Under 'normal' conditions,
+   this error must never occurr. However, it may occurr for example if a file
+   is changed in the background, or someone inadvertedly tempered with the
+   analyzers data structures, or if a defective low-level file system driver is
+   used.
 
 .. data:: on_bad_lexatom
 

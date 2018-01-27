@@ -10,7 +10,7 @@ echo "## Buffer Size = $1"
 tmp=`pwd`
 cd $bug/ 
 
-if [[ $2 == "FIRST" ]]; then
+if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
     make clean
 else
     make mostlyclean
@@ -21,7 +21,8 @@ make BUFFER_SIZE=$1 >& /dev/null
 valgrind --leak-check=full ./lexer error-example.txt >& tmp.txt
 python ../show-valgrind.py
 rm tmp.txt
-if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
+
+if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
     make clean
 else
     make mostlyclean

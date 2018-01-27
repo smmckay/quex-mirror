@@ -6,18 +6,15 @@ if [[ $1 == "--hwut-info" ]]; then
 fi
 cd $QUEX_PATH/demo/C/11-ManualBufferFilling
 
-if [[ "$2" == "FIRST" ]]; then
+if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
     make clean >& /dev/null
-fi
-if [ -z "$2" ]; then
-    make clean
 fi
 
 $QUEX_PATH/TEST/call-make.sh $1.exe
 $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$1.exe 
 cat tmp.txt; rm -f tmp.txt
 
-if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
+if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
     make clean >& /dev/null
 fi
 

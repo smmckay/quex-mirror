@@ -206,13 +206,16 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 {
     const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[-1] 
-                                                    - &self.buffer._memory._front[1] 
-                                                    - (ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N));
-    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
-    QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[1] 
+                                                    - self.buffer._memory._front);
 
-QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
+    /* Try to double the size of the buffer, by default.                      */
+    if( ! QUEX_NAME(Buffer_negotiate_extend_root)(&self.buffer, 2.0) ) {
+        QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+        QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
+    }
+
+    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
 }
 #undef self
 #undef LexemeNull
@@ -619,7 +622,7 @@ self_send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 623 "TestAnalyzer.c"
+#   line 626 "TestAnalyzer.c"
 
 }
 RETURN;
@@ -853,7 +856,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 857 "TestAnalyzer.c"
+#   line 860 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -884,7 +887,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 888 "TestAnalyzer.c"
+#   line 891 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -930,7 +933,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 934 "TestAnalyzer.c"
+#   line 937 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -1017,7 +1020,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 1021 "TestAnalyzer.c"
+#   line 1024 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1038,7 +1041,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 1042 "TestAnalyzer.c"
+#   line 1045 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1057,7 +1060,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1061 "TestAnalyzer.c"
+#   line 1064 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1132,7 +1135,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1136 "TestAnalyzer.c"
+#   line 1139 "TestAnalyzer.c"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

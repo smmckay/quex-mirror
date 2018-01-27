@@ -376,11 +376,15 @@ self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
     backup.buffer._memory.including_buffer = lx->buffer._memory.including_buffer;
     //hwut_verify(0 == memcmp((void*)&backup.buffer,               (void*)&lx->buffer, 1));
     hwut_verify(0 == memcmp((void*)&backup._token_queue,         (void*)&lx->_token_queue, 1));
-    hwut_verify(0 == memcmp((void*)&backup.__memory_token_queue, (void*)&lx->__memory_token_queue, 1));
     hwut_verify(0 == memcmp((void*)&backup.counter,              (void*)&lx->counter, 1));
     hwut_verify(backup.current_analyzer_function == lx->current_analyzer_function);
     hwut_verify(backup.__current_mode_p          == lx->__current_mode_p);
 
+    /* Ensure, that event handlers are copied around propperly.                      */
+    hwut_verify(memcmp((void*)&backup.buffer.event, 
+                       (void*)&lx->buffer.event, 
+                       sizeof(backup.buffer.event)) == 0);
+    
     if( ExpectedError != E_Error_None ) {
         hwut_verify(lx->error_code == ExpectedError);
     }

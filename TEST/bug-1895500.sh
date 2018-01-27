@@ -10,7 +10,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 
-if [[ $2 == "FIRST" ]]; then
+if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
     make clean
 fi
 
@@ -18,7 +18,7 @@ make lexer-$1 >& /dev/null
 ./lexer-$1 example-utf-8.dat
 
 # cleansening
-if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
+if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
    make clean
 fi
 

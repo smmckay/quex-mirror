@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-if [ "$2" = "FIRST" ] || [ "$2" = "" ]; then 
+if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
     quex -i line-number-pragma.qx -o LineNumberPragma
 fi
 
@@ -49,7 +49,7 @@ case $1 in
 esac
 
 echo __________________________________________________________________
-if [[ "$3" = "LAST" ]] || [[ "$3" = "" ]]; then 
+if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
     # echo "Do not forget to 'remove'"
     rm LineNumberPragma*
 fi

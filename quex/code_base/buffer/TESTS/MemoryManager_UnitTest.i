@@ -93,7 +93,7 @@ QUEXED_DEF(MemoryManager_reallocate)(void*              old_memory,
 {
     void* result_p;
 
-    if( NewByteN > MemoryManager_UnitTest.reallocate_limit_byte_n ) {
+    if( NewByteN > (size_t)MemoryManager_UnitTest.reallocate_limit_byte_n ) {
         MemoryManager_UnitTest.reallocated_refusal_n += 1;
         if( MemoryManager_UnitTest.reallocate_verbose_f ) {
             __QUEX_STD_printf("Reallocate: refuse %i;\n", (int)NewByteN);

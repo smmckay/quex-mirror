@@ -153,6 +153,8 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
                                 Memory, MemorySize, EndOfFileP,
                                 E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0);
+    new_buffer.event = me->buffer.event;              /* Plain copy suffices. */
+
     if( ! QUEX_NAME(include_push_all_but_buffer)(me, InputName, &new_buffer,
                                                  (QUEX_NAME(LexatomLoader)*)0) ) {
         goto ERROR_1;
@@ -194,6 +196,9 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER*       me,
                                                    new_filler) ) {
             goto ERROR_1;
         }
+    }
+    else {
+        new_buffer->event = me->buffer.event;
     }
 
     QUEX_NAME(Buffer_shallow_copy)(&me->buffer, new_buffer);
