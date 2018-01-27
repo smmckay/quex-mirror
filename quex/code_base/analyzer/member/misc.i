@@ -9,6 +9,7 @@
 #endif
 #include <quex/code_base/token/TokenPolicy>
 #include <quex/code_base/buffer/Buffer_print>
+#include <quex/code_base/buffer/lexatoms/LexatomLoader>
 
 QUEX_NAMESPACE_MAIN_OPEN
 

@@ -1203,9 +1203,6 @@ class Language(dict):
     def ON_BUFFER_BEFORE_CHANGE_default(self):
         return ""
 
-    def ON_BUFFER_OVERFLOW_default(self):
-        return "QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);"
-
     @typed(dial_db=DialDB)
     def RELOAD_PROCEDURE(self, ForwardF, dial_db, variable_db):
         assert self.__code_generation_reload_label is None

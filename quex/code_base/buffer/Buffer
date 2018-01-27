@@ -8,6 +8,8 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 struct QUEX_NAME(Buffer_tag);
+struct QUEX_NAME(LexatomLoader_tag);
+
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG { 
     E_Ownership                    ownership;
@@ -140,6 +142,9 @@ QUEX_INLINE void  QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*                
                                               QUEX_TYPE_LEXATOM*                    EndOfFileP,
                                               E_Ownership                           Ownership,
                                               QUEX_NAME(Buffer)*                    IncludingBuffer);
+QUEX_INLINE bool  QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*                   including,
+                                                       QUEX_NAME(Buffer)*                   included,
+                                                       struct QUEX_NAME(LexatomLoader_tag)* filler);
 
 QUEX_INLINE void  QUEX_NAME(Buffer_shallow_copy)(QUEX_NAME(Buffer)*       drain, 
                                                  const QUEX_NAME(Buffer)* source);

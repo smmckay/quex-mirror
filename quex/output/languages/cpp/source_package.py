@@ -55,6 +55,7 @@ base_buffer = """
 /buffer/Buffer_fill.i
 /buffer/Buffer_move.i
 /buffer/Buffer_load.i
+/buffer/Buffer_nesting.i
 /buffer/bytes/ByteLoader
 /buffer/bytes/ByteLoader.i
 /buffer/bytes/ByteLoader_FILE
