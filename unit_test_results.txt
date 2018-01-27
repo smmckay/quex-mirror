@@ -1014,10 +1014,10 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .....................................[FAIL]
+                          real .......................................[OK]
  * Code Check with pyflakes
         pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
@@ -1026,7 +1026,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ................................[FAIL]
+        include_guard.py convention ..................................[OK]
                          undefinition ................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
@@ -1037,14 +1037,10 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] svn-status.sh
-    [FAIL] function-check.sh _ real
-    [FAIL] include_guard.py _ convention
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -3317,7 +3313,7 @@ SUMMARY:
         1  58    [FAIL] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        3  15    [FAIL] ........../code/TEST                                          
+           15      [OK] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3372,11 +3368,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____             
-    |  ___|_ _(_) |___     | ___|      __  __
-    | |_ / _` | | / __|    |___ \      \ \/ /
-    |  _| (_| | | \__ \     ___) |      >  < 
-    |_|  \__,_|_|_|___/    |____/      /_/\_\
+     _____     _ _       _____          _          
+    |  ___|_ _(_) |___  |_   _|_      _(_) ___ ___ 
+    | |_ / _` | | / __|   | | \ \ /\ / / |/ __/ _ \
+    |  _| (_| | | \__ \   | |  \ V  V /| | (__| __/
+    |_|  \__,_|_|_|___/   |_|   \_/\_/ |_|\___\___|
                                                                    (1682 tests)
 
 ===============================================================================
