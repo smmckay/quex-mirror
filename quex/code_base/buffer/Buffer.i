@@ -392,6 +392,30 @@ QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me)
     }
 }
 
+QUEX_INLINE bool
+QUEX_NAME(Buffer_negotiate_allocate_memory)(const size_t        Size, 
+                                            QUEX_TYPE_LEXATOM** memory, 
+                                            size_t*             memory_size)
+{
+    const size_t MinSize = 4;             /* 2 for boarder, 2 for content */
+
+    *memory_size = Size;
+
+    do {
+        *memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
+                           (*memory_size) * sizeof(QUEX_TYPE_LEXATOM), 
+                           E_MemoryObjectType_BUFFER_MEMORY);
+        if( *memory ) {
+            return true;
+        }
+
+        (*memory_size) = (MinSize + (*memory_size)) >> 1;
+
+    } while( (*memory_size) > MinSize );
+
+    return false;
+}
+
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

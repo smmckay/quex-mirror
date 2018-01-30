@@ -58,7 +58,7 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
     new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
 
     if( ! new_byte_loader ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_ByteLoader_Failed);
+        QUEX_NAME(error_code_set_if_first)(me, E_Error_OpeningFile_Failed);
         goto ERROR_2;
     }
     QUEX_NAME(from_ByteLoader)(me, new_byte_loader, converter); 

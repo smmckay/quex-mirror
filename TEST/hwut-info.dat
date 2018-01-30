@@ -6,6 +6,7 @@ bash *.sh
 --not bug-template.sh
 --not test_that_it_does_not_take_too_long.sh
 --not valgrindi.sh
+--not valgrind-executer.sh
 --not call-make.sh
 ------------------------------------------------------
 

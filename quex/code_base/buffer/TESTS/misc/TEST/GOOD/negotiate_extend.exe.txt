@@ -1,6 +1,3 @@
-## COMMENT: The end state of the reallocation is checked via asserts.
-## COMMENT: The particular sequence of accept/refusal sizes is indifferent.
-## COMMENT: Important is the final 'verdict'.
 
 ---( initial size: 4; target size: 8; reallocation limit: 0 [byte]; )---
 Reallocate: refuse 8;
@@ -149,3 +146,4 @@ allocate_n:            ((27));
 free_n:                ((27));
 reallocated_byte_n:    ((130));
 reallocated_refusal_n: ((45));
+VALGRIND:   All heap blocks were freed -- no leaks are possible

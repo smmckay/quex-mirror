@@ -2,6 +2,11 @@
 // CHOICES: empty, trigger;
 token { X; }
 
+header {
+#include "quex/code_base/MemoryManager"
+#define  __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_I
+}
+
 mode X :
 {
     [^x]+ => TK_X;

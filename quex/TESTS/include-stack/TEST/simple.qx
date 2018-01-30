@@ -61,7 +61,6 @@ mode OPEN_INCLUDED_FILE : END_INCLUDED_FILE {
             std::ifstream* input_handle = new std::ifstream(Filename.c_str(), std::ios::binary);
 
             if( ! input_handle || input_handle->fail() ) {
-                delete input_handle;
                 self.space(1);
                 printf("%s: file '%s' cannot be opened.\n", self.input_name(), Filename.c_str());
             }
@@ -80,6 +79,7 @@ mode OPEN_INCLUDED_FILE : END_INCLUDED_FILE {
 
                 self.include_push(Filename.c_str(), NULL);
             }
+            if( input_handle ) delete input_handle;
         }
         /* IMPORTANT */
         RETURN;

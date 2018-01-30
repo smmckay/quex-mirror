@@ -92,20 +92,23 @@ self_file_name()
     {
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_None);
+        lx->TestAnalyzer::~TestAnalyzer();
     }
 
     /* Bad cases                                                              */
     ++lx;
     {
         new (lx) TestAnalyzer("file-that-does-not-exists.txt", NULL);
-        self_assert(lx, E_Error_Allocation_ByteLoader_Failed);
+        self_assert(lx, E_Error_OpeningFile_Failed);
+        lx->TestAnalyzer::~TestAnalyzer();
     }
 
     ++lx;
     {
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
-        self_assert(lx, E_Error_Allocation_ByteLoader_Failed); 
+        self_assert(lx, E_Error_OpeningFile_Failed); 
+        lx->TestAnalyzer::~TestAnalyzer();
         MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
     }
 
@@ -114,6 +117,7 @@ self_file_name()
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_LexatomLoader_Failed); 
+        lx->TestAnalyzer::~TestAnalyzer();
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     }
 
@@ -122,6 +126,7 @@ self_file_name()
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_BufferMemory_Failed); 
+        lx->TestAnalyzer::~TestAnalyzer();
         MemoryManager_UnitTest.forbid_BufferMemory_f = false;
     }
 
@@ -130,6 +135,7 @@ self_file_name()
         UserConstructor_UnitTest_return_value = false;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_UserConstructor_Failed); 
+        lx->TestAnalyzer::~TestAnalyzer();
         UserConstructor_UnitTest_return_value = true;
     }
 
@@ -138,6 +144,7 @@ self_file_name()
         MemoryManager_UnitTest.forbid_InputName_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_InputName_Set_Failed); 
+        lx->TestAnalyzer::~TestAnalyzer();
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }
 }
@@ -189,6 +196,7 @@ self_byte_loader_core(E_Error ExpectedError)
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
         new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
+        lx->TestAnalyzer::~TestAnalyzer();
     }
     ++lx;
     {
@@ -196,6 +204,7 @@ self_byte_loader_core(E_Error ExpectedError)
         converter   = NULL;
         new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
+        lx->TestAnalyzer::~TestAnalyzer();
     }
     ++lx;
     {
@@ -203,6 +212,7 @@ self_byte_loader_core(E_Error ExpectedError)
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
         new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
+        lx->TestAnalyzer::~TestAnalyzer();
     }
     ++lx;
     {
@@ -210,6 +220,7 @@ self_byte_loader_core(E_Error ExpectedError)
         converter   = NULL;
         new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
+        lx->TestAnalyzer::~TestAnalyzer();
     }
     ++lx;
 
@@ -232,6 +243,7 @@ self_memory()
     {
         new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
+        lx->TestAnalyzer::~TestAnalyzer();
     }
     ++lx;
     {
@@ -243,12 +255,14 @@ self_memory()
 
         new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
+        lx->TestAnalyzer::~TestAnalyzer();
     }
     ++lx;
     {
         UserConstructor_UnitTest_return_value = false;
         new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_UserConstructor_Failed);
+        lx->TestAnalyzer::~TestAnalyzer();
         UserConstructor_UnitTest_return_value = true;
     }
     ++lx;
@@ -258,6 +272,7 @@ self_memory()
         /* Input name is not set upon construction from memory. */
         hwut_verify(lx->__input_name == (char*)0);
         self_assert(lx, E_Error_None);
+        lx->TestAnalyzer::~TestAnalyzer();
 
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }

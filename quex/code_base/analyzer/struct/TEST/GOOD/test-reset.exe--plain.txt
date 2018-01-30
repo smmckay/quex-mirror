@@ -1,4 +1,4 @@
 <terminated 'byte loader': 2>
 <terminated 'memory': 2>
- All heap blocks were freed -- no leaks are possible
- ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+VALGRIND:   All heap blocks were freed -- no leaks are possible
+

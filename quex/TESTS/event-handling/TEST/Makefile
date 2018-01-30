@@ -20,7 +20,7 @@ endif
 COMPILER = gcc
 
 LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
-	 -I./ -I$(QUEX_PATH)                   \
+	 -fsanitize=address -I./ -I$(QUEX_PATH)                   \
 	 -DQUEX_OPTION_DEBUG_SHOW_MODES        \
 	 -DQUEX_OPTION_COUNTER_LINE_DISABLED   \
 	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK   
@@ -54,7 +54,8 @@ on_bad_lexatom.exe: on_bad_lexatom.qx
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD4) ./lexer.c EHLexer.c -o $@  
+	$(LD4) ./lexer.c EHLexer.c -o $@ \
+	       -DUNIT_TEST_DEFINE_MEMORY_MANAGER_IMPLEMENTATION
 
 on_buffer_before_change.exe: on_buffer_before_change.qx 
 	$(QUEX) -i $< -o EHLexer 

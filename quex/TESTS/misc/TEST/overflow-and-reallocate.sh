@@ -22,13 +22,15 @@ case $1 in
         if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
             build_lexer
         fi
-        ./lexer data/overflow-and-reallocate.txt
+        bash $QUEX_PATH/TEST/valgrind-executer.sh ./lexer \
+                                                  data/overflow-and-reallocate.txt
         ;; 
     included)
         if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
             build_lexer
         fi
-        ./lexer data/overflow-and-reallocate-include-2.txt
+        bash $QUEX_PATH/TEST/valgrind-executer.sh ./lexer \
+                                                  data/overflow-and-reallocate-include-2.txt
         ;;
 esac
 

@@ -33,3 +33,4 @@ number of digits: 4 (buffer size: 8)
 <TERMINATION>
 | [END] number of token = 1
 `-----------------------------------------------------------------
+VALGRIND:   All heap blocks were freed -- no leaks are possible

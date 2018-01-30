@@ -12,6 +12,7 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+#if 1 
 QUEX_INLINE bool
 QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
                                      QUEX_NAME(Buffer)*        included,
@@ -70,13 +71,14 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     if( QUEX_NAME(Buffer_resources_absent)(including) ) {
         goto ERROR_0;
     }
-    else if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ) {
+    else if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_SIZE_MIN) ) {
         /* (1) AVAILABLE SIZE too SMALL
          *     => Try to move content, so that free space becomes available.  */                    
         available_size = QUEX_NAME(Buffer_load_prepare_forward_tricky)(including);
     }
 
-    if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE) ) {
+
+    if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_SIZE_MIN) ) {
         /* (2) AVAILABLE SIZE still too SMALL
          *     => Allocate new memory for new buffer.                         */                    
         memory_size = (size_t)(QUEX_SETTING_BUFFER_SIZE);
@@ -92,10 +94,12 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     else {
         /* (2) AVAILABLE SIZE in including buffer sufficient
          *     => Use free space for new buffer.                              */                    
-        memory                   = &including->input.end_p[1];
-        memory_size              = (size_t)(&including->_memory._back[1] - memory);
+        memory      = &including->input.end_p[1];
+        memory_size = (size_t)available_size;
+        __quex_assert(0           != memory);
+        __quex_assert(memory_size == (size_t)(&including->_memory._back[1] - memory));
+
         including->_memory._back = &including->input.end_p[0];
-        __quex_assert(0 != memory);
         ownership          = E_Ownership_INCLUDING_BUFFER;
         including_buffer_p = including;
     }
@@ -118,7 +122,44 @@ ERROR_0:
     return false;
 }
 
-#if 0
+#else
+QUEX_INLINE bool
+QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        me,
+                                     QUEX_NAME(Buffer)*        included,
+                                     QUEX_NAME(LexatomLoader)* filler)
+/* Construct 'included' buffer (-> memory split):
+ *
+ * Constructor takes over ownership over 'filler'. If construction fails,
+ * the 'filler' is immediatedly deleted.
+ *
+ * To optimize memory usage and minimize the generation of new buffers in 
+ * situations of extensive file inclusions, the current buffer's memory may
+ * be split to generate the included buffer's memory.
+ *
+ *                 including  .---------------------.
+ *                 buffer     |0|a|b|c|d|0| | | | | |
+ *                            '---------------------'
+ *                   read_p -------'     |
+ *                   end_p  -------------'
+ *
+ *                              /    split      \
+ *                             /                 \
+ *                                  
+ *        including  .-----------.     included .---------.
+ *        buffer     |0|a|b|c|d|0|  +  buffer   | | | | | |
+ *                   '-----------'              '---------'
+ *          read_p -------'     |
+ *          end_p  -------------'
+ *
+ * NOTE: Loaded content is NEVER overwritten or split. This is a precaution
+ *       for situations where byte loaders may not be able to reload content
+ *       that has already been loaded (for example 'TCP socket' byte loaders).
+ *
+ * RETURNS: true,  if memory has been allocated and the 'included' buffer is
+ *                 ready to rumble.
+ *          false, if memory allocation failed. 'included' buffer is not 
+ *                 functional.
+ *                                                                            */
 {
     /*         front           read_p      end_p                 back
      *           |               |           |                   |
@@ -128,37 +169,27 @@ ERROR_0:
      *                                         :                 :
      *                                         '--- available ---'
      *                                                                        */
-    ptrdiff_t           available_size =   including->_memory._back 
-                                         - including->input.end_p;
+    ptrdiff_t           available_size = me->_memory._back - me->input.end_p;
     QUEX_TYPE_LEXATOM*  memory;
     size_t              memory_size;
     E_Ownership         ownership;
     QUEX_NAME(Buffer)*  including_buffer_p = (QUEX_NAME(Buffer)*)0;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(including);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
-    if( QUEX_NAME(Buffer_resources_absent)(including) ) {
+    if( QUEX_NAME(Buffer_resources_absent)(me) ) {
         goto ERROR_0;
     }
     else if( available_size > (ptrdiff_t)4 ) {
-        SUCCESS_0:
-                /* (2) AVAILABLE SIZE in including buffer sufficient
-                 *     => Use free space for new buffer.                              */                    
-                __quex_assert(0 != memory);
-                ownership          = E_Ownership_INCLUDING_BUFFER;
-                including_buffer_p = including;
-        return;
-    }
-    else if( QUEX_NAME(Buffer_load_prepare_forward_tricky)(including) > (ptrdiff_t)4 ) {
         ownership          = E_Ownership_INCLUDING_BUFFER;
-        including_buffer_p = including;
+        including_buffer_p = me;
     }
-    else if( QUEX_NAME(Buffer_negotiate_extend_root)(me, (float)2.0) ) {
+    else if( QUEX_NAME(Buffer_load_prepare_forward_tricky)(me) > (ptrdiff_t)QUEX_SETTING_BUFFER_SIZE_MIN ) {
         ownership          = E_Ownership_INCLUDING_BUFFER;
-        including_buffer_p = including;
+        including_buffer_p = me;
     }
-    else if( QUEX_NAME(Buffer_negotiate_allocate_new)((size_t)QUEX_SETTING_BUFFER_SIZE, 
-                                                      &memory, &memory_size) ) {
+    else if( QUEX_NAME(Buffer_negotiate_allocate_memory)((size_t)QUEX_SETTING_BUFFER_SIZE, 
+                                                         &memory, &memory_size) ) {
         ownership          = E_Ownership_LEXICAL_ANALYZER;
         including_buffer_p = (QUEX_NAME(Buffer)*)0;
     }
@@ -167,9 +198,9 @@ ERROR_0:
     }
 
     if( ownership == E_Ownership_INCLUDING_BUFFER ) {
-        memory                   = &including->input.end_p[1];
-        memory_size              = (size_t)(&including->_memory._back[1] - memory);
-        including->_memory._back = &including->input.end_p[0];
+        memory                   = &me->input.end_p[1];
+        memory_size              = (size_t)(&me->_memory._back[1] - memory);
+        me->_memory._back = &me->input.end_p[0];
     }
     else {
         /* 'memory' and 'memory_size' have been set by called function.       */
@@ -179,10 +210,10 @@ ERROR_0:
                                 (QUEX_TYPE_LEXATOM*)0, ownership, 
                                 including_buffer_p);
     
-    included->event = including->event;               /* Plain copy suffices. */
+    included->event = me->event;                      /* Plain copy suffices. */
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(included);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(including);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
     return true;
 
 ERROR_0:
@@ -192,31 +223,8 @@ ERROR_0:
     QUEX_NAME(Buffer_resources_absent_mark)(included);
     return false;
 }
-    
-    QUEX_INLINE bool
-    QUEX_NAME(Buffer_negotiate_allocate_new)(const size_t Size, QUEX_TYPE_LEXATOM** memory, size_t* memory_size)
-    {
-        const size_t MinSize = 4;             /* 2 for boarder, 2 for content */
-
-        *memory_size = Size;
-
-        do {
-            *memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
-                               (*memory_size) * sizeof(QUEX_TYPE_LEXATOM), 
-                               E_MemoryObjectType_BUFFER_MEMORY);
-            if( *memory ) {
-                return true;
-            }
-
-            (*memory_size) = (MinSize + (*memory_size)) >> 1;
-
-        } while( (*memory_size) > MinSize );
-
-        return false;
-    }
-
 #endif
-
+    
 QUEX_INLINE bool
 QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me, 
                                         float               Factor)
@@ -440,6 +448,30 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
     /* LexatomBeforeLexemeStart       */ (QUEX_TYPE_LEXATOM)0, /* ignored */
 #   endif
     /* BackupLexatomIndexOfReadP      */ me->_backup_lexatom_index_of_read_p);
+}
+
+QUEX_INLINE QUEX_NAME(Buffer)* 
+QUEX_NAME(Buffer_get_nested)(QUEX_NAME(Buffer)* me, 
+                             QUEX_NAME(Buffer)* tail)
+/* RETURNS: Buffer which is included by 'me'.
+ *          'tail' in case 'me' does not inculude a buffer. 
+ *
+ * The 'tail' must be provided because only the including buffer is 
+ * provided. Finding the nested buffer means going backward until the 
+ * buffer's included buffer is equal to 'me'                              */
+{
+    QUEX_NAME(Buffer)* focus;
+
+    for(focus = tail; focus->_memory.including_buffer != me; 
+        focus = focus->_memory.including_buffer) {
+        if( ! focus->_memory.including_buffer ) {
+            return tail;
+        }
+    }
+    
+    /* HERE: 'focus' is directly included by 'me', or 'focus' == tail, 
+     *       if it fails.                                                 */
+    return focus;
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

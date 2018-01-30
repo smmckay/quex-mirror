@@ -54,8 +54,8 @@ QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)(QUEX_NAME(Buffer)* B)
     if( B->_memory.ownership == E_Ownership_INCLUDING_BUFFER ) {
         __quex_assert(0 != B->_memory.including_buffer);
         /* No cyclic nesting of buffers.                                      */
-        focus = B;
-        while( 0 != focus->_memory.including_buffer ) { 
+        for(focus = B; 0 != focus->_memory.including_buffer; ) { 
+            __quex_assert(focus->_memory.ownership == E_Ownership_INCLUDING_BUFFER);
             focus = focus->_memory.including_buffer;
             __quex_assert(focus != B);
         }

@@ -57,7 +57,7 @@ main(int argc, char** argv)
     printf("<terminated: file_name: %i; byte_loader: %i; memory: %i>\n", 
            self_include_file_name_n, self_include_byte_loader_n, 
            self_include_memory_n);
-    printf("<terminated: buffer-splits: %i/%i; allocate_n: %i; free_n: %i;>\n", 
+    printf("<terminated: buffer-splits: %i/%i; allocate_n: ((%i)); free_n: ((%i));>\n", 
            (int)self_split_n, (int)self_total_n,
            (int)MemoryManager_UnitTest.allocation_n, 
            (int)MemoryManager_UnitTest.free_n); 
@@ -166,6 +166,7 @@ self_include_push(uint32_t n)
 
     switch( lx->error_code ) {
     case E_Error_None:                         return true;  /* OK                   */
+    case E_Error_OpeningFile_Failed:           return false; /* Too many file descr. */
     case E_Error_Allocation_ByteLoader_Failed: return false; /* Too many file descr. */
     default:                                   hwut_verify(false); return false;
     }

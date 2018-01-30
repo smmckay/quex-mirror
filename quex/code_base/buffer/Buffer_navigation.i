@@ -40,9 +40,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE bool
-QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me);
-
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION  
 QUEX_NAME(Buffer_input_lexatom_index_begin)(QUEX_NAME(Buffer)* me)
 /* Determine lexatom index of first lexatom in the buffer.               */

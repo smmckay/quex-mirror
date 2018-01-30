@@ -6,32 +6,12 @@
 #include <quex/code_base/buffer/asserts>
 #include <quex/code_base/definitions>
 #include <quex/code_base/buffer/Buffer>
+#include <quex/code_base/buffer/asserts>
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
-                                                           ptrdiff_t           move_distance);
-QUEX_INLINE void      QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)* me,
-                                                                intmax_t           move_distance,
-                                                                ptrdiff_t          move_size);
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me, 
-                                                      ptrdiff_t          move_distance);
-QUEX_INLINE bool      QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me);
-
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*   me, 
-                                                                                QUEX_TYPE_LEXATOM**  move_begin_p);
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me);
-
-QUEX_INLINE void      QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(QUEX_NAME(Buffer)*  me,
-                                                                          ptrdiff_t           move_distance,
-                                                                          QUEX_TYPE_LEXATOM** position_register,
-                                                                          const size_t        PositionRegisterN);
-QUEX_INLINE void      QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
-                                                                           ptrdiff_t          move_distance);
-
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*   me, 
-                                                          QUEX_TYPE_LEXATOM**  move_begin_p)
+QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*  me) 
 /* RETURNS: Move Distance
  *
  *  -1,   if the lexeme starts at a position so that it covers so much that 
@@ -40,10 +20,10 @@ QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*   m
  *   > 1  number of positions that the content may be moved towards the
  *        begin of the buffer.                                                */
 {
-    QUEX_TYPE_LEXATOM*        BeginP = &me->_memory._front[1];
-    const ptrdiff_t           ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
-    ptrdiff_t                 move_distance;
-    const ptrdiff_t           FallBackN = (ptrdiff_t)QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
+    QUEX_TYPE_LEXATOM*  BeginP = &me->_memory._front[1];
+    QUEX_TYPE_LEXATOM*  region_p;
+    const ptrdiff_t     ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
+    const ptrdiff_t     FallBackN = (ptrdiff_t)QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
     __quex_assert(FallBackN >= 0);
@@ -60,17 +40,16 @@ QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*   m
 
     /* Determine from where the region-to-be-moved BEGINS, what its size is
      * and how far it is to be moved.                                         */
-    *move_begin_p  = me->_read_p;
+    region_p  = me->_read_p;
     if( me->_lexeme_start_p ) {
-        *move_begin_p = QUEX_MIN(*move_begin_p, me->_lexeme_start_p);
+        region_p = QUEX_MIN(region_p, me->_lexeme_start_p);
     }
-    if( *move_begin_p - BeginP <= FallBackN ) {
+    if( region_p - BeginP <= FallBackN ) {
         return 0;
     }
-    *move_begin_p  = &((*move_begin_p)[- FallBackN]);
-    move_distance = *move_begin_p - BeginP;
+    region_p  = &((region_p)[- FallBackN]);
 
-    return move_distance;
+    return /* move distance */region_p - BeginP;
 }
 
 QUEX_INLINE ptrdiff_t        
@@ -133,7 +112,7 @@ QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(QUEX_NAME(Buffer)*  me,
  *         input.end_lexatom_index                                            */
 { 
     QUEX_TYPE_LEXATOM*   BeginP = &me->_memory._front[1];
-    QUEX_TYPE_LEXATOM**  pr_it     = 0x0;
+    QUEX_TYPE_LEXATOM**  pr_it  = 0x0;
 
     me->_read_p                                   -= move_distance;
     if( me->_lexeme_start_p ) me->_lexeme_start_p -= move_distance;
@@ -152,6 +131,8 @@ QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(QUEX_NAME(Buffer)*  me,
 
     QUEX_NAME(Buffer_register_content)(me, &me->input.end_p[- move_distance], 
                                        me->input.lexatom_index_begin + move_distance);
+
+    QUEX_BUFFER_ASSERT_pointers_in_range(me);
 }
 
 QUEX_INLINE void        
@@ -181,6 +162,8 @@ QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
 
     QUEX_NAME(Buffer_register_content)(me, end_p, 
                                        me->input.lexatom_index_begin - move_distance);
+
+    QUEX_BUFFER_ASSERT_pointers_in_range(me);
 }
 
 QUEX_INLINE ptrdiff_t
@@ -216,6 +199,35 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)* me,
                            (size_t)move_size * sizeof(QUEX_TYPE_LEXATOM));
     }
     return move_size;
+}
+
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(QUEX_NAME(Buffer)*  me, 
+                                                        ptrdiff_t           MoveDistance,
+                                                        QUEX_TYPE_LEXATOM** position_register,
+                                                        const size_t        PositionRegisterN)
+/* Calls 'Buffer_move_towards_begin' and adapts pointers inside 'me'.
+ *
+ * CALLS:   callbacks 'on_buffer_change'.
+ *
+ * RETURNS: free space from 'end_p' to '&back[1]'.                            */
+{
+    ptrdiff_t move_size;
+
+    if( MoveDistance ) {
+        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+
+        move_size = QUEX_NAME(Buffer_move_towards_begin)(me, MoveDistance);
+
+        QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(me, MoveDistance, 
+                                                            position_register,
+                                                            PositionRegisterN);
+
+        __quex_assert(me->input.end_p == &me->_memory._front[1 + move_size]);
+        (void)move_size;
+    }
+
+    return me->_memory._back - me->input.end_p;
 }
 
 QUEX_INLINE ptrdiff_t

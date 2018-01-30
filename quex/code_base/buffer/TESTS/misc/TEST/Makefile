@@ -5,7 +5,7 @@ TESTS := construct_destruct_included.exe \
 
 CC    := gcc -ggdb -Wall -Werror \
 		     -I. -I$(QUEX_PATH) -I$(HWUT_PATH)/support/C  \
-		     -DQUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE=4 \
+		     -DQUEX_SETTING_BUFFER_SIZE_MIN=4 \
 		     -DQUEX_SETTING_BUFFER_SIZE=11            \
 
 all: $(TESTS)

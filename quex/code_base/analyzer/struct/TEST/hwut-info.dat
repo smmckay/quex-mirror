@@ -1,5 +1,5 @@
 Resource Scenarios for Constructor, Include, and Reset
 ----------------------------------------------------------
-bash helper.sh *.exe
+bash ${QUEX_PATH}/TEST/valgrind-executer.sh *.exe
 --not helper.sh
 ----------------------------------------------------------

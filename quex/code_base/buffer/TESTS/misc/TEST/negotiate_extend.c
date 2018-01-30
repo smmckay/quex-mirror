@@ -126,6 +126,8 @@ self_test(size_t SizeBefore, ptrdiff_t ReallocLimitByteN)
     hwut_verify(! verdict_f == (size == SizeBefore));
 
     self_destruct_setup(&self_reference[0], /* Depth */5);
+
+    free(content_before);
 }
 
 static QUEX_NAME(Buffer)*

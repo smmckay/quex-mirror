@@ -1,1 +1,2 @@
 <terminated: ((13612)); shrinked: ((3403)); allocated_byte_n: ((1116266)); allocate_n: ((13613)); free_n: ((13613));>
+VALGRIND:   All heap blocks were freed -- no leaks are possible

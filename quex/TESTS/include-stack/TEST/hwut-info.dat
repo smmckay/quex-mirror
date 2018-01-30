@@ -2,3 +2,4 @@ Include Stack
 --------------
 *.exe
 --------------
+NOTE: Makefile uses sanitizer; valgrind not necessary

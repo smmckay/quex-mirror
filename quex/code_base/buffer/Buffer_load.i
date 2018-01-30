@@ -12,26 +12,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-/* Moving buffer content. */
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
-                                                           ptrdiff_t           move_distance);
-QUEX_INLINE void      QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)* me,
-                                                          intmax_t           move_distance,
-                                                          ptrdiff_t          move_size);
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me, 
-                                                         ptrdiff_t          move_distance);
-
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*   me, 
-                                                                                QUEX_TYPE_LEXATOM**  move_begin_p);
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me);
-QUEX_INLINE void      QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(QUEX_NAME(Buffer)*  me,
-                                                                          ptrdiff_t           move_distance,
-                                                                          QUEX_TYPE_LEXATOM** position_register,
-                                                                          const size_t        PositionRegisterN);
-QUEX_INLINE void      QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
-                                                                           ptrdiff_t          move_distance);
-
-
 QUEX_INLINE E_LoadResult
 QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
                                QUEX_TYPE_LEXATOM** position_register,
@@ -401,14 +381,12 @@ QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
  * RETURNS: Free space at end of buffer to fill new data.
  *          0, if there is none.                                              */
 { 
-    QUEX_TYPE_LEXATOM* move_begin_p;
-    ptrdiff_t          move_size;
     ptrdiff_t          free_space;
     ptrdiff_t          move_distance;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
-    move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(me, &move_begin_p);
+    move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(me); 
 
     if( 0 == move_distance ) {
         if(    me->input.end_p >= me->_memory._back 
@@ -419,27 +397,17 @@ QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
 
             /* 'on_buffer_overflow' may have extended the buffer's memory.
              * => second chance!                                              */
-            move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(me, &move_begin_p);
+            move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(me);
             if( me->input.end_p >= me->_memory._back ) {
                 return 0;                                         /* Give up! */
             }
         }
     }
 
-    /* NOT else if */
-    if( move_distance) {
-        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
-
-        move_size = QUEX_NAME(Buffer_move_towards_begin)(me, move_distance);
-
-        QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(me, move_distance, 
-                                                            position_register,
-                                                            PositionRegisterN);
-        __quex_assert(me->input.end_p == &move_begin_p[move_size - move_distance]);
-        (void)move_size;
-    }
-
-    free_space = me->_memory._back - me->input.end_p;
+    free_space = QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(me, 
+                                                                         move_distance,
+                                                                         position_register,
+                                                                         PositionRegisterN);
 
     /*________________________________________________________________________*/
     QUEX_IF_ASSERTS_poison(&me->_memory._back[- move_distance + 1], 
@@ -450,6 +418,7 @@ QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
     return free_space;
 }
 
+#if 0
 QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me)
 /* Circumvent restriction of 'Buffer_load_prepare_forward()' which 
@@ -473,12 +442,61 @@ QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me)
 
     /* After 'move away' possibly:
      *
-     *   size(me's buffer) < 'QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE'
+     *   size(me's buffer) < 'QUEX_SETTING_BUFFER_SIZE_MIN'
      *
      * However, 'me' buffer is NOT used before 'included' terminates.
      * => included is pasted back at the end of me.                           */
     return free_space;
 }
+
+#else
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me)
+/* Shrink all nesting buffers to a minimum and reset all pointers accordingly.
+ *
+ * RETURNS: Free space at the end of 'me'.                                    */
+{
+    QUEX_NAME(Buffer)* it;
+    QUEX_NAME(Buffer)* previous = (QUEX_NAME(Buffer)*)0;
+    ptrdiff_t          move_distance = 0;
+    ptrdiff_t          nesting_freed = 0;
+
+    /* Iterate over all nesting buffers starting from root up to 'me'.
+     * Shrink each buffer, adapt its 'back pointer' and the 'front pointer'
+     * of the included buffer.                                                */
+    for(it = QUEX_NAME(Buffer_find_root)(me); true ; 
+        it = QUEX_NAME(Buffer_get_nested)(it, me)) {
+        move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(it);
+
+        if( previous ) {
+            previous->_memory._back   -= nesting_freed;
+            it->_memory._front        -= nesting_freed;
+            previous->_memory._back[0] = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LIMIT_CODE);
+            it->_memory._front[0]      = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LIMIT_CODE);
+        }
+
+        (void)QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(it, 
+                          move_distance + nesting_freed,
+                          (QUEX_TYPE_LEXATOM**)0, 0);
+
+        /* Adapt pointers added 'move_distance + nesting_freed' to lexatom
+         * index. Must subtract 'nesting_freed'.                              */
+        __quex_assert(it->input.lexatom_index_begin >= nesting_freed);
+        it->input.lexatom_index_begin -= nesting_freed;
+
+        if( it == me ) {
+            break;
+        }
+
+        nesting_freed = it->_memory._back - it->input.end_p;
+        previous      = it;
+    } 
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    return me->_memory._back - me->input.end_p;
+}
+    
+#endif
 
 QUEX_INLINE ptrdiff_t        
 QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)

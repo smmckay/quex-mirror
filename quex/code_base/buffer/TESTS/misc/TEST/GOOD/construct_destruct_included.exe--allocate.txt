@@ -1,1 +1,2 @@
-<terminated: 45; splits: 31; allocated_byte_n: 212644; allocate_n: 104; free_n: 104;>
+<terminated: 45; splits: ((15)); allocated_byte_n: ((212820)); allocate_n: ((120)); free_n: ((120));>
+VALGRIND:   All heap blocks were freed -- no leaks are possible

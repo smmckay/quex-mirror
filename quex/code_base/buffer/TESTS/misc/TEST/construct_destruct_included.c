@@ -108,7 +108,7 @@ main(int argc, char** argv)
         }
     }
 
-    printf("<terminated: %i; splits: %i; allocated_byte_n: %i; allocate_n: %i; free_n: %i;>\n", 
+    printf("<terminated: %i; splits: ((%i)); allocated_byte_n: ((%i)); allocate_n: ((%i)); free_n: ((%i));>\n", 
            (int)count_n, (int)split_n,
            (int)MemoryManager_UnitTest.allocated_byte_n, 
            (int)MemoryManager_UnitTest.allocation_n, 
@@ -146,7 +146,7 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
          * => Only upon 'split' the buffers contents are adjacent!            */
         __quex_assert(&including->_memory._back[1] == &included->_memory._front[0]);
         __quex_assert(&included->_memory._back[1] - &included->_memory._front[0]
-                      >= QUEX_SETTING_BUFFER_INCLUDE_MIN_SIZE);
+                      >= QUEX_SETTING_BUFFER_SIZE_MIN);
         __quex_assert(&included->_memory._back[1] == MemoryEnd);
     }
     else {
