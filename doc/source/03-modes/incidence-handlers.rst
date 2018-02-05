@@ -121,31 +121,44 @@ Buffer Handling
 
 .. function:: on_buffer_overflow(self, LexemeBegin, LexemeEnd, BufferSize, BufferBegin, BufferEnd)
 
-   The reload process always tries to maintain the current lexeme inside the
-   buffer. If the lexeme becomes as large as the buffer itself no new content
-   can be loaded into the buffer. So, either new content must be provided,
-   or an error handling must be triggered.
+   When new content is about to be loaded into the lexer's buffer, free space
+   must be provided. A reload-request where no free space can be provided, 
+   triggers a call to the ``on_buffer_overlow`` handler.  By default, this
+   handler tries to extend the current buffer, or copy it to a different 
+   location. 
 
-   By default, the buffer's memory is tried to be extended in a specific
-   manner. Starting with a new size `s` as twice the size of the current buffer,
-   an extension is tried. If that fails `s` is set to the average of `s`
-   and the current size. This procedure is repeated until the allocation
-   succeeds or `s` becomes equal to the current size. In the latter case
-   an error code is set ('overflow') and a debug message is printed.
+   .. note::
+   
+       The default on-buffer-overlow strategy for extending is the following.
+       It starts with a target size *s* as the double of the current size. If
+       that fails a new size *s* is tried which is the average between the
+       current size and the previous size *s*.  This procedure is repeated
+       until the allocation succeeds or `s` becomes equal to the current size
+       *+ 4 + fallback* (because *4* is the minimal buffer size). 
+   
+   .. note::
 
-   One scenerio that necessitates a customized ``on_buffer_overflow`` handler
-   is in an embedded environment, where dynamic allocation needs to be 
-   prevented. In that case, setting an error code might be sufficient, 
-   as in the example below.
+       In any case, if the overflow handler does not end with a buffer that
+       contains free space, the error ``E_Error_Buffer_Overflow_LexemeTooLong``
+       is set.
+
+   When buffer's memory management is user-defined, then that necessitates a
+   customized ``on_buffer_overflow`` handler.  An embedded environment, where
+   dynamic allocation is forbidden might be such a case. Then, error code might
+   be sufficient and an empty handler might do.
 
    .. block:: cpp
 
       on_buffer_overflow {
-          self.error_code = E_Error_Buffer_Overflow_LexemeTooLong;
+          // Empty handler:
+          // => re-allocation is prevented.
+          // => after overflow, still free space == 0.
+          // => 'E_Error_Buffer_Overflow_LexemeTooLong'.                      
       }
 
-   The current buffer is available via ``self.buffer``. In particular the
-   following two functions might be used to assing new memory or to extend it.
+   Inside the handler, the current buffer is available via ``self.buffer``. In
+   particular the following two functions might be used to assing new memory or
+   to extend it.
 
    .. function:: bool QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, 
                                                     ptrdiff_t           SizeAdd)
@@ -166,15 +179,6 @@ Buffer Handling
    for the fact that a buffer may be nested into an *including* buffer due to
    an include operation. When buffers are extended, the root of all nesting 
    is extended.
-
-   .. warning::
-
-       In case of error, an error code *must* be set in the ``on_buffer_overflow``
-       handler. Otherwise, the lexer has no way to know that it has to stop. 
-
-   TODO: elaborate: "In particular, when filling the buffer manually, a re-allocation may
-   not be wanted"
-
 
 .. function:: on_buffer_before_change(self, BufferBegin, BufferEnd)
 

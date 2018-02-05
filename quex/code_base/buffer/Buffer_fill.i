@@ -46,7 +46,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
  * The content may be filled into the engine's buffer or an intermediate 
  * 'raw' buffer which still needs to be converted.                          */
 {
-    if( QUEX_NAME(Buffer_load_prepare_forward)(me, (QUEX_TYPE_LEXATOM**)0, 0) == 0 ) {
+    if( QUEX_NAME(Buffer_free_back)(me, (QUEX_TYPE_LEXATOM**)0, 0) == 0 ) {
         *begin_p = (void*)0;
         *end_p   = (const void*)0;
         return;

@@ -1,4 +1,4 @@
-/* PURPOSE: Test Buffer_load_prepare_forward()
+/* PURPOSE: Test Buffer_free_back()
  *
  * The tested function shall free some space ahead inside the buffer,
  * so that new content can be loaded. Detailed comment, see function
@@ -112,7 +112,7 @@ main(int argc, char** argv)
         min_p                    = QUEX_MIN(buffer._read_p, buffer._lexeme_start_p);
         memcpy(&backup[0], min_p, buffer.input.end_p - min_p);
 
-        free_space = QUEX_NAME(Buffer_load_prepare_forward)(&buffer, (QUEX_TYPE_LEXATOM**)0, 0);
+        free_space = QUEX_NAME(Buffer_free_back)(&buffer, (QUEX_TYPE_LEXATOM**)0, 0);
         (void)free_space;
         move_distance = before.end_p - buffer.input.end_p;
 

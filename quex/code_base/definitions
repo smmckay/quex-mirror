@@ -135,7 +135,7 @@ typedef enum {
 #ifndef QUEX_TYPE_DEFINITIONS_E_ERROR
 #define QUEX_TYPE_DEFINITIONS_E_ERROR
 typedef enum {
-    E_Error_OpeningFile_Failed,
+    E_Error_File_OpenFailed,
     /* --------------------------------------------------*/
     E_Error_Allocation_BufferMemory_Failed,
     E_Error_Allocation_ByteLoader_Failed,
@@ -190,7 +190,7 @@ typedef enum {
 } E_Error;
 
 #define E_Error_NAME(E) \
-    (  (E) == E_Error_OpeningFile_Failed                 ? "OpeningFile_Failed"                 \
+    (  (E) == E_Error_File_OpenFailed                 ? "File_OpenFailed"                 \
      : (E) == E_Error_Allocation_BufferMemory_Failed     ? "Allocation_BufferMemory_Failed"     \
      : (E) == E_Error_Allocation_ByteLoader_Failed       ? "Allocation_ByteLoader_Failed"       \
      : (E) == E_Error_Allocation_LexatomLoader_Failed    ? "Allocation_LexatomLoader_Failed"    \

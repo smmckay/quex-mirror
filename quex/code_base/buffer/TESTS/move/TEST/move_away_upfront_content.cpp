@@ -1,4 +1,4 @@
-/* PURPOSE: Test Buffer_load_prepare_backward()
+/* PURPOSE: Test Buffer_free_front()
  *
  * The tested function shall free some space in the rear buffer,
  * so that old content can be reloaded. Detailed comment, see function
@@ -123,7 +123,7 @@ main(int argc, char** argv)
         memcpy(&backup[0], min_p, buffer.input.end_p - min_p);
 
         /* Call Function under Test _________________________________________*/
-        move_distance = QUEX_NAME(Buffer_load_prepare_backward)(&buffer);
+        move_distance = QUEX_NAME(Buffer_free_front)(&buffer);
 
         self_print(&buffer);
 

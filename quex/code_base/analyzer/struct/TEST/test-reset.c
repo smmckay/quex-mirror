@@ -151,13 +151,13 @@ self_file_name()
     ++lx;
     {
         QUEX_NAME(reset_file_name)(lx, "file-that-does-not-exists.txt", NULL);
-        self_assert(lx, E_Error_OpeningFile_Failed);
+        self_assert(lx, E_Error_File_OpenFailed);
     }
     ++lx;
     {
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
         QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
-        self_assert(lx, E_Error_OpeningFile_Failed); 
+        self_assert(lx, E_Error_File_OpenFailed); 
         MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
     }
     ++lx;

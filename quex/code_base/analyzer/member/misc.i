@@ -40,6 +40,14 @@ QUEX_NAME(error_code_clear)(QUEX_TYPE_ANALYZER* me)
 { me->error_code = E_Error_None; }
 
 QUEX_INLINE void 
+QUEX_NAME(error_code_set_void)(QUEX_TYPE_ANALYZER* me)
+{ me->error_code = E_Error_Uninitialized; }
+
+QUEX_INLINE bool 
+QUEX_NAME(error_code_is_void)(QUEX_TYPE_ANALYZER* me)
+{ return me->error_code == E_Error_Uninitialized; }
+
+QUEX_INLINE void 
 QUEX_NAME(error_code_set_if_first)(QUEX_TYPE_ANALYZER* me, E_Error ErrorCode)
 /* Never overwrite an error code
  * => original error is maintained.                                           */

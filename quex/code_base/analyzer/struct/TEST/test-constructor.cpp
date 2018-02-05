@@ -99,7 +99,7 @@ self_file_name()
     ++lx;
     {
         new (lx) TestAnalyzer("file-that-does-not-exists.txt", NULL);
-        self_assert(lx, E_Error_OpeningFile_Failed);
+        self_assert(lx, E_Error_File_OpenFailed);
         lx->TestAnalyzer::~TestAnalyzer();
     }
 
@@ -107,7 +107,7 @@ self_file_name()
     {
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
-        self_assert(lx, E_Error_OpeningFile_Failed); 
+        self_assert(lx, E_Error_File_OpenFailed); 
         lx->TestAnalyzer::~TestAnalyzer();
         MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
     }

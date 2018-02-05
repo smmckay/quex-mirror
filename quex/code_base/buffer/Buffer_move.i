@@ -69,7 +69,7 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
 }
 
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*  me) 
+QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(QUEX_NAME(Buffer)*  me) 
 /* RETURNS: Move Distance
  *
  *  -1,   if the lexeme starts at a position so that it covers so much that 
@@ -157,20 +157,6 @@ QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me)
     move_distance = QUEX_MIN(move_distance_max, move_distance_nominal);
 
     return move_distance;
-}
-
-QUEX_INLINE void        
-QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
-                                                     ptrdiff_t          move_distance)
-/* Adapt points after content has been moved towards end.
- *
- * ADAPTS: _read_p, _lexeme_start_p, position registers, end_p, 
- *         input.end_lexatom_index                                            */
-{
-    QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, 
-                                          (QUEX_TYPE_LEXATOM**)0, 0);
-
-    QUEX_BUFFER_ASSERT_pointers_in_range(me);
 }
 
 QUEX_INLINE ptrdiff_t
@@ -321,6 +307,54 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)* me,
         /* Ensure, that the buffer limit code is restored.                   */
         *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
     }
+}
+
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(QUEX_NAME(Buffer)*         me,
+                                                       QUEX_TYPE_STREAM_POSITION* lexatom_index_to_be_contained)
+{
+    QUEX_TYPE_STREAM_POSITION lexatom_index_begin = me->input.lexatom_index_begin;
+    QUEX_TYPE_STREAM_POSITION lexatom_index_end   = lexatom_index_begin + (me->input.end_p - &me->_memory._front[1]);
+    QUEX_TYPE_STREAM_POSITION new_lexatom_index_begin;
+    QUEX_TYPE_STREAM_POSITION FallBackN   = QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
+    /* Assert to emphasize: 
+     *      'lexatom_index_to_be_contained == lexatom_index_end_of_stream'
+     * is correct, even if 'lexatom_index_end_of_stream' is undefined (-1).   */
+    __quex_assert(*lexatom_index_to_be_contained != (QUEX_TYPE_STREAM_POSITION)-1);
+
+    if( *lexatom_index_to_be_contained < lexatom_index_begin ) {
+        return (ptrdiff_t)0;
+    }
+    else if( *lexatom_index_to_be_contained < lexatom_index_end ) {
+        /* The '*lexatom_index_to_be_contained' already lies inside the buffer.*/
+        return (ptrdiff_t)0;
+    }
+    else if( me->input.lexatom_index_end_of_stream != (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        if( *lexatom_index_to_be_contained > me->input.lexatom_index_end_of_stream ) {
+            /* This position cannot be reached.                               */
+            return (ptrdiff_t)0;
+        }
+        else if( *lexatom_index_to_be_contained == me->input.lexatom_index_end_of_stream ) {
+            /* 'index end of stream' = first position AFTER the last lexatom. 
+             * => There is NO lexatom at that position.                       */
+            if( *lexatom_index_to_be_contained == lexatom_index_end ) {
+                /* 'lexatom_index_to_be_contained' lies on border => OK!      */
+                return (ptrdiff_t)0;
+            } 
+            else {
+                /* seek for lexatom before 'lexatom_index_to_be_contained'.   */
+                *lexatom_index_to_be_contained = QUEX_MAX(0, *lexatom_index_to_be_contained - 1);
+            }
+        }
+    }
+
+    new_lexatom_index_begin = QUEX_MAX(0, *lexatom_index_to_be_contained - FallBackN);
+    __quex_assert(me->input.lexatom_index_begin         <= new_lexatom_index_begin);
+    __quex_assert(new_lexatom_index_begin               <= *lexatom_index_to_be_contained);
+    __quex_assert(new_lexatom_index_begin + ContentSize >= *lexatom_index_to_be_contained );
+
+    /* Move existing content in the buffer to appropriate position.          */
+    return (ptrdiff_t)(new_lexatom_index_begin - lexatom_index_begin);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

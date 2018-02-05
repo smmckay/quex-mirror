@@ -172,7 +172,7 @@ QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me,
                                                       ptrdiff_t          move_distance);
 QUEX_INLINE bool      QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me);
 
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*   me); 
+QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(QUEX_NAME(Buffer)*   me); 
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me);
 
 QUEX_INLINE void      QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
@@ -219,10 +219,12 @@ QUEX_INLINE bool       QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buff
 QUEX_INLINE bool       QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)* me, 
                                                                QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin,
                                                                QUEX_TYPE_STREAM_POSITION MinCharacterIndexInBuffer);
-QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
+QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
                                                               QUEX_TYPE_LEXATOM** position_register,
                                                               const size_t        PositionRegisterN);
-QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(QUEX_NAME(Buffer)*         me,
+                                            QUEX_TYPE_STREAM_POSITION* lexatom_index_to_be_contained);
 
 /* User's manual buffer filling. */
 QUEX_INLINE void*      QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)* me, 

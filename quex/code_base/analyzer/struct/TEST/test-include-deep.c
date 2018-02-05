@@ -166,7 +166,7 @@ self_include_push(uint32_t n)
 
     switch( lx->error_code ) {
     case E_Error_None:                         return true;  /* OK                   */
-    case E_Error_OpeningFile_Failed:           return false; /* Too many file descr. */
+    case E_Error_File_OpenFailed:           return false; /* Too many file descr. */
     case E_Error_Allocation_ByteLoader_Failed: return false; /* Too many file descr. */
     default:                                   hwut_verify(false); return false;
     }
