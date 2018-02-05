@@ -147,14 +147,14 @@ Buffer Handling
    The current buffer is available via ``self.buffer``. In particular the
    following two functions might be used to assing new memory or to extend it.
 
-   .. function:: bool QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, 
+   .. function:: bool QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, 
                                                     ptrdiff_t           SizeAdd)
 
       Attempts to allocate new memory for the buffer and migrates the
       content to the new memory. Returns ``false`` if and only if that
       attempt fails.
 
-   .. function:: bool QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
+   .. function:: bool QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
                                 QUEX_TYPE_LEXATOM*  memory,
                                 const size_t        MemoryLexatomN,
                                 E_Ownership         Ownership) 

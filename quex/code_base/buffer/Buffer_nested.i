@@ -12,11 +12,10 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#if 1 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
-                                     QUEX_NAME(Buffer)*        included,
-                                     QUEX_NAME(LexatomLoader)* filler)
+QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
+                                   QUEX_NAME(Buffer)*        included,
+                                   QUEX_NAME(LexatomLoader)* filler)
 /* Construct 'included' buffer (-> memory split):
  *
  * Constructor takes over ownership over 'filler'. If construction fails,
@@ -74,7 +73,7 @@ QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
     else if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_SIZE_MIN) ) {
         /* (1) AVAILABLE SIZE too SMALL
          *     => Try to move content, so that free space becomes available.  */                    
-        available_size = QUEX_NAME(Buffer_load_prepare_forward_tricky)(including);
+        available_size = QUEX_NAME(Buffer_nested_free_front)(including);
     }
 
 
@@ -121,113 +120,10 @@ ERROR_0:
     QUEX_NAME(Buffer_resources_absent_mark)(included);
     return false;
 }
-
-#else
-QUEX_INLINE bool
-QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        me,
-                                     QUEX_NAME(Buffer)*        included,
-                                     QUEX_NAME(LexatomLoader)* filler)
-/* Construct 'included' buffer (-> memory split):
- *
- * Constructor takes over ownership over 'filler'. If construction fails,
- * the 'filler' is immediatedly deleted.
- *
- * To optimize memory usage and minimize the generation of new buffers in 
- * situations of extensive file inclusions, the current buffer's memory may
- * be split to generate the included buffer's memory.
- *
- *                 including  .---------------------.
- *                 buffer     |0|a|b|c|d|0| | | | | |
- *                            '---------------------'
- *                   read_p -------'     |
- *                   end_p  -------------'
- *
- *                              /    split      \
- *                             /                 \
- *                                  
- *        including  .-----------.     included .---------.
- *        buffer     |0|a|b|c|d|0|  +  buffer   | | | | | |
- *                   '-----------'              '---------'
- *          read_p -------'     |
- *          end_p  -------------'
- *
- * NOTE: Loaded content is NEVER overwritten or split. This is a precaution
- *       for situations where byte loaders may not be able to reload content
- *       that has already been loaded (for example 'TCP socket' byte loaders).
- *
- * RETURNS: true,  if memory has been allocated and the 'included' buffer is
- *                 ready to rumble.
- *          false, if memory allocation failed. 'included' buffer is not 
- *                 functional.
- *                                                                            */
-{
-    /*         front           read_p      end_p                 back
-     *           |               |           |                   |
-     *          .-------------------------------------------------.
-     *          |0|-|-|-|-|-|-|-|a|b|c|d|e|f|0| | | | | | | | | | |
-     *          '-------------------------------------------------'
-     *                                         :                 :
-     *                                         '--- available ---'
-     *                                                                        */
-    ptrdiff_t           available_size = me->_memory._back - me->input.end_p;
-    QUEX_TYPE_LEXATOM*  memory;
-    size_t              memory_size;
-    E_Ownership         ownership;
-    QUEX_NAME(Buffer)*  including_buffer_p = (QUEX_NAME(Buffer)*)0;
-
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-
-    if( QUEX_NAME(Buffer_resources_absent)(me) ) {
-        goto ERROR_0;
-    }
-    else if( available_size > (ptrdiff_t)4 ) {
-        ownership          = E_Ownership_INCLUDING_BUFFER;
-        including_buffer_p = me;
-    }
-    else if( QUEX_NAME(Buffer_load_prepare_forward_tricky)(me) > (ptrdiff_t)QUEX_SETTING_BUFFER_SIZE_MIN ) {
-        ownership          = E_Ownership_INCLUDING_BUFFER;
-        including_buffer_p = me;
-    }
-    else if( QUEX_NAME(Buffer_negotiate_allocate_memory)((size_t)QUEX_SETTING_BUFFER_SIZE, 
-                                                         &memory, &memory_size) ) {
-        ownership          = E_Ownership_LEXICAL_ANALYZER;
-        including_buffer_p = (QUEX_NAME(Buffer)*)0;
-    }
-    else {
-        goto ERROR_0;
-    }
-
-    if( ownership == E_Ownership_INCLUDING_BUFFER ) {
-        memory                   = &me->input.end_p[1];
-        memory_size              = (size_t)(&me->_memory._back[1] - memory);
-        me->_memory._back = &me->input.end_p[0];
-    }
-    else {
-        /* 'memory' and 'memory_size' have been set by called function.       */
-    }
-
-    QUEX_NAME(Buffer_construct)(included, filler, memory, memory_size, 
-                                (QUEX_TYPE_LEXATOM*)0, ownership, 
-                                including_buffer_p);
-    
-    included->event = me->event;                      /* Plain copy suffices. */
-
-    QUEX_BUFFER_ASSERT_CONSISTENCY(included);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    return true;
-
-ERROR_0:
-    if( filler ) {
-        filler->delete_self(filler); 
-    }
-    QUEX_NAME(Buffer_resources_absent_mark)(included);
-    return false;
-}
-#endif
     
 QUEX_INLINE bool
-QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me, 
-                                        float               Factor)
+QUEX_NAME(Buffer_nested_negotiate_extend)(QUEX_NAME(Buffer)*  me, 
+                                          float               Factor)
 /* Attempt to resize the current buffer to a size 's = Factor * current size'.
  * If that fails, try to access memory that of a sizes in between the 's' and 
  * the current sizes, i.e. 's = (s + current_size) / 2'. This is repeated until
@@ -239,7 +135,7 @@ QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me,
  *                could be found.
  *          false, else.                                                      */
 {
-    QUEX_NAME(Buffer)*  root         = QUEX_NAME(Buffer_find_root)(me);
+    QUEX_NAME(Buffer)*  root         = QUEX_NAME(Buffer_nested_find_root)(me);
     ptrdiff_t           current_size = &me->_memory._back[1] - root->_memory._front;
     /* Refuse negotiations where the requested amount of memory is greater
      * than the total addressable space divided by 16.
@@ -248,7 +144,7 @@ QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me,
     const ptrdiff_t     MinSize      = 4;
     ptrdiff_t           new_size     = (ptrdiff_t)((float)(QUEX_MAX(MinSize, QUEX_MIN(MaxSize, current_size))) * Factor);
 
-    while( ! QUEX_NAME(Buffer_extend_root)(me, new_size - current_size) ) {
+    while( ! QUEX_NAME(Buffer_nested_extend)(me, new_size - current_size) ) {
         new_size = (current_size + new_size) >> 1;
         if( new_size <= current_size ) {
             return false;
@@ -258,7 +154,7 @@ QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me,
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
+QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
 /* Allocates a chunk of memory that is 'SizeAdd' greater than the current size.
  * If 'SizeAdd' is negative a smaller chunk is allocated. However, if the 
  * resulting size is insufficient to hold the buffer's content, the function
@@ -280,7 +176,7 @@ QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     /* The 'Buffer_extend()' function cannot be called for an buffer which is
      * currently including, i.e. has dependent buffers! It can only be called
      * for the currently working buffer.                                      */
-    root              = QUEX_NAME(Buffer_find_root)(me);
+    root              = QUEX_NAME(Buffer_nested_find_root)(me);
     old_memory_root_p = root->_memory._front;
     required_size     = (size_t)(old_content_end_p - old_memory_root_p);
     new_size          = (size_t)(&me->_memory._back[1] - old_memory_root_p + SizeAdd);
@@ -317,10 +213,10 @@ QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
-                               QUEX_TYPE_LEXATOM*  memory,
-                               const size_t        MemoryLexatomN,
-                               E_Ownership         Ownership) 
+QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
+                                 QUEX_TYPE_LEXATOM*  memory,
+                                 const size_t        MemoryLexatomN,
+                                 E_Ownership         Ownership) 
 /* Migrate the content of the current buffer to a new memory space. In case
  * that the buffer is nested in an including buffer, the root of all included
  * buffers is moved. 
@@ -343,7 +239,7 @@ QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
     __quex_assert(old_content_end_p >= me->_memory._front);
     __quex_assert(old_content_end_p <= me->_memory._back);
 
-    root              = QUEX_NAME(Buffer_find_root)(me);
+    root              = QUEX_NAME(Buffer_nested_find_root)(me);
     old_memory_root_p = root->_memory._front;
     required_size     = (size_t)(old_content_end_p - old_memory_root_p);
 
@@ -371,7 +267,7 @@ QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
 }
 
 QUEX_INLINE QUEX_NAME(Buffer)*
-QUEX_NAME(Buffer_find_root)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_nested_find_root)(QUEX_NAME(Buffer)* me)
 /* A buffer may be nested in an including buffer. This function walks down
  * the path of nesting until the root of all including buffers is found.
  *

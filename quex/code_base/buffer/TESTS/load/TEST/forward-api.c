@@ -19,11 +19,11 @@
  *            (2.b) _read_p != input.end_p
  *                => '_read_p' pointed to buffer limit code, but it was 
  *                   not the buffer's limit
- *                => E_LoadResult_BAD_LEXATOM
+ *                => E_LoadResult_ENCODING_ERROR
  *            (2.c) Encoding Error from lexatom_loader/converter
  *                1) ICU
  *                2) IConv
- *                => E_LoadResult_BAD_LEXATOM
+ *                => E_LoadResult_ENCODING_ERROR
  *
  * E_LoadResult_NO_MORE_DATA => EOS must be set.
  *
@@ -197,7 +197,7 @@ self_load(bool ConverterF)
     delta   = before.read_p - self.buffer._read_p;
 
     hwut_verify(delta >= 0);
-    if( verdict != E_LoadResult_BAD_LEXATOM ) {
+    if( verdict != E_LoadResult_ENCODING_ERROR ) {
         before_check_consistency(&before, delta, verdict, &self.buffer, position_register, ConverterF);
     }
 
@@ -317,20 +317,20 @@ self_BAD_LEXATOM()
     /* (2.b) _read_p != input.end_p
      *     => '_read_p' pointed to buffer limit code, but it was 
      *        not the buffer's limit
-     *     => E_LoadResult_BAD_LEXATOM */
+     *     => E_LoadResult_ENCODING_ERROR */
     for(read_p_offset = 1; read_p_offset < BufferElementN; ++read_p_offset) {
         self_setup(/* LexemePOffset     */-1, 
                    /* ReadPOffset       */ read_p_offset,
                    /* EmptyFile         */ false,
                    /* LexatomLoaderType */ E_LexatomLoader_Plain,
                    /* ErrorCodePosition */ -1);
-        hwut_verify(self_load(false) == E_LoadResult_BAD_LEXATOM);
+        hwut_verify(self_load(false) == E_LoadResult_ENCODING_ERROR);
     }
 
     /* (2.c) Encoding Error from lexatom_loader/converter
      *     1) ICU (does not work!)
      *     2) IConv
-     *     => E_LoadResult_BAD_LEXATOM */
+     *     => E_LoadResult_ENCODING_ERROR */
     for(position = 0; position < PSEUDO_FILE_UTF8_ELEMENT_N; ++position) 
     {
         backup_byte = PseudoFileUTF8[position]; 
@@ -347,7 +347,7 @@ self_BAD_LEXATOM()
                                                    self.buffer.input.end_p);
             self.buffer._lexeme_start_p = &self.buffer._read_p[-1];
  
-            if( self_load(true) == E_LoadResult_BAD_LEXATOM) break;
+            if( self_load(true) == E_LoadResult_ENCODING_ERROR) break;
         }
 
         PseudoFileUTF8[position] = backup_byte;
@@ -368,7 +368,7 @@ self_BAD_LEXATOM()
             self.buffer._read_p         = QUEX_MIN(self.buffer._memory._back,
                                                    self.buffer.input.end_p);
             self.buffer._lexeme_start_p = &self.buffer._read_p[-1];
-            if( self_load(true) == E_LoadResult_BAD_LEXATOM) break;
+            if( self_load(true) == E_LoadResult_ENCODING_ERROR) break;
         }
 
         PseudoFileUTF8[position] = backup_byte;

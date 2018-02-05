@@ -10,6 +10,64 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+#define QUEX_BUFFER_POINTER_ADD(P, BORDER, OFFSET)          \
+        ((P) = (  ((P) == (QUEX_TYPE_LEXATOM*)0) ? (P)      \
+                : ((BORDER) - (P) < OFFSET)     ? (BORDER) \
+                : (P) + (OFFSET)))
+#define QUEX_BUFFER_POINTER_SUBTRACT(P, BORDER, NEGATIVE_OFFSET)  \
+        ((P) = (  ((P) == (QUEX_TYPE_LEXATOM*)0)     ? (P)        \
+                : ((BORDER) - (P) > NEGATIVE_OFFSET) ? (BORDER)   \
+                : (P) + (NEGATIVE_OFFSET)))
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
+                                      ptrdiff_t           offset,
+                                      QUEX_TYPE_LEXATOM** position_register,
+                                      const size_t        PositionRegisterN)
+/* Adapt points after content has been moved towards begin.
+ *
+ * ADAPTS: _read_p, _lexeme_start_p, position registers, end_p, 
+ *         input.end_lexatom_index                                            */
+{ 
+    QUEX_TYPE_LEXATOM*  border = (QUEX_TYPE_LEXATOM*)0;
+    QUEX_TYPE_LEXATOM** pit    = (QUEX_TYPE_LEXATOM**)0x0;
+    QUEX_TYPE_LEXATOM** pEnd   = &position_register[PositionRegisterN];
+
+    if( offset > 0 ) {
+        border = me->_memory._back;
+        QUEX_BUFFER_POINTER_ADD(me->_read_p,         border, offset);
+        QUEX_BUFFER_POINTER_ADD(me->_lexeme_start_p, border, offset);
+        QUEX_BUFFER_POINTER_ADD(me->input.end_p,     border, offset);
+
+        for(pit = position_register; pit != pEnd; ++pit) {
+            QUEX_BUFFER_POINTER_ADD(*pit, border, offset); 
+        }
+    }
+    else if( offset < 0 ) {
+        border = me->_memory._front;
+        QUEX_BUFFER_POINTER_SUBTRACT(me->_read_p,         border, offset);
+        QUEX_BUFFER_POINTER_SUBTRACT(me->_lexeme_start_p, border, offset);
+        QUEX_BUFFER_POINTER_SUBTRACT(me->input.end_p,     border, offset);
+
+        for(pit = position_register; pit != pEnd; ++pit) {
+            QUEX_BUFFER_POINTER_SUBTRACT(*pit, border, offset); 
+        }
+    }
+    else {
+        return;
+    }
+
+    *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
+
+    me->input.lexatom_index_begin -= offset;
+
+    /* input.end_p/end_lexatom_index: End lexatom index remains the SAME, 
+     * since no new content has been loaded into the buffer.                 */
+    __quex_assert(me->input.end_p - &me->_memory._front[1] >= offset);
+
+    QUEX_BUFFER_ASSERT_pointers_in_range(me);
+}
+
 QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*  me) 
 /* RETURNS: Move Distance
@@ -101,40 +159,6 @@ QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me)
     return move_distance;
 }
 
-QUEX_INLINE void
-QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(QUEX_NAME(Buffer)*  me,
-                                                    ptrdiff_t           move_distance,
-                                                    QUEX_TYPE_LEXATOM** position_register,
-                                                    const size_t        PositionRegisterN)
-/* Adapt points after content has been moved towards begin.
- *
- * ADAPTS: _read_p, _lexeme_start_p, position registers, end_p, 
- *         input.end_lexatom_index                                            */
-{ 
-    QUEX_TYPE_LEXATOM*   BeginP = &me->_memory._front[1];
-    QUEX_TYPE_LEXATOM**  pr_it  = 0x0;
-
-    me->_read_p                                   -= move_distance;
-    if( me->_lexeme_start_p ) me->_lexeme_start_p -= move_distance;
-   
-    if( position_register ) {
-        /* All position registers MUST point behind '_lexeme_start_p'.       */
-        for(pr_it = position_register; pr_it != &position_register[PositionRegisterN]; ++pr_it) {
-            if( ! *pr_it ) continue;
-            *pr_it = (*pr_it - BeginP) >= move_distance ? *pr_it - move_distance : 0;
-        }
-    }
-
-    /* input.end_p/end_lexatom_index: End lexatom index remains the SAME, 
-     * since no new content has been loaded into the buffer.                 */
-    __quex_assert(me->input.end_p - BeginP >= move_distance);
-
-    QUEX_NAME(Buffer_register_content)(me, &me->input.end_p[- move_distance], 
-                                       me->input.lexatom_index_begin + move_distance);
-
-    QUEX_BUFFER_ASSERT_pointers_in_range(me);
-}
-
 QUEX_INLINE void        
 QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
                                                      ptrdiff_t          move_distance)
@@ -143,25 +167,8 @@ QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
  * ADAPTS: _read_p, _lexeme_start_p, position registers, end_p, 
  *         input.end_lexatom_index                                            */
 {
-    QUEX_TYPE_LEXATOM*  EndP = me->_memory._back;
-    QUEX_TYPE_LEXATOM*  end_p;
-
-    __quex_assert(move_distance <= me->input.lexatom_index_begin);
-
-    /* Pointer Adaption: _read_p, _lexeme_start_p.                           */
-    me->_read_p += move_distance;
-    if( me->_lexeme_start_p ) {
-        me->_lexeme_start_p = EndP - me->_lexeme_start_p > move_distance ?
-                                  &me->_lexeme_start_p[move_distance]
-                                : &EndP[-1];
-    }
-
-    /* Adapt and of content pointer and new lexatom index at begin.          */
-    end_p = EndP - me->input.end_p < move_distance ? EndP
-                                                   : &me->input.end_p[move_distance];
-
-    QUEX_NAME(Buffer_register_content)(me, end_p, 
-                                       me->input.lexatom_index_begin - move_distance);
+    QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, 
+                                          (QUEX_TYPE_LEXATOM**)0, 0);
 
     QUEX_BUFFER_ASSERT_pointers_in_range(me);
 }
@@ -219,10 +226,8 @@ QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(QUEX_NAME(Buffer)*  me,
 
         move_size = QUEX_NAME(Buffer_move_towards_begin)(me, MoveDistance);
 
-        QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(me, MoveDistance, 
-                                                            position_register,
-                                                            PositionRegisterN);
-
+        QUEX_NAME(Buffer_pointers_add_offset)(me, - MoveDistance, 
+                                              position_register, PositionRegisterN); 
         __quex_assert(me->input.end_p == &me->_memory._front[1 + move_size]);
         (void)move_size;
     }

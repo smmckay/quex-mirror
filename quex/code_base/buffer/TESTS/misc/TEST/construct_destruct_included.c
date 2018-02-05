@@ -6,7 +6,7 @@
  *
  * Construction and destruction of included buffer's is triggered by 
  *
- *                   Buffer_construct_included() and 
+ *                   Buffer_nested_construct() and 
  *                   Buffer_destruct_included()
  *
  * CHOICES: allocate    -- MemoryManager allocates a 2nd buffer if split fails.
@@ -87,7 +87,7 @@ main(int argc, char** argv)
             /* Construct Included ____________________________________________*/
             MemoryManager_UnitTest.allocation_addmissible_f = allocation_f;
             including._lexeme_start_p = including._read_p;
-            verdict = QUEX_NAME(Buffer_construct_included)(&including, &included, 
+            verdict = QUEX_NAME(Buffer_nested_construct)(&including, &included, 
                                                            (QUEX_NAME(LexatomLoader)*)0);
 
             split_n += self_check_construction(&including, &included, 

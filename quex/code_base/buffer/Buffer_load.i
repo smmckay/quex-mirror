@@ -64,7 +64,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
         /* If the read pointer does not stand on the end of input pointer, then
          * the 'buffer limit code' at the read pointer is a bad lexatom.    
          * Buffer limit codes cannot be possibly be part of buffer content.  */
-        return E_LoadResult_BAD_LEXATOM;
+        return E_LoadResult_ENCODING_ERROR;
     }
     else if( ! me->filler || ! me->filler->byte_loader ) {
         QUEX_NAME(Buffer_register_eos)(me, ci_begin + (me->input.end_p - begin_p));
@@ -110,7 +110,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
 
     __quex_debug_buffer_load(me, "LOAD FORWARD(exit)\n");
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    if     ( encoding_error_f ) return E_LoadResult_BAD_LEXATOM;
+    if     ( encoding_error_f ) return E_LoadResult_ENCODING_ERROR;
     else if( loaded_n )         return E_LoadResult_DONE;
     else                        return E_LoadResult_NO_MORE_DATA;
 }
@@ -163,7 +163,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
         /* If the read pointer does not stand on 'front', then the buffer limit
          * code is a bad character, Buffer limit codes are not supposed to     
          * appear in buffer content.                                         */
-        return E_LoadResult_BAD_LEXATOM;
+        return E_LoadResult_ENCODING_ERROR;
     }
     else if( me->input.lexatom_index_begin == 0 ) {
         return E_LoadResult_NO_MORE_DATA; /* Begin of stream.                */
@@ -190,7 +190,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
                                              me->input.lexatom_index_begin, 
                                              &end_of_stream_f, &encoding_error_f);
     if( encoding_error_f ) {
-        return E_LoadResult_BAD_LEXATOM;
+        return E_LoadResult_ENCODING_ERROR;
     }
     else if( loaded_n != move_distance ) {
         /* Serious: previously loaded content could not be loaded again!     
@@ -206,7 +206,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_move_and_load_forward)(QUEX_NAME(Buffer)*        me, 
+QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me, 
                                         QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin,
                                         QUEX_TYPE_STREAM_POSITION MinCharacterIndexInBuffer)
 /* RETURNS:  true -- if the the buffer could be filled starting from 
@@ -294,7 +294,7 @@ QUEX_NAME(Buffer_move_and_load_forward)(QUEX_NAME(Buffer)*        me,
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)*        me, 
+QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)*        me, 
                                          QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin)
 /* Before:                     
  *            .------------------------------------- prev lexatom index begin
@@ -420,7 +420,7 @@ QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,
 
 #if 0
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
 /* Circumvent restriction of 'Buffer_load_prepare_forward()' which 
  * refuses to move if end of stream is inside buffer. 
  *
@@ -451,7 +451,7 @@ QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me)
 
 #else
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
 /* Shrink all nesting buffers to a minimum and reset all pointers accordingly.
  *
  * RETURNS: Free space at the end of 'me'.                                    */
@@ -464,7 +464,7 @@ QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me)
     /* Iterate over all nesting buffers starting from root up to 'me'.
      * Shrink each buffer, adapt its 'back pointer' and the 'front pointer'
      * of the included buffer.                                                */
-    for(it = QUEX_NAME(Buffer_find_root)(me); true ; 
+    for(it = QUEX_NAME(Buffer_nested_find_root)(me); true ; 
         it = QUEX_NAME(Buffer_get_nested)(it, me)) {
         move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(it);
 
@@ -548,7 +548,7 @@ QUEX_NAME(Buffer_load_prepare_backward)(QUEX_NAME(Buffer)* me)
     }
     
     (void)QUEX_NAME(Buffer_move_towards_end)(me, move_distance);
-    QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(me, move_distance);
+    QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, (QUEX_TYPE_LEXATOM**)0, 0);
 
     /*________________________________________________________________________*/
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);

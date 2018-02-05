@@ -185,7 +185,6 @@ QUEX_NAME(LexatomLoader_load)(QUEX_NAME(LexatomLoader)*  me,
     return loaded_n;
 }
 
-
 QUEX_INLINE void
 QUEX_NAME(LexatomLoader_reverse_byte_order)(QUEX_TYPE_LEXATOM*       Begin, 
                                            const QUEX_TYPE_LEXATOM* End)

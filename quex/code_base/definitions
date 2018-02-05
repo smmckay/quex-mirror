@@ -114,7 +114,7 @@ typedef enum {
     E_LoadResult_DONE,              /* Complete or incomplete, load happened. */
     E_LoadResult_COMPLETE,          /* Load filled drain completely.          */
     E_LoadResult_INCOMPLETE,        /* Drain not filled completely.           */
-    E_LoadResult_BAD_LEXATOM,       /* Encoding error in stream.              */
+    E_LoadResult_ENCODING_ERROR,       /* Encoding error in stream.              */
     E_LoadResult_NO_MORE_DATA,      /* No more data to fill drain.            */
     E_LoadResult_FAILURE,           /* General low-level load failure.        */ 
     E_LoadResult_VOID               /* General low-level load failure.        */ 
@@ -125,7 +125,7 @@ typedef enum {
             (  (LR) == E_LoadResult_DONE              ? "DONE"              \
              : (LR) == E_LoadResult_COMPLETE          ? "COMPLETE"          \
              : (LR) == E_LoadResult_INCOMPLETE        ? "INCOMPLETE"        \
-             : (LR) == E_LoadResult_BAD_LEXATOM       ? "BAD LEXATOM"       \
+             : (LR) == E_LoadResult_ENCODING_ERROR       ? "BAD LEXATOM"       \
              : (LR) == E_LoadResult_NO_MORE_DATA      ? "NO MORE DATA"      \
              : (LR) == E_LoadResult_FAILURE           ? "FAILURE"           \
              : (LR) == E_LoadResult_VOID              ? "VOID"              \

@@ -210,7 +210,7 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
                                                     - self.buffer._memory._front);
 
     /* Try to double the size of the buffer, by default.                      */
-    if( ! QUEX_NAME(Buffer_negotiate_extend_root)(&self.buffer, 2.0) ) {
+    if( ! QUEX_NAME(Buffer_nested_negotiate_extend)(&self.buffer, 2.0) ) {
         QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
         QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
     }
@@ -668,7 +668,7 @@ _10:
 
     switch( load_result ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_BAD_LEXATOM:       goto _1;
+    case E_LoadResult_ENCODING_ERROR:       goto _1;
     case E_LoadResult_FAILURE:           QUEX_GOTO_STATE(target_state_else_index); 
     /* case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(E_LoadResult_FAILURE); return; */
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 

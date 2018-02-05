@@ -2,8 +2,8 @@
  *
  * The test operates on the following functions:
  *
- *    Buffer_extend_root()     tested in    self_common_single_migration()
- *    Buffer_migrate_root()    tested in    self_common_single_extension()
+ *    Buffer_nested_extend()     tested in    self_common_single_migration()
+ *    Buffer_nested_migrate()    tested in    self_common_single_extension()
  *
  * 'Nested' means, that the initial buffer IS NESTED IN AN INCLUDING BUFFER.
  * Both functions are checked for the same sample space of setups 
@@ -48,7 +48,7 @@ static void               self_test_single_migration(QUEX_NAME(Buffer)* referenc
                                                      ptrdiff_t*         shrink_n);
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
+QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
                                      QUEX_NAME(Buffer)*        included,
                                      QUEX_NAME(LexatomLoader)* filler);
 
@@ -152,7 +152,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t Depth)
     MemoryManager_UnitTest.allocation_addmissible_f = false;
 
     for(i=0; i<Depth-1 ; ++i) {
-        success_f = QUEX_NAME(Buffer_construct_included)(&array[i], 
+        success_f = QUEX_NAME(Buffer_nested_construct)(&array[i], 
                                                          &array[i+1], 
                                                          (QUEX_NAME(LexatomLoader)*)0);
         hwut_verify(success_f);
@@ -197,7 +197,7 @@ self_test_single_migration(QUEX_NAME(Buffer)* reference,
     __quex_assert(subject->input.end_p >= subject->_memory._front);
     __quex_assert(subject->input.end_p <= subject->_memory._back);
 
-    QUEX_NAME(Buffer_migrate_root)(subject, new_memory, NewSize, 
+    QUEX_NAME(Buffer_nested_migrate)(subject, new_memory, NewSize, 
                                    E_Ownership_EXTERNAL);
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;

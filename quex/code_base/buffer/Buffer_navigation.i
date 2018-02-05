@@ -79,7 +79,7 @@ QUEX_NAME(Buffer_seek_forward)(QUEX_NAME(Buffer)* me, const ptrdiff_t CharacterN
     else {
         /* Character index at read_p = lexatom index at begin + offset     */
         new_lexatom_index_begin = QUEX_MAX(0, target - QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
-        if( ! QUEX_NAME(Buffer_move_and_load_forward)(me, new_lexatom_index_begin, target) ) {
+        if( ! QUEX_NAME(Buffer_load_forward_to_contain)(me, new_lexatom_index_begin, target) ) {
             QUEX_BUFFER_ASSERT_CONSISTENCY(me);
             return false;
         }
@@ -123,7 +123,7 @@ QUEX_NAME(Buffer_seek_backward)(QUEX_NAME(Buffer)* me,
         offset                    = (ptrdiff_t)QUEX_MIN((QUEX_TYPE_STREAM_POSITION)(ContentSize >> 1), target);
         new_lexatom_index_begin = target - offset;
 
-        if( ! QUEX_NAME(Buffer_move_and_load_backward)(me, new_lexatom_index_begin) ) {
+        if( ! QUEX_NAME(Buffer_load_backward_to_contain)(me, new_lexatom_index_begin) ) {
             /* QUEX_ERROR_EXIT() initiated inside above function.            */
             return false;
         }

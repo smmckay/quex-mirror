@@ -5,10 +5,10 @@ GENERAL_FLAGS    := $(GENERAL_WARNINGS) \
 	                $(GENERAL_INCLUDES) \
 			        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 
-CC          := gcc -c $(GENERAL_FLAGS) -Wno-deprecated #-ggdb
-CPP         := g++ -c $(GENERAL_FLAGS) -pedantic       #-ggdb
-LDC         := gcc $(GENERAL_FLAGS)    -Wno-deprecated #-ggdb
-LDCPP       := g++ $(GENERAL_FLAGS)    -pedantic       #-ggdb
+CC          := gcc -c $(GENERAL_FLAGS) -Wno-deprecated # -ggdb
+CPP         := g++ -c $(GENERAL_FLAGS) -pedantic       # -ggdb
+LDC         := gcc $(GENERAL_FLAGS)    -Wno-deprecated # -ggdb
+LDCPP       := g++ $(GENERAL_FLAGS)    -pedantic       # -ggdb
 
 # ICONV _______________________________________________________________________
 # LIB_ICONV := -liconv

@@ -41,7 +41,7 @@ QUEX_INLINE void      QUEX_NAME(Buffer_on_overflow_DEFAULT)(void*              a
 QUEX_INLINE void      QUEX_NAME(Buffer_on_before_buffer_change_DEFAULT)(void*  aux,
                                                                         const  QUEX_TYPE_LEXATOM*, 
                                                                         const  QUEX_TYPE_LEXATOM*);
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_load_prepare_forward_tricky)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void      QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
                                                                           QUEX_TYPE_LEXATOM* old_memory_root,
                                                                           QUEX_TYPE_LEXATOM* new_memory_root,
@@ -424,7 +424,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #include <quex/code_base/buffer/Buffer_navigation.i>
 #include <quex/code_base/buffer/Buffer_fill.i>
 #include <quex/code_base/buffer/Buffer_load.i>
-#include <quex/code_base/buffer/Buffer_nesting.i>
+#include <quex/code_base/buffer/Buffer_nested.i>
 #include <quex/code_base/buffer/Buffer_move.i>
 #include <quex/code_base/buffer/BufferMemory.i>
 

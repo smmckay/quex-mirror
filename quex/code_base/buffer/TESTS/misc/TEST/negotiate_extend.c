@@ -2,7 +2,7 @@
  *
  * The test operates on the following functions:
  *
- *          Buffer_negotiate_extend_root()
+ *          Buffer_nested_negotiate_extend()
  *
  * Pointer and indice handling is not subject to this test. Subject to test
  * is:
@@ -36,7 +36,7 @@ static void               self_destruct_setup(QUEX_NAME(Buffer)* array,
                                               size_t Depth);
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*        including,
+QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
                                      QUEX_NAME(Buffer)*        included,
                                      QUEX_NAME(LexatomLoader)* filler);
 
@@ -111,7 +111,7 @@ self_test(size_t SizeBefore, ptrdiff_t ReallocLimitByteN)
     MemoryManager_UnitTest.reallocate_limit_byte_n = ReallocLimitByteN;
     MemoryManager_UnitTest.reallocate_verbose_f    = 1;
 
-    verdict_f   = QUEX_NAME(Buffer_negotiate_extend_root)(me, 2.0);
+    verdict_f   = QUEX_NAME(Buffer_nested_negotiate_extend)(me, 2.0);
     printf("verdict: %s;\n", verdict_f ? "true" : "false");
 
     size        = &me->_memory._back[1] - root->_memory._front;
@@ -157,7 +157,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t DepthWan
     MemoryManager_UnitTest.allocation_addmissible_f = false;
 
     for(i=0; i<depth-1 ; ++i) {
-        success_f = QUEX_NAME(Buffer_construct_included)(&array[i], 
+        success_f = QUEX_NAME(Buffer_nested_construct)(&array[i], 
                                                          &array[i+1], 
                                                          (QUEX_NAME(LexatomLoader)*)0);
         hwut_verify(success_f);

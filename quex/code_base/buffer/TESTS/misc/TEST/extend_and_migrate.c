@@ -2,8 +2,8 @@
  *
  * The test operates on the following functions:
  *
- *    Buffer_extend_root()     tested in    self_common_single_migration()
- *    Buffer_migrate_root()    tested in    self_common_single_extension()
+ *    Buffer_nested_extend()     tested in    self_common_single_migration()
+ *    Buffer_nested_migrate()    tested in    self_common_single_extension()
  *
  * 'Plain' means, that the initial buffer is not nested in an including
  * buffer. Both functions are checked for the same sample space of setups 

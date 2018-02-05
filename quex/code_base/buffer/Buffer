@@ -142,7 +142,7 @@ QUEX_INLINE void  QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*                
                                               QUEX_TYPE_LEXATOM*                    EndOfFileP,
                                               E_Ownership                           Ownership,
                                               QUEX_NAME(Buffer)*                    IncludingBuffer);
-QUEX_INLINE bool  QUEX_NAME(Buffer_construct_included)(QUEX_NAME(Buffer)*                   including,
+QUEX_INLINE bool  QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*                   including,
                                                        QUEX_NAME(Buffer)*                   included,
                                                        struct QUEX_NAME(LexatomLoader_tag)* filler);
 QUEX_INLINE bool  QUEX_NAME(Buffer_negotiate_allocate_memory)(const size_t        Size, 
@@ -175,15 +175,12 @@ QUEX_INLINE bool      QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_begin)(QUEX_NAME(Buffer)*   me); 
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me);
 
-QUEX_INLINE void      QUEX_NAME(Buffer_adapt_pointers_after_move_forward)(QUEX_NAME(Buffer)*  me,
-                                                                          ptrdiff_t           move_distance,
-                                                                          QUEX_TYPE_LEXATOM** position_register,
-                                                                          const size_t        PositionRegisterN);
-QUEX_INLINE void      QUEX_NAME(Buffer_adapt_pointers_after_move_backward)(QUEX_NAME(Buffer)* me,
-                                                                           ptrdiff_t          move_distance);
+QUEX_INLINE void      QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
+                                                            ptrdiff_t           offset,
+                                                            QUEX_TYPE_LEXATOM** position_register,
+                                                            const size_t        PositionRegisterN);
 
-QUEX_INLINE ptrdiff_t 
-                      QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(QUEX_NAME(Buffer)*  me, 
+QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(QUEX_NAME(Buffer)*  me, 
                                                                               ptrdiff_t           MoveDistance,
                                                                               QUEX_TYPE_LEXATOM** position_register,
                                                                               const size_t        PositionRegisterN);
@@ -194,16 +191,16 @@ QUEX_INLINE void  QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffe
                                                                  size_t             NewSize);
 
 /* Memory extend and migrate. */
-QUEX_INLINE bool  QUEX_NAME(Buffer_extend_root)(QUEX_NAME(Buffer)*  me,
+QUEX_INLINE bool  QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me,
                                                 ptrdiff_t           SizeAdd);
-QUEX_INLINE bool  QUEX_NAME(Buffer_negotiate_extend_root)(QUEX_NAME(Buffer)*  me, 
+QUEX_INLINE bool  QUEX_NAME(Buffer_nested_negotiate_extend)(QUEX_NAME(Buffer)*  me, 
                                                           float               Factor);
-QUEX_INLINE bool  QUEX_NAME(Buffer_migrate_root)(QUEX_NAME(Buffer)*  me,
+QUEX_INLINE bool  QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
                                                  QUEX_TYPE_LEXATOM*  memory,
                                                  const size_t        MemoryLexatomN,
                                                  E_Ownership         Ownership);
 QUEX_INLINE QUEX_NAME(Buffer)*
-                  QUEX_NAME(Buffer_find_root)(QUEX_NAME(Buffer)* me);
+                  QUEX_NAME(Buffer_nested_find_root)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE QUEX_NAME(Buffer)* 
                   QUEX_NAME(Buffer_get_nested)(QUEX_NAME(Buffer)* me, 
                                                    QUEX_NAME(Buffer)* tail);
@@ -217,9 +214,9 @@ QUEX_INLINE E_LoadResult
 QUEX_INLINE E_LoadResult       
                        QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me);
 
-QUEX_INLINE bool       QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me, 
+QUEX_INLINE bool       QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)* me, 
                                                                 QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin);
-QUEX_INLINE bool       QUEX_NAME(Buffer_move_and_load_forward)(QUEX_NAME(Buffer)* me, 
+QUEX_INLINE bool       QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)* me, 
                                                                QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin,
                                                                QUEX_TYPE_STREAM_POSITION MinCharacterIndexInBuffer);
 QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_load_prepare_forward)(QUEX_NAME(Buffer)*  me,

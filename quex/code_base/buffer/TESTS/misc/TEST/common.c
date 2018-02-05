@@ -92,7 +92,7 @@ common_test_single_migration(QUEX_NAME(Buffer)* reference,
     common_clone(reference, &subject);
 
     hwut_verify(
-        verdict_f == QUEX_NAME(Buffer_migrate_root(&subject, new_memory, NewSize, 
+        verdict_f == QUEX_NAME(Buffer_nested_migrate(&subject, new_memory, NewSize, 
                                                    E_Ownership_EXTERNAL))
     );
 
@@ -111,7 +111,7 @@ common_test_single_extension(QUEX_NAME(Buffer)* reference, size_t NewSize)
 
     common_clone(reference, &subject);
 
-    QUEX_NAME(Buffer_extend_root)(&subject, NewSize - reference_size); 
+    QUEX_NAME(Buffer_nested_extend)(&subject, NewSize - reference_size); 
 
     hwut_verify(E_Ownership_LEXICAL_ANALYZER == subject._memory.ownership);
 
