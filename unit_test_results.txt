@@ -658,8 +658,6 @@ demo/C/TEST                                                          <no date>
                                                                                
 demo/Cpp/TEST                                                        <no date>
 -------------------------------------------------------------------------------
- * --hwut-info:
-        tmp.sh .............................................[NO GOOD FILE]
  * 00-Minimalist
         00-Minimalist.sh .............................................[OK]
  * No references to C demos
@@ -781,12 +779,10 @@ demo/Cpp/TEST                                                        <no date>
     Multiple Lexical Analyzers -- shared token
         14-MultipleLexersSameToken.sh DEBUG ..........................[OK]
                                       NDEBUG .........................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] tmp.sh
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -1010,11 +1006,11 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ....................................[OK]
+        no-use-of-lexeme-macro.sh ..................................[FAIL]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ................................................[OK]
+        svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
@@ -1026,7 +1022,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ..................................[OK]
+        include_guard.py convention ................................[FAIL]
                          undefinition ................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
@@ -1037,10 +1033,14 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] no-use-of-lexeme-macro.sh
+    [FAIL] svn-status.sh
+    [FAIL] include_guard.py _ convention
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1112,7 +1112,7 @@ quex/TESTS/errors-warnings/TEST                                      <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-Error: Directory: /home/fschaef/prj/quex/trunk/quex/TESTS/event-handling/TEST
+Error: Directory: /home/fschaef/prj/quex/r4980/quex/TESTS/event-handling/TEST
 Error:
 Error:     Makefile: no response on 'make hwut-info'.
 Error:
@@ -2768,7 +2768,7 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
                                                                    \___/|_|\_) 
 ===============================================================================
                                                                                
-                      <no file 'hwut-info.dat', no title>                      
+                     Include and buffer nesting scenarios                      
                                                                                
 quex/code_base/buffer/TESTS/misc/TEST                                <no date>
 -------------------------------------------------------------------------------
@@ -3301,7 +3301,6 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] tmp.sh
 ===============================================================================
 
 SUMMARY:
@@ -3310,10 +3309,10 @@ SUMMARY:
 
            238     [OK] TEST                                                          
            57      [OK] demo/C/TEST                                                   
-        1  58    [FAIL] ..../Cpp/TEST                                                 
+           57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-           15      [OK] ........../code/TEST                                          
+        3  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3368,11 +3367,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _       _____          _          
-    |  ___|_ _(_) |___  |_   _|_      _(_) ___ ___ 
-    | |_ / _` | | / __|   | | \ \ /\ / / |/ __/ _ \
-    |  _| (_| | | \__ \   | |  \ V  V /| | (__| __/
-    |_|  \__,_|_|_|___/   |_|   \_/\_/ |_|\___\___|
-                                                                   (1682 tests)
+     _____     _ _          _  _            
+    |  ___|_ _(_) |___     | || |     __  __
+    | |_ / _` | | / __|    | || |_    \ \/ /
+    |  _| (_| | | \__ \    |__   _     >  < 
+    |_|  \__,_|_|_|___/       |_|     /_/\_\
+                                                                   (1681 tests)
 
 ===============================================================================
