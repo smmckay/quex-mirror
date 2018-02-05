@@ -232,6 +232,8 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     QUEX_TYPE_LEXATOM*        begin_p     = (QUEX_TYPE_LEXATOM*)0;
     QUEX_TYPE_LEXATOM*        end_p       = (QUEX_TYPE_LEXATOM*)0;
     const ptrdiff_t           ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
+    QUEX_TYPE_STREAM_POSITION lexatom_index_to_be_contained = MinCharacterIndexInBuffer;
+    QUEX_TYPE_STREAM_POSITION new_lexatom_index_begin;
     QUEX_TYPE_STREAM_POSITION load_lexatom_index;
     ptrdiff_t                 load_request_n;
     QUEX_TYPE_LEXATOM*        load_p;
@@ -240,21 +242,14 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     ptrdiff_t                 move_size;
     bool                      end_of_stream_f  = false;
     bool                      encoding_error_f = false;
+    (void)NewCharacterIndexBegin;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    __quex_assert(me->input.lexatom_index_begin        <= NewCharacterIndexBegin);
-    __quex_assert(NewCharacterIndexBegin               <= MinCharacterIndexInBuffer);
-    __quex_assert(NewCharacterIndexBegin + ContentSize >= MinCharacterIndexInBuffer );
-
-    if(    me->input.lexatom_index_end_of_stream != -1
-        && MinCharacterIndexInBuffer >= me->input.lexatom_index_end_of_stream ) {
-        /* If the end of the stream is INSIDE the buffer already, then there
-         * is no need, no chance, of loading more content.                   */
-        return false;
-    }
 
     /* Move existing content in the buffer to appropriate position.          */
-    move_distance      = NewCharacterIndexBegin - me->input.lexatom_index_begin;
+    move_distance = QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(me, 
+                                             &lexatom_index_to_be_contained);
+    new_lexatom_index_begin = me->input.lexatom_index_begin + move_distance;
 
     QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
     move_size          = QUEX_NAME(Buffer_move_towards_begin)(me, (ptrdiff_t)move_distance);
@@ -263,11 +258,11 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     begin_p  = &me->_memory._front[1];
     end_p    = me->_memory._back;                                   (void)end_p;
 
-    load_lexatom_index = NewCharacterIndexBegin + move_size;
+    load_lexatom_index = new_lexatom_index_begin + move_size;
     load_request_n     = ContentSize - move_size; 
     load_p             = &begin_p[move_size];
 
-    __quex_assert(load_lexatom_index == NewCharacterIndexBegin + (load_p - begin_p));
+    __quex_assert(load_lexatom_index == new_lexatom_index_begin + (load_p - begin_p));
     __quex_assert(load_p >= begin_p);
     __quex_assert(&load_p[load_request_n] <= end_p);
 
@@ -285,13 +280,13 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
         return false;
     }
 
-    QUEX_NAME(Buffer_register_content)(me, &load_p[loaded_n], NewCharacterIndexBegin);
+    QUEX_NAME(Buffer_register_content)(me, &load_p[loaded_n], new_lexatom_index_begin);
     return true;
 }
 
 QUEX_INLINE bool
 QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)*        me, 
-                                         QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin)
+                                           QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin)
 /* Before:                     
  *            .------------------------------------- prev lexatom index begin
  *            :
@@ -379,6 +374,8 @@ QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
 { 
     ptrdiff_t  free_space;
     ptrdiff_t  move_distance;
+    ptrdiff_t  move_size;
+    (void)move_size;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
@@ -400,10 +397,25 @@ QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
         }
     }
 
+#   if 1
     free_space = QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(me, 
                                                                          move_distance,
                                                                          position_register,
                                                                          PositionRegisterN);
+#   else
+    if( MoveDistance ) {
+        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+
+        move_size = QUEX_NAME(Buffer_move_towards_begin)(me, move_distance);
+
+        QUEX_NAME(Buffer_pointers_add_offset)(me, - move_distance, 
+                                              position_register, PositionRegisterN); 
+        __quex_assert(me->input.end_p == &me->_memory._front[1 + move_size]);
+        (void)move_size;
+    }
+
+    free_space = me->_memory._back - me->input.end_p;
+#   endif
 
     /*________________________________________________________________________*/
     QUEX_IF_ASSERTS_poison(&me->_memory._back[- move_distance + 1], 

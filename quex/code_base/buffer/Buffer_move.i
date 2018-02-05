@@ -351,7 +351,7 @@ QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(QUEX_NAME(Buffer)*       
     new_lexatom_index_begin = QUEX_MAX(0, *lexatom_index_to_be_contained - FallBackN);
     __quex_assert(me->input.lexatom_index_begin         <= new_lexatom_index_begin);
     __quex_assert(new_lexatom_index_begin               <= *lexatom_index_to_be_contained);
-    __quex_assert(new_lexatom_index_begin + ContentSize >= *lexatom_index_to_be_contained );
+    /* __quex_assert(new_lexatom_index_begin + ContentSize >= *lexatom_index_to_be_contained ); */
 
     /* Move existing content in the buffer to appropriate position.          */
     return (ptrdiff_t)(new_lexatom_index_begin - lexatom_index_begin);
