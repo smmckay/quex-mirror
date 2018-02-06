@@ -291,7 +291,7 @@ quex_Token_construct(quex_Token* __this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
 
-#   line 26 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 26 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
 
        self.number = 0;
        self.text   = LexemeNull;
@@ -319,7 +319,7 @@ quex_Token_destruct(quex_Token* __this)
     if( ! __this ) return;
 
 
-#   line 31 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 31 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
 
        if( self.text != LexemeNull ) {
            QUEXED(MemoryManager_free)((void*)self.text,
@@ -344,7 +344,7 @@ quex_Token_copy(quex_Token*       __this,
     (void)__this;
     (void)__That;
 
-#   line 39 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 39 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
 
         self.id  = Other.id;
 
@@ -405,7 +405,7 @@ quex_Token_take_text(quex_Token*            __this,
     (void)Begin;
     (void)End;
 
-#   line 68 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 68 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
 
 
 #       if 0
@@ -477,7 +477,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
 
-#   line 131 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 131 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
 
        return self.number;
    
@@ -496,7 +496,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
     (void)__this;
     (void)N;
 
-#   line 127 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 127 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
 
        self.number = N;
    
@@ -536,7 +536,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 
-#   line 135 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 135 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
 
         const char* 
         quex_Token_get_string(quex_Token* me, char*   buffer, size_t  BufferSize) 

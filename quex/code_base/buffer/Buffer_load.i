@@ -90,11 +90,8 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
      * 'input.end_p' has been MOVED towards the begin of buffer!             */
     ci_load_begin  = me->input.lexatom_index_begin + (me->input.end_p - begin_p);
 
-    loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, 
-                                             me->input.end_p, 
-                                             /* LoadRequestN */free_space,
-                                             ci_load_begin, 
-                                             &end_of_stream_f,
+    loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, me->input.end_p, free_space,
+                                             ci_load_begin, &end_of_stream_f,
                                              &encoding_error_f);
 
     QUEX_NAME(Buffer_register_content)(me, &me->input.end_p[loaded_n], -1);
@@ -147,7 +144,6 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
  *      completely in between 'lexeme start' to 'read '. Thus, one never has
  *      to go farther back then the buffer's begin.                          */
 {
-    QUEX_TYPE_LEXATOM*  begin_p = (QUEX_TYPE_LEXATOM*)0; 
     ptrdiff_t           move_distance;
     ptrdiff_t           loaded_n;
     bool                end_of_stream_f  = false;
@@ -178,12 +174,8 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
         return E_LoadResult_FAILURE;
     }
 
-    /* Assign 'begin_p' lately to capture adaptions in preparation etc.      */
-    begin_p  = &me->_memory._front[1];
     /* Load new content.                                                     */
-    loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, 
-                                             begin_p, 
-                                             move_distance,
+    loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, &me->_memory._front[1], move_distance,
                                              me->input.lexatom_index_begin, 
                                              &end_of_stream_f, &encoding_error_f);
     if( encoding_error_f ) {
@@ -192,7 +184,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
     else if( loaded_n != move_distance ) {
         /* Serious: previously loaded content could not be loaded again!     
          * => Buffer has now hole: 
-         *    from begin_p[loaded_n] to Begin[move_distance]                 
+         *    from _front[1+loaded_n] to Begin[move_distance]                 
          * The analysis can continue in forward direction, but not backwards.*/
         return E_LoadResult_FAILURE;     
     }
@@ -204,7 +196,6 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
 
 QUEX_INLINE bool
 QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me, 
-                                          QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin,
                                           QUEX_TYPE_STREAM_POSITION MinCharacterIndexInBuffer)
 /* RETURNS:  true -- if the the buffer could be filled starting from 
  *                   NewCharacterIndexBegin.
@@ -242,7 +233,6 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     ptrdiff_t                 move_size;
     bool                      end_of_stream_f  = false;
     bool                      encoding_error_f = false;
-    (void)NewCharacterIndexBegin;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 

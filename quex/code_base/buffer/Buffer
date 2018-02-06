@@ -217,7 +217,6 @@ QUEX_INLINE E_LoadResult
 QUEX_INLINE bool       QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)* me, 
                                                                 QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin);
 QUEX_INLINE bool       QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)* me, 
-                                                               QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin,
                                                                QUEX_TYPE_STREAM_POSITION MinCharacterIndexInBuffer);
 QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
                                                               QUEX_TYPE_LEXATOM** position_register,
