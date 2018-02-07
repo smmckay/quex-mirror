@@ -158,7 +158,7 @@ QUEX_INLINE bool
 QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
 {
     QUEX_TYPE_LEXATOM* BeginP    = &me->_memory._front[1];
-    bool                 verdict_f = true;
+    bool               verdict_f = true;
 
     if( me->_read_p >= me->input.end_p ) {
         me->_read_p = me->input.end_p;
@@ -169,7 +169,7 @@ QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
         verdict_f = false;
     }
 
-    me->_lexeme_start_p          = me->_read_p;
+    me->_lexeme_start_p = me->_read_p;
 #   if 0
     me->_lexatom_at_lexeme_start = me->_read_p[0];
 #   ifdef __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
