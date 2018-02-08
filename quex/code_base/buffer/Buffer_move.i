@@ -272,10 +272,10 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)* me,
 {
     QUEX_TYPE_LEXATOM* BeginP      = &me->_memory._front[1];
     QUEX_TYPE_LEXATOM* EndP        = me->_memory._back;
-    ptrdiff_t            load_request_n;
-    ptrdiff_t            loaded_n;
-    bool                 end_of_stream_f = false;
-    bool                 encoding_error_f = false;
+    ptrdiff_t          load_request_n;
+    ptrdiff_t          loaded_n;
+    bool               end_of_stream_f = false;
+    bool               encoding_error_f = false;
 
     /* Character with lexatom index 'MinCharacterIndexInBuffer' has
      * not been loaded. => Buffer must be setup as before.                    */
