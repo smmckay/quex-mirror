@@ -102,7 +102,6 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
 
 
     if( free_space == 0 ) {
-        /* Error callback 'on_buffer_overflow()' has been called already!    */
         return E_LoadResult_FAILURE; 
     }
 
@@ -242,14 +241,16 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     QUEX_TYPE_STREAM_POSITION new_lexatom_index_begin;
     QUEX_TYPE_STREAM_POSITION load_lexatom_index;
     ptrdiff_t                 free_space;
-    QUEX_TYPE_LEXATOM*        prev_end_p;
     ptrdiff_t                 loaded_n;
     intmax_t                  move_distance;
     ptrdiff_t                 move_size;
     bool                      end_of_stream_f  = false;
     bool                      encoding_error_f = false;
+    QUEX_NAME(BufferInvariance)  bi;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+
+    QUEX_NAME(BufferInvariance_construct)(&bi, me);
 
     /* Move existing content in the buffer to appropriate position.          */
     move_distance = QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(me, 
@@ -260,9 +261,14 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
 
     new_lexatom_index_begin = me->input.lexatom_index_begin + move_distance;
 
-    prev_end_p      = me->input.end_p;
     me->input.end_p = &me->_memory._front[1 + move_size];
     free_space      = me->_memory._back - me->input.end_p; 
+
+    if( ! free_space ) {
+        QUEX_NAME(BufferInvariance_restore)(&bi, me);
+        QUEX_NAME(Buffer_move_towards_begin_undo)(me, move_distance, move_size);
+        return false;
+    }
 
     load_lexatom_index =   new_lexatom_index_begin 
                          + (me->input.end_p - &me->_memory._front[1]);
@@ -277,7 +283,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
 
     /* (3) In case of failure, restore previous buffer content.              */
     if( MinCharacterIndexInBuffer >= load_lexatom_index + loaded_n ) {
-        me->input.end_p = prev_end_p;
+        QUEX_NAME(BufferInvariance_restore)(&bi, me);
         QUEX_NAME(Buffer_move_towards_begin_undo)(me, move_distance, move_size);
         return false;
     }

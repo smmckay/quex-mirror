@@ -14,22 +14,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-typedef struct {
-    const QUEX_TYPE_LEXATOM*   front_p;
-    const QUEX_TYPE_LEXATOM*   back_p;
-    const QUEX_TYPE_LEXATOM*   read_p;
-    const QUEX_TYPE_LEXATOM*   end_p;
-    const QUEX_TYPE_LEXATOM*   lexeme_start_p;
-    QUEX_TYPE_STREAM_POSITION  lexatom_index_begin;
-    QUEX_TYPE_STREAM_POSITION  read_lexatom_index;
-} QUEX_NAME(BufferInvariance);
-
-QUEX_INLINE void QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me, 
-                                                       QUEX_NAME(Buffer)*           subject);
-QUEX_INLINE void QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)* me, 
-                                                    QUEX_NAME(Buffer)*           subject,
-                                                    bool                         SameF);
-
 #define QUEX_ASSERT_BUFFER_IVARIANCE_SETUP(BI, ME)           \
         QUEX_NAME(BufferInvariance) (BI);                    \
         QUEX_NAME(BufferInvariance_construct)(&(BI), (ME));  \

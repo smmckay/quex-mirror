@@ -272,6 +272,23 @@ QUEX_INLINE void       QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* m
 QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me);
 
+typedef struct {
+    QUEX_TYPE_LEXATOM*         front_p;
+    QUEX_TYPE_LEXATOM*         back_p;
+    QUEX_TYPE_LEXATOM*         read_p;
+    QUEX_TYPE_LEXATOM*         end_p;
+    QUEX_TYPE_LEXATOM*         lexeme_start_p;
+    QUEX_TYPE_STREAM_POSITION  lexatom_index_begin;
+} QUEX_NAME(BufferInvariance);
+
+QUEX_INLINE void QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me, 
+                                                       QUEX_NAME(Buffer)*           subject);
+QUEX_INLINE void QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)* me, 
+                                                    QUEX_NAME(Buffer)*           subject,
+                                                    bool                         SameF);
+QUEX_INLINE void QUEX_NAME(BufferInvariance_restore)(QUEX_NAME(BufferInvariance)* me, 
+                                                     QUEX_NAME(Buffer)*           subject);
+
 
 QUEX_NAMESPACE_MAIN_CLOSE
 #include <quex/code_base/buffer/lexatoms/LexatomLoader>

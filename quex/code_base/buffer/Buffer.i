@@ -416,6 +416,45 @@ QUEX_NAME(Buffer_negotiate_allocate_memory)(const size_t        Size,
     return false;
 }
 
+QUEX_INLINE void
+QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me, 
+                                      QUEX_NAME(Buffer)*           subject)
+{
+    me->front_p             = subject->_memory._front;
+    me->back_p              = subject->_memory._back;
+    me->end_p               = subject->input.end_p;
+    me->read_p              = subject->_read_p;
+    me->lexeme_start_p      = subject->_lexeme_start_p;
+    me->lexatom_index_begin = subject->input.lexatom_index_begin;
+}
+
+QUEX_INLINE void
+QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)* me, 
+                                   QUEX_NAME(Buffer)*           subject,
+                                   bool                         SameF)
+{
+    if( SameF ) {
+        __quex_assert(me->front_p             == subject->_memory._front);
+        __quex_assert(me->back_p              == subject->_memory._back);
+        __quex_assert(me->end_p               == subject->input.end_p);
+        __quex_assert(me->lexatom_index_begin == subject->input.lexatom_index_begin);
+    }
+
+    /* Dislocation of '_read_p' same as the dislocation of '_lexeme_start_p'. */
+    __quex_assert(me->read_p - subject->_read_p == me->lexeme_start_p - subject->_lexeme_start_p);
+}
+
+QUEX_INLINE void
+QUEX_NAME(BufferInvariance_restore)(QUEX_NAME(BufferInvariance)* me, 
+                                    QUEX_NAME(Buffer)*           subject)
+{
+    subject->_memory._front            = me->front_p;
+    subject->_memory._back             = me->back_p;
+    subject->input.end_p               = me->end_p;
+    subject->_read_p                   = me->read_p;
+    subject->_lexeme_start_p           = me->lexeme_start_p;
+    subject->input.lexatom_index_begin = me->lexatom_index_begin;
+}
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
