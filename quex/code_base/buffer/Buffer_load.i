@@ -173,9 +173,14 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
     move_size = QUEX_NAME(Buffer_move_towards_begin)(me, (ptrdiff_t)move_distance);
 
+#   if 1
+    QUEX_NAME(Buffer_pointers_add_offset)(me, - move_distance, 
+                                          (QUEX_TYPE_LEXATOM**)0, 0);
+#   else
     me->input.lexatom_index_begin += move_distance;
-
     me->input.end_p = &me->_memory._front[1 + move_size];
+#   endif
+
     free_space      = me->_memory._back - me->input.end_p; 
 
     if( ! free_space ) {
@@ -195,14 +200,15 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
         me->input.lexatom_index_end_of_stream = load_lexatom_index + loaded_n;
     }
 
+    me->input.end_p    = &me->input.end_p[loaded_n];
+    *(me->input.end_p) = QUEX_SETTING_BUFFER_LIMIT_CODE;
+
     /* (3) In case of failure, restore previous buffer content.              */
     if( MinCharacterIndexInBuffer >= load_lexatom_index + loaded_n ) {
         QUEX_NAME(BufferInvariance_restore)(&bi, me);
         QUEX_NAME(Buffer_move_towards_begin_undo)(me, move_distance, move_size);
         return false;
     }
-    me->input.end_p    = &me->input.end_p[loaded_n];
-    *(me->input.end_p) = QUEX_SETTING_BUFFER_LIMIT_CODE;
     return true;
 }
 

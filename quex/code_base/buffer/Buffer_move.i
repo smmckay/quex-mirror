@@ -44,7 +44,7 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
         }
     }
     else if( offset < 0 ) {
-        border = me->_memory._front;
+        border = &me->_memory._front[1];
         QUEX_BUFFER_POINTER_SUBTRACT(me->_read_p,         border, offset);
         QUEX_BUFFER_POINTER_SUBTRACT(me->_lexeme_start_p, border, offset);
         QUEX_BUFFER_POINTER_SUBTRACT(me->input.end_p,     border, offset);
