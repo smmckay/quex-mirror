@@ -331,7 +331,6 @@ QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)*        me,
  *         false, if the region could not be be filled.
  *                => something is seriously wrong.                            */
 {
-    QUEX_TYPE_LEXATOM*         begin_p  = &me->_memory._front[1];
     QUEX_TYPE_LEXATOM*         end_p    = me->_memory._back;
     QUEX_TYPE_STREAM_POSITION  ci_begin = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
     ptrdiff_t                  load_request_n;
@@ -348,15 +347,14 @@ QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)*        me,
 
     QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
     load_request_n = QUEX_NAME(Buffer_move_towards_end)(me, (ptrdiff_t)move_distance);
+#   if 0
+    QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, (QUEX_TYPE_LEXATOM**)0, 0);
+#   endif
 
-    /* Assign 'begin_p/end_p' lately to capture adaptions in preparation etc. */
-    begin_p = &me->_memory._front[1];
-    end_p   = me->_memory._back;                                    (void)end_p;
-
-    __quex_assert(&begin_p[load_request_n] <= end_p);
+    __quex_assert(&me->_memory._front[1 + load_request_n] <= me->_memory._back);
 
     /* (2) Move away content, so that previous content can be reloaded.       */
-    loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, begin_p, load_request_n,
+    loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, &me->_memory._front[1], load_request_n,
                                              NewCharacterIndexBegin,
                                              &end_of_stream_f, &encoding_error_f);
                            
@@ -365,11 +363,15 @@ QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)*        me,
     if( loaded_n != load_request_n ) {
         return false;
     }
+#   if 1
+    end_p = me->_memory._back - me->input.end_p < move_distance ? 
+            me->_memory._back : &me->input.end_p[move_distance];
 
-    end_p = end_p - me->input.end_p < move_distance ? 
-            end_p : &me->input.end_p[move_distance];
+    me->input.end_p    = end_p;
+    *(me->input.end_p) = QUEX_SETTING_BUFFER_LIMIT_CODE;
 
-    QUEX_NAME(Buffer_register_content)(me, end_p, NewCharacterIndexBegin);
+    me->input.lexatom_index_begin = NewCharacterIndexBegin;
+#   endif
     return true;
 }
 
