@@ -23,6 +23,14 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
                                 ptrdiff_t           move_distance, 
                                 bool*               encoding_error_f, 
                                 ptrdiff_t*          loaded_n);
+QUEX_INLINE bool
+QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)*  me, 
+                                         ptrdiff_t           move_distance, 
+                                         bool*               encoding_error_f, 
+                                         ptrdiff_t*          loaded_n);
+QUEX_INLINE void
+QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
+                                                 ptrdiff_t          move_distance);
 
 QUEX_INLINE E_LoadResult
 QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
@@ -271,11 +279,15 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
         return E_LoadResult_NO_MORE_DATA; /* Stream cannot go backwards.     */
     }
 
-    move_distance = QUEX_NAME(Buffer_free_front)(me);
+    move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(me);
 
     if( 0 == move_distance ) {
         return E_LoadResult_FAILURE;
     }
+    QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(me, move_distance);
+    
+    (void)QUEX_NAME(Buffer_move_towards_end)(me, move_distance);
+    QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, (QUEX_TYPE_LEXATOM**)0, 0);
 
     /* Load new content.                                                     */
     loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, &me->_memory._front[1], move_distance,
@@ -359,6 +371,27 @@ QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)*        me,
 
     QUEX_NAME(Buffer_register_content)(me, end_p, NewCharacterIndexBegin);
     return true;
+}
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
+                                                 ptrdiff_t          move_distance)
+{
+    if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+    }
+    else {
+        /* Content has already been completely moved. No notification.        */
+    }
+
+    if(    me->_lexeme_start_p
+           && me->_lexeme_start_p + move_distance >= me->_memory._back
+           && me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        /* Lexeme start will be out of buffer. Store the position to be
+         * reloaded when lexing forward restarts.                             */
+        me->_backup_lexatom_index_of_read_p =   QUEX_NAME(Buffer_tell)(me)
+            + (me->_lexeme_start_p - me->_read_p);
+    }
 }
 
 QUEX_INLINE ptrdiff_t
