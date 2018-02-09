@@ -61,10 +61,6 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
 
     me->input.lexatom_index_begin -= offset;
 
-    /* input.end_p/end_lexatom_index: End lexatom index remains the SAME, 
-     * since no new content has been loaded into the buffer.                 */
-    __quex_assert(me->input.end_p - &me->_memory._front[1] >= offset);
-
     QUEX_BUFFER_ASSERT_pointers_in_range(me);
 }
 
