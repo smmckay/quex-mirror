@@ -134,6 +134,15 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
 
 } QUEX_NAME(Buffer);
 
+typedef struct {
+    QUEX_TYPE_LEXATOM*         front_p;
+    QUEX_TYPE_LEXATOM*         back_p;
+    QUEX_TYPE_LEXATOM*         read_p;
+    QUEX_TYPE_LEXATOM*         end_p;
+    QUEX_TYPE_LEXATOM*         lexeme_start_p;
+    QUEX_TYPE_STREAM_POSITION  lexatom_index_begin;
+} QUEX_NAME(BufferInvariance);
+
 /* Constructor, destructor, reset. */
 QUEX_INLINE void  QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*                    me, 
                                               struct QUEX_NAME(LexatomLoader_tag)*  filler,
@@ -166,6 +175,7 @@ QUEX_INLINE bool  QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
                                                            ptrdiff_t           move_distance);
 QUEX_INLINE void      QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)* me,
+                                                                QUEX_NAME(BufferInvariance)* bi,
                                                                 intmax_t           move_distance,
                                                                 ptrdiff_t          move_size);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me, 
@@ -184,6 +194,8 @@ QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(QU
                                                                               ptrdiff_t           MoveDistance,
                                                                               QUEX_TYPE_LEXATOM** position_register,
                                                                               const size_t        PositionRegisterN);
+QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer)* me, 
+                                                                ptrdiff_t move_distance);
 
 /* Move and pointer adaptions. */
 QUEX_INLINE void  QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
@@ -271,15 +283,6 @@ QUEX_INLINE void       QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* m
                                                             void*  aux);
 QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me);
-
-typedef struct {
-    QUEX_TYPE_LEXATOM*         front_p;
-    QUEX_TYPE_LEXATOM*         back_p;
-    QUEX_TYPE_LEXATOM*         read_p;
-    QUEX_TYPE_LEXATOM*         end_p;
-    QUEX_TYPE_LEXATOM*         lexeme_start_p;
-    QUEX_TYPE_STREAM_POSITION  lexatom_index_begin;
-} QUEX_NAME(BufferInvariance);
 
 QUEX_INLINE void QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me, 
                                                        QUEX_NAME(Buffer)*           subject);

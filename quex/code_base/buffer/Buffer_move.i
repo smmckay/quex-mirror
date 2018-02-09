@@ -160,6 +160,16 @@ QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me)
 }
 
 QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer)* me, ptrdiff_t move_distance)
+{
+    const ptrdiff_t FilledSize = me->input.end_p - &me->_memory._front[1];
+    if( move_distance >= FilledSize ) {
+        return 0;
+    }
+    return FilledSize - move_distance;
+}
+
+QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)* me, 
                                      ptrdiff_t          move_distance)
 /* Moves the entire (meaningful) content of the buffer by 'move_distance'
@@ -177,18 +187,13 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)* me,
  *
  * RETURNS: Number of lexatoms that have been moved.                       */
 {
-    QUEX_TYPE_LEXATOM* BeginP     = &me->_memory._front[1];
-    const ptrdiff_t    FilledSize = me->input.end_p - BeginP;
-    ptrdiff_t          move_size;
+    ptrdiff_t move_size;
 
-    if( move_distance >= FilledSize ) {
-        return 0;
-    }
-
-    move_size = FilledSize - move_distance;
+    move_size = QUEX_NAME(Buffer_move_size_towards_begin)(me, move_distance);
 
     if( move_distance && move_size ) {
-        __QUEX_STD_memmove((void*)BeginP, (void*)&BeginP[move_distance],
+        __QUEX_STD_memmove((void*)&me->_memory._front[1], 
+                           (void*)&me->_memory._front[1 + move_distance],
                            (size_t)move_size * sizeof(QUEX_TYPE_LEXATOM));
     }
     return move_size;
@@ -259,9 +264,10 @@ QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me,
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)* me,
-                                          intmax_t           move_distance,
-                                          ptrdiff_t          move_size)
+QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
+                                          QUEX_NAME(BufferInvariance)* bi,
+                                          intmax_t                     move_distance,
+                                          ptrdiff_t                    move_size)
 /* Restore the buffer's raw memory to what it was before in the 'FORWARD' case. 
  * It is assumed that the buffer's parameters in
  *
@@ -274,19 +280,22 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)* me,
     QUEX_TYPE_LEXATOM* EndP        = me->_memory._back;
     ptrdiff_t          load_request_n;
     ptrdiff_t          loaded_n;
-    bool               end_of_stream_f = false;
+    bool               end_of_stream_f  = false;
     bool               encoding_error_f = false;
 
+    QUEX_NAME(BufferInvariance_restore)(bi, me);
+
+    move_size = QUEX_NAME(Buffer_move_size_towards_begin)(me, move_distance);
+    
     /* Character with lexatom index 'MinCharacterIndexInBuffer' has
      * not been loaded. => Buffer must be setup as before.                    */
-    if( move_size ) {
+    if( move_size && move_distance ) {
         /* NOT NECESSARY:
          *
          * QUEX_NAME(Buffer_call_on_buffer_before_change)(me, BeginP);
          *
          * Because, this function is to be called only after 'move_...' which
-         * must have called the 'on_buffer_before_change()'
-         *                                                                    */
+         * must have called the 'on_buffer_before_change()'                   */
         __QUEX_STD_memmove((void*)&BeginP[move_distance], (void*)BeginP, 
                            (size_t)move_size * sizeof(QUEX_TYPE_LEXATOM));
         load_request_n = (ptrdiff_t)move_distance;

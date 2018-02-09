@@ -174,12 +174,16 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
  * of the buffer and tries to load as many lexatoms as possible behind it. */
 {
     QUEX_TYPE_STREAM_POSITION lexatom_index_to_be_contained = LexatomIndexToBeContained;
+#   if 1
     QUEX_TYPE_STREAM_POSITION load_lexatom_index;
     ptrdiff_t                 free_space;
+    bool                      end_of_stream_f  = false;
+    ptrdiff_t                 move_size;
+#   else
+    bool                      verdict_f;
+#   endif
     ptrdiff_t                 loaded_n;
     intmax_t                  move_distance;
-    ptrdiff_t                 move_size;
-    bool                      end_of_stream_f  = false;
     bool                      encoding_error_f = false;
     QUEX_NAME(BufferInvariance)  bi;
 
@@ -193,14 +197,14 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
 #   if 0
     verdict_f = QUEX_NAME(Buffer_move_and_load)(me, (QUEX_TYPE_LEXATOM**)0, 0,
                                                 move_distance, &encoding_error_f, &loaded_n);
-    if(    ! verdict 
-        || LexatomIndexToBeContained >= me->input.lexatom_index_begin + 
-                                        (me->input.end_p - &me->_memory._front[1]) ) {
-        QUEX_NAME(BufferInvariance_restore)(&bi, me);
-        QUEX_NAME(Buffer_move_towards_begin_undo)(me, move_distance, move_size);
-        return false;
+    if(    verdict_f
+        && LexatomIndexToBeContained < me->input.lexatom_index_begin + 
+                                       (me->input.end_p - &me->_memory._front[1]) ) {
+        return true;
     }
-#   endif
+    QUEX_NAME(Buffer_move_towards_begin_undo)(me, bi, move_distance, move_size);
+    return false;
+#   else
 
     QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
     move_size = QUEX_NAME(Buffer_move_towards_begin)(me, (ptrdiff_t)move_distance);
@@ -216,8 +220,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     free_space      = me->_memory._back - me->input.end_p; 
 
     if( ! free_space ) {
-        QUEX_NAME(BufferInvariance_restore)(&bi, me);
-        QUEX_NAME(Buffer_move_towards_begin_undo)(me, move_distance, move_size);
+        QUEX_NAME(Buffer_move_towards_begin_undo)(me, &bi, move_distance, move_size);
         return false;
     }
 
@@ -237,11 +240,11 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
 
     /* (3) In case of failure, restore previous buffer content.              */
     if( LexatomIndexToBeContained >= load_lexatom_index + loaded_n ) {
-        QUEX_NAME(BufferInvariance_restore)(&bi, me);
-        QUEX_NAME(Buffer_move_towards_begin_undo)(me, move_distance, move_size);
+        QUEX_NAME(Buffer_move_towards_begin_undo)(me, &bi, move_distance, move_size);
         return false;
     }
     return true;
+#   endif
 }
 
 QUEX_INLINE E_LoadResult   
