@@ -263,10 +263,10 @@ QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me,
     return (ptrdiff_t)move_distance;
 }
 
-QUEX_INLINE void
+QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
                                           QUEX_NAME(BufferInvariance)* bi,
-                                          intmax_t                     move_distance)
+                                          ptrdiff_t                    move_distance)
 /* Restore the buffer's raw memory to what it was before in the 'FORWARD' case. 
  * It is assumed that the buffer's parameters in
  *
@@ -279,9 +279,6 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
     QUEX_TYPE_LEXATOM* EndP        = me->_memory._back;
     ptrdiff_t          move_size;
     ptrdiff_t          load_request_n;
-    ptrdiff_t          loaded_n;
-    bool               end_of_stream_f  = false;
-    bool               encoding_error_f = false;
 
     QUEX_NAME(BufferInvariance_restore)(bi, me);
 
@@ -305,17 +302,7 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
     }
     __quex_assert(&BeginP[load_request_n] <= EndP);
     (void)EndP;
-    loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, BeginP, load_request_n,
-                                             me->input.lexatom_index_begin,
-                                             &end_of_stream_f, &encoding_error_f);
-
-    if( loaded_n != load_request_n ) {
-        QUEX_ERROR_EXIT("Buffer filler failed to load content that has been loaded before.!");
-    }
-    else {
-        /* Ensure, that the buffer limit code is restored.                   */
-        *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
-    }
+    return load_request_n;
 }
 
 QUEX_INLINE ptrdiff_t

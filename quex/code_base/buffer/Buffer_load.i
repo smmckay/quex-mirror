@@ -175,8 +175,10 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
 {
     QUEX_TYPE_STREAM_POSITION lexatom_index_to_be_contained = LexatomIndexToBeContained;
     bool                      verdict_f;
+    ptrdiff_t                 load_request_n;
     ptrdiff_t                 loaded_n;
     intmax_t                  move_distance;
+    bool                      end_of_stream_f  = false;
     bool                      encoding_error_f = false;
     QUEX_NAME(BufferInvariance)  bi;
 
@@ -195,7 +197,18 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
                                        (me->input.end_p - &me->_memory._front[1]) ) {
         return true;
     }
-    QUEX_NAME(Buffer_move_towards_begin_undo)(me, &bi, move_distance);
+    load_request_n = QUEX_NAME(Buffer_move_towards_begin_undo)(me, &bi, move_distance);
+
+    loaded_n       = QUEX_NAME(LexatomLoader_load)(me->filler, &me->_memory._front[1], load_request_n,
+                                                   me->input.lexatom_index_begin,
+                                                   &end_of_stream_f, &encoding_error_f);
+    if( loaded_n != load_request_n ) {
+        QUEX_ERROR_EXIT("Buffer filler failed to load content that has been loaded before.!");
+    }
+    else {
+        /* Ensure, that the buffer limit code is restored.                   */
+        *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
+    }
     return false;
 }
 
