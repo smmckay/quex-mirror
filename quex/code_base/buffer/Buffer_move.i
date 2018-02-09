@@ -266,8 +266,7 @@ QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me,
 QUEX_INLINE void
 QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
                                           QUEX_NAME(BufferInvariance)* bi,
-                                          intmax_t                     move_distance,
-                                          ptrdiff_t                    move_size)
+                                          intmax_t                     move_distance)
 /* Restore the buffer's raw memory to what it was before in the 'FORWARD' case. 
  * It is assumed that the buffer's parameters in
  *
@@ -278,6 +277,7 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
 {
     QUEX_TYPE_LEXATOM* BeginP      = &me->_memory._front[1];
     QUEX_TYPE_LEXATOM* EndP        = me->_memory._back;
+    ptrdiff_t          move_size;
     ptrdiff_t          load_request_n;
     ptrdiff_t          loaded_n;
     bool               end_of_stream_f  = false;
