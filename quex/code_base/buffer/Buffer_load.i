@@ -212,7 +212,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
 {
     ptrdiff_t           move_distance;
     ptrdiff_t           loaded_n;
-    bool                end_of_stream_f  = false;
+    ptrdiff_t           load_request_n;
     bool                encoding_error_f = false;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -239,7 +239,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
     if( 0 == move_distance ) {
         return E_LoadResult_FAILURE;
     }
-#   if 0
+#   if 1
     loaded_n = QUEX_NAME(Buffer_move_and_load_backward)(me, move_distance, &encoding_error_f, &load_request_n);
 #   else
     QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(me, move_distance);
