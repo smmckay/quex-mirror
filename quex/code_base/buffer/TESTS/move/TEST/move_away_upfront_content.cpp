@@ -72,8 +72,7 @@ QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
  *                         <  0: Overflow. Nothing has been moved. 
  *                               Lexeme fills complete buffer.                */
 {
-    const QUEX_TYPE_LEXATOM*  last_p = (QUEX_TYPE_LEXATOM*)0;
-    ptrdiff_t                 move_distance;
+    ptrdiff_t   move_distance;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
@@ -93,20 +92,7 @@ QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
         /* Content has already been completely moved. No notification.        */
     }
 
-    /* Assign 'last_p' lately to capture adaptions in preparation etc.        */
-    last_p = &me->_memory._back[-1];
-
-    if(    me->_lexeme_start_p
-        && me->_lexeme_start_p + move_distance > last_p 
-        && me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-        /* Lexeme start will be out of buffer. Store the position to be
-         * reloaded when lexing forward restarts.                             */
-        me->_backup_lexatom_index_of_read_p =   QUEX_NAME(Buffer_tell)(me)
-                                              + (me->_lexeme_start_p - me->_read_p);
-    }
-    
     (void)QUEX_NAME(Buffer_move_towards_end)(me, move_distance);
-    QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, (QUEX_TYPE_LEXATOM**)0, 0);
 
     /*________________________________________________________________________*/
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);

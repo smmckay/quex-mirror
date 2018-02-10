@@ -234,18 +234,18 @@ QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me,
     const ptrdiff_t     ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
     ptrdiff_t           move_size;
 
-    if( move_distance > ContentSize ) {
-        return ContentSize;
+    QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(me, move_distance);
+    if( move_distance <= ContentSize ) {
+        move_size = ContentSize - move_distance;
+
+        if( move_distance && move_size ) {
+            __QUEX_STD_memmove((void*)&BeginP[move_distance], BeginP, 
+                               (size_t)move_size * sizeof(QUEX_TYPE_LEXATOM));
+        }
+
+        QUEX_IF_ASSERTS_poison(BeginP, &BeginP[move_distance]); 
     }
-
-    move_size = ContentSize - move_distance;
-
-    if( move_distance && move_size ) {
-        __QUEX_STD_memmove((void*)&BeginP[move_distance], BeginP, 
-                           (size_t)move_size * sizeof(QUEX_TYPE_LEXATOM));
-    }
-
-    QUEX_IF_ASSERTS_poison(BeginP, &BeginP[move_distance]); 
+    QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, (QUEX_TYPE_LEXATOM**)0, 0);
     return (ptrdiff_t)move_distance;
 }
 

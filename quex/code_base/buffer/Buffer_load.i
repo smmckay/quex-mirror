@@ -350,10 +350,11 @@ QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me,
     bool end_of_stream_f  = false;
 
     if( move_distance ) {
-        QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(me, move_distance);
+        if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+            /* If content has not been moved already, notify change!          */
+            QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+        }
         (void)QUEX_NAME(Buffer_move_towards_end)(me, (ptrdiff_t)move_distance);
-
-        QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, (QUEX_TYPE_LEXATOM**)0, 0);
     }
 
     *load_request_n = QUEX_MIN(me->_memory._back - &me->_memory._front[1], 
@@ -369,13 +370,6 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
                                                  ptrdiff_t          move_distance)
 {
-    if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
-    }
-    else {
-        /* Content has already been completely moved. No notification.        */
-    }
-
     if(    me->_lexeme_start_p
         && me->_lexeme_start_p + move_distance >= me->_memory._back
         && me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
