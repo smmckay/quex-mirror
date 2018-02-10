@@ -1006,7 +1006,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check if the default configuration has been updated.
         check-default-configuration.sh ...............................[OK]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -1038,7 +1038,6 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] no-use-of-lexeme-macro.sh
     [FAIL] svn-status.sh
     [FAIL] include_guard.py _ convention
 ===============================================================================
@@ -1112,7 +1111,7 @@ quex/TESTS/errors-warnings/TEST                                      <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-Error: Directory: /home/fschaef/prj/quex/r4980/quex/TESTS/event-handling/TEST
+Error: Directory: /home/fschaef/prj/quex/trunk/quex/TESTS/event-handling/TEST
 Error:
 Error:     Makefile: no response on 'make hwut-info'.
 Error:
@@ -3312,7 +3311,7 @@ SUMMARY:
            57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        3  15    [FAIL] ........../code/TEST                                          
+        2  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3367,11 +3366,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _            
-    |  ___|_ _(_) |___     | || |     __  __
-    | |_ / _` | | / __|    | || |_    \ \/ /
-    |  _| (_| | | \__ \    |__   _     >  < 
-    |_|  \__,_|_|_|___/       |_|     /_/\_\
+     _____     _ _       _____     _          
+    |  ___|_ _(_) |___  |_   _| __(_) ___ ___ 
+    | |_ / _` | | / __|   | || '__| |/ __/ _ \
+    |  _| (_| | | \__ \   | || |  | | (_|  __/
+    |_|  \__,_|_|_|___/   |_||_|  |_|\___\___|
                                                                    (1681 tests)
 
 ===============================================================================
