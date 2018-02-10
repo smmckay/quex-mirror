@@ -282,6 +282,52 @@ QUEX_NAME(Buffer_nested_find_root)(QUEX_NAME(Buffer)* me)
     return focus;
 }
 
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
+/* Shrink all nesting buffers to a minimum and reset all pointers accordingly.
+ *
+ * RETURNS: Free space at the end of 'me'.                                    */
+{
+    QUEX_NAME(Buffer)* it;
+    QUEX_NAME(Buffer)* previous = (QUEX_NAME(Buffer)*)0;
+    ptrdiff_t          move_distance = 0;
+    ptrdiff_t          nesting_freed = 0;
+
+    /* Iterate over all nesting buffers starting from root up to 'me'.
+     * Shrink each buffer, adapt its 'back pointer' and the 'front pointer'
+     * of the included buffer.                                                */
+    for(it = QUEX_NAME(Buffer_nested_find_root)(me); true ; 
+        it = QUEX_NAME(Buffer_get_nested)(it, me)) {
+        move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(it);
+
+        if( previous ) {
+            previous->_memory._back   -= nesting_freed;
+            it->_memory._front        -= nesting_freed;
+            previous->_memory._back[0] = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LIMIT_CODE);
+            it->_memory._front[0]      = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LIMIT_CODE);
+        }
+
+        (void)QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(it, 
+                          move_distance + nesting_freed,
+                          (QUEX_TYPE_LEXATOM**)0, 0);
+
+        /* Adapt pointers added 'move_distance + nesting_freed' to lexatom
+         * index. Must subtract 'nesting_freed'.                              */
+        __quex_assert(it->input.lexatom_index_begin >= nesting_freed);
+        it->input.lexatom_index_begin -= nesting_freed;
+
+        if( it == me ) {
+            break;
+        }
+
+        nesting_freed = it->_memory._back - it->input.end_p;
+        previous      = it;
+    } 
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    return me->_memory._back - me->input.end_p;
+}
+    
 QUEX_INLINE void
 QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
                                                     QUEX_TYPE_LEXATOM* old_memory_root,

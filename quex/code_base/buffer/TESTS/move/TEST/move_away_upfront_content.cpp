@@ -54,6 +54,66 @@ ptrdiff_t                   ContentSize = sizeof(content)/sizeof(content[0]);
 static QUEX_TYPE_LEXATOM  memory[11];
 const  ptrdiff_t            MemorySize = sizeof(memory)/sizeof(memory[0]);
 
+QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me);
+
+QUEX_INLINE ptrdiff_t        
+QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
+/* Free some space in the REAR so that previous content can be re-loaded. Some 
+ * content is to be left in front, so that no immediate reload is necessary
+ * once the analysis goes forward again. Following things need to be respected:
+ *
+ *    _lexeme_start_p  --> points to the lexeme that is currently treated.
+ *                         MUST BE INSIDE BUFFER!
+ *    _read_p          --> points to the lexatom that is currently used
+ *                         for triggering. MUST BE INSIDE BUFFER!
+ *
+ * RETURNS: Moved distance >  0: OK.
+ *                         == 0: Nothing has been moved.                     
+ *                         <  0: Overflow. Nothing has been moved. 
+ *                               Lexeme fills complete buffer.                */
+{
+    const QUEX_TYPE_LEXATOM*  last_p = (QUEX_TYPE_LEXATOM*)0;
+    ptrdiff_t                 move_distance;
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+
+    if( 0 == me->input.lexatom_index_begin ) {
+        return 0;
+    }
+    
+    move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(me);
+
+    if( 0 == move_distance ) {
+        return 0;
+    }
+    else if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+    }
+    else {
+        /* Content has already been completely moved. No notification.        */
+    }
+
+    /* Assign 'last_p' lately to capture adaptions in preparation etc.        */
+    last_p = &me->_memory._back[-1];
+
+    if(    me->_lexeme_start_p
+        && me->_lexeme_start_p + move_distance > last_p 
+        && me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        /* Lexeme start will be out of buffer. Store the position to be
+         * reloaded when lexing forward restarts.                             */
+        me->_backup_lexatom_index_of_read_p =   QUEX_NAME(Buffer_tell)(me)
+                                              + (me->_lexeme_start_p - me->_read_p);
+    }
+    
+    (void)QUEX_NAME(Buffer_move_towards_end)(me, move_distance);
+    QUEX_NAME(Buffer_pointers_add_offset)(me, move_distance, (QUEX_TYPE_LEXATOM**)0, 0);
+
+    /*________________________________________________________________________*/
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+
+    return move_distance;
+}
+
 
 int
 main(int argc, char** argv)
