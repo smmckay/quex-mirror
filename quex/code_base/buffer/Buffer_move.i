@@ -166,8 +166,10 @@ QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer)* me, ptrdiff_t move_
 }
 
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)* me, 
-                                     ptrdiff_t          move_distance)
+QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
+                                     ptrdiff_t           MoveDistance,
+                                     QUEX_TYPE_LEXATOM** position_register,
+                                     const size_t        PositionRegisterN)
 /* Moves the entire (meaningful) content of the buffer by 'move_distance'
  * forward. It does NOT MODIFY any pointers about the buffer content!
  *
@@ -182,24 +184,6 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)* me,
  *               |<---- move_size ---->|
  *
  * RETURNS: Number of lexatoms that have been moved.                       */
-{
-    ptrdiff_t move_size;
-
-    move_size = QUEX_NAME(Buffer_move_size_towards_begin)(me, move_distance);
-
-    if( move_distance && move_size ) {
-        __QUEX_STD_memmove((void*)&me->_memory._front[1], 
-                           (void*)&me->_memory._front[1 + move_distance],
-                           (size_t)move_size * sizeof(QUEX_TYPE_LEXATOM));
-    }
-    return move_size;
-}
-
-QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(QUEX_NAME(Buffer)*  me, 
-                                                        ptrdiff_t           MoveDistance,
-                                                        QUEX_TYPE_LEXATOM** position_register,
-                                                        const size_t        PositionRegisterN)
 /* Calls 'Buffer_move_towards_begin' and adapts pointers inside 'me'.
  *
  * CALLS:   callbacks 'on_buffer_change'.
@@ -211,7 +195,13 @@ QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(QUEX_NAME(Buffer)*  me,
     if( MoveDistance ) {
         QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
 
-        move_size = QUEX_NAME(Buffer_move_towards_begin)(me, MoveDistance);
+        move_size = QUEX_NAME(Buffer_move_size_towards_begin)(me, MoveDistance);
+
+        if( MoveDistance && move_size ) {
+            __QUEX_STD_memmove((void*)&me->_memory._front[1], 
+                               (void*)&me->_memory._front[1 + MoveDistance],
+                               (size_t)move_size * sizeof(QUEX_TYPE_LEXATOM));
+        }
 
         QUEX_NAME(Buffer_pointers_add_offset)(me, - MoveDistance, 
                                               position_register, PositionRegisterN); 

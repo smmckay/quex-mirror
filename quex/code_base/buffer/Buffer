@@ -173,7 +173,9 @@ QUEX_INLINE bool  QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me);
 
 /* Move */
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
-                                                           ptrdiff_t           move_distance);
+                                                           ptrdiff_t           MoveDistance,
+                                                           QUEX_TYPE_LEXATOM** position_register,
+                                                           const size_t        PositionRegisterN);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
                                                                 QUEX_NAME(BufferInvariance)* bi,
                                                                 ptrdiff_t                    move_distance);
@@ -189,10 +191,6 @@ QUEX_INLINE void      QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  
                                                             QUEX_TYPE_LEXATOM** position_register,
                                                             const size_t        PositionRegisterN);
 
-QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(QUEX_NAME(Buffer)*  me, 
-                                                                              ptrdiff_t           MoveDistance,
-                                                                              QUEX_TYPE_LEXATOM** position_register,
-                                                                              const size_t        PositionRegisterN);
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer)* me, 
                                                                 ptrdiff_t move_distance);
 

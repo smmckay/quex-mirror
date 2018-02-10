@@ -307,9 +307,8 @@ QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
             it->_memory._front[0]      = (QUEX_TYPE_LEXATOM)(QUEX_SETTING_BUFFER_LIMIT_CODE);
         }
 
-        (void)QUEX_NAME(Buffer_move_towards_begin_and_adapt_pointers)(it, 
-                          move_distance + nesting_freed,
-                          (QUEX_TYPE_LEXATOM**)0, 0);
+        QUEX_NAME(Buffer_move_towards_begin)(it, move_distance + nesting_freed,
+                                             (QUEX_TYPE_LEXATOM**)0, 0);
 
         /* Adapt pointers added 'move_distance + nesting_freed' to lexatom
          * index. Must subtract 'nesting_freed'.                              */

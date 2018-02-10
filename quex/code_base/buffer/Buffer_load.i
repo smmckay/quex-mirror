@@ -316,12 +316,8 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
     bool                        end_of_stream_f  = false;
 
     if( move_distance ) {
-        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
-
-        (void)QUEX_NAME(Buffer_move_towards_begin)(me, move_distance);
-
-        QUEX_NAME(Buffer_pointers_add_offset)(me, - move_distance, 
-                                              position_register, PositionRegisterN); 
+        QUEX_NAME(Buffer_move_towards_begin)(me, move_distance,
+                                             position_register, PositionRegisterN); 
     }
     free_space = me->_memory._back - me->input.end_p;
 
@@ -430,12 +426,8 @@ QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
     }
 
     if( move_distance ) {
-        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
-
-        (void)QUEX_NAME(Buffer_move_towards_begin)(me, move_distance);
-
-        QUEX_NAME(Buffer_pointers_add_offset)(me, - move_distance, 
-                                              position_register, PositionRegisterN); 
+        (void)QUEX_NAME(Buffer_move_towards_begin)(me, move_distance,
+                                                   position_register, PositionRegisterN); 
     }
 
     free_space = me->_memory._back - me->input.end_p;
