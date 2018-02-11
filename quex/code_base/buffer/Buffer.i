@@ -445,7 +445,24 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
                                       ptrdiff_t           offset,
                                       QUEX_TYPE_LEXATOM** position_register,
                                       const size_t        PositionRegisterN)
-/* Adapt points after content has been moved towards begin.
+/* Modify all buffer related pointers and lexatom indices by an offset. It is
+ * assumed, that buffer content has been moved by 'offset' and that pointers
+ * and offsets still related to the content before the move. 
+ *
+ * EXAMPLE: (lexatom index at buffer begin, read_p)
+ *
+ *                       0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 
+ * Stream:               [a][b][c][d][e][f][g][h][j][i][k][l][m][n][o][p]
+ *
+ * Buffer before move:           |[d][e][f][g][h]|
+ *                                |        |
+ *     lexatom_index_begin = 3 ---'        |
+ *     read_p -----------------------------'
+ *
+ * Buffer after move, then ADD:  |[f][g][h][j][i]|
+ *                                |   |
+ *     lexatom_index_begin = 5 ---'   |
+ *     read_p ------------------------'
  *
  * ADAPTS: _read_p, _lexeme_start_p, position registers, end_p, 
  *         input.end_lexatom_index                                            */
@@ -501,6 +518,7 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
 QUEX_INLINE void
 QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me, 
                                       QUEX_NAME(Buffer)*           subject)
+/* Store all buffer related pointers and indicates present in 'subject'.      */
 {
     me->front_p             = subject->_memory._front;
     me->back_p              = subject->_memory._back;
@@ -514,6 +532,10 @@ QUEX_INLINE void
 QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)* me, 
                                    QUEX_NAME(Buffer)*           subject,
                                    bool                         SameF)
+/* Assert that pointers and indices in 'me' and 'subject' are equivalent or
+ * the same. When 'SameF' is true, equivalents is required.
+ *
+ * ASSERTS: see above.                                                        */
 {
     if( SameF ) {
         __quex_assert(me->front_p             == subject->_memory._front);
@@ -529,6 +551,8 @@ QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)* me,
 QUEX_INLINE void
 QUEX_NAME(BufferInvariance_restore)(QUEX_NAME(BufferInvariance)* me, 
                                     QUEX_NAME(Buffer)*           subject)
+/* Restores all pointers and indices relevant for a buffer from 'me' into 
+ * 'subject'.                                                                 */
 {
     subject->_memory._front            = me->front_p;
     subject->_memory._back             = me->back_p;

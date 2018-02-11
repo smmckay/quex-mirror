@@ -126,19 +126,23 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
                                        (me->input.end_p - &me->_memory._front[1]) ) {
         return true;
     }
-    load_request_n = QUEX_NAME(Buffer_move_towards_begin_undo)(me, &bi, move_distance);
-
-    loaded_n       = QUEX_NAME(LexatomLoader_load)(me->filler, &me->_memory._front[1], load_request_n,
-                                                   me->input.lexatom_index_begin,
-                                                   &end_of_stream_f, &encoding_error_f);
-    if( loaded_n != load_request_n ) {
-        QUEX_ERROR_EXIT("Buffer filler failed to load content that has been loaded before.!");
-    }
     else {
-        /* Ensure, that the buffer limit code is restored.                   */
-        *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
+        load_request_n = QUEX_NAME(Buffer_move_towards_begin_undo)(me, &bi, move_distance);
+
+        loaded_n       = QUEX_NAME(LexatomLoader_load)(me->filler, &me->_memory._front[1], 
+                                                       load_request_n, me->input.lexatom_index_begin,
+                                                       &end_of_stream_f, &encoding_error_f);
+        if( loaded_n != load_request_n ) {
+            /* Error: buffer is dysfunctional.                                    */
+            /* QUEX_NAME(Buffer_dysfunctional_set)(me); */
+            QUEX_ERROR_EXIT("Buffer filler failed to load content that has been loaded before.!");
+        }
+        else {
+            /* Ensure, that the buffer limit code is restored.                    */
+            *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
+        }
+        return false;
     }
-    return false;
 }
 
 QUEX_INLINE E_LoadResult   
