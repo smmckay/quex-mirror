@@ -16,23 +16,14 @@ QUEX_INLINE E_LoadResult
 QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
                                QUEX_TYPE_LEXATOM** position_register,
                                const size_t        PositionRegisterN)
-/* Load as much new content into the buffer as possible--from what lies ahead
- * in the input stream. Maintains '_read_p', '_lexeme_start_p' inside the
- * buffer (if possible also fallback region). The 'input.end_p' pointer and
- * 'input.end_lexatom_index' are adapted according to the newly loaded
- * content, i.e. the point to exactly the same lexatom as before the load.
+/* Load a maximum amount of new content into the buffer from input stream. 
+ * Pointers and indices are adapted, so that they relate to the same content 
+ * in the input stream as before the call. 
  *
- * BEHAVIOR: BLOCKING wait for incoming stream content. 
- *           No return without content--except at end of stream.
- *
- *           Buffer and pointers are adapted are adapted IN ANY CASE!
- *
- *           (i) Content present:
- *               => return 'true'.
- *
- *           (ii) No content:
- *               => pointers are 'disabled' because 'end_p = _read_p'.
- *                  return 'false'.
+ *        .-----------------------------------------------------.
+ *        |     BLOCKING wait for incoming stream content.      |
+ *        | No return without content--except at end of stream. |
+ *        '-----------------------------------------------------'
  *
  * RETURNS: 
  *          
@@ -43,12 +34,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
  *     NO_MORE_DATA      => No more data available.     (analysis MUST STOP)
  *     BAD_LEXATOM       => Read pointer on buffer limit code,
  *                          but it was not a buffer limit.
- *
- * The case of 'end-of-stream' may be true in both cases. When 'end-of-stream' 
- * is detected, the lexatom index of the 'end-of-stream' is registered. This 
- * prevents future attemps to load beyond that index. Again, even if 
- * 'end-of-stream' has been detected, there might be lexatoms for the lexer 
- * to chew on.                                                               */
+ *                                                                            */
 {
     QUEX_TYPE_LEXATOM*          begin_p = &me->_memory._front[1];
     QUEX_TYPE_STREAM_POSITION   ci_begin = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
@@ -93,15 +79,9 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
 QUEX_INLINE bool
 QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me, 
                                           QUEX_TYPE_STREAM_POSITION LexatomIndexToBeContained)
-/* RETURNS:  true -- if the the buffer could be filled starting from 
- *                   NewCharacterIndexBegin.
- *           false, else.
- *
- * In case, that the loading fails, the buffer is setup as it was BEFORE the call
- * to this function.
- *
- * EXPLANATION:
- *
+/* Load new content into the buffer, so that a specific lexatom index is 
+ * contained inside the buffer.
+ * 
  * Before:    .-------------------------------------- prev lexatom_index_begin             
  *            :                 
  *            | . . . . . . . . .x.x.x.x.x.x.x.x.x.x.x| 
@@ -113,8 +93,13 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
  *            |x.x.x.x.x.x.x.x.x.x.x|N.N.N.N.N.N.N. . | 
  *            |- move_size -------->|- loaded_n ->|
  *                                                             
- * Moves the region of size 'Size' from the end of the buffer to the beginning
- * of the buffer and tries to load as many lexatoms as possible behind it. */
+ *
+ * RETURNS:  true, in case of success.
+ *           false, in case of FAILURE.
+ *
+ * FAILURE:  If it was not possible to restore the previous content of the 
+ *           buffer the buffer is *disabled*. That is, in case of 'return false',
+ *           the function 'QUEX_NAME(Buffer_dysfunctional)(me)' must be checked.*/
 {
     QUEX_TYPE_STREAM_POSITION lexatom_index_to_be_contained = LexatomIndexToBeContained;
     bool                      verdict_f;
@@ -129,12 +114,13 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
 
     QUEX_NAME(BufferInvariance_construct)(&bi, me);
 
-    /* Move existing content in the buffer to appropriate position.          */
+    /* Move existing content in the buffer to appropriate position.           */
     move_distance = QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(me, 
                                              &lexatom_index_to_be_contained);
 
     verdict_f = QUEX_NAME(Buffer_move_and_load)(me, (QUEX_TYPE_LEXATOM**)0, 0,
-                                                move_distance, &encoding_error_f, &loaded_n);
+                                                move_distance, &encoding_error_f, 
+                                                &loaded_n);
     if(    verdict_f
         && LexatomIndexToBeContained < me->input.lexatom_index_begin + 
                                        (me->input.end_p - &me->_memory._front[1]) ) {

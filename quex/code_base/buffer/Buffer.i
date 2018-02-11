@@ -134,6 +134,29 @@ QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me)
            && QUEX_NAME(BufferMemory_resources_absent)(&me->_memory);
 }
 
+QUEX_INLINE void     
+QUEX_NAME(Buffer_dysfunctional_set)(QUEX_NAME(Buffer)*  me)
+{
+    QUEX_NAME(Buffer_init_analyzis_core)(me, 
+    /* ReadP                          */ (QUEX_TYPE_LEXATOM*)0,
+    /* LexatomStartP                  */ (QUEX_TYPE_LEXATOM*)0,
+    /* LexatomAtLexemeStart           */ (QUEX_TYPE_LEXATOM)0,                                   
+    /* LexatomBeforeLexemeStart       */ (QUEX_TYPE_LEXATOM)0,
+    /* BackupLexatomIndexOfReadP      */ (QUEX_TYPE_STREAM_POSITION)-1);
+}
+
+QUEX_INLINE bool     
+QUEX_NAME(Buffer_dysfunctional)(QUEX_NAME(Buffer)*  me)
+{
+    return    me->_read_p                         == (QUEX_TYPE_LEXATOM*)0
+           && me->_lexeme_start_p                 == (QUEX_TYPE_LEXATOM*)0
+           && me->_lexatom_at_lexeme_start        == (QUEX_TYPE_LEXATOM)0                                   
+#          ifdef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
+           && me->_lexatom_before_lexeme_start    == (QUEX_TYPE_LEXATOM)0
+#          endif
+           && me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1;
+}
+
 QUEX_INLINE void
 QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me) 
 /* Initialize:  _read_p                          
@@ -414,6 +437,65 @@ QUEX_NAME(Buffer_negotiate_allocate_memory)(const size_t        Size,
     } while( (*memory_size) > MinSize );
 
     return false;
+}
+
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
+                                      ptrdiff_t           offset,
+                                      QUEX_TYPE_LEXATOM** position_register,
+                                      const size_t        PositionRegisterN)
+/* Adapt points after content has been moved towards begin.
+ *
+ * ADAPTS: _read_p, _lexeme_start_p, position registers, end_p, 
+ *         input.end_lexatom_index                                            */
+{ 
+#   define QUEX_BUFFER_POINTER_ADD(P, BORDER, OFFSET)                \
+           ((P) = (  ((P) == (QUEX_TYPE_LEXATOM*)0) ? (P)            \
+                   : ((BORDER) - (P) < OFFSET)     ? (BORDER)        \
+                   : (P) + (OFFSET)))
+#   define QUEX_BUFFER_POINTER_SUBTRACT(P, BORDER, NEGATIVE_OFFSET)  \
+           ((P) = (  ((P) == (QUEX_TYPE_LEXATOM*)0)     ? (P)        \
+                   : ((BORDER) - (P) > NEGATIVE_OFFSET) ? (BORDER)   \
+                   : (P) + (NEGATIVE_OFFSET)))
+    QUEX_TYPE_LEXATOM*  border = (QUEX_TYPE_LEXATOM*)0;
+    QUEX_TYPE_LEXATOM** pit    = (QUEX_TYPE_LEXATOM**)0x0;
+    QUEX_TYPE_LEXATOM** pEnd   = &position_register[PositionRegisterN];
+
+    QUEX_BUFFER_ASSERT_pointers_in_range(me);
+
+    if( offset > 0 ) {
+        border = me->_memory._back;
+        QUEX_BUFFER_POINTER_ADD(me->_read_p,         border, offset);
+        QUEX_BUFFER_POINTER_ADD(me->_lexeme_start_p, border, offset);
+        QUEX_BUFFER_POINTER_ADD(me->input.end_p,     border, offset);
+
+        for(pit = position_register; pit != pEnd; ++pit) {
+            QUEX_BUFFER_POINTER_ADD(*pit, border, offset); 
+        }
+    }
+    else if( offset < 0 ) {
+        border = &me->_memory._front[1];
+        QUEX_BUFFER_POINTER_SUBTRACT(me->_read_p,         border, offset);
+        QUEX_BUFFER_POINTER_SUBTRACT(me->_lexeme_start_p, border, offset);
+        QUEX_BUFFER_POINTER_SUBTRACT(me->input.end_p,     border, offset);
+
+        for(pit = position_register; pit != pEnd; ++pit) {
+            QUEX_BUFFER_POINTER_SUBTRACT(*pit, border, offset); 
+        }
+    }
+    else {
+        return;
+    }
+
+    *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
+
+    me->input.lexatom_index_begin -= offset;
+
+    QUEX_BUFFER_ASSERT_pointers_in_range(me);
+
+#   undef QUEX_BUFFER_POINTER_ADD
+#   undef QUEX_BUFFER_POINTER_SUBTRACT
 }
 
 QUEX_INLINE void

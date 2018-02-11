@@ -133,25 +133,30 @@ QUEX_NAME(Buffer_tell)(QUEX_NAME(Buffer)* me)
 /* RETURNS: lexatom index which corresponds to the position of the input
  *          pointer.                                                         */
 {
-    const QUEX_TYPE_STREAM_POSITION DeltaToBufferBegin = me->_read_p - &me->_memory._front[1];
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-
-    return DeltaToBufferBegin + QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
+    const QUEX_TYPE_STREAM_POSITION Delta = me->_read_p - &me->_memory._front[1];
+    return Delta + me->input.lexatom_index_begin;
 }
 
-QUEX_INLINE void    
-QUEX_NAME(Buffer_seek)(QUEX_NAME(Buffer)* me, const QUEX_TYPE_STREAM_POSITION CharacterIndex)
-/* Set the _read_p according to a lexatom index of the input. It is the 
- * inverse of 'tell()'.                                                      */
+QUEX_INLINE bool    
+QUEX_NAME(Buffer_seek)(QUEX_NAME(Buffer)*              me, 
+                       const QUEX_TYPE_STREAM_POSITION LexatomIndex)
+/* Set the _read_p according to a lexatom index of the input. 
+ *
+ * RETURNS: 'true' in case of success.
+ *          'false', else.
+ *
+ * FAILURE: Due to a errors in seek-operations of the input stream, this may 
+ *          totally fail. Then, check 'QUEX_NAME(Buffer_dysfunctional)'.      */
 {
-    const QUEX_TYPE_STREAM_POSITION CurrentCharacterIndex = QUEX_NAME(Buffer_tell)(me);
+    const QUEX_TYPE_STREAM_POSITION lexatom_index_read_p = QUEX_NAME(Buffer_tell)(me);
 
-    if( CharacterIndex > CurrentCharacterIndex ) {
-        QUEX_NAME(Buffer_seek_forward)(me, (ptrdiff_t)(CharacterIndex - CurrentCharacterIndex));
+    if( LexatomIndex > lexatom_index_read_p ) {
+        QUEX_NAME(Buffer_seek_forward)(me, (ptrdiff_t)(LexatomIndex - lexatom_index_read_p));
     }
-    else if( CharacterIndex < CurrentCharacterIndex ) {
-        QUEX_NAME(Buffer_seek_backward)(me,(ptrdiff_t)(CurrentCharacterIndex - CharacterIndex));
+    else if( LexatomIndex < lexatom_index_read_p ) {
+        QUEX_NAME(Buffer_seek_backward)(me,(ptrdiff_t)(lexatom_index_read_p - LexatomIndex));
     }
+    return true;
 }
 
 QUEX_INLINE bool

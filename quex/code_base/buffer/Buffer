@@ -170,6 +170,8 @@ QUEX_INLINE void  QUEX_NAME(Buffer_init)(QUEX_NAME(Buffer)* me,
 QUEX_INLINE void  QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void  QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE bool  QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE void  QUEX_NAME(Buffer_dysfunctional_set)(QUEX_NAME(Buffer)*  me);
+QUEX_INLINE bool  QUEX_NAME(Buffer_dysfunctional)(QUEX_NAME(Buffer)*  me);
 
 /* Move */
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
@@ -276,8 +278,8 @@ QUEX_INLINE size_t     QUEX_NAME(Buffer_content_size)(QUEX_NAME(Buffer)*);
 /* Tell & seek '_read_p' to/from lexatom index. */
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION  
                        QUEX_NAME(Buffer_tell)(QUEX_NAME(Buffer)*);
-QUEX_INLINE void       QUEX_NAME(Buffer_seek)(QUEX_NAME(Buffer)*, 
-                                              const QUEX_TYPE_STREAM_POSITION CharacterIndex);
+QUEX_INLINE bool       QUEX_NAME(Buffer_seek)(QUEX_NAME(Buffer)*, 
+                                              const QUEX_TYPE_STREAM_POSITION LexatomIndex);
 QUEX_INLINE bool       QUEX_NAME(Buffer_seek_forward)(QUEX_NAME(Buffer)*, const ptrdiff_t CharacterN);
 QUEX_INLINE bool       QUEX_NAME(Buffer_seek_backward)(QUEX_NAME(Buffer)*, const ptrdiff_t CharacterN);
 QUEX_INLINE bool       QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me);

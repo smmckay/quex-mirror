@@ -14,18 +14,18 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#define QUEX_ASSERT_BUFFER_IVARIANCE_SETUP(BI, ME)           \
-        QUEX_NAME(BufferInvariance) (BI);                    \
-        QUEX_NAME(BufferInvariance_construct)(&(BI), (ME));  \
-        (void)bi;                                            \
-        QUEX_BUFFER_ASSERT_CONSISTENCY(subject);
+#define QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(BI, ME)           \
+        QUEX_NAME(BufferInvariance) (BI);                     \
+        QUEX_NAME(BufferInvariance_construct)(&(BI), (ME));   \
+        (void)bi;                                             \
+        QUEX_BUFFER_ASSERT_CONSISTENCY(ME);
 
-#define QUEX_ASSERT_BUFFER_IVARIANCE_VERIFY(BI, ME)          \
-        QUEX_BUFFER_ASSERT_CONSISTENCY(subject);             \
+#define QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY(BI, ME)          \
+        QUEX_BUFFER_ASSERT_CONSISTENCY(ME);                   \
         QUEX_NAME(BufferInvariance_assert)(&(BI), (ME), false);
 
-#define QUEX_ASSERT_BUFFER_IVARIANCE_VERIFY_SAME(BI, ME)     \
-        QUEX_BUFFER_ASSERT_CONSISTENCY(subject);             \
+#define QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY_SAME(BI, ME)     \
+        QUEX_BUFFER_ASSERT_CONSISTENCY(ME);                   \
         QUEX_NAME(BufferInvariance_assert)(&(BI), (ME), true);
 
 #define QUEX_BUFFER_ASSERT_pointers_in_range    QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)
