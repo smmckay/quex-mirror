@@ -192,8 +192,8 @@ QUEX_NAME(include_push_all_but_buffer)(QUEX_TYPE_ANALYZER*       me,
 
     if( ! new_buffer ) {
         new_buffer = &tmp_buffer;
-        if( ! QUEX_NAME(Buffer_nested_construct)(&memento->buffer, new_buffer, 
-                                                   new_filler) ) {
+        if( ! QUEX_NAME(Buffer_nested_construct)(new_buffer, &memento->buffer, 
+                                                 new_filler) ) {
             goto ERROR_1;
         }
     }

@@ -36,9 +36,9 @@ static void               self_destruct_setup(QUEX_NAME(Buffer)* array,
                                               size_t Depth);
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
-                                     QUEX_NAME(Buffer)*        included,
-                                     QUEX_NAME(LexatomLoader)* filler);
+QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
+                                   QUEX_NAME(Buffer)*        nesting,
+                                   QUEX_NAME(LexatomLoader)* filler);
 
 int
 main(int argc, char** argv)
@@ -157,9 +157,8 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t DepthWan
     MemoryManager_UnitTest.allocation_addmissible_f = false;
 
     for(i=0; i<depth-1 ; ++i) {
-        success_f = QUEX_NAME(Buffer_nested_construct)(&array[i], 
-                                                         &array[i+1], 
-                                                         (QUEX_NAME(LexatomLoader)*)0);
+        success_f = QUEX_NAME(Buffer_nested_construct)(&array[i+1], &array[i], 
+                                                       (QUEX_NAME(LexatomLoader)*)0);
         hwut_verify(success_f);
 
         array[i+1].input.end_p    = &array[i+1]._memory._front[single_size-1];

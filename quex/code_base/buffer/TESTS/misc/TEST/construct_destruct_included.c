@@ -87,8 +87,8 @@ main(int argc, char** argv)
             /* Construct Included ____________________________________________*/
             MemoryManager_UnitTest.allocation_addmissible_f = allocation_f;
             including._lexeme_start_p = including._read_p;
-            verdict = QUEX_NAME(Buffer_nested_construct)(&including, &included, 
-                                                           (QUEX_NAME(LexatomLoader)*)0);
+            verdict = QUEX_NAME(Buffer_nested_construct)(&included, &including, 
+                                                         (QUEX_NAME(LexatomLoader)*)0);
 
             split_n += self_check_construction(&including, &included, 
                                                &memory[MemorySize], 

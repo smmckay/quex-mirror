@@ -13,19 +13,19 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
-                                   QUEX_NAME(Buffer)*        included,
+QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
+                                   QUEX_NAME(Buffer)*        nesting,
                                    QUEX_NAME(LexatomLoader)* filler)
-/* Construct 'included' buffer (-> memory split):
+/* Construct 'me' buffer (-> memory split):
  *
  * Constructor takes over ownership over 'filler'. If construction fails,
  * the 'filler' is immediatedly deleted.
  *
  * To optimize memory usage and minimize the generation of new buffers in 
  * situations of extensive file inclusions, the current buffer's memory may
- * be split to generate the included buffer's memory.
+ * be split to generate the nested buffer's memory.
  *
- *                 including  .---------------------.
+ *                 nesting  .---------------------.
  *                 buffer     |0|a|b|c|d|0| | | | | |
  *                            '---------------------'
  *                   read_p -------'     |
@@ -34,9 +34,9 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
  *                              /    split      \
  *                             /                 \
  *                                  
- *        including  .-----------.     included .---------.
- *        buffer     |0|a|b|c|d|0|  +  buffer   | | | | | |
- *                   '-----------'              '---------'
+ *           nesting .-----------.     nested .---------.
+ *            buffer |0|a|b|c|d|0|  +  buffer | | | | | |
+ *                   '-----------'            '---------'
  *          read_p -------'     |
  *          end_p  -------------'
  *
@@ -44,9 +44,9 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
  *       for situations where byte loaders may not be able to reload content
  *       that has already been loaded (for example 'TCP socket' byte loaders).
  *
- * RETURNS: true,  if memory has been allocated and the 'included' buffer is
+ * RETURNS: true,  if memory has been allocated and the 'nested' buffer is
  *                 ready to rumble.
- *          false, if memory allocation failed. 'included' buffer is not 
+ *          false, if memory allocation failed. 'nested' buffer is not 
  *                 functional.
  *                                                                            */
 {
@@ -58,22 +58,22 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
      *                                         :                 :
      *                                         '--- available ---'
      *                                                                        */
-    ptrdiff_t           available_size =   including->_memory._back 
-                                         - including->input.end_p;
+    ptrdiff_t           available_size =   nesting->_memory._back 
+                                         - nesting->input.end_p;
     QUEX_TYPE_LEXATOM*  memory;
     size_t              memory_size;
     E_Ownership         ownership;
-    QUEX_NAME(Buffer)*  including_buffer_p = (QUEX_NAME(Buffer)*)0;
+    QUEX_NAME(Buffer)*  nesting_buffer_p = (QUEX_NAME(Buffer)*)0;
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(including);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(nesting);
 
-    if( QUEX_NAME(Buffer_resources_absent)(including) ) {
+    if( QUEX_NAME(Buffer_resources_absent)(nesting) ) {
         goto ERROR_0;
     }
     else if( available_size < (ptrdiff_t)(QUEX_SETTING_BUFFER_SIZE_MIN) ) {
         /* (1) AVAILABLE SIZE too SMALL
          *     => Try to move content, so that free space becomes available.  */                    
-        available_size = QUEX_NAME(Buffer_nested_free_front)(including);
+        available_size = QUEX_NAME(Buffer_nested_free_front)(nesting);
     }
 
 
@@ -88,36 +88,36 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        including,
             goto ERROR_0;
         }
         ownership          = E_Ownership_LEXICAL_ANALYZER;
-        including_buffer_p = (QUEX_NAME(Buffer)*)0;
+        nesting_buffer_p = (QUEX_NAME(Buffer)*)0;
     }
     else {
-        /* (2) AVAILABLE SIZE in including buffer sufficient
+        /* (2) AVAILABLE SIZE in nesting buffer sufficient
          *     => Use free space for new buffer.                              */                    
-        memory      = &including->input.end_p[1];
+        memory      = &nesting->input.end_p[1];
         memory_size = (size_t)available_size;
         __quex_assert(0           != memory);
-        __quex_assert(memory_size == (size_t)(&including->_memory._back[1] - memory));
+        __quex_assert(memory_size == (size_t)(&nesting->_memory._back[1] - memory));
 
-        including->_memory._back = &including->input.end_p[0];
+        nesting->_memory._back = &nesting->input.end_p[0];
         ownership          = E_Ownership_INCLUDING_BUFFER;
-        including_buffer_p = including;
+        nesting_buffer_p = nesting;
     }
 
-    QUEX_NAME(Buffer_construct)(included, filler, memory, memory_size, 
+    QUEX_NAME(Buffer_construct)(me, filler, memory, memory_size, 
                                 (QUEX_TYPE_LEXATOM*)0, ownership, 
-                                including_buffer_p);
+                                nesting_buffer_p);
     
-    included->event = including->event;               /* Plain copy suffices. */
+    me->event = nesting->event;               /* Plain copy suffices. */
 
-    QUEX_BUFFER_ASSERT_CONSISTENCY(included);
-    QUEX_BUFFER_ASSERT_CONSISTENCY(including);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(nesting);
     return true;
 
 ERROR_0:
     if( filler ) {
         filler->delete_self(filler); 
     }
-    QUEX_NAME(Buffer_resources_absent_mark)(included);
+    QUEX_NAME(Buffer_resources_absent_mark)(me);
     return false;
 }
     
