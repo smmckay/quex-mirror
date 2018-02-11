@@ -156,7 +156,10 @@ QUEX_NAME(Buffer_seek)(QUEX_NAME(Buffer)*              me,
     else if( LexatomIndex < lexatom_index_read_p ) {
         QUEX_NAME(Buffer_seek_backward)(me,(ptrdiff_t)(lexatom_index_read_p - LexatomIndex));
     }
-    return true;
+
+    return    LexatomIndex == QUEX_NAME(Buffer_tell)(me)
+           && ! QUEX_NAME(Buffer_dysfunctional)(me);
+
 }
 
 QUEX_INLINE bool

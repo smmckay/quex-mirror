@@ -134,8 +134,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
                                                        &end_of_stream_f, &encoding_error_f);
         if( loaded_n != load_request_n ) {
             /* Error: buffer is dysfunctional.                                    */
-            /* QUEX_NAME(Buffer_dysfunctional_set)(me); */
-            QUEX_ERROR_EXIT("Buffer filler failed to load content that has been loaded before.!");
+            QUEX_NAME(Buffer_dysfunctional_set)(me);
         }
         else {
             /* Ensure, that the buffer limit code is restored.                    */
