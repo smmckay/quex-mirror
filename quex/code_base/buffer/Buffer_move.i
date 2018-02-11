@@ -183,8 +183,7 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me,
  *     After:    |x.x.x.x.x.x.x.x.x.x.x| . . . . . . . . . . . . | 
  *               |<---- move_size ---->|
  *
- * RETURNS: Number of lexatoms that have been moved.                       */
-/* Calls 'Buffer_move_towards_begin' and adapts pointers inside 'me'.
+ * RETURNS: Number of lexatoms that have been moved.                       
  *
  * CALLS:   callbacks 'on_buffer_change'.
  *
@@ -207,6 +206,7 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me,
                                               position_register, PositionRegisterN); 
         __quex_assert(me->input.end_p == &me->_memory._front[1 + move_size]);
         (void)move_size;
+        QUEX_IF_ASSERTS_poison(&me->input.end_p[1], me->_memory._back);
     }
 
     return me->_memory._back - me->input.end_p;

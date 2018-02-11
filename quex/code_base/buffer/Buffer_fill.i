@@ -46,7 +46,27 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
  * The content may be filled into the engine's buffer or an intermediate 
  * 'raw' buffer which still needs to be converted.                          */
 {
-    if( QUEX_NAME(Buffer_free_back)(me, (QUEX_TYPE_LEXATOM**)0, 0) == 0 ) {
+    ptrdiff_t  free_space;
+    ptrdiff_t  move_distance;
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+
+    move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me); 
+
+    if(    0 == move_distance 
+        && ! QUEX_NAME(Buffer_on_cannot_move_towards_begin)(me, &move_distance) ) {
+        *begin_p = (void*)0;
+        *end_p   = (const void*)0;
+        return;
+    }
+
+    if( move_distance ) {
+        (void)QUEX_NAME(Buffer_move_towards_begin)(me, move_distance,
+                                                   (QUEX_TYPE_LEXATOM**)0, 0);
+    }
+
+    free_space = me->_memory._back - me->input.end_p;
+    
+    if( 0 == free_space ) {
         *begin_p = (void*)0;
         *end_p   = (const void*)0;
         return;
@@ -56,6 +76,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
     me->filler->derived.fill_prepare(me->filler, me, begin_p, end_p);
 
     __quex_assert(*end_p >= *begin_p);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 }
 
 QUEX_INLINE void

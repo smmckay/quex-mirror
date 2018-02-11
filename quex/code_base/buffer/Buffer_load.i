@@ -12,26 +12,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE bool
-QUEX_NAME(Buffer_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
-                                               ptrdiff_t*          move_distance);
-
-QUEX_INLINE bool
-QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me, 
-                                QUEX_TYPE_LEXATOM** position_register,
-                                size_t              PositionRegisterN,
-                                ptrdiff_t           move_distance, 
-                                bool*               encoding_error_f, 
-                                ptrdiff_t*          loaded_n);
-QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me, 
-                                         ptrdiff_t          move_distance,
-                                         bool*              encoding_error_f, 
-                                         ptrdiff_t*         load_request_n);
-QUEX_INLINE void
-QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
-                                                 ptrdiff_t          move_distance);
-
 QUEX_INLINE E_LoadResult
 QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
                                QUEX_TYPE_LEXATOM** position_register,
@@ -378,61 +358,6 @@ QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
         me->_backup_lexatom_index_of_read_p =   QUEX_NAME(Buffer_tell)(me)
             + (me->_lexeme_start_p - me->_read_p);
     }
-}
-
-QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
-                            QUEX_TYPE_LEXATOM** position_register,
-                            const size_t        PositionRegisterN)
-/*    ..    WARNING: 
- *   /  \   Pointers to the '_memory' object may change!
- *  /    \  References to pointers from prior a call to this function
- *  '----'  become INVALID!
- *
- * Free some space AHEAD so that new content can be loaded. Content that 
- * is still used, or expected to be used shall remain inside the buffer.
- * Following things need to be respected:
- *
- *    _lexeme_start_p  --> points to the lexeme that is currently treated.
- *                         MUST BE INSIDE BUFFER!
- *    _read_p          --> points to the lexatom that is currently used
- *                         for triggering. MUST BE INSIDE BUFFER!
- *    fall back region --> A used defined buffer backwards from the lexeme
- *                         start. Shall help to avoid extensive backward
- *                         loading.
- *
- * RETURNS: Free space at end of buffer to fill new data.
- *          0, if there is none.                                              */
-{ 
-    ptrdiff_t  free_space;
-    ptrdiff_t  move_distance;
-    ptrdiff_t  move_size;
-    (void)move_size;
-
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-
-    move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me); 
-
-    if( 0 == move_distance ) {
-        if( ! QUEX_NAME(Buffer_on_cannot_move_towards_begin)(me, &move_distance) ) {
-            return 0;
-        }
-    }
-
-    if( move_distance ) {
-        (void)QUEX_NAME(Buffer_move_towards_begin)(me, move_distance,
-                                                   position_register, PositionRegisterN); 
-    }
-
-    free_space = me->_memory._back - me->input.end_p;
-
-    /*________________________________________________________________________*/
-    QUEX_IF_ASSERTS_poison(&me->_memory._back[- move_distance + 1], 
-                           me->_memory._back);
-
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-
-    return free_space;
 }
 
 QUEX_INLINE bool

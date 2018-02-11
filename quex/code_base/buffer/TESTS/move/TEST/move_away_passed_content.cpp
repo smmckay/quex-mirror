@@ -55,6 +55,66 @@ const  ptrdiff_t            ContentSize = sizeof(content)/sizeof(content[0]);
 static QUEX_TYPE_LEXATOM  memory[12];
 const  ptrdiff_t            MemorySize = sizeof(memory)/sizeof(memory[0]);
 
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
+                            QUEX_TYPE_LEXATOM** position_register,
+                            const size_t        PositionRegisterN);
+
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
+                            QUEX_TYPE_LEXATOM** position_register,
+                            const size_t        PositionRegisterN)
+/*    ..    WARNING: 
+ *   /  \   Pointers to the '_memory' object may change!
+ *  /    \  References to pointers from prior a call to this function
+ *  '----'  become INVALID!
+ *
+ * Free some space AHEAD so that new content can be loaded. Content that 
+ * is still used, or expected to be used shall remain inside the buffer.
+ * Following things need to be respected:
+ *
+ *    _lexeme_start_p  --> points to the lexeme that is currently treated.
+ *                         MUST BE INSIDE BUFFER!
+ *    _read_p          --> points to the lexatom that is currently used
+ *                         for triggering. MUST BE INSIDE BUFFER!
+ *    fall back region --> A used defined buffer backwards from the lexeme
+ *                         start. Shall help to avoid extensive backward
+ *                         loading.
+ *
+ * RETURNS: Free space at end of buffer to fill new data.
+ *          0, if there is none.                                              */
+{ 
+    ptrdiff_t  free_space;
+    ptrdiff_t  move_distance;
+    ptrdiff_t  move_size;
+    (void)move_size;
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+
+    move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me); 
+
+    if( 0 == move_distance ) {
+        if( ! QUEX_NAME(Buffer_on_cannot_move_towards_begin)(me, &move_distance) ) {
+            return 0;
+        }
+    }
+
+    if( move_distance ) {
+        (void)QUEX_NAME(Buffer_move_towards_begin)(me, move_distance,
+                                                   position_register, PositionRegisterN); 
+    }
+
+    free_space = me->_memory._back - me->input.end_p;
+
+    /*________________________________________________________________________*/
+    QUEX_IF_ASSERTS_poison(&me->_memory._back[- move_distance + 1], 
+                           me->_memory._back);
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+
+    return free_space;
+}
+
 int
 main(int argc, char** argv)
 {

@@ -224,14 +224,25 @@ QUEX_INLINE E_LoadResult
                        QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me);
 
 QUEX_INLINE bool       QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)* me, 
-                                                                QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin);
+                                                                  QUEX_TYPE_STREAM_POSITION LexatomIndexToBeContained);
 QUEX_INLINE bool       QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)* me, 
-                                                               QUEX_TYPE_STREAM_POSITION MinCharacterIndexInBuffer);
-QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
-                                                              QUEX_TYPE_LEXATOM** position_register,
-                                                              const size_t        PositionRegisterN);
+                                                                 QUEX_TYPE_STREAM_POSITION LexatomIndexToBeContained);
 QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(QUEX_NAME(Buffer)*         me,
                                             QUEX_TYPE_STREAM_POSITION* lexatom_index_to_be_contained);
+
+QUEX_INLINE bool       QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me, 
+                                                       QUEX_TYPE_LEXATOM** position_register,
+                                                       size_t              PositionRegisterN,
+                                                       ptrdiff_t           move_distance, 
+                                                       bool*               encoding_error_f, 
+                                                       ptrdiff_t*          loaded_n);
+QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me, 
+                                                                ptrdiff_t          move_distance,
+                                                                bool*              encoding_error_f, 
+                                                                ptrdiff_t*         load_request_n);
+QUEX_INLINE void       QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
+                                                                        ptrdiff_t          move_distance);
+
 
 /* User's manual buffer filling. */
 QUEX_INLINE void*      QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)* me, 
@@ -279,6 +290,9 @@ QUEX_INLINE void       QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* m
                                                             void*  aux);
 QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE bool       QUEX_NAME(Buffer_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
+                                                                      ptrdiff_t*          move_distance);
+
 
 QUEX_INLINE void QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me, 
                                                        QUEX_NAME(Buffer)*           subject);
