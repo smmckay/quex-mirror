@@ -30,6 +30,7 @@
 
 #include <common.h>
 #include <quex/code_base/buffer/TESTS/MemoryManager_UnitTest.i>
+#include <quex/code_base/buffer/asserts>
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
@@ -55,6 +56,7 @@ main(int argc, char** argv)
     count = 0;
     for(new_size = QUEX_MAX(3, reference_size - 1); 
         new_size <= reference_size + 2 ; ++new_size) {
+        QUEX_BUFFER_ASSERT_CONSISTENCY(&reference);
 
         count += common_iterate(&reference, new_size, &shrink_n);
     }

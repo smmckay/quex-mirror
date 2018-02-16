@@ -432,7 +432,7 @@ class Language(dict):
             E_R.Column:          "(me->counter._column_number_at_end)",
             E_R.Line:            "(me->counter._line_number_at_end)",
             E_R.LexemeStartP:    "(me->buffer._lexeme_start_p)",
-            E_R.BackupStreamPositionOfInputP: "(me->buffer._backup_lexatom_index_of_read_p)",
+            E_R.BackupStreamPositionOfLexemeStartP: "(me->buffer._backup_lexatom_index_of_lexeme_start_p)",
             E_R.LexemeStartBeforeReload: "lexeme_start_before_reload_p)",
             E_R.CountReferenceP: "count_reference_p",
             E_R.LexemeEnd:       "LexemeEnd",

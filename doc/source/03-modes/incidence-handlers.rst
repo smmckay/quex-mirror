@@ -121,20 +121,22 @@ Buffer Handling
 
 .. function:: on_buffer_overflow(self, LexemeBegin, LexemeEnd, BufferSize, BufferBegin, BufferEnd)
 
-   When new content is about to be loaded into the lexer's buffer, free space
-   must be provided. A reload-request where no free space can be provided, 
-   triggers a call to the ``on_buffer_overlow`` handler.  By default, this
-   handler tries to extend the current buffer, or copy it to a different 
+   When new content is about to be loaded into the lexer's buffer, there must
+   be free space. First, it is tried to move content towards the beginning.
+   If this fails, because the current lexeme spans the complete buffer, the
+   incident ``on_buffer_overflow`` is triggered.  The corresponding default
+   handler tries to extend the current buffer, or copy it to a different
    location. 
 
    .. note::
    
        The default on-buffer-overlow strategy for extending is the following.
-       It starts with a target size *s* as the double of the current size. If
-       that fails a new size *s* is tried which is the average between the
-       current size and the previous size *s*.  This procedure is repeated
+       It starts with a target size `s` as the double of the current size. If
+       that fails a new size `s` is tried which is the average between the
+       current size and the previous size `s`.  This procedure is repeated
        until the allocation succeeds or `s` becomes equal to the current size
-       *+ 4 + fallback* (because *4* is the minimal buffer size). 
+       *+ 2 x B + F* where ``B`` is the number of border lexatoms on each
+       border (usually 1), and ``F`` is the required fallback region' size.
    
    .. note::
 
@@ -142,8 +144,8 @@ Buffer Handling
        contains free space, the error ``E_Error_Buffer_Overflow_LexemeTooLong``
        is set.
 
-   When buffer's memory management is user-defined, then that necessitates a
-   customized ``on_buffer_overflow`` handler.  An embedded environment, where
+   A customized ``on_buffer_overlow`` handler becomes mandatory, when the user
+   applies his own buffer memory management.  An embedded environment, where
    dynamic allocation is forbidden might be such a case. Then, error code might
    be sufficient and an empty handler might do.
 
@@ -161,7 +163,7 @@ Buffer Handling
    to extend it.
 
    .. function:: bool QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, 
-                                                    ptrdiff_t           SizeAdd)
+                                                      ptrdiff_t           SizeAdd)
 
       Attempts to allocate new memory for the buffer and migrates the
       content to the new memory. Returns ``false`` if and only if that
@@ -175,27 +177,27 @@ Buffer Handling
       Migrates the current buffer's content to the specified memory chunk.
       Returns ``false`` if and only if that attempt fails.
 
-   The two functions operate on the ``root`` of nested buffers. This accounts
-   for the fact that a buffer may be nested into an *including* buffer due to
-   an include operation. When buffers are extended, the root of all nesting 
-   is extended.
+    Operations on the buffer's setup are very sensitive.  Besides the two
+    mentioned functions, it is advised not to tamper with the current buffer.
+    The two functions operate on the ``root`` of nested buffers. This accounts
+    for the fact that a buffer may be nested into an *including* buffer due to
+    an include operation. When applied to a nested buffer, the extension and
+    migration concerns the root nesting buffer.
 
 .. function:: on_buffer_before_change(self, BufferBegin, BufferEnd)
 
-   The reload process always tries to maintain the current lexeme inside the
-   buffer. If the lexeme becomes as large as the buffer itself, no reload can
-   happen. In the case that the reload failed due to a lexeme being too long
-   this handler is executed. Consider enlarging the buffer or using skippers
-   which do not maintain the lexeme.
-
-
+   For performance reasons, it is conceivable, that users relate to buffer
+   content via pointers, instead of copying lexemes to other places. For 
+   these scenarios, the handler ``on_buffer_before_change`` muse be used
+   to trigger a copying of all lexemes to a safe place. 
+   
 Failures and End of Stream
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When it is impossible to match at a given position, when a lexatom appears that
-is unknown to the current encoding, and when the input stream terminates, then
-it lexer is in a state where it cannot continue. To handle these cases, the
-following incidence handlers may be provided.
+Whenever it is impossible to match at a given position, whenever a lexatom
+appears that is unknown to the current encoding, and whenever the input stream
+terminates, then it lexer is in a state where it cannot continue. To handle
+these cases, the following incidence handlers may be provided.
 
 .. data:: on_end_of_stream
 

@@ -45,7 +45,7 @@ QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
 QUEX_INLINE void      QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
                                                                           QUEX_TYPE_LEXATOM* old_memory_root,
                                                                           QUEX_TYPE_LEXATOM* new_memory_root,
-                                                                          size_t             NewRootSize);
+                                                                          ptrdiff_t          NewRootSize);
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me, 
@@ -118,7 +118,25 @@ QUEX_NAME(Buffer_shallow_copy)(QUEX_NAME(Buffer)* drain, const QUEX_NAME(Buffer)
  * The caller of this function MUST determine whether 'drain' or 'source'
  * maintains ownership.                                                       */
 {
+    QUEX_BUFFER_ASSERT_CONSISTENCY(source);
     *drain = *source;
+}
+
+QUEX_INLINE bool 
+QUEX_NAME(Buffer_has_intersection)(QUEX_NAME(Buffer)*       me,
+                                   const QUEX_TYPE_LEXATOM* Begin,
+                                   ptrdiff_t                Size)
+{
+    const QUEX_TYPE_LEXATOM* End      = &Begin[Size];
+    QUEX_NAME(Buffer)*       root     = QUEX_NAME(Buffer_nested_find_root)(me);
+    const QUEX_TYPE_LEXATOM* my_begin = root->_memory._front;
+    const QUEX_TYPE_LEXATOM* my_end   = &me->_memory._back[1];
+
+    /* No intersection in two cases:
+     * (1) second interval lies completely before: 'End <= my_begin'.
+     * (2) second interval lies completely after:  'Begin >= my_begin'.       */
+    if( Begin >= my_end || End <= my_begin ) return false;
+    else                                     return true;
 }
 
 QUEX_INLINE void
@@ -154,7 +172,7 @@ QUEX_NAME(Buffer_dysfunctional)(QUEX_NAME(Buffer)*  me)
 #          ifdef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
            && me->_lexatom_before_lexeme_start    == (QUEX_TYPE_LEXATOM)0
 #          endif
-           && me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1;
+           && me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1;
 }
 
 QUEX_INLINE void
@@ -203,7 +221,7 @@ QUEX_NAME(Buffer_init_analyzis_core)(QUEX_NAME(Buffer)*        me,
 #   ifdef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
     me->_lexatom_before_lexeme_start    = LexatomBeforeLexemeStart;
 #   endif
-    me->_backup_lexatom_index_of_read_p = BackupLexatomIndexOfReadP;
+    me->_backup_lexatom_index_of_lexeme_start_p = BackupLexatomIndexOfReadP;
 }
 
 QUEX_INLINE void
@@ -402,17 +420,21 @@ QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
 QUEX_INLINE void
 QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
 {
+    QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
     if( me->event.on_buffer_before_change ) {
         me->event.on_buffer_before_change(me->event.aux); 
     }
+    QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY_SAME(bi, me);
 }
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me)
 {
+    QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
     if( me->event.on_buffer_overflow ) {
         me->event.on_buffer_overflow(me->event.aux);
     }
+    QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY(bi, me);
 }
 
 QUEX_INLINE bool

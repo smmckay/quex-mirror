@@ -180,6 +180,7 @@ typedef enum {
     /* --------------------------------------------------*/
     E_Error_None,
     E_Error_ProvidedExternal_Memory_Corrupt,
+    E_Error_ProvidedExternal_Memory_Intersects,
     E_Error_Reset_OnError,
     E_Error_TokenRepetitionNSetButNotSupportedByGeneratedCode,
     E_Error_TokenQueueNoMoreTokensAvailable,
@@ -229,6 +230,7 @@ typedef enum {
      : (E) == E_Error_NoHandler_OnSkipRangeOpen          ? "NoHandler_OnSkipRangeOpen"          \
      : (E) == E_Error_None                               ? "None"                               \
      : (E) == E_Error_ProvidedExternal_Memory_Corrupt    ? "ProvidedExternal_Memory_Corrupt"    \
+     : (E) == E_Error_ProvidedExternal_Memory_Intersects ? "ProvidedExternal_Memory_Intersects" \
      : (E) == E_Error_Reset_OnError                      ? "Reset_OnError"                      \
      : (E) == E_Error_TokenRepetitionNSetButNotSupportedByGeneratedCode ? "TokenRepetitionNSetButNotSupportedByGeneratedCode" \
      : (E) == E_Error_TokenQueueNoMoreTokensAvailable    ? "TokenQueueNoMoreTokensAvailable"    \

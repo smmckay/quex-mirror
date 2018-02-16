@@ -102,9 +102,9 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
 
     /* (*) When data from a different stream position is loaded than what is 
      *     required for the current analysis step, the current position is 
-     *     stored in '_backup_lexatom_index_of_read_p', so that it can be 
+     *     stored in '', so that it can be 
      *     restored before the analysis forward step starts.                  */
-    QUEX_TYPE_STREAM_POSITION _backup_lexatom_index_of_read_p;
+    QUEX_TYPE_STREAM_POSITION _backup_lexatom_index_of_lexeme_start_p;
                                                                              
     /* (*) Information about previous content:
      *
@@ -172,6 +172,9 @@ QUEX_INLINE void  QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me)
 QUEX_INLINE bool  QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void  QUEX_NAME(Buffer_dysfunctional_set)(QUEX_NAME(Buffer)*  me);
 QUEX_INLINE bool  QUEX_NAME(Buffer_dysfunctional)(QUEX_NAME(Buffer)*  me);
+QUEX_INLINE bool  QUEX_NAME(Buffer_has_intersection)(QUEX_NAME(Buffer)*       me,
+                                                     const QUEX_TYPE_LEXATOM* Begin,
+                                                     ptrdiff_t                Size);
 
 /* Move */
 QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
@@ -197,9 +200,9 @@ QUEX_INLINE ptrdiff_t QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer
                                                                 ptrdiff_t move_distance);
 
 /* Move and pointer adaptions. */
-QUEX_INLINE void  QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
+QUEX_INLINE bool  QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
                                                                  QUEX_TYPE_LEXATOM* new_memory,
-                                                                 size_t             NewSize);
+                                                                 ptrdiff_t          NewSize);
 
 /* Memory extend and migrate. */
 QUEX_INLINE bool  QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me,
@@ -207,9 +210,9 @@ QUEX_INLINE bool  QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me,
 QUEX_INLINE bool  QUEX_NAME(Buffer_nested_negotiate_extend)(QUEX_NAME(Buffer)*  me, 
                                                           float               Factor);
 QUEX_INLINE bool  QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
-                                                 QUEX_TYPE_LEXATOM*  memory,
-                                                 const size_t        MemoryLexatomN,
-                                                 E_Ownership         Ownership);
+                                                   QUEX_TYPE_LEXATOM*  memory,
+                                                   ptrdiff_t           MemoryLexatomN,
+                                                   E_Ownership         Ownership);
 QUEX_INLINE QUEX_NAME(Buffer)*
                   QUEX_NAME(Buffer_nested_find_root)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE QUEX_NAME(Buffer)* 

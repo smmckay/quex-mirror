@@ -22,8 +22,17 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
  *
  *        .-----------------------------------------------------.
  *        |     BLOCKING wait for incoming stream content.      |
- *        | No return without content--except at end of stream. |
+ *        | No return without content--EXCEPT at end of stream. |
  *        '-----------------------------------------------------'
+ *
+ * Before:    
+ *            | . . . . . . . . .x.x.x.x.x.x.x.x.x.x.x| 
+ *                              |<---- move size ---->|
+ *
+ * After:     |<- move distance |
+ *
+ *            |x.x.x.x.x.x.x.x.x.x.x|N.N.N.N.N.N.N. . | 
+ *            |<--- move_size ----->|- loaded_n ->|
  *
  * RETURNS: 
  *          
@@ -80,26 +89,30 @@ QUEX_INLINE bool
 QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me, 
                                           QUEX_TYPE_STREAM_POSITION LexatomIndexToBeContained)
 /* Load new content into the buffer, so that a specific lexatom index is 
- * contained inside the buffer.
+ * contained inside the buffer. In underlying seek procedure failed, it is
+ * tried to restore the buffer to a state prior to this call.
+ *
+ *        .-----------------------------------------------------.
+ *        |     BLOCKING wait for incoming stream content.      |
+ *        | No return without content--EXCEPT at end of stream. |
+ *        '-----------------------------------------------------'
  * 
- * Before:    .-------------------------------------- prev lexatom_index_begin             
- *            :                 
+ * Before:    
  *            | . . . . . . . . .x.x.x.x.x.x.x.x.x.x.x| 
- *                              |<---- move size ---->|
- * After:     |<- move distance |
- *            .-------------------------------------- new lexatom_index_begin
- *            :                     .---------------- prev lexatom index begin
- *            :                     :  
- *            |x.x.x.x.x.x.x.x.x.x.x|N.N.N.N.N.N.N. . | 
+ *
+ * After:                                .--------------- LexatomIndex..
+ *            |x.x.x.x.x.x.x.x.x.x.x|N.N.N.N.N.N.N. . |   
  *            |- move_size -------->|- loaded_n ->|
  *                                                             
  *
  * RETURNS:  true, in case of success.
  *           false, in case of FAILURE.
  *
- * FAILURE:  If it was not possible to restore the previous content of the 
- *           buffer the buffer is *disabled*. That is, in case of 'return false',
- *           the function 'QUEX_NAME(Buffer_dysfunctional)(me)' must be checked.*/
+ * FAILURE:  In case of error in underlying lexatom/byte loader, if it is not 
+ *           possible to restore the previous content of the buffer the buffer is 
+ *           *disabled*. 
+ *
+ *        => In case of 'return false', call 'QUEX_NAME(Buffer_dysfunctional) */
 {
     QUEX_TYPE_STREAM_POSITION lexatom_index_to_be_contained = LexatomIndexToBeContained;
     bool                      verdict_f;
@@ -146,13 +159,13 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
 
 QUEX_INLINE E_LoadResult   
 QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
-/* Load *previous* content into the buffer so that the analyzer can continue
- * seeminglessly (in backward direction).
+/* Load *previous* stream content into the buffer so that the analyzer can 
+ * continue in backward direction.
  *
- * BEHAVIOR: BLOCKING wait for incoming stream content. 
- *           No return without content--except at end of stream.
- *
- *           Buffer and pointers are adapted are adapted IN ANY CASE!
+ *        .-----------------------------------------------------.
+ *        |     BLOCKING wait for incoming stream content.      |
+ *        | No return without content--EXCEPT at end of stream. |
+ *        '-----------------------------------------------------'
  *
  * RETURNS: 
  *          
@@ -218,6 +231,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
          * => Buffer has now hole: 
          *    from _front[1+loaded_n] to Begin[move_distance]                 
          * The analysis can continue in forward direction, but not backwards.*/
+        QUEX_NAME(Buffer_dysfunctional_set)(me);
         return E_LoadResult_FAILURE;     
     }
 
@@ -229,20 +243,14 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
 QUEX_INLINE bool
 QUEX_NAME(Buffer_load_backward_to_contain)(QUEX_NAME(Buffer)*        me, 
                                            QUEX_TYPE_STREAM_POSITION NewCharacterIndexBegin)
-/* Before:                     
- *            .------------------------------------- prev lexatom index begin
- *            :
- *            |x.x.x.x.x.x.x.x.x.x. . . . . . . . . . . . . |
- *            |<--- move size---->|                         
- * After:                                             
- *            .------------------------------------- new lexatom index begin
- *            :                     .--------------- prev lexatom index begin
- *            :                     :
- *            :--- move distance--->|                 
- *            |N.N.N.N.N.N.N.N.N.N.N.x.x.x.x.x.x.x.x.x.x. . | 
- *                               
- * Moves the region of size 'Size' from the beginning of the buffer to the end
- * and tries to load as many lexatoms as possible behind it. 
+/* Load new content into the buffer BACKWARDS, so that a specific lexatom 
+ * index is contained inside the buffer. In underlying seek procedure failed, 
+ * it is tried to restore the buffer to a state prior to this call.
+ *
+ *        .-----------------------------------------------------.
+ *        |     BLOCKING wait for incoming stream content.      |
+ *        | No return without content--EXCEPT at end of stream. |
+ *        '-----------------------------------------------------'
  *
  * RETURN: true, in case of success.
  *         false, if the region could not be be filled.
@@ -279,6 +287,19 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
                                 ptrdiff_t           move_distance, 
                                 bool*               encoding_error_f, 
                                 ptrdiff_t*          loaded_n)
+/* Move buffer content towards begin and load as much content as possible in
+ * the front.
+ *
+ *        .-----------------------------------------------------.
+ *        |     BLOCKING wait for incoming stream content.      |
+ *        | No return without content--EXCEPT at end of stream. |
+ *        '-----------------------------------------------------'
+ *
+ * ADAPTS:  'encoding_error_f == true' if an encoding error has been detected.
+ *          'loaded_n' containing the number of loaded lexatoms.
+ *
+ * RETURNS: true, in case of success,
+ *          false, in case that insufficent space could be freed.             */
 {
     QUEX_TYPE_STREAM_POSITION   load_lexatom_index;
     ptrdiff_t                   free_space;
@@ -315,11 +336,24 @@ QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me,
                                          ptrdiff_t          move_distance,
                                          bool*              encoding_error_f, 
                                          ptrdiff_t*         load_request_n)
+/* Move buffer content towards end and load as much content as possible in
+ * the back.
+ *
+ *        .-----------------------------------------------------.
+ *        |     BLOCKING wait for incoming stream content.      |
+ *        | No return without content--EXCEPT at end of stream. |
+ *        '-----------------------------------------------------'
+ *
+ * ADAPTS:  'encoding_error_f == true' if an encoding error has been detected.
+ *          'load_request_n' containing the number of requested lexatoms to be 
+ *                           loaded.
+ *
+ * RETURNS: Number of loaded lexatoms.                                        */
 {
     bool end_of_stream_f  = false;
 
     if( move_distance ) {
-        if( me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
             /* If content has not been moved already, notify change!          */
             QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
         }
@@ -341,10 +375,10 @@ QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
 {
     if(    me->_lexeme_start_p
         && me->_lexeme_start_p + move_distance >= me->_memory._back
-        && me->_backup_lexatom_index_of_read_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        && me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         /* Lexeme start will be out of buffer. Store the position to be
          * reloaded when lexing forward restarts.                             */
-        me->_backup_lexatom_index_of_read_p =   QUEX_NAME(Buffer_tell)(me)
+        me->_backup_lexatom_index_of_lexeme_start_p =   QUEX_NAME(Buffer_tell)(me)
             + (me->_lexeme_start_p - me->_read_p);
     }
 }

@@ -31,7 +31,7 @@
  *        Only then, the lexer object is assigned new content.
  * 
  * The *pivot point* of 'success granted' is inside the function 
- * 'include_push_all_but_buffer()'. If it returns != NULL, success is granted.
+ * 'reset_all_but_buffer()'. If it returns != NULL, success is granted.
  * Anything that might fail, *must happen before* the call to this function.
  * The exact 'pivot point' is marked in a comment by '[PIVOT POINT]'.
  *______________________________________________________________________________

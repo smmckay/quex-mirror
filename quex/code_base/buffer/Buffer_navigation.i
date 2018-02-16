@@ -34,7 +34,7 @@
  * the input pointer '_read_p' to a particular position. The position-1 where 
  * it points contains the next lexatom to be read during analysis.           
  *
- * (C) Frank-Rene Schaefer                                                   */
+ * (C) Frank-Rene Schaefer                                                    */
 #ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NAVIGATION_I
 #define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NAVIGATION_I
 
@@ -42,7 +42,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION  
 QUEX_NAME(Buffer_input_lexatom_index_begin)(QUEX_NAME(Buffer)* me)
-/* Determine lexatom index of first lexatom in the buffer.               */
+/* Determine lexatom index of first lexatom in the buffer.                    */
 {
     __quex_assert(me->input.lexatom_index_begin >= 0);
     return me->input.lexatom_index_begin;
@@ -57,7 +57,7 @@ QUEX_NAME(Buffer_seek_forward)(QUEX_NAME(Buffer)* me, const ptrdiff_t CharacterN
  *                  to '_read_p' or '_lexeme_start_p'. 
  * 
  * RETURNS: True -- if positioning was successful,
- *          False -- else.                                                   */
+ *          False -- else.                                                    */
 {
     QUEX_TYPE_STREAM_POSITION  CharacterIndexAtReadP =   me->input.lexatom_index_begin
                                                        + (me->_read_p - &me->_memory._front[1]);
@@ -170,11 +170,11 @@ QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
 
     if( me->_read_p >= me->input.end_p ) {
         me->_read_p = me->input.end_p;
-        verdict_f = false;
+        verdict_f   = false;
     }
     else if( me->_read_p < BeginP ) {
         me->_read_p = BeginP;
-        verdict_f = false;
+        verdict_f   = false;
     }
 
     me->_lexeme_start_p = me->_read_p;

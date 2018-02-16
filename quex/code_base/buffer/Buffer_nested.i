@@ -25,8 +25,8 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
  * situations of extensive file inclusions, the current buffer's memory may
  * be split to generate the nested buffer's memory.
  *
- *                 nesting  .---------------------.
- *                 buffer     |0|a|b|c|d|0| | | | | |
+ *                   nesting  .---------------------.
+ *                   buffer   |0|a|b|c|d|0| | | | | |
  *                            '---------------------'
  *                   read_p -------'     |
  *                   end_p  -------------'
@@ -87,7 +87,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
         if( ! memory ) {
             goto ERROR_0;
         }
-        ownership          = E_Ownership_LEXICAL_ANALYZER;
+        ownership        = E_Ownership_LEXICAL_ANALYZER;
         nesting_buffer_p = (QUEX_NAME(Buffer)*)0;
     }
     else {
@@ -99,7 +99,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
         __quex_assert(memory_size == (size_t)(&nesting->_memory._back[1] - memory));
 
         nesting->_memory._back = &nesting->input.end_p[0];
-        ownership          = E_Ownership_INCLUDING_BUFFER;
+        ownership        = E_Ownership_INCLUDING_BUFFER;
         nesting_buffer_p = nesting;
     }
 
@@ -114,9 +114,6 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
     return true;
 
 ERROR_0:
-    if( filler ) {
-        filler->delete_self(filler); 
-    }
     QUEX_NAME(Buffer_resources_absent_mark)(me);
     return false;
 }
@@ -168,54 +165,60 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
 {
     QUEX_TYPE_LEXATOM*  old_memory_root_p;
     QUEX_TYPE_LEXATOM*  new_memory_root_p;
-    size_t              required_size;
-    size_t              new_size;
+    ptrdiff_t           required_size;
+    ptrdiff_t           new_size;
     QUEX_NAME(Buffer)*  root = me;
-    QUEX_TYPE_LEXATOM*  old_content_end_p = me->input.end_p ? me->input.end_p : me->_memory._back;
+    QUEX_TYPE_LEXATOM*  old_content_end_p = me->input.end_p ? me->input.end_p : &me->_memory._back[1];
+    bool                verdict_f = false;
     
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+
     /* The 'Buffer_extend()' function cannot be called for an buffer which is
      * currently including, i.e. has dependent buffers! It can only be called
      * for the currently working buffer.                                      */
     root              = QUEX_NAME(Buffer_nested_find_root)(me);
-    old_memory_root_p = root->_memory._front;
-    required_size     = (size_t)(old_content_end_p - old_memory_root_p);
-    new_size          = (size_t)(&me->_memory._back[1] - old_memory_root_p + SizeAdd);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(root);
 
-    if( SizeAdd <= 0 ) {
-        return false;
-    }
-    else if( required_size >= new_size ) {
+    old_memory_root_p = root->_memory._front;
+    /* required: content + 2 lexatoms for border.                             */
+    required_size     = old_content_end_p - &old_memory_root_p[1] + 2;
+    new_size          = &me->_memory._back[1] - old_memory_root_p + SizeAdd;
+
+    if( SizeAdd <= 0 || required_size >= new_size ) {
         return false;
     }
 
     new_memory_root_p = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_reallocate)(
                                                 (void*)old_memory_root_p,
-                                                sizeof(QUEX_TYPE_LEXATOM) * new_size,
+                                                sizeof(QUEX_TYPE_LEXATOM) * (size_t)new_size,
                                                 E_MemoryObjectType_BUFFER_MEMORY);
 
     if( ! new_memory_root_p ) {
         /* Old memory object IS NOT DE-ALLOCATED.                             */
-        return false;
+        verdict_f = false;
     }
     else if( new_memory_root_p == old_memory_root_p ) {
         /* Old memory object IS NOT REPLACED--CONTENT AT SAME ADDRESS.        */
         me->_memory._back = &new_memory_root_p[new_size-1];
-        return true;
+        verdict_f = true;
     }
+    else {
+        QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(me, 
+                                                            old_memory_root_p,
+                                                            new_memory_root_p, 
+                                                            new_size);
 
-    QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(me, 
-                                                        old_memory_root_p,
-                                                        new_memory_root_p, 
-                                                        new_size);
-
-    root->_memory.ownership = E_Ownership_LEXICAL_ANALYZER;
-    return true;
+        root->_memory.ownership = E_Ownership_LEXICAL_ANALYZER;
+        verdict_f = true;
+    }
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    return verdict_f;
 }
 
 QUEX_INLINE bool
 QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
                                  QUEX_TYPE_LEXATOM*  memory,
-                                 const size_t        MemoryLexatomN,
+                                 ptrdiff_t           MemoryLexatomN,
                                  E_Ownership         Ownership) 
 /* Migrate the content of the current buffer to a new memory space. In case
  * that the buffer is nested in an including buffer, the root of all included
@@ -230,40 +233,48 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
  * RETURNS: true, if migration was successful.
  *          false, if newly allocated memory is too small.                    */
 {
-    size_t             required_size;
     QUEX_NAME(Buffer)* root;
     QUEX_TYPE_LEXATOM* old_memory_root_p;
-    QUEX_TYPE_LEXATOM* old_content_end_p = me->input.end_p ? me->input.end_p : me->_memory._back;
-    size_t             copy_size;
+    QUEX_TYPE_LEXATOM* old_content_end_p = me->input.end_p ? me->input.end_p : &me->_memory._back[1];
+    ptrdiff_t          required_size;
+    bool               verdict_f = false;
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
     __quex_assert(old_content_end_p >= me->_memory._front);
     __quex_assert(old_content_end_p <= me->_memory._back);
 
     root              = QUEX_NAME(Buffer_nested_find_root)(me);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(root);
+
     old_memory_root_p = root->_memory._front;
-    required_size     = (size_t)(old_content_end_p - old_memory_root_p);
+    /* required: content + 2 lexatoms for border.                             */
+    required_size     = old_content_end_p - &old_memory_root_p[1] + 2;
 
     if( required_size > MemoryLexatomN ) {
-        return false;
+        verdict_f = false;
+    }
+    else {
+        /* Copy content to the new habitat.                                   */
+        __QUEX_STD_memcpy((void*)&memory[0], 
+                          (void*)&old_memory_root_p[0],
+                          (size_t)required_size * sizeof(QUEX_TYPE_LEXATOM));
+
+        /* Adapt this and all nesting buffers to new memory location.         */
+        QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(me, old_memory_root_p,
+                                                            &memory[0], MemoryLexatomN);
+
+        if( root->_memory.ownership == E_Ownership_LEXICAL_ANALYZER ) {
+            QUEXED(MemoryManager_free)(old_memory_root_p, E_MemoryObjectType_BUFFER_MEMORY);
+        }
+        root->_memory.ownership = Ownership;
+        /* Limit codes for '_front' and '_end' have been set during 'memcpy'. */
+        me->_memory._back[0]  = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        verdict_f = true;
     }
 
-    /* Copy content to the new habitat.                                       */
-    copy_size = old_content_end_p <= old_memory_root_p ? 
-                (size_t)0 : (size_t)(old_content_end_p - &old_memory_root_p[1]);
-    __QUEX_STD_memcpy((void*)&memory[1], 
-                      (void*)&old_memory_root_p[1],
-                      copy_size * sizeof(QUEX_TYPE_LEXATOM));
-
-    /* Adapt this and all nesting buffers to new memory location.             */
-    QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(me, old_memory_root_p,
-                                                        &memory[0], MemoryLexatomN);
-
-    if( root->_memory.ownership == E_Ownership_LEXICAL_ANALYZER ) {
-        QUEXED(MemoryManager_free)(old_memory_root_p, E_MemoryObjectType_BUFFER_MEMORY);
-    }
-    root->_memory.ownership = Ownership;
-
-    return true;
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    return verdict_f;
 }
 
 QUEX_INLINE QUEX_NAME(Buffer)*
@@ -331,29 +342,35 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
                                                     QUEX_TYPE_LEXATOM* old_memory_root,
                                                     QUEX_TYPE_LEXATOM* new_memory_root,
-                                                    size_t             NewRootSize)
+                                                    ptrdiff_t          NewRootSize)
+/* Caller *must* ensure that 'NewRootSize' can hold all the content.          */
 {
-    QUEX_NAME(Buffer)* focus;
+    QUEX_NAME(Buffer)* focus = (QUEX_NAME(Buffer)*)0;
     QUEX_TYPE_LEXATOM* new_memory;
-    size_t             new_size;
+    ptrdiff_t          buffer_size;
+    
+    /* Migration impossible, if the memory is not large enough for content.   */
+    __quex_assert(me->input.end_p - old_memory_root <= NewRootSize);
 
     /* Adapt this and all nesting buffers to new memory location.             */
     for(focus = me; focus ; focus = focus->_memory.including_buffer) {
 
         QUEX_NAME(Buffer_call_on_buffer_before_change)(focus);
 
-        new_memory = &new_memory_root[focus->_memory._front - old_memory_root];
-        new_size   = (size_t)(&focus->_memory._back[1]      - focus->_memory._front);
-        QUEX_NAME(Buffer_adapt_to_new_memory_location)(focus, new_memory, new_size);
+        new_memory  = &new_memory_root[focus->_memory._front - old_memory_root];
+        buffer_size = &focus->_memory._back[1]      - focus->_memory._front;
+        QUEX_NAME(Buffer_adapt_to_new_memory_location)(focus, new_memory, buffer_size);
     }
-
-    me->_memory._back = &new_memory_root[NewRootSize - 1];
+    __quex_assert(me->input.end_p <= &new_memory_root[NewRootSize-1]);
+    me->_memory._back    = &new_memory_root[NewRootSize - 1];
+    me->_memory._back[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 }
 
-QUEX_INLINE void
+QUEX_INLINE bool
 QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
                                                QUEX_TYPE_LEXATOM* new_memory_base,
-                                               size_t             NewSize)
+                                               ptrdiff_t          NewSize)
 /* Adapt all content to a new memory base and ownership. 
  *
  * -- This function is not concerned with memory management, etc. everything is
@@ -363,6 +380,9 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
  *    the memory of 'me' itself.
  *
  * -- It is assumed, that new memory has the SAME size as the current.
+ *
+ * RETURN: true, if success.
+ *         false, if new memory is too small to hold content.
  *                                                                            */
 {
     ptrdiff_t  offset_end_p          = me->input.end_p     - me->_memory._front;
@@ -371,9 +391,15 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
 
     __quex_assert(   (0                            != me->_memory.including_buffer) 
                   == (E_Ownership_INCLUDING_BUFFER == me->_memory.ownership));
+    __quex_assert(offset_end_p          < NewSize);
+    __quex_assert(offset_read_p         < NewSize);
+    __quex_assert(offset_lexeme_start_p < NewSize);
+    /* Required buffer size: content + 2 lexatoms for borders.                */
+    __quex_assert(me->input.end_p - &me->_memory._front[1] + 2 <= NewSize);
 
-    QUEX_NAME(BufferMemory_construct)(&me->_memory, new_memory_base, NewSize,
-                                      me->_memory.ownership, me->_memory.including_buffer); 
+    QUEX_NAME(BufferMemory_construct)(&me->_memory, new_memory_base, (size_t)NewSize,
+                                      me->_memory.ownership, 
+                                      me->_memory.including_buffer); 
 
     QUEX_NAME(Buffer_init_content_core)(me, 
                                         me->input.lexatom_index_begin,
@@ -388,7 +414,10 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
 #   else
     /* LexatomBeforeLexemeStart       */ (QUEX_TYPE_LEXATOM)0, /* ignored */
 #   endif
-    /* BackupLexatomIndexOfReadP      */ me->_backup_lexatom_index_of_read_p);
+    /* BackupLexatomIndexOfReadP      */ me->_backup_lexatom_index_of_lexeme_start_p);
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    return true;
 }
 
 QUEX_INLINE QUEX_NAME(Buffer)* 

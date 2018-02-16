@@ -72,6 +72,7 @@ QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me)
     QUEX_NAME(BufferMemory_resources_absent_mark)(me);
 }
 
+
 QUEX_INLINE void 
 QUEX_NAME(BufferMemory_resources_absent_mark)(QUEX_NAME(BufferMemory)* me) 
 /* Marks memory absent. If previously the ownership was 'E_Ownership_EXTERNAL'.

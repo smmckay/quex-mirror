@@ -65,6 +65,7 @@ main(int argc, char** argv)
     size_t             total_size = 0;
     size_t             single_size = 0;
     size_t             depth = atoi(argv[1]);
+    QUEX_TYPE_LEXATOM  tmp[3];
 
     hwut_info("Extend/Migrate Memory: Nested;"
               "CHOICES: 2, 3, 51;");
@@ -82,21 +83,34 @@ main(int argc, char** argv)
         for(new_size = QUEX_MAX(3, total_size - 1); 
             new_size <= total_size + 2 ; ++new_size) {
             /* Varry the offsets of '_read_p', '_lexeme_start_p', and 'input.end_p'.  */
-            for(end_offset = 0; end_offset != single_size; ++end_offset) {
+            for(end_offset = 0; end_offset != single_size-1; ++end_offset) {
                 for(offset = 0; offset <= end_offset ; ++offset) {
 
                     /* Prepare                                                        */
-                    reference->input.end_p     = &reference->_memory._front[end_offset];
-                    reference->_read_p         = &reference->_memory._front[offset + 1];
-                    reference->_lexeme_start_p = &reference->_memory._front[offset + 1];
+                    reference->input.end_p       = &reference->_memory._front[end_offset + 1];
+                    reference->_read_p           = &reference->_memory._front[offset + 1];
+                    reference->_lexeme_start_p   = &reference->_memory._front[offset + 1];
+                    tmp[0] = reference->input.end_p[0];
+                    tmp[1] = reference->_memory._front[0];
+                    tmp[2] = reference->_memory._back[0];
+                    reference->input.end_p[0]    = (QUEX_TYPE_LEXATOM)0;
+                    reference->_memory._front[0] = (QUEX_TYPE_LEXATOM)0;
+                    reference->_memory._back[0]  = (QUEX_TYPE_LEXATOM)0;
 
                     subject = self_construct_setup(&self_subject[0], total_size, depth);
-                    subject->input.end_p       = &subject->_memory._front[end_offset];
+                    subject->input.end_p       = &subject->_memory._front[end_offset + 1];
                     subject->_read_p           = &subject->_memory._front[offset + 1];
                     subject->_lexeme_start_p   = &subject->_memory._front[offset + 1];
+                    subject->input.end_p[0]    = (QUEX_TYPE_LEXATOM)0;
+                    subject->_memory._front[0] = (QUEX_TYPE_LEXATOM)0;
+                    subject->_memory._back[0]  = (QUEX_TYPE_LEXATOM)0;
 
                     self_test_single_migration(reference, subject, new_size, &shrink_n);
                     self_destruct_setup(&self_subject[0], depth);
+
+                    reference->input.end_p[0]    = tmp[0];
+                    reference->_memory._front[0] = tmp[1];
+                    reference->_memory._back[0]  = tmp[2];
 #if 0
                     self_destruct_setup(&self_subject, depth);
 
@@ -157,7 +171,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t Depth)
         hwut_verify(success_f);
 
         array[i+1].input.end_p    = &array[i+1]._memory._front[single_size-1];
-        *(array[i+1].input.end_p) = (QUEX_TYPE_LEXATOM)0;
+        array[i+1].input.end_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
 
         for(p =  &array[i+1]._memory._front[1]; p != array[i+1].input.end_p; ++p) {
             *p = (QUEX_TYPE_LEXATOM)('a' + i);
@@ -197,7 +211,7 @@ self_test_single_migration(QUEX_NAME(Buffer)* reference,
     __quex_assert(subject->input.end_p <= subject->_memory._back);
 
     QUEX_NAME(Buffer_nested_migrate)(subject, new_memory, NewSize, 
-                                   E_Ownership_EXTERNAL);
+                                     E_Ownership_EXTERNAL);
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;
 

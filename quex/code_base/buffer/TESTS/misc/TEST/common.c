@@ -13,24 +13,37 @@ common_iterate(QUEX_NAME(Buffer)* reference, size_t NewSize, ptrdiff_t* shrink_n
  *
  * RETURNS: Number of performed experiments.                                  */
 {
-    size_t              reference_size = reference->_memory._back - reference->_memory._front + 1;
-    ptrdiff_t           end_offset;
-    ptrdiff_t           offset;
-    ptrdiff_t           count = 0;
+    size_t     reference_size = reference->_memory._back - reference->_memory._front + 1;
+    ptrdiff_t  end_offset;
+    ptrdiff_t  offset;
+    ptrdiff_t  count = 0;
+    QUEX_TYPE_LEXATOM tmp[3];
 
     /* Varry the offsets of '_read_p', '_lexeme_start_p', and 'input.end_p'.  */
-    for(end_offset = 0; end_offset != reference_size; ++end_offset) {
+    for(end_offset = 0; end_offset < reference_size-1; ++end_offset) {
         for(offset = 0; offset <= end_offset ; ++offset) {
             
             /* Prepare                                                        */
-            reference->input.end_p     = &reference->_memory._front[end_offset];
-            reference->_read_p         = &reference->_memory._front[offset + 1];
-            reference->_lexeme_start_p = &reference->_memory._front[offset + 1];
+            reference->input.end_p       = &reference->_memory._front[end_offset + 1];
+            reference->_read_p           = &reference->_memory._front[offset + 1];
+            reference->_lexeme_start_p   = &reference->_memory._front[offset + 1];
+            tmp[0] = reference->input.end_p[0];
+            tmp[1] = reference->_memory._front[0];
+            tmp[2] = reference->_memory._back[0];
+            reference->input.end_p[0]    = (QUEX_TYPE_LEXATOM)0;
+            reference->_memory._front[0] = (QUEX_TYPE_LEXATOM)0;
+            reference->_memory._back[0]  = (QUEX_TYPE_LEXATOM)0;
 
+            QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
             common_test_single_migration(reference, NewSize, shrink_n);
+            QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
             common_test_single_extension(reference, NewSize);
 
             count += 1;
+
+            reference->input.end_p[0]    = tmp[0];
+            reference->_memory._front[0] = tmp[1];
+            reference->_memory._back[0]  = tmp[2];
         }
     }
     return count;
@@ -43,6 +56,10 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
     ptrdiff_t end_offset     = reference->input.end_p   - reference->_memory._front;
     ptrdiff_t i;
 
+    __quex_assert(end_offset > 0);
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
+
     QUEX_TYPE_LEXATOM* memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
                                         reference_size * sizeof(QUEX_TYPE_LEXATOM), 
                                         E_MemoryObjectType_BUFFER_MEMORY);
@@ -52,29 +69,31 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
                                 E_Ownership_LEXICAL_ANALYZER,
                                 (QUEX_NAME(Buffer)*)0);
 
-    memset((void*)&subject->_memory._front[end_offset], 
-           0x5A, 
-           (reference_size - end_offset) * sizeof(QUEX_TYPE_LEXATOM));
-
     subject->input.end_p     = &subject->_memory._front[reference->input.end_p     - reference->_memory._front];
     subject->_read_p         = &subject->_memory._front[reference->_read_p         - reference->_memory._front];
     subject->_lexeme_start_p = &subject->_memory._front[reference->_lexeme_start_p - reference->_memory._front];
 
-    /* Copy the content of the buffer.                                        */
+    /* Set reference content of the buffer.                                   */
     for(i=1; i<=reference_size; ++i) {
         if( i < end_offset ) {
             reference->_memory._front[i] = (QUEX_TYPE_LEXATOM)('a' + i);
             subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM)('a' + i);
         }
         else if( i == end_offset ) {
-            reference->_memory._front[i] = (QUEX_TYPE_LEXATOM)(0);
-            subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM)(0);
+            reference->_memory._front[i] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+            subject->_memory._front[i]   = QUEX_SETTING_BUFFER_LIMIT_CODE;
         }
         else {
             reference->_memory._front[i] = (QUEX_TYPE_LEXATOM)(0xAA);
             subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM)(0xBB);
         }
     }
+    reference->_memory._front[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    reference->_memory._back[0]  = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    subject->_memory._front[0]   = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    subject->_memory._back[0]    = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(subject);
 }
 
 void
@@ -83,7 +102,7 @@ common_test_single_migration(QUEX_NAME(Buffer)* reference,
                              ptrdiff_t*         shrink_n)
 {
     QUEX_NAME(Buffer)   subject; 
-    bool                verdict_f = (reference->input.end_p - reference->_memory._front <= NewSize) ? true : false;
+    bool                verdict_f = (&reference->input.end_p[1] - reference->_memory._front <= NewSize) ? true : false;
     E_Ownership         ownership = verdict_f ? E_Ownership_EXTERNAL : E_Ownership_LEXICAL_ANALYZER;
     QUEX_TYPE_LEXATOM   new_memory[256];
 
@@ -93,7 +112,7 @@ common_test_single_migration(QUEX_NAME(Buffer)* reference,
 
     hwut_verify(
         verdict_f == QUEX_NAME(Buffer_nested_migrate(&subject, new_memory, NewSize, 
-                                                   E_Ownership_EXTERNAL))
+                                                     E_Ownership_EXTERNAL))
     );
 
     hwut_verify(ownership == subject._memory.ownership);
@@ -126,6 +145,9 @@ common_verify(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
 { 
     ptrdiff_t end_offset = reference->input.end_p - reference->_memory._front;
     ptrdiff_t i;
+    QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
+    QUEX_BUFFER_ASSERT_CONSISTENCY(subject);
+    QUEX_NAME(Buffer)*  root;
 
     common_verify_offset(reference, subject, reference->_read_p,         subject->_read_p);
     common_verify_offset(reference, subject, reference->_lexeme_start_p, subject->_lexeme_start_p);
@@ -140,16 +162,25 @@ common_verify(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
     hwut_verify(   reference->_lexatom_reference_lexeme_start
                 == subject->_lexatom_reference_lexeme_start);
 #   endif
-    hwut_verify(   reference->_backup_lexatom_index_of_read_p
-                == subject->_backup_lexatom_index_of_read_p);
+    hwut_verify(   reference->_backup_lexatom_index_of_lexeme_start_p
+                == subject->_backup_lexatom_index_of_lexeme_start_p);
 
     if( memcmp((void*)reference->_memory._front, (void*)subject->_memory._front,
                (size_t)end_offset * sizeof(QUEX_TYPE_LEXATOM)) != 0 ) {
-        for(i=0; i<end_offset; ++i) 
-        { printf("%02x.", (int)reference->_memory._front[i]); }
+
+        root = QUEX_NAME(Buffer_nested_find_root)(reference);
+        printf("reference.root: ((%p))\n", root->_memory._front);
+        for(i=0; i<reference->input.end_p - reference->_memory._front + 1; ++i) 
+        { printf("[%i]%02x.", 
+                 (int)(reference->_memory._front - root->_memory._front + i), 
+                 (int)reference->_memory._front[i]); }
         printf("\n");
-        for(i=0; i<end_offset; ++i) 
-        { printf("%02x.", (int)subject->_memory._front[i]); }
+        root = QUEX_NAME(Buffer_nested_find_root)(subject);
+        printf("subject.root:   ((%p))\n", root->_memory._front);
+        for(i=0; i<subject->input.end_p - subject->_memory._front + 1; ++i) 
+        { printf("[%i]%02x.", 
+                 (int)(subject->_memory._front - root->_memory._front + i), 
+                 (int)subject->_memory._front[i]); }
         printf("\n");
         abort();
     }
@@ -209,6 +240,6 @@ common_construct_reference_base(QUEX_NAME(Buffer)* reference,
                                 memory, reference_size, &memory[reference_size-1],
                                 E_Ownership_LEXICAL_ANALYZER,
                                 (QUEX_NAME(Buffer)*)0);
-
+    QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
 }
 

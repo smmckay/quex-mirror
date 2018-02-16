@@ -15,8 +15,8 @@ INCLUDES := -I$(QUEX_PATH) \
  		    -I$(QUEX_PATH)/quex/code_base/extra/test_environment \
 			-I$(HWUT_PATH)/support/C
 
-CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb # -fsanitize=address
-CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb -fstack-protector-all # -fsanitize=address
+CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb #-lefence # -fsanitize=address
+CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb -fstack-protector-all # -lefence -fsanitize=address
 
 LIB_ICU  := `icu-config --ldflags --cppflags`
 	

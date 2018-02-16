@@ -1,3 +1,3 @@
 <terminated: file_name: 4788; byte_loader: 4753; memory: 4872>
-<terminated: buffer-splits: 6433/14413; allocate_n: ((58401)); free_n: ((58401));>
+<terminated: buffer-splits: 6314/14413; allocate_n: ((58520)); free_n: ((58520));>
 VALGRIND:   All heap blocks were freed -- no leaks are possible

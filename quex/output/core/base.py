@@ -78,7 +78,7 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
 
     txt, analyzer = __do_state_machine(SM, engine.BACKWARD_PRE_CONTEXT, dial_db) 
 
-    backup_position = Lng.REGISTER_NAME(E_R.BackupStreamPositionOfInputP)
+    backup_position = Lng.REGISTER_NAME(E_R.BackupStreamPositionOfLexemeStartP)
 
     txt.append("\n".join([
         Lng.LABEL(DoorID.global_end_of_pre_context_check(dial_db)),
@@ -93,12 +93,12 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
             # "QUEX_NAME(Buffer_print_content)(&me->buffer);\n",
             # "std::cout << std::endl;\n",
             Lng.ASSIGN(backup_position, "((QUEX_TYPE_STREAM_POSITION)-1)"),
+        Lng.ELSE,
+            #-----------------------
+            # -- set the input stream back to the real current position.
+            #    during backward lexing the analyzer went backwards, so it needs to be reset.
+            Lng.INPUT_P_TO_LEXEME_START(),
         Lng.END_IF(),
-        #-----------------------
-
-        # -- set the input stream back to the real current position.
-        #    during backward lexing the analyzer went backwards, so it needs to be reset.
-        Lng.INPUT_P_TO_LEXEME_START()
     ]))
     txt.append("\n")
 

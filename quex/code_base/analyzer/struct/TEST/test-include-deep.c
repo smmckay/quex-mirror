@@ -19,8 +19,9 @@ MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
 quex_TestAnalyzer      lexer;
 quex_TestAnalyzer*     lx =&lexer;
-#define                MemorySize 7
+#define                MemorySize 65536
 uint8_t                memory[MemorySize];
+uint8_t*               memory_it = &memory[0];
 int                    self_split_n = 0;
 int                    self_total_n = 0;
 
@@ -83,8 +84,6 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
     ptrdiff_t              depth = 0;
     uint32_t               n = 57;
     memset(&memory[0], 0x5A, sizeof(memory));
-    memory[0]            = QUEX_SETTING_BUFFER_LIMIT_CODE;
-    memory[MemorySize-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
 
     memset(lx, 0x5A, sizeof(lexer));
     QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
@@ -127,6 +126,10 @@ self_include_push(uint32_t n)
     QUEX_NAME(ByteLoader)* byte_loader;
     QUEX_NAME(Converter)*  converter;
     QUEX_NAME(Buffer_event_callbacks) backup_callbacks = lx->buffer.event; 
+    QUEX_TYPE_LEXATOM*     new_memory = (QUEX_TYPE_LEXATOM*)0;
+    QUEX_TYPE_LEXATOM*     new_memory_end = (QUEX_TYPE_LEXATOM*)0;
+    QUEX_TYPE_LEXATOM*     new_memory_eos_p = (QUEX_TYPE_LEXATOM*)0;
+    ptrdiff_t              new_memory_size;
 
     /* Setup the pointers, so that the inclusion type varries.
      * => usage of current buffer for the included buffer.                    */
@@ -152,8 +155,20 @@ self_include_push(uint32_t n)
         self_include_byte_loader_n += 1;
         break;
     case 2:
-        QUEX_NAME(include_push_memory)(lx, "memory", &memory[0], 
-                                       MemorySize, &memory[MemorySize-1]);
+        new_memory_size  = (n % 8) + 4;
+        new_memory       = memory_it;
+        new_memory_end   = &new_memory[new_memory_size];
+        new_memory_eos_p = &new_memory[(n % (new_memory_size-1)) + 1];
+
+        memory_it        = new_memory_end;
+        assert(&memory[MemorySize] >= memory_it);
+
+        new_memory[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        new_memory_end[-1]  = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        new_memory_eos_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+
+        QUEX_NAME(include_push_memory)(lx, "memory", new_memory, (size_t)(new_memory_size), 
+                                       new_memory_eos_p);
         self_include_memory_n += 1;
         break;
     }
@@ -166,7 +181,7 @@ self_include_push(uint32_t n)
 
     switch( lx->error_code ) {
     case E_Error_None:                         return true;  /* OK                   */
-    case E_Error_File_OpenFailed:           return false; /* Too many file descr. */
+    case E_Error_File_OpenFailed:              return false; /* Too many file descr. */
     case E_Error_Allocation_ByteLoader_Failed: return false; /* Too many file descr. */
     default:                                   hwut_verify(false); return false;
     }
