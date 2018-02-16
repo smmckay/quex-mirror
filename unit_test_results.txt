@@ -1022,7 +1022,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ................................[FAIL]
+        include_guard.py convention ..................................[OK]
                          undefinition ................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
@@ -1039,7 +1039,6 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] svn-status.sh
-    [FAIL] include_guard.py _ convention
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -3311,7 +3310,7 @@ SUMMARY:
            57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        2  15    [FAIL] ........../code/TEST                                          
+        1  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3366,11 +3365,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _       _____     _          
-    |  ___|_ _(_) |___  |_   _| __(_) ___ ___ 
-    | |_ / _` | | / __|   | || '__| |/ __/ _ \
-    |  _| (_| | | \__ \   | || |  | | (_|  __/
-    |_|  \__,_|_|_|___/   |_||_|  |_|\___\___|
+     _____     _ _       _____          _          
+    |  ___|_ _(_) |___  |_   _|_      _(_) ___ ___ 
+    | |_ / _` | | / __|   | | \ \ /\ / / |/ __/ _ \
+    |  _| (_| | | \__ \   | |  \ V  V /| | (__| __/
+    |_|  \__,_|_|_|___/   |_|   \_/\_/ |_|\___\___|
                                                                    (1681 tests)
 
 ===============================================================================

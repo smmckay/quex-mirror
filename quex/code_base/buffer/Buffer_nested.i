@@ -1,6 +1,6 @@
 /* vim:set ft=c: -*- C++ -*- */
-#ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NESTING_I
-#define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NESTING_I
+#ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NESTED_I
+#define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NESTED_I
 
 #include <quex/code_base/asserts>
 #include <quex/code_base/buffer/asserts>
@@ -446,4 +446,4 @@ QUEX_NAME(Buffer_get_nested)(QUEX_NAME(Buffer)* me,
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NESTING_I */
+#endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NESTED_I */
