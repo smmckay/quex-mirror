@@ -128,6 +128,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
        QuexBufferSize=15, # DO NOT CHANGE!
        SecondPatternActionPairList=[], QuexBufferFallbackN=0, ShowBufferLoadsF=False,
        AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
+    assert type(TestStr) == list or isinstance(TestStr, (str, unicode))
 
     assert QuexBufferFallbackN >= 0
     __Setup_init_language_database(Language)
@@ -182,9 +183,18 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     except RegularExpressionException, x:
         print "Dictionary Creation:\n" + repr(x)
 
+    if type(TestStr) != list:
+        test_str = TestSTr
+        test_str_list = None
+    else:
+        test_str      = sorted(TestStr, key=lambda x: len(x))[-1] # longest test string
+        test_str_list = TestStr
+
     if FullLanguage.find("PlainMemory") != -1:
-        QuexBufferSize = len(TestStr) + 2
-    test_program = create_main_function(Language, TestStr, QuexBufferSize, 
+        assert type(test_str) != list
+        QuexBufferSize = len(test_str) + 2
+
+    test_program = create_main_function(Language, test_str, QuexBufferSize, 
                                         ComputedGotoF=computed_goto_f)
 
     state_machine_code = create_state_machine_function(PatternActionPairList, 
@@ -213,7 +223,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     # Verify, that Templates and Pathwalkers are really generated
     __verify_code_generation(FullLanguage, source_code)
 
-    compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr)
+    compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr, 
+                    test_str_list)
 
 def run_this(Str, filter_result_db=None, FilterFunc=None):
     if True: #try:
@@ -257,12 +268,22 @@ def run_this(Str, filter_result_db=None, FilterFunc=None):
     else: #except:
         print "<<execution failed>>"
 
-def compile_and_run(Language, SourceCode, AssertsActionvation_str="", StrangeStream_str=""):
+def compile_and_run(Language, SourceCode, AssertsActionvation_str="", StrangeStream_str="",
+                    TestStrList=None):
+
     executable_name, filename_tmp = compile(Language, SourceCode, AssertsActionvation_str, 
                                             StrangeStream_str)
 
     print "## (*) running the test"
-    run_this("./%s" % executable_name)
+    if TestStrList is None:
+        run_this("./%s" % executable_name)
+    else:
+        for test_str in TestStrList:
+            print "-----------------------------------------------------------------"
+            with open("tmp.txt", "w") as fh:
+                fh.write(test_str)
+                fh.close()
+            run_this("./%s tmp.txt" % executable_name)
     if REMOVE_FILES:
         try:    os.remove(filename_tmp)
         except: pass

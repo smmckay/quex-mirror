@@ -1,0 +1,38 @@
+(*) Lexical Analyser Patterns:
+            [ ]+/x+/ --> WHITESPACE / X+ /
+                  x+ --> X+
+                [ ]+ --> WHITESPACE
+## (1) code generation
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPTION_ASSERTS ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+-----------------------------------------------------------------
+(*) test string: 
+'xxx '
+(*) result:
+                 X+  'xxx'
+         WHITESPACE  ' '
+  ''
+-----------------------------------------------------------------
+(*) test string: 
+' xxx'
+(*) result:
+         WHITESPACE  ' '
+  WHITESPACE / X+ /  'xxx'
+  ''
+-----------------------------------------------------------------
+(*) test string: 
+'xxx    '
+(*) result:
+                 X+  'xxx'
+         WHITESPACE  '   '
+         WHITESPACE  ' '
+  ''
+-----------------------------------------------------------------
+(*) test string: 
+'     xxx'
+(*) result:
+         WHITESPACE  '   '
+         WHITESPACE  '  '
+  WHITESPACE / X+ /  'xxx'
+  ''
