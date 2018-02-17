@@ -246,7 +246,7 @@ QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(QUEX_NAME(Buffer)*       
     QUEX_TYPE_STREAM_POSITION new_lexatom_index_begin;
     QUEX_TYPE_STREAM_POSITION FallBackN   = QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
     /* Assert to emphasize: 
-     *      'lexatom_index_to_be_contained == lexatom_index_end_of_stream'
+     *      'lexatom_index_to_be_contained != lexatom_index_end_of_stream'
      * is correct, even if 'lexatom_index_end_of_stream' is undefined (-1).   */
     __quex_assert(*lexatom_index_to_be_contained != (QUEX_TYPE_STREAM_POSITION)-1);
 

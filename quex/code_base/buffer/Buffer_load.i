@@ -115,7 +115,6 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
  *        => In case of 'return false', call 'QUEX_NAME(Buffer_dysfunctional) */
 {
     QUEX_TYPE_STREAM_POSITION lexatom_index_to_be_contained = LexatomIndexToBeContained;
-    bool                      verdict_f;
     ptrdiff_t                 load_request_n;
     ptrdiff_t                 loaded_n;
     intmax_t                  move_distance;
@@ -131,12 +130,12 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     move_distance = QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(me, 
                                              &lexatom_index_to_be_contained);
 
-    verdict_f = QUEX_NAME(Buffer_move_and_load)(me, (QUEX_TYPE_LEXATOM**)0, 0,
-                                                move_distance, &encoding_error_f, 
-                                                &loaded_n);
-    if(    verdict_f
-        && LexatomIndexToBeContained < me->input.lexatom_index_begin + 
-                                       (me->input.end_p - &me->_memory._front[1]) ) {
+    (void)QUEX_NAME(Buffer_move_and_load)(me, (QUEX_TYPE_LEXATOM**)0, 0,
+                                    move_distance, &encoding_error_f, 
+                                    &loaded_n);
+
+    if( LexatomIndexToBeContained < me->input.lexatom_index_begin + 
+                                    (me->input.end_p - &me->_memory._front[1]) ) {
         return true;
     }
     else {

@@ -144,7 +144,7 @@ class Language(dict):
         return txt
 
     def BUFFER_SEEK(self, Position):
-        return "QUEX_NAME(Buffer_seek)(&me->buffer, %s);" % Position
+        return "QUEX_NAME(Buffer_seek)(&me->buffer, %s)" % Position
 
     def frame_all(self, Code, Setup):      return templates.frame_of_all(Code, Setup)
 
@@ -1176,9 +1176,12 @@ class Language(dict):
         assert type(VariableDB) != dict
         return templates._local_variable_definitions(VariableDB.get()) 
 
+    def RAISE_ERROR_FLAG(self, Name):
+        return "QUEX_NAME(error_code_set_if_first)(&self, %s);\n" % Name
+
     def RAISE_ERROR_FLAG_BY_INCIDENCE_ID(self, IncidenceId):
         if not IncidenceId: return ""
-        return "QUEX_NAME(error_code_set_if_first)(&self, %s);\n" % self.__error_code_db[IncidenceId][0]
+        return self.RAISE_ERROR_FLAG(self.__error_code_db[IncidenceId][0])
 
     def RAISE_ERROR_FLAG_BY_TERMINAL_TYPE(self, TerminalType):
         incidence_id = standard_incidence_db_get_incidence_id(TerminalType)
@@ -1186,7 +1189,7 @@ class Language(dict):
 
     def EXIT_ON_MISSING_HANDLER(self, IncidenceId):
         return [
-            'QUEX_NAME(error_code_set_if_first)(&self, %s);\n' % self.__error_code_db[IncidenceId][1],
+            self.RAISE_ERROR_FLAG(self.__error_code_db[IncidenceId][1]),
             "%s\n"  % self.TOKEN_SEND("QUEX_TOKEN_ID(TERMINATION)"),
             '%s;\n' % self.PURE_RETURN
         ]

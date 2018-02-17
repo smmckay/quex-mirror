@@ -149,17 +149,15 @@ QUEX_NAME(Buffer_seek)(QUEX_NAME(Buffer)*              me,
  *          totally fail. Then, check 'QUEX_NAME(Buffer_dysfunctional)'.      */
 {
     const QUEX_TYPE_STREAM_POSITION lexatom_index_read_p = QUEX_NAME(Buffer_tell)(me);
+    bool  verdict_f = false;
 
     if( LexatomIndex > lexatom_index_read_p ) {
-        QUEX_NAME(Buffer_seek_forward)(me, (ptrdiff_t)(LexatomIndex - lexatom_index_read_p));
+        verdict_f = QUEX_NAME(Buffer_seek_forward)(me, (ptrdiff_t)(LexatomIndex - lexatom_index_read_p));
     }
     else if( LexatomIndex < lexatom_index_read_p ) {
-        QUEX_NAME(Buffer_seek_backward)(me,(ptrdiff_t)(lexatom_index_read_p - LexatomIndex));
+        verdict_f = QUEX_NAME(Buffer_seek_backward)(me,(ptrdiff_t)(lexatom_index_read_p - LexatomIndex));
     }
-
-    return    LexatomIndex == QUEX_NAME(Buffer_tell)(me)
-           && ! QUEX_NAME(Buffer_dysfunctional)(me);
-
+    return verdict_f;
 }
 
 QUEX_INLINE bool
