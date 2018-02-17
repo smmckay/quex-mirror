@@ -1010,7 +1010,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
@@ -1023,7 +1023,7 @@ quex/TESTS/code/TEST                                                 <no date>
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
         include_guard.py convention ..................................[OK]
-                         undefinition ..............................[FAIL]
+                         undefinition ................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
  * Propper undefinition of configuration parameters.
@@ -1033,13 +1033,10 @@ quex/TESTS/code/TEST                                                 <no date>
 
     __parse_token_id_file
         test-token_id_file-find_ids.py ...............................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] svn-status.sh
-    [FAIL] include_guard.py _ undefinition
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -2024,7 +2021,12 @@ quex/output/core/TEST                                                <no date>
                              ANSI-C-CG ...............................[OK]
                              Cpp .....................................[OK]
  * Special Cases
-        challenge-with-tiny-buffer-sizes.py l2-b5 ..........[NO GOOD FILE]
+        challenge-with-tiny-buffer-sizes.py l2-b4 ....................[OK]
+                                            l3-b5 ....................[OK]
+                                            long-way-back ............[OK]
+                                            pc-l2-b4 .................[OK]
+                                            pc-l3-b5 .................[OK]
+                                            pc-long-way-back .........[OK]
 
  * Buffer Reload:
 
@@ -2267,12 +2269,10 @@ quex/output/core/TEST                                                <no date>
                                          B-UTF8 ......................[OK]
                                          C ...........................[OK]
                                          C-UTF8 ......................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] challenge-with-tiny-buffer-sizes.py _ l2-b5
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
             Resource Scenarios for Constructor, Include, and Reset             
@@ -3304,7 +3304,6 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] challenge-with-tiny-buffer-sizes.py _ l2-b5
 ===============================================================================
 
 SUMMARY:
@@ -3316,7 +3315,7 @@ SUMMARY:
            57      [OK] ..../Cpp/TEST                                                 
            16      [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        2  15    [FAIL] ........../code/TEST                                          
+           15      [OK] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3365,17 +3364,17 @@ SUMMARY:
            58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
-        1  197   [FAIL] ..../output/core/TEST                                         
+           202     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
            30      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _            
-    |  ___|_ _(_) |___     | || |     __  __
-    | |_ / _` | | / __|    | || |_    \ \/ /
-    |  _| (_| | | \__ \    |__   _     >  < 
-    |_|  \__,_|_|_|___/       |_|     /_/\_\
-                                                                   (1682 tests)
+     _____     _ _        ___                 
+    |  ___|_ _(_) |___   / _ \ _ __   ___ ___ 
+    | |_ / _` | | / __| | | | | '_ \ / __/ _ \
+    |  _| (_| | | \__ \ | |_| | | | | (_|  __/
+    |_|  \__,_|_|_|___/  \___/|_| |_|\___\___|
+                                                                   (1687 tests)
 
 ===============================================================================

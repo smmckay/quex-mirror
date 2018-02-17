@@ -1,4 +1,23 @@
 #! /usr/bin/env python
+#
+# PURPOSE: Border-Tests with pre and post contexts in tiny buffers.
+#
+# -- Buffer's size to hold exactly a matched lexatom, i.e.
+#    buffer size = lexatom length + 2. The '2' is for the border lexatoms.
+# -- Include backward conditions which require loading backward that requires
+#    multiple reloads beyond the buffer sizes.
+# -- Post conditions to check whether the store and restore works properly.
+#
+# CHOICES: with 'pc'       --> with post context
+#          without 'pc'    --> without post-context
+#          'l2-b4'         --> lexatom length '2', buffer size = 4.
+#          'l3-b5'         --> lexatom length '3', buffer size = 5.
+#          'long-way-back' --> with a pre-context that walks along a long 
+#                              graph in the state machine over multiple 
+#                              backward loads.
+#    
+# (C) Frank-Rene Schaefer
+#______________________________________________________________________________
 import generator_test
 import sys
 
@@ -13,7 +32,7 @@ if "l2-b4" in sys.argv:
         ('x+',       "X+"),
         ('[ ]+',     "WHITESPACE")
     ]
-    test_str_list = ["xx ", " xx", "xx    ", "     xx"]
+    test_str_list = ["xx ", " xx", "xx    ", "     xx", "xx xx  xx   xx    xx"]
     buffer_size = 4
 
 if "l3-b5" in sys.argv:
@@ -22,7 +41,7 @@ if "l3-b5" in sys.argv:
         ('x+',       "X+"),
         ('[ ]+',     "WHITESPACE")
     ]
-    test_str_list = ["xxx ", " xxx", "xxx    ", "     xxx"]
+    test_str_list = ["xxx ", " xxx", "xxx    ", "     xxx", "xxx xxx  xxx   xxx    xxx"]
     buffer_size = 5
 
 if "long-way-back" in sys.argv:

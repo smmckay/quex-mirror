@@ -36,3 +36,18 @@ gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPT
          WHITESPACE  '  '
   WHITESPACE / X+ /  'xxx'
   ''
+-----------------------------------------------------------------
+(*) test string: 
+'xxx xxx  xxx   xxx    xxx'
+(*) result:
+                 X+  'xxx'
+         WHITESPACE  ' '
+  WHITESPACE / X+ /  'xxx'
+         WHITESPACE  '  '
+  WHITESPACE / X+ /  'xxx'
+         WHITESPACE  '   '
+  WHITESPACE / X+ /  'xxx'
+         WHITESPACE  '   '
+         WHITESPACE  ' '
+  WHITESPACE / X+ /  'xxx'
+  ''
