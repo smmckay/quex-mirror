@@ -1,0 +1,58 @@
+// Challenges with Buffer Size 5
+// CHOICES: x, long-way-x, pc-x, pc-long-way-x, dtc-x, dtc-long-way-x;
+// 
+// x          --> lexeme of length two 'x'.
+// long-way-x --> lexeme of length two 'x' preceeded by a long pre-context.
+// pc-*       --> same with post context.
+// dtc-*      --> same with dangerous trailing content. 
+//
+// (C) Frank-Rene Schaefer
+//_____________________________________________________________________________
+
+start = PRE_X;
+
+token {
+  WHITESPACE_XP;
+  XP;
+  WHITESPACE;
+  WHITESPACE_X_PCY;
+  XYP;
+  LONG_WAY_BACK_XP;
+  LETTER;
+}
+
+mode PRE_X {
+    [ ]+/x+/ => QUEX_TKN_WHITESPACE_XP(Lexeme); 
+    x+       => QUEX_TKN_XP(Lexeme);
+    [ ]      => QUEX_TKN_WHITESPACE(Lexeme);
+}
+
+mode PRE_X_PC {
+    [ ]+/x/y => QUEX_TKN_WHITESPACE_X_PCY(Lexeme); 
+    [xy]+    => QUEX_TKN_XYP(Lexeme);
+    [ ]      => QUEX_TKN_WHITESPACE(Lexeme);
+}
+
+mode PRE_X_DTC {
+    [ ]+/x+/x => QUEX_TKN_WHITESPACE_XP(Lexeme); 
+    x+        => QUEX_TKN_XP(Lexeme);
+    [ ]       => QUEX_TKN_WHITESPACE(Lexeme);
+}
+
+mode PRE_LONG_X {
+    long-way-back/x+/ => QUEX_TKN_LONG_WAY_BACK_XP(Lexeme);
+    x+                => QUEX_TKN_XP(Lexeme);
+    [longwayback\-]   => QUEX_TKN_LETTER(Lexeme);
+}
+
+mode PRE_LONG_X_PC {
+    long-way-back/x+/y => QUEX_TKN_LONG_WAY_BACK_XP(Lexeme);
+    [xy]+              => QUEX_TKN_XYP(Lexeme);
+    [longwayback\-]    => QUEX_TKN_LETTER(Lexeme);
+}
+
+mode PRE_LONG_X_DTC {
+    long-way-back/x+/x => QUEX_TKN_LONG_WAY_BACK_XP(Lexeme);
+    [x]+               => QUEX_TKN_XP(Lexeme);
+    [longwayback\-]    => QUEX_TKN_LETTER(Lexeme);
+}
