@@ -184,7 +184,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
         print "Dictionary Creation:\n" + repr(x)
 
     if type(TestStr) != list:
-        test_str = TestSTr
+        test_str = TestStr
         test_str_list = None
     else:
         test_str      = sorted(TestStr, key=lambda x: len(x))[-1] # longest test string

@@ -273,7 +273,7 @@ self_NO_SPACE_FOR_LOAD()
                    /* EmptyFile         */ false,
                    /* LexatomLoaderType */ E_LexatomLoader_Plain,
                    /* ErrorCodePosition */ -1);
-        hwut_verify(self_load(false) == E_LoadResult_FAILURE);
+        hwut_verify(self_load(false) == E_LoadResult_OVERFLOW);
     }
 }
 

@@ -40,9 +40,9 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
  *     FAILURE           => General load failure.       (analysis MUST STOP)
  *     NO_SPACE_FOR_LOAD => Lexeme exceeds buffer size. (analysis MUST STOP)
  *     ENCODING_ERROR    => Failed. conversion error    (analysis MUST STOP)
- *     NO_MORE_DATA      => No more data available.     (analysis MUST STOP)
- *     BAD_LEXATOM       => Read pointer on buffer limit code,
+ *                          or, read pointer on buffer limit code,
  *                          but it was not a buffer limit.
+ *     NO_MORE_DATA      => No more data available.     (analysis MUST STOP)
  *                                                                            */
 {
     QUEX_TYPE_LEXATOM*          begin_p = &me->_memory._front[1];
@@ -130,9 +130,10 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     move_distance = QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(me, 
                                              &lexatom_index_to_be_contained);
 
+    /* Even if 'move_distance = 0' call the 'move and load' for consistency.  */
     (void)QUEX_NAME(Buffer_move_and_load)(me, (QUEX_TYPE_LEXATOM**)0, 0,
-                                    move_distance, &encoding_error_f, 
-                                    &loaded_n);
+                                          move_distance, &encoding_error_f, 
+                                          &loaded_n);
 
     if( LexatomIndexToBeContained < me->input.lexatom_index_begin + 
                                     (me->input.end_p - &me->_memory._front[1]) ) {
@@ -145,11 +146,11 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
                                                        load_request_n, me->input.lexatom_index_begin,
                                                        &end_of_stream_f, &encoding_error_f);
         if( loaded_n != load_request_n ) {
-            /* Error: buffer is dysfunctional.                                    */
+            /* Error: buffer is dysfunctional.                                */
             QUEX_NAME(Buffer_dysfunctional_set)(me);
         }
         else {
-            /* Ensure, that the buffer limit code is restored.                    */
+            /* Ensure, that the buffer limit code is restored.                */
             *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
         }
         return false;
@@ -298,7 +299,7 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
  *          'loaded_n' containing the number of loaded lexatoms.
  *
  * RETURNS: true, in case of success,
- *          false, in case that insufficent space could be freed.             */
+ *          false, if there was no free-space to load.                        */
 {
     QUEX_TYPE_STREAM_POSITION   load_lexatom_index;
     ptrdiff_t                   free_space;

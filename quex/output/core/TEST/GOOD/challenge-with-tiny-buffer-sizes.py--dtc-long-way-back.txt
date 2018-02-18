@@ -1,0 +1,86 @@
+(*) Lexical Analyser Patterns:
+  long-way-back/x+/x --> LONG WAY BACK / X+ / X
+                  x+ --> X+
+     [longwayback\-] --> LETTER
+## (1) code generation
+## (2) compiling generated engine code and test
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPTION_ASSERTS ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+## (*) running the test
+-----------------------------------------------------------------
+(*) test string: 
+'xxlong-way-back'
+(*) result:
+                 X+  'xx'
+             LETTER  'l'
+             LETTER  'o'
+             LETTER  'n'
+             LETTER  'g'
+             LETTER  '-'
+             LETTER  'w'
+             LETTER  'a'
+             LETTER  'y'
+             LETTER  '-'
+             LETTER  'b'
+             LETTER  'a'
+             LETTER  'c'
+             LETTER  'k'
+  ''
+-----------------------------------------------------------------
+(*) test string: 
+'long-way-backxx'
+(*) result:
+             LETTER  'l'
+             LETTER  'o'
+             LETTER  'n'
+             LETTER  'g'
+             LETTER  '-'
+             LETTER  'w'
+             LETTER  'a'
+             LETTER  'y'
+             LETTER  '-'
+             LETTER  'b'
+             LETTER  'a'
+             LETTER  'c'
+             LETTER  'k'
+LONG WAY BACK / X+ / X  'x'
+                 X+  'x'
+  ''
+-----------------------------------------------------------------
+(*) test string: 
+'xxlong-way-back'
+(*) result:
+                 X+  'xx'
+             LETTER  'l'
+             LETTER  'o'
+             LETTER  'n'
+             LETTER  'g'
+             LETTER  '-'
+             LETTER  'w'
+             LETTER  'a'
+             LETTER  'y'
+             LETTER  '-'
+             LETTER  'b'
+             LETTER  'a'
+             LETTER  'c'
+             LETTER  'k'
+  ''
+-----------------------------------------------------------------
+(*) test string: 
+'long-way-backxx'
+(*) result:
+             LETTER  'l'
+             LETTER  'o'
+             LETTER  'n'
+             LETTER  'g'
+             LETTER  '-'
+             LETTER  'w'
+             LETTER  'a'
+             LETTER  'y'
+             LETTER  '-'
+             LETTER  'b'
+             LETTER  'a'
+             LETTER  'c'
+             LETTER  'k'
+LONG WAY BACK / X+ / X  'x'
+                 X+  'x'
+  ''

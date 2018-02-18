@@ -16,7 +16,7 @@
 self:        ((0x7ffff2f56f40))
 LexemeBegin: ((0x55dc389d35a1))
 LexemeEnd:   ((0x55dc389d35a1)) + 2
-BufferSize:  1
+BufferSize:  4
 TOKEN: <TERMINATION> ''
 | [END]
 _________________________________________________________________
@@ -61,8 +61,6 @@ _________________________________________________________________
       end_character_index: 2;
       end_p:               begin + 3, end - 1;
     }
-
-
   }
 
 
