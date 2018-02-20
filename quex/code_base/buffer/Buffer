@@ -130,6 +130,18 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
     void      (*fill_finish)(struct QUEX_NAME(Buffer_tag)* me,
                              const void*                   FilledEndP);
 
+    QUEX_TYPE_LEXATOM*   (*begin)(struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*end)(struct QUEX_NAME(Buffer_tag)* me);
+    ptrdiff_t            (*size)(struct QUEX_NAME(Buffer_tag)* me);
+
+    QUEX_TYPE_LEXATOM*   (*content_space_begin)(struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*content_space_end)(struct QUEX_NAME(Buffer_tag)* me);
+    ptrdiff_t            (*content_space_size)(struct QUEX_NAME(Buffer_tag)* me);
+
+    QUEX_TYPE_LEXATOM*   (*content_begin)(struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*content_end)(struct QUEX_NAME(Buffer_tag)* me);
+    ptrdiff_t            (*content_size)(struct QUEX_NAME(Buffer_tag)* me);
+
     QUEX_NAME(Buffer_event_callbacks) event;
 
 } QUEX_NAME(Buffer);

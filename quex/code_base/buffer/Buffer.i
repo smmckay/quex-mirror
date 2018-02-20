@@ -47,6 +47,18 @@ QUEX_INLINE void      QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_N
                                                                           QUEX_TYPE_LEXATOM* new_memory_root,
                                                                           ptrdiff_t          NewRootSize);
 
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_begin)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_end)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_size)(QUEX_NAME(Buffer)* me);
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_space_begin)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_space_end)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_content_space_size)(QUEX_NAME(Buffer)* me);
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_begin)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_end)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_content_size)(QUEX_NAME(Buffer)* me);
+
 QUEX_INLINE void
 QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me, 
                             QUEX_NAME(LexatomLoader)* filler,
@@ -67,6 +79,18 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
     me->fill_prepare = QUEX_NAME(Buffer_fill_prepare);
     me->fill_finish  = QUEX_NAME(Buffer_fill_finish);
 
+    me->begin               = QUEX_NAME(Buffer_memory_begin);
+    me->end                 = QUEX_NAME(Buffer_memory_end);
+    me->size                = QUEX_NAME(Buffer_memory_size);
+
+    me->content_space_begin = QUEX_NAME(Buffer_memory_content_space_begin);
+    me->content_space_end   = QUEX_NAME(Buffer_memory_content_space_end);
+    me->content_space_size  = QUEX_NAME(Buffer_memory_content_space_size);
+
+    me->content_begin       = QUEX_NAME(Buffer_memory_content_begin);
+    me->content_end         = QUEX_NAME(Buffer_memory_content_end);
+    me->content_size        = QUEX_NAME(Buffer_memory_content_size);
+
     /* Event handlers.                                                       */
     QUEX_NAME(Buffer_set_event_handlers)(me, (void (*)(void*))0,
                                          (void (*)(void*))0, (void*)0);
@@ -76,6 +100,18 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 }
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_begin)(QUEX_NAME(Buffer)* me) { return me->_memory._front; }
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_end)(QUEX_NAME(Buffer)* me)   { return &me->_memory._back[1]; }
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_size)(QUEX_NAME(Buffer)* me)  { return &me->_memory._back[1] - me->_memory._front; }
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_space_begin)(QUEX_NAME(Buffer)* me) { return &me->_memory._front[1]; }
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_space_end)(QUEX_NAME(Buffer)* me)   { return me->_memory._back; }
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_content_space_size)(QUEX_NAME(Buffer)* me)  { return me->_memory._back - &me->_memory._front[1]; }
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_begin)(QUEX_NAME(Buffer)* me) { return &me->_memory._front[1]; }
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_end)(QUEX_NAME(Buffer)* me)   { return me->input.end_p; }
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_content_size)(QUEX_NAME(Buffer)* me)  { return me->input.end_p - &me->_memory._front[1]; }
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_init)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFileP)
