@@ -1,1 +1,7 @@
+-- Streamlined design of user callbacks 'on_buffer_change' and 'on_buffer_overflow'.
+-- Helper functions to migrate buffer or extend it during running analysis.
+-- Default implementation for buffer extension upon buffer overflow.
+-- Fix of subtle bug with tiny buffer sizes upon reload and pre-conditions.
+   (UTs implemented to detect issues of that kind and possible related issues)
+-- Refactoring of buffer load and navigation.
 -- Arbitrary backward lexical analysis even beyond buffer's borders.
