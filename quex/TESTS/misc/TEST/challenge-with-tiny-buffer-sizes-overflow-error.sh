@@ -14,7 +14,7 @@ if [[ $choice == "--hwut-info" ]]; then
     echo "Challenges with Buffer Size 5: Extend on Overflow;"
     echo "CHOICES: PRE_X, PRE_X_PC, PRE_X_DTC, PRE_LONG_X, PRE_LONG_X_PC, PRE_LONG_X_DTC;"
     echo "SAME;"
-    echo "SAME: [PRE_X_DTCPCLONG]+;"
+    echo "HAPPY: [PRE_X_DTCPCLONG]+;"
     exit
 fi
 
@@ -31,6 +31,7 @@ function test_this {
     echo "## content: [$content];"
     echo
     printf "$content" > $tmp
+    bash $QUEX_PATH/TEST/valgrind-executer.sh \
     ./lexer $mode $tmp |& grep -v '^##' | grep 'error_code\|buffer size'
     echo
     rm -f $tmp >& /dev/null

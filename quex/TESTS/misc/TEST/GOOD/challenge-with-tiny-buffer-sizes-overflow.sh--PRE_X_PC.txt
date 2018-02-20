@@ -6,35 +6,41 @@ START: initial buffer size: 5
        WHITESPACE ' '
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
-content: [ xxy]; mode: PRE_X_PC;
 
+content: [ xxy]; mode: PRE_X_PC;
 START: initial buffer size: 5
+
        WHITESPACE ' '
        WHITESPACE_X_PCY 'xx'
        XYP 'y'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [xxy    ]; mode: PRE_X_PC;
 
 START: initial buffer size: 5
        XYP 'xxy'
+
        WHITESPACE ' '
        WHITESPACE ' '
        WHITESPACE ' '
        WHITESPACE ' '
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [     xxy]; mode: PRE_X_PC;
-
 START: initial buffer size: 5
+
        WHITESPACE ' '
        WHITESPACE ' '
+
        WHITESPACE ' '
        WHITESPACE ' '
        WHITESPACE ' '
@@ -42,14 +48,16 @@ START: initial buffer size: 5
        XYP 'y'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [xxy xxy  xxy   xxy    xxy]; mode: PRE_X_PC;
-
 START: initial buffer size: 5
        XYP 'xxy'
+
        WHITESPACE ' '
        WHITESPACE_X_PCY 'xx'
+
        XYP 'y'
        WHITESPACE ' '
        WHITESPACE ' '
@@ -68,4 +76,5 @@ START: initial buffer size: 5
        XYP 'y'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 

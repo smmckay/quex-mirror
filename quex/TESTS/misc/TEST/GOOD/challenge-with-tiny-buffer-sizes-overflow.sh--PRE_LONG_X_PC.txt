@@ -18,11 +18,13 @@ START: initial buffer size: 5
        LETTER 'k'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
-content: [long-way-backxxy]; mode: PRE_LONG_X_PC;
 
+content: [long-way-backxxy]; mode: PRE_LONG_X_PC;
 START: initial buffer size: 5
+
        LETTER 'l'
        LETTER 'o'
        LETTER 'n'
@@ -40,12 +42,14 @@ START: initial buffer size: 5
        XYP 'y'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [xxylong-way-back]; mode: PRE_LONG_X_PC;
 
 START: initial buffer size: 5
        XYP 'xxy'
+
        LETTER 'l'
        LETTER 'o'
        LETTER 'n'
@@ -61,13 +65,15 @@ START: initial buffer size: 5
        LETTER 'k'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [long-way-backxxy]; mode: PRE_LONG_X_PC;
-
 START: initial buffer size: 5
+
        LETTER 'l'
        LETTER 'o'
+
        LETTER 'n'
        LETTER 'g'
        LETTER '-'
@@ -83,14 +89,16 @@ START: initial buffer size: 5
        XYP 'y'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [long-way-backxxxy]; mode: PRE_LONG_X_PC;
-
 START: initial buffer size: 5
        LETTER 'l'
+
        LETTER 'o'
        LETTER 'n'
+
        LETTER 'g'
        LETTER '-'
        LETTER 'w'
@@ -105,4 +113,5 @@ START: initial buffer size: 5
        XYP 'y'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 

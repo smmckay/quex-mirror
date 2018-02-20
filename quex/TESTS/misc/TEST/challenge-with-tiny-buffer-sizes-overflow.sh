@@ -29,6 +29,7 @@ function test_this {
     echo "content: [$content]; mode: $mode;"
     echo
     printf "$content" > $tmp
+    bash $QUEX_PATH/TEST/valgrind-executer.sh \
     ./lexer $mode $tmp |& grep -v '^##'
     echo
     rm -f $tmp >& /dev/null

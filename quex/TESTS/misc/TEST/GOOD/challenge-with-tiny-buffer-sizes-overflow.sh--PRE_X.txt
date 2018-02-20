@@ -6,48 +6,56 @@ START: initial buffer size: 5
        WHITESPACE ' '
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
-content: [ xxx]; mode: PRE_X;
 
+content: [ xxx]; mode: PRE_X;
 START: initial buffer size: 5
+
        WHITESPACE ' '
        WHITESPACE_XP 'xxx'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [xxx    ]; mode: PRE_X;
 
 START: initial buffer size: 5
        XP 'xxx'
+
        WHITESPACE ' '
        WHITESPACE ' '
        WHITESPACE ' '
        WHITESPACE ' '
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [     xxx]; mode: PRE_X;
-
 START: initial buffer size: 5
+
        WHITESPACE ' '
        WHITESPACE ' '
+
        WHITESPACE ' '
        WHITESPACE ' '
        WHITESPACE ' '
        WHITESPACE_XP 'xxx'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
 ---------------------------------------------------------------------
 content: [xxx xxx  xxx   xxx    xxx]; mode: PRE_X;
-
 START: initial buffer size: 5
        XP 'xxx'
+
        WHITESPACE ' '
        WHITESPACE_XP 'xxx'
+
        WHITESPACE ' '
        WHITESPACE ' '
        WHITESPACE_XP 'xxx'
@@ -62,4 +70,5 @@ START: initial buffer size: 5
        WHITESPACE_XP 'xxx'
        <TERMINATION> ''
 END: final buffer size: 10
+VALGRIND:   All heap blocks were freed -- no leaks are possible
 
