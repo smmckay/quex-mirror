@@ -255,7 +255,7 @@ find_reference(const char* file_stem)
 static QUEX_TYPE_STREAM_POSITION
 reference_load(const char* FileName)
 /* The content of the file is directly loaded into the 'reference' buffer 
- * so that it may be used to compare against actually loaded results.        */
+ * so that it may be used to compare against actually loaded results.         */
 {
     FILE*      fh;
     size_t     loaded_byte_n;
@@ -274,7 +274,7 @@ reference_load(const char* FileName)
 
 static bool 
 seek_forward(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION PositionLimit)
-/* Seek in steps of 1 backward until 0 is reached and try again.             */
+/* Seek in steps of 1 backward until 0 is reached and try again.              */
 {
     ptrdiff_t count_n;
     for(count_n = 0; count_n != PositionLimit-1; ++count_n ) {
@@ -287,22 +287,27 @@ seek_forward(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION PositionLimit)
         hwut_verify(QUEX_NAME(Buffer_seek_forward)(me, 1));
     }
     hwut_verify(QUEX_NAME(Buffer_tell)(me) == PositionLimit - 1);
+    /* Position limit has been reached. 
+     * Position here: right before PositionLimit.                             */
+    hwut_verify(QUEX_NAME(Buffer_seek_forward)(me, 1));
+    hwut_verify(QUEX_NAME(Buffer_tell)(me) == PositionLimit);
 
+    /* No positioning after PositionLimit                                     */
     hwut_verify(! QUEX_NAME(Buffer_seek_forward)(me, 1));
-    hwut_verify(me->input.lexatom_index_end_of_stream != -1);
 
-    hwut_verify(QUEX_NAME(Buffer_tell)(me) == PositionLimit - 1);
+    hwut_verify(me->input.lexatom_index_end_of_stream != -1);
+    hwut_verify(QUEX_NAME(Buffer_tell)(me) == PositionLimit);
     return true;
 }
 
 static bool 
 seek_backward(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION PositionLimit)
-/* Seek in steps of 1 backward until 0 is reached and try again.             */
+/* Seek in steps of 1 backward until 0 is reached and try again.              */
 {
     ptrdiff_t count_n;
-    for(count_n = 0; count_n != PositionLimit-1; ++count_n ) {
+    for(count_n = 0; count_n != PositionLimit; ++count_n ) {
         if( count_n < PositionLimit ) {
-            hwut_verify(PositionLimit - count_n - 1 == QUEX_NAME(Buffer_tell)(me));
+            hwut_verify(PositionLimit - count_n == QUEX_NAME(Buffer_tell)(me));
         }
         if( ! verify_content(me, QUEX_NAME(Buffer_tell)(me), PositionLimit) ) {
             return false;

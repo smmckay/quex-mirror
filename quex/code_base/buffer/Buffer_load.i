@@ -71,7 +71,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
 
     if(    0 == move_distance 
         && ! QUEX_NAME(Buffer_on_cannot_move_towards_begin)(me, &move_distance) ) {
-        return E_LoadResult_FAILURE; 
+        return E_LoadResult_OVERFLOW; 
     }
 
     if( ! QUEX_NAME(Buffer_move_and_load)(me, position_register, PositionRegisterN, 
@@ -114,12 +114,13 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
  *
  *        => In case of 'return false', call 'QUEX_NAME(Buffer_dysfunctional) */
 {
-    QUEX_TYPE_STREAM_POSITION lexatom_index_to_be_contained = LexatomIndexToBeContained;
-    ptrdiff_t                 load_request_n;
-    ptrdiff_t                 loaded_n;
-    intmax_t                  move_distance;
-    bool                      end_of_stream_f  = false;
-    bool                      encoding_error_f = false;
+    QUEX_TYPE_STREAM_POSITION    lexatom_index_to_be_contained = LexatomIndexToBeContained;
+    QUEX_TYPE_STREAM_POSITION    lexatom_index_end = (QUEX_TYPE_STREAM_POSITION)-1;
+    ptrdiff_t                    load_request_n;
+    ptrdiff_t                    loaded_n;
+    intmax_t                     move_distance;
+    bool                         end_of_stream_f  = false;
+    bool                         encoding_error_f = false;
     QUEX_NAME(BufferInvariance)  bi;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -135,8 +136,14 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
                                           move_distance, &encoding_error_f, 
                                           &loaded_n);
 
-    if( LexatomIndexToBeContained < me->input.lexatom_index_begin + 
-                                    (me->input.end_p - &me->_memory._front[1]) ) {
+    lexatom_index_end =   me->input.lexatom_index_begin  
+                        + (me->input.end_p - &me->_memory._front[1]);
+
+    if(    LexatomIndexToBeContained == me->input.lexatom_index_end_of_stream 
+        && LexatomIndexToBeContained == lexatom_index_end ) {
+        return true;
+    }
+    if( LexatomIndexToBeContained < lexatom_index_end ) {
         return true;
     }
     else {
@@ -386,20 +393,28 @@ QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
 QUEX_INLINE bool
 QUEX_NAME(Buffer_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
                                                ptrdiff_t*          move_distance)
+/* Calls the 'on_buffer_oveflow' callback where new buffer memory may be 
+ * provided and checks whether memory is then sufficient.
+ *
+ * RETURNS: true, if space for reload could be provided.
+ *          false, else.                                                      */
 {
-    if( me->input.end_p >= me->_memory._back && me->input.end_p == me->_read_p ) {
-        /* No free space can be provided for loading new content. This is 
-         * a buffer overflow situation. The lexeme spans complete buffer.     */
-        QUEX_NAME(Buffer_call_on_buffer_overflow)(me);
-
-        /* 'on_buffer_overflow' may have extended the buffer's memory.
-         * => second chance!                                                  */
-        *move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me);
-        if( me->input.end_p >= me->_memory._back ) {
-            return false;                                         /* Give up! */
-        }
+    if( me->input.end_p < me->_memory._back || me->input.end_p != me->_read_p ) {
+        return true;
     }
-    return true;
+    /* No free space can be provided for loading new content. 
+     * The lexeme spans complete buffer.                                      */
+
+    QUEX_NAME(Buffer_call_on_buffer_overflow)(me);
+
+    if( me->input.end_p < &me->_memory._back[-1] ) {
+        return true;                                          /* Fair enough! */
+    }
+
+    /* 'on_buffer_overflow' may have extended the buffer's memory.
+     * => second chance!                                                      */
+    *move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me);
+    return 0 != *move_distance;
 }
 
 

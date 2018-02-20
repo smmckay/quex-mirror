@@ -1,53 +1,71 @@
 (*) Lexical Analyser Patterns:
             [ ]+/x+/ --> WHITESPACE / X+ /
                   x+ --> X+
-                [ ]+ --> WHITESPACE
+                 [ ] --> WHITESPACE
 ## (1) code generation
 ## (2) compiling generated engine code and test
 gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPTION_ASSERTS ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
 ## (*) running the test
 -----------------------------------------------------------------
 (*) test string: 
-'xxx '
+'xx '
 (*) result:
-                 X+  'xxx'
+                 X+  'xx'
          WHITESPACE  ' '
   ''
 -----------------------------------------------------------------
 (*) test string: 
-' xxx'
+' xx'
 (*) result:
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'xxx'
+  WHITESPACE / X+ /  'xx'
   ''
 -----------------------------------------------------------------
 (*) test string: 
-'xxx    '
+'xx    '
 (*) result:
-                 X+  'xxx'
-         WHITESPACE  '   '
+                 X+  'xx'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
          WHITESPACE  ' '
   ''
 -----------------------------------------------------------------
 (*) test string: 
-'     xxx'
+'     xx'
 (*) result:
-         WHITESPACE  '   '
-         WHITESPACE  '  '
-  WHITESPACE / X+ /  'xxx'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+  WHITESPACE / X+ /  'xx'
   ''
 -----------------------------------------------------------------
 (*) test string: 
-'xxx xxx  xxx   xxx    xxx'
+'xx xx  xx   xx    xx'
 (*) result:
-                 X+  'xxx'
+                 X+  'xx'
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'xxx'
-         WHITESPACE  '  '
-  WHITESPACE / X+ /  'xxx'
-         WHITESPACE  '   '
-  WHITESPACE / X+ /  'xxx'
-         WHITESPACE  '   '
+  WHITESPACE / X+ /  'xx'
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'xxx'
+         WHITESPACE  ' '
+  WHITESPACE / X+ /  'xx'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+  WHITESPACE / X+ /  'xx'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+  WHITESPACE / X+ /  'xx'
   ''
+
+
+
+
+
+
+
+

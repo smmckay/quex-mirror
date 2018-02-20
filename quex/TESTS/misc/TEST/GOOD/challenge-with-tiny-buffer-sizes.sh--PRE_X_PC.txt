@@ -1,0 +1,71 @@
+---------------------------------------------------------------------
+content: [xy ]; mode: PRE_X_PC;
+
+START: initial buffer size: 5
+       XYP 'xy'
+       WHITESPACE ' '
+       <TERMINATION> ''
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+content: [ xy]; mode: PRE_X_PC;
+
+START: initial buffer size: 5
+       WHITESPACE ' '
+       WHITESPACE_X_PCY 'x'
+       XYP 'y'
+       <TERMINATION> ''
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+content: [xy    ]; mode: PRE_X_PC;
+
+START: initial buffer size: 5
+       XYP 'xy'
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       <TERMINATION> ''
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+content: [     xy]; mode: PRE_X_PC;
+
+START: initial buffer size: 5
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE_X_PCY 'x'
+       XYP 'y'
+       <TERMINATION> ''
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+content: [xy xy  xy   xy    xy]; mode: PRE_X_PC;
+
+START: initial buffer size: 5
+       XYP 'xy'
+       WHITESPACE ' '
+       WHITESPACE_X_PCY 'x'
+       XYP 'y'
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE_X_PCY 'x'
+       XYP 'y'
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE_X_PCY 'x'
+       XYP 'y'
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE_X_PCY 'x'
+       XYP 'y'
+       <TERMINATION> ''
+END: final buffer size: 5
+

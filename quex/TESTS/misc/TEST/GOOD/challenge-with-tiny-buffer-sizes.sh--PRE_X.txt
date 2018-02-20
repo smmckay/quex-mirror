@@ -1,0 +1,65 @@
+---------------------------------------------------------------------
+content: [xx ]; mode: PRE_X;
+
+START: initial buffer size: 5
+       XP 'xx'
+       WHITESPACE ' '
+       <TERMINATION> ''
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+content: [ xx]; mode: PRE_X;
+
+START: initial buffer size: 5
+       WHITESPACE ' '
+       WHITESPACE_XP 'xx'
+       <TERMINATION> ''
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+content: [xx    ]; mode: PRE_X;
+
+START: initial buffer size: 5
+       XP 'xx'
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       <TERMINATION> ''
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+content: [     xx]; mode: PRE_X;
+
+START: initial buffer size: 5
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE_XP 'xx'
+       <TERMINATION> ''
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+content: [xx xx  xx   xx    xx]; mode: PRE_X;
+
+START: initial buffer size: 5
+       XP 'xx'
+       WHITESPACE ' '
+       WHITESPACE_XP 'xx'
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE_XP 'xx'
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE_XP 'xx'
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE ' '
+       WHITESPACE_XP 'xx'
+       <TERMINATION> ''
+END: final buffer size: 5
+

@@ -1,3 +1,7 @@
+-- Minimal buffer size:   lexeme size 
+                      + 1 lexatom to detect end 
+                      + 2 border lexatoms of buffer
+
 -- Easy include pattern:
 
     @[a-z/\-\.012]+ {

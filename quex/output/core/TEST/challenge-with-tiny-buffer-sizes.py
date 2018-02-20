@@ -30,26 +30,26 @@ import sys
 
 if "--hwut-info" in sys.argv:
     print "Special Cases;"
-    print "CHOICES: l2-b4, l3-b5, long-way-back, pc-l2-b4, pc-l3-b5, pc-long-way-back, dtc-l2-b4, dtc-l3-b5, dtc-long-way-back;"
+    print "CHOICES: l2, l3, long-way-back, pc-l2, pc-l3, pc-long-way-back, dtc-l2, dtc-l3, dtc-long-way-back;"
     sys.exit(0)
 
-if "l2-b4" in sys.argv:
+if "l2" in sys.argv:
     pattern_action_pair_list = [
         ('[ ]+/x+/', "WHITESPACE / X+ /"),
         ('x+',       "X+"),
-        ('[ ]+',     "WHITESPACE")
+        ('[ ]',      "WHITESPACE")
     ]
     test_str_list = ["xx ", " xx", "xx    ", "     xx", "xx xx  xx   xx    xx"]
-    buffer_size = 4
+    lexeme_size = 2
 
-if "l3-b5" in sys.argv:
+if "l3" in sys.argv:
     pattern_action_pair_list = [
         ('[ ]+/x+/', "WHITESPACE / X+ /"),
         ('x+',       "X+"),
-        ('[ ]+',     "WHITESPACE")
+        ('[ ]',      "WHITESPACE")
     ]
     test_str_list = ["xxx ", " xxx", "xxx    ", "     xxx", "xxx xxx  xxx   xxx    xxx"]
-    buffer_size = 5
+    lexeme_size = 3
 
 if "long-way-back" in sys.argv:
     pattern_action_pair_list = [
@@ -58,55 +58,55 @@ if "long-way-back" in sys.argv:
         ('[longwayback\-]',   "LETTER")
     ]
     test_str_list = ["xxlong-way-back", "long-way-backxx", "xxlong-way-back", "long-way-backxx"]
-    buffer_size = 4
+    lexeme_size = 2
 
-if "pc-l2-b4" in sys.argv:
+if "pc-l2" in sys.argv:
     pattern_action_pair_list = [
         ('[ ]+/x/y', "WHITESPACE / X / Y"),
         ('x+',       "X+"),
         ('y+',       "Y+"),
-        ('[ ]+',     "WHITESPACE")
+        ('[ ]',      "WHITESPACE")
     ]
     test_str_list = ["xy ", " xy", "xy    ", "     xy", "xy xy  xy   xy    xy"]
-    buffer_size = 4
+    lexeme_size = 2
 
-if "pc-l3-b5" in sys.argv:
+if "pc-l3" in sys.argv:
     pattern_action_pair_list = [
         ('[ ]+/x+/y', "WHITESPACE / X+ / Y"),
         ('x+',       "X+"),
         ('y+',       "Y+"),
-        ('[ ]+',     "WHITESPACE")
+        ('[ ]',      "WHITESPACE")
     ]
     test_str_list = ["xxy ", " xxy", "xxy    ", "     xxy", "xxy xxy  xxy   xxy    xxy"]
-    buffer_size = 5
+    lexeme_size = 3
 
 if "pc-long-way-back" in sys.argv:
     pattern_action_pair_list = [
         ('long-way-back/x+/y', "LONG WAY BACK / X+ / Y"),
-        ('x+',              "X+"),
-        ('y+',              "Y+"),
-        ('[longwayback\-]', "LETTER")
+        ('x+',                 "X+"),
+        ('y+',                 "Y+"),
+        ('[longwayback\-]',    "LETTER")
     ]
     test_str_list = ["xylong-way-back", "long-way-backxy", "xylong-way-back", "long-way-backxy"]
-    buffer_size = 4
+    lexeme_size = 2
 
-if "dtc-l2-b4" in sys.argv:
+if "dtc-l2" in sys.argv:
     pattern_action_pair_list = [
         ('[ ]+/x+/x', "WHITESPACE / X+ / X"),
-        ('x+',       "X+"),
-        ('[ ]+',     "WHITESPACE")
+        ('x+',        "X+"),
+        ('[ ]',       "WHITESPACE")
     ]
     test_str_list = ["xx ", " xx", "xx    ", "     xx", "xx xx  xx   xx    xx"]
-    buffer_size = 4
+    lexeme_size = 2
 
-if "dtc-l3-b5" in sys.argv:
+if "dtc-l3" in sys.argv:
     pattern_action_pair_list = [
         ('[ ]+/x+/x', "WHITESPACE / X+ / X"),
-        ('x+',       "X+"),
-        ('[ ]+',     "WHITESPACE")
+        ('x+',        "X+"),
+        ('[ ]',       "WHITESPACE")
     ]
     test_str_list = ["xxx ", " xxx", "xxx    ", "     xxx", "xxx xxx  xxx   xxx    xxx"]
-    buffer_size = 5
+    lexeme_size = 3
 
 if "dtc-long-way-back" in sys.argv:
     pattern_action_pair_list = [
@@ -115,7 +115,10 @@ if "dtc-long-way-back" in sys.argv:
         ('[longwayback\-]',   "LETTER")
     ]
     test_str_list = ["xxlong-way-back", "long-way-backxx", "xxlong-way-back", "long-way-backxx"]
-    buffer_size = 4
+    lexeme_size = 2
 
+# Minimal buffer size:   lexeme size 
+#                      + 1 lexatom to detect end 
+#                      + 2 border lexatoms of buffer
 generator_test.do(pattern_action_pair_list, test_str_list, {}, "ANSI-C",
-                  QuexBufferSize=buffer_size)    
+                  QuexBufferSize=lexeme_size + 3)    

@@ -1,0 +1,86 @@
+---------------------------------------------------------------------
+content: [xxxlong-way-back]; mode: PRE_LONG_X_DTC;
+
+START: initial buffer size: 5
+       XP 'xxx'
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       LETTER 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       <TERMINATION> ''
+END: final buffer size: 10
+
+---------------------------------------------------------------------
+content: [long-way-backxxx]; mode: PRE_LONG_X_DTC;
+
+START: initial buffer size: 5
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       LETTER 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       LONG_WAY_BACK_XP 'xx'
+       XP 'x'
+       <TERMINATION> ''
+END: final buffer size: 10
+
+---------------------------------------------------------------------
+content: [xxxlong-way-back]; mode: PRE_LONG_X_DTC;
+
+START: initial buffer size: 5
+       XP 'xxx'
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       LETTER 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       <TERMINATION> ''
+END: final buffer size: 10
+
+---------------------------------------------------------------------
+content: [long-way-backxxx]; mode: PRE_LONG_X_DTC;
+
+START: initial buffer size: 5
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       LETTER 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       LONG_WAY_BACK_XP 'xx'
+       XP 'x'
+       <TERMINATION> ''
+END: final buffer size: 10
+

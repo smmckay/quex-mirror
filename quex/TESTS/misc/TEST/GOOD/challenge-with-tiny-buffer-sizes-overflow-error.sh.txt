@@ -1,0 +1,14 @@
+---------------------------------------------------------------------
+## content: [xxxlong-way-back];
+
+START: initial buffer size: 5
+  error_code: Buffer_Overflow_LexemeTooLong;
+END: final buffer size: 5
+
+---------------------------------------------------------------------
+## content: [long-way-backxxx];
+
+START: initial buffer size: 5
+  error_code: Buffer_Overflow_LexemeTooLong;
+END: final buffer size: 5
+

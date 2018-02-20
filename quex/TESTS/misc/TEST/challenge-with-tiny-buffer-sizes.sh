@@ -35,44 +35,48 @@ function test_this {
 }
 
 case $choice in
-    x)     # lexeme of length 2
-        test_this PRE_X "xx "
-        test_this PRE_X " xx"
+
+    DEBUG)     # lexeme of length 2
         test_this PRE_X "xx    "
-        test_this PRE_X "     xx"
-        test_this PRE_X "xx xx  xx   xx    xx"
+        ;;
+    PRE_X)     # lexeme of length 2
+        test_this $choice "xx "
+        test_this $choice " xx"
+        test_this $choice "xx    "
+        test_this $choice "     xx"
+        test_this $choice "xx xx  xx   xx    xx"
     ;;
-    dtc-x) # lexemes with a dangerous trailing context
-        test_this PRE_X_DTC "xx "
-        test_this PRE_X_DTC " xx"
-        test_this PRE_X_DTC "xx    "
-        test_this PRE_X_DTC "     xx"
-        test_this PRE_X_DTC "xx xx  xx   xx    xx"
+    PRE_X_DTC) # lexemes with a dangerous trailing context
+        test_this $choice "xx "
+        test_this $choice " xx"
+        test_this $choice "xx    "
+        test_this $choice "     xx"
+        test_this $choice "xx xx  xx   xx    xx"
     ;;
-    long-way-x) # long sequential pre-context
-        test_this PRE_LONG_X "xxlong-way-back"
-        test_this PRE_LONG_X "long-way-backxx"
-        test_this PRE_LONG_X "xxlong-way-back"
-        test_this PRE_LONG_X "long-way-backxx"
+    PRE_X_PC) # lexemes with post context
+        test_this $choice "xy "
+        test_this $choice " xy"
+        test_this $choice "xy    "
+        test_this $choice "     xy"
+        test_this $choice "xy xy  xy   xy    xy"
         ;;
-    dtc-long-way-x) # lexemes with dangerous trailing context and long pre-context
-        test_this PRE_LONG_DTC "xxlong-way-back"
-        test_this PRE_LONG_DTC "long-way-backxx"
-        test_this PRE_LONG_DTC "xxlong-way-back"
-        test_this PRE_LONG_DTC "long-way-backxx"
+    PRE_LONG_X) # long sequential pre-context
+        test_this $choice "xxlong-way-back"
+        test_this $choice "long-way-backxx"
+        test_this $choice "xxlong-way-back"
+        test_this $choice "long-way-backxx"
         ;;
-    pc-x) # lexemes with post context
-        test_this PRE_X_PC "xy "
-        test_this PRE_X_PC " xy"
-        test_this PRE_X_PC "xy    "
-        test_this PRE_X_PC "     xy"
-        test_this PRE_X_PC "xy xy  xy   xy    xy"
+    PRE_LONG_X_PC) # lexemes with post context and long sequential pre-context
+        test_this $choice "xylong-way-back"
+        test_this $choice "long-way-backxy"
+        test_this $choice "xylong-way-back"
+        test_this $choice "long-way-backxy"
         ;;
-    pc-long-way-x) # lexemes with post context and long sequential pre-context
-        test_this PRE_LONG_X_PC "xylong-way-back"
-        test_this PRE_LONG_X_PC "long-way-backxy"
-        test_this PRE_LONG_X_PC "xylong-way-back"
-        test_this PRE_LONG_X_PC "long-way-backxy"
+    PRE_LONG_X_DTC) # lexemes with dangerous trailing context and long pre-context
+        test_this $choice "xxlong-way-back"
+        test_this $choice "long-way-backxx"
+        test_this $choice "xxlong-way-back"
+        test_this $choice "long-way-backxx"
         ;;
 esac
 

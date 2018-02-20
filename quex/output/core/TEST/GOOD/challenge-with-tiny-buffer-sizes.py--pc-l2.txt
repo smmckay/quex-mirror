@@ -1,63 +1,81 @@
 (*) Lexical Analyser Patterns:
-           [ ]+/x+/y --> WHITESPACE / X+ / Y
+            [ ]+/x/y --> WHITESPACE / X / Y
                   x+ --> X+
                   y+ --> Y+
-                [ ]+ --> WHITESPACE
+                 [ ] --> WHITESPACE
 ## (1) code generation
 ## (2) compiling generated engine code and test
 gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPTION_ASSERTS ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
 ## (*) running the test
 -----------------------------------------------------------------
 (*) test string: 
-'xxy '
+'xy '
 (*) result:
-                 X+  'xx'
+                 X+  'x'
                  Y+  'y'
          WHITESPACE  ' '
   ''
 -----------------------------------------------------------------
 (*) test string: 
-' xxy'
+' xy'
 (*) result:
          WHITESPACE  ' '
-WHITESPACE / X+ / Y  'xx'
+ WHITESPACE / X / Y  'x'
                  Y+  'y'
   ''
 -----------------------------------------------------------------
 (*) test string: 
-'xxy    '
+'xy    '
 (*) result:
-                 X+  'xx'
+                 X+  'x'
                  Y+  'y'
-         WHITESPACE  '   '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
          WHITESPACE  ' '
   ''
 -----------------------------------------------------------------
 (*) test string: 
-'     xxy'
+'     xy'
 (*) result:
-         WHITESPACE  '   '
-         WHITESPACE  '  '
-WHITESPACE / X+ / Y  'xx'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+ WHITESPACE / X / Y  'x'
                  Y+  'y'
   ''
 -----------------------------------------------------------------
 (*) test string: 
-'xxy xxy  xxy   xxy    xxy'
+'xy xy  xy   xy    xy'
 (*) result:
-                 X+  'xx'
+                 X+  'x'
                  Y+  'y'
          WHITESPACE  ' '
-WHITESPACE / X+ / Y  'xx'
+ WHITESPACE / X / Y  'x'
                  Y+  'y'
-         WHITESPACE  '  '
-WHITESPACE / X+ / Y  'xx'
-                 Y+  'y'
-         WHITESPACE  '   '
-WHITESPACE / X+ / Y  'xx'
-                 Y+  'y'
-         WHITESPACE  '   '
          WHITESPACE  ' '
-WHITESPACE / X+ / Y  'xx'
+         WHITESPACE  ' '
+ WHITESPACE / X / Y  'x'
+                 Y+  'y'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+ WHITESPACE / X / Y  'x'
+                 Y+  'y'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+ WHITESPACE / X / Y  'x'
                  Y+  'y'
   ''
+
+
+
+
+
+
+
+

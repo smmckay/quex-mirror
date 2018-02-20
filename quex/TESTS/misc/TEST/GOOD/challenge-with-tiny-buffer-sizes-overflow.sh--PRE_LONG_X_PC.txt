@@ -1,0 +1,108 @@
+---------------------------------------------------------------------
+content: [xxylong-way-back]; mode: PRE_LONG_X_PC;
+
+START: initial buffer size: 5
+       XYP 'xxy'
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       XYP 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       <TERMINATION> ''
+END: final buffer size: 10
+
+---------------------------------------------------------------------
+content: [long-way-backxxy]; mode: PRE_LONG_X_PC;
+
+START: initial buffer size: 5
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       XYP 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       LONG_WAY_BACK_XP 'xx'
+       XYP 'y'
+       <TERMINATION> ''
+END: final buffer size: 10
+
+---------------------------------------------------------------------
+content: [xxylong-way-back]; mode: PRE_LONG_X_PC;
+
+START: initial buffer size: 5
+       XYP 'xxy'
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       XYP 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       <TERMINATION> ''
+END: final buffer size: 10
+
+---------------------------------------------------------------------
+content: [long-way-backxxy]; mode: PRE_LONG_X_PC;
+
+START: initial buffer size: 5
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       XYP 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       LONG_WAY_BACK_XP 'xx'
+       XYP 'y'
+       <TERMINATION> ''
+END: final buffer size: 10
+
+---------------------------------------------------------------------
+content: [long-way-backxxxy]; mode: PRE_LONG_X_PC;
+
+START: initial buffer size: 5
+       LETTER 'l'
+       LETTER 'o'
+       LETTER 'n'
+       LETTER 'g'
+       LETTER '-'
+       LETTER 'w'
+       LETTER 'a'
+       XYP 'y'
+       LETTER '-'
+       LETTER 'b'
+       LETTER 'a'
+       LETTER 'c'
+       LETTER 'k'
+       LONG_WAY_BACK_XP 'xxx'
+       XYP 'y'
+       <TERMINATION> ''
+END: final buffer size: 10
+

@@ -1,7 +1,7 @@
 (*) Lexical Analyser Patterns:
-            [ ]+/x+/ --> WHITESPACE / X+ /
+           [ ]+/x+/x --> WHITESPACE / X+ / X
                   x+ --> X+
-                [ ]+ --> WHITESPACE
+                 [ ] --> WHITESPACE
 ## (1) code generation
 ## (2) compiling generated engine code and test
 gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPTION_ASSERTS ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
@@ -18,24 +18,30 @@ gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPT
 ' xx'
 (*) result:
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'xx'
+WHITESPACE / X+ / X  'x'
+                 X+  'x'
   ''
 -----------------------------------------------------------------
 (*) test string: 
 'xx    '
 (*) result:
                  X+  'xx'
-         WHITESPACE  '  '
-         WHITESPACE  '  '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
   ''
 -----------------------------------------------------------------
 (*) test string: 
 '     xx'
 (*) result:
-         WHITESPACE  '  '
-         WHITESPACE  '  '
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'xx'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+WHITESPACE / X+ / X  'x'
+                 X+  'x'
   ''
 -----------------------------------------------------------------
 (*) test string: 
@@ -43,13 +49,29 @@ gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function  -DQUEX_OPT
 (*) result:
                  X+  'xx'
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'xx'
-         WHITESPACE  '  '
-  WHITESPACE / X+ /  'xx'
-         WHITESPACE  '  '
+WHITESPACE / X+ / X  'x'
+                 X+  'x'
          WHITESPACE  ' '
-  WHITESPACE / X+ /  'xx'
-         WHITESPACE  '  '
-         WHITESPACE  '  '
-  WHITESPACE / X+ /  'xx'
+         WHITESPACE  ' '
+WHITESPACE / X+ / X  'x'
+                 X+  'x'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+WHITESPACE / X+ / X  'x'
+                 X+  'x'
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+         WHITESPACE  ' '
+WHITESPACE / X+ / X  'x'
+                 X+  'x'
   ''
+
+
+
+
+
+
+
+

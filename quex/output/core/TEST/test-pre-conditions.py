@@ -23,14 +23,15 @@ pattern_action_pair_list = [
     #    patterns, since they are always longer.
     #
     # repetition of 'x' (one or more) **preceded** by 'good' + whitespace
-    ('x[ \\t]+/"x"+/',        "WHITESPACE / X+ /"),
-    ('x[ \\t]+/"xz"/',        "WHITESPACE / XZ /"),
+    ('x[ \\t]+/"x"+/', "WHITESPACE / X+ /"),
+    ('x[ \\t]+/"xz"/', "WHITESPACE / XZ /"),
     # normal repetition (one or more) of 'x'
-    ('"x"+',                 "X+"),
+    ('"x"+',           "X+"),
     # whitespace
-    ('[ \\t\\n]+',           "WHITESPACE")
+    ('[ \\t\\n]',      "WHITESPACE")
 ]
 test_str = "x                            xxxxx xz x"
 
+# Min. buffer size: max. lexeme size + 3
 generator_test.do(pattern_action_pair_list, test_str, {}, choice, 
-                  QuexBufferSize=7)    
+                  QuexBufferSize=8)    

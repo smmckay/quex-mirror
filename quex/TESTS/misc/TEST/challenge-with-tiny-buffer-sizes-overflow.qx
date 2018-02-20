@@ -19,7 +19,7 @@ token {
 
 mode BASE :
 <inheritable: only> {
-    on_buffer_overflow {} // PREVENT buffer expansion on overflow.
+    /* on_buffer_overflow { Default: extend buffer size. } */
     on_end_of_stream   => QUEX_TKN_TERMINATION(LexemeNull);
 }
 
@@ -30,7 +30,7 @@ mode PRE_X : BASE {
 }
 
 mode PRE_X_PC : BASE {
-    [ ]+/x/y => QUEX_TKN_WHITESPACE_X_PCY(Lexeme); 
+    [ ]+/x+/y => QUEX_TKN_WHITESPACE_X_PCY(Lexeme); 
     [xy]+    => QUEX_TKN_XYP(Lexeme);
     [ ]      => QUEX_TKN_WHITESPACE(Lexeme);
 }
