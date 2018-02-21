@@ -211,7 +211,7 @@ QUEX_NAME(include_push_core)(QUEX_TYPE_ANALYZER*       me,
         QUEX_NAME(Buffer_shallow_copy)(&me->buffer, new_buffer);
     }
 
-    __quex_assert(me->buffer._memory._front != memento->buffer._memory._front);
+    __quex_assert(me->buffer.begin(&me->buffer) != memento->buffer.begin(&memento->buffer));
     QUEX_BUFFER_ASSERT_CONSISTENCY(&memento->buffer);
     QUEX_BUFFER_ASSERT_CONSISTENCY(&me->buffer);
 
@@ -290,7 +290,7 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
                                                                             
     /* Buffer_destruct() takes care of propper destructor calls for byte-
      * loaders, buffer fillers, and converters.                              */
-    __quex_assert(me->buffer._memory._front != memento->buffer._memory._front);
+    __quex_assert(me->buffer.begin(&me->buffer) != memento->buffer.begin(&memento->buffer));
     QUEX_NAME(Buffer_destruct)(&me->buffer);                              
 
     me->_parent_memento = memento->_parent_memento;

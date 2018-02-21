@@ -60,7 +60,7 @@ QUEX_NAME(Buffer_seek_forward)(QUEX_NAME(Buffer)* me, const ptrdiff_t CharacterN
  *          False -- else.                                                    */
 {
     QUEX_TYPE_STREAM_POSITION  CharacterIndexAtReadP =   me->input.lexatom_index_begin
-                                                       + (me->_read_p - &me->_memory._front[1]);
+                                                       + (me->_read_p - me->content_space_begin(me));
     QUEX_TYPE_STREAM_POSITION  target = CharacterIndexAtReadP + CharacterN;
 
     if( ! CharacterN ) {
@@ -80,7 +80,7 @@ QUEX_NAME(Buffer_seek_forward)(QUEX_NAME(Buffer)* me, const ptrdiff_t CharacterN
             QUEX_BUFFER_ASSERT_CONSISTENCY(me);
             return false;
         }
-        me->_read_p = &me->_memory._front[1 + target - me->input.lexatom_index_begin];
+        me->_read_p = &me->content_space_begin(me)[target - me->input.lexatom_index_begin];
     }
     me->_lexeme_start_p = me->_read_p;
 
@@ -100,7 +100,7 @@ QUEX_NAME(Buffer_seek_backward)(QUEX_NAME(Buffer)* me,
  *          False -- else.                                                   */
 {
     QUEX_TYPE_STREAM_POSITION  CharacterIndexAtReadP =   me->input.lexatom_index_begin
-                                                       + (me->_read_p - &me->_memory._front[1]);
+                                                       + (me->_read_p - me->content_space_begin(me));
     QUEX_TYPE_STREAM_POSITION  target      = CharacterIndexAtReadP - CharacterN;
     const ptrdiff_t            ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me); 
     QUEX_TYPE_STREAM_POSITION  new_lexatom_index_begin;
@@ -122,7 +122,7 @@ QUEX_NAME(Buffer_seek_backward)(QUEX_NAME(Buffer)* me,
             /* QUEX_ERROR_EXIT() initiated inside above function.            */
             return false;
         }
-        me->_read_p = &me->_memory._front[1 + offset];
+        me->_read_p = &me->content_space_begin(me)[offset];
     }
 
     return QUEX_NAME(Buffer_finish_seek_based_on_read_p)(me);
@@ -133,7 +133,7 @@ QUEX_NAME(Buffer_tell)(QUEX_NAME(Buffer)* me)
 /* RETURNS: lexatom index which corresponds to the position of the input
  *          pointer.                                                         */
 {
-    const QUEX_TYPE_STREAM_POSITION Delta = me->_read_p - &me->_memory._front[1];
+    const QUEX_TYPE_STREAM_POSITION Delta = me->_read_p - me->content_space_begin(me);
     return Delta + me->input.lexatom_index_begin;
 }
 
@@ -163,7 +163,7 @@ QUEX_NAME(Buffer_seek)(QUEX_NAME(Buffer)*              me,
 QUEX_INLINE bool
 QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
 {
-    QUEX_TYPE_LEXATOM* BeginP    = &me->_memory._front[1];
+    QUEX_TYPE_LEXATOM* BeginP    = me->content_space_begin(me);
     bool               verdict_f = true;
 
     if( me->_read_p > me->input.end_p ) {

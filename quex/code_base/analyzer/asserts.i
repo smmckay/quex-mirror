@@ -8,13 +8,13 @@
 
 #if defined(QUEX_OPTION_ASSERTS)
 
-#define __QUEX_LEXEME_VALID_BASIC_CHECK()                                                  \
-    if( buffer->_read_p < buffer->_memory._front ) {                                      \
-        __QUEX_STD_printf("%s:%i:\n", FileName, (int)LineN);                               \
-        QUEX_ERROR_EXIT("Lexeme out of buffer bounds.\n");                                 \
-    } else if( buffer->_read_p > buffer->_memory._back ) {                                \
-        __QUEX_STD_printf("%s:%i:\n", FileName, (int)LineN);                               \
-        QUEX_ERROR_EXIT("Lexeme out of buffer bounds.\n");                                 \
+#define __QUEX_LEXEME_VALID_BASIC_CHECK()                        \
+    if( buffer->_read_p < buffer->begin(buffer) ) {              \
+        __QUEX_STD_printf("%s:%i:\n", FileName, (int)LineN);     \
+        QUEX_ERROR_EXIT("Lexeme out of buffer bounds.\n");       \
+    } else if( buffer->_read_p >= buffer->end(buffer) ) {        \
+        __QUEX_STD_printf("%s:%i:\n", FileName, (int)LineN);     \
+        QUEX_ERROR_EXIT("Lexeme out of buffer bounds.\n");       \
     }
 
 #define __QUEX_LEXEME_VALID_CHECK()                                                        \

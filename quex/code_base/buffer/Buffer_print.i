@@ -24,8 +24,8 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)* me)
 {
     QUEX_NAME(Buffer_print_content_core)(sizeof(QUEX_TYPE_LEXATOM),
-                                         (const uint8_t*)me->_memory._front,
-                                         (const uint8_t*)me->_memory._back, 
+                                         (const uint8_t*)me->begin(me),
+                                         (const uint8_t*)me->content_space_end(me), 
                                          (const uint8_t*)me->_read_p, 
                                          (const uint8_t*)me->input.end_p,
                                          /* BordersF */ true);
@@ -45,7 +45,7 @@ QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* me)
      *
      *    |12345 ...      12345  ....       12345      ....    12345|
      *    Begin           lexeme start        input_p               buffer end     */ 
-    QUEX_TYPE_LEXATOM*  iterator  = me->_memory._front;
+    QUEX_TYPE_LEXATOM*  iterator  = me->begin(me);
     QUEX_TYPE_LEXATOM*  total_end = me->_memory._back + 1;
     __quex_assert(me != 0x0);
 
@@ -55,13 +55,13 @@ QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* me)
     }
 
     __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "_________________________________________________________________\n");
-    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_memory._front,      total_end, me);
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->begin(me),      total_end, me);
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_lexeme_start_p - 2, total_end, me);
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_read_p        - 2, total_end, me);
     if( me->input.end_p != 0x0 ) {
         QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->input.end_p - 4, total_end, me);
     }
-    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_memory._back   - 4, total_end, me);
+    QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->content_space_end(me)   - 4, total_end, me);
     __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "_________________________________________________________________\n");
 }
 
@@ -113,11 +113,11 @@ QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
     QUEX_NAME(BufferMemory_print_this)(&me->_memory);
 
     __QUEX_STD_printf("    _read_p:                      ");
-    QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
+    QUEXED(print_relative_positions)(me->begin(me), me->end(me), 
                                      sizeof(QUEX_TYPE_LEXATOM), me->_read_p);
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("    _lexeme_start_p:              ");
-    QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
+    QUEXED(print_relative_positions)(me->begin(me), me->end(me), 
                                      sizeof(QUEX_TYPE_LEXATOM), me->_lexeme_start_p);
     __QUEX_STD_printf("\n");
 
@@ -132,7 +132,7 @@ QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
     __QUEX_STD_printf("      lexatom_index_begin: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_begin)(me));
     __QUEX_STD_printf("      end_character_index: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_end)(me));
     __QUEX_STD_printf("      end_p:               ");
-    QUEXED(print_relative_positions)(&me->_memory._front[0], &me->_memory._back[1], 
+    QUEXED(print_relative_positions)(me->begin(me), me->end(me), 
                                      sizeof(QUEX_TYPE_LEXATOM), me->input.end_p);
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("    }\n");
@@ -216,7 +216,7 @@ QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* me)
     /* Print out the lexeme start, so that the user has a hint. */
     WEnd        = utf8_encoded_str + 512 - 7;
     witerator   = utf8_encoded_str; 
-    End         = me->_memory._back; 
+    End         = me->content_space_end(me); 
     iterator    = me->_lexeme_start_p; 
 
     QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, utf8)(&iterator, End, &witerator, WEnd);

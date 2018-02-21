@@ -366,11 +366,11 @@ typedef enum {
 #   define __quex_debug_core(StateIdx, Message)                \
            __quex_debug3("state %i ____%s", (int)(StateIdx), (Message)) 
 
-#   define __quex_debug_input(StateIdx)                                            \
-           __quex_debug("input:           ");                                      \
-           __QUEX_PRINT_CHAR(*(me->buffer._read_p));                              \
-           __quex_debug2("input position:  %i",                                    \
-                         (int)(me->buffer._read_p - me->buffer._memory._front));  \
+#   define __quex_debug_input(StateIdx)                              \
+           __quex_debug("input:           ");                        \
+           __QUEX_PRINT_CHAR(*(me->buffer._read_p));                 \
+           __quex_debug2("input position:  %i",                      \
+                         (int)(me->buffer._read_p - me->buffer.begin(&me->buffer))); \
            __quex_optional_statistics((StateIdx))
 
 #   define __quex_debug_path_walker_core(PathWalkerIdx, PathBase, PathIterator, Message)             \
@@ -417,13 +417,13 @@ typedef enum {
 #   define __quex_debug_template_drop_out(TemplateIdx, StateKey)            \
            __quex_debug_template_core(TemplateIdx, StateKey, "<DROP OUT>")           
 
-#   define __quex_debug_buffer_info(B)                                         \
-           __quex_debug2("input position:  %i",                                \
-                         (int)((B)._read_p        - (B)._memory._front + 1)); \
-           __quex_debug2("lexeme start:    %i",                                \
-                         (int)((B)._lexeme_start_p - (B)._memory._front + 1)); \
-           __quex_debug2("buffer size:     %i",                                \
-                         (int)((B)._memory._back   - (B)._memory._front)); 
+#   define __quex_debug_buffer_info(B)                                             \
+           __quex_debug2("input position:  %i",                                    \
+                         (int)((B)._read_p        - (B).content_space_begin(&B)));  \
+           __quex_debug2("lexeme start:    %i",                                    \
+                         (int)((B)._lexeme_start_p - (B).content_space_begin(&B))); \
+           __quex_debug2("buffer size:     %i",                                    \
+                         (int)((B)._memory._back   - (B).begin(&B))); 
 
 #   define __quex_debug_reload_before()                              \
            __quex_debug1("reload ________________");                 \

@@ -86,8 +86,8 @@ $$HAS_EXIT_TO$$
 void
 $on_buffer_before_change(void* me /* 'aux' -> 'self' via 'me' */)
 {
-    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer._memory._front;
-    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer._memory._back;
+    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer.begin(&self.buffer);
+    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer.end(&self.buffer);
     (void)me; (void)BufferBegin; (void)BufferEnd;
 $$ON_BUFFER_BEFORE_CHANGE$$
 }
@@ -100,8 +100,8 @@ $on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */)
 {
     const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[1] 
-                                                    - self.buffer._memory._front);
+    const size_t             BufferSize  = (size_t)(self.buffer.size(&self.buffer)); 
+
 $$ON_BUFFER_OVERFLOW$$
     (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
 }

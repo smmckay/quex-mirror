@@ -106,7 +106,7 @@ self_test(size_t SizeBefore, ptrdiff_t ReallocLimitByteN)
     root_memory_p = &self_reference[0]._memory._front[0];
     memcpy((void*)content_before, (void*)root_memory_p, content_before_size);
 
-    hwut_verify(SizeBefore == &me->_memory._back[1] - me->_memory._front);
+    hwut_verify(SizeBefore == me->end(me) - me->begin(me));
 
     MemoryManager_UnitTest.reallocate_limit_byte_n = ReallocLimitByteN;
     MemoryManager_UnitTest.reallocate_verbose_f    = 1;
@@ -114,7 +114,7 @@ self_test(size_t SizeBefore, ptrdiff_t ReallocLimitByteN)
     verdict_f   = QUEX_NAME(Buffer_nested_negotiate_extend)(me, 2.0);
     printf("verdict: %s;\n", verdict_f ? "true" : "false");
 
-    size        = &me->_memory._back[1] - root->_memory._front;
+    size        = me->end(me) - root->_memory._front;
 
     /* Verify content before/after is the same. */
     root_memory_p = &self_reference[0]._memory._front[0];

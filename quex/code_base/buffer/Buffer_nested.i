@@ -58,7 +58,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
      *                                         :                 :
      *                                         '--- available ---'
      *                                                                        */
-    ptrdiff_t           available_size =   nesting->_memory._back 
+    ptrdiff_t           available_size =   nesting->content_space_end(nesting)
                                          - nesting->input.end_p;
     QUEX_TYPE_LEXATOM*  memory;
     size_t              memory_size;
@@ -96,7 +96,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
         memory      = &nesting->input.end_p[1];
         memory_size = (size_t)available_size;
         __quex_assert(0           != memory);
-        __quex_assert(memory_size == (size_t)(&nesting->_memory._back[1] - memory));
+        __quex_assert(memory_size == (size_t)(nesting->end(nesting) - memory));
 
         nesting->_memory._back = &nesting->input.end_p[0];
         ownership        = E_Ownership_INCLUDING_BUFFER;
@@ -133,7 +133,7 @@ QUEX_NAME(Buffer_nested_negotiate_extend)(QUEX_NAME(Buffer)*  me,
  *          false, else.                                                      */
 {
     QUEX_NAME(Buffer)*  root         = QUEX_NAME(Buffer_nested_find_root)(me);
-    ptrdiff_t           current_size = &me->_memory._back[1] - root->_memory._front;
+    ptrdiff_t           current_size = me->end(me) - root->begin(root);
     /* Refuse negotiations where the requested amount of memory is greater
      * than the total addressable space divided by 16.
      * Addressable space = PTRDIFF_MAX * 2 => Max. size = PTRDIFF_MAX / 8     */
@@ -168,7 +168,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     ptrdiff_t           required_size;
     ptrdiff_t           new_size;
     QUEX_NAME(Buffer)*  root = me;
-    QUEX_TYPE_LEXATOM*  old_content_end_p = me->input.end_p ? me->input.end_p : &me->_memory._back[1];
+    QUEX_TYPE_LEXATOM*  old_content_end_p = me->input.end_p ? me->input.end_p : me->end(me);
     bool                verdict_f = false;
     
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -179,10 +179,10 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     root              = QUEX_NAME(Buffer_nested_find_root)(me);
     QUEX_BUFFER_ASSERT_CONSISTENCY(root);
 
-    old_memory_root_p = root->_memory._front;
+    old_memory_root_p = root->begin(root);
     /* required: content + 2 lexatoms for border.                             */
     required_size     = old_content_end_p - &old_memory_root_p[1] + 2;
-    new_size          = &me->_memory._back[1] - old_memory_root_p + SizeAdd;
+    new_size          = me->end(me) - old_memory_root_p + SizeAdd;
 
     if( SizeAdd <= 0 || required_size >= new_size ) {
         return false;
@@ -235,19 +235,19 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
 {
     QUEX_NAME(Buffer)* root;
     QUEX_TYPE_LEXATOM* old_memory_root_p;
-    QUEX_TYPE_LEXATOM* old_content_end_p = me->input.end_p ? me->input.end_p : &me->_memory._back[1];
+    QUEX_TYPE_LEXATOM* old_content_end_p = me->input.end_p ? me->input.end_p : me->end(me);
     ptrdiff_t          required_size;
     bool               verdict_f = false;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
-    __quex_assert(old_content_end_p >= me->_memory._front);
-    __quex_assert(old_content_end_p <= me->_memory._back);
+    __quex_assert(old_content_end_p >= me->begin(me));
+    __quex_assert(old_content_end_p <= me->content_space_end(me));
 
     root              = QUEX_NAME(Buffer_nested_find_root)(me);
     QUEX_BUFFER_ASSERT_CONSISTENCY(root);
 
-    old_memory_root_p = root->_memory._front;
+    old_memory_root_p = root->begin(root);
     /* required: content + 2 lexatoms for border.                             */
     required_size     = old_content_end_p - &old_memory_root_p[1] + 2;
 
@@ -335,7 +335,7 @@ QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
     } 
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    return me->_memory._back - me->input.end_p;
+    return me->content_space_end(me) - me->input.end_p;
 }
     
 QUEX_INLINE void
@@ -385,9 +385,9 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
  *         false, if new memory is too small to hold content.
  *                                                                            */
 {
-    ptrdiff_t  offset_end_p          = me->input.end_p     - me->_memory._front;
-    ptrdiff_t  offset_read_p         = me->_read_p         - me->_memory._front;
-    ptrdiff_t  offset_lexeme_start_p = me->_lexeme_start_p - me->_memory._front;
+    ptrdiff_t  offset_end_p          = me->input.end_p     - me->begin(me);
+    ptrdiff_t  offset_read_p         = me->_read_p         - me->begin(me);
+    ptrdiff_t  offset_lexeme_start_p = me->_lexeme_start_p - me->begin(me);
 
     __quex_assert(   (0                            != me->_memory.including_buffer) 
                   == (E_Ownership_INCLUDING_BUFFER == me->_memory.ownership));
@@ -395,7 +395,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
     __quex_assert(offset_read_p         < NewSize);
     __quex_assert(offset_lexeme_start_p < NewSize);
     /* Required buffer size: content + 2 lexatoms for borders.                */
-    __quex_assert(me->input.end_p - &me->_memory._front[1] + 2 <= NewSize);
+    __quex_assert(me->input.end_p - me->content_space_begin(me) + 2 <= NewSize);
 
     QUEX_NAME(BufferMemory_construct)(&me->_memory, new_memory_base, (size_t)NewSize,
                                       me->_memory.ownership, 

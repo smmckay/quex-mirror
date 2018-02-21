@@ -20,7 +20,7 @@ QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(QUEX_NAME(Buffer)*  me)
  *   > 1  number of positions that the content may be moved towards the
  *        begin of the buffer.                                                */
 {
-    QUEX_TYPE_LEXATOM*  BeginP = &me->_memory._front[1];
+    QUEX_TYPE_LEXATOM*  BeginP = me->content_space_begin(me);
     QUEX_TYPE_LEXATOM*  region_p;
     const ptrdiff_t     ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
     const ptrdiff_t     FallBackN = (ptrdiff_t)QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
@@ -62,8 +62,8 @@ QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me)
  *   > 1  number of positions that the content may be moved towards the
  *        begin of the buffer.                                                */
 {
-    const QUEX_TYPE_LEXATOM*  BeginP      = &me->_memory._front[1];
-    QUEX_TYPE_LEXATOM*        LastP       = &me->_memory._back[-1];
+    const QUEX_TYPE_LEXATOM*  BeginP = me->content_space_begin(me);
+    QUEX_TYPE_LEXATOM*        LastP  = &me->content_space_end(me)[-1];
     ptrdiff_t                 backward_walk_distance;  
     ptrdiff_t                 move_distance;
     ptrdiff_t                 move_distance_reasonable;
@@ -104,7 +104,7 @@ QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me)
 QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer)* me, ptrdiff_t move_distance)
 {
-    const ptrdiff_t FilledSize = me->input.end_p - &me->_memory._front[1];
+    const ptrdiff_t FilledSize = me->input.end_p - me->content_space_begin(me);
     if( move_distance >= FilledSize ) {
         return 0;
     }
@@ -143,19 +143,19 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me,
         move_size = QUEX_NAME(Buffer_move_size_towards_begin)(me, MoveDistance);
 
         if( MoveDistance && move_size ) {
-            __QUEX_STD_memmove((void*)&me->_memory._front[1], 
-                               (void*)&me->_memory._front[1 + MoveDistance],
+            __QUEX_STD_memmove((void*)me->content_space_begin(me), 
+                               (void*)&me->content_space_begin(me)[MoveDistance],
                                (size_t)move_size * sizeof(QUEX_TYPE_LEXATOM));
         }
 
         QUEX_NAME(Buffer_pointers_add_offset)(me, - MoveDistance, 
                                               position_register, PositionRegisterN); 
-        __quex_assert(me->input.end_p == &me->_memory._front[1 + move_size]);
+        __quex_assert(me->input.end_p == &me->content_space_begin(me)[move_size]);
         (void)move_size;
-        QUEX_IF_ASSERTS_poison(&me->input.end_p[1], me->_memory._back);
+        QUEX_IF_ASSERTS_poison(&me->input.end_p[1], me->content_space_end(me));
     }
 
-    return me->_memory._back - me->input.end_p;
+    return me->content_space_end(me) - me->input.end_p;
 }
 
 QUEX_INLINE ptrdiff_t
@@ -176,7 +176,7 @@ QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me,
  * RETURNS: Number of lexatom that need to be filled into the gap.
  *                                                                           */
 {
-    QUEX_TYPE_LEXATOM*  BeginP      = &me->_memory._front[1];
+    QUEX_TYPE_LEXATOM*  BeginP      = me->content_space_begin(me);
     const ptrdiff_t     ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
     ptrdiff_t           move_size;
 
@@ -207,8 +207,8 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
  * remained UNTOUCHED during the moving and loading of the caller function.
  * That is, they indicate the situation to be restored.                       */
 {
-    QUEX_TYPE_LEXATOM* BeginP      = &me->_memory._front[1];
-    QUEX_TYPE_LEXATOM* EndP        = me->_memory._back;
+    QUEX_TYPE_LEXATOM* BeginP      = me->content_space_begin(me);
+    QUEX_TYPE_LEXATOM* EndP        = me->content_space_end(me);
     ptrdiff_t          move_size;
     ptrdiff_t          load_request_n;
 
@@ -242,7 +242,7 @@ QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(QUEX_NAME(Buffer)*       
                                                        QUEX_TYPE_STREAM_POSITION* lexatom_index_to_be_contained)
 {
     QUEX_TYPE_STREAM_POSITION lexatom_index_begin = me->input.lexatom_index_begin;
-    QUEX_TYPE_STREAM_POSITION lexatom_index_end   = lexatom_index_begin + (me->input.end_p - &me->_memory._front[1]);
+    QUEX_TYPE_STREAM_POSITION lexatom_index_end   = lexatom_index_begin + (me->input.end_p - me->content_space_begin(me));
     QUEX_TYPE_STREAM_POSITION new_lexatom_index_begin;
     QUEX_TYPE_STREAM_POSITION FallBackN   = QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
     /* Assert to emphasize: 

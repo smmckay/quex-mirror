@@ -4,7 +4,7 @@
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.
-##    This helps to find subtile errors.
+##    This helps to find subtle errors.
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
@@ -16,10 +16,10 @@
 TOKEN: X ''
 TOKEN: X ''
 self:        ((0x7ffd57654bd0))
-BufferBegin: ((0x55f3738355a0))
-BufferEnd:   ((0x55f3738355a0)) + 3
+BufferBegin: ((0x602000000010))
+BufferEnd:   ((0x602000000010)) + 4
 TOKEN: <TERMINATION> ''
 | [END]
 self:        ((0x7ffd57654bd0))
-BufferBegin: ((0x55f3738355a0))
-BufferEnd:   ((0x55f3738355a0)) + 3
+BufferBegin: ((0x602000000010))
+BufferEnd:   ((0x602000000010)) + 4

@@ -64,7 +64,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
                                                    (QUEX_TYPE_LEXATOM**)0, 0);
     }
 
-    free_space = me->_memory._back - me->input.end_p;
+    free_space = me->content_space_end(me) - me->input.end_p;
     
     if( 0 == free_space ) {
         *begin_p = (void*)0;
@@ -85,16 +85,16 @@ QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
 /* Uses the content that has been inserted until 'FilledEndP' to fill the
  * engine's lexatom buffer (if it is not already done). A fille of type
  * 'LexatomLoader_Converter' takes the content of the raw buffer and converts
- * it into the engine's buffer from 'me->input.end_p' to 'me->_memory._back'.
+ * it into the engine's buffer from 'me->input.end_p' to 'me->content_space_end(me)'.
  *                                                                           */
 {
-    QUEX_TYPE_LEXATOM*   BeginP = &me->_memory._front[1];
-    __quex_assert((QUEX_TYPE_LEXATOM*)FilledEndP <= me->_memory._back);
+    QUEX_TYPE_LEXATOM*   BeginP = me->content_space_begin(me);
+    __quex_assert((QUEX_TYPE_LEXATOM*)FilledEndP <= me->content_space_end(me));
 
     /* Place new content in the engine's buffer.                             */
     ptrdiff_t inserted_lexatom_n = me->filler->derived.fill_finish(me->filler, 
                                                                    me->input.end_p,
-                                                                   me->_memory._back, 
+                                                                   me->content_space_end(me), 
                                                                    FilledEndP);
 
     /* Assume: content from 'input.end_p' to 'input.end_p[CharN]'
