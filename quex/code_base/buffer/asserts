@@ -9,6 +9,7 @@
 #define QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY_SAME(BI, ME) /* empty */    
 #define QUEX_BUFFER_ASSERT_pointers_in_range(ME)          /* empty */
 #define QUEX_BUFFER_ASSERT_CONSISTENCY(ME)                /* empty */
+#define QUEX_BUFFER_ASSERT_MEMBER_FUNCTIONS(ME)           /* empty */
 
 #else
 #    include <quex/code_base/definitions>
@@ -34,12 +35,14 @@ QUEX_NAMESPACE_MAIN_OPEN
 #define QUEX_BUFFER_ASSERT_limit_codes_in_place QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)
 #define QUEX_BUFFER_ASSERT_CONSISTENCY          QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)
 #define QUEX_BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE QUEX_NAME(BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE_core)
+#define QUEX_BUFFER_ASSERT_MEMBER_FUNCTIONS     QUEX_NAME(Buffer_member_functions_assert)
 
 QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)(const QUEX_NAME(Buffer)* B);                 
 QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)(const QUEX_NAME(Buffer)* B);
 QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)(const QUEX_NAME(Buffer)* B);                                            
 QUEX_INLINE void QUEX_NAME(BUFFER_ASSERT_NO_BUFFER_LIMIT_CODE_core)(const QUEX_TYPE_LEXATOM* Begin, 
                                                                      const QUEX_TYPE_LEXATOM* End);
+QUEX_INLINE void QUEX_NAME(Buffer_member_functions_assert)(const QUEX_NAME(Buffer)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

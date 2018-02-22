@@ -53,14 +53,14 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
-    if( me->_read_p != me->input.end_p) {
+    if( me->_read_p != me->content_end(me)) {
         /* If the read pointer does not stand on the end of input pointer, then
          * the 'buffer limit code' at the read pointer is a bad lexatom.    
          * Buffer limit codes cannot be possibly be part of buffer content.  */
         return E_LoadResult_ENCODING_ERROR;
     }
     else if( ! me->filler || ! me->filler->byte_loader ) {
-        QUEX_NAME(Buffer_register_eos)(me, ci_begin + (me->input.end_p - begin_p));
+        QUEX_NAME(Buffer_register_eos)(me, ci_begin + (me->content_end(me) - begin_p));
         return E_LoadResult_NO_MORE_DATA;  /* No filler/loader => no load!   */
     }
 
@@ -137,7 +137,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
                                           &loaded_n);
 
     lexatom_index_end =   me->input.lexatom_index_begin  
-                        + (me->input.end_p - me->content_space_begin(me));
+                        + (me->content_end(me) - me->content_space_begin(me));
 
     if(    LexatomIndexToBeContained == me->input.lexatom_index_end_of_stream 
         && LexatomIndexToBeContained == lexatom_index_end ) {
@@ -158,7 +158,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
         }
         else {
             /* Ensure, that the buffer limit code is restored.                */
-            *(me->input.end_p) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
+            *(me->content_end(me)) = (QUEX_TYPE_LEXATOM)QUEX_SETTING_BUFFER_LIMIT_CODE;
         }
         return false;
     }
@@ -316,16 +316,16 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
         QUEX_NAME(Buffer_move_towards_begin)(me, move_distance,
                                              position_register, PositionRegisterN); 
     }
-    free_space = me->content_space_end(me) - me->input.end_p;
+    free_space = me->content_space_end(me) - me->content_end(me);
 
     if( 0 == free_space ) {
         return false; 
     }
 
     load_lexatom_index  =   me->input.lexatom_index_begin 
-                          + (me->input.end_p - me->content_space_begin(me));
+                          + (me->content_end(me) - me->content_space_begin(me));
 
-    *loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, me->input.end_p, free_space,
+    *loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, me->content_end(me), free_space,
                                               load_lexatom_index, &end_of_stream_f,
                                               encoding_error_f);
 
@@ -333,8 +333,8 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
         me->input.lexatom_index_end_of_stream = load_lexatom_index + *loaded_n;
     }
 
-    me->input.end_p    = &me->input.end_p[*loaded_n];
-    *(me->input.end_p) = QUEX_SETTING_BUFFER_LIMIT_CODE;
+    me->input.end_p        = &me->input.end_p[*loaded_n];
+    *(me->content_end(me)) = QUEX_SETTING_BUFFER_LIMIT_CODE;
     return true;
 }
 
@@ -399,7 +399,7 @@ QUEX_NAME(Buffer_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me,
  * RETURNS: true, if space for reload could be provided.
  *          false, else.                                                      */
 {
-    if( me->input.end_p < me->content_space_end(me) || me->input.end_p != me->_read_p ) {
+    if( me->content_end(me) < me->content_space_end(me) || me->content_end(me) != me->_read_p ) {
         return true;
     }
     /* No free space can be provided for loading new content. 
@@ -407,7 +407,7 @@ QUEX_NAME(Buffer_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me,
 
     QUEX_NAME(Buffer_call_on_buffer_overflow)(me);
 
-    if( me->input.end_p < &me->content_space_end(me)[-1] ) {
+    if( me->content_end(me) < &me->content_space_end(me)[-1] ) {
         return true;                                          /* Fair enough! */
     }
 

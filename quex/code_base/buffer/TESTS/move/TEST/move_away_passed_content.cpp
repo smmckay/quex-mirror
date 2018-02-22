@@ -104,7 +104,7 @@ QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
                                                    position_register, PositionRegisterN); 
     }
 
-    free_space = me->content_space_end(me) - me->input.end_p;
+    free_space = me->content_space_end(me) - me->content_end(me);
 
     /*________________________________________________________________________*/
     QUEX_IF_ASSERTS_poison(&me->content_space_end(me)[- move_distance + 1], 

@@ -3,6 +3,7 @@
 #define __QUEX_INCLUDE_GUARD__BUFFER__ASSERTS_I
 
 #include <quex/code_base/buffer/asserts>
+#include <quex/code_base/buffer/Buffer>
 
 #ifndef QUEX_OPTION_ASSERTS
 
@@ -19,12 +20,12 @@ QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)(const QUEX_NAME(Buffer)* B)
         return;
     }
 
-    __quex_assert((*B)._memory._front  <  (*B)._memory._back);                     
-    __quex_assert((*B)._read_p         >= (*B)._memory._front);                
-    __quex_assert((*B)._lexeme_start_p >= (*B)._memory._front);                
+    __quex_assert((*B)._memory._front  <  (*B).content_space_end(B));                     
+    __quex_assert((*B)._read_p         >= (*B).begin(B));                
+    __quex_assert((*B)._lexeme_start_p >= (*B).begin(B));                
 
-    __quex_assert((*B).input.end_p     >= (*B)._memory._front + 1);          
-    __quex_assert((*B).input.end_p     <= (*B)._memory._back);               
+    __quex_assert((*B).input.end_p     >= (*B).content_space_begin(B));          
+    __quex_assert((*B).input.end_p     <= (*B).content_space_end(B));               
 
     __quex_assert((*B)._read_p         <= (*B).input.end_p);              
     __quex_assert((*B)._lexeme_start_p <= (*B).input.end_p);              
@@ -70,6 +71,27 @@ QUEX_NAME(BUFFER_ASSERT_CONSISTENCY_core)(const QUEX_NAME(Buffer)* B)
     else {
         __quex_assert(0 == B->_memory.including_buffer);
     }
+    QUEX_BUFFER_ASSERT_MEMBER_FUNCTIONS(B);
+}
+
+QUEX_INLINE void
+QUEX_NAME(Buffer_member_functions_assert)(const QUEX_NAME(Buffer)* me)
+{
+    __quex_assert(me->fill                == QUEX_NAME(Buffer_fill));
+    __quex_assert(me->fill_prepare        == QUEX_NAME(Buffer_fill_prepare));
+    __quex_assert(me->fill_finish         == QUEX_NAME(Buffer_fill_finish));
+
+    __quex_assert(me->begin               == QUEX_NAME(Buffer_memory_begin));
+    __quex_assert(me->end                 == QUEX_NAME(Buffer_memory_end));
+    __quex_assert(me->size                == QUEX_NAME(Buffer_memory_size));
+
+    __quex_assert(me->content_space_begin == QUEX_NAME(Buffer_memory_content_space_begin));
+    __quex_assert(me->content_space_end   == QUEX_NAME(Buffer_memory_content_space_end));
+    __quex_assert(me->content_space_size  == QUEX_NAME(Buffer_memory_content_space_size));
+
+    __quex_assert(me->content_begin       == QUEX_NAME(Buffer_memory_content_begin));
+    __quex_assert(me->content_end         == QUEX_NAME(Buffer_memory_content_end));
+    __quex_assert(me->content_size        == QUEX_NAME(Buffer_memory_content_size));
 }
 
 QUEX_INLINE void

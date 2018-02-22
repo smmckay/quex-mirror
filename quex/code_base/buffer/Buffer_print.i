@@ -27,7 +27,7 @@ QUEX_NAME(Buffer_print_content)(QUEX_NAME(Buffer)* me)
                                          (const uint8_t*)me->begin(me),
                                          (const uint8_t*)me->content_space_end(me), 
                                          (const uint8_t*)me->_read_p, 
-                                         (const uint8_t*)me->input.end_p,
+                                         (const uint8_t*)me->content_end(me),
                                          /* BordersF */ true);
 
 }
@@ -58,8 +58,8 @@ QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* me)
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->begin(me),      total_end, me);
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_lexeme_start_p - 2, total_end, me);
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->_read_p        - 2, total_end, me);
-    if( me->input.end_p != 0x0 ) {
-        QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->input.end_p - 4, total_end, me);
+    if( me->content_end(me) != 0x0 ) {
+        QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->content_end(me) - 4, total_end, me);
     }
     QUEX_NAME(Buffer_print_content_detailed_lines)(&iterator, me->content_space_end(me)   - 4, total_end, me);
     __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "_________________________________________________________________\n");
@@ -133,7 +133,7 @@ QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
     __QUEX_STD_printf("      end_character_index: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_end)(me));
     __QUEX_STD_printf("      end_p:               ");
     QUEXED(print_relative_positions)(me->begin(me), me->end(me), 
-                                     sizeof(QUEX_TYPE_LEXATOM), me->input.end_p);
+                                     sizeof(QUEX_TYPE_LEXATOM), me->content_end(me));
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("    }\n");
     __QUEX_STD_printf("  }\n");

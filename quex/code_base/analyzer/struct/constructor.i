@@ -290,7 +290,7 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
  *          Otherwise: unreferenced trailing objects; memory leaks.
  *____________________________________________________________________________*/
 {
-    /* NOTE: 'memset()' will destroy the v-table in case that the analyzer 
+    /* NOTE: 'memset()' would destroy the v-table in case that the analyzer 
      *       is a c++ class object.                                           */
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
 #   ifdef QUEX_OPTION_COUNTER
@@ -304,7 +304,7 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 
     QUEX_NAME(ModeStack_resources_absent_mark)(&me->_mode_stack);
     __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
-    me->__input_name    = (char*)0;
+    me->__input_name = (char*)0;
 }
 
 QUEX_INLINE void

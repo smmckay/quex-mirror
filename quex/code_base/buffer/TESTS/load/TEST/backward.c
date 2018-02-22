@@ -148,8 +148,8 @@ load_forward_until_eos(QUEX_NAME(Buffer)* me)
     int  count = 0;
 
     while( me->input.lexatom_index_end_of_stream == -1 ) {
-        me->_read_p         = me->input.end_p;
-        me->_lexeme_start_p = me->input.end_p;
+        me->_read_p         = me->content_end(me);
+        me->_lexeme_start_p = me->content_end(me);
         QUEX_NAME(Buffer_load_forward)(me, NULL, 0);
 
         (void)verify_content(me);

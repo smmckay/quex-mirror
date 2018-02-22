@@ -18,7 +18,7 @@
 
 
 
-#   line 2 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
+#   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 #include <stdio.h>
 #include <string.h>
@@ -39,12 +39,12 @@ QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
     QUEX_TYPE_TOKEN_ID    id;
 
-#   line 20 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
+#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
 #   line 46 "TestAnalyzer-token.h"
 
-#   line 21 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
+#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
 #   line 51 "TestAnalyzer-token.h"
@@ -59,7 +59,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #       endif
 #   endif
 
-#   line 123 "/home/fschaef/prj/quex/r4980/quex/code_base/token/CDefault.qx"
+#   line 123 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        /* Nothing here. */
    

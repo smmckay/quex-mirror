@@ -121,26 +121,26 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) 
 
     struct    QUEX_NAME(LexatomLoader_tag)*  filler;
 
-    void*     (*fill)(struct QUEX_NAME(Buffer_tag)*  me, 
-                      const void*                    ContentBegin,
-                      const void*                    ContentEnd);
-    void      (*fill_prepare)(struct QUEX_NAME(Buffer_tag)*  me, 
-                              void**                         begin_p, 
-                              const void**                   end_p);
-    void      (*fill_finish)(struct QUEX_NAME(Buffer_tag)* me,
-                             const void*                   FilledEndP);
+    void*                (*fill)(struct QUEX_NAME(Buffer_tag)*  me, 
+                                 const void*                    ContentBegin,
+                                 const void*                    ContentEnd);
+    void                 (*fill_prepare)(struct QUEX_NAME(Buffer_tag)*  me, 
+                                         void**                         begin_p, 
+                                         const void**                   end_p);
+    void                 (*fill_finish)(struct QUEX_NAME(Buffer_tag)* me,
+                                        const void*                   FilledEndP);
 
-    QUEX_TYPE_LEXATOM*   (*begin)(struct QUEX_NAME(Buffer_tag)* me);
-    QUEX_TYPE_LEXATOM*   (*end)(struct QUEX_NAME(Buffer_tag)* me);
-    ptrdiff_t            (*size)(struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*begin)(const struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*end)(const struct QUEX_NAME(Buffer_tag)* me);
+    ptrdiff_t            (*size)(const struct QUEX_NAME(Buffer_tag)* me);
 
-    QUEX_TYPE_LEXATOM*   (*content_space_begin)(struct QUEX_NAME(Buffer_tag)* me);
-    QUEX_TYPE_LEXATOM*   (*content_space_end)(struct QUEX_NAME(Buffer_tag)* me);
-    ptrdiff_t            (*content_space_size)(struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*content_space_begin)(const struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*content_space_end)(const struct QUEX_NAME(Buffer_tag)* me);
+    ptrdiff_t            (*content_space_size)(const struct QUEX_NAME(Buffer_tag)* me);
 
-    QUEX_TYPE_LEXATOM*   (*content_begin)(struct QUEX_NAME(Buffer_tag)* me);
-    QUEX_TYPE_LEXATOM*   (*content_end)(struct QUEX_NAME(Buffer_tag)* me);
-    ptrdiff_t            (*content_size)(struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*content_begin)(const struct QUEX_NAME(Buffer_tag)* me);
+    QUEX_TYPE_LEXATOM*   (*content_end)(const struct QUEX_NAME(Buffer_tag)* me);
+    ptrdiff_t            (*content_size)(const struct QUEX_NAME(Buffer_tag)* me);
 
     QUEX_NAME(Buffer_event_callbacks) event;
 
@@ -318,6 +318,27 @@ QUEX_INLINE void QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)*
                                                     bool                         SameF);
 QUEX_INLINE void QUEX_NAME(BufferInvariance_restore)(QUEX_NAME(BufferInvariance)* me, 
                                                      QUEX_NAME(Buffer)*           subject);
+
+/* Member functions */
+QUEX_INLINE void*                QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me, 
+                                                        const void*         ContentBegin,
+                                                        const void*         ContentEnd);
+QUEX_INLINE void                 QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me, 
+                                                                void**              begin_p, 
+                                                                const void**        end_p);
+QUEX_INLINE void                 QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
+                                                               const void*        FilledEndP);
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_begin)(const QUEX_NAME(Buffer)* me);
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_end)(const QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_size)(const QUEX_NAME(Buffer)* me);
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_space_begin)(const QUEX_NAME(Buffer)* me);
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_space_end)(const QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_content_space_size)(const QUEX_NAME(Buffer)* me);
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_begin)(const QUEX_NAME(Buffer)* me);
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_end)(const QUEX_NAME(Buffer)* me);
+QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_content_size)(const QUEX_NAME(Buffer)* me);
 
 
 QUEX_NAMESPACE_MAIN_CLOSE

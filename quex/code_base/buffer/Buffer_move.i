@@ -104,7 +104,7 @@ QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me)
 QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer)* me, ptrdiff_t move_distance)
 {
-    const ptrdiff_t FilledSize = me->input.end_p - me->content_space_begin(me);
+    const ptrdiff_t FilledSize = me->content_size(me);
     if( move_distance >= FilledSize ) {
         return 0;
     }
@@ -150,12 +150,12 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me,
 
         QUEX_NAME(Buffer_pointers_add_offset)(me, - MoveDistance, 
                                               position_register, PositionRegisterN); 
-        __quex_assert(me->input.end_p == &me->content_space_begin(me)[move_size]);
+        __quex_assert(me->content_end(me) == &me->content_space_begin(me)[move_size]);
         (void)move_size;
-        QUEX_IF_ASSERTS_poison(&me->input.end_p[1], me->content_space_end(me));
+        QUEX_IF_ASSERTS_poison(&me->content_end(me)[1], me->content_space_end(me));
     }
 
-    return me->content_space_end(me) - me->input.end_p;
+    return me->content_space_end(me) - me->content_end(me);
 }
 
 QUEX_INLINE ptrdiff_t
@@ -207,8 +207,8 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
  * remained UNTOUCHED during the moving and loading of the caller function.
  * That is, they indicate the situation to be restored.                       */
 {
-    QUEX_TYPE_LEXATOM* BeginP      = me->content_space_begin(me);
-    QUEX_TYPE_LEXATOM* EndP        = me->content_space_end(me);
+    QUEX_TYPE_LEXATOM* BeginP = me->content_space_begin(me);
+    QUEX_TYPE_LEXATOM* EndP   = me->content_space_end(me);
     ptrdiff_t          move_size;
     ptrdiff_t          load_request_n;
 
@@ -230,7 +230,7 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
         load_request_n = (ptrdiff_t)move_distance;
     }
     else {
-        load_request_n = (me->input.end_p - BeginP);
+        load_request_n = me->content_size(me);
     }
     __quex_assert(&BeginP[load_request_n] <= EndP);
     (void)EndP;
@@ -242,7 +242,7 @@ QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(QUEX_NAME(Buffer)*       
                                                        QUEX_TYPE_STREAM_POSITION* lexatom_index_to_be_contained)
 {
     QUEX_TYPE_STREAM_POSITION lexatom_index_begin = me->input.lexatom_index_begin;
-    QUEX_TYPE_STREAM_POSITION lexatom_index_end   = lexatom_index_begin + (me->input.end_p - me->content_space_begin(me));
+    QUEX_TYPE_STREAM_POSITION lexatom_index_end   = lexatom_index_begin + me->content_size(me);
     QUEX_TYPE_STREAM_POSITION new_lexatom_index_begin;
     QUEX_TYPE_STREAM_POSITION FallBackN   = QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
     /* Assert to emphasize: 

@@ -64,7 +64,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
                                                    (QUEX_TYPE_LEXATOM**)0, 0);
     }
 
-    free_space = me->content_space_end(me) - me->input.end_p;
+    free_space = me->content_space_end(me) - me->content_end(me);
     
     if( 0 == free_space ) {
         *begin_p = (void*)0;
@@ -85,7 +85,7 @@ QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
 /* Uses the content that has been inserted until 'FilledEndP' to fill the
  * engine's lexatom buffer (if it is not already done). A fille of type
  * 'LexatomLoader_Converter' takes the content of the raw buffer and converts
- * it into the engine's buffer from 'me->input.end_p' to 'me->content_space_end(me)'.
+ * it into the engine's buffer from 'me->content_end(me)' to 'me->content_space_end(me)'.
  *                                                                           */
 {
     QUEX_TYPE_LEXATOM*   BeginP = me->content_space_begin(me);
@@ -93,15 +93,15 @@ QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
 
     /* Place new content in the engine's buffer.                             */
     ptrdiff_t inserted_lexatom_n = me->filler->derived.fill_finish(me->filler, 
-                                                                   me->input.end_p,
+                                                                   me->content_end(me),
                                                                    me->content_space_end(me), 
                                                                    FilledEndP);
 
     /* Assume: content from 'input.end_p' to 'input.end_p[CharN]'
      * has been filled with data.                                            */
     if( me->filler->_byte_order_reversion_active_f ) {
-        QUEX_NAME(LexatomLoader_reverse_byte_order)(me->input.end_p, 
-                                                   &me->input.end_p[inserted_lexatom_n]);
+        QUEX_NAME(LexatomLoader_reverse_byte_order)(me->content_end(me), 
+                                                   &me->content_end(me)[inserted_lexatom_n]);
     }
 
     /* -- Manual buffer filling requires the end-of-stream pointer always
@@ -111,9 +111,9 @@ QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
      * -- The 'lexatom_index_end_of_stream' can now be set, since it is
      *    known how many lexatoms have been inserted.
      *                                                                       */
-    QUEX_NAME(Buffer_register_content)(me, &me->input.end_p[inserted_lexatom_n], -1);
+    QUEX_NAME(Buffer_register_content)(me, &me->content_end(me)[inserted_lexatom_n], -1);
     QUEX_NAME(Buffer_register_eos)(me,   me->input.lexatom_index_begin
-                                       + (me->input.end_p - BeginP));
+                                       + (me->content_end(me) - BeginP));
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 }

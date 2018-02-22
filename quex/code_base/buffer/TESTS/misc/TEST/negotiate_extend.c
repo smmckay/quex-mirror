@@ -22,6 +22,7 @@
 #include <common.h>
 #include <quex/code_base/buffer/TESTS/MemoryManager_UnitTest.i>
 #include <quex/code_base/buffer/Buffer>
+#include <quex/code_base/buffer/asserts>
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
@@ -31,9 +32,10 @@ QUEX_NAME(Buffer) self_subject[1024];
 static void               self_test(size_t    SizeBefore, 
                                     ptrdiff_t ReallocLimitByteN);
 static QUEX_NAME(Buffer)* self_construct_setup(QUEX_NAME(Buffer)* array, 
-                                               size_t TotalSize, size_t Depth);
+                                               size_t             TotalSize, 
+                                               size_t*            depth);
 static void               self_destruct_setup(QUEX_NAME(Buffer)* array,
-                                              size_t Depth);
+                                              size_t             Depth);
 
 QUEX_INLINE bool
 QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
@@ -55,7 +57,7 @@ main(int argc, char** argv)
     printf("## COMMENT: The end state of the reallocation is checked via asserts.\n"
            "## COMMENT: The particular sequence of accept/refusal sizes is indifferent.\n"
            "## COMMENT: Important is the final 'verdict'.\n");
-    for(total_size = 4; total_size < 7; ++total_size) {
+    for(total_size = 4; total_size < 21; total_size += 3 ) {
         self_test(total_size, 0);
         self_test(total_size, 1);
 
@@ -95,18 +97,27 @@ self_test(size_t SizeBefore, ptrdiff_t ReallocLimitByteN)
                                             sizeof(QUEX_TYPE_LEXATOM) * SizeBefore);
     size_t               content_before_size;
     QUEX_TYPE_LEXATOM*   root_memory_p = 0;
+    size_t               depth = 5;            
 
-    printf("\n---( initial size: %i; target size: %i; reallocation limit: %i [byte]; )---\n",
-           (int)SizeBefore, (int)(SizeBefore * 2.0), (int)ReallocLimitByteN);
-    me = self_construct_setup(&self_reference[0], SizeBefore, /* Depth */5);
+    if( ReallocLimitByteN < 0) return; 
 
-    content_before_size = (size_t)(me->input.end_p - &self_reference[0]._memory._front[0]);
+    printf("\n---( initial size: %i; target size: %i; reallocation limit: ",
+           (int)SizeBefore, (int)(SizeBefore * 2.0)); 
+
+    if( ReallocLimitByteN == PTRDIFF_MAX ) printf("PTRDIFF_MAX");
+    else                                   printf("%i", (int)ReallocLimitByteN);
+    printf(" [byte]; )---\n");
+
+    me = self_construct_setup(&self_reference[0], SizeBefore, &depth);
+    hwut_verify(SizeBefore == me->end(me) - self_reference[0].begin(&self_reference[0]));
+
+    /* depth may have been adapted. */
+
+    content_before_size = (size_t)(me->content_end(me) - &self_reference[0]._memory._front[0]);
 
     /* Backup the initial content for later check. */
     root_memory_p = &self_reference[0]._memory._front[0];
     memcpy((void*)content_before, (void*)root_memory_p, content_before_size);
-
-    hwut_verify(SizeBefore == me->end(me) - me->begin(me));
 
     MemoryManager_UnitTest.reallocate_limit_byte_n = ReallocLimitByteN;
     MemoryManager_UnitTest.reallocate_verbose_f    = 1;
@@ -125,19 +136,21 @@ self_test(size_t SizeBefore, ptrdiff_t ReallocLimitByteN)
     hwut_verify(verdict_f   == (size > SizeBefore));
     hwut_verify(! verdict_f == (size == SizeBefore));
 
-    self_destruct_setup(&self_reference[0], /* Depth */5);
+    self_destruct_setup(&self_reference[0], depth);
 
     free(content_before);
 }
 
 static QUEX_NAME(Buffer)*
-self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t DepthWanted)
+self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t* depth)
 {
     ptrdiff_t          i           = 0;
     bool               success_f   = false;
-    ptrdiff_t          depth       = QUEX_MIN(TotalSize / 4, DepthWanted);
-    ptrdiff_t          single_size = TotalSize / depth;
+    ptrdiff_t          single_size;
     QUEX_TYPE_LEXATOM* p;
+
+    *depth      = QUEX_MIN(TotalSize / 4, *depth);
+    single_size = TotalSize / *depth;
 
     QUEX_TYPE_LEXATOM* memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
                                       TotalSize * sizeof(QUEX_TYPE_LEXATOM), 
@@ -156,7 +169,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t DepthWan
     /* Ensure, that all buffers are split from the root buffer. */
     MemoryManager_UnitTest.allocation_addmissible_f = false;
 
-    for(i=0; i<depth-1 ; ++i) {
+    for(i=0; i<*depth-1 ; ++i) {
         success_f = QUEX_NAME(Buffer_nested_construct)(&array[i+1], &array[i], 
                                                        (QUEX_NAME(LexatomLoader)*)0);
         hwut_verify(success_f);
@@ -167,11 +180,13 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t DepthWan
         for(p =  &array[i+1]._memory._front[1]; p != array[i+1].input.end_p; ++p) {
             *p = (QUEX_TYPE_LEXATOM)('a' + i);
         }
+
+        QUEX_BUFFER_ASSERT_CONSISTENCY(&array[i+1]);
     }
 
     MemoryManager_UnitTest.allocation_addmissible_f = true;
 
-    return &array[depth-1];
+    return &array[*depth-1];
 }
 
 static void

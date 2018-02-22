@@ -166,8 +166,8 @@ QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
     QUEX_TYPE_LEXATOM* BeginP    = me->content_space_begin(me);
     bool               verdict_f = true;
 
-    if( me->_read_p > me->input.end_p ) {
-        me->_read_p = me->input.end_p;
+    if( me->_read_p > me->content_end(me) ) {
+        me->_read_p = me->content_end(me);
         verdict_f   = false;
     }
     else if( me->_read_p < BeginP ) {

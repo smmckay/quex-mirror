@@ -47,8 +47,6 @@ QUEX_NAME(ByteLoader_Probe_construct)(QUEX_NAME(ByteLoader_Probe)* me,
                                       QUEX_NAME(ByteLoader)*       source,
                                       void*                        reference_object)
 {
-    __QUEX_STD_memset((void*)me, 0, sizeof(*me));
-
     me->source           = source;
     me->reference_object = reference_object;
 

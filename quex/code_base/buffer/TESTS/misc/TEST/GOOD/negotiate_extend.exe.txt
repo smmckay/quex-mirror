@@ -42,108 +42,279 @@ verdict: true;
 Reallocate: done 8;
 verdict: true;
 
----( initial size: 4; target size: 8; reallocation limit: -1 [byte]; )---
+---( initial size: 4; target size: 8; reallocation limit: PTRDIFF_MAX [byte]; )---
 Reallocate: done 8;
 verdict: true;
 
----( initial size: 5; target size: 10; reallocation limit: 0 [byte]; )---
+---( initial size: 7; target size: 14; reallocation limit: 0 [byte]; )---
+Reallocate: refuse 14;
 Reallocate: refuse 10;
-Reallocate: refuse 7;
-Reallocate: refuse 6;
+Reallocate: refuse 8;
 verdict: false;
 
----( initial size: 5; target size: 10; reallocation limit: 1 [byte]; )---
+---( initial size: 7; target size: 14; reallocation limit: 1 [byte]; )---
+Reallocate: refuse 14;
 Reallocate: refuse 10;
-Reallocate: refuse 7;
-Reallocate: refuse 6;
+Reallocate: refuse 8;
 verdict: false;
 
----( initial size: 5; target size: 10; reallocation limit: 4 [byte]; )---
+---( initial size: 7; target size: 14; reallocation limit: 6 [byte]; )---
+Reallocate: refuse 14;
 Reallocate: refuse 10;
-Reallocate: refuse 7;
-Reallocate: refuse 6;
+Reallocate: refuse 8;
 verdict: false;
 
----( initial size: 5; target size: 10; reallocation limit: 5 [byte]; )---
+---( initial size: 7; target size: 14; reallocation limit: 7 [byte]; )---
+Reallocate: refuse 14;
 Reallocate: refuse 10;
-Reallocate: refuse 7;
-Reallocate: refuse 6;
+Reallocate: refuse 8;
 verdict: false;
 
----( initial size: 5; target size: 10; reallocation limit: 6 [byte]; )---
+---( initial size: 7; target size: 14; reallocation limit: 8 [byte]; )---
+Reallocate: refuse 14;
 Reallocate: refuse 10;
-Reallocate: refuse 7;
-Reallocate: done 6;
+Reallocate: done 8;
 verdict: true;
 
----( initial size: 5; target size: 10; reallocation limit: 9 [byte]; )---
-Reallocate: refuse 10;
-Reallocate: done 7;
-verdict: true;
-
----( initial size: 5; target size: 10; reallocation limit: 10 [byte]; )---
+---( initial size: 7; target size: 14; reallocation limit: 13 [byte]; )---
+Reallocate: refuse 14;
 Reallocate: done 10;
 verdict: true;
 
----( initial size: 5; target size: 10; reallocation limit: 11 [byte]; )---
-Reallocate: done 10;
+---( initial size: 7; target size: 14; reallocation limit: 14 [byte]; )---
+Reallocate: done 14;
 verdict: true;
 
----( initial size: 5; target size: 10; reallocation limit: -1 [byte]; )---
-Reallocate: done 10;
+---( initial size: 7; target size: 14; reallocation limit: 15 [byte]; )---
+Reallocate: done 14;
 verdict: true;
 
----( initial size: 6; target size: 12; reallocation limit: 0 [byte]; )---
+---( initial size: 7; target size: 14; reallocation limit: PTRDIFF_MAX [byte]; )---
+Reallocate: done 14;
+verdict: true;
+
+---( initial size: 10; target size: 20; reallocation limit: 0 [byte]; )---
+Reallocate: refuse 20;
+Reallocate: refuse 15;
 Reallocate: refuse 12;
-Reallocate: refuse 9;
-Reallocate: refuse 7;
+Reallocate: refuse 11;
 verdict: false;
 
----( initial size: 6; target size: 12; reallocation limit: 1 [byte]; )---
+---( initial size: 10; target size: 20; reallocation limit: 1 [byte]; )---
+Reallocate: refuse 20;
+Reallocate: refuse 15;
 Reallocate: refuse 12;
-Reallocate: refuse 9;
-Reallocate: refuse 7;
+Reallocate: refuse 11;
 verdict: false;
 
----( initial size: 6; target size: 12; reallocation limit: 5 [byte]; )---
+---( initial size: 10; target size: 20; reallocation limit: 9 [byte]; )---
+Reallocate: refuse 20;
+Reallocate: refuse 15;
 Reallocate: refuse 12;
-Reallocate: refuse 9;
-Reallocate: refuse 7;
+Reallocate: refuse 11;
 verdict: false;
 
----( initial size: 6; target size: 12; reallocation limit: 6 [byte]; )---
+---( initial size: 10; target size: 20; reallocation limit: 10 [byte]; )---
+Reallocate: refuse 20;
+Reallocate: refuse 15;
 Reallocate: refuse 12;
-Reallocate: refuse 9;
-Reallocate: refuse 7;
+Reallocate: refuse 11;
 verdict: false;
 
----( initial size: 6; target size: 12; reallocation limit: 7 [byte]; )---
+---( initial size: 10; target size: 20; reallocation limit: 11 [byte]; )---
+Reallocate: refuse 20;
+Reallocate: refuse 15;
 Reallocate: refuse 12;
-Reallocate: refuse 9;
-Reallocate: done 7;
+Reallocate: done 11;
 verdict: true;
 
----( initial size: 6; target size: 12; reallocation limit: 11 [byte]; )---
-Reallocate: refuse 12;
-Reallocate: done 9;
+---( initial size: 10; target size: 20; reallocation limit: 19 [byte]; )---
+Reallocate: refuse 20;
+Reallocate: done 15;
 verdict: true;
 
----( initial size: 6; target size: 12; reallocation limit: 12 [byte]; )---
-Reallocate: done 12;
+---( initial size: 10; target size: 20; reallocation limit: 20 [byte]; )---
+Reallocate: done 20;
 verdict: true;
 
----( initial size: 6; target size: 12; reallocation limit: 13 [byte]; )---
-Reallocate: done 12;
+---( initial size: 10; target size: 20; reallocation limit: 21 [byte]; )---
+Reallocate: done 20;
 verdict: true;
 
----( initial size: 6; target size: 12; reallocation limit: -1 [byte]; )---
-Reallocate: done 12;
+---( initial size: 10; target size: 20; reallocation limit: PTRDIFF_MAX [byte]; )---
+Reallocate: done 20;
+verdict: true;
+
+---( initial size: 13; target size: 26; reallocation limit: 0 [byte]; )---
+Reallocate: refuse 26;
+Reallocate: refuse 19;
+Reallocate: refuse 16;
+Reallocate: refuse 14;
+verdict: false;
+
+---( initial size: 13; target size: 26; reallocation limit: 1 [byte]; )---
+Reallocate: refuse 26;
+Reallocate: refuse 19;
+Reallocate: refuse 16;
+Reallocate: refuse 14;
+verdict: false;
+
+---( initial size: 13; target size: 26; reallocation limit: 12 [byte]; )---
+Reallocate: refuse 26;
+Reallocate: refuse 19;
+Reallocate: refuse 16;
+Reallocate: refuse 14;
+verdict: false;
+
+---( initial size: 13; target size: 26; reallocation limit: 13 [byte]; )---
+Reallocate: refuse 26;
+Reallocate: refuse 19;
+Reallocate: refuse 16;
+Reallocate: refuse 14;
+verdict: false;
+
+---( initial size: 13; target size: 26; reallocation limit: 14 [byte]; )---
+Reallocate: refuse 26;
+Reallocate: refuse 19;
+Reallocate: refuse 16;
+Reallocate: done 14;
+verdict: true;
+
+---( initial size: 13; target size: 26; reallocation limit: 25 [byte]; )---
+Reallocate: refuse 26;
+Reallocate: done 19;
+verdict: true;
+
+---( initial size: 13; target size: 26; reallocation limit: 26 [byte]; )---
+Reallocate: done 26;
+verdict: true;
+
+---( initial size: 13; target size: 26; reallocation limit: 27 [byte]; )---
+Reallocate: done 26;
+verdict: true;
+
+---( initial size: 13; target size: 26; reallocation limit: PTRDIFF_MAX [byte]; )---
+Reallocate: done 26;
+verdict: true;
+
+---( initial size: 16; target size: 32; reallocation limit: 0 [byte]; )---
+Reallocate: refuse 32;
+Reallocate: refuse 24;
+Reallocate: refuse 20;
+Reallocate: refuse 18;
+Reallocate: refuse 17;
+verdict: false;
+
+---( initial size: 16; target size: 32; reallocation limit: 1 [byte]; )---
+Reallocate: refuse 32;
+Reallocate: refuse 24;
+Reallocate: refuse 20;
+Reallocate: refuse 18;
+Reallocate: refuse 17;
+verdict: false;
+
+---( initial size: 16; target size: 32; reallocation limit: 15 [byte]; )---
+Reallocate: refuse 32;
+Reallocate: refuse 24;
+Reallocate: refuse 20;
+Reallocate: refuse 18;
+Reallocate: refuse 17;
+verdict: false;
+
+---( initial size: 16; target size: 32; reallocation limit: 16 [byte]; )---
+Reallocate: refuse 32;
+Reallocate: refuse 24;
+Reallocate: refuse 20;
+Reallocate: refuse 18;
+Reallocate: refuse 17;
+verdict: false;
+
+---( initial size: 16; target size: 32; reallocation limit: 17 [byte]; )---
+Reallocate: refuse 32;
+Reallocate: refuse 24;
+Reallocate: refuse 20;
+Reallocate: refuse 18;
+Reallocate: done 17;
+verdict: true;
+
+---( initial size: 16; target size: 32; reallocation limit: 31 [byte]; )---
+Reallocate: refuse 32;
+Reallocate: done 24;
+verdict: true;
+
+---( initial size: 16; target size: 32; reallocation limit: 32 [byte]; )---
+Reallocate: done 32;
+verdict: true;
+
+---( initial size: 16; target size: 32; reallocation limit: 33 [byte]; )---
+Reallocate: done 32;
+verdict: true;
+
+---( initial size: 16; target size: 32; reallocation limit: PTRDIFF_MAX [byte]; )---
+Reallocate: done 32;
+verdict: true;
+
+---( initial size: 19; target size: 38; reallocation limit: 0 [byte]; )---
+Reallocate: refuse 38;
+Reallocate: refuse 28;
+Reallocate: refuse 23;
+Reallocate: refuse 21;
+Reallocate: refuse 20;
+verdict: false;
+
+---( initial size: 19; target size: 38; reallocation limit: 1 [byte]; )---
+Reallocate: refuse 38;
+Reallocate: refuse 28;
+Reallocate: refuse 23;
+Reallocate: refuse 21;
+Reallocate: refuse 20;
+verdict: false;
+
+---( initial size: 19; target size: 38; reallocation limit: 18 [byte]; )---
+Reallocate: refuse 38;
+Reallocate: refuse 28;
+Reallocate: refuse 23;
+Reallocate: refuse 21;
+Reallocate: refuse 20;
+verdict: false;
+
+---( initial size: 19; target size: 38; reallocation limit: 19 [byte]; )---
+Reallocate: refuse 38;
+Reallocate: refuse 28;
+Reallocate: refuse 23;
+Reallocate: refuse 21;
+Reallocate: refuse 20;
+verdict: false;
+
+---( initial size: 19; target size: 38; reallocation limit: 20 [byte]; )---
+Reallocate: refuse 38;
+Reallocate: refuse 28;
+Reallocate: refuse 23;
+Reallocate: refuse 21;
+Reallocate: done 20;
+verdict: true;
+
+---( initial size: 19; target size: 38; reallocation limit: 37 [byte]; )---
+Reallocate: refuse 38;
+Reallocate: done 28;
+verdict: true;
+
+---( initial size: 19; target size: 38; reallocation limit: 38 [byte]; )---
+Reallocate: done 38;
+verdict: true;
+
+---( initial size: 19; target size: 38; reallocation limit: 39 [byte]; )---
+Reallocate: done 38;
+verdict: true;
+
+---( initial size: 19; target size: 38; reallocation limit: PTRDIFF_MAX [byte]; )---
+Reallocate: done 38;
 verdict: true;
 
 shrinked:              ((0));
-allocated_byte_n:      ((135));
-allocate_n:            ((27));
-free_n:                ((27));
-reallocated_byte_n:    ((130));
-reallocated_refusal_n: ((45));
+allocated_byte_n:      ((621));
+allocate_n:            ((54));
+free_n:                ((54));
+reallocated_byte_n:    ((591));
+reallocated_refusal_n: ((120));
 VALGRIND:   All heap blocks were freed -- no leaks are possible

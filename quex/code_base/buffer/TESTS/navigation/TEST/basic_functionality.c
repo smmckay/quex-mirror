@@ -133,11 +133,11 @@ verify_content(QUEX_NAME(Buffer)* me,
  */ 
 {
     QUEX_TYPE_LEXATOM*         BeginP = me->content_space_begin(me);
-    ptrdiff_t                  ContentSize = me->input.end_p - BeginP;
+    ptrdiff_t                  ContentSize = me->content_end(me) - BeginP;
     QUEX_TYPE_STREAM_POSITION  begin_lexatom_index = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
 
     if( Position < PositionLimit ) {
-        if(     me->_read_p != me->input.end_p 
+        if(     me->_read_p != me->content_end(me) 
             && *me->_read_p != reference[Position] ) {
             printf("ERROR: read_p: %p; begin: %p; end: %p;\n"
                    "ERROR: position: %i; position_limit: %i;\n"

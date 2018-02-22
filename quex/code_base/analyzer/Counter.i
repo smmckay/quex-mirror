@@ -10,9 +10,6 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE bool
     QUEX_NAME(Counter_construct)(QUEX_NAME(Counter)* me)
     {
-        /* Set all to '0xFF' in order to catch easily a lack of initialization. */
-        __QUEX_IF_ASSERTS(memset((void*)me, 0xFF, sizeof(QUEX_NAME(Counter))));
-
         __QUEX_IF_COUNT_LINES(me->_line_number_at_begin     = (size_t)1);
         __QUEX_IF_COUNT_LINES(me->_line_number_at_end       = (size_t)1);
         __QUEX_IF_COUNT_COLUMNS(me->_column_number_at_begin = (size_t)1);

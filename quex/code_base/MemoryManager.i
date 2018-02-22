@@ -16,6 +16,8 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
                                    E_MemoryObjectType Type)
 {
     uint8_t* me = 0;
+    (void)Type;
+
 #   ifdef __cplusplus
     try                   { me = new uint8_t[ByteN]; } 
     catch(std::bad_alloc) { return (uint8_t*)0; }
@@ -23,10 +25,7 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
     me = (uint8_t*)__QUEX_STD_malloc(ByteN);
 #   endif
 
-    (void)Type;
-#   ifdef QUEX_OPTION_ASSERTS
-    __QUEX_STD_memset((void*)me, 0xFF, ByteN);
-#   endif
+    QUEX_IF_ASSERTS_poison(me, &me[ByteN]);
     return me;
 }
 

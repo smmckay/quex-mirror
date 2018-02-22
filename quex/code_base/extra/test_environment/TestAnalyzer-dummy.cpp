@@ -192,8 +192,8 @@ switch( Mode->id ) {
 void
 QUEX_NAME(M_on_buffer_before_change)(void* me /* 'aux' -> 'self' via 'me' */)
 {
-    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer._memory._front;
-    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer._memory._back;
+    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer.begin(&self.buffer);
+    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer.end(&self.buffer);
     (void)me; (void)BufferBegin; (void)BufferEnd;
 
 }
@@ -206,8 +206,8 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 {
     const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
     const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-    const size_t             BufferSize  = (size_t)(  &self.buffer._memory._back[1] 
-                                                    - self.buffer._memory._front);
+    const size_t             BufferSize  = (size_t)(self.buffer.size(&self.buffer)); 
+
 
     /* Try to double the size of the buffer, by default.                      */
     if( ! QUEX_NAME(Buffer_nested_negotiate_extend)(&self.buffer, 2.0) ) {
@@ -660,8 +660,9 @@ _10:
 
     switch( load_result ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_ENCODING_ERROR:       goto _1;
+    case E_LoadResult_ENCODING_ERROR:    goto _1;
     case E_LoadResult_FAILURE:           QUEX_GOTO_STATE(target_state_else_index); 
+    case E_LoadResult_OVERFLOW:          QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
     /* case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(E_LoadResult_FAILURE); return; */
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
     default:                             __quex_assert(false);

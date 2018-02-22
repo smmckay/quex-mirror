@@ -168,7 +168,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     ptrdiff_t           required_size;
     ptrdiff_t           new_size;
     QUEX_NAME(Buffer)*  root = me;
-    QUEX_TYPE_LEXATOM*  old_content_end_p = me->input.end_p ? me->input.end_p : me->end(me);
+    QUEX_TYPE_LEXATOM*  old_content_end_p = me->content_end(me) ? me->content_end(me) : me->end(me);
     bool                verdict_f = false;
     
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -199,7 +199,8 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     }
     else if( new_memory_root_p == old_memory_root_p ) {
         /* Old memory object IS NOT REPLACED--CONTENT AT SAME ADDRESS.        */
-        me->_memory._back = &new_memory_root_p[new_size-1];
+        me->_memory._back    = &new_memory_root_p[new_size-1];
+        me->_memory._back[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
         verdict_f = true;
     }
     else {
@@ -235,7 +236,7 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
 {
     QUEX_NAME(Buffer)* root;
     QUEX_TYPE_LEXATOM* old_memory_root_p;
-    QUEX_TYPE_LEXATOM* old_content_end_p = me->input.end_p ? me->input.end_p : me->end(me);
+    QUEX_TYPE_LEXATOM* old_content_end_p = me->content_end(me) ? me->content_end(me) : me->end(me);
     ptrdiff_t          required_size;
     bool               verdict_f = false;
 
@@ -330,12 +331,12 @@ QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
             break;
         }
 
-        nesting_freed = it->_memory._back - it->input.end_p;
+        nesting_freed = it->content_space_end(it) - it->content_end(it);
         previous      = it;
     } 
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    return me->content_space_end(me) - me->input.end_p;
+    return me->content_space_end(me) - me->content_end(me);
 }
     
 QUEX_INLINE void
@@ -350,7 +351,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
     ptrdiff_t          buffer_size;
     
     /* Migration impossible, if the memory is not large enough for content.   */
-    __quex_assert(me->input.end_p - old_memory_root <= NewRootSize);
+    __quex_assert(me->content_end(me) - old_memory_root <= NewRootSize);
 
     /* Adapt this and all nesting buffers to new memory location.             */
     for(focus = me; focus ; focus = focus->_memory.including_buffer) {
@@ -361,7 +362,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
         buffer_size = &focus->_memory._back[1]      - focus->_memory._front;
         QUEX_NAME(Buffer_adapt_to_new_memory_location)(focus, new_memory, buffer_size);
     }
-    __quex_assert(me->input.end_p <= &new_memory_root[NewRootSize-1]);
+    __quex_assert(me->content_end(me) <= &new_memory_root[NewRootSize-1]);
     me->_memory._back    = &new_memory_root[NewRootSize - 1];
     me->_memory._back[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -385,7 +386,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
  *         false, if new memory is too small to hold content.
  *                                                                            */
 {
-    ptrdiff_t  offset_end_p          = me->input.end_p     - me->begin(me);
+    ptrdiff_t  offset_end_p          = me->content_end(me)     - me->begin(me);
     ptrdiff_t  offset_read_p         = me->_read_p         - me->begin(me);
     ptrdiff_t  offset_lexeme_start_p = me->_lexeme_start_p - me->begin(me);
 
@@ -395,7 +396,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
     __quex_assert(offset_read_p         < NewSize);
     __quex_assert(offset_lexeme_start_p < NewSize);
     /* Required buffer size: content + 2 lexatoms for borders.                */
-    __quex_assert(me->input.end_p - me->content_space_begin(me) + 2 <= NewSize);
+    __quex_assert(me->content_end(me) - me->content_space_begin(me) + 2 <= NewSize);
 
     QUEX_NAME(BufferMemory_construct)(&me->_memory, new_memory_base, (size_t)NewSize,
                                       me->_memory.ownership, 
