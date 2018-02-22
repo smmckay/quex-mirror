@@ -123,7 +123,7 @@ verify_content(QUEX_NAME(Buffer)* me)
     /* If end_p does not stand on buffer boarder, then it must stand according
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
     if( me->content_end(me) != me->content_space_end(me) ) {
-        lexatom_index_at_end_p = me->content_end(me) - me->content_space_begin(me);
+        lexatom_index_at_end_p = me->content_size(me);
 #       ifndef HWUT_OPTION_NO_ASSUMPTION_ON_LEXATOM_INDEX_AT_END
         hwut_verify(lexatom_index_at_end_p + me->input.lexatom_index_begin
                     == PSEUDO_FILE_LEXATOM_INDEX_AT_END);
@@ -137,7 +137,7 @@ verify_content(QUEX_NAME(Buffer)* me)
         hwut_verify(*p == expected);
         ++count;
     }
-    hwut_verify(count == me->content_end(me) - me->content_space_begin(me));
+    hwut_verify(count == me->content_size(me));
 
     common_verification_count += count;
     return count;

@@ -132,8 +132,7 @@ verify_content(QUEX_NAME(Buffer)* me,
  * text and can be compared with what is stored about 'begin_lexatom_index'.
  */ 
 {
-    QUEX_TYPE_LEXATOM*         BeginP = me->content_space_begin(me);
-    ptrdiff_t                  ContentSize = me->content_end(me) - BeginP;
+    ptrdiff_t                  ContentSize = me->content_size(me);
     QUEX_TYPE_STREAM_POSITION  begin_lexatom_index = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
 
     if( Position < PositionLimit ) {
@@ -155,7 +154,8 @@ verify_content(QUEX_NAME(Buffer)* me,
     }
 
     /* Make sure that the content corresponds to the reference data.     */
-    if( memcmp((void*)&reference[begin_lexatom_index], (void*)BeginP, 
+    if( memcmp((void*)&reference[begin_lexatom_index], 
+               (void*)me->content_space_begin(me), 
                (size_t)ContentSize) != 0 ) {
         print_difference(me);
         return false;

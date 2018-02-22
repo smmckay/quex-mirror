@@ -113,7 +113,7 @@ self_test(size_t SizeBefore, ptrdiff_t ReallocLimitByteN)
 
     /* depth may have been adapted. */
 
-    content_before_size = (size_t)(me->content_end(me) - &self_reference[0]._memory._front[0]);
+    content_before_size = (size_t)(me->content_end(me) - self_reference[0].begin(&self_reference[0]));
 
     /* Backup the initial content for later check. */
     root_memory_p = &self_reference[0]._memory._front[0];

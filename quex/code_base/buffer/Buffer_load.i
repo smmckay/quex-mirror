@@ -136,8 +136,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
                                           move_distance, &encoding_error_f, 
                                           &loaded_n);
 
-    lexatom_index_end =   me->input.lexatom_index_begin  
-                        + (me->content_end(me) - me->content_space_begin(me));
+    lexatom_index_end = me->input.lexatom_index_begin + me->content_size(me);
 
     if(    LexatomIndexToBeContained == me->input.lexatom_index_end_of_stream 
         && LexatomIndexToBeContained == lexatom_index_end ) {

@@ -168,7 +168,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     ptrdiff_t           required_size;
     ptrdiff_t           new_size;
     QUEX_NAME(Buffer)*  root = me;
-    QUEX_TYPE_LEXATOM*  old_content_end_p = me->content_end(me) ? me->content_end(me) : me->end(me);
+    QUEX_TYPE_LEXATOM*  old_content_end_p = me->content_end(me);
     bool                verdict_f = false;
     
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -236,7 +236,7 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
 {
     QUEX_NAME(Buffer)* root;
     QUEX_TYPE_LEXATOM* old_memory_root_p;
-    QUEX_TYPE_LEXATOM* old_content_end_p = me->content_end(me) ? me->content_end(me) : me->end(me);
+    QUEX_TYPE_LEXATOM* old_content_end_p = me->content_end(me);
     ptrdiff_t          required_size;
     bool               verdict_f = false;
 
@@ -359,7 +359,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
         QUEX_NAME(Buffer_call_on_buffer_before_change)(focus);
 
         new_memory  = &new_memory_root[focus->_memory._front - old_memory_root];
-        buffer_size = &focus->_memory._back[1]      - focus->_memory._front;
+        buffer_size = focus->size(focus);
         QUEX_NAME(Buffer_adapt_to_new_memory_location)(focus, new_memory, buffer_size);
     }
     __quex_assert(me->content_end(me) <= &new_memory_root[NewRootSize-1]);
@@ -386,7 +386,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
  *         false, if new memory is too small to hold content.
  *                                                                            */
 {
-    ptrdiff_t  offset_end_p          = me->content_end(me)     - me->begin(me);
+    ptrdiff_t  offset_end_p          = me->content_end(me) - me->begin(me);
     ptrdiff_t  offset_read_p         = me->_read_p         - me->begin(me);
     ptrdiff_t  offset_lexeme_start_p = me->_lexeme_start_p - me->begin(me);
 
@@ -396,7 +396,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
     __quex_assert(offset_read_p         < NewSize);
     __quex_assert(offset_lexeme_start_p < NewSize);
     /* Required buffer size: content + 2 lexatoms for borders.                */
-    __quex_assert(me->content_end(me) - me->content_space_begin(me) + 2 <= NewSize);
+    __quex_assert(me->size(me) <= NewSize);
 
     QUEX_NAME(BufferMemory_construct)(&me->_memory, new_memory_base, (size_t)NewSize,
                                       me->_memory.ownership, 
