@@ -79,7 +79,7 @@ QUEX_NAME(receive_from_chunk)(QUEX_TYPE_ANALYZER*    me,
         }
     } while( QUEX_NAME(TokenQueue_is_empty)(&me->_token_queue) );
 
-    if( me->buffer._read_p < me->buffer.input.end_p ) {
+    if( me->buffer._read_p < me->buffer.content_end(&me->buffer) ) {
         /* Complete token queue is generated without reaching buffer boarders.*/
         return token_p;
     }

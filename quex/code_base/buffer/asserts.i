@@ -20,15 +20,14 @@ QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)(const QUEX_NAME(Buffer)* B)
         return;
     }
 
-    __quex_assert((*B)._memory._front  <  (*B).content_space_end(B));                     
+    __quex_assert((*B).begin(B)        <  (*B).content_space_end(B));                     
+    __quex_assert((*B).content_end(B)  >= (*B).content_begin(B));          
+    __quex_assert((*B).content_end(B)  <= (*B).content_space_end(B));               
+
     __quex_assert((*B)._read_p         >= (*B).begin(B));                
+    __quex_assert((*B)._read_p         <= (*B).content_end(B));              
     __quex_assert((*B)._lexeme_start_p >= (*B).begin(B));                
-
-    __quex_assert((*B).input.end_p     >= (*B).content_begin(B));          
-    __quex_assert((*B).input.end_p     <= (*B).content_space_end(B));               
-
-    __quex_assert((*B)._read_p         <= (*B).input.end_p);              
-    __quex_assert((*B)._lexeme_start_p <= (*B).input.end_p);              
+    __quex_assert((*B)._lexeme_start_p <= (*B).content_end(B));              
 }
 
 QUEX_INLINE void
@@ -37,9 +36,9 @@ QUEX_NAME(BUFFER_ASSERT_limit_codes_in_place_core)(const QUEX_NAME(Buffer)* B)
     if( ! (*B)._memory._front && ! (*B)._memory._back ) {                    
         return;
     }
-    __quex_assert(*((*B)._memory._front) == QUEX_SETTING_BUFFER_LIMIT_CODE);    
-    __quex_assert(*((*B)._memory._back)  == QUEX_SETTING_BUFFER_LIMIT_CODE);    
-    __quex_assert(*(*B).input.end_p      == QUEX_SETTING_BUFFER_LIMIT_CODE);   
+    __quex_assert((*B).begin(B)[0]              == QUEX_SETTING_BUFFER_LIMIT_CODE);    
+    __quex_assert((*B).content_space_end(B)[0]  == QUEX_SETTING_BUFFER_LIMIT_CODE);    
+    __quex_assert((*B).content_end(B)[0]        == QUEX_SETTING_BUFFER_LIMIT_CODE);   
 }
 
 QUEX_INLINE void

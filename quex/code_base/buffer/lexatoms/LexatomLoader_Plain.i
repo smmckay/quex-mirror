@@ -171,8 +171,8 @@ QUEX_NAME(LexatomLoader_Plain_get_fill_boundaries)(QUEX_NAME(LexatomLoader)* alt
 {
     (void)alter_ego;
 
-    *begin_p = (void*)buffer->input.end_p;
-    *end_p   = (void*)buffer->_memory._back; 
+    *begin_p = (void*)buffer->content_end(buffer);
+    *end_p   = (void*)buffer->content_space_end(buffer);
 }
 
 QUEX_INLINE ptrdiff_t 

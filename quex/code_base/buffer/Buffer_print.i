@@ -160,7 +160,7 @@ QUEX_NAME(Buffer_print_content_detailed_lines)(QUEX_TYPE_LEXATOM** iterator,
         length = 0;
         __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "   ");
 
-        if( *iterator == buffer->_memory._front ) {
+        if( *iterator == buffer->begin(buffer) ) {
             __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "buffer front");
             length += 12;
         }
@@ -174,12 +174,12 @@ QUEX_NAME(Buffer_print_content_detailed_lines)(QUEX_TYPE_LEXATOM** iterator,
             __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "input");
             length += 5;
         }
-        if( *iterator == buffer->input.end_p ) {
+        if( *iterator == buffer->content_end(buffer) ) {
             if( length ) { __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, ", "); length += 2; }
             __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "end of file");
             length += 11;
         }
-        if( *iterator == buffer->_memory._back ) {
+        if( *iterator == buffer->content_space_end(buffer) ) {
             if( length ) { __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, ", "); length += 2; }
             __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "buffer back");
             length += 11;
@@ -194,7 +194,7 @@ QUEX_NAME(Buffer_print_content_detailed_lines)(QUEX_TYPE_LEXATOM** iterator,
 
         /* Print the character information */
         __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "[%04X] 0x%04X\n", 
-                           (int)(*iterator - buffer->_memory._front),
+                           (int)(*iterator - buffer->begin(buffer)),
                            (int)(**iterator));
     }
 }

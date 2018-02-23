@@ -59,7 +59,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
      *                                         '--- available ---'
      *                                                                        */
     ptrdiff_t           available_size =   nesting->content_space_end(nesting)
-                                         - nesting->input.end_p;
+                                         - nesting->content_end(nesting);
     QUEX_TYPE_LEXATOM*  memory;
     size_t              memory_size;
     E_Ownership         ownership;
@@ -306,7 +306,7 @@ QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
      * Shrink each buffer, adapt its 'back pointer' and the 'front pointer'
      * of the included buffer.                                                */
     for(it = QUEX_NAME(Buffer_nested_find_root)(me); true ; 
-        it = QUEX_NAME(Buffer_get_nested)(it, me)) {
+        it = QUEX_NAME(Buffer_nested_get)(it, me)) {
         move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(it);
 
         if( previous ) {
@@ -419,7 +419,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
 }
 
 QUEX_INLINE QUEX_NAME(Buffer)* 
-QUEX_NAME(Buffer_get_nested)(QUEX_NAME(Buffer)* me, 
+QUEX_NAME(Buffer_nested_get)(QUEX_NAME(Buffer)* me, 
                              QUEX_NAME(Buffer)* tail)
 /* RETURNS: Buffer which is included by 'me'.
  *          'tail' in case 'me' does not inculude a buffer. 

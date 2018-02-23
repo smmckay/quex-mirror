@@ -300,12 +300,14 @@ QUEX_NAME(Buffer_init_content_core)(QUEX_NAME(Buffer)* me,
 {
     me->input.lexatom_index_begin         = LI_Begin;
     me->input.lexatom_index_end_of_stream = LI_EndOfStream;
-    me->input.end_p                       = EndOfFileP;
-    if( me->input.end_p ) {
+    if( EndOfFileP ) {
+        me->input.end_p    = EndOfFileP;
         me->input.end_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
+        QUEX_IF_ASSERTS_poison(&me->content_end(me)[1], me->content_space_end(me));
     }
-
-    QUEX_IF_ASSERTS_poison(&me->content_end(me)[1], me->content_space_end(me));
+    else {
+        me->input.end_p    = (QUEX_TYPE_LEXATOM*)0;
+    }
 }
 
 QUEX_INLINE void
@@ -520,9 +522,9 @@ QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me,
 {
     QUEX_BUFFER_ASSERT_pointers_in_range(subject);
 
-    me->front_p             = subject->_memory._front;
-    me->back_p              = subject->_memory._back;
-    me->end_p               = subject->input.end_p;
+    me->front_p             = subject->begin(subject);
+    me->back_p              = subject->content_space_end(subject);
+    me->end_p               = subject->content_end(subject);
     me->read_p              = subject->_read_p;
     me->lexeme_start_p      = subject->_lexeme_start_p;
     me->lexatom_index_begin = subject->input.lexatom_index_begin;
@@ -538,9 +540,9 @@ QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)* me,
  * ASSERTS: see above.                                                        */
 {
     if( SameF ) {
-        __quex_assert(me->front_p             == subject->_memory._front);
-        __quex_assert(me->back_p              == subject->_memory._back);
-        __quex_assert(me->end_p               == subject->input.end_p);
+        __quex_assert(me->front_p             == subject->begin(subject));
+        __quex_assert(me->back_p              == subject->content_space_end(subject));
+        __quex_assert(me->end_p               == subject->content_end(subject));
         __quex_assert(me->lexatom_index_begin == subject->input.lexatom_index_begin);
     }
 
