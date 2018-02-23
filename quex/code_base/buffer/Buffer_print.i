@@ -46,7 +46,7 @@ QUEX_NAME(Buffer_print_content_detailed)(QUEX_NAME(Buffer)* me)
      *    |12345 ...      12345  ....       12345      ....    12345|
      *    Begin           lexeme start        input_p               buffer end     */ 
     QUEX_TYPE_LEXATOM*  iterator  = me->begin(me);
-    QUEX_TYPE_LEXATOM*  total_end = me->_memory._back + 1;
+    QUEX_TYPE_LEXATOM*  total_end = me->end(me); 
     __quex_assert(me != 0x0);
 
     if( QUEX_NAME(Buffer_resources_absent)(me) ) {

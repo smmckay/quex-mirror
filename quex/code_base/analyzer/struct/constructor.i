@@ -450,7 +450,7 @@ QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me,
 {
     *user_buffer_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
                             (QUEX_TYPE_LEXATOM*)0 
-                          : (QUEX_TYPE_LEXATOM*)me->buffer._memory._front;
+                          : me->buffer.begin(&me->buffer);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

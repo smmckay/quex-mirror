@@ -134,7 +134,7 @@ QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me,
     ptrdiff_t move_size;
 
     if( MoveDistance ) {
-        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+        QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(me);
 
         move_size = QUEX_NAME(Buffer_move_size_towards_begin)(me, MoveDistance);
 
@@ -217,7 +217,7 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
     if( move_size && move_distance ) {
         /* NOT NECESSARY:
          *
-         * QUEX_NAME(Buffer_call_on_buffer_before_change)(me, BeginP);
+         * QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(me, BeginP);
          *
          * Because, this function is to be called only after 'move_...' which
          * must have called the 'on_buffer_before_change()'                   */

@@ -86,7 +86,7 @@ QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
         return 0;
     }
     else if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-        QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+        QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(me);
     }
     else {
         /* Content has already been completely moved. No notification.        */
@@ -145,7 +145,7 @@ main(int argc, char** argv)
                              &memory[0], MemorySize, 
                              &content[0], ContentSize);
         buffer.input.lexatom_index_begin = lexatom_index_at_begin;
-        QUEX_NAME(Buffer_set_event_handlers)(&buffer, 
+        QUEX_NAME(Buffer_callbacks_set)(&buffer, 
                                              self_on_content_change,
                                              self_on_overflow,
                                              &theAux);

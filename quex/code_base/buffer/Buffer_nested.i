@@ -93,14 +93,14 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
     else {
         /* (2) AVAILABLE SIZE in nesting buffer sufficient
          *     => Use free space for new buffer.                              */                    
-        memory      = &nesting->input.end_p[1];
+        memory      = &nesting->content_end(nesting)[1];
         memory_size = (size_t)available_size;
         __quex_assert(0           != memory);
         __quex_assert(memory_size == (size_t)(nesting->end(nesting) - memory));
 
-        nesting->_memory._back = &nesting->input.end_p[0];
-        ownership        = E_Ownership_INCLUDING_BUFFER;
-        nesting_buffer_p = nesting;
+        nesting->_memory._back = nesting->content_end(nesting);
+        ownership              = E_Ownership_INCLUDING_BUFFER;
+        nesting_buffer_p       = nesting;
     }
 
     QUEX_NAME(Buffer_construct)(me, filler, memory, memory_size, 
@@ -353,9 +353,9 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(QUEX_NAME(Buffer)* me,
     /* Adapt this and all nesting buffers to new memory location.             */
     for(focus = me; focus ; focus = focus->_memory.including_buffer) {
 
-        QUEX_NAME(Buffer_call_on_buffer_before_change)(focus);
+        QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(focus);
 
-        new_memory  = &new_memory_root[focus->_memory._front - old_memory_root];
+        new_memory  = &new_memory_root[focus->begin(focus) - old_memory_root];
         buffer_size = focus->size(focus);
         QUEX_NAME(Buffer_adapt_to_new_memory_location)(focus, new_memory, buffer_size);
     }

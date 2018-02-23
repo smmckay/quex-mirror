@@ -94,7 +94,7 @@ QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
     move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me); 
 
     if( 0 == move_distance ) {
-        if( ! QUEX_NAME(Buffer_on_cannot_move_towards_begin)(me, &move_distance) ) {
+        if( ! QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(me, &move_distance) ) {
             return 0;
         }
     }
@@ -156,7 +156,7 @@ main(int argc, char** argv)
                              end_of_stream_in_buffer_f,
                              &memory[0],  MemorySize, 
                              &content[0], ContentSize);
-        QUEX_NAME(Buffer_set_event_handlers)(&buffer, 
+        QUEX_NAME(Buffer_callbacks_set)(&buffer, 
                                              self_on_content_change,
                                              self_on_overflow,
                                              &theAux);

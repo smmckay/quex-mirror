@@ -70,7 +70,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
     move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me); 
 
     if(    0 == move_distance 
-        && ! QUEX_NAME(Buffer_on_cannot_move_towards_begin)(me, &move_distance) ) {
+        && ! QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(me, &move_distance) ) {
         return E_LoadResult_OVERFLOW; 
     }
 
@@ -361,7 +361,7 @@ QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me,
     if( move_distance ) {
         if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
             /* If content has not been moved already, notify change!          */
-            QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+            QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(me);
         }
         (void)QUEX_NAME(Buffer_move_towards_end)(me, (ptrdiff_t)move_distance);
     }
@@ -390,7 +390,7 @@ QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Buffer_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
+QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
                                                ptrdiff_t*          move_distance)
 /* Calls the 'on_buffer_oveflow' callback where new buffer memory may be 
  * provided and checks whether memory is then sufficient.
@@ -404,7 +404,7 @@ QUEX_NAME(Buffer_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me,
     /* No free space can be provided for loading new content. 
      * The lexeme spans complete buffer.                                      */
 
-    QUEX_NAME(Buffer_call_on_buffer_overflow)(me);
+    QUEX_NAME(Buffer_callbacks_on_buffer_overflow)(me);
 
     if( me->content_end(me) < &me->content_space_end(me)[-1] ) {
         return true;                                          /* Fair enough! */

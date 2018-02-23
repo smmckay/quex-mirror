@@ -12,7 +12,6 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE bool      QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE void      QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, 
                                                      QUEX_TYPE_LEXATOM* EndOfFileP);
 QUEX_INLINE void      QUEX_NAME(Buffer_init_content_core)(QUEX_NAME(Buffer)*        me, 
@@ -58,7 +57,7 @@ QUEX_NAME(Buffer_construct)(QUEX_NAME(Buffer)*        me,
     QUEX_NAME(Buffer_member_functions_assign)(me);
 
     /* Event handlers.                                                       */
-    QUEX_NAME(Buffer_set_event_handlers)(me, (void (*)(void*))0,
+    QUEX_NAME(Buffer_callbacks_set)(me, (void (*)(void*))0,
                                          (void (*)(void*))0, (void*)0);
 
     /* Initialize.                                                           */
@@ -108,7 +107,7 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_destruct)(QUEX_NAME(Buffer)* me)
 /* Destruct 'me' and mark all resources as absent.                            */
 {
-    QUEX_NAME(Buffer_call_on_buffer_before_change)(me);
+    QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(me);
 
     if( me->filler ) {
         me->filler->delete_self(me->filler); 
@@ -164,7 +163,7 @@ QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me)
  * object is functional.                                                      */
 {
     QUEX_NAME(Buffer_member_functions_assign)(me);
-    QUEX_NAME(Buffer_set_event_handlers)(me, (void (*)(void*))0,
+    QUEX_NAME(Buffer_callbacks_set)(me, (void (*)(void*))0,
                                          (void (*)(void*))0, (void*)0);
     me->filler = (QUEX_NAME(LexatomLoader)*)0;
     QUEX_NAME(BufferMemory_resources_absent_mark)(&me->_memory);
@@ -410,7 +409,7 @@ QUEX_NAME(Buffer_is_begin_of_stream)(QUEX_NAME(Buffer)* buffer)
 }
 
 QUEX_INLINE void  
-QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
+QUEX_NAME(Buffer_callbacks_set)(QUEX_NAME(Buffer)* me,
                                      void   (*on_before_change)(void* aux),
                                      void   (*on_overflow)(void*  aux),
                                      void*  aux)
@@ -421,7 +420,7 @@ QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
 {
     QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
     if( me->event.on_buffer_before_change ) {
@@ -431,7 +430,7 @@ QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
 }
 
 QUEX_INLINE void
-QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_callbacks_on_buffer_overflow)(QUEX_NAME(Buffer)* me)
 {
     QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
     if( me->event.on_buffer_overflow ) {

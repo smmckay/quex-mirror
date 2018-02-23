@@ -423,7 +423,7 @@ typedef enum {
            __quex_debug2("lexeme start:    %i",                               \
                          (int)((B)._lexeme_start_p - (B).content_begin(&B))); \
            __quex_debug2("buffer size:     %i",                               \
-                         (int)((B)._memory._back   - (B).begin(&B))); 
+                         (int)((B).content_space_end(&B) - (B).begin(&B))); 
 
 #   define __quex_debug_reload_before()                              \
            __quex_debug1("reload ________________");                 \

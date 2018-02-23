@@ -63,7 +63,7 @@ QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me)
             break;
         case E_Ownership_INCLUDING_BUFFER:
             __quex_assert(0 != me->including_buffer);
-            __quex_assert(&me->_front[0] == &me->including_buffer->_memory._back[1]);
+            __quex_assert(me->_front == me->including_buffer->end(me->including_buffer));
             me->including_buffer->_memory._back = me->_back;
         default: 
             break;

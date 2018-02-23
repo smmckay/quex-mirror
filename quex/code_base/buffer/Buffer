@@ -293,7 +293,7 @@ QUEX_INLINE QUEX_TYPE_STREAM_POSITION
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION  
                        QUEX_NAME(Buffer_input_lexatom_index_begin)(QUEX_NAME(Buffer)* me);
 
-/* Tell & seek '_read_p' to/from lexatom index. */
+/* Tell & seek '_read_p' to/from lexatom index. ______________________________*/
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION  
                        QUEX_NAME(Buffer_tell)(QUEX_NAME(Buffer)*);
 QUEX_INLINE bool       QUEX_NAME(Buffer_seek)(QUEX_NAME(Buffer)*, 
@@ -303,15 +303,15 @@ QUEX_INLINE bool       QUEX_NAME(Buffer_seek_backward)(QUEX_NAME(Buffer)*, const
 QUEX_INLINE bool       QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me);
 
 
-/* Callbacks */
-QUEX_INLINE void       QUEX_NAME(Buffer_set_event_handlers)(QUEX_NAME(Buffer)* me,
-                                                            void   (*on_buffer_before_change)(void* aux),
-                                                            void   (*on_buffer_overflow)(void* aux),
-                                                            void*  aux);
-QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_before_change)(QUEX_NAME(Buffer)* me);
-QUEX_INLINE void       QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me);
-QUEX_INLINE bool       QUEX_NAME(Buffer_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
-                                                                      ptrdiff_t*          move_distance);
+/* Callbacks _________________________________________________________________*/
+QUEX_INLINE bool       QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
+                                                                                ptrdiff_t*          move_distance);
+QUEX_INLINE void       QUEX_NAME(Buffer_callbacks_set)(QUEX_NAME(Buffer)* me,
+                                                       void   (*on_buffer_before_change)(void* aux),
+                                                       void   (*on_buffer_overflow)(void* aux),
+                                                       void*  aux);
+QUEX_INLINE void       QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE void       QUEX_NAME(Buffer_callbacks_on_buffer_overflow)(QUEX_NAME(Buffer)* me);
 
 /* Member functions __________________________________________________________*/
 

@@ -53,7 +53,7 @@ QUEX_NAME(Buffer_fill_prepare)(QUEX_NAME(Buffer)*  me,
     move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me); 
 
     if(    0 == move_distance 
-        && ! QUEX_NAME(Buffer_on_cannot_move_towards_begin)(me, &move_distance) ) {
+        && ! QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(me, &move_distance) ) {
         *begin_p = (void*)0;
         *end_p   = (const void*)0;
         return;
@@ -88,7 +88,6 @@ QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
  * it into the engine's buffer from 'me->content_end(me)' to 'me->content_space_end(me)'.
  *                                                                           */
 {
-    QUEX_TYPE_LEXATOM*   BeginP = me->content_space_begin(me);
     __quex_assert((QUEX_TYPE_LEXATOM*)FilledEndP <= me->content_space_end(me));
 
     /* Place new content in the engine's buffer.                             */
@@ -112,8 +111,7 @@ QUEX_NAME(Buffer_fill_finish)(QUEX_NAME(Buffer)* me,
      *    known how many lexatoms have been inserted.
      *                                                                       */
     QUEX_NAME(Buffer_register_content)(me, &me->content_end(me)[inserted_lexatom_n], -1);
-    QUEX_NAME(Buffer_register_eos)(me,   me->input.lexatom_index_begin
-                                       + (me->content_end(me) - BeginP));
+    QUEX_NAME(Buffer_register_eos)(me, me->input.lexatom_index_begin + me->content_size(me));
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 }
