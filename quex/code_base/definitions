@@ -417,12 +417,12 @@ typedef enum {
 #   define __quex_debug_template_drop_out(TemplateIdx, StateKey)            \
            __quex_debug_template_core(TemplateIdx, StateKey, "<DROP OUT>")           
 
-#   define __quex_debug_buffer_info(B)                                             \
-           __quex_debug2("input position:  %i",                                    \
-                         (int)((B)._read_p        - (B).content_space_begin(&B)));  \
-           __quex_debug2("lexeme start:    %i",                                    \
-                         (int)((B)._lexeme_start_p - (B).content_space_begin(&B))); \
-           __quex_debug2("buffer size:     %i",                                    \
+#   define __quex_debug_buffer_info(B)                                        \
+           __quex_debug2("input position:  %i",                               \
+                         (int)((B)._read_p        - (B).content_begin(&B)));  \
+           __quex_debug2("lexeme start:    %i",                               \
+                         (int)((B)._lexeme_start_p - (B).content_begin(&B))); \
+           __quex_debug2("buffer size:     %i",                               \
                          (int)((B)._memory._back   - (B).begin(&B))); 
 
 #   define __quex_debug_reload_before()                              \

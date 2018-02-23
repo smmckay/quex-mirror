@@ -160,8 +160,8 @@ QUEX_NAME(LexatomLoader_lexatom_index_reset_backup)(QUEX_NAME(LexatomLoader)* me
 }
 
 QUEX_INLINE bool 
-QUEX_NAME(LexatomLoader_lexatom_index_step_to)(QUEX_NAME(LexatomLoader)*        me,
-                                                const QUEX_TYPE_STREAM_POSITION TargetCI)
+QUEX_NAME(LexatomLoader_lexatom_index_step_to)(QUEX_NAME(LexatomLoader)*       me,
+                                               const QUEX_TYPE_STREAM_POSITION TargetCI)
 /* From the given 'lexatom_index_next_to_fill' (i.e. the return value of 
  * 'input_lexatom_tell()') step forward to lexatom index 'TargetCI'. This 
  * function is used to reach a target input position in cases where computing 

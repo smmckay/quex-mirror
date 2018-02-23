@@ -78,7 +78,6 @@ QUEX_NAME(Buffer_member_functions_assign)(QUEX_NAME(Buffer)* me)
     me->end                 = QUEX_NAME(Buffer_memory_end);
     me->size                = QUEX_NAME(Buffer_memory_size);
 
-    me->content_space_begin = QUEX_NAME(Buffer_memory_content_space_begin);
     me->content_space_end   = QUEX_NAME(Buffer_memory_content_space_end);
     me->content_space_size  = QUEX_NAME(Buffer_memory_content_space_size);
 
@@ -91,11 +90,10 @@ QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_begin)(const QUEX_NAME(
 QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_end)(const QUEX_NAME(Buffer)* me)   { return &me->_memory._back[1]; }
 QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_size)(const QUEX_NAME(Buffer)* me)  { return &me->_memory._back[1] - me->_memory._front; }
 
-QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_space_begin)(const QUEX_NAME(Buffer)* me) { return &me->_memory._front[1]; }
 QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_space_end)(const QUEX_NAME(Buffer)* me)   { return me->_memory._back; }
 QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_content_space_size)(const QUEX_NAME(Buffer)* me)  { return me->_memory._back - &me->_memory._front[1]; }
 
-QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_begin)(const QUEX_NAME(Buffer)* me) { return me->content_space_begin(me); }
+QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_begin)(const QUEX_NAME(Buffer)* me) { return &me->_memory._front[1]; }
 QUEX_INLINE QUEX_TYPE_LEXATOM*   QUEX_NAME(Buffer_memory_content_end)(const QUEX_NAME(Buffer)* me)   { return me->input.end_p; }
 QUEX_INLINE ptrdiff_t            QUEX_NAME(Buffer_memory_content_size)(const QUEX_NAME(Buffer)* me)  { return me->input.end_p - &me->_memory._front[1]; }
 
@@ -211,8 +209,6 @@ QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me)
  *              _lexatom_at_lexeme_start     
  *              _lexatom_before_lexeme_start                                  */
 {
-    QUEX_TYPE_LEXATOM*  BeginP = me->content_space_begin(me);
-
     if( ! me->_memory._front ) {
         /* No memory => FSM is put into a non-functional state.               */
         QUEX_NAME(Buffer_init_analyzis_core)(me, 
@@ -226,8 +222,8 @@ QUEX_NAME(Buffer_init_analyzis)(QUEX_NAME(Buffer)*   me)
         /* The first state in the state machine does not increment. 
          * => input pointer is set to the first position, not before.         */
         QUEX_NAME(Buffer_init_analyzis_core)(me, 
-        /* ReadP                          */ BeginP,
-        /* LexatomStartP                  */ BeginP,
+        /* ReadP                          */ me->content_begin(me),
+        /* LexatomStartP                  */ me->content_begin(me),
         /* LexatomAtLexemeStart           */ (QUEX_TYPE_LEXATOM)0,
         /* LexatomBeforeLexemeStart       */ QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC,
         /* BackupLexatomIndexOfReadP      */ (QUEX_TYPE_STREAM_POSITION)-1);
@@ -259,7 +255,6 @@ QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFi
  *              input.lexatom_index_end_of_stream                         
  *              input.end_p                                                   */
 {
-    QUEX_TYPE_LEXATOM*        BeginP           = me->content_space_begin(me);
     QUEX_TYPE_LEXATOM*        EndP             = me->content_space_end(me);
     QUEX_TYPE_STREAM_POSITION ci_begin         = (QUEX_TYPE_STREAM_POSITION)0;
     QUEX_TYPE_STREAM_POSITION ci_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
@@ -274,30 +269,23 @@ QUEX_NAME(Buffer_init_content)(QUEX_NAME(Buffer)* me, QUEX_TYPE_LEXATOM* EndOfFi
     else if( me->filler && me->filler->byte_loader ) {
         __quex_assert(0 == EndOfFileP);
 
-#       if 0
-        loaded_n         = QUEX_NAME(LexatomLoader_load)(me->filler, BeginP, ContentSize,
-                                                         0, &end_of_stream_f, &encoding_error_f);
-        ci_end_of_stream = ((! loaded_n) || end_of_stream_f) ? loaded_n 
-                                                             : (QUEX_TYPE_STREAM_POSITION)-1;
-        end_p            = &BeginP[loaded_n];
-#       endif
         /* Setup condition to initiate immediate load when the state machine
          * is entered: 'read pointer hits buffer limit code'.                */
         ci_begin         = (QUEX_TYPE_STREAM_POSITION)0;
         ci_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
-        end_p            = &BeginP[0];
+        end_p            = me->content_begin(me);
     } 
     else {
         __quex_assert(0 != me->_memory._front);           /* See first condition. */
-        __quex_assert(! EndOfFileP || (EndOfFileP >= BeginP && EndOfFileP <= EndP));
+        __quex_assert(! EndOfFileP || (EndOfFileP >= me->content_begin(me) && EndOfFileP <= EndP));
 
         if( EndOfFileP ) {
-            ci_end_of_stream = EndOfFileP - BeginP;
+            ci_end_of_stream = EndOfFileP - me->content_begin(me);
             end_p            = EndOfFileP;   
         }
         else {
             ci_end_of_stream = (QUEX_TYPE_STREAM_POSITION)-1;
-            end_p            = BeginP;   
+            end_p            = me->content_begin(me);   
         }
     }
 
@@ -337,7 +325,7 @@ QUEX_NAME(Buffer_register_content)(QUEX_NAME(Buffer)*        me,
 {
     if( EndOfInputP ) {
         __quex_assert(EndOfInputP <= me->content_space_end(me));
-        __quex_assert(EndOfInputP >= me->content_space_begin(me));
+        __quex_assert(EndOfInputP >= me->content_begin(me));
 
         me->input.end_p    = EndOfInputP;
         me->input.end_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
@@ -364,7 +352,7 @@ QUEX_NAME(Buffer_is_empty)(QUEX_NAME(Buffer)* me)
 /* RETURNS: true, if buffer does not contain anything.
  *          false, else.                                                     */
 { 
-    return    me->content_end(me) == me->content_space_begin(me) 
+    return    me->content_end(me) == me->content_begin(me) 
            && me->input.lexatom_index_begin == 0; 
 }
 
@@ -376,29 +364,13 @@ QUEX_NAME(Buffer_input_lexatom_index_end)(QUEX_NAME(Buffer)* me)
     __quex_assert(me->input.lexatom_index_begin >= 0);
     QUEX_BUFFER_ASSERT_pointers_in_range(me);
 
-    return   me->input.lexatom_index_begin + me->content_size(me);
-}
-
-QUEX_INLINE void
-QUEX_NAME(Buffer_read_p_add_offset)(QUEX_NAME(Buffer)* buffer, const size_t Offset)
-/* Add offset to '._read_p'. No check applies whether this is admissible.
- *                                                                           */
-{ 
-    QUEX_BUFFER_ASSERT_pointers_in_range(buffer);
-    buffer->_read_p += Offset; 
-    QUEX_BUFFER_ASSERT_pointers_in_range(buffer);
-}
-
-QUEX_INLINE size_t
-QUEX_NAME(Buffer_content_size)(QUEX_NAME(Buffer)* me)
-{
-    return QUEX_NAME(BufferMemory_size)(&(me->_memory)) - 2;
+    return me->input.lexatom_index_begin + me->content_size(me);
 }
 
 QUEX_INLINE bool 
 QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me)
 { 
-    const ptrdiff_t ContentSize = (ptrdiff_t)QUEX_NAME(Buffer_content_size)(me);
+    const ptrdiff_t ContentSpaceSize = me->content_space_size(me);
 
     if( me->input.lexatom_index_end_of_stream == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         return false;
@@ -406,8 +378,9 @@ QUEX_NAME(Buffer_is_end_of_stream_inside)(QUEX_NAME(Buffer)* me)
     else if( me->input.lexatom_index_end_of_stream < me->input.lexatom_index_begin ) {
         return false;
     }
-    
-    return me->input.lexatom_index_end_of_stream - me->input.lexatom_index_begin < ContentSize;
+    else {
+        return me->input.lexatom_index_end_of_stream - me->input.lexatom_index_begin < ContentSpaceSize;
+    }
 }
 
 QUEX_INLINE bool 
@@ -429,9 +402,9 @@ QUEX_INLINE bool
 QUEX_NAME(Buffer_is_begin_of_stream)(QUEX_NAME(Buffer)* buffer)
 { 
     QUEX_BUFFER_ASSERT_CONSISTENCY(buffer);
-    if     ( buffer->_lexeme_start_p != buffer->content_space_begin(buffer) ) return false;
-    else if( QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer) )            return false;
-    else                                                                      return true;
+    if     ( buffer->_lexeme_start_p != buffer->content_begin(buffer) ) return false;
+    else if( QUEX_NAME(Buffer_input_lexatom_index_begin)(buffer) )      return false;
+    else                                                                return true;
 }
 
 QUEX_INLINE void  
@@ -464,31 +437,6 @@ QUEX_NAME(Buffer_call_on_buffer_overflow)(QUEX_NAME(Buffer)* me)
     }
     QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY(bi, me);
 }
-
-QUEX_INLINE bool
-QUEX_NAME(Buffer_negotiate_allocate_memory)(const size_t        Size, 
-                                            QUEX_TYPE_LEXATOM** memory, 
-                                            size_t*             memory_size)
-{
-    const size_t MinSize = 4;             /* 2 for boarder, 2 for content */
-
-    *memory_size = Size;
-
-    do {
-        *memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
-                           (*memory_size) * sizeof(QUEX_TYPE_LEXATOM), 
-                           E_MemoryObjectType_BUFFER_MEMORY);
-        if( *memory ) {
-            return true;
-        }
-
-        (*memory_size) = (MinSize + (*memory_size)) >> 1;
-
-    } while( (*memory_size) > MinSize );
-
-    return false;
-}
-
 
 QUEX_INLINE void
 QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
@@ -542,7 +490,7 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
         }
     }
     else if( offset < 0 ) {
-        border = me->content_space_begin(me);
+        border = me->content_begin(me);
         QUEX_BUFFER_POINTER_SUBTRACT(me->_read_p,         border, offset);
         QUEX_BUFFER_POINTER_SUBTRACT(me->_lexeme_start_p, border, offset);
         QUEX_BUFFER_POINTER_SUBTRACT(me->input.end_p,     border, offset);

@@ -163,12 +163,10 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
  * RETURNS: true, in case of success.
  *          false, else.                                                      */
 {
-    QUEX_TYPE_LEXATOM*  old_memory_root_p;
     QUEX_TYPE_LEXATOM*  new_memory_root_p;
     ptrdiff_t           required_size;
     ptrdiff_t           new_size;
     QUEX_NAME(Buffer)*  root = me;
-    QUEX_TYPE_LEXATOM*  old_content_end_p = me->content_end(me);
     bool                verdict_f = false;
     
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
@@ -179,17 +177,16 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     root              = QUEX_NAME(Buffer_nested_find_root)(me);
     QUEX_BUFFER_ASSERT_CONSISTENCY(root);
 
-    old_memory_root_p = root->begin(root);
     /* required: content + 2 lexatoms for border.                             */
-    required_size     = old_content_end_p - &old_memory_root_p[1] + 2;
-    new_size          = me->end(me) - old_memory_root_p + SizeAdd;
+    required_size     = me->content_end(me) - root->begin(root) + 1;
+    new_size          = me->end(me) - root->begin(root) + SizeAdd;
 
     if( SizeAdd <= 0 || required_size >= new_size ) {
         return false;
     }
 
     new_memory_root_p = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_reallocate)(
-                                                (void*)old_memory_root_p,
+                                                (void*)root->begin(root),
                                                 sizeof(QUEX_TYPE_LEXATOM) * (size_t)new_size,
                                                 E_MemoryObjectType_BUFFER_MEMORY);
 
@@ -197,7 +194,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
         /* Old memory object IS NOT DE-ALLOCATED.                             */
         verdict_f = false;
     }
-    else if( new_memory_root_p == old_memory_root_p ) {
+    else if( new_memory_root_p == root->begin(root) ) {
         /* Old memory object IS NOT REPLACED--CONTENT AT SAME ADDRESS.        */
         me->_memory._back    = &new_memory_root_p[new_size-1];
         me->_memory._back[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
@@ -205,7 +202,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
     }
     else {
         QUEX_NAME(Buffer_adapt_to_new_memory_location_root)(me, 
-                                                            old_memory_root_p,
+                                                            root->begin(root),
                                                             new_memory_root_p, 
                                                             new_size);
 

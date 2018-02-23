@@ -24,7 +24,7 @@ QUEX_NAME(BUFFER_ASSERT_pointers_in_range_core)(const QUEX_NAME(Buffer)* B)
     __quex_assert((*B)._read_p         >= (*B).begin(B));                
     __quex_assert((*B)._lexeme_start_p >= (*B).begin(B));                
 
-    __quex_assert((*B).input.end_p     >= (*B).content_space_begin(B));          
+    __quex_assert((*B).input.end_p     >= (*B).content_begin(B));          
     __quex_assert((*B).input.end_p     <= (*B).content_space_end(B));               
 
     __quex_assert((*B)._read_p         <= (*B).input.end_p);              
@@ -85,7 +85,6 @@ QUEX_NAME(Buffer_member_functions_assert)(const QUEX_NAME(Buffer)* me)
     __quex_assert(me->end                 == QUEX_NAME(Buffer_memory_end));
     __quex_assert(me->size                == QUEX_NAME(Buffer_memory_size));
 
-    __quex_assert(me->content_space_begin == QUEX_NAME(Buffer_memory_content_space_begin));
     __quex_assert(me->content_space_end   == QUEX_NAME(Buffer_memory_content_space_end));
     __quex_assert(me->content_space_size  == QUEX_NAME(Buffer_memory_content_space_size));
 

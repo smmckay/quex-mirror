@@ -141,7 +141,7 @@ verify_content(QUEX_NAME(Buffer)* me,
             printf("ERROR: read_p: %p; begin: %p; end: %p;\n"
                    "ERROR: position: %i; position_limit: %i;\n"
                    "ERROR: *_read_p: %04X; *reference[Position]: %04X;\n",
-                   me->_read_p, me->content_space_begin(me), me->content_space_end(me), 
+                   me->_read_p, me->content_begin(me), me->content_space_end(me), 
                    (int)Position, (int)PositionLimit,
                    (int)*(me->_read_p), (int)reference[Position]);
             print_difference(me);
@@ -155,7 +155,7 @@ verify_content(QUEX_NAME(Buffer)* me,
 
     /* Make sure that the content corresponds to the reference data.     */
     if( memcmp((void*)&reference[begin_lexatom_index], 
-               (void*)me->content_space_begin(me), 
+               (void*)me->content_begin(me), 
                (size_t)ContentSize) != 0 ) {
         print_difference(me);
         return false;
@@ -168,7 +168,7 @@ difference(QUEX_NAME(Buffer)* me, QUEX_TYPE_STREAM_POSITION CI)
 {
     const QUEX_TYPE_STREAM_POSITION ci_begin = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
 
-    return me->content_space_begin(me)[CI - ci_begin] != reference[CI];
+    return me->content_begin(me)[CI - ci_begin] != reference[CI];
 }
 
 #define FOR_RANGE(C, BEGIN, END) \
@@ -218,7 +218,7 @@ print_difference(QUEX_NAME(Buffer)* me)
     printf("\n");
     printf("buffer:     ");
     FOR_RANGE(ci, ci_print_begin, ci_print_end) {
-        printf("%4x.", (int)me->content_space_begin(me)[ci - ci_begin]);
+        printf("%4x.", (int)me->content_begin(me)[ci - ci_begin]);
     }
     printf("\n");
     printf("reference:  ");

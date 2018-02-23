@@ -116,9 +116,9 @@ verify_content(QUEX_NAME(Buffer)* me)
     (void)lexatom_index_at_end_p;
     (void)expected;
 
-    hwut_verify(me->content_space_begin(me)[-1] == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    hwut_verify(me->content_space_end(me)[0]    == QUEX_SETTING_BUFFER_LIMIT_CODE);
-    hwut_verify(me->content_end(me)[0]              == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->begin(me)[0]             == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->content_space_end(me)[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->content_end(me)[0]       == QUEX_SETTING_BUFFER_LIMIT_CODE);
 
     /* If end_p does not stand on buffer boarder, then it must stand according
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
@@ -132,8 +132,8 @@ verify_content(QUEX_NAME(Buffer)* me)
     /* Make sure that the content has been loaded properly. From the 
      * variable 'pseudo_file' it can be previewed what the content is 
      * supposed to be.                                                       */
-    for(p=me->content_space_begin(me); p != me->content_end(me) ; ++p) {
-        expected = PseudoFile[me->input.lexatom_index_begin + p - me->content_space_begin(me)];
+    for(p=me->content_begin(me); p != me->content_end(me) ; ++p) {
+        expected = PseudoFile[me->input.lexatom_index_begin + p - me->content_begin(me)];
         hwut_verify(*p == expected);
         ++count;
     }
@@ -153,26 +153,26 @@ verify_ucs4_content(QUEX_NAME(Buffer)* me)
     (void)lexatom_index_at_end_p;
     (void)expected;
 
-    hwut_verify(me->content_space_begin(me)[-1] == QUEX_SETTING_BUFFER_LIMIT_CODE);
+    hwut_verify(me->begin(me)[0] == QUEX_SETTING_BUFFER_LIMIT_CODE);
     hwut_verify(me->content_space_end(me)[0]    == QUEX_SETTING_BUFFER_LIMIT_CODE);
     hwut_verify(me->content_end(me)[0]              == QUEX_SETTING_BUFFER_LIMIT_CODE);
 
     /* If end_p does not stand on buffer boarder, then it must stand according
      * to the 'lexatom_index_begin' at the end of the pseudo files content.*/
     if( me->content_end(me) != me->content_space_end(me) ) {
-        lexatom_index_at_end_p = me->content_end(me) - me->content_space_begin(me);
+        lexatom_index_at_end_p = me->content_size(me);
         hwut_verify(lexatom_index_at_end_p + me->input.lexatom_index_begin
                     == PSEUDO_FILE_UCS4_LEXATOM_INDEX_AT_END);
     }
     /* Make sure that the content has been loaded properly. From the 
      * variable 'pseudo_file' it can be previewed what the content is 
      * supposed to be.                                                       */
-    for(p=me->content_space_begin(me); p != me->content_end(me) ; ++p) {
-        expected = PseudoFileUCS4[me->input.lexatom_index_begin + p - me->content_space_begin(me)];
+    for(p=me->content_begin(me); p != me->content_end(me) ; ++p) {
+        expected = PseudoFileUCS4[me->input.lexatom_index_begin + p - me->content_begin(me)];
         hwut_verify(*p == expected);
         ++count;
     }
-    hwut_verify(count == me->content_end(me) - me->content_space_begin(me));
+    hwut_verify(count == me->content_size(me));
 
     return count;
 }

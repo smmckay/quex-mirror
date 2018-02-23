@@ -77,8 +77,7 @@ def do(SM, EngineType=engine.FORWARD,
 
     # Generate FSM from DFA
     analyzer = FSM.from_DFA(SM, EngineType, ReloadStateExtern, 
-                                          OnBeforeEntry, 
-                                          dial_db=dial_db)
+                            OnBeforeEntry, dial_db=dial_db)
     # Optimize the FSM
     analyzer = optimizer.do(analyzer)
 
@@ -147,7 +146,7 @@ class FSM:
         if EngineType.requires_detailed_track_analysis():
             result._prepare_entries_and_drop_out(EngineType, SM)
         else:
-            result._prepare_entries_and_drop_out_withou_analysis(EngineType, SM)
+            result._prepare_entries_and_drop_out_without_analysis(EngineType, SM)
         return result
 
     @typed(SM=DFA, OnBeforeEntry=OpList)
@@ -180,7 +179,7 @@ class FSM:
             self.reload_state          = ReloadStateExtern
             self.reload_state_extern_f = True
 
-    def _prepare_entries_and_drop_out_withou_analysis(self, EngineType, SM):
+    def _prepare_entries_and_drop_out_without_analysis(self, EngineType, SM):
         for state_index, state in sorted(SM.states.iteritems(), key=itemgetter(0)):
             if not self.state_db[state_index].transition_map.has_drop_out(): continue
             cl = EngineType.create_DropOut(state, self.dial_db)
