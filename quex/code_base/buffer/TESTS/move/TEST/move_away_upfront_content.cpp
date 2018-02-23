@@ -80,7 +80,7 @@ QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
         return 0;
     }
     
-    move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(me);
+    move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_end)(me);
 
     if( 0 == move_distance ) {
         return 0;

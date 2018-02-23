@@ -67,7 +67,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
     /* Move remaining content.
      * Maintain lexeme and fallback.                 
      * Adapt pointers.                                                       */
-    move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me); 
+    move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(me); 
 
     if(    0 == move_distance 
         && ! QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(me, &move_distance) ) {
@@ -128,7 +128,7 @@ QUEX_NAME(Buffer_load_forward_to_contain)(QUEX_NAME(Buffer)*        me,
     QUEX_NAME(BufferInvariance_construct)(&bi, me);
 
     /* Move existing content in the buffer to appropriate position.           */
-    move_distance = QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(me, 
+    move_distance = QUEX_NAME(Buffer_move_get_distance_forward_to_contain)(me, 
                                              &lexatom_index_to_be_contained);
 
     /* Even if 'move_distance = 0' call the 'move and load' for consistency.  */
@@ -222,7 +222,7 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
         return E_LoadResult_NO_MORE_DATA; /* Stream cannot go backwards.     */
     }
 
-    move_distance = QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(me);
+    move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_end)(me);
 
     if( 0 == move_distance ) {
         return E_LoadResult_FAILURE;
@@ -412,7 +412,7 @@ QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(QUEX_NAME(Buffer)*  me,
 
     /* 'on_buffer_overflow' may have extended the buffer's memory.
      * => second chance!                                                      */
-    *move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me);
+    *move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(me);
     return 0 != *move_distance;
 }
 

@@ -91,7 +91,7 @@ QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
-    move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(me); 
+    move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(me); 
 
     if( 0 == move_distance ) {
         if( ! QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(me, &move_distance) ) {

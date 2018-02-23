@@ -307,7 +307,7 @@ QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me)
      * of the included buffer.                                                */
     for(it = QUEX_NAME(Buffer_nested_find_root)(me); true ; 
         it = QUEX_NAME(Buffer_nested_get)(it, me)) {
-        move_distance = QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(it);
+        move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(it);
 
         if( previous ) {
             previous->_memory._back   -= nesting_freed;

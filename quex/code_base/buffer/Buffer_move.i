@@ -11,7 +11,7 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(QUEX_NAME(Buffer)*  me) 
+QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(QUEX_NAME(Buffer)*  me) 
 /* RETURNS: Move Distance
  *
  *  -1,   if the lexeme starts at a position so that it covers so much that 
@@ -52,7 +52,7 @@ QUEX_NAME(Buffer_get_move_distance_max_towards_begin)(QUEX_NAME(Buffer)*  me)
 }
 
 QUEX_INLINE ptrdiff_t        
-QUEX_NAME(Buffer_get_maximum_move_distance_towards_end)(QUEX_NAME(Buffer)* me)
+QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
 /* RETURNS: Move Distance
  *
  *  -1,   if the lexeme starts at a position so that it covers so much that 
@@ -234,7 +234,7 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
 }
 
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_get_move_distance_forward_to_contain)(QUEX_NAME(Buffer)*         me,
+QUEX_NAME(Buffer_move_get_distance_forward_to_contain)(QUEX_NAME(Buffer)*         me,
                                                        QUEX_TYPE_STREAM_POSITION* lexatom_index_to_be_contained)
 {
     QUEX_TYPE_STREAM_POSITION lexatom_index_begin = me->input.lexatom_index_begin;

@@ -142,6 +142,9 @@ QUEX_INLINE bool
 QUEX_NAME(Buffer_has_intersection)(QUEX_NAME(Buffer)*       me,
                                    const QUEX_TYPE_LEXATOM* Begin,
                                    ptrdiff_t                Size)
+/* RETURNS: 'true' if buffer's memory intersects with the region given
+ *                 by 'Begin' and 'Size'.
+ *          'false', else.                                                    */
 {
     const QUEX_TYPE_LEXATOM* End      = &Begin[Size];
     QUEX_NAME(Buffer)*       root     = QUEX_NAME(Buffer_nested_find_root)(me);
@@ -172,6 +175,9 @@ QUEX_NAME(Buffer_resources_absent_mark)(QUEX_NAME(Buffer)* me)
 
 QUEX_INLINE bool    
 QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me)
+/* RETURNS: 'true' if all resources of buffer are absent. Then, nothing needs
+ *                 to be freed.
+ *          'false' else.                                                     */ 
 {
     return    me->filler == (QUEX_NAME(LexatomLoader)*)0 
            && QUEX_NAME(BufferMemory_resources_absent)(&me->_memory);
@@ -179,6 +185,8 @@ QUEX_NAME(Buffer_resources_absent)(QUEX_NAME(Buffer)* me)
 
 QUEX_INLINE void     
 QUEX_NAME(Buffer_dysfunctional_set)(QUEX_NAME(Buffer)*  me)
+/* Set buffer into dysfunctional state, i.e. the buffer is inable to operarate.
+ * Shall be applied only upon failure beyond repair.                          */
 {
     QUEX_NAME(Buffer_init_analyzis_core)(me, 
     /* ReadP                          */ (QUEX_TYPE_LEXATOM*)0,
@@ -191,6 +199,8 @@ QUEX_NAME(Buffer_dysfunctional_set)(QUEX_NAME(Buffer)*  me)
 
 QUEX_INLINE bool     
 QUEX_NAME(Buffer_dysfunctional)(QUEX_NAME(Buffer)*  me)
+/* RETURNS: 'true' if buffer is in dysfunctional state.
+ *          'false', else.                                                    */
 {
     return    me->_read_p                         == (QUEX_TYPE_LEXATOM*)0
            && me->_lexeme_start_p                 == (QUEX_TYPE_LEXATOM*)0
@@ -408,37 +418,6 @@ QUEX_NAME(Buffer_is_begin_of_stream)(QUEX_NAME(Buffer)* buffer)
     else                                                                return true;
 }
 
-QUEX_INLINE void  
-QUEX_NAME(Buffer_callbacks_set)(QUEX_NAME(Buffer)* me,
-                                     void   (*on_before_change)(void* aux),
-                                     void   (*on_overflow)(void*  aux),
-                                     void*  aux)
-{
-    me->event.on_buffer_before_change = on_before_change;
-    me->event.on_buffer_overflow      = on_overflow;
-    me->event.aux                     = aux;
-}
-
-QUEX_INLINE void
-QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
-{
-    QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
-    if( me->event.on_buffer_before_change ) {
-        me->event.on_buffer_before_change(me->event.aux); 
-    }
-    QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY_SAME(bi, me);
-}
-
-QUEX_INLINE void
-QUEX_NAME(Buffer_callbacks_on_buffer_overflow)(QUEX_NAME(Buffer)* me)
-{
-    QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
-    if( me->event.on_buffer_overflow ) {
-        me->event.on_buffer_overflow(me->event.aux);
-    }
-    QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY(bi, me);
-}
-
 QUEX_INLINE void
 QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
                                       ptrdiff_t           offset,
@@ -514,55 +493,6 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
 #   undef QUEX_BUFFER_POINTER_SUBTRACT
 }
 
-QUEX_INLINE void
-QUEX_NAME(BufferInvariance_construct)(QUEX_NAME(BufferInvariance)* me, 
-                                      QUEX_NAME(Buffer)*           subject)
-/* Store all buffer related pointers and indicates present in 'subject'.      */
-{
-    QUEX_BUFFER_ASSERT_pointers_in_range(subject);
-
-    me->front_p             = subject->begin(subject);
-    me->back_p              = subject->content_space_end(subject);
-    me->end_p               = subject->content_end(subject);
-    me->read_p              = subject->_read_p;
-    me->lexeme_start_p      = subject->_lexeme_start_p;
-    me->lexatom_index_begin = subject->input.lexatom_index_begin;
-}
-
-QUEX_INLINE void
-QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)* me, 
-                                   QUEX_NAME(Buffer)*           subject,
-                                   bool                         SameF)
-/* Assert that pointers and indices in 'me' and 'subject' are equivalent or
- * the same. When 'SameF' is true, equivalents is required.
- *
- * ASSERTS: see above.                                                        */
-{
-    if( SameF ) {
-        __quex_assert(me->front_p             == subject->begin(subject));
-        __quex_assert(me->back_p              == subject->content_space_end(subject));
-        __quex_assert(me->end_p               == subject->content_end(subject));
-        __quex_assert(me->lexatom_index_begin == subject->input.lexatom_index_begin);
-    }
-
-    /* Dislocation of '_read_p' same as the dislocation of '_lexeme_start_p'. */
-    __quex_assert(me->read_p - subject->_read_p == me->lexeme_start_p - subject->_lexeme_start_p);
-}
-
-QUEX_INLINE void
-QUEX_NAME(BufferInvariance_restore)(QUEX_NAME(BufferInvariance)* me, 
-                                    QUEX_NAME(Buffer)*           subject)
-/* Restores all pointers and indices relevant for a buffer from 'me' into 
- * 'subject'.                                                                 */
-{
-    subject->_memory._front            = me->front_p;
-    subject->_memory._back             = me->back_p;
-    subject->input.end_p               = me->end_p;
-    subject->_read_p                   = me->read_p;
-    subject->_lexeme_start_p           = me->lexeme_start_p;
-    subject->input.lexatom_index_begin = me->lexatom_index_begin;
-}
-
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
@@ -571,6 +501,8 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #include <quex/code_base/buffer/Buffer_fill.i>
 #include <quex/code_base/buffer/Buffer_load.i>
 #include <quex/code_base/buffer/Buffer_nested.i>
+#include <quex/code_base/buffer/Buffer_callbacks.i>
+#include <quex/code_base/buffer/Buffer_invariance.i>
 #include <quex/code_base/buffer/Buffer_move.i>
 #include <quex/code_base/buffer/BufferMemory.i>
 
