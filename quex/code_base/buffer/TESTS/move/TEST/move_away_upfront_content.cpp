@@ -85,12 +85,6 @@ QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
     if( 0 == move_distance ) {
         return 0;
     }
-    else if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-        QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(me);
-    }
-    else {
-        /* Content has already been completely moved. No notification.        */
-    }
 
     (void)QUEX_NAME(Buffer_move_towards_end)(me, move_distance);
 

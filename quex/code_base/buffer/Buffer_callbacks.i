@@ -21,7 +21,12 @@ QUEX_INLINE void
 QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(QUEX_NAME(Buffer)* me)
 {
     QUEX_ASSERT_BUFFER_INVARIANCE_SETUP(bi, me);
-    if( me->event.on_buffer_before_change ) {
+    if( me->_backup_lexatom_index_of_lexeme_start_p != (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        /* Callbacks must have been called bedore the lexeme start position has
+         * been back-uped. No pointer positions inside the buffer are referred
+         * to by the user while lexeme start is not present inside the buffer.*/
+    }
+    else if( me->event.on_buffer_before_change ) {
         me->event.on_buffer_before_change(me->event.aux); 
     }
     QUEX_ASSERT_BUFFER_INVARIANCE_VERIFY_SAME(bi, me);

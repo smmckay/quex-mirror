@@ -217,6 +217,8 @@ QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffe
                                                                  ptrdiff_t move_distance);
 QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_move_get_distance_forward_to_contain)(QUEX_NAME(Buffer)*         me,
                                                                               QUEX_TYPE_STREAM_POSITION* lexatom_index_to_be_contained);
+QUEX_INLINE void       QUEX_NAME(Buffer_move_backup_lexatom_index_of_lexeme_start)(QUEX_NAME(Buffer)* me,
+                                                                                   ptrdiff_t          move_distance);
 
 /* Buffer pointers ___________________________________________________________*/
 QUEX_INLINE void  QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
@@ -226,8 +228,6 @@ QUEX_INLINE void  QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
 QUEX_INLINE bool  QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
                                                                  QUEX_TYPE_LEXATOM* new_memory,
                                                                  ptrdiff_t          NewSize);
-QUEX_INLINE void  QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
-                                                                   ptrdiff_t          move_distance);
 QUEX_INLINE bool  QUEX_NAME(Buffer_has_intersection)(QUEX_NAME(Buffer)*       me,
                                                      const QUEX_TYPE_LEXATOM* Begin,
                                                      ptrdiff_t                Size);
@@ -244,6 +244,8 @@ QUEX_INLINE bool   QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
                                                     E_Ownership         Ownership);
 QUEX_INLINE 
 QUEX_NAME(Buffer)* QUEX_NAME(Buffer_nested_find_root)(QUEX_NAME(Buffer)* me);
+QUEX_INLINE 
+ptrdiff_t          QUEX_NAME(Buffer_nested_free_front)(QUEX_NAME(Buffer)* me);
 QUEX_INLINE 
 QUEX_NAME(Buffer)* QUEX_NAME(Buffer_nested_get)(QUEX_NAME(Buffer)* me, 
                                                    QUEX_NAME(Buffer)* tail);

@@ -359,10 +359,6 @@ QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me,
     bool end_of_stream_f  = false;
 
     if( move_distance ) {
-        if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-            /* If content has not been moved already, notify change!          */
-            QUEX_NAME(Buffer_callbacks_on_buffer_before_change)(me);
-        }
         (void)QUEX_NAME(Buffer_move_towards_end)(me, (ptrdiff_t)move_distance);
     }
 
@@ -373,20 +369,6 @@ QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me,
     return QUEX_NAME(LexatomLoader_load)(me->filler, me->content_begin(me), *load_request_n,
                                          me->input.lexatom_index_begin,
                                          &end_of_stream_f, encoding_error_f);
-}
-
-QUEX_INLINE void
-QUEX_NAME(Buffer_backup_lexatom_index_of_read_p)(QUEX_NAME(Buffer)* me,
-                                                 ptrdiff_t          move_distance)
-{
-    if(    me->_lexeme_start_p
-        && me->_lexeme_start_p + move_distance >= me->content_space_end(me)
-        && me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-        /* Lexeme start will be out of buffer. Store the position to be
-         * reloaded when lexing forward restarts.                             */
-        me->_backup_lexatom_index_of_lexeme_start_p =   QUEX_NAME(Buffer_tell)(me)
-            + (me->_lexeme_start_p - me->_read_p);
-    }
 }
 
 QUEX_INLINE bool
