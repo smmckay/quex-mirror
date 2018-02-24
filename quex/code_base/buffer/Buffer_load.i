@@ -76,7 +76,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
 
     if( ! QUEX_NAME(Buffer_move_and_load)(me, position_register, PositionRegisterN, 
                                           move_distance, &encoding_error_f, &loaded_n) ) {
-        return E_LoadResult_FAILURE;
+        return E_LoadResult_OVERFLOW;
     }
     __quex_debug_buffer_load(me, "LOAD FORWARD(exit)\n");
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
