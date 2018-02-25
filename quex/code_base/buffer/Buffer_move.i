@@ -167,8 +167,8 @@ QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me,
  *            :------- move distance------->|                   |
  *            | . . . . . . . . . . . . . . |x.x.x.x.x.x.x.x.x.x| 
  *                               
- * RETURNS: Number of free lexatoms from the buffer's front to where the
- *          content has been moved.                                           */
+ * RETURNS: Number of lexatoms that need to be filled, starting from the 
+ *          buffer's content begin.                                           */
 {
     QUEX_TYPE_LEXATOM*  BeginP           = me->content_begin(me);
     const ptrdiff_t     ContentSpaceSize = me->content_space_size(me);
@@ -192,7 +192,8 @@ QUEX_NAME(Buffer_move_towards_end)(QUEX_NAME(Buffer)* me,
         }
         QUEX_NAME(Buffer_pointers_add_offset)(me, MoveDistance, (QUEX_TYPE_LEXATOM**)0, 0);
     }
-    return MoveDistance;
+    return QUEX_MIN(me->content_space_end(me) - me->content_begin(me), 
+                    MoveDistance);
 }
 
 QUEX_INLINE ptrdiff_t

@@ -37,19 +37,16 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
  * RETURNS: 
  *          
  *     DONE              => Something has been loaded   (analysis MAY CONTINUE)
- *     FAILURE           => General load failure.       (analysis MUST STOP)
- *     NO_SPACE_FOR_LOAD => Lexeme exceeds buffer size. (analysis MUST STOP)
+ *     OVERFLOW          => Current lexeme spans buffer.(analysis MUST STOP)
  *     ENCODING_ERROR    => Failed. conversion error    (analysis MUST STOP)
  *                          or, read pointer on buffer limit code,
  *                          but it was not a buffer limit.
  *     NO_MORE_DATA      => No more data available.     (analysis MUST STOP)
  *                                                                            */
 {
-    QUEX_TYPE_LEXATOM*          begin_p = me->content_begin(me);
-    QUEX_TYPE_STREAM_POSITION   ci_begin = QUEX_NAME(Buffer_input_lexatom_index_begin)(me);
-    ptrdiff_t                   move_distance;
-    ptrdiff_t                   loaded_n;
-    bool                        encoding_error_f = false;
+    ptrdiff_t  move_distance;
+    ptrdiff_t  loaded_n;
+    bool       encoding_error_f = false;
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
@@ -60,7 +57,7 @@ QUEX_NAME(Buffer_load_forward)(QUEX_NAME(Buffer)*  me,
         return E_LoadResult_ENCODING_ERROR;
     }
     else if( ! me->filler || ! me->filler->byte_loader ) {
-        QUEX_NAME(Buffer_register_eos)(me, ci_begin + (me->content_end(me) - begin_p));
+        QUEX_NAME(Buffer_register_eos)(me, me->input.lexatom_index_begin + me->content_size(me));
         return E_LoadResult_NO_MORE_DATA;  /* No filler/loader => no load!   */
     }
 
@@ -311,10 +308,8 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
     ptrdiff_t                   free_space;
     bool                        end_of_stream_f  = false;
 
-    if( move_distance ) {
-        QUEX_NAME(Buffer_move_towards_begin)(me, move_distance,
-                                             position_register, PositionRegisterN); 
-    }
+    QUEX_NAME(Buffer_move_towards_begin)(me, move_distance,
+                                         position_register, PositionRegisterN); 
     free_space = me->content_space_end(me) - me->content_end(me);
 
     if( 0 == free_space ) {
@@ -324,9 +319,9 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
     load_lexatom_index  =   me->input.lexatom_index_begin 
                           + (me->content_end(me) - me->content_begin(me));
 
-    *loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, me->content_end(me), free_space,
-                                              load_lexatom_index, &end_of_stream_f,
-                                              encoding_error_f);
+    *loaded_n = QUEX_NAME(LexatomLoader_load)(me->filler, me->content_end(me), 
+                                              free_space, load_lexatom_index, 
+                                              &end_of_stream_f, encoding_error_f);
 
     if( (! *loaded_n) || end_of_stream_f ) { /* End of stream detected.       */
         me->input.lexatom_index_end_of_stream = load_lexatom_index + *loaded_n;
@@ -339,7 +334,7 @@ QUEX_NAME(Buffer_move_and_load)(QUEX_NAME(Buffer)*  me,
 
 QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me, 
-                                         ptrdiff_t          move_distance,
+                                         ptrdiff_t          MoveDistance,
                                          bool*              encoding_error_f, 
                                          ptrdiff_t*         load_request_n)
 /* Move buffer content towards end and load as much content as possible in
@@ -358,14 +353,11 @@ QUEX_NAME(Buffer_move_and_load_backward)(QUEX_NAME(Buffer)* me,
 {
     bool end_of_stream_f  = false;
 
-    if( move_distance ) {
-        (void)QUEX_NAME(Buffer_move_towards_end)(me, (ptrdiff_t)move_distance);
-    }
+    (void)QUEX_NAME(Buffer_move_towards_end)(me, MoveDistance);
 
     *load_request_n = QUEX_MIN(me->content_space_end(me) - me->content_begin(me), 
-                               move_distance);
+                               MoveDistance);
 
-    /* (2) Move away content, so that previous content can be reloaded.       */
     return QUEX_NAME(LexatomLoader_load)(me->filler, me->content_begin(me), *load_request_n,
                                          me->input.lexatom_index_begin,
                                          &end_of_stream_f, encoding_error_f);
