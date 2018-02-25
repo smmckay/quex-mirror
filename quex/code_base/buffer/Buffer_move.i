@@ -10,99 +10,6 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(QUEX_NAME(Buffer)*  me) 
-/* RETURNS: Max. move distance towards begin without loosing lexeme start.
- *
- *   0,   if nothing can be moved, anyway.
- *   > 1  number of positions that the content may be moved towards the
- *        begin of the buffer.                                                */
-{
-    QUEX_TYPE_LEXATOM*  region_p;
-    const ptrdiff_t     ContentSpaceSize = me->content_space_size(me);
-    const ptrdiff_t     FallBackN        = (ptrdiff_t)QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
-
-    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
-    __quex_assert(FallBackN >= 0);
-
-    if( me->_read_p - me->_lexeme_start_p >= ContentSpaceSize - FallBackN ) { 
-        /* OVERFLOW: If stretch from _read_p to _lexeme_start_p 
-         * spans the whole buffer, then nothing can be loaded.                */
-        return 0;
-    }
-    else if( QUEX_NAME(Buffer_is_end_of_stream_inside)(me) ) {
-        /* Refuse the move, if the end of stream is inside buffer.            */
-        return 0;
-    }
-
-    /* Determine from where the region-to-be-moved BEGINS, what its size is
-     * and how far it is to be moved.                                         */
-    region_p  = me->_read_p;
-    if( me->_lexeme_start_p ) {
-        region_p = QUEX_MIN(region_p, me->_lexeme_start_p);
-    }
-    if( region_p - me->content_begin(me) <= FallBackN ) {
-        return 0;
-    }
-    region_p  = &((region_p)[- FallBackN]);
-
-    return /* move distance */region_p - me->content_begin(me);
-}
-
-QUEX_INLINE ptrdiff_t        
-QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
-/* RETURNS: Move Distance
- *
- *  -1,   if the lexeme starts at a position so that it covers so much that 
- *        nothing may be moved.
- *   0,   if nothing can be moved, anyway.
- *   > 1  number of positions that the content may be moved towards the
- *        begin of the buffer.                                                */
-{
-    ptrdiff_t  backward_walk_distance;  
-    ptrdiff_t  move_distance;
-    ptrdiff_t  move_distance_reasonable;
-    ptrdiff_t  move_distance_max;
-    ptrdiff_t  move_distance_nominal;
-
-    /* Move distance restrict by: -- begin of stream (lexatom_index_begin == 0)
-     *                            -- '_read_p' must remain in buffer.         */
-    move_distance_max = QUEX_MIN(me->input.lexatom_index_begin, 
-                                 me->content_space_end(me) - me->_read_p - 1);
-
-    if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
-        /* There is still content in the buffer that might be useful for
-         * forward lexical analyis. Load only a decent amount backward.   */
-        move_distance_reasonable = QUEX_MAX((ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 256), 
-                                            (me->content_space_size(me)-1) / 4);
-        if( me->_lexeme_start_p ) {
-            backward_walk_distance = me->_lexeme_start_p ?  me->_lexeme_start_p - me->_read_p : 0;
-        }
-        /* Provide backward data so that lexer might go backward twice as 
-         * far as it already went.                                        */
-        move_distance_nominal = QUEX_MAX(move_distance_reasonable, 
-                                         backward_walk_distance * 2);
-    }
-    else {
-        /* Next step forward requires a total reload anyway.
-         * Go forward as much as possible.                                */
-        move_distance_nominal = move_distance_max;
-    }
-    move_distance = QUEX_MIN(move_distance_max, move_distance_nominal);
-
-    return move_distance;
-}
-
-QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer)* me, ptrdiff_t move_distance)
-{
-    const ptrdiff_t ContentSize = me->content_size(me);
-    if( move_distance >= ContentSize ) {
-        return 0;
-    }
-    return ContentSize - move_distance;
-}
-
-QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_move_towards_begin)(QUEX_NAME(Buffer)*  me, 
                                      ptrdiff_t           MoveDistance,
                                      QUEX_TYPE_LEXATOM** position_register,
@@ -234,6 +141,99 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
     __quex_assert(&BeginP[load_request_n] <= EndP);
     (void)EndP;
     return load_request_n;
+}
+
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(QUEX_NAME(Buffer)*  me) 
+/* RETURNS: Max. move distance towards begin without loosing lexeme start.
+ *
+ *   0,   if nothing can be moved, anyway.
+ *   > 1  number of positions that the content may be moved towards the
+ *        begin of the buffer.                                                */
+{
+    QUEX_TYPE_LEXATOM*  region_p;
+    const ptrdiff_t     ContentSpaceSize = me->content_space_size(me);
+    const ptrdiff_t     FallBackN        = (ptrdiff_t)QUEX_SETTING_BUFFER_MIN_FALLBACK_N;
+
+    QUEX_BUFFER_ASSERT_CONSISTENCY(me);
+    __quex_assert(FallBackN >= 0);
+
+    if( me->_read_p - me->_lexeme_start_p >= ContentSpaceSize - FallBackN ) { 
+        /* OVERFLOW: If stretch from _read_p to _lexeme_start_p 
+         * spans the whole buffer, then nothing can be loaded.                */
+        return 0;
+    }
+    else if( QUEX_NAME(Buffer_is_end_of_stream_inside)(me) ) {
+        /* Refuse the move, if the end of stream is inside buffer.            */
+        return 0;
+    }
+
+    /* Determine from where the region-to-be-moved BEGINS, what its size is
+     * and how far it is to be moved.                                         */
+    region_p  = me->_read_p;
+    if( me->_lexeme_start_p ) {
+        region_p = QUEX_MIN(region_p, me->_lexeme_start_p);
+    }
+    if( region_p - me->content_begin(me) <= FallBackN ) {
+        return 0;
+    }
+    region_p  = &((region_p)[- FallBackN]);
+
+    return /* move distance */region_p - me->content_begin(me);
+}
+
+QUEX_INLINE ptrdiff_t        
+QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
+/* RETURNS: Move Distance
+ *
+ *  -1,   if the lexeme starts at a position so that it covers so much that 
+ *        nothing may be moved.
+ *   0,   if nothing can be moved, anyway.
+ *   > 1  number of positions that the content may be moved towards the
+ *        begin of the buffer.                                                */
+{
+    ptrdiff_t  backward_walk_distance;  
+    ptrdiff_t  move_distance;
+    ptrdiff_t  move_distance_reasonable;
+    ptrdiff_t  move_distance_max;
+    ptrdiff_t  move_distance_nominal;
+
+    /* Move distance restrict by: -- begin of stream (lexatom_index_begin == 0)
+     *                            -- '_read_p' must remain in buffer.         */
+    move_distance_max = QUEX_MIN(me->input.lexatom_index_begin, 
+                                 me->content_space_end(me) - me->_read_p - 1);
+
+    if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
+        /* There is still content in the buffer that might be useful for
+         * forward lexical analyis. Load only a decent amount backward.   */
+        move_distance_reasonable = QUEX_MAX((ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 256), 
+                                            (me->content_space_size(me)-1) / 4);
+        if( me->_lexeme_start_p ) {
+            backward_walk_distance = me->_lexeme_start_p ?  me->_lexeme_start_p - me->_read_p : 0;
+        }
+        /* Provide backward data so that lexer might go backward twice as 
+         * far as it already went.                                        */
+        move_distance_nominal = QUEX_MAX(move_distance_reasonable, 
+                                         backward_walk_distance * 2);
+    }
+    else {
+        /* Next step forward requires a total reload anyway.
+         * Go forward as much as possible.                                */
+        move_distance_nominal = move_distance_max;
+    }
+    move_distance = QUEX_MIN(move_distance_max, move_distance_nominal);
+
+    return move_distance;
+}
+
+QUEX_INLINE ptrdiff_t
+QUEX_NAME(Buffer_move_size_towards_begin)(QUEX_NAME(Buffer)* me, ptrdiff_t move_distance)
+{
+    const ptrdiff_t ContentSize = me->content_size(me);
+    if( move_distance >= ContentSize ) {
+        return 0;
+    }
+    return ContentSize - move_distance;
 }
 
 QUEX_INLINE ptrdiff_t
