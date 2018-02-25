@@ -207,10 +207,15 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
         /* There is still content in the buffer that might be useful for
          * forward lexical analyis. Load only a decent amount backward.   */
         move_distance_reasonable = QUEX_MAX((ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 256), 
-                                            (me->content_space_size(me)-1) / 4);
-        if( me->_lexeme_start_p ) {
-            backward_walk_distance = me->_lexeme_start_p ?  me->_lexeme_start_p - me->_read_p : 0;
+                                            me->content_space_size(me) / 4);
+
+        if( me->_lexeme_start_p && me->_lexeme_start_p > me->_read_p ) {
+            backward_walk_distance = me->_lexeme_start_p - me->_read_p;
         }
+        else {
+            backward_walk_distance = 0;
+        }
+       
         /* Provide backward data so that lexer might go backward twice as 
          * far as it already went.                                        */
         move_distance_nominal = QUEX_MAX(move_distance_reasonable, 
@@ -221,7 +226,9 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
          * Go forward as much as possible.                                */
         move_distance_nominal = move_distance_max;
     }
+
     move_distance = QUEX_MIN(move_distance_max, move_distance_nominal);
+    /* 'move_distance_max >= 0' => 'move_distance >= 0'                       */
 
     return move_distance;
 }
