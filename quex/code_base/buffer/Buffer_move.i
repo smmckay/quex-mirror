@@ -114,7 +114,6 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
  * That is, they indicate the situation to be restored.                       */
 {
     QUEX_TYPE_LEXATOM* BeginP = me->content_begin(me);
-    QUEX_TYPE_LEXATOM* EndP   = me->content_space_end(me);
     ptrdiff_t          move_size;
     ptrdiff_t          load_request_n;
 
@@ -138,8 +137,7 @@ QUEX_NAME(Buffer_move_towards_begin_undo)(QUEX_NAME(Buffer)*           me,
     else {
         load_request_n = me->content_size(me);
     }
-    __quex_assert(&BeginP[load_request_n] <= EndP);
-    (void)EndP;
+    __quex_assert(&BeginP[load_request_n] <= me->content_space_end(me));
     return load_request_n;
 }
 
@@ -186,8 +184,6 @@ QUEX_INLINE ptrdiff_t
 QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
 /* RETURNS: Move Distance
  *
- *  -1,   if the lexeme starts at a position so that it covers so much that 
- *        nothing may be moved.
  *   0,   if nothing can be moved, anyway.
  *   > 1  number of positions that the content may be moved towards the
  *        begin of the buffer.                                                */
@@ -205,7 +201,7 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
 
     if( me->_backup_lexatom_index_of_lexeme_start_p == (QUEX_TYPE_STREAM_POSITION)-1 ) {
         /* There is still content in the buffer that might be useful for
-         * forward lexical analyis. Load only a decent amount backward.   */
+         * forward lexical analyis. Load only a decent amount backward.       */
         move_distance_reasonable = QUEX_MAX((ptrdiff_t)(QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 256), 
                                             me->content_space_size(me) / 4);
 
@@ -217,19 +213,19 @@ QUEX_NAME(Buffer_move_get_max_distance_towards_end)(QUEX_NAME(Buffer)* me)
         }
        
         /* Provide backward data so that lexer might go backward twice as 
-         * far as it already went.                                        */
+         * far as it already went.                                            */
         move_distance_nominal = QUEX_MAX(move_distance_reasonable, 
                                          backward_walk_distance * 2);
     }
     else {
         /* Next step forward requires a total reload anyway.
-         * Go forward as much as possible.                                */
+         * Go forward as much as possible.                                    */
         move_distance_nominal = move_distance_max;
     }
 
     move_distance = QUEX_MIN(move_distance_max, move_distance_nominal);
-    /* 'move_distance_max >= 0' => 'move_distance >= 0'                       */
 
+    /* 'move_distance_max >= 0' => 'move_distance >= 0'                       */
     return move_distance;
 }
 

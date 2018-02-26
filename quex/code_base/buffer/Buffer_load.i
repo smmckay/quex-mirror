@@ -173,17 +173,12 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
  * RETURNS: 
  *          
  *     DONE              => Something has been loaded   (analysis MAY CONTINUE)
- *     FAILURE           => General load failure.       (analysis MUST STOP)
- *     NO_SPACE_FOR_LOAD => Lexeme exceeds buffer size. (analysis MUST STOP)
- *     ENCODING_ERROR    => Failed. Conversion error.   (analysis MUST STOP)
  *     NO_MORE_DATA      => Begin of stream reached.    (analysis MUST STOP)
- *
- *  __________________________________________________________________________
- * ! In the false case, the range from 'Begin' to '_lexeme_start_p' may       !
- * ! have ARBITRARY CONTENT. Then the '_read_p' MUST be reset IMMEDIATELY and !
- * ! only forward analysis may work.                                          !
- * '--------------------------------------------------------------------------'
- *
+ *     ENCODING_ERROR    => Failed. Conversion error.   (analysis MUST STOP)
+ *     FAILURE           => General load failure.       (analysis MUST STOP)
+ *                         
+ * In case of 'FAILURE', the buffer is set into a dysfunctional state. I may
+ * not be used any longer!
  *_____________________________________________________________________________
  * NO ADAPTIONS OF POST-CONTEXT POSITIONS. Reason: Backward analysis appears
  * only in the following two cases.
@@ -222,6 +217,9 @@ QUEX_NAME(Buffer_load_backward)(QUEX_NAME(Buffer)* me)
     move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_end)(me);
 
     if( 0 == move_distance ) {
+        /* Earlier, it has been checked that 'lexatom_index_begin != 0'
+         * => move distance == 0 definitely means 'error'.                    */
+        QUEX_NAME(Buffer_dysfunctional_set)(me);
         return E_LoadResult_FAILURE;
     }
     loaded_n = QUEX_NAME(Buffer_move_and_load_backward)(me, move_distance, &encoding_error_f, &load_request_n);
