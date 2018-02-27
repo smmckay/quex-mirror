@@ -86,14 +86,6 @@ def do(setup, command_line, argv):
         error.log("The use of a manually written token class requires that the name of the class\n"
                   "is specified on the command line via the '--token-class' option.")
     
-    # Token queue
-    if setup.token_queue_size <= setup.token_queue_safety_border + 1:
-        if setup.token_queue_size == setup.token_queue_safety_border: cmp_str = "equal to"
-        else:                                                         cmp_str = "less than"
-        error.log("Token queue size is %i is %s token queue safety border %i + 1.\n" % \
-                  (setup.token_queue_size, cmp_str, setup.token_queue_safety_border) + 
-                  "Set appropriate values with --token-queue-size and --token-queue-safety-border.")
-
     # Check that names are valid identifiers
     if setup.token_id_prefix_plain:
         __check_identifier(setup, "token_id_prefix_plain", "Token prefix")

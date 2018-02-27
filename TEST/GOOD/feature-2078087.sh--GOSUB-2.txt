@@ -50,7 +50,7 @@ LETTER 'one'
 | Mode change from ONE
 |             to   ONE
 LETTER 'one'
-<TERMINATION> 'one'
+<TERMINATION> ''
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
                                            [0001] 0x0031

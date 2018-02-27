@@ -208,11 +208,10 @@ QUEX_INLINE bool
 QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
                               const QUEX_TYPE_TOKEN_ID  TokenID)
 {
-    QUEX_TYPE_TOKEN*   token_p = QUEX_TOKEN_QUEUE_GET_CURRENT(me->the_lexer->_token_queue);
     QUEX_TYPE_LEXATOM* begin_p;
     QUEX_TYPE_LEXATOM* end_p;
 
-    if( ! token_p ) {
+    if( QUEX_NAME(TokenQueue_is_full)(&me->the_lexer->_token_queue) ) {
         QUEX_NAME(error_code_set_if_first)(me->the_lexer, 
                                            E_Error_TokenQueueNoMoreTokensAvailable);
         return false;
@@ -221,12 +220,6 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     /* All functions must ensure: there is one cell to store terminating zero.*/  
     __quex_assert(me->text.end < me->text.memory_end);   
 
-    /* If no text is to be flushed, behave the same as self_send              */             
-    /* That is: self_token_set_id(ID);                                        */             
-    /*          QUEX_TOKEN_POLICY_PREPARE_NEXT();                             */             
-    /*          BUT: We clear the text of the otherwise void token.           */             
-    QUEX_ACTION_TOKEN_STAMP(*(me->the_lexer));   
-    token_p->id = TokenID;
     if( me->text.begin == me->text.end ) {               
         begin_p = &QUEX_LEXEME_NULL;
         end_p   = &QUEX_LEXEME_NULL;                  /* -> terminating zero. */
@@ -238,7 +231,13 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     }                                                                              
     /* 'end_p' points *to* terminating zero, *not* behind it.                 */
 
-    if( ! QUEX_NAME_TOKEN(take_text)(token_p, begin_p, end_p) ) {
+    /* If no text is to be flushed, behave the same as self_send              */             
+    /* That is: self_token_set_id(ID);                                        */             
+    /*          QUEX_TOKEN_POLICY_PREPARE_NEXT();                             */             
+    /*          BUT: We clear the text of the otherwise void token.           */             
+    QUEX_ACTION_TOKEN_STAMP(*(me->the_lexer));   
+    if( ! QUEX_NAME(TokenQueue_push_text)(&me->the_lexer->_token_queue, TokenID,
+                                          begin_p, end_p) ) {
         /* MEMORY OWNERSHIP *not* transferred to token. Reuse current memory. */
         QUEX_NAME(Accumulator__clear)(me);                       
     }          
@@ -246,7 +245,7 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
         /* MEMORY OWNERSHIP transferred to token. => Access new memory.       */
         QUEX_NAME(Accumulator__memory_resources_allocate)(me);                 
     }                                                                          
-    QUEX_TOKEN_QUEUE_PREPARE_NEXT(me->the_lexer->_token_queue);                                               
+
     return true;
 }
 

@@ -212,14 +212,6 @@ Option("token_queue_size", "number",
      function.
      """), 
 
-Option("token_queue_safety_border", "number", 
-     """
-     Specifies the number of tokens that can be sent at maximum as reaction to
-     one single pattern match. More precisely, it determines the number of 
-     token slots that are left empty when the token queue is detected to be
-     full.
-     """),
-
 Option("token_id_counter_offset", "number",
      """
      \\v{number} = Number where the numeric values for the token ids start

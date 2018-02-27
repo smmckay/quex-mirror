@@ -40,7 +40,6 @@ QUEX_NAME(TokenQueue_construct)(QUEX_NAME(TokenQueue)* me,
     }
 
     __quex_assert(memory != 0x0);
-    __quex_assert(N > (size_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);
 
     /* Call placement new (plain constructor) for all tokens in chunk.        */
     for(iterator = memory; iterator != memory_end; ++iterator) {
@@ -55,11 +54,6 @@ QUEX_NAME(TokenQueue_reset)(QUEX_NAME(TokenQueue)* me)
 {                                                    
     me->read_iterator  = (QUEX_TYPE_TOKEN*)me->begin; 
     me->write_iterator = (QUEX_TYPE_TOKEN*)me->begin; 
-
-    __quex_assert(  me->end - me->begin 
-                  > (ptrdiff_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);
-    __quex_assert(   me->end_minus_safety_border 
-                  == me->end - (ptrdiff_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);         
 }
 
 QUEX_INLINE void
@@ -67,32 +61,27 @@ QUEX_NAME(TokenQueue_init)(QUEX_NAME(TokenQueue)* me,
                            QUEX_TYPE_TOKEN* Memory, 
                            QUEX_TYPE_TOKEN* MemoryEnd) 
 {
-    __quex_assert(  MemoryEnd - Memory 
-                  > (ptrdiff_t)QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER);
-    me->begin                   = Memory;                           
-    me->end                     = MemoryEnd;                        
-    me->end_minus_safety_border = MemoryEnd - QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER;         
+    me->begin = Memory;                           
+    me->end   = MemoryEnd;                        
     QUEX_NAME(TokenQueue_reset)(me);                                
 }
 
 QUEX_INLINE void
 QUEX_NAME(TokenQueue_resources_absent_mark)(QUEX_NAME(TokenQueue)* me) 
 {
-    me->begin                   = (QUEX_TYPE_TOKEN*)0;                           
-    me->end                     = (QUEX_TYPE_TOKEN*)0;
-    me->read_iterator           = (QUEX_TYPE_TOKEN*)0; 
-    me->write_iterator          = (QUEX_TYPE_TOKEN*)0; 
-    me->end_minus_safety_border = (QUEX_TYPE_TOKEN*)0;
+    me->begin          = (QUEX_TYPE_TOKEN*)0;                           
+    me->end            = (QUEX_TYPE_TOKEN*)0;
+    me->read_iterator  = (QUEX_TYPE_TOKEN*)0; 
+    me->write_iterator = (QUEX_TYPE_TOKEN*)0; 
 }
 
 QUEX_INLINE bool
 QUEX_NAME(TokenQueue_resources_absent)(QUEX_NAME(TokenQueue)* me) 
 {
-    return    me->begin                   == (QUEX_TYPE_TOKEN*)0                           
-           && me->end                     == (QUEX_TYPE_TOKEN*)0
-           && me->read_iterator           == (QUEX_TYPE_TOKEN*)0 
-           && me->write_iterator          == (QUEX_TYPE_TOKEN*)0
-           && me->end_minus_safety_border == (QUEX_TYPE_TOKEN*)0;
+    return    me->begin          == (QUEX_TYPE_TOKEN*)0                           
+           && me->end            == (QUEX_TYPE_TOKEN*)0
+           && me->read_iterator  == (QUEX_TYPE_TOKEN*)0 
+           && me->write_iterator == (QUEX_TYPE_TOKEN*)0;
 }
 
 QUEX_INLINE void
@@ -134,11 +123,60 @@ QUEX_NAME(TokenQueue_memory_get)(QUEX_NAME(TokenQueue)* me,
 
 QUEX_INLINE bool 
 QUEX_NAME(TokenQueue_is_full)(QUEX_NAME(TokenQueue)* me) 
-{ return me->write_iterator >= me->end_minus_safety_border; }
+{ return me->write_iterator >= me->end; }
 
 QUEX_INLINE bool 
 QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me)
 { return me->read_iterator == me->write_iterator; }
+
+QUEX_INLINE void             
+QUEX_NAME(TokenQueue_push)(QUEX_NAME(TokenQueue)* me,
+                           QUEX_TYPE_TOKEN_ID     Id)
+/* Push a token and set only its token identifier.                            */
+{
+    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
+    me->write_iterator->id = Id;              
+    ++(me->write_iterator);       
+}
+
+QUEX_INLINE bool             
+QUEX_NAME(TokenQueue_push_text)(QUEX_NAME(TokenQueue)* me,
+                                QUEX_TYPE_TOKEN_ID     Id,
+                                QUEX_TYPE_LEXATOM*     BeginP,
+                                QUEX_TYPE_LEXATOM*     EndP)
+/* Push a token and set its 'text' member.                                    */
+{
+    bool ownership_transferred_to_token_f = false;
+    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);
+#   if defined(QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT)
+    ownership_transferred_to_token_f = QUEX_NAME_TOKEN(take_text)(me->write_iterator, BeginP, EndP);
+    QUEX_NAME(TokenQueue_push)(me, Id);
+    return ownership_transferred_to_token_f;
+#   else
+    (void)me; (void)Id; (void)BeginP; (void)EndP;
+    __quex_assert(false);
+#   endif
+    return ownership_transferred_to_token_f;
+}
+
+QUEX_INLINE void             
+QUEX_NAME(TokenQueue_push_repeated)(QUEX_NAME(TokenQueue)* me,
+                                    QUEX_TYPE_TOKEN_ID     Id,
+                                    size_t                 RepetitionN)
+/* Push a repeated token by 'RepetitionN' times. This is only addmissible for
+ * TokenId-s specified in the 'repeated_token' section of the '.qx' file.     */
+{
+    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
+    __quex_assert(RepetitionN != 0);        
+#   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
+    __quex_assert(__QUEX_SETTING_TOKEN_ID_REPETITION_TEST(Id));
+    QUEX_NAME_TOKEN(repetition_n_set)(me->write_iterator, RepetitionN);
+    QUEX_NAME(TokenQueue_push)(me, Id);
+#   else
+    (void)me; (void)Id; (void)RepetitionN;
+    __quex_assert(false);
+#   endif
+}
 
 QUEX_INLINE QUEX_TYPE_TOKEN* 
 QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
@@ -196,7 +234,8 @@ QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me)
  * only be called in case of a detected error.                                */
 {
     QUEX_NAME(TokenQueue_reset)(me);
-    (me->write_iterator++)->id =  QUEX_TOKEN_ID(TERMINATION);
+    QUEX_NAME(TokenQueue_push_text)(me, QUEX_TOKEN_ID(TERMINATION), 
+                                    (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0);
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

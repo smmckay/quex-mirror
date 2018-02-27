@@ -668,11 +668,9 @@ _10:
 
     switch( load_result ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_ENCODING_ERROR:    goto _1;
-    case E_LoadResult_FAILURE:           QUEX_GOTO_STATE(target_state_else_index); 
-    case E_LoadResult_OVERFLOW:          QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
-    /* case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(E_LoadResult_FAILURE); return; */
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
+    case E_LoadResult_ENCODING_ERROR:    goto _1;
+    case E_LoadResult_OVERFLOW:          QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
     default:                             __quex_assert(false);
     }
 
@@ -857,7 +855,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 861 "TestAnalyzer.c"
+#   line 859 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -888,7 +886,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 892 "TestAnalyzer.c"
+#   line 890 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -934,7 +932,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 938 "TestAnalyzer.c"
+#   line 936 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -1021,7 +1019,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 1025 "TestAnalyzer.c"
+#   line 1023 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1042,7 +1040,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 1046 "TestAnalyzer.c"
+#   line 1044 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1061,7 +1059,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1065 "TestAnalyzer.c"
+#   line 1063 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1136,7 +1134,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1140 "TestAnalyzer.c"
+#   line 1138 "TestAnalyzer.c"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

@@ -4,7 +4,7 @@
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.
-##    This helps to find subtile errors.
+##    This helps to find subtle errors.
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
@@ -43,7 +43,7 @@ Exit:  to   ONE
 |             to   ONE
 Enter: from TWO
 TOKEN: RETURN_TO_MODE 'return'
-TOKEN: <TERMINATION> 'return'
+TOKEN: <TERMINATION> ''
 | [END]
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000

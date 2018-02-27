@@ -660,11 +660,9 @@ _10:
 
     switch( load_result ) {
     case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_ENCODING_ERROR:    goto _1;
-    case E_LoadResult_FAILURE:           QUEX_GOTO_STATE(target_state_else_index); 
-    case E_LoadResult_OVERFLOW:          QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
-    /* case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(E_LoadResult_FAILURE); return; */
     case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
+    case E_LoadResult_ENCODING_ERROR:    goto _1;
+    case E_LoadResult_OVERFLOW:          QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
     default:                             __quex_assert(false);
     }
 

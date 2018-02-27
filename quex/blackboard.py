@@ -162,11 +162,13 @@ reset_extension = CodeFragment_NULL
 # memento_extension: fragment to be pasted into the memento  class's body.
 #-----------------------------------------------------------------------------------------
 memento_class_extension = CodeFragment_NULL
+
 #-----------------------------------------------------------------------------------------
 # memento_pack_extension: fragment to be pasted into the function that packs the
 #                         lexical analyzer state in a memento.
 #-----------------------------------------------------------------------------------------
 memento_pack_extension = CodeFragment_NULL
+
 #-----------------------------------------------------------------------------------------
 # memento_unpack_extension: fragment to be pasted into the function that unpacks the
 #                           lexical analyzer state in a memento.

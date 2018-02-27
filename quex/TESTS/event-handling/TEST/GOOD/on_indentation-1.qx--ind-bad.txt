@@ -17,7 +17,7 @@ TOKEN: X 'x'
 INDENT
 TOKEN: X 'x'
 INDENTATION BAD (line starts with undesired whitespace)
-TOKEN: <TERMINATION> 'x'
+TOKEN: <TERMINATION> ''
 | [END]
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000

@@ -2,7 +2,7 @@
 ** Thus, it does not match newline, and the lexer triggers on newline **
 ** to the default terminal.                                           **
 URL 'http://www.dog.com/get?q=food'
-<TERMINATION> 'http://www.dog.com/get?q=food'
+<TERMINATION> ''
   mode:       ONE_AND_ONLY;
   error_code: NoHandler_OnFailure;
               (* 'on_failure' has not been specified for mode*)

@@ -228,12 +228,13 @@ class TokenTypeDescriptor(TokenTypeDescriptorCore):
         error.warning(_warning_msg, self.sr,
                       SuppressCode=NotificationDB.warning_on_no_token_class_take_text)
 
-class TokenTypeDescriptorManual:
+class TokenTypeDescriptorManual(TokenTypeDescriptorCore):
     """Class to mimik as 'real' TokenTypeDescriptor as defined in 
        quex.input.files.token_type.py. Names and functions must remain
        as they are for compatibility.
     """
     def __init__(self, FileName, ClassName, NameSpace, ClassNameSafe, TokenIDType):
+        TokenTypeDescriptorCore.__init__(self)
         self.__file_name       = FileName
         self.class_name        = ClassName
         self.name_space        = NameSpace

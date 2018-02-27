@@ -28,6 +28,7 @@ def do(Mode_PrepPrepDB):
     )
 
     # token_repetition_token_id_list empty => token_repetition_support_txt = ""
+    token_descr = token_db.token_type_definition
     token_repetition_support_f   = (len(token_db.token_repetition_token_id_list) != 0)
     token_repetition_support_txt = (" %s " % Lng.OR).join(
         Lng.EQUAL("TokenID", token_id_str)
@@ -42,23 +43,23 @@ def do(Mode_PrepPrepDB):
     # Is there a 'standard type' correspondent the lexatom type.
     # (Relevant only if a user defined lexatom type has been specified)
 
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_COLUMN",        Setup.count_column_number_f)        
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_COLUMN",                Setup.count_column_number_f)        
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COMPUTED_GOTOS",                False)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_INCLUDE_STACK",                 Setup.include_stack_support_f)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_LINE",          Setup.count_line_number_f)      
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_LINE",                  Setup.count_line_number_f)      
     txt = Lng.SWITCH(txt, "QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK", Setup.mode_transition_check_f)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT",      token_repetition_support_f) 
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT",       token_descr.take_text is not None) 
     txt = Lng.SWITCH(txt, "QUEX_OPTION_INDENTATION_TRIGGER",           IndentationSupportF)     
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_BIG",                  Setup.buffer_byte_order == "big")
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_LITTLE",               Setup.buffer_byte_order == "little")
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_BIG",                    Setup.buffer_byte_order == "big")
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_LITTLE",                 Setup.buffer_byte_order == "little")
     txt = Lng.SWITCH(txt, "__QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT",    entry_handler_active_f)
     txt = Lng.SWITCH(txt, "__QUEX_OPTION_ON_EXIT_HANDLER_PRESENT",     exit_handler_active_f)
     txt = Lng.SWITCH(txt, "__QUEX_OPTION_PLAIN_C",                     Setup.language.upper() == "C")
     txt = Lng.SWITCH(txt, "__QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION", BeginOfLineSupportF)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_SYSTEM",               Setup.byte_order_is_that_of_current_system_f)
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_SYSTEM",                 Setup.byte_order_is_that_of_current_system_f)
     txt = Lng.SWITCH(txt, "__QUEX_OPTION_ENGINE_RUNNING_ON_CODEC",     Setup.buffer_encoding.name != "unicode")
 
-    token_descr = token_db.token_type_definition
     codec_name  = Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
     include_guard_extension = Lng.INCLUDE_GUARD(Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space) 
                                                 + "__" + Setup.analyzer_class_name)
@@ -95,7 +96,6 @@ def do(Mode_PrepPrepDB):
              ["$$TOKEN_ID_TYPE$$",              token_descr.token_id_type.get_pure_text()],
              ["$$TOKEN_LINE_N_TYPE$$",          token_descr.line_number_type.get_pure_text()],
              ["$$TOKEN_PREFIX$$",               Setup.token_id_prefix],
-             ["$$TOKEN_QUEUE_SAFETY_BORDER$$",  repr(Setup.token_queue_safety_border)],
              ["$$TOKEN_QUEUE_SIZE$$",           repr(Setup.token_queue_size)],
              ["$$TOKEN_REPEAT_TEST$$",          token_repetition_support_txt],
              ["$$USER_LEXER_VERSION$$",         Setup.user_application_version_id],

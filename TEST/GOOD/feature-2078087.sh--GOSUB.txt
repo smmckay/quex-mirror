@@ -24,7 +24,7 @@ LETTER '4'
 |             to   TWO
 | Mode change from TWO
 |             to   ONE
-<TERMINATION> '4'
+<TERMINATION> ''
 _________________________________________________________________
    buffer front--------------------------->[0000] 0x0000
                                            [0001] 0x0031

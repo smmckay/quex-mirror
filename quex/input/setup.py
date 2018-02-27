@@ -290,7 +290,6 @@ SETUP_INFO = {
     "token_id_type":                  [["--token-id-type"],                  "uint32_t"],
     "token_id_prefix":                [["--token-id-prefix"],                "QUEX_TKN_"],
     "token_queue_size":               [["--token-queue-size"],               64],
-    "token_queue_safety_border":      [["--token-queue-safety-border"],      16],
     "mode_transition_check_f":        [["--no-mode-transition-check"],       SetupParTypes.NEGATED_FLAG],
     "language":                       [["--language", "-l"],                 "C++"],
     "normalize_f":                    [["--normalize"],                      SetupParTypes.FLAG],
@@ -402,6 +401,7 @@ SETUP_INFO = {
     "XX_converter_iconv_f":              [["--iconv"],                            SetupParTypes.FLAG],
     "XX_converter_icu_f":                [["--icu"],                              SetupParTypes.FLAG],
     "XX_external_lexeme_null_object":    [["--lexeme-null-object", "--lno"],      ""],
+    "XX_token_queue_safety_border":      [["--token-queue-safety-border"],      16],
 }
 
 class NotificationDB:
@@ -432,6 +432,10 @@ class NotificationDB:
     warning_incidence_handler_overwrite              = 19
 
 DEPRECATED = { 
+  "XX_token_queue_safety_border":
+    ("Command line option '--token-queue-safety-border' considered useless with new\n"
+     "token queue implementation.", 
+     "0.68.2"),
   "XX_OLD_query_codec": 
     ("Use '--encoding-info' or '--ei' instead of '--codec-info', '--ci'",
      "0.67.5"),
@@ -684,7 +688,6 @@ DOC = {
     "token_id_type":                  ("", ""),
     "token_id_prefix":                ("", ""),
     "token_queue_size":               ("", ""),
-    "token_queue_safety_border":      ("", ""),
     "token_policy":                   ("", ""),
     "token_memory_management_by_user_f": ("", ""),
     "mode_transition_check_f":        ("", ""),

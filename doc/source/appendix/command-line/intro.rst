@@ -288,16 +288,6 @@ Default: QUEX_TKN_
 
 Default: 64
 
-.. cmdoption:: --token-queue-safety-border number
-
-    Specifies the number of tokens that can be sent at maximum as reaction to one single pattern match. 
-    More precisely, it determines the number of token slots that are left empty when the token 
-    queue is detected to be full.  
-
-    
-
-Default: 16
-
 .. cmdoption:: --token-id-offset number
 
     ``number`` = Number where the numeric values for the token ids start to count. Note, that this 

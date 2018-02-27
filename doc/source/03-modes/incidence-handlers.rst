@@ -1,9 +1,15 @@
 Incidence Handlers
 ==================
 
+The dominant characteristic of a lexer is determined by its pattern matching
+behavior. While this subject has covered a large portion of the preceeding
+text, it is only one aspect of a lexer's behavior. In a more general sense, a
+lexer's behavior is determined by its way to react on incidents. In this
+section types of incidents are discussed other than pattern matching events. 
+
 In order to customize a lexer's reaction to incidences so called incidence
 handlers may be specified [#f1]_. They are specified inside a mode definition
-and follow the example of ``on_some_incidence`` shown below in the mode
+and follow the scheme of ``on_some_incidence`` as shown below in the mode
 'EXAMPLE'.::
 
     mode EXAMPLE {
@@ -13,76 +19,56 @@ and follow the example of ``on_some_incidence`` shown below in the mode
     }
 
 The following subsections group the explanations of incidence handlers by
-subject.  Some incidence handlers receive additional 'implicit arguments'.  The
-are specified as if they were function arguments. The meaning of names used as
-implicit arguments is given at the entry of each subsection. 
+subject. The specification of incidence handlers does not contain any
+named argument. Moreover, any argument is passed implicitly with a specific
+*name* and *type*. They are explained along with the incidence handlers 
+as if they were function arguments. For example the specification
 
-Mode Entry and Exit
-^^^^^^^^^^^^^^^^^^^
+.. function:: on_some_incidence(This, That)
 
-Upon mode entry and exit the incidence handlers ``on_entry`` and ``on_exit``
-are executed. The following implicit arguments may be passed along.
+means, that inside the handler ``on_some_incidence`` the names ``This`` and
+``That`` may be referred. The types of implicit arguments are listed in
+the enumeration below. 
 
-.. variable:: QUEX_NAME(Mode)* FromMode
+.. variable:: QUEX_TYPE_ANALYZER self
+.. variable:: QUEX_NAME(Mode)*   FromMode
+.. variable:: QUEX_NAME(Mode)*   ToMode
+.. variable:: QUEX_TYPE_LEXATOM* Lexeme
 
-   A pointer to the mode object of the mode *from* where the current mode is
-   entered.
+   Pointer to a zero-terminated string that carries the matching lexeme. 
 
-.. variable:: QUEX_NAME(Mode)* ToMode
+.. variable:: size_t             LexemeL
 
-   A pointer to the mode object of the mode *to* where the current mode leaves.
+   Length of the matching lexeme.
 
-The incidence handlers for entry and exit are:
+.. variable:: QUEX_TYPE_LEXATOM* LexemeBegin
 
-.. function:: on_entry(FromMode)
+   Pointer to the begin of the lexeme which is not necessarily zero-terminated.
 
-    Incidence handler to be executed on entrance of the mode. This happens as a
-    reaction to mode transitions. 
+.. variable:: QUEX_TYPE_LEXATOM* LexemeEnd
 
-.. function:: on_exit(ToMode)
+   Pointer to the first lexatom after the last lexatom in the lexeme.
 
-    Incidence handler to be executed on exit of the mode. This happens as a
-    reaction to mode transitions. 
-
-The incidence handlers are triggered whenever the user triggers a mode
-transition. This may happen by explicit function calls to such
-``self_enter_mode()``, or one of the commands ``GOTO``. ``GOSUB``, or ``GOUP``.
-``on_exit`` is called before the mode transition is accomplished. ``on_entry``
-is called when the new mode has been set. Sending tokens from inside the
-entry/exit handlers is is possible. However, the lexical analyzer does not
-return immediately as it does when pattern matched. Tokens which are sent from
-inside these handlers are stacked in the token queue. 
 
 Pattern Matching
 ^^^^^^^^^^^^^^^^
 
-The following two incidence handlers make it possible to specify actions to be
-executed before and after the match specific actions. 
-
-.. variable:: QUEX_TYPE_LEXATOM* Lexeme
-.. variable:: size_t             LexemeL
-.. variable:: QUEX_TYPE_LEXATOM* LexemeBegin
-.. variable:: QUEX_TYPE_LEXATOM* LexemeEnd
+With the following two incidence handlers actions actions may be defined to be
+executed before and after *each* match action. 
 
 .. function:: on_match(Lexeme, LexemeBegin, LexemeEnd, LexemeL)
 
     This incidence handler is executed on every match *before* the pattern's
-    action is executed.  Implicit arguments allow access to the matched lexeme
-    and correspond to what is passed to pattern-actions.
+    action is executed.  
 
-    ``Lexeme`` gives a pointer to a zero-terminated string that carries the
-    matching lexeme. ``LexemeL`` is the lexeme's length. ``LexemeBegin`` gives
-    a pointer to the begin of the lexeme which is not necessarily
-    zero-terminated.  ``LexemeEnd`` points to the first lexatom after the last
-    lexatom in the lexeme.
 
 .. function:: on_after_match(Lexeme, LexemeBegin, LexemeEnd, LexemeL)
 
     The ``on_after_match`` handler is executed at every pattern match.
     Contrary to ``on_match`` it is executed *after* the action of the winning
     pattern.  To make sure that the handler is executed, it is essential that
-    ``return`` is never a used in any pattern action directly. If a forced
-    return is required, ``RETURN`` must be used. 
+    ``return`` is never used in any pattern action directly. To force an 
+    immediate return, ``RETURN`` must be used. 
 
     .. warning::
 
@@ -110,6 +96,31 @@ Using ``RETURN`` or ``CONTINUE`` triggers a direct jump to the
    'mismatches'.  Consequently, the ``on_match`` and ``on_after_match`` are not
    executed in that case.
 
+
+Mode Entry and Exit
+^^^^^^^^^^^^^^^^^^^
+
+Upon mode entry and exit the incidence handlers ``on_entry`` and ``on_exit``
+are executed. The following implicit arguments may be passed along.
+
+.. function:: on_entry(self, QUEX_NAME(Mode)* FromMode)
+
+   Handles the event of entering the current mode. The ``FromMode``
+   determines the mode from where this mode is entered.
+
+.. function:: on_exit(self, QUEX_NAME(Mode)* ToMode)
+
+   Handles the event of exeting the current mode. The ``ToMode``
+   determines the mode from where this mode is entered.
+
+The handlers ``on_entry`` and ``on_exit`` are triggered whenever the user
+triggers a mode transition. This may happen by explicit function calls such as
+``self_enter_mode()``, or one of the commands ``GOTO``. ``GOSUB``, or ``GOUP``.
+``on_exit`` is called before the mode transition is accomplished. ``on_entry``
+is called when the new mode has been set. Tokens may be sent from inside the
+entry/exit handlers. However, the lexical analyzer does not return immediately
+as it does when pattern matched. Tokens which are sent from inside these
+handlers are stacked in the token queue. 
 
 Buffer Handling
 ^^^^^^^^^^^^^^^
