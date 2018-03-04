@@ -178,10 +178,6 @@ public:
 
     /*__( Reset )_______________________________________________________________
      *                                                                        */
-/* TODO:
-    $$MF: bool reset(const char* FileName, QUEX_NAME(Converter)* Converter)$$
-    */
-
     bool reset()
          { return QUEX_NAME(reset)(this); }
     bool reset(const char*            FileName, 
@@ -226,18 +222,14 @@ public:
 
     /*__( Analysis => Receiving Tokens )________________________________________
      *                                                                        */
-    void receive(QUEX_TYPE_TOKEN** token_pp)    { QUEX_NAME(MF_receive)(this, token_pp); }
+    $$MF: void receive(QUEX_TYPE_TOKEN** token_pp)$$
 
-    QUEX_TYPE_TOKEN*  token_p()                 { return QUEX_NAME(MF_token_p)(this); }
+    $$MF: QUEX_TYPE_TOKEN*  token_p()$$
 
-    void send(QUEX_TYPE_TOKEN_ID Id)            { QUEX_NAME(MF_send)(this, Id); }
-    void send_n(QUEX_TYPE_TOKEN_ID Id, 
-                size_t             RepetitionN) { QUEX_NAME(MF_send_n)(this, Id, RepetitionN); }
-    bool send_text(QUEX_TYPE_TOKEN_ID Id,
-                   QUEX_TYPE_LEXATOM* BeginP, 
-                   QUEX_TYPE_LEXATOM* EndP)     { return QUEX_NAME(MF_send_text)(this, Id, BeginP, EndP); }
-    bool send_string(QUEX_TYPE_TOKEN_ID Id,
-                     QUEX_TYPE_LEXATOM* ZeroTerminatedString) { return QUEX_NAME(MF_send_string)(this, Id, ZeroTerminatedString); }
+    $$MF: void send(QUEX_TYPE_TOKEN_ID Id)$$
+    $$MF: void send_n(QUEX_TYPE_TOKEN_ID Id, size_t RepetitionN)$$
+    $$MF: bool send_text(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP)$$
+    $$MF: bool send_string(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString)$$
 
     bool token_queue_is_empty()                           { return QUEX_NAME(token_queue_is_empty)(this); }
     void token_queue_remainder_get(QUEX_TYPE_TOKEN** begin, 
@@ -304,13 +296,13 @@ public:
 
     /*__( Navigation: Tell/Seek )______________________________________________
      *                                                                       */
-    size_t      tell()                                 { return QUEX_NAME(MF_tell)(this); }
-    void        seek(const size_t CharacterIndex)      { QUEX_NAME(MF_seek)(this, CharacterIndex); }
-    void        seek_forward(const size_t CharacterN)  { QUEX_NAME(MF_seek_forward)(this, CharacterN); }
-    void        seek_backward(const size_t CharacterN) { QUEX_NAME(MF_seek_backward)(this, CharacterN); }
+    $$MF: size_t  tell()$$
+    $$MF: void    seek(const size_t CharacterIndex)$$
+    $$MF: void    seek_forward(const size_t CharacterN)$$
+    $$MF: void    seek_backward(const size_t CharacterN)$$
                 
-    void        undo()                         { return QUEX_NAME(MF_undo)(this); }
-    void        undo_n(size_t DeltaN_Backward) { return QUEX_NAME(MF_undo_n)(this, DeltaN_Backward); }
+    $$MF: void    undo()$$
+    $$MF: void    undo_n(size_t DeltaN_Backward)$$
                 
 public:
     bool        resources_absent() { return QUEX_NAME(resources_absent)(this); }

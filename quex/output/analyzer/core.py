@@ -41,6 +41,8 @@ def do(ModeDB, Epilog):
 
     template_code_txt = Lng.open_template(Lng.analyzer_template_file())
 
+    template_code_txt = declare_member_functions(template_code_txt)
+
     txt = blue_print(template_code_txt, [
         ["$$___SPACE___$$",                      " " * (len(LexerClassName) + 1)],
         ["$$CLASS_BODY_EXTENSION$$",             Lng.SOURCE_REFERENCED(blackboard.class_body_extension)],
@@ -101,3 +103,58 @@ def __mode_db_constructor_code(ModeDb):
     )
 
 
+class Signature:
+    def __init__(self, ReturnType, FunctionName, ArgumentList):
+        self.return_type   = ReturnType
+        self.function_name = FunctionName
+        self.argument_list = ArgumentList
+
+    @classmethod
+    def from_String(cls, String):
+        """SYNTAX: return-type; function-name; argument-list;
+
+        argument-list:   type ':' name ','
+        """
+        def type_and_name(SubString):
+            fields   = [x.strip() for x in SubString.split()]
+            type_str = " ".join(fields[:-1])
+            name_str = fields[-1]
+            return type_str, name_str
+
+        open_i  = String.find("(")
+        close_i = String.rfind(")")
+        return_type, function_name = type_and_name(String[:open_i])
+        argument_list = [ 
+            type_and_name(x) 
+            for x in String[open_i+1:close_i].split(",") if x.strip()
+        ]
+
+        return cls(return_type, function_name, argument_list)
+
+def member_functions(Txt):
+    """YIELDS:
+       [0] begin index of letter in 'Txt'
+       [1] end index of letter in 'Txt'
+       [2] signature of function
+    """
+    start_i = 0
+    while 1 + 1 == 2:
+        begin_i = Txt.find("$$MF:", start_i+1)
+        if begin_i == -1: break
+        end_i   = Txt.find("$$", begin_i+1)
+        if end_i == -1: break
+        yield begin_i, end_i+2, Signature.from_String(Txt[begin_i+len("$$MF:"):end_i])
+        start_i = end_i + 2
+
+    return 
+
+def declare_member_functions(Txt):
+    txt = []
+    last_i = 0
+    for begin_i, end_i, signature in member_functions(Txt):
+        if signature is None: continue
+        txt.append(Txt[last_i:begin_i])
+        txt.append(Lng.MEMBER_FUNCTION_DECLARATION(signature))
+        last_i = end_i
+    txt.append(Txt[last_i:])
+    return "".join(txt)

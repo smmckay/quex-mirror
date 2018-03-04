@@ -423,6 +423,21 @@ class Language(dict):
     def CLASS_MEMBER_DEFINITION(self, TypeStr, MaxTypeNameL, VariableName):
         return "    %s%s %s;" % (TypeStr, " " * (MaxTypeNameL - len(TypeStr)), VariableName)
 
+    def MEMBER_FUNCTION_DECLARATION(self, signature):
+        argument_list_str = ", ".join("%s %s" % (arg_type, arg_name) 
+                                      for arg_type, arg_name in signature.argument_list)
+        if signature.return_type != "void": return_str = "return "
+        else:                               return_str = ""
+
+        call_argument_list  = ["this"] + [ arg_name for arg_type, arg_name in signature.argument_list ]
+        call_definition_str = "QUEX_NAME(MF_%s)(%s)" % (signature.function_name,
+                                                        ", ".join(call_argument_list))
+        return "%s %s(%s) { %s%s; }\n" % (signature.return_type, 
+                                          signature.function_name, 
+                                          argument_list_str, 
+                                          return_str, 
+                                          call_definition_str)
+
     def REGISTER_NAME(self, Register):
         return {
             E_R.InputP:          "(me->buffer._read_p)",
