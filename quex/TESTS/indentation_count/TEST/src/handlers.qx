@@ -10,11 +10,11 @@ mode X :
 <indentation: >
 <skip: [ \t] >
 {
-    on_indent { self_send1(QUEX_TKN_NEWLINE, LexemeNull);             self_send1(QUEX_TKN_INDENT, LexemeNull); }
-    on_dedent { if( First ) self_send1(QUEX_TKN_NEWLINE, LexemeNull); self_send1(QUEX_TKN_DEDENT, LexemeNull); }
-    on_nodent { self_send1(QUEX_TKN_NEWLINE, LexemeNull);                                         }
-    on_indentation_error { self_send1(QUEX_TKN_INDENTATION_ERROR, LexemeNull); QUEX_NAME(error_code_clear)(&self); }
-    on_indentation_bad   { self_send1(QUEX_TKN_INDENTATION_BAD, LexemeNull);   }
+    on_indent { self.send_string(&self, QUEX_TKN_NEWLINE, LexemeNull);             self.send_string(&self, QUEX_TKN_INDENT, LexemeNull); }
+    on_dedent { if( First ) self.send_string(&self, QUEX_TKN_NEWLINE, LexemeNull); self.send_string(&self, QUEX_TKN_DEDENT, LexemeNull); }
+    on_nodent { self.send_string(&self, QUEX_TKN_NEWLINE, LexemeNull);                                         }
+    on_indentation_error { self.send_string(&self, QUEX_TKN_INDENTATION_ERROR, LexemeNull); QUEX_NAME(error_code_clear)(&self); }
+    on_indentation_bad   { self.send_string(&self, QUEX_TKN_INDENTATION_BAD, LexemeNull);   }
 
     [a-z]+ => QUEX_TKN_WORD(Lexeme);
 }

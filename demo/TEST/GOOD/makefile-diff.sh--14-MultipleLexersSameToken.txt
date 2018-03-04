@@ -14,32 +14,47 @@
 < %.o: %.cpp $(ENGINE)
 ---
 > %.o: %.c $(ENGINE)
+< COMMON_TOKEN_OPTIONS = \
 < 	 --token-class-file A_B_C-token \
+<      \
 ---
-> 	 --token-class-file A_B_C-token.h \
+> COMMON_TOKEN_OPTIONS = --token-class-file A_B_C-token.h \
+< 		 # --no-message-on-extra-options \
 < %.E: %.cpp
-< 	g++ -E $< -o  $@ -I$(QUEX_PATH) 
+< 	g++ -E $< -o  $@ -DQUEX_OPTION_MULTI -I$(QUEX_PATH) 
 ---
 > %.E: %.c
 > 	gcc -E $< -o  $@ -I$(QUEX_PATH)
+< nolp: max_Lexer.cpp moritz_Lexer.cpp boeck_Lexer.cpp
+< 	cat max_Lexer.cpp    | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp max_Lexer.cpp
+< 	cat moritz_Lexer.cpp | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp moritz_Lexer.cpp
+< 	cat boeck_Lexer.cpp  | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp boeck_Lexer.cpp
+---
+> nolp: max_Lexer.c moritz_Lexer.c boeck_Lexer.c
+> 	cat max_Lexer.c    | awk '!/^# *line/' > tmp.c; mv tmp.c max_Lexer.c
+> 	cat moritz_Lexer.c | awk '!/^# *line/' > tmp.c; mv tmp.c moritz_Lexer.c
+> 	cat boeck_Lexer.c  | awk '!/^# *line/' > tmp.c; mv tmp.c boeck_Lexer.c
 < boeck_Lexer.cpp:  boeck.qx A_B_C-token.cpp A_B_C-token_ids
 < 	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
 ---
-> boeck_Lexer.c:  boeck.qx A_B_C-token.c A_B_C-token_ids.h
-> 	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C
+> #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+> #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 < max_Lexer.cpp:    max.qx A_B_C-token.cpp A_B_C-token_ids
 < 	quex -i $< -o max::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
 ---
-> max_Lexer.c:    max.qx A_B_C-token.c A_B_C-token_ids.h
-> 	quex -i $< -o max::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+> boeck_Lexer.c:  boeck.qx A_B_C-token.c A_B_C-token_ids.h
+> 	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C
 < moritz_Lexer.cpp: moritz.qx A_B_C-token.cpp A_B_C-token_ids
 < 	quex -i $< -o moritz::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
 ---
-> moritz_Lexer.c: moritz.qx A_B_C-token.c A_B_C-token_ids.h
-> 	quex -i $< -o moritz::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+> max_Lexer.c:    max.qx A_B_C-token.c A_B_C-token_ids.h
+> 	quex -i $< -o max::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
 < A_B_C-token_ids \
 < A_B_C-token.cpp: 
 ---
+> moritz_Lexer.c: moritz.qx A_B_C-token.c A_B_C-token_ids.h
+> 	quex -i $< -o moritz::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C 
+> 
 > A_B_C-token_ids.h \
 > A_B_C-token.c: 
 > 		 --language C                  \

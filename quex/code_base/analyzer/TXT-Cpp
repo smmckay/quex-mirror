@@ -222,54 +222,45 @@ public:
 
     /*__( Analysis => Receiving Tokens )________________________________________
      *                                                                        */
-    void receive(QUEX_TYPE_TOKEN** token_pp)
-         { QUEX_NAME(receive)(this, token_pp); }
+    void receive(QUEX_TYPE_TOKEN** token_pp)    { QUEX_NAME(MF_receive)(this, token_pp); }
 
-    QUEX_TYPE_TOKEN*  token_p()
-         { return QUEX_NAME(token_p)(this); }
+    QUEX_TYPE_TOKEN*  token_p()                 { return QUEX_NAME(MF_token_p)(this); }
 
-    bool token_queue_is_empty()       
-         { return QUEX_NAME(token_queue_is_empty)(this); }
+    void send(QUEX_TYPE_TOKEN_ID Id)            { QUEX_NAME(MF_send)(this, Id); }
+    void send_n(QUEX_TYPE_TOKEN_ID Id, 
+                size_t             RepetitionN) { QUEX_NAME(MF_send_n)(this, Id, RepetitionN); }
+    bool send_text(QUEX_TYPE_TOKEN_ID Id,
+                   QUEX_TYPE_LEXATOM* BeginP, 
+                   QUEX_TYPE_LEXATOM* EndP)     { return QUEX_NAME(MF_send_text)(this, Id, BeginP, EndP); }
+    bool send_string(QUEX_TYPE_TOKEN_ID Id,
+                     QUEX_TYPE_LEXATOM* ZeroTerminatedString) { return QUEX_NAME(MF_send_string)(this, Id, ZeroTerminatedString); }
+
+    bool token_queue_is_empty()                           { return QUEX_NAME(token_queue_is_empty)(this); }
     void token_queue_remainder_get(QUEX_TYPE_TOKEN** begin, 
-                                    QUEX_TYPE_TOKEN** end)
-         { QUEX_NAME(token_queue_remainder_get)(this, begin, end); }
-    void token_queue_swap(QUEX_TYPE_TOKEN** queue, 
-                           size_t*           size); 
+                                   QUEX_TYPE_TOKEN** end) { QUEX_NAME(token_queue_remainder_get)(this, begin, end); }
+    void token_queue_swap(QUEX_TYPE_TOKEN** queue, size_t* size); 
 
-    const char* input_name()                          
-         { return QUEX_NAME(input_name)(this); }
-    bool        input_name_set(const char* InputName) 
-         { return QUEX_NAME(input_name_set)(this, InputName); }
+    const char* input_name()                          { return QUEX_NAME(input_name)(this); }
+    bool        input_name_set(const char* InputName) { return QUEX_NAME(input_name_set)(this, InputName); }
 
     /*__( Modes )_______________________________________________________________
      *                                                                        */
-    QUEX_NAME(Mode)&      mode()            
-         { return *QUEX_NAME(get_mode)(this); }
-    int                   mode_id() const   
-         { return QUEX_NAME(get_mode_id)(this); }
-    const char*           mode_name() const 
-         { return QUEX_NAME(get_mode_name)(this); }
-    QUEX_NAME(Mode)&      map_mode_id_to_mode(const int ModeId)
-         { return *(QUEX_NAME(map_mode_id_to_mode)(this, ModeId)); }
-    int                   map_mode_to_mode_id(const QUEX_NAME(Mode)& Mode) const
-         { return QUEX_NAME(map_mode_to_mode_id)(this, &Mode); }
+    QUEX_NAME(Mode)&  mode()            { return *QUEX_NAME(get_mode)(this); }
+    int               mode_id() const   { return QUEX_NAME(get_mode_id)(this); }
+    const char*       mode_name() const { return QUEX_NAME(get_mode_name)(this); }
+    QUEX_NAME(Mode)&  map_mode_id_to_mode(const int ModeId)                  { return *(QUEX_NAME(map_mode_id_to_mode)(this, ModeId)); }
+    int               map_mode_to_mode_id(const QUEX_NAME(Mode)& Mode) const { return QUEX_NAME(map_mode_to_mode_id)(this, &Mode); }
 
-    void set_mode_brutally(const int ModeId)
-         { QUEX_NAME(set_mode_brutally_by_id)(this, ModeId); }
-    void set_mode_brutally(const QUEX_NAME(Mode)& Mode)
-         { QUEX_NAME(set_mode_brutally)(this, ((QUEX_NAME(Mode)*)&Mode)); }
-    void enter_mode(/* NOT const*/ QUEX_NAME(Mode)& TargetMode)
-         { QUEX_NAME(enter_mode)(this, &TargetMode); }
-    void operator<<(const int ModeId)
-         { enter_mode(*(QUEX_NAME(map_mode_id_to_mode)(this, ModeId))); }
-    void operator<<(/* NOT const*/ QUEX_NAME(Mode)& Mode)
-         { enter_mode(Mode); }
-    void pop_mode()
-         { QUEX_NAME(pop_mode)(this); }
-    void pop_drop_mode()
-         { QUEX_NAME(pop_drop_mode)(this); }
-    void push_mode(QUEX_NAME(Mode)& new_mode)
-         { QUEX_NAME(push_mode)(this, &new_mode); }
+    void set_mode_brutally(const int ModeId) { QUEX_NAME(set_mode_brutally_by_id)(this, ModeId); }
+    void set_mode_brutally(const QUEX_NAME(Mode)& Mode) { QUEX_NAME(set_mode_brutally)(this, ((QUEX_NAME(Mode)*)&Mode)); }
+    void enter_mode(/* NOT const*/ QUEX_NAME(Mode)& TargetMode) { QUEX_NAME(enter_mode)(this, &TargetMode); }
+
+    void operator<<(const int ModeId)                     { enter_mode(*(QUEX_NAME(map_mode_id_to_mode)(this, ModeId))); }
+    void operator<<(/* NOT const*/ QUEX_NAME(Mode)& Mode) { enter_mode(Mode); }
+
+    void pop_mode()                           { QUEX_NAME(pop_mode)(this); }
+    void pop_drop_mode()                      { QUEX_NAME(pop_drop_mode)(this); }
+    void push_mode(QUEX_NAME(Mode)& new_mode) { QUEX_NAME(push_mode)(this, &new_mode); }
 private:
     /* Befriend all modes                                                     */
 $$MODE_CLASS_FRIENDS$$  
@@ -277,20 +268,13 @@ $$MODE_CLASS_FRIENDS$$
 public:
     /*__( Access to Buffer )____________________________________________________
      *                                                                        */
-    QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get()
-         { return QUEX_NAME(lexeme_start_pointer_get)(this); }
-
-    QUEX_TYPE_LEXATOM*    input_pointer_get()
-         { return QUEX_NAME(input_pointer_get)(this); }
-
-    void input_pointer_set(QUEX_TYPE_LEXATOM* InputP)
-         { return QUEX_NAME(input_pointer_set)(this, InputP); }
+    QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get()  { return QUEX_NAME(lexeme_start_pointer_get)(this); }
+    QUEX_TYPE_LEXATOM*    input_pointer_get()         { return QUEX_NAME(input_pointer_get)(this); }
+    void input_pointer_set(QUEX_TYPE_LEXATOM* InputP) { return QUEX_NAME(input_pointer_set)(this, InputP); }
 
     /* Activate/deactivate byte order reversion (big-/little-endian)          */
-    bool byte_order_reversion()
-         { return QUEX_NAME(byte_order_reversion)(this); }
-    void byte_order_reversion_set(bool Value)
-         { return QUEX_NAME(byte_order_reversion_set)(this, Value); }
+    bool byte_order_reversion()               { return QUEX_NAME(byte_order_reversion)(this); }
+    void byte_order_reversion_set(bool Value) { return QUEX_NAME(byte_order_reversion_set)(this, Value); }
 
     /*__( Line/Column Counter )________________________________________________
      *                                                                       */
@@ -316,25 +300,21 @@ public:
 
     /*__( Navigation: Tell/Seek )______________________________________________
      *                                                                       */
-    size_t      tell()                                 { return QUEX_NAME(tell)(this); }
-    void        seek(const size_t CharacterIndex)      { QUEX_NAME(seek)(this, CharacterIndex); }
-    void        seek_forward(const size_t CharacterN)  { QUEX_NAME(seek_forward)(this, CharacterN); }
-    void        seek_backward(const size_t CharacterN) { QUEX_NAME(seek_backward)(this, CharacterN); }
+    size_t      tell()                                 { return QUEX_NAME(MF_tell)(this); }
+    void        seek(const size_t CharacterIndex)      { QUEX_NAME(MF_seek)(this, CharacterIndex); }
+    void        seek_forward(const size_t CharacterN)  { QUEX_NAME(MF_seek_forward)(this, CharacterN); }
+    void        seek_backward(const size_t CharacterN) { QUEX_NAME(MF_seek_backward)(this, CharacterN); }
                 
-    void        undo()                       { return QUEX_NAME(undo)(this); }
-    void        undo(size_t DeltaN_Backward) { return QUEX_NAME(undo_n)(this, DeltaN_Backward); }
+    void        undo()                         { return QUEX_NAME(MF_undo)(this); }
+    void        undo_n(size_t DeltaN_Backward) { return QUEX_NAME(MF_undo_n)(this, DeltaN_Backward); }
                 
 public:
-    bool        resources_absent()
-    { return QUEX_NAME(resources_absent)(this); }
+    bool        resources_absent() { return QUEX_NAME(resources_absent)(this); }
 
     /*__( General Information )________________________________________________
      *                                                                       */
-    const char* version() const
-    { return QUEX_NAME(version)((QUEX_TYPE_ANALYZER*)this); }
-
-    void        print_this()
-    { QUEX_NAME(print_this)(this); }
+    const char* version() const { return QUEX_NAME(version)((QUEX_TYPE_ANALYZER*)this); }
+    void        print_this()    { QUEX_NAME(print_this)(this); }
 
 public:
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)

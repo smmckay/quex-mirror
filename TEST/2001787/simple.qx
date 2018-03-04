@@ -11,7 +11,7 @@ token {
 
 mode ONE_AND_ONLY
 {
-   <<EOF>> => QUEX_TKN_TERMINATION;
+   <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
    {P_URL} => QUEX_TKN_URL(Lexeme);
    .       => QUEX_TKN_NONE(Lexeme);
 }

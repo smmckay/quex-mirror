@@ -88,25 +88,25 @@ QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me,
             return;
         }
         *(stack->back) = Indentation;
-self_send(QUEX_TOKEN_ID(INDENT));
+self.send(QUEX_TOKEN_ID(INDENT));
         return;
     }
     else if( Indentation == *(stack->back) ) {
-self_send(QUEX_TOKEN_ID(NODENT));
+self.send(QUEX_TOKEN_ID(NODENT));
     }
     else  {
         start = stack->back;
         --(stack->back);
 #       if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #       define First true
-self_send(QUEX_TOKEN_ID(DEDENT));
+self.send(QUEX_TOKEN_ID(DEDENT));
 #       undef  First
 #       endif
         while( Indentation < *(stack->back) ) {
             --(stack->back);
 #           if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define First false
-self_send(QUEX_TOKEN_ID(DEDENT));
+self.send(QUEX_TOKEN_ID(DEDENT));
 #           undef  First
 #           endif
         }
@@ -115,7 +115,7 @@ self_send(QUEX_TOKEN_ID(DEDENT));
             /* 'Landing' must happen on indentation border. */
 #           if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define ClosedN (start - stack->back)
-self_send_n((size_t)ClosedN, QUEX_TOKEN_ID(DEDENT));
+self.send_n(QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #           undef  ClosedN
 #           endif
@@ -545,7 +545,7 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnBadLexatom);
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnBadLexatom);
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -559,7 +559,7 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnLoadFailure);
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnLoadFailure);
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -571,7 +571,7 @@ _3:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(QUEX_TOKEN_ID(TERMINATION));
 
 }
     /* End of Stream FORCES a return from the lexical analyzer, so that no
@@ -583,7 +583,7 @@ _4:
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnFailure);
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -595,7 +595,7 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 #define Counter counter
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnSkipRangeOpen);
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnSkipRangeOpen);
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -609,12 +609,11 @@ __QUEX_IF_COUNT_COLUMNS_ADD(1);
 {
 
 #   line 2 "nothing.qx"
-self_send(QUEX_TKN_X);
-
+self.send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 618 "TestAnalyzer.cpp"
+#   line 617 "TestAnalyzer.cpp"
 
 }
 RETURN;

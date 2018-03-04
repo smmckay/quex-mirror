@@ -9,7 +9,8 @@ main(int argc, char** argv)
 
     do {
         qlex.receive(&token_p);
-        std::cout << token_p->number_ << std::endl;
+        std::cout << "token.id: " << token_p->id << "; token.number: ";
+        std::cout << token_p->number_ << ";" << std::endl;
     } while( token_p->type_id() != BR_TKN_TERMINATION);
 
     return 0;

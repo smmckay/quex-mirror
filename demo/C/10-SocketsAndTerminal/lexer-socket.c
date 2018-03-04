@@ -115,7 +115,7 @@ accept_and_lex(int listen_fd)
 
     continue_f = true;
     do {
-        (void)QUEX_NAME(receive)(&qlex, &token);
+        qlex.receive(&qlex, &token);
 
         print_token(token);
 

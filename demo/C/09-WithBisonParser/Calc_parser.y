@@ -87,7 +87,7 @@ int Calc_yylex(YYSTYPE *yylval, struct quex_Calc_lexer_tag *qlex)
 {
 	QUEX_TYPE_TOKEN* token;
 
-	QUEX_NAME(receive)(qlex, &token);
+	qlex->receive(qlex, &token);
 
     if( ! token ) {
         return TKN_TERMINATION;

@@ -9,7 +9,7 @@
         QUEX_NAME(from_file_name)(&tlex, "example.txt", /* Converter */NULL);
 
         do {
-            QUEX_NAME(receive)(&tlex, &token_p);
+            tlex.receive(&tlex, &token_p);
 
             printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
 

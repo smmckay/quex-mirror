@@ -182,8 +182,8 @@ typedef enum {
     E_Error_ProvidedExternal_Memory_Corrupt,
     E_Error_ProvidedExternal_Memory_Intersects,
     E_Error_Reset_OnError,
-    E_Error_TokenRepetitionNSetButNotSupportedByGeneratedCode,
-    E_Error_TokenQueueNoMoreTokensAvailable,
+    E_Error_Token_RepetitionNSetButNotSupportedByGeneratedCode,
+    E_Error_Token_QueueOverflow,
     E_Error_Uninitialized,
     E_Error_UnitTest_Termination,
     E_Error_UserConstructor_Failed,
@@ -232,8 +232,8 @@ typedef enum {
      : (E) == E_Error_ProvidedExternal_Memory_Corrupt    ? "ProvidedExternal_Memory_Corrupt"    \
      : (E) == E_Error_ProvidedExternal_Memory_Intersects ? "ProvidedExternal_Memory_Intersects" \
      : (E) == E_Error_Reset_OnError                      ? "Reset_OnError"                      \
-     : (E) == E_Error_TokenRepetitionNSetButNotSupportedByGeneratedCode ? "TokenRepetitionNSetButNotSupportedByGeneratedCode" \
-     : (E) == E_Error_TokenQueueNoMoreTokensAvailable    ? "TokenQueueNoMoreTokensAvailable"    \
+     : (E) == E_Error_Token_RepetitionNSetButNotSupportedByGeneratedCode ? "Token_RepetitionNSetButNotSupportedByGeneratedCode" \
+     : (E) == E_Error_Token_QueueOverflow    ? "Token_QueueOverflow"    \
      : (E) == E_Error_Uninitialized                      ? "Uninitialized"                      \
      : (E) == E_Error_UnitTest_Termination               ? "UnitTest_Termination"               \
      : (E) == E_Error_UserConstructor_Failed             ? "UserConstructor_Failed"             \

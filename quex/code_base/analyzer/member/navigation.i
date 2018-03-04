@@ -9,35 +9,35 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE size_t  
-QUEX_NAME(tell)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_tell)(QUEX_TYPE_ANALYZER* me)
 {
     /* No 'undo terminating zero' -- we do not change the lexeme pointer here. */
     return (size_t)QUEX_NAME(Buffer_tell)(&me->buffer);
 }
 
 QUEX_INLINE void    
-QUEX_NAME(seek)(QUEX_TYPE_ANALYZER* me, const size_t CharacterIndex)
+QUEX_NAME(MF_seek)(QUEX_TYPE_ANALYZER* me, const size_t CharacterIndex)
 {
     QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);
     QUEX_NAME(Buffer_seek)(&me->buffer, (ptrdiff_t)CharacterIndex);
 }
 
 QUEX_INLINE void    
-QUEX_NAME(seek_forward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN)
+QUEX_NAME(MF_seek_forward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN)
 {
     QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);
     QUEX_NAME(Buffer_seek_forward)(&me->buffer, (ptrdiff_t)CharacterN);
 }
 
 QUEX_INLINE void    
-QUEX_NAME(seek_backward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN)
+QUEX_NAME(MF_seek_backward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN)
 {
     QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);
     QUEX_NAME(Buffer_seek_backward)(&me->buffer, (ptrdiff_t)CharacterN);
 }
 
 QUEX_INLINE void  
-QUEX_NAME(undo)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_undo)(QUEX_TYPE_ANALYZER* me)
 {
     __QUEX_IF_COUNT_LINES(me->counter._line_number_at_end     = me->counter._line_number_at_begin);
     __QUEX_IF_COUNT_COLUMNS(me->counter._column_number_at_end = me->counter._column_number_at_begin);
@@ -50,7 +50,7 @@ QUEX_NAME(undo)(QUEX_TYPE_ANALYZER* me)
 }
 
 QUEX_INLINE void  
-QUEX_NAME(undo_n)(QUEX_TYPE_ANALYZER* me, size_t DeltaN_Backward)
+QUEX_NAME(MF_undo_n)(QUEX_TYPE_ANALYZER* me, size_t DeltaN_Backward)
 {
     __QUEX_IF_COUNT_LINES(me->counter._line_number_at_end     = me->counter._line_number_at_begin);
     __QUEX_IF_COUNT_COLUMNS(me->counter._column_number_at_end = me->counter._column_number_at_begin);

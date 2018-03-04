@@ -192,11 +192,15 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 {
     QUEX_NAME(Asserts_construct)();
 
+#   if defined(__QUEX_OPTION_PLAIN_C)
+    QUEX_NAME(member_functions_assign)(me);
+#   endif
+
     me->__input_name = (char*)0;
 
     __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
 
-    if( ! QUEX_NAME(TokenQueue_construct)(&me->_token_queue, 
+    if( ! QUEX_NAME(TokenQueue_construct)(&me->_token_queue, me,
                                           QUEX_SETTING_TOKEN_QUEUE_SIZE) ) {
         goto ERROR_0;
     }
@@ -213,7 +217,6 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 #   ifdef QUEX_OPTION_INDENTATION_TRIGGER
     me->_indentation_handler_active_f = true;
 #   endif
-
 
     /* A user's mode change callbacks may be called as a consequence of the 
      * call to 'set_mode_brutally_by_id()'. The current mode must be set to '0'
@@ -293,6 +296,11 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
     /* NOTE: 'memset()' would destroy the v-table in case that the analyzer 
      *       is a c++ class object.                                           */
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
+
+#   if defined(__QUEX_OPTION_PLAIN_C)
+    QUEX_NAME(member_functions_assign)(me);
+#   endif
+
 #   ifdef QUEX_OPTION_COUNTER
     QUEX_NAME(Counter_resources_absent_mark)(&me->counter);
 #   endif
@@ -452,6 +460,28 @@ QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me,
                             (QUEX_TYPE_LEXATOM*)0 
                           : me->buffer.begin(&me->buffer);
 }
+
+#if defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE void
+QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
+{
+    me->receive       = QUEX_NAME(MF_receive);
+
+    me->token_p       = QUEX_NAME(MF_token_p);
+    me->send          = QUEX_NAME(MF_send);
+    me->send_n        = QUEX_NAME(MF_send_n);
+    me->send_text     = QUEX_NAME(MF_send_text);
+    me->send_string   = QUEX_NAME(MF_send_string);
+
+    me->tell          = QUEX_NAME(MF_tell);
+    me->seek          = QUEX_NAME(MF_seek);
+    me->seek_forward  = QUEX_NAME(MF_seek_forward);
+    me->seek_backward = QUEX_NAME(MF_seek_backward);
+    me->undo          = QUEX_NAME(MF_undo);
+    me->undo_n        = QUEX_NAME(MF_undo_n);
+}
+#endif
+
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

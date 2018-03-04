@@ -78,7 +78,7 @@ main(int argc, char** argv)
         qlex.buffer.fill(&qlex.buffer, &p[0], &p[received_n]);
 
         do {
-            (void)QUEX_NAME(receive)(&qlex, &token);
+            qlex.receive(&qlex, &token);
             print_token(token);
         } while( token->id != QUEX_TKN_TERMINATION && token->id != QUEX_TKN_BYE );
     }

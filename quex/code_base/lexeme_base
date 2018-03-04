@@ -1,0 +1,22 @@
+/* -*- C++ -*- vim:set syntax=cpp: 
+ * (C) Frank-Rene Schaefer    
+ * ABSOLUTELY NO WARRANTY                                                     */
+#ifndef __QUEX_INCLUDE_GUARD__LEXEME_BASE
+#define __QUEX_INCLUDE_GUARD__LEXEME_BASE
+
+QUEX_NAMESPACE_TOKEN_OPEN
+
+/* HINT: If compiler complaints about non-existing 'lexeme_length' function,
+ *       then this is probably caused by a user-defined token class file which
+ *       does not include 'quex/code_base/lexeme.i'                           */
+QUEX_INLINE size_t 
+QUEX_NAME_TOKEN(lexeme_length)(const QUEX_TYPE_LEXATOM* Str);
+
+
+QUEX_INLINE size_t 
+QUEX_NAME_TOKEN(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0, 
+                                const QUEX_TYPE_LEXATOM* it1);
+
+QUEX_NAMESPACE_TOKEN_CLOSE
+
+#endif /* __QUEX_INCLUDE_GUARD__LEXEME_BASE */

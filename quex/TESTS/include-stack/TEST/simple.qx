@@ -47,7 +47,7 @@ token {
 mode END_INCLUDED_FILE {
     <<EOF>> { 
        if( self.include_pop() ) RETURN;
-       self_send(QUEX_TKN_TERMINATION);
+       self.send(QUEX_TKN_TERMINATION);
        RETURN;
     }
 

@@ -1,0 +1,113 @@
+
+---( size: 1; )------------------
+
+construct: ((0x5600f0f62270))
+
+         take_text: ((0x5600f0f62270)) 'adelbert'
+(1)  100 adelbert-->
+(1)      <-- 100 adelbert
+(2)      <--  -1 
+
+destruct: ((0x5600f0f62270))
+
+
+---( size: 2; )------------------
+
+construct: ((0x5600f0f622b0))
+construct: ((0x5600f0f622c0))
+
+         take_text: ((0x5600f0f622b0)) 'adelbert'
+(1)  100 adelbert-->
+(1)      <-- 100 adelbert
+         take_text: ((0x5600f0f622c0)) 'berta'
+(2)  200 berta-->
+(2)      <-- 200 berta
+(3)      <--  -1 
+
+destruct: ((0x5600f0f622b0))
+destruct: ((0x5600f0f622c0))
+
+
+---( size: 2; )------------------
+
+construct: ((0x5600f0f622b0))
+construct: ((0x5600f0f622c0))
+
+         take_text: ((0x5600f0f622b0)) 'adelbert'
+(1)  100 adelbert-->
+         take_text: ((0x5600f0f622c0)) 'berta'
+(2)  200 berta-->
+(1)      <-- 100 adelbert
+(2)      <-- 200 berta
+(3)      <--  -1 
+
+destruct: ((0x5600f0f622b0))
+destruct: ((0x5600f0f622c0))
+
+
+---( size: 3; )------------------
+
+construct: ((0x5600f0f622e0))
+construct: ((0x5600f0f622f0))
+construct: ((0x5600f0f62300))
+
+         take_text: ((0x5600f0f622e0)) 'adelbert'
+(1)  100 adelbert-->
+(1)      <-- 100 adelbert
+         take_text: ((0x5600f0f622f0)) 'berta'
+(2)  200 berta-->
+         take_text: ((0x5600f0f62300)) 'caesar'
+(3)  300 caesar-->
+(2)      <-- 200 berta
+(3)      <-- 300 caesar
+(4)      <--  -1 
+
+destruct: ((0x5600f0f622e0))
+destruct: ((0x5600f0f622f0))
+destruct: ((0x5600f0f62300))
+
+
+---( size: 3; )------------------
+
+construct: ((0x5600f0f622e0))
+construct: ((0x5600f0f622f0))
+construct: ((0x5600f0f62300))
+
+         take_text: ((0x5600f0f622e0)) 'adelbert'
+(1)  100 adelbert-->
+         take_text: ((0x5600f0f622f0)) 'berta'
+(2)  200 berta-->
+(1)      <-- 100 adelbert
+         take_text: ((0x5600f0f62300)) 'caesar'
+(3)  300 caesar-->
+(2)      <-- 200 berta
+(3)      <-- 300 caesar
+(4)      <--  -1 
+
+destruct: ((0x5600f0f622e0))
+destruct: ((0x5600f0f622f0))
+destruct: ((0x5600f0f62300))
+
+
+---( size: 3; )------------------
+
+construct: ((0x5600f0f622e0))
+construct: ((0x5600f0f622f0))
+construct: ((0x5600f0f62300))
+
+         take_text: ((0x5600f0f622e0)) 'adelbert'
+(1)  100 adelbert-->
+         take_text: ((0x5600f0f622f0)) 'berta'
+(2)  200 berta-->
+         take_text: ((0x5600f0f62300)) 'caesar'
+(3)  300 caesar-->
+(1)      <-- 100 adelbert
+(2)      <-- 200 berta
+(3)      <-- 300 caesar
+(4)      <--  -1 
+
+destruct: ((0x5600f0f622e0))
+destruct: ((0x5600f0f622f0))
+destruct: ((0x5600f0f62300))
+
+<terminated 40>

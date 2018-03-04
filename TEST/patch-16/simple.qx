@@ -19,6 +19,6 @@ mode PROGRAM
 	<<EOF>>               => QUEX_TKN_TERMINATION;
 	on_end_of_stream      => QUEX_TKN_TERMINATION;
 	on_failure            => QUEX_TKN_TERMINATION;
-	"a" { self_send_n(1,QUEX_TKN_ATOKEN); RETURN; }
+	"a"                  { self.send_n(&self, 1,QUEX_TKN_ATOKEN); RETURN; }
 	"b"                   => QUEX_TKN_BTOKEN;
 }

@@ -10,6 +10,7 @@
 #include <quex/code_base/token/TokenPolicy>
 #include <quex/code_base/buffer/Buffer_print>
 #include <quex/code_base/buffer/lexatoms/LexatomLoader>
+#include <quex/code_base/lexeme_base>
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -54,11 +55,42 @@ QUEX_NAME(error_code_set_if_first)(QUEX_TYPE_ANALYZER* me, E_Error ErrorCode)
 { if( me->error_code == E_Error_None ) me->error_code = ErrorCode; }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*  
-QUEX_NAME(token_p)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_token_p)(QUEX_TYPE_ANALYZER* me)
 {
-#   define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
-    return self_write_token_p();
-#   undef self
+    return me->_token_queue.write_iterator; 
+}
+
+QUEX_INLINE void 
+QUEX_NAME(MF_send)(QUEX_TYPE_ANALYZER* me, 
+                   QUEX_TYPE_TOKEN_ID  Id)
+{ QUEX_NAME(TokenQueue_push)(&me->_token_queue, Id); }
+
+QUEX_INLINE void 
+QUEX_NAME(MF_send_n)(QUEX_TYPE_ANALYZER* me, 
+                     QUEX_TYPE_TOKEN_ID  Id, 
+                     size_t              RepetitionN)
+{ QUEX_NAME(TokenQueue_push_repeated)(&me->_token_queue, Id, RepetitionN); }
+
+QUEX_INLINE bool 
+QUEX_NAME(MF_send_text)(QUEX_TYPE_ANALYZER* me, 
+                        QUEX_TYPE_TOKEN_ID  Id,
+                        QUEX_TYPE_LEXATOM*  BeginP, 
+                        QUEX_TYPE_LEXATOM*  EndP)
+{ return QUEX_NAME(TokenQueue_push_text)(&me->_token_queue, Id, BeginP, EndP); }
+
+QUEX_INLINE bool 
+QUEX_NAME(MF_send_string)(QUEX_TYPE_ANALYZER* me,
+                          QUEX_TYPE_TOKEN_ID  Id,
+                          QUEX_TYPE_LEXATOM*  ZeroTerminatedString)
+{ 
+#   if defined(__QUEX_OPTION_PLAIN_C)
+    const size_t Length = QUEX_NAME_TOKEN(lexeme_length)((const QUEX_TYPE_LEXATOM*)ZeroTerminatedString);
+#   else
+    const size_t Length = QUEX_NAMESPACE_TOKEN::QUEX_NAME_TOKEN(lexeme_length)((const QUEX_TYPE_LEXATOM*)ZeroTerminatedString);
+#   endif
+
+    return QUEX_NAME(TokenQueue_push_text)(&me->_token_queue, Id, ZeroTerminatedString, 
+                                           ZeroTerminatedString + (ptrdiff_t)Length); 
 }
 
 QUEX_INLINE bool
@@ -135,5 +167,6 @@ QUEX_NAME(print_this)(QUEX_TYPE_ANALYZER* me)
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE
+
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC_I */

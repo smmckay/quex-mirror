@@ -41,6 +41,6 @@ mode END_OF_FILE :
 <inheritable: only>
 {
 	<<EOF>> {
-		self_send(QUEX_TKN_TERMINATION);
+		self.send(&self, QUEX_TKN_TERMINATION);
 	}
 }

@@ -22,7 +22,9 @@ find quex/code_base \
 base = """
 /asserts
 /lexeme
+/lexeme_base
 /lexeme.i
+/lexeme_base.i
 /definitions
 /include-guard-undef
 /bom

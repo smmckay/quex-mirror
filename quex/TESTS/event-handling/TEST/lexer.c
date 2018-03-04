@@ -39,7 +39,7 @@ main(int argc, char** argv)
 #   endif
 
     do {
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
         token_id = token_p->id;
         FLUSH();
         printf("TOKEN: %s\n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));

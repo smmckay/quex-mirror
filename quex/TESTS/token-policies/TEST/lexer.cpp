@@ -41,6 +41,10 @@ main(int argc, char** argv)
 
     while( test_core(*qlex, argv[1]) != QUEX_TKN_TERMINATION );
 
+    if( qlex->error_code != E_Error_None ) {
+        printf("Error: %s;\n", E_Error_NAME(qlex->error_code));
+    }
+
     delete qlex;
 }
 
@@ -63,44 +67,44 @@ void  pseudo_analysis(QUEX_TYPE_ANALYZER* me)
     static int i = 0;
 
     switch( i++ ) {
-    default: self_send(QUEX_TKN_TERMINATION); break;
-    case 0:  self_send(QUEX_TKN_ONE);         break;
-    case 1:  self_send(QUEX_TKN_TWO);         break;
-    case 2:  self_send(QUEX_TKN_THREE);       break;
-    case 3:  self_send(QUEX_TKN_FOUR);        break;
-    case 4:  self_send(QUEX_TKN_FIVE);        break;
-    case 5:  self_send(QUEX_TKN______NEXT_____); break;
-    case 6:  self_send(QUEX_TKN______NEXT_____); break;
-    case 7:  self_send(QUEX_TKN______NEXT_____); break;
+    default: self.send(QUEX_TKN_TERMINATION); break;
+    case 0:  self.send(QUEX_TKN_ONE);         break;
+    case 1:  self.send(QUEX_TKN_TWO);         break;
+    case 2:  self.send(QUEX_TKN_THREE);       break;
+    case 3:  self.send(QUEX_TKN_FOUR);        break;
+    case 4:  self.send(QUEX_TKN_FIVE);        break;
+    case 5:  self.send(QUEX_TKN______NEXT_____); break;
+    case 6:  self.send(QUEX_TKN______NEXT_____); break;
+    case 7:  self.send(QUEX_TKN______NEXT_____); break;
     case 8:  
-             self_send(QUEX_TKN_ONE);
-             self_send(QUEX_TKN______NEXT_____);
+             self.send(QUEX_TKN_ONE);
+             self.send(QUEX_TKN______NEXT_____);
              break;
     case 9:
-             self_send(QUEX_TKN_ONE);
-             self_send(QUEX_TKN_TWO);
-             self_send(QUEX_TKN______NEXT_____);
+             self.send(QUEX_TKN_ONE);
+             self.send(QUEX_TKN_TWO);
+             self.send(QUEX_TKN______NEXT_____);
              break;
     case 10:
-             self_send(QUEX_TKN_ONE);
-             self_send(QUEX_TKN_TWO);
-             self_send(QUEX_TKN_THREE);
-             self_send(QUEX_TKN______NEXT_____);
+             self.send(QUEX_TKN_ONE);
+             self.send(QUEX_TKN_TWO);
+             self.send(QUEX_TKN_THREE);
+             self.send(QUEX_TKN______NEXT_____);
              break;
     case 11:
-             self_send(QUEX_TKN_ONE);
-             self_send(QUEX_TKN_TWO);
-             self_send(QUEX_TKN_THREE); 
-             self_send(QUEX_TKN_FOUR);   
-             self_send(QUEX_TKN______NEXT_____);
+             self.send(QUEX_TKN_ONE);
+             self.send(QUEX_TKN_TWO);
+             self.send(QUEX_TKN_THREE); 
+             self.send(QUEX_TKN_FOUR);   
+             self.send(QUEX_TKN______NEXT_____);
              break;
     case 12:
-             self_send(QUEX_TKN_ONE);
-             self_send(QUEX_TKN_TWO);
-             self_send(QUEX_TKN_THREE); 
-             self_send(QUEX_TKN_FOUR); 
-             self_send(QUEX_TKN_FIVE); 
-             self_send(QUEX_TKN______NEXT_____);
+             self.send(QUEX_TKN_ONE);
+             self.send(QUEX_TKN_TWO);
+             self.send(QUEX_TKN_THREE); 
+             self.send(QUEX_TKN_FOUR); 
+             self.send(QUEX_TKN_FIVE); 
+             self.send(QUEX_TKN______NEXT_____);
              break;
     }
 }

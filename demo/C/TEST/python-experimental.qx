@@ -136,12 +136,12 @@ mode PROGRAM :
     "?"           => QUEX_TKN_QUESTION_MARK(Lexeme);
     "~"           => QUEX_TKN_TILDE(Lexeme);
 
-    "("           { self.open_bracket_n++; self_send1(QUEX_TKN_BRACKET_O, Lexeme); }
-    ")"           { self.open_bracket_n++; self_send1(QUEX_TKN_BRACKET_C, Lexeme); }
-    "["           { self.open_bracket_n++; self_send1(QUEX_TKN_CORNER_BRACKET_O, Lexeme); }
-    "]"           { self.open_bracket_n--; self_send1(QUEX_TKN_CORNER_BRACKET_C, Lexeme); }
-    "{"           { self.open_bracket_n--; self_send1(QUEX_TKN_CURLY_BRACKET_O, Lexeme); }
-    "}"           { self.open_bracket_n--; self_send1(QUEX_TKN_CURLY_BRACKET_C, Lexeme); }
+    "("           { self.open_bracket_n++; self.send_string(&self, QUEX_TKN_BRACKET_O, Lexeme); }
+    ")"           { self.open_bracket_n++; self.send_string(&self, QUEX_TKN_BRACKET_C, Lexeme); }
+    "["           { self.open_bracket_n++; self.send_string(&self, QUEX_TKN_CORNER_BRACKET_O, Lexeme); }
+    "]"           { self.open_bracket_n--; self.send_string(&self, QUEX_TKN_CORNER_BRACKET_C, Lexeme); }
+    "{"           { self.open_bracket_n--; self.send_string(&self, QUEX_TKN_CURLY_BRACKET_O, Lexeme); }
+    "}"           { self.open_bracket_n--; self.send_string(&self, QUEX_TKN_CURLY_BRACKET_C, Lexeme); }
 
     "="           => QUEX_TKN_OP_ASSIGNMENT(Lexeme);
     "+"           => QUEX_TKN_PLUS(Lexeme);

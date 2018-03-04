@@ -1,4 +1,4 @@
-.SECONDARY:
+.SECONDARY: $(ENGINE)
 
 ENGINE = \
 		boeck_Lexer.cpp   \
@@ -29,7 +29,12 @@ COMMON_TOKEN_OPTIONS = \
 		 # --no-message-on-extra-options \
 
 %.E: %.cpp
-	g++ -E $< -o  $@ -I$(QUEX_PATH) 
+	g++ -E $< -o  $@ -DQUEX_OPTION_MULTI -I$(QUEX_PATH) 
+
+nolp: max_Lexer.cpp moritz_Lexer.cpp boeck_Lexer.cpp
+	cat max_Lexer.cpp    | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp max_Lexer.cpp
+	cat moritz_Lexer.cpp | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp moritz_Lexer.cpp
+	cat boeck_Lexer.cpp  | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp boeck_Lexer.cpp
 	
 boeck_Lexer.cpp:  boeck.qx A_B_C-token.cpp A_B_C-token_ids
 	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 

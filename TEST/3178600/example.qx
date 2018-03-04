@@ -29,7 +29,7 @@ mode HEADER_LINE
 {
     on_failure      { printf("HEADER_LINE: something is wrong: %s\n",Lexeme); }
     \r?\n           { printf("leaving HEADER_LINE\n"); self_enter_mode(&HEADER); }
-    [^=\r\n]+       { self_send1(QUEX_TKN_KEY,Lexeme); }
+    [^=\r\n]+       { self.send_string(&self, QUEX_TKN_KEY,Lexeme); }
     "="             => QUEX_TKN_EQUALS(Lexeme);
 }
 

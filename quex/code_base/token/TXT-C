@@ -16,6 +16,7 @@
 #include <quex/code_base/MemoryManager>
 
 $$HELPER_DEFINITIONS$$
+#include <quex/code_base/lexeme>
 
 $$HEADER$$
  
@@ -43,14 +44,16 @@ QUEX_INLINE void         $TOKEN_CLASS_destruct($TOKEN_CLASS*);
 /* NOTE: Setters and getters as in the C++ version of the token class are not
  *       necessary, since the members are accessed directly.                   */
 
-QUEX_INLINE void         $TOKEN_CLASS_set($TOKEN_CLASS*            __this, 
+QUEX_INLINE void         $TOKEN_CLASS_set($TOKEN_CLASS*            me, 
                                           const QUEX_TYPE_TOKEN_ID ID);
 
 QUEX_INLINE const char*  $TOKEN_CLASS_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
 
-QUEX_INLINE bool         $TOKEN_CLASS_take_text($TOKEN_CLASS*            __this, 
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+QUEX_INLINE bool         $TOKEN_CLASS_take_text($TOKEN_CLASS*            me, 
                                                 const QUEX_TYPE_LEXATOM* Begin, 
                                                 const QUEX_TYPE_LEXATOM* End);
+#endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t       $TOKEN_CLASS_repetition_n_get($TOKEN_CLASS*);

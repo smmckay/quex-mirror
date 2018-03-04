@@ -73,6 +73,7 @@ $$COPY$$
 }
 
 
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
 $TOKEN_CLASS_take_text($TOKEN_CLASS*            __this, 
                        const QUEX_TYPE_LEXATOM* Begin, 
@@ -94,6 +95,7 @@ $$FUNC_TAKE_TEXT$$
     /* Default: no ownership.                                                */
     return false;
 }
+#endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t 
@@ -138,5 +140,7 @@ $$MAP_ID_TO_NAME_CASES$$
 }
 
 $$FOOTER$$
+
+#include <quex/code_base/lexeme.i>
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I */

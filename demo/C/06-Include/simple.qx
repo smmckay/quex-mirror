@@ -41,22 +41,21 @@ mode MAIN
 : <skip: [ \t\r\n] > 
 {
     <<EOF>> {
-	    self_send1(QUEX_TKN_TERMINATION, LexemeNull);
-        RETURN;
+	    self.send_string(&self, QUEX_TKN_TERMINATION, LexemeNull);
     }
 
     "(" => QUEX_TKN_BRACKET_OPEN(LexemeNull);
     ")" => QUEX_TKN_BRACKET_CLOSE(LexemeNull);
     //
     "include"   { 
-        self_send1(QUEX_TKN_INCLUDE, LexemeNull); 
+        self.send_string(&self, QUEX_TKN_INCLUDE, LexemeNull); 
         self.letter_count += strlen((char*)Lexeme); 
         self_enter_mode(&FIND_INCLUDE_NAME);
         RETURN;
     }
     //
     ([_a-zA-Z]|("/"|"."|"'"))+  { 
-        self_send1(QUEX_TKN_IDENTIFIER, Lexeme); 
+        self.send_string(&self, QUEX_TKN_IDENTIFIER, Lexeme); 
         self.letter_count += strlen((char*)Lexeme); 
     }
 }
@@ -65,7 +64,7 @@ mode FIND_INCLUDE_NAME
 : <skip: [ \t\r\n] > 
 {
     ([_a-zA-Z]|("/"|"."|"'"))+  { 
-        self_send1(QUEX_TKN_IDENTIFIER, Lexeme); 
+        self.send_string(&self, QUEX_TKN_IDENTIFIER, Lexeme); 
         self.letter_count += strlen((char*)Lexeme); 
         self_enter_mode(&MAIN);
         /* IMPORTANT -- see documentation */

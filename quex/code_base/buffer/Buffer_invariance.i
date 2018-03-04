@@ -28,6 +28,7 @@ QUEX_NAME(BufferInvariance_assert)(QUEX_NAME(BufferInvariance)* me,
  *
  * ASSERTS: see above.                                                        */
 {
+    (void)me; (void)subject; (void)SameF;
     if( SameF ) {
         __quex_assert(me->front_p             == subject->begin(subject));
         __quex_assert(me->back_p              == subject->content_space_end(subject));

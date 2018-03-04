@@ -41,7 +41,7 @@ extern bool QUEX_NAME_TOKEN(take_text)(Token*                   __this,
                                        const QUEX_TYPE_LEXATOM* End);
 }
 
-
+#include <quex/code_base/lexeme.i>
 #endif
 
  	  	 

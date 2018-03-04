@@ -19,7 +19,7 @@ mode X :
 <skip_range: "/*" "*/">
 <skip_range: "#"  "\n">
 {
-    on_n_dedent { self_send_n(ClosedN, QUEX_TKN_DEDENT); }
+    on_n_dedent { self.send_n(&self, QUEX_TKN_DEDENT, ClosedN); }
 
     [0-9a-z]+ => QUEX_TKN_WORD(Lexeme);
 }

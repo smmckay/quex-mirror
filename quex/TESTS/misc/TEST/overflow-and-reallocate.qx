@@ -20,7 +20,7 @@ mode X : <skip: [\n]> {
     on_end_of_stream {
         if( QUEX_NAME(include_pop)(&self) == false ) {
            QUEX_NAME(error_code_clear)(&self);
-           self_send(QUEX_TKN_TERMINATION);
+           self.send(&self, QUEX_TKN_TERMINATION);
         }
         else { 
            printf("<< include\n");

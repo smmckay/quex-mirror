@@ -2,8 +2,7 @@ ________________________________________________________
 
 brief{ "+" PLUS; }
 
-    '"+"' -> self_send(TOKEN_PLUS);
-
+    '"+"' -> self.send(TOKEN_PLUS);
     Token Identifiers: 'PLUS'
     Token Identifiers(implicit): 'PLUS'
 
@@ -11,12 +10,8 @@ ________________________________________________________
 
 brief(N) { "+" PLUS; "-" MINUS; }
 
-    '"+"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), LexemeNull, LexemeNull);
-self_send(TOKEN_PLUS);
-
-    '"-"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), LexemeNull, LexemeNull);
-self_send(TOKEN_MINUS);
-
+    '"+"' -> self.send_text(TOKEN_PLUS, LexemeNull, LexemeNull);
+    '"-"' -> self.send_text(TOKEN_MINUS, LexemeNull, LexemeNull);
     Token Identifiers: 'MINUS', 'PLUS'
     Token Identifiers(implicit): 'PLUS', 'MINUS'
 
@@ -24,12 +19,8 @@ ________________________________________________________
 
 brief(L) { "+" PLUS; "-" MINUS; }
 
-    '"+"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), me->buffer._lexeme_start_p, me->buffer._read_p);
-self_send(TOKEN_PLUS);
-
-    '"-"' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), me->buffer._lexeme_start_p, me->buffer._read_p);
-self_send(TOKEN_MINUS);
-
+    '"+"' -> self.send_text(TOKEN_PLUS, me->buffer._lexeme_start_p, me->buffer._read_p);
+    '"-"' -> self.send_text(TOKEN_MINUS, me->buffer._lexeme_start_p, me->buffer._read_p);
     Token Identifiers: 'MINUS', 'PLUS'
     Token Identifiers(implicit): 'PLUS', 'MINUS'
 
@@ -37,8 +28,7 @@ ________________________________________________________
 
 brief(i)  { "+"+ MANY_PLUS; }
 
-    '"+"+' -> self_send(TOKEN_MANY_PLUS);
-
+    '"+"+' -> self.send(TOKEN_MANY_PLUS);
     Token Identifiers: 'MANY_PLUS'
     Token Identifiers(implicit): 
 

@@ -38,10 +38,10 @@ token_type {
        self.id         = Other.id;
 #      ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #      ifdef QUEX_OPTION_COUNTER_LINE
-              self._line_n = Other._line_n;
+       self._line_n = Other._line_n;
 #      endif
 #      ifdef  QUEX_OPTION_COUNTER_COLUMN
-              self._column_n = Other._column_n;
+       self._column_n = Other._column_n;
 #      endif
 #      endif
 

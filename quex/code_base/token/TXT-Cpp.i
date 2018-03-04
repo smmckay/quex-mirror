@@ -77,6 +77,7 @@ $$COPY$$
 #endif
 }
 
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
 QUEX_NAME_TOKEN(take_text)($TOKEN_CLASS*              __this, 
                            const QUEX_TYPE_LEXATOM* Begin, 
@@ -93,6 +94,7 @@ $$FUNC_TAKE_TEXT$$
     /* Default: no ownership.                                                */
     return false;
 }
+#endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t 
@@ -108,8 +110,7 @@ QUEX_INLINE void
 QUEX_NAME_TOKEN(repetition_n_set)($TOKEN_CLASS* __this, size_t N)
 {
 #   define self (*__this)
-    (void)__this;
-    (void)N;
+    (void)__this; (void)N;
 $$TOKEN_REPETITION_N_SET$$
 #   undef  self
 }
@@ -134,5 +135,6 @@ $$MAP_ID_TO_NAME_CASES$$
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
+#include <quex/code_base/lexeme.i>
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I */

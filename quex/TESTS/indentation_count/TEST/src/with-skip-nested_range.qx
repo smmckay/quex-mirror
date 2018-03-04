@@ -11,7 +11,7 @@ mode X :
 {
     on_indent { 
         printf("[[INDENT]] %i\n", (int)Indentation);
-        self_send(QUEX_TKN_INDENT);
+        self.send(&self, QUEX_TKN_INDENT);
     }
     on_indentation_error {
         int i = 0;
@@ -23,7 +23,7 @@ mode X :
         printf("-- IndentationUpper = %i\n", (int)IndentationUpper    );     
         printf("-- IndentationLower = %i\n", (int)IndentationLower    );     
         printf("-- ClosedN = %i\n",          (int)ClosedN);
-        self_send(QUEX_TKN_INDENTATION_ERROR);
+        self.send(&self, QUEX_TKN_INDENTATION_ERROR);
     }
     [a-z]+ => QUEX_TKN_WORD(Lexeme);
 

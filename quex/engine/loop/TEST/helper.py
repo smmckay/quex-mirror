@@ -70,7 +70,7 @@ def __prepare(Language):
     global dial_db
     end_str  = '    printf("end\\n");\n'
     end_str += "#   define self (*me)\n"
-    end_str += "    self_send(QUEX_TKN_TERMINATION);\n"
+    end_str += "    self.send(&self, QUEX_TKN_TERMINATION);\n"
     end_str += "    return;\n"
     end_str += "#   undef self\n"
 

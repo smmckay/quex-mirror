@@ -38,9 +38,9 @@ main(int argc, char** argv)
     printf("                Max:        Moritz:      Boeck:\n");
 
     do {
-        (void)max_Lexer_receive(&max_lex, &max_token);
-        (void)moritz_Lexer_receive(&moritz_lex, &moritz_token);
-        (void)boeck_Lexer_receive(&boeck_lex, &boeck_token);
+        max_lex.receive(&max_lex, &max_token);
+        moritz_lex.receive(&moritz_lex, &moritz_token);
+        boeck_lex.receive(&boeck_lex, &boeck_token);
 
         /* Lexeme is same for all three. */
         size_t      preL   = (size_t)strlen((const char*)boeck_token->text);

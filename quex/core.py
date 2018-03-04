@@ -100,6 +100,11 @@ def do_token_class_info():
         "  --buffer-element-type   %s" % Setup.lexatom.type,
         "  --foreign-token-id-file %s" % Setup.output_token_id_file,
     ]
+    if token_db.support_repetition():
+        info_list.append("  --token-class-support-repetition")
+    if token_db.support_take_text():
+        info_list.append("  --token-class-support-take-text")
+
     print "info: Analyzers using this token class must be generated with"
     print "info:"
     for line in info_list:

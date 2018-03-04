@@ -213,7 +213,7 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
 
     if( QUEX_NAME(TokenQueue_is_full)(&me->the_lexer->_token_queue) ) {
         QUEX_NAME(error_code_set_if_first)(me->the_lexer, 
-                                           E_Error_TokenQueueNoMoreTokensAvailable);
+                                           E_Error_Token_QueueOverflow);
         return false;
     }
 
@@ -235,7 +235,6 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     /* That is: self_token_set_id(ID);                                        */             
     /*          QUEX_TOKEN_POLICY_PREPARE_NEXT();                             */             
     /*          BUT: We clear the text of the otherwise void token.           */             
-    QUEX_ACTION_TOKEN_STAMP(*(me->the_lexer));   
     if( ! QUEX_NAME(TokenQueue_push_text)(&me->the_lexer->_token_queue, TokenID,
                                           begin_p, end_p) ) {
         /* MEMORY OWNERSHIP *not* transferred to token. Reuse current memory. */

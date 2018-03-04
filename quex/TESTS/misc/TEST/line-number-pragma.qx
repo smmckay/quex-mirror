@@ -96,7 +96,7 @@ mode DERIVED : BASE {
     */
 
     ":" {
-        self_send(TKN_ABC);
+        self.send(TKN_ABC);
         printf("((A)) 95");
         self_goto(BASE);
     }

@@ -21,7 +21,7 @@ mode COMMON:
 	}
 	{P_EOS}        {
 					   Lexeme;
-					   self_send2(QUEX_TKN_EOS, LexemeEnd - 1, LexemeEnd);
+					   self.send_text(QUEX_TKN_EOS, LexemeEnd - 1, LexemeEnd);
 				   }
 	{P_WORD}       => QUEX_TKN_WORD(Lexeme);
 

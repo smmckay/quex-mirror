@@ -31,7 +31,7 @@ main(int argc, char** argv)
             (int)(&qlex.buffer._memory._back[1] - qlex.buffer._memory._front));
 
     do {
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
         token_id = token_p->id;
         printf("       %s\n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
     } while( token_id != QUEX_TKN_TERMINATION );

@@ -144,6 +144,30 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;
 #   endif
+    void              (*receive)(QUEX_TYPE_ANALYZER* me, 
+                                 QUEX_TYPE_TOKEN** token_pp);
+    QUEX_TYPE_TOKEN*  (*token_p)(QUEX_TYPE_ANALYZER* me);
+    void              (*send)(QUEX_TYPE_ANALYZER* me, 
+                              QUEX_TYPE_TOKEN_ID Id);
+    void              (*send_n)(QUEX_TYPE_ANALYZER* me, 
+                                QUEX_TYPE_TOKEN_ID Id, 
+                                size_t             RepetitionN);
+    bool              (*send_text)(QUEX_TYPE_ANALYZER* me, 
+                                   QUEX_TYPE_TOKEN_ID  Id,
+                                   QUEX_TYPE_LEXATOM*  BeginP, 
+                                   QUEX_TYPE_LEXATOM*  EndP);
+    bool              (*send_string)(QUEX_TYPE_ANALYZER* me, 
+                                     QUEX_TYPE_TOKEN_ID  Id,
+                                     QUEX_TYPE_LEXATOM*  ZeroTerminatedString);
+
+    size_t      (*tell)(QUEX_TYPE_ANALYZER* me);
+    void        (*seek)(QUEX_TYPE_ANALYZER* me, const size_t CharacterIndex);
+    void        (*seek_forward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN);
+    void        (*seek_backward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN);
+                   
+    void        (*undo)(QUEX_TYPE_ANALYZER* me);
+    void        (*undo_n)(QUEX_TYPE_ANALYZER* me, size_t DeltaN_Backward);
+
     /* __( END: Data Members )________________________________________________*/
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
@@ -297,7 +321,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 301 "TestAnalyzer.h"
+#   line 325 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -328,7 +352,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 332 "TestAnalyzer.h"
+#   line 356 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -374,7 +398,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 378 "TestAnalyzer.h"
+#   line 402 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -389,6 +413,7 @@ quex_Token_copy(quex_Token*       __this,
 }
 
 
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
 quex_Token_take_text(quex_Token*            __this, 
                        const QUEX_TYPE_LEXATOM* Begin, 
@@ -461,13 +486,14 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 465 "TestAnalyzer.h"
+#   line 490 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
     /* Default: no ownership.                                                */
     return false;
 }
+#endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t 
@@ -482,7 +508,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 486 "TestAnalyzer.h"
+#   line 512 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -501,7 +527,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 505 "TestAnalyzer.h"
+#   line 531 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -576,7 +602,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 580 "TestAnalyzer.h"
+#   line 606 "TestAnalyzer.h"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

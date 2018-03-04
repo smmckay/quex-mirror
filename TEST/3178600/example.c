@@ -15,7 +15,7 @@ main(int argc, char** argv)
     QUEX_NAME(from_file_name)(&qlex, FileName, (void*)0);
 
     do {
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
 
         printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
 

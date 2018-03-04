@@ -28,7 +28,7 @@ main(int argc, char** argv)
 
     do {
         /* Get next token from the token stream   */
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
         printf("(%i, %i)  \t", (int)token_p->_line_n, (int)token_p->_column_n);
         /* Print out token information            */
         fflush(stderr);

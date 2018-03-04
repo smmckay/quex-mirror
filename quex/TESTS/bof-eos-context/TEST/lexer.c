@@ -18,7 +18,7 @@ int main(int argc, char** argv)
     QUEX_NAME(from_file_name)(&tlex, file_name, /* Converter */NULL);
 
     do {
-        QUEX_NAME(receive)(&tlex, &token_p);
+        tlex.receive(&tlex, &token_p);
 
         printf("%s;\n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
 

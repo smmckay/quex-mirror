@@ -278,6 +278,16 @@ Option("token_class", "[name ::]+ name",
      to defined the exact name space as mentioned for the `--analyzer-class` command
      line option.
      """),
+Option("token_class_support_take_text_f", None,
+     """
+     When specifying an external token class which provides the 'take_text'
+     member function, this option needs to be given.
+     """),
+Option("token_class_support_repetition_f", None,
+     """
+     This option must be specified when specifying an external token class which 
+     provides the repetition count inside the token itself.
+     """),
 Option("token_id_type", "type name",
      """
      \\v{type-name} defines the type of the token id. This defines internally the 

@@ -27,7 +27,7 @@ main(int argc, char** argv)
     printf("| [START]\n");
 
     while( qlex.error_code == E_Error_None ) {
-        quex_EasyLexer_receive(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
         if( ! token_p ) break;
 
         print_token(token_p);

@@ -52,7 +52,7 @@ main(int argc, char** argv)
     QUEX_NAME(from_ByteLoader)(&qlex, loader, converter);
 
     do {
-        (void)QUEX_NAME(receive)(&qlex, &token);
+        qlex.receive(&qlex, &token);
         print_token(token);
     } while( token->id != QUEX_TKN_TERMINATION && token->id != QUEX_TKN_BYE );
         

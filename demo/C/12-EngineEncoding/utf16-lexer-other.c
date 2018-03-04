@@ -29,7 +29,7 @@ main(int argc, char** argv)
     printf("## byte order reversion = %s\n", E_Boolean_NAME(QUEX_NAME(byte_order_reversion)(&qlex)));
     
     do {
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
 
         printf("%s\t", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
         for(iterator = token_p->text; *iterator; ++iterator) {

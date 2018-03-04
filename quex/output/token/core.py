@@ -322,6 +322,13 @@ helper_definitions_common = """
 #define QUEX_TYPE_TOKEN_ID                 %s
 #define QUEX_SETTING_CHARACTER_CODEC       %s
 
+#ifndef    QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+$$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+#endif
+#ifndef    QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+$$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+#endif
+
 #include "%s" 
 """
 
@@ -347,6 +354,8 @@ def _helper_definitions():
               Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
               Setup.output_token_id_file_ref)
 
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT", token_db.support_take_text())        
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT", token_db.support_repetition())        
     return txt
 
 def _some_standard_stuff(Descr):

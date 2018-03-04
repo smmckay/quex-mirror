@@ -516,11 +516,13 @@ demo/TEST                                                            <no date>
                          11-ManualBufferFilling ......................[OK]
                          12-EngineEncoding ...........................[OK]
                          13-MultipleLexers ...........................[OK]
-                         14-MultipleLexersSameToken ..................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                         14-MultipleLexersSameToken ................[FAIL]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] makefile-diff.sh _ 14-MultipleLexersSameToken
 ===============================================================================
                                                                                
                                   Demos for C                                  
@@ -1025,7 +1027,7 @@ quex/TESTS/code/TEST                                                 <no date>
         include_guard.py convention ..................................[OK]
                          undefinition ................................[OK]
  * Main data member consistency for C and C++
-        class-data-member-consistency.sh .............................[OK]
+        class-data-member-consistency.sh ...........................[FAIL]
  * Propper undefinition of configuration parameters.
         macro-check.py ...............................................[OK]
 
@@ -1039,6 +1041,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] svn-status.sh
+    [FAIL] class-data-member-consistency.sh
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1130,7 +1133,7 @@ quex/TESTS/event-handling/TEST                                       <no date>
 
     'on_buffer_overflow'
         on_buffer_overflow.qx empty ..................................[OK]
-                              trigger ..............................[FAIL]
+                              trigger ................................[OK]
     Customized 'on_skip_range_open' event
         on_skip_range_open-customized.qx customized ..................[OK]
     Default 'on_skip_range_open' event
@@ -1166,12 +1169,10 @@ quex/TESTS/event-handling/TEST                                       <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       error ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] on_buffer_overflow.qx _ trigger
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1458,20 +1459,27 @@ quex/TESTS/source-package/TEST                                       <no date>
                     codec-utf16 ......................................[OK]
                     codec-utf8 .......................................[OK]
                     customized-token-class ...........................[OK]
-                    manual-token-class ...............................[OK]
+                    manual-token-class .............................[FAIL]
                     no-counter .......................................[OK]
                     no-include-stack .................................[OK]
                     plain ............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] test-cpp.sh _ manual-token-class
 ===============================================================================
                                                                                
                                   Token Class                                  
                                                                                
 quex/TESTS/token-class/TEST                                          <no date>
 -------------------------------------------------------------------------------
+ * Miscellaneous Sample Runs
+        misc.sh double-colon .........................................[OK]
+                empty ................................................[OK]
+                no-namespace .........................................[OK]
+                token ................................................[OK]
  * With token policy 'queue'.
         simple-queue.exe .............................................[OK]
                                                                     ___  _  _  
@@ -1488,15 +1496,13 @@ quex/TESTS/token-policies/TEST                                       <no date>
  * Token Policy 'queue':
 
     Pseudo Analysis
-        queue.exe ...........................................[MAKE FAILED]
+        queue.exe ....................................................[OK]
     Real Analysis
         queue-real.exe ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] queue.exe
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  FSM Code Base                                 
@@ -2333,18 +2339,16 @@ quex/code_base/analyzer/struct/TEST                                  <no date>
                               file-name ..............................[OK]
                               memory .................................[OK]
  * Include Push/Pop Deep
-        test-include-deep.exe ...............................[MAKE FAILED]
+        test-include-deep.exe ........................................[OK]
  * Reset
         test-reset.exe byte-loader ...................................[OK]
                        file-name .....................................[OK]
                        memory ........................................[OK]
                        plain .........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-include-deep.exe
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   ByteLoaders                                  
@@ -3360,27 +3364,27 @@ SUMMARY:
            238     [OK] TEST                                                          
            57      [OK] demo/C/TEST                                                   
            57      [OK] ..../Cpp/TEST                                                 
-           16      [OK] ..../TEST                                                     
+        1  16    [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        1  15    [FAIL] ........../code/TEST                                          
+        2  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        1  23    [FAIL] ........../event-handling/TEST                                
+           23      [OK] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
            32      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
-           16      [OK] ........../source-package/TEST                                
-           1       [OK] ........../token-class/TEST                                   
-        1  2     [FAIL] ........../token-policies/TEST                                
+        1  16    [FAIL] ........../source-package/TEST                                
+           5       [OK] ........../token-class/TEST                                   
+           2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TEST                                           
            1       [OK] ............../analyzer/TEST                                  
-        1  11    [FAIL] ......................./struct/TEST                           
+           11      [OK] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            11      [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
@@ -3423,6 +3427,6 @@ SUMMARY:
     | |_ / _` | | / __|    |___ \      \ \/ /
     |  _| (_| | | \__ \     ___) |      >  < 
     |_|  \__,_|_|_|___/    |____/      /_/\_\
-                                                                   (1709 tests)
+                                                                   (1713 tests)
 
 ===============================================================================

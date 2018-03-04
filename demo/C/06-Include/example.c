@@ -26,13 +26,13 @@ main(int argc, char** argv)
     /* (*) loop until the 'termination' token arrives */
     do {
         /* (*) get next token from the token stream */
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
 
         /* (*) print out token information */
         print_token(&qlex, token_p, true);
 
         if( token_p->id == QUEX_TKN_INCLUDE ) { 
-            QUEX_NAME(receive)(&qlex, &token_p);
+            qlex.receive(&qlex, &token_p);
 
             print_token(&qlex, token_p, true);
 

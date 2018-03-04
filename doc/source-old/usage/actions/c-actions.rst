@@ -44,12 +44,12 @@ can be accessed via
 
 The following send macros are available:
 
-.. cfunction:: self_send(TokenID)
+.. cfunction:: self.send([&self], TokenID)
 
     Sends one token to the caller of the lexical analyzer with the given 
     token identifier ``TokenID``.
 
-.. cfunction:: self_send_n(N, TokenID)
+.. cfunction:: self.send_n([&self], N, TokenID)
 
     Implicit repetition of tokens can be achieved via the ``self_send_n``
     macro. The token identifiers to be repeated must be defined in the
@@ -72,7 +72,7 @@ The following send macros are available:
     repetition number is to be stored inside the token class (see :ref:`
     _sec-customized-token-class:`).
 
-.. cfunction:: self_send1(TokenID, Str)
+.. cfunction:: self.send_string([&self,] TokenID, Str)
 
     This allows to call the token's ``take_text`` function to set text content
     to what is specified by the zero terminated string ``Str``. ``Str`` must

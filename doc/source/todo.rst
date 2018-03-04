@@ -1,3 +1,5 @@
+-- Manual written token class must include 'lexeme.i'
+
 -- Minimal buffer size:   lexeme size 
                       + 1 lexatom to detect end 
                       + 2 border lexatoms of buffer

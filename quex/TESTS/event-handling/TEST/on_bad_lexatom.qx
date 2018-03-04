@@ -9,7 +9,7 @@ mode X :
 
     on_bad_lexatom { 
         printf("bad_lexatom!\n");
-        self_send(TK_TERMINATION);
+        self.send(&self, TK_TERMINATION);
     }
 }
 

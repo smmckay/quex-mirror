@@ -1,11 +1,12 @@
 Confirm, that 'dos.qx' contains 0x0A 0x0D as newline characters
-     30      61     718
+     30      62     731
 Confirm, that 'unix' contains NO 0x0A 0x0D as newline characters
       0       0       0
 Watch out, that output from unix file format is the same as from dos format.
 DATE stamps are ignored
 
 ||||
+
 Dos
 Dos-configuration
 Dos.cpp

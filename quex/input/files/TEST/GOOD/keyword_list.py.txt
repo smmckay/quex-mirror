@@ -2,8 +2,7 @@ ________________________________________________________
 
 keyword_list{ a; }
 
-    'a' -> self_send(TOKEN_a);
-
+    'a' -> self.send(TOKEN_a);
     Token Identifiers: 'a'
     Token Identifiers(implicit): 'a'
 
@@ -11,8 +10,7 @@ ________________________________________________________
 
 keyword_list(u)  { x; }
 
-    'x' -> self_send(TOKEN_X);
-
+    'x' -> self.send(TOKEN_X);
     Token Identifiers: 'X'
     Token Identifiers(implicit): 'X'
 
@@ -20,8 +18,7 @@ ________________________________________________________
 
 keyword_list(u)  { Z; }
 
-    'Z' -> self_send(TOKEN_Z);
-
+    'Z' -> self.send(TOKEN_Z);
     Token Identifiers: 'Z'
     Token Identifiers(implicit): 'Z'
 
@@ -29,8 +26,7 @@ ________________________________________________________
 
 keyword_list(l)  { x; }
 
-    'x' -> self_send(TOKEN_x);
-
+    'x' -> self.send(TOKEN_x);
     Token Identifiers: 'x'
     Token Identifiers(implicit): 'x'
 
@@ -38,8 +34,7 @@ ________________________________________________________
 
 keyword_list(l)  { Z; }
 
-    'Z' -> self_send(TOKEN_z);
-
+    'Z' -> self.send(TOKEN_z);
     Token Identifiers: 'z'
     Token Identifiers(implicit): 'z'
 
@@ -47,9 +42,7 @@ ________________________________________________________
 
 keyword_list(Nl) { Z; }
 
-    'Z' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), LexemeNull, LexemeNull);
-self_send(TOKEN_z);
-
+    'Z' -> self.send_text(TOKEN_z, LexemeNull, LexemeNull);
     Token Identifiers: 'z'
     Token Identifiers(implicit): 'z'
 
@@ -57,45 +50,40 @@ ________________________________________________________
 
 keyword_list(Nu) { x; }
 
-    'x' -> QUEX_NAME_TOKEN(take_text)(self_write_token_p(), LexemeNull, LexemeNull);
-self_send(TOKEN_X);
-
+    'x' -> self.send_text(TOKEN_X, LexemeNull, LexemeNull);
     Token Identifiers: 'X'
+
     Token Identifiers(implicit): 'X'
 
 ________________________________________________________
 
 keyword_list(i)  { x; }
-
-    'x' -> self_send(TOKEN_x);
-
+    'x' -> self.send(TOKEN_x);
     Token Identifiers: 'x'
+
     Token Identifiers(implicit): 
 
 ________________________________________________________
 
 keyword_list(i)  { Z; }
-
-    'Z' -> self_send(TOKEN_Z);
-
+    'Z' -> self.send(TOKEN_Z);
     Token Identifiers: 'Z'
+
     Token Identifiers(implicit): 
 
 ________________________________________________________
 
 keyword_list PREFIX_{ a; }
-
-    'a' -> self_send(TOKEN_PREFIX_a);
-
+    'a' -> self.send(TOKEN_PREFIX_a);
     Token Identifiers: 'PREFIX_a'
+
     Token Identifiers(implicit): 'PREFIX_a'
 
 ________________________________________________________
 
 keyword_list(u)PREFIX_ { x; }
-
-    'x' -> self_send(TOKEN_PREFIX_X);
-
+    'x' -> self.send(TOKEN_PREFIX_X);
     Token Identifiers: 'PREFIX_X'
+
     Token Identifiers(implicit): 'PREFIX_X'
 

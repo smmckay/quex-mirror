@@ -8,9 +8,11 @@ info:      --token-class           quex::Token
 info:      --token-id-type         uint32_t
 info:      --buffer-element-type   uint8_t
 info:      --foreign-token-id-file Lexer-token_ids
+info:      --token-class-support-take-text
 info:
 info: Header: "Lexer-token"
 info: Source: "Lexer-token.cpp"
 Compile -- No output is good output ________________________________
 g++ -I<<QUEX_PATH>> Lexer-token.cpp -c 2>&1
 <terminated>
+

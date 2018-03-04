@@ -9,7 +9,7 @@ mode X :
 
     on_end_of_stream {
         printf("on_end_of_stream: {}\n");
-        self_send(TK_TERMINATION);
+        self.send(&self, TK_TERMINATION);
     }
 
     on_failure {

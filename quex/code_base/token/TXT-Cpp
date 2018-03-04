@@ -11,6 +11,7 @@
 #include <quex/code_base/MemoryManager>
 
 $$HELPER_DEFINITIONS$$
+#include <quex/code_base/lexeme>
 
 $$HEADER$$
  
@@ -22,9 +23,11 @@ inline void    QUEX_NAME_TOKEN(construct)($TOKEN_CLASS* __this);
 inline void    QUEX_NAME_TOKEN(destruct)($TOKEN_CLASS* __this);
 inline void    QUEX_NAME_TOKEN(copy)($TOKEN_CLASS*       me, 
                                      const $TOKEN_CLASS* That);
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 inline bool    QUEX_NAME_TOKEN(take_text)($TOKEN_CLASS*             __this, 
                                           const QUEX_TYPE_LEXATOM*  Begin, 
                                           const QUEX_TYPE_LEXATOM*  End);
+#endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 inline size_t  QUEX_NAME_TOKEN(repetition_n_get)($TOKEN_CLASS* __this);

@@ -121,6 +121,30 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;
 #   endif
+    void              (*receive)(QUEX_TYPE_ANALYZER* me, 
+                                 QUEX_TYPE_TOKEN** token_pp);
+    QUEX_TYPE_TOKEN*  (*token_p)(QUEX_TYPE_ANALYZER* me);
+    void              (*send)(QUEX_TYPE_ANALYZER* me, 
+                              QUEX_TYPE_TOKEN_ID Id);
+    void              (*send_n)(QUEX_TYPE_ANALYZER* me, 
+                                QUEX_TYPE_TOKEN_ID Id, 
+                                size_t             RepetitionN);
+    bool              (*send_text)(QUEX_TYPE_ANALYZER* me, 
+                                   QUEX_TYPE_TOKEN_ID  Id,
+                                   QUEX_TYPE_LEXATOM*  BeginP, 
+                                   QUEX_TYPE_LEXATOM*  EndP);
+    bool              (*send_string)(QUEX_TYPE_ANALYZER* me, 
+                                     QUEX_TYPE_TOKEN_ID  Id,
+                                     QUEX_TYPE_LEXATOM*  ZeroTerminatedString);
+
+    size_t      (*tell)(QUEX_TYPE_ANALYZER* me);
+    void        (*seek)(QUEX_TYPE_ANALYZER* me, const size_t CharacterIndex);
+    void        (*seek_forward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN);
+    void        (*seek_backward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN);
+                   
+    void        (*undo)(QUEX_TYPE_ANALYZER* me);
+    void        (*undo_n)(QUEX_TYPE_ANALYZER* me, size_t DeltaN_Backward);
+
     /* __( END: Data Members )________________________________________________*/
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)

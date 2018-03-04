@@ -13,13 +13,13 @@ mode ONE_AND_ONLY
 {
 // Order is relevant
 <<EOF>> {
-    self_send1(QUEX_TKN_TERMINATION, LexemeNull);
+    self.send_string(QUEX_TKN_TERMINATION, LexemeNull);
     RETURN;
 }
 
 {P_TOK}     => QUEX_TKN_TOK(Lexeme);
 \n          {
-                self_send1(QUEX_TKN_NEWLINE, LexemeNull);
+                self.send_string(QUEX_TKN_NEWLINE, LexemeNull);
                 RETURN;
             }
 [^ \r\n\t]+ => QUEX_TKN_WORD(Lexeme);

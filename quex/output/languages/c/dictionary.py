@@ -25,3 +25,14 @@ class Language(LanguageCpp):
     def NAMESPACE_OPEN(self, NameList):  return ""
     def NAMESPACE_CLOSE(self, NameList): return ""
 
+    def TOKEN_SET_MEMBER(self, Member, Value):
+        return "self.token_p(&self)->%s = %s;" % (Member, Value)
+
+    def TOKEN_SEND(self, TokenName):
+        return "self.send(&self, %s);" % TokenName
+
+    def TOKEN_SEND_TEXT(self, TokenName, Begin, End):
+        return "self.send_text(&self, %s, %s, %s);" % (TokenName, Begin, End)
+
+    def TOKEN_SEND_N(self, N, TokenName):
+        return "self.send_n(&self, %s, (size_t)%s);\n" % (TokenName, N)

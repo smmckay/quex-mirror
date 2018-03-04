@@ -16,6 +16,7 @@
 #include <quex/code_base/MemoryManager>
 
 
+#include <quex/code_base/lexeme_base>
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
@@ -33,7 +34,7 @@ QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   
 #include <quex/code_base/lexeme>
    
 
-#   line 37 "TestAnalyzer-token.h"
+#   line 38 "TestAnalyzer-token.h"
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
@@ -42,12 +43,12 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 46 "TestAnalyzer-token.h"
+#   line 47 "TestAnalyzer-token.h"
 
 #   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
-#   line 51 "TestAnalyzer-token.h"
+#   line 52 "TestAnalyzer-token.h"
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -64,7 +65,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
        /* Nothing here. */
    
 
-#   line 68 "TestAnalyzer-token.h"
+#   line 69 "TestAnalyzer-token.h"
 
 } quex_Token;
 
@@ -77,14 +78,16 @@ QUEX_INLINE void         quex_Token_destruct(quex_Token*);
 /* NOTE: Setters and getters as in the C++ version of the token class are not
  *       necessary, since the members are accessed directly.                   */
 
-QUEX_INLINE void         quex_Token_set(quex_Token*            __this, 
+QUEX_INLINE void         quex_Token_set(quex_Token*            me, 
                                           const QUEX_TYPE_TOKEN_ID ID);
 
 QUEX_INLINE const char*  quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
 
-QUEX_INLINE bool         quex_Token_take_text(quex_Token*            __this, 
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+QUEX_INLINE bool         quex_Token_take_text(quex_Token*            me, 
                                                 const QUEX_TYPE_LEXATOM* Begin, 
                                                 const QUEX_TYPE_LEXATOM* End);
+#endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t       quex_Token_repetition_n_get(quex_Token*);

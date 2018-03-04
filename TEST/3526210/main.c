@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 
     while (1) {
         QUEX_TYPE_TOKEN* t = NULL;
-        QUEX_NAME(receive)(&lex, &t);
+        lex.receive(&lex, &t);
 
         if (QUEX_TKN_TERMINATION == t->id)
             break;

@@ -21,17 +21,14 @@ body {
 constructor {
     self.my_counter = 0;
 }
-header {
-
-#ifdef  QUEX_ACTION_TOKEN_STAMP
-#   error "QUEX_ACTION_TOKEN_STAMP defined before!"
-#endif
-#define QUEX_ACTION_TOKEN_STAMP(ME)                 \
-        QUEX_ACTION_TOKEN_STAMP_LINE_NUMBER(ME);    \
-        QUEX_ACTION_TOKEN_STAMP_COLUMN_NUMBER(ME);  \
-        self_write_token_p()->number_ = self.my_counter++;   
-}
 
 mode X {
-    [a-z] => BR_TKN_LETTER;
+    <<EOF>> {
+        self.token_p()->number_ = 0;   
+        self.send(BR_TKN_TERMINATION);
+    }
+    [a-z] {
+        self.token_p()->number_ = self.my_counter++;   
+        self.send(BR_TKN_LETTER);
+    }
 }

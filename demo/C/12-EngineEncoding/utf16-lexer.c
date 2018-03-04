@@ -31,7 +31,7 @@ main(int argc, char** argv)
     printf("## byte order reversion = %s\n", E_Boolean_NAME(QUEX_NAME(byte_order_reversion)(&qlex)));
     
     do {
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
 
         /* Print the lexeme in utf8 format. */
         printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));

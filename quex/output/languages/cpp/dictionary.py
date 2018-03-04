@@ -386,18 +386,17 @@ class Language(dict):
                         SM.get_string(NormalizeF=False) + \
                         "END: STATE MACHINE")) 
 
-    def TOKEN_INTAKE_LEXEME(self, BeginP, EndP):
-        return "QUEX_NAME_TOKEN(take_text)(self_write_token_p(), %s, %s);\n" \
-                % (BeginP, EndP)
-
     def TOKEN_SET_MEMBER(self, Member, Value):
-        return "self_write_token_p()->%s = %s;" % (Member, Value)
+        return "self.token_p()->%s = %s;" % (Member, Value)
 
     def TOKEN_SEND(self, TokenName):
-        return "self_send(%s);" % TokenName
+        return "self.send(%s);" % TokenName
 
     def TOKEN_SEND_N(self, N, TokenName):
-        return "self_send_n((size_t)ClosedN, QUEX_TOKEN_ID(DEDENT));\n"
+        return "self.send_n(%s, (size_t)%s);\n" % (TokenName, N)
+
+    def TOKEN_SEND_TEXT(self, TokenName, Begin, End):
+        return "self.send_text(%s, %s, %s);" % (TokenName, Begin, End)
 
     def DEFAULT_COUNTER_FUNCTION_NAME(self, ModeName):
         return self.NAME_IN_NAMESPACE_MAIN("%s_counter" % ModeName)

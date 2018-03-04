@@ -6,40 +6,19 @@
 
 #include <quex/code_base/definitions>
 
-#if   ! defined(QUEX_INLINE)
-#   error      "QUEX_INLINE definition missing."
-#elif ! defined(QUEX_NAME_TOKEN)
-#   error      "QUEX_NAME_TOKEN definition missing."
-#elif ! defined(QUEX_TYPE_LEXATOM)
-#   error      "QUEX_TYPE_LEXATOM definition missing."
-#elif ! defined(QUEX_SETTING_CHARACTER_CODEC)
+#if 0
+#if   ! defined(QUEX_SETTING_CHARACTER_CODEC)
 #   error      "QUEX_SETTING_CHARACTER_CODEC definition missing."
 #elif ! defined(QUEX_CONVERTER_STRING)
 #   error      "QUEX_CONVERTER_STRING definition missing."
 #endif
+#endif
+
+#include <quex/code_base/lexeme_base.i>
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
-QUEX_INLINE size_t 
-QUEX_NAME_TOKEN(lexeme_length)(const QUEX_TYPE_LEXATOM* Str)
-{
-    const QUEX_TYPE_LEXATOM* iterator = Str;
-    while( *iterator != 0 ) ++iterator; 
-    return (size_t)(iterator - Str);
-}
-
-QUEX_INLINE size_t 
-QUEX_NAME_TOKEN(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0, 
-                                const QUEX_TYPE_LEXATOM* it1)
-{
-    for(; *it0 == *it1; ++it0, ++it1) {
-        /* Both letters are the same and == 0?
-         * => both reach terminall zero without being different.              */
-        if( *it0 == 0 ) return 0;
-    }
-    return (size_t)(*it0) - (size_t)(*it1);
-}
-
+#ifdef QUEX_CONVERTER_STRING
 QUEX_INLINE void
 QUEX_NAME_TOKEN(lexeme_to_utf8)(const QUEX_TYPE_LEXATOM** source_p, 
                                 const QUEX_TYPE_LEXATOM*  SourceEnd,
@@ -121,6 +100,7 @@ QUEX_NAME_TOKEN(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM** source_p,
                           source_p, SourceEnd, drain_p,  DrainEnd);
 }
 #endif
+#endif /* QUEX_CONVERTER_STRING */
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

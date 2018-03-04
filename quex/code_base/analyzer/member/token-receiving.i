@@ -18,7 +18,7 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(remaining_token_pop)(QUEX_TYPE_ANALYZER*);
 
 QUEX_INLINE void
-QUEX_NAME(receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
+QUEX_NAME(MF_receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
 { 
     *result_pp = QUEX_NAME(remaining_token_pop)(me);
     if( *result_pp ) return; 

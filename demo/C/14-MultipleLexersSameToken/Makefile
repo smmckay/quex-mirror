@@ -1,4 +1,4 @@
-.SECONDARY:
+.SECONDARY: $(ENGINE)
 
 ENGINE = \
 		boeck_Lexer.c   \
@@ -22,14 +22,19 @@ lexer: $(ENGINE:.c=.o) lexer.o A_B_C-token.o
 # -DQUEX_OPTION_ASSERTS_DISABLED
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 
-COMMON_TOKEN_OPTIONS = \
-	 --token-class-file A_B_C-token.h \
-     \
-	 --suppress         0 1 6
-		 # --no-message-on-extra-options \
+COMMON_TOKEN_OPTIONS = --token-class-file A_B_C-token.h \
+	                   --suppress         0 1 6
 
 %.E: %.c
 	gcc -E $< -o  $@ -I$(QUEX_PATH)
+
+nolp: max_Lexer.c moritz_Lexer.c boeck_Lexer.c
+	cat max_Lexer.c    | awk '!/^# *line/' > tmp.c; mv tmp.c max_Lexer.c
+	cat moritz_Lexer.c | awk '!/^# *line/' > tmp.c; mv tmp.c moritz_Lexer.c
+	cat boeck_Lexer.c  | awk '!/^# *line/' > tmp.c; mv tmp.c boeck_Lexer.c
+
+#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 	
 boeck_Lexer.c:  boeck.qx A_B_C-token.c A_B_C-token_ids.h
 	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) --language C

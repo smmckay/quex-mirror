@@ -4,7 +4,7 @@
 
 #include <quex/code_base/MemoryManager>
 #include <quex/code_base/extra/post_categorizer/PostCategorizer>
-#include <quex/code_base/lexeme>
+#include <quex/code_base/lexeme_base>
 
 QUEX_NAMESPACE_MAIN_OPEN
 

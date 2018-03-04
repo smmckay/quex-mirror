@@ -6,6 +6,7 @@ info:      --token-class           quex::Token
 info:      --token-id-type         uint32_t
 info:      --buffer-element-type   uint8_t
 info:      --foreign-token-id-file Lexer-token_ids
+info:      --token-class-support-take-text
 info:
 info: Header: "Lexer-token"
 info: Source: "Lexer-token.cpp"
@@ -13,3 +14,4 @@ info: Source: "Lexer-token.cpp"
 Verify that the occurrence sequence is equal the sequence 
 how it occurred in generated code. (no output is good output)
 <terminated>
+

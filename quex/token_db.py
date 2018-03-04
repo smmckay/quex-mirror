@@ -69,3 +69,13 @@ token_repetition_token_id_list = ""
 #-----------------------------------------------------------------------------------------
 token_type_definition = None
 
+def support_take_text():
+    global token_type_definition
+    if not token_type_definition: 
+        return False
+    else:
+        return token_type_definition.take_text is not None 
+
+def support_repetition():
+    global token_repetition_token_id_list
+    return len(token_repetition_token_id_list) != 0

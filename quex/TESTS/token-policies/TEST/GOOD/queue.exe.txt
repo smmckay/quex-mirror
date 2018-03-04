@@ -24,9 +24,6 @@ received: TWO
 received: THREE
 received: FOUR
 received: _____NEXT_____
-lexer.cpp:125:	terminate called after throwing an instance of 'std::runtime_error'
-  what():  Error: Token queue overflow. This happens if too many tokens are sent
-       as a reaction to one single pattern match. Use quex's command line
-       option --token-queue-safety-border, or define the macro
-       QUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER with a greater value.
+received: <TERMINATION>
+Error: Token_QueueOverflow;
 

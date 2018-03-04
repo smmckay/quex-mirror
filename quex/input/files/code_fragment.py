@@ -324,13 +324,13 @@ def __token_sender_with_implicit_member_names(TokenName, argument_list, fh):
                   + "Found: " + repr(argument_list)[1:-1] + ".", fh)
 
     elif L == 2:
-        take_lexeme_str = Lng.TOKEN_INTAKE_LEXEME(argument_list[0], argument_list[1]) 
+        send_str = Lng.TOKEN_SEND_TEXT(TokenName, argument_list[0], argument_list[1])
 
     elif L == 1:
         if argument_list[0] == "Lexeme":
-            take_lexeme_str = Lng.TOKEN_INTAKE_LEXEME(Lng.LEXEME_START_P(), Lng.INPUT_P())
+            send_str = Lng.TOKEN_SEND_TEXT(TokenName, Lng.LEXEME_START_P(), Lng.INPUT_P())
         elif argument_list[0] == "LexemeNull":
-            take_lexeme_str = Lng.TOKEN_INTAKE_LEXEME(Lng.LEXEME_NULL(), Lng.LEXEME_NULL())
+            send_str = Lng.TOKEN_SEND_TEXT(TokenName, Lng.LEXEME_NULL(), Lng.LEXEME_NULL())
         else:
             error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
                       "or 'LexemeNull'. Found '%s'.\n" % argument_list[0]                     + \
@@ -339,12 +339,10 @@ def __token_sender_with_implicit_member_names(TokenName, argument_list, fh):
                       "Alternatively, use named parameters such as 'number=...'.", 
                       fh)
 
-    elif L == 0:
-        take_lexeme_str = ""
+    else:
+        send_str = Lng.TOKEN_SEND(TokenName)
 
-    return "%sself_send(%s);\n" % (take_lexeme_str, TokenName)
-
-    # Returned from Function if implicit member names
+    return send_str
 
 
 def __create_mode_transition_and_token_sender(fh, Op):

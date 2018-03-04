@@ -88,25 +88,25 @@ QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me,
             return;
         }
         *(stack->back) = Indentation;
-self_send(QUEX_TOKEN_ID(INDENT));
+self.send(&self, QUEX_TOKEN_ID(INDENT));
         return;
     }
     else if( Indentation == *(stack->back) ) {
-self_send(QUEX_TOKEN_ID(NODENT));
+self.send(&self, QUEX_TOKEN_ID(NODENT));
     }
     else  {
         start = stack->back;
         --(stack->back);
 #       if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #       define First true
-self_send(QUEX_TOKEN_ID(DEDENT));
+self.send(&self, QUEX_TOKEN_ID(DEDENT));
 #       undef  First
 #       endif
         while( Indentation < *(stack->back) ) {
             --(stack->back);
 #           if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define First false
-self_send(QUEX_TOKEN_ID(DEDENT));
+self.send(&self, QUEX_TOKEN_ID(DEDENT));
 #           undef  First
 #           endif
         }
@@ -115,7 +115,7 @@ self_send(QUEX_TOKEN_ID(DEDENT));
             /* 'Landing' must happen on indentation border. */
 #           if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define ClosedN (start - stack->back)
-self_send_n((size_t)ClosedN, QUEX_TOKEN_ID(DEDENT));
+self.send_n(&self, QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #           undef  ClosedN
 #           endif
@@ -553,7 +553,7 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnBadLexatom);
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnBadLexatom);
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -567,7 +567,7 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnLoadFailure);
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnLoadFailure);
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -579,7 +579,7 @@ _3:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 
 }
     /* End of Stream FORCES a return from the lexical analyzer, so that no
@@ -591,7 +591,7 @@ _4:
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnFailure);
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -603,7 +603,7 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 #define Counter counter
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnSkipRangeOpen);
 QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnSkipRangeOpen);
-self_send(QUEX_TOKEN_ID(TERMINATION));
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -617,12 +617,11 @@ __QUEX_IF_COUNT_COLUMNS_ADD(1);
 {
 
 #   line 2 "nothing.qx"
-self_send(QUEX_TKN_X);
-
+self.send(&self, QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 626 "TestAnalyzer.c"
+#   line 625 "TestAnalyzer.c"
 
 }
 RETURN;
@@ -855,7 +854,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 859 "TestAnalyzer.c"
+#   line 858 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -886,7 +885,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 890 "TestAnalyzer.c"
+#   line 889 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -932,7 +931,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 936 "TestAnalyzer.c"
+#   line 935 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -947,6 +946,7 @@ quex_Token_copy(quex_Token*       __this,
 }
 
 
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
 quex_Token_take_text(quex_Token*            __this, 
                        const QUEX_TYPE_LEXATOM* Begin, 
@@ -1026,6 +1026,7 @@ quex_Token_take_text(quex_Token*            __this,
     /* Default: no ownership.                                                */
     return false;
 }
+#endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t 
@@ -1040,7 +1041,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 1044 "TestAnalyzer.c"
+#   line 1045 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1059,7 +1060,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1063 "TestAnalyzer.c"
+#   line 1064 "TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1134,7 +1135,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include <quex/code_base/lexeme.i>
    
 
-#   line 1138 "TestAnalyzer.c"
+#   line 1139 "TestAnalyzer.c"
 
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */

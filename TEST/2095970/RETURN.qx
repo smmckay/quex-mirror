@@ -7,7 +7,7 @@ mode MODULE {
 
     <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
     "\"" { 
-        self_send1(QUEX_TKN_EVENT_MODE_CHANGE_TO_STRING, LexemeNull); 
+        self.send_string(QUEX_TKN_EVENT_MODE_CHANGE_TO_STRING, LexemeNull); 
         self << STRING; 
         RETURN; 
     }
@@ -18,15 +18,15 @@ mode MODULE {
 mode STRING {
     <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
     on_entry { 
-        self_send1(QUEX_TKN_MODE_STRING_ENTER, LexemeNull);
+        self.send_string(QUEX_TKN_MODE_STRING_ENTER, LexemeNull);
         self_accumulator_clear(); 
     }
     on_exit {
        self_accumulator_flush(QUEX_TKN_STRING_LITERAL);
-       self_send1(QUEX_TKN_MODE_STRING_EXIT, LexemeNull);
+       self.send_string(QUEX_TKN_MODE_STRING_EXIT, LexemeNull);
     }
     "\"" { 
-        self_send1(QUEX_TKN_EVENT_MODE_CHANGE_TO_MODULE, LexemeNull); 
+        self.send_string(QUEX_TKN_EVENT_MODE_CHANGE_TO_MODULE, LexemeNull); 
         self << MODULE; 
         RETURN;                          
     }

@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
 	QUEX_NAME(from_file_name)(&qlex, file_name, ENCODING_NAME);
 	do {
-		QUEX_NAME(receive)(&qlex, &token_p);
+		qlex.receive(&qlex, &token_p);
 		/* Print out token information            */
 #       ifdef PRINT_LINE_COLUMN_NUMBER
 		printf("(%i, %i)  \t", (int)token_p._line_n, (int)token_p._column_n);

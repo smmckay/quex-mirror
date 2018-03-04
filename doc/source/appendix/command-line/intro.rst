@@ -368,6 +368,24 @@ The following options support the definition of a independently customized token
 
 Default: Token
 
+.. cmdoption:: --token-class-support-take-text, --tcstt 
+
+    When specifying an external token class which provides the 'take_text' member function, this 
+    option needs to be given.  
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --token-class-support-repetition, --tcsr 
+
+    This option must be specified when specifying an external token class which provides the repetition 
+    count inside the token itself.  
+
+    
+
+Default: false (disabled)
+
 .. cmdoption:: --token-id-type type name
 
     ``type-name`` defines the type of the token id. This defines internally the macro ``QUEX_TYPE_TOKEN_ID``. 

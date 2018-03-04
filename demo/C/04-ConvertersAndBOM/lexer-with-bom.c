@@ -46,7 +46,7 @@ main(int argc, char** argv)
     printf("| [START]\n");
 
     do {
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
 
         printf("(%i, %i)  \t", (int)token_p->_line_n, (int)token_p->_column_n);
         printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));

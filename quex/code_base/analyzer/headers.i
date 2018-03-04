@@ -17,13 +17,15 @@
 #include    <quex/code_base/analyzer/asserts.i>
 #include    <quex/code_base/buffer/asserts.i>
 
-/* Token sending happens only via macros, for flexibility. */
 #include    <quex/code_base/analyzer/member/token-receiving.i>
 #include    <quex/code_base/analyzer/member/mode-handling.i>
 #include    <quex/code_base/analyzer/member/misc.i>
 #include    <quex/code_base/analyzer/member/navigation.i>
 #include    <quex/code_base/analyzer/struct/constructor.i>
 #include    <quex/code_base/analyzer/struct/reset.i>
+#ifdef      QUEX_OPTION_INCLUDE_STACK
+#   include <quex/code_base/analyzer/struct/include-stack.i>
+#endif
 
 #include    <quex/code_base/analyzer/Mode.i>
 #include    <quex/code_base/token/TokenQueue.i>
@@ -34,9 +36,6 @@
 
 #ifdef      QUEX_OPTION_COUNTER
 #   include <quex/code_base/analyzer/Counter.i>
-#endif
-#ifdef      QUEX_OPTION_INCLUDE_STACK
-#   include <quex/code_base/analyzer/struct/include-stack.i>
 #endif
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I */

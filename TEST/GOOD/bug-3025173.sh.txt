@@ -7,12 +7,12 @@ g++ -Wall -Werror br_scan.cpp example.cpp \
 	-I<<QUEX_PATH>> -I. \
 	-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 	-o check 
-0
-1
-2
-3
-4
-5
+token.id: 5; token.number: 0;
+token.id: 5; token.number: 1;
+token.id: 5; token.number: 2;
+token.id: 5; token.number: 3;
+token.id: 5; token.number: 4;
+token.id: 1; token.number: 0;
 (2) Mix member assignments with manually written token class.
 quex -i scan-error.qx -o br_scan --token-class-file token.h --token-id-prefix BR_TKN_ --foreign-token-id-file gramma.h --token-class blackray::Token
 scan-error.qx:5:error: Member assignments in brief token senders are inadmissible

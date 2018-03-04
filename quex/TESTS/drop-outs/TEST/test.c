@@ -34,7 +34,7 @@ main(int argc, char** argv)
     printf("[START]\n");
 
     do {
-        quex_EasyLexer_receive(&qlex, &token_p);
+        qlex.receive(&qlex, &token_p);
 
         print_token(token_p);
 

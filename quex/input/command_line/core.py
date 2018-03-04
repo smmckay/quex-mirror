@@ -110,7 +110,7 @@ def __extra_option_extract_from_file(FileName):
         location_list.append((SourceRef(FileName, line_n), options))
         result.extend(options)
 
-    if len(result) == 0: return None, location_list
+    if not result: return None, location_list
 
     return result, location_list
 

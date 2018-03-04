@@ -87,6 +87,7 @@ inline void QUEX_NAME_TOKEN(destruct)(Token* __this) { }
 
 } //namespace 
 
+#include <quex/code_base/lexeme.i>
 
 #endif
 

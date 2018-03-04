@@ -283,6 +283,8 @@ SETUP_INFO = {
     "suppressed_notification_list":   [["--suppress", "-s"],                   SetupParTypes.INT_LIST],
     "extern_token_class_file":        [["--token-class-file"],                 ""],
     "token_class":                    [["--token-class", "--tc"],              "Token"],
+    "token_class_support_take_text_f":  [["--token-class-support-take-text",  "--tcstt"], SetupParTypes.FLAG],
+    "token_class_support_repetition_f": [["--token-class-support-repetition", "--tcsr"],  SetupParTypes.FLAG],
     "token_class_only_f":             [["--token-class-only", "--tco"],        SetupParTypes.FLAG],
     "extern_token_id_specification":  [["--foreign-token-id-file"],            SetupParTypes.LIST],  
     "extern_token_id_file_show_f":    [["--foreign-token-id-file-show"],       SetupParTypes.FLAG],
