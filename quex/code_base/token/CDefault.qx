@@ -39,23 +39,12 @@ $INCLUDE_CONVERTER_DECLARATION
         self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text,
-                                       E_MemoryObjectType_TEXT);
+            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
-            self.text = \
-               (QUEX_TYPE_LEXATOM*)
-               QUEXED(MemoryManager_allocate)(
-                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1),
-                      E_MemoryObjectType_TEXT);
-            if( self.text ) {
-                __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
-                                    sizeof(QUEX_TYPE_LEXATOM) 
-                                  * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1));
-            }
-            else {
-                self.text = LexemeNull;
-            }
+            self.text = QUEX_NAME_TOKEN(lexeme_clone)(self.text, 
+                                                      QUEX_NAME_TOKEN(lexeme_length)(Other.text));
+            if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -88,14 +77,8 @@ $INCLUDE_CONVERTER_DECLARATION
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);
-            self.text = \
-                 (QUEX_TYPE_LEXATOM*)
-                 QUEXED(MemoryManager_allocate)(
-                              sizeof(QUEX_TYPE_LEXATOM) * (size_t)(End - Begin + 1), 
-                              E_MemoryObjectType_TEXT);
-            __QUEX_STD_memcpy((void*)self.text, (void*)Begin, 
-                              sizeof(QUEX_TYPE_LEXATOM) * (size_t)(End - Begin));
-            /* The string is not necessarily zero terminated, so terminate it here. */
+            self.text = QUEX_NAME_TOKEN(lexeme_clone)(Begin, (size_t)(End - Begin));
+            if( ! self.text ) self.text = LexemeNull;
             *((QUEX_TYPE_LEXATOM*)(self.text + (End - Begin))) = (QUEX_TYPE_LEXATOM)0;
         } else {
             self.text = LexemeNull;

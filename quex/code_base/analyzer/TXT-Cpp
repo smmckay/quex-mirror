@@ -178,6 +178,10 @@ public:
 
     /*__( Reset )_______________________________________________________________
      *                                                                        */
+/* TODO:
+    $$MF: bool reset(const char* FileName, QUEX_NAME(Converter)* Converter)$$
+    */
+
     bool reset()
          { return QUEX_NAME(reset)(this); }
     bool reset(const char*            FileName, 

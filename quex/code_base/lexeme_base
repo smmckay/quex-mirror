@@ -13,6 +13,10 @@ QUEX_INLINE size_t
 QUEX_NAME_TOKEN(lexeme_length)(const QUEX_TYPE_LEXATOM* Str);
 
 
+QUEX_INLINE QUEX_TYPE_LEXATOM*
+QUEX_NAME_TOKEN(lexeme_clone)(const QUEX_TYPE_LEXATOM* BeginP,
+                              size_t                   Length);
+
 QUEX_INLINE size_t 
 QUEX_NAME_TOKEN(lexeme_compare)(const QUEX_TYPE_LEXATOM* it0, 
                                 const QUEX_TYPE_LEXATOM* it1);

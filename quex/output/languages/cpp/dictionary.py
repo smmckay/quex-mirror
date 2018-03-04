@@ -1286,11 +1286,11 @@ cpp_reload_forward_str = """
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
     switch( $$LOAD_RESULT$$ ) {
-    case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
-    case E_LoadResult_ENCODING_ERROR:    goto $$ON_BAD_LEXATOM$$;
-    case E_LoadResult_OVERFLOW:          QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
-    default:                             __quex_assert(false);
+    case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);      
+    case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index); 
+    case E_LoadResult_ENCODING_ERROR: goto $$ON_BAD_LEXATOM$$;
+    case E_LoadResult_OVERFLOW:       QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
+    default:                          __quex_assert(false);
     }
 """
 
@@ -1306,11 +1306,11 @@ cpp_reload_backward_str = """
     __quex_debug_reload_after($$LOAD_RESULT$$);
 
     switch( $$LOAD_RESULT$$ ) {
-    case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
-    case E_LoadResult_ENCODING_ERROR:    goto $$ON_BAD_LEXATOM$$;
-    case E_LoadResult_FAILURE:           QUEX_NAME(error_code_set_if_first)(me, E_Error_OnLoadFailure); RETURN; 
-    default:                             __quex_assert(false);
+    case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);      
+    case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index); 
+    case E_LoadResult_ENCODING_ERROR: goto $$ON_BAD_LEXATOM$$;
+    case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(me, E_Error_OnLoadFailure); RETURN; 
+    default:                          __quex_assert(false);
     }
 """
 

@@ -20,10 +20,11 @@ endif
 COMPILER = gcc
 
 LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
-	 -fsanitize=address -I./ -I$(QUEX_PATH)                   \
+	 -I./ -I$(QUEX_PATH)                   \
 	 -DQUEX_OPTION_DEBUG_SHOW_MODES        \
 	 -DQUEX_OPTION_COUNTER_LINE_DISABLED   \
 	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK   
+	 # -fsanitize=address 
 
 LD := $(LD0) -DQUEX_OPTION_COUNTER_COLUMN_DISABLED 
 

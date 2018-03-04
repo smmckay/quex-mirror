@@ -15,12 +15,38 @@
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
+extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);
+
 QUEX_INLINE size_t 
 QUEX_NAME_TOKEN(lexeme_length)(const QUEX_TYPE_LEXATOM* Str)
 {
     const QUEX_TYPE_LEXATOM* iterator = Str;
     while( *iterator != 0 ) ++iterator; 
     return (size_t)(iterator - Str);
+}
+
+QUEX_INLINE QUEX_TYPE_LEXATOM*
+QUEX_NAME_TOKEN(lexeme_clone)(const QUEX_TYPE_LEXATOM* BeginP,
+                              size_t                   Length)
+{
+    QUEX_TYPE_LEXATOM* result;
+
+    if( BeginP == &QUEX_NAME_TOKEN(LexemeNull) || ! BeginP ) {
+        return &QUEX_NAME_TOKEN(LexemeNull);
+    }
+    
+    result = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
+                   sizeof(QUEX_TYPE_LEXATOM) * (Length + 1),
+                   E_MemoryObjectType_TEXT);
+
+    if( result ) {
+        __QUEX_STD_memcpy((void*)result, (void*)BeginP, 
+                          sizeof(QUEX_TYPE_LEXATOM) * (Length + 1));
+    }
+    else {
+        result = &QUEX_NAME_TOKEN(LexemeNull); 
+    }
+    return result;
 }
 
 QUEX_INLINE size_t 
