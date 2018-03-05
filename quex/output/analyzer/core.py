@@ -41,7 +41,8 @@ def do(ModeDB, Epilog):
 
     template_code_txt = Lng.open_template(Lng.analyzer_template_file())
 
-    template_code_txt = declare_member_functions(template_code_txt)
+    template_code_txt, \
+    member_function_signature_list = declare_member_functions(template_code_txt)
 
     txt = blue_print(template_code_txt, [
         ["$$___SPACE___$$",                      " " * (len(LexerClassName) + 1)],
@@ -71,13 +72,14 @@ def do(ModeDB, Epilog):
         ["$$EPILOG$$",                           Epilog],
      ])
 
-    return txt
+    return txt, member_function_signature_list
 
-def do_implementation(ModeDB):
+def do_implementation(ModeDB, MemberFunctionSignatureList):
 
     func_txt = Lng.open_template(Lng.analyzer_template_i_file())
 
     func_txt = blue_print(func_txt, [
+        ["$$MEMBER_FUNCTION_ASSIGNMENT$$",              Lng.MEMBER_FUNCTION_ASSIGNMENT(MemberFunctionSignatureList)],
         ["$$CONSTRUCTOR_EXTENSTION$$",                  Lng.SOURCE_REFERENCED(blackboard.class_constructor_extension)],
         ["$$DESTRUCTOR_EXTENSTION$$",                   Lng.SOURCE_REFERENCED(blackboard.class_destructor_extension)],
         ["$$USER_DEFINED_PRINT$$",                      Lng.SOURCE_REFERENCED(blackboard.class_print_extension)],
@@ -149,12 +151,17 @@ def member_functions(Txt):
     return 
 
 def declare_member_functions(Txt):
+    """RETURNS: [0] 'Txt' with member function declarations replaced.
+                [1] list of function signatures in the sequence of their appearance.
+    """
     txt = []
+    signature_list = []
     last_i = 0
     for begin_i, end_i, signature in member_functions(Txt):
         if signature is None: continue
         txt.append(Txt[last_i:begin_i])
         txt.append(Lng.MEMBER_FUNCTION_DECLARATION(signature))
         last_i = end_i
+        signature_list.append(signature)
     txt.append(Txt[last_i:])
-    return "".join(txt)
+    return "".join(txt), signature_list

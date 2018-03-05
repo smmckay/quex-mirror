@@ -438,6 +438,9 @@ class Language(dict):
                                           return_str, 
                                           call_definition_str)
 
+    def MEMBER_FUNCTION_ASSIGNMENT(self, MemberFunctionSignatureList):
+        return ""
+
     def REGISTER_NAME(self, Register):
         return {
             E_R.InputP:          "(me->buffer._read_p)",

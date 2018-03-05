@@ -129,9 +129,11 @@ def _prepare_all(mode_db, class_token_implementation,
     # (*) Implement the 'quex' core class from a template
     # -- do the coding of the class framework
     configuration_header    = configuration.do(mode_db)
-    analyzer_header         = analyzer_class.do(mode_db, 
-                                                Epilog=global_lexeme_null_declaration) 
-    analyzer_implementation = analyzer_class.do_implementation(mode_db) 
+    analyzer_header, \
+    member_function_signature_list = analyzer_class.do(mode_db, 
+                                                       Epilog=global_lexeme_null_declaration) 
+    analyzer_implementation = analyzer_class.do_implementation(mode_db, 
+                                                               member_function_signature_list) 
     mode_implementation     = mode_classes.do(mode_db)
 
     # (*) [Optional] Generate a converter helper

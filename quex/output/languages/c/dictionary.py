@@ -36,3 +36,26 @@ class Language(LanguageCpp):
 
     def TOKEN_SEND_N(self, N, TokenName):
         return "self.send_n(&self, %s, (size_t)%s);\n" % (TokenName, N)
+
+    def MEMBER_FUNCTION_DECLARATION(self, signature):
+        argument_list_str = ", ".join("%s %s" % (arg_type, arg_name) 
+                                      for arg_type, arg_name in signature.argument_list)
+        if signature.return_type != "void": return_str = "return "
+        else:                               return_str = ""
+
+        if signature.argument_list: me_str = "QUEX_TYPE_ANALYZER* me, "
+        else:                       me_str = "QUEX_TYPE_ANALYZER* me"
+
+        return "%s (*%s)(%s%s);\n" % (signature.return_type, 
+                                                          signature.function_name, 
+                                                          me_str,
+                                                          argument_list_str) 
+
+    def MEMBER_FUNCTION_ASSIGNMENT(self, MemberFunctionSignatureList):
+        txt = [
+            "    me->%s = QUEX_NAME(MF_%s);" % (signature.function_name, signature.function_name)
+            for signature in MemberFunctionSignatureList
+        ]
+        return "\n".join(txt)
+        
+

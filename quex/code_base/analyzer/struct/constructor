@@ -45,10 +45,6 @@ QUEX_INLINE bool QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me,
 extern      bool QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER*);
 extern      void QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER*);
 
-#if defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE void QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me);
-#endif
-
 QUEX_NAMESPACE_MAIN_CLOSE 
 
 #endif /*  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__CONSTRUCTOR */

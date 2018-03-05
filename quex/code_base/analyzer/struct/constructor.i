@@ -461,28 +461,6 @@ QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me,
                           : me->buffer.begin(&me->buffer);
 }
 
-#if defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE void
-QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
-{
-    me->receive       = QUEX_NAME(MF_receive);
-
-    me->token_p       = QUEX_NAME(MF_token_p);
-    me->send          = QUEX_NAME(MF_send);
-    me->send_n        = QUEX_NAME(MF_send_n);
-    me->send_text     = QUEX_NAME(MF_send_text);
-    me->send_string   = QUEX_NAME(MF_send_string);
-
-    me->tell          = QUEX_NAME(MF_tell);
-    me->seek          = QUEX_NAME(MF_seek);
-    me->seek_forward  = QUEX_NAME(MF_seek_forward);
-    me->seek_backward = QUEX_NAME(MF_seek_backward);
-    me->undo          = QUEX_NAME(MF_undo);
-    me->undo_n        = QUEX_NAME(MF_undo_n);
-}
-#endif
-
-
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /*  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__CONSTRUCTOR_I */
