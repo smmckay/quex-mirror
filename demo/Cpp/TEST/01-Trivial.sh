@@ -1,21 +1,20 @@
 #! /usr/bin/env bash
-source $HWUT_PATH/support/bash/hwut_unit.sh
+source build-and-run.sh
+
 hwut_info $1 \
     "01-Trivial: Single Mode Example;\n" \
     "CHOICES:  asserts, no-asserts;\n"  \
     "SAME;\n"
 
 directory="../01-Trivial"
-choice=$2
-first_f=$3
-last_f=$4
-
-source build-and-run.sh
+choice=$1
 
 pushd $directory >& /dev/null
 
-build lexer $choice "$first_f"
-run   lexer 
-clean "$last_f"
+# Clean always, because there is w/ and wo/ 'asserts'
+bar_clean 
+bar_build lexer "$choice" 
+bar_run   lexer 
+bar_clean 
 
 popd >& /dev/null

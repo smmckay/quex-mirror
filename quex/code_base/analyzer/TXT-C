@@ -138,6 +138,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
     $$MF: void    undo()$$
     $$MF: void    undo_n(size_t DeltaN_Backward)$$
 
+    $$MF: const char* version()$$
+    $$MF: void        print_this()$$
     /* __( END: Data Members )________________________________________________*/
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)

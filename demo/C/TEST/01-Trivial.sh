@@ -1,8 +1,20 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/000: Single Mode Example"
-    echo "CHOICES:  NDEBUG, DEBUG;"
-    echo "SAME;"
-    exit
-fi
-source core-new.sh 01-Trivial $2 $3 $1
+source build-and-run.sh
+
+hwut_info $1 \
+    "01-Trivial: Single Mode Example;\n" \
+    "CHOICES:  asserts, no-asserts;\n"  \
+    "SAME;\n"
+
+directory="../01-Trivial"
+choice=$1
+
+pushd $directory >& /dev/null
+
+# Clean always, because there is w/ and wo/ 'asserts'
+bar_clean 
+bar_build lexer "$choice" 
+bar_run   lexer 
+bar_clean 
+
+popd >& /dev/null

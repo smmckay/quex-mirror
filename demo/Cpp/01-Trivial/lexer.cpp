@@ -34,13 +34,15 @@ print_token(quex::Token* token_p)
     std::cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
 
     switch( token_p->id ) {
-    case QUEX_TKN_INDENT: 
-    case QUEX_TKN_DEDENT: 
-    case QUEX_TKN_NODENT: 
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still might carry an old lexeme. 
          * Printing it would be confusing.                                    */
         std::cout << token_p->type_id_name() << std::endl;
+        break;
+    case QUEX_TKN_NUMBER: 
+        /* In this case, the token still might carry an old lexeme. 
+         * Printing it would be confusing.                                    */
+        std::cout << token_p->type_id_name() << ": " << token_p->number << std::endl;
         break;
     default:
         std::cout << std::string(*token_p) << std::endl;

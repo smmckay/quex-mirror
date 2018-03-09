@@ -309,8 +309,8 @@ public:
 
     /*__( General Information )________________________________________________
      *                                                                       */
-    const char* version() const { return QUEX_NAME(version)((QUEX_TYPE_ANALYZER*)this); }
-    void        print_this()    { QUEX_NAME(print_this)(this); }
+    $$MF: const char*  version()$$
+    $$MF: void         print_this()$$
 
 public:
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
