@@ -10,13 +10,13 @@
 #ifndef    __QUEX_OPTION_PLAIN_C
 #   define __QUEX_OPTION_PLAIN_C
 #endif
-#include <quex/code_base/definitions>
-#include <quex/code_base/asserts>
-#include <quex/code_base/compatibility/stdint.h>
-#include <quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: asserts$$
+$$INC: compatibility/stdint.h$$
+$$INC: MemoryManager$$
 
 
-#include <quex/code_base/lexeme_base>
+$$INC: lexeme_base$$
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
@@ -29,9 +29,9 @@ struct quex_Token_tag;
 extern const char* 
 QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   BufferSize); 
 
-#include <quex/code_base/lexeme_converter/from-unicode-buffer>
+$$INC: lexeme_converter/from-unicode-buffer$$
 
-#include <quex/code_base/lexeme>
+$$INC: lexeme$$
    
 
 #   line 38 "TestAnalyzer-token.h"

@@ -312,8 +312,8 @@ def get_implementation_header(Setup):
         return ""
 
     result = [
-        "#include <quex/code_base/analyzer/headers.i>",
-        "#include <quex/code_base/analyzer/C-adaptions.h>",
+        "$$INC: analyzer/headers.i$$",
+        "$$INC: analyzer/C-adaptions.h$$",
         "\n",
         "/* START: User defined header content _________________________________________",
         " *        The 'footer' content relies on class definitions made above.        */",

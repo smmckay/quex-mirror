@@ -5,13 +5,13 @@
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/asserts>
-#include <quex/code_base/compatibility/stdint.h>
-#include <quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: asserts$$
+$$INC: compatibility/stdint.h$$
+$$INC: MemoryManager$$
 
 
-#include <quex/code_base/lexeme_base>
+$$INC: lexeme_base$$
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
@@ -19,9 +19,9 @@
 #include <iostream>
 #include <string>
 
-#include <quex/code_base/lexeme_converter/from-unicode-buffer>
+$$INC: lexeme_converter/from-unicode-buffer$$
 
-#include <quex/code_base/lexeme>
+$$INC: lexeme$$
    
 
 #   line 28 "TestAnalyzer-token"
@@ -158,9 +158,9 @@ operator<<(std::ostream& ostr, const Token& Tok)
 { ostr << Tok.get_string(); return ostr; }
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
+$$INC: lexeme_converter/from-unicode-buffer.i$$
 
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
    
 
 #   line 167 "TestAnalyzer-token"
@@ -179,7 +179,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 #include "TestAnalyzer-token"
 
 QUEX_NAMESPACE_TOKEN_OPEN

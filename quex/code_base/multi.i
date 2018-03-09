@@ -13,7 +13,7 @@
  *
  * must be defined. In one single file include
  *
- *                     #include <quex/code_base/multi.i>
+ *                     $$INC: multi.i$$
  *
  * Option 'QUEX_OPTION_MULTI' avoids the inclusion of some critical files 
  * during the implementation of all files. Instead, the explicit inclusion of 
@@ -45,7 +45,7 @@
 #    error "This file can only be included if option 'QUEX_OPTION_MULTI' has been set."
 #endif
 
-#include <quex/code_base/bom.i>
-#include <quex/code_base/MemoryManager.i>
+$$INC: bom.i$$
+$$INC: MemoryManager.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__MULTI_I__ */

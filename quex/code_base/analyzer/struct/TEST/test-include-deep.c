@@ -7,12 +7,12 @@
  *
  * (C) 2017 Frank-Rene Schaefer                                               */
 #include <TestAnalyzer.h>
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/buffer/TESTS/MemoryManager_UnitTest.i>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
+$$INC: MemoryManager$$
+$$INC: buffer/TESTS/MemoryManager_UnitTest.i$$
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv.i$$
+$$INC: buffer/lexatoms/converter/icu/Converter_ICU$$
+$$INC: buffer/lexatoms/converter/icu/Converter_ICU.i$$
 #include <hwut_unit.h>
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;

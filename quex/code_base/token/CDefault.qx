@@ -149,7 +149,7 @@ $INCLUDE_CONVERTER_DECLARATION
         }
 
 $INCLUDE_CONVERTER_IMPLEMENTATION
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
    }
 }
 

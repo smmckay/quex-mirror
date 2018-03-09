@@ -3,9 +3,9 @@
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE
 #define __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/asserts>
-#include <quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: asserts$$
+$$INC: MemoryManager$$
 
 #ifndef QUEX_TYPE_TOKEN
 #    error "QUEX_TYPE_TOKEN must be defined before including this file."

@@ -33,6 +33,7 @@ from   quex.constants    import E_Files, \
 from   itertools import islice
 from   math      import log
 import re
+import os
 
 class Language(dict):
     #------------------------------------------------------------------------------
@@ -47,8 +48,8 @@ class Language(dict):
 
     CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
     
-    CODE_BASE                 = "/quex/code_base/"
-    LEXEME_CONVERTER_DIR      = "quex/code_base/lexeme_converter"
+    CODE_BASE                 = "quex/code_base/"
+    LEXEME_CONVERTER_DIR      = "lib/lexeme_converter"
                               
     RETURN                    = "RETURN;"
     PURE_RETURN               = "__QUEX_PURE_RETURN;"
@@ -149,46 +150,36 @@ class Language(dict):
     def frame_all(self, Code, Setup):      return templates.frame_of_all(Code, Setup)
 
     def open_template(self, PathTail):
-        full_path = QUEX_PATH + self.CODE_BASE + PathTail
-        return get_file_content_or_die(full_path.replace("//", "/"))
+        full_path = os.path.normpath(os.path.join(QUEX_PATH, PathTail))
+        return get_file_content_or_die(full_path)
 
     def open_template_fh(self, PathTail):
-        full_path = QUEX_PATH + self.CODE_BASE + PathTail
-        return open_file_or_die(full_path.replace("//", "/"))
+        full_path = os.path.normpath(os.path.join(QUEX_PATH, PathTail))
+        return open_file_or_die(full_path)
 
-    def token_template_file(self):         return "/token/TXT-Cpp"       
-    def token_template_i_file(self):       return "/token/TXT-Cpp.i"    
-    def token_default_file(self):          return "/token/CppDefault.qx" 
-    def analyzer_template_file(self):      return "/analyzer/TXT-Cpp"  
-    def analyzer_template_i_file(self):    return "/analyzer/TXT-Cpp.i"  
-    def converter_helper_i_file(self):     return "/lexeme_converter/TXT-from-codec-buffer.i"
-    def converter_helper_file(self):       return "/lexeme_converter/TXT-from-codec-buffer"
-    def analyzer_configuration_file(self): return "/analyzer/configuration/TXT"
+    def token_template_file(self):         return "%s/token/TXT-Cpp"                            % self.CODE_BASE
+    def token_template_i_file(self):       return "%s/token/TXT-Cpp.i"                          % self.CODE_BASE
+    def token_default_file(self):          return "%s/token/CppDefault.qx"                      % self.CODE_BASE
+    def analyzer_template_file(self):      return "%s/analyzer/TXT-Cpp"                         % self.CODE_BASE
+    def analyzer_template_i_file(self):    return "%s/analyzer/TXT-Cpp.i"                       % self.CODE_BASE
+    def analyzer_configuration_file(self): return "%s/analyzer/configuration/TXT"               % self.CODE_BASE
+    def converter_helper_i_file(self):     return "%s/lexeme_converter/TXT-from-codec-buffer.i" % self.CODE_BASE
+    def converter_helper_file(self):       return "%s/lexeme_converter/TXT-from-codec-buffer"   % self.CODE_BASE
 
 
     def buffer_encoding_headers(self, EncodingName):
-        lexeme_converter_dir = "quex/code_base/lexeme_converter"
-        if   EncodingName == "utf8":
-            return "%s/from-utf8"    % lexeme_converter_dir, \
-                   "%s/from-utf8.i"  % lexeme_converter_dir
-
-        elif EncodingName == "utf16":
-            return "%s/from-utf16"   % lexeme_converter_dir, \
-                   "%s/from-utf16.i" % lexeme_converter_dir
-
-        elif EncodingName == "utf32":
-            return "%s/from-utf32"   % lexeme_converter_dir, \
-                   "%s/from-utf32.i" % lexeme_converter_dir
-
-        elif EncodingName != "unicode":
+        if   EncodingName == "utf8":    file_stem = "from-utf8" 
+        elif EncodingName == "utf16":   file_stem = "from-utf16"
+        elif EncodingName == "utf32":   file_stem = "from-utf32"
+        elif EncodingName == "unicode": file_stem = "from-unicode-buffer"
+        else:
             # Note, that the name may be set to 'None' if the conversion is utf8 or utf16
             # See Internal engine character encoding'
             return Setup.prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER), \
                    Setup.prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER_IMPLEMTATION)
 
-        else:
-            return "%s/from-unicode-buffer"   % lexeme_converter_dir, \
-                   "%s/from-unicode-buffer.i" % lexeme_converter_dir
+        return os.path.join(self.LEXEME_CONVERTER_DIR, file_stem), \
+               os.path.join(self.LEXEME_CONVERTER_DIR, "%s.i" % file_stem)
 
 
     def register_analyzer(self, TheAnalyzer):
@@ -299,24 +290,30 @@ class Language(dict):
         return "\n#undef %s\n" % NAME
 
     def CONVERTER_HELPER_DECLARATION(self):
-        if Setup.buffer_encoding.name in ["utf8", "utf16", "utf32"]:
-            return "#include <%s/from-%s>\n" % (self.LEXEME_CONVERTER_DIR, Setup.buffer_encoding.name)
+        if Setup.buffer_encoding.name in ("utf8", "utf16", "utf32"):
+            file_name = os.path.join(self.LEXEME_CONVERTER_DIR, 
+                                     "from-%s" % Setup.buffer_encoding.name)
         elif Setup.buffer_encoding.name == "unicode":
-            return "#include <%s/from-unicode-buffer>\n" % self.LEXEME_CONVERTER_DIR
+            file_name = os.path.join(self.LEXEME_CONVERTER_DIR, 
+                                     "from-unicode-buffer")
         else:
-            header, \
-            dummy   = self.buffer_encoding_headers(Setup.buffer_encoding.name)
-            return "#include \"%s\"\n" % Setup.get_file_reference(header)
+            print "#above if-statements are redundant: try to replace by call below"
+            file_name, \
+            dummy      = self.buffer_encoding_headers(Setup.buffer_encoding.name)
+        return self.INCLUDE(file_name)
 
     def CONVERTER_HELPER_IMLEMENTATION(self):
-        if Setup.buffer_encoding.name in ["utf8", "utf16", "utf32"]:
-            return "#include <%s/from-%s.i>\n" % (self.LEXEME_CONVERTER_DIR, Setup.buffer_encoding.name)
+        if Setup.buffer_encoding.name in ("utf8", "utf16", "utf32"):
+            file_name = os.path.join(self.LEXEME_CONVERTER_DIR, 
+                                     "from-%s.i" % Setup.buffer_encoding.name)
         elif Setup.buffer_encoding.name == "unicode":
-            return "#include <%s/from-unicode-buffer.i>\n" % self.LEXEME_CONVERTER_DIR
+            file_name = os.path.join(self.LEXEME_CONVERTER_DIR, 
+                                     "from-unicode-buffer.i")
         else:
-            dummy,   \
-            header_i = self.buffer_encoding_headers(Setup.buffer_encoding.name)
-            return "#include \"%s\"\n" % Setup.get_file_reference(header_i)
+            dummy,    \
+            file_name = self.buffer_encoding_headers(Setup.buffer_encoding.name)
+
+        return self.INCLUDE(file_name)
                                                                                                                                 
     @typed(Txt=(CodeFragment))
     def SOURCE_REFERENCED(self, Cf, PrettyF=False):
@@ -858,11 +855,14 @@ class Language(dict):
         else:
             return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (name, IteratorName)
 
+    def INCLUDE(self, Path):
+        return "#include \"%s\"" % Path
+
     def ENGINE_TEXT_EPILOG(self):
         if Setup.analyzer_derived_class_file: 
-            header = "<" + Setup.get_file_reference(Setup.analyzer_derived_class_file) +">\n"
+            header = self.INCLUDE(Setup.analyzer_derived_class_file)
         else:                                 
-            header = "\"" + Setup.get_file_reference(Setup.output_header_file) +"\"\n"
+            header = self.INCLUDE(Setup.output_header_file)
         return cpp_include_Multi_i_str.replace("$$HEADER$$", header)
     
     def MODE_GOTO(self, Mode):
@@ -1283,13 +1283,13 @@ class Language(dict):
         ]
 
 cpp_include_Multi_i_str = """
-#include $$HEADER$$
-#include <quex/code_base/analyzer/C-adaptions.h>
+$$HEADER$$
+$$INC: analyzer/C-adaptions.h$$
 /* The file 'multi.i' contains implementations which are the same for all 
  * possibly generated analyzers. If QUEX_OPTION_MULTI is defined, it is
  * NOT supposed to be included here. If not--in which case we have a single
  * analzer--then it is included.                                             */
-#include <quex/code_base/single.i>
+$$INC: single.i$$
 """
 
 cpp_reload_forward_str = """
@@ -1333,8 +1333,8 @@ cpp_reload_backward_str = """
 """
 
 cpp_header_definition_str = """
-#include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/token/TokenQueue>
+$$INC: buffer/Buffer$$
+$$INC: token/TokenQueue$$
 
 #ifdef    CONTINUE
 #   undef CONTINUE

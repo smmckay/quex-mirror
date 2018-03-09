@@ -16,7 +16,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__BOM
 #define __QUEX_INCLUDE_GUARD__BOM
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 typedef enum {
     QUEX_BOM_NONE            = 0x200,  /* D9 --> NONE/NOT SURE */

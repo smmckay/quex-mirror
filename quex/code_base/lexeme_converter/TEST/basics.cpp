@@ -7,7 +7,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
-#include <quex/code_base/MemoryManager.i>
+$$INC: MemoryManager.i$$
 
 template <class SourceT, class DrainT>
 struct converter {

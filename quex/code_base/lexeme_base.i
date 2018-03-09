@@ -4,7 +4,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__LEXEME_BASE_I
 #define __QUEX_INCLUDE_GUARD__LEXEME_BASE_I
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 #if   ! defined(QUEX_INLINE)
 #   error "QUEX_INLINE definition missing."
 #elif ! defined(QUEX_NAME_TOKEN)

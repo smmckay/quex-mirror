@@ -1,7 +1,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__STATISTICS_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__STATISTICS_I
 
-#include <quex/code_base/analyzer/Statistics>
+$$INC: analyzer/Statistics$$
 
 QUEX_INLINE void
 QUEX_NAME(statistics_state_count)(const QUEX_NAME(statistics_state)* S, QUEX_TYPE_LEXATOM C)

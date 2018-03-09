@@ -4,7 +4,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__LEXEME_I
 #define __QUEX_INCLUDE_GUARD__LEXEME_I
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 #if 0
 #if   ! defined(QUEX_SETTING_CHARACTER_CODEC)
@@ -14,7 +14,7 @@
 #endif
 #endif
 
-#include <quex/code_base/lexeme_base.i>
+$$INC: lexeme_base.i$$
 
 QUEX_NAMESPACE_TOKEN_OPEN
 

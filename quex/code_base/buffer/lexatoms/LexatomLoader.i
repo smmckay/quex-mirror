@@ -2,11 +2,11 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_I
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader>
-#include <quex/code_base/buffer/Buffer_print>
+$$INC: definitions$$
+$$INC: buffer/Buffer$$
+$$INC: MemoryManager$$
+$$INC: buffer/lexatoms/LexatomLoader$$
+$$INC: buffer/Buffer_print$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -247,11 +247,11 @@ QUEX_NAME(LexatomLoader_print_this)(QUEX_NAME(LexatomLoader)* me)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/buffer/Buffer.i>
-#include <quex/code_base/buffer/bytes/ByteLoader.i>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader_navigation.i>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter.i>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader_Plain.i>
+$$INC: buffer/Buffer.i$$
+$$INC: buffer/bytes/ByteLoader.i$$
+$$INC: buffer/lexatoms/LexatomLoader_navigation.i$$
+$$INC: buffer/lexatoms/LexatomLoader_Converter.i$$
+$$INC: buffer/lexatoms/LexatomLoader_Plain.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFERFILLER_I */
 

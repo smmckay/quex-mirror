@@ -28,7 +28,7 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY
 #define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY
 
-#include <quex/code_base/buffer/bytes/ByteLoader>
+$$INC: buffer/bytes/ByteLoader$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -36,7 +36,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 extern "C" {
 #endif
 #include <stdio.h>
-#include <quex/code_base/MemoryManager>
+$$INC: MemoryManager$$
 #ifdef __cplusplus
 }
 #endif

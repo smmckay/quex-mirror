@@ -12,7 +12,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__RESET
 #define __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__RESET
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN 
 

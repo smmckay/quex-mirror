@@ -3,7 +3,7 @@
  *
  * (1) Includes for required standard headers.
  * (2) Definitions of options and settings for the particular application.
- * (3) #include <quex/code_base/definitions> for default settings.
+ * (3) $$INC: definitions$$ for default settings.
  * (4) Lexical FSM class $$LEXER_CLASS_NAME$$ and its memento class.
  * (5) Constructor and init core of $$LEXER_CLASS_NAME$$.
  * (6) Memento pack and unpack functions.
@@ -25,7 +25,7 @@
 #   ifndef  QUEX_OPTION_MULTI
 #      error "Multiple lexical analyzers detected. QUEX_OPTION_MULTI must be defined and 'quex/code_base/multi.i' must be included in one single file!"
 #   endif
-#   include <quex/code_base/include-guard-undef>
+$$INC: include-guard-undef$$
 #   undef   __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
 #else
 #   define  __QUEX_INCLUDE_INDICATOR__ANALYZER__MAIN
@@ -34,7 +34,7 @@
 
 #include "$$LEXER_CONFIG_FILE$$"
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 struct  QUEX_NAME(Engine_tag);
 struct  QUEX_NAME(Memento_tag);
@@ -50,7 +50,7 @@ QUEX_TYPE0_TOKEN;
  *        might rely on contents of the header.                                */
 $$USER_DEFINED_HEADER$$
 /* END: _______________________________________________________________________*/
-#include <quex/code_base/analyzer/headers>
+$$INC: analyzer/headers$$
 
 #include "$$TOKEN_ID_DEFINITION_FILE$$"
 #include "$$TOKEN_CLASS_DEFINITION_FILE$$"

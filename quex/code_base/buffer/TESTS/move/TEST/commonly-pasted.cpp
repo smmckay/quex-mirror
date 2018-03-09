@@ -1,13 +1,13 @@
 #ifndef INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H
 #define INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H
 
-#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include <quex/code_base/buffer/Buffer_print.i>
-#include <quex/code_base/buffer/Buffer.i>
-#include <quex/code_base/buffer/asserts.i>
-#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
-#include <quex/code_base/single.i>
+$$INC: extra/test_environment/TestAnalyzer-configuration$$
+$$INC: buffer/lexatoms/LexatomLoader.i$$
+$$INC: buffer/Buffer_print.i$$
+$$INC: buffer/Buffer.i$$
+$$INC: buffer/asserts.i$$
+$$INC: lexeme_converter/from-unicode-buffer.i$$
+$$INC: single.i$$
 #include <cstring>
 #include <hwut_unit.h>
 

@@ -2,9 +2,9 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/buffer/bytes/ByteLoader>
+$$INC: definitions$$
+$$INC: buffer/Buffer$$
+$$INC: buffer/bytes/ByteLoader$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -149,7 +149,7 @@ QUEX_INLINE void
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader_Plain>
+$$INC: buffer/lexatoms/LexatomLoader_Converter$$
+$$INC: buffer/lexatoms/LexatomLoader_Plain$$
 
 #endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFERFILLER */

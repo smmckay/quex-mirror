@@ -4,10 +4,10 @@
 #ifndef __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
 #define __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/token/TokenPolicy>
-#include <quex/code_base/extra/accumulator/Accumulator>
+$$INC: definitions$$
+$$INC: MemoryManager$$
+$$INC: token/TokenPolicy$$
+$$INC: extra/accumulator/Accumulator$$
 
 #if   ! defined(QUEX_TYPE_LEXATOM)
 #        error "QUEX_TYPE_LEXATOM definition missing."

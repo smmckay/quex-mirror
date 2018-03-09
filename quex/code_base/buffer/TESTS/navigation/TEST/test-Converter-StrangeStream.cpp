@@ -31,16 +31,16 @@
  * (C) Frank-Rene Schaefer                                                   */
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-#include <quex/code_base/extra/test_environment/StrangeStream>
-#include <quex/code_base/buffer/Buffer.i>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
-#include <quex/code_base/buffer/bytes/ByteLoader_Memory>
-#include <quex/code_base/buffer/bytes/ByteLoader_Memory.i>
+$$INC: extra/test_environment/StrangeStream$$
+$$INC: buffer/Buffer.i$$
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv.i$$
+$$INC: buffer/lexatoms/converter/icu/Converter_ICU$$
+$$INC: buffer/lexatoms/converter/icu/Converter_ICU.i$$
+$$INC: buffer/bytes/ByteLoader_Memory$$
+$$INC: buffer/bytes/ByteLoader_Memory.i$$
 #include <fstream>
-// #include <quex/code_base/MemoryManager.i>
+// $$INC: MemoryManager.i$$
 
 typedef enum { TEST_ICU, TEST_ICONV } E_ConverterTestType;
 

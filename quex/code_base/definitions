@@ -7,9 +7,9 @@
 #ifndef __QUEX_INCLUDE_GUARD__DEFINITIONS
 #define __QUEX_INCLUDE_GUARD__DEFINITIONS
 
-#include<quex/code_base/asserts>
-#include<quex/code_base/compatibility/stdint.h>
-#include<quex/code_base/compatibility/stdbool-pseudo.h>
+$$INC: asserts$$
+$$INC: compatibility/stdint.h$$
+$$INC: compatibility/stdbool-pseudo.h$$
 
 #ifndef    QUEX_NAMESPACE_QUEX 
 #   define QUEX_NAMESPACE_QUEX         quex
@@ -468,7 +468,7 @@ typedef enum {
 
 #if  defined(QUEX_OPTION_DEBUG_SHOW_LOADS)
 
-#   include <quex/code_base/buffer/Buffer_print>
+$$INC: buffer/Buffer_print$$
 #   define __quex_debug_buffer_load(BUFFER, Msg)                        \
            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);  \
            QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \
@@ -476,7 +476,7 @@ typedef enum {
 
 #elif  defined(QUEX_OPTION_DEBUG_SHOW_LOADS) 
 
-#   include <quex/code_base/buffer/Buffer_print>
+$$INC: buffer/Buffer_print$$
 #   define __quex_debug_buffer_load(BUFFER, Msg)                        \
            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, Msg);  \
            QUEX_NAME(Buffer_print_content_detailed)(BUFFER);            \

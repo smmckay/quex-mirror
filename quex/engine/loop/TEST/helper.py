@@ -386,7 +386,7 @@ customized_unit_test_function_txt = """
 static bool show_next_character(QUEX_TYPE_ANALYZER* me);
 static bool skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me);
 
-#include <quex/code_base/single.i>
+$$INC: single.i$$
 
 void
 QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER* me)

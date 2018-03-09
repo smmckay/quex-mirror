@@ -523,18 +523,18 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #  define __QUEX_SETTING_MAX_MODE_CLASS_N 2
 #endif
 #ifdef __cplusplus
-#include <quex/code_base/extra/test_environment/TestAnalyzer>
+$$INC: extra/test_environment/TestAnalyzer$$
 #else
-#include <quex/code_base/extra/test_environment/TestAnalyzer.h>
+$$INC: extra/test_environment/TestAnalyzer.h$$
 #endif
-#include <quex/code_base/analyzer/asserts.i>
-#include <quex/code_base/analyzer/struct/constructor.i>
-#include <quex/code_base/analyzer/struct/reset.i>
-#include <quex/code_base/analyzer/member/mode-handling.i>
-#include <quex/code_base/buffer/asserts.i>
-#include <quex/code_base/token/TokenQueue.i>
+$$INC: analyzer/asserts.i$$
+$$INC: analyzer/struct/constructor.i$$
+$$INC: analyzer/struct/reset.i$$
+$$INC: analyzer/member/mode-handling.i$$
+$$INC: buffer/asserts.i$$
+$$INC: token/TokenQueue.i$$
 
-#include <quex/code_base/single.i>
+$$INC: single.i$$
 
 #if ! defined (__QUEX_OPTION_PLAIN_C)
     using namespace quex;
@@ -689,7 +689,7 @@ test_program_db = {
 
     "ANSI-C": """
     #include <stdio.h>
-    /* #include <quex/code_base/buffer/lexatoms/LexatomLoader_Plain> */
+    /* $$INC: buffer/lexatoms/LexatomLoader_Plain$$ */
 
     int main(int argc, char** argv)
     {
@@ -730,7 +730,7 @@ test_program_db = {
     "Cpp": """
     #include <cstring>
     #include <sstream>
-    #include <quex/code_base/buffer/lexatoms/LexatomLoader_Plain>
+    $$INC: buffer/lexatoms/LexatomLoader_Plain$$
 
     int main(int argc, char** argv)
     {
@@ -749,8 +749,8 @@ test_program_db = {
     "Cpp_StrangeStream": """
     #include <cstring>
     #include <sstream>
-    #include <quex/code_base/buffer/lexatoms/LexatomLoader_Plain>
-    #include <quex/code_base/extra/test_environment/StrangeStream>
+    $$INC: buffer/lexatoms/LexatomLoader_Plain$$
+    $$INC: extra/test_environment/StrangeStream$$
 
 
     int main(int argc, char** argv)

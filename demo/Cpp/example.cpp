@@ -1,7 +1,7 @@
 #include<fstream>    
 #include<iostream> 
 
-#include "EasyLexer"
+#include "Easy"
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 
@@ -20,8 +20,8 @@ main(int argc, char** argv)
 #   else
 #   define                   converter NULL
 #   endif
-    EasyLexer    qlex(argc == 1 ? "example.txt" : argv[1], converter);
-    Token*       token_p = 0;
+    Easy    qlex(argc == 1 ? "example.txt" : argv[1], converter);
+    Token*  token_p = 0;
 
     cout << ",-----------------------------------------------------------------\n";
     cout << "| [START]\n";

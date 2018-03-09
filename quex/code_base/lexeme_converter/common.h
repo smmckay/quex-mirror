@@ -5,10 +5,10 @@
 #ifndef  __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__COMMON_H
 #define  __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__COMMON_H
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/compatibility/stdint.h>
-#include <quex/code_base/asserts>
+$$INC: definitions$$
+$$INC: MemoryManager$$
+$$INC: compatibility/stdint.h$$
+$$INC: asserts$$
 #if ! defined(__QUEX_OPTION_PLAIN_C)
 #   include <string>
 #endif

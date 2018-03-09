@@ -1,5 +1,5 @@
-#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
-#include <quex/code_base/buffer/lexatoms/converter/Converter>
+$$INC: extra/test_environment/TestAnalyzer-configuration$$
+$$INC: buffer/lexatoms/converter/Converter$$
 #include <stdint.h>
 
 QUEX_NAMESPACE_QUEX_OPEN

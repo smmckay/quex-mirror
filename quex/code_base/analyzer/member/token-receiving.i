@@ -9,8 +9,8 @@
 #   error "QUEX_TYPE_TOKEN definition missing."
 #endif
 
-#include <quex/code_base/token/TokenPolicy>
-#include <quex/code_base/definitions>
+$$INC: token/TokenPolicy$$
+$$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 from   quex.engine.misc.string_handling import blue_print
 import quex.output.analyzer.modes       as     mode_classes
+from   quex.output.analyzer.adapt       import produce_include_statements, \
+                                               declare_member_functions
 
 from   quex.DEFINITIONS import QUEX_PATH, \
                                QUEX_VERSION
@@ -51,7 +53,7 @@ def do(ModeDB, Epilog):
         ["$$LEXER_CLASS_NAME$$",                 LexerClassName],
         ["$$LEXER_NAME_SPACE_EXT$$",             lexer_name_space_safe],
         ["$$LEXER_CLASS_NAME_SAFE$$",            Setup.analyzer_name_safe],
-        ["$$LEXER_CONFIG_FILE$$",                Setup.get_file_reference(Setup.output_configuration_file)],
+        ["$$LEXER_CONFIG_FILE$$",                Setup.output_configuration_file],
         ["$$LEXER_DERIVED_CLASS_DECL$$",         derived_class_type_declaration],
         ["$$LEXER_DERIVED_CLASS_NAME$$",         analyzer_derived_class_name],
         ["$$QUEX_MODE_ID_DEFINITIONS$$",         mode_id_definition_str],
@@ -62,7 +64,7 @@ def do(ModeDB, Epilog):
         ["$$PRETTY_INDENTATION$$",               "     " + " " * (len(LexerClassName)*2 + 2)],
         ["$$QUEX_TEMPLATE_DIR$$",                QUEX_PATH + Lng.CODE_BASE],
         ["$$QUEX_VERSION$$",                     QUEX_VERSION],
-        ["$$TOKEN_CLASS_DEFINITION_FILE$$",      Setup.get_file_reference(token_class_file_name)],
+        ["$$TOKEN_CLASS_DEFINITION_FILE$$",      token_class_file_name],
         ["$$TOKEN_CLASS$$",                      token_class_name],
         ["$$TOKEN_CLASS_NAME_SAFE$$",            token_class_name_safe],
         ["$$TOKEN_ID_DEFINITION_FILE$$",         Setup.output_token_id_file_ref],
@@ -72,6 +74,7 @@ def do(ModeDB, Epilog):
         ["$$EPILOG$$",                           Epilog],
      ])
 
+    txt = produce_include_statements(txt)
     return txt, member_function_signature_list
 
 def do_implementation(ModeDB, MemberFunctionSignatureList):
@@ -88,6 +91,8 @@ def do_implementation(ModeDB, MemberFunctionSignatureList):
         ["$$MEMENTO_EXTENSIONS_PACK$$",                 Lng.SOURCE_REFERENCED(blackboard.memento_pack_extension)],
         ["$$MEMENTO_EXTENSIONS_UNPACK$$",               Lng.SOURCE_REFERENCED(blackboard.memento_unpack_extension)],
     ])
+
+    func_txt = produce_include_statements(func_txt)
     return "\n%s\n" % func_txt
 
 def __mode_db_constructor_code(ModeDb):
@@ -100,68 +105,6 @@ def __mode_db_constructor_code(ModeDb):
                          Lng.ADDRESS_OF(Lng.NAME_IN_NAMESPACE_MAIN(mode.name)))
 
     return "".join(
-        "    %s\n" % Lng.ASSERT(condition(mode))
-        for mode in ModeDb.itervalues() 
+        "    %s\n" % Lng.ASSERT(condition(mode)) for mode in ModeDb.itervalues() 
     )
 
-
-class Signature:
-    def __init__(self, ReturnType, FunctionName, ArgumentList):
-        self.return_type   = ReturnType
-        self.function_name = FunctionName
-        self.argument_list = ArgumentList
-
-    @classmethod
-    def from_String(cls, String):
-        """SYNTAX: return-type; function-name; argument-list;
-
-        argument-list:   type ':' name ','
-        """
-        def type_and_name(SubString):
-            fields   = [x.strip() for x in SubString.split()]
-            type_str = " ".join(fields[:-1])
-            name_str = fields[-1]
-            return type_str, name_str
-
-        open_i  = String.find("(")
-        close_i = String.rfind(")")
-        return_type, function_name = type_and_name(String[:open_i])
-        argument_list = [ 
-            type_and_name(x) 
-            for x in String[open_i+1:close_i].split(",") if x.strip()
-        ]
-
-        return cls(return_type, function_name, argument_list)
-
-def member_functions(Txt):
-    """YIELDS:
-       [0] begin index of letter in 'Txt'
-       [1] end index of letter in 'Txt'
-       [2] signature of function
-    """
-    start_i = 0
-    while 1 + 1 == 2:
-        begin_i = Txt.find("$$MF:", start_i+1)
-        if begin_i == -1: break
-        end_i   = Txt.find("$$", begin_i+1)
-        if end_i == -1: break
-        yield begin_i, end_i+2, Signature.from_String(Txt[begin_i+len("$$MF:"):end_i])
-        start_i = end_i + 2
-
-    return 
-
-def declare_member_functions(Txt):
-    """RETURNS: [0] 'Txt' with member function declarations replaced.
-                [1] list of function signatures in the sequence of their appearance.
-    """
-    txt = []
-    signature_list = []
-    last_i = 0
-    for begin_i, end_i, signature in member_functions(Txt):
-        if signature is None: continue
-        txt.append(Txt[last_i:begin_i])
-        txt.append(Lng.MEMBER_FUNCTION_DECLARATION(signature))
-        last_i = end_i
-        signature_list.append(signature)
-    txt.append(Txt[last_i:])
-    return "".join(txt), signature_list

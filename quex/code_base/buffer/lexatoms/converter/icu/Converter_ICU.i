@@ -3,12 +3,12 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICU__CONVERTER_ICU_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICU__CONVERTER_ICU_I
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/compatibility/stdint.h>
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
+$$INC: definitions$$
+$$INC: compatibility/stdint.h$$
+$$INC: MemoryManager$$
+$$INC: buffer/lexatoms/converter/icu/Converter_ICU$$
 
-#include <quex/code_base/analyzer/configuration/validation>
+$$INC: analyzer/configuration/validation$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

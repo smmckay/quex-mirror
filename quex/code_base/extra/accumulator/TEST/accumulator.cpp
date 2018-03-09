@@ -3,9 +3,9 @@
 #include <cstring>
 
 #include <tmp_dir/TestAnalyzer>
-#include <quex/code_base/lexeme.i>
-#include <quex/code_base/extra/accumulator/Accumulator>
-#include <quex/code_base/extra/accumulator/Accumulator.i>
+$$INC: lexeme.i$$
+$$INC: extra/accumulator/Accumulator$$
+$$INC: extra/accumulator/Accumulator.i$$
 
 int
 main(int argc, char** argv)

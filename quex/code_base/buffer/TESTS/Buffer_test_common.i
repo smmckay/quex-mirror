@@ -2,16 +2,16 @@
 #ifndef __QUEX_INCLUDE_GUARD__BUFFER__TEST__BUFFER_TEST_COMMON_I
 #define __QUEX_INCLUDE_GUARD__BUFFER__TEST__BUFFER_TEST_COMMON_I
 
-#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
-#include <quex/code_base/buffer/Buffer.i>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/buffer/Buffer_print.i>
-#include <quex/code_base/lexeme_converter/from-utf8.i>
-#include <quex/code_base/lexeme_converter/from-utf16.i>
-#include <quex/code_base/lexeme_converter/from-utf32.i>
-#include <quex/code_base/lexeme_converter/from-unicode-buffer>
-#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
+$$INC: extra/test_environment/TestAnalyzer-configuration$$
+$$INC: buffer/Buffer.i$$
+$$INC: buffer/lexatoms/LexatomLoader.i$$
+$$INC: MemoryManager$$
+$$INC: buffer/Buffer_print.i$$
+$$INC: lexeme_converter/from-utf8.i$$
+$$INC: lexeme_converter/from-utf16.i$$
+$$INC: lexeme_converter/from-utf32.i$$
+$$INC: lexeme_converter/from-unicode-buffer$$
+$$INC: lexeme_converter/from-unicode-buffer.i$$
 #include <string.h>
 #include <cstdio>
 

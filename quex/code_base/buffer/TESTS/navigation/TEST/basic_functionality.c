@@ -27,8 +27,8 @@
 #include <basic_functionality.h>
 #include <hwut_unit.h>
 
-#include <quex/code_base/MemoryManager.i>
-//#include <quex/code_base/buffer/asserts.i>
+$$INC: MemoryManager.i$$
+//$$INC: buffer/asserts.i$$
 
 /* Number of positionings defines the duration of the test! For analysis,
  * in order to reduce test duration, the number may be reduced here.         */

@@ -10,12 +10,12 @@ extern "C" {
 #ifndef __QUEX_OPTION_PLAIN_C
 }
 #endif
-#include <quex/code_base/definitions>
-#include <quex/code_base/compatibility/iconv-argument-types.h>
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
+$$INC: definitions$$
+$$INC: compatibility/iconv-argument-types.h$$
+$$INC: MemoryManager$$
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
 
-#include <quex/code_base/analyzer/configuration/validation>
+$$INC: analyzer/configuration/validation$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

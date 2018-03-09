@@ -3,7 +3,7 @@
  *
  * (1) Includes for required standard headers.
  * (2) Definitions of options and settings for the particular application.
- * (3) #include <quex/code_base/definitions> for default settings.
+ * (3) $$INC: definitions$$ for default settings.
  * (4) Lexical FSM class TestAnalyzer and its memento class.
  * (5) Constructor and init core of TestAnalyzer.
  * (6) Memento pack and unpack functions.
@@ -25,7 +25,7 @@
 #   ifndef  QUEX_OPTION_MULTI
 #      error "Multiple lexical analyzers detected. QUEX_OPTION_MULTI must be defined and 'quex/code_base/multi.i' must be included in one single file!"
 #   endif
-#   include <quex/code_base/include-guard-undef>
+$$INC: include-guard-undef$$
 #   undef   __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__QUEX___TESTANALYZER
 #else
 #   define  __QUEX_INCLUDE_INDICATOR__ANALYZER__MAIN
@@ -34,7 +34,7 @@
 
 #include "TestAnalyzer-configuration.h"
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 struct  QUEX_NAME(Engine_tag);
 struct  QUEX_NAME(Memento_tag);
@@ -55,7 +55,7 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 
 /* END: _______________________________________________________________________*/
-#include <quex/code_base/analyzer/headers>
+$$INC: analyzer/headers$$
 
 #include "TestAnalyzer-token_ids.h"
 #include "TestAnalyzer-token.h"
@@ -273,8 +273,8 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
-#include <quex/code_base/analyzer/headers.i>
-#include <quex/code_base/analyzer/C-adaptions.h>
+$$INC: analyzer/headers.i$$
+$$INC: analyzer/C-adaptions.h$$
 
 
 /* START: User defined header content _________________________________________
@@ -299,7 +299,7 @@ bool UserMementoPack_UnitTest_return_value = true;
 #endif
 
 #include "TestAnalyzer-token.h"
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 #include "TestAnalyzer-token.h"
 
@@ -597,9 +597,9 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
             return buffer;
         }
 
-#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
+$$INC: lexeme_converter/from-unicode-buffer.i$$
 
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
    
 
 #   line 606 "TestAnalyzer.h"

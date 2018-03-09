@@ -167,15 +167,15 @@ QUEX_NAME(ByteLoader_print_this)(QUEX_NAME(ByteLoader)* me)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/buffer/bytes/ByteLoader_FILE.i>
-#include <quex/code_base/buffer/bytes/ByteLoader_stream.i>
-#include <quex/code_base/buffer/bytes/ByteLoader_wstream.i>
+$$INC: buffer/bytes/ByteLoader_FILE.i$$
+$$INC: buffer/bytes/ByteLoader_stream.i$$
+$$INC: buffer/bytes/ByteLoader_wstream.i$$
 #ifdef QUEX_OPTION_POSIX
-#   include <quex/code_base/buffer/bytes/ByteLoader_POSIX.i>    /* (tm) */
+$$INC: buffer/bytes/ByteLoader_POSIX.i$$    /* (tm) */
 #endif
 #if 0
-#   include <quex/code_base/buffer/bytes/ByteLoader_FreeRTOS.i> /* (tm) */
-#   include <quex/code_base/buffer/bytes/ByteLoader_PalmOS.i>   /* (tm) */
+$$INC: buffer/bytes/ByteLoader_FreeRTOS.i$$ /* (tm) */
+$$INC: buffer/bytes/ByteLoader_PalmOS.i$$   /* (tm) */
 #endif
 
 #endif /*  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_I */

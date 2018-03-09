@@ -26,13 +26,13 @@
 #ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF8
 #define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF8
 
-#include <quex/code_base/lexeme_converter/common.h>
+$$INC: lexeme_converter/common.h$$
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
 #define __QUEX_FROM  utf8
 
-#include <quex/code_base/lexeme_converter/generator/declarations.g>
+$$INC: lexeme_converter/generator/declarations.g$$
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

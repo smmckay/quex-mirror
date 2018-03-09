@@ -31,14 +31,14 @@
  * (C) Frank-Rene Schaefer                                                   */
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-#include <quex/code_base/buffer/Buffer.i>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
-#include <quex/code_base/buffer/bytes/ByteLoader_Memory>
-#include <quex/code_base/buffer/bytes/ByteLoader_Memory.i>
-// #include <quex/code_base/MemoryManager.i>
+$$INC: buffer/Buffer.i$$
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv.i$$
+$$INC: buffer/lexatoms/converter/icu/Converter_ICU$$
+$$INC: buffer/lexatoms/converter/icu/Converter_ICU.i$$
+$$INC: buffer/bytes/ByteLoader_Memory$$
+$$INC: buffer/bytes/ByteLoader_Memory.i$$
+// $$INC: MemoryManager.i$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 typedef enum { TEST_ICU, TEST_ICONV } E_ConverterTestType;

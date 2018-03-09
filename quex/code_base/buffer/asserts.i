@@ -2,8 +2,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__BUFFER__ASSERTS_I
 #define __QUEX_INCLUDE_GUARD__BUFFER__ASSERTS_I
 
-#include <quex/code_base/buffer/asserts>
-#include <quex/code_base/buffer/Buffer>
+$$INC: buffer/asserts$$
+$$INC: buffer/Buffer$$
 
 #ifndef QUEX_OPTION_ASSERTS
 

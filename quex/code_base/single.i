@@ -24,7 +24,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__SINGLE_I
 #define __QUEX_INCLUDE_GUARD__SINGLE_I
 #   define  QUEX_OPTION_MULTI_ALLOW_IMPLEMENTATION
-#   include <quex/code_base/multi.i>
+$$INC: multi.i$$
 #   undef   QUEX_OPTION_MULTI_ALLOW_IMPLEMENTATION
 #endif /* __QUEX_INCLUDE_GUARD__SINGLE_I */
 #endif

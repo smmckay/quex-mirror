@@ -4,7 +4,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 $$INCLUDE_TOKEN_CLASS_HEADER$$
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -135,6 +135,6 @@ $$MAP_ID_TO_NAME_CASES$$
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I */

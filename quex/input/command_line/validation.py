@@ -16,13 +16,15 @@ def do(setup, command_line, argv):
         error.log("Option '--foreign-token-id-file-show' cannot be used without\n"
                   "option '--foreign-token-id-file'.")
 
-    setup.output_directory = os.path.normpath(setup.output_directory)
-    if setup.output_directory:
-        # Check, if the output directory exists
-        if os.access(setup.output_directory, os.F_OK) == False:
-            error.log("The directory %s was specified for output, but does not exists." % setup.output_directory)
+    if os.path.isfile(setup.output_directory):
+        error.log("The name '%s' is already a file and may not be used as output directory." 
+                  % setup.output_directory)
+    elif os.path.isdir(setup.output_directory):
         if os.access(setup.output_directory, os.W_OK) == False:
-            error.log("The directory %s was specified for output, but is not writeable." % setup.output_directory)
+            error.log("The directory '%s' is not writeable." 
+                      % setup.output_directory)
+    else:
+        os.mkdir(setup.output_directory)
 
     # if the mode is '--language dot' => check character display options. 
     if setup.character_display not in ["hex", "utf8"]:

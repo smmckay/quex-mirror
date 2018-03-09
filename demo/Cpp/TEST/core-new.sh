@@ -1,25 +1,17 @@
 test_dir=../$1
-first_f=$2
-last_f=$3
-
-if [[ "$2" != "FIRST" && "$2" != "not-first" ]]; then
-    echo "Warning: \$2 is not FIRST or not-first as HWUT would ask"
-fi
-if [[ "$3" != "LAST" && "$3" != "not-last" ]]; then
-    echo "Warning: \$3 is not LAST or not-last as HWUT would ask"
-fi
-
-echo $1 $2 $3 >> tmp.txt
-
+asserts_f=$2
+first_f=$3
+last_f=$4
 current_dir=`pwd`
+
+echo "ARGS:" $*
+echo $1 $2 $3 >> tmp.txt
 
 cd $test_dir
 
-if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
+if [ "$first_f" == "FIRST" ] || [ -z "$first_f"  ]; then 
     make clean >& /dev/null
 fi
-# In any case delete existing object files, and executables
-rm -f *.o *.exe
 
 # Make the test program _______________________________________________________
 echo "## make lexer $4 $5 $6 $7"
@@ -35,8 +27,7 @@ if [[ "$lexer_name" == "" ]]; then
     lexer_name="./lexer"
 fi
 
-chmod a+rx $QUEX_PATH/TEST/valgrindi.sh
-$QUEX_PATH/TEST/valgrindi.sh tmp-valgrind.log $lexer_name $args_to_lexer
+bash $QUEX_PATH/TEST/valgrindi.sh tmp-valgrind.log $lexer_name $args_to_lexer
 cat tmp-valgrind.log; rm -f tmp-valgrind.log
 
 # -- use a 'side-kick' to filter additional lines
@@ -56,7 +47,7 @@ rm -f tmp-stdout.txt tmp-stdout0.txt
 rm -f tmp-make.txt   tmp-make0.txt
 
 # Clean up ____________________________________________________________________
-if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
+if [ "$last_f" == "LAST" ] || [ -z "$last_f" ]; then 
     make clean >& /dev/null
 fi
 

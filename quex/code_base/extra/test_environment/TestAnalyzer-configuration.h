@@ -18,7 +18,7 @@
  *       configuration options on the command line without being immediately
  *       deleted by "configuration/undefine".                                 */
 #ifdef __QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION
-#   include <quex/code_base/analyzer/configuration/undefine>
+$$INC: analyzer/configuration/undefine$$
 #else
 #   define __QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION
 #endif
@@ -325,6 +325,6 @@
 #   define QUEX_TYPE_TOKEN_COLUMN_N  size_t
 #endif
 
-#include <quex/code_base/analyzer/configuration/derived>
+$$INC: analyzer/configuration/derived$$
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__QUEX___TESTANALYZER */

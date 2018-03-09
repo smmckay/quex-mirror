@@ -5,12 +5,12 @@
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC_I
 
 #if defined(QUEX_OPTION_COUNTER)
-#   include <quex/code_base/analyzer/Counter>
+$$INC: analyzer/Counter$$
 #endif
-#include <quex/code_base/token/TokenPolicy>
-#include <quex/code_base/buffer/Buffer_print>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader>
-#include <quex/code_base/lexeme_base>
+$$INC: token/TokenPolicy$$
+$$INC: buffer/Buffer_print$$
+$$INC: buffer/lexatoms/LexatomLoader$$
+$$INC: lexeme_base$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

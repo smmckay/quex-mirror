@@ -19,7 +19,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__BOM_I
 #define __QUEX_INCLUDE_GUARD__BOM_I
 
-#include <quex/code_base/bom>
+$$INC: bom$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 

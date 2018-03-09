@@ -1,6 +1,6 @@
-#include <quex/code_base/extra/post_categorizer/TEST/post-categorizer-common.h>
+$$INC: extra/post_categorizer/TEST/post-categorizer-common.h$$
 
-#include <quex/code_base/single.i>
+$$INC: single.i$$
 
 using namespace quex;
 

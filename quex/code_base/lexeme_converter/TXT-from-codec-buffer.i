@@ -75,11 +75,11 @@ $$BODY_UTF8$$
 
 /* (1b) Derive converters to char and wchar_t from the given set 
  *      of converters. (Generator uses __QUEX_FROM and QUEX_FROM_TYPE)      */
-#include <quex/code_base/lexeme_converter/generator/character-converter-to-char-wchar_t.gi>
+$$INC: lexeme_converter/generator/character-converter-to-char-wchar_t.gi$$
 
 /* (2) Generate string converters to utf8, utf16, utf32 based on the
  *     definitions of the character converters.                             */
-#include <quex/code_base/lexeme_converter/generator/implementations.gi>
+$$INC: lexeme_converter/generator/implementations.gi$$
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

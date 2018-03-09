@@ -7,8 +7,8 @@
 #define __QUEX_STD_fprintf           fprintf
 #define QUEX_NAME(X)                 Quex_ ## X
 
-#include <quex/code_base/analyzer/Statistics>
-#include <quex/code_base/analyzer/Statistics.i>
+$$INC: analyzer/Statistics$$
+$$INC: analyzer/Statistics.i$$
 #include <support/C/hwut_unit.h>
 
 

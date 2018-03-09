@@ -10,7 +10,7 @@
 #endif
 
 #include "$$TOKEN_CLASS_HEADER$$"
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 $$INCLUDE_TOKEN_CLASS_HEADER$$
 
@@ -141,6 +141,6 @@ $$MAP_ID_TO_NAME_CASES$$
 
 $$FOOTER$$
 
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I */

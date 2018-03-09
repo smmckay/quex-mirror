@@ -9,10 +9,10 @@
 #   include <cerrno>
 #   include <stdexcept>
 #endif
-#include <quex/code_base/definitions>
-#include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader>
-#include <quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: buffer/Buffer$$
+$$INC: buffer/lexatoms/LexatomLoader$$
+$$INC: MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -206,6 +206,6 @@ QUEX_NAME(LexatomLoader_Plain_print_this)(QUEX_NAME(LexatomLoader)* alter_ego)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
+$$INC: buffer/lexatoms/LexatomLoader.i$$
 
 #endif /* __INCLUDE_GUARD__QUEX_BUFFER_INPUT_STRATEGY_PLAIN_I__ */

@@ -30,8 +30,8 @@
 /* #define  QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE */
 
 #include <common.h>
-#include <quex/code_base/buffer/TESTS/MemoryManager_UnitTest.i>
-#include <quex/code_base/buffer/Buffer>
+$$INC: buffer/TESTS/MemoryManager_UnitTest.i$$
+$$INC: buffer/Buffer$$
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 

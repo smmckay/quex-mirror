@@ -20,8 +20,8 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER
 #define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -107,16 +107,16 @@ QUEX_INLINE void  QUEX_NAME(ByteLoader_delete)(QUEX_NAME(ByteLoader)** me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/buffer/bytes/ByteLoader_FILE>
-#include <quex/code_base/buffer/bytes/ByteLoader_stream>
-#include <quex/code_base/buffer/bytes/ByteLoader_wstream>
+$$INC: buffer/bytes/ByteLoader_FILE$$
+$$INC: buffer/bytes/ByteLoader_stream$$
+$$INC: buffer/bytes/ByteLoader_wstream$$
 
 #ifdef QUEX_OPTION_POSIX
-#   include <quex/code_base/buffer/bytes/ByteLoader_POSIX>    /* (tm) */
+$$INC: buffer/bytes/ByteLoader_POSIX$$    /* (tm) */
 #endif
 #if 0
-#   include <quex/code_base/buffer/bytes/ByteLoader_FreeRTOS> /* (tm) */
-#   include <quex/code_base/buffer/bytes/ByteLoader_PalmOS>   /* (tm) */
+$$INC: buffer/bytes/ByteLoader_FreeRTOS$$ /* (tm) */
+$$INC: buffer/bytes/ByteLoader_PalmOS$$   /* (tm) */
 #endif
 
 #endif /*  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER */

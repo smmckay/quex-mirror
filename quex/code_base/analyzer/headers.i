@@ -8,34 +8,34 @@
 #   error "No configuration header included before this header."
 #endif
 
-/* NOT: "#include    <quex/code_base/lexeme.i>"
+/* NOT: "$$INC: lexeme.i$$"
  *
  * Converters and helpers of 'lexeme.i' are only to be included from inside the
  * token class header.  Otherwise, it may occur multiple times when same token
  * class is used for multiple lexical analyzers.                              */
 
-#include    <quex/code_base/analyzer/asserts.i>
-#include    <quex/code_base/buffer/asserts.i>
+$$INC: analyzer/asserts.i$$
+$$INC: buffer/asserts.i$$
 
-#include    <quex/code_base/analyzer/member/token-receiving.i>
-#include    <quex/code_base/analyzer/member/mode-handling.i>
-#include    <quex/code_base/analyzer/member/misc.i>
-#include    <quex/code_base/analyzer/member/navigation.i>
-#include    <quex/code_base/analyzer/struct/constructor.i>
-#include    <quex/code_base/analyzer/struct/reset.i>
+$$INC: analyzer/member/token-receiving.i$$
+$$INC: analyzer/member/mode-handling.i$$
+$$INC: analyzer/member/misc.i$$
+$$INC: analyzer/member/navigation.i$$
+$$INC: analyzer/struct/constructor.i$$
+$$INC: analyzer/struct/reset.i$$
 #ifdef      QUEX_OPTION_INCLUDE_STACK
-#   include <quex/code_base/analyzer/struct/include-stack.i>
+$$INC: analyzer/struct/include-stack.i$$
 #endif
 
-#include    <quex/code_base/analyzer/Mode.i>
-#include    <quex/code_base/token/TokenQueue.i>
+$$INC: analyzer/Mode.i$$
+$$INC: token/TokenQueue.i$$
 
-#include    <quex/code_base/buffer/Buffer.i>
-#include    <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include    <quex/code_base/buffer/bytes/ByteLoader>
+$$INC: buffer/Buffer.i$$
+$$INC: buffer/lexatoms/LexatomLoader.i$$
+$$INC: buffer/bytes/ByteLoader$$
 
 #ifdef      QUEX_OPTION_COUNTER
-#   include <quex/code_base/analyzer/Counter.i>
+$$INC: analyzer/Counter.i$$
 #endif
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I */

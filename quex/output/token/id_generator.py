@@ -55,7 +55,7 @@ def do(setup):
         token_id_txt = __get_token_id_definition_txt()
     else:
         # Content of file = inclusion of 'Setup.extern_token_id_file'.
-        token_id_txt = ["#include \"%s\"\n" % Setup.get_file_reference(Setup.extern_token_id_file)]
+        token_id_txt = ["%s\n" % Lng.INCLUDE(Setup.extern_token_id_file)]
 
     include_guard_ext = Lng.INCLUDE_GUARD(Setup.analyzer_name_safe.upper() \
                                           + "__" + Setup.token_class_name_safe.upper())

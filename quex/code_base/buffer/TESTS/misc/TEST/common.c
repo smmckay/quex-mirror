@@ -1,6 +1,6 @@
 #include <common.h>
 
-#include <quex/code_base/buffer/Buffer.i>
+$$INC: buffer/Buffer.i$$
 
 int common_recursion_count_n = 0;
 

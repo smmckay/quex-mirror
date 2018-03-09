@@ -3,8 +3,8 @@
 #define __QUEX_INCLUDE_GUARD__MEMORY_MANAGER
 
 #include <stddef.h>
-#include <quex/code_base/compatibility/stdint.h>
-#include <quex/code_base/definitions>
+$$INC: compatibility/stdint.h$$
+$$INC: definitions$$
 
 #ifndef QUEX_TYPE_DEFINITIONS_MEMORY_MANAGER
 #define QUEX_TYPE_DEFINITIONS_MEMORY_MANAGER

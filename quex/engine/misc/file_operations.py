@@ -31,15 +31,6 @@ def write_safely_and_close(FileName, txt):
     fh.write(txt)
     fh.close()
 
-def get_propperly_slash_based_file_name(PathName):
-    """Replaces backslashes '\\' by '/' and replaces adjacent
-       slashes by single slashes.
-    """
-    path = PathName.replace("\\", "/")
-    while path.find("//") != -1:
-        path = path.replace("//", "/")
-    return path
-
 # 'Bad' byte order marks (we only treat UTF8)
 Bad_BOM_list = [ 
     codecs.BOM_BE, 

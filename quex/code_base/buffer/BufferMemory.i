@@ -2,13 +2,13 @@
 #ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MEMORY_I
 #define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MEMORY_I
 
-#include <quex/code_base/asserts>
-#include <quex/code_base/buffer/asserts>
-#include <quex/code_base/definitions>
-#include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/buffer/Buffer_print.i>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader>
-#include <quex/code_base/MemoryManager>
+$$INC: asserts$$
+$$INC: buffer/asserts$$
+$$INC: definitions$$
+$$INC: buffer/Buffer$$
+$$INC: buffer/Buffer_print.i$$
+$$INC: buffer/lexatoms/LexatomLoader$$
+$$INC: MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

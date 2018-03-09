@@ -170,8 +170,16 @@ def argv_interpret(argv):
 
     # Handle unidentified command line options.
     argv_ufo_detections(command_line)
+    configure_output_directory(setup)
 
     return query_f, command_line
+
+def configure_output_directory(setup):
+    if setup.output_directory == "--":
+        setup.output_directory = setup.analyzer_class.split("::")[-1]
+    elif not setup.output_directory:
+        setup.output_directory = "./"
+    setup.output_directory = os.path.normpath(setup.output_directory)
 
 def argv_is_query_option(Cl, Option, Name, PrevQueryF):
     """Determines whether the setup parameter is a parameter related to 

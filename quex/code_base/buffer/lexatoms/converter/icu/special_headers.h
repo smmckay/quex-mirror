@@ -20,7 +20,7 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICU__SPECIAL_HEADERS_H
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICU__SPECIAL_HEADERS_H
    
-#include <quex/code_base/buffer/lexatoms/converter/Converter>
+$$INC: buffer/lexatoms/converter/Converter$$
 
 #if ! defined (__QUEX_OPTION_PLAIN_C)
 extern "C" { 

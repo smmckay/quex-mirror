@@ -1,6 +1,6 @@
 #include "common_token.h"
-#include <quex/code_base/token/TokenQueue.i>
-#include <quex/code_base/MemoryManager.i>
+$$INC: token/TokenQueue.i$$
+$$INC: MemoryManager.i$$
 
 void
 common_print_push(QUEX_NAME(TokenQueue)* me, int count, QUEX_TYPE_TOKEN* token_p)

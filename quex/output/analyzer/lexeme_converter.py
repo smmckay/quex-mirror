@@ -66,9 +66,8 @@ def _do(UnicodeTrafoInfo):
     utf32_function_body = ConverterWriterUTF32().do(UnicodeTrafoInfo)
 
     # Provide only the constant which are necessary
-    header, \
-    dummy   = Lng.buffer_encoding_headers(Setup.buffer_encoding.name)
-    codec_header = Setup.get_file_reference(header)
+    codec_header, \
+    dummy         = Lng.buffer_encoding_headers(Setup.buffer_encoding.name)
 
     template_txt_i = Lng.open_template(Lng.converter_helper_i_file())
     txt_i = blue_print(template_txt_i,

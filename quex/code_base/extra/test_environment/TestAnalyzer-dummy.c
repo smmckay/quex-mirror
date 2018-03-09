@@ -1,12 +1,12 @@
 
 #include "TestAnalyzer.h"
 
-#include <quex/code_base/analyzer/C-adaptions.h>
+$$INC: analyzer/C-adaptions.h$$
 /* The file 'multi.i' contains implementations which are the same for all 
  * possibly generated analyzers. If QUEX_OPTION_MULTI is defined, it is
  * NOT supposed to be included here. If not--in which case we have a single
  * analzer--then it is included.                                             */
-#include <quex/code_base/single.i>
+$$INC: single.i$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 QUEX_NAME(Mode) QUEX_NAME(M) = {
@@ -223,8 +223,8 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 QUEX_NAMESPACE_MAIN_CLOSE
 
 /* #include "TestAnalyzer.h"*/
-#include <quex/code_base/analyzer/headers.i>
-#include <quex/code_base/analyzer/C-adaptions.h>
+$$INC: analyzer/headers.i$$
+$$INC: analyzer/C-adaptions.h$$
 
 
 /* START: User defined header content _________________________________________
@@ -431,8 +431,8 @@ _18:
 }
 #endif /* QUEX_OPTION_COUNTER */
 
-#include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/token/TokenQueue>
+$$INC: buffer/Buffer$$
+$$INC: token/TokenQueue$$
 
 #ifdef    CONTINUE
 #   undef CONTINUE
@@ -832,7 +832,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #endif
 
 #include "TestAnalyzer-token.h"
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 #include "TestAnalyzer-token.h"
 
@@ -1130,9 +1130,9 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
             return buffer;
         }
 
-#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
+$$INC: lexeme_converter/from-unicode-buffer.i$$
 
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
    
 
 #   line 1139 "TestAnalyzer.c"

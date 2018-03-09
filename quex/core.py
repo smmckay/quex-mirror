@@ -7,6 +7,7 @@ from   quex.engine.misc.file_operations          import write_safely_and_close
 #
 import quex.output.core.engine                   as     engine_generator
 import quex.output.analyzer.core                 as     analyzer_class
+from   quex.output.analyzer.adapt                import produce_include_statements
 import quex.output.analyzer.configuration        as     configuration 
 import quex.output.analyzer.lexeme_converter     as     lexeme_converter 
 import quex.output.token.core                    as     token_class
@@ -43,21 +44,25 @@ def _generate(mode_db):
                            token_id_header)
         return
 
-    configuration_header,                 \
-    analyzer_header,                      \
-    engine_txt,                           \
+    configuration_header,           \
+    analyzer_header,                \
+    engine_txt,                     \
     lexeme_converter_header,        \
     lexeme_converter_implementation = _prepare_all(mode_db, 
                                                          class_token_implementation,
                                                          global_lexeme_null_declaration)
 
+    configuration_header = produce_include_statements(configuration_header)
+    analyzer_header      = produce_include_statements(analyzer_header)
+    engine_txt           = produce_include_statements(engine_txt)
+    lexeme_converter_header = produce_include_statements(lexeme_converter_header)
+    lexeme_converter_implementation = produce_include_statements(lexeme_converter_implementation)
     _write_all(configuration_header, analyzer_header, engine_txt, 
                class_token_header, token_id_header,
                lexeme_converter_header, 
                lexeme_converter_implementation)
 
-    if Setup.source_package_directory != "":
-        source_package.do()
+    source_package.do()
 
 def analyzer_functions_get(ModeDB):
     # (*) Get list of modes that are actually implemented

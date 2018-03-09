@@ -12,8 +12,8 @@
  *                               the lexical analyzer.
  *
  * (C) 2005-2017 Frank-Rene Schaefer                                          */
-#include <quex/code_base/token/TokenQueue>
-#include <quex/code_base/lexeme>
+$$INC: token/TokenQueue$$
+$$INC: lexeme$$
 
 /* NO INCLUDE GUARDS -- THIS FILE MIGHT BE INCLUDED TWICE FOR MULTIPLE
  *                      LEXICAL ANALYZERS

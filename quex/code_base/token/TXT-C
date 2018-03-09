@@ -10,13 +10,13 @@
 #ifndef    __QUEX_OPTION_PLAIN_C
 #   define __QUEX_OPTION_PLAIN_C
 #endif
-#include <quex/code_base/definitions>
-#include <quex/code_base/asserts>
-#include <quex/code_base/compatibility/stdint.h>
-#include <quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: asserts$$
+$$INC: compatibility/stdint.h$$
+$$INC: MemoryManager$$
 
 $$HELPER_DEFINITIONS$$
-#include <quex/code_base/lexeme>
+$$INC: lexeme$$
 
 $$HEADER$$
  

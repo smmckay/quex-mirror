@@ -27,7 +27,7 @@
 #      define __QUEX_ASSERT_COUNTER_CONSISTENCY(ME) /* empty */
 #   endif
 
-#   include <quex/code_base/buffer/Buffer>
+$$INC: buffer/Buffer$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

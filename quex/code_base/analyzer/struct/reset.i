@@ -41,8 +41,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__RESET_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__RESET_I
 
-#include <quex/code_base/buffer/Buffer.i>
-#include <quex/code_base/analyzer/struct/reset>
+$$INC: buffer/Buffer.i$$
+$$INC: analyzer/struct/reset$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

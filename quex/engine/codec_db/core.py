@@ -9,6 +9,7 @@ from   quex.engine.misc.file_operations   import get_file_content_or_die, \
                                                  open_file_or_die
 
 from   copy import copy
+import os
 
 
 _supported_codec_list              = []
@@ -97,7 +98,7 @@ def get_file_name_for_codec_alias(CodecAlias):
     for record in parser.get_codec_list_db():
         if CodecAlias in record[1] or CodecAlias == record[0]: 
             codec_name = record[0]
-            return codec_name, "%s/%s.dat" % (QUEX_CODEC_DB_PATH, codec_name)
+            return codec_name, os.path.join(QUEX_CODEC_DB_PATH, "%s.dat" % codec_name)
 
     error.verify_word_in_list(CodecAlias, get_supported_codec_list(), 
                         "Character encoding '%s' unknown to current version of quex." % CodecAlias)

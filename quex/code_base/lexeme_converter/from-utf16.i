@@ -35,7 +35,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF16_I
 #define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF16_I
 
-#include <quex/code_base/lexeme_converter/from-utf16>
+$$INC: lexeme_converter/from-utf16$$
 
 /* (1) Implement the character converters utf8, utf16, utf32.
  *     (Note, that character converters are generated into namespace 'quex'.) */
@@ -122,11 +122,11 @@ QUEX_CONVERTER_CHAR_DEF(utf16, utf32)(const QUEX_TYPE_LEXATOM**  input_pp,
 
 /* (1b) Derive converters to char and wchar_t from the given set 
  *      of converters. (Generator uses __QUEX_FROM and QUEX_FROM_TYPE)        */
-#include <quex/code_base/lexeme_converter/generator/character-converter-to-char-wchar_t.gi>
+$$INC: lexeme_converter/generator/character-converter-to-char-wchar_t.gi$$
 
 /* (2) Generate string converters to utf8, utf16, utf32 based on the
  *     definitions of the character converters.                               */
-#include <quex/code_base/lexeme_converter/generator/implementations.gi>
+$$INC: lexeme_converter/generator/implementations.gi$$
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

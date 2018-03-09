@@ -3,10 +3,10 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I
 
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter>
-#include <quex/code_base/compatibility/iconv-argument-types.h>
+$$INC: MemoryManager$$
+$$INC: buffer/lexatoms/LexatomLoader$$
+$$INC: buffer/lexatoms/LexatomLoader_Converter$$
+$$INC: compatibility/iconv-argument-types.h$$
 
 
 QUEX_NAMESPACE_MAIN_OPEN
@@ -432,8 +432,8 @@ QUEX_NAME(LexatomLoader_Converter_print_this)(QUEX_NAME(LexatomLoader)* alter_eg
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader_Converter_RawBuffer.i>
-#include <quex/code_base/buffer/lexatoms/converter/Converter.i>
+$$INC: buffer/lexatoms/LexatomLoader.i$$
+$$INC: buffer/lexatoms/LexatomLoader_Converter_RawBuffer.i$$
+$$INC: buffer/lexatoms/converter/Converter.i$$
 
 #endif /*  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I */

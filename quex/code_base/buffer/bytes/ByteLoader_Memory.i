@@ -3,8 +3,8 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY_I
 
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/buffer/bytes/ByteLoader_Memory>
+$$INC: MemoryManager$$
+$$INC: buffer/bytes/ByteLoader_Memory$$
 #include <malloc.h> // DEBUG
 
 QUEX_NAMESPACE_MAIN_OPEN

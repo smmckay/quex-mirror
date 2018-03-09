@@ -12,13 +12,13 @@
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE_I
 #define __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE_I
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/asserts>
-#include <quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: asserts$$
+$$INC: MemoryManager$$
 
 /* NOTE: QUEX_TYPE_TOKEN must be defined at this place!                       */
 
-#include <quex/code_base/token/TokenQueue>
+$$INC: token/TokenQueue$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

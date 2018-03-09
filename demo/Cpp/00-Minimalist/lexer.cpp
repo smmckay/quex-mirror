@@ -1,7 +1,7 @@
     #include <fstream>
     #include <iostream>
 
-    #include "tiny"
+    #include "tiny/tiny"
 
     int main(int argc, char** argv)
     {         

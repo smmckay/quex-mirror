@@ -3,9 +3,9 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__CONVERTER_ICONV
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__CONVERTER_ICONV
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/buffer/lexatoms/converter/Converter>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/special_headers.h>
+$$INC: definitions$$
+$$INC: buffer/lexatoms/converter/Converter$$
+$$INC: buffer/lexatoms/converter/iconv/special_headers.h$$
 
 
 QUEX_NAMESPACE_MAIN_OPEN

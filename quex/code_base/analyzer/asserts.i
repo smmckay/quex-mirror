@@ -4,7 +4,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__ASSERTS_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__ASSERTS_I
 
-#include <quex/code_base/buffer/Buffer>
+$$INC: buffer/Buffer$$
 
 #if defined(QUEX_OPTION_ASSERTS)
 

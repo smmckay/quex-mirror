@@ -3,7 +3,7 @@
  *
  * (1) Includes for required standard headers.
  * (2) Definitions of options and settings for the particular application.
- * (3) #include <quex/code_base/definitions> for default settings.
+ * (3) $$INC: definitions$$ for default settings.
  * (4) Lexical FSM class TestAnalyzer and its memento class.
  * (5) Constructor and init core of TestAnalyzer.
  * (6) Memento pack and unpack functions.
@@ -25,7 +25,7 @@
 #   ifndef  QUEX_OPTION_MULTI
 #      error "Multiple lexical analyzers detected. QUEX_OPTION_MULTI must be defined and 'quex/code_base/multi.i' must be included in one single file!"
 #   endif
-#   include <quex/code_base/include-guard-undef>
+$$INC: include-guard-undef$$
 #   undef   __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION____QUEX____TESTANALYZER
 #else
 #   define  __QUEX_INCLUDE_INDICATOR__ANALYZER__MAIN
@@ -34,7 +34,7 @@
 
 #include "TestAnalyzer-configuration"
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN 
     struct QUEX_NAME(Engine_tag);
@@ -61,7 +61,7 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 /* END: _______________________________________________________________________*/
 
-#include <quex/code_base/analyzer/headers>
+$$INC: analyzer/headers$$
 
 #include "TestAnalyzer-token_ids"
 #include "TestAnalyzer-token"
@@ -399,7 +399,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
-#include <quex/code_base/analyzer/headers.i>
+$$INC: analyzer/headers.i$$
 /* START: User defined header content _________________________________________
  *        The 'footer' content relies on class definitions made above.        */
 

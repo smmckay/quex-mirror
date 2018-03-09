@@ -1,4 +1,4 @@
-#include <quex/code_base/extra/post_categorizer/TEST/post-categorizer-common.h>
+$$INC: extra/post_categorizer/TEST/post-categorizer-common.h$$
 
 /* See: post-categorizer-common.c */
 using namespace quex;

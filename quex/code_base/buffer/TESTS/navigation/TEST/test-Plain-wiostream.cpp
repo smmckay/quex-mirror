@@ -1,7 +1,7 @@
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-#include <quex/code_base/buffer/Buffer.i>
-// #include <quex/code_base/MemoryManager.i>
+$$INC: buffer/Buffer.i$$
+// $$INC: MemoryManager.i$$
 
 
 #include <sstream>

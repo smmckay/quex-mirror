@@ -1,6 +1,6 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__TEST__MY_TESTER_H
 #define __QUEX_INCLUDE_GUARD__ANALYZER__TEST__MY_TESTER_H
-#include <quex/code_base/compatibility/stdint.h>
+$$INC: compatibility/stdint.h$$
 
 #define QUEX_TYPE_LEXATOM           uint8_t  
 
@@ -12,14 +12,14 @@ namespace quex {
     //typedef struct {} Token;
     typedef int       CounterLineColumnIndentation;
 }
-#include <quex/code_base/extra/test_environment/TestAnalyzer>
-//#include <quex/code_base/analyzer/Counter>
-//#include <quex/code_base/analyzer/Mode>
+$$INC: extra/test_environment/TestAnalyzer$$
+//$$INC: analyzer/Counter$$
+//$$INC: analyzer/Mode$$
 #undef   QUEX_TYPE_ANALYZER
 #undef   QUEX_TYPE0_ANALYZER
 #define  QUEX_TYPE_ANALYZER  my_tester
 #define  QUEX_TYPE0_ANALYZER my_tester
-#include <quex/code_base/analyzer/member/basic>
+$$INC: analyzer/member/basic$$
 
 
 extern int  indentation[64];

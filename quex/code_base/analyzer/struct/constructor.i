@@ -30,9 +30,9 @@
 #ifndef  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__CONSTRUCTOR_I
 #define  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__CONSTRUCTOR_I
 
-#include <quex/code_base/buffer/Buffer.i>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include <quex/code_base/analyzer/struct/include-stack>
+$$INC: buffer/Buffer.i$$
+$$INC: buffer/lexatoms/LexatomLoader.i$$
+$$INC: analyzer/struct/include-stack$$
 
 #if ! defined(QUEX_TYPE_TOKEN)
 #      error "QUEX_TYPE_TOKEN definition missing!"

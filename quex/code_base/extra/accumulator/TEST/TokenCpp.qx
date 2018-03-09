@@ -4,7 +4,7 @@ token_type {
 #       include <string>
 
 $INCLUDE_CONVERTER_DECLARATION
-#include <quex/code_base/lexeme>
+$$INC: lexeme$$
 
    }
    standard {
@@ -75,7 +75,7 @@ $INCLUDE_CONVERTER_DECLARATION
         $NAMESPACE_CLOSE
 
 $INCLUDE_CONVERTER_IMPLEMENTATION
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
    }
 }
 

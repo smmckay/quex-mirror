@@ -1,9 +1,9 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__COUNTER_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__COUNTER_I
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/analyzer/asserts>
-#include <quex/code_base/analyzer/Counter>
+$$INC: definitions$$
+$$INC: analyzer/asserts$$
+$$INC: analyzer/Counter$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

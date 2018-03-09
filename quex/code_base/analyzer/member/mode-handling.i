@@ -4,8 +4,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MODE_HANDLING_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MODE_HANDLING_I
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/analyzer/Mode>
+$$INC: definitions$$
+$$INC: analyzer/Mode$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

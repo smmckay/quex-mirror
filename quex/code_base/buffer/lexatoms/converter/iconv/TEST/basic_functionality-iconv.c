@@ -8,8 +8,8 @@
  *
  * (C) Frank-Rene Schaefer.                                                  */
 #include <basic_functionality.h>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include <quex/code_base/buffer/lexatoms/converter/Converter.i>
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv.i$$
+$$INC: buffer/lexatoms/converter/Converter.i$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

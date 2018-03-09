@@ -14,8 +14,8 @@
 #      error   "QUEX_TYPE_LEXATOM definition missing!"
 #endif
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/lexeme_base>
+$$INC: definitions$$
+$$INC: lexeme_base$$
 
 QUEX_NAMESPACE_TOKEN_OPEN
 

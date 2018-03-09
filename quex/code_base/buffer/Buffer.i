@@ -2,13 +2,13 @@
 #ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I
 #define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I
 
-#include <quex/code_base/asserts>
-#include <quex/code_base/buffer/asserts>
-#include <quex/code_base/definitions>
-#include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/buffer/Buffer_print.i>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader>
-#include <quex/code_base/MemoryManager>
+$$INC: asserts$$
+$$INC: buffer/asserts$$
+$$INC: definitions$$
+$$INC: buffer/Buffer$$
+$$INC: buffer/Buffer_print.i$$
+$$INC: buffer/lexatoms/LexatomLoader$$
+$$INC: MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -494,15 +494,15 @@ QUEX_NAME(Buffer_pointers_add_offset)(QUEX_NAME(Buffer)*  me,
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include <quex/code_base/buffer/Buffer_print.i>
-#include <quex/code_base/buffer/Buffer_navigation.i>
-#include <quex/code_base/buffer/Buffer_fill.i>
-#include <quex/code_base/buffer/Buffer_load.i>
-#include <quex/code_base/buffer/Buffer_nested.i>
-#include <quex/code_base/buffer/Buffer_callbacks.i>
-#include <quex/code_base/buffer/Buffer_invariance.i>
-#include <quex/code_base/buffer/Buffer_move.i>
-#include <quex/code_base/buffer/BufferMemory.i>
+$$INC: buffer/lexatoms/LexatomLoader.i$$
+$$INC: buffer/Buffer_print.i$$
+$$INC: buffer/Buffer_navigation.i$$
+$$INC: buffer/Buffer_fill.i$$
+$$INC: buffer/Buffer_load.i$$
+$$INC: buffer/Buffer_nested.i$$
+$$INC: buffer/Buffer_callbacks.i$$
+$$INC: buffer/Buffer_invariance.i$$
+$$INC: buffer/Buffer_move.i$$
+$$INC: buffer/BufferMemory.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I */

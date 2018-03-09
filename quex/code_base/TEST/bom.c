@@ -1,7 +1,7 @@
 #include <stdio.h>
 #define QUEX_NAME(X) (X)
-#include <quex/code_base/bom>
-#include <quex/code_base/bom.i>
+$$INC: bom$$
+$$INC: bom.i$$
 #include <support/C/hwut_unit.h>
 
 

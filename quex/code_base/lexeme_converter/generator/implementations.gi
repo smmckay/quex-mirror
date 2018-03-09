@@ -23,24 +23,24 @@
 
 #define  __QUEX_TO         utf8
 #define  __QUEX_TO_TYPE    uint8_t
-#include <quex/code_base/lexeme_converter/generator/string-converter.gi>
+$$INC: lexeme_converter/generator/string-converter.gi$$
 #define  __QUEX_TO         utf16
 #define  __QUEX_TO_TYPE    uint16_t
-#include <quex/code_base/lexeme_converter/generator/string-converter.gi>
+$$INC: lexeme_converter/generator/string-converter.gi$$
 #define  __QUEX_TO         utf32
 #define  __QUEX_TO_TYPE    uint32_t
-#include <quex/code_base/lexeme_converter/generator/string-converter.gi>
+$$INC: lexeme_converter/generator/string-converter.gi$$
 #define  __QUEX_TO         char
 #define  __QUEX_TO_TYPE    char
-#include <quex/code_base/lexeme_converter/generator/string-converter.gi>
+$$INC: lexeme_converter/generator/string-converter.gi$$
 #define  __QUEX_TO         pretty_char
 #define  __QUEX_TO_TYPE    char
-#include <quex/code_base/lexeme_converter/generator/string-converter.gi>
+$$INC: lexeme_converter/generator/string-converter.gi$$
 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
 #   define  __QUEX_TO         wchar
 #   define  __QUEX_TO_TYPE    wchar_t
-#   include <quex/code_base/lexeme_converter/generator/string-converter.gi>
+$$INC: lexeme_converter/generator/string-converter.gi$$
 #   undef   __QUEX_TO     
 #   undef   __QUEX_TO_TYPE 
 #endif

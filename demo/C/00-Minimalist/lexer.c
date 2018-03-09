@@ -1,5 +1,5 @@
     #include <stdio.h>
-    #include "tiny.h"
+    #include "tiny/tiny.h"
 
     int main(int argc, char** argv)
     {

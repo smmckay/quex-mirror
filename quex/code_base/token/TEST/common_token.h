@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_COMMON_TOKEN_H
 #define INCLUDE_GUARD_COMMON_TOKEN_H
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 #define QUEX_NAME_TOKEN(X) TokenName_ ## X
 #define QUEX_NAME(X)       LexerName_ ## X
@@ -38,7 +38,7 @@ QUEX_INLINE void QUEX_NAME_TOKEN(repetition_n_set)(QUEX_TYPE_TOKEN* me,
                                                    size_t           RepetitionN);
 QUEX_INLINE size_t QUEX_NAME_TOKEN(repetition_n_get)(QUEX_TYPE_TOKEN* me); 
 
-#include <quex/code_base/token/TokenQueue>
+$$INC: token/TokenQueue$$
 
 #include <support/C/hwut_unit.h>
 

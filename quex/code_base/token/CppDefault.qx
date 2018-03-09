@@ -130,7 +130,7 @@ operator<<(std::ostream& ostr, const $TOKEN_CLASS& Tok)
 $NAMESPACE_CLOSE
 
 $INCLUDE_CONVERTER_IMPLEMENTATION
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
    }
 }
 

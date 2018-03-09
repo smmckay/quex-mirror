@@ -10,8 +10,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_UNIT_TEST_I
 #define __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_UNIT_TEST_I
 
-#include <quex/code_base/definitions>
-#include <quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: MemoryManager$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 

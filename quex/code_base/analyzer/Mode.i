@@ -5,7 +5,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__MODE_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MODE_I
 
-#include <quex/code_base/definitions>
+$$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

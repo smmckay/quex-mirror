@@ -2,9 +2,9 @@
 #ifndef __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I
 #define __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I
 
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/extra/post_categorizer/PostCategorizer>
-#include <quex/code_base/lexeme_base>
+$$INC: MemoryManager$$
+$$INC: extra/post_categorizer/PostCategorizer$$
+$$INC: lexeme_base$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

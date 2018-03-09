@@ -1,5 +1,6 @@
 from quex.engine.misc.file_operations import open_file_or_die, \
                                              write_safely_and_close 
+from quex.output.analyzer.core        import produce_include_statements
 from quex.blackboard   import setup as Setup, \
                               Lng
 from quex.DEFINITIONS  import QUEX_PATH
@@ -20,132 +21,132 @@ find quex/code_base \
 """
 
 base = """
-/asserts
-/lexeme
-/lexeme_base
-/lexeme.i
-/lexeme_base.i
-/definitions
-/include-guard-undef
-/bom
-/bom.i
-/MemoryManager
-/MemoryManager.i
-/single.i
-/multi.i
+asserts
+lexeme
+lexeme_base
+lexeme.i
+lexeme_base.i
+definitions
+include-guard-undef
+bom
+bom.i
+MemoryManager
+MemoryManager.i
+single.i
+multi.i
 """
 
 base_compatibility = """
-/compatibility/iconv-argument-types.h
-/compatibility/stdint.h
-/compatibility/stdbool-pseudo.h
-/compatibility/stdbool.h
-/compatibility/win/borland_stdint.h
-/compatibility/win/msc_stdint.h
-/compatibility/win/msc_stdint.h
+compatibility/iconv-argument-types.h
+compatibility/stdint.h
+compatibility/stdbool-pseudo.h
+compatibility/stdbool.h
+compatibility/win/borland_stdint.h
+compatibility/win/msc_stdint.h
+compatibility/win/msc_stdint.h
 """
 
 base_buffer = """
-/buffer/asserts
-/buffer/asserts.i
-/buffer/Buffer
-/buffer/Buffer_print
-/buffer/Buffer_print.i
-/buffer/Buffer.i
-/buffer/BufferMemory.i
-/buffer/Buffer_navigation.i
-/buffer/Buffer_fill.i
-/buffer/Buffer_move.i
-/buffer/Buffer_load.i
-/buffer/Buffer_nested.i
-/buffer/Buffer_callbacks.i
-/buffer/Buffer_invariance.i
-/buffer/bytes/ByteLoader
-/buffer/bytes/ByteLoader.i
-/buffer/bytes/ByteLoader_FILE
-/buffer/bytes/ByteLoader_FILE.i
-/buffer/bytes/ByteLoader_POSIX
-/buffer/bytes/ByteLoader_POSIX.i
-/buffer/bytes/ByteLoader_stream
-/buffer/bytes/ByteLoader_stream.i
-/buffer/bytes/ByteLoader_wstream
-/buffer/bytes/ByteLoader_wstream.i
+buffer/asserts
+buffer/asserts.i
+buffer/Buffer
+buffer/Buffer_print
+buffer/Buffer_print.i
+buffer/Buffer.i
+buffer/BufferMemory.i
+buffer/Buffer_navigation.i
+buffer/Buffer_fill.i
+buffer/Buffer_move.i
+buffer/Buffer_load.i
+buffer/Buffer_nested.i
+buffer/Buffer_callbacks.i
+buffer/Buffer_invariance.i
+buffer/bytes/ByteLoader
+buffer/bytes/ByteLoader.i
+buffer/bytes/ByteLoader_FILE
+buffer/bytes/ByteLoader_FILE.i
+buffer/bytes/ByteLoader_POSIX
+buffer/bytes/ByteLoader_POSIX.i
+buffer/bytes/ByteLoader_stream
+buffer/bytes/ByteLoader_stream.i
+buffer/bytes/ByteLoader_wstream
+buffer/bytes/ByteLoader_wstream.i
 """
 
 base_analyzer = """
-/analyzer/C-adaptions.h
-/analyzer/Mode
-/analyzer/Mode.i
-/analyzer/asserts
-/analyzer/asserts.i
-/analyzer/configuration/derived
-/analyzer/configuration/undefine
-/analyzer/configuration/validation
-/analyzer/headers
-/analyzer/headers.i
-/analyzer/struct/constructor
-/analyzer/struct/constructor.i
-/analyzer/struct/reset
-/analyzer/struct/reset.i
-/analyzer/struct/include-stack
-/analyzer/struct/include-stack.i
-/analyzer/member/misc
-/analyzer/member/misc.i
-/analyzer/member/mode-handling
-/analyzer/member/mode-handling.i
-/analyzer/member/navigation
-/analyzer/member/navigation.i
-/analyzer/member/token-receiving
-/analyzer/member/token-receiving.i
+analyzer/C-adaptions.h
+analyzer/Mode
+analyzer/Mode.i
+analyzer/asserts
+analyzer/asserts.i
+analyzer/configuration/derived
+analyzer/configuration/undefine
+analyzer/configuration/validation
+analyzer/headers
+analyzer/headers.i
+analyzer/struct/constructor
+analyzer/struct/constructor.i
+analyzer/struct/reset
+analyzer/struct/reset.i
+analyzer/struct/include-stack
+analyzer/struct/include-stack.i
+analyzer/member/misc
+analyzer/member/misc.i
+analyzer/member/mode-handling
+analyzer/member/mode-handling.i
+analyzer/member/navigation
+analyzer/member/navigation.i
+analyzer/member/token-receiving
+analyzer/member/token-receiving.i
 """
 
 analyzer_accumulator = """
-/extra/accumulator/Accumulator
-/extra/accumulator/Accumulator.i
+extra/accumulator/Accumulator
+extra/accumulator/Accumulator.i
 """
 
 analyzer_counter = """
-/analyzer/Counter
-/analyzer/Counter.i
+analyzer/Counter
+analyzer/Counter.i
 """
 
 analyzer_post_categorizer = """
-/extra/post_categorizer/PostCategorizer
-/extra/post_categorizer/PostCategorizer.i
+extra/post_categorizer/PostCategorizer
+extra/post_categorizer/PostCategorizer.i
 """
 
 analyzer_include_stack = """
-/analyzer/struct/include-stack
-/analyzer/struct/include-stack.i
+analyzer/struct/include-stack
+analyzer/struct/include-stack.i
 """
 
-token_policy = "/token/TokenPolicy"
+token_policy = "token/TokenPolicy"
 
 token_queue = """
-/token/TokenQueue
-/token/TokenQueue.i
+token/TokenQueue
+token/TokenQueue.i
 """
 
-token_default_C   = "/token/CDefault.qx"
-token_default_Cpp = "/token/CppDefault.qx"
+token_default_C   = "token/CDefault.qx"
+token_default_Cpp = "token/CppDefault.qx"
 
 buffer_filler = """
-/buffer/lexatoms/LexatomLoader
-/buffer/lexatoms/LexatomLoader.i
-/buffer/lexatoms/LexatomLoader_navigation.i
-/buffer/lexatoms/LexatomLoader_Plain
-/buffer/lexatoms/LexatomLoader_Plain.i
-/buffer/lexatoms/LexatomLoader_Converter
-/buffer/lexatoms/LexatomLoader_Converter.i
-/buffer/lexatoms/LexatomLoader_Converter_RawBuffer.i
-/buffer/lexatoms/converter/Converter
-/buffer/lexatoms/converter/Converter.i
-/buffer/lexatoms/converter/iconv/Converter_IConv
-/buffer/lexatoms/converter/iconv/Converter_IConv.i
-/buffer/lexatoms/converter/iconv/special_headers.h
-/buffer/lexatoms/converter/icu/Converter_ICU
-/buffer/lexatoms/converter/icu/Converter_ICU.i
-/buffer/lexatoms/converter/icu/special_headers.h
+buffer/lexatoms/LexatomLoader
+buffer/lexatoms/LexatomLoader.i
+buffer/lexatoms/LexatomLoader_navigation.i
+buffer/lexatoms/LexatomLoader_Plain
+buffer/lexatoms/LexatomLoader_Plain.i
+buffer/lexatoms/LexatomLoader_Converter
+buffer/lexatoms/LexatomLoader_Converter.i
+buffer/lexatoms/LexatomLoader_Converter_RawBuffer.i
+buffer/lexatoms/converter/Converter
+buffer/lexatoms/converter/Converter.i
+buffer/lexatoms/converter/iconv/Converter_IConv
+buffer/lexatoms/converter/iconv/Converter_IConv.i
+buffer/lexatoms/converter/iconv/special_headers.h
+buffer/lexatoms/converter/icu/Converter_ICU
+buffer/lexatoms/converter/icu/Converter_ICU.i
+buffer/lexatoms/converter/icu/special_headers.h
 """
 
 converter_helper = [
@@ -177,7 +178,7 @@ def do():
 
     txt += buffer_filler
 
-    txt += " ".join("/lexeme_converter/%s" % line for line in converter_helper)
+    txt += " ".join("lexeme_converter/%s" % line for line in converter_helper)
     txt += "\n"
 
     if Setup.extern_token_class_file:
@@ -193,28 +194,25 @@ def do():
 
 def __copy_files(FileTxt):
 
-    input_directory  = QUEX_PATH               
-    output_directory = Setup.output_directory 
+    input_directory  = os.path.join(QUEX_PATH, Lng.CODE_BASE)
+    output_directory = os.path.join(Setup.output_directory, "lib")
 
-    file_list = [ Lng.CODE_BASE + x.strip() for x in FileTxt.split() ]
-
-    # Ensure that all directories exist
-    directory_list = []
-    for file in file_list:
-        directory = path.dirname(output_directory + file)
-        if directory in directory_list: continue
-        directory_list.append(directory)
+    file_list      = [ x.strip() for x in FileTxt.split() ]
+    file_pair_list = [ 
+        (os.path.join(input_directory, x), os.path.join(output_directory, x))
+         for x in file_list 
+    ]
+    out_directory_set = set(
+        path.dirname(drain) for source, drain in file_pair_list
+    )
 
     # Sort directories according to length --> create parent directories before child
-    for directory in sorted(directory_list, key=len):
+    for directory in sorted(out_directory_set, key=len):
         if os.access(directory, os.F_OK) == True: continue
-        # Create also parent directories, if required
-        os.makedirs(directory)
+        os.makedirs(directory) # create parents, if necessary
 
-    for file in file_list:
-        input_file  = input_directory + file
-        output_file = output_directory + file
-        # Copy
-        content     = open_file_or_die(input_file, "rb").read()
-        write_safely_and_close(output_file, content)
+    for source_file, drain_file in file_pair_list:
+        content = open_file_or_die(source_file, "rb").read()
+        content = produce_include_statements(content)
+        write_safely_and_close(drain_file, content)
 

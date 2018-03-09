@@ -1,12 +1,12 @@
 
 #include "TestAnalyzer"
 
-#include <quex/code_base/analyzer/C-adaptions.h>
+$$INC: analyzer/C-adaptions.h$$
 /* The file 'multi.i' contains implementations which are the same for all 
  * possibly generated analyzers. If QUEX_OPTION_MULTI is defined, it is
  * NOT supposed to be included here. If not--in which case we have a single
  * analzer--then it is included.                                             */
-#include <quex/code_base/single.i>
+$$INC: single.i$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 QUEX_NAME(Mode) QUEX_NAME(M) = {
@@ -423,8 +423,8 @@ _18:
 }
 #endif /* QUEX_OPTION_COUNTER */
 
-#include <quex/code_base/buffer/Buffer>
-#include <quex/code_base/token/TokenQueue>
+$$INC: buffer/Buffer$$
+$$INC: token/TokenQueue$$
 
 #ifdef    CONTINUE
 #   undef CONTINUE

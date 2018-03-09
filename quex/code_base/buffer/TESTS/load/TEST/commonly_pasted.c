@@ -1,13 +1,13 @@
 
-#include <quex/code_base/extra/test_environment/TestAnalyzer-configuration>
-#include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
-#include <quex/code_base/buffer/bytes/ByteLoader_Memory>
-#include <quex/code_base/buffer/bytes/ByteLoader_Memory.i>
-#include <quex/code_base/buffer/Buffer_print.i>
-#include <quex/code_base/buffer/Buffer.i>
-#include <quex/code_base/MemoryManager>
-#include <quex/code_base/lexeme_converter/from-unicode-buffer.i>
-#include <quex/code_base/single.i>
+$$INC: extra/test_environment/TestAnalyzer-configuration$$
+$$INC: buffer/lexatoms/LexatomLoader.i$$
+$$INC: buffer/bytes/ByteLoader_Memory$$
+$$INC: buffer/bytes/ByteLoader_Memory.i$$
+$$INC: buffer/Buffer_print.i$$
+$$INC: buffer/Buffer.i$$
+$$INC: MemoryManager$$
+$$INC: lexeme_converter/from-unicode-buffer.i$$
+$$INC: single.i$$
 #include <hwut_unit.h>
 
 typedef struct {

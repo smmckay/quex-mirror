@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 import quex.engine.misc.error                        as     error
 import quex.engine.misc.file_in                      as     file_in
-from   quex.engine.misc.file_operations              import get_propperly_slash_based_file_name
 from   quex.engine.misc.enum                         import Enum
 from   quex.engine.misc.interval_handling            import Interval, Interval_All
 from   quex.constants                                import INTEGER_MAX, E_Files
@@ -150,73 +149,17 @@ class QuexSetup:
                $QUEX_PATH/quex/code_base --> source-package-dir/quex/code_base
                .  (current dir)          --> source-package-dir     
         """
-        def clean(X):
-            return get_propperly_slash_based_file_name(X)
+        return os.path.normpath(os.path.join(self.output_directory, FileName))
 
-        # The starting backslash must be assumed for many things ...
-        code_base_dir = self.language_db.CODE_BASE
-        assert code_base_dir[0] == "/"
-
-        # If the source packager is active, then everything becomes relative
-        # to the new source package directory.
-        if not self.source_package_directory: 
-            return clean(FileName)
-
-        full_file_name          = clean(os.path.realpath(FileName))
-        # Ensure that all directories end with '/'. The 'clean' will omit double slashes.
-        full_source_package_dir = clean(os.path.realpath(self.source_package_directory) + "/")
-        full_code_base_dir      = clean(os.path.realpath(QUEX_PATH + code_base_dir) + "/")
-
-        ##if FileName.find("CppDefault.qx") != -1:
-        ##    print "## filename           = ", FileName
-        ##    print "## full filename      = ", full_file_name
-        ##    print "## source package dir = ", full_source_package_dir
-        ##    print "## full_code_base_dir = ", full_code_base_dir
-
-        idx = full_file_name.find(full_code_base_dir)
-        if idx != -1:
-            ## print "##Found"
-            ## print "## source package directory = ", self.source_package_directory
-            ## print "## languages' code_base     = ", self.language_db.CODE_BASE
-            ## print "## local file               = ", idx, len(full_code_base_dir), \
-            ##                                        full_file_name[idx + len(full_code_base_dir):]
-
-            # The starting '/' must be deleted from codebase, since otherwise
-            # it will be considered as an absolute path under Unix.
-            result = clean(code_base_dir + "/" + full_file_name[idx + len(full_code_base_dir):])
-            ## print "## result = ", result
-            return result
-
-        elif self.source_package_directory and self.output_directory == self.source_package_directory:
-            # If we are in the process of 'source packaging' and no explicit output
-            # directory is specified, then the base directory is deleted from the FileName.
-            idx = full_file_name.find(full_source_package_dir)
-            if idx == 0: 
-                return clean(full_file_name[len(full_source_package_dir):])
-
-        return clean(FileName)
-
-    def prepare_file_name(self, Suffix, ContentType, BaseNameF=False):
+    def prepare_file_name(self, Suffix, ContentType):
         assert ContentType in E_Files
 
         # Language + Extenstion Scheme + ContentType --> name of extension
-        ext = self.language_db.extension_db[ContentType]
-
-        file_name = self.output_file_stem + Suffix + ext
-
-        if not self.output_directory or BaseNameF:       
-            return file_name
-        else:                                
-            return os.path.normpath(self.output_directory + "/" + file_name)
+        ext       = self.language_db.extension_db[ContentType]
+        file_name = "%s%s%s" % (self.output_file_stem, Suffix, ext)
+        return self.get_file_reference(file_name)
 
     def prepare_all_file_names(self):
-        # BEFORE file names can be prepared, determine the output directory!
-        #
-        # If 'source packaging' is enabled and no output directory is specified
-        # then take the directory of the source packaging.
-        if self.source_package_directory and not self.output_directory:
-            self.output_directory = self.source_package_directory
-
         #__________________________________________________________________________
         if self.language in ["DOT"]:
             return
@@ -234,8 +177,7 @@ class QuexSetup:
             self.output_token_id_file_ref = self.extern_token_id_file
         else:
             self.output_token_id_file_ref = self.prepare_file_name("-token_ids",     
-                                                                   E_Files.HEADER, 
-                                                                   BaseNameF=True)
+                                                                   E_Files.HEADER) 
         self.output_token_class_file   = self.prepare_file_name("-token",         
                                                                 E_Files.HEADER)
 
@@ -296,8 +238,7 @@ SETUP_INFO = {
     "language":                       [["--language", "-l"],                 "C++"],
     "normalize_f":                    [["--normalize"],                      SetupParTypes.FLAG],
     "output_file_naming_scheme":      [["--file-extension-scheme", "--fes"], ""],
-    "output_directory":               [["--output-directory", "--odir"],     ""],
-    "source_package_directory":       [["--source-package", "--sp"],         ""],
+    "output_directory":               [["--output-directory", "--odir"],     "--"],
     "show_name_spaces_f":             [["--show-name-spaces", "--sns"],      SetupParTypes.FLAG],
     "single_mode_analyzer_f":         [["--single-mode-analyzer", "--sma"],  SetupParTypes.FLAG],
     "user_application_version_id":    [["--version-id"],                     "0.0.0-pre-release"],
@@ -404,6 +345,7 @@ SETUP_INFO = {
     "XX_converter_icu_f":                [["--icu"],                              SetupParTypes.FLAG],
     "XX_external_lexeme_null_object":    [["--lexeme-null-object", "--lno"],      ""],
     "XX_token_queue_safety_border":      [["--token-queue-safety-border"],      16],
+    "XX_source_package_directory":       [["--source-package", "--sp"],         ""],
 }
 
 class NotificationDB:
@@ -434,6 +376,10 @@ class NotificationDB:
     warning_incidence_handler_overwrite              = 19
 
 DEPRECATED = { 
+  "XX_source_package_directory": 
+    ("Since version 0.69.1, only complete source packages are produced.\n"
+     "Explicit source packaging is obsolete.",
+     "0.69.1"),
   "XX_token_queue_safety_border":
     ("Command line option '--token-queue-safety-border' considered useless with new\n"
      "token queue implementation.", 
@@ -699,7 +645,6 @@ DOC = {
     "output_file_naming_scheme":      ("", ""),
     "post_categorizer_f":             ("", ""),
     "output_directory":               ("", ""),
-    "source_package_directory":       ("", ""),
     "show_name_spaces_f":             ("", ""),
     "single_mode_analyzer_f":         ("", ""),
     "state_entry_analysis_complexity_limit": ("", ""),

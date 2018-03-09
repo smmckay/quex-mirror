@@ -3,7 +3,7 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_FILE_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_FILE_I
 
-#include <quex/code_base/MemoryManager>
+$$INC: MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

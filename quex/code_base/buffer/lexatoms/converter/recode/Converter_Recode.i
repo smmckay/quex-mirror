@@ -3,8 +3,8 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__RECODE__CONVERTER_RECODE_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__RECODE__CONVERTER_RECODE_I
 
-#include <quex/code_base/compatibility/stdint.h>
-#include <quex/code_base/MemoryManager>
+$$INC: compatibility/stdint.h$$
+$$INC: MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -163,6 +163,6 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_NAMESPACE_MAIN_CLOSE
 
 
-#include <quex/code_base/buffer/lexatoms/LexatomLoader.i>
+$$INC: buffer/lexatoms/LexatomLoader.i$$
 
 #endif /* __INCLUDE_GUARD__QUEX_BUFFER__CONVERTER_ICONV_I__ */

@@ -24,8 +24,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER
 #define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER
 
-#include<quex/code_base/definitions>
-#include<quex/code_base/MemoryManager>
+$$INC: definitions$$
+$$INC: MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -351,6 +351,6 @@ QUEX_INLINE void QUEX_NAME(BufferInvariance_restore)(QUEX_NAME(BufferInvariance)
                                                      QUEX_NAME(Buffer)*           subject);
 
 QUEX_NAMESPACE_MAIN_CLOSE
-#include <quex/code_base/buffer/lexatoms/LexatomLoader>
+$$INC: buffer/lexatoms/LexatomLoader$$
 
 #endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFER */

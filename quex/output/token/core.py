@@ -1,10 +1,11 @@
 # (C) 2005-2017 Frank-Rene Schaefer
 # ABSOLUTELY NO WARANTY
-from   quex.input.files.token_type              import TokenTypeDescriptor
-from   quex.engine.misc.string_handling         import blue_print
-import quex.output.token.id_generator as     token_id_maker
-import quex.token_db                            as     token_db
-from   quex.blackboard                          import setup as Setup, Lng
+from   quex.input.files.token_type       import TokenTypeDescriptor
+from   quex.engine.misc.string_handling  import blue_print
+import quex.output.token.id_generator    as     token_id_maker
+from   quex.output.analyzer.adapt        import produce_include_statements
+import quex.token_db                     as     token_db
+from   quex.blackboard                   import setup as Setup, Lng
 
 from   collections import OrderedDict
 
@@ -35,6 +36,8 @@ def do():
         header_txt,        \
         implementation_txt = _do(token_db.token_type_definition)
 
+    header_txt         = produce_include_statements(header_txt)
+    implementation_txt = produce_include_statements(implementation_txt)
     return token_id_header, \
            global_lexeme_null_declaration, \
            header_txt, \
@@ -56,7 +59,7 @@ def _do(Descr):
     # Except that the token class comes from outside
     if not Setup.extern_token_class_file:
         if not implementation_txt:
-            implementation_txt = "%s\n" % _include_token_class_header()
+            implementation_txt = "%s\n" % Lng.INCLUDE(Setup.output_token_class_file)
         implementation_txt += Lng.LEXEME_NULL_IMPLEMENTATION()
 
     return header_txt, implementation_txt
@@ -121,13 +124,13 @@ def _do_core(Descr):
 
     template_i_str = Lng.open_template(Lng.token_template_i_file())
     txt_i = blue_print(template_i_str, [
-        ["$$INCLUDE_TOKEN_CLASS_HEADER$$", _include_token_class_header()],
+        ["$$INCLUDE_TOKEN_CLASS_HEADER$$", Lng.INCLUDE(Setup.output_token_class_file)],
         ["$$CONSTRUCTOR$$",                Lng.SOURCE_REFERENCED(Descr.constructor)],
         ["$$COPY$$",                       copy_str],
         ["$$DESTRUCTOR$$",                 Lng.SOURCE_REFERENCED(Descr.destructor)],
         ["$$FOOTER$$",                     Lng.SOURCE_REFERENCED(Descr.footer)],
         ["$$FUNC_TAKE_TEXT$$",             take_text_str],
-        ["$$TOKEN_CLASS_HEADER$$",         Setup.get_file_reference(token_db.token_type_definition.get_file_name())],
+        ["$$TOKEN_CLASS_HEADER$$",         token_db.token_type_definition.get_file_name()],
         ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension_str],
         ["$$NAMESPACE_OPEN$$",             Lng.NAMESPACE_OPEN(Descr.name_space)],
         ["$$NAMESPACE_CLOSE$$",            Lng.NAMESPACE_CLOSE(Descr.name_space)],
@@ -331,10 +334,6 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 
 #include "%s" 
 """
-
-def _include_token_class_header():
-    return "#include \"%s\"" % \
-           Setup.get_file_reference(Setup.output_token_class_file)
 
 def _helper_definitions():
     token_descr = token_db.token_type_definition
