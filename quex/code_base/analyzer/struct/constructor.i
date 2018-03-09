@@ -53,12 +53,12 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
 {
     QUEX_NAME(ByteLoader)*   new_byte_loader;
 
-    QUEX_NAME(error_code_clear)(me);
+    QUEX_NAME(MF_error_code_clear)(me);
 
     new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
 
     if( ! new_byte_loader ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_File_OpenFailed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_File_OpenFailed);
         goto ERROR_2;
     }
     QUEX_NAME(from_ByteLoader)(me, new_byte_loader, converter); 
@@ -66,8 +66,8 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
     if( me->error_code != E_Error_None ) {
         goto ERROR_1;
     }
-    else if( ! QUEX_NAME(input_name_set)(me, FileName) ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_InputName_Set_Failed);
+    else if( ! QUEX_NAME(MF_input_name_set)(me, FileName) ) {
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_InputName_Set_Failed);
         goto ERROR_0;
     }
 
@@ -100,13 +100,13 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     QUEX_NAME(LexatomLoader)* new_filler;
     QUEX_TYPE_LEXATOM*        new_memory;
 
-    QUEX_NAME(error_code_clear)(me);
+    QUEX_NAME(MF_error_code_clear)(me);
 
     /* NEW: Filler.                                                           */
     new_filler = QUEX_NAME(LexatomLoader_new)(byte_loader, converter);
 
     if( ! new_filler ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_LexatomLoader_Failed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Allocation_LexatomLoader_Failed);
         goto ERROR_0;
     }
 
@@ -115,7 +115,7 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                        QUEX_SETTING_BUFFER_SIZE * sizeof(QUEX_TYPE_LEXATOM), 
                        E_MemoryObjectType_BUFFER_MEMORY);
     if( ! new_memory ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_BufferMemory_Failed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Allocation_BufferMemory_Failed);
         goto ERROR_1;
     }
 
@@ -157,10 +157,10 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
  * for filling it. There is no 'file/stream handle', no 'ByteLoader', and no
  * 'LexatomLoader'.                                                           */
 {
-    QUEX_NAME(error_code_clear)(me);
+    QUEX_NAME(MF_error_code_clear)(me);
 
     if( ! QUEX_NAME(BufferMemory_check_chunk)(Memory, MemorySize, EndOfFileP) ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_ProvidedExternal_Memory_Corrupt);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_ProvidedExternal_Memory_Corrupt);
         goto ERROR_0;
     }
 
@@ -210,7 +210,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     }
 #   ifdef QUEX_OPTION_COUNTER
     else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_Constructor_Counter_Failed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Constructor_Counter_Failed);
         goto ERROR_2;
     }
 #   endif
@@ -222,14 +222,14 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
      * call to 'set_mode_brutally_by_id()'. The current mode must be set to '0'
      * so that the user may detect whether this is the first mode transition.*/
     me->__current_mode_p = (QUEX_NAME(Mode)*)0;
-    QUEX_NAME(set_mode_brutally_by_id)(me, __QUEX_SETTING_INITIAL_LEXER_MODE_ID);
+    QUEX_NAME(MF_set_mode_brutally)(me, QUEX_SETTING_MODE_INITIAL_P);
 
     if( CallUserConstructorF && ! QUEX_NAME(user_constructor)(me) ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_UserConstructor_Failed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_UserConstructor_Failed);
         goto ERROR_3;
     }
 
-    QUEX_NAME(error_code_clear)(me);
+    QUEX_NAME(MF_error_code_clear)(me);
     return true;
 
     /* ERROR CASES: Free Resources ___________________________________________*/
@@ -426,30 +426,6 @@ QUEX_NAME(Asserts_construct)()
         QUEX_ERROR_EXIT("Path termination code (PTC) and buffer limit code (BLC) must be different.\n");
     }
 #   endif
-}
-
-QUEX_INLINE const char*
-QUEX_NAME(input_name)(QUEX_TYPE_ANALYZER* me)
-{ return me->__input_name; }
-
-QUEX_INLINE bool
-QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
-/* Sets the 'input name', i.e. some string that identifies the input stream.
- * In case of failure '.__input_name' is set to NULL.
- *
- * RETURNS: true, for success. false, else.                                   */
-{ 
-    if( me->__input_name ) {
-        QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_INPUT_NAME);
-    }
-    if(  ! InputNameP ) {
-        me->__input_name = (char*)0;
-        return true;
-    }
-    else {
-        me->__input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
-        return me->__input_name ? true : false;
-    }
 }
 
 QUEX_INLINE void

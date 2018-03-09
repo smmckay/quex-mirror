@@ -37,19 +37,19 @@ QUEX_NAME(indentation_handler_is_active)(QUEX_TYPE_ANALYZER* me)
 #endif
 
 QUEX_INLINE void 
-QUEX_NAME(error_code_clear)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_error_code_clear)(QUEX_TYPE_ANALYZER* me)
 { me->error_code = E_Error_None; }
 
 QUEX_INLINE void 
-QUEX_NAME(error_code_set_void)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_error_code_set_void)(QUEX_TYPE_ANALYZER* me)
 { me->error_code = E_Error_Uninitialized; }
 
 QUEX_INLINE bool 
-QUEX_NAME(error_code_is_void)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_error_code_is_void)(QUEX_TYPE_ANALYZER* me)
 { return me->error_code == E_Error_Uninitialized; }
 
 QUEX_INLINE void 
-QUEX_NAME(error_code_set_if_first)(QUEX_TYPE_ANALYZER* me, E_Error ErrorCode)
+QUEX_NAME(MF_error_code_set_if_first)(QUEX_TYPE_ANALYZER* me, E_Error ErrorCode)
 /* Never overwrite an error code
  * => original error is maintained.                                           */
 { if( me->error_code == E_Error_None ) me->error_code = ErrorCode; }
@@ -94,31 +94,42 @@ QUEX_NAME(MF_send_string)(QUEX_TYPE_ANALYZER* me,
 }
 
 QUEX_INLINE bool
-QUEX_NAME(token_queue_is_empty)(QUEX_TYPE_ANALYZER* me)
-{ 
-    return QUEX_NAME(TokenQueue_is_empty)(&me->_token_queue); 
-}
-
-QUEX_INLINE void
-QUEX_NAME(token_queue_remainder_get)(QUEX_TYPE_ANALYZER*  me,
-                                     QUEX_TYPE_TOKEN**    begin, 
-                                     QUEX_TYPE_TOKEN**    end)
-{ QUEX_NAME(TokenQueue_remainder_get)(&me->_token_queue, begin, end); }
-
-QUEX_INLINE bool
-QUEX_NAME(byte_order_reversion)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_byte_order_reversion)(QUEX_TYPE_ANALYZER* me)
 { 
     __quex_assert(0 != me->buffer.filler);
     return me->buffer.filler->_byte_order_reversion_active_f; 
 }
 
 QUEX_INLINE void     
-QUEX_NAME(byte_order_reversion_set)(QUEX_TYPE_ANALYZER* me, bool Value)
+QUEX_NAME(MF_byte_order_reversion_set)(QUEX_TYPE_ANALYZER* me, bool Value)
 { 
     __quex_assert(0 != me->buffer.filler);
     me->buffer.filler->_byte_order_reversion_active_f = Value; 
 }
 
+QUEX_INLINE const char*
+QUEX_NAME(MF_input_name)(QUEX_TYPE_ANALYZER* me)
+{ return me->__input_name; }
+
+QUEX_INLINE bool
+QUEX_NAME(MF_input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
+/* Sets the 'input name', i.e. some string that identifies the input stream.
+ * In case of failure '.__input_name' is set to NULL.
+ *
+ * RETURNS: true, for success. false, else.                                   */
+{ 
+    if( me->__input_name ) {
+        QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_INPUT_NAME);
+    }
+    if(  ! InputNameP ) {
+        me->__input_name = (char*)0;
+        return true;
+    }
+    else {
+        me->__input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
+        return me->__input_name ? true : false;
+    }
+}
 
 QUEX_INLINE const char* 
 QUEX_NAME(MF_version)(QUEX_TYPE_ANALYZER* me)

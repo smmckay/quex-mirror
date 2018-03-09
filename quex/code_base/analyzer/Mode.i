@@ -34,7 +34,7 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_NAME(ModeStack_construct)(QUEX_NAME(ModeStack)* me,
                                    const size_t          N)
     {
-        me->begin = (QUEX_NAME(Mode)**)QUEXED(MemoryManager_allocate)(
+        me->begin = (const QUEX_NAME(Mode)**)QUEXED(MemoryManager_allocate)(
                                     N * sizeof(QUEX_NAME(Mode)*),
                                     E_MemoryObjectType_MODE_STACK);
         if( ! me->begin ) {
@@ -61,22 +61,22 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE void
     QUEX_NAME(ModeStack_resources_absent_mark)(QUEX_NAME(ModeStack)* me)
     {
-        me->begin      = (QUEX_NAME(Mode)**)0;
-        me->end        = (QUEX_NAME(Mode)**)0;
-        me->memory_end = (QUEX_NAME(Mode)**)0;
+        me->begin      = (const QUEX_NAME(Mode)**)0;
+        me->end        = (const QUEX_NAME(Mode)**)0;
+        me->memory_end = (const QUEX_NAME(Mode)**)0;
     }
 
     QUEX_INLINE bool
     QUEX_NAME(ModeStack_resources_absent)(QUEX_NAME(ModeStack)* me)
     {
-        return    me->end        == (QUEX_NAME(Mode)**)0
-               && me->memory_end == (QUEX_NAME(Mode)**)0;
+        return    me->end        == (const QUEX_NAME(Mode)**)0
+               && me->memory_end == (const QUEX_NAME(Mode)**)0;
     }
 
     QUEX_INLINE void
     QUEX_NAME(ModeStack_print)(QUEX_NAME(ModeStack)* me)
     {
-        QUEX_NAME(Mode)** iterator = 0x0;
+        const QUEX_NAME(Mode)** iterator = 0x0;
         if( QUEX_NAME(ModeStack_resources_absent)(me) ) {
             __QUEX_STD_printf("<uninitialized>\n");
         }

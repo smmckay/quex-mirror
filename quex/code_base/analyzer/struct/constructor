@@ -37,10 +37,6 @@ QUEX_INLINE bool QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me, 
                                                 QUEX_TYPE_LEXATOM** user_buffer_memory_p);
 
-QUEX_INLINE const char*
-                 QUEX_NAME(input_name)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE bool QUEX_NAME(input_name_set)(QUEX_TYPE_ANALYZER* me, 
-                                           const char*         InputNameP);
 
 extern      bool QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER*);
 extern      void QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER*);

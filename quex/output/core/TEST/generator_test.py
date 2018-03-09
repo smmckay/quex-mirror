@@ -429,7 +429,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
         elif "->2" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mrs_analyzer_function);\n")
 
         if   "CONTINUE" in PatternName: txt.append("")
-        elif "STOP" in PatternName:     txt.append("QUEX_NAME(error_code_set_if_first)(me, E_Error_UnitTest_Termination); return;\n")
+        elif "STOP" in PatternName:     txt.append("QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_UnitTest_Termination); return;\n")
         else:                           txt.append("return;\n")
 
         txt.append("%s\n" % Lng.GOTO(DoorID.continue_with_on_after_match(dial_db), dial_db))
@@ -456,7 +456,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     # -- PatternList/TerminalDb
     #    (Terminals can only be generated after the 'mount procedure', because, 
     #     the bipd_sm is generated through mounting.)
-    on_failure = CodeTerminal(["QUEX_NAME(error_code_set_if_first)(me, E_Error_UnitTest_Termination); return;\n"])
+    on_failure = CodeTerminal(["QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_UnitTest_Termination); return;\n"])
     terminal_db.update({
         E_IncidenceIDs.MATCH_FAILURE: Terminal(on_failure, "FAILURE", 
                                                E_IncidenceIDs.MATCH_FAILURE,
@@ -608,7 +608,7 @@ QUEX_NAME(Mode) QUEX_NAME(M2) = {
 };
 #endif
 
-QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {
+const QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {
    &QUEX_NAME(M)
 #  ifdef QUEX_UNIT_TEST_SECOND_MODE
    , 

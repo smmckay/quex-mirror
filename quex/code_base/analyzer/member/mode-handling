@@ -9,28 +9,16 @@ $$INC: definitions$$
 QUEX_NAMESPACE_MAIN_OPEN
 
 /* Read Access */
-QUEX_INLINE QUEX_NAME(Mode)*   QUEX_NAME(get_mode)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE int                QUEX_NAME(get_mode_id)(const QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE const char*        QUEX_NAME(get_mode_name)(const QUEX_TYPE_ANALYZER* me);
-
-/* Map: mode id to mode and vice versa */
-QUEX_INLINE QUEX_NAME(Mode)*   QUEX_NAME(map_mode_id_to_mode)(QUEX_TYPE_ANALYZER*  me,
-                                                              const int            ModeID);       
-QUEX_INLINE int                QUEX_NAME(map_mode_to_mode_id)(const QUEX_TYPE_ANALYZER* me,
-                                                              const QUEX_NAME(Mode)*    Mode);
-
-/* Changing Modes */
-QUEX_INLINE void        QUEX_NAME(set_mode_brutally_by_id)(QUEX_TYPE_ANALYZER*    me,
-                                                           const int              LexerMode);
-QUEX_INLINE void        QUEX_NAME(set_mode_brutally)(QUEX_TYPE_ANALYZER* me,
-                                                     QUEX_NAME(Mode)*    Mode);
-QUEX_INLINE void        QUEX_NAME(enter_mode)(QUEX_TYPE_ANALYZER* me,
-                                              /* NOT const*/ QUEX_NAME(Mode)* TargetMode);
+QUEX_INLINE const QUEX_NAME(Mode)*   QUEX_NAME(MF_mode)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE void               QUEX_NAME(MF_set_mode_brutally)(QUEX_TYPE_ANALYZER*     me,
+                                                               const QUEX_NAME(Mode)*  Mode);
+QUEX_INLINE void               QUEX_NAME(MF_enter_mode)(QUEX_TYPE_ANALYZER*    me,
+                                                        const QUEX_NAME(Mode)* TargetMode);
 
 /* Changing Modes with stack */ 
-QUEX_INLINE void        QUEX_NAME(pop_mode)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE void        QUEX_NAME(pop_drop_mode)(QUEX_TYPE_ANALYZER* me);
-QUEX_INLINE void        QUEX_NAME(push_mode)(QUEX_TYPE_ANALYZER* me, QUEX_NAME(Mode)* new_mode);
+QUEX_INLINE void        QUEX_NAME(MF_pop_mode)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE void        QUEX_NAME(MF_pop_drop_mode)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE void        QUEX_NAME(MF_push_mode)(QUEX_TYPE_ANALYZER* me, QUEX_NAME(Mode)* new_mode);
   
 QUEX_NAMESPACE_MAIN_CLOSE
 

@@ -58,4 +58,5 @@ class Language(LanguageCpp):
         ]
         return "\n".join(txt)
         
-
+    def RAISE_ERROR_FLAG(self, Name):
+        return "self.error_code_set_if_first(&self, %s);\n" % Name

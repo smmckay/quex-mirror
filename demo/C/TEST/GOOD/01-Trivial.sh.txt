@@ -1,33 +1,30 @@
-,-----------------------------------------------------------------
-| [START]
-STRUCT
-IDENTIFIER
-BRACKET_OPEN
-TYPE_INT
-IDENTIFIER
-SEMICOLON
-TYPE_DOUBLE
-IDENTIFIER
-SEMICOLON
-BRACKET_CLOSE
-SEMICOLON
-IDENTIFIER
-IDENTIFIER
-BRACKET_OPEN
-SEND
-IDENTIFIER
-NUMBER
-IDENTIFIER
-IDENTIFIER
-SEMICOLON
-EXPECT
-IDENTIFIER
-NUMBER
-IDENTIFIER
-IDENTIFIER
-SEMICOLON
-BRACKET_CLOSE
-<TERMINATION>
-| [END] number of token = 28
-`-----------------------------------------------------------------
+(1, 1)  	STRUCT ''
+(1, 8)  	IDENTIFIER 'example'
+(1, 16)  	BRACKET_OPEN ''
+(2, 3)  	TYPE_INT ''
+(2, 10)  	IDENTIFIER 'x'
+(2, 11)  	SEMICOLON ''
+(3, 3)  	TYPE_DOUBLE ''
+(3, 10)  	IDENTIFIER 'y'
+(3, 11)  	SEMICOLON ''
+(4, 1)  	BRACKET_CLOSE ''
+(4, 2)  	SEMICOLON ''
+(6, 1)  	IDENTIFIER 'if'
+(6, 4)  	IDENTIFIER 'ConfigOk'
+(6, 13)  	BRACKET_OPEN ''
+(7, 3)  	SEND ''
+(7, 8)  	IDENTIFIER 'number'
+(7, 15)  	NUMBER: 4711
+(7, 20)  	IDENTIFIER 'hello'
+(7, 26)  	IDENTIFIER 'world'
+(7, 31)  	SEMICOLON ''
+(8, 3)  	EXPECT ''
+(8, 10)  	IDENTIFIER 'number'
+(8, 17)  	NUMBER: 815
+(8, 22)  	IDENTIFIER 'handshake'
+(8, 32)  	IDENTIFIER 'acknowledged'
+(8, 44)  	SEMICOLON ''
+(9, 1)  	BRACKET_CLOSE ''
+(10, 1)  	<TERMINATION>
+[END] number of tokens = 28
 VALGRIND:   All heap blocks were freed -- no leaks are possible

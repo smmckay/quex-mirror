@@ -5,31 +5,13 @@
 .PHONY: clean
 .SECONDARY:
 
-ifndef QUEX_PATH
-    $(error The environment variable QUEX_PATH is not defined!)
-endif
-
-
-ifdef ASSERTS_ENABLED_F
-	CCFLAG_ASSERTS=# By default asserts are enabled
-else 
-	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
-endif
-
-# (*) COMPILER SETTINGS ________________________________________________________
-#     (change COMPILER to whatever you use as compiler on the command line,
-#      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-COMPILER = gcc -ggdb 
-
-CC = $(COMPILER) -c \
-	 -I./ -I$(QUEX_PATH)                  \
-	 -Wall -Werror -Wconversion -pedantic \
-	 $(CCFLAG_ASSERTS)                               
-     # -DQUEX_OPTION_DEBUG_SHOW
-	 # -DQUEX_OPTION_ASSERTS_DISABLED
-	 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-   
-LD = $(COMPILER) 
+COMPILER := gcc -ggdb -pedantic -Wconversion -Wall -Werror -W
+LD       := $(COMPILER) 
+CC       := $(COMPILER) -c -I./ $(ADD_FLAGS) 
+#           Useful options for debugging:
+#           -DQUEX_OPTION_ASSERTS_DISABLED
+#           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+#           -DQUEX_OPTION_DEBUG_SHOW
 
 # (*) RULES ____________________________________________________________________
 # -- application
@@ -53,10 +35,5 @@ EasyLexer.c: simple.qx
 		 --token-id-offset  0x1000     \
 		 --language         C          
 
-# (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f EasyLexer*
-	rm -f *.o
-	rm -f *.bak
-	rm -f *.E
-	rm -f lexer
+	rm -rf lexer easy/ *.o

@@ -45,7 +45,7 @@ $$INC: analyzer/configuration/undefine$$
 #if defined(__QUEX_INCLUDE_INDICATOR__ASSERTS)
 #   error "Asserts included before configuration file. However, the configuration file MUST control asserts!"
 #endif
-#
+
 #if           defined(QUEX_OPTION_ASSERTS_DISABLED) || defined(NDEBUG)
 #   ifdef     QUEX_OPTION_ASSERTS
 #      undef  QUEX_OPTION_ASSERTS

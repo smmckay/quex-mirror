@@ -30,13 +30,13 @@ def __get_code(StateRouterInfoList):
     # case the state router is void of states. But, the terminal router
     # requires it to be defined --> define a dummy state router.
     if len(StateRouterInfoList) == 0:
-        return ["    QUEX_NAME(error_code_set_if_first)(&self, E_Error_StateRouter_Empty);\n    return;\n"]
+        return ["    QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_StateRouter_Empty);\n    return;\n"]
 
     variable = "target_state_index"
     case_code_list = sorted(StateRouterInfoList, key=itemgetter(0))
     default  = [
         "        default:\n"
-        "            QUEX_NAME(error_code_set_if_first)(&self, E_Error_StateRouter_UnkownStateIndex);\n"
+        "            QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_StateRouter_UnkownStateIndex);\n"
         "            return;\n"
         "    }\n"
     ]

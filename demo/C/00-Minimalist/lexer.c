@@ -16,5 +16,6 @@
         } while(    token_p->id     != QUEX_TKN_TERMINATION
                  && tlex.error_code == E_Error_None );
 
+        QUEX_NAME(destruct)(&tlex);
         return 0;
     }

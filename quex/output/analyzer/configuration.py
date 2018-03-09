@@ -81,7 +81,7 @@ def do(Mode_PrepPrepDB):
              ["$$BUFFER_LIMIT_CODE$$",          "%s" % Setup.buffer_limit_code],
              ["$$QUEX_SETTING_CHARACTER_CODEC$$", codec_name],
              ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension],
-             ["$$INITIAL_LEXER_MODE_ID$$",      Lng.NAME_IN_NAMESPACE_MAIN("ModeID_%s" % blackboard.initial_mode.get_pure_text())],
+             ["$$QUEX_SETTING_MODE_INITIAL$$",  Lng.NAME_IN_NAMESPACE_MAIN(blackboard.initial_mode.get_pure_text())],
              ["$$LEXER_BUILD_DATE$$",           time.asctime()],
              ["$$LEXER_CLASS_NAME$$",           LexerClassName],
              ["$$LEXER_CLASS_NAME_SAFE$$",      Setup.analyzer_name_safe],

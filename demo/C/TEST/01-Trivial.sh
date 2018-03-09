@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-source build-and-run.sh
+source ../../Cpp/TEST/build-and-run.sh
 
 hwut_info $1 \
     "01-Trivial: Single Mode Example;\n" \

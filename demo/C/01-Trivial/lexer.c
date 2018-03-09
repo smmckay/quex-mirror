@@ -22,9 +22,10 @@ main(int argc, char** argv)
 
     } while( token_p->id != QUEX_TKN_TERMINATION );
 
-    printf("[END] number of tokens: %i\n", number_of_tokens);
+    printf("[END] number of tokens = %i\n", number_of_tokens);
     if( qlex.error_code != E_Error_None ) qlex.print_this(&qlex); 
 
+    QUEX_NAME(destruct)(&qlex);
     return 0;
 }
 

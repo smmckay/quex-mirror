@@ -104,7 +104,7 @@ QUEX_NAME(Feeder_deliver)(QUEX_TYPE_FEEDER* me)
             /* If '_read_p' stands at beginning of buffer, no more content 
              * can be filled. Buffer size must be large enough to hold a 
              * complete token queue for one step (including skipped data).    */
-            QUEX_NAME(error_code_set_if_first)(me->base.lexer, 
+            QUEX_NAME(MF_error_code_set_if_first)(me->base.lexer, 
                                                E_Error_Buffer_Feeder_CannotAbsorbMoreContent);
             return (QUEX_TYPE_TOKEN*)0;
         }

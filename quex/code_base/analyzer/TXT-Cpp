@@ -69,7 +69,7 @@ $$QUEX_MODE_ID_DEFINITIONS$$
 
 $$MODE_OBJECTS$$
 
-extern QUEX_NAME(Mode)*   (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
+extern const QUEX_NAME(Mode)*   (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 
@@ -79,7 +79,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
-    struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
+    const struct QUEX_NAME(Mode_tag)*  __current_mode_p; 
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
@@ -231,32 +231,23 @@ public:
     $$MF: bool send_text(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP)$$
     $$MF: bool send_string(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString)$$
 
-    bool token_queue_is_empty()                           { return QUEX_NAME(token_queue_is_empty)(this); }
-    void token_queue_remainder_get(QUEX_TYPE_TOKEN** begin, 
-                                   QUEX_TYPE_TOKEN** end) { QUEX_NAME(token_queue_remainder_get)(this, begin, end); }
-    void token_queue_swap(QUEX_TYPE_TOKEN** queue, size_t* size); 
-
-    const char* input_name()                          { return QUEX_NAME(input_name)(this); }
-    bool        input_name_set(const char* InputName) { return QUEX_NAME(input_name_set)(this, InputName); }
+    $$MF: bool token_queue_is_empty()$$
+    $$MF: void token_queue_remainder_get(QUEX_TYPE_TOKEN** begin, QUEX_TYPE_TOKEN** end)$$
+    $$MF: void token_queue_swap(QUEX_TYPE_TOKEN** queue, size_t* size)$$
 
     /*__( Modes )_______________________________________________________________
      *                                                                        */
-    QUEX_NAME(Mode)&  mode()            { return *QUEX_NAME(get_mode)(this); }
-    int               mode_id() const   { return QUEX_NAME(get_mode_id)(this); }
-    const char*       mode_name() const { return QUEX_NAME(get_mode_name)(this); }
-    QUEX_NAME(Mode)&  map_mode_id_to_mode(const int ModeId)                  { return *(QUEX_NAME(map_mode_id_to_mode)(this, ModeId)); }
-    int               map_mode_to_mode_id(const QUEX_NAME(Mode)& Mode) const { return QUEX_NAME(map_mode_to_mode_id)(this, &Mode); }
+    $$MF: const QUEX_NAME_Mode_*  mode()$$
+    $$MF: void                    set_mode_brutally(const QUEX_NAME_Mode_* Mode)$$
+    $$MF: void                    enter_mode(const QUEX_NAME_Mode_* TargetMode)$$
 
-    void set_mode_brutally(const int ModeId) { QUEX_NAME(set_mode_brutally_by_id)(this, ModeId); }
-    void set_mode_brutally(const QUEX_NAME(Mode)& Mode) { QUEX_NAME(set_mode_brutally)(this, ((QUEX_NAME(Mode)*)&Mode)); }
-    void enter_mode(/* NOT const*/ QUEX_NAME(Mode)& TargetMode) { QUEX_NAME(enter_mode)(this, &TargetMode); }
+    $$MF: void pop_mode()$$
+    $$MF: void pop_drop_mode()$$
+    $$MF: void push_mode(QUEX_NAME_Mode_* new_mode)$$
 
     void operator<<(const int ModeId)                     { enter_mode(*(QUEX_NAME(map_mode_id_to_mode)(this, ModeId))); }
     void operator<<(/* NOT const*/ QUEX_NAME(Mode)& Mode) { enter_mode(Mode); }
 
-    void pop_mode()                           { QUEX_NAME(pop_mode)(this); }
-    void pop_drop_mode()                      { QUEX_NAME(pop_drop_mode)(this); }
-    void push_mode(QUEX_NAME(Mode)& new_mode) { QUEX_NAME(push_mode)(this, &new_mode); }
 private:
     /* Befriend all modes                                                     */
 $$MODE_CLASS_FRIENDS$$  
@@ -266,11 +257,7 @@ public:
      *                                                                        */
     QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get()  { return QUEX_NAME(lexeme_start_pointer_get)(this); }
     QUEX_TYPE_LEXATOM*    input_pointer_get()         { return QUEX_NAME(input_pointer_get)(this); }
-    void input_pointer_set(QUEX_TYPE_LEXATOM* InputP) { return QUEX_NAME(input_pointer_set)(this, InputP); }
-
-    /* Activate/deactivate byte order reversion (big-/little-endian)          */
-    bool byte_order_reversion()               { return QUEX_NAME(byte_order_reversion)(this); }
-    void byte_order_reversion_set(bool Value) { return QUEX_NAME(byte_order_reversion_set)(this, Value); }
+    void                  input_pointer_set(QUEX_TYPE_LEXATOM* InputP) { return QUEX_NAME(input_pointer_set)(this, InputP); }
 
     /*__( Line/Column Counter )________________________________________________
      *                                                                       */
@@ -311,6 +298,17 @@ public:
      *                                                                       */
     $$MF: const char*  version()$$
     $$MF: void         print_this()$$
+    $$MF: const char*  input_name()$$
+    $$MF: bool         input_name_set(const char* InputName)$$
+    /* Activate/deactivate byte order reversion (big-/little-endian)          */
+    $$MF: bool byte_order_reversion()$$
+    $$MF: void byte_order_reversion_set(bool Value)$$
+
+
+    $$MF: void error_code_clear()$$
+    $$MF: bool error_code_is_void()$$
+    $$MF: void error_code_set_void()$$
+    $$MF: void error_code_set_if_first(E_Error ErrorCode)$$
 
 public:
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)

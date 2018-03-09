@@ -71,7 +71,7 @@ QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
 
     new_byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(FileName);
     if( ! new_byte_loader ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_File_OpenFailed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_File_OpenFailed);
         goto ERROR_0;
     }
     else if( ! QUEX_NAME(include_push_ByteLoader)(me, FileName, new_byte_loader, new_converter) ) {
@@ -103,7 +103,7 @@ QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
 
     new_filler = QUEX_NAME(LexatomLoader_new)(new_byte_loader, new_converter);
     if( ! new_filler ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_Allocation_LexatomLoader_Failed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Allocation_LexatomLoader_Failed);
         goto ERROR_0;
     }
     else if( me->buffer.filler )
@@ -142,15 +142,15 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
     QUEX_NAME(Buffer)    new_buffer;
 
     if( QUEX_NAME(Buffer_has_intersection)(&me->buffer, Memory, (ptrdiff_t)MemorySize) ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_ProvidedExternal_Memory_Intersects);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_ProvidedExternal_Memory_Intersects);
         goto ERROR_0;
     }
     else if( ! QUEX_NAME(BufferMemory_check_chunk)(Memory, MemorySize, EndOfFileP) ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_ProvidedExternal_Memory_Corrupt);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_ProvidedExternal_Memory_Corrupt);
         goto ERROR_0;
     }
     else if( me->error_code != E_Error_None ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_IncludePush_OnError);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_IncludePush_OnError);
         goto ERROR_0;
     }
 
@@ -187,7 +187,7 @@ QUEX_NAME(include_push_core)(QUEX_TYPE_ANALYZER*       me,
     
     new_input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
     if( ! new_input_name ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_InputName_Set_Failed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_InputName_Set_Failed);
         goto ERROR_0;
     }
 
@@ -267,7 +267,7 @@ QUEX_NAME(Memento_construct)(QUEX_NAME(Memento)* memento,
     /* When 'user_memento_pack()' is called, nothing has been done to the 
      * current lexical analyzer object, yet!                                  */
     if( ! QUEX_NAME(user_memento_pack)(me, InputNameP, memento) ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_UserMementoPack_Failed);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_UserMementoPack_Failed);
         return false;
     }
     return true;
@@ -282,7 +282,7 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
     
     /* Not included? return 'false' to indicate we're on the top level       */
     if( ! me->_parent_memento ) {
-        QUEX_NAME(error_code_set_if_first)(me, E_Error_IncludePopOnEmptyStack);
+        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_IncludePopOnEmptyStack);
         return false;                             
     }
 

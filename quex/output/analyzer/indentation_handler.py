@@ -71,7 +71,7 @@ $on_indentation(QUEX_TYPE_ANALYZER*    me,
     if( Indentation > *(stack->back) ) {
         ++(stack->back);
         if( stack->back == stack->memory_end ) {
-            QUEX_NAME(error_code_set_if_first)(me, E_Error_Indentation_StackOverflow);
+            QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Indentation_StackOverflow);
             return;
         }
         *(stack->back) = Indentation;
@@ -111,7 +111,7 @@ $$N-DEDENT-PROCEDURE$$
 #            define IndentationUpper     (*(stack->back))
 #            define IndentationLower     ((stack->back == stack->front) ? *(stack->front) : *(stack->back - 1))
 #            define ClosedN              (start - stack->back)
-             QUEX_NAME(error_code_set_if_first)(me,  
+             QUEX_NAME(MF_error_code_set_if_first)(me,  
                                                 E_Error_Indentation_DedentNotOnIndentationBorder);
 $$INDENTATION-ERROR-PROCEDURE$$
 #            undef IndentationStackSize 

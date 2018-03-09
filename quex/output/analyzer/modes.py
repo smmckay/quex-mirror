@@ -110,7 +110,7 @@ $$ON_BUFFER_OVERFLOW$$
 on_buffer_overflow_DEFAULT = """
     /* Try to double the size of the buffer, by default.                      */
     if( ! QUEX_NAME(Buffer_nested_negotiate_extend)(&self.buffer, 2.0) ) {
-        QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+        QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
         QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
     }
 """                         
@@ -322,7 +322,7 @@ def __setup(ModeDb):
         for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id"))
     ]
     txt.append("\n")
-    txt.append("QUEX_NAME(Mode)* (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {\n")
+    txt.append("const QUEX_NAME(Mode)* (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {\n")
 
     content_txt = [
         "    &QUEX_NAME(%s),\n" % mode.name

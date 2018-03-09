@@ -1194,7 +1194,7 @@ class Language(dict):
         return templates._local_variable_definitions(VariableDB.get()) 
 
     def RAISE_ERROR_FLAG(self, Name):
-        return "QUEX_NAME(error_code_set_if_first)(&self, %s);\n" % Name
+        return "self.error_code_set_if_first(%s);\n" % Name
 
     def RAISE_ERROR_FLAG_BY_INCIDENCE_ID(self, IncidenceId):
         if not IncidenceId: return ""
@@ -1307,7 +1307,7 @@ cpp_reload_forward_str = """
     case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index); 
     case E_LoadResult_ENCODING_ERROR: goto $$ON_BAD_LEXATOM$$;
-    case E_LoadResult_OVERFLOW:       QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
+    case E_LoadResult_OVERFLOW:       QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
     default:                          __quex_assert(false);
     }
 """
@@ -1327,7 +1327,7 @@ cpp_reload_backward_str = """
     case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);      
     case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index); 
     case E_LoadResult_ENCODING_ERROR: goto $$ON_BAD_LEXATOM$$;
-    case E_LoadResult_FAILURE:        QUEX_NAME(error_code_set_if_first)(me, E_Error_OnLoadFailure); RETURN; 
+    case E_LoadResult_FAILURE:        QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_OnLoadFailure); RETURN; 
     default:                          __quex_assert(false);
     }
 """

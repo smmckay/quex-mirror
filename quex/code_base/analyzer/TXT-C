@@ -61,8 +61,6 @@ $$QUEX_MODE_ID_DEFINITIONS$$
     
 $$MODE_OBJECTS$$
 
-extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
-
 $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
@@ -71,7 +69,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
-    struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
+    const struct QUEX_NAME(Mode_tag)* __current_mode_p; 
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
@@ -105,7 +103,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
     E_Error                         error_code;
     char*                           __input_name;
 
-    QUEX_NAME(Mode)*                __current_mode_p; 
+    const QUEX_NAME(Mode)*          __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
@@ -138,8 +136,29 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
     $$MF: void    undo()$$
     $$MF: void    undo_n(size_t DeltaN_Backward)$$
 
-    $$MF: const char* version()$$
-    $$MF: void        print_this()$$
+    /*__( Modes )_______________________________________________________________
+     *                                                                        */
+    $$MF: const QUEX_NAME_Mode_*  mode()$$
+    $$MF: void                    set_mode_brutally(const QUEX_NAME_Mode_* Mode)$$
+    $$MF: void                    enter_mode(const QUEX_NAME_Mode_* TargetMode)$$
+
+    $$MF: void pop_mode()$$
+    $$MF: void pop_drop_mode()$$
+    $$MF: void push_mode(QUEX_NAME_Mode_* new_mode)$$
+
+    $$MF: const char*  version()$$
+    $$MF: void         print_this()$$
+    $$MF: const char*  input_name()$$
+    $$MF: bool         input_name_set(const char* InputName)$$
+    /* Activate/deactivate byte order reversion (big-/little-endian)          */
+    $$MF: bool byte_order_reversion()$$
+    $$MF: void byte_order_reversion_set(bool Value)$$
+
+    $$MF: void error_code_clear()$$
+    $$MF: bool error_code_is_void()$$
+    $$MF: void error_code_set_void()$$
+    $$MF: void error_code_set_if_first(E_Error ErrorCode)$$
+
     /* __( END: Data Members )________________________________________________*/
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)

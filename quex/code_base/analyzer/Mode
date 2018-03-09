@@ -61,9 +61,9 @@ QUEX_INLINE void
 QUEX_NAME(Mode_on_entry_exit_null_function)(QUEX_TYPE_ANALYZER*, const QUEX_NAME(Mode)*);
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
-    QUEX_NAME(Mode)** begin;
-    QUEX_NAME(Mode)** end;
-    QUEX_NAME(Mode)** memory_end;
+    const QUEX_NAME(Mode)** begin;
+    const QUEX_NAME(Mode)** end;
+    const QUEX_NAME(Mode)** memory_end;
 } QUEX_NAME(ModeStack);
 
 QUEX_INLINE bool  QUEX_NAME(ModeStack_construct)(QUEX_NAME(ModeStack)* me,
