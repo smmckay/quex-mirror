@@ -54,8 +54,9 @@ class Language(dict):
     RETURN                    = "RETURN;"
     PURE_RETURN               = "__QUEX_PURE_RETURN;"
     UNREACHABLE               = "__quex_assert_no_passage();"
-    ELSE                      = "} else {\n"
+    ELSE                      = "else {"
     ELSE_SIMPLE               = "else"
+    END_IF                    = "}"
     FALSE                     = "false"
     TRUE                      = "true"
     OR                        = "||"
@@ -181,6 +182,25 @@ class Language(dict):
         return os.path.join(self.LEXEME_CONVERTER_DIR, file_stem), \
                os.path.join(self.LEXEME_CONVERTER_DIR, "%s.i" % file_stem)
 
+    def DEFINE_SELF(self, Name):
+        return "#   ifdef     self\n" \
+               "#       undef self\n" \
+               "#   endif\n" \
+               "#   define self (*((QUEX_TYPE_ANALYZER*)%s))\n" % Name\
+
+    def MODE_DEFINITION(self, ModeNameList):
+        if not ModeNameList: return ""
+        L = max(len(m) for m in ModeNameList)
+        return "\n".join(
+            "#   define %s%s    (&QUEX_NAME(%s))" % (name, " " * (L- len(name)), name)
+            for name in ModeNameList
+        ) + "\n"
+
+    def MODE_UNDEFINITION(self, ModeNameList):
+        if not ModeNameList: return ""
+        return "\n".join(
+            "#   undef %s" % name for name in ModeNameList
+        ) + "\n"
 
     def register_analyzer(self, TheAnalyzer):
         self.__analyzer = TheAnalyzer
@@ -331,18 +351,20 @@ class Language(dict):
         """Return a code fragment that returns a source reference pragma. If 
         the source reference is void, no pragma is required. 
         """
-        if not SourceReference.is_void(): 
-            norm_file_name = Setup.get_file_reference(SourceReference.file_name) 
-            line_n = SourceReference.line_n
-            if   line_n <= 0:     
-                line_n = 1
-            elif line_n >= 2**15: 
-                line_n = 2**15 - 1  # ISO 89: line number <= 32767
-                return '\n#   line %i "%s" /* ISO C89: line number <= 32767 */\n' % (line_n, norm_file_name) 
+        if SourceReference.is_void(): return ""
+        norm_file_name = Setup.get_file_reference(SourceReference.file_name) 
+        line_n         = SourceReference.line_n
+        return self.LINE_PRAGMA(norm_file_name, line_n)
 
-            return '\n#   line %i "%s"\n' % (line_n, norm_file_name) 
+    def LINE_PRAGMA(self, Path, LineN):
+        if LineN >= 2**15: 
+            return '\n#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767\n' \
+                    % (2**15 - 1, Path, LineN) 
+        elif LineN <= 0:     
+            return '\n#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767\n' \
+                    % (1, Path, LineN) 
         else:
-            return ""
+            return '\n#   line %i "%s"\n' % (LineN, Path) 
 
     def _SOURCE_REFERENCE_END(self, SourceReference=None):
         """Return a code fragment that returns a source reference pragma which
@@ -689,7 +711,7 @@ class Language(dict):
     def ANALYZER_FUNCTION(self, ModeName, Setup, VariableDefs, 
                           FunctionBody, dial_db, ModeNameList):
         return templates._analyzer_function(ModeName, Setup, VariableDefs, 
-                                      FunctionBody, dial_db, ModeNameList)
+                                            FunctionBody, dial_db, ModeNameList)
 
     def REENTRY_PREPARATION(self, PreConditionIDList, OnAfterMatchCode, dial_db):
         return templates.reentry_preparation(self, PreConditionIDList, OnAfterMatchCode, dial_db)
@@ -885,13 +907,13 @@ class Language(dict):
     @typed(Condition=list)
     def IF_PLAIN(self, FirstF, Condition, Consequence):
         if not Condition:
-            if FirstF: return [ "%s\n" % "".join(Consequence) ]
-            else:      return [ "else { %s }\n" % "".join(Consequence) ]
+            if FirstF: return [ "%s" % "".join(Consequence) ]
+            else:      return [ "else { %s }" % "".join(Consequence) ]
         else:
             if not FirstF: else_str = "else "
             else:          else_str = ""
             return [ 
-                "%sif( %s ) {\n" % (else_str, "".join(Condition)),
+                "%sif( %s ) {\n" % (else_str, " ".join(Condition)),
                 "%s\n" % "".join(Consequence), 
                 "}\n" 
             ]
@@ -955,9 +977,6 @@ class Language(dict):
                                                               "".join(post_combined)])
 
         return self.IF_PLAIN(FirstF, all_combined, Consequence)
-
-    def END_IF(self):
-        return "}"
 
     def PRE_CONTEXT_RESET(self, PreConditionIDList):
         if PreConditionIDList is None: return ""
@@ -1028,13 +1047,15 @@ class Language(dict):
         condition_list = [ [Name, "==", value] for value in ComparisonList ]
         return self.CONDITION_SEQUENCE(condition_list, [Consequence] * len(condition_list))
 
-    def CONDITION_SEQUENCE(self, ConditionList, ConsequenceList):
+    def CONDITION_SEQUENCE(self, ConditionList, ConsequenceList, ElseConsequence=None):
         assert all(type(condition) == list for condition in ConditionList)
-        print "#condition_list:", ConditionList
-        return flatten_list_of_lists(
+        txt = flatten_list_of_lists(
             self.IF_PLAIN((i==0), cc[0], Consequence=cc[1])
             for i, cc in enumerate(izip(ConditionList, ConsequenceList))
         )
+        if ElseConsequence:
+            txt.extend([self.ELSE, ElseConsequence, self.END_IF])
+        return txt
 
     def COMPARISON_SEQUENCE(self, IntervalEffectSequence, get_decision):
         """Get a sequence of comparisons that map intervals to effects as given
@@ -1264,7 +1285,6 @@ class Language(dict):
         return txt 
 
     def straighten_open_line_pragmas(self, FileName):
-        norm_filename   = Setup.get_file_reference(FileName)
         line_pragma_txt = self._SOURCE_REFERENCE_END().strip()
 
         new_content = []
@@ -1279,7 +1299,7 @@ class Language(dict):
                 new_content.append(line)
             else:
                 line_n += 1
-                new_content.append(self._SOURCE_REFERENCE_BEGIN(SourceRef(norm_filename, line_n)))
+                new_content.append(self.LINE_PRAGMA(FileName, line_n))
         fh.close()
         write_safely_and_close(FileName, "".join(new_content))
 

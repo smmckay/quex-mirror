@@ -1,9 +1,9 @@
-from quex.engine.misc.file_operations import open_file_or_die, \
-                                             write_safely_and_close 
-from quex.output.analyzer.core        import produce_include_statements
-from quex.blackboard   import setup as Setup, \
-                              Lng
-from quex.DEFINITIONS  import QUEX_PATH
+from   quex.engine.misc.file_operations import open_file_or_die, \
+                                               write_safely_and_close 
+import quex.output.analyzer.adapt       as     adapt
+from   quex.blackboard                  import setup as Setup, \
+                                               Lng
+from   quex.DEFINITIONS                 import QUEX_PATH
 
 import os.path as path
 import os
@@ -168,7 +168,11 @@ converter_helper = [
 ]
 
 def do():
-    # FSM base file list (required by any analyzer)
+    txt = __collect_file_list_description()
+
+    __copy_files(txt)
+
+def __collect_file_list_description():
     txt =   base                   \
           + base_compatibility     \
           + base_buffer            \
@@ -189,11 +193,25 @@ def do():
     if Setup.count_column_number_f or Setup.count_line_number_f: txt += analyzer_counter 
     txt += analyzer_post_categorizer 
     if Setup.include_stack_support_f:                            txt += analyzer_include_stack
-
-    __copy_files(txt)
+    return txt
 
 def __copy_files(FileTxt):
 
+    file_pair_list, out_directory_set = __get_source_drain_list(FileTxt)
+
+    # Make directories
+    # (Sort according to length --> create parent directories before child)
+    for directory in sorted(out_directory_set, key=len):
+        if os.access(directory, os.F_OK) == True: continue
+        os.makedirs(directory) # create parents, if necessary
+
+    # Copy
+    for source_file, drain_file in file_pair_list:
+        content = open_file_or_die(source_file, "rb").read()
+        content = adapt.do(content, OriginalPath=source_file)
+        write_safely_and_close(drain_file, content)
+
+def __get_source_drain_list(FileTxt):
     input_directory  = os.path.join(QUEX_PATH, Lng.CODE_BASE)
     output_directory = os.path.join(Setup.output_directory, "lib")
 
@@ -206,13 +224,4 @@ def __copy_files(FileTxt):
         path.dirname(drain) for source, drain in file_pair_list
     )
 
-    # Sort directories according to length --> create parent directories before child
-    for directory in sorted(out_directory_set, key=len):
-        if os.access(directory, os.F_OK) == True: continue
-        os.makedirs(directory) # create parents, if necessary
-
-    for source_file, drain_file in file_pair_list:
-        content = open_file_or_die(source_file, "rb").read()
-        content = produce_include_statements(content)
-        write_safely_and_close(drain_file, content)
-
+    return file_pair_list, out_directory_set

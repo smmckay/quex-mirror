@@ -3,7 +3,6 @@
 from   quex.input.files.token_type       import TokenTypeDescriptor
 from   quex.engine.misc.string_handling  import blue_print
 import quex.output.token.id_generator    as     token_id_maker
-from   quex.output.analyzer.adapt        import produce_include_statements
 import quex.token_db                     as     token_db
 from   quex.blackboard                   import setup as Setup, Lng
 
@@ -36,8 +35,6 @@ def do():
         header_txt,        \
         implementation_txt = _do(token_db.token_type_definition)
 
-    header_txt         = produce_include_statements(header_txt)
-    implementation_txt = produce_include_statements(implementation_txt)
     return token_id_header, \
            global_lexeme_null_declaration, \
            header_txt, \

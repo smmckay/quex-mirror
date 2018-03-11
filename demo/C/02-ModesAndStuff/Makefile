@@ -31,4 +31,4 @@ easy/Easy.h: simple.qx
 		 --language         C          
 
 clean:	
-	rm -rf lexer easy/ *.o
+	rm -rf lexer easy/ *.o tmp.*

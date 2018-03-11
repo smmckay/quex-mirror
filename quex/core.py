@@ -7,7 +7,7 @@ from   quex.engine.misc.file_operations          import write_safely_and_close
 #
 import quex.output.core.engine                   as     engine_generator
 import quex.output.analyzer.core                 as     analyzer_class
-from   quex.output.analyzer.adapt                import produce_include_statements
+import quex.output.analyzer.adapt                as     adapt
 import quex.output.analyzer.configuration        as     configuration 
 import quex.output.analyzer.lexeme_converter     as     lexeme_converter 
 import quex.output.token.core                    as     token_class
@@ -36,9 +36,11 @@ def _generate(mode_db):
     class_token_header,             \
     class_token_implementation      = token_class.do()
 
+    class_token_header         = adapt.do(class_token_header)
+    class_token_implementation = adapt.do(class_token_implementation)
+
     if Setup.token_class_only_f:
-        class_token_header =   do_token_class_info() \
-                             + class_token_header
+        class_token_header = do_token_class_info() + class_token_header
         _write_token_class(class_token_header, 
                            class_token_implementation, 
                            token_id_header)
@@ -49,14 +51,14 @@ def _generate(mode_db):
     engine_txt,                     \
     lexeme_converter_header,        \
     lexeme_converter_implementation = _prepare_all(mode_db, 
-                                                         class_token_implementation,
-                                                         global_lexeme_null_declaration)
+                                                   class_token_implementation,
+                                                   global_lexeme_null_declaration)
 
-    configuration_header = produce_include_statements(configuration_header)
-    analyzer_header      = produce_include_statements(analyzer_header)
-    engine_txt           = produce_include_statements(engine_txt)
-    lexeme_converter_header = produce_include_statements(lexeme_converter_header)
-    lexeme_converter_implementation = produce_include_statements(lexeme_converter_implementation)
+    configuration_header            = adapt.do(configuration_header)
+    analyzer_header                 = adapt.do(analyzer_header)
+    engine_txt                      = adapt.do(engine_txt)
+    lexeme_converter_header         = adapt.do(lexeme_converter_header)
+    lexeme_converter_implementation = adapt.do(lexeme_converter_implementation)
     _write_all(configuration_header, analyzer_header, engine_txt, 
                class_token_header, token_id_header,
                lexeme_converter_header, 

@@ -1,6 +1,6 @@
 
 from   quex.engine.misc.string_handling import blue_print
-from   quex.output.analyzer.adapt       import produce_include_statements
+import quex.output.analyzer.adapt       as     adapt
 
 from   quex.blackboard  import setup as Setup, Lng
 import quex.token_db    as     token_db
@@ -17,7 +17,7 @@ def do(Mode_PrepPrepDB):
     LexerClassName = Setup.analyzer_class_name
 
     txt = Lng.open_template(Lng.analyzer_configuration_file())
-    txt = produce_include_statements(txt)
+    txt = adapt.do(txt)
 
     # -- check if exit/entry handlers have to be active
     entry_handler_active_f = any(

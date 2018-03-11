@@ -103,7 +103,7 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, dial_db):
         "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
         "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
         "        %s\n" % "return;", # TODO: Replace with Lng.PURE_RETURN
-        "    %s\n" % Lng.END_IF(),
+        "    %s\n" % Lng.END_IF,
         "    %s = LexemeBegin;\n" % IteratorName
     ])
 

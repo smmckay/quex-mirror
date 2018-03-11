@@ -154,7 +154,7 @@ class TerminalFactory:
             #    Lng.GOTO(DoorID.continue_without_on_after_match()),
             #Lng.IF_INPUT_P_EQUAL_LEXEME_START_P(FirstF=False),
             #    Lng.INPUT_P_INCREMENT(),
-            #Lng.END_IF(),
+            #Lng.END_IF,
             self.__counter_code(None),
             #
             adorned_code,

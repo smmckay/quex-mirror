@@ -1,8 +1,7 @@
 #! /usr/bin/env python
 from   quex.engine.misc.string_handling import blue_print
 import quex.output.analyzer.modes       as     mode_classes
-from   quex.output.analyzer.adapt       import produce_include_statements, \
-                                               declare_member_functions
+from   quex.output.analyzer.adapt       import declare_member_functions
 
 from   quex.DEFINITIONS import QUEX_PATH, \
                                QUEX_VERSION
@@ -72,7 +71,6 @@ def do(ModeDB, Epilog):
         ["$$EPILOG$$",                           Epilog],
      ])
 
-    txt = produce_include_statements(txt)
     return txt, member_function_signature_list
 
 def do_implementation(ModeDB, MemberFunctionSignatureList):
@@ -89,6 +87,5 @@ def do_implementation(ModeDB, MemberFunctionSignatureList):
         ["$$MEMENTO_EXTENSIONS_UNPACK$$",               Lng.SOURCE_REFERENCED(blackboard.memento_unpack_extension)],
     ])
 
-    func_txt = produce_include_statements(func_txt)
     return "\n%s\n" % func_txt
 

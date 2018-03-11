@@ -2,7 +2,7 @@ from   quex.engine.misc.string_handling  import blue_print
 from   quex.blackboard                   import Lng, \
                                                 E_IncidenceIDs
 
-def do(Mode):
+def do(Mode, ModeNameList):
     # 'on_dedent' and 'on_n_dedent cannot be defined at the same time.
     assert not (    E_IncidenceIDs.INDENTATION_DEDENT   in Mode.incidence_db \
                 and E_IncidenceIDs.INDENTATION_N_DEDENT in Mode.incidence_db)
@@ -39,6 +39,9 @@ def do(Mode):
     # Note: 'on_indentation_bad' is applied in code generation for 
     #       indentation counter in 'indentation_counter.py'.
     return blue_print(on_indentation_str, [
+        ["$$DEFINE_SELF$$",                 Lng.DEFINE_SELF("me")],
+        ["$$MODE_DEFINITION$$",             Lng.MODE_DEFINITION(ModeNameList)],
+        ["$$MODE_UNDEFINITION$$",           Lng.MODE_DEFINITION(ModeNameList)],
         ["$$INDENT-PROCEDURE$$",            on_indent_str],
         ["$$NODENT-PROCEDURE$$",            on_nodent_str],
         ["$$DEDENT-PROCEDURE$$",            on_dedent_str],
@@ -56,9 +59,8 @@ $on_indentation(QUEX_TYPE_ANALYZER*    me,
     (void)me;
     (void)Indentation;
     (void)Begin;
-#   ifndef self
-#   define self          (*me)
-#   endif
+$$DEFINE_SELF$$
+$$MODE_DEFINITION$$
 #   define Lexeme        Begin
 #   define LexemeEnd     (me->buffer._read_p)
 
@@ -125,6 +127,7 @@ $$INDENTATION-ERROR-PROCEDURE$$
 
 #   undef Lexeme    
 #   undef LexemeEnd 
+$$MODE_UNDEFINITION$$
 }
 #endif
 """

@@ -25,6 +25,6 @@ class Bisection(object):
             self.high.implement()
         )
         txt.append(
-            "%s\n" % Lng.END_IF()
+            "%s\n" % Lng.END_IF
         )
         return txt

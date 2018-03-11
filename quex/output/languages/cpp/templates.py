@@ -162,35 +162,18 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
     Lng = Setup.language_db
     SingleModeAnalyzerF = Setup.single_mode_analyzer_f
 
-    mode_definition_str   = ""
-    mode_undefinition_str = ""
-    if len(ModeNameList) != 0 and not SingleModeAnalyzerF: 
-        L = max(map(lambda name: len(name), ModeNameList))
-        mode_definition_str = "".join(
-            "#   define %s%s    (QUEX_NAME(%s))\n" % (name, " " * (L- len(name)), name)
-            for name in ModeNameList
-        )
-        mode_undefinition_str = "".join(
-            "#   undef %s\n" % name 
-            for name in ModeNameList
-        )
-
     function_signature_str = __function_signature.replace("$$STATE_MACHINE_NAME$$", 
                                                           StateMachineName)
 
     state_router_adr = DoorID.global_state_router(dial_db).related_address
     txt = [
         function_signature_str,
-        # 
         # Macro definitions
         #
-        "#   ifdef     self\n",
-        "#       undef self\n",
-        "#   endif\n",
-        "#   define self (*((QUEX_TYPE_ANALYZER*)me))\n",
+        Lng.DEFINE_SELF("me"),
+        Lng.MODE_DEFINITION(ModeNameList),
         "/*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */\n",
         "#   define QUEX_LABEL_STATE_ROUTER %s\n" % Lng.LABEL_STR_BY_ADR(state_router_adr),
-        mode_definition_str,
         Lng.LEXEME_MACRO_SETUP(),
         #
         variable_definitions,
@@ -234,7 +217,7 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         # Macro undefinitions
         # 
         lexeme_macro_clean_up,
-        mode_undefinition_str,
+        Lng.MODE_UNDEFINITION(ModeNameList),
         "#   undef self\n",
         "#   undef QUEX_LABEL_STATE_ROUTER\n",
         "}\n",

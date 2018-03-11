@@ -5,7 +5,7 @@
 .PHONY: clean
 .SECONDARY:
 
-COMPILER := gcc -ggdb -pedantic -Wconversion -Wall -Werror -W
+COMPILER := g++ -ggdb -pedantic -Wconversion -Wall -Werror -W
 LD       := $(COMPILER) 
 CC       := $(COMPILER) -c -I./ $(ADD_FLAGS) 
 #           Useful options for debugging:
@@ -30,4 +30,4 @@ easy/Easy: simple.qx
 		 --token-id-offset  0x1000 
 
 clean:	
-	rm -rf lexer easy/ *.o
+	rm -rf lexer easy/ *.o tmp.*

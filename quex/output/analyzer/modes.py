@@ -9,14 +9,14 @@ def do(ModeDb):
     LexerClassName   = Setup.analyzer_class_name
     DerivedClassName = Setup.analyzer_derived_class_name
 
-    mode_db_setup_txt = __setup(ModeDb)
+    mode_setup_txt = __setup(ModeDb)
 
     # -- mode class member function definitions (on_entry, on_exit, has_base, ...)
     mode_class_member_functions_txt = write_member_functions(ModeDb.values())
 
     txt  = "".join([
         "QUEX_NAMESPACE_MAIN_OPEN\n",
-        mode_db_setup_txt,
+        mode_setup_txt,
         mode_class_member_functions_txt,
         "QUEX_NAMESPACE_MAIN_CLOSE\n"
     ])
@@ -30,7 +30,7 @@ def write_member_functions(Modes):
     # -- get the implementation of mode class functions
     #    (on_entry, on_exit, on_indent, on_dedent, has_base, has_entry, has_exit, ...)
     txt  = [
-        "#define self        (*(QUEX_TYPE_DERIVED_ANALYZER*)me)\n",
+        Lng.DEFINE_SELF("me"), 
         "#define LexemeNull  (&QUEX_LEXEME_NULL)\n"
         "#define RETURN      return\n"
     ]
@@ -139,7 +139,8 @@ def get_implementation_of_mode_functions(mode, Modes):
         on_exit_str += Lng.SOURCE_REFERENCED(code_fragment)
 
     # (*) on indentation
-    on_indentation_str = indentation_handler.do(mode)
+    mode_name_list     = [m.name for m in Modes]
+    on_indentation_str = indentation_handler.do(mode, mode_name_list)
     on_indentation_str = __replace_function_names(on_indentation_str, mode, 
                                                   NullFunctionsF=False)
 
@@ -186,7 +187,7 @@ def get_implementation_of_mode_functions(mode, Modes):
     txt = __replace_function_names(mode_function_implementation_str, mode, 
                                    NullFunctionsF=False)
 
-    return blue_print(txt, [
+    result = blue_print(txt, [
         ["$$ENTER-PROCEDURE$$",      on_entry_str],
         ["$$EXIT-PROCEDURE$$",       on_exit_str],
         #
@@ -202,29 +203,29 @@ def get_implementation_of_mode_functions(mode, Modes):
         ["$$MODE_NAME$$",            mode.name],
     ])
 
-def get_IsOneOfThoseCode(ThoseModes, CheckBaseModeF = False,
+    return result
+
+def get_IsOneOfThoseCode(ModeNameList, CheckBaseModeF=False,
                          ConsiderDerivedClassesF=False):
-    return_true_txt   = Lng.RETURN_THIS(Lng.TRUE)
-    mode_pointer_list = ["&QUEX_NAME(%s)" % mode_name for mode_name in ThoseModes]
+    mode_pointer_list = [
+        "&QUEX_NAME(%s)" % mode_name for mode_name in ModeNameList
+    ]
 
-    txt = Lng.IF_CONDITION_SEQUENCE("Mode", mode_pointer_list, return_true_txt)
-
-    extra_txt = None
+    condition_list = [
+        ["Mode", "==", mp] for mp in mode_pointer_list
+    ]
     if ConsiderDerivedClassesF:
-        extra_txt = Lng.CONDITION_SEQUENCE(
-            [["Mode->has_base(%s)" % mp] for mp in mode_pointer_list],
-            [return_true_txt] * len(mode_pointer_list)
+        condition_list.extend(
+            ["Mode->has_base(%s)" % mp] for mp in mode_pointer_list
         )
     if CheckBaseModeF:
-        extra_txt = Lng.CONDITION_SEQUENCE(
-            [["(%s)->has_base(Mode)" % mp] for mp in mode_pointer_list],
-            [return_true_txt] * len(mode_pointer_list)
+        condition_list.extend(
+            ["(%s)->has_base(Mode)" % mp] for mp in mode_pointer_list
         )
-    
-    if not extra_txt:
-        extra_txt = Lng.RETURN_THIS(Lng.FALSE)
 
-    txt.extend(extra_txt)
+    txt = Lng.CONDITION_SEQUENCE(condition_list,
+                                 [Lng.RETURN_THIS(Lng.TRUE)] * len(condition_list),
+                                 Lng.RETURN_THIS(Lng.FALSE))
     return txt
 
 def get_related_code_fragments(ModeDb):

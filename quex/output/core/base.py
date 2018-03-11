@@ -89,7 +89,7 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
             Lng.IF("false", "==", Lng.BUFFER_SEEK(backup_position)),
                 Lng.RAISE_ERROR_FLAG("E_Error_File_SeekFailed"),
                 Lng.RETURN,
-            Lng.END_IF(),
+            Lng.END_IF,
             Lng.LEXEME_START_SET(PositionStorage=None), # use '_read_p'
             # "std::cout << \"lexst \" << me->buffer._lexeme_start_p[0] << std::endl;",
             # "std::cout << \"readp \" << me->buffer._read_p[0] << std::endl;",
@@ -101,7 +101,7 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
             # -- set the input stream back to the real current position.
             #    during backward lexing the analyzer went backwards, so it needs to be reset.
             Lng.INPUT_P_TO_LEXEME_START(),
-        Lng.END_IF(),
+        Lng.END_IF,
     ]))
     txt.append("\n")
 

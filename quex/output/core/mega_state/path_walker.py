@@ -137,7 +137,7 @@ def framework(txt, PWState, TheAnalyzer):
                       + "                %s\n" % Lng.GOTO(door_id_sequence[-1], dial_db) 
             tmp += "            %s"       % Lng.ELSE                                  
             tmp += "                %s\n" % Lng.UNREACHABLE
-            tmp += "            %s\n"     % Lng.END_IF()                                  
+            tmp += "            %s\n"     % Lng.END_IF                                  
             goto_terminal_door = tmp
 
         path_walker_head = \
@@ -147,8 +147,8 @@ def framework(txt, PWState, TheAnalyzer):
              goto_next_door,
              "        %s"        % Lng.ELSE,                                  
              goto_terminal_door,
-             "        %s\n"      % Lng.END_IF(),
-             "    %s\n"          % Lng.END_IF()]
+             "        %s\n"      % Lng.END_IF,
+             "    %s\n"          % Lng.END_IF]
     else:
         # NON UNIFORM PATHS
         #
@@ -168,7 +168,7 @@ def framework(txt, PWState, TheAnalyzer):
         path_walker_head = ["    %s"       % Lng.IF_INPUT("==", "*path_iterator"),
                             "        %s\n" % Lng.PATH_ITERATOR_INCREMENT,
                             "        %s\n" % goto_next_door,
-                            "    %s\n"     % Lng.END_IF()]
+                            "    %s\n"     % Lng.END_IF]
 
     txt.extend(path_walker_head)
     return

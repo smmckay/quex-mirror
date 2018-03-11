@@ -19,7 +19,7 @@ all: lexer
 lexer: lexer.o Easy.o
 	$(LD) -o $@ lexer.o Easy.o 
           
-Easy.o: Easy/Easy.cpp 
+Easy.o: easy/Easy.cpp 
 	$(CC) $< -I. -o $@ 
 
 lexer.o: lexer.cpp easy/Easy.cpp
