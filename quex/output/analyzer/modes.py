@@ -204,23 +204,27 @@ def get_implementation_of_mode_functions(mode, Modes):
 
 def get_IsOneOfThoseCode(ThoseModes, CheckBaseModeF = False,
                          ConsiderDerivedClassesF=False):
-    if not ThoseModes:
-        return [ Lng.RETURN_THIS(Lng.FALSE) ]
+    return_true_txt   = Lng.RETURN_THIS(Lng.TRUE)
+    mode_pointer_list = ["&QUEX_NAME(%s)" % mode_name for mode_name in ThoseModes]
 
-    # NOTE: Usually, switch commands do a binary bracketting.
-    #       (Cannot be faster here ... is not critical anyway since this is debug code)
+    txt = Lng.IF_CONDITION_SEQUENCE("Mode", mode_pointer_list, return_true_txt)
 
-    case_code_list = [
-        (Lng.NAME_IN_NAMESPACE_MAIN("ModeID_%s" % mode_name), Lng.RETURN_THIS(Lng.TRUE))
-        for mode_name in ThoseModes
-    ]
-    if ConsiderDerivedClassesF and mode_name in ThoseModes:
-        default = "if( Mode->has_base(&QUEX_NAME(%s)) ) %s\n" % (mode_name, Lng.RETURN_THIS(Lng.TRUE))
-    else:
-        default = Lng.RETURN_THIS(Lng.FALSE)
+    extra_txt = None
+    if ConsiderDerivedClassesF:
+        extra_txt = Lng.CONDITION_SEQUENCE(
+            [["Mode->has_base(%s)" % mp] for mp in mode_pointer_list],
+            [return_true_txt] * len(mode_pointer_list)
+        )
+    if CheckBaseModeF:
+        extra_txt = Lng.CONDITION_SEQUENCE(
+            [["(%s)->has_base(Mode)" % mp] for mp in mode_pointer_list],
+            [return_true_txt] * len(mode_pointer_list)
+        )
+    
+    if not extra_txt:
+        extra_txt = Lng.RETURN_THIS(Lng.FALSE)
 
-    txt = Lng.CASE_SELECT("Mode->id", case_code_list, default)
-
+    txt.extend(extra_txt)
     return txt
 
 def get_related_code_fragments(ModeDb):
@@ -306,35 +310,12 @@ def __get_function_declaration(Modes, FriendF=False):
 
     return "".join(txt)
 
-def mode_id_definition(ModeDb):
-    if not ModeDb: return ""
-
-    result = "".join(
-        "    QUEX_NAME(ModeID_%s) = %i,\n" % (mode.name, mode.mode_id)
-        for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id"))
-    )
-
-    return result[:-2]
-
 def __setup(ModeDb):
     txt = [
         initialization(mode)
         for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id"))
     ]
     txt.append("\n")
-    txt.append("const QUEX_NAME(Mode)* (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {\n")
-
-    content_txt = [
-        "    &QUEX_NAME(%s),\n" % mode.name
-        for mode in sorted(ModeDb.itervalues(), key=attrgetter("mode_id"))
-    ]
-    # delete trailing comma
-    if content_txt: 
-        content_txt[-1] = "%s\n" % content_txt[-1][:-2]
-
-    txt.extend(content_txt)
-    txt.append("};\n")
-
     return "".join(txt)
 
 def initialization(mode):
@@ -374,7 +355,6 @@ def __replace_function_names(txt, mode, NullFunctionsF=True):
 
 mode_setup_str = \
 """QUEX_NAME(Mode) QUEX_NAME($$MN$$) = {
-    /* id                */ QUEX_NAME(ModeID_$$MN$$),
     /* name              */ "$$MN$$",
 #   if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \\
        && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)

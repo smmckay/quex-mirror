@@ -16,7 +16,6 @@ def do(ModeDB, Epilog):
 
     LexerClassName                 = Setup.analyzer_class_name
     quex_converter_coding_name_str = Setup.converter_ucs_coding_name
-    mode_id_definition_str         = mode_classes.mode_id_definition(ModeDB)
 
     # -- instances of mode classes as members of the lexer
     mode_object_members_txt,     \
@@ -56,7 +55,6 @@ def do(ModeDB, Epilog):
         ["$$LEXER_CONFIG_FILE$$",                Setup.output_configuration_file],
         ["$$LEXER_DERIVED_CLASS_DECL$$",         derived_class_type_declaration],
         ["$$LEXER_DERIVED_CLASS_NAME$$",         analyzer_derived_class_name],
-        ["$$QUEX_MODE_ID_DEFINITIONS$$",         mode_id_definition_str],
         ["$$MEMENTO_EXTENSIONS$$",               Lng.SOURCE_REFERENCED(blackboard.memento_class_extension)],
         ["$$MODE_CLASS_FRIENDS$$",               friend_txt],
         ["$$MODE_OBJECTS$$",                     mode_object_members_txt],
@@ -86,7 +84,6 @@ def do_implementation(ModeDB, MemberFunctionSignatureList):
         ["$$CONSTRUCTOR_EXTENSTION$$",                  Lng.SOURCE_REFERENCED(blackboard.class_constructor_extension)],
         ["$$DESTRUCTOR_EXTENSTION$$",                   Lng.SOURCE_REFERENCED(blackboard.class_destructor_extension)],
         ["$$USER_DEFINED_PRINT$$",                      Lng.SOURCE_REFERENCED(blackboard.class_print_extension)],
-        ["$$CONSTRUCTOR_MODE_DB_INITIALIZATION_CODE$$", __mode_db_constructor_code(ModeDB)],
         ["$$RESET_EXTENSIONS$$",                        Lng.SOURCE_REFERENCED(blackboard.reset_extension)],
         ["$$MEMENTO_EXTENSIONS_PACK$$",                 Lng.SOURCE_REFERENCED(blackboard.memento_pack_extension)],
         ["$$MEMENTO_EXTENSIONS_UNPACK$$",               Lng.SOURCE_REFERENCED(blackboard.memento_unpack_extension)],
@@ -94,17 +91,4 @@ def do_implementation(ModeDB, MemberFunctionSignatureList):
 
     func_txt = produce_include_statements(func_txt)
     return "\n%s\n" % func_txt
-
-def __mode_db_constructor_code(ModeDb):
-    if not ModeDb: return ""
-
-    L = max(len(m.name) for m in ModeDb.itervalues())
-
-    def condition(mode):
-        return Lng.EQUAL("%s %s" % (Lng.MODE_BY_ID(mode.name), " " * (L-len(mode.name))),
-                         Lng.ADDRESS_OF(Lng.NAME_IN_NAMESPACE_MAIN(mode.name)))
-
-    return "".join(
-        "    %s\n" % Lng.ASSERT(condition(mode)) for mode in ModeDb.itervalues() 
-    )
 

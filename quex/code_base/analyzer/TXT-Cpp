@@ -63,13 +63,7 @@ $$INC: analyzer/headers$$
 
 QUEX_NAMESPACE_MAIN_OPEN 
 
-enum {
-$$QUEX_MODE_ID_DEFINITIONS$$
-};
-
 $$MODE_OBJECTS$$
-
-extern const QUEX_NAME(Mode)*   (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 
@@ -79,7 +73,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
-    const struct QUEX_NAME(Mode_tag)*  __current_mode_p; 
+    const QUEX_NAME(Mode)*          __current_mode_p; 
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
@@ -114,7 +108,7 @@ public:
     E_Error                         error_code;
     char*                           __input_name;
 
-    QUEX_NAME(Mode)*                __current_mode_p; 
+    const QUEX_NAME(Mode)*          __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
@@ -231,10 +225,6 @@ public:
     $$MF: bool send_text(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP)$$
     $$MF: bool send_string(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString)$$
 
-    $$MF: bool token_queue_is_empty()$$
-    $$MF: void token_queue_remainder_get(QUEX_TYPE_TOKEN** begin, QUEX_TYPE_TOKEN** end)$$
-    $$MF: void token_queue_swap(QUEX_TYPE_TOKEN** queue, size_t* size)$$
-
     /*__( Modes )_______________________________________________________________
      *                                                                        */
     $$MF: const QUEX_NAME_Mode_*  mode()$$
@@ -244,9 +234,6 @@ public:
     $$MF: void pop_mode()$$
     $$MF: void pop_drop_mode()$$
     $$MF: void push_mode(QUEX_NAME_Mode_* new_mode)$$
-
-    void operator<<(const int ModeId)                     { enter_mode(*(QUEX_NAME(map_mode_id_to_mode)(this, ModeId))); }
-    void operator<<(/* NOT const*/ QUEX_NAME(Mode)& Mode) { enter_mode(Mode); }
 
 private:
     /* Befriend all modes                                                     */

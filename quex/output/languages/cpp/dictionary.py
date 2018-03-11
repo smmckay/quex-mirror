@@ -30,7 +30,7 @@ from   quex.constants    import E_Files, \
                                 E_TransitionN,   \
                                 E_AcceptanceCondition, \
                                 E_Op
-from   itertools import islice
+from   itertools import islice, izip
 from   math      import log
 import re
 import os
@@ -885,8 +885,8 @@ class Language(dict):
     @typed(Condition=list)
     def IF_PLAIN(self, FirstF, Condition, Consequence):
         if not Condition:
-            if FirstF: return "%s\n" % "".join(Consequence)
-            else:      return "else { %s }\n" % "".join(Consequence)
+            if FirstF: return [ "%s\n" % "".join(Consequence) ]
+            else:      return [ "else { %s }\n" % "".join(Consequence) ]
         else:
             if not FirstF: else_str = "else "
             else:          else_str = ""
@@ -1022,6 +1022,19 @@ class Language(dict):
             return ""
         else:
             assert False 
+
+    @typed(Name=(str,unicode), ComparisonList=[(str,unicode)])
+    def IF_CONDITION_SEQUENCE(self, Name, ComparisonList, Consequence):
+        condition_list = [ [Name, "==", value] for value in ComparisonList ]
+        return self.CONDITION_SEQUENCE(condition_list, [Consequence] * len(condition_list))
+
+    def CONDITION_SEQUENCE(self, ConditionList, ConsequenceList):
+        assert all(type(condition) == list for condition in ConditionList)
+        print "#condition_list:", ConditionList
+        return flatten_list_of_lists(
+            self.IF_PLAIN((i==0), cc[0], Consequence=cc[1])
+            for i, cc in enumerate(izip(ConditionList, ConsequenceList))
+        )
 
     def COMPARISON_SEQUENCE(self, IntervalEffectSequence, get_decision):
         """Get a sequence of comparisons that map intervals to effects as given

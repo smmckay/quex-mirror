@@ -1,24 +1,21 @@
-,-----------------------------------------------------------------
-| [START]
-STRUCT
-IDENTIFIER
-CURLY_BRACKET_O
-IDENTIFIER
-IDENTIFIER
-SEMICOLON
-IDENTIFIER
-IDENTIFIER
-SEMICOLON
-CURLY_BRACKET_C
-SEMICOLON
-IF
-CURLY_BRACKET_O
-QUOTE
-STRING
-QUOTE
-SEMICOLON
-CURLY_BRACKET_C
-<TERMINATION>
-| [END] number of token = 19
-`-----------------------------------------------------------------
+(1, 1)  	STRUCT
+(1, 8)  	IDENTIFIER 'example' 
+(1, 16)  	CURLY_BRACKET_O
+(2, 3)  	IDENTIFIER 'int' 
+(2, 10)  	IDENTIFIER 'x' 
+(2, 11)  	SEMICOLON
+(3, 3)  	IDENTIFIER 'double' 
+(3, 10)  	IDENTIFIER 'y' 
+(3, 11)  	SEMICOLON
+(4, 1)  	CURLY_BRACKET_C
+(4, 2)  	SEMICOLON
+(6, 1)  	IF
+(6, 4)  	CURLY_BRACKET_O
+(7, 3)  	QUOTE
+(7, 15)  	STRING 'hallo world' 
+(7, 15)  	QUOTE
+(7, 16)  	SEMICOLON
+(8, 1)  	CURLY_BRACKET_C
+(9, 1)  	<TERMINATION>
+[END] number of tokens = 19
 VALGRIND:   All heap blocks were freed -- no leaks are possible

@@ -163,8 +163,8 @@ QUEX_NAME(Accumulator__add)(QUEX_NAME(Accumulator)* me,
         /* L + 1 we need space for the string + the terminating zero */
         if( QUEX_NAME(Accumulator__extend)(me, L + 1) == false ) {
             if( me->the_lexer ) {
-                QUEX_NAME(error_code_set_if_first)(me->the_lexer, 
-                                                   E_Error_Accumulator_OutOfMemory);
+                QUEX_NAME(MF_error_code_set_if_first)(me->the_lexer, 
+                                                      E_Error_Accumulator_OutOfMemory);
                 return;
             }
         }
@@ -193,8 +193,8 @@ QUEX_NAME(Accumulator__add_character)(QUEX_NAME(Accumulator)*     me,
         /* 1 + 1 we need space for the character + the terminating zero */
         if( QUEX_NAME(Accumulator__extend)(me, 2) == false ) {
             if( me->the_lexer ) {
-                QUEX_NAME(error_code_set_if_first)(me->the_lexer, 
-                                                   E_Error_Accumulator_OutOfMemory);
+                QUEX_NAME(MF_error_code_set_if_first)(me->the_lexer, 
+                                                      E_Error_Accumulator_OutOfMemory);
                 return;
             }
         }
@@ -212,8 +212,8 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     QUEX_TYPE_LEXATOM* end_p;
 
     if( QUEX_NAME(TokenQueue_is_full)(&me->the_lexer->_token_queue) ) {
-        QUEX_NAME(error_code_set_if_first)(me->the_lexer, 
-                                           E_Error_Token_QueueOverflow);
+        QUEX_NAME(MF_error_code_set_if_first)(me->the_lexer, 
+                                              E_Error_Token_QueueOverflow);
         return false;
     }
 

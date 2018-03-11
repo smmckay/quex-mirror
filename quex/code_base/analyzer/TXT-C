@@ -55,10 +55,6 @@ $$INC: analyzer/headers$$
 #include "$$TOKEN_ID_DEFINITION_FILE$$"
 #include "$$TOKEN_CLASS_DEFINITION_FILE$$"
 
-enum {
-$$QUEX_MODE_ID_DEFINITIONS$$
-};
-    
 $$MODE_OBJECTS$$
 
 $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$

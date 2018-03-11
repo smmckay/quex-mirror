@@ -13,26 +13,21 @@ CC       := $(COMPILER) -c -I./ $(ADD_FLAGS)
 #           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 #           -DQUEX_OPTION_DEBUG_SHOW
 
-# (*) RULES ____________________________________________________________________
-# -- application
-lexer:          example.o EasyLexer.o
-	$(LD) -o $@ example.o EasyLexer.o 
+all: lexer
+
+lexer: lexer.o Easy.o
+	$(LD) -o $@ lexer.o Easy.o 
           
-# Object files:
-EasyLexer.o: EasyLexer.c 
+Easy.o: easy/Easy.c 
 	$(CC) $< -o $@ 
 
-example.o: ../example.c EasyLexer.c
+lexer.o: lexer.c easy/Easy.h
 	$(CC) $< -o $@ 
 
-# Macro expansions (only for debugging):
-%.E: %.c    
-	$(CC) -E $< -o $@ 
-
-EasyLexer.c: simple.qx 
-	quex -i                 simple.qx  common.qx \
-	     -o                 EasyLexer  \
-		 --token-id-offset  0x1000     \
+easy/Easy.c \
+easy/Easy.h: simple.qx 
+	quex -i simple.qx  common.qx -o Easy --odir easy \
+		 --token-id-offset  0x1000 \
 		 --language         C          
 
 clean:	

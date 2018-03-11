@@ -1,9 +1,9 @@
 #! /usr/bin/env bash
-source ../../Cpp/TEST/build-and-run.sh
+source ../../TEST/build-and-run.sh
 
 hwut_info $1 \
-    "demo/001: Multiple Modes, Mode Transitions" \
-    "CHOICES:  asserts, no-asserts;"             \
+    "02-ModesAndStuff: Multiple Modes, Mode Transitions;" \
+    "CHOICES:  asserts, no-asserts;"                      \
     "SAME;"
 
 directory="../02-ModesAndStuff"

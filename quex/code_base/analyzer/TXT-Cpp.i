@@ -13,8 +13,6 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
 
-$$CONSTRUCTOR_MODE_DB_INITIALIZATION_CODE$$
-
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
 $$CONSTRUCTOR_EXTENSTION$$

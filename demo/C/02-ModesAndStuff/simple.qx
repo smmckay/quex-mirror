@@ -32,10 +32,7 @@ token {
 mode END_OF_FILE :
 <inheritable: only>  
 {    
-    <<EOF>> {
-        self.send(&self, QUEX_TKN_TERMINATION);
-        RETURN;
-    }
+    <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
 }
 
 
@@ -58,7 +55,7 @@ mode PROGRAM :
 
     {P_STRING_DELIMITER} {
         self.send(&self, QUEX_TKN_QUOTE);
-        self_enter_mode(&STRING_READER);
+        self.enter_mode(&self, &STRING_READER);
         RETURN;
     }
 }
@@ -77,7 +74,7 @@ mode STRING_READER :
     {P_BACKSLASHED_STRING_DELIMITER} { self_accumulator_add(Lexeme, LexemeEnd); }
     {P_BACKSLASHED_BACKSLASH}        { self_accumulator_add(Lexeme, LexemeEnd); }
 
-    {P_STRING_DELIMITER}             { self_enter_mode(&PROGRAM); return; }
+    {P_STRING_DELIMITER}             { self.enter_mode(&self, &PROGRAM); return; }
 
     <<FAIL>> {
         self_accumulator_add(Lexeme, LexemeEnd); 

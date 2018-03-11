@@ -20,8 +20,7 @@ QUEX_TYPE0_ANALYZER;
 #endif
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Mode_tag) {  
-    int                  id;
-    const char*          name;
+    const char* name;
 
 #if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \
     && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
@@ -44,7 +43,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Mode_tag) {
      * content of this class changes, any mismatch of pointers is likely
      * to trigger a compilation error, thus signalling that the setup is
      * incorrect.                                                        */
-    QUEX_NAME(AnalyzerFunctionP)    analyzer_function;
+    QUEX_NAME(AnalyzerFunctionP)      analyzer_function;
 } QUEX_NAME(Mode);
 
 QUEX_INLINE void
