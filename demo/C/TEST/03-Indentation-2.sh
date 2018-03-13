@@ -2,7 +2,7 @@
 source ../../TEST/build-and-run.sh
 
 hwut_info $1 \
-    "03-Indentation: Off-side rule;" \
+    "03-Indentation: Off-side rule (second case);" \
     "CHOICES:  asserts, no-asserts;" \
     "SAME;"
 

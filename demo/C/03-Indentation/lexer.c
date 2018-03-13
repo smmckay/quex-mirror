@@ -1,17 +1,30 @@
-#include <stdio.h>    
-#include "easy/Easy.h"
+#ifndef LEXER2
+#   include "Easy/Easy.h"
+typedef quex_Easy  Lexer;
+typedef quex_Token Token;
+#define CONSTRUCT quex_Easy_from_file_name
+#define DESTRUCT  quex_Easy_destruct
+#else
+#   include "Easy2/Easy2.h"
+typedef quex_Easy2  Lexer;
+typedef quex_Token  Token;
+#define CONSTRUCT quex_Easy2_from_file_name
+#define DESTRUCT  quex_Easy2_destruct
+#endif
 
-static void print_token(quex_Token* token_p);
+#include<stdio.h>    
+
+static void print_token(Token* token_p);
 
 int 
 main(int argc, char** argv) 
 {        
-    quex_Easy    qlex;
-    quex_Token*  token_p = NULL;
-    int          number_of_tokens = 0;
+    Lexer   qlex;
+    Token*  token_p = 0;
 
-    quex_Easy_from_file_name(&qlex, argc == 1 ? "example.txt" : argv[1], NULL); 
+    CONSTRUCT(&qlex, argc == 1 ? "example.txt" : argv[1], NULL); 
 
+    int number_of_tokens = 0;
     do {
         qlex.receive(&qlex, &token_p);
         if( ! token_p ) break;
@@ -25,27 +38,40 @@ main(int argc, char** argv)
     printf("[END] number of tokens = %i\n", number_of_tokens);
     if( qlex.error_code != E_Error_None ) qlex.print_this(&qlex); 
 
-    quex_Easy_destruct(&qlex);
+    DESTRUCT(&qlex);
+
     return 0;
 }
 
 static void
-print_token(quex_Token* token_p)
+print_token(Token* token_p)
 {
     const size_t    BufferSize = 1024;
     char            buffer[1024];
     printf("(%i, %i)  \t", (int)token_p->_line_n, (int)token_p->_column_n);
 
     switch( token_p->id ) {
+    case QUEX_TKN_INDENT:
+    case QUEX_TKN_DEDENT:
+    case QUEX_TKN_NODENT:
     case QUEX_TKN_BRACKET_O:
     case QUEX_TKN_BRACKET_C:
     case QUEX_TKN_CURLY_BRACKET_O:
     case QUEX_TKN_CURLY_BRACKET_C:
-    case QUEX_TKN_OP_ASSIGNMENT:
+    case QUEX_TKN_OP_EQUAL:
     case QUEX_TKN_IF:
+    case QUEX_TKN_ELSE:
+    case QUEX_TKN_AND:
+    case QUEX_TKN_OR:
+    case QUEX_TKN_COLON:
+    case QUEX_TKN_FOR:
+    case QUEX_TKN_IN:
+    case QUEX_TKN_INDENTATION:
     case QUEX_TKN_STRUCT:
     case QUEX_TKN_SEMICOLON:
-    case QUEX_TKN_QUOTE:
+    case QUEX_TKN_ERROR_MISALIGNED_INDENTATION:
+    case QUEX_TKN_DOTS:
+    case QUEX_TKN_FAILURE:
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still might carry an old lexeme. 
          * Printing it would be confusing.                                    */

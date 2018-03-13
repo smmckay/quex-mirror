@@ -55,6 +55,7 @@ class Language(dict):
     PURE_RETURN               = "__QUEX_PURE_RETURN;"
     UNREACHABLE               = "__quex_assert_no_passage();"
     ELSE                      = "else {"
+    ELSE_FOLLOWS              = "} else {"
     ELSE_SIMPLE               = "else"
     END_IF                    = "}"
     FALSE                     = "false"
@@ -352,9 +353,7 @@ class Language(dict):
         the source reference is void, no pragma is required. 
         """
         if SourceReference.is_void(): return ""
-        norm_file_name = Setup.get_file_reference(SourceReference.file_name) 
-        line_n         = SourceReference.line_n
-        return self.LINE_PRAGMA(norm_file_name, line_n)
+        return self.LINE_PRAGMA(SourceReference.file_name, SourceReference.line_n)
 
     def LINE_PRAGMA(self, Path, LineN):
         if LineN >= 2**15: 
@@ -888,13 +887,13 @@ class Language(dict):
         return cpp_include_Multi_i_str.replace("$$HEADER$$", header)
     
     def MODE_GOTO(self, Mode):
-        return "%s(&self, &%s);" % (self.NAME_IN_NAMESPACE_MAIN("enter_mode"), Mode)
+        return "self.enter_mode(%s);" % Mode
 
     def MODE_GOSUB(self, Mode):
-        return "%s(&self, &%s);" % (self.NAME_IN_NAMESPACE_MAIN("push_mode"), Mode)
+        return "self.push_mode(%s);" % Mode
 
     def MODE_GOUP(self):
-        return "%s(&self);"      % self.NAME_IN_NAMESPACE_MAIN("pop_mode")
+        return "self.pop_mode();"
 
     def NAME_IN_NAMESPACE_MAIN(self, Name):
         return "QUEX_NAME(%s)" % Name

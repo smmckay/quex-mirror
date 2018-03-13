@@ -97,7 +97,7 @@ class Mode(BasicMode):
         assert all(p.incidence_id in TerminalDb for p in PatternList)
         self.name    = Name
         self.sr      = Sr
-        self.mode_id = Mode.__mode_id_counter 
+        self.mode_id = Mode.__mode_id_counter  # Used for mode sorting, nothing else.
         Mode.__mode_id_counter += 1
 
         self.terminal_db         = TerminalDb

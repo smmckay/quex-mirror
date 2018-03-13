@@ -60,3 +60,13 @@ class Language(LanguageCpp):
         
     def RAISE_ERROR_FLAG(self, Name):
         return "self.error_code_set_if_first(&self, %s);\n" % Name
+
+    def MODE_GOTO(self, Mode):
+        return "self.enter_mode(&self, %s);" % Mode
+
+    def MODE_GOSUB(self, Mode):
+        return "self.push_mode(&self, %s);" % Mode
+
+    def MODE_GOUP(self):
+        return "self.pop_mode(&self);"
+

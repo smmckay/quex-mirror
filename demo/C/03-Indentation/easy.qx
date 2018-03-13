@@ -4,6 +4,14 @@
 //_____________________________________________________________________________
 start = PROGRAM;
 
+header {
+#include <Easy/lib/extra/accumulator/Accumulator>
+}
+
+footer {
+#include <Easy/lib/extra/accumulator/Accumulator.i>
+}
+
 mode END_OF_FILE :
 <inheritable: only>  
 {    

@@ -6,6 +6,13 @@
 
 start = PROGRAM;
 
+header {
+#include <Easy2/lib/extra/accumulator/Accumulator>
+}
+footer {
+#include <Easy2/lib/extra/accumulator/Accumulator.i>
+}
+
 mode END_OF_FILE : <inheritable: only>  
 {    
     on_end_of_stream => QUEX_TKN_TERMINATION;

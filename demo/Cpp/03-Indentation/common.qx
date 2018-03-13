@@ -1,11 +1,4 @@
 
-header {
-#include <quex/code_base/extra/accumulator/Accumulator>
-}
-
-footer {
-#include <quex/code_base/extra/accumulator/Accumulator.i>
-}
 body {
     QUEX_NAME(Accumulator)          accumulator;
 }

@@ -2,11 +2,17 @@ source $HWUT_PATH/support/bash/hwut_unit.sh
 
 function bar_build {
     target=$1
-    asserts_f=$2
+    asserts_f=$2  # 'no-asserts' => disable asserts
+    #             # 'asserts'    => leave asserts enabled
+    #             # else         => pass through as arguments to 'make'
     first_f=$3
 
     if [ "$asserts_f" == "no-asserts" ]; then 
         add_flags="-DQUEX_OPTION_ASSERTS_DISABLED"
+    elif [ "$asserts_f" == "asserts" ]; then  
+        add_flags=""
+    else
+        make_flags="$asserts_f"
     fi
 
     bash $QUEX_PATH/TEST/call-make.sh $target "ADD_FLAGS=$add_flags" 
@@ -51,3 +57,19 @@ function bar_check_assert_activation {
         fi
     fi
 }
+
+function bar_build_always_and_run {
+    directory=$1
+    app=$2
+    choice=$3  # 'asserts/no-asserts'
+    pushd $directory >& /dev/null
+
+    # Clean always, because there is w/ and wo/ 'asserts'
+    bar_clean 
+    bar_build lexer "$choice" 
+    bar_run   lexer 
+    bar_clean 
+
+    popd >& /dev/null
+}
+
