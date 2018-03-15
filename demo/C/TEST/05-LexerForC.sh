@@ -1,11 +1,12 @@
 #! /usr/bin/env bash
-#! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/004: A C-Lexical Analyser;"
-    echo "CHOICES:  NDEBUG, DEBUG;"
-    echo "SAME;"
-    exit
-fi
-cp 004-side-kick.sh side-kick.sh
-source core-new.sh 05-LexerForC $2 $3 $1
+source ../../TEST/build-and-run.sh
+
+hwut_info $1 \
+    "05-LexerForC: A C-Lexical Analyser;\n" \
+    "CHOICES:  NDEBUG, DEBUG;\n"        \
+    "SAME;"
+
+choice=$1
+
+bar_build_always_and_run "../05-LexerForC" lexer "$choice"
 

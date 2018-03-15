@@ -1,63 +1,31 @@
-# PURPOSE: Makefile Demo Application of Quex
+# PURPOSE: Lexer for the C-Programming language
 #
-# ABSOLUTELY NO WARRANTY
+# License: MIT; Project http://quex.sourceforge.net
+# (C) Frank-Rene Schaefer; FREE OF CHARGE--ABSOLUTELY NO WARRANTY.
 #_______________________________________________________________________________
 .PHONY: clean
 .SECONDARY:
 
-ifndef QUEX_PATH
-    $(error The environment variable QUEX_PATH is not defined!)
-endif
+COMPILER := gcc -ggdb -pedantic -Wconversion -Wall -Werror -W
+LD       := $(COMPILER) 
+CC       := $(COMPILER) -c -I./ $(ADD_FLAGS) 
+# HINTS: -DQUEX_OPTION_ASSERTS_DISABLED
+#        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+#        -DQUEX_OPTION_DEBUG_SHOW
 
+all: lexer
 
-ifdef ASSERTS_ENABLED_F
-	CCFLAG_ASSERTS=# By default asserts are enabled
-else 
-	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
-endif
-
-# (*) COMPILER SETTINGS ________________________________________________________
-#     (change COMPILER to whatever you use as compiler on the command line,
-#      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-COMPILER = gcc -ggdb 
-
-# Note, when using '-pedantic' add '-std=c99' otherwise gcc defaults to 'c89'.
-CC = $(COMPILER) -c \
-	 -I./ -I$(QUEX_PATH)                   \
-	 -Wall -Werror -Wconversion -pedantic -std=c99 \
-	 $(CCFLAG_ASSERTS)                \
-	 -DPRINT_TOKEN                    \
-	 # -DQUEX_OPTION_ASSERTS_DISABLED
-	 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-     # -DQUEX_OPTION_DEBUG_SHOW
-   
-LD = $(COMPILER) 
-
-# (*) RULES ____________________________________________________________________
-# -- application
-lexer:          example.o EasyLexer.o
-	$(LD) -o $@ example.o EasyLexer.o 
+lexer:          lexer.o LexerForC.o
+	$(LD) -o $@ lexer.o LexerForC.o 
           
-# Object files:
-EasyLexer.o: EasyLexer.c 
+LexerForC.o:  lexical_analysis/LexerForC.c 
 	$(CC) $< -o $@ 
 
-example.o: ../example.c  EasyLexer.c
+lexer.o:      lexer.c lexical_analysis/LexerForC.c
 	$(CC) $< -o $@ 
 
-# Macro expansions (only for debugging):
-%.E: %.c    
-	$(CC) -E $< -o $@ 
+lexical_analysis/LexerForC.c: c.qx 
+	quex -i c.qx -o LexerForC --odir lexical_analysis --language C
 
-EasyLexer.c: c.qx 
-	quex -i c.qx -o EasyLexer \
-		 --language C
-
-# (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f EasyLexer*
-	rm -f *.o
-	rm -f *.bak
-	rm -f *.E
-	rm -f lexer
-	rm -f *.svg
+	rm -rf lexer lexical_analysis *.o tmp.*

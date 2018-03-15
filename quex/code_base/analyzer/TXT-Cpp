@@ -216,6 +216,8 @@ public:
 
     /*__( Analysis => Receiving Tokens )________________________________________
      *                                                                        */
+    typedef bool (*callback_on_token_t)(QUEX_TYPE_TOKEN*);
+    $$MF: bool run(callback_on_token_t on_token, bool ErrorPrintF)$$
     $$MF: void receive(QUEX_TYPE_TOKEN** token_pp)$$
 
     $$MF: QUEX_TYPE_TOKEN*  token_p()$$

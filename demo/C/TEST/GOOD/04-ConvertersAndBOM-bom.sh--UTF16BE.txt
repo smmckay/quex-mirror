@@ -1,20 +1,4 @@
-## make lexer    
 Found BOM: UTF_16_BE
-## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
-##
-## Asserts activated! Lexical analyzer is 'paranoid'!
-## => Even smallest misbehavior causes program exit.
-##    This helps to find subtile errors.
-##
-## Note however: the paranoia is a heavy load on performance!
-##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
-##
-## Report any bug at
-##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
-,-----------------------------------------------------------------
-| [START]
 (1, 1)  	PI 'π' 
 (1, 3)  	ALLMOST_EQUAL '≈' 
 (1, 5)  	LATIN_NUMBER '3.14159' 
@@ -45,7 +29,6 @@ Found BOM: UTF_16_BE
 (8, 30)  	OK '✓' 
 (10, 1)  	COPYRIGHT '©' 
 (10, 3)  	LATIN_IDENTIFIER 'Schäfer' 
-(11, 1)  	<TERMINATION> '' 
+(11, 1)  	<TERMINATION>
 | [END] number of token = 31
-`-----------------------------------------------------------------
 VALGRIND:   All heap blocks were freed -- no leaks are possible

@@ -1,9 +1,6 @@
 #include "Easy/Easy.h"
 #include <Easy/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #include <Easy/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-/* #include <Easy/lib/buffer/lexatoms/converter/icu/Converter_ICU>
- * #include <Easy/lib/buffer/lexatoms/converter/icu/Converter_ICU.i>          */
-
 #include <Easy/lib/bom>
 #include <stdio.h>    
 
@@ -32,7 +29,7 @@ main(int argc, char** argv)
         converter->initialize(converter, "UTF8", NULL);
     }
     else if( ! converter->initialize_by_bom_id(converter, bom_id) ) {
-        printf("Cannot treat coding given by BOM.\n");
+        printf("Cannot treat encoding given by BOM.\n");
         fclose(fh);
         converter->delete_self(converter);
         byte_loader->delete_self(byte_loader);

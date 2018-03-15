@@ -1,29 +1,26 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    cat << EOF
-        demo/003: Byte Order Mark (BOM) Cutting;
-        CHOICES:  Without, UTF8-BOM, UTF16BE-BOM, EBCDIC-BOM, UTF7-BOM;
-EOF
-exit
-fi
+source ../../TEST/build-and-run.sh
+
+hwut_info $1 \
+   "04-ConvertersAndBOM-bom: Lexer with converter that detects BOM;\n" \
+   "CHOICES:  Without, UTF8, UTF16BE, EBCDIC, UTF7;"
+
+choice=$1
+first_f=$2
+last_f=$3
+directory="../04-ConvertersAndBOM"
+app=lexer-with-bom
 
 case $1 in
-"Without" )     export args_to_lexer="example.txt";;
-"UTF8-BOM" )    export args_to_lexer="example-bom-utf8.txt";;
-"UTF16BE-BOM" ) export args_to_lexer="example-bom-utf16be.txt";;
-"UTF7-BOM" )    export args_to_lexer="example-bom-utf7.txt";;
-"EBCDIC-BOM" )  export args_to_lexer="example-bom-ebcdic.txt";;
+"Without" ) args="example.txt";;
+"EBCDIC" )  args="example-bom-ebcdic.txt";;
+"UTF8" )    args="example-bom-utf8.txt";;
+"UTF16BE" ) args="example-bom-utf16be.txt";;
+"UTF7" )    args="example-bom-utf7.txt";;
 esac
 
-# HWUT provides:
-#
-# $2 == FIRST if it is the first choice that is applied on 
-#       this test.
-# $3 == LAST  if it is the last choice.
-#
-# $args_to_lexer are inherited to lexer call
-export args_to_make="CONVERTER=ICU lexer-with-bom"
-export lexer_name="./lexer-with-bom"
-source core-new.sh 04-ConvertersAndBOM $2 $3 
+bar_build_and_run_this "$directory" "no-asserts" "$first_f" "$last_f" $app "$args"
+
+
 
 

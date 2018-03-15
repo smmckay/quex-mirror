@@ -1,60 +1,70 @@
-#include<fstream>    
-#include<iostream> 
+#include "Easy/Easy"
+#include <Easy/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <Easy/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#include <Easy/lib/bom>
+#include <stdio.h>    
 
-#include "EasyLexer"
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+static void print_token(quex::Token* token_p);
 
 int 
 main(int argc, char** argv) 
+/* 1st arg: input file, default = 'example.txt'
+ * 2nd arg: input character encoding name, 0x0 --> no conversion              */
 {        
-    using namespace std;
     using namespace quex;
 
-    Token*                 token_p = 0x0;
-    FILE*                  fh      = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
-    /* The lexer **must** be constructed after the BOM-cut */
-    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
-#   if   defined(QUEX_OPTION_CONVERTER_ICONV)
-    QUEX_NAME(Converter)*  converter   = QUEX_NAME(Converter_IConv_new)(NULL, NULL);
-#   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    QUEX_NAME(Converter)*  converter   = QUEX_NAME(Converter_ICU_new)(NULL, NULL);
-#   else
-#   define                 converter NULL
-#   endif
-    QUEX_TYPE_BOM          bom_id      = quex::bom_snap(fh);
+    quex::Token* token_p          = 0x0;
+    int          number_of_tokens = 0;
+    FILE*        fh               = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
 
-    cout << "Found BOM: " << bom_name(bom_id) << endl;
+    /* The lexer must be constructed AFTER the BOM-cut                        */
+    QUEX_NAME(ByteLoader)*    byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
+    QUEX_NAME(Converter)*     converter   = QUEX_NAME(Converter_IConv_new)(NULL, NULL);
+    QUEX_TYPE_BOM             bom_id      = quex::bom_snap(fh);
+
+    printf("Found BOM: %s\n", quex::bom_name(bom_id));
 
     if( bom_id == QUEX_BOM_NONE ) {
-        /* No BOM in data stream => try to interpret data as UTF8 */
+        /* No BOM in data stream => try to interpret data as UTF8             */
         converter->initialize(converter, "UTF8", NULL);
     }
     else if( ! converter->initialize_by_bom_id(converter, bom_id) ) {
-        cout << "Cannot treat coding given by BOM.\n";
+        printf("Cannot treat encoding given by BOM.\n");
         fclose(fh);
         converter->delete_self(converter);
         byte_loader->delete_self(byte_loader);
         return 0;
     }
-    EasyLexer             qlex(byte_loader, converter);
 
-    cout << ",-----------------------------------------------------------------\n";
-    cout << "| [START]\n";
-
-    int number_of_tokens = 0;
+    quex::Easy   qlex(byte_loader, converter);
     do {
         qlex.receive(&token_p);
 
-        cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
-        cout << string(*token_p) << endl;
+        print_token(token_p);
+
         ++number_of_tokens;
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
-    } while( token_p->type_id() != QUEX_TKN_TERMINATION );
-
-    cout << "| [END] number of token = " << number_of_tokens << "\n";
-    cout << "`-----------------------------------------------------------------\n";
+    std::cout << "| [END] number of token = " << number_of_tokens << std::endl;
 
     fclose(fh);
     return 0;
+}
+
+static void
+print_token(quex::Token* token_p)
+{
+    std::cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
+
+    switch( token_p->id ) {
+    case QUEX_TKN_INDENT: 
+    case QUEX_TKN_DEDENT: 
+    case QUEX_TKN_NODENT: 
+    case QUEX_TKN_TERMINATION: 
+        std::cout << token_p->type_id_name() << std::endl;
+        break;
+    default:
+        std::cout << std::string(*token_p) << std::endl;
+        break;
+    }
 }

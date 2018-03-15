@@ -1,3 +1,7 @@
+-- Mention:
+
+    qlex.run(&qlex, self_print_token, true);
+
 -- Manual written token class must include 'lexeme.i'
 
 -- Minimal buffer size:   lexeme size 

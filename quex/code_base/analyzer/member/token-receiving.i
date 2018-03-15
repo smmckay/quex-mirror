@@ -17,6 +17,35 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(remaining_token_pop)(QUEX_TYPE_ANALYZER*);
 
+QUEX_INLINE bool
+QUEX_NAME(MF_run)(QUEX_TYPE_ANALYZER* me, 
+                  bool                (*callback_on_token)(QUEX_TYPE_TOKEN*),
+                  bool                ErrorPrintF)
+/* Implements the reception loop relying on user's callback. If 'ErrorPrintF'
+ * is 'true' an error message is printed in case of error.
+ *
+ * RETURNS: true, in case no error occurred.
+ *          false, else.                                                      */
+{
+    QUEX_TYPE_TOKEN* token_p = (QUEX_TYPE_TOKEN*)0;
+
+    /* Reception loop.                                                        */
+    do {
+        QUEX_NAME(MF_receive)(me, &token_p);
+        if     ( ! token_p ) break;
+        else if( ! callback_on_token(token_p) ) break;
+    } while( token_p->id != QUEX_TKN_TERMINATION );
+
+    /* Error handling.                                                        */
+    if( me->error_code != E_Error_None ) {
+        if( ErrorPrintF ) QUEX_NAME(MF_print_this)(me); 
+        return false;
+    }
+    else {
+        return true;
+    } 
+}
+
 QUEX_INLINE void
 QUEX_NAME(MF_receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** result_pp)
 { 
