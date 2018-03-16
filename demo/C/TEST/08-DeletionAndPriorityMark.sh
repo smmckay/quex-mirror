@@ -1,8 +1,7 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/007: Miscellaneous Features"
-    echo "CHOICES:  NDEBUG, DEBUG;"
-    echo "SAME;"
-    exit
-fi
-source core-new.sh 08-DeletionAndPriorityMark $2 $3 $1
+source ../../TEST/build-and-run.sh
+
+hwut_info $1 \
+    "08-DeletionAndPriorityMark: Priorization;\n" 
+
+bar_build_always_and_run "../08-DeletionAndPriorityMark" lexer ""

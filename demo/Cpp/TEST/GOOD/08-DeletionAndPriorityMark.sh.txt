@@ -1,35 +1,18 @@
-## make lexer DEBUG   
-## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
-##
-## Asserts activated! Lexical analyzer is 'paranoid'!
-## => Even smallest misbehavior causes program exit.
-##    This helps to find subtile errors.
-##
-## Note however: the paranoia is a heavy load on performance!
-##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
-##
-## Report any bug at
-##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
-,-----------------------------------------------------------------
-| [START]
-FISCHERS 'Fischer's' 
-FRITZ 'Fritz' 
-GRABS 'grabs' 
-SWORDFISH 'Swordfish' 
-PERIOD '' 
-FISCHERS 'Fischer's' 
-FRITZ 'Fritz' 
-FISCHES 'hunts' 
-TROUTS 'Trouts' 
-PERIOD '' 
-FISCHERS 'Fischer's' 
-FRITZ 'Fritz' 
-FISCHES 'catches' 
-FISCH 'Sharks' 
-PERIOD '' 
-<TERMINATION>
-| [END] number of token = 16
-`-----------------------------------------------------------------
+(1, 1)  	FISCHERS 'Fischer's'
+(1, 11)  	FRITZ 'Fritz'
+(1, 17)  	GRABS 'grabs'
+(1, 23)  	SWORDFISH 'Swordfish'
+(2, 1)  	PERIOD ''
+(18, 1)  	FISCHERS 'Fischer's'
+(18, 11)  	FRITZ 'Fritz'
+(18, 30)  	FISCHES 'hunts'
+(18, 44)  	TROUTS 'Trouts'
+(18, 54)  	PERIOD ''
+(19, 1)  	FISCHERS 'Fischer's'
+(19, 21)  	FRITZ 'Fritz'
+(19, 27)  	FISCHES 'catches'
+(19, 39)  	FISCH 'Sharks'
+(19, 45)  	PERIOD ''
+(20, 1)  	<TERMINATION>
+[END] number of tokens = 16
 VALGRIND:   All heap blocks were freed -- no leaks are possible
