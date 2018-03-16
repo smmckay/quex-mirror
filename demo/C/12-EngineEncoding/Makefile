@@ -1,23 +1,21 @@
+# PURPOSE: Engines with Encodings different from Unicode
+#
+# License: MIT; Project http://quex.sourceforge.net
+# (C) Frank-Rene Schaefer; FREE OF CHARGE--ABSOLUTELY NO WARRANTY.
+#_______________________________________________________________________________
+.PHONY: clean
 .SECONDARY:
+
+COMPILER := gcc -ggdb -pedantic -Wconversion -Wall -Werror -W
+LD       := $(COMPILER) -I./ $(ADD_FLAGS) 
+# HINTS: -DQUEX_OPTION_ASSERTS_DISABLED
+#        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+#        -DQUEX_OPTION_DEBUG_SHOW
 
 APPS := iso8859-7-lexer \
 	    utf8-lexer      \
 		utf16-lexer     \
 		utf16-lexer-other
-
-ifdef ASSERTS_ENABLED_F
-	CCFLAG_ASSERTS :=# By default asserts are enabled
-else 
-	CCFLAG_ASSERTS := -DQUEX_OPTION_ASSERTS_DISABLED
-endif
-
-# Other useful options:
-#   -DQUEX_OPTION_ASSERTS_DISABLED
-#   -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
-#   -DQUEX_OPTION_DEBUG_SHOW 
-
-CC := gcc -ggdb -Wall -Werror -I$(QUEX_PATH) -I. $(CCFLAG_ASSERTS) 
-
 
 all: $(APPS)
 
@@ -25,47 +23,36 @@ iso8859-7-lexer: iso8859-7-lexer.c greek.qx
 	quex -i                greek.qx  \
 		 --encoding        iso8859_7 \
 		 --token-id-prefix TKN_      \
-		 -o                ISO8859_7_Lex \
+		 -o                ISO8859_7_Lex --odir iso8859-7 \
 		 --language        C         
-	$(CC) -D__QUEX_TEST_OPTION_ISO8859_7 $< ISO8859_7_Lex.c -o $@
+	$(LD) -D__QUEX_TEST_OPTION_ISO8859_7 $< iso8859-7/ISO8859_7_Lex.c -o $@
 
 utf8-lexer: utf8-lexer.c greek.qx
 	quex -i greek.qx            \
 		 --encoding utf8        \
 		 --token-id-prefix TKN_ \
-		 -o UTF8Lex             \
+		 -o UTF8Lex             --odir utf8 \
 		 --language        C
-	$(CC) $< UTF8Lex.c -o $@
+	$(LD) $< utf8/UTF8Lex.c -o $@
 	
 utf16-lexer: utf16-lexer.c greek.qx
 	quex -i                greek.qx  \
 		 --encoding        utf16     \
 		 --token-id-prefix TKN_      \
 	     -b                2         \
-		 -o                UTF16Lex  \
+		 -o                UTF16Lex  --odir utf16 \
 		 --language        C
-	$(CC) -D__QUEX_TEST_OPTION_UTF16BE $< UTF16Lex.c -o $@
+	$(LD) -D__QUEX_TEST_OPTION_UTF16BE $< utf16/UTF16Lex.c -o $@
 
 utf16-lexer-other: utf16-lexer-other.c greek-other.qx
 	quex -i                greek-other.qx  \
 		 --encoding        utf16           \
 		 --token-id-prefix TKN_            \
 	     -b                2               \
-		 -o                UTF16Lex        \
+		 -o                UTF16Lex --odir utf16-other \
 		 --language        C
-	$(CC) -D__QUEX_TEST_OPTION_UTF16BE $< UTF16Lex.c -o $@
+	$(LD) -D__QUEX_TEST_OPTION_UTF16BE $< utf16-other/UTF16Lex.c -o $@
 
-%.E: %.c
-	g++ -E -D__QUEX_TEST_OPTION_ISO8859_7 \
-		-I$(QUEX_PATH) -I. $< -o $@
-	
 clean:
-	rm -f ISO8859_7_Lex* UTF8Lex* UTF16Lex*
-	rm -f $(APPS)
-	rm -f *.E
-	rm -f *.svg
-	rm -f *.o
-	rm -f *.bak
-	rm -f tmp.*
-	rm -f *~
+	rm -rf iso8859-7/ utf8/ utf16/ *.o tmp.* $(APPS)
 

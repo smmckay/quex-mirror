@@ -1,7 +1,7 @@
 #include <stdio.h> 
 
 // (*) include lexical analyser header
-#include "UTF8Lex.h"
+#include "utf8/UTF8Lex.h"
 
 int 
 main(int argc, char** argv) 
@@ -10,7 +10,8 @@ main(int argc, char** argv)
     size_t        BufferSize = 1024;
     char          buffer[1024];
     quex_UTF8Lex  qlex;
-    
+    (void)argc; (void)argv;
+
     QUEX_NAME(from_file_name)(&qlex, "example-utf8.txt", NULL);
 
     // (*) loop until the 'termination' token arrives

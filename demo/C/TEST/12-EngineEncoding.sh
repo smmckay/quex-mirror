@@ -1,10 +1,10 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/011: Engine Encoding (Example ISO8859-7)"
-    echo "CHOICES:  iso8859-7, utf8, utf16-be, utf16-le;"
-    echo "SAME;"
-    exit
-fi
+source ../../TEST/build-and-run.sh
+
+hwut_info $1 \
+    "12-EngineEncoding: Engine Encoding (Example ISO8859-7);\n" \
+    "CHOICES:  iso8859-7, utf8, utf16-be, utf16-le;\n" \
+    "SAME;"
 
 choice=$1
 special=''
@@ -15,9 +15,10 @@ case $choice in
 esac
 
 
-cd $QUEX_PATH/demo/C/12-EngineEncoding
+pushd ../12-EngineEncoding >& /dev/null
 
 $QUEX_PATH/TEST/call-make.sh clean $choice-lexer | grep -v greek.qx 
 $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$choice-lexer $special 
-
 cat tmp.txt; rm -f tmp.txt
+
+popd >& /dev/null

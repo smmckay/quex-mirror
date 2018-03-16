@@ -1,7 +1,6 @@
 #include <stdio.h> 
 
-// (*) include lexical analyser header
-#include "ISO8859_7_Lex.h"
+#include "iso8859-7/ISO8859_7_Lex.h"
 
 int 
 main(int argc, char** argv) 
@@ -10,6 +9,7 @@ main(int argc, char** argv)
     quex_ISO8859_7_Lex qlex;
     size_t             BufferSize = 1024;
     char               buffer[1024];
+    (void)argc; (void)argv;
     
     QUEX_NAME(from_file_name)(&qlex, "example-iso8859-7.txt", NULL);
 

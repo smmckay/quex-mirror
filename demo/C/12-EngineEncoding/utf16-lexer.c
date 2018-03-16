@@ -1,7 +1,7 @@
 #include <stdio.h> 
 
 // (*) include lexical analyser header
-#include "UTF16Lex.h"
+#include "utf16/UTF16Lex.h"
 
 int 
 main(int argc, char** argv) 
@@ -25,10 +25,10 @@ main(int argc, char** argv)
     /* System's endianness is 'little' => reversion if 'big'
      *                     is 'big'    => reversion if 'little' (not 'big'). */
     byte_order_reversion_f = QUEXED(system_is_little_endian)() ?  BigEndianF : ! BigEndianF;
-    QUEX_NAME(byte_order_reversion_set)(&qlex, byte_order_reversion_f);
+    qlex.byte_order_reversion_set(&qlex, byte_order_reversion_f);
 
     printf("## input file           = %s\n", file_name);
-    printf("## byte order reversion = %s\n", E_Boolean_NAME(QUEX_NAME(byte_order_reversion)(&qlex)));
+    printf("## byte order reversion = %s\n", E_Boolean_NAME(qlex.byte_order_reversion(&qlex)));
     
     do {
         qlex.receive(&qlex, &token_p);
