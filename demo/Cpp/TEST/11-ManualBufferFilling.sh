@@ -1,23 +1,13 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/010: Manual Buffer Filling (w/o Converter)"
-    echo "CHOICES:  feeder-plain, feeder-converter, gavager-plain, gavager-converter, point-plain;"
-    exit
-fi
-cd $QUEX_PATH/demo/Cpp/11-ManualBufferFilling
+source ../../TEST/build-and-run.sh
 
-if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
-    make clean >& /dev/null
-fi
-if [ -z "$2" ]; then
-    make clean
-fi
+hwut_info $1 \
+"11-ManualBufferFilling: Manual Buffer Filling (w/o Converter);\n" \
+"CHOICES:  feeder-plain, feeder-converter, gavager-plain, gavager-converter, point-plain;"
 
-$QUEX_PATH/TEST/call-make.sh $1.exe
-$QUEX_PATH/TEST/valgrindi.sh tmp.txt ./$1.exe 
-cat tmp.txt; rm -f tmp.txt
+directory="../11-ManualBufferFilling"
+app=$1.exe
 
-if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
-    make clean >& /dev/null
-fi
+bar_build_always_and_run "$directory" "$app" "asserts"
+
 

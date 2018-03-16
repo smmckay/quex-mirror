@@ -44,7 +44,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER_I
 
-#include "quex/code_base/analyzer/adaptors/Gavager"
+$$INC: analyzer/adaptors/Gavager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -126,6 +126,6 @@ QUEX_NAME(Gavager_deliver)(QUEX_TYPE_GAVAGER* me)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#include "quex/code_base/analyzer/adaptors/Feeder.i"
+$$INC: analyzer/adaptors/Feeder.i$$
 
 #endif /*  __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER_I */

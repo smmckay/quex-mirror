@@ -1,13 +1,14 @@
 #include <stdio.h>
 
 #ifdef QUEX_EXAMPLE_WITH_CONVERTER
-#   include "lexConverter"
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#   include "converter/lexConverter"
+#   include "converter/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#   include "converter/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#   include "converter/lib/analyzer/adaptors/Gavager.i"
 #else
-#   include "lexPlain"
+#   include "plain/lexPlain"
+#   include "plain/lib/analyzer/adaptors/Gavager.i"
 #endif
-#include "quex/code_base/analyzer/adaptors/Gavager.i"
 
 #include "receiver.h"
 
@@ -35,6 +36,7 @@ main(int argc, char** argv)
     size_t                   received_n;
     uint8_t*                 begin_p;
     const uint8_t*           end_p;
+    (void)argc; (void)argv;
 
     token = (CToken*)0;
     while( ! token || token->id != QUEX_TKN_BYE ) {

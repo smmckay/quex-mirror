@@ -1,5 +1,4 @@
 #! /usr/bin/env bash
-#! /usr/bin/env bash
 source ../../TEST/build-and-run.sh
 
 hwut_info $1 \

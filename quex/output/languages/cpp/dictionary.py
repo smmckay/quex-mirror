@@ -357,10 +357,10 @@ class Language(dict):
 
     def LINE_PRAGMA(self, Path, LineN):
         if LineN >= 2**15: 
-            return '\n#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767\n' \
+            return '\n#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767 */\n' \
                     % (2**15 - 1, Path, LineN) 
         elif LineN <= 0:     
-            return '\n#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767\n' \
+            return '\n#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767 */\n' \
                     % (1, Path, LineN) 
         else:
             return '\n#   line %i "%s"\n' % (LineN, Path) 

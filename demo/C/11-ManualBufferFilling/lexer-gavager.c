@@ -1,15 +1,17 @@
 #include <stdio.h>
 
 #ifdef QUEX_EXAMPLE_WITH_CONVERTER
-#   include "lexConverter.h"
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#   include "converter/lexConverter.h"
+#   include "converter/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#   include "converter/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#   include "converter/lib/analyzer/adaptors/Gavager.i"
+#   include "converter/lib/buffer/Buffer_print"
 #else
-#   include "lexPlain.h"
+#   include "plain/lexPlain.h"
+#   include "plain/lib/analyzer/adaptors/Gavager.i"
+#   include "plain/lib/buffer/Buffer_print"
 #endif
 
-#include "quex/code_base/analyzer/adaptors/Gavager.i"
-#include "quex/code_base/buffer/Buffer_print"
 
 #include "receiver.h"
 
@@ -33,10 +35,11 @@ main(int argc, char** argv)
 #   endif
     CLexer          lexer;
     CGavager        gavager;
-    size_t          received_n;
+    ptrdiff_t       received_n;
     uint8_t*        begin_p;
     const uint8_t*  end_p;
     char            buffer[256];
+    (void)argc; (void)argv;
 
     QUEX_NAME(from_ByteLoader)(&lexer, (QUEX_NAME(ByteLoader)*)0, converter);
     QUEX_NAME(Gavager_construct)(&gavager, &lexer, QUEX_TKN_BYE);
@@ -47,7 +50,7 @@ main(int argc, char** argv)
         if( ! token ) {
             gavager.access(&gavager, (void**)&begin_p, (const void**)&end_p); 
             
-            received_n = receiver_receive_in_this_place(begin_p, end_p);
+            received_n = (ptrdiff_t)receiver_receive_in_this_place(begin_p, end_p);
 
             gavager.gavage(&gavager, received_n);
 

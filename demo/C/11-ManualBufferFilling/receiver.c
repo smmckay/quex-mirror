@@ -4,11 +4,11 @@
 #include "receiver.h"
 
 #ifdef QUEX_EXAMPLE_WITH_CONVERTER
-#   include "lexConverter.h"
+#   include "converter/lexConverter.h"
     static ELEMENT_TYPE receiver_data[] = 
        "Ελληνικά • Euskara • فارسی • Frysk • Galego • 한국어 • हिन्दी bye";
 #else
-#   include "lexPlain.h"
+#   include "plain/lexPlain.h"
     static QUEX_TYPE_LEXATOM   receiver_data[] = 
        "A little nonsense now and then is cherished by the wisest men bye";
 #endif
@@ -23,11 +23,11 @@ receiver_get_pointer_to_received(ELEMENT_TYPE** rx_buffer)
  *                                                                           */
 {
     static ELEMENT_TYPE*  iterator       = &receiver_data[0];
-    const size_t          remainder_size =   CONTENT_SIZE  
+    const ptrdiff_t       remainder_size =   CONTENT_SIZE  
                                            - (iterator - &receiver_data[0]);
     size_t                size = (size_t)((float)(rand()) / (float)(RAND_MAX) * 10.0) + 1;
 
-    if( size >= remainder_size ) size = remainder_size; 
+    if( (ptrdiff_t)size >= remainder_size ) size = (size_t)remainder_size; 
 
     *rx_buffer = iterator; 
     iterator += size;
@@ -48,12 +48,12 @@ receiver_receive_in_this_place(ELEMENT_TYPE* BeginP, const ELEMENT_TYPE* EndP)
  * memory.                                                                   */
 {
     static ELEMENT_TYPE*  iterator   = receiver_data;
-    const size_t          BufferSize = EndP - BeginP;
+    const size_t          BufferSize = (size_t)(EndP - BeginP);
     size_t                size = (size_t)((float)(rand()) / (float)(RAND_MAX) * 10.0) + 1;
 
     assert(iterator <= receiver_data + CONTENT_SIZE);
     if( iterator + size >= receiver_data + CONTENT_SIZE ) 
-        size = CONTENT_SIZE - (iterator - receiver_data); 
+        size = (size_t)(CONTENT_SIZE - (iterator - receiver_data)); 
     if( size > BufferSize ) size = BufferSize;
 
     memcpy(BeginP, iterator, size);

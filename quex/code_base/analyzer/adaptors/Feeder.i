@@ -35,7 +35,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__FEEDER_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__FEEDER_I
 
-#include "quex/code_base/analyzer/adaptors/Feeder"
+$$INC: analyzer/adaptors/Feeder$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

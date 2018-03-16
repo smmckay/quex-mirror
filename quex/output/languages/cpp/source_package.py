@@ -98,6 +98,10 @@ analyzer/member/navigation
 analyzer/member/navigation.i
 analyzer/member/token-receiving
 analyzer/member/token-receiving.i
+analyzer/adaptors/Feeder
+analyzer/adaptors/Feeder.i
+analyzer/adaptors/Gavager
+analyzer/adaptors/Gavager.i
 """
 
 analyzer_accumulator = """

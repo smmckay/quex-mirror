@@ -13,7 +13,7 @@ function bar_build {
         add_flags=""
     fi
 
-    echo "[$target] [$add_flags] [$make_flags]"
+    ## echo "[$target] [$add_flags] [$make_flags]"
     bash $QUEX_PATH/TEST/call-make.sh $target "ADD_FLAGS=$add_flags" $make_flags
     # make $target "ADD_FLAGS=$add_flags" $make_flags
 }

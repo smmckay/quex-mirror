@@ -13,7 +13,7 @@
 #include<stdio.h>    
 #include<string.h> 
 
-#include "lexPlain.h"
+#include "plain/lexPlain.h"
 
 /* Terminating zero is implicitly added by the C-Language.                   */
 static uint8_t Memory0[] = 
@@ -31,6 +31,7 @@ int
 main(int argc, char** argv) 
 {        
     QUEX_TYPE_ANALYZER  lexer; 
+    (void)argc; (void)argv;
 
     QUEX_NAME(from_memory)(&lexer, (QUEX_TYPE_LEXATOM*)&Memory0[0], 
                            Memory0Size,
