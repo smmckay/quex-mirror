@@ -1,8 +1,8 @@
 #include<cstdio> 
 
 // (*) include lexical analyser header
-#include "ISO8859_7_Lex"
-#include "ISO8859_7_Lex-converter-iso8859_7"
+#include "iso8859-7/ISO8859_7_Lex"
+#include "iso8859-7/ISO8859_7_Lex-converter-iso8859_7"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ main(int argc, char** argv)
 
     Token*           token_p;
     ISO8859_7_Lex    qlex("example-iso8859-7.txt");
-    
+    (void)argc; (void)argv; 
 
     // (*) loop until the 'termination' token arrives
     do {
