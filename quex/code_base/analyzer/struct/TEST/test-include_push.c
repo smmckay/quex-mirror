@@ -388,4 +388,6 @@ self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
     if( ExpectedError != E_Error_None ) {
         hwut_verify(lx->error_code == ExpectedError);
     }
+
+    TODO verify that the token queue content remained intact!
 }

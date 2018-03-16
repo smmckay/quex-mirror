@@ -1,57 +1,34 @@
-# PURPOSE: Makefile Demo Application of Quex
+# PURPOSE: Example for Include-stack Handling
 #
-# ABSOLUTELY NO WARRANTY
+# License: MIT; Project http://quex.sourceforge.net
+# (C) Frank-Rene Schaefer; FREE OF CHARGE--ABSOLUTELY NO WARRANTY.
 #_______________________________________________________________________________
 .PHONY: clean
 .SECONDARY:
 
-ifndef QUEX_PATH
-    $(error The environment variable QUEX_PATH is not defined!)
-endif
+COMPILER := g++ -pedantic -Wconversion -Wall -Werror -W # -ggdb
+LD       := $(COMPILER) -I./ $(ADD_FLAGS) 
+# HINTS: -DQUEX_OPTION_ASSERTS_DISABLED
+#        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+#        -DQUEX_OPTION_DEBUG_SHOW
+#
+all: lexer-1 lexer-2
 
-
-ifdef ASSERTS_ENABLED_F
-	CCFLAG_ASSERTS=# By default asserts are enabled
-else 
-	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
-endif
-
-# (*) COMPILER SETTINGS ________________________________________________________
-#     (change COMPILER to whatever you use as compiler on the command line,
-#      e.g. "make COMPILER=icpc" will use intel's c++ compiler)
-COMPILER = g++ -ggdb 
-
-CC = $(COMPILER) -c \
-	 -I./ -I$(QUEX_PATH)                             \
-	 -Wall -Werror -Wconversion -pedantic                    \
-	 $(CCFLAG_ASSERTS)                               \
-	 # -DQUEX_OPTION_ASSERTS_DISABLED
-	 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-     # -DQUEX_OPTION_DEBUG_SHOW
-   
-LD = $(COMPILER) 
-
-# (*) RULES ____________________________________________________________________
-# -- application
-lexer:          example.o EasyLexer.o
-	$(LD) -o $@ example.o EasyLexer.o 
+lexer-1:        approach-1.cpp approach-1/Easy.cpp
+	$(LD) -o $@ approach-1.cpp approach-1/Easy.cpp
           
-# Object files:
-%.o: %.cpp EasyLexer
-	$(CC) $< -o $@ 
+lexer-2:        approach-2.cpp approach-2/Easy.cpp
+	$(LD) -o $@ approach-2.cpp approach-2/Easy.cpp
+          
+approach-1/Easy.cpp: approach-1.qx 
+	quex -i approach-1.qx -o Easy --odir approach-1
 
-# Macro expansions (only for debugging):
-%.E: %.cpp    
-	$(CC) -E $< -o $@ 
+approach-2/Easy.cpp: approach-2.qx 
+	quex -i approach-2.qx -o Easy --odir approach-2
 
-EasyLexer EasyLexer.cpp: simple.qx 
-	quex -i simple.qx -o EasyLexer \
-		 
-
-# (*) HELPERS __________________________________________________________________
-clean:	
-	rm -f EasyLexer*
-	rm -f *.o
-	rm -f *.bak
-	rm -f *.E
-	rm -f lexer
+clean: clean_lexer-1 clean_lexer-2
+	rm -rf tmp.* *.o
+clean_lexer-1:
+	rm -rf lexer-1 approach-1 
+clean_lexer-2:
+	rm -rf lexer-2 approach-2 

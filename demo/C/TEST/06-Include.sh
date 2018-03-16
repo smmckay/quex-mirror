@@ -1,25 +1,16 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/005: Including Files"
-    echo "CHOICES:  1, 1_NDEBUG, 2, 2_NDEBUG"
-    exit
-fi
+source ../../TEST/build-and-run.sh
 
-case $1 in
-"1" ) export args_to_lexer="example.txt"  
-;;
+choice=$1
+first_f=$2
+last_f=$3
+directory="../06-Include"
+app=lexer-1
 
-"1_NDEBUG" ) export args_to_lexer="example.txt" 
-             args="NDEBUG"
-;;
-
-"2" ) export args_to_lexer="example-2.txt" 
-;;
-
-"2_NDEBUG" ) export args_to_lexer="example-2.txt" 
-             args="NDEBUG"
-;;
-esac
-
-source core-new.sh 06-Include $2 $3 $args 
+hwut_info $choice \
+    "06-Include: From within reception loop (complicated);\n" \
+    "CHOICES:    shallow, deep;"
+    
+input_file="example-$choice.txt"
+bar_build_and_run_this "$directory" "no-asserts" "$first_f" "$last_f" $app "$input_file"
 

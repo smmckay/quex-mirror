@@ -1,3 +1,9 @@
+-- Demos updated
+-- Demo for include push/pop simplified
+-- Towards removing macro definitions
+-- Source packaging by default
+-- Unification of interface C/Cpp
+
 -- Streamlined design of user callbacks 'on_buffer_change' and 'on_buffer_overflow'.
 -- Helper functions to migrate buffer or extend it during running analysis.
 -- Default implementation for buffer extension upon buffer overflow.

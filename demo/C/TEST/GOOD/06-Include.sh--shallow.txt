@@ -1,0 +1,11 @@
+(01, 01) INCLUDE '' 
+(01, 09) IDENTIFIER 'auxiliary/hallo.txt' 
+>> including: auxiliary/hallo.txt
+    (01, 01) IDENTIFIER 'Hallo' 
+    (02, 01) <TERMINATION>
+    Per File Letter Count = 5
+<< return from include
+(02, 01) <TERMINATION>
+Per File Letter Count = 26
+| [END] number of tokens = 4
+VALGRIND:   All heap blocks were freed -- no leaks are possible

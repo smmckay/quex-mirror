@@ -1,0 +1,31 @@
+(01, 01) IDENTIFIER 'Avant' 
+(01, 07) IDENTIFIER 'la' 
+(01, 10) IDENTIFIER 'premiere' 
+(01, 19) IDENTIFIER ''include'' 
+>> including: auxiliary/hello.txt
+    >> including: auxiliary/bonjour.txt
+        (01, 01) IDENTIFIER 'Bonjour' 
+        (01, 09) IDENTIFIER 'le' 
+        (01, 12) IDENTIFIER 'monde' 
+        >> including: auxiliary/moin.txt
+            (01, 01) IDENTIFIER 'Moin' 
+            (01, 06) IDENTIFIER 'Moin' 
+            >> including: auxiliary/hallo.txt
+                (01, 01) IDENTIFIER 'Hallo' 
+            << return from include
+            (03, 01) IDENTIFIER 'Tschuess' 
+        << return from include
+        >> including: auxiliary/hallo.txt
+            (01, 01) IDENTIFIER 'Hallo' 
+        << return from include
+    << return from include
+    (02, 01) IDENTIFIER 'Hello' 
+    (02, 07) IDENTIFIER 'World' 
+<< return from include
+(03, 01) IDENTIFIER 'Apres' 
+(03, 07) IDENTIFIER 'la' 
+(03, 10) IDENTIFIER 'premiere' 
+(03, 19) IDENTIFIER ''include'' 
+(04, 01) <TERMINATION>
+[END] number of tokens = 19
+VALGRIND:   All heap blocks were freed -- no leaks are possible

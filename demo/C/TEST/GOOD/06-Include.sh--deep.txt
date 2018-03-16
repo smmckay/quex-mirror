@@ -1,0 +1,52 @@
+(01, 01) IDENTIFIER 'Avant' 
+(01, 07) IDENTIFIER 'la' 
+(01, 10) IDENTIFIER 'premiere' 
+(01, 19) IDENTIFIER ''include'' 
+(02, 01) INCLUDE '' 
+(02, 09) IDENTIFIER 'auxiliary/hello.txt' 
+>> including: auxiliary/hello.txt
+    (01, 01) INCLUDE '' 
+    (01, 09) IDENTIFIER 'auxiliary/bonjour.txt' 
+    >> including: auxiliary/bonjour.txt
+        (01, 01) IDENTIFIER 'Bonjour' 
+        (01, 09) IDENTIFIER 'le' 
+        (01, 12) IDENTIFIER 'monde' 
+        (02, 01) INCLUDE '' 
+        (02, 09) IDENTIFIER 'auxiliary/moin.txt' 
+        >> including: auxiliary/moin.txt
+            (01, 01) IDENTIFIER 'Moin' 
+            (01, 06) IDENTIFIER 'Moin' 
+            (02, 01) INCLUDE '' 
+            (02, 09) IDENTIFIER 'auxiliary/hallo.txt' 
+            >> including: auxiliary/hallo.txt
+                (01, 01) IDENTIFIER 'Hallo' 
+                (02, 01) <TERMINATION>
+                Per File Letter Count = 5
+            << return from include
+            (03, 01) IDENTIFIER 'Tschuess' 
+            (04, 01) <TERMINATION>
+            Per File Letter Count = 42
+        << return from include
+        (03, 01) INCLUDE '' 
+        (03, 09) IDENTIFIER 'auxiliary/hallo.txt' 
+        >> including: auxiliary/hallo.txt
+            (01, 01) IDENTIFIER 'Hallo' 
+            (02, 01) <TERMINATION>
+            Per File Letter Count = 5
+        << return from include
+        (05, 01) <TERMINATION>
+        Per File Letter Count = 65
+    << return from include
+    (02, 01) IDENTIFIER 'Hello' 
+    (02, 07) IDENTIFIER 'World' 
+    (04, 01) <TERMINATION>
+    Per File Letter Count = 38
+<< return from include
+(03, 01) IDENTIFIER 'Apres' 
+(03, 07) IDENTIFIER 'la' 
+(03, 10) IDENTIFIER 'premiere' 
+(03, 19) IDENTIFIER ''include'' 
+(04, 01) <TERMINATION>
+Per File Letter Count = 74
+| [END] number of tokens = 29
+VALGRIND:   All heap blocks were freed -- no leaks are possible
