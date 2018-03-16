@@ -53,8 +53,7 @@ main(int argc, char** argv)
 
     } while( continue_lexing_f );
 
-    printf("[END] number of tokens = %i\n", number_of_tokens);
-    if( qlex.error_code != E_Error_None ) qlex.print_this(); 
+    printf("| [END] number of tokens = %i\n", number_of_tokens);
 
     return 0;
 }
@@ -68,7 +67,7 @@ print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p)
 { 
     using namespace quex;
     space(qlex->include_depth);
-    std::cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
+    printf("(%02i, %02i) ", (int)token_p->line_number(), (int)token_p->column_number());
 
     switch( token_p->id ) {
     case QUEX_TKN_TERMINATION: 

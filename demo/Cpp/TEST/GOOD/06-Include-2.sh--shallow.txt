@@ -1,0 +1,6 @@
+>> including: auxiliary/hallo.txt
+    (01, 01) IDENTIFIER 'Hallo' 
+<< return from include
+(02, 01) <TERMINATION>
+[END] number of tokens = 2
+VALGRIND:   All heap blocks were freed -- no leaks are possible

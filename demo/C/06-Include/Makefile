@@ -6,7 +6,7 @@
 .PHONY: clean
 .SECONDARY:
 
-COMPILER := gcc -pedantic -Wconversion -Wall -Werror -W # -ggdb
+COMPILER := gcc -pedantic -Wconversion -Wall -Werror -W -ggdb
 LD       := $(COMPILER) -I./ $(ADD_FLAGS) 
 # HINTS: -DQUEX_OPTION_ASSERTS_DISABLED
 #        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
