@@ -1,4 +1,4 @@
-# PURPOSE: Demo with trailing post context.
+# PURPOSE: Deletion and Priorization Examples.
 #
 # License: MIT; Project http://quex.sourceforge.net
 # (C) Frank-Rene Schaefer; FREE OF CHARGE--ABSOLUTELY NO WARRANTY.

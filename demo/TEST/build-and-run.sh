@@ -4,7 +4,6 @@ function bar_build {
     target=$1
     asserts_f=$2  # 'no-asserts' => disable asserts
     #             # 'asserts'    => leave asserts enabled
-    first_f=$3
     shift; shift; shift;
     make_flags="$@"
 
@@ -14,6 +13,7 @@ function bar_build {
         add_flags=""
     fi
 
+    echo "[$target] [$add_flags] [$make_flags]"
     bash $QUEX_PATH/TEST/call-make.sh $target "ADD_FLAGS=$add_flags" $make_flags
     # make $target "ADD_FLAGS=$add_flags" $make_flags
 }
@@ -69,8 +69,8 @@ function bar_build_always_and_run {
 
     # Clean always, because there is w/ and wo/ 'asserts'
     bar_clean 
-    bar_build lexer "$asserts_f" 
-    bar_run   lexer 
+    bar_build $app "$asserts_f" 
+    bar_run   $app 
     bar_clean 
 
     popd >& /dev/null

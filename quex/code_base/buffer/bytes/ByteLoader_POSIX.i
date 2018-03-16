@@ -36,8 +36,8 @@ QUEX_NAME(ByteLoader_POSIX_new)(int fd)
 QUEX_INLINE QUEX_NAME(ByteLoader)*    
 QUEX_NAME(ByteLoader_POSIX_new_from_file_name)(const char* FileName)
 {
-    int          fd = open(FileName, O_RDONLY);
     QUEX_NAME(ByteLoader)*  alter_ego;
+    int                     fd = open(FileName, O_RDONLY);
 
     if( fd == -1 ) {
         return (QUEX_NAME(ByteLoader)*)0;
@@ -84,33 +84,38 @@ QUEX_NAME(ByteLoader_POSIX_delete_self)(QUEX_NAME(ByteLoader)* alter_ego)
 }
 
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION    
-QUEX_NAME(ByteLoader_POSIX_tell)(QUEX_NAME(ByteLoader)* me)            
+QUEX_NAME(ByteLoader_POSIX_tell)(QUEX_NAME(ByteLoader)* alter_ego)            
 { 
+    QUEX_NAME(ByteLoader_POSIX)* me = (QUEX_NAME(ByteLoader_POSIX)*)(alter_ego);
     /* Use 'lseek(current position + 0)' to get the current position.        */
-    return (QUEX_TYPE_STREAM_POSITION)lseek(((QUEX_NAME(ByteLoader_POSIX)*)me)->fd, 0, SEEK_CUR); 
+    return (QUEX_TYPE_STREAM_POSITION)lseek(me->fd, 0, SEEK_CUR); 
 }
 
 QUEX_INLINE void    
-QUEX_NAME(ByteLoader_POSIX_seek)(QUEX_NAME(ByteLoader)*    me, 
+QUEX_NAME(ByteLoader_POSIX_seek)(QUEX_NAME(ByteLoader)*    alter_ego, 
                                  QUEX_TYPE_STREAM_POSITION Pos) 
-{ lseek(((QUEX_NAME(ByteLoader_POSIX)*)me)->fd, (long)Pos, SEEK_SET); }
+{ 
+    QUEX_NAME(ByteLoader_POSIX)* me = (QUEX_NAME(ByteLoader_POSIX)*)(alter_ego);
+    lseek(me->fd, (long)Pos, SEEK_SET); 
+}
 
 QUEX_INLINE size_t  
-QUEX_NAME(ByteLoader_POSIX_load)(QUEX_NAME(ByteLoader)* me, 
+QUEX_NAME(ByteLoader_POSIX_load)(QUEX_NAME(ByteLoader)* alter_ego, 
                                  void*                  buffer, 
                                  const size_t           ByteN, 
                                  bool*                  end_of_stream_f) 
 /* The POSIX interface does not allow to detect end of file upon reading.
  * The caller will realize end of stream by a return of zero bytes.          */
 { 
-    int n = read(((QUEX_NAME(ByteLoader_POSIX)*)me)->fd, buffer, ByteN); 
+    QUEX_NAME(ByteLoader_POSIX)* me = (QUEX_NAME(ByteLoader_POSIX)*)(alter_ego);
+    ssize_t                      n  = read(me->fd, buffer, ByteN); 
     /* Theoretically, a last 'terminating zero' might be send over socket 
      * connections. Make sure, that this does not appear in the stream.      */
     if( n && ((uint8_t*)buffer)[n-1] == 0x0 ) {
         --n;
     }
     *end_of_stream_f = false;
-    return n;
+    return (size_t)n;
 }
 
 QUEX_INLINE bool  

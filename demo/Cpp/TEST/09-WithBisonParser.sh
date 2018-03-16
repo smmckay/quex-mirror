@@ -1,9 +1,9 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/008: Interface to Bison/Yacc (Contributed by Marco Antonelli)"
-    echo "CHOICES:  NDEBUG, DEBUG;"
-    echo "SAME;"
-    exit
-fi
-cp 09-WithBisonParser-side-kick.sh side-kick.sh
-source core-new.sh 09-WithBisonParser $2 $3 $1
+source ../../TEST/build-and-run.sh
+
+hwut_info $1 \
+    "09-WithBisonParser: Linking Lexical Analysis to Bison Parser;\n" \
+    "CHOICES:  asserts, no-asserts;\n"                                \
+    "SAME;"
+
+bar_build_always_and_run "../09-WithBisonParser" parser "$1"

@@ -94,10 +94,10 @@ QUEX_CONVERTER_CHAR_DEF(utf16, utf16)(const QUEX_TYPE_LEXATOM**  input_pp,
 {
     if(    (uint16_t)0xD800 - (uint16_t)**input_pp > 0 
         || (uint16_t)0xE000 - (uint16_t)**input_pp <= 0 ) {
-        *((*output_pp)++) = *(*input_pp)++;
+        *((*output_pp)++) = (uint16_t)*(*input_pp)++;
     } else { 
-        *((*output_pp)++) = *(*input_pp)++;
-        *((*output_pp)++) = *(*input_pp)++;
+        *((*output_pp)++) = (uint16_t)*(*input_pp)++;
+        *((*output_pp)++) = (uint16_t)*(*input_pp)++;
     }
 }
 

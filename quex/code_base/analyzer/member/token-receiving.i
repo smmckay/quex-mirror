@@ -34,7 +34,7 @@ QUEX_NAME(MF_run)(QUEX_TYPE_ANALYZER* me,
         QUEX_NAME(MF_receive)(me, &token_p);
         if     ( ! token_p ) break;
         else if( ! callback_on_token(token_p) ) break;
-    } while( token_p->id != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TOKEN_ID(TERMINATION) );
 
     /* Error handling.                                                        */
     if( me->error_code != E_Error_None ) {

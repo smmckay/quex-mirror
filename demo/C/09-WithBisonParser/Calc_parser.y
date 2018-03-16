@@ -7,7 +7,7 @@
 %define api.prefix {Calc_yy}
 
 %{
-#include "Calc_lexer.h"
+#include "lexical_analysis/Calc_lexer.h"
 #include <stdio.h>
 #include <math.h>
 #include <errno.h>
@@ -20,7 +20,7 @@
 };
 
 %{
-#include "Calc_lexer.h"
+#include "lexical_analysis/Calc_lexer.h"
 #include <stdio.h>
 int  Calc_yylex(YYSTYPE *yylval, struct quex_Calc_lexer_tag *qlex);
 void Calc_yyerror(struct quex_Calc_lexer_tag *qlex, const char* m);

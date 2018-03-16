@@ -1,10 +1,14 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/009: Lexers on pipes, sockets, and the command line."
-    echo "CHOICES:  stdin, stdin-utf8, socket, socket-utf8, command-line, command-line-utf8;"
-    exit
-fi
-cd $QUEX_PATH/demo/Cpp/10-SocketsAndTerminal
+#! /usr/bin/env bash
+source ../../TEST/build-and-run.sh
+
+hwut_info $1 \
+    "10-SocketsAndTerminal: Lexers on pipes, sockets, and the command line.;\n" \
+    "CHOICES:  stdin, stdin-utf8, socket, socket-utf8, command-line, command-line-utf8;\n"
+    
+choice=$1
+
+cd ../10-SocketsAndTerminal
 
 function make_silent() {
     $QUEX_PATH/TEST/call-make.sh $1 $2 >& /dev/null

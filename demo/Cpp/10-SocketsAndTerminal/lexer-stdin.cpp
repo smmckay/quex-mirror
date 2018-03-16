@@ -24,14 +24,19 @@
 
 #include <stdio.h>
 #if ! defined(WITH_UTF8)
-#   include <LexAscii>
+#   include <lex_ascii/LexAscii>
 #   define  LEXER_CLASS   LexAscii
+#   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX>
+#   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX.i>
 #else
-#   include <LexUtf8>
+#   include <lex_utf8/LexUtf8>
 #   define  LEXER_CLASS   LexUtf8
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
+#   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#   include <lex_utf8/lib/buffer/bytes/ByteLoader_POSIX>
+#   include <lex_utf8/lib/buffer/bytes/ByteLoader_POSIX.i>
 #endif
+
 
 int 
 main(int argc, char** argv) 
@@ -46,6 +51,7 @@ main(int argc, char** argv)
 #   define                 converter NULL
 #endif
     QUEX_NAME(ByteLoader)* loader = QUEX_NAME(ByteLoader_POSIX_new)(0); /* 0 = stdin */
+    (void)argc; (void)argv;
 
     QUEX_NAME(ByteLoader_seek_disable)(loader);
 

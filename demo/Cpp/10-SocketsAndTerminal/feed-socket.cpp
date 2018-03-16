@@ -24,6 +24,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <iostream>
 
 static void feed_file_to_socket(char* FileName, int socket_fd, int ChunkSize, int Delay_ms);
 static void feed_string_to_socket(char* String, int socket_fd, int ChunkSize, int Delay_ms);
@@ -139,7 +140,7 @@ connect_to_server()
     addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     if( connect(socket_fd, (struct sockaddr *)&addr, sizeof(addr)) == -1 ) {
-        printf("client: connect() terminates with failure.\n");
+        std::cout << "client: write() terminates with failure." << std::endl;
         return -1;
     }
 
@@ -171,12 +172,12 @@ feed_file_to_socket(char* FileName, int socket_fd, int ChunkSize, int Delay_ms)
 
         /* Flush the bytes into the socket.                                  */
         if( write(socket_fd, &buffer[0], read_n) == -1 ) {
-            printf("client: write() terminates with failure.\n");
+            std::cout << "client: write() terminates with failure." << std::endl;
             return;
         }
-        usleep(1000L * Delay_ms);
+        usleep((__useconds_t)1000 * Delay_ms);
     }
-    printf("<done>\n");
+    std::cout << "<done>" << std::endl;
 }
 
 static void
@@ -186,7 +187,7 @@ feed_string_to_socket(char* String, int socket_fd, int ChunkSize, int Delay_ms)
 {
     char*       p;
     const char* StringEnd = &String[strlen(String)+1];
-    int         chunk_size;
+    ptrdiff_t   chunk_size;
     char        tmp;
 
     assert(ChunkSize <= 256);
@@ -198,16 +199,16 @@ feed_string_to_socket(char* String, int socket_fd, int ChunkSize, int Delay_ms)
         tmp = p[chunk_size];
         p[chunk_size] = '\0';
 
-        printf("flush: %i: [%s]\n", chunk_size, p);
+        printf("flush: %i: [%s]\n", (int)chunk_size, p);
 
         p[chunk_size] = tmp;
 
         /* Flush the bytes into the socket.                                  */
         if( write(socket_fd, p, chunk_size) == -1 ) {
-            printf("client: write() terminates with failure.\n");
+            std::cout << "client: write() terminates with failure." << std::endl;
             return;
         }
-        usleep(1000L * Delay_ms);
+        usleep((__useconds_t)1000 * Delay_ms);
     }
-    printf("<done>\n");
+    std::cout << "<done>" << std::endl;
 }
