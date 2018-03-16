@@ -55,13 +55,17 @@
 #include <stdio.h>
 
 #if ! defined(WITH_UTF8)
-#   include <LexAscii.h>
+#   include <lex_ascii/LexAscii.h>
 #   define  LEXER_CLASS   quex_LexAscii
+#   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX>
+#   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX.i>
 #else
-#   include <LexUtf8.h>
+#   include <lex_utf8/LexUtf8.h>
 #   define  LEXER_CLASS   quex_LexUtf8
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
+#   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#   include <lex_utf8/lib/buffer/bytes/ByteLoader_POSIX>
+#   include <lex_utf8/lib/buffer/bytes/ByteLoader_POSIX.i>
 #endif
 
 static int  setup_socket_server(void);

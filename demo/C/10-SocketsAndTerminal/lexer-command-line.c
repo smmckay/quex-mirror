@@ -40,13 +40,13 @@
 
 #include <stdio.h>
 #if ! defined(WITH_UTF8)
-#   include <LexAscii.h>
+#   include <lex_ascii/LexAscii.h>
 #   define  LEXER_CLASS   quex_LexAscii
 #else
-#   include <LexUtf8.h>
+#   include <lex_utf8/LexUtf8.h>
 #   define  LEXER_CLASS   quex_LexUtf8
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
+#   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
 
 static void  print_token(quex_Token*  token);
@@ -60,6 +60,8 @@ main(int argc, char** argv)
     char                     buffer[4096];
     char*                    p;
     ssize_t                  received_n;
+    (void)argc; (void)argv;
+
 #if defined(WITH_UTF8)
     QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
 #   else

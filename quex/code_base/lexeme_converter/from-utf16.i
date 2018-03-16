@@ -67,8 +67,8 @@ QUEX_CONVERTER_CHAR_DEF(utf16, utf8)(const QUEX_TYPE_LEXATOM** input_pp,
     } else if ( (uint16_t)0xE000 - (uint16_t)**input_pp > 0 ) { 
         /* Characters > 0xFFFF need to be coded in two bytes by means of 
          * surrogates.                                                        */
-        x0 = (uint32_t)(*(*input_pp)++ - (uint32_t)0xD800);
-        x1 = (uint32_t)(*(*input_pp)++ - (uint32_t)0xDC00);
+        x0 = (uint32_t)(*(*input_pp)++ - (QUEX_TYPE_LEXATOM)0xD800);
+        x1 = (uint32_t)(*(*input_pp)++ - (QUEX_TYPE_LEXATOM)0xDC00);
         unicode = (x0 << 10) + x1 + 0x10000;
 
         /* Assume that only character appear, that are defined in unicode.    */
@@ -110,11 +110,11 @@ QUEX_CONVERTER_CHAR_DEF(utf16, utf32)(const QUEX_TYPE_LEXATOM**  input_pp,
 
     if(    (uint16_t)0xD800 - (uint16_t)**input_pp > 0 
         || (uint16_t)0xE000 - (uint16_t)**input_pp <= 0 ) {
-        *((*output_pp)++) = *(*input_pp)++;
+        *((*output_pp)++) = (uint32_t)*(*input_pp)++;
     } else { 
         x0 = (uint32_t)(*(*input_pp)++) - (uint32_t)0xD800;
         x1 = (uint32_t)(*(*input_pp)++) - (uint32_t)0xDC00;
-        *((*output_pp)++) = (x0 << 10) + x1 + (uint32_t)0x10000;
+        *((*output_pp)++) = (uint32_t)((x0 << 10) + x1 + (uint32_t)0x10000);
     }
 }
 

@@ -55,8 +55,7 @@ QUEX_CONVERTER_CHAR_DEF(utf32, utf8)(const QUEX_TYPE_LEXATOM**  input_pp,
      *          zero after the last byte of the representation.
      *
      * RETURNS: Pointer to the fist position after the last character.      */
-    uint32_t  Unicode = **input_pp;
-    /**/
+    uint32_t  Unicode = (uint32_t)**input_pp;
 
     if (Unicode <= 0x0000007f) {
         *((*output_pp)++) = (uint8_t)Unicode;
@@ -92,7 +91,7 @@ QUEX_CONVERTER_CHAR_DEF(utf32, utf16)(const QUEX_TYPE_LEXATOM**  input_pp,
     if( (long)0x10000 - (long)(**input_pp) > 0 ) {
         *((*output_pp)++) = (uint16_t)**input_pp;
     } else { 
-        tmp             = (uint32_t)(**input_pp - (uint32_t)0x10000);
+        tmp             = (uint32_t)((uint32_t)**input_pp - (uint32_t)0x10000);
 
         *(((*output_pp)++)) = (uint16_t)((tmp >> 10)             | (uint16_t)0xD800);
         *(((*output_pp)++)) = (uint16_t)((tmp & (uint32_t)0x3FF) | (uint16_t)0xDC00);

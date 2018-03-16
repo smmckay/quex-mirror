@@ -21,12 +21,13 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
-static void feed_file_to_socket(char* FileName, int socket_fd, int ChunkSize, int Delay_ms);
-static void feed_string_to_socket(char* String, int socket_fd, int ChunkSize, int Delay_ms);
+static void feed_file_to_socket(char* FileName, int socket_fd, ptrdiff_t ChunkSize, int Delay_ms);
+static void feed_string_to_socket(char* String, int socket_fd, ptrdiff_t ChunkSize, int Delay_ms);
 static int  connect_to_server();
 
 int 
@@ -147,7 +148,7 @@ connect_to_server()
 }
 
 static void
-feed_file_to_socket(char* FileName, int socket_fd, int ChunkSize, int Delay_ms)
+feed_file_to_socket(char* FileName, int socket_fd, ptrdiff_t ChunkSize, int Delay_ms)
 /* Take the content found in 'fh' and feeds it into socket 'socket_fd' in 
  * chunks of size 'ChunkSize'. When done, this function returns.             */
 {
@@ -164,7 +165,7 @@ feed_file_to_socket(char* FileName, int socket_fd, int ChunkSize, int Delay_ms)
     while( 1 + 1 == 2 ) {
         /* Read some bytes from the file that contains the source for 
          * feeding.                                                          */
-        read_n = fread(&buffer[0], 1, ChunkSize, fh);
+        read_n = fread(&buffer[0], 1, (size_t)ChunkSize, fh);
         buffer[read_n] = '\0';
         printf("flush: %i: [%s]\n", (int)read_n, &buffer[0]);
         if( ! read_n ) break;
@@ -174,19 +175,19 @@ feed_file_to_socket(char* FileName, int socket_fd, int ChunkSize, int Delay_ms)
             printf("client: write() terminates with failure.\n");
             return;
         }
-        usleep(1000L * Delay_ms);
+        usleep((__useconds_t)(1000 * Delay_ms));
     }
     printf("<done>\n");
 }
 
 static void
-feed_string_to_socket(char* String, int socket_fd, int ChunkSize, int Delay_ms)
+feed_string_to_socket(char* String, int socket_fd, ptrdiff_t ChunkSize, int Delay_ms)
 /* Take the content found in 'fh' and feeds it into socket 'socket_fd' in 
  * chunks of size 'ChunkSize'. When done, this function returns.             */
 {
     char*       p;
     const char* StringEnd = &String[strlen(String)+1];
-    int         chunk_size;
+    ptrdiff_t   chunk_size;
     char        tmp;
 
     assert(ChunkSize <= 256);
@@ -203,11 +204,11 @@ feed_string_to_socket(char* String, int socket_fd, int ChunkSize, int Delay_ms)
         p[chunk_size] = tmp;
 
         /* Flush the bytes into the socket.                                  */
-        if( write(socket_fd, p, chunk_size) == -1 ) {
+        if( write(socket_fd, p, (size_t)chunk_size) == -1 ) {
             printf("client: write() terminates with failure.\n");
             return;
         }
-        usleep(1000L * Delay_ms);
+        usleep((__useconds_t)(1000 * Delay_ms));
     }
     printf("<done>\n");
 }
