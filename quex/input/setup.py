@@ -161,13 +161,9 @@ class QuexSetup:
 
     def prepare_all_file_names(self):
         #__________________________________________________________________________
-        if self.language in ["DOT"]:
-            return
+        if self.language in ["DOT"]: return
 
-        if self.analyzer_name_space != ["quex"]:
-            for name in self.analyzer_name_space:
-                self.output_file_stem += name + "_"
-        self.output_file_stem += self.analyzer_class_name
+        self.output_file_stem = self.analyzer_class_name
 
         self.output_code_file          = self.prepare_file_name("",               E_Files.SOURCE) 
         self.output_header_file        = self.prepare_file_name("",               E_Files.HEADER)

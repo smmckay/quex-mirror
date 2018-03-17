@@ -1,62 +1,31 @@
+# PURPOSE: Multiple Lexers
+#
+# License: MIT; Project http://quex.sourceforge.net
+# (C) Frank-Rene Schaefer; FREE OF CHARGE--ABSOLUTELY NO WARRANTY.
+#_______________________________________________________________________________
+.PHONY:     clean
 .SECONDARY:
 
-OBJS =  lexer.o          \
-		boeck_Lexer.o    \
-		max_Lexer.o      \
-		moritz_Lexer.o             
+COMPILER := gcc -pedantic -Wconversion -Wall -Werror -W # -ggdb
+LD       := $(COMPILER) -I./ $(ADD_FLAGS) -DQUEX_OPTION_MULTI 
+# HINTS:    -DQUEX_OPTION_ASSERTS_DISABLED
+#           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+#           -DQUEX_OPTION_DEBUG_SHOW
 
-ifdef ASSERTS_ENABLED_F
-	CCFLAG_ASSERTS=# By default asserts are enabled
-else 
-	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
-endif
+lexer: lexer.c max/Lexer.c moritz/Lexer.c boeck/Lexer.c
+	$(LD) $^ -o $@ 
+	 
+max/Lexer.c:    max.qx
+	quex -i token.qx $< -o max::Lexer --odir max/ -b 4 \
+	     --token-id-prefix MAX_TKN_ --suppress 6 --language C
 
-CC := gcc -ggdb -Wall -Werror -DQUEX_OPTION_MULTI
+moritz/Lexer.c: moritz.qx
+	quex -i token.qx $< -o moritz::Lexer --odir moritz/ -b 2 \
+		 --token-id-prefix MORITZ_TKN_ --suppress 6 --language C
 
-lexer: $(OBJS)
-	gcc $(OBJS) -ggdb -o  $@ -I$(QUEX_PATH) 
-# -DQUEX_OPTION_ASSERTS_DISABLED
-# -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-
-lexer.o: lexer.c max_Lexer.h moritz_Lexer.h boeck_Lexer.h
-	$(CC) -c $< -o $@ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) 
-
-%.o: %.c 
-	$(CC) -c $< -o $@ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) 
-	
-# -DQUEX_OPTION_ASSERTS_DISABLED
-# -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-
-%.E: %.c
-	$(CC) $< -E -o $@ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) 
-# -DQUEX_OPTION_ASSERTS_DISABLED
-# -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-
-max_Lexer.h \
-max_Lexer.c: max.qx
-	quex -i token.qx $< -o max::Lexer -b 4                \
-		 --token-id-prefix MAX_TKN_ \
-		 --language C                                     \
-		 --suppress 6
-
-moritz_Lexer.h \
-moritz_Lexer.c: moritz.qx
-	quex -i token.qx $< -o moritz::Lexer -b 2                \
-		 --token-id-prefix MORITZ_TKN_ \
-		 --language C                                        \
-		 --suppress 6
-
-boeck_Lexer.h \
-boeck_Lexer.c: boeck.qx
-	quex -i token.qx $< -o boeck::Lexer --encoding utf8 \
-		 --token-id-prefix TKN_ \
-		 --language C                                \
-		 --suppress 6
+boeck/Lexer.c:  boeck.qx
+	quex -i token.qx $< -o boeck::Lexer --odir boeck/ --encoding utf8 \
+		 --token-id-prefix TKN_ --suppress 6 --language C
 
 clean:
-	rm -rf boeck_Lexer*
-	rm -rf max_Lexer*
-	rm -rf moritz_Lexer*
-	rm -rf lexer
-	rm -rf *.E
-	rm -rf lexer.o
+	rm -rf max/ moritz/ boeck/ *.o lexer tmp.*

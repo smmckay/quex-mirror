@@ -1,16 +1,16 @@
-#include <stdio.h> 
 
-#include "moritz_Lexer.h"
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include "max_Lexer.h"
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include "boeck_Lexer.h"
+#include "moritz/Lexer.h"
+#include "moritz/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#include "moritz/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#include "max/Lexer.h"
+#include "max/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#include "max/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#include "boeck/Lexer.h"
 
-/* When using multipl lexical analyzers, it must be compiled with 
+/* When using multiple lexical analyzers, it must be compiled with 
  * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.      */
-#include <quex/code_base/multi.i>
+#include <boeck/lib/multi.i>
+#include <stdio.h> 
 
 int 
 main(int argc, char** argv) 
@@ -18,13 +18,13 @@ main(int argc, char** argv)
     /* We want to have error outputs in stdout, so that the unit test could 
      * see it.                                                               */
     max_Lexer     max_lex;
-    moritz_Lexer  moritz_lex;
-    boeck_Lexer   boeck_lex;
     max_Token*    max_token    = 0x0;
+    moritz_Lexer  moritz_lex;
     moritz_Token* moritz_token = 0x0;
+    boeck_Lexer   boeck_lex;
     boeck_Token*  boeck_token  = 0x0;
-
-    size_t        i = 0;
+    size_t        i, preL, L;
+    (void)argc; (void)argv;
 
     max_Lexer_Converter*    converter_utf16 = max_Lexer_Converter_IConv_new("UTF16", NULL);
     moritz_Lexer_Converter* converter_ucs2  = moritz_Lexer_Converter_IConv_new("UCS-2", NULL);
@@ -33,8 +33,7 @@ main(int argc, char** argv)
     moritz_Lexer_from_file_name(&moritz_lex, "example-ucs2.txt",  converter_ucs2);
     boeck_Lexer_from_file_name(&boeck_lex,   "example-utf8.txt",  NULL);
 
-    /* Each lexer reads one token, since the grammars are similar the lexeme 
-     * is always the same.                                                   */
+    /* Different lexers produce different interpretations on same lexeme.     */
     printf("                Max:        Moritz:      Boeck:\n");
 
     do {
@@ -43,8 +42,8 @@ main(int argc, char** argv)
         boeck_lex.receive(&boeck_lex, &boeck_token);
 
         /* Lexeme is same for all three. */
-        size_t      preL   = (size_t)strlen((const char*)boeck_token->text);
-        size_t      L      = preL < 10 ? preL : 10;
+        preL   = (size_t)strlen((const char*)boeck_token->text);
+        L      = preL < 10 ? preL : 10;
         printf("%s", boeck_token->text);
 
         for(i=0; i < 10 - L ; ++i) printf(" ");

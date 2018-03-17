@@ -1,9 +1,12 @@
 #! /usr/bin/env bash
-if [[ $1 == "--hwut-info" ]]; then
-    echo "demo/012: Single Application/Multiple Lexical Analyzers"
-    echo "CHOICES:  NDEBUG, DEBUG;"
-    echo "SAME;"
-    exit
-fi
-cp 012-side-kick.sh side-kick.sh
-source core-new.sh 13-MultipleLexers $2 $3 $1
+source ../../TEST/build-and-run.sh
+
+hwut_info $1 \
+    "13-MultipleLexers: Single Application/Multiple Lexical Analyzers;\n" \
+    "CHOICES:  asserts, no-asserts;\n"                           \
+    "SAME;"
+
+choice=$1
+
+bar_build_always_and_run "../13-MultipleLexers" lexer "$choice"
+
