@@ -44,25 +44,24 @@ def _generate(mode_db):
         _write_token_class(class_token_header, 
                            class_token_implementation, 
                            token_id_header)
-        return
+    else:
+        configuration_header,           \
+        analyzer_header,                \
+        engine_txt,                     \
+        lexeme_converter_header,        \
+        lexeme_converter_implementation = _prepare_all(mode_db, 
+                                                       class_token_implementation,
+                                                       global_lexeme_null_declaration)
 
-    configuration_header,           \
-    analyzer_header,                \
-    engine_txt,                     \
-    lexeme_converter_header,        \
-    lexeme_converter_implementation = _prepare_all(mode_db, 
-                                                   class_token_implementation,
-                                                   global_lexeme_null_declaration)
-
-    configuration_header            = adapt.do(configuration_header)
-    analyzer_header                 = adapt.do(analyzer_header)
-    engine_txt                      = adapt.do(engine_txt)
-    lexeme_converter_header         = adapt.do(lexeme_converter_header)
-    lexeme_converter_implementation = adapt.do(lexeme_converter_implementation)
-    _write_all(configuration_header, analyzer_header, engine_txt, 
-               class_token_header, token_id_header,
-               lexeme_converter_header, 
-               lexeme_converter_implementation)
+        configuration_header            = adapt.do(configuration_header)
+        analyzer_header                 = adapt.do(analyzer_header)
+        engine_txt                      = adapt.do(engine_txt)
+        lexeme_converter_header         = adapt.do(lexeme_converter_header)
+        lexeme_converter_implementation = adapt.do(lexeme_converter_implementation)
+        _write_all(configuration_header, analyzer_header, engine_txt, 
+                   class_token_header, token_id_header,
+                   lexeme_converter_header, 
+                   lexeme_converter_implementation)
 
     source_package.do()
 

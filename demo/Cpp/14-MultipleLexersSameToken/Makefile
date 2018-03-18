@@ -1,67 +1,42 @@
-.SECONDARY: $(ENGINE)
+# PURPOSE: Multiple Lexers same Token
+#
+# License: MIT; Project http://quex.sourceforge.net
+# (C) Frank-Rene Schaefer; FREE OF CHARGE--ABSOLUTELY NO WARRANTY.
+#_______________________________________________________________________________
+.PHONY:     clean
+.SECONDARY:
 
-ENGINE = \
-		boeck_Lexer.cpp   \
-		max_Lexer.cpp     \
-		moritz_Lexer.cpp             
+COMPILER := g++ -pedantic -Wconversion -Wall -Werror -W # -ggdb
+LD       := $(COMPILER) -I./ $(ADD_FLAGS) -DQUEX_OPTION_MULTI 
+# HINTS:    -DQUEX_OPTION_ASSERTS_DISABLED
+#           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+#           -DQUEX_OPTION_DEBUG_SHOW
 
-ifdef ASSERTS_ENABLED_F
-	CCFLAG_ASSERTS=# By default asserts are enabled
-else 
-	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
-endif
+all: lexer
 
-CC := g++ -ggdb -Wall -Werror -DQUEX_OPTION_MULTI 
-
-lexer: $(ENGINE:.cpp=.o) lexer.o A_B_C-token.o
-	$(CC) $^ -o  $@ -I$(QUEX_PATH) `icu-config --ldflags`
+lexer: max/Lexer.cpp moritz/Lexer.cpp boeck/Lexer.cpp lexer.cpp A_B_C/C-token.cpp
+	$(LD) $^ -o  $@ `icu-config --ldflags` 
 	 
-%.o: %.cpp $(ENGINE)
-	$(CC) -c $< -o $@ -I$(QUEX_PATH) $(CCFLAG_ASSERTS) 
+COMMON_TOKEN_OPTIONS = --token-class-file A_B_C/C-token \
+	                   --suppress         0 1 6
 
-# -DQUEX_OPTION_ASSERTS_DISABLED
-# -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+max/Lexer.cpp:    max.qx A_B_C/C-token.cpp A_B_C/C-token_ids.h
+	quex -i $< -o max::Lexer --odir max -b 4 $(COMMON_TOKEN_OPTIONS) 
 
-COMMON_TOKEN_OPTIONS = \
-	 --token-class-file A_B_C-token \
-     \
-	 --suppress         0 1 6
-		 # --no-message-on-extra-options \
+moritz/Lexer.cpp: moritz.qx A_B_C/C-token.cpp A_B_C/C-token_ids.h
+	quex -i $< -o moritz::Lexer --odir moritz -b 4 $(COMMON_TOKEN_OPTIONS)
 
-%.E: %.cpp
-	g++ -E $< -o  $@ -DQUEX_OPTION_MULTI -I$(QUEX_PATH) 
+boeck/Lexer.cpp:  boeck.qx A_B_C/C-token.cpp A_B_C/C-token_ids.h
+	quex -i $< -o boeck::Lexer --odir boeck -b 4 $(COMMON_TOKEN_OPTIONS)
 
-nolp: max_Lexer.cpp moritz_Lexer.cpp boeck_Lexer.cpp
-	cat max_Lexer.cpp    | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp max_Lexer.cpp
-	cat moritz_Lexer.cpp | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp moritz_Lexer.cpp
-	cat boeck_Lexer.cpp  | awk '!/^# *line/' > tmp.cpp; mv tmp.cpp boeck_Lexer.cpp
-	
-boeck_Lexer.cpp:  boeck.qx A_B_C-token.cpp A_B_C-token_ids
-	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
-
-max_Lexer.cpp:    max.qx A_B_C-token.cpp A_B_C-token_ids
-	quex -i $< -o max::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
-
-moritz_Lexer.cpp: moritz.qx A_B_C-token.cpp A_B_C-token_ids
-	quex -i $< -o moritz::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) 
-
-A_B_C-token_ids \
-A_B_C-token.cpp: 
-	quex -i token_ids.qx               \
-		 -b 4                          \
-		 --token-id-prefix TKN_        \
-		 -o A::B::C                    \
-		 --token-class A::B::C::Token  \
-		 --token-class-only 
+A_B_C/C-token_ids.h \
+A_B_C/C-token.cpp: 
+	quex -i token_ids.qx                  \
+		 -o A::B::C         --odir A_B_C  \
+		 --token-class-only               \
+		 --token-class      Token         \
+		 -b                4              \
+		 --token-id-prefix TKN_     
 
 clean:
-	rm -rf $(ENGINE)
-	rm -rf $(ENGINE:.cpp=.o)
-	rm -rf $(ENGINE:.cpp=)
-	rm -rf $(ENGINE:.cpp=-token_ids)
-	rm -rf $(ENGINE:.cpp=-token)
-	rm -rf $(ENGINE:.cpp=-configuration)
-	rm -rf A_B_C-token*
-	rm -rf lexer
-	rm -rf *.E
-	rm -rf lexer.o
+	rm -rf max/ moritz/ boeck/ A_B_C/ *.o lexer tmp.* 

@@ -1,18 +1,18 @@
-#include<cstdio> 
+#include<stdio.h> 
 
-#include "moritz_Lexer"
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
-#include "max_Lexer"
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
-#include "boeck_Lexer"
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
+#include "moritz/Lexer"
+#include "moritz/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "moritz/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "max/Lexer"
+#include "max/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "max/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "boeck/Lexer"
+#include "boeck/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "boeck/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
 
 /* When using multiple lexical analyzers, it must be compiled with 
  * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.      */
-#include <quex/code_base/multi.i>
+#include <boeck/lib/multi.i>
 
 
 int 
@@ -20,16 +20,14 @@ main(int argc, char** argv)
 {        
     using namespace std;
 
-    // we want to have error outputs in stdout, so that the unit test could see it.
     max::Lexer      max_lex("ucs4.txt", max::Lexer_Converter_ICU_new("UCS4", NULL));
-    A::B::C::Token* max_token    = 0x0;
+    A::B::Token* max_token    = 0x0;
     moritz::Lexer   moritz_lex("ucs4.txt", moritz::Lexer_Converter_ICU_new("UCS4", NULL));
-    A::B::C::Token* moritz_token = 0x0;
+    A::B::Token* moritz_token = 0x0;
     boeck::Lexer    boeck_lex("ucs4.txt", boeck::Lexer_Converter_ICU_new("UCS4", NULL));
-    A::B::C::Token* boeck_token  = 0x0;
+    A::B::Token* boeck_token  = 0x0;
+    (void)argc; (void)argv;
 
-    // Each lexer reads one token, since the grammars are similar the lexeme 
-    // is always the same.                                                    
     printf("                Max:        Moritz:      Boeck:\n");
 
     do {
@@ -37,12 +35,12 @@ main(int argc, char** argv)
         (void)moritz_lex.receive(&moritz_token);
         (void)boeck_lex.receive(&boeck_token);
 
-        /* Lexeme is same for all three. */
-        int  L = A::B::C::Token_lexeme_length(max_token->text);
+        /* Lexeme is same for all three.                                      */
+        size_t  L = A::B::Token_lexeme_length(max_token->text);
 
-        printf("%s", (char*)A::B::C::Token_lexeme_to_pretty_char(max_token->text).c_str());
+        printf("%s", (char*)A::B::Token_lexeme_to_pretty_char(max_token->text).c_str());
 
-        for(int i=0; i < 10 - L ; ++i) printf(" ");
+        for(size_t i=0; i < (size_t)10 - L ; ++i) printf(" ");
         printf("\t");
         printf("%s   %s   %s\n", 
                max_token->type_id_name().c_str(), 

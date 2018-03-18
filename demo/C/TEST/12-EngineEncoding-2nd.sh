@@ -5,7 +5,7 @@ if [[ $1 == "--hwut-info" ]]; then
     echo "SAME;"
     exit
 fi
-cd $QUEX_PATH/demo/C/12-EngineEncoding
+cd ../12-EngineEncoding
 
 $QUEX_PATH/TEST/call-make.sh clean    utf16-lexer-other 
 $QUEX_PATH/TEST/valgrindi.sh tmp.txt ./utf16-lexer-other $1 

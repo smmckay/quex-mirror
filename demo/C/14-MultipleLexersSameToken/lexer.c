@@ -1,25 +1,23 @@
 #include<stdio.h> 
 
-#include "moritz_Lexer.h"
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
-#include "max_Lexer.h"
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
-#include "boeck_Lexer.h"
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
+#include "moritz/Lexer.h"
+#include "moritz/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "moritz/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "max/Lexer.h"
+#include "max/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "max/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "boeck/Lexer.h"
+#include "boeck/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "boeck/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
 
 /* When using multiple lexical analyzers, it must be compiled with 
  * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.      */
-#include <quex/code_base/multi.i>
+#include <boeck/lib/multi.i>
 
 
 int 
 main(int argc, char** argv) 
 {        
-    /* We want to have error outputs in stdout, so that the unit test could 
-     * see it.                                                               */
     max_Lexer     max_lex;
     moritz_Lexer  moritz_lex;
     boeck_Lexer   boeck_lex;
@@ -29,6 +27,7 @@ main(int argc, char** argv)
     const size_t  BufferSize = 1024;
     char          buffer[1024];
     size_t        i = 0;
+    (void)argc; (void)argv;
 
     max_Lexer_Converter*    max_converter    = max_Lexer_Converter_ICU_new("UCS4", NULL);
     moritz_Lexer_Converter* moritz_converter = moritz_Lexer_Converter_ICU_new("UCS4", NULL);
@@ -38,8 +37,6 @@ main(int argc, char** argv)
     moritz_Lexer_from_file_name(&moritz_lex, "ucs4.txt", moritz_converter);
     boeck_Lexer_from_file_name(&boeck_lex,   "ucs4.txt", boeck_converter);
 
-    /* Each lexer reads one token, since the grammars are similar the lexeme 
-     * is always the same.                                                   */
     printf("                Max:        Moritz:      Boeck:\n");
 
     do {
@@ -47,7 +44,7 @@ main(int argc, char** argv)
         moritz_lex.receive(&moritz_lex, &moritz_token);
         boeck_lex.receive(&boeck_lex, &boeck_token);
 
-        /* Lexeme is same for all three.                                     */
+        /* Lexeme is same for all three.                                      */
         (void)QUEX_NAME_TOKEN(lexeme_to_pretty_char)(boeck_token->text, buffer, BufferSize);
         printf("%s", &buffer[0]);
 
