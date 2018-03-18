@@ -23,4 +23,4 @@ lexer2: easy2.qx
 	$(LD) -DLEXER2 lexer.cpp Easy2/Easy2.cpp -o $@ 
 
 clean:	
-	rm -rf lexer Easy/ Easy2/ *.o tmp.*
+	rm -rf lexer lexer2 Easy/ Easy2/ *.o tmp.*

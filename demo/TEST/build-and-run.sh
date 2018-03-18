@@ -13,7 +13,7 @@ function bar_build {
         add_flags=""
     fi
 
-    ## echo "[$target] [$add_flags] [$make_flags]"
+    ## echo "#build: [$target] [$add_flags] [$make_flags]"
     bash $QUEX_PATH/TEST/call-make.sh $target "ADD_FLAGS=$add_flags" $make_flags
     # make $target "ADD_FLAGS=$add_flags" $make_flags
 }
@@ -39,12 +39,13 @@ function bar_clean {
 }
 
 function bar_check_assert_activation {
-    asserts_f=$1
-    out_file=$2
+    asserts_f="$1"
+    out_file="$2"
     # Tracks the output of the lexer for the warning of 'asserts activated'.
     # => Determine whether this fits with the requirement of the test.
 
     asserts_active=$(grep -sHIne QUEX_OPTION_ASSERTS $out_file)
+    ## echo "#check asserts: [$asserts_f][$out_file][$asserts_active]"
     if [ -z "$asserts_active" ]; then
         # Asserts were inactive
         if [ "$asserts_f" == "asserts" ]; then
@@ -64,13 +65,15 @@ function bar_build_always_and_run {
     directory=$1
     app=$2
     asserts_f=$3  # 'asserts/no-asserts'
+    shift; shift; shift;
+    args="$@"
 
     pushd $directory >& /dev/null
 
     # Clean always, because there is w/ and wo/ 'asserts'
     bar_clean 
-    bar_build $app "$asserts_f" 
-    bar_run   $app 
+    bar_build "$app" "$asserts_f" 
+    bar_run   "$app" "$asserts_f" $@
     bar_clean 
 
     popd >& /dev/null

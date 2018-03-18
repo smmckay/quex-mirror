@@ -1,5 +1,4 @@
 #! /usr/bin/env bash
-#! /usr/bin/env bash
 source ../../TEST/build-and-run.sh
 
 hwut_info $1 \
@@ -9,5 +8,5 @@ hwut_info $1 \
 
 choice=$1
 
-bar_build_always_and_run "../03-Indentation" lexer2 "$choice"
+bar_build_always_and_run "../03-Indentation" lexer2 "$choice" example2.txt
 
