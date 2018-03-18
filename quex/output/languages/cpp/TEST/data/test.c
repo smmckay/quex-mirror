@@ -77,7 +77,6 @@ _15:
     me->buffer._read_p = me->buffer._lexeme_start_p + 1;
 goto _31;
 
-
     __quex_debug("Drop-Out Catcher\n");
 
 
@@ -87,12 +86,10 @@ _16:
 goto _23;
 
 
-
     __quex_assert_no_passage();
 _17:
     /* (DROP_OUT from 19)  */
 goto _24;
-
 
 
     __quex_assert_no_passage();
@@ -101,19 +98,16 @@ _18:
 goto _25;
 
 
-
     __quex_assert_no_passage();
 _19:
     /* (DROP_OUT from 21)  */
 goto _26;
 
 
-
     __quex_assert_no_passage();
 _20:
     /* (DROP_OUT from 23)  */
 goto _32;
-
 
 
     __quex_assert_no_passage();
