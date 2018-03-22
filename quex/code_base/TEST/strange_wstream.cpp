@@ -1,5 +1,5 @@
-$$INC: extra/test_environment/TestAnalyzer-configuration$$
-$$INC: extra/test_environment/StrangeStream$$
+#include "ut/lib/extra/test_environment/TestAnalyzer-configuration"
+#include "ut/lib/extra/test_environment/StrangeStream"
 #include <sstream>
 #include <iostream>
 #include <cstdlib>
