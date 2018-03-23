@@ -18,12 +18,12 @@ DEFS = \
 
 CC_PURE := gcc \
 		  -Wall -Werror -ggdb \
-		  -I. -I$(QUEX_PATH) -I$(HWUT_PATH)/support/C \
+		  -I. -I$(HWUT_PATH)/support/C -I../../../../ \
 		  $(DEFS) 
 
 CC := gcc \
 		  -Wall -Werror -ggdb \
-		  -I. -I$(QUEX_PATH) -I$(HWUT_PATH)/support/C \
+		  -I. -I$(HWUT_PATH)/support/C -I../../../../ \
 		  $(DEFS) 
 
 all: $(TESTS)
@@ -34,21 +34,23 @@ hwut-info:
 hwut-end: clean
 	@echo Bye
 
-%-fb0.exe: %.c 
-	$(CC) $(FALLBACK_0) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@ 
-%-fb1.exe: %.c 
-	$(CC) $(FALLBACK_1) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
-%-fb2.exe: %.c 
-	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint8_t $^ -o $@
-%-fb2-32.exe: %.c 
-	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $^ -o $@
-%-api.exe: %-api.c 
-	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $^ -o $@ $(ICU_LIBS) \
+%-fb0.exe: %.c ut
+	$(CC) $(FALLBACK_0) -DQUEX_TYPE_LEXATOM=uint8_t $< -o $@ 
+%-fb1.exe: %.c ut
+	$(CC) $(FALLBACK_1) -DQUEX_TYPE_LEXATOM=uint8_t $< -o $@
+%-fb2.exe: %.c ut
+	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint8_t $< -o $@
+%-fb2-32.exe: %.c ut
+	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $< -o $@
+%-api.exe: %-api.c ut
+	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $< -o $@ $(ICU_LIBS) \
 		-DHWUT_OPTION_NO_ASSUMPTION_ON_LEXATOM_INDEX_AT_END
 
+ut:
+	python ../../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter
+
 clean: 
-	rm -rf $(TEST_FILES)
-	rm -rf *.o
+	rm -rf $(PROGRAMS) ut
 	rm -rf *-gen.[ch]
 	rm -rf *-gen.[ch].[ch]   # some unattended build results ...
 	rm -rf *.exe

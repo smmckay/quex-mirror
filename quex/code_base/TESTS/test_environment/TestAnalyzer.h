@@ -3,7 +3,7 @@
  *
  * (1) Includes for required standard headers.
  * (2) Definitions of options and settings for the particular application.
- * (3) $$INC: definitions$$ for default settings.
+ * (3) #include "test_environment/lib/definitions"
  * (4) Lexical FSM class TestAnalyzer and its memento class.
  * (5) Constructor and init core of TestAnalyzer.
  * (6) Memento pack and unpack functions.
@@ -25,16 +25,16 @@
 #   ifndef  QUEX_OPTION_MULTI
 #      error "Multiple lexical analyzers detected. QUEX_OPTION_MULTI must be defined and 'quex/code_base/multi.i' must be included in one single file!"
 #   endif
-$$INC: include-guard-undef$$
+#include "test_environment/lib/include-guard-undef"
 #   undef   __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__QUEX___TESTANALYZER
 #else
 #   define  __QUEX_INCLUDE_INDICATOR__ANALYZER__MAIN
 #endif
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_QUEX_
 
-#include "TestAnalyzer-configuration.h"
+#include "test_environment/TestAnalyzer-configuration.h"
 
-$$INC: definitions$$
+#include "test_environment/lib/definitions"
 
 struct  QUEX_NAME(Engine_tag);
 struct  QUEX_NAME(Memento_tag);
@@ -55,19 +55,13 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 
 /* END: _______________________________________________________________________*/
-$$INC: analyzer/headers$$
+#include "test_environment/lib/analyzer/headers"
 
-#include "TestAnalyzer-token_ids.h"
-#include "TestAnalyzer-token.h"
+#include "test_environment/TestAnalyzer-token_ids.h"
+#include "test_environment/TestAnalyzer-token.h"
 
-enum {
-    QUEX_NAME(ModeID_M) = 0
-};
-    
 extern QUEX_NAME(Mode)  QUEX_NAME(M);
 
-
-extern QUEX_NAME(Mode)*  (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 extern  void QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -94,7 +88,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
-    struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
+    const struct QUEX_NAME(Mode_tag)* __current_mode_p; 
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
@@ -128,7 +122,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
     E_Error                         error_code;
     char*                           __input_name;
 
-    QUEX_NAME(Mode)*                __current_mode_p; 
+    const QUEX_NAME(Mode)*          __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
@@ -144,29 +138,75 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 #   if defined(QUEX_OPTION_INCLUDE_STACK)
     struct QUEX_NAME(Memento_tag)*  _parent_memento;
 #   endif
-    void              (*receive)(QUEX_TYPE_ANALYZER* me, 
-                                 QUEX_TYPE_TOKEN** token_pp);
-    QUEX_TYPE_TOKEN*  (*token_p)(QUEX_TYPE_ANALYZER* me);
-    void              (*send)(QUEX_TYPE_ANALYZER* me, 
-                              QUEX_TYPE_TOKEN_ID Id);
-    void              (*send_n)(QUEX_TYPE_ANALYZER* me, 
-                                QUEX_TYPE_TOKEN_ID Id, 
-                                size_t             RepetitionN);
-    bool              (*send_text)(QUEX_TYPE_ANALYZER* me, 
-                                   QUEX_TYPE_TOKEN_ID  Id,
-                                   QUEX_TYPE_LEXATOM*  BeginP, 
-                                   QUEX_TYPE_LEXATOM*  EndP);
-    bool              (*send_string)(QUEX_TYPE_ANALYZER* me, 
-                                     QUEX_TYPE_TOKEN_ID  Id,
-                                     QUEX_TYPE_LEXATOM*  ZeroTerminatedString);
+    bool (*run)(QUEX_TYPE_ANALYZER* me, bool (*on_token)(QUEX_TYPE_TOKEN*), bool ErrorPrintF);
 
-    size_t      (*tell)(QUEX_TYPE_ANALYZER* me);
-    void        (*seek)(QUEX_TYPE_ANALYZER* me, const size_t CharacterIndex);
-    void        (*seek_forward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN);
-    void        (*seek_backward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN);
-                   
-    void        (*undo)(QUEX_TYPE_ANALYZER* me);
-    void        (*undo_n)(QUEX_TYPE_ANALYZER* me, size_t DeltaN_Backward);
+    void (*receive)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN** token_pp);
+
+
+    QUEX_TYPE_TOKEN* (*token_p)(QUEX_TYPE_ANALYZER* me);
+
+
+    void (*send)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN_ID Id);
+
+    void (*send_n)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN_ID Id, size_t RepetitionN);
+
+    bool (*send_text)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP);
+
+    bool (*send_string)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString);
+
+
+    size_t (*tell)(QUEX_TYPE_ANALYZER* me);
+
+    void (*seek)(QUEX_TYPE_ANALYZER* me, const size_t CharacterIndex);
+
+    void (*seek_forward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN);
+
+    void (*seek_backward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN);
+
+                
+    void (*undo)(QUEX_TYPE_ANALYZER* me);
+
+    void (*undo_n)(QUEX_TYPE_ANALYZER* me, size_t DeltaN_Backward);
+
+
+    /*__( Modes )_______________________________________________________________
+     *                                                                        */
+    const QUEX_NAME(Mode)* (*mode)(QUEX_TYPE_ANALYZER* me);
+
+    void (*set_mode_brutally)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* Mode);
+
+    void (*enter_mode)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* TargetMode);
+
+
+    void (*pop_mode)(QUEX_TYPE_ANALYZER* me);
+
+    void (*pop_drop_mode)(QUEX_TYPE_ANALYZER* me);
+
+    void (*push_mode)(QUEX_TYPE_ANALYZER* me, QUEX_NAME(Mode)* new_mode);
+
+
+    const char* (*version)(QUEX_TYPE_ANALYZER* me);
+
+    void (*print_this)(QUEX_TYPE_ANALYZER* me);
+
+    const char* (*input_name)(QUEX_TYPE_ANALYZER* me);
+
+    bool (*input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputName);
+
+    /* Activate/deactivate byte order reversion (big-/little-endian)          */
+    bool (*byte_order_reversion)(QUEX_TYPE_ANALYZER* me);
+
+    void (*byte_order_reversion_set)(QUEX_TYPE_ANALYZER* me, bool Value);
+
+
+    void (*error_code_clear)(QUEX_TYPE_ANALYZER* me);
+
+    bool (*error_code_is_void)(QUEX_TYPE_ANALYZER* me);
+
+    void (*error_code_set_void)(QUEX_TYPE_ANALYZER* me);
+
+    void (*error_code_set_if_first)(QUEX_TYPE_ANALYZER* me, E_Error ErrorCode);
+
 
     /* __( END: Data Members )________________________________________________*/
 
@@ -178,6 +218,10 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 
 } quex_TestAnalyzer;
 
+#if defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE void QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me);
+#endif
+
 
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__QUEX___TESTANALYZER */
@@ -185,13 +229,46 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+#if defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE void
+QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
+{
+    me->run = QUEX_NAME(MF_run);
+    me->receive = QUEX_NAME(MF_receive);
+    me->token_p = QUEX_NAME(MF_token_p);
+    me->send = QUEX_NAME(MF_send);
+    me->send_n = QUEX_NAME(MF_send_n);
+    me->send_text = QUEX_NAME(MF_send_text);
+    me->send_string = QUEX_NAME(MF_send_string);
+    me->tell = QUEX_NAME(MF_tell);
+    me->seek = QUEX_NAME(MF_seek);
+    me->seek_forward = QUEX_NAME(MF_seek_forward);
+    me->seek_backward = QUEX_NAME(MF_seek_backward);
+    me->undo = QUEX_NAME(MF_undo);
+    me->undo_n = QUEX_NAME(MF_undo_n);
+    me->mode = QUEX_NAME(MF_mode);
+    me->set_mode_brutally = QUEX_NAME(MF_set_mode_brutally);
+    me->enter_mode = QUEX_NAME(MF_enter_mode);
+    me->pop_mode = QUEX_NAME(MF_pop_mode);
+    me->pop_drop_mode = QUEX_NAME(MF_pop_drop_mode);
+    me->push_mode = QUEX_NAME(MF_push_mode);
+    me->version = QUEX_NAME(MF_version);
+    me->print_this = QUEX_NAME(MF_print_this);
+    me->input_name = QUEX_NAME(MF_input_name);
+    me->input_name_set = QUEX_NAME(MF_input_name_set);
+    me->byte_order_reversion = QUEX_NAME(MF_byte_order_reversion);
+    me->byte_order_reversion_set = QUEX_NAME(MF_byte_order_reversion_set);
+    me->error_code_clear = QUEX_NAME(MF_error_code_clear);
+    me->error_code_is_void = QUEX_NAME(MF_error_code_is_void);
+    me->error_code_set_void = QUEX_NAME(MF_error_code_set_void);
+    me->error_code_set_if_first = QUEX_NAME(MF_error_code_set_if_first);
+}
+#endif
+
 bool
 QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
-
-    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_M)]  == &(QUEX_NAME(M)));
-
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
@@ -298,10 +375,10 @@ bool UserMementoPack_UnitTest_return_value = true;
 #   define __QUEX_OPTION_PLAIN_C
 #endif
 
-#include "TestAnalyzer-token.h"
+#include "test_environment/TestAnalyzer-token.h"
 $$INC: definitions$$
 
-#include "TestAnalyzer-token.h"
+#include "test_environment/TestAnalyzer-token.h"
 
 QUEX_INLINE void 
 quex_Token_set(quex_Token*            __this, 
@@ -315,13 +392,13 @@ quex_Token_construct(quex_Token* __this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
 
-#   line 26 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 25 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = 0;
        self.text   = LexemeNull;
    
 
-#   line 325 "TestAnalyzer.h"
+#   line 402 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -343,7 +420,7 @@ quex_Token_destruct(quex_Token* __this)
     if( ! __this ) return;
 
 
-#   line 31 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 30 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        if( self.text != LexemeNull ) {
            QUEXED(MemoryManager_free)((void*)self.text,
@@ -352,7 +429,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 356 "TestAnalyzer.h"
+#   line 433 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -368,28 +445,17 @@ quex_Token_copy(quex_Token*       __this,
     (void)__this;
     (void)__That;
 
-#   line 39 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 38 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
         self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text,
-                                       E_MemoryObjectType_TEXT);
+            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
-            self.text = \
-               (QUEX_TYPE_LEXATOM*)
-               QUEXED(MemoryManager_allocate)(
-                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1),
-                      E_MemoryObjectType_TEXT);
-            if( self.text ) {
-                __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
-                                    sizeof(QUEX_TYPE_LEXATOM) 
-                                  * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1));
-            }
-            else {
-                self.text = LexemeNull;
-            }
+            self.text = QUEX_NAME_TOKEN(lexeme_clone)(self.text, 
+                                                      QUEX_NAME_TOKEN(lexeme_length)(Other.text));
+            if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -398,7 +464,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 402 "TestAnalyzer.h"
+#   line 468 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -430,7 +496,7 @@ quex_Token_take_text(quex_Token*            __this,
     (void)Begin;
     (void)End;
 
-#   line 68 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 56 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 
 #       if 0
@@ -455,14 +521,8 @@ quex_Token_take_text(quex_Token*            __this,
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);
-            self.text = \
-                 (QUEX_TYPE_LEXATOM*)
-                 QUEXED(MemoryManager_allocate)(
-                              sizeof(QUEX_TYPE_LEXATOM) * (size_t)(End - Begin + 1), 
-                              E_MemoryObjectType_TEXT);
-            __QUEX_STD_memcpy((void*)self.text, (void*)Begin, 
-                              sizeof(QUEX_TYPE_LEXATOM) * (size_t)(End - Begin));
-            /* The string is not necessarily zero terminated, so terminate it here. */
+            self.text = QUEX_NAME_TOKEN(lexeme_clone)(Begin, (size_t)(End - Begin));
+            if( ! self.text ) self.text = LexemeNull;
             *((QUEX_TYPE_LEXATOM*)(self.text + (End - Begin))) = (QUEX_TYPE_LEXATOM)0;
         } else {
             self.text = LexemeNull;
@@ -486,7 +546,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 490 "TestAnalyzer.h"
+#   line 550 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -503,12 +563,12 @@ quex_Token_repetition_n_get(quex_Token* __this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
 
-#   line 131 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 113 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        return self.number;
    
 
-#   line 512 "TestAnalyzer.h"
+#   line 572 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -522,12 +582,12 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
     (void)__this;
     (void)N;
 
-#   line 127 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 109 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        self.number = N;
    
 
-#   line 531 "TestAnalyzer.h"
+#   line 591 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -562,7 +622,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 
-#   line 135 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 117 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
         const char* 
         quex_Token_get_string(quex_Token* me, char*   buffer, size_t  BufferSize) 
@@ -597,13 +657,14 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
             return buffer;
         }
 
-$$INC: lexeme_converter/from-unicode-buffer.i$$
-
+#include "lib/lexeme_converter/from-unicode-buffer.i"
 $$INC: lexeme.i$$
    
 
-#   line 606 "TestAnalyzer.h"
+#   line 665 "TestAnalyzer.h"
 
+
+$$INC: lexeme.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
 QUEX_NAMESPACE_TOKEN_OPEN

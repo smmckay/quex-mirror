@@ -10,13 +10,13 @@
 #ifndef    __QUEX_OPTION_PLAIN_C
 #   define __QUEX_OPTION_PLAIN_C
 #endif
-$$INC: definitions$$
-$$INC: asserts$$
-$$INC: compatibility/stdint.h$$
-$$INC: MemoryManager$$
+#include "test_environment/lib/definitions"
+#include "test_environment/lib/asserts"
+#include "test_environment/lib/compatibility/stdint.h"
+#include "test_environment/lib/MemoryManager"
 
 
-$$INC: lexeme_base$$
+#include "test_environment/lib/lexeme"
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
@@ -29,26 +29,24 @@ struct quex_Token_tag;
 extern const char* 
 QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   BufferSize); 
 
-$$INC: lexeme_converter/from-unicode-buffer$$
-
-$$INC: lexeme$$
+#include "lib/lexeme_converter/from-unicode-buffer"
    
 
-#   line 38 "TestAnalyzer-token.h"
+#   line 36 "test_environment/TestAnalyzer-token.h"
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
     QUEX_TYPE_TOKEN_ID    id;
 
-#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 19 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 47 "TestAnalyzer-token.h"
+#   line 45 "test_environment/TestAnalyzer-token.h"
 
-#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     size_t                   number;
 
-#   line 52 "TestAnalyzer-token.h"
+#   line 50 "test_environment/TestAnalyzer-token.h"
 
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -60,12 +58,12 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 #       endif
 #   endif
 
-#   line 123 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 105 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        /* Nothing here. */
    
 
-#   line 69 "TestAnalyzer-token.h"
+#   line 67 "test_environment/TestAnalyzer-token.h"
 
 } quex_Token;
 

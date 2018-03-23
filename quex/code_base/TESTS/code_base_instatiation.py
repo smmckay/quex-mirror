@@ -14,7 +14,7 @@
 #______________________________________________________________________________
 import os
 import sys
-sys.path.insert(0, os.path.abspath("../../../"))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), "../../../")))
 import quex.output.languages.cpp.source_package as     source_package
 import quex.output.analyzer.adapt               as     adapt
 from   quex.output.languages.core               import db
@@ -44,4 +44,4 @@ else:
     if not code_dir_list: code_dir_list = None
     try:    os.mkdir(target_dir)
     except: print "Directory '%s' already exists." % target_dir
-    source_package.do(target_dir)
+    source_package.do(target_dir, code_dir_list)

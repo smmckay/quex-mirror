@@ -30,20 +30,27 @@ blackboard.memento_pack_extension      = CodeFragment("return UserMementoPack_Un
 
 def code(Language):
     global tail_str
-    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer",
+    current_dir = os.getcwd()
+    os.chdir("..")
+    command_line.do(["-i", "test_environment/nothing.qx", "-o", "TestAnalyzer", "--odir",  "test_environment",
                      "--no-include-stack", "--language", Language])
     mode_db = quex_file_parser.do(Setup.input_mode_files)
 
     core._generate(mode_db)
+    os.chdir(current_dir)
 
     return mode_db
 
 def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
 
+    dummy, \
+    member_function_signature_list = analyzer_class.do(mode_db, "")
+
     # FSM class implementation
     #
     analyzer_class_implementation  = "#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n"
-    analyzer_class_implementation += analyzer_class.do_implementation(mode_db)
+    analyzer_class_implementation += analyzer_class.do_implementation(mode_db, 
+                                                                      member_function_signature_list)
     analyzer_class_implementation += "\n"
     analyzer_class_implementation += templates.get_implementation_header(Setup)
     analyzer_class_implementation += "\n"
@@ -54,7 +61,6 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
 
     with open(FileName, "a") as fh:
         fh.write(analyzer_class_implementation)
-
 
     if not TokenClassImplementationF:
         return

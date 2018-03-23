@@ -43,13 +43,11 @@ point-converter.exe:    lexer-point.c              converter/lexConverter.c
 	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^ 
           
 plain/lexPlain.c: lexPlain.qx 
-	quex -i lexPlain.qx -o lexPlain --odir plain \
-		 --language C            
+	quex -i lexPlain.qx -o lexPlain --odir plain --language C            
 
 converter/lexConverter.c: lexConverter.qx 
 	quex -i lexConverter.qx -o lexConverter --odir converter \
-		 --buffer-element-type wchar_t \
-		 --language            C            
+		 --buffer-element-type wchar_t --language C            
 
 clean:	
 	rm -rf plain/ converter/ *.o $(FILES) tmp.*

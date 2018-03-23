@@ -27,8 +27,5 @@ lexer.o: lexer.c easy/Easy.c
 easy/Easy.c: easy.qx 
 	quex -i easy.qx -o Easy --odir easy --token-id-offset 0x1000 --language C
 
-%.E: %.cpp    # Macro expansions (only for debugging)
-	$(CC) -E $< -o $@ 
-
 clean:	
 	rm -rf lexer easy/ *.o

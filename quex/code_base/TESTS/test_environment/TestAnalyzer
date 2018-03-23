@@ -3,7 +3,7 @@
  *
  * (1) Includes for required standard headers.
  * (2) Definitions of options and settings for the particular application.
- * (3) $$INC: definitions$$ for default settings.
+ * (3) #include "test_environment/lib/definitions"
  * (4) Lexical FSM class TestAnalyzer and its memento class.
  * (5) Constructor and init core of TestAnalyzer.
  * (6) Memento pack and unpack functions.
@@ -25,16 +25,16 @@
 #   ifndef  QUEX_OPTION_MULTI
 #      error "Multiple lexical analyzers detected. QUEX_OPTION_MULTI must be defined and 'quex/code_base/multi.i' must be included in one single file!"
 #   endif
-$$INC: include-guard-undef$$
+#include "test_environment/lib/include-guard-undef"
 #   undef   __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION____QUEX____TESTANALYZER
 #else
 #   define  __QUEX_INCLUDE_INDICATOR__ANALYZER__MAIN
 #endif
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE___QUEX__
 
-#include "TestAnalyzer-configuration"
+#include "test_environment/TestAnalyzer-configuration"
 
-$$INC: definitions$$
+#include "test_environment/lib/definitions"
 
 QUEX_NAMESPACE_MAIN_OPEN 
     struct QUEX_NAME(Engine_tag);
@@ -61,21 +61,15 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 /* END: _______________________________________________________________________*/
 
-$$INC: analyzer/headers$$
+#include "test_environment/lib/analyzer/headers"
 
-#include "TestAnalyzer-token_ids"
-#include "TestAnalyzer-token"
+#include "test_environment/TestAnalyzer-token_ids"
+#include "test_environment/TestAnalyzer-token"
 
 QUEX_NAMESPACE_MAIN_OPEN 
 
-enum {
-    QUEX_NAME(ModeID_M) = 0
-};
-
 extern QUEX_NAME(Mode)  QUEX_NAME(M);
 
-
-extern QUEX_NAME(Mode)*   (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]);  
 
 extern  void QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -102,7 +96,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
-    struct QUEX_NAME(Mode_tag)*     __current_mode_p; 
+    const QUEX_NAME(Mode)*          __current_mode_p; 
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
@@ -137,7 +131,7 @@ public:
     E_Error                         error_code;
     char*                           __input_name;
 
-    QUEX_NAME(Mode)*                __current_mode_p; 
+    const QUEX_NAME(Mode)*          __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
@@ -245,62 +239,40 @@ public:
 
     /*__( Analysis => Receiving Tokens )________________________________________
      *                                                                        */
-    void receive(QUEX_TYPE_TOKEN** token_pp)    { QUEX_NAME(MF_receive)(this, token_pp); }
+    typedef bool (*callback_on_token_t)(QUEX_TYPE_TOKEN*);
+    bool run(callback_on_token_t on_token, bool ErrorPrintF) { return QUEX_NAME(MF_run)(this, on_token, ErrorPrintF); }
 
-    QUEX_TYPE_TOKEN*  token_p()                 { return QUEX_NAME(MF_token_p)(this); }
+    void receive(QUEX_TYPE_TOKEN** token_pp) { QUEX_NAME(MF_receive)(this, token_pp); }
 
-    void send(QUEX_TYPE_TOKEN_ID Id)            { QUEX_NAME(MF_send)(this, Id); }
-    void send_n(QUEX_TYPE_TOKEN_ID Id, 
-                size_t             RepetitionN) { QUEX_NAME(MF_send_n)(this, Id, RepetitionN); }
-    bool send_text(QUEX_TYPE_TOKEN_ID Id,
-                   QUEX_TYPE_LEXATOM* BeginP, 
-                   QUEX_TYPE_LEXATOM* EndP)     { return QUEX_NAME(MF_send_text)(this, Id, BeginP, EndP); }
-    bool send_string(QUEX_TYPE_TOKEN_ID Id,
-                     QUEX_TYPE_LEXATOM* ZeroTerminatedString) { return QUEX_NAME(MF_send_string)(this, Id, ZeroTerminatedString); }
 
-    bool token_queue_is_empty()       
-    { return QUEX_NAME(token_queue_is_empty)(this); }
+    QUEX_TYPE_TOKEN* token_p() { return QUEX_NAME(MF_token_p)(this); }
 
-    void token_queue_remainder_get(QUEX_TYPE_TOKEN** begin, 
-                                   QUEX_TYPE_TOKEN** end)
-    { QUEX_NAME(token_queue_remainder_get)(this, begin, end); }
 
-    void token_queue_swap(QUEX_TYPE_TOKEN** queue, size_t* size); 
+    void send(QUEX_TYPE_TOKEN_ID Id) { QUEX_NAME(MF_send)(this, Id); }
 
-    const char* input_name()                          
-         { return QUEX_NAME(input_name)(this); }
-    bool        input_name_set(const char* InputName) 
-         { return QUEX_NAME(input_name_set)(this, InputName); }
+    void send_n(QUEX_TYPE_TOKEN_ID Id, size_t RepetitionN) { QUEX_NAME(MF_send_n)(this, Id, RepetitionN); }
+
+    bool send_text(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP) { return QUEX_NAME(MF_send_text)(this, Id, BeginP, EndP); }
+
+    bool send_string(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString) { return QUEX_NAME(MF_send_string)(this, Id, ZeroTerminatedString); }
+
 
     /*__( Modes )_______________________________________________________________
      *                                                                        */
-    QUEX_NAME(Mode)&      mode()            
-         { return *QUEX_NAME(get_mode)(this); }
-    int                   mode_id() const   
-         { return QUEX_NAME(get_mode_id)(this); }
-    const char*           mode_name() const 
-         { return QUEX_NAME(get_mode_name)(this); }
-    QUEX_NAME(Mode)&      map_mode_id_to_mode(const int ModeId)
-         { return *(QUEX_NAME(map_mode_id_to_mode)(this, ModeId)); }
-    int                   map_mode_to_mode_id(const QUEX_NAME(Mode)& Mode) const
-         { return QUEX_NAME(map_mode_to_mode_id)(this, &Mode); }
+    const QUEX_NAME(Mode)* mode() { return QUEX_NAME(MF_mode)(this); }
 
-    void set_mode_brutally(const int ModeId)
-         { QUEX_NAME(set_mode_brutally_by_id)(this, ModeId); }
-    void set_mode_brutally(const QUEX_NAME(Mode)& Mode)
-         { QUEX_NAME(set_mode_brutally)(this, ((QUEX_NAME(Mode)*)&Mode)); }
-    void enter_mode(/* NOT const*/ QUEX_NAME(Mode)& TargetMode)
-         { QUEX_NAME(enter_mode)(this, &TargetMode); }
-    void operator<<(const int ModeId)
-         { enter_mode(*(QUEX_NAME(map_mode_id_to_mode)(this, ModeId))); }
-    void operator<<(/* NOT const*/ QUEX_NAME(Mode)& Mode)
-         { enter_mode(Mode); }
-    void pop_mode()
-         { QUEX_NAME(pop_mode)(this); }
-    void pop_drop_mode()
-         { QUEX_NAME(pop_drop_mode)(this); }
-    void push_mode(QUEX_NAME(Mode)& new_mode)
-         { QUEX_NAME(push_mode)(this, &new_mode); }
+    void set_mode_brutally(const QUEX_NAME(Mode)* Mode) { QUEX_NAME(MF_set_mode_brutally)(this, Mode); }
+
+    void enter_mode(const QUEX_NAME(Mode)* TargetMode) { QUEX_NAME(MF_enter_mode)(this, TargetMode); }
+
+
+    void pop_mode() { QUEX_NAME(MF_pop_mode)(this); }
+
+    void pop_drop_mode() { QUEX_NAME(MF_pop_drop_mode)(this); }
+
+    void push_mode(QUEX_NAME(Mode)* new_mode) { QUEX_NAME(MF_push_mode)(this, new_mode); }
+
+
 private:
     /* Befriend all modes                                                     */
     friend  void QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me);
@@ -325,20 +297,9 @@ private:
 public:
     /*__( Access to Buffer )____________________________________________________
      *                                                                        */
-    QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get()
-         { return QUEX_NAME(lexeme_start_pointer_get)(this); }
-
-    QUEX_TYPE_LEXATOM*    input_pointer_get()
-         { return QUEX_NAME(input_pointer_get)(this); }
-
-    void input_pointer_set(QUEX_TYPE_LEXATOM* InputP)
-         { return QUEX_NAME(input_pointer_set)(this, InputP); }
-
-    /* Activate/deactivate byte order reversion (big-/little-endian)          */
-    bool byte_order_reversion()
-         { return QUEX_NAME(byte_order_reversion)(this); }
-    void byte_order_reversion_set(bool Value)
-         { return QUEX_NAME(byte_order_reversion_set)(this, Value); }
+    QUEX_TYPE_LEXATOM*    lexeme_start_pointer_get()  { return QUEX_NAME(lexeme_start_pointer_get)(this); }
+    QUEX_TYPE_LEXATOM*    input_pointer_get()         { return QUEX_NAME(input_pointer_get)(this); }
+    void                  input_pointer_set(QUEX_TYPE_LEXATOM* InputP) { return QUEX_NAME(input_pointer_set)(this, InputP); }
 
     /*__( Line/Column Counter )________________________________________________
      *                                                                       */
@@ -364,25 +325,48 @@ public:
 
     /*__( Navigation: Tell/Seek )______________________________________________
      *                                                                       */
-    size_t      tell()                                 { return QUEX_NAME(MF_tell)(this); }
-    void        seek(const size_t CharacterIndex)      { QUEX_NAME(MF_seek)(this, CharacterIndex); }
-    void        seek_forward(const size_t CharacterN)  { QUEX_NAME(MF_seek_forward)(this, CharacterN); }
-    void        seek_backward(const size_t CharacterN) { QUEX_NAME(MF_seek_backward)(this, CharacterN); }
+    size_t tell() { return QUEX_NAME(MF_tell)(this); }
+
+    void seek(const size_t CharacterIndex) { QUEX_NAME(MF_seek)(this, CharacterIndex); }
+
+    void seek_forward(const size_t CharacterN) { QUEX_NAME(MF_seek_forward)(this, CharacterN); }
+
+    void seek_backward(const size_t CharacterN) { QUEX_NAME(MF_seek_backward)(this, CharacterN); }
+
                 
-    void        undo()                         { return QUEX_NAME(MF_undo)(this); }
-    void        undo_n(size_t DeltaN_Backward) { return QUEX_NAME(MF_undo_n)(this, DeltaN_Backward); }
+    void undo() { QUEX_NAME(MF_undo)(this); }
+
+    void undo_n(size_t DeltaN_Backward) { QUEX_NAME(MF_undo_n)(this, DeltaN_Backward); }
+
                 
 public:
-    bool        resources_absent()
-    { return QUEX_NAME(resources_absent)(this); }
+    bool        resources_absent() { return QUEX_NAME(resources_absent)(this); }
 
     /*__( General Information )________________________________________________
      *                                                                       */
-    const char* version() const
-    { return QUEX_NAME(version)((QUEX_TYPE_ANALYZER*)this); }
+    const char* version() { return QUEX_NAME(MF_version)(this); }
 
-    void        print_this()
-    { QUEX_NAME(print_this)(this); }
+    void print_this() { QUEX_NAME(MF_print_this)(this); }
+
+    const char* input_name() { return QUEX_NAME(MF_input_name)(this); }
+
+    bool input_name_set(const char* InputName) { return QUEX_NAME(MF_input_name_set)(this, InputName); }
+
+    /* Activate/deactivate byte order reversion (big-/little-endian)          */
+    bool byte_order_reversion() { return QUEX_NAME(MF_byte_order_reversion)(this); }
+
+    void byte_order_reversion_set(bool Value) { QUEX_NAME(MF_byte_order_reversion_set)(this, Value); }
+
+
+
+    void error_code_clear() { QUEX_NAME(MF_error_code_clear)(this); }
+
+    bool error_code_is_void() { return QUEX_NAME(MF_error_code_is_void)(this); }
+
+    void error_code_set_void() { QUEX_NAME(MF_error_code_set_void)(this); }
+
+    void error_code_set_if_first(E_Error ErrorCode) { QUEX_NAME(MF_error_code_set_if_first)(this, ErrorCode); }
+
 
 public:
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
@@ -399,7 +383,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
-$$INC: analyzer/headers.i$$
+#include "test_environment/lib/analyzer/headers.i"
 /* START: User defined header content _________________________________________
  *        The 'footer' content relies on class definitions made above.        */
 
@@ -410,13 +394,18 @@ $$INC: analyzer/headers.i$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+#if defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE void
+QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
+{
+
+}
+#endif
+
 bool
 QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
-
-    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_M)]  == &(QUEX_NAME(M)));
-
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
@@ -504,7 +493,7 @@ bool UserReset_UnitTest_return_value       = true;
 bool UserMementoPack_UnitTest_return_value = true;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
-#include "TestAnalyzer-token"
+#include "test_environment/TestAnalyzer-token"
 QUEX_NAMESPACE_TOKEN_OPEN
 QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
 QUEX_NAMESPACE_TOKEN_CLOSE

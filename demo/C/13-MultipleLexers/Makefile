@@ -3,10 +3,10 @@
 # License: MIT; Project http://quex.sourceforge.net
 # (C) Frank-Rene Schaefer; FREE OF CHARGE--ABSOLUTELY NO WARRANTY.
 #_______________________________________________________________________________
-.PHONY:     clean
+.PHONY: clean
 .SECONDARY:
 
-COMPILER := gcc -pedantic -Wconversion -Wall -Werror -W # -ggdb
+COMPILER := gcc -pedantic -Wconversion -Wall -Werror -W 
 LD       := $(COMPILER) -I./ $(ADD_FLAGS) -DQUEX_OPTION_MULTI 
 # HINTS:    -DQUEX_OPTION_ASSERTS_DISABLED
 #           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 

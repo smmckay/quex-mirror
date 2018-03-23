@@ -5,13 +5,13 @@
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN
 
-$$INC: definitions$$
-$$INC: asserts$$
-$$INC: compatibility/stdint.h$$
-$$INC: MemoryManager$$
+#include "test_environment/lib/definitions"
+#include "test_environment/lib/asserts"
+#include "test_environment/lib/compatibility/stdint.h"
+#include "test_environment/lib/MemoryManager"
 
 
-$$INC: lexeme_base$$
+#include "test_environment/lib/lexeme"
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
@@ -19,12 +19,10 @@ $$INC: lexeme_base$$
 #include <iostream>
 #include <string>
 
-$$INC: lexeme_converter/from-unicode-buffer$$
-
-$$INC: lexeme$$
+#include "lib/lexeme_converter/from-unicode-buffer"
    
 
-#   line 28 "TestAnalyzer-token"
+#   line 26 "test_environment/TestAnalyzer-token"
 
  
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -62,29 +60,29 @@ public:
     virtual ~Token();
 
 
-#   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
 
-#   line 69 "TestAnalyzer-token"
+#   line 67 "test_environment/TestAnalyzer-token"
 
-#   line 16 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     size_t                   number;
 
-#   line 74 "TestAnalyzer-token"
+#   line 72 "test_environment/TestAnalyzer-token"
 
 
 public:
 
-#   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     const QUEX_TYPE_LEXATOM* get_text() const                           { return text; }
-#   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     void                     set_text(const QUEX_TYPE_LEXATOM*& Value)  { text = Value; }
-#   line 16 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     size_t                   get_number() const                         { return number; }
-#   line 16 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     void                     set_number(size_t Value)                   { number = Value; }
 
-#   line 88 "TestAnalyzer-token"
+#   line 86 "test_environment/TestAnalyzer-token"
 
     void set(const QUEX_TYPE_TOKEN_ID ID) { id = ID; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const  QUEX_TYPE_LEXATOM*& Value0, const size_t& Value1)
@@ -118,7 +116,7 @@ public:
     public:
 #   define self (*this)
 
-#   line 117 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 100 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
         operator 
         const std::string() const
@@ -135,7 +133,7 @@ public:
     
    
 
-#   line 139 "TestAnalyzer-token"
+#   line 137 "test_environment/TestAnalyzer-token"
 
 #   undef  self
 
@@ -150,7 +148,7 @@ public:
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 
-#   line 142 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 125 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 QUEX_NAMESPACE_TOKEN_OPEN
 inline std::ostream&
@@ -158,12 +156,11 @@ operator<<(std::ostream& ostr, const Token& Tok)
 { ostr << Tok.get_string(); return ostr; }
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-$$INC: lexeme_converter/from-unicode-buffer.i$$
-
-$$INC: lexeme.i$$
+#include "lib/lexeme_converter/from-unicode-buffer.i"
+#include "test_environment/lib/lexeme.i"
    
 
-#   line 167 "TestAnalyzer-token"
+#   line 164 "test_environment/TestAnalyzer-token"
 
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -179,8 +176,8 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I
 
-$$INC: definitions$$
-#include "TestAnalyzer-token"
+#include "test_environment/lib/definitions"
+#include "test_environment/TestAnalyzer-token"
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
@@ -190,13 +187,13 @@ Token::Token()
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
 
-#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
        self.number = 0;
        self.text   = LexemeNull;
    
 
-#   line 200 "TestAnalyzer-token"
+#   line 197 "test_environment/TestAnalyzer-token"
 
 #   undef  LexemeNull
 #   undef  self
@@ -209,13 +206,13 @@ Token::Token(const Token& Other)
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
 
-#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
        self.number = 0;
        self.text   = LexemeNull;
    
 
-#   line 219 "TestAnalyzer-token"
+#   line 216 "test_environment/TestAnalyzer-token"
 
 #   undef  LexemeNull
 #   undef  self
@@ -227,7 +224,7 @@ Token::~Token()
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
 
-#   line 26 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 25 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
        if( self.text != LexemeNull ) {
            QUEXED(MemoryManager_free)((void*)self.text,
@@ -236,7 +233,7 @@ Token::~Token()
        }
    
 
-#   line 240 "TestAnalyzer-token"
+#   line 237 "test_environment/TestAnalyzer-token"
 
 #   undef  LexemeNull
 #   undef  self
@@ -265,7 +262,7 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
     (void)__this;
     (void)__That;
 
-#   line 34 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 33 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
         self.id  = Other.id;
 
@@ -273,19 +270,9 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
             QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
-            self.text = \
-               (QUEX_TYPE_LEXATOM*)
-               QUEXED(MemoryManager_allocate)(
-                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1),
-                      E_MemoryObjectType_TEXT);
-            if( self.text ) {
-                __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
-                                    sizeof(QUEX_TYPE_LEXATOM) 
-                                  * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1));
-            }
-            else {
-                self.text = LexemeNull;
-            }
+            self.text = QUEX_NAME_TOKEN(lexeme_clone)(self.text, 
+                                                      QUEX_NAME_TOKEN(lexeme_length)(Other.text));
+            if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
     #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
@@ -294,7 +281,7 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
     #   endif
    
 
-#   line 298 "TestAnalyzer-token"
+#   line 285 "test_environment/TestAnalyzer-token"
 
 #   undef LexemeNull
 #   undef Other
@@ -322,7 +309,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
 
-#   line 62 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 51 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 
 #       if 0
@@ -347,14 +334,8 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);
-            self.text = \
-                 (QUEX_TYPE_LEXATOM*)
-                 QUEXED(MemoryManager_allocate)(
-                              sizeof(QUEX_TYPE_LEXATOM) * (size_t)(End - Begin + 1), 
-                              E_MemoryObjectType_TEXT);
-            __QUEX_STD_memcpy((void*)self.text, (void*)Begin, 
-                              sizeof(QUEX_TYPE_LEXATOM) * (size_t)(End - Begin));
-            /* The string is not necessarily zero terminated, so terminate it here. */
+            self.text = QUEX_NAME_TOKEN(lexeme_clone)(Begin, (size_t)(End - Begin));
+            if( ! self.text ) self.text = LexemeNull;
             *((QUEX_TYPE_LEXATOM*)(self.text + (End - Begin))) = (QUEX_TYPE_LEXATOM)0;
         } else {
             self.text = LexemeNull;
@@ -378,7 +359,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
         return false;
    
 
-#   line 382 "TestAnalyzer-token"
+#   line 363 "test_environment/TestAnalyzer-token"
 
 #   undef  LexemeNull
 #   undef  self
@@ -394,12 +375,12 @@ QUEX_NAME_TOKEN(repetition_n_get)(Token* __this)
 #   define self (*__this)
     (void)__this;
 
-#   line 138 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 121 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
        return self.number;
    
 
-#   line 403 "TestAnalyzer-token"
+#   line 384 "test_environment/TestAnalyzer-token"
 
 #   undef self
 }
@@ -408,15 +389,14 @@ QUEX_INLINE void
 QUEX_NAME_TOKEN(repetition_n_set)(Token* __this, size_t N)
 {
 #   define self (*__this)
-    (void)__this;
-    (void)N;
+    (void)__this; (void)N;
 
-#   line 134 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 117 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
        self.number = N;
    
 
-#   line 420 "TestAnalyzer-token"
+#   line 400 "test_environment/TestAnalyzer-token"
 
 #   undef  self
 }
@@ -450,5 +430,7 @@ QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
 }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
+
+#include "test_environment/lib/lexeme.i"
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I */

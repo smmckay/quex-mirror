@@ -1,14 +1,14 @@
 #include <stddef.h>
 #include <stdio.h>
-#define QUEX_TYPE_LEXATOM          int
+#define QUEX_TYPE_LEXATOM            int
 #define QUEX_TYPE_STATISTICS_COUNTER unsigned int
 #define __QUEX_STD_fopen             fopen
 #define __QUEX_STD_fclose            fclose
 #define __QUEX_STD_fprintf           fprintf
 #define QUEX_NAME(X)                 Quex_ ## X
 
-$$INC: analyzer/Statistics$$
-$$INC: analyzer/Statistics.i$$
+#include "ut/lib/analyzer/Statistics"
+#include "ut/lib/analyzer/Statistics.i"
 #include <support/C/hwut_unit.h>
 
 

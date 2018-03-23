@@ -16,10 +16,10 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 from   copy import copy
                                                    
 from   quex.engine.analyzer.door_id_address_label import DialDB
-from   quex.output.core.state.transition_map.branch_table import BranchTable   
-from   quex.output.languages.core import db
 from   quex.engine.misc.interval_handling        import Interval
 from   quex.engine.analyzer.transition_map  import TransitionMap   
+from   quex.output.core.state.transition_map.branch_table import BranchTable   
+from   quex.output.languages.core import db
 from   quex.blackboard                      import setup as Setup, \
                                                    Lng
 from   collections import defaultdict

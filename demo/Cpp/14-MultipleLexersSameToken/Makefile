@@ -20,16 +20,16 @@ lexer: max/Lexer.cpp moritz/Lexer.cpp boeck/Lexer.cpp lexer.cpp A_B_C/C-token.cp
 COMMON_TOKEN_OPTIONS = --token-class-file A_B_C/C-token \
 	                   --suppress         0 1 6
 
-max/Lexer.cpp:    max.qx A_B_C/C-token.cpp A_B_C/C-token_ids.h
+max/Lexer.cpp:    max.qx A_B_C/C-token.cpp A_B_C/C-token_ids
 	quex -i $< -o max::Lexer --odir max -b 4 $(COMMON_TOKEN_OPTIONS) 
 
-moritz/Lexer.cpp: moritz.qx A_B_C/C-token.cpp A_B_C/C-token_ids.h
+moritz/Lexer.cpp: moritz.qx A_B_C/C-token.cpp A_B_C/C-token_ids
 	quex -i $< -o moritz::Lexer --odir moritz -b 4 $(COMMON_TOKEN_OPTIONS)
 
-boeck/Lexer.cpp:  boeck.qx A_B_C/C-token.cpp A_B_C/C-token_ids.h
+boeck/Lexer.cpp:  boeck.qx A_B_C/C-token.cpp A_B_C/C-token_ids
 	quex -i $< -o boeck::Lexer --odir boeck -b 4 $(COMMON_TOKEN_OPTIONS)
 
-A_B_C/C-token_ids.h \
+A_B_C/C-token_ids \
 A_B_C/C-token.cpp: 
 	quex -i token_ids.qx                  \
 		 -o A::B::C         --odir A_B_C  \

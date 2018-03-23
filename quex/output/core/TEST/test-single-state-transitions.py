@@ -146,7 +146,7 @@ def get_transition_function(iid_map, Codec):
 main_template = """
 /* From '.begin' the target map targets to '.target' until the next '.begin' is
  * reached.                                                                   */
-$$INC: compatibility/stdint.h$$ 
+#include "ut/lib/compatibility/stdint.h"
 #include <stdio.h>
 #define __QUEX_OPTION_PLAIN_C
 #define QUEX_TYPE_LEXATOM              uint32_t
@@ -155,11 +155,11 @@ $$INC: compatibility/stdint.h$$
 #define QUEX_NAME_TOKEN(NAME)          Token_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN        
 #define QUEX_NAMESPACE_TOKEN_CLOSE      
-$$INC: lexeme_converter/from-utf32$$
-$$INC: lexeme_converter/from-utf32.i$$
+#include "ut/lib/lexeme_converter/from-utf32"
+#include "ut/lib/lexeme_converter/from-utf32.i"
 #undef  QUEX_TYPE_LEXATOM
 #define QUEX_TYPE_LEXATOM              $$QUEX_TYPE_LEXATOM$$
-$$INC: single.i$$
+#include "ut/lib/single.i"
 
 typedef struct {
     struct {

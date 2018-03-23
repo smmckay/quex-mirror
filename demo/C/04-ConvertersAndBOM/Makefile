@@ -22,14 +22,14 @@ endif
 
 all: lexer lexer-with-bom lexer-icu
 
-lexer:          lexer.o Easy/Easy.o
-	$(LD) -o $@ lexer.o Easy/Easy.o $(LIB_CONV) 
+lexer:          lexer.o Easy.o
+	$(LD) -o $@ lexer.o Easy.o $(LIB_CONV) 
           
-lexer-with-bom: lexer-with-bom.o Easy/Easy.o
-	$(LD) -o $@ lexer-with-bom.o Easy/Easy.o $(LIB_CONV) 
+lexer-with-bom: lexer-with-bom.o Easy.o
+	$(LD) -o $@ lexer-with-bom.o Easy.o $(LIB_CONV) 
 
-lexer-icu:      lexer-icu.o Easy/Easy.o
-	$(LD) -o $@ lexer-icu.o Easy/Easy.o $(LIB_CONV) `icu-config --ldflags`
+lexer-icu:      lexer-icu.o Easy.o
+	$(LD) -o $@ lexer-icu.o Easy.o $(LIB_CONV) `icu-config --ldflags`
           
 Easy.o: Easy/Easy.c 
 	$(CC) $< -o $@ 
@@ -46,8 +46,7 @@ lexer-icu.o:      lexer-icu.c Easy/Easy.h
 Easy/Easy.c \
 Easy/Easy.h: definitions.qx end_of_file.qx program.qx 
 	quex -i definitions.qx end_of_file.qx program.qx -o Easy \
-	     -b $(BYTES_PER_CHARACTER) \
-		 --language        C                      
+	     -b $(BYTES_PER_CHARACTER) --language        C                      
 
 # (*) HELPERS __________________________________________________________________
 clean: clean_lexer clean_lexer-icu clean_lexer-with-bom

@@ -1,7 +1,11 @@
 
-pushd quex/code_base/extra/test_environment/
+pushd quex/code_base/TESTS/test_environment/
 python generate-TestAnalyzer.py C
 python generate-TestAnalyzer.py C++
+popd
+
+pushd quex/output/core/TEST
+python ../../../code_base/TESTS/code_base_instatiation.py ut
 popd
 
 pushd doc

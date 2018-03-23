@@ -16,7 +16,7 @@
 #define  __QUEX_OPTION_PLAIN_C
 
 $$INC: extra/test_environment/TestAnalyzer-configuration$$
-$$INC: buffer/TESTS/MemoryManager_UnitTest.i$$
+#include "TESTS/MemoryManager_UnitTest.i"
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
 $$INC: MemoryManager$$

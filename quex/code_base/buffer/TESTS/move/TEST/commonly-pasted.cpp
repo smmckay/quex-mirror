@@ -1,13 +1,13 @@
 #ifndef INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H
 #define INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H
 
-$$INC: extra/test_environment/TestAnalyzer-configuration$$
-$$INC: buffer/lexatoms/LexatomLoader.i$$
-$$INC: buffer/Buffer_print.i$$
-$$INC: buffer/Buffer.i$$
-$$INC: buffer/asserts.i$$
-$$INC: lexeme_converter/from-unicode-buffer.i$$
-$$INC: single.i$$
+#include "TESTS/minimum-definitions.h"
+#include "ut/lib/buffer/lexatoms/LexatomLoader.i"
+#include "ut/lib/buffer/Buffer_print.i"
+#include "ut/lib/buffer/Buffer.i"
+#include "ut/lib/buffer/asserts.i"
+#include "ut/lib/lexeme_converter/from-unicode-buffer.i"
+#include "ut/lib/single.i"
 #include <cstring>
 #include <hwut_unit.h>
 

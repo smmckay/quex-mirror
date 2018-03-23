@@ -47,11 +47,6 @@ $$INC: lexeme$$
 #endif
 /*____________________________________________________________________________*/
 
-/* Token access. _______________________________________________________________
- *
- * Provide access to the currently to-be-sent token from the token queue.     */
-#define self_write_token_p()             (self._token_queue.write_iterator)
-
 /* Token content writing _______________________________________________________
  *
  * Setting 'id' and 'text' (most likely == lexeme) of the content.              

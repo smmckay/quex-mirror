@@ -235,12 +235,12 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_TKN_DEDENT            4
 #define QUEX_TKN_NODENT            5
 
-$$INC: extra/test_environment/TestAnalyzer$$
-$$INC: analyzer/asserts.i$$
-$$INC: analyzer/member/mode-handling.i$$
-$$INC: token/TokenQueue.i$$
+#include "ut/lib/extra/test_environment/TestAnalyzer"
+#include "ut/lib/analyzer/asserts.i"
+#include "ut/lib/analyzer/member/mode-handling.i"
+#include "ut/lib/token/TokenQueue.i"
 
-$$INC: single.i$$
+#include "ut/lib/single.i"
 
 #if ! defined (__QUEX_OPTION_PLAIN_C)
     using namespace quex;

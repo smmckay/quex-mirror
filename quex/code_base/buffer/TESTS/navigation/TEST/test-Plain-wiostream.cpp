@@ -1,7 +1,7 @@
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-$$INC: buffer/Buffer.i$$
-// $$INC: MemoryManager.i$$
+#include "ut/lib/buffer/Buffer.i"
+// #include "ut/lib/MemoryManager.i"
 
 
 #include <sstream>

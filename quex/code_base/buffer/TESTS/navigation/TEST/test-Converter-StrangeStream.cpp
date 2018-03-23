@@ -31,16 +31,16 @@
  * (C) Frank-Rene Schaefer                                                   */
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-$$INC: extra/test_environment/StrangeStream$$
-$$INC: buffer/Buffer.i$$
-$$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
-$$INC: buffer/lexatoms/converter/iconv/Converter_IConv.i$$
-$$INC: buffer/lexatoms/converter/icu/Converter_ICU$$
-$$INC: buffer/lexatoms/converter/icu/Converter_ICU.i$$
-$$INC: buffer/bytes/ByteLoader_Memory$$
-$$INC: buffer/bytes/ByteLoader_Memory.i$$
+#include "ut/lib/extra/strange_stream/StrangeStream"
+#include "ut/lib/buffer/Buffer.i"
+#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "ut/lib/buffer/bytes/ByteLoader_Memory"
+#include "ut/lib/buffer/bytes/ByteLoader_Memory.i"
 #include <fstream>
-// $$INC: MemoryManager.i$$
+// #include "ut/lib/MemoryManager.i"
 
 typedef enum { TEST_ICU, TEST_ICONV } E_ConverterTestType;
 

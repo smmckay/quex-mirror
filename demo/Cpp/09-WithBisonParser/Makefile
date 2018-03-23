@@ -17,12 +17,12 @@ all: parser
 parser: main.cpp lexical_analysis/Calc_lexer.cpp Calc_parser.tab.cpp
 	$(LD) -o $@ $^ -lm -Wno-sign-conversion -Wno-conversion
 
-lexical_analysis/Calc_lexer.cpp: Calc_lexer.qx Calc_parser.tab.h
+lexical_analysis/Calc_lexer.cpp: Calc_lexer.qx Calc_parser.tab.hpp
 	quex -i $< -o Calc_lexer --token-id-prefix TKN_ \
           --foreign-token-id-file Calc_token-ids.h  \
 		  --odir lexical_analysis --suppress 0      
 
-Calc_parser.tab.h \
+Calc_parser.tab.hpp \
 Calc_parser.tab.cpp:  Calc_parser.ypp
 	bison $<
 

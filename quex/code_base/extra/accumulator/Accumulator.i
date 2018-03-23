@@ -6,7 +6,6 @@
 
 $$INC: definitions$$
 $$INC: MemoryManager$$
-$$INC: token/TokenPolicy$$
 $$INC: extra/accumulator/Accumulator$$
 
 #if   ! defined(QUEX_TYPE_LEXATOM)

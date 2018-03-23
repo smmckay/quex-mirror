@@ -11,12 +11,12 @@ DEFINES  := \
 			-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=32 \
 			-DQUEX_OPTION_INCLUDE_STACK 
 
-INCLUDES := -I$(QUEX_PATH) \
- 		    -I$(QUEX_PATH)/quex/code_base/extra/test_environment \
-			-I$(HWUT_PATH)/support/C
+INCLUDES := -I. -I$(HWUT_PATH)/support/C -I../../../TESTS
 
 CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb #-lefence # -fsanitize=address
 CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb -fstack-protector-all # -lefence -fsanitize=address
+
+TESTENV  := $(QUEX_PATH)/quex/code_base/TESTS
 
 LIB_ICU  := `icu-config --ldflags --cppflags`
 	
@@ -36,14 +36,17 @@ hwut-info:
 
 # Trick: Use 'QUEX_OPTION_MULTI' to avoid inclusion of 'multi.i' in 'single.i'
 #        which is included in 'TestAnalyzer-dummy.c'.
-TestAnalyzer-dummy.o: $(QUEX_PATH)/quex/code_base/extra/test_environment/TestAnalyzer-dummy.c
+TestAnalyzer-dummy.o: $(TESTENV)/test_environment/TestAnalyzer-dummy.c
 	$(CC) -c -D__QUEX_OPTION_PLAIN_C -DQUEX_OPTION_MULTI $< -o $@
 
-TestAnalyzer-dummy-Cpp.o: $(QUEX_PATH)/quex/code_base/extra/test_environment/TestAnalyzer-dummy.cpp
+TestAnalyzer-dummy-Cpp.o: $(TESTENV)/test_environment/TestAnalyzer-dummy.cpp
 	$(CC) -c -DQUEX_OPTION_MULTI $< -o $@
 
-TestAnalyzer-dummy.E: $(QUEX_PATH)/quex/code_base/extra/test_environment/TestAnalyzer-dummy.c
+TestAnalyzer-dummy.E: $(TESTENV)/test_environment/TestAnalyzer-dummy.c
 	$(CC) -E $< -o $@
 
+ut:
+	python ../../../TESTS/code_base_instatiation.py ut 
+
 clean:
-	rm -f *.exe *.o *~ tmp.* *.gc* *.E *.sw[mnop]
+	rm -f *.exe *.o *~ tmp.* *.gc* *.E *.sw[mnop] ut

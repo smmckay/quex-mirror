@@ -1,16 +1,14 @@
 
-#include "TestAnalyzer.h"
-
-$$INC: analyzer/C-adaptions.h$$
+#include "test_environment/TestAnalyzer"
+#include "test_environment/lib/analyzer/C-adaptions.h"
 /* The file 'multi.i' contains implementations which are the same for all 
  * possibly generated analyzers. If QUEX_OPTION_MULTI is defined, it is
  * NOT supposed to be included here. If not--in which case we have a single
  * analzer--then it is included.                                             */
-$$INC: single.i$$
+#include "test_environment/lib/single.i"
 
 QUEX_NAMESPACE_MAIN_OPEN
 QUEX_NAME(Mode) QUEX_NAME(M) = {
-    /* id                */ QUEX_NAME(ModeID_M),
     /* name              */ "M",
 #   if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \
        && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
@@ -32,10 +30,10 @@ QUEX_NAME(Mode) QUEX_NAME(M) = {
     /* analyzer_function */ QUEX_NAME(M_analyzer_function)
 };
 
-QUEX_NAME(Mode)* (QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {
-    &QUEX_NAME(M)
-};
-#define self        (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#   ifdef     self
+#       undef self
+#   endif
+#   define self (*((QUEX_TYPE_ANALYZER*)me))
 #define LexemeNull  (&QUEX_LEXEME_NULL)
 #define RETURN      return
 
@@ -69,9 +67,13 @@ QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me,
     (void)me;
     (void)Indentation;
     (void)Begin;
-#   ifndef self
-#   define self          (*me)
+#   ifdef     self
+#       undef self
 #   endif
+#   define self (*((QUEX_TYPE_ANALYZER*)me))
+
+#   define M    (&QUEX_NAME(M))
+
 #   define Lexeme        Begin
 #   define LexemeEnd     (me->buffer._read_p)
 
@@ -84,29 +86,29 @@ QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me,
     if( Indentation > *(stack->back) ) {
         ++(stack->back);
         if( stack->back == stack->memory_end ) {
-            QUEX_NAME(error_code_set_if_first)(me, E_Error_Indentation_StackOverflow);
+            QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Indentation_StackOverflow);
             return;
         }
         *(stack->back) = Indentation;
-self.send(&self, QUEX_TOKEN_ID(INDENT));
+self.send(QUEX_TOKEN_ID(INDENT));
         return;
     }
     else if( Indentation == *(stack->back) ) {
-self.send(&self, QUEX_TOKEN_ID(NODENT));
+self.send(QUEX_TOKEN_ID(NODENT));
     }
     else  {
         start = stack->back;
         --(stack->back);
 #       if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #       define First true
-self.send(&self, QUEX_TOKEN_ID(DEDENT));
+self.send(QUEX_TOKEN_ID(DEDENT));
 #       undef  First
 #       endif
         while( Indentation < *(stack->back) ) {
             --(stack->back);
 #           if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define First false
-self.send(&self, QUEX_TOKEN_ID(DEDENT));
+self.send(QUEX_TOKEN_ID(DEDENT));
 #           undef  First
 #           endif
         }
@@ -115,7 +117,7 @@ self.send(&self, QUEX_TOKEN_ID(DEDENT));
             /* 'Landing' must happen on indentation border. */
 #           if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define ClosedN (start - stack->back)
-self.send_n(&self, QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
+self.send_n(QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #           undef  ClosedN
 #           endif
@@ -125,7 +127,7 @@ self.send_n(&self, QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 #            define IndentationUpper     (*(stack->back))
 #            define IndentationLower     ((stack->back == stack->front) ? *(stack->front) : *(stack->back - 1))
 #            define ClosedN              (start - stack->back)
-             QUEX_NAME(error_code_set_if_first)(me,  
+             QUEX_NAME(MF_error_code_set_if_first)(me,  
                                                 E_Error_Indentation_DedentNotOnIndentationBorder);
 
 #            undef IndentationStackSize 
@@ -139,6 +141,8 @@ self.send_n(&self, QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #   undef Lexeme    
 #   undef LexemeEnd 
+#   define M    (&QUEX_NAME(M))
+
 }
 #endif
 
@@ -153,39 +157,41 @@ QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)* Mode) {
 bool
 QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
-switch( Mode->id ) {
-
-    case QUEX_NAME(ModeID_M): {
+if( Mode == &QUEX_NAME(M) ) {
 
     return true;
+
     }
 
-    default: {
+    else if( Mode->has_base(&QUEX_NAME(M)) ) {
 
     return true;
-    }
 
     }
 
+    else {
+    return false;
+    }
 }
 
 bool
 QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
     (void)Mode;
-switch( Mode->id ) {
-
-    case QUEX_NAME(ModeID_M): {
+if( Mode == &QUEX_NAME(M) ) {
 
     return true;
+
     }
 
-    default: {
+    else if( Mode->has_base(&QUEX_NAME(M)) ) {
 
     return true;
-    }
 
     }
 
+    else {
+    return false;
+    }
 }
 #endif    
 
@@ -211,7 +217,7 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 
     /* Try to double the size of the buffer, by default.                      */
     if( ! QUEX_NAME(Buffer_nested_negotiate_extend)(&self.buffer, 2.0) ) {
-        QUEX_NAME(error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+        QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
         QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
     }
 
@@ -222,15 +228,7 @@ QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 #undef RETURN
 QUEX_NAMESPACE_MAIN_CLOSE
 
-/* #include "TestAnalyzer.h"*/
-$$INC: analyzer/headers.i$$
-$$INC: analyzer/C-adaptions.h$$
-
-
-/* START: User defined header content _________________________________________
- *        The 'footer' content relies on class definitions made above.        */
-
-
+/* #include "test_environment/test_environment/TestAnalyzer"*/
 QUEX_NAMESPACE_MAIN_OPEN
 #ifdef      QUEX_FUNCTION_COUNT_ARBITRARY
 #   undef   QUEX_FUNCTION_COUNT_ARBITRARY
@@ -295,7 +293,6 @@ _5:
     /* (DROP_OUT from 23)  */
 goto _10;
 
-
     __quex_debug("Drop-Out Catcher\n");
 
 
@@ -305,12 +302,10 @@ _6:
 goto _11;
 
 
-
     __quex_assert_no_passage();
 _7:
     /* (DROP_OUT from 25)  */
 goto _12;
-
 
 
     __quex_assert_no_passage();
@@ -431,8 +426,8 @@ _18:
 }
 #endif /* QUEX_OPTION_COUNTER */
 
-$$INC: buffer/Buffer$$
-$$INC: token/TokenQueue$$
+#include "test_environment/lib/buffer/Buffer"
+#include "test_environment/lib/token/TokenQueue"
 
 #ifdef    CONTINUE
 #   undef CONTINUE
@@ -456,9 +451,9 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 #       undef self
 #   endif
 #   define self (*((QUEX_TYPE_ANALYZER*)me))
+#   define M    (&QUEX_NAME(M))
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
 #   define QUEX_LABEL_STATE_ROUTER _20
-#   define M    (QUEX_NAME(M))
 
     /* Lexeme setup: 
      *
@@ -519,7 +514,6 @@ else                      goto _8;
 _9:
     /* (DROP_OUT from 20)  */
 goto _0;
-
 _13:
     __quex_debug("Drop-Out Catcher\n");
 
@@ -529,7 +523,6 @@ _8:
     /* (DROP_OUT from 19)  */
     me->buffer._read_p = me->buffer._lexeme_start_p + 1;
 goto _4;
-
     goto _13;
 
 
@@ -551,9 +544,9 @@ _1:
     __quex_debug("* TERMINAL BAD_LEXATOM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnBadLexatom);
-QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnBadLexatom);
-self.send(&self, QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(E_Error_OnBadLexatom);
+self.error_code_set_if_first(E_Error_NoHandler_OnBadLexatom);
+self.send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -565,9 +558,9 @@ _2:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnLoadFailure);
-QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnLoadFailure);
-self.send(&self, QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(E_Error_OnLoadFailure);
+self.error_code_set_if_first(E_Error_NoHandler_OnLoadFailure);
+self.send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -579,7 +572,7 @@ _3:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.send(&self, QUEX_TOKEN_ID(TERMINATION));
+self.send(QUEX_TOKEN_ID(TERMINATION));
 
 }
     /* End of Stream FORCES a return from the lexical analyzer, so that no
@@ -590,8 +583,8 @@ _4:
     __quex_debug("* TERMINAL FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnFailure);
-self.send(&self, QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(E_Error_NoHandler_OnFailure);
+self.send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -601,9 +594,9 @@ _5:
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
-QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnSkipRangeOpen);
-QUEX_NAME(error_code_set_if_first)(&self, E_Error_NoHandler_OnSkipRangeOpen);
-self.send(&self, QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(E_Error_OnSkipRangeOpen);
+self.error_code_set_if_first(E_Error_NoHandler_OnSkipRangeOpen);
+self.send(QUEX_TOKEN_ID(TERMINATION));
 __QUEX_PURE_RETURN;;
 
 }
@@ -616,12 +609,12 @@ __QUEX_IF_COUNT_SHIFT_VALUES();
 __QUEX_IF_COUNT_COLUMNS_ADD(1);
 {
 
-#   line 2 "nothing.qx"
-self.send(&self, QUEX_TKN_X);
+#   line 2 "test_environment/nothing.qx"
+self.send(QUEX_TKN_X);
 __QUEX_PURE_RETURN;
 
 
-#   line 625 "TestAnalyzer.c"
+#   line 618 "test_environment/TestAnalyzer.cpp"
 
 }
 RETURN;
@@ -666,11 +659,11 @@ _10:
     __quex_debug_reload_after(load_result);
 
     switch( load_result ) {
-    case E_LoadResult_DONE:              QUEX_GOTO_STATE(target_state_index);      
-    case E_LoadResult_NO_MORE_DATA:      QUEX_GOTO_STATE(target_state_else_index); 
-    case E_LoadResult_ENCODING_ERROR:    goto _1;
-    case E_LoadResult_OVERFLOW:          QUEX_NAME(error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
-    default:                             __quex_assert(false);
+    case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);      
+    case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index); 
+    case E_LoadResult_ENCODING_ERROR: goto _1;
+    case E_LoadResult_OVERFLOW:       QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
+    default:                          __quex_assert(false);
     }
 
 _16:
@@ -732,13 +725,18 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 QUEX_NAMESPACE_MAIN_OPEN
 
+#if defined(__QUEX_OPTION_PLAIN_C)
+QUEX_INLINE void
+QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
+{
+
+}
+#endif
+
 bool
 QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
-
-    __quex_assert(QUEX_NAME(mode_db)[QUEX_NAME(ModeID_M)]  == &(QUEX_NAME(M)));
-
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
@@ -820,325 +818,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
-/* -*- C++ -*-   vim: set syntax=cpp: 
- * (C) 2004-2009 Frank-Rene Schaefer
- * ABSOLUTELY NO WARRANTY
- */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I
-
-#ifndef    __QUEX_OPTION_PLAIN_C
-#   define __QUEX_OPTION_PLAIN_C
-#endif
-
-#include "TestAnalyzer-token.h"
-$$INC: definitions$$
-
-#include "TestAnalyzer-token.h"
-
-QUEX_INLINE void 
-quex_Token_set(quex_Token*            __this, 
-                 const QUEX_TYPE_TOKEN_ID ID) 
-{ __this->id = ID; }
-
-QUEX_INLINE void 
-quex_Token_construct(quex_Token* __this)
-{
-#   define self (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
-    (void)__this;
-
-#   line 26 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
-
-       self.number = 0;
-       self.text   = LexemeNull;
-   
-
-#   line 858 "TestAnalyzer.c"
-
-#   undef  LexemeNull
-#   undef  self
-}
-
-QUEX_INLINE void 
-quex_Token_copy_construct(quex_Token*       __this, 
-                            const quex_Token* __That)
-{
-    QUEX_NAME_TOKEN(construct)(__this);
-    QUEX_NAME_TOKEN(copy)(__this, __That);
-}
-
-QUEX_INLINE void 
-quex_Token_destruct(quex_Token* __this)
-{
-#   define self (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
-    if( ! __this ) return;
-
-
-#   line 31 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
-
-       if( self.text != LexemeNull ) {
-           QUEXED(MemoryManager_free)((void*)self.text,
-                                      E_MemoryObjectType_TEXT);
-           self.text = LexemeNull;
-       }
-   
-
-#   line 889 "TestAnalyzer.c"
-
-#   undef  LexemeNull
-#   undef  self
-}
-
-QUEX_INLINE void
-quex_Token_copy(quex_Token*       __this, 
-                  const quex_Token* __That)
-{
-#   define self  (*__this)
-#   define Other (*__That)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
-    (void)__this;
-    (void)__That;
-
-#   line 39 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
-
-        self.id  = Other.id;
-
-        if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text,
-                                       E_MemoryObjectType_TEXT);
-        }
-        if( Other.text != LexemeNull ) {
-            self.text = \
-               (QUEX_TYPE_LEXATOM*)
-               QUEXED(MemoryManager_allocate)(
-                      sizeof(QUEX_TYPE_LEXATOM) * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1),
-                      E_MemoryObjectType_TEXT);
-            if( self.text ) {
-                __QUEX_STD_memcpy((void*)self.text, (void*)Other.text, 
-                                    sizeof(QUEX_TYPE_LEXATOM) 
-                                  * (QUEX_NAME_TOKEN(lexeme_length)(Other.text) + 1));
-            }
-            else {
-                self.text = LexemeNull;
-            }
-        }
-        self.number = Other.number;
-    #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-        __QUEX_IF_COUNT_LINES(self._line_n     = Other._line_n);
-        __QUEX_IF_COUNT_COLUMNS(self._column_n = Other._column_n);
-    #   endif
-   
-
-#   line 935 "TestAnalyzer.c"
-
-#   undef  LexemeNull
-#   undef  Other
-#   undef  self
-    /* If the user even misses to copy the token id, then there's
-     * something seriously wrong.                                 */
-    __quex_assert(__this->id == __That->id);
-#   ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-    __QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));
-    __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
-#   endif
-}
-
-
-#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-QUEX_INLINE bool 
-quex_Token_take_text(quex_Token*            __this, 
-                       const QUEX_TYPE_LEXATOM* Begin, 
-                       const QUEX_TYPE_LEXATOM* End)
-/* RETURNS: true -- if the token claims ownership over the given memory.
- *          false -- if no ownership is claimed.                             */
-{
-#   define self       (*__this)
-#   ifdef  LexemeNull
-#   error  "Error LexemeNull shall not be defined here."
-#   endif
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
-    (void)__this;
-    (void)Begin;
-    (void)End;
-
-#   line 68 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
-
-
-#       if 0
-        /* Hint for debug: To check take_text change "#if 0" to "#if 1" */
-        {
-            const QUEX_TYPE_LEXATOM* it = (void*)0x0;
-            printf("previous:  '");
-            if( self.text != LexemeNull ) {
-                for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
-                printf("%04X.", (int)*it);
-            }
-            printf("'\n");
-            printf("take_text: '");
-            for(it = Begin; it != End; ++it) printf("%04X.", (int)*it);
-            printf("%04X.", (int)*it);
-            printf("'\n");
-        }
-#       endif
-
-        if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
-        }
-        if( Begin != LexemeNull ) {
-            __quex_assert(End >= Begin);
-            self.text = \
-                 (QUEX_TYPE_LEXATOM*)
-                 QUEXED(MemoryManager_allocate)(
-                              sizeof(QUEX_TYPE_LEXATOM) * (size_t)(End - Begin + 1), 
-                              E_MemoryObjectType_TEXT);
-            __QUEX_STD_memcpy((void*)self.text, (void*)Begin, 
-                              sizeof(QUEX_TYPE_LEXATOM) * (size_t)(End - Begin));
-            /* The string is not necessarily zero terminated, so terminate it here. */
-            *((QUEX_TYPE_LEXATOM*)(self.text + (End - Begin))) = (QUEX_TYPE_LEXATOM)0;
-        } else {
-            self.text = LexemeNull;
-        }
-
-#       if 0
-        /* Hint for debug: To check take_text change "#if 0" to "#if 1"       */
-        {
-            const QUEX_TYPE_LEXATOM* it = 0x0;
-            printf("after:     '");
-            if( self.text != LexemeNull ) { 
-                for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
-                printf("%04X.", (int)*it);
-            }
-            printf("'\n");
-        }
-#       endif
-
-        /* This token copied the text from the chunk into the string, 
-         * so we do not claim ownership over it.                             */
-        return false;
-   
-
-#   line 1023 "TestAnalyzer.c"
-
-#   undef  LexemeNull
-#   undef  self
-    /* Default: no ownership.                                                */
-    return false;
-}
-#endif
-
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-QUEX_INLINE size_t 
-quex_Token_repetition_n_get(quex_Token* __this)
-{
-#   define self        (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
-    (void)__this;
-
-#   line 131 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
-
-       return self.number;
-   
-
-#   line 1045 "TestAnalyzer.c"
-
-#   undef  LexemeNull
-#   undef  self
-}
-
-QUEX_INLINE void 
-quex_Token_repetition_n_set(quex_Token* __this, size_t N)
-{
-#   define self        (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
-    (void)__this;
-    (void)N;
-
-#   line 127 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
-
-       self.number = N;
-   
-
-#   line 1064 "TestAnalyzer.c"
-
-#   undef  LexemeNull
-#   undef  self
-}
-#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
-
-QUEX_INLINE const char*
-quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
-{
-   static char  error_string[64];
-
-   /* NOTE: This implementation works only for token id types that are 
-    *       some type of integer or enum. In case an alien type is to
-    *       used, this function needs to be redefined.                  */
-   switch( TokenID ) {
-   default: {
-       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
-       return error_string;
-   }
-
-   case QUEX_TKN_TERMINATION:    return "<TERMINATION>";
-   case QUEX_TKN_UNINITIALIZED:  return "<UNINITIALIZED>";
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   case QUEX_TKN_INDENT:         return "<INDENT>";
-   case QUEX_TKN_DEDENT:         return "<DEDENT>";
-   case QUEX_TKN_NODENT:         return "<NODENT>";
-#  endif
-   case QUEX_TKN_X:             return "X";
-
-
-   }
-}
-
-
-#   line 135 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
-
-        const char* 
-        quex_Token_get_string(quex_Token* me, char*   buffer, size_t  BufferSize) 
-        {
-            const char*  token_id_str = quex_Token_map_id_to_name(me->id);
-            const char*  BufferEnd    = buffer + BufferSize;
-            char*        writerator   = 0;
-
-            if( ! BufferSize ) return NULL;
-
-            /* Token Type */
-            writerator = buffer; 
-            writerator += __QUEX_STD_strlcpy(writerator, token_id_str, 
-                                             BufferEnd - writerator);
-
-            /* Opening Quote */
-            if( BufferEnd - writerator > 2 ) {
-                *writerator++ = ' ';
-                *writerator++ = '\'';
-            }
-
-            /* The String */
-            QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
-                                                   (size_t)(BufferEnd - writerator));
-            while( *writerator ) ++writerator;
-
-            /* Closing Quote */
-            if( BufferEnd - writerator > 1 ) {
-                *writerator++ = '\'';
-            }
-            *writerator = '\0';
-            return buffer;
-        }
-
-$$INC: lexeme_converter/from-unicode-buffer.i$$
-
-$$INC: lexeme.i$$
-   
-
-#   line 1139 "TestAnalyzer.c"
-
-
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
+#include "test_environment/TestAnalyzer-token"
 QUEX_NAMESPACE_TOKEN_OPEN
 QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
 QUEX_NAMESPACE_TOKEN_CLOSE

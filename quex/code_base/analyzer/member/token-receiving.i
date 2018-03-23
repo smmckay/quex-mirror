@@ -9,7 +9,6 @@
 #   error "QUEX_TYPE_TOKEN definition missing."
 #endif
 
-$$INC: token/TokenPolicy$$
 $$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN

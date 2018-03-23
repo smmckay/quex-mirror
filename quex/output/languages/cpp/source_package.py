@@ -1,5 +1,6 @@
 from   quex.engine.misc.file_operations import open_file_or_die, \
                                                write_safely_and_close 
+from   quex.engine.misc.tools           import flatten_list_of_lists
 import quex.output.analyzer.adapt       as     adapt
 from   quex.blackboard                  import setup as Setup, \
                                                Lng
@@ -8,203 +9,187 @@ from   quex.DEFINITIONS                 import QUEX_PATH
 import os.path as path
 import os
 
-# Search for related files by:
-dummy = """
-find quex/code_base \
-     -path "*.svn*"        -or -path "*TEST*" -or -name tags      \
-     -or -name "TXT*"      -or -name "*.txt"  -or -name "*.sw?"   \
-     -or -path "*DESIGN*"  -or -name "*.7z"   -or -name "*ignore" \
-     -or -name "*DELETED*" -or -name .        -or -name "*_body"  \
-     -or -name "[1-9]"     -or -name "circle" -or -name "*.o"     \
-     -or -name "*.exe"     -prune  \
-     -or -type f -print | sort
-"""
+def do(OutputDir, DirList=None):
+    file_set = __collect_files(DirList)
+    __copy_files(OutputDir, file_set)
 
-base = """
-asserts
-lexeme
-lexeme_base
-lexeme.i
-lexeme_base.i
-definitions
-include-guard-undef
-bom
-bom.i
-MemoryManager
-MemoryManager.i
-single.i
-multi.i
-"""
+dir_db = {
+    "": [
+        "asserts",
+        "lexeme",
+        "lexeme_base",
+        "lexeme.i",
+        "lexeme_base.i",
+        "definitions",
+        "include-guard-undef",
+        "bom",
+        "bom.i",
+        "MemoryManager",
+        "MemoryManager.i",
+        "single.i",
+        "multi.i",
+    ],
+    "token/": [
+        "TokenQueue",
+        "TokenQueue.i",
+        "CDefault.qx",
+        "CppDefault.qx" 
+    ],
+    "extra/post_categorizer/": [
+        "PostCategorizer",
+        "PostCategorizer.i",
+    ],
+    "extra/accumulator/": [
+        "Accumulator",
+        "Accumulator.i",
+    ],
+    "extra/strange_stream/": [
+        "StrangeStream",
+    ],
+    "buffer/lexatoms/": [
+        "LexatomLoader", 
+        "LexatomLoader.i",
+        "LexatomLoader_navigation.i",
+        "LexatomLoader_Plain",
+        "LexatomLoader_Plain.i",
+        "LexatomLoader_Converter",
+        "LexatomLoader_Converter.i",
+        "LexatomLoader_Converter_RawBuffer.i",
+        "converter/Converter",
+        "converter/Converter.i",
+        "converter/iconv/Converter_IConv",
+        "converter/iconv/Converter_IConv.i",
+        "converter/iconv/special_headers.h",
+        "converter/icu/Converter_ICU",
+        "converter/icu/Converter_ICU.i",
+        "converter/icu/special_headers.h",
+        "converter/recode/Converter_Recode",
+        "converter/recode/Converter_Recode.i",
+    ],
+    "buffer/": [
+        "asserts",
+        "asserts.i",
+        "Buffer",
+        "Buffer_print",
+        "Buffer_print.i",
+        "Buffer.i",
+        "BufferMemory.i",
+        "Buffer_navigation.i",
+        "Buffer_fill.i",
+        "Buffer_move.i",
+        "Buffer_load.i",
+        "Buffer_nested.i",
+        "Buffer_callbacks.i",
+        "Buffer_invariance.i",
+    ],
+    "buffer/bytes/": [
+        "ByteLoader",
+        "ByteLoader.i",
+        "ByteLoader_FILE",
+        "ByteLoader_FILE.i",
+        "ByteLoader_POSIX",
+        "ByteLoader_POSIX.i",
+        "ByteLoader_stream",
+        "ByteLoader_stream.i",
+        "ByteLoader_wstream",
+        "ByteLoader_wstream.i",
+        "ByteLoader_Memory",
+        "ByteLoader_Memory.i",
+        "ByteLoader_Probe",
+        "ByteLoader_Probe.i",
+    ],
+    "analyzer/": [
+        "C-adaptions.h",
+        "Mode",
+        "Mode.i",
+        "asserts",
+        "asserts.i",
+        "configuration/derived",
+        "configuration/undefine",
+        "configuration/validation",
+        "headers",
+        "headers.i",
+        "Counter",
+        "Counter.i",
+        "struct/include-stack",
+        "struct/include-stack.i",
+        "struct/constructor",
+        "struct/constructor.i",
+        "struct/reset",
+        "struct/reset.i",
+        "struct/include-stack",
+        "struct/include-stack.i",
+        "member/misc",
+        "member/misc.i",
+        "member/mode-handling",
+        "member/mode-handling.i",
+        "member/navigation",
+        "member/navigation.i",
+        "member/token-receiving",
+        "member/token-receiving.i",
+        "adaptors/Feeder",
+        "adaptors/Feeder.i",
+        "adaptors/Gavager",
+        "adaptors/Gavager.i",
+        "Statistics",
+        "Statistics.i"
+    ],
+    "compatibility/": [
+        "iconv-argument-types.h",
+        "stdint.h",
+        "stdbool-pseudo.h",
+        "stdbool.h",
+        "win/borland_stdint.h",
+        "win/msc_stdint.h",
+        "win/msc_stdint.h",
+    ],
+    "lexeme_converter/": [
+        "common.h",
+        "identity",
+        "identity.i",
+        "generator/declarations.g",
+        "generator/implementations.gi",
+        "generator/string-converter.gi",
+        "generator/character-converter-to-char-wchar_t.gi",
+        "from-unicode-buffer",
+        "from-unicode-buffer.i",
+        "from-utf8",
+        "from-utf8.i",
+        "from-utf16",
+        "from-utf16.i",
+        "from-utf32",
+        "from-utf32.i"
+    ],
+}
 
-base_compatibility = """
-compatibility/iconv-argument-types.h
-compatibility/stdint.h
-compatibility/stdbool-pseudo.h
-compatibility/stdbool.h
-compatibility/win/borland_stdint.h
-compatibility/win/msc_stdint.h
-compatibility/win/msc_stdint.h
-"""
+def dir_db_get_files(Dir):
+    global dir_db
 
-base_buffer = """
-buffer/asserts
-buffer/asserts.i
-buffer/Buffer
-buffer/Buffer_print
-buffer/Buffer_print.i
-buffer/Buffer.i
-buffer/BufferMemory.i
-buffer/Buffer_navigation.i
-buffer/Buffer_fill.i
-buffer/Buffer_move.i
-buffer/Buffer_load.i
-buffer/Buffer_nested.i
-buffer/Buffer_callbacks.i
-buffer/Buffer_invariance.i
-buffer/bytes/ByteLoader
-buffer/bytes/ByteLoader.i
-buffer/bytes/ByteLoader_FILE
-buffer/bytes/ByteLoader_FILE.i
-buffer/bytes/ByteLoader_POSIX
-buffer/bytes/ByteLoader_POSIX.i
-buffer/bytes/ByteLoader_stream
-buffer/bytes/ByteLoader_stream.i
-buffer/bytes/ByteLoader_wstream
-buffer/bytes/ByteLoader_wstream.i
-"""
+    if   not Dir: return []
+    elif Dir[-1] != "/": Dir += "/"
 
-base_analyzer = """
-analyzer/C-adaptions.h
-analyzer/Mode
-analyzer/Mode.i
-analyzer/asserts
-analyzer/asserts.i
-analyzer/configuration/derived
-analyzer/configuration/undefine
-analyzer/configuration/validation
-analyzer/headers
-analyzer/headers.i
-analyzer/struct/constructor
-analyzer/struct/constructor.i
-analyzer/struct/reset
-analyzer/struct/reset.i
-analyzer/struct/include-stack
-analyzer/struct/include-stack.i
-analyzer/member/misc
-analyzer/member/misc.i
-analyzer/member/mode-handling
-analyzer/member/mode-handling.i
-analyzer/member/navigation
-analyzer/member/navigation.i
-analyzer/member/token-receiving
-analyzer/member/token-receiving.i
-analyzer/adaptors/Feeder
-analyzer/adaptors/Feeder.i
-analyzer/adaptors/Gavager
-analyzer/adaptors/Gavager.i
-"""
+    return [
+        os.path.join(directory, path)
+        for directory, file_list in dir_db.iteritems() if directory.startswith(Dir)
+        for path in file_list
+    ]
 
-analyzer_accumulator = """
-extra/accumulator/Accumulator
-extra/accumulator/Accumulator.i
-"""
+def __collect_files(DirList):
+    if DirList is None: dir_list = dir_db.keys() 
+    else:               dir_list = DirList
 
-analyzer_counter = """
-analyzer/Counter
-analyzer/Counter.i
-"""
+    result = set(flatten_list_of_lists(
+        dir_db_get_files(d) for d in dir_list
+    ))
+    result.update(dir_db[""])
+    return result
 
-analyzer_post_categorizer = """
-extra/post_categorizer/PostCategorizer
-extra/post_categorizer/PostCategorizer.i
-"""
-
-analyzer_include_stack = """
-analyzer/struct/include-stack
-analyzer/struct/include-stack.i
-"""
-
-token_policy = "token/TokenPolicy"
-
-token_queue = """
-token/TokenQueue
-token/TokenQueue.i
-"""
-
-token_default_C   = "token/CDefault.qx"
-token_default_Cpp = "token/CppDefault.qx"
-
-buffer_filler = """
-buffer/lexatoms/LexatomLoader
-buffer/lexatoms/LexatomLoader.i
-buffer/lexatoms/LexatomLoader_navigation.i
-buffer/lexatoms/LexatomLoader_Plain
-buffer/lexatoms/LexatomLoader_Plain.i
-buffer/lexatoms/LexatomLoader_Converter
-buffer/lexatoms/LexatomLoader_Converter.i
-buffer/lexatoms/LexatomLoader_Converter_RawBuffer.i
-buffer/lexatoms/converter/Converter
-buffer/lexatoms/converter/Converter.i
-buffer/lexatoms/converter/iconv/Converter_IConv
-buffer/lexatoms/converter/iconv/Converter_IConv.i
-buffer/lexatoms/converter/iconv/special_headers.h
-buffer/lexatoms/converter/icu/Converter_ICU
-buffer/lexatoms/converter/icu/Converter_ICU.i
-buffer/lexatoms/converter/icu/special_headers.h
-"""
-
-converter_helper = [
-    "common.h",
-    "identity",
-    "identity.i",
-    "generator/declarations.g",
-    "generator/implementations.gi",
-    "generator/string-converter.gi",
-    "generator/character-converter-to-char-wchar_t.gi",
-    "from-unicode-buffer",
-    "from-unicode-buffer.i",
-    "from-utf8",
-    "from-utf8.i",
-    "from-utf16",
-    "from-utf16.i",
-    "from-utf32",
-    "from-utf32.i",
-]
-
-def do():
-    txt = __collect_file_list_description()
-
-    __copy_files(txt)
-
-def __collect_file_list_description():
-    txt =   base                   \
-          + base_compatibility     \
-          + base_buffer            \
-          + base_analyzer          \
-          + token_policy           \
-          + token_queue
-
-    txt += buffer_filler
-
-    txt += " ".join("lexeme_converter/%s" % line for line in converter_helper)
-    txt += "\n"
-
-    if Setup.extern_token_class_file:
-        if   Setup.language == "C":   txt += token_default_C
-        elif Setup.language == "C++": txt += token_default_Cpp
-
-    txt += analyzer_accumulator
-    if Setup.count_column_number_f or Setup.count_line_number_f: txt += analyzer_counter 
-    txt += analyzer_post_categorizer 
-    if Setup.include_stack_support_f:                            txt += analyzer_include_stack
-    return txt
-
-def __copy_files(FileTxt):
-
-    file_pair_list, out_directory_set = __get_source_drain_list(FileTxt)
+def __copy_files(OutputDir, FileSet):
+    file_pair_list,   \
+    out_directory_set = __get_source_drain_list(OutputDir, FileSet)
 
     # Make directories
-    # (Sort according to length --> create parent directories before child)
+    # Sort according to length => create parent directories before child.
     for directory in sorted(out_directory_set, key=len):
         if os.access(directory, os.F_OK) == True: continue
         os.makedirs(directory) # create parents, if necessary
@@ -212,17 +197,16 @@ def __copy_files(FileTxt):
     # Copy
     for source_file, drain_file in file_pair_list:
         content = open_file_or_die(source_file, "rb").read()
-        content = adapt.do(content, OriginalPath=source_file)
+        content = adapt.do(content, OutputDir, OriginalPath=source_file)
         write_safely_and_close(drain_file, content)
 
-def __get_source_drain_list(FileTxt):
+def __get_source_drain_list(OutputDir, FileSet):
     input_directory  = os.path.join(QUEX_PATH, Lng.CODE_BASE)
-    output_directory = os.path.join(Setup.output_directory, "lib")
+    output_directory = os.path.join(OutputDir, "lib")
 
-    file_list      = [ x.strip() for x in FileTxt.split() ]
     file_pair_list = [ 
         (os.path.join(input_directory, x), os.path.join(output_directory, x))
-         for x in file_list 
+         for x in FileSet 
     ]
     out_directory_set = set(
         path.dirname(drain) for source, drain in file_pair_list

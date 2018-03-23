@@ -18,13 +18,13 @@
  *       configuration options on the command line without being immediately
  *       deleted by "configuration/undefine".                                 */
 #ifdef __QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION
-$$INC: analyzer/configuration/undefine$$
+#include "test_environment/lib/analyzer/configuration/undefine"
 #else
 #   define __QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION
 #endif
 
 #define QUEX_SETTING_VERSION           "0.68.2"
-#define QUEX_SETTING_BUILD_DATE        "Fri Mar  2 13:32:59 2018"
+#define QUEX_SETTING_BUILD_DATE        "Sat Mar 24 00:15:07 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -63,10 +63,10 @@ $$INC: analyzer/configuration/undefine$$
 #define    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC  ('\n')
 
 #ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
-#   define __QUEX_SETTING_MAX_MODE_CLASS_N         (1)
+#   define __QUEX_SETTING_MAX_MODE_CLASS_N  (1)
 #endif
-#ifndef    __QUEX_SETTING_INITIAL_LEXER_MODE_ID
-#   define __QUEX_SETTING_INITIAL_LEXER_MODE_ID    (QUEX_NAME(ModeID_M))
+#ifndef    QUEX_SETTING_MODE_INITIAL_P
+#   define QUEX_SETTING_MODE_INITIAL_P      (&QUEX_NAME(M))
 #endif
 
 #ifndef    QUEX_OPTION_ENDIAN_LITTLE
@@ -325,6 +325,6 @@ $$INC: analyzer/configuration/undefine$$
 #   define QUEX_TYPE_TOKEN_COLUMN_N  size_t
 #endif
 
-$$INC: analyzer/configuration/derived$$
+#include "test_environment/lib/analyzer/configuration/derived"
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION____QUEX____TESTANALYZER */

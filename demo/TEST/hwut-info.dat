@@ -2,4 +2,4 @@ Testing the Consistency of the Demo-Tests
 -----------------------------------------
 bash *.sh
 
---not build-and-run.sh
+--not build-and-run.sh helper.sh

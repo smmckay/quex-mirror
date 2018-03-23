@@ -318,7 +318,7 @@ def compile(Language, SourceCode, AssertsActionvation_str="", StrangeStream_str=
                   StrangeStream_str       + " " + \
                   AssertsActionvation_str + " " + \
                   filename_tmp            + " " + \
-                  "-I./. -I%s " % os.environ["QUEX_PATH"] + \
+                  "-I./. -I../../../code_base/TESTS -I%s " % os.environ["QUEX_PATH"] + \
                   "-o %s "      % executable_name         + \
                   SHOW_TRANSITIONS_STR    + " " + \
                   SHOW_BUFFER_LOADS_STR
@@ -523,18 +523,18 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #  define __QUEX_SETTING_MAX_MODE_CLASS_N 2
 #endif
 #ifdef __cplusplus
-$$INC: extra/test_environment/TestAnalyzer$$
+#include "test_environment/TestAnalyzer"
 #else
-$$INC: extra/test_environment/TestAnalyzer.h$$
+#include "test_environment/TestAnalyzer.h"
 #endif
-$$INC: analyzer/asserts.i$$
-$$INC: analyzer/struct/constructor.i$$
-$$INC: analyzer/struct/reset.i$$
-$$INC: analyzer/member/mode-handling.i$$
-$$INC: buffer/asserts.i$$
-$$INC: token/TokenQueue.i$$
+#include "ut/lib/analyzer/asserts.i"
+#include "ut/lib/analyzer/struct/constructor.i"
+#include "ut/lib/analyzer/struct/reset.i"
+#include "ut/lib/analyzer/member/mode-handling.i"
+#include "ut/lib/buffer/asserts.i"
+#include "ut/lib/token/TokenQueue.i"
 
-$$INC: single.i$$
+#include "ut/lib/single.i"
 
 #if ! defined (__QUEX_OPTION_PLAIN_C)
     using namespace quex;
@@ -689,7 +689,7 @@ test_program_db = {
 
     "ANSI-C": """
     #include <stdio.h>
-    /* $$INC: buffer/lexatoms/LexatomLoader_Plain$$ */
+    /* #include "ut/lib/buffer/lexatoms/LexatomLoader_Plain"
 
     int main(int argc, char** argv)
     {
@@ -730,7 +730,7 @@ test_program_db = {
     "Cpp": """
     #include <cstring>
     #include <sstream>
-    $$INC: buffer/lexatoms/LexatomLoader_Plain$$
+    #include "ut/lib/buffer/lexatoms/LexatomLoader_Plain"
 
     int main(int argc, char** argv)
     {
@@ -749,8 +749,8 @@ test_program_db = {
     "Cpp_StrangeStream": """
     #include <cstring>
     #include <sstream>
-    $$INC: buffer/lexatoms/LexatomLoader_Plain$$
-    $$INC: extra/test_environment/StrangeStream$$
+    #include "ut/lib/buffer/lexatoms/LexatomLoader_Plain"
+    #include "ut/lib/extra/strange_stream/StrangeStream"
 
 
     int main(int argc, char** argv)

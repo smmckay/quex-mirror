@@ -1,13 +1,13 @@
 #ifndef QUEX_INCLUDE_GUARD_BUFFER_BASIC_FUNCTIONALITY
 #define QUEX_INCLUDE_GUARD_BUFFER_BASIC_FUNCTIONALITY
 
-$$INC: extra/test_environment/TestAnalyzer-configuration$$
-$$INC: definitions$$
-$$INC: buffer/Buffer$$
-$$INC: MemoryManager$$
+#include "TESTS/minimum-definitions.h"
+#include "ut/lib/definitions"
+#include "ut/lib/buffer/Buffer"
+#include "ut/lib/MemoryManager"
 #include <hwut_unit.h>
 #ifdef __cplusplus
-$$INC: buffer/Buffer.i$$
+#include "ut/lib/buffer/Buffer.i"
 #endif
 
 QUEX_NAMESPACE_MAIN_OPEN

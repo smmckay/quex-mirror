@@ -20,8 +20,7 @@ parser: main.c lexical_analysis/Calc_lexer.c Calc_parser.tab.c
 lexical_analysis/Calc_lexer.c: Calc_lexer.qx Calc_parser.tab.h
 	quex -i $< -o Calc_lexer --token-id-prefix TKN_ \
           --foreign-token-id-file Calc_token-ids.h  \
-		  --odir lexical_analysis --suppress 0      \
-		  --language C         
+		  --odir lexical_analysis --suppress 0 --language C         
 
 Calc_parser.tab.h \
 Calc_parser.tab.c:  Calc_parser.y

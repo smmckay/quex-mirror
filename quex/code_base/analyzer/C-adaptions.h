@@ -1,8 +1,6 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H
 #define __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H
 
-$$INC: token/TokenPolicy$$
-
 #ifdef self_accumulator_add
 /* Token / Token Policy _____________________________________________________*/
 #   undef self_token_take_text

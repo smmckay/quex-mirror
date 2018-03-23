@@ -36,8 +36,8 @@ def _generate(mode_db):
     class_token_header,             \
     class_token_implementation      = token_class.do()
 
-    class_token_header         = adapt.do(class_token_header)
-    class_token_implementation = adapt.do(class_token_implementation)
+    class_token_header         = adapt.do(class_token_header, Setup.output_directory)
+    class_token_implementation = adapt.do(class_token_implementation, Setup.output_directory)
 
     if Setup.token_class_only_f:
         class_token_header = do_token_class_info() + class_token_header
@@ -53,17 +53,17 @@ def _generate(mode_db):
                                                        class_token_implementation,
                                                        global_lexeme_null_declaration)
 
-        configuration_header            = adapt.do(configuration_header)
-        analyzer_header                 = adapt.do(analyzer_header)
-        engine_txt                      = adapt.do(engine_txt)
-        lexeme_converter_header         = adapt.do(lexeme_converter_header)
-        lexeme_converter_implementation = adapt.do(lexeme_converter_implementation)
+        configuration_header            = adapt.do(configuration_header, Setup.output_directory)
+        analyzer_header                 = adapt.do(analyzer_header, Setup.output_directory)
+        engine_txt                      = adapt.do(engine_txt, Setup.output_directory)
+        lexeme_converter_header         = adapt.do(lexeme_converter_header, Setup.output_directory)
+        lexeme_converter_implementation = adapt.do(lexeme_converter_implementation, Setup.output_directory)
         _write_all(configuration_header, analyzer_header, engine_txt, 
                    class_token_header, token_id_header,
                    lexeme_converter_header, 
                    lexeme_converter_implementation)
 
-    source_package.do()
+    source_package.do(Setup.output_directory)
 
 def analyzer_functions_get(ModeDB):
     # (*) Get list of modes that are actually implemented

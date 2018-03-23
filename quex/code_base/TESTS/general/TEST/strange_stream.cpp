@@ -1,5 +1,5 @@
-#include "ut/lib/extra/test_environment/TestAnalyzer-configuration"
-#include "ut/lib/extra/test_environment/StrangeStream"
+#include "../../minimum-definitions.h"
+#include "ut/lib/extra/strange_stream/StrangeStream"
 #include <sstream>
 #include <iostream>
 #include <cstdlib>
@@ -9,7 +9,7 @@ int
 main(int argc, char** argv)
 {
     using namespace std;
-    using namespace quex;
+// using namespace quex;
 
     if( argc < 2 ) {
         cout << "Error: require one command line argument.\n";

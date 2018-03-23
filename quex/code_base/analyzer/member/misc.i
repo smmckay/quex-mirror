@@ -7,7 +7,6 @@
 #if defined(QUEX_OPTION_COUNTER)
 $$INC: analyzer/Counter$$
 #endif
-$$INC: token/TokenPolicy$$
 $$INC: buffer/Buffer_print$$
 $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: lexeme_base$$

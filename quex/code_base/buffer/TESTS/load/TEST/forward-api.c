@@ -31,12 +31,12 @@
 #define BufferElementN (QUEX_SETTING_BUFFER_MIN_FALLBACK_N + 5)
 
 #include "commonly_pasted.c"
-$$INC: buffer/lexatoms/LexatomLoader.i$$
-$$INC: buffer/lexatoms/LexatomLoader_Converter.i$$
-$$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
-$$INC: buffer/lexatoms/converter/iconv/Converter_IConv.i$$
-$$INC: buffer/lexatoms/converter/icu/Converter_ICU$$
-$$INC: buffer/lexatoms/converter/icu/Converter_ICU.i$$
+#include "ut/lib/buffer/lexatoms/LexatomLoader.i"
+#include "ut/lib/buffer/lexatoms/LexatomLoader_Converter.i"
+#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
 
 typedef enum {
     E_LexatomLoader_ICU,

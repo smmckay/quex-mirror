@@ -14,7 +14,7 @@ $$INC: analyzer/asserts$$
 $$INC: definitions$$
 
 #ifdef      __QUEX_OPTION_UNIT_TEST
-$$INC: extra/test_environment/StrangeStream$$
+$$INC: extra/strange_stream/StrangeStream$$
 #endif
 
 $$INC: buffer/Buffer$$

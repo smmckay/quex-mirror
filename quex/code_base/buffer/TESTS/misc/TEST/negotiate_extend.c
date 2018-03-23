@@ -20,7 +20,7 @@
 /* #define  QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE */
 
 #include <common.h>
-$$INC: buffer/TESTS/MemoryManager_UnitTest.i$$
+#include "TESTS/MemoryManager_UnitTest.i"
 $$INC: buffer/Buffer$$
 $$INC: buffer/asserts$$
 
