@@ -18,7 +18,7 @@ class Bisection(object):
         txt.extend(
             self.low.implement()
         )
-        txt.append(Lng.ELSE_FOLLOWS)
+        txt.append("%s\n" % Lng.ELSE_FOLLOWS)
         txt.extend(
             self.high.implement()
         )

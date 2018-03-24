@@ -96,7 +96,7 @@ def do_pre_context(SM, PreContextSmIdList, dial_db):
             # "QUEX_NAME(Buffer_print_content)(&me->buffer);\n",
             # "std::cout << std::endl;\n",
             Lng.ASSIGN(backup_position, "((QUEX_TYPE_STREAM_POSITION)-1)"),
-        Lng.ELSE,
+        Lng.ELSE_FOLLOWS,
             #-----------------------
             # -- set the input stream back to the real current position.
             #    during backward lexing the analyzer went backwards, so it needs to be reset.

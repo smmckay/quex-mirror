@@ -145,7 +145,7 @@ def framework(txt, PWState, TheAnalyzer):
              "        %s\n"      % Lng.PATH_ITERATOR_INCREMENT,
              "        %s"        % Lng.IF("*path_iterator", "!=", "QUEX_SETTING_PATH_TERMINATION_CODE"),
              goto_next_door,
-             "        %s"        % Lng.ELSE,                                  
+             "        %s\n"        % Lng.ELSE_FOLLOWS,                                  
              goto_terminal_door,
              "        %s\n"      % Lng.END_IF,
              "    %s\n"          % Lng.END_IF]
