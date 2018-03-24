@@ -270,7 +270,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
                                                    CounterPrintF=False,
                                                    BeforeCode=counter_code)
 
-    on_indentation_txt = indentation_handler.do(AuxMode()).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
+    on_indentation_txt = indentation_handler.do(AuxMode(), ["M", "M2"]).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
 
     return main_txt + on_indentation_txt
     
@@ -386,10 +386,10 @@ customized_unit_test_function_txt = """
 static bool show_next_character(QUEX_TYPE_ANALYZER* me);
 static bool skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me);
 
-$$INC: single.i$$
+#include "ut/lib/single.i"
 
 void
-QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 {
 #   define  engine (me)
 #   define  self   (*me)

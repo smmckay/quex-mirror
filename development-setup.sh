@@ -7,6 +7,9 @@ popd
 pushd quex/output/core/TEST
 python ../../../code_base/TESTS/code_base_instatiation.py ut
 popd
+pushd quex/engine/loop/TEST
+python ../../../code_base/TESTS/code_base_instatiation.py ut
+popd
 
 pushd doc
 python command_line_options.py
