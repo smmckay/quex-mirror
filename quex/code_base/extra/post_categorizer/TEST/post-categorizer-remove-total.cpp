@@ -1,5 +1,5 @@
-$$INC: extra/post_categorizer/TEST/post-categorizer-common.h$$
-$$INC: lexeme_converter/from-unicode-buffer.i$$
+#include "post-categorizer-common.h"
+#include "ut/lib/lexeme_converter/from-unicode-buffer.i"
 
 
 using namespace quex;

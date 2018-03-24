@@ -1,6 +1,6 @@
-$$INC: extra/post_categorizer/TEST/post-categorizer-common.h$$
+#include "post-categorizer-common.h"
 
-$$INC: single.i$$
+#include "ut/lib/single.i"
 
 using namespace quex;
 
