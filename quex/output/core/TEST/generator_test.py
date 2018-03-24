@@ -10,7 +10,7 @@ else:
 
 # Switch: Verbose debug output: 
 #         'False' --> Verbose debug output
-if True: # False: # True:
+if False: # False: # True:
     SHOW_TRANSITIONS_STR  = ""
     SHOW_BUFFER_LOADS_STR = ""
 else:
@@ -56,6 +56,8 @@ from   quex.output.core.variable_db                import VariableDB
 from   quex.output.languages.core                  import db
 import quex.output.core.state_router               as     state_router_generator
 import quex.output.core.engine                     as     engine_generator
+import quex.output.analyzer.adapt                  as     adapt
+import quex.output.analyzer.modes                  as     modes
 #
 import quex.blackboard as blackboard
 from   quex.constants  import E_Compression, \
@@ -292,7 +294,7 @@ def compile_and_run(Language, SourceCode, AssertsActionvation_str="", StrangeStr
 
 def compile(Language, SourceCode, AssertsActionvation_str="", StrangeStream_str=""):
     print "## (2) compiling generated engine code and test"    
-    we_str = "-Wall -Werror -Wno-error=unused-function"
+    we_str = "-Wall -Werror -Wno-error=unused-function -Wno-missing-braces"
     if Language.find("ANSI-C") != -1:
         extension = ".c"
         # The '-Wvariadic-macros' shall remind us that we do not want use variadic macroes.
@@ -374,7 +376,17 @@ def create_common_declarations(Language, QuexBufferSize,
 
     txt += test_program_common_declarations.replace("$$BUFFER_FALLBACK_N$$", 
                                                     repr(QuexBufferFallbackN))
-    txt  =  txt.replace("$$BUFFER_SIZE$$", "%s" % QuexBufferSize)
+    txt  = txt.replace("$$BUFFER_SIZE$$", "%s" % QuexBufferSize)
+    class Something:
+        pass
+    mode_1 = Something()
+    mode_1.name = "Mr"
+    mode_1.incidence_db = {}
+    mode_2 = Something()
+    mode_2.name = "Mrs"
+    mode_2.incidence_db = {}
+    txt  = txt.replace("$$MODE_DEF_M$$", modes.initialization(mode_1))
+    txt  = txt.replace("$$MODE_DEF_M2$$", modes.initialization(mode_2))
 
     if ComputedGotoF:   
         txt = txt.replace("$$COMPUTED_GOTOS$$",    "/* Correct */")
@@ -486,14 +498,16 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     variable_definitions = engine_generator.do_core(mode)
     function_body += "if(0) { QUEX_FUNCTION_COUNT_ARBITRARY((QUEX_TYPE_ANALYZER*)0, (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0); }\n"
     function_txt  = engine_generator.wrap_up(sm_name, function_body, 
-                                          variable_definitions, 
-                                          ModeNameList=[], dial_db=dial_db)
+                                             variable_definitions, 
+                                             ModeNameList=[], dial_db=dial_db)
 
     assert all_isinstance(function_txt, str)
 
-    return   "#define  __QUEX_OPTION_UNIT_TEST\n" \
-           + nonsense_default_counter(not SecondModeF) \
-           + "".join(function_txt)
+    result =  "#define  __QUEX_OPTION_UNIT_TEST\n" \
+            + nonsense_default_counter(not SecondModeF) \
+            + "".join(function_txt)
+
+    return adapt.do(result, "ut")
 
 def nonsense_default_counter(FirstModeF):
     if FirstModeF:
@@ -560,52 +574,22 @@ static void  QUEX_NAME(Mrs_analyzer_function)(QUEX_TYPE_ANALYZER*);
 #endif
 
 QUEX_NAMESPACE_MAIN_OPEN
-QUEX_NAME(Mode) QUEX_NAME(M) = {
-      /* id                */ 0, 
-      /* name              */ "Mode0", 
-#     if      defined( QUEX_OPTION_INDENTATION_TRIGGER) \
-         && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
-      /* on_indentation    */ NULL,
-#     endif
-      /* on_entry          */ 0,
-      /* on_exit           */ 0, 
-#     ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-      /* has_base          */ NULL,
-      /* has_entry_from)   */ NULL,
-      /* has_exit_to       */ NULL,
-#     endif
-      {
-      /* on_buffer_before_change */ (void (*)(void*))0,
-      /* on_buffer_overflow      */ (void (*)(void*))0,
-      /* aux                     */ (void*)0,
-      },
+bool TestAnalyzer_Mr_has_base(quex::TestAnalyzer_Mode_tag const* me)       { return false; }                                                                  
+bool TestAnalyzer_Mr_has_entry_from(quex::TestAnalyzer_Mode_tag const* me) { return false; }                                                            
+bool TestAnalyzer_Mr_has_exit_to(quex::TestAnalyzer_Mode_tag const* me)    { return false; }                                                               
+void TestAnalyzer_Mr_on_buffer_before_change(void* me)                     { return; }                                                                                
+void TestAnalyzer_Mr_on_buffer_overflow(void* me)                          { return; }                                                                                     
 
-      /* analyzer_function */ QUEX_NAME(Mr_analyzer_function),
-};
+$$MODE_DEF_M$$
 
 #ifdef QUEX_UNIT_TEST_SECOND_MODE
-QUEX_NAME(Mode) QUEX_NAME(M2) = {
-      /* id                */ 1, 
-      /* name              */ "Mode1", 
-#     if      defined( QUEX_OPTION_INDENTATION_TRIGGER) \
-         && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
-      /* on_indentation    */ NULL,
-#     endif
-      /* on_entry          */ 0,
-      /* on_exit           */ 0, 
-#     ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-      /* has_base          */ NULL,
-      /* has_entry_from)   */ NULL,
-      /* has_exit_to       */ NULL,
-#     endif
-      {
-      /* on_buffer_before_change */ (void (*)(void*))0,
-      /* on_buffer_overflow      */ (void (*)(void*))0,
-      /* aux                     */ (void*)0,
-      },
+bool TestAnalyzer_Mrs_has_base(quex::TestAnalyzer_Mode_tag const* me)       { return false; }                                                                  
+bool TestAnalyzer_Mrs_has_entry_from(quex::TestAnalyzer_Mode_tag const* me) { return false; }                                                            
+bool TestAnalyzer_Mrs_has_exit_to(quex::TestAnalyzer_Mode_tag const* me)    { return false; }                                                               
+void TestAnalyzer_Mrs_on_buffer_before_change(void* me)                     { return; }                                                                                
+void TestAnalyzer_Mrs_on_buffer_overflow(void* me)                          { return; }                                                                                     
 
-      /* analyzer_function */ QUEX_NAME(Mrs_analyzer_function),
-};
+$$MODE_DEF_M2$$
 #endif
 
 const QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {
