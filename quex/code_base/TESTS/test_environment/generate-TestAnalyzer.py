@@ -6,6 +6,7 @@ sys.path.insert(0, os.environ["QUEX_PATH"])
 import quex.input.command_line.core              as command_line
 import quex.input.files.core                     as quex_file_parser
 import quex.output.analyzer.core                 as analyzer_class
+import quex.output.analyzer.adapt                as adapt
 import quex.output.languages.cpp.templates       as templates
 import quex.output.token.core     as token_class
 # from   quex.TESTS.code.TEST.include_guard import better_name
@@ -60,7 +61,7 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     analyzer_class_implementation += "#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n"
 
     with open(FileName, "a") as fh:
-        fh.write(analyzer_class_implementation)
+        fh.write("%s\n" % adapt.do(analyzer_class_implementation, "ut"))
 
     if not TokenClassImplementationF:
         return
@@ -72,7 +73,7 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
 
     with open(FileName, "a") as fh:
         fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")
-        fh.write(token_class_implementation)
+        fh.write("%s\n" % adapt.do(token_class_implementation, "ut"))
 
         # fh.write("#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
         # fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
@@ -87,7 +88,7 @@ def append_variable_definitions(FileName):
     content = fh.read()
     fh.close()
     fh = open(FileName, "wb")
-    fh.write(content)
+    fh.write("%s\n" % adapt.do(content, "ut"))
     fh.write("\n")
     fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
     fh.write("bool UserReset_UnitTest_return_value       = true;\n")

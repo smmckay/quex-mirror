@@ -10,7 +10,7 @@ else:
 
 # Switch: Verbose debug output: 
 #         'False' --> Verbose debug output
-if False: # False: # True:
+if True: # False: # True:
     SHOW_TRANSITIONS_STR  = ""
     SHOW_BUFFER_LOADS_STR = ""
 else:
@@ -380,10 +380,10 @@ def create_common_declarations(Language, QuexBufferSize,
     class Something:
         pass
     mode_1 = Something()
-    mode_1.name = "Mr"
+    mode_1.name = "M"
     mode_1.incidence_db = {}
     mode_2 = Something()
-    mode_2.name = "Mrs"
+    mode_2.name = "M2"
     mode_2.incidence_db = {}
     txt  = txt.replace("$$MODE_DEF_M$$", modes.initialization(mode_1))
     txt  = txt.replace("$$MODE_DEF_M2$$", modes.initialization(mode_2))
@@ -412,8 +412,8 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     global dial_db
     incidence_db = IncidenceDB()
 
-    if not SecondModeF:  sm_name = "Mr"
-    else:                sm_name = "Mrs"
+    if not SecondModeF:  sm_name = "M"
+    else:                sm_name = "M2"
 
     Setup.analyzer_class_name = sm_name
 
@@ -437,8 +437,8 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
         txt.append("%s\n" % Lng.LEXEME_TERMINATING_ZERO_SET(True))
         txt.append('printf("%19s  \'%%s\'\\n", Lexeme); fflush(stdout);\n' % PatternName)
 
-        if   "->1" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mr_analyzer_function);\n")
-        elif "->2" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(Mrs_analyzer_function);\n")
+        if   "->1" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(M_analyzer_function);\n")
+        elif "->2" in PatternName: txt.append("me->current_analyzer_function = QUEX_NAME(M2_analyzer_function);\n")
 
         if   "CONTINUE" in PatternName: txt.append("")
         elif "STOP" in PatternName:     txt.append("QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_UnitTest_Termination); return;\n")
@@ -504,8 +504,10 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     assert all_isinstance(function_txt, str)
 
     result =  "#define  __QUEX_OPTION_UNIT_TEST\n" \
+            + "QUEX_NAMESPACE_MAIN_OPEN\n" \
             + nonsense_default_counter(not SecondModeF) \
-            + "".join(function_txt)
+            + "".join(function_txt) \
+            + "QUEX_NAMESPACE_MAIN_CLOSE\n"
 
     return adapt.do(result, "ut")
 
@@ -568,26 +570,26 @@ quex_TestAnalyzer*   lexer_state;
 TestAnalyzer*        lexer_state;
 #endif
 
-static void  QUEX_NAME(Mr_analyzer_function)(QUEX_TYPE_ANALYZER*);
+extern void  QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER*);
 #ifdef QUEX_UNIT_TEST_SECOND_MODE
-static void  QUEX_NAME(Mrs_analyzer_function)(QUEX_TYPE_ANALYZER*);
+extern void  QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER*);
 #endif
 
 QUEX_NAMESPACE_MAIN_OPEN
-bool TestAnalyzer_Mr_has_base(quex::TestAnalyzer_Mode_tag const* me)       { return false; }                                                                  
-bool TestAnalyzer_Mr_has_entry_from(quex::TestAnalyzer_Mode_tag const* me) { return false; }                                                            
-bool TestAnalyzer_Mr_has_exit_to(quex::TestAnalyzer_Mode_tag const* me)    { return false; }                                                               
-void TestAnalyzer_Mr_on_buffer_before_change(void* me)                     { return; }                                                                                
-void TestAnalyzer_Mr_on_buffer_overflow(void* me)                          { return; }                                                                                     
+bool QUEX_NAME(M_has_base)(QUEX_NAME(Mode) const* me)       { return false; }                                                                  
+bool QUEX_NAME(M_has_entry_from)(QUEX_NAME(Mode) const* me) { return false; }                                                            
+bool QUEX_NAME(M_has_exit_to)(QUEX_NAME(Mode) const* me)    { return false; }                                                               
+void QUEX_NAME(M_on_buffer_before_change)(void* me)         { return; }                                                                                
+void QUEX_NAME(M_on_buffer_overflow)(void* me)              { return; }                                                                                     
 
 $$MODE_DEF_M$$
 
 #ifdef QUEX_UNIT_TEST_SECOND_MODE
-bool TestAnalyzer_Mrs_has_base(quex::TestAnalyzer_Mode_tag const* me)       { return false; }                                                                  
-bool TestAnalyzer_Mrs_has_entry_from(quex::TestAnalyzer_Mode_tag const* me) { return false; }                                                            
-bool TestAnalyzer_Mrs_has_exit_to(quex::TestAnalyzer_Mode_tag const* me)    { return false; }                                                               
-void TestAnalyzer_Mrs_on_buffer_before_change(void* me)                     { return; }                                                                                
-void TestAnalyzer_Mrs_on_buffer_overflow(void* me)                          { return; }                                                                                     
+bool QUEX_NAME(M2_has_base)(QUEX_NAME(Mode) const* me)       { return false; }                                                                  
+bool QUEX_NAME(M2_has_entry_from)(QUEX_NAME(Mode) const* me) { return false; }                                                            
+bool QUEX_NAME(M2_has_exit_to)(QUEX_NAME(Mode) const* me)    { return false; }                                                               
+void QUEX_NAME(M2_on_buffer_before_change)(void* me)         { return; }                                                                                
+void QUEX_NAME(M2_on_buffer_overflow)(void* me)              { return; }                                                                                     
 
 $$MODE_DEF_M2$$
 #endif
@@ -673,7 +675,9 @@ test_program_db = {
 
     "ANSI-C": """
     #include <stdio.h>
-    /* #include "ut/lib/buffer/lexatoms/LexatomLoader_Plain"
+    #if 0
+    #include "ut/lib/buffer/lexatoms/LexatomLoader_Plain"
+    #endif
 
     int main(int argc, char** argv)
     {

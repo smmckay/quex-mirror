@@ -1163,6 +1163,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 
+
 bool UserConstructor_UnitTest_return_value = true;
 bool UserReset_UnitTest_return_value       = true;
 bool UserMementoPack_UnitTest_return_value = true;

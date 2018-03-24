@@ -350,8 +350,8 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 
 
-$$INC: analyzer/headers.i$$
-$$INC: analyzer/C-adaptions.h$$
+#include "ut/lib/analyzer/headers.i"
+#include "ut/lib/analyzer/C-adaptions.h"
 
 
 /* START: User defined header content _________________________________________
@@ -363,6 +363,7 @@ bool UserConstructor_UnitTest_return_value = true;
 bool UserReset_UnitTest_return_value       = true;
 bool UserMementoPack_UnitTest_return_value = true;
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
+
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 /* -*- C++ -*-   vim: set syntax=cpp: 
  * (C) 2004-2009 Frank-Rene Schaefer
@@ -376,7 +377,7 @@ bool UserMementoPack_UnitTest_return_value = true;
 #endif
 
 #include "test_environment/TestAnalyzer-token.h"
-$$INC: definitions$$
+#include "ut/lib/definitions"
 
 #include "test_environment/TestAnalyzer-token.h"
 
@@ -398,7 +399,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 402 "TestAnalyzer.h"
+#   line 403 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -429,7 +430,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 433 "TestAnalyzer.h"
+#   line 434 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -464,7 +465,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 468 "TestAnalyzer.h"
+#   line 469 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -546,7 +547,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 550 "TestAnalyzer.h"
+#   line 551 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -568,7 +569,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 572 "TestAnalyzer.h"
+#   line 573 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -587,7 +588,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 591 "TestAnalyzer.h"
+#   line 592 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -658,16 +659,17 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
         }
 
 #include "lib/lexeme_converter/from-unicode-buffer.i"
-$$INC: lexeme.i$$
+#include "ut/lib/lexeme.i"
    
 
-#   line 665 "TestAnalyzer.h"
+#   line 666 "TestAnalyzer.h"
 
 
-$$INC: lexeme.i$$
+#include "ut/lib/lexeme.i"
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
 QUEX_NAMESPACE_TOKEN_OPEN
 QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
 QUEX_NAMESPACE_TOKEN_CLOSE
+
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */
