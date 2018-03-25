@@ -31,36 +31,28 @@ all: lexer
 
 # -- application
 lexer: lexer.o Simple.o 
-	$(LD) lexer.o Simple.o -o $@ \
-		`icu-config --ldflags`      
+	$(LD) lexer.o Simple.o -o $@ `icu-config --ldflags`      
 
 # -- engine and object files
-lexer.o: ../lexer.c Simple.c
+lexer.o: ../lexer.c Simple/Simple.c
 	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED $< -ggdb -o $@
 
-%.o: %.c Simple.c
+Simple.o: Simple/Simple.c
 	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED $< -ggdb -o $@
 
-Simple.c: simple.qx
+%.o: %.c Simple/Simple.c
+	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED $< -ggdb -o $@
+
+Simple/Simple.c: simple.qx
 	@quex -i simple.qx -o Simple --language C --debug-exception > tmp.txt 2>&1
 
 # (*) HELPERS __________________________________________________________________
 mostlyclean:
-	@rm -f Simple.o
-	@rm -f lexer.o
-	@rm -f lexer
-	@rm -f *.bak
-	@rm -f tmp.txt
+	@rm -rf Simple* lexer.o lexer *.bak tmp.txt
 	@echo "clean"
 
 clean:	
 	@touch simple.qx
-	@rm -f Simple*
-	@rm -f Simple.o
-	@rm -f lexer.o
-	@rm -f lexer
-	@rm -f token_ids
-	@rm -f *.bak
-	@rm -f tmp.txt
+	@rm -rf Simple* lexer.o lexer *.bak tmp.txt
 	@echo "clean"
 

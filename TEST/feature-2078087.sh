@@ -14,6 +14,5 @@ make INPUT=$1.qx &> tmp.txt
 
 source ../quex_pathify.sh tmp.txt
 
-# cleansening
-rm -f Simple Simple.[ch] Simple-* *.o tmp*.txt lexer
+make clean
 cd $tmp

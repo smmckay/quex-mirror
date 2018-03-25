@@ -1,11 +1,11 @@
-#include "Simple.h"
+#include "Simple/Simple.h"
 #ifdef  QUEX_OPTION_CONVERTER_ICONV
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#   include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#   include <Simple/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
+#   include <Simple/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
 #ifdef  QUEX_OPTION_CONVERTER_ICU
-#   include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#   include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
+#   include <Simple/lib/buffer/lexatoms/converter/icu/Converter_ICU>
+#   include <Simple/lib/buffer/lexatoms/converter/icu/Converter_ICU.i>
 #endif
 
 #ifndef    PRINT_TOKEN_FIRST_NUMBER 
@@ -85,7 +85,7 @@ main(int argc, char** argv)
     } while( token_p->id != QUEX_TKN_TERMINATION );
 
     if( qlex.error_code != E_Error_None ) {
-        QUEX_NAME(print_this)(&qlex);
+        qlex.print_this(&qlex);
     }
     TEST_EPILOG
 
