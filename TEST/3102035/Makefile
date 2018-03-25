@@ -24,7 +24,7 @@ LDC := $(LDC) \
 # (*) RULES ____________________________________________________________________
 # -- application
 # Object files:
-Case%: Case%.c 
+Case%: Simple/Case%.c 
 	$(LDC) -c $< -o $@.o
 
 # Macro expansions (only for debugging):
@@ -33,24 +33,19 @@ Case%: Case%.c
 
 Case4: $(QUEX_PATH)/TEST/lexer.c
 	quex -i case4.qx  -o Simple --language C --debug-exception
-	$(LDC) $^ Simple.c -o $@ 
+	$(LDC) $^ Simple/Simple.c -o $@ 
 
 Case5: $(QUEX_PATH)/TEST/lexer.c
 	quex -i case5.qx  -o Simple --language C --debug-exception
-	$(LDC) $^ Simple.c -o $@ 
+	$(LDC) $^ Simple/Simple.c -o $@ 
 
-Case2.c: case2.qx 
+Simple/Case2.c: case2.qx 
 	## Case2 causes an error message which we want to see: no '--debug-exception'
-	quex -i $<  -o $(@:.c=) --language C 
+	quex -i $<  -o Case2 --odir Simple --language C 
 
-Case%.c: case%.qx 
-	quex -i $<  -o $(@:.c=) --language C --debug-exception
+Simple/Case%.c: case%.qx 
+	quex -i $<  -o Case$* --odir Simple --language C --debug-exception
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f Simple*
-	rm -f Case*
-	rm -f *.o
-	rm -f *.bak
-	rm -f *.E
-	rm -f lexer
+	rm -rf Simple* Case?  *.o *.bak *.E lexer

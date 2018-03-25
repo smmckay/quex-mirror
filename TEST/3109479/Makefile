@@ -41,22 +41,22 @@ lexer: example.o Simple.o
 	$(LDC) -o $@ example.o Simple.o 
           
 # Object files:
-Simple.o: Simple.c 
+Simple.o: Simple/Simple.c 
 	$(CC) $< -o $@ 
 
-example.o: $(QUEX_PATH)/TEST/lexer.c  Simple.c
+example.o: $(QUEX_PATH)/TEST/lexer.c  Simple/Simple.c
 	$(CC) $< -o $@ 
 
 # Macro expansions (only for debugging):
 %.E: %.c    
 	$(CC) -E $< -o $@ 
 
-Simple.c: $(QX_FILE) 
+Simple/Simple.c: $(QX_FILE) 
 	quex -i $(QX_FILE) -o Simple --language C #--debug-exception
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f Simple*
+	rm -rf Simple*
 	rm -f *.o
 	rm -f *.bak
 	rm -f *.E

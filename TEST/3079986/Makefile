@@ -9,12 +9,12 @@ Lexer: simple.qx
 
 check: Lexer
 	@echo "(1) check out generated sources"
-	@awk ' /TKN_/ { print; }' Lexer.cpp Lexer-token 2>&1 
+	@awk ' /TKN_/ { print; }' Lexer/Lexer.cpp Lexer/Lexer-token 2>&1 
 
 compile: Lexer
 	@echo "(2) compile -- no output is good output"
-	@g++ -I$(QUEX_PATH) -c Lexer.cpp -I. -Wall -Werror -Wconversion 2>&1
+	@g++ -I. -c Lexer/Lexer.cpp -I. -Wall -Werror -Wconversion 2>&1
 
 clean:
-	@rm -f *.exe *.o Lexer* simple.qx > /dev/null 2>&1
+	@rm -rf *.exe *.o Lexer* simple.qx > /dev/null 2>&1
 

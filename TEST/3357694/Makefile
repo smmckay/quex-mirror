@@ -6,19 +6,14 @@ ICU_LFLAGS=$(shell icu-config --ldflags)
 test: lexer.o Simple.o
 	$(LDC_ICU) -o $@ $^ $(ICU_LFLAGS)
 
-lexer.o: ../lexer.c SOURCES
+lexer.o: ../lexer.c Simple/Simple.c
 	$(CC_ICU) -o $@ -DPRINT_TOKEN $< 
 
-Simple.o: Simple.c SOURCES
+Simple.o: Simple/Simple.c 
 	$(CC) -o $@ $< 
 
-Simple \
-Simple.cpp: SOURCES
-
-SOURCES: 
+Simple/Simple.c: 
 	quex -b 2 -i test.qx -o Simple --language C $(ADD_OPTION) --debug-exception
 
 clean:
-	rm -f Simple*
-	rm -f *.o
-	rm -f test
+	rm -f Simple* *.o test
