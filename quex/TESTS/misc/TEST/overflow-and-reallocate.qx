@@ -14,12 +14,12 @@ mode X : <skip: [\n]> {
 
     on_failure {
         printf("failed: '%s'\n", Lexeme);
-        QUEX_NAME(error_code_set_if_first)(&self, E_Error_OnFailure);
+        self.error_code_set_if_first(&self, E_Error_OnFailure);
     }
 
     on_end_of_stream {
         if( QUEX_NAME(include_pop)(&self) == false ) {
-           QUEX_NAME(error_code_clear)(&self);
+           self.error_code_clear(&self);
            self.send(&self, QUEX_TKN_TERMINATION);
         }
         else { 

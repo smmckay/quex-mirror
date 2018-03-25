@@ -31,9 +31,6 @@ hwut-info:
 hwut-end: clean
 	@echo Bye
 
-%-gen.c: %.cpp
-	hwut gen $< -o $(@:.c=)
-
 move_away_passed_content-fb0.exe: move_away_passed_content.cpp \
 	                              move_away_passed_content-gen.o \
 							      hwut_cursor.o ut
@@ -81,6 +78,9 @@ move_away_upfront_content-32.exe: move_away_upfront_content.cpp \
 		  move_away_upfront_content-gen.o hwut_cursor.o -o $@
 
 
+%-gen.c: %.cpp
+	hwut gen $< -o $(@:.c=)
+
 %.o: %.c
 	$(CC) -c $< -o $@
 
@@ -106,7 +106,7 @@ ut:
 	python ../../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter
 
 clean: 
-	rm -rf $(TEST_FILES) ut
+	rm -rf $(TEST_FILES) ut *.o
 	rm -rf *-gen.[ch]
 	rm -rf *-gen.[ch].[ch]   # some unattended build results ...
 	rm -rf *.exe

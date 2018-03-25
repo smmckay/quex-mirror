@@ -2,8 +2,8 @@
 
 function build_lexer {
     quex -i overflow-and-reallocate.qx -o EasyLexer --language C
-    gcc $QUEX_PATH/demo/C/example.c EasyLexer.c  \
-        -I. -I$QUEX_PATH \
+    gcc $QUEX_PATH/demo/C/example.c EasyLexer/EasyLexer.c  \
+        -I. -I \
         -DPRINT_TOKEN \
         -DQUEX_SETTING_BUFFER_SIZE=4 \
         -DQUEX_SETTING_BUFFER_FALLBACK_N=0 \
@@ -35,5 +35,5 @@ case $1 in
 esac
 
 if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
-    rm -f EasyLexer* lexer
+    rm -rf EasyLexer* lexer
 fi

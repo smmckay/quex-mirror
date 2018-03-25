@@ -3191,72 +3191,45 @@ quex/code_base/buffer/TESTS/move/TEST                                <no date>
  * move_away_passed_content:
 
     (BPC=1, FB=0)
-        move_away_passed_content-fb0.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb0.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=1, FB=1)
-        move_away_passed_content-fb1.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb1.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=1, FB=2)
-        move_away_passed_content-fb2.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb2.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=4, FB=2)
-        move_away_passed_content-fb2-32.exe EoS .............[MAKE FAILED]
-                                            NoEoS ...........[MAKE FAILED]
+        move_away_passed_content-fb2-32.exe EoS ......................[OK]
+                                            NoEoS ....................[OK]
 
  * move_away_upfront_content:
 
     (BPC=1)
-        move_away_upfront_content-8.exe cib=0 ...............[MAKE FAILED]
-                                        cib=0:EOS ...........[MAKE FAILED]
-                                        cib=1 ...............[MAKE FAILED]
-                                        cib=1:EOS ...........[MAKE FAILED]
-                                        cib=2 ...............[MAKE FAILED]
-                                        cib=2:EOS ...........[MAKE FAILED]
+        move_away_upfront_content-8.exe cib=0 ........................[OK]
+                                        cib=0:EOS ....................[OK]
+                                        cib=1 ........................[OK]
+                                        cib=1:EOS ....................[OK]
+                                        cib=2 ........................[OK]
+                                        cib=2:EOS ....................[OK]
     (BPC=2)
-        move_away_upfront_content-16.exe cib=0 ..............[MAKE FAILED]
-                                         cib=0:EOS ..........[MAKE FAILED]
-                                         cib=1 ..............[MAKE FAILED]
-                                         cib=1:EOS ..........[MAKE FAILED]
-                                         cib=2 ..............[MAKE FAILED]
-                                         cib=2:EOS ..........[MAKE FAILED]
+        move_away_upfront_content-16.exe cib=0 .......................[OK]
+                                         cib=0:EOS ...................[OK]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
     (BPC=4)
-        move_away_upfront_content-32.exe cib=0 ..............[MAKE FAILED]
-                                         cib=0:EOS ..........[MAKE FAILED]
-                                         cib=1 ..............[MAKE FAILED]
-                                         cib=1:EOS ..........[MAKE FAILED]
-                                         cib=2 ..............[MAKE FAILED]
-                                         cib=2:EOS ..........[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] move_away_passed_content-fb0.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb1.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb2.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb2-32.exe _ EoS
-                                             \__ NoEoS
-    [FAIL] move_away_upfront_content-8.exe _ cib=0
-                                         \__ cib=0:EOS
-                                         \__ cib=1
-                                         \__ cib=1:EOS
-                                         \__ cib=2
-                                         \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-16.exe _ cib=0
-                                          \__ cib=0:EOS
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-32.exe _ cib=0
-                                          \__ cib=0:EOS
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
+        move_away_upfront_content-32.exe cib=0 .......................[OK]
+                                         cib=0:EOS ...................[OK]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       Extensive Tests on Buffer Seek&Tell                      
@@ -3773,7 +3746,7 @@ SUMMARY:
         4  11    [FAIL] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
        11  11    [FAIL] .........................../misc/TEST                         
-       26  26    [FAIL] .........................../move/TEST                         
+           26      [OK] .........................../move/TEST                         
            96      [OK] .........................../navigation/TEST                   
        12  12    [FAIL] ...................../bytes/TEST                              
        12  12    [FAIL] ...................../lexatoms/converter/iconv/TEST           
@@ -3808,11 +3781,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  _  _   ____             
-    |  ___|_ _(_) |___     |___ / | || | | ___|      __  __
-    | |_ / _` | | / __|      |_ \ | || |_|___ \      \ \/ /
-    |  _| (_| | | \__ \     ___) ||__   _ ___) |      >  < 
-    |_|  \__,_|_|_|___/    |____/    |_| |____/      /_/\_\
+     _____     _ _          _____  _   ___            
+    |  ___|_ _(_) |___     |___ / / | / _ \     __  __
+    | |_ / _` | | / __|      |_ \ | || (_) |    \ \/ /
+    |  _| (_| | | \__ \     ___) || | \__, |     >  < 
+    |_|  \__,_|_|_|___/    |____/ |_|   /_/     /_/\_\
                                                                    (1705 tests)
 
 ===============================================================================
