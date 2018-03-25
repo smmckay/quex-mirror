@@ -2,12 +2,12 @@
 #include<iostream> 
 
 #include <Simple/Simple>
-#include "quex/code_base/buffer/bytes/ByteLoader_FILE.i"
-#include <quex/code_base/extra/test_environment/StrangeStream>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
+#include "Simple/lib/buffer/bytes/ByteLoader_FILE.i"
+#include <Simple/lib/extra/strange_stream/StrangeStream>
+#include <Simple/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <Simple/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#include <Simple/lib/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <Simple/lib/buffer/lexatoms/converter/icu/Converter_ICU.i>
 
 #ifndef    CONVERTER
 #   define CONVERTER 0

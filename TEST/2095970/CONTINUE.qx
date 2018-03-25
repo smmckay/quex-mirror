@@ -9,7 +9,7 @@ mode MODULE {
 
     "\"" { 
         self.send_string(QUEX_TKN_EVENT_MODE_CHANGE_TO_STRING, Lexeme); 
-        self << STRING; 
+        self.enter_mode(STRING); 
         CONTINUE;
     }
     [^\"]+  => QUEX_TKN_MODULE_EATS(Lexeme);
@@ -27,7 +27,7 @@ mode STRING {
     }
     "\"" { 
         self.send_string(QUEX_TKN_EVENT_MODE_CHANGE_TO_MODULE, Lexeme); 
-        self << MODULE; 
+        self.enter_mode(MODULE); 
         CONTINUE;
     }
     [^\"] { self_accumulator_add(Lexeme, LexemeEnd); CONTINUE; }

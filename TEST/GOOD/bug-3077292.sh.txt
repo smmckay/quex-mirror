@@ -1,2 +1,3 @@
 Confirm lexer has been created
-Lexer.o
+Simple.o
+

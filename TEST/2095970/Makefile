@@ -12,12 +12,6 @@ endif
 # (*) SETUP ____________________________________________________________________
 # -- INPUT
 # -- FILES PRODUCED BY QUEX
-ENGINE_NAME    = Simple# NOTE: a whitespace after this name creates chaos!
-ENGINE_SOURCES = $(ENGINE_NAME)                     \
-                 $(ENGINE_NAME).cpp                 \
-                 $(ENGINE_NAME)-token_ids           \
-                 $(ENGINE_NAME)-configuration       \
-                 $(ENGINE_NAME)-token               \
 
 # (*) COMPILER SETTINGS ________________________________________________________
 CC := $(LDCPP) $(EXT_CFLAGS) 
@@ -26,23 +20,17 @@ CC := $(LDCPP) $(EXT_CFLAGS)
 all: lexer
 
 # -- application
-lexer: ../lexer-simply.cpp $(ENGINE_SOURCES)
-	$(CC) $< $(ENGINE_NAME).cpp -o $@  -ggdb
+lexer: ../lexer-simply.cpp Simple/Simple.cpp
+	$(CC) $< Simple/Simple.cpp -o $@  -ggdb
 
-Simple.E: Simple.cpp
+Simple.E: Simple/Simple.cpp
 	$(CC) -E $< -o $@ 
 
-$(ENGINE_SOURCES): $(EXT_MODE_FILE)
-	quex -i $(EXT_MODE_FILE) common.qx token.qx -o $(ENGINE_NAME) $(EXT_TOKEN_QUEUE_FLAG) > tmp.txt 2>&1
+Simple/Simple.cpp: $(EXT_MODE_FILE)
+	quex -i $(EXT_MODE_FILE) common.qx token.qx -o Simple $(EXT_TOKEN_QUEUE_FLAG) > tmp.txt 2>&1
 
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	@rm -f $(ENGINE_SOURCES)
-	@rm -f $(ENGINE_NAME).o
-	@rm -f lexer.o
-	@rm -f lexer
-	@rm -f token_ids
-	@rm -f *.bak
-	@rm -f tmp.txt
+	@rm -rf Simple* lexer.o lexer token_ids *.bak tmp.txt
 

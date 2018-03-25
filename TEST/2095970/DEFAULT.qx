@@ -9,7 +9,7 @@ mode MODULE {
     <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull);
     "\"" { 
         self.send_string(QUEX_TKN_EVENT_MODE_CHANGE_TO_STRING, LexemeNull); 
-        self << STRING; 
+        self.enter_mode(STRING);
         /* Not RETURN; and not CONTINUE; */
     }
     [ \t\n] {}
@@ -28,7 +28,7 @@ mode STRING {
     }
     "\"" { 
         self.send_string(QUEX_TKN_EVENT_MODE_CHANGE_TO_MODULE, LexemeNull); 
-        self << MODULE; 
+        self.enter_mode(MODULE);
         /* Not RETURN; and not CONTINUE; */
     }
     [^\"] { self_accumulator_add(Lexeme, LexemeEnd); CONTINUE; }

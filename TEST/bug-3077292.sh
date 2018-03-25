@@ -7,17 +7,15 @@ fi
 
 tmp=`pwd`
 cd $bug/ 
-quex -i simple.qx --language C --debug-exception
-gcc -c Lexer.c -I$QUEX_PATH -DQUEX_OPTION_DEBUG_SHOW -DQUEX_OPTION_COUNTER_LINE -DQUEX_OPTION_COUNTER_COLUMN >& tmp.txt
-cat tmp.txt
+rm -rf Simple.o >& /dev/null
+
+bash ../call-make.sh all 
 
 echo "Confirm lexer has been created"
-ls Lexer.o >& tmp.txt
-
+ls Simple.o >& tmp.txt
 cat tmp.txt
 
 # cleansening
-rm tmp.txt
-rm Lexer*
+make clean >& /dev/null
 
 cd $tmp

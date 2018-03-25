@@ -10,12 +10,14 @@ tmp=`pwd`
 cd $bug/ 
 quex -i $1.qx -b 2 -o Simple >& tmp.txt
 cat tmp.txt 
+cd Simple
 if [ -e Simple ]; then
     echo "||||"
     ls Simple* 
     echo "||||"
 fi
+cd ..
 rm tmp.txt
-rm -f Simple*
+rm -rf Simple*
 
 cd $tmp

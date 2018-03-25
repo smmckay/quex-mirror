@@ -27,3 +27,6 @@ CC_ICU      := $(CC) $(FLAGS_ICU)
 CPP_ICU     := $(CPP) $(FLAGS_ICU)
 LDC_ICU     := $(LDC) $(FLAGS_ICU) 
 LDCPP_ICU   := $(LDCPP) $(FLAGS_ICU) 
+
+# Copy of the code base in 'ut' _______________________________________________
+COPY_CODE_BASE := python ../quex/code_base/TESTS/code_base_instatiation.py ut
