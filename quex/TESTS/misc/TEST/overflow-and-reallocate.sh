@@ -1,10 +1,9 @@
 #! /usr/bin/env bash
 
 function build_lexer {
-    quex -i overflow-and-reallocate.qx -o EasyLexer --language C
-    gcc $QUEX_PATH/demo/C/example.c EasyLexer/EasyLexer.c  \
-        -I. -I \
-        -DPRINT_TOKEN \
+    quex -i overflow-and-reallocate.qx -o EHLexer --language C
+    gcc lexer2nd.c EHLexer/EHLexer.c  \
+        -I. -DPRINT_TOKEN \
         -DQUEX_SETTING_BUFFER_SIZE=4 \
         -DQUEX_SETTING_BUFFER_FALLBACK_N=0 \
         -o lexer

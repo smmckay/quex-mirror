@@ -1231,76 +1231,53 @@ quex/TESTS/event-handling/TEST                                       <no date>
  * Check whether all event handlers from 'blackboard.py' are tested.
         all_event_handlers_checked.sh ................................[OK]
  * Customized 'on_buffer_before_change' event.
-        on_buffer_before_change.qx empty ...........................[FAIL]
-                                   twice ...........................[FAIL]
+        on_buffer_before_change.qx empty .............................[OK]
+                                   twice .............................[OK]
 
  * Errors:
 
     'on_buffer_overflow'
-        on_buffer_overflow.qx empty ................................[FAIL]
-                              trigger ..............................[FAIL]
+        on_buffer_overflow.qx empty ..................................[OK]
+                              trigger ................................[OK]
     Customized 'on_skip_range_open' event
-        on_skip_range_open-customized.qx customized ................[FAIL]
+        on_skip_range_open-customized.qx customized ..................[OK]
     Default 'on_skip_range_open' event
-        on_skip_range_open.qx default ..............................[FAIL]
+        on_skip_range_open.qx default ................................[OK]
     on_bad_lexatom
-        on_bad_lexatom.qx bad-utf16 ................................[FAIL]
-                          good-utf16 ...............................[FAIL]
+        on_bad_lexatom.qx bad-utf16 ..................................[OK]
+                          good-utf16 .................................[OK]
 
  * Indentation:
 
     With N x DEDENT
-        on_indentation-2.qx n-dedent ...............................[FAIL]
+        on_indentation-2.qx n-dedent .................................[OK]
     Without N x DEDENT
-        on_indentation-1.qx ind-bad ................................[FAIL]
-                            ind-bad-dedent .........................[FAIL]
-                            ind-good ...............................[FAIL]
+        on_indentation-1.qx ind-bad ..................................[OK]
+                            ind-bad-dedent ...........................[OK]
+                            ind-good .................................[OK]
 
  * Matching:
 
     on_failure, on_match, on_after_match
-        on_match.qx failure ........................................[FAIL]
-                    match ..........................................[FAIL]
+        on_match.qx failure ..........................................[OK]
+                    match ............................................[OK]
 
  * Mode Transitions:
 
     more on on_entry, on_exit
-        transition-x.qx 1 ..........................................[FAIL]
-                        2 ..........................................[FAIL]
-                        3 ..........................................[FAIL]
-                        error ......................................[FAIL]
+        transition-x.qx 1 ............................................[OK]
+                        2 ............................................[OK]
+                        3 ............................................[OK]
+                        error ........................................[OK]
     on_entry, on_exit
-        transition.qx 1 ............................................[FAIL]
-                      2 ............................................[FAIL]
-                      3 ............................................[FAIL]
-                      error ........................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] on_buffer_before_change.qx _ empty
-                                    \__ twice
-    [FAIL] on_buffer_overflow.qx _ empty
-                               \__ trigger
-    [FAIL] on_skip_range_open-customized.qx _ customized
-    [FAIL] on_skip_range_open.qx _ default
-    [FAIL] on_bad_lexatom.qx _ bad-utf16
-                           \__ good-utf16
-    [FAIL] on_indentation-2.qx _ n-dedent
-    [FAIL] on_indentation-1.qx _ ind-bad
-                             \__ ind-bad-dedent
-                             \__ ind-good
-    [FAIL] on_match.qx _ failure
-                     \__ match
-    [FAIL] transition-x.qx _ 1
-                         \__ 2
-                         \__ 3
-                         \__ error
-    [FAIL] transition.qx _ 1
-                       \__ 2
-                       \__ 3
-                       \__ error
+        transition.qx 1 ..............................................[OK]
+                      2 ..............................................[OK]
+                      3 ..............................................[OK]
+                      error ..........................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1473,16 +1450,16 @@ quex/TESTS/match-precedence/TEST                                     <no date>
 quex/TESTS/misc/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Challenges with Buffer Size 5
-        challenge-with-tiny-buffer-sizes.sh PRE_LONG_X .............[FAIL]
-                                            PRE_LONG_X_DTC .........[FAIL]
-                                            PRE_LONG_X_PC ..........[FAIL]
-                                            PRE_X ..................[FAIL]
-                                            PRE_X_DTC ..............[FAIL]
-                                            PRE_X_PC ...............[FAIL]
+        challenge-with-tiny-buffer-sizes.sh PRE_LONG_X ...............[OK]
+                                            PRE_LONG_X_DTC ...........[OK]
+                                            PRE_LONG_X_PC ............[OK]
+                                            PRE_X ....................[OK]
+                                            PRE_X_DTC ................[OK]
+                                            PRE_X_PC .................[OK]
  * Customized codec files (option --encoding-file)
         customized_codec.sh ........................................[FAIL]
  * FSM DFA_State Tracer
-        debug_show.sh ..............................................[FAIL]
+        debug_show.sh ................................................[OK]
  * Inadmissible commonalities
         commonality.sh indentation-newline ...........................[OK]
                        mix ...........................................[OK]
@@ -1491,62 +1468,38 @@ quex/TESTS/misc/TEST                                                 <no date>
                        skip_nested_range .............................[OK]
                        skip_range ....................................[OK]
  * Provoque overflow and automatic buffer resize
-        overflow-and-reallocate.sh included ........................[FAIL]
-                                   plain ...........................[FAIL]
+        overflow-and-reallocate.sh included ..........................[OK]
+                                   plain .............................[OK]
  * Respect max. recursion depth upon base mode inclusion.
         huge-inheritance.sh ..........................................[OK]
  * Test code comments
-        comment.sh ............................................[NO OUTPUT]
+        comment.sh ...................................................[OK]
  * Testing the implementation of line number pragmas
-        line-number-pragma.sh qx ...................................[FAIL]
-                              source ...............................[FAIL]
+        line-number-pragma.sh qx .....................................[OK]
+                              source .................................[OK]
 
  * Challenges with Buffer Size 5:
 
     Extend on Overflow
-        challenge-with-tiny-buffer-sizes-overflow-error.sh PRE_LONG_X [FAIL]
-                                                           PRE_LONG_X_DTC [FAIL]
-                                                           PRE_LONG_X_PC [FAIL]
-                                                           PRE_X ...[FAIL]
-                                                           PRE_X_DTC [FAIL]
-                                                           PRE_X_PC [FAIL]
+        challenge-with-tiny-buffer-sizes-overflow-error.sh PRE_LONG_X [OK]
+                                                           PRE_LONG_X_DTC [OK]
+                                                           PRE_LONG_X_PC [OK]
+                                                           PRE_X .....[OK]
+                                                           PRE_X_DTC .[OK]
+                                                           PRE_X_PC ..[OK]
     Extend on Overflow
-        challenge-with-tiny-buffer-sizes-overflow.sh PRE_LONG_X ....[FAIL]
-                                                     PRE_LONG_X_DTC [FAIL]
-                                                     PRE_LONG_X_PC .[FAIL]
-                                                     PRE_X .........[FAIL]
-                                                     PRE_X_DTC .....[FAIL]
-                                                     PRE_X_PC ......[FAIL]
+        challenge-with-tiny-buffer-sizes-overflow.sh PRE_LONG_X ......[OK]
+                                                     PRE_LONG_X_DTC ..[OK]
+                                                     PRE_LONG_X_PC ...[OK]
+                                                     PRE_X ...........[OK]
+                                                     PRE_X_DTC .......[OK]
+                                                     PRE_X_PC ........[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] challenge-with-tiny-buffer-sizes.sh _ PRE_LONG_X
-                                             \__ PRE_LONG_X_DTC
-                                             \__ PRE_LONG_X_PC
-                                             \__ PRE_X
-                                             \__ PRE_X_DTC
-                                             \__ PRE_X_PC
     [FAIL] customized_codec.sh
-    [FAIL] debug_show.sh
-    [FAIL] overflow-and-reallocate.sh _ included
-                                    \__ plain
-    [FAIL] comment.sh
-    [FAIL] line-number-pragma.sh _ qx
-                               \__ source
-    [FAIL] challenge-with-tiny-buffer-sizes-overflow-error.sh _ PRE_LONG_X
-                                                            \__ PRE_LONG_X_DTC
-                                                            \__ PRE_LONG_X_PC
-                                                            \__ PRE_X
-                                                            \__ PRE_X_DTC
-                                                            \__ PRE_X_PC
-    [FAIL] challenge-with-tiny-buffer-sizes-overflow.sh _ PRE_LONG_X
-                                                      \__ PRE_LONG_X_DTC
-                                                      \__ PRE_LONG_X_PC
-                                                      \__ PRE_X
-                                                      \__ PRE_X_DTC
-                                                      \__ PRE_X_PC
 ===============================================================================
                                                                                
                                      Reset                                     
@@ -3731,12 +3684,12 @@ SUMMARY:
         6  6     [FAIL] ........../drop-outs/TEST                                     
         1  2     [FAIL] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-       22  23    [FAIL] ........../event-handling/TEST                                
+           23      [OK] ........../event-handling/TEST                                
         7  7     [FAIL] ........../include-stack/TEST                                 
        14  21    [FAIL] ........../indentation_count/TEST                             
         2  2     [FAIL] ........../loop/TEST                                          
         3  45    [FAIL] ........../match-precedence/TEST                              
-       25  32    [FAIL] ........../misc/TEST                                          
+        1  32    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
        16  16    [FAIL] ........../source-package/TEST                                
         2  5     [FAIL] ........../token-class/TEST                                   
@@ -3781,11 +3734,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  _   ___            
-    |  ___|_ _(_) |___     |___ / / | / _ \     __  __
-    | |_ / _` | | / __|      |_ \ | || (_) |    \ \/ /
-    |  _| (_| | | \__ \     ___) || | \__, |     >  < 
-    |_|  \__,_|_|_|___/    |____/ |_|   /_/     /_/\_\
+     _____     _ _          ____   _____  _____           
+    |  ___|_ _(_) |___     |___ \ |___  ||___ /     __  __
+    | |_ / _` | | / __|      __) |   / /   |_ \     \ \/ /
+    |  _| (_| | | \__ \     / __/   / /   ___) |     >  < 
+    |_|  \__,_|_|_|___/    |_____| /_/   |____/     /_/\_\
                                                                    (1705 tests)
 
 ===============================================================================

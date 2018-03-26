@@ -33,7 +33,7 @@ DEFS := -DQUEX_OPTION_ASSERTS \
 	    -DQUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE=6 \
         -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 
 
-INCLUDES := -I. -I$(HWUT_PATH)/support/C -I$(QUEX_PATH) -I$(TEST_SUPPORT_DIR)
+INCLUDES := -I. -I$(HWUT_PATH)/support/C -I$(TEST_SUPPORT_DIR) -I../../../../../TESTS
 
 ICU_LIBS := $(shell icu-config --ldflags) 
 
@@ -50,17 +50,20 @@ hwut-info:
 hwut-end: clean
 	@echo Bye
 
-%-1.exe: %.cpp $(BASIC_SOURCES)
-	$(CC) $^ $(ICU_LIBS) -o $@ -DQUEX_TYPE_LEXATOM=uint8_t 
+%-1.exe: %.cpp ut
+	$(CC) $< $(BASIC_SOURCES) $(ICU_LIBS) -o $@ -DQUEX_TYPE_LEXATOM=uint8_t 
 
-%-2.exe: %.cpp $(BASIC_SOURCES)
-	$(CC) $^ $(ICU_LIBS) -o $@ -DQUEX_TYPE_LEXATOM=uint16_t 
+%-2.exe: %.cpp ut
+	$(CC) $< $(BASIC_SOURCES) $(ICU_LIBS) -o $@ -DQUEX_TYPE_LEXATOM=uint16_t 
 
-%-4.exe: %.cpp $(BASIC_SOURCES)
-	$(CC) $^ $(ICU_LIBS) -o $@ -DQUEX_TYPE_LEXATOM=uint32_t 
+%-4.exe: %.cpp ut
+	$(CC) $< $(BASIC_SOURCES) $(ICU_LIBS) -o $@ -DQUEX_TYPE_LEXATOM=uint32_t 
 
-%-WC.exe: %.cpp $(BASIC_SOURCES)
-	$(CC) $^ $(ICU_LIBS) -o $@ -DQUEX_TYPE_LEXATOM=wchar_t 
+%-WC.exe: %.cpp ut
+	$(CC) $< $(BASIC_SOURCES) $(ICU_LIBS) -o $@ -DQUEX_TYPE_LEXATOM=wchar_t 
+
+ut:
+	python ../../../../../TESTS/code_base_instatiation.py ut buffer compatibility analyzer
 
 %.E: %.cpp
 	g++ $(DEFS) $(INCLUDES) -E $< -o $@
@@ -69,7 +72,4 @@ hwut-end: clean
 	g++ $(DEFS) $(INCLUDES) -E $< -o $@
 
 clean:
-	rm -f $(FILES)
-	rm -f *.o
-	rm -f *.E
-	rm -f *~
+	rm -rf $(FILES) ut *.o *.E *~

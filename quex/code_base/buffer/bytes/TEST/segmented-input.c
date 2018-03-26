@@ -32,10 +32,10 @@
 #include <string.h>
 #include <sys/types.h>
 #include <basic_functionality.h>
-$$INC: buffer/bytes/ByteLoader_POSIX$$
-$$INC: buffer/bytes/ByteLoader.i$$
-$$INC: buffer/bytes/ByteLoader_POSIX.i$$
-$$INC: MemoryManager.i$$
+#include "ut/lib/buffer/bytes/ByteLoader_POSIX"
+#include "ut/lib/buffer/bytes/ByteLoader.i"
+#include "ut/lib/buffer/bytes/ByteLoader_POSIX.i"
+#include "ut/lib/MemoryManager.i"
 
 #include <hwut_unit.h>
 

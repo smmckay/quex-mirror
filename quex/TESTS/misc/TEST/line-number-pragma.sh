@@ -5,6 +5,7 @@ if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then
 fi
 
 file_list='LineNumberPragma LineNumberPragma-token LineNumberPragma.cpp'
+cd LineNumberPragma
 
 case $1 in
     --hwut-info)
@@ -38,7 +39,7 @@ case $1 in
             #              N = M - 1
             # * No output is good output
             echo "   <no output is good output/print only errors>"
-            grep -sHIne "# *line \+[0-9]\+ \+\"$file\"" $file \
+            grep -sHIne "# *line \+[0-9]\+ \+\"LineNumberPragma/$file\"" $file \
             | sed -e "s/$file//g" \
             | sed -e "s/line//g"  \
             | tr -d "\"#:"        \
@@ -49,8 +50,9 @@ case $1 in
 esac
 
 echo __________________________________________________________________
+cd ..
 if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
     # echo "Do not forget to 'remove'"
-    rm LineNumberPragma*
+    rm -rf LineNumberPragma*
 fi
 echo "<terminated>"

@@ -10,8 +10,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_UNIT_TEST_I
 #define __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_UNIT_TEST_I
 
-#include "ut/lib/definitions"
-#include "ut/lib/MemoryManager"
+#include "definitions"      /* Must provide '-IMyDirectory/lib' to compiler. */
+#include "MemoryManager"    /* ----------------------------------------------*/
 
 QUEX_NAMESPACE_QUEX_OPEN
 

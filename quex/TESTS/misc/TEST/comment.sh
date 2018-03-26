@@ -13,7 +13,7 @@ case $1 in
              --comment-mode-patterns \
              --comment-transitions   \
              --debug-exception
-        diff With.cpp WithOut.cpp | awk ' (/</ || />/) && ! /\#/ '
-        rm -f With*
+        diff With/With.cpp WithOut/WithOut.cpp | awk ' (/</ || />/) && ! /\#/ '
+        rm -rf With*
         ;;
 esac

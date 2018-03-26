@@ -8,9 +8,8 @@
  *
  * (C) Frank-Rene Schaefer.                                                  */
 #include <basic_functionality.h>
-$$INC: buffer/lexatoms/converter/icu/Converter_ICU.i$$
-$$INC: buffer/lexatoms/converter/Converter.i$$
-/* $$INC: MemoryManager.i$$ */
+#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "ut/lib/buffer/lexatoms/converter/Converter.i"
 
 QUEX_NAMESPACE_MAIN_OPEN
 

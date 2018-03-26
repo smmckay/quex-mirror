@@ -35,12 +35,12 @@ if [[ $1 == "on_indentation_error" ]]; then
     txt_file=data/on_indentation_error.txt
     buffer_size=30
 fi
-quex -i $qx_file -o EasyLexer --language C --debug-exception
+quex -i $qx_file -o Simple --language C --debug-exception
 
 gcc \
-    -I$QUEX_PATH -I.                                 \
-    EasyLexer.c                                      \
-    $QUEX_PATH/demo/C/example.c                      \
+    -I.                                              \
+    Simple/Simple.c                                  \
+    lexer2nd.c                                       \
     -o lexer -DPRINT_TOKEN                           \
     -DQUEX_SETTING_BUFFER_SIZE=$buffer_size          \
     -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
@@ -51,7 +51,5 @@ gcc \
 
 cat tmp.txt
 
-rm -f ./EasyLexer*
-rm -f ./lexer
-rm -f tmp.txt
+rm -f ./Simple* ./lexer tmp.txt
 

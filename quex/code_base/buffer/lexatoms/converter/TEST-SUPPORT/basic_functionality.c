@@ -1,5 +1,5 @@
 #include <basic_functionality.h>
-$$INC: MemoryManager.i$$
+#include "ut/lib/MemoryManager.i"
 #include <hwut_unit.h>
 #define REFERENCE_DIR    "../../../../TESTS/navigation/TEST/examples/"
 #define ARRAY_ELEMENT_N  65536

@@ -2,10 +2,10 @@
 #define UNIT_TEST_COMMON_H
 
 #define  __QUEX_OPTION_PLAIN_C
-$$INC: extra/test_environment/TestAnalyzer-configuration$$
-$$INC: definitions$$
-$$INC: buffer/Buffer$$
-$$INC: MemoryManager$$
+#include "test_environment/TestAnalyzer-configuration"
+#include "ut/lib/definitions"
+#include "ut/lib/buffer/Buffer"
+#include "ut/lib/MemoryManager"
 #include <hwut_unit.h>
 #include <stdio.h>
 #include <stddef.h>

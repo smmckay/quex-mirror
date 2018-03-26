@@ -18,7 +18,7 @@ fi
 
 if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
     quex -i challenge-with-tiny-buffer-sizes-overflow.qx -o Simple --language C
-    gcc -I$QUEX_PATH -I. lexer.c Simple.c -o lexer -DQUEX_SETTING_BUFFER_SIZE=5
+    gcc -I. lexer.c Simple/Simple.c -o lexer -DQUEX_SETTING_BUFFER_SIZE=5
 fi
 
 function test_this {
@@ -79,7 +79,7 @@ case $choice in
 esac
 
 if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
-    rm -f Simple* ./lexer
+    rm -rf Simple* ./lexer
 fi
 
 

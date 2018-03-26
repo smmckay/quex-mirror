@@ -1,7 +1,7 @@
 #include<string.h>
 #include<stdio.h>
 
-#include "Simple.h"
+#include "Simple/Simple.h"
 
 int 
 main(int argc, char** argv) 
@@ -25,7 +25,7 @@ main(int argc, char** argv)
 
 
     QUEX_NAME(from_file_name)(&qlex, file_name, NULL); 
-    QUEX_NAME(set_mode_brutally)(&qlex, mode);
+    qlex.set_mode_brutally(&qlex, mode);
 
     printf("START: initial buffer size: %i\n", 
             (int)(&qlex.buffer._memory._back[1] - qlex.buffer._memory._front));
@@ -37,7 +37,7 @@ main(int argc, char** argv)
     } while( token_id != QUEX_TKN_TERMINATION );
 
     if( qlex.error_code != E_Error_None ) {
-        QUEX_NAME(print_this)(&qlex);
+        qlex.print_this(&qlex);
     }
 
     printf("END: final buffer size: %i\n", 

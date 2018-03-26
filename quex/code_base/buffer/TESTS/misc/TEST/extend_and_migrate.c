@@ -29,8 +29,8 @@
 /* #define  QUEX_OPTION_UNIT_TEST_MEMORY_MANAGER_VERBOSE */
 
 #include <common.h>
-#include "TESTS/MemoryManager_UnitTest.i"
-$$INC: buffer/asserts$$
+#include "MemoryManager_UnitTest.i"
+#include "ut/lib/buffer/asserts"
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 

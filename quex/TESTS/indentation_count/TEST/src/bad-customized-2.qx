@@ -12,7 +12,7 @@ mode X :
 >
 <skip: [ \t] >
 {
-    on_indentation_bad { QUEX_NAME(error_code_clear)(&self); self.send_string(&self, QUEX_TKN_BAD, LexemeNull); }
+    on_indentation_bad { self.error_code_clear(&self); self.send_string(&self, QUEX_TKN_BAD, LexemeNull); }
     [a-z]+  => QUEX_TKN_WORD(Lexeme);
     [\:]    => QUEX_TKN_COLON(LexemeNull);
 }

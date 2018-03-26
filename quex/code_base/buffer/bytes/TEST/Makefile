@@ -14,22 +14,24 @@ FLAGS    :=  -ggdb -Wall -Werror \
 			 -I$(QUEX_PATH) \
 			 -I.
 
+MORE := basic_functionality.c initial_position.c
+
 all: $(TESTS)
 
 hwut-info:
 	@echo $(TESTS)
 
-test-%.exe: test-%.c basic_functionality.c initial_position.c
-	gcc $(FLAGS) -D__QUEX_OPTION_PLAIN_C $^ -o $@
+test-%.exe: test-%.c $(MORE) ut
+	gcc $(FLAGS) -D__QUEX_OPTION_PLAIN_C $< $(MORE) -o $@
 
-test-%.exe: test-%.cpp basic_functionality.c initial_position.c
-	g++ $(FLAGS) $^ -o $@
+test-%.exe: test-%.cpp $(MORE) ut
+	g++ $(FLAGS) $< $(MORE) -o $@
 
-segmented-input.exe: segmented-input.c
-	gcc $(FLAGS) -D__QUEX_OPTION_PLAIN_C $^ -o $@
+segmented-input.exe: segmented-input.c ut
+	gcc $(FLAGS) -D__QUEX_OPTION_PLAIN_C $< -o $@
 
-%.E: %.c
-	gcc -E $(FLAGS) -D__QUEX_OPTION_PLAIN_C $^ -o $@
+ut:
+	python ../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter
 
 clean:
 	rm -f *.exe

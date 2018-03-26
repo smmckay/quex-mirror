@@ -20,7 +20,7 @@ endif
 COMPILER = gcc
 
 LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
-	 -I./ -I$(QUEX_PATH)                   \
+	 -I./ -I. -IEHLexer/lib \
 	 -DQUEX_OPTION_DEBUG_SHOW_MODES        \
 	 -DQUEX_OPTION_COUNTER_LINE_DISABLED   \
 	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK   
@@ -39,53 +39,46 @@ all: $(TEST_FILES)
 
 on_match.exe: on_match.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD4) ./lexer.c EHLexer.c -o $@  
+	$(LD4) ./lexer.c EHLexer/EHLexer.c -o $@  
 
 on_indentation-%.exe: on_indentation-%.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=65536 ./lexer.c EHLexer.c -o $@ 
+	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=65536 ./lexer.c EHLexer/EHLexer.c -o $@ 
 
 on_load_failure.exe: on_load_failure.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=6 ./lexer-probed.c EHLexer.c -o $@ 
+	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=6 ./lexer-probed.c EHLexer/EHLexer.c -o $@ 
 
 on_bad_lexatom.exe: on_bad_lexatom.qx 
 	$(QUEX) -i $< -o EHLexer --encoding utf16
-	$(LD65536) ./lexer.c EHLexer.c -o $@ 
+	$(LD65536) ./lexer.c EHLexer/EHLexer.c -o $@ 
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD4) ./lexer.c EHLexer.c -o $@ \
+	$(LD4) ./lexer.c EHLexer/EHLexer.c -o $@ \
 	       -DUNIT_TEST_DEFINE_MEMORY_MANAGER_IMPLEMENTATION
 
 on_buffer_before_change.exe: on_buffer_before_change.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD4) ./lexer.c EHLexer.c -o $@  
+	$(LD4) ./lexer.c EHLexer/EHLexer.c -o $@  
 
 on_skip_range_open.exe: on_skip_range_open.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD4) ./lexer.c EHLexer.c -o $@ `icu-config --ldflags`   
+	$(LD4) ./lexer.c EHLexer/EHLexer.c -o $@ `icu-config --ldflags`   
 
 on_skip_range_open-customized.exe: on_skip_range_open-customized.qx 
 	$(QUEX) -i $< -o EHLexer
-	$(LD4) ./lexer.c EHLexer.c -o $@ `icu-config --ldflags`  
+	$(LD4) ./lexer.c EHLexer/EHLexer.c -o $@ `icu-config --ldflags`  
 
 %.exe: %.qx 
 	$(QUEX) -i $< -o EHLexer
-	$(LD4) ./lexer.c EHLexer.c -o $@ `icu-config --ldflags`  
+	$(LD4) ./lexer.c EHLexer/EHLexer.c -o $@ `icu-config --ldflags`  
 
 transit%.exe: transit%.qx lexer.c 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD) ./lexer.c EHLexer.c -o $@ `icu-config --ldflags`      
+	$(LD) ./lexer.c EHLexer/EHLexer.c -o $@ `icu-config --ldflags`      
 
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f EHLexer*
-	rm -f EasyLexer*
-	rm -f *.exe
-	rm -f lexer.o
-	rm -f lexer
-	rm -f token_ids
-	rm -f *.bak
-	rm -f $(TEST_FILES)
+	rm -rf EHLexer* EasyLexer* *.exe lexer.o lexer token_ids *.bak $(TEST_FILES)

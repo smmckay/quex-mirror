@@ -15,12 +15,12 @@
  * (C) Frank-Rene Schaefer.                                                   */
 #define  __QUEX_OPTION_PLAIN_C
 
-$$INC: extra/test_environment/TestAnalyzer-configuration$$
-#include "TESTS/MemoryManager_UnitTest.i"
-$$INC: definitions$$
-$$INC: buffer/Buffer$$
-$$INC: MemoryManager$$
-$$INC: buffer/Buffer.i$$
+#include "test_environment/TestAnalyzer-configuration"
+#include "MemoryManager_UnitTest.i"
+#include "ut/lib/definitions"
+#include "ut/lib/buffer/Buffer"
+#include "ut/lib/MemoryManager"
+#include "ut/lib/buffer/Buffer.i"
 
 #include <hwut_unit.h>
 

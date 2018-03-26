@@ -290,7 +290,7 @@ fh.write("".join(txt))
 fh.close()
 try:    os.remove("./test")
 except: pass
-os.system("gcc -I$QUEX_PATH -Wall -Werror test.c -o test -ggdb -std=c89")
+os.system("gcc -I. -Wall -Werror test.c -o test -ggdb -std=c89")
 os.system("./test")
 
 if True:

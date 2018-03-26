@@ -1,9 +1,9 @@
 #include<string.h>
 #include<stdio.h>
 
-#include "EHLexer.h"
+#include "EHLexer/EHLexer.h"
 #ifdef      UNIT_TEST_DEFINE_MEMORY_MANAGER_IMPLEMENTATION
-#   include "quex/code_base/buffer/TESTS/MemoryManager_UnitTest.i"
+#   include "../../../code_base/TESTS/MemoryManager_UnitTest.i"
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 #endif
 
@@ -50,7 +50,7 @@ main(int argc, char** argv)
     FLUSH();
 
     if( qlex.error_code != E_Error_None ) {
-        QUEX_NAME(print_this)(&qlex);
+        qlex.print_this(&qlex);
     }
 
     QUEX_NAME(destruct)(&qlex);

@@ -1,9 +1,9 @@
 /* PURPOSE: See comment in file 'basic_functionality.c'                      */
 #include <basic_functionality.h>
-$$INC: buffer/bytes/ByteLoader_stream$$
-$$INC: buffer/bytes/ByteLoader_stream.i$$
-$$INC: buffer/bytes/ByteLoader.i$$
-$$INC: MemoryManager.i$$
+#include "ut/lib/buffer/bytes/ByteLoader_stream"
+#include "ut/lib/buffer/bytes/ByteLoader_stream.i"
+#include "ut/lib/buffer/bytes/ByteLoader.i"
+#include "ut/lib/MemoryManager.i"
 #include <hwut_unit.h>
 #include <iostream>
 

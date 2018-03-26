@@ -1,6 +1,6 @@
 #include <common.h>
 
-$$INC: buffer/Buffer.i$$
+#include "ut/lib/buffer/Buffer.i"
 
 int common_recursion_count_n = 0;
 

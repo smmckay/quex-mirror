@@ -11,12 +11,11 @@ txt_file=data/comment-$1.txt
 buffer_size=25
 
 if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
-    quex -i $qx_file -o EasyLexer --language C --debug-exception
+    quex -i $qx_file -o Simple --language C --debug-exception
     gcc -ggdb \
-        -I$QUEX_PATH -I.                                 \
-        EasyLexer.c                                      \
-        $QUEX_PATH/demo/C/example.c                      \
-        -o lexer -DPRINT_TOKEN                           \
+        -I.                                              \
+        Simple/Simple.c                                  \
+        lexer2nd.c -o lexer -DPRINT_TOKEN                \
         -DQUEX_SETTING_BUFFER_SIZE=$buffer_size          \
         -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
 fi
@@ -29,8 +28,6 @@ fi
 cat tmp.txt
 
 if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
-    rm -f ./EasyLexer*
-    rm -f ./lexer
-    rm -f tmp.txt
+    rm -rf ./Simple* ./lexer tmp.txt
 fi
 
