@@ -13,19 +13,19 @@ lex_iconv:
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t 
 	@echo "Compiling"
-	$(LDCPP_ICONV) $(X).cpp ../lexer.cpp $(DEFINES) -o $@
+	$(LDCPP_ICONV) $(X)/$(X).cpp ../lexer.cpp $(DEFINES) -o $@
 
 lex_icu: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t 
 	@echo "Compiling"
-	$(LDCPP_ICU) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU)
+	$(LDCPP_ICU) $(X)/$(X).cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU)
 
 lex_codec: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --encoding utf8  
 	@echo "Compiling"
-	$(LDCPP) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
+	$(LDCPP) $(X)/$(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
 
 # C Versions ________________________________________________________________
 # 
@@ -33,25 +33,25 @@ lex_iconv_c:
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t --language c
 	@echo "Compiling"
-	$(LDC_ICONV) $(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@
+	$(LDC_ICONV) $(X)/$(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@
 
 lex_icu_c: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --bet wchar_t --language c
 	@echo "Compiling"
-	$(LDC_ICU) $(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@ $(LIB_ICU)
+	$(LDC_ICU) $(X)/$(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@ $(LIB_ICU)
 
 lex_codec_c: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o $(X) --encoding utf8  --language C
 	@echo "Compiling"
-	$(LDC) $(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@ 
+	$(LDC) $(X)/$(X).c ../lexer.c $(DEFINES) -DPRINT_TOKEN -o $@ 
 
 wiki.txt: wiki.txt.bz2
 	bzip2 -dk wiki.txt.bz2
 
 clean:
-	rm -rf $(X)-*
+	rm -rf $(X)
 	rm -rf $(X).cpp
 	rm -rf $(X).c
 	rm -rf $(X).h

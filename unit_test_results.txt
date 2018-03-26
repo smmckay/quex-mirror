@@ -35,12 +35,12 @@ TEST                                                                 <no date>
         bug-2002070.sh iconv ..................................[NO OUTPUT]
                        icu ....................................[NO OUTPUT]
     2002474 Segmentation Fault while UTF-8 Decoding
-        bug-2002474.sh codec .......................................[FAIL]
-                       codec_c .....................................[FAIL]
-                       iconv .......................................[FAIL]
-                       iconv_c .....................................[FAIL]
-                       icu .........................................[FAIL]
-                       icu_c .......................................[FAIL]
+        bug-2002474.sh codec .........................................[OK]
+                       codec_c .......................................[OK]
+                       iconv .........................................[OK]
+                       iconv_c .......................................[OK]
+                       icu ...........................................[OK]
+                       icu_c .........................................[OK]
     2004927 UTF-8 RE Extra Comma Matched
         bug-2004927.sh codec ..................................[NO OUTPUT]
                        iconv ..................................[NO OUTPUT]
@@ -158,9 +158,9 @@ TEST                                                                 <no date>
     3082041 0.52.4 Buffer Memory Size not Accepted
         bug-3082041.sh .............................................[FAIL]
     3102035 0.55.1 Weird Setup causes Duplicate State Label
-        bug-3102035.sh 1 ...........................................[FAIL]
-                       2 ...........................................[FAIL]
-                       3 ...........................................[FAIL]
+        bug-3102035.sh 1 .............................................[OK]
+                       2 .............................................[OK]
+                       3 .............................................[OK]
                        4 .............................................[OK]
                        5 .............................................[OK]
     3157923 Memory Leak by Components
@@ -259,7 +259,7 @@ TEST                                                                 <no date>
         feature-3402386.sh hex .......................................[OK]
                            utf8 ......................................[OK]
     3403249 0.61.2 Non UTF8 encoding for *.qx files not detected.
-        bug-3403249.sh GBK .........................................[FAIL]
+        bug-3403249.sh GBK ...........................................[OK]
                        utf16 .........................................[OK]
                        utf16-with-bom ................................[OK]
                        utf8 ..........................................[OK]
@@ -483,7 +483,7 @@ TEST                                                                 <no date>
                            pp ........................................[OK]
                            xx ........................................[OK]
     3077292 0.52.3 Compilation Error With DEBUG_MODE_TRANSITIONS
-        bug-3077292.sh .............................................[FAIL]
+        bug-3077292.sh ...............................................[OK]
 
  * yoavg:
 
@@ -507,12 +507,6 @@ TEST                                                                 <no date>
                         \__ icu
     [FAIL] bug-2002070.sh _ iconv
                         \__ icu
-    [FAIL] bug-2002474.sh _ codec
-                        \__ codec_c
-                        \__ iconv
-                        \__ iconv_c
-                        \__ icu
-                        \__ icu_c
     [FAIL] bug-2004927.sh _ codec
                         \__ iconv
                         \__ icu
@@ -550,9 +544,6 @@ TEST                                                                 <no date>
     [FAIL] feature-3038088.sh
     [FAIL] feature-3039173.sh
     [FAIL] bug-3082041.sh
-    [FAIL] bug-3102035.sh _ 1
-                        \__ 2
-                        \__ 3
     [FAIL] bug-3157923.sh
     [FAIL] bug-3513568.sh
     [FAIL] bug-264.sh
@@ -566,7 +557,6 @@ TEST                                                                 <no date>
     [FAIL] bug-2896732.sh
     [FAIL] bug-2395200.sh _ lexer
     [FAIL] bug-2894648.sh
-    [FAIL] bug-3403249.sh _ GBK
     [FAIL] bug-3512806.sh _ C
                         \__ Cpp
     [FAIL] bug-298.sh
@@ -597,7 +587,6 @@ TEST                                                                 <no date>
                             \__ NotExist
     [FAIL] bug-2163753.sh
     [FAIL] bug-3097431.sh
-    [FAIL] bug-3077292.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1314,9 +1303,9 @@ quex/TESTS/include-stack/TEST                                        <no date>
 quex/TESTS/indentation_count/TEST                                    <no date>
 -------------------------------------------------------------------------------
  * Bad character detection.
-        bad.sh customized ..........................................[FAIL]
-               customized-2 ........................................[FAIL]
-               default .............................................[FAIL]
+        bad.sh customized ............................................[OK]
+               customized-2 ..........................................[OK]
+               default ...............................................[OK]
  * Commonalities of Indentation Counter vs. Patterns
         commonalities.sh 1 ...........................................[OK]
                          2 ...........................................[OK]
@@ -1326,38 +1315,23 @@ quex/TESTS/indentation_count/TEST                                    <no date>
                          5b ..........................................[OK]
                          6 ...........................................[OK]
  * Customized Event Handlers
-        comment.sh bash ............................................[FAIL]
-                   c ...............................................[FAIL]
-                   mix .............................................[FAIL]
+        comment.sh bash ..............................................[OK]
+                   c .................................................[OK]
+                   mix ...............................................[OK]
  * Customized Event Handlers
-        handlers.sh check-eof ......................................[FAIL]
-                    empty-lines ....................................[FAIL]
-                    on_dedent ......................................[FAIL]
-                    on_indentation_error ...........................[FAIL]
-                    on_n_dedent ....................................[FAIL]
+        handlers.sh check-eof ........................................[OK]
+                    empty-lines ......................................[OK]
+                    on_dedent ........................................[OK]
+                    on_indentation_error .............................[OK]
+                    on_n_dedent ......................................[OK]
  * Indentation Counting and Range Skipper
-        with-skip-range.sh nested_range ............................[FAIL]
-                           range ...................................[FAIL]
-                           range-2 .................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] bad.sh _ customized
-                \__ customized-2
-                \__ default
-    [FAIL] comment.sh _ bash
-                    \__ c
-                    \__ mix
-    [FAIL] handlers.sh _ check-eof
-                     \__ empty-lines
-                     \__ on_dedent
-                     \__ on_indentation_error
-                     \__ on_n_dedent
-    [FAIL] with-skip-range.sh _ nested_range
-                            \__ range
-                            \__ range-2
+        with-skip-range.sh nested_range ..............................[OK]
+                           range .....................................[OK]
+                           range-2 ...................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                     Testing general patterns for 'loopers'                     
@@ -1693,34 +1667,23 @@ quex/code_base/analyzer/TEST                                         <no date>
 quex/code_base/lexeme_converter/TEST                                 <no date>
 -------------------------------------------------------------------------------
  * Test of complete character set on base converters (utf8, utf16, utf32)
-        characters ..........................................[MAKE FAILED]
+        characters ...................................................[OK]
  * utf16 to utf8, utf16, and utf32
-        from-utf16 Drain_ToSmall ............................[MAKE FAILED]
-                   Source_Empty .............................[MAKE FAILED]
-                   Source_TestFile ..........................[MAKE FAILED]
+        from-utf16 Drain_ToSmall .....................................[OK]
+                   Source_Empty ......................................[OK]
+                   Source_TestFile ...................................[OK]
  * utf32 to utf8, utf16, and utf32
-        from-utf32 Drain_ToSmall ............................[MAKE FAILED]
-                   Source_Empty .............................[MAKE FAILED]
-                   Source_TestFile ..........................[MAKE FAILED]
+        from-utf32 Drain_ToSmall .....................................[OK]
+                   Source_Empty ......................................[OK]
+                   Source_TestFile ...................................[OK]
  * utf8 to utf8, utf16, and utf32
-        from-utf8 Drain_ToSmall .............................[MAKE FAILED]
-                  Source_Empty ..............................[MAKE FAILED]
-                  Source_TestFile ...........................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] characters
-    [FAIL] from-utf16 _ Drain_ToSmall
-                    \__ Source_Empty
-                    \__ Source_TestFile
-    [FAIL] from-utf32 _ Drain_ToSmall
-                    \__ Source_Empty
-                    \__ Source_TestFile
-    [FAIL] from-utf8 _ Drain_ToSmall
-                   \__ Source_Empty
-                   \__ Source_TestFile
+        from-utf8 Drain_ToSmall ......................................[OK]
+                  Source_Empty .......................................[OK]
+                  Source_TestFile ....................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2504,12 +2467,12 @@ quex/output/core/TEST                                                <no date>
  * Single DFA_State:
 
     Transition Code Generation
-        test-single-state-transitions.py A ....................[NO OUTPUT]
-                                         A-UTF8 ...............[NO OUTPUT]
-                                         B ....................[NO OUTPUT]
-                                         B-UTF8 ...............[NO OUTPUT]
-                                         C ....................[NO OUTPUT]
-                                         C-UTF8 ...............[NO OUTPUT]
+        test-single-state-transitions.py A ...........................[OK]
+                                         A-UTF8 ......................[OK]
+                                         B ...........................[OK]
+                                         B-UTF8 ......................[OK]
+                                         C ...........................[OK]
+                                         C-UTF8 ......................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
@@ -2522,12 +2485,6 @@ quex/output/core/TEST                                                <no date>
                           \__ Cpp-Path-CG
                           \__ Cpp-PathUniform
                           \__ Cpp-PathUniform-CG
-    [FAIL] test-single-state-transitions.py _ A
-                                          \__ A-UTF8
-                                          \__ B
-                                          \__ B-UTF8
-                                          \__ C
-                                          \__ C-UTF8
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -2572,9 +2529,9 @@ quex/code_base/TESTS/general/TEST                                    <no date>
 quex/code_base/analyzer/struct/TEST                                  <no date>
 -------------------------------------------------------------------------------
  * Constructor
-        test-constructor.exe byte-loader .............................[OK]
-                             file-name ...............................[OK]
-                             memory ..................................[OK]
+        test-constructor.exe byte-loader ....................[MAKE FAILED]
+                             file-name ......................[MAKE FAILED]
+                             memory .........................[MAKE FAILED]
  * Include Push/Pop
         test-include_push.exe byte-loader ...................[MAKE FAILED]
                               file-name .....................[MAKE FAILED]
@@ -2582,19 +2539,26 @@ quex/code_base/analyzer/struct/TEST                                  <no date>
  * Include Push/Pop Deep
         test-include-deep.exe ...............................[MAKE FAILED]
  * Reset
-        test-reset.exe byte-loader ...................................[OK]
-                       file-name .....................................[OK]
-                       memory ........................................[OK]
-                       plain .........................................[OK]
+        test-reset.exe byte-loader ..........................[MAKE FAILED]
+                       file-name ............................[MAKE FAILED]
+                       memory ...............................[MAKE FAILED]
+                       plain ................................[MAKE FAILED]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] test-constructor.exe _ byte-loader
+                              \__ file-name
+                              \__ memory
     [FAIL] test-include_push.exe _ byte-loader
                                \__ file-name
                                \__ memory
     [FAIL] test-include-deep.exe
+    [FAIL] test-reset.exe _ byte-loader
+                        \__ file-name
+                        \__ memory
+                        \__ plain
 ===============================================================================
                                                                                
                                   ByteLoaders                                  
@@ -2602,43 +2566,30 @@ quex/code_base/analyzer/struct/TEST                                  <no date>
 quex/code_base/buffer/bytes/TEST                                     <no date>
 -------------------------------------------------------------------------------
  * Segmented Input
-        segmented-input.exe Handler .........................[MAKE FAILED]
-                            Normal ..........................[MAKE FAILED]
+        segmented-input.exe Handler ..................................[OK]
+                            Normal ...................................[OK]
 
  * QUEX_NAME(ByteLoader):
 
     FILE
-        test-FILE.exe basic .................................[MAKE FAILED]
-                      init-pos ..............................[MAKE FAILED]
+        test-FILE.exe basic ..........................................[OK]
+                      init-pos .......................................[OK]
     Memory
-        test-Memory.exe basic ...............................[MAKE FAILED]
-                        init-pos ............................[MAKE FAILED]
+        test-Memory.exe basic ........................................[OK]
+                        init-pos .....................................[OK]
     POSIX
-        test-POSIX.exe basic ................................[MAKE FAILED]
-                       init-pos .............................[MAKE FAILED]
+        test-POSIX.exe basic .........................................[OK]
+                       init-pos ......................................[OK]
     std::fstream
-        test-fstream.exe basic ..............................[MAKE FAILED]
-                         init-pos ...........................[MAKE FAILED]
+        test-fstream.exe basic .......................................[OK]
+                         init-pos ....................................[OK]
     std::stringstream
-        test-stringstream.exe basic .........................[MAKE FAILED]
-                              init-pos ......................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] segmented-input.exe _ Handler
-                             \__ Normal
-    [FAIL] test-FILE.exe _ basic
-                       \__ init-pos
-    [FAIL] test-Memory.exe _ basic
-                         \__ init-pos
-    [FAIL] test-POSIX.exe _ basic
-                        \__ init-pos
-    [FAIL] test-fstream.exe _ basic
-                          \__ init-pos
-    [FAIL] test-stringstream.exe _ basic
-                               \__ init-pos
+        test-stringstream.exe basic ..................................[OK]
+                              init-pos ...............................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3101,39 +3052,27 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
 quex/code_base/buffer/TESTS/misc/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Construct/Destruct Included Buffer
-        construct_destruct_included.exe allocate ............[MAKE FAILED]
-                                        no-allocate .........[MAKE FAILED]
+        construct_destruct_included.exe allocate .....................[OK]
+                                        no-allocate ..................[OK]
  * Extend negotiated amount of memory
-        negotiate_extend.exe ................................[MAKE FAILED]
+        negotiate_extend.exe .........................................[OK]
 
  * Extend/Migrate Memory:
 
     Nested
-        extend_and_migrate-nested.exe 2 .....................[MAKE FAILED]
-                                      3 .....................[MAKE FAILED]
-                                      51 ....................[MAKE FAILED]
+        extend_and_migrate-nested.exe 2 ..............................[OK]
+                                      3 ..............................[OK]
+                                      51 .............................[OK]
     Plain
-        extend_and_migrate.exe 21 ...........................[MAKE FAILED]
-                               3 ............................[MAKE FAILED]
-                               4 ............................[MAKE FAILED]
-                               7 ............................[MAKE FAILED]
-                               82 ...........................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] construct_destruct_included.exe _ allocate
-                                         \__ no-allocate
-    [FAIL] negotiate_extend.exe
-    [FAIL] extend_and_migrate-nested.exe _ 2
-                                       \__ 3
-                                       \__ 51
-    [FAIL] extend_and_migrate.exe _ 21
-                                \__ 3
-                                \__ 4
-                                \__ 7
-                                \__ 82
+        extend_and_migrate.exe 21 ....................................[OK]
+                               3 .....................................[OK]
+                               4 .....................................[OK]
+                               7 .....................................[OK]
+                               82 ....................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Buffer Moving/Copying Content                         
@@ -3460,52 +3399,39 @@ quex/code_base/buffer/lexatoms/converter/iconv/TEST                  <no date>
  * Convert all in one beat:
 
     uint16_t
-        one-beat-2.exe ......................................[MAKE FAILED]
+        one-beat-2.exe ...............................................[OK]
     uint32_t
-        one-beat-4.exe ......................................[MAKE FAILED]
+        one-beat-4.exe ...............................................[OK]
     uint8_t
-        one-beat-1.exe ......................................[MAKE FAILED]
+        one-beat-1.exe ...............................................[OK]
     wchar_t
-        one-beat-WC.exe .....................................[MAKE FAILED]
+        one-beat-WC.exe ..............................................[OK]
 
  * Convert drain character by drain character:
 
     uint16_t
-        stepwise-drain-2.exe ................................[MAKE FAILED]
+        stepwise-drain-2.exe .........................................[OK]
     uint32_t
-        stepwise-drain-4.exe ................................[MAKE FAILED]
+        stepwise-drain-4.exe .........................................[OK]
     uint8_t
-        stepwise-drain-1.exe ................................[MAKE FAILED]
+        stepwise-drain-1.exe .........................................[OK]
     wchar_t
-        stepwise-drain-WC.exe ...............................[MAKE FAILED]
+        stepwise-drain-WC.exe ........................................[OK]
 
  * Convert source byte by source byte:
 
     uint16_t
-        stepwise-source-2.exe ...............................[MAKE FAILED]
+        stepwise-source-2.exe ........................................[OK]
     uint32_t
-        stepwise-source-4.exe ...............................[MAKE FAILED]
+        stepwise-source-4.exe ........................................[OK]
     uint8_t
-        stepwise-source-1.exe ...............................[MAKE FAILED]
+        stepwise-source-1.exe ........................................[OK]
     wchar_t
-        stepwise-source-WC.exe ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] one-beat-2.exe
-    [FAIL] one-beat-4.exe
-    [FAIL] one-beat-1.exe
-    [FAIL] one-beat-WC.exe
-    [FAIL] stepwise-drain-2.exe
-    [FAIL] stepwise-drain-4.exe
-    [FAIL] stepwise-drain-1.exe
-    [FAIL] stepwise-drain-WC.exe
-    [FAIL] stepwise-source-2.exe
-    [FAIL] stepwise-source-4.exe
-    [FAIL] stepwise-source-1.exe
-    [FAIL] stepwise-source-WC.exe
+        stepwise-source-WC.exe .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                             ICU Converter Interface                            
@@ -3516,52 +3442,39 @@ quex/code_base/buffer/lexatoms/converter/icu/TEST                    <no date>
  * Convert all in one beat:
 
     uint16_t
-        one-beat-2.exe ......................................[MAKE FAILED]
+        one-beat-2.exe ...............................................[OK]
     uint32_t
-        one-beat-4.exe ......................................[MAKE FAILED]
+        one-beat-4.exe ...............................................[OK]
     uint8_t
-        one-beat-1.exe ......................................[MAKE FAILED]
+        one-beat-1.exe ...............................................[OK]
     wchar_t
-        one-beat-WC.exe .....................................[MAKE FAILED]
+        one-beat-WC.exe ..............................................[OK]
 
  * Convert drain character by drain character:
 
     uint16_t
-        stepwise-drain-2.exe ................................[MAKE FAILED]
+        stepwise-drain-2.exe .........................................[OK]
     uint32_t
-        stepwise-drain-4.exe ................................[MAKE FAILED]
+        stepwise-drain-4.exe .........................................[OK]
     uint8_t
-        stepwise-drain-1.exe ................................[MAKE FAILED]
+        stepwise-drain-1.exe .........................................[OK]
     wchar_t
-        stepwise-drain-WC.exe ...............................[MAKE FAILED]
+        stepwise-drain-WC.exe ........................................[OK]
 
  * Convert source byte by source byte:
 
     uint16_t
-        stepwise-source-2.exe ...............................[MAKE FAILED]
+        stepwise-source-2.exe ........................................[OK]
     uint32_t
-        stepwise-source-4.exe ...............................[MAKE FAILED]
+        stepwise-source-4.exe ........................................[OK]
     uint8_t
-        stepwise-source-1.exe ...............................[MAKE FAILED]
+        stepwise-source-1.exe ........................................[OK]
     wchar_t
-        stepwise-source-WC.exe ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] one-beat-2.exe
-    [FAIL] one-beat-4.exe
-    [FAIL] one-beat-1.exe
-    [FAIL] one-beat-WC.exe
-    [FAIL] stepwise-drain-2.exe
-    [FAIL] stepwise-drain-4.exe
-    [FAIL] stepwise-drain-1.exe
-    [FAIL] stepwise-drain-WC.exe
-    [FAIL] stepwise-source-2.exe
-    [FAIL] stepwise-source-4.exe
-    [FAIL] stepwise-source-1.exe
-    [FAIL] stepwise-source-WC.exe
+        stepwise-source-WC.exe .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   DFA Algebra                                  
@@ -3673,7 +3586,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-      104  238   [FAIL] TEST                                                          
+       93  238   [FAIL] TEST                                                          
         1  56    [FAIL] demo/C/TEST                                                   
         1  56    [FAIL] ..../Cpp/TEST                                                 
         2  2     [FAIL] ..../TEST                                                     
@@ -3686,7 +3599,7 @@ SUMMARY:
            1       [OK] ........../errors-warnings/TEST                               
            23      [OK] ........../event-handling/TEST                                
         7  7     [FAIL] ........../include-stack/TEST                                 
-       14  21    [FAIL] ........../indentation_count/TEST                             
+           21      [OK] ........../indentation_count/TEST                             
         2  2     [FAIL] ........../loop/TEST                                          
         3  45    [FAIL] ........../match-precedence/TEST                              
         1  32    [FAIL] ........../misc/TEST                                          
@@ -3696,17 +3609,17 @@ SUMMARY:
         2  2     [FAIL] ........../token-policies/TEST                                
         1  11    [FAIL] ..../code_base/TESTS/general/TEST                             
         4  5     [FAIL] ............../analyzer/TEST                                  
-        4  11    [FAIL] ......................./struct/TEST                           
+       11  11    [FAIL] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
-       11  11    [FAIL] .........................../misc/TEST                         
+           11      [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
            96      [OK] .........................../navigation/TEST                   
-       12  12    [FAIL] ...................../bytes/TEST                              
-       12  12    [FAIL] ...................../lexatoms/converter/iconv/TEST           
-       12  12    [FAIL] ......................................../icu/TEST             
+           12      [OK] ...................../bytes/TEST                              
+           12      [OK] ...................../lexatoms/converter/iconv/TEST           
+           12      [OK] ......................................../icu/TEST             
         5  5     [FAIL] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
-       10  10    [FAIL] ............../lexeme_converter/TEST                          
+           10      [OK] ............../lexeme_converter/TEST                          
         3  3     [FAIL] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
@@ -3728,17 +3641,17 @@ SUMMARY:
            58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
-       13  205   [FAIL] ..../output/core/TEST                                         
+        7  205   [FAIL] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
         6  31    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____   _____  _____           
-    |  ___|_ _(_) |___     |___ \ |___  ||___ /     __  __
-    | |_ / _` | | / __|      __) |   / /   |_ \     \ \/ /
-    |  _| (_| | | \__ \     / __/   / /   ___) |     >  < 
-    |_|  \__,_|_|_|___/    |_____| /_/   |____/     /_/\_\
+     _____     _ _          _   ___   ____            
+    |  ___|_ _(_) |___     / | / _ \ |___ \     __  __
+    | |_ / _` | | / __|    | || (_) |  __) |    \ \/ /
+    |  _| (_| | | \__ \    | | \__, | / __/      >  < 
+    |_|  \__,_|_|_|___/    |_|   /_/ |_____|    /_/\_\
                                                                    (1705 tests)
 
 ===============================================================================
