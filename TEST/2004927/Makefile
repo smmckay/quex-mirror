@@ -9,22 +9,18 @@ lex_iconv:
 	@echo "Call to quex"
 	@quex -i simple.qx -o Simple --bet wchar_t --debug-exception
 	@echo "Compiling"
-	$(LDCPP_ICONV) Simple.cpp ../lexer.cpp $(DEFINES) -o $@
+	$(LDCPP_ICONV) Simple/Simple.cpp ../lexer.cpp $(DEFINES) -o $@
 
 lex_icu: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o Simple --bet wchar_t 
 	@echo "Compiling"
-	$(LDCPP_ICU) Simple.cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU)
+	$(LDCPP_ICU) Simple/Simple.cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU)
 
 lex_codec: 
 	@echo "Call to quex"
 	@quex -i simple.qx -o Simple --encoding utf8  
 	@echo "Compiling"
-	$(LDCPP) Simple.cpp ../lexer.cpp $(DEFINES) -o $@
+	$(LDCPP) Simple/Simple.cpp ../lexer.cpp $(DEFINES) -o $@
 clean:
-	rm -rf Simple-*
-	rm -rf Simple.cpp
-	rm -rf Simple
-	rm -rf a.out
-	rm -rf lex_iconv lex_icu lex_codec
+	rm -rf Simple* a.out lex_iconv lex_icu lex_codec *.o

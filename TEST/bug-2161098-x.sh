@@ -13,5 +13,5 @@ make INPUT=$1 PREFIX=nested- 1>&2 > tmp2.txt
 ../quex_pathify.sh tmp2.txt
 
 # cleansening
-rm -f Simple Simple-* Simple.cpp lexer
+make clean
 cd $tmp

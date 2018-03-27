@@ -6,9 +6,9 @@
  * properly detected.
  *
  * (C) 2017 Frank-Rene Schaefer                                               */
-#include <TestAnalyzer.h>
+#include <test_environment/TestAnalyzer.h>
 #include "ut/lib/MemoryManager"
-#include "TESTS/MemoryManager_UnitTest.i"
+#include "MemoryManager_UnitTest.i"
 #include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
 #include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
 #include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU"

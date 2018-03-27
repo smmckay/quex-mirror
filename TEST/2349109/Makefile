@@ -8,7 +8,7 @@ all: $(INPUT)
 
 newline-skipper: 
 	@quex -i token.qx newline-skipper.qx -o Simple --debug-exception
-	@$(LDCPP) Simple*.cpp ../lexer-simply.cpp -o lexer \
+	@$(LDCPP) Simple/Simple*.cpp ../lexer-simply.cpp -o lexer \
 		-DPRINT_LINE_COLUMN \
 		-DQUEX_OPTION_COUNTER_LINE \
 		-DQUEX_OPTION_COUNTER_COLUMN \
@@ -16,7 +16,7 @@ newline-skipper:
 
 newline-skipper-utf8: 
 	@quex -i token.qx newline-skipper-utf8.qx -o Simple  -b 2 --debug-exception
-	@$(LDCPP_ICONV) ../lexer-simply.cpp Simple*.cpp -o lexer \
+	@$(LDCPP_ICONV) ../lexer-simply.cpp Simple/Simple*.cpp -o lexer \
 		-DPRINT_LINE_COLUMN \
 		-DCONVERTER_ENCODING='"UTF-8"' \
 		-DQUEX_OPTION_COUNTER_LINE \
@@ -26,7 +26,7 @@ newline-skipper-utf8:
 
 non-newline-skipper: 
 	@quex -i token.qx non-newline-skipper.qx -o Simple --debug-exception
-	@$(LDCPP) Simple*.cpp ../lexer-simply.cpp -o lexer \
+	@$(LDCPP) Simple/Simple*.cpp ../lexer-simply.cpp -o lexer \
 		-DPRINT_LINE_COLUMN \
 		-DPRINT_TOKEN \
 		-DQUEX_OPTION_COUNTER_LINE \
@@ -34,4 +34,4 @@ non-newline-skipper:
 		-DQUEX_SETTING_BUFFER_SIZE=4
 
 clean:
-	@rm -f lexer Simple*
+	@rm -rf lexer Simple*

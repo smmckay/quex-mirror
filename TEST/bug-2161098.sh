@@ -12,6 +12,5 @@ make INPUT=$1  >& /dev/null
 ./lexer $1.txt      > tmp2.txt
 ../quex_pathify.sh  tmp2.txt
 
-# cleansening
-rm -f Simple Simple-* Simple.cpp lexer tmp2.txt
+make clean
 cd $tmp

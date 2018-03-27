@@ -9,31 +9,21 @@ fi
 tmp=`pwd`
 cd $bug/ 
 
-rm a/b/c/d/* -f
-chomd u+w x/y/z
-rm x/y/z/* -f
-chmod u-w x/y/z
+chmod u+w x/y/z >& /dev/null
+rm -rf a/b/c/d
+rm -rf a/b/c/x
+rm -rf x/y/z
+chmod u-w x/y/z >& /dev/null
 
-if [[ $1 == "Normal" ]]; then
-    quex -i simple.qx --output-directory a/b/c/d
-    echo "||||"
-    find -path "*.svn*" -prune -or -print 
-    echo "||||"
-    rm a/b/c/d/Lexer*
-fi
-if [[ $1 == "NotExist" ]]; then
-    quex -i simple.qx --output-directory a/b/c/x
-    echo "||||"
-    find -path "*.svn*" -prune -or -print
-    echo "||||"
-fi
-if [[ $1 == "NoWrite" ]]; then
-    quex -i simple.qx --output-directory x/y/z
-    echo "||||"
-    find -path "*.svn*" -prune -or -print 
-    echo "||||"
-fi
+case $1 in
+    "Normal")   odir=a/b/c/d;;
+    "NotExist") odir=a/b/c/x;;
+    "NoWrite")  odir=x/y/z;;
+esac
+
+quex -i simple.qx --output-directory $odir
+find -path "*.svn*" -prune -or -print | grep $odir | grep -v lib | sort
 
 # cleansening
-rm -f Lexer.cpp Lexer-token_ids 
+rm -rf Lexer
 cd $tmp

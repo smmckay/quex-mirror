@@ -34,6 +34,7 @@
 #include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU"
 #include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
 #include <hwut_unit.h>
+#include <common.h>
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
@@ -83,6 +84,7 @@ self_reset_on_loader(int argc, char** argv)
     memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */
     for(lx=&lexer[0]; lx != lexerEnd; ++lx) {
         QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        common_token_queue_dummy_setup(lx);
         assert(lx->error_code == E_Error_None);
     }
 
@@ -119,6 +121,7 @@ self_reset_on_memory(int argc, char** argv)
     memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */
     for(lx=&lexer[0]; lx != lexerEnd; ++lx) {
         QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        common_token_queue_dummy_setup(lx);
         assert(lx->error_code == E_Error_None);
     }
 
@@ -363,4 +366,5 @@ self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
     else {
         hwut_verify(! QUEX_NAME(resources_absent)(lx));
     }
+    hwut_verify(QUEX_NAME(TokenQueue_is_empty)(lx));
 }
