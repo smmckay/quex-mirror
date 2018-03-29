@@ -8,8 +8,8 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i simple.qx -o Simple --token-id-offset 111 --debug-exception
-grep QUEX_TKN Simple-token_ids
+grep QUEX_TKN Simple/Simple-token_ids
 
 # cleansening
-rm Simple*
+rm -rf Simple/
 cd $tmp

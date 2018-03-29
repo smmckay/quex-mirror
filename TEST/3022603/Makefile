@@ -5,10 +5,10 @@
 include ../Makefile.lexer
 .PHONY: clean
 
-a.out: Simple.cpp
-	$(LDCPP)  point.cpp Simple.cpp -I. -I$(QUEX_PATH)
+a.out: Simple/Simple.cpp
+	$(LDCPP)  point.cpp Simple/Simple.cpp -I. -I$(QUEX_PATH)
 
-Simple.cpp:
+Simple/Simple.cpp:
 	quex -i simple.qx -o Simple --debug-exception 
 
 clean:

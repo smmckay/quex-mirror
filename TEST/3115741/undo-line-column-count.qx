@@ -13,7 +13,7 @@ mode MINE : <skip: [ \t\n] > {
   ([:alpha:]|[\r])([:alpha:]|[\r\n])* { 
       self.send_string(&self, QUEX_TKN_UNDO_THIS, Lexeme);
       self.undo(&self); 
-      self_enter_mode(&STEP_OVER_UNDONE);
+      self.enter_mode(&self, STEP_OVER_UNDONE);
   }
   <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull); 
 }
@@ -21,7 +21,7 @@ mode MINE : <skip: [ \t\n] > {
 mode STEP_OVER_UNDONE : <skip: [ \t\n] > {
   ([:alpha:]|[\r])([:alpha:]|[\r\n])* { 
       self.send_string(&self, QUEX_TKN_STEP_OVER, Lexeme);
-      self_enter_mode(&MINE);
+      self.enter_mode(&self, MINE);
   }
   <<EOF>> => QUEX_TKN_TERMINATION(LexemeNull); 
 }

@@ -44,10 +44,10 @@ case $1 in
 esac
 
 echo "(0) Running Quex (no output is good output)"
-quex -o EasyLexer --source-package pkg $option --language C --debug-exception --comment-state-machine
+quex -o EasyLexer --odir pkg $option --language C --debug-exception --comment-state-machine
 
 echo "(1) Running gcc (no output is good output)"
-gcc  -Ipkg pkg/EasyLexer.c -o pkg/EasyLexer.o -c -Wall -Werror -W
+gcc  -I. pkg/EasyLexer.c -o pkg/EasyLexer.o -c -Wall -Werror -W
 
 echo "(2) Double check that output file exists"
 ls    pkg/EasyLexer.o 2> tmp.txt

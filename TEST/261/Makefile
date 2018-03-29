@@ -24,13 +24,13 @@ case1:
 	quex -i                 case1.qx  \
 	     -o                 Simple  \
 		 --token-id-offset  0x1000     --debug-exception --language C
-	$(CC) -o $@ ../lexer.c Simple.c `icu-config --ldflags`      
+	$(CC) -o $@ ../lexer.c Simple/Simple.c `icu-config --ldflags`      
           
 case2:
 	quex -i                 case2.qx  \
 	     -o                 Simple  \
 		 --token-id-offset  0x1000     --debug-exception --language C
-	$(CC) -o $@ ../lexer.c Simple.c `icu-config --ldflags`      
+	$(CC) -o $@ ../lexer.c Simple/Simple.c `icu-config --ldflags`      
 
 # (*) HELPERS __________________________________________________________________
 clean:	

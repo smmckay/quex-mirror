@@ -4,8 +4,9 @@ TEST_FILES = bug-1935701.exe
 
 
 DEBUGF = -ggdb -D__QUEX_OPTION_UNIT_TEST 
+TESTENV := ../../quex/code_base/TESTS
 
-INCLUDE_DIRS = -I./ -I$(QUEX_PATH)
+INCLUDES = -I./ -I. -I$(TESTENV)
 
 OPTF   = # -Os
 FLAGS  = #-lefence
@@ -15,8 +16,11 @@ all: $(TEST_FILES)
 hwut-info:
 	@echo $(TEST_FILES) 
 
-%.exe: %.cpp  
-	$(LDCPP) $(DEBUGF) $(OPTF) $< -o $@
+%.exe: %.cpp ut 
+	$(LDCPP) $(INCLUDES) $(DEBUGF) $(OPTF) $< -o $@
+
+ut:
+	python $(TESTENV)/code_base_instatiation.py ut
 
 clean:
 	rm -f $(TEST_FILES)

@@ -8,7 +8,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i simple.qx -o EasyLexer
-g++ -I$QUEX_PATH -I. test.cpp EasyLexer.cpp -o test \
+g++ -I. test.cpp EasyLexer/EasyLexer.cpp -o test \
     -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
     -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
     -DQUEX_SETTING_BUFFER_SIZE=512 \
@@ -21,7 +21,7 @@ python ../show-valgrind.py tmp.txt
 
 # cleaning
 #rm tmp.txt
-rm -f EasyLexer*
+rm -rf EasyLexer*
 rm -f test
 rm -f tmp*
 cd $tmp

@@ -20,6 +20,7 @@ function perform_test() {
     echo "ARGUMENT_LIST: $argument_list"
     echo
     quex -i simple.qx -o EasyLexer $argument_list # --debug-exception
+    cd EasyLexer
     if [ -e EasyLexer-configuration ]; then
         awk ' /QUEX_TYPE_LEXATOM/ && /define/ && !/SETTING/ ' EasyLexer-configuration \
             >& tmp.txt
@@ -28,7 +29,8 @@ function perform_test() {
     else
         echo "File EasyLexer-configuration does not exist."
     fi
-    rm -f EasyLexer*
+    cd ..
+    rm -rf EasyLexer*
     rm -f Lexer*
     echo
 }

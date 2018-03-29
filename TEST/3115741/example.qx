@@ -11,7 +11,7 @@ mode THE_MODE : <skip: [ \t\n] > {
   }
   <<EOF>> { 
       self.seek(&self, 0);
-      self_enter_mode(&SECOND_EXPERIMENT);
+      self.enter_mode(&self, SECOND_EXPERIMENT);
   }
 }
 
@@ -19,7 +19,7 @@ mode SECOND_EXPERIMENT : <skip: [ \t\n] > {
   [:alnum:]+   { 
       self.send_string(&self, QUEX_TKN_B, Lexeme);
       self.undo(&self); 
-      self_enter_mode(&THIRD_EXPERIMENT);
+      self.enter_mode(&self, THIRD_EXPERIMENT);
   }
 }
 

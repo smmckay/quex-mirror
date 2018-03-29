@@ -2,7 +2,7 @@ include ../Makefile.lexer
 
 all:
 	quex -i simple.qx --language C -o Simple 
-	$(LDC) point.c Simple.c -o a.out 
+	$(LDC) point.c Simple/Simple.c -o a.out 
 
 clean:
 	rm Simple*

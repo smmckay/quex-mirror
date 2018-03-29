@@ -8,8 +8,7 @@ gcc -I$QUEX_PATH -I. \
     -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
     -DPRINT_LINE_COLUMN_NUMBER \
     -DPRINT_TOKEN \
-    $QUEX_PATH/TEST/lexer.c Simple.c -o lexer  \
+    $QUEX_PATH/TEST/lexer.c Simple/Simple.c -o lexer  \
     -DQUEX_TKN_TERMINATION=T_TERMINATION
 ./lexer data/large-tree.txt
-rm -f ./lexer
-rm -f Simple*
+rm -rf ./lexer Simple*

@@ -1,7 +1,5 @@
 include ../Makefile.lexer
 
-X = Simple
-
 DEFINES := -DPRINT_TOKEN \
            -DQUEX_SETTING_BUFFER_SIZE=65536 
 
@@ -9,21 +7,18 @@ DEFINES := -DPRINT_TOKEN \
 
 all: lexer-iconv lexer-icu
 
-lexer-iconv: Simple.cpp
-	$(LDCPP_ICONV) -ggdb $(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
+lexer-iconv: Simple/Simple.cpp
+	$(LDCPP_ICONV) -ggdb Simple/Simple.cpp ../lexer.cpp $(DEFINES) -o $@ 
 		
 	
 
-lexer-icu: Simple.cpp
-	$(LDCPP_ICU) $(X).cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU) 
+lexer-icu: Simple/Simple.cpp
+	$(LDCPP_ICU) Simple/Simple.cpp ../lexer.cpp $(DEFINES) -o $@ $(LIB_ICU) 
 
 
-Simple.cpp: simple.qx
+Simple/Simple.cpp: simple.qx
 	@quex -i $< -o Simple --bet wchar_t --debug-exception
 
 
 clean:
-	@rm -rf Simple-*
-	@rm -rf Simple.cpp
-	@rm -rf Simple
-	@rm -rf a.out lexer-iconv lexer-icu
+	@rm -rf Simple-* a.out lexer-iconv lexer-icu

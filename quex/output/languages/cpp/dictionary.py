@@ -1,5 +1,4 @@
-from   quex.input.code.base                              import SourceRef, \
-                                                                CodeFragment
+from   quex.input.code.base                              import CodeFragment
 from   quex.engine.analyzer.state.core                   import Processor
 from   quex.engine.operations.content_terminal_router    import RouterContentElement
 from   quex.engine.operations.operation_list             import E_R

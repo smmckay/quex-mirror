@@ -2,8 +2,8 @@
 #include<iostream> 
 
 // (*) include lexical analyser header
-#include "Simple"
-#include "Simple-token_ids"
+#include "Simple/Simple"
+#include "Simple/Simple-token_ids"
 
 using namespace std;
 

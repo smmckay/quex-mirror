@@ -47,9 +47,9 @@ class Language(LanguageCpp):
         else:                       me_str = "QUEX_TYPE_ANALYZER* me"
 
         return "%s (*%s)(%s%s);\n" % (signature.return_type, 
-                                                          signature.function_name, 
-                                                          me_str,
-                                                          argument_list_str) 
+                                      signature.function_name, 
+                                      me_str,
+                                      argument_list_str) 
 
     def MEMBER_FUNCTION_ASSIGNMENT(self, MemberFunctionSignatureList):
         txt = [

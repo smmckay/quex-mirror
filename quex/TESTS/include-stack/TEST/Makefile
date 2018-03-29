@@ -1,8 +1,6 @@
 
 TESTS = queue.exe 
 
-ENGINE = Simple.cpp
-
 all: $(TESTS)
 
 CC =  \
@@ -21,16 +19,7 @@ hwut-info:
 
 queue.exe:       lexer.cpp simple.qx 
 	quex -i simple.qx -o Simple 
-	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -lefence -o $@
-
-## User's queue has been deprecated
-##
-## users_queue.exe: lexer.cpp simple.qx 
-##	quex -i simple.qx -o Simple 
-##	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -o $@
-
-%.E: %.cpp
-	$(CC) -E -I$(QUEX_PATH) $< -o $@
+	$(CC) -I. lexer.cpp Simple/Simple.cpp -lefence -o $@
 
 %.o: %.cpp
 

@@ -8,6 +8,6 @@ fi
 tmp=`pwd`
 cd $bug/ 
 make lexer | bash ../quex_pathify.sh
-rm -f Lexer* tmp.txt
+rm -rf Lexer* tmp.txt
 cd $tmp
 echo "<terminated>"

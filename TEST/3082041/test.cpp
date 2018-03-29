@@ -1,7 +1,7 @@
 #include<iostream> 
 #include<cstring> 
 
-#include "EasyLexer"
+#include "EasyLexer/EasyLexer"
 
 static void test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1);
 static void print_this(quex::EasyLexer* lex, int Index, size_t Size, size_t ContentSize);

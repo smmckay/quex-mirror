@@ -27,6 +27,7 @@ from   quex.engine.misc.interval_handling                   import Interval
 from   quex.engine.misc.tools                               import typed
 from   quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 import quex.output.core.state.transition_map.core           as     transition_map
+import quex.output.analyzer.adapt                           as     adapt
 
 from quex.blackboard import setup as Setup, \
                             Lng
@@ -80,6 +81,8 @@ def _do(UnicodeTrafoInfo):
     # A separate declaration header is required
     template_h_txt = Lng.open_template(Lng.converter_helper_file())
     txt_h          = template_h_txt.replace("$$CODEC$$", codec_name)
+    txt_h = adapt.do(txt_h, Setup.output_directory)
+    txt_i = adapt.do(txt_i, Setup.output_directory)
     return txt_h, txt_i
 
 class ConversionInfo:

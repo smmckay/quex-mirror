@@ -3,16 +3,15 @@ quex -i token_type.qx --token-class-only --debug-exception
 info: Analyzers using this token class must be generated with
 info:
 info:      --token-id-prefix       QUEX_TKN_
-info:      --token-class-file      Lexer-token
+info:      --token-class-file      Lexer/Lexer-token
 info:      --token-class           quex::Token
 info:      --token-id-type         uint32_t
 info:      --buffer-element-type   uint8_t
-info:      --foreign-token-id-file Lexer-token_ids
+info:      --foreign-token-id-file Lexer/Lexer-token_ids
 info:      --token-class-support-take-text
 info:
-info: Header: "Lexer-token"
-info: Source: "Lexer-token.cpp"
+info: Header: "Lexer/Lexer-token"
+info: Source: "Lexer/Lexer-token.cpp"
 Compile -- No output is good output ________________________________
-g++ -I<<QUEX_PATH>> Lexer-token.cpp -c 2>&1
+g++ -I. Lexer/Lexer-token.cpp -c 2>&1
 <terminated>
-

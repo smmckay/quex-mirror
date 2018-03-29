@@ -1,6 +1,6 @@
 
 SOURCES := test.c \
-	       EasyLexer.c
+	       EasyLexer/EasyLexer.c
 
 INCLUDES := -I. -I$(QUEX_PATH) -I$(HWUT_PATH)/support/C
 

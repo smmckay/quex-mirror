@@ -10,6 +10,11 @@ popd
 pushd quex/engine/loop/TEST
 python ../../../code_base/TESTS/code_base_instatiation.py ut
 popd
+pushd quex/output/languages/cpp/TEST
+python ../../../../code_base/TESTS/code_base_instatiation.py test_environment
+cp ../../../../code_base/TESTS/test_environment/TestAnalyzer-configuration test_environment
+popd
+
 
 pushd doc
 python command_line_options.py

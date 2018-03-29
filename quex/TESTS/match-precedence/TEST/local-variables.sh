@@ -9,7 +9,7 @@ quex -i data/local-variables.qx -o Simple --debug-exception
 rm -f ./lexer
 g++ -I$QUEX_PATH -I. \
     -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
-    $QUEX_PATH/TEST/lexer.cpp Simple.cpp -o lexer  
+    $QUEX_PATH/TEST/lexer.cpp Simple/Simple.cpp -o lexer  
 ls lexer
-rm -f ./lexer
+rm -rf ./lexer Simple
 # rm -f Simple*

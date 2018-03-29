@@ -14,11 +14,13 @@ echo "(1) Call Quex: 'No output is good output'"
 quex -i token_ids.qx cplusplus.qx -b 4 --path-compression --template-compression --token-id-prefix Sym_ --debug-exception --language C 2>&1
 
 echo "(2) Check wether generated files are present"
+cd Lexer
 echo "||||"
 ls Lexer* 
 echo "||||"
+cd ..
 
-rm -f Lexer*
+rm -rf Lexer*
 
 # cleansening
 cd $tmp

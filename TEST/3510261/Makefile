@@ -1,7 +1,7 @@
 include ../Makefile.lexer
 
 # Leave the generated code for debugging etc.
-.SECONDARY: Simple.c 
+.SECONDARY:Simple/Simple.c 
 
 test: Simple.o lexer.o
 	$(LDC) -o $@ $^ -ggdb
@@ -14,7 +14,7 @@ test: Simple.o lexer.o
 		-DPRINT_LINE_COLUMN_NUMBER \
 		-DPRINT_TOKEN                  
 
-Simple.c: test.qx
+Simple/Simple.c: test.qx
 	quex -i $< -o $* --language C --encoding utf8
 
 clean:

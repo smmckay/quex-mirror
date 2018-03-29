@@ -15,7 +15,7 @@ simple: $(QUEX_PATH)/TEST/lexer.c
 		 --token-id-offset  0x1000     \
 		 --language         C          \
 		 --debug-exception
-	$(LDC) $^ Simple.c -o $@ -DPRINT_TOKEN 
+	$(LDC) $^ Simple/Simple.c -o $@ -DPRINT_TOKEN 
 
 more: $(QUEX_PATH)/TEST/lexer.c 
 	quex -i                 more.qx  \
@@ -23,7 +23,7 @@ more: $(QUEX_PATH)/TEST/lexer.c
 		 --token-id-offset  0x1000   \
 		 --language         C        \
 		 --debug-exception
-	$(LDC) $^ Simple.c -o $@ -DPRINT_TOKEN 
+	$(LDC) $^ Simple/Simple.c -o $@ -DPRINT_TOKEN 
 
 # (*) HELPERS __________________________________________________________________
 clean:	

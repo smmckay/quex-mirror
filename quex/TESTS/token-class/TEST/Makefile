@@ -2,7 +2,7 @@
 TESTS = \
 		simple-queue.exe \
 
-ENGINE = Simple.cpp
+ENGINE = Simple/Simple.cpp
 
 all: $(TESTS)
 
@@ -17,7 +17,7 @@ hwut-info:
 simple-queue.exe: lexer.cpp  token.qx send-via-name.qx
 	quex -i token.qx send-via-name.qx -o Simple \
 		 --suppress 15
-	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -o $@
+	$(CC) -I. lexer.cpp $(ENGINE) -o $@
 
 %.E: %.cpp
 	$(CC) -E -I$(QUEX_PATH) $< -o $@

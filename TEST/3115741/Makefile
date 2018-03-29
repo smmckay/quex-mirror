@@ -19,8 +19,7 @@ endif
 
 CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS
 
-CC := $(CC) -c \
-	 -I./ -I$(QUEX_PATH)                            \
+CC := $(CC) -c -I./ \
 	 -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED -Wconversion -pedantic \
 	 -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 	 -DPRINT_TOKEN                                  \
@@ -30,29 +29,20 @@ CC := $(CC) -c \
 	
 LD := $(LDC) 
 
-# (*) RULES ____________________________________________________________________
-# -- application
+all: lexer
+
 lexer:          example.o Simple.o
 	$(LD) -o $@ example.o Simple.o 
           
 # Object files:
-Simple.o: Simple.c 
+Simple.o: Simple/Simple.c 
 	$(CC) $< -o $@ 
 
-example.o: $(QUEX_PATH)/TEST/lexer.c  Simple.c
+example.o: $(QUEX_PATH)/TEST/lexer.c  Simple/Simple.c
 	$(CC) -DPRINT_LINE_COLUMN_NUMBER $< -o $@ 
 
-# Macro expansions (only for debugging):
-%.E: %.c    
-	$(CC) -E $< -o $@ 
-
-Simple.c: $(QX_FILE) 
+Simple/Simple.c: $(QX_FILE) 
 	quex -i $(QX_FILE) -o Simple --language C --debug-exception
 
-# (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f Simple*
-	rm -f *.o
-	rm -f *.bak
-	rm -f *.E
-	rm -f lexer
+	rm -rf Simple* *.o *.bak lexer

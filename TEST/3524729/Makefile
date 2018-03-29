@@ -1,6 +1,6 @@
 all lexer: Lexer-token
 	@echo Compile -- No output is good output ________________________________
-	g++ -I$(QUEX_PATH) Lexer-token.cpp -c 2>&1
+	g++ -I. Lexer/Lexer-token.cpp -c 2>&1
 
 Lexer-token:
 	@echo Generate token class _______________________________________________

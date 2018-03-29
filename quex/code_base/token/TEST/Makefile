@@ -4,26 +4,26 @@ PROGRAMS := push-pop.exe \
 all:       $(PROGRAMS) 
 
 MYFLAGS   := -ggdb -Wall -Werror  \
-		     -I. -I$(QUEX_PATH) \
+		     -I. \
 		     -DQUEX_OPTION_COUNTER_LINE  \
 		     -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \
 		     -DQUEX_SETTING_ACCUMULATOR_INITIAL_SIZE=0 \
 		     -DQUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR=1 \
 		     -DQUEX_OPTION_COUNTER_COLUMN 
 
-CC        := gcc  -I../ -I$(QUEX_PATH) -D__QUEX_OPTION_PLAIN_C -I$(HWUT_PATH) -ggdb
+CC        := gcc  -I../ -I. -D__QUEX_OPTION_PLAIN_C -I$(HWUT_PATH) -ggdb
 
-%.exe: %.c common_token.c
-	$(CC) $^ -o $@ 
+%.exe: %.c common_token.c ut
+	$(CC) $< common_token.c -o $@ 
 
 %.E:   %.cpp 
 	$(CC) -E -I./. $< -o $@ 
 
 clean: 
-	rm -f *.o
-	rm -f *.E tmp.*
-	rm -f tmp_dir/*
-	rm -f $(PROGRAMS)
+	rm -rf *.o *.E tmp.* tmp_dir/* $(PROGRAMS) ut
+
+ut:
+	python ../../TESTS/code_base_instatiation.py ut token compatibility
 
 .PHONY: hwut-info
 hwut-info: 

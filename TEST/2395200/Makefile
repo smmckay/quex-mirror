@@ -13,7 +13,7 @@ CFLAGS = \
 
 lexer:
 	quex -i simple.qx -o Simple --debug-exception
-	$(LDCPP) $(CFLAGS) ../lexer-simply.cpp Simple.cpp -o lexer
+	$(LDCPP) $(CFLAGS) ../lexer-simply.cpp Simple/Simple.cpp -o lexer
 
 clean:
 	rm -f Simple*

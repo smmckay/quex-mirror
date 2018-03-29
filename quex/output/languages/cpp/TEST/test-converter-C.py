@@ -23,7 +23,7 @@ def test(CodecName):
                  ("-D__QUEX_CODEC=%s " % CodecName) + \
                  "-D__QUEX_OPTION_LITTLE_ENDIAN " 
 
-    compile_str = "g++ -ggdb -I./ -I$QUEX_PATH %s converter-tester.cpp -o converter-tester" % define_str
+    compile_str = "g++ -ggdb -I./ %s converter-tester.cpp -o converter-tester" % define_str
     print "##", compile_str
     os.system(compile_str)
 
@@ -39,6 +39,7 @@ def tiny(miniSelf):
     return "converter-tester.h", "" 
 
 quex.blackboard.setup.language_db.buffer_encoding_headers = tiny
+quex.blackboard.setup.output_directory                    = "test_environment"
 
 test(sys.argv[1])
 

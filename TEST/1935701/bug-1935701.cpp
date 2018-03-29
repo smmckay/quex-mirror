@@ -3,11 +3,11 @@
 #include<fstream>
 #include<cstring>
 
-#include<quex/code_base/extra/test_environment/TestAnalyzer-configuration>
-#include<quex/code_base/buffer/lexatoms/LexatomLoader>
-#include<quex/code_base/buffer/lexatoms/LexatomLoader_Plain>
-#include<quex/code_base/buffer/lexatoms/LexatomLoader_Plain.i>
-#include<quex/code_base/single.i>
+#include"test_environment/TestAnalyzer-configuration"
+#include<ut/lib/buffer/lexatoms/LexatomLoader>
+#include<ut/lib/buffer/lexatoms/LexatomLoader_Plain>
+#include<ut/lib/buffer/lexatoms/LexatomLoader_Plain.i>
+#include<ut/lib/single.i>
 
 using namespace std;
 using namespace quex;

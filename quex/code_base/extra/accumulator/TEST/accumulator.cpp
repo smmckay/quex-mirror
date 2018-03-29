@@ -2,10 +2,10 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <tmp_dir/TestAnalyzer>
-$$INC: lexeme.i$$
-$$INC: extra/accumulator/Accumulator$$
-$$INC: extra/accumulator/Accumulator.i$$
+#include <test_environment/TestAnalyzer>
+#include "test_environment/lib/lexeme.i"
+#include "test_environment/lib/extra/accumulator/Accumulator"
+#include "test_environment/lib/extra/accumulator/Accumulator.i"
 
 int
 main(int argc, char** argv)
@@ -75,5 +75,6 @@ main(int argc, char** argv)
 
     // QUEX_NAME(Accumulator_destruct)(&accumulator);
 
+    printf("<terminated>\n");
     return 0;
 }

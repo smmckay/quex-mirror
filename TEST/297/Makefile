@@ -1,13 +1,13 @@
-INCLUDES := -I$(QUEX_PATH)/quex/code_base/extra/test_environment/ \
-		    -I$(QUEX_PATH)
+INCLUDES := -I$(QUEX_PATH)/quex/code_base/TESTS/test_environment/ \
+		    -I$(QUEX_PATH)/quex/code_base/TESTS/
 
 DEFINES  := -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 
 SRC_CPP  := lexer.cpp \
-	        $(QUEX_PATH)/quex/code_base/extra/test_environment/TestAnalyzer-dummy.cpp
+	        $(QUEX_PATH)/quex/code_base/TESTS/test_environment/TestAnalyzer-dummy.cpp
 
 SRC_C    := lexer.c \
-	        $(QUEX_PATH)/quex/code_base/extra/test_environment/TestAnalyzer-dummy.c
+	        $(QUEX_PATH)/quex/code_base/TESTS/test_environment/TestAnalyzer-dummy.c
 
 all: lexerCpp lexerC
 

@@ -1,7 +1,7 @@
 #include<cstdio> 
 #include<cstring>
 
-#include "TPLex"
+#include "TPLex/TPLex"
 #if ! defined(__QUEX_OPTION_PLAIN_C)
 using namespace std;
 using namespace quex;

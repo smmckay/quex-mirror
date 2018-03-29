@@ -135,7 +135,7 @@ def framework(txt, PWState, TheAnalyzer):
                 tmp +=  "            %s"  % Lng.IF("path_iterator", "==", "&path_walker_%i_path_base[%s]" %  \
                                                           (PWState.index, offset - 1), FirstF=(path_id == 0))                                  \
                       + "                %s\n" % Lng.GOTO(door_id_sequence[-1], dial_db) 
-            tmp += "            %s"       % Lng.ELSE                                  
+            tmp += "            %s"       % Lng.ELSE_FOLLOWS
             tmp += "                %s\n" % Lng.UNREACHABLE
             tmp += "            %s\n"     % Lng.END_IF                                  
             goto_terminal_door = tmp

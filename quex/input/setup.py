@@ -4,7 +4,6 @@ import quex.engine.misc.file_in                      as     file_in
 from   quex.engine.misc.enum                         import Enum
 from   quex.engine.misc.interval_handling            import Interval, Interval_All
 from   quex.constants                                import INTEGER_MAX, E_Files
-from   quex.DEFINITIONS                              import QUEX_PATH
 
 import os  
 import sys

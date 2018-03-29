@@ -1,7 +1,7 @@
 #include <stdio.h>    
 #include <hwut_unit.h>    
 
-#include "EasyLexer.h"
+#include "EasyLexer/EasyLexer.h"
 
 #ifndef     ENCODING_NAME
 #    define ENCODING_NAME (0x0)
@@ -29,7 +29,7 @@ main(int argc, char** argv)
     hwut_if_choice("END-many") { file_name = "END-many.txt"; mode = &QUEX_NAME(END); }
 
     quex_EasyLexer_from_file_name(&qlex, file_name, ENCODING_NAME);
-    QUEX_NAME(enter_mode)(&qlex, mode);
+    qlex.enter_mode(&qlex, mode);
 
     printf("[START]\n");
 

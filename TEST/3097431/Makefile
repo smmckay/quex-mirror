@@ -23,10 +23,10 @@ lexer:          example.o EasyLexer.o
 	$(LDCPP) -o $@ example.o EasyLexer.o 
           
 # Object files:
-EasyLexer.o: EasyLexer.cpp 
+EasyLexer.o: EasyLexer/EasyLexer.cpp 
 	$(CPP) $< -o $@ 
 
-example.o: $q/demo/Cpp/example.cpp  EasyLexer.cpp
+example.o: $q/demo/Cpp/example.cpp  EasyLexer/EasyLexer.cpp
 	$(CPP) $< -o $@ 
 
 # Macro expansions (only for debugging):
@@ -34,12 +34,8 @@ example.o: $q/demo/Cpp/example.cpp  EasyLexer.cpp
 	$(CPP) -E $< -o $@ 
 
 EasyLexer.cpp: masm.qx 
-	quex -i masm.qx  -o  EasyLexer --debug-exception
+	quex -i masm.qx  -o  EasyLexer --debug-exception 
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f EasyLexer*
-	rm -f *.o
-	rm -f *.bak
-	rm -f *.E
-	rm -f lexer
+	rm -f EasyLexer* *.o *.bak *.E lexer

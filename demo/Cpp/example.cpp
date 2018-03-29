@@ -1,7 +1,7 @@
 #include<fstream>    
 #include<iostream> 
 
-#include "Easy"
+#include "EasyLexer/Easy"
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 

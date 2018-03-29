@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "Simple.h"
+#include "Simple/Simple.h"
 
 int 
 main(int argc, char** argv) 

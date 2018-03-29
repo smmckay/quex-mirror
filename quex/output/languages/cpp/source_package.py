@@ -2,8 +2,7 @@ from   quex.engine.misc.file_operations import open_file_or_die, \
                                                write_safely_and_close 
 from   quex.engine.misc.tools           import flatten_list_of_lists
 import quex.output.analyzer.adapt       as     adapt
-from   quex.blackboard                  import setup as Setup, \
-                                               Lng
+from   quex.blackboard                  import Lng
 from   quex.DEFINITIONS                 import QUEX_PATH
 
 import os.path as path

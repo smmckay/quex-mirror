@@ -2,7 +2,7 @@
 #include<iostream> 
 
 // (*) include lexical analyser header
-#include "Simple"
+#include "Simple/Simple"
 
 using namespace std;
 using namespace europa::deutschland::baden_wuertemberg;

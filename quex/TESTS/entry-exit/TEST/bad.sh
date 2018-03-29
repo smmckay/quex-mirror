@@ -6,8 +6,8 @@ fi
 
 function test {
     echo "    File: 'good-$1.qx': {"
-    rm -f TmpLex*
-    quex -i bad-$1.qx -o TmpLex |& awk '{ print "        " $0; }'
+    rm -rf TmpLex*
+    quex -i bad-$1.qx -o TmpLex --odir . |& awk '{ print "        " $0; }'
     if [ -e TmpLex ]; then echo Files generated with incorrect configuration; exit; fi
     echo "    }"
     echo 

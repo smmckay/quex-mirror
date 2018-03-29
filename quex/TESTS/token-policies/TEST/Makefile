@@ -2,7 +2,7 @@
 TESTS = queue.exe \
 		queue-real.exe 
 
-ENGINE = TPLex.cpp
+ENGINE = TPLex/TPLex.cpp
 
 all: $(TESTS)
 
@@ -20,11 +20,11 @@ hwut-info:
 
 queue.exe:            lexer.cpp 
 	quex -i simple.qx -o TPLex 
-	$(CC) -I$(QUEX_PATH) -DUNIT_TEST_PSEUDO_ANALYSIS lexer.cpp $(ENGINE) -lefence -o $@
+	$(CC) -I. -DUNIT_TEST_PSEUDO_ANALYSIS lexer.cpp $(ENGINE) -lefence -o $@
 
 queue-real.exe:       lexer.cpp  
 	quex -i real.qx -o TPLex 
-	$(CC) -I$(QUEX_PATH) lexer.cpp $(ENGINE) -lefence -o $@
+	$(CC) -I. lexer.cpp $(ENGINE) -lefence -o $@
 
 %.E: %.cpp
 	$(CC) -E -I$(QUEX_PATH) $< -o $@
