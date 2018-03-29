@@ -1,6 +1,6 @@
 include ../Makefile.lexer
 
-ENGINE = boeck_Lexer.c   
+ENGINE = Lexer/boeck_Lexer.c   
 
 ifdef ASSERTS_ENABLED_F
 	CCFLAG_ASSERTS=# By default asserts are enabled
@@ -8,9 +8,9 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-CC := $(CC) -DQUEX_OPTION_MULTI
+CC := $(CC) -DQUEX_OPTION_MULTI -I.
 
-lexer: $(ENGINE:.c=.o) lexer.o Common-token.o
+lexer: Lexer/Lexer.c lexer.o Common-token.o
 	$(LDC) $^ -o  $@ $(LIB_ICU) 
 	 
 %.o: %.c 
@@ -26,7 +26,7 @@ COMMON_TOKEN_OPTIONS = --token-class-file Common-token.h \
 %.E: %.c
 	gcc -E $< -o  $@ -I$(QUEX_PATH) 
 	
-boeck_Lexer.c:  boeck.qx Common-token.c Common-token_ids
+Lexer/boeck_Lexer.c:  boeck.qx Common-token.c Common-token_ids
 	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
 		 --language C --suppress 15 \
 		 --debug-exception
@@ -36,7 +36,7 @@ Common-token.c:
 	quex -i token_ids.qx token_type.qx \
 		 -b 4                          \
 		 --token-id-prefix TKN_        \
-		 -o Common                     \
+		 -o Common  --odir .           \
 		 --token-class Common::Token   \
 		 --token-class-only            \
 	     --debug-exception \

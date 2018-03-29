@@ -1,7 +1,7 @@
-#include "boeck_Lexer.h"
-#include <quex/code_base/multi.i>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU>
-#include <quex/code_base/buffer/lexatoms/converter/icu/Converter_ICU.i>
+#include "Lexer/Lexer.h"
+#include <Lexer/lib/multi.i>
+#include <Lexer/lib/buffer/lexatoms/converter/icu/Converter_ICU>
+#include <Lexer/lib/buffer/lexatoms/converter/icu/Converter_ICU.i>
 
 int 
 main(int argc, char** argv) 

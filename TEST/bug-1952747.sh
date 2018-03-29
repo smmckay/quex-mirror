@@ -8,7 +8,9 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i simple.qx -o Simple --debug-exception
+cd Simple
 grep -e user_specified_tkn_termination_handler Simple.cpp
+cd ..
 # cleansening
-rm -f Simple Simple.cpp Simple-*
+rm -rf Simple Simple.cpp Simple-*
 cd $tmp

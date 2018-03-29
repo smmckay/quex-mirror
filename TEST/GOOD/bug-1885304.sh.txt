@@ -7,25 +7,30 @@ DATE stamps are ignored
 
 ||||
 
-Dos
-Dos-configuration
-Dos.cpp
-Dos-token
-Dos-token_ids
-Unix
-Unix-configuration
-Unix.cpp
-Unix-token
-Unix-token_ids
+Dos/Xanther
+Dos/Xanther-configuration
+Dos/Xanther.cpp
+Dos/Xanther-token
+Dos/Xanther-token_ids
+Unix/Xanther
+Unix/Xanther-configuration
+Unix/Xanther.cpp
+Unix/Xanther-token
+Unix/Xanther-token_ids
 ||||
+
 
 (*) Dos vs Unix (no output is good output)
 
 (*) Dos-configuration vs Unix-configuration (no output is good output)
 
 (*) Dos.cpp vs Unix.cpp (no output is good output)
+
 < #   line 16 "dos.qx"
+
 > #   line 16 "unix.qx"
+
+
 < #   line 18 "dos.qx"
 > #   line 18 "unix.qx"
 < #   line 19 "dos.qx"

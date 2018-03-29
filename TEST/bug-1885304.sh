@@ -27,23 +27,19 @@ rm -f Dos* Unix* tmp*.txt
 # Generate code from a dos formatted file
 echo "Confirm, that 'dos.qx' contains 0x0A 0x0D as newline characters"
 cat dos.qx | awk 'BEGIN { RS="--never--" } /\x0d\x0a/ { print; }' | wc
-quex -i dos.qx  -o Xanther
-for file in $(ls Xanther*); do cp $file $(echo $file | sed -e 's/Xanther/Dos/g'); done
-rm Xanther*
+quex -i dos.qx  -o Xanther --odir Dos
 
 # Generate code from a unix formatted file
 echo "Confirm, that 'unix' contains NO 0x0A 0x0D as newline characters"
 cat unix.qx | awk 'BEGIN { RS="--never--" } /\x0d\x0a/ { print; }' | wc
-quex -i unix.qx -o Xanther
-for file in $(ls Xanther*); do cp $file $(echo $file | sed -e 's/Xanther/Unix/g'); done
-rm Xanther*
+quex -i unix.qx -o Xanther --odir Unix
 
 echo "Watch out, that output from unix file format is the same as from dos format."
 echo "DATE stamps are ignored"
 echo
 echo "||||"
-ls Dos*
-ls Unix*
+ls Dos/Xanther*
+ls Unix/Xanther*
 echo "||||"
 echo
 echo "(*) Dos vs Unix (no output is good output)"
@@ -61,5 +57,5 @@ done
 echo
 echo "DONE"
 
-rm -f Dos* Unix* tmp*.txt
+rm -rf Dos* Unix* tmp*.txt
 popd >& /dev/null

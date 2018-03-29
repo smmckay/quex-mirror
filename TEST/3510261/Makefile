@@ -3,7 +3,7 @@ include ../Makefile.lexer
 # Leave the generated code for debugging etc.
 .SECONDARY:Simple/Simple.c 
 
-test: Simple.o lexer.o
+test: Simple/Simple.c lexer.o
 	$(LDC) -o $@ $^ -ggdb
 
 %.o: %.c
