@@ -11,19 +11,21 @@ quex -i simple.qx -o Simple --comment-mode-patterns --debug-exception
 
 echo "Search for THE_INHERITABLE_ONLY_MODE_XYZ_4711 ___________________________"
 echo " (No output is good output. '*' indicates that it appears in comment)"
+cd Simple
 grep THE_INHERITABLE_ONLY_MODE_XYZ_4711 Simple Simple.cpp
+cd ..
 
 echo
 echo "Compilation _____________________________________________________________"
 echo " (No output is good output)"
-g++ -Wall -Werror -c Simple.cpp -o Simple.o -I. -I$QUEX_PATH
+g++ -Wall -Werror -c Simple/Simple.cpp -o Simple.o -I. -I$QUEX_PATH
 echo
 echo "Result of: > ls Simple.o ________________________________________________"
 ls Simple.o
 echo
 echo "_________________________________________________________________________"
 
-rm Simple*
+rm -rf Simple*
 
 # cleansening
 cd $tmp

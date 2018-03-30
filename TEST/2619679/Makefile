@@ -12,15 +12,7 @@ endif
 
 
 # (*) SETUP ____________________________________________________________________
-# -- INPUT
 MODE_FILES       = simple.qx
-# -- FILES PRODUCED BY QUEX
-ENGINE_NAME      = Simple# NOTE: a whitespace after this name creates chaos!
-ENGINE_SOURCES   = $(ENGINE_NAME)                     \
-                   $(ENGINE_NAME).cpp                 \
-                   $(ENGINE_NAME)-token_ids           \
-                   $(ENGINE_NAME)-token               
-# -- OUTPUT
 APPLICATION      = lexer
 
 # (*) COMPILER SETTINGS ________________________________________________________
@@ -29,23 +21,17 @@ APPLICATION      = lexer
 
 # (*) RULES ____________________________________________________________________
 # -- application
-$(APPLICATION): ../lexer-simply.cpp $(ENGINE_NAME).cpp 
+$(APPLICATION): ../lexer-simply.cpp Simple/Simple.cpp 
 	@echo "##"
 	@echo "## The issue here was that there were warnings about double defined macros."
 	@echo "##"
 	$(LDCPP) -DQUEX_OPTION_ASSERTS_DISABLED -o $(APPLICATION) \
-		  ../lexer-simply.cpp $(ENGINE_NAME).cpp 
+		  ../lexer-simply.cpp Simple/Simple.cpp 
           
-$(ENGINE_SOURCES): $(MODE_FILES) 
-	quex -i $(MODE_FILES) -o $(ENGINE_NAME) 
+Simple/Simple.cpp: $(MODE_FILES) 
+	quex -i $(MODE_FILES) -o Simple
 
 # (*) HELPERS __________________________________________________________________
 clean:	
 	touch $(MODE_FILES)
-	rm -f $(ENGINE_SOURCES)
-	rm -f $(ENGINE_NAME).o
-	rm -f $(ENGINE_NAME)-configuration
-	rm -f lexer.o
-	rm -f lexer
-	rm -f token_ids
-	rm -f *.bak
+	rm -rf Simple lexer.o lexer token_ids *.bak

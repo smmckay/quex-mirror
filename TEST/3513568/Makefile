@@ -14,7 +14,7 @@ lexer: Lexer/Lexer.c lexer.o Common-token.o
 	$(LDC) $^ -o  $@ $(LIB_ICU) 
 	 
 %.o: %.c 
-	$(CC) $< -o $@ $(CCFLAG_ASSERTS) 
+	$(CC) -ICommon $< -o $@ $(CCFLAG_ASSERTS) 
 
 # -DQUEX_OPTION_ASSERTS_DISABLED
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
@@ -43,8 +43,8 @@ Common-token.c:
 		 --language C 
 
 clean:
-	rm -rf boeck_Lexer*
-	rm -rf Common-token*
+	rm -rf Lexer*
+	rm -rf Common-*
 	rm -rf lexer
 	rm -rf *.E
 	rm -rf *.o

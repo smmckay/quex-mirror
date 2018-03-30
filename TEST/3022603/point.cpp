@@ -2,7 +2,7 @@
 #include<fstream>    
 #include<iostream> 
 
-#include "Simple"
+#include "Simple/Simple"
 
 int 
 main(int argc, char** argv) 
