@@ -21,4 +21,4 @@ Simple/Simple.cpp: simple.qx
 
 
 clean:
-	@rm -rf Simple-* a.out lexer-iconv lexer-icu
+	@rm -rf Simple* a.out lexer-iconv lexer-icu

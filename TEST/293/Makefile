@@ -10,21 +10,16 @@ CC := $(LDCPP_ICONV) \
 
 all: lexer
 
-lexer: lexer.cpp IConv_Lexer.cpp Codec_Lexer.cpp
-	@$(CC) $^ -o $@ -I$(QUEX_PATH) \
+lexer: lexer.cpp IConv/Lexer.cpp Codec/Lexer.cpp
+	@$(CC) $^ -o $@ -I. \
 		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED
 
-%.E: %.cpp # IConvLexer.cpp CodecLexer.cpp
-	$(CC) -c $< -o $@ -I$(QUEX_PATH) \
-		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED \
-		 -E
-	
-IConv_Lexer.cpp:    iconv.qx
-	quex -i $< -o IConv::Lexer -b 4 \
+IConv/Lexer.cpp:    iconv.qx
+	quex -i $< -o IConv::Lexer --odir IConv -b 4 \
 		 --token-id-prefix ICONV_TKN_
 
-Codec_Lexer.cpp:    codec.qx
-	quex -i $< -o Codec::Lexer --encoding utf8 --bet wchar_t  \
+Codec/Lexer.cpp:    codec.qx
+	quex -i $< -o Codec::Lexer --odir Codec --encoding utf8 --bet wchar_t  \
 		 --token-id-prefix CODEC_TKN_
 
 Message0:      codec.qx  

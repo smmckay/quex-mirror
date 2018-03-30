@@ -9,5 +9,5 @@ tmp=`pwd`
 cd $bug/ 
 bash ../test_that_it_does_not_take_too_long.sh simple.qx 20 '--encoding utf8' > tmp.txt
 ../quex_pathify.sh tmp.txt
-rm -f Lexer*
+rm -rf Lexer*
 cd $tmp

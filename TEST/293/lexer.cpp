@@ -7,16 +7,16 @@
  *
  * (C) Frank-Rene Schaefer                                                    */
 #include <cstdio> 
-#include "IConv_Lexer"
+#include "IConv/Lexer"
 /* Include after 'IConv_Lexer' to ensure they 'land' in  correct namespace.   */
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#include <IConv/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <IConv/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 
-#include "Codec_Lexer"
+#include "Codec/Lexer"
 
 /* When using multiple lexical analyzers, it must be compiled with 
  * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.       */
-#include <quex/code_base/multi.i>
+#include <Codec/lib/multi.i>
 
 using namespace std;
 

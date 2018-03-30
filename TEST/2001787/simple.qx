@@ -17,10 +17,10 @@ mode ONE_AND_ONLY
 }
 
 header {
-#include <quex/code_base/extra/accumulator/Accumulator>
+#include <Simple/lib/extra/accumulator/Accumulator>
 }
 footer {
-#include <quex/code_base/extra/accumulator/Accumulator.i>
+#include <Simple/lib/extra/accumulator/Accumulator.i>
 }
 body {
     QUEX_NAME(Accumulator)          accumulator;
