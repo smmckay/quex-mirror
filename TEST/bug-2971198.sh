@@ -13,10 +13,10 @@ cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) &&
 rm tmp.txt
 
 echo "||||"
-ls Simple* | cut -d ' ' -f 1 | sort 
+ls Simple/Simple* | cut -d ' ' -f 1 | sort 
 echo "||||"
 
 # cleansening
-rm -f Simple*
+rm -rf Simple*
 
 cd $tmp

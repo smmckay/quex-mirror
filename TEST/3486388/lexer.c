@@ -1,2 +1,2 @@
-#include "Fritz.h"
-#include "Otto.h"
+#include "Fritz/Fritz.h"
+#include "Otto/Otto.h"

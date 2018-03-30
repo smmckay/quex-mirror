@@ -9,9 +9,9 @@ tmp=`pwd`
 cd $bug/ 
 quex -i simple.qx -o Otto  --language C
 quex -i simple.qx -o Fritz --language C
-gcc  -c lexer.c >& tmp.txt -I$QUEX_PATH
+gcc  -c lexer.c >& tmp.txt -I.
 cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ ' | head -n 1
-rm tmp.txt Fritz* Otto*
+rm -rf tmp.txt Fritz* Otto*
 
 # cleansening
 make clean >& /dev/null

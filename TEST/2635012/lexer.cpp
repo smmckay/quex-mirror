@@ -1,7 +1,7 @@
 #include<fstream>    
 #include<fstream> 
-#include <./Simple>
-#include <quex/code_base/buffer/bytes/ByteLoader_stream.i>
+#include <Simple/Simple>
+#include <Simple/lib/buffer/bytes/ByteLoader_stream.i>
 
 using namespace std;
 

@@ -1,12 +1,10 @@
 (*) With QUEX_OPTION_INCLUDE_STACK
-g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        lexer.cpp Simple*.cpp -o lexer
-g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        lexer.cpp Simple*.cpp -o lexer
+g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        lexer.cpp Simple/Simple*.cpp -o lexer
+g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        lexer.cpp Simple/Simple*.cpp -o lexer
 (*) With QUEX_OPTION_INCLUDE_STACK_DISABLED
-g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        -DQUEX_OPTION_INCLUDE_STACK_DISABLED lexer.cpp Simple*.cpp -o lexer
-g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        -DQUEX_OPTION_INCLUDE_STACK_DISABLED lexer.cpp Simple*.cpp -o lexer
+g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        -DQUEX_OPTION_INCLUDE_STACK_DISABLED lexer.cpp Simple/Simple*.cpp -o lexer
+g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        -DQUEX_OPTION_INCLUDE_STACK_DISABLED lexer.cpp Simple/Simple*.cpp -o lexer
 lexer.cpp:18:10: error: ‘class quex::Simple’ has no member named ‘_parent_memento’
 lexer.cpp:19:10: error: ‘class quex::Simple’ has no member named ‘include_pop’
 make: *** [without-include-stack] Error 1
-rm -f Simple*
-rm -f *.o
-rm -f lexer error-lexer
+rm -rf Simple* *.o lexer 

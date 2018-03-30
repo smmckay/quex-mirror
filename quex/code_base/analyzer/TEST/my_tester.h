@@ -1,38 +1,32 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__TEST__MY_TESTER_H
 #define __QUEX_INCLUDE_GUARD__ANALYZER__TEST__MY_TESTER_H
-#include "ut/lib/compatibility/stdint.h"
 
-#define QUEX_TYPE_LEXATOM           uint8_t  
 
 #include <cstdio>
-
-struct my_tester;
 
 namespace quex {
     //typedef struct {} Token;
     typedef int       CounterLineColumnIndentation;
 }
-#include "test_environment/TestAnalyzer"
+
+#include "minimum-definitions.h"
 
 #include "ut/lib/analyzer/Counter"
 #include "ut/lib/analyzer/Mode"
 #include <ut/lib/MemoryManager>
-#undef   QUEX_TYPE_ANALYZER
-#undef   QUEX_TYPE0_ANALYZER
-#define  QUEX_TYPE_ANALYZER  my_tester
-#define  QUEX_TYPE0_ANALYZER my_tester
-/* #include "ut/lib/analyzer/member/basic" */
-
+#include "ut/lib/compatibility/stdint.h"
 
 extern int  indentation[64];
 
-class my_tester : 
-    public quex::TestAnalyzer {
+class Tester { 
 public:
-    my_tester();
-    quex::QUEX_NAME(Counter)   counter;
-    quex::QUEX_NAME(Mode)      tester_mini_mode;
+    Tester();
+    QUEX_NAME(Counter)   counter;
+    QUEX_NAME(Mode)      tester_mini_mode;
+    QUEX_NAME(Mode)*     __current_mode_p;
 };
+
+typedef Tester my_tester;
 
 inline void 
 mini_mode_on_indentation(my_tester* x, size_t Indentation) 
@@ -41,7 +35,7 @@ mini_mode_on_indentation(my_tester* x, size_t Indentation)
     printf("indentation = %i\n", (int)Indentation);
 }
 
-my_tester::my_tester() 
+Tester::Tester() 
 { 
     /* tester_mini_mode.on_indentation = mini_mode_on_indentation; */
     __current_mode_p = &tester_mini_mode; 

@@ -366,5 +366,5 @@ self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
     else {
         hwut_verify(! QUEX_NAME(resources_absent)(lx));
     }
-    hwut_verify(QUEX_NAME(TokenQueue_is_empty)(lx));
+    hwut_verify(QUEX_NAME(TokenQueue_is_empty)(&lx->_token_queue));
 }
