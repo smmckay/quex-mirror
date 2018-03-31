@@ -72,12 +72,10 @@ fi
 if [[ "$1" = "compile" ]] || [[ "$2" = "compile" ]]; then
     echo ${functions_unused[@]} | tr " " "\n" | awk '{ print "\\\\bdef *" $1 "("; }' > $tmp_file
     while read fdef; do
-        grep -sHIne "$fdef" $QUEX_PATH -r --include "*.py"
-    done < $tmp_file
+        grep -sHIne "$fdef" $QUEX_PATH -r --include "*.py" 
+    done < $tmp_file | sort
 else
-    echo "||||"
     echo ${functions_unused[@]} | tr " " "\n" | sort
-    echo "||||"
 fi
 
 # python ./function-check-side-kick.py $functions_unused > $grep_expressions

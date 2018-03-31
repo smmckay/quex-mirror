@@ -40,8 +40,6 @@ class Language(LanguageCpp):
     def MEMBER_FUNCTION_DECLARATION(self, signature):
         argument_list_str = ", ".join("%s %s" % (arg_type, arg_name) 
                                       for arg_type, arg_name in signature.argument_list)
-        if signature.return_type != "void": return_str = "return "
-        else:                               return_str = ""
 
         if signature.argument_list: me_str = "QUEX_TYPE_ANALYZER* me, "
         else:                       me_str = "QUEX_TYPE_ANALYZER* me"

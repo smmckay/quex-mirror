@@ -140,13 +140,6 @@ Option("mode_transition_check_f", None,
     During development this option should not be used. But the final lexical
     analyzer should be created with this option set. 
     """),
-Option("single_mode_analyzer_f",  None,
-    """
-    In case that there is only one mode, this flag can be used to inform quex
-    that it is not intended to refer to the mode at all. In that case no
-    instance of the mode is going to be implemented. This reduces memory 
-    consumption a little and may possibly increase performance slightly.
-    """),
 Option("include_stack_support_f", None,
      """
      Disables the support of include stacks where the state of the lexical 
@@ -160,20 +153,6 @@ Option("count_line_number_f", None,
 Option("count_column_number_f", None,
      """
      Lets quex generate an analyzer without internal column counting.
-     """),
-"""
-If an independent source package is required that can be compiled without an 
-installation of quex, the following option may be used
-""",
-Option("source_package_directory",  "directory",
-     """
-     Creates all source code that is required to compile the produced
-     lexical analyzer. Only those packages are included which are actually
-     required. Thus, when creating a source package the same command line
-     'as usual' must be used with the added `--source-package` option.
-
-     The directory name following the option  specifies the place where
-     the source package is to be located.
      """),
 """
 For the support of derivation from the generated lexical analyzer class the

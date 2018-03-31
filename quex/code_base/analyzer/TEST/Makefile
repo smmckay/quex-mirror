@@ -1,8 +1,8 @@
-PROGRAMS := statistics.exe \
-			counter-column_line.exe \
-			counter-column_line-indentation.exe \
-			counter-column_line-indentation-x.exe \
-			counter-column_line-x.exe
+PROGRAMS := statistics.exe # 
+# 		counter-column_line.exe \
+# 		counter-column_line-indentation.exe \
+# 		counter-column_line-indentation-x.exe \
+# 		counter-column_line-x.exe
 
 all:       $(PROGRAMS) 
 

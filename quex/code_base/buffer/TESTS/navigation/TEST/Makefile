@@ -21,6 +21,7 @@
 #
 # (C) Frank-Rene Schaefer
 #______________________________________________________________________________
+.SECONDARY:
 
 TESTS := \
 	     $(foreach S, 1 2 4, $(foreach FB, 0 1 2, test-Plain-$(S)-$(FB).exe)) \

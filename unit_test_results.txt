@@ -48,7 +48,7 @@ TEST                                                                 <no date>
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
         bug-2619679.sh ...............................................[OK]
     286 Maintaining character index during manual buffer filling.
-        bug-286.sh ............................................[NO OUTPUT]
+        bug-286.sh ...................................................[OK]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
         bug-2937342.sh 1 .............................................[OK]
                        2 .............................................[OK]
@@ -71,7 +71,7 @@ TEST                                                                 <no date>
     3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once
         bug-3486388.sh ...............................................[OK]
     3495127 Event Handler on_after_match
-        feature-3495127.sh queue ...................................[FAIL]
+        feature-3495127.sh queue .....................................[OK]
     3503831 0.61.2 Missleading error message in anti-pattern A{foo$}
         bug-3503831.sh ...............................................[OK]
     3504730 0.61.2 Post condition with OR causes crash
@@ -88,7 +88,7 @@ TEST                                                                 <no date>
                        PathTemplateCompression .......................[OK]
                        TemplateCompression ...........................[OK]
     3392478 UTF-8 Backward Input Position Detection Error
-        bug-3392478.sh ........................................[NO OUTPUT]
+        bug-3392478.sh ...............................................[OK]
 
  * dlazesz:
 
@@ -106,12 +106,12 @@ TEST                                                                 <no date>
  * enmarabrams:
 
     257 Hang-up on recursive --foreign-token-id-file
-        bug-257.sh .................................................[FAIL]
+        bug-257.sh ...................................................[OK]
 
  * fschaef:
 
     1948456 (feature) Inheritance Info
-        feature-1948456.sh ....................................[NO OUTPUT]
+        feature-1948456.sh ...........................................[OK]
     1952133 0.24.11 Crash in Buffer Handling with tiny buffer size
         bug-1952133.sh 127 ...........................................[OK]
                        128 ...........................................[OK]
@@ -141,7 +141,7 @@ TEST                                                                 <no date>
         bug-2209142.sh error .........................................[OK]
                        good ..........................................[OK]
     2277660 character count pre-determination
-        bug-2277660.sh .............................................[FAIL]
+        bug-2277660.sh ...............................................[OK]
     2349109 0.33.5 Line and Column number counts with Set skippers
         bug-2349109.sh newline-skipper ...............................[OK]
                        newline-skipper-utf8 ..........................[OK]
@@ -154,7 +154,7 @@ TEST                                                                 <no date>
     3038088 token_id = numeric value
         feature-3038088.sh ...........................................[OK]
     3039173 On Mismatch: abort()
-        feature-3039173.sh .........................................[FAIL]
+        feature-3039173.sh ...........................................[OK]
     3082041 0.52.4 Buffer Memory Size not Accepted
         bug-3082041.sh ...............................................[OK]
     3102035 0.55.1 Weird Setup causes Duplicate State Label
@@ -164,7 +164,7 @@ TEST                                                                 <no date>
                        4 .............................................[OK]
                        5 .............................................[OK]
     3157923 Memory Leak by Components
-        bug-3157923.sh .............................................[FAIL]
+        bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
         bug-3513568.sh .............................................[FAIL]
 
@@ -229,7 +229,7 @@ TEST                                                                 <no date>
                            4 .........................................[OK]
                            5 .........................................[OK]
                            6 .........................................[OK]
-                           good ....................................[FAIL]
+                           good ......................................[OK]
     2257908 Quex does not terminate lexer generation
         bug-2257908.sh ...............................................[OK]
     2262537 (feature) Allow Nothing is fine in define section
@@ -278,7 +278,7 @@ TEST                                                                 <no date>
  * patrikj-kt:
 
     298 Quex exception in loop generation.
-        bug-298.sh .................................................[FAIL]
+        bug-298.sh ...................................................[OK]
     299 LoopRestartP -- generated code does not compile
         bug-299.sh ...................................................[OK]
     300 Missing error message on non-existing mode.
@@ -292,7 +292,7 @@ TEST                                                                 <no date>
  * prade2p:
 
     2914877 0.47.3 RE Exception on [10000-10FFFF]
-        bug-2914877.sh .............................................[FAIL]
+        bug-2914877.sh ...............................................[OK]
 
  * rami-al-rafou:
 
@@ -494,18 +494,7 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-286.sh
-    [FAIL] feature-3495127.sh _ queue
-    [FAIL] bug-3392478.sh
-    [FAIL] bug-257.sh
-    [FAIL] feature-1948456.sh
-    [FAIL] bug-2277660.sh
-    [FAIL] feature-3039173.sh
-    [FAIL] bug-3157923.sh
     [FAIL] bug-3513568.sh
-    [FAIL] feature-2251359.sh _ good
-    [FAIL] bug-298.sh
-    [FAIL] bug-2914877.sh
     [FAIL] bug-1885304.sh
     [FAIL] feature-2146712.sh _ NoWrite
 ===============================================================================
@@ -1004,21 +993,21 @@ quex/TESTS/code/TEST                                                 <no date>
         svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .....................................[FAIL]
+                          real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .....................[FAIL]
-                                           sphinx ..................[FAIL]
+        command_line_options-verify-doc.py man .......................[OK]
+                                           sphinx ....................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ................................[FAIL]
-                         undefinition ..............................[FAIL]
+        include_guard.py convention ..................................[OK]
+                         undefinition ................................[OK]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh ...........................[FAIL]
  * Propper undefinition of configuration parameters.
-        macro-check.py .............................................[FAIL]
+        macro-check.py ...............................................[OK]
 
  * User defined token id file:
 
@@ -1031,14 +1020,7 @@ quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] check-default-configuration.sh
     [FAIL] svn-status.sh
-    [FAIL] function-check.sh _ real
-    [FAIL] pyflakes-check.sh
-    [FAIL] command_line_options-verify-doc.py _ man
-                                            \__ sphinx
-    [FAIL] include_guard.py _ convention
-                          \__ undefinition
     [FAIL] class-data-member-consistency.sh
-    [FAIL] macro-check.py
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -1525,25 +1507,12 @@ quex/TESTS/token-policies/TEST                                       <no date>
                                                                                
 quex/code_base/analyzer/TEST                                         <no date>
 -------------------------------------------------------------------------------
- * 
-        counter-column_line-indentation-x.exe ......................[FAIL]
- * 
-        counter-column_line-indentation.exe ........................[FAIL]
- * 
-        counter-column_line-x.exe ..................................[FAIL]
- * 
-        counter-column_line.exe ....................................[FAIL]
  * Statistics Module
         statistics.exe ...............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] counter-column_line-indentation-x.exe
-    [FAIL] counter-column_line-indentation.exe
-    [FAIL] counter-column_line-x.exe
-    [FAIL] counter-column_line.exe
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       Encoding Converter Helper Functions                      
@@ -3437,12 +3406,12 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       14  238   [FAIL] TEST                                                          
+        3  238   [FAIL] TEST                                                          
         1  56    [FAIL] demo/C/TEST                                                   
         1  56    [FAIL] ..../Cpp/TEST                                                 
         2  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-       10  15    [FAIL] ........../code/TEST                                          
+        3  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            2       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3459,7 +3428,7 @@ SUMMARY:
         1  5     [FAIL] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
         1  11    [FAIL] ..../code_base/TESTS/general/TEST                             
-        4  5     [FAIL] ............../analyzer/TEST                                  
+           1       [OK] ............../analyzer/TEST                                  
            11      [OK] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            11      [OK] .........................../misc/TEST                         
@@ -3498,11 +3467,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____    _____           
-    |  ___|_ _(_) |___     | ___|  |___ /     __  __
-    | |_ / _` | | / __|    |___ \    |_ \     \ \/ /
-    |  _| (_| | | \__ \     ___) |  ___) |     >  < 
-    |_|  \__,_|_|_|___/    |____/  |____/     /_/\_\
-                                                                   (1705 tests)
+     _____     _ _          _____  _           
+    |  ___|_ _(_) |___     |___ / / |    __  __
+    | |_ / _` | | / __|      |_ \ | |    \ \/ /
+    |  _| (_| | | \__ \     ___) || |     >  < 
+    |_|  \__,_|_|_|___/    |____/ |_|    /_/\_\
+                                                                   (1701 tests)
 
 ===============================================================================

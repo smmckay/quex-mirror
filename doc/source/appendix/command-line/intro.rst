@@ -77,6 +77,8 @@ Default: false (disabled)
 
     
 
+Default: --
+
 .. cmdoption:: --file-extension-scheme, --fes scheme
 
     Specifies the file stem and extensions of the output files. The provided argument identifies 
@@ -192,17 +194,6 @@ Default: 0.0.0-pre-release
 
 Default: true (not disabled)
 
-.. cmdoption:: --single-mode-analyzer, --sma 
-
-    In case that there is only one mode, this flag can be used to inform quex that it is not intended 
-    to refer to the mode at all. In that case no instance of the mode is going to be implemented. 
-    This reduces memory consumption a little and may possibly increase performance 
-    slightly.  
-
-    
-
-Default: false (disabled)
-
 .. cmdoption:: --no-include-stack, --nois 
 
     Disables the support of include stacks where the state of the lexical analyzer can be saved and 
@@ -228,21 +219,6 @@ Default: true (not disabled)
     
 
 Default: true (not disabled)
-
-If an independent source package is required that can be compiled without an installation of quex, 
-the following option may be used  
-
-.. cmdoption:: --source-package, --sp directory
-
-    Creates all source code that is required to compile the produced lexical analyzer. Only those 
-    packages are included which are actually required. Thus, when creating a source package 
-    the same command line 'as usual' must be used with the added `--source-package` option. 
-     
-
-    The directory name following the option specifies the place where the source package 
-    is to be located.  
-
-    
 
 For the support of derivation from the generated lexical analyzer class the following command line 
 options can be used.  

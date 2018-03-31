@@ -93,8 +93,8 @@
 #ifdef    __QUEX_SETTING_MAX_MODE_CLASS_N       
 #   undef __QUEX_SETTING_MAX_MODE_CLASS_N       
 #endif
-#ifdef    __QUEX_SETTING_INITIAL_LEXER_MODE_ID  
-#   undef __QUEX_SETTING_INITIAL_LEXER_MODE_ID  
+#ifdef    QUEX_SETTING_MODE_INITIAL_P  
+#   undef QUEX_SETTING_MODE_INITIAL_P  
 #endif
 #ifdef    QUEX_TOKEN_ID
 #   undef QUEX_TOKEN_ID

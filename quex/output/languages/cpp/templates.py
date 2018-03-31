@@ -155,12 +155,8 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
     """EngineClassName = name of the structure that contains the engine state.
                          if a mode of a complete quex environment is created, this
                          is the mode name. otherwise, any name can be chosen. 
-       SingleModeAnalyzerF = False if a mode for a quex engine is to be created. True
-                           if a stand-alone lexical engine is required (without the
-                           complete mode-handling framework of quex).
     """              
     Lng = Setup.language_db
-    SingleModeAnalyzerF = Setup.single_mode_analyzer_f
 
     function_signature_str = __function_signature.replace("$$STATE_MACHINE_NAME$$", 
                                                           StateMachineName)

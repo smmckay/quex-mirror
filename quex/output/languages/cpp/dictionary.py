@@ -299,13 +299,6 @@ class Language(dict):
         return "    %s\n" % self.ASSIGN("me->buffer._lexatom_before_lexeme_start", 
                                         self.INPUT_P_DEREFERENCE(-1))
 
-    def MODE_BY_ID(self, ModeName):
-        return "%s[%s]" % (self.NAME_IN_NAMESPACE_MAIN("mode_db"), 
-                           self.NAME_IN_NAMESPACE_MAIN("ModeID_%s" % ModeName))
-
-    def ADDRESS_OF(self, Variable):
-        return "&(%s)" % Variable
-
     def UNDEFINE(self, NAME):
         return "\n#undef %s\n" % NAME
 
@@ -1039,11 +1032,6 @@ class Language(dict):
             return ""
         else:
             assert False 
-
-    @typed(Name=(str,unicode), ComparisonList=[(str,unicode)])
-    def IF_CONDITION_SEQUENCE(self, Name, ComparisonList, Consequence):
-        condition_list = [ [Name, "==", value] for value in ComparisonList ]
-        return self.CONDITION_SEQUENCE(condition_list, [Consequence] * len(condition_list))
 
     def CONDITION_SEQUENCE(self, ConditionList, ConsequenceList, ElseConsequence=None):
         assert all(type(condition) == list for condition in ConditionList)

@@ -34,7 +34,7 @@ case2:
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f Simple*
+	rm -rf Simple*
 	rm -f *.o
 	rm -f *.bak
 	rm -f *.E

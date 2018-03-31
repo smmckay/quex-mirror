@@ -235,7 +235,6 @@ SETUP_INFO = {
     "output_file_naming_scheme":      [["--file-extension-scheme", "--fes"], ""],
     "output_directory":               [["--output-directory", "--odir"],     "--"],
     "show_name_spaces_f":             [["--show-name-spaces", "--sns"],      SetupParTypes.FLAG],
-    "single_mode_analyzer_f":         [["--single-mode-analyzer", "--sma"],  SetupParTypes.FLAG],
     "user_application_version_id":    [["--version-id"],                     "0.0.0-pre-release"],
     #
     "warning_on_outrun_f":            [["--warning-on-outrun", "--woo"],   SetupParTypes.FLAG],
@@ -341,6 +340,8 @@ SETUP_INFO = {
     "XX_external_lexeme_null_object":    [["--lexeme-null-object", "--lno"],      ""],
     "XX_token_queue_safety_border":      [["--token-queue-safety-border"],      16],
     "XX_source_package_directory":       [["--source-package", "--sp"],         ""],
+    "XX_single_mode_analyzer_f":         [["--single-mode-analyzer", "--sma"],  SetupParTypes.FLAG],
+
 }
 
 class NotificationDB:
@@ -371,6 +372,9 @@ class NotificationDB:
     warning_incidence_handler_overwrite              = 19
 
 DEPRECATED = { 
+  "XX_single_mode_analyzer_f": 
+    ("Single mode analyzer's no longer have to be indicated on the command line.",
+     "0.69.1"),
   "XX_source_package_directory": 
     ("Since version 0.69.1, only complete source packages are produced.\n"
      "Explicit source packaging is obsolete.",

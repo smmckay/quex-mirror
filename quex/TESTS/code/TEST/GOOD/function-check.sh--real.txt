@@ -1,4 +1,3 @@
-||||
 __combine_transitionless_acceptance_states
 from_LinearState
 from_mouth
@@ -18,5 +17,4 @@ __nonzero__
 pair_combinations
 partials
 print_mouth
-||||
 <terminated>
