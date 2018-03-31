@@ -13,8 +13,10 @@ quex -i error.qx -o Simple
 echo
 echo 'Output from constructed header:_______________________________________'
 echo
-../quex_pathify.sh Simple | awk '/\#/ && /line/' 
+cd Simple
+../../quex_pathify.sh Simple | awk '/\#/ && /line/' 
+cd ..
 
 # cleansening
-rm -f Simple Simple.cpp Simple-*
+rm -rf Simple
 cd $tmp

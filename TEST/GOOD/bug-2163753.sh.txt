@@ -12,8 +12,5 @@ FAILED '\n'
 <TERMINATION> ''
 | [END] number of token = 7
 `------------------------------------------------------------------------------------
-rm -rf Simple-*
-rm -rf Simple.[ch]
-rm -rf Simple
-rm -rf a.out
+rm -rf Simple* a.out
 touch simple.qx

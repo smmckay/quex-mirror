@@ -1,6 +1,6 @@
 #include <stdio.h>    
 
-#include "EasyLexer.h"
+#include "EasyLexer/EasyLexer.h"
 
 
 int 

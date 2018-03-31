@@ -10,11 +10,11 @@ tmp=`pwd`
 cd $bug/ 
 quex -i test.qx -o Simple --comment-state-machine --language C >& tmp.txt
 cat tmp.txt | awk '(/[Ww][Aa][Rr][Nn][Ii][Nn][Gg]/ || /[Ee][Rr][Rr][Oo][Rr]/) && ! /ASSERTS/ '
-awk 'BEGIN {w=0} /BEGIN:/ {w=1;} // {if(w) print;} /END:/ {w=0;}' Simple.c
+awk 'BEGIN {w=0} /BEGIN:/ {w=1;} // {if(w) print;} /END:/ {w=0;}' Simple/Simple.c
 
 # python show.py
 rm tmp.txt
 
 # cleansening
-rm Simple*
+rm -rf Simple*
 cd $tmp

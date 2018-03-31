@@ -8,16 +8,16 @@ TEST                                                                 <no date>
  * Dizzzy:
 
     293 0.66.5: Encoding running on wchar_t
-        bug-293.sh bad .............................................[FAIL]
-                   good ............................................[FAIL]
+        bug-293.sh bad ...............................................[OK]
+                   good ..............................................[OK]
                    invokation ........................................[OK]
 
  * alexeevm:
 
     3022603 0.49.2 Using external buffer with Quex lexer
-        bug-3022603.sh .............................................[FAIL]
+        bug-3022603.sh ...............................................[OK]
     3025173 0.49.2 Custom Token struct for quex
-        bug-3025173.sh .............................................[FAIL]
+        bug-3025173.sh ...............................................[OK]
     3032877 -b, --buffer-element-size enhancement
         feature-3032877.sh codec .....................................[OK]
                            normal ....................................[OK]
@@ -29,8 +29,8 @@ TEST                                                                 <no date>
                        iconv .........................................[OK]
                        icu ...........................................[OK]
     2001787 RE Problem with inverted whitespace
-        bug-2001787.sh iconv .......................................[FAIL]
-                       icu .........................................[FAIL]
+        bug-2001787.sh iconv .........................................[OK]
+                       icu ...........................................[OK]
     2002070 Output buffer overflow
         bug-2002070.sh iconv .........................................[OK]
                        icu ...........................................[OK]
@@ -46,7 +46,7 @@ TEST                                                                 <no date>
                        iconv .........................................[OK]
                        icu ...........................................[OK]
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
-        bug-2619679.sh .............................................[FAIL]
+        bug-2619679.sh ...............................................[OK]
     286 Maintaining character index during manual buffer filling.
         bug-286.sh ............................................[NO OUTPUT]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
@@ -56,7 +56,7 @@ TEST                                                                 <no date>
                        4 .............................................[OK]
                        5 .............................................[OK]
     3025852 0.49.2 Instatiation of inheritable-only-modes
-        bug-3025852.sh .............................................[FAIL]
+        bug-3025852.sh ...............................................[OK]
 
  * clemwang:
 
@@ -65,11 +65,11 @@ TEST                                                                 <no date>
     3478018 0.62.3 errmsg about missing { when missing }
         bug-3478018.sh ...............................................[OK]
     3479354 Reversed (right to left) Pattern Definition
-        bug-3479354.sh .............................................[FAIL]
+        bug-3479354.sh ...............................................[OK]
     3485516 0.60.1 0.60.1 Exception Handling Disorder
         bug-3485516.sh ...............................................[OK]
     3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once
-        bug-3486388.sh .............................................[FAIL]
+        bug-3486388.sh ...............................................[OK]
     3495127 Event Handler on_after_match
         feature-3495127.sh queue ...................................[FAIL]
     3503831 0.61.2 Missleading error message in anti-pattern A{foo$}
@@ -101,7 +101,7 @@ TEST                                                                 <no date>
  * eabrams:
 
     patch-16 Compile error when indentation based without token queue
-        patch-16.sh ................................................[FAIL]
+        patch-16.sh ..................................................[OK]
 
  * enmarabrams:
 
@@ -147,7 +147,7 @@ TEST                                                                 <no date>
                        newline-skipper-utf8 ..........................[OK]
                        non-newline-skipper ...........................[OK]
     2635012 0.36.4 Include Stack Disablement
-        bug-2635012.sh .............................................[FAIL]
+        bug-2635012.sh ...............................................[OK]
     297 r4678(trunk): Memory leak in Token Class
         bug-297.sh C .................................................[OK]
                    Cpp ...............................................[OK]
@@ -176,12 +176,12 @@ TEST                                                                 <no date>
  * jdavidberger:
 
     264 0.64.6 Incorrect column numbering with post conditions
-        bug-264.sh .................................................[FAIL]
+        bug-264.sh ...................................................[OK]
 
  * jmarsik:
 
     0.58.2 history effect in UCS database interface: 3235790
-        bug-3235790.sh .............................................[FAIL]
+        bug-3235790.sh ...............................................[OK]
     3115741 0.55.4 move_backward triggers assert
         bug-3115741.sh general .......................................[OK]
                        undo-line-colum-count .........................[OK]
@@ -200,7 +200,7 @@ TEST                                                                 <no date>
  * kromaks:
 
     2971198 0.48.1 Parsing long REs
-        bug-2971198.sh .............................................[FAIL]
+        bug-2971198.sh ...............................................[OK]
 
  * liancheng:
 
@@ -238,7 +238,7 @@ TEST                                                                 <no date>
  * nazim-can-bedir:
 
     2896732 0.46.2 - Memory leak
-        bug-2896732.sh .............................................[FAIL]
+        bug-2896732.sh ...............................................[OK]
 
  * nobody:
 
@@ -249,7 +249,7 @@ TEST                                                                 <no date>
     2891125 0.45.1 bug in -- version
         bug-2891125.sh ...............................................[OK]
     2894648 0.46.2 Backslashed . is unknown to quex
-        bug-2894648.sh ........................................[NO OUTPUT]
+        bug-2894648.sh ...............................................[OK]
 
  * ollydbg:
 
@@ -287,7 +287,7 @@ TEST                                                                 <no date>
  * petulda:
 
     3178600 0.58.1 Last appeared char not stored when switching modes
-        bug-3178600.sh .............................................[FAIL]
+        bug-3178600.sh ...............................................[OK]
 
  * prade2p:
 
@@ -297,12 +297,12 @@ TEST                                                                 <no date>
  * rami-al-rafou:
 
     3476232 0.62.1 Slow C code generation (unicode)
-        bug-3476232.sh .............................................[FAIL]
+        bug-3476232.sh ...............................................[OK]
 
  * raphamiard:
 
     185 0.66.5 Stable output for distinct token fields
-        feature-185.sh .............................................[FAIL]
+        feature-185.sh ...............................................[OK]
 
  * rayhayes:
 
@@ -312,7 +312,7 @@ TEST                                                                 <no date>
  * remcobloemen1:
 
     3295781 Duplicate label with Template and Path Compression
-        bug-3295781.sh .............................................[FAIL]
+        bug-3295781.sh ...............................................[OK]
 
  * rmanoj-oss:
 
@@ -325,12 +325,12 @@ TEST                                                                 <no date>
  * rofr3:
 
     3009642 0.48.3 Begin of Line Precondition flag
-        bug-3009642.sh .............................................[FAIL]
+        bug-3009642.sh ...............................................[OK]
 
  * sbellon:
 
     265 Modification time change on input file.
-        bug-265.sh .................................................[FAIL]
+        bug-265.sh ...................................................[OK]
     3524729 0.62.4 token_type distinct members cause overloading error
         bug-3524729.sh ...............................................[OK]
     3538026 Handling of spurious transition in PathWalkerState
@@ -371,7 +371,7 @@ TEST                                                                 <no date>
     1892227 accepted as identifiers in def
         bug-1892227.sh ...............................................[OK]
     1892809 0.20.4 \x, \X, \U accept too many digits
-        bug-1892809.sh .............................................[FAIL]
+        bug-1892809.sh ...............................................[OK]
     1893849 0.20.5 allows engine names that are not valid identifiers
         bug-1893849.sh ...............................................[OK]
     1893874 Missing colon in mode definition crashes 0.20.5
@@ -383,9 +383,9 @@ TEST                                                                 <no date>
     1894185 Unbalanced quote and double quote in header/init/body blocks in 0.20.6
         bug-1894185.sh ...............................................[OK]
     1894578 header block not added to -core-engine.cpp file in 0.20.6
-        bug-1894578.sh .............................................[FAIL]
+        bug-1894578.sh ...............................................[OK]
     1895066 0.20.8 #line directive after header contents missing
-        bug-1895066.sh .............................................[FAIL]
+        bug-1895066.sh ...............................................[OK]
     1895500 assertion error running generated 0.20.8 lexer with Unicode
         bug-1895500.sh iconv .........................................[OK]
                        icu ...........................................[OK]
@@ -464,12 +464,12 @@ TEST                                                                 <no date>
                            Normal ....................................[OK]
                            NotExist ..................................[OK]
     2163753 0.32.1 Incorrect on_failure behavior
-        bug-2163753.sh .............................................[FAIL]
+        bug-2163753.sh ...............................................[OK]
 
  * yaroslavkrv:
 
     3097431 0.54.1 Line-Column numbers
-        bug-3097431.sh .............................................[FAIL]
+        bug-3097431.sh ...............................................[OK]
 
  * ymarkovitch:
 
@@ -494,48 +494,20 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-293.sh _ bad
-                    \__ good
-    [FAIL] bug-3022603.sh
-    [FAIL] bug-3025173.sh
-    [FAIL] bug-2001787.sh _ iconv
-                        \__ icu
-    [FAIL] bug-2619679.sh
     [FAIL] bug-286.sh
-    [FAIL] bug-3025852.sh
-    [FAIL] bug-3479354.sh
-    [FAIL] bug-3486388.sh
     [FAIL] feature-3495127.sh _ queue
     [FAIL] bug-3392478.sh
-    [FAIL] patch-16.sh
     [FAIL] bug-257.sh
     [FAIL] feature-1948456.sh
     [FAIL] bug-2277660.sh
-    [FAIL] bug-2635012.sh
     [FAIL] feature-3039173.sh
     [FAIL] bug-3157923.sh
     [FAIL] bug-3513568.sh
-    [FAIL] bug-264.sh
-    [FAIL] bug-3235790.sh
-    [FAIL] bug-2971198.sh
     [FAIL] feature-2251359.sh _ good
-    [FAIL] bug-2896732.sh
-    [FAIL] bug-2894648.sh
     [FAIL] bug-298.sh
-    [FAIL] bug-3178600.sh
     [FAIL] bug-2914877.sh
-    [FAIL] bug-3476232.sh
-    [FAIL] feature-185.sh
-    [FAIL] bug-3295781.sh
-    [FAIL] bug-3009642.sh
-    [FAIL] bug-265.sh
     [FAIL] bug-1885304.sh
-    [FAIL] bug-1892809.sh
-    [FAIL] bug-1894578.sh
-    [FAIL] bug-1895066.sh
     [FAIL] feature-2146712.sh _ NoWrite
-    [FAIL] bug-2163753.sh
-    [FAIL] bug-3097431.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -2441,19 +2413,14 @@ quex/code_base/analyzer/struct/TEST                                  <no date>
  * Include Push/Pop Deep
         test-include-deep.exe ........................................[OK]
  * Reset
-        test-reset.exe byte-loader .................................[FAIL]
-                       file-name ...................................[FAIL]
-                       memory ......................................[FAIL]
-                       plain .......................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-reset.exe _ byte-loader
-                        \__ file-name
-                        \__ memory
-                        \__ plain
+        test-reset.exe byte-loader ...................................[OK]
+                       file-name .....................................[OK]
+                       memory ........................................[OK]
+                       plain .........................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   ByteLoaders                                  
@@ -3470,7 +3437,7 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       42  238   [FAIL] TEST                                                          
+       14  238   [FAIL] TEST                                                          
         1  56    [FAIL] demo/C/TEST                                                   
         1  56    [FAIL] ..../Cpp/TEST                                                 
         2  2     [FAIL] ..../TEST                                                     
@@ -3493,7 +3460,7 @@ SUMMARY:
            2       [OK] ........../token-policies/TEST                                
         1  11    [FAIL] ..../code_base/TESTS/general/TEST                             
         4  5     [FAIL] ............../analyzer/TEST                                  
-        4  11    [FAIL] ......................./struct/TEST                           
+           11      [OK] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            11      [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
@@ -3531,11 +3498,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           ___   ____             
-    |  ___|_ _(_) |___      ( _ ) | ___|      __  __
-    | |_ / _` | | / __|     / _ \ |___ \      \ \/ /
-    |  _| (_| | | \__ \    | (_) | ___) |      >  < 
-    |_|  \__,_|_|_|___/     \___/ |____/      /_/\_\
+     _____     _ _          ____    _____           
+    |  ___|_ _(_) |___     | ___|  |___ /     __  __
+    | |_ / _` | | / __|    |___ \    |_ \     \ \/ /
+    |  _| (_| | | \__ \     ___) |  ___) |     >  < 
+    |_|  \__,_|_|_|___/    |____/  |____/     /_/\_\
                                                                    (1705 tests)
 
 ===============================================================================

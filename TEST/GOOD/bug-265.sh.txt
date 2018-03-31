@@ -33,5 +33,8 @@ EasyLexer-configuration
 EasyLexer-converter-codec
 EasyLexer-converter-codec.i
 EasyLexer.cpp
+lib
 
 Compare time stamps before and after (No Output is Good output)
+
+

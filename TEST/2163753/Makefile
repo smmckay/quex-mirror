@@ -1,20 +1,16 @@
 include ../Makefile.lexer
-X = Simple
 
 # -DQUEX_OPTION_DEBUG_SHOW 
 #
-all: $(X).c 
+all: Simple/Simple.c 
 	@echo "Compiling"
-	@$(LDC_ICU) $(X).c ../lexer.c  $(LIB_ICU) -DPRINT_TOKEN 
+	@$(LDC_ICU) Simple/Simple.c ../lexer.c  $(LIB_ICU) -DPRINT_TOKEN 
 
-$(X).c: simple.qx
+Simple/Simple.c: simple.qx
 	@echo "Call to quex"
-	quex -i $< -o $(X) --language C --debug-exception
+	quex -i $< -o Simple --language C --debug-exception
 
 
 clean:
-	rm -rf $(X)-*
-	rm -rf $(X).[ch]
-	rm -rf $(X)
-	rm -rf a.out
+	rm -rf Simple* a.out
 	touch simple.qx

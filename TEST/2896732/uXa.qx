@@ -186,7 +186,7 @@ mode DEFAULT {
 		self.comment.bnCount = 0 + 0;
 
 		// Mode switch.
-		self << COMMENT;
+		self.enter_mode(COMMENT);
 	}
 	"%{" {
 		self.textAccumulator.clear();
@@ -194,7 +194,7 @@ mode DEFAULT {
 		self.comment.bnCount = 0x01;
 
 		// Mode switch.
-		self << COMMENT;
+		self.enter_mode(COMMENT);
 	}
 	";" {
 		self.textAccumulator.clear();
@@ -202,7 +202,7 @@ mode DEFAULT {
 		self.comment.bnCount = 0 + 0;
 
 		// Mode switch.
-		self << COMMENT;
+		self.enter_mode(COMMENT);
 	}
 
 	{___WS___}+ => QUEX_UUID_WS;
@@ -231,10 +231,10 @@ mode COMMENT {
 			self.comment.bnCount--;
 
 			if(0x00 == self.comment.bnCount) {
-				self << INITIAL;
+				self.enter_mode(INITIAL);
 
 				// Send token to the caller.
-                self_write_token_p()->stringValue = self.textAccumulator;
+                self.token_p()->stringValue = self.textAccumulator;
 				self.send(QUEX_UUID_COMMENT);
 
 				// Return to the caller.
@@ -249,9 +249,9 @@ mode COMMENT {
 
 	{___NL___}+ {
 		if(!self.comment.isBlock) {
-			self << INITIAL;
+			self.enter_mode(INITIAL);
 
-            self_write_token_p()->stringValue = self.textAccumulator;
+            self.token_p()->stringValue = self.textAccumulator;
 			self.send(QUEX_UUID_COMMENT);
 			self.send(QUEX_UUID_NL);
 
@@ -268,10 +268,10 @@ mode COMMENT {
 
 	<<EOF>> {
 		if(!self.comment.isBlock) {
-			self << INITIAL;
+			self.enter_mode(INITIAL);
 
 			// Send token to the caller.
-            self_write_token_p()->stringValue = self.textAccumulator;
+            self.token_p()->stringValue = self.textAccumulator;
 			self.send(QUEX_UUID_COMMENT);
 		}
 
@@ -290,9 +290,9 @@ mode COMMENT {
 }
 
 mode INITIAL : DEFAULT {
-	\X0027 { self.textAccumulator.clear(); self << SINGLE; }
-	\X0060 { self.textAccumulator.clear(); self << SYMBOLIC; }
-	\X0022 { self.textAccumulator.clear(); self << STRING; }
+	\X0027 { self.textAccumulator.clear(); self.enter_mode(SINGLE); }
+	\X0060 { self.textAccumulator.clear(); self.enter_mode(SYMBOLIC); }
+	\X0022 { self.textAccumulator.clear(); self.enter_mode(STRING); }
 
 	"null"  => QUEX_UUID_NULL;
 	"nul"   => QUEX_UUID_NUL;

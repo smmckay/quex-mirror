@@ -9,7 +9,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i error.qx -o Simple --language C 
-gcc -I./ -I$QUEX_PATH Simple.c ../lexer.c -o lexer \
+gcc -I./ Simple/Simple.c ../lexer.c -o lexer \
     -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
 
 echo "(1)"
@@ -23,5 +23,5 @@ cat tmp.txt
 rm -f tmp.txt
 
 #
-rm -f Simple* lexer
+rm -rf Simple* lexer
 cd $tmp

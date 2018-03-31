@@ -1,7 +1,7 @@
 /*
 	Queχ Lexical FSM
 */
-#include "Lexer"
+#include "Lexer/Lexer"
 
 /*
 	International Components for Unicode (ICU)

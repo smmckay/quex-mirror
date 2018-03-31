@@ -37,6 +37,6 @@ echo
 echo "Compare time stamps before and after (No Output is Good output)"
 diff before.txt after.txt
 
-rm -f EasyLexer*
+rm -rf EasyLexer*
 rm -f before.txt after.txt
 cd $tmp

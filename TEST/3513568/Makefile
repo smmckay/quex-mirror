@@ -23,10 +23,7 @@ COMMON_TOKEN_OPTIONS = --token-class-file Common-token.h \
                        --suppress 5
 	   	 	           # --no-message-on-extra-options \
 
-%.E: %.c
-	gcc -E $< -o  $@ -I$(QUEX_PATH) 
-	
-Lexer/boeck_Lexer.c:  boeck.qx Common-token.c Common-token_ids
+Lexer/Lexer.c:  boeck.qx Common-token.c Common-token_ids
 	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
 		 --language C --suppress 15 \
 		 --debug-exception

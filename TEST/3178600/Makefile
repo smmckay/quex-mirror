@@ -25,20 +25,10 @@ CC := $(CC) -c -Wconversion -pedantic   \
    
 LD := $(LDC) 
 
-lexer:          example.o EasyLexer.o
-	$(LD) -o $@ example.o EasyLexer.o 
+lexer:          example.c EasyLexer/EasyLexer.c
+	$(LD) -o $@ $^
           
-EasyLexer.o: EasyLexer.c 
-	$(CC) $< -o $@ 
-
-example.o: example.c  EasyLexer.c
-	$(CC) $< -o $@ 
-
-# Macro expansions (only for debugging):
-%.E: %.cpp    
-	$(CC) -E $< -o $@ 
-
-EasyLexer.c: example.qx $(QUEX_CORE)
+EasyLexer/EasyLexer.c: example.qx $(QUEX_CORE)
 	quex -i         example.qx   \
 	     -o   EasyLexer    \
 		 --comment-state-machine \
