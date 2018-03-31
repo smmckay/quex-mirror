@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "simple.h"
-#include "simple-token_ids.h"
+#include "simple/simple.h"
+#include "simple/simple-token_ids.h"
 #define BUFFER_SIZE 1024
 char file_buffer[BUFFER_SIZE];
 

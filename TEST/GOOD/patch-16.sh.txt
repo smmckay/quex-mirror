@@ -1,10 +1,3 @@
 No error output is good output
-quex -i simple.qx \
-	 --language C \
-	 --debug-exception \
-	-o simple
-gcc -c -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED  -Wno-deprecated  -DQUEX_OPTION_ASSERTS_DISABLED -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0  -Wimplicit -c simple.c -o simple.o
-gcc -c -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED  -Wno-deprecated  -DQUEX_OPTION_ASSERTS_DISABLED -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0  -Wimplicit -c main.c -o main.o
-gcc -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -Wno-deprecated  -o lexer simple.o main.o
-
-
+quex -i simple.qx --language C --debug-exception -o simple
+gcc -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -Wno-deprecated  -o lexer simple/simple.c main.c

@@ -1,4 +1,4 @@
-#include "br_scan"
+#include "br_scan/br_scan"
 #include "iostream"
 
 int 

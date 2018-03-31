@@ -8,7 +8,9 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i test.qx -o Simple --debug-exception
+cd Simple
 cat Simple.cpp | awk 'BEGIN { f=0; } /23456789/ { f=1; } /{/ { f=0; } /COLUMNS/ { if( f == 1 ) { print; }}'
+cd ..
 
-rm Simple*
+rm -rf Simple*
 cd $tmp

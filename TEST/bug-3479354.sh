@@ -9,8 +9,10 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i test.qx -o EasyLexer --language C --comment-state-machine --debug-exception
+cd EasyLexer
 awk 'BEGIN {w=0} /BEGIN:/ {w=1;} // {if(w) print;} /END:/ {w=0;}' EasyLexer.c
+cd ..
 
 # cleansening
-rm -f EasyLexer*
+rm -rf EasyLexer*
 cd $tmp
