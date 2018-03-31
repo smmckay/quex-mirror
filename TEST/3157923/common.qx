@@ -1,12 +1,12 @@
 
 header {
-#include <quex/code_base/extra/accumulator/Accumulator>
-#include <quex/code_base/extra/post_categorizer/PostCategorizer>
+#include <Simple/lib/extra/accumulator/Accumulator>
+#include <Simple/lib/extra/post_categorizer/PostCategorizer>
 }
 
 footer {
-#include <quex/code_base/extra/accumulator/Accumulator.i>
-#include <quex/code_base/extra/post_categorizer/PostCategorizer.i>
+#include <Simple/lib/extra/accumulator/Accumulator.i>
+#include <Simple/lib/extra/post_categorizer/PostCategorizer.i>
 }
 body {
     QUEX_NAME(Accumulator)     accumulator;

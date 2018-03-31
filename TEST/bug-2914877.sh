@@ -15,11 +15,13 @@ echo "quex: no output is just fine."
 cat tmp.txt 
 rm tmp.txt
 echo
+cd Simple
 echo "file list after:"
 echo "||||"
 ls
 echo "||||"
+cd ..
 
 # cleansening
-rm Simple*
+rm -rf Simple*
 cd $tmp

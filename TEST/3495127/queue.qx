@@ -19,7 +19,7 @@ mode MINE {
     on_end_of_stream => QUEX_TKN_TERMINATION(LexemeNull);
     on_failure => QUEX_TKN_ON_FAILURE____(Lexeme);
     on_match {
-        self_write_token_p()->number = self.my_number;
+        self.token_p(&self)->number = self.my_number;
         self.send(&self, QUEX_TKN_ON_MATCH______);
         printf("before: Lexeme: %s; LexemeBegin: %s; LexemeEnd - LexemeBegin: %i; LexemeL: %i\n",
                (const char*)Lexeme, (const char*)LexemeBegin, 
@@ -28,7 +28,7 @@ mode MINE {
         printf("       at end:   line_n = %i; column_n = %i;\n", (int)me->counter._line_number_at_end, (int)me->counter._column_number_at_end);
     }
     on_after_match {
-        self_write_token_p()->number = self.my_number;
+        self.token_p(&self)->number = self.my_number;
         self.send(&self, QUEX_TKN_ON_AFTER_MATCH);
         printf("after:  Lexeme: %s; LexemeBegin: %s; LexemeEnd - LexemeBegin: %i; LexemeL: %i\n",
                (const char*)Lexeme, (const char*)LexemeBegin, 

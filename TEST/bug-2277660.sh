@@ -10,6 +10,6 @@ cd $bug/
 bash ../test_that_it_does_not_take_too_long.sh tokenizer.qx 120
 
 
-rm -f Lexer-token
+rm -rf Lexer
 # cleansening
 cd $tmp

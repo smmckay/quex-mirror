@@ -1,7 +1,7 @@
 #include "iostream"
-#include "tokenizer_it"
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
-#include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
+#include "tokenizer_it/tokenizer_it"
+#include <tokenizer_it/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
+#include <tokenizer_it/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 
 int main(int argc, char** argv)
 {

@@ -10,9 +10,10 @@ quex -i                     ecmascript.qx    \
 	 2>&1
 (done)
 List of generated files:
+ecmascript_lexer
 ecmascript_lexer-configuration
+ecmascript_lexer.cpp
 ecmascript_lexer-token
 ecmascript_lexer-token_ids
-ecmascript_lexer.cpp
-ecmascript_lexer
+lib
 <terminated>
