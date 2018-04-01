@@ -316,16 +316,8 @@ class Language(dict):
         return self.INCLUDE(file_name)
 
     def CONVERTER_HELPER_IMLEMENTATION(self):
-        if Setup.buffer_encoding.name in ("utf8", "utf16", "utf32"):
-            file_name = os.path.join(self.LEXEME_CONVERTER_DIR, 
-                                     "from-%s.i" % Setup.buffer_encoding.name)
-        elif Setup.buffer_encoding.name == "unicode":
-            file_name = os.path.join(self.LEXEME_CONVERTER_DIR, 
-                                     "from-unicode-buffer.i")
-        else:
-            dummy,    \
-            file_name = self.buffer_encoding_headers(Setup.buffer_encoding.name)
-
+        dummy,    \
+        file_name = self.buffer_encoding_headers(Setup.buffer_encoding.name)
         return self.INCLUDE(file_name)
                                                                                                                                 
     @typed(Txt=(CodeFragment))

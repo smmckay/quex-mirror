@@ -1,2 +1,4 @@
 token { X; }
+start = M;
 mode M { X => QUEX_TKN_X; }
+mode M2 { X => QUEX_TKN_X; }

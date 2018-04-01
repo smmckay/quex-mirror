@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.68.2"
-#define QUEX_SETTING_BUILD_DATE        "Thu Mar 29 08:09:24 2018"
+#define QUEX_SETTING_BUILD_DATE        "Sun Apr  1 00:00:56 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -63,7 +63,7 @@
 #define    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC  ('\n')
 
 #ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
-#   define __QUEX_SETTING_MAX_MODE_CLASS_N  (1)
+#   define __QUEX_SETTING_MAX_MODE_CLASS_N  (2)
 #endif
 #ifndef    QUEX_SETTING_MODE_INITIAL_P
 #   define QUEX_SETTING_MODE_INITIAL_P      (&QUEX_NAME(M))

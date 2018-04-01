@@ -69,6 +69,7 @@ extern bool UserMementoPack_UnitTest_return_value;
 QUEX_NAMESPACE_MAIN_OPEN 
 
 extern QUEX_NAME(Mode)  QUEX_NAME(M);
+extern QUEX_NAME(Mode)  QUEX_NAME(M2);
 
 
 extern  void QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me);
@@ -87,6 +88,23 @@ extern  void QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)
 extern  void QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
 extern  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+#endif
+extern  void QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me);
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+extern  bool QUEX_NAME(M2_has_base)(const QUEX_NAME(Mode)* mode);
+#endif
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+extern  bool QUEX_NAME(M2_has_entry_from)(const QUEX_NAME(Mode)* mode);
+#endif
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+extern  bool QUEX_NAME(M2_has_exit_to)(const QUEX_NAME(Mode)* mode);
+#endif
+extern  void QUEX_NAME(M2_on_buffer_before_change)(void* aux);
+extern  void QUEX_NAME(M2_on_buffer_overflow)(void* aux);
+extern  void QUEX_NAME(M2_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
+extern  void QUEX_NAME(M2_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
+#ifdef QUEX_OPTION_INDENTATION_TRIGGER
+extern  void QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
 #endif
 
 
@@ -291,6 +309,23 @@ private:
     friend  void QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
     friend  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+#endif
+    friend  void QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me);
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+    friend  bool QUEX_NAME(M2_has_base)(const QUEX_NAME(Mode)* mode);
+#endif
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+    friend  bool QUEX_NAME(M2_has_entry_from)(const QUEX_NAME(Mode)* mode);
+#endif
+#ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+    friend  bool QUEX_NAME(M2_has_exit_to)(const QUEX_NAME(Mode)* mode);
+#endif
+    friend  void QUEX_NAME(M2_on_buffer_before_change)(void* aux);
+    friend  void QUEX_NAME(M2_on_buffer_overflow)(void* aux);
+    friend  void QUEX_NAME(M2_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
+    friend  void QUEX_NAME(M2_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
+#ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    friend  void QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
 #endif
   
 
