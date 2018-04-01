@@ -8,6 +8,6 @@ fi
 quex -i token_type-$1.qx -o Simple
 
 if [[ $1 == "no-namespace" ]]; then
-    grep -e QToken Simple-token
+    grep -e QToken Simple/Simple-token
     rm -rf Simple*
 fi

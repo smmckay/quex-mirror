@@ -26,8 +26,7 @@ lexer.o: lexer.c easy/Easy.h
 easy/Easy.c \
 easy/Easy.h: simple.qx 
 	quex -i simple.qx  common.qx -o Easy --odir easy \
-		 --token-id-offset  0x1000 \
-		 --language         C          
+		 --token-id-offset  0x1000 --language C          
 
 clean:	
 	rm -rf lexer easy/ *.o tmp.*

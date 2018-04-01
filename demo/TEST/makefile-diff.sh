@@ -1,8 +1,20 @@
 #! /usr/bin/env bash
+# 
+# PURPOSE: Compares Makefiles of the C and C++ Demo Applications.
+#
+# A minimal process is applied to unify the content of Makefiles for C and C++.
+# Then, the content is compared. All demo application directories are checked.
+#
+# At the end of the file in comments it is shown how a single directory can be
+# considered independently.
+#
+# (C) Frank-Rene Schaefer
+#______________________________________________________________________________
 source helper.sh
 
 hwut_info $1 \
-    "Demo Consistency: C and C++ Makefiles;"
+    "Demo Consistency: C and C++ Makefiles;\n" \
+    "HAPPY: [0-9]+"
 
 count=0
 cpp_dir="../Cpp/"
@@ -28,4 +40,6 @@ function compare_Makefiles {
 }
 
 for subdir in $demo_directories; do compare_Makefiles $(basename $subdir); done
+# echo "-- special --"
+# compare_Makefiles 02-ModesAndStuff
 echo "<terminated $count>"

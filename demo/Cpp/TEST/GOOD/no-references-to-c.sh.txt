@@ -1,16 +1,4 @@
 
 -- Check for references to 'C demos' (no output is good output) --
-||||
-||||
---
-
--- Check for references to 'Cpp demos' --
-||||
-10-SocketsAndTerminal.sh:7:cd $QUEX_PATH/demo/Cpp/10-SocketsAndTerminal
-11-ManualBufferFilling.sh:7:cd $QUEX_PATH/demo/Cpp/11-ManualBufferFilling
-12-EngineEncoding-2nd.sh:8:cd $QUEX_PATH/demo/Cpp/12-EngineEncoding
-12-EngineEncoding.sh:18:cd $QUEX_PATH/demo/Cpp/12-EngineEncoding
-core.sh:12:cd $QUEX_PATH/demo/Cpp/$1 
-||||
 --
 <terminated>

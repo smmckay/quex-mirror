@@ -1,32 +1,56 @@
-00-Minimalist.sh.txt
-01-Trivial.sh.txt
-02-ModesAndStuff.sh--DEBUG.txt
-02-ModesAndStuff.sh--NDEBUG.txt
-02-ModesAndStuff.sh.txt
-03-Indentation.sh.txt
-04-ConvertersAndBOM-bom.sh--EBCDIC-BOM.txt
-04-ConvertersAndBOM-bom.sh--UTF16BE-BOM.txt
-04-ConvertersAndBOM-bom.sh--UTF7-BOM.txt
-04-ConvertersAndBOM-bom.sh--UTF8-BOM.txt
-04-ConvertersAndBOM-bom.sh--Without.txt
-04-ConvertersAndBOM.sh--BYTES_PER_CHARACTER=2.txt
-04-ConvertersAndBOM.sh--BYTES_PER_CHARACTER=4.txt
-04-ConvertersAndBOM.sh--BYTES_PER_CHARACTER=wchar_t.txt
-04-ConvertersAndBOM.sh--BYTES_PER_CHARACTER=whar_t.txt
-04-ConvertersAndBOM.sh--FAIL.txt
-06-Include.sh--1_NDEBUG.txt
-06-Include.sh--1.txt
-06-Include.sh--2_NDEBUG.txt
-06-Include.sh--2.txt
-07-TrailingPostContext.sh.txt
-10-SocketsAndTerminal.sh--socket.txt
-10-SocketsAndTerminal.sh--socket-utf8.txt
-10-SocketsAndTerminal.sh--stdin.txt
-10-SocketsAndTerminal.sh--stdin-utf8.txt
-11-ManualBufferFilling.sh--feeder-converter.txt
-11-ManualBufferFilling.sh--feeder-plain.txt
-11-ManualBufferFilling.sh--gavager-converter.txt
-11-ManualBufferFilling.sh--gavager-plain.txt
-11-ManualBufferFilling.sh--point-plain.txt
-12-EngineEncoding-2nd.sh.txt
+List off differing files: (no output is good output)
 
+[OK]      00-Minimalist.sh.txt
+[OK]      01-Trivial.sh.txt
+[OK]      02-ModesAndStuff.sh--DEBUG.txt
+[OK]      02-ModesAndStuff.sh--NDEBUG.txt
+[OK]      02-ModesAndStuff.sh.txt
+[OK]      03-Indentation-2.sh.txt
+[OK]      03-Indentation.sh.txt
+[OK]      04-ConvertersAndBOM-bom.sh--EBCDIC.txt
+[OK]      04-ConvertersAndBOM-bom.sh--UTF16BE.txt
+[OK]      04-ConvertersAndBOM-bom.sh--UTF7.txt
+[OK]      04-ConvertersAndBOM-bom.sh--UTF8.txt
+[OK]      04-ConvertersAndBOM-bom.sh--Without.txt
+[OK]      04-ConvertersAndBOM-icu.sh.txt
+[OK]      04-ConvertersAndBOM-no-asserts.sh.txt
+[OK]      04-ConvertersAndBOM.sh--BPC=2_NDEBUG.txt
+[OK]      04-ConvertersAndBOM.sh--BPC=2.txt
+[OK]      04-ConvertersAndBOM.sh--BPC=4_NDEBUG.txt
+[OK]      04-ConvertersAndBOM.sh--BPC=4.txt
+[OK]      04-ConvertersAndBOM.sh--BPC=wchar_t.txt
+[OK]      04-ConvertersAndBOM.sh--BYTES_PER_CHARACTER=2.txt
+[OK]      04-ConvertersAndBOM.sh--BYTES_PER_CHARACTER=4.txt
+[OK]      04-ConvertersAndBOM.sh--BYTES_PER_CHARACTER=wchar_t.txt
+[OK]      04-ConvertersAndBOM.sh--BYTES_PER_CHARACTER=whar_t.txt
+[OK]      04-ConvertersAndBOM.sh--FAIL.txt
+[OK]      04-ConvertersAndBOM.sh.txt
+[OK]      05-LexerForC.sh.txt
+[OK]      06-Include-2.sh--deep.txt
+[OK]      06-Include-2.sh--shallow.txt
+[OK]      06-Include.sh--1_NDEBUG.txt
+[OK]      06-Include.sh--1.txt
+[OK]      06-Include.sh--2_NDEBUG.txt
+[OK]      06-Include.sh--2.txt
+[OK]      06-Include.sh--deep.txt
+[OK]      06-Include.sh--shallow.txt
+[OK]      07-TrailingPostContext.sh.txt
+[OK]      08-DeletionAndPriorityMark.sh.txt
+[OK]      09-WithBisonParser.sh.txt
+[OK]      10-SocketsAndTerminal.sh--command-line.txt
+[OK]      10-SocketsAndTerminal.sh--command-line-utf8.txt
+[OK]      10-SocketsAndTerminal.sh--socket.txt
+[OK]      10-SocketsAndTerminal.sh--socket-utf8.txt
+[OK]      10-SocketsAndTerminal.sh--stdin.txt
+[OK]      10-SocketsAndTerminal.sh--stdin-utf8.txt
+[OK]      11-ManualBufferFilling.sh--feeder-converter.txt
+[OK]      11-ManualBufferFilling.sh--feeder-plain.txt
+[OK]      11-ManualBufferFilling.sh--gavager-converter.txt
+[OK]      11-ManualBufferFilling.sh--gavager-plain.txt
+[OK]      11-ManualBufferFilling.sh--point-plain.txt
+[OK]      12-EngineEncoding-2nd.sh.txt
+[OK]      12-EngineEncoding.sh.txt
+[OK]      13-MultipleLexers.sh.txt
+[OK]      14-MultipleLexersSameToken.sh.txt
+
+<terminated>
