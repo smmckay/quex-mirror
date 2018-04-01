@@ -7,5 +7,5 @@ Lexer-token:
 	quex -i token_type.qx --token-class-only --debug-exception
 
 clean:
-	rm -f Lexer* tmp.txt
+	rm -rf Lexer* tmp.txt
 

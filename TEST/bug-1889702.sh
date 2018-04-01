@@ -21,5 +21,5 @@ quex -i error-3.qx -o Simple
 echo
 
 # cleansening
-rm -f Simple Simple.cpp Simple-token_ids Simplism
+rm -rf Simple Simple.cpp Simple-token_ids Simplism
 cd $tmp

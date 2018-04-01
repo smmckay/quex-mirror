@@ -10,5 +10,5 @@ cd $bug/
 quex -i error.qx -o Simple
 
 # cleansening
-rm -f Simple*
+rm -rf Simple*
 cd $tmp

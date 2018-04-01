@@ -14,5 +14,5 @@ echo "Good Case:\n"
 quex -i test.qx -o Simple
 
 # cleansening
-rm -f Simple Simple.cpp Simple-* *.o tmp.txt
+rm -rf Simple Simple.cpp Simple-* *.o tmp.txt
 cd $tmp

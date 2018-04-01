@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 import sys
 import os
+import subprocess
 
 sys.path.append(os.environ["QUEX_PATH"])
 
@@ -27,6 +28,7 @@ def test(TokenIDFile, TokenPrefix):
 
     #for key, token_info in token_id_db.items():
     #    print "%s:%i: %s" % (token_info.file_name, token_info.line_n, key)
+    subprocess.check_output(["rm", "-rf", "Lexer"])
 
 test("example.h",     "TKN_")
 test("example-x.h",   "TKN_")

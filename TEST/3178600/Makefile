@@ -36,8 +36,4 @@ EasyLexer/EasyLexer.c: example.qx $(QUEX_CORE)
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f EasyLexer*
-	rm -f *.o
-	rm -f *.bak
-	rm -f *.E
-	rm -f lexer
+	rm -rf EasyLexer* *.o *.bak *.E lexer

@@ -27,6 +27,6 @@ case $1 in
 esac
 
 # cleansening
-rm *.dot
+rm -rf Lexer *.dot
 
 cd $tmp

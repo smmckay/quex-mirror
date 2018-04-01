@@ -16,4 +16,4 @@ Simple/Simple.c:
 	quex -b 2 -i test.qx -o Simple --language C $(ADD_OPTION) --debug-exception
 
 clean:
-	rm -f Simple* *.o test
+	rm -rf Simple* *.o test

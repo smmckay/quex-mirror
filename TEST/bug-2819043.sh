@@ -11,6 +11,6 @@ echo No output is just fine
 quex -i error.qx -o Simple --debug-exception
 
 # cleansening
-rm -f Simple*
+rm -rf Simple*
 cd $tmp
 echo "<terminated>"

@@ -10,7 +10,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 
-rm -f lexerCpp lexerC
+rm -rf lexerCpp lexerC
 
 case $1 in
     Cpp) make lexerCpp 
@@ -21,7 +21,7 @@ case $1 in
          ;;
 esac
 
-rm -f lexerCpp lexerC
+rm -rf lexerCpp lexerC
 
 cat tmp.txt
 rm  tmp.txt

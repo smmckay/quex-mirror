@@ -28,7 +28,5 @@ ut:
 	python ../../../TESTS/code_base_instatiation.py ut 
 
 clean: 
-	rm -rf $(PROGRAMS) ut
-	rm -f *.o
-	rm -f *.E
+	rm -rf $(PROGRAMS) ut *.o *.E
 

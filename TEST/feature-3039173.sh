@@ -14,7 +14,7 @@ gcc ../lexer.c Simple/Simple.c -I. -I$QUEX_PATH -o lexer -Wall -Werror
 ./lexer example.txt 2> tmp.txt
 cat tmp.txt
 rm -f tmp.txt
-rm -f Simple* 
+rm -rf Simple* 
 rm -f lexer
 
 # cleansening

@@ -27,9 +27,4 @@ more: $(QUEX_PATH)/TEST/lexer.c
 
 # (*) HELPERS __________________________________________________________________
 clean:	
-	rm -f Simple*
-	rm -f More*
-	rm -f *.o
-	rm -f *.bak
-	rm -f *.E
-	rm -f simple more
+	rm -rf Simple* More* *.o *.bak *.E simple more

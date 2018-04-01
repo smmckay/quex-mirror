@@ -22,7 +22,7 @@ fi
 tmp=`pwd`
 pushd 1885304/  >& /dev/null
 
-rm -f Dos* Unix* tmp*.txt
+rm -rf Dos* Unix* tmp*.txt
 
 # Generate code from a dos formatted file
 echo "Confirm, that 'dos.qx' contains 0x0A 0x0D as newline characters"

@@ -18,6 +18,4 @@ Simple/Simple.c: test.qx
 	quex -i $< -o $* --language C --encoding utf8
 
 clean:
-	rm -f Simple*
-	rm -f test
-	rm -f *.o
+	rm -rf Simple* test *.o

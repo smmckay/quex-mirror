@@ -31,7 +31,7 @@ function perform_test() {
     fi
     cd ..
     rm -rf EasyLexer*
-    rm -f Lexer*
+    rm -rf Lexer*
     echo
 }
 

@@ -10,5 +10,5 @@ cd $bug/
 quex -i nonsense.qx -o Simple
 
 # cleansening
-rm -f Simple Simple.cpp Simple-token_ids Simplism
+rm -rf Simple Simple.cpp Simple-token_ids Simplism
 cd $tmp

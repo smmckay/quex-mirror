@@ -16,5 +16,5 @@ echo
 
 
 # cleansening
-rm -f Simple*
+rm -rf Simple*
 cd $tmp

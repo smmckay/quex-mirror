@@ -31,5 +31,4 @@ lexer/tiny_lexer.c:
 	@echo Code Generation Done
 
 clean: 
-	rm -rf ./lexer
-	rm -f ./tiny_lexer*
+	rm -rf ./lexer ./tiny_lexer*

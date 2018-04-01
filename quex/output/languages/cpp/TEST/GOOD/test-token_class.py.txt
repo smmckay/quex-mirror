@@ -4,6 +4,7 @@
  */
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN
+
 $$INC: definitions$$
 $$INC: asserts$$
 $$INC: compatibility/stdint.h$$
@@ -13,14 +14,12 @@ $$INC: MemoryManager$$
 $$INC: lexeme$$
 
 
+ 
 QUEX_NAMESPACE_TOKEN_OPEN
 
-
- 
 class MeinToken;
 
 inline void    QUEX_NAME_TOKEN(construct)(MeinToken* __this);
-
 inline void    QUEX_NAME_TOKEN(destruct)(MeinToken* __this);
 inline void    QUEX_NAME_TOKEN(copy)(MeinToken*       me, 
                                      const MeinToken* That);
@@ -29,18 +28,18 @@ inline bool    QUEX_NAME_TOKEN(take_text)(MeinToken*             __this,
                                           const QUEX_TYPE_LEXATOM*  Begin, 
                                           const QUEX_TYPE_LEXATOM*  End);
 #endif
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 
+#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 inline size_t  QUEX_NAME_TOKEN(repetition_n_get)(MeinToken* __this);
 inline void    QUEX_NAME_TOKEN(repetition_n_set)(MeinToken* __this, 
                                                  size_t        N);
 #endif 
+
 inline const char*  
-
                QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID);
+
+
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG MeinToken {
-
-
 public:
     MeinToken();
     MeinToken(const MeinToken& That);
@@ -49,54 +48,54 @@ public:
     MeinToken& operator=(const MeinToken& That) 
     { QUEX_NAME_TOKEN(copy)(this, &That); return *this; }
     virtual ~MeinToken();
+
+
 #   line 5 "a string"
-
-
     std::string      my_name;
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
-#   line 6 "a string"
 
+#   line 6 "a string"
     std::vector<int> numbers;
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
     union {
-
         struct {
-#   line 10 "a string"
 
+#   line 10 "a string"
             float            number;
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
-#   line 11 "a string"
 
+#   line 11 "a string"
             short            index;
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
         } data_0;
-
         struct {
-#   line 14 "a string"
 
+#   line 14 "a string"
             int16_t          x;
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
-#   line 15 "a string"
 
+#   line 15 "a string"
             int16_t          y;
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
         } data_1;
 
 #   line 17 "a string"
-
         uint32_t         stream_position;
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
+
 #   line 18 "a string"
-
-
         uint16_t         who_is_that;
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
+
     } content;
 
 public:
 
 #   line 11 "a string"
-
     short            get_index() const                           { return content.data_0.index; }
 #   line 11 "a string"
     void             set_index(short Value)                      { content.data_0.index = Value; }
@@ -129,8 +128,8 @@ public:
 #   line 14 "a string"
     void             set_x(int16_t Value)                        { content.data_1.x = Value; }
 <<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
-    void set(const QUEX_TYPE_TOKEN_ID ID) { id = ID; }
 
+    void set(const QUEX_TYPE_TOKEN_ID ID) { id = ID; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const std::string& Value0, const std::vector<int>& Value1)
     { id = ID; my_name = Value0; numbers = Value1; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const float& Value0, const short& Value1)
@@ -141,9 +140,9 @@ public:
     { id = ID; content.stream_position = Value0; }
     void set(const QUEX_TYPE_TOKEN_ID ID, const uint16_t& Value0)
     { id = ID; content.who_is_that = Value0; }
+
+
     public:
-
-
         /* _line_n, _column_n, and id are public, so that the token policy 
          * can access it. making it private would imply complications for 
          * user customized token classes. The token policies should be the
@@ -152,8 +151,8 @@ public:
         QUEX_TYPE_TOKEN_ID    type_id() const                             { return id; }
         const char*           map_id_to_name(QUEX_TYPE_TOKEN_ID ID) const { return QUEX_NAME_TOKEN(map_id_to_name)(ID); }
         const std::string     type_id_name() const                        { return map_id_to_name(id); }
-#   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 
+#   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE
     public:
         QUEX_TYPE_TOKEN_LINE_N    _line_n;
@@ -166,106 +165,106 @@ public:
         QUEX_TYPE_TOKEN_COLUMN_N  column_number() const                                   { return _column_n; }
         void                      set_column_number(const QUEX_TYPE_TOKEN_COLUMN_N Value) { _column_n = Value; }
 #       endif
-#       endif
+#   endif
     public:
 #   define self (*this)
+
 #   undef  self
 
     private:
-
         friend void QUEX_NAME_TOKEN(copy)(MeinToken*       __this, 
                                           const MeinToken* That);
         friend bool QUEX_NAME_TOKEN(take_text)(MeinToken*             __this, 
                                                const QUEX_TYPE_LEXATOM*  Begin, 
                                                const QUEX_TYPE_LEXATOM*  End);
 };
+
 QUEX_NAMESPACE_TOKEN_CLOSE
+
+
 
 QUEX_NAMESPACE_TOKEN_OPEN
-
-
-
 extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);
 QUEX_NAMESPACE_TOKEN_CLOSE
+
+
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN */
 
-
 /* This content is pasted into header, so the include guard is superfluous. 
-
  * It is left in place, so that if some time later the code generator is 
  * adapted to generate independent files, it will still work safely.          */
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN_I
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN_I
-#include <quex/code_base/definitions>
 
+$$INC: definitions$$
 #include ""
+
 QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_INLINE
-
 MeinToken::MeinToken()
 {
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+
 #   line 20 "a string"
 
        this = is = a = constructor;
-
-<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
    
-#   undef  LexemeNull
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
 
+#   undef  LexemeNull
 #   undef  self
 }
-QUEX_INLINE
 
+QUEX_INLINE
 MeinToken::MeinToken(const MeinToken& Other)
 {
    QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+
 #   line 20 "a string"
 
        this = is = a = constructor;
-
-<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
    
-#   undef  LexemeNull
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
 
+#   undef  LexemeNull
 #   undef  self
 }
-QUEX_INLINE
 
+QUEX_INLINE
 MeinToken::~MeinToken()
 {
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+
 #   line 24 "a string"
 
        this = is = a = destructor;
-
-<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
    
-#   undef  LexemeNull
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
 
+#   undef  LexemeNull
 #   undef  self
 }
-QUEX_INLINE void
 
+QUEX_INLINE void
 QUEX_NAME_TOKEN(construct)(MeinToken* __this)
 {
     /* Explicit constructor call by 'placement new' */
     new ((void*)__this) MeinToken;
 }
-QUEX_INLINE void
 
+QUEX_INLINE void
 QUEX_NAME_TOKEN(destruct)(MeinToken* __this)
 {
     if( ! __this ) return;
     __this->MeinToken::~MeinToken();  
 }
-QUEX_INLINE void
 
+QUEX_INLINE void
 QUEX_NAME_TOKEN(copy)(MeinToken* __this, const MeinToken* __That)
 {
 #   define self  (*__this)
@@ -273,14 +272,14 @@ QUEX_NAME_TOKEN(copy)(MeinToken* __this, const MeinToken* __That)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
     (void)__That;
+
 #   line 30 "a string"
 
        this = is = a = copy-code;
-
-<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
    
-#   undef LexemeNull
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
 
+#   undef LexemeNull
 #   undef Other
 #   undef self
    /* If the user even misses to copy the token id, then there's
@@ -293,8 +292,8 @@ QUEX_NAME_TOKEN(copy)(MeinToken* __this, const MeinToken* __That)
 #   endif
 #endif
 }
-#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
 QUEX_NAME_TOKEN(take_text)(MeinToken*              __this, 
                            const QUEX_TYPE_LEXATOM* Begin, 
@@ -305,46 +304,46 @@ QUEX_NAME_TOKEN(take_text)(MeinToken*              __this,
 #   define self      (*__this)
 #   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
     (void)__this;
+
 #   line 27 "a string"
 
        return true;
-
-<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
    
-#   undef  LexemeNull
+<<<<LINE_PRAGMA_WITH_CURRENT_LINE_N_AND_FILE_NAME>>>>
 
+#   undef  LexemeNull
 #   undef  self
     /* Default: no ownership.                                                */
     return false;
 }
 #endif
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 
+#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t 
 QUEX_NAME_TOKEN(repetition_n_get)(MeinToken* __this)
 {
 #   define self (*__this)
     (void)__this;
+
 #   undef self
-
 }
-QUEX_INLINE void 
 
+QUEX_INLINE void 
 QUEX_NAME_TOKEN(repetition_n_set)(MeinToken* __this, size_t N)
 {
 #   define self (*__this)
     (void)__this; (void)N;
-#   undef  self
 
+#   undef  self
 }
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
-QUEX_INLINE const char*
 
+QUEX_INLINE const char*
 QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
 {
    static char  error_string[64];
-   /* NOTE: This implementation works only for token id types that are 
 
+   /* NOTE: This implementation works only for token id types that are 
     *       some type of integer or enum. In case an alien type is to
     *       used, this function needs to be redefined.                  */
    switch( TokenID ) {
@@ -352,14 +351,13 @@ QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID)
        __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
        return error_string;
    }
-   }
 
+   }
 }
+
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#include <quex/code_base/lexeme.i>
+$$INC: lexeme.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN_I */
-
-
 

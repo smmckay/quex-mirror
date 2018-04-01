@@ -16,6 +16,4 @@ lexer:
 	$(LDCPP) $(CFLAGS) ../lexer-simply.cpp Simple/Simple.cpp -o lexer
 
 clean:
-	rm -f Simple*
-	rm -f *.o
-	rm -f lexer error-lexer
+	rm -rf Simple* *.o lexer error-lexer

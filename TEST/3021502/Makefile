@@ -5,5 +5,4 @@ all:
 	$(LDC) point.c Simple/Simple.c -o a.out 
 
 clean:
-	rm Simple*
-	rm a.out
+	rm -rf Simple* a.out

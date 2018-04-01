@@ -20,5 +20,4 @@ Simple/Simple.cpp: ecmascript.qx
 		--language c++
 
 clean: 
-	rm -f Simple*
-	rm -f lexer
+	rm -rf Simple* f lexer

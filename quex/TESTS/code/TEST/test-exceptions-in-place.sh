@@ -18,3 +18,4 @@ for x in AssertionError KeyboardInterrupt Exception; do
     quex '<<TEST:Exceptions/function>>' $x
     echo
 done
+rm -rf Lexer

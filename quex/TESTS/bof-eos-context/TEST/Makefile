@@ -18,5 +18,5 @@ hwut-info:
 		-o $@ -ggdb 
 
 clean:
-	rm -f *.exe implicit.c explicit.c \
+	rm -rf *.exe implicit.c explicit.c explicit implicit \
 		  *.h *-configuration.h *-token.h *-token_ids.h \

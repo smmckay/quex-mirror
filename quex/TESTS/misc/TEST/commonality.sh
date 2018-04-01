@@ -10,6 +10,6 @@ case $1 in
         quex -i interfere/$1.qx -o Lexer >& tmp.txt # --debug-exception
         cat tmp.txt
         rm tmp.txt
-        rm -f Lexer*
+        rm -rf Lexer*
         ;;
 esac

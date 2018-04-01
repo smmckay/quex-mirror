@@ -5,3 +5,4 @@ if [[ $1 == "--hwut-info" ]]; then
 fi
 
 quex -i token_type-member-name.qx --suppress 15 # --debug-exception
+rm -rf Lexer

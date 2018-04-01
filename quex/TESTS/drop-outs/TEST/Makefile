@@ -20,10 +20,7 @@ hwut-info:
 lexer: no-drop.qx test.c Makefile
 	quex -i no-drop.qx --language C -o EasyLexer
 	$(CC) -DPRINT_TOKEN -o $@
+	rm -rf EasyLexer 
 
 clean:
-	rm -f EasyLexer*
-	rm -f *.o
-	rm -f lexer
-	rm -f tmp.*
-	rm -f *.dot
+	rm -rf EasyLexer* *.o lexer tmp.* *.dot

@@ -9,5 +9,5 @@ tmp=`pwd`
 cd $bug/ 
 echo "No output is good output"
 quex -i error.qx -o Simple
-rm -f Simple*
+rm -rf Simple*
 cd $tmp

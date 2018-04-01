@@ -1,0 +1,6 @@
+Files in package but not in code base (no output is good output) {
+}
+Files in code base but not in package  {
+    analyzer/member/NameObject
+    observed_string/Strexeme
+}

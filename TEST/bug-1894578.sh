@@ -9,7 +9,7 @@ tmp=`pwd`
 cd $bug/ 
 echo "If no errors occur in compilation, then everything is fine"
 quex -i error.qx -o Simple
-rm -f Simlicism
+rm -rf Simlicism
 g++ -I./ -I$QUEX_PATH Simple/Simple.cpp  ../lexer-simply.cpp my_function.cpp -o Simlicism -Wall -Werror
 ls Simlicism
 

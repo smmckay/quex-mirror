@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
+source $HWUT_PATH/support/bash/hwut_unit.sh
 
 function build_lexer {
     quex -i overflow-and-reallocate.qx -o EHLexer --language C
@@ -18,21 +19,15 @@ case $1 in
         ;;
 
     plain)
-        if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
-            build_lexer
-        fi
+        hwut_if_first $2 build_lexer
         bash $QUEX_PATH/TEST/valgrind-executer.sh ./lexer \
                                                   data/overflow-and-reallocate.txt
         ;; 
     included)
-        if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then 
-            build_lexer
-        fi
+        hwut_if_first $2 build_lexer
         bash $QUEX_PATH/TEST/valgrind-executer.sh ./lexer \
                                                   data/overflow-and-reallocate-include-2.txt
         ;;
 esac
 
-if [ "$3" == "LAST" ] || [ -z "$3" ]; then 
-    rm -rf EasyLexer* lexer
-fi
+hwut_if_last $3 "rm -rf EHLexer lexer"

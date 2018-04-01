@@ -39,4 +39,4 @@ A_B_C/A_B_C-token.c:
 		 --token-id-prefix TKN_ --language C 
 
 clean:
-	rm -rf max/ moritz/ boeck/ A_B_C/ *.o lexer tmp.* 
+	rm -rf max/ moritz/ boeck/ A_B_C/ *.o lexer tmp.* C

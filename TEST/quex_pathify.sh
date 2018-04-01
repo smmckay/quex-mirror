@@ -15,6 +15,6 @@ case $1 in
 
     *)
         cat $1 | sed -e "s/$extra/<<QUEX_PATH>>/g"
-        rm -f $1
+        rm -rf $1
     ;;
  esac

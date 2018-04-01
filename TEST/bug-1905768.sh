@@ -11,5 +11,5 @@ quex -i error.qx -o Simple --debug-exception
 cat Simple/Simple.cpp | awk ' /analyzer_function/ { print; } '
 
 # cleansening
-rm -f Simple Simple.cpp Simple-*
+rm -rf Simple Simple.cpp Simple-*
 cd $tmp

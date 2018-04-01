@@ -18,5 +18,5 @@ echo "Three TokenIDs ______________________________________"
 quex -i 3.qx -o Simple
 
 # cleansening
-rm Simple*
+rm -rf Simple*
 cd $tmp

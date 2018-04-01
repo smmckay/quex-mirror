@@ -10,6 +10,6 @@ case $1 in
         quex -i no-error-flags.qx -o Lexer         \
              --token-id-prefix T_                  \
              --suppress 2 3 4 5 
-        rm -f Lexer*
+        rm -rf Lexer*
         ;;
 esac

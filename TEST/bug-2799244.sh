@@ -28,5 +28,5 @@ else
 fi
 
 # cleansening
-rm -f Simple* 
+rm -rf Simple* 
 cd $tmp

@@ -21,5 +21,5 @@ echo '(1)'
 quex --token-id-prefix TKN-
 echo '(2)'
 quex --token-id-prefix SMOEREBROED
-rm -f Simple  Simple.cpp  Simple-token_ids
+rm -rf Simple  Simple.cpp  Simple-token_ids
 cd $tmp
