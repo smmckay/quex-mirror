@@ -23,5 +23,5 @@ ut:
 	python $(TESTENV)/code_base_instatiation.py ut
 
 clean:
-	rm -f $(TEST_FILES)
+	rm -rf $(TEST_FILES) ut
 	rm -f *.o

@@ -35,7 +35,7 @@ Message3:      codec.qx
 	quex -i $< -o X --encoding utf16 --bet int16_t --token-id-prefix CODEC_TKN_  # => Error, range 'i16' = 32768
 
 clean:
-	@rm -rf lexer
+	@rm -rf lexer X Lexer
 	@rm -rf IConv* Codec*
 	@rm -rf *.E
 	@rm -rf lexer.o

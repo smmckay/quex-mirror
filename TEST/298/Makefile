@@ -17,5 +17,5 @@ without-debug:
 		 -b                     1                
 
 clean:
-	rm -f ecmascript_lexer*
+	rm -rf ecmascript_lexer*
 	rm -f tmp.*
