@@ -18,4 +18,6 @@ echo
 echo "Third Use Case:"
 quex -i error-3.qx -o Simple # --debug-exception
 echo
+
+rm -rf Simple
 cd $tmp

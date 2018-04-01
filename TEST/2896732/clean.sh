@@ -1,2 +1,2 @@
-rm -f Lexer*
-rm -f ./uXa
+rm -rf Lexer*
+rm -rf ./uXa

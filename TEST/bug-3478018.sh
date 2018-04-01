@@ -9,4 +9,5 @@ tmp=`pwd`
 cd $bug/ 
 
 quex -i test.qx
+rm -rf Lexer
 cd $tmp

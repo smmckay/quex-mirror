@@ -25,5 +25,5 @@ quex -i simple.qx --output-directory $odir
 find -path "*.svn*" -prune -or -print | grep $odir | grep -v lib | sort
 
 # cleansening
-rm -rf Lexer
+rm -rf Lexer $odir
 cd $tmp

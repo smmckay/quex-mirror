@@ -20,4 +20,6 @@ echo "(5)"
 quex -i error-4.qx 
 echo "(6)"
 quex -i error-5.qx 
+
+rm -rf Lexer
 cd $tmp

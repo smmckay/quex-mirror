@@ -23,7 +23,7 @@ sort -n occurrence_sequence.txt > sorted_by_occurrence.txt
 echo "Verify that the occurrence sequence is equal the sequence "
 echo "how it occurred in generated code. (no output is good output)"
 diff occurrence_sequence.txt sorted_by_occurrence.txt
-rm Lexer-token*
+rm -rf Lexer*
 rm *.txt
 cd $tmp
 echo "<terminated>"

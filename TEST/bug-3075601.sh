@@ -18,6 +18,6 @@ fi
 g++ -c EasyLexer.c -I$QUEX_PATH  
 
 # cleansening
-rm EasyLexer*
+rm -rf EasyLexer*
 
 cd $tmp

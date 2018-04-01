@@ -10,6 +10,6 @@ cd $bug/
 echo "||||"
 quex -i error.qx --debug-exception
 echo "||||"
-rm Lexer*
+rm -rf Lexer*
 cd $tmp
 echo "<terminated>"

@@ -9,4 +9,5 @@ tmp=`pwd`
 cd $bug/ 
 quex -i ecmascript.qx --token-id-prefix TOK_DECLIT 2>&1 
 
+rm -rf Lexer
 cd $tmp

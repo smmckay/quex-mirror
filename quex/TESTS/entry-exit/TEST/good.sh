@@ -47,5 +47,5 @@ echo "(8) Inclusive aggregation of exit permissions"
 test 8
 
 
-
+rm -rf TmpLex
 echo "<terminated>"

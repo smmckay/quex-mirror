@@ -57,6 +57,6 @@ echo "(2.1) Double check that nothing in current directory. (no output is good o
 ls    EasyLexer* 2> tmp.txt
 cat tmp.txt
 
-rm -f tmp.txt
+rm -rf EasyLexer tmp.txt
 
 

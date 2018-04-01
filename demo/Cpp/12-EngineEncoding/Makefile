@@ -50,5 +50,5 @@ utf16-lexer-other: utf16-lexer-other.cpp greek-other.qx
 	$(LD) -D__QUEX_TEST_OPTION_UTF16BE $< utf16-other/UTF16Lex.cpp -o $@
 
 clean:
-	rm -rf iso8859-7/ utf8/ utf16/ *.o tmp.* $(APPS)
+	rm -rf iso8859-7/ utf8/ utf16/ *.o tmp.* $(APPS) utf16-other
 

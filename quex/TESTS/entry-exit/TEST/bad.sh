@@ -49,5 +49,5 @@ echo "(9) Entry mode does not exist"
 test 9
 
 
-
+rm -rf TmpLex
 echo "<terminated>"

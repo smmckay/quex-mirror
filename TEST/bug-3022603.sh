@@ -17,5 +17,5 @@ cat tmp2.txt
 rm -f tmp.txt tmp2.txt
 
 # cleansening
-rm ./a.out Simple*
+rm -rf ./a.out Simple*
 cd $tmp

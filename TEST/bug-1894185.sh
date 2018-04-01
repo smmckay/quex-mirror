@@ -15,4 +15,5 @@ echo '(2)'
 quex -i error-2.qx -o Simple
 
 # cleansening
+rm -rf Simple
 cd $tmp

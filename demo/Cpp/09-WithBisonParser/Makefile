@@ -27,4 +27,4 @@ Calc_parser.tab.cpp:  Calc_parser.ypp
 	bison $<
 
 clean:	
-	rm -rf parser lexical_analysis/ tmp.* Calc_parser.tab.cpp Calc_parser.tab.h *.o
+	rm -rf parser lexical_analysis/ tmp.* Calc_parser.tab.cpp Calc_parser.tab.hpp *.o

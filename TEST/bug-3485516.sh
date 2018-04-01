@@ -8,5 +8,5 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i uuu.qx -o UuuLexer --token-id-prefix UUU_TKN_ 2>&1
-
+rm -rf UuuLexer
 cd $tmp
