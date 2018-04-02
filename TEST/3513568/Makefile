@@ -40,4 +40,4 @@ Common-token.c:
 		 --language C 
 
 clean:
-	rm -rf Lexer* lib* Common-* lexer *.E *.o
+	rm -rf Lexer* lib* Common* lexer *.E *.o

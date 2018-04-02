@@ -57,5 +57,5 @@ done
 echo
 echo "DONE"
 
-rm -rf Dos* Unix* tmp*.txt
+rm -rf Dos* Unix* tmp*.txt Xanther*
 popd >& /dev/null
