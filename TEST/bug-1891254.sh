@@ -13,5 +13,5 @@ echo
 echo "(2)"
 quex -i error-2.qx 
 echo 
-rm -rf lexer*
+rm -rf Lexer*
 cd $tmp
