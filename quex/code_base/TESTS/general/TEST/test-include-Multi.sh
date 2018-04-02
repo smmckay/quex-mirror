@@ -18,17 +18,20 @@ if [[ $1 == "--hwut-info" ]]; then
     echo "Consistency: Files in multi.i are not included elsewhere."
     echo "HAPPY: [0-9]+\\ files;"
 else
-echo "DEBUG: TODO awk expression must be rewritten"
+
 file_multi_i=$QUEX_PATH/quex/code_base/multi.i
 file_list_else=$(find $QUEX_PATH/quex/code_base -type f | grep -v '\(\.svn\)\|\(Makefile\)\|\(TEST\)\|\(multi\.i\)')
 
 function get_included_files() {
-    cat $1 | awk '/$$INC: *[a-zA-Z_0-9\-/]+/ { gsub("<", "", $2); gsub(">", "", $2); gsub("\"","",$2); print $2; }'
+    cat $1 | awk '/^ *\$\$INC: *[^\n\$ \t]+/ { gsub("\\$\\$", "", $2); print $2; }'
 }
 
-included_in_multi_i=$(get_included_files $file_multi_i)
+included_in_multi_i=$(get_included_files $file_multi_i | sort)
 file_list_including_multi_i=
 
+echo "# Included in multi.i:"
+echo "#-----------------------------------------------------"
+echo $included_in_multi_i
 echo "#List of files which include files from multi.i:"
 echo "#-----------------------------------------------------"
 echo "# (No output is good output)"
