@@ -1,6 +1,6 @@
-./a/b/c/x
-./a/b/c/x/Lexer
-./a/b/c/x/Lexer-configuration
-./a/b/c/x/Lexer.cpp
-./a/b/c/x/Lexer-token
-./a/b/c/x/Lexer-token_ids
+./e/f/g/not-existent
+./e/f/g/not-existent/Lexer
+./e/f/g/not-existent/Lexer-configuration
+./e/f/g/not-existent/Lexer.cpp
+./e/f/g/not-existent/Lexer-token
+./e/f/g/not-existent/Lexer-token_ids

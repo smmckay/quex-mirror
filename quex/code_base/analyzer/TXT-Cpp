@@ -73,7 +73,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
-    const QUEX_NAME(Mode)*          __current_mode_p; 
+    const struct QUEX_NAME(Mode_tag)* __current_mode_p; 
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
@@ -216,9 +216,8 @@ public:
 
     /*__( Analysis => Receiving Tokens )________________________________________
      *                                                                        */
-    typedef bool (*callback_on_token_t)(QUEX_TYPE_TOKEN*);
-    $$MF: bool run(callback_on_token_t on_token, bool ErrorPrintF)$$
-    $$MF: void receive(QUEX_TYPE_TOKEN** token_pp)$$
+    $$MF: bool    run(bool (*on_token)(QUEX_TYPE_TOKEN*), bool ErrorPrintF)$$
+    $$MF: void    receive(QUEX_TYPE_TOKEN** token_pp)$$
 
     $$MF: QUEX_TYPE_TOKEN*  token_p()$$
 
@@ -237,7 +236,27 @@ public:
     $$MF: void pop_drop_mode()$$
     $$MF: void push_mode(QUEX_NAME_Mode_* new_mode)$$
 
-private:
+    $$MF: const char*  version()$$
+    $$MF: void         print_this()$$
+    $$MF: const char*  input_name()$$
+    $$MF: bool         input_name_set(const char* InputName)$$
+    /* Activate/deactivate byte order reversion (big-/little-endian)          */
+    $$MF: bool byte_order_reversion()$$
+    $$MF: void byte_order_reversion_set(bool Value)$$
+
+    $$MF: void error_code_clear()$$
+    $$MF: bool error_code_is_void()$$
+    $$MF: void error_code_set_void()$$
+    $$MF: void error_code_set_if_first(E_Error ErrorCode)$$
+
+public:
+#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
+/* START: User's class body extensions _______________________________________*/
+$$CLASS_BODY_EXTENSION$$
+/* END: ______________________________________________________________________*/
+#undef  self
+
+public:
     /* Befriend all modes                                                     */
 $$MODE_CLASS_FRIENDS$$  
 
@@ -285,29 +304,6 @@ public:
 
     /*__( General Information )________________________________________________
      *                                                                       */
-    $$MF: const char*  version()$$
-    $$MF: void         print_this()$$
-    $$MF: const char*  input_name()$$
-    $$MF: bool         input_name_set(const char* InputName)$$
-    /* Activate/deactivate byte order reversion (big-/little-endian)          */
-    $$MF: bool byte_order_reversion()$$
-    $$MF: void byte_order_reversion_set(bool Value)$$
-
-
-    $$MF: void error_code_clear()$$
-    $$MF: bool error_code_is_void()$$
-    $$MF: void error_code_set_void()$$
-    $$MF: void error_code_set_if_first(E_Error ErrorCode)$$
-
-public:
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
-/* START: User's class body extensions _______________________________________*/
-$$CLASS_BODY_EXTENSION$$
-/* END: ______________________________________________________________________*/
-#undef  self
-
-public:
-    // Token sending happens only via 'self_send*(...)' macros
 };
 
 QUEX_NAMESPACE_MAIN_CLOSE

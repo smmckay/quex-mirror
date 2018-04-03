@@ -156,7 +156,6 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
     $$MF: void error_code_set_void()$$
     $$MF: void error_code_set_if_first(E_Error ErrorCode)$$
 
-    /* __( END: Data Members )________________________________________________*/
 
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
 /* START: User's class body extensions _______________________________________*/

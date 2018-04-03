@@ -37,5 +37,5 @@ echo "(*) Check: content same?"
 diff -srq $tmpC $tmpCpp \
      | awk '/identical/ { print "identical"; } ! /identical/ { print "differ"; }'
 
-# vimdiff $tmpC $tmpCpp
+vimdiff $tmpC $tmpCpp
 rm $tmpC $tmpCpp -f

@@ -8,14 +8,11 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-CC := $(CC) -DQUEX_OPTION_MULTI -I.
+LDC := $(LDC) -DQUEX_OPTION_MULTI -I.
 
-lexer: Lexer/Lexer.c lexer.o Common-token.o
+lexer: Lexer/Lexer.c lexer.c Common-token.c
 	$(LDC) $^ -o  $@ $(LIB_ICU) 
 	 
-%.o: %.c 
-	$(CC) -ICommon $< -o $@ $(CCFLAG_ASSERTS) 
-
 # -DQUEX_OPTION_ASSERTS_DISABLED
 # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
 
