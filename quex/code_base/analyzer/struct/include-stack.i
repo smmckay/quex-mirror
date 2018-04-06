@@ -63,7 +63,7 @@ QUEX_NAME(Memento_construct)(QUEX_NAME(Memento)* memento,
                              const char*         InputNameP);
 
 QUEX_INLINE bool
-QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
+QUEX_NAME(MF_include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
                                   const char*             FileName, 
                                   QUEX_NAME(Converter)*   new_converter /* = 0 */)
 {
@@ -74,7 +74,7 @@ QUEX_NAME(include_push_file_name)(QUEX_TYPE_ANALYZER*     me,
         QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_File_OpenFailed);
         goto ERROR_0;
     }
-    else if( ! QUEX_NAME(include_push_ByteLoader)(me, FileName, new_byte_loader, new_converter) ) {
+    else if( ! QUEX_NAME(MF_include_push_ByteLoader)(me, FileName, new_byte_loader, new_converter) ) {
         goto ERROR_1;
     }
     return true;
@@ -94,10 +94,10 @@ ERROR_1:
  *      Unit Test's StrangeStreams:
  *      byte_loader = QUEX_NAME(ByteLoader_stream_new)(strangestr_p, false);  */
 QUEX_INLINE bool
-QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
-                                   const char*             InputName,
-                                   QUEX_NAME(ByteLoader)*  new_byte_loader,
-                                   QUEX_NAME(Converter)*   new_converter /* = 0 */)
+QUEX_NAME(MF_include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
+                                      const char*             InputName,
+                                      QUEX_NAME(ByteLoader)*  new_byte_loader,
+                                      QUEX_NAME(Converter)*   new_converter /* = 0 */)
 {
     QUEX_NAME(LexatomLoader)* new_filler;
 
@@ -113,8 +113,8 @@ QUEX_NAME(include_push_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                               me->buffer.filler->_byte_order_reversion_active_f;
     }
 
-    if( ! QUEX_NAME(include_push_core)(me, InputName, (QUEX_NAME(Buffer)*)0,
-                                       new_filler) ) {
+    if( ! QUEX_NAME(MF_include_push_core)(me, InputName, (QUEX_NAME(Buffer)*)0,
+                                          new_filler) ) {
         goto ERROR_1;
     }
     return true;
@@ -130,11 +130,11 @@ ERROR_0:
 }
 
 QUEX_INLINE bool
-QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
-                               const char*         InputName,
-                               QUEX_TYPE_LEXATOM*  Memory,
-                               const size_t        MemorySize,
-                               QUEX_TYPE_LEXATOM*  EndOfFileP)
+QUEX_NAME(MF_include_push_memory)(QUEX_TYPE_ANALYZER* me,
+                                  const char*         InputName,
+                                  QUEX_TYPE_LEXATOM*  Memory,
+                                  const size_t        MemorySize,
+                                  QUEX_TYPE_LEXATOM*  EndOfFileP)
 /* When memory is provided from extern, the 'external entity' is
  * responsible for filling it. There is no 'file/stream handle', no 'byte
  * loader', and 'no buffer filler'.                                           */
@@ -163,8 +163,8 @@ QUEX_NAME(include_push_memory)(QUEX_TYPE_ANALYZER* me,
                                 (QUEX_NAME(Buffer)*)0);
     new_buffer.event = me->buffer.event;              /* Plain copy suffices. */
 
-    if( ! QUEX_NAME(include_push_core)(me, InputName, &new_buffer,
-                                       (QUEX_NAME(LexatomLoader)*)0) ) {
+    if( ! QUEX_NAME(MF_include_push_core)(me, InputName, &new_buffer,
+                                          (QUEX_NAME(LexatomLoader)*)0) ) {
         goto ERROR_1;
     }
     return true;
@@ -177,10 +177,10 @@ ERROR_0:
 }
 
 QUEX_INLINE bool
-QUEX_NAME(include_push_core)(QUEX_TYPE_ANALYZER*       me,
-                             const char*               InputNameP,
-                             QUEX_NAME(Buffer)*        new_buffer,
-                             QUEX_NAME(LexatomLoader)* new_filler)
+QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
+                                const char*               InputNameP,
+                                QUEX_NAME(Buffer)*        new_buffer,
+                                QUEX_NAME(LexatomLoader)* new_filler)
 {
     char*               new_input_name;
     QUEX_NAME(Memento)* memento;
@@ -274,7 +274,7 @@ QUEX_NAME(Memento_construct)(QUEX_NAME(Memento)* memento,
 }   
 
 QUEX_INLINE bool
-QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 /* RETURNS: true, if there was a memento that has been restored. 
  *          false, else.                                                     */
 {
@@ -343,16 +343,16 @@ QUEX_NAME(include_pop)(QUEX_TYPE_ANALYZER* me)
 }
      
 QUEX_INLINE void
-QUEX_NAME(include_stack_delete)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_include_stack_delete)(QUEX_TYPE_ANALYZER* me)
 {
     /* Avoid 'E_Error_IncludePopOnEmptyStack'. Check before.                 */
     if( ! me->_parent_memento ) return;
-    while( QUEX_NAME(include_pop)(me) );
+    while( QUEX_NAME(MF_include_pop)(me) );
 }
 
 QUEX_INLINE bool
-QUEX_NAME(include_detect_recursion)(QUEX_TYPE_ANALYZER* me,
-                                    const char*         InputName)
+QUEX_NAME(MF_include_detect_recursion)(QUEX_TYPE_ANALYZER* me,
+                                       const char*         InputName)
 {
     QUEX_NAME(Memento)* iterator;
     for(iterator = me->_parent_memento; iterator ; 

@@ -10,20 +10,11 @@
 #ifdef     __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION_DISABLED
 #   undef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 #endif
-#ifdef    QUEX_OPTION_INCLUDE_STACK_DISABLED
-#   undef QUEX_OPTION_INCLUDE_STACK
-#endif
 #ifdef    QUEX_OPTION_DEBUG_SHOW_MODES_DISABLED
 #   undef QUEX_OPTION_DEBUG_SHOW_MODES
 #endif
 #ifdef    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_DISABLED
 #   undef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-#endif
-#ifdef    QUEX_OPTION_COUNTER_COLUMN_DISABLED
-#   undef QUEX_OPTION_COUNTER_COLUMN
-#endif
-#ifdef    QUEX_OPTION_COUNTER_LINE_DISABLED
-#   undef QUEX_OPTION_COUNTER_LINE
 #endif
 
 #define __QUEX_PURE_RETURN   do { return; } while(0)
@@ -252,12 +243,6 @@
 #   define __QUEX_IF_ASSERT(X)  X
 #else
 #   define __QUEX_IF_ASSERT(X)  /* Ignore */
-#endif
-
-#ifdef  QUEX_OPTION_INCLUDE_STACK
-#    define __QUEX_IF_INCLUDE_STACK(X) X
-#else
-#    define __QUEX_IF_INCLUDE_STACK(X) /* No operation */
 #endif
 
 /* If the user does not define a class declaration epilog, 

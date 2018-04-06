@@ -40,10 +40,6 @@ the suffix enables something, the option with the suffix disables the 'something
 
    Enables/disables the output of details about reloads of the buffer.
 
-.. cmacro:: QUEX_OPTION_INCLUDE_STACK
-
-   Enables/disables the feature of an intelligent include stack. 
-
 .. cmacro:: QUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE
 
    Enables/disables informative buffer overflow messages. If set it prints the lexeme

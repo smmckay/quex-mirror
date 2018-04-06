@@ -1354,8 +1354,6 @@ QUEX_NAME(user_print)(QUEX_TYPE_ANALYZER* me)
 #undef self
 }
 
-#ifdef QUEX_OPTION_INCLUDE_STACK
-
 bool
 QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me, 
                              const char*         InputName, 
@@ -1383,7 +1381,6 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 /* END: _______________________________________________________________________*/
 #undef self
 }
-#endif /* QUEX_OPTION_INCLUDE_STACK */
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

@@ -140,12 +140,6 @@ Option("mode_transition_check_f", None,
     During development this option should not be used. But the final lexical
     analyzer should be created with this option set. 
     """),
-Option("include_stack_support_f", None,
-     """
-     Disables the support of include stacks where the state of the lexical 
-     analyzer can be saved and restored before diving into included files.
-     Setting this flag may speed up a bit compile time
-     """),
 Option("count_line_number_f", None,
      """
      Lets quex generate an analyzer without internal line counting.

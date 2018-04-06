@@ -1308,6 +1308,16 @@ QUEX_NAMESPACE_MAIN_OPEN
 QUEX_INLINE void
 QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
 {
+    me->reset = QUEX_NAME(MF_reset);
+    me->reset_file_name = QUEX_NAME(MF_reset_file_name);
+    me->reset_ByteLoader = QUEX_NAME(MF_reset_ByteLoader);
+    me->reset_memory = QUEX_NAME(MF_reset_memory);
+    me->include_push_file_name = QUEX_NAME(MF_include_push_file_name);
+    me->include_push_ByteLoader = QUEX_NAME(MF_include_push_ByteLoader);
+    me->include_push_memory = QUEX_NAME(MF_include_push_memory);
+    me->include_pop = QUEX_NAME(MF_include_pop);
+    me->include_stack_delete = QUEX_NAME(MF_include_stack_delete);
+    me->include_detect_recursion = QUEX_NAME(MF_include_detect_recursion);
     me->run = QUEX_NAME(MF_run);
     me->receive = QUEX_NAME(MF_receive);
     me->token_p = QUEX_NAME(MF_token_p);
@@ -1315,12 +1325,6 @@ QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
     me->send_n = QUEX_NAME(MF_send_n);
     me->send_text = QUEX_NAME(MF_send_text);
     me->send_string = QUEX_NAME(MF_send_string);
-    me->tell = QUEX_NAME(MF_tell);
-    me->seek = QUEX_NAME(MF_seek);
-    me->seek_forward = QUEX_NAME(MF_seek_forward);
-    me->seek_backward = QUEX_NAME(MF_seek_backward);
-    me->undo = QUEX_NAME(MF_undo);
-    me->undo_n = QUEX_NAME(MF_undo_n);
     me->mode = QUEX_NAME(MF_mode);
     me->set_mode_brutally = QUEX_NAME(MF_set_mode_brutally);
     me->enter_mode = QUEX_NAME(MF_enter_mode);
@@ -1337,6 +1341,12 @@ QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
     me->error_code_is_void = QUEX_NAME(MF_error_code_is_void);
     me->error_code_set_void = QUEX_NAME(MF_error_code_set_void);
     me->error_code_set_if_first = QUEX_NAME(MF_error_code_set_if_first);
+    me->tell = QUEX_NAME(MF_tell);
+    me->seek = QUEX_NAME(MF_seek);
+    me->seek_forward = QUEX_NAME(MF_seek_forward);
+    me->seek_backward = QUEX_NAME(MF_seek_backward);
+    me->undo = QUEX_NAME(MF_undo);
+    me->undo_n = QUEX_NAME(MF_undo_n);
 }
 #endif
 
@@ -1390,8 +1400,6 @@ QUEX_NAME(user_print)(QUEX_TYPE_ANALYZER* me)
 #undef self
 }
 
-#ifdef QUEX_OPTION_INCLUDE_STACK
-
 bool
 QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me, 
                              const char*         InputName, 
@@ -1419,7 +1427,6 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 /* END: _______________________________________________________________________*/
 #undef self
 }
-#endif /* QUEX_OPTION_INCLUDE_STACK */
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
@@ -1459,7 +1466,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 1463 "test_environment/TestAnalyzer.c"
+#   line 1470 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1490,7 +1497,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 1494 "test_environment/TestAnalyzer.c"
+#   line 1501 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1525,7 +1532,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 1529 "test_environment/TestAnalyzer.c"
+#   line 1536 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -1607,7 +1614,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 1611 "test_environment/TestAnalyzer.c"
+#   line 1618 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1629,7 +1636,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 1633 "test_environment/TestAnalyzer.c"
+#   line 1640 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1648,7 +1655,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1652 "test_environment/TestAnalyzer.c"
+#   line 1659 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1722,7 +1729,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include "test_environment/lib/lexeme.i"
    
 
-#   line 1726 "test_environment/TestAnalyzer.c"
+#   line 1733 "test_environment/TestAnalyzer.c"
 
 
 #include "test_environment/lib/lexeme.i"

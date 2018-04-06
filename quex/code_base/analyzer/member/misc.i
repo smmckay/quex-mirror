@@ -13,18 +13,6 @@ $$INC: lexeme_base$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-QUEX_INLINE QUEX_TYPE_LEXATOM*  
-QUEX_NAME(lexeme_start_pointer_get)(QUEX_TYPE_ANALYZER* me) 
-{ return me->buffer._lexeme_start_p; }
-
-QUEX_INLINE QUEX_TYPE_LEXATOM* 
-QUEX_NAME(input_pointer_get)(QUEX_TYPE_ANALYZER* me)
-{ return me->buffer._read_p; }
-
-QUEX_INLINE void
-QUEX_NAME(input_pointer_set)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* Adr)
-{ me->buffer._read_p = Adr; }
-
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
 QUEX_INLINE void 
 QUEX_NAME(indentation_handler_switch)(QUEX_TYPE_ANALYZER* me, bool ActiveF)
@@ -175,6 +163,24 @@ QUEX_NAME(MF_print_this)(QUEX_TYPE_ANALYZER* me)
         __QUEX_STD_printf("\n\n");
     }
 }
+
+#ifdef  QUEX_OPTION_COUNTER_LINE
+QUEX_INLINE size_t QUEX_NAME(MF_line_number)(const QUEX_TYPE_ANALYZER* me)            { return QUEX_NAME(MF_line_number_at_begin)(me); }
+QUEX_INLINE size_t QUEX_NAME(MF_line_number_at_begin)(const QUEX_TYPE_ANALYZER* me)   { return me->counter._line_number_at_begin; }
+QUEX_INLINE size_t QUEX_NAME(MF_line_number_at_end)(const QUEX_TYPE_ANALYZER* me)     { return me->counter._line_number_at_end; }
+QUEX_INLINE void   QUEX_NAME(MF_line_number_set)(QUEX_TYPE_ANALYZER* me, size_t Value) { me->counter._line_number_at_end = Value; }
+#endif
+#ifdef  QUEX_OPTION_COUNTER_COLUMN
+QUEX_INLINE size_t QUEX_NAME(MF_column_number)(const QUEX_TYPE_ANALYZER* me)          { return QUEX_NAME(MF_column_number_at_begin)(me); }
+QUEX_INLINE size_t QUEX_NAME(MF_column_number_at_begin)(const QUEX_TYPE_ANALYZER* me) { return me->counter._column_number_at_begin; }
+QUEX_INLINE size_t QUEX_NAME(MF_column_number_at_end)(const QUEX_TYPE_ANALYZER* me)   { return me->counter._column_number_at_end; }
+QUEX_INLINE void   QUEX_NAME(MF_column_number_set)(QUEX_TYPE_ANALYZER* me, size_t Value) { me->counter._column_number_at_end = Value; }
+#endif
+#ifdef   QUEX_OPTION_INDENTATION_TRIGGER
+QUEX_INLINE size_t  QUEX_NAME(MF_indentation)(const QUEX_TYPE_ANALYZER* me)           
+{ return (size_t)(me->counter._indentation_stack.back - me->counter._indentation_stack.front) + (size_t)1; }
+#endif
+
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

@@ -194,16 +194,6 @@ Default: 0.0.0-pre-release
 
 Default: true (not disabled)
 
-.. cmdoption:: --no-include-stack, --nois 
-
-    Disables the support of include stacks where the state of the lexical analyzer can be saved and 
-    restored before diving into included files. Setting this flag may speed up a bit compile 
-    time  
-
-    
-
-Default: true (not disabled)
-
 .. cmdoption:: --no-count-columns 
 
     Lets quex generate an analyzer without internal line counting.  

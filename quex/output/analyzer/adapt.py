@@ -1,4 +1,5 @@
-from   quex.blackboard  import Lng
+from   quex.engine.misc.tools import typed
+from   quex.blackboard        import Lng
 
 def do(Txt, OutputDir, OriginalPath=None):
     ## txt = declare_member_functions(txt)
@@ -8,32 +9,56 @@ def do(Txt, OutputDir, OriginalPath=None):
     return txt
 
 class Signature:
-    def __init__(self, ReturnType, FunctionName, ArgumentList):
+    @typed(ConstantF=bool)
+    def __init__(self, ReturnType, FunctionName, ArgumentList, Condition, ConstantF):
         self.return_type   = ReturnType
         self.function_name = FunctionName
-        self.argument_list = ArgumentList
+        self.argument_list = ArgumentList # (type, name, default)
+        self.condition     = Condition
+        self.constant_f    = ConstantF    # Does not change object's state
 
     @classmethod
     def from_String(cls, String):
-        """SYNTAX: return-type; function-name; argument-list;
+        """SYNTAX: return-type; function-name; argument-list [const];
 
-        argument-list:   type ':' name ','
+        argument-list:   type name [ '=' default ]','
         """
         def type_and_name(SubString):
-            fields   = [x.strip() for x in SubString.split()]
+            idx = SubString.find("=")
+            if idx != -1:
+                core_str    = SubString[:idx]
+                default_str = SubString[idx+1:].strip()
+            else:
+                core_str    = SubString
+                default_str = ""
+
+            fields   = [x.strip() for x in core_str.split()]
             type_str = " ".join(fields[:-1])
             name_str = fields[-1]
-            return type_str, name_str
 
-        open_i  = String.find("(")
-        close_i = String.rfind(")")
-        return_type, function_name = type_and_name(String[:open_i])
+            return type_str, name_str, default_str
+
+        def condition_str(SubString):
+            begin_i = String.find("<")
+            if begin_i == -1: return None, SubString
+            end_i     = String.find(">")
+            condition = String[begin_i+1: end_i].strip()
+            return condition, SubString[end_i+1:]
+
+        condition, string = condition_str(String)
+
+        open_i  = string.find("(")
+        close_i = string.rfind(")")
+        return_type, function_name, default_str = type_and_name(string[:open_i])
         argument_list = [ 
             type_and_name(x) 
-            for x in String[open_i+1:close_i].split(",") if x.strip()
+            for x in string[open_i+1:close_i].split(",") if x.strip()
         ]
 
-        return cls(return_type, function_name, argument_list)
+        remainder  = string[close_i+1:].strip()
+        constant_f = (remainder == "const")
+
+        return cls(return_type, function_name, argument_list, condition, constant_f)
 
 def member_functions(Txt):
     """YIELDS: [0] begin index of letter in 'Txt'
@@ -72,6 +97,9 @@ def declare_member_functions(Txt):
         txt.append(Txt[last_i:begin_i])
         decl_txt = Lng.MEMBER_FUNCTION_DECLARATION(signature)
         decl_txt = decl_txt.replace("QUEX_NAME_Mode_", "QUEX_NAME(Mode)")
+        decl_txt = decl_txt.replace("QUEX_NAME_Converter_", "QUEX_NAME(Converter)")
+        decl_txt = decl_txt.replace("QUEX_NAME_ByteLoader_", "QUEX_NAME(ByteLoader)")
+        decl_txt = decl_txt.replace("QUEX_NAME_callback_on_token_type_", "QUEX_NAME(callback_on_token_type)")
         txt.append(decl_txt)
         last_i = end_i
         signature_list.append(signature)

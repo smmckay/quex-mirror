@@ -34,7 +34,7 @@ def code(Language):
     current_dir = os.getcwd()
     os.chdir("..")
     command_line.do(["-i", "test_environment/nothing.qx", "-o", "TestAnalyzer", "--odir",  "test_environment",
-                     "--no-include-stack", "--language", Language])
+                     "--language", Language])
     mode_db = quex_file_parser.do(Setup.input_mode_files)
 
     core._generate(mode_db)

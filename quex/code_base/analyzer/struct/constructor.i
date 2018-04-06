@@ -76,7 +76,7 @@ QUEX_NAME(from_file_name)(QUEX_TYPE_ANALYZER*     me,
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_2:
     if( converter ) converter->delete_self(converter);
-    QUEX_NAME(resources_absent_mark)(me);
+    QUEX_NAME(MF_resources_absent_mark)(me);
 ERROR_1:
     /* from_ByteLoader(): destructed and marked all resources absent.         */
     return;
@@ -134,16 +134,16 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     /* ERROR CASES: Free Resources __________________________________________*/
 ERROR_2:
     QUEX_NAME(Buffer_destruct)(&me->buffer);
-    QUEX_NAME(resources_absent_mark)(me);
+    QUEX_NAME(MF_resources_absent_mark)(me);
     return;
 ERROR_1:
     if( new_filler ) new_filler->delete_self(new_filler); 
-    QUEX_NAME(resources_absent_mark)(me);
+    QUEX_NAME(MF_resources_absent_mark)(me);
     return;
 ERROR_0:
     if( byte_loader ) byte_loader->delete_self(byte_loader);
     if( converter )   converter->delete_self(converter);
-    QUEX_NAME(resources_absent_mark)(me);
+    QUEX_NAME(MF_resources_absent_mark)(me);
     return;
 }
 
@@ -179,7 +179,7 @@ QUEX_NAME(from_memory)(QUEX_TYPE_ANALYZER* me,
 ERROR_1:
     QUEX_NAME(Buffer_destruct)(&me->buffer); 
 ERROR_0:
-    QUEX_NAME(resources_absent_mark)(me);
+    QUEX_NAME(MF_resources_absent_mark)(me);
 }
 
 QUEX_INLINE bool
@@ -198,7 +198,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 
     me->__input_name = (char*)0;
 
-    __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
+    me->_parent_memento = (QUEX_NAME(Memento)*)0;
 
     if( ! QUEX_NAME(TokenQueue_construct)(&me->_token_queue, me,
                                           QUEX_SETTING_TOKEN_QUEUE_SIZE) ) {
@@ -256,13 +256,13 @@ QUEX_NAME(destruct)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(user_destructor)(me);
 
     /* Protect against double destruction.                                    */
-    QUEX_NAME(resources_absent_mark)(me);
+    QUEX_NAME(MF_resources_absent_mark)(me);
 }
 
 QUEX_INLINE void
 QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
 {
-    __QUEX_IF_INCLUDE_STACK(QUEX_NAME(include_stack_delete)(me));
+    QUEX_NAME(MF_include_stack_delete)(me);
     /*
      *              DESTRUCT ANYTHING ONLY AFTER INCLUDE STACK                
      *
@@ -280,7 +280,7 @@ QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
 }
 
 QUEX_INLINE void
-QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
 /* Resouces = 'absent' => Destructor knows that it must not be freed. 
  * 
  * This function is essential to set the lexical analyzer into a state
@@ -311,7 +311,7 @@ QUEX_NAME(resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
     me->__current_mode_p          = (QUEX_NAME(Mode)*)0; 
 
     QUEX_NAME(ModeStack_resources_absent_mark)(&me->_mode_stack);
-    __QUEX_IF_INCLUDE_STACK(me->_parent_memento = (QUEX_NAME(Memento)*)0);
+    me->_parent_memento = (QUEX_NAME(Memento)*)0;
     me->__input_name = (char*)0;
 }
 
@@ -323,25 +323,23 @@ QUEX_NAME(all_but_buffer_resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
     /* Plain copy suffices (backup holds pointers safely).                    */
     memcpy((void*)&backup[0], (void*)&me->buffer, sizeof(QUEX_NAME(Buffer)));
 
-    QUEX_NAME(resources_absent_mark)(me);
+    QUEX_NAME(MF_resources_absent_mark)(me);
 
     /* Plain copy suffices (backup resets pointers safely).                   */
     memcpy((void*)&me->buffer, (void*)&backup[0], sizeof(QUEX_NAME(Buffer)));
 }
 
 QUEX_INLINE bool
-QUEX_NAME(resources_absent)(QUEX_TYPE_ANALYZER* me)
+QUEX_NAME(MF_resources_absent)(QUEX_TYPE_ANALYZER* me)
 /* RETURNS: 'true' if all resources are marked absent.
  *          'false' if at least one is not marked absent.                     */
 {
     if( ! QUEX_NAME(TokenQueue_resources_absent)(&me->_token_queue) ) {
         return false;
     }
-#   if defined(QUEX_OPTION_INCLUDE_STACK)
     else if( me->_parent_memento != (QUEX_NAME(Memento)*)0 ) {
         return false;
     }
-#   endif
     else if( ! QUEX_NAME(Buffer_resources_absent)(&me->buffer) ) {
         return false;
     }
@@ -429,8 +427,8 @@ QUEX_NAME(Asserts_construct)()
 }
 
 QUEX_INLINE void
-QUEX_NAME(collect_user_memory)(QUEX_TYPE_ANALYZER* me, 
-                               QUEX_TYPE_LEXATOM** user_buffer_memory)
+QUEX_NAME(MF_collect_user_memory)(QUEX_TYPE_ANALYZER* me, 
+                                  QUEX_TYPE_LEXATOM** user_buffer_memory)
 {
     *user_buffer_memory = me->buffer._memory.ownership == E_Ownership_LEXICAL_ANALYZER ?
                             (QUEX_TYPE_LEXATOM*)0 

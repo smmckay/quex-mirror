@@ -155,7 +155,7 @@ self_file_name()
     /* Good case                                                              */
     backup = *lx;
     {
-        QUEX_NAME(include_push_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->include_push_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_None);
     }
 
@@ -163,14 +163,14 @@ self_file_name()
     ++lx;
     backup = *lx;
     {
-        QUEX_NAME(include_push_file_name)(lx, "file-that-does-not-exists.txt", NULL);
+        lx->include_push_file_name(lx, "file-that-does-not-exists.txt", NULL);
         self_assert(lx, E_Error_File_OpenFailed);
     }
     ++lx;
     backup = *lx;
     {
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
-        QUEX_NAME(include_push_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->include_push_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_File_OpenFailed); 
         MemoryManager_UnitTest.forbid_ByteLoader_f = false;
     }
@@ -178,7 +178,7 @@ self_file_name()
     backup = *lx;
     {
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
-        QUEX_NAME(include_push_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->include_push_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_LexatomLoader_Failed); 
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     }
@@ -186,7 +186,7 @@ self_file_name()
     backup = *lx;
     {   /* Buffer Memory allocation is not required => No Error!              */
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
-        QUEX_NAME(include_push_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->include_push_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_None); 
         MemoryManager_UnitTest.forbid_BufferMemory_f = false;
     }
@@ -194,7 +194,7 @@ self_file_name()
     backup = *lx;
     {
         UserMementoPack_UnitTest_return_value = false;
-        QUEX_NAME(include_push_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->include_push_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_UserMementoPack_Failed); 
         UserMementoPack_UnitTest_return_value = true;
     }
@@ -202,7 +202,7 @@ self_file_name()
     backup = *lx;
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
-        QUEX_NAME(include_push_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->include_push_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_InputName_Set_Failed); 
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }
@@ -257,7 +257,7 @@ self_byte_loader_core(E_Error ExpectedError)
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(include_push_ByteLoader)(lx, "UT Input0", byte_loader, converter);
+        lx->include_push_ByteLoader(lx, "UT Input0", byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
@@ -265,7 +265,7 @@ self_byte_loader_core(E_Error ExpectedError)
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = NULL;
-        QUEX_NAME(include_push_ByteLoader)(lx, "UT Input1", byte_loader, converter);
+        lx->include_push_ByteLoader(lx, "UT Input1", byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
@@ -273,7 +273,7 @@ self_byte_loader_core(E_Error ExpectedError)
     {
         byte_loader = NULL;
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(include_push_ByteLoader)(lx, "UT Input2", byte_loader, converter);
+        lx->include_push_ByteLoader(lx, "UT Input2", byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
@@ -281,7 +281,7 @@ self_byte_loader_core(E_Error ExpectedError)
     {
         byte_loader = NULL;
         converter   = NULL;
-        QUEX_NAME(include_push_ByteLoader)(lx, "UT Input2", byte_loader, converter);
+        lx->include_push_ByteLoader(lx, "UT Input2", byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
@@ -304,7 +304,7 @@ self_memory()
 
     backup = *lx;
     {
-        QUEX_NAME(include_push_memory)(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
+        lx->include_push_memory(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
 
@@ -316,14 +316,14 @@ self_memory()
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
         MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
 
-        QUEX_NAME(include_push_memory)(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
+        lx->include_push_memory(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
     ++lx;
     backup = *lx;
     {
         UserMementoPack_UnitTest_return_value = false;
-        QUEX_NAME(include_push_memory)(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
+        lx->include_push_memory(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_UserMementoPack_Failed);
         UserMementoPack_UnitTest_return_value = true;
     }
@@ -331,7 +331,7 @@ self_memory()
     backup = *lx;
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
-        QUEX_NAME(include_push_memory)(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
+        lx->include_push_memory(lx, "InputMemory", &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_InputName_Set_Failed);
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }
@@ -345,7 +345,7 @@ self_destruct(quex_TestAnalyzer* lexer, size_t N)
 
     for(i=0; i<N; ++i) {
         QUEX_NAME(destruct)(&lexer[i]);
-        hwut_verify(QUEX_NAME(resources_absent)(&lexer[i]));
+        hwut_verify(QUEX_NAME(MF_resources_absent)(&lexer[i]));
     }
 }
 
@@ -356,9 +356,9 @@ self_pop(quex_TestAnalyzer* lexer, size_t N)
 
     for(i=0; i<N; ++i) {
         if( lexer[i].error_code == E_Error_None ) {
-            QUEX_NAME(include_pop)(&lexer[i]);
+            lexer[i].include_pop(&lexer[i]);
         }
-        hwut_verify(! QUEX_NAME(resources_absent)(&lexer[i]));
+        hwut_verify(! QUEX_NAME(MF_resources_absent)(&lexer[i]));
     }
 }
 
@@ -371,7 +371,7 @@ self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
     hwut_verify(lx->error_code == ExpectedError);
 
     /* Resources are *never* absent.                                          */
-    hwut_verify(! QUEX_NAME(resources_absent)(lx));
+    hwut_verify(! QUEX_NAME(MF_resources_absent)(lx));
 
     hwut_verify(lx->_mode_stack.memory_end - lx->_mode_stack.begin == QUEX_SETTING_MODE_STACK_SIZE);
     hwut_verify(lx->_mode_stack.end        - lx->_mode_stack.begin == 0);

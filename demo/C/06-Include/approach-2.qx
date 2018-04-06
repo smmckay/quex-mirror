@@ -44,7 +44,7 @@ mode BASE :
 <inheritable: only> 
 {
     on_end_of_stream {
-        if( QUEX_NAME(include_pop)(&self) == false ) {
+        if( self.include_pop(&self) == false ) {
            self.error_code_clear(&self);
            self.send(&self, QUEX_TKN_TERMINATION);
         }
@@ -80,7 +80,7 @@ mode FIND_INCLUDE_NAME : BASE
         self.enter_mode(&self, MAIN);
 
         my_print(&self, ">> including: ", (const char*)Lexeme, 0x0);
-        QUEX_NAME(include_push_file_name)(&self, (const char*)Lexeme, 0x0);
+        self.include_push_file_name(&self, (const char*)Lexeme, 0x0);
     }
 }
 

@@ -37,12 +37,12 @@ main(int argc, char** argv)
             }
             my_print(&qlex, ">> including: ", (const char*)token_p->text, 0x0);
             included_file_name = ((const char*)token_p->text);
-            QUEX_NAME(include_push_file_name)(&qlex, included_file_name, 0x0);
+            qlex.include_push_file_name(&qlex, included_file_name, 0x0);
         }
         else if( token_p->id == QUEX_TKN_TERMINATION ) {
             space(qlex.include_depth);
             printf("Per File Letter Count = %i\n", (int)qlex.letter_count);
-            if( QUEX_NAME(include_pop)(&qlex) == false ) 
+            if( qlex.include_pop(&qlex) == false ) 
                 continue_lexing_f = false;
             else {
                 my_print(&qlex, "<< return from include", 0x0, 0x0);

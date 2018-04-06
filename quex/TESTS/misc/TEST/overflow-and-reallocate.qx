@@ -9,7 +9,7 @@ mode X : <skip: [\n]> {
 
     @[a-z/\-\.012]+ {
         printf(">> include %s;\n", &Lexeme[1]);
-        QUEX_NAME(include_push_file_name)(&self, &Lexeme[1], 0x0);
+        self.include_push_file_name(&self, &Lexeme[1], 0x0);
     }
 
     on_failure {
@@ -18,7 +18,7 @@ mode X : <skip: [\n]> {
     }
 
     on_end_of_stream {
-        if( QUEX_NAME(include_pop)(&self) == false ) {
+        if( self.include_pop(&self) == false ) {
            self.error_code_clear(&self);
            self.send(&self, QUEX_TKN_TERMINATION);
         }

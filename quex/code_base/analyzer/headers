@@ -13,7 +13,7 @@ $$INC: analyzer/asserts$$
 
 $$INC: definitions$$
 
-#ifdef      __QUEX_OPTION_UNIT_TEST
+#ifdef __QUEX_OPTION_UNIT_TEST
 $$INC: extra/strange_stream/StrangeStream$$
 #endif
 
@@ -25,14 +25,12 @@ $$INC: MemoryManager$$
 $$INC: analyzer/Mode$$
 $$INC: token/TokenQueue$$
 
-#ifdef      QUEX_OPTION_COUNTER
+#ifdef QUEX_OPTION_COUNTER
 $$INC: analyzer/Counter$$
-#endif
-#ifdef      QUEX_OPTION_INCLUDE_STACK
-$$INC: analyzer/struct/include-stack$$
 #endif
 
 $$INC: analyzer/struct/constructor$$
+$$INC: analyzer/struct/include-stack$$
 $$INC: analyzer/struct/reset$$
 $$INC: analyzer/member/misc$$
 $$INC: analyzer/member/navigation$$

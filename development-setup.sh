@@ -1,5 +1,6 @@
 
 pushd quex/code_base/TESTS/test_environment/
+rm -rf TestAnalyzer* lib
 python generate-TestAnalyzer.py C
 python generate-TestAnalyzer.py C++
 popd

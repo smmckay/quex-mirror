@@ -274,3 +274,15 @@ class DefaultCounterFunctionDB:
         del DefaultCounterFunctionDB.__db[:]
  
 
+#______________________________________________________________________________
+# Determine wether a source code generation condition holds.
+#
+def condition_holds(Condition):
+    global setup
+    if   Condition is None:                                                    return True
+    elif Condition == "count-line"   and setup.count_line_number_f:            return True
+    elif Condition == "count-column" and setup.count_column_number_f:          return True
+    elif Condition == "indentation"  and required_support_indentation_count(): return True
+    else:                                                                      return False
+
+

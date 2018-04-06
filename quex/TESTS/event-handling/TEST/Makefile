@@ -22,16 +22,16 @@ COMPILER = gcc
 LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
 	 -I./ -I. -IEHLexer/lib \
 	 -DQUEX_OPTION_DEBUG_SHOW_MODES        \
-	 -DQUEX_OPTION_COUNTER_LINE_DISABLED   \
 	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK   
 	 # -fsanitize=address 
 
-LD := $(LD0) -DQUEX_OPTION_COUNTER_COLUMN_DISABLED 
+LD := $(LD0) 
 
 LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE=4
 LD65536 := $(LD) -DQUEX_SETTING_BUFFER_SIZE=65536
 
-QUEX := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_
+QUEX  := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines --no-count-columns
+QUEX2 := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines
 
 # (*) RULES ____________________________________________________________________
 # -- application
@@ -42,7 +42,7 @@ on_match.exe: on_match.qx
 	$(LD4) ./lexer.c EHLexer/EHLexer.c -o $@  
 
 on_indentation-%.exe: on_indentation-%.qx 
-	$(QUEX) -i $< -o EHLexer 
+	$(QUEX2) -i $< -o EHLexer 
 	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=65536 ./lexer.c EHLexer/EHLexer.c -o $@ 
 
 on_load_failure.exe: on_load_failure.qx 

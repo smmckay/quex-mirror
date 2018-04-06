@@ -51,7 +51,6 @@ def do(Mode_PrepPrepDB):
 
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_COLUMN",                Setup.count_column_number_f)        
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COMPUTED_GOTOS",                False)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_INCLUDE_STACK",                 Setup.include_stack_support_f)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_LINE",                  Setup.count_line_number_f)      
     txt = Lng.SWITCH(txt, "QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK", Setup.mode_transition_check_f)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT",      token_repetition_support_f) 

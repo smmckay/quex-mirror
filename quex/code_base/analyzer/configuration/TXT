@@ -45,7 +45,7 @@ $$SWITCH$$ __QUEX_OPTION_PLAIN_C
 #if defined(__QUEX_INCLUDE_INDICATOR__ASSERTS)
 #   error "Asserts included before configuration file. However, the configuration file MUST control asserts!"
 #endif
-#
+
 #if           defined(QUEX_OPTION_ASSERTS_DISABLED) || defined(NDEBUG)
 #   ifdef     QUEX_OPTION_ASSERTS
 #      undef  QUEX_OPTION_ASSERTS
@@ -94,6 +94,54 @@ $$SWITCH$$ QUEX_OPTION_COUNTER_LINE
 #ifndef    QUEX_OPTION_COUNTER_COLUMN          
 $$SWITCH$$ QUEX_OPTION_COUNTER_COLUMN       
 #endif
+$$SWITCH$$ QUEX_OPTION_INDENTATION_TRIGGER
+/* Quex can determine whether certain handlers are not used at all.  If so,
+ * computation time can be spared and quex comments the following options out.
+ *                                                                           */
+$$SWITCH$$ __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
+$$SWITCH$$ __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
+
+/* Begin of line pre-condition requires an extra flag in the buffer
+ * structure. Only out-comment this in case of tough memory restrictions,
+ * if no begin of line pre-condition is required.                            */
+$$SWITCH$$ __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
+
+/* The following flag indicates that the engine is running on a specific
+ * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
+$$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
+#
+#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+$$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+#endif
+#ifndef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+$$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+#endif
+
+/* QUEX_TYPE_LEXATOM: The buffer element's type. A lexatom may be a character
+ *     (e.g. ASCII),  or a code unit (e.g. UTF8) depending on the applied 
+ *     encoding inside the lexer's engine.                                    */
+#ifndef    QUEX_TYPE_LEXATOM
+#   define QUEX_TYPE_LEXATOM                                $$QUEX_TYPE_LEXATOM$$
+#endif 
+#ifndef    QUEX_TYPE_TOKEN_ID
+#   define QUEX_TYPE_TOKEN_ID                               $$TOKEN_ID_TYPE$$
+#endif
+#define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$ ## BRIEF)
+#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
+#ifndef    QUEX_TYPE_TOKEN_LINE_N
+#   define QUEX_TYPE_TOKEN_LINE_N    $$TOKEN_LINE_N_TYPE$$
+#endif
+#ifndef    QUEX_TYPE_TOKEN_COLUMN_N
+#   define QUEX_TYPE_TOKEN_COLUMN_N  $$TOKEN_COLUMN_N_TYPE$$
+#endif
+#ifndef    QUEX_TYPE_ACCEPTANCE_ID
+#   define QUEX_TYPE_ACCEPTANCE_ID   int
+#endif
+#if defined(QUEX_OPTION_INDENTATION_TRIGGER)
+#   ifndef    QUEX_TYPE_INDENTATION
+#      define QUEX_TYPE_INDENTATION  size_t
+#   endif
+#endif
 
 /* Mode Transitions:
  *    If the engine was created without the flag '--no-mode-transition-check'
@@ -107,14 +155,9 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #   define QUEX_SETTING_MODE_STACK_SIZE                                (size_t)8
 #endif
 
-/* Verbosity (uncomment the following, if you want it verbose.)               */
+/* Verbosity can be enabled by the following:                                 */
 /* #define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED                       */
                                                                              
-/* Include Stack Support                                                      */
-#ifndef   QUEX_OPTION_INCLUDE_STACK
-$$SWITCH$$ QUEX_OPTION_INCLUDE_STACK
-#endif
-
 /* BLC -- Buffer Limit Code:
  *
  * This code is used as a delimiter for buffer borders. When the analyzer
@@ -186,62 +229,18 @@ $$SWITCH$$ QUEX_OPTION_INCLUDE_STACK
 /* If one mode requires indentation support, then the lexical analyser class
  * must be setup for indentation counting. The following flag is defined or
  * undefined by the lexical analyser generator quex.                         */
-$$SWITCH$$ QUEX_OPTION_INDENTATION_TRIGGER
 #if    defined(QUEX_OPTION_INDENTATION_TRIGGER)
 #   ifndef    QUEX_SETTING_INDENTATION_STACK_SIZE
 #      define QUEX_SETTING_INDENTATION_STACK_SIZE                         (64)
 #   endif
-#   ifndef    QUEX_TYPE_INDENTATION
-#      define QUEX_TYPE_INDENTATION                                     size_t
-#   endif
 #endif
   
-/* Quex can determine whether certain handlers are not used at all.  If so,
- * computation time can be spared and quex comments the following options out.
- *                                                                           */
-$$SWITCH$$ __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
-$$SWITCH$$ __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
-
 #ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
 #    define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)65536)
 #endif
 
-/* Begin of line pre-condition requires an extra flag in the buffer
- * structure. Only out-comment this in case of tough memory restrictions,
- * if no begin of line pre-condition is required.                            */
-$$SWITCH$$ __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
-
-/* Type Definitions 
- *
- * CHARACTER TYPE: Type that represents the number of bytes used in the engine
- * to store a character. This is independent of the coding (ASCII, WinArabic,
- * ...)
- *
- * Both character types are clearly related, because they are supposed to
- * relate to the same type of objects in memory. The following example shows,
- * that 'uint8_t' and 'char' belong together, the lexeme type cannot be
- * 'uint8_t' because the std-string functions accept 'char*' and not 'uint8_t'
- * (which is most propperly 'unsigned char').
- *
- * NOTE: If in parallel another engine is built with other bytes per character
- * settings, then the engines will also include their own header with their own
- * definition of QUEX_TYPE_LEXATOM. Thus there is no danger at all.
- * Templatifying the lexer would be possible, but the author has in mind to
- * bring out a 'pure C' version of the quex generated engine. Thus templating
- * would make this goal harder achievable.
- *                                                                            */
-#ifndef    QUEX_TYPE_LEXATOM
-#   define QUEX_TYPE_LEXATOM          $$QUEX_TYPE_LEXATOM$$
-#endif 
 #ifndef    QUEX_SETTING_CHARACTER_CODEC   
 #   define QUEX_SETTING_CHARACTER_CODEC $$QUEX_SETTING_CHARACTER_CODEC$$
-#endif
-/* The following flag indicates that the engine is running on a specific
- * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
-$$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
-
-#ifndef    QUEX_TYPE_ACCEPTANCE_ID
-#   define QUEX_TYPE_ACCEPTANCE_ID   int
 #endif
 
 /* QUEX_TYPE_X  --> Type of X in global namespace 
@@ -303,26 +302,6 @@ $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 
 #ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
 #   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)$$TOKEN_QUEUE_SIZE$$)
-#endif
-
-#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-$$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-#endif
-#ifndef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-$$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-#endif
-
-#ifndef    QUEX_TYPE_TOKEN_ID
-#   define QUEX_TYPE_TOKEN_ID                               $$TOKEN_ID_TYPE$$
-#endif
-#define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$ ## BRIEF)
-#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
-
-#ifndef    QUEX_TYPE_TOKEN_LINE_N
-#   define QUEX_TYPE_TOKEN_LINE_N    $$TOKEN_LINE_N_TYPE$$
-#endif
-#ifndef    QUEX_TYPE_TOKEN_COLUMN_N
-#   define QUEX_TYPE_TOKEN_COLUMN_N  $$TOKEN_COLUMN_N_TYPE$$
 #endif
 
 $$INC: analyzer/configuration/derived$$

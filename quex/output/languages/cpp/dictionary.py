@@ -21,6 +21,7 @@ from   quex.engine.misc.tools                            import typed, \
 import quex.output.languages.cpp.templates               as     templates
 
 from   quex.DEFINITIONS  import QUEX_PATH
+import quex.blackboard   as     blackboard
 from   quex.blackboard   import setup as Setup, \
                                 standard_incidence_db_get_incidence_id
 from   quex.constants    import E_Files, \
@@ -418,12 +419,19 @@ class Language(dict):
         return "    %s%s %s;" % (TypeStr, " " * (MaxTypeNameL - len(TypeStr)), VariableName)
 
     def MEMBER_FUNCTION_DECLARATION(self, signature):
-        argument_list_str = ", ".join("%s %s" % (arg_type, arg_name) 
-                                      for arg_type, arg_name in signature.argument_list)
+        if not blackboard.condition_holds(signature.condition):
+            return "\n"
+        def argument_str(arg_type, arg_name, default):
+            if default:
+                return "%s %s = %s" % (arg_type, arg_name, default) 
+            else:
+                return "%s %s" % (arg_type, arg_name) 
+        argument_list_str = ", ".join(argument_str(arg_type, arg_name, default) 
+                                      for arg_type, arg_name, default in signature.argument_list)
         if signature.return_type != "void": return_str = "return "
         else:                               return_str = ""
 
-        call_argument_list  = ["this"] + [ arg_name for arg_type, arg_name in signature.argument_list ]
+        call_argument_list  = ["this"] + [ arg_name for arg_type, arg_name, default in signature.argument_list ]
         call_definition_str = "QUEX_NAME(MF_%s)(%s)" % (signature.function_name,
                                                         ", ".join(call_argument_list))
         return "%s %s(%s) { %s%s; }\n" % (signature.return_type, 

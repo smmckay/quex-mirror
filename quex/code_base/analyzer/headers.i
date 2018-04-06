@@ -22,10 +22,8 @@ $$INC: analyzer/member/mode-handling.i$$
 $$INC: analyzer/member/misc.i$$
 $$INC: analyzer/member/navigation.i$$
 $$INC: analyzer/struct/constructor.i$$
-$$INC: analyzer/struct/reset.i$$
-#ifdef      QUEX_OPTION_INCLUDE_STACK
 $$INC: analyzer/struct/include-stack.i$$
-#endif
+$$INC: analyzer/struct/reset.i$$
 
 $$INC: analyzer/Mode.i$$
 $$INC: token/TokenQueue.i$$

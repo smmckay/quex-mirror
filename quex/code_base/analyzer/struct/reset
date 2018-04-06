@@ -21,30 +21,30 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 /* Level (0) __________________________________________________________________
  *                                                                           */
-QUEX_INLINE bool QUEX_NAME(reset)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE bool QUEX_NAME(MF_reset)(QUEX_TYPE_ANALYZER* me);
 
 /* Level (1) __________________________________________________________________
  *                                                                           */
-QUEX_INLINE bool QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me,
-                                            const char*           Filename, 
-                                            QUEX_NAME(Converter)* converter);
+QUEX_INLINE bool QUEX_NAME(MF_reset_file_name)(QUEX_TYPE_ANALYZER*   me,
+                                               const char*           Filename, 
+                                               QUEX_NAME(Converter)* converter);
 
 /* Level (3) __________________________________________________________________
  *                                                                           */
-QUEX_INLINE bool QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*    me,
-                                             QUEX_NAME(ByteLoader)* byte_loader,
-                                             QUEX_NAME(Converter)*  converter);
+QUEX_INLINE bool QUEX_NAME(MF_reset_ByteLoader)(QUEX_TYPE_ANALYZER*    me,
+                                                QUEX_NAME(ByteLoader)* byte_loader,
+                                                QUEX_NAME(Converter)*  converter);
 
 /* Level (5) __________________________________________________________________
  *                                                                           */
-QUEX_INLINE bool QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER* me,
-                                         QUEX_TYPE_LEXATOM*  BufferMemoryBegin, 
-                                         size_t              BufferMemorySize,
-                                         QUEX_TYPE_LEXATOM*  BufferEndOfFileP); 
+QUEX_INLINE bool QUEX_NAME(MF_reset_memory)(QUEX_TYPE_ANALYZER* me,
+                                            QUEX_TYPE_LEXATOM*  BufferMemoryBegin, 
+                                            size_t              BufferMemorySize,
+                                            QUEX_TYPE_LEXATOM*  BufferEndOfFileP); 
 
 /* Basic constructions ________________________________________________________
  *                                                                           */
-QUEX_INLINE bool QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER* me);
+QUEX_INLINE bool QUEX_NAME(MF_reset_all_but_buffer)(QUEX_TYPE_ANALYZER* me);
 extern      bool QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE

@@ -59,7 +59,7 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
 
     QUEX_TYPE_LEXATOM*  prev;
     qlex.collect_user_memory(&prev);
-    assert(qlex.reset(buffer_1, Size1, end_of_content_p));
+    assert(qlex.reset_memory(buffer_1, Size1, end_of_content_p));
     if( prev ) delete [] prev;
 
     cout << "\n\n";
@@ -72,7 +72,7 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
 
     if( buffer_1 ) {
         qlex.collect_user_memory(&prev);
-        assert(qlex.reset((QUEX_TYPE_LEXATOM*)0x0, 0, (QUEX_TYPE_LEXATOM*)0x0));
+        assert(qlex.reset_memory((QUEX_TYPE_LEXATOM*)0x0, 0, (QUEX_TYPE_LEXATOM*)0x0));
         if( prev ) delete [] prev;
 
         cout << "\n\n";

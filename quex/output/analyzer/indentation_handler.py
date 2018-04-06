@@ -41,7 +41,7 @@ def do(Mode, ModeNameList):
     return blue_print(on_indentation_str, [
         ["$$DEFINE_SELF$$",                 Lng.DEFINE_SELF("me")],
         ["$$MODE_DEFINITION$$",             Lng.MODE_DEFINITION(ModeNameList)],
-        ["$$MODE_UNDEFINITION$$",           Lng.MODE_DEFINITION(ModeNameList)],
+        ["$$MODE_UNDEFINITION$$",           Lng.MODE_UNDEFINITION(ModeNameList)],
         ["$$INDENT-PROCEDURE$$",            on_indent_str],
         ["$$NODENT-PROCEDURE$$",            on_nodent_str],
         ["$$DEDENT-PROCEDURE$$",            on_dedent_str],

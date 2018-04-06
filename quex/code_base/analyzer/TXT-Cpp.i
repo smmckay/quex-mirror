@@ -58,8 +58,6 @@ $$USER_DEFINED_PRINT$$
 #undef self
 }
 
-#ifdef QUEX_OPTION_INCLUDE_STACK
-
 bool
 QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me, 
                              const char*         InputName, 
@@ -87,7 +85,6 @@ $$MEMENTO_EXTENSIONS_UNPACK$$
 /* END: _______________________________________________________________________*/
 #undef self
 }
-#endif /* QUEX_OPTION_INCLUDE_STACK */
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

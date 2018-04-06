@@ -146,48 +146,48 @@ self_file_name()
 {
     /* Good case                                                              */
     {
-        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->reset_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_None);
     }
 
     /* Bad cases                                                              */
     ++lx;
     {
-        QUEX_NAME(reset_file_name)(lx, "file-that-does-not-exists.txt", NULL);
+        lx->reset_file_name(lx, "file-that-does-not-exists.txt", NULL);
         self_assert(lx, E_Error_File_OpenFailed);
     }
     ++lx;
     {
         MemoryManager_UnitTest.forbid_ByteLoader_f = true;
-        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->reset_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_File_OpenFailed); 
         MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
     }
     ++lx;
     {
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
-        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->reset_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_LexatomLoader_Failed); 
         MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     }
     ++lx;
     {   /* Buffer Memory allocation is not required => No Error!              */
         MemoryManager_UnitTest.forbid_BufferMemory_f = true;
-        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->reset_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_None); 
         MemoryManager_UnitTest.forbid_BufferMemory_f = false;
     }
     ++lx;
     {
         UserReset_UnitTest_return_value = false;
-        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->reset_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_UserReset_Failed); 
         UserReset_UnitTest_return_value = true;
     }
     ++lx;
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
-        QUEX_NAME(reset_file_name)(lx, "file-that-exists.txt", NULL);
+        lx->reset_file_name(lx, "file-that-exists.txt", NULL);
         self_assert(lx, E_Error_InputName_Set_Failed); 
         MemoryManager_UnitTest.forbid_InputName_f = false;
     }
@@ -241,28 +241,28 @@ self_byte_loader_core(E_Error ExpectedError)
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter);
+        lx->reset_ByteLoader(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
         converter   = NULL;
-        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter);
+        lx->reset_ByteLoader(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = NULL;
         converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter);
+        lx->reset_ByteLoader(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
         byte_loader = NULL;
         converter   = NULL;
-        QUEX_NAME(reset_ByteLoader)(lx, byte_loader, converter);
+        lx->reset_ByteLoader(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
@@ -284,7 +284,7 @@ self_memory()
     memory[65536-1] = QUEX_SETTING_BUFFER_LIMIT_CODE;
 
     {
-        QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        lx->reset_memory(lx, &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
     ++lx;
@@ -294,20 +294,20 @@ self_memory()
         MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
         MemoryManager_UnitTest.forbid_BufferMemory_f  = true;
 
-        QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        lx->reset_memory(lx, &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
     }
     ++lx;
     {
         UserReset_UnitTest_return_value = false;
-        QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        lx->reset_memory(lx, &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_UserReset_Failed);
         UserReset_UnitTest_return_value = true;
     }
     ++lx;
     {
         MemoryManager_UnitTest.forbid_InputName_f = true;
-        QUEX_NAME(reset_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        lx->reset_memory(lx, &memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
 
         MemoryManager_UnitTest.forbid_InputName_f = false;
@@ -327,9 +327,9 @@ self_plain()
     UserConstructor_UnitTest_return_value           = false; /* Shall not be called! */
     UserReset_UnitTest_return_value                 = true;
     {
-        QUEX_NAME(reset)(lx);
+        lx->reset(lx);
         self_assert(lx, E_Error_None);
-        hwut_verify(! QUEX_NAME(resources_absent)(lx));
+        hwut_verify(! QUEX_NAME(MF_resources_absent)(lx));
     }
     ++lx;
 
@@ -337,9 +337,9 @@ self_plain()
     UserConstructor_UnitTest_return_value           = false; /* Shall not be called! */
     UserReset_UnitTest_return_value                 = false;
     {
-        QUEX_NAME(reset)(lx);
+        lx->reset(lx);
         self_assert(lx, E_Error_UserReset_Failed);
-        hwut_verify(QUEX_NAME(resources_absent)(lx));
+        hwut_verify(QUEX_NAME(MF_resources_absent)(lx));
     }
     ++lx;
 }
@@ -351,7 +351,7 @@ self_destruct(quex_TestAnalyzer* lexer, size_t N)
 
     for(i=0; i<N; ++i) {
         QUEX_NAME(destruct)(&lexer[i]);
-        hwut_verify(QUEX_NAME(resources_absent)(&lexer[i]));
+        hwut_verify(QUEX_NAME(MF_resources_absent)(&lexer[i]));
     }
 }
 
@@ -361,10 +361,10 @@ self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
     hwut_verify(lx->error_code == ExpectedError);
 
     if( ExpectedError != E_Error_None ) {
-        hwut_verify(QUEX_NAME(resources_absent)(lx));
+        hwut_verify(QUEX_NAME(MF_resources_absent)(lx));
     }
     else {
-        hwut_verify(! QUEX_NAME(resources_absent)(lx));
+        hwut_verify(! QUEX_NAME(MF_resources_absent)(lx));
     }
     hwut_verify(QUEX_NAME(TokenQueue_is_empty)(&lx->_token_queue));
 }

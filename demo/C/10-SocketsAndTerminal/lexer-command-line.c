@@ -76,7 +76,7 @@ main(int argc, char** argv)
         if( (received_n = getline(&p, &size, stdin)) == -1 ) break;
 
         printf("    read: %i [byte]\n", (int)received_n);
-        QUEX_NAME(reset)(&qlex);
+        qlex.reset(&qlex);
         qlex.buffer.fill(&qlex.buffer, &p[0], &p[received_n]);
 
         do {

@@ -287,7 +287,7 @@ self_destruct(size_t N)
 
     for(TestAnalyzer* it = lx0; it != End; ++it) {
         it->~TestAnalyzer();
-        hwut_verify(QUEX_NAME(resources_absent)(it));
+        hwut_verify(QUEX_NAME(MF_resources_absent)(it));
     }
 }
 
@@ -297,9 +297,9 @@ self_assert(TestAnalyzer* lexer, E_Error ExpectedError)
     hwut_verify(lx->error_code == ExpectedError);
 
     if( ExpectedError != E_Error_None ) {
-        hwut_verify(QUEX_NAME(resources_absent)(lx));
+        hwut_verify(QUEX_NAME(MF_resources_absent)(lx));
     }
     else {
-        hwut_verify(! QUEX_NAME(resources_absent)(lx));
+        hwut_verify(! QUEX_NAME(MF_resources_absent)(lx));
     }
 }

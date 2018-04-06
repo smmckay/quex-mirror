@@ -141,7 +141,7 @@ self_include_push(uint32_t n)
         n = hwut_random_next(n);
         converter = n % 2 ? QUEX_NAME(Converter_IConv_new)("UTF8", NULL)
                           : (QUEX_NAME(Converter)*)0;
-        QUEX_NAME(include_push_file_name)(lx, "file-that-exists.txt", converter);
+        lx->include_push_file_name(lx, "file-that-exists.txt", converter);
         self_include_file_name_n += 1;
         break;
     case 1:
@@ -151,7 +151,7 @@ self_include_push(uint32_t n)
         n = hwut_random_next(n);
         converter   = n % 2 ? QUEX_NAME(Converter_IConv_new)("UTF8", NULL)
                             : (QUEX_NAME(Converter)*)0;
-        QUEX_NAME(include_push_ByteLoader)(lx, "byte-loader", byte_loader, converter);
+        lx->include_push_ByteLoader(lx, "byte-loader", byte_loader, converter);
         self_include_byte_loader_n += 1;
         break;
     case 2:
@@ -167,8 +167,8 @@ self_include_push(uint32_t n)
         new_memory_end[-1]  = QUEX_SETTING_BUFFER_LIMIT_CODE;
         new_memory_eos_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
 
-        QUEX_NAME(include_push_memory)(lx, "memory", new_memory, (size_t)(new_memory_size), 
-                                       new_memory_eos_p);
+        lx->include_push_memory(lx, "memory", new_memory, (size_t)(new_memory_size), 
+                                new_memory_eos_p);
         self_include_memory_n += 1;
         break;
     }
@@ -193,7 +193,7 @@ self_include_pop(quex_TestAnalyzer* lx)
 {
     QUEX_NAME(Buffer_event_callbacks)  backup_callbacks = lx->buffer.event;
 
-    QUEX_NAME(include_pop)(lx);
+    lx->include_pop(lx);
 
     /* Ensure, that event handlers are copied around propperly.                      */
     hwut_verify(memcmp((void*)&backup_callbacks, (void*)&lx->buffer.event, sizeof(backup_callbacks)) == 0);

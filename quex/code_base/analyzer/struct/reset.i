@@ -31,7 +31,7 @@
  *        Only then, the lexer object is assigned new content.
  * 
  * The *pivot point* of 'success granted' is inside the function 
- * 'reset_all_but_buffer()'. If it returns != NULL, success is granted.
+ * 'MF_reset_all_but_buffer()'. If it returns != NULL, success is granted.
  * Anything that might fail, *must happen before* the call to this function.
  * The exact 'pivot point' is marked in a comment by '[PIVOT POINT]'.
  *______________________________________________________________________________
@@ -47,7 +47,7 @@ $$INC: analyzer/struct/reset$$
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE bool
-QUEX_NAME(reset)(QUEX_TYPE_ANALYZER* me)  
+QUEX_NAME(MF_reset)(QUEX_TYPE_ANALYZER* me)  
 /* Reset given setup to initial position. This works on 'byte_loader' buffers
  * as well as buffers initialized to run on memory only.
  *
@@ -62,7 +62,7 @@ QUEX_NAME(reset)(QUEX_TYPE_ANALYZER* me)
 
     QUEX_NAME(Buffer_init)(&me->buffer, (QUEX_TYPE_LEXATOM*)0); 
 
-    if( ! QUEX_NAME(reset_all_but_buffer)(me) ) {
+    if( ! QUEX_NAME(MF_reset_all_but_buffer)(me) ) {
         goto ERROR_0;
     }
 
@@ -74,7 +74,7 @@ ERROR_0:
 }
 
 QUEX_INLINE bool
-QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me, 
+QUEX_NAME(MF_reset_file_name)(QUEX_TYPE_ANALYZER*   me, 
                            const char*           FileName, 
                            QUEX_NAME(Converter)* new_converter /* = 0 */)
 /* Reset on file 'FileName' as C-Standard Lib 'FILE'. 
@@ -97,7 +97,7 @@ QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me,
         goto ERROR_0;
     }
 
-    if( ! QUEX_NAME(reset_ByteLoader)(me, new_byte_loader, new_converter) ) {
+    if( ! QUEX_NAME(MF_reset_ByteLoader)(me, new_byte_loader, new_converter) ) {
         goto ERROR_1;
     }
     else if( ! QUEX_NAME(MF_input_name_set)(me, FileName) ) {
@@ -108,7 +108,7 @@ QUEX_NAME(reset_file_name)(QUEX_TYPE_ANALYZER*   me,
     return true;
 
 ERROR_1:
-    /* 'reset_ByteLoader()': deletes and mark absent everything.              */
+    /* 'MF_reset_ByteLoader()': deletes and mark absent everything.              */
 ERROR_0:
     /* 'destruct' marks resources as absent => double destruction is safe.    */
     QUEX_NAME(destruct)(me);
@@ -122,7 +122,7 @@ ERROR_0:
  *      Unit Test's StrangeStreams:
  *      byte_loader = QUEX_NAME(ByteLoader_stream_new)(strangestr_p, false);  */
 QUEX_INLINE bool
-QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
+QUEX_NAME(MF_reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
                             QUEX_NAME(ByteLoader)*  new_byte_loader,
                             QUEX_NAME(Converter)*   new_converter /* = 0 */)
 /* Resets the 'filler' to a new 'new_byte_loader' and 'new_converter'. If it fails
@@ -158,7 +158,7 @@ QUEX_NAME(reset_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
 
     QUEX_NAME(Buffer_init)(&me->buffer, (QUEX_TYPE_LEXATOM*)0);
 
-    if( ! QUEX_NAME(reset_all_but_buffer)(me) ) {
+    if( ! QUEX_NAME(MF_reset_all_but_buffer)(me) ) {
         goto ERROR_1;
     }
     return true;
@@ -174,7 +174,7 @@ ERROR_1:
 }
 
 QUEX_INLINE bool
-QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me, 
+QUEX_NAME(MF_reset_memory)(QUEX_TYPE_ANALYZER*  me, 
                         QUEX_TYPE_LEXATOM*   Memory,
                         const size_t         MemorySize,
                         QUEX_TYPE_LEXATOM*   EndOfFileP)
@@ -204,7 +204,7 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
     /* Buffer's memory owned externally => memory NOT freed!
      * but 'me->buffer._memory._front = NULL'!                                */
 
-    if( ! QUEX_NAME(reset_all_but_buffer)(me) ) {
+    if( ! QUEX_NAME(MF_reset_all_but_buffer)(me) ) {
         goto ERROR_1;
     }
 
@@ -217,7 +217,7 @@ QUEX_NAME(reset_memory)(QUEX_TYPE_ANALYZER*  me,
 
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_1:
-    /* 'reset_all_but_buffer()' All but the buffer resource destructed and 
+    /* 'MF_reset_all_but_buffer()' All but the buffer resource destructed and 
      *                          marked as absent.                             */
     QUEX_NAME(Buffer_destruct)(&me->buffer);
     return false;
@@ -228,7 +228,7 @@ ERROR_0:
 }
 
 QUEX_INLINE bool
-QUEX_NAME(reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me) 
+QUEX_NAME(MF_reset_all_but_buffer)(QUEX_TYPE_ANALYZER*  me) 
 /* Resets anything but 'Buffer'. In general reset is not equal to 'destruct'
  * followed by 'construct'. However, for the concerned components it is 
  * convenient.

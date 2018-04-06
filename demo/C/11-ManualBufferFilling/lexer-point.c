@@ -52,8 +52,8 @@ test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
 
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */
-        QUEX_NAME(reset_memory)(lexer, (QUEX_TYPE_LEXATOM*)&memory[0], Size, 
-                                (QUEX_TYPE_LEXATOM*)&memory[Size-1]);
+        lexer->reset_memory(lexer, (QUEX_TYPE_LEXATOM*)&memory[0], Size, 
+                            (QUEX_TYPE_LEXATOM*)&memory[Size-1]);
     }
 
     /* Loop until the 'termination' token arrives                            */

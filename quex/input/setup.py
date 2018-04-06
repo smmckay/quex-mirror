@@ -208,14 +208,13 @@ SETUP_INFO = {
     "compression_template_min_gain":  [["--template-compression-min-gain"],    0],
     "compression_path_f":             [["--path-compression"],                 SetupParTypes.FLAG],
     "compression_path_uniform_f":     [["--path-compression-uniform"],         SetupParTypes.FLAG],
-    "count_column_number_f":          [["--no-count-lines"],                   SetupParTypes.NEGATED_FLAG],
-    "count_line_number_f":            [["--no-count-columns"],                 SetupParTypes.NEGATED_FLAG],
+    "count_line_number_f":            [["--no-count-lines"],                   SetupParTypes.NEGATED_FLAG],
+    "count_column_number_f":          [["--no-count-columns"],                 SetupParTypes.NEGATED_FLAG],
     "character_display":              [["--character-display"],                "utf8"],
     "path_limit_code":                [["--path-termination"],                 0x1],
     "dos_carriage_return_newline_f":  [["--no-DOS"],                           SetupParTypes.NEGATED_FLAG],
     "insight_f":                      [["--insight"],                              SetupParTypes.FLAG],
     "converter_ucs_coding_name":      [["--converter-ucs-coding-name", "--cucn"], ""],
-    "include_stack_support_f":        [["--no-include-stack", "--nois"],       SetupParTypes.NEGATED_FLAG],
     "input_mode_files":               [["-i"],                                 SetupParTypes.LIST],
     "suppressed_notification_list":   [["--suppress", "-s"],                   SetupParTypes.INT_LIST],
     "extern_token_class_file":        [["--token-class-file"],                 ""],
@@ -341,7 +340,7 @@ SETUP_INFO = {
     "XX_token_queue_safety_border":      [["--token-queue-safety-border"],      16],
     "XX_source_package_directory":       [["--source-package", "--sp"],         ""],
     "XX_single_mode_analyzer_f":         [["--single-mode-analyzer", "--sma"],  SetupParTypes.FLAG],
-
+    "XX_include_stack_support_f":        [["--no-include-stack", "--nois"],       SetupParTypes.NEGATED_FLAG],
 }
 
 class NotificationDB:
@@ -372,6 +371,9 @@ class NotificationDB:
     warning_incidence_handler_overwrite              = 19
 
 DEPRECATED = { 
+  "XX_include_stack_support_f": 
+    ("Option '--no-include-stack' is no longer supported.", 
+      "0.69.1"), 
   "XX_single_mode_analyzer_f": 
     ("Single mode analyzer's no longer have to be indicated on the command line.",
      "0.69.1"),

@@ -37,7 +37,7 @@ main(int argc, char** argv)
                 break;
             }
             my_print(&qlex, ">> including: ", (const char*)token_p->get_text());
-            qlex.include_push((const char*)token_p->get_text(), NULL);
+            qlex.include_push_file_name((const char*)token_p->get_text(), NULL);
         }
         else if( token_p->id == QUEX_TKN_TERMINATION ) {
             space(qlex.include_depth);

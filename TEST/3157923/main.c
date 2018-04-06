@@ -16,13 +16,13 @@ main(int argc, char** argv)
 
     qlex.post_categorizer.enter(&qlex.post_categorizer, (QUEX_TYPE_LEXATOM*)"Otto", 12); 
 
-    QUEX_NAME(include_push_file_name)(&qlex, "main.c", NULL);
+    qlex.include_push_file_name(&qlex, "main.c", NULL);
 
     QUEX_NAME(destruct)(&qlex);
 
     QUEX_NAME(from_memory)(&qlex, 0x0, 0, 0x0);
-    QUEX_NAME(include_push_file_name)(&qlex, "main.c", NULL);
-    QUEX_NAME(reset_file_name)(&qlex, "main.c", NULL);
+    qlex.include_push_file_name(&qlex, "main.c", NULL);
+    qlex.reset_file_name(&qlex, "main.c", NULL);
     QUEX_NAME(destruct)(&qlex);
     fclose(dummy_fh);
 
