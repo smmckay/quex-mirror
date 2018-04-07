@@ -194,7 +194,7 @@ Default: 0.0.0-pre-release
 
 Default: true (not disabled)
 
-.. cmdoption:: --no-count-columns 
+.. cmdoption:: --no-count-lines 
 
     Lets quex generate an analyzer without internal line counting.  
 
@@ -202,7 +202,7 @@ Default: true (not disabled)
 
 Default: true (not disabled)
 
-.. cmdoption:: --no-count-lines 
+.. cmdoption:: --no-count-columns 
 
     Lets quex generate an analyzer without internal column counting.  
 

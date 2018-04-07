@@ -16,7 +16,7 @@ main(int argc, char** argv)
     const size_t        BufferSize = 1024;
     char                buffer[1024];
     QUEX_TYPE_TOKEN*    token_p = 0x0;
-    QUEX_TYPE_TOKEN_ID  token_id = 0;
+    EHLexer_token_id_t  token_id = 0;
     char                file_name[256];
     quex_EHLexer        qlex;
 

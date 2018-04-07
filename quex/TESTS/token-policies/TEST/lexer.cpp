@@ -8,7 +8,7 @@ using namespace quex;
 #endif
 
 void  pseudo_analysis(QUEX_TYPE_ANALYZER* me);
-QUEX_TYPE_TOKEN_ID  test_core(TPLex&, const char*);
+TPLex_token_id_t  test_core(TPLex&, const char*);
 
 #define UMM_NAME ""
 #if defined(UNIT_TEST_PSEUDO_ANALYSIS)
@@ -48,14 +48,14 @@ main(int argc, char** argv)
     delete qlex;
 }
 
-QUEX_TYPE_TOKEN_ID test_core(TPLex& qlex, const char* Choice)
+TPLex_token_id_t test_core(TPLex& qlex, const char* Choice)
 {
     QUEX_TYPE_TOKEN*  token_p;
 
     qlex.receive(&token_p);
 
     printf("received: %s\n", token_p->type_id_name().c_str());
-    QUEX_TYPE_TOKEN_ID token_id = token_p->type_id();
+    TPLex_token_id_t token_id = token_p->type_id();
 
     return token_id;
 }

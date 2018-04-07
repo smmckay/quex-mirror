@@ -46,29 +46,9 @@ $$SWITCH$$ __QUEX_OPTION_PLAIN_C
 #   error "Asserts included before configuration file. However, the configuration file MUST control asserts!"
 #endif
 
-#if           defined(QUEX_OPTION_ASSERTS_DISABLED) || defined(NDEBUG)
-#   ifdef     QUEX_OPTION_ASSERTS
-#      undef  QUEX_OPTION_ASSERTS
-#   endif
-#else
-#   ifndef    QUEX_OPTION_ASSERTS
-#      define QUEX_OPTION_ASSERTS
-#   endif
-#endif
-
 #ifndef  QUEX_OPTION_COMPUTED_GOTOS
 $$SWITCH$$ QUEX_OPTION_COMPUTED_GOTOS
 #endif
-
-#define    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC  ('\n')
-
-#ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
-#   define __QUEX_SETTING_MAX_MODE_CLASS_N  ($$MAX_MODE_CLASS_N$$)
-#endif
-#ifndef    QUEX_SETTING_MODE_INITIAL_P
-#   define QUEX_SETTING_MODE_INITIAL_P      (&$$QUEX_SETTING_MODE_INITIAL$$)
-#endif
-
 #ifndef    QUEX_OPTION_ENDIAN_LITTLE
 $$SWITCH$$ QUEX_OPTION_ENDIAN_LITTLE
 #endif
@@ -116,6 +96,70 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 #ifndef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 #endif
+/* Mode Transitions:
+ *    If the engine was created without the flag '--no-mode-transition-check'
+ *    then code for mode transition control is inserted. It can be deactivated
+ *    by commenting the following option out.                                 */
+#ifndef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+$$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+#endif
+
+/* QUEX_TYPE_X  --> Type of X in global namespace 
+ * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
+#if defined(__QUEX_OPTION_PLAIN_C)
+    /* In 'C' there are no namespaces, so namespaces are coded directly
+     * into the type name. Both, global and local names are equal.            */
+#   define QUEX_TYPE0_ANALYZER         struct $$LEXER_CLASS_NAME_SAFE$$_tag
+#   define QUEX_TYPE_ANALYZER          struct $$LEXER_CLASS_NAME_SAFE$$_tag
+#   define QUEX_NAME_COMPLETE_ANALYZER $$LEXER_CLASS_NAME_SAFE$$
+#   define QUEX_TYPE_DERIVED_ANALYZER  struct $$LEXER_CLASS_NAME_SAFE$$_tag
+
+#   define QUEX_NAMESPACE_MAIN         $$LEXER_CLASS_NAME_SAFE$$
+#   define QUEX_NAMESPACE_MAIN_OPEN   
+#   define QUEX_NAMESPACE_MAIN_CLOSE  
+#   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME_SAFE$$_ ## NAME
+
+#else
+    /* Add namespaces for the global names of the classes of analyzer
+     * and token.                                                             */
+#   define QUEX_TYPE0_ANALYZER         $$LEXER_CLASS_NAME$$
+#   define QUEX_TYPE_ANALYZER          $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$
+#   define QUEX_NAME_COMPLETE_ANALYZER $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$
+#   define QUEX_TYPE_DERIVED_ANALYZER  $$LEXER_DERIVED_CLASS_NAME$$
+
+#   define QUEX_NAMESPACE_MAIN         $$NAMESPACE_MAIN$$
+#   define QUEX_NAMESPACE_MAIN_OPEN    $$NAMESPACE_MAIN_OPEN$$
+#   define QUEX_NAMESPACE_MAIN_CLOSE   $$NAMESPACE_MAIN_CLOSE$$
+#   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME$$_ ## NAME
+#endif
+
+#if defined(__QUEX_OPTION_PLAIN_C)
+#   define QUEX_TYPE0_TOKEN            struct $$TOKEN_CLASS_NAME_SAFE$$_tag
+#   define QUEX_TYPE_TOKEN             struct $$TOKEN_CLASS_NAME_SAFE$$_tag
+#   define QUEX_NAME_COMPLETE_TOKEN    $$TOKEN_CLASS_NAME_SAFE$$
+
+#   define QUEX_NAMESPACE_TOKEN   
+#   define QUEX_NAMESPACE_TOKEN_OPEN  
+#   define QUEX_NAMESPACE_TOKEN_CLOSE 
+
+#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
+
+#   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
+
+#else
+#   define QUEX_TYPE0_TOKEN            $$TOKEN_CLASS$$
+#   define QUEX_TYPE_TOKEN             $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
+#   define QUEX_NAME_COMPLETE_TOKEN    $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
+
+#   define QUEX_NAMESPACE_TOKEN        $$NAMESPACE_TOKEN$$
+#   define QUEX_NAMESPACE_TOKEN_OPEN   $$NAMESPACE_TOKEN_OPEN$$
+#   define QUEX_NAMESPACE_TOKEN_CLOSE  $$NAMESPACE_TOKEN_CLOSE$$
+
+#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
+
+#   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS$$_ ## NAME
+
+#endif
 
 /* QUEX_TYPE_LEXATOM: The buffer element's type. A lexatom may be a character
  *     (e.g. ASCII),  or a code unit (e.g. UTF8) depending on the applied 
@@ -123,11 +167,7 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 #ifndef    QUEX_TYPE_LEXATOM
 #   define QUEX_TYPE_LEXATOM                                $$QUEX_TYPE_LEXATOM$$
 #endif 
-#ifndef    QUEX_TYPE_TOKEN_ID
-#   define QUEX_TYPE_TOKEN_ID                               $$TOKEN_ID_TYPE$$
-#endif
-#define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$ ## BRIEF)
-#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
+#define  $$LEXER_CLASS_NAME$$_token_id_t $$TOKEN_ID_TYPE$$                               
 #ifndef    QUEX_TYPE_TOKEN_LINE_N
 #   define QUEX_TYPE_TOKEN_LINE_N    $$TOKEN_LINE_N_TYPE$$
 #endif
@@ -143,12 +183,11 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 #   endif
 #endif
 
-/* Mode Transitions:
- *    If the engine was created without the flag '--no-mode-transition-check'
- *    then code for mode transition control is inserted. It can be deactivated
- *    by commenting the following option out.                                 */
-#ifndef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-$$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+#ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
+#   define __QUEX_SETTING_MAX_MODE_CLASS_N                 ($$MAX_MODE_CLASS_N$$)
+#endif
+#ifndef    QUEX_SETTING_MODE_INITIAL_P
+#   define QUEX_SETTING_MODE_INITIAL_P                     (&$$QUEX_SETTING_MODE_INITIAL$$)
 #endif
 
 #ifndef    QUEX_SETTING_MODE_STACK_SIZE 
@@ -168,6 +207,8 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #ifndef    QUEX_SETTING_BUFFER_LIMIT_CODE
 #   define QUEX_SETTING_BUFFER_LIMIT_CODE  ((QUEX_TYPE_LEXATOM)$$BUFFER_LIMIT_CODE$$)
 #endif
+
+#define    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC  ('\n')
 
 /* PTC -- Path Termination code:
  * 
@@ -243,63 +284,8 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #   define QUEX_SETTING_CHARACTER_CODEC $$QUEX_SETTING_CHARACTER_CODEC$$
 #endif
 
-/* QUEX_TYPE_X  --> Type of X in global namespace 
- * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
-#if defined(__QUEX_OPTION_PLAIN_C)
-    /* In 'C' there are no namespaces, so namespaces are coded directly
-     * into the type name. Both, global and local names are equal.            */
-#   define QUEX_TYPE0_ANALYZER         struct $$LEXER_CLASS_NAME_SAFE$$_tag
-#   define QUEX_TYPE_ANALYZER          struct $$LEXER_CLASS_NAME_SAFE$$_tag
-#   define QUEX_NAME_COMPLETE_ANALYZER $$LEXER_CLASS_NAME_SAFE$$
-#   define QUEX_TYPE_DERIVED_ANALYZER  struct $$LEXER_CLASS_NAME_SAFE$$_tag
-
-#   define QUEX_NAMESPACE_MAIN         $$LEXER_CLASS_NAME_SAFE$$
-#   define QUEX_NAMESPACE_MAIN_OPEN   
-#   define QUEX_NAMESPACE_MAIN_CLOSE  
-#   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME_SAFE$$_ ## NAME
-
-#else
-    /* Add namespaces for the global names of the classes of analyzer
-     * and token.                                                             */
-#   define QUEX_TYPE0_ANALYZER         $$LEXER_CLASS_NAME$$
-#   define QUEX_TYPE_ANALYZER          $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$
-#   define QUEX_NAME_COMPLETE_ANALYZER $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$
-#   define QUEX_TYPE_DERIVED_ANALYZER  $$LEXER_DERIVED_CLASS_NAME$$
-
-#   define QUEX_NAMESPACE_MAIN         $$NAMESPACE_MAIN$$
-#   define QUEX_NAMESPACE_MAIN_OPEN    $$NAMESPACE_MAIN_OPEN$$
-#   define QUEX_NAMESPACE_MAIN_CLOSE   $$NAMESPACE_MAIN_CLOSE$$
-#   define QUEX_NAME(NAME)             $$LEXER_CLASS_NAME$$_ ## NAME
-#endif
-
-#if defined(__QUEX_OPTION_PLAIN_C)
-#   define QUEX_TYPE0_TOKEN            struct $$TOKEN_CLASS_NAME_SAFE$$_tag
-#   define QUEX_TYPE_TOKEN             struct $$TOKEN_CLASS_NAME_SAFE$$_tag
-#   define QUEX_NAME_COMPLETE_TOKEN    $$TOKEN_CLASS_NAME_SAFE$$
-
-#   define QUEX_NAMESPACE_TOKEN   
-#   define QUEX_NAMESPACE_TOKEN_OPEN  
-#   define QUEX_NAMESPACE_TOKEN_CLOSE 
-
-#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
-
-#   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
-
-#else
-#   define QUEX_TYPE0_TOKEN            $$TOKEN_CLASS$$
-#   define QUEX_TYPE_TOKEN             $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
-#   define QUEX_NAME_COMPLETE_TOKEN    $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
-
-#   define QUEX_NAMESPACE_TOKEN        $$NAMESPACE_TOKEN$$
-#   define QUEX_NAMESPACE_TOKEN_OPEN   $$NAMESPACE_TOKEN_OPEN$$
-#   define QUEX_NAMESPACE_TOKEN_CLOSE  $$NAMESPACE_TOKEN_CLOSE$$
-
-#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
-
-#   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS$$_ ## NAME
-
-#endif
-
+#define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$ ## BRIEF)
+#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
 #ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
 #   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)$$TOKEN_QUEUE_SIZE$$)
 #endif

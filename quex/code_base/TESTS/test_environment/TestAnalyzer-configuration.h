@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.68.2"
-#define QUEX_SETTING_BUILD_DATE        "Thu Apr  5 08:24:42 2018"
+#define QUEX_SETTING_BUILD_DATE        "Sat Apr  7 08:28:22 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -46,55 +46,9 @@
 #   error "Asserts included before configuration file. However, the configuration file MUST control asserts!"
 #endif
 
-#if           defined(QUEX_OPTION_ASSERTS_DISABLED) || defined(NDEBUG)
-#   ifdef     QUEX_OPTION_ASSERTS
-#      undef  QUEX_OPTION_ASSERTS
-#   endif
-#else
-#   ifndef    QUEX_OPTION_ASSERTS
-#      define QUEX_OPTION_ASSERTS
-#   endif
-#endif
-
 #ifndef  QUEX_OPTION_COMPUTED_GOTOS
 /* #define QUEX_OPTION_COMPUTED_GOTOS */
 #endif
-
-/* QUEX_TYPE_LEXATOM: The buffer element's type. A lexatom may be a character
- *     (e.g. ASCII),  or a code unit (e.g. UTF8) depending on the applied 
- *     encoding inside the lexer's engine.                                    */
-#ifndef    QUEX_TYPE_LEXATOM
-#   define QUEX_TYPE_LEXATOM          uint8_t
-#endif 
-#ifndef    QUEX_TYPE_TOKEN_ID
-#   define QUEX_TYPE_TOKEN_ID                               uint32_t
-#endif
-#define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_ ## BRIEF)
-#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
-#ifndef    QUEX_TYPE_TOKEN_LINE_N
-#   define QUEX_TYPE_TOKEN_LINE_N    size_t
-#endif
-#ifndef    QUEX_TYPE_TOKEN_COLUMN_N
-#   define QUEX_TYPE_TOKEN_COLUMN_N  size_t
-#endif
-#ifndef    QUEX_TYPE_ACCEPTANCE_ID
-#   define QUEX_TYPE_ACCEPTANCE_ID   int
-#endif
-#if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-#   ifndef    QUEX_TYPE_INDENTATION
-#      define QUEX_TYPE_INDENTATION  size_t
-#   endif
-#endif
-
-#define    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC  ('\n')
-
-#ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
-#   define __QUEX_SETTING_MAX_MODE_CLASS_N  (2)
-#endif
-#ifndef    QUEX_SETTING_MODE_INITIAL_P
-#   define QUEX_SETTING_MODE_INITIAL_P      (&QUEX_NAME(M))
-#endif
-
 #ifndef    QUEX_OPTION_ENDIAN_LITTLE
 #define    QUEX_OPTION_ENDIAN_LITTLE
 #endif
@@ -120,13 +74,120 @@
 #ifndef    QUEX_OPTION_COUNTER_COLUMN          
 #define    QUEX_OPTION_COUNTER_COLUMN       
 #endif
+/* #define QUEX_OPTION_INDENTATION_TRIGGER */
+/* Quex can determine whether certain handlers are not used at all.  If so,
+ * computation time can be spared and quex comments the following options out.
+ *                                                                           */
+/* #define __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT */
+/* #define __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT */
 
+/* Begin of line pre-condition requires an extra flag in the buffer
+ * structure. Only out-comment this in case of tough memory restrictions,
+ * if no begin of line pre-condition is required.                            */
+/* #define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
+
+/* The following flag indicates that the engine is running on a specific
+ * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
+/* #define __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC */
+#
+#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+/* #define QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+#endif
+#ifndef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+#define    QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+#endif
 /* Mode Transitions:
  *    If the engine was created without the flag '--no-mode-transition-check'
  *    then code for mode transition control is inserted. It can be deactivated
  *    by commenting the following option out.                                 */
 #ifndef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #define    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+#endif
+
+/* QUEX_TYPE_X  --> Type of X in global namespace 
+ * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
+#if defined(__QUEX_OPTION_PLAIN_C)
+    /* In 'C' there are no namespaces, so namespaces are coded directly
+     * into the type name. Both, global and local names are equal.            */
+#   define QUEX_TYPE0_ANALYZER         struct quex_TestAnalyzer_tag
+#   define QUEX_TYPE_ANALYZER          struct quex_TestAnalyzer_tag
+#   define QUEX_NAME_COMPLETE_ANALYZER quex_TestAnalyzer
+#   define QUEX_TYPE_DERIVED_ANALYZER  struct quex_TestAnalyzer_tag
+
+#   define QUEX_NAMESPACE_MAIN         quex_TestAnalyzer
+#   define QUEX_NAMESPACE_MAIN_OPEN   
+#   define QUEX_NAMESPACE_MAIN_CLOSE  
+#   define QUEX_NAME(NAME)             quex_TestAnalyzer_ ## NAME
+
+#else
+    /* Add namespaces for the global names of the classes of analyzer
+     * and token.                                                             */
+#   define QUEX_TYPE0_ANALYZER         TestAnalyzer
+#   define QUEX_TYPE_ANALYZER          quex::TestAnalyzer
+#   define QUEX_NAME_COMPLETE_ANALYZER quex::TestAnalyzer
+#   define QUEX_TYPE_DERIVED_ANALYZER  TestAnalyzer
+
+#   define QUEX_NAMESPACE_MAIN         quex
+#   define QUEX_NAMESPACE_MAIN_OPEN    
+#   define QUEX_NAMESPACE_MAIN_CLOSE   
+#   define QUEX_NAME(NAME)             TestAnalyzer_ ## NAME
+#endif
+
+#if defined(__QUEX_OPTION_PLAIN_C)
+#   define QUEX_TYPE0_TOKEN            struct quex_Token_tag
+#   define QUEX_TYPE_TOKEN             struct quex_Token_tag
+#   define QUEX_NAME_COMPLETE_TOKEN    quex_Token
+
+#   define QUEX_NAMESPACE_TOKEN   
+#   define QUEX_NAMESPACE_TOKEN_OPEN  
+#   define QUEX_NAMESPACE_TOKEN_CLOSE 
+
+#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
+
+#   define QUEX_NAME_TOKEN(NAME)       quex_Token_ ## NAME
+
+#else
+#   define QUEX_TYPE0_TOKEN            Token
+#   define QUEX_TYPE_TOKEN             quex::Token
+#   define QUEX_NAME_COMPLETE_TOKEN    quex::Token
+
+#   define QUEX_NAMESPACE_TOKEN        quex
+#   define QUEX_NAMESPACE_TOKEN_OPEN   
+#   define QUEX_NAMESPACE_TOKEN_CLOSE  
+
+#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
+
+#   define QUEX_NAME_TOKEN(NAME)       Token_ ## NAME
+
+#endif
+
+/* QUEX_TYPE_LEXATOM: The buffer element's type. A lexatom may be a character
+ *     (e.g. ASCII),  or a code unit (e.g. UTF8) depending on the applied 
+ *     encoding inside the lexer's engine.                                    */
+#ifndef    QUEX_TYPE_LEXATOM
+#   define QUEX_TYPE_LEXATOM                                uint8_t
+#endif 
+#define  TestAnalyzer_token_id_t uint32_t                               
+#ifndef    QUEX_TYPE_TOKEN_LINE_N
+#   define QUEX_TYPE_TOKEN_LINE_N    size_t
+#endif
+#ifndef    QUEX_TYPE_TOKEN_COLUMN_N
+#   define QUEX_TYPE_TOKEN_COLUMN_N  size_t
+#endif
+#ifndef    QUEX_TYPE_ACCEPTANCE_ID
+#   define QUEX_TYPE_ACCEPTANCE_ID   int
+#endif
+#if defined(QUEX_OPTION_INDENTATION_TRIGGER)
+#   ifndef    QUEX_TYPE_INDENTATION
+#      define QUEX_TYPE_INDENTATION  size_t
+#   endif
+#endif
+
+#ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
+#   define __QUEX_SETTING_MAX_MODE_CLASS_N                 (2)
+#endif
+#ifndef    QUEX_SETTING_MODE_INITIAL_P
+#   define QUEX_SETTING_MODE_INITIAL_P                     (&QUEX_NAME(M))
 #endif
 
 #ifndef    QUEX_SETTING_MODE_STACK_SIZE 
@@ -146,6 +207,8 @@
 #ifndef    QUEX_SETTING_BUFFER_LIMIT_CODE
 #   define QUEX_SETTING_BUFFER_LIMIT_CODE  ((QUEX_TYPE_LEXATOM)0)
 #endif
+
+#define    QUEX_SETTING_CHARACTER_NEWLINE_IN_ENGINE_CODEC  ('\n')
 
 /* PTC -- Path Termination code:
  * 
@@ -207,101 +270,24 @@
 /* If one mode requires indentation support, then the lexical analyser class
  * must be setup for indentation counting. The following flag is defined or
  * undefined by the lexical analyser generator quex.                         */
-/* #define QUEX_OPTION_INDENTATION_TRIGGER */
 #if    defined(QUEX_OPTION_INDENTATION_TRIGGER)
 #   ifndef    QUEX_SETTING_INDENTATION_STACK_SIZE
 #      define QUEX_SETTING_INDENTATION_STACK_SIZE                         (64)
 #   endif
 #endif
   
-/* Quex can determine whether certain handlers are not used at all.  If so,
- * computation time can be spared and quex comments the following options out.
- *                                                                           */
-/* #define __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT */
-/* #define __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT */
-
 #ifndef     QUEX_SETTING_TRANSLATION_BUFFER_SIZE
 #    define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)65536)
 #endif
 
-/* Begin of line pre-condition requires an extra flag in the buffer
- * structure. Only out-comment this in case of tough memory restrictions,
- * if no begin of line pre-condition is required.                            */
-/* #define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
-
 #ifndef    QUEX_SETTING_CHARACTER_CODEC   
 #   define QUEX_SETTING_CHARACTER_CODEC unicode
 #endif
-/* The following flag indicates that the engine is running on a specific
- * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
-/* #define __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC */
 
-/* QUEX_TYPE_X  --> Type of X in global namespace 
- * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
-#if defined(__QUEX_OPTION_PLAIN_C)
-    /* In 'C' there are no namespaces, so namespaces are coded directly
-     * into the type name. Both, global and local names are equal.            */
-#   define QUEX_TYPE0_ANALYZER         struct quex_TestAnalyzer_tag
-#   define QUEX_TYPE_ANALYZER          struct quex_TestAnalyzer_tag
-#   define QUEX_NAME_COMPLETE_ANALYZER quex_TestAnalyzer
-#   define QUEX_TYPE_DERIVED_ANALYZER  struct quex_TestAnalyzer_tag
-
-#   define QUEX_NAMESPACE_MAIN         quex_TestAnalyzer
-#   define QUEX_NAMESPACE_MAIN_OPEN   
-#   define QUEX_NAMESPACE_MAIN_CLOSE  
-#   define QUEX_NAME(NAME)             quex_TestAnalyzer_ ## NAME
-
-#else
-    /* Add namespaces for the global names of the classes of analyzer
-     * and token.                                                             */
-#   define QUEX_TYPE0_ANALYZER         TestAnalyzer
-#   define QUEX_TYPE_ANALYZER          quex::TestAnalyzer
-#   define QUEX_NAME_COMPLETE_ANALYZER quex::TestAnalyzer
-#   define QUEX_TYPE_DERIVED_ANALYZER  TestAnalyzer
-
-#   define QUEX_NAMESPACE_MAIN         quex
-#   define QUEX_NAMESPACE_MAIN_OPEN    
-#   define QUEX_NAMESPACE_MAIN_CLOSE   
-#   define QUEX_NAME(NAME)             TestAnalyzer_ ## NAME
-#endif
-
-#if defined(__QUEX_OPTION_PLAIN_C)
-#   define QUEX_TYPE0_TOKEN            struct quex_Token_tag
-#   define QUEX_TYPE_TOKEN             struct quex_Token_tag
-#   define QUEX_NAME_COMPLETE_TOKEN    quex_Token
-
-#   define QUEX_NAMESPACE_TOKEN   
-#   define QUEX_NAMESPACE_TOKEN_OPEN  
-#   define QUEX_NAMESPACE_TOKEN_CLOSE 
-
-#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
-
-#   define QUEX_NAME_TOKEN(NAME)       quex_Token_ ## NAME
-
-#else
-#   define QUEX_TYPE0_TOKEN            Token
-#   define QUEX_TYPE_TOKEN             quex::Token
-#   define QUEX_NAME_COMPLETE_TOKEN    quex::Token
-
-#   define QUEX_NAMESPACE_TOKEN        quex
-#   define QUEX_NAMESPACE_TOKEN_OPEN   
-#   define QUEX_NAMESPACE_TOKEN_CLOSE  
-
-#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
-
-#   define QUEX_NAME_TOKEN(NAME)       Token_ ## NAME
-
-#endif
-
+#define    QUEX_TOKEN_ID(BRIEF)                             ((TestAnalyzer_token_id_t)QUEX_TKN_ ## BRIEF)
+#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
 #ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
 #   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)64)
-#endif
-
-#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-/* #define QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
-#endif
-#ifndef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-#define    QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 #endif
 
 #include "test_environment/lib/analyzer/configuration/derived"

@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 
 		while (true) {
 			qlex.receive(&token_p);
-            const QUEX_TYPE_TOKEN_ID TokenID = token_p->id;
+            const tokenizer_it_token_id_t TokenID = token_p->id;
 
 			if (TokenID == QUEX_TKN_TERMINATION)
 				break;

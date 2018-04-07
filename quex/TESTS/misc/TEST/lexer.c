@@ -9,7 +9,7 @@ main(int argc, char** argv)
     const size_t        BufferSize = 1024;
     char                buffer[1024];
     QUEX_TYPE_TOKEN*    token_p = 0x0;
-    QUEX_TYPE_TOKEN_ID  token_id = 0;
+    Simple_token_id_t   token_id = 0;
     quex_Simple         qlex;
     QUEX_NAME(Mode)*    mode;
 

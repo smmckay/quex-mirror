@@ -1,9 +1,12 @@
 from   quex.engine.misc.tools import typed
-from   quex.blackboard        import Lng
+from   quex.blackboard        import Lng, setup as Setup
+from   quex.engine.misc.string_handling import blue_print
 
 def do(Txt, OutputDir, OriginalPath=None):
+    if not Txt: return Txt
     ## txt = declare_member_functions(txt)
     txt = produce_include_statements(OutputDir, Txt)
+    txt = _insert_type_definitions(txt)
     if OriginalPath:
         txt = "%s%s" % (Lng.LINE_PRAGMA(OriginalPath, 1), txt)
     return txt
@@ -122,3 +125,10 @@ def produce_include_statements(OutputDir, Txt):
         # include_file_list.append(local_path)
     txt.append(Txt[last_i:])
     return "".join(txt)
+
+def _insert_type_definitions(Txt):
+    if not Txt: return Txt
+    quex_type_token_id = "%s_token_id_t" % Setup.analyzer_class_name
+    return blue_print(Txt, 
+                      [("QUEX_TYPE_TOKEN_ID", quex_type_token_id)],
+                      CommonStart="QUEX_TYPE_")

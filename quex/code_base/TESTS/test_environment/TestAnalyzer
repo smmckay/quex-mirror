@@ -166,7 +166,7 @@ public:
 
 public:
     typedef QUEX_TYPE_TOKEN      token_type;
-    typedef QUEX_TYPE_TOKEN_ID   token_id_type;
+    typedef TestAnalyzer_token_id_t   token_id_type;
     typedef QUEX_TYPE_LEXATOM    char_type;
 
     /*__( Constructors )________________________________________________________
@@ -242,13 +242,13 @@ public:
     QUEX_TYPE_TOKEN* token_p() { return QUEX_NAME(MF_token_p)(this); }
 
 
-    void send(QUEX_TYPE_TOKEN_ID Id) { QUEX_NAME(MF_send)(this, Id); }
+    void send(TestAnalyzer_token_id_t Id) { QUEX_NAME(MF_send)(this, Id); }
 
-    void send_n(QUEX_TYPE_TOKEN_ID Id, size_t RepetitionN) { QUEX_NAME(MF_send_n)(this, Id, RepetitionN); }
+    void send_n(TestAnalyzer_token_id_t Id, size_t RepetitionN) { QUEX_NAME(MF_send_n)(this, Id, RepetitionN); }
 
-    bool send_text(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP) { return QUEX_NAME(MF_send_text)(this, Id, BeginP, EndP); }
+    bool send_text(TestAnalyzer_token_id_t Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP) { return QUEX_NAME(MF_send_text)(this, Id, BeginP, EndP); }
 
-    bool send_string(QUEX_TYPE_TOKEN_ID Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString) { return QUEX_NAME(MF_send_string)(this, Id, ZeroTerminatedString); }
+    bool send_string(TestAnalyzer_token_id_t Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString) { return QUEX_NAME(MF_send_string)(this, Id, ZeroTerminatedString); }
 
 
     /*__( Mode Handling )______________________________________________________
@@ -267,6 +267,32 @@ public:
     void push_mode(QUEX_NAME(Mode)* new_mode) { QUEX_NAME(MF_push_mode)(this, new_mode); }
 
 
+    /*__( Line/Column Counter )________________________________________________
+     *                                                                       */
+    size_t line_number() { return QUEX_NAME(MF_line_number)(this); }
+
+    size_t line_number_at_begin() { return QUEX_NAME(MF_line_number_at_begin)(this); }
+
+    size_t line_number_at_end() { return QUEX_NAME(MF_line_number_at_end)(this); }
+
+    void line_number_set(size_t Y) { QUEX_NAME(MF_line_number_set)(this, Y); }
+
+
+    size_t column_number() { return QUEX_NAME(MF_column_number)(this); }
+
+    size_t column_number_at_begin() { return QUEX_NAME(MF_column_number_at_begin)(this); }
+
+    size_t column_number_at_end() { return QUEX_NAME(MF_column_number_at_end)(this); }
+
+    void column_number_set(size_t X) { QUEX_NAME(MF_column_number_set)(this, X); }
+
+
+    /*__( Indentation )________________________________________________________
+     *                                                                       */
+    
+
+
+public:
     /*__( General Information )________________________________________________
      *                                                                       */
     const char* version() { return QUEX_NAME(MF_version)(this); }
@@ -276,22 +302,6 @@ public:
     const char* input_name() { return QUEX_NAME(MF_input_name)(this); }
 
     bool input_name_set(const char* InputName) { return QUEX_NAME(MF_input_name_set)(this, InputName); }
-
-
-    /*__( Byte Order Reversion Activation / Deactivation )_____________________
-     *                                                                       */
-    bool byte_order_reversion() { return QUEX_NAME(MF_byte_order_reversion)(this); }
-
-    void byte_order_reversion_set(bool Value) { QUEX_NAME(MF_byte_order_reversion_set)(this, Value); }
-
-
-    void error_code_clear() { QUEX_NAME(MF_error_code_clear)(this); }
-
-    bool error_code_is_void() { return QUEX_NAME(MF_error_code_is_void)(this); }
-
-    void error_code_set_void() { QUEX_NAME(MF_error_code_set_void)(this); }
-
-    void error_code_set_if_first(E_Error ErrorCode) { QUEX_NAME(MF_error_code_set_if_first)(this, ErrorCode); }
 
 
     /*__( Navigation: Tell/Seek )______________________________________________
@@ -310,40 +320,38 @@ public:
     void undo_n(size_t DeltaN_Backward) { QUEX_NAME(MF_undo_n)(this, DeltaN_Backward); }
 
 
+    /*__( Byte Order Reversion Activation / Deactivation )_____________________
+     *                                                                       */
+    bool byte_order_reversion() { return QUEX_NAME(MF_byte_order_reversion)(this); }
+
+    void byte_order_reversion_set(bool Value) { QUEX_NAME(MF_byte_order_reversion_set)(this, Value); }
+
+
+    /*__( Error Codes )________________________________________________________
+     *                                                                       */
+    void error_code_clear() { QUEX_NAME(MF_error_code_clear)(this); }
+
+    bool error_code_is_void() { return QUEX_NAME(MF_error_code_is_void)(this); }
+
+    void error_code_set_void() { QUEX_NAME(MF_error_code_set_void)(this); }
+
+    void error_code_set_if_first(E_Error ErrorCode) { QUEX_NAME(MF_error_code_set_if_first)(this, ErrorCode); }
+
+
+    /*__( Deep Resources )_____________________________________________________
+     *                                                                       */
+    void collect_user_memory(QUEX_TYPE_LEXATOM** user_memory_p) { QUEX_NAME(MF_collect_user_memory)(this, user_memory_p); }
+
+    void resources_absent_mark() { QUEX_NAME(MF_resources_absent_mark)(this); }
+
+    bool resources_absent() { return QUEX_NAME(MF_resources_absent)(this); }
+
+
 #define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
 /* START: User's class body extensions _______________________________________*/
 
 /* END: ______________________________________________________________________*/
 #undef  self
-
-public:
-    /*__( Line/Column Counter )________________________________________________
-     *                                                                       */
-#   ifdef  QUEX_OPTION_COUNTER_LINE
-    size_t      line_number() const            { return line_number_at_begin(); }
-    size_t      line_number_at_begin() const   { return counter._line_number_at_begin; }
-    size_t      line_number_at_end() const     { return counter._line_number_at_end; }
-    /*          line_number_set(...) defines the column number of the next pattern match. */
-    void        line_number_set(size_t Y)      { counter._line_number_at_end = Y; }
-#   endif
-#   ifdef  QUEX_OPTION_COUNTER_COLUMN
-    size_t      column_number() const          { return column_number_at_begin(); }
-    size_t      column_number_at_begin() const { return counter._column_number_at_begin; }
-    size_t      column_number_at_end() const   { return counter._column_number_at_end; }
-    /*          column_number_set(...) defines the column number of the next pattern match. */
-    void        column_number_set(size_t X)    { counter._column_number_at_end = X; }
-#   endif
-    /*__( Indentation )________________________________________________________
-     *                                                                       */
-#   ifdef   QUEX_OPTION_INDENTATION_TRIGGER
-    size_t      indentation()                  { return counter._indentation_stack.back - counter._indentation_stack.front + 1; }
-#   endif
-
-    void collect_user_memory(QUEX_TYPE_LEXATOM** user_memory_p) { QUEX_NAME(MF_collect_user_memory)(this, user_memory_p); }
-
-    bool resources_absent() { return QUEX_NAME(MF_resources_absent)(this); }
-
-    void resources_absent_mark() { QUEX_NAME(MF_resources_absent_mark)(this); }
 
 public:
     /* Befriend all modes                                                     */

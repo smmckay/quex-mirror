@@ -36,7 +36,7 @@ QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
-    QUEX_TYPE_TOKEN_ID    id;
+    TestAnalyzer_token_id_t    id;
 
 #   line 19 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
     const QUEX_TYPE_LEXATOM* text;
@@ -77,9 +77,9 @@ QUEX_INLINE void         quex_Token_destruct(quex_Token*);
  *       necessary, since the members are accessed directly.                   */
 
 QUEX_INLINE void         quex_Token_set(quex_Token*            me, 
-                                          const QUEX_TYPE_TOKEN_ID ID);
+                                          const TestAnalyzer_token_id_t ID);
 
-QUEX_INLINE const char*  quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
+QUEX_INLINE const char*  quex_Token_map_id_to_name(const TestAnalyzer_token_id_t);
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool         quex_Token_take_text(quex_Token*            me, 

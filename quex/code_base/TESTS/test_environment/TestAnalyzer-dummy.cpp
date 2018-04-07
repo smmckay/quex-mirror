@@ -163,8 +163,8 @@ self.send_n(QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #   undef Lexeme    
 #   undef LexemeEnd 
-#   define M     (&QUEX_NAME(M))
-#   define M2    (&QUEX_NAME(M2))
+#   undef M
+#   undef M2
 
 }
 #endif
@@ -376,8 +376,8 @@ self.send_n(QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #   undef Lexeme    
 #   undef LexemeEnd 
-#   define M     (&QUEX_NAME(M))
-#   define M2    (&QUEX_NAME(M2))
+#   undef M
+#   undef M2
 
 }
 #endif

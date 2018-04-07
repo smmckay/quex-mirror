@@ -23,7 +23,7 @@ typedef struct {
 } Lexer;
 
 #define QUEX_TYPE_LEXATOM    uint8_t
-#define QUEX_TYPE_TOKEN_ID   uint32_t
+#define TestAnalyzer_token_id_t uint32_t
 #define QUEX_TYPE_TOKEN      Token
 #define QUEX_TYPE_ANALYZER   Lexer 
 #define TokenId_TERMINATION  0

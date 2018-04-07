@@ -21,6 +21,7 @@ from   quex.output.languages.core               import db
 from   quex.blackboard                          import setup as Setup, \
                                                        Lng
 Setup.language_db = db["C++"]()
+Setup.analyzer_class_name = "TestAnalyzer"
 
 if len(sys.argv) < 2:
     print "Error: require at least target directory."

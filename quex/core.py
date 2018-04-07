@@ -36,6 +36,7 @@ def _generate(mode_db):
     class_token_header,             \
     class_token_implementation      = token_class.do()
 
+    token_id_header            = adapt.do(token_id_header, Setup.output_directory)
     class_token_header         = adapt.do(class_token_header, Setup.output_directory)
     class_token_implementation = adapt.do(class_token_implementation, Setup.output_directory)
 

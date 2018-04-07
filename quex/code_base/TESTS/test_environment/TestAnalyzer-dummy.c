@@ -163,8 +163,8 @@ self.send_n(&self, QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #   undef Lexeme    
 #   undef LexemeEnd 
-#   define M     (&QUEX_NAME(M))
-#   define M2    (&QUEX_NAME(M2))
+#   undef M
+#   undef M2
 
 }
 #endif
@@ -376,8 +376,8 @@ self.send_n(&self, QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #   undef Lexeme    
 #   undef LexemeEnd 
-#   define M     (&QUEX_NAME(M))
-#   define M2    (&QUEX_NAME(M2))
+#   undef M
+#   undef M2
 
 }
 #endif
@@ -1331,22 +1331,33 @@ QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
     me->pop_mode = QUEX_NAME(MF_pop_mode);
     me->pop_drop_mode = QUEX_NAME(MF_pop_drop_mode);
     me->push_mode = QUEX_NAME(MF_push_mode);
+    me->line_number = QUEX_NAME(MF_line_number);
+    me->line_number_at_begin = QUEX_NAME(MF_line_number_at_begin);
+    me->line_number_at_end = QUEX_NAME(MF_line_number_at_end);
+    me->line_number_set = QUEX_NAME(MF_line_number_set);
+    me->column_number = QUEX_NAME(MF_column_number);
+    me->column_number_at_begin = QUEX_NAME(MF_column_number_at_begin);
+    me->column_number_at_end = QUEX_NAME(MF_column_number_at_end);
+    me->column_number_set = QUEX_NAME(MF_column_number_set);
     me->version = QUEX_NAME(MF_version);
     me->print_this = QUEX_NAME(MF_print_this);
     me->input_name = QUEX_NAME(MF_input_name);
     me->input_name_set = QUEX_NAME(MF_input_name_set);
-    me->byte_order_reversion = QUEX_NAME(MF_byte_order_reversion);
-    me->byte_order_reversion_set = QUEX_NAME(MF_byte_order_reversion_set);
-    me->error_code_clear = QUEX_NAME(MF_error_code_clear);
-    me->error_code_is_void = QUEX_NAME(MF_error_code_is_void);
-    me->error_code_set_void = QUEX_NAME(MF_error_code_set_void);
-    me->error_code_set_if_first = QUEX_NAME(MF_error_code_set_if_first);
     me->tell = QUEX_NAME(MF_tell);
     me->seek = QUEX_NAME(MF_seek);
     me->seek_forward = QUEX_NAME(MF_seek_forward);
     me->seek_backward = QUEX_NAME(MF_seek_backward);
     me->undo = QUEX_NAME(MF_undo);
     me->undo_n = QUEX_NAME(MF_undo_n);
+    me->byte_order_reversion = QUEX_NAME(MF_byte_order_reversion);
+    me->byte_order_reversion_set = QUEX_NAME(MF_byte_order_reversion_set);
+    me->error_code_clear = QUEX_NAME(MF_error_code_clear);
+    me->error_code_is_void = QUEX_NAME(MF_error_code_is_void);
+    me->error_code_set_void = QUEX_NAME(MF_error_code_set_void);
+    me->error_code_set_if_first = QUEX_NAME(MF_error_code_set_if_first);
+    me->collect_user_memory = QUEX_NAME(MF_collect_user_memory);
+    me->resources_absent_mark = QUEX_NAME(MF_resources_absent_mark);
+    me->resources_absent = QUEX_NAME(MF_resources_absent);
 }
 #endif
 
@@ -1450,7 +1461,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 QUEX_INLINE void 
 quex_Token_set(quex_Token*            __this, 
-                 const QUEX_TYPE_TOKEN_ID ID) 
+                 const TestAnalyzer_token_id_t ID) 
 { __this->id = ID; }
 
 QUEX_INLINE void 
@@ -1466,7 +1477,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 1470 "test_environment/TestAnalyzer.c"
+#   line 1481 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1497,7 +1508,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 1501 "test_environment/TestAnalyzer.c"
+#   line 1512 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1532,7 +1543,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 1536 "test_environment/TestAnalyzer.c"
+#   line 1547 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -1614,7 +1625,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 1618 "test_environment/TestAnalyzer.c"
+#   line 1629 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1636,7 +1647,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 1640 "test_environment/TestAnalyzer.c"
+#   line 1651 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1655,7 +1666,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 1659 "test_environment/TestAnalyzer.c"
+#   line 1670 "test_environment/TestAnalyzer.c"
 
 #   undef  LexemeNull
 #   undef  self
@@ -1663,7 +1674,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 QUEX_INLINE const char*
-quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
+quex_Token_map_id_to_name(const TestAnalyzer_token_id_t TokenID)
 {
    static char  error_string[64];
 
@@ -1729,7 +1740,7 @@ quex_Token_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 #include "test_environment/lib/lexeme.i"
    
 
-#   line 1733 "test_environment/TestAnalyzer.c"
+#   line 1744 "test_environment/TestAnalyzer.c"
 
 
 #include "test_environment/lib/lexeme.i"

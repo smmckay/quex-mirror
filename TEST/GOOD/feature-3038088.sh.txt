@@ -10,15 +10,15 @@ simple.qx:5:warning: Token ids with same numeric value 115 found:
 simple.qx:5:warning:   C
 simple.qx:7:warning:   E
 simple.qx:7:warning: ('--suppress 18' to avoid this message)
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_A             = ((QUEX_TYPE_TOKEN_ID)114);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_B             = ((QUEX_TYPE_TOKEN_ID)116);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_C             = ((QUEX_TYPE_TOKEN_ID)115);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_D             = ((QUEX_TYPE_TOKEN_ID)117);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_DEDENT        = ((QUEX_TYPE_TOKEN_ID)111);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_E             = ((QUEX_TYPE_TOKEN_ID)115);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_F             = ((QUEX_TYPE_TOKEN_ID)111);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_INDENT        = ((QUEX_TYPE_TOKEN_ID)112);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_NODENT        = ((QUEX_TYPE_TOKEN_ID)113);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_TERMINATION   = ((QUEX_TYPE_TOKEN_ID)0);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_UNINITIALIZED = ((QUEX_TYPE_TOKEN_ID)111);
-const QUEX_TYPE_TOKEN_ID QUEX_TKN_Z             = ((QUEX_TYPE_TOKEN_ID)118);
+const Simple_token_id_t QUEX_TKN_A             = ((Simple_token_id_t)114);
+const Simple_token_id_t QUEX_TKN_B             = ((Simple_token_id_t)116);
+const Simple_token_id_t QUEX_TKN_C             = ((Simple_token_id_t)115);
+const Simple_token_id_t QUEX_TKN_D             = ((Simple_token_id_t)117);
+const Simple_token_id_t QUEX_TKN_DEDENT        = ((Simple_token_id_t)111);
+const Simple_token_id_t QUEX_TKN_E             = ((Simple_token_id_t)115);
+const Simple_token_id_t QUEX_TKN_F             = ((Simple_token_id_t)111);
+const Simple_token_id_t QUEX_TKN_INDENT        = ((Simple_token_id_t)112);
+const Simple_token_id_t QUEX_TKN_NODENT        = ((Simple_token_id_t)113);
+const Simple_token_id_t QUEX_TKN_TERMINATION   = ((Simple_token_id_t)0);
+const Simple_token_id_t QUEX_TKN_UNINITIALIZED = ((Simple_token_id_t)111);
+const Simple_token_id_t QUEX_TKN_Z             = ((Simple_token_id_t)118);
