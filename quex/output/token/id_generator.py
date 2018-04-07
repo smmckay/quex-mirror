@@ -119,13 +119,16 @@ def __get_token_id_definition_txt():
     assert len(Setup.extern_token_id_file) == 0
 
     def define_this(txt, token, L):
+        tid_t = Setup.token_id_type
         assert token.number is not None
         if Setup.language == "C":
-            txt.append("#define %s%s %s((QUEX_TYPE_TOKEN_ID)%i)\n" \
-                       % (Setup.token_id_prefix_plain, token.name, space(L, token.name), token.number))
+            txt.append("#define %s%s %s((%s)%i)\n" \
+                       % (Setup.token_id_prefix_plain, token.name, space(L, token.name), 
+                          tid_t, token.number))
         else:
-            txt.append("const QUEX_TYPE_TOKEN_ID %s%s%s = ((QUEX_TYPE_TOKEN_ID)%i);\n" \
-                       % (Setup.token_id_prefix_plain, token.name, space(L, token.name), token.number))
+            txt.append("const %s %s%s%s = ((%s)%i);\n" \
+                       % (tid_t, Setup.token_id_prefix_plain, token.name, 
+                          space(L, token.name), tid_t, token.number))
 
     if Setup.language == "C": 
         prolog = ""
