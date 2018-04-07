@@ -1,5 +1,5 @@
-quex -i GOTO.qx -o Simple --language C --debug-exception
-gcc -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -Wno-deprecated  -DQUEX_OPTION_CONVERTER_ICONV  -DPRINT_TOKEN -DQUEX_OPTION_DEBUG_SHOW_MODES -DQUEX_OPTION_COUNTER_LINE_DISABLED -DQUEX_OPTION_COUNTER_COLUMN_DISABLED  ../lexer.c Simple/Simple*.c -o lexer
+quex -i GOTO.qx -o Simple --language C --debug-exception --no-count-lines --no-count-columns 
+gcc -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -Wno-deprecated  -DQUEX_OPTION_CONVERTER_ICONV  -DPRINT_TOKEN -DQUEX_OPTION_DEBUG_SHOW_MODES  ../lexer.c Simple/Simple*.c -o lexer
 | Mode change to ONE
 ,------------------------------------------------------------------------------------
 | [START]

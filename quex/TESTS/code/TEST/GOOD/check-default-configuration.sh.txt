@@ -10,6 +10,32 @@
 > /* #define __QUEX_OPTION_PLAIN_C */
 < $$SWITCH$$ QUEX_OPTION_COMPUTED_GOTOS
 > /* #define QUEX_OPTION_COMPUTED_GOTOS */
+> #endif
+> 
+> /* QUEX_TYPE_LEXATOM: The buffer element's type. A lexatom may be a character
+>  *     (e.g. ASCII),  or a code unit (e.g. UTF8) depending on the applied 
+>  *     encoding inside the lexer's engine.                                    */
+> #ifndef    QUEX_TYPE_LEXATOM
+> #   define QUEX_TYPE_LEXATOM          uint8_t
+> #endif 
+> #ifndef    QUEX_TYPE_TOKEN_ID
+> #   define QUEX_TYPE_TOKEN_ID                               uint32_t
+> #endif
+> #define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_ ## BRIEF)
+> #define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
+> #ifndef    QUEX_TYPE_TOKEN_LINE_N
+> #   define QUEX_TYPE_TOKEN_LINE_N    size_t
+> #endif
+> #ifndef    QUEX_TYPE_TOKEN_COLUMN_N
+> #   define QUEX_TYPE_TOKEN_COLUMN_N  size_t
+> #endif
+> #ifndef    QUEX_TYPE_ACCEPTANCE_ID
+> #   define QUEX_TYPE_ACCEPTANCE_ID   int
+> #endif
+> #if defined(QUEX_OPTION_INDENTATION_TRIGGER)
+> #   ifndef    QUEX_TYPE_INDENTATION
+> #      define QUEX_TYPE_INDENTATION  size_t
+> #   endif
 < #   define __QUEX_SETTING_MAX_MODE_CLASS_N  ($$MAX_MODE_CLASS_N$$)
 > #   define __QUEX_SETTING_MAX_MODE_CLASS_N  (2)
 < #   define QUEX_SETTING_MODE_INITIAL_P      (&$$QUEX_SETTING_MODE_INITIAL$$)
@@ -23,28 +49,77 @@
 < $$SWITCH$$ QUEX_OPTION_COUNTER_LINE         
 > #define    QUEX_OPTION_COUNTER_LINE         
 < $$SWITCH$$ QUEX_OPTION_COUNTER_COLUMN       
+< #endif
+< $$SWITCH$$ QUEX_OPTION_INDENTATION_TRIGGER
+< /* Quex can determine whether certain handlers are not used at all.  If so,
+<  * computation time can be spared and quex comments the following options out.
+<  *                                                                           */
+< $$SWITCH$$ __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
+< $$SWITCH$$ __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
+< 
+< /* Begin of line pre-condition requires an extra flag in the buffer
+<  * structure. Only out-comment this in case of tough memory restrictions,
+<  * if no begin of line pre-condition is required.                            */
+< $$SWITCH$$ __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
+< 
+< /* The following flag indicates that the engine is running on a specific
+<  * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
+< $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
+< #
+< #ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+< $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+< #endif
+< #ifndef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+< $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+< #endif
+< 
+< /* QUEX_TYPE_LEXATOM: The buffer element's type. A lexatom may be a character
+<  *     (e.g. ASCII),  or a code unit (e.g. UTF8) depending on the applied 
+<  *     encoding inside the lexer's engine.                                    */
+< #ifndef    QUEX_TYPE_LEXATOM
+< #   define QUEX_TYPE_LEXATOM                                $$QUEX_TYPE_LEXATOM$$
+< #endif 
+< #ifndef    QUEX_TYPE_TOKEN_ID
+< #   define QUEX_TYPE_TOKEN_ID                               $$TOKEN_ID_TYPE$$
+< #endif
+< #define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$ ## BRIEF)
+< #define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
+< #ifndef    QUEX_TYPE_TOKEN_LINE_N
+< #   define QUEX_TYPE_TOKEN_LINE_N    $$TOKEN_LINE_N_TYPE$$
+< #endif
+< #ifndef    QUEX_TYPE_TOKEN_COLUMN_N
+< #   define QUEX_TYPE_TOKEN_COLUMN_N  $$TOKEN_COLUMN_N_TYPE$$
+< #endif
+< #ifndef    QUEX_TYPE_ACCEPTANCE_ID
+< #   define QUEX_TYPE_ACCEPTANCE_ID   int
+< #endif
+< #if defined(QUEX_OPTION_INDENTATION_TRIGGER)
+< #   ifndef    QUEX_TYPE_INDENTATION
+< #      define QUEX_TYPE_INDENTATION  size_t
+< #   endif
 > #define    QUEX_OPTION_COUNTER_COLUMN       
 < $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 > #define    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-< $$SWITCH$$ QUEX_OPTION_INCLUDE_STACK
-> /* #define QUEX_OPTION_INCLUDE_STACK */
 < #   define QUEX_SETTING_BUFFER_LIMIT_CODE  ((QUEX_TYPE_LEXATOM)$$BUFFER_LIMIT_CODE$$)
 > #   define QUEX_SETTING_BUFFER_LIMIT_CODE  ((QUEX_TYPE_LEXATOM)0)
 < #   define QUEX_SETTING_PATH_TERMINATION_CODE  ((QUEX_TYPE_LEXATOM)$$PATH_TERMINATION_CODE$$)
 > #   define QUEX_SETTING_PATH_TERMINATION_CODE  ((QUEX_TYPE_LEXATOM)1)
-< $$SWITCH$$ QUEX_OPTION_INDENTATION_TRIGGER
 > /* #define QUEX_OPTION_INDENTATION_TRIGGER */
-< $$SWITCH$$ __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
-< $$SWITCH$$ __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
+> /* Quex can determine whether certain handlers are not used at all.  If so,
+>  * computation time can be spared and quex comments the following options out.
+>  *                                                                           */
 > /* #define __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT */
 > /* #define __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT */
-< $$SWITCH$$ __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
+> 
+> /* Begin of line pre-condition requires an extra flag in the buffer
+>  * structure. Only out-comment this in case of tough memory restrictions,
+>  * if no begin of line pre-condition is required.                            */
 > /* #define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
-< #   define QUEX_TYPE_LEXATOM          $$QUEX_TYPE_LEXATOM$$
-> #   define QUEX_TYPE_LEXATOM          uint8_t
+> 
 < #   define QUEX_SETTING_CHARACTER_CODEC $$QUEX_SETTING_CHARACTER_CODEC$$
 > #   define QUEX_SETTING_CHARACTER_CODEC unicode
-< $$SWITCH$$ __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
+> /* The following flag indicates that the engine is running on a specific
+>  * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
 > /* #define __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC */
 < #   define QUEX_TYPE0_ANALYZER         struct $$LEXER_CLASS_NAME_SAFE$$_tag
 < #   define QUEX_TYPE_ANALYZER          struct $$LEXER_CLASS_NAME_SAFE$$_tag
@@ -102,20 +177,13 @@
 > #   define QUEX_NAME_TOKEN(NAME)       Token_ ## NAME
 < #   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)$$TOKEN_QUEUE_SIZE$$)
 > #   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)64)
-< $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+> #endif
+> 
+> #ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 > /* #define QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
-< $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+> #endif
+> #ifndef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 > #define    QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-< #   define QUEX_TYPE_TOKEN_ID                               $$TOKEN_ID_TYPE$$
-> #   define QUEX_TYPE_TOKEN_ID                               uint32_t
-< #define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)$$TOKEN_PREFIX$$ ## BRIEF)
-< #define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
-> #define    QUEX_TOKEN_ID(BRIEF)                             ((QUEX_TYPE_TOKEN_ID)QUEX_TKN_ ## BRIEF)
-> #define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
-< #   define QUEX_TYPE_TOKEN_LINE_N    $$TOKEN_LINE_N_TYPE$$
-> #   define QUEX_TYPE_TOKEN_LINE_N    size_t
-< #   define QUEX_TYPE_TOKEN_COLUMN_N  $$TOKEN_COLUMN_N_TYPE$$
-> #   define QUEX_TYPE_TOKEN_COLUMN_N  size_t
 < $$INC: analyzer/configuration/derived$$
 > #include "test_environment/lib/analyzer/configuration/derived"
 < #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$ */

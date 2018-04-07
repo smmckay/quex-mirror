@@ -23,19 +23,16 @@ fi
 tmpC=$(mktemp)
 tmpCpp=$(mktemp)
 
-awk 'BEGIN{ok=0} / Data Members \)/ { ok = !ok; } { if(ok) { print; } }'  \
-    $QUEX_PATH/quex/code_base/analyzer/TXT-C   > $tmpC
+awk 'BEGIN{ok=0} /\$\$MF/ { print; }' $QUEX_PATH/quex/code_base/analyzer/TXT-C > $tmpC
 
-awk 'BEGIN{ok=0} / Data Members \)/ { ok = !ok; } { if(ok) { print; } }'  \
-    $QUEX_PATH/quex/code_base/analyzer/TXT-Cpp > $tmpCpp
+awk 'BEGIN{ok=0} /\$\$MF/ { print; }' $QUEX_PATH/quex/code_base/analyzer/TXT-Cpp > $tmpCpp
 
 echo "(*) Check: extracted content != 0  (else verdict 'same' is meaningless)"
-wc $tmpC -l   | cut -f 1 -d ' '
-wc $tmpCpp -l | cut -f 1 -d ' '
+echo "(($(wc $tmpC -l   | cut -f 1 -d ' ')))"
+echo "(($(wc $tmpCpp -l   | cut -f 1 -d ' ')))"
 
 echo "(*) Check: content same?"
 diff -srq $tmpC $tmpCpp \
      | awk '/identical/ { print "identical"; } ! /identical/ { print "differ"; }'
 
-vimdiff $tmpC $tmpCpp
 rm $tmpC $tmpCpp -f
