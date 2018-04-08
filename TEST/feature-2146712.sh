@@ -9,11 +9,7 @@ fi
 tmp=`pwd`
 cd $bug/ 
 
-chmod u+w x/y/z >& /dev/null
-rm -rf a/b/c/writeable/*     # 
-rm -rf a/b/c/not-existent
-rm -rf x/y/z/*
-chmod u-w x/y/z >& /dev/null
+rm -rf a e h
 
 case $1 in
     "Normal")   odir=a/b/c/writeable;     mkdir -p $odir; chmod u+w $odir;;
@@ -25,6 +21,5 @@ quex -i simple.qx --output-directory $odir
 find -path "*.svn*" -prune -or -print | grep $odir | grep -v lib | sort
 
 # cleansening
-rm -rf a # 
-rm -rf x
+rm -rf a e h
 cd $tmp

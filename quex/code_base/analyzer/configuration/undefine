@@ -108,9 +108,6 @@
 #ifdef    QUEX_SETTING_BUFFER_MIN_FALLBACK_N
 #   undef QUEX_SETTING_BUFFER_MIN_FALLBACK_N
 #endif
-#ifndef   QUEX_TYPE_TOKEN_ID
-#   undef QUEX_TYPE_TOKEN_ID                 
-#endif
 #ifdef    QUEX_TYPE_TOKEN
 #   undef QUEX_TYPE_TOKEN                    
 #endif
