@@ -10,15 +10,15 @@ simple.qx:5:warning: Token ids with same numeric value 115 found:
 simple.qx:5:warning:   C
 simple.qx:7:warning:   E
 simple.qx:7:warning: ('--suppress 18' to avoid this message)
-const Simple_token_id_t QUEX_TKN_A             = ((Simple_token_id_t)114);
-const Simple_token_id_t QUEX_TKN_B             = ((Simple_token_id_t)116);
-const Simple_token_id_t QUEX_TKN_C             = ((Simple_token_id_t)115);
-const Simple_token_id_t QUEX_TKN_D             = ((Simple_token_id_t)117);
-const Simple_token_id_t QUEX_TKN_DEDENT        = ((Simple_token_id_t)111);
-const Simple_token_id_t QUEX_TKN_E             = ((Simple_token_id_t)115);
-const Simple_token_id_t QUEX_TKN_F             = ((Simple_token_id_t)111);
-const Simple_token_id_t QUEX_TKN_INDENT        = ((Simple_token_id_t)112);
-const Simple_token_id_t QUEX_TKN_NODENT        = ((Simple_token_id_t)113);
-const Simple_token_id_t QUEX_TKN_TERMINATION   = ((Simple_token_id_t)0);
-const Simple_token_id_t QUEX_TKN_UNINITIALIZED = ((Simple_token_id_t)111);
-const Simple_token_id_t QUEX_TKN_Z             = ((Simple_token_id_t)118);
+const uint32_t QUEX_TKN_A             = ((uint32_t)114);
+const uint32_t QUEX_TKN_B             = ((uint32_t)116);
+const uint32_t QUEX_TKN_C             = ((uint32_t)115);
+const uint32_t QUEX_TKN_D             = ((uint32_t)117);
+const uint32_t QUEX_TKN_DEDENT        = ((uint32_t)111);
+const uint32_t QUEX_TKN_E             = ((uint32_t)115);
+const uint32_t QUEX_TKN_F             = ((uint32_t)111);
+const uint32_t QUEX_TKN_INDENT        = ((uint32_t)112);
+const uint32_t QUEX_TKN_NODENT        = ((uint32_t)113);
+const uint32_t QUEX_TKN_TERMINATION   = ((uint32_t)0);
+const uint32_t QUEX_TKN_UNINITIALIZED = ((uint32_t)111);
+const uint32_t QUEX_TKN_Z             = ((uint32_t)118);
