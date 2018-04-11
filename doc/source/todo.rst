@@ -1,5 +1,16 @@
 -- Mention:
 
+   When types other than ISO stdint are used (uint8_t etc), then the headers
+   must be manually extended (this is a nuissance).
+   The 'header' section may not be used, since it may rely on types that are
+   already defined in the configuration. Example: 'include Accumulator' which
+   requires the token type id definition.
+
+   Solution: 'first_header' section which may be inserted right in front of
+   of all headers.
+
+-- Mention:
+
     qlex.run(&qlex, self_print_token, true);
 
 -- Manual written token class must include 'lexeme.i'

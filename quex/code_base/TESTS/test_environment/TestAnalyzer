@@ -32,6 +32,8 @@
 #endif
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE___QUEX__
 
+#include <cstddef>
+#include "test_environment/lib/compatibility/stdint.h"
 #include "test_environment/TestAnalyzer-configuration"
 
 #include "test_environment/lib/definitions"
@@ -87,7 +89,7 @@ extern  void QUEX_NAME(M_on_buffer_overflow)(void* aux);
 extern  void QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 extern  void QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-extern  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+extern  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
 extern  void QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -104,7 +106,7 @@ extern  void QUEX_NAME(M2_on_buffer_overflow)(void* aux);
 extern  void QUEX_NAME(M2_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 extern  void QUEX_NAME(M2_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-extern  void QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+extern  void QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
 
 
@@ -167,7 +169,7 @@ public:
 public:
     typedef QUEX_TYPE_TOKEN      token_type;
     typedef TestAnalyzer_token_id_t   token_id_type;
-    typedef QUEX_TYPE_LEXATOM    char_type;
+    typedef TestAnalyzer_lexatom_t    char_type;
 
     /*__( Constructors )________________________________________________________
      *                                                                        */
@@ -182,9 +184,9 @@ public:
                   QUEX_NAME(Converter)*        Converter = 0) 
          { QUEX_NAME(from_ByteLoader)(this, byte_loader, Converter); }
 
-    TestAnalyzer(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
+    TestAnalyzer(TestAnalyzer_lexatom_t* BufferMemoryBegin, 
                   size_t                  BufferMemorySize,
-                  QUEX_TYPE_LEXATOM*      BufferEndOfContentP = 0x0)
+                  TestAnalyzer_lexatom_t*      BufferEndOfContentP = 0x0)
          { QUEX_NAME(from_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
     /* Named placement-new functions.                                         */
@@ -196,14 +198,14 @@ public:
                                                QUEX_NAME(Converter)*   Converter = 0) 
          { return new TestAnalyzer(byte_loader, Converter); }
 
-    static TestAnalyzer* from_memory(QUEX_TYPE_LEXATOM* BufferMemoryBegin, 
+    static TestAnalyzer* from_memory(TestAnalyzer_lexatom_t* BufferMemoryBegin, 
                                            size_t             BufferMemorySize,
-                                           QUEX_TYPE_LEXATOM* BufferEndOfContentP = 0x0)
+                                           TestAnalyzer_lexatom_t* BufferEndOfContentP = 0x0)
          { return new TestAnalyzer(BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
     virtual ~TestAnalyzer()
          { QUEX_NAME(destruct)(this); }
-
+public:
     /*__( Reset )_______________________________________________________________
      *                                                                        */
     bool reset() { return QUEX_NAME(MF_reset)(this); }
@@ -212,7 +214,7 @@ public:
 
     bool reset_ByteLoader(QUEX_NAME(ByteLoader)* byte_loader, QUEX_NAME(Converter)* Converter = 0) { return QUEX_NAME(MF_reset_ByteLoader)(this, byte_loader, Converter); }
 
-    bool reset_memory(QUEX_TYPE_LEXATOM* BufferMemoryBegin, size_t BufferMemorySize, QUEX_TYPE_LEXATOM* BufferEndOfContentP) { return QUEX_NAME(MF_reset_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
+    bool reset_memory(TestAnalyzer_lexatom_t* BufferMemoryBegin, size_t BufferMemorySize, TestAnalyzer_lexatom_t* BufferEndOfContentP) { return QUEX_NAME(MF_reset_memory)(this, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
 
     /*__( Include From and To Substream )_______________________________________
@@ -221,7 +223,7 @@ public:
 
     bool include_push_ByteLoader(const char* InputName, QUEX_NAME(ByteLoader)* byte_loader, QUEX_NAME(Converter)* Converter) { return QUEX_NAME(MF_include_push_ByteLoader)(this, InputName, byte_loader, Converter); }
 
-    bool include_push_memory(const char* InputName, QUEX_TYPE_LEXATOM* BufferMemoryBegin, size_t BufferMemorySize, QUEX_TYPE_LEXATOM* BufferEndOfContentP) { return QUEX_NAME(MF_include_push_memory)(this, InputName, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
+    bool include_push_memory(const char* InputName, TestAnalyzer_lexatom_t* BufferMemoryBegin, size_t BufferMemorySize, TestAnalyzer_lexatom_t* BufferEndOfContentP) { return QUEX_NAME(MF_include_push_memory)(this, InputName, BufferMemoryBegin, BufferMemorySize, BufferEndOfContentP); }
 
     bool include_pop() { return QUEX_NAME(MF_include_pop)(this); }
 
@@ -246,9 +248,9 @@ public:
 
     void send_n(TestAnalyzer_token_id_t Id, size_t RepetitionN) { QUEX_NAME(MF_send_n)(this, Id, RepetitionN); }
 
-    bool send_text(TestAnalyzer_token_id_t Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP) { return QUEX_NAME(MF_send_text)(this, Id, BeginP, EndP); }
+    bool send_text(TestAnalyzer_token_id_t Id, TestAnalyzer_lexatom_t* BeginP, TestAnalyzer_lexatom_t* EndP) { return QUEX_NAME(MF_send_text)(this, Id, BeginP, EndP); }
 
-    bool send_string(TestAnalyzer_token_id_t Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString) { return QUEX_NAME(MF_send_string)(this, Id, ZeroTerminatedString); }
+    bool send_string(TestAnalyzer_token_id_t Id, TestAnalyzer_lexatom_t* ZeroTerminatedString) { return QUEX_NAME(MF_send_string)(this, Id, ZeroTerminatedString); }
 
 
     /*__( Mode Handling )______________________________________________________
@@ -340,7 +342,7 @@ public:
 
     /*__( Deep Resources )_____________________________________________________
      *                                                                       */
-    void collect_user_memory(QUEX_TYPE_LEXATOM** user_memory_p) { QUEX_NAME(MF_collect_user_memory)(this, user_memory_p); }
+    void collect_user_memory(TestAnalyzer_lexatom_t** user_memory_p) { QUEX_NAME(MF_collect_user_memory)(this, user_memory_p); }
 
     void resources_absent_mark() { QUEX_NAME(MF_resources_absent_mark)(this); }
 
@@ -370,7 +372,7 @@ public:
     friend  void QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
     friend  void QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    friend  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+    friend  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
     friend  void QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -387,11 +389,13 @@ public:
     friend  void QUEX_NAME(M2_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
     friend  void QUEX_NAME(M2_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    friend  void QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+    friend  void QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
   
 private:
-    TestAnalyzer(const TestAnalyzer&) {}
+    TestAnalyzer(const TestAnalyzer&);                   /* Forbidden */
+    TestAnalyzer& operator=(const TestAnalyzer& Other); /* Forbidden */
+
 };
 
 QUEX_NAMESPACE_MAIN_CLOSE
@@ -508,7 +512,7 @@ bool UserMementoPack_UnitTest_return_value = true;
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 #include "test_environment/TestAnalyzer-token"
 QUEX_NAMESPACE_TOKEN_OPEN
-QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
+TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull) = (TestAnalyzer_lexatom_t)0;
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */

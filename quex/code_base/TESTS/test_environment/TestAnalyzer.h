@@ -32,6 +32,8 @@
 #endif
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_QUEX_
 
+#include <stddef.h>
+#include "test_environment/lib/compatibility/stdint.h"
 #include "test_environment/TestAnalyzer-configuration.h"
 
 #include "test_environment/lib/definitions"
@@ -85,7 +87,7 @@ extern  void QUEX_NAME(M_on_buffer_overflow)(void* aux);
 extern  void QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 extern  void QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-extern  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+extern  void QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
 extern  void QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -102,7 +104,7 @@ extern  void QUEX_NAME(M2_on_buffer_overflow)(void* aux);
 extern  void QUEX_NAME(M2_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 extern  void QUEX_NAME(M2_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-extern  void QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_INDENTATION Indentation, QUEX_TYPE_LEXATOM* Lexeme);
+extern  void QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
 
 
@@ -168,7 +170,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 
     bool (*reset_ByteLoader)(QUEX_TYPE_ANALYZER* me, QUEX_NAME(ByteLoader)* byte_loader, QUEX_NAME(Converter)* Converter);
 
-    bool (*reset_memory)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* BufferMemoryBegin, size_t BufferMemorySize, QUEX_TYPE_LEXATOM* BufferEndOfContentP);
+    bool (*reset_memory)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t* BufferMemoryBegin, size_t BufferMemorySize, TestAnalyzer_lexatom_t* BufferEndOfContentP);
 
 
     /*__( Include From and To Substream )_______________________________________
@@ -177,7 +179,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 
     bool (*include_push_ByteLoader)(QUEX_TYPE_ANALYZER* me, const char* InputName, QUEX_NAME(ByteLoader)* byte_loader, QUEX_NAME(Converter)* Converter);
 
-    bool (*include_push_memory)(QUEX_TYPE_ANALYZER* me, const char* InputName, QUEX_TYPE_LEXATOM* BufferMemoryBegin, size_t BufferMemorySize, QUEX_TYPE_LEXATOM* BufferEndOfContentP);
+    bool (*include_push_memory)(QUEX_TYPE_ANALYZER* me, const char* InputName, TestAnalyzer_lexatom_t* BufferMemoryBegin, size_t BufferMemorySize, TestAnalyzer_lexatom_t* BufferEndOfContentP);
 
     bool (*include_pop)(QUEX_TYPE_ANALYZER* me);
 
@@ -202,9 +204,9 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 
     void (*send_n)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_token_id_t Id, size_t RepetitionN);
 
-    bool (*send_text)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_token_id_t Id, QUEX_TYPE_LEXATOM* BeginP, QUEX_TYPE_LEXATOM* EndP);
+    bool (*send_text)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_token_id_t Id, TestAnalyzer_lexatom_t* BeginP, TestAnalyzer_lexatom_t* EndP);
 
-    bool (*send_string)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_token_id_t Id, QUEX_TYPE_LEXATOM* ZeroTerminatedString);
+    bool (*send_string)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_token_id_t Id, TestAnalyzer_lexatom_t* ZeroTerminatedString);
 
 
     /*__( Mode Handling )______________________________________________________
@@ -295,7 +297,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_TestAnalyzer_tag 
 
     /*__( Deep Resources )_____________________________________________________
      *                                                                       */
-    void (*collect_user_memory)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM** user_memory_p);
+    void (*collect_user_memory)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t** user_memory_p);
 
     void (*resources_absent_mark)(QUEX_TYPE_ANALYZER* me);
 
@@ -500,7 +502,7 @@ QUEX_INLINE void
 quex_Token_construct(quex_Token* __this)
 {
 #   define self (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
 
 #   line 25 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
@@ -509,7 +511,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 513 "TestAnalyzer.h"
+#   line 515 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -527,7 +529,7 @@ QUEX_INLINE void
 quex_Token_destruct(quex_Token* __this)
 {
 #   define self (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     if( ! __this ) return;
 
 
@@ -540,7 +542,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 544 "TestAnalyzer.h"
+#   line 546 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -552,7 +554,7 @@ quex_Token_copy(quex_Token*       __this,
 {
 #   define self  (*__this)
 #   define Other (*__That)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
     (void)__That;
 
@@ -564,8 +566,8 @@ quex_Token_copy(quex_Token*       __this,
             QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
-            self.text = QUEX_NAME_TOKEN(lexeme_clone)(self.text, 
-                                                      QUEX_NAME_TOKEN(lexeme_length)(Other.text));
+            self.text = QUEX_NAME(lexeme_clone)(self.text, 
+                                                      QUEX_NAME(lexeme_length)(Other.text));
             if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
@@ -575,7 +577,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 579 "TestAnalyzer.h"
+#   line 581 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -593,8 +595,8 @@ quex_Token_copy(quex_Token*       __this,
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
 quex_Token_take_text(quex_Token*            __this, 
-                       const QUEX_TYPE_LEXATOM* Begin, 
-                       const QUEX_TYPE_LEXATOM* End)
+                       const TestAnalyzer_lexatom_t* Begin, 
+                       const TestAnalyzer_lexatom_t* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
  *          false -- if no ownership is claimed.                             */
 {
@@ -602,7 +604,7 @@ quex_Token_take_text(quex_Token*            __this,
 #   ifdef  LexemeNull
 #   error  "Error LexemeNull shall not be defined here."
 #   endif
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
     (void)Begin;
     (void)End;
@@ -613,7 +615,7 @@ quex_Token_take_text(quex_Token*            __this,
 #       if 0
         /* Hint for debug: To check take_text change "#if 0" to "#if 1" */
         {
-            const QUEX_TYPE_LEXATOM* it = (void*)0x0;
+            const TestAnalyzer_lexatom_t* it = (void*)0x0;
             printf("previous:  '");
             if( self.text != LexemeNull ) {
                 for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
@@ -632,9 +634,9 @@ quex_Token_take_text(quex_Token*            __this,
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);
-            self.text = QUEX_NAME_TOKEN(lexeme_clone)(Begin, (size_t)(End - Begin));
+            self.text = QUEX_NAME(lexeme_clone)(Begin, (size_t)(End - Begin));
             if( ! self.text ) self.text = LexemeNull;
-            *((QUEX_TYPE_LEXATOM*)(self.text + (End - Begin))) = (QUEX_TYPE_LEXATOM)0;
+            *((TestAnalyzer_lexatom_t*)(self.text + (End - Begin))) = (TestAnalyzer_lexatom_t)0;
         } else {
             self.text = LexemeNull;
         }
@@ -642,7 +644,7 @@ quex_Token_take_text(quex_Token*            __this,
 #       if 0
         /* Hint for debug: To check take_text change "#if 0" to "#if 1"       */
         {
-            const QUEX_TYPE_LEXATOM* it = 0x0;
+            const TestAnalyzer_lexatom_t* it = 0x0;
             printf("after:     '");
             if( self.text != LexemeNull ) { 
                 for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
@@ -657,7 +659,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 661 "TestAnalyzer.h"
+#   line 663 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -671,7 +673,7 @@ QUEX_INLINE size_t
 quex_Token_repetition_n_get(quex_Token* __this)
 {
 #   define self        (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
 
 #   line 113 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
@@ -679,7 +681,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 683 "TestAnalyzer.h"
+#   line 685 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -689,7 +691,7 @@ QUEX_INLINE void
 quex_Token_repetition_n_set(quex_Token* __this, size_t N)
 {
 #   define self        (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
     (void)N;
 
@@ -698,7 +700,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 702 "TestAnalyzer.h"
+#   line 704 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -772,14 +774,14 @@ quex_Token_map_id_to_name(const TestAnalyzer_token_id_t TokenID)
 #include "ut/lib/lexeme.i"
    
 
-#   line 776 "TestAnalyzer.h"
+#   line 778 "TestAnalyzer.h"
 
 
 #include "ut/lib/lexeme.i"
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
 QUEX_NAMESPACE_TOKEN_OPEN
-QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
+TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull) = (TestAnalyzer_lexatom_t)0;
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */

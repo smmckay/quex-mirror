@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 			else if (TokenID == QUEX_TKN_EOS) {
 				cout << endl;
 			} else {
-				int offset = qlex.tell() - QUEX_NAME_TOKEN(lexeme_length)(token_p->text);
+				int offset = qlex.tell() - QUEX_NAME(lexeme_length)(token_p->text);
 				cout << offset << '\t' << QUEX_NAME_TOKEN(lexeme_to_pretty_char)(token_p->text) << endl;
 			}
 		}

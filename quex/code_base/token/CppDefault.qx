@@ -37,8 +37,8 @@ $INCLUDE_CONVERTER_DECLARATION
             QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
-            self.text = QUEX_NAME_TOKEN(lexeme_clone)(self.text, 
-                                                      QUEX_NAME_TOKEN(lexeme_length)(Other.text));
+            self.text = QUEX_NAME(lexeme_clone)(self.text, 
+                                                      QUEX_NAME(lexeme_length)(Other.text));
             if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
@@ -72,7 +72,7 @@ $INCLUDE_CONVERTER_DECLARATION
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);
-            self.text = QUEX_NAME_TOKEN(lexeme_clone)(Begin, (size_t)(End - Begin));
+            self.text = QUEX_NAME(lexeme_clone)(Begin, (size_t)(End - Begin));
             if( ! self.text ) self.text = LexemeNull;
             *((QUEX_TYPE_LEXATOM*)(self.text + (End - Begin))) = (QUEX_TYPE_LEXATOM)0;
         } else {

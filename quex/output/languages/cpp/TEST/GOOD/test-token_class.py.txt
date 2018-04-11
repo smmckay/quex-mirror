@@ -184,7 +184,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 QUEX_NAMESPACE_TOKEN_OPEN
-extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);
+extern QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull);
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 
@@ -205,7 +205,7 @@ QUEX_INLINE
 MeinToken::MeinToken()
 {
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 
 #   line 20 "a string"
 
@@ -222,7 +222,7 @@ MeinToken::MeinToken(const MeinToken& Other)
 {
    QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 
 #   line 20 "a string"
 
@@ -238,7 +238,7 @@ QUEX_INLINE
 MeinToken::~MeinToken()
 {
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 
 #   line 24 "a string"
 
@@ -269,7 +269,7 @@ QUEX_NAME_TOKEN(copy)(MeinToken* __this, const MeinToken* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
     (void)__That;
 
@@ -302,7 +302,7 @@ QUEX_NAME_TOKEN(take_text)(MeinToken*              __this,
  *          false -- if no ownership is claimed.                             */
 {
 #   define self      (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
 
 #   line 27 "a string"

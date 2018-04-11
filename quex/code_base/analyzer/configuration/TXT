@@ -142,7 +142,7 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #   define QUEX_NAMESPACE_TOKEN_OPEN  
 #   define QUEX_NAMESPACE_TOKEN_CLOSE 
 
-#   define QUEX_LEXEME_NULL            QUEX_NAME_TOKEN(LexemeNull)
+#   define QUEX_LEXEME_NULL            QUEX_NAME(LexemeNull)
 
 #   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
 
@@ -155,33 +155,13 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #   define QUEX_NAMESPACE_TOKEN_OPEN   $$NAMESPACE_TOKEN_OPEN$$
 #   define QUEX_NAMESPACE_TOKEN_CLOSE  $$NAMESPACE_TOKEN_CLOSE$$
 
-#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME_TOKEN(LexemeNull)
+#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME(LexemeNull)
 
 #   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS$$_ ## NAME
 
 #endif
 
-/* QUEX_TYPE_LEXATOM: The buffer element's type. A lexatom may be a character
- *     (e.g. ASCII),  or a code unit (e.g. UTF8) depending on the applied 
- *     encoding inside the lexer's engine.                                    */
-#ifndef    QUEX_TYPE_LEXATOM
-#   define QUEX_TYPE_LEXATOM                                $$QUEX_TYPE_LEXATOM$$
-#endif 
-#define  $$LEXER_CLASS_NAME$$_token_id_t $$TOKEN_ID_TYPE$$                               
-#ifndef    QUEX_TYPE_TOKEN_LINE_N
-#   define QUEX_TYPE_TOKEN_LINE_N    $$TOKEN_LINE_N_TYPE$$
-#endif
-#ifndef    QUEX_TYPE_TOKEN_COLUMN_N
-#   define QUEX_TYPE_TOKEN_COLUMN_N  $$TOKEN_COLUMN_N_TYPE$$
-#endif
-#ifndef    QUEX_TYPE_ACCEPTANCE_ID
-#   define QUEX_TYPE_ACCEPTANCE_ID   int
-#endif
-#if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-#   ifndef    QUEX_TYPE_INDENTATION
-#      define QUEX_TYPE_INDENTATION  size_t
-#   endif
-#endif
+$$TYPE_DEFINITIONS$$
 
 #ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
 #   define __QUEX_SETTING_MAX_MODE_CLASS_N                 ($$MAX_MODE_CLASS_N$$)
@@ -194,9 +174,6 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #   define QUEX_SETTING_MODE_STACK_SIZE                                (size_t)8
 #endif
 
-/* Verbosity can be enabled by the following:                                 */
-/* #define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED                       */
-                                                                             
 /* BLC -- Buffer Limit Code:
  *
  * This code is used as a delimiter for buffer borders. When the analyzer

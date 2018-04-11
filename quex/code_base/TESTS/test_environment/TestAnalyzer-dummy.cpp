@@ -82,8 +82,8 @@ QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
 void
 QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me, 
-                QUEX_TYPE_INDENTATION  Indentation, 
-                QUEX_TYPE_LEXATOM*     Begin) 
+                TestAnalyzer_indentation_t  Indentation, 
+                TestAnalyzer_lexatom_t*     Begin) 
 {
     (void)me;
     (void)Indentation;
@@ -100,7 +100,7 @@ QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me,
 #   define LexemeEnd     (me->buffer._read_p)
 
     QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
-    QUEX_TYPE_INDENTATION*        start = 0x0;
+    TestAnalyzer_indentation_t*        start = 0x0;
     (void)start;
 
     __quex_assert((long)Indentation >= 0);
@@ -245,8 +245,8 @@ if( Mode == &QUEX_NAME(M) ) {
 void
 QUEX_NAME(M_on_buffer_before_change)(void* me /* 'aux' -> 'self' via 'me' */)
 {
-    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer.begin(&self.buffer);
-    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer.end(&self.buffer);
+    const TestAnalyzer_lexatom_t* BufferBegin = self.buffer.begin(&self.buffer);
+    const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
     (void)me; (void)BufferBegin; (void)BufferEnd;
 
 }
@@ -257,8 +257,8 @@ QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer);
 void
 QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 {
-    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
-    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
+    const TestAnalyzer_lexatom_t* LexemeBegin = self.buffer._lexeme_start_p;
+    const TestAnalyzer_lexatom_t* LexemeEnd   = self.buffer._read_p;
     const size_t             BufferSize  = (size_t)(self.buffer.size(&self.buffer)); 
 
 
@@ -295,8 +295,8 @@ QUEX_NAME(M2_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
 void
 QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER*    me, 
-                QUEX_TYPE_INDENTATION  Indentation, 
-                QUEX_TYPE_LEXATOM*     Begin) 
+                TestAnalyzer_indentation_t  Indentation, 
+                TestAnalyzer_lexatom_t*     Begin) 
 {
     (void)me;
     (void)Indentation;
@@ -313,7 +313,7 @@ QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER*    me,
 #   define LexemeEnd     (me->buffer._read_p)
 
     QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
-    QUEX_TYPE_INDENTATION*        start = 0x0;
+    TestAnalyzer_indentation_t*        start = 0x0;
     (void)start;
 
     __quex_assert((long)Indentation >= 0);
@@ -458,8 +458,8 @@ if( Mode == &QUEX_NAME(M) ) {
 void
 QUEX_NAME(M2_on_buffer_before_change)(void* me /* 'aux' -> 'self' via 'me' */)
 {
-    const QUEX_TYPE_LEXATOM* BufferBegin = self.buffer.begin(&self.buffer);
-    const QUEX_TYPE_LEXATOM* BufferEnd   = self.buffer.end(&self.buffer);
+    const TestAnalyzer_lexatom_t* BufferBegin = self.buffer.begin(&self.buffer);
+    const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
     (void)me; (void)BufferBegin; (void)BufferEnd;
 
 }
@@ -470,8 +470,8 @@ QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer);
 void
 QUEX_NAME(M2_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
 {
-    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
-    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
+    const TestAnalyzer_lexatom_t* LexemeBegin = self.buffer._lexeme_start_p;
+    const TestAnalyzer_lexatom_t* LexemeEnd   = self.buffer._read_p;
     const size_t             BufferSize  = (size_t)(self.buffer.size(&self.buffer)); 
 
 
@@ -504,16 +504,16 @@ QUEX_NAMESPACE_MAIN_OPEN
 #endif
 #ifdef QUEX_OPTION_COUNTER
 static void
-QUEX_NAME(M_counter)(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)
+QUEX_NAME(M_counter)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t* LexemeBegin, TestAnalyzer_lexatom_t* LexemeEnd)
 {
 #   define self (*me)
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
 #   define QUEX_LABEL_STATE_ROUTER _18
-    QUEX_TYPE_LEXATOM              input                          = (QUEX_TYPE_LEXATOM)(0x00);
+    TestAnalyzer_lexatom_t              input                          = (TestAnalyzer_lexatom_t)(0x00);
     QUEX_TYPE_GOTO_LABEL           target_state_else_index        = QUEX_GOTO_LABEL_VOID;
     QUEX_TYPE_GOTO_LABEL           target_state_index             = QUEX_GOTO_LABEL_VOID;
 #   ifdef QUEX_OPTION_COUNTER_COLUMN
-    QUEX_TYPE_LEXATOM*             count_reference_p              = (QUEX_TYPE_LEXATOM*)0x0;
+    TestAnalyzer_lexatom_t*             count_reference_p              = (TestAnalyzer_lexatom_t*)0x0;
 #   endif /* QUEX_OPTION_COUNTER_COLUMN */
     (void)me;
     __QUEX_IF_COUNT_SHIFT_VALUES();
@@ -735,10 +735,10 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 
 #define LexemeNull      (&QUEX_LEXEME_NULL)
     E_LoadResult                   load_result                    = E_LoadResult_VOID;
-    QUEX_TYPE_LEXATOM**            position                       = 0x0;
+    TestAnalyzer_lexatom_t**            position                       = 0x0;
     QUEX_TYPE_GOTO_LABEL           target_state_else_index        = QUEX_GOTO_LABEL_VOID;
     const size_t                   PositionRegisterN              = (size_t)0;
-    QUEX_TYPE_LEXATOM              input                          = (QUEX_TYPE_LEXATOM)(0x00);
+    TestAnalyzer_lexatom_t              input                          = (TestAnalyzer_lexatom_t)(0x00);
     QUEX_TYPE_GOTO_LABEL           target_state_index             = QUEX_GOTO_LABEL_VOID;
 
     /* Post context positions do not have to be reset or initialized. If a state
@@ -916,7 +916,7 @@ _10:
     __quex_debug_reload_before();                 
     /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'
      * are called during load process upon occurrence.                        */
-    load_result = QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
+    load_result = QUEX_NAME(Buffer_load_forward)(&me->buffer, (TestAnalyzer_lexatom_t**)position, PositionRegisterN);
     __quex_debug_reload_after(load_result);
 
     switch( load_result ) {
@@ -1044,10 +1044,10 @@ QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 
 #define LexemeNull      (&QUEX_LEXEME_NULL)
     E_LoadResult                   load_result                    = E_LoadResult_VOID;
-    QUEX_TYPE_LEXATOM**            position                       = 0x0;
+    TestAnalyzer_lexatom_t**            position                       = 0x0;
     QUEX_TYPE_GOTO_LABEL           target_state_else_index        = QUEX_GOTO_LABEL_VOID;
     const size_t                   PositionRegisterN              = (size_t)0;
-    QUEX_TYPE_LEXATOM              input                          = (QUEX_TYPE_LEXATOM)(0x00);
+    TestAnalyzer_lexatom_t              input                          = (TestAnalyzer_lexatom_t)(0x00);
     QUEX_TYPE_GOTO_LABEL           target_state_index             = QUEX_GOTO_LABEL_VOID;
 
     /* Post context positions do not have to be reset or initialized. If a state
@@ -1225,7 +1225,7 @@ _10:
     __quex_debug_reload_before();                 
     /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'
      * are called during load process upon occurrence.                        */
-    load_result = QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)position, PositionRegisterN);
+    load_result = QUEX_NAME(Buffer_load_forward)(&me->buffer, (TestAnalyzer_lexatom_t**)position, PositionRegisterN);
     __quex_debug_reload_after(load_result);
 
     switch( load_result ) {
@@ -1388,7 +1388,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 #include "test_environment/TestAnalyzer-token"
 QUEX_NAMESPACE_TOKEN_OPEN
-QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
+TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull) = (TestAnalyzer_lexatom_t)0;
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 

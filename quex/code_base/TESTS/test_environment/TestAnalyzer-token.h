@@ -39,7 +39,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
     TestAnalyzer_token_id_t    id;
 
 #   line 19 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
-    const QUEX_TYPE_LEXATOM* text;
+    const TestAnalyzer_lexatom_t* text;
 
 #   line 45 "test_environment/TestAnalyzer-token.h"
 
@@ -51,10 +51,10 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG quex_Token_tag {
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE
-        QUEX_TYPE_TOKEN_LINE_N    _line_n;
+        TestAnalyzer_token_line_n_t    _line_n;
 #       endif
 #       ifdef  QUEX_OPTION_COUNTER_COLUMN
-        QUEX_TYPE_TOKEN_COLUMN_N  _column_n;
+        TestAnalyzer_token_column_n_t  _column_n;
 #       endif
 #   endif
 
@@ -83,8 +83,8 @@ QUEX_INLINE const char*  quex_Token_map_id_to_name(const TestAnalyzer_token_id_t
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool         quex_Token_take_text(quex_Token*            me, 
-                                                const QUEX_TYPE_LEXATOM* Begin, 
-                                                const QUEX_TYPE_LEXATOM* End);
+                                                const TestAnalyzer_lexatom_t* Begin, 
+                                                const TestAnalyzer_lexatom_t* End);
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
@@ -93,7 +93,7 @@ QUEX_INLINE void         quex_Token_repetition_n_set(quex_Token*, size_t);
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 QUEX_NAMESPACE_TOKEN_OPEN
-extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);
+extern TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull);
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 

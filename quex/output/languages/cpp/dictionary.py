@@ -21,6 +21,7 @@ from   quex.engine.misc.tools                            import typed, \
 import quex.output.languages.cpp.templates               as     templates
 
 from   quex.DEFINITIONS  import QUEX_PATH
+import quex.token_db     as     token_db
 import quex.blackboard   as     blackboard
 from   quex.blackboard   import setup as Setup, \
                                 standard_incidence_db_get_incidence_id
@@ -264,12 +265,12 @@ class Language(dict):
 
     def LEXEME_NULL_DECLARATION(self):
         return "QUEX_NAMESPACE_TOKEN_OPEN\n" \
-               "extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);\n" \
+               "extern QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull);\n" \
                "QUEX_NAMESPACE_TOKEN_CLOSE\n"
 
     def LEXEME_NULL_IMPLEMENTATION(self):
         return "QUEX_NAMESPACE_TOKEN_OPEN\n" \
-               "QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull) = (QUEX_TYPE_LEXATOM)0;\n" \
+               "QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull) = (QUEX_TYPE_LEXATOM)0;\n" \
                "QUEX_NAMESPACE_TOKEN_CLOSE\n"
 
     def DEFAULT_TOKEN_COPY(self, X, Y):
@@ -355,8 +356,10 @@ class Language(dict):
 
     def NAMESPACE_OPEN(self, NameList):
         return " ".join(("    " * i + "namespace %s {" % name) for i, name in enumerate(NameList))
+
     def NAMESPACE_CLOSE(self, NameList):
         return " ".join("} /* close %s */" % name for name in NameList)
+
     def NAMESPACE_REFERENCE(self, NameList, TrailingDelimiterF=True):
         result = reduce(lambda x, y: x + "::" + y, [""] + NameList) + "::"
         if TrailingDelimiterF: return result
@@ -1292,6 +1295,41 @@ class Language(dict):
            self.POSITIONING(X),
            self.GOTO(door_id, dial_db)
         ]
+
+    def type_definitions(self, excluded=set()):
+        token_descr = token_db.token_type_definition
+        type_def_list = [
+            ("lexatom_t",        Setup.lexatom.type),
+            ("token_id_t",       token_descr.token_id_type.get_pure_text()),
+            ("token_line_n_t",   token_descr.line_number_type.get_pure_text()),
+            ("token_column_n_t", token_descr.column_number_type.get_pure_text()),
+            ("acceptance_id_t",  "int"),
+            ("indentation_t",    "int")
+        ]
+
+        if blackboard.required_support_indentation_count():
+            excluded.add("indentation_t")
+
+        acn = Setup.analyzer_class_name
+        def_str = "\n".join("typedef %s %s_%s;" % (original, acn, customized_name) 
+                         for customized_name, original in type_def_list 
+                         if customized_name not in excluded)
+        return "QUEX_NAMESPACE_MAIN_OPEN\n" \
+               + "%s\n" % def_str \
+               + "QUEX_NAMESPACE_MAIN_CLOSE\n"
+
+    def type_definition_adapt(self, Txt):
+        if not Txt: return Txt
+        acn = Setup.analyzer_class_name
+        return blue_print(Txt, [
+                           ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
+                           ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
+                           ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
+                           ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),
+                           ("QUEX_TYPE_ACCEPTANCE_ID",  "%s_acceptance_id_t" % acn),
+                           ("QUEX_TYPE_INDENTATION",    "%s_indentation_t" % acn)
+                          ],
+                          CommonStart="QUEX_TYPE_")
 
 cpp_include_Multi_i_str = """
 $$HEADER$$

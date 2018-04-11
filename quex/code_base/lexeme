@@ -10,8 +10,6 @@
 #      error   "QUEX_NAMESPACE_TOKEN_CLOSE definition missing!"
 #elif ! defined(QUEX_NAME_TOKEN)
 #      error   "QUEX_NAME_TOKEN definition missing!"
-#elif ! defined(QUEX_TYPE_LEXATOM)
-#      error   "QUEX_TYPE_LEXATOM definition missing!"
 #endif
 
 $$INC: definitions$$

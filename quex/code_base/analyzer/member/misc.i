@@ -71,9 +71,9 @@ QUEX_NAME(MF_send_string)(QUEX_TYPE_ANALYZER* me,
                           QUEX_TYPE_LEXATOM*  ZeroTerminatedString)
 { 
 #   if defined(__QUEX_OPTION_PLAIN_C)
-    const size_t Length = QUEX_NAME_TOKEN(lexeme_length)((const QUEX_TYPE_LEXATOM*)ZeroTerminatedString);
+    const size_t Length = QUEX_NAME(lexeme_length)((const QUEX_TYPE_LEXATOM*)ZeroTerminatedString);
 #   else
-    const size_t Length = QUEX_NAMESPACE_TOKEN::QUEX_NAME_TOKEN(lexeme_length)((const QUEX_TYPE_LEXATOM*)ZeroTerminatedString);
+    const size_t Length = QUEX_NAMESPACE_TOKEN::QUEX_NAME(lexeme_length)((const QUEX_TYPE_LEXATOM*)ZeroTerminatedString);
 #   endif
 
     return QUEX_NAME(TokenQueue_push_text)(&me->_token_queue, Id, ZeroTerminatedString, 

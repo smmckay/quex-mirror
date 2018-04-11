@@ -10,8 +10,6 @@ $$INC: extra/accumulator/Accumulator$$
 
 #if   ! defined(QUEX_TYPE_LEXATOM)
 #        error "QUEX_TYPE_LEXATOM definition missing."
-#elif ! defined(QUEX_TYPE_TOKEN_ID)
-#        error "QUEX_TYPE_TOKEN_ID definition missing."
 #elif ! defined(QUEX_TYPE_ANALYZER)
 #        error "QUEX_TYPE_ANALYZER definition missing."
 #endif

@@ -32,6 +32,8 @@ $$INC: include-guard-undef$$
 #endif
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_$$LEXER_NAME_SPACE_EXT$$
 
+#include <cstddef>
+$$INC: compatibility/stdint.h$$
 #include "$$LEXER_CONFIG_FILE$$"
 
 $$INC: definitions$$
@@ -162,7 +164,7 @@ public:
 
     virtual ~$$LEXER_CLASS_NAME$$()
          { QUEX_NAME(destruct)(this); }
-
+public:
     /*__( Reset )_______________________________________________________________
      *                                                                        */
     $$MF: bool reset()$$
@@ -265,7 +267,9 @@ public:
     /* Befriend all modes                                                     */
 $$MODE_CLASS_FRIENDS$$  
 private:
-    $$LEXER_CLASS_NAME$$(const $$LEXER_CLASS_NAME$$&) {}
+    $$LEXER_CLASS_NAME$$(const $$LEXER_CLASS_NAME$$&);                   /* Forbidden */
+    $$LEXER_CLASS_NAME$$& operator=(const $$LEXER_CLASS_NAME$$& Other); /* Forbidden */
+
 };
 
 QUEX_NAMESPACE_MAIN_CLOSE

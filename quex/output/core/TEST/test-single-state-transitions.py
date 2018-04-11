@@ -27,6 +27,7 @@ import quex.engine.analyzer.core                     as     analyzer_generator
 from   quex.engine.analyzer.door_id_address_label    import DialDB
 from   quex.engine.analyzer.transition_map           import TransitionMap  
 import quex.engine.state_machine.transformation.core as     bc_factory
+import quex.output.analyzer.adapt                    as     adapt
 from   quex.blackboard                               import setup as Setup, \
                                                             E_IncidenceIDs, \
                                                             Lng
@@ -286,7 +287,7 @@ txt            = get_main_function(tm0, transition_txt, codec)
 Lng.REPLACE_INDENT(txt)
 
 fh = open("test.c", "wb")
-fh.write("".join(txt))
+fh.write("".join(adapt.do(txt, "ut")))
 fh.close()
 try:    os.remove("./test")
 except: pass

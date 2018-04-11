@@ -35,8 +35,8 @@ inline void    QUEX_NAME_TOKEN(copy)(Token*       me,
                                      const Token* That);
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 inline bool    QUEX_NAME_TOKEN(take_text)(Token*             __this, 
-                                          const QUEX_TYPE_LEXATOM*  Begin, 
-                                          const QUEX_TYPE_LEXATOM*  End);
+                                          const TestAnalyzer_lexatom_t*  Begin, 
+                                          const TestAnalyzer_lexatom_t*  End);
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
@@ -61,7 +61,7 @@ public:
 
 
 #   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    const QUEX_TYPE_LEXATOM* text;
+    const TestAnalyzer_lexatom_t* text;
 
 #   line 67 "test_environment/TestAnalyzer-token"
 
@@ -74,9 +74,9 @@ public:
 public:
 
 #   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    const QUEX_TYPE_LEXATOM* get_text() const                           { return text; }
+    const TestAnalyzer_lexatom_t* get_text() const                           { return text; }
 #   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    void                     set_text(const QUEX_TYPE_LEXATOM*& Value)  { text = Value; }
+    void                     set_text(const TestAnalyzer_lexatom_t*& Value)  { text = Value; }
 #   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
     size_t                   get_number() const                         { return number; }
 #   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
@@ -85,7 +85,7 @@ public:
 #   line 86 "test_environment/TestAnalyzer-token"
 
     void set(const TestAnalyzer_token_id_t ID) { id = ID; }
-    void set(const TestAnalyzer_token_id_t ID, const  QUEX_TYPE_LEXATOM*& Value0, const size_t& Value1)
+    void set(const TestAnalyzer_token_id_t ID, const  TestAnalyzer_lexatom_t*& Value0, const size_t& Value1)
     { id = ID; text = Value0; number = Value1; }
 
 
@@ -102,15 +102,15 @@ public:
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE
     public:
-        QUEX_TYPE_TOKEN_LINE_N    _line_n;
-        QUEX_TYPE_TOKEN_LINE_N    line_number() const                                 { return _line_n; }
-        void                      set_line_number(const QUEX_TYPE_TOKEN_LINE_N Value) { _line_n = Value; }
+        TestAnalyzer_token_line_n_t    _line_n;
+        TestAnalyzer_token_line_n_t    line_number() const                                 { return _line_n; }
+        void                      set_line_number(const TestAnalyzer_token_line_n_t Value) { _line_n = Value; }
 #       endif
 #       ifdef  QUEX_OPTION_COUNTER_COLUMN
     public:
-        QUEX_TYPE_TOKEN_COLUMN_N  _column_n;
-        QUEX_TYPE_TOKEN_COLUMN_N  column_number() const                                   { return _column_n; }
-        void                      set_column_number(const QUEX_TYPE_TOKEN_COLUMN_N Value) { _column_n = Value; }
+        TestAnalyzer_token_column_n_t  _column_n;
+        TestAnalyzer_token_column_n_t  column_number() const                                   { return _column_n; }
+        void                      set_column_number(const TestAnalyzer_token_column_n_t Value) { _column_n = Value; }
 #       endif
 #   endif
     public:
@@ -141,8 +141,8 @@ public:
         friend void QUEX_NAME_TOKEN(copy)(Token*       __this, 
                                           const Token* That);
         friend bool QUEX_NAME_TOKEN(take_text)(Token*             __this, 
-                                               const QUEX_TYPE_LEXATOM*  Begin, 
-                                               const QUEX_TYPE_LEXATOM*  End);
+                                               const TestAnalyzer_lexatom_t*  Begin, 
+                                               const TestAnalyzer_lexatom_t*  End);
 };
 
 QUEX_NAMESPACE_TOKEN_CLOSE
@@ -164,7 +164,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 
 
 QUEX_NAMESPACE_TOKEN_OPEN
-extern QUEX_TYPE_LEXATOM   QUEX_NAME_TOKEN(LexemeNull);
+extern TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull);
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 
@@ -185,7 +185,7 @@ QUEX_INLINE
 Token::Token()
 {
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 
 #   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
@@ -204,7 +204,7 @@ Token::Token(const Token& Other)
 {
    QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 
 #   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
@@ -222,7 +222,7 @@ QUEX_INLINE
 Token::~Token()
 {
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 
 #   line 25 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
@@ -258,7 +258,7 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
     (void)__That;
 
@@ -270,8 +270,8 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
             QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
-            self.text = QUEX_NAME_TOKEN(lexeme_clone)(self.text, 
-                                                      QUEX_NAME_TOKEN(lexeme_length)(Other.text));
+            self.text = QUEX_NAME(lexeme_clone)(self.text, 
+                                                      QUEX_NAME(lexeme_length)(Other.text));
             if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
@@ -300,13 +300,13 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
 QUEX_NAME_TOKEN(take_text)(Token*              __this, 
-                           const QUEX_TYPE_LEXATOM* Begin, 
-                           const QUEX_TYPE_LEXATOM* End)
+                           const TestAnalyzer_lexatom_t* Begin, 
+                           const TestAnalyzer_lexatom_t* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
  *          false -- if no ownership is claimed.                             */
 {
 #   define self      (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
 
 #   line 51 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
@@ -315,7 +315,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
 #       if 0
         /* Hint for debug: To check take_text change "#if 0" to "#if 1" */
         {
-            const QUEX_TYPE_LEXATOM* it = (void*)0x0;
+            const TestAnalyzer_lexatom_t* it = (void*)0x0;
             printf("previous:  '");
             if( self.text != LexemeNull ) {
                 for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
@@ -334,9 +334,9 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);
-            self.text = QUEX_NAME_TOKEN(lexeme_clone)(Begin, (size_t)(End - Begin));
+            self.text = QUEX_NAME(lexeme_clone)(Begin, (size_t)(End - Begin));
             if( ! self.text ) self.text = LexemeNull;
-            *((QUEX_TYPE_LEXATOM*)(self.text + (End - Begin))) = (QUEX_TYPE_LEXATOM)0;
+            *((TestAnalyzer_lexatom_t*)(self.text + (End - Begin))) = (TestAnalyzer_lexatom_t)0;
         } else {
             self.text = LexemeNull;
         }
@@ -344,7 +344,7 @@ QUEX_NAME_TOKEN(take_text)(Token*              __this,
 #       if 0
         /* Hint for debug: To check take_text change "#if 0" to "#if 1"       */
         {
-            const QUEX_TYPE_LEXATOM* it = 0x0;
+            const TestAnalyzer_lexatom_t* it = 0x0;
             printf("after:     '");
             if( self.text != LexemeNull ) { 
                 for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);

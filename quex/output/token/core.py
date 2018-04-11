@@ -318,8 +318,7 @@ helper_definitions_C = """
 """
 
 helper_definitions_common = """
-#define QUEX_TYPE_LEXATOM                  %s
-#define QUEX_TYPE_TOKEN_ID                 %s
+$$TYPE_DEFINITIONS$$
 #define QUEX_SETTING_CHARACTER_CODEC       %s
 
 #ifndef    QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
@@ -345,10 +344,9 @@ def _helper_definitions():
         txt = helper_definitions_C % token_descr.class_name_safe
 
     txt += helper_definitions_common \
-           % (Setup.lexatom.type,
-              Setup.token_id_type,
-              Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
+           % (Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
               Setup.output_token_id_file_ref)
+    txt = txt.replace("$$TYPE_DEFINITIONS$$", Lng.type_definitions())
 
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT", token_db.support_take_text())        
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT", token_db.support_repetition())        

@@ -225,6 +225,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     # Verify, that Templates and Pathwalkers are really generated
     __verify_code_generation(FullLanguage, source_code)
 
+    source_code = adapt.do(source_code, "ut")
+
     compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr, 
                     test_str_list)
 
@@ -415,7 +417,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     if not SecondModeF:  sm_name = "M"
     else:                sm_name = "M2"
 
-    Setup.analyzer_class_name = sm_name
+    Setup.analyzer_class_name = "TestAnalyzer"
 
     # (*) Initialize address handling
     dial_db = DialDB()     # BEFORE constructor of generator; 

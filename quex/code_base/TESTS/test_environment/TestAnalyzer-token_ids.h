@@ -6,7 +6,7 @@
  * NOTE: This file has been created automatically by Quex.
  *       Visit quex.org for further info.
  *
- * DATE: Sat Apr  7 08:28:22 2018
+ * DATE: Wed Apr 11 22:59:01 2018
  *
  * (C) 2005-2010 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                     */
@@ -21,12 +21,12 @@
 
 /* Note: When multiple lexical analyzers are included, then their
  *       token prefix must differ! Use '--token-id-prefix'.                   */
-#define QUEX_TKN_DEDENT        ((TestAnalyzer_token_id_t)10000)
-#define QUEX_TKN_INDENT        ((TestAnalyzer_token_id_t)10001)
-#define QUEX_TKN_NODENT        ((TestAnalyzer_token_id_t)10002)
-#define QUEX_TKN_TERMINATION   ((TestAnalyzer_token_id_t)0)
-#define QUEX_TKN_UNINITIALIZED ((TestAnalyzer_token_id_t)10003)
-#define QUEX_TKN_X             ((TestAnalyzer_token_id_t)10004)
+#define QUEX_TKN_DEDENT        ((uint32_t)10000)
+#define QUEX_TKN_INDENT        ((uint32_t)10001)
+#define QUEX_TKN_NODENT        ((uint32_t)10002)
+#define QUEX_TKN_TERMINATION   ((uint32_t)0)
+#define QUEX_TKN_UNINITIALIZED ((uint32_t)10003)
+#define QUEX_TKN_X             ((uint32_t)10004)
 
 
 #endif /* __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_QUEX_TESTANALYZER__QUEX_TOKEN__        */

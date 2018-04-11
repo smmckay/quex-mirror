@@ -3,8 +3,8 @@
 
 #include "gramma.h"
 
-#ifndef    QUEX_TYPE_TOKEN_ID
-#   define QUEX_TYPE_TOKEN_ID              uint32_t
+#ifndef    br_scan_token_id_t
+#   define br_scan_token_id_t              uint32_t
 #endif
 
 namespace blackray {
@@ -13,7 +13,7 @@ namespace blackray {
 struct Token {
 
     int                                    number_;
-    std::basic_string<QUEX_TYPE_LEXATOM> text_;
+    std::basic_string<br_scan_lexatom_t> text_;
 
 
 public:
@@ -21,26 +21,26 @@ public:
     { return number_; }
     void                                   set_name(int number)
     { number_ = number; }
-    std::basic_string<QUEX_TYPE_LEXATOM> get_text() const
+    std::basic_string<br_scan_lexatom_t> get_text() const
     { return text_; }
-    void                                   set_text(std::basic_string<QUEX_TYPE_LEXATOM>& text)
+    void                                   set_text(std::basic_string<br_scan_lexatom_t>& text)
     { text_ = text; }
 
 
-    void set(const QUEX_TYPE_TOKEN_ID ID)
+    void set(const br_scan_token_id_t ID)
     { id = ID; }
-    void set(const QUEX_TYPE_TOKEN_ID ID, int Value0)
+    void set(const br_scan_token_id_t ID, int Value0)
     { id = ID; number_ = Value0; }
-    void set(const QUEX_TYPE_TOKEN_ID ID, const std::basic_string<QUEX_TYPE_LEXATOM>& Value0)
+    void set(const br_scan_token_id_t ID, const std::basic_string<br_scan_lexatom_t>& Value0)
     { id = ID; text_ = Value0; }
-    void set(const QUEX_TYPE_TOKEN_ID ID, int Value0, const std::basic_string<QUEX_TYPE_LEXATOM>& Value1)
+    void set(const br_scan_token_id_t ID, int Value0, const std::basic_string<br_scan_lexatom_t>& Value1)
     { id = ID; number_ = Value0; text_ = Value1; }
 
 
-        QUEX_TYPE_TOKEN_ID    id;
+        br_scan_token_id_t    id;
 
-        QUEX_TYPE_TOKEN_ID    type_id() const      { return id; }
-        static const char*    map_id_to_name(QUEX_TYPE_TOKEN_ID ID) {
+        br_scan_token_id_t    type_id() const      { return id; }
+        static const char*    map_id_to_name(br_scan_token_id_t ID) {
           switch (ID) {
             case BR_TKN_DOT           : return "BR_TKN_DOT";
             case BR_TKN_TERMINATION   : return "BR_TKN_TERMINATION";
@@ -64,14 +64,14 @@ public:
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE
-        QUEX_TYPE_TOKEN_LINE_N    _line_n;
-        QUEX_TYPE_TOKEN_LINE_N    line_number() const                           { return _line_n; }
-        void                      set_line_number(const QUEX_TYPE_TOKEN_LINE_N Value) { _line_n = Value; }
+        br_scan_token_line_n_t    _line_n;
+        br_scan_token_line_n_t    line_number() const                           { return _line_n; }
+        void                      set_line_number(const br_scan_token_line_n_t Value) { _line_n = Value; }
 #       endif
 #       ifdef  QUEX_OPTION_COUNTER_COLUMN
-        QUEX_TYPE_TOKEN_COLUMN_N  _column_n;
-        QUEX_TYPE_TOKEN_COLUMN_N  column_number() const                             { return _column_n; }
-        void                      set_column_number(const QUEX_TYPE_TOKEN_COLUMN_N Value) { _column_n = Value; }
+        br_scan_token_column_n_t  _column_n;
+        br_scan_token_column_n_t  column_number() const                             { return _column_n; }
+        void                      set_column_number(const br_scan_token_column_n_t Value) { _column_n = Value; }
 #       endif
 #   endif
 

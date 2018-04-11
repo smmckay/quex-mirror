@@ -68,7 +68,7 @@ QUEX_NAME_TOKEN(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme,
  * string.                                                                    */
 {
     const QUEX_TYPE_LEXATOM** source_p  = &Lexeme;
-    const QUEX_TYPE_LEXATOM*  SourceEnd = &Lexeme[QUEX_NAME_TOKEN(lexeme_length)(Lexeme) + (size_t)1];
+    const QUEX_TYPE_LEXATOM*  SourceEnd = &Lexeme[QUEX_NAME(lexeme_length)(Lexeme) + (size_t)1];
     char*                     original  = buffer;  /* Maintain original pointer    */
     char**                    drain_pp  = &buffer; /* Conv. changes buffer pointer */
     const char*               DrainEnd  = &buffer[BufferSize];

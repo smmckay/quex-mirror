@@ -32,6 +32,8 @@ $$INC: include-guard-undef$$
 #endif
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_$$LEXER_NAME_SPACE_EXT$$
 
+#include <stddef.h>
+$$INC: compatibility/stdint.h$$
 #include "$$LEXER_CONFIG_FILE$$"
 
 $$INC: definitions$$

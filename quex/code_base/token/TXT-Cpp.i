@@ -13,7 +13,7 @@ QUEX_INLINE
 $TOKEN_CLASS::$TOKEN_CLASS()
 {
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 $$CONSTRUCTOR$$
 #   undef  LexemeNull
 #   undef  self
@@ -24,7 +24,7 @@ $TOKEN_CLASS::$TOKEN_CLASS(const $TOKEN_CLASS& Other)
 {
    QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 $$CONSTRUCTOR$$
 #   undef  LexemeNull
 #   undef  self
@@ -34,7 +34,7 @@ QUEX_INLINE
 $TOKEN_CLASS::~$TOKEN_CLASS()
 {
 #   define self (*this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
 $$DESTRUCTOR$$
 #   undef  LexemeNull
 #   undef  self
@@ -59,7 +59,7 @@ QUEX_NAME_TOKEN(copy)($TOKEN_CLASS* __this, const $TOKEN_CLASS* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
     (void)__That;
 $$COPY$$
@@ -86,7 +86,7 @@ QUEX_NAME_TOKEN(take_text)($TOKEN_CLASS*              __this,
  *          false -- if no ownership is claimed.                             */
 {
 #   define self      (*__this)
-#   define LexemeNull  (&QUEX_NAME_TOKEN(LexemeNull))
+#   define LexemeNull  (&QUEX_NAME(LexemeNull))
     (void)__this;
 $$FUNC_TAKE_TEXT$$
 #   undef  LexemeNull
