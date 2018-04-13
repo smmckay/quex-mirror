@@ -20,9 +20,8 @@ customized_codec.qx:25:warning: (Buffer element size is 1 [byte])
 #ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__customized_codec_I
 #define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__customized_codec_I
 #include "Simple/Simple-converter-customized_codec"
-QUEX_CONVERTER_CHAR_DEF(customized_codec, utf32)(const QUEX_TYPE_LEXATOM** input_pp,
-QUEX_CONVERTER_CHAR_DEF(customized_codec, utf16)(const QUEX_TYPE_LEXATOM** input_pp,
-QUEX_CONVERTER_CHAR_DEF(customized_codec, utf8)(const QUEX_TYPE_LEXATOM**  input_pp, 
+QUEX_CONVERTER_CHAR_DEF(customized_codec, utf32)(const Simple_lexatom_t** input_pp,
+QUEX_CONVERTER_CHAR_DEF(customized_codec, utf16)(const Simple_lexatom_t** input_pp,
+QUEX_CONVERTER_CHAR_DEF(customized_codec, utf8)(const Simple_lexatom_t**  input_pp, 
 #define __QUEX_FROM           customized_codec
 #endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__customized_codec_I */
-

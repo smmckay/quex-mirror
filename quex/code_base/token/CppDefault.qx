@@ -38,7 +38,7 @@ $INCLUDE_CONVERTER_DECLARATION
         }
         if( Other.text != LexemeNull ) {
             self.text = QUEX_NAME(lexeme_clone)(self.text, 
-                                                      QUEX_NAME(lexeme_length)(Other.text));
+                                                QUEX_NAME(lexeme_length)(Other.text));
             if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
@@ -107,7 +107,7 @@ $INCLUDE_CONVERTER_DECLARATION
         {
             std::string  tmp;
             tmp  = map_id_to_name(self.id);
-            tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
+            tmp += " '" + QUEX_NAME(lexeme_to_pretty_char)(self.text) + "'";
             return tmp;
         }
     

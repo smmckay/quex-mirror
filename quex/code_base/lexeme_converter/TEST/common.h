@@ -5,13 +5,6 @@
 #ifndef __INCLUDE_GUARD__COMMON_H
 #define __INCLUDE_GUARD__COMMON_H
 
-#define QUEX_NAMESPACE_MAIN        //Tester
-#define QUEX_NAMESPACE_MAIN_OPEN   //namespace Tester {
-#define QUEX_NAMESPACE_MAIN_CLOSE  //}
-#define QUEX_NAME_TOKEN(NAME)      TesterToken_ ## NAME
-#define QUEX_NAMESPACE_TOKEN_OPEN  namespace TesterToken {
-#define QUEX_NAMESPACE_TOKEN_CLOSE }
-
 #define ____QUEX_CONVERTER_CHAR(FROM, TO)    TesterToken_ ## FROM ## _to_ ## TO ## _character
 #define QUEX_CONVERTER_CHAR(FROM, TO)        ____QUEX_CONVERTER_CHAR(FROM, TO)
 #define QUEX_CONVERTER_CHAR_DEF(FROM, TO)    ____QUEX_CONVERTER_CHAR(FROM, TO)

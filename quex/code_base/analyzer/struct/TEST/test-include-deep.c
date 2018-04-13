@@ -126,9 +126,9 @@ self_include_push(uint32_t n)
     QUEX_NAME(ByteLoader)* byte_loader;
     QUEX_NAME(Converter)*  converter;
     QUEX_NAME(Buffer_event_callbacks) backup_callbacks = lx->buffer.event; 
-    QUEX_TYPE_LEXATOM*     new_memory = (QUEX_TYPE_LEXATOM*)0;
-    QUEX_TYPE_LEXATOM*     new_memory_end = (QUEX_TYPE_LEXATOM*)0;
-    QUEX_TYPE_LEXATOM*     new_memory_eos_p = (QUEX_TYPE_LEXATOM*)0;
+    TestAnalyzer_lexatom_t*     new_memory = (TestAnalyzer_lexatom_t*)0;
+    TestAnalyzer_lexatom_t*     new_memory_end = (TestAnalyzer_lexatom_t*)0;
+    TestAnalyzer_lexatom_t*     new_memory_eos_p = (TestAnalyzer_lexatom_t*)0;
     ptrdiff_t              new_memory_size;
 
     /* Setup the pointers, so that the inclusion type varries.
@@ -204,16 +204,16 @@ self_setup_pointers(uint32_t n)
 {
     uint32_t           random0                = hwut_random_next(n);
     uint32_t           random1                = hwut_random_next(random0);
-    QUEX_TYPE_LEXATOM* end_p_current          = lx->buffer.input.end_p ? lx->buffer.input.end_p 
+    TestAnalyzer_lexatom_t* end_p_current          = lx->buffer.input.end_p ? lx->buffer.input.end_p 
                                                                        : &lx->buffer._memory._front[1];
     ptrdiff_t          end_p_max_increment_n  = lx->buffer._memory._back - end_p_current;
     ptrdiff_t          end_p_increment_n      = end_p_max_increment_n ? random0 % end_p_max_increment_n
                                                                       : 0;
-    QUEX_TYPE_LEXATOM* end_p_new              = lx->buffer.input.end_p + end_p_increment_n;
+    TestAnalyzer_lexatom_t* end_p_new              = lx->buffer.input.end_p + end_p_increment_n;
     ptrdiff_t          read_p_max_increment_n = end_p_new - lx->buffer._read_p;
     ptrdiff_t          read_p_increment_n     = read_p_max_increment_n ? random1 % read_p_max_increment_n
                                                                        : 0;
-    QUEX_TYPE_LEXATOM* read_p_new             = lx->buffer._read_p + read_p_increment_n;
+    TestAnalyzer_lexatom_t* read_p_new             = lx->buffer._read_p + read_p_increment_n;
 
     *(lx->buffer.input.end_p)  = 0x5A;
     lx->buffer.input.end_p     = end_p_new;

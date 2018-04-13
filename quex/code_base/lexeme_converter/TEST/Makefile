@@ -4,7 +4,7 @@ FILES = characters \
 		from-utf32  
 
 
-CC = g++ -Wall -Werror -W -I. -I$(HWUT_PATH) -ggdb 
+CC = g++ -Wall -Werror -W -I. -I$(HWUT_PATH) -I../../ -ggdb 
 
 all: $(FILES)
 

@@ -3,6 +3,7 @@
 
 #include "ut/lib/definitions"
 
+typedef unsigned char TestAnalyzer_lexatom_t;
 #define QUEX_NAME_TOKEN(X) TokenName_ ## X
 #define QUEX_NAME(X)       LexerName_ ## X
 #define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG 

@@ -136,8 +136,8 @@ $INCLUDE_CONVERTER_DECLARATION
             }
 
             /* The String */
-            QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
-                                                   (size_t)(BufferEnd - writerator));
+            QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, 
+                                             (size_t)(BufferEnd - writerator));
             while( *writerator ) ++writerator;
 
             /* Closing Quote */

@@ -5,6 +5,7 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 }
+#include "../../TESTS/minimum-definitions.h"
 #include "common.h"
 
 #define UTF8_STRING_SIZE  6
@@ -133,7 +134,6 @@ struct UnicodeTester {
 
     bool test_this(uint32_t UTF32Source)
     {
-        using namespace TesterToken;
         /* Convert the characters and print the result on the screen. */
         uint8_t*   utf8_drain        = (uint8_t*)malloc((size_t)UTF8_STRING_SIZE);
         uint16_t*  utf16_drain       = (uint16_t*)malloc((size_t)UTF16_STRING_SIZE);

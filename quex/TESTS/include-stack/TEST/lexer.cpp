@@ -7,7 +7,7 @@
 
 using namespace std;
 
-QUEX_TYPE_LEXATOM  EmptyLexeme = 0x0000;  /* Only the terminating zero */
+quex::Simple_lexatom_t  EmptyLexeme = 0x0000;  /* Only the terminating zero */
 
 void    print(quex::Simple& qlex, quex::Token& Token, bool TextF = false);
 void    print(quex::Simple& qlex, const char* Str1, const char* Str2=0x0, const char* Str3=0x0);

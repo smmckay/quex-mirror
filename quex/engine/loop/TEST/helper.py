@@ -14,6 +14,7 @@ from   quex.engine.analyzer.door_id_address_label    import get_plain_strings
 from   quex.engine.pattern                           import Pattern
 import quex.engine.analyzer.engine_supply_factory    as     engine
 import quex.engine.state_machine.transformation.core as     bc_factory
+import quex.output.analyzer.adapt                    as     adapt
 from   quex.output.core.TEST.generator_test          import *
 from   quex.output.core.TEST.generator_test          import __Setup_init_language_database
 from   quex.output.core.variable_db                  import variable_db
@@ -272,7 +273,8 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
 
     on_indentation_txt = indentation_handler.do(AuxMode(), ["M", "M2"]).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
 
-    return main_txt + on_indentation_txt
+    Setup.analyzer_class_name = "TestAnalyzer"
+    return adapt.do(main_txt + on_indentation_txt, "ut")
     
 
 def create_customized_analyzer_function(Language, TestStr, EngineSourceCode, 
@@ -310,7 +312,8 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
 
     txt = txt.replace(Lng._SOURCE_REFERENCE_END(), "")
 
-    return txt
+    Setup.analyzer_class_name = "TestAnalyzer"
+    return adapt.do(txt, "ut")
 
 def my_own_mr_unit_test_function(SourceCode, EndStr, 
                                  LocalVariableDB={}, ReloadF=False, 
@@ -457,7 +460,7 @@ show_next_character(QUEX_TYPE_ANALYZER* me)
         if( QUEX_NAME(Buffer_is_end_of_stream)(buffer) ) {
             return false;
         }
-        QUEX_NAME(Buffer_load_forward)(buffer, (QUEX_TYPE_LEXATOM**)0x0, 0);
+        QUEX_NAME(Buffer_load_forward)(buffer, (TestAnalyzer_lexatom_t**)0x0, 0);
     }
     if( me->buffer._read_p != me->buffer.input.end_p ) {
         if( ((*buffer->_read_p) & 0x80) == 0 ) 
@@ -479,7 +482,7 @@ skip_irrelevant_characters_function_txt = """
 static bool
 skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me)
 {
-    QUEX_TYPE_LEXATOM   input;
+    TestAnalyzer_lexatom_t   input;
     (void)input;
     $$FOUND$$
 
@@ -491,7 +494,7 @@ $$MARKER_LIST$$
             if( QUEX_NAME(Buffer_is_end_of_stream)(&me->buffer) ) {
                 return false;
             }
-            QUEX_NAME(Buffer_load_forward)(&me->buffer, (QUEX_TYPE_LEXATOM**)0x0, 0);
+            QUEX_NAME(Buffer_load_forward)(&me->buffer, (TestAnalyzer_lexatom_t**)0x0, 0);
             assert(me->buffer._read_p >= me->buffer._memory._front);
             assert(me->buffer._read_p <= me->buffer._memory._back);
 

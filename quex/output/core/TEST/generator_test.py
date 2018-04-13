@@ -372,7 +372,6 @@ def create_common_declarations(Language, QuexBufferSize,
     txt += "#    define QUEX_SETTING_BUFFER_SIZE  %s\n" % QuexBufferSize
 
     # Parameterize the common declarations
-    # txt += "#define QUEX_TYPE_LEXATOM unsigned char\n" 
     txt += "#define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n" 
     txt += "#define __QUEX_OPTION_UNIT_TEST\n" 
 
@@ -498,7 +497,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 
     function_body, \
     variable_definitions = engine_generator.do_core(mode)
-    function_body += "if(0) { QUEX_FUNCTION_COUNT_ARBITRARY((QUEX_TYPE_ANALYZER*)0, (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0); }\n"
+    function_body += "if(0) { QUEX_FUNCTION_COUNT_ARBITRARY((QUEX_TYPE_ANALYZER*)0, (TestAnalyzer_lexatom_t*)0, (TestAnalyzer_lexatom_t*)0); }\n"
     function_txt  = engine_generator.wrap_up(sm_name, function_body, 
                                              variable_definitions, 
                                              ModeNameList=[], dial_db=dial_db)
@@ -516,7 +515,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 def nonsense_default_counter(FirstModeF):
     if FirstModeF:
         return   "static void\n" \
-               + "QUEX_FUNCTION_COUNT_ARBITRARY(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd) {}\n" 
+               + "QUEX_FUNCTION_COUNT_ARBITRARY(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t* LexemeBegin, TestAnalyzer_lexatom_t* LexemeEnd) {}\n" 
     else:
         return "" # Definition done before
 
@@ -526,7 +525,7 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED
 #define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
 #define QUEX_SETTING_BUFFER_MIN_FALLBACK_N     ((size_t)$$BUFFER_FALLBACK_N$$)
-#define QUEX_SETTING_BUFFER_LIMIT_CODE         ((QUEX_TYPE_LEXATOM)$$BUFFER_LIMIT_CODE$$)
+#define QUEX_SETTING_BUFFER_LIMIT_CODE         ((TestAnalyzer_lexatom_t)$$BUFFER_LIMIT_CODE$$)
 #define QUEX_OPTION_INCLUDE_STACK_DISABLED
 
 #if 0
@@ -541,8 +540,12 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #  define __QUEX_SETTING_MAX_MODE_CLASS_N 2
 #endif
 #ifdef __cplusplus
+namespace quex {
+typedef int TestAnalyzer_indentation_t;
+}
 #include "test_environment/TestAnalyzer"
 #else
+typedef int TestAnalyzer_indentation_t;
 #include "test_environment/TestAnalyzer.h"
 #endif
 #include "ut/lib/analyzer/asserts.i"
@@ -558,9 +561,9 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
     using namespace quex;
 #endif
 
-QUEX_NAMESPACE_TOKEN_OPEN     
-QUEX_TYPE_LEXATOM   LexemeNull = (QUEX_TYPE_LEXATOM)0;
-QUEX_NAMESPACE_TOKEN_CLOSE     
+QUEX_NAMESPACE_MAIN_OPEN     
+TestAnalyzer_lexatom_t   LexemeNull = (TestAnalyzer_lexatom_t)0;
+QUEX_NAMESPACE_MAIN_CLOSE     
 
 #ifndef RETURN
 #   define RETURN    return
@@ -663,7 +666,7 @@ test_program_db = {
 
     int main(int argc, char** argv)
     {
-        QUEX_TYPE_LEXATOM  TestString[] = "\\0$$TEST_STRING$$\\0";
+        TestAnalyzer_lexatom_t  TestString[] = "\\0$$TEST_STRING$$\\0";
         const size_t       MemorySize   = strlen((const char*)&TestString[1]) + 2;
         quex_TestAnalyzer  object;
 

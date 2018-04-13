@@ -148,18 +148,12 @@ main_template = """
 /* From '.begin' the target map targets to '.target' until the next '.begin' is
  * reached.                                                                   */
 #include "ut/lib/compatibility/stdint.h"
+#define QUEX_TYPE_LEXATOM              $$QUEX_TYPE_LEXATOM$$
+#include "../../../code_base/TESTS/minimum-definitions.h"
 #include <stdio.h>
 #define __QUEX_OPTION_PLAIN_C
-#define QUEX_TYPE_LEXATOM              uint32_t
-#define QUEX_NAMESPACE_MAIN_OPEN
-#define QUEX_NAMESPACE_MAIN_CLOSE
-#define QUEX_NAME_TOKEN(NAME)          Token_ ## NAME
-#define QUEX_NAMESPACE_TOKEN_OPEN        
-#define QUEX_NAMESPACE_TOKEN_CLOSE      
 #include "ut/lib/lexeme_converter/from-utf32"
 #include "ut/lib/lexeme_converter/from-utf32.i"
-#undef  QUEX_TYPE_LEXATOM
-#define QUEX_TYPE_LEXATOM              $$QUEX_TYPE_LEXATOM$$
 #include "ut/lib/single.i"
 
 typedef struct {
@@ -291,7 +285,7 @@ fh.write("".join(adapt.do(txt, "ut")))
 fh.close()
 try:    os.remove("./test")
 except: pass
-os.system("gcc -I. -Wall -Werror test.c -o test -ggdb -std=c89")
+os.system("gcc -Wall -Werror -I. -I../../../code_base -o test test.c -ggdb -std=c89")
 os.system("./test")
 
 if True:

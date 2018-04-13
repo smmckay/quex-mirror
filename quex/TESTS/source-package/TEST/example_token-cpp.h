@@ -37,8 +37,8 @@ extern void QUEX_NAME_TOKEN(copy)(Token* me, const Token* Other);
 extern void QUEX_NAME_TOKEN(construct)(Token* __this);
 extern void QUEX_NAME_TOKEN(destruct)(Token* __this);
 extern bool QUEX_NAME_TOKEN(take_text)(Token*                   __this, 
-                                       const QUEX_TYPE_LEXATOM* Begin, 
-                                       const QUEX_TYPE_LEXATOM* End);
+                                       const EasyLexer_lexatom_t* Begin, 
+                                       const EasyLexer_lexatom_t* End);
 }
 
 #include <pkg/lib/lexeme.i>
