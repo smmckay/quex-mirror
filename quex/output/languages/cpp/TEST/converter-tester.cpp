@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <test_environment/TestAnalyzer-configuration>
+#include <../../../../code_base/TESTS/minimum-definitions.h>
 #include "converter-tester.h"
 
 #define __MY_STRING(X)   # X

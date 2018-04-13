@@ -102,7 +102,7 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, dial_db):
                               "BUT, if so quit immediately after 'shift values'."),
         "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
         "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
-        "        %s\n" % "return;", # TODO: Replace with Lng.PURE_RETURN
+        "        %s\n" % Lng.PURE_RETURN,
         "    %s\n" % Lng.END_IF,
         "    %s = LexemeBegin;\n" % IteratorName
     ])

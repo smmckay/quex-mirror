@@ -53,7 +53,7 @@ class Language(dict):
     LEXEME_CONVERTER_DIR      = "lib/lexeme_converter"
                               
     RETURN                    = "RETURN;"
-    PURE_RETURN               = "__QUEX_PURE_RETURN;"
+    PURE_RETURN               = "return;"
     UNREACHABLE               = "__quex_assert_no_passage();"
     ELSE                      = "else {"
     ELSE_FOLLOWS              = "} else {"
