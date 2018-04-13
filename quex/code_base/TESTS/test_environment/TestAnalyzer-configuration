@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.68.2"
-#define QUEX_SETTING_BUILD_DATE        "Wed Apr 11 22:59:01 2018"
+#define QUEX_SETTING_BUILD_DATE        "Thu Apr 12 08:11:48 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -167,7 +167,6 @@ typedef uint32_t TestAnalyzer_token_id_t;
 typedef size_t TestAnalyzer_token_line_n_t;
 typedef size_t TestAnalyzer_token_column_n_t;
 typedef int TestAnalyzer_acceptance_id_t;
-typedef int TestAnalyzer_indentation_t;
 QUEX_NAMESPACE_MAIN_CLOSE
 
 

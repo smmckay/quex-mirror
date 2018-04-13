@@ -15,7 +15,7 @@
  * (C) Frank-Rene Schaefer.                                                   */
 #define  __QUEX_OPTION_PLAIN_C
 
-#include "test_environment/TestAnalyzer-configuration"
+#include "minimum-definitions.h"
 #include "MemoryManager_UnitTest.i"
 #include "ut/lib/definitions"
 #include "ut/lib/buffer/Buffer"

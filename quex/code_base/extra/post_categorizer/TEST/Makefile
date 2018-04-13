@@ -15,7 +15,7 @@ hwut-info:
 MYFLAGS = \
      -ggdb \
 	 -Wall -Werror \
-	 -I. -I../../../TESTS \
+	 -I. -I../../../TESTS -I../../../\
      -DQUEX_OPTION_COUNTER_LINE  \
      -DQUEX_OPTION_COUNTER_COLUMN 
 
@@ -24,9 +24,13 @@ CC = g++ $(MYFLAGS)
 post-categorizer-%.exe: post-categorizer-%.cpp ut
 	$(CC) -I./. $< post-categorizer-common.cpp -o $@ 
 
+post-categorizer-%.E: post-categorizer-%.cpp ut
+	$(CC) -I./. $< post-categorizer-common.cpp -E > $@ 
+
 ut:
 	python ../../../TESTS/code_base_instatiation.py ut 
 
 clean: 
 	rm -rf $(PROGRAMS) ut *.o *.E
+
 

@@ -6,7 +6,7 @@
 #include <cstring>
 #define QUEX_TYPE_LEXATOM        char
 #define QUEX_TKN_UNINITIALIZED   1
-#include "test_environment/TestAnalyzer-configuration"
+#include "minimum-definitions.h"
 #include "ut/lib/lexeme_converter/from-unicode-buffer"
 #undef  QUEX_TYPE_TOKEN_ID
 #define QUEX_TYPE_TOKEN_ID  int

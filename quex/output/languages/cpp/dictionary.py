@@ -288,7 +288,7 @@ class Language(dict):
     def INDENTATION_HANDLER_CALL(self, ModeName):
         name = self.NAME_IN_NAMESPACE_MAIN("%s_on_indentation" % ModeName)
         return "".join(["    if( QUEX_NAME(indentation_handler_is_active)(me) ) {\n",
-                "        %s(me, me->counter._column_number_at_end, LexemeNull);\n" % name,
+                "        %s(me, (QUEX_TYPE_INDENTATION)me->counter._column_number_at_end, LexemeNull);\n" % name,
                 "    }\n"])
 
     def STORE_LAST_CHARACTER(self, BeginOfLineSupportF):
@@ -1307,7 +1307,7 @@ class Language(dict):
             ("indentation_t",    "int")
         ]
 
-        if blackboard.required_support_indentation_count():
+        if not blackboard.required_support_indentation_count():
             excluded.add("indentation_t")
 
         acn = Setup.analyzer_class_name

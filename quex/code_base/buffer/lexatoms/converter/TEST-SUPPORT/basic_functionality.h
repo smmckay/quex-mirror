@@ -1,8 +1,8 @@
-#include "test_environment/TestAnalyzer-configuration"
+#include "minimum-definitions.h"
 #include "ut/lib/buffer/lexatoms/converter/Converter"
 #include <stdint.h>
 
-QUEX_NAMESPACE_QUEX_OPEN
+QUEX_NAMESPACE_MAIN_OPEN
 
 extern void test_with_available_codecs(void (*test)(QUEX_NAME(Converter)*, const char*));
 
@@ -19,4 +19,4 @@ extern void print_result(const char*);
 #define STR_CORE(X) #X
 #define STR(X) STR_CORE(X)
 
-QUEX_NAMESPACE_QUEX_CLOSE
+QUEX_NAMESPACE_MAIN_CLOSE

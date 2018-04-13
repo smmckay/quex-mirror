@@ -32,9 +32,9 @@ BASIC_SOURCES := $(TEST_SUPPORT_DIR)/basic_functionality.c \
 DEFS := -DQUEX_OPTION_ASSERTS \
 	    -DQUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE=6 \
         -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
-	    -DQUEX_OPTION_CONVERTER_ICONV 
+	    -DQUEX_OPTION_CONVERTER_ICONV
 
-INCLUDES := -I. -I$(HWUT_PATH)/support/C -I$(TEST_SUPPORT_DIR) -I../../../../../TESTS
+INCLUDES := -I. -I$(HWUT_PATH)/support/C -I$(TEST_SUPPORT_DIR) -I../../../../../TESTS -I../../../../../
 
 CC := g++ $(INCLUDES) $(DEFS) \
 		-ggdb  \
@@ -66,6 +66,10 @@ ut:
 
 %.E: %.cpp
 	g++ $(DEFS) $(INCLUDES) -E $< -o $@
+
+%.o: %.cpp
+	g++ -c $(DEFS) $(INCLUDES) -E $< -o $@
+
 
 %.E: %.c
 	g++ $(DEFS) $(INCLUDES) -E $< -o $@

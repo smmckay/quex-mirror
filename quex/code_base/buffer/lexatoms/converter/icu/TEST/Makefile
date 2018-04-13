@@ -33,7 +33,7 @@ DEFS := -DQUEX_OPTION_ASSERTS \
 	    -DQUEX_SETTING_BUFFER_FILLER_SEEK_TEMP_BUFFER_SIZE=6 \
         -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 
 
-INCLUDES := -I. -I$(HWUT_PATH)/support/C -I$(TEST_SUPPORT_DIR) -I../../../../../TESTS
+INCLUDES := -I. -I$(HWUT_PATH)/support/C -I$(TEST_SUPPORT_DIR) -I../../../../../TESTS -I../../../../../
 
 ICU_LIBS := $(shell icu-config --ldflags) 
 

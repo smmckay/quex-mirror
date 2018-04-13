@@ -33,9 +33,9 @@ main(int argc, char** argv)
     QUEX_TYPE_ANALYZER  lexer; 
     (void)argc; (void)argv;
 
-    QUEX_NAME(from_memory)(&lexer, (QUEX_TYPE_LEXATOM*)&Memory0[0], 
+    QUEX_NAME(from_memory)(&lexer, (lexPlain_lexatom_t*)&Memory0[0], 
                            Memory0Size,
-                           (QUEX_TYPE_LEXATOM*)&Memory0[Memory0Size-1]);
+                           (lexPlain_lexatom_t*)&Memory0[Memory0Size-1]);
 
     test(&lexer, NULL, 0);                  /* memory given during construct.  */
     test(&lexer, &Memory1[0], Memory1Size); /* memory given upon reset.        */
@@ -52,8 +52,8 @@ test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
 
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */
-        lexer->reset_memory(lexer, (QUEX_TYPE_LEXATOM*)&memory[0], Size, 
-                            (QUEX_TYPE_LEXATOM*)&memory[Size-1]);
+        lexer->reset_memory(lexer, (lexPlain_lexatom_t*)&memory[0], Size, 
+                            (lexPlain_lexatom_t*)&memory[Size-1]);
     }
 
     /* Loop until the 'termination' token arrives                            */

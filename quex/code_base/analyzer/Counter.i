@@ -87,7 +87,7 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_INLINE void 
     QUEX_NAME(Counter_print_this)(QUEX_NAME(Counter)* me)
     {
-        __QUEX_IF_COUNT_INDENTATION(size_t* it = 0x0);
+        __QUEX_IF_COUNT_INDENTATION(QUEX_TYPE_INDENTATION* it = 0x0);
 
         __QUEX_STD_printf("  counter: ");
         if( QUEX_NAME(Counter_resources_absent)(me) ) {

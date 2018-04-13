@@ -8,12 +8,6 @@ $$INC: definitions$$
 $$INC: MemoryManager$$
 $$INC: extra/accumulator/Accumulator$$
 
-#if   ! defined(QUEX_TYPE_LEXATOM)
-#        error "QUEX_TYPE_LEXATOM definition missing."
-#elif ! defined(QUEX_TYPE_ANALYZER)
-#        error "QUEX_TYPE_ANALYZER definition missing."
-#endif
-
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE void

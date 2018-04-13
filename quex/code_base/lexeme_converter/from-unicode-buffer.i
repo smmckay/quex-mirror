@@ -48,7 +48,7 @@ $$INC: lexeme_converter/from-utf16.i$$
 $$INC: lexeme_converter/from-utf32.i$$
 
 
-QUEX_NAMESPACE_TOKEN_OPEN
+QUEX_NAMESPACE_MAIN_OPEN
 
 /* (2) Route the converters from 'unicode' to the implementing converter.    */
 QUEX_INLINE void
@@ -100,6 +100,6 @@ $$INC: lexeme_converter/generator/character-converter-to-char-wchar_t.gi$$
  *     definitions of the character converters.                             */
 $$INC: lexeme_converter/generator/implementations.gi$$
 
-QUEX_NAMESPACE_TOKEN_CLOSE
+QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UNICODE_BUFFER_I */

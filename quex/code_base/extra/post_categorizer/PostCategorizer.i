@@ -338,7 +338,7 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
         const QUEX_TYPE_LEXATOM* source_end_p = &source_p[1];
 
         /* Convert the first character                                       */
-        QUEX_NAME_TOKEN(lexeme_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
+        QUEX_NAME(lexeme_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
 
         *drain_p++   = '\0';
         remainder_p  = drain_p;
@@ -346,7 +346,7 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
         source_end_p = source_p + QUEX_NAME(lexeme_length)(source_p) + 1;
 
         /* Convert the remainder                                             */
-        QUEX_NAME_TOKEN(lexeme_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
+        QUEX_NAME(lexeme_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
 
         __QUEX_STD_printf("[%s]%s: %i\n", &drain[0], remainder_p, 
                           (int)node->token_id);

@@ -2,7 +2,7 @@
 #define UNIT_TEST_COMMON_H
 
 #define  __QUEX_OPTION_PLAIN_C
-#include "test_environment/TestAnalyzer-configuration"
+#include "minimum-definitions.h"
 #include "ut/lib/definitions"
 #include "ut/lib/buffer/Buffer"
 #include "ut/lib/MemoryManager"

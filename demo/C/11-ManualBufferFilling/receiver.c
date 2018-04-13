@@ -9,7 +9,7 @@
        "Ελληνικά • Euskara • فارسی • Frysk • Galego • 한국어 • हिन्दी bye";
 #else
 #   include "plain/lexPlain.h"
-    static QUEX_TYPE_LEXATOM   receiver_data[] = 
+    static lexPlain_lexatom_t   receiver_data[] = 
        "A little nonsense now and then is cherished by the wisest men bye";
 #endif
 
