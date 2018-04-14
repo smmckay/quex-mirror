@@ -4,7 +4,7 @@ TEST_FILES = \
 	       strange_wstream.exe \
 		   bom.exe             \
 		   bom-istream.exe
-INCLUDE := -I$(HWUT_PATH) -I. -I../../../TESTS
+INCLUDE := -I$(HWUT_PATH) -I. -I../../../TESTS -I../../../
 
 DEFS = -DQUEX_OPTION_ASSERTS $(INCLUDE) -ggdb 
 
