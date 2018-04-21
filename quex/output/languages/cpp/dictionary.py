@@ -160,29 +160,28 @@ class Language(dict):
         full_path = os.path.normpath(os.path.join(QUEX_PATH, PathTail))
         return open_file_or_die(full_path)
 
-    def token_template_file(self):         return "%s/token/TXT-Cpp"                            % self.CODE_BASE
-    def token_template_i_file(self):       return "%s/token/TXT-Cpp.i"                          % self.CODE_BASE
-    def token_default_file(self):          return "%s/token/CppDefault.qx"                      % self.CODE_BASE
-    def analyzer_template_file(self):      return "%s/analyzer/TXT-Cpp"                         % self.CODE_BASE
-    def analyzer_template_i_file(self):    return "%s/analyzer/TXT-Cpp.i"                       % self.CODE_BASE
-    def analyzer_configuration_file(self): return "%s/analyzer/configuration/TXT"               % self.CODE_BASE
-    def converter_helper_i_file(self):     return "%s/lexeme_converter/TXT-from-codec-buffer.i" % self.CODE_BASE
-    def converter_helper_file(self):       return "%s/lexeme_converter/TXT-from-codec-buffer"   % self.CODE_BASE
+    def token_template_file(self):         return "%s/token/TXT-Cpp"                         % self.CODE_BASE
+    def token_template_i_file(self):       return "%s/token/TXT-Cpp.i"                       % self.CODE_BASE
+    def token_default_file(self):          return "%s/token/CppDefault.qx"                   % self.CODE_BASE
+    def analyzer_template_file(self):      return "%s/analyzer/TXT-Cpp"                      % self.CODE_BASE
+    def analyzer_template_i_file(self):    return "%s/analyzer/TXT-Cpp.i"                    % self.CODE_BASE
+    def analyzer_configuration_file(self): return "%s/analyzer/configuration/TXT"            % self.CODE_BASE
+    def converter_helper_i_file(self):     return "%s/lexeme_converter/TXT-from-codec-core"  % self.CODE_BASE
+    def converter_helper_file(self):       return "%s/lexeme_converter/TXT-header"           % self.CODE_BASE
+    def converter_standard_file(self, Name): return "%s/lexeme_converter/from-%s-core.i"       % (self.CODE_BASE, Name)
+    def converter_implementation_file(self): return "%s/lexeme_converter/TXT-implementation"   % self.CODE_BASE
+    def converter_lexeme_header(self):         return "%s/lexeme_converter/TXT-from-lexeme"   % self.CODE_BASE
+    def converter_lexeme_implementation(self): return "%s/lexeme_converter/TXT-from-lexeme.i"   % self.CODE_BASE
+    def converter_string_file(self):       return "%s/lexeme_converter/TXT-string-core"      % self.CODE_BASE
 
+    def file_name_header_converter_from_lexeme(self): return os.path.join(Setup.output_directory, "lexeme")
+    def file_name_impl_converter_from_lexeme(self):   return os.path.join(Setup.output_directory, "lexeme.i")
 
-    def buffer_encoding_headers(self, EncodingName):
-        if   EncodingName == "utf8":    file_stem = "from-utf8" 
-        elif EncodingName == "utf16":   file_stem = "from-utf16"
-        elif EncodingName == "utf32":   file_stem = "from-utf32"
-        elif EncodingName == "unicode": file_stem = "from-unicode-buffer"
-        else:
-            # Note, that the name may be set to 'None' if the conversion is utf8 or utf16
-            # See Internal engine character encoding'
-            return Setup.prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER), \
-                   Setup.prepare_file_name("-converter-%s" % EncodingName, E_Files.HEADER_IMPLEMTATION)
-
-        return os.path.join(self.LEXEME_CONVERTER_DIR, file_stem), \
-               os.path.join(self.LEXEME_CONVERTER_DIR, "%s.i" % file_stem)
+    def lexeme_converter_file_names(self):
+        file_stem = "converter-from-%s" % self.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
+        odir      = Setup.output_directory
+        return os.path.join(odir, "%s%s" % (file_stem, self.extension_db[E_Files.HEADER])), \
+               os.path.join(odir, "%s%s" % (file_stem, self.extension_db[E_Files.HEADER_IMPLEMTATION]))
 
     def DEFINE_SELF(self, Name):
         return "#   ifdef     self\n" \
@@ -305,13 +304,11 @@ class Language(dict):
         return "\n#undef %s\n" % NAME
 
     def CONVERTER_HELPER_DECLARATION(self):
-        file_name, \
-        dummy      = self.buffer_encoding_headers(Setup.buffer_encoding.name)
+        file_name, dummy = self.lexeme_converter_file_names()
         return self.INCLUDE(file_name)
 
     def CONVERTER_HELPER_IMLEMENTATION(self):
-        dummy,    \
-        file_name = self.buffer_encoding_headers(Setup.buffer_encoding.name)
+        dummy, file_name = self.lexeme_converter_file_names()
         return self.INCLUDE(file_name)
                                                                                                                                 
     @typed(Txt=(CodeFragment))

@@ -1,54 +1,7 @@
-/* -*- C++ -*- vim: set syntax=cpp:
- * PURPOSE: 
- *
- * Provide the implementation of character and string converter functions
- * FROM utf8 to utf8, utf16, utf32, char, and wchar_t.
- *
- * STEPS:
- *
- * (1) Include the implementation of the character converters from utf8 
- *     to utf8, utf16, utf32, char, and wchar_t.
- *
- *     Use: "character-converter/from-utf8.i"
- *             --> implementation for utf8
- *
- *          "../generator/character-converter-char-wchar_t.gi"
- *             --> route 'char' and 'wchar_t' conversion to
- *                 one of the converters defined before.
- *
- * (2) Generate the implementation of the string converters in terms
- *     of those character converters.
- *
- *     Use: "../generator/implementation-string-converters.gi"
- *
- *          which uses
- *
- *              "../generator/string-converter.gi"
- *
- *          to implement each string converter from the given 
- *          character converters. 
- *
- * All functions are placed in the analyzer's namespace.
- *
- * ACKNOWLEDGEMENT: Parts of the following utf8 conversion have been derived from 
- *                  segments of the utf8 conversion library of Alexey Vatchenko 
- *                  <av@bsdua.org>.    
- *
- * (C) 2010-2017 Frank-Rene Schaefer
- * ABSOLUTELY NO WARRANTY                                                    */
-#ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF8_I
-#define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF8_I
-
-$$INC: lexeme_converter/from-utf8$$
-
-QUEX_NAMESPACE_MAIN_OPEN
-
-/* (1) Implement the character converters utf8 to utf8, utf16, utf32.
- *     (Note, that character converters are generated into namespace 'quex'.)*/
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_CONVERTER_CHAR_DEF(utf8, utf8)(const QUEX_TYPE_LEXATOM** input_pp, 
-                                    uint8_t**                 output_pp)
+QUEX_NAME(utf8_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp, 
+                               uint8_t**                 output_pp)
 {
     /* Just for comformity with other encodings: Do nothing but copying. */
     if( ((uint8_t)**input_pp & (uint8_t)0x80) == (uint8_t)0 ) {
@@ -73,8 +26,8 @@ QUEX_CONVERTER_CHAR_DEF(utf8, utf8)(const QUEX_TYPE_LEXATOM** input_pp,
 
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_CONVERTER_CHAR_DEF(utf8, utf16)(const QUEX_TYPE_LEXATOM** input_pp, 
-                                     uint16_t**                output_pp)
+QUEX_NAME(utf8_utf16_character)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                 uint16_t**                output_pp)
 {
     const QUEX_TYPE_LEXATOM*  iterator = *input_pp;
     uint32_t                  tmp = 0;
@@ -126,8 +79,8 @@ QUEX_CONVERTER_CHAR_DEF(utf8, utf16)(const QUEX_TYPE_LEXATOM** input_pp,
 
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_CONVERTER_CHAR_DEF(utf8, utf32)(const QUEX_TYPE_LEXATOM** input_pp, 
-                                     uint32_t**                output_pp)
+QUEX_NAME(utf8_utf32_character)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                uint32_t**                output_pp)
 {
     const QUEX_TYPE_LEXATOM*  iterator = *input_pp;
 
@@ -163,18 +116,3 @@ QUEX_CONVERTER_CHAR_DEF(utf8, utf32)(const QUEX_TYPE_LEXATOM** input_pp,
     ++(*output_pp);
     *input_pp = iterator;
 }
-
-
-#define __QUEX_FROM       utf8
-
-/* (1b) Derive converters to char and wchar_t from the given set 
- *      of converters. (Generator uses __QUEX_FROM and QUEX_FROM_TYPE)      */
-$$INC: lexeme_converter/generator/character-converter-to-char-wchar_t.gi$$
-
-/* (2) Generate string converters to utf8, utf16, utf32 based on the
- *     definitions of the character converters.                             */
-$$INC: lexeme_converter/generator/implementations.gi$$
-
-QUEX_NAMESPACE_MAIN_CLOSE
-
-#endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__FROM_UTF8_I */

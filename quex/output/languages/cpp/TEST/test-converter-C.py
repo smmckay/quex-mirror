@@ -41,8 +41,8 @@ quex.blackboard.setup.language_db = languages.db["C"]()
 def tiny(miniSelf):
     return "converter-tester.h", "" 
 
-quex.blackboard.setup.language_db.buffer_encoding_headers = tiny
-quex.blackboard.setup.output_directory                    = "test_environment"
+quex.blackboard.setup.language_db.lexeme_converter_file_names = tiny
+quex.blackboard.setup.output_directory                        = "test_environment"
 
 test(sys.argv[1])
 

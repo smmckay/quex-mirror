@@ -14,6 +14,7 @@ $$INC: definitions$$
 #endif
 #endif
 
+$$INC: ../converter-from-$$SOURCE_ENCODING$$$$
 $$INC: lexeme_base.i$$
 
 QUEX_NAMESPACE_MAIN_OPEN
@@ -25,8 +26,7 @@ QUEX_NAME(lexeme_to_utf8)(const QUEX_TYPE_LEXATOM** source_p,
                           uint8_t**                 drain_p,  
                           const uint8_t*            DrainEnd)
 {
-    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,utf8)(
-                          source_p, SourceEnd, drain_p, DrainEnd);
+    QUEX_NAME($$SOURCE_ENCODING$$_utf8)(source_p, SourceEnd, drain_p, DrainEnd);
 }
 
 QUEX_INLINE void
@@ -35,8 +35,7 @@ QUEX_NAME(lexeme_to_utf16)(const QUEX_TYPE_LEXATOM** source_p,
                            uint16_t**                drain_p,  
                            const uint16_t*           DrainEnd)
 {
-    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,utf16)(
-                          source_p, SourceEnd, drain_p, DrainEnd);
+    QUEX_NAME($$SOURCE_ENCODING$$_utf16)(source_p, SourceEnd, drain_p, DrainEnd);
 }
 
 QUEX_INLINE void
@@ -45,8 +44,7 @@ QUEX_NAME(lexeme_to_utf32)(const QUEX_TYPE_LEXATOM** source_p,
                            uint32_t**                drain_p,  
                            const uint32_t*           DrainEnd)
 {
-    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,utf32)(
-                          source_p, SourceEnd, drain_p, DrainEnd);
+    QUEX_NAME($$SOURCE_ENCODING$$_utf32)(source_p, SourceEnd, drain_p, DrainEnd);
 }
 
 QUEX_INLINE void
@@ -55,8 +53,7 @@ QUEX_NAME(lexeme_to_char)(const QUEX_TYPE_LEXATOM** source_p,
                           char**                    drain_p,  
                           const char*               DrainEnd)
 {
-    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,char)(
-                          source_p, SourceEnd, drain_p, DrainEnd);
+    QUEX_NAME($$SOURCE_ENCODING$$_char_char)(source_p, SourceEnd, drain_p, DrainEnd);
 }
 
 QUEX_INLINE const char* 
@@ -73,8 +70,7 @@ QUEX_NAME(lexeme_to_pretty_char)(const QUEX_TYPE_LEXATOM* Lexeme,
     char**                    drain_pp  = &buffer; /* Conv. changes buffer pointer */
     const char*               DrainEnd  = &buffer[BufferSize];
 
-    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, pretty_char)(
-                          source_p, SourceEnd, drain_pp, DrainEnd);
+    QUEX_NAME($$SOURCE_ENCODING$$_pretty_char)(source_p, SourceEnd, drain_pp, DrainEnd);
 
     return original;
 }
@@ -84,7 +80,7 @@ QUEX_INLINE const std::string
 QUEX_NAME(lexeme_to_pretty_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Text) 
 /* Provides a somehow pretty-print of the text in the token.          */
 {
-    return QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, pretty_char)(Text);
+    return QUEX_NAME($$SOURCE_ENCODING$$_pretty_char)(Text);
 }
 
 #endif
@@ -96,8 +92,7 @@ QUEX_NAME(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM** source_p,
                            wchar_t**                 drain_p,  
                            const wchar_t*            DrainEnd)
 {
-    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC,wchar)(
-                          source_p, SourceEnd, drain_p,  DrainEnd);
+    QUEX_NAME($$SOURCE_ENCODING$$_wchar)(source_p, SourceEnd, drain_p,  DrainEnd);
 }
 #endif
 #endif /* QUEX_CONVERTER_STRING */
@@ -105,3 +100,5 @@ QUEX_NAME(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM** source_p,
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_INCLUDE_GUARD__LEXEME_I                                      */
+
+$$INC: ../converter-from-$$SOURCE_ENCODING$$.i$$

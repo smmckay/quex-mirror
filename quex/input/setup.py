@@ -82,6 +82,23 @@ class QuexSetup:
         encoding.adapt_ranges_to_lexatom_type_range(self.lexatom.type_range)
         self.__buffer_encoding = encoding
 
+    def adapted_encoding_name(self):
+        """RETURNS: Name of buffer encoding, if name != unicode
+                    A standard encoding name (uft8, utf16, utf32), else. 
+                    None, if no standard encoding name could be associated 
+                          with the lexatom's size.
+        """
+        if self.buffer_encoding.name != "unicode": 
+            return self.buffer_encoding.name
+        elif self.lexatom.size_in_byte == 1: 
+            return "utf8"
+        elif self.lexatom.size_in_byte == 2: 
+            return "utf16"
+        elif self.lexatom.size_in_byte == 4: 
+            return "utf32"
+        else:
+            return None
+
     def set_all_character_set_UNIT_TEST(self):
         if self.language_db is None:
             import quex.output.languages.core as languages
@@ -197,7 +214,7 @@ SETUP_INFO = {
     "buffer_encoding_name":           [["--encoding"],                         "unicode"],
     "buffer_encoding_file":           [["--encoding-file"],                    ""],
     "buffer_limit_code":              [["--buffer-limit"],                     0x0],
-    "__buffer_lexatom_size_in_byte":  [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes]
+    "__buffer_lexatom_size_in_byte":  [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes] => ".lexatom.size_in_byte"
     "__buffer_lexatom_type":          [["--buffer-element-type", "--bet"],     ""],
     "buffer_byte_order":              [["--endian"],                           "<system>"],
     "comment_state_machine_f":        [["--comment-state-machine"],            SetupParTypes.FLAG],

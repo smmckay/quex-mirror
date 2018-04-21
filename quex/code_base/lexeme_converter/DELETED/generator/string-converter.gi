@@ -46,7 +46,7 @@
 #define __QUEX_TO_MAX_LENGTH(X)          ____QUEX_TO_MAX_LENGTH(X)
 
 QUEX_INLINE void
-QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const QUEX_TYPE_LEXATOM**  source_pp, 
+QUEX_CONVERTER_STRING(__QUEX_FROM, __QUEX_TO)(const QUEX_TYPE_LEXATOM**  source_pp, 
                                                   const QUEX_TYPE_LEXATOM*   SourceEnd, 
                                                   __QUEX_TO_TYPE**          drain_pp,  
                                                   const __QUEX_TO_TYPE*     DrainEnd)
@@ -76,7 +76,7 @@ QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const QUEX_TYPE_LEXATOM**  sou
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE std::basic_string<__QUEX_TO_TYPE>
-QUEX_CONVERTER_STRING_DEF(__QUEX_FROM, __QUEX_TO)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
+QUEX_CONVERTER_STRING(__QUEX_FROM, __QUEX_TO)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
 {
     /* Avoiding the mess with 'c_str()' and 'begin()' in 'std::string()'
      * => copy string to a temporary array.                                   */

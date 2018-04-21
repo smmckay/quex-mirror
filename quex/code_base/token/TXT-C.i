@@ -141,6 +141,6 @@ $$MAP_ID_TO_NAME_CASES$$
 
 $$FOOTER$$
 
-$$INC: lexeme.i$$
+#include "lexeme.i"
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I */

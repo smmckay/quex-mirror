@@ -36,33 +36,35 @@ def _generate(mode_db):
     class_token_header,             \
     class_token_implementation      = token_class.do()
 
-    token_id_header            = adapt.do(token_id_header, Setup.output_directory)
-    class_token_header         = adapt.do(class_token_header, Setup.output_directory)
-    class_token_implementation = adapt.do(class_token_implementation, Setup.output_directory)
+    content_table = [
+        (token_id_header,            Setup.output_token_id_file),
+        (class_token_header,         token_db.token_type_definition.get_file_name()),
+        (class_token_implementation, Setup.output_token_class_file_implementation),
+    ]
 
     if Setup.token_class_only_f:
-        class_token_header = do_token_class_info() + class_token_header
-        _write_token_class(class_token_header, 
-                           class_token_implementation, 
-                           token_id_header)
+        class_token_header  = content_table[1][0]
+        content_table[1][0] = do_token_class_info() + class_token_header
+        _straighten_line_pragmas_token_class()
     else:
-        configuration_header,           \
-        analyzer_header,                \
-        engine_txt,                     \
-        lexeme_converter_header,        \
-        lexeme_converter_implementation = _prepare_all(mode_db, 
-                                                       class_token_implementation,
-                                                       global_lexeme_null_declaration)
+        configuration_header, \
+        analyzer_header,      \
+        engine_txt            = _prepare_analyzers(mode_db, 
+                                                   class_token_implementation,
+                                                   global_lexeme_null_declaration)
 
-        configuration_header            = adapt.do(configuration_header, Setup.output_directory)
-        analyzer_header                 = adapt.do(analyzer_header, Setup.output_directory)
-        engine_txt                      = adapt.do(engine_txt, Setup.output_directory)
-        lexeme_converter_header         = adapt.do(lexeme_converter_header, Setup.output_directory)
-        lexeme_converter_implementation = adapt.do(lexeme_converter_implementation, Setup.output_directory)
-        _write_all(configuration_header, analyzer_header, engine_txt, 
-                   class_token_header, token_id_header,
-                   lexeme_converter_header, 
-                   lexeme_converter_implementation)
+        content_table.extend([
+            (configuration_header, Setup.output_configuration_file),
+            (analyzer_header,      Setup.output_header_file),
+            (engine_txt,           Setup.output_code_file),
+        ])
+
+        # (*) [Optional] Generate a converter helper
+        content_table.extend(lexeme_converter.do())
+
+        print "#", [x[1] for x in content_table]
+
+    _write_all(content_table)
 
     source_package.do(Setup.output_directory)
 
@@ -127,8 +129,8 @@ def do_token_class_info():
     comment.append("<<<QUEX-OPTIONS>>>")
     return Lng.ML_COMMENT("".join(comment), IndentN=0)
 
-def _prepare_all(mode_db, class_token_implementation, 
-                 global_lexeme_null_declaration): 
+def _prepare_analyzers(mode_db, class_token_implementation, 
+                       global_lexeme_null_declaration): 
     # (*) implement the lexer mode-specific analyser functions
     function_analyzers_implementation \
                             = analyzer_functions_get(mode_db)
@@ -143,10 +145,6 @@ def _prepare_all(mode_db, class_token_implementation,
                                                                member_function_signature_list) 
     mode_implementation     = mode_classes.do(mode_db)
 
-    # (*) [Optional] Generate a converter helper
-    lexeme_converter_header, \
-    lexeme_converter_implementation = lexeme_converter.do()
-    
     # Engine (Source Code)
     engine_txt = "\n".join([Lng.ENGINE_TEXT_EPILOG(),
                             mode_implementation,
@@ -156,48 +154,24 @@ def _prepare_all(mode_db, class_token_implementation,
 
     return configuration_header, \
            analyzer_header, \
-           engine_txt, \
-           lexeme_converter_header, \
-           lexeme_converter_implementation
+           engine_txt
 
-def _write_all(configuration_header, analyzer_header, engine_txt, 
-               class_token_header, token_id_header, 
-               lexeme_converter_header, 
-               lexeme_converter_implementation):
+def _write_all(content_table):
 
-    if lexeme_converter_header is not None:
-        header, \
-        header_i = Lng.buffer_encoding_headers(Setup.buffer_encoding.name)
-        write_safely_and_close(header, lexeme_converter_header) 
-        write_safely_and_close(header_i, lexeme_converter_implementation) 
+    content_table = [
+        (adapt.do(x[0], Setup.output_directory), x[1]) for x in content_table
+    ]
 
-    if token_id_header is not None:
-        assert not Setup.extern_token_id_file
-        write_safely_and_close(Setup.output_token_id_file, token_id_header)
-
-    write_safely_and_close(Setup.output_configuration_file, configuration_header)
-
-
-    write_safely_and_close(Setup.output_header_file, analyzer_header)
-    write_safely_and_close(Setup.output_code_file,   engine_txt)
-
-    if class_token_header:
-        write_safely_and_close(token_db.token_type_definition.get_file_name(), 
-                               class_token_header)
+    for content, file_name in content_table:
+        if content is None: continue
+        write_safely_and_close(file_name, content)
 
     _straighten_open_line_pragmas_all()
 
-def _write_token_class(class_token_header, class_token_implementation, 
-                       token_id_header):
-    write_safely_and_close(token_db.token_type_definition.get_file_name(), 
-                           class_token_header) 
+def _straighten_line_pragmas_token_class():
     Lng.straighten_open_line_pragmas(token_db.token_type_definition.get_file_name())
-    write_safely_and_close(Setup.output_token_class_file_implementation,
-                           class_token_implementation)
     Lng.straighten_open_line_pragmas(Setup.output_token_class_file_implementation)
-
     if token_id_header is not None:
-        write_safely_and_close(Setup.output_token_id_file, token_id_header)
         Lng.straighten_open_line_pragmas(Setup.output_token_id_file)
 
 def _straighten_open_line_pragmas_all():

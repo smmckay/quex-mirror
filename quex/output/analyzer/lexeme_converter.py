@@ -33,17 +33,68 @@ from quex.blackboard import setup as Setup, \
                             Lng
 from quex.constants  import INTEGER_MAX
 
-from copy import copy
+from operator import attrgetter
+from copy     import copy
 
 def do():
-    if Setup.buffer_encoding.name == "unicode": 
-        return None, None
-    elif isinstance(Setup.buffer_encoding, EncodingTrafoBySplit):
-        return None, None
+    """RETURNS: list of (content, file_name)
 
-    return _do(Setup.buffer_encoding) 
+       where 'content' is the content to be written into 'file_name'.
+    """
+    encoding_name            = Lng.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
 
-def _do(UnicodeTrafoInfo):
+    from_encoding_header_txt = Lng.open_template(Lng.converter_helper_file())
+    character_converters_txt = _character_converters(encoding_name)
+    from_encoding_txt        = blue_print(Lng.open_template(Lng.converter_implementation_file()), [
+                                          ("$$CHARACTER_CONVERTERS$$", character_converters_txt),
+                                          ("$$STRING_CONVERTERS$$",    _string_converters())])
+    header_file_name,         \
+    implementation_file_name  = Lng.lexeme_converter_file_names()
+
+    from_lexeme_header_txt = Lng.open_template(Lng.converter_lexeme_header())
+    from_lexeme_txt        = Lng.open_template(Lng.converter_lexeme_implementation())
+    
+    return [
+        (_adapt(from_encoding_header_txt), header_file_name), 
+        (_adapt(from_encoding_txt),        implementation_file_name),
+        (_adapt(from_lexeme_header_txt),   Lng.file_name_header_converter_from_lexeme()),
+        (_adapt(from_lexeme_txt),          Lng.file_name_impl_converter_from_lexeme()),
+    ] 
+
+def _adapt(Txt):
+    encoding_name          = Lng.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
+    converter_header_file, \
+    dummy                  = Lng.lexeme_converter_file_names()
+    txt = blue_print(Txt, [
+                     ("$$SOURCE_ENCODING$$", Setup.adapted_encoding_name()),
+                     ("$$CONVERTER_HEADER$$", converter_header_file)])
+    return adapt.do(txt, Setup.output_directory)
+
+def _character_converters(EncodingName):
+    if isinstance(Setup.buffer_encoding, EncodingTrafoBySplit):
+        return Lng.open_template(Lng.converter_standard_file(encoding_name))
+    else:
+        return _table_character_converters(Setup.buffer_encoding)
+
+def _string_converters():
+    drain_encoding_list = [
+        ("utf8",  "uint8_t",  4),
+        ("utf16", "uint16_t", 2),
+        ("utf32", "uint8_t",  1),
+    ]
+
+    string_template = Lng.open_template(Lng.converter_string_file())
+
+    return "\n".join(
+        blue_print(string_template, [
+            ["$$DRAIN_ENCODING$$",                 name],
+            ["$$DRAIN_CODE_UNIT_TYPE$$",           code_unit_type],
+            ["$$DRAIN_ENCODING_MAX_CODE_UNIT_N$$", str(max_code_unit_n)],
+        ])
+        for name, code_unit_type, max_code_unit_n in drain_encoding_list
+    )
+
+def _table_character_converters(unicode_trafo_info):
     """
     PURPOSE: Writes converters for conversion towards UTF8/UTF16/UCS2/UCS4.
 
@@ -61,29 +112,29 @@ def _do(UnicodeTrafoInfo):
                ]
 
     """
-    codec_name          = Lng.SAFE_IDENTIFIER(UnicodeTrafoInfo.name)
-    utf8_function_body  = ConverterWriterUTF8().do(UnicodeTrafoInfo)
-    utf16_function_body = ConverterWriterUTF16().do(UnicodeTrafoInfo)
-    utf32_function_body = ConverterWriterUTF32().do(UnicodeTrafoInfo)
+    encoding_name = Lng.SAFE_IDENTIFIER(unicode_trafo_info.name)
+    if encoding_name == "unicode":
+        source_interval_begin = 0
+        source_interval_end   = 256**Setup.lexatom.size_in_byte
+        target_interval_begin = 0
+        unicode_trafo_info    = [
+            (source_interval_begin, source_interval_end, target_interval_begin)
+        ]
 
-    # Provide only the constant which are necessary
-    codec_header, \
-    dummy         = Lng.buffer_encoding_headers(Setup.buffer_encoding.name)
+    utf8_function_body  = ConverterWriterUTF8().do(unicode_trafo_info)
+    utf16_function_body = ConverterWriterUTF16().do(unicode_trafo_info)
+    utf32_function_body = ConverterWriterUTF32().do(unicode_trafo_info)
 
+    return _core_implementation(utf8_function_body, 
+                                utf16_function_body, 
+                                utf32_function_body)
+
+def _core_implementation(utf8_function_body, utf16_function_body, utf32_function_body):
     template_txt_i = Lng.open_template(Lng.converter_helper_i_file())
-    txt_i = blue_print(template_txt_i,
-                       [["$$CODEC$$",        codec_name],
-                        ["$$CODEC_HEADER$$", codec_header],
-                        ["$$BODY_UTF8$$",    utf8_function_body],
-                        ["$$BODY_UTF16$$",   utf16_function_body],
-                        ["$$BODY_UTF32$$",   utf32_function_body]])
-
-    # A separate declaration header is required
-    template_h_txt = Lng.open_template(Lng.converter_helper_file())
-    txt_h          = template_h_txt.replace("$$CODEC$$", codec_name)
-    txt_h = adapt.do(txt_h, Setup.output_directory)
-    txt_i = adapt.do(txt_i, Setup.output_directory)
-    return txt_h, txt_i
+    return blue_print(template_txt_i, [
+                        ["$$BODY_UTF8$$",  utf8_function_body],
+                        ["$$BODY_UTF16$$", utf16_function_body],
+                        ["$$BODY_UTF32$$", utf32_function_body]])
 
 class ConversionInfo:
     """A given interval in the character encoding corresponds to a certain byte 
@@ -158,7 +209,7 @@ class ConverterWriter:
                     self.jump_to_output_formatter(ci.code_unit_n))
 
         if len(conversion_table) == 1:
-            ci = conversion_table[0]
+            ci  = conversion_table[0]
             txt = [ "    %s" % self.get_offset_code(ci) ]
             txt.extend(self.unicode_to_output(ci.code_unit_n))
                       
@@ -236,7 +287,7 @@ class ConverterWriter:
                 info.codec_interval_size = remaining_size
                 result.append(info)
 
-        result.sort(lambda a, b: cmp(a.codec_interval_begin, b.codec_interval_begin))
+        result.sort(key=attrgetter("codec_interval_begin"))
 
         return result
 

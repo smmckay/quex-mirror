@@ -16,7 +16,7 @@ $$INC: compatibility/stdint.h$$
 $$INC: MemoryManager$$
 
 $$HELPER_DEFINITIONS$$
-$$INC: lexeme$$
+#include "lexeme"
 
 $$HEADER$$
  

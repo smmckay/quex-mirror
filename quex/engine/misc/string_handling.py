@@ -1,4 +1,5 @@
 def trim(Str):
+    # TODO: replace by '.strip()'
     """Deletes whitepspace borders of a string.
        
        Transforms: input  = "  hallo, du da   "
@@ -55,7 +56,6 @@ def blue_print(BluePrintStr, Replacements, CommonStart="$"):
                         print "##", original, "  ->  ", repr(replacement.__class__.__name__)
                         print "##>>", replacement
                 assert False
-
 
         for orig, replacement in Replacements:
             assert orig[0] == CommonStart[0]

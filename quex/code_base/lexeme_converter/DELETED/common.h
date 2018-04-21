@@ -13,21 +13,10 @@ $$INC: asserts$$
 #   include <string>
 #endif
 
-#if defined(QUEX_CONVERTER_CHAR_DEF)
-#   undef  __QUEX_CONVERTER_CHAR_DEF
-#   undef  __QUEX_CONVERTER_STRING_DEF
-#   undef  QUEX_CONVERTER_CHAR_DEF
-#   undef  QUEX_CONVERTER_STRING_DEF
-#   undef  __QUEX_CONVERTER_CHAR
-#   undef  __QUEX_CONVERTER_STRING
+#if defined(QUEX_CONVERTER_CHAR)
 #   undef  QUEX_CONVERTER_CHAR
 #   undef  QUEX_CONVERTER_STRING
 #endif
-
-#define __QUEX_CONVERTER_CHAR_DEF(FROM, TO)    QUEX_NAME(FROM ## _to_ ## TO ## _character)
-#define __QUEX_CONVERTER_STRING_DEF(FROM, TO)  QUEX_NAME(FROM ## _to_ ## TO)
-#define QUEX_CONVERTER_CHAR_DEF(FROM, TO)      __QUEX_CONVERTER_CHAR_DEF(FROM, TO)
-#define QUEX_CONVERTER_STRING_DEF(FROM, TO)    __QUEX_CONVERTER_STRING_DEF(FROM, TO)
 
 #define __QUEX_CONVERTER_CHAR(FROM, TO)        QUEX_NAME(FROM ## _to_ ## TO ## _character)
 #define __QUEX_CONVERTER_STRING(FROM, TO)      QUEX_NAME(FROM ## _to_ ## TO)

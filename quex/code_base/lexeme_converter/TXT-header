@@ -1,0 +1,88 @@
+/* vim: set filetype=cpp:  -*- C++ -*-
+ *
+ * Declaration of all converter functions towards 'utf8', 'utf16', 'utf32',
+ * 'char', and 'wchar_t': 
+ *
+ * (C) 2018 Frank-Rene Schaefer. 
+ *     ABSOLUTELY NO WARRANTY                                                */
+#ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$SOURCE_ENCODING$$__
+#define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$SOURCE_ENCODING$$__
+
+QUEX_NAMESPACE_MAIN_OPEN
+
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                              uint8_t**                 output_pp);
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_utf16_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                               uint16_t**                 output_pp);
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_utf32_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                               uint32_t**                 output_pp);
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_char_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                              char**                     output_pp);
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_pretty_char_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                                     char**                     output_pp);
+#if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_wchar_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                               wchar_t**                 output_pp);
+#endif
+
+/* (2) String converters */
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_utf8)(const QUEX_TYPE_LEXATOM**  source_pp, 
+                                    const QUEX_TYPE_LEXATOM*   SourceEnd, 
+                                    uint8_t**                 drain_pp,  
+                                    const uint8_t*            DrainEnd);
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_utf16)(const QUEX_TYPE_LEXATOM**  source_pp, 
+                                     const QUEX_TYPE_LEXATOM*   SourceEnd, 
+                                     uint16_t**                drain_pp,  
+                                     const uint16_t*           DrainEnd);
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_utf32)(const QUEX_TYPE_LEXATOM**  source_pp, 
+                                     const QUEX_TYPE_LEXATOM*   SourceEnd, 
+                                     uint32_t**                drain_pp,  
+                                     const uint32_t*           DrainEnd);
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_char)(const QUEX_TYPE_LEXATOM**  source_pp, 
+                                    const QUEX_TYPE_LEXATOM*   SourceEnd, 
+                                    char**                    drain_pp,  
+                                    const char*               DrainEnd);
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_pretty_char)(const QUEX_TYPE_LEXATOM**  source_pp, 
+                                           const QUEX_TYPE_LEXATOM*   SourceEnd, 
+                                           char**                     drain_pp,  
+                                           const char*                DrainEnd);
+
+#if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
+QUEX_INLINE void
+QUEX_NAME($$SOURCE_ENCODING$$_wchar)(const QUEX_TYPE_LEXATOM**  source_pp, 
+                                     const QUEX_TYPE_LEXATOM*   SourceEnd, 
+                                     wchar_t**                  drain_pp,  
+                                     const wchar_t*             DrainEnd);
+#endif
+
+#if ! defined(__QUEX_OPTION_PLAIN_C)
+    QUEX_INLINE std::basic_string<uint8_t>
+    QUEX_NAME($$SOURCE_ENCODING$$_utf8)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+    QUEX_INLINE std::basic_string<uint16_t>
+    QUEX_NAME($$SOURCE_ENCODING$$_utf16)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+    QUEX_INLINE std::basic_string<uint32_t>
+    QUEX_NAME($$SOURCE_ENCODING$$_utf32)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+    QUEX_INLINE std::basic_string<char>
+    QUEX_NAME($$SOURCE_ENCODING$$_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+    QUEX_INLINE std::basic_string<char>
+    QUEX_NAME($$SOURCE_ENCODING$$_pretty_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+#   if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
+    QUEX_INLINE std::basic_string<wchar_t>
+    QUEX_NAME($$SOURCE_ENCODING$$_wchar)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+#   endif
+#endif
+
+QUEX_NAMESPACE_MAIN_CLOSE
+
+#endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$SOURCE_ENCODING$$__                */

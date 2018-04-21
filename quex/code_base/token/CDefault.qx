@@ -149,7 +149,7 @@ $INCLUDE_CONVERTER_DECLARATION
         }
 
 $INCLUDE_CONVERTER_IMPLEMENTATION
-$$INC: lexeme.i$$
+#include "lexeme.i"
    }
 }
 
