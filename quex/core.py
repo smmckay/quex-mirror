@@ -62,8 +62,6 @@ def _generate(mode_db):
         # (*) [Optional] Generate a converter helper
         content_table.extend(lexeme_converter.do())
 
-        print "#", [x[1] for x in content_table]
-
     _write_all(content_table)
 
     source_package.do(Setup.output_directory)

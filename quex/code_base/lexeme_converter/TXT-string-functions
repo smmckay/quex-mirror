@@ -1,8 +1,8 @@
 QUEX_INLINE void
-QUEX_CONVERTER_STRING($$SOURCE_ENCODING$$, $$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM**  source_pp, 
-                                                      const QUEX_TYPE_LEXATOM*   SourceEnd, 
-                                                      $$DRAIN_CODE_UNIT_TYPE$$**          drain_pp,  
-                                                      const $$DRAIN_CODE_UNIT_TYPE$$*     DrainEnd)
+QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM**  source_pp, 
+                                        const QUEX_TYPE_LEXATOM*   SourceEnd, 
+                                        $$DRAIN_CODE_UNIT_TYPE$$**          drain_pp,  
+                                        const $$DRAIN_CODE_UNIT_TYPE$$*     DrainEnd)
 {
     const QUEX_TYPE_LEXATOM*  source_iterator; 
     $$DRAIN_CODE_UNIT_TYPE$$* drain_iterator;
@@ -19,7 +19,7 @@ QUEX_CONVERTER_STRING($$SOURCE_ENCODING$$, $$DRAIN_ENCODING$$)(const QUEX_TYPE_L
     while( 1 + 1 == 2 ) { 
         if     ( source_iterator == SourceEnd ) break;
         else if( DrainEnd - drain_iterator < TargetMaxCodeUnitN ) break;
-        QUEX_NAME($$SOURCE_ENCODING$$_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_iterator);
+        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_iterator);
         __quex_assert(source_iterator >  *source_pp);
         __quex_assert(source_iterator <= SourceEnd);
     }
@@ -30,7 +30,7 @@ QUEX_CONVERTER_STRING($$SOURCE_ENCODING$$, $$DRAIN_ENCODING$$)(const QUEX_TYPE_L
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>
-QUEX_NAME($$SOURCE_ENCODING$$, $$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
+QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
 {
     /* Avoiding the mess with 'c_str()' and 'begin()' in 'std::string()'
      * => copy string to a temporary array.                                   */
@@ -54,7 +54,7 @@ QUEX_NAME($$SOURCE_ENCODING$$, $$DRAIN_ENCODING$$)(const std::basic_string<QUEX_
 
     for(source_iterator = &source[0]; source_iterator != SourceEnd; ) {
         drain_iterator = drain;
-        QUEX_NAME($$SOURCE_ENCODING$$_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_iterator);
+        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_iterator);
         __quex_assert(source_iterator >  &source[0]);
         __quex_assert(source_iterator <= SourceEnd);
         result.append(($$DRAIN_CODE_UNIT_TYPE$$*)drain, (size_t)(drain_iterator - drain));

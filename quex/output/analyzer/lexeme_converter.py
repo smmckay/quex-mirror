@@ -41,38 +41,21 @@ def do():
 
        where 'content' is the content to be written into 'file_name'.
     """
-    encoding_name            = Lng.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
-
-    from_encoding_header_txt = Lng.open_template(Lng.converter_helper_file())
-    character_converters_txt = _character_converters(encoding_name)
-    from_encoding_txt        = blue_print(Lng.open_template(Lng.converter_implementation_file()), [
+    character_converters_txt = _character_converters()
+    from_encoding_txt        = blue_print(Lng.template_converter_implementation(), [
+                                          ("$$CONVERTER_HEADER$$",     Lng.file_name_converter_header()),
                                           ("$$CHARACTER_CONVERTERS$$", character_converters_txt),
                                           ("$$STRING_CONVERTERS$$",    _string_converters())])
-    header_file_name,         \
-    implementation_file_name  = Lng.lexeme_converter_file_names()
 
-    from_lexeme_header_txt = Lng.open_template(Lng.converter_lexeme_header())
-    from_lexeme_txt        = Lng.open_template(Lng.converter_lexeme_implementation())
-    
     return [
-        (_adapt(from_encoding_header_txt), header_file_name), 
-        (_adapt(from_encoding_txt),        implementation_file_name),
-        (_adapt(from_lexeme_header_txt),   Lng.file_name_header_converter_from_lexeme()),
-        (_adapt(from_lexeme_txt),          Lng.file_name_impl_converter_from_lexeme()),
+        (Lng.template_converter_header(), Lng.file_name_converter_header()), 
+        (from_encoding_txt,               Lng.file_name_converter_implementation()),
     ] 
 
-def _adapt(Txt):
-    encoding_name          = Lng.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
-    converter_header_file, \
-    dummy                  = Lng.lexeme_converter_file_names()
-    txt = blue_print(Txt, [
-                     ("$$SOURCE_ENCODING$$", Setup.adapted_encoding_name()),
-                     ("$$CONVERTER_HEADER$$", converter_header_file)])
-    return adapt.do(txt, Setup.output_directory)
-
-def _character_converters(EncodingName):
+def _character_converters():
     if isinstance(Setup.buffer_encoding, EncodingTrafoBySplit):
-        return Lng.open_template(Lng.converter_standard_file(encoding_name))
+        encoding_name = self.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
+        return Lng.template_converter_character_functions_standard(encoding_name)
     else:
         return _table_character_converters(Setup.buffer_encoding)
 
@@ -80,10 +63,13 @@ def _string_converters():
     drain_encoding_list = [
         ("utf8",  "uint8_t",  4),
         ("utf16", "uint16_t", 2),
-        ("utf32", "uint8_t",  1),
+        ("utf32", "uint32_t", 1),
+        ("char",        "char",  4),
+        ("wchar_t",     "wchar_t",  4),
+        ("pretty_char", "char",  4),
     ]
 
-    string_template = Lng.open_template(Lng.converter_string_file())
+    string_template = Lng.template_converter_string_functions()
 
     return "\n".join(
         blue_print(string_template, [
@@ -125,13 +111,7 @@ def _table_character_converters(unicode_trafo_info):
     utf16_function_body = ConverterWriterUTF16().do(unicode_trafo_info)
     utf32_function_body = ConverterWriterUTF32().do(unicode_trafo_info)
 
-    return _core_implementation(utf8_function_body, 
-                                utf16_function_body, 
-                                utf32_function_body)
-
-def _core_implementation(utf8_function_body, utf16_function_body, utf32_function_body):
-    template_txt_i = Lng.open_template(Lng.converter_helper_i_file())
-    return blue_print(template_txt_i, [
+    return blue_print(Lng.template_converter_character_functions(), [
                         ["$$BODY_UTF8$$",  utf8_function_body],
                         ["$$BODY_UTF16$$", utf16_function_body],
                         ["$$BODY_UTF32$$", utf32_function_body]])
@@ -201,10 +181,10 @@ class ConverterWriter:
         assert all(isinstance(entry, ConversionInfo) for entry in conversion_table)
 
         # Make sure that the conversion table is sorted
-        conversion_table.sort(lambda a, b: cmp(a.codec_interval_begin, b.codec_interval_begin))
+        conversion_table.sort(key=attrgetter("codec_interval_begin"))
 
         def action(ci):
-            return "%s %s" % \
+            return "{ %s %s }" % \
                    (self.get_offset_code(ci),
                     self.jump_to_output_formatter(ci.code_unit_n))
 

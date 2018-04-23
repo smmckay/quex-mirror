@@ -1,6 +1,6 @@
 QUEX_INLINE void
-QUEX_NAME(utf16_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp, 
-                                uint8_t**                 output_pp)
+QUEX_NAME(lexeme_to_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                    uint8_t**                 output_pp)
 {
     uint32_t  x0      = (uint16_t)0;
     uint32_t  x1      = (uint16_t)0;
@@ -46,8 +46,8 @@ QUEX_NAME(utf16_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp,
 }
 
 QUEX_INLINE void
-QUEX_NAME(utf16_utf16_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
-                                 uint16_t**                 output_pp)
+QUEX_NAME(lexeme_to_utf16_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                     uint16_t**                 output_pp)
 {
     if(    (uint16_t)0xD800 - (uint16_t)**input_pp > 0 
         || (uint16_t)0xE000 - (uint16_t)**input_pp <= 0 ) {
@@ -59,8 +59,8 @@ QUEX_NAME(utf16_utf16_character)(const QUEX_TYPE_LEXATOM**  input_pp,
 }
 
 QUEX_INLINE void
-QUEX_NAME(utf16_utf32_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
-                                 uint32_t**                 output_pp)
+QUEX_NAME(lexeme_to_utf32_character)(const QUEX_TYPE_LEXATOM**  input_pp, 
+                                     uint32_t**                 output_pp)
 {
     uint32_t  x0 = (uint32_t)0;
     uint32_t  x1 = (uint32_t)0;

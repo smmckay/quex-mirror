@@ -166,22 +166,25 @@ class Language(dict):
     def analyzer_template_file(self):      return "%s/analyzer/TXT-Cpp"                      % self.CODE_BASE
     def analyzer_template_i_file(self):    return "%s/analyzer/TXT-Cpp.i"                    % self.CODE_BASE
     def analyzer_configuration_file(self): return "%s/analyzer/configuration/TXT"            % self.CODE_BASE
-    def converter_helper_i_file(self):     return "%s/lexeme_converter/TXT-from-codec-core"  % self.CODE_BASE
-    def converter_helper_file(self):       return "%s/lexeme_converter/TXT-header"           % self.CODE_BASE
-    def converter_standard_file(self, Name): return "%s/lexeme_converter/from-%s-core.i"       % (self.CODE_BASE, Name)
-    def converter_implementation_file(self): return "%s/lexeme_converter/TXT-implementation"   % self.CODE_BASE
-    def converter_lexeme_header(self):         return "%s/lexeme_converter/TXT-from-lexeme"   % self.CODE_BASE
-    def converter_lexeme_implementation(self): return "%s/lexeme_converter/TXT-from-lexeme.i"   % self.CODE_BASE
-    def converter_string_file(self):       return "%s/lexeme_converter/TXT-string-core"      % self.CODE_BASE
 
-    def file_name_header_converter_from_lexeme(self): return os.path.join(Setup.output_directory, "lexeme")
-    def file_name_impl_converter_from_lexeme(self):   return os.path.join(Setup.output_directory, "lexeme.i")
+    def _template_converter(self, Basename):
+        path = os.path.join(QUEX_PATH, self.CODE_BASE, "lexeme_converter", Basename)
+        return get_file_content_or_die(path)
+    def template_converter_character_functions(self):     
+        return self._template_converter("TXT-character-functions-from-encoding")
+    def template_converter_character_functions_standard(self, EncodingName): 
+        return self._template_converter("TXT-character-functions-from-%s" % EncodingName)
+    def template_converter_string_functions(self):
+        return self._template_converter("TXT-string-functions")
+    def template_converter_header(self):       
+        return self._template_converter("TXT-header")
+    def template_converter_implementation(self):
+        return self._template_converter("TXT-implementation")
 
-    def lexeme_converter_file_names(self):
-        file_stem = "converter-from-%s" % self.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
-        odir      = Setup.output_directory
-        return os.path.join(odir, "%s%s" % (file_stem, self.extension_db[E_Files.HEADER])), \
-               os.path.join(odir, "%s%s" % (file_stem, self.extension_db[E_Files.HEADER_IMPLEMTATION]))
+    def file_name_converter_header(self): 
+        return os.path.join(Setup.output_directory, "converter-from-lexeme")
+    def file_name_converter_implementation(self): 
+        return os.path.join(Setup.output_directory, "converter-from-lexeme.i")
 
     def DEFINE_SELF(self, Name):
         return "#   ifdef     self\n" \
@@ -304,12 +307,10 @@ class Language(dict):
         return "\n#undef %s\n" % NAME
 
     def CONVERTER_HELPER_DECLARATION(self):
-        file_name, dummy = self.lexeme_converter_file_names()
-        return self.INCLUDE(file_name)
+        return self.INCLUDE(self.file_name_header_converter_from_lexeme())
 
     def CONVERTER_HELPER_IMLEMENTATION(self):
-        dummy, file_name = self.lexeme_converter_file_names()
-        return self.INCLUDE(file_name)
+        return self.INCLUDE(self.file_name_implmt_converter_from_lexeme())
                                                                                                                                 
     @typed(Txt=(CodeFragment))
     def SOURCE_REFERENCED(self, Cf, PrettyF=False):

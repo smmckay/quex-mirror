@@ -2,7 +2,7 @@
  * PURPOSE: 
  *
  * Provide the implementation of character and string converter functions
- * FROM the buffer's lexeme_to to utf8, utf16, utf32, char, and wchar_t.
+ * FROM the buffer's $$SOURCE_ENCODING$$ to utf8, utf16, utf32, char, and wchar_t.
  *
  * STEPS:
  *
@@ -31,52 +31,51 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__lexeme_I
-#define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__lexeme_I
+#ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$SOURCE_ENCODING$$_I
+#define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$SOURCE_ENCODING$$_I
 
 #include "$$CONVERTER_HEADER$$"
+#include "$$CONVERTER_CORE$$"
 
 QUEX_NAMESPACE_MAIN_OPEN
-
-$$CHARACTER_CONVERTERS$$
 
 /* Converters for 'char', 'pretty_char', and 'wchar_t' _________________________
  *                                                                            */
 QUEX_INLINE void
-QUEX_NAME(lexeme_to_char_character)(const QUEX_TYPE_LEXATOM** source_pp, 
-                                 char**                    drain_pp)  
+QUEX_NAME($$SOURCE_ENCODING$$_char_character)(const QUEX_TYPE_LEXATOM** source_pp, 
+                                              char**                    drain_pp)  
 {
     switch( sizeof(char) )
     {
-    case 1:  QUEX_NAME(lexeme_to_utf8_character)(source_pp, (uint8_t**)drain_pp); break;
-    case 2:  QUEX_NAME(lexeme_to_utf16_character)(source_pp, (uint16_t**)drain_pp); break;
-    case 4:  QUEX_NAME(lexeme_to_utf32_character)(source_pp, (uint32_t**)drain_pp); break;
+    case 1:  QUEX_NAME($$SOURCE_ENCODING$$_utf8_character)(source_pp, (uint8_t**)drain_pp); break;
+    case 2:  QUEX_NAME($$SOURCE_ENCODING$$_utf16_character)(source_pp, (uint16_t**)drain_pp); break;
+    case 4:  QUEX_NAME($$SOURCE_ENCODING$$_utf32_character)(source_pp, (uint32_t**)drain_pp); break;
     default: __quex_assert(false); /* Cannot be handled */
     }
 }
 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
 QUEX_INLINE void
-QUEX_NAME(lexeme_to_wchar_t_character)(const QUEX_TYPE_LEXATOM** source_pp, 
-                                       wchar_t**                 drain_pp)  
+QUEX_NAME($$SOURCE_ENCODING$$_wchar_character)(const QUEX_TYPE_LEXATOM** source_pp, 
+                                               wchar_t**                 drain_pp)  
 {
     switch( sizeof(wchar_t) )
     {
-    case 1:  QUEX_NAME(lexeme_to_utf8_character)(source_pp, (uint8_t**)drain_pp); break;
-    case 2:  QUEX_NAME(lexeme_to_utf16_character)(source_pp, (uint16_t**)drain_pp); break;
-    case 4:  QUEX_NAME(lexeme_to_utf32_character)(source_pp, (uint32_t**)drain_pp); break;
+    case 1:  QUEX_NAME($$SOURCE_ENCODING$$, utf8_character)(source_pp, (uint8_t**)drain_pp); break;
+    case 2:  QUEX_NAME($$SOURCE_ENCODING$$, utf16_character)(source_pp, (uint16_t**)drain_pp); break;
+    case 4:  QUEX_NAME($$SOURCE_ENCODING$$, utf32_character)(source_pp, (uint32_t**)drain_pp); break;
     default: __quex_assert(false); /* Cannot be handled */
     }
 }
 #endif
 
 QUEX_INLINE void
-QUEX_NAME(lexeme_to_pretty_char_character)(const QUEX_TYPE_LEXATOM** source_pp, 
-                                        char**                    drain_pp)  
+QUEX_NAME($$SOURCE_ENCODING$$_pretty_char_character)(const QUEX_TYPE_LEXATOM** source_pp, 
+                                                     char**                    drain_pp)  
 {
     char* write_p = *drain_pp;
 
-    QUEX_NAME(lexeme_to_char_character)(source_pp, drain_pp);
+    QUEX_NAME($$SOURCE_ENCODING$$_char_character)(source_pp, drain_pp);
    
     switch( *write_p ) { 
     case (int)'\n': *write_p++ = (char)'\\'; *write_p = (char)'n'; break;
@@ -99,5 +98,5 @@ $$STRING_CONVERTERS$$
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__LEXEME_I */
+#endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__$$SOURCE_ENCODING$$_I */
 

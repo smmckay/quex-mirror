@@ -1,7 +1,7 @@
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_NAME(utf8_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp, 
-                               uint8_t**                 output_pp)
+QUEX_NAME(lexeme_to_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                    uint8_t**                 output_pp)
 {
     /* Just for comformity with other encodings: Do nothing but copying. */
     if( ((uint8_t)**input_pp & (uint8_t)0x80) == (uint8_t)0 ) {
@@ -26,8 +26,8 @@ QUEX_NAME(utf8_utf8_character)(const QUEX_TYPE_LEXATOM** input_pp,
 
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_NAME(utf8_utf16_character)(const QUEX_TYPE_LEXATOM** input_pp, 
-                                 uint16_t**                output_pp)
+QUEX_NAME(lexeme_to_utf16_character)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                     uint16_t**                output_pp)
 {
     const QUEX_TYPE_LEXATOM*  iterator = *input_pp;
     uint32_t                  tmp = 0;
@@ -79,8 +79,8 @@ QUEX_NAME(utf8_utf16_character)(const QUEX_TYPE_LEXATOM** input_pp,
 
 QUEX_INLINE void
 /* DrainEnd pointer is not returned, since the increment is always '1' */
-QUEX_NAME(utf8_utf32_character)(const QUEX_TYPE_LEXATOM** input_pp, 
-                                uint32_t**                output_pp)
+QUEX_NAME(lexeme_to_utf32_character)(const QUEX_TYPE_LEXATOM** input_pp, 
+                                     uint32_t**                output_pp)
 {
     const QUEX_TYPE_LEXATOM*  iterator = *input_pp;
 
