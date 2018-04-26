@@ -152,8 +152,8 @@ main_template = """
 #include "../../../code_base/TESTS/minimum-definitions.h"
 #include <stdio.h>
 #define __QUEX_OPTION_PLAIN_C
-#include "ut/lib/lexeme_converter/from-utf32"
-#include "ut/lib/lexeme_converter/from-utf32.i"
+#include "ut/converter-from-lexeme"
+#include "ut/converter-from-lexeme.i"
 #include "ut/lib/single.i"
 
 typedef struct {
