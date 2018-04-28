@@ -219,7 +219,7 @@ QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* me)
     End         = me->content_space_end(me); 
     iterator    = me->_lexeme_start_p; 
 
-    QUEX_CONVERTER_STRING(QUEX_SETTING_CHARACTER_CODEC, utf8)(&iterator, End, &witerator, WEnd);
+    QUEX_NAME(lexeme_nnzt_to_utf8)(&iterator, End, &witerator, WEnd);
 
     /* No use of 'snprintf()' because not all systems seem to support it propperly. */
     it += __QUEX_STD_strlcpy(it, 

@@ -1,5 +1,4 @@
 #include "post-categorizer-common.h"
-#include "ut/lib/lexeme_converter/from-unicode-buffer.i"
 
 using namespace quex;
 void post_categorizer_setup(QUEX_NAME(Dictionary)* me, int Seed);

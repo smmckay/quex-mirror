@@ -36,25 +36,43 @@ from quex.constants  import INTEGER_MAX
 from operator import attrgetter
 from copy     import copy
 
-def do():
+def do(Suffix="lexeme", LexatomType=None):
     """RETURNS: list of (content, file_name)
 
        where 'content' is the content to be written into 'file_name'.
     """
-    character_converters_txt = _character_converters()
-    from_encoding_txt        = blue_print(Lng.template_converter_implementation(), [
-                                          ("$$CONVERTER_HEADER$$",     Lng.file_name_converter_header()),
-                                          ("$$CHARACTER_CONVERTERS$$", character_converters_txt),
-                                          ("$$STRING_CONVERTERS$$",    _string_converters())])
+
+    header_txt         = Lng.template_converter_header()
+    implementation_txt = blue_print(Lng.template_converter_implementation(), [
+                                    ("$$CONVERTER_HEADER$$",     Lng.file_name_converter_header(Suffix)),
+                                    ("$$CHARACTER_CONVERTERS$$", _character_converters()),
+                                    ("$$STRING_CONVERTERS$$",    _string_converters())])
+
+    if LexatomType is not None:
+        implementation_txt = implementation_txt.replace("QUEX_TYPE_LEXATOM", LexatomType)
+        header_txt         = header_txt.replace("QUEX_TYPE_LEXATOM", LexatomType)
+        implementation_txt = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % Setup.buffer_encoding.name, 
+                                                            implementation_txt)
+        header_txt         = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % Setup.buffer_encoding.name, 
+                                                            header_txt)
+
+    include_guard_suffix = ("%s_%s_%s" % (Lng.SAFE_IDENTIFIER(Setup.analyzer_class_name),
+                                          Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
+                                          Lng.SAFE_IDENTIFIER(Setup.lexatom.type))).upper()
+
+    implementation_txt = implementation_txt.replace("$$INCLUDE_GUARD_SUFFIX$$", 
+                                                    include_guard_suffix)
+    header_txt         = header_txt.replace("$$INCLUDE_GUARD_SUFFIX$$", 
+                                            include_guard_suffix)
 
     return [
-        (Lng.template_converter_header(), Lng.file_name_converter_header()), 
-        (from_encoding_txt,               Lng.file_name_converter_implementation()),
+        (header_txt,         Lng.file_name_converter_header(Suffix)), 
+        (implementation_txt, Lng.file_name_converter_implementation(Suffix)),
     ] 
 
 def _character_converters():
     if isinstance(Setup.buffer_encoding, EncodingTrafoBySplit):
-        encoding_name = self.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
+        encoding_name = Lng.SAFE_IDENTIFIER(Setup.adapted_encoding_name())
         return Lng.template_converter_character_functions_standard(encoding_name)
     else:
         return _table_character_converters(Setup.buffer_encoding)
@@ -101,7 +119,7 @@ def _table_character_converters(unicode_trafo_info):
     encoding_name = Lng.SAFE_IDENTIFIER(unicode_trafo_info.name)
     if encoding_name == "unicode":
         source_interval_begin = 0
-        source_interval_end   = 256**Setup.lexatom.size_in_byte
+        source_interval_end   = min(256**Setup.lexatom.size_in_byte, 0x200000)
         target_interval_begin = 0
         unicode_trafo_info    = [
             (source_interval_begin, source_interval_end, target_interval_begin)
@@ -155,6 +173,7 @@ class ConversionInfo:
        The codec interval always lies inside a single utf8 range.
     """
     def __init__(self, CodeUnitN, CI_Begin_in_Unicode, CI_Begin, CI_Size=-1):
+        assert CodeUnitN <= 4
         self.code_unit_n                  = CodeUnitN
         self.codec_interval_begin         = CI_Begin
         self.codec_interval_size          = CI_Size
@@ -189,7 +208,7 @@ class ConverterWriter:
                     self.jump_to_output_formatter(ci.code_unit_n))
 
         if len(conversion_table) == 1:
-            ci  = conversion_table[0]
+            ci = conversion_table[0]
             txt = [ "    %s" % self.get_offset_code(ci) ]
             txt.extend(self.unicode_to_output(ci.code_unit_n))
                       
@@ -211,7 +230,7 @@ class ConverterWriter:
                     subtracting an offset.
         """
         offset = Info.codec_interval_begin_unicode - Info.codec_interval_begin
-        return "%s\n" % Lng.ASSIGN("offset", "(int32_t)(%s)" % offset)
+        return "%s" % Lng.ASSIGN("offset", "(int32_t)(%s)" % offset)
 
     def get_conversion_table(self, UnicodeTrafoInfo):
         """The UnicodeTrafoInfo tells what ranges in the codec are mapped to what ranges
@@ -251,8 +270,10 @@ class ConverterWriter:
             remaining_size = source_interval_end - source_interval_begin
 
             ## print "## %i, %x, %x" % (i, source_interval_begin, source_interval_end)
-            while i != L - 1 and remaining_size != 0:
+            while i != L - 1:
                 remaining_utf8_range_size = border_list[i+1] - source_interval_begin
+                if remaining_utf8_range_size <= 0: break
+
                 info.codec_interval_size  = min(remaining_utf8_range_size, remaining_size)
                 ## print i, "%X: %x, %x" % (border_list[i+1], remaining_utf8_range_size, remaining_size)
                 result.append(info)
@@ -261,6 +282,8 @@ class ConverterWriter:
                 target_interval_begin += info.codec_interval_size
                 remaining_size        -= info.codec_interval_size
                 i += 1
+
+                if remaining_size <= 0: break
                 info = ConversionInfo(i+1, source_interval_begin, target_interval_begin)
 
             if remaining_size != 0:

@@ -136,9 +136,7 @@ QUEX_NAME_TOKEN(get_string)(struct $TOKEN_CLASS_tag* me,  char*  buffer, size_t 
             }
 
             /* The String */
-            QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, 
-                                             (size_t)(BufferEnd - writerator));
-            while( *writerator ) ++writerator;
+            writerator = QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, BufferEnd);
 
             /* Closing Quote */
             if( BufferEnd - writerator > 1 ) {

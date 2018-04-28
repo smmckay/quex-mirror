@@ -46,6 +46,8 @@ class Language(dict):
     Match_vector              = re.compile("\\bvector\\b", re.UNICODE) 
     Match_map                 = re.compile("\\bmap\\b", re.UNICODE)
     Match_include             = re.compile(r"#[ \t]*include[ \t]*[\"<]([^\">]+)[\">]")
+    Match_Lexeme              = re.compile("\\bLexeme\\b", re.UNICODE)
+    Match_QUEX_NAME_lexeme    = re.compile("\\bQUEX_NAME\\(lexeme_", re.UNICODE)
 
     CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
     
@@ -181,10 +183,10 @@ class Language(dict):
     def template_converter_implementation(self):
         return self._template_converter("TXT-implementation")
 
-    def file_name_converter_header(self): 
-        return os.path.join(Setup.output_directory, "converter-from-lexeme")
-    def file_name_converter_implementation(self): 
-        return os.path.join(Setup.output_directory, "converter-from-lexeme.i")
+    def file_name_converter_header(self, Suffix): 
+        return os.path.join(Setup.output_directory, "converter-from-%s" % Suffix)
+    def file_name_converter_implementation(self, Suffix): 
+        return os.path.join(Setup.output_directory, "converter-from-%s.i" % Suffix)
 
     def DEFINE_SELF(self, Name):
         return "#   ifdef     self\n" \

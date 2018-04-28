@@ -14,22 +14,22 @@
 #include "test_environment/lib/asserts"
 #include "test_environment/lib/compatibility/stdint.h"
 #include "test_environment/lib/MemoryManager"
+#include "test_environment/lib/lexeme_base"
 
 
-#include "test_environment/lib/lexeme"
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 #include <stdio.h>
 #include <string.h>
+#include "test_environment/converter-from-lexeme"
 
 struct quex_Token_tag;
 
 extern const char* 
 QUEX_NAME_TOKEN(get_string)(struct quex_Token_tag* me,  char*  buffer, size_t   BufferSize); 
 
-#include "lib/lexeme_converter/from-unicode-buffer"
    
 
 #   line 36 "test_environment/TestAnalyzer-token.h"

@@ -12,7 +12,7 @@
 #include "$$TOKEN_CLASS_HEADER$$"
 $$INC: definitions$$
 $$INC: lexeme_base$$
-
+$$INC: lexeme_base.i$$
 $$INCLUDE_TOKEN_CLASS_HEADER$$
 
 QUEX_INLINE void 

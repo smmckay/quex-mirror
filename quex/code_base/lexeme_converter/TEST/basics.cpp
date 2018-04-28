@@ -2,7 +2,8 @@
 #include <support/C/hwut_unit.h>
 #include <cassert>
 
-#define CONVERTER_NAME(OUTPUT)   QUEX_CONVERTER_STRING(SOURCE_NAME, OUTPUT)
+#define EXPAND(X) X
+#define CONVERTER_NAME(OUTPUT)   QUEX_NAME(EXPAND(SOURCE_NAME), EXPAND(OUTPUT))
 
 #include <iostream>
 #include <cstdio>

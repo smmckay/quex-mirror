@@ -31,8 +31,8 @@
  *
  * 2010 (C) Frank-Rene Schaefer; 
  * ABSOLUTELY NO WARRANTY                                                    */
-#ifndef __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__lexeme_I
-#define __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__lexeme_I
+#ifndef __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$_I
+#define __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$_I
 
 #include "$$CONVERTER_HEADER$$"
 
@@ -72,7 +72,7 @@ QUEX_NAME(lexeme_to_wchar_t_character)(const QUEX_TYPE_LEXATOM** source_pp,
 
 QUEX_INLINE void
 QUEX_NAME(lexeme_to_pretty_char_character)(const QUEX_TYPE_LEXATOM** source_pp, 
-                                        char**                    drain_pp)  
+                                           char**                    drain_pp)  
 {
     char* write_p = *drain_pp;
 
@@ -99,5 +99,5 @@ $$STRING_CONVERTERS$$
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__LEXEME_CONVERTER__LEXEME_I */
+#endif /* __QUEX_INCLUDE_GUARD__$$INCLUDE_GUARD_SUFFIX$$ */
 

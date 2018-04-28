@@ -1,13 +1,19 @@
-    header {
-    #include <stdlib.h>  // for: atoi()
-    }   
+header {
+#include <stdlib.h>  // for: atoi()
+}   
 
-    mode ONE_AND_ONLY
-    {   
-        <<EOF>>     => QUEX_TKN_TERMINATION;
+token {
+  OP_EQUAL;
+  NUMBER;
+  IDENTIFIER;
+}
 
-        [ \t\r\n]+  {}  
-        "="         => QUEX_TKN_OP_EQUAL;
-        [0-9]+      => QUEX_TKN_NUMBER(number=atoi((char*)Lexeme));
-        [_a-zA-Z]+  => QUEX_TKN_IDENTIFIER(Lexeme);
-    }   
+mode ONE_AND_ONLY
+{   
+    <<EOF>>     => QUEX_TKN_TERMINATION;
+
+    [ \t\r\n]+  {}  
+    "="         => QUEX_TKN_OP_EQUAL;
+    [0-9]+      => QUEX_TKN_NUMBER(number=atoi((char*)Lexeme));
+    [_a-zA-Z]+  => QUEX_TKN_IDENTIFIER(Lexeme);
+}   

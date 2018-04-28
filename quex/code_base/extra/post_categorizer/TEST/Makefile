@@ -29,6 +29,7 @@ post-categorizer-%.E: post-categorizer-%.cpp ut
 
 ut:
 	python ../../../TESTS/code_base_instatiation.py ut 
+	quex --co -o TestAnalyzer --odir ut
 
 clean: 
 	rm -rf $(PROGRAMS) ut *.o *.E

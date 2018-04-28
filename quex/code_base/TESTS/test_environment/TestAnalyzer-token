@@ -9,17 +9,17 @@
 #include "test_environment/lib/asserts"
 #include "test_environment/lib/compatibility/stdint.h"
 #include "test_environment/lib/MemoryManager"
+#include "test_environment/lib/lexeme_base"
 
 
-#include "test_environment/lib/lexeme"
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 #include <iostream>
 #include <string>
+#include "test_environment/converter-from-lexeme"
 
-#include "lib/lexeme_converter/from-unicode-buffer"
    
 
 #   line 26 "test_environment/TestAnalyzer-token"
@@ -127,7 +127,7 @@ public:
         {
             std::string  tmp;
             tmp  = map_id_to_name(self.id);
-            tmp += " '" + QUEX_NAME_TOKEN(lexeme_to_pretty_char)(self.text) + "'";
+            tmp += " '" + QUEX_NAME(lexeme_to_pretty_char)(self.text) + "'";
             return tmp;
         }
     
@@ -155,12 +155,10 @@ inline std::ostream&
 operator<<(std::ostream& ostr, const Token& Tok)
 { ostr << Tok.get_string(); return ostr; }
 QUEX_NAMESPACE_TOKEN_CLOSE
-
-#include "lib/lexeme_converter/from-unicode-buffer.i"
-#include "test_environment/lib/lexeme.i"
+#include "test_environment/converter-from-lexeme.i"
    
 
-#   line 164 "test_environment/TestAnalyzer-token"
+#   line 162 "test_environment/TestAnalyzer-token"
 
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -177,6 +175,8 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I
 
 #include "test_environment/lib/definitions"
+#include "test_environment/lib/lexeme_base"
+#include "test_environment/lib/lexeme_base.i"
 #include "test_environment/TestAnalyzer-token"
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -271,7 +271,7 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
         }
         if( Other.text != LexemeNull ) {
             self.text = QUEX_NAME(lexeme_clone)(self.text, 
-                                                      QUEX_NAME(lexeme_length)(Other.text));
+                                                QUEX_NAME(lexeme_length)(Other.text));
             if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
@@ -430,7 +430,5 @@ QUEX_NAME_TOKEN(map_id_to_name)(const TestAnalyzer_token_id_t TokenID)
 }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
-
-#include "test_environment/lib/lexeme.i"
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I */

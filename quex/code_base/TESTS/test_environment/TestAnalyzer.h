@@ -490,7 +490,8 @@ bool UserMementoPack_UnitTest_return_value = true;
 
 #include "test_environment/TestAnalyzer-token.h"
 #include "ut/lib/definitions"
-
+#include "ut/lib/lexeme_base"
+#include "ut/lib/lexeme_base.i"
 #include "test_environment/TestAnalyzer-token.h"
 
 QUEX_INLINE void 
@@ -511,7 +512,7 @@ quex_Token_construct(quex_Token* __this)
        self.text   = LexemeNull;
    
 
-#   line 515 "TestAnalyzer.h"
+#   line 516 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -542,7 +543,7 @@ quex_Token_destruct(quex_Token* __this)
        }
    
 
-#   line 546 "TestAnalyzer.h"
+#   line 547 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -577,7 +578,7 @@ quex_Token_copy(quex_Token*       __this,
     #   endif
    
 
-#   line 581 "TestAnalyzer.h"
+#   line 582 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  Other
@@ -659,7 +660,7 @@ quex_Token_take_text(quex_Token*            __this,
         return false;
    
 
-#   line 663 "TestAnalyzer.h"
+#   line 664 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -681,7 +682,7 @@ quex_Token_repetition_n_get(quex_Token* __this)
        return self.number;
    
 
-#   line 685 "TestAnalyzer.h"
+#   line 686 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -700,7 +701,7 @@ quex_Token_repetition_n_set(quex_Token* __this, size_t N)
        self.number = N;
    
 
-#   line 704 "TestAnalyzer.h"
+#   line 705 "TestAnalyzer.h"
 
 #   undef  LexemeNull
 #   undef  self
@@ -758,9 +759,7 @@ quex_Token_map_id_to_name(const TestAnalyzer_token_id_t TokenID)
             }
 
             /* The String */
-            QUEX_NAME_TOKEN(lexeme_to_pretty_char)(me->text, writerator, 
-                                                   (size_t)(BufferEnd - writerator));
-            while( *writerator ) ++writerator;
+            writerator = QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, BufferEnd);
 
             /* Closing Quote */
             if( BufferEnd - writerator > 1 ) {
@@ -770,14 +769,11 @@ quex_Token_map_id_to_name(const TestAnalyzer_token_id_t TokenID)
             return buffer;
         }
 
-#include "lib/lexeme_converter/from-unicode-buffer.i"
-#include "ut/lib/lexeme.i"
+#include "test_environment/converter-from-lexeme.i"
    
 
-#   line 778 "TestAnalyzer.h"
+#   line 776 "TestAnalyzer.h"
 
-
-#include "ut/lib/lexeme.i"
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__QUEX___TOKEN_I */
 QUEX_NAMESPACE_TOKEN_OPEN

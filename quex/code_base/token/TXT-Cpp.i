@@ -5,7 +5,7 @@
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I
 
 $$INC: definitions$$
-$$INC: lexeme_base.i$$
+$$INC: lexeme_base$$
 $$INC: lexeme_base.i$$
 $$INCLUDE_TOKEN_CLASS_HEADER$$
 

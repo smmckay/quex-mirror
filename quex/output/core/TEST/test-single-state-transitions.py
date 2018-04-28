@@ -148,27 +148,32 @@ main_template = """
 /* From '.begin' the target map targets to '.target' until the next '.begin' is
  * reached.                                                                   */
 #include "ut/lib/compatibility/stdint.h"
-#define QUEX_TYPE_LEXATOM              $$QUEX_TYPE_LEXATOM$$
+
+#define QUEX_TYPE_LEXATOM   TestAnalyzer_lexatom_t
+
 #include "../../../code_base/TESTS/minimum-definitions.h"
 #include <stdio.h>
 #define __QUEX_OPTION_PLAIN_C
-#include "ut/converter-from-lexeme"
-#include "ut/converter-from-lexeme.i"
 #include "ut/lib/single.i"
 
 typedef struct {
     struct {
-        QUEX_TYPE_LEXATOM*  _read_p;
-        QUEX_TYPE_LEXATOM*  _lexeme_start_p;
+        TestAnalyzer_lexatom_t*  _read_p;
+        TestAnalyzer_lexatom_t*  _lexeme_start_p;
     } buffer;
 } MiniAnalyzer;
 
-int transition(QUEX_TYPE_LEXATOM* buffer);
+int transition(TestAnalyzer_lexatom_t* buffer);
 
 typedef struct { 
     uint32_t begin; 
     int      target; 
 } entry_t;
+
+#include "ut/converter-from-utf8"
+#include "ut/converter-from-utf8.i"
+#include "ut/converter-from-unicode"
+#include "ut/converter-from-unicode.i"
 
 int
 main(int argc, char** argv) {
@@ -181,7 +186,7 @@ $$ENTRY_LIST$$
     int                  output          = -1;
     int                  output_expected = -1;
     uint32_t             unicode_input;
-    QUEX_TYPE_LEXATOM    buffer[8];
+    TestAnalyzer_lexatom_t buffer[8];
     
     printf("No output is good output!\\n");
     for(iterator=&db[0]; iterator != db_last; ++iterator) {
@@ -205,11 +210,11 @@ $$ENTRY_LIST$$
 }
 
 int 
-transition(QUEX_TYPE_LEXATOM* buffer)
+transition(TestAnalyzer_lexatom_t* buffer)
 {
-    MiniAnalyzer       self;
-    MiniAnalyzer*      me = &self;
-    QUEX_TYPE_LEXATOM  input = 0;
+    MiniAnalyzer            self;
+    MiniAnalyzer*           me = &self;
+    TestAnalyzer_lexatom_t  input = 0;
 
     me->buffer._read_p = buffer;
 
@@ -263,9 +268,9 @@ def get_read_preparation(Codec):
     if Codec == "UTF8":
         txt = [
             "{\n"
-            "    QUEX_TYPE_LEXATOM*  buffer_p    = &buffer[0];\n"
-            "    const uint32_t*     u32_input_p = &unicode_input;\n"
-            "    QUEX_CONVERTER_CHAR(utf32, utf8)(&u32_input_p, &buffer_p);\n"
+            "    TestAnalyzer_lexatom_t*  buffer_p    = &buffer[0];\n"
+            "    const uint32_t*          u32_input_p = &unicode_input;\n"
+            "    QUEX_NAME(unicode_to_utf8_character)(&u32_input_p, &buffer_p);\n"
             "}\n"
         ]
     else:
@@ -285,6 +290,7 @@ fh.write("".join(adapt.do(txt, "ut")))
 fh.close()
 try:    os.remove("./test")
 except: pass
+
 os.system("gcc -Wall -Werror -I. -I../../../code_base -o test test.c -ggdb -std=c89")
 os.system("./test")
 

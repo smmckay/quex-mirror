@@ -26,44 +26,36 @@ def do():
     if Setup.language == "DOT": 
         return do_plot()
 
-    mode_db = quex_file_parser.do(Setup.input_mode_files)
+    if not Setup.converter_only_f:
+        mode_db = quex_file_parser.do(Setup.input_mode_files)
+    else:
+        mode_db = None
 
     _generate(mode_db)
 
 def _generate(mode_db):
-    token_id_header,                \
-    global_lexeme_null_declaration, \
-    class_token_header,             \
-    class_token_implementation      = token_class.do()
+    if Setup.converter_only_f:
+        content_table = lexeme_converter.do(Suffix=Setup.buffer_encoding.name,
+                                            LexatomType=Setup.lexatom.type)
+        do_converter_info(content_table[0][1], content_table[1][1])
+        _write_all(content_table)
+        return
 
-    content_table = [
-        (token_id_header,            Setup.output_token_id_file),
-        (class_token_header,         token_db.token_type_definition.get_file_name()),
-        (class_token_implementation, Setup.output_token_class_file_implementation),
-    ]
-
-    if Setup.token_class_only_f:
+    elif Setup.token_class_only_f:
+        content_table, global_lexeme_null_declaration = _get_token_class()
         class_token_header  = content_table[1][0]
         content_table[1][0] = do_token_class_info() + class_token_header
         _straighten_line_pragmas_token_class()
     else:
-        configuration_header, \
-        analyzer_header,      \
-        engine_txt            = _prepare_analyzers(mode_db, 
-                                                   class_token_implementation,
-                                                   global_lexeme_null_declaration)
-
-        content_table.extend([
-            (configuration_header, Setup.output_configuration_file),
-            (analyzer_header,      Setup.output_header_file),
-            (engine_txt,           Setup.output_code_file),
-        ])
-
-        # (*) [Optional] Generate a converter helper
-        content_table.extend(lexeme_converter.do())
+        content_table, global_lexeme_null_declaration = _get_token_class()
+        class_token_implementation = content_table[-1][0]
+        content_table.extend(_get_analyzers(mode_db, 
+                                            class_token_implementation, 
+                                            global_lexeme_null_declaration))
+        content_table.extend(lexeme_converter.do()) # [Optional]
 
     _write_all(content_table)
-
+    _straighten_open_line_pragmas_all()
     source_package.do(Setup.output_directory)
 
 def analyzer_functions_get(ModeDB):
@@ -97,6 +89,17 @@ def do_plot():
     for mode in mode_db.itervalues():        
         plotter = grapviz_generator.Generator(mode)
         plotter.do(Option=Setup.character_display)
+
+def do_converter_info(HeaderFileName, SourceFileName):
+    print "  Generate character and string converter functions"
+    print
+    print "     from encoding: %s;" % Setup.buffer_encoding.name
+    print "          type:     %s;" % Setup.lexatom.type
+    print "     to:            utf8, utf16, utf32, 'char', and 'wchar_t'."
+    print
+    print "     header: %s" % HeaderFileName
+    print "     source: %s" % SourceFileName
+    print
 
 def do_token_class_info():
     info_list = [
@@ -154,6 +157,34 @@ def _prepare_analyzers(mode_db, class_token_implementation,
            analyzer_header, \
            engine_txt
 
+def _get_token_class():
+    """RETURNS: [0] List of (source code, file-name)
+                [1] Source code for global lexeme null declaration
+    """
+    token_id_header,                \
+    global_lexeme_null_declaration, \
+    class_token_header,             \
+    class_token_implementation      = token_class.do()
+
+    return [
+        (token_id_header,            Setup.output_token_id_file),
+        (class_token_header,         token_db.token_type_definition.get_file_name()),
+        (class_token_implementation, Setup.output_token_class_file_implementation),
+    ], global_lexeme_null_declaration
+
+def _get_analyzers(mode_db, class_token_implementation, global_lexeme_null_declaration):
+    configuration_header, \
+    analyzer_header,      \
+    engine_txt            = _prepare_analyzers(mode_db, 
+                                               class_token_implementation,
+                                               global_lexeme_null_declaration)
+
+    return [
+        (configuration_header, Setup.output_configuration_file),
+        (analyzer_header,      Setup.output_header_file),
+        (engine_txt,           Setup.output_code_file),
+    ]
+
 def _write_all(content_table):
 
     content_table = [
@@ -164,7 +195,6 @@ def _write_all(content_table):
         if content is None: continue
         write_safely_and_close(file_name, content)
 
-    _straighten_open_line_pragmas_all()
 
 def _straighten_line_pragmas_token_class():
     Lng.straighten_open_line_pragmas(token_db.token_type_definition.get_file_name())

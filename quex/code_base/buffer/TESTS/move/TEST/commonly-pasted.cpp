@@ -6,7 +6,6 @@
 #include "ut/lib/buffer/Buffer_print.i"
 #include "ut/lib/buffer/Buffer.i"
 #include "ut/lib/buffer/asserts.i"
-#include "ut/lib/lexeme_converter/from-unicode-buffer.i"
 #include "ut/lib/single.i"
 #include <cstring>
 #include <hwut_unit.h>

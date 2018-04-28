@@ -84,9 +84,12 @@ def do(setup, command_line, argv):
                   "By default, quex automatically chooses the endian type of your system.")
 
     # Manually written token class requires token class name to be specified
-    if setup.extern_token_class_file != "" and command_line.search("--token-class", "--tc") == False:
+    if setup.extern_token_class_file and command_line.search("--token-class", "--tc") == False:
         error.log("The use of a manually written token class requires that the name of the class\n"
                   "is specified on the command line via the '--token-class' option.")
+
+    if setup.converter_only_f and not setup.lexatom.type:
+        error.log("Lexatom type must be specific for converter generation.")
     
     # Check that names are valid identifiers
     if setup.token_id_prefix_plain:

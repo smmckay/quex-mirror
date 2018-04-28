@@ -7,7 +7,7 @@
 
     unicode = (uint32_t)(input + offset);
     *(*output_pp)++ = (uint8_t)(unicode);
-    __QUEX_PURE_RETURN;
+    return;
 
 (*) Single Interval B
 
@@ -18,7 +18,7 @@
     unicode = (uint32_t)(input + offset);
     *(*output_pp)++ = (uint8_t)(0xC0 | (unicode >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
-    __QUEX_PURE_RETURN;
+    return;
 
 (*) Single Interval C
 
@@ -30,7 +30,7 @@
     *(*output_pp)++ = (uint8_t)(0xE0 | (unicode >> 12));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
-    __QUEX_PURE_RETURN;
+    return;
 
 (*) Single Interval E
 
@@ -43,4 +43,4 @@
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0x3FFFF) >> 12));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
-    __QUEX_PURE_RETURN;
+    return;

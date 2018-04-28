@@ -808,13 +808,13 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 self.error_code_set_if_first(E_Error_OnBadLexatom);
 self.error_code_set_if_first(E_Error_NoHandler_OnBadLexatom);
 self.send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
+return;;
 
 }
     /* Bad lexatom detection FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-__QUEX_PURE_RETURN;
+return;
 _2:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
@@ -822,13 +822,13 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 self.error_code_set_if_first(E_Error_OnLoadFailure);
 self.error_code_set_if_first(E_Error_NoHandler_OnLoadFailure);
 self.send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
+return;;
 
 }
     /* Load failure FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-__QUEX_PURE_RETURN;
+return;
 _3:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
@@ -839,17 +839,17 @@ self.send(QUEX_TOKEN_ID(TERMINATION));
     /* End of Stream FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-__QUEX_PURE_RETURN;
+return;
 _4:
     __quex_debug("* TERMINAL FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code_set_if_first(E_Error_NoHandler_OnFailure);
 self.send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
+return;;
 
 }
-__QUEX_PURE_RETURN;
+return;
 _5:
     __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
@@ -858,12 +858,12 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 self.error_code_set_if_first(E_Error_OnSkipRangeOpen);
 self.error_code_set_if_first(E_Error_NoHandler_OnSkipRangeOpen);
 self.send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
+return;;
 
 }
     /* End of Stream appeared, while scanning for end of skip-range.
      */
-__QUEX_PURE_RETURN;
+return;
 _0:
     __quex_debug("* TERMINAL X\n");
 __QUEX_IF_COUNT_SHIFT_VALUES();
@@ -872,7 +872,7 @@ __QUEX_IF_COUNT_COLUMNS_ADD(1);
 
 #   line 3 "test_environment/nothing.qx"
 self.send(QUEX_TKN_X);
-__QUEX_PURE_RETURN;
+return;
 
 
 #   line 879 "test_environment/TestAnalyzer.cpp"
@@ -929,7 +929,7 @@ _10:
 
 _16:
 /* RETURN -- after executing 'on_after_match' code. */
-    __QUEX_PURE_RETURN;
+    return;
 
 
 _17:
@@ -1117,13 +1117,13 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 self.error_code_set_if_first(E_Error_OnBadLexatom);
 self.error_code_set_if_first(E_Error_NoHandler_OnBadLexatom);
 self.send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
+return;;
 
 }
     /* Bad lexatom detection FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-__QUEX_PURE_RETURN;
+return;
 _2:
     __quex_debug("* TERMINAL LOAD_FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
@@ -1131,13 +1131,13 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 self.error_code_set_if_first(E_Error_OnLoadFailure);
 self.error_code_set_if_first(E_Error_NoHandler_OnLoadFailure);
 self.send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
+return;;
 
 }
     /* Load failure FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-__QUEX_PURE_RETURN;
+return;
 _3:
     __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
@@ -1148,17 +1148,17 @@ self.send(QUEX_TOKEN_ID(TERMINATION));
     /* End of Stream FORCES a return from the lexical analyzer, so that no
      * tokens can be filled after the termination token.
      */
-__QUEX_PURE_RETURN;
+return;
 _4:
     __quex_debug("* TERMINAL FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 self.error_code_set_if_first(E_Error_NoHandler_OnFailure);
 self.send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
+return;;
 
 }
-__QUEX_PURE_RETURN;
+return;
 _5:
     __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
@@ -1167,12 +1167,12 @@ QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 self.error_code_set_if_first(E_Error_OnSkipRangeOpen);
 self.error_code_set_if_first(E_Error_NoHandler_OnSkipRangeOpen);
 self.send(QUEX_TOKEN_ID(TERMINATION));
-__QUEX_PURE_RETURN;;
+return;;
 
 }
     /* End of Stream appeared, while scanning for end of skip-range.
      */
-__QUEX_PURE_RETURN;
+return;
 _0:
     __quex_debug("* TERMINAL X\n");
 __QUEX_IF_COUNT_SHIFT_VALUES();
@@ -1181,7 +1181,7 @@ __QUEX_IF_COUNT_COLUMNS_ADD(1);
 
 #   line 4 "test_environment/nothing.qx"
 self.send(QUEX_TKN_X);
-__QUEX_PURE_RETURN;
+return;
 
 
 #   line 1188 "test_environment/TestAnalyzer.cpp"
@@ -1238,7 +1238,7 @@ _10:
 
 _16:
 /* RETURN -- after executing 'on_after_match' code. */
-    __QUEX_PURE_RETURN;
+    return;
 
 
 _17:

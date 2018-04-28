@@ -1,3 +1,10 @@
+-- Converter Only generation:
+
+   mention importance of '--bet' and '--encoding', the naming and maybe, the include guard.
+
+    quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t    
+    quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8
+    
 -- Mention:
 
    When types other than ISO stdint are used (uint8_t etc), then the headers

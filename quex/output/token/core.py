@@ -77,8 +77,8 @@ def _do_core(Descr):
     else:
         token_class_name = Descr.class_name
 
-    converter_declaration_include    = Lng.INCLUDE(Lng.file_name_converter_header())
-    converter_implementation_include = Lng.INCLUDE(Lng.file_name_converter_implementation())
+    converter_declaration_include    = Lng.INCLUDE(Lng.file_name_converter_header("lexeme"))
+    converter_implementation_include = Lng.INCLUDE(Lng.file_name_converter_implementation("lexeme"))
 
     # ------------
     # TODO: Following should be always placed in front of footer/header:

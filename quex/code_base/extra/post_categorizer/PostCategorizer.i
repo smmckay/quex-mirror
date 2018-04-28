@@ -5,6 +5,8 @@
 $$INC: MemoryManager$$
 $$INC: extra/post_categorizer/PostCategorizer$$
 $$INC: lexeme_base$$
+$$INC: ../converter-from-lexeme$$
+$$INC: ../converter-from-lexeme.i$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -313,7 +315,6 @@ QUEX_NAME(PostCategorizer_resources_absent)(QUEX_NAME(Dictionary)* me)
     return me->root == (QUEX_NAME(DictionaryNode)*)0;
 }
 
-
 QUEX_INLINE void
 QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Depth)
 {
@@ -338,7 +339,7 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
         const QUEX_TYPE_LEXATOM* source_end_p = &source_p[1];
 
         /* Convert the first character                                       */
-        QUEX_NAME(lexeme_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
+        QUEX_NAME(lexeme_nnzt_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
 
         *drain_p++   = '\0';
         remainder_p  = drain_p;
@@ -346,7 +347,7 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
         source_end_p = source_p + QUEX_NAME(lexeme_length)(source_p) + 1;
 
         /* Convert the remainder                                             */
-        QUEX_NAME(lexeme_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
+        QUEX_NAME(lexeme_nnzt_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
 
         __QUEX_STD_printf("[%s]%s: %i\n", &drain[0], remainder_p, 
                           (int)node->token_id);
@@ -398,5 +399,7 @@ QUEX_NAME(Dictionary)::print_this()
 #endif 
 
 QUEX_NAMESPACE_MAIN_CLOSE
+
+$$INC: lexeme_base.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I */

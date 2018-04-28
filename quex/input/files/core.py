@@ -25,7 +25,8 @@ import quex.token_db                            as     token_db
 from   quex.input.regular_expression.exception  import RegularExpressionException
 
 def do(file_list):
-    if len(file_list) == 0 and not Setup.token_class_only_f: 
+    if     len(file_list) == 0 \
+       and not (Setup.token_class_only_f or Setup.converter_only_f): 
         error.log("No input files.")
 
     # If a foreign token-id file was presented even the standard token ids

@@ -1,3 +1,5 @@
+-- removal of macro-generated code
+-- exclusive encoding converter command line options
 -- Demos updated
 -- Demo for include push/pop simplified
 -- Towards removing macro definitions

@@ -1,12 +1,10 @@
 #include "TESTS/minimum-definitions.h"
-/* #include "ut/lib/extra/test_environment/TestAnalyzer-configuration" */
 #include "ut/lib/buffer/lexatoms/LexatomLoader.i"
 #include "ut/lib/buffer/bytes/ByteLoader_Memory"
 #include "ut/lib/buffer/bytes/ByteLoader_Memory.i"
 #include "ut/lib/buffer/Buffer_print.i"
 #include "ut/lib/buffer/Buffer.i"
 #include "ut/lib/MemoryManager"
-#include "ut/lib/lexeme_converter/from-unicode-buffer.i"
 #include "ut/lib/single.i"
 #include <hwut_unit.h>
 

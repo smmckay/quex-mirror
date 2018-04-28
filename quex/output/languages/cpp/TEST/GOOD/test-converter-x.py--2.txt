@@ -34,22 +34,22 @@ default: offset = (int32_t)(-4128768);
 code_unit_n_1:
     unicode = (uint32_t)(input + offset);
     *(*output_pp)++ = (uint8_t)(unicode);
-    __QUEX_PURE_RETURN;
+    return;
 code_unit_n_2:
     unicode = (uint32_t)(input + offset);
     *(*output_pp)++ = (uint8_t)(0xC0 | (unicode >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
-    __QUEX_PURE_RETURN;
+    return;
 code_unit_n_3:
     unicode = (uint32_t)(input + offset);
     *(*output_pp)++ = (uint8_t)(0xE0 | (unicode >> 12));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
-    __QUEX_PURE_RETURN;
+    return;
 code_unit_n_4:
     unicode = (uint32_t)(input + offset);
     *(*output_pp)++ = (uint8_t)(0xF0 | (unicode >> 18));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0x3FFFF) >> 12));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
-    __QUEX_PURE_RETURN;
+    return;

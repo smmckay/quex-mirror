@@ -16,8 +16,10 @@ if "--hwut-info" in sys.argv:
     sys.exit()
 
 def test(CodecName):
-    trafo_info          = EncodingTrafoByTable(CodecName)
-    code_str, code0_str = lexeme_converter._do(trafo_info)
+    quex.blackboard.setup.buffer_encoding = EncodingTrafoByTable(CodecName)
+    content_table = lexeme_converter.do()
+    code_str  = content_table[0][0]
+    code0_str = content_table[1][0]
     fh = open("converter-tester.h", "w")
     fh.write(adapt.do(code_str + "\n" + code0_str, "ut"))
     fh.close()
