@@ -13,8 +13,8 @@ def do(setup, command_line, argv):
     """Does a consistency check for setup and the command line.
     """
     if setup.extern_token_id_file_show_f and not setup.extern_token_id_file:
-        error.log("Option '--foreign-token-id-file-show' cannot be used without\n"
-                  "option '--foreign-token-id-file'.")
+        error.log("Option '%s' cannot be used without\n" % _example_flag("extern_token_id_file_show_f")
+                  + "option '%s'." % _example_flag("extern_token_id_file"))
 
     if os.path.isfile(setup.output_directory):
         error.log("The name '%s' is already a file and may not be used as output directory." 
@@ -75,8 +75,9 @@ def do(setup, command_line, argv):
                       "use command line option '--derived-class-file'.\n")
 
     if setup.lexatom.size_in_byte not in [-1, 1, 2, 4]:
-        error.log("The setting of '--buffer-element-size' (or '-b') can only be\n" 
-                  "1, 2, or 4 (found %s)." % repr(setup.lexatom.size_in_byte))
+        example_flag = SETUP_INFO["__buffer_lexatom_size_in_byte"][0][0]
+        error.log("The setting of '%s' can only be\n" % example_flag
+                  + "1, 2, or 4 (found %s)." % repr(setup.lexatom.size_in_byte))
 
     if setup.buffer_byte_order not in ["<system>", "little", "big"]:
         error.log("Byte order (option --endian) must be 'little', 'big', or '<system>'.\n" + \
@@ -88,8 +89,16 @@ def do(setup, command_line, argv):
         error.log("The use of a manually written token class requires that the name of the class\n"
                   "is specified on the command line via the '--token-class' option.")
 
-    if setup.converter_only_f and not setup.lexatom.type:
-        error.log("Lexatom type must be specific for converter generation.")
+    if setup.converter_only_f:
+        if not setup.lexatom.type:
+            error.log("Lexatom type must be specific for converter generation.")
+        if not _find_flag("buffer_encoding_name", argv):
+            error.log("Lexeme-converter-only-mode requires explicit definition of encoding.\n"
+                      "Example:  '%s unicode'." % _example_flag("buffer_encoding_name"))
+        if not _find_flag("__buffer_lexatom_type", argv):
+            error.log("Lexeme-converter-only-mode requires explicit definition of the code unit type.\n"
+                      "Example: '%s uint8_t'." % _example_flag("__buffer_lexatom_type"))
+
     
     # Check that names are valid identifiers
     if setup.token_id_prefix_plain:
@@ -113,6 +122,17 @@ def do(setup, command_line, argv):
         # NOT: __check_codec_vs_buffer_lexatom_size_in_byte("utf8", 1)
         # BECAUSE: Code unit size is one. No type has a size of less than one byte!
         __check_codec_vs_buffer_lexatom_size_in_byte(setup, "utf16", 2)
+
+def _find_flag(MemberName, Argv):
+    """RETURNS: True, if flag which is associated with 'MemberName' in setup is
+                      present on command line.
+                False, else.
+    """
+    flag_list = set(SETUP_INFO[MemberName][0])
+    return not flag_list.isdisjoint(Argv)
+
+def _example_flag(MemberName):
+    return SETUP_INFO[MemberName][0][0]
 
 def __check_identifier(setup, Candidate, Name):
     value = setup.__dict__[Candidate]

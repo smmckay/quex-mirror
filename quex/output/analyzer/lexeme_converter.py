@@ -36,24 +36,30 @@ from quex.constants  import INTEGER_MAX
 from operator import attrgetter
 from copy     import copy
 
-def do(Suffix="lexeme", LexatomType=None):
+def do():
     """RETURNS: list of (content, file_name)
 
        where 'content' is the content to be written into 'file_name'.
     """
+    if not Setup.converter_only_f:
+        source_name = "lexeme"
+    else:
+        if Setup.converter_source_name: source_name = Setup.converter_source_name
+        else:                           source_name = Setup.buffer_encoding.name
 
     header_txt         = Lng.template_converter_header()
     implementation_txt = blue_print(Lng.template_converter_implementation(), [
-                                    ("$$CONVERTER_HEADER$$",     Lng.file_name_converter_header(Suffix)),
+                                    ("$$CONVERTER_HEADER$$",     Lng.file_name_converter_header(source_name)),
                                     ("$$CHARACTER_CONVERTERS$$", _character_converters()),
                                     ("$$STRING_CONVERTERS$$",    _string_converters())])
 
-    if LexatomType is not None:
-        implementation_txt = implementation_txt.replace("QUEX_TYPE_LEXATOM", LexatomType)
+    if not Setup.converter_only_f:
+        implementation_txt = implementation_txt.replace("QUEX_TYPE_LEXATOM", 
+                                                        Setup.lexatom.type)
         header_txt         = header_txt.replace("QUEX_TYPE_LEXATOM", LexatomType)
-        implementation_txt = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % Setup.buffer_encoding.name, 
+        implementation_txt = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % function_prefix, 
                                                             implementation_txt)
-        header_txt         = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % Setup.buffer_encoding.name, 
+        header_txt         = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % function_prefix, 
                                                             header_txt)
 
     include_guard_suffix = ("%s_%s_%s" % (Lng.SAFE_IDENTIFIER(Setup.analyzer_class_name),
@@ -66,8 +72,8 @@ def do(Suffix="lexeme", LexatomType=None):
                                             include_guard_suffix)
 
     return [
-        (header_txt,         Lng.file_name_converter_header(Suffix)), 
-        (implementation_txt, Lng.file_name_converter_implementation(Suffix)),
+        (header_txt,         Lng.file_name_converter_header(source_name)), 
+        (implementation_txt, Lng.file_name_converter_implementation(source_name)),
     ] 
 
 def _character_converters():

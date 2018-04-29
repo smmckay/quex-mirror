@@ -35,8 +35,7 @@ def do():
 
 def _generate(mode_db):
     if Setup.converter_only_f:
-        content_table = lexeme_converter.do(Suffix=Setup.buffer_encoding.name,
-                                            LexatomType=Setup.lexatom.type)
+        content_table = lexeme_converter.do()
         do_converter_info(content_table[0][1], content_table[1][1])
         _write_all(content_table)
         return

@@ -4,6 +4,9 @@
 
     quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t    
     quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8
+
+    also mention '--csn' converter source name which influences function name prefix 
+    and file names.
     
 -- Mention:
 

@@ -8,8 +8,8 @@ TEST                                                                 <no date>
  * Dizzzy:
 
     293 0.66.5: Encoding running on wchar_t
-        bug-293.sh bad .............................................[FAIL]
-                   good ............................................[FAIL]
+        bug-293.sh bad ...............................................[OK]
+                   good ..............................................[OK]
                    invokation ........................................[OK]
 
  * alexeevm:
@@ -387,8 +387,8 @@ TEST                                                                 <no date>
     1895066 0.20.8 #line directive after header contents missing
         bug-1895066.sh ...............................................[OK]
     1895500 assertion error running generated 0.20.8 lexer with Unicode
-        bug-1895500.sh iconv ..................................[NO OUTPUT]
-                       icu ....................................[NO OUTPUT]
+        bug-1895500.sh iconv .........................................[OK]
+                       icu ...........................................[OK]
     1898125 invalid argument for --token-id-offset can crash 0.21.4
         bug-1898125.sh ...............................................[OK]
     1900391 malformed --set-by-expression can crash 0.21.8
@@ -494,8 +494,6 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-293.sh _ bad
-                    \__ good
     [FAIL] bug-3025173.sh
     [FAIL] feature-3032877.sh _ codec
                             \__ normal
@@ -530,8 +528,6 @@ TEST                                                                 <no date>
     [FAIL] bug-3524729.sh
     [FAIL] bug-3538026.sh
     [FAIL] bug-1885304.sh
-    [FAIL] bug-1895500.sh _ iconv
-                        \__ icu
     [FAIL] bug-1935701.sh _ FILE
                         \__ fstream
     [FAIL] bug-2799244.sh _ good-1
@@ -652,7 +648,7 @@ demo/C/TEST                                                          <no date>
  * 11-ManualBufferFilling:
 
     Manual Buffer Filling (w/o Converter)
-        11-ManualBufferFilling.sh feeder-converter .............[TIME_OUT]
+        11-ManualBufferFilling.sh feeder-converter .................[FAIL]
                                   feeder-plain .......................[OK]
                                   gavager-converter ................[FAIL]
                                   gavager-plain ......................[OK]
@@ -1022,19 +1018,28 @@ quex/input/TEST                                                      <no date>
 quex/TESTS/bof-eos-context/TEST                                      <no date>
 -------------------------------------------------------------------------------
  * explicit
-        explicit.exe bos-and-eos.txt .................................[OK]
-                     bos-eos.txt .....................................[OK]
-                     bos-x-x-eos.txt .................................[OK]
-                     not-bos-eos.txt .................................[OK]
+        explicit.exe bos-and-eos.txt ........................[MAKE FAILED]
+                     bos-eos.txt ............................[MAKE FAILED]
+                     bos-x-x-eos.txt ........................[MAKE FAILED]
+                     not-bos-eos.txt ........................[MAKE FAILED]
  * implicit
-        implicit.exe bos-and-eos.txt .................................[OK]
-                     bos-eos.txt .....................................[OK]
-                     bos-x-x-eos.txt .................................[OK]
-                     not-bos-eos.txt .................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        implicit.exe bos-and-eos.txt ........................[MAKE FAILED]
+                     bos-eos.txt ............................[MAKE FAILED]
+                     bos-x-x-eos.txt ........................[MAKE FAILED]
+                     not-bos-eos.txt ........................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] explicit.exe _ bos-and-eos.txt
+                      \__ bos-eos.txt
+                      \__ bos-x-x-eos.txt
+                      \__ not-bos-eos.txt
+    [FAIL] implicit.exe _ bos-and-eos.txt
+                      \__ bos-eos.txt
+                      \__ bos-x-x-eos.txt
+                      \__ not-bos-eos.txt
 ===============================================================================
                                                                                
                         Test Collection on Source Code                         
@@ -1055,8 +1060,8 @@ quex/TESTS/code/TEST                                                 <no date>
  * Code Check with pyflakes
         pyflakes-check.sh ..........................................[FAIL]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .......................[OK]
-                                           sphinx ....................[OK]
+        command_line_options-verify-doc.py man .....................[FAIL]
+                                           sphinx ..................[FAIL]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1080,6 +1085,8 @@ quex/TESTS/code/TEST                                                 <no date>
     [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
     [FAIL] pyflakes-check.sh
+    [FAIL] command_line_options-verify-doc.py _ man
+                                            \__ sphinx
     [FAIL] include_guard.py _ convention
                           \__ undefinition
     [FAIL] macro-check.py
@@ -1120,16 +1127,23 @@ quex/TESTS/did-you-mean/TEST                                         <no date>
 quex/TESTS/drop-outs/TEST                                            <no date>
 -------------------------------------------------------------------------------
  * Testing states with no hole in transition map
-        lexer BEGIN-1 ................................................[OK]
-              BEGIN-many .............................................[OK]
-              END-1 ..................................................[OK]
-              END-many ...............................................[OK]
-              MIDDLE-1 ...............................................[OK]
-              MIDDLE-many ............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        lexer BEGIN-1 .......................................[MAKE FAILED]
+              BEGIN-many ....................................[MAKE FAILED]
+              END-1 .........................................[MAKE FAILED]
+              END-many ......................................[MAKE FAILED]
+              MIDDLE-1 ......................................[MAKE FAILED]
+              MIDDLE-many ...................................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] lexer _ BEGIN-1
+               \__ BEGIN-many
+               \__ END-1
+               \__ END-many
+               \__ MIDDLE-1
+               \__ MIDDLE-many
 ===============================================================================
                                                                                
                 Mode Transition Permissions 'entry' and 'exit'                 
@@ -1226,23 +1240,33 @@ quex/TESTS/include-stack/TEST                                        <no date>
  * Include Stack:
 
     Misc Scenarios
-        queue.exe 1 ..................................................[OK]
-                  2 ..................................................[OK]
-                  20 .................................................[OK]
-                  3 ..................................................[OK]
-                  4 ..................................................[OK]
-                  5 ..................................................[OK]
-                  empty ..............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        queue.exe 1 .........................................[MAKE FAILED]
+                  2 .........................................[MAKE FAILED]
+                  20 ........................................[MAKE FAILED]
+                  3 .........................................[MAKE FAILED]
+                  4 .........................................[MAKE FAILED]
+                  5 .........................................[MAKE FAILED]
+                  empty .....................................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] queue.exe _ 1
+                   \__ 2
+                   \__ 20
+                   \__ 3
+                   \__ 4
+                   \__ 5
+                   \__ empty
 ===============================================================================
                                                                                
                        Indentation Counter / Birds View                        
                                                                                
 quex/TESTS/indentation_count/TEST                                    <no date>
 -------------------------------------------------------------------------------
+ * 
+        tmp.sh .............................................[NO GOOD FILE]
  * Bad character detection.
         bad.sh customized ............................................[OK]
                customized-2 ..........................................[OK]
@@ -1269,10 +1293,12 @@ quex/TESTS/indentation_count/TEST                                    <no date>
         with-skip-range.sh nested_range ..............................[OK]
                            range .....................................[OK]
                            range-2 ...................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] tmp.sh
 ===============================================================================
                                                                                
                     Testing general patterns for 'loopers'                     
@@ -1369,6 +1395,9 @@ quex/TESTS/misc/TEST                                                 <no date>
                                             PRE_X_PC .................[OK]
  * Customized codec files (option --encoding-file)
         customized_codec.sh ........................................[FAIL]
+ * Exception occurred -- please, report a bug under
+        line-number-pragma.sh qx .....................................[OK]
+                              source .................................[OK]
  * FSM DFA_State Tracer
         debug_show.sh ................................................[OK]
  * Inadmissible commonalities
@@ -1385,9 +1414,6 @@ quex/TESTS/misc/TEST                                                 <no date>
         huge-inheritance.sh ..........................................[OK]
  * Test code comments
         comment.sh .................................................[FAIL]
- * Testing the implementation of line number pragmas
-        line-number-pragma.sh qx .....................................[OK]
-                              source .................................[OK]
 
  * Challenges with Buffer Size 5:
 
@@ -1522,7 +1548,7 @@ quex/TESTS/source-package/TEST                                       <no date>
                   codec-utf16 ........................................[OK]
                   codec-utf8 .........................................[OK]
                   customized-token-class ...........................[FAIL]
-                  manual-token-class .................................[OK]
+                  manual-token-class ...............................[FAIL]
                   no-counter .........................................[OK]
                   plain ..............................................[OK]
     C++
@@ -1539,6 +1565,7 @@ quex/TESTS/source-package/TEST                                       <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] test-c.sh _ customized-token-class
+                   \__ manual-token-class
     [FAIL] test-cpp.sh _ customized-token-class
                      \__ manual-token-class
 ===============================================================================
@@ -1570,13 +1597,16 @@ quex/TESTS/token-policies/TEST                                       <no date>
  * Token Policy 'queue':
 
     Pseudo Analysis
-        queue.exe ....................................................[OK]
+        queue.exe ...........................................[MAKE FAILED]
     Real Analysis
-        queue-real.exe ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        queue-real.exe ......................................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] queue.exe
+    [FAIL] queue-real.exe
 ===============================================================================
                                                                                
                                  FSM Code Base                                 
@@ -2405,23 +2435,20 @@ quex/output/core/TEST                                                <no date>
  * Single DFA_State:
 
     Transition Code Generation
-        test-single-state-transitions.py A ....................[NO OUTPUT]
-                                         A-UTF8 ...............[NO OUTPUT]
+        test-single-state-transitions.py A .........................[FAIL]
+                                         A-UTF8 ......................[OK]
                                          B ....................[NO OUTPUT]
-                                         B-UTF8 ...............[NO OUTPUT]
+                                         B-UTF8 ......................[OK]
                                          C ....................[NO OUTPUT]
-                                         C-UTF8 ...............[NO OUTPUT]
+                                         C-UTF8 ......................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] test-single-state-transitions.py _ A
-                                          \__ A-UTF8
                                           \__ B
-                                          \__ B-UTF8
                                           \__ C
-                                          \__ C-UTF8
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -2545,50 +2572,87 @@ quex/code_base/extra/post_categorizer/TEST                           <no date>
  * Post Categorizer:
 
     Enter
-        post-categorizer-enter.exe 0 .................................[OK]
-                                   1 .................................[OK]
-                                   2 .................................[OK]
-                                   3 .................................[OK]
-                                   4 .................................[OK]
-                                   5 .................................[OK]
-                                   6 .................................[OK]
+        post-categorizer-enter.exe 0 ........................[MAKE FAILED]
+                                   1 ........................[MAKE FAILED]
+                                   2 ........................[MAKE FAILED]
+                                   3 ........................[MAKE FAILED]
+                                   4 ........................[MAKE FAILED]
+                                   5 ........................[MAKE FAILED]
+                                   6 ........................[MAKE FAILED]
     Enter
-        post-categorizer-find.exe 0 ..................................[OK]
-                                  1 ..................................[OK]
-                                  2 ..................................[OK]
-                                  3 ..................................[OK]
-                                  4 ..................................[OK]
-                                  5 ..................................[OK]
-                                  6 ..................................[OK]
+        post-categorizer-find.exe 0 .........................[MAKE FAILED]
+                                  1 .........................[MAKE FAILED]
+                                  2 .........................[MAKE FAILED]
+                                  3 .........................[MAKE FAILED]
+                                  4 .........................[MAKE FAILED]
+                                  5 .........................[MAKE FAILED]
+                                  6 .........................[MAKE FAILED]
     Remove Existent Node
-        post-categorizer-remove-2.exe Ab .............................[OK]
-                                      Ad .............................[OK]
-                                      Af .............................[OK]
-                                      Ah .............................[OK]
-                                      Bb .............................[OK]
-                                      Bd .............................[OK]
-                                      Bf .............................[OK]
+        post-categorizer-remove-2.exe Ab ....................[MAKE FAILED]
+                                      Ad ....................[MAKE FAILED]
+                                      Af ....................[MAKE FAILED]
+                                      Ah ....................[MAKE FAILED]
+                                      Bb ....................[MAKE FAILED]
+                                      Bd ....................[MAKE FAILED]
+                                      Bf ....................[MAKE FAILED]
     Remove Non-Existent Node
-        post-categorizer-remove.exe Aa ...............................[OK]
-                                    Ac ...............................[OK]
-                                    Ae ...............................[OK]
-                                    Ag ...............................[OK]
-                                    Ai ...............................[OK]
-                                    Ba ...............................[OK]
-                                    Bc ...............................[OK]
-                                    Be ...............................[OK]
+        post-categorizer-remove.exe Aa ......................[MAKE FAILED]
+                                    Ac ......................[MAKE FAILED]
+                                    Ae ......................[MAKE FAILED]
+                                    Ag ......................[MAKE FAILED]
+                                    Ai ......................[MAKE FAILED]
+                                    Ba ......................[MAKE FAILED]
+                                    Bc ......................[MAKE FAILED]
+                                    Be ......................[MAKE FAILED]
     Remove Total
-        post-categorizer-remove-total.exe 1 ..........................[OK]
-                                          2 ..........................[OK]
-                                          3 ..........................[OK]
-                                          4 ..........................[OK]
-                                          5 ..........................[OK]
-                                          6 ..........................[OK]
-                                          7 ..........................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        post-categorizer-remove-total.exe 1 .................[MAKE FAILED]
+                                          2 .................[MAKE FAILED]
+                                          3 .................[MAKE FAILED]
+                                          4 .................[MAKE FAILED]
+                                          5 .................[MAKE FAILED]
+                                          6 .................[MAKE FAILED]
+                                          7 .................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] post-categorizer-enter.exe _ 0
+                                    \__ 1
+                                    \__ 2
+                                    \__ 3
+                                    \__ 4
+                                    \__ 5
+                                    \__ 6
+    [FAIL] post-categorizer-find.exe _ 0
+                                   \__ 1
+                                   \__ 2
+                                   \__ 3
+                                   \__ 4
+                                   \__ 5
+                                   \__ 6
+    [FAIL] post-categorizer-remove-2.exe _ Ab
+                                       \__ Ad
+                                       \__ Af
+                                       \__ Ah
+                                       \__ Bb
+                                       \__ Bd
+                                       \__ Bf
+    [FAIL] post-categorizer-remove.exe _ Aa
+                                     \__ Ac
+                                     \__ Ae
+                                     \__ Ag
+                                     \__ Ai
+                                     \__ Ba
+                                     \__ Bc
+                                     \__ Be
+    [FAIL] post-categorizer-remove-total.exe _ 1
+                                           \__ 2
+                                           \__ 3
+                                           \__ 4
+                                           \__ 5
+                                           \__ 6
+                                           \__ 7
 ===============================================================================
                                                                                
                             DFA related Algorithms                             
@@ -2879,19 +2943,19 @@ quex/output/languages/cpp/TEST                                       <no date>
  * Converter:
 
     Determine UTF-8 Range Map for Codec
-        test-converter-C.py cp037 .............................[NO OUTPUT]
-                            cp1256 ............................[NO OUTPUT]
-                            cp737 .............................[NO OUTPUT]
-                            cp866 .............................[NO OUTPUT]
+        test-converter-C.py cp037 ..................................[FAIL]
+                            cp1256 .................................[FAIL]
+                            cp737 ..................................[FAIL]
+                            cp866 ..................................[FAIL]
     Determine UTF-8 Range Map for Codec
-        test-converter-x.py 1 ......................................[FAIL]
+        test-converter-x.py 1 ........................................[OK]
                             2 ......................................[FAIL]
                             3 ........................................[OK]
     Determine UTF-8 Range Map for Codec
         test-converter.py 1 ..........................................[OK]
                           2 ..........................................[OK]
-                          3 ..........................................[OK]
-                          4 ..........................................[OK]
+                          3 ........................................[FAIL]
+                          4 ........................................[FAIL]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
@@ -2903,8 +2967,9 @@ quex/output/languages/cpp/TEST                                       <no date>
                              \__ cp1256
                              \__ cp737
                              \__ cp866
-    [FAIL] test-converter-x.py _ 1
-                             \__ 2
+    [FAIL] test-converter-x.py _ 2
+    [FAIL] test-converter.py _ 3
+                           \__ 4
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3505,33 +3570,34 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
+    [NO GOOD FILE] tmp.sh
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       46  238   [FAIL] TEST                                                          
+       42  238   [FAIL] TEST                                                          
         9  56    [FAIL] demo/C/TEST                                                   
        11  56    [FAIL] ..../Cpp/TEST                                                 
            2       [OK] ..../TEST                                                     
-           8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        7  15    [FAIL] ........../code/TEST                                          
+        8  8     [FAIL] quex/TESTS/bof-eos-context/TEST                               
+        9  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
-           6       [OK] ........../drop-outs/TEST                                     
+        6  6     [FAIL] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
            23      [OK] ........../event-handling/TEST                                
-           7       [OK] ........../include-stack/TEST                                 
-           21      [OK] ........../indentation_count/TEST                             
+        7  7     [FAIL] ........../include-stack/TEST                                 
+        1  22    [FAIL] ........../indentation_count/TEST                             
         2  2     [FAIL] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
         2  32    [FAIL] ........../misc/TEST                                          
        22  55    [FAIL] ........../reset/TEST                                         
-        3  14    [FAIL] ........../source-package/TEST                                
+        4  14    [FAIL] ........../source-package/TEST                                
         1  5     [FAIL] ........../token-class/TEST                                   
-           2       [OK] ........../token-policies/TEST                                
+        2  2     [FAIL] ........../token-policies/TEST                                
            11      [OK] ..../code_base/TESTS/general/TEST                             
         1  1     [FAIL] ............../analyzer/TEST                                  
            11      [OK] ......................./struct/TEST                           
@@ -3543,7 +3609,7 @@ SUMMARY:
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
         5  5     [FAIL] ............../extra/accumulator/TEST                         
-           36      [OK] ..................../post_categorizer/TEST                    
+       36  36    [FAIL] ..................../post_categorizer/TEST                    
        10  10    [FAIL] ............../lexeme_converter/TEST                          
            3       [OK] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
@@ -3566,17 +3632,17 @@ SUMMARY:
            58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
-        6  205   [FAIL] ..../output/core/TEST                                         
+        3  205   [FAIL] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        8  31    [FAIL] .........../languages/cpp/TEST                                
+        9  31    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _____  _____           
-    |  ___|_ _(_) |___     / ||___ / |___ /     __  __
-    | |_ / _` | | / __|    | |  |_ \   |_ \     \ \/ /
-    |  _| (_| | | \__ \    | | ___) | ___) |     >  < 
-    |_|  \__,_|_|_|___/    |_||____/ |____/     /_/\_\
-                                                                   (1701 tests)
+     _____     _ _          _   ___    ___            
+    |  ___|_ _(_) |___     / | / _ \  / _ \     __  __
+    | |_ / _` | | / __|    | || (_) || | | |    \ \/ /
+    |  _| (_| | | \__ \    | | \__, || |_| |     >  < 
+    |_|  \__,_|_|_|___/    |_|   /_/  \___/     /_/\_\
+                                                                   (1702 tests)
 
 ===============================================================================

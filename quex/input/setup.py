@@ -233,6 +233,7 @@ SETUP_INFO = {
     "insight_f":                      [["--insight"],                              SetupParTypes.FLAG],
     "converter_ucs_coding_name":      [["--converter-ucs-coding-name", "--cucn"], ""],
     "converter_only_f":               [["--converter-only", "--co"],           SetupParTypes.FLAG],
+    "converter_source_name":          [["--converter-source-name", "--csn"],  ""],
     "input_mode_files":               [["-i"],                                 SetupParTypes.LIST],
     "suppressed_notification_list":   [["--suppress", "-s"],                   SetupParTypes.INT_LIST],
     "extern_token_class_file":        [["--token-class-file"],                 ""],

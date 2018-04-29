@@ -16,7 +16,7 @@ popd
 pushd quex/output/languages/cpp/TEST
 python ../../../../code_base/TESTS/code_base_instatiation.py test_environment
 cp ../../../../code_base/TESTS/test_environment/TestAnalyzer-configuration test_environment
-quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t
+quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t --encoding unicode
 quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8
 popd
 
