@@ -156,14 +156,15 @@ class EncodingTrafoUnicode(EncodingTrafo):
     DEFAULT_LEXATOM_TYPE_SIZE = 1 # Byte
 
     @typed(SourceSet=NumberSet)
-    def __init__(self, SourceSet):
+    def __init__(self, SourceSet, Name="unicode"):
         # Plain 'Unicode' associates a character with a single code unit, i.e.
         # its 'code point'. 
         # => Only code unit '0' is specified and everything is allowed.
         #    ('everything allowed' is disputable, since certain ranges are
         #     disallowed.)
+        assert Name in ("unicode", "utf32")
         error_range_by_code_unit_db = { 0: NumberSet() }
-        EncodingTrafo.__init__(self, "unicode", SourceSet, 
+        EncodingTrafo.__init__(self, Name, SourceSet, 
                                error_range_by_code_unit_db)
 
     def do_transition(self, from_target_map, FromSi, ToSi, BadLexatomSi):

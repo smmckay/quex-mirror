@@ -53,13 +53,14 @@ def do():
                                     ("$$CHARACTER_CONVERTERS$$", _character_converters()),
                                     ("$$STRING_CONVERTERS$$",    _string_converters())])
 
-    if not Setup.converter_only_f:
+    if Setup.converter_only_f:
         implementation_txt = implementation_txt.replace("QUEX_TYPE_LEXATOM", 
                                                         Setup.lexatom.type)
-        header_txt         = header_txt.replace("QUEX_TYPE_LEXATOM", LexatomType)
-        implementation_txt = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % function_prefix, 
+        header_txt         = header_txt.replace("QUEX_TYPE_LEXATOM", 
+                                                Setup.lexatom.type)
+        implementation_txt = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % source_name, 
                                                             implementation_txt)
-        header_txt         = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % function_prefix, 
+        header_txt         = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % source_name, 
                                                             header_txt)
 
     include_guard_suffix = ("%s_%s_%s" % (Lng.SAFE_IDENTIFIER(Setup.analyzer_class_name),
@@ -123,7 +124,7 @@ def _table_character_converters(unicode_trafo_info):
 
     """
     encoding_name = Lng.SAFE_IDENTIFIER(unicode_trafo_info.name)
-    if encoding_name == "unicode":
+    if encoding_name in ("utf32", "unicode"):
         source_interval_begin = 0
         source_interval_end   = min(256**Setup.lexatom.size_in_byte, 0x200000)
         target_interval_begin = 0

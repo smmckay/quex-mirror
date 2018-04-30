@@ -2,8 +2,17 @@
 #include <support/C/hwut_unit.h>
 #include <cassert>
 
-#define EXPAND(X) X
-#define CONVERTER_NAME(OUTPUT)   QUEX_NAME(EXPAND(SOURCE_NAME), EXPAND(OUTPUT))
+#ifndef SOURCE_NAME
+#error "Missing SOURCE_NAME"
+#endif
+#ifndef QUEX_NAME
+#error "Missing QUEX_NAME"
+#endif
+
+#define __CONVERTER_POINTER(SOURCE, DRAIN)   QUEX_NAME(SOURCE ## _nnzt_to_ ## DRAIN)
+#define CONVERTER_POINTER(SOURCE, DRAIN)   __CONVERTER_POINTER(SOURCE, DRAIN)
+#define __CONVERTER_STRING(SOURCE, DRAIN)   QUEX_NAME(SOURCE ## _to_ ## DRAIN)
+#define CONVERTER_STRING(SOURCE, DRAIN)   __CONVERTER_STRING(SOURCE, DRAIN)
 
 #include <iostream>
 #include <cstdio>
@@ -101,8 +110,6 @@ test_this(const SOURCE_TYPE* Source,
           const uint32_t*    UTF32_Expected, const size_t  UTF32_DrainSize, 
           bool               SourceEmptyF=false)
 {
-    using namespace TesterToken;
-
     const SOURCE_TYPE*  source_end = Source;
     if( SourceEmptyF ) {
         source_end = Source;
@@ -114,15 +121,15 @@ test_this(const SOURCE_TYPE* Source,
     test<uint8_t>("to utf8", 
                   Source,               source_end, 
                   UTF8_DrainSize,       SourceEmptyF ? (uint8_t*)0x0 : UTF8_Expected,
-                  CONVERTER_NAME(utf8), CONVERTER_NAME(utf8)); 
+                  CONVERTER_POINTER(SOURCE_NAME, utf8), CONVERTER_STRING(SOURCE_NAME, utf8)); 
     test<uint16_t>("to utf16", 
                    Source,                source_end, 
                    UTF16_DrainSize,       SourceEmptyF ? (uint16_t*)0x0 : UTF16_Expected,
-                   CONVERTER_NAME(utf16), CONVERTER_NAME(utf16)); 
+                   CONVERTER_POINTER(SOURCE_NAME, utf16), CONVERTER_STRING(SOURCE_NAME, utf16)); 
     test<uint32_t>("to utf32", 
                    Source,                source_end, 
                    UTF32_DrainSize,       SourceEmptyF ? (uint32_t*)0x0 : UTF32_Expected,
-                   CONVERTER_NAME(utf32), CONVERTER_NAME(utf32)); 
+                   CONVERTER_POINTER(SOURCE_NAME, utf32), CONVERTER_STRING(SOURCE_NAME, utf32)); 
 }
 
 template <class ElementT> inline ElementT*

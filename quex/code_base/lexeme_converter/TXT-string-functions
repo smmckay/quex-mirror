@@ -8,7 +8,7 @@ QUEX_NAME(lexeme_nnzt_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM**      sour
  * larger segments.                                                           */
 {
     const QUEX_TYPE_LEXATOM*  source_iterator; 
-    $$DRAIN_CODE_UNIT_TYPE$$* drain_iterator;
+    $$DRAIN_CODE_UNIT_TYPE$$* drain_it;
     const ptrdiff_t           TargetMaxCodeUnitN = $$DRAIN_ENCODING_MAX_CODE_UNIT_N$$; /* UF32=1, UTF16=2, utf8=... */
 
     __quex_assert(source_pp != 0x0);
@@ -16,16 +16,16 @@ QUEX_NAME(lexeme_nnzt_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM**      sour
     __quex_assert(drain_pp != 0x0);
     __quex_assert(*drain_pp != 0x0);
 
-    drain_iterator  = *drain_pp;
+    drain_it  = *drain_pp;
     for(source_iterator=*source_pp; source_iterator != SourceEnd; ) { 
         if     ( source_iterator == SourceEnd ) break;
-        else if( DrainEnd - drain_iterator < TargetMaxCodeUnitN ) break;
-        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_iterator);
+        else if( DrainEnd - drain_it < TargetMaxCodeUnitN ) break;
+        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_it);
         __quex_assert(source_iterator >  *source_pp);
         __quex_assert(source_iterator <= SourceEnd);
     }
 
-    *drain_pp  = drain_iterator;
+    *drain_pp  = drain_it;
     *source_pp = source_iterator;
 }
 
@@ -37,22 +37,22 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM*         SourceB
  * iteration over write buffer.                                               */
 {
     const QUEX_TYPE_LEXATOM*  source_iterator; 
-    $$DRAIN_CODE_UNIT_TYPE$$* drain_iterator;
+    $$DRAIN_CODE_UNIT_TYPE$$* drain_it;
     const ptrdiff_t           TargetMaxCodeUnitN = $$DRAIN_ENCODING_MAX_CODE_UNIT_N$$; /* UF32=1, UTF16=2, utf8=... */
 
     __quex_assert(SourceBegin != 0x0);
     __quex_assert(drain_p != 0x0);
 
-    drain_iterator  = drain_p;
+    drain_it  = drain_p;
     source_iterator = SourceBegin;
 
     for(source_iterator=SourceBegin; (QUEX_TYPE_LEXATOM)0 != *source_iterator; ) { 
-        if( DrainEnd - drain_iterator < TargetMaxCodeUnitN ) break;
-        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_iterator);
+        if( DrainEnd - drain_it < TargetMaxCodeUnitN ) break;
+        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_it);
         __quex_assert(source_iterator > SourceBegin);
     }
 
-    return drain_iterator;
+    return drain_it;
 }
 
 #if ! defined(__QUEX_OPTION_PLAIN_C)
@@ -61,33 +61,20 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATO
 {
     /* Avoiding the mess with 'c_str()' and 'begin()' in 'std::string()'
      * => copy string to a temporary array.                                   */
-    QUEX_TYPE_LEXATOM*                 source = (QUEX_TYPE_LEXATOM*)
-                                                QUEXED(MemoryManager_allocate)(
-                                                sizeof(QUEX_TYPE_LEXATOM) * (Source.length() + 1),
-                                                E_MemoryObjectType_TEXT);
-    const QUEX_TYPE_LEXATOM*           source_iterator;
-    const QUEX_TYPE_LEXATOM*           SourceEnd = &source[Source.length()];
-    const ptrdiff_t                    TargetMaxCodeUnitN = $$DRAIN_ENCODING_MAX_CODE_UNIT_N$$;
-    $$DRAIN_CODE_UNIT_TYPE$$           drain[TargetMaxCodeUnitN];
-    $$DRAIN_CODE_UNIT_TYPE$$*          drain_iterator  = 0;
+    const ptrdiff_t            TargetMaxCodeUnitN = $$DRAIN_ENCODING_MAX_CODE_UNIT_N$$;
+    $$DRAIN_CODE_UNIT_TYPE$$   drain[TargetMaxCodeUnitN];
+    $$DRAIN_CODE_UNIT_TYPE$$*  drain_it  = 0;
     std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>  result;
+    const QUEX_TYPE_LEXATOM*         source_p;
 
-    if( ! Source.copy(&source[0], Source.length()) ) {
-        QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
-        return result;
-    }
-    /* .copy() does not append a terminating zero ...
-     * and it is not to be copied.                                            */
-
-    for(source_iterator = &source[0]; source_iterator != SourceEnd; ) {
-        drain_iterator = drain;
-        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_iterator, &drain_iterator);
-        __quex_assert(source_iterator >  &source[0]);
-        __quex_assert(source_iterator <= SourceEnd);
-        result.append(($$DRAIN_CODE_UNIT_TYPE$$*)drain, (size_t)(drain_iterator - drain));
+    for(std::basic_string<QUEX_TYPE_LEXATOM>::const_iterator source_it = Source.begin(); 
+        source_it != Source.end(); ++source_it) {
+        drain_it = drain;
+        source_p = &(*source_it);
+        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_p, &drain_it);
+        result.append(($$DRAIN_CODE_UNIT_TYPE$$*)drain, (size_t)(drain_it - drain));
     }
 
-    QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
     return result;
 }
 #endif

@@ -29,7 +29,7 @@ post-categorizer-%.E: post-categorizer-%.cpp ut
 
 ut:
 	python ../../../TESTS/code_base_instatiation.py ut 
-	quex --co -o TestAnalyzer --odir ut --encoding lexeme
+	quex --co -o TestAnalyzer --odir ut --encoding unicode --bet uint8_t --csn lexeme --debug-exception
 
 clean: 
 	rm -rf $(PROGRAMS) ut *.o *.E

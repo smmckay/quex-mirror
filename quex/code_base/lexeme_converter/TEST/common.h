@@ -5,17 +5,14 @@
 #ifndef __INCLUDE_GUARD__COMMON_H
 #define __INCLUDE_GUARD__COMMON_H
 
-#define ____QUEX_CONVERTER_CHAR(FROM, TO)    TesterToken_ ## FROM ## _to_ ## TO ## _character
-#define QUEX_CONVERTER_CHAR(FROM, TO)        ____QUEX_CONVERTER_CHAR(FROM, TO)
-#define QUEX_CONVERTER_CHAR(FROM, TO)    ____QUEX_CONVERTER_CHAR(FROM, TO)
-#define ____QUEX_CONVERTER_STRING(FROM, TO)  TesterToken_ ## FROM ## _to_ ## TO
-#define QUEX_CONVERTER_STRING(FROM, TO)      ____QUEX_CONVERTER_STRING(FROM, TO)
-#define QUEX_CONVERTER_STRING(FROM, TO)  ____QUEX_CONVERTER_STRING(FROM, TO)
-
 #define QUEX_SETTING_CHAR_CODEC    8
 #define QUEX_SETTING_WCHAR_CODEC   32
 
-#include "ut/converter-from-lexeme.i"
+#include "ut/lib/asserts"
+#include "../../TESTS/minimum-definitions.h"
+#include "ut/converter-from-utf8.i"
+#include "ut/converter-from-utf16.i"
+#include "ut/converter-from-utf32.i"
 
 using namespace std;
 

@@ -1,14 +1,22 @@
 #include "compatibility/stdint.h"
+#include <assert.h>
 #ifdef __cplusplus
+#  include <string>
    class  TestAnalyzer;
 #  define QUEX_NAME(NAME)                                TestAnalyzer_ ## NAME
 #  define QUEX_TYPE_ANALYZER                             TestAnalyzer
    typedef void  (*QUEX_NAME(AnalyzerFunctionP))(TestAnalyzer*);
+#  ifndef QUEX_INLINE
+#  define QUEX_INLINE inline
+#  endif 
 #else
    struct TestAnalyzer;
 #  define QUEX_NAME(NAME)                                TestAnalyzer_ ## NAME
 #  define QUEX_TYPE_ANALYZER                             (struct TestAnalyzer)
    typedef void  (*QUEX_NAME(AnalyzerFunctionP))(struct TestAnalyzer*);
+#  ifndef QUEX_INLINE
+#  define QUEX_INLINE static
+#  endif 
 #endif
 
 #define QUEX_SETTING_BUFFER_LIMIT_CODE                 0
@@ -45,4 +53,5 @@
 #endif
 typedef QUEX_TYPE_LEXATOM  TestAnalyzer_lexatom_t;
 typedef QUEX_TYPE_TOKEN_ID TestAnalyzer_token_id_t;
+
 

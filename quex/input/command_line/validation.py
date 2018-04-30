@@ -114,10 +114,10 @@ def do(setup, command_line, argv):
     __check_file_name(setup, "input_mode_files", "quex source file")
 
     # Internal engine character encoding
-    if setup.buffer_encoding.name != "unicode":
+    if setup.buffer_encoding.name not in ("utf32", "unicode"):
         if not setup.buffer_encoding_file:
             error.verify_word_in_list(setup.buffer_encoding_name,
-                                      codec_db.get_supported_codec_list() + ["utf8", "utf16"],
+                                      codec_db.get_supported_codec_list() + ["utf8", "utf16", "utf32"],
                                       "Codec '%s' is not supported." % setup.buffer_encoding.name)
         # NOT: __check_codec_vs_buffer_lexatom_size_in_byte("utf8", 1)
         # BECAUSE: Code unit size is one. No type has a size of less than one byte!
