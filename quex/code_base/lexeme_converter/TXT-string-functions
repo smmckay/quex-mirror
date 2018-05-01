@@ -55,24 +55,37 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM*         SourceB
     return drain_it;
 }
 
-#if ! defined(__QUEX_OPTION_PLAIN_C)
+#if    ! defined(__QUEX_OPTION_PLAIN_C) \
+    && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
 QUEX_INLINE std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>
 QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
 {
-    /* Avoiding the mess with 'c_str()' and 'begin()' in 'std::string()'
+    /* Save iteration over string with existing character converters.
      * => copy string to a temporary array.                                   */
-    const ptrdiff_t            TargetMaxCodeUnitN = $$DRAIN_ENCODING_MAX_CODE_UNIT_N$$;
-    $$DRAIN_CODE_UNIT_TYPE$$   drain[TargetMaxCodeUnitN];
-    $$DRAIN_CODE_UNIT_TYPE$$*  drain_it  = 0;
-    std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>  result;
-    const QUEX_TYPE_LEXATOM*         source_p;
+    $$DRAIN_CODE_UNIT_TYPE$$    tmp_drain[$$DRAIN_ENCODING_MAX_CODE_UNIT_N$$];
+    $$DRAIN_CODE_UNIT_TYPE$$*   drain_it;
+    QUEX_TYPE_LEXATOM*          source = (QUEX_TYPE_LEXATOM*)
+                                                QUEXED(MemoryManager_allocate)(
+                                                sizeof(QUEX_TYPE_LEXATOM) * (Source.length() + 1),
+                                                E_MemoryObjectType_TEXT);
+    const size_t                SourceLength = Source.length();
+    const QUEX_TYPE_LEXATOM*    source_it;
 
-    for(std::basic_string<QUEX_TYPE_LEXATOM>::const_iterator source_it = Source.begin(); 
-        source_it != Source.end(); ++source_it) {
-        drain_it = drain;
-        source_p = &(*source_it);
-        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_p, &drain_it);
-        result.append(($$DRAIN_CODE_UNIT_TYPE$$*)drain, (size_t)(drain_it - drain));
+    std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>  result;
+
+
+    if( SourceLength != Source.copy(&source[0], SourceLength) ) {
+        QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+        return result;
+    }
+    /* .copy() does not append a terminating zero ...
+     * and it is not to be copied.                                            */
+    for(source_it = &source[0]; source_it < &source[SourceLength]; ) {
+        drain_it = tmp_drain;
+        QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$_character)(&source_it, &drain_it);
+        __quex_assert(source_it >  &source[0]);
+        __quex_assert(source_it <= &source[SourceLength]);
+        result.append(($$DRAIN_CODE_UNIT_TYPE$$*)tmp_drain, (size_t)(drain_it - tmp_drain));
     }
 
     return result;
