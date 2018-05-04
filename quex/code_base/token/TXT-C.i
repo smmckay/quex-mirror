@@ -9,11 +9,9 @@
 #   define __QUEX_OPTION_PLAIN_C
 #endif
 
-#include "$$TOKEN_CLASS_HEADER$$"
-$$INC: definitions$$
-$$INC: lexeme_base$$
-$$INC: lexeme_base.i$$
 $$INCLUDE_TOKEN_CLASS_HEADER$$
+$$INCLUDE_TOKEN_ID_HEADER$$
+$$INC: lexeme_base.i$$
 
 QUEX_INLINE void 
 $TOKEN_CLASS_set($TOKEN_CLASS*            __this, 

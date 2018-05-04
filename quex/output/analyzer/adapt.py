@@ -1,6 +1,5 @@
 from   quex.engine.misc.tools import typed
-from   quex.blackboard        import Lng, setup as Setup
-from   quex.engine.misc.string_handling import blue_print
+from   quex.blackboard        import Lng
 
 def do(Txt, OutputDir, OriginalPath=None):
     if not Txt: return Txt

@@ -23,7 +23,7 @@ while (( $time < $max_time )); do
         echo "||||"
         ls Lexer* 
         echo "||||"
-        rm Lexer Lexer.cpp Lexer-token_ids Lexer-configuration
+        rm -rf Lexer Lexer.cpp Lexer-token_ids Lexer-configuration
         exit
     fi
 done

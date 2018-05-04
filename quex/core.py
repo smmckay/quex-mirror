@@ -42,20 +42,23 @@ def _generate(mode_db):
 
     elif Setup.token_class_only_f:
         content_table, global_lexeme_null_declaration = _get_token_class()
-        class_token_header  = content_table[1][0]
-        content_table[1][0] = do_token_class_info() + class_token_header
-        _straighten_line_pragmas_token_class()
+        class_token_header = do_token_class_info() + content_table[1][0]
+        content_table[1]   = (class_token_header,    content_table[1][1])
+        _write_all(content_table)
+        return
+
     else:
         content_table, global_lexeme_null_declaration = _get_token_class()
         class_token_implementation = content_table[-1][0]
+        del content_table[-1]
         content_table.extend(_get_analyzers(mode_db, 
                                             class_token_implementation, 
                                             global_lexeme_null_declaration))
         content_table.extend(lexeme_converter.do()) # [Optional]
+        _write_all(content_table)
 
-    _write_all(content_table)
-    _straighten_open_line_pragmas_all()
-    source_package.do(Setup.output_directory)
+        source_package.do(Setup.output_directory)
+        return
 
 def analyzer_functions_get(ModeDB):
     # (*) Get list of modes that are actually implemented
@@ -189,22 +192,11 @@ def _write_all(content_table):
     content_table = [
         (adapt.do(x[0], Setup.output_directory), x[1]) for x in content_table
     ]
+    content_table = [
+        (Lng.straighten_open_line_pragmas_new(x[0], x[1]), x[1]) for x in content_table
+    ]
 
     for content, file_name in content_table:
-        if content is None: continue
+        if not content: continue
         write_safely_and_close(file_name, content)
-
-
-def _straighten_line_pragmas_token_class():
-    Lng.straighten_open_line_pragmas(token_db.token_type_definition.get_file_name())
-    Lng.straighten_open_line_pragmas(Setup.output_token_class_file_implementation)
-    if token_id_header is not None:
-        Lng.straighten_open_line_pragmas(Setup.output_token_id_file)
-
-def _straighten_open_line_pragmas_all():
-    Lng.straighten_open_line_pragmas(Setup.output_header_file)
-    Lng.straighten_open_line_pragmas(Setup.output_code_file)
-    if not token_db.token_type_definition.manually_written():
-        Lng.straighten_open_line_pragmas(token_db.token_type_definition.get_file_name())
-
 

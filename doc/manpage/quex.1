@@ -852,6 +852,32 @@ By default it is defined based on the buffer element type.
 .RE
 
 
+.TP
+.BI "--converter-only, --co "
+
+.RS
+Only generates lexeme converter code for converters towards UTF8, UTF16, and UTF32. Additionally, converters are provided towards 'char', and 'wchar_t'. A converter to 'pretty_char' translates signal characters into ASCII strings. 
+
+This options requires '--buffer-element-type' and '--encoding'. 
+
+
+.RE
+
+\.RS
+Default: false (disabled)
+.RE
+
+
+.TP
+.BI "--converter-source-name, --csn string"
+
+.RS
+By default, converter generation uses the name of the source encoding as source name as prefix in function names. With this option the function name prefix can be given explicitly. 
+
+
+.RE
+
+
 Template and Path Compression ore methods to combine multiple states into one 'mega state'. The mega state combines in itself the common actions of the states that it represents. The result is a massive reduction in code size. The compression can be controlled with the following command line options: 
 
 .TP

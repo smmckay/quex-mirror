@@ -11,6 +11,8 @@ class Language(LanguageCpp):
         },
     }
 
+    INLINE = "static"
+
     def __init__(self):      
         LanguageCpp.__init__(self)
 
@@ -40,7 +42,7 @@ class Language(LanguageCpp):
 
     def MEMBER_FUNCTION_DECLARATION(self, signature):
         if not blackboard.condition_holds(signature.condition):
-            return "\n"
+            return ""
         argument_list_str = ", ".join("%s %s" % (arg_type, arg_name) 
                                       for arg_type, arg_name, default in signature.argument_list)
 
@@ -49,8 +51,8 @@ class Language(LanguageCpp):
         if signature.argument_list: me_str = "%sQUEX_TYPE_ANALYZER* me, " % constant_str
         else:                       me_str = "%sQUEX_TYPE_ANALYZER* me" % constant_str
 
-        return "%s (*%s)(%s%s);\n" % (signature.return_type, signature.function_name, 
-                                      me_str, argument_list_str) 
+        return "%s (*%s)(%s%s);" % (signature.return_type, signature.function_name, 
+                                    me_str, argument_list_str) 
 
     def MEMBER_FUNCTION_ASSIGNMENT(self, MemberFunctionSignatureList):
         txt = [

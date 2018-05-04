@@ -163,12 +163,6 @@ file_str = \
 #ifndef __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__
 #define __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_$$INCLUDE_GUARD_EXT$$__
 
-#ifndef __QUEX_OPTION_PLAIN_C
-#   include<cstdio> 
-#else
-#   include<stdio.h> 
-#endif
-
 /* Note: When multiple lexical analyzers are included, then their
  *       token prefix must differ! Use '--token-id-prefix'.                   */
 $$TOKEN_ID_DEFINITIONS$$

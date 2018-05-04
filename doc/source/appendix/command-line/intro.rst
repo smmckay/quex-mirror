@@ -592,6 +592,27 @@ The implementation of customized converters is supported by the following option
 
     
 
+.. cmdoption:: --converter-only, --co 
+
+    Only generates lexeme converter code for converters towards UTF8, UTF16, and UTF32. Additionally, 
+    converters are provided towards 'char', and 'wchar_t'. A converter to 'pretty_char' 
+    translates signal characters into ASCII strings.  
+
+    This options requires '--buffer-element-type' 
+    and '--encoding'.  
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --converter-source-name, --csn string
+
+    By default, converter generation uses the name of the source encoding as source name as prefix 
+    in function names. With this option the function name prefix can be given explicitly. 
+     
+
+    
+
 Template and Path Compression ore methods to combine multiple states into one 'mega state'. The 
 mega state combines in itself the common actions of the states that it represents. The result 
 is a massive reduction in code size. The compression can be controlled with the following 

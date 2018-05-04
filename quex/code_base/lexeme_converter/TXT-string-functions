@@ -88,6 +88,7 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATO
         result.append(($$DRAIN_CODE_UNIT_TYPE$$*)tmp_drain, (size_t)(drain_it - tmp_drain));
     }
 
+    QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
     return result;
 }
 #endif

@@ -28,13 +28,11 @@ nonsense.qx:1:warning: Above token ids must be defined in 'token_ids.h'
 
 
 Generated Files:
+converter-from-lexeme
+converter-from-lexeme.i
 EasyLexer
 EasyLexer-configuration
-EasyLexer-converter-codec
-EasyLexer-converter-codec.i
 EasyLexer.cpp
 lib
 
 Compare time stamps before and after (No Output is Good output)
-
-

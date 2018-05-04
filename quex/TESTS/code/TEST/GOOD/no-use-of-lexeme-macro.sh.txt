@@ -12,6 +12,8 @@ Following lines are suppossed to be accepted:
 ./engine/state_machine/TEST_help/walk.py:17:    __print(__get_step_list(Dfa, Lexeme))
 ./engine/state_machine/TEST_help/walk.py:74:def __get_step_list(Dfa, Lexeme):
 ./engine/state_machine/TEST_help/walk.py:77:    for input_position, lexatom in enumerate(Lexeme):
+./input/command_line/validation.py:96:            error.log("Lexeme-converter-only-mode requires explicit definition of encoding.\n"
+./input/command_line/validation.py:99:            error.log("Lexeme-converter-only-mode requires explicit definition of the code unit type.\n"
 ./input/files/code_fragment.py:22:lexeme_re = re.compile(r"^Lexeme\b")
 ./input/files/code_fragment.py:254:        argument_list = ["Lexeme"]
 ./input/files/code_fragment.py:282:        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
@@ -39,3 +41,5 @@ Following lines are suppossed to be accepted:
 ./output/languages/cpp/dictionary.py:403:        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
 ./output/languages/cpp/templates.py:245:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST
+
+

@@ -54,6 +54,7 @@ class Language(dict):
     CODE_BASE                 = "quex/code_base/"
     LEXEME_CONVERTER_DIR      = "lib/lexeme_converter"
                               
+    INLINE                    = "inline"
     RETURN                    = "RETURN;"
     PURE_RETURN               = "return;"
     UNREACHABLE               = "__quex_assert_no_passage();"
@@ -308,12 +309,6 @@ class Language(dict):
     def UNDEFINE(self, NAME):
         return "\n#undef %s\n" % NAME
 
-    def CONVERTER_HELPER_DECLARATION(self):
-        return self.INCLUDE(self.file_name_header_converter_from_lexeme())
-
-    def CONVERTER_HELPER_IMLEMENTATION(self):
-        return self.INCLUDE(self.file_name_implmt_converter_from_lexeme())
-                                                                                                                                
     @typed(Txt=(CodeFragment))
     def SOURCE_REFERENCED(self, Cf, PrettyF=False):
         if Cf is None:    return ""
@@ -423,7 +418,7 @@ class Language(dict):
 
     def MEMBER_FUNCTION_DECLARATION(self, signature):
         if not blackboard.condition_holds(signature.condition):
-            return "\n"
+            return ""
         def argument_str(arg_type, arg_name, default):
             if default:
                 return "%s %s = %s" % (arg_type, arg_name, default) 
@@ -437,11 +432,8 @@ class Language(dict):
         call_argument_list  = ["this"] + [ arg_name for arg_type, arg_name, default in signature.argument_list ]
         call_definition_str = "QUEX_NAME(MF_%s)(%s)" % (signature.function_name,
                                                         ", ".join(call_argument_list))
-        return "%s %s(%s) { %s%s; }\n" % (signature.return_type, 
-                                          signature.function_name, 
-                                          argument_list_str, 
-                                          return_str, 
-                                          call_definition_str)
+        return "%s %s(%s) { %s%s; }" % (signature.return_type, signature.function_name, 
+                                        argument_list_str, return_str, call_definition_str)
 
     def MEMBER_FUNCTION_ASSIGNMENT(self, MemberFunctionSignatureList):
         return ""
@@ -1265,6 +1257,26 @@ class Language(dict):
 
         return txt 
 
+    def straighten_open_line_pragmas_new(self, Txt, FileName):
+
+        def straighten(Line, FileName, LineN, LinePragmaTxt):
+            line = Line.strip()
+            if not line: 
+                return ""
+            elif line.strip() != LinePragmaTxt:
+                return line
+            else:
+                return self.LINE_PRAGMA(FileName, LineN)
+
+        if Txt is None: return None
+
+        line_pragma_txt = self._SOURCE_REFERENCE_END().strip()
+
+        return "\n".join(
+            straighten(line, FileName, line_n, line_pragma_txt)
+            for line_n, line in enumerate(Txt.split("\n"), start=1)
+        )
+        
     def straighten_open_line_pragmas(self, FileName):
         line_pragma_txt = self._SOURCE_REFERENCE_END().strip()
 

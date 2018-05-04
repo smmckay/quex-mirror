@@ -466,6 +466,20 @@ Option("converter_ucs_coding_name", "name",
 
      By default it is defined based on the buffer element type.
      """),
+Option("converter_only_f", None,
+      """
+      Only generates lexeme converter code for converters towards UTF8, UTF16,
+      and UTF32. Additionally, converters are provided towards 'char', and 
+      'wchar_t'. A converter to 'pretty_char' translates signal characters 
+      into ASCII strings.
+      
+      This options requires '--buffer-element-type' and '--encoding'.
+      """),
+Option("converter_source_name", "string",
+      """By default, converter generation uses the name of the source encoding
+      as source name as prefix in function names. With this option the function
+      name prefix can be given explicitly.
+      """),
 """
 Template and Path Compression ore methods to combine multiple states into one
 'mega state'. The mega state combines in itself the common actions of the states

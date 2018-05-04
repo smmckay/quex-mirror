@@ -92,7 +92,7 @@ def _do_core(Descr):
     ]
 
     if Setup.token_class_only_f: helper_definitions = _helper_definitions() 
-    else:                        helper_definitions = ""
+    else:                        helper_definitions = Lng.INCLUDE(Setup.output_configuration_file)
 
     template_str = Lng.open_template(Lng.token_template_file())
     txt = blue_print(template_str, [
@@ -122,6 +122,7 @@ def _do_core(Descr):
     template_i_str = Lng.open_template(Lng.token_template_i_file())
     txt_i = blue_print(template_i_str, [
         ["$$INCLUDE_TOKEN_CLASS_HEADER$$", Lng.INCLUDE(Setup.output_token_class_file)],
+        ["$$INCLUDE_TOKEN_ID_HEADER$$",    Lng.INCLUDE(Setup.output_token_id_file)],
         ["$$CONSTRUCTOR$$",                Lng.SOURCE_REFERENCED(Descr.constructor)],
         ["$$COPY$$",                       copy_str],
         ["$$DESTRUCTOR$$",                 Lng.SOURCE_REFERENCED(Descr.destructor)],
@@ -309,17 +310,21 @@ helper_definitions_Cpp = """
 #define QUEX_NAME_TOKEN(NAME)              %s_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN          %s
 #define QUEX_NAMESPACE_TOKEN_CLOSE         %s
+#define QUEX_NAMESPACE_MAIN_OPEN           %s 
+#define QUEX_NAMESPACE_MAIN_CLOSE          %s
 """
 
 helper_definitions_C = """
 #define QUEX_NAME_TOKEN(NAME)              %s_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN  
-#define QUEX_NAMESPACE_TOKEN_CLOSE 
+#define QUEX_NAMESPACE_TOKEN_CLOSE  
+#define QUEX_NAMESPACE_MAIN_OPEN 
+#define QUEX_NAMESPACE_MAIN_CLOSE 
 """
 
 helper_definitions_common = """
 $$TYPE_DEFINITIONS$$
-#define QUEX_SETTING_CHARACTER_CODEC       %s
+#define    QUEX_SETTING_CHARACTER_CODEC       %s
 
 #ifndef    QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
@@ -335,11 +340,13 @@ def _helper_definitions():
     token_descr = token_db.token_type_definition
 
     if Setup.language.upper() == "C++":
-        namespace_open  = Lng.NAMESPACE_OPEN(token_descr.name_space)
-        namespace_close = Lng.NAMESPACE_CLOSE(token_descr.name_space)
+        namespace_open       = Lng.NAMESPACE_OPEN(token_descr.name_space)
+        namespace_close      = Lng.NAMESPACE_CLOSE(token_descr.name_space)
+        namespace_main_open  = Lng.NAMESPACE_OPEN(Setup.analyzer_name_space)
+        namespace_main_close = Lng.NAMESPACE_CLOSE(Setup.analyzer_name_space)
         txt = helper_definitions_Cpp % (token_descr.class_name, 
-                                        namespace_open, 
-                                        namespace_close)        
+                                        namespace_open,      namespace_close,
+                                        namespace_main_open, namespace_main_close)        
     else:
         txt = helper_definitions_C % token_descr.class_name_safe
 

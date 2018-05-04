@@ -29,6 +29,7 @@ for root, dir_list, file_list in os.walk(os.environ["QUEX_PATH"] + "/quex"):
         ext = os.path.splitext(file)[1]
         if ext not in ["", ".i", ".h", ".txt", ".bak"]: continue
         elif file.endswith("~"): continue
+        elif file.startswith("TXT-"): continue
         elif file.lower() in ["makefile", "tags", "readme", "readme.txt"]: continue
         file_name = root + "/" + file
 

@@ -32,7 +32,7 @@ $$INC: buffer/Buffer.i$$
 $$INC: buffer/lexatoms/LexatomLoader.i$$
 $$INC: buffer/bytes/ByteLoader$$
 
-#ifdef      QUEX_OPTION_COUNTER
+#ifdef QUEX_OPTION_COUNTER
 $$INC: analyzer/Counter.i$$
 #endif
 

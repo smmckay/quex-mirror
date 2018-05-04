@@ -27,14 +27,13 @@ from   quex.engine.misc.interval_handling                   import Interval
 from   quex.engine.misc.tools                               import typed
 from   quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 import quex.output.core.state.transition_map.core           as     transition_map
-import quex.output.analyzer.adapt                           as     adapt
 
-from quex.blackboard import setup as Setup, \
-                            Lng
-from quex.constants  import INTEGER_MAX
+from   quex.blackboard import setup as Setup, \
+                              Lng
+from   quex.constants  import INTEGER_MAX
 
-from operator import attrgetter
-from copy     import copy
+from   operator import attrgetter
+from   copy     import copy
 
 def do():
     """RETURNS: list of (content, file_name)
@@ -56,10 +55,14 @@ def do():
     if Setup.converter_only_f:
         implementation_txt = implementation_txt.replace("QUEX_TYPE_LEXATOM", 
                                                         Setup.lexatom.type)
-        header_txt         = header_txt.replace("QUEX_TYPE_LEXATOM", 
-                                                Setup.lexatom.type)
+        implementation_txt = implementation_txt.replace("QUEX_INLINE",
+                                                        Lng.INLINE)
         implementation_txt = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % source_name, 
                                                             implementation_txt)
+        header_txt         = header_txt.replace("QUEX_TYPE_LEXATOM", 
+                                                Setup.lexatom.type)
+        header_txt         = header_txt.replace("QUEX_INLINE",
+                                                Lng.INLINE)
         header_txt         = Lng.Match_QUEX_NAME_lexeme.sub("QUEX_NAME(%s_" % source_name, 
                                                             header_txt)
 
@@ -126,7 +129,9 @@ def _table_character_converters(unicode_trafo_info):
     encoding_name = Lng.SAFE_IDENTIFIER(unicode_trafo_info.name)
     if encoding_name in ("utf32", "unicode"):
         source_interval_begin = 0
-        source_interval_end   = min(256**Setup.lexatom.size_in_byte, 0x200000)
+        lexatom_size_in_byte  = Setup.lexatom.size_in_byte
+        if lexatom_size_in_byte == -1: lexatom_size_in_byte = 4
+        source_interval_end   = min(256**lexatom_size_in_byte, 0x200000)
         target_interval_begin = 0
         unicode_trafo_info    = [
             (source_interval_begin, source_interval_end, target_interval_begin)

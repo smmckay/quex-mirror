@@ -3,5 +3,6 @@ Simple
 Simple-configuration
 Simple.cpp
 Simple-token
+Simple-token.i
 Simple-token_ids
 ||||
