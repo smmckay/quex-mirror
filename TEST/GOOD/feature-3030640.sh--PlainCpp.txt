@@ -3,6 +3,5 @@ Lexer
 Lexer-configuration
 Lexer.cpp
 Lexer-token
-Lexer-token.i
 Lexer-token_ids
 ||||

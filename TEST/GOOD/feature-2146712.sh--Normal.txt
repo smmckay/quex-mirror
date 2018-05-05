@@ -1,4 +1,6 @@
 ./a/b/c/writeable
+./a/b/c/writeable/converter-from-lexeme
+./a/b/c/writeable/converter-from-lexeme.i
 ./a/b/c/writeable/Lexer
 ./a/b/c/writeable/Lexer-configuration
 ./a/b/c/writeable/Lexer.cpp

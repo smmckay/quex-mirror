@@ -2,7 +2,6 @@
 Lexer.c
 Lexer-configuration.h
 Lexer.h
-Lexer-token.c
 Lexer-token.h
 Lexer-token_ids.h
 ||||

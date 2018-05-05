@@ -1,4 +1,6 @@
 ./e/f/g/not-existent
+./e/f/g/not-existent/converter-from-lexeme
+./e/f/g/not-existent/converter-from-lexeme.i
 ./e/f/g/not-existent/Lexer
 ./e/f/g/not-existent/Lexer-configuration
 ./e/f/g/not-existent/Lexer.cpp
