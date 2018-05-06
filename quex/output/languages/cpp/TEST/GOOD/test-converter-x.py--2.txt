@@ -11,23 +11,19 @@ switch( input ) {
 case 0x100000: case 0x100001: case 0x100002: case 0x100003: case 0x100004: case 0x100005: case 0x100006: case 0x100007: 
 
 case 0x100008: case 0x100009: case 0x10000A: case 0x10000B: case 0x10000C: case 0x10000D: case 0x10000E: case 0x10000F: 
-offset = (int32_t)(-1048576);
- goto code_unit_n_1;
+{ offset = (int32_t)(-1048576); goto code_unit_n_1; }
 
 case 0x200000: case 0x200001: case 0x200002: case 0x200003: case 0x200004: case 0x200005: case 0x200006: case 0x200007: 
 
 case 0x200008: case 0x200009: case 0x20000A: case 0x20000B: case 0x20000C: case 0x20000D: case 0x20000E: case 0x20000F: 
-offset = (int32_t)(-2097024);
- goto code_unit_n_2;
+{ offset = (int32_t)(-2097024); goto code_unit_n_2; }
 
 case 0x300000: case 0x300001: case 0x300002: case 0x300003: case 0x300004: case 0x300005: case 0x300006: case 0x300007: 
 
 case 0x300008: case 0x300009: case 0x30000A: case 0x30000B: case 0x30000C: case 0x30000D: case 0x30000E: case 0x30000F: 
-offset = (int32_t)(-3143680);
- goto code_unit_n_3;
+{ offset = (int32_t)(-3143680); goto code_unit_n_3; }
 
-default: offset = (int32_t)(-4128768);
- goto code_unit_n_4;
+default: { offset = (int32_t)(-4128768); goto code_unit_n_4; }
 
 }
 

@@ -37,6 +37,7 @@ accumulator.exe: accumulator.cpp test_environment/TestAnalyzer-dummy.cpp
 
 test_environment:
 	python $(TESTENV)/code_base_instatiation.py test_environment
+	quex --co -o TestAnalyzer --odir test_environment --encoding unicode --bet char --csn lexeme
 
 clean: 
 	rm -rf *.o *.E tmp.* test_environment $(PROGRAMS)

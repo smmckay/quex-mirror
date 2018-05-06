@@ -2,11 +2,15 @@
 import os
 import sys
 sys.path.append(os.environ["QUEX_PATH"])
+import quex.input.command_line.core          as command_line
+import quex.core                             as core
 import quex.output.analyzer.lexeme_converter as lexeme_converter
 import quex.output.analyzer.adapt            as adapt
-import quex.output.languages.core as languages
+import quex.output.languages.core            as languages
 from   quex.engine.state_machine.transformation.table import EncodingTrafoByTable
 import quex.blackboard
+
+import shutil
 
 quex.blackboard.setup.analyzer_class_name = "TestAnalyzer"
 
@@ -16,35 +20,33 @@ if "--hwut-info" in sys.argv:
     sys.exit()
 
 def test(CodecName):
-    quex.blackboard.setup.buffer_encoding = EncodingTrafoByTable(CodecName)
-    content_table = lexeme_converter.do()
-    code_str  = content_table[0][0]
-    code0_str = content_table[1][0]
-    fh = open("converter-tester.h", "w")
-    fh.write(adapt.do(code_str + "\n" + code0_str, "ut"))
-    fh.close()
-    define_str = "-DQUEX_TYPE_LEXATOM='unsigned char' " + \
-                 "-DQUEX_INLINE=inline " + \
-                 ("-D__QUEX_CODEC=%s " % CodecName) + \
-                 "-D__QUEX_OPTION_LITTLE_ENDIAN " 
+    stdout = sys.stdout
+    sys.stdout = open(os.devnull, "w")
+    command_line.do(["--co", "--encoding", CodecName, "--csn", "lexeme", 
+                     "--language", "C++", "--bet", "uint8_t", "--odir", "Conv"])
+    core.do()
+    sys.stdout = stdout
 
-    compile_str = "g++ -ggdb -I./ -I../../../../code_base/ %s converter-tester.cpp -o converter-tester" % define_str
+    define_str = " ".join(["-DQUEX_TYPE_LEXATOM='unsigned char'",
+                           "-DQUEX_OPTION_DISABLE_STD_STRING_USAGE",
+                           "-DQUEX_INLINE=inline", 
+                           "-D__QUEX_CODEC=%s " % CodecName,
+                           "-D__QUEX_OPTION_LITTLE_ENDIAN"])
+
+    compile_str = "g++ -ggdb -I./ %s converter-tester.cpp -o converter-tester" % define_str
     print "##", compile_str
     os.system(compile_str)
 
     os.system("./converter-tester")
     if True:
-        os.remove("./converter-tester.h")
         os.remove("./converter-tester")
+        shutil.rmtree("./Conv")
     else:
         print "#TODO delete temporary files"
 
 quex.blackboard.setup.language_db = languages.db["C"]()
 def tiny(miniSelf):
     return "converter-tester.h", "" 
-
-quex.blackboard.setup.language_db.lexeme_converter_file_names = tiny
-quex.blackboard.setup.output_directory                        = "test_environment"
 
 test(sys.argv[1])
 

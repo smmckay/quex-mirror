@@ -1,4 +1,4 @@
-#include "compatibility/stdint.h"
+#include "test_environment/lib/compatibility/stdint.h"
 #include <assert.h>
 #ifdef __cplusplus
 #  include <string>

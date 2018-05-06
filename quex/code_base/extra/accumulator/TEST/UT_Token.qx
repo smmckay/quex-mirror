@@ -2,9 +2,7 @@ token_type {
    header {
 #       include <iostream>
 #       include <string>
-
-$INCLUDE_CONVERTER_DECLARATION
-$$INC: lexeme$$
+   #include "test_environment/converter-from-lexeme"
 
    }
    standard {
@@ -13,7 +11,7 @@ $$INC: lexeme$$
         column_number : size_t;
    }
    distinct {
-       text   :  std::basic_string<QUEX_TYPE_LEXATOM>;
+       text   :  std::basic_string<char>;
        number :  size_t;
    }
 
@@ -51,8 +49,9 @@ $$INC: lexeme$$
 
    take_text {
         /* It cannot be assumed that the lexeme is zero terminated. */
+       const char* B = (const char*)Begin;
         __quex_assert(End >= Begin);
-        self.text.assign(Begin, (size_t)(End-Begin));
+        self.text.assign(B, (size_t)(End-Begin));
 
         printf("Lexical FSM Receives:\n");
         printf("   '%s'\n", Begin);
@@ -74,8 +73,7 @@ $$INC: lexeme$$
         { ostr << Tok.get_string(); return ostr; }
         $NAMESPACE_CLOSE
 
-$INCLUDE_CONVERTER_IMPLEMENTATION
-$$INC: lexeme.i$$
+   #include "test_environment/converter-from-lexeme.i"
    }
 }
 

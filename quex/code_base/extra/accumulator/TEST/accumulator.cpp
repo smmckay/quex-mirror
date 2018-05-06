@@ -3,7 +3,7 @@
 #include <cstring>
 
 #include <test_environment/TestAnalyzer>
-#include "test_environment/lib/lexeme.i"
+#include "test_environment/converter-from-lexeme.i"
 #include "test_environment/lib/extra/accumulator/Accumulator"
 #include "test_environment/lib/extra/accumulator/Accumulator.i"
 

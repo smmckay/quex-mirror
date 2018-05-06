@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <../../../../code_base/TESTS/minimum-definitions.h>
-#include "converter-tester.h"
+#define  __quex_assert assert
+#include "Conv/converter-from-lexeme"
+#include "Conv/converter-from-lexeme.i"
 
 #define __MY_STRING(X)   # X
 #define MY_STRING(X)     __MY_STRING(X)
@@ -8,8 +10,6 @@
 int
 main(int argc, char** argv)
 {
-    using namespace quex;
-
     const size_t             Start      = 0x0;
     const size_t             CharacterN = 255;
     QUEX_TYPE_LEXATOM        source[256];
@@ -22,7 +22,7 @@ main(int argc, char** argv)
     for(int i=Start; i < Start + CharacterN; ++i) source[i-Start] = i;
 
     /* Convert the whole array */
-    QUEX_CONVERTER_STRING(__QUEX_CODEC,utf8)(&source_p, source_p + CharacterN, &drain_p, drain_p + 4095);
+    QUEX_NAME(lexeme_nnzt_to_utf8)(&source_p, source_p + CharacterN, &drain_p, drain_p + 4095);
 
     const int    Size = (int)(drain_p - (uint8_t*)drain);
 
