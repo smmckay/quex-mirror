@@ -12,9 +12,11 @@ echo "No output is good output (make)"
 make 
 echo "(done)"
 echo "List of generated files:"
+cd ecmascript_lexer
 ls ecmascript_lexer-* | sort 
 ls ecmascript_lexer.cpp
 ls ecmascript_lexer
+cd ..
 echo "<terminated>"
 
 make clean >& /dev/null

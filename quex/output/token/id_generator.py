@@ -115,8 +115,7 @@ def prepare_default_standard_token_ids():
         token_id_db_enter(None, name, NumericValue=__get_free_token_id())
 
 def __get_token_id_definition_txt():
-    
-    assert len(Setup.extern_token_id_file) == 0
+    assert not Setup.extern_token_id_file
 
     def define_this(txt, token, L):
         tid_t = Setup.token_id_type

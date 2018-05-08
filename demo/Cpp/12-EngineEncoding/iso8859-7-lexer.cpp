@@ -2,7 +2,6 @@
 
 // (*) include lexical analyser header
 #include "iso8859-7/ISO8859_7_Lex"
-#include "iso8859-7/ISO8859_7_Lex-converter-iso8859_7"
 
 using namespace std;
 

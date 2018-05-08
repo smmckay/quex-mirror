@@ -122,7 +122,7 @@ def _do_core(Descr):
     template_i_str = Lng.open_template(Lng.token_template_i_file())
     txt_i = blue_print(template_i_str, [
         ["$$INCLUDE_TOKEN_CLASS_HEADER$$", Lng.INCLUDE(Setup.output_token_class_file)],
-        ["$$INCLUDE_TOKEN_ID_HEADER$$",    Lng.INCLUDE(Setup.output_token_id_file)],
+        ["$$INCLUDE_TOKEN_ID_HEADER$$",    Lng.INCLUDE(Setup.output_token_id_file_ref)],
         ["$$CONSTRUCTOR$$",                Lng.SOURCE_REFERENCED(Descr.constructor)],
         ["$$COPY$$",                       copy_str],
         ["$$DESTRUCTOR$$",                 Lng.SOURCE_REFERENCED(Descr.destructor)],

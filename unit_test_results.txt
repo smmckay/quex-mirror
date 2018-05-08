@@ -48,7 +48,7 @@ TEST                                                                 <no date>
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
         bug-2619679.sh ...............................................[OK]
     286 Maintaining character index during manual buffer filling.
-        bug-286.sh ............................................[NO OUTPUT]
+        bug-286.sh ...................................................[OK]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
         bug-2937342.sh 1 .............................................[OK]
                        2 .............................................[OK]
@@ -262,9 +262,9 @@ TEST                                                                 <no date>
         bug-3403249.sh GBK ...........................................[OK]
                        utf16 .........................................[OK]
                        utf16-with-bom ................................[OK]
-                       utf8 ........................................[FAIL]
+                       utf8 ..........................................[OK]
                        utf8-error ....................................[OK]
-                       utf8-with-bom ...............................[FAIL]
+                       utf8-with-bom .................................[OK]
     3512806 0.62.2 build error
         bug-3512806.sh C .............................................[OK]
                        Cpp ...........................................[OK]
@@ -278,9 +278,9 @@ TEST                                                                 <no date>
  * patrikj-kt:
 
     298 Quex exception in loop generation.
-        bug-298.sh .................................................[FAIL]
+        bug-298.sh ...................................................[OK]
     299 LoopRestartP -- generated code does not compile
-        bug-299.sh .................................................[FAIL]
+        bug-299.sh ...................................................[OK]
     300 Missing error message on non-existing mode.
         bug-300.sh ...................................................[OK]
 
@@ -317,10 +317,10 @@ TEST                                                                 <no date>
  * rmanoj-oss:
 
     3079986 Allow namespace delimiter in --token-id-prefix for C++
-        feature-3079986.sh ccc .....................................[FAIL]
-                           ncc .....................................[FAIL]
-                           nnc .....................................[FAIL]
-                           nnn .....................................[FAIL]
+        feature-3079986.sh ccc .......................................[OK]
+                           ncc .......................................[OK]
+                           nnc .......................................[OK]
+                           nnn .......................................[OK]
 
  * rofr3:
 
@@ -497,7 +497,6 @@ TEST                                                                 <no date>
     [FAIL] bug-3025173.sh
     [FAIL] feature-3032877.sh _ codec
                             \__ normal
-    [FAIL] bug-286.sh
     [FAIL] bug-3025852.sh
     [FAIL] bug-3479354.sh
     [FAIL] feature-3495127.sh _ queue
@@ -510,17 +509,9 @@ TEST                                                                 <no date>
     [FAIL] bug-2257908.sh
     [FAIL] bug-2896732.sh
     [FAIL] bug-2894648.sh
-    [FAIL] bug-3403249.sh _ utf8
-                        \__ utf8-with-bom
-    [FAIL] bug-298.sh
-    [FAIL] bug-299.sh
     [FAIL] bug-2914877.sh
     [FAIL] bug-3476232.sh
     [FAIL] bug-3295781.sh
-    [FAIL] feature-3079986.sh _ ccc
-                            \__ ncc
-                            \__ nnc
-                            \__ nnn
     [FAIL] bug-3524729.sh
     [FAIL] bug-1935701.sh _ FILE
                         \__ fstream
@@ -622,8 +613,8 @@ demo/C/TEST                                                          <no date>
  * 09-WithBisonParser:
 
     Linking Lexical Analysis to Bison Parser
-        09-WithBisonParser.sh asserts ..............................[FAIL]
-                              no-asserts ...........................[FAIL]
+        09-WithBisonParser.sh asserts ................................[OK]
+                              no-asserts .............................[OK]
 
  * 10-SocketsAndTerminal:
 
@@ -680,8 +671,6 @@ demo/C/TEST                                                          <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] 09-WithBisonParser.sh _ asserts
-                               \__ no-asserts
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
@@ -765,8 +754,8 @@ demo/Cpp/TEST                                                        <no date>
  * 09-WithBisonParser:
 
     Linking Lexical Analysis to Bison Parser
-        09-WithBisonParser.sh asserts ..............................[FAIL]
-                              no-asserts ...........................[FAIL]
+        09-WithBisonParser.sh asserts ................................[OK]
+                              no-asserts .............................[OK]
 
  * 10-SocketsAndTerminal:
 
@@ -790,16 +779,16 @@ demo/Cpp/TEST                                                        <no date>
  * 12-EngineEncoding:
 
     Engine Encoding (Example ISO8859-7)
-        12-EngineEncoding.sh iso8859-7 .............................[FAIL]
+        12-EngineEncoding.sh iso8859-7 ...............................[OK]
                              utf16-be ................................[OK]
                              utf16-le ................................[OK]
-                             utf8 ..................................[FAIL]
+                             utf8 ....................................[OK]
 
  * 13-MultipleLexers:
 
     Single Application/Multiple Lexical Analyzers
-        13-MultipleLexers.sh asserts ...............................[FAIL]
-                             no-asserts ............................[FAIL]
+        13-MultipleLexers.sh asserts .................................[OK]
+                             no-asserts ..............................[OK]
 
  * 14-MultipleLexersSameToken:
 
@@ -823,12 +812,6 @@ demo/Cpp/TEST                                                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] 09-WithBisonParser.sh _ asserts
-                               \__ no-asserts
-    [FAIL] 12-EngineEncoding.sh _ iso8859-7
-                              \__ utf8
-    [FAIL] 13-MultipleLexers.sh _ asserts
-                              \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
                                        \__ no-asserts
 ===============================================================================
@@ -2790,7 +2773,7 @@ quex/output/languages/cpp/TEST                                       <no date>
  * Files for Packaging vs. Files in Code Base
         package-file-db.py .........................................[FAIL]
  * Token Class Template
-        test-token_class.py ..........................................[OK]
+        test-token_class.py ...................................[NO OUTPUT]
 
  * Character Counter:
 
@@ -2822,9 +2805,9 @@ quex/output/languages/cpp/TEST                                       <no date>
                             cp737 ....................................[OK]
                             cp866 ....................................[OK]
     Determine UTF-8 Range Map for Codec
-        test-converter-x.py 1 ........................................[OK]
-                            2 ........................................[OK]
-                            3 ........................................[OK]
+        test-converter-x.py 1 ......................................[FAIL]
+                            2 ......................................[FAIL]
+                            3 ......................................[FAIL]
     Determine UTF-8 Range Map for Codec
         test-converter.py 1 ..........................................[OK]
                           2 ..........................................[OK]
@@ -2836,6 +2819,10 @@ quex/output/languages/cpp/TEST                                       <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] package-file-db.py
+    [FAIL] test-token_class.py
+    [FAIL] test-converter-x.py _ 1
+                             \__ 2
+                             \__ 3
     [FAIL] test-converter.py _ 3
                            \__ 4
 ===============================================================================
@@ -3445,9 +3432,9 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       32  238   [FAIL] TEST                                                          
-        6  56    [FAIL] demo/C/TEST                                                   
-        8  56    [FAIL] ..../Cpp/TEST                                                 
+       23  238   [FAIL] TEST                                                          
+        4  56    [FAIL] demo/C/TEST                                                   
+        2  56    [FAIL] ..../Cpp/TEST                                                 
            2       [OK] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
         5  15    [FAIL] ........../code/TEST                                          
@@ -3502,15 +3489,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
         3  205   [FAIL] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        3  31    [FAIL] .........../languages/cpp/TEST                                
+        7  31    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           __    _____           
-    |  ___|_ _(_) |___      / /_  |___  |    __  __
-    | |_ / _` | | / __|    | '_ \    / /     \ \/ /
-    |  _| (_| | | \__ \    | (_) |  / /       >  < 
-    |_|  \__,_|_|_|___/     \___/  /_/       /_/\_\
+     _____     _ _          ____    _  _            
+    |  ___|_ _(_) |___     | ___|  | || |     __  __
+    | |_ / _` | | / __|    |___ \  | || |_    \ \/ /
+    |  _| (_| | | \__ \     ___) | |__   _     >  < 
+    |_|  \__,_|_|_|___/    |____/     |_|     /_/\_\
                                                                    (1702 tests)
 
 ===============================================================================

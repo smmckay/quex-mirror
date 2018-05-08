@@ -25,11 +25,11 @@ main(int argc, char** argv)
         return 0;
     }
 
-    const size_t       BufferSize = 512;
-    QUEX_TYPE_LEXATOM  buffer[BufferSize];
-    size_t             loaded_character_n = 0;  
-    bool               end_of_stream_f;
-    bool               encoding_error_f;
+    const size_t  BufferSize = 512;
+    size_t        loaded_character_n = 0;  
+    bool          end_of_stream_f;
+    bool          encoding_error_f;
+    quex::TestAnalyzer_lexatom_t  buffer[BufferSize];
 
     if( strcmp(argv[1], "FILE") == 0 ) { 
         FILE* fh = 0x0;

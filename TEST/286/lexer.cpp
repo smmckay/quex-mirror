@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 				cout << endl;
 			} else {
 				int offset = qlex.tell() - QUEX_NAME(lexeme_length)(token_p->text);
-				cout << offset << '\t' << QUEX_NAME_TOKEN(lexeme_to_pretty_char)(token_p->text) << endl;
+				cout << offset << '\t' << QUEX_NAME(lexeme_to_pretty_char)(token_p->text) << endl;
 			}
 		}
 	}

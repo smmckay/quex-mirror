@@ -2,8 +2,6 @@
 
 // (*) include lexical analyser header
 #include "utf8/UTF8Lex"
-#include "utf8/lib/lexeme_converter/from-utf8"
-#include "utf8/lib/lexeme_converter/from-utf8.i"
 
 using namespace std;
 

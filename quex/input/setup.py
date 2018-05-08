@@ -199,8 +199,6 @@ class QuexSetup:
         self.output_token_class_file_implementation = self.prepare_file_name("-token",     
                                                                              implementation_type)
 
-
-
 SetupParTypes = Enum("LIST", "INT_LIST", "FLAG", "NEGATED_FLAG", "STRING", "OPTIONAL_STRING")
 
 SETUP_INFO = {         

@@ -320,7 +320,7 @@ class ConverterWriter:
         return "\n".join(txt)
 
     def unicode_to_output(self, CodeUnitN):
-        txt = [ Lng.ASSIGN("unicode", "(uint32_t)(%s)" % Lng.OP("input", "+", "offset")) ]
+        txt = [ Lng.ASSIGN("unicode", "(uint32_t)(%s)" % Lng.OP("(int32_t)input", "+", "offset")) ]
         txt.extend(self.get_output_formatter(CodeUnitN))
         txt.append(Lng.PURE_RETURN)
         return [ "    %s" % line for line in txt ]
