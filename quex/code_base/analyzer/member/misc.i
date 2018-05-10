@@ -77,7 +77,7 @@ QUEX_NAME(MF_send_string)(QUEX_TYPE_ANALYZER* me,
 #   endif
 
     return QUEX_NAME(TokenQueue_push_text)(&me->_token_queue, Id, ZeroTerminatedString, 
-                                           ZeroTerminatedString + (ptrdiff_t)Length); 
+                                           ZeroTerminatedString + (ptrdiff_t)Length + 1); 
 }
 
 QUEX_INLINE bool

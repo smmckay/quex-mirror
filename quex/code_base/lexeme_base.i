@@ -17,7 +17,7 @@ QUEX_INLINE size_t
 QUEX_NAME(lexeme_length)(const QUEX_TYPE_LEXATOM* Str)
 {
     const QUEX_TYPE_LEXATOM* iterator = Str;
-    while( *iterator != 0 ) ++iterator; 
+    while( *iterator ) ++iterator; 
     return (size_t)(iterator - Str);
 }
 

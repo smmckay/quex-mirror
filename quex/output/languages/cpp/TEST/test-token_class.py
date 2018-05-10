@@ -12,6 +12,7 @@ import quex.blackboard            as blackboard
 
 blackboard.setup.buffer_element_size     = 1
 blackboard.setup.output_token_class_file = ""
+blackboard.setup.output_token_id_file_ref = "token-ids.h"
 blackboard.setup.token_class_name        = ""
 blackboard.setup.token_class_name_space  = ""
 blackboard.setup.token_class_name_safe   = ""

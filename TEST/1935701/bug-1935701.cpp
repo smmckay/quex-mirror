@@ -3,7 +3,8 @@
 #include<fstream>
 #include<cstring>
 
-#include"test_environment/TestAnalyzer-configuration"
+#define QUEX_TYPE_LEXATOM uint32_t
+#include"minimum-definitions.h"
 #include<ut/lib/buffer/lexatoms/LexatomLoader>
 #include<ut/lib/buffer/lexatoms/LexatomLoader_Plain>
 #include<ut/lib/buffer/lexatoms/LexatomLoader_Plain.i>
@@ -29,7 +30,9 @@ main(int argc, char** argv)
     size_t        loaded_character_n = 0;  
     bool          end_of_stream_f;
     bool          encoding_error_f;
-    quex::TestAnalyzer_lexatom_t  buffer[BufferSize];
+    TestAnalyzer_lexatom_t  buffer[BufferSize];
+
+    assert(sizeof(TestAnalyzer_lexatom_t) == 4);
 
     if( strcmp(argv[1], "FILE") == 0 ) { 
         FILE* fh = 0x0;

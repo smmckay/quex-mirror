@@ -1,4 +1,5 @@
 #include "Simple/Simple.h"
+#include "support/C/hwut_unit.h"
 
 #ifndef    CHARACTER_ENCODING_NAME 
 #   define CHARACTER_ENCODING_NAME 0x0
@@ -39,7 +40,8 @@ main(int argc, char** argv)
             printf("%i\n", (int)token_p->number); 
             break;
         default:
-            printf("%s\n", QUEX_NAME_TOKEN(lexeme_to_pretty_char)(token_p->text, buffer, BufferSize)); 
+            hwut_verify(QUEX_NAME(lexeme_to_pretty_char)(token_p->text, buffer, &buffer[BufferSize]));
+            printf("%s\n", &buffer[0]); 
             break;
         }
         fflush(stdout);

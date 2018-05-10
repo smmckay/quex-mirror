@@ -26,9 +26,9 @@ void
 test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
 {
     using namespace std;
-    QUEX_TYPE_LEXATOM*  end_of_content_p;
-    QUEX_TYPE_LEXATOM*  buffer_0 = (Size0 == 0) ? 0x0 : new QUEX_TYPE_LEXATOM[Size0+2];
-    QUEX_TYPE_LEXATOM*  buffer_1 = (Size1 == 0) ? 0x0 : new QUEX_TYPE_LEXATOM[Size1+2];
+    EasyLexer_lexatom_t*  end_of_content_p;
+    EasyLexer_lexatom_t*  buffer_0 = (Size0 == 0) ? 0x0 : new EasyLexer_lexatom_t[Size0+2];
+    EasyLexer_lexatom_t*  buffer_1 = (Size1 == 0) ? 0x0 : new EasyLexer_lexatom_t[Size1+2];
 
     if( Size0 ) {
         buffer_0[0]       = QUEX_SETTING_BUFFER_LIMIT_CODE;
@@ -38,7 +38,7 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
         memset(&buffer_0[1], 'a', ContentSize0); 
     }
     else {
-        end_of_content_p = (QUEX_TYPE_LEXATOM*)0;
+        end_of_content_p = (EasyLexer_lexatom_t*)0;
     }
     quex::EasyLexer qlex(&buffer_0[0], Size0, end_of_content_p); 
 
@@ -54,10 +54,10 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
         *end_of_content_p = QUEX_SETTING_BUFFER_LIMIT_CODE;
     }
     else {
-        end_of_content_p = (QUEX_TYPE_LEXATOM*)0;
+        end_of_content_p = (EasyLexer_lexatom_t*)0;
     }
 
-    QUEX_TYPE_LEXATOM*  prev;
+    EasyLexer_lexatom_t*  prev;
     qlex.collect_user_memory(&prev);
     assert(qlex.reset_memory(buffer_1, Size1, end_of_content_p));
     if( prev ) delete [] prev;
@@ -72,7 +72,7 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
 
     if( buffer_1 ) {
         qlex.collect_user_memory(&prev);
-        assert(qlex.reset_memory((QUEX_TYPE_LEXATOM*)0x0, 0, (QUEX_TYPE_LEXATOM*)0x0));
+        assert(qlex.reset_memory((EasyLexer_lexatom_t*)0x0, 0, (EasyLexer_lexatom_t*)0x0));
         if( prev ) delete [] prev;
 
         cout << "\n\n";
@@ -96,8 +96,8 @@ print_this(quex::EasyLexer* lex, int Index, size_t Size, size_t ContentSize)
     } else {
         assert(! lex->buffer._memory._back);
         assert(! lex->buffer.input.end_p);
-        assert(lex->buffer._read_p == (QUEX_TYPE_LEXATOM*)0);
-        assert(lex->buffer._lexeme_start_p == (QUEX_TYPE_LEXATOM*)0);
+        assert(lex->buffer._read_p == (EasyLexer_lexatom_t*)0);
+        assert(lex->buffer._lexeme_start_p == (EasyLexer_lexatom_t*)0);
         assert(lex->buffer.input.lexatom_index_begin == -1);
         assert(lex->buffer.input.lexatom_index_end_of_stream == -1);
         cout << "   <empty buffer>"  << endl; 

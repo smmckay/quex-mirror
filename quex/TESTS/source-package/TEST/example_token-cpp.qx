@@ -4,7 +4,7 @@ token_type {
 #       include <string>
 
 $INCLUDE_CONVERTER_DECLARATION
-#include <pkg/lib/lexeme>
+#include <pkg/converter-from-lexeme>
    }
    standard {
         id            : uint32_t;
@@ -52,7 +52,7 @@ $INCLUDE_CONVERTER_DECLARATION
         const std::string 
         pretty_char_text() const
         {
-            return QUEX_NAME_TOKEN(lexeme_to_pretty_char)(this->text);
+            return QUEX_NAME(lexeme_to_pretty_char)(this->text);
         }
    }
 
@@ -105,7 +105,7 @@ $INCLUDE_CONVERTER_DECLARATION
         QUEX_NAMESPACE_TOKEN_CLOSE
 
 $INCLUDE_CONVERTER_IMPLEMENTATION
-#include <pkg/lib/lexeme.i>
+#include <pkg/converter-from-lexeme.i>
    }
 }
 

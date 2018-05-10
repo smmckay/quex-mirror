@@ -4,8 +4,7 @@
     [1] at 00000000: Codec Interval [1000000,1000014)
 
     offset = (int32_t)(-16777216);
-
-    unicode = (uint32_t)(input + offset);
+    unicode = (uint32_t)((int32_t)input + offset);
     *(*output_pp)++ = (uint8_t)(unicode);
     return;
 
@@ -14,8 +13,7 @@
     [2] at 00000080: Codec Interval [1000000,1000014)
 
     offset = (int32_t)(-16777088);
-
-    unicode = (uint32_t)(input + offset);
+    unicode = (uint32_t)((int32_t)input + offset);
     *(*output_pp)++ = (uint8_t)(0xC0 | (unicode >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
     return;
@@ -25,8 +23,7 @@
     [3] at 00000800: Codec Interval [1000000,1000014)
 
     offset = (int32_t)(-16775168);
-
-    unicode = (uint32_t)(input + offset);
+    unicode = (uint32_t)((int32_t)input + offset);
     *(*output_pp)++ = (uint8_t)(0xE0 | (unicode >> 12));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
@@ -37,8 +34,7 @@
     [4] at 00010000: Codec Interval [1000000,1000014)
 
     offset = (int32_t)(-16711680);
-
-    unicode = (uint32_t)(input + offset);
+    unicode = (uint32_t)((int32_t)input + offset);
     *(*output_pp)++ = (uint8_t)(0xF0 | (unicode >> 18));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0x3FFFF) >> 12));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));

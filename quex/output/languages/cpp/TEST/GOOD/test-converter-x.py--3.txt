@@ -67,22 +67,22 @@ default: { offset = (int32_t)(-129023); goto code_unit_n_3; }
 }
 
 code_unit_n_1:
-    unicode = (uint32_t)(input + offset);
+    unicode = (uint32_t)((int32_t)input + offset);
     *(*output_pp)++ = (uint8_t)(unicode);
     return;
 code_unit_n_2:
-    unicode = (uint32_t)(input + offset);
+    unicode = (uint32_t)((int32_t)input + offset);
     *(*output_pp)++ = (uint8_t)(0xC0 | (unicode >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
     return;
 code_unit_n_3:
-    unicode = (uint32_t)(input + offset);
+    unicode = (uint32_t)((int32_t)input + offset);
     *(*output_pp)++ = (uint8_t)(0xE0 | (unicode >> 12));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));
     *(*output_pp)++ = (uint8_t)(0x80 | (unicode & (uint32_t)0x3F));
     return;
 code_unit_n_4:
-    unicode = (uint32_t)(input + offset);
+    unicode = (uint32_t)((int32_t)input + offset);
     *(*output_pp)++ = (uint8_t)(0xF0 | (unicode >> 18));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0x3FFFF) >> 12));
     *(*output_pp)++ = (uint8_t)(0x80 | ((unicode & (uint32_t)0xFFF) >> 6));

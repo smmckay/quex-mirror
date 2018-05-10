@@ -1,12 +1,12 @@
 include ../Makefile.lexer
 
-all:Simple/Simple.c 
+all: Simple/Simple.c 
 	@echo "Compiling"
-	@$(LDC)Simple/Simple.c lexer.c -DPRINT_TOKEN -ggdb
+	@$(LDC) Simple/Simple.c lexer.c -DPRINT_TOKEN -ggdb -I$(HWUT_PATH)
 		
 # -DQUEX_OPTION_DEBUG_SHOW  
 
-Simple.E:Simple/Simple.c
+Simple.E: Simple/Simple.c
 	$(LDC) -E -I./ -I$(QUEX_PATH) Simple/Simple.c -o Simple.E
 
 Simple/Simple.c: queue.qx

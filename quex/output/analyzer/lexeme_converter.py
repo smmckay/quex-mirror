@@ -185,7 +185,6 @@ class ConversionInfo:
        The codec interval always lies inside a single utf8 range.
     """
     def __init__(self, CodeUnitN, CI_Begin_in_Unicode, CI_Begin, CI_Size=-1):
-        assert CodeUnitN <= 4
         self.code_unit_n                  = CodeUnitN
         self.codec_interval_begin         = CI_Begin
         self.codec_interval_size          = CI_Size
@@ -245,18 +244,18 @@ class ConverterWriter:
         return "%s" % Lng.ASSIGN("offset", "(int32_t)(%s)" % offset)
 
     def get_conversion_table(self, UnicodeTrafoInfo):
-        """The UnicodeTrafoInfo tells what ranges in the codec are mapped to what ranges
-           in unicode. The codec (e.g. UTF8/UTF16) has ranges of different byte
-           formatting. 
+        """The UnicodeTrafoInfo tells what ranges in the codec are mapped to 
+        what ranges in unicode. The codec (e.g. UTF8/UTF16) has ranges of 
+        different byte formatting. 
 
-           This function identifies ranges in the codec that:
+        This function identifies ranges in the codec that:
 
               (1) map linearly to unicode
               (2) belong to the same byte format range.
 
-           The result is a list of objects that identify those ranges in the codec
-           and their relation to unicode. See definition of class ConversionInfo
-           for a detailed description and a nice picture.
+        The result is a list of objects that identify those ranges in the codec
+        and their relation to unicode. See definition of class ConversionInfo
+        for a detailed description and a nice picture.
         """
         trafo_info  = copy(UnicodeTrafoInfo)
         border_list = self.get_byte_format_range_border_list()
@@ -270,19 +269,18 @@ class ConverterWriter:
         for source_interval_begin, source_interval_end, target_interval_begin in trafo_info:
 
             # How does the target interval has to be split according to utf8-ranges?
-            i = 0
-            while source_interval_begin >= border_list[i]: 
-                i += 1
+            begin_i = 0
+            while source_interval_begin >= border_list[begin_i]: 
+                begin_i += 1
+            begin_i -= 1
 
-            i -= 1
             # 'i' now stands on the first utf8_range that touches the source interval
-            info = ConversionInfo(i+1, source_interval_begin, target_interval_begin)
+            info = ConversionInfo(begin_i+1, source_interval_begin, target_interval_begin)
 
             # NOTE: size of target interval = size of source interval
             remaining_size = source_interval_end - source_interval_begin
 
-            ## print "## %i, %x, %x" % (i, source_interval_begin, source_interval_end)
-            while i != L - 1:
+            for i in range(begin_i, L-1):
                 remaining_utf8_range_size = border_list[i+1] - source_interval_begin
                 if remaining_utf8_range_size <= 0: break
 
@@ -313,6 +311,11 @@ class ConverterWriter:
         return Lng.GOTO_STRING("code_unit_n_%i" % CodeUnitN)
 
     def unicode_to_output_all_ranges(self):
+        if max(self.code_unit_n_occurrence_set) > self.max_code_unit_n():
+            error.note("The lexer's functionality and robustness IS NOT affected by the following:\n"
+                       "Optionally provided helper functions for conversion of lexemes towards\n"
+                       "UTF8, UTF16 and UTF32 malfunction in case of usage beyond unicode.\n")
+
         txt = []
         for code_unit_n in sorted(self.code_unit_n_occurrence_set):
             txt.append(Lng.LABEL_PLAIN("code_unit_n_%i" % code_unit_n))
@@ -326,6 +329,9 @@ class ConverterWriter:
         return [ "    %s" % line for line in txt ]
 
 class ConverterWriterUTF8(ConverterWriter):
+
+    def max_code_unit_n(self):
+        return 4
 
     def get_output_formatter(self, CodeUnitN):
         last_but_two = Lng.OP("0x80", "|", 
@@ -378,6 +384,9 @@ class ConverterWriterUTF8(ConverterWriter):
         return [ 0x0, 0x00000080, 0x00000800, 0x00010000, 0x00200000, 0x04000000, 0x80000000, INTEGER_MAX] 
 
 class ConverterWriterUTF16(ConverterWriter):
+    def max_code_unit_n(self):
+        return 2
+
     def get_output_formatter(self, CodeUnitN):
         UnicodeMinus0x10000 = "(%s)" % Lng.OP("unicode", "-", "0x10000")
         Offset_10bit_high = "(uint16_t)(%s)" % Lng.OP(UnicodeMinus0x10000, ">>", 10)
@@ -399,6 +408,9 @@ class ConverterWriterUTF16(ConverterWriter):
         return [ 0x0, 0x10000, INTEGER_MAX] 
     
 class ConverterWriterUTF32(ConverterWriter):
+    def max_code_unit_n(self):
+        return 1
+
     def get_output_formatter(self, CodeUnitN):
         return {
             1: [ Lng.INCREMENT_ITERATOR_THEN_ASSIGN("*output_pp", "unicode") ]
