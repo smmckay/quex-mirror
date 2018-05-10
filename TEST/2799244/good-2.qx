@@ -2,7 +2,7 @@
 token_type {
 name = Token;
 distinct {
-fred : std::basic_string<QUEX_TYPE_LEXATOM>;
+fred : std::basic_string<Simple::Simple_lexatom_t>;
 }
 take_text {
     return Token();

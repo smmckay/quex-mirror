@@ -1,5 +1,5 @@
 Indentation Counter / Birds View
 --------------------------------------
 *.sh
---not lexer
+--not lexer tmp.*
 --------------------------------------

@@ -2,7 +2,7 @@
 token_type {
 name = Token;
 distinct {
-fred : const QUEX_TYPE_LEXATOM*;
+fred : const Simple::Simple_lexatom_t*;
 }
 take_text {
     return true;

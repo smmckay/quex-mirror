@@ -2,65 +2,65 @@ test.qx:6:warning: Detected implicit token identifier definitions. Proposal:
 test.qx:6:warning:    token {
 test.qx:6:warning:      WORLD;
 test.qx:6:warning:    }
-    /* BEGIN: STATE MACHINE
-     * init-state = 145L
-     * 00145 
-     *      == ['a', 'z'] ==> 00146
-     *     
-     * 00146 
-     *      == ['0', '9'] ==> 00147
-     *     
-     * 00147 A(17)
-     *     
-     * END: STATE MACHINE
-    /* BEGIN: STATE MACHINE
-     * init-state = 148L
-     * 00148 
-     *      == 'w' ==> 00149
-     *     
-     * 00149 
-     *      == 'o' ==> 00150
-     *     
-     * 00150 
-     *      == 'r' ==> 00151
-     *     
-     * 00151 
-     *      == 'l' ==> 00152
-     *     
-     * 00152 
-     *      == 'd' ==> 00153
-     *     
-     * 00153 A(11)
-     *     
-     * END: STATE MACHINE
-    /* BEGIN: STATE MACHINE
-     * init-state = 154L
-     * 00154 
-     *      == 'A' ==> 00155
-     *     
-     * 00155 
-     *      == 'c' ==> 00156
-     *     
-     * 00156 
-     *      == 'b' ==> 00157
-     *     
-     * 00157 
-     *      == 'a' ==> 00158
-     *     
-     * 00158 
-     *      == 'Z' ==> 00159
-     *     
-     * 00159 A(26)
-     *     
-     * END: STATE MACHINE
-    /* BEGIN: STATE MACHINE
-     * init-state = 160L
-     * 00160 
-     *      == 'h' ==> 00161
-     *     
-     * 00161 
-     *      == 'i' ==> 00162
-     *     
-     * 00162 A(30)
-     *     
-     * END: STATE MACHINE
+/* BEGIN: STATE MACHINE
+* init-state = 159L
+* 00159
+*      == ['a', 'z'] ==> 00160
+*
+* 00160
+*      == ['0', '9'] ==> 00161
+*
+* 00161 A(17)
+*
+* END: STATE MACHINE
+/* BEGIN: STATE MACHINE
+* init-state = 162L
+* 00162
+*      == 'w' ==> 00163
+*
+* 00163
+*      == 'o' ==> 00164
+*
+* 00164
+*      == 'r' ==> 00165
+*
+* 00165
+*      == 'l' ==> 00166
+*
+* 00166
+*      == 'd' ==> 00167
+*
+* 00167 A(11)
+*
+* END: STATE MACHINE
+/* BEGIN: STATE MACHINE
+* init-state = 168L
+* 00168
+*      == 'A' ==> 00169
+*
+* 00169
+*      == 'c' ==> 00170
+*
+* 00170
+*      == 'b' ==> 00171
+*
+* 00171
+*      == 'a' ==> 00172
+*
+* 00172
+*      == 'Z' ==> 00173
+*
+* 00173 A(26)
+*
+* END: STATE MACHINE
+/* BEGIN: STATE MACHINE
+* init-state = 174L
+* 00174
+*      == 'h' ==> 00175
+*
+* 00175
+*      == 'i' ==> 00176
+*
+* 00176 A(30)
+*
+* END: STATE MACHINE

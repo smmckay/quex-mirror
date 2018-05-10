@@ -2,10 +2,10 @@
 ## 2 seconds
 ## 3 seconds
 ## 4 seconds
-## 5 seconds
-## 6 seconds
 Oll Korrekt
 ||||
+converter-from-lexeme
+converter-from-lexeme.i
 Lexer
 Lexer-configuration
 Lexer.cpp
