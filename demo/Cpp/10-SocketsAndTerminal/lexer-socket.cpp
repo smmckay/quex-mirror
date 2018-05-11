@@ -68,7 +68,7 @@
 
 static int  setup_socket_server(void);
 static bool accept_and_lex(int listen_fd);
-static bool self_on_nothing(quex::QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t LoadedN);
+static bool self_on_nothing(QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t LoadedN);
  
 int main(void)
 {
@@ -170,7 +170,7 @@ setup_socket_server(void)
 }
 
 static bool  
-self_on_nothing(quex::QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t RequiredToLoad)
+self_on_nothing(QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t RequiredToLoad)
 /* ByteLoader's handler to treat the case that nothing has been received. Note,
  * that with the current setup the socket receiver blocks until something comes
  * in. If nothing is received, the socket is closed.

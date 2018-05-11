@@ -5,8 +5,8 @@
 
     int main(int argc, char** argv)
     {         
-        quex::Token*  token_p = 0x0;
-        quex::tiny    tlex("example.txt", /* Converter */NULL);
+        Token*  token_p = 0x0;
+        tiny    tlex("example.txt", /* Converter */NULL);
 
         do {
             tlex.receive(&token_p);

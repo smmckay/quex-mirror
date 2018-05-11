@@ -7,14 +7,14 @@
 #    define ENCODING_NAME (0x0)
 #endif
 
-static void print_token(quex_Token* token_p);
+static void print_token(Token* token_p);
 
 int 
 main(int argc, char** argv) 
 {        
-    quex_Token*      token_p = NULL;
+    Token*      token_p = NULL;
     size_t           number_of_tokens = 0;
-    quex_EasyLexer   qlex;
+    EasyLexer   qlex;
     const char*      file_name; 
     QUEX_NAME(Mode)* mode;
 
@@ -28,7 +28,7 @@ main(int argc, char** argv)
     hwut_if_choice("END-1")    { file_name = "END-1.txt"; mode = &QUEX_NAME(END); }
     hwut_if_choice("END-many") { file_name = "END-many.txt"; mode = &QUEX_NAME(END); }
 
-    quex_EasyLexer_from_file_name(&qlex, file_name, ENCODING_NAME);
+    EasyLexer_from_file_name(&qlex, file_name, ENCODING_NAME);
     qlex.enter_mode(&qlex, mode);
 
     printf("[START]\n");
@@ -42,14 +42,14 @@ main(int argc, char** argv)
 
     } while( token_p->id != QUEX_TKN_TERMINATION );
 
-    quex_EasyLexer_destruct(&qlex);
+    EasyLexer_destruct(&qlex);
 
     printf("[END] number of token = %i\n", (int)number_of_tokens);
     return 0;
 }
 
 static void
-print_token(quex_Token* token_p)
+print_token(Token* token_p)
 {
 #   ifdef PRINT_TOKEN
     const size_t    BufferSize = 1024;

@@ -3,12 +3,12 @@
 
 #ifndef LEXER2
 #   include "Easy/Easy"
-typedef quex::Easy  Lexer;
-typedef quex::Token Token;
+typedef Easy  Lexer;
+typedef Token Token;
 #else
 #   include "Easy2/Easy2"
-typedef quex::Easy2  Lexer;
-typedef quex::Token  Token;
+typedef Easy2  Lexer;
+typedef Token  Token;
 #endif
 
 static void print_token(Token* token_p);
@@ -37,7 +37,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(quex::Token* token_p)
+print_token(Token* token_p)
 {
     std::cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
 

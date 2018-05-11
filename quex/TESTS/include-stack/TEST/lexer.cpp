@@ -7,10 +7,10 @@
 
 using namespace std;
 
-quex::Simple_lexatom_t  EmptyLexeme = 0x0000;  /* Only the terminating zero */
+Simple_lexatom_t  EmptyLexeme = 0x0000;  /* Only the terminating zero */
 
-void    print(quex::Simple& qlex, quex::Token& Token, bool TextF = false);
-void    print(quex::Simple& qlex, const char* Str1, const char* Str2=0x0, const char* Str3=0x0);
+void    print(Simple& qlex, Token& Token, bool TextF = false);
+void    print(Simple& qlex, const char* Str1, const char* Str2=0x0, const char* Str3=0x0);
 
 #define RECEIVE(TokenP)   (void)qlex.receive(&TokenP)
 
@@ -39,8 +39,8 @@ self_test(const char* CharFilename)
     string         Directory("example/");
     string         Filename(CharFilename);
     ifstream       istr((Directory + Filename + ".txt").c_str());
-    quex::Simple   qlex(quex::QUEX_NAME(ByteLoader_stream_new)(&istr), NULL);
-    quex::Token*   token_p = 0x0;
+    Simple   qlex(QUEX_NAME(ByteLoader_stream_new)(&istr), NULL);
+    Token*   token_p = 0x0;
 
 
     qlex.input_name_set((Directory + Filename + ".txt").c_str());
@@ -59,7 +59,7 @@ self_test(const char* CharFilename)
 string  space(int N)
 { string tmp; for(int i=0; i<N; ++i) tmp += "    "; return tmp; }
 
-void  print(quex::Simple& qlex, quex::Token& Token, bool TextF /* = false */)
+void  print(Simple& qlex, Token& Token, bool TextF /* = false */)
 { 
     cout << space(qlex.include_depth) << Token.line_number() << ": (" << Token.column_number() << ")";
     cout << Token.type_id_name();
@@ -67,7 +67,7 @@ void  print(quex::Simple& qlex, quex::Token& Token, bool TextF /* = false */)
     cout << endl;
 }
 
-void print(quex::Simple& qlex, const char* Str1, const char* Str2 /* = 0x0 */, const char* Str3 /* = 0x0*/)
+void print(Simple& qlex, const char* Str1, const char* Str2 /* = 0x0 */, const char* Str3 /* = 0x0*/)
 {
     cout << space(qlex.include_depth) << Str1;
     if( Str2 != 0x0 ) cout << Str2;
@@ -77,10 +77,10 @@ void print(quex::Simple& qlex, const char* Str1, const char* Str2 /* = 0x0 */, c
 
 #if 0 
 // Policy 'users_queue' deprecated.
-void get_token_from_users_queue(quex::Simple& qlex, quex::Token& Token)
+void get_token_from_users_queue(Simple& qlex, Token& Token)
 {
-    static quex::Token   Begin[3];
-    static quex::Token*  End  = Begin + 3;
+    static Token   Begin[3];
+    static Token*  End  = Begin + 3;
     
     if( QUEX_NAME(TokenQueue_is_empty)(&qlex._token_queue) ) {
         qlex.receive(Begin, End);

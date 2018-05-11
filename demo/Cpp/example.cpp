@@ -5,7 +5,7 @@
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv>
 #include <quex/code_base/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 
-static void print_token(quex::Token* token_p);
+static void print_token(Token* token_p);
 
 int 
 main(int argc, char** argv) 
@@ -46,7 +46,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(quex::Token* token_p)
+print_token(Token* token_p)
 {
     using namespace std;
 

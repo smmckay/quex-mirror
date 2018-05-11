@@ -4,7 +4,7 @@
 #include <Easy/lib/bom>
 #include <stdio.h>    
 
-static void print_token(quex::Token* token_p);
+static void print_token(Token* token_p);
 
 int 
 main(int argc, char** argv) 
@@ -13,7 +13,7 @@ main(int argc, char** argv)
 {        
 
 
-    quex::Token* token_p          = 0x0;
+    Token* token_p          = 0x0;
     int          number_of_tokens = 0;
     FILE*        fh               = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
 
@@ -36,7 +36,7 @@ main(int argc, char** argv)
         return 0;
     }
 
-    quex::Easy   qlex(byte_loader, converter);
+    Easy   qlex(byte_loader, converter);
     do {
         qlex.receive(&token_p);
 
@@ -52,7 +52,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(quex::Token* token_p)
+print_token(Token* token_p)
 {
     std::cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
 

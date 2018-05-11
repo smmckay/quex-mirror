@@ -9,8 +9,8 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    quex::Token*   token_p;
-    quex::Simple   qlex("example.txt", NULL);
+    Token*   token_p;
+    Simple   qlex("example.txt", NULL);
 
     if( argc < 2 ) {
         printf("Command line argument required!\n");
@@ -25,7 +25,7 @@ main(int argc, char** argv)
     int N = atoi(argv[1]);
 
     qlex.byte_order_reversion_set(true);
-    qlex.push_mode(&quex::QUEX_NAME(EXTRA));
+    qlex.push_mode(&QUEX_NAME(EXTRA));
 
     /* Read 'N' tokens before doing the reset. */
     for(int i=0; i < N; ++i) {

@@ -2,8 +2,8 @@
 %debug
 %pure-parser
 %error-verbose
-%lex-param {quex::Calc_lexer  *qlex}
-%parse-param {quex::Calc_lexer  *qlex}
+%lex-param {Calc_lexer  *qlex}
+%parse-param {Calc_lexer  *qlex}
 %define api.prefix {Calc_yy}
 
 %{
@@ -22,8 +22,8 @@
 %{
 #include "lexical_analysis/Calc_lexer"
 #include <iostream>
-int Calc_yylex(YYSTYPE *yylval, quex::Calc_lexer *qlex);
-void Calc_yyerror(quex::Calc_lexer *qlex, const std::string& m);
+int Calc_yylex(YYSTYPE *yylval, Calc_lexer *qlex);
+void Calc_yyerror(Calc_lexer *qlex, const std::string& m);
 %}
 
 %type<dbl> exp num
@@ -76,15 +76,15 @@ num:	TKN_NUM
         
 %%
 
-void Calc_yyerror(quex::Calc_lexer *qlex, const std::string& m)
+void Calc_yyerror(Calc_lexer *qlex, const std::string& m)
 {
 	std::cout << "Parsing error at " << qlex->line_number() 
 		<< ":" << qlex->column_number() << " : " << m;
 }
 
-int Calc_yylex(YYSTYPE *yylval, quex::Calc_lexer *qlex)
+int Calc_yylex(YYSTYPE *yylval, Calc_lexer *qlex)
 {
-	quex::Token* token;
+	Token* token;
 	qlex->receive(&token);
     if( ! token ) {
         return TKN_TERMINATION;

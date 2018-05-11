@@ -17,7 +17,7 @@ main(int argc, char** argv)
 
     int              number_of_tokens = 0;
     bool             continue_lexing_f = true;
-    quex::Easy       qlex(argc == 1 ? "example-shallow.txt" : argv[1], NULL);
+    Easy       qlex(argc == 1 ? "example-shallow.txt" : argv[1], NULL);
     QUEX_TYPE_TOKEN* token_p;
 
     do {

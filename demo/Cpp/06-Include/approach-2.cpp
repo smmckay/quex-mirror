@@ -8,8 +8,8 @@ static void  print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p);
 int 
 main(int argc, char** argv) 
 {        
-    quex::Easy   qlex(argc == 1 ? "example-shallow.txt" : argv[1], NULL);
-    quex::Token* token_p = NULL;
+    Easy   qlex(argc == 1 ? "example-shallow.txt" : argv[1], NULL);
+    Token* token_p = NULL;
     int          number_of_tokens = 0;
 
     do {
