@@ -53,7 +53,7 @@
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
     using namespace std;
     Token*                   token;
     LEXER_CLASS*             qlex;   

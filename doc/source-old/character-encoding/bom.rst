@@ -91,8 +91,6 @@ example
 
 .. code-block:: cpp
 
-    using namespace quex;
-
     bom_type = bom_snap(file_handle);
 
     if( bom_type & (QUEX_BOM_UTF32 | QUEX_BOM_NONE) ) {

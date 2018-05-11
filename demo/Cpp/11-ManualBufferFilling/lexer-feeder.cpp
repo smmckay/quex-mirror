@@ -12,7 +12,7 @@
 
 #include "receiver.h"
 
-using namespace quex;
+
 
 typedef QUEX_TYPE_ANALYZER CLexer;
 typedef QUEX_TYPE_TOKEN    CToken;
@@ -68,7 +68,7 @@ main(int argc, char** argv)
 static void
 show_buffer(CLexer* lexer, const uint8_t* RawBeginP, const uint8_t* RawEndP)
 {
-    using namespace quex;
+
 #   ifdef QUEX_EXAMPLE_WITH_CONVERTER
     printf("     raw: ");
     QUEX_NAME(Buffer_print_content_core)(1, RawBeginP, &RawEndP[-1], 

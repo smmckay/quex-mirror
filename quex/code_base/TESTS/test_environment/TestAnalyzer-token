@@ -1,17 +1,17 @@
-/* -*- C++ -*-   vim: set syntax=cpp: 
- * (C) 2004-2009 Frank-Rene Schaefer
- * ABSOLUTELY NO WARRANTY
- */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN
+/* -*- C++ -*-   vim: set syntax=cpp:
+* (C) 2004-2009 Frank-Rene Schaefer
+* ABSOLUTELY NO WARRANTY
+*/
+#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN
+#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN
 
+#include <cstddef>
+#include "test_environment/lib/compatibility/stdint.h"
+#include "test_environment/TestAnalyzer-configuration"
 #include "test_environment/lib/definitions"
 #include "test_environment/lib/asserts"
-#include "test_environment/lib/compatibility/stdint.h"
 #include "test_environment/lib/MemoryManager"
 #include "test_environment/lib/lexeme_base"
-
-
 
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
@@ -20,129 +20,134 @@
 #include <string>
 #include "test_environment/converter-from-lexeme"
 
-   
 
-#   line 26 "test_environment/TestAnalyzer-token"
 
- 
+#   line 24 "test_environment/TestAnalyzer-token"
+
+
+
 QUEX_NAMESPACE_TOKEN_OPEN
 
 class Token;
 
 inline void    QUEX_NAME_TOKEN(construct)(Token* __this);
 inline void    QUEX_NAME_TOKEN(destruct)(Token* __this);
-inline void    QUEX_NAME_TOKEN(copy)(Token*       me, 
-                                     const Token* That);
+inline void    QUEX_NAME_TOKEN(copy)(Token*       me,
+const Token* That);
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-inline bool    QUEX_NAME_TOKEN(take_text)(Token*             __this, 
-                                          const TestAnalyzer_lexatom_t*  Begin, 
-                                          const TestAnalyzer_lexatom_t*  End);
+inline bool    QUEX_NAME_TOKEN(take_text)(Token*             __this,
+const TestAnalyzer_lexatom_t*  Begin,
+const TestAnalyzer_lexatom_t*  End);
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 inline size_t  QUEX_NAME_TOKEN(repetition_n_get)(Token* __this);
-inline void    QUEX_NAME_TOKEN(repetition_n_set)(Token* __this, 
-                                                 size_t        N);
-#endif 
+inline void    QUEX_NAME_TOKEN(repetition_n_set)(Token* __this,
+size_t        N);
+#endif
 
-inline const char*  
-               QUEX_NAME_TOKEN(map_id_to_name)(const TestAnalyzer_token_id_t);
+inline const char*
+QUEX_NAME_TOKEN(map_id_to_name)(const TestAnalyzer_token_id_t);
 
 
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG Token {
 public:
-    Token();
-    Token(const Token& That);
-    /* operator=(..): USE WITH CAUTION--POSSIBLE MAJOR PERFORMANCE DECREASE! 
-     *                BETTER USE __copy(That)                                */
-    Token& operator=(const Token& That) 
-    { QUEX_NAME_TOKEN(copy)(this, &That); return *this; }
-    virtual ~Token();
+Token();
+Token(const Token& That);
+/* operator=(..): USE WITH CAUTION--POSSIBLE MAJOR PERFORMANCE DECREASE!
+*                BETTER USE __copy(That)                                */
+Token& operator=(const Token& That)
+{ QUEX_NAME_TOKEN(copy)(this, &That); return *this; }
+virtual ~Token();
 
 
 #   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    const TestAnalyzer_lexatom_t* text;
+const TestAnalyzer_lexatom_t* text;
 
-#   line 67 "test_environment/TestAnalyzer-token"
+#   line 64 "test_environment/TestAnalyzer-token"
+
 
 #   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    size_t                   number;
+size_t                   number;
 
-#   line 72 "test_environment/TestAnalyzer-token"
+#   line 68 "test_environment/TestAnalyzer-token"
+
 
 
 public:
 
 #   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    const TestAnalyzer_lexatom_t* get_text() const                           { return text; }
+const TestAnalyzer_lexatom_t* get_text() const                           { return text; }
 #   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    void                     set_text(const TestAnalyzer_lexatom_t*& Value)  { text = Value; }
+void                     set_text(const TestAnalyzer_lexatom_t*& Value)  { text = Value; }
 #   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    size_t                   get_number() const                         { return number; }
+size_t                   get_number() const                         { return number; }
 #   line 15 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
-    void                     set_number(size_t Value)                   { number = Value; }
+void                     set_number(size_t Value)                   { number = Value; }
 
-#   line 86 "test_environment/TestAnalyzer-token"
-
-    void set(const TestAnalyzer_token_id_t ID) { id = ID; }
-    void set(const TestAnalyzer_token_id_t ID, const  TestAnalyzer_lexatom_t*& Value0, const size_t& Value1)
-    { id = ID; text = Value0; number = Value1; }
+#   line 81 "test_environment/TestAnalyzer-token"
 
 
-    public:
-        /* _line_n, _column_n, and id are public, so that the token policy 
-         * can access it. making it private would imply complications for 
-         * user customized token classes. The token policies should be the
-         * same for C and Cpp.                                               */
-        TestAnalyzer_token_id_t    id;
-        TestAnalyzer_token_id_t    type_id() const                             { return id; }
-        const char*           map_id_to_name(TestAnalyzer_token_id_t ID) const { return QUEX_NAME_TOKEN(map_id_to_name)(ID); }
-        const std::string     type_id_name() const                        { return map_id_to_name(id); }
+void set(const TestAnalyzer_token_id_t ID) { id = ID; }
+void set(const TestAnalyzer_token_id_t ID, const  TestAnalyzer_lexatom_t*& Value0, const size_t& Value1)
+{ id = ID; text = Value0; number = Value1; }
+
+
+public:
+/* _line_n, _column_n, and id are public, so that the token policy
+* can access it. making it private would imply complications for
+* user customized token classes. The token policies should be the
+* same for C and Cpp.                                               */
+TestAnalyzer_token_id_t    id;
+TestAnalyzer_token_id_t    type_id() const                             { return id; }
+const char*           map_id_to_name(TestAnalyzer_token_id_t ID) const { return QUEX_NAME_TOKEN(map_id_to_name)(ID); }
+const std::string     type_id_name() const                        { return map_id_to_name(id); }
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE
-    public:
-        TestAnalyzer_token_line_n_t    _line_n;
-        TestAnalyzer_token_line_n_t    line_number() const                                 { return _line_n; }
-        void                      set_line_number(const TestAnalyzer_token_line_n_t Value) { _line_n = Value; }
+public:
+TestAnalyzer_token_line_n_t    _line_n;
+TestAnalyzer_token_line_n_t    line_number() const                                 { return _line_n; }
+void                      set_line_number(const TestAnalyzer_token_line_n_t Value) { _line_n = Value; }
 #       endif
 #       ifdef  QUEX_OPTION_COUNTER_COLUMN
-    public:
-        TestAnalyzer_token_column_n_t  _column_n;
-        TestAnalyzer_token_column_n_t  column_number() const                                   { return _column_n; }
-        void                      set_column_number(const TestAnalyzer_token_column_n_t Value) { _column_n = Value; }
+public:
+TestAnalyzer_token_column_n_t  _column_n;
+TestAnalyzer_token_column_n_t  column_number() const                                   { return _column_n; }
+void                      set_column_number(const TestAnalyzer_token_column_n_t Value) { _column_n = Value; }
 #       endif
 #   endif
-    public:
+public:
 #   define self (*this)
 
 #   line 100 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
-        operator 
-        const std::string() const
-        { return std::string(get_string()); }
+operator
+const std::string() const
+{ return std::string(get_string()); }
 
-        const std::string
-        get_string() const 
-        {
-            std::string  tmp;
-            tmp  = map_id_to_name(self.id);
-            tmp += " '" + QUEX_NAME(lexeme_to_pretty_char)(self.text) + "'";
-            return tmp;
-        }
-    
-   
+const std::string
+get_string() const
+{
+std::string  tmp;
+tmp  = map_id_to_name(self.id);
+tmp += " '" + QUEX_NAME(lexeme_to_pretty_char)(self.text) + "'";
+return tmp;
+}
 
-#   line 137 "test_environment/TestAnalyzer-token"
+
+
+#   line 131 "test_environment/TestAnalyzer-token"
+
 
 #   undef  self
 
-    private:
-        friend void QUEX_NAME_TOKEN(copy)(Token*       __this, 
-                                          const Token* That);
-        friend bool QUEX_NAME_TOKEN(take_text)(Token*             __this, 
-                                               const TestAnalyzer_lexatom_t*  Begin, 
-                                               const TestAnalyzer_lexatom_t*  End);
+private:
+friend void QUEX_NAME_TOKEN(copy)(Token*       __this,
+const Token* That);
+friend bool QUEX_NAME_TOKEN(take_text)(Token*             __this,
+const TestAnalyzer_lexatom_t*  Begin,
+const TestAnalyzer_lexatom_t*  End);
 };
 
 QUEX_NAMESPACE_TOKEN_CLOSE
@@ -156,9 +161,10 @@ operator<<(std::ostream& ostr, const Token& Tok)
 { ostr << Tok.get_string(); return ostr; }
 QUEX_NAMESPACE_TOKEN_CLOSE
 #include "test_environment/converter-from-lexeme.i"
-   
 
-#   line 162 "test_environment/TestAnalyzer-token"
+
+#   line 155 "test_environment/TestAnalyzer-token"
+
 
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -166,18 +172,17 @@ extern TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull);
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN */
+#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN */
 
-/* This content is pasted into header, so the include guard is superfluous. 
- * It is left in place, so that if some time later the code generator is 
- * adapted to generate independent files, it will still work safely.          */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I
+/* This content is pasted into header, so the include guard is superfluous.
+* It is left in place, so that if some time later the code generator is
+* adapted to generate independent files, it will still work safely.          */
+#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN_I
+#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN_I
 
-#include "test_environment/lib/definitions"
-#include "test_environment/lib/lexeme_base"
-#include "test_environment/lib/lexeme_base.i"
 #include "test_environment/TestAnalyzer-token"
+#include "test_environment/TestAnalyzer-token_ids"
+#include "test_environment/lib/lexeme_base.i"
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
@@ -189,11 +194,12 @@ Token::Token()
 
 #   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
-       self.number = 0;
-       self.text   = LexemeNull;
-   
+self.number = 0;
+self.text   = LexemeNull;
 
-#   line 197 "test_environment/TestAnalyzer-token"
+
+#   line 188 "test_environment/TestAnalyzer-token"
+
 
 #   undef  LexemeNull
 #   undef  self
@@ -202,17 +208,18 @@ Token::Token()
 QUEX_INLINE
 Token::Token(const Token& Other)
 {
-   QUEX_NAME_TOKEN(copy)(this, &Other);
+QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
 
 #   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
-       self.number = 0;
-       self.text   = LexemeNull;
-   
+self.number = 0;
+self.text   = LexemeNull;
 
-#   line 216 "test_environment/TestAnalyzer-token"
+
+#   line 206 "test_environment/TestAnalyzer-token"
+
 
 #   undef  LexemeNull
 #   undef  self
@@ -226,14 +233,15 @@ Token::~Token()
 
 #   line 25 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
-       if( self.text != LexemeNull ) {
-           QUEXED(MemoryManager_free)((void*)self.text,
-                                      E_MemoryObjectType_TEXT);
-           self.text = LexemeNull;
-       }
-   
+if( self.text != LexemeNull ) {
+QUEXED(MemoryManager_free)((void*)self.text,
+E_MemoryObjectType_TEXT);
+self.text = LexemeNull;
+}
 
-#   line 237 "test_environment/TestAnalyzer-token"
+
+#   line 226 "test_environment/TestAnalyzer-token"
+
 
 #   undef  LexemeNull
 #   undef  self
@@ -242,15 +250,15 @@ Token::~Token()
 QUEX_INLINE void
 QUEX_NAME_TOKEN(construct)(Token* __this)
 {
-    /* Explicit constructor call by 'placement new' */
-    new ((void*)__this) Token;
+/* Explicit constructor call by 'placement new' */
+new ((void*)__this) Token;
 }
 
 QUEX_INLINE void
 QUEX_NAME_TOKEN(destruct)(Token* __this)
 {
-    if( ! __this ) return;
-    __this->Token::~Token();  
+if( ! __this ) return;
+__this->Token::~Token();
 }
 
 QUEX_INLINE void
@@ -259,144 +267,148 @@ QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
 #   define self  (*__this)
 #   define Other (*__That)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
-    (void)__this;
-    (void)__That;
+(void)__this;
+(void)__That;
 
 #   line 33 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
-        self.id  = Other.id;
+self.id  = Other.id;
 
-        if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
-        }
-        if( Other.text != LexemeNull ) {
-            self.text = QUEX_NAME(lexeme_clone)(self.text, 
-                                                QUEX_NAME(lexeme_length)(Other.text));
-            if( ! self.text ) self.text = LexemeNull;
-        }
-        self.number = Other.number;
-    #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-        __QUEX_IF_COUNT_LINES(self._line_n     = Other._line_n);
-        __QUEX_IF_COUNT_COLUMNS(self._column_n = Other._column_n);
-    #   endif
-   
+if( self.text != LexemeNull ) {
+QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+}
+if( Other.text != LexemeNull ) {
+self.text = QUEX_NAME(lexeme_clone)(self.text,
+QUEX_NAME(lexeme_length)(Other.text));
+if( ! self.text ) self.text = LexemeNull;
+}
+self.number = Other.number;
+#   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
+__QUEX_IF_COUNT_LINES(self._line_n     = Other._line_n);
+__QUEX_IF_COUNT_COLUMNS(self._column_n = Other._column_n);
+#   endif
 
-#   line 285 "test_environment/TestAnalyzer-token"
+
+#   line 273 "test_environment/TestAnalyzer-token"
+
 
 #   undef LexemeNull
 #   undef Other
 #   undef self
-   /* If the user even misses to copy the token id, then there's
-    * something seriously wrong.                                 */
-   __quex_assert(__this->id == __That->id);
+/* If the user even misses to copy the token id, then there's
+* something seriously wrong.                                 */
+__quex_assert(__this->id == __That->id);
 #ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #   ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-    __QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));
-    __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
+__QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));
+__QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
 #   endif
 #endif
 }
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-QUEX_INLINE bool 
-QUEX_NAME_TOKEN(take_text)(Token*              __this, 
-                           const TestAnalyzer_lexatom_t* Begin, 
-                           const TestAnalyzer_lexatom_t* End)
+QUEX_INLINE bool
+QUEX_NAME_TOKEN(take_text)(Token*              __this,
+const TestAnalyzer_lexatom_t* Begin,
+const TestAnalyzer_lexatom_t* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
- *          false -- if no ownership is claimed.                             */
+*          false -- if no ownership is claimed.                             */
 {
 #   define self      (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
-    (void)__this;
+(void)__this;
 
 #   line 51 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 
 #       if 0
-        /* Hint for debug: To check take_text change "#if 0" to "#if 1" */
-        {
-            const TestAnalyzer_lexatom_t* it = (void*)0x0;
-            printf("previous:  '");
-            if( self.text != LexemeNull ) {
-                for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
-                printf("%04X.", (int)*it);
-            }
-            printf("'\n");
-            printf("take_text: '");
-            for(it = Begin; it != End; ++it) printf("%04X.", (int)*it);
-            printf("%04X.", (int)*it);
-            printf("'\n");
-        }
+/* Hint for debug: To check take_text change "#if 0" to "#if 1" */
+{
+const TestAnalyzer_lexatom_t* it = (void*)0x0;
+printf("previous:  '");
+if( self.text != LexemeNull ) {
+for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
+printf("%04X.", (int)*it);
+}
+printf("'\n");
+printf("take_text: '");
+for(it = Begin; it != End; ++it) printf("%04X.", (int)*it);
+printf("%04X.", (int)*it);
+printf("'\n");
+}
 #       endif
 
-        if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
-        }
-        if( Begin != LexemeNull ) {
-            __quex_assert(End >= Begin);
-            self.text = QUEX_NAME(lexeme_clone)(Begin, (size_t)(End - Begin));
-            if( ! self.text ) self.text = LexemeNull;
-            *((TestAnalyzer_lexatom_t*)(self.text + (End - Begin))) = (TestAnalyzer_lexatom_t)0;
-        } else {
-            self.text = LexemeNull;
-        }
+if( self.text != LexemeNull ) {
+QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+}
+if( Begin != LexemeNull ) {
+__quex_assert(End >= Begin);
+self.text = QUEX_NAME(lexeme_clone)(Begin, (size_t)(End - Begin));
+if( ! self.text ) self.text = LexemeNull;
+*((TestAnalyzer_lexatom_t*)(self.text + (End - Begin))) = (TestAnalyzer_lexatom_t)0;
+} else {
+self.text = LexemeNull;
+}
 
 #       if 0
-        /* Hint for debug: To check take_text change "#if 0" to "#if 1"       */
-        {
-            const TestAnalyzer_lexatom_t* it = 0x0;
-            printf("after:     '");
-            if( self.text != LexemeNull ) { 
-                for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
-                printf("%04X.", (int)*it);
-            }
-            printf("'\n");
-        }
+/* Hint for debug: To check take_text change "#if 0" to "#if 1"       */
+{
+const TestAnalyzer_lexatom_t* it = 0x0;
+printf("after:     '");
+if( self.text != LexemeNull ) {
+for(it = self.text; *it ; ++it) printf("%04X.", (int)*it);
+printf("%04X.", (int)*it);
+}
+printf("'\n");
+}
 #       endif
 
-        /* This token copied the text from the chunk into the string, 
-         * so we do not claim ownership over it.                             */
-        return false;
-   
+/* This token copied the text from the chunk into the string,
+* so we do not claim ownership over it.                             */
+return false;
 
-#   line 363 "test_environment/TestAnalyzer-token"
+
+#   line 350 "test_environment/TestAnalyzer-token"
+
 
 #   undef  LexemeNull
 #   undef  self
-    /* Default: no ownership.                                                */
-    return false;
+/* Default: no ownership.                                                */
+return false;
 }
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-QUEX_INLINE size_t 
+QUEX_INLINE size_t
 QUEX_NAME_TOKEN(repetition_n_get)(Token* __this)
 {
 #   define self (*__this)
-    (void)__this;
+(void)__this;
 
 #   line 121 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
-       return self.number;
-   
+return self.number;
 
-#   line 384 "test_environment/TestAnalyzer-token"
+
+#   line 370 "test_environment/TestAnalyzer-token"
+
 
 #   undef self
 }
 
-QUEX_INLINE void 
+QUEX_INLINE void
 QUEX_NAME_TOKEN(repetition_n_set)(Token* __this, size_t N)
 {
 #   define self (*__this)
-    (void)__this; (void)N;
+(void)__this; (void)N;
 
 #   line 117 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
-       self.number = N;
-   
+self.number = N;
 
-#   line 400 "test_environment/TestAnalyzer-token"
+
+#   line 385 "test_environment/TestAnalyzer-token"
+
 
 #   undef  self
 }
@@ -405,30 +417,30 @@ QUEX_NAME_TOKEN(repetition_n_set)(Token* __this, size_t N)
 QUEX_INLINE const char*
 QUEX_NAME_TOKEN(map_id_to_name)(const TestAnalyzer_token_id_t TokenID)
 {
-   static char  error_string[64];
+static char  error_string[64];
 
-   /* NOTE: This implementation works only for token id types that are 
-    *       some type of integer or enum. In case an alien type is to
-    *       used, this function needs to be redefined.                  */
-   switch( TokenID ) {
-   default: {
-       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
-       return error_string;
-   }
+/* NOTE: This implementation works only for token id types that are
+*       some type of integer or enum. In case an alien type is to
+*       used, this function needs to be redefined.                  */
+switch( TokenID ) {
+default: {
+__QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
+return error_string;
+}
 
-   case QUEX_TKN_TERMINATION:    return "<TERMINATION>";
-   case QUEX_TKN_UNINITIALIZED:  return "<UNINITIALIZED>";
+case QUEX_TKN_TERMINATION:    return "<TERMINATION>";
+case QUEX_TKN_UNINITIALIZED:  return "<UNINITIALIZED>";
 #  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
-   case QUEX_TKN_INDENT:         return "<INDENT>";
-   case QUEX_TKN_DEDENT:         return "<DEDENT>";
-   case QUEX_TKN_NODENT:         return "<NODENT>";
+case QUEX_TKN_INDENT:         return "<INDENT>";
+case QUEX_TKN_DEDENT:         return "<DEDENT>";
+case QUEX_TKN_NODENT:         return "<NODENT>";
 #  endif
-   case QUEX_TKN_X:             return "X";
+case QUEX_TKN_X:             return "X";
 
 
-   }
+}
 }
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____QUEX____TOKEN_I */
+#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN_I */

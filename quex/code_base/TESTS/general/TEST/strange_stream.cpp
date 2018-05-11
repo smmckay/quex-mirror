@@ -9,7 +9,7 @@ int
 main(int argc, char** argv)
 {
     using namespace std;
-// using namespace quex;
+
 
     if( argc < 2 ) {
         cout << "Error: require one command line argument.\n";

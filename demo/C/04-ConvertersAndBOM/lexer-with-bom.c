@@ -4,23 +4,23 @@
 #include <Easy/lib/bom>
 #include <stdio.h>    
 
-static void print_token(quex_Token* token_p);
+static void print_token(Token* token_p);
 
 int 
 main(int argc, char** argv) 
 /* 1st arg: input file, default = 'example.txt'
  * 2nd arg: input character encoding name, 0x0 --> no conversion              */
 {        
-    quex_Easy   qlex;
-    quex_Token* token_p = 0x0;
-    int         number_of_tokens = 0;
-    FILE*       fh = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
+    Easy   qlex;
+    Token* token_p = 0x0;
+    int    number_of_tokens = 0;
+    FILE*  fh = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
 
     /* The lexer must be constructed AFTER the BOM-cut                        */
-    QUEX_NAME(ByteLoader)*    byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
-    QUEX_NAME(Converter)*     converter   = QUEX_NAME(Converter_IConv_new)(NULL, NULL);
+    Easy_ByteLoader*    byte_loader = Easy_ByteLoader_FILE_new(fh, true);
+    Easy_Converter*     converter   = Easy_Converter_IConv_new(NULL, NULL);
     /* QUEX_NAME(Converter)*  converter   = QUEX_NAME(Converter_ICU_new)(NULL, NULL); */
-    QUEX_TYPE_BOM             bom_id      = quex_bom_snap(fh);
+    QUEX_TYPE_BOM       bom_id      = quex_bom_snap(fh);
 
     printf("Found BOM: %s\n", quex_bom_name(bom_id));
 
@@ -35,7 +35,7 @@ main(int argc, char** argv)
         byte_loader->delete_self(byte_loader);
         return 0;
     }
-    quex_Easy_from_ByteLoader(&qlex, byte_loader, converter);
+    Easy_from_ByteLoader(&qlex, byte_loader, converter);
 
     do {
         qlex.receive(&qlex, &token_p);
@@ -47,14 +47,14 @@ main(int argc, char** argv)
 
     printf("| [END] number of token = %i\n", number_of_tokens);
 
-    quex_Easy_destruct(&qlex);
+    Easy_destruct(&qlex);
 
     fclose(fh);
     return 0;
 }
 
 static void
-print_token(quex_Token* token_p)
+print_token(Token* token_p)
 {
     const size_t    BufferSize = 1024;
     char            buffer[1024];

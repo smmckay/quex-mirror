@@ -8,7 +8,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
 
     Token*   token;
     UTF8Lex  qlex("example-utf8.txt");

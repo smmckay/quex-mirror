@@ -1,14 +1,12 @@
 #include "post-categorizer-common.h"
 
 
-using namespace quex;
 void post_categorizer_setup(QUEX_NAME(Dictionary)* me, int Seed);
 void test(QUEX_NAME(Dictionary)* pc, const char* Name);
 
 int
 main(int argc, char** argv)
 {
-    using namespace quex;
 
     if( argc < 2 ) return -1;
 

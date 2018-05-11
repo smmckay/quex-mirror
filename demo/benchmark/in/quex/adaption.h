@@ -6,7 +6,7 @@
 extern quex::quex_scan*  global_qlex; 
 extern quex::Token       global_token; 
 
-using namespace quex;
+
 
 #define ANALYZER_ANALYZE(TokenID)       \
             do {                           \

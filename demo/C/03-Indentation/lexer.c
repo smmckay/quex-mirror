@@ -1,15 +1,15 @@
 #ifndef LEXER2
 #   include "Easy/Easy.h"
-typedef quex_Easy  Lexer;
-typedef quex_Token Token;
-#define CONSTRUCT quex_Easy_from_file_name
-#define DESTRUCT  quex_Easy_destruct
+typedef Easy  Lexer;
+typedef Token Token;
+#define CONSTRUCT Easy_from_file_name
+#define DESTRUCT  Easy_destruct
 #else
 #   include "Easy2/Easy2.h"
-typedef quex_Easy2  Lexer;
-typedef quex_Token  Token;
-#define CONSTRUCT quex_Easy2_from_file_name
-#define DESTRUCT  quex_Easy2_destruct
+typedef Easy2  Lexer;
+typedef Token  Token;
+#define CONSTRUCT Easy2_from_file_name
+#define DESTRUCT  Easy2_destruct
 #endif
 
 #include<stdio.h>    

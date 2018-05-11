@@ -15,7 +15,7 @@ $$INC: lexeme_converter/from-unicode-buffer.i$$
 #include <string.h>
 #include <cstdio>
 
-using namespace quex;
+
 using namespace std;
 
 inline int 

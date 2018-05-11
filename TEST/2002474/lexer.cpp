@@ -5,7 +5,7 @@
 #include "Simple"
 
 using namespace std;
-using namespace quex;
+
 
 class mystream : public ifstream {
 public:

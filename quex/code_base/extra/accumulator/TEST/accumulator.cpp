@@ -10,7 +10,6 @@
 int
 main(int argc, char** argv)
 {
-    using namespace quex;
 
     uint8_t TestString0[] = "AsSalaamu Alaikum";
     size_t  TestString0L  = strlen((const char*)TestString0);

@@ -1,7 +1,6 @@
 #include "post-categorizer-common.h"
 
 /* See: post-categorizer-common.c */
-using namespace quex;
 void post_categorizer_setup(QUEX_NAME(Dictionary)* me, int Seed);
 
 int

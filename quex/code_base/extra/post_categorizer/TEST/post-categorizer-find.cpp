@@ -1,14 +1,11 @@
 #include "post-categorizer-common.h"
 
-using namespace quex;
 void post_categorizer_setup(QUEX_NAME(Dictionary)* me, int Seed);
 void test(QUEX_NAME(Dictionary)* pc, const char* Name);
 
 int
 main(int argc, char** argv)
 {
-    using namespace quex;
-
     if( argc < 2 ) return -1;
 
     if( strcmp(argv[1], "--hwut-info") == 0 ) {
@@ -43,7 +40,6 @@ main(int argc, char** argv)
 
 void test(QUEX_NAME(Dictionary)* pc, const char* Name)
 {
-    using namespace quex;
     QUEX_NAME(DictionaryNode)* found = QUEX_NAME(PostCategorizer__find)(pc, Name);
     printf("%s: ", Name);
     if( found != 0x0 ) {

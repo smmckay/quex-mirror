@@ -33,9 +33,9 @@ main(int argc, char** argv)
     const size_t  BufferSize = 1024;
     char          buffer[1024];
 #   endif
-    quex_Token*   token_p = 0x0;
+    Token*        token_p = 0x0;
     long          token_n = 0;
-    quex_Simple   qlex;
+    Simple        qlex;
     const char*   file_name = argc > 1 ? argv[1] : "example.txt";
 
     QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);

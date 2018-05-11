@@ -40,7 +40,6 @@ tiny_lexer_PROGRAM_analyser_function(QuexAnalyzerEngine* me)
 #   if defined (__QUEX_OPTION_PLAIN_C)
 #      define self (*me)
 #   else
-       using namespace quex;
        QUEX_LEXER_CLASS& self = *((QUEX_LEXER_CLASS*)me);
 #   endif
     /* me = pointer to state of the lexical analyser */

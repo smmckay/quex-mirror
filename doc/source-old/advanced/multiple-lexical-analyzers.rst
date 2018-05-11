@@ -30,7 +30,6 @@ as
 .. code-block:: cpp
 
    int main(int argc, char** argv) {
-        using namespace quex;
         ALexer     qlex("example.txt");
         ...
    }

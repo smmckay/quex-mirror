@@ -18,7 +18,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
     // we want to have error outputs in stdout, so that the unit test could see it.
     Token*                   token_p;
     const char*              file_name = argc < 2 ? "example.txt" : argv[1];

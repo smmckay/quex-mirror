@@ -3,7 +3,7 @@
 #include <cstdio>
 
 using namespace std;
-using namespace quex;
+
 
 char total_string[65536];
 

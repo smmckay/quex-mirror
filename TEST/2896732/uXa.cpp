@@ -35,7 +35,6 @@
 #include <vector>
 
 using namespace std;
-using namespace quex;
 
 namespace quex {
 	class Parser {

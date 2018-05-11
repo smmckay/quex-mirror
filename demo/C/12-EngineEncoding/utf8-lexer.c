@@ -6,13 +6,13 @@
 int 
 main(int argc, char** argv) 
 {        
-    quex_Token*   token_p = 0x0;
+    Token*        token_p = 0x0;
     size_t        BufferSize = 1024;
     char          buffer[1024];
-    quex_UTF8Lex  qlex;
+    UTF8Lex       qlex;
     (void)argc; (void)argv;
 
-    QUEX_NAME(from_file_name)(&qlex, "example-utf8.txt", NULL);
+    UTF8Lex_from_file_name(&qlex, "example-utf8.txt", NULL);
 
     // (*) loop until the 'termination' token arrives
     do {
@@ -26,6 +26,6 @@ main(int argc, char** argv)
         // (*) check against 'termination'
     } while( token_p->id != TKN_TERMINATION );
 
-    QUEX_NAME(destruct)(&qlex);
+    UTF8Lex_destruct(&qlex);
     return 0;
 }

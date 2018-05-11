@@ -88,6 +88,7 @@ static void
 print_this(quex::EasyLexer* lex, int Index, size_t Size, size_t ContentSize)
 {
     using namespace std;
+
     cout << "   (Size"  << Index << " = " << Size;
     cout << ", ContentSize"  << Index << " = " << ContentSize << ")\n";
     if( lex->buffer._memory._front ) {

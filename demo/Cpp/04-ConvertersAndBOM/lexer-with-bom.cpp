@@ -11,7 +11,7 @@ main(int argc, char** argv)
 /* 1st arg: input file, default = 'example.txt'
  * 2nd arg: input character encoding name, 0x0 --> no conversion              */
 {        
-    using namespace quex;
+
 
     quex::Token* token_p          = 0x0;
     int          number_of_tokens = 0;

@@ -11,7 +11,7 @@ int
 main(int argc, char** argv) 
 {        
     using namespace std;
-    using namespace quex;
+
 
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
     QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);

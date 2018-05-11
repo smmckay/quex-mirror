@@ -1,3 +1,5 @@
+-- Removal of implicit default namespace 'quex'
+
 -- Converter Only generation:
 
    mention importance of '--bet' and '--encoding', the naming and maybe, the include guard.

@@ -41,20 +41,20 @@
 #include <stdio.h>
 #if ! defined(WITH_UTF8)
 #   include <lex_ascii/LexAscii.h>
-#   define  LEXER_CLASS   quex_LexAscii
+#   define  LEXER_CLASS   LexAscii
 #else
 #   include <lex_utf8/LexUtf8.h>
-#   define  LEXER_CLASS   quex_LexUtf8
+#   define  LEXER_CLASS   LexUtf8
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
 
-static void  print_token(quex_Token*  token);
+static void  print_token(Token*  token);
 
 int 
 main(int argc, char** argv) 
 {        
-    quex_Token*              token = 0;
+    Token*              token = 0;
     LEXER_CLASS              qlex;   
     size_t                   size = 4096;
     char                     buffer[4096];
@@ -91,7 +91,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(quex_Token*  token)
+print_token(Token*  token)
 {
     size_t PrintBufferSize = 1024;
     char   print_buffer[1024];

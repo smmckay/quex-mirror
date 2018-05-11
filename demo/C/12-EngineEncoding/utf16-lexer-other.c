@@ -6,11 +6,11 @@
 int 
 main(int argc, char** argv) 
 {        
-    quex_Token*               token_p     = 0x0;
+    Token*               token_p     = 0x0;
     bool                      BigEndianF  = (argc < 2 || (strcmp(argv[1], "BE") == 0)); 
     const char*               file_name   = BigEndianF ? "example-other-utf16be.txt" : "example-other-utf16le.txt";
     QUEX_NAME(ByteLoader)*    byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
-    quex_UTF16Lex             qlex;
+    UTF16Lex                  qlex;
     const UTF16Lex_lexatom_t* iterator    = 0x0;
     bool                      byte_order_reversion_f;
 

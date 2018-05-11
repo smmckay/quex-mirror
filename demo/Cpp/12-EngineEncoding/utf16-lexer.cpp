@@ -8,7 +8,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
     (void)argc; (void)argv;
 
     if( argc == 1 ) {

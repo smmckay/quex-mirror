@@ -242,10 +242,6 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 
 #include "ut/lib/single.i"
 
-#if ! defined (__QUEX_OPTION_PLAIN_C)
-    using namespace quex;
-#endif
-
 QUEX_NAMESPACE_LEXEME_NULL_OPEN     
 QUEX_TYPE_LEXATOM   LexemeNull = 0;
 QUEX_NAMESPACE_LEXEME_NULL_CLOSE     

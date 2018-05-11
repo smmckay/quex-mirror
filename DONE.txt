@@ -1,3 +1,5 @@
+-- removed default namespace 'quex'
+-- refactored lexeme converter helper functions
 -- removal of macro-generated code
 -- exclusive encoding converter command line options
 -- Demos updated

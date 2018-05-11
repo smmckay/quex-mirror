@@ -6,7 +6,6 @@
 int main(int argc, char** argv)
 {
 	using namespace std;
-	using namespace quex;
 
 	quex::Token*             token_p;
     QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);

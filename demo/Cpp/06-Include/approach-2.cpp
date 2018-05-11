@@ -35,7 +35,7 @@ space(size_t N)
 static void  
 print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p)
 { 
-    using namespace quex;
+
     space(qlex->include_depth);
     printf("(%02i, %02i) ", (int)token_p->line_number(), (int)token_p->column_number());
 

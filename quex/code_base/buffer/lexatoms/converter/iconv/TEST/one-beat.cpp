@@ -44,7 +44,7 @@
 int
 main(int argc, char** argv)
 {
-    using namespace quex;
+
 
     hwut_info("Convert all in one beat: " STR(QUEX_TYPE_LEXATOM) ";");
 

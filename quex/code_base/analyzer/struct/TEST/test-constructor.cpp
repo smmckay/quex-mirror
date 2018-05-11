@@ -40,7 +40,7 @@ namespace quex {
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 }
 
-using namespace quex;
+
 
 static void self_file_name();
 static void self_byte_loader();

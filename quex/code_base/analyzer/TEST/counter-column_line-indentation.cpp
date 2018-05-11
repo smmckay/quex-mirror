@@ -3,7 +3,7 @@
 #include <cstring>
 
 using namespace std;
-using namespace quex;
+
 
 
 string    total_string;

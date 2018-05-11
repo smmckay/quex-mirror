@@ -83,7 +83,7 @@ main(int argc, char** argv)
 static void
 test(E_ConverterTestType CTT, bool LinearF, bool ClueLessStomachF, size_t BPC)
 {
-    using namespace quex;
+
 
     const char*   file_4 = LinearF ? "examples/languages.ucs4-be"    : "examples/languages.utf8";
     const char*   file_2 = LinearF ? "examples/small.ucs4-be"        : "examples/small.utf8";

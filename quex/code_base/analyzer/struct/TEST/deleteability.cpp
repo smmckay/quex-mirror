@@ -3,7 +3,7 @@
 #include "ut/lib/MemoryManager.i"
 #include <hwut_unit.h>
 
-using namespace quex;
+
 
 Dumlyzer* dl;
 

@@ -13,7 +13,7 @@
 /* Define static functions included in each test file:
  * => avoid dedicated compilation for each setup.
  * => avoid mentioning the 'common.cpp' on each compiler command line.       */
-using namespace quex; /* One should not do this in a header ...              */
+
 
 typedef struct {
     QUEX_NAME(Buffer)* buffer;

@@ -2,7 +2,6 @@
 
 #include "ut/lib/single.i"
 
-using namespace quex;
 
 void post_categorizer_setup(QUEX_NAME(Dictionary)* me, int Seed)
 {

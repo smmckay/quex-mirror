@@ -8,7 +8,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
 
     Token*           token_p;
     ISO8859_7_Lex    qlex("example-iso8859-7.txt");

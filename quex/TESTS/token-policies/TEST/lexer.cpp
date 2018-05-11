@@ -4,7 +4,7 @@
 #include "TPLex/TPLex"
 #if ! defined(__QUEX_OPTION_PLAIN_C)
 using namespace std;
-using namespace quex;
+
 #endif
 
 void  pseudo_analysis(QUEX_TYPE_ANALYZER* me);

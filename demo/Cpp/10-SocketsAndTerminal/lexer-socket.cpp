@@ -89,7 +89,7 @@ accept_and_lex(int listen_fd)
  * RETURNS: True, lexing successful.
  *          False, if an error occured or the 'BYE' token requests to stop.  */
 {
-    using namespace quex;
+
 
     int           connected_fd = accept(listen_fd, (struct sockaddr*)NULL ,NULL); 
     Token*        token;
@@ -178,7 +178,7 @@ self_on_nothing(quex::QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t RequiredTo
  * RETURNS: 'false' in any case to mark the end of transmission.
  *                                                                           */
 { 
-    using namespace quex;
+
 
     int       error  = 0;
     socklen_t len    = sizeof (error);

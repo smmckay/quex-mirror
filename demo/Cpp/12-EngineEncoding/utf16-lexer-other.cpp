@@ -8,7 +8,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
 
     if( argc == 1 ) {
        printf("Required at least one argument: 'LE' or 'BE'.\n");

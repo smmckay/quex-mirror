@@ -133,9 +133,6 @@ def __setup_analyzer_class(Setup):
         ClassName --> analyzer_class_name = ClassName
                       analyzer_name_space = ["quex"]
     """
-    if Setup.analyzer_class.find("::") == -1:
-        Setup.analyzer_class = "quex::%s" % Setup.analyzer_class
-
     Setup.analyzer_class_name, \
     Setup.analyzer_name_space, \
     Setup.analyzer_name_safe   = \

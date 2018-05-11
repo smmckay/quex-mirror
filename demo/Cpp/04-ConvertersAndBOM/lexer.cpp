@@ -11,7 +11,7 @@ static int  self_number_of_tokens = 0;
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
     const char*            FileName  = (argc < 2) ? "example.txt" : argv[1];
     QUEX_NAME(Converter)*  converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
     Easy                   qlex(FileName, converter);

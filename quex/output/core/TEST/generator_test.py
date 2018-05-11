@@ -557,10 +557,6 @@ typedef int TestAnalyzer_indentation_t;
 
 #include "ut/lib/single.i"
 
-#if ! defined (__QUEX_OPTION_PLAIN_C)
-    using namespace quex;
-#endif
-
 QUEX_NAMESPACE_MAIN_OPEN     
 TestAnalyzer_lexatom_t   LexemeNull = (TestAnalyzer_lexatom_t)0;
 QUEX_NAMESPACE_MAIN_CLOSE     
@@ -728,7 +724,6 @@ test_program_db = {
     int main(int argc, char** argv)
     {
         using namespace std;
-        using namespace quex;
 
         istringstream*          istr = new istringstream("$$TEST_STRING$$");
         QUEX_NAME(ByteLoader)*  byte_loader = QUEX_NAME(ByteLoader_stream_new)(istr);
@@ -749,7 +744,6 @@ test_program_db = {
     int main(int argc, char** argv)
     {
         using namespace std;
-        using namespace quex;
 
         istringstream                  istr("$$TEST_STRING$$");
         StrangeStream<istringstream>*  strange_stream = new StrangeStream<istringstream>(&istr);

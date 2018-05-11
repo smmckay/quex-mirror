@@ -14,7 +14,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
     Token*   token_p = 0x0;
 #   if   defined (__QUEX_SETTING_TEST_UTF8)
     const char*    file_name = "example-hindi.utf8";

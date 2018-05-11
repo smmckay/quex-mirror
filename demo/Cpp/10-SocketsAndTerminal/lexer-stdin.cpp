@@ -41,7 +41,7 @@
 int 
 main(int argc, char** argv) 
 {        
-    using namespace quex;
+
 
     Token*                 token;
     LEXER_CLASS*           qlex;   

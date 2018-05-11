@@ -6,11 +6,11 @@
 int 
 main(int argc, char** argv) 
 {        
-    quex_Token*              token_p     = 0x0;
+    Token*              token_p     = 0x0;
     bool                     BigEndianF  = (argc < 2 || (strcmp(argv[1], "BE") == 0)); 
     const char*              file_name   = BigEndianF ? "example-utf16be.txt" : "example-utf16le.txt";
     QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
-    quex_UTF16Lex            qlex;
+    UTF16Lex                 qlex;
     size_t                   BufferSize = 1024;
     char                     buffer[1024];
     bool                     byte_order_reversion_f;
@@ -20,7 +20,7 @@ main(int argc, char** argv)
         return -1;
     }
    
-    QUEX_NAME(from_ByteLoader)(&qlex, byte_loader, NULL);
+    UTF16Lex_from_ByteLoader(&qlex, byte_loader, NULL);
 
     /* System's endianness is 'little' => reversion if 'big'
      *                     is 'big'    => reversion if 'little' (not 'big'). */
@@ -39,6 +39,6 @@ main(int argc, char** argv)
         // (*) check against 'termination'
     } while( token_p->id != TKN_TERMINATION );
 
-    QUEX_NAME(destruct)(&qlex);
+    UTF16Lex_destruct(&qlex);
     return 0;
 }

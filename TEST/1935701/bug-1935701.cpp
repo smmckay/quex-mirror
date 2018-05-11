@@ -11,7 +11,6 @@
 #include<ut/lib/single.i>
 
 using namespace std;
-using namespace quex;
 
 int
 main(int argc, char** argv) 
