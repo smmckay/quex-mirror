@@ -260,7 +260,7 @@ main(int argCount, char * argValues[])
 	}
 
 	for(int argIndex = 0x01;argIndex < argCount;argIndex++) {
-		Parser * parser = new Parser(argValues[argIndex],"UTF-8");
+        quex::Parser * parser = new quex::Parser(argValues[argIndex],"UTF-8");
 
 		parser->parse();
 		parser->assemble();

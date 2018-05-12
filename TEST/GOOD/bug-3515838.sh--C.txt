@@ -4,13 +4,13 @@ Language Option: '--language C --debug-exception'
 quex -i test.qx -o Lexey --token-class Tokey --show-name-spaces --language C --debug-exception
 FSM: {
      class_name:  Lexey;
-     name_space:  'quex';
-     name_prefix: quex_Lexey;
+     name_space:  ;
+     name_prefix: Lexey;
 }
 Token: {
      class_name:  Tokey;
-     name_space:  'quex';
-     name_prefix: quex_Tokey;
+     name_space:  ;
+     name_prefix: Tokey;
 }
 quex -i test.qx -o ::Lexey --token-class ::Tokey --show-name-spaces --language C --debug-exception
 FSM: {

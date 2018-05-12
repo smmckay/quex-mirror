@@ -7,12 +7,12 @@ int main(int argc, char** argv)
 {
 	using namespace std;
 
-	quex::Token*             token_p;
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-	quex::tokenizer_it       qlex((QUEX_NAME(ByteLoader)*)NULL, converter); 
-    uint8_t*                 begin_p;
-    const uint8_t*           end_p;
-    size_t                   received_n;
+	Token*                token_p;
+    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+	tokenizer_it          qlex((QUEX_NAME(ByteLoader)*)NULL, converter); 
+    uint8_t*              begin_p;
+    const uint8_t*        end_p;
+    size_t                received_n;
 
 	while (cin) {
 		qlex.buffer.fill_prepare(&qlex.buffer, (void**)&begin_p, (const void**)&end_p);

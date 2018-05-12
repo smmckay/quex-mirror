@@ -48,12 +48,12 @@ static void self_byte_loader_core(E_Error ExpectedError);
 static void self_memory();
 static void self_plain();
 
-static void self_destruct(quex_TestAnalyzer* lexer, size_t N);
-static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
+static void self_destruct(TestAnalyzer* lexer, size_t N);
+static void self_assert(TestAnalyzer* lexer, E_Error ExpectedError);
 
-quex_TestAnalyzer        lexer[24];
-const quex_TestAnalyzer* lexerEnd = &lexer[24];
-quex_TestAnalyzer*       lx;
+TestAnalyzer        lexer[24];
+const TestAnalyzer* lexerEnd = &lexer[24];
+TestAnalyzer*       lx;
 
 int
 main(int argc, char** argv)
@@ -345,7 +345,7 @@ self_plain()
 }
 
 static void
-self_destruct(quex_TestAnalyzer* lexer, size_t N)
+self_destruct(TestAnalyzer* lexer, size_t N)
 {
     int i;
 
@@ -356,7 +356,7 @@ self_destruct(quex_TestAnalyzer* lexer, size_t N)
 }
 
 static void 
-self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
+self_assert(TestAnalyzer* lexer, E_Error ExpectedError)
 {
     hwut_verify(lx->error_code == ExpectedError);
 

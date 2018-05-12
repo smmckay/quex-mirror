@@ -344,7 +344,7 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
         *drain_p++   = '\0';
         remainder_p  = drain_p;
         source_p     = (uint8_t*)node->name_remainder;
-        source_end_p = &source_p[QUEX_NAME(lexeme_length)((TestAnalyzer_lexatom_t*)source_p) + 1];
+        source_end_p = &source_p[QUEX_NAME(lexeme_length)((QUEX_TYPE_LEXATOM*)source_p) + 1];
 
         /* Convert the remainder                                             */
         QUEX_NAME(lexeme_nnzt_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);

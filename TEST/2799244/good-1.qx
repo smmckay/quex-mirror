@@ -2,7 +2,7 @@
 token_type {
 name = Token;
 distinct {
-fred : const Simple::Simple_lexatom_t*;
+fred : const Simple_lexatom_t*;
 }
 take_text {
     return true;

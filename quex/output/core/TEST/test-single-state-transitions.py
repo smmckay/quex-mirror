@@ -6,6 +6,9 @@
 #           (2) 'tmp2': containing the information about the number set under
 #               consideration.
 #
+# NOTE: The file '$QUEX_PATH/development-setup.sh' implements basic helper
+#       functions.
+#
 # The result is best viewed with 'gnuplot'. Call the program redirect the stdout
 # to file 'tmp2' and type in gnuplot:
 #
@@ -149,8 +152,6 @@ main_template = """
  * reached.                                                                   */
 #include "ut/lib/compatibility/stdint.h"
 
-#define QUEX_TYPE_LEXATOM   TestAnalyzer_lexatom_t
-
 #include "../../../code_base/TESTS/minimum-definitions.h"
 #include <stdio.h>
 #define __QUEX_OPTION_PLAIN_C
@@ -236,9 +237,6 @@ def get_main_function(tm0, TranstionTxt, Codec):
     def indent(Txt, N):
         return (" " * N) + (Txt.replace("\n", "\n" + (" " * N)))
 
-    if Codec == "UTF8": qtc_str = "uint8_t"
-    else:               qtc_str = "uint32_t"
-
     input_preperation = get_read_preparation(codec)
 
     entry_list = [ 
@@ -253,7 +251,6 @@ def get_main_function(tm0, TranstionTxt, Codec):
     ]
 
     txt = main_template.replace("$$ENTRY_LIST$$",     "".join(expected_array))
-    txt = txt.replace("$$QUEX_TYPE_LEXATOM$$",        qtc_str)
     txt = txt.replace("$$TRANSITION$$",               indent(TranstionTxt, 4))
     txt = txt.replace("$$PREPARE_INPUT$$",            input_preperation)
 
@@ -291,7 +288,10 @@ fh.close()
 try:    os.remove("./test")
 except: pass
 
-os.system("gcc -Wall -Werror -I. -I../../../code_base -o test test.c -ggdb -std=c89")
+if codec == "UTF8": qtc_str = "-DQUEX_TYPE_LEXATOM=uint8_t"
+else:               qtc_str = "-DQUEX_TYPE_LEXATOM=uint32_t"
+
+os.system("gcc -Wall -Werror -I. -I../../../code_base %s -o test test.c -ggdb -std=c89" % qtc_str)
 os.system("./test")
 
 if True:

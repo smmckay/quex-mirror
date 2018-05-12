@@ -4,7 +4,7 @@
 #include "EasyLexer/EasyLexer"
 
 static void test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1);
-static void print_this(quex::EasyLexer* lex, int Index, size_t Size, size_t ContentSize);
+static void print_this(EasyLexer* lex, int Index, size_t Size, size_t ContentSize);
 
 int 
 main(int argc, char** argv) 
@@ -40,7 +40,7 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
     else {
         end_of_content_p = (EasyLexer_lexatom_t*)0;
     }
-    quex::EasyLexer qlex(&buffer_0[0], Size0, end_of_content_p); 
+    EasyLexer qlex(&buffer_0[0], Size0, end_of_content_p); 
 
     cout << "--------------------------------------------------------------------------\n";
     cout << "Constructor:\n";
@@ -85,7 +85,7 @@ test(size_t Size0, size_t ContentSize0, size_t Size1, size_t ContentSize1)
 }
 
 static void
-print_this(quex::EasyLexer* lex, int Index, size_t Size, size_t ContentSize)
+print_this(EasyLexer* lex, int Index, size_t Size, size_t ContentSize)
 {
     using namespace std;
 

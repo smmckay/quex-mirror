@@ -3,5 +3,5 @@
 (*) perform compilation
 # Compilation error on return 'Token' instead 'bool'
 # is intended and correctly expected behavior.
-good-2.qx: In function ‘bool Token_take_text(Token*, const uint8_t*, const uint8_t*)’:
-good-2.qx:10:18: error: cannot convert ‘Token’ to ‘bool’ in return
+good-2.qx: In function ‘bool Token_take_text(Token*, const Simple_lexatom_t*, const Simple_lexatom_t*)’:
+good-2.qx:8:14: error: cannot convert ‘Token’ to ‘bool’ in return

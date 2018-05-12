@@ -8,5 +8,5 @@ fi
 tmp=`pwd`
 cd $bug/ 
 quex -i error.qx -o Engin-e
-rm Engin-e*
+rm -rf Engin-e*
 cd $tmp

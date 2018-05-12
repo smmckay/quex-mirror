@@ -9,11 +9,11 @@ char file_buffer[BUFFER_SIZE];
 #endif
 
 int main(int argc, char** argv) {
-    quex_simple      qlex;
-    QUEX_TYPE_TOKEN* token_p;
-    char*            file_name = argc    ==   1    ?   "example.txt"    :   argv[1];
+    simple qlex;
+    Token* token_p;
+    char*  file_name = argc    ==   1    ?   "example.txt"    :   argv[1];
 
-	QUEX_NAME(from_file_name)(&qlex, file_name, ENCODING_NAME);
+	simple_from_file_name(&qlex, file_name, ENCODING_NAME);
 	do {
 		qlex.receive(&qlex, &token_p);
 		/* Print out token information            */
@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 #       endif
 	} while(token_p->id != QUEX_TKN_TERMINATION);
 
-	QUEX_NAME(destruct)(&qlex);
+	simple_destruct(&qlex);
 	return 0;
 }
 

@@ -49,14 +49,14 @@ static void self_byte_loader();
 static void self_byte_loader_core(E_Error ExpectedError);
 static void self_memory();
 
-static void self_pop(quex_TestAnalyzer* lexer, size_t N);
-static void self_destruct(quex_TestAnalyzer* lexer, size_t N);
-static void self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError);
+static void self_pop(TestAnalyzer* lexer, size_t N);
+static void self_destruct(TestAnalyzer* lexer, size_t N);
+static void self_assert(TestAnalyzer* lexer, E_Error ExpectedError);
 
-quex_TestAnalyzer        lexer[25];
-const quex_TestAnalyzer* lexerEnd = &lexer[25];
-quex_TestAnalyzer*       lx;
-quex_TestAnalyzer        backup;
+TestAnalyzer        lexer[25];
+const TestAnalyzer* lexerEnd = &lexer[25];
+TestAnalyzer*       lx;
+TestAnalyzer        backup;
 
 int
 main(int argc, char** argv)
@@ -339,7 +339,7 @@ self_memory()
 }
 
 static void
-self_destruct(quex_TestAnalyzer* lexer, size_t N)
+self_destruct(TestAnalyzer* lexer, size_t N)
 {
     int i;
 
@@ -350,7 +350,7 @@ self_destruct(quex_TestAnalyzer* lexer, size_t N)
 }
 
 static void
-self_pop(quex_TestAnalyzer* lexer, size_t N)
+self_pop(TestAnalyzer* lexer, size_t N)
 {
     int i;
 
@@ -363,7 +363,7 @@ self_pop(quex_TestAnalyzer* lexer, size_t N)
 }
 
 static void 
-self_assert(quex_TestAnalyzer* lexer, E_Error ExpectedError)
+self_assert(TestAnalyzer* lexer, E_Error ExpectedError)
 {
     hwut_verify(backup._mode_stack.end == backup._mode_stack.begin);
     hwut_verify(backup._mode_stack.memory_end - backup._mode_stack.begin == QUEX_SETTING_MODE_STACK_SIZE);

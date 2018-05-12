@@ -2,7 +2,7 @@
 #include <hwut_unit.h>
 
 void 
-common_token_queue_dummy_setup(quex_TestAnalyzer* me)
+common_token_queue_dummy_setup(TestAnalyzer* me)
 {
     TestAnalyzer_token_id_t token_id;
     int                     token_n = 0;
@@ -13,7 +13,7 @@ common_token_queue_dummy_setup(quex_TestAnalyzer* me)
 }
 
 void 
-common_token_queue_verify(const quex_TestAnalyzer* me)
+common_token_queue_verify(const TestAnalyzer* me)
 {
     TestAnalyzer_token_id_t token_id;
     QUEX_TYPE_TOKEN*        token_p = me->_token_queue.read_iterator;

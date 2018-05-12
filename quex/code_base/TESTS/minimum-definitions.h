@@ -51,12 +51,13 @@
 #define QUEX_NAME_TOKEN(NAME)      TestAnalyzerToken_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN  
 #define QUEX_NAMESPACE_TOKEN_CLOSE 
-#ifndef   QUEX_TYPE_LEXATOM
-#  define QUEX_TYPE_LEXATOM uint8_t
-#endif
 #define   QUEX_TOKEN_ID(X)    QUEX_TKN_ ## X
 #ifndef   QUEX_TYPE_TOKEN_ID
 #  define QUEX_TYPE_TOKEN_ID int
+#endif
+
+#ifndef   QUEX_TYPE_LEXATOM
+#  define QUEX_TYPE_LEXATOM uint8_t
 #endif
 typedef QUEX_TYPE_LEXATOM  TestAnalyzer_lexatom_t;
 typedef QUEX_TYPE_TOKEN_ID TestAnalyzer_token_id_t;

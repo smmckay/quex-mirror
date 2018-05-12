@@ -17,8 +17,8 @@
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
-quex_TestAnalyzer      lexer;
-quex_TestAnalyzer*     lx =&lexer;
+TestAnalyzer      lexer;
+TestAnalyzer*     lx =&lexer;
 #define                MemorySize 65536
 uint8_t                memory[MemorySize];
 uint8_t*               memory_it = &memory[0];
@@ -28,7 +28,7 @@ int                    self_total_n = 0;
 static void      self_run(ptrdiff_t Depth);
 static void      self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN);
 static bool      self_include_push(uint32_t n);
-static void      self_include_pop(quex_TestAnalyzer* lx);
+static void      self_include_pop(TestAnalyzer* lx);
 static void      self_setup_pointers(uint32_t n);
 static ptrdiff_t self_find_include_depth();
 
@@ -189,7 +189,7 @@ self_include_push(uint32_t n)
 
 
 static void      
-self_include_pop(quex_TestAnalyzer* lx)
+self_include_pop(TestAnalyzer* lx)
 {
     QUEX_NAME(Buffer_event_callbacks)  backup_callbacks = lx->buffer.event;
 
