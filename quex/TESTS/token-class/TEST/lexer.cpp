@@ -14,7 +14,7 @@ main(int argc, char** argv)
         printf("With token policy 'queue'.\n");
         return 0;
     }
-    quex::Simple           qlex("example.txt");
+    Simple           qlex("example.txt");
     ispringen::MeinToken*  token_p = qlex.token_p();
 
     // (*) Access the '__nonsense__' member to ensure it has been generated

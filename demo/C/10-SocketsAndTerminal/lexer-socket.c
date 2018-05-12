@@ -57,11 +57,13 @@
 #if ! defined(WITH_UTF8)
 #   include <lex_ascii/LexAscii.h>
 #   define  LEXER_CLASS   LexAscii
+#   define  TOKEN_CLASS   LexAscii_Token
 #   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX>
 #   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX.i>
 #else
 #   include <lex_utf8/LexUtf8.h>
 #   define  LEXER_CLASS   LexUtf8
+#   define  TOKEN_CLASS   LexUtf8_Token
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #   include <lex_utf8/lib/buffer/bytes/ByteLoader_POSIX>
@@ -70,7 +72,7 @@
 
 static int  setup_socket_server(void);
 static bool accept_and_lex(int listen_fd);
-static void print_token(Token*  token);
+static void print_token(TOKEN_CLASS*  token);
 static bool self_on_nothing(QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t LoadedN);
  
 int main(void)
@@ -93,7 +95,7 @@ accept_and_lex(int listen_fd)
  *          False, if an error occured or the 'BYE' token requests to stop.  */
 {
     int                    connected_fd = accept(listen_fd, (struct sockaddr*)NULL ,NULL); 
-    Token*            token;
+    TOKEN_CLASS*           token;
     LEXER_CLASS            qlex;
     bool                   continue_f;
 #if defined(WITH_UTF8)
@@ -202,7 +204,7 @@ self_on_nothing(QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t RequiredToLoad)
 
 
 static void
-print_token(Token*  token)
+print_token(TOKEN_CLASS*  token)
 {
     size_t PrintBufferSize = 1024;
     char   print_buffer[1024];

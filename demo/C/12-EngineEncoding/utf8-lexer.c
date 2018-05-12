@@ -6,10 +6,10 @@
 int 
 main(int argc, char** argv) 
 {        
-    Token*        token_p = 0x0;
-    size_t        BufferSize = 1024;
-    char          buffer[1024];
-    UTF8Lex       qlex;
+    size_t          BufferSize = 1024;
+    char            buffer[1024];
+    UTF8Lex         qlex;
+    UTF8Lex_Token*  token_p = 0x0;
     (void)argc; (void)argv;
 
     UTF8Lex_from_file_name(&qlex, "example-utf8.txt", NULL);

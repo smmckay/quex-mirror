@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-    Token*  token_p = 0x0;
+    TOKEN_TYPE*  token_p = 0x0;
     LEXER_TYPE   tlex;
     const char*  file_name = (const char*)0;
 #   define       BufferSize 1024

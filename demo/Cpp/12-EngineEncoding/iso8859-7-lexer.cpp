@@ -10,8 +10,9 @@ main(int argc, char** argv)
 {        
 
 
-    Token*           token_p;
-    ISO8859_7_Lex    qlex("example-iso8859-7.txt");
+    ISO8859_7_Lex_Token* token_p;
+    ISO8859_7_Lex        qlex("example-iso8859-7.txt");
+    
     (void)argc; (void)argv; 
 
     // (*) loop until the 'termination' token arrives

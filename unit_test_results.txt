@@ -8,14 +8,14 @@ TEST                                                                 <no date>
  * Dizzzy:
 
     293 0.66.5: Encoding running on wchar_t
-        bug-293.sh bad ...............................................[OK]
-                   good ..............................................[OK]
+        bug-293.sh bad .............................................[FAIL]
+                   good ............................................[FAIL]
                    invokation ........................................[OK]
 
  * alexeevm:
 
     3022603 0.49.2 Using external buffer with Quex lexer
-        bug-3022603.sh .............................................[FAIL]
+        bug-3022603.sh ...............................................[OK]
     3025173 0.49.2 Custom Token struct for quex
         bug-3025173.sh .............................................[FAIL]
     3032877 -b, --buffer-element-size enhancement
@@ -48,7 +48,7 @@ TEST                                                                 <no date>
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
         bug-2619679.sh ...............................................[OK]
     286 Maintaining character index during manual buffer filling.
-        bug-286.sh ............................................[NO OUTPUT]
+        bug-286.sh ...................................................[OK]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
         bug-2937342.sh 1 .............................................[OK]
                        2 .............................................[OK]
@@ -56,7 +56,7 @@ TEST                                                                 <no date>
                        4 .............................................[OK]
                        5 .............................................[OK]
     3025852 0.49.2 Instatiation of inheritable-only-modes
-        bug-3025852.sh .............................................[FAIL]
+        bug-3025852.sh ...............................................[OK]
 
  * clemwang:
 
@@ -101,7 +101,7 @@ TEST                                                                 <no date>
  * eabrams:
 
     patch-16 Compile error when indentation based without token queue
-        patch-16.sh ..................................................[OK]
+        patch-16.sh ................................................[FAIL]
 
  * enmarabrams:
 
@@ -164,7 +164,7 @@ TEST                                                                 <no date>
                        4 .............................................[OK]
                        5 .............................................[OK]
     3157923 Memory Leak by Components
-        bug-3157923.sh .............................................[FAIL]
+        bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
         bug-3513568.sh .............................................[FAIL]
 
@@ -287,12 +287,12 @@ TEST                                                                 <no date>
  * petulda:
 
     3178600 0.58.1 Last appeared char not stored when switching modes
-        bug-3178600.sh .............................................[FAIL]
+        bug-3178600.sh ...............................................[OK]
 
  * prade2p:
 
     2914877 0.47.3 RE Exception on [10000-10FFFF]
-        bug-2914877.sh .............................................[FAIL]
+        bug-2914877.sh ...............................................[OK]
 
  * rami-al-rafou:
 
@@ -494,15 +494,12 @@ TEST                                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bug-3022603.sh
+    [FAIL] bug-293.sh _ bad
+                    \__ good
     [FAIL] bug-3025173.sh
-    [FAIL] bug-286.sh
-    [FAIL] bug-3025852.sh
+    [FAIL] patch-16.sh
     [FAIL] feature-1948456.sh
-    [FAIL] bug-3157923.sh
     [FAIL] bug-3513568.sh
-    [FAIL] bug-3178600.sh
-    [FAIL] bug-2914877.sh
     [FAIL] bug-3524729.sh
 ===============================================================================
                                                                                
@@ -516,11 +513,13 @@ demo/TEST                                                            <no date>
  * Demo Consistency:
 
     C and C++ Makefiles
-        makefile-diff.sh .............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        makefile-diff.sh ...........................................[FAIL]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] makefile-diff.sh
 ===============================================================================
                                                                                
                                   Demos for C                                  
@@ -774,8 +773,8 @@ demo/Cpp/TEST                                                        <no date>
  * 13-MultipleLexers:
 
     Single Application/Multiple Lexical Analyzers
-        13-MultipleLexers.sh asserts .................................[OK]
-                             no-asserts ..............................[OK]
+        13-MultipleLexers.sh asserts ...............................[FAIL]
+                             no-asserts ............................[FAIL]
 
  * 14-MultipleLexersSameToken:
 
@@ -799,6 +798,8 @@ demo/Cpp/TEST                                                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] 13-MultipleLexers.sh _ asserts
+                              \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
                                        \__ no-asserts
 ===============================================================================
@@ -1229,16 +1230,13 @@ quex/TESTS/indentation_count/TEST                                    <no date>
 quex/TESTS/loop/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * skip_nested_range
-        skip_nested_range.exe ...............................[MAKE FAILED]
+        skip_nested_range.exe ........................................[OK]
  * skip_range
-        skip_range.exe ......................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] skip_nested_range.exe
-    [FAIL] skip_range.exe
+        skip_range.exe ...............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                Match Precedence                                
@@ -1298,13 +1296,11 @@ quex/TESTS/match-precedence/TEST                                     <no date>
     Derived before Base
         derived-before-base.sh .......................................[OK]
     Larger Inheritance Tree
-        large-tree.sh ..............................................[FAIL]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] large-tree.sh
+        large-tree.sh ................................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                      Misc                                      
@@ -1477,17 +1473,17 @@ quex/TESTS/token-class/TEST                                          <no date>
 -------------------------------------------------------------------------------
  * Miscellaneous Sample Runs
         misc.sh double-colon .........................................[OK]
-                empty ................................................[OK]
+                empty ..............................................[FAIL]
                 no-namespace .........................................[OK]
                 token ................................................[OK]
  * With token policy 'queue'.
-        simple-queue.exe ....................................[MAKE FAILED]
+        simple-queue.exe .............................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] simple-queue.exe
+    [FAIL] misc.sh _ empty
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -2322,20 +2318,16 @@ quex/output/core/TEST                                                <no date>
  * Single DFA_State:
 
     Transition Code Generation
-        test-single-state-transitions.py A .........................[FAIL]
+        test-single-state-transitions.py A ...........................[OK]
                                          A-UTF8 ......................[OK]
-                                         B ....................[NO OUTPUT]
+                                         B ...........................[OK]
                                          B-UTF8 ......................[OK]
-                                         C ....................[NO OUTPUT]
+                                         C ...........................[OK]
                                          C-UTF8 ......................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-single-state-transitions.py _ A
-                                          \__ B
-                                          \__ C
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -3412,10 +3404,10 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       10  238   [FAIL] TEST                                                          
+        7  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
-        2  56    [FAIL] ..../Cpp/TEST                                                 
-           2       [OK] ..../TEST                                                     
+        4  56    [FAIL] ..../Cpp/TEST                                                 
+        1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
         6  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
@@ -3426,8 +3418,8 @@ SUMMARY:
            23      [OK] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
-        2  2     [FAIL] ........../loop/TEST                                          
-        1  45    [FAIL] ........../match-precedence/TEST                              
+           2       [OK] ........../loop/TEST                                          
+           45      [OK] ........../match-precedence/TEST                              
         3  32    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
         2  14    [FAIL] ........../source-package/TEST                                
@@ -3467,16 +3459,16 @@ SUMMARY:
            58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
-        3  205   [FAIL] ..../output/core/TEST                                         
+           205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
         1  31    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____   __             
-    |  ___|_ _(_) |___     |___ /  / /_      __  __
-    | |_ / _` | | / __|      |_ \ | '_ \     \ \/ /
-    |  _| (_| | | \__ \     ___) || (_) |     >  < 
+     _____     _ _          _____   ___            
+    |  ___|_ _(_) |___     |___ /  / _ \     __  __
+    | |_ / _` | | / __|      |_ \ | | | |    \ \/ /
+    |  _| (_| | | \__ \     ___) || |_| |     >  < 
     |_|  \__,_|_|_|___/    |____/  \___/     /_/\_\
                                                                    (1701 tests)
 

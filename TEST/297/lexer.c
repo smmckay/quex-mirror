@@ -3,7 +3,7 @@
 int 
 main(int argc, char** argv) 
 {        
-    quex_TestAnalyzer  qlex;
+    TestAnalyzer  qlex;
     
     QUEX_NAME(from_file_name)(&qlex, "example.txt", NULL);
 

@@ -2,13 +2,13 @@
 
 #include "lexical_analysis/LexerForC"
 
-static void print_token(Token* token_p);
+static void print_token(LexerForC_Token* token_p);
 
 int 
 main(int argc, char** argv) 
 {        
     LexerForC qlex(argc == 1 ? "example.txt" : argv[1]);
-    Token*    token_p = 0;
+    LexerForC_Token*    token_p = 0;
     int             number_of_tokens = 0;
 
     do {
@@ -28,7 +28,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(Token* token_p)
+print_token(LexerForC_Token* token_p)
 {
     std::cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
 

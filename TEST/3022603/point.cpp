@@ -10,7 +10,7 @@ main(int argc, char** argv)
     using namespace std;
     const static size_t BUFFER_SIZE = 10000;
     uint8_t             BUFFER[BUFFER_SIZE];
-    Token*   token_p;
+    Simple_Token*   token_p;
     Simple*  qlex;
         
     // -- Call the low lever driver to fill the fill region

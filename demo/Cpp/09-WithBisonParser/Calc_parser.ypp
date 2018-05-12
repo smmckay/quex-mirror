@@ -84,7 +84,8 @@ void Calc_yyerror(Calc_lexer *qlex, const std::string& m)
 
 int Calc_yylex(YYSTYPE *yylval, Calc_lexer *qlex)
 {
-	Token* token;
+	Calc_lexer_Token* token;
+
 	qlex->receive(&token);
     if( ! token ) {
         return TKN_TERMINATION;

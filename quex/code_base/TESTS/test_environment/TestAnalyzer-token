@@ -2,8 +2,8 @@
 * (C) 2004-2009 Frank-Rene Schaefer
 * ABSOLUTELY NO WARRANTY
 */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN
+#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TESTANALYZER_TOKEN
+#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TESTANALYZER_TOKEN
 
 #include <cstddef>
 #include "test_environment/lib/compatibility/stdint.h"
@@ -28,21 +28,21 @@
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
-class Token;
+class TestAnalyzer_Token;
 
-inline void    QUEX_NAME_TOKEN(construct)(Token* __this);
-inline void    QUEX_NAME_TOKEN(destruct)(Token* __this);
-inline void    QUEX_NAME_TOKEN(copy)(Token*       me,
-const Token* That);
+inline void    QUEX_NAME_TOKEN(construct)(TestAnalyzer_Token* __this);
+inline void    QUEX_NAME_TOKEN(destruct)(TestAnalyzer_Token* __this);
+inline void    QUEX_NAME_TOKEN(copy)(TestAnalyzer_Token*       me,
+const TestAnalyzer_Token* That);
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-inline bool    QUEX_NAME_TOKEN(take_text)(Token*             __this,
+inline bool    QUEX_NAME_TOKEN(take_text)(TestAnalyzer_Token*             __this,
 const TestAnalyzer_lexatom_t*  Begin,
 const TestAnalyzer_lexatom_t*  End);
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-inline size_t  QUEX_NAME_TOKEN(repetition_n_get)(Token* __this);
-inline void    QUEX_NAME_TOKEN(repetition_n_set)(Token* __this,
+inline size_t  QUEX_NAME_TOKEN(repetition_n_get)(TestAnalyzer_Token* __this);
+inline void    QUEX_NAME_TOKEN(repetition_n_set)(TestAnalyzer_Token* __this,
 size_t        N);
 #endif
 
@@ -50,15 +50,15 @@ inline const char*
 QUEX_NAME_TOKEN(map_id_to_name)(const TestAnalyzer_token_id_t);
 
 
-class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG Token {
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_Token {
 public:
-Token();
-Token(const Token& That);
+TestAnalyzer_Token();
+TestAnalyzer_Token(const TestAnalyzer_Token& That);
 /* operator=(..): USE WITH CAUTION--POSSIBLE MAJOR PERFORMANCE DECREASE!
 *                BETTER USE __copy(That)                                */
-Token& operator=(const Token& That)
+TestAnalyzer_Token& operator=(const TestAnalyzer_Token& That)
 { QUEX_NAME_TOKEN(copy)(this, &That); return *this; }
-virtual ~Token();
+virtual ~TestAnalyzer_Token();
 
 
 #   line 14 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
@@ -143,9 +143,9 @@ return tmp;
 #   undef  self
 
 private:
-friend void QUEX_NAME_TOKEN(copy)(Token*       __this,
-const Token* That);
-friend bool QUEX_NAME_TOKEN(take_text)(Token*             __this,
+friend void QUEX_NAME_TOKEN(copy)(TestAnalyzer_Token*       __this,
+const TestAnalyzer_Token* That);
+friend bool QUEX_NAME_TOKEN(take_text)(TestAnalyzer_Token*             __this,
 const TestAnalyzer_lexatom_t*  Begin,
 const TestAnalyzer_lexatom_t*  End);
 };
@@ -157,7 +157,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 
 QUEX_NAMESPACE_TOKEN_OPEN
 inline std::ostream&
-operator<<(std::ostream& ostr, const Token& Tok)
+operator<<(std::ostream& ostr, const TestAnalyzer_Token& Tok)
 { ostr << Tok.get_string(); return ostr; }
 QUEX_NAMESPACE_TOKEN_CLOSE
 #include "test_environment/converter-from-lexeme.i"
@@ -172,13 +172,13 @@ extern TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull);
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN */
+#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TESTANALYZER_TOKEN */
 
 /* This content is pasted into header, so the include guard is superfluous.
 * It is left in place, so that if some time later the code generator is
 * adapted to generate independent files, it will still work safely.          */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN_I
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN_I
+#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TESTANALYZER_TOKEN_I
+#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TESTANALYZER_TOKEN_I
 
 #include "test_environment/TestAnalyzer-token"
 #include "test_environment/TestAnalyzer-token_ids"
@@ -187,7 +187,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_INLINE
-Token::Token()
+TestAnalyzer_Token::TestAnalyzer_Token()
 {
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -206,7 +206,7 @@ self.text   = LexemeNull;
 }
 
 QUEX_INLINE
-Token::Token(const Token& Other)
+TestAnalyzer_Token::TestAnalyzer_Token(const TestAnalyzer_Token& Other)
 {
 QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
@@ -226,7 +226,7 @@ self.text   = LexemeNull;
 }
 
 QUEX_INLINE
-Token::~Token()
+TestAnalyzer_Token::~TestAnalyzer_Token()
 {
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -248,21 +248,21 @@ self.text = LexemeNull;
 }
 
 QUEX_INLINE void
-QUEX_NAME_TOKEN(construct)(Token* __this)
+QUEX_NAME_TOKEN(construct)(TestAnalyzer_Token* __this)
 {
 /* Explicit constructor call by 'placement new' */
-new ((void*)__this) Token;
+new ((void*)__this) TestAnalyzer_Token;
 }
 
 QUEX_INLINE void
-QUEX_NAME_TOKEN(destruct)(Token* __this)
+QUEX_NAME_TOKEN(destruct)(TestAnalyzer_Token* __this)
 {
 if( ! __this ) return;
-__this->Token::~Token();
+__this->TestAnalyzer_Token::~TestAnalyzer_Token();
 }
 
 QUEX_INLINE void
-QUEX_NAME_TOKEN(copy)(Token* __this, const Token* __That)
+QUEX_NAME_TOKEN(copy)(TestAnalyzer_Token* __this, const TestAnalyzer_Token* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
@@ -308,7 +308,7 @@ __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool
-QUEX_NAME_TOKEN(take_text)(Token*              __this,
+QUEX_NAME_TOKEN(take_text)(TestAnalyzer_Token*              __this,
 const TestAnalyzer_lexatom_t* Begin,
 const TestAnalyzer_lexatom_t* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
@@ -380,7 +380,7 @@ return false;
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t
-QUEX_NAME_TOKEN(repetition_n_get)(Token* __this)
+QUEX_NAME_TOKEN(repetition_n_get)(TestAnalyzer_Token* __this)
 {
 #   define self (*__this)
 (void)__this;
@@ -397,7 +397,7 @@ return self.number;
 }
 
 QUEX_INLINE void
-QUEX_NAME_TOKEN(repetition_n_set)(Token* __this, size_t N)
+QUEX_NAME_TOKEN(repetition_n_set)(TestAnalyzer_Token* __this, size_t N)
 {
 #   define self (*__this)
 (void)__this; (void)N;
@@ -443,4 +443,4 @@ case QUEX_TKN_X:             return "X";
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TOKEN_I */
+#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED______TESTANALYZER_TOKEN_I */

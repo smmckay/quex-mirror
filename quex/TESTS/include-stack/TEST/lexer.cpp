@@ -9,7 +9,7 @@ using namespace std;
 
 Simple_lexatom_t  EmptyLexeme = 0x0000;  /* Only the terminating zero */
 
-void    print(Simple& qlex, Token& Token, bool TextF = false);
+void    print(Simple& qlex, Simple_Token& Token, bool TextF = false);
 void    print(Simple& qlex, const char* Str1, const char* Str2=0x0, const char* Str3=0x0);
 
 #define RECEIVE(TokenP)   (void)qlex.receive(&TokenP)
@@ -40,7 +40,7 @@ self_test(const char* CharFilename)
     string         Filename(CharFilename);
     ifstream       istr((Directory + Filename + ".txt").c_str());
     Simple   qlex(QUEX_NAME(ByteLoader_stream_new)(&istr), NULL);
-    Token*   token_p = 0x0;
+    Simple_Token*   token_p = 0x0;
 
 
     qlex.input_name_set((Directory + Filename + ".txt").c_str());
@@ -59,7 +59,7 @@ self_test(const char* CharFilename)
 string  space(int N)
 { string tmp; for(int i=0; i<N; ++i) tmp += "    "; return tmp; }
 
-void  print(Simple& qlex, Token& Token, bool TextF /* = false */)
+void  print(Simple& qlex, Simple_Token& Token, bool TextF /* = false */)
 { 
     cout << space(qlex.include_depth) << Token.line_number() << ": (" << Token.column_number() << ")";
     cout << Token.type_id_name();

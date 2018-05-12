@@ -42,24 +42,26 @@
 #if ! defined(WITH_UTF8)
 #   include <lex_ascii/LexAscii.h>
 #   define  LEXER_CLASS   LexAscii
+#   define  TOKEN_CLASS   LexAscii_Token
 #else
 #   include <lex_utf8/LexUtf8.h>
 #   define  LEXER_CLASS   LexUtf8
+#   define  TOKEN_CLASS   LexUtf8_Token
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
 
-static void  print_token(Token*  token);
+static void  print_token(TOKEN_CLASS*  token);
 
 int 
 main(int argc, char** argv) 
 {        
-    Token*              token = 0;
-    LEXER_CLASS              qlex;   
-    size_t                   size = 4096;
-    char                     buffer[4096];
-    char*                    p;
-    ssize_t                  received_n;
+    TOKEN_CLASS*   token = 0;
+    LEXER_CLASS    qlex;   
+    size_t         size = 4096;
+    char           buffer[4096];
+    char*          p;
+    ssize_t        received_n;
     (void)argc; (void)argv;
 
 #if defined(WITH_UTF8)
@@ -91,7 +93,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(Token*  token)
+print_token(TOKEN_CLASS*  token)
 {
     size_t PrintBufferSize = 1024;
     char   print_buffer[1024];

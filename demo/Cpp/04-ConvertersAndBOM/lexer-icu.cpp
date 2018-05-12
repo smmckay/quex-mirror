@@ -4,7 +4,7 @@
 
 #include <stdio.h>    
 
-static bool self_print_token(Token* token_p);
+static bool self_print_token(Easy_Token* token_p);
 static int  self_number_of_tokens = 0;
 
 int 
@@ -24,7 +24,7 @@ main(int argc, char** argv)
 }
 
 static bool
-self_print_token(Token* token_p)
+self_print_token(Easy_Token* token_p)
 {
     std::cout << "(" << token_p->line_number() << ", " << token_p->column_number() << ")  \t";
 

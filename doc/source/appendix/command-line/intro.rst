@@ -332,8 +332,6 @@ The following options support the definition of a independently customized token
 
     
 
-Default: Token
-
 .. cmdoption:: --token-class-support-take-text, --tcstt 
 
     When specifying an external token class which provides the 'take_text' member function, this 

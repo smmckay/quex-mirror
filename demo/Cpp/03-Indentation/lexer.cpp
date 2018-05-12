@@ -3,12 +3,12 @@
 
 #ifndef LEXER2
 #   include "Easy/Easy"
-typedef Easy  Lexer;
-typedef Token Token;
+typedef Easy       Lexer;
+typedef Easy_Token Token;
 #else
 #   include "Easy2/Easy2"
-typedef Easy2  Lexer;
-typedef Token  Token;
+typedef Easy2        Lexer;
+typedef Easy2_Token  Token;
 #endif
 
 static void print_token(Token* token_p);

@@ -55,11 +55,13 @@
 #if ! defined(WITH_UTF8)
 #   include <lex_ascii/LexAscii>
 #   define  LEXER_CLASS   LexAscii
+#   define  TOKEN_CLASS   LexAscii_Token
 #   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX>
 #   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX.i>
 #else
 #   include <lex_utf8/LexUtf8>
 #   define  LEXER_CLASS   LexUtf8
+#   define  TOKEN_CLASS   LexUtf8_Token
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #   include <lex_utf8/lib/buffer/bytes/ByteLoader_POSIX>
@@ -92,7 +94,7 @@ accept_and_lex(int listen_fd)
 
 
     int           connected_fd = accept(listen_fd, (struct sockaddr*)NULL ,NULL); 
-    Token*        token;
+    TOKEN_CLASS*  token;
     LEXER_CLASS*  qlex;
     bool          continue_f;
 #if defined(WITH_UTF8)

@@ -5,10 +5,10 @@
 int 
 main(int argc, char** argv) 
 {        
-    Token*        token_p;
-    ISO8859_7_Lex qlex;
-    size_t             BufferSize = 1024;
-    char               buffer[1024];
+    ISO8859_7_Lex_Token*  token_p;
+    ISO8859_7_Lex         qlex;
+    size_t                BufferSize = 1024;
+    char                  buffer[1024];
     (void)argc; (void)argv;
     
     ISO8859_7_Lex_from_file_name(&qlex, "example-iso8859-7.txt", NULL);

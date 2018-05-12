@@ -10,8 +10,8 @@ main(int argc, char** argv)
 {        
 
 
-    Token*   token;
-    UTF8Lex  qlex("example-utf8.txt");
+    UTF8Lex_Token*  token;
+    UTF8Lex         qlex("example-utf8.txt");
     (void)argc; (void)argv;
     
 

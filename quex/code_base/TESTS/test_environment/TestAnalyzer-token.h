@@ -2,8 +2,8 @@
 * (C) 2004-2017 Frank-Rene Schaefer
 * ABSOLUTELY NO WARRANTY
 */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TOKEN
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TOKEN
+#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN
+#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN
 
 /* For '--token-class-only' the following option may not come directly
 * from the configuration file.                                        */
@@ -25,10 +25,10 @@
 #include <string.h>
 #include "test_environment/converter-from-lexeme"
 
-struct Token_tag;
+struct TestAnalyzer_Token_tag;
 
 extern const char*
-QUEX_NAME_TOKEN(get_string)(struct Token_tag* me,  char*  buffer, size_t   BufferSize);
+QUEX_NAME_TOKEN(get_string)(struct TestAnalyzer_Token_tag* me,  char*  buffer, size_t   BufferSize);
 
 
 
@@ -36,7 +36,7 @@ QUEX_NAME_TOKEN(get_string)(struct Token_tag* me,  char*  buffer, size_t   Buffe
 
 
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG Token_tag {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_Token_tag {
 TestAnalyzer_token_id_t    id;
 
 #   line 19 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
@@ -69,31 +69,31 @@ TestAnalyzer_token_column_n_t  _column_n;
 #   line 62 "test_environment/TestAnalyzer-token.h"
 
 
-} Token;
+} TestAnalyzer_Token;
 
-QUEX_INLINE void         Token_construct(Token*);
-QUEX_INLINE void         Token_copy_construct(Token*,
-const Token*);
-QUEX_INLINE void         Token_copy(Token*, const Token*);
-QUEX_INLINE void         Token_destruct(Token*);
+QUEX_INLINE void         TestAnalyzer_Token_construct(TestAnalyzer_Token*);
+QUEX_INLINE void         TestAnalyzer_Token_copy_construct(TestAnalyzer_Token*,
+const TestAnalyzer_Token*);
+QUEX_INLINE void         TestAnalyzer_Token_copy(TestAnalyzer_Token*, const TestAnalyzer_Token*);
+QUEX_INLINE void         TestAnalyzer_Token_destruct(TestAnalyzer_Token*);
 
 /* NOTE: Setters and getters as in the C++ version of the token class are not
 *       necessary, since the members are accessed directly.                   */
 
-QUEX_INLINE void         Token_set(Token*            me,
+QUEX_INLINE void         TestAnalyzer_Token_set(TestAnalyzer_Token*            me,
 const TestAnalyzer_token_id_t ID);
 
-QUEX_INLINE const char*  Token_map_id_to_name(const TestAnalyzer_token_id_t);
+QUEX_INLINE const char*  TestAnalyzer_Token_map_id_to_name(const TestAnalyzer_token_id_t);
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-QUEX_INLINE bool         Token_take_text(Token*            me,
+QUEX_INLINE bool         TestAnalyzer_Token_take_text(TestAnalyzer_Token*            me,
 const TestAnalyzer_lexatom_t* Begin,
 const TestAnalyzer_lexatom_t* End);
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-QUEX_INLINE size_t       Token_repetition_n_get(Token*);
-QUEX_INLINE void         Token_repetition_n_set(Token*, size_t);
+QUEX_INLINE size_t       TestAnalyzer_Token_repetition_n_get(TestAnalyzer_Token*);
+QUEX_INLINE void         TestAnalyzer_Token_repetition_n_set(TestAnalyzer_Token*, size_t);
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 QUEX_NAMESPACE_TOKEN_OPEN
@@ -101,4 +101,4 @@ extern TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull);
 QUEX_NAMESPACE_TOKEN_CLOSE
 
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TOKEN */
+#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN */

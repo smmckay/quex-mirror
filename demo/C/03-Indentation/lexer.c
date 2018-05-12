@@ -1,13 +1,13 @@
 #ifndef LEXER2
 #   include "Easy/Easy.h"
-typedef Easy  Lexer;
-typedef Token Token;
+typedef Easy       Lexer;
+typedef Easy_Token Token;
 #define CONSTRUCT Easy_from_file_name
 #define DESTRUCT  Easy_destruct
 #else
 #   include "Easy2/Easy2.h"
-typedef Easy2  Lexer;
-typedef Token  Token;
+typedef Easy2        Lexer;
+typedef Easy2_Token  Token;
 #define CONSTRUCT Easy2_from_file_name
 #define DESTRUCT  Easy2_destruct
 #endif

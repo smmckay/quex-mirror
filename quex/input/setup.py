@@ -235,7 +235,7 @@ SETUP_INFO = {
     "input_mode_files":               [["-i"],                                 SetupParTypes.LIST],
     "suppressed_notification_list":   [["--suppress", "-s"],                   SetupParTypes.INT_LIST],
     "extern_token_class_file":        [["--token-class-file"],                 ""],
-    "token_class":                    [["--token-class", "--tc"],              "Token"],
+    "token_class":                    [["--token-class", "--tc"],              ""],
     "token_class_support_take_text_f":  [["--token-class-support-take-text",  "--tcstt"], SetupParTypes.FLAG],
     "token_class_support_repetition_f": [["--token-class-support-repetition", "--tcsr"],  SetupParTypes.FLAG],
     "token_class_only_f":             [["--token-class-only", "--tco"],        SetupParTypes.FLAG],

@@ -4,17 +4,17 @@
 #include <Easy/lib/bom>
 #include <stdio.h>    
 
-static void print_token(Token* token_p);
+static void print_token(Easy_Token* token_p);
 
 int 
 main(int argc, char** argv) 
 /* 1st arg: input file, default = 'example.txt'
  * 2nd arg: input character encoding name, 0x0 --> no conversion              */
 {        
-    Easy   qlex;
-    Token* token_p = 0x0;
-    int    number_of_tokens = 0;
-    FILE*  fh = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
+    Easy        qlex;
+    Easy_Token* token_p = 0x0;
+    int         number_of_tokens = 0;
+    FILE*       fh = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
 
     /* The lexer must be constructed AFTER the BOM-cut                        */
     Easy_ByteLoader*    byte_loader = Easy_ByteLoader_FILE_new(fh, true);
@@ -54,7 +54,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(Token* token_p)
+print_token(Easy_Token* token_p)
 {
     const size_t    BufferSize = 1024;
     char            buffer[1024];

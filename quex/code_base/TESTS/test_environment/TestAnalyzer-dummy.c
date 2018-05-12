@@ -1449,8 +1449,8 @@ QUEX_NAMESPACE_MAIN_CLOSE
 * (C) 2004-2009 Frank-Rene Schaefer
 * ABSOLUTELY NO WARRANTY
 */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TOKEN_I
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TOKEN_I
+#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I
+#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I
 
 #ifndef    __QUEX_OPTION_PLAIN_C
 #   define __QUEX_OPTION_PLAIN_C
@@ -1461,12 +1461,12 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #include "test_environment/lib/lexeme_base.i"
 
 QUEX_INLINE void
-Token_set(Token*            __this,
+TestAnalyzer_Token_set(TestAnalyzer_Token*            __this,
 const TestAnalyzer_token_id_t ID)
 { __this->id = ID; }
 
 QUEX_INLINE void
-Token_construct(Token* __this)
+TestAnalyzer_Token_construct(TestAnalyzer_Token* __this)
 {
 #   define self (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -1486,15 +1486,15 @@ self.text   = LexemeNull;
 }
 
 QUEX_INLINE void
-Token_copy_construct(Token*       __this,
-const Token* __That)
+TestAnalyzer_Token_copy_construct(TestAnalyzer_Token*       __this,
+const TestAnalyzer_Token* __That)
 {
 QUEX_NAME_TOKEN(construct)(__this);
 QUEX_NAME_TOKEN(copy)(__this, __That);
 }
 
 QUEX_INLINE void
-Token_destruct(Token* __this)
+TestAnalyzer_Token_destruct(TestAnalyzer_Token* __this)
 {
 #   define self (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -1518,8 +1518,8 @@ self.text = LexemeNull;
 }
 
 QUEX_INLINE void
-Token_copy(Token*       __this,
-const Token* __That)
+TestAnalyzer_Token_copy(TestAnalyzer_Token*       __this,
+const TestAnalyzer_Token* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
@@ -1564,7 +1564,7 @@ __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool
-Token_take_text(Token*            __this,
+TestAnalyzer_Token_take_text(TestAnalyzer_Token*            __this,
 const TestAnalyzer_lexatom_t* Begin,
 const TestAnalyzer_lexatom_t* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
@@ -1641,7 +1641,7 @@ return false;
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t
-Token_repetition_n_get(Token* __this)
+TestAnalyzer_Token_repetition_n_get(TestAnalyzer_Token* __this)
 {
 #   define self        (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -1660,7 +1660,7 @@ return self.number;
 }
 
 QUEX_INLINE void
-Token_repetition_n_set(Token* __this, size_t N)
+TestAnalyzer_Token_repetition_n_set(TestAnalyzer_Token* __this, size_t N)
 {
 #   define self        (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -1681,7 +1681,7 @@ self.number = N;
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 QUEX_INLINE const char*
-Token_map_id_to_name(const TestAnalyzer_token_id_t TokenID)
+TestAnalyzer_Token_map_id_to_name(const TestAnalyzer_token_id_t TokenID)
 {
 static char  error_string[64];
 
@@ -1711,9 +1711,9 @@ case QUEX_TKN_X:             return "X";
 #   line 117 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 const char*
-Token_get_string(Token* me, char*   buffer, size_t  BufferSize)
+TestAnalyzer_Token_get_string(TestAnalyzer_Token* me, char*   buffer, size_t  BufferSize)
 {
-const char*  token_id_str = Token_map_id_to_name(me->id);
+const char*  token_id_str = TestAnalyzer_Token_map_id_to_name(me->id);
 const char*  BufferEnd    = buffer + BufferSize;
 char*        writerator   = 0;
 
@@ -1748,7 +1748,7 @@ return buffer;
 
 
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TOKEN_I */
+#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I */
 QUEX_NAMESPACE_TOKEN_OPEN
 TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull) = (TestAnalyzer_lexatom_t)0;
 QUEX_NAMESPACE_TOKEN_CLOSE

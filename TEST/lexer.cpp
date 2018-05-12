@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     assert(argc > 1);
 
     // (*) create token
-    Token*                token_p = 0;
+    Simple_Token*         token_p = 0;
     long                  token_n = 0;
     //
     // (*) create the lexical analyser

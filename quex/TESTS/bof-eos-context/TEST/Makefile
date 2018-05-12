@@ -13,7 +13,7 @@ hwut-info:
 	gcc lexer.c $*/$< -I. -I$(HWUT_PATH) \
 		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED \
 		-DQUEX_SETTING_BUFFER_SIZE=4 \
-		-DHEADER_FILE='"$*/$*.h"' -DLEXER_TYPE=$* -DTITLE='"$*"' \
+		-DHEADER_FILE='"$*/$*.h"' -DLEXER_TYPE=$* -DTITLE='"$*"' -DTOKEN_TYPE=$*_Token \
 		-Wall -Werror \
 		-o $@ -ggdb 
 

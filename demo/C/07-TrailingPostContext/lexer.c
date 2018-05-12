@@ -1,13 +1,13 @@
 #include <stdio.h>    
 #include "easy/Easy.h"
 
-static void print_token(Token* token_p);
+static void print_token(Easy_Token* token_p);
 
 int 
 main(int argc, char** argv) 
 {        
-    Easy    qlex;
-    Token*  token_p = NULL;
+    Easy         qlex;
+    Easy_Token*  token_p = NULL;
     int          number_of_tokens = 0;
 
     Easy_from_file_name(&qlex, argc == 1 ? "example.txt" : argv[1], NULL); 
@@ -30,7 +30,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(Token* token_p)
+print_token(Easy_Token* token_p)
 {
     const size_t    BufferSize = 1024;
     char            buffer[1024];

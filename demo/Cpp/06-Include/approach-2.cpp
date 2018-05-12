@@ -9,7 +9,7 @@ int
 main(int argc, char** argv) 
 {        
     Easy   qlex(argc == 1 ? "example-shallow.txt" : argv[1], NULL);
-    Token* token_p = NULL;
+    Easy_Token* token_p = NULL;
     int          number_of_tokens = 0;
 
     do {

@@ -6,12 +6,12 @@
 * NOTE: This file has been created automatically by Quex.
 *       Visit quex.org for further info.
 *
-* DATE: Fri May 11 07:53:15 2018
+* DATE: Sat May 12 15:40:11 2018
 *
 * (C) 2005-2010 Frank-Rene Schaefer
 * ABSOLUTELY NO WARRANTY                                                     */
-#ifndef __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_TESTANALYZER__TOKEN__
-#define __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_TESTANALYZER__TOKEN__
+#ifndef __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_TESTANALYZER__TESTANALYZER_TOKEN__
+#define __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_TESTANALYZER__TESTANALYZER_TOKEN__
 
 /* Note: When multiple lexical analyzers are included, then their
 *       token prefix must differ! Use '--token-id-prefix'.                   */
@@ -23,4 +23,4 @@
 #define QUEX_TKN_X             ((uint32_t)10004)
 
 
-#endif /* __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_TESTANALYZER__TOKEN__        */
+#endif /* __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_TESTANALYZER__TESTANALYZER_TOKEN__        */

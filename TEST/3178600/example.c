@@ -6,8 +6,8 @@
 int 
 main(int argc, char** argv) 
 {        
-    Token*    token_p = 0x0;
-    EasyLexer qlex;
+    EasyLexer           qlex;
+    EasyLexer_Token*    token_p = 0x0;
     const size_t   BufferSize = 1024;
     char           buffer[1024];
     const char*    FileName = "example.txt";

@@ -1,11 +1,11 @@
 
-#include "moritz/Lexer.h"
+#include "moritz/moritz.h"
 #include "moritz/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
 #include "moritz/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
-#include "max/Lexer.h"
+#include "max/max.h"
 #include "max/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
 #include "max/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
-#include "boeck/Lexer.h"
+#include "boeck/boeck.h"
 
 /* When using multiple lexical analyzers, it must be compiled with 
  * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.      */
@@ -17,21 +17,21 @@ main(int argc, char** argv)
 {        
     /* We want to have error outputs in stdout, so that the unit test could 
      * see it.                                                               */
-    max_Lexer     max_lex;
+    max           max_lex;
     max_Token*    max_token    = 0x0;
-    moritz_Lexer  moritz_lex;
+    moritz        moritz_lex;
     moritz_Token* moritz_token = 0x0;
-    boeck_Lexer   boeck_lex;
+    boeck         boeck_lex;
     boeck_Token*  boeck_token  = 0x0;
     size_t        i, preL, L;
     (void)argc; (void)argv;
 
-    max_Lexer_Converter*    converter_utf16 = max_Lexer_Converter_IConv_new("UTF16", NULL);
-    moritz_Lexer_Converter* converter_ucs2  = moritz_Lexer_Converter_IConv_new("UCS-2", NULL);
+    max_Converter*    converter_utf16 = max_Converter_IConv_new("UTF16", NULL);
+    moritz_Converter* converter_ucs2  = moritz_Converter_IConv_new("UCS-2", NULL);
 
-    max_Lexer_from_file_name(&max_lex,       "example-utf16.txt", converter_utf16);
-    moritz_Lexer_from_file_name(&moritz_lex, "example-ucs2.txt",  converter_ucs2);
-    boeck_Lexer_from_file_name(&boeck_lex,   "example-utf8.txt",  NULL);
+    max_from_file_name(&max_lex,       "example-utf16.txt", converter_utf16);
+    moritz_from_file_name(&moritz_lex, "example-ucs2.txt",  converter_ucs2);
+    boeck_from_file_name(&boeck_lex,   "example-utf8.txt",  NULL);
 
     /* Different lexers produce different interpretations on same lexeme.     */
     printf("                Max:        Moritz:      Boeck:\n");
@@ -56,9 +56,9 @@ main(int argc, char** argv)
 
     } while( boeck_token->id != TKN_TERMINATION );
 
-    boeck_Lexer_destruct(&boeck_lex);
-    max_Lexer_destruct(&max_lex);
-    moritz_Lexer_destruct(&moritz_lex);
+    boeck_destruct(&boeck_lex);
+    max_destruct(&max_lex);
+    moritz_destruct(&moritz_lex);
 
     return 0;
 }

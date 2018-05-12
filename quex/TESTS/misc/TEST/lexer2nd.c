@@ -5,14 +5,14 @@
 #include <EHLexer/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 
 
-static void print_token(Token* token_p);
+static void print_token(EHLexer_Token* token_p);
 
 int 
 main(int argc, char** argv) 
 {        
-    Token*     token_p = NULL;
+    EHLexer_Token*  token_p = NULL;
     size_t          number_of_tokens = 0;
-    EHLexer    qlex;
+    EHLexer         qlex;
     const char*     FileName = (argc == 1) ? "example.txt" : argv[1];
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
     QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
@@ -49,7 +49,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(Token* token_p)
+print_token(EHLexer_Token* token_p)
 {
 #   ifdef PRINT_TOKEN
     const size_t    BufferSize = 1024;

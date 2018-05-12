@@ -16,11 +16,11 @@ main(int argc, char** argv)
        return -1;
     }
 
-    Token*                   token;
     bool                     BigEndianF  = (strcmp(argv[1], "BE") == 0); 
     const char*              file_name   = BigEndianF ? "example-utf16be.txt" : "example-utf16le.txt";
     QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
     UTF16Lex*                qlex;
+    UTF16Lex_Token*          token;
 
     qlex = UTF16Lex::from_ByteLoader(byte_loader, NULL);
     /* System's endianness is 'little' => reversion if 'big'

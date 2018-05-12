@@ -12,7 +12,7 @@ main(int argc, char** argv)
     const size_t BufferSize = 1024;
     char         buffer[1024];
 #   endif
-    Token*             token_p = 0x0;
+    Simple_Token*      token_p = 0x0;
     int                token_n = 0;
     Simple             qlex;
     const char*        file_name = argc > 1 ? argv[1] : "example.txt";

@@ -9,7 +9,7 @@ using namespace std;
 int 
 main(int argc, char** argv) 
 {        
-    Token*   token_p;
+    Simple_Token*   token_p;
     Simple   qlex("example.txt", NULL);
 
     if( argc < 2 ) {

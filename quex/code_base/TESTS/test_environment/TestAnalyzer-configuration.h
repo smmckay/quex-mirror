@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.68.2"
-#define QUEX_SETTING_BUILD_DATE        "Fri May 11 07:53:15 2018"
+#define QUEX_SETTING_BUILD_DATE        "Sat May 12 15:40:11 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -134,9 +134,9 @@
 #endif
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-#   define QUEX_TYPE0_TOKEN            struct Token_tag
-#   define QUEX_TYPE_TOKEN             struct Token_tag
-#   define QUEX_NAME_COMPLETE_TOKEN    Token
+#   define QUEX_TYPE0_TOKEN            struct TestAnalyzer_Token_tag
+#   define QUEX_TYPE_TOKEN             struct TestAnalyzer_Token_tag
+#   define QUEX_NAME_COMPLETE_TOKEN    TestAnalyzer_Token
 
 #   define QUEX_NAMESPACE_TOKEN
 #   define QUEX_NAMESPACE_TOKEN_OPEN
@@ -144,12 +144,12 @@
 
 #   define QUEX_LEXEME_NULL            QUEX_NAME(LexemeNull)
 
-#   define QUEX_NAME_TOKEN(NAME)       Token_ ## NAME
+#   define QUEX_NAME_TOKEN(NAME)       TestAnalyzer_Token_ ## NAME
 
 #else
-#   define QUEX_TYPE0_TOKEN            Token
-#   define QUEX_TYPE_TOKEN             ::Token
-#   define QUEX_NAME_COMPLETE_TOKEN    ::Token
+#   define QUEX_TYPE0_TOKEN            TestAnalyzer_Token
+#   define QUEX_TYPE_TOKEN             ::TestAnalyzer_Token
+#   define QUEX_NAME_COMPLETE_TOKEN    ::TestAnalyzer_Token
 
 #   define QUEX_NAMESPACE_TOKEN
 #   define QUEX_NAMESPACE_TOKEN_OPEN
@@ -157,7 +157,7 @@
 
 #   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME(LexemeNull)
 
-#   define QUEX_NAME_TOKEN(NAME)       Token_ ## NAME
+#   define QUEX_NAME_TOKEN(NAME)       TestAnalyzer_Token_ ## NAME
 
 #endif
 

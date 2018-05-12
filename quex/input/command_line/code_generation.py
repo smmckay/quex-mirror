@@ -128,10 +128,8 @@ def __compile_regular_expression(Str, Name):
 def __setup_analyzer_class(Setup):
     """ X0::X1::X2::ClassName --> analyzer_class_name = ClassName
                                   analyzer_name_space = ["X0", "X1", "X2"]
-        ::ClassName --> analyzer_class_name = ClassName
-                        analyzer_name_space = []
         ClassName --> analyzer_class_name = ClassName
-                      analyzer_name_space = ["quex"]
+                      analyzer_name_space = []
     """
     Setup.analyzer_class_name, \
     Setup.analyzer_name_space, \
@@ -158,16 +156,13 @@ def __setup_token_class(Setup):
                                   token_name_space = ["X0", "X1", "X2"]
         ::ClassName --> token_class_name = ClassName
                         token_name_space = []
-        ClassName --> token_class_name = ClassName
-                      token_name_space = analyzer_name_space
     """
-    if Setup.token_class.find("::") == -1:
-        # By default, Setup the token in the analyzer's namespace
-        if len(Setup.analyzer_name_space) != 0:
-            analyzer_name_space = reduce(lambda x, y: "%s::%s" % (x, y), Setup.analyzer_name_space)
+    if not Setup.token_class:
+        default_name = "Token"
+        if Setup.analyzer_class_name:
+            Setup.token_class = "%s_%s" % (Setup.analyzer_class_name, default_name)
         else:
-            analyzer_name_space = ""
-        Setup.token_class = "%s::%s" % (analyzer_name_space, Setup.token_class)
+            Setup.token_class = default_name
 
     # Token classes and derived classes have the freedom not to open a namespace,
     # thus no check 'if namespace == empty'.

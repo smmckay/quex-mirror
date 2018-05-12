@@ -565,11 +565,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 #   define RETURN    return
 #endif
 
-#ifdef __QUEX_OPTION_PLAIN_C
-quex_TestAnalyzer*   lexer_state;
-#else
 TestAnalyzer*        lexer_state;
-#endif
 
 extern void  QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER*);
 #ifdef QUEX_UNIT_TEST_SECOND_MODE
@@ -664,7 +660,7 @@ test_program_db = {
     {
         TestAnalyzer_lexatom_t  TestString[] = "\\0$$TEST_STRING$$\\0";
         const size_t       MemorySize   = strlen((const char*)&TestString[1]) + 2;
-        quex_TestAnalyzer  object;
+        TestAnalyzer  object;
 
         DEAL_WITH_COMPUTED_GOTOS();
         lexer_state = &object;
@@ -686,7 +682,7 @@ test_program_db = {
         char   buffer[65536*16];
         FILE*  fh;
         int    n;
-        quex_TestAnalyzer      object;
+        TestAnalyzer      object;
         QUEX_NAME(ByteLoader)* byte_loader;
 
         lexer_state = &object;
@@ -762,7 +758,7 @@ test_program_db = {
     {
         char              test_string[65536];
         FILE*             fh = fopen(argv[1], "rb");
-        quex_TestAnalyzer object;
+        TestAnalyzer object;
 
         lexer_state = &object;
 

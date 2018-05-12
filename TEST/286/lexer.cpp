@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 {
 	using namespace std;
 
-	Token*                token_p;
+	tokenizer_it_Token*   token_p;
     QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
 	tokenizer_it          qlex((QUEX_NAME(ByteLoader)*)NULL, converter); 
     uint8_t*              begin_p;

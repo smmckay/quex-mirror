@@ -20,7 +20,6 @@ main(int argc, char** argv)
 {        
 
     // we want to have error outputs in stdout, so that the unit test could see it.
-    Token*                   token_p;
     const char*              file_name = argc < 2 ? "example.txt" : argv[1];
 
 #   ifdef STRANGE_STREAM
@@ -39,6 +38,7 @@ main(int argc, char** argv)
 #   define                   converter NULL
 #   endif
     Simple                   qlex(byte_loader, converter); 
+    Simple_Token*            token_p;
 
     cout << "## An Assert-Abortion might be an intended element of the experiment.\n";
     do {

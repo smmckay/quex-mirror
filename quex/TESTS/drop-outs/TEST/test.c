@@ -7,12 +7,12 @@
 #    define ENCODING_NAME (0x0)
 #endif
 
-static void print_token(Token* token_p);
+static void print_token(EasyLexer_Token* token_p);
 
 int 
 main(int argc, char** argv) 
 {        
-    Token*      token_p = NULL;
+    EasyLexer_Token*      token_p = NULL;
     size_t           number_of_tokens = 0;
     EasyLexer   qlex;
     const char*      file_name; 
@@ -49,7 +49,7 @@ main(int argc, char** argv)
 }
 
 static void
-print_token(Token* token_p)
+print_token(EasyLexer_Token* token_p)
 {
 #   ifdef PRINT_TOKEN
     const size_t    BufferSize = 1024;
