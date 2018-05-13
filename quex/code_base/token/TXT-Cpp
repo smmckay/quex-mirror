@@ -5,49 +5,20 @@
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
 
-#include <cstddef>
-$$INC: compatibility/stdint.h$$
-$$HELPER_DEFINITIONS$$
-$$INC: definitions$$
-$$INC: asserts$$
-$$INC: MemoryManager$$
-$$INC: lexeme_base$$
-
 $$HEADER$$
  
 QUEX_NAMESPACE_TOKEN_OPEN
 
-class $TOKEN_CLASS;
+class $$TOKEN_CLASS$$;
 
-inline void    QUEX_NAME_TOKEN(construct)($TOKEN_CLASS* __this);
-inline void    QUEX_NAME_TOKEN(destruct)($TOKEN_CLASS* __this);
-inline void    QUEX_NAME_TOKEN(copy)($TOKEN_CLASS*       me, 
-                                     const $TOKEN_CLASS* That);
-#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-inline bool    QUEX_NAME_TOKEN(take_text)($TOKEN_CLASS*             __this, 
-                                          const QUEX_TYPE_LEXATOM*  Begin, 
-                                          const QUEX_TYPE_LEXATOM*  End);
-#endif
-
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-inline size_t  QUEX_NAME_TOKEN(repetition_n_get)($TOKEN_CLASS* __this);
-inline void    QUEX_NAME_TOKEN(repetition_n_set)($TOKEN_CLASS* __this, 
-                                                 size_t        N);
-#endif 
-
-inline const char*  
-               QUEX_NAME_TOKEN(map_id_to_name)(const QUEX_TYPE_TOKEN_ID);
-
-
-class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $TOKEN_CLASS {
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$TOKEN_CLASS$$ {
 public:
-    $TOKEN_CLASS();
-    $TOKEN_CLASS(const $TOKEN_CLASS& That);
+    $$TOKEN_CLASS$$();
+    $$TOKEN_CLASS$$(const $$TOKEN_CLASS$$& That);
     /* operator=(..): USE WITH CAUTION--POSSIBLE MAJOR PERFORMANCE DECREASE! 
      *                BETTER USE __copy(That)                                */
-    $TOKEN_CLASS& operator=(const $TOKEN_CLASS& That) 
-    { QUEX_NAME_TOKEN(copy)(this, &That); return *this; }
-    $$VIRTUAL_DESTRUCTOR$$~$TOKEN_CLASS();
+    $$TOKEN_CLASS$$& operator=(const $$TOKEN_CLASS$$& That);
+    $$VIRTUAL_DESTRUCTOR$$~$$TOKEN_CLASS$$();
 
 $$DISTINCT_MEMBERS$$
 $$UNION_MEMBERS$$
@@ -62,9 +33,7 @@ $$QUICK_SETTERS$$
          * user customized token classes. The token policies should be the
          * same for C and Cpp.                                               */
         QUEX_TYPE_TOKEN_ID    id;
-        QUEX_TYPE_TOKEN_ID    type_id() const                             { return id; }
-        const char*           map_id_to_name(QUEX_TYPE_TOKEN_ID ID) const { return QUEX_NAME_TOKEN(map_id_to_name)(ID); }
-        const std::string     type_id_name() const                        { return map_id_to_name(id); }
+        const char*           id_name() const;
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE
@@ -86,12 +55,37 @@ $$BODY$$
 #   undef  self
 
     private:
-        friend void QUEX_NAME_TOKEN(copy)($TOKEN_CLASS*       __this, 
-                                          const $TOKEN_CLASS* That);
-        friend bool QUEX_NAME_TOKEN(take_text)($TOKEN_CLASS*             __this, 
+        friend void QUEX_NAME_TOKEN(copy)($$TOKEN_CLASS$$*       __this, 
+                                          const $$TOKEN_CLASS$$* That);
+        friend bool QUEX_NAME_TOKEN(take_text)($$TOKEN_CLASS$$*             __this, 
                                                const QUEX_TYPE_LEXATOM*  Begin, 
                                                const QUEX_TYPE_LEXATOM*  End);
 };
+
+QUEX_INLINE void         $$TOKEN_CLASS$$_construct($$TOKEN_CLASS$$*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_copy_construct($$TOKEN_CLASS$$*, 
+                                                     const $$TOKEN_CLASS$$*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_copy($$TOKEN_CLASS$$*, const $$TOKEN_CLASS$$*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_destruct($$TOKEN_CLASS$$*);
+
+/* NOTE: Setters and getters as in the C++ version of the token class are not
+ *       necessary, since the members are accessed directly.                   */
+
+QUEX_INLINE void         $$TOKEN_CLASS$$_set($$TOKEN_CLASS$$*            me, 
+                                          const QUEX_TYPE_TOKEN_ID ID);
+
+QUEX_INLINE const char*  $$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
+
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+QUEX_INLINE bool         $$TOKEN_CLASS$$_take_text($$TOKEN_CLASS$$*            me, 
+                                                const QUEX_TYPE_LEXATOM* Begin, 
+                                                const QUEX_TYPE_LEXATOM* End);
+#endif
+
+#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+QUEX_INLINE size_t       $$TOKEN_CLASS$$_repetition_n_get($$TOKEN_CLASS$$*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_repetition_n_set($$TOKEN_CLASS$$*, size_t);
+#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

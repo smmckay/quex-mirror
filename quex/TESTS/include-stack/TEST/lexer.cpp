@@ -51,7 +51,7 @@ self_test(const char* CharFilename)
 
         print(qlex, *token_p, true);
 
-    } while( token_p->type_id() != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     cout << "[END]\n";
 }

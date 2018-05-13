@@ -47,7 +47,7 @@ main(int argc, char** argv)
                moritz_token->type_id_name().c_str(), 
                boeck_token->type_id_name().c_str());
 
-    } while( boeck_token->type_id() != TKN_TERMINATION );
+    } while( boeck_token->id != TKN_TERMINATION );
 
     return 0;
 }

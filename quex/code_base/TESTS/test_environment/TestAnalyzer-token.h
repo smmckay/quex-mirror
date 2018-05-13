@@ -10,20 +10,19 @@
 #ifndef    __QUEX_OPTION_PLAIN_C
 #   define __QUEX_OPTION_PLAIN_C
 #endif
-#include "stddef.h"
-#include "test_environment/lib/compatibility/stdint.h"
-#include "test_environment/TestAnalyzer-configuration.h"
-#include "test_environment/lib/definitions"
-#include "test_environment/lib/asserts"
-#include "test_environment/lib/MemoryManager"
-#include "test_environment/lib/lexeme_base"
-
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include "test_environment/converter-from-lexeme"
+#include <test_environment/lib/compatibility/stdint.h>
+#include "test_environment/TestAnalyzer-configuration.h"
+#include <test_environment/lib/definitions>
+#include <test_environment/lib/asserts>
+#include <test_environment/lib/MemoryManager>
+#include <test_environment/lib/lexeme_base>
+#include <test_environment/converter-from-lexeme>
 
 struct TestAnalyzer_Token_tag;
 
@@ -32,23 +31,23 @@ QUEX_NAME_TOKEN(get_string)(struct TestAnalyzer_Token_tag* me,  char*  buffer, s
 
 
 
-#   line 34 "test_environment/TestAnalyzer-token.h"
+#   line 33 "test_environment/TestAnalyzer-token.h"
 
 
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_Token_tag {
 TestAnalyzer_token_id_t    id;
 
-#   line 19 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 26 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 const TestAnalyzer_lexatom_t* text;
 
-#   line 42 "test_environment/TestAnalyzer-token.h"
+#   line 41 "test_environment/TestAnalyzer-token.h"
 
 
-#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 27 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 size_t                   number;
 
-#   line 46 "test_environment/TestAnalyzer-token.h"
+#   line 45 "test_environment/TestAnalyzer-token.h"
 
 
 
@@ -61,12 +60,12 @@ TestAnalyzer_token_column_n_t  _column_n;
 #       endif
 #   endif
 
-#   line 105 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 112 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 /* Nothing here. */
 
 
-#   line 62 "test_environment/TestAnalyzer-token.h"
+#   line 61 "test_environment/TestAnalyzer-token.h"
 
 
 } TestAnalyzer_Token;

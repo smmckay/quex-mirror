@@ -20,7 +20,7 @@ main(int argc, char** argv)
 
         printf("%s\n", (char*)(string(*token).c_str()));
 
-    } while( token->type_id() != TKN_TERMINATION );
+    } while( token->id != TKN_TERMINATION );
 
     return 0;
 }

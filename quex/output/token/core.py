@@ -77,26 +77,22 @@ def _do_core(Descr):
     else:
         token_class_name = Descr.class_name
 
-    converter_declaration_include    = Lng.INCLUDE(Lng.file_name_converter_header("lexeme"))
-    converter_implementation_include = Lng.INCLUDE(Lng.file_name_converter_implementation("lexeme"))
-
     # ------------
     # TODO: Following should be always placed in front of footer/header:
     # ------------
-    helper_variable_replacements = [
-        ["$INCLUDE_CONVERTER_DECLARATION",    converter_declaration_include],
-        ["$INCLUDE_CONVERTER_IMPLEMENTATION", converter_implementation_include],
-        ["$NAMESPACE_OPEN",                   "QUEX_NAMESPACE_TOKEN_OPEN"],
-        ["$NAMESPACE_CLOSE",                  "QUEX_NAMESPACE_TOKEN_CLOSE"],
-        ["$TOKEN_CLASS",                      token_class_name],
-    ]
-
     if Setup.token_class_only_f: helper_definitions = _helper_definitions() 
     else:                        helper_definitions = Lng.INCLUDE(Setup.output_configuration_file)
 
+    helper_variable_replacements = [
+        ["$$HELPER_DEFINITIONS$$", helper_definitions],
+        ["$$OUTPUT_DIR$$",         Setup.output_directory],
+        ["$$NAMESPACE_OPEN$$",     Lng.NAMESPACE_OPEN(Descr.name_space)],
+        ["$$NAMESPACE_CLOSE$$",    Lng.NAMESPACE_CLOSE(Descr.name_space)],
+        ["$$TOKEN_CLASS$$",        token_class_name],
+    ]
+
     template_str = Lng.open_template(Lng.token_template_file())
     txt = blue_print(template_str, [
-        ["$$HELPER_DEFINITIONS$$",      helper_definitions],
         ["$$LEXEME_NULL_DECLARATION$$", Lng.LEXEME_NULL_DECLARATION()],
         ["$$BODY$$",                    Lng.SOURCE_REFERENCED(Descr.body)],
         ["$$CONSTRUCTOR$$",             Lng.SOURCE_REFERENCED(Descr.constructor)],
@@ -107,17 +103,13 @@ def _do_core(Descr):
         ["$$FUNC_TAKE_TEXT$$",          take_text_str],
         ["$$HEADER$$",                  Lng.SOURCE_REFERENCED(Descr.header)],
         ["$$INCLUDE_GUARD_EXTENSION$$", include_guard_extension_str],
-        ["$$NAMESPACE_CLOSE$$",         Lng.NAMESPACE_CLOSE(Descr.name_space)],
-        ["$$NAMESPACE_OPEN$$",          Lng.NAMESPACE_OPEN(Descr.name_space)],
         ["$$QUICK_SETTERS$$",           get_quick_setters(Descr)],
         ["$$SETTERS_GETTERS$$",         get_setter_getter(Descr)],
         ["$$TOKEN_REPETITION_N_GET$$",  Lng.SOURCE_REFERENCED(Descr.repetition_get)],
         ["$$TOKEN_REPETITION_N_SET$$",  Lng.SOURCE_REFERENCED(Descr.repetition_set)],
         ["$$UNION_MEMBERS$$",           get_union_members(Descr)],
         ["$$VIRTUAL_DESTRUCTOR$$",      virtual_destructor_str],
-        ["$$TOKEN_CLASS_NAME_SAFE$$",   Descr.class_name_safe],
     ])
-    txt = blue_print(txt, helper_variable_replacements)
 
     template_i_str = Lng.open_template(Lng.token_template_i_file())
     txt_i = blue_print(template_i_str, [
@@ -130,13 +122,12 @@ def _do_core(Descr):
         ["$$FUNC_TAKE_TEXT$$",             take_text_str],
         ["$$TOKEN_CLASS_HEADER$$",         token_db.token_type_definition.get_file_name()],
         ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension_str],
-        ["$$NAMESPACE_OPEN$$",             Lng.NAMESPACE_OPEN(Descr.name_space)],
-        ["$$NAMESPACE_CLOSE$$",            Lng.NAMESPACE_CLOSE(Descr.name_space)],
         ["$$TOKEN_REPETITION_N_GET$$",     Lng.SOURCE_REFERENCED(Descr.repetition_get)],
         ["$$TOKEN_REPETITION_N_SET$$",     Lng.SOURCE_REFERENCED(Descr.repetition_set)],
-        ["$$TOKEN_CLASS_NAME_SAFE$$",      Descr.class_name_safe],
         ["$$MAP_ID_TO_NAME_CASES$$",       token_id_maker.do_map_id_to_name_cases()],
     ])
+
+    txt   = blue_print(txt, helper_variable_replacements)
     txt_i = blue_print(txt_i, helper_variable_replacements)
 
     return txt, txt_i

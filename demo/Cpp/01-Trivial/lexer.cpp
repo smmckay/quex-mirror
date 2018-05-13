@@ -20,7 +20,7 @@ main(int argc, char** argv)
 
         ++number_of_tokens;
 
-    } while( token_p->type_id() != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     std::cout << "[END] number of tokens = " << number_of_tokens << std::endl;
     if( qlex.error_code != E_Error_None ) qlex.print_this(); 

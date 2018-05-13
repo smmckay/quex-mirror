@@ -47,12 +47,12 @@ main(int argc, char** argv)
 #       ifdef PRINT_LINE_COLUMN
         cout << "(" << qlex.line_number() << ", " << qlex.column_number() << ")  \t";
 #       endif
-        if( token_p->type_id() != QUEX_TKN_TERMINATION )
+        if( token_p->id != QUEX_TKN_TERMINATION )
             cout << string(*token_p) << endl;
         else
             cout << "<TERMINATION>\n";
         cout.flush();
-    } while( token_p->type_id() != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     if( qlex.error_code != E_Error_None ) {
         qlex.print_this();

@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     do {
         token_id = qlex.receive();       
         cout << string(*(qlex.token_p())) << endl;
-    } while( qlex.token_p()->type_id() != QUEX_TKN_TERMINATION );
+    } while( qlex.token_p()->id != QUEX_TKN_TERMINATION );
 
     return 0;
 }

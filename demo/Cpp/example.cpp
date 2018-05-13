@@ -35,7 +35,7 @@ main(int argc, char** argv)
 
         ++number_of_tokens;
 
-        if( token_p->type_id() == QUEX_TKN_TERMINATION ) break;
+        if( token_p->id == QUEX_TKN_TERMINATION ) break;
     }
 
     cout << "| [END] number of token = " << number_of_tokens << "\n";

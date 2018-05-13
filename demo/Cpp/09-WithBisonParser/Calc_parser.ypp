@@ -95,5 +95,5 @@ int Calc_yylex(YYSTYPE *yylval, Calc_lexer *qlex)
 		yylval->str = new std::string((const char *)token->get_text());
 		//printit(yylval->str);
 	}
-	return (int)token->type_id();
+	return (int)token->id;
 }

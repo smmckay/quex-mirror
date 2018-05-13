@@ -40,15 +40,16 @@ def _generate(mode_db):
         _write_all(content_table)
         return
 
-    elif Setup.token_class_only_f:
-        content_table, global_lexeme_null_declaration = _get_token_class()
+    content_table, global_lexeme_null_declaration = _get_token_class()
+
+    if Setup.token_class_only_f:
         class_token_header = do_token_class_info() + content_table[1][0]
         content_table[1]   = (class_token_header,    content_table[1][1])
+
         _write_all(content_table)
         return
 
     else:
-        content_table, global_lexeme_null_declaration = _get_token_class()
         class_token_implementation = content_table[-1][0]
         del content_table[-1]
         content_table.extend(_get_analyzers(mode_db, 

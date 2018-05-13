@@ -42,7 +42,7 @@ int main(int argc, char** argv)
             cout << token->get_string();
             cout << "\n";
 
-        } while( token->type_id() != CODEC_TKN_TERMINATION );
+        } while( token->id != CODEC_TKN_TERMINATION );
     }
 
     return 0;

@@ -26,7 +26,7 @@ main(int argc, char** argv)
 
         cout << token_p->get_string() << endl;
 
-    } while( token_p->type_id() != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     delete qlex;
     return 0;

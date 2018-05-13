@@ -24,7 +24,7 @@ main(int argc, char** argv)
         cout << string(*token_p) << endl;
 
         // (*) check against 'termination'
-    } while( token_p->type_id() != TKN_TERMINATION );
+    } while( token_p->id != TKN_TERMINATION );
 
     return 0;
 }

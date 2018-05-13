@@ -1472,7 +1472,7 @@ TestAnalyzer_Token_construct(TestAnalyzer_Token* __this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
 (void)__this;
 
-#   line 25 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 32 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 self.number = 0;
 self.text   = LexemeNull;
@@ -1501,7 +1501,7 @@ TestAnalyzer_Token_destruct(TestAnalyzer_Token* __this)
 if( ! __this ) return;
 
 
-#   line 30 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 37 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 if( self.text != LexemeNull ) {
 QUEXED(MemoryManager_free)((void*)self.text,
@@ -1527,7 +1527,7 @@ const TestAnalyzer_Token* __That)
 (void)__this;
 (void)__That;
 
-#   line 38 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 45 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 self.id  = Other.id;
 
@@ -1579,7 +1579,7 @@ const TestAnalyzer_lexatom_t* End)
 (void)Begin;
 (void)End;
 
-#   line 56 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 63 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 
 #       if 0
@@ -1647,7 +1647,7 @@ TestAnalyzer_Token_repetition_n_get(TestAnalyzer_Token* __this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
 (void)__this;
 
-#   line 113 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 120 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 return self.number;
 
@@ -1667,7 +1667,7 @@ TestAnalyzer_Token_repetition_n_set(TestAnalyzer_Token* __this, size_t N)
 (void)__this;
 (void)N;
 
-#   line 109 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 116 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 self.number = N;
 
@@ -1708,7 +1708,7 @@ case QUEX_TKN_X:             return "X";
 }
 
 
-#   line 117 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 124 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 const char*
 TestAnalyzer_Token_get_string(TestAnalyzer_Token* me, char*   buffer, size_t  BufferSize)
@@ -1741,7 +1741,7 @@ if( BufferEnd - writerator > 1 ) {
 return buffer;
 }
 
-#include "test_environment/converter-from-lexeme.i"
+#include <test_environment/converter-from-lexeme.i>
 
 
 #   line 1730 "test_environment/TestAnalyzer.c"

@@ -67,10 +67,10 @@ main(int argc, char** argv)
         (void)qlex.receive(&token_p);
 
         printf("(%2i, %2i)   \t%s '%s' \n", (int)qlex.line_number(), (int)qlex.column_number(),
-               token_p->type_id_name().c_str(), 
+               token_p->id_name(), 
                QUEX_NAME(lexeme_to_pretty_char)(token_p->text).c_str());
 
-    } while( token_p->type_id() != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     return 0;
 }

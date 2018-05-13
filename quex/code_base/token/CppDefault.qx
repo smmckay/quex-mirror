@@ -1,8 +1,15 @@
 token_type {
    header {
+#include <stddef.h>
 #include <iostream>
 #include <string>
-$INCLUDE_CONVERTER_DECLARATION
+#include <$$OUTPUT_DIR$$/lib/compatibility/stdint.h>
+$$HELPER_DEFINITIONS$$
+#include <$$OUTPUT_DIR$$/lib/definitions>
+#include <$$OUTPUT_DIR$$/lib/asserts>
+#include <$$OUTPUT_DIR$$/lib/MemoryManager>
+#include <$$OUTPUT_DIR$$/lib/lexeme_base>
+#include <$$OUTPUT_DIR$$/converter-from-lexeme>
 
    }
    standard {
@@ -105,8 +112,7 @@ $INCLUDE_CONVERTER_DECLARATION
         const std::string
         get_string() const 
         {
-            std::string  tmp;
-            tmp  = map_id_to_name(self.id);
+            std::string  tmp($$TOKEN_CLASS$$_map_id_to_name(self.id));
             tmp += " '" + QUEX_NAME(lexeme_to_pretty_char)(self.text) + "'";
             return tmp;
         }
@@ -123,12 +129,12 @@ $INCLUDE_CONVERTER_DECLARATION
    }
 
    footer {
-$NAMESPACE_OPEN
+$$NAMESPACE_OPEN$$
 inline std::ostream&
-operator<<(std::ostream& ostr, const $TOKEN_CLASS& Tok)
+operator<<(std::ostream& ostr, const $$TOKEN_CLASS$$& Tok)
 { ostr << Tok.get_string(); return ostr; }
-$NAMESPACE_CLOSE
-$INCLUDE_CONVERTER_IMPLEMENTATION
+$$NAMESPACE_CLOSE$$
+#include <$$OUTPUT_DIR$$/converter-from-lexeme.i>
    }
 }
 

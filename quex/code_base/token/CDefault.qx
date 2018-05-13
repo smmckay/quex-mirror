@@ -1,13 +1,20 @@
 token_type {
    header {
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-$INCLUDE_CONVERTER_DECLARATION
+#include <$$OUTPUT_DIR$$/lib/compatibility/stdint.h>
+$$HELPER_DEFINITIONS$$
+#include <$$OUTPUT_DIR$$/lib/definitions>
+#include <$$OUTPUT_DIR$$/lib/asserts>
+#include <$$OUTPUT_DIR$$/lib/MemoryManager>
+#include <$$OUTPUT_DIR$$/lib/lexeme_base>
+#include <$$OUTPUT_DIR$$/converter-from-lexeme>
 
-struct $TOKEN_CLASS_tag;
+struct $$TOKEN_CLASS$$_tag;
 
 extern const char* 
-QUEX_NAME_TOKEN(get_string)(struct $TOKEN_CLASS_tag* me,  char*  buffer, size_t   BufferSize); 
+QUEX_NAME_TOKEN(get_string)(struct $$TOKEN_CLASS$$_tag* me,  char*  buffer, size_t   BufferSize); 
 
    }
    standard {
@@ -116,9 +123,9 @@ QUEX_NAME_TOKEN(get_string)(struct $TOKEN_CLASS_tag* me,  char*  buffer, size_t 
 
    footer {
         const char* 
-        $TOKEN_CLASS_get_string($TOKEN_CLASS* me, char*   buffer, size_t  BufferSize) 
+        $$TOKEN_CLASS$$_get_string($$TOKEN_CLASS$$* me, char*   buffer, size_t  BufferSize) 
         {
-            const char*  token_id_str = $TOKEN_CLASS_map_id_to_name(me->id);
+            const char*  token_id_str = $$TOKEN_CLASS$$_map_id_to_name(me->id);
             const char*  BufferEnd    = buffer + BufferSize;
             char*        writerator   = 0;
 
@@ -146,7 +153,7 @@ QUEX_NAME_TOKEN(get_string)(struct $TOKEN_CLASS_tag* me,  char*  buffer, size_t 
             return buffer;
         }
 
-$INCLUDE_CONVERTER_IMPLEMENTATION
+#include <$$OUTPUT_DIR$$/converter-from-lexeme.i>
    }
 }
 

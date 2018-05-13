@@ -28,7 +28,7 @@ main(int argc, char** argv)
         qlex.receive(&token_p);
         cout << token_p->type_id_name() << " ";
 
-        switch( token_p->type_id() ) {
+        switch( token_p->id ) {
         case QUEX_TKN_N1a: 
         case QUEX_TKN_N2a: 
         case QUEX_TKN_N3a: 
@@ -54,7 +54,7 @@ main(int argc, char** argv)
             QUEX_ERROR_EXIT("Loop beyond border.\n");
         }
 
-    } while( token_p->type_id() != QUEX_TKN_TERMINATION );
+    } while( token_p->id != QUEX_TKN_TERMINATION );
 
     cout << "\n[END] number of token = " << number_of_tokens << "\n";
 

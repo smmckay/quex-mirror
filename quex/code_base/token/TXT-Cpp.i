@@ -11,7 +11,7 @@ $$INC: lexeme_base.i$$
 QUEX_NAMESPACE_TOKEN_OPEN
 
 QUEX_INLINE
-$TOKEN_CLASS::$TOKEN_CLASS()
+$$TOKEN_CLASS$$::$$TOKEN_CLASS$$()
 {
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -21,7 +21,7 @@ $$CONSTRUCTOR$$
 }
 
 QUEX_INLINE
-$TOKEN_CLASS::$TOKEN_CLASS(const $TOKEN_CLASS& Other)
+$$TOKEN_CLASS$$::$$TOKEN_CLASS$$(const $$TOKEN_CLASS$$& Other)
 {
    QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
@@ -32,7 +32,7 @@ $$CONSTRUCTOR$$
 }
 
 QUEX_INLINE
-$TOKEN_CLASS::~$TOKEN_CLASS()
+$$TOKEN_CLASS$$::~$$TOKEN_CLASS$$()
 {
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -42,21 +42,29 @@ $$DESTRUCTOR$$
 }
 
 QUEX_INLINE void
-QUEX_NAME_TOKEN(construct)($TOKEN_CLASS* __this)
+QUEX_NAME_TOKEN(construct)($$TOKEN_CLASS$$* __this)
 {
     /* Explicit constructor call by 'placement new' */
-    new ((void*)__this) $TOKEN_CLASS;
+    new ((void*)__this) $$TOKEN_CLASS$$;
 }
 
+$$TOKEN_CLASS$$& 
+$$TOKEN_CLASS$$$$::operator=(const $$TOKEN_CLASS$$& That) 
+{ if( this != &That ) { $$TOKEN_CLASS$$_copy(this, &That); } return *this; }
+
 QUEX_INLINE void
-QUEX_NAME_TOKEN(destruct)($TOKEN_CLASS* __this)
+QUEX_NAME_TOKEN(destruct)($$TOKEN_CLASS$$* __this)
 {
     if( ! __this ) return;
-    __this->$TOKEN_CLASS::~$TOKEN_CLASS();  
+    __this->$$TOKEN_CLASS$$::~$$TOKEN_CLASS$$();  
 }
 
+QUEX_INLINE const char*           
+$$TOKEN_CLASS$$::id_name() const 
+{ return $$TOKEN_CLASS$$_map_id_to_name(id); }
+
 QUEX_INLINE void
-QUEX_NAME_TOKEN(copy)($TOKEN_CLASS* __this, const $TOKEN_CLASS* __That)
+QUEX_NAME_TOKEN(copy)($$TOKEN_CLASS$$* __this, const $$TOKEN_CLASS$$* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
@@ -80,7 +88,7 @@ $$COPY$$
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
-QUEX_NAME_TOKEN(take_text)($TOKEN_CLASS*              __this, 
+QUEX_NAME_TOKEN(take_text)($$TOKEN_CLASS$$*              __this, 
                            const QUEX_TYPE_LEXATOM* Begin, 
                            const QUEX_TYPE_LEXATOM* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
@@ -99,7 +107,7 @@ $$FUNC_TAKE_TEXT$$
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t 
-QUEX_NAME_TOKEN(repetition_n_get)($TOKEN_CLASS* __this)
+QUEX_NAME_TOKEN(repetition_n_get)($$TOKEN_CLASS$$* __this)
 {
 #   define self (*__this)
     (void)__this;
@@ -108,7 +116,7 @@ $$TOKEN_REPETITION_N_GET$$
 }
 
 QUEX_INLINE void 
-QUEX_NAME_TOKEN(repetition_n_set)($TOKEN_CLASS* __this, size_t N)
+QUEX_NAME_TOKEN(repetition_n_set)($$TOKEN_CLASS$$* __this, size_t N)
 {
 #   define self (*__this)
     (void)__this; (void)N;

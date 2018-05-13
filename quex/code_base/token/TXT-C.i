@@ -14,12 +14,12 @@ $$INCLUDE_TOKEN_ID_HEADER$$
 $$INC: lexeme_base.i$$
 
 QUEX_INLINE void 
-$TOKEN_CLASS_set($TOKEN_CLASS*            __this, 
+$$TOKEN_CLASS$$_set($$TOKEN_CLASS$$*            __this, 
                  const QUEX_TYPE_TOKEN_ID ID) 
 { __this->id = ID; }
 
 QUEX_INLINE void 
-$TOKEN_CLASS_construct($TOKEN_CLASS* __this)
+$$TOKEN_CLASS$$_construct($$TOKEN_CLASS$$* __this)
 {
 #   define self (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -30,15 +30,15 @@ $$CONSTRUCTOR$$
 }
 
 QUEX_INLINE void 
-$TOKEN_CLASS_copy_construct($TOKEN_CLASS*       __this, 
-                            const $TOKEN_CLASS* __That)
+$$TOKEN_CLASS$$_copy_construct($$TOKEN_CLASS$$*       __this, 
+                            const $$TOKEN_CLASS$$* __That)
 {
     QUEX_NAME_TOKEN(construct)(__this);
     QUEX_NAME_TOKEN(copy)(__this, __That);
 }
 
 QUEX_INLINE void 
-$TOKEN_CLASS_destruct($TOKEN_CLASS* __this)
+$$TOKEN_CLASS$$_destruct($$TOKEN_CLASS$$* __this)
 {
 #   define self (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -50,8 +50,8 @@ $$DESTRUCTOR$$
 }
 
 QUEX_INLINE void
-$TOKEN_CLASS_copy($TOKEN_CLASS*       __this, 
-                  const $TOKEN_CLASS* __That)
+$$TOKEN_CLASS$$_copy($$TOKEN_CLASS$$*       __this, 
+                  const $$TOKEN_CLASS$$* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
@@ -74,7 +74,7 @@ $$COPY$$
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool 
-$TOKEN_CLASS_take_text($TOKEN_CLASS*            __this, 
+$$TOKEN_CLASS$$_take_text($$TOKEN_CLASS$$*            __this, 
                        const QUEX_TYPE_LEXATOM* Begin, 
                        const QUEX_TYPE_LEXATOM* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
@@ -98,7 +98,7 @@ $$FUNC_TAKE_TEXT$$
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 QUEX_INLINE size_t 
-$TOKEN_CLASS_repetition_n_get($TOKEN_CLASS* __this)
+$$TOKEN_CLASS$$_repetition_n_get($$TOKEN_CLASS$$* __this)
 {
 #   define self        (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -109,7 +109,7 @@ $$TOKEN_REPETITION_N_GET$$
 }
 
 QUEX_INLINE void 
-$TOKEN_CLASS_repetition_n_set($TOKEN_CLASS* __this, size_t N)
+$$TOKEN_CLASS$$_repetition_n_set($$TOKEN_CLASS$$* __this, size_t N)
 {
 #   define self        (*__this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
@@ -122,7 +122,7 @@ $$TOKEN_REPETITION_N_SET$$
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 QUEX_INLINE const char*
-$TOKEN_CLASS_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
+$$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 {
    static char  error_string[64];
 

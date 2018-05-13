@@ -38,7 +38,7 @@ main(int argc, char** argv)
         printf("%s\n", (char*)(string(*token).c_str()));
 
         // (*) check against 'termination'
-    } while( token->type_id() != TKN_TERMINATION );
+    } while( token->id != TKN_TERMINATION );
 
     delete qlex;
     return 0;

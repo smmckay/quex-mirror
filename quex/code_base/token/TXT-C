@@ -10,17 +10,9 @@
 #ifndef    __QUEX_OPTION_PLAIN_C
 #   define __QUEX_OPTION_PLAIN_C
 #endif
-#include "stddef.h"
-$$INC: compatibility/stdint.h$$
-$$HELPER_DEFINITIONS$$
-$$INC: definitions$$
-$$INC: asserts$$
-$$INC: MemoryManager$$
-$$INC: lexeme_base$$
-
 $$HEADER$$
  
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $TOKEN_CLASS_tag {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$TOKEN_CLASS$$_tag {
     QUEX_TYPE_TOKEN_ID    id;
 $$DISTINCT_MEMBERS$$
 $$UNION_MEMBERS$$
@@ -33,31 +25,31 @@ $$UNION_MEMBERS$$
 #       endif
 #   endif
 $$BODY$$
-} $TOKEN_CLASS;
+} $$TOKEN_CLASS$$;
 
-QUEX_INLINE void         $TOKEN_CLASS_construct($TOKEN_CLASS*);
-QUEX_INLINE void         $TOKEN_CLASS_copy_construct($TOKEN_CLASS*, 
-                                                     const $TOKEN_CLASS*);
-QUEX_INLINE void         $TOKEN_CLASS_copy($TOKEN_CLASS*, const $TOKEN_CLASS*);
-QUEX_INLINE void         $TOKEN_CLASS_destruct($TOKEN_CLASS*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_construct($$TOKEN_CLASS$$*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_copy_construct($$TOKEN_CLASS$$*, 
+                                                     const $$TOKEN_CLASS$$*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_copy($$TOKEN_CLASS$$*, const $$TOKEN_CLASS$$*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_destruct($$TOKEN_CLASS$$*);
 
 /* NOTE: Setters and getters as in the C++ version of the token class are not
  *       necessary, since the members are accessed directly.                   */
 
-QUEX_INLINE void         $TOKEN_CLASS_set($TOKEN_CLASS*            me, 
+QUEX_INLINE void         $$TOKEN_CLASS$$_set($$TOKEN_CLASS$$*            me, 
                                           const QUEX_TYPE_TOKEN_ID ID);
 
-QUEX_INLINE const char*  $TOKEN_CLASS_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
+QUEX_INLINE const char*  $$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-QUEX_INLINE bool         $TOKEN_CLASS_take_text($TOKEN_CLASS*            me, 
+QUEX_INLINE bool         $$TOKEN_CLASS$$_take_text($$TOKEN_CLASS$$*            me, 
                                                 const QUEX_TYPE_LEXATOM* Begin, 
                                                 const QUEX_TYPE_LEXATOM* End);
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-QUEX_INLINE size_t       $TOKEN_CLASS_repetition_n_get($TOKEN_CLASS*);
-QUEX_INLINE void         $TOKEN_CLASS_repetition_n_set($TOKEN_CLASS*, size_t);
+QUEX_INLINE size_t       $$TOKEN_CLASS$$_repetition_n_get($$TOKEN_CLASS$$*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_repetition_n_set($$TOKEN_CLASS$$*, size_t);
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 $$LEXEME_NULL_DECLARATION$$
