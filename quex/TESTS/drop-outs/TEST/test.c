@@ -12,21 +12,21 @@ static void print_token(EasyLexer_Token* token_p);
 int 
 main(int argc, char** argv) 
 {        
-    EasyLexer_Token*      token_p = NULL;
+    EasyLexer_Token* token_p = NULL;
     size_t           number_of_tokens = 0;
-    EasyLexer   qlex;
+    EasyLexer        qlex;
     const char*      file_name; 
-    QUEX_NAME(Mode)* mode;
+    EasyLexer_Mode*  mode;
 
     hwut_info("Testing states with no hole in transition map;\n"
               "CHOICES: BEGIN-1, BEGIN-many, MIDDLE-1, MIDDLE-many, END-1, END-many;");
 
-    hwut_if_choice("BEGIN-1")    { file_name = "BEGIN-1.txt"; mode = &QUEX_NAME(BEGIN); }
-    hwut_if_choice("BEGIN-many") { file_name = "BEGIN-many.txt"; mode = &QUEX_NAME(BEGIN); }
-    hwut_if_choice("MIDDLE-1")    { file_name = "MIDDLE-1.txt"; mode = &QUEX_NAME(MIDDLE); }
-    hwut_if_choice("MIDDLE-many") { file_name = "MIDDLE-many.txt"; mode = &QUEX_NAME(MIDDLE); }
-    hwut_if_choice("END-1")    { file_name = "END-1.txt"; mode = &QUEX_NAME(END); }
-    hwut_if_choice("END-many") { file_name = "END-many.txt"; mode = &QUEX_NAME(END); }
+    hwut_if_choice("BEGIN-1")     { file_name = "BEGIN-1.txt";     mode = &EasyLexer_BEGIN; }
+    hwut_if_choice("BEGIN-many")  { file_name = "BEGIN-many.txt";  mode = &EasyLexer_BEGIN; }
+    hwut_if_choice("MIDDLE-1")    { file_name = "MIDDLE-1.txt";    mode = &EasyLexer_MIDDLE; }
+    hwut_if_choice("MIDDLE-many") { file_name = "MIDDLE-many.txt"; mode = &EasyLexer_MIDDLE; }
+    hwut_if_choice("END-1")       { file_name = "END-1.txt";       mode = &EasyLexer_END; }
+    hwut_if_choice("END-many")    { file_name = "END-many.txt";    mode = &EasyLexer_END; }
 
     EasyLexer_from_file_name(&qlex, file_name, ENCODING_NAME);
     qlex.enter_mode(&qlex, mode);
@@ -61,8 +61,8 @@ print_token(EasyLexer_Token* token_p)
 #   endif
 
 #   ifdef PRINT_TOKEN
-    printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+    printf("%s \n", EasyLexer_Token_get_string(token_p, buffer, BufferSize));
 #   else
-    printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+    printf("%s\n", EasyLexer_Token_map_id_to_name(token_p->id));
 #   endif
 }

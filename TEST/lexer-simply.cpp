@@ -25,15 +25,15 @@ main(int argc, char** argv)
 #   ifdef STRANGE_STREAM
     ifstream                 istr(file_name);
     StrangeStream<ifstream>  strange_stream(&istr);
-    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_stream_new)(&strange_stream);
+    Simple_ByteLoader*       byte_loader = Simple_ByteLoader_stream_new(&strange_stream);
 #   else
-    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
+    Simple_ByteLoader*       byte_loader = Simple_ByteLoader_FILE_new_from_file_name(file_name);
 #   endif
 
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    Simple_Converter*        converter = Simple_Converter_IConv_new("UTF8", NULL);
 #   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+    Simple_Converter*        converter = Simple_Converter_ICU_new("UTF8", NULL);
 #   else
 #   define                   converter NULL
 #   endif

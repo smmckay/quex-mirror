@@ -22,14 +22,14 @@ main(int argc, char** argv)
     const char*    file_name = "example.txt";
 #   endif
 #   if defined(QUEX_OPTION_CONVERTER_ICONV)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    Simple_Converter*  converter = Simple_Converter_IConv_new("UTF8", NULL);
 #   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+    Simple_Converter*  converter = Simple_Converter_ICU_new("UTF8", NULL);
 #   else
-#   define                   converter NULL
+#   define             converter NULL
 #   endif
-    QUEX_NAME(ByteLoader)* byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
-    Simple   qlex(byte_loader, converter);
+    Simple_ByteLoader* byte_loader = Simple_ByteLoader_FILE_new_from_file_name(file_name);
+    Simple             qlex(byte_loader, converter);
 
     if( argc < 2 ) {
         printf("Command line argument required!\n");
@@ -68,7 +68,7 @@ main(int argc, char** argv)
 
         printf("(%2i, %2i)   \t%s '%s' \n", (int)qlex.line_number(), (int)qlex.column_number(),
                token_p->id_name(), 
-               QUEX_NAME(lexeme_to_pretty_char)(token_p->text).c_str());
+               Simple_lexeme_to_pretty_char(token_p->text).c_str());
 
     } while( token_p->id != QUEX_TKN_TERMINATION );
 

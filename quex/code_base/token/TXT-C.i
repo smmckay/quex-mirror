@@ -11,7 +11,6 @@
 
 $$INCLUDE_TOKEN_CLASS_HEADER$$
 $$INCLUDE_TOKEN_ID_HEADER$$
-$$INC: lexeme_base.i$$
 
 QUEX_INLINE void 
 $$TOKEN_CLASS$$_set($$TOKEN_CLASS$$*            __this, 
@@ -33,8 +32,8 @@ QUEX_INLINE void
 $$TOKEN_CLASS$$_copy_construct($$TOKEN_CLASS$$*       __this, 
                             const $$TOKEN_CLASS$$* __That)
 {
-    QUEX_NAME_TOKEN(construct)(__this);
-    QUEX_NAME_TOKEN(copy)(__this, __That);
+    $$TOKEN_CLASS$$_construct(__this);
+    $$TOKEN_CLASS$$_copy(__this, __That);
 }
 
 QUEX_INLINE void 
@@ -124,15 +123,9 @@ $$TOKEN_REPETITION_N_SET$$
 QUEX_INLINE const char*
 $$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
 {
-   static char  error_string[64];
-
-   /* NOTE: This implementation works only for token id types that are 
-    *       some type of integer or enum. In case an alien type is to
-    *       used, this function needs to be redefined.                  */
    switch( TokenID ) {
    default: {
-       __QUEX_STD_sprintf(error_string, "<UNKNOWN TOKEN-ID: %i>", (int)TokenID);
-       return error_string;
+       return "<NUMERIC VALUE OF TOKEN-ID UNDEFINED>";
    }
 $$MAP_ID_TO_NAME_CASES$$
    }

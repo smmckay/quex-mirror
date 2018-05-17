@@ -15,7 +15,7 @@ main(int argc, char** argv)
 {        
     const size_t        BufferSize = 1024;
     char                buffer[1024];
-    QUEX_TYPE_TOKEN*    token_p = 0x0;
+    EHLexer_Token*      token_p = 0x0;
     EHLexer_token_id_t  token_id = 0;
     char                file_name[256];
     EHLexer             qlex;
@@ -27,7 +27,7 @@ main(int argc, char** argv)
 
     snprintf(file_name, (size_t)256, "./examples/%s.txt", (const char*)argv[1]);
     /* printf("%s\n", file_name); */
-    QUEX_NAME(from_file_name)(&qlex, file_name, NULL); 
+    EHLexer_from_file_name(&qlex, file_name, NULL); 
     FLUSH();
 
     fprintf(stderr, "| [START]\n");
@@ -42,7 +42,7 @@ main(int argc, char** argv)
         qlex.receive(&qlex, &token_p);
         token_id = token_p->id;
         FLUSH();
-        printf("TOKEN: %s\n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("TOKEN: %s\n", EHLexer_Token_get_string(token_p, buffer, BufferSize));
         FLUSH();
     } while( token_id != TK_TERMINATION );
 
@@ -53,7 +53,7 @@ main(int argc, char** argv)
         qlex.print_this(&qlex);
     }
 
-    QUEX_NAME(destruct)(&qlex);
+    EHLexer_destruct(&qlex);
 
     return 0;
 }

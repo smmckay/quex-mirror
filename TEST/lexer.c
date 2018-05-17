@@ -38,16 +38,16 @@ main(int argc, char** argv)
     Simple        qlex;
     const char*   file_name = argc > 1 ? argv[1] : "example.txt";
 
-    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
+    Simple_ByteLoader*   byte_loader = Simple_ByteLoader_FILE_new_from_file_name(file_name);
 
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    Simple_Converter)*    converter = Simple_Converter_IConv_new("UTF8", NULL);
 #   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+    Simple_Converter)*    converter = Simple_Converter_ICU_new("UTF8", NULL);
 #   else
 #   define                   converter NULL
 #   endif
-    QUEX_NAME(from_ByteLoader)(&qlex, byte_loader, converter);
+    Simple_from_ByteLoader(&qlex, byte_loader, converter);
 
 #   ifdef HWUT_INFO_MESSAGE
 	hwut_info(HWUT_INFO_MESSAGE);
@@ -71,11 +71,11 @@ main(int argc, char** argv)
         fflush(stderr);
 #       ifdef PRINT_TOKEN
         if( token_n >= PRINT_TOKEN_FIRST_NUMBER ) {
-            printf("%s", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+            printf("%s", Simple_Token_get_string(token_p, buffer, BufferSize));
             printf("\n");
         }
 #       else
-        printf("%s", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        printf("%s", Simple_Token_map_id_to_name(token_p->id));
         printf("\n");
 #       endif
         fflush(stdout);
@@ -89,6 +89,6 @@ main(int argc, char** argv)
     }
     TEST_EPILOG
 
-    QUEX_NAME(destruct)(&qlex);
+    Simple_destruct(&qlex);
     return 0;
 }

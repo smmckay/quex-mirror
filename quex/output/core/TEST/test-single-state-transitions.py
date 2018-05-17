@@ -267,7 +267,7 @@ def get_read_preparation(Codec):
             "{\n"
             "    TestAnalyzer_lexatom_t*  buffer_p    = &buffer[0];\n"
             "    const uint32_t*          u32_input_p = &unicode_input;\n"
-            "    QUEX_NAME(unicode_to_utf8_character)(&u32_input_p, &buffer_p);\n"
+            "    TestAnalyzer_unicode_to_utf8_character(&u32_input_p, &buffer_p);\n"
             "}\n"
         ]
     else:
@@ -291,7 +291,7 @@ except: pass
 if codec == "UTF8": qtc_str = "-DQUEX_TYPE_LEXATOM=uint8_t"
 else:               qtc_str = "-DQUEX_TYPE_LEXATOM=uint32_t"
 
-os.system("gcc -Wall -Werror -I. -I../../../code_base %s -o test test.c -ggdb -std=c89" % qtc_str)
+os.system("gcc -Wall -Werror -I. -I../../../code_base -DQUEX_INLINE=static %s -o test test.c -ggdb -std=c89" % qtc_str)
 os.system("./test")
 
 if True:

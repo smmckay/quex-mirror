@@ -15,11 +15,11 @@ main(int argc, char** argv)
     EHLexer         qlex;
     const char*     FileName = (argc == 1) ? "example.txt" : argv[1];
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    EHLexer_Converter*    converter = EHLexer_Converter_IConv_new("UTF8", NULL);
 #   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+    EHLexer_Converter*    converter = EHLexer_Converter_ICU_new("UTF8", NULL);
 #   else
-#   define                   converter NULL
+#   define                converter NULL
 #   endif
     EHLexer_from_file_name(&qlex, FileName, converter); 
 
@@ -68,13 +68,13 @@ print_token(EHLexer_Token* token_p)
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still carries an old lexeme; Printing it
          * would be confusing.                                               */
-        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        printf("%s\n", EHLexer_Token_map_id_to_name(token_p->id));
         break;
     default:
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s \n", EHLexer_Token_get_string(token_p, buffer, BufferSize));
         break;
     }
 #   else
-    printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+    printf("%s\n", EHLexer_Token_map_id_to_name(token_p->id));
 #   endif
 }

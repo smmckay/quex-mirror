@@ -4,7 +4,6 @@ token_type {
 #include <stdio.h>
 #include <string.h>
 #include <$$OUTPUT_DIR$$/lib/compatibility/stdint.h>
-$$HELPER_DEFINITIONS$$
 #include <$$OUTPUT_DIR$$/lib/definitions>
 #include <$$OUTPUT_DIR$$/lib/asserts>
 #include <$$OUTPUT_DIR$$/lib/MemoryManager>
@@ -14,7 +13,9 @@ $$HELPER_DEFINITIONS$$
 struct $$TOKEN_CLASS$$_tag;
 
 extern const char* 
-QUEX_NAME_TOKEN(get_string)(struct $$TOKEN_CLASS$$_tag* me,  char*  buffer, size_t   BufferSize); 
+$$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* me,  
+                           char*                       buffer, 
+                           size_t                      BufferSize); 
 
    }
    standard {
@@ -154,6 +155,7 @@ QUEX_NAME_TOKEN(get_string)(struct $$TOKEN_CLASS$$_tag* me,  char*  buffer, size
         }
 
 #include <$$OUTPUT_DIR$$/converter-from-lexeme.i>
+#include <$$OUTPUT_DIR$$/lib/lexeme_base.i>
    }
 }
 

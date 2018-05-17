@@ -25,7 +25,7 @@ main(int argc, char** argv)
     int N = atoi(argv[1]);
 
     qlex.byte_order_reversion_set(true);
-    qlex.push_mode(&QUEX_NAME(EXTRA));
+    qlex.push_mode(&Simple_EXTRA);
 
     /* Read 'N' tokens before doing the reset. */
     for(int i=0; i < N; ++i) {

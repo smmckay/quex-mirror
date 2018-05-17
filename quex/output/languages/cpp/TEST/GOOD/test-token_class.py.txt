@@ -150,7 +150,7 @@ public:
         QUEX_TYPE_TOKEN_ID    id;
         QUEX_TYPE_TOKEN_ID    type_id() const                             { return id; }
         const char*           map_id_to_name(QUEX_TYPE_TOKEN_ID ID) const { return QUEX_NAME_TOKEN(map_id_to_name)(ID); }
-        const std::string     type_id_name() const                        { return map_id_to_name(id); }
+        const std::string     id_name() const                        { return map_id_to_name(id); }
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE

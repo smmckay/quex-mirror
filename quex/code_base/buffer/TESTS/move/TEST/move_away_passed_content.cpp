@@ -55,15 +55,15 @@ const  ptrdiff_t            ContentSize = sizeof(content)/sizeof(content[0]);
 static QUEX_TYPE_LEXATOM  memory[12];
 const  ptrdiff_t            MemorySize = sizeof(memory)/sizeof(memory[0]);
 
-QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
-                            QUEX_TYPE_LEXATOM** position_register,
-                            const size_t        PositionRegisterN);
+inline ptrdiff_t
+TestAnalyzer_Buffer_free_back(QUEX_NAME(Buffer)*  me,
+                              QUEX_TYPE_LEXATOM** position_register,
+                              const size_t        PositionRegisterN);
 
-QUEX_INLINE ptrdiff_t
-QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
-                            QUEX_TYPE_LEXATOM** position_register,
-                            const size_t        PositionRegisterN)
+inline ptrdiff_t
+TestAnalyzer_Buffer_free_back(QUEX_NAME(Buffer)*  me,
+                              QUEX_TYPE_LEXATOM** position_register,
+                              const size_t        PositionRegisterN)
 /*    ..    WARNING: 
  *   /  \   Pointers to the '_memory' object may change!
  *  /    \  References to pointers from prior a call to this function
@@ -91,7 +91,7 @@ QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(me);
 
-    move_distance = QUEX_NAME(Buffer_move_get_max_distance_towards_begin)(me); 
+    move_distance = TestAnalyzer_Buffer_move_get_max_distance_towards_begin(me); 
 
     if( 0 == move_distance ) {
         if( ! QUEX_NAME(Buffer_callbacks_on_cannot_move_towards_begin)(me, &move_distance) ) {
@@ -118,7 +118,7 @@ QUEX_NAME(Buffer_free_back)(QUEX_NAME(Buffer)*  me,
 int
 main(int argc, char** argv)
 {
-    QUEX_NAME(Buffer)    buffer;
+    TestAnalyzer_Buffer  buffer;
     G_t                  it;
     struct {
         QUEX_TYPE_LEXATOM* end_p;     
@@ -197,7 +197,7 @@ main(int argc, char** argv)
             hwut_verify(! move_distance);
         }
 
-        QUEX_NAME(Buffer_destruct)(&buffer);
+        TestAnalyzer_Buffer_destruct(&buffer);
         ++count;
     }
     printf("<terminated %i>\n", count);

@@ -7,20 +7,20 @@
 
 #define FLUSH() do { fflush(stdout); fflush(stderr); } while(0)
 
-static size_t self_on_after_load_forward(struct QUEX_NAME(ByteLoader_Probe_tag)*, 
+static size_t self_on_after_load_forward(struct       EHLexer_ByteLoader_Probe_tag*, 
                                          void*        buffer, 
                                          const size_t LoadedN, 
                                          bool*        end_of_stream_f);
 static QUEX_TYPE_STREAM_POSITION 
-              self_on_seek_backward(struct QUEX_NAME(ByteLoader_Probe_tag)* me, 
-                                    QUEX_TYPE_STREAM_POSITION               Pos);
-static size_t self_on_after_load_backward(struct QUEX_NAME(ByteLoader_Probe_tag)*, 
+              self_on_seek_backward(struct EHLexer_ByteLoader_Probe_tag* me, 
+                                    QUEX_TYPE_STREAM_POSITION            Pos);
+static size_t self_on_after_load_backward(struct EHLexer_ByteLoader_Probe_tag*, 
                                           void*        buffer, 
                                           const size_t LoadedN, 
                                           bool*        end_of_stream_f);
 typedef struct {
-    quex_EHLexer* lexer;
-    bool          seek_backward_f;
+    EHLexer* lexer;
+    bool     seek_backward_f;
 } extra_t;
 
 int 
@@ -28,8 +28,8 @@ main(int argc, char** argv)
 {        
     const size_t        BufferSize = 1024;
     char                buffer[1024];
-    QUEX_TYPE_TOKEN*    token_p = 0x0;
-    QUEX_TYPE_TOKEN_ID  token_id = 0;
+    EHLexer_Token*      token_p = 0x0;
+    EHLexer_token_id_t  token_id = 0;
     char                file_name[256];
     quex_EHLexer        qlex;
     char*               memory = "abcx";
@@ -37,9 +37,9 @@ main(int argc, char** argv)
     const uint8_t*      EndP   = (uint8_t*)&memory[strlen(memory)+1];
     extra_t             extra;
 
-    QUEX_NAME(ByteLoader_Memory)* blm = (QUEX_NAME(ByteLoader_Memory)*)QUEX_NAME(ByteLoader_Memory_new)(BeginP, EndP);
-    QUEX_NAME(ByteLoader_Probe)*  blp = (QUEX_NAME(ByteLoader_Probe)*)QUEX_NAME(ByteLoader_Probe_new)((QUEX_NAME(ByteLoader)*)blm, 
-                                                                                                      (void*)&extra);
+    EHLexer_ByteLoader_Memory* blm = (EHLexer_ByteLoader_Memory*)EHLexer_ByteLoader_Memory_new(BeginP, EndP);
+    EHLexer_ByteLoader_Probe*  blp = (EHLexer_ByteLoader_Probe*)EHLexer_ByteLoader_Probe_new((EHLexer_ByteLoader*)blm, 
+                                                                                             (void*)&extra);
 
     extra.lexer           = &qlex;
     extra.seek_backward_f = false;
@@ -54,18 +54,18 @@ main(int argc, char** argv)
 
     snprintf(file_name, (size_t)256, "./examples/%s.txt", (const char*)argv[1]);
     /* printf("%s\n", file_name); */
-    QUEX_NAME(from_file_name)(&qlex, file_name, NULL); 
-    QUEX_NAME(from_ByteLoader)(&qlex, &blp->base, NULL);
+    EHLexer_from_file_name(&qlex, file_name, NULL); 
+    EHLexer_from_ByteLoader(&qlex, &blp->base, NULL);
     FLUSH();
 
     fprintf(stderr, "| [START]\n");
     FLUSH();
 
     do {
-        QUEX_NAME(receive)(&qlex, &token_p);
+        qlex->receive(&qlex, &token_p);
         token_id = token_p->id;
         FLUSH();
-        printf("TOKEN: %s\n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("TOKEN: %s\n", EHLexer_Token_get_string(token_p, buffer, BufferSize));
         FLUSH();
     } while( token_id != TK_TERMINATION );
 
@@ -73,12 +73,12 @@ main(int argc, char** argv)
     FLUSH();
 
     if( qlex.error_code != E_Error_None ) {
-        QUEX_NAME(print_this)(&qlex);
+        qlex.print_this(&qlex);
     }
 
-    QUEX_NAME(destruct)(&qlex);
+    EHLexer_destruct(&qlex);
 
-    blp->base.delete_self((QUEX_NAME(ByteLoader)*)blp);
+    blp->base.delete_self((EHLexer_ByteLoader*)blp);
 
     return 0;
 }

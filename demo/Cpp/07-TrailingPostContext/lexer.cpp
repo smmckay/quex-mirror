@@ -35,7 +35,7 @@ print_token(Easy_Token* token_p)
 
     switch( token_p->id ) {
     case QUEX_TKN_TERMINATION: 
-        std::cout << token_p->type_id_name() << std::endl;
+        std::cout << token_p->id_name() << std::endl;
         break;
     default:
         std::cout << std::string(*token_p) << std::endl;

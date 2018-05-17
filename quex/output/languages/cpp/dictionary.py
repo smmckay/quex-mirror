@@ -48,6 +48,8 @@ class Language(dict):
     Match_include             = re.compile(r"#[ \t]*include[ \t]*[\"<]([^\">]+)[\">]")
     Match_Lexeme              = re.compile("\\bLexeme\\b", re.UNICODE)
     Match_QUEX_NAME_lexeme    = re.compile("\\bQUEX_NAME\\(lexeme_", re.UNICODE)
+    Match_QUEX_NAME           = re.compile(r"\bQUEX_NAME\(([A-Z_a-z0-9]+)\)")
+    Match_QUEX_NAME_TOKEN     = re.compile(r"\bQUEX_NAME_TOKEN\(([A-Z_a-z0-9]+)\)")
 
     CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
     
@@ -350,9 +352,11 @@ class Language(dict):
             return ""
 
     def NAMESPACE_OPEN(self, NameList):
+        if not NameList: return ""
         return " ".join(("    " * i + "namespace %s {" % name) for i, name in enumerate(NameList))
 
     def NAMESPACE_CLOSE(self, NameList):
+        if not NameList: return ""
         return " ".join("} /* close %s */" % name for name in NameList)
 
     def NAMESPACE_REFERENCE(self, NameList, TrailingDelimiterF=True):
@@ -415,6 +419,21 @@ class Language(dict):
     @typed(TypeStr=(str,unicode), MaxTypeNameL=(int,long), VariableName=(str,unicode))
     def CLASS_MEMBER_DEFINITION(self, TypeStr, MaxTypeNameL, VariableName):
         return "    %s%s %s;" % (TypeStr, " " * (MaxTypeNameL - len(TypeStr)), VariableName)
+
+    def VARIABLE_DECLARATION(self, variable):
+        if not blackboard.condition_holds(variable.condition):
+            return ""
+
+        if variable.constant_f: const_str = "const "
+        else:                   const_str = ""
+
+        if variable.initial_value: init_value_str = variable.init_value
+        else:                      init_value_str = ""
+
+        return "%s%s %s%s;" % (const_str, variable.type, variable.name, init_value_str)
+
+    def MEMBER_VARIABLE_DECLARATION(self, variable):
+        return self.VARIABLE_DECLARATION(variable)
 
     def MEMBER_FUNCTION_DECLARATION(self, signature):
         if not blackboard.condition_holds(signature.condition):
@@ -1330,18 +1349,45 @@ class Language(dict):
                + "%s\n" % def_str \
                + "QUEX_NAMESPACE_MAIN_CLOSE\n"
 
-    def type_definition_adapt(self, Txt):
+    def adapt_to_configuration(self, Txt):
         if not Txt: return Txt
-        acn = Setup.analyzer_class_name
-        return blue_print(Txt, [
-                           ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
-                           ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
-                           ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
-                           ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),
-                           ("QUEX_TYPE_ACCEPTANCE_ID",  "%s_acceptance_id_t" % acn),
-                           ("QUEX_TYPE_INDENTATION",    "%s_indentation_t" % acn)
-                          ],
-                          CommonStart="QUEX_TYPE_")
+
+        acn         = Setup.analyzer_class_name
+        token_descr = token_db.token_type_definition
+        if token_descr is not None:
+            tcn              = token_descr.class_name
+            token_name_space = token_descr.name_space
+        else:
+            tcn              = ""
+            token_name_space = ""
+
+        # Types
+        replacements = [
+             ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
+             ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
+             ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
+             ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),
+             ("QUEX_TYPE_ACCEPTANCE_ID",  "%s_acceptance_id_t" % acn),
+             ("QUEX_TYPE_INDENTATION",    "%s_indentation_t" % acn)
+        ]
+
+        # Namespaces
+        replacements.extend([
+            ("QUEX_NAMESPACE_MAIN_OPEN",   self.NAMESPACE_OPEN(Setup.analyzer_name_space)),
+            ("QUEX_NAMESPACE_MAIN_CLOSE",  self.NAMESPACE_CLOSE(Setup.analyzer_name_space)),
+            ("QUEX_NAMESPACE_TOKEN_OPEN",  self.NAMESPACE_OPEN(token_name_space)),
+            ("QUEX_NAMESPACE_TOKEN_CLOSE", self.NAMESPACE_CLOSE(token_name_space)),
+        ])
+
+        # Inline
+        replacements.append(
+            ("QUEX_INLINE", "inline")
+        )
+
+        # QUEX_NAME
+        txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, Txt)
+        txt = self.Match_QUEX_NAME_TOKEN.sub(r"%s_\1" % tcn, txt)
+        return blue_print(txt, replacements, CommonStart="QUEX_")
 
 cpp_include_Multi_i_str = """
 $$HEADER$$

@@ -165,8 +165,8 @@ self_byte_loader()
 static void
 self_byte_loader_core(E_Error ExpectedError)
 {
-    QUEX_NAME(ByteLoader)* byte_loader;
-    QUEX_NAME(Converter)*  converter;
+    TestAnalyzer_ByteLoader* byte_loader;
+    TestAnalyzer_Converter*  converter;
 
     switch( ExpectedError ) {
     case E_Error_Allocation_ByteLoader_Failed:
@@ -192,15 +192,15 @@ self_byte_loader_core(E_Error ExpectedError)
         break;
     }
     {
-        byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
-        converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+        byte_loader = TestAnalyzer_ByteLoader_FILE_new_from_file_name("file-that-exists.txt");
+        converter   = TestAnalyzer_Converter_IConv_new("UTF8", NULL);
         new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
         lx->TestAnalyzer::~TestAnalyzer();
     }
     ++lx;
     {
-        byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
+        byte_loader = TestAnalyzer_ByteLoader_FILE_new_from_file_name("file-that-exists.txt");
         converter   = NULL;
         new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
@@ -209,7 +209,7 @@ self_byte_loader_core(E_Error ExpectedError)
     ++lx;
     {
         byte_loader = NULL;
-        converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+        converter   = TestAnalyzer_Converter_IConv_new("UTF8", NULL);
         new (lx) TestAnalyzer(byte_loader, converter);
         self_assert(lx, ExpectedError);
         lx->TestAnalyzer::~TestAnalyzer();
@@ -287,7 +287,7 @@ self_destruct(size_t N)
 
     for(TestAnalyzer* it = lx0; it != End; ++it) {
         it->~TestAnalyzer();
-        hwut_verify(QUEX_NAME(MF_resources_absent)(it));
+        hwut_verify(TestAnalyzer_MF_resources_absent(it));
     }
 }
 
@@ -297,9 +297,9 @@ self_assert(TestAnalyzer* lexer, E_Error ExpectedError)
     hwut_verify(lx->error_code == ExpectedError);
 
     if( ExpectedError != E_Error_None ) {
-        hwut_verify(QUEX_NAME(MF_resources_absent)(lx));
+        hwut_verify(TestAnalyzer_MF_resources_absent(lx));
     }
     else {
-        hwut_verify(! QUEX_NAME(MF_resources_absent)(lx));
+        hwut_verify(! TestAnalyzer_MF_resources_absent(lx));
     }
 }

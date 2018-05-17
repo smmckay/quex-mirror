@@ -20,13 +20,7 @@ main(int argc, char** argv)
 
         /* (*) print out token information
          *     'get_string' automagically converts codec bytes into utf8 */
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
-#       if 0
-        cout << "\t\t plain bytes: ";
-        for(QUEX_TYPE_LEXATOM* iterator = (uint8_t*)tmp.c_str(); *iterator ; ++iterator) {
-            printf("%02X.", (int)*iterator);
-        }
-#       endif
+        printf("%s \n", ISO8859_7_Token_get_string(token_p, buffer, BufferSize));
 
         // (*) check against 'termination'
     } while( token_p->id != TKN_TERMINATION );

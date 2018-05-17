@@ -26,11 +26,11 @@ main(int argc, char** argv)
 {        
     CToken*   token;
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    CLexer_Converter*    converter = CLexer_Converter_IConv_new("UTF8", NULL);
 #   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL);
+    CLexer_Converter*    converter = CLexer_Converter_ICU_new("TF8", NULL);
 #   else
-#   define                   converter NULL
+#   define               converter NULL
 #   endif
     CLexer    lexer;
     CFeeder   feeder;
@@ -39,7 +39,7 @@ main(int argc, char** argv)
     char      buffer[256];
     (void)argc; (void)argv;
 
-    QUEX_NAME(from_ByteLoader)(&lexer, (QUEX_NAME(ByteLoader)*)0, converter);
+    CLexer_from_ByteLoader(&lexer, (CLexer_ByteLoader*)0, converter);
     QUEX_NAME(Feeder_construct)(&feeder, &lexer, QUEX_TKN_BYE);
 
     token = (CToken*)0;
@@ -62,13 +62,13 @@ main(int argc, char** argv)
         }
 
         if( token ) {
-            printf("   TOKEN: %s\n", QUEX_NAME_TOKEN(get_string)(token, &buffer[0], sizeof(buffer)));
+            printf("   TOKEN: %s\n", CLexer_get_string(token, &buffer[0], sizeof(buffer)));
         }
     }
 
     show_buffer(&lexer, &rx_content_p[0], &rx_content_p[received_n]);
 
-    QUEX_NAME(destruct)(&lexer);
+    CLexer_destruct(&lexer);
     /* Feeders do not need destruction. */
 }
 
@@ -77,13 +77,13 @@ show_buffer(CLexer* lexer, const uint8_t* RawBeginP, const uint8_t* RawEndP)
 {
 #   ifdef QUEX_EXAMPLE_WITH_CONVERTER
     printf("     raw: ");
-    QUEX_NAME(Buffer_print_content_core)(1, RawBeginP, &RawEndP[-1], 
-                                         (const uint8_t*)0, RawEndP,
-                                         /* BordersF */ false);
+    CLexer_Buffer_print_content_core(1, RawBeginP, &RawEndP[-1], 
+                                     (const uint8_t*)0, RawEndP,
+                                     /* BordersF */ false);
     printf("\n");
 #   endif
     (void)RawBeginP; (void)RawEndP;
     printf("        : ");
-    QUEX_NAME(Buffer_print_content)(&lexer->buffer);
+    CLexer_Buffer_print_content(&lexer->buffer);
     printf("\n");
 }

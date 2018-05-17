@@ -36,7 +36,7 @@ print_token(LexerForC_Token* token_p)
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still might carry an old lexeme. 
          * Printing it would be confusing.                                    */
-        std::cout << token_p->type_id_name() << std::endl;
+        std::cout << token_p->id_name() << std::endl;
         break;
     default:
         std::cout << std::string(*token_p) << std::endl;

@@ -15,12 +15,12 @@ int main(int argc, char** argv)
 
     file_name = argv[1];
 
-    QUEX_NAME(from_file_name)(&tlex, file_name, /* Converter */NULL);
+    CONSTRUCT(&tlex, file_name, /* Converter */NULL);
 
     do {
         tlex.receive(&tlex, &token_p);
 
-        printf("%s;\n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s;\n", GET_STRING(token_p, buffer, BufferSize));
 
     } while(    token_p->id     != QUEX_TKN_TERMINATION
              && tlex.error_code == E_Error_None );

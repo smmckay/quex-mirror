@@ -18,9 +18,9 @@ main(int argc, char** argv)
     FILE*        fh               = fopen(argc > 1 ? argv[1] : "example.txt", "rb");
 
     /* The lexer must be constructed AFTER the BOM-cut                        */
-    QUEX_NAME(ByteLoader)*    byte_loader = QUEX_NAME(ByteLoader_FILE_new)(fh, true);
-    QUEX_NAME(Converter)*     converter   = QUEX_NAME(Converter_IConv_new)(NULL, NULL);
-    QUEX_TYPE_BOM             bom_id      = quex::bom_snap(fh);
+    Easy_ByteLoader*    byte_loader = Easy_ByteLoader_FILE_new(fh, true);
+    Easy_Converter*     converter   = Easy_Converter_IConv_new(NULL, NULL);
+    QUEX_TYPE_BOM       bom_id      = quex::bom_snap(fh);
 
     printf("Found BOM: %s\n", quex::bom_name(bom_id));
 
@@ -61,7 +61,7 @@ print_token(Easy_Token* token_p)
     case QUEX_TKN_DEDENT: 
     case QUEX_TKN_NODENT: 
     case QUEX_TKN_TERMINATION: 
-        std::cout << token_p->type_id_name() << std::endl;
+        std::cout << token_p->id_name() << std::endl;
         break;
     default:
         std::cout << std::string(*token_p) << std::endl;

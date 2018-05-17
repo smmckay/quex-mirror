@@ -11,7 +11,7 @@
         do {
             tlex.receive(&token_p);
 
-            std::cout << token_p->type_id_name() << std::endl;
+            std::cout << token_p->id_name() << std::endl;
 
         } while(    token_p->id     != QUEX_TKN_TERMINATION 
                  && tlex.error_code == E_Error_None );

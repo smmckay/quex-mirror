@@ -15,10 +15,10 @@ main(int argc, char** argv)
 {        
     using namespace std;
 
-    int              number_of_tokens = 0;
-    bool             continue_lexing_f = true;
-    Easy       qlex(argc == 1 ? "example-shallow.txt" : argv[1], NULL);
-    QUEX_TYPE_TOKEN* token_p;
+    int         number_of_tokens = 0;
+    bool        continue_lexing_f = true;
+    Easy        qlex(argc == 1 ? "example-shallow.txt" : argv[1], NULL);
+    Easy_Token* token_p;
 
     do {
         qlex.receive(&token_p);
@@ -33,7 +33,7 @@ main(int argc, char** argv)
             if( token_p->id != QUEX_TKN_IDENTIFIER ) {
                 continue_lexing_f = false;
                 my_print(&qlex, "Found 'include' without a subsequent filename: '%s' hm?\n",
-                         (char*)QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+                         (char*)Easy_Token_map_id_to_name(token_p->id));
                 break;
             }
             my_print(&qlex, ">> including: ", (const char*)token_p->get_text());
@@ -71,10 +71,10 @@ print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p)
 
     switch( token_p->id ) {
     case QUEX_TKN_TERMINATION: 
-        std::cout << token_p->type_id_name() << std::endl;
+        std::cout << token_p->id_name() << std::endl;
         break;
     case QUEX_TKN_NUMBER: 
-        std::cout << token_p->type_id_name() << ": " << token_p->number << std::endl;
+        std::cout << token_p->id_name() << ": " << token_p->number << std::endl;
         break;
     default:
         std::cout << std::string(*token_p) << std::endl;

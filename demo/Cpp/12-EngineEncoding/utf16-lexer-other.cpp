@@ -34,7 +34,7 @@ main(int argc, char** argv)
         qlex->receive(&token);
 
         /* Print the lexeme in hex format. */
-        printf("%s\t", (char*)token->type_id_name().c_str());
+        printf("%s\t", (char*)token->id_name());
         for(const UTF16Lex_lexatom_t* iterator = token->get_text(); *iterator ; ++iterator) {
             printf("%04X.", *iterator);
         }

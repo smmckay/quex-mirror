@@ -11,9 +11,9 @@ static int  self_number_of_tokens = 0;
 int 
 main(int argc, char** argv) 
 {        
-    Easy              qlex;
-    const char*            FileName  = (argc < 2) ? "example.txt" : argv[1];
-    QUEX_NAME(Converter)*  converter = QUEX_NAME(Converter_ICU_new)("UTF8", NULL); 
+    Easy             qlex;
+    const char*      FileName  = (argc < 2) ? "example.txt" : argv[1];
+    Easy_Converter*  converter = Easy_Converter_ICU_new("UTF8", NULL); 
 
     Easy_from_file_name(&qlex, FileName, converter); 
 
@@ -38,10 +38,10 @@ self_print_token(Easy_Token* token_p)
     case QUEX_TKN_DEDENT: 
     case QUEX_TKN_NODENT: 
     case QUEX_TKN_TERMINATION: 
-        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        printf("%s\n", Easy_Token_map_id_to_name(token_p->id));
         break;
     default:
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s \n", Easy_Token_get_string(token_p, buffer, BufferSize));
         break;
     }
     ++self_number_of_tokens;

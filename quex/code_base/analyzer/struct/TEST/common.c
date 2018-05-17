@@ -7,7 +7,7 @@ common_token_queue_dummy_setup(TestAnalyzer* me)
     TestAnalyzer_token_id_t token_id;
     int                     token_n = 0;
     for(token_id = 3; token_n < 5 ; ++token_n) {
-        QUEX_NAME(TokenQueue_push)(&me->_token_queue, token_id);
+        TestAnalyzer_TokenQueue_push(&me->_token_queue, token_id);
         token_id = (token_id * 571) % 513 + 1;
     }
 }

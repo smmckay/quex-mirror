@@ -12,9 +12,9 @@ int
 main(int argc, char** argv) 
 {        
 
-    const char*            FileName  = (argc < 2) ? "example.txt" : argv[1];
-    QUEX_NAME(Converter)*  converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-    Easy                   qlex(FileName, converter);
+    const char*      FileName  = (argc < 2) ? "example.txt" : argv[1];
+    Easy_Converter*  converter = Easy_Converter_IConv_new("UTF8", NULL);
+    Easy             qlex(FileName, converter);
 
     qlex.run(self_print_token, true);
 
@@ -33,7 +33,7 @@ self_print_token(Easy_Token* token_p)
     case QUEX_TKN_DEDENT: 
     case QUEX_TKN_NODENT: 
     case QUEX_TKN_TERMINATION: 
-        std::cout << token_p->type_id_name() << std::endl;
+        std::cout << token_p->id_name() << std::endl;
         break;
     default:
         std::cout << std::string(*token_p) << std::endl;

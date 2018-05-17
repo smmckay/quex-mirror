@@ -27,7 +27,7 @@ main(int argc, char** argv)
     printf("[END] number of tokens = %i\n", number_of_tokens);
     if( qlex.error_code != E_Error_None ) qlex.print_this(&qlex); 
 
-    QUEX_NAME(destruct)(&qlex);
+    Easy_destruct(&qlex);
     return 0;
 }
 
@@ -47,15 +47,15 @@ print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p)
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still might carry an old lexeme. 
          * Printing it would be confusing.                                    */
-        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        printf("%s\n", Easy_Token_map_id_to_name(token_p->id));
         break;
     case QUEX_TKN_NUMBER: 
         /* In this case, the token still might carry an old lexeme. 
          * Printing it would be confusing.                                    */
-        printf("%s: %i\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id), (int)token_p->number);
+        printf("%s: %i\n", Easy_Token_map_id_to_name(token_p->id), (int)token_p->number);
         break;
     default:
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s \n", Easy_Token_get_string(token_p, buffer, BufferSize));
         break;
     }
 }

@@ -22,7 +22,7 @@ main(int argc, char** argv)
     for(int i=Start; i < Start + CharacterN; ++i) source[i-Start] = i;
 
     /* Convert the whole array */
-    QUEX_NAME(lexeme_nnzt_to_utf8)(&source_p, source_p + CharacterN, &drain_p, drain_p + 4095);
+    Lexer_lexeme_nnzt_to_utf8(&source_p, source_p + CharacterN, &drain_p, drain_p + 4095);
 
     const int    Size = (int)(drain_p - (uint8_t*)drain);
 

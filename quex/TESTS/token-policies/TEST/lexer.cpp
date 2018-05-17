@@ -54,7 +54,7 @@ TPLex_token_id_t test_core(TPLex& qlex, const char* Choice)
 
     qlex.receive(&token_p);
 
-    printf("received: %s\n", token_p->type_id_name().c_str());
+    printf("received: %s\n", token_p->id_name());
     TPLex_token_id_t token_id = token_p->id;
 
     return token_id;

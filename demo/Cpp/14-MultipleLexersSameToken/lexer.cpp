@@ -43,9 +43,9 @@ main(int argc, char** argv)
         for(size_t i=0; i < (size_t)10 - L ; ++i) printf(" ");
         printf("\t");
         printf("%s   %s   %s\n", 
-               max_token->type_id_name().c_str(), 
-               moritz_token->type_id_name().c_str(), 
-               boeck_token->type_id_name().c_str());
+               max_token->id_name(), 
+               moritz_token->id_name(), 
+               boeck_token->id_name());
 
     } while( boeck_token->id != TKN_TERMINATION );
 

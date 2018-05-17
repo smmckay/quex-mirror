@@ -39,7 +39,7 @@ token_type {
         {
             std::string             tmp;
 
-            tmp = map_id_to_name(self.id);
+            tmp = $$TOKEN_CLASS$$_map_id_to_name(self.id);
 
             tmp += " '" + QUEX_NAME(lexeme_to_pretty_char)(self.text) + "'";
 
@@ -67,11 +67,9 @@ token_type {
    }
 
    footer {
-        $NAMESPACE_OPEN
         inline std::ostream&
-        operator<<(std::ostream& ostr, const $TOKEN_CLASS& Tok)
+        operator<<(std::ostream& ostr, const $$TOKEN_CLASS$$& Tok)
         { ostr << Tok.get_string(); return ostr; }
-        $NAMESPACE_CLOSE
 
    #include "test_environment/converter-from-lexeme.i"
    }

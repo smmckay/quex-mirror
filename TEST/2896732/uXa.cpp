@@ -111,11 +111,11 @@ namespace quex {
 			for(/* void */;/* void */;/* void */) {
 				token = read();
 
-				if(token->id == QUEX_UUID_EOF || token->type_id() == QUEX_UUID_FCK) {
+				if(token->id == QUEX_UUID_EOF || token->id == QUEX_UUID_FCK) {
 					break;
 				}
 
-				std::cout << token->type_id_name();
+				std::cout << token->id_name();
 
 				if(token->id == QUEX_UUID_POINTIE) {
 					std::cout << "(";

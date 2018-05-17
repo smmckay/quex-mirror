@@ -7,48 +7,48 @@
 * analzer--then it is included.                                             */
 #include "test_environment/lib/single.i"
 
-QUEX_NAMESPACE_MAIN_OPEN
-QUEX_NAME(Mode) QUEX_NAME(M) = {
+
+TestAnalyzer_Mode TestAnalyzer_M = {
 /* name              */ "M",
 #   if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \
 && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
-/* on_indentation    */ QUEX_NAME(Mode_on_indentation_null_function),
+/* on_indentation    */ TestAnalyzer_Mode_on_indentation_null_function,
 #   endif
-/* on_entry          */ QUEX_NAME(Mode_on_entry_exit_null_function),
-/* on_exit           */ QUEX_NAME(Mode_on_entry_exit_null_function),
+/* on_entry          */ TestAnalyzer_Mode_on_entry_exit_null_function,
+/* on_exit           */ TestAnalyzer_Mode_on_entry_exit_null_function,
 #   if      defined(QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK)
-/* has_base          */ QUEX_NAME(M_has_base),
-/* has_entry_from    */ QUEX_NAME(M_has_entry_from),
-/* has_exit_to       */ QUEX_NAME(M_has_exit_to),
+/* has_base          */ TestAnalyzer_M_has_base,
+/* has_entry_from    */ TestAnalyzer_M_has_entry_from,
+/* has_exit_to       */ TestAnalyzer_M_has_exit_to,
 #   endif
 {
-/* on_buffer_before_change */ QUEX_NAME(M_on_buffer_before_change),
-/* on_buffer_overflow      */ QUEX_NAME(M_on_buffer_overflow),
+/* on_buffer_before_change */ TestAnalyzer_M_on_buffer_before_change,
+/* on_buffer_overflow      */ TestAnalyzer_M_on_buffer_overflow,
 /* aux                     */ (void*)0,
 },
 
-/* analyzer_function */ QUEX_NAME(M_analyzer_function)
+/* analyzer_function */ TestAnalyzer_M_analyzer_function
 };
-QUEX_NAME(Mode) QUEX_NAME(M2) = {
+TestAnalyzer_Mode TestAnalyzer_M2 = {
 /* name              */ "M2",
 #   if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \
 && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
-/* on_indentation    */ QUEX_NAME(Mode_on_indentation_null_function),
+/* on_indentation    */ TestAnalyzer_Mode_on_indentation_null_function,
 #   endif
-/* on_entry          */ QUEX_NAME(Mode_on_entry_exit_null_function),
-/* on_exit           */ QUEX_NAME(Mode_on_entry_exit_null_function),
+/* on_entry          */ TestAnalyzer_Mode_on_entry_exit_null_function,
+/* on_exit           */ TestAnalyzer_Mode_on_entry_exit_null_function,
 #   if      defined(QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK)
-/* has_base          */ QUEX_NAME(M2_has_base),
-/* has_entry_from    */ QUEX_NAME(M2_has_entry_from),
-/* has_exit_to       */ QUEX_NAME(M2_has_exit_to),
+/* has_base          */ TestAnalyzer_M2_has_base,
+/* has_entry_from    */ TestAnalyzer_M2_has_entry_from,
+/* has_exit_to       */ TestAnalyzer_M2_has_exit_to,
 #   endif
 {
-/* on_buffer_before_change */ QUEX_NAME(M2_on_buffer_before_change),
-/* on_buffer_overflow      */ QUEX_NAME(M2_on_buffer_overflow),
+/* on_buffer_before_change */ TestAnalyzer_M2_on_buffer_before_change,
+/* on_buffer_overflow      */ TestAnalyzer_M2_on_buffer_overflow,
 /* aux                     */ (void*)0,
 },
 
-/* analyzer_function */ QUEX_NAME(M2_analyzer_function)
+/* analyzer_function */ TestAnalyzer_M2_analyzer_function
 };
 
 #   ifdef     self
@@ -59,21 +59,21 @@ QUEX_NAME(Mode) QUEX_NAME(M2) = {
 #define RETURN      return
 
 void
-QUEX_NAME(M_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* FromMode) {
+TestAnalyzer_M_on_entry(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* FromMode) {
 (void)me;
 (void)FromMode;
 #   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-QUEX_NAME(M).has_entry_from(FromMode);
+TestAnalyzer_M.has_entry_from(FromMode);
 #   endif
 
 }
 
 void
-QUEX_NAME(M_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
+TestAnalyzer_M_on_exit(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* ToMode)  {
 (void)me;
 (void)ToMode;
 #   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-QUEX_NAME(M).has_exit_to(ToMode);
+TestAnalyzer_M.has_exit_to(ToMode);
 #   endif
 
 }
@@ -81,7 +81,7 @@ QUEX_NAME(M).has_exit_to(ToMode);
 
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER)
 void
-QUEX_NAME(M_on_indentation)(QUEX_TYPE_ANALYZER*    me,
+TestAnalyzer_M_on_indentation(QUEX_TYPE_ANALYZER*    me,
 TestAnalyzer_indentation_t  Indentation,
 TestAnalyzer_lexatom_t*     Begin)
 {
@@ -93,13 +93,13 @@ TestAnalyzer_lexatom_t*     Begin)
 #   endif
 #   define self (*((QUEX_TYPE_ANALYZER*)me))
 
-#   define M     (&QUEX_NAME(M))
-#   define M2    (&QUEX_NAME(M2))
+#   define M     (&TestAnalyzer_M)
+#   define M2    (&TestAnalyzer_M2)
 
 #   define Lexeme        Begin
 #   define LexemeEnd     (me->buffer._read_p)
 
-QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
+TestAnalyzer_IndentationStack*  stack = &me->counter._indentation_stack;
 TestAnalyzer_indentation_t*        start = 0x0;
 (void)start;
 
@@ -108,7 +108,7 @@ __quex_assert((long)Indentation >= 0);
 if( Indentation > *(stack->back) ) {
 ++(stack->back);
 if( stack->back == stack->memory_end ) {
-QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Indentation_StackOverflow);
+TestAnalyzer_MF_error_code_set_if_first(me, E_Error_Indentation_StackOverflow);
 return;
 }
 *(stack->back) = Indentation;
@@ -149,7 +149,7 @@ self.send_n(QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 #            define IndentationUpper     (*(stack->back))
 #            define IndentationLower     ((stack->back == stack->front) ? *(stack->front) : *(stack->back - 1))
 #            define ClosedN              (start - stack->back)
-QUEX_NAME(MF_error_code_set_if_first)(me,
+TestAnalyzer_MF_error_code_set_if_first(me,
 E_Error_Indentation_DedentNotOnIndentationBorder);
 
 #            undef IndentationStackSize
@@ -172,33 +172,33 @@ return;
 
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 bool
-QUEX_NAME(M_has_base)(const QUEX_NAME(Mode)* Mode) {
+TestAnalyzer_M_has_base(const TestAnalyzer_Mode* Mode) {
 (void)Mode;
 return false;
 }
 
 bool
-QUEX_NAME(M_has_entry_from)(const QUEX_NAME(Mode)* Mode) {
+TestAnalyzer_M_has_entry_from(const TestAnalyzer_Mode* Mode) {
 (void)Mode;
-if( Mode == &QUEX_NAME(M) ) {
+if( Mode == &TestAnalyzer_M ) {
 
 return true;
 
 }
 
-else if( Mode == &QUEX_NAME(M2) ) {
+else if( Mode == &TestAnalyzer_M2 ) {
 
 return true;
 
 }
 
-else if( Mode->has_base(&QUEX_NAME(M)) ) {
+else if( Mode->has_base(&TestAnalyzer_M) ) {
 
 return true;
 
 }
 
-else if( Mode->has_base(&QUEX_NAME(M2)) ) {
+else if( Mode->has_base(&TestAnalyzer_M2) ) {
 
 return true;
 
@@ -210,27 +210,27 @@ return false;
 }
 
 bool
-QUEX_NAME(M_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
+TestAnalyzer_M_has_exit_to(const TestAnalyzer_Mode* Mode) {
 (void)Mode;
-if( Mode == &QUEX_NAME(M) ) {
+if( Mode == &TestAnalyzer_M ) {
 
 return true;
 
 }
 
-else if( Mode == &QUEX_NAME(M2) ) {
+else if( Mode == &TestAnalyzer_M2 ) {
 
 return true;
 
 }
 
-else if( Mode->has_base(&QUEX_NAME(M)) ) {
+else if( Mode->has_base(&TestAnalyzer_M) ) {
 
 return true;
 
 }
 
-else if( Mode->has_base(&QUEX_NAME(M2)) ) {
+else if( Mode->has_base(&TestAnalyzer_M2) ) {
 
 return true;
 
@@ -243,7 +243,7 @@ return false;
 #endif
 
 void
-QUEX_NAME(M_on_buffer_before_change)(void* me /* 'aux' -> 'self' via 'me' */)
+TestAnalyzer_M_on_buffer_before_change(void* me /* 'aux' -> 'self' via 'me' */)
 {
 const TestAnalyzer_lexatom_t* BufferBegin = self.buffer.begin(&self.buffer);
 const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
@@ -251,11 +251,11 @@ const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
 
 }
 
-QUEX_INLINE void
-QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer);
+inline void
+TestAnalyzer_Buffer_print_overflow_message(TestAnalyzer_Buffer* buffer);
 
 void
-QUEX_NAME(M_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
+TestAnalyzer_M_on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */)
 {
 const TestAnalyzer_lexatom_t* LexemeBegin = self.buffer._lexeme_start_p;
 const TestAnalyzer_lexatom_t* LexemeEnd   = self.buffer._read_p;
@@ -263,30 +263,30 @@ const size_t             BufferSize  = (size_t)(self.buffer.size(&self.buffer));
 
 
 /* Try to double the size of the buffer, by default.                      */
-if( ! QUEX_NAME(Buffer_nested_negotiate_extend)(&self.buffer, 2.0) ) {
-QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
-QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
+if( ! TestAnalyzer_Buffer_nested_negotiate_extend(&self.buffer, 2.0) ) {
+TestAnalyzer_MF_error_code_set_if_first(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+TestAnalyzer_Buffer_print_overflow_message(&self.buffer);
 }
 
 (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
 }
 
 void
-QUEX_NAME(M2_on_entry)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* FromMode) {
+TestAnalyzer_M2_on_entry(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* FromMode) {
 (void)me;
 (void)FromMode;
 #   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-QUEX_NAME(M2).has_entry_from(FromMode);
+TestAnalyzer_M2.has_entry_from(FromMode);
 #   endif
 
 }
 
 void
-QUEX_NAME(M2_on_exit)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* ToMode)  {
+TestAnalyzer_M2_on_exit(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* ToMode)  {
 (void)me;
 (void)ToMode;
 #   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-QUEX_NAME(M2).has_exit_to(ToMode);
+TestAnalyzer_M2.has_exit_to(ToMode);
 #   endif
 
 }
@@ -294,7 +294,7 @@ QUEX_NAME(M2).has_exit_to(ToMode);
 
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER)
 void
-QUEX_NAME(M2_on_indentation)(QUEX_TYPE_ANALYZER*    me,
+TestAnalyzer_M2_on_indentation(QUEX_TYPE_ANALYZER*    me,
 TestAnalyzer_indentation_t  Indentation,
 TestAnalyzer_lexatom_t*     Begin)
 {
@@ -306,13 +306,13 @@ TestAnalyzer_lexatom_t*     Begin)
 #   endif
 #   define self (*((QUEX_TYPE_ANALYZER*)me))
 
-#   define M     (&QUEX_NAME(M))
-#   define M2    (&QUEX_NAME(M2))
+#   define M     (&TestAnalyzer_M)
+#   define M2    (&TestAnalyzer_M2)
 
 #   define Lexeme        Begin
 #   define LexemeEnd     (me->buffer._read_p)
 
-QUEX_NAME(IndentationStack)*  stack = &me->counter._indentation_stack;
+TestAnalyzer_IndentationStack*  stack = &me->counter._indentation_stack;
 TestAnalyzer_indentation_t*        start = 0x0;
 (void)start;
 
@@ -321,7 +321,7 @@ __quex_assert((long)Indentation >= 0);
 if( Indentation > *(stack->back) ) {
 ++(stack->back);
 if( stack->back == stack->memory_end ) {
-QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Indentation_StackOverflow);
+TestAnalyzer_MF_error_code_set_if_first(me, E_Error_Indentation_StackOverflow);
 return;
 }
 *(stack->back) = Indentation;
@@ -362,7 +362,7 @@ self.send_n(QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 #            define IndentationUpper     (*(stack->back))
 #            define IndentationLower     ((stack->back == stack->front) ? *(stack->front) : *(stack->back - 1))
 #            define ClosedN              (start - stack->back)
-QUEX_NAME(MF_error_code_set_if_first)(me,
+TestAnalyzer_MF_error_code_set_if_first(me,
 E_Error_Indentation_DedentNotOnIndentationBorder);
 
 #            undef IndentationStackSize
@@ -385,33 +385,33 @@ return;
 
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 bool
-QUEX_NAME(M2_has_base)(const QUEX_NAME(Mode)* Mode) {
+TestAnalyzer_M2_has_base(const TestAnalyzer_Mode* Mode) {
 (void)Mode;
 return false;
 }
 
 bool
-QUEX_NAME(M2_has_entry_from)(const QUEX_NAME(Mode)* Mode) {
+TestAnalyzer_M2_has_entry_from(const TestAnalyzer_Mode* Mode) {
 (void)Mode;
-if( Mode == &QUEX_NAME(M) ) {
+if( Mode == &TestAnalyzer_M ) {
 
 return true;
 
 }
 
-else if( Mode == &QUEX_NAME(M2) ) {
+else if( Mode == &TestAnalyzer_M2 ) {
 
 return true;
 
 }
 
-else if( Mode->has_base(&QUEX_NAME(M)) ) {
+else if( Mode->has_base(&TestAnalyzer_M) ) {
 
 return true;
 
 }
 
-else if( Mode->has_base(&QUEX_NAME(M2)) ) {
+else if( Mode->has_base(&TestAnalyzer_M2) ) {
 
 return true;
 
@@ -423,27 +423,27 @@ return false;
 }
 
 bool
-QUEX_NAME(M2_has_exit_to)(const QUEX_NAME(Mode)* Mode) {
+TestAnalyzer_M2_has_exit_to(const TestAnalyzer_Mode* Mode) {
 (void)Mode;
-if( Mode == &QUEX_NAME(M) ) {
+if( Mode == &TestAnalyzer_M ) {
 
 return true;
 
 }
 
-else if( Mode == &QUEX_NAME(M2) ) {
+else if( Mode == &TestAnalyzer_M2 ) {
 
 return true;
 
 }
 
-else if( Mode->has_base(&QUEX_NAME(M)) ) {
+else if( Mode->has_base(&TestAnalyzer_M) ) {
 
 return true;
 
 }
 
-else if( Mode->has_base(&QUEX_NAME(M2)) ) {
+else if( Mode->has_base(&TestAnalyzer_M2) ) {
 
 return true;
 
@@ -456,7 +456,7 @@ return false;
 #endif
 
 void
-QUEX_NAME(M2_on_buffer_before_change)(void* me /* 'aux' -> 'self' via 'me' */)
+TestAnalyzer_M2_on_buffer_before_change(void* me /* 'aux' -> 'self' via 'me' */)
 {
 const TestAnalyzer_lexatom_t* BufferBegin = self.buffer.begin(&self.buffer);
 const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
@@ -464,11 +464,11 @@ const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
 
 }
 
-QUEX_INLINE void
-QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* buffer);
+inline void
+TestAnalyzer_Buffer_print_overflow_message(TestAnalyzer_Buffer* buffer);
 
 void
-QUEX_NAME(M2_on_buffer_overflow)(void*  me /* 'aux' -> 'self' via 'me' */)
+TestAnalyzer_M2_on_buffer_overflow(void*  me /* 'aux' -> 'self' via 'me' */)
 {
 const TestAnalyzer_lexatom_t* LexemeBegin = self.buffer._lexeme_start_p;
 const TestAnalyzer_lexatom_t* LexemeEnd   = self.buffer._read_p;
@@ -476,9 +476,9 @@ const size_t             BufferSize  = (size_t)(self.buffer.size(&self.buffer));
 
 
 /* Try to double the size of the buffer, by default.                      */
-if( ! QUEX_NAME(Buffer_nested_negotiate_extend)(&self.buffer, 2.0) ) {
-QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_Buffer_Overflow_LexemeTooLong);
-QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
+if( ! TestAnalyzer_Buffer_nested_negotiate_extend(&self.buffer, 2.0) ) {
+TestAnalyzer_MF_error_code_set_if_first(&self, E_Error_Buffer_Overflow_LexemeTooLong);
+TestAnalyzer_Buffer_print_overflow_message(&self.buffer);
 }
 
 (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
@@ -486,17 +486,17 @@ QUEX_NAME(Buffer_print_overflow_message)(&self.buffer);
 #undef self
 #undef LexemeNull
 #undef RETURN
-QUEX_NAMESPACE_MAIN_CLOSE
+
 
 /* #include "test_environment/test_environment/TestAnalyzer"*/
-QUEX_NAMESPACE_MAIN_OPEN
+
 #ifdef      QUEX_FUNCTION_COUNT_ARBITRARY
 #   undef   QUEX_FUNCTION_COUNT_ARBITRARY
 #endif
 #ifdef      QUEX_OPTION_COUNTER
 #    define QUEX_FUNCTION_COUNT_ARBITRARY(ME, BEGIN, END) \
 do {                              \
-QUEX_NAME(M_counter)((ME), (BEGIN), (END));     \
+TestAnalyzer_M_counter((ME), (BEGIN), (END));     \
 __quex_debug_counter();       \
 } while(0)
 #else
@@ -504,7 +504,7 @@ __quex_debug_counter();       \
 #endif
 #ifdef QUEX_OPTION_COUNTER
 static void
-QUEX_NAME(M_counter)(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t* LexemeBegin, TestAnalyzer_lexatom_t* LexemeEnd)
+TestAnalyzer_M_counter(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t* LexemeBegin, TestAnalyzer_lexatom_t* LexemeEnd)
 {
 #   define self (*me)
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
@@ -700,7 +700,7 @@ goto _19;
 #define   RETURN   do { goto _16; } while(0)
 
 void
-QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_M_analyzer_function(QUEX_TYPE_ANALYZER* me)
 {
 /* NOTE: Different modes correspond to different analyzer functions. The
 *       analyzer functions are all located inside the main class as static
@@ -711,8 +711,8 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 #       undef self
 #   endif
 #   define self (*((QUEX_TYPE_ANALYZER*)me))
-#   define M     (&QUEX_NAME(M))
-#   define M2    (&QUEX_NAME(M2))
+#   define M     (&TestAnalyzer_M)
+#   define M2    (&TestAnalyzer_M2)
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
 #   define QUEX_LABEL_STATE_ROUTER _20
 
@@ -722,10 +722,10 @@ QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 * references to the 'Lexeme'. 'LexemeNull' provides a reference to an empty
 * zero terminated string.                                                    */
 #if defined(QUEX_OPTION_ASSERTS)
-#   define Lexeme       QUEX_NAME(access_Lexeme)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeBegin  QUEX_NAME(access_LexemeBegin)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeL      QUEX_NAME(access_LexemeL)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeEnd    QUEX_NAME(access_LexemeEnd)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define Lexeme       TestAnalyzer_access_Lexeme((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeBegin  TestAnalyzer_access_LexemeBegin((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeL      TestAnalyzer_access_LexemeL((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeEnd    TestAnalyzer_access_LexemeEnd((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
 #else
 #   define Lexeme       (me->buffer._lexeme_start_p)
 #   define LexemeBegin  Lexeme
@@ -917,14 +917,14 @@ __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
 __quex_debug_reload_before();
 /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'
 * are called during load process upon occurrence.                        */
-load_result = QUEX_NAME(Buffer_load_forward)(&me->buffer, (TestAnalyzer_lexatom_t**)position, PositionRegisterN);
+load_result = TestAnalyzer_Buffer_load_forward(&me->buffer, (TestAnalyzer_lexatom_t**)position, PositionRegisterN);
 __quex_debug_reload_after(load_result);
 
 switch( load_result ) {
 case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);
 case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index);
 case E_LoadResult_ENCODING_ERROR: goto _1;
-case E_LoadResult_OVERFLOW:       QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
+case E_LoadResult_OVERFLOW:       TestAnalyzer_MF_error_code_set_if_first(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
 default:                          __quex_assert(false);
 }
 
@@ -947,7 +947,7 @@ __quex_assert(   me->DEBUG_analyzer_function_at_entry
 == me->current_analyzer_function);
 
 
-if( QUEX_NAME(TokenQueue_is_full)(&self._token_queue) ) {
+if( TestAnalyzer_TokenQueue_is_full(&self._token_queue) ) {
 return;
 }
 
@@ -989,7 +989,7 @@ goto _20; /* in QUEX_GOTO_STATE       */
 #ifdef      QUEX_OPTION_COUNTER
 #    define QUEX_FUNCTION_COUNT_ARBITRARY(ME, BEGIN, END) \
 do {                              \
-QUEX_NAME(M_counter)((ME), (BEGIN), (END));     \
+TestAnalyzer_M_counter((ME), (BEGIN), (END));     \
 __quex_debug_counter();       \
 } while(0)
 #else
@@ -1010,7 +1010,7 @@ __quex_debug_counter();       \
 #define   RETURN   do { goto _16; } while(0)
 
 void
-QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_M2_analyzer_function(QUEX_TYPE_ANALYZER* me)
 {
 /* NOTE: Different modes correspond to different analyzer functions. The
 *       analyzer functions are all located inside the main class as static
@@ -1021,8 +1021,8 @@ QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 #       undef self
 #   endif
 #   define self (*((QUEX_TYPE_ANALYZER*)me))
-#   define M     (&QUEX_NAME(M))
-#   define M2    (&QUEX_NAME(M2))
+#   define M     (&TestAnalyzer_M)
+#   define M2    (&TestAnalyzer_M2)
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
 #   define QUEX_LABEL_STATE_ROUTER _20
 
@@ -1032,10 +1032,10 @@ QUEX_NAME(M2_analyzer_function)(QUEX_TYPE_ANALYZER* me)
 * references to the 'Lexeme'. 'LexemeNull' provides a reference to an empty
 * zero terminated string.                                                    */
 #if defined(QUEX_OPTION_ASSERTS)
-#   define Lexeme       QUEX_NAME(access_Lexeme)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeBegin  QUEX_NAME(access_LexemeBegin)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeL      QUEX_NAME(access_LexemeL)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
-#   define LexemeEnd    QUEX_NAME(access_LexemeEnd)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define Lexeme       TestAnalyzer_access_Lexeme((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeBegin  TestAnalyzer_access_LexemeBegin((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeL      TestAnalyzer_access_LexemeL((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
+#   define LexemeEnd    TestAnalyzer_access_LexemeEnd((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
 #else
 #   define Lexeme       (me->buffer._lexeme_start_p)
 #   define LexemeBegin  Lexeme
@@ -1227,14 +1227,14 @@ __quex_assert(*(me->buffer._read_p) == QUEX_SETTING_BUFFER_LIMIT_CODE);
 __quex_debug_reload_before();
 /* Callbacks: 'on_buffer_before_change()' and 'on_buffer_overflow()'
 * are called during load process upon occurrence.                        */
-load_result = QUEX_NAME(Buffer_load_forward)(&me->buffer, (TestAnalyzer_lexatom_t**)position, PositionRegisterN);
+load_result = TestAnalyzer_Buffer_load_forward(&me->buffer, (TestAnalyzer_lexatom_t**)position, PositionRegisterN);
 __quex_debug_reload_after(load_result);
 
 switch( load_result ) {
 case E_LoadResult_DONE:           QUEX_GOTO_STATE(target_state_index);
 case E_LoadResult_NO_MORE_DATA:   QUEX_GOTO_STATE(target_state_else_index);
 case E_LoadResult_ENCODING_ERROR: goto _1;
-case E_LoadResult_OVERFLOW:       QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
+case E_LoadResult_OVERFLOW:       TestAnalyzer_MF_error_code_set_if_first(me, E_Error_Buffer_Overflow_LexemeTooLong); RETURN;
 default:                          __quex_assert(false);
 }
 
@@ -1257,7 +1257,7 @@ __quex_assert(   me->DEBUG_analyzer_function_at_entry
 == me->current_analyzer_function);
 
 
-if( QUEX_NAME(TokenQueue_is_full)(&self._token_queue) ) {
+if( TestAnalyzer_TokenQueue_is_full(&self._token_queue) ) {
 return;
 }
 
@@ -1293,21 +1293,21 @@ goto _20; /* in QUEX_GOTO_STATE       */
 #   undef self
 #   undef QUEX_LABEL_STATE_ROUTER
 }
-QUEX_NAMESPACE_MAIN_CLOSE
 
 
-QUEX_NAMESPACE_MAIN_OPEN
+
+
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE void
-QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
+inline void
+TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me)
 {
 
 }
 #endif
 
 bool
-QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_constructor(QUEX_TYPE_ANALYZER* me)
 {
 (void)me;
 
@@ -1320,7 +1320,7 @@ return true;
 }
 
 void
-QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_destructor(QUEX_TYPE_ANALYZER* me)
 {
 (void)me;
 
@@ -1332,7 +1332,7 @@ QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
 }
 
 bool
-QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_reset(QUEX_TYPE_ANALYZER* me)
 {
 (void)me;
 
@@ -1345,7 +1345,7 @@ return true;
 }
 
 void
-QUEX_NAME(user_print)(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_print(QUEX_TYPE_ANALYZER* me)
 {
 (void)me;
 
@@ -1357,9 +1357,9 @@ QUEX_NAME(user_print)(QUEX_TYPE_ANALYZER* me)
 }
 
 bool
-QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me,
+TestAnalyzer_user_memento_pack(QUEX_TYPE_ANALYZER* me,
 const char*         InputName,
-QUEX_NAME(Memento)* memento)
+TestAnalyzer_Memento* memento)
 {
 (void)me; (void)memento; (void)InputName;
 
@@ -1372,8 +1372,8 @@ return true;
 }
 
 void
-QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
-QUEX_NAME(Memento)*  memento)
+TestAnalyzer_user_memento_unpack(QUEX_TYPE_ANALYZER*  me,
+TestAnalyzer_Memento*  memento)
 {
 (void)me; (void)memento;
 
@@ -1384,14 +1384,14 @@ QUEX_NAME(Memento)*  memento)
 #undef self
 }
 
-QUEX_NAMESPACE_MAIN_CLOSE
+
 
 
 
 #include "test_environment/TestAnalyzer-token"
-QUEX_NAMESPACE_TOKEN_OPEN
-TestAnalyzer_lexatom_t   QUEX_NAME(LexemeNull) = (TestAnalyzer_lexatom_t)0;
-QUEX_NAMESPACE_TOKEN_CLOSE
+
+TestAnalyzer_lexatom_t   TestAnalyzer_LexemeNull = (TestAnalyzer_lexatom_t)0;
+
 
 
 

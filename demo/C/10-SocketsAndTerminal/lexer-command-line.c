@@ -41,12 +41,14 @@
 #include <stdio.h>
 #if ! defined(WITH_UTF8)
 #   include <lex_ascii/LexAscii.h>
-#   define  LEXER_CLASS   LexAscii
-#   define  TOKEN_CLASS   LexAscii_Token
+#   define  LEXER_CLASS     LexAscii
+#   define  TOKEN_CLASS     LexAscii_Token
+#   define  CONVERTER_CLASS LexAscii_Converter
 #else
 #   include <lex_utf8/LexUtf8.h>
-#   define  LEXER_CLASS   LexUtf8
-#   define  TOKEN_CLASS   LexUtf8_Token
+#   define  LEXER_CLASS      LexUtf8
+#   define  TOKEN_CLASS      LexUtf8_Token
+#   define  CONVERTER_CLASS  LexUtf8_Converter
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
@@ -65,11 +67,11 @@ main(int argc, char** argv)
     (void)argc; (void)argv;
 
 #if defined(WITH_UTF8)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    CONVERTER_CLASS    converter = LexUtf8_Converter_IConv_new("UTF8", NULL);
+    LexUtf8_from_ByteLoader(&qlex, NULL, converter);
 #   else
-#   define                   converter NULL
+    LexAscii_from_ByteLoader(&qlex, NULL, NULL);
 #endif
-    QUEX_NAME(from_ByteLoader)(&qlex, NULL, converter);
 
     while( ! token || token->id != QUEX_TKN_BYE ) {
         printf("type here: ");
@@ -87,7 +89,11 @@ main(int argc, char** argv)
         } while( token->id != QUEX_TKN_TERMINATION && token->id != QUEX_TKN_BYE );
     }
         
-    QUEX_NAME(destruct)(&qlex);
+#if defined(WITH_UTF8)
+    LexUtf8_destruct(&qlex);
+#else
+    LexAscii_destruct(&qlex);
+#endif
     printf("<terminated>\n");
     return 0;
 }

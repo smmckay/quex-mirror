@@ -61,13 +61,13 @@ print_token(Easy_Token* token_p)
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still carries an old lexeme; Printing it
          * would be confusing.                                               */
-        cout << token_p->type_id_name() << endl;
+        cout << token_p->id_name() << endl;
         break;
     default:
         cout << string(*token_p) << endl;
         break;
     }
 #   else
-    cout << token_p->type_id_name() << endl;
+    cout << token_p->id_name() << endl;
 #   endif
 }

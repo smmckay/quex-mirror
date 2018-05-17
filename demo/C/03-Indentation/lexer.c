@@ -2,14 +2,18 @@
 #   include "Easy/Easy.h"
 typedef Easy       Lexer;
 typedef Easy_Token Token;
-#define CONSTRUCT Easy_from_file_name
-#define DESTRUCT  Easy_destruct
+#define CONSTRUCT      Easy_from_file_name
+#define DESTRUCT       Easy_destruct
+#define TOKEN_ID_NAME  Easy_Token_map_id_to_name
+#define TOKEN_STRING   Easy_Token_get_string
 #else
 #   include "Easy2/Easy2.h"
 typedef Easy2        Lexer;
 typedef Easy2_Token  Token;
-#define CONSTRUCT Easy2_from_file_name
-#define DESTRUCT  Easy2_destruct
+#define CONSTRUCT      Easy2_from_file_name
+#define DESTRUCT       Easy2_destruct
+#define TOKEN_ID_NAME  Easy2_Token_map_id_to_name
+#define TOKEN_STRING   Easy2_Token_get_string
 #endif
 
 #include<stdio.h>    
@@ -73,17 +77,13 @@ print_token(Token* token_p)
     case QUEX_TKN_DOTS:
     case QUEX_TKN_FAILURE:
     case QUEX_TKN_TERMINATION: 
-        /* In this case, the token still might carry an old lexeme. 
-         * Printing it would be confusing.                                    */
-        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        printf("%s\n", TOKEN_ID_NAME(token_p->id));
         break;
     case QUEX_TKN_NUMBER: 
-        /* In this case, the token still might carry an old lexeme. 
-         * Printing it would be confusing.                                    */
-        printf("%s: %i\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id), (int)token_p->number);
+        printf("%s: %i\n", TOKEN_ID_NAME(token_p->id), (int)token_p->number);
         break;
     default:
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s \n", TOKEN_STRING(token_p, buffer, BufferSize));
         break;
     }
 }

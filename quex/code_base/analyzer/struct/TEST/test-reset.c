@@ -83,7 +83,7 @@ self_reset_on_loader(int argc, char** argv)
 
     memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */
     for(lx=&lexer[0]; lx != lexerEnd; ++lx) {
-        QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+        TestAnalyzer_from_file_name(lx, "file-that-exists.txt", NULL);
         common_token_queue_dummy_setup(lx);
         assert(lx->error_code == E_Error_None);
     }
@@ -120,7 +120,7 @@ self_reset_on_memory(int argc, char** argv)
     /* Construct: Memory */
     memset(&lexer[0], 0x5A, sizeof(lexer)); /* Poisson all memory. */
     for(lx=&lexer[0]; lx != lexerEnd; ++lx) {
-        QUEX_NAME(from_memory)(lx, &memory[0], 65536, &memory[65536-1]);
+        TestAnalyzer_from_memory(lx, &memory[0], 65536, &memory[65536-1]);
         common_token_queue_dummy_setup(lx);
         assert(lx->error_code == E_Error_None);
     }
@@ -210,8 +210,8 @@ self_byte_loader()
 static void
 self_byte_loader_core(E_Error ExpectedError)
 {
-    QUEX_NAME(ByteLoader)* byte_loader;
-    QUEX_NAME(Converter)*  converter;
+    TestAnalyzer_ByteLoader* byte_loader;
+    TestAnalyzer_Converter*  converter;
 
     switch( ExpectedError ) {
     case E_Error_Allocation_ByteLoader_Failed:
@@ -239,14 +239,14 @@ self_byte_loader_core(E_Error ExpectedError)
     }
 
     {
-        byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
-        converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+        byte_loader = TestAnalyzer_ByteLoader_FILE_new_from_file_name("file-that-exists.txt");
+        converter   = TestAnalyzer_Converter_IConv_new("UTF8", NULL);
         lx->reset_ByteLoader(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
     ++lx;
     {
-        byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt");
+        byte_loader = TestAnalyzer_ByteLoader_FILE_new_from_file_name("file-that-exists.txt");
         converter   = NULL;
         lx->reset_ByteLoader(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
@@ -254,7 +254,7 @@ self_byte_loader_core(E_Error ExpectedError)
     ++lx;
     {
         byte_loader = NULL;
-        converter   = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+        converter   = TestAnalyzer_Converter_IConv_new("UTF8", NULL);
         lx->reset_ByteLoader(lx, byte_loader, converter);
         self_assert(lx, ExpectedError);
     }
@@ -329,7 +329,7 @@ self_plain()
     {
         lx->reset(lx);
         self_assert(lx, E_Error_None);
-        hwut_verify(! QUEX_NAME(MF_resources_absent)(lx));
+        hwut_verify(! TestAnalyzer_MF_resources_absent(lx));
     }
     ++lx;
 
@@ -339,7 +339,7 @@ self_plain()
     {
         lx->reset(lx);
         self_assert(lx, E_Error_UserReset_Failed);
-        hwut_verify(QUEX_NAME(MF_resources_absent)(lx));
+        hwut_verify(TestAnalyzer_MF_resources_absent(lx));
     }
     ++lx;
 }
@@ -350,8 +350,8 @@ self_destruct(TestAnalyzer* lexer, size_t N)
     int i;
 
     for(i=0; i<N; ++i) {
-        QUEX_NAME(destruct)(&lexer[i]);
-        hwut_verify(QUEX_NAME(MF_resources_absent)(&lexer[i]));
+        TestAnalyzer_destruct(&lexer[i]);
+        hwut_verify(TestAnalyzer_MF_resources_absent(&lexer[i]));
     }
 }
 
@@ -361,10 +361,10 @@ self_assert(TestAnalyzer* lexer, E_Error ExpectedError)
     hwut_verify(lx->error_code == ExpectedError);
 
     if( ExpectedError != E_Error_None ) {
-        hwut_verify(QUEX_NAME(MF_resources_absent)(lx));
+        hwut_verify(TestAnalyzer_MF_resources_absent(lx));
     }
     else {
-        hwut_verify(! QUEX_NAME(MF_resources_absent)(lx));
+        hwut_verify(! TestAnalyzer_MF_resources_absent(lx));
     }
-    hwut_verify(QUEX_NAME(TokenQueue_is_empty)(&lx->_token_queue));
+    hwut_verify(TestAnalyzer_TokenQueue_is_empty(&lx->_token_queue));
 }

@@ -48,7 +48,7 @@
 #define QUEX_NAMESPACE_MAIN        
 #define QUEX_NAMESPACE_MAIN_OPEN   
 #define QUEX_NAMESPACE_MAIN_CLOSE  
-#define QUEX_NAME_TOKEN(NAME)      TestAnalyzerToken_ ## NAME
+#define QUEX_NAME_TOKEN(NAME)                           TestAnalyzer_Token_ ## NAME
 #define QUEX_NAMESPACE_TOKEN_OPEN  
 #define QUEX_NAMESPACE_TOKEN_CLOSE 
 #define   QUEX_TOKEN_ID(X)    QUEX_TKN_ ## X

@@ -17,7 +17,7 @@
  * these standards or not. Even prominent compilers, such as gcc at the time of
  * this writing, did not provide __STDC_VERSION__. Thus, the 'easy' solution to
  * simply define it as 'int' and call this file a 'stdbool-pseudo.h'. */
-#ifndef bool
+#ifndef __bool_true_false_are_defined 
 #   define bool int
 #endif
 

@@ -11,6 +11,35 @@
 #   define __QUEX_OPTION_PLAIN_C
 #endif
 $$HEADER$$
+
+$$HELPER_DEFINITIONS$$
+
+struct $$TOKEN_CLASS$$_tag;
+
+QUEX_INLINE void         $$TOKEN_CLASS$$_construct(struct $$TOKEN_CLASS$$_tag*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_copy(struct $$TOKEN_CLASS$$_tag*, 
+                                              const struct $$TOKEN_CLASS$$_tag*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_destruct(struct $$TOKEN_CLASS$$_tag*);
+
+/* NOTE: Setters and getters as in the C++ version of the token class are not
+ *       necessary, since the members are accessed directly.                   */
+
+QUEX_INLINE void         $$TOKEN_CLASS$$_set(struct $$TOKEN_CLASS$$_tag* me, 
+                                             const QUEX_TYPE_TOKEN_ID    ID);
+
+QUEX_INLINE const char*  $$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
+
+#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+QUEX_INLINE bool         $$TOKEN_CLASS$$_take_text(struct $$TOKEN_CLASS$$_tag* me, 
+                                                   const QUEX_TYPE_LEXATOM*    Begin, 
+                                                   const QUEX_TYPE_LEXATOM*    End);
+#endif
+
+#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+QUEX_INLINE size_t       $$TOKEN_CLASS$$_repetition_n_get(struct $$TOKEN_CLASS$$_tag*);
+QUEX_INLINE void         $$TOKEN_CLASS$$_repetition_n_set(struct $$TOKEN_CLASS$$_tag*, size_t);
+#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$TOKEN_CLASS$$_tag {
     QUEX_TYPE_TOKEN_ID    id;
@@ -27,31 +56,6 @@ $$UNION_MEMBERS$$
 $$BODY$$
 } $$TOKEN_CLASS$$;
 
-QUEX_INLINE void         $$TOKEN_CLASS$$_construct($$TOKEN_CLASS$$*);
-QUEX_INLINE void         $$TOKEN_CLASS$$_copy_construct($$TOKEN_CLASS$$*, 
-                                                     const $$TOKEN_CLASS$$*);
-QUEX_INLINE void         $$TOKEN_CLASS$$_copy($$TOKEN_CLASS$$*, const $$TOKEN_CLASS$$*);
-QUEX_INLINE void         $$TOKEN_CLASS$$_destruct($$TOKEN_CLASS$$*);
-
-/* NOTE: Setters and getters as in the C++ version of the token class are not
- *       necessary, since the members are accessed directly.                   */
-
-QUEX_INLINE void         $$TOKEN_CLASS$$_set($$TOKEN_CLASS$$*            me, 
-                                          const QUEX_TYPE_TOKEN_ID ID);
-
-QUEX_INLINE const char*  $$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
-
-#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-QUEX_INLINE bool         $$TOKEN_CLASS$$_take_text($$TOKEN_CLASS$$*            me, 
-                                                const QUEX_TYPE_LEXATOM* Begin, 
-                                                const QUEX_TYPE_LEXATOM* End);
-#endif
-
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-QUEX_INLINE size_t       $$TOKEN_CLASS$$_repetition_n_get($$TOKEN_CLASS$$*);
-QUEX_INLINE void         $$TOKEN_CLASS$$_repetition_n_set($$TOKEN_CLASS$$*, size_t);
-#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
-
-$$LEXEME_NULL_DECLARATION$$
+extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */

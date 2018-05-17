@@ -39,7 +39,7 @@ self_test(const char* CharFilename)
     string         Directory("example/");
     string         Filename(CharFilename);
     ifstream       istr((Directory + Filename + ".txt").c_str());
-    Simple   qlex(QUEX_NAME(ByteLoader_stream_new)(&istr), NULL);
+    Simple         qlex(Simple_ByteLoader_stream_new(&istr), NULL);
     Simple_Token*   token_p = 0x0;
 
 
@@ -62,7 +62,7 @@ string  space(int N)
 void  print(Simple& qlex, Simple_Token& Token, bool TextF /* = false */)
 { 
     cout << space(qlex.include_depth) << Token.line_number() << ": (" << Token.column_number() << ")";
-    cout << Token.type_id_name();
+    cout << Token.id_name();
     if( TextF ) cout << "\t'" << Token.get_text() << "'";
     cout << endl;
 }

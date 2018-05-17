@@ -297,22 +297,6 @@ def get_quick_setters(Descr):
 
     return "".join(txt)
 
-helper_definitions_Cpp = """
-#define QUEX_NAME_TOKEN(NAME)              %s_ ## NAME
-#define QUEX_NAMESPACE_TOKEN_OPEN          %s
-#define QUEX_NAMESPACE_TOKEN_CLOSE         %s
-#define QUEX_NAMESPACE_MAIN_OPEN           %s 
-#define QUEX_NAMESPACE_MAIN_CLOSE          %s
-"""
-
-helper_definitions_C = """
-#define QUEX_NAME_TOKEN(NAME)              %s_ ## NAME
-#define QUEX_NAMESPACE_TOKEN_OPEN  
-#define QUEX_NAMESPACE_TOKEN_CLOSE  
-#define QUEX_NAMESPACE_MAIN_OPEN 
-#define QUEX_NAMESPACE_MAIN_CLOSE 
-"""
-
 helper_definitions_common = """
 $$TYPE_DEFINITIONS$$
 #define    QUEX_SETTING_CHARACTER_CODEC       %s
@@ -324,24 +308,31 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 #endif
 
+/* In cases, such as DLL compilation for some dedicated compilers, 
+ * the classes need some epilog. If the user does not specify such
+ * a thing, it must be empty.                                                */
+#ifndef    QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG
+#   define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG
+#endif
+
+#ifdef QUEX_OPTION_ASSERTS
+#   if ! defined (__QUEX_OPTION_PLAIN_C)
+#       include <cassert>
+#   else
+#       include <assert.h>
+#   endif
+#   define  __quex_assert(X)              assert(X)
+#else
+#   define  __quex_assert(X)              /* no assert */
+#endif
+
 #include "%s" 
 """
 
 def _helper_definitions():
     token_descr = token_db.token_type_definition
 
-    if Setup.language.upper() == "C++":
-        namespace_open       = Lng.NAMESPACE_OPEN(token_descr.name_space)
-        namespace_close      = Lng.NAMESPACE_CLOSE(token_descr.name_space)
-        namespace_main_open  = Lng.NAMESPACE_OPEN(Setup.analyzer_name_space)
-        namespace_main_close = Lng.NAMESPACE_CLOSE(Setup.analyzer_name_space)
-        txt = helper_definitions_Cpp % (token_descr.class_name, 
-                                        namespace_open,      namespace_close,
-                                        namespace_main_open, namespace_main_close)        
-    else:
-        txt = helper_definitions_C % token_descr.class_name_safe
-
-    txt += helper_definitions_common \
+    txt = helper_definitions_common \
            % (Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
               Setup.output_token_id_file_ref)
     txt = txt.replace("$$TYPE_DEFINITIONS$$", Lng.type_definitions())

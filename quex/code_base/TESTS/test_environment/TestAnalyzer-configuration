@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.68.2"
-#define QUEX_SETTING_BUILD_DATE        "Sun May 13 08:19:11 2018"
+#define QUEX_SETTING_BUILD_DATE        "Thu May 17 23:04:08 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -115,9 +115,6 @@
 #   define QUEX_TYPE_DERIVED_ANALYZER  struct TestAnalyzer_tag
 
 #   define QUEX_NAMESPACE_MAIN         TestAnalyzer
-#   define QUEX_NAMESPACE_MAIN_OPEN
-#   define QUEX_NAMESPACE_MAIN_CLOSE
-#   define QUEX_NAME(NAME)             TestAnalyzer_ ## NAME
 
 #else
 /* Add namespaces for the global names of the classes of analyzer
@@ -128,9 +125,6 @@
 #   define QUEX_TYPE_DERIVED_ANALYZER  TestAnalyzer
 
 #   define QUEX_NAMESPACE_MAIN
-#   define QUEX_NAMESPACE_MAIN_OPEN
-#   define QUEX_NAMESPACE_MAIN_CLOSE
-#   define QUEX_NAME(NAME)             TestAnalyzer_ ## NAME
 #endif
 
 #if defined(__QUEX_OPTION_PLAIN_C)
@@ -139,12 +133,10 @@
 #   define QUEX_NAME_COMPLETE_TOKEN    TestAnalyzer_Token
 
 #   define QUEX_NAMESPACE_TOKEN
-#   define QUEX_NAMESPACE_TOKEN_OPEN
-#   define QUEX_NAMESPACE_TOKEN_CLOSE
 
-#   define QUEX_LEXEME_NULL            QUEX_NAME(LexemeNull)
+#   define QUEX_LEXEME_NULL            TestAnalyzer_LexemeNull
 
-#   define QUEX_NAME_TOKEN(NAME)       TestAnalyzer_Token_ ## NAME
+#   define TestAnalyzer_Token_NAME       TestAnalyzer_Token_ ## NAME
 
 #else
 #   define QUEX_TYPE0_TOKEN            TestAnalyzer_Token
@@ -152,29 +144,27 @@
 #   define QUEX_NAME_COMPLETE_TOKEN    ::TestAnalyzer_Token
 
 #   define QUEX_NAMESPACE_TOKEN
-#   define QUEX_NAMESPACE_TOKEN_OPEN
-#   define QUEX_NAMESPACE_TOKEN_CLOSE
 
-#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: QUEX_NAME(LexemeNull)
+#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: TestAnalyzer_LexemeNull
 
-#   define QUEX_NAME_TOKEN(NAME)       TestAnalyzer_Token_ ## NAME
+#   define TestAnalyzer_Token_NAME       TestAnalyzer_Token_ ## NAME
 
 #endif
 
-QUEX_NAMESPACE_MAIN_OPEN
+
 typedef uint8_t TestAnalyzer_lexatom_t;
 typedef uint32_t TestAnalyzer_token_id_t;
 typedef size_t TestAnalyzer_token_line_n_t;
 typedef size_t TestAnalyzer_token_column_n_t;
 typedef int TestAnalyzer_acceptance_id_t;
-QUEX_NAMESPACE_MAIN_CLOSE
+
 
 
 #ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
 #   define __QUEX_SETTING_MAX_MODE_CLASS_N                 (2)
 #endif
 #ifndef    QUEX_SETTING_MODE_INITIAL_P
-#   define QUEX_SETTING_MODE_INITIAL_P                     (&QUEX_NAME(M))
+#   define QUEX_SETTING_MODE_INITIAL_P                     (&TestAnalyzer_M)
 #endif
 
 #ifndef    QUEX_SETTING_MODE_STACK_SIZE

@@ -66,10 +66,10 @@ print_token(Easy_Token* token_p)
     case QUEX_TKN_DEDENT: 
     case QUEX_TKN_NODENT: 
     case QUEX_TKN_TERMINATION: 
-        printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        printf("%s\n", Easy_Token_map_id_to_name(token_p->id));
         break;
     default:
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s \n", Easy_Token_get_string(token_p, buffer, BufferSize));
         break;
     }
 }

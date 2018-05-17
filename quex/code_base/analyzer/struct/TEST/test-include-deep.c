@@ -86,7 +86,7 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
     memset(&memory[0], 0x5A, sizeof(memory));
 
     memset(lx, 0x5A, sizeof(lexer));
-    QUEX_NAME(from_file_name)(lx, "file-that-exists.txt", NULL);
+    TestAnalyzer_from_file_name(lx, "file-that-exists.txt", NULL);
     hwut_verify(lx->error_code == E_Error_None);
 
     /* Double check, that global objects are not touched. */
@@ -104,7 +104,7 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
         if( ! self_include_push(n) ) {
             /* Too many file descriptors can only occur if i >> 0 */
             hwut_verify(i > 0);
-            QUEX_NAME(MF_error_code_clear)(lx);
+            TestAnalyzer_MF_error_code_clear(lx);
             break;
         }
     }
@@ -117,15 +117,15 @@ self_test(ptrdiff_t MaxDepth, ptrdiff_t PopN)
         else            hwut_verify(lx->error_code == E_Error_IncludePopOnEmptyStack);
     }
 
-    QUEX_NAME(destruct)(lx);
+    TestAnalyzer_destruct(lx);
 }
 
 static bool 
 self_include_push(uint32_t n)
 {
-    QUEX_NAME(ByteLoader)* byte_loader;
-    QUEX_NAME(Converter)*  converter;
-    QUEX_NAME(Buffer_event_callbacks) backup_callbacks = lx->buffer.event; 
+    TestAnalyzer_ByteLoader* byte_loader;
+    TestAnalyzer_Converter*  converter;
+    TestAnalyzer_Buffer_event_callbacks backup_callbacks = lx->buffer.event; 
     TestAnalyzer_lexatom_t*     new_memory = (TestAnalyzer_lexatom_t*)0;
     TestAnalyzer_lexatom_t*     new_memory_end = (TestAnalyzer_lexatom_t*)0;
     TestAnalyzer_lexatom_t*     new_memory_eos_p = (TestAnalyzer_lexatom_t*)0;
@@ -139,18 +139,18 @@ self_include_push(uint32_t n)
 
     case 0:
         n = hwut_random_next(n);
-        converter = n % 2 ? QUEX_NAME(Converter_IConv_new)("UTF8", NULL)
-                          : (QUEX_NAME(Converter)*)0;
+        converter = n % 2 ? TestAnalyzer_Converter_IConv_new("UTF8", NULL)
+                          : (TestAnalyzer_Converter*)0;
         lx->include_push_file_name(lx, "file-that-exists.txt", converter);
         self_include_file_name_n += 1;
         break;
     case 1:
         n = hwut_random_next(n);
-        byte_loader = n % 2 ? QUEX_NAME(ByteLoader_FILE_new_from_file_name)("file-that-exists.txt")
-                            : (QUEX_NAME(ByteLoader)*)0;
+        byte_loader = n % 2 ? TestAnalyzer_ByteLoader_FILE_new_from_file_name("file-that-exists.txt")
+                            : (TestAnalyzer_ByteLoader*)0;
         n = hwut_random_next(n);
-        converter   = n % 2 ? QUEX_NAME(Converter_IConv_new)("UTF8", NULL)
-                            : (QUEX_NAME(Converter)*)0;
+        converter   = n % 2 ? TestAnalyzer_Converter_IConv_new("UTF8", NULL)
+                            : (TestAnalyzer_Converter*)0;
         lx->include_push_ByteLoader(lx, "byte-loader", byte_loader, converter);
         self_include_byte_loader_n += 1;
         break;
@@ -191,7 +191,7 @@ self_include_push(uint32_t n)
 static void      
 self_include_pop(TestAnalyzer* lx)
 {
-    QUEX_NAME(Buffer_event_callbacks)  backup_callbacks = lx->buffer.event;
+    TestAnalyzer_Buffer_event_callbacks  backup_callbacks = lx->buffer.event;
 
     lx->include_pop(lx);
 
@@ -226,7 +226,7 @@ static ptrdiff_t
 self_find_include_depth()
 {
     ptrdiff_t           depth = -1;
-    QUEX_NAME(Memento)* memento_p = lx->_parent_memento;
+    TestAnalyzer_Memento* memento_p = lx->_parent_memento;
     for(depth=0; memento_p ; memento_p = memento_p->_parent_memento, ++depth);
     return depth;
 }

@@ -54,9 +54,9 @@ ptrdiff_t                   ContentSize = sizeof(content)/sizeof(content[0]);
 static QUEX_TYPE_LEXATOM  memory[11];
 const  ptrdiff_t            MemorySize = sizeof(memory)/sizeof(memory[0]);
 
-QUEX_INLINE ptrdiff_t  QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me);
+inline ptrdiff_t  QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me);
 
-QUEX_INLINE ptrdiff_t        
+inline ptrdiff_t        
 QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me)
 /* Free some space in the REAR so that previous content can be re-loaded. Some 
  * content is to be left in front, so that no immediate reload is necessary
