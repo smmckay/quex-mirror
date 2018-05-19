@@ -13,7 +13,7 @@
 #include<stdio.h>    
 #include<string.h> 
 
-#include "plain/lexPlain"
+#include "plain/Lexer"
 
 /* Terminating zero is implicitly added by the C-Language.                   */
 static uint8_t Memory0[] = 
@@ -24,15 +24,15 @@ static uint8_t Memory1[] =
 #define Memory0Size (sizeof(Memory0)/sizeof(Memory0[0]))
 #define Memory1Size (sizeof(Memory1)/sizeof(Memory1[1]))
        
-static void  test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size);
+static void  test(Lexer* lexer, uint8_t* memory, size_t Size);
 
 
 int 
 main(int argc, char** argv) 
 {        
-    QUEX_TYPE_ANALYZER  lexer((lexPlain_lexatom_t*)&Memory0[0], 
-                              Memory0Size,
-                              (lexPlain_lexatom_t*)&Memory0[Memory0Size-1]); 
+    Lexer  lexer((Lexer_lexatom_t*)&Memory0[0], 
+                 Memory0Size,
+                 (Lexer_lexatom_t*)&Memory0[Memory0Size-1]); 
     (void)argc; (void)argv;
 
     test(&lexer, NULL, 0);                  /* memory given during construct.  */
@@ -42,13 +42,13 @@ main(int argc, char** argv)
 }
 
 static void  
-test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
+test(Lexer* lexer, uint8_t* memory, size_t Size)
 {
-    QUEX_TYPE_TOKEN*  token_p = NULL;
+    Lexer_Token*  token_p = NULL;
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */
-        lexer->reset_memory((lexPlain_lexatom_t*)&memory[0], Size, 
-                            (lexPlain_lexatom_t*)&memory[Size-1]);
+        lexer->reset_memory((Lexer_lexatom_t*)&memory[0], Size, 
+                            (Lexer_lexatom_t*)&memory[Size-1]);
     }
 
     /* Loop until the 'termination' token arrives                            */

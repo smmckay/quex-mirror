@@ -4,11 +4,6 @@
 #ifndef __QUEX_INCLUDE_GUARD__LEXEME_BASE_I
 #define __QUEX_INCLUDE_GUARD__LEXEME_BASE_I
 
-$$INC: definitions$$
-#if   ! defined(QUEX_INLINE)
-#   error "QUEX_INLINE definition missing."
-#endif
-
 QUEX_NAMESPACE_MAIN_OPEN
 
 extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);

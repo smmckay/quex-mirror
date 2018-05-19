@@ -20,32 +20,32 @@ FILES := lexer-command-line lexer-command-line-utf8 \
 
 all: $(FILES)
 
-lexer-socket:            lexer-socket.cpp       lex_ascii/LexAscii.cpp 
+lexer-socket:            lexer-socket.cpp       lex_ascii/Lexer.cpp 
 	$(LD) -o $@  $^                  
 
-lexer-stdin:             lexer-stdin.cpp        lex_ascii/LexAscii.cpp
+lexer-stdin:             lexer-stdin.cpp        lex_ascii/Lexer.cpp
 	$(LD) -o $@  $^
 
-lexer-command-line:      lexer-command-line.cpp lex_ascii/LexAscii.cpp
+lexer-command-line:      lexer-command-line.cpp lex_ascii/Lexer.cpp
 	$(LD) -o $@  $^
 
 feed-socket:             feed-socket.cpp
 	$(LD) -o $@  $^                  
                                      
-lexer-socket-utf8:       lexer-socket.cpp       lex_utf8/LexUtf8.cpp 
+lexer-socket-utf8:       lexer-socket.cpp       lex_utf8/Lexer.cpp 
 	$(LD) -DWITH_UTF8 -o $@  $^                  
 
-lexer-stdin-utf8:        lexer-stdin.cpp        lex_utf8/LexUtf8.cpp
+lexer-stdin-utf8:        lexer-stdin.cpp        lex_utf8/Lexer.cpp
 	$(LD) -DWITH_UTF8 -o $@  $^
           
-lexer-command-line-utf8: lexer-command-line.cpp lex_utf8/LexUtf8.cpp
+lexer-command-line-utf8: lexer-command-line.cpp lex_utf8/Lexer.cpp
 	$(LD) -DWITH_UTF8 -o $@  $^
           
-lex_utf8/LexUtf8.cpp:    utf8.qx 
-	quex -i utf8.qx -o LexUtf8 --bet wchar_t --odir lex_utf8
+lex_utf8/Lexer.cpp:    utf8.qx 
+	quex -i utf8.qx -o Lexer --bet wchar_t --odir lex_utf8
 		 
-lex_ascii/LexAscii.cpp:  ascii.qx 
-	quex -i ascii.qx -o LexAscii --odir lex_ascii
+lex_ascii/Lexer.cpp:  ascii.qx 
+	quex -i ascii.qx -o Lexer --odir lex_ascii
 		 
 clean:	
 	rm -rf lex_ascii/ lex_utf8/ *.o $(FILES) tmp.*

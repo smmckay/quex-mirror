@@ -30,10 +30,11 @@ $$INC: token/TokenQueue.i$$
 
 $$INC: buffer/Buffer.i$$
 $$INC: buffer/lexatoms/LexatomLoader.i$$
-$$INC: buffer/bytes/ByteLoader$$
+$$INC: buffer/bytes/ByteLoader.i$$
 
 #ifdef QUEX_OPTION_COUNTER
 $$INC: analyzer/Counter.i$$
 #endif
+$$INC: lexeme_base.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I */

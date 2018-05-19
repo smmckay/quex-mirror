@@ -24,29 +24,29 @@ FILES := feeder-plain.exe  feeder-converter.exe  \
 
 all: $(FILES)
 
-feeder-plain.exe:       lexer-feeder.cpp receiver.cpp  plain/lexPlain.cpp
+feeder-plain.exe:       lexer-feeder.cpp receiver.cpp  plain/Lexer.cpp
 	$(LD_PLAIN)     -o $@ $^ 
           
-gavager-plain.exe:      lexer-gavager.cpp receiver.cpp plain/lexPlain.cpp
+gavager-plain.exe:      lexer-gavager.cpp receiver.cpp plain/Lexer.cpp
 	$(LD_PLAIN)     -o $@ $^ 
           
-point-plain.exe:        lexer-point.cpp                plain/lexPlain.cpp
+point-plain.exe:        lexer-point.cpp                plain/Lexer.cpp
 	$(LD_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^
 
-feeder-converter.exe:   lexer-feeder.cpp receiver.cpp  converter/lexConverter.cpp
+feeder-converter.exe:   lexer-feeder.cpp receiver.cpp  converter/Lexer.cpp
 	$(LD_CONVERTER) -o $@ $^ 
 
-gavager-converter.exe:  lexer-gavager.cpp receiver.cpp converter/lexConverter.cpp
+gavager-converter.exe:  lexer-gavager.cpp receiver.cpp converter/Lexer.cpp
 	$(LD_CONVERTER) -o $@ $^ 
 
-point-converter.exe:    lexer-point.cpp                converter/lexConverter.cpp
+point-converter.exe:    lexer-point.cpp                converter/Lexer.cpp
 	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^ 
           
-plain/lexPlain.cpp: lexPlain.qx 
-	quex -i lexPlain.qx -o lexPlain --odir plain 
+plain/Lexer.cpp: lexPlain.qx 
+	quex -i lexPlain.qx -o Lexer --odir plain 
 
-converter/lexConverter.cpp: lexConverter.qx 
-	quex -i lexConverter.qx -o lexConverter --odir converter \
+converter/Lexer.cpp: lexConverter.qx 
+	quex -i lexConverter.qx -o Lexer --odir converter \
 		 --buffer-element-type wchar_t 
 
 clean:	

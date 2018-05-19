@@ -4,6 +4,7 @@
 
 #include <test_environment/TestAnalyzer>
 #include "test_environment/converter-from-lexeme.i"
+#include "test_environment/lib/lexeme_base.i"
 #include "test_environment/lib/extra/accumulator/Accumulator"
 #include "test_environment/lib/extra/accumulator/Accumulator.i"
 
@@ -25,14 +26,14 @@ main(int argc, char** argv)
         printf("CHOICES: String, Character, N-Character, N-String, Mix;\n");
         return 0;
     }
-    TestAnalyzer            analyzer((QUEX_NAME(ByteLoader)*)0, NULL);
-    QUEX_NAME(Accumulator)  accumulator;
+    TestAnalyzer              analyzer((TestAnalyzer_ByteLoader*)0, NULL);
+    TestAnalyzer_Accumulator  accumulator;
 
 #   define self analyzer
 
     analyzer._token_queue.write_iterator = analyzer._token_queue.begin;
     analyzer._token_queue.read_iterator = analyzer._token_queue.begin;
-    (void)QUEX_NAME(Accumulator_construct)(&accumulator, &analyzer);
+    (void)TestAnalyzer_Accumulator_construct(&accumulator, &analyzer);
 
     if     ( strcmp(argv[1], "String") == 0 ) {
         accumulator.add(TestString0, TestString0 + TestString0L);

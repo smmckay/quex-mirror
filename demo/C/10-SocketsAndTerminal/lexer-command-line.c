@@ -40,26 +40,20 @@
 
 #include <stdio.h>
 #if ! defined(WITH_UTF8)
-#   include <lex_ascii/LexAscii.h>
-#   define  LEXER_CLASS     LexAscii
-#   define  TOKEN_CLASS     LexAscii_Token
-#   define  CONVERTER_CLASS LexAscii_Converter
+#   include <lex_ascii/Lexer.h>
 #else
-#   include <lex_utf8/LexUtf8.h>
-#   define  LEXER_CLASS      LexUtf8
-#   define  TOKEN_CLASS      LexUtf8_Token
-#   define  CONVERTER_CLASS  LexUtf8_Converter
+#   include <lex_utf8/Lexer.h>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
 
-static void  print_token(TOKEN_CLASS*  token);
+static void  print_token(Lexer_Token*  token);
 
 int 
 main(int argc, char** argv) 
 {        
-    TOKEN_CLASS*   token = 0;
-    LEXER_CLASS    qlex;   
+    Lexer_Token*   token = 0;
+    Lexer          qlex;   
     size_t         size = 4096;
     char           buffer[4096];
     char*          p;
@@ -67,11 +61,11 @@ main(int argc, char** argv)
     (void)argc; (void)argv;
 
 #if defined(WITH_UTF8)
-    CONVERTER_CLASS    converter = LexUtf8_Converter_IConv_new("UTF8", NULL);
-    LexUtf8_from_ByteLoader(&qlex, NULL, converter);
+    Lexer_Converter*   converter = Lexer_Converter_IConv_new("UTF8", NULL);
 #   else
-    LexAscii_from_ByteLoader(&qlex, NULL, NULL);
+    Lexer_Converter*   converter = NULL;
 #endif
+    Lexer_from_ByteLoader(&qlex, NULL, converter);
 
     while( ! token || token->id != QUEX_TKN_BYE ) {
         printf("type here: ");
@@ -89,22 +83,17 @@ main(int argc, char** argv)
         } while( token->id != QUEX_TKN_TERMINATION && token->id != QUEX_TKN_BYE );
     }
         
-#if defined(WITH_UTF8)
-    LexUtf8_destruct(&qlex);
-#else
-    LexAscii_destruct(&qlex);
-#endif
+    Lexer_destruct(&qlex);
     printf("<terminated>\n");
     return 0;
 }
 
 static void
-print_token(TOKEN_CLASS*  token)
+print_token(Lexer_Token*  token)
 {
     size_t PrintBufferSize = 1024;
     char   print_buffer[1024];
 
-    printf("   Token: %s\n", QUEX_NAME_TOKEN(get_string)(token, print_buffer, 
-                                                         PrintBufferSize));
+    printf("   Token: %s\n", Lexer_Token_get_string(token, print_buffer, PrintBufferSize));
 }
 

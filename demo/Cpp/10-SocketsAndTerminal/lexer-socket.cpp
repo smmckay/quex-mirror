@@ -53,15 +53,11 @@
 #include <sys/types.h>
 
 #if ! defined(WITH_UTF8)
-#   include <lex_ascii/LexAscii>
-#   define  LEXER_CLASS   LexAscii
-#   define  TOKEN_CLASS   LexAscii_Token
+#   include <lex_ascii/Lexer>
 #   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX>
 #   include <lex_ascii/lib/buffer/bytes/ByteLoader_POSIX.i>
 #else
-#   include <lex_utf8/LexUtf8>
-#   define  LEXER_CLASS   LexUtf8
-#   define  TOKEN_CLASS   LexUtf8_Token
+#   include <lex_utf8/Lexer>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #   include <lex_utf8/lib/buffer/bytes/ByteLoader_POSIX>
@@ -70,7 +66,7 @@
 
 static int  setup_socket_server(void);
 static bool accept_and_lex(int listen_fd);
-static bool self_on_nothing(QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t LoadedN);
+static bool self_on_nothing(Lexer_ByteLoader*  me, size_t TryN, size_t LoadedN);
  
 int main(void)
 {
@@ -93,17 +89,17 @@ accept_and_lex(int listen_fd)
 {
 
 
-    int           connected_fd = accept(listen_fd, (struct sockaddr*)NULL ,NULL); 
-    TOKEN_CLASS*  token;
-    LEXER_CLASS*  qlex;
-    bool          continue_f;
+    int               connected_fd = accept(listen_fd, (struct sockaddr*)NULL ,NULL); 
+    Lexer_Token*      token;
+    Lexer*            qlex;
+    bool              continue_f;
 #if defined(WITH_UTF8)
-    QUEX_NAME(Converter)*  converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    Lexer_Converter*  converter = Lexer_Converter_IConv_new("UTF8", NULL);
 #   else
-#   define                 converter NULL
+#   define            converter NULL
 #endif
 
-    QUEX_NAME(ByteLoader)* loader = QUEX_NAME(ByteLoader_POSIX_new)(connected_fd);
+    Lexer_ByteLoader* loader = Lexer_ByteLoader_POSIX_new(connected_fd);
 
     if( connected_fd == -1 ) {
         printf("server: accept() terminates with failure.\n");
@@ -111,12 +107,12 @@ accept_and_lex(int listen_fd)
         return true;
     }
 
-    QUEX_NAME(ByteLoader_seek_disable)(loader);
+    Lexer_ByteLoader_seek_disable(loader);
 
     /* A handler for the case that nothing is received over the line. */
     loader->on_nothing = self_on_nothing; 
 
-    qlex = LEXER_CLASS::from_ByteLoader(loader, converter);
+    qlex = Lexer::from_ByteLoader(loader, converter);
 
     continue_f = true;
     do {
@@ -172,7 +168,7 @@ setup_socket_server(void)
 }
 
 static bool  
-self_on_nothing(QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t RequiredToLoad)
+self_on_nothing(Lexer_ByteLoader*  me, size_t TryN, size_t RequiredToLoad)
 /* ByteLoader's handler to treat the case that nothing has been received. Note,
  * that with the current setup the socket receiver blocks until something comes
  * in. If nothing is received, the socket is closed.
@@ -184,7 +180,7 @@ self_on_nothing(QUEX_NAME(ByteLoader)*  me, size_t TryN, size_t RequiredToLoad)
 
     int       error  = 0;
     socklen_t len    = sizeof (error);
-    int       retval = getsockopt(((QUEX_NAME(ByteLoader_POSIX)*)me)->fd, SOL_SOCKET, SO_ERROR, &error, &len);
+    int       retval = getsockopt(((Lexer_ByteLoader_POSIX*)me)->fd, SOL_SOCKET, SO_ERROR, &error, &len);
     (void)TryN; (void)RequiredToLoad;
 
     if( retval ) {

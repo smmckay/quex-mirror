@@ -40,13 +40,9 @@
 
 #include <stdio.h>
 #if ! defined(WITH_UTF8)
-#   include <lex_ascii/LexAscii>
-#   define  LEXER_CLASS   LexAscii
-#   define  TOKEN_CLASS   LexAscii_Token
+#   include <lex_ascii/Lexer>
 #else
-#   include <lex_utf8/LexUtf8>
-#   define  LEXER_CLASS   LexUtf8
-#   define  TOKEN_CLASS   LexUtf8_Token
+#   include <lex_utf8/Lexer>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #   include <lex_utf8/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
 #endif
@@ -57,18 +53,18 @@ main(int argc, char** argv)
 {        
 
     using namespace std;
-    TOKEN_CLASS*             token;
-    LEXER_CLASS*             qlex;   
-    char                     buffer[4096];
-    ssize_t                  received_n;
+    Lexer_Token*  token;
+    Lexer*        qlex;   
+    char          buffer[4096];
+    ssize_t       received_n;
     (void)argc; (void)argv;
 #if defined(WITH_UTF8)
-    QUEX_NAME(Converter)*    converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
+    Lexer_Converter*    converter = Lexer_Converter_IConv_new("UTF8", NULL);
 #   else
-#   define                   converter NULL
+#   define              converter NULL
 #endif
 
-    qlex = LEXER_CLASS::from_ByteLoader(NULL, converter);
+    qlex = Lexer::from_ByteLoader(NULL, converter);
 
     while( ! token || token->id != QUEX_TKN_BYE ) {
         printf("type here: ");

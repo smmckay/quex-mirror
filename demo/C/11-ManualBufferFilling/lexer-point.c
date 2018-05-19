@@ -13,7 +13,7 @@
 #include<stdio.h>    
 #include<string.h> 
 
-#include "plain/lexPlain.h"
+#include "plain/Lexer.h"
 
 /* Terminating zero is implicitly added by the C-Language.                   */
 static uint8_t Memory0[] = 
@@ -24,44 +24,44 @@ static uint8_t Memory1[] =
 #define Memory0Size (sizeof(Memory0)/sizeof(Memory0[0]))
 #define Memory1Size (sizeof(Memory1)/sizeof(Memory1[1]))
        
-static void  test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size);
+static void  test(Lexer* lexer, uint8_t* memory, size_t Size);
 
 
 int 
 main(int argc, char** argv) 
 {        
-    QUEX_TYPE_ANALYZER  lexer; 
+    Lexer  lexer; 
     (void)argc; (void)argv;
 
-    QUEX_NAME(from_memory)(&lexer, (lexPlain_lexatom_t*)&Memory0[0], 
-                           Memory0Size,
-                           (lexPlain_lexatom_t*)&Memory0[Memory0Size-1]);
+    Lexer_from_memory(&lexer, (Lexer_lexatom_t*)&Memory0[0], 
+                      Memory0Size,
+                      (Lexer_lexatom_t*)&Memory0[Memory0Size-1]);
 
     test(&lexer, NULL, 0);                  /* memory given during construct.  */
     test(&lexer, &Memory1[0], Memory1Size); /* memory given upon reset.        */
 
-    QUEX_NAME(destruct)(&lexer);
+    Lexer_destruct(&lexer);
     return 0;
 }
 
 static void  
-test(QUEX_TYPE_ANALYZER* lexer, uint8_t* memory, size_t Size)
+test(Lexer* lexer, uint8_t* memory, size_t Size)
 {
     char             buffer[256];
     QUEX_TYPE_TOKEN* token_p;
 
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */
-        lexer->reset_memory(lexer, (lexPlain_lexatom_t*)&memory[0], Size, 
-                            (lexPlain_lexatom_t*)&memory[Size-1]);
+        lexer->reset_memory(lexer, (Lexer_lexatom_t*)&memory[0], Size, 
+                            (Lexer_lexatom_t*)&memory[Size-1]);
     }
 
     /* Loop until the 'termination' token arrives                            */
     do {
         lexer->receive(lexer, &token_p);
 
-        printf("   Token: %s\n", QUEX_NAME_TOKEN(get_string)(token_p,
-                                                             &buffer[0], sizeof(buffer)));
+        printf("   Token: %s\n", Lexer_Token_get_string(token_p,
+                                                        &buffer[0], sizeof(buffer)));
         
     } while( token_p->id != QUEX_TKN_TERMINATION );
 
