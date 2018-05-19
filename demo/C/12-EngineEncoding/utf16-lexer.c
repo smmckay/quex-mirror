@@ -6,14 +6,14 @@
 int 
 main(int argc, char** argv) 
 {        
-    bool                     BigEndianF  = (argc < 2 || (strcmp(argv[1], "BE") == 0)); 
-    const char*              file_name   = BigEndianF ? "example-utf16be.txt" : "example-utf16le.txt";
-    QUEX_NAME(ByteLoader)*   byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
-    UTF16Lex                 qlex;
-    UTF16Lex_Token*          token_p     = 0x0;
-    size_t                   BufferSize = 1024;
-    char                     buffer[1024];
-    bool                     byte_order_reversion_f;
+    bool                 BigEndianF  = (argc < 2 || (strcmp(argv[1], "BE") == 0)); 
+    const char*          file_name   = BigEndianF ? "example-utf16be.txt" : "example-utf16le.txt";
+    UTF16Lex_ByteLoader* byte_loader = UTF16Lex_ByteLoader_FILE_new_from_file_name(file_name);
+    UTF16Lex             qlex;
+    UTF16Lex_Token*      token_p     = 0x0;
+    size_t               BufferSize = 1024;
+    char                 buffer[1024];
+    bool                 byte_order_reversion_f;
 
     if( argc == 1 ) {
         printf("Required at least one argument: 'LE' or 'BE'.\n");
@@ -34,7 +34,7 @@ main(int argc, char** argv)
         qlex.receive(&qlex, &token_p);
 
         /* Print the lexeme in utf8 format. */
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s \n", UTF16Lex_Token_get_string(token_p, buffer, BufferSize));
 
         // (*) check against 'termination'
     } while( token_p->id != TKN_TERMINATION );

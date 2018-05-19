@@ -21,7 +21,7 @@ main(int argc, char** argv)
 
         /* (*) print out token information
          *     'get_string' automagically converts codec bytes into utf8 */
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s \n", UTF8Lex_Token_get_string(token_p, buffer, BufferSize));
 
         // (*) check against 'termination'
     } while( token_p->id != TKN_TERMINATION );

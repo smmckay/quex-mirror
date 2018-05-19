@@ -8,7 +8,7 @@ main(int argc, char** argv)
 {        
     bool                      BigEndianF  = (argc < 2 || (strcmp(argv[1], "BE") == 0)); 
     const char*               file_name   = BigEndianF ? "example-other-utf16be.txt" : "example-other-utf16le.txt";
-    QUEX_NAME(ByteLoader)*    byte_loader = QUEX_NAME(ByteLoader_FILE_new_from_file_name)(file_name);
+    UTF16Lex_ByteLoader*      byte_loader = UTF16Lex_ByteLoader_FILE_new_from_file_name(file_name);
     UTF16Lex                  qlex;
     UTF16Lex_Token*           token_p     = 0x0;
     const UTF16Lex_lexatom_t* iterator    = 0x0;
@@ -19,7 +19,7 @@ main(int argc, char** argv)
         return -1;
     }
    
-    QUEX_NAME(from_ByteLoader)(&qlex, byte_loader, NULL);
+    UTF16Lex_from_ByteLoader(&qlex, byte_loader, NULL);
     /* System's endianness is 'little' => reversion if 'big'
      *                     is 'big'    => reversion if 'little' (not 'big'). */
     byte_order_reversion_f = QUEXED(system_is_little_endian)() ? BigEndianF : ! BigEndianF;
@@ -31,7 +31,7 @@ main(int argc, char** argv)
     do {
         qlex.receive(&qlex, &token_p);
 
-        printf("%s\t", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        printf("%s\t", UTF16Lex_Token_map_id_to_name(token_p->id));
         for(iterator = token_p->text; *iterator; ++iterator) {
             printf("%04X.", (int)*iterator);
         }
@@ -40,7 +40,7 @@ main(int argc, char** argv)
         // (*) check against 'termination'
     } while( token_p->id != TKN_TERMINATION );
 
-    QUEX_NAME(destruct)(&qlex);
+    UTF16Lex_destruct(&qlex);
 
     return 0;
 }
