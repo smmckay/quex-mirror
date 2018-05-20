@@ -30,22 +30,30 @@ typedef struct {
 #define TokenId_TERMINATION  0
 #define QUEX_TOKEN_ID(SHORT) TokenId_ ## SHORT
 
-QUEX_INLINE void QUEX_NAME_TOKEN(construct)(QUEX_TYPE_TOKEN* me);
-QUEX_INLINE void QUEX_NAME_TOKEN(destruct)(QUEX_TYPE_TOKEN* me); 
-QUEX_INLINE bool QUEX_NAME_TOKEN(take_text)(QUEX_TYPE_TOKEN* me, 
+#ifdef __cplusplus
+#   define QUEX_INLINE inline
+#else
+#   define QUEX_INLINE static
+#endif
+
+QUEX_INLINE void TestAnalyzer_Token_construct(QUEX_TYPE_TOKEN* me);
+QUEX_INLINE void TestAnalyzer_Token_destruct(QUEX_TYPE_TOKEN* me); 
+QUEX_INLINE bool TestAnalyzer_Token_take_text(QUEX_TYPE_TOKEN* me, 
                                             const char*      BeginP,
                                             const char*      EndP);
-QUEX_INLINE void QUEX_NAME_TOKEN(repetition_n_set)(QUEX_TYPE_TOKEN* me, 
-                                                   size_t           RepetitionN);
-QUEX_INLINE size_t QUEX_NAME_TOKEN(repetition_n_get)(QUEX_TYPE_TOKEN* me); 
+QUEX_INLINE void TestAnalyzer_Token_repetition_n_set(QUEX_TYPE_TOKEN* me, 
+                                                     size_t           RepetitionN);
+QUEX_INLINE size_t TestAnalyzer_Token_repetition_n_get(QUEX_TYPE_TOKEN* me); 
 
 #include "ut/lib/token/TokenQueue"
 
 #include <support/C/hwut_unit.h>
 
-extern void common_print_push(QUEX_NAME(TokenQueue)* me, int count, QUEX_TYPE_TOKEN* token_p);
-extern void common_print_pop(QUEX_NAME(TokenQueue)* me, int count, QUEX_TYPE_TOKEN* token_p);
-extern bool common_empty_queue(QUEX_NAME(TokenQueue)* me, int pop_n, int Size);
+extern void common_print_push(TestAnalyzer_TokenQueue* me, 
+                              int count, QUEX_TYPE_TOKEN* token_p);
+extern void common_print_pop(TestAnalyzer_TokenQueue* me, 
+                             int count, QUEX_TYPE_TOKEN* token_p);
+extern bool common_empty_queue(TestAnalyzer_TokenQueue* me, int pop_n, int Size);
 
 typedef enum {
     E_UNIT_TEST_PLAIN,
