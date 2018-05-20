@@ -1381,7 +1381,7 @@ class Language(dict):
 
         # Inline
         replacements.append(
-            ("QUEX_INLINE", "inline")
+            ("QUEX_INLINE", self.INLINE)
         )
 
         # QUEX_NAME

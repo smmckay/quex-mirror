@@ -41,11 +41,11 @@ main(int argc, char** argv)
     Simple_ByteLoader*   byte_loader = Simple_ByteLoader_FILE_new_from_file_name(file_name);
 
 #   if   defined(QUEX_OPTION_CONVERTER_ICONV)
-    Simple_Converter)*    converter = Simple_Converter_IConv_new("UTF8", NULL);
+    Simple_Converter*    converter = Simple_Converter_IConv_new("UTF8", NULL);
 #   elif defined(QUEX_OPTION_CONVERTER_ICU)
-    Simple_Converter)*    converter = Simple_Converter_ICU_new("UTF8", NULL);
+    Simple_Converter*    converter = Simple_Converter_ICU_new("UTF8", NULL);
 #   else
-#   define                   converter NULL
+#   define               converter NULL
 #   endif
     Simple_from_ByteLoader(&qlex, byte_loader, converter);
 

@@ -9,9 +9,9 @@ char file_buffer[BUFFER_SIZE];
 #endif
 
 int main(int argc, char** argv) {
-    simple qlex;
-    Token* token_p;
-    char*  file_name = argc    ==   1    ?   "example.txt"    :   argv[1];
+    simple        qlex;
+    simple_Token* token_p;
+    char*         file_name = argc    ==   1    ?   "example.txt"    :   argv[1];
 
 	simple_from_file_name(&qlex, file_name, ENCODING_NAME);
 	do {
@@ -21,9 +21,9 @@ int main(int argc, char** argv) {
 		printf("(%i, %i)  \t", (int)token_p._line_n, (int)token_p._column_n);
 #       endif
 #       ifdef PRINT_TOKEN
-		printf("%s \n", QUEX_NAME_TOKEN(get_string)(&token_p, buffer, BufferSize));
+		printf("%s \n", simple_Token_get_string(&token_p, buffer, BufferSize));
 #       else
-		printf("%s\n", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+		printf("%s\n", simple_Token_map_id_to_name(token_p->id));
 #       endif
 	} while(token_p->id != QUEX_TKN_TERMINATION);
 

@@ -17,7 +17,7 @@ main(int argc, char** argv)
     Simple             qlex;
     const char*        file_name = argc > 1 ? argv[1] : "example.txt";
 
-    QUEX_NAME(from_file_name)(&qlex, file_name, CHARACTER_ENCODING_NAME);
+    Simple_from_file_name(&qlex, file_name, CHARACTER_ENCODING_NAME);
 
     printf(",------------------------------------------------------------------------------------\n");
     printf("| [START]\n");
@@ -33,14 +33,14 @@ main(int argc, char** argv)
         printf("(%i, %i)  \t", (int)token_p->_line_n, (int)token_p->_column_n);
         /* Print out token information            */
         fflush(stderr);
-        printf("%s: ", QUEX_NAME_TOKEN(map_id_to_name)(token_p->id));
+        printf("%s: ", Simple_Token_map_id_to_name(token_p->id));
         switch( token_p->id ) {
         case QUEX_TKN_ON_AFTER_MATCH:
         case QUEX_TKN_ON_MATCH______:
             printf("%i\n", (int)token_p->number); 
             break;
         default:
-            hwut_verify(QUEX_NAME(lexeme_to_pretty_char)(token_p->text, buffer, &buffer[BufferSize]));
+            hwut_verify(Simple_lexeme_to_pretty_char(token_p->text, buffer, &buffer[BufferSize]));
             printf("%s\n", &buffer[0]); 
             break;
         }

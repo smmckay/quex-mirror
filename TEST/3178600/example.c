@@ -12,16 +12,16 @@ main(int argc, char** argv)
     char           buffer[1024];
     const char*    FileName = "example.txt";
 
-    QUEX_NAME(from_file_name)(&qlex, FileName, (void*)0);
+    EasyLexer_from_file_name(&qlex, FileName, (void*)0);
 
     do {
         qlex.receive(&qlex, &token_p);
 
-        printf("%s \n", QUEX_NAME_TOKEN(get_string)(token_p, buffer, BufferSize));
+        printf("%s \n", EasyLexer_Token_get_string(token_p, buffer, BufferSize));
 
     } while( token_p->id != QUEX_TKN_TERMINATION );
 
-    QUEX_NAME(destruct)(&qlex);
+    EasyLexer_destruct(&qlex);
 
     return 0;
 }

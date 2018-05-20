@@ -38,9 +38,9 @@ TEST                                                                 <no date>
         bug-2002474.sh codec .........................................[OK]
                        codec_c .......................................[OK]
                        iconv .........................................[OK]
-                       iconv_c .....................................[FAIL]
+                       iconv_c .......................................[OK]
                        icu ...........................................[OK]
-                       icu_c .......................................[FAIL]
+                       icu_c .........................................[OK]
     2004927 UTF-8 RE Extra Comma Matched
         bug-2004927.sh codec .........................................[OK]
                        iconv .........................................[OK]
@@ -71,7 +71,7 @@ TEST                                                                 <no date>
     3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once
         bug-3486388.sh ...............................................[OK]
     3495127 Event Handler on_after_match
-        feature-3495127.sh queue ...................................[FAIL]
+        feature-3495127.sh queue .....................................[OK]
     3503831 0.61.2 Missleading error message in anti-pattern A{foo$}
         bug-3503831.sh ...............................................[OK]
     3504730 0.61.2 Post condition with OR causes crash
@@ -83,10 +83,10 @@ TEST                                                                 <no date>
     3354250 Issue in Hopcroft-Minimization
         bug-3354250.sh ...............................................[OK]
     3357694 Matches too long when using certain post condition
-        bug-3357694.sh Normal ......................................[FAIL]
-                       PathCompression .............................[FAIL]
-                       PathTemplateCompression .....................[FAIL]
-                       TemplateCompression .........................[FAIL]
+        bug-3357694.sh Normal ........................................[OK]
+                       PathCompression ...............................[OK]
+                       PathTemplateCompression .......................[OK]
+                       TemplateCompression ...........................[OK]
     3392478 UTF-8 Backward Input Position Detection Error
         bug-3392478.sh ...............................................[OK]
 
@@ -101,7 +101,7 @@ TEST                                                                 <no date>
  * eabrams:
 
     patch-16 Compile error when indentation based without token queue
-        patch-16.sh ................................................[FAIL]
+        patch-16.sh ..................................................[OK]
 
  * enmarabrams:
 
@@ -125,10 +125,10 @@ TEST                                                                 <no date>
     1952747 TKN_TERMINATION
         bug-1952747.sh ...............................................[OK]
     2078087 (feature) Mode transition shortcuts GOTO, GOSUB, GOUP
-        feature-2078087.sh GOSUB ...................................[FAIL]
-                           GOSUB-2 .................................[FAIL]
-                           GOTO ....................................[FAIL]
-                           GOTO-2 ..................................[FAIL]
+        feature-2078087.sh GOSUB .....................................[OK]
+                           GOSUB-2 ...................................[OK]
+                           GOTO ......................................[OK]
+                           GOTO-2 ....................................[OK]
     2161098 0.32.1 Nested-Range Skipper Line Number Counter
         bug-2161098-x.sh c_comments ..................................[OK]
                          funny_comments ..............................[OK]
@@ -149,8 +149,8 @@ TEST                                                                 <no date>
     2635012 0.36.4 Include Stack Disablement
         bug-2635012.sh .............................................[FAIL]
     297 r4678(trunk): Memory leak in Token Class
-        bug-297.sh C ...............................................[FAIL]
-                   Cpp .............................................[FAIL]
+        bug-297.sh C .................................................[OK]
+                   Cpp ...............................................[OK]
     3038088 token_id = numeric value
         feature-3038088.sh ...........................................[OK]
     3039173 On Mismatch: abort()
@@ -164,7 +164,7 @@ TEST                                                                 <no date>
                        4 .............................................[OK]
                        5 .............................................[OK]
     3157923 Memory Leak by Components
-        bug-3157923.sh .............................................[FAIL]
+        bug-3157923.sh ...............................................[OK]
     3513568 0.62.2 Memory Leak when using ICU
         bug-3513568.sh .............................................[FAIL]
 
@@ -208,7 +208,7 @@ TEST                                                                 <no date>
         bug-3515838.sh C .............................................[OK]
                        Cpp ...........................................[OK]
     3526210 0.62.4 Accumulator misbehaviour when no text is to be flushed
-        bug-3526210.sh .............................................[FAIL]
+        bug-3526210.sh ...............................................[OK]
 
  * mabraham:
 
@@ -287,7 +287,7 @@ TEST                                                                 <no date>
  * petulda:
 
     3178600 0.58.1 Last appeared char not stored when switching modes
-        bug-3178600.sh .............................................[FAIL]
+        bug-3178600.sh ...............................................[OK]
 
  * prade2p:
 
@@ -396,7 +396,7 @@ TEST                                                                 <no date>
     1902175 invalid escape in character set expression crashes 0.21.12
         bug-1902175.sh ...............................................[OK]
     1905768 0.22.9 doesn't create analyzer function for event only modes
-        bug-1905768.sh .............................................[FAIL]
+        bug-1905768.sh ...............................................[OK]
     1908092 0.23.5 uses --token-class without --token-class-file
         bug-1908092.sh ...............................................[OK]
     1908436 0.23.6 rule precedence reversed for identical patterns
@@ -424,7 +424,7 @@ TEST                                                                 <no date>
                        case-4 ........................................[OK]
                        case-5 ........................................[OK]
     2798423 0.39.4 token_type default __copy function does not compile
-        bug-2798423.sh .............................................[FAIL]
+        bug-2798423.sh ...............................................[OK]
     2799244 0.39.5 attempts to call unimplemented token set() function
         bug-2799244.sh error .........................................[OK]
                        good-1 ........................................[OK]
@@ -433,7 +433,7 @@ TEST                                                                 <no date>
  * the-user-k:
 
     3021502 0.49.2 Buffer-size gets ignored
-        bug-3021502.sh .............................................[FAIL]
+        bug-3021502.sh ...............................................[OK]
 
  * timdawborn:
 
@@ -464,7 +464,7 @@ TEST                                                                 <no date>
                            Normal ....................................[OK]
                            NotExist ..................................[OK]
     2163753 0.32.1 Incorrect on_failure behavior
-        bug-2163753.sh .............................................[FAIL]
+        bug-2163753.sh ...............................................[OK]
 
  * yaroslavkrv:
 
@@ -497,33 +497,12 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3025173.sh
-    [FAIL] bug-2002474.sh _ iconv_c
-                        \__ icu_c
     [FAIL] bug-286.sh
-    [FAIL] feature-3495127.sh _ queue
-    [FAIL] bug-3357694.sh _ Normal
-                        \__ PathCompression
-                        \__ PathTemplateCompression
-                        \__ TemplateCompression
-    [FAIL] patch-16.sh
     [FAIL] feature-1948456.sh
-    [FAIL] feature-2078087.sh _ GOSUB
-                            \__ GOSUB-2
-                            \__ GOTO
-                            \__ GOTO-2
     [FAIL] bug-2635012.sh
-    [FAIL] bug-297.sh _ C
-                    \__ Cpp
-    [FAIL] bug-3157923.sh
     [FAIL] bug-3513568.sh
-    [FAIL] bug-3526210.sh
     [FAIL] bug-2896732.sh
-    [FAIL] bug-3178600.sh
     [FAIL] bug-3295781.sh
-    [FAIL] bug-1905768.sh
-    [FAIL] bug-2798423.sh
-    [FAIL] bug-3021502.sh
-    [FAIL] bug-2163753.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -628,29 +607,29 @@ demo/C/TEST                                                          <no date>
  * 10-SocketsAndTerminal:
 
     Lexers on pipes, sockets, and the command line.
-        10-SocketsAndTerminal.sh command-line ......................[FAIL]
-                                 command-line-utf8 .................[FAIL]
-                                 socket ............................[FAIL]
-                                 socket-utf8 .......................[FAIL]
-                                 stdin .............................[FAIL]
-                                 stdin-utf8 ........................[FAIL]
+        10-SocketsAndTerminal.sh command-line ........................[OK]
+                                 command-line-utf8 ...................[OK]
+                                 socket ..............................[OK]
+                                 socket-utf8 .........................[OK]
+                                 stdin ...............................[OK]
+                                 stdin-utf8 ..........................[OK]
 
  * 11-ManualBufferFilling:
 
     Manual Buffer Filling (w/o Converter)
-        11-ManualBufferFilling.sh feeder-converter .................[FAIL]
-                                  feeder-plain .....................[FAIL]
-                                  gavager-converter ................[FAIL]
-                                  gavager-plain ....................[FAIL]
-                                  point-plain ......................[FAIL]
+        11-ManualBufferFilling.sh feeder-converter ...................[OK]
+                                  feeder-plain .......................[OK]
+                                  gavager-converter ..................[OK]
+                                  gavager-plain ......................[OK]
+                                  point-plain ........................[OK]
 
  * 12-EngineEncoding:
 
     Engine Encoding (Example ISO8859-7)
-        12-EngineEncoding.sh iso8859-7 .............................[FAIL]
-                             utf16-be ..............................[FAIL]
-                             utf16-le ..............................[FAIL]
-                             utf8 ..................................[FAIL]
+        12-EngineEncoding.sh iso8859-7 ...............................[OK]
+                             utf16-be ................................[OK]
+                             utf16-le ................................[OK]
+                             utf8 ....................................[OK]
 
  * 13-MultipleLexers:
 
@@ -673,34 +652,17 @@ demo/C/TEST                                                          <no date>
  * demo/011b:
 
     Engine Encoding UTF16
-        12-EngineEncoding-2nd.sh BE ................................[FAIL]
-                                 LE ................................[FAIL]
+        12-EngineEncoding-2nd.sh BE ..................................[OK]
+                                 LE ..................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] 10-SocketsAndTerminal.sh _ command-line
-                                  \__ command-line-utf8
-                                  \__ socket
-                                  \__ socket-utf8
-                                  \__ stdin
-                                  \__ stdin-utf8
-    [FAIL] 11-ManualBufferFilling.sh _ feeder-converter
-                                   \__ feeder-plain
-                                   \__ gavager-converter
-                                   \__ gavager-plain
-                                   \__ point-plain
-    [FAIL] 12-EngineEncoding.sh _ iso8859-7
-                              \__ utf16-be
-                              \__ utf16-le
-                              \__ utf8
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
                                        \__ no-asserts
-    [FAIL] 12-EngineEncoding-2nd.sh _ BE
-                                  \__ LE
 ===============================================================================
                                                                                
                                  Demos for Cpp                                 
@@ -787,27 +749,27 @@ demo/Cpp/TEST                                                        <no date>
 
     Lexers on pipes, sockets, and the command line.
         10-SocketsAndTerminal.sh command-line ........................[OK]
-                                 command-line-utf8 .................[FAIL]
-                                 socket ............................[FAIL]
-                                 socket-utf8 .......................[FAIL]
-                                 stdin .............................[FAIL]
-                                 stdin-utf8 ........................[FAIL]
+                                 command-line-utf8 ...................[OK]
+                                 socket ..............................[OK]
+                                 socket-utf8 .........................[OK]
+                                 stdin ...............................[OK]
+                                 stdin-utf8 ..........................[OK]
 
  * 11-ManualBufferFilling:
 
     Manual Buffer Filling (w/o Converter)
-        11-ManualBufferFilling.sh feeder-converter .................[FAIL]
-                                  feeder-plain .....................[FAIL]
-                                  gavager-converter ................[FAIL]
-                                  gavager-plain ....................[FAIL]
+        11-ManualBufferFilling.sh feeder-converter ...................[OK]
+                                  feeder-plain .......................[OK]
+                                  gavager-converter ..................[OK]
+                                  gavager-plain ......................[OK]
                                   point-plain ........................[OK]
 
  * 12-EngineEncoding:
 
     Engine Encoding (Example ISO8859-7)
         12-EngineEncoding.sh iso8859-7 ...............................[OK]
-                             utf16-be ..............................[FAIL]
-                             utf16-le ..............................[FAIL]
+                             utf16-be ................................[OK]
+                             utf16-le ................................[OK]
                              utf8 ....................................[OK]
 
  * 13-MultipleLexers:
@@ -831,30 +793,17 @@ demo/Cpp/TEST                                                        <no date>
  * demo/011b:
 
     Engine Encoding UTF16
-        12-EngineEncoding-2nd.sh BE ................................[FAIL]
-                                 LE ................................[FAIL]
+        12-EngineEncoding-2nd.sh BE ..................................[OK]
+                                 LE ..................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] 10-SocketsAndTerminal.sh _ command-line-utf8
-                                  \__ socket
-                                  \__ socket-utf8
-                                  \__ stdin
-                                  \__ stdin-utf8
-    [FAIL] 11-ManualBufferFilling.sh _ feeder-converter
-                                   \__ feeder-plain
-                                   \__ gavager-converter
-                                   \__ gavager-plain
-    [FAIL] 12-EngineEncoding.sh _ utf16-be
-                              \__ utf16-le
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
                                        \__ no-asserts
-    [FAIL] 12-EngineEncoding-2nd.sh _ BE
-                                  \__ LE
 ===============================================================================
                                                                                
                                   Core Engine                                  
@@ -2495,21 +2444,15 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ...........................[MAKE FAILED]
-                        Mix .................................[MAKE FAILED]
-                        N-Character .........................[MAKE FAILED]
-                        N-String ............................[MAKE FAILED]
-                        String ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] accumulator.exe _ Character
-                         \__ Mix
-                         \__ N-Character
-                         \__ N-String
-                         \__ String
+        accumulator.exe Character ....................................[OK]
+                        Mix ..........................................[OK]
+                        N-Character ..................................[OK]
+                        N-String .....................................[OK]
+                        String .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3485,9 +3428,9 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       30  238   [FAIL] TEST                                                          
-       21  56    [FAIL] demo/C/TEST                                                   
-       17  56    [FAIL] ..../Cpp/TEST                                                 
+        9  238   [FAIL] TEST                                                          
+        4  56    [FAIL] demo/C/TEST                                                   
+        4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
         7  15    [FAIL] ........../code/TEST                                          
@@ -3516,7 +3459,7 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-        5  5     [FAIL] ............../extra/accumulator/TEST                         
+           5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
         3  3     [FAIL] ............../token/TEST                                     
@@ -3546,11 +3489,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _   ___   _____           
-    |  ___|_ _(_) |___     / | / _ \ |___  |    __  __
-    | |_ / _` | | / __|    | || | | |   / /     \ \/ /
-    |  _| (_| | | \__ \    | || |_| |  / /       >  < 
-    |_|  \__,_|_|_|___/    |_| \___/  /_/       /_/\_\
+     _____     _ _          ____    _           
+    |  ___|_ _(_) |___     | ___|  / |    __  __
+    | |_ / _` | | / __|    |___ \  | |    \ \/ /
+    |  _| (_| | | \__ \     ___) | | |     >  < 
+    |_|  \__,_|_|_|___/    |____/  |_|    /_/\_\
                                                                    (1701 tests)
 
 ===============================================================================

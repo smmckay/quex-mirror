@@ -5,7 +5,7 @@
 int main(int argc, char* argv[])
 {
     Lexer lex;
-    QUEX_NAME(from_file_name)(&lex, argv[1], 0x0);
+    Lexer_from_file_name(&lex, argv[1], 0x0);
 
     while (1) {
         QUEX_TYPE_TOKEN* t = NULL;
@@ -15,11 +15,11 @@ int main(int argc, char* argv[])
             break;
 
         printf("id=%s text=[%s]\n",
-               QUEX_NAME_TOKEN(map_id_to_name)(t->id),
+               Lexer_Token_map_id_to_name(t->id),
                t->text);
     }
 
-    QUEX_NAME(destruct)(&lex);
+    Lexer_destruct(&lex);
 
     return 0;
 }
