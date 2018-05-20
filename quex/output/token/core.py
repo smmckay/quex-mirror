@@ -80,8 +80,12 @@ def _do_core(Descr):
     # ------------
     # TODO: Following should be always placed in front of footer/header:
     # ------------
-    if Setup.token_class_only_f: helper_definitions = _helper_definitions() 
-    else:                        helper_definitions = Lng.INCLUDE(Setup.output_configuration_file)
+    if Setup.token_class_only_f: 
+        helper_definitions = _helper_definitions() 
+    elif Setup.output_configuration_file:                        
+        helper_definitions = Lng.INCLUDE(Setup.output_configuration_file)
+    else:
+        helper_definitions = ""
 
     helper_variable_replacements = [
         ["$$HELPER_DEFINITIONS$$", helper_definitions],
