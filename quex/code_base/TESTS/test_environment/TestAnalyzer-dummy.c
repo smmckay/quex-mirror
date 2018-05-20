@@ -251,7 +251,7 @@ const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
 
 }
 
-static void
+QUEX_INLINE void
 TestAnalyzer_Buffer_print_overflow_message(TestAnalyzer_Buffer* buffer);
 
 void
@@ -464,7 +464,7 @@ const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
 
 }
 
-static void
+QUEX_INLINE void
 TestAnalyzer_Buffer_print_overflow_message(TestAnalyzer_Buffer* buffer);
 
 void
@@ -1307,7 +1307,7 @@ goto _20; /* in QUEX_GOTO_STATE       */
 
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-static void
+QUEX_INLINE void
 TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me)
 {
 me->reset = TestAnalyzer_MF_reset;
@@ -1459,12 +1459,12 @@ TestAnalyzer_Memento*  memento)
 #include "test_environment/TestAnalyzer-token.h"
 #include "test_environment/TestAnalyzer-token_ids.h"
 
-static void
+QUEX_INLINE void
 TestAnalyzer_Token_set(TestAnalyzer_Token*            __this,
 const TestAnalyzer_token_id_t ID)
 { __this->id = ID; }
 
-static void
+QUEX_INLINE void
 TestAnalyzer_Token_construct(TestAnalyzer_Token* __this)
 {
 #   define self (*__this)
@@ -1484,7 +1484,7 @@ self.text   = LexemeNull;
 #   undef  self
 }
 
-static void
+QUEX_INLINE void
 TestAnalyzer_Token_copy_construct(TestAnalyzer_Token*       __this,
 const TestAnalyzer_Token* __That)
 {
@@ -1492,7 +1492,7 @@ TestAnalyzer_Token_construct(__this);
 TestAnalyzer_Token_copy(__this, __That);
 }
 
-static void
+QUEX_INLINE void
 TestAnalyzer_Token_destruct(TestAnalyzer_Token* __this)
 {
 #   define self (*__this)
@@ -1516,7 +1516,7 @@ self.text = LexemeNull;
 #   undef  self
 }
 
-static void
+QUEX_INLINE void
 TestAnalyzer_Token_copy(TestAnalyzer_Token*       __this,
 const TestAnalyzer_Token* __That)
 {
@@ -1562,7 +1562,7 @@ __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
 
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-static bool
+QUEX_INLINE bool
 TestAnalyzer_Token_take_text(TestAnalyzer_Token*            __this,
 const TestAnalyzer_lexatom_t* Begin,
 const TestAnalyzer_lexatom_t* End)
@@ -1639,7 +1639,7 @@ return false;
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-static size_t
+QUEX_INLINE size_t
 TestAnalyzer_Token_repetition_n_get(TestAnalyzer_Token* __this)
 {
 #   define self        (*__this)
@@ -1658,7 +1658,7 @@ return self.number;
 #   undef  self
 }
 
-static void
+QUEX_INLINE void
 TestAnalyzer_Token_repetition_n_set(TestAnalyzer_Token* __this, size_t N)
 {
 #   define self        (*__this)
@@ -1679,7 +1679,7 @@ self.number = N;
 }
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
-static const char*
+QUEX_INLINE const char*
 TestAnalyzer_Token_map_id_to_name(const TestAnalyzer_token_id_t TokenID)
 {
 switch( TokenID ) {

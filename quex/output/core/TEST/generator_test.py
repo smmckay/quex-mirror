@@ -540,11 +540,13 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #  define __QUEX_SETTING_MAX_MODE_CLASS_N 2
 #endif
 #ifdef __cplusplus
+#define QUEX_INLINE inline
 namespace quex {
 typedef int TestAnalyzer_indentation_t;
 }
 #include "test_environment/TestAnalyzer"
 #else
+#define QUEX_INLINE /* nothing */
 typedef int TestAnalyzer_indentation_t;
 #include "test_environment/TestAnalyzer.h"
 #endif

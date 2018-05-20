@@ -202,9 +202,11 @@ class QuexSetup:
 SetupParTypes = Enum("LIST", "INT_LIST", "FLAG", "NEGATED_FLAG", "STRING", "OPTIONAL_STRING")
 
 SETUP_INFO = {         
-    # [Name in Setup]                 [ Flags ]                                [Default / Type]
-    "_debug_exception_f":             [["--debug-exception"],                  SetupParTypes.FLAG], 
-    "_debug_limit_recursion":         [["--debug-limit-recursion"],            0], 
+    # [Name in Setup]                 [ Flags ]                                  [Default / Type]
+    "_debug_exception_f":             [["--debug-exception"],                    SetupParTypes.FLAG], 
+    "_debug_limit_recursion":         [["--debug-limit-recursion"],              0], 
+    "_debug_reference_original_paths_f": [["--debug-original-paths"],            SetupParTypes.NEGATED_FLAG], 
+    "_debug_leave_basic_language_macros_f": [["--debug-leave-language-macros"],  SetupParTypes.NEGATED_FLAG], 
     "analyzer_class":                 [["-o", "--analyzer-class"],             "Lexer"],    
     "analyzer_derived_class_file":    [["--derived-class-file"],               ""],
     "analyzer_derived_class_name":    [["--derived-class", "--dc"],            ""],

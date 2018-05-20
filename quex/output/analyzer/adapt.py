@@ -1,12 +1,12 @@
 from   quex.engine.misc.tools import typed
-from   quex.blackboard        import Lng
+from   quex.blackboard        import Lng, setup as Setup
 
 def do(Txt, OutputDir, OriginalPath=None):
     if not Txt: return Txt
     ## txt = declare_member_functions(txt)
     txt = produce_include_statements(OutputDir, Txt)
     txt = Lng.adapt_to_configuration(txt)
-    if OriginalPath:
+    if OriginalPath and not Setup._debug_reference_original_paths_f:
         txt = "%s%s" % (Lng.LINE_PRAGMA(OriginalPath, 1), txt)
     return txt
 
@@ -34,7 +34,6 @@ class Symbol:
         end_i     = SubString.find(">")
         condition = SubString[begin_i+1: end_i].strip()
         return condition, SubString[end_i+1:]
-
 
 class Variable(Symbol):
     @typed(ConstantF=bool)

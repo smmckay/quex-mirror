@@ -40,28 +40,28 @@ size_t                      BufferSize);
 
 struct TestAnalyzer_Token_tag;
 
-static void         TestAnalyzer_Token_construct(struct TestAnalyzer_Token_tag*);
-static void         TestAnalyzer_Token_copy(struct TestAnalyzer_Token_tag*,
+QUEX_INLINE void         TestAnalyzer_Token_construct(struct TestAnalyzer_Token_tag*);
+QUEX_INLINE void         TestAnalyzer_Token_copy(struct TestAnalyzer_Token_tag*,
 const struct TestAnalyzer_Token_tag*);
-static void         TestAnalyzer_Token_destruct(struct TestAnalyzer_Token_tag*);
+QUEX_INLINE void         TestAnalyzer_Token_destruct(struct TestAnalyzer_Token_tag*);
 
 /* NOTE: Setters and getters as in the C++ version of the token class are not
 *       necessary, since the members are accessed directly.                   */
 
-static void         TestAnalyzer_Token_set(struct TestAnalyzer_Token_tag* me,
+QUEX_INLINE void         TestAnalyzer_Token_set(struct TestAnalyzer_Token_tag* me,
 const TestAnalyzer_token_id_t    ID);
 
-static const char*  TestAnalyzer_Token_map_id_to_name(const TestAnalyzer_token_id_t);
+QUEX_INLINE const char*  TestAnalyzer_Token_map_id_to_name(const TestAnalyzer_token_id_t);
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-static bool         TestAnalyzer_Token_take_text(struct TestAnalyzer_Token_tag* me,
+QUEX_INLINE bool         TestAnalyzer_Token_take_text(struct TestAnalyzer_Token_tag* me,
 const TestAnalyzer_lexatom_t*    Begin,
 const TestAnalyzer_lexatom_t*    End);
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-static size_t       TestAnalyzer_Token_repetition_n_get(struct TestAnalyzer_Token_tag*);
-static void         TestAnalyzer_Token_repetition_n_set(struct TestAnalyzer_Token_tag*, size_t);
+QUEX_INLINE size_t       TestAnalyzer_Token_repetition_n_get(struct TestAnalyzer_Token_tag*);
+QUEX_INLINE void         TestAnalyzer_Token_repetition_n_set(struct TestAnalyzer_Token_tag*, size_t);
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 

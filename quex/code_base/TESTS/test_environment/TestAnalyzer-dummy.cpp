@@ -251,7 +251,7 @@ const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
 
 }
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_Buffer_print_overflow_message(TestAnalyzer_Buffer* buffer);
 
 void
@@ -464,7 +464,7 @@ const TestAnalyzer_lexatom_t* BufferEnd   = self.buffer.end(&self.buffer);
 
 }
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_Buffer_print_overflow_message(TestAnalyzer_Buffer* buffer);
 
 void
@@ -1299,7 +1299,7 @@ goto _20; /* in QUEX_GOTO_STATE       */
 
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-inline void
+QUEX_INLINE void
 TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me)
 {
 

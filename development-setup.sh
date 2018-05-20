@@ -1,3 +1,4 @@
+chmod a+rx TEST/valgrindi.sh
 
 pushd quex/code_base/TESTS/test_environment/
 rm -rf TestAnalyzer* lib
@@ -6,10 +7,10 @@ python generate-TestAnalyzer.py C++
 popd
 
 pushd quex/output/core/TEST
+rm -rf ut 
 python ../../../code_base/TESTS/code_base_instatiation.py ut
-rm -rf ut
-quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t --encoding unicode
-quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8
+quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t --encoding unicode --language C
+quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8 --language C
 popd
 
 pushd quex/engine/loop/TEST

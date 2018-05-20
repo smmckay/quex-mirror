@@ -363,7 +363,7 @@ TestAnalyzer& operator=(const TestAnalyzer& Other); /* Forbidden */
 
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-inline void
+QUEX_INLINE void
 TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me)
 {
 

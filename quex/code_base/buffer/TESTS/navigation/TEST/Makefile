@@ -111,8 +111,10 @@ hwut-end: clean
 	$(CCP) $(SIZE_1) $(FALLBACK_2) $< $(XLIBS) -o $@
 
 
-ut:
+ut-cpp:
 	python ../../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter extra
+ut:
+	python ../../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter extra --language C
 
 clean: 
 	rm -rf $(TESTS) ut

@@ -73,7 +73,6 @@ $$INC: compatibility/stdbool-pseudo.h$$
 #   define __QUEX_STD_realloc  std::realloc
 #   define __QUEX_STD_free     std::free  
 
-#   define QUEX_INLINE     inline
     /* Input handle type is determined automagically via templates */
 #else
 #   include <stddef.h>
@@ -102,7 +101,6 @@ $$INC: compatibility/stdbool-pseudo.h$$
 #   define __QUEX_STD_realloc  realloc
 #   define __QUEX_STD_free     free  
 
-#   define QUEX_INLINE             /* static */
 #   define QUEX_INPUT_HANDLE_TYPE  /* stdio.h's */ FILE 
 #endif
 

@@ -50,6 +50,8 @@ class Language(dict):
     Match_QUEX_NAME_lexeme    = re.compile("\\bQUEX_NAME\\(lexeme_", re.UNICODE)
     Match_QUEX_NAME           = re.compile(r"\bQUEX_NAME\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_NAME_TOKEN     = re.compile(r"\bQUEX_NAME_TOKEN\(([A-Z_a-z0-9]+)\)")
+    Match_QUEX_SETTING        = re.compile(r"\bQUEX_SETTING_([A-Z_0-9]+)\b")
+    Match_QUEX_OPTION         = re.compile(r"\bQUEX_OPTION_([A-Z_0-9]+)\b")
 
     CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
     
@@ -1380,13 +1382,18 @@ class Language(dict):
         ])
 
         # Inline
-        replacements.append(
-            ("QUEX_INLINE", self.INLINE)
-        )
+        if not Setup._debug_leave_basic_language_macros_f:
+            replacements.append(
+                ("QUEX_INLINE", self.INLINE)
+            )
 
         # QUEX_NAME
-        txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, Txt)
+        txt = Txt
+        txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, txt)
         txt = self.Match_QUEX_NAME_TOKEN.sub(r"%s_\1" % tcn, txt)
+        #txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % acn, txt)
+        #txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % acn, txt)
+
         return blue_print(txt, replacements, CommonStart="QUEX_")
 
 cpp_include_Multi_i_str = """

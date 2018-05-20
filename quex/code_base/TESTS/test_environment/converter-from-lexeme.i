@@ -42,7 +42,7 @@
 
 
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_to_utf32_character(const TestAnalyzer_lexatom_t** input_pp, uint32_t** output_pp)
 {
 uint32_t          unicode;
@@ -55,7 +55,7 @@ unicode = (uint32_t)((int32_t)input + offset);
 return;
 }
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_to_utf16_character(const TestAnalyzer_lexatom_t** input_pp, uint16_t** output_pp)
 {
 uint32_t          unicode;
@@ -68,7 +68,7 @@ unicode = (uint32_t)((int32_t)input + offset);
 return;
 }
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_to_utf8_character(const TestAnalyzer_lexatom_t**  input_pp, uint8_t** output_pp)
 {
 uint32_t          unicode;
@@ -95,7 +95,7 @@ return;
 
 /* Converters for 'char', 'pretty_char', and 'wchar_t' _________________________
 *                                                                            */
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_to_char_character(const TestAnalyzer_lexatom_t** source_pp,
 char**                    drain_pp)
 {
@@ -109,7 +109,7 @@ default: __quex_assert(false); /* Cannot be handled */
 }
 
 #if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_to_wchar_t_character(const TestAnalyzer_lexatom_t** source_pp,
 wchar_t**                 drain_pp)
 {
@@ -123,7 +123,7 @@ default: __quex_assert(false); /* Cannot be handled */
 }
 #endif
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_to_pretty_char_character(const TestAnalyzer_lexatom_t** source_pp,
 char**                    drain_pp)
 {
@@ -148,7 +148,7 @@ default: /* 'drain_pp' has been adapted by converter!       */ return;
 
 /* Converters for strings ______________________________________________________
 *                                                                            */
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_nnzt_to_utf8(const TestAnalyzer_lexatom_t**      source_pp,
 const TestAnalyzer_lexatom_t*        SourceEnd,
 uint8_t**      drain_pp,
@@ -179,7 +179,7 @@ __quex_assert(source_iterator <= SourceEnd);
 *source_pp = source_iterator;
 }
 
-inline uint8_t*
+QUEX_INLINE uint8_t*
 TestAnalyzer_lexeme_to_utf8(const TestAnalyzer_lexatom_t*         SourceBegin,
 uint8_t*        drain_p,
 const uint8_t*  DrainEnd)
@@ -223,7 +223,7 @@ return terminating_zero_p;
 
 #if    ! defined(__QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
-inline std::basic_string<uint8_t>
+QUEX_INLINE std::basic_string<uint8_t>
 TestAnalyzer_lexeme_to_utf8(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
 {
 /* Save iteration over string with existing character converters.
@@ -260,7 +260,7 @@ return result;
 #endif
 
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_nnzt_to_utf16(const TestAnalyzer_lexatom_t**      source_pp,
 const TestAnalyzer_lexatom_t*        SourceEnd,
 uint16_t**      drain_pp,
@@ -291,7 +291,7 @@ __quex_assert(source_iterator <= SourceEnd);
 *source_pp = source_iterator;
 }
 
-inline uint16_t*
+QUEX_INLINE uint16_t*
 TestAnalyzer_lexeme_to_utf16(const TestAnalyzer_lexatom_t*         SourceBegin,
 uint16_t*        drain_p,
 const uint16_t*  DrainEnd)
@@ -335,7 +335,7 @@ return terminating_zero_p;
 
 #if    ! defined(__QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
-inline std::basic_string<uint16_t>
+QUEX_INLINE std::basic_string<uint16_t>
 TestAnalyzer_lexeme_to_utf16(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
 {
 /* Save iteration over string with existing character converters.
@@ -372,7 +372,7 @@ return result;
 #endif
 
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_nnzt_to_utf32(const TestAnalyzer_lexatom_t**      source_pp,
 const TestAnalyzer_lexatom_t*        SourceEnd,
 uint32_t**      drain_pp,
@@ -403,7 +403,7 @@ __quex_assert(source_iterator <= SourceEnd);
 *source_pp = source_iterator;
 }
 
-inline uint32_t*
+QUEX_INLINE uint32_t*
 TestAnalyzer_lexeme_to_utf32(const TestAnalyzer_lexatom_t*         SourceBegin,
 uint32_t*        drain_p,
 const uint32_t*  DrainEnd)
@@ -447,7 +447,7 @@ return terminating_zero_p;
 
 #if    ! defined(__QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
-inline std::basic_string<uint32_t>
+QUEX_INLINE std::basic_string<uint32_t>
 TestAnalyzer_lexeme_to_utf32(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
 {
 /* Save iteration over string with existing character converters.
@@ -484,7 +484,7 @@ return result;
 #endif
 
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_nnzt_to_char(const TestAnalyzer_lexatom_t**      source_pp,
 const TestAnalyzer_lexatom_t*        SourceEnd,
 char**      drain_pp,
@@ -515,7 +515,7 @@ __quex_assert(source_iterator <= SourceEnd);
 *source_pp = source_iterator;
 }
 
-inline char*
+QUEX_INLINE char*
 TestAnalyzer_lexeme_to_char(const TestAnalyzer_lexatom_t*         SourceBegin,
 char*        drain_p,
 const char*  DrainEnd)
@@ -559,7 +559,7 @@ return terminating_zero_p;
 
 #if    ! defined(__QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
-inline std::basic_string<char>
+QUEX_INLINE std::basic_string<char>
 TestAnalyzer_lexeme_to_char(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
 {
 /* Save iteration over string with existing character converters.
@@ -596,7 +596,7 @@ return result;
 #endif
 
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_nnzt_to_wchar_t(const TestAnalyzer_lexatom_t**      source_pp,
 const TestAnalyzer_lexatom_t*        SourceEnd,
 wchar_t**      drain_pp,
@@ -627,7 +627,7 @@ __quex_assert(source_iterator <= SourceEnd);
 *source_pp = source_iterator;
 }
 
-inline wchar_t*
+QUEX_INLINE wchar_t*
 TestAnalyzer_lexeme_to_wchar_t(const TestAnalyzer_lexatom_t*         SourceBegin,
 wchar_t*        drain_p,
 const wchar_t*  DrainEnd)
@@ -671,7 +671,7 @@ return terminating_zero_p;
 
 #if    ! defined(__QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
-inline std::basic_string<wchar_t>
+QUEX_INLINE std::basic_string<wchar_t>
 TestAnalyzer_lexeme_to_wchar_t(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
 {
 /* Save iteration over string with existing character converters.
@@ -708,7 +708,7 @@ return result;
 #endif
 
 
-inline void
+QUEX_INLINE void
 TestAnalyzer_lexeme_nnzt_to_pretty_char(const TestAnalyzer_lexatom_t**      source_pp,
 const TestAnalyzer_lexatom_t*        SourceEnd,
 char**      drain_pp,
@@ -739,7 +739,7 @@ __quex_assert(source_iterator <= SourceEnd);
 *source_pp = source_iterator;
 }
 
-inline char*
+QUEX_INLINE char*
 TestAnalyzer_lexeme_to_pretty_char(const TestAnalyzer_lexatom_t*         SourceBegin,
 char*        drain_p,
 const char*  DrainEnd)
@@ -783,7 +783,7 @@ return terminating_zero_p;
 
 #if    ! defined(__QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
-inline std::basic_string<char>
+QUEX_INLINE std::basic_string<char>
 TestAnalyzer_lexeme_to_pretty_char(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
 {
 /* Save iteration over string with existing character converters.

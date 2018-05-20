@@ -11,7 +11,7 @@ class Language(LanguageCpp):
         },
     }
 
-    INLINE = "static"
+    INLINE = "" # "static"
 
     def __init__(self):      
         LanguageCpp.__init__(self)
