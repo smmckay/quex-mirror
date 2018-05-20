@@ -262,7 +262,7 @@ bool (*resources_absent)(QUEX_TYPE_ANALYZER* me);
 } TestAnalyzer;
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-inline void TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me);
+static void TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me);
 #endif
 
 
@@ -273,7 +273,7 @@ inline void TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me);
 
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-inline void
+static void
 TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me)
 {
     me->reset = TestAnalyzer_MF_reset;
@@ -440,12 +440,12 @@ bool UserMementoPack_UnitTest_return_value = true;
 #include "test_environment/TestAnalyzer-token.h"
 #include "test_environment/TestAnalyzer-token_ids.h"
 
-inline void 
+static void 
 TestAnalyzer_Token_set(TestAnalyzer_Token*            __this, 
                  const TestAnalyzer_token_id_t ID) 
 { __this->id = ID; }
 
-inline void 
+static void 
 TestAnalyzer_Token_construct(TestAnalyzer_Token* __this)
 {
 #   define self (*__this)
@@ -464,7 +464,7 @@ TestAnalyzer_Token_construct(TestAnalyzer_Token* __this)
 #   undef  self
 }
 
-inline void 
+static void 
 TestAnalyzer_Token_copy_construct(TestAnalyzer_Token*       __this, 
                             const TestAnalyzer_Token* __That)
 {
@@ -472,7 +472,7 @@ TestAnalyzer_Token_copy_construct(TestAnalyzer_Token*       __this,
     TestAnalyzer_Token_copy(__this, __That);
 }
 
-inline void 
+static void 
 TestAnalyzer_Token_destruct(TestAnalyzer_Token* __this)
 {
 #   define self (*__this)
@@ -495,7 +495,7 @@ TestAnalyzer_Token_destruct(TestAnalyzer_Token* __this)
 #   undef  self
 }
 
-inline void
+static void
 TestAnalyzer_Token_copy(TestAnalyzer_Token*       __this, 
                   const TestAnalyzer_Token* __That)
 {
@@ -540,7 +540,7 @@ TestAnalyzer_Token_copy(TestAnalyzer_Token*       __this,
 
 
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-inline bool 
+static bool 
 TestAnalyzer_Token_take_text(TestAnalyzer_Token*            __this, 
                        const TestAnalyzer_lexatom_t* Begin, 
                        const TestAnalyzer_lexatom_t* End)
@@ -616,7 +616,7 @@ TestAnalyzer_Token_take_text(TestAnalyzer_Token*            __this,
 #endif
 
 #ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-inline size_t 
+static size_t 
 TestAnalyzer_Token_repetition_n_get(TestAnalyzer_Token* __this)
 {
 #   define self        (*__this)
@@ -634,7 +634,7 @@ TestAnalyzer_Token_repetition_n_get(TestAnalyzer_Token* __this)
 #   undef  self
 }
 
-inline void 
+static void 
 TestAnalyzer_Token_repetition_n_set(TestAnalyzer_Token* __this, size_t N)
 {
 #   define self        (*__this)
@@ -654,7 +654,7 @@ TestAnalyzer_Token_repetition_n_set(TestAnalyzer_Token* __this, size_t N)
 }
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
-inline const char*
+static const char*
 TestAnalyzer_Token_map_id_to_name(const TestAnalyzer_token_id_t TokenID)
 {
    switch( TokenID ) {
