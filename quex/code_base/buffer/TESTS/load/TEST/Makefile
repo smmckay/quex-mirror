@@ -17,12 +17,12 @@ DEFS = \
 #      -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE
 
 CC_PURE := gcc \
-		  -Wall -Werror -ggdb \
+		  -Wall -Werror -ggdb -DQUEX_INLINE= \
 		  -I. -I$(HWUT_PATH)/support/C -I../../../../ \
 		  $(DEFS) 
 
 CC := gcc \
-		  -Wall -Werror -ggdb \
+		  -Wall -Werror -ggdb -DQUEX_INLINE= \
 		  -I. -I$(HWUT_PATH)/support/C -I../../../../ \
 		  $(DEFS) 
 

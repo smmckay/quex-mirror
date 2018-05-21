@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.68.2"
-#define QUEX_SETTING_BUILD_DATE        "Mon May 21 01:05:54 2018"
+#define QUEX_SETTING_BUILD_DATE        "Mon May 21 23:09:29 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -145,7 +145,7 @@
 
 #   define QUEX_NAMESPACE_TOKEN
 
-#   define QUEX_LEXEME_NULL            QUEX_NAMESPACE_TOKEN :: TestAnalyzer_LexemeNull
+#   define QUEX_LEXEME_NULL             :: TestAnalyzer_LexemeNull
 
 #   define TestAnalyzer_Token_NAME       TestAnalyzer_Token_ ## NAME
 

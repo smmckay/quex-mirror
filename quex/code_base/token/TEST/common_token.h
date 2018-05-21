@@ -3,6 +3,12 @@
 
 #include "ut/lib/definitions"
 
+#ifdef __cplusplus
+#   define QUEX_INLINE inline
+#else
+#   define QUEX_INLINE 
+#endif
+
 typedef unsigned char TestAnalyzer_lexatom_t;
 #define QUEX_NAME_TOKEN(X) TokenName_ ## X
 #define QUEX_NAME(X)       LexerName_ ## X
@@ -29,12 +35,6 @@ typedef struct {
 #define QUEX_TYPE_ANALYZER   Lexer 
 #define TokenId_TERMINATION  0
 #define QUEX_TOKEN_ID(SHORT) TokenId_ ## SHORT
-
-#ifdef __cplusplus
-#   define QUEX_INLINE inline
-#else
-#   define QUEX_INLINE static
-#endif
 
 QUEX_INLINE void TestAnalyzer_Token_construct(QUEX_TYPE_TOKEN* me);
 QUEX_INLINE void TestAnalyzer_Token_destruct(QUEX_TYPE_TOKEN* me); 

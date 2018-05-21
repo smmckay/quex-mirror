@@ -39,7 +39,7 @@ INCLUDES := -I. -I$(HWUT_PATH)/support/C -I$(TEST_SUPPORT_DIR) -I../../../../../
 CC := g++ $(INCLUDES) $(DEFS) \
 		-ggdb  \
 		-Wall -Werror \
-        -Werror-implicit-function-declaration 
+        -Werror-implicit-function-declaration  -DQUEX_INLINE=inline
 
 all: $(FILES)
 

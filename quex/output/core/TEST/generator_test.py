@@ -225,7 +225,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     # Verify, that Templates and Pathwalkers are really generated
     __verify_code_generation(FullLanguage, source_code)
 
-    source_code = adapt.do(source_code, "ut")
+    source_code = "%s%s" % (language_defines, adapt.do(source_code, "ut"))
 
     compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr, 
                     test_str_list)
@@ -510,7 +510,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
             + "".join(function_txt) \
             + "QUEX_NAMESPACE_MAIN_CLOSE\n"
 
-    return adapt.do(result, "ut")
+    return result
 
 def nonsense_default_counter(FirstModeF):
     if FirstModeF:
@@ -518,6 +518,14 @@ def nonsense_default_counter(FirstModeF):
                + "QUEX_FUNCTION_COUNT_ARBITRARY(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t* LexemeBegin, TestAnalyzer_lexatom_t* LexemeEnd) {}\n" 
     else:
         return "" # Definition done before
+
+language_defines = """
+#ifdef __cplusplus
+#    define QUEX_INLINE inline
+#else
+#    define QUEX_INLINE 
+#endif
+"""
 
 test_program_common_declarations = """
 $$__QUEX_OPTION_PLAIN_C$$
@@ -540,13 +548,11 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #  define __QUEX_SETTING_MAX_MODE_CLASS_N 2
 #endif
 #ifdef __cplusplus
-#define QUEX_INLINE inline
 namespace quex {
 typedef int TestAnalyzer_indentation_t;
 }
 #include "test_environment/TestAnalyzer"
 #else
-#define QUEX_INLINE /* nothing */
 typedef int TestAnalyzer_indentation_t;
 #include "test_environment/TestAnalyzer.h"
 #endif

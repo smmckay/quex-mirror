@@ -13,7 +13,7 @@ MYFLAGS   := -ggdb -Wall -Werror  \
 		     -DQUEX_OPTION_COUNTER_COLUMN \
              -DQUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 
-CC        := g++ $(MYFLAGS) -ggdb
+CC        := g++ $(MYFLAGS) -ggdb -DQUEX_INLINE=inline
 
 test_environment/TestAnalyzer-dummy.cpp: test_environment
 	cp $(TESTENV)/test_environment/TestAnalyzer* ./test_environment

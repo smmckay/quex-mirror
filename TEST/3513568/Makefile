@@ -1,7 +1,5 @@
 include ../Makefile.lexer
 
-ENGINE = Lexer/boeck_Lexer.c   
-
 ifdef ASSERTS_ENABLED_F
 	CCFLAG_ASSERTS=# By default asserts are enabled
 else 
@@ -13,17 +11,14 @@ LDC := $(LDC) -DQUEX_OPTION_MULTI -I.
 lexer: Lexer/Lexer.c lexer.c Common-token.c
 	$(LDC) $^ -o  $@ $(LIB_ICU) 
 	 
-# -DQUEX_OPTION_ASSERTS_DISABLED
-# -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-
 COMMON_TOKEN_OPTIONS = --token-class-file Common-token.h \
                        --suppress 5
 	   	 	           # --no-message-on-extra-options \
 
 Lexer/Lexer.c:  boeck.qx Common-token.c Common-token_ids
-	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
+	quex -i $< -o Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
 		 --language C --suppress 15 \
-		 --debug-exception
+		 # --debug-exception
 
 Common-token_ids \
 Common-token.c: 
@@ -31,10 +26,25 @@ Common-token.c:
 		 -b 4                          \
 		 --token-id-prefix TKN_        \
 		 -o Common  --odir .           \
-		 --token-class Common::Token   \
+		 --token-class Token           \
 		 --token-class-only            \
-	     --debug-exception \
+	     --debug-exception             \
 		 --language C 
+
+#Lexer/Lexer.cpp:  boeck.qx Common-token.cpp Common-token_ids
+#	quex -i $< -o boeck::Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
+#		 --suppress 15 \
+#		 # --debug-exception
+#
+#Common-token_ids \
+#Common-token.cpp: 
+#	quex -i token_ids.qx token_type.qx \
+#		 -b 4                          \
+#		 --token-id-prefix TKN_        \
+#		 -o Common  --odir .           \
+#		 --token-class Common::Token   \
+#		 --token-class-only            \
+#	     --debug-exception 
 
 clean:
 	rm -rf Lexer* lib* Common* lexer *.E *.o

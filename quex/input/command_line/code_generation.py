@@ -136,6 +136,7 @@ def __setup_analyzer_class(Setup):
     Setup.analyzer_name_safe   = \
          read_namespaced_name(Setup.analyzer_class, 
                               "analyzer class (options -o, --analyzer-class)")
+    __check_namespace_admissibility("analyzer class", Setup.analyzer_name_space)
 
     if Setup.show_name_spaces_f:
         print "FSM: {"
@@ -150,6 +151,7 @@ def __setup_analyzer_class(Setup):
          read_namespaced_name(Setup.analyzer_derived_class_name, 
                               "derived analyzer class (options --derived-class, --dc)",
                               AllowEmptyF=True)
+    __check_namespace_admissibility("derived class", Setup.analyzer_derived_class_name_space)
 
 def __setup_token_class(Setup):
     """ X0::X1::X2::ClassName --> token_class_name = ClassName
@@ -171,6 +173,7 @@ def __setup_token_class(Setup):
     Setup.token_class_name_safe = \
          read_namespaced_name(Setup.token_class, 
                               "token class (options --token-class, --tc)")
+    __check_namespace_admissibility("token class", Setup.token_class_name_space)
 
     if Setup.show_name_spaces_f:
         print "Token: {"
@@ -189,6 +192,15 @@ def __setup_token_class(Setup):
 
     #if len(Setup.token_class_name_space) == 0:
     #    Setup.token_class_name_space = deepcopy(Setup.analyzer_name_space)
+
+def __check_namespace_admissibility(ClassName, NameSpace):
+    if not NameSpace: 
+        return
+    elif Setup.language == "C":
+        error.log("Language '%s' has been specified for output.\n" % Setup.language + \
+                  "Thus, name spaces are inadmissible for %s." % ClassName)
+    else:
+        return
 
 def __setup_token_id_prefix(Setup):
     Setup.token_id_prefix_plain,      \

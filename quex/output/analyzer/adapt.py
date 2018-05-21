@@ -6,7 +6,7 @@ def do(Txt, OutputDir, OriginalPath=None):
     ## txt = declare_member_functions(txt)
     txt = produce_include_statements(OutputDir, Txt)
     txt = Lng.adapt_to_configuration(txt)
-    if OriginalPath and not Setup._debug_reference_original_paths_f:
+    if OriginalPath and Setup._debug_reference_original_paths_f:
         txt = "%s%s" % (Lng.LINE_PRAGMA(OriginalPath, 1), txt)
     return txt
 

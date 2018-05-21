@@ -40,7 +40,7 @@ ICU_LIBS := $(shell icu-config --ldflags)
 CC := g++ $(INCLUDES) $(DEFS) \
 		-ggdb  \
 		-Wall -Werror \
-        -Werror-implicit-function-declaration
+        -Werror-implicit-function-declaration -DQUEX_INLINE=inline 
 
 all: $(FILES)
 

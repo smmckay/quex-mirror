@@ -274,7 +274,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     on_indentation_txt = indentation_handler.do(AuxMode(), ["M", "M2"]).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
 
     Setup.analyzer_class_name = "TestAnalyzer"
-    return adapt.do(main_txt + on_indentation_txt, "ut")
+    return language_defines + adapt.do(main_txt + on_indentation_txt, "ut")
     
 
 def create_customized_analyzer_function(Language, TestStr, EngineSourceCode, 

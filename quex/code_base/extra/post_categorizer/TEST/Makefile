@@ -19,7 +19,7 @@ MYFLAGS = \
      -DQUEX_OPTION_COUNTER_LINE  \
      -DQUEX_OPTION_COUNTER_COLUMN 
 
-CC = g++ $(MYFLAGS)
+CC = g++ $(MYFLAGS) -DQUEX_INLINE=inline
 
 post-categorizer-%.exe: post-categorizer-%.cpp ut
 	$(CC) -I./. $< post-categorizer-common.cpp -o $@ 

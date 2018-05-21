@@ -95,6 +95,7 @@ def append_variable_definitions(FileName):
     fh.write("bool UserMementoPack_UnitTest_return_value = true;\n")
     fh.close()
 
+Setup._debug_leave_basic_language_macros_f = True
 if sys.argv[1] == "C++":
     mode_db = code("C++")
     add_engine_stuff(mode_db, "TestAnalyzer", TokenClassImplementationF=True)

@@ -13,8 +13,8 @@ DEFINES  := \
 
 INCLUDES := -I. -Iut/lib -I$(HWUT_PATH)/support/C -I../../../TESTS
 
-CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb #-lefence # -fsanitize=address
-CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb -fstack-protector-all # -lefence -fsanitize=address
+CC       := gcc -Wall $(INCLUDES) $(DEFINES) -ggdb -DQUEX_INLINE= #-lefence # -fsanitize=address
+CPP      := g++ -Wall $(INCLUDES) $(DEFINES) -ggdb -DQUEX_INLINE=inline -fstack-protector-all # -lefence -fsanitize=address
 
 TESTENV  := ../../../TESTS
 

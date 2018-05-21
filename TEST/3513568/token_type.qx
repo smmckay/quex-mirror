@@ -1,5 +1,8 @@
 token_type {
    header {
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
    }
    standard {
         id            : uint32_t;

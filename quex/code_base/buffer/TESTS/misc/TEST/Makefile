@@ -7,7 +7,7 @@ CC    := gcc -ggdb -Wall -Werror \
 		     -I. -I../../../../TESTS -Iut/lib -I$(HWUT_PATH)/support/C  \
 		     -DQUEX_SETTING_BUFFER_SIZE_MIN=4 \
 		     -DQUEX_SETTING_BUFFER_SIZE=11 \
-			 -DQUEX_INLINE=static
+			 -DQUEX_INLINE=
 
 all: $(TESTS)
 
