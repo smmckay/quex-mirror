@@ -112,16 +112,18 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
     if InitialSkipF: marker_char_list = TriggerSet.get_number_list()
     else:            marker_char_list = []
 
-    return create_customized_analyzer_function(Language, TestStr, loop_code,
-                                               QuexBufferSize, 
-                                               CommentTestStrF = False, 
-                                               ShowPositionF   = False, 
-                                               EndStr          = end_str,
-                                               SkipUntilMarkerSet = marker_char_list, 
-                                               LocalVariableDB = deepcopy(variable_db.get()), 
-                                               ReloadF         = True, 
-                                               OnePassOnlyF    = OnePassOnlyF,
-                                               CounterPrintF   = CounterPrintF)
+    result = create_customized_analyzer_function(Language, TestStr, loop_code,
+                                                 QuexBufferSize, 
+                                                 CommentTestStrF = False, 
+                                                 ShowPositionF   = False, 
+                                                 EndStr          = end_str,
+                                                 SkipUntilMarkerSet = marker_char_list, 
+                                                 LocalVariableDB = deepcopy(variable_db.get()), 
+                                                 ReloadF         = True, 
+                                                 OnePassOnlyF    = OnePassOnlyF,
+                                                 CounterPrintF   = CounterPrintF)
+
+    return language_defines + result
 
 def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=1024, 
                               CommentTestStrF=False, ShowPositionF=False, CounterPrintF=True):
@@ -153,12 +155,13 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
         generator.do_terminals(terminal_list, TheAnalyzer=None, dial_db=dial_db)
     )
 
-    return create_customized_analyzer_function(Language, TestStr, loop_code,
-                                               QuexBufferSize, CommentTestStrF, ShowPositionF, end_str,
-                                               SkipUntilMarkerSet = [], 
-                                               LocalVariableDB = deepcopy(variable_db.get()),
-                                               DoorIdOnSkipRangeOpenF=True, 
-                                               CounterPrintF=CounterPrintF) 
+    result = create_customized_analyzer_function(Language, TestStr, loop_code,
+                                                 QuexBufferSize, CommentTestStrF, ShowPositionF, end_str,
+                                                 SkipUntilMarkerSet = [], 
+                                                 LocalVariableDB = deepcopy(variable_db.get()),
+                                                 DoorIdOnSkipRangeOpenF=True, 
+                                                 CounterPrintF=CounterPrintF) 
+    return language_defines + result
 
 def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSequence, 
                                      QuexBufferSize=1024, CommentTestStrF=False, ShowPositionF=False):
@@ -207,16 +210,17 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
         loop_code
     )
 
-    return create_customized_analyzer_function(Language, TestStr, 
-                                               loop_code,
-                                               QuexBufferSize=QuexBufferSize, 
-                                               CommentTestStrF=CommentTestStrF, 
-                                               ShowPositionF=ShowPositionF, 
-                                               EndStr=end_str,
-                                               SkipUntilMarkerSet=[], 
-                                               LocalVariableDB=deepcopy(variable_db.get()), 
-                                               DoorIdOnSkipRangeOpenF=True, 
-                                               CounterPrintF="short") 
+    result = create_customized_analyzer_function(Language, TestStr, 
+                                                 loop_code,
+                                                 QuexBufferSize=QuexBufferSize, 
+                                                 CommentTestStrF=CommentTestStrF, 
+                                                 ShowPositionF=ShowPositionF, 
+                                                 EndStr=end_str,
+                                                 SkipUntilMarkerSet=[], 
+                                                 LocalVariableDB=deepcopy(variable_db.get()), 
+                                                 DoorIdOnSkipRangeOpenF=True, 
+                                                 CounterPrintF="short") 
+    return language_defines + result
 
 def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
                                 

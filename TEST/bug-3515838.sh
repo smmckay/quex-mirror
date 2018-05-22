@@ -12,7 +12,7 @@ case $1 in
         export language='--debug-exception' 
     ;;
     C) 
-        export language='--language C --debug-exception'
+        export language='--language C'
     ;;
 esac
 

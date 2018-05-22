@@ -23,6 +23,7 @@ bom-istream.exe: bom.cpp ut
 	g++ \
 		-DQUEX_NAMESPACE_MAIN_OPEN="" \
 		-DQUEX_NAMESPACE_MAIN_CLOSE="" \
+		-DQUEX_INLINE= \
 		$(DEFS) $< -o $@
 
 strange_stream.exe: strange_stream.cpp ut

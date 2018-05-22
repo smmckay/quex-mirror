@@ -12,8 +12,8 @@ SRC_C    := lexer.c \
 all: lexerCpp lexerC
 
 lexerCpp: $(SRC_CPP)
-	@g++ $(INCLUDES) $(DEFINES) $^ -o $@
+	@g++ $(INCLUDES) $(DEFINES) -DQUEX_INLINE=inline $^ -o $@
 	
 lexerC: $(SRC_C)
-	@gcc $(INCLUDES) $(DEFINES) -D__QUEX_OPTION_PLAIN_C $^ -o $@
+	@gcc $(INCLUDES) $(DEFINES) -DQUEX_INLINE= -D__QUEX_OPTION_PLAIN_C $^ -o $@
 

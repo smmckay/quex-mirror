@@ -17,7 +17,7 @@ hwut-info:
 	@echo $(TEST_FILES) 
 
 %.exe: %.cpp ut 
-	$(LDCPP) $(INCLUDES) $(DEBUGF) $(OPTF) $< -o $@
+	$(LDCPP) -DQUEX_INLINE=inline $(INCLUDES) $(DEBUGF) $(OPTF) $< -o $@
 
 ut:
 	python $(TESTENV)/code_base_instatiation.py ut

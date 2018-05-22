@@ -8,8 +8,8 @@ int main(int argc, char** argv)
 	using namespace std;
 
 	tokenizer_it_Token*   token_p;
-    QUEX_NAME(Converter)* converter = QUEX_NAME(Converter_IConv_new)("UTF8", NULL);
-	tokenizer_it          qlex((QUEX_NAME(ByteLoader)*)NULL, converter); 
+    tokenizer_it_Converter* converter = tokenizer_it_Converter_IConv_new("UTF8", NULL);
+	tokenizer_it          qlex((tokenizer_it_ByteLoader*)NULL, converter); 
     uint8_t*              begin_p;
     const uint8_t*        end_p;
     size_t                received_n;
@@ -44,8 +44,8 @@ int main(int argc, char** argv)
 			else if (TokenID == QUEX_TKN_EOS) {
 				cout << endl;
 			} else {
-				int offset = qlex.tell() - QUEX_NAME(lexeme_length)(token_p->text);
-				cout << offset << '\t' << QUEX_NAME(lexeme_to_pretty_char)(token_p->text) << endl;
+				int offset = qlex.tell() - tokenizer_it_lexeme_length(token_p->text);
+				cout << offset << '\t' << tokenizer_it_lexeme_to_pretty_char(token_p->text) << endl;
 			}
 		}
 	}

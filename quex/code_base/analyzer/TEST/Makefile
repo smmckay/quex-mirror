@@ -22,7 +22,7 @@ counter-%.exe:  counter-%.cpp ut
 	$(CC) $< -o $@ 
 
 statistics.exe: statistics.c ut
-	gcc $(MYFLAGS) $< -o $@ -D__QUEX_OPTION_PLAIN_C
+	gcc $(MYFLAGS) $< -o $@ -D__QUEX_OPTION_PLAIN_C -DQUEX_INLINE= 
 
 nonsense.exe: nonsense.cpp 
 	$(CC) $< -o $@ 
