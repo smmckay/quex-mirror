@@ -207,7 +207,7 @@ SETUP_INFO = {
     "_debug_limit_recursion":         [["--debug-limit-recursion"],              0], 
     "_debug_reference_original_paths_f": [["--debug-original-paths"],            SetupParTypes.FLAG], 
     "_debug_leave_basic_language_macros_f": [["--debug-leave-language-macros"],  SetupParTypes.FLAG], 
-    "analyzer_class":                 [["-o", "--analyzer-class"],             "Lexer"],    
+    "analyzer_class":                 [["-o", "--analyzer-class"],             ""],    
     "analyzer_derived_class_file":    [["--derived-class-file"],               ""],
     "analyzer_derived_class_name":    [["--derived-class", "--dc"],            ""],
     "bad_lexatom_detection_f":        [["--no-bad-lexatom-detection", "--nbld"], SetupParTypes.NEGATED_FLAG],
@@ -215,7 +215,7 @@ SETUP_INFO = {
     "buffer_encoding_file":           [["--encoding-file"],                    ""],
     "buffer_limit_code":              [["--buffer-limit"],                     0x0],
     "__buffer_lexatom_size_in_byte":  [["--buffer-element-size", "-b", "--bes"], -1],  # [Bytes] => ".lexatom.size_in_byte"
-    "__buffer_lexatom_type":          [["--buffer-element-type", "--bet"],     ""],
+    "__buffer_lexatom_type":          [["--lexatom-type", "--buffer-element-type", "--bet"],     ""],
     "buffer_byte_order":              [["--endian"],                           "<system>"],
     "comment_state_machine_f":        [["--comment-state-machine"],            SetupParTypes.FLAG],
     "comment_transitions_f":          [["--comment-transitions"],              SetupParTypes.FLAG],

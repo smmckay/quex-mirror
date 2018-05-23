@@ -1,3 +1,10 @@
+-- token class generation: Name of *lexer* must be specified, i.e. the
+   token class must know the lexer for which lexer it is generated.
+
+   => use of $$LEXER_CLASS$ macro
+
+   OR: disable _take_text (==> good subject for unit tests, also)
+
 -- Removal of implicit default namespace 'quex'
 
 -- Converter Only generation:

@@ -52,7 +52,7 @@ for option in option_db:
         print "error: %s is not documented" % option
     else:
         count_n += 1
-print "Documented options %i out of %i existing options." % (count_n, len(option_db))
+print "Documented options ((%i)) out of ((%i)) existing options." % (count_n, len(option_db))
 
 # Find things which are documented but do not exist
 print "(*) Options which are reported, but are not available in application  (no output is good output)"

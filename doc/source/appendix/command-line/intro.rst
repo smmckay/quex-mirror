@@ -1055,4 +1055,51 @@ Default: false (disabled)
 
 Default: false (disabled)
 
+For the support of software development of Quex and debugging, the following options are provided. 
+ 
+
+.. cmdoption:: --debug-exception 
+
+    If set, exceptions are no longer caught and treated internally. This options permits to trace 
+    locations where exceptions occur.  
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --debug-limit-recursion number
+
+    This options limits the number of possible recursions. It may extend the default which is set 
+    by the python application. Or, it may be set purposely small, so that larger recursions can 
+    be detected by triggering an exception.  
+
+    
+
+Default: 0
+
+.. cmdoption:: --debug-original-paths 
+
+    When code is generated the reference to the original templates is maintained. Thus, a debugger 
+    or compiler might directly point to the place in the Quex template base while actually 
+    observing generated code.  
+
+    
+
+Default: false (disabled)
+
+.. cmdoption:: --debug-leave-language-macros 
+
+    This option leaves basic language macros in places. Thus, code which is equal for different 
+    languages (e.g. C and C++) may be used in its language context relying on macro definitions 
+    on the command line. What those missing macro definitions are depends the version 
+    of Quex and can only be determined through the error output of compiled generated code. 
+     
+
+    
+
+Default: false (disabled)
+
+The aforementioned options are solely provided for core developers who desire to work on the internal 
+Quex core.  
+
 

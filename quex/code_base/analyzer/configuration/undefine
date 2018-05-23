@@ -132,9 +132,6 @@
 #ifdef    QUEX_SETTING_ANALYZER_VERSION
 #   undef QUEX_SETTING_ANALYZER_VERSION  /* see analyzer/CppTemplate.txt */
 #endif
-#ifdef    QUEX_NAME 
-#   undef QUEX_NAME 
-#endif
 #ifdef    QUEX_NAME_TOKEN 
 #   undef QUEX_NAME_TOKEN 
 #endif

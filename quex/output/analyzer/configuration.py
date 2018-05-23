@@ -1,6 +1,7 @@
 
 from   quex.engine.misc.string_handling import blue_print
 import quex.output.analyzer.adapt       as     adapt
+import quex.engine.misc.error           as     error 
 
 from   quex.blackboard  import setup as Setup, Lng
 import quex.token_db    as     token_db
@@ -35,6 +36,7 @@ def do(Mode_PrepPrepDB):
                                  or Setup.token_class_support_repetition_f
     token_take_text_support_f  =    token_db.support_take_text() \
                                  or Setup.token_class_support_take_text_f 
+
     token_repetition_support_txt = (" %s " % Lng.OR).join(
         Lng.EQUAL("TokenID", token_id_str)
         for token_id_str in token_db.token_repetition_token_id_list

@@ -25,6 +25,7 @@ sys.path.append(os.environ["QUEX_PATH"])
 from   quex.engine.misc.string_handling                     import blue_print
 from   quex.engine.misc.interval_handling                   import Interval
 from   quex.engine.misc.tools                               import typed
+import quex.engine.misc.error                               as     error
 from   quex.engine.state_machine.transformation.state_split import EncodingTrafoBySplit
 import quex.output.core.state.transition_map.core           as     transition_map
 

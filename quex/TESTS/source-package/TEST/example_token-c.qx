@@ -4,20 +4,20 @@ token_type {
        #include <string.h>
 
        extern const char* 
-       QUEX_NAME_TOKEN(get_string)(const QUEX_TYPE_TOKEN*  me, 
-                                   char*                   buffer, 
-                                   size_t                  BufferSize); 
+       EasyLexer_Token_get_string(const QUEX_TYPE_TOKEN*  me, 
+                                  char*                   buffer, 
+                                  size_t                  BufferSize); 
 
        extern const char* 
-       QUEX_NAME_TOKEN(pretty_char_text)(const QUEX_TYPE_TOKEN*  me, 
-                                        char*                    buffer, 
-                                        size_t                   BufferSize); 
+       EasyLexer_Token_pretty_char_text(const QUEX_TYPE_TOKEN*  me, 
+                                       char*                    buffer, 
+                                       size_t                   BufferSize); 
 
 #      if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
        extern const wchar_t* 
-       QUEX_NAME_TOKEN(pretty_wchar_text)(const QUEX_TYPE_TOKEN*  me, 
-                                          wchar_t*                buffer, 
-                                          size_t                  BufferSize); 
+       EasyLexer_Token_pretty_wchar_text(const QUEX_TYPE_TOKEN*  me, 
+                                         wchar_t*                buffer, 
+                                         size_t                  BufferSize); 
 #      endif
 
 #include <pkg/converter-from-lexeme>
@@ -184,7 +184,6 @@ token_type {
             return buffer;
         }
 
-$INCLUDE_CONVERTER_IMPLEMENTATION
 #include <pkg/converter-from-lexeme.i>
    }
 }

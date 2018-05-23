@@ -1329,6 +1329,18 @@ class Language(dict):
            self.GOTO(door_id, dial_db)
         ]
 
+    def type_definitions_replace(self, txt):
+        token_descr = token_db.token_type_definition
+
+        return blue_print(txt, [
+            ("lexatom_t",        Setup.lexatom.type),
+            ("token_id_t",       token_descr.token_id_type.get_pure_text()),
+            ("token_line_n_t",   token_descr.line_number_type.get_pure_text()),
+            ("token_column_n_t", token_descr.column_number_type.get_pure_text()),
+            ("acceptance_id_t",  "int"),
+            ("indentation_t",    "int")
+        ])
+
     def type_definitions(self, excluded=set()):
         token_descr = token_db.token_type_definition
         type_def_list = [

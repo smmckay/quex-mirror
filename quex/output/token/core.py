@@ -134,6 +134,11 @@ def _do_core(Descr):
     txt   = blue_print(txt, helper_variable_replacements)
     txt_i = blue_print(txt_i, helper_variable_replacements)
 
+    if Setup.token_class_only_f:
+        # All type definitions need to be replaced!
+        txt   = Lng.type_definitions_replace(txt)
+        txt_i = Lng.type_definitions_replace(txt_i)
+
     return txt, txt_i
 
 #______________________________________________________________________________
@@ -302,7 +307,6 @@ def get_quick_setters(Descr):
     return "".join(txt)
 
 helper_definitions_common = """
-$$TYPE_DEFINITIONS$$
 #define    QUEX_SETTING_CHARACTER_CODEC       %s
 
 #ifndef    QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
@@ -334,12 +338,10 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 """
 
 def _helper_definitions():
-    token_descr = token_db.token_type_definition
-
     txt = helper_definitions_common \
            % (Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
               Setup.output_token_id_file_ref)
-    txt = txt.replace("$$TYPE_DEFINITIONS$$", Lng.type_definitions())
+    # txt = txt.replace("$$TYPE_DEFINITIONS$$", Lng.type_definitions())
 
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT", token_db.support_take_text())        
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT", token_db.support_repetition())        

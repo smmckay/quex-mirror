@@ -51,15 +51,15 @@ class Variable(Symbol):
         argument-list:   type name [ '=' default ]','
         """
         condition,         \
-        remainder          = self.condition_str(String)
+        remainder          = cls.condition_str(String)
         variable_type,     \
-        name,              \
-        initial_assignment = self.type_and_name(remainder)
+        variable_name,     \
+        initial_assignment = cls.type_and_name(remainder)
 
-        remainder  = string[close_i+1:].strip()
+        remainder  = String.strip()
         constant_f = (remainder == "const")
 
-        return cls(variable_type, function_name, initial_assignment, 
+        return cls(variable_type, variable_name, initial_assignment, 
                    condition, constant_f)
 
 def member_variables(Txt):
@@ -141,7 +141,6 @@ def declare_member_variables(Txt):
         decl_txt = decl_txt.replace("QUEX_NAME_callback_on_token_type_", "QUEX_NAME(callback_on_token_type)")
         txt.append(decl_txt)
         last_i = end_i
-        signature_list.append(signature)
     txt.append(Txt[last_i:])
     return "".join(txt)
 

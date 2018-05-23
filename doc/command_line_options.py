@@ -814,6 +814,39 @@ Option("query_unicode_names_f", None,
        If this option is given, resulting characters are displayed by their
        (lengthy) Unicode name.
        """),
+"""
+For the support of software development of Quex and debugging, the following options
+are provided. 
+""",
+Option("_debug_exception_f", None,
+       """
+       If set, exceptions are no longer caught and treated internally. This options
+       permits to trace locations where exceptions occur.
+       """),
+Option("_debug_limit_recursion", "number",
+       """
+       This options limits the number of possible recursions. It may extend the default
+       which is set by the python application. Or, it may be set purposely small, so that
+       larger recursions can be detected by triggering an exception.
+       """),
+Option("_debug_reference_original_paths_f", None,
+       """
+       When code is generated the reference to the original templates is maintained.
+       Thus, a debugger or compiler might directly point to the place in the Quex 
+       template base while actually observing generated code.
+       """),
+Option("_debug_leave_basic_language_macros_f", None,
+       """
+       This option leaves basic language macros in places. Thus, code which is equal
+       for different languages (e.g. C and C++) may be used in its language context
+       relying on macro definitions on the command line. What those missing macro
+       definitions are depends the version of Quex and can only be determined through
+       the error output of compiled generated code.
+       """),
+"""
+The aforementioned options are solely provided for core developers who desire
+to work on the internal Quex core.
+"""
 ]
 
 def doc(Formatter, TemplateFile, OutFile):

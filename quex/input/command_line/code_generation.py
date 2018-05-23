@@ -131,6 +131,9 @@ def __setup_analyzer_class(Setup):
         ClassName --> analyzer_class_name = ClassName
                       analyzer_name_space = []
     """
+    # Default set here => able to detect seting on command line.
+    if not Setup.analyzer_class: Setup.analyzer_class = "Lexer"
+
     Setup.analyzer_class_name, \
     Setup.analyzer_name_space, \
     Setup.analyzer_name_safe   = \
@@ -159,12 +162,12 @@ def __setup_token_class(Setup):
         ::ClassName --> token_class_name = ClassName
                         token_name_space = []
     """
+    # Default set here => able to detect seting on command line.
     if not Setup.token_class:
-        default_name = "Token"
-        if Setup.analyzer_class_name:
-            Setup.token_class = "%s_%s" % (Setup.analyzer_class_name, default_name)
+        if Setup.analyzer_class:
+            Setup.token_class = "%s_Token" % Setup.analyzer_class_name
         else:
-            Setup.token_class = default_name
+            Setup.token_class = "Token"
 
     # Token classes and derived classes have the freedom not to open a namespace,
     # thus no check 'if namespace == empty'.

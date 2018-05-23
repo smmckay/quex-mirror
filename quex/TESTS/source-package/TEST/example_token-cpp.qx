@@ -3,7 +3,6 @@ token_type {
 #       include <iostream>
 #       include <string>
 
-$INCLUDE_CONVERTER_DECLARATION
 #include <pkg/converter-from-lexeme>
    }
    standard {
@@ -42,7 +41,7 @@ $INCLUDE_CONVERTER_DECLARATION
         {
             std::string             tmp;
 
-            tmp = map_id_to_name(self.id);
+            /* tmp = map_id_to_name(self.id); */
 
             tmp += " '" + pretty_char_text() + "' ";
 
@@ -104,7 +103,6 @@ $INCLUDE_CONVERTER_DECLARATION
         { ostr << std::string(Tok); return ostr; }
         QUEX_NAMESPACE_TOKEN_CLOSE
 
-$INCLUDE_CONVERTER_IMPLEMENTATION
 #include <pkg/converter-from-lexeme.i>
    }
 }

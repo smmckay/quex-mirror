@@ -33,7 +33,7 @@ case $1 in
         ;;
     manual-token-class)
         cp example_token-cpp.h pkg/
-        option='-i simple.qx --token-class-file example_token-cpp.h --token-class Token'
+        option='-i simple.qx --token-class-file example_token-cpp.h --token-class Test::MyToken'
         ;;
 esac
 
