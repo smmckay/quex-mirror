@@ -17,20 +17,23 @@
 $$INC: analyzer/asserts.i$$
 $$INC: buffer/asserts.i$$
 
-$$INC: analyzer/member/token-receiving.i$$
+$$INCLUDE_TOKEN_CLASS_IMPLEMENTATION$$
+$$INC: token/TokenQueue.i$$
+$$INC: token/receiving.i$$
+
 $$INC: analyzer/member/mode-handling.i$$
 $$INC: analyzer/member/misc.i$$
 $$INC: analyzer/member/navigation.i$$
+
 $$INC: analyzer/struct/constructor.i$$
 $$INC: analyzer/struct/include-stack.i$$
 $$INC: analyzer/struct/reset.i$$
 
-$$INC: analyzer/Mode.i$$
-$$INC: token/TokenQueue.i$$
-
 $$INC: buffer/Buffer.i$$
 $$INC: buffer/lexatoms/LexatomLoader.i$$
 $$INC: buffer/bytes/ByteLoader.i$$
+
+$$INC: analyzer/Mode.i$$
 
 #ifdef QUEX_OPTION_COUNTER
 $$INC: analyzer/Counter.i$$

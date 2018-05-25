@@ -2,7 +2,7 @@ from   quex.engine.misc.file_operations import open_file_or_die, \
                                                write_safely_and_close 
 from   quex.engine.misc.tools           import flatten_list_of_lists
 import quex.output.analyzer.adapt       as     adapt
-from   quex.blackboard                  import Lng
+from   quex.blackboard                  import Lng, setup as Setup
 from   quex.DEFINITIONS                 import QUEX_PATH
 
 import os.path as path
@@ -29,6 +29,8 @@ dir_db = {
         "multi.i",
     ],
     "token/": [
+        "receiving",
+        "receiving.i",
         "TokenQueue",
         "TokenQueue.i",
         "CDefault.qx",
@@ -124,8 +126,6 @@ dir_db = {
         "member/mode-handling.i",
         "member/navigation",
         "member/navigation.i",
-        "member/token-receiving",
-        "member/token-receiving.i",
         "adaptors/Feeder",
         "adaptors/Feeder.i",
         "adaptors/Gavager",
@@ -168,6 +168,9 @@ def __collect_files(DirList):
     return result
 
 def __copy_files(OutputDir, FileSet):
+    assert "header" not in dir_db["analyzer/"] or "header.i" not in dir_db["analyzer/"], \
+           "Filename for token/receiving changed! Adapt code below!"
+
     file_pair_list,   \
     out_directory_set = __get_source_drain_list(OutputDir, FileSet)
 
@@ -180,6 +183,12 @@ def __copy_files(OutputDir, FileSet):
     # Copy
     for source_file, drain_file in file_pair_list:
         content = open_file_or_die(source_file, "rb").read()
+        if source_file.endswith("analyzer/headers"):
+            content = content.replace("$$INCLUDE_TOKEN_CLASS_DEFINITION$$",
+                                      Lng.INCLUDE(Setup.output_token_class_file))
+        elif source_file.endswith("analyzer/headers.i"):
+            content = content.replace("$$INCLUDE_TOKEN_CLASS_IMPLEMENTATION$$",
+                                      Lng.INCLUDE(Setup.output_token_class_file_implementation))
         content = adapt.do(content, OutputDir, OriginalPath=source_file)
         write_safely_and_close(drain_file, content)
 

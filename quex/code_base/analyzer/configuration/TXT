@@ -109,9 +109,6 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #if defined(__QUEX_OPTION_PLAIN_C)
     /* In 'C' there are no namespaces, so namespaces are coded directly
      * into the type name. Both, global and local names are equal.            */
-#   define QUEX_TYPE0_ANALYZER         struct $$LEXER_CLASS_NAME_SAFE$$_tag
-#   define QUEX_TYPE_ANALYZER          struct $$LEXER_CLASS_NAME_SAFE$$_tag
-#   define QUEX_NAME_COMPLETE_ANALYZER $$LEXER_CLASS_NAME_SAFE$$
 #   define QUEX_TYPE_DERIVED_ANALYZER  struct $$LEXER_CLASS_NAME_SAFE$$_tag
 
 #   define QUEX_NAMESPACE_MAIN         $$LEXER_CLASS_NAME_SAFE$$
@@ -119,19 +116,12 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #else
     /* Add namespaces for the global names of the classes of analyzer
      * and token.                                                             */
-#   define QUEX_TYPE0_ANALYZER         $$LEXER_CLASS_NAME$$
-#   define QUEX_TYPE_ANALYZER          $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$
-#   define QUEX_NAME_COMPLETE_ANALYZER $$NAMESPACE_MAIN$$::$$LEXER_CLASS_NAME$$
 #   define QUEX_TYPE_DERIVED_ANALYZER  $$LEXER_DERIVED_CLASS_NAME$$
 
 #   define QUEX_NAMESPACE_MAIN         $$NAMESPACE_MAIN$$
 #endif
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-#   define QUEX_TYPE0_TOKEN            struct $$TOKEN_CLASS_NAME_SAFE$$_tag
-#   define QUEX_TYPE_TOKEN             struct $$TOKEN_CLASS_NAME_SAFE$$_tag
-#   define QUEX_NAME_COMPLETE_TOKEN    $$TOKEN_CLASS_NAME_SAFE$$
-
 #   define QUEX_NAMESPACE_TOKEN   
 
 #   define QUEX_LEXEME_NULL            QUEX_NAME(LexemeNull)
@@ -139,10 +129,6 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
 
 #else
-#   define QUEX_TYPE0_TOKEN            $$TOKEN_CLASS$$
-#   define QUEX_TYPE_TOKEN             $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
-#   define QUEX_NAME_COMPLETE_TOKEN    $$NAMESPACE_TOKEN$$::$$TOKEN_CLASS$$
-
 #   define QUEX_NAMESPACE_TOKEN        $$NAMESPACE_TOKEN$$
 
 #   define QUEX_LEXEME_NULL            $$NAMESPACE_MAIN$$ :: QUEX_NAME(LexemeNull)

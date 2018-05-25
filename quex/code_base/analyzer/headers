@@ -17,24 +17,28 @@ $$INC: definitions$$
 $$INC: extra/strange_stream/StrangeStream$$
 #endif
 
+$$INCLUDE_TOKEN_CLASS_DEFINITION$$
+$$INC: token/TokenQueue$$
+$$INC: token/receiving$$
+
+$$INC: analyzer/member/misc$$
+$$INC: analyzer/member/navigation$$
+$$INC: analyzer/member/mode-handling$$
+
+$$INC: analyzer/struct/constructor$$
+$$INC: analyzer/struct/include-stack$$
+$$INC: analyzer/struct/reset$$
+
 $$INC: buffer/Buffer$$
 $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: buffer/bytes/ByteLoader$$
 
-$$INC: MemoryManager$$
 $$INC: analyzer/Mode$$
-$$INC: token/TokenQueue$$
 
 #ifdef QUEX_OPTION_COUNTER
 $$INC: analyzer/Counter$$
 #endif
 
-$$INC: analyzer/struct/constructor$$
-$$INC: analyzer/struct/include-stack$$
-$$INC: analyzer/struct/reset$$
-$$INC: analyzer/member/misc$$
-$$INC: analyzer/member/navigation$$
-$$INC: analyzer/member/mode-handling$$
-$$INC: analyzer/member/token-receiving$$
+$$INC: MemoryManager$$
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS */

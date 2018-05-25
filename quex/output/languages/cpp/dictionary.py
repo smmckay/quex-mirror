@@ -366,6 +366,9 @@ class Language(dict):
         if TrailingDelimiterF: return result
         else:                  return result[:-2]
 
+    def NAME_IN_NAMESPACE(self, Name, NameList):
+        return "%s%s" % (self.NAMESPACE_REFERENCE(NameList), Name)
+
     def COMMENT(self, Comment):
         """Eliminated Comment Terminating character sequence from 'Comment'
            and comment it into a single line comment.
@@ -1378,6 +1381,10 @@ class Language(dict):
         # Types
         replacements = [
              ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
+             ("QUEX_TYPE_TOKEN",          self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
+             ("QUEX_TYPE0_TOKEN",         "struct %s_tag" % Setup.token_class_name),
+             ("QUEX_TYPE_ANALYZER",       self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_ANALYZER",      "struct %s_tag" % Setup.analyzer_class_name),
              ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
              ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
              ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),

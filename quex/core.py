@@ -50,10 +50,10 @@ def _generate(mode_db):
         return
 
     else:
-        class_token_implementation = content_table[-1][0]
-        del content_table[-1]
+        ## class_token_implementation = content_table[-1][0]
+        ## del content_table[-1]
         content_table.extend(_get_analyzers(mode_db, 
-                                            class_token_implementation, 
+                                            "", # class_token_implementation, 
                                             global_lexeme_null_declaration))
         content_table.extend(lexeme_converter.do()) # [Optional]
         _write_all(content_table)
@@ -110,7 +110,7 @@ def do_token_class_info():
         "  --token-class-file      %s" % Setup.output_token_class_file,
         "  --token-class           %s" % Setup.token_class,
         "  --token-id-type         %s" % Setup.token_id_type,
-        "  --buffer-element-type   %s" % Setup.lexatom.type,
+        "  --lexatom-type          %s" % Setup.lexatom.type,
         "  --foreign-token-id-file %s" % Setup.output_token_id_file,
     ]
     if token_db.support_repetition():
