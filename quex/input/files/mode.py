@@ -60,6 +60,10 @@ def parse(fh):
         pass
 
 def finalize_modes(ModePrepPrepDb):
+    assert not Setup.token_class_only_f
+    assert not Setup.converter_only_f
+    assert ModePrepPrepDb
+
     mode_prep_db = __finalize_modes_prep(ModePrepPrepDb)
 
     return dict((name, mode_prep.finalize(mode_prep_db)) 
@@ -67,6 +71,9 @@ def finalize_modes(ModePrepPrepDb):
                 if mode_prep.implemented_f())
 
 def __finalize_modes_prep(ModePrepPrepDb):
+    assert not Setup.token_class_only_f
+    assert not Setup.converter_only_f
+
     assert all(isinstance(x, Mode_PrepPrep) for x in ModePrepPrepDb.itervalues())
 
     # (BEFORE) Parsing --> Mode_PrepPrep
@@ -90,8 +97,7 @@ def __finalize_modes_prep(ModePrepPrepDb):
 
     consistency_check.do_pre(mode_prep_db.values())
 
-    if not Setup.token_class_only_f:
-        __determine_initial_mode(mode_prep_db)
+    __determine_initial_mode(mode_prep_db)
 
     # (*) Mode_Prep --> Mode
     #     Pattern lists are determined for each mode
@@ -102,6 +108,9 @@ def __finalize_modes_prep(ModePrepPrepDb):
     return mode_prep_db
 
 def __determine_initial_mode(ModePrepDb):
+    assert not Setup.token_class_only_f
+    assert not Setup.converter_only_f
+
     if not blackboard.initial_mode.sr.is_void():
         return
 

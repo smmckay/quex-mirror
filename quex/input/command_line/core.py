@@ -27,9 +27,13 @@ def do(argv):
     if setup._debug_limit_recursion:
         sys.setrecursionlimit(setup._debug_limit_recursion)
 
-    if command_line is None: return False
-    elif not query_f:        code_generation.prepare(command_line, argv)
-    else:                    query.run(command_line, argv)
+    if command_line is None: 
+        return False
+    elif not query_f:        
+        code_generation.prepare(command_line, argv)
+        configure_output_directory(setup)
+    else:                    
+        query.run(command_line, argv)
 
     __extra_option_message(location_list)
     return not query_f
@@ -170,16 +174,26 @@ def argv_interpret(argv):
 
     # Handle unidentified command line options.
     argv_ufo_detections(command_line)
-    configure_output_directory(setup)
 
     return query_f, command_line
 
 def configure_output_directory(setup):
-    if setup.output_directory == "--":
-        setup.output_directory = setup.analyzer_class.split("::")[-1]
-    elif not setup.output_directory:
-        setup.output_directory = "./"
-    setup.output_directory = os.path.normpath(setup.output_directory)
+    # Ensure existence of output directory
+    if os.path.isfile(setup.output_directory):
+        error.log("The name '%s' is already a file and may not be used as output directory." 
+                  % setup.output_directory)
+    elif os.path.isdir(setup.output_directory):
+        if os.access(setup.output_directory, os.W_OK) == False:
+            error.log("The directory '%s' is not writeable." 
+                      % setup.output_directory)
+    elif setup.output_directory:
+        try:
+            os.mkdir(setup.output_directory)
+        except:
+            error.warning("Cannot create directory '%s'." % setup.output_directory)
+    else:
+        return
+
 
 def argv_is_query_option(Cl, Option, Name, PrevQueryF):
     """Determines whether the setup parameter is a parameter related to 

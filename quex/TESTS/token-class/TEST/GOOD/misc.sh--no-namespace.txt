@@ -1,27 +1,35 @@
 class QToken;
-inline void    QUEX_NAME_TOKEN(construct)(QToken* __this);
-inline void    QUEX_NAME_TOKEN(destruct)(QToken* __this);
-inline void    QUEX_NAME_TOKEN(copy)(QToken*       me, 
-                                     const QToken* That);
-inline bool    QUEX_NAME_TOKEN(take_text)(QToken*             __this, 
-inline size_t  QUEX_NAME_TOKEN(repetition_n_get)(QToken* __this);
-inline void    QUEX_NAME_TOKEN(repetition_n_set)(QToken* __this, 
+inline void         QToken_construct(QToken*);
+inline void         QToken_copy(QToken*, const QToken*);
+inline void         QToken_destruct(QToken*);
+inline void         QToken_set(QToken*            me,
+inline const char*  QToken_map_id_to_name(const Simple_token_id_t);
+inline bool         QToken_take_text(QToken*            me,
+inline size_t       QToken_repetition_n_get(QToken*);
+inline void         QToken_repetition_n_set(QToken*, size_t);
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QToken {
-    QToken();
-    QToken(const QToken& That);
-    QToken& operator=(const QToken& That) 
-    ~QToken();
-        friend void QUEX_NAME_TOKEN(copy)(QToken*       __this, 
-                                          const QToken* That);
-        friend bool QUEX_NAME_TOKEN(take_text)(QToken*             __this, 
+QToken();
+QToken(const QToken& That);
+QToken& operator=(const QToken& That);
+~QToken();
+friend void QToken_copy(QToken*       __this,
+const QToken* That);
+friend bool QToken_take_text(QToken*             __this,
 QToken::QToken()
 QToken::QToken(const QToken& Other)
+QToken_copy(this, &Other);
 QToken::~QToken()
-QUEX_NAME_TOKEN(construct)(QToken* __this)
-    new ((void*)__this) QToken;
-QUEX_NAME_TOKEN(destruct)(QToken* __this)
-    __this->QToken::~QToken();  
-QUEX_NAME_TOKEN(copy)(QToken* __this, const QToken* __That)
-QUEX_NAME_TOKEN(take_text)(QToken*              __this, 
-QUEX_NAME_TOKEN(repetition_n_get)(QToken* __this)
-QUEX_NAME_TOKEN(repetition_n_set)(QToken* __this, size_t N)
+inline QToken&
+QToken::operator=(const QToken& That)
+{ if( this != &That ) { QToken_copy(this, &That); } return *this; }
+QToken::id_name() const
+{ return QToken_map_id_to_name(id); }
+QToken_construct(QToken* __this)
+new ((void*)__this) QToken;
+QToken_destruct(QToken* __this)
+__this->QToken::~QToken();
+QToken_copy(QToken* __this, const QToken* __That)
+QToken_take_text(QToken*              __this,
+QToken_repetition_n_get(QToken* __this)
+QToken_repetition_n_set(QToken* __this, size_t N)
+QToken_map_id_to_name(const Simple_token_id_t TokenID)

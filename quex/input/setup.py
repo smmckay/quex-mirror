@@ -175,6 +175,12 @@ class QuexSetup:
         file_name = "%s%s%s" % (self.output_file_stem, Suffix, ext)
         return self.get_file_reference(file_name)
 
+    def prepare_output_directory(self):
+        if   self.output_directory:    return
+        elif self.analyzer_class_name: directory = self.analyzer_class_name
+        else:                          directory = "./"
+        self.output_directory = os.path.normpath(directory)
+
     def prepare_all_file_names(self):
         #__________________________________________________________________________
         if self.language in ["DOT"]: return
@@ -251,7 +257,7 @@ SETUP_INFO = {
     "language":                       [["--language", "-l"],                 "C++"],
     "normalize_f":                    [["--normalize"],                      SetupParTypes.FLAG],
     "output_file_naming_scheme":      [["--file-extension-scheme", "--fes"], ""],
-    "output_directory":               [["--output-directory", "--odir"],     "--"],
+    "output_directory":               [["--output-directory", "--odir"],     ""],
     "show_name_spaces_f":             [["--show-name-spaces", "--sns"],      SetupParTypes.FLAG],
     "user_application_version_id":    [["--version-id"],                     "0.0.0-pre-release"],
     #

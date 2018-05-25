@@ -96,6 +96,7 @@ def prepare(command_line, argv):
         token_id_file_parse(Setup.extern_token_id_file)
 
     # AFTER: Setup.extern_token_id_file !!!
+    Setup.prepare_output_directory()
     if Setup.language not in ["DOT"]: Setup.prepare_all_file_names()
 
     # (*) Compression Types
@@ -132,12 +133,13 @@ def __setup_analyzer_class(Setup):
                       analyzer_name_space = []
     """
     # Default set here => able to detect seting on command line.
-    if not Setup.analyzer_class: Setup.analyzer_class = "Lexer"
+    if not Setup.analyzer_class: analyzer_class = "Lexer"
+    else:                        analyzer_class = Setup.analyzer_class
 
     Setup.analyzer_class_name, \
     Setup.analyzer_name_space, \
     Setup.analyzer_name_safe   = \
-         read_namespaced_name(Setup.analyzer_class, 
+         read_namespaced_name(analyzer_class, 
                               "analyzer class (options -o, --analyzer-class)")
     __check_namespace_admissibility("analyzer class", Setup.analyzer_name_space)
 
@@ -165,16 +167,18 @@ def __setup_token_class(Setup):
     # Default set here => able to detect seting on command line.
     if not Setup.token_class:
         if Setup.analyzer_class:
-            Setup.token_class = "%s_Token" % Setup.analyzer_class_name
+            token_class = "%s_Token" % Setup.analyzer_class_name
         else:
-            Setup.token_class = "Token"
+            token_class = "Token"
+    else:
+        token_class = Setup.token_class
 
     # Token classes and derived classes have the freedom not to open a namespace,
     # thus no check 'if namespace == empty'.
     Setup.token_class_name,       \
     Setup.token_class_name_space, \
     Setup.token_class_name_safe = \
-         read_namespaced_name(Setup.token_class, 
+         read_namespaced_name(token_class, 
                               "token class (options --token-class, --tc)")
     __check_namespace_admissibility("token class", Setup.token_class_name_space)
 

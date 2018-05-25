@@ -282,14 +282,14 @@ def parse(fh):
         error.log("Missing closing '}' at end of token_type definition.", fh);
 
     result = TokenTypeDescriptor(descriptor, sr_begin)
-    if     len(result.get_member_db()) == 0       \
-       and result.class_name == "Token"           \
+    if     not result.get_member_db()             \
+       and result.class_name == Setup.token_class_name \
        and result.token_id_type.sr.is_void()      \
        and result.column_number_type.sr.is_void() \
        and result.line_number_type.sr.is_void():
         error.log("Section 'token_type' does not define any members, does not\n" + \
                   "modify any standard member types, nor does it define a class\n" + \
-                  "different from 'Token'.", fh)
+                  "different from '%s'." % Setup.token_class_name, fh)
 
     result.consistency_check()
     return result

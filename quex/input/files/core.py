@@ -50,7 +50,10 @@ def do(file_list):
     if token_db.token_type_definition is None:
         parse_default_token_definition()
 
-    return mode.finalize_modes(blackboard.mode_prep_prep_db)
+    if blackboard.mode_prep_prep_db:
+        return mode.finalize_modes(blackboard.mode_prep_prep_db)
+    else:
+        return dict()
 
 default_token_type_definition_triggered_by_mode_definition_f = False
 

@@ -4,7 +4,7 @@ from   quex.input.files.token_type       import TokenTypeDescriptor
 from   quex.engine.misc.string_handling  import blue_print
 import quex.output.token.id_generator    as     token_id_maker
 import quex.token_db                     as     token_db
-from   quex.blackboard                   import setup as Setup, Lng
+from   quex.blackboard                   import setup as Setup, Lng, mode_prep_prep_db
 
 from   collections import OrderedDict
 
@@ -14,9 +14,12 @@ def do():
                 [2] Header text of the token class definition.
                 [3] Implementation of the token class.
     """
+    assert not Setup.converter_only_f
+
     assert token_db.token_type_definition is not None
 
-    token_id_header = token_id_maker.do(Setup) 
+    if mode_prep_prep_db: token_id_header = token_id_maker.do(Setup) 
+    else:                 token_id_header = ""
 
     if token_db.token_type_definition.manually_written():
         # User has specified a manually written token class

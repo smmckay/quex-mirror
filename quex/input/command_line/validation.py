@@ -16,16 +16,6 @@ def do(setup, command_line, argv):
         error.log("Option '%s' cannot be used without\n" % _example_flag("extern_token_id_file_show_f")
                   + "option '%s'." % _example_flag("extern_token_id_file"))
 
-    if os.path.isfile(setup.output_directory):
-        error.log("The name '%s' is already a file and may not be used as output directory." 
-                  % setup.output_directory)
-    elif os.path.isdir(setup.output_directory):
-        if os.access(setup.output_directory, os.W_OK) == False:
-            error.log("The directory '%s' is not writeable." 
-                      % setup.output_directory)
-    else:
-        os.mkdir(setup.output_directory)
-
     # if the mode is '--language dot' => check character display options. 
     if setup.character_display not in ["hex", "utf8"]:
         error.log("Character display must be either 'hex' or 'utf8'.\nFound: '%s'" % 
