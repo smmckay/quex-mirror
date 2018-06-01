@@ -27,8 +27,8 @@
  * In case that the v-table is corrupted, this procudure is likely to fail.
  *
  * (C) 2017 Frank-Rene Schaefer                                               */
-#include <test_environment/TestAnalyzer>
-#include "ut/lib/MemoryManager"
+#include <test_cpp/TestAnalyzer>
+#include "ut/lib/quex/MemoryManager"
 #include "MemoryManager_UnitTest.i"
 #include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
 #include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"

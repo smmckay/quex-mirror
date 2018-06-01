@@ -32,7 +32,10 @@ $$INC: <count> analyzer/Counter.i$$
 
 #endif
 
+
+#if ! defined(QUEX_OPTION_USER_DEFINED_MEMORY_MANAGER)
 $$INC: <lib-quex> quex/MemoryManager.i$$
+#endif
 
 QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
 

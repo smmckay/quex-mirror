@@ -33,7 +33,7 @@ hwut-info:
 	@echo $(FILES)
 
 ut:
-	python ../../TESTS/code_base_instatiation.py ut lexeme_converter compatibility
+	python ../../TESTS/code_base_instatiation.py ut lexeme_converter quex
 	quex --co -o TestAnalyzer --odir ut --encoding utf8  --bet uint8_t  --debug-exception
 	quex --co -o TestAnalyzer --odir ut --encoding utf16 --bet uint16_t --debug-exception
 	quex --co -o TestAnalyzer --odir ut --encoding utf32 --bet uint32_t --debug-exception

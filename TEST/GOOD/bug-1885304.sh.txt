@@ -10,11 +10,13 @@ Dos/Xanther
 Dos/Xanther-configuration
 Dos/Xanther.cpp
 Dos/Xanther-token
+Dos/Xanther-token.i
 Dos/Xanther-token_ids
 Unix/Xanther
 Unix/Xanther-configuration
 Unix/Xanther.cpp
 Unix/Xanther-token
+Unix/Xanther-token.i
 Unix/Xanther-token_ids
 ||||
 

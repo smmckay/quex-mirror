@@ -55,6 +55,7 @@ def do(file_list):
     else:
         return dict()
 
+
 default_token_type_definition_triggered_by_mode_definition_f = False
 
 def parse_section(fh):

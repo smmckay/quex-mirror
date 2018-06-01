@@ -1,11 +1,11 @@
 /* analyzer_function */ Simple_Y_analyzer_function
 /* analyzer_function */ Simple_X_analyzer_function
 __quex_debug_template_state(315, state_key);
-Simple_Y_analyzer_function(QUEX_TYPE_ANALYZER* me)
+Simple_Y_analyzer_function(struct Simple_tag* me)
 __quex_debug_path_walker_state(327, path_walker_327_path_base, path_iterator);
 __quex_debug_template_state(328, state_key);
 __quex_debug_template_state(201, state_key);
-Simple_X_analyzer_function(QUEX_TYPE_ANALYZER* me)
+Simple_X_analyzer_function(struct Simple_tag* me)
 __quex_debug_path_walker_state(329, path_walker_329_path_base, path_iterator);
 __quex_debug_path_walker_state(330, path_walker_330_path_base, path_iterator);
 __quex_debug_path_walker_state(331, path_walker_331_path_base, path_iterator);

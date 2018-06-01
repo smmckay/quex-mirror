@@ -30,21 +30,24 @@ token_type_code_fragment_db = {
     "repetition_get": CodeUser_NULL,
 }
 
-class TokenTypeDescriptorCore:
+class TokenTypeDescriptorCore(object):
     """Object used during the generation of the TokenTypeDescriptor."""
     def __init__(self, Core=None):
         if Core is None:
-            self._file_name                = Setup.output_token_class_file
-            self._file_name_implementation = Setup.output_token_class_file_implementation
+            # Consistency is maintained via properties (see below constructor)
+            #    self.class_name      = Setup.token_class_name
+            #    self.class_name_safe = Setup.token_class_name_safe
+            #    self.name_space      = Setup.token_class_name_space
+
+            # Consistency maintained via 'set_file_name/get_file_name'
+            #    self._file_name                = Setup.output_token_class_file
+            #    self._file_name_implementation = Setup.output_token_class_file_implementation
             if Setup.token_class_name.find("::") != -1:
                 Setup.token_class_name,       \
                 Setup.token_class_name_space, \
                 Setup.token_class_name_safe = \
                         read_namespaced_name(Setup.token_class_name, 
                                              "token class (options --token-class, --tc)")
-            self.class_name            = Setup.token_class_name
-            self.class_name_safe       = Setup.token_class_name_safe
-            self.name_space            = Setup.token_class_name_space
             self.open_for_derivation_f      = False
             self.token_contains_token_id_f  = True
             self.token_id_type         = CodeUser("size_t", SourceRef())
@@ -58,11 +61,15 @@ class TokenTypeDescriptorCore:
                 self.__dict__[name] = default_value
 
         else:
-            self._file_name                 = Core._file_name
-            self._file_name_implementation  = Core._file_name_implementation
-            self.class_name                 = Core.class_name
-            self.class_name_safe            = Core.class_name_safe
-            self.name_space                 = Core.name_space
+            # Consistency is maintained via properties (see below constructor)
+            Setup.token_class_name          = Core.class_name
+            Setup.token_class_name_safe     = Core.class_name_safe
+            Setup.token_class_name_space    = Core.name_space
+
+            # Consistency maintained via 'set_file_name/get_file_name'
+            #    self._file_name                = Setup.output_token_class_file
+            #    self._file_name_implementation = Setup.output_token_class_file_implementation
+
             self.open_for_derivation_f      = Core.open_for_derivation_f
             self.token_contains_token_id_f  = Core.token_contains_token_id_f
             self.token_id_type              = Core.token_id_type
@@ -74,16 +81,31 @@ class TokenTypeDescriptorCore:
 
             for name in token_type_code_fragment_db.keys():
                 self.__dict__[name] = Core.__dict__[name]
+
+    # Maintain consistency with the token class naming provided in 'Setup'.
+    # => User properties, in order to only store in 'Setup'.
+    @property
+    def class_name(self):         return Setup.token_class_name
+    @class_name.setter
+    def class_name(self, N):      Setup.token_class_name = N
+    @property
+    def class_name_safe(self):    return Setup.token_class_name_safe
+    @class_name_safe.setter
+    def class_name_safe(self, N): Setup.token_class_name_safe = N
+    @property
+    def name_space(self):         return Setup.token_class_name_space
+    @name_space.setter
+    def name_space(self, N):      Setup.token_class_name_space = N
             
     def set_file_name(self, FileName):
-        self._file_name = FileName
         ext = Lng.extension_db[E_Files.HEADER_IMPLEMTATION]
-        self._file_name_implementation = FileName + ext
+        Setup.output_token_class_file                = FileName
+        Setup.output_token_class_file_implementation = FileName + ext
 
     def __repr__(self):
         txt = ""
-        if self._file_name != "": 
-            txt += "file name: '%s'\n" % self._file_name
+        if self.get_file_name() != "": 
+            txt += "file name: '%s'\n" % self.get_file_name()
         txt += "class:     '%s'\n" % self.class_name
         if self.open_for_derivation_f: 
             txt += "           (with virtual destructor)\n"
@@ -198,7 +220,7 @@ class TokenTypeDescriptor(TokenTypeDescriptorCore):
         self.__member_db = db
 
     def get_file_name(self):
-        return self._file_name
+        return Setup.output_token_class_file
 
     def type_name_length_max(self):
         return self.__type_name_length_max

@@ -5,4 +5,6 @@
 ./a/b/c/writeable/Lexer-configuration
 ./a/b/c/writeable/Lexer.cpp
 ./a/b/c/writeable/Lexer-token
+./a/b/c/writeable/Lexer-token.i
 ./a/b/c/writeable/Lexer-token_ids
+

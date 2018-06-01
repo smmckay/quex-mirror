@@ -1,10 +1,10 @@
-    /* analyzer_function */ Simple_MODULE_analyzer_function
-    /* analyzer_function */ Simple_U1_STRING_analyzer_function
-Simple_MODULE_analyzer_function(QUEX_TYPE_ANALYZER* me)
-    me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
-    __quex_assert(   me->DEBUG_analyzer_function_at_entry
-                  == me->current_analyzer_function);
-Simple_U1_STRING_analyzer_function(QUEX_TYPE_ANALYZER* me)
-    me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
-    __quex_assert(   me->DEBUG_analyzer_function_at_entry
-                  == me->current_analyzer_function);
+/* analyzer_function */ Simple_MODULE_analyzer_function
+/* analyzer_function */ Simple_U1_STRING_analyzer_function
+Simple_MODULE_analyzer_function(::Simple* me)
+me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
+__quex_assert(   me->DEBUG_analyzer_function_at_entry
+== me->current_analyzer_function);
+Simple_U1_STRING_analyzer_function(::Simple* me)
+me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
+__quex_assert(   me->DEBUG_analyzer_function_at_entry
+== me->current_analyzer_function);

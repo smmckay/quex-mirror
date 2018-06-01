@@ -28,8 +28,8 @@
  * properly detected.
  *
  * (C) 2017 Frank-Rene Schaefer                                               */
-#include <test_environment/TestAnalyzer.h>
-#include "ut/lib/MemoryManager"
+#include <test_c/TestAnalyzer.h>
+#include "ut/lib/quex/MemoryManager"
 #include "MemoryManager_UnitTest.i"
 #include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
 #include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"

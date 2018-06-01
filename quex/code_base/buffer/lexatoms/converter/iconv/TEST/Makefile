@@ -62,7 +62,7 @@ hwut-end: clean
 	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM=wchar_t 
 
 ut:
-	python ../../../../../TESTS/code_base_instatiation.py ut buffer compatibility analyzer
+	python ../../../../../TESTS/code_base_instatiation.py ut buffer quex analyzer
 
 %.E: %.cpp
 	g++ $(DEFS) $(INCLUDES) -E $< -o $@

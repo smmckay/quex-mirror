@@ -5,4 +5,6 @@
 ./e/f/g/not-existent/Lexer-configuration
 ./e/f/g/not-existent/Lexer.cpp
 ./e/f/g/not-existent/Lexer-token
+./e/f/g/not-existent/Lexer-token.i
 ./e/f/g/not-existent/Lexer-token_ids
+

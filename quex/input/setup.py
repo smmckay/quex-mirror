@@ -196,14 +196,18 @@ class QuexSetup:
         else:
             self.output_token_id_file_ref = self.prepare_file_name("-token_ids",     
                                                                    E_Files.HEADER) 
-        self.output_token_class_file   = self.prepare_file_name("-token",         
-                                                                E_Files.HEADER)
+        # Token class:
+        if self.extern_token_class_file:
+            header_file         = self.extern_token_class_file
+            implementation_file = None # Must be linked outside!
+        else:
+            if self.token_class_only_f == False: implementation_type = E_Files.HEADER_IMPLEMTATION
+            else:                                implementation_type = E_Files.SOURCE
+            header_file         = self.prepare_file_name("-token", E_Files.HEADER)
+            implementation_file = self.prepare_file_name("-token", implementation_type)
 
-        if self.token_class_only_f == False: implementation_type = E_Files.HEADER_IMPLEMTATION
-        else:                                implementation_type = E_Files.SOURCE
-
-        self.output_token_class_file_implementation = self.prepare_file_name("-token",     
-                                                                             implementation_type)
+        self.output_token_class_file                = header_file
+        self.output_token_class_file_implementation = implementation_file
 
 SetupParTypes = Enum("LIST", "INT_LIST", "FLAG", "NEGATED_FLAG", "STRING", "OPTIONAL_STRING")
 

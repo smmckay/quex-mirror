@@ -7,3 +7,6 @@ lexer:
 	$(LDCPP_ICU) -o uXa uXa.cpp Lexer/Lexer.cpp \
 		         -DQUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN \
 				 $(LIB_ICU)
+clean:
+	rm -rf Lexer*
+	rm -rf ./uXa

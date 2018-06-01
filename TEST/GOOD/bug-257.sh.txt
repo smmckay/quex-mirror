@@ -11,10 +11,9 @@ include_me.h:1:note: ('--suppress 0' to avoid this message)
 
 Generated Files:
 ||||
-
 EasyLexer
 EasyLexer-configuration
 EasyLexer.cpp
 EasyLexer-token
+EasyLexer-token.i
 ||||
-

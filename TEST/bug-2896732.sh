@@ -14,5 +14,5 @@ cat valgrint-out.txt
 rm -f valgrint-out.txt
 
 # cleansening
-./clean.sh
+make clean >& /dev/null
 cd $tmp

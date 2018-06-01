@@ -6,6 +6,7 @@ FILES    := test-constructor.exe \
 DEFINES  := \
 	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \
 			-DQUEX_OPTION_CONVERTER_ICONV \
+			-DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER \
 			-DQUEX_SETTING_BUFFER_SIZE=31 \
 			-DQUEX_SETTING_BUFFER_SIZE_MIN=3  \
 			-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=32 \
@@ -33,10 +34,10 @@ hwut-info:
 
 # Trick: Use 'QUEX_OPTION_MULTI' to avoid inclusion of 'multi.i' in 'single.i'
 #        which is included in 'TestAnalyzer-dummy.c'.
-TestAnalyzer-dummy.o: $(TESTENV)/test_environment/TestAnalyzer-dummy.c ut
+TestAnalyzer-dummy.o: $(TESTENV)/test_c/TestAnalyzer-dummy.c ut
 	$(CC) -c -D__QUEX_OPTION_PLAIN_C -DQUEX_OPTION_MULTI $< -o $@
 
-TestAnalyzer-dummy-cpp.o: $(TESTENV)/test_environment/TestAnalyzer-dummy.cpp ut
+TestAnalyzer-dummy-cpp.o: $(TESTENV)/test_cpp/TestAnalyzer-dummy.cpp ut
 	$(CC) -c -DQUEX_OPTION_MULTI $< -o $@
 
 ut:

@@ -1,6 +1,6 @@
 #include <Dumlyzer>
-#include "ut/lib/MemoryManager"
-#include "ut/lib/MemoryManager.i"
+#include "ut/lib/quex/MemoryManager"
+#include "ut/lib/quex/MemoryManager.i"
 #include <hwut_unit.h>
 
 
