@@ -1,11 +1,9 @@
 
-#include "test_environment/TestAnalyzer"
+#include "test_environment/TestAnalyzer.h"
 #include "test_environment/lib/analyzer/C-adaptions.h"
-/* The file 'multi.i' contains implementations which are the same for all
-* possibly generated analyzers. If QUEX_OPTION_MULTI is defined, it is
-* NOT supposed to be included here. If not--in which case we have a single
-* analzer--then it is included.                                             */
-#include "test_environment/lib/single.i"
+#include "test_environment/lib/implementations.i"
+
+
 
 
 TestAnalyzer_Mode TestAnalyzer_M = {
@@ -54,12 +52,12 @@ TestAnalyzer_Mode TestAnalyzer_M2 = {
 #   ifdef     self
 #       undef self
 #   endif
-#   define self (*((QUEX_TYPE_ANALYZER*)me))
-#define LexemeNull  (&QUEX_LEXEME_NULL)
+#   define self (*((struct TestAnalyzer_tag*)me))
+#define LexemeNull  (&TestAnalyzer_LexemeNull)
 #define RETURN      return
 
 void
-TestAnalyzer_M_on_entry(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* FromMode) {
+TestAnalyzer_M_on_entry(struct TestAnalyzer_tag* me, const TestAnalyzer_Mode* FromMode) {
 (void)me;
 (void)FromMode;
 #   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -69,7 +67,7 @@ TestAnalyzer_M.has_entry_from(FromMode);
 }
 
 void
-TestAnalyzer_M_on_exit(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* ToMode)  {
+TestAnalyzer_M_on_exit(struct TestAnalyzer_tag* me, const TestAnalyzer_Mode* ToMode)  {
 (void)me;
 (void)ToMode;
 #   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -81,7 +79,7 @@ TestAnalyzer_M.has_exit_to(ToMode);
 
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER)
 void
-TestAnalyzer_M_on_indentation(QUEX_TYPE_ANALYZER*    me,
+TestAnalyzer_M_on_indentation(struct TestAnalyzer_tag*    me,
 TestAnalyzer_indentation_t  Indentation,
 TestAnalyzer_lexatom_t*     Begin)
 {
@@ -91,7 +89,7 @@ TestAnalyzer_lexatom_t*     Begin)
 #   ifdef     self
 #       undef self
 #   endif
-#   define self (*((QUEX_TYPE_ANALYZER*)me))
+#   define self (*((struct TestAnalyzer_tag*)me))
 
 #   define M     (&TestAnalyzer_M)
 #   define M2    (&TestAnalyzer_M2)
@@ -112,25 +110,25 @@ TestAnalyzer_MF_error_code_set_if_first(me, E_Error_Indentation_StackOverflow);
 return;
 }
 *(stack->back) = Indentation;
-self.send(QUEX_TOKEN_ID(INDENT));
+self.send(&self, QUEX_TOKEN_ID(INDENT));
 return;
 }
 else if( Indentation == *(stack->back) ) {
-self.send(QUEX_TOKEN_ID(NODENT));
+self.send(&self, QUEX_TOKEN_ID(NODENT));
 }
 else  {
 start = stack->back;
 --(stack->back);
 #       if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #       define First true
-self.send(QUEX_TOKEN_ID(DEDENT));
+self.send(&self, QUEX_TOKEN_ID(DEDENT));
 #       undef  First
 #       endif
 while( Indentation < *(stack->back) ) {
 --(stack->back);
 #           if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define First false
-self.send(QUEX_TOKEN_ID(DEDENT));
+self.send(&self, QUEX_TOKEN_ID(DEDENT));
 #           undef  First
 #           endif
 }
@@ -139,7 +137,7 @@ if( Indentation == *(stack->back) ) {
 /* 'Landing' must happen on indentation border. */
 #           if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define ClosedN (start - stack->back)
-self.send_n(QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
+self.send_n(&self, QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #           undef  ClosedN
 #           endif
@@ -272,7 +270,7 @@ TestAnalyzer_Buffer_print_overflow_message(&self.buffer);
 }
 
 void
-TestAnalyzer_M2_on_entry(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* FromMode) {
+TestAnalyzer_M2_on_entry(struct TestAnalyzer_tag* me, const TestAnalyzer_Mode* FromMode) {
 (void)me;
 (void)FromMode;
 #   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -282,7 +280,7 @@ TestAnalyzer_M2.has_entry_from(FromMode);
 }
 
 void
-TestAnalyzer_M2_on_exit(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* ToMode)  {
+TestAnalyzer_M2_on_exit(struct TestAnalyzer_tag* me, const TestAnalyzer_Mode* ToMode)  {
 (void)me;
 (void)ToMode;
 #   ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
@@ -294,7 +292,7 @@ TestAnalyzer_M2.has_exit_to(ToMode);
 
 #if defined(QUEX_OPTION_INDENTATION_TRIGGER)
 void
-TestAnalyzer_M2_on_indentation(QUEX_TYPE_ANALYZER*    me,
+TestAnalyzer_M2_on_indentation(struct TestAnalyzer_tag*    me,
 TestAnalyzer_indentation_t  Indentation,
 TestAnalyzer_lexatom_t*     Begin)
 {
@@ -304,7 +302,7 @@ TestAnalyzer_lexatom_t*     Begin)
 #   ifdef     self
 #       undef self
 #   endif
-#   define self (*((QUEX_TYPE_ANALYZER*)me))
+#   define self (*((struct TestAnalyzer_tag*)me))
 
 #   define M     (&TestAnalyzer_M)
 #   define M2    (&TestAnalyzer_M2)
@@ -325,25 +323,25 @@ TestAnalyzer_MF_error_code_set_if_first(me, E_Error_Indentation_StackOverflow);
 return;
 }
 *(stack->back) = Indentation;
-self.send(QUEX_TOKEN_ID(INDENT));
+self.send(&self, QUEX_TOKEN_ID(INDENT));
 return;
 }
 else if( Indentation == *(stack->back) ) {
-self.send(QUEX_TOKEN_ID(NODENT));
+self.send(&self, QUEX_TOKEN_ID(NODENT));
 }
 else  {
 start = stack->back;
 --(stack->back);
 #       if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #       define First true
-self.send(QUEX_TOKEN_ID(DEDENT));
+self.send(&self, QUEX_TOKEN_ID(DEDENT));
 #       undef  First
 #       endif
 while( Indentation < *(stack->back) ) {
 --(stack->back);
 #           if ! defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define First false
-self.send(QUEX_TOKEN_ID(DEDENT));
+self.send(&self, QUEX_TOKEN_ID(DEDENT));
 #           undef  First
 #           endif
 }
@@ -352,7 +350,7 @@ if( Indentation == *(stack->back) ) {
 /* 'Landing' must happen on indentation border. */
 #           if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
 #           define ClosedN (start - stack->back)
-self.send_n(QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
+self.send_n(&self, QUEX_TOKEN_ID(DEDENT), (size_t)ClosedN);
 
 #           undef  ClosedN
 #           endif
@@ -488,7 +486,7 @@ TestAnalyzer_Buffer_print_overflow_message(&self.buffer);
 #undef RETURN
 
 
-/* #include "test_environment/test_environment/TestAnalyzer"*/
+
 
 #ifdef      QUEX_FUNCTION_COUNT_ARBITRARY
 #   undef   QUEX_FUNCTION_COUNT_ARBITRARY
@@ -504,7 +502,7 @@ __quex_debug_counter();       \
 #endif
 #ifdef QUEX_OPTION_COUNTER
 static void
-TestAnalyzer_M_counter(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t* LexemeBegin, TestAnalyzer_lexatom_t* LexemeEnd)
+TestAnalyzer_M_counter(struct TestAnalyzer_tag* me, TestAnalyzer_lexatom_t* LexemeBegin, TestAnalyzer_lexatom_t* LexemeEnd)
 {
 #   define self (*me)
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
@@ -700,7 +698,7 @@ goto _19;
 #define   RETURN   do { goto _16; } while(0)
 
 void
-TestAnalyzer_M_analyzer_function(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_M_analyzer_function(struct TestAnalyzer_tag* me)
 {
 /* NOTE: Different modes correspond to different analyzer functions. The
 *       analyzer functions are all located inside the main class as static
@@ -710,7 +708,7 @@ TestAnalyzer_M_analyzer_function(QUEX_TYPE_ANALYZER* me)
 #   ifdef     self
 #       undef self
 #   endif
-#   define self (*((QUEX_TYPE_ANALYZER*)me))
+#   define self (*((struct TestAnalyzer_tag*)me))
 #   define M     (&TestAnalyzer_M)
 #   define M2    (&TestAnalyzer_M2)
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
@@ -733,7 +731,7 @@ TestAnalyzer_M_analyzer_function(QUEX_TYPE_ANALYZER* me)
 #   define LexemeEnd    me->buffer._read_p
 #endif
 
-#define LexemeNull      (&QUEX_LEXEME_NULL)
+#define LexemeNull      (&TestAnalyzer_LexemeNull)
 E_LoadResult                   load_result                    = E_LoadResult_VOID;
 TestAnalyzer_lexatom_t**            position                       = 0x0;
 QUEX_TYPE_GOTO_LABEL           target_state_else_index        = QUEX_GOTO_LABEL_VOID;
@@ -805,9 +803,9 @@ _1:
 __quex_debug("* TERMINAL BAD_LEXATOM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code_set_if_first(E_Error_OnBadLexatom);
-self.error_code_set_if_first(E_Error_NoHandler_OnBadLexatom);
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(&self, E_Error_OnBadLexatom);
+self.error_code_set_if_first(&self, E_Error_NoHandler_OnBadLexatom);
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 return;;
 
 }
@@ -819,9 +817,9 @@ _2:
 __quex_debug("* TERMINAL LOAD_FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code_set_if_first(E_Error_OnLoadFailure);
-self.error_code_set_if_first(E_Error_NoHandler_OnLoadFailure);
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(&self, E_Error_OnLoadFailure);
+self.error_code_set_if_first(&self, E_Error_NoHandler_OnLoadFailure);
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 return;;
 
 }
@@ -833,7 +831,7 @@ _3:
 __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 
 }
 /* End of Stream FORCES a return from the lexical analyzer, so that no
@@ -844,8 +842,8 @@ _4:
 __quex_debug("* TERMINAL FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code_set_if_first(E_Error_NoHandler_OnFailure);
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(&self, E_Error_NoHandler_OnFailure);
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 return;;
 
 }
@@ -855,9 +853,9 @@ __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
-self.error_code_set_if_first(E_Error_OnSkipRangeOpen);
-self.error_code_set_if_first(E_Error_NoHandler_OnSkipRangeOpen);
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(&self, E_Error_OnSkipRangeOpen);
+self.error_code_set_if_first(&self, E_Error_NoHandler_OnSkipRangeOpen);
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 return;;
 
 }
@@ -871,11 +869,11 @@ __QUEX_IF_COUNT_COLUMNS_ADD(1);
 {
 
 #   line 3 "test_environment/nothing.qx"
-self.send(QUEX_TKN_X);
+self.send(&self, QUEX_TKN_X);
 return;
 
 
-#   line 877 "test_environment/TestAnalyzer.cpp"
+#   line 875 "test_environment/TestAnalyzer.c"
 
 
 }
@@ -967,7 +965,7 @@ goto _20; /* in QUEX_GOTO_STATE       */
 #   endif
 
 /* Prevent compiler warning 'unused variable'.                           */
-(void)QUEX_LEXEME_NULL;
+(void)TestAnalyzer_LexemeNull;
 /* target_state_index and target_state_else_index appear when
 * QUEX_GOTO_STATE is used without computed goto-s.                      */
 (void)target_state_index;
@@ -1010,7 +1008,7 @@ __quex_debug_counter();       \
 #define   RETURN   do { goto _16; } while(0)
 
 void
-TestAnalyzer_M2_analyzer_function(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_M2_analyzer_function(struct TestAnalyzer_tag* me)
 {
 /* NOTE: Different modes correspond to different analyzer functions. The
 *       analyzer functions are all located inside the main class as static
@@ -1020,7 +1018,7 @@ TestAnalyzer_M2_analyzer_function(QUEX_TYPE_ANALYZER* me)
 #   ifdef     self
 #       undef self
 #   endif
-#   define self (*((QUEX_TYPE_ANALYZER*)me))
+#   define self (*((struct TestAnalyzer_tag*)me))
 #   define M     (&TestAnalyzer_M)
 #   define M2    (&TestAnalyzer_M2)
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
@@ -1043,7 +1041,7 @@ TestAnalyzer_M2_analyzer_function(QUEX_TYPE_ANALYZER* me)
 #   define LexemeEnd    me->buffer._read_p
 #endif
 
-#define LexemeNull      (&QUEX_LEXEME_NULL)
+#define LexemeNull      (&TestAnalyzer_LexemeNull)
 E_LoadResult                   load_result                    = E_LoadResult_VOID;
 TestAnalyzer_lexatom_t**            position                       = 0x0;
 QUEX_TYPE_GOTO_LABEL           target_state_else_index        = QUEX_GOTO_LABEL_VOID;
@@ -1115,9 +1113,9 @@ _1:
 __quex_debug("* TERMINAL BAD_LEXATOM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code_set_if_first(E_Error_OnBadLexatom);
-self.error_code_set_if_first(E_Error_NoHandler_OnBadLexatom);
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(&self, E_Error_OnBadLexatom);
+self.error_code_set_if_first(&self, E_Error_NoHandler_OnBadLexatom);
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 return;;
 
 }
@@ -1129,9 +1127,9 @@ _2:
 __quex_debug("* TERMINAL LOAD_FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code_set_if_first(E_Error_OnLoadFailure);
-self.error_code_set_if_first(E_Error_NoHandler_OnLoadFailure);
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(&self, E_Error_OnLoadFailure);
+self.error_code_set_if_first(&self, E_Error_NoHandler_OnLoadFailure);
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 return;;
 
 }
@@ -1143,7 +1141,7 @@ _3:
 __quex_debug("* TERMINAL END_OF_STREAM\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 
 }
 /* End of Stream FORCES a return from the lexical analyzer, so that no
@@ -1154,8 +1152,8 @@ _4:
 __quex_debug("* TERMINAL FAILURE\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
-self.error_code_set_if_first(E_Error_NoHandler_OnFailure);
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(&self, E_Error_NoHandler_OnFailure);
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 return;;
 
 }
@@ -1165,9 +1163,9 @@ __quex_debug("* TERMINAL SKIP_RANGE_OPEN\n");
 QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);
 {
 #define Counter counter
-self.error_code_set_if_first(E_Error_OnSkipRangeOpen);
-self.error_code_set_if_first(E_Error_NoHandler_OnSkipRangeOpen);
-self.send(QUEX_TOKEN_ID(TERMINATION));
+self.error_code_set_if_first(&self, E_Error_OnSkipRangeOpen);
+self.error_code_set_if_first(&self, E_Error_NoHandler_OnSkipRangeOpen);
+self.send(&self, QUEX_TOKEN_ID(TERMINATION));
 return;;
 
 }
@@ -1181,11 +1179,11 @@ __QUEX_IF_COUNT_COLUMNS_ADD(1);
 {
 
 #   line 4 "test_environment/nothing.qx"
-self.send(QUEX_TKN_X);
+self.send(&self, QUEX_TKN_X);
 return;
 
 
-#   line 1185 "test_environment/TestAnalyzer.cpp"
+#   line 1183 "test_environment/TestAnalyzer.c"
 
 
 }
@@ -1277,7 +1275,7 @@ goto _20; /* in QUEX_GOTO_STATE       */
 #   endif
 
 /* Prevent compiler warning 'unused variable'.                           */
-(void)QUEX_LEXEME_NULL;
+(void)TestAnalyzer_LexemeNull;
 /* target_state_index and target_state_else_index appear when
 * QUEX_GOTO_STATE is used without computed goto-s.                      */
 (void)target_state_index;
@@ -1298,16 +1296,66 @@ goto _20; /* in QUEX_GOTO_STATE       */
 
 
 
+
 #if defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void
-TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_member_functions_assign(struct TestAnalyzer_tag* me)
 {
-
+me->reset = TestAnalyzer_MF_reset;
+me->reset_file_name = TestAnalyzer_MF_reset_file_name;
+me->reset_ByteLoader = TestAnalyzer_MF_reset_ByteLoader;
+me->reset_memory = TestAnalyzer_MF_reset_memory;
+me->include_push_file_name = TestAnalyzer_MF_include_push_file_name;
+me->include_push_ByteLoader = TestAnalyzer_MF_include_push_ByteLoader;
+me->include_push_memory = TestAnalyzer_MF_include_push_memory;
+me->include_pop = TestAnalyzer_MF_include_pop;
+me->include_stack_delete = TestAnalyzer_MF_include_stack_delete;
+me->include_detect_recursion = TestAnalyzer_MF_include_detect_recursion;
+me->run = TestAnalyzer_MF_run;
+me->receive = TestAnalyzer_MF_receive;
+me->token_p = TestAnalyzer_MF_token_p;
+me->send = TestAnalyzer_MF_send;
+me->send_n = TestAnalyzer_MF_send_n;
+me->send_text = TestAnalyzer_MF_send_text;
+me->send_string = TestAnalyzer_MF_send_string;
+me->mode = TestAnalyzer_MF_mode;
+me->set_mode_brutally = TestAnalyzer_MF_set_mode_brutally;
+me->enter_mode = TestAnalyzer_MF_enter_mode;
+me->pop_mode = TestAnalyzer_MF_pop_mode;
+me->pop_drop_mode = TestAnalyzer_MF_pop_drop_mode;
+me->push_mode = TestAnalyzer_MF_push_mode;
+me->line_number = TestAnalyzer_MF_line_number;
+me->line_number_at_begin = TestAnalyzer_MF_line_number_at_begin;
+me->line_number_at_end = TestAnalyzer_MF_line_number_at_end;
+me->line_number_set = TestAnalyzer_MF_line_number_set;
+me->column_number = TestAnalyzer_MF_column_number;
+me->column_number_at_begin = TestAnalyzer_MF_column_number_at_begin;
+me->column_number_at_end = TestAnalyzer_MF_column_number_at_end;
+me->column_number_set = TestAnalyzer_MF_column_number_set;
+me->version = TestAnalyzer_MF_version;
+me->print_this = TestAnalyzer_MF_print_this;
+me->input_name = TestAnalyzer_MF_input_name;
+me->input_name_set = TestAnalyzer_MF_input_name_set;
+me->tell = TestAnalyzer_MF_tell;
+me->seek = TestAnalyzer_MF_seek;
+me->seek_forward = TestAnalyzer_MF_seek_forward;
+me->seek_backward = TestAnalyzer_MF_seek_backward;
+me->undo = TestAnalyzer_MF_undo;
+me->undo_n = TestAnalyzer_MF_undo_n;
+me->byte_order_reversion = TestAnalyzer_MF_byte_order_reversion;
+me->byte_order_reversion_set = TestAnalyzer_MF_byte_order_reversion_set;
+me->error_code_clear = TestAnalyzer_MF_error_code_clear;
+me->error_code_is_void = TestAnalyzer_MF_error_code_is_void;
+me->error_code_set_void = TestAnalyzer_MF_error_code_set_void;
+me->error_code_set_if_first = TestAnalyzer_MF_error_code_set_if_first;
+me->collect_user_memory = TestAnalyzer_MF_collect_user_memory;
+me->resources_absent_mark = TestAnalyzer_MF_resources_absent_mark;
+me->resources_absent = TestAnalyzer_MF_resources_absent;
 }
 #endif
 
 bool
-TestAnalyzer_user_constructor(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_constructor(struct TestAnalyzer_tag* me)
 {
 (void)me;
 
@@ -1320,7 +1368,7 @@ return true;
 }
 
 void
-TestAnalyzer_user_destructor(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_destructor(struct TestAnalyzer_tag* me)
 {
 (void)me;
 
@@ -1332,7 +1380,7 @@ TestAnalyzer_user_destructor(QUEX_TYPE_ANALYZER* me)
 }
 
 bool
-TestAnalyzer_user_reset(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_reset(struct TestAnalyzer_tag* me)
 {
 (void)me;
 
@@ -1345,7 +1393,7 @@ return true;
 }
 
 void
-TestAnalyzer_user_print(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_print(struct TestAnalyzer_tag* me)
 {
 (void)me;
 
@@ -1357,7 +1405,7 @@ TestAnalyzer_user_print(QUEX_TYPE_ANALYZER* me)
 }
 
 bool
-TestAnalyzer_user_memento_pack(QUEX_TYPE_ANALYZER* me,
+TestAnalyzer_user_memento_pack(struct TestAnalyzer_tag* me,
 const char*         InputName,
 TestAnalyzer_Memento* memento)
 {
@@ -1372,7 +1420,7 @@ return true;
 }
 
 void
-TestAnalyzer_user_memento_unpack(QUEX_TYPE_ANALYZER*  me,
+TestAnalyzer_user_memento_unpack(struct TestAnalyzer_tag*  me,
 TestAnalyzer_Memento*  memento)
 {
 (void)me; (void)memento;
@@ -1387,10 +1435,6 @@ TestAnalyzer_Memento*  memento)
 
 
 
-
-#include "test_environment/TestAnalyzer-token"
-
-TestAnalyzer_lexatom_t   TestAnalyzer_LexemeNull = (TestAnalyzer_lexatom_t)0;
 
 
 

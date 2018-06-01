@@ -23,7 +23,7 @@ clean:
 	rm -rf *.o *.E tmp.* tmp_dir/* $(PROGRAMS) ut
 
 ut:
-	python ../../TESTS/code_base_instatiation.py ut token compatibility
+	python ../../TESTS/code_base_instatiation.py ut token quex
 
 .PHONY: hwut-info
 hwut-info: 

@@ -16,14 +16,16 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <test_environment/lib/compatibility/stdint.h>
+#include <test_environment/lib/quex/compatibility/stdint.h>
+#include <test_environment/lib/quex/MemoryManager>
 #include <test_environment/lib/definitions>
 #include <test_environment/lib/asserts>
-#include <test_environment/lib/MemoryManager>
 #include <test_environment/lib/lexeme_base>
 #include <test_environment/converter-from-lexeme>
 
 struct TestAnalyzer_Token_tag;
+
+extern TestAnalyzer_lexatom_t TestAnalyzer_LexemeNull;
 
 extern const char*
 TestAnalyzer_Token_get_string(struct TestAnalyzer_Token_tag* me,
@@ -32,7 +34,7 @@ size_t                      BufferSize);
 
 
 
-#   line 34 "test_environment/TestAnalyzer-token.h"
+#   line 36 "test_environment/TestAnalyzer-token.h"
 
 
 
@@ -68,16 +70,16 @@ QUEX_INLINE void         TestAnalyzer_Token_repetition_n_set(struct TestAnalyzer
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_Token_tag {
 TestAnalyzer_token_id_t    id;
 
-#   line 27 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 29 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 const TestAnalyzer_lexatom_t* text;
 
-#   line 71 "test_environment/TestAnalyzer-token.h"
+#   line 73 "test_environment/TestAnalyzer-token.h"
 
 
-#   line 28 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 30 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 size_t                   number;
 
-#   line 75 "test_environment/TestAnalyzer-token.h"
+#   line 77 "test_environment/TestAnalyzer-token.h"
 
 
 
@@ -90,16 +92,15 @@ TestAnalyzer_token_column_n_t  _column_n;
 #       endif
 #   endif
 
-#   line 113 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
+#   line 115 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 /* Nothing here. */
 
 
-#   line 91 "test_environment/TestAnalyzer-token.h"
+#   line 93 "test_environment/TestAnalyzer-token.h"
 
 
 } TestAnalyzer_Token;
 
-extern TestAnalyzer_lexatom_t TestAnalyzer_LexemeNull;
 
 #endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN */

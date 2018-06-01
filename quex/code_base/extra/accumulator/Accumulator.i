@@ -5,8 +5,8 @@
 #define __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
 
 $$INC: definitions$$
-$$INC: MemoryManager$$
 $$INC: extra/accumulator/Accumulator$$
+$$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

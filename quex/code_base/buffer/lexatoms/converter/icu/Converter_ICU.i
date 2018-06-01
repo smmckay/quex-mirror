@@ -4,9 +4,9 @@
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICU__CONVERTER_ICU_I
 
 $$INC: definitions$$
-$$INC: compatibility/stdint.h$$
-$$INC: MemoryManager$$
 $$INC: buffer/lexatoms/converter/icu/Converter_ICU$$
+$$INC: quex/compatibility/stdint.h$$
+$$INC: quex/MemoryManager$$
 
 $$INC: analyzer/configuration/validation$$
 

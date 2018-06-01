@@ -40,7 +40,7 @@ def _generate(mode_db):
         _write_all(content_table)
         return
 
-    content_table, global_lexeme_null_declaration = _get_token_class()
+    content_table = _get_token_class()
 
     if Setup.token_class_only_f:
         class_token_header = do_token_class_info() + content_table[1][0]
@@ -54,7 +54,7 @@ def _generate(mode_db):
         ## del content_table[-1]
         content_table.extend(_get_analyzers(mode_db, 
                                             "", # class_token_implementation, 
-                                            global_lexeme_null_declaration))
+                                            ""))
         content_table.extend(lexeme_converter.do()) # [Optional]
         _write_all(content_table)
 
@@ -84,7 +84,7 @@ def analyzer_functions_get(ModeDB):
     )
 
     # generate frame for analyser code
-    return engine_generator.frame_this("".join(code))
+    return Lng.FRAME_IN_NAMESPACE_MAIN("".join(code))
 
 def do_plot():
     mode_db = quex_file_parser.do(Setup.input_mode_files)
@@ -165,7 +165,6 @@ def _get_token_class():
                 [1] Source code for global lexeme null declaration
     """
     token_id_header,                \
-    global_lexeme_null_declaration, \
     class_token_header,             \
     class_token_implementation      = token_class.do()
 
@@ -173,7 +172,7 @@ def _get_token_class():
         (token_id_header,            Setup.output_token_id_file),
         (class_token_header,         token_db.token_type_definition.get_file_name()),
         (class_token_implementation, Setup.output_token_class_file_implementation),
-    ], global_lexeme_null_declaration
+    ]
 
 def _get_analyzers(mode_db, class_token_implementation, global_lexeme_null_declaration):
     configuration_header, \

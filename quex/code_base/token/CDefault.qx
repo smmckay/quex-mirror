@@ -3,14 +3,16 @@ token_type {
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <$$OUTPUT_DIR$$/lib/compatibility/stdint.h>
+#include <$$OUTPUT_DIR$$/lib/quex/compatibility/stdint.h>
+#include <$$OUTPUT_DIR$$/lib/quex/MemoryManager>
 #include <$$OUTPUT_DIR$$/lib/definitions>
 #include <$$OUTPUT_DIR$$/lib/asserts>
-#include <$$OUTPUT_DIR$$/lib/MemoryManager>
 #include <$$OUTPUT_DIR$$/lib/lexeme_base>
 #include <$$OUTPUT_DIR$$/converter-from-lexeme>
 
 struct $$TOKEN_CLASS$$_tag;
+
+extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);
 
 extern const char* 
 $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* me,  

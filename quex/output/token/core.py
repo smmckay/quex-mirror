@@ -24,22 +24,14 @@ def do():
     if token_db.token_type_definition.manually_written():
         # User has specified a manually written token class
         # (LexemeNull must be declared in global header)
-        global_lexeme_null_declaration = \
-                Lng.COMMENT("A manually written token class has been provided.\n"
-                            + "See file '%s'." % Setup.output_token_class_file
-                            + "Declaration of 'lexeme null' is provided here.\n"
-                            + "The token class implementation must provide its definition.\n") \
-                + Lng.LEXEME_NULL_DECLARATION()
         header_txt         = ""
         implementation_txt = ""
     else:
         # (LexemeNull is declared in token class header)
-        global_lexeme_null_declaration = ""
         header_txt,        \
         implementation_txt = _do(token_db.token_type_definition)
 
     return token_id_header, \
-           global_lexeme_null_declaration, \
            header_txt, \
            implementation_txt
 
@@ -60,7 +52,6 @@ def _do(Descr):
     if not Setup.extern_token_class_file:
         if not implementation_txt:
             implementation_txt = "%s\n" % Lng.INCLUDE(Setup.output_token_class_file)
-        implementation_txt += Lng.LEXEME_NULL_IMPLEMENTATION()
 
     return header_txt, implementation_txt
 
@@ -100,7 +91,6 @@ def _do_core(Descr):
 
     template_str = Lng.open_template(Lng.token_template_file())
     txt = blue_print(template_str, [
-        ["$$LEXEME_NULL_DECLARATION$$", Lng.LEXEME_NULL_DECLARATION()],
         ["$$BODY$$",                    Lng.SOURCE_REFERENCED(Descr.body)],
         ["$$CONSTRUCTOR$$",             Lng.SOURCE_REFERENCED(Descr.constructor)],
         ["$$COPY$$",                    copy_str],

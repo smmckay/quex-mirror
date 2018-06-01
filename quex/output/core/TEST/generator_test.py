@@ -225,7 +225,12 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     # Verify, that Templates and Pathwalkers are really generated
     __verify_code_generation(FullLanguage, source_code)
 
-    source_code = "%s%s" % (language_defines, adapt.do(source_code, "ut"))
+    if Language == "Cpp": test_analyzer_dir = "test_cpp"
+    else:                 test_analyzer_dir = "test_c"
+    source_code = "%s%s" % (language_defines, adapt.do(source_code, test_analyzer_dir))
+
+    source_code = source_code.replace("$$TEST_ANALYZER_DIR$$",
+                                      test_analyzer_dir)
 
     compile_and_run(Language, source_code, AssertsActionvation_str, CompileOptionStr, 
                     test_str_list)
@@ -375,8 +380,10 @@ def create_common_declarations(Language, QuexBufferSize,
     txt += "#define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n" 
     txt += "#define __QUEX_OPTION_UNIT_TEST\n" 
 
+    if Language == "Cpp": test_analyzer_dir = "test_cpp"
+    else:                 test_analyzer_dir = "test_c"
     txt += test_program_common_declarations.replace("$$BUFFER_FALLBACK_N$$", 
-                                                    repr(QuexBufferFallbackN))
+                                                    repr(QuexBufferFallbackN)) 
     txt  = txt.replace("$$BUFFER_SIZE$$", "%s" % QuexBufferSize)
     class Something:
         pass
@@ -505,10 +512,9 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
     assert all_isinstance(function_txt, str)
 
     result =  "#define  __QUEX_OPTION_UNIT_TEST\n" \
-            + "QUEX_NAMESPACE_MAIN_OPEN\n" \
-            + nonsense_default_counter(not SecondModeF) \
-            + "".join(function_txt) \
-            + "QUEX_NAMESPACE_MAIN_CLOSE\n"
+            + Lng.FRAME_IN_NAMESPACE_MAIN(
+              nonsense_default_counter(not SecondModeF) \
+            + "".join(function_txt))
 
     return result
 
@@ -551,19 +557,20 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 namespace quex {
 typedef int TestAnalyzer_indentation_t;
 }
-#include "test_environment/TestAnalyzer"
+#include "$$TEST_ANALYZER_DIR$$/TestAnalyzer"
 #else
 typedef int TestAnalyzer_indentation_t;
-#include "test_environment/TestAnalyzer.h"
+#include "$$TEST_ANALYZER_DIR$$/TestAnalyzer.h"
 #endif
-#include "ut/lib/analyzer/asserts.i"
-#include "ut/lib/analyzer/struct/constructor.i"
-#include "ut/lib/analyzer/struct/reset.i"
-#include "ut/lib/analyzer/member/mode-handling.i"
-#include "ut/lib/buffer/asserts.i"
-#include "ut/lib/token/TokenQueue.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/analyzer/asserts.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/analyzer/struct/constructor.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/analyzer/struct/reset.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/analyzer/member/mode-handling.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/buffer/asserts.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/token/TokenQueue.i"
 
-#include "ut/lib/single.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/implementations.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/implementations-inline.i"
 
 QUEX_NAMESPACE_MAIN_OPEN     
 TestAnalyzer_lexatom_t   LexemeNull = (TestAnalyzer_lexatom_t)0;
@@ -681,7 +688,7 @@ test_program_db = {
     "ANSI-C": """
     #include <stdio.h>
     #if 0
-    #include "ut/lib/buffer/lexatoms/LexatomLoader_Plain"
+    #include "$$TEST_ANALYZER_DIR$$/lib/buffer/lexatoms/LexatomLoader_Plain"
     #endif
 
     int main(int argc, char** argv)
@@ -723,7 +730,7 @@ test_program_db = {
     "Cpp": """
     #include <cstring>
     #include <sstream>
-    #include "ut/lib/buffer/lexatoms/LexatomLoader_Plain"
+    #include "$$TEST_ANALYZER_DIR$$/lib/buffer/lexatoms/LexatomLoader_Plain"
 
     int main(int argc, char** argv)
     {
@@ -741,8 +748,8 @@ test_program_db = {
     "Cpp_StrangeStream": """
     #include <cstring>
     #include <sstream>
-    #include "ut/lib/buffer/lexatoms/LexatomLoader_Plain"
-    #include "ut/lib/extra/strange_stream/StrangeStream"
+    #include "$$TEST_ANALYZER_DIR$$/lib/buffer/lexatoms/LexatomLoader_Plain"
+    #include "$$TEST_ANALYZER_DIR$$/lib/extra/strange_stream/StrangeStream"
 
 
     int main(int argc, char** argv)

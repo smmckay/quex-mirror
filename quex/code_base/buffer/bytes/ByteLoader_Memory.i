@@ -3,7 +3,7 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY_I
 
-$$INC: MemoryManager$$
+$$INC: quex/MemoryManager$$
 $$INC: buffer/bytes/ByteLoader_Memory$$
 #include <malloc.h> // DEBUG
 

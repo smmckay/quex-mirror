@@ -11,6 +11,7 @@ from   quex.blackboard  import setup as Setup, \
                                Lng
 
 def do(ModeDB, Epilog):
+    assert not Epilog # If this never triggers, delete 'Epilog'
     assert token_db.token_type_definition is not None
 
     LexerClassName                 = Setup.analyzer_class_name

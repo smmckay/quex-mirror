@@ -19,7 +19,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__BOM_I
 #define __QUEX_INCLUDE_GUARD__BOM_I
 
-$$INC: bom$$
+$$INC: quex/bom$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 
@@ -89,9 +89,9 @@ QUEXED_DEF(__bom_snap_core)(uint8_t buffer[4], size_t read_n, size_t* byte_n)
 
 extern QUEX_TYPE_BOM
 QUEXED_DEF(bom_identify)(const uint8_t* const Buffer, size_t* n)
-    /* Assume, that the buffer contains at least 4 elements!                 */
+    /* Assume, that the buffer contains at least 4 elements!                  */
 {
-    /* Table of byte order marks (BOMs), see file 'quex/code_base/bom'       */
+    /* Table of byte order marks (BOMs), see 'quex/code_base/quex/bom'     */
     const uint8_t B0 = Buffer[0];
     const uint8_t B1 = Buffer[1];
     const uint8_t B2 = Buffer[2];

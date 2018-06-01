@@ -5,13 +5,13 @@
 $$INC: extra/test_environment/TestAnalyzer-configuration$$
 $$INC: buffer/Buffer.i$$
 $$INC: buffer/lexatoms/LexatomLoader.i$$
-$$INC: MemoryManager$$
 $$INC: buffer/Buffer_print.i$$
 $$INC: lexeme_converter/from-utf8.i$$
 $$INC: lexeme_converter/from-utf16.i$$
 $$INC: lexeme_converter/from-utf32.i$$
 $$INC: lexeme_converter/from-unicode-buffer$$
 $$INC: lexeme_converter/from-unicode-buffer.i$$
+$$INC: quex/MemoryManager$$
 #include <string.h>
 #include <cstdio>
 

@@ -3,10 +3,10 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I
 
-$$INC: MemoryManager$$
 $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: buffer/lexatoms/LexatomLoader_Converter$$
-$$INC: compatibility/iconv-argument-types.h$$
+$$INC: quex/MemoryManager$$
+$$INC: quex/compatibility/iconv-argument-types.h$$
 
 
 QUEX_NAMESPACE_MAIN_OPEN

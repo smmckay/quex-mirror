@@ -3,8 +3,8 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__RECODE__CONVERTER_RECODE_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__RECODE__CONVERTER_RECODE_I
 
-$$INC: compatibility/stdint.h$$
-$$INC: MemoryManager$$
+$$INC: quex/compatibility/stdint.h$$
+$$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

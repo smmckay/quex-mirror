@@ -1,5 +1,6 @@
 from   quex.engine.misc.tools import typed
 from   quex.blackboard        import Lng, setup as Setup
+import os
 
 def do(Txt, OutputDir, OriginalPath=None):
     if not Txt: return Txt
@@ -172,11 +173,14 @@ def produce_include_statements(OutputDir, Txt):
     txt = []
     # include_file_list = []
     last_i = 0
-    for begin_i, end_i, path in _marked_tags(Txt, "$$INC:", "$$"):
-        if path is None: continue
-        local_path = "%s/lib/%s" % (OutputDir, path.strip())
+    subdir = "lib"
+    for begin_i, end_i, content in _marked_tags(Txt, "$$INC:", "$$"):
+        if content is None: continue
+        condition, path = Symbol.condition_str(content)
+        path       = path.strip()
+        local_path = os.path.join(OutputDir, subdir, path.strip())
         txt.append(Txt[last_i:begin_i])
-        txt.append(Lng.INCLUDE(local_path))
+        txt.append(Lng.INCLUDE(local_path, condition))
         last_i = Txt.find("\n", end_i) # Step beyond the '\n'
         # include_file_list.append(local_path)
     txt.append(Txt[last_i:])

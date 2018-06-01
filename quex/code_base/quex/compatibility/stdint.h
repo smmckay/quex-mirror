@@ -11,9 +11,9 @@ extern "C" {
 #endif
 
 #if defined (_MSC_VER)
-$$INC: compatibility/win/msc_stdint.h$$
+$$INC: quex/compatibility/win/msc_stdint.h$$
 #elif defined(__BORLANDC__)
-$$INC: compatibility/win/borland_stdint.h$$
+$$INC: quex/compatibility/win/borland_stdint.h$$
 #elif defined(__sun) && defined(__sparc)
 #   include <inttypes.h>      /* Thanks to sbellon@users.sourceforge.net */ 
 #else

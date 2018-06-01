@@ -47,8 +47,8 @@ main(int argc, char** argv)
 static void  
 test(Lexer* lexer, uint8_t* memory, size_t Size)
 {
-    char             buffer[256];
-    QUEX_TYPE_TOKEN* token_p;
+    char         buffer[256];
+    Lexer_Token* token_p;
 
     if( memory ) {
         /* Fill at 'memory + 1'; 'memory + 0' holds buffer limit code.       */

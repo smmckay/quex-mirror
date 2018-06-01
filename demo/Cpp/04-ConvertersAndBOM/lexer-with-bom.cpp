@@ -1,7 +1,7 @@
 #include "Easy/Easy"
 #include <Easy/lib/buffer/lexatoms/converter/iconv/Converter_IConv>
 #include <Easy/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i>
-#include <Easy/lib/bom>
+#include <Easy/lib/quex/bom.i>
 #include <stdio.h>    
 
 static void print_token(Easy_Token* token_p);

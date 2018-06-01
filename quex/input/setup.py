@@ -260,6 +260,7 @@ SETUP_INFO = {
     "output_directory":               [["--output-directory", "--odir"],     ""],
     "show_name_spaces_f":             [["--show-name-spaces", "--sns"],      SetupParTypes.FLAG],
     "user_application_version_id":    [["--version-id"],                     "0.0.0-pre-release"],
+    "implement_lib_quex_f":           [["--no-lib-quex", "--nlq"],           SetupParTypes.NEGATED_FLAG],
     #
     "warning_on_outrun_f":            [["--warning-on-outrun", "--woo"],   SetupParTypes.FLAG],
     #
@@ -267,10 +268,10 @@ SETUP_INFO = {
     #
     "query_version_f":                [["--version", "-v"],               SetupParTypes.FLAG],
     "query_help_f":                   [["--help", "-h"],                  SetupParTypes.FLAG],
-    "query_encoding":                    [["--encoding-info",         "--ei"],  ""],
-    "query_encoding_list":               [["--encoding-list",         "--el"],  SetupParTypes.FLAG],
-    "query_encoding_file":               [["--encoding-info-file",    "--eif"], ""], 
-    "query_encoding_language":           [["--encoding-for-language", "--eil"], ""],
+    "query_encoding":                 [["--encoding-info",         "--ei"],  ""],
+    "query_encoding_list":            [["--encoding-list",         "--el"],  SetupParTypes.FLAG],
+    "query_encoding_file":            [["--encoding-info-file",    "--eif"], ""], 
+    "query_encoding_language":        [["--encoding-for-language", "--eil"], ""],
     "query_property":                 [["--property", "--pr"],            SetupParTypes.OPTIONAL_STRING],
     "query_set_by_property":          [["--set-by-property", "--sbpr"],   ""], 
     "query_set_by_expression":        [["--set-by-expression", "--sbe"],  ""],

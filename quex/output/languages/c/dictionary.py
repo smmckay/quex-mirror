@@ -1,6 +1,7 @@
 from   quex.output.languages.cpp.dictionary import Language as LanguageCpp
 from   quex.constants                       import E_Files
 import quex.blackboard                      as     blackboard
+from   quex.blackboard                      import setup as Setup
 
 class Language(LanguageCpp):
     all_extension_db = {
@@ -17,9 +18,7 @@ class Language(LanguageCpp):
         LanguageCpp.__init__(self)
 
     def NAMESPACE_REFERENCE(self, NameList, TrailingDelimiterF=True):
-        result = "".join("%s_" % name for name in NameList)
-        if TrailingDelimiterF: return result
-        else:                  return result[:-1]
+        return "" # C knows no namespaces
     def token_template_file(self):    return "%s/token/TXT-C"       % self.CODE_BASE
     def token_template_i_file(self):  return "%s/token/TXT-C.i"     % self.CODE_BASE
     def token_default_file(self):     return "%s/token/CDefault.qx" % self.CODE_BASE
@@ -74,3 +73,22 @@ class Language(LanguageCpp):
     def MODE_GOUP(self):
         return "self.pop_mode(&self);"
 
+    def type_replacements(self):
+        acn = Setup.analyzer_class_name
+        return [
+             ("QUEX_TYPE_TOKEN",          "struct %s_tag" % self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
+             ("QUEX_TYPE0_TOKEN",         "struct %s_tag" % Setup.token_class_name),
+             ("QUEX_TYPE_ANALYZER",       "struct %s_tag" % self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_ANALYZER",      "struct %s_tag" % Setup.analyzer_class_name),
+             ("QUEX_TYPE_MEMENTO",        "struct %s_tag" % self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_MEMENTO",       "struct %s_Memento_tag" % Setup.analyzer_class_name),
+             ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
+             ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
+             ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
+             ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),
+             ("QUEX_TYPE_ACCEPTANCE_ID",  "%s_acceptance_id_t" % acn),
+             ("QUEX_TYPE_INDENTATION",    "%s_indentation_t" % acn)
+        ]
+
+    def FOOTER_IN_IMPLEMENTATION(self):
+        return blackboard.Lng.SOURCE_REFERENCED(blackboard.footer)

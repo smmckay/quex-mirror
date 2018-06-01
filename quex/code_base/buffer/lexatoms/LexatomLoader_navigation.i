@@ -28,9 +28,9 @@
 
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
-$$INC: MemoryManager$$
 $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: buffer/Buffer_print$$
+$$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

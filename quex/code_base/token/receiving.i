@@ -2,13 +2,6 @@
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__TOKEN_RECEIVING_I
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__TOKEN_RECEIVING_I
 
-#ifndef QUEX_TYPE_ANALYZER
-#   error "QUEX_TYPE_ANALYZER definition missing."
-#endif
-#ifndef QUEX_TYPE_TOKEN
-#   error "QUEX_TYPE_TOKEN definition missing."
-#endif
-
 $$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN

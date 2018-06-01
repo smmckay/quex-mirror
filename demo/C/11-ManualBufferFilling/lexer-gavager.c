@@ -15,10 +15,6 @@
 
 #include "receiver.h"
 
-typedef QUEX_TYPE_ANALYZER Lexer;
-typedef QUEX_TYPE_TOKEN    Lexer_Token;
-typedef QUEX_TYPE_GAVAGER  CGavager;
-
 static void show_buffer(Lexer* lexer, 
                         const uint8_t* RawBeginP, const uint8_t* RawEndP);
 

@@ -12,6 +12,7 @@ from   quex.input.setup       import QuexSetup, \
                                      SETUP_INFO
 from   quex.constants         import E_IncidenceIDs, \
                                      E_TerminalType
+import quex.engine.misc.error as     error
 
 import quex.engine.state_machine.transformation.core as     bc_factory
 
@@ -279,10 +280,19 @@ class DefaultCounterFunctionDB:
 #
 def condition_holds(Condition):
     global setup
-    if   Condition is None:                                                    return True
-    elif Condition == "count-line"   and setup.count_line_number_f:            return True
-    elif Condition == "count-column" and setup.count_column_number_f:          return True
-    elif Condition == "indentation"  and required_support_indentation_count(): return True
-    else:                                                                      return False
+    if   not Condition:                                                        
+        return True
+    elif Condition == "count-line":
+        return bool(setup.count_line_number_f)
+    elif Condition == "count-column":
+        return bool(setup.count_column_number_f)
+    elif Condition == "count":
+        return setup.count_line_number_f or setup.count_column_number_f
+    elif Condition == "indentation":
+        return bool(required_support_indentation_count())
+    elif Condition == "lib-quex":
+        return bool(setup.implement_lib_quex_f)
+    else:                                                                      
+        error.log("Code generation: found unknown condition '<%s>'." % Condition)
 
 

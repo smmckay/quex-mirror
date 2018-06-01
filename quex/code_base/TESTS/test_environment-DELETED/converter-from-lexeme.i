@@ -37,7 +37,7 @@
 #include "test_environment/converter-from-lexeme"
 
 #if ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
-#include "test_environment/lib/MemoryManager"
+#include "test_environment/lib/quex/MemoryManager"
 #endif
 
 

@@ -123,7 +123,11 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
                                                  OnePassOnlyF    = OnePassOnlyF,
                                                  CounterPrintF   = CounterPrintF)
 
-    return language_defines + result
+    result = language_defines + result
+    if Language == "Cpp": test_analyzer_dir = "test_cpp"
+    else:                 test_analyzer_dir = "test_c"
+    result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
+    return result
 
 def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=1024, 
                               CommentTestStrF=False, ShowPositionF=False, CounterPrintF=True):
@@ -161,7 +165,11 @@ def create_range_skipper_code(Language, TestStr, CloserSequence, QuexBufferSize=
                                                  LocalVariableDB = deepcopy(variable_db.get()),
                                                  DoorIdOnSkipRangeOpenF=True, 
                                                  CounterPrintF=CounterPrintF) 
-    return language_defines + result
+    result = language_defines + result
+    if Language == "Cpp": test_analyzer_dir = "test_cpp"
+    else:                 test_analyzer_dir = "test_c"
+    result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
+    return result
 
 def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSequence, 
                                      QuexBufferSize=1024, CommentTestStrF=False, ShowPositionF=False):
@@ -220,7 +228,11 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
                                                  LocalVariableDB=deepcopy(variable_db.get()), 
                                                  DoorIdOnSkipRangeOpenF=True, 
                                                  CounterPrintF="short") 
-    return language_defines + result
+    result = language_defines + result
+    if Language == "Cpp": test_analyzer_dir = "test_cpp"
+    else:                 test_analyzer_dir = "test_c"
+    result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
+    return result
 
 def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
                                 
@@ -278,7 +290,12 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     on_indentation_txt = indentation_handler.do(AuxMode(), ["M", "M2"]).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
 
     Setup.analyzer_class_name = "TestAnalyzer"
-    return language_defines + adapt.do(main_txt + on_indentation_txt, "ut")
+    result = adapt.do(main_txt + on_indentation_txt, "ut")
+    result = language_defines + result
+    if Language == "Cpp": test_analyzer_dir = "test_cpp"
+    else:                 test_analyzer_dir = "test_c"
+    result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
+    return result
     
 
 def create_customized_analyzer_function(Language, TestStr, EngineSourceCode, 
@@ -393,7 +410,8 @@ customized_unit_test_function_txt = """
 static bool show_next_character(QUEX_TYPE_ANALYZER* me);
 static bool skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me);
 
-#include "ut/lib/single.i"
+#include "ut/lib/implementations.i"
+#include "ut/lib/implementations-inline.i"
 
 void
 QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)

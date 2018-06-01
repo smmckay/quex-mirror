@@ -204,7 +204,7 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         "#   endif\n",
         "\n",
         "    /* Prevent compiler warning 'unused variable'.                           */\n",
-        "    (void)QUEX_LEXEME_NULL;\n",                                    
+        "    (void)QUEX_NAME(LexemeNull);\n",                                    
         "    /* target_state_index and target_state_else_index appear when \n",
         "     * QUEX_GOTO_STATE is used without computed goto-s.                      */\n",
         "    (void)target_state_index;\n",
@@ -238,7 +238,7 @@ lexeme_macro_setup = """
 #   define LexemeEnd    $$INPUT_P$$
 #endif
 
-#define LexemeNull      (&QUEX_LEXEME_NULL)
+#define LexemeNull      (&QUEX_NAME(LexemeNull))
 """
 
 lexeme_macro_clean_up = """
@@ -286,34 +286,15 @@ def reentry_preparation(Lng, PreConditionIDList, OnAfterMatchCode, dial_db):
         "\n%s\n" % Lng.GOTO(DoorID.global_reentry(dial_db), dial_db), 
     ]
 
-def get_implementation_header(Setup):
+def get_implementation_begin(Setup):
     if Setup.language != "C":
         return ""
-
-    result = [
-        "$$INC: analyzer/headers.i$$",
-        "$$INC: analyzer/C-adaptions.h$$",
-        "\n",
-        "/* START: User defined header content _________________________________________",
-        " *        The 'footer' content relies on class definitions made above.        */",
-    ]
-    result.append(blackboard.Lng.SOURCE_REFERENCED(blackboard.footer))
-    result.append("\n")
-    return "\n".join(result)
-
-def frame_of_all(Code, Setup):
-    # namespace_ref   = Lng.NAMESPACE_REFERENCE(Setup.analyzer_name_space)
-    # if namespace_ref.startswith("::"):  namespace_ref = namespace_ref[2:]
-    # if namespace_ref.endswith("::"): namespace_ref = namespace_ref[:-2]
-    # "using namespace " + namespace_ref + ";\n"       + \
-
-    implementation_header_str = get_implementation_header(Setup)
-
-    return "".join(["/* #include \"%s\"*/\n" % Setup.get_file_reference(Setup.output_header_file),
-                    implementation_header_str,
-                    "QUEX_NAMESPACE_MAIN_OPEN\n",
-                    Code,
-                    "QUEX_NAMESPACE_MAIN_CLOSE\n"])                     
+    else:
+        return "\n".join([
+            "/* START: User defined header content _________________________________________",
+            " *        The 'footer' content relies on class definitions made above.        */",
+            blackboard.Lng.SOURCE_REFERENCED(blackboard.footer),
+        ]) + "\n"
 
 def __condition(txt, CharSet):
     first_f = True

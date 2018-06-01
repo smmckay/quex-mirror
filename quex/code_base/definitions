@@ -8,8 +8,8 @@
 #define __QUEX_INCLUDE_GUARD__DEFINITIONS
 
 $$INC: asserts$$
-$$INC: compatibility/stdint.h$$
-$$INC: compatibility/stdbool-pseudo.h$$
+$$INC: quex/compatibility/stdint.h$$
+$$INC: quex/compatibility/stdbool-pseudo.h$$
 
 #ifndef    QUEX_NAMESPACE_QUEX 
 #   define QUEX_NAMESPACE_QUEX         quex

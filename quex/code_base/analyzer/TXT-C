@@ -33,7 +33,7 @@ $$INC: include-guard-undef$$
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_$$LEXER_NAME_SPACE_EXT$$
 
 #include <stddef.h>
-$$INC: compatibility/stdint.h$$
+$$INC: quex/compatibility/stdint.h$$
 #include "$$LEXER_CONFIG_FILE$$"
 
 $$INC: definitions$$
@@ -56,7 +56,7 @@ QUEX_NAMESPACE_TOKEN_CLOSE
 $$USER_DEFINED_HEADER$$
 /* END: _______________________________________________________________________*/
 
-$$INC: analyzer/headers$$
+$$INC: declarations$$
 
 #include "$$TOKEN_ID_DEFINITION_FILE$$"
 #include "$$TOKEN_CLASS_DEFINITION_FILE$$"
@@ -70,8 +70,9 @@ $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 typedef bool (*QUEX_NAME(callback_on_token_type))(QUEX_TYPE_TOKEN*);
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
-    /* __( Data Members )_______________________________________________________
-     *                                                                        */
+    /* In contrary to C++ implementation, constructors and destructors 
+     * are called explicitly.                                                 */
+
     char*                           __input_name;
     QUEX_NAME(Buffer)               buffer;
 
@@ -87,10 +88,6 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag)
     bool                            _indentation_handler_active_f;
 #   endif
     struct QUEX_NAME(Memento_tag)*  _parent_memento;
-    /* __( END: Data Members )________________________________________________*/
-
-    /* Con- and Destruction are **not** necessary in C. No con- or de-
-     * structors of members need to be triggered.                             */
 
 /* START: User's memento extentions __________________________________________*/
 $$MEMENTO_EXTENSIONS$$
@@ -120,7 +117,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
 #   ifdef QUEX_OPTION_INDENTATION_TRIGGER
     bool                            _indentation_handler_active_f;
 #   endif
-    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+    QUEX_NAME(Memento)*             _parent_memento;
     /*__( Reset )_______________________________________________________________
      *                                                                        */
     $$MF: bool reset()$$
@@ -225,5 +222,7 @@ QUEX_INLINE void QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me);
 #endif
 
 $$EPILOG$$
+
+$$INC: implementations-inline.i$$
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */

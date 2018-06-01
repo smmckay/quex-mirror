@@ -37,7 +37,7 @@
 #include "$$CONVERTER_HEADER$$"
 
 #if ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
-$$INC: MemoryManager$$
+$$INC: quex/MemoryManager$$
 #endif
 
 QUEX_NAMESPACE_MAIN_OPEN

@@ -3,8 +3,8 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__CONVERTER_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__CONVERTER_I
 
-$$INC: MemoryManager$$
 $$INC: buffer/lexatoms/converter/Converter$$
+$$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

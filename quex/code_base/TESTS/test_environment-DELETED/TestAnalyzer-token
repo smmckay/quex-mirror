@@ -11,16 +11,18 @@
 #include <stddef.h>
 #include <iostream>
 #include <string>
-#include <test_environment/lib/compatibility/stdint.h>
+#include <test_environment/lib/quex/compatibility/stdint.h>
+#include <test_environment/lib/quex/MemoryManager>
 #include <test_environment/lib/definitions>
 #include <test_environment/lib/asserts>
-#include <test_environment/lib/MemoryManager>
 #include <test_environment/lib/lexeme_base>
 #include <test_environment/converter-from-lexeme>
 
+extern TestAnalyzer_lexatom_t TestAnalyzer_LexemeNull;
 
 
-#   line 22 "test_environment/TestAnalyzer-token"
+
+#   line 24 "test_environment/TestAnalyzer-token"
 
 
 
@@ -64,31 +66,31 @@ TestAnalyzer_Token& operator=(const TestAnalyzer_Token& That);
 virtual ~TestAnalyzer_Token();
 
 
-#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 22 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 const TestAnalyzer_lexatom_t* text;
 
-#   line 67 "test_environment/TestAnalyzer-token"
+#   line 69 "test_environment/TestAnalyzer-token"
 
 
-#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 23 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 size_t                   number;
 
-#   line 71 "test_environment/TestAnalyzer-token"
+#   line 73 "test_environment/TestAnalyzer-token"
 
 
 
 public:
 
-#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 22 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 const TestAnalyzer_lexatom_t* get_text() const                           { return text; }
-#   line 20 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 22 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 void                     set_text(const TestAnalyzer_lexatom_t*& Value)  { text = Value; }
-#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 23 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 size_t                   get_number() const                         { return number; }
-#   line 21 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 23 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 void                     set_number(size_t Value)                   { number = Value; }
 
-#   line 84 "test_environment/TestAnalyzer-token"
+#   line 86 "test_environment/TestAnalyzer-token"
 
 
 void set(const TestAnalyzer_token_id_t ID) { id = ID; }
@@ -121,7 +123,7 @@ void                      set_column_number(const TestAnalyzer_token_column_n_t 
 public:
 #   define self (*this)
 
-#   line 106 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 108 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 operator
 const std::string() const
@@ -137,7 +139,7 @@ return tmp;
 
 
 
-#   line 131 "test_environment/TestAnalyzer-token"
+#   line 133 "test_environment/TestAnalyzer-token"
 
 
 #   undef  self
@@ -153,7 +155,7 @@ const TestAnalyzer_lexatom_t*  End);
 
 
 
-#   line 130 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 132 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 
 inline std::ostream&
@@ -164,7 +166,7 @@ operator<<(std::ostream& ostr, const TestAnalyzer_Token& Tok)
 #include <test_environment/lib/lexeme_base.i>
 
 
-#   line 156 "test_environment/TestAnalyzer-token"
+#   line 158 "test_environment/TestAnalyzer-token"
 
 
 
@@ -189,13 +191,13 @@ TestAnalyzer_Token::TestAnalyzer_Token()
 #   define self (*this)
 #   define LexemeNull  (&TestAnalyzer_LexemeNull)
 
-#   line 26 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 28 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 self.number = 0;
 self.text   = LexemeNull;
 
 
-#   line 185 "test_environment/TestAnalyzer-token"
+#   line 187 "test_environment/TestAnalyzer-token"
 
 
 #   undef  LexemeNull
@@ -209,13 +211,13 @@ TestAnalyzer_Token_copy(this, &Other);
 #   define self (*this)
 #   define LexemeNull  (&TestAnalyzer_LexemeNull)
 
-#   line 26 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 28 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 self.number = 0;
 self.text   = LexemeNull;
 
 
-#   line 203 "test_environment/TestAnalyzer-token"
+#   line 205 "test_environment/TestAnalyzer-token"
 
 
 #   undef  LexemeNull
@@ -228,7 +230,7 @@ TestAnalyzer_Token::~TestAnalyzer_Token()
 #   define self (*this)
 #   define LexemeNull  (&TestAnalyzer_LexemeNull)
 
-#   line 31 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 33 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 if( self.text != LexemeNull ) {
 QUEXED(MemoryManager_free)((void*)self.text,
@@ -237,7 +239,7 @@ self.text = LexemeNull;
 }
 
 
-#   line 223 "test_environment/TestAnalyzer-token"
+#   line 225 "test_environment/TestAnalyzer-token"
 
 
 #   undef  LexemeNull
@@ -275,7 +277,7 @@ TestAnalyzer_Token_copy(TestAnalyzer_Token* __this, const TestAnalyzer_Token* __
 (void)__this;
 (void)__That;
 
-#   line 39 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 41 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 self.id  = Other.id;
 
@@ -294,7 +296,7 @@ __QUEX_IF_COUNT_COLUMNS(self._column_n = Other._column_n);
 #   endif
 
 
-#   line 278 "test_environment/TestAnalyzer-token"
+#   line 280 "test_environment/TestAnalyzer-token"
 
 
 #   undef LexemeNull
@@ -323,7 +325,7 @@ const TestAnalyzer_lexatom_t* End)
 #   define LexemeNull  (&TestAnalyzer_LexemeNull)
 (void)__this;
 
-#   line 57 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 59 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 
 #       if 0
@@ -373,7 +375,7 @@ printf("'\n");
 return false;
 
 
-#   line 355 "test_environment/TestAnalyzer-token"
+#   line 357 "test_environment/TestAnalyzer-token"
 
 
 #   undef  LexemeNull
@@ -390,12 +392,12 @@ TestAnalyzer_Token_repetition_n_get(TestAnalyzer_Token* __this)
 #   define self (*__this)
 (void)__this;
 
-#   line 126 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 128 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 return self.number;
 
 
-#   line 375 "test_environment/TestAnalyzer-token"
+#   line 377 "test_environment/TestAnalyzer-token"
 
 
 #   undef self
@@ -407,12 +409,12 @@ TestAnalyzer_Token_repetition_n_set(TestAnalyzer_Token* __this, size_t N)
 #   define self (*__this)
 (void)__this; (void)N;
 
-#   line 122 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
+#   line 124 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CppDefault.qx"
 
 self.number = N;
 
 
-#   line 390 "test_environment/TestAnalyzer-token"
+#   line 392 "test_environment/TestAnalyzer-token"
 
 
 #   undef  self

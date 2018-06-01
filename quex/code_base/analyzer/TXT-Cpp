@@ -33,33 +33,34 @@ $$INC: include-guard-undef$$
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE_$$LEXER_NAME_SPACE_EXT$$
 
 #include <cstddef>
-$$INC: compatibility/stdint.h$$
+$$INC: quex/compatibility/stdint.h$$
 #include "$$LEXER_CONFIG_FILE$$"
 
 $$INC: definitions$$
 
+/* Forward declarations ______________________________________________________*/
 QUEX_NAMESPACE_MAIN_OPEN 
-struct QUEX_NAME(Engine_tag);
-struct QUEX_NAME(Memento_tag);
+class QUEX_NAME(Memento);
+class $$LEXER_CLASS_NAME$$;    
 $$LEXER_DERIVED_CLASS_DECL$$
-class  QUEX_TYPE0_ANALYZER;    /* $$LEXER_CLASS_NAME$$ */
 typedef void  (*QUEX_NAME(AnalyzerFunctionP))(QUEX_TYPE_ANALYZER*);
 QUEX_NAMESPACE_MAIN_CLOSE
 
-/* Token Class Declaration must preceed the user's header, so that the user
- * can refer to it at ease.                                                    */
 QUEX_NAMESPACE_TOKEN_OPEN
 class QUEX_TYPE0_TOKEN;
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-/* START: User defined header content ___________________________________________
- *        Must come before token class definition, since the token class 
- *        might rely on contents of the header.                                */
+/* User defined header content ________________________________________________
+ * Must come before token class definition, since the token class 
+ * might rely on contents of the header.                                     */
 $$USER_DEFINED_HEADER$$
-/* END: _______________________________________________________________________*/
 
-$$INC: analyzer/headers$$
+/* Declaration of all basic classes ___________________________________________
+ *                                                                           */
+$$INC: declarations$$
 
+/* Token class and token id definitions _______________________________________
+ *                                                                           */
 #include "$$TOKEN_ID_DEFINITION_FILE$$"
 #include "$$TOKEN_CLASS_DEFINITION_FILE$$"
 
@@ -71,33 +72,32 @@ $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 
 typedef bool (*QUEX_NAME(callback_on_token_type))(QUEX_TYPE_TOKEN*);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
-    /* __( Data Members )_______________________________________________________
-     *                                                                        */
-    char*                           __input_name;
-    QUEX_NAME(Buffer)               buffer;
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento) {
+public:
+    QUEX_NAME(Memento)()  {} /* Con- and Destruction necessary to trigger */
+    ~QUEX_NAME(Memento)() {} /* con- and destruction of user members.     */
+
+    char*                             __input_name;
+    QUEX_NAME(Buffer)                 buffer;
 
     const struct QUEX_NAME(Mode_tag)* __current_mode_p; 
-    QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS)
-    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
-#   endif
+    QUEX_NAME(AnalyzerFunctionP)      current_analyzer_function;
 #   if defined(QUEX_OPTION_COUNTER)
-    QUEX_NAME(Counter)              counter;
+    QUEX_NAME(Counter)                counter;
 #   endif
 #   ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    bool                            _indentation_handler_active_f;
+    bool                              _indentation_handler_active_f;
 #   endif
-    struct QUEX_NAME(Memento_tag)*  _parent_memento;
-    /* __( END: Data Members )________________________________________________*/
-
-    QUEX_NAME(Memento_tag)()  {} /* Con- and Destruction necessary to trigger */
-    ~QUEX_NAME(Memento_tag)() {} /* con- and destruction of user members.     */
+    QUEX_NAME(Memento)*               _parent_memento;
 
 /* START: User's memento extentions __________________________________________*/
 $$MEMENTO_EXTENSIONS$$
 /* END: ______________________________________________________________________*/
-} QUEX_NAME(Memento);
+
+#   if defined(QUEX_OPTION_ASSERTS)
+    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
+#   endif
+};
 
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME$$ {
 public:
@@ -123,7 +123,7 @@ public:
 #   ifdef QUEX_OPTION_INDENTATION_TRIGGER
     bool                            _indentation_handler_active_f;
 #   endif
-    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+    QUEX_NAME(Memento)*             _parent_memento;
 
 public:
     typedef QUEX_TYPE_TOKEN      token_type;
@@ -276,7 +276,8 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 $$EPILOG$$
 
-$$INC: analyzer/headers.i$$
+$$INC: implementations-inline.i$$
+
 /* START: User defined header content _________________________________________
  *        The 'footer' content relies on class definitions made above.        */
 $$USER_DEFINED_FOOTER$$

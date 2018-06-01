@@ -24,7 +24,7 @@
 #endif
 
 #define QUEX_SETTING_VERSION           "0.68.2"
-#define QUEX_SETTING_BUILD_DATE        "Mon May 21 23:09:29 2018"
+#define QUEX_SETTING_BUILD_DATE        "Wed May 30 15:42:45 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
 #ifndef    __QUEX_OPTION_PLAIN_C
@@ -109,9 +109,6 @@
 #if defined(__QUEX_OPTION_PLAIN_C)
 /* In 'C' there are no namespaces, so namespaces are coded directly
 * into the type name. Both, global and local names are equal.            */
-#   define QUEX_TYPE0_ANALYZER         struct TestAnalyzer_tag
-#   define QUEX_TYPE_ANALYZER          struct TestAnalyzer_tag
-#   define QUEX_NAME_COMPLETE_ANALYZER TestAnalyzer
 #   define QUEX_TYPE_DERIVED_ANALYZER  struct TestAnalyzer_tag
 
 #   define QUEX_NAMESPACE_MAIN         TestAnalyzer
@@ -119,19 +116,12 @@
 #else
 /* Add namespaces for the global names of the classes of analyzer
 * and token.                                                             */
-#   define QUEX_TYPE0_ANALYZER         TestAnalyzer
-#   define QUEX_TYPE_ANALYZER          ::TestAnalyzer
-#   define QUEX_NAME_COMPLETE_ANALYZER ::TestAnalyzer
 #   define QUEX_TYPE_DERIVED_ANALYZER  TestAnalyzer
 
 #   define QUEX_NAMESPACE_MAIN
 #endif
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-#   define QUEX_TYPE0_TOKEN            struct TestAnalyzer_Token_tag
-#   define QUEX_TYPE_TOKEN             struct TestAnalyzer_Token_tag
-#   define QUEX_NAME_COMPLETE_TOKEN    TestAnalyzer_Token
-
 #   define QUEX_NAMESPACE_TOKEN
 
 #   define QUEX_LEXEME_NULL            TestAnalyzer_LexemeNull
@@ -139,10 +129,6 @@
 #   define TestAnalyzer_Token_NAME       TestAnalyzer_Token_ ## NAME
 
 #else
-#   define QUEX_TYPE0_TOKEN            TestAnalyzer_Token
-#   define QUEX_TYPE_TOKEN             ::TestAnalyzer_Token
-#   define QUEX_NAME_COMPLETE_TOKEN    ::TestAnalyzer_Token
-
 #   define QUEX_NAMESPACE_TOKEN
 
 #   define QUEX_LEXEME_NULL             :: TestAnalyzer_LexemeNull

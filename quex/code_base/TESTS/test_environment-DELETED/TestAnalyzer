@@ -33,7 +33,7 @@
 #define     __QUEX_SIGNAL_DEFINED_LEXER_IN_NAMESPACE___
 
 #include <cstddef>
-#include "test_environment/lib/compatibility/stdint.h"
+#include "test_environment/lib/quex/compatibility/stdint.h"
 #include "test_environment/TestAnalyzer-configuration"
 
 #include "test_environment/lib/definitions"
@@ -42,14 +42,14 @@
 struct TestAnalyzer_Engine_tag;
 struct TestAnalyzer_Memento_tag;
 
-class  QUEX_TYPE0_ANALYZER;    /* TestAnalyzer */
-typedef void  (*TestAnalyzer_AnalyzerFunctionP)(QUEX_TYPE_ANALYZER*);
+class  TestAnalyzer;    /* TestAnalyzer */
+typedef void  (*TestAnalyzer_AnalyzerFunctionP)(::TestAnalyzer*);
 
 
 /* Token Class Declaration must preceed the user's header, so that the user
 * can refer to it at ease.                                                    */
 
-class QUEX_TYPE0_TOKEN;
+class TestAnalyzer_Token;
 
 
 /* START: User defined header content ___________________________________________
@@ -63,7 +63,7 @@ extern bool UserMementoPack_UnitTest_return_value;
 
 /* END: _______________________________________________________________________*/
 
-#include "test_environment/lib/analyzer/headers"
+#include "test_environment/lib/declarations"
 
 #include "test_environment/TestAnalyzer-token_ids"
 #include "test_environment/TestAnalyzer-token"
@@ -74,7 +74,7 @@ extern TestAnalyzer_Mode  TestAnalyzer_M;
 extern TestAnalyzer_Mode  TestAnalyzer_M2;
 
 
-extern  void TestAnalyzer_M_analyzer_function(QUEX_TYPE_ANALYZER* me);
+extern  void TestAnalyzer_M_analyzer_function(::TestAnalyzer* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 extern  bool TestAnalyzer_M_has_base(const TestAnalyzer_Mode* mode);
 #endif
@@ -86,12 +86,12 @@ extern  bool TestAnalyzer_M_has_exit_to(const TestAnalyzer_Mode* mode);
 #endif
 extern  void TestAnalyzer_M_on_buffer_before_change(void* aux);
 extern  void TestAnalyzer_M_on_buffer_overflow(void* aux);
-extern  void TestAnalyzer_M_on_entry(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* mode);
-extern  void TestAnalyzer_M_on_exit(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* mode);
+extern  void TestAnalyzer_M_on_entry(::TestAnalyzer* me, const TestAnalyzer_Mode* mode);
+extern  void TestAnalyzer_M_on_exit(::TestAnalyzer* me, const TestAnalyzer_Mode* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-extern  void TestAnalyzer_M_on_indentation(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
+extern  void TestAnalyzer_M_on_indentation(::TestAnalyzer* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
-extern  void TestAnalyzer_M2_analyzer_function(QUEX_TYPE_ANALYZER* me);
+extern  void TestAnalyzer_M2_analyzer_function(::TestAnalyzer* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 extern  bool TestAnalyzer_M2_has_base(const TestAnalyzer_Mode* mode);
 #endif
@@ -103,14 +103,14 @@ extern  bool TestAnalyzer_M2_has_exit_to(const TestAnalyzer_Mode* mode);
 #endif
 extern  void TestAnalyzer_M2_on_buffer_before_change(void* aux);
 extern  void TestAnalyzer_M2_on_buffer_overflow(void* aux);
-extern  void TestAnalyzer_M2_on_entry(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* mode);
-extern  void TestAnalyzer_M2_on_exit(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* mode);
+extern  void TestAnalyzer_M2_on_entry(::TestAnalyzer* me, const TestAnalyzer_Mode* mode);
+extern  void TestAnalyzer_M2_on_exit(::TestAnalyzer* me, const TestAnalyzer_Mode* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-extern  void TestAnalyzer_M2_on_indentation(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
+extern  void TestAnalyzer_M2_on_indentation(::TestAnalyzer* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
 
 
-typedef bool (*TestAnalyzer_callback_on_token_type)(QUEX_TYPE_TOKEN*);
+typedef bool (*TestAnalyzer_callback_on_token_type)(::TestAnalyzer_Token*);
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_Memento_tag {
 /* __( Data Members )_______________________________________________________
@@ -167,7 +167,7 @@ bool                            _indentation_handler_active_f;
 struct TestAnalyzer_Memento_tag*  _parent_memento;
 
 public:
-typedef QUEX_TYPE_TOKEN      token_type;
+typedef ::TestAnalyzer_Token      token_type;
 typedef TestAnalyzer_token_id_t   token_id_type;
 typedef TestAnalyzer_lexatom_t    char_type;
 
@@ -225,11 +225,11 @@ bool include_detect_recursion(const char* InputName) { return TestAnalyzer_MF_in
 /*__( Receiving Tokens -- from outside lexer )_____________________________
 *                                                                       */
 bool run(TestAnalyzer_callback_on_token_type on_token, bool ErrorPrintF) { return TestAnalyzer_MF_run(this, on_token, ErrorPrintF); }
-void receive(QUEX_TYPE_TOKEN** token_pp) { TestAnalyzer_MF_receive(this, token_pp); }
+void receive(::TestAnalyzer_Token** token_pp) { TestAnalyzer_MF_receive(this, token_pp); }
 
 /*__( Sending Tokens -- from inside lexer )________________________________
 *                                                                       */
-QUEX_TYPE_TOKEN* token_p() { return TestAnalyzer_MF_token_p(this); }
+::TestAnalyzer_Token* token_p() { return TestAnalyzer_MF_token_p(this); }
 
 void send(TestAnalyzer_token_id_t Id) { TestAnalyzer_MF_send(this, Id); }
 void send_n(TestAnalyzer_token_id_t Id, size_t RepetitionN) { TestAnalyzer_MF_send_n(this, Id, RepetitionN); }
@@ -306,7 +306,7 @@ bool resources_absent() { return TestAnalyzer_MF_resources_absent(this); }
 
 public:
 /* Befriend all modes                                                     */
-friend  void TestAnalyzer_M_analyzer_function(QUEX_TYPE_ANALYZER* me);
+friend  void TestAnalyzer_M_analyzer_function(::TestAnalyzer* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 friend  bool TestAnalyzer_M_has_base(const TestAnalyzer_Mode* mode);
 #endif
@@ -318,12 +318,12 @@ friend  bool TestAnalyzer_M_has_exit_to(const TestAnalyzer_Mode* mode);
 #endif
 friend  void TestAnalyzer_M_on_buffer_before_change(void* aux);
 friend  void TestAnalyzer_M_on_buffer_overflow(void* aux);
-friend  void TestAnalyzer_M_on_entry(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* mode);
-friend  void TestAnalyzer_M_on_exit(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* mode);
+friend  void TestAnalyzer_M_on_entry(::TestAnalyzer* me, const TestAnalyzer_Mode* mode);
+friend  void TestAnalyzer_M_on_exit(::TestAnalyzer* me, const TestAnalyzer_Mode* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-friend  void TestAnalyzer_M_on_indentation(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
+friend  void TestAnalyzer_M_on_indentation(::TestAnalyzer* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
-friend  void TestAnalyzer_M2_analyzer_function(QUEX_TYPE_ANALYZER* me);
+friend  void TestAnalyzer_M2_analyzer_function(::TestAnalyzer* me);
 #ifdef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 friend  bool TestAnalyzer_M2_has_base(const TestAnalyzer_Mode* mode);
 #endif
@@ -335,10 +335,10 @@ friend  bool TestAnalyzer_M2_has_exit_to(const TestAnalyzer_Mode* mode);
 #endif
 friend  void TestAnalyzer_M2_on_buffer_before_change(void* aux);
 friend  void TestAnalyzer_M2_on_buffer_overflow(void* aux);
-friend  void TestAnalyzer_M2_on_entry(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* mode);
-friend  void TestAnalyzer_M2_on_exit(QUEX_TYPE_ANALYZER* me, const TestAnalyzer_Mode* mode);
+friend  void TestAnalyzer_M2_on_entry(::TestAnalyzer* me, const TestAnalyzer_Mode* mode);
+friend  void TestAnalyzer_M2_on_exit(::TestAnalyzer* me, const TestAnalyzer_Mode* mode);
 #ifdef QUEX_OPTION_INDENTATION_TRIGGER
-friend  void TestAnalyzer_M2_on_indentation(QUEX_TYPE_ANALYZER* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
+friend  void TestAnalyzer_M2_on_indentation(::TestAnalyzer* me, TestAnalyzer_indentation_t Indentation, TestAnalyzer_lexatom_t* Lexeme);
 #endif
 
 private:
@@ -351,7 +351,8 @@ TestAnalyzer& operator=(const TestAnalyzer& Other); /* Forbidden */
 
 
 
-#include "test_environment/lib/analyzer/headers.i"
+#include "test_environment/lib/implementations-inline.i"
+
 /* START: User defined header content _________________________________________
 *        The 'footer' content relies on class definitions made above.        */
 
@@ -364,14 +365,14 @@ TestAnalyzer& operator=(const TestAnalyzer& Other); /* Forbidden */
 
 #if defined(__QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void
-TestAnalyzer_member_functions_assign(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_member_functions_assign(::TestAnalyzer* me)
 {
 
 }
 #endif
 
 bool
-TestAnalyzer_user_constructor(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_constructor(::TestAnalyzer* me)
 {
     (void)me;
 
@@ -384,7 +385,7 @@ return UserConstructor_UnitTest_return_value;
 }
 
 void
-TestAnalyzer_user_destructor(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_destructor(::TestAnalyzer* me)
 {
     (void)me;
 
@@ -396,7 +397,7 @@ TestAnalyzer_user_destructor(QUEX_TYPE_ANALYZER* me)
 }
 
 bool
-TestAnalyzer_user_reset(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_reset(::TestAnalyzer* me)
 {
     (void)me;
 
@@ -409,7 +410,7 @@ return UserReset_UnitTest_return_value;
 }
 
 void
-TestAnalyzer_user_print(QUEX_TYPE_ANALYZER* me)
+TestAnalyzer_user_print(::TestAnalyzer* me)
 {
     (void)me;
 
@@ -421,7 +422,7 @@ TestAnalyzer_user_print(QUEX_TYPE_ANALYZER* me)
 }
 
 bool
-TestAnalyzer_user_memento_pack(QUEX_TYPE_ANALYZER* me, 
+TestAnalyzer_user_memento_pack(::TestAnalyzer* me, 
                              const char*         InputName, 
                              TestAnalyzer_Memento* memento) 
 {
@@ -436,7 +437,7 @@ return UserMementoPack_UnitTest_return_value;
 }
 
 void
-TestAnalyzer_user_memento_unpack(QUEX_TYPE_ANALYZER*  me, 
+TestAnalyzer_user_memento_unpack(::TestAnalyzer*  me, 
                                TestAnalyzer_Memento*  memento)
 {
     (void)me; (void)memento;
@@ -460,8 +461,5 @@ bool UserMementoPack_UnitTest_return_value = true;
 
 #ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
 #include "test_environment/TestAnalyzer-token"
-
-TestAnalyzer_lexatom_t   TestAnalyzer_LexemeNull = (TestAnalyzer_lexatom_t)0;
-
 
 #endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */

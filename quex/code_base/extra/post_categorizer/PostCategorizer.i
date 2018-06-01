@@ -2,11 +2,11 @@
 #ifndef __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I
 #define __QUEX_INCLUDE_GUARD__EXTRA__POST_CATEGORIZER__POST_CATEGORIZER_I
 
-$$INC: MemoryManager$$
 $$INC: extra/post_categorizer/PostCategorizer$$
 $$INC: lexeme_base$$
 $$INC: ../converter-from-lexeme$$
 $$INC: ../converter-from-lexeme.i$$
+$$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

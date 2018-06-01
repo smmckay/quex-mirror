@@ -18,6 +18,7 @@ import quex.blackboard                  as     blackboard
 from   quex.input.code.base             import CodeFragment
 
 # re_include_guard = re.compile(r"__QUEX_INCLUDE_[A-Z_a-z0-9]*")
+output_dir = None
 
 blackboard.header = CodeFragment(
 """
@@ -30,20 +31,19 @@ blackboard.reset_extension             = CodeFragment("return UserReset_UnitTest
 blackboard.memento_pack_extension      = CodeFragment("return UserMementoPack_UnitTest_return_value;")
 
 def code(Language):
+    global output_dir
     global tail_str
-    current_dir = os.getcwd()
-    os.chdir("..")
-    command_line.do(["-i", "test_environment/nothing.qx", "-o", "TestAnalyzer", "--odir",  "test_environment",
-                     "--language", Language])
+    command_line.do(["-i", "nothing.qx", "-o", "TestAnalyzer", 
+                     "--odir",  output_dir, "--language", Language])
     mode_db = quex_file_parser.do(Setup.input_mode_files)
 
     core._generate(mode_db)
-    os.chdir(current_dir)
 
     return mode_db
 
 def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
 
+    global output_dir
     dummy, \
     member_function_signature_list = analyzer_class.do(mode_db, "")
 
@@ -53,7 +53,7 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     analyzer_class_implementation += analyzer_class.do_implementation(mode_db, 
                                                                       member_function_signature_list)
     analyzer_class_implementation += "\n"
-    analyzer_class_implementation += templates.get_implementation_header(Setup)
+    # analyzer_class_implementation += templates.get_implementation_header(Setup)
     analyzer_class_implementation += "\n"
     analyzer_class_implementation += "bool UserConstructor_UnitTest_return_value = true;\n"
     analyzer_class_implementation += "bool UserReset_UnitTest_return_value       = true;\n"
@@ -61,19 +61,18 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     analyzer_class_implementation += "#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n"
 
     with open(FileName, "a") as fh:
-        fh.write("%s\n" % adapt.do(analyzer_class_implementation, "ut"))
+        fh.write("%s\n" % adapt.do(analyzer_class_implementation, output_dir))
 
     if not TokenClassImplementationF:
         return
 
     dummy,                     \
     dummy,                     \
-    dummy,                     \
     token_class_implementation = token_class.do()
 
     with open(FileName, "a") as fh:
         fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")
-        fh.write("%s\n" % adapt.do(token_class_implementation, "ut"))
+        fh.write("%s\n" % adapt.do(token_class_implementation, output_dir))
 
         # fh.write("#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
         # fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
@@ -84,11 +83,12 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     Lng.straighten_open_line_pragmas(FileName)
 
 def append_variable_definitions(FileName):
+    global output_dir
     fh = open(FileName)
     content = fh.read()
     fh.close()
     fh = open(FileName, "wb")
-    fh.write("%s\n" % adapt.do(content, "ut"))
+    fh.write("%s\n" % adapt.do(content, output_dir))
     fh.write("\n")
     fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
     fh.write("bool UserReset_UnitTest_return_value       = true;\n")
@@ -97,17 +97,20 @@ def append_variable_definitions(FileName):
 
 Setup._debug_leave_basic_language_macros_f = True
 if sys.argv[1] == "C++":
+    output_dir = "test_cpp"
     mode_db = code("C++")
-    add_engine_stuff(mode_db, "TestAnalyzer", TokenClassImplementationF=True)
-    os.rename("TestAnalyzer.cpp", "TestAnalyzer-dummy.cpp")
-    append_variable_definitions("TestAnalyzer-dummy.cpp")
+    # os.system("cp test_cpp/TestAnalyzer Debug_TestAnalyzer")
+    add_engine_stuff(mode_db, "test_cpp/TestAnalyzer", TokenClassImplementationF=True)
+    os.rename("test_cpp/TestAnalyzer.cpp", "test_cpp/TestAnalyzer-dummy.cpp")
+    append_variable_definitions("test_cpp/TestAnalyzer-dummy.cpp")
 
 elif sys.argv[1] == "C":
+    output_dir = "test_c"
     mode_db = code("C")
-    add_engine_stuff(mode_db, "TestAnalyzer.h",
+    add_engine_stuff(mode_db, "test_c/TestAnalyzer.h",
                      TokenClassImplementationF=True)
-    os.rename("TestAnalyzer.c", "TestAnalyzer-dummy.c")
-    append_variable_definitions("TestAnalyzer-dummy.c")
+    os.rename("test_c/TestAnalyzer.c", "test_c/TestAnalyzer-dummy.c")
+    append_variable_definitions("test_c/TestAnalyzer-dummy.c")
 
 else:
     print "pass 'C' or C++' as first command line argument"

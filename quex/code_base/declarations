@@ -13,6 +13,10 @@ $$INC: analyzer/asserts$$
 
 $$INC: definitions$$
 
+QUEX_NAMESPACE_MAIN_OPEN
+extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);
+QUEX_NAMESPACE_MAIN_CLOSE
+
 #ifdef __QUEX_OPTION_UNIT_TEST
 $$INC: extra/strange_stream/StrangeStream$$
 #endif
@@ -39,6 +43,6 @@ $$INC: analyzer/Mode$$
 $$INC: analyzer/Counter$$
 #endif
 
-$$INC: MemoryManager$$
+$$INC: quex/MemoryManager$$
 
 #endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS */

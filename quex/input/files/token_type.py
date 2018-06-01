@@ -291,6 +291,7 @@ def parse(fh):
                   "modify any standard member types, nor does it define a class\n" + \
                   "different from '%s'." % Setup.token_class_name, fh)
 
+    Setup.token_class_name = result.class_name
     result.consistency_check()
     return result
 

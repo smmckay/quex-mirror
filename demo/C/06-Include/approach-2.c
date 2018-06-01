@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 static void  space(size_t N);
-static void  print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p); 
+static void  print_token(Easy* qlex, Easy_Token* token_p); 
 
 int 
 main(int argc, char** argv) 
@@ -36,7 +36,7 @@ space(size_t N)
 { size_t i = 0; for(i=0; i<N; ++i) printf("    "); }
 
 static void  
-print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p)
+print_token(Easy* qlex, Easy_Token* token_p)
 { 
     const size_t    BufferSize = 1024;
     char            buffer[1024];
@@ -61,7 +61,7 @@ print_token(QUEX_TYPE_ANALYZER* qlex, QUEX_TYPE_TOKEN* token_p)
 }
 
 void 
-my_print(QUEX_TYPE_ANALYZER* qlex, const char* Str1, 
+my_print(Easy* qlex, const char* Str1, 
          const char* Str2 /* = 0x0 */, const char* Str3 /* = 0x0*/)
 {
     space(qlex->include_depth);

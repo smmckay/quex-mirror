@@ -5,8 +5,9 @@
 
 $$INC: definitions$$
 $$INC: asserts$$
-$$INC: MemoryManager$$
-
+$$INC: quex/MemoryManager$$
+$$INCLUDE_TOKEN_CLASS_DEFINITION$$
+/* $$INCLUDE_LEXER_CLASS_DEFINITION$$ */
 
 QUEX_NAMESPACE_MAIN_OPEN
 

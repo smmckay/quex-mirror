@@ -4,9 +4,6 @@
  * ABSOLUTELY NO WARRANTY              */
 #ifndef __QUEX_INCLUDE_GUARD__ANALYZER__MODE
 #define __QUEX_INCLUDE_GUARD__ANALYZER__MODE
-#ifndef   QUEX_TYPE_ANALYZER
-#   error "Macro QUEX_TYPE_ANALYZER must be defined before inclusion of this file."
-#endif
 
 $$INC: definitions$$
 $$INC: buffer/Buffer$$

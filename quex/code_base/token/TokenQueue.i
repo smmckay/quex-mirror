@@ -14,7 +14,7 @@
 
 $$INC: definitions$$
 $$INC: asserts$$
-$$INC: MemoryManager$$
+$$INC: quex/MemoryManager$$
 
 /* NOTE: QUEX_TYPE_TOKEN must be defined at this place!                       */
 

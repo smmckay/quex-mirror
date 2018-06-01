@@ -158,6 +158,4 @@ def comment_match_behavior(ModeIterable):
                           txt                      + \
                           "\nEND: MODE PATTERNS")
 
-def frame_this(Code):
-    return Lng.frame_all(Code, Setup)
 

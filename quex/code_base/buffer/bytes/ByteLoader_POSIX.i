@@ -3,8 +3,8 @@
 #ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_POSIX_I
 #define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_POSIX_I
 
-$$INC: MemoryManager$$
 $$INC: buffer/bytes/ByteLoader_POSIX$$
+$$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 

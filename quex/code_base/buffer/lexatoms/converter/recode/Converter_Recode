@@ -10,7 +10,7 @@
 
 $$INC: buffer/converter/Converter$$
 
-$$INC: compatibility/stdbool-pseudo.h$$
+$$INC: quex/compatibility/stdbool-pseudo.h$$
  
 #if ! defined (__QUEX_OPTION_PLAIN_C)
     extern "C" { 

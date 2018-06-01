@@ -11,11 +11,12 @@ extern "C" {
 }
 #endif
 $$INC: definitions$$
-$$INC: compatibility/iconv-argument-types.h$$
-$$INC: MemoryManager$$
-$$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
-
 $$INC: analyzer/configuration/validation$$
+
+$$INC: buffer/lexatoms/converter/iconv/Converter_IConv$$
+$$INC: quex/compatibility/iconv-argument-types.h$$
+$$INC: quex/MemoryManager$$
+
 
 QUEX_NAMESPACE_MAIN_OPEN
 

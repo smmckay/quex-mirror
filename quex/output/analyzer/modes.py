@@ -14,12 +14,10 @@ def do(ModeDb):
     # -- mode class member function definitions (on_entry, on_exit, has_base, ...)
     mode_class_member_functions_txt = write_member_functions(ModeDb.values())
 
-    txt  = "".join([
-        "QUEX_NAMESPACE_MAIN_OPEN\n",
+    txt  = Lng.FRAME_IN_NAMESPACE_MAIN("".join([
         mode_setup_txt,
         mode_class_member_functions_txt,
-        "QUEX_NAMESPACE_MAIN_CLOSE\n"
-    ])
+    ]))
 
     return blue_print(txt, [
         ["$$LEXER_CLASS_NAME$$",         LexerClassName],
@@ -31,7 +29,7 @@ def write_member_functions(Modes):
     #    (on_entry, on_exit, on_indent, on_dedent, has_base, has_entry, has_exit, ...)
     txt  = [
         Lng.DEFINE_SELF("me"), 
-        "#define LexemeNull  (&QUEX_LEXEME_NULL)\n"
+        "#define LexemeNull  (&QUEX_NAME(LexemeNull))\n"
         "#define RETURN      return\n"
     ]
     txt.extend(

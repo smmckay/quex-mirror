@@ -7,7 +7,7 @@
 #define __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_I
 
 $$INC: definitions$$
-$$INC: MemoryManager$$
+$$INC: quex/MemoryManager$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 

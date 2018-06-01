@@ -36,7 +36,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 extern "C" {
 #endif
 #include <stdio.h>
-$$INC: MemoryManager$$
+$$INC: quex/MemoryManager$$
 #ifdef __cplusplus
 }
 #endif

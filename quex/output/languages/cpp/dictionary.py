@@ -157,8 +157,6 @@ class Language(dict):
     def BUFFER_SEEK(self, Position):
         return "QUEX_NAME(Buffer_seek)(&me->buffer, %s)" % Position
 
-    def frame_all(self, Code, Setup):      return templates.frame_of_all(Code, Setup)
-
     def open_template(self, PathTail):
         full_path = os.path.normpath(os.path.join(QUEX_PATH, PathTail))
         return get_file_content_or_die(full_path)
@@ -362,9 +360,10 @@ class Language(dict):
         return " ".join("} /* close %s */" % name for name in NameList)
 
     def NAMESPACE_REFERENCE(self, NameList, TrailingDelimiterF=True):
-        result = reduce(lambda x, y: x + "::" + y, [""] + NameList) + "::"
-        if TrailingDelimiterF: return result
-        else:                  return result[:-2]
+        if NameList: result = "::".join(NameList)
+        else:        result = ""
+        if TrailingDelimiterF: return result + "::"
+        else:                  return result
 
     def NAME_IN_NAMESPACE(self, Name, NameList):
         return "%s%s" % (self.NAMESPACE_REFERENCE(NameList), Name)
@@ -879,15 +878,19 @@ class Language(dict):
         else:
             return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (name, IteratorName)
 
-    def INCLUDE(self, Path):
+    def INCLUDE(self, Path, Condition=None):
+        if not blackboard.condition_holds(Condition): return ""
         return "#include \"%s\"" % Path
 
     def ENGINE_TEXT_EPILOG(self):
-        if Setup.analyzer_derived_class_file: 
-            header = self.INCLUDE(Setup.analyzer_derived_class_file)
-        else:                                 
-            header = self.INCLUDE(Setup.output_header_file)
-        return cpp_include_Multi_i_str.replace("$$HEADER$$", header)
+        if Setup.analyzer_derived_class_file: header = self.INCLUDE(Setup.analyzer_derived_class_file)
+        else:                                 header = self.INCLUDE(Setup.output_header_file)
+        footer = self.FOOTER_IN_IMPLEMENTATION()
+        return implementation_headers_txt.replace("$$HEADER$$", header) \
+                                         .replace("$$FOOTER$$", footer)
+
+    def FOOTER_IN_IMPLEMENTATION(self):
+        return ""
     
     def MODE_GOTO(self, Mode):
         return "self.enter_mode(%s);" % Mode
@@ -1362,9 +1365,10 @@ class Language(dict):
         def_str = "\n".join("typedef %s %s_%s;" % (original, acn, customized_name) 
                          for customized_name, original in type_def_list 
                          if customized_name not in excluded)
-        return "QUEX_NAMESPACE_MAIN_OPEN\n" \
-               + "%s\n" % def_str \
-               + "QUEX_NAMESPACE_MAIN_CLOSE\n"
+        return self.FRAME_IN_NAMESPACE_MAIN(def_str)
+
+    def FRAME_IN_NAMESPACE_MAIN(self, Code):
+        return "QUEX_NAMESPACE_MAIN_OPEN\n%s\nQUEX_NAMESPACE_MAIN_CLOSE\n" % Code
 
     def adapt_to_configuration(self, Txt):
         if not Txt: return Txt
@@ -1379,18 +1383,7 @@ class Language(dict):
             token_name_space = ""
 
         # Types
-        replacements = [
-             ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
-             ("QUEX_TYPE_TOKEN",          self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
-             ("QUEX_TYPE0_TOKEN",         "struct %s_tag" % Setup.token_class_name),
-             ("QUEX_TYPE_ANALYZER",       self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
-             ("QUEX_TYPE0_ANALYZER",      "struct %s_tag" % Setup.analyzer_class_name),
-             ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
-             ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
-             ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),
-             ("QUEX_TYPE_ACCEPTANCE_ID",  "%s_acceptance_id_t" % acn),
-             ("QUEX_TYPE_INDENTATION",    "%s_indentation_t" % acn)
-        ]
+        replacements = self.type_replacements()
 
         # Namespaces
         replacements.extend([
@@ -1415,14 +1408,30 @@ class Language(dict):
 
         return blue_print(txt, replacements, CommonStart="QUEX_")
 
-cpp_include_Multi_i_str = """
+    def type_replacements(self):
+        acn = Setup.analyzer_class_name
+
+        return [
+             ("QUEX_TYPE_TOKEN",          self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
+             ("QUEX_TYPE0_TOKEN",         Setup.token_class_name),
+             ("QUEX_TYPE_ANALYZER",       self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_ANALYZER",      Setup.analyzer_class_name),
+             ("QUEX_TYPE_MEMENTO",        self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
+             ("QUEX_TYPE0_MEMENTO",       "%s_Memento" % Setup.analyzer_class_name),
+             ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
+             ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
+             ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
+             ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),
+             ("QUEX_TYPE_ACCEPTANCE_ID",  "%s_acceptance_id_t" % acn),
+             ("QUEX_TYPE_INDENTATION",    "%s_indentation_t" % acn)
+        ]
+
+implementation_headers_txt = """
 $$HEADER$$
 $$INC: analyzer/C-adaptions.h$$
-/* The file 'multi.i' contains implementations which are the same for all 
- * possibly generated analyzers. If QUEX_OPTION_MULTI is defined, it is
- * NOT supposed to be included here. If not--in which case we have a single
- * analzer--then it is included.                                             */
-$$INC: single.i$$
+$$INC: implementations.i$$
+
+$$FOOTER$$
 """
 
 cpp_reload_forward_str = """

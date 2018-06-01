@@ -47,18 +47,11 @@
 #ifndef  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__INCLUDE_STACK_I
 #define  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__INCLUDE_STACK_I
 
-/*  __QUEX_INCLUDE_GUARD__ANALYZER__STRUCT__INCLUDE_STACK_I may be undefined in case
- *    that multiple lexical analyzers are used. Then, the name of the
- *    QUEX_NAME(Accumulator) must be different.                               */
-#ifndef   QUEX_TYPE_ANALYZER
-#   error "Macro QUEX_TYPE_ANALYZER must be defined before inclusion of this file."
-#endif
-
 
 QUEX_NAMESPACE_MAIN_OPEN
 
 QUEX_INLINE bool
-QUEX_NAME(Memento_construct)(QUEX_NAME(Memento)* memento,
+QUEX_NAME(Memento_construct)(QUEX_TYPE_MEMENTO* memento,
                              QUEX_TYPE_ANALYZER* me,
                              const char*         InputNameP);
 
@@ -183,7 +176,7 @@ QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
                                 QUEX_NAME(LexatomLoader)* new_filler)
 {
     char*               new_input_name;
-    QUEX_NAME(Memento)* memento;
+    QUEX_TYPE_MEMENTO* memento;
     
     new_input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
     if( ! new_input_name ) {
@@ -191,8 +184,8 @@ QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
         goto ERROR_0;
     }
 
-    memento = (QUEX_NAME(Memento)*)QUEXED(MemoryManager_allocate)(
-                      sizeof(QUEX_NAME(Memento)), E_MemoryObjectType_MEMENTO);
+    memento = (QUEX_TYPE_MEMENTO*)QUEXED(MemoryManager_allocate)(
+                      sizeof(QUEX_TYPE_MEMENTO), E_MemoryObjectType_MEMENTO);
     if( ! memento ) {
         goto ERROR_1;
     }
@@ -231,7 +224,7 @@ ERROR_0:
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Memento_construct)(QUEX_NAME(Memento)* memento,
+QUEX_NAME(Memento_construct)(QUEX_TYPE_MEMENTO* memento,
                              QUEX_TYPE_ANALYZER* me,
                              const char*         InputNameP)
 {
@@ -243,7 +236,7 @@ QUEX_NAME(Memento_construct)(QUEX_NAME(Memento)* memento,
 #   ifndef __QUEX_OPTION_PLAIN_C
     /* Use placement 'new' for explicit call of constructor. 
      * Necessary in C++: Call to constructor for user defined members.        */
-    new ((void*)memento) QUEX_NAME(Memento);
+    new ((void*)memento) QUEX_TYPE_MEMENTO;
 #   endif
 
     /* 'memento->__input_name' points to previously allocated memory.         */
@@ -278,7 +271,7 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 /* RETURNS: true, if there was a memento that has been restored. 
  *          false, else.                                                     */
 {
-    QUEX_NAME(Memento)* memento;
+    QUEX_TYPE_MEMENTO* memento;
     
     /* Not included? return 'false' to indicate we're on the top level       */
     if( ! me->_parent_memento ) {
@@ -333,7 +326,7 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 #   ifndef __QUEX_OPTION_PLAIN_C
     /* Counterpart to placement new: Explicit destructor call.
      * Necessary in C++: Trigger call to destructor for user defined members.*/
-    memento->~QUEX_NAME(Memento_tag)();
+    memento->~QUEX_TYPE0_MEMENTO();
 #   endif
 
     QUEXED(MemoryManager_free)((void*)memento, E_MemoryObjectType_MEMENTO); 
@@ -354,7 +347,7 @@ QUEX_INLINE bool
 QUEX_NAME(MF_include_detect_recursion)(QUEX_TYPE_ANALYZER* me,
                                        const char*         InputName)
 {
-    QUEX_NAME(Memento)* iterator;
+    QUEX_TYPE_MEMENTO* iterator;
     for(iterator = me->_parent_memento; iterator ; 
         iterator = iterator->_parent_memento ) {
         if( __QUEX_STD_strcmp(iterator->__input_name, InputName) == 0 ) {

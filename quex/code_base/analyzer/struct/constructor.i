@@ -34,10 +34,6 @@ $$INC: buffer/Buffer.i$$
 $$INC: buffer/lexatoms/LexatomLoader.i$$
 $$INC: analyzer/struct/include-stack$$
 
-#if ! defined(QUEX_TYPE_TOKEN)
-#      error "QUEX_TYPE_TOKEN definition missing!"
-#endif
-
 QUEX_NAMESPACE_MAIN_OPEN
                     
 QUEX_INLINE void   QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER*  me,
@@ -198,7 +194,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 
     me->__input_name = (char*)0;
 
-    me->_parent_memento = (QUEX_NAME(Memento)*)0;
+    me->_parent_memento = (QUEX_TYPE_MEMENTO*)0;
 
     if( ! QUEX_NAME(TokenQueue_construct)(&me->_token_queue, me,
                                           QUEX_SETTING_TOKEN_QUEUE_SIZE) ) {
@@ -311,7 +307,7 @@ QUEX_NAME(MF_resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
     me->__current_mode_p          = (QUEX_NAME(Mode)*)0; 
 
     QUEX_NAME(ModeStack_resources_absent_mark)(&me->_mode_stack);
-    me->_parent_memento = (QUEX_NAME(Memento)*)0;
+    me->_parent_memento = (QUEX_TYPE_MEMENTO*)0;
     me->__input_name = (char*)0;
 }
 
@@ -337,7 +333,7 @@ QUEX_NAME(MF_resources_absent)(QUEX_TYPE_ANALYZER* me)
     if( ! QUEX_NAME(TokenQueue_resources_absent)(&me->_token_queue) ) {
         return false;
     }
-    else if( me->_parent_memento != (QUEX_NAME(Memento)*)0 ) {
+    else if( me->_parent_memento != (QUEX_TYPE_MEMENTO*)0 ) {
         return false;
     }
     else if( ! QUEX_NAME(Buffer_resources_absent)(&me->buffer) ) {

@@ -1,7 +1,7 @@
 QUEX_NAMESPACE_MAIN_OPEN
 
 #if defined(__QUEX_OPTION_PLAIN_C)
-QUEX_INLINE void
+void
 QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
 {
 $$MEMBER_FUNCTION_ASSIGNMENT$$

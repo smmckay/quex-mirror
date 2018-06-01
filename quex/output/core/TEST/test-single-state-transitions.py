@@ -155,7 +155,8 @@ main_template = """
 #include "../../../code_base/TESTS/minimum-definitions.h"
 #include <stdio.h>
 #define __QUEX_OPTION_PLAIN_C
-#include "ut/lib/single.i"
+#include "ut/lib/implementations.i"
+#include "ut/lib/implementations-inline.i"
 
 typedef struct {
     struct {

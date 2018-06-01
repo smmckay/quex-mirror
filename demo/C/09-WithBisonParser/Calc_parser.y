@@ -85,7 +85,7 @@ void Calc_yyerror(struct Calc_lexer_tag *qlex, const char*  m)
 
 int Calc_yylex(YYSTYPE *yylval, struct Calc_lexer_tag *qlex)
 {
-	QUEX_TYPE_TOKEN* token;
+	Calc_lexer_Token* token;
 
 	qlex->receive(qlex, &token);
 

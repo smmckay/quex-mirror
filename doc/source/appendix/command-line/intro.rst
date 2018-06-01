@@ -57,8 +57,6 @@ Default: empty list
 
     
 
-Default: Lexer
-
 .. cmdoption:: --insight 
 
     Prints insights on construction process together with time stamps. This option is usefule 
@@ -76,8 +74,6 @@ Default: false (disabled)
     as a base.  
 
     
-
-Default: --
 
 .. cmdoption:: --file-extension-scheme, --fes scheme
 
@@ -533,7 +529,7 @@ and 0x93. Each byte is read separately and causes a separate state transition.
 
 Default: -1
 
-.. cmdoption:: --buffer-element-type, --bet type name
+.. cmdoption:: --lexatom-type, --buffer-element-type, --bet type name
 
     A flexible approach to specify the buffer element size and type is by specifying the name of the 
     buffer element's type, which is the purpose of this option. Note, that there are some 'well-known' 

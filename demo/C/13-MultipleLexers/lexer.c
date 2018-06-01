@@ -9,7 +9,6 @@
 
 /* When using multiple lexical analyzers, it must be compiled with 
  * QUEX_OPTION_MULTI and 'multi.i' must be included in one single file.      */
-#include <boeck/lib/multi.i>
 #include <stdio.h> 
 
 int 
