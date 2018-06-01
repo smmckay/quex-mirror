@@ -5,7 +5,7 @@
 #include "minimum-definitions.h"
 #include "ut/lib/definitions"
 #include "ut/lib/buffer/Buffer"
-#include "ut/lib/MemoryManager"
+#include "ut/lib/quex/MemoryManager"
 #include <hwut_unit.h>
 #include <stdio.h>
 #include <stddef.h>

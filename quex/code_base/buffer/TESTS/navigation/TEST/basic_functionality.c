@@ -27,7 +27,7 @@
 #include <basic_functionality.h>
 #include <hwut_unit.h>
 
-#include "ut/lib/MemoryManager.i"
+#include "ut/lib/quex/MemoryManager.i"
 //#include "ut/lib/buffer/asserts.i"
 
 /* Number of positionings defines the duration of the test! For analysis,

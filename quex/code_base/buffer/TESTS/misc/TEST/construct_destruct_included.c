@@ -19,7 +19,7 @@
 #include "MemoryManager_UnitTest.i"
 #include "ut/lib/definitions"
 #include "ut/lib/buffer/Buffer"
-#include "ut/lib/MemoryManager"
+#include "ut/lib/quex/MemoryManager"
 #include "ut/lib/buffer/Buffer.i"
 
 #include <hwut_unit.h>

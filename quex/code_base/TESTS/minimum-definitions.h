@@ -1,5 +1,5 @@
-#include "test_environment/lib/compatibility/stdint.h"
 #include <assert.h>
+#include "ut/lib/quex/compatibility/stdint.h"
 #ifdef __cplusplus
 #  include <string>
    class  TestAnalyzer;

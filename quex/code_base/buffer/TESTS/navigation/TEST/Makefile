@@ -35,7 +35,7 @@ DEFS := -DQUEX_OPTION_ASSERTS \
 
 # -DUNIT_TEST_POSITIONING_TEST_N=128 
 
-INCLUDES   := -I. -I$(HWUT_PATH)/support/C -I../../../../
+INCLUDES   := -I. -I$(HWUT_PATH)/support/C -I../../../../ 
 
 SIZE_1     := -DQUEX_TYPE_LEXATOM=uint8_t
 SIZE_2     := -DQUEX_TYPE_LEXATOM=uint16_t
@@ -82,18 +82,18 @@ hwut-end: clean
 %-2-2.exe: %.c basic_functionality.c  ut
 	$(CC) $(SIZE_2) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-wchar_t-0.exe: %.cpp basic_functionality.c  ut
+%-wchar_t-0.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_WC) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-wchar_t-1.exe: %.cpp basic_functionality.c  ut
+%-wchar_t-1.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_WC) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-wchar_t-2.exe: %.cpp basic_functionality.c  ut
+%-wchar_t-2.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_WC) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-2-0.exe: %.cpp basic_functionality.c  ut
+%-2-0.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_WC) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-2-1.exe: %.cpp basic_functionality.c  ut
+%-2-1.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_WC) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-2-2.exe: %.cpp basic_functionality.c  ut
+%-2-2.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_WC) $(FALLBACK_2) $< $(XLIBS) -o $@
 
 %-1-0.exe: %.c basic_functionality.c  ut
@@ -103,21 +103,21 @@ hwut-end: clean
 %-1-2.exe: %.c basic_functionality.c  ut
 	$(CC) $(SIZE_1) $(FALLBACK_2) $< $(XLIBS) -o $@
 
-%-1-0.exe: %.cpp basic_functionality.c  ut
+%-1-0.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_1) $(FALLBACK_0) $< $(XLIBS) -o $@
-%-1-1.exe: %.cpp basic_functionality.c  ut
+%-1-1.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_1) $(FALLBACK_1) $< $(XLIBS) -o $@
-%-1-2.exe: %.cpp basic_functionality.c  ut
+%-1-2.exe: %.cpp basic_functionality.c  ut-cpp
 	$(CCP) $(SIZE_1) $(FALLBACK_2) $< $(XLIBS) -o $@
 
 
 ut-cpp:
-	python ../../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter extra
+	python ../../../../TESTS/code_base_instatiation.py ut-cpp analyzer quex buffer lexeme_converter extra 
 ut:
-	python ../../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter extra --language C
+	python ../../../../TESTS/code_base_instatiation.py ut analyzer quex buffer lexeme_converter extra --language C
 
 clean: 
-	rm -rf $(TESTS) ut
+	rm -rf $(TESTS) ut ut-cpp
 	rm -rf *-gen.[ch]
 	rm -rf *-gen.[ch].[ch]   # some unattended build results ...
 	rm -rf *.exe

@@ -4,8 +4,8 @@
 #include "ut/lib/buffer/bytes/ByteLoader_Memory.i"
 #include "ut/lib/buffer/Buffer_print.i"
 #include "ut/lib/buffer/Buffer.i"
-#include "ut/lib/MemoryManager"
-#include "ut/lib/single.i"
+#include "ut/lib/quex/MemoryManager"
+#include "ut/lib/quex/MemoryManager.i"
 #include <hwut_unit.h>
 
 typedef struct {

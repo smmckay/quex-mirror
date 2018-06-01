@@ -30,7 +30,7 @@ hwut-info:
 	@echo $(TESTS)
 
 ut:
-	python ../../../../TESTS/code_base_instatiation.py ut buffer compatibility
+	python ../../../../TESTS/code_base_instatiation.py ut buffer quex
 
 clean: 
 	rm -rf *.exe *.o *.E ut tmp.*

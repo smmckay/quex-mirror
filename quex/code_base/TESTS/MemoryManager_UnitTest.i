@@ -11,7 +11,7 @@
 #define __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_UNIT_TEST_I
 
 #include "definitions"      /* Must provide '-IMyDirectory/lib' to compiler. */
-#include "MemoryManager"    /* ----------------------------------------------*/
+#include "ut/lib/quex/MemoryManager"    /* ----------------------------------------------*/
 
 QUEX_NAMESPACE_QUEX_OPEN
 

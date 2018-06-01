@@ -104,7 +104,7 @@ hwut_cursor.o: $(HWUT_PATH)/support/C/hwut_cursor.c
 		$(DEFS) $< -o $@
 
 ut:
-	python ../../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter
+	python ../../../../TESTS/code_base_instatiation.py ut analyzer quex buffer lexeme_converter
 
 clean: 
 	rm -rf $(TEST_FILES) ut *.o

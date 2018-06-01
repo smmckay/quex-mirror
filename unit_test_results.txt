@@ -2970,61 +2970,42 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * API:
 
     load_forward
-        forward-api.exe BAD_LEXATOM .........................[MAKE FAILED]
-                        DONE ................................[MAKE FAILED]
-                        NO_MORE_DATA ........................[MAKE FAILED]
-                        NO_SPACE_FOR_LOAD ...................[MAKE FAILED]
+        forward-api.exe BAD_LEXATOM ..................................[OK]
+                        DONE .........................................[OK]
+                        NO_MORE_DATA .................................[OK]
+                        NO_SPACE_FOR_LOAD ............................[OK]
 
  * Buffer_load_backward:
 
     (BPC=1, FB=0)
-        backward-fb0.exe BufferSize-3 .......................[MAKE FAILED]
-                         BufferSize-4 .......................[MAKE FAILED]
-                         BufferSize-5 .......................[MAKE FAILED]
+        backward-fb0.exe BufferSize-3 ................................[OK]
+                         BufferSize-4 ................................[OK]
+                         BufferSize-5 ................................[OK]
     (BPC=1, FB=1)
-        backward-fb1.exe BufferSize-4 .......................[MAKE FAILED]
-                         BufferSize-5 .......................[MAKE FAILED]
+        backward-fb1.exe BufferSize-4 ................................[OK]
+                         BufferSize-5 ................................[OK]
     (BPC=1, FB=2)
-        backward-fb2.exe BufferSize-5 .......................[MAKE FAILED]
+        backward-fb2.exe BufferSize-5 ................................[OK]
     (BPC=4, FB=2)
-        backward-fb2-32.exe BufferSize-5 ....................[MAKE FAILED]
+        backward-fb2-32.exe BufferSize-5 .............................[OK]
 
  * Buffer_load_forward:
 
     (BPC=1, FB=0)
-        forward-fb0.exe BufferSize-3 ........................[MAKE FAILED]
-                        BufferSize-4 ........................[MAKE FAILED]
-                        BufferSize-5 ........................[MAKE FAILED]
+        forward-fb0.exe BufferSize-3 .................................[OK]
+                        BufferSize-4 .................................[OK]
+                        BufferSize-5 .................................[OK]
     (BPC=1, FB=1)
-        forward-fb1.exe BufferSize-4 ........................[MAKE FAILED]
-                        BufferSize-5 ........................[MAKE FAILED]
+        forward-fb1.exe BufferSize-4 .................................[OK]
+                        BufferSize-5 .................................[OK]
     (BPC=1, FB=2)
-        forward-fb2.exe BufferSize-5 ........................[MAKE FAILED]
+        forward-fb2.exe BufferSize-5 .................................[OK]
     (BPC=4, FB=2)
-        forward-fb2-32.exe BufferSize-5 .....................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] forward-api.exe _ BAD_LEXATOM
-                         \__ DONE
-                         \__ NO_MORE_DATA
-                         \__ NO_SPACE_FOR_LOAD
-    [FAIL] backward-fb0.exe _ BufferSize-3
-                          \__ BufferSize-4
-                          \__ BufferSize-5
-    [FAIL] backward-fb1.exe _ BufferSize-4
-                          \__ BufferSize-5
-    [FAIL] backward-fb2.exe _ BufferSize-5
-    [FAIL] backward-fb2-32.exe _ BufferSize-5
-    [FAIL] forward-fb0.exe _ BufferSize-3
-                         \__ BufferSize-4
-                         \__ BufferSize-5
-    [FAIL] forward-fb1.exe _ BufferSize-4
-                         \__ BufferSize-5
-    [FAIL] forward-fb2.exe _ BufferSize-5
-    [FAIL] forward-fb2-32.exe _ BufferSize-5
+        forward-fb2-32.exe BufferSize-5 ..............................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                      Include and buffer nesting scenarios                      
@@ -3032,39 +3013,27 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
 quex/code_base/buffer/TESTS/misc/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Construct/Destruct Included Buffer
-        construct_destruct_included.exe allocate ............[MAKE FAILED]
-                                        no-allocate .........[MAKE FAILED]
+        construct_destruct_included.exe allocate .....................[OK]
+                                        no-allocate ..................[OK]
  * Extend negotiated amount of memory
-        negotiate_extend.exe ................................[MAKE FAILED]
+        negotiate_extend.exe .........................................[OK]
 
  * Extend/Migrate Memory:
 
     Nested
-        extend_and_migrate-nested.exe 2 .....................[MAKE FAILED]
-                                      3 .....................[MAKE FAILED]
-                                      51 ....................[MAKE FAILED]
+        extend_and_migrate-nested.exe 2 ..............................[OK]
+                                      3 ..............................[OK]
+                                      51 .............................[OK]
     Plain
-        extend_and_migrate.exe 21 ...........................[MAKE FAILED]
-                               3 ............................[MAKE FAILED]
-                               4 ............................[MAKE FAILED]
-                               7 ............................[MAKE FAILED]
-                               82 ...........................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] construct_destruct_included.exe _ allocate
-                                         \__ no-allocate
-    [FAIL] negotiate_extend.exe
-    [FAIL] extend_and_migrate-nested.exe _ 2
-                                       \__ 3
-                                       \__ 51
-    [FAIL] extend_and_migrate.exe _ 21
-                                \__ 3
-                                \__ 4
-                                \__ 7
-                                \__ 82
+        extend_and_migrate.exe 21 ....................................[OK]
+                               3 .....................................[OK]
+                               4 .....................................[OK]
+                               7 .....................................[OK]
+                               82 ....................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                          Buffer Moving/Copying Content                         
@@ -3075,72 +3044,45 @@ quex/code_base/buffer/TESTS/move/TEST                                <no date>
  * move_away_passed_content:
 
     (BPC=1, FB=0)
-        move_away_passed_content-fb0.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb0.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=1, FB=1)
-        move_away_passed_content-fb1.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb1.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=1, FB=2)
-        move_away_passed_content-fb2.exe EoS ................[MAKE FAILED]
-                                         NoEoS ..............[MAKE FAILED]
+        move_away_passed_content-fb2.exe EoS .........................[OK]
+                                         NoEoS .......................[OK]
     (BPC=4, FB=2)
-        move_away_passed_content-fb2-32.exe EoS .............[MAKE FAILED]
-                                            NoEoS ...........[MAKE FAILED]
+        move_away_passed_content-fb2-32.exe EoS ......................[OK]
+                                            NoEoS ....................[OK]
 
  * move_away_upfront_content:
 
     (BPC=1)
-        move_away_upfront_content-8.exe cib=0 ...............[MAKE FAILED]
-                                        cib=0:EOS ...........[MAKE FAILED]
-                                        cib=1 ...............[MAKE FAILED]
-                                        cib=1:EOS ...........[MAKE FAILED]
-                                        cib=2 ...............[MAKE FAILED]
-                                        cib=2:EOS ...........[MAKE FAILED]
+        move_away_upfront_content-8.exe cib=0 ........................[OK]
+                                        cib=0:EOS ....................[OK]
+                                        cib=1 ........................[OK]
+                                        cib=1:EOS ....................[OK]
+                                        cib=2 ........................[OK]
+                                        cib=2:EOS ....................[OK]
     (BPC=2)
-        move_away_upfront_content-16.exe cib=0 ..............[MAKE FAILED]
-                                         cib=0:EOS ..........[MAKE FAILED]
-                                         cib=1 ..............[MAKE FAILED]
-                                         cib=1:EOS ..........[MAKE FAILED]
-                                         cib=2 ..............[MAKE FAILED]
-                                         cib=2:EOS ..........[MAKE FAILED]
+        move_away_upfront_content-16.exe cib=0 .......................[OK]
+                                         cib=0:EOS ...................[OK]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
     (BPC=4)
-        move_away_upfront_content-32.exe cib=0 ..............[MAKE FAILED]
-                                         cib=0:EOS ..........[MAKE FAILED]
-                                         cib=1 ..............[MAKE FAILED]
-                                         cib=1:EOS ..........[MAKE FAILED]
-                                         cib=2 ..............[MAKE FAILED]
-                                         cib=2:EOS ..........[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] move_away_passed_content-fb0.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb1.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb2.exe _ EoS
-                                          \__ NoEoS
-    [FAIL] move_away_passed_content-fb2-32.exe _ EoS
-                                             \__ NoEoS
-    [FAIL] move_away_upfront_content-8.exe _ cib=0
-                                         \__ cib=0:EOS
-                                         \__ cib=1
-                                         \__ cib=1:EOS
-                                         \__ cib=2
-                                         \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-16.exe _ cib=0
-                                          \__ cib=0:EOS
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
-    [FAIL] move_away_upfront_content-32.exe _ cib=0
-                                          \__ cib=0:EOS
-                                          \__ cib=1
-                                          \__ cib=1:EOS
-                                          \__ cib=2
-                                          \__ cib=2:EOS
+        move_away_upfront_content-32.exe cib=0 .......................[OK]
+                                         cib=0:EOS ...................[OK]
+                                         cib=1 .......................[OK]
+                                         cib=1:EOS ...................[OK]
+                                         cib=2 .......................[OK]
+                                         cib=2:EOS ...................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       Extensive Tests on Buffer Seek&Tell                      
@@ -3151,229 +3093,132 @@ quex/code_base/buffer/TESTS/navigation/TEST                          <no date>
  * Buffer Tell&Seek:
 
     LexatomLoader_Converter (BPC=1, FALLBACK=0)
-        test-Converter-1-0.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-1-0.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=1, FALLBACK=1)
-        test-Converter-1-1.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-1-1.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=1, FALLBACK=2)
-        test-Converter-1-2.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-1-2.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=2, FALLBACK=0)
-        test-Converter-2-0.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-2-0.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=2, FALLBACK=1)
-        test-Converter-2-1.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-2-1.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=2, FALLBACK=2)
-        test-Converter-2-2.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-2-2.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=4, FALLBACK=0)
-        test-Converter-4-0.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-4-0.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=4, FALLBACK=1)
-        test-Converter-4-1.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-4-1.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter (BPC=4, FALLBACK=2)
-        test-Converter-4-2.exe ICU-linear ...................[MAKE FAILED]
-                               ICU-stepping .................[MAKE FAILED]
-                               ICU-stepping-cls .............[MAKE FAILED]
-                               IConv-linear .................[MAKE FAILED]
-                               IConv-stepping ...............[MAKE FAILED]
-                               IConv-stepping-cls ...........[MAKE FAILED]
+        test-Converter-4-2.exe ICU-linear ............................[OK]
+                               ICU-stepping ..........................[OK]
+                               ICU-stepping-cls ......................[OK]
+                               IConv-linear ..........................[OK]
+                               IConv-stepping ........................[OK]
+                               IConv-stepping-cls ....................[OK]
     LexatomLoader_Converter StrangeStream (BPC=1, FALLBACK=0)
-        test-Converter-StrangeStream-1-0.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-1-0.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=1, FALLBACK=2)
-        test-Converter-StrangeStream-1-2.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-1-2.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=0)
-        test-Converter-StrangeStream-2-0.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-2-0.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=0)
-        test-Converter-StrangeStream-4-0.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-4-0.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=2)
-        test-Converter-StrangeStream-2-2.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-2-2.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Converter StrangeStream (BPC=4, FALLBACK=2)
-        test-Converter-StrangeStream-4-2.exe ICU-stepping ...[MAKE FAILED]
-                                             ICU-stepping-cls [MAKE FAILED]
-                                             IConv-linear ...[MAKE FAILED]
+        test-Converter-StrangeStream-4-2.exe ICU-stepping ............[OK]
+                                             ICU-stepping-cls ........[OK]
+                                             IConv-linear ............[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=0)
-        test-Plain-1-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=1)
-        test-Plain-1-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=1, FALLBACK=2)
-        test-Plain-1-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-1-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=0)
-        test-Plain-2-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=1)
-        test-Plain-2-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=2, FALLBACK=2)
-        test-Plain-2-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-2-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=0)
-        test-Plain-4-0.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-0.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=1)
-        test-Plain-4-1.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-1.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain (BPC=4, FALLBACK=2)
-        test-Plain-4-2.exe linear ...........................[MAKE FAILED]
-                           stepping .........................[MAKE FAILED]
+        test-Plain-4-2.exe linear ....................................[OK]
+                           stepping ..................................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=0)
-        test-Plain-wiostream-wchar_t-0.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
+        test-Plain-wiostream-wchar_t-0.exe linear ....................[OK]
+                                           stepping ..................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=1)
-        test-Plain-wiostream-wchar_t-1.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
+        test-Plain-wiostream-wchar_t-1.exe linear ....................[OK]
+                                           stepping ..................[OK]
     LexatomLoader_Plain wiostream (BPC=4, FALLBACK=2)
-        test-Plain-wiostream-wchar_t-2.exe linear ...........[MAKE FAILED]
-                                           stepping .........[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-Converter-1-0.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-1-1.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-1-2.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-2-0.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-2-1.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-2-2.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-4-0.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-4-1.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-4-2.exe _ ICU-linear
-                                \__ ICU-stepping
-                                \__ ICU-stepping-cls
-                                \__ IConv-linear
-                                \__ IConv-stepping
-                                \__ IConv-stepping-cls
-    [FAIL] test-Converter-StrangeStream-1-0.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-1-2.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-2-0.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-4-0.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-2-2.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Converter-StrangeStream-4-2.exe _ ICU-stepping
-                                              \__ ICU-stepping-cls
-                                              \__ IConv-linear
-    [FAIL] test-Plain-1-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-1-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-1-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-2-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-0.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-1.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-4-2.exe _ linear
-                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-0.exe _ linear
-                                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-1.exe _ linear
-                                            \__ stepping
-    [FAIL] test-Plain-wiostream-wchar_t-2.exe _ linear
-                                            \__ stepping
+        test-Plain-wiostream-wchar_t-2.exe linear ....................[OK]
+                                           stepping ..................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Pathwalker DFA_State Construction                       
@@ -3752,10 +3597,10 @@ SUMMARY:
        11  11    [FAIL] ..../code_base/TESTS/general/TEST                             
            1       [OK] ............../analyzer/TEST                                  
        11  11    [FAIL] ......................./struct/TEST                           
-       18  18    [FAIL] ............../buffer/TESTS/load/TEST                         
-       11  11    [FAIL] .........................../misc/TEST                         
-       26  26    [FAIL] .........................../move/TEST                         
-       96  96    [FAIL] .........................../navigation/TEST                   
+           18      [OK] ............../buffer/TESTS/load/TEST                         
+           11      [OK] .........................../misc/TEST                         
+           26      [OK] .........................../move/TEST                         
+           96      [OK] .........................../navigation/TEST                   
            12      [OK] ...................../bytes/TEST                              
        12  12    [FAIL] ...................../lexatoms/converter/iconv/TEST           
        12  12    [FAIL] ......................................../icu/TEST             
@@ -3789,11 +3634,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  _  _    ___            
-    |  ___|_ _(_) |___     |___ / | || |  / _ \     __  __
-    | |_ / _` | | / __|      |_ \ | || |_| | | |    \ \/ /
-    |  _| (_| | | \__ \     ___) ||__   _| |_| |     >  < 
-    |_|  \__,_|_|_|___/    |____/    |_|  \___/     /_/\_\
+     _____     _ _          _   ___    ___            
+    |  ___|_ _(_) |___     / | ( _ )  / _ \     __  __
+    | |_ / _` | | / __|    | | / _ \ | (_) |    \ \/ /
+    |  _| (_| | | \__ \    | || (_) | \__, |     >  < 
+    |_|  \__,_|_|_|___/    |_| \___/    /_/     /_/\_\
                                                                    (1701 tests)
 
 ===============================================================================

@@ -47,7 +47,7 @@ hwut-end: clean
 		-DHWUT_OPTION_NO_ASSUMPTION_ON_LEXATOM_INDEX_AT_END
 
 ut:
-	python ../../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter
+	python ../../../../TESTS/code_base_instatiation.py ut analyzer quex buffer lexeme_converter
 
 clean: 
 	rm -rf $(PROGRAMS) ut
