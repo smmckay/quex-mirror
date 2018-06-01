@@ -2,11 +2,11 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <test_environment/TestAnalyzer>
-#include "test_environment/converter-from-lexeme.i"
-#include "test_environment/lib/lexeme_base.i"
-#include "test_environment/lib/extra/accumulator/Accumulator"
-#include "test_environment/lib/extra/accumulator/Accumulator.i"
+#include <test_cpp/TestAnalyzer>
+#include "test_cpp/converter-from-lexeme.i"
+#include "test_cpp/lib/lexeme_base.i"
+#include "test_cpp/lib/extra/accumulator/Accumulator"
+#include "test_cpp/lib/extra/accumulator/Accumulator.i"
 
 int
 main(int argc, char** argv)

@@ -2,7 +2,7 @@ token_type {
    header {
 #       include <iostream>
 #       include <string>
-   #include "test_environment/converter-from-lexeme"
+   #include "test_cpp/converter-from-lexeme"
 
    }
    standard {
@@ -71,7 +71,7 @@ token_type {
         operator<<(std::ostream& ostr, const $$TOKEN_CLASS$$& Tok)
         { ostr << Tok.get_string(); return ostr; }
 
-   #include "test_environment/converter-from-lexeme.i"
+   #include "test_cpp/converter-from-lexeme.i"
    }
 }
 

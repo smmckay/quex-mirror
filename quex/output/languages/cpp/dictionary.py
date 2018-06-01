@@ -141,7 +141,8 @@ class Language(dict):
         return "".join(_safe(letter) for letter in String)
 
     def INCLUDE_GUARD(self, Filename):
-        return self.SAFE_IDENTIFIER(Filename).upper()
+        if Filename: return self.SAFE_IDENTIFIER(Filename).upper()
+        else:        return ""
 
     def INCREMENT_ITERATOR_THEN_ASSIGN(self, Iterator, Value):
         return "*(%s)++ = %s;" % (Iterator, Value)
@@ -879,8 +880,9 @@ class Language(dict):
             return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (name, IteratorName)
 
     def INCLUDE(self, Path, Condition=None):
-        if not blackboard.condition_holds(Condition): return ""
-        return "#include \"%s\"" % Path
+        if   not Path:                                  return ""
+        elif not blackboard.condition_holds(Condition): return ""
+        else:                                           return "#include \"%s\"" % Path
 
     def ENGINE_TEXT_EPILOG(self):
         if Setup.analyzer_derived_class_file: header = self.INCLUDE(Setup.analyzer_derived_class_file)

@@ -8,7 +8,7 @@
 #include<ut/lib/buffer/lexatoms/LexatomLoader>
 #include<ut/lib/buffer/lexatoms/LexatomLoader_Plain>
 #include<ut/lib/buffer/lexatoms/LexatomLoader_Plain.i>
-#include<ut/lib/single.i>
+#include"ut/lib/quex/MemoryManager.i"
 
 using namespace std;
 

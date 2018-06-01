@@ -16,6 +16,7 @@ MYFLAGS = \
      -ggdb \
 	 -Wall -Werror \
 	 -I. -I../../../TESTS -I../../../\
+	 -DQUEX_SETTING_USER_CLASS_DECLARATION_EPILOG= \
      -DQUEX_OPTION_COUNTER_LINE  \
      -DQUEX_OPTION_COUNTER_COLUMN 
 
