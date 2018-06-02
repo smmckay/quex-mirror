@@ -1,8 +1,8 @@
 /* -*- C++ -*-   vim: set syntax=cpp:
  * (C) Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                      */
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS
-#define __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__HEADERS
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__HEADERS
 
 /* NOT: "$$INC: lexeme$$"
  *
@@ -45,4 +45,4 @@ $$INC: analyzer/Counter$$
 
 $$INC: quex/MemoryManager$$
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__HEADERS */

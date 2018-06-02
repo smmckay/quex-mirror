@@ -9,8 +9,8 @@
  * Wrap-arround is neither necessary nor meaningful!
  *
  * (C) 2004-2017 Frank-Rene Schaefer                                          */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE_I
-#define __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE_I
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__TOKEN_QUEUE_I
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__TOKEN_QUEUE_I
 
 $$INC: definitions$$
 $$INC: asserts$$
@@ -277,4 +277,4 @@ QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE_I */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__TOKEN_QUEUE_I */

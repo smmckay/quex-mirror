@@ -1,5 +1,5 @@
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H
-#define __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__C_ADAPTIONS_H
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__C_ADAPTIONS_H
 
 #ifdef self_accumulator_add
 /* Token / Token Policy _____________________________________________________*/
@@ -75,4 +75,4 @@
 #   define self_undo()                           QUEX_NAME(undo)(&self)
 #   define self_undo_n(N)                        QUEX_NAME(undo_n)(&self, N)
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__C_ADAPTIONS_H */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__C_ADAPTIONS_H */

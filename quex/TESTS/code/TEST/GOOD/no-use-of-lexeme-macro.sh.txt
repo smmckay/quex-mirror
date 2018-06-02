@@ -6,14 +6,14 @@ that referes to the Lexeme macros.
 Following lines are suppossed to be accepted:
 
 ~/prj/quex/trunk/quex ~/prj/quex/trunk/quex/TESTS/code/TEST
-./constants.py:194:           "LexemeEnd",
+./constants.py:195:           "LexemeEnd",
 ./engine/state_machine/TEST_help/walk.py:14:def do(Dfa, Lexeme):
 ./engine/state_machine/TEST_help/walk.py:15:    """'Lexeme' can be list of characters (string) or list of numbers.
 ./engine/state_machine/TEST_help/walk.py:17:    __print(__get_step_list(Dfa, Lexeme))
 ./engine/state_machine/TEST_help/walk.py:74:def __get_step_list(Dfa, Lexeme):
 ./engine/state_machine/TEST_help/walk.py:77:    for input_position, lexatom in enumerate(Lexeme):
-./input/command_line/validation.py:96:            error.log("Lexeme-converter-only-mode requires explicit definition of encoding.\n"
-./input/command_line/validation.py:99:            error.log("Lexeme-converter-only-mode requires explicit definition of the code unit type.\n"
+./input/command_line/validation.py:87:            error.log("Lexeme-converter-only-mode requires explicit definition of encoding.\n"
+./input/command_line/validation.py:90:            error.log("Lexeme-converter-only-mode requires explicit definition of the code unit type.\n"
 ./input/files/code_fragment.py:22:lexeme_re = re.compile(r"^Lexeme\b")
 ./input/files/code_fragment.py:254:        argument_list = ["Lexeme"]
 ./input/files/code_fragment.py:282:        error.log("Assignment of token member with 'Lexeme' directly being involved. The\n" + 
@@ -26,20 +26,18 @@ Following lines are suppossed to be accepted:
 ./input/files/code_fragment.py:330:        if argument_list[0] == "Lexeme":
 ./input/files/code_fragment.py:335:            error.log("If one unnamed argument is specified it must be 'Lexeme'\n"          + \
 ./input/files/code_fragment.py:338:                      "QUEX_TKN_MY_ID(Lexeme + 1, LexemeEnd - 2);\n"                             + \
-./input/files/mode.py:300:                            "L": "pass Lexeme to token constructor.",
-./input/files/mode.py:348:                            "L": "pass Lexeme to token constructor.",
-./output/analyzer/modes.py:102:    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
-./output/analyzer/modes.py:103:    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
-./output/analyzer/modes.py:107:    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
-./output/analyzer/modes.py:257:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
+./input/files/mode.py:309:                            "L": "pass Lexeme to token constructor.",
+./input/files/mode.py:357:                            "L": "pass Lexeme to token constructor.",
+./output/analyzer/modes.py:100:    const QUEX_TYPE_LEXATOM* LexemeEnd   = self.buffer._read_p;
+./output/analyzer/modes.py:104:    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
+./output/analyzer/modes.py:263:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
+./output/analyzer/modes.py:99:    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
 ./output/counter/run_time.py:100:        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
 ./output/counter/run_time.py:103:        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
 ./output/counter/run_time.py:104:        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
 ./output/counter/run_time.py:107:        "    %s = LexemeBegin;\n" % IteratorName
 ./output/counter/run_time.py:126:       + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
 ./output/counter/run_time.py:87:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" \
-./output/languages/cpp/dictionary.py:403:        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
-./output/languages/cpp/templates.py:245:    /* Lexeme setup: 
+./output/languages/cpp/dictionary.py:407:        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
+./output/languages/cpp/templates.py:224:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST
-
-

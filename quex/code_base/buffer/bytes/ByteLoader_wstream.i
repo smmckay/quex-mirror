@@ -1,7 +1,7 @@
 /* vim: set ft=c:
  * (C) Frank-Rene Schaefer */
-#ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I
-#define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I
+#ifndef  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I
+#define  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I
 
 #if ! defined(__QUEX_OPTION_PLAIN_C) && defined(__QUEX_OPTION_WCHAR_T)
 
@@ -165,5 +165,5 @@ QUEX_NAME(ByteLoader_wstream_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif /* __QUEX_OPTION_PLAIN_C                                               */
-#endif /*  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I         */
+#endif /*  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_WSTREAM_I         */
 

@@ -2,26 +2,8 @@
  *
  * (C) 2005-2017 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                     */
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
-#define __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
-/* Additionally to the 'local' include guard, there is an include indicator 
- *
- *         __INCLUDE_INDICATOR_QUEX__CONFIGURATION
- *
- * If it is defined, this means, that another lexical analyzer configuration
- * has been included before this. That in turn means, that multiple lexical
- * analyzers are used. The configuration settings of the previous analyzer
- * need to be undefined. And, this happens in "configuration/undefine".         
- *
- * NOTE: We do undefine without making sure that there is an older definition
- *       from a configuration file. This allows users to define some
- *       configuration options on the command line without being immediately
- *       deleted by "configuration/undefine".                                 */
-#ifdef __QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION
-$$INC: analyzer/configuration/undefine$$
-#else
-#   define __QUEX_INCLUDE_INDICATOR__ANALYZER__CONFIGURATION
-#endif
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
 
 #define QUEX_SETTING_VERSION           "$$QUEX_VERSION$$"
 #define QUEX_SETTING_BUILD_DATE        "$$LEXER_BUILD_DATE$$"
@@ -46,7 +28,7 @@ $$SWITCH$$ __QUEX_OPTION_PLAIN_C
 #   error "Asserts included before configuration file. However, the configuration file MUST control asserts!"
 #endif
 
-#ifndef  QUEX_OPTION_COMPUTED_GOTOS
+#ifndef    QUEX_OPTION_COMPUTED_GOTOS
 $$SWITCH$$ QUEX_OPTION_COMPUTED_GOTOS
 #endif
 #ifndef    QUEX_OPTION_ENDIAN_LITTLE
@@ -245,4 +227,4 @@ $$TYPE_DEFINITIONS$$
 
 $$INC: analyzer/configuration/derived$$
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$ */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$ */

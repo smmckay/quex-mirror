@@ -5,7 +5,6 @@ import quex.output.analyzer.adapt       as     adapt
 from   quex.blackboard                  import Lng, setup as Setup
 from   quex.DEFINITIONS                 import QUEX_PATH
 
-import os.path as path
 import os
 
 def do(OutputDir, DirList=None):
@@ -206,7 +205,7 @@ def __get_source_drain_list(OutputDir, FileSet):
          for source in FileSet 
     ]
     out_directory_set = set(
-        path.dirname(drain) for source, drain in file_pair_list
+        os.path.dirname(drain) for source, drain in file_pair_list
     )
 
     return file_pair_list, out_directory_set

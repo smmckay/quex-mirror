@@ -150,13 +150,13 @@ def get_transition_function(iid_map, Codec):
 main_template = """
 /* From '.begin' the target map targets to '.target' until the next '.begin' is
  * reached.                                                                   */
-#include "ut/lib/compatibility/stdint.h"
+#define __QUEX_OPTION_WCHAR_T_DISABLED
+
+#include "ut/lib/quex/compatibility/stdint.h"
 
 #include "../../../code_base/TESTS/minimum-definitions.h"
 #include <stdio.h>
 #define __QUEX_OPTION_PLAIN_C
-#include "ut/lib/implementations.i"
-#include "ut/lib/implementations-inline.i"
 
 typedef struct {
     struct {

@@ -1,7 +1,11 @@
 #include<string.h>
 #include<stdio.h>
 
-#include "EHLexer/EHLexer.h"
+#if defined(UNIT_TEST_IN_UT)
+#   include "ut/EHLexer.h"
+#else
+#   include "EHLexer/EHLexer.h"
+#endif
 #ifdef      UNIT_TEST_DEFINE_MEMORY_MANAGER_IMPLEMENTATION
 #   include "../../../code_base/TESTS/MemoryManager_UnitTest.i"
 MemoryManager_UnitTest_t MemoryManager_UnitTest;

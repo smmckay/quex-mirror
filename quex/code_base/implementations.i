@@ -1,8 +1,8 @@
 /* -*- C++ -*- vim:set syntax=cpp:
  * (C) 2005-2010 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                      */
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__IMPLEMENTATIONS_I
-#define __QUEX_INCLUDE_GUARD__ANALYZER__IMPLEMENTATIONS_I
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__IMPLEMENTATIONS_I
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__IMPLEMENTATIONS_I
 
 #if ! defined(__cplusplus)
 
@@ -40,4 +40,4 @@ $$INC: <lib-quex> quex/MemoryManager.i$$
 QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull) = (QUEX_TYPE_LEXATOM)0;
 
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__HEADERS_I */

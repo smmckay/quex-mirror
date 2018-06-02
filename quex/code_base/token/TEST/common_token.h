@@ -19,20 +19,20 @@ typedef unsigned char TestAnalyzer_lexatom_t;
 #define QUEX_NAMESPACE_MAIN_OPEN 
 #define QUEX_NAMESPACE_MAIN_CLOSE 
 
-typedef struct {
+typedef struct TestAnalyzer_Token_tag {
     int     id;
     char*   text;
     size_t  repetition_n;
-} Token;
+} TestAnalyzer_Token;
 
-typedef struct {
+typedef struct TestAnalyzer_tag {
     E_Error  error_code;
-} Lexer;
+} TestAnalyzer;
 
 #define QUEX_TYPE_LEXATOM    uint8_t
 #define TestAnalyzer_token_id_t uint32_t
-#define QUEX_TYPE_TOKEN      Token
-#define QUEX_TYPE_ANALYZER   Lexer 
+#define QUEX_TYPE_TOKEN      TestAnalyzer_Token
+#define QUEX_TYPE_ANALYZER   TestAnalyzer 
 #define TokenId_TERMINATION  0
 #define QUEX_TOKEN_ID(SHORT) TokenId_ ## SHORT
 

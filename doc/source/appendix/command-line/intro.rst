@@ -57,6 +57,16 @@ Default: empty list
 
     
 
+.. cmdoption:: --no-lib-quex, --nlq 
+
+    If set, no code is produced in the 'lib/quex' subdirectory. The code in this subdirectory is 
+    general over any Quex-generated lexer. When linking multiple lexical analyzers, only one 
+    may include 'lib/quex'. All other lexers need to be generated with this flag being set.  
+
+    
+
+Default: true (not disabled)
+
 .. cmdoption:: --insight 
 
     Prints insights on construction process together with time stamps. This option is usefule 
@@ -358,9 +368,8 @@ Default: uint32_t
 
 .. cmdoption:: --token-class-only, --tco 
 
-    When specified, quex only creates a token class. This token class differs from the normally 
-    generated token classes in that it may be shared between multiple lexical analyzers. 
-     
+    When specified, quex only creates a token class. This token class differs from the default token 
+    classes in that it may be shared between multiple lexical analyzers.  
 
         .. note::
 

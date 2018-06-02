@@ -2,8 +2,8 @@
  * (C) 2004-2017 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY
  */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
 
 /* For '--token-class-only' the following option may not come directly
  * from the configuration file.                                        */
@@ -57,4 +57,4 @@ $$BODY$$
 } $$TOKEN_CLASS$$;
 
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */

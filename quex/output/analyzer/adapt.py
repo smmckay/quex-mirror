@@ -9,6 +9,7 @@ def do(Txt, OutputDir, OriginalPath=None):
     txt = Lng.adapt_to_configuration(txt)
     if OriginalPath and Setup._debug_reference_original_paths_f:
         txt = "%s%s" % (Lng.LINE_PRAGMA(OriginalPath, 1), txt)
+    txt = txt.replace("$$LEXER_CLASS$$", Lng.SAFE_IDENTIFIER(Setup.analyzer_name_safe))
     return txt
 
 class Symbol:

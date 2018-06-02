@@ -1,7 +1,6 @@
 
 from   quex.engine.misc.string_handling import blue_print
 import quex.output.analyzer.adapt       as     adapt
-import quex.engine.misc.error           as     error 
 
 from   quex.blackboard  import setup as Setup, Lng
 import quex.token_db    as     token_db

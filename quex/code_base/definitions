@@ -4,8 +4,8 @@
  *
  * NOTE: '__VA_ARGS__' in macros is avoided because at the time of
  *       this writing, even some prominent compilers choke on it. */
-#ifndef __QUEX_INCLUDE_GUARD__DEFINITIONS
-#define __QUEX_INCLUDE_GUARD__DEFINITIONS
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__DEFINITIONS
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__DEFINITIONS
 
 $$INC: asserts$$
 $$INC: quex/compatibility/stdint.h$$
@@ -553,4 +553,4 @@ $$INC: buffer/Buffer_print$$
 
 #endif
 
-#endif /* __QUEX_INCLUDE_GUARD__DEFINITIONS */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__DEFINITIONS */

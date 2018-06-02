@@ -1,8 +1,8 @@
 /* This content is pasted into header, so the include guard is superfluous. 
  * It is left in place, so that if some time later the code generator is 
  * adapted to generate independent files, it will still work safely.          */
-#ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I
-#define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I
 
 $$INCLUDE_TOKEN_CLASS_HEADER$$
 $$INCLUDE_TOKEN_ID_HEADER$$
@@ -137,4 +137,4 @@ $$MAP_ID_TO_NAME_CASES$$
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I */

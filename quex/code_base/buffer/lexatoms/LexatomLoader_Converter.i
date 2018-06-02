@@ -1,7 +1,7 @@
 /* -*- C++ -*-  vim: set syntax=cpp:
  * (C) 2007-2015 Frank-Rene Schaefer  */
-#ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I
-#define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I
+#ifndef  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I
+#define  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I
 
 $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: buffer/lexatoms/LexatomLoader_Converter$$
@@ -436,4 +436,4 @@ $$INC: buffer/lexatoms/LexatomLoader.i$$
 $$INC: buffer/lexatoms/LexatomLoader_Converter_RawBuffer.i$$
 $$INC: buffer/lexatoms/converter/Converter.i$$
 
-#endif /*  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I */
+#endif /*  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__LEXATOMS__LEXATOM_LOADER_CONVERTER_I */

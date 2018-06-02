@@ -21,8 +21,8 @@
  * include other streams and come back. This is referred to as 'nesting'.
  *
  * (C) Frank-Rene Schaefer                                                    */
-#ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER
-#define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER
 
 $$INC: definitions$$
 $$INC: quex/MemoryManager$$
@@ -353,4 +353,4 @@ QUEX_INLINE void QUEX_NAME(BufferInvariance_restore)(QUEX_NAME(BufferInvariance)
 QUEX_NAMESPACE_MAIN_CLOSE
 $$INC: buffer/lexatoms/LexatomLoader$$
 
-#endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFER */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER */

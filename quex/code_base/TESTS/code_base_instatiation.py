@@ -24,7 +24,8 @@ from   quex.output.languages.core import db
 import quex.token_db              as     token_db
 from   quex.blackboard            import setup as Setup, \
                                          Lng
-Setup.language_db = db["C++"]()
+if "--lang-C" in sys.argv: Setup.language_db = db["C"](); sys.argv.remove("--lang-C")
+else:                      Setup.language_db = db["C++"]()
 Setup.analyzer_class_name     = "TestAnalyzer"
 Setup.token_class_name        = "TestAnalyzer_Token"
 Setup.token_class_name_safe   = "TestAnalyzer_Token"

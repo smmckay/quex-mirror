@@ -107,7 +107,6 @@ class Language(dict):
     }
     extension_db = None # To be set by 'setup' to one of 'all_extension_db'
 
-
     def __init__(self):      
         self.__analyzer                           = None
         self.__code_generation_reload_label       = None
@@ -132,6 +131,9 @@ class Language(dict):
         return "class %s;" % ClassName
 
     def SAFE_IDENTIFIER(self, String):
+        if not String:
+            return ""
+
         def _safe(L):
             if len(L) != 1:
                 error.log("The underlying python build cannot handle character '%s'." % L)

@@ -1,7 +1,7 @@
 /* vim: set ft=c:
  * (C) Frank-Rene Schaefer */
-#ifndef  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_I
-#define  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_I
+#ifndef  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_I
+#define  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_I
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -178,4 +178,4 @@ $$INC: buffer/bytes/ByteLoader_FreeRTOS.i$$ /* (tm) */
 $$INC: buffer/bytes/ByteLoader_PalmOS.i$$   /* (tm) */
 #endif
 
-#endif /*  __QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_I */
+#endif /*  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_I */

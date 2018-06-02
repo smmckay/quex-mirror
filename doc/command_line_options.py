@@ -67,6 +67,13 @@ Option("analyzer_class", "[name ::]* name",
     """generates a lexical analyzer class \\v{Lexer} in default name space \\v{quex}.
     """
     ),
+Option("implement_lib_quex_f", None,
+    """
+    If set, no code is produced in the 'lib/quex' subdirectory. The code in
+    this subdirectory is general over any Quex-generated lexer. When linking
+    multiple lexical analyzers, only one may include 'lib/quex'. All other
+    lexers need to be generated with this flag being set.
+    """),
 Option("insight_f", None,
     """
     Prints insights on construction process together with time stamps. This
@@ -270,7 +277,7 @@ Option("token_id_type", "type name",
 Option("token_class_only_f", None,
      """
      When specified, quex only creates a token class. This token class differs
-     from the normally generated token classes in that it may be shared between
+     from the default token classes in that it may be shared between
      multiple lexical analyzers.
      """,
      Note("""

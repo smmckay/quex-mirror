@@ -25,8 +25,8 @@
  * new habitat must be provided in another thread.
  *
  * (C) 2017 Frank-Rene Schaefer                                               */
-#ifndef __QUEX_INCLUDE_GUARD__OBSERVED_STRING__STREXEME
-#define __QUEX_INCLUDE_GUARD__OBSERVED_STRING__STREXEME
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__OBSERVED_STRING__STREXEME
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__OBSERVED_STRING__STREXEME
 /*  
  *  [ y == 23 ) { print 34; }]
  *    |    |      |     |
@@ -161,4 +161,4 @@ StrexemoObserver_StringList_new()
     result->memory_end = result->begin + size;
 }
 
-#endif /* __QUEX_INCLUDE_GUARD__OBSERVED_STRING__STREXEME */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__OBSERVED_STRING__STREXEME */

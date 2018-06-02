@@ -8,7 +8,7 @@ popd
 
 pushd quex/output/core/TEST
 rm -rf ut 
-python ../../../code_base/TESTS/code_base_instatiation.py ut
+python ../../../code_base/TESTS/code_base_instatiation.py ut --lang-C
 quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t --encoding unicode --language C
 quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8 --language C
 popd
@@ -19,9 +19,9 @@ python ../../../code_base/TESTS/code_base_instatiation.py ut
 popd
 
 pushd quex/output/languages/cpp/TEST
-rm -rf test_environment
-python ../../../../code_base/TESTS/code_base_instatiation.py  test_environment
-cp ../../../../code_base/TESTS/test_cpp/TestAnalyzer-configuration test_environment
+rm -rf ut
+python ../../../../code_base/TESTS/code_base_instatiation.py  ut
+cp ../../../../code_base/TESTS/test_cpp/TestAnalyzer-configuration ut
 #quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t --encoding unicode
 #quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8
 popd

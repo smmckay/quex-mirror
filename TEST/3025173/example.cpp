@@ -5,7 +5,7 @@ int
 main(int argc, char** argv) 
 {        
     blackray::Token*  token_p = 0x0;
-    quex::br_scan     qlex("example.txt");
+    br_scan     qlex("example.txt");
 
     do {
         qlex.receive(&token_p);

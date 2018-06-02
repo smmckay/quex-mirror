@@ -1,6 +1,6 @@
 #include "common_token.h"
 #include "ut/lib/token/TokenQueue.i"
-#include "ut/lib/MemoryManager.i"
+#include "ut/lib/quex/MemoryManager.i"
 
 void
 common_print_push(TestAnalyzer_TokenQueue* me, int count, QUEX_TYPE_TOKEN* token_p)

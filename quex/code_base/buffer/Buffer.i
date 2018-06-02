@@ -1,6 +1,6 @@
 /* vim:set ft=c: -*- C++ -*- */
-#ifndef __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I
-#define __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_I
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_I
 
 $$INC: asserts$$
 $$INC: buffer/asserts$$
@@ -505,4 +505,4 @@ $$INC: buffer/Buffer_invariance.i$$
 $$INC: buffer/Buffer_move.i$$
 $$INC: buffer/BufferMemory.i$$
 
-#endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFER_I */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_I */

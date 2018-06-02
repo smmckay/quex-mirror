@@ -15,6 +15,9 @@ struct Token {
     int                                    number_;
     std::basic_string<uint8_t> text_;
 
+    int _line_n;
+    int _column_n;
+
 
 public:
     int                                    get_number() const

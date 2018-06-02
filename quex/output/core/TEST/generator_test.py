@@ -225,8 +225,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     # Verify, that Templates and Pathwalkers are really generated
     __verify_code_generation(FullLanguage, source_code)
 
-    if Language == "Cpp": test_analyzer_dir = "test_cpp"
-    else:                 test_analyzer_dir = "test_c"
+    if Language.startswith("Cpp"): test_analyzer_dir = "test_cpp"
+    else:                          test_analyzer_dir = "test_c"
     source_code = "%s%s" % (language_defines, adapt.do(source_code, test_analyzer_dir))
 
     source_code = source_code.replace("$$TEST_ANALYZER_DIR$$",

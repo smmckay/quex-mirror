@@ -116,6 +116,20 @@ in default name space
 
 
 .TP
+.BI "--no-lib-quex, --nlq "
+
+.RS
+If set, no code is produced in the 'lib/quex' subdirectory. The code in this subdirectory is general over any Quex-generated lexer. When linking multiple lexical analyzers, only one may include 'lib/quex'. All other lexers need to be generated with this flag being set. 
+
+
+.RE
+
+\.RS
+Default: true (not disabled)
+.RE
+
+
+.TP
 .BI "--insight "
 
 .RS
@@ -610,7 +624,7 @@ Default: uint32_t
 .BI "--token-class-only, --tco "
 
 .RS
-When specified, quex only creates a token class. This token class differs from the normally generated token classes in that it may be shared between multiple lexical analyzers. 
+When specified, quex only creates a token class. This token class differs from the default token classes in that it may be shared between multiple lexical analyzers. 
 
 When this option is specified, then the LexemeNull is implemented along with the token class. In this case all analyzers that use the token class, shall define 
 .B "--lexeme-null-object"

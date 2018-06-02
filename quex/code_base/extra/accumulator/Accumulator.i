@@ -1,8 +1,8 @@
 /* -*- C++ -*- vim:set syntax=cpp:
  *
  * (C) 2005-2009 Frank-Rene Schaefer                                        */
-#ifndef __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
-#define __QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
+#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__EXTRA__ACCUMULATOR__ACCUMULATOR_I
+#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__EXTRA__ACCUMULATOR__ACCUMULATOR_I
 
 $$INC: definitions$$
 $$INC: extra/accumulator/Accumulator$$
@@ -294,4 +294,4 @@ QUEX_NAME(Accumulator)::print_this()
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD_EXTRA__ACCUMULATOR__ACCUMULATOR_I */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$_EXTRA__ACCUMULATOR__ACCUMULATOR_I */

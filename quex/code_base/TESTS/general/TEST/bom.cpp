@@ -2,8 +2,8 @@
 #include <iostream>
 #include <fstream>
 #define QUEX_NAME(X) (X)
-#include "ut/lib/bom"
-#include "ut/lib/bom.i"
+#include "ut/lib/quex/bom"
+#include "ut/lib/quex/bom.i"
 #include <support/C/hwut_unit.h>
 
 

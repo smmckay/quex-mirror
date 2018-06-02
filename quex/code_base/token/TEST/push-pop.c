@@ -31,8 +31,8 @@ static int
 self_test(int Size, int ContinuousPushN)
 {
     TestAnalyzer_TokenQueue me;
-    QUEX_TYPE_ANALYZER    lexer;
-    int                   count_n;
+    struct TestAnalyzer_tag lexer;
+    int                     count_n;
 
     printf("\n---( size: %i; )------------------\n", (int)Size);
     printf("\n");

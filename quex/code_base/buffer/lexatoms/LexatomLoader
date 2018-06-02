@@ -1,6 +1,6 @@
 /* -*- C++ -*- vim: set syntax=cpp: */
-#ifndef  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER
-#define  __QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER
+#ifndef  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__LEXATOMS__LEXATOM_LOADER
+#define  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__LEXATOMS__LEXATOM_LOADER
 
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
@@ -152,4 +152,4 @@ QUEX_NAMESPACE_MAIN_CLOSE
 $$INC: buffer/lexatoms/LexatomLoader_Converter$$
 $$INC: buffer/lexatoms/LexatomLoader_Plain$$
 
-#endif /* __QUEX_INCLUDE_GUARD__BUFFER__BUFFERFILLER */
+#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFERFILLER */

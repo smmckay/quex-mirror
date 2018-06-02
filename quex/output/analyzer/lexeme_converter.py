@@ -94,20 +94,32 @@ def _string_converters():
         ("utf16", "uint16_t", 2),
         ("utf32", "uint32_t", 1),
         ("char",        "char",  4),
-        ("wchar_t",     "wchar_t",  4),
         ("pretty_char", "char",  4),
+        ("wchar_t",     "wchar_t",  4)
     ]
 
     string_template = Lng.template_converter_string_functions()
 
-    return "\n".join(
-        blue_print(string_template, [
+    def prepare(template, name, code_unit_type, max_code_unit_n):
+        result = blue_print(string_template, [
             ["$$DRAIN_ENCODING$$",                 name],
             ["$$DRAIN_CODE_UNIT_TYPE$$",           code_unit_type],
             ["$$DRAIN_ENCODING_MAX_CODE_UNIT_N$$", str(max_code_unit_n)],
         ])
+        if name == "wchar_t":
+            result = "\n".join([
+                "#if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)",
+                result,
+                "#endif"
+            ])
+        return result
+
+    txt = [
+        prepare(string_template, name, code_unit_type, max_code_unit_n)
         for name, code_unit_type, max_code_unit_n in drain_encoding_list
-    )
+    ]
+
+    return "\n".join(txt)
 
 def _table_character_converters(unicode_trafo_info):
     """
