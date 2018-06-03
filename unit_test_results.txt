@@ -17,7 +17,7 @@ TEST                                                                 <no date>
     3022603 0.49.2 Using external buffer with Quex lexer
         bug-3022603.sh ...............................................[OK]
     3025173 0.49.2 Custom Token struct for quex
-        bug-3025173.sh .............................................[FAIL]
+        bug-3025173.sh ...............................................[OK]
     3032877 -b, --buffer-element-size enhancement
         feature-3032877.sh codec .....................................[OK]
                            normal ....................................[OK]
@@ -69,7 +69,7 @@ TEST                                                                 <no date>
     3485516 0.60.1 0.60.1 Exception Handling Disorder
         bug-3485516.sh ...............................................[OK]
     3486388 0.61.2 Need better errmsg when incorrectly using 2 Lexers at once
-        bug-3486388.sh ...............................................[OK]
+        bug-3486388.sh .............................................[FAIL]
     3495127 Event Handler on_after_match
         feature-3495127.sh queue .....................................[OK]
     3503831 0.61.2 Missleading error message in anti-pattern A{foo$}
@@ -208,7 +208,7 @@ TEST                                                                 <no date>
         bug-3515838.sh C .............................................[OK]
                        Cpp ...........................................[OK]
     3526210 0.62.4 Accumulator misbehaviour when no text is to be flushed
-        bug-3526210.sh .............................................[FAIL]
+        bug-3526210.sh ...............................................[OK]
 
  * mabraham:
 
@@ -302,7 +302,7 @@ TEST                                                                 <no date>
  * raphamiard:
 
     185 0.66.5 Stable output for distinct token fields
-        feature-185.sh ...............................................[OK]
+        feature-185.sh .............................................[FAIL]
 
  * rayhayes:
 
@@ -419,8 +419,8 @@ TEST                                                                 <no date>
                        RETURN_w_Asserts ..............................[OK]
     2796383 0.39.3 does not handle token_type without distinct section
         bug-2796383.sh case-1 ........................................[OK]
-                       case-2 ......................................[FAIL]
-                       case-3 ......................................[FAIL]
+                       case-2 ........................................[OK]
+                       case-3 ........................................[OK]
                        case-4 ........................................[OK]
                        case-5 ........................................[OK]
     2798423 0.39.4 token_type default __copy function does not compile
@@ -496,13 +496,11 @@ TEST                                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] bug-293.sh _ bad
                     \__ good
-    [FAIL] bug-3025173.sh
+    [FAIL] bug-3486388.sh
     [FAIL] bug-3513568.sh
-    [FAIL] bug-3526210.sh
+    [FAIL] feature-185.sh
     [FAIL] bug-3524729.sh
     [FAIL] bug-1895066.sh
-    [FAIL] bug-2796383.sh _ case-2
-                        \__ case-3
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -938,9 +936,9 @@ quex/input/TEST                                                      <no date>
                         1 ............................................[OK]
                         2 ............................................[OK]
                         3 ............................................[OK]
-                        4 ..........................................[FAIL]
+                        4 ............................................[OK]
                         5 ............................................[OK]
-                        6 ..........................................[FAIL]
+                        6 ............................................[OK]
     Constructor, Copy, Destructor
         token_type-4.py Constructor ..................................[OK]
                         Constructor-1 ................................[OK]
@@ -964,13 +962,10 @@ quex/input/TEST                                                      <no date>
                         Some-2 .......................................[OK]
                         Twice ........................................[OK]
                         Twice-2 ......................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] token_type-5.py _ 4
-                         \__ 6
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                   Acceptance Conditions: Begin/End of Stream                   
@@ -1000,7 +995,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check if the default configuration has been updated.
         check-default-configuration.sh ........................[NO OUTPUT]
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -1009,10 +1004,10 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .....................[FAIL]
-                                           sphinx ..................[FAIL]
+        command_line_options-verify-doc.py man .......................[OK]
+                                           sphinx ....................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1033,12 +1028,8 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] check-default-configuration.sh
-    [FAIL] no-use-of-lexeme-macro.sh
     [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
-    [FAIL] pyflakes-check.sh
-    [FAIL] command_line_options-verify-doc.py _ man
-                                            \__ sphinx
     [FAIL] include_guard.py _ convention
                           \__ undefinition
     [FAIL] macro-check.py
@@ -1484,7 +1475,7 @@ quex/TESTS/token-class/TEST                                          <no date>
 -------------------------------------------------------------------------------
  * Miscellaneous Sample Runs
         misc.sh double-colon .........................................[OK]
-                empty ................................................[OK]
+                empty ..............................................[FAIL]
                 no-namespace .......................................[FAIL]
                 token ................................................[OK]
  * With token policy 'queue'.
@@ -1494,7 +1485,8 @@ quex/TESTS/token-class/TEST                                          <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] misc.sh _ no-namespace
+    [FAIL] misc.sh _ empty
+                 \__ no-namespace
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -1561,18 +1553,14 @@ quex/code_base/token/TEST                                            <no date>
  * TokenQueue:
 
     Push and Pop
-        push-pop.exe plain ..................................[MAKE FAILED]
-                     text ...................................[MAKE FAILED]
+        push-pop.exe plain ...........................................[OK]
+                     text ............................................[OK]
     Push and Pop with Repetition
-        push-pop-repetition.exe .............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] push-pop.exe _ plain
-                      \__ text
-    [FAIL] push-pop-repetition.exe
+        push-pop-repetition.exe ......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                 Track Analysis                                 
@@ -1736,20 +1724,20 @@ quex/engine/loop/TEST                                                <no date>
  * Indentation Counting:
 
     With Comments
-        indentation-w-comments.py Mixed ..............................[OK]
-                                  NewlineTerminated ..................[OK]
-                                  NotNewlineTerminated ...............[OK]
+        indentation-w-comments.py Mixed ............................[FAIL]
+                                  NewlineTerminated ...........[NO OUTPUT]
+                                  NotNewlineTerminated ........[NO OUTPUT]
     With Tabulators
-        indentation-w-tabs.py Back ...................................[OK]
-                              Front ..................................[OK]
-                              InComment ..............................[OK]
-                              Potpourri ..............................[OK]
+        indentation-w-tabs.py Back .................................[FAIL]
+                              Front ...........................[NO OUTPUT]
+                              InComment .......................[NO OUTPUT]
+                              Potpourri .......................[NO OUTPUT]
     Without Tabulators
-        indentation.py CloseMultiple .................................[OK]
-                       EmptyLines ....................................[OK]
-                       InAndOut ......................................[OK]
-                       NoDents .......................................[OK]
-                       SuppressedNewline .............................[OK]
+        indentation.py CloseMultiple ...............................[FAIL]
+                       EmptyLines .............................[NO OUTPUT]
+                       InAndOut ...............................[NO OUTPUT]
+                       NoDents ................................[NO OUTPUT]
+                       SuppressedNewline ......................[NO OUTPUT]
 
  * Loop:
 
@@ -1767,37 +1755,68 @@ quex/engine/loop/TEST                                                <no date>
  * Skip-Characters:
 
     UTF8 Engine -- Varrying Buffer Size
-        skip-utf8.py 5 ...............................................[OK]
-                     6 ...............................................[OK]
-                     7 ...............................................[OK]
-                     8 ...............................................[OK]
+        skip-utf8.py 5 .............................................[FAIL]
+                     6 .............................................[FAIL]
+                     7 .............................................[FAIL]
+                     8 .............................................[FAIL]
     Varrying Buffer Size
-        skip.py 3 ....................................................[OK]
-                4 ....................................................[OK]
-                5 ....................................................[OK]
-                6 ....................................................[OK]
-                7 ....................................................[OK]
-                8 ....................................................[OK]
+        skip.py 3 ..................................................[FAIL]
+                4 .............................................[NO OUTPUT]
+                5 .............................................[NO OUTPUT]
+                6 .............................................[NO OUTPUT]
+                7 .............................................[NO OUTPUT]
+                8 .............................................[NO OUTPUT]
 
  * Skip-NestedRange:
 
     Delimiters of different sizes
-        skip-nested_range.py one .....................................[OK]
-                             same-head ...............................[OK]
-                             three ...................................[OK]
-                             two .....................................[OK]
+        skip-nested_range.py one ...................................[FAIL]
+                             same-head .............................[FAIL]
+                             three .................................[FAIL]
+                             two ...................................[FAIL]
 
  * Skip-Range:
 
     Varrying DelimiterLength (Buffer=length+3)
-        skip-range.py 1 ..............................................[OK]
-                      2 ..............................................[OK]
-                      3 ..............................................[OK]
-                      4 ..............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        skip-range.py 1 ............................................[FAIL]
+                      2 ............................................[FAIL]
+                      3 ............................................[FAIL]
+                      4 ............................................[FAIL]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] indentation-w-comments.py _ Mixed
+                                   \__ NewlineTerminated
+                                   \__ NotNewlineTerminated
+    [FAIL] indentation-w-tabs.py _ Back
+                               \__ Front
+                               \__ InComment
+                               \__ Potpourri
+    [FAIL] indentation.py _ CloseMultiple
+                        \__ EmptyLines
+                        \__ InAndOut
+                        \__ NoDents
+                        \__ SuppressedNewline
+    [FAIL] skip-utf8.py _ 5
+                      \__ 6
+                      \__ 7
+                      \__ 8
+    [FAIL] skip.py _ 3
+                 \__ 4
+                 \__ 5
+                 \__ 6
+                 \__ 7
+                 \__ 8
+    [FAIL] skip-nested_range.py _ one
+                              \__ same-head
+                              \__ three
+                              \__ two
+    [FAIL] skip-range.py _ 1
+                       \__ 2
+                       \__ 3
+                       \__ 4
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -2129,7 +2148,7 @@ quex/output/core/TEST                                                <no date>
                                   Cpp-PathUniform-CG .................[OK]
                                   Cpp-Template .......................[OK]
                                   Cpp-Template-CG ....................[OK]
-                                  Cpp_StrangeStream ................[FAIL]
+                                  Cpp_StrangeStream ..................[OK]
     No Backward Reload -- Precondition at Border
         test-no-backward-reloading.py ANSI-C .........................[OK]
                                       ANSI-C-ASSERTS .................[OK]
@@ -2144,7 +2163,7 @@ quex/output/core/TEST                                                <no date>
                                       Cpp-PathUniform-CG .............[OK]
                                       Cpp-Template ...................[OK]
                                       Cpp-Template-CG ................[OK]
-                                      Cpp_StrangeStream ............[FAIL]
+                                      Cpp_StrangeStream ..............[OK]
 
  * CONTINUE:
 
@@ -2160,7 +2179,7 @@ quex/output/core/TEST                                                <no date>
                                         Cpp-PathUniform-CG ...........[OK]
                                         Cpp-Template .................[OK]
                                         Cpp-Template-CG ..............[OK]
-                                        Cpp_StrangeStream ..........[FAIL]
+                                        Cpp_StrangeStream ............[OK]
 
  * Post Conditions:
 
@@ -2176,7 +2195,7 @@ quex/output/core/TEST                                                <no date>
                                   Cpp-PathUniform-CG .................[OK]
                                   Cpp-Template .......................[OK]
                                   Cpp-Template-CG ....................[OK]
-                                  Cpp_StrangeStream ................[FAIL]
+                                  Cpp_StrangeStream ..................[OK]
     Part I
         test-post-conditions.py ANSI-C ...............................[OK]
                                 ANSI-C-CG ............................[OK]
@@ -2200,7 +2219,7 @@ quex/output/core/TEST                                                <no date>
                                  Cpp-PathUniform-CG ..................[OK]
                                  Cpp-Template ........................[OK]
                                  Cpp-Template-CG .....................[OK]
-                                 Cpp_StrangeStream .................[FAIL]
+                                 Cpp_StrangeStream ...................[OK]
     Part 2
         test-pre-conditions-2.py ANSI-C ..............................[OK]
                                  ANSI-C-CG ...........................[OK]
@@ -2213,7 +2232,7 @@ quex/output/core/TEST                                                <no date>
                                  Cpp-PathUniform-CG ..................[OK]
                                  Cpp-Template ........................[OK]
                                  Cpp-Template-CG .....................[OK]
-                                 Cpp_StrangeStream .................[FAIL]
+                                 Cpp_StrangeStream ...................[OK]
 
  * Pre- and Post- Conditions:
 
@@ -2229,7 +2248,7 @@ quex/output/core/TEST                                                <no date>
                                    Cpp-PathUniform-CG ................[OK]
                                    Cpp-Template ......................[OK]
                                    Cpp-Template-CG ...................[OK]
-                                   Cpp_StrangeStream ...............[FAIL]
+                                   Cpp_StrangeStream .................[OK]
 
  * Pre-conditions:
 
@@ -2250,7 +2269,7 @@ quex/output/core/TEST                                                <no date>
                                                  Cpp-Path-CG .........[OK]
                                                  Cpp-Template ........[OK]
                                                  Cpp-Template-CG .....[OK]
-                                                 Cpp_StrangeStream .[FAIL]
+                                                 Cpp_StrangeStream ...[OK]
     Part II
         test-pseudo_ambiguous_post_conditions-2.py ANSI-C ............[OK]
                                                    ANSI-C-CG .........[OK]
@@ -2261,7 +2280,7 @@ quex/output/core/TEST                                                <no date>
                                                    Cpp-Path-CG .......[OK]
                                                    Cpp-Template ......[OK]
                                                    Cpp-Template-CG ...[OK]
-                                                   Cpp_StrangeStream [FAIL]
+                                                   Cpp_StrangeStream .[OK]
 
  * Simple:
 
@@ -2277,7 +2296,7 @@ quex/output/core/TEST                                                <no date>
                         Cpp-PathUniform-CG ...........................[OK]
                         Cpp-Template .................................[OK]
                         Cpp-Template-CG ..............................[OK]
-                        Cpp_StrangeStream ..........................[FAIL]
+                        Cpp_StrangeStream ............................[OK]
     Keywords 'for', 'forest', 'forester', and 'formidable'
         test-simple-5.py ANSI-C ......................................[OK]
                          ANSI-C-CG ...................................[OK]
@@ -2288,7 +2307,7 @@ quex/output/core/TEST                                                <no date>
                          Cpp-Path-CG .................................[OK]
                          Cpp-Template ................................[OK]
                          Cpp-Template-CG .............................[OK]
-                         Cpp_StrangeStream .........................[FAIL]
+                         Cpp_StrangeStream ...........................[OK]
     Maximum Length Match
         test-simple-2.py ANSI-C ......................................[OK]
                          ANSI-C-CG ...................................[OK]
@@ -2301,7 +2320,7 @@ quex/output/core/TEST                                                <no date>
                          Cpp-PathUniform-CG ..........................[OK]
                          Cpp-Template ................................[OK]
                          Cpp-Template-CG .............................[OK]
-                         Cpp_StrangeStream .........................[FAIL]
+                         Cpp_StrangeStream ...........................[OK]
     Reload Init State
         test-continue-without-return-2.py ANSI-C .....................[OK]
                                           ANSI-C-CG ..................[OK]
@@ -2329,41 +2348,21 @@ quex/output/core/TEST                                                <no date>
                        Cpp-PathUniform-CG ............................[OK]
                        Cpp-Template ..................................[OK]
                        Cpp-Template-CG ...............................[OK]
-                       Cpp_StrangeStream ...........................[FAIL]
+                       Cpp_StrangeStream .............................[OK]
 
  * Single DFA_State:
 
     Transition Code Generation
-        test-single-state-transitions.py A ....................[NO OUTPUT]
-                                         A-UTF8 ...............[NO OUTPUT]
-                                         B ....................[NO OUTPUT]
-                                         B-UTF8 ...............[NO OUTPUT]
-                                         C ....................[NO OUTPUT]
-                                         C-UTF8 ...............[NO OUTPUT]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-position_adaption.py _ Cpp_StrangeStream
-    [FAIL] test-no-backward-reloading.py _ Cpp_StrangeStream
-    [FAIL] test-continue-without-return.py _ Cpp_StrangeStream
-    [FAIL] test-post-conditions-2.py _ Cpp_StrangeStream
-    [FAIL] test-pre-conditions-3.py _ Cpp_StrangeStream
-    [FAIL] test-pre-conditions-2.py _ Cpp_StrangeStream
-    [FAIL] test-pre-post-condition.py _ Cpp_StrangeStream
-    [FAIL] test-pseudo_ambiguous_post_conditions.py _ Cpp_StrangeStream
-    [FAIL] test-pseudo_ambiguous_post_conditions-2.py _ Cpp_StrangeStream
-    [FAIL] test-bol-eol.py _ Cpp_StrangeStream
-    [FAIL] test-simple-5.py _ Cpp_StrangeStream
-    [FAIL] test-simple-2.py _ Cpp_StrangeStream
-    [FAIL] test-simple.py _ Cpp_StrangeStream
-    [FAIL] test-single-state-transitions.py _ A
-                                          \__ A-UTF8
-                                          \__ B
-                                          \__ B-UTF8
-                                          \__ C
-                                          \__ C-UTF8
+        test-single-state-transitions.py A ...........................[OK]
+                                         A-UTF8 ......................[OK]
+                                         B ...........................[OK]
+                                         B-UTF8 ......................[OK]
+                                         C ...........................[OK]
+                                         C-UTF8 ......................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    Code Base                                   
@@ -2374,9 +2373,9 @@ quex/code_base/TESTS/general/TEST                                    <no date>
  * BOM Snap:
 
     FILE
-        bom.exe .............................................[MAKE FAILED]
+        bom.exe ......................................................[OK]
     ifstream
-        bom-istream.exe .....................................[MAKE FAILED]
+        bom-istream.exe ..............................................[OK]
 
  * Consistency:
 
@@ -2400,8 +2399,6 @@ quex/code_base/TESTS/general/TEST                                    <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] bom.exe
-    [FAIL] bom-istream.exe
     [FAIL] test-include-Multi.sh
 ===============================================================================
                                                                                
@@ -2410,24 +2407,36 @@ quex/code_base/TESTS/general/TEST                                    <no date>
 quex/code_base/analyzer/struct/TEST                                  <no date>
 -------------------------------------------------------------------------------
  * Constructor
-        test-constructor.exe byte-loader .............................[OK]
-                             file-name ...............................[OK]
-                             memory ..................................[OK]
+        test-constructor.exe byte-loader ....................[MAKE FAILED]
+                             file-name ......................[MAKE FAILED]
+                             memory .........................[MAKE FAILED]
  * Include Push/Pop
-        test-include_push.exe byte-loader ............................[OK]
-                              file-name ..............................[OK]
-                              memory .................................[OK]
+        test-include_push.exe byte-loader ...................[MAKE FAILED]
+                              file-name .....................[MAKE FAILED]
+                              memory ........................[MAKE FAILED]
  * Include Push/Pop Deep
-        test-include-deep.exe ........................................[OK]
+        test-include-deep.exe ...............................[MAKE FAILED]
  * Reset
-        test-reset.exe byte-loader ...................................[OK]
-                       file-name .....................................[OK]
-                       memory ........................................[OK]
-                       plain .........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        test-reset.exe byte-loader ..........................[MAKE FAILED]
+                       file-name ............................[MAKE FAILED]
+                       memory ...............................[MAKE FAILED]
+                       plain ................................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] test-constructor.exe _ byte-loader
+                              \__ file-name
+                              \__ memory
+    [FAIL] test-include_push.exe _ byte-loader
+                               \__ file-name
+                               \__ memory
+    [FAIL] test-include-deep.exe
+    [FAIL] test-reset.exe _ byte-loader
+                        \__ file-name
+                        \__ memory
+                        \__ plain
 ===============================================================================
                                                                                
                                   ByteLoaders                                  
@@ -2466,15 +2475,21 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ....................................[OK]
-                        Mix ..........................................[OK]
-                        N-Character ..................................[OK]
-                        N-String .....................................[OK]
-                        String .......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        accumulator.exe Character ...........................[MAKE FAILED]
+                        Mix .................................[MAKE FAILED]
+                        N-Character .........................[MAKE FAILED]
+                        N-String ............................[MAKE FAILED]
+                        String ..............................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] accumulator.exe _ Character
+                         \__ Mix
+                         \__ N-Character
+                         \__ N-String
+                         \__ String
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2819,10 +2834,10 @@ quex/output/languages/cpp/TEST                                       <no date>
  * Converter:
 
     Determine UTF-8 Range Map for Codec
-        test-converter-C.py cp037 ..................................[FAIL]
-                            cp1256 .................................[FAIL]
-                            cp737 ..................................[FAIL]
-                            cp866 ..................................[FAIL]
+        test-converter-C.py cp037 ....................................[OK]
+                            cp1256 ...................................[OK]
+                            cp737 ....................................[OK]
+                            cp866 ....................................[OK]
     Determine UTF-8 Range Map for Codec
         test-converter-x.py 1 ........................................[OK]
                             2 ........................................[OK]
@@ -2839,10 +2854,6 @@ quex/output/languages/cpp/TEST                                       <no date>
 -------------------------------------------------------------------------------
     [FAIL] package-file-db.py
     [FAIL] test-token_class.py
-    [FAIL] test-converter-C.py _ cp037
-                             \__ cp1256
-                             \__ cp737
-                             \__ cp866
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3449,12 +3460,12 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        9  238   [FAIL] TEST                                                          
+        7  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-       10  15    [FAIL] ........../code/TEST                                          
+        6  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3468,11 +3479,11 @@ SUMMARY:
         3  32    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
         1  14    [FAIL] ........../source-package/TEST                                
-        1  5     [FAIL] ........../token-class/TEST                                   
+        2  5     [FAIL] ........../token-class/TEST                                   
         2  2     [FAIL] ........../token-policies/TEST                                
-        3  11    [FAIL] ..../code_base/TESTS/general/TEST                             
+        1  11    [FAIL] ..../code_base/TESTS/general/TEST                             
            1       [OK] ............../analyzer/TEST                                  
-           11      [OK] ......................./struct/TEST                           
+       11  11    [FAIL] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            11      [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
@@ -3480,15 +3491,15 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-           5       [OK] ............../extra/accumulator/TEST                         
+        5  5     [FAIL] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
-        3  3     [FAIL] ............../token/TEST                                     
+           3       [OK] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-           38      [OK] .........../loop/TEST                                         
+       30  38    [FAIL] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
            17      [OK] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
@@ -3501,20 +3512,20 @@ SUMMARY:
            8       [OK] ........................./construction/TEST                   
            33      [OK] ........................./cut/TEST                            
            62      [OK] ........................./transformation/TEST                 
-        2  58    [FAIL] ..../input/TEST                                               
+           58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
-       19  205   [FAIL] ..../output/core/TEST                                         
+           205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        6  31    [FAIL] .........../languages/cpp/TEST                                
+        2  31    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____   ___            
-    |  ___|_ _(_) |___     |___  | / _ \     __  __
-    | |_ / _` | | / __|       / / | | | |    \ \/ /
-    |  _| (_| | | \__ \      / /  | |_| |     >  < 
-    |_|  \__,_|_|_|___/     /_/    \___/     /_/\_\
+     _____     _ _           ___   _           
+    |  ___|_ _(_) |___      ( _ ) / |    __  __
+    | |_ / _` | | / __|     / _ \ | |    \ \/ /
+    |  _| (_| | | \__ \    | (_) || |     >  < 
+    |_|  \__,_|_|_|___/     \___/ |_|    /_/\_\
                                                                    (1701 tests)
 
 ===============================================================================

@@ -1344,7 +1344,7 @@ class Language(dict):
 
         return blue_print(txt, [
             ("lexatom_t",        Setup.lexatom.type),
-            ("token_id_t",       token_descr.token_id_type.get_pure_text()),
+            ("token_id_t",       token_descr.token_id_type),
             ("token_line_n_t",   token_descr.line_number_type.get_pure_text()),
             ("token_column_n_t", token_descr.column_number_type.get_pure_text()),
             ("acceptance_id_t",  "int"),
@@ -1355,7 +1355,7 @@ class Language(dict):
         token_descr = token_db.token_type_definition
         type_def_list = [
             ("lexatom_t",        Setup.lexatom.type),
-            ("token_id_t",       token_descr.token_id_type.get_pure_text()),
+            ("token_id_t",       token_descr.token_id_type),
             ("token_line_n_t",   token_descr.line_number_type.get_pure_text()),
             ("token_column_n_t", token_descr.column_number_type.get_pure_text()),
             ("acceptance_id_t",  "int"),
@@ -1407,8 +1407,8 @@ class Language(dict):
         txt = Txt
         txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, txt)
         txt = self.Match_QUEX_NAME_TOKEN.sub(r"%s_\1" % tcn, txt)
-        #txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % acn, txt)
-        #txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % acn, txt)
+        # txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % acn, txt)
+        # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % acn, txt)
 
         return blue_print(txt, replacements, CommonStart="QUEX_")
 

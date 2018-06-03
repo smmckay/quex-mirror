@@ -1,4 +1,5 @@
 import quex.engine.misc.error          as     error
+from   quex.engine.misc.tools          import typed
 from   quex.engine.misc.file_in        import EndOfStreamException, \
                                               skip_whitespace, \
                                               check_or_die, \
@@ -38,19 +39,14 @@ class TokenTypeDescriptorCore(object):
             #    self.class_name      = Setup.token_class_name
             #    self.class_name_safe = Setup.token_class_name_safe
             #    self.name_space      = Setup.token_class_name_space
+            #    self.token_id_type   = Setup.token_id_type
 
             # Consistency maintained via 'set_file_name/get_file_name'
             #    self._file_name                = Setup.output_token_class_file
             #    self._file_name_implementation = Setup.output_token_class_file_implementation
-            if Setup.token_class_name.find("::") != -1:
-                Setup.token_class_name,       \
-                Setup.token_class_name_space, \
-                Setup.token_class_name_safe = \
-                        read_namespaced_name(Setup.token_class_name, 
-                                             "token class (options --token-class, --tc)")
-            self.open_for_derivation_f      = False
-            self.token_contains_token_id_f  = True
-            self.token_id_type         = CodeUser("size_t", SourceRef())
+            self.open_for_derivation_f     = False
+            self.token_contains_token_id_f = True
+            self.token_id_type         = "size_t"
             self.column_number_type    = CodeUser("size_t", SourceRef())
             self.line_number_type      = CodeUser("size_t", SourceRef())
 
@@ -65,6 +61,7 @@ class TokenTypeDescriptorCore(object):
             Setup.token_class_name          = Core.class_name
             Setup.token_class_name_safe     = Core.class_name_safe
             Setup.token_class_name_space    = Core.name_space
+            Setup.token_id_type             = Core.token_id_type
 
             # Consistency maintained via 'set_file_name/get_file_name'
             #    self._file_name                = Setup.output_token_class_file
@@ -72,7 +69,6 @@ class TokenTypeDescriptorCore(object):
 
             self.open_for_derivation_f      = Core.open_for_derivation_f
             self.token_contains_token_id_f  = Core.token_contains_token_id_f
-            self.token_id_type              = Core.token_id_type
             self.column_number_type         = Core.column_number_type
             self.line_number_type           = Core.line_number_type
 
@@ -96,6 +92,11 @@ class TokenTypeDescriptorCore(object):
     def name_space(self):         return Setup.token_class_name_space
     @name_space.setter
     def name_space(self, N):      Setup.token_class_name_space = N
+    @property
+    def token_id_type(self):          return Setup.token_id_type
+    @token_id_type.setter
+    @typed(Value=(str,unicode))
+    def token_id_type(self, Value):   Setup.token_id_type = Value
             
     def set_file_name(self, FileName):
         ext = Lng.extension_db[E_Files.HEADER_IMPLEMTATION]
@@ -112,7 +113,7 @@ class TokenTypeDescriptorCore(object):
         if self.token_contains_token_id_f == False:
             txt += "           (token id not part of token object)\n"
         txt += "namespace: '%s'\n" % repr(self.name_space)[1:-1]
-        txt += "type(token_id)      = %s\n" % self.token_id_type.get_text()
+        txt += "type(token_id)      = %s\n" % self.token_id_type
         txt += "type(column_number) = %s\n" % self.column_number_type.get_text()
         txt += "type(line_number)   = %s\n" % self.line_number_type.get_text()
 
@@ -264,7 +265,7 @@ class TokenTypeDescriptorManual(TokenTypeDescriptorCore):
 
         self.column_number_type = CodeFragment("size_t")
         self.line_number_type   = CodeFragment("size_t")
-        self.token_id_type      = CodeFragment(TokenIDType)
+        self.token_id_type      = TokenIDType
 
     def get_file_name(self):
         return self.__file_name
@@ -306,7 +307,7 @@ def parse(fh):
     result = TokenTypeDescriptor(descriptor, sr_begin)
     if     not result.get_member_db()             \
        and result.class_name == Setup.token_class_name \
-       and result.token_id_type.sr.is_void()      \
+       and not result.token_id_type           \
        and result.column_number_type.sr.is_void() \
        and result.line_number_type.sr.is_void():
         error.log("Section 'token_type' does not define any members, does not\n" + \
@@ -406,7 +407,7 @@ def parse_standard_members(fh, section_name, descriptor, already_defined_list):
         __validate_definition(type_code_fragment, name,
                               already_defined_list, StandardMembersF=True)
 
-        if   name == "id":            descriptor.token_id_type      = type_code_fragment
+        if   name == "id":            descriptor.token_id_type      = type_code_fragment.get_pure_text()
         elif name == "column_number": descriptor.column_number_type = type_code_fragment
         elif name == "line_number":   descriptor.line_number_type   = type_code_fragment
         else:

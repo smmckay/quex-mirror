@@ -17,7 +17,6 @@ def do(Mode_PrepPrepDB):
     LexerClassName = Setup.analyzer_class_name
 
     txt = Lng.open_template(Lng.analyzer_configuration_file())
-    txt = adapt.do(txt, Setup.output_directory)
 
     # -- check if exit/entry handlers have to be active
     entry_handler_active_f = any(
@@ -104,5 +103,5 @@ def do(Mode_PrepPrepDB):
              ["$$USER_LEXER_VERSION$$",         Setup.user_application_version_id],
              ])
 
-    return txt
+    return adapt.do(txt, Setup.output_directory)
 
