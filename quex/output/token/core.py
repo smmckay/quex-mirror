@@ -3,7 +3,7 @@
 from   quex.input.files.token_type       import TokenTypeDescriptor
 from   quex.engine.misc.string_handling  import blue_print
 import quex.token_db                     as     token_db
-from   quex.blackboard                   import setup as Setup, Lng, mode_prep_prep_db
+from   quex.blackboard                   import setup as Setup, Lng
 
 from   collections import OrderedDict
 
@@ -322,13 +322,11 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 #   define  __quex_assert(X)              /* no assert */
 #endif
 
-#include "%s" 
 """
 
 def _helper_definitions():
     txt = helper_definitions_common \
-           % (Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name),
-              Setup.output_token_id_file_ref)
+           % Lng.SAFE_IDENTIFIER(Setup.buffer_encoding.name)
     # txt = txt.replace("$$TYPE_DEFINITIONS$$", Lng.type_definitions())
 
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT", token_db.support_take_text())        

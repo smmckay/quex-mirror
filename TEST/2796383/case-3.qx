@@ -1,6 +1,7 @@
 token_type {
 name = a;
-standard {
+distinct {
+did: int;
 }
 }
 token {

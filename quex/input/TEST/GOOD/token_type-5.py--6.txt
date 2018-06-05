@@ -1,12 +1,12 @@
 -----------------------------
 IN:
-    [ {name = europa::deutschland::ispringen;}]
+    [ {name = europa::deutschland::ispringen; standard{ id: short; }}]
 
 OUT:
 
 class:     'ispringen'
 namespace: ''europa', 'deutschland''
-type(token_id)      = size_t
+type(token_id)      = short
 type(column_number) = size_t
 type(line_number)   = size_t
 distinct members {

@@ -1,6 +1,7 @@
 token { A; }
 
 token_type {
+   name = spaced::Tokey;
    header {
 #       include <cstddef>
 #       include <cstdint>

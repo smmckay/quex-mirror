@@ -3,7 +3,6 @@ inline void         QToken_construct(QToken*);
 inline void         QToken_copy(QToken*, const QToken*);
 inline void         QToken_destruct(QToken*);
 inline void         QToken_set(QToken*            me,
-inline const char*  QToken_map_id_to_name(const Simple_token_id_t);
 inline bool         QToken_take_text(QToken*            me,
 inline size_t       QToken_repetition_n_get(QToken*);
 inline void         QToken_repetition_n_set(QToken*, size_t);
@@ -22,8 +21,6 @@ QToken::~QToken()
 inline QToken&
 QToken::operator=(const QToken& That)
 { if( this != &That ) { QToken_copy(this, &That); } return *this; }
-QToken::id_name() const
-{ return QToken_map_id_to_name(id); }
 QToken_construct(QToken* __this)
 new ((void*)__this) QToken;
 QToken_destruct(QToken* __this)
@@ -33,5 +30,4 @@ __QUEX_STD_memcpy((void*)__this, (void*)__That, sizeof(::QToken));
 QToken_take_text(QToken*              __this,
 QToken_repetition_n_get(QToken* __this)
 QToken_repetition_n_set(QToken* __this, size_t N)
-QToken_map_id_to_name(const Simple_token_id_t TokenID)
 

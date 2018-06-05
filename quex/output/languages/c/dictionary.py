@@ -73,7 +73,10 @@ class Language(LanguageCpp):
     def MODE_GOUP(self):
         return "self.pop_mode(&self);"
 
-    def type_replacements(self):
+    def type_replacements(self, DirectF=False):
+        if DirectF:
+            return LanguageCpp.type_replacements(self, True)
+
         acn = Setup.analyzer_class_name
         return [
              ("QUEX_TYPE_TOKEN",          "struct %s_tag" % self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),

@@ -26,7 +26,7 @@ main(int argc, char** argv)
     // (*) loop until the 'termination' token arrives
     do {
         qlex.receive(&token_p);
-        cout << token_p->id_name() << " ";
+        cout << Simple_map_token_id_to_name(token_p->id) << " ";
 
         switch( token_p->id ) {
         case QUEX_TKN_N1a: 

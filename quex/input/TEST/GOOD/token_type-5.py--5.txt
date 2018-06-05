@@ -1,6 +1,6 @@
 -----------------------------
 IN:
-    [ {name = deutschland::ispringen::;}]
+    [ {name = deutschland::ispringen::; standard{ id: short; }}]
 
 OUT:
 

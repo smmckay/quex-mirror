@@ -1,6 +1,6 @@
 -----------------------------
 IN:
-    [ {name = ispringen::;}]
+    [ {name = ispringen::; standard{ id: short; }}]
 
 OUT:
 

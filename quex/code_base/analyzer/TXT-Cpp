@@ -45,6 +45,9 @@ $$INC: declarations$$
 /* Token class and token id definitions _______________________________________
  *                                                                           */
 #include "$$TOKEN_ID_DEFINITION_FILE$$"
+QUEX_NAMESPACE_MAIN_OPEN 
+extern const char* QUEX_NAME(map_token_id_to_name)(const QUEX_TYPE_TOKEN_ID TokenID);
+QUEX_NAMESPACE_MAIN_CLOSE 
 #include "$$TOKEN_CLASS_DEFINITION_FILE$$"
 
 QUEX_NAMESPACE_MAIN_OPEN 

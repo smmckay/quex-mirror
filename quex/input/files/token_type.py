@@ -44,6 +44,8 @@ class TokenTypeDescriptorCore(object):
             # Consistency maintained via 'set_file_name/get_file_name'
             #    self._file_name                = Setup.output_token_class_file
             #    self._file_name_implementation = Setup.output_token_class_file_implementation
+
+            self.token_id_type_defined_f   = False
             self.open_for_derivation_f     = False
             self.token_contains_token_id_f = True
             self.token_id_type         = "size_t"
@@ -67,6 +69,7 @@ class TokenTypeDescriptorCore(object):
             #    self._file_name                = Setup.output_token_class_file
             #    self._file_name_implementation = Setup.output_token_class_file_implementation
 
+            self.token_id_type_defined_f    = Core.token_id_type_defined_f
             self.open_for_derivation_f      = Core.open_for_derivation_f
             self.token_contains_token_id_f  = Core.token_contains_token_id_f
             self.column_number_type         = Core.column_number_type
@@ -96,8 +99,7 @@ class TokenTypeDescriptorCore(object):
     def token_id_type(self):          return Setup.token_id_type
     @token_id_type.setter
     @typed(Value=(str,unicode))
-    def token_id_type(self, Value):   Setup.token_id_type = Value
-            
+    def token_id_type(self, Value):   Setup.token_id_type = Value; self.token_id_type_defined_f = True;             
     def set_file_name(self, FileName):
         ext = Lng.extension_db[E_Files.HEADER_IMPLEMTATION]
         Setup.output_token_class_file                = FileName
@@ -306,6 +308,7 @@ def parse(fh):
 
     result = TokenTypeDescriptor(descriptor, sr_begin)
     if     not result.get_member_db()             \
+       and not result.token_id_type_defined_f \
        and result.column_number_type.sr.is_void() \
        and result.line_number_type.sr.is_void():
         error.log("Section 'token_type' does not define any members, does not\n" + \

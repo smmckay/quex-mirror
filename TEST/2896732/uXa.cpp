@@ -115,7 +115,7 @@ namespace quex {
 					break;
 				}
 
-				std::cout << token->id_name();
+				std::cout << Lexer_map_token_id_to_name(token->id);
 
 				if(token->id == QUEX_UUID_POINTIE) {
 					std::cout << "(";

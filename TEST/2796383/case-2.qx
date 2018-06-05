@@ -1,6 +1,7 @@
 
 token_type {
 name = a;
+distinct { x: int; }
 }
 token {
 A;

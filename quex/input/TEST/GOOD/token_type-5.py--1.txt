@@ -1,6 +1,6 @@
 -----------------------------
 IN:
-    [ {name;}]
+    [ {name; standard{ id: short; }}]
 
 OUT:
 

@@ -1,3 +1,5 @@
-        void                      set_line_number(const Simple_token_line_n_t Value) { _line_n = Value; }
-        void                      set_column_number(const Simple_token_column_n_t Value) { _column_n = Value; }
-/* This content is pasted into header, so the include guard is superfluous. 
+int get_did() const    { return did; }
+void set_did(int Value) { did = Value; }
+void                      set_line_number(const Simple_token_line_n_t Value) { _line_n = Value; }
+void                      set_column_number(const Simple_token_column_n_t Value) { _column_n = Value; }
+/* This content is pasted into header, so the include guard is superfluous.

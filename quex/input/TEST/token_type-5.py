@@ -25,7 +25,7 @@ if "--hwut-info" in sys.argv:
 
 def test(Txt):
     descr = TokenTypeDescriptorCore()
-    txt = "{" + Txt + "}"
+    txt = "{" + Txt + " " + "standard{ id: short; }" + "}"
     sh = StringIO(txt)
     sh.name = "string"
     print "-----------------------------"

@@ -142,7 +142,7 @@ token_type {
                                     char*                   buffer, 
                                     size_t                  BufferSize) 
         {
-            const char*  token_type_str = QUEX_NAME_TOKEN(map_id_to_name)(me->id);
+            const char*  token_type_str = QUEX_NAME(map_token_id_to_name)(me->id);
             const char*  BufferEnd  = buffer + BufferSize;
             const char*  iterator   = 0;
             char*        writerator = 0;

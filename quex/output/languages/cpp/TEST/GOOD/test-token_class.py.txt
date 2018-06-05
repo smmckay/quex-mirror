@@ -23,8 +23,6 @@ QUEX_INLINE void         MeinToken_destruct(MeinToken*);
 QUEX_INLINE void         MeinToken_set(MeinToken*            me, 
                                           const QUEX_TYPE_TOKEN_ID ID);
 
-QUEX_INLINE const char*  MeinToken_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
-
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool         MeinToken_take_text(MeinToken*            me, 
                                                 const QUEX_TYPE_LEXATOM* Begin, 
@@ -145,7 +143,6 @@ public:
          * user customized token classes. The token policies should be the
          * same for C and Cpp.                                               */
         QUEX_TYPE_TOKEN_ID    id;
-        const char*           id_name() const;
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE
@@ -189,7 +186,6 @@ extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);
 #define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__GENERATED__EUROPA__DEUTSCHLAND__BADEN_WUERTEMBERG__ISPRINGEN____MEINTOKEN_I
 
 
-#include "token-ids.h"
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
@@ -245,10 +241,6 @@ MeinToken::~MeinToken()
 QUEX_INLINE MeinToken& 
 MeinToken::operator=(const MeinToken& That) 
 { if( this != &That ) { MeinToken_copy(this, &That); } return *this; }
-
-QUEX_INLINE const char*           
-MeinToken::id_name() const 
-{ return MeinToken_map_id_to_name(id); }
 
 QUEX_INLINE void
 MeinToken_construct(MeinToken* __this)
@@ -337,17 +329,6 @@ MeinToken_repetition_n_set(MeinToken* __this, size_t N)
 #   undef  self
 }
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
-
-QUEX_INLINE const char*
-MeinToken_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
-{
-   switch( TokenID ) {
-   default: {
-       return "<NUMERIC VALUE OF TOKEN-ID UNDEFINED>";
-   }
-
-   }
-}
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

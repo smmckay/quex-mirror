@@ -2,6 +2,7 @@ token_type {
 take_text {}
 constructor {}
 destructor {}
+standard { id: uint32_t; }
 distinct {
    HBG_position_001 : uint8_t;
    ACI_position_002 : uint32_t;

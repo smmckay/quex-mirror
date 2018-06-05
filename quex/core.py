@@ -44,9 +44,6 @@ def _generate(mode_db):
     content_table = _get_token_class()
 
     if Setup.token_class_only_f:
-        class_token_header = do_token_class_info() + content_table[1][0]
-        content_table[1]   = (class_token_header,    content_table[1][1])
-
         _write_all(content_table)
         return
 
@@ -107,13 +104,13 @@ def do_converter_info(HeaderFileName, SourceFileName):
     print
 
 def do_token_class_info():
+    token_class = "::".join(Setup.token_class_name_space + [Setup.token_class_name]) 
     info_list = [
-        "  --token-id-prefix       %s" % Setup.token_id_prefix,
-        "  --token-class-file      %s" % Setup.output_token_class_file,
-        "  --token-class           %s" % Setup.token_class,
-        "  --token-id-type         %s" % Setup.token_id_type,
-        "  --lexatom-type          %s" % Setup.lexatom.type,
-        "  --foreign-token-id-file %s" % Setup.output_token_id_file,
+        "  --token-id-prefix  %s" % Setup.token_id_prefix,
+        "  --token-class-file %s" % Setup.output_token_class_file,
+        "  --token-class      %s" % token_class,
+        "  --token-id-type    %s" % Setup.token_id_type,
+        "  --lexatom-type     %s" % Setup.lexatom.type,
     ]
     if token_db.support_repetition():
         info_list.append("  --token-class-support-repetition")
@@ -166,6 +163,9 @@ def _get_token_class():
     """
     class_token_header,        \
     class_token_implementation = token_class.do()
+
+    if Setup.token_class_only_f:
+        class_token_header = do_token_class_info() + class_token_header
 
     return [
         (class_token_header,         token_db.token_type_definition.get_file_name()),
