@@ -14,7 +14,7 @@ echo
 echo 'Output from constructed header:_______________________________________'
 echo
 cd Simple
-../../quex_pathify.sh Simple | awk '/\#/ && /line/' 
+../../quex_pathify.sh Simple | awk '/\# *line/' 
 cd ..
 
 # cleansening

@@ -2,7 +2,6 @@
 # ABSOLUTELY NO WARANTY
 from   quex.input.files.token_type       import TokenTypeDescriptor
 from   quex.engine.misc.string_handling  import blue_print
-import quex.output.token.id_generator    as     token_id_maker
 import quex.token_db                     as     token_db
 from   quex.blackboard                   import setup as Setup, Lng, mode_prep_prep_db
 
@@ -18,8 +17,6 @@ def do():
 
     assert token_db.token_type_definition is not None
 
-    if mode_prep_prep_db: token_id_header = token_id_maker.do(Setup) 
-    else:                 token_id_header = ""
 
     if token_db.token_type_definition.manually_written():
         # User has specified a manually written token class
@@ -31,8 +28,7 @@ def do():
         header_txt,        \
         implementation_txt = _do(token_db.token_type_definition)
 
-    return token_id_header, \
-           header_txt, \
+    return header_txt, \
            implementation_txt
 
 def _do(Descr):
@@ -111,7 +107,6 @@ def _do_core(Descr):
     template_i_str = Lng.open_template(Lng.token_template_i_file())
     txt_i = blue_print(template_i_str, [
         ["$$INCLUDE_TOKEN_CLASS_HEADER$$", Lng.INCLUDE(Setup.output_token_class_file)],
-        ["$$INCLUDE_TOKEN_ID_HEADER$$",    Lng.INCLUDE(Setup.output_token_id_file_ref)],
         ["$$CONSTRUCTOR$$",                Lng.SOURCE_REFERENCED(Descr.constructor)],
         ["$$COPY$$",                       copy_str],
         ["$$DESTRUCTOR$$",                 Lng.SOURCE_REFERENCED(Descr.destructor)],
@@ -121,7 +116,6 @@ def _do_core(Descr):
         ["$$INCLUDE_GUARD_EXTENSION$$",    include_guard_extension_str],
         ["$$TOKEN_REPETITION_N_GET$$",     Lng.SOURCE_REFERENCED(Descr.repetition_get)],
         ["$$TOKEN_REPETITION_N_SET$$",     Lng.SOURCE_REFERENCED(Descr.repetition_set)],
-        ["$$MAP_ID_TO_NAME_CASES$$",       token_id_maker.do_map_id_to_name_cases()],
     ])
 
     txt   = blue_print(txt, helper_variable_replacements)

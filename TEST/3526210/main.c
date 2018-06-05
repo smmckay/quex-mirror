@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
             break;
 
         printf("id=%s text=[%s]\n",
-               Lexer_Token_map_id_to_name(t->id),
+               Lexer_map_token_id_to_name(t->id),
                t->text);
     }
 

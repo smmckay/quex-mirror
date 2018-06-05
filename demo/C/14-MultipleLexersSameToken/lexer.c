@@ -53,9 +53,9 @@ main(int argc, char** argv)
         for(i=0; i < 10 - L ; ++i) printf(" ");
         printf("\t");
         printf("%s   %s   %s\n", 
-               A_B_C_Token_map_id_to_name(max_token->id),
-               A_B_C_Token_map_id_to_name(moritz_token->id),
-               A_B_C_Token_map_id_to_name(boeck_token->id));
+               A_B_C_map_token_id_to_name(max_token->id),
+               A_B_C_map_token_id_to_name(moritz_token->id),
+               A_B_C_map_token_id_to_name(boeck_token->id));
 
     } while( boeck_token->id != TKN_TERMINATION );
 

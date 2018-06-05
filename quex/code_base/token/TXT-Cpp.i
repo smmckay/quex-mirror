@@ -5,7 +5,6 @@
 #define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__GENERATED__$$INCLUDE_GUARD_EXTENSION$$_I
 
 $$INCLUDE_TOKEN_CLASS_HEADER$$
-$$INCLUDE_TOKEN_ID_HEADER$$
 
 QUEX_NAMESPACE_TOKEN_OPEN
 
@@ -43,10 +42,6 @@ $$DESTRUCTOR$$
 QUEX_INLINE $$TOKEN_CLASS$$& 
 $$TOKEN_CLASS$$::operator=(const $$TOKEN_CLASS$$& That) 
 { if( this != &That ) { $$TOKEN_CLASS$$_copy(this, &That); } return *this; }
-
-QUEX_INLINE const char*           
-$$TOKEN_CLASS$$::id_name() const 
-{ return $$TOKEN_CLASS$$_map_id_to_name(id); }
 
 QUEX_INLINE void
 $$TOKEN_CLASS$$_construct($$TOKEN_CLASS$$* __this)
@@ -123,17 +118,6 @@ $$TOKEN_REPETITION_N_SET$$
 #   undef  self
 }
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
-
-QUEX_INLINE const char*
-$$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
-{
-   switch( TokenID ) {
-   default: {
-       return "<NUMERIC VALUE OF TOKEN-ID UNDEFINED>";
-   }
-$$MAP_ID_TO_NAME_CASES$$
-   }
-}
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

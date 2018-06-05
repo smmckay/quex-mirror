@@ -25,7 +25,7 @@ def do(setup):
     
        -- token id definitions (if they are not done in '--foreign-token-id-file').
 
-       -- const string& TokenClass::map_id_to_name(), i.e. a function which can 
+       -- const string& TokenClass::map_token_id_to_name(), i.e. a function which can 
           convert token ids into strings.
        ________________________________________________________________________
     """

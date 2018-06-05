@@ -13,11 +13,10 @@ token_type {
 struct $$TOKEN_CLASS$$_tag;
 
 extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);
-
-extern const char* 
-$$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* me,  
-                           char*                       buffer, 
-                           size_t                      BufferSize); 
+extern const char*       QUEX_NAME(map_token_id_to_name)(const QUEX_TYPE_TOKEN_ID);
+extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* me,  
+                                                    char*                       buffer, 
+                                                    size_t                      BufferSize); 
 
    }
    standard {
@@ -128,7 +127,7 @@ $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* me,
         const char* 
         $$TOKEN_CLASS$$_get_string($$TOKEN_CLASS$$* me, char*   buffer, size_t  BufferSize) 
         {
-            const char*  token_id_str = $$TOKEN_CLASS$$_map_id_to_name(me->id);
+            const char*  token_id_str = QUEX_NAME(map_token_id_to_name)(me->id);
             const char*  BufferEnd    = buffer + BufferSize;
             char*        writerator   = 0;
 

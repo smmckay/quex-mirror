@@ -67,7 +67,6 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
         return
 
     dummy,                     \
-    dummy,                     \
     token_class_implementation = token_class.do()
 
     with open(FileName, "a") as fh:

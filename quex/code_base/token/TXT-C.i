@@ -10,7 +10,6 @@
 #endif
 
 $$INCLUDE_TOKEN_CLASS_HEADER$$
-$$INCLUDE_TOKEN_ID_HEADER$$
 
 QUEX_INLINE void 
 $$TOKEN_CLASS$$_set($$TOKEN_CLASS$$*            __this, 
@@ -50,7 +49,7 @@ $$DESTRUCTOR$$
 
 QUEX_INLINE void
 $$TOKEN_CLASS$$_copy($$TOKEN_CLASS$$*       __this, 
-                  const $$TOKEN_CLASS$$* __That)
+                     const $$TOKEN_CLASS$$* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
@@ -119,17 +118,6 @@ $$TOKEN_REPETITION_N_SET$$
 #   undef  self
 }
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
-
-QUEX_INLINE const char*
-$$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID TokenID)
-{
-   switch( TokenID ) {
-   default: {
-       return "<NUMERIC VALUE OF TOKEN-ID UNDEFINED>";
-   }
-$$MAP_ID_TO_NAME_CASES$$
-   }
-}
 
 $$FOOTER$$
 

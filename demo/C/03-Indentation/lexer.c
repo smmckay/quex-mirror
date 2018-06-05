@@ -4,7 +4,7 @@ typedef Easy       Lexer;
 typedef Easy_Token Token;
 #define CONSTRUCT      Easy_from_file_name
 #define DESTRUCT       Easy_destruct
-#define TOKEN_ID_NAME  Easy_Token_map_id_to_name
+#define TOKEN_ID_NAME  Easy_map_token_id_to_name
 #define TOKEN_STRING   Easy_Token_get_string
 #else
 #   include "Easy2/Easy2.h"
@@ -12,7 +12,7 @@ typedef Easy2        Lexer;
 typedef Easy2_Token  Token;
 #define CONSTRUCT      Easy2_from_file_name
 #define DESTRUCT       Easy2_destruct
-#define TOKEN_ID_NAME  Easy2_Token_map_id_to_name
+#define TOKEN_ID_NAME  Easy2_map_token_id_to_name
 #define TOKEN_STRING   Easy2_Token_get_string
 #endif
 

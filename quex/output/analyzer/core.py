@@ -2,13 +2,15 @@
 from   quex.engine.misc.string_handling import blue_print
 import quex.output.analyzer.modes       as     mode_classes
 from   quex.output.analyzer.adapt       import declare_member_functions
+import quex.output.token.id_generator   as     token_id_maker
 
 from   quex.DEFINITIONS import QUEX_PATH, \
                                QUEX_VERSION
 import quex.token_db    as     token_db
 import quex.blackboard  as     blackboard
 from   quex.blackboard  import setup as Setup, \
-                               Lng
+                               Lng, \
+                               mode_prep_prep_db
 
 def do(ModeDB, Epilog):
     assert not Epilog # If this never triggers, delete 'Epilog'
@@ -78,14 +80,21 @@ def do_implementation(ModeDB, MemberFunctionSignatureList):
 
     func_txt = Lng.open_template(Lng.analyzer_template_i_file())
 
+    if mode_prep_prep_db: 
+        map_token_ids_to_names_str = token_id_maker.do_map_id_to_name_cases()
+    else:                 
+        map_token_ids_to_names_str = ""
+
     func_txt = blue_print(func_txt, [
-        ["$$MEMBER_FUNCTION_ASSIGNMENT$$",              Lng.MEMBER_FUNCTION_ASSIGNMENT(MemberFunctionSignatureList)],
-        ["$$CONSTRUCTOR_EXTENSTION$$",                  Lng.SOURCE_REFERENCED(blackboard.class_constructor_extension)],
-        ["$$DESTRUCTOR_EXTENSTION$$",                   Lng.SOURCE_REFERENCED(blackboard.class_destructor_extension)],
-        ["$$USER_DEFINED_PRINT$$",                      Lng.SOURCE_REFERENCED(blackboard.class_print_extension)],
-        ["$$RESET_EXTENSIONS$$",                        Lng.SOURCE_REFERENCED(blackboard.reset_extension)],
-        ["$$MEMENTO_EXTENSIONS_PACK$$",                 Lng.SOURCE_REFERENCED(blackboard.memento_pack_extension)],
-        ["$$MEMENTO_EXTENSIONS_UNPACK$$",               Lng.SOURCE_REFERENCED(blackboard.memento_unpack_extension)],
+        ["$$MEMBER_FUNCTION_ASSIGNMENT$$", Lng.MEMBER_FUNCTION_ASSIGNMENT(MemberFunctionSignatureList)],
+        ["$$CONSTRUCTOR_EXTENSTION$$",     Lng.SOURCE_REFERENCED(blackboard.class_constructor_extension)],
+        ["$$DESTRUCTOR_EXTENSTION$$",      Lng.SOURCE_REFERENCED(blackboard.class_destructor_extension)],
+        ["$$USER_DEFINED_PRINT$$",         Lng.SOURCE_REFERENCED(blackboard.class_print_extension)],
+        ["$$RESET_EXTENSIONS$$",           Lng.SOURCE_REFERENCED(blackboard.reset_extension)],
+        ["$$MEMENTO_EXTENSIONS_PACK$$",    Lng.SOURCE_REFERENCED(blackboard.memento_pack_extension)],
+        ["$$MEMENTO_EXTENSIONS_UNPACK$$",  Lng.SOURCE_REFERENCED(blackboard.memento_unpack_extension)],
+        ["$$INCLUDE_TOKEN_ID_HEADER$$",    Lng.INCLUDE(Setup.output_token_id_file_ref)],
+        ["$$MAP_ID_TO_NAME_CASES$$",       map_token_ids_to_names_str],
     ])
 
     return "\n%s\n" % func_txt

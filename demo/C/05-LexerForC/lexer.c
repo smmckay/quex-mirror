@@ -40,7 +40,7 @@ print_token(LexerForC_Token* token_p)
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still might carry an old lexeme. 
          * Printing it would be confusing.                                    */
-        printf("%s\n", LexerForC_Token_map_id_to_name(token_p->id));
+        printf("%s\n", LexerForC_map_token_id_to_name(token_p->id));
         break;
     default:
         printf("%s \n", LexerForC_Token_get_string(token_p, buffer, BufferSize));

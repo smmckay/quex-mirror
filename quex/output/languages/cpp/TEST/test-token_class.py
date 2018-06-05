@@ -3,12 +3,12 @@ import sys
 import os
 from StringIO import StringIO
 sys.path.append(os.environ["QUEX_PATH"])
-from   quex.input.files.token_type        import TokenTypeDescriptor
+from   quex.input.files.token_type     import TokenTypeDescriptor
 import quex.output.token.core          as token_class
-import quex.input.files.token_type          as parser
-import quex.output.languages.core as languages
-import quex.token_db              as token_db
-import quex.blackboard            as blackboard
+import quex.input.files.token_type     as parser
+import quex.output.languages.core      as languages
+import quex.token_db                   as token_db
+import quex.blackboard                 as blackboard
 
 blackboard.setup.buffer_element_size     = 1
 blackboard.setup.output_token_class_file = ""

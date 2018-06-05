@@ -11,6 +11,7 @@ import quex.output.analyzer.adapt                as     adapt
 import quex.output.analyzer.configuration        as     configuration 
 import quex.output.analyzer.lexeme_converter     as     lexeme_converter 
 import quex.output.token.core                    as     token_class
+import quex.output.token.id_generator            as     token_id_maker
 import quex.output.analyzer.modes                as     mode_classes
 import quex.output.languages.graphviz.core       as     grapviz_generator
 
@@ -50,11 +51,12 @@ def _generate(mode_db):
         return
 
     else:
+        content_table.append(
+            (token_id_maker.do(Setup), Setup.output_token_id_file_ref)
+        )
         ## class_token_implementation = content_table[-1][0]
         ## del content_table[-1]
-        content_table.extend(_get_analyzers(mode_db, 
-                                            "", # class_token_implementation, 
-                                            ""))
+        content_table.extend(_get_analyzers(mode_db))
         content_table.extend(lexeme_converter.do()) # [Optional]
         _write_all(content_table)
 
@@ -133,8 +135,7 @@ def do_token_class_info():
     comment.append("<<<QUEX-OPTIONS>>>")
     return Lng.ML_COMMENT("".join(comment), IndentN=0)
 
-def _prepare_analyzers(mode_db, class_token_implementation, 
-                       global_lexeme_null_declaration): 
+def _prepare_analyzers(mode_db): 
     # (*) implement the lexer mode-specific analyser functions
     function_analyzers_implementation \
                             = analyzer_functions_get(mode_db)
@@ -143,8 +144,7 @@ def _prepare_analyzers(mode_db, class_token_implementation,
     # -- do the coding of the class framework
     configuration_header    = configuration.do(mode_db)
     analyzer_header, \
-    member_function_signature_list = analyzer_class.do(mode_db, 
-                                                       Epilog=global_lexeme_null_declaration) 
+    member_function_signature_list = analyzer_class.do(mode_db, Epilog="") 
     analyzer_implementation = analyzer_class.do_implementation(mode_db, 
                                                                member_function_signature_list) 
     mode_implementation     = mode_classes.do(mode_db)
@@ -154,7 +154,7 @@ def _prepare_analyzers(mode_db, class_token_implementation,
                             mode_implementation,
                             function_analyzers_implementation,
                             analyzer_implementation,
-                            class_token_implementation, "\n"])
+                            "\n"])
 
     return configuration_header, \
            analyzer_header, \
@@ -164,22 +164,18 @@ def _get_token_class():
     """RETURNS: [0] List of (source code, file-name)
                 [1] Source code for global lexeme null declaration
     """
-    token_id_header,                \
-    class_token_header,             \
-    class_token_implementation      = token_class.do()
+    class_token_header,        \
+    class_token_implementation = token_class.do()
 
     return [
-        (token_id_header,            Setup.output_token_id_file),
         (class_token_header,         token_db.token_type_definition.get_file_name()),
         (class_token_implementation, Setup.output_token_class_file_implementation),
     ]
 
-def _get_analyzers(mode_db, class_token_implementation, global_lexeme_null_declaration):
+def _get_analyzers(mode_db):
     configuration_header, \
     analyzer_header,      \
-    engine_txt            = _prepare_analyzers(mode_db, 
-                                               class_token_implementation,
-                                               global_lexeme_null_declaration)
+    engine_txt            = _prepare_analyzers(mode_db)
 
     return [
         (configuration_header, Setup.output_configuration_file),

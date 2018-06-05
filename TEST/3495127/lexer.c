@@ -33,7 +33,7 @@ main(int argc, char** argv)
         printf("(%i, %i)  \t", (int)token_p->_line_n, (int)token_p->_column_n);
         /* Print out token information            */
         fflush(stderr);
-        printf("%s: ", Simple_Token_map_id_to_name(token_p->id));
+        printf("%s: ", Simple_map_token_id_to_name(token_p->id));
         switch( token_p->id ) {
         case QUEX_TKN_ON_AFTER_MATCH:
         case QUEX_TKN_ON_MATCH______:

@@ -39,7 +39,7 @@ token_type {
         {
             std::string             tmp;
 
-            tmp = $$TOKEN_CLASS$$_map_id_to_name(self.id);
+            /* tmp = QUEX_NAME(map_token_id_to_name)(self.id); */
 
             tmp += " '" + QUEX_NAME(lexeme_to_pretty_char)(self.text) + "'";
 

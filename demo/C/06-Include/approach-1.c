@@ -32,7 +32,7 @@ main(int argc, char** argv)
             if( token_p->id != QUEX_TKN_IDENTIFIER ) {
                 continue_lexing_f = false;
                 my_print(&qlex, "Found 'include' without a subsequent filename: '%s' hm?\n",
-                         (char*)Easy_Token_map_id_to_name(token_p->id), 0x0);
+                         (char*)Easy_map_token_id_to_name(token_p->id), 0x0);
                 break;
             }
             my_print(&qlex, ">> including: ", (const char*)token_p->text, 0x0);
@@ -75,12 +75,12 @@ print_token(Easy* qlex, Easy_Token* token_p)
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still might carry an old lexeme. 
          * Printing it would be confusing.                                    */
-        printf("%s\n", Easy_Token_map_id_to_name(token_p->id));
+        printf("%s\n", Easy_map_token_id_to_name(token_p->id));
         break;
     case QUEX_TKN_NUMBER: 
         /* In this case, the token still might carry an old lexeme. 
          * Printing it would be confusing.                                    */
-        printf("%s: %i\n", Easy_Token_map_id_to_name(token_p->id), (int)token_p->number);
+        printf("%s: %i\n", Easy_map_token_id_to_name(token_p->id), (int)token_p->number);
         break;
     default:
         printf("%s \n", Easy_Token_get_string(token_p, buffer, BufferSize));

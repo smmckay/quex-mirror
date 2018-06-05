@@ -68,13 +68,13 @@ print_token(Simple_Token* token_p)
     case QUEX_TKN_TERMINATION: 
         /* In this case, the token still carries an old lexeme; Printing it
          * would be confusing.                                               */
-        printf("%s\n", Simple_Token_map_id_to_name(token_p->id));
+        printf("%s\n", Simple_map_token_id_to_name(token_p->id));
         break;
     default:
         printf("%s \n", Simple_Token_get_string(token_p, buffer, BufferSize));
         break;
     }
 #   else
-    printf("%s\n", Simple_Token_map_id_to_name(token_p->id));
+    printf("%s\n", Simple_token_map_id_to_name(token_p->id));
 #   endif
 }

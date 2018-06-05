@@ -49,9 +49,9 @@ main(int argc, char** argv)
 
         printf("\t");
         printf("%s   %s   %s\n", 
-               max_Token_map_id_to_name(max_token->id),
-               moritz_Token_map_id_to_name(moritz_token->id),
-               boeck_Token_map_id_to_name(boeck_token->id));
+               max_map_token_id_to_name(max_token->id),
+               moritz_map_token_id_to_name(moritz_token->id),
+               boeck_map_token_id_to_name(boeck_token->id));
 
     } while( boeck_token->id != TKN_TERMINATION );
 

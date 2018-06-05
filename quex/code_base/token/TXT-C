@@ -27,8 +27,6 @@ QUEX_INLINE void         $$TOKEN_CLASS$$_destruct(struct $$TOKEN_CLASS$$_tag*);
 QUEX_INLINE void         $$TOKEN_CLASS$$_set(struct $$TOKEN_CLASS$$_tag* me, 
                                              const QUEX_TYPE_TOKEN_ID    ID);
 
-QUEX_INLINE const char*  $$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
-
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool         $$TOKEN_CLASS$$_take_text(struct $$TOKEN_CLASS$$_tag* me, 
                                                    const QUEX_TYPE_LEXATOM*    Begin, 

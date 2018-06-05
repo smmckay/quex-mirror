@@ -31,7 +31,7 @@ main(int argc, char** argv)
     do {
         qlex.receive(&qlex, &token_p);
 
-        printf("%s\t", UTF16Lex_Token_map_id_to_name(token_p->id));
+        printf("%s\t", UTF16Lex_map_token_id_to_name(token_p->id));
         for(iterator = token_p->text; *iterator; ++iterator) {
             printf("%04X.", (int)*iterator);
         }

@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 #       ifdef PRINT_TOKEN
 		printf("%s \n", simple_Token_get_string(&token_p, buffer, BufferSize));
 #       else
-		printf("%s\n", simple_Token_map_id_to_name(token_p->id));
+		printf("%s\n", simple_map_token_id_to_name(token_p->id));
 #       endif
 	} while(token_p->id != QUEX_TKN_TERMINATION);
 

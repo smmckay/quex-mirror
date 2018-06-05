@@ -11,6 +11,8 @@ token_type {
 #include <$$OUTPUT_DIR$$/converter-from-lexeme>
 
 extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);
+extern const char*       QUEX_NAME(map_token_id_to_name)(const QUEX_TYPE_TOKEN_ID);
+
 
    }
    standard {
@@ -110,16 +112,15 @@ extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);
         const std::string() const
         { return std::string(get_string()); }
 
-        const std::string
-        get_string() const 
+        const std::string   get_string() const 
         {
-            std::string  tmp($$TOKEN_CLASS$$_map_id_to_name(self.id));
+            std::string  tmp(QUEX_NAME(map_token_id_to_name)(self.id));
             tmp += " '" + QUEX_NAME(lexeme_to_pretty_char)(self.text) + "'";
             return tmp;
         }
-    
+        const char*        id_name() const
+        { return QUEX_NAME(map_token_id_to_name)(id); }
    }
-
 
    repetition_set {
        self.number = N;

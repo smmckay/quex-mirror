@@ -33,7 +33,7 @@ main(int argc, char** argv)
             if( token_p->id != QUEX_TKN_IDENTIFIER ) {
                 continue_lexing_f = false;
                 my_print(&qlex, "Found 'include' without a subsequent filename: '%s' hm?\n",
-                         (char*)Easy_Token_map_id_to_name(token_p->id));
+                         (char*)Easy_map_token_id_to_name(token_p->id));
                 break;
             }
             my_print(&qlex, ">> including: ", (const char*)token_p->get_text());

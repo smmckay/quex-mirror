@@ -23,8 +23,6 @@ QUEX_INLINE void         $$TOKEN_CLASS$$_destruct($$TOKEN_CLASS$$*);
 QUEX_INLINE void         $$TOKEN_CLASS$$_set($$TOKEN_CLASS$$*            me, 
                                           const QUEX_TYPE_TOKEN_ID ID);
 
-QUEX_INLINE const char*  $$TOKEN_CLASS$$_map_id_to_name(const QUEX_TYPE_TOKEN_ID);
-
 #ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 QUEX_INLINE bool         $$TOKEN_CLASS$$_take_text($$TOKEN_CLASS$$*            me, 
                                                 const QUEX_TYPE_LEXATOM* Begin, 
@@ -59,7 +57,6 @@ $$QUICK_SETTERS$$
          * user customized token classes. The token policies should be the
          * same for C and Cpp.                                               */
         QUEX_TYPE_TOKEN_ID    id;
-        const char*           id_name() const;
 
 #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
 #       ifdef QUEX_OPTION_COUNTER_LINE

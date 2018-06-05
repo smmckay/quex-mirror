@@ -75,7 +75,7 @@ main(int argc, char** argv)
             printf("\n");
         }
 #       else
-        printf("%s", Simple_Token_map_id_to_name(token_p->id));
+        printf("%s", Simple_map_token_id_to_name(token_p->id));
         printf("\n");
 #       endif
         fflush(stdout);
