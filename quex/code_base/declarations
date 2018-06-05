@@ -39,9 +39,8 @@ $$INC: buffer/bytes/ByteLoader$$
 
 $$INC: analyzer/Mode$$
 
-#ifdef QUEX_OPTION_COUNTER
-$$INC: analyzer/Counter$$
-#endif
+$$INC: lexeme_base$$
+$$INC: <count> analyzer/Counter$$
 
 $$INC: quex/MemoryManager$$
 

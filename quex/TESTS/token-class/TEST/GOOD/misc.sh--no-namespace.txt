@@ -29,7 +29,9 @@ new ((void*)__this) QToken;
 QToken_destruct(QToken* __this)
 __this->QToken::~QToken();
 QToken_copy(QToken* __this, const QToken* __That)
+__QUEX_STD_memcpy((void*)__this, (void*)__That, sizeof(::QToken));
 QToken_take_text(QToken*              __this,
 QToken_repetition_n_get(QToken* __this)
 QToken_repetition_n_set(QToken* __this, size_t N)
 QToken_map_id_to_name(const Simple_token_id_t TokenID)
+

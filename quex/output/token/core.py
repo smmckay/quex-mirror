@@ -129,8 +129,9 @@ def _do_core(Descr):
 
     if Setup.token_class_only_f:
         # All type definitions need to be replaced!
-        txt   = Lng.type_definitions_replace(txt)
-        txt_i = Lng.type_definitions_replace(txt_i)
+        replacements = Lng.type_replacements(DirectF=True)
+        txt   = blue_print(txt, replacements, "QUEX_TYPE_")
+        txt_i = blue_print(txt_i, replacements, "QUEX_TYPE_")
 
     return txt, txt_i
 

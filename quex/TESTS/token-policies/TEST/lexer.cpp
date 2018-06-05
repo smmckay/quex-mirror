@@ -7,7 +7,7 @@ using namespace std;
 
 #endif
 
-void  pseudo_analysis(QUEX_TYPE_ANALYZER* me);
+void  pseudo_analysis(TPLex* me);
 TPLex_token_id_t  test_core(TPLex&, const char*);
 
 #define UMM_NAME ""
@@ -50,7 +50,7 @@ main(int argc, char** argv)
 
 TPLex_token_id_t test_core(TPLex& qlex, const char* Choice)
 {
-    QUEX_TYPE_TOKEN*  token_p;
+    TPLex_Token*  token_p;
 
     qlex.receive(&token_p);
 
@@ -61,7 +61,7 @@ TPLex_token_id_t test_core(TPLex& qlex, const char* Choice)
 }
 
 #if defined(UNIT_TEST_PSEUDO_ANALYSIS)
-void  pseudo_analysis(QUEX_TYPE_ANALYZER* me)
+void  pseudo_analysis(TPLex* me)
 {
     TPLex&     self = *((TPLex*)me);
     static int i = 0;

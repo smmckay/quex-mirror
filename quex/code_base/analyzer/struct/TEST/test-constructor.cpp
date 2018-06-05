@@ -28,12 +28,12 @@
  *
  * (C) 2017 Frank-Rene Schaefer                                               */
 #include <test_cpp/TestAnalyzer>
-#include "ut/lib/quex/MemoryManager"
+#include "test_cpp/lib/quex/MemoryManager"
+#include "test_cpp/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#include "test_cpp/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#include "test_cpp/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "test_cpp/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
 #include "MemoryManager_UnitTest.i"
-#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
-#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
-#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU"
-#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
 #include <hwut_unit.h>
 
 namespace quex {

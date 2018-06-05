@@ -1339,18 +1339,6 @@ class Language(dict):
            self.GOTO(door_id, dial_db)
         ]
 
-    def type_definitions_replace(self, txt):
-        token_descr = token_db.token_type_definition
-
-        return blue_print(txt, [
-            ("lexatom_t",        Setup.lexatom.type),
-            ("token_id_t",       token_descr.token_id_type),
-            ("token_line_n_t",   token_descr.line_number_type.get_pure_text()),
-            ("token_column_n_t", token_descr.column_number_type.get_pure_text()),
-            ("acceptance_id_t",  "int"),
-            ("indentation_t",    "int")
-        ])
-
     def type_definitions(self, excluded=set()):
         token_descr = token_db.token_type_definition
         type_def_list = [
@@ -1412,8 +1400,25 @@ class Language(dict):
 
         return blue_print(txt, replacements, CommonStart="QUEX_")
 
-    def type_replacements(self):
-        acn = Setup.analyzer_class_name
+    def type_replacements(self, DirectF=False):
+        if DirectF:
+            token_descr = token_db.token_type_definition
+            type_memento        = "(void*)"
+            type_lexatom        = Setup.lexatom.type
+            type_token_id       = token_descr.token_id_type
+            type_token_line_n   = token_descr.line_number_type.get_pure_text()
+            type_token_column_n = token_descr.column_number_type.get_pure_text()
+            type_acceptance_id  = "int"
+            type_indentation    = "int"
+        else:
+            acn = Setup.analyzer_class_name
+            type_memento        = "%s_Memento" % acn
+            type_lexatom        = "%s_lexatom_t" % acn
+            type_token_id       = "%s_token_id_t" % acn
+            type_token_line_n   = "%s_token_line_n_t" % acn
+            type_token_column_n = "%s_token_column_n_t" % acn
+            type_acceptance_id  = "%s_acceptance_id_t" % acn
+            type_indentation    = "%s_indentation_t" % acn
 
         return [
              ("QUEX_TYPE_TOKEN",          self.NAME_IN_NAMESPACE(Setup.token_class_name, Setup.token_class_name_space)),
@@ -1421,13 +1426,13 @@ class Language(dict):
              ("QUEX_TYPE_ANALYZER",       self.NAME_IN_NAMESPACE(Setup.analyzer_class_name, Setup.analyzer_name_space)),
              ("QUEX_TYPE0_ANALYZER",      Setup.analyzer_class_name),
              ("QUEX_TYPE_MEMENTO",        self.NAME_IN_NAMESPACE("%s_Memento" % Setup.analyzer_class_name, Setup.analyzer_name_space)),
-             ("QUEX_TYPE0_MEMENTO",       "%s_Memento" % Setup.analyzer_class_name),
-             ("QUEX_TYPE_LEXATOM",        "%s_lexatom_t" % acn),
-             ("QUEX_TYPE_TOKEN_ID",       "%s_token_id_t" % acn),
-             ("QUEX_TYPE_TOKEN_LINE_N",   "%s_token_line_n_t" % acn),
-             ("QUEX_TYPE_TOKEN_COLUMN_N", "%s_token_column_n_t" % acn),
-             ("QUEX_TYPE_ACCEPTANCE_ID",  "%s_acceptance_id_t" % acn),
-             ("QUEX_TYPE_INDENTATION",    "%s_indentation_t" % acn)
+             ("QUEX_TYPE0_MEMENTO",       type_memento),
+             ("QUEX_TYPE_LEXATOM",        type_lexatom),
+             ("QUEX_TYPE_TOKEN_ID",       type_token_id),
+             ("QUEX_TYPE_TOKEN_LINE_N",   type_token_line_n),
+             ("QUEX_TYPE_TOKEN_COLUMN_N", type_token_column_n),
+             ("QUEX_TYPE_ACCEPTANCE_ID",  type_acceptance_id),
+             ("QUEX_TYPE_INDENTATION",    type_indentation)
         ]
 
 implementation_headers_txt = """

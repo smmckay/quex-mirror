@@ -290,10 +290,10 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     on_indentation_txt = indentation_handler.do(AuxMode(), ["M", "M2"]).replace("$on_indentation", "QUEX_NAME(M_on_indentation)")
 
     Setup.analyzer_class_name = "TestAnalyzer"
-    result = adapt.do(main_txt + on_indentation_txt, "ut")
-    result = language_defines + result
     if Language == "Cpp": test_analyzer_dir = "test_cpp"
     else:                 test_analyzer_dir = "test_c"
+    result = adapt.do(main_txt + on_indentation_txt, test_analyzer_dir)
+    result = language_defines + result
     result = result.replace("$$TEST_ANALYZER_DIR$$", test_analyzer_dir)
     return result
     
@@ -334,7 +334,9 @@ def create_customized_analyzer_function(Language, TestStr, EngineSourceCode,
     txt = txt.replace(Lng._SOURCE_REFERENCE_END(), "")
 
     Setup.analyzer_class_name = "TestAnalyzer"
-    return adapt.do(txt, "ut")
+    if Language == "Cpp": test_analyzer_dir = "test_cpp"
+    else:                 test_analyzer_dir = "test_c"
+    return adapt.do(txt, test_analyzer_dir)
 
 def my_own_mr_unit_test_function(SourceCode, EndStr, 
                                  LocalVariableDB={}, ReloadF=False, 
@@ -410,8 +412,8 @@ customized_unit_test_function_txt = """
 static bool show_next_character(QUEX_TYPE_ANALYZER* me);
 static bool skip_irrelevant_characters(QUEX_TYPE_ANALYZER* me);
 
-#include "ut/lib/implementations.i"
-#include "ut/lib/implementations-inline.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/implementations.i"
+#include "$$TEST_ANALYZER_DIR$$/lib/implementations-inline.i"
 
 void
 QUEX_NAME(M_analyzer_function)(QUEX_TYPE_ANALYZER* me)

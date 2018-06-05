@@ -306,8 +306,6 @@ def parse(fh):
 
     result = TokenTypeDescriptor(descriptor, sr_begin)
     if     not result.get_member_db()             \
-       and result.class_name == Setup.token_class_name \
-       and not result.token_id_type           \
        and result.column_number_type.sr.is_void() \
        and result.line_number_type.sr.is_void():
         error.log("Section 'token_type' does not define any members, does not\n" + \
