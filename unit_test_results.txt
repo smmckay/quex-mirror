@@ -726,8 +726,8 @@ demo/Cpp/TEST                                                        <no date>
         06-Include-2.sh deep .........................................[OK]
                         shallow ......................................[OK]
     From within reception loop (complicated)
-        06-Include.sh deep .........................................[FAIL]
-                      shallow ......................................[FAIL]
+        06-Include.sh deep ...........................................[OK]
+                      shallow ........................................[OK]
 
  * 08-DeletionAndPriorityMark:
 
@@ -795,8 +795,6 @@ demo/Cpp/TEST                                                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] 06-Include.sh _ deep
-                       \__ shallow
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
@@ -935,9 +933,9 @@ quex/input/TEST                                                      <no date>
                         1 ............................................[OK]
                         2 ............................................[OK]
                         3 ............................................[OK]
-                        4 ..........................................[FAIL]
+                        4 ............................................[OK]
                         5 ............................................[OK]
-                        6 ..........................................[FAIL]
+                        6 ............................................[OK]
     Constructor, Copy, Destructor
         token_type-4.py Constructor ..................................[OK]
                         Constructor-1 ................................[OK]
@@ -961,13 +959,10 @@ quex/input/TEST                                                      <no date>
                         Some-2 .......................................[OK]
                         Twice ........................................[OK]
                         Twice-2 ......................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] token_type-5.py _ 4
-                         \__ 6
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                   Acceptance Conditions: Begin/End of Stream                   
@@ -1006,7 +1001,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .....................................[FAIL]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1032,7 +1027,6 @@ quex/TESTS/code/TEST                                                 <no date>
     [FAIL] check-default-configuration.sh
     [FAIL] svn-status.sh
     [FAIL] function-check.sh _ real
-    [FAIL] pyflakes-check.sh
     [FAIL] include_guard.py _ convention
                           \__ undefinition
     [FAIL] macro-check.py
@@ -1320,7 +1314,7 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Customized codec files (option --encoding-file)
         customized_codec.sh ........................................[FAIL]
  * FSM DFA_State Tracer
-        debug_show.sh ..............................................[FAIL]
+        debug_show.sh ................................................[OK]
  * Inadmissible commonalities
         commonality.sh indentation-newline ...........................[OK]
                        mix ...........................................[OK]
@@ -1361,7 +1355,6 @@ quex/TESTS/misc/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] customized_codec.sh
-    [FAIL] debug_show.sh
     [FAIL] comment.sh
     [FAIL] line-number-pragma.sh _ source
 ===============================================================================
@@ -1450,7 +1443,7 @@ quex/TESTS/source-package/TEST                                       <no date>
         test-c.sh codec ..............................................[OK]
                   codec-utf16 ........................................[OK]
                   codec-utf8 .........................................[OK]
-                  customized-token-class ...........................[FAIL]
+                  customized-token-class .............................[OK]
                   manual-token-class .................................[OK]
                   no-counter .........................................[OK]
                   plain ..............................................[OK]
@@ -1462,12 +1455,10 @@ quex/TESTS/source-package/TEST                                       <no date>
                     manual-token-class ...............................[OK]
                     no-counter .......................................[OK]
                     plain ............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-c.sh _ customized-token-class
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Token Class                                  
@@ -1476,18 +1467,17 @@ quex/TESTS/token-class/TEST                                          <no date>
 -------------------------------------------------------------------------------
  * Miscellaneous Sample Runs
         misc.sh double-colon .........................................[OK]
-                empty ................................................[OK]
-                no-namespace .......................................[FAIL]
+                empty ..............................................[FAIL]
+                no-namespace .........................................[OK]
                 token ................................................[OK]
  * With token policy 'queue'.
-        simple-queue.exe ....................................[MAKE FAILED]
+        simple-queue.exe .............................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] misc.sh _ no-namespace
-    [FAIL] simple-queue.exe
+    [FAIL] misc.sh _ empty
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -2749,7 +2739,7 @@ quex/output/languages/cpp/TEST                                       <no date>
  * Files for Packaging vs. Files in Code Base
         package-file-db.py ...........................................[OK]
  * Token Class Template
-        test-token_class.py ........................................[FAIL]
+        test-token_class.py ..........................................[OK]
 
  * Character Counter:
 
@@ -2789,12 +2779,10 @@ quex/output/languages/cpp/TEST                                       <no date>
                           2 ..........................................[OK]
                           3 ..........................................[OK]
                           4 ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-token_class.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3403,10 +3391,10 @@ SUMMARY:
 
         4  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
-        6  56    [FAIL] ..../Cpp/TEST                                                 
+        4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        7  15    [FAIL] ........../code/TEST                                          
+        6  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3417,10 +3405,10 @@ SUMMARY:
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-        4  32    [FAIL] ........../misc/TEST                                          
+        3  32    [FAIL] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
-        1  14    [FAIL] ........../source-package/TEST                                
-        2  5     [FAIL] ........../token-class/TEST                                   
+           14      [OK] ........../source-package/TEST                                
+        1  5     [FAIL] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TESTS/general/TEST                             
            1       [OK] ............../analyzer/TEST                                  
@@ -3453,20 +3441,20 @@ SUMMARY:
            8       [OK] ........................./construction/TEST                   
            33      [OK] ........................./cut/TEST                            
            62      [OK] ........................./transformation/TEST                 
-        2  58    [FAIL] ..../input/TEST                                               
+           58      [OK] ..../input/TEST                                               
            2       [OK] ........../files/TEST                                         
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        1  31    [FAIL] .........../languages/cpp/TEST                                
+           31      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____  ____            
-    |  ___|_ _(_) |___     |___ / |___ \     __  __
-    | |_ / _` | | / __|      |_ \   __) |    \ \/ /
-    |  _| (_| | | \__ \     ___) | / __/      >  < 
-    |_|  \__,_|_|_|___/    |____/ |_____|    /_/\_\
+     _____     _ _          ____   _____           
+    |  ___|_ _(_) |___     |___ \ |___ /     __  __
+    | |_ / _` | | / __|      __) |  |_ \     \ \/ /
+    |  _| (_| | | \__ \     / __/  ___) |     >  < 
+    |_|  \__,_|_|_|___/    |_____||____/     /_/\_\
                                                                    (1700 tests)
 
 ===============================================================================
