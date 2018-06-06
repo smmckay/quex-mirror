@@ -1,9 +1,6 @@
 from   quex.engine.analyzer.door_id_address_label import DoorID, DialDB
 from   quex.engine.misc.tools                     import typed
 
-import quex.blackboard as blackboard
-
-#
 
 def __nice(SM_ID): 
     return repr(SM_ID).replace("L", "")
@@ -285,16 +282,6 @@ def reentry_preparation(Lng, PreConditionIDList, OnAfterMatchCode, dial_db):
         unset_pre_context_flags_str,
         "\n%s\n" % Lng.GOTO(DoorID.global_reentry(dial_db), dial_db), 
     ]
-
-def get_implementation_begin(Setup):
-    if Setup.language != "C":
-        return ""
-    else:
-        return "\n".join([
-            "/* START: User defined header content _________________________________________",
-            " *        The 'footer' content relies on class definitions made above.        */",
-            blackboard.Lng.SOURCE_REFERENCED(blackboard.footer),
-        ]) + "\n"
 
 def __condition(txt, CharSet):
     first_f = True

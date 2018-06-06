@@ -9,6 +9,8 @@ get_property_value_matches
 has_pre_context_begin_of_stream
 __iadd__
 __invert__
+MEMBER_VARIABLE_DECLARATION
+member_variables
 __missing__
 new_do
 NewFaster_Enum
@@ -18,3 +20,5 @@ pair_combinations
 partials
 print_mouth
 <terminated>
+
+

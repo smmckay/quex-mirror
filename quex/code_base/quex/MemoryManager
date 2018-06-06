@@ -1,6 +1,6 @@
 /* -*- C++ -*- vim: set syntax=cpp: */
-#ifndef __QUEX_INCLUDE_GUARD__MEMORY_MANAGER
-#define __QUEX_INCLUDE_GUARD__MEMORY_MANAGER
+#ifndef QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER
+#define QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER
 
 #include <stddef.h>
 $$INC: quex/compatibility/stdint.h$$
@@ -74,4 +74,4 @@ QUEXED_DEF(strlcpy)(char* Dest, const char* Src, size_t MaxN);
 
 QUEX_NAMESPACE_QUEX_CLOSE
  
-#endif /* __INCLUDE_GUARD_QUEX__CODE_BASE__MEMORY_MANAGER__ */
+#endif /* QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER */

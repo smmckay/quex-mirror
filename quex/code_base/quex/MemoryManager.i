@@ -3,8 +3,8 @@
 /* This file contains an implementation which can potentially be shared between
  * multiple different lexical analyzers. See 'multi.i' for further info.     */
 
-#ifndef __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_I
-#define __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_I
+#ifndef QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_I
+#define QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_I
 #ifndef QUEX_OPTION_USER_DEFINED_MEMORY_MANAGER
 
 $$INC: definitions$$
@@ -198,6 +198,6 @@ QUEXED_DEF(strlcpy)(char* dst, const char* src, size_t siz)
 QUEX_NAMESPACE_QUEX_CLOSE
  
 #endif /* QUEX_OPTION_USER_DEFINED_MEMORY_MANAGER */
-#endif /*  __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_I */
+#endif /* QUEX_INCLUDE_GUARD__QUEX__MEMORY_MANAGER_I */
 
 

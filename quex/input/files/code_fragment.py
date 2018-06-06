@@ -68,7 +68,7 @@ def __read_token_identifier(fh):
     identifier, name_space_list, dummy = read_namespaced_name(fh, "token identifier")
     if   identifier == "":    return ""
     elif not name_space_list: return identifier
-    return reduce(lambda x, y: x + "::" + y, name_space_list + [identifier])
+    return Lng.NAME_IN_NAMESPACE(identifier, name_space_list) 
 
 def __parse_brief_token_sender(fh):
     # shorthand for { self.send(TKN_SOMETHING); RETURN; }

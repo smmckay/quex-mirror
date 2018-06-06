@@ -53,6 +53,7 @@ class Language(dict):
     Match_QUEX_SETTING        = re.compile(r"\bQUEX_SETTING_([A-Z_0-9]+)\b")
     Match_QUEX_OPTION         = re.compile(r"\bQUEX_OPTION_([A-Z_0-9]+)\b")
     Match_QUEX_INCLUDE_GUARD  = re.compile(r"\bQUEX_INCLUDE_GUARD_([a-zA-Z_0-9]+)\b")
+    Match_QUEX_INCLUDE_GUARD_TOKEN = re.compile(r"\bQUEX_INCLUDE_GUARD__TOKEN_([a-zA-Z_0-9]+)\b")
 
     CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
     
@@ -274,16 +275,6 @@ class Language(dict):
     def LEXEME_MACRO_CLEAN_UP(self):
         return templates.lexeme_macro_clean_up
 
-    def LEXEME_NULL_DECLARATION(self):
-        return "QUEX_NAMESPACE_TOKEN_OPEN\n" \
-               "extern QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull);\n" \
-               "QUEX_NAMESPACE_TOKEN_CLOSE\n"
-
-    def LEXEME_NULL_IMPLEMENTATION(self):
-        return "QUEX_NAMESPACE_TOKEN_OPEN\n" \
-               "QUEX_TYPE_LEXATOM   QUEX_NAME(LexemeNull) = (QUEX_TYPE_LEXATOM)0;\n" \
-               "QUEX_NAMESPACE_TOKEN_CLOSE\n"
-
     def DEFAULT_TOKEN_COPY(self, X, Y):
         return "__QUEX_STD_memcpy((void*)%s, (void*)%s, sizeof(QUEX_TYPE_TOKEN));\n" % (X, Y)
 
@@ -364,13 +355,19 @@ class Language(dict):
         return " ".join("} /* close %s */" % name for name in NameList)
 
     def NAMESPACE_REFERENCE(self, NameList, TrailingDelimiterF=True):
-        if NameList: result = "::".join(NameList)
-        else:        result = ""
+        if NameList and NameList[0]: result = "::".join(NameList)
+        else:                        result = ""
         if TrailingDelimiterF: return result + "::"
         else:                  return result
 
+    @typed(Name=(None, str,unicode), NameList=(None, list))
     def NAME_IN_NAMESPACE(self, Name, NameList):
-        return "%s%s" % (self.NAMESPACE_REFERENCE(NameList), Name)
+        if NameList and NameList[0]: 
+            return "%s%s" % (self.NAMESPACE_REFERENCE(NameList), Name)
+        elif Name:
+            return Name
+        else:
+            return "MissingNameDefinition"
 
     def COMMENT(self, Comment):
         """Eliminated Comment Terminating character sequence from 'Comment'
@@ -1246,7 +1243,7 @@ class Language(dict):
     def EXIT_ON_MISSING_HANDLER(self, IncidenceId):
         return [
             self.RAISE_ERROR_FLAG(self.__error_code_db[IncidenceId][1]),
-            "%s\n"  % self.TOKEN_SEND("QUEX_TOKEN_ID(TERMINATION)"),
+            "%s\n"  % self.TOKEN_SEND("QUEX_SETTING_TOKEN_ID_TERMINATION"),
             '%s;\n' % self.PURE_RETURN
         ]
 
@@ -1257,7 +1254,7 @@ class Language(dict):
     def EXIT_ON_TERMINATION(self):
         # NOT: "Lng.PURE_RETURN" because the terminal end of stream 
         #      exits anyway immediately--after 'on_after_match'.
-        return "%s\n" % self.TOKEN_SEND("QUEX_TOKEN_ID(TERMINATION)")
+        return "%s\n" % self.TOKEN_SEND("QUEX_SETTING_TOKEN_ID_TERMINATION")
 
     def ON_BUFFER_BEFORE_CHANGE_default(self):
         return ""
@@ -1290,6 +1287,8 @@ class Language(dict):
         return txt 
 
     def straighten_open_line_pragmas_new(self, Txt, FileName):
+        if Txt is None: return None
+
         line_pragma_txt = self._SOURCE_REFERENCE_END().strip()
 
         new_content = []
@@ -1299,24 +1298,6 @@ class Language(dict):
             else:
                 new_content.append(self.LINE_PRAGMA(FileName, line_n))
         return "\n".join(new_content)
-
-        def straighten(Line, FileName, LineN, LinePragmaTxt):
-            line = Line.strip()
-            if not line: 
-                return ""
-            elif line.strip() != LinePragmaTxt:
-                return line
-            else:
-                return self.LINE_PRAGMA(FileName, LineN)
-
-        if Txt is None: return None
-
-        line_pragma_txt = self._SOURCE_REFERENCE_END().strip()
-
-        return "\n".join(
-            straighten(line, FileName, line_n, line_pragma_txt)
-            for line_n, line in enumerate(Txt.split("\n"), start=1)
-        )
         
     def straighten_open_line_pragmas(self, FileName):
         line_pragma_txt = self._SOURCE_REFERENCE_END().strip()
@@ -1382,7 +1363,7 @@ class Language(dict):
             token_name_space = token_descr.name_space
         else:
             tcn              = ""
-            token_name_space = ""
+            token_name_space = [""]
 
         # Types
         replacements = self.type_replacements()
@@ -1401,11 +1382,25 @@ class Language(dict):
                 ("QUEX_INLINE", self.INLINE)
             )
 
+        # TokenIds
+        def tid(Name):
+            return "%s%s" % (Setup.token_id_prefix, Name)
+
+        replacements.extend([
+            ("QUEX_SETTING_TOKEN_ID_UNINITIALIZED",  tid("UNINITIALIZED")),
+            ("QUEX_SETTING_TOKEN_ID_TERMINATION",    tid("TERMINATION")),
+            ("QUEX_SETTING_TOKEN_ID_INDENT",         tid("INDENT")),
+            ("QUEX_SETTING_TOKEN_ID_DEDENT",         tid("DEDENT")),
+            ("QUEX_SETTING_TOKEN_ID_NODENT",         tid("NODENT")),
+        ])
+
         # QUEX_NAME
+        token_include_guard = self.NAME_IN_NAMESPACE(tcn, token_name_space).replace("::", "__")
         txt = Txt
         txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, txt)
         txt = self.Match_QUEX_NAME_TOKEN.sub(r"%s_\1" % tcn, txt)
         txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s_\1" % Setup.analyzer_name_safe, txt)
+        txt = self.Match_QUEX_INCLUDE_GUARD_TOKEN.sub(r"QUEX_INCLUDE_GUARD__TOKEN__%s_\1" % token_include_guard, txt)
         # txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % acn, txt)
         # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % acn, txt)
 
@@ -1443,7 +1438,7 @@ class Language(dict):
              ("QUEX_TYPE_TOKEN_LINE_N",   type_token_line_n),
              ("QUEX_TYPE_TOKEN_COLUMN_N", type_token_column_n),
              ("QUEX_TYPE_ACCEPTANCE_ID",  type_acceptance_id),
-             ("QUEX_TYPE_INDENTATION",    type_indentation)
+             ("QUEX_TYPE_INDENTATION",    type_indentation),
         ]
 
 implementation_headers_txt = """

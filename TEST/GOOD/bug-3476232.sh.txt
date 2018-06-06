@@ -3,7 +3,7 @@
 ## 3 seconds
 ## 4 seconds
 Oll Korrekt
-||||
+----
 converter-from-lexeme
 converter-from-lexeme.i
 Lexer
@@ -13,4 +13,3 @@ Lexer-token
 Lexer-token.i
 Lexer-token_ids
 lib
-||||

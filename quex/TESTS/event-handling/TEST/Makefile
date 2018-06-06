@@ -22,7 +22,8 @@ COMPILER = gcc
 LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
 	 -I./ -I. -IEHLexer/lib \
 	 -DQUEX_OPTION_DEBUG_SHOW_MODES        \
-	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK   
+	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK  \
+	 # -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER
 	 # -fsanitize=address 
 
 LD := $(LD0) 
@@ -56,7 +57,7 @@ on_bad_lexatom.exe: on_bad_lexatom.qx
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	$(QUEX) -i $< -o EHLexer --odir ut 
 	$(LD4) ./lexer.c ut/EHLexer.c -o $@ -Iut/lib \
-	       -DUNIT_TEST_DEFINE_MEMORY_MANAGER_IMPLEMENTATION \
+	       -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER \
 		   -DUNIT_TEST_IN_UT
 
 on_buffer_before_change.exe: on_buffer_before_change.qx 

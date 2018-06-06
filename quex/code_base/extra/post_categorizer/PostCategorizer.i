@@ -291,7 +291,7 @@ QUEX_NAME(PostCategorizer__get_token_id)(const QUEX_NAME(Dictionary)*  me,
                                          const QUEX_TYPE_LEXATOM*      Lexeme)
 {
     QUEX_NAME(DictionaryNode)* found = QUEX_NAME(PostCategorizer__find)(me, Lexeme);
-    if( ! found ) return QUEX_TOKEN_ID(UNINITIALIZED);
+    if( ! found ) return  QUEX_SETTING_TOKEN_ID_TERMINATION;
     return found->token_id;
 }
 

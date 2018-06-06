@@ -102,9 +102,6 @@
 #ifdef    QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR  
 #   undef QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR  
 #endif
-#ifdef    QUEX_NAMESPACE_MAIN
-#   undef QUEX_NAMESPACE_MAIN
-#endif
 #ifdef    __QUEX_OPTION_WCHAR_T_DISABLED
 #   undef __QUEX_OPTION_WCHAR_T_DISABLED
 #endif
@@ -119,9 +116,6 @@
 #endif
 #ifdef    QUEX_SETTING_ANALYZER_VERSION
 #   undef QUEX_SETTING_ANALYZER_VERSION  /* see analyzer/CppTemplate.txt */
-#endif
-#ifdef    QUEX_NAME_TOKEN 
-#   undef QUEX_NAME_TOKEN 
 #endif
 #ifdef    QUEX_NAMESPACE_TOKEN 
 #   undef QUEX_NAMESPACE_TOKEN 

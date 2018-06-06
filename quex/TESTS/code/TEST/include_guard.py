@@ -77,7 +77,7 @@ def better_name(FileName):
         result     += letter
         prev_letter = letter
     suffix  = result.upper()
-    return "__QUEX_INCLUDE_GUARD__" + suffix
+    return "QUEX_INCLUDE_GUARD__" + suffix
 
 def __AUX_helper_to_name_the_include_guards_according_to_quex_convention():
     global include_guard_list

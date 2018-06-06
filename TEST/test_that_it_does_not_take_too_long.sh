@@ -20,10 +20,9 @@ while (( $time < $max_time )); do
     if [[ -z $process ]]; then
         echo "Oll Korrekt"
         # Show the content of this directory
-        echo "||||"
-        ls Lexer* 
-        echo "||||"
-        rm -rf Lexer Lexer.cpp Lexer-token_ids Lexer-configuration
+        echo "----"
+        ls Lexer* | sort
+        rm -rf Lexer Lexer.cpp Lexer-token_ids Lexer-configuration converter-from-lexeme*
         exit
     fi
 done

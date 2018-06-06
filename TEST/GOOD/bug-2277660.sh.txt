@@ -10,10 +10,7 @@ tokenizer.qx:75:warning: Pattern contains elements not found in engine codec 'un
 tokenizer.qx:75:warning: (Buffer element size is 1 [byte])
 ## 1 seconds
 Oll Korrekt
-||||
-Lexer-token
-
-Lexer:
+----
 converter-from-lexeme
 converter-from-lexeme.i
 Lexer
@@ -23,4 +20,4 @@ Lexer-token
 Lexer-token.i
 Lexer-token_ids
 lib
-||||
+

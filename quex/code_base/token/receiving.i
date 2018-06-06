@@ -1,6 +1,6 @@
 /* -*- C++ -*-   vim: set syntax=cpp: */
-#ifndef QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__TOKEN_RECEIVING_I
-#define QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__TOKEN_RECEIVING_I
+#ifndef QUEX_INCLUDE_GUARD__TOKEN__RECEIVING_I
+#define QUEX_INCLUDE_GUARD__TOKEN__RECEIVING_I
 
 $$INC: definitions$$
 
@@ -26,7 +26,7 @@ QUEX_NAME(MF_run)(QUEX_TYPE_ANALYZER* me,
         QUEX_NAME(MF_receive)(me, &token_p);
         if     ( ! token_p ) break;
         else if( ! callback_on_token(token_p) ) break;
-    } while( token_p->id != QUEX_TOKEN_ID(TERMINATION) );
+    } while( token_p->id !=  QUEX_SETTING_TOKEN_ID_TERMINATION );
 
     /* Error handling.                                                        */
     if( me->error_code != E_Error_None ) {

@@ -1,5 +1,5 @@
-#ifndef __QUEX_INCLUDE_GUARD__COMPATIBILITY__WIN__BORLAND_STDINT_H
-#define __QUEX_INCLUDE_GUARD__COMPATIBILITY__WIN__BORLAND_STDINT_H
+#ifndef QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__WIN__BORLAND_STDINT_H
+#define QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__WIN__BORLAND_STDINT_H
   /* Contributed by Howard Jeng, sphericalcow at users sourceforge net.
    * DATE: 08y3m4d                                                      */
 

@@ -8,8 +8,8 @@
  * Specifications Issue 6, IEEE Std 1003.1, 2004 Edition".
  *
  * (C) 2008-2018  Frank-Rene Schaefer                                         */           
-#ifndef __QUEX_INCLUDE_GUARD__COMPATIBILITY__STDBOOL_H
-#define __QUEX_INCLUDE_GUARD__COMPATIBILITY__STDBOOL_H
+#ifndef QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__STDBOOL_H
+#define QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__STDBOOL_H
 
 #if defined(__QUEX_OPTION_PLAIN_C)
 
@@ -35,4 +35,4 @@
 #endif
 
 #endif /* __QUEX_OPTION_PLAIN_C */
-#endif /* __QUEX_INCLUDE_GUARD__COMPATIBILITY__STDBOOL_H */
+#endif /* QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__STDBOOL_H */

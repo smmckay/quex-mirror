@@ -15,9 +15,8 @@
  *
  * (C) 2010 Frank-Rene Schaefer    
  * ABSOLUTELY NO WARRANTY                                                    */
-
-#ifndef __QUEX_INCLUDE_GUARD__BOM_I
-#define __QUEX_INCLUDE_GUARD__BOM_I
+#ifndef QUEX_INCLUDE_GUARD__QUEX__BOM_I
+#define QUEX_INCLUDE_GUARD__QUEX__BOM_I
 
 $$INC: quex/bom$$
 
@@ -178,6 +177,6 @@ QUEXED_DEF(bom_name)(QUEX_TYPE_BOM BOM)
 
 QUEX_NAMESPACE_QUEX_CLOSE
 
-#endif /* __QUEX_INCLUDE_GUARD__BOM_I */
+#endif /* QUEX_INCLUDE_GUARD__QUEX__BOM_I */
 
 

@@ -12,8 +12,8 @@
  *
  * (C) 2005-2012 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                      */
-#ifndef __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
-#define __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$
+#ifndef QUEX_INCLUDE_GUARD__ANALYZER__GENERATED
+#define QUEX_INCLUDE_GUARD__ANALYZER__GENERATED
 
 #include <cstddef>
 $$INC: quex/compatibility/stdint.h$$
@@ -268,4 +268,4 @@ $$INC: implementations-inline.i$$
  *        The 'footer' content relies on class definitions made above.        */
 $$USER_DEFINED_FOOTER$$
 
-#endif /* __QUEX_INCLUDE_GUARD__ANALYZER__GENERATED__$$INCLUDE_GUARD_EXTENSION$$ */
+#endif /* QUEX_INCLUDE_GUARD__ANALYZER__GENERATED */

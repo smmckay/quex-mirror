@@ -988,17 +988,15 @@ quex/TESTS/bof-eos-context/TEST                                      <no date>
                                                                                
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * Check if the default configuration has been updated.
-        check-default-configuration.sh ........................[NO OUTPUT]
  * Check that 'Lexeme' macro is not used.
         no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
-                          real .....................................[FAIL]
+                          real .......................................[OK]
  * Code Check with pyflakes
         pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
@@ -1007,12 +1005,12 @@ quex/TESTS/code/TEST                                                 <no date>
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ................................[FAIL]
+        include_guard.py convention ..................................[OK]
                          undefinition ..............................[FAIL]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
  * Propper undefinition of configuration parameters.
-        macro-check.py .............................................[FAIL]
+        macro-check.py ...............................................[OK]
 
  * User defined token id file:
 
@@ -1023,12 +1021,7 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] check-default-configuration.sh
-    [FAIL] svn-status.sh
-    [FAIL] function-check.sh _ real
-    [FAIL] include_guard.py _ convention
-                          \__ undefinition
-    [FAIL] macro-check.py
+    [FAIL] include_guard.py _ undefinition
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -3387,7 +3380,7 @@ SUMMARY:
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        6  15    [FAIL] ........../code/TEST                                          
+        1  14    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3443,11 +3436,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _   ___            
-    |  ___|_ _(_) |___     / | ( _ )     __  __
-    | |_ / _` | | / __|    | | / _ \     \ \/ /
-    |  _| (_| | | \__ \    | || (_) |     >  < 
-    |_|  \__,_|_|_|___/    |_| \___/     /_/\_\
-                                                                   (1700 tests)
+     _____     _ _          _  _____           
+    |  ___|_ _(_) |___     / ||___ /     __  __
+    | |_ / _` | | / __|    | |  |_ \     \ \/ /
+    |  _| (_| | | \__ \    | | ___) |     >  < 
+    |_|  \__,_|_|_|___/    |_||____/     /_/\_\
+                                                                   (1699 tests)
 
 ===============================================================================

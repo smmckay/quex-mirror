@@ -7,8 +7,8 @@
  * Specifications Issue 6, IEEE Std 1003.1, 2004 Edition".
  *
  * (C) 2008-2018  Frank-Rene Schaefer                                         */           
-#ifndef __QUEX_INCLUDE_GUARD__COMPATIBILITY__STDINT_H
-#define __QUEX_INCLUDE_GUARD__COMPATIBILITY__STDINT_H
+#ifndef QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__STDINT_H
+#define QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__STDINT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,4 +28,4 @@ $$INC: quex/compatibility/win/borland_stdint.h$$
 } /* extern "C" */
 #endif
 
-#endif /* __QUEX_INCLUDE_GUARD__COMPATIBILITY__STDINT_H */
+#endif /* QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__STDINT_H */

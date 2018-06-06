@@ -11,25 +11,25 @@ def do(Mode, ModeNameList):
     if code_fragment is not None:
         on_indent_str   = Lng.SOURCE_REFERENCED(code_fragment)
     else:
-        on_indent_str   = Lng.TOKEN_SEND("QUEX_TOKEN_ID(INDENT)")
+        on_indent_str   = Lng.TOKEN_SEND("QUEX_SETTING_TOKEN_ID_INDENT")
 
     code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_NODENT)
     if code_fragment is not None:
         on_nodent_str   = Lng.SOURCE_REFERENCED(code_fragment)
     else:
-        on_nodent_str   = Lng.TOKEN_SEND("QUEX_TOKEN_ID(NODENT)")
+        on_nodent_str   = Lng.TOKEN_SEND("QUEX_SETTING_TOKEN_ID_NODENT")
 
     code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_DEDENT)
     if code_fragment is not None:
         on_dedent_str = Lng.SOURCE_REFERENCED(code_fragment)
     else:
-        on_dedent_str = Lng.TOKEN_SEND("QUEX_TOKEN_ID(DEDENT)")
+        on_dedent_str = Lng.TOKEN_SEND("QUEX_SETTING_TOKEN_ID_DEDENT")
 
     code_fragment   = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_N_DEDENT)
     if code_fragment is not None:
         on_n_dedent_str = Lng.SOURCE_REFERENCED(code_fragment)
     else:
-        on_n_dedent_str = Lng.TOKEN_SEND_N("ClosedN", "QUEX_TOKEN_ID(DEDENT)")
+        on_n_dedent_str = Lng.TOKEN_SEND_N("ClosedN", "QUEX_SETTING_TOKEN_ID_DEDENT")
 
     code_fragment = Mode.incidence_db.get(E_IncidenceIDs.INDENTATION_ERROR)
     on_indentation_error = ""

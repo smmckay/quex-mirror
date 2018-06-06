@@ -268,10 +268,10 @@ QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me)
 {
     QUEX_NAME(TokenQueue_reset)(me);
 #   if defined(QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT)
-    QUEX_NAME(TokenQueue_push_text)(me, QUEX_TOKEN_ID(TERMINATION), 
+    QUEX_NAME(TokenQueue_push_text)(me, QUEX_SETTING_TOKEN_ID_TERMINATION, 
                                     (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0);
 #   else
-    QUEX_NAME(TokenQueue_push)(me, QUEX_TOKEN_ID(TERMINATION)); 
+    QUEX_NAME(TokenQueue_push)(me, QUEX_SETTING_TOKEN_ID_TERMINATION); 
 #   endif
 }
 
