@@ -9,9 +9,10 @@ MYFLAGS   := -ggdb -Wall -Werror  \
 		     -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \
 		     -DQUEX_SETTING_ACCUMULATOR_INITIAL_SIZE=0 \
 		     -DQUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR=1 \
-		     -DQUEX_OPTION_COUNTER_COLUMN 
+		     -DQUEX_OPTION_COUNTER_COLUMN \
+			 -DQUEX_OPTION_ASSERTS
 
-CC        := gcc  -I../ -I. -D__QUEX_OPTION_PLAIN_C -I$(HWUT_PATH) -ggdb
+CC        := gcc  -I../ -I. -D__QUEX_OPTION_PLAIN_C -I$(HWUT_PATH) -ggdb $(MYFLAGS)
 
 %.exe: %.c common_token.c ut
 	$(CC) $< common_token.c -o $@ 

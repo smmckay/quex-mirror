@@ -1,8 +1,8 @@
 /* -*- C++ -*- vim:set syntax=cpp:
  *
  * (C) 2005-2009 Frank-Rene Schaefer                                        */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__EXTRA__ACCUMULATOR__ACCUMULATOR_I
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__EXTRA__ACCUMULATOR__ACCUMULATOR_I
+#ifndef QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
+#define QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR_I
 
 $$INC: definitions$$
 $$INC: extra/accumulator/Accumulator$$
@@ -212,8 +212,8 @@ QUEX_NAME(Accumulator__flush)(QUEX_NAME(Accumulator)*   me,
     __quex_assert(me->text.end < me->text.memory_end);   
 
     if( me->text.begin == me->text.end ) {               
-        begin_p = &QUEX_LEXEME_NULL;
-        end_p   = &QUEX_LEXEME_NULL;                  /* -> terminating zero. */
+        begin_p = &QUEX_NAME(LexemeNull);
+        end_p   = &QUEX_NAME(LexemeNull);             /* -> terminating zero. */
     }
     else {
         begin_p  = me->text.begin;
@@ -294,4 +294,4 @@ QUEX_NAME(Accumulator)::print_this()
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$_EXTRA__ACCUMULATOR__ACCUMULATOR_I */
+#endif /* QUEX_INCLUDE_GUARD_EXTRA__ACCUMULATOR__ACCUMULATOR_I */

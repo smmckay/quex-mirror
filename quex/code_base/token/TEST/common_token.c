@@ -22,7 +22,6 @@ common_print_pop(TestAnalyzer_TokenQueue* me, int count, QUEX_TYPE_TOKEN* token_
 int
 common_empty_queue(TestAnalyzer_TokenQueue* me, int pop_n, int Size)
 {
-    bool             verdict_f;
     QUEX_TYPE_TOKEN* token_p;
 
     hwut_verify(TestAnalyzer_TokenQueue_is_full(me));
@@ -57,9 +56,9 @@ QUEX_INLINE void TestAnalyzer_Token_destruct(QUEX_TYPE_TOKEN* me)
     if( me->text ) free(me->text);
 }
 
-QUEX_INLINE bool TestAnalyzer_Token_take_text(QUEX_TYPE_TOKEN* me, 
-                                            const char*      BeginP,
-                                            const char*      EndP) 
+QUEX_INLINE bool TestAnalyzer_Token_take_text(QUEX_TYPE_TOKEN*              me, 
+                                              const TestAnalyzer_lexatom_t* BeginP,
+                                              const TestAnalyzer_lexatom_t* EndP) 
 { 
     printf("         take_text: ((%p)) '%s'\n", (void*)me, BeginP);
     me->text = (char*)malloc(sizeof(char) * (EndP - BeginP));

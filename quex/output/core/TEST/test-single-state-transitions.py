@@ -151,7 +151,9 @@ main_template = """
 /* From '.begin' the target map targets to '.target' until the next '.begin' is
  * reached.                                                                   */
 #define __QUEX_OPTION_WCHAR_T_DISABLED
-
+/* Prevent analyzer specific definition of '__quex_assert_no_passage' 
+ * in 'lib/asserts'.                                                          */
+#define __quex_assert_no_passage()     assert(false)
 #include "ut/lib/quex/compatibility/stdint.h"
 
 #include "../../../code_base/TESTS/minimum-definitions.h"
@@ -292,7 +294,7 @@ except: pass
 if codec == "UTF8": qtc_str = "-DQUEX_TYPE_LEXATOM=uint8_t"
 else:               qtc_str = "-DQUEX_TYPE_LEXATOM=uint32_t"
 
-os.system("gcc -Wall -Werror -I. -I../../../code_base -DQUEX_INLINE=static %s -o test test.c -ggdb -std=c89" % qtc_str)
+os.system("gcc -Wall -Werror -I. -I../../../code_base -DQUEX_OPTION_ASSERTS -DQUEX_INLINE=static %s -o test test.c -ggdb -std=c89" % qtc_str)
 os.system("./test")
 
 if True:

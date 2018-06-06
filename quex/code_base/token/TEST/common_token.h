@@ -38,9 +38,9 @@ typedef struct TestAnalyzer_tag {
 
 QUEX_INLINE void TestAnalyzer_Token_construct(QUEX_TYPE_TOKEN* me);
 QUEX_INLINE void TestAnalyzer_Token_destruct(QUEX_TYPE_TOKEN* me); 
-QUEX_INLINE bool TestAnalyzer_Token_take_text(QUEX_TYPE_TOKEN* me, 
-                                            const char*      BeginP,
-                                            const char*      EndP);
+QUEX_INLINE bool TestAnalyzer_Token_take_text(QUEX_TYPE_TOKEN*              me, 
+                                              const TestAnalyzer_lexatom_t* BeginP,
+                                              const TestAnalyzer_lexatom_t* EndP);
 QUEX_INLINE void TestAnalyzer_Token_repetition_n_set(QUEX_TYPE_TOKEN* me, 
                                                      size_t           RepetitionN);
 QUEX_INLINE size_t TestAnalyzer_Token_repetition_n_get(QUEX_TYPE_TOKEN* me); 
@@ -53,7 +53,7 @@ extern void common_print_push(TestAnalyzer_TokenQueue* me,
                               int count, QUEX_TYPE_TOKEN* token_p);
 extern void common_print_pop(TestAnalyzer_TokenQueue* me, 
                              int count, QUEX_TYPE_TOKEN* token_p);
-extern bool common_empty_queue(TestAnalyzer_TokenQueue* me, int pop_n, int Size);
+extern int  common_empty_queue(TestAnalyzer_TokenQueue* me, int pop_n, int Size);
 
 typedef enum {
     E_UNIT_TEST_PLAIN,

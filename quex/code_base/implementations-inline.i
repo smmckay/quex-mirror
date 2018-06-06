@@ -1,8 +1,8 @@
 /* -*- C++ -*- vim:set syntax=cpp:
  * (C) 2005-2010 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                      */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__IMPLEMENTATIONS_INLINE_I
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__IMPLEMENTATIONS_INLINE_I
+#ifndef QUEX_INCLUDE_GUARD__IMPLEMENTATIONS_INLINE_I
+#define QUEX_INCLUDE_GUARD__IMPLEMENTATIONS_INLINE_I
 
 #if defined(__cplusplus)
 
@@ -32,4 +32,4 @@ $$INC: <count> analyzer/Counter.i$$
 
 #endif
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__HEADERS_I */
+#endif /* QUEX_INCLUDE_GUARD__ANALYZER__HEADERS_I */

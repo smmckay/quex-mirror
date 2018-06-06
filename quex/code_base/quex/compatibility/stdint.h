@@ -1,10 +1,14 @@
+/* PURPOSE: This header defines standard integer types.
+ *
+ * This is done here, because some compiler distributions or versions of 
+ * compiler distributions do not provide according C99 standard headers. 
+ *
+ * For the standard reference, please review: "The Open Group Base 
+ * Specifications Issue 6, IEEE Std 1003.1, 2004 Edition".
+ *
+ * (C) 2008-2018  Frank-Rene Schaefer                                         */           
 #ifndef __QUEX_INCLUDE_GUARD__COMPATIBILITY__STDINT_H
 #define __QUEX_INCLUDE_GUARD__COMPATIBILITY__STDINT_H
-/* NOTE: At the time of this writing (Aug. 2007) there are still some
- *       compilers that do not support C99 Standard completely and
- *       do not provided 'stdint.h' and 'stdint.h' along with their
- *       compiler package (e.g. a major Redmondian Company). For this
- *       reason this header creates som adaptions. */
 
 #ifdef __cplusplus
 extern "C" {

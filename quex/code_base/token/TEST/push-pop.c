@@ -55,9 +55,8 @@ self_fill_and_empty(TestAnalyzer_TokenQueue* me, size_t Size, int CPushN)
 {
     int              push_n = 1, pop_n = 1, total_n = -1;
     QUEX_TYPE_TOKEN* token_p = (QUEX_TYPE_TOKEN*)0;
-    bool             verdict_f;
     char*            example[] = { "adelbert", "berta", "caesar", "dagobert" };
-    char*            string;
+    TestAnalyzer_lexatom_t*  string;
 
     hwut_verify(TestAnalyzer_TokenQueue_is_empty(me));
 
@@ -68,9 +67,9 @@ self_fill_and_empty(TestAnalyzer_TokenQueue* me, size_t Size, int CPushN)
             TestAnalyzer_TokenQueue_push(me, 100 * push_n);
             break;
         case E_UNIT_TEST_TEXT:
-            string = example[push_n-1];
+            string = (TestAnalyzer_lexatom_t*)example[push_n-1];
             TestAnalyzer_TokenQueue_push_text(me, 100 * push_n, string, 
-                                              &string[strlen(string)+1]);
+                                              &string[strlen((char*)string)+1]);
             break;
         default:
             hwut_verify(false);

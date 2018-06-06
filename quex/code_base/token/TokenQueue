@@ -1,7 +1,7 @@
 /* -*- C++ -*- vim: set syntax=cpp: 
  * (C) 2004-2009 Frank-Rene Schaefer                               */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__TOKEN_QUEUE
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__TOKEN_QUEUE
+#ifndef QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE
+#define QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE
 
 $$INC: definitions$$
 $$INC: asserts$$
@@ -99,4 +99,4 @@ QUEX_INLINE void             QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NA
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__TOKEN__TOKEN_QUEUE */
+#endif /* QUEX_INCLUDE_GUARD__TOKEN__TOKEN_QUEUE */

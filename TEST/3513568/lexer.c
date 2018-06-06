@@ -1,5 +1,4 @@
 #include "Lexer/Lexer.h"
-#include <Lexer/lib/multi.i>
 #include <Lexer/lib/buffer/lexatoms/converter/icu/Converter_ICU>
 #include <Lexer/lib/buffer/lexatoms/converter/icu/Converter_ICU.i>
 

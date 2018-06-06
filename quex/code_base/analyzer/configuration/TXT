@@ -2,12 +2,14 @@
  *
  * (C) 2005-2017 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                     */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
+#ifndef QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
+#define QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$
 
 #define QUEX_SETTING_VERSION           "$$QUEX_VERSION$$"
 #define QUEX_SETTING_BUILD_DATE        "$$LEXER_BUILD_DATE$$"
 #define QUEX_SETTING_ANALYZER_VERSION  "$$USER_LEXER_VERSION$$"
+
+#define QUEX_INDICATE_CONFIGURATION_FILE_PASSED
 
 #ifndef    __QUEX_OPTION_PLAIN_C
 $$SWITCH$$ __QUEX_OPTION_PLAIN_C
@@ -22,10 +24,6 @@ $$SWITCH$$ __QUEX_OPTION_PLAIN_C
  *   -- 'quex/code_base/configuration/derived'.                               */ 
 #if ! defined(__QUEX_OPTION_PLAIN_C) && ! defined(__cplusplus)
 #   error "__QUEX_OPTION_PLAIN_C must be defined if no C++ compiler is used! Call quex with option '--language C'."
-#endif
-
-#if defined(__QUEX_INCLUDE_INDICATOR__ASSERTS)
-#   error "Asserts included before configuration file. However, the configuration file MUST control asserts!"
 #endif
 
 #ifndef    QUEX_OPTION_COMPUTED_GOTOS
@@ -93,29 +91,18 @@ $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
      * into the type name. Both, global and local names are equal.            */
 #   define QUEX_TYPE_DERIVED_ANALYZER  struct $$LEXER_CLASS_NAME_SAFE$$_tag
 
-#   define QUEX_NAMESPACE_MAIN         $$LEXER_CLASS_NAME_SAFE$$
-
 #else
     /* Add namespaces for the global names of the classes of analyzer
      * and token.                                                             */
 #   define QUEX_TYPE_DERIVED_ANALYZER  $$LEXER_DERIVED_CLASS_NAME$$
 
-#   define QUEX_NAMESPACE_MAIN         $$NAMESPACE_MAIN$$
 #endif
 
 #if defined(__QUEX_OPTION_PLAIN_C)
 #   define QUEX_NAMESPACE_TOKEN   
 
-#   define QUEX_LEXEME_NULL            QUEX_NAME(LexemeNull)
-
-#   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS_NAME_SAFE$$_ ## NAME
-
 #else
 #   define QUEX_NAMESPACE_TOKEN        $$NAMESPACE_TOKEN$$
-
-#   define QUEX_LEXEME_NULL            $$NAMESPACE_MAIN$$ :: QUEX_NAME(LexemeNull)
-
-#   define QUEX_NAME_TOKEN(NAME)       $$TOKEN_CLASS$$_ ## NAME
 
 #endif
 
@@ -227,4 +214,4 @@ $$TYPE_DEFINITIONS$$
 
 $$INC: analyzer/configuration/derived$$
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$ */
+#endif /* QUEX_INCLUDE_GUARD__ANALYZER__CONFIGURATION__$$INCLUDE_GUARD_EXTENSION$$ */

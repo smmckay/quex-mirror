@@ -25,8 +25,8 @@
  *  the one who passed it to this byte loader.
  *
  * (C) Frank-Rene Schaefer                                                   */
-#ifndef  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_MEMORY
-#define  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_MEMORY
+#ifndef  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY
+#define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY
 
 $$INC: buffer/bytes/ByteLoader$$
 
@@ -57,4 +57,4 @@ QUEX_INLINE QUEX_NAME(ByteLoader)*    QUEX_NAME(ByteLoader_Memory_new_from_file_
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /*  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_MEMORY */
+#endif /*  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_MEMORY */

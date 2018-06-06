@@ -1,54 +1,37 @@
-< if     ( input >= 0xB )  goto _3; /* ['\v', 'ÿ'] */
-< 
-< else if( input == 0xA )  goto _4; /* '\n' */
-< 
-< else if( input == 0x9 )  goto _2; /* '\t' */
-< 
-< else                     goto _3; /* [\0, '\b'] */
-< 
-> if     ( input >= 0xB )  goto _3;
-> else if( input == 0xA )  goto _4;
-> else if( input == 0x9 )  goto _2;
-> else                     goto _3;
-< goto _5; /* [\0, 'ÿ'] */
-< 
-> goto _5;
+< #include "With/Lexer"
+< #include "With/lib/analyzer/C-adaptions.h"
+< #include "With/lib/implementations.i"
+< if     ( input >= 0xB )  goto _4; /* ['\v', 'ÿ'] */
+< else if( input == 0xA )  goto _2; /* '\n' */
+< else if( input == 0x9 )  goto _3; /* '\t' */
+< else                     goto _4; /* [\0, '\b'] */
 < goto _6; /* [\0, 'ÿ'] */
-< 
-> goto _6;
 < goto _7; /* [\0, 'ÿ'] */
-< 
-> goto _7;
+< goto _5; /* [\0, 'ÿ'] */
+< #include "With/lib/buffer/Buffer"
+< #include "With/lib/token/TokenQueue"
 <     /* BEGIN: STATE MACHINE
-<      * init-state = 13L
-<      * 00013 
-<      *      == 'a' ==> 00014
+<      * init-state = 19L
+<      * 00019 
+<      *      == 'a' ==> 00020
 <      *     
-<      * 00014 A(0)
+<      * 00020 A(1)
 <      *     
 <      * END: STATE MACHINE
 <      */
-< if     ( input >= 0x62 )  goto _5; /* ['b', 'ÿ'] */
-< 
-< else if( input == 0x61 )  goto _4; /* 'a' */
-< 
-< else if( input >= 0x1 )   goto _5; /* [\1, '`'] */
-< 
-< else                      goto _8; /* \0 */
-< 
-> if     ( input == 0x61 )  goto _4;
-> else if( input == 0x0 )   goto _8;
-> else                      goto _5;
-< goto _6; /* [\0, 'ÿ'] */
-< 
-> goto _6;
+< if     ( input >= 0x62 )  goto _8; /* ['b', 'ÿ'] */
+< else if( input == 0x61 )  goto _7; /* 'a' */
+< else if( input >= 0x1 )   goto _8; /* [\1, '`'] */
+< else                      goto _10; /* \0 */
+< goto _9; /* [\0, 'ÿ'] */
 <     /* BEGIN: MODE PATTERNS
 <      * 
 <      * MODE: X
 <      * 
 <      *     PATTERN LIST:
-<      *       (  0) X: a
+<      *       (  1) X: a
 <      * 
 <      * 
 <      * END: MODE PATTERNS
 <      */
+< #include "With/Lexer-token_ids"

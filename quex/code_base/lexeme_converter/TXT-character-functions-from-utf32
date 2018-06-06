@@ -27,7 +27,7 @@ QUEX_NAME(lexeme_to_utf8_character)(const QUEX_TYPE_LEXATOM**  input_pp,
         /* Assume that only character appear, that are defined in unicode. */
         __quex_assert(Unicode <= (uint32_t)0x1FFFFF);
         /* No surrogate pairs (They are reserved even in non-utf16).       */
-        __quex_assert(! (Unicode >= 0xd800 && Unicode <= 0xdfff) );
+        __quex_assert(! (Unicode >= (uint32_t)0xd800 && Unicode <= (uint32_t)0xdfff) );
 
         *((*output_pp)++) = (uint8_t)(0xF0 | Unicode >> 18);
         *((*output_pp)++) = (uint8_t)(0x80 | (Unicode & (uint32_t)0x3FFFF) >> 12);

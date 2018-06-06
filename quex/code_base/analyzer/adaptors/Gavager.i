@@ -41,8 +41,8 @@
  *
  * (C) 2016 Frank-Rene Schaefer.                                             */
 
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__ADAPTORS__GAVAGER_I
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__ADAPTORS__GAVAGER_I
+#ifndef QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER_I
+#define QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER_I
 
 $$INC: analyzer/adaptors/Gavager$$
 
@@ -128,4 +128,4 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 $$INC: analyzer/adaptors/Feeder.i$$
 
-#endif /*  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__ADAPTORS__GAVAGER_I */
+#endif /*  QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER_I */

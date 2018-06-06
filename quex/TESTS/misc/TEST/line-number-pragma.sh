@@ -43,7 +43,7 @@ case $1 in
             | sed -e "s/$file//g" \
             | sed -e "s/line//g"  \
             | tr -d "\"#:"        \
-            | awk 'BEGIN { n = 0; } { n += 1; if( $1 != $2 - 1 ) print "$1 != $2 - 1"; } END { print "   count: " n; }'
+            | awk 'BEGIN { n = 0; } { n += 1; if( $1 != $2 ) print $1 "!=" $2 "- 1"; } END { print "   count: " n; }'
         done
         
         ;;

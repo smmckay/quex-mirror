@@ -1,6 +1,6 @@
 /* vim:set ft=c: -*- C++ -*- */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_MOVE_I
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_MOVE_I
+#ifndef QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MOVE_I
+#define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MOVE_I
 
 $$INC: asserts$$
 $$INC: definitions$$
@@ -310,5 +310,5 @@ QUEX_NAMESPACE_MAIN_CLOSE
 $$INC: buffer/lexatoms/LexatomLoader.i$$
 $$INC: buffer/BufferMemory.i$$
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_MOVE_I */
+#endif /* QUEX_INCLUDE_GUARD__BUFFER__BUFFER_MOVE_I */
 

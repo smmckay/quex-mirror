@@ -132,7 +132,6 @@ dir_db = {
     "quex/compatibility/": [
         "iconv-argument-types.h",
         "stdint.h",
-        "stdbool-pseudo.h",
         "stdbool.h",
         "win/borland_stdint.h",
         "win/msc_stdint.h",

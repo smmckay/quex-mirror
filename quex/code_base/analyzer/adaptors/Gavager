@@ -6,8 +6,8 @@
  * See file 'Gavager.i' for detailed description.
  * 
  * (C) 2016 Frank-Rene Schaefer.                                             */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__ADAPTORS__GAVAGER
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__ADAPTORS__GAVAGER
+#ifndef QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER
+#define QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER
 
 $$INC: analyzer/adaptors/Feeder$$
 
@@ -54,4 +54,4 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__ADAPTORS__GAVAGER */
+#endif /* QUEX_INCLUDE_GUARD__ANALYZER__ADAPTORS__GAVAGER */

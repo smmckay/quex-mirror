@@ -1,6 +1,6 @@
 /* -*- C++ -*- vim: set syntax=cpp: */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__ASSERTS_I
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__ASSERTS_I
+#ifndef QUEX_INCLUDE_GUARD__BUFFER__ASSERTS_I
+#define QUEX_INCLUDE_GUARD__BUFFER__ASSERTS_I
 
 $$INC: buffer/asserts$$
 $$INC: buffer/Buffer$$
@@ -115,5 +115,5 @@ QUEX_NAMESPACE_MAIN_CLOSE
 
 #endif
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__ASSERTS_I */
+#endif /* QUEX_INCLUDE_GUARD__BUFFER__ASSERTS_I */
 

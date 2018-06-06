@@ -1,6 +1,6 @@
 /* -*- C++ -*- vim:set syntax=c: */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__STATISTICS
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__STATISTICS
+#ifndef QUEX_INCLUDE_GUARD__ANALYZER__STATISTICS
+#define QUEX_INCLUDE_GUARD__ANALYZER__STATISTICS
 /* STATISTICS _________________________________________________________________
  *
  * (C) Frank-Rene Schaefer

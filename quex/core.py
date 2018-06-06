@@ -106,7 +106,7 @@ def do_converter_info(HeaderFileName, SourceFileName):
 def do_token_class_info():
     token_class = "::".join(Setup.token_class_name_space + [Setup.token_class_name]) 
     info_list = [
-        "  --token-id-prefix  %s" % Setup.token_id_prefix,
+        ## "  --token-id-prefix  %s" % Setup.token_id_prefix,
         "  --token-class-file %s" % Setup.output_token_class_file,
         "  --token-class      %s" % token_class,
         "  --token-id-type    %s" % Setup.token_id_type,

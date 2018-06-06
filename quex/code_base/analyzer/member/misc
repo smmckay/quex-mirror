@@ -1,8 +1,8 @@
 /* -*- C++ -*- vim: set syntax=cpp:
  * (C) 2005-2016 Frank-Rene Schaefer
  * ABSOLUTELY NO WARRANTY                                                    */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__MEMBER__MISC
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__MEMBER__MISC
+#ifndef QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC
+#define QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC
 
 $$INC: definitions$$
 
@@ -65,5 +65,5 @@ QUEX_INLINE size_t  QUEX_NAME(MF_indentation)(const QUEX_TYPE_ANALYZER* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ANALYZER__MEMBER__MISC */
+#endif /* QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC */
 

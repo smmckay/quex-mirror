@@ -6,25 +6,27 @@ else
 	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
 endif
 
-LDC := $(LDC) -DQUEX_OPTION_MULTI -I.
+LDC := $(LDC) -DQUEX_OPTION_MULTI -I. -Wall -Werror
 
 lexer: Lexer/Lexer.c lexer.c Common-token.c
 	$(LDC) $^ -o  $@ $(LIB_ICU) 
+
+lexerle.E: Lexer/Lexer.c 
+	$(LDC) $^ -o  $@ $(LIB_ICU) -E > $@
 	 
 COMMON_TOKEN_OPTIONS = --token-class-file Common-token.h \
                        --suppress 5
 	   	 	           # --no-message-on-extra-options \
 
-Lexer/Lexer.c:  boeck.qx Common-token.c Common-token_ids
+Lexer/Lexer.c:  boeck.qx Common-token.c 
 	quex -i $< -o Lexer -b 4 $(COMMON_TOKEN_OPTIONS) \
 		 --language C --suppress 15 \
-		 # --debug-exception
+		 --token-id-prefix TKN_ \
+		 --suppress 1 # --debug-exception
 
-Common-token_ids \
 Common-token.c: 
 	quex -i token_ids.qx token_type.qx \
 		 -b 4                          \
-		 --token-id-prefix TKN_        \
 		 -o Common  --odir .           \
 		 --token-class Token           \
 		 --token-class-only            \

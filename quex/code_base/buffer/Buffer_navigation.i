@@ -35,8 +35,8 @@
  * it points contains the next lexatom to be read during analysis.           
  *
  * (C) Frank-Rene Schaefer                                                    */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_NAVIGATION_I
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_NAVIGATION_I
+#ifndef QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NAVIGATION_I
+#define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NAVIGATION_I
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -192,4 +192,4 @@ QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE
-#endif                  /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_NAVIGATION_I */
+#endif                  /* QUEX_INCLUDE_GUARD__BUFFER__BUFFER_NAVIGATION_I */

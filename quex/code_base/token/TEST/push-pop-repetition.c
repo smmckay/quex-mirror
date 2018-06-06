@@ -4,7 +4,6 @@ static int  self_fill_and_empty(TestAnalyzer_TokenQueue* me,
                                 size_t Size, int CPushN);
 static int  self_test(int Size, int ContinuousPushN);
 
-static E_UnitTest self_unit_test = E_UNIT_TEST_VOID;
 
 int
 main(int argc, char** argv)
@@ -49,11 +48,8 @@ self_test(int Size, int ContinuousPushN)
 static int
 self_fill_and_empty(TestAnalyzer_TokenQueue* me, size_t Size, int CPushN) 
 {
-    int              push_n = 1, pop_n = 1;
-    QUEX_TYPE_TOKEN* token_p = (QUEX_TYPE_TOKEN*)0;
-    bool             verdict_f;
-    char*            example[] = { "adelbert", "berta", "caesar", "dagobert" };
-    char*            string;
+    int                     push_n = 1, pop_n = 1;
+    QUEX_TYPE_TOKEN*        token_p = (QUEX_TYPE_TOKEN*)0;
 
     hwut_verify(TestAnalyzer_TokenQueue_is_empty(me));
 

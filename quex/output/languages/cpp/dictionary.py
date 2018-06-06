@@ -52,6 +52,7 @@ class Language(dict):
     Match_QUEX_NAME_TOKEN     = re.compile(r"\bQUEX_NAME_TOKEN\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_SETTING        = re.compile(r"\bQUEX_SETTING_([A-Z_0-9]+)\b")
     Match_QUEX_OPTION         = re.compile(r"\bQUEX_OPTION_([A-Z_0-9]+)\b")
+    Match_QUEX_INCLUDE_GUARD  = re.compile(r"\bQUEX_INCLUDE_GUARD_([a-zA-Z_0-9]+)\b")
 
     CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
     
@@ -331,17 +332,17 @@ class Language(dict):
         the source reference is void, no pragma is required. 
         """
         if SourceReference.is_void(): return ""
-        return self.LINE_PRAGMA(SourceReference.file_name, SourceReference.line_n)
+        return "\n%s\n" % self.LINE_PRAGMA(SourceReference.file_name, SourceReference.line_n)
 
     def LINE_PRAGMA(self, Path, LineN):
         if LineN >= 2**15: 
-            return '\n#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767 */\n' \
+            return '#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767 */' \
                     % (2**15 - 1, Path, LineN) 
         elif LineN <= 0:     
-            return '\n#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767 */\n' \
+            return '#   line %i "%s" /* was %i; ISO C89: 0 <= line number <= 32767 */' \
                     % (1, Path, LineN) 
         else:
-            return '\n#   line %i "%s"\n' % (LineN, Path) 
+            return '#   line %i "%s"' % (LineN, Path) 
 
     def _SOURCE_REFERENCE_END(self, SourceReference=None):
         """Return a code fragment that returns a source reference pragma which
@@ -1289,6 +1290,15 @@ class Language(dict):
         return txt 
 
     def straighten_open_line_pragmas_new(self, Txt, FileName):
+        line_pragma_txt = self._SOURCE_REFERENCE_END().strip()
+
+        new_content = []
+        for line_n, line in enumerate(Txt.splitlines(), start=1):
+            if line.strip() != line_pragma_txt:
+                new_content.append(line)
+            else:
+                new_content.append(self.LINE_PRAGMA(FileName, line_n))
+        return "\n".join(new_content)
 
         def straighten(Line, FileName, LineN, LinePragmaTxt):
             line = Line.strip()
@@ -1395,6 +1405,7 @@ class Language(dict):
         txt = Txt
         txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, txt)
         txt = self.Match_QUEX_NAME_TOKEN.sub(r"%s_\1" % tcn, txt)
+        txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s_\1" % Setup.analyzer_name_safe, txt)
         # txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % acn, txt)
         # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % acn, txt)
 

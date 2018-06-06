@@ -42,8 +42,8 @@
  * inconsistent data.
  *
  * (C) Frank-Rene Schaefer                                                   */
-#ifndef  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_PROBE
-#define  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_PROBE
+#ifndef  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_PROBE
+#define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_PROBE
 
 $$INC: buffer/bytes/ByteLoader$$
 
@@ -95,4 +95,4 @@ QUEX_INLINE QUEX_NAME(ByteLoader)*    QUEX_NAME(ByteLoader_Probe_new)(QUEX_NAME(
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /*  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_PROBE */
+#endif /*  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_PROBE */

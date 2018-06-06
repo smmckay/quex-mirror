@@ -6,11 +6,11 @@ case $1 in
         ;;
 
     *)
-        rm -f Simple*
+        rm -rf Simple*
         quex -i              customized_codec.qx  \
              --encoding-file customized_codec.dat \
              -o              Simple --debug-exception
-        awk '/customized_codec/' Simple/Simple-*customized_codec*
+        awk '/_lexeme_/' Simple/converter-from-lexeme
         rm -rf Simple*
         ;;
 esac

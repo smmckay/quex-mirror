@@ -1,8 +1,8 @@
 /* -*- C++ -*-  vim: set syntax=cpp:
  *
  * (C) 2008 Frank-Rene Schaefer */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_PRINT_I
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_PRINT_I
+#ifndef QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT_I
+#define QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT_I
 
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
@@ -245,4 +245,4 @@ QUEX_NAME(Buffer_print_overflow_message)(QUEX_NAME(Buffer)* me)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BUFFER_PRINT_I */
+#endif /* QUEX_INCLUDE_GUARD__BUFFER__BUFFER_PRINT_I */

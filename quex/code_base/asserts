@@ -1,6 +1,11 @@
 /* vim: set syntax=cpp: */
-#ifndef QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ASSERTS
-#define QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ASSERTS
+#ifndef QUEX_INCLUDE_GUARD__ASSERTS
+#define QUEX_INCLUDE_GUARD__ASSERTS
+
+#if    ! defined(QUEX_INDICATE_CONFIGURATION_FILE_PASSED) \
+    && ! defined(QUEX_OPTION_ASSERTS)
+#   error "Asserts included before configuration file. However, configuration file CONTROLS asserts!"
+#endif
 
 #ifdef QUEX_OPTION_ASSERTS
 #   if ! defined (__QUEX_OPTION_PLAIN_C)
@@ -9,7 +14,9 @@
 #       include <assert.h>
 #   endif
 #   define  __quex_assert(X)              assert(X)
+#   ifndef  __quex_assert_no_passage
 #   define  __quex_assert_no_passage()    do { QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_DFA_DropIntoOtherState); return; } while ( 0 )
+#   endif
 #   define  __QUEX_IF_ASSERTS(EXPRESSION) EXPRESSION
 #   define  QUEX_IF_ASSERTS_poison(BEGIN, END) \
             do { \
@@ -26,5 +33,5 @@
 
 #define __QUEX_INCLUDE_INDICATOR__ASSERTS
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__ASSERTS */
+#endif /* QUEX_INCLUDE_GUARD__ASSERTS */
 

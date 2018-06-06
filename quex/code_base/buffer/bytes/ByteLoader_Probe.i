@@ -1,7 +1,7 @@
 /* vim: set ft=c:
  * (C) Frank-Rene Schaefer */
-#ifndef  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_PROBE_I
-#define  QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_PROBE_I
+#ifndef  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_PROBE_I
+#define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_PROBE_I
 
 $$INC: quex/MemoryManager$$
 #include "quex/code_base/buffer/bytes/ByteLoader_Probe"
@@ -166,4 +166,4 @@ QUEX_NAME(ByteLoader_Probe_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_INCLUDE_GUARD_$$LEXER_CLASS$$__BUFFER__BYTES__BYTE_LOADER_PROBE_I */
+#endif /* QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_PROBE_I */
