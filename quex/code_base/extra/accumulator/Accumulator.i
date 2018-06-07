@@ -40,7 +40,7 @@ QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me,
     __QUEX_IF_COUNT_LINES(me->_begin_line = 0);
     __QUEX_IF_COUNT_COLUMNS(me->_begin_column = 0);
 
-#   ifdef __QUEX_OPTION_PLAIN_C
+#   ifdef QUEX_OPTION_PLAIN_C
     me->destruct      = QUEX_NAME(Accumulator_destruct);
     me->clear         = QUEX_NAME(Accumulator__clear);
     me->add           = QUEX_NAME(Accumulator__add);
@@ -256,7 +256,7 @@ QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
     }
 }
 
-#ifndef __QUEX_OPTION_PLAIN_C
+#ifndef QUEX_OPTION_PLAIN_C
 QUEX_INLINE 
 QUEX_NAME(Accumulator)::QUEX_NAME(Accumulator)()
 { /* C/C++ Compability: Constructors/Destructors do nothing. */ }

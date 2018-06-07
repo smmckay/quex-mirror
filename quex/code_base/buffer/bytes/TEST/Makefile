@@ -22,13 +22,13 @@ hwut-info:
 	@echo $(TESTS)
 
 test-%.exe: test-%.c $(MORE) ut
-	gcc $(FLAGS) -D__QUEX_OPTION_PLAIN_C $< $(MORE) -o $@
+	gcc $(FLAGS) -DQUEX_OPTION_PLAIN_C $< $(MORE) -o $@
 
 test-%.exe: test-%.cpp $(MORE) ut
 	g++ $(FLAGS) $< $(MORE) -o $@
 
 segmented-input.exe: segmented-input.c ut
-	gcc $(FLAGS) -D__QUEX_OPTION_PLAIN_C $< -o $@
+	gcc $(FLAGS) -DQUEX_OPTION_PLAIN_C $< -o $@
 
 ut:
 	python ../../../TESTS/code_base_instatiation.py ut analyzer compatibility buffer lexeme_converter

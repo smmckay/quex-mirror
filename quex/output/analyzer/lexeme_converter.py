@@ -108,7 +108,7 @@ def _string_converters():
         ])
         if name == "wchar_t":
             result = "\n".join([
-                "#if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)",
+                "#if ! defined(QUEX_OPTION_WCHAR_T_DISABLED)",
                 result,
                 "#endif"
             ])

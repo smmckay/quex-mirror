@@ -213,7 +213,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
 
     if ShowBufferLoadsF:
         state_machine_code = "#define QUEX_OPTION_DEBUG_SHOW_LOADS\n" + \
-                             "#define __QUEX_OPTION_UNIT_TEST\n"                   + \
+                             "#define QUEX_OPTION_UNIT_TEST\n"                   + \
                              state_machine_code
 
     source_code =   create_common_declarations(Language, QuexBufferSize, 
@@ -377,8 +377,8 @@ def create_common_declarations(Language, QuexBufferSize,
     txt += "#    define QUEX_SETTING_BUFFER_SIZE  %s\n" % QuexBufferSize
 
     # Parameterize the common declarations
-    txt += "#define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n" 
-    txt += "#define __QUEX_OPTION_UNIT_TEST\n" 
+    txt += "#define QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n" 
+    txt += "#define QUEX_OPTION_UNIT_TEST\n" 
 
     if Language == "Cpp": test_analyzer_dir = "test_cpp"
     else:                 test_analyzer_dir = "test_c"
@@ -409,9 +409,9 @@ def create_common_declarations(Language, QuexBufferSize,
     if not IndentationSupportF: replace_str = "/* %s */" % replace_str
     txt = txt.replace("$$QUEX_OPTION_INDENTATION_TRIGGER$$", replace_str)
        
-    replace_str = "#define __QUEX_OPTION_PLAIN_C"
+    replace_str = "#define QUEX_OPTION_PLAIN_C"
     if Language not in ["ANSI-C", "ANSI-C-PlainMemory", "ANSI-C-from-file"]: replace_str = "/* %s */" % replace_str
-    txt = txt.replace("$$__QUEX_OPTION_PLAIN_C$$", replace_str)
+    txt = txt.replace("$$QUEX_OPTION_PLAIN_C$$", replace_str)
 
     return txt
 
@@ -511,7 +511,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 
     assert all_isinstance(function_txt, str)
 
-    result =  "#define  __QUEX_OPTION_UNIT_TEST\n" \
+    result =  "#define  QUEX_OPTION_UNIT_TEST\n" \
             + Lng.FRAME_IN_NAMESPACE_MAIN(
               nonsense_default_counter(not SecondModeF) \
             + "".join(function_txt))
@@ -534,7 +534,7 @@ language_defines = """
 """
 
 test_program_common_declarations = """
-$$__QUEX_OPTION_PLAIN_C$$
+$$QUEX_OPTION_PLAIN_C$$
 $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED
 #define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED

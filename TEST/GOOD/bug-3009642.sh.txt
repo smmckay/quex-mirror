@@ -1,12 +1,12 @@
 Check whether the begin of line support flag is set propperly.
 
 (1) A grammar with a begin of line pre-condition.
-#define    __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
+#define    QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 (2) A grammar without a begin of line pre-condition.
 without-begin-of-line.qx:43:warning: Suspicious 'RETURN' in event handler 'END_OF_STREAM'.
 without-begin-of-line.qx:43:warning: This statement will trigger 'on_after_match' handler.
 without-begin-of-line.qx:43:warning: May be, use plain return instead.
-/* #define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
+/* #define QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
 
 
 

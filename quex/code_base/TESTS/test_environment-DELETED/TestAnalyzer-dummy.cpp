@@ -1297,7 +1297,7 @@ goto _20; /* in QUEX_GOTO_STATE       */
 
 
 
-#if defined(__QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void
 TestAnalyzer_member_functions_assign(::TestAnalyzer* me)
 {

@@ -14,7 +14,7 @@ hwut-info:
 	@echo $(TEST_FILES)
 
 bom.exe: bom.c ut
-	gcc -D__QUEX_OPTION_PLAIN_C \
+	gcc -DQUEX_OPTION_PLAIN_C \
 		-DQUEX_NAMESPACE_MAIN_OPEN="" \
 		-DQUEX_NAMESPACE_MAIN_CLOSE="" \
 		$< -o $@ $(DEFS)

@@ -12,7 +12,7 @@ lexer-iconv: Simple/Simple.cpp text.345
 	
 lexer-icu: Simple/Simple.cpp text.345
 	$(LDCPP_ICU) Simple/Simple.cpp ../lexer.cpp -o $@ $(DEF_SIZE) $(LIB_ICU) \
-		-D__QUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICU > tmp.txt 2>&1
+		-DQUEX_OPTION_UNIT_TEST_INPUT_STRATEGY_ICU > tmp.txt 2>&1
 	@cat tmp.txt
 	# @rm  tmp.txt
 

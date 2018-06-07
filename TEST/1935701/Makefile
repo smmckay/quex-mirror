@@ -3,7 +3,7 @@ include ../Makefile.lexer
 TEST_FILES = bug-1935701.exe
 
 
-DEBUGF = -ggdb -D__QUEX_OPTION_UNIT_TEST 
+DEBUGF = -ggdb -DQUEX_OPTION_UNIT_TEST 
 TESTENV := ../../quex/code_base/TESTS
 
 INCLUDES = -I./ -I. -I$(TESTENV)

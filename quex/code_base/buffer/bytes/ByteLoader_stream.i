@@ -3,7 +3,7 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_STREAM_I
 #define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_STREAM_I
 
-#if ! defined(__QUEX_OPTION_PLAIN_C)
+#if ! defined(QUEX_OPTION_PLAIN_C)
 
 #include <fstream>
 #include <sstream>
@@ -163,6 +163,6 @@ QUEX_NAME(ByteLoader_stream_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* __QUEX_OPTION_PLAIN_C                                     */
+#endif /* QUEX_OPTION_PLAIN_C                                     */
 #endif /* QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_STREAM_I */
 

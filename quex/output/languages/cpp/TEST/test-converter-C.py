@@ -31,7 +31,7 @@ def test(CodecName):
                            "-DQUEX_OPTION_DISABLE_STD_STRING_USAGE",
                            "-DQUEX_INLINE=inline", 
                            "-D__QUEX_CODEC=%s " % CodecName,
-                           "-D__QUEX_OPTION_LITTLE_ENDIAN"])
+                           "-DQUEX_OPTION_LITTLE_ENDIAN"])
 
     compile_str = "g++ -ggdb -I./ %s converter-tester.cpp -o converter-tester" % define_str
     print "##", compile_str

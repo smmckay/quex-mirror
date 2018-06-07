@@ -103,7 +103,7 @@ def create_common_declarations(Language,
     txt = ""
     if ShowBufferLoadsF:
         txt += "#define QUEX_OPTION_DEBUG_SHOW_LOADS\n" \
-               "#define __QUEX_OPTION_UNIT_TEST\n"                   
+               "#define QUEX_OPTION_UNIT_TEST\n"                   
 
     # Parameterize the common declarations
     txt += test_program_common_declarations.replace("$$BUFFER_FALLBACK_N$$", 
@@ -116,9 +116,9 @@ def create_common_declarations(Language,
     if not IndentationSupportF: replace_str = "/* %s */" % replace_str
     txt = txt.replace("$$QUEX_OPTION_INDENTATION_TRIGGER$$", replace_str)
 
-    replace_str = "#define __QUEX_OPTION_PLAIN_C"
+    replace_str = "#define QUEX_OPTION_PLAIN_C"
     if Language not in ["ANSI-C", "ANSI-C-PlainMemory", "ANSI-C-from-file"]: replace_str = "/* %s */" % replace_str
-    txt = txt.replace("$$__QUEX_OPTION_PLAIN_C$$", replace_str)
+    txt = txt.replace("$$QUEX_OPTION_PLAIN_C$$", replace_str)
 
     return txt
 
@@ -217,11 +217,11 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
            + "".join(function_txt)
 
 test_program_common_declarations = """
-#define __QUEX_OPTION_UNIT_TEST
-#define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
+#define QUEX_OPTION_UNIT_TEST
+#define QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 #define QUEX_TYPE_LEXATOM unsigned char
 
-$$__QUEX_OPTION_PLAIN_C$$
+$$QUEX_OPTION_PLAIN_C$$
 $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED
 #define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED

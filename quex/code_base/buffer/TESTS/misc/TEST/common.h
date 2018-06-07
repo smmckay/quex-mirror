@@ -1,7 +1,7 @@
 #ifndef UNIT_TEST_COMMON_H
 #define UNIT_TEST_COMMON_H
 
-#define  __QUEX_OPTION_PLAIN_C
+#define  QUEX_OPTION_PLAIN_C
 #include "minimum-definitions.h"
 #include "ut/lib/definitions"
 #include "ut/lib/buffer/Buffer"

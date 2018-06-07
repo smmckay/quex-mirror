@@ -178,7 +178,7 @@ QUEX_NAME(Buffer_finish_seek_based_on_read_p)(QUEX_NAME(Buffer)* me)
     me->_lexeme_start_p = me->_read_p;
 #   if 0
     me->_lexatom_at_lexeme_start = me->_read_p[0];
-#   ifdef __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
+#   ifdef QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
     /* Seek was towards 'target - 1'
      * => Now, there must be at least one lexatom before '_read_p'.
      *    Or if not, then the target was on the lower limit 0 and the '_read_p'

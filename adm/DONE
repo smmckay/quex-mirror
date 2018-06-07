@@ -147,7 +147,7 @@ ENTRY_INTO_MACHINE:
 
    straighten out the QUEX_OPTION definitions for virtual functions.
 
-   may be use __QUEX_OPTIONS which are not to be changed by the user after
+   may be use QUEX_OPTIONS which are not to be changed by the user after
    the engine has been build.
 
 (*) 07y8m9d from 07y6m7d:

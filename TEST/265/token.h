@@ -14,8 +14,8 @@
 
 /* For '--token-class-only' the following option may not come directly
  * from the configuration file.                                        */
-#ifndef    __QUEX_OPTION_PLAIN_C
-#   define __QUEX_OPTION_PLAIN_C
+#ifndef    QUEX_OPTION_PLAIN_C
+#   define QUEX_OPTION_PLAIN_C
 #endif
 #include <quex/code_base/definitions>
 #include <quex/code_base/asserts>
@@ -24,7 +24,7 @@
 /* LexemeNull object may be used for 'take_text'. */
 
 #if ! defined(QUEX_NAME_TOKEN)
-#   if defined(__QUEX_OPTION_PLAIN_C)
+#   if defined(QUEX_OPTION_PLAIN_C)
 #      define QUEX_NAME_TOKEN(NAME)   Common_Token_ ## NAME
 #   else
 #      define QUEX_NAME_TOKEN(NAME)   Common_Token_ ## NAME
@@ -50,7 +50,7 @@ extern uint32_t  Common_LexemeNullObject;
        extern const char* 
        Common_Token_pretty_char_text(struct Common_Token_tag* me, char*   buffer, size_t  BufferSize); 
 
-#      if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
+#      if ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
        extern const wchar_t* 
        Common_Token_pretty_wchar_text(struct Common_Token_tag* me, wchar_t*  buffer, size_t BufferSize); 
 #      endif

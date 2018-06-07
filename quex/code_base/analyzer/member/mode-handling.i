@@ -36,17 +36,17 @@ QUEX_NAME(MF_set_mode_brutally)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* M
 QUEX_INLINE void    
 QUEX_NAME(MF_enter_mode)(QUEX_TYPE_ANALYZER* me, const QUEX_NAME(Mode)* TargetMode) 
 {
-#   ifdef __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
+#   ifdef QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
     const QUEX_NAME(Mode)* SourceMode = me->__current_mode_p;
 #   endif
 
-#   ifdef __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
+#   ifdef QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
     me->__current_mode_p->on_exit(me, TargetMode);
 #   endif
 
     QUEX_NAME(MF_set_mode_brutally)(me, TargetMode);
 
-#   ifdef __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
+#   ifdef QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
     TargetMode->on_entry(me, SourceMode);         
 #   endif
 }

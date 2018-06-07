@@ -13,7 +13,7 @@ token_type {
                                        char*                    buffer, 
                                        size_t                   BufferSize); 
 
-#      if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
+#      if ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
        extern const wchar_t* 
        EasyLexer_Token_pretty_wchar_text(const QUEX_TYPE_TOKEN*  me, 
                                          wchar_t*                buffer, 

@@ -47,7 +47,7 @@ FALLBACK_2 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=2
 
 CFLAGS := -ggdb -Wall -Werror $(INCLUDES) $(DEFS) \
 	      -fsanitize=address basic_functionality.c
-CC     := gcc $(CFLAGS) -DQUEX_INLINE= -D__QUEX_OPTION_PLAIN_C # -pg -fprofile-arcs
+CC     := gcc $(CFLAGS) -DQUEX_INLINE= -DQUEX_OPTION_PLAIN_C # -pg -fprofile-arcs
 CCP    := g++ $(CFLAGS) -DQUEX_INLINE=inline 
 
 XLIBS := $(shell icu-config --ldflags) 

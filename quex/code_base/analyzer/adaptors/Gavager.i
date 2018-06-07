@@ -48,7 +48,7 @@ $$INC: analyzer/adaptors/Gavager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#if ! defined( __QUEX_OPTION_PLAIN_C)
+#if ! defined( QUEX_OPTION_PLAIN_C)
 
 QUEX_INLINE
 QUEX_NAME(Gavager)::QUEX_NAME(Gavager)(QUEX_TYPE_ANALYZER* lexer,
@@ -79,7 +79,7 @@ QUEX_NAME(Gavager_construct)(QUEX_TYPE_GAVAGER*  me,
     me->base.last_incomplete_lexeme_p    = (QUEX_TYPE_LEXATOM*)0;
     me->base.stream_terminating_token_id = StreamTerminatingTokenId;
 
-#   ifdef __QUEX_OPTION_PLAIN_C
+#   ifdef QUEX_OPTION_PLAIN_C
     me->access  = QUEX_NAME(Gavager_access);
     me->gavage  = QUEX_NAME(Gavager_gavage);
     me->deliver = QUEX_NAME(Gavager_deliver);

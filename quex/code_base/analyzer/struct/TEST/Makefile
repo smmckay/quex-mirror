@@ -35,7 +35,7 @@ hwut-info:
 # Trick: Use 'QUEX_OPTION_MULTI' to avoid inclusion of 'multi.i' in 'single.i'
 #        which is included in 'TestAnalyzer-dummy.c'.
 TestAnalyzer-dummy.o: $(TESTENV)/test_c/TestAnalyzer-dummy.c ut
-	$(CC) -c -D__QUEX_OPTION_PLAIN_C -DQUEX_OPTION_MULTI $< -o $@
+	$(CC) -c -DQUEX_OPTION_PLAIN_C -DQUEX_OPTION_MULTI $< -o $@
 
 TestAnalyzer-dummy-cpp.o: $(TESTENV)/test_cpp/TestAnalyzer-dummy.cpp ut
 	$(CC) -c -DQUEX_OPTION_MULTI $< -o $@

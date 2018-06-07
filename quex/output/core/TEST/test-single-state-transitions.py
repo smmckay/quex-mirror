@@ -150,7 +150,7 @@ def get_transition_function(iid_map, Codec):
 main_template = """
 /* From '.begin' the target map targets to '.target' until the next '.begin' is
  * reached.                                                                   */
-#define __QUEX_OPTION_WCHAR_T_DISABLED
+#define QUEX_OPTION_WCHAR_T_DISABLED
 /* Prevent analyzer specific definition of '__quex_assert_no_passage' 
  * in 'lib/asserts'.                                                          */
 #define __quex_assert_no_passage()     assert(false)
@@ -158,7 +158,7 @@ main_template = """
 
 #include "../../../code_base/TESTS/minimum-definitions.h"
 #include <stdio.h>
-#define __QUEX_OPTION_PLAIN_C
+#define QUEX_OPTION_PLAIN_C
 
 typedef struct {
     struct {

@@ -3,11 +3,11 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__CONVERTER_ICONV_I
 #define  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__CONVERTER_ICONV_I
 
-#ifndef __QUEX_OPTION_PLAIN_C
+#ifndef QUEX_OPTION_PLAIN_C
 extern "C" { 
 #endif
 #include <errno.h>
-#ifndef __QUEX_OPTION_PLAIN_C
+#ifndef QUEX_OPTION_PLAIN_C
 }
 #endif
 $$INC: definitions$$

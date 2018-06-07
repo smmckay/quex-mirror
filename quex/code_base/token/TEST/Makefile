@@ -13,7 +13,7 @@ MYFLAGS   := -ggdb -Wall -Werror  \
 			 -DQUEX_OPTION_ASSERTS \
 			 -DQUEX_TKN_TERMINATION
 
-CC        := gcc  -I../ -I. -D__QUEX_OPTION_PLAIN_C -I$(HWUT_PATH) -ggdb $(MYFLAGS)
+CC        := gcc  -I../ -I. -DQUEX_OPTION_PLAIN_C -I$(HWUT_PATH) -ggdb $(MYFLAGS)
 
 %.exe: %.c common_token.c ut
 	$(CC) $< common_token.c -o $@ 

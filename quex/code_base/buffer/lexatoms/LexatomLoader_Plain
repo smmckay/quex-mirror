@@ -4,7 +4,7 @@
 #define  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_PLAIN
 /**/
 
-#if ! defined (__QUEX_OPTION_PLAIN_C)
+#if ! defined (QUEX_OPTION_PLAIN_C)
 #   include <iostream> 
 #   include <cerrno>
 #   include <stdexcept>

@@ -39,7 +39,7 @@ $$INC: analyzer/adaptors/Feeder$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#if ! defined( __QUEX_OPTION_PLAIN_C)
+#if ! defined( QUEX_OPTION_PLAIN_C)
 
 QUEX_INLINE
 QUEX_NAME(Feeder)::QUEX_NAME(Feeder)(QUEX_TYPE_ANALYZER* lexer,
@@ -69,7 +69,7 @@ QUEX_NAME(Feeder_construct)(QUEX_TYPE_FEEDER*   me,
     me->external_chunk.begin_p   = (void*)0;
     me->external_chunk.end_p     = (void*)0;
 
-#   ifdef __QUEX_OPTION_PLAIN_C
+#   ifdef QUEX_OPTION_PLAIN_C
     me->feed    = QUEX_NAME(Feeder_feed);
     me->deliver = QUEX_NAME(Feeder_deliver);
 #   endif

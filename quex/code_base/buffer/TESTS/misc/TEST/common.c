@@ -158,7 +158,7 @@ common_verify(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
 
     hwut_verify(   reference->input.lexatom_index_end_of_stream 
                 == subject->input.lexatom_index_end_of_stream);
-#   ifdef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
+#   ifdef  QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
     hwut_verify(   reference->_lexatom_reference_lexeme_start
                 == subject->_lexatom_reference_lexeme_start);
 #   endif

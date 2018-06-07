@@ -21,7 +21,7 @@ CC := $(CC) -fPIC $(NDEBUG_F) \
 	 -DPRINT_TOKEN \
 	 -DTEST_PROLOG='' \
 	 -DTEST_EPILOG='printf("Buffer Size = %i\n", QUEX_SETTING_BUFFER_SIZE);'
-	 # -D__QUEX_OPTION_UNIT_TEST \
+	 # -DQUEX_OPTION_UNIT_TEST \
      # -DQUEX_OPTION_DEBUG_SHOW \
 
 LD = $(LDC)

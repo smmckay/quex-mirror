@@ -108,7 +108,7 @@ default: __quex_assert(false); /* Cannot be handled */
 }
 }
 
-#if ! defined(__QUEX_OPTION_WCHAR_T_DISABLED)
+#if ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
 QUEX_INLINE void
 TestAnalyzer_lexeme_to_wchar_t_character(const TestAnalyzer_lexatom_t** source_pp,
 wchar_t**                 drain_pp)
@@ -221,7 +221,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(__QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
 QUEX_INLINE std::basic_string<uint8_t>
 TestAnalyzer_lexeme_to_utf8(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -333,7 +333,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(__QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
 QUEX_INLINE std::basic_string<uint16_t>
 TestAnalyzer_lexeme_to_utf16(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -445,7 +445,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(__QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
 QUEX_INLINE std::basic_string<uint32_t>
 TestAnalyzer_lexeme_to_utf32(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -557,7 +557,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(__QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
 QUEX_INLINE std::basic_string<char>
 TestAnalyzer_lexeme_to_char(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -669,7 +669,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(__QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
 QUEX_INLINE std::basic_string<wchar_t>
 TestAnalyzer_lexeme_to_wchar_t(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -781,7 +781,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(__QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
 QUEX_INLINE std::basic_string<char>
 TestAnalyzer_lexeme_to_pretty_char(const std::basic_string<TestAnalyzer_lexatom_t>& Source)

@@ -407,7 +407,7 @@ QUEX_NAME(Buffer_adapt_to_new_memory_location)(QUEX_NAME(Buffer)* me,
     /* ReadP                          */ &new_memory_base[offset_read_p],
     /* LexatomStartP                  */ &new_memory_base[offset_lexeme_start_p],
     /* LexatomAtLexemeStart           */ me->_lexatom_at_lexeme_start,
-#   ifdef  __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
+#   ifdef  QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION                 
     /* LexatomBeforeLexemeStart       */ me->_lexatom_before_lexeme_start,
 #   else
     /* LexatomBeforeLexemeStart       */ (QUEX_TYPE_LEXATOM)0, /* ignored */

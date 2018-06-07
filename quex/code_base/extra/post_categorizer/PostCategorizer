@@ -26,7 +26,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(DictionaryNo
 
 } QUEX_NAME(DictionaryNode);
 
-#ifdef __QUEX_OPTION_PLAIN_C
+#ifdef QUEX_OPTION_PLAIN_C
     typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Dictionary_tag) {
         QUEX_NAME(DictionaryNode)*  root;
 

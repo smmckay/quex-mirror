@@ -261,7 +261,7 @@ bool (*resources_absent)(struct TestAnalyzer_tag* me);
 
 } TestAnalyzer;
 
-#if defined(__QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void TestAnalyzer_member_functions_assign(struct TestAnalyzer_tag* me);
 #endif
 
@@ -274,7 +274,7 @@ QUEX_INLINE void TestAnalyzer_member_functions_assign(struct TestAnalyzer_tag* m
 
 
 
-#if defined(__QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C)
 QUEX_INLINE void
 TestAnalyzer_member_functions_assign(struct TestAnalyzer_tag* me)
 {
@@ -427,8 +427,8 @@ bool UserMementoPack_UnitTest_return_value = true;
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I
 
-#ifndef    __QUEX_OPTION_PLAIN_C
-#   define __QUEX_OPTION_PLAIN_C
+#ifndef    QUEX_OPTION_PLAIN_C
+#   define QUEX_OPTION_PLAIN_C
 #endif
 
 #include "test_environment/TestAnalyzer-token.h"

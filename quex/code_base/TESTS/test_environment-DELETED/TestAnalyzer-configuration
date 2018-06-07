@@ -27,8 +27,8 @@
 #define QUEX_SETTING_BUILD_DATE        "Wed May 30 15:42:45 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
-#ifndef    __QUEX_OPTION_PLAIN_C
-/* #define __QUEX_OPTION_PLAIN_C */
+#ifndef    QUEX_OPTION_PLAIN_C
+/* #define QUEX_OPTION_PLAIN_C */
 #endif
 
 /* Following checks are best done here:
@@ -38,8 +38,8 @@
 * Errors would be hard to find if the two checks were made in
 *   -- 'quex/code_base/configuration/validation' or
 *   -- 'quex/code_base/configuration/derived'.                               */
-#if ! defined(__QUEX_OPTION_PLAIN_C) && ! defined(__cplusplus)
-#   error "__QUEX_OPTION_PLAIN_C must be defined if no C++ compiler is used! Call quex with option '--language C'."
+#if ! defined(QUEX_OPTION_PLAIN_C) && ! defined(__cplusplus)
+#   error "QUEX_OPTION_PLAIN_C must be defined if no C++ compiler is used! Call quex with option '--language C'."
 #endif
 
 #if defined(__QUEX_INCLUDE_INDICATOR__ASSERTS)
@@ -78,17 +78,17 @@
 /* Quex can determine whether certain handlers are not used at all.  If so,
 * computation time can be spared and quex comments the following options out.
 *                                                                           */
-/* #define __QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT */
-/* #define __QUEX_OPTION_ON_EXIT_HANDLER_PRESENT */
+/* #define QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT */
+/* #define QUEX_OPTION_ON_EXIT_HANDLER_PRESENT */
 
 /* Begin of line pre-condition requires an extra flag in the buffer
 * structure. Only out-comment this in case of tough memory restrictions,
 * if no begin of line pre-condition is required.                            */
-/* #define __QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
+/* #define QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION */
 
 /* The following flag indicates that the engine is running on a specific
 * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
-/* #define __QUEX_OPTION_ENGINE_RUNNING_ON_CODEC */
+/* #define QUEX_OPTION_ENGINE_RUNNING_ON_CODEC */
 #
 #ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 /* #define QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
@@ -106,7 +106,7 @@
 
 /* QUEX_TYPE_X  --> Type of X in global namespace
 * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
-#if defined(__QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C)
 /* In 'C' there are no namespaces, so namespaces are coded directly
 * into the type name. Both, global and local names are equal.            */
 #   define QUEX_TYPE_DERIVED_ANALYZER  struct TestAnalyzer_tag
@@ -121,7 +121,7 @@
 #   define QUEX_NAMESPACE_MAIN
 #endif
 
-#if defined(__QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C)
 #   define QUEX_NAMESPACE_TOKEN
 
 #   define QUEX_LEXEME_NULL            TestAnalyzer_LexemeNull
