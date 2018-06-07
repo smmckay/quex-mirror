@@ -61,7 +61,7 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     analyzer_class_implementation += "#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n"
 
     with open(FileName, "a") as fh:
-        fh.write("%s\n" % adapt.do(analyzer_class_implementation, output_dir))
+        fh.write("\n%s\n" % adapt.do(analyzer_class_implementation, output_dir))
 
     if not TokenClassImplementationF:
         return

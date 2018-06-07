@@ -993,7 +993,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ................................................[OK]
+        svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
@@ -1010,7 +1010,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
  * Propper undefinition of configuration parameters.
-        macro-check.py ...............................................[OK]
+        macro-check.py .............................................[FAIL]
 
  * User defined token id file:
 
@@ -1021,7 +1021,9 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] svn-status.sh
     [FAIL] include_guard.py _ undefinition
+    [FAIL] macro-check.py
 ===============================================================================
                                                                                
                               Command Line Checks                              
@@ -3380,7 +3382,7 @@ SUMMARY:
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        1  14    [FAIL] ........../code/TEST                                          
+        3  14    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3436,11 +3438,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _____           
-    |  ___|_ _(_) |___     / ||___ /     __  __
-    | |_ / _` | | / __|    | |  |_ \     \ \/ /
-    |  _| (_| | | \__ \    | | ___) |     >  < 
-    |_|  \__,_|_|_|___/    |_||____/     /_/\_\
+     _____     _ _          _  ____             
+    |  ___|_ _(_) |___     / || ___|      __  __
+    | |_ / _` | | / __|    | ||___ \      \ \/ /
+    |  _| (_| | | \__ \    | | ___) |      >  < 
+    |_|  \__,_|_|_|___/    |_||____/      /_/\_\
                                                                    (1699 tests)
 
 ===============================================================================

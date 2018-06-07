@@ -1394,17 +1394,17 @@ class Language(dict):
             ("QUEX_SETTING_TOKEN_ID_NODENT",         tid("NODENT")),
         ])
 
+        txt = blue_print(Txt, replacements, CommonStart="QUEX_")
+
         # QUEX_NAME
         token_include_guard = self.NAME_IN_NAMESPACE(tcn, token_name_space).replace("::", "__")
-        txt = Txt
         txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, txt)
         txt = self.Match_QUEX_NAME_TOKEN.sub(r"%s_\1" % tcn, txt)
         txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s_\1" % Setup.analyzer_name_safe, txt)
         txt = self.Match_QUEX_INCLUDE_GUARD_TOKEN.sub(r"QUEX_INCLUDE_GUARD__TOKEN__%s_\1" % token_include_guard, txt)
         # txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % acn, txt)
         # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % acn, txt)
-
-        return blue_print(txt, replacements, CommonStart="QUEX_")
+        return txt
 
     def type_replacements(self, DirectF=False):
         if DirectF:
