@@ -550,9 +550,6 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_TKN_NODENT            5
 #endif
 
-#ifdef QUEX_UNIT_TEST_SECOND_MODE
-#  define QUEX_SETTING_MAX_MODE_CLASS_N 2
-#endif
 #ifdef __cplusplus
 namespace quex {
 typedef int TestAnalyzer_indentation_t;

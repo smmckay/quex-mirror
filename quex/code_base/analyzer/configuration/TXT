@@ -29,13 +29,12 @@ $$SWITCH$$ QUEX_OPTION_PLAIN_C
 #ifndef    QUEX_OPTION_COMPUTED_GOTOS
 $$SWITCH$$ QUEX_OPTION_COMPUTED_GOTOS
 #endif
-#ifndef    QUEX_OPTION_ENDIAN_LITTLE
+
+#if    ! defined(QUEX_OPTION_ENDIAN_LITTLE) \
+    && ! defined(QUEX_OPTION_ENDIAN_BIG)    \
+    && ! defined(QUEX_OPTION_ENDIAN_SYSTEM)
 $$SWITCH$$ QUEX_OPTION_ENDIAN_LITTLE
-#endif
-#ifndef    QUEX_OPTION_ENDIAN_BIG
 $$SWITCH$$ QUEX_OPTION_ENDIAN_BIG
-#endif
-#ifndef    QUEX_OPTION_ENDIAN_SYSTEM
 $$SWITCH$$ QUEX_OPTION_ENDIAN_SYSTEM
 #endif
 
@@ -69,46 +68,25 @@ $$SWITCH$$ QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 /* The following flag indicates that the engine is running on a specific
  * codec. Thus no converter is necessary. Use the flag to detect misuse.      */
 $$SWITCH$$ QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
-#
-#ifndef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+
 $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
-#endif
-#ifndef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
-#endif
+
 /* Mode Transitions:
  *    If the engine was created without the flag '--no-mode-transition-check'
  *    then code for mode transition control is inserted. It can be deactivated
  *    by commenting the following option out.                                 */
-#ifndef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
+#ifndef    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 $$SWITCH$$ QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-#endif
-
-/* QUEX_TYPE_X  --> Type of X in global namespace 
- * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
-#if defined(QUEX_OPTION_PLAIN_C)
-    /* In 'C' there are no namespaces, so namespaces are coded directly
-     * into the type name. Both, global and local names are equal.            */
-#   define QUEX_TYPE_DERIVED_ANALYZER  struct $$LEXER_CLASS_NAME_SAFE$$_tag
-
-#else
-    /* Add namespaces for the global names of the classes of analyzer
-     * and token.                                                             */
-#   define QUEX_TYPE_DERIVED_ANALYZER  $$LEXER_DERIVED_CLASS_NAME$$
-
 #endif
 
 $$TYPE_DEFINITIONS$$
 
-#ifndef    QUEX_SETTING_MAX_MODE_CLASS_N
-#   define QUEX_SETTING_MAX_MODE_CLASS_N                 ($$MAX_MODE_CLASS_N$$)
-#endif
-#ifndef    QUEX_SETTING_MODE_INITIAL_P
-#   define QUEX_SETTING_MODE_INITIAL_P                     (&$$QUEX_SETTING_MODE_INITIAL$$)
-#endif
+#define QUEX_SETTING_MAX_MODE_CLASS_N       ($$MAX_MODE_CLASS_N$$)
+#define QUEX_SETTING_MODE_INITIAL_P         (&$$QUEX_SETTING_MODE_INITIAL$$)
 
 #ifndef    QUEX_SETTING_MODE_STACK_SIZE 
-#   define QUEX_SETTING_MODE_STACK_SIZE                                (size_t)8
+#   define QUEX_SETTING_MODE_STACK_SIZE     (size_t)8
 #endif
 
 /* BLC -- Buffer Limit Code:
@@ -167,8 +145,8 @@ $$TYPE_DEFINITIONS$$
 #endif
 
 /* Initial size of the character accumulator.                                */
-#ifndef     QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE
-#   define  QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE                         (256)
+#ifndef    QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE
+#   define QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE                         (256)
 #endif
 
 /* Granularity, if new memory has to be allocated. The new memory will be by
@@ -194,13 +172,11 @@ $$TYPE_DEFINITIONS$$
 #    define QUEX_SETTING_TRANSLATION_BUFFER_SIZE ((size_t)65536)
 #endif
 
-#ifndef    QUEX_SETTING_CHARACTER_CODEC   
-#   define QUEX_SETTING_CHARACTER_CODEC $$QUEX_SETTING_CHARACTER_CODEC$$
-#endif
+#define     QUEX_SETTING_CHARACTER_CODEC                  $$QUEX_SETTING_CHARACTER_CODEC$$
 
 #define    QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) ($$TOKEN_REPEAT_TEST$$)
 #ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
-#   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)$$TOKEN_QUEUE_SIZE$$)
+#   define QUEX_SETTING_TOKEN_QUEUE_SIZE                  ((size_t)$$TOKEN_QUEUE_SIZE$$)
 #endif
 
 $$INC: analyzer/configuration/derived$$

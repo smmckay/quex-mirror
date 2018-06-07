@@ -195,7 +195,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAF
     $$MF: void resources_absent_mark()$$
     $$MF: bool resources_absent()$$
 
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
+#define self  (*(QUEX_TYPE_ANALYZER*)this)
 /* START: User's class body extensions _______________________________________*/
 $$CLASS_BODY_EXTENSION$$
 /* END: ______________________________________________________________________*/

@@ -243,7 +243,7 @@ public:
     $$MF: void resources_absent_mark()$$
     $$MF: bool resources_absent()$$
 
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)this)
+#define self  (*(QUEX_TYPE_ANALYZER*)this)
 /* START: User's class body extensions _______________________________________*/
 $$CLASS_BODY_EXTENSION$$
 /* END: ______________________________________________________________________*/

@@ -15,7 +15,7 @@ QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
 
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#define self  (*(QUEX_TYPE_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
 $$CONSTRUCTOR_EXTENSTION$$
 /* END: _______________________________________________________________________*/
@@ -28,7 +28,7 @@ QUEX_NAME(user_destructor)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
 
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#define self  (*(QUEX_TYPE_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
 $$DESTRUCTOR_EXTENSTION$$
 /* END: _______________________________________________________________________*/
@@ -40,7 +40,7 @@ QUEX_NAME(user_reset)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
 
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#define self  (*(QUEX_TYPE_ANALYZER*)me)
 /* START: User's 'reset' ______________________________________________________*/
 $$RESET_EXTENSIONS$$
 /* END: _______________________________________________________________________*/
@@ -53,7 +53,7 @@ QUEX_NAME(user_print)(QUEX_TYPE_ANALYZER* me)
 {
     (void)me;
 
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#define self  (*(QUEX_TYPE_ANALYZER*)me)
 /* START: User's constructor extensions _______________________________________*/
 $$USER_DEFINED_PRINT$$
 /* END: _______________________________________________________________________*/
@@ -67,7 +67,7 @@ QUEX_NAME(user_memento_pack)(QUEX_TYPE_ANALYZER* me,
 {
     (void)me; (void)memento; (void)InputName;
 
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#define self  (*(QUEX_TYPE_ANALYZER*)me)
 /* START: User's memento 'pack' _______________________________________________*/
 $$MEMENTO_EXTENSIONS_PACK$$
 /* END: _______________________________________________________________________*/
@@ -81,7 +81,7 @@ QUEX_NAME(user_memento_unpack)(QUEX_TYPE_ANALYZER*  me,
 {
     (void)me; (void)memento;
 
-#define self  (*(QUEX_TYPE_DERIVED_ANALYZER*)me)
+#define self  (*(QUEX_TYPE_ANALYZER*)me)
 /* START: User's memento 'unpack' _____________________________________________*/
 $$MEMENTO_EXTENSIONS_UNPACK$$
 /* END: _______________________________________________________________________*/
