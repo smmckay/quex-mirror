@@ -146,8 +146,8 @@ typedef int TestAnalyzer_acceptance_id_t;
 
 
 
-#ifndef    __QUEX_SETTING_MAX_MODE_CLASS_N
-#   define __QUEX_SETTING_MAX_MODE_CLASS_N                 (2)
+#ifndef    QUEX_SETTING_MAX_MODE_CLASS_N
+#   define QUEX_SETTING_MAX_MODE_CLASS_N                 (2)
 #endif
 #ifndef    QUEX_SETTING_MODE_INITIAL_P
 #   define QUEX_SETTING_MODE_INITIAL_P                     (&TestAnalyzer_M)
@@ -245,7 +245,7 @@ typedef int TestAnalyzer_acceptance_id_t;
 #endif
 
 #define    QUEX_TOKEN_ID(BRIEF)                             ((TestAnalyzer_token_id_t)QUEX_TKN_ ## BRIEF)
-#define    __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
+#define    QUEX_SETTING_TOKEN_ID_REPETITION_TEST(TokenID) (false)
 #ifndef    QUEX_SETTING_TOKEN_QUEUE_SIZE
 #   define QUEX_SETTING_TOKEN_QUEUE_SIZE          ((size_t)64)
 #endif

@@ -201,7 +201,7 @@ QUEX_NAME(TokenQueue_push_repeated)(QUEX_NAME(TokenQueue)* me,
     QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
     __quex_assert(RepetitionN != 0);        
 #   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-    __quex_assert(__QUEX_SETTING_TOKEN_ID_REPETITION_TEST(Id));
+    __quex_assert(QUEX_SETTING_TOKEN_ID_REPETITION_TEST(Id));
     QUEX_NAME_TOKEN(repetition_n_set)(me->write_iterator, RepetitionN);
     QUEX_NAME(TokenQueue_push_core)(me, Id);
 #   else
@@ -224,7 +224,7 @@ QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
         return (QUEX_TYPE_TOKEN*)0;
     }
 #   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-    else if( __QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->id) ) {
+    else if( QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->id) ) {
         repetition_count = QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator);
         if( repetition_count == 0 ) { 
             /* This case should never occurr!                                 */

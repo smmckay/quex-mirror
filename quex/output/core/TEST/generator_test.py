@@ -551,7 +551,7 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #endif
 
 #ifdef QUEX_UNIT_TEST_SECOND_MODE
-#  define __QUEX_SETTING_MAX_MODE_CLASS_N 2
+#  define QUEX_SETTING_MAX_MODE_CLASS_N 2
 #endif
 #ifdef __cplusplus
 namespace quex {
@@ -606,7 +606,7 @@ void QUEX_NAME(M2_on_buffer_overflow)(void* me)              { return; }
 $$MODE_DEF_M2$$
 #endif
 
-const QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[__QUEX_SETTING_MAX_MODE_CLASS_N]) = {
+const QUEX_NAME(Mode) *(QUEX_NAME(mode_db)[QUEX_SETTING_MAX_MODE_CLASS_N]) = {
    &QUEX_NAME(M)
 #  ifdef QUEX_UNIT_TEST_SECOND_MODE
    , 

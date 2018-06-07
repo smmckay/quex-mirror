@@ -16,7 +16,7 @@ main(int argc, char** argv)
 {        
 
     Simple_Token*   token_p = 0x0;
-#   if   defined (__QUEX_SETTING_TEST_UTF8)
+#   if   defined (QUEX_SETTING_TEST_UTF8)
     const char*    file_name = "example-hindi.utf8";
 #   else
     const char*    file_name = "example.txt";
@@ -40,7 +40,7 @@ main(int argc, char** argv)
         printf("Reset w/ QuexLexatomLoader: Converter_IConv;\n");
 #       elif defined(QUEX_OPTION_CONVERTER_ICU)
         printf("Reset w/ QuexLexatomLoader: Converter_ICU;\n");
-#       elif defined(__QUEX_SETTING_TEST_UTF8)
+#       elif defined(QUEX_SETTING_TEST_UTF8)
         printf("Reset w/ QuexLexatomLoader: Plain w/ Engine Codec;\n");
 #       else
         printf("Reset w/ QuexLexatomLoader: Plain;\n");
