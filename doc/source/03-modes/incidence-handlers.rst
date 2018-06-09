@@ -77,7 +77,7 @@ executed before and after *each* match action.
         margin of the queue to the maximum number of tokens which are expected to
         be sent from inside this handler. Define::
 
-               -DQUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER=...some number...
+               -DQUEX_SETTING_TOKEN_QUEUE_SAFETY_BORDER_EXT=...some number...
      
         on the command line to your compiler. Alternatively, quex can be passed the 
         command line option ``--token-policy-queue-safety-border`` followed by the

@@ -65,7 +65,7 @@ tremendously from template compression. If your compiler supports computed
 gotos try to set ``QUEX_OPTION_COMPUTED_GOTOS`` on the compilers' command
 line, e.g. with GNU C++::
 
-   > g++ -DQUEX_OPTION_COMPUTED_GOTOS ... MyLexer.cpp -c -o MyLexer.o
+   > g++ -DQUEX_OPTION_COMPUTED_GOTOS_EXT ... MyLexer.cpp -c -o MyLexer.o
 
 
 Principle of Template Compression

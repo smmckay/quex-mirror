@@ -11,7 +11,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 struct QUEX_NAME(Converter_tag);
 struct QUEX_NAME(Buffer_tag);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(LexatomLoader_tag) {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(LexatomLoader_tag) {
     /* -- byte order (i.e little- vs. big-endian) reversion: enable/disable
      *    the reversion of byte order.    
      *                                                                       */

@@ -307,8 +307,8 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 /* In cases, such as DLL compilation for some dedicated compilers, 
  * the classes need some epilog. If the user does not specify such
  * a thing, it must be empty.                                                */
-#ifndef    QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG
-#   define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG
+#ifndef    QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT
+#   define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT
 #endif
 
 #ifdef QUEX_OPTION_ASSERTS

@@ -8,7 +8,7 @@ function bar_build {
     make_flags="$@"
 
     if [ "$asserts_f" == "no-asserts" ]; then 
-        add_flags="-DQUEX_OPTION_ASSERTS_DISABLED"
+        add_flags="-DQUEX_OPTION_ASSERTS_DISABLED_EXT"
     elif [ "$asserts_f" == "asserts" ]; then  
         add_flags=""
     fi
@@ -25,7 +25,7 @@ function bar_run {
     remainder="$@"
 
     ## echo "#run: [$app][$asserts_f][$remainder]"
-
+    chmod a+rx $QUEX_PATH/TEST/valgrindi.sh 
     bash $QUEX_PATH/TEST/valgrindi.sh tmp-log.txt ./$app $remainder > tmp-out.txt
     bar_check_assert_activation "$asserts_f" tmp-out.txt
 

@@ -56,7 +56,7 @@ QUEX_INLINE void         TestAnalyzer_Token_repetition_n_set(TestAnalyzer_Token*
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 
-class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_Token {
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT TestAnalyzer_Token {
 public:
 TestAnalyzer_Token();
 TestAnalyzer_Token(const TestAnalyzer_Token& That);

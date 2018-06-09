@@ -539,7 +539,7 @@ DEPRECATED = {
        "    }", "0.51.1"),
   "XX_output_debug_f":
       ("Option '--debug' is no longer supported. Column and line number counting\n" \
-       "is supported by the compile option '-DQUEX_OPTION_DEBUG_SHOW'.",            \
+       "is supported by the compile option '-DQUEX_OPTION_DEBUG_SHOW_EXT'.",            \
        "0.58.3"),
   "XX_plot_graphic_format":         
       ("Option '--plot' no longer supported, use '--language dot' for example\n" \

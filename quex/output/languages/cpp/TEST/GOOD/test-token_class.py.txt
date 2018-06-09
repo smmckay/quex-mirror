@@ -35,7 +35,7 @@ QUEX_INLINE void         MeinToken_repetition_n_set(MeinToken*, size_t);
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 
-class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG MeinToken {
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT MeinToken {
 public:
     MeinToken();
     MeinToken(const MeinToken& That);

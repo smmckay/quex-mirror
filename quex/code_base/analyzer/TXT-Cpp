@@ -58,7 +58,7 @@ $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 
 typedef bool (*QUEX_NAME(callback_on_token_type))(QUEX_TYPE_TOKEN*);
 
-class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento) {
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Memento) {
 public:
     QUEX_NAME(Memento)()  {} /* Con- and Destruction necessary to trigger */
     ~QUEX_NAME(Memento)() {} /* con- and destruction of user members.     */
@@ -85,7 +85,7 @@ $$MEMENTO_EXTENSIONS$$
 #   endif
 };
 
-class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME$$ {
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT $$LEXER_CLASS_NAME$$ {
 public:
     /* __( Data Members )_______________________________________________________
      *                                                                        */

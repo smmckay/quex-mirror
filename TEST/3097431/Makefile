@@ -8,9 +8,9 @@ include ../Makefile.lexer
 CPP := $(CPP) -I. \
 	 -DPRINT_TOKEN                                   \
 	 -DPRINT_LINE_COLUMN_NUMBER
-     # -DQUEX_OPTION_ASSERTS_DISABLED
-     # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-     # -DQUEX_OPTION_DEBUG_SHOW
+     # -DQUEX_OPTION_ASSERTS_DISABLED_EXT
+     # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
+     # -DQUEX_OPTION_DEBUG_SHOW_EXT
    
 # (*) RULES ____________________________________________________________________
 # -- application

@@ -1,11 +1,11 @@
 include ../Makefile.lexer
 X = Simple
 
-#-DQUEX_OPTION_DEBUG_SHOW \
-#-DQUEX_OPTION_UNIT_TEST \
+#-DQUEX_OPTION_DEBUG_SHOW_EXT \
+#-DQUEX_OPTION_UNIT_TEST_EXT \
 
-DEFINES := -DQUEX_SETTING_BUFFER_SIZE=64 \
-		   -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 
+DEFINES := -DQUEX_SETTING_BUFFER_SIZE_EXT=64 \
+		   -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=64 
 
 all: lex_icu lex_iconv lex_codec
 
@@ -27,7 +27,7 @@ lex_codec:
 	@echo "Compiling"
 	$(LDCPP) $(X)/$(X).cpp ../lexer.cpp $(DEFINES) -o $@ 
 
-#-DQUEX_OPTION_DEBUG_SHOW 
+#-DQUEX_OPTION_DEBUG_SHOW_EXT 
 
 clean:
 	rm -rf Simple* a.out lex_icu lex_iconv lex_codec stats.log *.o

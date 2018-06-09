@@ -9,9 +9,9 @@
 COMPILER := g++ -ggdb -pedantic -Wconversion -Wall -Werror -W
 LD       := $(COMPILER) -I./ $(ADD_FLAGS) 
 #           Useful options for debugging:
-#           -DQUEX_OPTION_ASSERTS_DISABLED
-#           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-#           -DQUEX_OPTION_DEBUG_SHOW
+#           -DQUEX_OPTION_ASSERTS_DISABLED_EXT
+#           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
+#           -DQUEX_OPTION_DEBUG_SHOW_EXT
 
 FILES := lexer-command-line lexer-command-line-utf8 \
 	     lexer-stdin        lexer-stdin-utf8        \

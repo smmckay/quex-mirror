@@ -38,7 +38,7 @@
  *  Strexemos are located in token.
  *
  * /                   
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME_TOKEN(Strexemo_tag) {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME_TOKEN(Strexemo_tag) {
     QUEX_TYPE_LEXATOM*             begin;
     QUEX_TYPE_LEXATOM*             end;
     QUEX_NAME_TOKEN(Strexemo_tag)* __next;
@@ -56,7 +56,7 @@ Strexemo_crc8(Strexemo*);
 Strexemo_crc16(Strexemo*);
 Strexemo_crc32(Strexemo*);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT {
    StrexemoPool  head;
 } StrexemoHabitat;
     

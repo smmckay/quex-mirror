@@ -194,7 +194,7 @@ QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*  alter_ego,
  *  types of the second argument. There are two variants 'const char**'
  *  and 'char **'.  If you get an error here, consider defining 
  *
- *            -DQUEX_SETTING_ICONV_2ND_ARG_CONST_CHARPP
+ *            -DQUEX_SETTING_ICONV_2ND_ARG_CONST_CHARPP_EXT
  *
  *  as a compile option. If you know of an elegant solution to solve the 
  *  problem for plain 'C', then please, let me know 

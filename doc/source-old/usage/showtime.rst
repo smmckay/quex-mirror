@@ -6,7 +6,7 @@ compile macro::
 
         QUEX_OPTION_DEBUG_SHOW
        
-is defined (for example, by using ``-DQUEX_OPTION_DEBUG_SHOW`` as a compile
+is defined (for example, by using ``-DQUEX_OPTION_DEBUG_SHOW_EXT`` as a compile
 option). Quex generates code that is instrumented with macros that
 are empty if this option is not set, and it if the compile option is defined
 the macros expand to debug output code. The output is printed to 'standard

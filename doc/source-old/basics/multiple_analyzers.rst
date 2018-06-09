@@ -5,7 +5,7 @@ In case that multiple lexical analyzers are generated and linked into a single
 application, some specific action needs to be taken. First of all, one needs to
 compile all quex related files with the command line option::
 
-                    -DQUEX_OPTION_MULTI
+                    -DQUEX_OPTION_MULTI_EXT
 
 Second, one single file need to include the implementation file, that is somewhere in one
 single file there must be a line like

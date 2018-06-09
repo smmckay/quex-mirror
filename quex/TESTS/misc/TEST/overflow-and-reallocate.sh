@@ -5,10 +5,10 @@ function build_lexer {
     quex -i overflow-and-reallocate.qx -o EHLexer --language C
     gcc lexer2nd.c EHLexer/EHLexer.c  \
         -I. -DPRINT_TOKEN \
-        -DQUEX_SETTING_BUFFER_SIZE=4 \
-        -DQUEX_SETTING_BUFFER_FALLBACK_N=0 \
+        -DQUEX_SETTING_BUFFER_SIZE_EXT=4 \
+        -DQUEX_SETTING_BUFFER_FALLBACK_N_EXT=0 \
         -o lexer
-    # -DQUEX_OPTION_DEBUG_SHOW -lefence -ggdb
+    # -DQUEX_OPTION_DEBUG_SHOW_EXT -lefence -ggdb
 }
 
 case $1 in

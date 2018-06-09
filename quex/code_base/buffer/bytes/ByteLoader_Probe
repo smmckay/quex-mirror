@@ -58,7 +58,7 @@ $$INC: quex/MemoryManager$$
 }
 #endif
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(ByteLoader_Probe_tag) { 
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(ByteLoader_Probe_tag) { 
     QUEX_NAME(ByteLoader)  base;
     QUEX_NAME(ByteLoader)* source;
 

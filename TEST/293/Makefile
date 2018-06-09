@@ -3,16 +3,16 @@ include ../Makefile.lexer
 OBJS =  lexer.o IConvLexer.o CodecLexer.o
 
 CC := $(LDCPP_ICONV) \
-	  -DQUEX_OPTION_MULTI \
-	  -DQUEX_OPTION_CONVERTER_ICONV
-	  # -DQUEX_OPTION_ASSERTS_DISABLED
-      # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
+	  -DQUEX_OPTION_MULTI_EXT \
+	  -DQUEX_OPTION_CONVERTER_ICONV_EXT
+	  # -DQUEX_OPTION_ASSERTS_DISABLED_EXT
+      # -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
 
 all: lexer
 
 lexer: lexer.cpp IConv/Lexer.cpp Codec/Lexer.cpp
 	@$(CC) $^ -o $@ -I. \
-		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED
+		 -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED_EXT
 
 IConv/Lexer.cpp:    iconv.qx
 	quex -i $< -o IConv::Lexer --odir IConv -b 4 \

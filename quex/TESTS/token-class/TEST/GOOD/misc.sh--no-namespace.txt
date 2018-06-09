@@ -6,7 +6,7 @@ inline void         QToken_set(QToken*            me,
 inline bool         QToken_take_text(QToken*            me,
 inline size_t       QToken_repetition_n_get(QToken*);
 inline void         QToken_repetition_n_set(QToken*, size_t);
-class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QToken {
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QToken {
 QToken();
 QToken(const QToken& That);
 QToken& operator=(const QToken& That);

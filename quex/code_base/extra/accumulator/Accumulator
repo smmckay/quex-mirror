@@ -4,10 +4,22 @@
  *
  * QUEX_INCLUDE_GUARD__ANALYZER__ACCUMULATOR may be undefined in case
  *    that multiple lexical analyzers are used. Then, the name of the
- *    QUEX_NAME(Accumulator) must be different.                             */
+ *    QUEX_NAME(Accumulator) must be different.                               */
 #ifndef QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR
 #define QUEX_INCLUDE_GUARD__EXTRA__ACCUMULATOR__ACCUMULATOR
 
+/* Initial size of memory to hold accumulated text.                           */
+#if defined(QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE_EXT)
+#   define QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE         QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE_EXT
+#else
+#   define QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE         (256)
+#endif
+
+/* Granularity of memory allocation:
+ * Upon overload: new memory's size = current memory's size * (1 + factor)    */
+#ifndef     QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR
+#   define  QUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR  (0.8)
+#endif
 
 $$INC: definitions$$
 
@@ -16,7 +28,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 #ifdef QUEX_OPTION_PLAIN_C
     QUEX_TYPE0_ANALYZER;   
 
-    typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Accumulator_tag) {
+    typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Accumulator_tag) {
         __QUEX_IF_COUNT_LINES(size_t    _begin_line;)
         __QUEX_IF_COUNT_COLUMNS(size_t  _begin_column;)
 
@@ -45,7 +57,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 #else
     class QUEX_TYPE0_ANALYZER;
 
-    class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Accumulator) {
+    class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Accumulator) {
     public:
         __QUEX_IF_COUNT_LINES(size_t    _begin_line;)
         __QUEX_IF_COUNT_COLUMNS(size_t  _begin_column;)

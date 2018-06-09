@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#_SIZEr/bin/env python
 
 # Switch: Removal of source and executable file
 #         'False' --> No removal.
@@ -16,10 +16,10 @@ if True: # False: # True:
 else:
     REMOVE_FILES = False
     print "NOTE:> Print transitions and do not remove files!;"
-    SHOW_TRANSITIONS_STR  = "-DQUEX_OPTION_DEBUG_SHOW "  
-    SHOW_BUFFER_LOADS_STR = "-DQUEX_OPTION_DEBUG_SHOW_LOADS " \
-                            "-DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE " \
-                            "-DQUEX_SETTING_DEBUG_OUTPUT_CHANNEL=stdout"
+    SHOW_TRANSITIONS_STR  = "-DQUEX_OPTION_DEBUG_SHOW_EXT "  
+    SHOW_BUFFER_LOADS_STR = "-DQUEX_OPTION_DEBUG_SHOW_LOADS_EXT " \
+                            "-DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE_EXT " \
+                            "-DQUEX_SETTING_DEBUG_OUTPUT_CHANNEL_EXT=stdout"
 
 # Switch: Turn off some warnings
 #         'False' --> show (almost) all compiler warnings
@@ -129,7 +129,7 @@ def __Setup_init_language_database(Language):
 def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
        SecondPatternActionPairList=[], QuexBufferFallbackN=0, ShowBufferLoadsF=False,
-       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS"):
+       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS_EXT"):
     assert type(TestStr) == list or isinstance(TestStr, (str, unicode))
 
     assert QuexBufferFallbackN >= 0
@@ -143,11 +143,11 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
     computed_goto_f  = False
     FullLanguage     = Language
     if Language.find("StrangeStream") != -1:
-        CompileOptionStr += " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION "
+        CompileOptionStr += " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION_EXT "
 
     if Language.find("-CG") != -1:
         Language = Language.replace("-CG", "")
-        CompileOptionStr += " -DQUEX_OPTION_COMPUTED_GOTOS "
+        CompileOptionStr += " -DQUEX_OPTION_COMPUTED_GOTOS_EXT "
         computed_goto_f   = True
 
     if Language == "Cpp-Template":
@@ -212,8 +212,8 @@ def do(PatternActionPairList, TestStr, PatternDictionary={}, Language="ANSI-C-Pl
                                                             SecondModeF=True)
 
     if ShowBufferLoadsF:
-        state_machine_code = "#define QUEX_OPTION_DEBUG_SHOW_LOADS\n" + \
-                             "#define QUEX_OPTION_UNIT_TEST\n"                   + \
+        state_machine_code = "#define QUEX_OPTION_DEBUG_SHOW_LOADS_EXT\n" + \
+                             "#define QUEX_OPTION_UNIT_TEST_EXT\n"                   + \
                              state_machine_code
 
     source_code =   create_common_declarations(Language, QuexBufferSize, 
@@ -320,7 +320,7 @@ def compile(Language, SourceCode, AssertsActionvation_str="", StrangeStream_str=
     filename_tmp = "./tmp%s" % extension # DEBUG
 
     executable_name = "%s.exe" % filename_tmp
-    # NOTE: QUEX_OPTION_ASSERTS is defined by AssertsActionvation_str (or not)
+    # NOTE: QUEX_OPTION_ASSERTS_EXT is defined by AssertsActionvation_str (or not)
     try:    os.remove(executable_name)
     except: pass
     compile_str = compiler                + " " + \
@@ -334,7 +334,7 @@ def compile(Language, SourceCode, AssertsActionvation_str="", StrangeStream_str=
 
 
     # If computed gotos are involved, then make sure that the option is really active.
-    # if compile_str.find("-DQUEX_OPTION_COMPUTED_GOTOS") != -1:
+    # if compile_str.find("-DQUEX_OPTION_COMPUTED_GOTOS_EXT") != -1:
     #   run_this(compile_str + " -E") # -E --> expand macros
     #   content = open(filename_tmp, "rb").read()
     #   if content.find("QUEX_STATE_ROUTER"):
@@ -374,11 +374,11 @@ def create_common_declarations(Language, QuexBufferSize,
     #    QuexBufferFallbackN = max(0, len(TestStr) - 3) 
 
     txt  = ""
-    txt += "#    define QUEX_SETTING_BUFFER_SIZE  %s\n" % QuexBufferSize
+    txt += "#    define QUEX_SETTING_BUFFER_SIZE_EXT  %s\n" % QuexBufferSize
 
     # Parameterize the common declarations
-    txt += "#define QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION\n" 
-    txt += "#define QUEX_OPTION_UNIT_TEST\n" 
+    txt += "#define QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION_EXT\n" 
+    txt += "#define QUEX_OPTION_UNIT_TEST_EXT\n" 
 
     if Language == "Cpp": test_analyzer_dir = "test_cpp"
     else:                 test_analyzer_dir = "test_c"
@@ -398,18 +398,18 @@ def create_common_declarations(Language, QuexBufferSize,
 
     if ComputedGotoF:   
         txt = txt.replace("$$COMPUTED_GOTOS$$",    "/* Correct */")
-        txt = txt.replace("$$NO_COMPUTED_GOTOS$$", "QUEX_ERROR_EXIT(\"QUEX_OPTION_COMPUTED_GOTOS not active!\\n\");")
+        txt = txt.replace("$$NO_COMPUTED_GOTOS$$", "QUEX_ERROR_EXIT(\"QUEX_OPTION_COMPUTED_GOTOS_EXT not active!\\n\");")
     else:
-        txt = txt.replace("$$COMPUTED_GOTOS$$",    "QUEX_ERROR_EXIT(\"QUEX_OPTION_COMPUTED_GOTOS active!\\n\");")
+        txt = txt.replace("$$COMPUTED_GOTOS$$",    "QUEX_ERROR_EXIT(\"QUEX_OPTION_COMPUTED_GOTOS_EXT active!\\n\");")
         txt = txt.replace("$$NO_COMPUTED_GOTOS$$", "/* Correct */")
 
     txt = txt.replace("$$BUFFER_LIMIT_CODE$$", repr(BufferLimitCode))
 
-    replace_str = "#define QUEX_OPTION_INDENTATION_TRIGGER"
+    replace_str = "#define QUEX_OPTION_INDENTATION_TRIGGER_EXT"
     if not IndentationSupportF: replace_str = "/* %s */" % replace_str
     txt = txt.replace("$$QUEX_OPTION_INDENTATION_TRIGGER$$", replace_str)
        
-    replace_str = "#define QUEX_OPTION_PLAIN_C"
+    replace_str = "#define QUEX_OPTION_PLAIN_C_EXT"
     if Language not in ["ANSI-C", "ANSI-C-PlainMemory", "ANSI-C-from-file"]: replace_str = "/* %s */" % replace_str
     txt = txt.replace("$$QUEX_OPTION_PLAIN_C$$", replace_str)
 
@@ -511,7 +511,7 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 
     assert all_isinstance(function_txt, str)
 
-    result =  "#define  QUEX_OPTION_UNIT_TEST\n" \
+    result =  "#define  QUEX_OPTION_UNIT_TEST_EXT\n" \
             + Lng.FRAME_IN_NAMESPACE_MAIN(
               nonsense_default_counter(not SecondModeF) \
             + "".join(function_txt))
@@ -536,11 +536,11 @@ language_defines = """
 test_program_common_declarations = """
 $$QUEX_OPTION_PLAIN_C$$
 $$QUEX_OPTION_INDENTATION_TRIGGER$$
-#define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED
-#define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
-#define QUEX_SETTING_BUFFER_MIN_FALLBACK_N     ((size_t)$$BUFFER_FALLBACK_N$$)
-#define QUEX_SETTING_BUFFER_LIMIT_CODE         ((TestAnalyzer_lexatom_t)$$BUFFER_LIMIT_CODE$$)
-#define QUEX_OPTION_INCLUDE_STACK_DISABLED
+#define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED_EXT
+#define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT
+#define QUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT     ((size_t)$$BUFFER_FALLBACK_N$$)
+#define QUEX_SETTING_BUFFER_LIMIT_CODE_EXT         ((TestAnalyzer_lexatom_t)$$BUFFER_LIMIT_CODE$$)
+#define QUEX_OPTION_INCLUDE_STACK_DISABLED_EXT
 
 #if 0
 #define QUEX_TKN_TERMINATION       0

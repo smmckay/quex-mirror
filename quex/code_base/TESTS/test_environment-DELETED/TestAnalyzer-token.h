@@ -67,7 +67,7 @@ QUEX_INLINE void         TestAnalyzer_Token_repetition_n_set(struct TestAnalyzer
 #endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
 
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_Token_tag {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT TestAnalyzer_Token_tag {
 TestAnalyzer_token_id_t    id;
 
 #   line 29 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"

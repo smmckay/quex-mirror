@@ -5,27 +5,27 @@ TESTS := construct_destruct_included.exe \
 
 CC    := gcc -ggdb -Wall -Werror \
 		     -I. -I../../../../TESTS -Iut/lib -I$(HWUT_PATH)/support/C  \
-		     -DQUEX_SETTING_BUFFER_SIZE_MIN=4 \
-		     -DQUEX_SETTING_BUFFER_SIZE=11 \
-			 -DQUEX_OPTION_ASSERTS \
+		     -DQUEX_SETTING_BUFFER_SIZE_MIN_EXT=4 \
+		     -DQUEX_SETTING_BUFFER_SIZE_EXT=11 \
+			 -DQUEX_OPTION_ASSERTS_EXT \
 			 -DQUEX_INLINE=
 
 all: $(TESTS)
 
 construct_destruct_included.exe: construct_destruct_included.c ut
-	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1 $< -o $@
+	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=1 $< -o $@
 
 extend_and_migrate.exe: extend_and_migrate.c common.c ut
-	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $< common.c -o $@
+	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $< common.c -o $@
 
 extend_and_migrate-nested.exe: extend_and_migrate-nested.c common.c ut
-	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $< common.c -o $@
+	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $< common.c -o $@
 
 negotiate_extend.exe: negotiate_extend.c common.c ut
-	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $< common.c -o $@
+	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $< common.c -o $@
 	    
 %.E: %.c
-	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1 $^ -E > $@
+	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=1 $^ -E > $@
 
 hwut-info:
 	@echo $(TESTS)

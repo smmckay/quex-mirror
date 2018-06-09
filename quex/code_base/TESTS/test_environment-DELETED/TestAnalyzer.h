@@ -110,7 +110,7 @@ extern  void TestAnalyzer_M2_on_indentation(struct TestAnalyzer_tag* me, TestAna
 
 typedef bool (*TestAnalyzer_callback_on_token_type)(struct TestAnalyzer_Token_tag*);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_Memento_tag {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT TestAnalyzer_Memento_tag {
 /* __( Data Members )_______________________________________________________
 *                                                                        */
 char*                           __input_name;
@@ -138,7 +138,7 @@ struct TestAnalyzer_Memento_tag*  _parent_memento;
 /* END: ______________________________________________________________________*/
 } TestAnalyzer_Memento;
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG TestAnalyzer_tag {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT TestAnalyzer_tag {
 /* __( Data Members )_______________________________________________________
 *                                                                        */
 TestAnalyzer_Buffer               buffer;

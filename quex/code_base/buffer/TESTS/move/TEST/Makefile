@@ -10,8 +10,8 @@ TEST_FILES = \
 
 .SECONDARY: $(TEST_FILES)
 
-DEFS = -DQUEX_OPTION_DEBUG_SHOW_LOADS \
-	   -DQUEX_OPTION_ASSERTS \
+DEFS = -DQUEX_OPTION_DEBUG_SHOW_LOADS_EXT \
+	   -DQUEX_OPTION_ASSERTS_EXT \
 	   -DQUEX_INLINE=inline
 
 CC_PURE := g++ \
@@ -35,25 +35,25 @@ hwut-end: clean
 move_away_passed_content-fb0.exe: move_away_passed_content.cpp \
 	                              move_away_passed_content-gen.o \
 							      hwut_cursor.o ut
-	$(CC) $< -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
+	$(CC) $< -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 \
 		  move_away_passed_content-gen.o hwut_cursor.o -o $@
 
 move_away_passed_content-fb1.exe: move_away_passed_content.cpp \
 	                              move_away_passed_content-gen.o \
 							      hwut_cursor.o ut
-	$(CC) $< -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=1 \
+	$(CC) $< -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=1 \
 		  move_away_passed_content-gen.o hwut_cursor.o -o $@
 
 move_away_passed_content-fb2.exe: move_away_passed_content.cpp \
 	                              move_away_passed_content-gen.o \
 							      hwut_cursor.o ut
-	$(CC) $< -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=2 \
+	$(CC) $< -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=2 \
 		  move_away_passed_content-gen.o hwut_cursor.o -o $@
 
 move_away_passed_content-fb2-32.exe: move_away_passed_content.cpp \
 	                                 move_away_passed_content-gen.o \
 							         hwut_cursor.o ut
-	$(CC_PURE) $< -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=2 \
+	$(CC_PURE) $< -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=2 \
 		  -DQUEX_TYPE_LEXATOM=uint32_t \
 		  move_away_passed_content-gen.o hwut_cursor.o -o $@
 
@@ -61,21 +61,21 @@ move_away_upfront_content-8.exe: move_away_upfront_content.cpp \
 	                             move_away_upfront_content-gen.o \
 							     hwut_cursor.o ut
 	$(CC_PURE) $< -DQUEX_TYPE_LEXATOM=uint8_t \
-          -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
+          -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 \
 		  move_away_upfront_content-gen.o hwut_cursor.o -o $@
 
 move_away_upfront_content-16.exe: move_away_upfront_content.cpp \
 	                              move_away_upfront_content-gen.o \
 							      hwut_cursor.o ut
 	$(CC_PURE) $< -DQUEX_TYPE_LEXATOM=uint16_t \
-          -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
+          -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 \
 		  move_away_upfront_content-gen.o hwut_cursor.o -o $@
 
 move_away_upfront_content-32.exe: move_away_upfront_content.cpp \
 	                              move_away_upfront_content-gen.o \
 							      hwut_cursor.o ut
 	$(CC_PURE) $< -DQUEX_TYPE_LEXATOM=uint32_t \
-          -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 \
+          -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 \
 		  move_away_upfront_content-gen.o hwut_cursor.o -o $@
 
 

@@ -55,7 +55,7 @@ $$MODE_SPECIFIC_ANALYSER_FUNCTIONS$$
 
 typedef bool (*QUEX_NAME(callback_on_token_type))(QUEX_TYPE_TOKEN*);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Memento_tag) {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Memento_tag) {
     /* In contrary to C++ implementation, constructors and destructors 
      * are called explicitly.                                                 */
 
@@ -80,7 +80,7 @@ $$MEMENTO_EXTENSIONS$$
 /* END: ______________________________________________________________________*/
 } QUEX_NAME(Memento);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG $$LEXER_CLASS_NAME_SAFE$$_tag {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT $$LEXER_CLASS_NAME_SAFE$$_tag {
     /* __( Data Members )_______________________________________________________
      *                                                                        */
     QUEX_NAME(Buffer)               buffer;

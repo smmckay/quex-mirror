@@ -28,10 +28,10 @@ def test(CodecName):
     sys.stdout = stdout
 
     define_str = " ".join(["-DQUEX_TYPE_LEXATOM='unsigned char'",
-                           "-DQUEX_OPTION_DISABLE_STD_STRING_USAGE",
+                           "-DQUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT",
                            "-DQUEX_INLINE=inline", 
                            "-D__QUEX_CODEC=%s " % CodecName,
-                           "-DQUEX_OPTION_LITTLE_ENDIAN"])
+                           "-DQUEX_OPTION_LITTLE_ENDIAN_EXT"])
 
     compile_str = "g++ -ggdb -I./ %s converter-tester.cpp -o converter-tester" % define_str
     print "##", compile_str

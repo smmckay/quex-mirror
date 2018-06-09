@@ -17,7 +17,7 @@ TEST                                                                 <no date>
     3022603 0.49.2 Using external buffer with Quex lexer
         bug-3022603.sh ...............................................[OK]
     3025173 0.49.2 Custom Token struct for quex
-        bug-3025173.sh ...............................................[OK]
+        bug-3025173.sh .............................................[FAIL]
     3032877 -b, --buffer-element-size enhancement
         feature-3032877.sh codec .....................................[OK]
                            normal ....................................[OK]
@@ -26,27 +26,27 @@ TEST                                                                 <no date>
 
     2001602 RE matching UTF8 l quote uno
         bug-2001602.sh codec .........................................[OK]
-                       iconv .........................................[OK]
-                       icu ...........................................[OK]
+                       iconv .......................................[FAIL]
+                       icu .........................................[FAIL]
     2001787 RE Problem with inverted whitespace
-        bug-2001787.sh iconv .........................................[OK]
-                       icu ...........................................[OK]
+        bug-2001787.sh iconv .......................................[FAIL]
+                       icu .........................................[FAIL]
     2002070 Output buffer overflow
-        bug-2002070.sh iconv .........................................[OK]
-                       icu ...........................................[OK]
+        bug-2002070.sh iconv .......................................[FAIL]
+                       icu .........................................[FAIL]
     2002474 Segmentation Fault while UTF-8 Decoding
         bug-2002474.sh codec .........................................[OK]
                        codec_c .......................................[OK]
-                       iconv .........................................[OK]
-                       iconv_c .......................................[OK]
-                       icu ...........................................[OK]
-                       icu_c .........................................[OK]
+                       iconv .......................................[FAIL]
+                       iconv_c .....................................[FAIL]
+                       icu .........................................[FAIL]
+                       icu_c .......................................[FAIL]
     2004927 UTF-8 RE Extra Comma Matched
         bug-2004927.sh codec .........................................[OK]
-                       iconv .........................................[OK]
-                       icu ...........................................[OK]
+                       iconv .......................................[FAIL]
+                       icu .........................................[FAIL]
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
-        bug-2619679.sh ...............................................[OK]
+        bug-2619679.sh .............................................[FAIL]
     286 Maintaining character index during manual buffer filling.
         bug-286.sh ...................................................[OK]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
@@ -83,10 +83,10 @@ TEST                                                                 <no date>
     3354250 Issue in Hopcroft-Minimization
         bug-3354250.sh ...............................................[OK]
     3357694 Matches too long when using certain post condition
-        bug-3357694.sh Normal ........................................[OK]
-                       PathCompression ...............................[OK]
-                       PathTemplateCompression .......................[OK]
-                       TemplateCompression ...........................[OK]
+        bug-3357694.sh Normal ......................................[FAIL]
+                       PathCompression .............................[FAIL]
+                       PathTemplateCompression .....................[FAIL]
+                       TemplateCompression .........................[FAIL]
     3392478 UTF-8 Backward Input Position Detection Error
         bug-3392478.sh ...............................................[OK]
 
@@ -101,7 +101,7 @@ TEST                                                                 <no date>
  * eabrams:
 
     patch-16 Compile error when indentation based without token queue
-        patch-16.sh ..................................................[OK]
+        patch-16.sh ................................................[FAIL]
 
  * enmarabrams:
 
@@ -125,14 +125,14 @@ TEST                                                                 <no date>
     1952747 TKN_TERMINATION
         bug-1952747.sh ...............................................[OK]
     2078087 (feature) Mode transition shortcuts GOTO, GOSUB, GOUP
-        feature-2078087.sh GOSUB .....................................[OK]
-                           GOSUB-2 ...................................[OK]
-                           GOTO ......................................[OK]
-                           GOTO-2 ....................................[OK]
+        feature-2078087.sh GOSUB ...................................[FAIL]
+                           GOSUB-2 .................................[FAIL]
+                           GOTO ....................................[FAIL]
+                           GOTO-2 ..................................[FAIL]
     2161098 0.32.1 Nested-Range Skipper Line Number Counter
-        bug-2161098-x.sh c_comments ..................................[OK]
-                         funny_comments ..............................[OK]
-                         shell_comments ..............................[OK]
+        bug-2161098-x.sh c_comments ................................[FAIL]
+                         funny_comments ............................[FAIL]
+                         shell_comments ............................[FAIL]
     2161098 0.32.1 Range Skipper Line Number Counter
         bug-2161098.sh c_comments ....................................[OK]
                        funny_comments ................................[OK]
@@ -144,13 +144,13 @@ TEST                                                                 <no date>
         bug-2277660.sh ...............................................[OK]
     2349109 0.33.5 Line and Column number counts with Set skippers
         bug-2349109.sh newline-skipper ...............................[OK]
-                       newline-skipper-utf8 ..........................[OK]
+                       newline-skipper-utf8 ........................[FAIL]
                        non-newline-skipper ...........................[OK]
     2635012 0.36.4 Include Stack Disablement
-        bug-2635012.sh ...............................................[OK]
+        bug-2635012.sh .............................................[FAIL]
     297 r4678(trunk): Memory leak in Token Class
-        bug-297.sh C .................................................[OK]
-                   Cpp ...............................................[OK]
+        bug-297.sh C ...............................................[FAIL]
+                   Cpp .............................................[FAIL]
     3038088 token_id = numeric value
         feature-3038088.sh ...........................................[OK]
     3039173 On Mismatch: abort()
@@ -158,9 +158,9 @@ TEST                                                                 <no date>
     3082041 0.52.4 Buffer Memory Size not Accepted
         bug-3082041.sh ...............................................[OK]
     3102035 0.55.1 Weird Setup causes Duplicate State Label
-        bug-3102035.sh 1 .............................................[OK]
+        bug-3102035.sh 1 ...........................................[FAIL]
                        2 .............................................[OK]
-                       3 .............................................[OK]
+                       3 ...........................................[FAIL]
                        4 .............................................[OK]
                        5 .............................................[OK]
     3157923 Memory Leak by Components
@@ -243,7 +243,7 @@ TEST                                                                 <no date>
  * nobody:
 
     2395200 assert  in QuexLexatomLoader_load_forward (The StrangeStream Issue)
-        bug-2395200.sh lexer .........................................[OK]
+        bug-2395200.sh lexer .......................................[FAIL]
     2841726 0.44.2 Unknown exception on unicode properties
         bug-2841726.sh ...............................................[OK]
     2891125 0.45.1 bug in -- version
@@ -387,8 +387,8 @@ TEST                                                                 <no date>
     1895066 0.20.8 #line directive after header contents missing
         bug-1895066.sh ...............................................[OK]
     1895500 assertion error running generated 0.20.8 lexer with Unicode
-        bug-1895500.sh iconv .........................................[OK]
-                       icu ...........................................[OK]
+        bug-1895500.sh iconv .......................................[FAIL]
+                       icu .........................................[FAIL]
     1898125 invalid argument for --token-id-offset can crash 0.21.4
         bug-1898125.sh ...............................................[OK]
     1900391 malformed --set-by-expression can crash 0.21.8
@@ -496,7 +496,42 @@ TEST                                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] bug-293.sh _ bad
                     \__ good
+    [FAIL] bug-3025173.sh
+    [FAIL] bug-2001602.sh _ iconv
+                        \__ icu
+    [FAIL] bug-2001787.sh _ iconv
+                        \__ icu
+    [FAIL] bug-2002070.sh _ iconv
+                        \__ icu
+    [FAIL] bug-2002474.sh _ iconv
+                        \__ iconv_c
+                        \__ icu
+                        \__ icu_c
+    [FAIL] bug-2004927.sh _ iconv
+                        \__ icu
+    [FAIL] bug-2619679.sh
     [FAIL] bug-3486388.sh
+    [FAIL] bug-3357694.sh _ Normal
+                        \__ PathCompression
+                        \__ PathTemplateCompression
+                        \__ TemplateCompression
+    [FAIL] patch-16.sh
+    [FAIL] feature-2078087.sh _ GOSUB
+                            \__ GOSUB-2
+                            \__ GOTO
+                            \__ GOTO-2
+    [FAIL] bug-2161098-x.sh _ c_comments
+                          \__ funny_comments
+                          \__ shell_comments
+    [FAIL] bug-2349109.sh _ newline-skipper-utf8
+    [FAIL] bug-2635012.sh
+    [FAIL] bug-297.sh _ C
+                    \__ Cpp
+    [FAIL] bug-3102035.sh _ 1
+                        \__ 3
+    [FAIL] bug-2395200.sh _ lexer
+    [FAIL] bug-1895500.sh _ iconv
+                        \__ icu
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -611,9 +646,9 @@ demo/C/TEST                                                          <no date>
  * 11-ManualBufferFilling:
 
     Manual Buffer Filling (w/o Converter)
-        11-ManualBufferFilling.sh feeder-converter ...................[OK]
+        11-ManualBufferFilling.sh feeder-converter .............[TIME_OUT]
                                   feeder-plain .......................[OK]
-                                  gavager-converter ..................[OK]
+                                  gavager-converter ............[TIME_OUT]
                                   gavager-plain ......................[OK]
                                   point-plain ........................[OK]
 
@@ -653,6 +688,8 @@ demo/C/TEST                                                          <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] 11-ManualBufferFilling.sh _ feeder-converter
+                                   \__ gavager-converter
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
@@ -752,9 +789,9 @@ demo/Cpp/TEST                                                        <no date>
  * 11-ManualBufferFilling:
 
     Manual Buffer Filling (w/o Converter)
-        11-ManualBufferFilling.sh feeder-converter ...................[OK]
+        11-ManualBufferFilling.sh feeder-converter .............[TIME_OUT]
                                   feeder-plain .......................[OK]
-                                  gavager-converter ..................[OK]
+                                  gavager-converter ............[TIME_OUT]
                                   gavager-plain ......................[OK]
                                   point-plain ........................[OK]
 
@@ -794,6 +831,8 @@ demo/Cpp/TEST                                                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] 11-ManualBufferFilling.sh _ feeder-converter
+                                   \__ gavager-converter
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
@@ -993,7 +1032,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ................................................[OK]
+        svn-status.sh ..............................................[FAIL]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
@@ -1005,7 +1044,7 @@ quex/TESTS/code/TEST                                                 <no date>
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ..................................[OK]
+        include_guard.py convention ................................[FAIL]
                          undefinition ..............................[FAIL]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
@@ -1021,7 +1060,9 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] include_guard.py _ undefinition
+    [FAIL] svn-status.sh
+    [FAIL] include_guard.py _ convention
+                          \__ undefinition
     [FAIL] macro-check.py
 ===============================================================================
                                                                                
@@ -1109,53 +1150,76 @@ quex/TESTS/event-handling/TEST                                       <no date>
  * Check whether all event handlers from 'blackboard.py' are tested.
         all_event_handlers_checked.sh ................................[OK]
  * Customized 'on_buffer_before_change' event.
-        on_buffer_before_change.qx empty .............................[OK]
-                                   twice .............................[OK]
+        on_buffer_before_change.qx empty ...........................[FAIL]
+                                   twice ...........................[FAIL]
 
  * Errors:
 
     'on_buffer_overflow'
-        on_buffer_overflow.qx empty ..................................[OK]
-                              trigger ................................[OK]
+        on_buffer_overflow.qx empty ................................[FAIL]
+                              trigger ..............................[FAIL]
     Customized 'on_skip_range_open' event
-        on_skip_range_open-customized.qx customized ..................[OK]
+        on_skip_range_open-customized.qx customized ................[FAIL]
     Default 'on_skip_range_open' event
-        on_skip_range_open.qx default ................................[OK]
+        on_skip_range_open.qx default ..............................[FAIL]
     on_bad_lexatom
-        on_bad_lexatom.qx bad-utf16 ..................................[OK]
-                          good-utf16 .................................[OK]
+        on_bad_lexatom.qx bad-utf16 ................................[FAIL]
+                          good-utf16 ...............................[FAIL]
 
  * Indentation:
 
     With N x DEDENT
-        on_indentation-2.qx n-dedent .................................[OK]
+        on_indentation-2.qx n-dedent ...............................[FAIL]
     Without N x DEDENT
-        on_indentation-1.qx ind-bad ..................................[OK]
-                            ind-bad-dedent ...........................[OK]
-                            ind-good .................................[OK]
+        on_indentation-1.qx ind-bad ................................[FAIL]
+                            ind-bad-dedent .........................[FAIL]
+                            ind-good ...............................[FAIL]
 
  * Matching:
 
     on_failure, on_match, on_after_match
-        on_match.qx failure ..........................................[OK]
-                    match ............................................[OK]
+        on_match.qx failure ........................................[FAIL]
+                    match ..........................................[FAIL]
 
  * Mode Transitions:
 
     more on on_entry, on_exit
-        transition-x.qx 1 ............................................[OK]
-                        2 ............................................[OK]
-                        3 ............................................[OK]
-                        error ........................................[OK]
+        transition-x.qx 1 ..........................................[FAIL]
+                        2 ..........................................[FAIL]
+                        3 ..........................................[FAIL]
+                        error ......................................[FAIL]
     on_entry, on_exit
-        transition.qx 1 ..............................................[OK]
-                      2 ..............................................[OK]
-                      3 ..............................................[OK]
-                      error ..........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        transition.qx 1 ............................................[FAIL]
+                      2 ............................................[FAIL]
+                      3 ............................................[FAIL]
+                      error ........................................[FAIL]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] on_buffer_before_change.qx _ empty
+                                    \__ twice
+    [FAIL] on_buffer_overflow.qx _ empty
+                               \__ trigger
+    [FAIL] on_skip_range_open-customized.qx _ customized
+    [FAIL] on_skip_range_open.qx _ default
+    [FAIL] on_bad_lexatom.qx _ bad-utf16
+                           \__ good-utf16
+    [FAIL] on_indentation-2.qx _ n-dedent
+    [FAIL] on_indentation-1.qx _ ind-bad
+                             \__ ind-bad-dedent
+                             \__ ind-good
+    [FAIL] on_match.qx _ failure
+                     \__ match
+    [FAIL] transition-x.qx _ 1
+                         \__ 2
+                         \__ 3
+                         \__ error
+    [FAIL] transition.qx _ 1
+                       \__ 2
+                       \__ 3
+                       \__ error
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1219,9 +1283,9 @@ quex/TESTS/indentation_count/TEST                                    <no date>
                                                                                
 quex/TESTS/loop/TEST                                                 <no date>
 -------------------------------------------------------------------------------
- * skip_nested_range
+ * ## Disable this message by compile option
         skip_nested_range.exe ........................................[OK]
- * skip_range
+ * ## Disable this message by compile option
         skip_range.exe ...............................................[OK]
                                                                     ___  _  _  
                                                                    / _ \| |/ ) 
@@ -1307,7 +1371,7 @@ quex/TESTS/misc/TEST                                                 <no date>
  * Customized codec files (option --encoding-file)
         customized_codec.sh ..........................................[OK]
  * FSM DFA_State Tracer
-        debug_show.sh ................................................[OK]
+        debug_show.sh ..............................................[FAIL]
  * Inadmissible commonalities
         commonality.sh indentation-newline ...........................[OK]
                        mix ...........................................[OK]
@@ -1342,56 +1406,55 @@ quex/TESTS/misc/TEST                                                 <no date>
                                                      PRE_X ...........[OK]
                                                      PRE_X_DTC .......[OK]
                                                      PRE_X_PC ........[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] debug_show.sh
 ===============================================================================
                                                                                
                                      Reset                                     
                                                                                
 quex/TESTS/reset/TEST                                                <no date>
 -------------------------------------------------------------------------------
- * Normal Reset
-        lexer-x 0 ....................................................[OK]
-                1 ....................................................[OK]
-                1000 .................................................[OK]
-                134 ..................................................[OK]
-                135 ..................................................[OK]
-                136 ..................................................[OK]
-                2 ....................................................[OK]
-                20 ...................................................[OK]
-                3 ....................................................[OK]
-                30 ...................................................[OK]
-                50 ...................................................[OK]
-
- * Reset w/ QuexLexatomLoader:
-
-    Converter_ICU
-        icu-lexer 0 ..................................................[OK]
-                  1 ..................................................[OK]
-                  1000 ...............................................[OK]
-                  134 ................................................[OK]
-                  135 ................................................[OK]
-                  136 ................................................[OK]
-                  2 ..................................................[OK]
-                  20 .................................................[OK]
-                  3 ..................................................[OK]
-                  30 .................................................[OK]
-                  50 .................................................[OK]
-    Converter_IConv
-        iconv-lexer 0 ................................................[OK]
-                    1 ................................................[OK]
-                    1000 .............................................[OK]
-                    134 ..............................................[OK]
-                    135 ..............................................[OK]
-                    136 ..............................................[OK]
-                    2 ................................................[OK]
-                    20 ...............................................[OK]
-                    3 ................................................[OK]
-                    30 ...............................................[OK]
-                    50 ...............................................[OK]
-    Plain
+ * ## Disable this message by compile option
+        codec-lexer 0 ..............................................[FAIL]
+                    1 ..............................................[FAIL]
+                    1000 ...........................................[FAIL]
+                    134 ............................................[FAIL]
+                    135 ............................................[FAIL]
+                    136 ............................................[FAIL]
+                    2 ..............................................[FAIL]
+                    20 .............................................[FAIL]
+                    3 ..............................................[FAIL]
+                    30 .............................................[FAIL]
+                    50 .............................................[FAIL]
+ * ## Disable this message by compile option
+        iconv-lexer 0 ..............................................[FAIL]
+                    1 ..............................................[FAIL]
+                    1000 ...........................................[FAIL]
+                    134 ............................................[FAIL]
+                    135 ............................................[FAIL]
+                    136 ............................................[FAIL]
+                    2 ..............................................[FAIL]
+                    20 .............................................[FAIL]
+                    3 ..............................................[FAIL]
+                    30 .............................................[FAIL]
+                    50 .............................................[FAIL]
+ * ## Disable this message by compile option
+        icu-lexer 0 ................................................[FAIL]
+                  1 ................................................[FAIL]
+                  1000 .............................................[FAIL]
+                  134 ..............................................[FAIL]
+                  135 ..............................................[FAIL]
+                  136 ..............................................[FAIL]
+                  2 ................................................[FAIL]
+                  20 ...............................................[FAIL]
+                  3 ................................................[FAIL]
+                  30 ...............................................[FAIL]
+                  50 ...............................................[FAIL]
+ * ## Disable this message by compile option
         lexer 0 ......................................................[OK]
               1 ......................................................[OK]
               1000 ...................................................[OK]
@@ -1403,22 +1466,56 @@ quex/TESTS/reset/TEST                                                <no date>
               3 ......................................................[OK]
               30 .....................................................[OK]
               50 .....................................................[OK]
-    Plain w/ Engine Codec
-        codec-lexer 0 ................................................[OK]
-                    1 ................................................[OK]
-                    1000 .............................................[OK]
-                    134 ..............................................[OK]
-                    135 ..............................................[OK]
-                    136 ..............................................[OK]
-                    2 ................................................[OK]
-                    20 ...............................................[OK]
-                    3 ................................................[OK]
-                    30 ...............................................[OK]
-                    50 ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+ * ## Disable this message by compile option
+        lexer-x 0 ....................................................[OK]
+                1 ....................................................[OK]
+                1000 .................................................[OK]
+                134 ..................................................[OK]
+                135 ..................................................[OK]
+                136 ..................................................[OK]
+                2 ....................................................[OK]
+                20 ...................................................[OK]
+                3 ....................................................[OK]
+                30 ...................................................[OK]
+                50 ...................................................[OK]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] codec-lexer _ 0
+                     \__ 1
+                     \__ 1000
+                     \__ 134
+                     \__ 135
+                     \__ 136
+                     \__ 2
+                     \__ 20
+                     \__ 3
+                     \__ 30
+                     \__ 50
+    [FAIL] iconv-lexer _ 0
+                     \__ 1
+                     \__ 1000
+                     \__ 134
+                     \__ 135
+                     \__ 136
+                     \__ 2
+                     \__ 20
+                     \__ 3
+                     \__ 30
+                     \__ 50
+    [FAIL] icu-lexer _ 0
+                   \__ 1
+                   \__ 1000
+                   \__ 134
+                   \__ 135
+                   \__ 136
+                   \__ 2
+                   \__ 20
+                   \__ 3
+                   \__ 30
+                   \__ 50
 ===============================================================================
                                                                                
                           Source Package Distribution                          
@@ -1489,11 +1586,13 @@ quex/TESTS/token-policies/TEST                                       <no date>
 quex/code_base/analyzer/TEST                                         <no date>
 -------------------------------------------------------------------------------
  * Statistics Module
-        statistics.exe ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        statistics.exe ......................................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] statistics.exe
 ===============================================================================
                                                                                
                       Encoding Converter Helper Functions                      
@@ -1501,23 +1600,34 @@ quex/code_base/analyzer/TEST                                         <no date>
 quex/code_base/lexeme_converter/TEST                                 <no date>
 -------------------------------------------------------------------------------
  * Test of complete character set on base converters (utf8, utf16, utf32)
-        characters ...................................................[OK]
+        characters ..........................................[MAKE FAILED]
  * utf16 to utf8, utf16, and utf32
-        from-utf16 Drain_ToSmall .....................................[OK]
-                   Source_Empty ......................................[OK]
-                   Source_TestFile ...................................[OK]
+        from-utf16 Drain_ToSmall ............................[MAKE FAILED]
+                   Source_Empty .............................[MAKE FAILED]
+                   Source_TestFile ..........................[MAKE FAILED]
  * utf32 to utf8, utf16, and utf32
-        from-utf32 Drain_ToSmall .....................................[OK]
-                   Source_Empty ......................................[OK]
-                   Source_TestFile ...................................[OK]
+        from-utf32 Drain_ToSmall ............................[MAKE FAILED]
+                   Source_Empty .............................[MAKE FAILED]
+                   Source_TestFile ..........................[MAKE FAILED]
  * utf8 to utf8, utf16, and utf32
-        from-utf8 Drain_ToSmall ......................................[OK]
-                  Source_Empty .......................................[OK]
-                  Source_TestFile ....................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        from-utf8 Drain_ToSmall .............................[MAKE FAILED]
+                  Source_Empty ..............................[MAKE FAILED]
+                  Source_TestFile ...........................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] characters
+    [FAIL] from-utf16 _ Drain_ToSmall
+                    \__ Source_Empty
+                    \__ Source_TestFile
+    [FAIL] from-utf32 _ Drain_ToSmall
+                    \__ Source_Empty
+                    \__ Source_TestFile
+    [FAIL] from-utf8 _ Drain_ToSmall
+                   \__ Source_Empty
+                   \__ Source_TestFile
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -1528,14 +1638,18 @@ quex/code_base/token/TEST                                            <no date>
  * TokenQueue:
 
     Push and Pop
-        push-pop.exe plain ...........................................[OK]
-                     text ............................................[OK]
+        push-pop.exe plain ..................................[MAKE FAILED]
+                     text ...................................[MAKE FAILED]
     Push and Pop with Repetition
-        push-pop-repetition.exe ......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        push-pop-repetition.exe .............................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] push-pop.exe _ plain
+                      \__ text
+    [FAIL] push-pop-repetition.exe
 ===============================================================================
                                                                                
                                 Track Analysis                                 
@@ -1699,20 +1813,20 @@ quex/engine/loop/TEST                                                <no date>
  * Indentation Counting:
 
     With Comments
-        indentation-w-comments.py Mixed ..............................[OK]
-                                  NewlineTerminated ..................[OK]
-                                  NotNewlineTerminated ...............[OK]
+        indentation-w-comments.py Mixed ............................[FAIL]
+                                  NewlineTerminated ...........[NO OUTPUT]
+                                  NotNewlineTerminated ........[NO OUTPUT]
     With Tabulators
-        indentation-w-tabs.py Back ...................................[OK]
-                              Front ..................................[OK]
-                              InComment ..............................[OK]
-                              Potpourri ..............................[OK]
+        indentation-w-tabs.py Back .................................[FAIL]
+                              Front ...........................[NO OUTPUT]
+                              InComment .......................[NO OUTPUT]
+                              Potpourri .......................[NO OUTPUT]
     Without Tabulators
-        indentation.py CloseMultiple .................................[OK]
-                       EmptyLines ....................................[OK]
-                       InAndOut ......................................[OK]
-                       NoDents .......................................[OK]
-                       SuppressedNewline .............................[OK]
+        indentation.py CloseMultiple ...............................[FAIL]
+                       EmptyLines .............................[NO OUTPUT]
+                       InAndOut ...............................[NO OUTPUT]
+                       NoDents ................................[NO OUTPUT]
+                       SuppressedNewline ......................[NO OUTPUT]
 
  * Loop:
 
@@ -1757,10 +1871,23 @@ quex/engine/loop/TEST                                                <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       4 ..............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] indentation-w-comments.py _ Mixed
+                                   \__ NewlineTerminated
+                                   \__ NotNewlineTerminated
+    [FAIL] indentation-w-tabs.py _ Back
+                               \__ Front
+                               \__ InComment
+                               \__ Potpourri
+    [FAIL] indentation.py _ CloseMultiple
+                        \__ EmptyLines
+                        \__ InAndOut
+                        \__ NoDents
+                        \__ SuppressedNewline
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -2317,9 +2444,9 @@ quex/code_base/TESTS/general/TEST                                    <no date>
  * BOM Snap:
 
     FILE
-        bom.exe ......................................................[OK]
+        bom.exe .............................................[MAKE FAILED]
     ifstream
-        bom-istream.exe ..............................................[OK]
+        bom-istream.exe .....................................[MAKE FAILED]
 
  * StrangeStream:
 
@@ -2333,10 +2460,13 @@ quex/code_base/TESTS/general/TEST                                    <no date>
                             3 ........................................[OK]
                             4 ........................................[OK]
                             5 ........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] bom.exe
+    [FAIL] bom-istream.exe
 ===============================================================================
                                                                                
             Resource Scenarios for Constructor, Include, and Reset             
@@ -2344,24 +2474,36 @@ quex/code_base/TESTS/general/TEST                                    <no date>
 quex/code_base/analyzer/struct/TEST                                  <no date>
 -------------------------------------------------------------------------------
  * Constructor
-        test-constructor.exe byte-loader .............................[OK]
-                             file-name ...............................[OK]
-                             memory ..................................[OK]
+        test-constructor.exe byte-loader ....................[MAKE FAILED]
+                             file-name ......................[MAKE FAILED]
+                             memory .........................[MAKE FAILED]
  * Include Push/Pop
-        test-include_push.exe byte-loader ............................[OK]
-                              file-name ..............................[OK]
-                              memory .................................[OK]
+        test-include_push.exe byte-loader ...................[MAKE FAILED]
+                              file-name .....................[MAKE FAILED]
+                              memory ........................[MAKE FAILED]
  * Include Push/Pop Deep
-        test-include-deep.exe ........................................[OK]
+        test-include-deep.exe ...............................[MAKE FAILED]
  * Reset
-        test-reset.exe byte-loader ...................................[OK]
-                       file-name .....................................[OK]
-                       memory ........................................[OK]
-                       plain .........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        test-reset.exe byte-loader ..........................[MAKE FAILED]
+                       file-name ............................[MAKE FAILED]
+                       memory ...............................[MAKE FAILED]
+                       plain ................................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] test-constructor.exe _ byte-loader
+                              \__ file-name
+                              \__ memory
+    [FAIL] test-include_push.exe _ byte-loader
+                               \__ file-name
+                               \__ memory
+    [FAIL] test-include-deep.exe
+    [FAIL] test-reset.exe _ byte-loader
+                        \__ file-name
+                        \__ memory
+                        \__ plain
 ===============================================================================
                                                                                
                                   ByteLoaders                                  
@@ -2369,30 +2511,39 @@ quex/code_base/analyzer/struct/TEST                                  <no date>
 quex/code_base/buffer/bytes/TEST                                     <no date>
 -------------------------------------------------------------------------------
  * Segmented Input
-        segmented-input.exe Handler ..................................[OK]
-                            Normal ...................................[OK]
+        segmented-input.exe Handler .........................[MAKE FAILED]
+                            Normal ..........................[MAKE FAILED]
 
  * QUEX_NAME(ByteLoader):
 
     FILE
-        test-FILE.exe basic ..........................................[OK]
-                      init-pos .......................................[OK]
+        test-FILE.exe basic .................................[MAKE FAILED]
+                      init-pos ..............................[MAKE FAILED]
     Memory
-        test-Memory.exe basic ........................................[OK]
-                        init-pos .....................................[OK]
+        test-Memory.exe basic ...............................[MAKE FAILED]
+                        init-pos ............................[MAKE FAILED]
     POSIX
-        test-POSIX.exe basic .........................................[OK]
-                       init-pos ......................................[OK]
+        test-POSIX.exe basic ................................[MAKE FAILED]
+                       init-pos .............................[MAKE FAILED]
     std::fstream
         test-fstream.exe basic .......................................[OK]
                          init-pos ....................................[OK]
     std::stringstream
         test-stringstream.exe basic ..................................[OK]
                               init-pos ...............................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] segmented-input.exe _ Handler
+                             \__ Normal
+    [FAIL] test-FILE.exe _ basic
+                       \__ init-pos
+    [FAIL] test-Memory.exe _ basic
+                         \__ init-pos
+    [FAIL] test-POSIX.exe _ basic
+                        \__ init-pos
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2400,15 +2551,21 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ....................................[OK]
-                        Mix ..........................................[OK]
-                        N-Character ..................................[OK]
-                        N-String .....................................[OK]
-                        String .......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        accumulator.exe Character ...........................[MAKE FAILED]
+                        Mix .................................[MAKE FAILED]
+                        N-Character .........................[MAKE FAILED]
+                        N-String ............................[MAKE FAILED]
+                        String ..............................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] accumulator.exe _ Character
+                         \__ Mix
+                         \__ N-Character
+                         \__ N-String
+                         \__ String
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2724,39 +2881,39 @@ quex/engine/state_machine/transformation/TEST                        <no date>
 quex/output/languages/cpp/TEST                                       <no date>
 -------------------------------------------------------------------------------
  * Files for Packaging vs. Files in Code Base
-        package-file-db.py ...........................................[OK]
+        package-file-db.py .........................................[FAIL]
  * Token Class Template
         test-token_class.py ..........................................[OK]
 
  * Character Counter:
 
     Default Implementation
-        test-counter.py ascii-1 ......................................[OK]
-                        ascii-1-wo-ReferenceP ........................[OK]
-                        cp737-1 ......................................[OK]
-                        cp737-1-wo-ReferenceP ........................[OK]
-                        utf_16_le-1 ..................................[OK]
-                        utf_16_le-1-wo-ReferenceP ....................[OK]
-                        utf_16_le-2 ..................................[OK]
-                        utf_16_le-2-wo-ReferenceP ....................[OK]
-                        utf_32_le-1 ..................................[OK]
-                        utf_32_le-1-wo-ReferenceP ....................[OK]
-                        utf_8-1 ......................................[OK]
-                        utf_8-1-wo-ReferenceP ........................[OK]
-                        utf_8-2 ......................................[OK]
-                        utf_8-2-wo-ReferenceP ........................[OK]
-                        utf_8-3 ......................................[OK]
-                        utf_8-3-wo-ReferenceP ........................[OK]
-                        utf_8-4 ......................................[OK]
-                        utf_8-4-wo-ReferenceP ........................[OK]
+        test-counter.py ascii-1 ....................................[FAIL]
+                        ascii-1-wo-ReferenceP ......................[FAIL]
+                        cp737-1 ....................................[FAIL]
+                        cp737-1-wo-ReferenceP ......................[FAIL]
+                        utf_16_le-1 ................................[FAIL]
+                        utf_16_le-1-wo-ReferenceP ..................[FAIL]
+                        utf_16_le-2 ................................[FAIL]
+                        utf_16_le-2-wo-ReferenceP ..................[FAIL]
+                        utf_32_le-1 ................................[FAIL]
+                        utf_32_le-1-wo-ReferenceP ..................[FAIL]
+                        utf_8-1 ....................................[FAIL]
+                        utf_8-1-wo-ReferenceP ......................[FAIL]
+                        utf_8-2 ....................................[FAIL]
+                        utf_8-2-wo-ReferenceP ......................[FAIL]
+                        utf_8-3 ....................................[FAIL]
+                        utf_8-3-wo-ReferenceP ......................[FAIL]
+                        utf_8-4 ....................................[FAIL]
+                        utf_8-4-wo-ReferenceP ......................[FAIL]
 
  * Converter:
 
     Determine UTF-8 Range Map for Codec
-        test-converter-C.py cp037 ....................................[OK]
-                            cp1256 ...................................[OK]
-                            cp737 ....................................[OK]
-                            cp866 ....................................[OK]
+        test-converter-C.py cp037 ..................................[FAIL]
+                            cp1256 .................................[FAIL]
+                            cp737 ..................................[FAIL]
+                            cp866 ..................................[FAIL]
     Determine UTF-8 Range Map for Codec
         test-converter-x.py 1 ........................................[OK]
                             2 ........................................[OK]
@@ -2766,10 +2923,34 @@ quex/output/languages/cpp/TEST                                       <no date>
                           2 ..........................................[OK]
                           3 ..........................................[OK]
                           4 ..........................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] package-file-db.py
+    [FAIL] test-counter.py _ ascii-1
+                         \__ ascii-1-wo-ReferenceP
+                         \__ cp737-1
+                         \__ cp737-1-wo-ReferenceP
+                         \__ utf_16_le-1
+                         \__ utf_16_le-1-wo-ReferenceP
+                         \__ utf_16_le-2
+                         \__ utf_16_le-2-wo-ReferenceP
+                         \__ utf_32_le-1
+                         \__ utf_32_le-1-wo-ReferenceP
+                         \__ utf_8-1
+                         \__ utf_8-1-wo-ReferenceP
+                         \__ utf_8-2
+                         \__ utf_8-2-wo-ReferenceP
+                         \__ utf_8-3
+                         \__ utf_8-3-wo-ReferenceP
+                         \__ utf_8-4
+                         \__ utf_8-4-wo-ReferenceP
+    [FAIL] test-converter-C.py _ cp037
+                             \__ cp1256
+                             \__ cp737
+                             \__ cp866
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3376,46 +3557,46 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        3  238   [FAIL] TEST                                                          
-        4  56    [FAIL] demo/C/TEST                                                   
-        4  56    [FAIL] ..../Cpp/TEST                                                 
+       38  238   [FAIL] TEST                                                          
+        6  56    [FAIL] demo/C/TEST                                                   
+        6  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        2  14    [FAIL] ........../code/TEST                                          
+        4  14    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-           23      [OK] ........../event-handling/TEST                                
+       22  23    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
-           32      [OK] ........../misc/TEST                                          
-           55      [OK] ........../reset/TEST                                         
+        1  32    [FAIL] ........../misc/TEST                                          
+       33  55    [FAIL] ........../reset/TEST                                         
            14      [OK] ........../source-package/TEST                                
            5       [OK] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
-           10      [OK] ..../code_base/TESTS/general/TEST                             
-           1       [OK] ............../analyzer/TEST                                  
-           11      [OK] ......................./struct/TEST                           
+        2  10    [FAIL] ..../code_base/TESTS/general/TEST                             
+        1  1     [FAIL] ............../analyzer/TEST                                  
+       11  11    [FAIL] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            11      [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
            96      [OK] .........................../navigation/TEST                   
-           12      [OK] ...................../bytes/TEST                              
+        8  12    [FAIL] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-           5       [OK] ............../extra/accumulator/TEST                         
+        5  5     [FAIL] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
-           10      [OK] ............../lexeme_converter/TEST                          
-           3       [OK] ............../token/TEST                                     
+       10  10    [FAIL] ............../lexeme_converter/TEST                          
+        3  3     [FAIL] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-           38      [OK] .........../loop/TEST                                         
+       12  38    [FAIL] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
            17      [OK] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
@@ -3433,15 +3614,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-           31      [OK] .........../languages/cpp/TEST                                
+       23  31    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _  _            
-    |  ___|_ _(_) |___     / || || |     __  __
-    | |_ / _` | | / __|    | || || |_    \ \/ /
-    |  _| (_| | | \__ \    | ||__   _     >  < 
-    |_|  \__,_|_|_|___/    |_|   |_|     /_/\_\
+     _____     _ _          _   ___    __             
+    |  ___|_ _(_) |___     / | ( _ )  / /_      __  __
+    | |_ / _` | | / __|    | | / _ \ | '_ \     \ \/ /
+    |  _| (_| | | \__ \    | || (_) || (_) |     >  < 
+    |_|  \__,_|_|_|___/    |_| \___/  \___/     /_/\_\
                                                                    (1699 tests)
 
 ===============================================================================

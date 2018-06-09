@@ -14,7 +14,7 @@ choice = sys.argv[1]
 Language          = "ANSI-C"
 StrangeStream_str = ""
 if sys.argv[1].find("StrangeStream") != -1:
-    StrangeStream_str = " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION "
+    StrangeStream_str = " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION_EXT "
     Language = "Cpp"
 
 

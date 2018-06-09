@@ -11,7 +11,7 @@ choice = generator_test.hwut_input("Buffer Reload: Backwards",
 
 if choice.find("-ASSERTS") != -1: 
     choice     = choice.replace("-ASSERTS", "")
-    ASSERT_str = "-DQUEX_OPTION_ASSERTS"
+    ASSERT_str = "-DQUEX_OPTION_ASSERTS_EXT"
 else: 
     ASSERT_str = ""
 

@@ -21,15 +21,15 @@ COMPILER = gcc
 
 LD0 := $(COMPILER) -Wno-deprecated -Wall -Werror -ggdb \
 	 -I./ -I. -IEHLexer/lib \
-	 -DQUEX_OPTION_DEBUG_SHOW_MODES        \
-	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK  \
-	 # -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER
+	 -DQUEX_OPTION_DEBUG_SHOW_MODES_EXT        \
+	 -DQUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_EXT  \
+	 # -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT
 	 # -fsanitize=address 
 
 LD := $(LD0) 
 
-LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE=4
-LD65536 := $(LD) -DQUEX_SETTING_BUFFER_SIZE=65536
+LD4     := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=4
+LD65536 := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=65536
 
 QUEX  := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines --no-count-columns
 QUEX2 := $(QUEX_PATH)/quex-exe.py --suppress 3 --language C --token-id-prefix TK_ --no-count-lines
@@ -44,11 +44,11 @@ on_match.exe: on_match.qx
 
 on_indentation-%.exe: on_indentation-%.qx 
 	$(QUEX2) -i $< -o EHLexer 
-	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=65536 ./lexer.c EHLexer/EHLexer.c -o $@ 
+	$(LD0) -DQUEX_SETTING_BUFFER_SIZE_EXT=65536 ./lexer.c EHLexer/EHLexer.c -o $@ 
 
 on_load_failure.exe: on_load_failure.qx 
 	$(QUEX) -i $< -o EHLexer 
-	$(LD0) -DQUEX_SETTING_BUFFER_SIZE=6 ./lexer-probed.c EHLexer/EHLexer.c -o $@ 
+	$(LD0) -DQUEX_SETTING_BUFFER_SIZE_EXT=6 ./lexer-probed.c EHLexer/EHLexer.c -o $@ 
 
 on_bad_lexatom.exe: on_bad_lexatom.qx 
 	$(QUEX) -i $< -o EHLexer --encoding utf16
@@ -57,7 +57,7 @@ on_bad_lexatom.exe: on_bad_lexatom.qx
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	$(QUEX) -i $< -o EHLexer --odir ut 
 	$(LD4) ./lexer.c ut/EHLexer.c -o $@ -Iut/lib \
-	       -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER \
+	       -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT \
 		   -DUNIT_TEST_IN_UT
 
 on_buffer_before_change.exe: on_buffer_before_change.qx 

@@ -8,15 +8,15 @@
 
 COMPILER := gcc -ggdb -pedantic -Wconversion -Wall -Werror -W
 LD       := $(COMPILER) -I./ $(ADD_FLAGS) 
-LD_PLAIN     := $(LD) -DQUEX_SETTING_BUFFER_SIZE=13 
-LD_CONVERTER := $(LD) -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=6 \
-	                  -DQUEX_SETTING_BUFFER_SIZE=16            \
+LD_PLAIN     := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=13 
+LD_CONVERTER := $(LD) -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=6 \
+	                  -DQUEX_SETTING_BUFFER_SIZE_EXT=16            \
 			          -DQUEX_TYPE_LEXATOM=wchar_t              \
 			          -DQUEX_EXAMPLE_WITH_CONVERTER            \
-			          -DQUEX_OPTION_CONVERTER_ICONV
-# HINTS: -DQUEX_OPTION_ASSERTS_DISABLED
-#        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-#        -DQUEX_OPTION_DEBUG_SHOW
+			          -DQUEX_OPTION_CONVERTER_ICONV_EXT
+# HINTS: -DQUEX_OPTION_ASSERTS_DISABLED_EXT
+#        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
+#        -DQUEX_OPTION_DEBUG_SHOW_EXT
 
 FILES := feeder-plain.exe  feeder-converter.exe  \
 	     gavager-plain.exe gavager-converter.exe \
@@ -31,7 +31,7 @@ gavager-plain.exe:      lexer-gavager.c receiver.c plain/Lexer.c
 	$(LD_PLAIN)     -o $@ $^ 
           
 point-plain.exe:        lexer-point.c              plain/Lexer.c
-	$(LD_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^
+	$(LD_PLAIN)     -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $^
 
 feeder-converter.exe:   lexer-feeder.c receiver.c  converter/Lexer.c
 	$(LD_CONVERTER) -o $@ $^ 
@@ -40,7 +40,7 @@ gavager-converter.exe:  lexer-gavager.c receiver.c converter/Lexer.c
 	$(LD_CONVERTER) -o $@ $^ 
 
 point-converter.exe:    lexer-point.c              converter/Lexer.c
-	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=0 $^ 
+	$(LD_CONVERTER) -o $@ -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $^ 
           
 plain/Lexer.c: lexPlain.qx 
 	quex -i lexPlain.qx -o Lexer --odir plain --language C            

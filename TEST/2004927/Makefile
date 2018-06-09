@@ -2,8 +2,8 @@ include ../Makefile.lexer
 
 all: lex_iconv lex_icu lex_codec
 
-DEFINES := -DQUEX_SETTING_BUFFER_SIZE=64            \
-		   -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=64 
+DEFINES := -DQUEX_SETTING_BUFFER_SIZE_EXT=64            \
+		   -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=64 
 
 lex_iconv: 
 	@echo "Call to quex"

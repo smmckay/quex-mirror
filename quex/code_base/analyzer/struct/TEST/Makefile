@@ -4,13 +4,13 @@ FILES    := test-constructor.exe \
 	        test-include-deep.exe 
 
 DEFINES  := \
-	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER \
-			-DQUEX_OPTION_CONVERTER_ICONV \
-			-DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER \
-			-DQUEX_SETTING_BUFFER_SIZE=31 \
-			-DQUEX_SETTING_BUFFER_SIZE_MIN=3  \
-			-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=32 \
-			-DQUEX_OPTION_INCLUDE_STACK 
+	        -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT \
+			-DQUEX_OPTION_CONVERTER_ICONV_EXT \
+			-DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT \
+			-DQUEX_SETTING_BUFFER_SIZE_EXT=31 \
+			-DQUEX_SETTING_BUFFER_SIZE_MIN_EXT=3  \
+			-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=32 \
+			-DQUEX_OPTION_INCLUDE_STACK_EXT 
 
 INCLUDES := -I. -Iut/lib -I$(HWUT_PATH)/support/C -I../../../TESTS
 
@@ -35,10 +35,10 @@ hwut-info:
 # Trick: Use 'QUEX_OPTION_MULTI' to avoid inclusion of 'multi.i' in 'single.i'
 #        which is included in 'TestAnalyzer-dummy.c'.
 TestAnalyzer-dummy.o: $(TESTENV)/test_c/TestAnalyzer-dummy.c ut
-	$(CC) -c -DQUEX_OPTION_PLAIN_C -DQUEX_OPTION_MULTI $< -o $@
+	$(CC) -c -DQUEX_OPTION_PLAIN_C_EXT -DQUEX_OPTION_MULTI_EXT $< -o $@
 
 TestAnalyzer-dummy-cpp.o: $(TESTENV)/test_cpp/TestAnalyzer-dummy.cpp ut
-	$(CC) -c -DQUEX_OPTION_MULTI $< -o $@
+	$(CC) -c -DQUEX_OPTION_MULTI_EXT $< -o $@
 
 ut:
 	python $(TESTENV)/code_base_instatiation.py ut 

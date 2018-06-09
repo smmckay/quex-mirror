@@ -16,13 +16,13 @@ endif
 #     Buffer sizes:   28 --> buffer overflow
 #                     29 --> OK
 CC := $(CC) -fPIC $(NDEBUG_F) \
-     -DQUEX_SETTING_BUFFER_SIZE=$(BUFFER_SIZE) \
-	 -DQUEX_OPTION_ACTIVATE_ASSERTS \
+     -DQUEX_SETTING_BUFFER_SIZE_EXT=$(BUFFER_SIZE) \
+	 -DQUEX_OPTION_ACTIVATE_ASSERTS_EXT \
 	 -DPRINT_TOKEN \
 	 -DTEST_PROLOG='' \
 	 -DTEST_EPILOG='printf("Buffer Size = %i\n", QUEX_SETTING_BUFFER_SIZE);'
-	 # -DQUEX_OPTION_UNIT_TEST \
-     # -DQUEX_OPTION_DEBUG_SHOW \
+	 # -DQUEX_OPTION_UNIT_TEST_EXT \
+     # -DQUEX_OPTION_DEBUG_SHOW_EXT \
 
 LD = $(LDC)
 
@@ -35,13 +35,13 @@ lexer: lexer.o Simple.o
 
 # -- engine and object files
 lexer.o: ../lexer.c Simple/Simple.c
-	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED $< -ggdb -o $@
+	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
 
 Simple.o: Simple/Simple.c
-	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED $< -ggdb -o $@
+	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
 
 %.o: %.c Simple/Simple.c
-	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED $< -ggdb -o $@
+	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
 
 Simple/Simple.c: simple.qx
 	@quex -i simple.qx -o Simple --language C --debug-exception > tmp.txt 2>&1

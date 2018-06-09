@@ -10,7 +10,7 @@ tmp=`pwd`
 cd $bug/ 
 quex -i error.qx -o Simple --language C 
 gcc -I./ Simple/Simple.c ../lexer.c -o lexer \
-    -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
+    -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT
 
 echo "(1)"
 ./lexer example.txt 2> tmp.txt

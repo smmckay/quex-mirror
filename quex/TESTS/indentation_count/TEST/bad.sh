@@ -16,10 +16,10 @@ quex -i src/bad-$1.qx -o Simple --language C --debug-exception
 gcc -I. -I. -Wall -Werror                   \
     Simple/Simple.c lexer2nd.c -o lexer \
     -DPRINT_TOKEN                                    \
-    -DQUEX_SETTING_BUFFER_SIZE=$buffer_size          \
-    -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE -ggdb
+    -DQUEX_SETTING_BUFFER_SIZE_EXT=$buffer_size          \
+    -DQUEX_OPTION_INFORMATIVE_BUFFER_OVERFLOW_MESSAGE_EXT -ggdb
 
-#     -DQUEX_OPTION_DEBUG_SHOW 
+#     -DQUEX_OPTION_DEBUG_SHOW_EXT 
 
 if [[ $1 == "customized-2" ]]; then
     ./lexer data/bad2.txt > out.txt 2> err.txt

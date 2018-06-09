@@ -795,8 +795,8 @@ the name of the character set as the third argument, e.g.
         quex::MyLexer  qlex((QUEX_TYPE_LEXATOM*)0x0, 0, "UTF-8");
 
 And the engine must be created with a converter flag (``--iconv`` or ``--icu``)
-or one of the macros ``-DQUEX_OPTION_CONVERTER_ICONV`` or
-``-DQUEX_OPTION_CONVERTER_ICU`` must be defined for compilation. Customized
+or one of the macros ``-DQUEX_OPTION_CONVERTER_ICONV_EXT`` or
+``-DQUEX_OPTION_CONVERTER_ICU_EXT`` must be defined for compilation. Customized
 converters might also be used (see section
                                :ref:`sec-customized-converters`). The
 process of analysis is the same, except for one single line in the code.
@@ -826,7 +826,7 @@ assumed that the input is raw. There are two possible cases:
    might be used. It does not use an intermediate buffer that stocks
    incoming data. Thus, it is faster and uses less memory. The raw 
    buffer size of the converter can be set to zero, i.e. you
-   can compile with ``-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE=0``.
+   can compile with ``-DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=0``.
 
    The returned pointer corresponds to what has been said about the previous
    function.

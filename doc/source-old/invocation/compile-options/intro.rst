@@ -17,7 +17,7 @@ lexical analyzer engine. The compile options split into the following groups
    been set by quex. To disable asserts for example the compiler is called
    like this::
 
-      $CC ... -DQUEX_OPTION_ASSERTS_DISABLED
+      $CC ... -DQUEX_OPTION_ASSERTS_DISABLED_EXT
 
    The disablement of asserts is, by the way, essential to high performance
    lexical analysis.
@@ -27,7 +27,7 @@ lexical analyzer engine. The compile options split into the following groups
    These macros contain a value that is expanded in the code of quex. This can
    for example be used to set the buffer size with::
 
-      $CC ... -DQUEX_SETTING_BUFFER_SIZE=4096
+      $CC ... -DQUEX_SETTING_BUFFER_SIZE_EXT=4096
 
 .. cmacro:: QUEX_TYPE_ ...
 

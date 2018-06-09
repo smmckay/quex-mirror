@@ -14,7 +14,7 @@
 #   error "Either little endian or big endian must be defined."
 #endif
 
-#if defined(QUEX_OPTION_ASSERTS) && defined (QUEX_OPTION_ASSERTS_DISABLED)
+#if defined(QUEX_OPTION_ASSERTS) && defined (QUEX_OPTION_ASSERTS_DISABLED_EXT)
 #   error "Ambiguous configuration options."
 #endif
 

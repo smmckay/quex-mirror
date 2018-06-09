@@ -16,7 +16,7 @@ class QUEX_TYPE0_ANALYZER;
 QUEX_TYPE0_ANALYZER;   
 #endif
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Mode_tag) {  
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Mode_tag) {  
     const char* name;
 
 #if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \
@@ -56,7 +56,7 @@ QUEX_NAME(Mode_on_indentation_null_function)(QUEX_TYPE_ANALYZER*,
 QUEX_INLINE void
 QUEX_NAME(Mode_on_entry_exit_null_function)(QUEX_TYPE_ANALYZER*, const QUEX_NAME(Mode)*);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG {
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT {
     const QUEX_NAME(Mode)** begin;
     const QUEX_NAME(Mode)** end;
     const QUEX_NAME(Mode)** memory_end;

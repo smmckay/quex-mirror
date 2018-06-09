@@ -13,9 +13,9 @@ hwut-info:
 MYFLAGS := -ggdb \
 	       -Wall -Werror \
 	       -I. -I../../TESTS -I$(HWUT_PATH) \
-           -DQUEX_OPTION_COUNTER_LINE  \
-           -DQUEX_OPTION_COUNTER_COLUMN \
-		   -DQUEX_OPTION_ASSERTS
+           -DQUEX_OPTION_COUNTER_LINE_EXT  \
+           -DQUEX_OPTION_COUNTER_COLUMN_EXT \
+		   -DQUEX_OPTION_ASSERTS_EXT
 
 CC = g++ $(MYFLAGS)
 
@@ -23,7 +23,7 @@ counter-%.exe:  counter-%.cpp ut
 	$(CC) $< -o $@ 
 
 statistics.exe: statistics.c ut
-	gcc $(MYFLAGS) $< -o $@ -DQUEX_OPTION_PLAIN_C -DQUEX_INLINE= 
+	gcc $(MYFLAGS) $< -o $@ -DQUEX_OPTION_PLAIN_C_EXT -DQUEX_INLINE= 
 
 nonsense.exe: nonsense.cpp 
 	$(CC) $< -o $@ 

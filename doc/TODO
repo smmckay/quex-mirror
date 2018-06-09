@@ -4,6 +4,6 @@ Using 'wchar_t' tokens must include
 
 and define
 
-      -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED
+      -DQUEX_OPTION_LEXEME_CONVERTERS_DISABLED_EXT
 
 EXAMPLE: 'TEST/293' (regression test)

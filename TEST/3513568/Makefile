@@ -3,10 +3,10 @@ include ../Makefile.lexer
 ifdef ASSERTS_ENABLED_F
 	CCFLAG_ASSERTS=# By default asserts are enabled
 else 
-	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED
+	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED_EXT
 endif
 
-LDC := $(LDC) -DQUEX_OPTION_MULTI -I. -Wall -Werror
+LDC := $(LDC) -DQUEX_OPTION_MULTI_EXT -I. -Wall -Werror
 
 lexer: Lexer/Lexer.c lexer.c Common-token.c
 	$(LDC) $^ -o  $@ $(LIB_ICU) 

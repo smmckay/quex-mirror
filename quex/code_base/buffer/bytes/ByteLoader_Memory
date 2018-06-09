@@ -41,7 +41,7 @@ $$INC: quex/MemoryManager$$
 }
 #endif
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG { 
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT { 
     QUEX_NAME(ByteLoader)  base;
     struct {
         const uint8_t*     begin_p;

@@ -15,7 +15,7 @@
  *
  * EXPERIMENT: Setup buffer of 5 elements.
  *
- * Let this file be compiled with '-DQUEX_SETTING_BUFFER_MIN_FALLBACK_N=3'
+ * Let this file be compiled with '-DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=3'
  * for all experiments. Multiple versions of compiled objects may exist:
  *
  *        QUEX_TYPE_LEXATOM  QUEX_SETTING_BUFFER_MIN_FALLBACK_N

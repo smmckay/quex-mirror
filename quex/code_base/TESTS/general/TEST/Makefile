@@ -6,7 +6,7 @@ TEST_FILES = \
 		   bom-istream.exe
 INCLUDE := -I$(HWUT_PATH) -I. -I../../../TESTS -I../../../
 
-DEFS = -DQUEX_OPTION_ASSERTS $(INCLUDE) -ggdb 
+DEFS = -DQUEX_OPTION_ASSERTS_EXT $(INCLUDE) -ggdb 
 
 all: $(TEST_FILES)
 
@@ -14,7 +14,7 @@ hwut-info:
 	@echo $(TEST_FILES)
 
 bom.exe: bom.c ut
-	gcc -DQUEX_OPTION_PLAIN_C \
+	gcc -DQUEX_OPTION_PLAIN_C_EXT \
 		-DQUEX_NAMESPACE_MAIN_OPEN="" \
 		-DQUEX_NAMESPACE_MAIN_CLOSE="" \
 		$< -o $@ $(DEFS)

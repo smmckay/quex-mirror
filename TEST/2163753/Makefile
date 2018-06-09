@@ -1,6 +1,6 @@
 include ../Makefile.lexer
 
-# -DQUEX_OPTION_DEBUG_SHOW 
+# -DQUEX_OPTION_DEBUG_SHOW_EXT 
 #
 all: Simple/Simple.c 
 	@echo "Compiling"

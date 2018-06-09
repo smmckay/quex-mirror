@@ -7,7 +7,7 @@ def do(PatternActionPairList, TestStr, PatternDictionary={},
        Language="ANSI-C-PlainMemory", 
        QuexBufferSize=15, # DO NOT CHANGE!
        QuexBufferFallbackN=-1, ShowBufferLoadsF=False,
-       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS",
+       AssertsActionvation_str="-DQUEX_OPTION_ASSERTS_EXT",
        TokenQueueF=False):
 
     setup_buffer(BufferLimitCode)
@@ -46,11 +46,11 @@ def setup_language(Language):
     computed_goto_f  = False
     FullLanguage     = Language
     if Language.find("StrangeStream") != -1:
-        CompileOptionStr += " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION "
+        CompileOptionStr += " -DQUEX_OPTION_STRANGE_ISTREAM_IMPLEMENTATION_EXT "
 
     if Language.find("-CG") != -1:
         Language = Language.replace("-CG", "")
-        CompileOptionStr += " -DQUEX_OPTION_COMPUTED_GOTOS "
+        CompileOptionStr += " -DQUEX_OPTION_COMPUTED_GOTOS_EXT "
         computed_goto_f   = True
 
     if Language == "Cpp-Template":

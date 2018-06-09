@@ -63,13 +63,13 @@
  * ____________________________________________________________________________*/
 $$INC: definitions$$
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG { 
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT { 
     const size_t                         boundary_n;  
     const QUEX_TYPE_LEXATOM* const     boundary;
     QUEX_TYPE_STATISTICS_COUNTER* const  counter;     /* size = boundary_n + 1 */
 } QUEX_NAME(statistics_interval_list);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG { 
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT { 
     const char*                mode_name;
     const size_t               state_index;
     QUEX_NAME(statistics_interval_list) interval_list;

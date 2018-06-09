@@ -4,7 +4,7 @@ all: Simple/Simple.c
 	@echo "Compiling"
 	@$(LDC) Simple/Simple.c lexer.c -DPRINT_TOKEN -ggdb -I$(HWUT_PATH)
 		
-# -DQUEX_OPTION_DEBUG_SHOW  
+# -DQUEX_OPTION_DEBUG_SHOW_EXT  
 
 Simple.E: Simple/Simple.c
 	$(LDC) -E -I./ -I$(QUEX_PATH) Simple/Simple.c -o Simple.E

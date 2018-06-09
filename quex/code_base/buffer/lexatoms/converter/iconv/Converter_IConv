@@ -10,7 +10,7 @@ $$INC: buffer/lexatoms/converter/iconv/special_headers.h$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-typedef QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG struct {
+typedef QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT struct {
     QUEX_NAME(Converter)  base;
 
     iconv_t               handle;

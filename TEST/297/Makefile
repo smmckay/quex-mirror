@@ -2,7 +2,7 @@ INCLUDES := -I$(QUEX_PATH)/quex/code_base/TESTS/test_cpp \
 		    -I$(QUEX_PATH)/quex/code_base/TESTS/test_c \
 		    -I$(QUEX_PATH)/quex/code_base/TESTS/
 
-DEFINES  := -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER
+DEFINES  := -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT
 
 SRC_CPP  := lexer.cpp \
 	        $(QUEX_PATH)/quex/code_base/TESTS/test_cpp/TestAnalyzer-dummy.cpp
@@ -16,7 +16,7 @@ lexerCpp: $(SRC_CPP)
 	@g++ $(INCLUDES) $(DEFINES) -DQUEX_INLINE=inline $^ -o $@
 	
 lexerC: $(SRC_C)
-	@gcc $(INCLUDES) $(DEFINES) -DQUEX_INLINE= -DQUEX_OPTION_PLAIN_C $^ -o $@
+	@gcc $(INCLUDES) $(DEFINES) -DQUEX_INLINE= -DQUEX_OPTION_PLAIN_C_EXT $^ -o $@
 
 clean:
 	rm -rf lexerCpp lexerC

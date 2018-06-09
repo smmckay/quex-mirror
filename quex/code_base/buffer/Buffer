@@ -33,7 +33,7 @@ struct QUEX_NAME(Buffer_tag);
 struct QUEX_NAME(LexatomLoader_tag);
 
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG { 
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT { 
     E_Ownership                    ownership;
     /* ownership == E_Ownership_INCLUDING_BUFFER means that the memory is 
      *              split from an including buffer.                          
@@ -86,7 +86,7 @@ typedef struct {
     void*  aux; 
 } QUEX_NAME(Buffer_event_callbacks);
 
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG QUEX_NAME(Buffer_tag) { 
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Buffer_tag) { 
 /* Buffer of lexatoms on which the lexical analyzer is running. 
  *
  * Character Stream:

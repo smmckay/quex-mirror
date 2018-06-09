@@ -464,7 +464,7 @@ can be adapted dynamically.
 .. cmdoption:: --iconv 
 
     Enable the use of the iconv library for character stream decoding. This is equivalent to defining 
-    '-DQUEX_OPTION_CONVERTER_ICONV' as a compiler flag. Depending on your compiler 
+    '-DQUEX_OPTION_CONVERTER_ICONV_EXT' as a compiler flag. Depending on your compiler 
     setup, you might have to set the '-liconv' flag explicitly in order to link against 
     the IConv library.  
 
@@ -475,7 +475,7 @@ Default: false (disabled)
 .. cmdoption:: --icu 
 
     Enable the use of IBM's ICU library for character stream decoding. This is equivalent to defining 
-    '-DQUEX_OPTION_CONVERTER_ICU' as a compiler flag. There are a couple of libraries 
+    '-DQUEX_OPTION_CONVERTER_ICU_EXT' as a compiler flag. There are a couple of libraries 
     that are required for ICU. You can query those using the ICU tool 'icu-config'. A command 
     line call to this tool with '--ldflags' delivers all libraries that need to be linked. 
     A typical list is '-lpthread -lm -L/usr/lib -licui18n -licuuc -licudata'.  

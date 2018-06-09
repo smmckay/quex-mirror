@@ -3,8 +3,8 @@ include ../Makefile.lexer
 .PHONY: lexer
 
 CFLAGS = \
-	 -DQUEX_OPTION_DEBUG_SHOW_MODES \
-	 #-DQUEX_OPTION_DEBUG_SHOW
+	 -DQUEX_OPTION_DEBUG_SHOW_MODES_EXT \
+	 #-DQUEX_OPTION_DEBUG_SHOW_EXT
 
 lexer:
 	quex -i $(INPUT) -o Simple --language C --debug-exception --no-count-lines --no-count-columns 

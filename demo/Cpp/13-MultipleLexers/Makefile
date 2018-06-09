@@ -7,10 +7,10 @@
 .SECONDARY:
 
 COMPILER := g++ -pedantic -Wconversion -Wall -Werror -W
-LD       := $(COMPILER) -I./ $(ADD_FLAGS) -DQUEX_OPTION_MULTI 
-# HINTS:    -DQUEX_OPTION_ASSERTS_DISABLED
-#           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED 
-#           -DQUEX_OPTION_DEBUG_SHOW
+LD       := $(COMPILER) -I./ $(ADD_FLAGS) -DQUEX_OPTION_MULTI_EXT 
+# HINTS:    -DQUEX_OPTION_ASSERTS_DISABLED_EXT
+#           -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
+#           -DQUEX_OPTION_DEBUG_SHOW_EXT
 
 lexer: lexer.cpp max/Lexer.cpp moritz/Lexer.cpp boeck/Lexer.cpp
 	$(LD) $^ -o $@ 
