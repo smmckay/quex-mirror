@@ -50,7 +50,11 @@ $$SWITCH$$ QUEX_OPTION_ENDIAN_SYSTEM
  *    Turning counting off may result in engine speed-up.                     */
 $$SWITCH$$ QUEX_OPTION_COUNTER_LINE         
 $$SWITCH$$ QUEX_OPTION_COUNTER_COLUMN       
+#if defined(QUEX_OPTION_INDENTATION_TRIGGER_EXT)
+#   define  QUEX_OPTION_INDENTATION_TRIGGER
+#else
 $$SWITCH$$ QUEX_OPTION_INDENTATION_TRIGGER
+#endif
 /* Quex can determine whether certain handlers are not used at all.  If so,
  * computation time can be spared and quex comments the following options out.
  *                                                                           */
@@ -73,6 +77,14 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
  *    If the engine was created without the flag '--no-mode-transition-check'
  *    then code for mode transition control is inserted. It can be deactivated
  *    by commenting the following option out.                                 */
+#if defined(QUEX_OPTION_DEBUG_SHOW_EXT)
+#   define QUEX_OPTION_DEBUG_SHOW
+#endif
+
+#if defined(QUEX_OPTION_DEBUG_SHOW_MODES_EXT)
+#   define QUEX_OPTION_DEBUG_SHOW_MODES
+#endif
+
 #if defined(QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_EXT)
 #   define QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #else

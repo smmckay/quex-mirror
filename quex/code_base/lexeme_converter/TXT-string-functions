@@ -72,7 +72,7 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const QUEX_TYPE_LEXATOM*         SourceB
 }
 
 #if    ! defined(QUEX_OPTION_PLAIN_C) \
-    && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE)
+    && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
 QUEX_INLINE std::basic_string<$$DRAIN_CODE_UNIT_TYPE$$>
 QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source)
 {

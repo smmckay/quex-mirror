@@ -49,7 +49,7 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
 
     # FSM class implementation
     #
-    analyzer_class_implementation  = "#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n"
+    analyzer_class_implementation  = "#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT\n"
     analyzer_class_implementation += analyzer_class.do_implementation(mode_db, 
                                                                       member_function_signature_list)
     analyzer_class_implementation += "\n"
@@ -58,7 +58,7 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     analyzer_class_implementation += "bool UserConstructor_UnitTest_return_value = true;\n"
     analyzer_class_implementation += "bool UserReset_UnitTest_return_value       = true;\n"
     analyzer_class_implementation += "bool UserMementoPack_UnitTest_return_value = true;\n"
-    analyzer_class_implementation += "#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n"
+    analyzer_class_implementation += "#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT */\n"
 
     with open(FileName, "a") as fh:
         fh.write("\n%s\n" % adapt.do(analyzer_class_implementation, output_dir))
@@ -70,14 +70,14 @@ def add_engine_stuff(mode_db, FileName, TokenClassImplementationF=False):
     token_class_implementation = token_class.do()
 
     with open(FileName, "a") as fh:
-        fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER\n")
+        fh.write("#ifndef QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT\n")
         fh.write("%s\n" % adapt.do(token_class_implementation, output_dir))
 
-        # fh.write("#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
+        # fh.write("#else  /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT */\n")
         # fh.write("bool UserConstructor_UnitTest_return_value = true;\n")
         # fh.write("bool UserReset_UnitTest_return_value       = true;\n")
         # fh.write("bool UserMementoPack_UnitTest_return_value = true;\n")
-        fh.write("#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER */\n")
+        fh.write("#endif /* QUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT */\n")
 
     Lng.straighten_open_line_pragmas(FileName)
 

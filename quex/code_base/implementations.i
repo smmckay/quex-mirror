@@ -33,7 +33,7 @@ $$INC: <count> analyzer/Counter.i$$
 #endif
 
 
-#if ! defined(QUEX_OPTION_USER_DEFINED_MEMORY_MANAGER)
+#if ! defined(QUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT)
 $$INC: <lib-quex> quex/MemoryManager.i$$
 #endif
 

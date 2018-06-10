@@ -13,24 +13,24 @@ codec-lexer: lexer.cpp
 	quex -i simple-hindi.qx -o Simple --encoding utf8 --debug-exception
 	$(CC) lexer.cpp Simple/Simple.cpp  -o $@ \
 		  -DQUEX_SETTING_BUFFER_SIZE_EXT=39                     \
-	      -DQUEX_SETTING_TEST_UTF8_EXT 
+	      -DQUEX_SETTING_TEST_UTF8     
 
 iconv-lexer: lexer.cpp 
 	quex -i simple-hindi.qx -o Simple --bet wchar_t --debug-exception
 	$(CC) lexer.cpp Simple/Simple.cpp  -o $@ \
 		  -DQUEX_SETTING_BUFFER_SIZE_EXT=20                     \
-		  -DQUEX_OPTION_CONVERTER_ICONV_EXT                     \
+		  -DQUEX_OPTION_CONVERTER_ICONV                         \
 		  -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=20         \
-		  -DQUEX_SETTING_TEST_UTF8_EXT           
+		  -DQUEX_SETTING_TEST_UTF8               
 
 icu-lexer: lexer.cpp 
 	quex -i simple-hindi.qx -o Simple --bet wchar_t --debug-exception
 	$(CC) lexer.cpp Simple/Simple.cpp  -o $@ \
 		  `icu-config --ldflags`                            \
 		  -DQUEX_SETTING_BUFFER_SIZE_EXT=20                     \
-		  -DQUEX_OPTION_CONVERTER_ICU_EXT                       \
+		  -DQUEX_OPTION_CONVERTER_ICU                           \
 		  -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=20         \
-		  -DQUEX_SETTING_TEST_UTF8_EXT           
+		  -DQUEX_SETTING_TEST_UTF8               
 
 lexer: lexer.cpp 
 	quex -i simple.qx common.qx -o Simple --debug-exception
