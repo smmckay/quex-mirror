@@ -1541,34 +1541,23 @@ quex/code_base/analyzer/TEST                                         <no date>
 quex/code_base/lexeme_converter/TEST                                 <no date>
 -------------------------------------------------------------------------------
  * Test of complete character set on base converters (utf8, utf16, utf32)
-        characters ..........................................[MAKE FAILED]
+        characters ...................................................[OK]
  * utf16 to utf8, utf16, and utf32
-        from-utf16 Drain_ToSmall ............................[MAKE FAILED]
-                   Source_Empty .............................[MAKE FAILED]
-                   Source_TestFile ..........................[MAKE FAILED]
+        from-utf16 Drain_ToSmall .....................................[OK]
+                   Source_Empty ......................................[OK]
+                   Source_TestFile ...................................[OK]
  * utf32 to utf8, utf16, and utf32
-        from-utf32 Drain_ToSmall ............................[MAKE FAILED]
-                   Source_Empty .............................[MAKE FAILED]
-                   Source_TestFile ..........................[MAKE FAILED]
+        from-utf32 Drain_ToSmall .....................................[OK]
+                   Source_Empty ......................................[OK]
+                   Source_TestFile ...................................[OK]
  * utf8 to utf8, utf16, and utf32
-        from-utf8 Drain_ToSmall .............................[MAKE FAILED]
-                  Source_Empty ..............................[MAKE FAILED]
-                  Source_TestFile ...........................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] characters
-    [FAIL] from-utf16 _ Drain_ToSmall
-                    \__ Source_Empty
-                    \__ Source_TestFile
-    [FAIL] from-utf32 _ Drain_ToSmall
-                    \__ Source_Empty
-                    \__ Source_TestFile
-    [FAIL] from-utf8 _ Drain_ToSmall
-                   \__ Source_Empty
-                   \__ Source_TestFile
+        from-utf8 Drain_ToSmall ......................................[OK]
+                  Source_Empty .......................................[OK]
+                  Source_TestFile ....................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3477,7 +3466,7 @@ SUMMARY:
            12      [OK] ......................................../icu/TEST             
         1  1     [FAIL] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
-       10  10    [FAIL] ............../lexeme_converter/TEST                          
+           10      [OK] ............../lexeme_converter/TEST                          
         3  3     [FAIL] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
@@ -3505,11 +3494,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           ___    ___            
-    |  ___|_ _(_) |___      ( _ )  / _ \     __  __
-    | |_ / _` | | / __|     / _ \ | | | |    \ \/ /
-    |  _| (_| | | \__ \    | (_) || |_| |     >  < 
-    |_|  \__,_|_|_|___/     \___/  \___/     /_/\_\
+     _____     _ _          _____   ___            
+    |  ___|_ _(_) |___     |___  | / _ \     __  __
+    | |_ / _` | | / __|       / / | | | |    \ \/ /
+    |  _| (_| | | \__ \      / /  | |_| |     >  < 
+    |_|  \__,_|_|_|___/     /_/    \___/     /_/\_\
                                                                    (1695 tests)
 
 ===============================================================================
