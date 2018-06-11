@@ -3,7 +3,7 @@ include ../Makefile.lexer
 ifdef ASSERTS_ENABLED_F
 	CCFLAG_ASSERTS=# By default asserts are enabled
 else 
-	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_DISABLED_EXT
+	CCFLAG_ASSERTS=-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT
 endif
 
 LDC := $(LDC) -DQUEX_OPTION_MULTI_EXT -I. -Wall -Werror

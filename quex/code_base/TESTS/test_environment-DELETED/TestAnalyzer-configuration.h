@@ -27,8 +27,8 @@
 #define QUEX_SETTING_BUILD_DATE        "Wed May 30 15:42:45 2018"
 #define QUEX_SETTING_ANALYZER_VERSION  "0.0.0-pre-release"
 
-#ifndef    QUEX_OPTION_PLAIN_C
-#define    QUEX_OPTION_PLAIN_C
+#ifndef    QUEX_OPTION_PLAIN_C_EXT
+#define    QUEX_OPTION_PLAIN_C_EXT
 #endif
 
 /* Following checks are best done here:
@@ -38,8 +38,8 @@
 * Errors would be hard to find if the two checks were made in
 *   -- 'quex/code_base/configuration/validation' or
 *   -- 'quex/code_base/configuration/derived'.                               */
-#if ! defined(QUEX_OPTION_PLAIN_C) && ! defined(__cplusplus)
-#   error "QUEX_OPTION_PLAIN_C must be defined if no C++ compiler is used! Call quex with option '--language C'."
+#if ! defined(QUEX_OPTION_PLAIN_C_EXT) && ! defined(__cplusplus)
+#   error "QUEX_OPTION_PLAIN_C_EXT must be defined if no C++ compiler is used! Call quex with option '--language C'."
 #endif
 
 #if defined(__QUEX_INCLUDE_INDICATOR__ASSERTS)
@@ -106,7 +106,7 @@
 
 /* QUEX_TYPE_X  --> Type of X in global namespace
 * QUEX_TYPE0_X --> Type of X in local namespace (namespace omitted)          */
-#if defined(QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C_EXT)
 /* In 'C' there are no namespaces, so namespaces are coded directly
 * into the type name. Both, global and local names are equal.            */
 #   define QUEX_TYPE_DERIVED_ANALYZER  struct TestAnalyzer_tag
@@ -121,7 +121,7 @@
 #   define QUEX_NAMESPACE_MAIN
 #endif
 
-#if defined(QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C_EXT)
 #   define QUEX_NAMESPACE_TOKEN
 
 #   define QUEX_LEXEME_NULL            TestAnalyzer_LexemeNull

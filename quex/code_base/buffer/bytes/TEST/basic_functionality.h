@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_QUEX_BASIC_FUNCTIONALITY_H
 #define INCLUDE_GUARD_QUEX_BASIC_FUNCTIONALITY_H
 
-#define  QUEX_NAME(X) unit_test_ ## X
+#define  QUEX_NAME(X) TestAnalyzer_ ## X
 #include "ut/lib/buffer/bytes/ByteLoader"
 
 extern void verify_basic_functionality(QUEX_NAME(ByteLoader)* me);

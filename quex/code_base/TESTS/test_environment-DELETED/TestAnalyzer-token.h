@@ -7,8 +7,8 @@
 
 /* For '--token-class-only' the following option may not come directly
 * from the configuration file.                                        */
-#ifndef    QUEX_OPTION_PLAIN_C
-#   define QUEX_OPTION_PLAIN_C
+#ifndef    QUEX_OPTION_PLAIN_C_EXT
+#   define QUEX_OPTION_PLAIN_C_EXT
 #endif
 
 #   line 2 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"

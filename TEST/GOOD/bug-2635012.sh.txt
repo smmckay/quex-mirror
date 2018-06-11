@@ -1,7 +1,7 @@
 (*) With QUEX_OPTION_INCLUDE_STACK
-g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        lexer.cpp Simple/Simple*.cpp -o lexer
-g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        lexer.cpp Simple/Simple*.cpp -o lexer
+g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT     -pedantic        lexer.cpp Simple/Simple*.cpp -o lexer
+g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT     -pedantic        lexer.cpp Simple/Simple*.cpp -o lexer
 (*) With QUEX_OPTION_INCLUDE_STACK_DISABLED
-g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        -DQUEX_OPTION_INCLUDE_STACK_DISABLED lexer.cpp Simple/Simple*.cpp -o lexer
-g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED     -pedantic        -DQUEX_OPTION_INCLUDE_STACK_DISABLED lexer.cpp Simple/Simple*.cpp -o lexer
+g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT     -pedantic        -DQUEX_OPTION_INCLUDE_STACK_DISABLED_EXT lexer.cpp Simple/Simple*.cpp -o lexer
+g++ -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT     -pedantic        -DQUEX_OPTION_INCLUDE_STACK_DISABLED_EXT lexer.cpp Simple/Simple*.cpp -o lexer
 rm -rf Simple* *.o lexer 

@@ -411,7 +411,7 @@ def create_common_declarations(Language, QuexBufferSize,
        
     replace_str = "#define QUEX_OPTION_PLAIN_C_EXT"
     if Language not in ["ANSI-C", "ANSI-C-PlainMemory", "ANSI-C-from-file"]: replace_str = "/* %s */" % replace_str
-    txt = txt.replace("$$QUEX_OPTION_PLAIN_C$$", replace_str)
+    txt = txt.replace("$$QUEX_OPTION_PLAIN_C_EXT$$", replace_str)
 
     return txt
 
@@ -534,10 +534,10 @@ language_defines = """
 """
 
 test_program_common_declarations = """
-$$QUEX_OPTION_PLAIN_C$$
+$$QUEX_OPTION_PLAIN_C_EXT$$
 $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED_EXT
-#define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT
+#define QUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT
 #define QUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT     ((size_t)$$BUFFER_FALLBACK_N$$)
 #define QUEX_SETTING_BUFFER_LIMIT_CODE_EXT         ((TestAnalyzer_lexatom_t)$$BUFFER_LIMIT_CODE$$)
 #define QUEX_OPTION_INCLUDE_STACK_DISABLED_EXT

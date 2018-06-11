@@ -3,12 +3,12 @@
 #define QUEX_INCLUDE_GUARD__ASSERTS
 
 #if    ! defined(QUEX_INDICATE_CONFIGURATION_FILE_PASSED) \
-    && ! defined(QUEX_OPTION_ASSERTS)
+    && ! defined(QUEX_OPTION_ASSERTS_EXT)
 #   error "Asserts included before configuration file. However, configuration file CONTROLS asserts!"
 #endif
 
-#ifdef QUEX_OPTION_ASSERTS
-#   if ! defined (QUEX_OPTION_PLAIN_C)
+#ifdef QUEX_OPTION_ASSERTS_EXT
+#   if ! defined (QUEX_OPTION_PLAIN_C_EXT)
 #       include <cassert>
 #   else
 #       include <assert.h>

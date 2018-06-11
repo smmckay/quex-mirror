@@ -16,7 +16,7 @@ distribution package directory 'demo/tuning/'.
 
 Before any measurements can be made the following points need to be assumed:
 
-.# Asserts are disabled, i.e the compile option ``QUEX_OPTION_ASSERTS_DISABLED``
+.# Asserts are disabled, i.e the compile option ``QUEX_OPTION_ASSERTS_EXT_DISABLED``
    is in place.
 
 .# Avoid printing through system calls, i.e avoid ``fprintf``, ``cout << ``

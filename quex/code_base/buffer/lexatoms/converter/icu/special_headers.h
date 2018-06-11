@@ -22,13 +22,13 @@
    
 $$INC: buffer/lexatoms/converter/Converter$$
 
-#if ! defined (QUEX_OPTION_PLAIN_C)
+#if ! defined (QUEX_OPTION_PLAIN_C_EXT)
 extern "C" { 
 #endif
 #   include <stdio.h>
 #   include <assert.h>
 #   include <string.h>
-#if ! defined (QUEX_OPTION_PLAIN_C)
+#if ! defined (QUEX_OPTION_PLAIN_C_EXT)
 } /* extern "C" */
 #endif
 #include "unicode/utypes.h"   /* Basic ICU data types */

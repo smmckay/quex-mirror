@@ -35,13 +35,13 @@ lexer: lexer.o Simple.o
 
 # -- engine and object files
 lexer.o: ../lexer.c Simple/Simple.c
-	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
+	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
 
 Simple.o: Simple/Simple.c
-	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
+	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
 
 %.o: %.c Simple/Simple.c
-	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
+	$(CC) -Wall -Werror -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT $< -ggdb -o $@
 
 Simple/Simple.c: simple.qx
 	@quex -i simple.qx -o Simple --language C --debug-exception > tmp.txt 2>&1

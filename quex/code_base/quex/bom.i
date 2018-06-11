@@ -44,7 +44,7 @@ QUEXED_DEF(bom_snap)(__QUEX_STD_FILE* InputHandle)
     return result;
 }
 
-#if ! defined(QUEX_OPTION_PLAIN_C)
+#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
 template <class InputStream> extern QUEX_TYPE_BOM
 QUEXED_DEF(bom_snap)(InputStream* p_input_stream)
 /* This function can **only** be used with **normally** behaving streams

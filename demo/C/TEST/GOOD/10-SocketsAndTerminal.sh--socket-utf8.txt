@@ -55,7 +55,7 @@ flush: 1: [e]
 flush: 1: []
 <done>
 ## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##        '-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED'
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.
@@ -63,7 +63,7 @@ flush: 1: []
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED'
 ##
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112
@@ -101,7 +101,7 @@ flush: 1: []
    Token: WHITESPACE '\n'
    Token: WHITESPACE '\n'
 ## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED'
+##        '-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED'
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.
@@ -109,7 +109,7 @@ flush: 1: []
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED'
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED'
 ##
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112

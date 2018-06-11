@@ -3,7 +3,7 @@
 #include "ut/lib/buffer/bytes/ByteLoader_stream"
 #include "ut/lib/buffer/bytes/ByteLoader_stream.i"
 #include "ut/lib/buffer/bytes/ByteLoader.i"
-#include "ut/lib/MemoryManager.i"
+#include "ut/lib/quex/MemoryManager.i"
 #include <hwut_unit.h>
 #include <iostream>
 

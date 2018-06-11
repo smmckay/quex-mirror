@@ -221,7 +221,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C_EXT) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
 QUEX_INLINE std::basic_string<uint8_t>
 TestAnalyzer_lexeme_to_utf8(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -333,7 +333,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C_EXT) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
 QUEX_INLINE std::basic_string<uint16_t>
 TestAnalyzer_lexeme_to_utf16(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -445,7 +445,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C_EXT) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
 QUEX_INLINE std::basic_string<uint32_t>
 TestAnalyzer_lexeme_to_utf32(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -557,7 +557,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C_EXT) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
 QUEX_INLINE std::basic_string<char>
 TestAnalyzer_lexeme_to_char(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -669,7 +669,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C_EXT) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
 QUEX_INLINE std::basic_string<wchar_t>
 TestAnalyzer_lexeme_to_wchar_t(const std::basic_string<TestAnalyzer_lexatom_t>& Source)
@@ -781,7 +781,7 @@ __quex_assert(drain_it <= DrainEnd);
 return terminating_zero_p;
 }
 
-#if    ! defined(QUEX_OPTION_PLAIN_C) \
+#if    ! defined(QUEX_OPTION_PLAIN_C_EXT) \
 && ! defined(QUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT)
 QUEX_INLINE std::basic_string<char>
 TestAnalyzer_lexeme_to_pretty_char(const std::basic_string<TestAnalyzer_lexatom_t>& Source)

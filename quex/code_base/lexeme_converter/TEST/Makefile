@@ -4,7 +4,7 @@ FILES = characters \
 		from-utf32  
 
 
-CC = g++ -Wall -Werror -W -I. -I$(HWUT_PATH) -I../../ -ggdb  -DQUEX_OPTION_ASSERTS_EXT -DQUEX_OPTION_ASSERTS
+CC = g++ -Wall -Werror -W -I. -I$(HWUT_PATH) -I../../ -ggdb  -DQUEX_OPTION_ASSERTS_EXT -DQUEX_OPTION_ASSERTS_EXT
 
 all: $(FILES)
 

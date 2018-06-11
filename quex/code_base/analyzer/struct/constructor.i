@@ -188,7 +188,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 {
     QUEX_NAME(Asserts_construct)();
 
-#   if defined(QUEX_OPTION_PLAIN_C)
+#   if defined(QUEX_OPTION_PLAIN_C_EXT)
     QUEX_NAME(member_functions_assign)(me);
 #   endif
 
@@ -293,7 +293,7 @@ QUEX_NAME(MF_resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
      *       is a c++ class object.                                           */
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
 
-#   if defined(QUEX_OPTION_PLAIN_C)
+#   if defined(QUEX_OPTION_PLAIN_C_EXT)
     QUEX_NAME(member_functions_assign)(me);
 #   endif
 
@@ -359,7 +359,7 @@ QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
                                size_t              BufferMemorySize,
                                QUEX_TYPE_LEXATOM*  BufferEndOfContentP /* = 0 */)
 {
-#   ifdef QUEX_OPTION_ASSERTS
+#   ifdef QUEX_OPTION_ASSERTS_EXT
     size_t               memory_size = BufferMemoryBegin ? BufferMemorySize 
                                        :                   QUEX_SETTING_BUFFER_SIZE;
     QUEX_TYPE_LEXATOM*   iterator = 0x0;
@@ -410,12 +410,12 @@ QUEX_NAME(Asserts_user_memory)(QUEX_TYPE_ANALYZER* me,
 QUEX_INLINE void
 QUEX_NAME(Asserts_construct)()
 {
-#   if      defined(QUEX_OPTION_ASSERTS) \
-       && ! defined(QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED)
+#   if      defined(QUEX_OPTION_ASSERTS_EXT) \
+       && ! defined(QUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED)
     __QUEX_STD_printf(__QUEX_MESSAGE_ASSERTS_INFO);
 #   endif
 
-#   if defined(QUEX_OPTION_ASSERTS) 
+#   if defined(QUEX_OPTION_ASSERTS_EXT) 
     if( QUEX_SETTING_BUFFER_LIMIT_CODE == QUEX_SETTING_PATH_TERMINATION_CODE ) {
         QUEX_ERROR_EXIT("Path termination code (PTC) and buffer limit code (BLC) must be different.\n");
     }

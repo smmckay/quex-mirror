@@ -95,7 +95,7 @@ QUEX_NAME(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM* SourceBegin,
                            const wchar_t*           DrainEnd);
 #endif
 
-#if ! defined(QUEX_OPTION_PLAIN_C)
+#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
     QUEX_INLINE std::basic_string<uint8_t>
     QUEX_NAME(lexeme_to_utf8)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
     QUEX_INLINE std::basic_string<uint16_t>

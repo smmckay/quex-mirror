@@ -95,7 +95,7 @@ wchar_t*                 drain_p,
 const wchar_t*           DrainEnd);
 #endif
 
-#if ! defined(QUEX_OPTION_PLAIN_C)
+#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
 QUEX_INLINE std::basic_string<uint8_t>
 TestAnalyzer_lexeme_to_utf8(const std::basic_string<TestAnalyzer_lexatom_t>& Source);
 QUEX_INLINE std::basic_string<uint16_t>

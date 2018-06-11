@@ -103,7 +103,7 @@ QUEX_INLINE bool
 QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me)
 {
     me->root = 0x0;
-#   ifdef QUEX_OPTION_PLAIN_C
+#   ifdef QUEX_OPTION_PLAIN_C_EXT
     me->enter         = QUEX_NAME(PostCategorizer__enter);
     me->remove        = QUEX_NAME(PostCategorizer__remove);
     me->get_token_id  = QUEX_NAME(PostCategorizer__get_token_id);
@@ -366,7 +366,7 @@ QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me)
 }
 
 
-#ifndef QUEX_OPTION_PLAIN_C
+#ifndef QUEX_OPTION_PLAIN_C_EXT
 QUEX_INLINE 
 QUEX_NAME(Dictionary)::QUEX_NAME(Dictionary)()
 { /* C/C++ Compability: Constructors/Destructors do nothing. */ }

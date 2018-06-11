@@ -5,8 +5,8 @@
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I
 
-#ifndef    QUEX_OPTION_PLAIN_C
-#   define QUEX_OPTION_PLAIN_C
+#ifndef    QUEX_OPTION_PLAIN_C_EXT
+#   define QUEX_OPTION_PLAIN_C_EXT
 #endif
 
 #include "test_environment/TestAnalyzer-token.h"

@@ -8,7 +8,7 @@ all \
 check: br_scan
 	g++ -Wall -Werror br_scan/br_scan.cpp example.cpp \
 		-I. \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT \
+		-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT \
 		-o check 
 
 mixMemberAssignWithManualTokenClass:

@@ -14,7 +14,7 @@ $$INC: quex/compatibility/stdbool.h$$
 #ifndef    QUEX_NAMESPACE_QUEX 
 #   define QUEX_NAMESPACE_QUEX         quex
 #endif
-#if ! defined(QUEX_OPTION_PLAIN_C)
+#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
 #   define QUEX_NAMESPACE_QUEX_OPEN   namespace QUEX_NAMESPACE_QUEX {
 #   define QUEX_NAMESPACE_QUEX_CLOSE  }
 #   define QUEXED_AUX2(NSP, X)        ::NSP::X
@@ -29,7 +29,7 @@ $$INC: quex/compatibility/stdbool.h$$
 #   define QUEXED(X)                  QUEXED_AUX(QUEX_NAMESPACE_QUEX, X)
 #   define QUEXED_DEF(X)              QUEXED_AUX(QUEX_NAMESPACE_QUEX, X)
 #endif
-#if defined( __cplusplus) && ! defined(QUEX_OPTION_PLAIN_C)
+#if defined( __cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 #   define QUEX_MAP_THIS_TO_ME(CLASS)   CLASS* me = this; (void)me;
 #else
 #   define QUEX_MAP_THIS_TO_ME(CLASS)   /* 'me' already plays the role of 'this'.   */
@@ -45,7 +45,7 @@ $$INC: quex/compatibility/stdbool.h$$
 #   pragma warning(disable: 4996)
 #endif
 
-#if ! defined(QUEX_OPTION_PLAIN_C)
+#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
 #   include <cstddef>  /* gets: size_t, ptrdiff_t */
 #   include <cstring>  /* gets: memmove, memcpy   */
 #   include <cstdio>   /* gets: fprintf           */
@@ -321,7 +321,7 @@ typedef enum {
 #define __QUEX_PRINT_SOURCE_POSITION()                             \
         __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s:%i:\t", __FILE__, (int)__LINE__) 
 
-#if ! defined(QUEX_OPTION_PLAIN_C)
+#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
 #   define QUEX_ERROR_EXIT(Msg) \
            do { \
                __QUEX_PRINT_SOURCE_POSITION(); \
@@ -508,7 +508,7 @@ $$INC: buffer/Buffer_print$$
 
 #define __QUEX_MESSAGE_ASSERTS_INFO \
         "## Disable this message by compile option\n"                               \
-        "##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'\n"              \
+        "##        '-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT'\n"              \
         "##\n"                                                                      \
         "## Asserts activated! Lexical analyzer is 'paranoid'!\n"                   \
         "## => Even smallest misbehavior causes program exit.\n"                    \
@@ -516,7 +516,7 @@ $$INC: buffer/Buffer_print$$
         "##\n"                                                                      \
         "## Note however: the paranoia is a heavy load on performance!\n"           \
         "##\n"                                                                      \
-        "## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'\n"                  \
+        "## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT'\n"                  \
         "##\n"                                                                      \
         "## Report any bug at\n"                                                    \
         "##        http://sourceforge.net/tracker/?group_id=168259&atid=846112\n" 

@@ -118,7 +118,7 @@ TestAnalyzer_Buffer               buffer;
 
 const struct TestAnalyzer_Mode_tag* __current_mode_p;
 TestAnalyzer_AnalyzerFunctionP    current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS_EXT)
 TestAnalyzer_AnalyzerFunctionP    DEBUG_analyzer_function_at_entry;
 #   endif
 #   if defined(QUEX_OPTION_COUNTER)
@@ -151,7 +151,7 @@ char*                           __input_name;
 const TestAnalyzer_Mode*          __current_mode_p;
 /* Shortcut to current mode's analyzer function.                          */
 TestAnalyzer_AnalyzerFunctionP    current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS_EXT)
 /* Backup of analyzer's function pointer => mode change detection.        */
 TestAnalyzer_AnalyzerFunctionP    DEBUG_analyzer_function_at_entry;
 #   endif
@@ -261,7 +261,7 @@ bool (*resources_absent)(struct TestAnalyzer_tag* me);
 
 } TestAnalyzer;
 
-#if defined(QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C_EXT)
 QUEX_INLINE void TestAnalyzer_member_functions_assign(struct TestAnalyzer_tag* me);
 #endif
 
@@ -274,7 +274,7 @@ QUEX_INLINE void TestAnalyzer_member_functions_assign(struct TestAnalyzer_tag* m
 
 
 
-#if defined(QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C_EXT)
 QUEX_INLINE void
 TestAnalyzer_member_functions_assign(struct TestAnalyzer_tag* me)
 {
@@ -427,8 +427,8 @@ bool UserMementoPack_UnitTest_return_value = true;
 #ifndef __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I
 #define __QUEX_INCLUDE_GUARD__TOKEN__GENERATED____TESTANALYZER_TOKEN_I
 
-#ifndef    QUEX_OPTION_PLAIN_C
-#   define QUEX_OPTION_PLAIN_C
+#ifndef    QUEX_OPTION_PLAIN_C_EXT
+#   define QUEX_OPTION_PLAIN_C_EXT
 #endif
 
 #include "test_environment/TestAnalyzer-token.h"

@@ -3,11 +3,11 @@
  *
  * Undefines all macros of the lexer's configuration file. This happens in
  * order to be able to safely include headers of multiple lexical analyzers. */
-#ifdef    QUEX_OPTION_ASSERTS
-#   undef QUEX_OPTION_ASSERTS
+#ifdef    QUEX_OPTION_ASSERTS_EXT
+#   undef QUEX_OPTION_ASSERTS_EXT
 #endif
-#ifdef     QUEX_OPTION_PLAIN_C
-#   undef  QUEX_OPTION_PLAIN_C
+#ifdef     QUEX_OPTION_PLAIN_C_EXT
+#   undef  QUEX_OPTION_PLAIN_C_EXT
 #endif
 #ifdef     QUEX_OPTION_COMPUTED_GOTOS
 #   undef  QUEX_OPTION_COMPUTED_GOTOS

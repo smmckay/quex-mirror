@@ -14,8 +14,8 @@
 
 /* For '--token-class-only' the following option may not come directly
  * from the configuration file.                                        */
-#ifndef    QUEX_OPTION_PLAIN_C
-#   define QUEX_OPTION_PLAIN_C
+#ifndef    QUEX_OPTION_PLAIN_C_EXT
+#   define QUEX_OPTION_PLAIN_C_EXT
 #endif
 #include <quex/code_base/definitions>
 #include <quex/code_base/asserts>
@@ -24,7 +24,7 @@
 /* LexemeNull object may be used for 'take_text'. */
 
 #if ! defined(QUEX_NAME_TOKEN)
-#   if defined(QUEX_OPTION_PLAIN_C)
+#   if defined(QUEX_OPTION_PLAIN_C_EXT)
 #      define QUEX_NAME_TOKEN(NAME)   Common_Token_ ## NAME
 #   else
 #      define QUEX_NAME_TOKEN(NAME)   Common_Token_ ## NAME

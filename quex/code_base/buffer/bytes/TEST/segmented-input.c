@@ -35,7 +35,7 @@
 #include "ut/lib/buffer/bytes/ByteLoader_POSIX"
 #include "ut/lib/buffer/bytes/ByteLoader.i"
 #include "ut/lib/buffer/bytes/ByteLoader_POSIX.i"
-#include "ut/lib/MemoryManager.i"
+#include "ut/lib/quex/MemoryManager.i"
 
 #include <hwut_unit.h>
 

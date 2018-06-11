@@ -60,7 +60,7 @@ def do(Mode_PrepPrepDB):
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_LITTLE",                 Setup.buffer_byte_order == "little")
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT",    entry_handler_active_f)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ON_EXIT_HANDLER_PRESENT",     exit_handler_active_f)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_PLAIN_C",                     Setup.language.upper() == "C")
+    txt = Lng.SWITCH(txt, "QUEX_OPTION_PLAIN_C_EXT",                     Setup.language.upper() == "C")
     txt = Lng.SWITCH(txt, "QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION", BeginOfLineSupportF)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_SYSTEM",                 Setup.byte_order_is_that_of_current_system_f)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENGINE_RUNNING_ON_CODEC",     Setup.buffer_encoding.name != "unicode")

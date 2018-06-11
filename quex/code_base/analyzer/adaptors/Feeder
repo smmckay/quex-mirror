@@ -19,7 +19,7 @@ typedef struct {
 
 #define QUEX_TYPE_FEEDER      QUEX_NAME(Feeder) 
 
-#ifndef QUEX_OPTION_PLAIN_C
+#ifndef QUEX_OPTION_PLAIN_C_EXT
 struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_TYPE_FEEDER {
 #else
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Feeder_tag) {
@@ -33,7 +33,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Feeder_t
 
     QUEX_TYPE_TOKEN_ID  stream_terminating_token_id;
 
-#ifndef QUEX_OPTION_PLAIN_C
+#ifndef QUEX_OPTION_PLAIN_C_EXT
 public:
     QUEX_TYPE_FEEDER(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
     void             feed(const void* BeginP, const void* EndP);

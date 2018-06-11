@@ -1,11 +1,7 @@
 #include <assert.h>
 #include "ut/lib/quex/compatibility/stdint.h"
-#ifndef   QUEX_OPTION_ASSERTS
-#  define QUEX_OPTION_ASSERTS
-#endif
-
-#ifdef    QUEX_OPTION_PLAIN_C_EXT
-#  define QUEX_OPTION_PLAIN_C
+#ifndef   QUEX_OPTION_ASSERTS_EXT
+#  define QUEX_OPTION_ASSERTS_EXT
 #endif
 
 #ifdef __cplusplus

@@ -16,13 +16,13 @@
 #ifdef    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_DISABLED
 #   undef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #endif
-#if           defined(QUEX_OPTION_ASSERTS_DISABLED_EXT) || defined(NDEBUG)
-#   ifdef     QUEX_OPTION_ASSERTS
-#      undef  QUEX_OPTION_ASSERTS
+#if           defined(QUEX_OPTION_ASSERTS_EXT_DISABLED_EXT) || defined(NDEBUG)
+#   ifdef     QUEX_OPTION_ASSERTS_EXT
+#      undef  QUEX_OPTION_ASSERTS_EXT
 #   endif
 #else
-#   ifndef    QUEX_OPTION_ASSERTS
-#      define QUEX_OPTION_ASSERTS
+#   ifndef    QUEX_OPTION_ASSERTS_EXT
+#      define QUEX_OPTION_ASSERTS_EXT
 #   endif
 #endif
 
@@ -248,7 +248,7 @@
 #   define    QUEX_SETTING_CHAR_CODEC   utf8
 #endif
 
-#if defined (QUEX_OPTION_ASSERTS) 
+#if defined (QUEX_OPTION_ASSERTS_EXT) 
 #   define __QUEX_IF_ASSERT(X)  X
 #else
 #   define __QUEX_IF_ASSERT(X)  /* Ignore */

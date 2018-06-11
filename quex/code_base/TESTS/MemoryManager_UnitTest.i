@@ -73,7 +73,7 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
     me = (uint8_t*)__QUEX_STD_malloc((size_t)ByteN);
 
     (void)Type;
-#   ifdef QUEX_OPTION_ASSERTS
+#   ifdef QUEX_OPTION_ASSERTS_EXT
     __QUEX_STD_memset((void*)me, 0xFF, ByteN);
 #   endif
 
@@ -146,7 +146,7 @@ QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
     if( DrainSize < size ) size = DrainSize;
 
     /* memcpy() might fail if the source and drain domain overlap! */
-#   ifdef QUEX_OPTION_ASSERTS 
+#   ifdef QUEX_OPTION_ASSERTS_EXT 
     if( drain_begin_p > source_begin_p ) __quex_assert(drain_begin_p >= source_begin_p + size);
     else                                 __quex_assert(drain_begin_p <= source_begin_p - size);
 #   endif

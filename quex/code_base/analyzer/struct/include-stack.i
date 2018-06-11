@@ -233,7 +233,7 @@ QUEX_NAME(Memento_construct)(QUEX_TYPE_MEMENTO* memento,
      * to the memento first.                                                  */
     QUEX_NAME(Buffer_shallow_copy)(&memento->buffer, &me->buffer);
 
-#   ifndef QUEX_OPTION_PLAIN_C
+#   ifndef QUEX_OPTION_PLAIN_C_EXT
     /* Use placement 'new' for explicit call of constructor. 
      * Necessary in C++: Call to constructor for user defined members.        */
     new ((void*)memento) QUEX_TYPE_MEMENTO;
@@ -244,7 +244,7 @@ QUEX_NAME(Memento_construct)(QUEX_TYPE_MEMENTO* memento,
     memento->_parent_memento           = me->_parent_memento;
     memento->__current_mode_p          = me->__current_mode_p; 
     memento->current_analyzer_function = me->current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS_EXT)
     memento->DEBUG_analyzer_function_at_entry = me->DEBUG_analyzer_function_at_entry;
 #   endif
     __QUEX_IF_COUNT(memento->counter   = me->counter); /* Plain copy is ok.   */ 
@@ -313,7 +313,7 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 
     me->__current_mode_p                 = memento->__current_mode_p; 
     me->current_analyzer_function        = memento->current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS_EXT)
     me->DEBUG_analyzer_function_at_entry = memento->DEBUG_analyzer_function_at_entry;
 #   endif
     __QUEX_IF_COUNT(me->counter          = memento->counter);
@@ -323,7 +323,7 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 
     QUEX_NAME(user_memento_unpack)(me, memento);
 
-#   ifndef QUEX_OPTION_PLAIN_C
+#   ifndef QUEX_OPTION_PLAIN_C_EXT
     /* Counterpart to placement new: Explicit destructor call.
      * Necessary in C++: Trigger call to destructor for user defined members.*/
     memento->~QUEX_TYPE0_MEMENTO();

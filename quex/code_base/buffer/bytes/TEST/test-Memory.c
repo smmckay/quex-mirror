@@ -3,7 +3,7 @@
 #include "ut/lib/buffer/bytes/ByteLoader_Memory"
 #include "ut/lib/buffer/bytes/ByteLoader_Memory.i"
 #include "ut/lib/buffer/bytes/ByteLoader.i"
-#include "ut/lib/MemoryManager.i"
+#include "ut/lib/quex/MemoryManager.i"
 #include <hwut_unit.h>
 
 /* The 'ByteArray' contains exactly the same content as the file "test.txt". */

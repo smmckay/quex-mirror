@@ -5,7 +5,7 @@
 $$INC: buffer/asserts$$
 $$INC: buffer/Buffer$$
 
-#ifndef QUEX_OPTION_ASSERTS
+#ifndef QUEX_OPTION_ASSERTS_EXT
 
 #else
 

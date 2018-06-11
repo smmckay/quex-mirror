@@ -3,7 +3,7 @@ GENERAL_WARNINGS := -Wall -Werror
 GENERAL_INCLUDES := -I. -I$(QUEX_PATH)
 GENERAL_FLAGS    := $(GENERAL_WARNINGS) \
 	                $(GENERAL_INCLUDES) \
-			        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
+			        -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT 
 
 CC          := gcc -c $(GENERAL_FLAGS) -Wno-deprecated # -ggdb
 CPP         := g++ -c $(GENERAL_FLAGS) -pedantic       # -ggdb
@@ -12,7 +12,7 @@ LDCPP       := g++ $(GENERAL_FLAGS)    -pedantic       # -ggdb
 
 # ICONV _______________________________________________________________________
 # LIB_ICONV := -liconv
-FLAGS_ICONV := -DQUEX_OPTION_CONVERTER_ICONV_EXT
+FLAGS_ICONV := -DQUEX_OPTION_CONVERTER_ICONV
 
 CC_ICONV    := $(CC) $(FLAGS_ICONV)
 CPP_ICONV   := $(CPP) $(FLAGS_ICONV)
@@ -21,7 +21,7 @@ LDCPP_ICONV := $(LDCPP) $(FLAGS_ICONV) $(LIB_ICONV)
 
 # ICU _________________________________________________________________________
 LIB_ICU     := `icu-config --ldflags --cppflags`
-FLAGS_ICU   := -DQUEX_OPTION_CONVERTER_ICU_EXT
+FLAGS_ICU   := -DQUEX_OPTION_CONVERTER_ICU
 
 CC_ICU      := $(CC) $(FLAGS_ICU)
 CPP_ICU     := $(CPP) $(FLAGS_ICU)

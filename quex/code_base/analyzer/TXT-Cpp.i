@@ -2,7 +2,7 @@ $$INCLUDE_TOKEN_ID_HEADER$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#if defined(QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C_EXT)
 void
 QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
 {

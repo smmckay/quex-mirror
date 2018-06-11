@@ -25,7 +25,7 @@ $(APPLICATION): ../lexer-simply.cpp Simple/Simple.cpp
 	@echo "##"
 	@echo "## The issue here was that there were warnings about double defined macros."
 	@echo "##"
-	$(LDCPP) -DQUEX_OPTION_ASSERTS_DISABLED_EXT -o $(APPLICATION) \
+	$(LDCPP) -DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT -o $(APPLICATION) \
 		  ../lexer-simply.cpp Simple/Simple.cpp 
           
 Simple/Simple.cpp: $(MODE_FILES) 

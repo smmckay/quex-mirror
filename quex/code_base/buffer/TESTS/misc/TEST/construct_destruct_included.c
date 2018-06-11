@@ -13,7 +13,7 @@
  *          no-allocate -- MemoryManager does not allocate 2nd buffer.
  *
  * (C) Frank-Rene Schaefer.                                                   */
-#define  QUEX_OPTION_PLAIN_C
+#define  QUEX_OPTION_PLAIN_C_EXT
 
 #include "minimum-definitions.h"
 #include "MemoryManager_UnitTest.i"

@@ -6,7 +6,7 @@ lexer:
 
 Simple.E:
 	g++ -c -E -I$(QUEX_PATH) -I. \
-		-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT \
+		-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT \
 		Simple.h -o $@
 
 clean: 

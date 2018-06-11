@@ -80,7 +80,7 @@ public:
 $$MEMENTO_EXTENSIONS$$
 /* END: ______________________________________________________________________*/
 
-#   if defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS_EXT)
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif
 };
@@ -99,7 +99,7 @@ public:
     const QUEX_NAME(Mode)*          __current_mode_p; 
     /* Shortcut to current mode's analyzer function.                          */
     QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
-#   if defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS_EXT)
     /* Backup of analyzer's function pointer => mode change detection.        */
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif

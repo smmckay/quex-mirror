@@ -172,7 +172,7 @@ def _analyzer_function(StateMachineName, Setup, variable_definitions,
         variable_definitions,
         #
         comment_on_post_context_position_init_str,
-        "#   if defined(QUEX_OPTION_ASSERTS)\n",
+        "#   if defined(QUEX_OPTION_ASSERTS_EXT)\n",
         "    me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;\n",
         "#   endif\n",
         #
@@ -223,7 +223,7 @@ lexeme_macro_setup = """
      * There is a temporary zero stored at the end of each lexeme, if the action 
      * references to the 'Lexeme'. 'LexemeNull' provides a reference to an empty
      * zero terminated string.                                                    */
-#if defined(QUEX_OPTION_ASSERTS)
+#if defined(QUEX_OPTION_ASSERTS_EXT)
 #   define Lexeme       QUEX_NAME(access_Lexeme)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
 #   define LexemeBegin  QUEX_NAME(access_LexemeBegin)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
 #   define LexemeL      QUEX_NAME(access_LexemeL)((const char*)__FILE__, (size_t)__LINE__, &me->buffer)

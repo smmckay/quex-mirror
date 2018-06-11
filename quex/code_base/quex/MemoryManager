@@ -4,6 +4,7 @@
 
 #include <stddef.h>
 $$INC: quex/compatibility/stdint.h$$
+$$INC: quex/compatibility/stdbool.h$$
 $$INC: definitions$$
 
 #ifndef QUEX_TYPE_DEFINITIONS_MEMORY_MANAGER

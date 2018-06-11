@@ -719,7 +719,7 @@ TestAnalyzer_M_analyzer_function(struct TestAnalyzer_tag* me)
 * There is a temporary zero stored at the end of each lexeme, if the action
 * references to the 'Lexeme'. 'LexemeNull' provides a reference to an empty
 * zero terminated string.                                                    */
-#if defined(QUEX_OPTION_ASSERTS)
+#if defined(QUEX_OPTION_ASSERTS_EXT)
 #   define Lexeme       TestAnalyzer_access_Lexeme((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
 #   define LexemeBegin  TestAnalyzer_access_LexemeBegin((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
 #   define LexemeL      TestAnalyzer_access_LexemeL((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
@@ -751,7 +751,7 @@ QUEX_TYPE_GOTO_LABEL           target_state_index             = QUEX_GOTO_LABEL_
 * (3)   when a terminal state of the post context is reached (which can only be reached
 *       for that particular post context), then the post context position is used
 *       to reset the input position.                                              */
-#   if defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS_EXT)
 me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
 #   endif
 _19:
@@ -1029,7 +1029,7 @@ TestAnalyzer_M2_analyzer_function(struct TestAnalyzer_tag* me)
 * There is a temporary zero stored at the end of each lexeme, if the action
 * references to the 'Lexeme'. 'LexemeNull' provides a reference to an empty
 * zero terminated string.                                                    */
-#if defined(QUEX_OPTION_ASSERTS)
+#if defined(QUEX_OPTION_ASSERTS_EXT)
 #   define Lexeme       TestAnalyzer_access_Lexeme((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
 #   define LexemeBegin  TestAnalyzer_access_LexemeBegin((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
 #   define LexemeL      TestAnalyzer_access_LexemeL((const char*)__FILE__, (size_t)__LINE__, &me->buffer)
@@ -1061,7 +1061,7 @@ QUEX_TYPE_GOTO_LABEL           target_state_index             = QUEX_GOTO_LABEL_
 * (3)   when a terminal state of the post context is reached (which can only be reached
 *       for that particular post context), then the post context position is used
 *       to reset the input position.                                              */
-#   if defined(QUEX_OPTION_ASSERTS)
+#   if defined(QUEX_OPTION_ASSERTS_EXT)
 me->DEBUG_analyzer_function_at_entry = me->current_analyzer_function;
 #   endif
 _19:
@@ -1297,7 +1297,7 @@ goto _20; /* in QUEX_GOTO_STATE       */
 
 
 
-#if defined(QUEX_OPTION_PLAIN_C)
+#if defined(QUEX_OPTION_PLAIN_C_EXT)
 QUEX_INLINE void
 TestAnalyzer_member_functions_assign(struct TestAnalyzer_tag* me)
 {

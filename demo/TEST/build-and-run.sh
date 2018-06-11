@@ -8,7 +8,7 @@ function bar_build {
     make_flags="$@"
 
     if [ "$asserts_f" == "no-asserts" ]; then 
-        add_flags="-DQUEX_OPTION_ASSERTS_DISABLED_EXT"
+        add_flags="-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT"
     elif [ "$asserts_f" == "asserts" ]; then  
         add_flags=""
     fi
@@ -44,7 +44,7 @@ function bar_check_assert_activation {
     # Tracks the output of the lexer for the warning of 'asserts activated'.
     # => Determine whether this fits with the requirement of the test.
 
-    asserts_active=$(grep -sHIne QUEX_OPTION_ASSERTS $out_file)
+    asserts_active=$(grep -sHIne QUEX_OPTION_ASSERTS_EXT $out_file)
     ## echo "#check asserts: [$asserts_f][$out_file][$asserts_active]"
     if [ -z "$asserts_active" ]; then
         # Asserts were inactive

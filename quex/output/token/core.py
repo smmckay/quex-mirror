@@ -311,8 +311,8 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 #   define QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT
 #endif
 
-#ifdef QUEX_OPTION_ASSERTS
-#   if ! defined (QUEX_OPTION_PLAIN_C)
+#ifdef QUEX_OPTION_ASSERTS_EXT
+#   if ! defined (QUEX_OPTION_PLAIN_C_EXT)
 #       include <cassert>
 #   else
 #       include <assert.h>

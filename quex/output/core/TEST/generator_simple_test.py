@@ -116,9 +116,9 @@ def create_common_declarations(Language,
     if not IndentationSupportF: replace_str = "/* %s */" % replace_str
     txt = txt.replace("$$QUEX_OPTION_INDENTATION_TRIGGER$$", replace_str)
 
-    replace_str = "#define QUEX_OPTION_PLAIN_C"
+    replace_str = "#define QUEX_OPTION_PLAIN_C_EXT"
     if Language not in ["ANSI-C", "ANSI-C-PlainMemory", "ANSI-C-from-file"]: replace_str = "/* %s */" % replace_str
-    txt = txt.replace("$$QUEX_OPTION_PLAIN_C$$", replace_str)
+    txt = txt.replace("$$QUEX_OPTION_PLAIN_C_EXT$$", replace_str)
 
     return txt
 
@@ -221,10 +221,10 @@ test_program_common_declarations = """
 #define QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 #define QUEX_TYPE_LEXATOM unsigned char
 
-$$QUEX_OPTION_PLAIN_C$$
+$$QUEX_OPTION_PLAIN_C_EXT$$
 $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #define QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN_DISABLED
-#define QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED
+#define QUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED
 #define QUEX_OPTION_INCLUDE_STACK_DISABLED
 #define QUEX_SETTING_BUFFER_MIN_FALLBACK_N     ((size_t)$$BUFFER_FALLBACK_N$$)
 #define QUEX_SETTING_BUFFER_LIMIT_CODE         ((QUEX_TYPE_LEXATOM)$$BUFFER_LIMIT_CODE$$)

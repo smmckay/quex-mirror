@@ -13,7 +13,7 @@
 #ifndef __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_QUEX_COMMON__COMMON_TOKEN__
 #define __QUEX_INCLUDE_GUARD__AUTO_TOKEN_IDS_QUEX_COMMON__COMMON_TOKEN__
 
-#ifndef QUEX_OPTION_PLAIN_C
+#ifndef QUEX_OPTION_PLAIN_C_EXT
 #   include<cstdio> 
 #else
 #   include<stdio.h> 
