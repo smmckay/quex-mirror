@@ -6,8 +6,8 @@
 #define __QUEX_STD_fprintf           fprintf
 typedef unsigned char TestAnalyzer_lexatom_t;
 
-#include "ut/lib/analyzer/Statistics"
-#include "ut/lib/analyzer/Statistics.i"
+#include "test_c/lib/analyzer/Statistics"
+#include "test_c/lib/analyzer/Statistics.i"
 #include <support/C/hwut_unit.h>
 
 

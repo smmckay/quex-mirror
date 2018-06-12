@@ -23,7 +23,7 @@ counter-%.exe:  counter-%.cpp ut
 	$(CC) $< -o $@ 
 
 statistics.exe: statistics.c ut
-	gcc $(MYFLAGS) $< -o $@ -DQUEX_OPTION_PLAIN_C_EXT -DQUEX_INLINE= 
+	gcc $(MYFLAGS) $< -o $@ -DQUEX_OPTION_PLAIN_C_EXT 
 
 nonsense.exe: nonsense.cpp 
 	$(CC) $< -o $@ 

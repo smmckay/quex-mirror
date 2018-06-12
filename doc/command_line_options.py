@@ -842,13 +842,12 @@ Option("_debug_reference_original_paths_f", None,
        Thus, a debugger or compiler might directly point to the place in the Quex 
        template base while actually observing generated code.
        """),
-Option("_debug_leave_basic_language_macros_f", None,
+Option("_debug_QUEX_TYPE_LEXATOM_EXT", None,
        """
-       This option leaves basic language macros in places. Thus, code which is equal
-       for different languages (e.g. C and C++) may be used in its language context
-       relying on macro definitions on the command line. What those missing macro
-       definitions are depends the version of Quex and can only be determined through
-       the error output of compiled generated code.
+       This option leaves the lexatom type to be defined from outside the lexical
+       analyzer upon compile time. For example: '-DQUEX_LEXATOM_TYPE_EXT=uint64_t' 
+       then defines the lexatom type to be `uint64_t`. This is useful for unit tests,
+       where one and the same lexer is tried with different buffer setups.
        """),
 """
 The aforementioned options are solely provided for core developers who desire

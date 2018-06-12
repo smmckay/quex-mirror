@@ -1092,13 +1092,12 @@ Default: 0
 
 Default: false (disabled)
 
-.. cmdoption:: --debug-leave-language-macros 
+.. cmdoption:: --debug-QUEX_TYPE_LEXATOM_EXT 
 
-    This option leaves basic language macros in places. Thus, code which is equal for different 
-    languages (e.g. C and C++) may be used in its language context relying on macro definitions 
-    on the command line. What those missing macro definitions are depends the version 
-    of Quex and can only be determined through the error output of compiled generated code. 
-     
+    This option leaves the lexatom type to be defined from outside the lexical analyzer upon compile 
+    time. For example: '-DQUEX_LEXATOM_TYPE_EXT=uint64_t' then defines the lexatom 
+    type to be `uint64_t`. This is useful for unit tests, where one and the same lexer is tried 
+    with different buffer setups.  
 
     
 

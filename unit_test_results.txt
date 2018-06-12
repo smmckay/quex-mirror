@@ -993,15 +993,15 @@ quex/TESTS/code/TEST                                                 <no date>
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
-        svn-status.sh ..............................................[FAIL]
+        svn-status.sh ................................................[OK]
  * Checking for defined but unused functions.
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
         pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .....................[FAIL]
-                                           sphinx ..................[FAIL]
+        command_line_options-verify-doc.py man .......................[OK]
+                                           sphinx ....................[OK]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
@@ -1021,9 +1021,6 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] svn-status.sh
-    [FAIL] command_line_options-verify-doc.py _ man
-                                            \__ sphinx
     [FAIL] include_guard.py _ undefinition
     [FAIL] macro-check.py
 ===============================================================================
@@ -1118,8 +1115,8 @@ quex/TESTS/event-handling/TEST                                       <no date>
  * Errors:
 
     'on_buffer_overflow'
-        on_buffer_overflow.qx empty ................................[FAIL]
-                              trigger ..............................[FAIL]
+        on_buffer_overflow.qx empty ..................................[OK]
+                              trigger ................................[OK]
     Customized 'on_skip_range_open' event
         on_skip_range_open-customized.qx customized ..................[OK]
     Default 'on_skip_range_open' event
@@ -1155,13 +1152,10 @@ quex/TESTS/event-handling/TEST                                       <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       error ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] on_buffer_overflow.qx _ empty
-                               \__ trigger
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1492,13 +1486,11 @@ quex/TESTS/token-policies/TEST                                       <no date>
 quex/code_base/analyzer/TEST                                         <no date>
 -------------------------------------------------------------------------------
  * Statistics Module
-        statistics.exe ......................................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] statistics.exe
+        statistics.exe ...............................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       Encoding Converter Helper Functions                      
@@ -3386,13 +3378,13 @@ SUMMARY:
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        5  14    [FAIL] ........../code/TEST                                          
+        2  14    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        2  23    [FAIL] ........../event-handling/TEST                                
+           23      [OK] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
@@ -3403,7 +3395,7 @@ SUMMARY:
            5       [OK] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TESTS/general/TEST                             
-        1  1     [FAIL] ............../analyzer/TEST                                  
+           1       [OK] ............../analyzer/TEST                                  
            11      [OK] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            11      [OK] .........................../misc/TEST                         
@@ -3442,11 +3434,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____    ___            
-    |  ___|_ _(_) |___     |___ \  / _ \     __  __
-    | |_ / _` | | / __|      __) || | | |    \ \/ /
-    |  _| (_| | | \__ \     / __/ | |_| |     >  < 
-    |_|  \__,_|_|_|___/    |_____| \___/     /_/\_\
+     _____     _ _          _  _  _            
+    |  ___|_ _(_) |___     / || || |     __  __
+    | |_ / _` | | / __|    | || || |_    \ \/ /
+    |  _| (_| | | \__ \    | ||__   _     >  < 
+    |_|  \__,_|_|_|___/    |_|   |_|     /_/\_\
                                                                    (1699 tests)
 
 ===============================================================================

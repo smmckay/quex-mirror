@@ -43,8 +43,6 @@ if len(sys.argv) < 2:
     print "Error: require at least target directory."
     sys.exit()
 
-Setup._debug_leave_basic_language_macros_f = True
-
 if "--adapt" in sys.argv or "-a" in sys.argv:
     target_dir      = sys.argv[2]
     input_file_list = sys.argv[3:]
