@@ -36,7 +36,7 @@ main(int argc, char**argv)
 
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer_load_forward: (BPC=%i, FB=%i);\n",
-               (int)sizeof(QUEX_TYPE_LEXATOM),
+               (int)sizeof(QUEX_TYPE_LEXATOM_EXT),
                (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
         printf("CHOICES: ");
         switch( QUEX_SETTING_BUFFER_MIN_FALLBACK_N ) {
@@ -80,7 +80,7 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
     QUEX_NAME(ByteLoader_Memory)  loader;
     QUEX_NAME(LexatomLoader)*     filler;
     int                           count  = 0;
-    QUEX_TYPE_LEXATOM             memory[32]; /* > anything ever needed.     */
+    QUEX_TYPE_LEXATOM_EXT             memory[32]; /* > anything ever needed.     */
     int                           on_overflow_count_before;
     SomethingContainingABuffer_t  theAux;
     theAux.buffer = &buffer;
@@ -93,7 +93,7 @@ walk_forward(ptrdiff_t LexemeStartPDelta, size_t BufferElementN)
 
     QUEX_NAME(Buffer_construct)(&buffer, filler,
                                 &memory[0], BufferElementN,
-                                (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL,
+                                (QUEX_TYPE_LEXATOM_EXT*)0, E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0); 
 
     QUEX_NAME(Buffer_callbacks_set)(&buffer,
@@ -147,7 +147,7 @@ static ptrdiff_t
 test_load_forward(QUEX_NAME(Buffer)* buffer) 
 {
     size_t             PositionRegisterN = 5;
-    QUEX_TYPE_LEXATOM* (position_register[5]);
+    QUEX_TYPE_LEXATOM_EXT* (position_register[5]);
     BufferBefore_t     before;
     E_LoadResult       verdict;
     ptrdiff_t          delta;

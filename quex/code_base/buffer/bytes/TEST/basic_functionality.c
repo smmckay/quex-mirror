@@ -1,5 +1,5 @@
-/* PURPOSE: This tests checks on the basic member functions of a QUEX_NAME(ByteLoader
-   )*          implementation:
+/* PURPOSE: This tests checks on the basic member functions of a QUEX_NAME(ByteLoader)
+ *          implementation:
  *
  *                  .tell()
  *                  .seek(position)

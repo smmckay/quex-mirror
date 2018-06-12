@@ -27,7 +27,7 @@ def test(CodecName):
     core.do()
     sys.stdout = stdout
 
-    define_str = " ".join(["-DQUEX_TYPE_LEXATOM='unsigned char'",
+    define_str = " ".join(["-DQUEX_TYPE_LEXATOM_EXT='unsigned char'",
                            "-DQUEX_OPTION_DISABLE_STD_STRING_USAGE_EXT",
                            "-DQUEX_INLINE=inline", 
                            "-D__QUEX_CODEC=%s " % CodecName,

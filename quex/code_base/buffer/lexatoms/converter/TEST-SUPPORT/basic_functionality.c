@@ -1,5 +1,9 @@
 #include <basic_functionality.h>
-#include "ut/lib/quex/MemoryManager.i"
+#ifdef __cplusplus
+#   include "test_cpp/lib/quex/MemoryManager.i"
+#else
+#   include "test_c/lib/quex/MemoryManager.i"
+#endif
 #include <hwut_unit.h>
 #define REFERENCE_DIR    "../../../../TESTS/navigation/TEST/examples/"
 #define ARRAY_ELEMENT_N  65536
@@ -23,24 +27,24 @@ static const char*  file_get_reference(const char* file_stem);
 static size_t       file_load(const char* FileName, void* buffer, size_t Size);
 
 static void         verify_completion(QUEX_NAME(Converter)* converter, 
-                                      uint8_t* source_p, QUEX_TYPE_LEXATOM* drain_p);
+                                      uint8_t* source_p, QUEX_TYPE_LEXATOM_EXT* drain_p);
 static void         verify_source_content(uint8_t*       SourceP, 
                                           const uint8_t* SourceEndP);
-static void         verify_drain_content(QUEX_TYPE_LEXATOM*       Drain, 
-                                         const QUEX_TYPE_LEXATOM* DrainEndP);
+static void         verify_drain_content(QUEX_TYPE_LEXATOM_EXT*       Drain, 
+                                         const QUEX_TYPE_LEXATOM_EXT* DrainEndP);
 static void         verify_call_to_convert(QUEX_NAME(Converter)*    converter,
                                            uint8_t**                source_pp, 
                                            const uint8_t*           SourceEndP,
-                                           QUEX_TYPE_LEXATOM**      drain_pp,  
-                                           const QUEX_TYPE_LEXATOM* DrainEndP,
+                                           QUEX_TYPE_LEXATOM_EXT**      drain_pp,  
+                                           const QUEX_TYPE_LEXATOM_EXT* DrainEndP,
                                            E_LoadResult             DrainFilledF);
 static void         poison_drain_buffer();
 
 uint8_t             source[ARRAY_ELEMENT_N];
 uint8_t             source_backup[ARRAY_ELEMENT_N];
 int                 source_byte_n;
-QUEX_TYPE_LEXATOM drain[ARRAY_ELEMENT_N];
-QUEX_TYPE_LEXATOM drain_nominal[ARRAY_ELEMENT_N];
+QUEX_TYPE_LEXATOM_EXT drain[ARRAY_ELEMENT_N];
+QUEX_TYPE_LEXATOM_EXT drain_nominal[ARRAY_ELEMENT_N];
 int                 drain_character_n;
 
 /* Following function is converter specific and must be defined in 
@@ -51,18 +55,18 @@ test_this(const char* Codec, void (*test)(QUEX_NAME(Converter)*, const char*));
 void 
 test_with_available_codecs(void (*test)(QUEX_NAME(Converter)*, const char*))
 {
-    if(    strcmp(STR(QUEX_TYPE_LEXATOM), "uint8_t")  == 0 
-        || strcmp(STR(QUEX_TYPE_LEXATOM), "uint16_t") == 0 
-        || strcmp(STR(QUEX_TYPE_LEXATOM), "uint32_t") == 0 
-        || strcmp(STR(QUEX_TYPE_LEXATOM), "wchar_t")  == 0  ) {
+    if(    strcmp(STR(QUEX_TYPE_LEXATOM_EXT), "uint8_t")  == 0 
+        || strcmp(STR(QUEX_TYPE_LEXATOM_EXT), "uint16_t") == 0 
+        || strcmp(STR(QUEX_TYPE_LEXATOM_EXT), "uint32_t") == 0 
+        || strcmp(STR(QUEX_TYPE_LEXATOM_EXT), "wchar_t")  == 0  ) {
         test_this("ASCII", test);
     }
-    if(    strcmp(STR(QUEX_TYPE_LEXATOM), "uint16_t") == 0 
-        || strcmp(STR(QUEX_TYPE_LEXATOM), "uint32_t") == 0 
-        || strcmp(STR(QUEX_TYPE_LEXATOM), "wchar_t")  == 0  ) {
+    if(    strcmp(STR(QUEX_TYPE_LEXATOM_EXT), "uint16_t") == 0 
+        || strcmp(STR(QUEX_TYPE_LEXATOM_EXT), "uint32_t") == 0 
+        || strcmp(STR(QUEX_TYPE_LEXATOM_EXT), "wchar_t")  == 0  ) {
         test_this("UTF16BE", test);
     }
-    if(   strcmp(STR(QUEX_TYPE_LEXATOM), "uint32_t") == 0 ) {
+    if(   strcmp(STR(QUEX_TYPE_LEXATOM_EXT), "uint32_t") == 0 ) {
         test_this("UTF8", test);
         test_this("UCS-4BE", test);
     }
@@ -89,7 +93,7 @@ void
 test_conversion_in_one_beat(QUEX_NAME(Converter)* converter, const char* CodecName)
 {
     uint8_t*              s_p;
-    QUEX_TYPE_LEXATOM*  d_p;
+    QUEX_TYPE_LEXATOM_EXT*  d_p;
     int                   i;
 
     printf("function: %s;\n", __func__);
@@ -116,7 +120,7 @@ test_conversion_stepwise_source(QUEX_NAME(Converter)* converter,
                                 const char*           CodecName)
 {
     uint8_t*              s_p;
-    QUEX_TYPE_LEXATOM*  d_p;
+    QUEX_TYPE_LEXATOM_EXT*  d_p;
     int                   i;
 
     printf("function: %s;\n", __func__);
@@ -143,7 +147,7 @@ test_conversion_stepwise_drain(QUEX_NAME(Converter)* converter,
                                const char*           CodecName)
 {
     uint8_t*              s_p;
-    QUEX_TYPE_LEXATOM*  d_p;
+    QUEX_TYPE_LEXATOM_EXT*  d_p;
     int                   i;
 
     printf("function: %s;\n", __func__);
@@ -180,8 +184,8 @@ prepare(const char* CodecName)
     /* Load content into source and nominal drain. */
     source_byte_n     = file_load(file_name, &source[0], ARRAY_ELEMENT_N);
     drain_character_n = file_load(reference_file_name, &drain_nominal[0], 
-                                  ARRAY_ELEMENT_N * sizeof(QUEX_TYPE_LEXATOM))
-                        / sizeof(QUEX_TYPE_LEXATOM);
+                                  ARRAY_ELEMENT_N * sizeof(QUEX_TYPE_LEXATOM_EXT))
+                        / sizeof(QUEX_TYPE_LEXATOM_EXT);
     self.character_n = drain_character_n;
 
     hwut_verify(source_byte_n);
@@ -233,12 +237,12 @@ file_get_reference(const char* Codec)
     static char  file_name[1024];
     const char*  file_stem = file_get_name_stem(Codec);
 
-    if( sizeof(QUEX_TYPE_LEXATOM) == 1 ) {
+    if( sizeof(QUEX_TYPE_LEXATOM_EXT) == 1 ) {
         snprintf(&file_name[0], 1023, "%s.dat", file_stem);
     }
     else {
         snprintf(&file_name[0], 1023, "%s-%i-%s.dat", file_stem, 
-                 (int)sizeof(QUEX_TYPE_LEXATOM)*8, 
+                 (int)sizeof(QUEX_TYPE_LEXATOM_EXT)*8, 
                  QUEXED(system_is_little_endian)() ? "le" : "be");
     }
     self.reference_file = &file_name[0];
@@ -265,7 +269,7 @@ file_load(const char* FileName, void* buffer, size_t Size)
 
 static void
 verify_completion(QUEX_NAME(Converter)* converter, 
-                  uint8_t* source_p, QUEX_TYPE_LEXATOM* drain_p)
+                  uint8_t* source_p, QUEX_TYPE_LEXATOM_EXT* drain_p)
 {
     /* Nothing shall be left in stomach. */
     hwut_verify(source_p - &source[0] == source_byte_n);
@@ -294,18 +298,18 @@ verify_completion(QUEX_NAME(Converter)* converter,
 static void
 poison_drain_buffer()
 {
-    memset(&drain[0], 0x5A, drain_character_n * sizeof(QUEX_TYPE_LEXATOM));
+    memset(&drain[0], 0x5A, drain_character_n * sizeof(QUEX_TYPE_LEXATOM_EXT));
 }
 
 static void
 verify_call_to_convert(QUEX_NAME(Converter)* converter,
                        uint8_t**             source_pp, const uint8_t*             SourceEndP,
-                       QUEX_TYPE_LEXATOM**   drain_pp,  const QUEX_TYPE_LEXATOM* DrainEndP,
+                       QUEX_TYPE_LEXATOM_EXT**   drain_pp,  const QUEX_TYPE_LEXATOM_EXT* DrainEndP,
                        E_LoadResult          DrainFilledF)
 {
     uint8_t*           s_p_before = *source_pp;
-    QUEX_TYPE_LEXATOM* d_p_before = *drain_pp;
-    QUEX_TYPE_LEXATOM* p;
+    QUEX_TYPE_LEXATOM_EXT* d_p_before = *drain_pp;
+    QUEX_TYPE_LEXATOM_EXT* p;
     E_LoadResult       result;
 
     result = converter->convert(converter, source_pp, SourceEndP, 
@@ -345,7 +349,8 @@ verify_source_content(uint8_t* SourceP, const uint8_t* SourceEndP)
 }
 
 static void
-verify_drain_content(QUEX_TYPE_LEXATOM* DrainP, const QUEX_TYPE_LEXATOM* DrainEndP)
+verify_drain_content(QUEX_TYPE_LEXATOM_EXT* DrainP, 
+                     const QUEX_TYPE_LEXATOM_EXT* DrainEndP)
 {
     const ptrdiff_t   Offset = DrainP - &drain[0];
     const size_t      Size   = (size_t)(DrainEndP - DrainP);

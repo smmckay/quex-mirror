@@ -291,8 +291,8 @@ fh.close()
 try:    os.remove("./test")
 except: pass
 
-if codec == "UTF8": qtc_str = "-DQUEX_TYPE_LEXATOM=uint8_t"
-else:               qtc_str = "-DQUEX_TYPE_LEXATOM=uint32_t"
+if codec == "UTF8": qtc_str = "-DQUEX_TYPE_LEXATOM_EXT=uint8_t"
+else:               qtc_str = "-DQUEX_TYPE_LEXATOM_EXT=uint32_t"
 
 os.system("gcc -Wall -Werror -I. -I../../../code_base -DQUEX_OPTION_ASSERTS_EXT -DQUEX_INLINE=static %s -o test test.c -ggdb -std=c89" % qtc_str)
 os.system("./test")

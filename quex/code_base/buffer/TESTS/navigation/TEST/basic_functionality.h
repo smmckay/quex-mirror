@@ -2,12 +2,16 @@
 #define QUEX_INCLUDE_GUARD_BUFFER_BASIC_FUNCTIONALITY
 
 #include "TESTS/minimum-definitions.h"
-#include "ut/lib/definitions"
-#include "ut/lib/buffer/Buffer"
-#include "ut/lib/quex/MemoryManager"
 #include <hwut_unit.h>
 #ifdef __cplusplus
-#include "ut/lib/buffer/Buffer.i"
+#include "test_cpp/lib/definitions"
+#include "test_cpp/lib/buffer/Buffer"
+#include "test_cpp/lib/quex/MemoryManager"
+#include "test_cpp/lib/buffer/Buffer.i"
+#else
+#include "test_c/lib/definitions"
+#include "test_c/lib/buffer/Buffer"
+#include "test_c/lib/quex/MemoryManager"
 #endif
 
 QUEX_NAMESPACE_MAIN_OPEN

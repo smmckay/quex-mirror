@@ -292,7 +292,7 @@ TEST                                                                 <no date>
  * prade2p:
 
     2914877 0.47.3 RE Exception on [10000-10FFFF]
-        bug-2914877.sh .............................................[FAIL]
+        bug-2914877.sh ...............................................[OK]
 
  * rami-al-rafou:
 
@@ -497,7 +497,6 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3486388.sh
-    [FAIL] bug-2914877.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1001,12 +1000,12 @@ quex/TESTS/code/TEST                                                 <no date>
  * Code Check with pyflakes
         pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
-        command_line_options-verify-doc.py man .......................[OK]
-                                           sphinx ....................[OK]
+        command_line_options-verify-doc.py man .....................[FAIL]
+                                           sphinx ..................[FAIL]
  * Double Check that Exception Handlers are in place
         test-exceptions-in-place.sh ..................................[OK]
  * Include Guards for C/C++
-        include_guard.py convention ................................[FAIL]
+        include_guard.py convention ..................................[OK]
                          undefinition ..............................[FAIL]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
@@ -1023,8 +1022,9 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] svn-status.sh
-    [FAIL] include_guard.py _ convention
-                          \__ undefinition
+    [FAIL] command_line_options-verify-doc.py _ man
+                                            \__ sphinx
+    [FAIL] include_guard.py _ undefinition
     [FAIL] macro-check.py
 ===============================================================================
                                                                                
@@ -1492,11 +1492,13 @@ quex/TESTS/token-policies/TEST                                       <no date>
 quex/code_base/analyzer/TEST                                         <no date>
 -------------------------------------------------------------------------------
  * Statistics Module
-        statistics.exe ...............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        statistics.exe ......................................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] statistics.exe
 ===============================================================================
                                                                                
                       Encoding Converter Helper Functions                      
@@ -2727,7 +2729,7 @@ quex/engine/state_machine/transformation/TEST                        <no date>
 quex/output/languages/cpp/TEST                                       <no date>
 -------------------------------------------------------------------------------
  * Files for Packaging vs. Files in Code Base
-        package-file-db.py .........................................[FAIL]
+        package-file-db.py ...........................................[OK]
  * Token Class Template
         test-token_class.py ..........................................[OK]
 
@@ -2769,12 +2771,10 @@ quex/output/languages/cpp/TEST                                       <no date>
                           2 ..........................................[OK]
                           3 ..........................................[OK]
                           4 ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] package-file-db.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3381,12 +3381,12 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        4  238   [FAIL] TEST                                                          
+        3  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        4  14    [FAIL] ........../code/TEST                                          
+        5  14    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
@@ -3403,7 +3403,7 @@ SUMMARY:
            5       [OK] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TESTS/general/TEST                             
-           1       [OK] ............../analyzer/TEST                                  
+        1  1     [FAIL] ............../analyzer/TEST                                  
            11      [OK] ......................./struct/TEST                           
            18      [OK] ............../buffer/TESTS/load/TEST                         
            11      [OK] .........................../misc/TEST                         
@@ -3438,7 +3438,7 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        1  31    [FAIL] .........../languages/cpp/TEST                                
+           31      [OK] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------

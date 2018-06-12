@@ -11,7 +11,7 @@ LD       := $(COMPILER) -I./ $(ADD_FLAGS)
 LD_PLAIN     := $(LD) -DQUEX_SETTING_BUFFER_SIZE_EXT=13 
 LD_CONVERTER := $(LD) -DQUEX_SETTING_TRANSLATION_BUFFER_SIZE_EXT=6 \
 	                  -DQUEX_SETTING_BUFFER_SIZE_EXT=16            \
-			          -DQUEX_TYPE_LEXATOM=wchar_t              \
+			          -DQUEX_TYPE_LEXATOM_EXT=wchar_t              \
 			          -DQUEX_EXAMPLE_WITH_CONVERTER            \
 			          -DQUEX_OPTION_CONVERTER_ICONV
 # HINTS: -DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT

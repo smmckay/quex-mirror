@@ -27,8 +27,12 @@
 #include <basic_functionality.h>
 #include <hwut_unit.h>
 
-#include "ut/lib/quex/MemoryManager.i"
-//#include "ut/lib/buffer/asserts.i"
+#ifdef   __cplusplus
+#   include "test_c/lib/quex/MemoryManager.i"
+#else
+#   include "test_cpp/lib/quex/MemoryManager.i"
+#endif
+//#include "test_c/lib/buffer/asserts.i"
 
 /* Number of positionings defines the duration of the test! For analysis,
  * in order to reduce test duration, the number may be reduced here.         */
@@ -38,7 +42,7 @@
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-static QUEX_TYPE_LEXATOM       reference[8192];
+static QUEX_TYPE_LEXATOM_EXT       reference[8192];
 static QUEX_TYPE_STREAM_POSITION reference_load(const char* file_stem);
 static bool                      verify_content(QUEX_NAME(Buffer)* me, 
                                                 QUEX_TYPE_STREAM_POSITION Position, 
@@ -242,11 +246,11 @@ find_reference(const char* file_stem)
 {
     static char file_name[256];
 
-    if( sizeof(QUEX_TYPE_LEXATOM) == 1 ) {
+    if( sizeof(QUEX_TYPE_LEXATOM_EXT) == 1 ) {
         snprintf(&file_name[0], 255, "%s.dat", file_stem);
     }
     else {
-        snprintf(&file_name[0], 255, "%s-%i-%s.dat", file_stem, (int)sizeof(QUEX_TYPE_LEXATOM)*8, 
+        snprintf(&file_name[0], 255, "%s-%i-%s.dat", file_stem, (int)sizeof(QUEX_TYPE_LEXATOM_EXT)*8, 
                  QUEXED(system_is_little_endian)() ? "le" : "be");
     }
     return &file_name[0];
@@ -269,7 +273,7 @@ reference_load(const char* FileName)
 
     loaded_byte_n = fread(&reference[0], 1, sizeof(reference), fh);
     fclose(fh);
-    return loaded_byte_n / sizeof(QUEX_TYPE_LEXATOM);
+    return loaded_byte_n / sizeof(QUEX_TYPE_LEXATOM_EXT);
 }
 
 static bool 

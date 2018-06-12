@@ -33,7 +33,7 @@
  * The test is repeated trice. Call '.stomach_clear()' to ensure it does nothing
  * bad.
  *
- * This is compiled for four different setting QUEX_TYPE_LEXATOM:
+ * This is compiled for four different setting QUEX_TYPE_LEXATOM_EXT:
  *                  uint8_t, uint16_t, uint32_t, wchar_t.
  * 
  * (C) Frank-Rene Schaefer                                                   */
@@ -46,7 +46,7 @@ main(int argc, char** argv)
 {
 
 
-    hwut_info("Convert all in one beat: " STR(QUEX_TYPE_LEXATOM) ";");
+    hwut_info("Convert all in one beat: " STR(QUEX_TYPE_LEXATOM_EXT) ";");
 
     test_with_available_codecs(test_conversion_in_one_beat);
 }

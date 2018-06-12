@@ -27,10 +27,10 @@ bom-istream.exe: bom.cpp ut
 		$(DEFS) $< -o $@
 
 strange_stream.exe: strange_stream.cpp ut
-	g++ -DQUEX_TYPE_LEXATOM=uint8_t $(DEFS) $< -o $@
+	g++ -DQUEX_TYPE_LEXATOM_EXT=uint8_t $(DEFS) $< -o $@
 
 strange_wstream.exe: strange_wstream.cpp ut
-	g++ -DQUEX_TYPE_LEXATOM=wchar_t $(DEFS) $< -o $@
+	g++ -DQUEX_TYPE_LEXATOM_EXT=wchar_t $(DEFS) $< -o $@
 
 ut:
 	python ../../code_base_instatiation.py ut

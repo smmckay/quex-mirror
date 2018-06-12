@@ -1,9 +1,9 @@
 /* PURPOSE: See comment in file 'basic_functionality.c'                      */
 #include <basic_functionality.h>
-#include "ut/lib/buffer/bytes/ByteLoader_Memory"
-#include "ut/lib/buffer/bytes/ByteLoader_Memory.i"
-#include "ut/lib/buffer/bytes/ByteLoader.i"
-#include "ut/lib/quex/MemoryManager.i"
+#include "test_c/lib/buffer/bytes/ByteLoader_Memory"
+#include "test_c/lib/buffer/bytes/ByteLoader_Memory.i"
+#include "test_c/lib/buffer/bytes/ByteLoader.i"
+#include "test_c/lib/quex/MemoryManager.i"
 #include <hwut_unit.h>
 
 /* The 'ByteArray' contains exactly the same content as the file "test.txt". */

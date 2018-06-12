@@ -35,20 +35,20 @@ DEFS := -DQUEX_OPTION_ASSERTS_EXT \
 
 # -DUNIT_TEST_POSITIONING_TEST_N=128 
 
-INCLUDES   := -I. -I$(HWUT_PATH)/support/C -I../../../../ 
+INCLUDES   := -I. -I$(HWUT_PATH)/support/C -I../../../../ -I../../../../TESTS
 
-SIZE_1     := -DQUEX_TYPE_LEXATOM=uint8_t
-SIZE_2     := -DQUEX_TYPE_LEXATOM=uint16_t
-SIZE_4     := -DQUEX_TYPE_LEXATOM=uint32_t
-SIZE_WC    := -DQUEX_TYPE_LEXATOM=wchar_t
+SIZE_1     := -DQUEX_TYPE_LEXATOM_EXT=uint8_t
+SIZE_2     := -DQUEX_TYPE_LEXATOM_EXT=uint16_t
+SIZE_4     := -DQUEX_TYPE_LEXATOM_EXT=uint32_t
+SIZE_WC    := -DQUEX_TYPE_LEXATOM_EXT=wchar_t
 FALLBACK_0 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 
 FALLBACK_1 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=1 
 FALLBACK_2 := -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=2
 
 CFLAGS := -ggdb -Wall -Werror $(INCLUDES) $(DEFS) \
 	      -fsanitize=address basic_functionality.c
-CC     := gcc $(CFLAGS) -DQUEX_INLINE= -DQUEX_OPTION_PLAIN_C_EXT # -pg -fprofile-arcs
-CCP    := g++ $(CFLAGS) -DQUEX_INLINE=inline 
+CC     := gcc $(CFLAGS) -DQUEX_OPTION_PLAIN_C_EXT # -pg -fprofile-arcs
+CCP    := g++ $(CFLAGS) 
 
 XLIBS := $(shell icu-config --ldflags) 
 
@@ -112,9 +112,7 @@ hwut-end: clean
 
 
 ut-cpp:
-	python ../../../../TESTS/code_base_instatiation.py ut-cpp analyzer quex buffer lexeme_converter extra 
 ut:
-	python ../../../../TESTS/code_base_instatiation.py ut analyzer quex buffer lexeme_converter extra --language C
 
 clean: 
 	rm -rf $(TESTS) ut ut-cpp

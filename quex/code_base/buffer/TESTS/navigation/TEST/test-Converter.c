@@ -31,14 +31,14 @@
  * (C) Frank-Rene Schaefer                                                   */
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-#include "ut/lib/buffer/Buffer.i"
-#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
-#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
-#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU"
-#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
-#include "ut/lib/buffer/bytes/ByteLoader_Memory"
-#include "ut/lib/buffer/bytes/ByteLoader_Memory.i"
-// #include "ut/lib/MemoryManager.i"
+#include "test_c/lib/buffer/Buffer.i"
+#include "test_c/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#include "test_c/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#include "test_c/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "test_c/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "test_c/lib/buffer/bytes/ByteLoader_Memory"
+#include "test_c/lib/buffer/bytes/ByteLoader_Memory.i"
+// #include "test_c/lib/MemoryManager.i"
 
 QUEX_NAMESPACE_MAIN_OPEN
 typedef enum { TEST_ICU, TEST_ICONV } E_ConverterTestType;
@@ -52,7 +52,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 int
 main(int argc, char** argv)
 {
-    const size_t  BPC = sizeof(QUEX_TYPE_LEXATOM);
+    const size_t  BPC = sizeof(QUEX_TYPE_LEXATOM_EXT);
 
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer Tell&Seek: LexatomLoader_Converter (BPC=%i, FALLBACK=%i);\n", 
@@ -111,7 +111,7 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
     QUEX_NAME(ByteLoader)*    byte_loader   = QUEX_NAME(ByteLoader_Memory_new_from_file_name)(FileName);
 #   endif
     const size_t              MemorySize    = true ? 5 : 16;
-    QUEX_TYPE_LEXATOM         memory[MemorySize];
+    QUEX_TYPE_LEXATOM_EXT         memory[MemorySize];
     QUEX_NAME(LexatomLoader)* filler;  
 
     switch( CTT ) {

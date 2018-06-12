@@ -9,15 +9,15 @@
 #include <hwut_unit.h>
 
 typedef struct {
-    QUEX_TYPE_LEXATOM*        read_p;
-    QUEX_TYPE_LEXATOM*        lexeme_start_p;
+    QUEX_TYPE_LEXATOM_EXT*        read_p;
+    QUEX_TYPE_LEXATOM_EXT*        lexeme_start_p;
     /* '_read_p' must point after the last treated letter. 
      * for reload => to a buffer limit code. 
      * => Interesting is the letter before the '_read_p'.                    */
-    QUEX_TYPE_LEXATOM         read_m1;         
-    QUEX_TYPE_LEXATOM         lexeme_start_m1;
-    QUEX_TYPE_LEXATOM*        position_register_1;
-    QUEX_TYPE_LEXATOM*        position_register_3;
+    QUEX_TYPE_LEXATOM_EXT         read_m1;         
+    QUEX_TYPE_LEXATOM_EXT         lexeme_start_m1;
+    QUEX_TYPE_LEXATOM_EXT*        position_register_1;
+    QUEX_TYPE_LEXATOM_EXT*        position_register_3;
     QUEX_TYPE_STREAM_POSITION lexatom_index_begin;
 } BufferBefore_t;
 
@@ -25,7 +25,7 @@ typedef struct {
     QUEX_NAME(Buffer)* buffer;
 } SomethingContainingABuffer_t;
 
-static const QUEX_TYPE_LEXATOM  PseudoFile[] = {
+static const QUEX_TYPE_LEXATOM_EXT  PseudoFile[] = {
    1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 
    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 };
@@ -94,11 +94,11 @@ static const uint32_t PseudoFileUCS4[] = { /* Maxwell Equations ...    */
 #define PSEUDO_FILE_UCS4_LEXATOM_INDEX_AT_END \
         PSEUDO_FILE_UCS4_ELEMENT_N 
 
-static QUEX_TYPE_LEXATOM* PoisonP = (QUEX_TYPE_LEXATOM*)0x5A5A5A5A; 
-static QUEX_TYPE_LEXATOM* NullP   = (QUEX_TYPE_LEXATOM*)0; 
+static QUEX_TYPE_LEXATOM_EXT* PoisonP = (QUEX_TYPE_LEXATOM_EXT*)0x5A5A5A5A; 
+static QUEX_TYPE_LEXATOM_EXT* NullP   = (QUEX_TYPE_LEXATOM_EXT*)0; 
 
-static QUEX_TYPE_LEXATOM* random_between(QUEX_TYPE_LEXATOM* A, 
-                                         QUEX_TYPE_LEXATOM* B);
+static QUEX_TYPE_LEXATOM_EXT* random_between(QUEX_TYPE_LEXATOM_EXT* A, 
+                                         QUEX_TYPE_LEXATOM_EXT* B);
 
 static int common_on_overflow_count = 0;
 static int common_on_content_change_count = 0;
@@ -107,8 +107,8 @@ static int common_verification_count = 0;
 static ptrdiff_t
 verify_content(QUEX_NAME(Buffer)* me)
 {
-    QUEX_TYPE_LEXATOM  expected;
-    QUEX_TYPE_LEXATOM* p;
+    QUEX_TYPE_LEXATOM_EXT  expected;
+    QUEX_TYPE_LEXATOM_EXT* p;
     ptrdiff_t          count = 0;
     ptrdiff_t          lexatom_index_at_end_p;
     (void)lexatom_index_at_end_p;
@@ -144,8 +144,8 @@ verify_content(QUEX_NAME(Buffer)* me)
 static ptrdiff_t
 verify_ucs4_content(QUEX_NAME(Buffer)* me)
 {
-    QUEX_TYPE_LEXATOM  expected;
-    QUEX_TYPE_LEXATOM* p;
+    QUEX_TYPE_LEXATOM_EXT  expected;
+    QUEX_TYPE_LEXATOM_EXT* p;
     ptrdiff_t          count = 0;
     ptrdiff_t          lexatom_index_at_end_p;
     (void)lexatom_index_at_end_p;
@@ -177,7 +177,7 @@ verify_ucs4_content(QUEX_NAME(Buffer)* me)
 
 static void
 before_setup(BufferBefore_t* me, QUEX_NAME(Buffer)* buffer, 
-             QUEX_TYPE_LEXATOM* (position_register[5]))
+             QUEX_TYPE_LEXATOM_EXT* (position_register[5]))
 {
     if( position_register ) {
         position_register[0] = PoisonP; 
@@ -206,7 +206,7 @@ before_check_consistency(BufferBefore_t*    me,
                          ptrdiff_t          Delta, 
                          E_LoadResult       Verdict,
                          QUEX_NAME(Buffer)* buffer, 
-                         QUEX_TYPE_LEXATOM* (position_register[5]), 
+                         QUEX_TYPE_LEXATOM_EXT* (position_register[5]), 
                          bool               ConverterF)
 {
     int count; 
@@ -260,11 +260,11 @@ before_check_consistency(BufferBefore_t*    me,
     return;
 }
 
-static QUEX_TYPE_LEXATOM*
-random_between(QUEX_TYPE_LEXATOM* A, QUEX_TYPE_LEXATOM* B)
+static QUEX_TYPE_LEXATOM_EXT*
+random_between(QUEX_TYPE_LEXATOM_EXT* A, QUEX_TYPE_LEXATOM_EXT* B)
 {
-    QUEX_TYPE_LEXATOM* min   = A > B ? B : A;
-    QUEX_TYPE_LEXATOM* max   = A > B ? A : B;
+    QUEX_TYPE_LEXATOM_EXT* min   = A > B ? B : A;
+    QUEX_TYPE_LEXATOM_EXT* max   = A > B ? A : B;
     ptrdiff_t            delta = max - min;
     static uint32_t      seed  = 971;
 

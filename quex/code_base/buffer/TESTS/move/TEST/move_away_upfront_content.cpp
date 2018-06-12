@@ -8,7 +8,7 @@
  *                      * _lexeme_start_p
  *                      * whether the buffer contains the end of file or not.
  *                      * begin_lexatom_index
- *                      * QUEX_TYPE_LEXATOM
+ *                      * QUEX_TYPE_LEXATOM_EXT
  *
  * The last one is controlled by a compile-time parameter. The others are
  * varried dynamically. The begin_lexatom_index is dealt with by setting
@@ -19,7 +19,7 @@
  *
  * Multiple versions of compiled objects exist:
  *
- *        QUEX_TYPE_LEXATOM:  uint8_t, uint16_t, uint32_t           
+ *        QUEX_TYPE_LEXATOM_EXT:  uint8_t, uint16_t, uint32_t           
  *
  * The parameters '_read_p' and '_lexeme_start_p' are varried the following
  * way:
@@ -49,9 +49,9 @@
 #include <move_away_upfront_content-gen.h>
 #include "commonly-pasted.cpp" /* requires 'G_t' from above header. */
 
-static QUEX_TYPE_LEXATOM  content[] = { '6', '5', '4', '3', '2', '1' }; 
+static QUEX_TYPE_LEXATOM_EXT  content[] = { '6', '5', '4', '3', '2', '1' }; 
 ptrdiff_t                   ContentSize = sizeof(content)/sizeof(content[0]);
-static QUEX_TYPE_LEXATOM  memory[11];
+static QUEX_TYPE_LEXATOM_EXT  memory[11];
 const  ptrdiff_t            MemorySize = sizeof(memory)/sizeof(memory[0]);
 
 inline ptrdiff_t  QUEX_NAME(Buffer_free_front)(QUEX_NAME(Buffer)* me);
@@ -101,24 +101,24 @@ main(int argc, char** argv)
     QUEX_NAME(Buffer)         buffer;
     G_t                       it;
     struct {
-        QUEX_TYPE_LEXATOM* end_p;     
-        QUEX_TYPE_LEXATOM* read_p;     
-        QUEX_TYPE_LEXATOM  read_char;
-        QUEX_TYPE_LEXATOM* lexeme_start_p;     
-        QUEX_TYPE_LEXATOM  lexeme_start_char;
+        QUEX_TYPE_LEXATOM_EXT* end_p;     
+        QUEX_TYPE_LEXATOM_EXT* read_p;     
+        QUEX_TYPE_LEXATOM_EXT  read_char;
+        QUEX_TYPE_LEXATOM_EXT* lexeme_start_p;     
+        QUEX_TYPE_LEXATOM_EXT  lexeme_start_char;
     } before;
-    QUEX_TYPE_LEXATOM*        min_p;     
+    QUEX_TYPE_LEXATOM_EXT*        min_p;     
     QUEX_TYPE_STREAM_POSITION lexatom_index_at_begin;
     bool                      end_of_stream_in_buffer_f;
     ptrdiff_t                 move_distance;
-    QUEX_TYPE_LEXATOM         backup[MemorySize * 2];
+    QUEX_TYPE_LEXATOM_EXT         backup[MemorySize * 2];
     int                       count = 0;
     SomethingContainingABuffer_t theAux;
     theAux.buffer = &buffer;
 
     if( cl_has(argc, argv, "--hwut-info") ) {
         printf("move_away_upfront_content: (BPC=%i);\n", 
-               (int)sizeof(QUEX_TYPE_LEXATOM));
+               (int)sizeof(QUEX_TYPE_LEXATOM_EXT));
         printf("CHOICES: cib=0, cib=1, cib=2, cib=0:EOS, cib=1:EOS, cib=2:EOS;\n");
         return 0;
     };

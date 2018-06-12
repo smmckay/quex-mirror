@@ -2,11 +2,11 @@
 #define INCLUDE_GUARD_TEST_MOVE_AWAY_PASSED_CONTENT_COMMON_H
 
 #include "TESTS/minimum-definitions.h"
-#include "ut/lib/buffer/lexatoms/LexatomLoader.i"
-#include "ut/lib/buffer/Buffer_print.i"
-#include "ut/lib/buffer/Buffer.i"
-#include "ut/lib/buffer/asserts.i"
-#include "ut/lib/quex/MemoryManager.i"
+#include "test_cpp/lib/buffer/lexatoms/LexatomLoader.i"
+#include "test_cpp/lib/buffer/Buffer_print.i"
+#include "test_cpp/lib/buffer/Buffer.i"
+#include "test_cpp/lib/buffer/asserts.i"
+#include "test_cpp/lib/quex/MemoryManager.i"
 #include <cstring>
 #include <hwut_unit.h>
 
@@ -21,13 +21,13 @@ typedef struct {
 
 
 static void self_print(QUEX_NAME(Buffer)* buffer);
-static void memory_fill_with_content(QUEX_TYPE_LEXATOM* memory, size_t MemorySize, 
-                                     QUEX_TYPE_LEXATOM* content, size_t ContentSize);
+static void memory_fill_with_content(QUEX_TYPE_LEXATOM_EXT* memory, size_t MemorySize, 
+                                     QUEX_TYPE_LEXATOM_EXT* content, size_t ContentSize);
 static int  cl_has(int argc, char** argv, const char* What);
 static void instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
                                  bool EndOfStreamInBufferF,
-                                 QUEX_TYPE_LEXATOM* memory, ptrdiff_t MemorySize,
-                                 QUEX_TYPE_LEXATOM* content, ptrdiff_t ContentSize);
+                                 QUEX_TYPE_LEXATOM_EXT* memory, ptrdiff_t MemorySize,
+                                 QUEX_TYPE_LEXATOM_EXT* content, ptrdiff_t ContentSize);
 static void self_on_content_change(void* aux);
 static void self_on_overflow(void* aux);
 
@@ -36,13 +36,13 @@ static int cl_has(int argc, char** argv, const char* What)
 { return argc > 1 && strcmp(argv[1], What) == 0; }
 
 static void
-memory_fill_with_content(QUEX_TYPE_LEXATOM* memory, size_t MemorySize, 
-                         QUEX_TYPE_LEXATOM* content, size_t ContentSize)
+memory_fill_with_content(QUEX_TYPE_LEXATOM_EXT* memory, size_t MemorySize, 
+                         QUEX_TYPE_LEXATOM_EXT* content, size_t ContentSize)
 {
     memset((void*)&memory[1], 0xFF, 
-           (MemorySize - 2)*sizeof(QUEX_TYPE_LEXATOM));
+           (MemorySize - 2)*sizeof(QUEX_TYPE_LEXATOM_EXT));
     memcpy((void*)&memory[1], (void*)content, 
-           ContentSize*sizeof(QUEX_TYPE_LEXATOM)); 
+           ContentSize*sizeof(QUEX_TYPE_LEXATOM_EXT)); 
 }
 
 static void
@@ -63,16 +63,16 @@ self_print(QUEX_NAME(Buffer)* buffer)
 static void
 instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
                      bool EndOfStreamInBufferF,
-                     QUEX_TYPE_LEXATOM* memory, ptrdiff_t MemorySize,
-                     QUEX_TYPE_LEXATOM* content, ptrdiff_t ContentSize)
+                     QUEX_TYPE_LEXATOM_EXT* memory, ptrdiff_t MemorySize,
+                     QUEX_TYPE_LEXATOM_EXT* content, ptrdiff_t ContentSize)
 /* Sets the buffer up according to what is specified in the iterator:
  *
  *  it.read_i         --> position of the buffer's _read_p.
  *  it.lexeme_start_i --> position of the buffer's _lexeme_start_p.
  *                                                                           */
 {
-    QUEX_TYPE_LEXATOM*   BeginP;
-    QUEX_TYPE_LEXATOM*   end_p;
+    QUEX_TYPE_LEXATOM_EXT*   BeginP;
+    QUEX_TYPE_LEXATOM_EXT*   end_p;
     ptrdiff_t            memory_size = EndOfStreamInBufferF ? MemorySize : ContentSize + 2;
 
     end_p  = &memory[ContentSize + 1];
@@ -109,8 +109,8 @@ instantiate_iterator(QUEX_NAME(Buffer)* buffer, G_t* it,
 static void
 self_on_content_change(void* aux)
 { 
-    const QUEX_TYPE_LEXATOM* BeginP = &((SomethingContainingABuffer_t*)aux)->buffer->_memory._front[1];
-    const QUEX_TYPE_LEXATOM* EndP   = ((SomethingContainingABuffer_t*)aux)->buffer->input.end_p;
+    const QUEX_TYPE_LEXATOM_EXT* BeginP = &((SomethingContainingABuffer_t*)aux)->buffer->_memory._front[1];
+    const QUEX_TYPE_LEXATOM_EXT* EndP   = ((SomethingContainingABuffer_t*)aux)->buffer->input.end_p;
     printf("on_content_change: size: %i;\n", (int)(EndP - BeginP));
 }
 

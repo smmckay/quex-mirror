@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "ut/lib/quex/compatibility/stdint.h"
+#include "test_c/lib/quex/compatibility/stdint.h"
 #ifndef   QUEX_OPTION_ASSERTS_EXT
 #  define QUEX_OPTION_ASSERTS_EXT
 #endif
@@ -83,10 +83,10 @@
 #  define QUEX_TYPE_TOKEN_ID int
 #endif
 
-#ifndef   QUEX_TYPE_LEXATOM
-#  define QUEX_TYPE_LEXATOM uint8_t
+#ifndef   QUEX_TYPE_LEXATOM_EXT
+#  define QUEX_TYPE_LEXATOM_EXT uint8_t
 #endif
-typedef QUEX_TYPE_LEXATOM  TestAnalyzer_lexatom_t;
-typedef QUEX_TYPE_TOKEN_ID TestAnalyzer_token_id_t;
+typedef QUEX_TYPE_LEXATOM_EXT  TestAnalyzer_lexatom_t;
+typedef QUEX_TYPE_TOKEN_ID     TestAnalyzer_token_id_t;
 
 

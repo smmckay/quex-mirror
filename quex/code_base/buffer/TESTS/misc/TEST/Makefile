@@ -7,8 +7,7 @@ CC    := gcc -ggdb -Wall -Werror \
 		     -I. -I../../../../TESTS -Iut/lib -I$(HWUT_PATH)/support/C  \
 		     -DQUEX_SETTING_BUFFER_SIZE_MIN_EXT=4 \
 		     -DQUEX_SETTING_BUFFER_SIZE_EXT=11 \
-			 -DQUEX_OPTION_ASSERTS_EXT \
-			 -DQUEX_INLINE=
+			 -DQUEX_OPTION_ASSERTS_EXT 
 
 all: $(TESTS)
 
@@ -31,7 +30,7 @@ hwut-info:
 	@echo $(TESTS)
 
 ut:
-	python ../../../../TESTS/code_base_instatiation.py ut buffer quex
+	python ../../../../TESTS/code_base_instatiation.py ut buffer quex --lang-C
 
 clean: 
 	rm -rf *.exe *.o *.E ut tmp.*

@@ -51,7 +51,7 @@ static struct {
     QUEX_NAME(ByteLoader_Memory)  byte_loader;
     QUEX_NAME(LexatomLoader)*     lexatom_loader;
     QUEX_NAME(Converter)*         converter;
-    QUEX_TYPE_LEXATOM             memory[BufferElementN + 2]; 
+    QUEX_TYPE_LEXATOM_EXT             memory[BufferElementN + 2]; 
     SomethingContainingABuffer_t  the_aux;
 } self;
 
@@ -154,7 +154,7 @@ self_setup(ptrdiff_t       LexemePOffset,  /* = LexemeP - Buffer's Front */
      *                                                                        */
     QUEX_NAME(Buffer_construct)(&self.buffer, self.lexatom_loader,
                                 &self.memory[0], BufferElementN,
-                                (QUEX_TYPE_LEXATOM*)0, E_Ownership_EXTERNAL,
+                                (QUEX_TYPE_LEXATOM_EXT*)0, E_Ownership_EXTERNAL,
                                 (QUEX_NAME(Buffer)*)0); 
 
     QUEX_NAME(Buffer_callbacks_set)(&self.buffer,
@@ -184,7 +184,7 @@ static E_LoadResult
 self_load(bool ConverterF)
 {
     size_t             PositionRegisterN = 5;
-    QUEX_TYPE_LEXATOM* (position_register[5]);
+    QUEX_TYPE_LEXATOM_EXT* (position_register[5]);
     BufferBefore_t     before;
     E_LoadResult       verdict;
     ptrdiff_t          delta;

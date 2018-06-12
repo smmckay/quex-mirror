@@ -35,19 +35,19 @@ hwut-end: clean
 	@echo Bye
 
 %-fb0.exe: %.c ut
-	$(CC) $(FALLBACK_0) -DQUEX_TYPE_LEXATOM=uint8_t $< -o $@ 
+	$(CC) $(FALLBACK_0) -DQUEX_TYPE_LEXATOM_EXT=uint8_t $< -o $@ 
 %-fb1.exe: %.c ut
-	$(CC) $(FALLBACK_1) -DQUEX_TYPE_LEXATOM=uint8_t $< -o $@
+	$(CC) $(FALLBACK_1) -DQUEX_TYPE_LEXATOM_EXT=uint8_t $< -o $@
 %-fb2.exe: %.c ut
-	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint8_t $< -o $@
+	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM_EXT=uint8_t $< -o $@
 %-fb2-32.exe: %.c ut
-	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $< -o $@
+	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM_EXT=uint32_t $< -o $@
 %-api.exe: %-api.c ut
-	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM=uint32_t $< -o $@ $(ICU_LIBS) \
+	$(CC) $(FALLBACK_2) -DQUEX_TYPE_LEXATOM_EXT=uint32_t $< -o $@ $(ICU_LIBS) \
 		-DHWUT_OPTION_NO_ASSUMPTION_ON_LEXATOM_INDEX_AT_END
 
 ut:
-	python ../../../../TESTS/code_base_instatiation.py ut analyzer quex buffer lexeme_converter
+	python ../../../../TESTS/code_base_instatiation.py ut analyzer quex buffer lexeme_converter --lang-C
 
 clean: 
 	rm -rf $(PROGRAMS) ut

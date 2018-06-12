@@ -1,7 +1,7 @@
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-#include "ut/lib/buffer/Buffer.i"
-// #include "ut/lib/MemoryManager.i"
+#include "test_cpp/lib/buffer/Buffer.i"
+// #include "test_cpp/lib/MemoryManager.i"
 
 
 #include <sstream>
@@ -15,7 +15,7 @@ QUEX_NAMESPACE_MAIN_CLOSE
 int
 main(int argc, char** argv)
 {
-    const size_t   BPC = sizeof(QUEX_TYPE_LEXATOM);
+    const size_t   BPC = sizeof(QUEX_TYPE_LEXATOM_EXT);
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer Tell&Seek: LexatomLoader_Plain wiostream (BPC=%i, FALLBACK=%i);\n", 
                (int)BPC, (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
@@ -38,7 +38,7 @@ test(bool BinaryF, size_t BPC)
     QUEX_NAME(ByteLoader)*    byte_loader;
     QUEX_NAME(LexatomLoader*) filler;
     const size_t              MemorySize  = true ? 5 : 16;
-    QUEX_TYPE_LEXATOM         memory[MemorySize];
+    QUEX_TYPE_LEXATOM_EXT         memory[MemorySize];
 
     sh << L"Fest gemauert in der Erden\n";
     sh.seekg(0);

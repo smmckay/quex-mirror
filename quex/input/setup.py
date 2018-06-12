@@ -217,6 +217,7 @@ SETUP_INFO = {
     "_debug_limit_recursion":         [["--debug-limit-recursion"],              0], 
     "_debug_reference_original_paths_f": [["--debug-original-paths"],            SetupParTypes.FLAG], 
     "_debug_leave_basic_language_macros_f": [["--debug-leave-language-macros"],  SetupParTypes.FLAG], 
+    "_debug_QUEX_TYPE_LEXATOM_EXT":       [["--debug-QUEX_TYPE_LEXATOM_EXT"],  SetupParTypes.FLAG], 
     "analyzer_class":                 [["-o", "--analyzer-class"],             ""],    
     "analyzer_derived_class_file":    [["--derived-class-file"],               ""],
     "analyzer_derived_class_name":    [["--derived-class", "--dc"],            ""],

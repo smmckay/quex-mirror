@@ -50,16 +50,16 @@ hwut-end: clean
 	@echo Bye
 
 %-1.exe: %.cpp ut
-	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM=uint8_t 
+	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM_EXT=uint8_t 
 
 %-2.exe: %.cpp ut
-	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM=uint16_t 
+	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM_EXT=uint16_t 
 
 %-4.exe: %.cpp ut
-	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM=uint32_t 
+	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM_EXT=uint32_t 
 
 %-WC.exe: %.cpp  ut
-	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM=wchar_t 
+	$(CC) $< $(BASIC_SOURCES) -o $@ -DQUEX_TYPE_LEXATOM_EXT=wchar_t 
 
 ut:
 	python ../../../../../TESTS/code_base_instatiation.py ut buffer quex analyzer

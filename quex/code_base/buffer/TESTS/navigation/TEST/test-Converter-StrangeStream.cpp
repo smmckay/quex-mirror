@@ -31,16 +31,16 @@
  * (C) Frank-Rene Schaefer                                                   */
 #include <hwut_unit.h>
 #include <basic_functionality.h>
-#include "ut/lib/extra/strange_stream/StrangeStream"
-#include "ut/lib/buffer/Buffer.i"
-#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
-#include "ut/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
-#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU"
-#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
-#include "ut/lib/buffer/bytes/ByteLoader_Memory"
-#include "ut/lib/buffer/bytes/ByteLoader_Memory.i"
+#include "test_cpp/lib/extra/strange_stream/StrangeStream"
+#include "test_cpp/lib/buffer/Buffer.i"
+#include "test_cpp/lib/buffer/lexatoms/converter/iconv/Converter_IConv"
+#include "test_cpp/lib/buffer/lexatoms/converter/iconv/Converter_IConv.i"
+#include "test_cpp/lib/buffer/lexatoms/converter/icu/Converter_ICU"
+#include "test_cpp/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "test_cpp/lib/buffer/bytes/ByteLoader_Memory"
+#include "test_cpp/lib/buffer/bytes/ByteLoader_Memory.i"
 #include <fstream>
-// #include "ut/lib/MemoryManager.i"
+// #include "test_cpp/lib/MemoryManager.i"
 
 typedef enum { TEST_ICU, TEST_ICONV } E_ConverterTestType;
 
@@ -58,7 +58,7 @@ int
 main(int argc, char** argv)
 {
 
-    const size_t  BPC = sizeof(QUEX_TYPE_LEXATOM);
+    const size_t  BPC = sizeof(QUEX_TYPE_LEXATOM_EXT);
 
     if( argc > 1 && strcmp(argv[1], "--hwut-info") == 0 ) {
         printf("Buffer Tell&Seek: LexatomLoader_Converter StrangeStream (BPC=%i, FALLBACK=%i);\n", 
@@ -113,7 +113,7 @@ test_file(E_ConverterTestType CTT, const char* Codec, bool LinearF, bool ClueLes
     StrangeStream<std::ifstream>  sh(&istr);
     const char*                   ref_file_name = find_reference(FileStem); 
     const size_t                  MemorySize    = true ? 5 : 16;
-    QUEX_TYPE_LEXATOM             memory[MemorySize];
+    QUEX_TYPE_LEXATOM_EXT             memory[MemorySize];
     QUEX_NAME(LexatomLoader)*     filler;  
     QUEX_NAME(ByteLoader)*        byte_loader;
 

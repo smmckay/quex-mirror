@@ -1331,9 +1331,12 @@ class Language(dict):
         ]
 
     def type_definitions(self, excluded=set()):
+        if Setup._debug_QUEX_TYPE_LEXATOM_EXT: type_lexatom = "QUEX_TYPE_LEXATOM_EXT"
+        else:                                  type_lexatom = Setup.lexatom.type
+
         token_descr = token_db.token_type_definition
         type_def_list = [
-            ("lexatom_t",        Setup.lexatom.type),
+            ("lexatom_t",        type_lexatom),
             ("token_id_t",       token_descr.token_id_type),
             ("token_line_n_t",   token_descr.line_number_type.get_pure_text()),
             ("token_column_n_t", token_descr.column_number_type.get_pure_text()),
@@ -1345,9 +1348,19 @@ class Language(dict):
             excluded.add("indentation_t")
 
         acn = Setup.analyzer_class_name
-        def_str = "\n".join("typedef %s %s_%s;" % (original, acn, customized_name) 
-                         for customized_name, original in type_def_list 
-                         if customized_name not in excluded)
+        if Setup._debug_QUEX_TYPE_LEXATOM_EXT:
+            def_str =   "#ifndef    QUEX_TYPE_LEXATOM_EXT\n" \
+                      + "#   define QUEX_TYPE_LEXATOM_EXT %s\n" % Setup.lexatom.type \
+                      + "#endif\n"
+        else:
+            def_str =   "#ifdef     QUEX_TYPE_LEXATOM_EXT\n" \
+                      + "#   error \"QUEX_TYPE_LEXATOM_EXT has been defined, but lexer was not generated with '--debug-QUEX_TYPE_LEXATOM_EXT'.\"\n" \
+                      + "#endif\n"
+
+        def_str += "\n".join("typedef %s %s_%s;" % (original, acn, customized_name) 
+                             for customized_name, original in type_def_list 
+                             if customized_name not in excluded)
+
         return self.FRAME_IN_NAMESPACE_MAIN(def_str)
 
     def FRAME_IN_NAMESPACE_MAIN(self, Code):
@@ -1377,10 +1390,9 @@ class Language(dict):
         ])
 
         # Inline
-        if not Setup._debug_leave_basic_language_macros_f:
-            replacements.append(
-                ("QUEX_INLINE", self.INLINE)
-            )
+        replacements.append(
+            ("QUEX_INLINE", self.INLINE)
+        )
 
         # TokenIds
         def tid(Name):

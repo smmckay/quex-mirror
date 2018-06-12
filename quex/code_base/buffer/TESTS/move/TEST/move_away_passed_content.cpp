@@ -8,7 +8,7 @@
  *                      * _lexeme_start_p
  *                      * whether the buffer contains the end of file or not.
  *                      * QUEX_SETTING_BUFFER_MIN_FALLBACK_N
- *                      * QUEX_TYPE_LEXATOM
+ *                      * QUEX_TYPE_LEXATOM_EXT
  *
  * The last two are compile-time parameters. The first three may be
  * varried dynamically. 
@@ -18,7 +18,7 @@
  * Let this file be compiled with '-DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=3'
  * for all experiments. Multiple versions of compiled objects may exist:
  *
- *        QUEX_TYPE_LEXATOM  QUEX_SETTING_BUFFER_MIN_FALLBACK_N
+ *        QUEX_TYPE_LEXATOM_EXT  QUEX_SETTING_BUFFER_MIN_FALLBACK_N
  *          uint8_t             0
  *          uint8_t             1
  *          uint8_t             2
@@ -50,19 +50,19 @@
 #include <move_away_passed_content-gen.h>
 #include "commonly-pasted.cpp" /* requires 'G_t' from above header. */
 
-static QUEX_TYPE_LEXATOM  content[] = { '5', '4', '3', '2', '1' }; 
+static QUEX_TYPE_LEXATOM_EXT  content[] = { '5', '4', '3', '2', '1' }; 
 const  ptrdiff_t            ContentSize = sizeof(content)/sizeof(content[0]);
-static QUEX_TYPE_LEXATOM  memory[12];
+static QUEX_TYPE_LEXATOM_EXT  memory[12];
 const  ptrdiff_t            MemorySize = sizeof(memory)/sizeof(memory[0]);
 
 inline ptrdiff_t
 TestAnalyzer_Buffer_free_back(QUEX_NAME(Buffer)*  me,
-                              QUEX_TYPE_LEXATOM** position_register,
+                              QUEX_TYPE_LEXATOM_EXT** position_register,
                               const size_t        PositionRegisterN);
 
 inline ptrdiff_t
 TestAnalyzer_Buffer_free_back(QUEX_NAME(Buffer)*  me,
-                              QUEX_TYPE_LEXATOM** position_register,
+                              QUEX_TYPE_LEXATOM_EXT** position_register,
                               const size_t        PositionRegisterN)
 /*    ..    WARNING: 
  *   /  \   Pointers to the '_memory' object may change!
@@ -121,17 +121,17 @@ main(int argc, char** argv)
     TestAnalyzer_Buffer  buffer;
     G_t                  it;
     struct {
-        QUEX_TYPE_LEXATOM* end_p;     
-        QUEX_TYPE_LEXATOM* read_p;     
-        QUEX_TYPE_LEXATOM  read_char;
-        QUEX_TYPE_LEXATOM* lexeme_start_p;     
-        QUEX_TYPE_LEXATOM  lexeme_start_char;
+        QUEX_TYPE_LEXATOM_EXT* end_p;     
+        QUEX_TYPE_LEXATOM_EXT* read_p;     
+        QUEX_TYPE_LEXATOM_EXT  read_char;
+        QUEX_TYPE_LEXATOM_EXT* lexeme_start_p;     
+        QUEX_TYPE_LEXATOM_EXT  lexeme_start_char;
     } before;
-    QUEX_TYPE_LEXATOM* min_p;     
+    QUEX_TYPE_LEXATOM_EXT* min_p;     
     bool               end_of_stream_in_buffer_f;
     ptrdiff_t          move_distance;
     ptrdiff_t          free_space;
-    QUEX_TYPE_LEXATOM  backup[MemorySize*2];
+    QUEX_TYPE_LEXATOM_EXT  backup[MemorySize*2];
     int                count = 0;
 
     SomethingContainingABuffer_t theAux;
@@ -139,7 +139,7 @@ main(int argc, char** argv)
 
     if( cl_has(argc, argv, "--hwut-info") ) {
         printf("move_away_passed_content: (BPC=%i, FB=%i);\n", 
-               (int)sizeof(QUEX_TYPE_LEXATOM),
+               (int)sizeof(QUEX_TYPE_LEXATOM_EXT),
                (int)QUEX_SETTING_BUFFER_MIN_FALLBACK_N);
         printf("CHOICES: EoS, NoEoS;\n");
         return 0;
@@ -172,7 +172,7 @@ main(int argc, char** argv)
         min_p                    = QUEX_MIN(buffer._read_p, buffer._lexeme_start_p);
         memcpy(&backup[0], min_p, buffer.input.end_p - min_p);
 
-        free_space = QUEX_NAME(Buffer_free_back)(&buffer, (QUEX_TYPE_LEXATOM**)0, 0);
+        free_space = QUEX_NAME(Buffer_free_back)(&buffer, (QUEX_TYPE_LEXATOM_EXT**)0, 0);
         (void)free_space;
         move_distance = before.end_p - buffer.input.end_p;
 
