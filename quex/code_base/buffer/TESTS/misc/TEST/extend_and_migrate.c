@@ -30,7 +30,7 @@
 
 #include <common.h>
 #include "MemoryManager_UnitTest.i"
-#include "ut/lib/buffer/asserts"
+#include "test_c/lib/buffer/asserts"
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 

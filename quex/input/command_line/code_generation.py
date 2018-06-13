@@ -158,6 +158,17 @@ def __setup_analyzer_class(Setup):
                               AllowEmptyF=True)
     __check_namespace_admissibility("derived class", Setup.analyzer_derived_class_name_space)
 
+    if not Setup.quex_lib:
+        if Setup.language == "C": quex_lib = "Quex"
+        else:                     quex_lib = "Quex::Quex"
+
+    Setup._quex_lib_prefix,     \
+    Setup._quex_lib_name_space, \
+    dummy                       = read_namespaced_name(quex_lib, 
+                                        "Naming of Quex-Lib functions. (options --quex-lib, --ql)",
+                                        AllowEmptyF=True)
+    __check_namespace_admissibility("derived class", Setup.analyzer_derived_class_name_space)
+
 def __setup_token_class(Setup):
     """ X0::X1::X2::ClassName --> token_class_name = ClassName
                                   token_name_space = ["X0", "X1", "X2"]

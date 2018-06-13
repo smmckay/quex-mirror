@@ -1,5 +1,9 @@
 #include "minimum-definitions.h"
-#include "ut/lib/buffer/lexatoms/converter/Converter"
+#ifdef __cplusplus
+#include "test_cpp/lib/buffer/lexatoms/converter/Converter"
+#else
+#include "test_c/lib/buffer/lexatoms/converter/Converter"
+#endif
 #include <stdint.h>
 
 QUEX_NAMESPACE_MAIN_OPEN

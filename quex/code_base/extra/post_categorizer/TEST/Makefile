@@ -31,7 +31,6 @@ post-categorizer-%.E: post-categorizer-%.cpp ut
 	$(CC) -I./. $< post-categorizer-common.cpp -E > $@ 
 
 ut:
-	python ../../../TESTS/code_base_instatiation.py ut 
 	quex --co -o TestAnalyzer --odir ut --encoding unicode --bet uint8_t --csn lexeme --debug-exception
 
 clean: 

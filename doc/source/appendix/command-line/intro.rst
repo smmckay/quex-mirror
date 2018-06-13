@@ -1103,6 +1103,13 @@ Default: false (disabled)
 
 Default: false (disabled)
 
+.. cmdoption:: --ql, --quex-lib 
+
+    Defines name prefix and namespace of the common library for all quex lexers. The specification 
+    format is the same as for the analyzer class.  
+
+    
+
 The aforementioned options are solely provided for core developers who desire to work on the internal 
 Quex core.  
 

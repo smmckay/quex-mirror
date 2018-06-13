@@ -1,5 +1,5 @@
 #include "post-categorizer-common.h"
-#include "ut/lib/quex/MemoryManager.i"
+#include "test_cpp/lib/quex/MemoryManager.i"
 
 
 void post_categorizer_setup(QUEX_NAME(Dictionary)* me, int Seed)

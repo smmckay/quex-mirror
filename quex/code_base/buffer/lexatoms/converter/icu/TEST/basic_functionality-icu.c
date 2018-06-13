@@ -8,8 +8,13 @@
  *
  * (C) Frank-Rene Schaefer.                                                  */
 #include <basic_functionality.h>
-#include "ut/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
-#include "ut/lib/buffer/lexatoms/converter/Converter.i"
+#ifdef   __cplusplus
+#include "test_cpp/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "test_cpp/lib/buffer/lexatoms/converter/Converter.i"
+#else
+#include "test_c/lib/buffer/lexatoms/converter/icu/Converter_ICU.i"
+#include "test_c/lib/buffer/lexatoms/converter/Converter.i"
+#endif
 
 QUEX_NAMESPACE_MAIN_OPEN
 

@@ -1,6 +1,6 @@
 #include <common.h>
 
-#include "ut/lib/buffer/Buffer.i"
+#include "test_c/lib/buffer/Buffer.i"
 
 int common_recursion_count_n = 0;
 
@@ -17,7 +17,7 @@ common_iterate(QUEX_NAME(Buffer)* reference, size_t NewSize, ptrdiff_t* shrink_n
     ptrdiff_t  end_offset;
     ptrdiff_t  offset;
     ptrdiff_t  count = 0;
-    QUEX_TYPE_LEXATOM tmp[3];
+    QUEX_TYPE_LEXATOM_EXT tmp[3];
 
     /* Varry the offsets of '_read_p', '_lexeme_start_p', and 'input.end_p'.  */
     for(end_offset = 0; end_offset < reference_size-1; ++end_offset) {
@@ -30,9 +30,9 @@ common_iterate(QUEX_NAME(Buffer)* reference, size_t NewSize, ptrdiff_t* shrink_n
             tmp[0] = reference->input.end_p[0];
             tmp[1] = reference->_memory._front[0];
             tmp[2] = reference->_memory._back[0];
-            reference->input.end_p[0]    = (QUEX_TYPE_LEXATOM)0;
-            reference->_memory._front[0] = (QUEX_TYPE_LEXATOM)0;
-            reference->_memory._back[0]  = (QUEX_TYPE_LEXATOM)0;
+            reference->input.end_p[0]    = (QUEX_TYPE_LEXATOM_EXT)0;
+            reference->_memory._front[0] = (QUEX_TYPE_LEXATOM_EXT)0;
+            reference->_memory._back[0]  = (QUEX_TYPE_LEXATOM_EXT)0;
 
             QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
             common_test_single_migration(reference, NewSize, shrink_n);
@@ -60,8 +60,8 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
 
-    QUEX_TYPE_LEXATOM* memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
-                                        reference_size * sizeof(QUEX_TYPE_LEXATOM), 
+    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+                                        reference_size * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                         E_MemoryObjectType_BUFFER_MEMORY);
 
     QUEX_NAME(Buffer_construct)(subject, (QUEX_NAME(LexatomLoader)*)0,
@@ -76,16 +76,16 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
     /* Set reference content of the buffer.                                   */
     for(i=1; i<=reference_size; ++i) {
         if( i < end_offset ) {
-            reference->_memory._front[i] = (QUEX_TYPE_LEXATOM)('a' + i);
-            subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM)('a' + i);
+            reference->_memory._front[i] = (QUEX_TYPE_LEXATOM_EXT)('a' + i);
+            subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM_EXT)('a' + i);
         }
         else if( i == end_offset ) {
             reference->_memory._front[i] = QUEX_SETTING_BUFFER_LIMIT_CODE;
             subject->_memory._front[i]   = QUEX_SETTING_BUFFER_LIMIT_CODE;
         }
         else {
-            reference->_memory._front[i] = (QUEX_TYPE_LEXATOM)(0xAA);
-            subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM)(0xBB);
+            reference->_memory._front[i] = (QUEX_TYPE_LEXATOM_EXT)(0xAA);
+            subject->_memory._front[i]   = (QUEX_TYPE_LEXATOM_EXT)(0xBB);
         }
     }
     reference->_memory._front[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
@@ -104,7 +104,7 @@ common_test_single_migration(QUEX_NAME(Buffer)* reference,
     QUEX_NAME(Buffer)   subject; 
     bool                verdict_f = (&reference->input.end_p[1] - reference->_memory._front <= NewSize) ? true : false;
     E_Ownership         ownership = verdict_f ? E_Ownership_EXTERNAL : E_Ownership_LEXICAL_ANALYZER;
-    QUEX_TYPE_LEXATOM   new_memory[256];
+    QUEX_TYPE_LEXATOM_EXT   new_memory[256];
 
     hwut_verify(NewSize < 256);
 
@@ -166,7 +166,7 @@ common_verify(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
                 == subject->_backup_lexatom_index_of_lexeme_start_p);
 
     if( memcmp((void*)reference->_memory._front, (void*)subject->_memory._front,
-               (size_t)end_offset * sizeof(QUEX_TYPE_LEXATOM)) != 0 ) {
+               (size_t)end_offset * sizeof(QUEX_TYPE_LEXATOM_EXT)) != 0 ) {
 
         root = QUEX_NAME(Buffer_nested_find_root)(reference);
         printf("reference.root: ((%p))\n", root->_memory._front);
@@ -214,7 +214,7 @@ common_verify(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
 
 void
 common_verify_offset(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject, 
-                     QUEX_TYPE_LEXATOM* reference_p, QUEX_TYPE_LEXATOM* subject_p)
+                     QUEX_TYPE_LEXATOM_EXT* reference_p, QUEX_TYPE_LEXATOM_EXT* subject_p)
 {
     ptrdiff_t offset_0 = reference_p - reference->_memory._front;
     ptrdiff_t offset_1 = subject_p   - subject->_memory._front;
@@ -232,8 +232,8 @@ void
 common_construct_reference_base(QUEX_NAME(Buffer)* reference, 
                                 size_t             reference_size)
 {
-    QUEX_TYPE_LEXATOM* memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
-                                      reference_size * sizeof(QUEX_TYPE_LEXATOM), 
+    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+                                      reference_size * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                       E_MemoryObjectType_BUFFER_MEMORY);
 
     QUEX_NAME(Buffer_construct)(reference, (QUEX_NAME(LexatomLoader)*)0,

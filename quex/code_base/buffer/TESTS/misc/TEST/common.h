@@ -3,9 +3,9 @@
 
 #define  QUEX_OPTION_PLAIN_C_EXT
 #include "minimum-definitions.h"
-#include "ut/lib/definitions"
-#include "ut/lib/buffer/Buffer"
-#include "ut/lib/quex/MemoryManager"
+#include "test_c/lib/definitions"
+#include "test_c/lib/buffer/Buffer"
+#include "test_c/lib/quex/MemoryManager"
 #include <hwut_unit.h>
 #include <stdio.h>
 #include <stddef.h>
@@ -24,8 +24,8 @@ ptrdiff_t common_iterate(QUEX_NAME(Buffer)* reference, size_t NewSize,
 
 void      common_verify_offset(QUEX_NAME(Buffer)* reference, 
                              QUEX_NAME(Buffer)* subject, 
-                             QUEX_TYPE_LEXATOM* reference_p, 
-                             QUEX_TYPE_LEXATOM* subject_p);
+                             QUEX_TYPE_LEXATOM_EXT* reference_p, 
+                             QUEX_TYPE_LEXATOM_EXT* subject_p);
 bool      common_verify(QUEX_NAME(Buffer)* reference, 
                       QUEX_NAME(Buffer)* subject);
 

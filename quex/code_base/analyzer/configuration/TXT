@@ -11,16 +11,6 @@
 
 #define QUEX_INDICATE_CONFIGURATION_FILE_PASSED
 
-#ifdef     QUEX_OPTION_PLAIN_C_EXT
-#   define QUEX_OPTION_PLAIN_C_EXT
-#else
-$$SWITCH$$ QUEX_OPTION_PLAIN_C_EXT
-#endif
-
-#if ! defined(QUEX_OPTION_PLAIN_C_EXT) && ! defined(__cplusplus)
-#   error "QUEX_OPTION_PLAIN_C_EXT must be defined if no C++ compiler is used! Call quex with option '--language C'."
-#endif
-
 #ifdef     QUEX_OPTION_COMPUTED_GOTOS_EXT
 #   define QUEX_OPTION_COMPUTED_GOTOS
 #else

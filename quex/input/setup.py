@@ -212,11 +212,12 @@ class QuexSetup:
 SetupParTypes = Enum("LIST", "INT_LIST", "FLAG", "NEGATED_FLAG", "STRING", "OPTIONAL_STRING")
 
 SETUP_INFO = {         
-    # [Name in Setup]                 [ Flags ]                                  [Default / Type]
-    "_debug_exception_f":             [["--debug-exception"],                    SetupParTypes.FLAG], 
-    "_debug_limit_recursion":         [["--debug-limit-recursion"],              0], 
-    "_debug_reference_original_paths_f": [["--debug-original-paths"],            SetupParTypes.FLAG], 
-    "_debug_QUEX_TYPE_LEXATOM_EXT":   [["--debug-QUEX_TYPE_LEXATOM_EXT"],       SetupParTypes.FLAG], 
+    # [Name in Setup]                 [ Flags ]                                [Default / Type]
+    "_debug_exception_f":             [["--debug-exception"],                  SetupParTypes.FLAG], 
+    "_debug_limit_recursion":         [["--debug-limit-recursion"],            0], 
+    "_debug_reference_original_paths_f": [["--debug-original-paths"],          SetupParTypes.FLAG], 
+    "_debug_QUEX_TYPE_LEXATOM_EXT":   [["--debug-QUEX_TYPE_LEXATOM_EXT"],      SetupParTypes.FLAG], 
+    "quex_lib":                       [["--ql", "--quex-lib"],                 ""],    
     "analyzer_class":                 [["-o", "--analyzer-class"],             ""],    
     "analyzer_derived_class_file":    [["--derived-class-file"],               ""],
     "analyzer_derived_class_name":    [["--derived-class", "--dc"],            ""],
@@ -287,6 +288,8 @@ SETUP_INFO = {
     #__________________________________________________________________________
     # Parameters not set on the command line:
     "byte_order_is_that_of_current_system_f":    True,
+    "_quex_lib_name_space":                      None,
+    "_quex_lib_prefix":                          None,
     "analyzer_class_name":                       None,
     "analyzer_name_space":                       None,
     "analyzer_name_safe":                        None,

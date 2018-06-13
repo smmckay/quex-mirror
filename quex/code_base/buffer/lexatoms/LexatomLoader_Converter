@@ -87,7 +87,7 @@
  *  NOTE: The 'raw_buffer.iterator' remains between calls to "read_lexatoms()".
  *        This is equivalent to having some bytes in the pipeline.
  **********************************************************************************/
-#if ! defined (QUEX_OPTION_PLAIN_C_EXT)
+#if defined(__cplusplus) && ! defined (QUEX_OPTION_PLAIN_C_EXT)
 #   include <iostream> 
 #   include <cerrno>
 #   include <stdexcept>

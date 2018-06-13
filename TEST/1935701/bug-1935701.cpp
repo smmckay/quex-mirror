@@ -1,14 +1,13 @@
-#define QUEX_TYPE_LEXATOM uint32_t
 #include<iostream>
 #include<fstream>
 #include<cstring>
 
-#define QUEX_TYPE_LEXATOM uint32_t
+#define QUEX_TYPE_LEXATOM_EXT uint32_t
 #include"minimum-definitions.h"
-#include<ut/lib/buffer/lexatoms/LexatomLoader>
-#include<ut/lib/buffer/lexatoms/LexatomLoader_Plain>
-#include<ut/lib/buffer/lexatoms/LexatomLoader_Plain.i>
-#include"ut/lib/quex/MemoryManager.i"
+#include<test_cpp/lib/buffer/lexatoms/LexatomLoader>
+#include<test_cpp/lib/buffer/lexatoms/LexatomLoader_Plain>
+#include<test_cpp/lib/buffer/lexatoms/LexatomLoader_Plain.i>
+#include"test_cpp/lib/quex/MemoryManager.i"
 
 using namespace std;
 

@@ -11,7 +11,7 @@
 #ifndef QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__STDBOOL_H
 #define QUEX_INCLUDE_GUARD__QUEX__COMPATIBILITY__STDBOOL_H
 
-#if defined(QUEX_OPTION_PLAIN_C_EXT)
+#if ! defined(__cplusplus) || defined(QUEX_OPTION_PLAIN_C_EXT)
 
 #if    (defined(__STDC_VERSION__) && __STDC_VERSION__ < 199901L) \
     || (defined(_MSC_VER)         && _MSC_VER < 1800)

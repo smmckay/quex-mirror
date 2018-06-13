@@ -17,10 +17,10 @@
 
 #include "minimum-definitions.h"
 #include "MemoryManager_UnitTest.i"
-#include "ut/lib/definitions"
-#include "ut/lib/buffer/Buffer"
-#include "ut/lib/quex/MemoryManager"
-#include "ut/lib/buffer/Buffer.i"
+#include "test_c/lib/definitions"
+#include "test_c/lib/buffer/Buffer"
+#include "test_c/lib/quex/MemoryManager"
+#include "test_c/lib/buffer/Buffer.i"
 
 #include <hwut_unit.h>
 
@@ -30,7 +30,7 @@ static void
 self_check_destruction(QUEX_NAME(Buffer)* including, size_t MemorySize);
 static int
 self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* included,
-                        QUEX_TYPE_LEXATOM* MemoryEnd,
+                        QUEX_TYPE_LEXATOM_EXT* MemoryEnd,
                         ptrdiff_t          DistanceReadToEnd,
                         bool               Verdict);
 
@@ -38,11 +38,11 @@ int
 main(int argc, char** argv)
 {
     const size_t       MemorySize = QUEX_SETTING_BUFFER_SIZE;
-    QUEX_TYPE_LEXATOM* dummy;
-    QUEX_TYPE_LEXATOM* memory;
-    QUEX_TYPE_LEXATOM* read_p;
-    QUEX_TYPE_LEXATOM* end_p;
-    QUEX_TYPE_LEXATOM* p;
+    QUEX_TYPE_LEXATOM_EXT* dummy;
+    QUEX_TYPE_LEXATOM_EXT* memory;
+    QUEX_TYPE_LEXATOM_EXT* read_p;
+    QUEX_TYPE_LEXATOM_EXT* end_p;
+    QUEX_TYPE_LEXATOM_EXT* p;
     bool               verdict;
     QUEX_NAME(Buffer)  including;
     QUEX_NAME(Buffer)  included;
@@ -62,11 +62,11 @@ main(int argc, char** argv)
         for(end_i = read_i + 1; end_i < MemorySize; ++end_i) {
   
             MemoryManager_UnitTest.allocation_addmissible_f = true;
-            memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
-                                MemorySize * sizeof(QUEX_TYPE_LEXATOM), 
+            memory = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+                                MemorySize * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                 E_MemoryObjectType_BUFFER_MEMORY);
             /* Dummy allocation to prevent adjacent memories.                */
-            dummy = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
+            dummy = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
                                         4711, E_MemoryObjectType_BUFFER_MEMORY);
 
             read_p = &memory[read_i];
@@ -117,11 +117,11 @@ main(int argc, char** argv)
 
 static int
 self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* included, 
-                        QUEX_TYPE_LEXATOM* MemoryEnd,
+                        QUEX_TYPE_LEXATOM_EXT* MemoryEnd,
                         ptrdiff_t          DistanceReadToEnd,
                         bool               Verdict)
 {
-    QUEX_TYPE_LEXATOM* p;
+    QUEX_TYPE_LEXATOM_EXT* p;
     ptrdiff_t          i;
     /*         front           read_p      end_p
      *           |               |           |
@@ -156,8 +156,8 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
             __quex_assert(&including->_memory._back[1] != &included->_memory._front[0]);
         }
         else {
-            __quex_assert(included->_memory._back == (QUEX_TYPE_LEXATOM*)0);
-            __quex_assert(included->_memory._front == (QUEX_TYPE_LEXATOM*)0);
+            __quex_assert(included->_memory._back == (QUEX_TYPE_LEXATOM_EXT*)0);
+            __quex_assert(included->_memory._front == (QUEX_TYPE_LEXATOM_EXT*)0);
         }
 
         /* Here, construction can only succeed, if allocation is addmissible. */
@@ -176,7 +176,7 @@ self_check_construction(QUEX_NAME(Buffer)* including, QUEX_NAME(Buffer)* include
 static void
 self_check_destruction(QUEX_NAME(Buffer)* including, size_t MemorySize)
 {
-    QUEX_TYPE_LEXATOM* p;
+    QUEX_TYPE_LEXATOM_EXT* p;
     ptrdiff_t          i;
 
     __quex_assert(&including->_memory._back[1] - &including->_memory._front[0] 

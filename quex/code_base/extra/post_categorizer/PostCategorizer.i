@@ -332,18 +332,18 @@ QUEX_NAME(PostCategorizer__print_tree)(QUEX_NAME(DictionaryNode)* node, int Dept
 
     for(i=0; i<Depth; ++i) __QUEX_STD_printf("        ");
     {
-        uint8_t        drain[256];
-        uint8_t*       drain_p     = &drain[0];
-        uint8_t*       remainder_p = (uint8_t*)0; 
-        const uint8_t* source_p     = (uint8_t*)&node->name_first_character;
-        const uint8_t* source_end_p = &source_p[1];
+        uint8_t                  drain[256];
+        uint8_t*                 drain_p     = &drain[0];
+        uint8_t*                 remainder_p = (uint8_t*)0; 
+        const QUEX_TYPE_LEXATOM* source_p     = (QUEX_TYPE_LEXATOM*)&node->name_first_character;
+        const QUEX_TYPE_LEXATOM* source_end_p = &source_p[1];
 
         /* Convert the first character                                       */
         QUEX_NAME(lexeme_nnzt_to_utf8)(&source_p, source_end_p, &drain_p, &drain[256]);
 
         *drain_p++   = '\0';
         remainder_p  = drain_p;
-        source_p     = (uint8_t*)node->name_remainder;
+        source_p     = (QUEX_TYPE_LEXATOM*)node->name_remainder;
         source_end_p = &source_p[QUEX_NAME(lexeme_length)((QUEX_TYPE_LEXATOM*)source_p) + 1];
 
         /* Convert the remainder                                             */

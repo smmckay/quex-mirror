@@ -31,7 +31,7 @@
 
 #include <common.h>
 #include "MemoryManager_UnitTest.i"
-#include "ut/lib/buffer/Buffer"
+#include "test_c/lib/buffer/Buffer"
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
@@ -47,7 +47,7 @@ static void               self_test_single_migration(QUEX_NAME(Buffer)* referenc
                                                      size_t             NewSize,
                                                      ptrdiff_t*         shrink_n);
 
-QUEX_INLINE bool
+bool
 QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
                                    QUEX_NAME(Buffer)*        nesting,
                                    QUEX_NAME(LexatomLoader)* filler);
@@ -65,7 +65,7 @@ main(int argc, char** argv)
     size_t             total_size = 0;
     size_t             single_size = 0;
     size_t             depth = atoi(argv[1]);
-    QUEX_TYPE_LEXATOM  tmp[3];
+    QUEX_TYPE_LEXATOM_EXT  tmp[3];
 
     hwut_info("Extend/Migrate Memory: Nested;"
               "CHOICES: 2, 3, 51;");
@@ -93,17 +93,17 @@ main(int argc, char** argv)
                     tmp[0] = reference->input.end_p[0];
                     tmp[1] = reference->_memory._front[0];
                     tmp[2] = reference->_memory._back[0];
-                    reference->input.end_p[0]    = (QUEX_TYPE_LEXATOM)0;
-                    reference->_memory._front[0] = (QUEX_TYPE_LEXATOM)0;
-                    reference->_memory._back[0]  = (QUEX_TYPE_LEXATOM)0;
+                    reference->input.end_p[0]    = (QUEX_TYPE_LEXATOM_EXT)0;
+                    reference->_memory._front[0] = (QUEX_TYPE_LEXATOM_EXT)0;
+                    reference->_memory._back[0]  = (QUEX_TYPE_LEXATOM_EXT)0;
 
                     subject = self_construct_setup(&self_subject[0], total_size, depth);
                     subject->input.end_p       = &subject->_memory._front[end_offset + 1];
                     subject->_read_p           = &subject->_memory._front[offset + 1];
                     subject->_lexeme_start_p   = &subject->_memory._front[offset + 1];
-                    subject->input.end_p[0]    = (QUEX_TYPE_LEXATOM)0;
-                    subject->_memory._front[0] = (QUEX_TYPE_LEXATOM)0;
-                    subject->_memory._back[0]  = (QUEX_TYPE_LEXATOM)0;
+                    subject->input.end_p[0]    = (QUEX_TYPE_LEXATOM_EXT)0;
+                    subject->_memory._front[0] = (QUEX_TYPE_LEXATOM_EXT)0;
+                    subject->_memory._back[0]  = (QUEX_TYPE_LEXATOM_EXT)0;
 
                     self_test_single_migration(reference, subject, new_size, &shrink_n);
                     self_destruct_setup(&self_subject[0], depth);
@@ -146,10 +146,10 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t Depth)
     ptrdiff_t          i           = 0;
     bool               success_f   = false;
     ptrdiff_t          single_size = TotalSize / Depth;
-    QUEX_TYPE_LEXATOM* p;
+    QUEX_TYPE_LEXATOM_EXT* p;
 
-    QUEX_TYPE_LEXATOM* memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
-                                      TotalSize * sizeof(QUEX_TYPE_LEXATOM), 
+    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+                                      TotalSize * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                       E_MemoryObjectType_BUFFER_MEMORY);
 
     QUEX_NAME(Buffer_construct)(&array[0], (QUEX_NAME(LexatomLoader)*)0,
@@ -159,7 +159,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t Depth)
                                 (QUEX_NAME(Buffer)*)0);
 
     for(p =  &array[0]._memory._front[1]; p != array[0].input.end_p; ++p) {
-        *p = (QUEX_TYPE_LEXATOM)('a' + i);
+        *p = (QUEX_TYPE_LEXATOM_EXT)('a' + i);
     }
 
     /* Ensure, that all buffers are split from the root buffer. */
@@ -174,7 +174,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t Depth)
         array[i+1].input.end_p[0] = QUEX_SETTING_BUFFER_LIMIT_CODE;
 
         for(p =  &array[i+1]._memory._front[1]; p != array[i+1].input.end_p; ++p) {
-            *p = (QUEX_TYPE_LEXATOM)('a' + i);
+            *p = (QUEX_TYPE_LEXATOM_EXT)('a' + i);
         }
     }
 
@@ -201,7 +201,7 @@ self_test_single_migration(QUEX_NAME(Buffer)* reference,
     //  QUEX_NAME(Buffer)*  root      = &self_reference[0];
     // bool                verdict_f = (subject->input.end_p - root->_memory._front <= NewSize) ? true : false;
     // E_Ownership         ownership = verdict_f ? E_Ownership_EXTERNAL : E_Ownership_LEXICAL_ANALYZER;
-    QUEX_TYPE_LEXATOM   new_memory[8192];
+    QUEX_TYPE_LEXATOM_EXT   new_memory[8192];
 
     hwut_verify(NewSize < 8192);
 

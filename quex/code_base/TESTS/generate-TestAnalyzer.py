@@ -20,6 +20,8 @@ from   quex.input.code.base             import CodeFragment
 # re_include_guard = re.compile(r"__QUEX_INCLUDE_[A-Z_a-z0-9]*")
 output_dir = None
 
+Setup._debug_QUEX_TYPE_LEXATOM_EXT =True
+
 blackboard.header = CodeFragment(
 """
 extern bool UserConstructor_UnitTest_return_value;

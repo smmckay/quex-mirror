@@ -21,8 +21,8 @@
 
 #include <common.h>
 #include "MemoryManager_UnitTest.i"
-#include "ut/lib/buffer/Buffer"
-#include "ut/lib/buffer/asserts"
+#include "test_c/lib/buffer/Buffer"
+#include "test_c/lib/buffer/asserts"
 
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
@@ -37,7 +37,7 @@ static QUEX_NAME(Buffer)* self_construct_setup(QUEX_NAME(Buffer)* array,
 static void               self_destruct_setup(QUEX_NAME(Buffer)* array,
                                               size_t             Depth);
 
-QUEX_INLINE bool
+bool
 QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
                                    QUEX_NAME(Buffer)*        nesting,
                                    QUEX_NAME(LexatomLoader)* filler);
@@ -93,10 +93,10 @@ self_test(size_t SizeBefore, ptrdiff_t ReallocLimitByteN)
     bool                 verdict_f = false;
     ptrdiff_t            size;
     QUEX_NAME(Buffer)*   root = &self_reference[0];
-    QUEX_TYPE_LEXATOM*   content_before = (QUEX_TYPE_LEXATOM*)malloc(
-                                            sizeof(QUEX_TYPE_LEXATOM) * SizeBefore);
+    QUEX_TYPE_LEXATOM_EXT*   content_before = (QUEX_TYPE_LEXATOM_EXT*)malloc(
+                                            sizeof(QUEX_TYPE_LEXATOM_EXT) * SizeBefore);
     size_t               content_before_size;
-    QUEX_TYPE_LEXATOM*   root_memory_p = 0;
+    QUEX_TYPE_LEXATOM_EXT*   root_memory_p = 0;
     size_t               depth = 5;            
 
     if( ReallocLimitByteN < 0) return; 
@@ -147,13 +147,13 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t* depth)
     ptrdiff_t          i           = 0;
     bool               success_f   = false;
     ptrdiff_t          single_size;
-    QUEX_TYPE_LEXATOM* p;
+    QUEX_TYPE_LEXATOM_EXT* p;
 
     *depth      = QUEX_MIN(TotalSize / 4, *depth);
     single_size = TotalSize / *depth;
 
-    QUEX_TYPE_LEXATOM* memory = (QUEX_TYPE_LEXATOM*)QUEXED(MemoryManager_allocate)(
-                                      TotalSize * sizeof(QUEX_TYPE_LEXATOM), 
+    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+                                      TotalSize * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                       E_MemoryObjectType_BUFFER_MEMORY);
 
     QUEX_NAME(Buffer_construct)(&array[0], (QUEX_NAME(LexatomLoader)*)0,
@@ -163,7 +163,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t* depth)
                                 (QUEX_NAME(Buffer)*)0);
 
     for(p =  &array[0]._memory._front[1]; p != array[0].input.end_p; ++p) {
-        *p = (QUEX_TYPE_LEXATOM)('a' + i);
+        *p = (QUEX_TYPE_LEXATOM_EXT)('a' + i);
     }
 
     /* Ensure, that all buffers are split from the root buffer. */
@@ -175,10 +175,10 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t* depth)
         hwut_verify(success_f);
 
         array[i+1].input.end_p    = &array[i+1]._memory._front[single_size-1];
-        *(array[i+1].input.end_p) = (QUEX_TYPE_LEXATOM)0;
+        *(array[i+1].input.end_p) = (QUEX_TYPE_LEXATOM_EXT)0;
 
         for(p =  &array[i+1]._memory._front[1]; p != array[i+1].input.end_p; ++p) {
-            *p = (QUEX_TYPE_LEXATOM)('a' + i);
+            *p = (QUEX_TYPE_LEXATOM_EXT)('a' + i);
         }
 
         QUEX_BUFFER_ASSERT_CONSISTENCY(&array[i+1]);

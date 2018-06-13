@@ -849,6 +849,11 @@ Option("_debug_QUEX_TYPE_LEXATOM_EXT", None,
        then defines the lexatom type to be `uint64_t`. This is useful for unit tests,
        where one and the same lexer is tried with different buffer setups.
        """),
+Option("quex_lib", None,
+       """
+       Defines name prefix and namespace of the common library for all quex lexers.
+       The specification format is the same as for the analyzer class.
+       """),
 """
 The aforementioned options are solely provided for core developers who desire
 to work on the internal Quex core.
