@@ -28,9 +28,9 @@
 #include <hwut_unit.h>
 
 #ifdef   __cplusplus
-#   include "test_c/lib/quex/MemoryManager.i"
-#else
 #   include "test_cpp/lib/quex/MemoryManager.i"
+#else
+#   include "test_c/lib/quex/MemoryManager.i"
 #endif
 //#include "test_c/lib/buffer/asserts.i"
 
@@ -244,6 +244,9 @@ find_reference(const char* file_stem)
  * endian and 'be' for big endian. 
  */
 {
+#   ifdef __cplusplus
+    using namespace Quex;
+#   endif
     static char file_name[256];
 
     if( sizeof(QUEX_TYPE_LEXATOM_EXT) == 1 ) {
@@ -251,7 +254,7 @@ find_reference(const char* file_stem)
     }
     else {
         snprintf(&file_name[0], 255, "%s-%i-%s.dat", file_stem, (int)sizeof(QUEX_TYPE_LEXATOM_EXT)*8, 
-                 QUEX_NAME_LIB(system_is_little_endian)() ? "le" : "be");
+                 QuexLib_system_is_little_endian() ? "le" : "be");
     }
     return &file_name[0];
 }

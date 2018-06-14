@@ -18,7 +18,9 @@
 #include "test_c/lib/quex/MemoryManager" 
 #endif
 
-QUEX_NAMESPACE_QUEX_OPEN
+#ifdef __cplusplus
+namespace Quex {
+#endif
 
 typedef struct {
     int allocation_n;
@@ -44,8 +46,8 @@ typedef struct {
 extern MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
 uint8_t*
-QUEX_NAME_LIB_DEF(MemoryManager_allocate)(const size_t       ByteN, 
-                                   E_MemoryObjectType Type)
+QuexLib_MemoryManager_allocate(const size_t       ByteN, 
+                                     E_MemoryObjectType Type)
 {
     uint8_t*  me;
 
@@ -92,9 +94,9 @@ QUEX_NAME_LIB_DEF(MemoryManager_allocate)(const size_t       ByteN,
 }
 
 uint8_t*
-QUEX_NAME_LIB_DEF(MemoryManager_reallocate)(void*              old_memory,
-                                     const size_t       NewByteN, 
-                                     E_MemoryObjectType Type)
+QuexLib_MemoryManager_reallocate(void*              old_memory,
+                                       const size_t       NewByteN, 
+                                       E_MemoryObjectType Type)
 {
     void* result_p;
 
@@ -116,8 +118,8 @@ QUEX_NAME_LIB_DEF(MemoryManager_reallocate)(void*              old_memory,
 }
        
 void 
-QUEX_NAME_LIB_DEF(MemoryManager_free)(void*              alter_ego, 
-                               E_MemoryObjectType Type)  
+QuexLib_MemoryManager_free(void*              alter_ego, 
+                                 E_MemoryObjectType Type)  
 { 
     void* me = (void*)alter_ego;
     (void)Type;
@@ -134,8 +136,8 @@ QUEX_NAME_LIB_DEF(MemoryManager_free)(void*              alter_ego,
 }
 
 size_t
-QUEX_NAME_LIB_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
-                                 uint8_t* source_begin_p, uint8_t* source_end_p)
+QuexLib_MemoryManager_insert(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
+                                   uint8_t* source_begin_p, uint8_t* source_end_p)
 /* Inserts as many bytes as possible into the array from 'drain_begin_p'
  * to 'drain_end_p'. The source of bytes starts at 'source_begin_p' and
  * ends at 'source_end_p'.
@@ -161,7 +163,7 @@ QUEX_NAME_LIB_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_
 }
 
 char*
-QUEX_NAME_LIB_DEF(MemoryManager_clone_string)(const char* String)
+QuexLib_MemoryManager_clone_string(const char* String)
 { 
     char* result;
    
@@ -172,7 +174,7 @@ QUEX_NAME_LIB_DEF(MemoryManager_clone_string)(const char* String)
         return (char*)0;
     }
    
-    result = (char*)QUEX_NAME_LIB(MemoryManager_allocate)(
+    result = (char*)QuexLib_MemoryManager_allocate(
                                  sizeof(char)*(__QUEX_STD_strlen(String)+1),
                                  E_MemoryObjectType_INPUT_NAME);
     if( ! result ) {
@@ -183,7 +185,7 @@ QUEX_NAME_LIB_DEF(MemoryManager_clone_string)(const char* String)
 }
 
 bool 
-QUEX_NAME_LIB_DEF(system_is_little_endian)(void)
+QuexLib_system_is_little_endian(void)
 {
     union {
         long int multi_bytes;
@@ -194,7 +196,7 @@ QUEX_NAME_LIB_DEF(system_is_little_endian)(void)
 }
 
 void
-QUEX_NAME_LIB_DEF(print_relative_positions)(const void*  Begin,       const void* End, 
+QuexLib_print_relative_positions(const void*  Begin,       const void* End, 
                                      size_t       ElementSize, const void* P)
 /* Begin       = pointer to first element of buffer.
  * End         = pointer behind last element of buffer.
@@ -224,7 +226,7 @@ QUEX_NAME_LIB_DEF(print_relative_positions)(const void*  Begin,       const void
 }
 
 ptrdiff_t
-QUEX_NAME_LIB_DEF(strlcpy)(char* dst, const char* src, size_t siz)
+QuexLib_strlcpy(char* dst, const char* src, size_t siz)
 {
     /* Copy src to string dst of size siz.  At most siz-1 characters
      * will be copied.  Always NUL terminates (unless siz == 0).
@@ -265,7 +267,9 @@ QUEX_NAME_LIB_DEF(strlcpy)(char* dst, const char* src, size_t siz)
     return (s - src - 1);/* count does n ot include NUL */
 }
 
-QUEX_NAMESPACE_QUEX_CLOSE
+#ifdef __cplusplus
+} /* namespace Quex */
+#endif
  
 #endif /*  __QUEX_INCLUDE_GUARD__MEMORY_MANAGER_I */
 

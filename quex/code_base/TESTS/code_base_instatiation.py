@@ -32,6 +32,15 @@ Setup.token_class_name_safe   = "TestAnalyzer_Token"
 Setup.token_id_type           = "int"
 Setup.extern_token_class_file = "no-name"
 
+if "--lang-C" in sys.argv:
+    Setup._quex_lib_prefix        = "QuexLib"
+    Setup._quex_lib_name_space    = []
+    Setup._quex_lib_name_safe     = "QuexLib"
+else:
+    Setup._quex_lib_prefix        = "QuexLib"
+    Setup._quex_lib_name_space    = ["Quex"]
+    Setup._quex_lib_name_safe     = "Quex_QuexLib"
+
 token_db.token_type_definition = \
         TokenTypeDescriptorManual(Setup.extern_token_class_file,
                                   Setup.token_class_name,
