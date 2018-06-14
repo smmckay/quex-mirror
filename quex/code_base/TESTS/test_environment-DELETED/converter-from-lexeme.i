@@ -231,7 +231,7 @@ TestAnalyzer_lexeme_to_utf8(const std::basic_string<TestAnalyzer_lexatom_t>& Sou
 uint8_t    tmp_drain[4];
 uint8_t*   drain_it;
 TestAnalyzer_lexatom_t*          source = (TestAnalyzer_lexatom_t*)
-QUEXED(MemoryManager_allocate)(
+QUEX_NAME_LIB(MemoryManager_allocate)(
 sizeof(TestAnalyzer_lexatom_t) * (Source.length() + 1),
 E_MemoryObjectType_TEXT);
 const size_t                SourceLength = Source.length();
@@ -241,7 +241,7 @@ std::basic_string<uint8_t>  result;
 
 
 if( SourceLength != Source.copy(&source[0], SourceLength) ) {
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 /* .copy() does not append a terminating zero ...
@@ -254,7 +254,7 @@ __quex_assert(source_it <= &source[SourceLength]);
 result.append((uint8_t*)tmp_drain, (size_t)(drain_it - tmp_drain));
 }
 
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 #endif
@@ -343,7 +343,7 @@ TestAnalyzer_lexeme_to_utf16(const std::basic_string<TestAnalyzer_lexatom_t>& So
 uint16_t    tmp_drain[2];
 uint16_t*   drain_it;
 TestAnalyzer_lexatom_t*          source = (TestAnalyzer_lexatom_t*)
-QUEXED(MemoryManager_allocate)(
+QUEX_NAME_LIB(MemoryManager_allocate)(
 sizeof(TestAnalyzer_lexatom_t) * (Source.length() + 1),
 E_MemoryObjectType_TEXT);
 const size_t                SourceLength = Source.length();
@@ -353,7 +353,7 @@ std::basic_string<uint16_t>  result;
 
 
 if( SourceLength != Source.copy(&source[0], SourceLength) ) {
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 /* .copy() does not append a terminating zero ...
@@ -366,7 +366,7 @@ __quex_assert(source_it <= &source[SourceLength]);
 result.append((uint16_t*)tmp_drain, (size_t)(drain_it - tmp_drain));
 }
 
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 #endif
@@ -455,7 +455,7 @@ TestAnalyzer_lexeme_to_utf32(const std::basic_string<TestAnalyzer_lexatom_t>& So
 uint32_t    tmp_drain[1];
 uint32_t*   drain_it;
 TestAnalyzer_lexatom_t*          source = (TestAnalyzer_lexatom_t*)
-QUEXED(MemoryManager_allocate)(
+QUEX_NAME_LIB(MemoryManager_allocate)(
 sizeof(TestAnalyzer_lexatom_t) * (Source.length() + 1),
 E_MemoryObjectType_TEXT);
 const size_t                SourceLength = Source.length();
@@ -465,7 +465,7 @@ std::basic_string<uint32_t>  result;
 
 
 if( SourceLength != Source.copy(&source[0], SourceLength) ) {
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 /* .copy() does not append a terminating zero ...
@@ -478,7 +478,7 @@ __quex_assert(source_it <= &source[SourceLength]);
 result.append((uint32_t*)tmp_drain, (size_t)(drain_it - tmp_drain));
 }
 
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 #endif
@@ -567,7 +567,7 @@ TestAnalyzer_lexeme_to_char(const std::basic_string<TestAnalyzer_lexatom_t>& Sou
 char    tmp_drain[4];
 char*   drain_it;
 TestAnalyzer_lexatom_t*          source = (TestAnalyzer_lexatom_t*)
-QUEXED(MemoryManager_allocate)(
+QUEX_NAME_LIB(MemoryManager_allocate)(
 sizeof(TestAnalyzer_lexatom_t) * (Source.length() + 1),
 E_MemoryObjectType_TEXT);
 const size_t                SourceLength = Source.length();
@@ -577,7 +577,7 @@ std::basic_string<char>  result;
 
 
 if( SourceLength != Source.copy(&source[0], SourceLength) ) {
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 /* .copy() does not append a terminating zero ...
@@ -590,7 +590,7 @@ __quex_assert(source_it <= &source[SourceLength]);
 result.append((char*)tmp_drain, (size_t)(drain_it - tmp_drain));
 }
 
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 #endif
@@ -679,7 +679,7 @@ TestAnalyzer_lexeme_to_wchar_t(const std::basic_string<TestAnalyzer_lexatom_t>& 
 wchar_t    tmp_drain[4];
 wchar_t*   drain_it;
 TestAnalyzer_lexatom_t*          source = (TestAnalyzer_lexatom_t*)
-QUEXED(MemoryManager_allocate)(
+QUEX_NAME_LIB(MemoryManager_allocate)(
 sizeof(TestAnalyzer_lexatom_t) * (Source.length() + 1),
 E_MemoryObjectType_TEXT);
 const size_t                SourceLength = Source.length();
@@ -689,7 +689,7 @@ std::basic_string<wchar_t>  result;
 
 
 if( SourceLength != Source.copy(&source[0], SourceLength) ) {
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 /* .copy() does not append a terminating zero ...
@@ -702,7 +702,7 @@ __quex_assert(source_it <= &source[SourceLength]);
 result.append((wchar_t*)tmp_drain, (size_t)(drain_it - tmp_drain));
 }
 
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 #endif
@@ -791,7 +791,7 @@ TestAnalyzer_lexeme_to_pretty_char(const std::basic_string<TestAnalyzer_lexatom_
 char    tmp_drain[4];
 char*   drain_it;
 TestAnalyzer_lexatom_t*          source = (TestAnalyzer_lexatom_t*)
-QUEXED(MemoryManager_allocate)(
+QUEX_NAME_LIB(MemoryManager_allocate)(
 sizeof(TestAnalyzer_lexatom_t) * (Source.length() + 1),
 E_MemoryObjectType_TEXT);
 const size_t                SourceLength = Source.length();
@@ -801,7 +801,7 @@ std::basic_string<char>  result;
 
 
 if( SourceLength != Source.copy(&source[0], SourceLength) ) {
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 /* .copy() does not append a terminating zero ...
@@ -814,7 +814,7 @@ __quex_assert(source_it <= &source[SourceLength]);
 result.append((char*)tmp_drain, (size_t)(drain_it - tmp_drain));
 }
 
-QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
 return result;
 }
 #endif

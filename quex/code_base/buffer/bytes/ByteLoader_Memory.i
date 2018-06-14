@@ -32,7 +32,7 @@ QUEX_NAME(ByteLoader_Memory_new)(const uint8_t*  BeginP,
    
     if( ! BeginP || ! EndP ) return (QUEX_NAME(ByteLoader)*)0;
 
-    me = (QUEX_NAME(ByteLoader_Memory)*)QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_Memory)),
+    me = (QUEX_NAME(ByteLoader_Memory)*)QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_Memory)),
                                                                        E_MemoryObjectType_BYTE_LOADER);
     if( ! me ) return (QUEX_NAME(ByteLoader)*)0;
 
@@ -64,16 +64,16 @@ QUEX_NAME(ByteLoader_Memory_new_from_file_name)(const char* FileName)
     }
 
     /* Load the file's content into some memory.                             */
-    begin_p = (uint8_t*)QUEXED(MemoryManager_allocate)(size, E_MemoryObjectType_BUFFER_MEMORY);
+    begin_p = (uint8_t*)QUEX_NNAME_LIB(MemoryManager_allocate)(size, E_MemoryObjectType_BUFFER_MEMORY);
     if( size != fread(begin_p, 1, size, fh) ) {
-        QUEXED(MemoryManager_free)(begin_p, E_MemoryObjectType_BUFFER_MEMORY);
+        QUEX_NNAME_LIB(MemoryManager_free)(begin_p, E_MemoryObjectType_BUFFER_MEMORY);
         return me;
     }
 
     /* Call the main new operator to allocate the byte loader.               */
     me = QUEX_NAME(ByteLoader_Memory_new)(begin_p, &begin_p[size]);
     if( ! me ) {
-        QUEXED(MemoryManager_free)(begin_p, E_MemoryObjectType_BUFFER_MEMORY);
+        QUEX_NNAME_LIB(MemoryManager_free)(begin_p, E_MemoryObjectType_BUFFER_MEMORY);
     }
     else {
         /* Mark memory ownership => destructor deletes it.                   */
@@ -111,11 +111,11 @@ QUEX_NAME(ByteLoader_Memory_delete_self)(QUEX_NAME(ByteLoader)* alter_ego)
     QUEX_NAME(ByteLoader_Memory)* me = (QUEX_NAME(ByteLoader_Memory)*)(alter_ego);
 
     if( me->memory_ownership == E_Ownership_LEXICAL_ANALYZER ) {
-        QUEXED(MemoryManager_free)((void*)&me->byte_array.begin_p[0], 
+        QUEX_NNAME_LIB(MemoryManager_free)((void*)&me->byte_array.begin_p[0], 
                                    E_MemoryObjectType_BUFFER_MEMORY);
     }
 
-    QUEXED(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
+    QUEX_NNAME_LIB(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
 
 }
 
@@ -180,7 +180,7 @@ QUEX_NAME(ByteLoader_Memory_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
                       (const void*)me->byte_array.end_p, 
                       (int)(me->byte_array.end_p - me->byte_array.begin_p));
     __QUEX_STD_printf("        input_position:   ");
-    QUEXED(print_relative_positions)(me->byte_array.begin_p, me->byte_array.end_p, 1, 
+    QUEX_NNAME_LIB(print_relative_positions)(me->byte_array.begin_p, me->byte_array.end_p, 1, 
                                      (void*)me->byte_array.position);
     __QUEX_STD_printf("\n");
 }

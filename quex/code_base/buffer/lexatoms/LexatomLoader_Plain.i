@@ -61,7 +61,7 @@ QUEX_NAME(LexatomLoader_Plain_new)(QUEX_NAME(ByteLoader)* byte_loader)
 {
     QUEX_NAME(LexatomLoader_Plain)*  me = \
          (QUEX_NAME(LexatomLoader_Plain)*) \
-          QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(LexatomLoader_Plain)),
+          QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(LexatomLoader_Plain)),
                                          E_MemoryObjectType_BUFFER_FILLER);
     if( ! me ) {
         return (QUEX_NAME(LexatomLoader)*)0;

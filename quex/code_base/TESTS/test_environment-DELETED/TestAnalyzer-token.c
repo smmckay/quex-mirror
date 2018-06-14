@@ -56,7 +56,7 @@ if( ! __this ) return;
 #   line 40 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
 if( self.text != LexemeNull ) {
-QUEXED(MemoryManager_free)((void*)self.text,
+QUEX_NAME_LIB(MemoryManager_free)((void*)self.text,
 E_MemoryObjectType_TEXT);
 self.text = LexemeNull;
 }
@@ -84,7 +84,7 @@ const TestAnalyzer_Token* __That)
 self.id  = Other.id;
 
 if( self.text != LexemeNull ) {
-QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
 }
 if( Other.text != LexemeNull ) {
 self.text = TestAnalyzer_lexeme_clone(self.text,
@@ -152,7 +152,7 @@ printf("'\n");
 #       endif
 
 if( self.text != LexemeNull ) {
-QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+QUEX_NAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
 }
 if( Begin != LexemeNull ) {
 __quex_assert(End >= Begin);

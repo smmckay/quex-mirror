@@ -477,7 +477,7 @@ TestAnalyzer_Token_destruct(TestAnalyzer_Token* __this)
 #   line 40 "/home/fschaef/prj/quex/trunk/quex/code_base/token/CDefault.qx"
 
        if( self.text != LexemeNull ) {
-           QUEXED(MemoryManager_free)((void*)self.text,
+           QUEX_NAME_LIB(MemoryManager_free)((void*)self.text,
                                       E_MemoryObjectType_TEXT);
            self.text = LexemeNull;
        }
@@ -504,7 +504,7 @@ TestAnalyzer_Token_copy(TestAnalyzer_Token*       __this,
         self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+            QUEX_NAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
             self.text = TestAnalyzer_lexeme_clone(self.text, 
@@ -571,7 +571,7 @@ TestAnalyzer_Token_take_text(TestAnalyzer_Token*            __this,
 #       endif
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+            QUEX_NAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);

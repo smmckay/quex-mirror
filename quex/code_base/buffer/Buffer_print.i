@@ -113,11 +113,11 @@ QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
     QUEX_NAME(BufferMemory_print_this)(&me->_memory);
 
     __QUEX_STD_printf("    _read_p:                      ");
-    QUEXED(print_relative_positions)(me->begin(me), me->end(me), 
+    QUEX_NNAME_LIB(print_relative_positions)(me->begin(me), me->end(me), 
                                      sizeof(QUEX_TYPE_LEXATOM), me->_read_p);
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("    _lexeme_start_p:              ");
-    QUEXED(print_relative_positions)(me->begin(me), me->end(me), 
+    QUEX_NNAME_LIB(print_relative_positions)(me->begin(me), me->end(me), 
                                      sizeof(QUEX_TYPE_LEXATOM), me->_lexeme_start_p);
     __QUEX_STD_printf("\n");
 
@@ -132,7 +132,7 @@ QUEX_NAME(Buffer_print_this)(QUEX_NAME(Buffer)* me)
     __QUEX_STD_printf("      lexatom_index_begin: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_begin)(me));
     __QUEX_STD_printf("      end_character_index: %i;\n", (int)QUEX_NAME(Buffer_input_lexatom_index_end)(me));
     __QUEX_STD_printf("      end_p:               ");
-    QUEXED(print_relative_positions)(me->begin(me), me->end(me), 
+    QUEX_NNAME_LIB(print_relative_positions)(me->begin(me), me->end(me), 
                                      sizeof(QUEX_TYPE_LEXATOM), me->content_end(me));
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("    }\n");

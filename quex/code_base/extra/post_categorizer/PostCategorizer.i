@@ -68,7 +68,7 @@ QUEX_NAME(PostCategorizer__allocate_node)(const QUEX_TYPE_LEXATOM* Remainder)
     const size_t   RemainderSize = sizeof(QUEX_TYPE_LEXATOM) * (RemainderL + 1);
     uint8_t*       base          = 
                       (uint8_t*)
-                      QUEXED(MemoryManager_allocate)(BaseSize + RemainderSize, 
+                      QUEX_NNAME_LIB(MemoryManager_allocate)(BaseSize + RemainderSize, 
                                                      E_MemoryObjectType_POST_CATEGORIZER_NODE);
     ((QUEX_NAME(DictionaryNode)*)base)->name_remainder = (const QUEX_TYPE_LEXATOM*)(base + BaseSize);
     return (QUEX_NAME(DictionaryNode)*)base;
@@ -79,7 +79,7 @@ QUEX_NAME(PostCategorizer__free_node)(QUEX_NAME(DictionaryNode)* node)
 { 
     if( ! node ) return;
     
-    QUEXED(MemoryManager_free)((void*)node, 
+    QUEX_NNAME_LIB(MemoryManager_free)((void*)node, 
                                E_MemoryObjectType_POST_CATEGORIZER_NODE); 
 }
 

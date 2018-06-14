@@ -251,7 +251,7 @@ find_reference(const char* file_stem)
     }
     else {
         snprintf(&file_name[0], 255, "%s-%i-%s.dat", file_stem, (int)sizeof(QUEX_TYPE_LEXATOM_EXT)*8, 
-                 QUEXED(system_is_little_endian)() ? "le" : "be");
+                 QUEX_NAME_LIB(system_is_little_endian)() ? "le" : "be");
     }
     return &file_name[0];
 }

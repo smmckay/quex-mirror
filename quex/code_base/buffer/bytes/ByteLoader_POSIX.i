@@ -26,7 +26,7 @@ QUEX_NAME(ByteLoader_POSIX_new)(int fd)
     QUEX_NAME(ByteLoader_POSIX)* me;
 
     if( fd == -1 ) return (QUEX_NAME(ByteLoader)*)0;
-    me = (QUEX_NAME(ByteLoader_POSIX)*)QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_POSIX)),
+    me = (QUEX_NAME(ByteLoader_POSIX)*)QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_POSIX)),
                                                            E_MemoryObjectType_BYTE_LOADER);
     if( ! me ) return (QUEX_NAME(ByteLoader)*)0;
     QUEX_NAME(ByteLoader_POSIX_construct)(me, fd);
@@ -80,7 +80,7 @@ QUEX_NAME(ByteLoader_POSIX_delete_self)(QUEX_NAME(ByteLoader)* alter_ego)
     if( me->fd && me->base.handle_ownership == E_Ownership_LEXICAL_ANALYZER ) {
         close(me->fd);
     }
-    QUEXED(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
+    QUEX_NNAME_LIB(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
 }
 
 QUEX_INLINE QUEX_TYPE_STREAM_POSITION    

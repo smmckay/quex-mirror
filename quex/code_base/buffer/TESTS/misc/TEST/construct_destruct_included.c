@@ -62,11 +62,11 @@ main(int argc, char** argv)
         for(end_i = read_i + 1; end_i < MemorySize; ++end_i) {
   
             MemoryManager_UnitTest.allocation_addmissible_f = true;
-            memory = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+            memory = (QUEX_TYPE_LEXATOM_EXT*)QUEX_NAME_LIB(MemoryManager_allocate)(
                                 MemorySize * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                 E_MemoryObjectType_BUFFER_MEMORY);
             /* Dummy allocation to prevent adjacent memories.                */
-            dummy = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+            dummy = (QUEX_TYPE_LEXATOM_EXT*)QUEX_NAME_LIB(MemoryManager_allocate)(
                                         4711, E_MemoryObjectType_BUFFER_MEMORY);
 
             read_p = &memory[read_i];
@@ -104,7 +104,7 @@ main(int argc, char** argv)
 
             count_n += 1;
 
-            QUEXED(MemoryManager_free)(dummy, E_MemoryObjectType_BUFFER_MEMORY);
+            QUEX_NAME_LIB(MemoryManager_free)(dummy, E_MemoryObjectType_BUFFER_MEMORY);
         }
     }
 

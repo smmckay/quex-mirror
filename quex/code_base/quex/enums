@@ -1,0 +1,143 @@
+#ifndef QUEX_INCLUDE_GUARD__QUEX__ENUMS
+#define QUEX_INCLUDE_GUARD__QUEX__ENUMS
+
+typedef enum {
+    E_LoadResult_DONE,              /* Complete or incomplete, load happened. */
+    E_LoadResult_COMPLETE,          /* Load filled drain completely.          */
+    E_LoadResult_INCOMPLETE,        /* Drain not filled completely.           */
+    E_LoadResult_ENCODING_ERROR,    /* Encoding error in stream.              */
+    E_LoadResult_NO_MORE_DATA,      /* No more data to fill drain.            */
+    E_LoadResult_OVERFLOW,          /* No more data to fill drain.            */
+    E_LoadResult_FAILURE,           /* General low-level load failure.        */ 
+    E_LoadResult_SEEK_FAILURE,      /* General low-level load failure.        */ 
+    E_LoadResult_VOID               /* General low-level load failure.        */ 
+} E_LoadResult;
+
+#define E_LoadResult_NAME(LR) \
+            (  (LR) == E_LoadResult_DONE           ? "DONE"              \
+             : (LR) == E_LoadResult_COMPLETE       ? "COMPLETE"          \
+             : (LR) == E_LoadResult_INCOMPLETE     ? "INCOMPLETE"        \
+             : (LR) == E_LoadResult_ENCODING_ERROR ? "ENCODING_ERROR"    \
+             : (LR) == E_LoadResult_NO_MORE_DATA   ? "NO MORE DATA"      \
+             : (LR) == E_LoadResult_FAILURE        ? "FAILURE"           \
+             : (LR) == E_LoadResult_VOID           ? "VOID"              \
+             :                                       "<error>")
+
+typedef enum {
+    E_Error_File_OpenFailed,
+    E_Error_File_SeekFailed,
+    E_Error_File_ReadInconsistent,
+    /* --------------------------------------------------*/
+    E_Error_Allocation_BufferMemory_Failed,
+    E_Error_Allocation_ByteLoader_Failed,
+    E_Error_Allocation_LexatomLoader_Failed,
+    E_Error_Constructor_Accumulator_Failed,
+    E_Error_Constructor_Counter_Failed,
+    E_Error_Constructor_PostCategorizer_Failed,
+    E_Error_IncludePopOnEmptyStack,
+    E_Error_IncludePush_OnError,
+    E_Error_InputName_Set_Failed,
+    /* --------------------------------------------------*/
+    E_Error_Buffer_Feeder_CannotAbsorbMoreContent,
+    E_Error_Buffer_Overflow_LexemeTooLong,
+    /* --------------------------------------------------*/
+    E_Error_DFA_DropIntoOtherState,
+    E_Error_StateRouter_Empty,
+    E_Error_StateRouter_UnkownStateIndex,
+    /* --------------------------------------------------*/
+    E_Error_Indentation_StackOverflow,
+    E_Error_Indentation_DedentNotOnIndentationBorder,
+    /* --------------------------------------------------*/
+    E_Error_Accumulator_OutOfMemory,
+    /* --------------------------------------------------*/
+    E_Error_NoHandler_OnBadLexatom,
+    E_Error_NoHandler_OnEndOfStream,
+    E_Error_NoHandler_OnFailure,
+    E_Error_NoHandler_OnIndentationBad,
+    E_Error_NoHandler_OnLoadFailure,
+    E_Error_NoHandler_OnOverflow,
+    E_Error_NoHandler_OnSkipRangeOpen,
+    /* Flags to be set even if handlers are implemented. */
+    E_Error_OnBadLexatom,
+    E_Error_OnFailure,
+    E_Error_OnIndentationBad,
+    E_Error_OnLoadFailure,
+    E_Error_OnOverflow,
+    E_Error_OnSkipRangeOpen,
+    /* --------------------------------------------------*/
+    E_Error_None,
+    E_Error_ProvidedExternal_Memory_Corrupt,
+    E_Error_ProvidedExternal_Memory_Intersects,
+    E_Error_Reset_OnError,
+    E_Error_Token_RepetitionNSetButNotSupportedByGeneratedCode,
+    E_Error_Token_QueueOverflow,
+    E_Error_Uninitialized,
+    E_Error_UnitTest_Termination,
+    E_Error_UserConstructor_Failed,
+    E_Error_UserMementoPack_Failed,
+    E_Error_UserReset_Failed,
+    /*---------------------------------------------------*/
+    E_Error_ModeStack_PopOnTopLevel,
+    E_Error_ModeStack_Overflow,
+} E_Error;
+
+#define E_Error_NAME(E) \
+    (  (E) == E_Error_File_OpenFailed                    ? "File_OpenFailed"                 \
+     : (E) == E_Error_File_SeekFailed                    ? "File_SeekFailed"                    \
+     : (E) == E_Error_File_ReadInconsistent                    ? "File_ReadInconsistent"                    \
+     : (E) == E_Error_Allocation_BufferMemory_Failed     ? "Allocation_BufferMemory_Failed"     \
+     : (E) == E_Error_Allocation_ByteLoader_Failed       ? "Allocation_ByteLoader_Failed"       \
+     : (E) == E_Error_Allocation_LexatomLoader_Failed    ? "Allocation_LexatomLoader_Failed"    \
+     : (E) == E_Error_Buffer_Feeder_CannotAbsorbMoreContent     ? "Buffer_Feeder_CannotAbsorbMoreContent"    \
+     : (E) == E_Error_Buffer_Overflow_LexemeTooLong      ? "Buffer_Overflow_LexemeTooLong"      \
+     : (E) == E_Error_Constructor_Accumulator_Failed     ? "Constructor_Accumulator_Failed"     \
+     : (E) == E_Error_Constructor_Counter_Failed         ? "Constructor_Counter_Failed"         \
+     : (E) == E_Error_Constructor_PostCategorizer_Failed ? "Constructor_PostCategorizer_Failed" \
+     : (E) == E_Error_DFA_DropIntoOtherState             ? "DFA_DropIntoOtherState"             \
+     : (E) == E_Error_IncludePopOnEmptyStack             ? "IncludePopOnEmptyStack"             \
+     : (E) == E_Error_IncludePush_OnError                ? "IncludePush_OnError"                \
+     : (E) == E_Error_StateRouter_Empty                  ? "StateRouter_Empty"                  \
+     : (E) == E_Error_StateRouter_UnkownStateIndex       ? "StateRouter_UnkownStateIndex"       \
+     : (E) == E_Error_Indentation_StackOverflow          ? "Indentation_StackOverflow"                       \
+     : (E) == E_Error_Indentation_DedentNotOnIndentationBorder ? "Indentation_DedentNotOnIndentationBorder"  \
+     : (E) == E_Error_InputName_Set_Failed               ? "InputName_Set_Failed"               \
+     : (E) == E_Error_Accumulator_OutOfMemory            ? "Accumulator_OutOfMemory"            \
+     : (E) == E_Error_OnBadLexatom                       ? "OnBadLexatom"                       \
+     : (E) == E_Error_OnFailure                          ? "OnFailure"                          \
+     : (E) == E_Error_OnIndentationBad                   ? "OnIndentationBad"                   \
+     : (E) == E_Error_OnLoadFailure                      ? "OnLoadFailure"                      \
+     : (E) == E_Error_OnOverflow                         ? "OnOverflow"                         \
+     : (E) == E_Error_OnSkipRangeOpen                    ? "OnSkipRangeOpen"                    \
+     : (E) == E_Error_NoHandler_OnBadLexatom             ? "NoHandler_OnBadLexatom"             \
+     : (E) == E_Error_NoHandler_OnEndOfStream            ? "NoHandler_OnEndOfStream"            \
+     : (E) == E_Error_NoHandler_OnFailure                ? "NoHandler_OnFailure"                \
+     : (E) == E_Error_NoHandler_OnIndentationBad         ? "NoHandler_OnIndentationBad"         \
+     : (E) == E_Error_NoHandler_OnLoadFailure            ? "NoHandler_OnLoadFailure"            \
+     : (E) == E_Error_NoHandler_OnOverflow               ? "NoHandler_OnOverflow"               \
+     : (E) == E_Error_NoHandler_OnSkipRangeOpen          ? "NoHandler_OnSkipRangeOpen"          \
+     : (E) == E_Error_None                               ? "None"                               \
+     : (E) == E_Error_ProvidedExternal_Memory_Corrupt    ? "ProvidedExternal_Memory_Corrupt"    \
+     : (E) == E_Error_ProvidedExternal_Memory_Intersects ? "ProvidedExternal_Memory_Intersects" \
+     : (E) == E_Error_Reset_OnError                      ? "Reset_OnError"                      \
+     : (E) == E_Error_Token_RepetitionNSetButNotSupportedByGeneratedCode ? "Token_RepetitionNSetButNotSupportedByGeneratedCode" \
+     : (E) == E_Error_Token_QueueOverflow                ? "Token_QueueOverflow"    \
+     : (E) == E_Error_Uninitialized                      ? "Uninitialized"                      \
+     : (E) == E_Error_UnitTest_Termination               ? "UnitTest_Termination"               \
+     : (E) == E_Error_UserConstructor_Failed             ? "UserConstructor_Failed"             \
+     : (E) == E_Error_UserMementoPack_Failed             ? "UserMementoPack_Failed"             \
+     : (E) == E_Error_UserReset_Failed                   ? "UserReset_Failed"                   \
+     : (E) == E_Error_ModeStack_PopOnTopLevel            ? "ModeStack_PopOnTopLevel"            \
+     : (E) == E_Error_ModeStack_Overflow                 ? "ModeStack_Overflow"                 \
+     :                                                     "<Error Void>")
+
+#define E_Error_MISSING_HANDLER_NAME(E) \
+     (  (E) == E_Error_NoHandler_OnBadLexatom     ? "on_bad_lexatom"     \
+      : (E) == E_Error_NoHandler_OnFailure        ? "on_failure"         \
+      : (E) == E_Error_NoHandler_OnIndentationBad ? "on_indentation_bad" \
+      : (E) == E_Error_NoHandler_OnLoadFailure    ? "on_load_failure"    \
+      : (E) == E_Error_NoHandler_OnOverflow       ? "on_buffer_overflow"        \
+      : (E) == E_Error_NoHandler_OnSkipRangeOpen  ? "on_skip_range_open" \
+      :                                             (const char*)0)
+
+#define E_Boolean_NAME(B) ((B == 0) ? "false" : "true")
+#endif /* QUEX_INCLUDE_GUARD__QUEX__ENUMS */

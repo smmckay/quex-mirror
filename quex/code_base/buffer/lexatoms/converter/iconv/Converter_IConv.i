@@ -51,7 +51,7 @@ QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
 {
     QUEX_NAME(Converter_IConv)*  me = \
        (QUEX_NAME(Converter_IConv)*)
-       QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(Converter_IConv)),
+       QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(Converter_IConv)),
                                       E_MemoryObjectType_CONVERTER);
     if( ! me ) {
         return (QUEX_NAME(Converter)*)0;
@@ -67,7 +67,7 @@ QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
                                          QUEX_NAME(Converter_IConv_stomach_byte_n),
                                          QUEX_NAME(Converter_IConv_stomach_clear),
                                          QUEX_NAME(Converter_IConv_print_this)) ) {
-        QUEXED(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
+        QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
         return (QUEX_NAME(Converter)*)0;
     }
 
@@ -95,7 +95,7 @@ QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* alter_ego,
 #   elif defined(QUEX_OPTION_ENDIAN_BIG)
     const bool little_endian_f = false;
 #   elif defined(QUEX_OPTION_ENDIAN_SYSTEM) 
-    const bool little_endian_f = QUEXED(system_is_little_endian)();
+    const bool little_endian_f = QUEX_NNAME_LIB(system_is_little_endian)();
 #   endif
 
     /* Setup conversion handle */
@@ -254,7 +254,7 @@ QUEX_NAME(Converter_IConv_delete_self)(QUEX_NAME(Converter)* alter_ego)
     QUEX_NAME(Converter_IConv)* me = (QUEX_NAME(Converter_IConv)*)alter_ego;
 
     iconv_close(me->handle); 
-    QUEXED(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
+    QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
 }
 
 QUEX_INLINE void 

@@ -81,7 +81,7 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATO
     $$DRAIN_CODE_UNIT_TYPE$$    tmp_drain[$$DRAIN_ENCODING_MAX_CODE_UNIT_N$$];
     $$DRAIN_CODE_UNIT_TYPE$$*   drain_it;
     QUEX_TYPE_LEXATOM*          source = (QUEX_TYPE_LEXATOM*)
-                                                QUEXED(MemoryManager_allocate)(
+                                                QUEX_NNAME_LIB(MemoryManager_allocate)(
                                                 sizeof(QUEX_TYPE_LEXATOM) * (Source.length() + 1),
                                                 E_MemoryObjectType_TEXT);
     const size_t                SourceLength = Source.length();
@@ -91,7 +91,7 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATO
 
 
     if( SourceLength != Source.copy(&source[0], SourceLength) ) {
-        QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+        QUEX_NNAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
         return result;
     }
     /* .copy() does not append a terminating zero ...
@@ -104,7 +104,7 @@ QUEX_NAME(lexeme_to_$$DRAIN_ENCODING$$)(const std::basic_string<QUEX_TYPE_LEXATO
         result.append(($$DRAIN_CODE_UNIT_TYPE$$*)tmp_drain, (size_t)(drain_it - tmp_drain));
     }
 
-    QUEXED(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
+    QUEX_NNAME_LIB(MemoryManager_free)(source, E_MemoryObjectType_TEXT);
     return result;
 }
 #endif

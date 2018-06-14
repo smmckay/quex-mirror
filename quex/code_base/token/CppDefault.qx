@@ -34,7 +34,7 @@ extern const char*       QUEX_NAME(map_token_id_to_name)(const QUEX_TYPE_TOKEN_I
 
    destructor {
        if( self.text != LexemeNull ) {
-           QUEXED(MemoryManager_free)((void*)self.text,
+           QUEX_NNAME_LIB(MemoryManager_free)((void*)self.text,
                                       E_MemoryObjectType_TEXT);
            self.text = LexemeNull;
        }
@@ -44,7 +44,7 @@ extern const char*       QUEX_NAME(map_token_id_to_name)(const QUEX_TYPE_TOKEN_I
         self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+            QUEX_NNAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
             self.text = QUEX_NAME(lexeme_clone)(self.text, 
@@ -78,7 +78,7 @@ extern const char*       QUEX_NAME(map_token_id_to_name)(const QUEX_TYPE_TOKEN_I
 #       endif
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+            QUEX_NNAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);

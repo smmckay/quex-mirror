@@ -34,7 +34,7 @@ QUEX_NAME(TokenQueue_construct)(QUEX_NAME(TokenQueue)* me,
  * N:      Number of token objects that the array can carry.                  */
 {
     QUEX_TYPE_TOKEN*   iterator   = 0x0;
-    QUEX_TYPE_TOKEN*   memory     = (QUEX_TYPE_TOKEN*)QUEXED(MemoryManager_allocate)(
+    QUEX_TYPE_TOKEN*   memory     = (QUEX_TYPE_TOKEN*)QUEX_NNAME_LIB(MemoryManager_allocate)(
                                              N * sizeof(QUEX_TYPE_TOKEN),
                                              E_MemoryObjectType_TOKEN_ARRAY);
     QUEX_TYPE_TOKEN*   memory_end = &memory[N];
@@ -101,7 +101,7 @@ QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me)
         QUEX_NAME_TOKEN(destruct)(iterator);
     }
 
-    QUEXED(MemoryManager_free)((void*)&me->begin[0],
+    QUEX_NNAME_LIB(MemoryManager_free)((void*)&me->begin[0],
                                E_MemoryObjectType_TOKEN_ARRAY);
 
     /* The memory chunk for the token queue itself is located inside the

@@ -56,7 +56,7 @@ on_bad_lexatom.exe: on_bad_lexatom.qx
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	$(QUEX) -i $< -o EHLexer --odir ut 
-	$(LD4) ./lexer.c ut/EHLexer.c -o $@ -Iut/lib \
+	$(LD4) ./lexer.c ut/EHLexer.c -o $@ -Iut/lib -I../../../code_base/TESTS\
 	       -DQUEX_OPTION_USER_DEFINED_MEMORY_MANAGER_EXT \
 		   -DUNIT_TEST_IN_UT
 

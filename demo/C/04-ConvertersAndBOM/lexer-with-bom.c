@@ -20,9 +20,9 @@ main(int argc, char** argv)
     Easy_ByteLoader*    byte_loader = Easy_ByteLoader_FILE_new(fh, true);
     Easy_Converter*     converter   = Easy_Converter_IConv_new(NULL, NULL);
     /* QUEX_NAME(Converter)*  converter   = QUEX_NAME(Converter_ICU_new)(NULL, NULL); */
-    QUEX_TYPE_BOM       bom_id      = quex_bom_snap(fh);
+    QUEX_TYPE_BOM       bom_id      = QuexLib_bom_snap(fh);
 
-    printf("Found BOM: %s\n", quex_bom_name(bom_id));
+    printf("Found BOM: %s\n", QuexLib_bom_name(bom_id));
 
     if( bom_id == QUEX_BOM_NONE ) {
         /* No BOM in data stream => try to interpret data as UTF8             */

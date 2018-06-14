@@ -98,7 +98,7 @@ QUEX_NAME(LexatomLoader_Converter_new)(QUEX_NAME(ByteLoader)* byte_loader,
     /* The 'LexatomLoader_Converter' is the same host for all converters.
      * Converters are pointed to by 'converter',                             */
     me = (QUEX_NAME(LexatomLoader_Converter)*) \
-          QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(LexatomLoader_Converter)),
+          QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(LexatomLoader_Converter)),
                                          E_MemoryObjectType_BUFFER_FILLER);
     if( ! me) {
         return (QUEX_NAME(LexatomLoader)*)0;
@@ -149,7 +149,7 @@ QUEX_NAME(LexatomLoader_Converter_construct)(QUEX_NAME(LexatomLoader_Converter)*
 
     /* Initialize the raw buffer that holds the plain bytes of the input file
      * (setup to trigger initial reload)                                     */
-    raw_memory = QUEXED(MemoryManager_allocate)(RawMemorySize, 
+    raw_memory = QUEX_NNAME_LIB(MemoryManager_allocate)(RawMemorySize, 
                                                 E_MemoryObjectType_BUFFER_RAW);
     QUEX_NAME(RawBuffer_init)(&me->raw_buffer, raw_memory, RawMemorySize);
 
@@ -205,7 +205,7 @@ QUEX_NAME(LexatomLoader_Converter_destruct_self)(QUEX_NAME(LexatomLoader)* alter
         me->converter->delete_self(me->converter); 
     }
 
-    QUEXED(MemoryManager_free)((void*)me->raw_buffer.begin,
+    QUEX_NNAME_LIB(MemoryManager_free)((void*)me->raw_buffer.begin,
                                E_MemoryObjectType_BUFFER_RAW); 
 }
 

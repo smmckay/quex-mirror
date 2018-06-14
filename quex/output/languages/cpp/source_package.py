@@ -126,7 +126,7 @@ dir_db = {
         "Statistics.i"
     ],
     "quex/": [
-        "enums",
+        "standard_functions", "debug_print", "enums", "operations",
         "bom",            "bom.i",  
         "MemoryManager",  "MemoryManager.i"
     ],

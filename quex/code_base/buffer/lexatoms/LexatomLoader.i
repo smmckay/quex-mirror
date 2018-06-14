@@ -84,7 +84,7 @@ QUEX_NAME(LexatomLoader_delete_self)(QUEX_NAME(LexatomLoader)* me)
         me->derived.destruct_self(me);
     }
 
-    QUEXED(MemoryManager_free)((void*)me, E_MemoryObjectType_BUFFER_FILLER);
+    QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_BUFFER_FILLER);
 }
 
 QUEX_INLINE void    

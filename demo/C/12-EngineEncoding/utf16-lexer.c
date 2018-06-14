@@ -24,7 +24,7 @@ main(int argc, char** argv)
 
     /* System's endianness is 'little' => reversion if 'big'
      *                     is 'big'    => reversion if 'little' (not 'big'). */
-    byte_order_reversion_f = QUEXED(system_is_little_endian)() ?  BigEndianF : ! BigEndianF;
+    byte_order_reversion_f = QuexLib_system_is_little_endian() ?  BigEndianF : ! BigEndianF;
     qlex.byte_order_reversion_set(&qlex, byte_order_reversion_f);
 
     printf("## input file           = %s\n", file_name);

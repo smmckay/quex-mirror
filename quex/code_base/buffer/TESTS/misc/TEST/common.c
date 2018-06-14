@@ -60,7 +60,7 @@ common_clone(QUEX_NAME(Buffer)* reference, QUEX_NAME(Buffer)* subject)
 
     QUEX_BUFFER_ASSERT_CONSISTENCY(reference);
 
-    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QUEX_NAME_LIB(MemoryManager_allocate)(
                                         reference_size * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                         E_MemoryObjectType_BUFFER_MEMORY);
 
@@ -232,7 +232,7 @@ void
 common_construct_reference_base(QUEX_NAME(Buffer)* reference, 
                                 size_t             reference_size)
 {
-    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QUEXED(MemoryManager_allocate)(
+    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QUEX_NAME_LIB(MemoryManager_allocate)(
                                       reference_size * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                       E_MemoryObjectType_BUFFER_MEMORY);
 

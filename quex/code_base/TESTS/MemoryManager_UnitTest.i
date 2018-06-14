@@ -44,7 +44,7 @@ typedef struct {
 extern MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
 uint8_t*
-QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN, 
+QUEX_NAME_LIB_DEF(MemoryManager_allocate)(const size_t       ByteN, 
                                    E_MemoryObjectType Type)
 {
     uint8_t*  me;
@@ -92,7 +92,7 @@ QUEXED_DEF(MemoryManager_allocate)(const size_t       ByteN,
 }
 
 uint8_t*
-QUEXED_DEF(MemoryManager_reallocate)(void*              old_memory,
+QUEX_NAME_LIB_DEF(MemoryManager_reallocate)(void*              old_memory,
                                      const size_t       NewByteN, 
                                      E_MemoryObjectType Type)
 {
@@ -116,7 +116,7 @@ QUEXED_DEF(MemoryManager_reallocate)(void*              old_memory,
 }
        
 void 
-QUEXED_DEF(MemoryManager_free)(void*              alter_ego, 
+QUEX_NAME_LIB_DEF(MemoryManager_free)(void*              alter_ego, 
                                E_MemoryObjectType Type)  
 { 
     void* me = (void*)alter_ego;
@@ -134,7 +134,7 @@ QUEXED_DEF(MemoryManager_free)(void*              alter_ego,
 }
 
 size_t
-QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
+QUEX_NAME_LIB_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
                                  uint8_t* source_begin_p, uint8_t* source_end_p)
 /* Inserts as many bytes as possible into the array from 'drain_begin_p'
  * to 'drain_end_p'. The source of bytes starts at 'source_begin_p' and
@@ -161,7 +161,7 @@ QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
 }
 
 char*
-QUEXED_DEF(MemoryManager_clone_string)(const char* String)
+QUEX_NAME_LIB_DEF(MemoryManager_clone_string)(const char* String)
 { 
     char* result;
    
@@ -172,7 +172,7 @@ QUEXED_DEF(MemoryManager_clone_string)(const char* String)
         return (char*)0;
     }
    
-    result = (char*)QUEXED(MemoryManager_allocate)(
+    result = (char*)QUEX_NAME_LIB(MemoryManager_allocate)(
                                  sizeof(char)*(__QUEX_STD_strlen(String)+1),
                                  E_MemoryObjectType_INPUT_NAME);
     if( ! result ) {
@@ -183,7 +183,7 @@ QUEXED_DEF(MemoryManager_clone_string)(const char* String)
 }
 
 bool 
-QUEXED_DEF(system_is_little_endian)(void)
+QUEX_NAME_LIB_DEF(system_is_little_endian)(void)
 {
     union {
         long int multi_bytes;
@@ -194,7 +194,7 @@ QUEXED_DEF(system_is_little_endian)(void)
 }
 
 void
-QUEXED_DEF(print_relative_positions)(const void*  Begin,       const void* End, 
+QUEX_NAME_LIB_DEF(print_relative_positions)(const void*  Begin,       const void* End, 
                                      size_t       ElementSize, const void* P)
 /* Begin       = pointer to first element of buffer.
  * End         = pointer behind last element of buffer.
@@ -224,7 +224,7 @@ QUEXED_DEF(print_relative_positions)(const void*  Begin,       const void* End,
 }
 
 ptrdiff_t
-QUEXED_DEF(strlcpy)(char* dst, const char* src, size_t siz)
+QUEX_NAME_LIB_DEF(strlcpy)(char* dst, const char* src, size_t siz)
 {
     /* Copy src to string dst of size siz.  At most siz-1 characters
      * will be copied.  Always NUL terminates (unless siz == 0).

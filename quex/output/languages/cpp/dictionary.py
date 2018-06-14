@@ -50,10 +50,14 @@ class Language(dict):
     Match_QUEX_NAME_lexeme    = re.compile("\\bQUEX_NAME\\(lexeme_", re.UNICODE)
     Match_QUEX_NAME           = re.compile(r"\bQUEX_NAME\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_NAME_TOKEN     = re.compile(r"\bQUEX_NAME_TOKEN\(([A-Z_a-z0-9]+)\)")
+    Match_QUEX_NAME_LIB       = re.compile(r"\bQUEX_NAME_LIB\(([A-Z_a-z0-9]+)\)")
+    Match_QUEX_NNAME_LIB      = re.compile(r"\bQUEX_NNAME_LIB\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_SETTING        = re.compile(r"\bQUEX_SETTING_([A-Z_0-9]+)\b")
     Match_QUEX_OPTION         = re.compile(r"\bQUEX_OPTION_([A-Z_0-9]+)\b")
-    Match_QUEX_INCLUDE_GUARD  = re.compile(r"\bQUEX_INCLUDE_GUARD_([a-zA-Z_0-9]+)\b")
-    Match_QUEX_INCLUDE_GUARD_TOKEN = re.compile(r"\bQUEX_INCLUDE_GUARD__TOKEN_([a-zA-Z_0-9]+)\b")
+    # Note: When the first two are replaced, the last cannot match anymore.
+    Match_QUEX_INCLUDE_GUARD_TOKEN = re.compile(r"\bQUEX_INCLUDE_GUARD__TOKEN__([a-zA-Z_0-9]+)\b")
+    Match_QUEX_INCLUDE_GUARD_QUEX  = re.compile(r"\bQUEX_INCLUDE_GUARD__QUEX__([a-zA-Z_0-9]+)\b")
+    Match_QUEX_INCLUDE_GUARD       = re.compile(r"\bQUEX_INCLUDE_GUARD__([a-zA-Z_0-9]+)\b")
 
     CommentDelimiterList      = [["//", "\n"], ["/*", "*/"]]
     
@@ -1387,6 +1391,8 @@ class Language(dict):
             ("QUEX_NAMESPACE_MAIN_CLOSE",  self.NAMESPACE_CLOSE(Setup.analyzer_name_space)),
             ("QUEX_NAMESPACE_TOKEN_OPEN",  self.NAMESPACE_OPEN(token_name_space)),
             ("QUEX_NAMESPACE_TOKEN_CLOSE", self.NAMESPACE_CLOSE(token_name_space)),
+            ("QUEX_NAMESPACE_QUEX_OPEN",   self.NAMESPACE_OPEN(Setup._quex_lib_name_space)),
+            ("QUEX_NAMESPACE_QUEX_CLOSE",  self.NAMESPACE_CLOSE(Setup._quex_lib_name_space)),
         ])
 
         # Inline
@@ -1409,11 +1415,13 @@ class Language(dict):
         txt = blue_print(Txt, replacements, CommonStart="QUEX_")
 
         # QUEX_NAME
-        token_include_guard = self.NAME_IN_NAMESPACE(tcn, token_name_space).replace("::", "__")
         txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, txt)
         txt = self.Match_QUEX_NAME_TOKEN.sub(r"%s_\1" % tcn, txt)
-        txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s_\1" % Setup.analyzer_name_safe, txt)
-        txt = self.Match_QUEX_INCLUDE_GUARD_TOKEN.sub(r"QUEX_INCLUDE_GUARD__TOKEN__%s_\1" % token_include_guard, txt)
+        txt = self.Match_QUEX_NAME_LIB.sub(r"%s_\1" % Setup._quex_lib_prefix, txt)
+        txt = self.Match_QUEX_NNAME_LIB.sub(r"%s_\1" % self.NAME_IN_NAMESPACE(Setup._quex_lib_prefix, Setup._quex_lib_name_space), txt)
+        txt = self.Match_QUEX_INCLUDE_GUARD_TOKEN.sub(r"QUEX_INCLUDE_GUARD_%s__TOKEN__\1" % Setup.token_class_name_safe, txt)
+        txt = self.Match_QUEX_INCLUDE_GUARD_QUEX.sub(r"QUEX_INCLUDE_GUARD_%s__QUEX__\1"   % Setup._quex_lib_name_safe, txt)
+        txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s__\1"              % Setup.analyzer_name_safe, txt)
         # txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % acn, txt)
         # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % acn, txt)
         return txt

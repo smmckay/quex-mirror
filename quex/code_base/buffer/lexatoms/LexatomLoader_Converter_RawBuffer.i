@@ -122,11 +122,11 @@ QUEX_NAME(RawBuffer_print_this)(QUEX_NAME(RawBuffer)*  me)
                       (void*)me->begin, (void*)me->memory_end, 
                       (int)(me->memory_end - me->begin));
     __QUEX_STD_printf("        fill_end_p:        ");
-    QUEXED(print_relative_positions)((void*)me->begin, (void*)me->memory_end,
+    QUEX_NNAME_LIB(print_relative_positions)((void*)me->begin, (void*)me->memory_end,
                                      sizeof(uint8_t), (void*)me->fill_end_p);
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("        next_to_convert_p: ");
-    QUEXED(print_relative_positions)((void*)me->begin, (void*)me->memory_end,
+    QUEX_NNAME_LIB(print_relative_positions)((void*)me->begin, (void*)me->memory_end,
                                      sizeof(uint8_t), (void*)me->next_to_convert_p);
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("      }\n");

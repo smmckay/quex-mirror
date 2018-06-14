@@ -58,7 +58,7 @@ QUEX_NAME(BufferMemory_destruct)(QUEX_NAME(BufferMemory)* me)
         switch( me->ownership ) {
         case E_Ownership_LEXICAL_ANALYZER:
             __quex_assert(0 == me->including_buffer);
-            QUEXED(MemoryManager_free)((void*)me->_front, 
+            QUEX_NNAME_LIB(MemoryManager_free)((void*)me->_front, 
                                        E_MemoryObjectType_BUFFER_MEMORY);
             break;
         case E_Ownership_INCLUDING_BUFFER:

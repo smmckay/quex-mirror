@@ -243,7 +243,7 @@ file_get_reference(const char* Codec)
     else {
         snprintf(&file_name[0], 1023, "%s-%i-%s.dat", file_stem, 
                  (int)sizeof(QUEX_TYPE_LEXATOM_EXT)*8, 
-                 QUEXED(system_is_little_endian)() ? "le" : "be");
+                 QUEX_NAME_LIB(system_is_little_endian)() ? "le" : "be");
     }
     self.reference_file = &file_name[0];
     return &file_name[0];

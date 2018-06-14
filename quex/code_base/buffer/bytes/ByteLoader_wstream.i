@@ -31,7 +31,7 @@ QUEX_NAME(ByteLoader_wstream_new)(std::wistream* sh)
 
     if( ! sh ) return (QUEX_NAME(ByteLoader)*)0;
 
-    me = (QUEX_NAME(ByteLoader_wstream)*)QUEXED(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_wstream)),
+    me = (QUEX_NAME(ByteLoader_wstream)*)QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_wstream)),
                                                                        E_MemoryObjectType_BYTE_LOADER);
 
     if( ! me ) return (QUEX_NAME(ByteLoader)*)0;
@@ -86,7 +86,7 @@ QUEX_NAME(ByteLoader_wstream_delete_self)(QUEX_NAME(ByteLoader)* alter_ego)
     if( me->input_handle && me->base.handle_ownership == E_Ownership_LEXICAL_ANALYZER ) {
         delete me->input_handle;
     }
-    QUEXED(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
+    QUEX_NNAME_LIB(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
 }
 
 /* The 'char_type' of a stream determines the atomic size of elements which are

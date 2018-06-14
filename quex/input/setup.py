@@ -290,6 +290,7 @@ SETUP_INFO = {
     "byte_order_is_that_of_current_system_f":    True,
     "_quex_lib_name_space":                      None,
     "_quex_lib_prefix":                          None,
+    "_quex_lib_name_safe":                       None,
     "analyzer_class_name":                       None,
     "analyzer_name_space":                       None,
     "analyzer_name_safe":                        None,

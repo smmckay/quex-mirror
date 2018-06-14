@@ -46,32 +46,32 @@ typedef enum {
 QUEX_NAMESPACE_QUEX_OPEN
 
 extern uint8_t*
-QUEXED_DEF(MemoryManager_allocate)(const size_t ByteN, E_MemoryObjectType);
+QUEX_NAME_LIB(MemoryManager_allocate)(const size_t ByteN, E_MemoryObjectType);
 
 extern uint8_t*
-QUEXED_DEF(MemoryManager_reallocate)(void*              old_memory,
+QUEX_NAME_LIB(MemoryManager_reallocate)(void*              old_memory,
                                      const size_t       NewByteN, 
                                      E_MemoryObjectType Type);
 
 extern void 
-QUEXED_DEF(MemoryManager_free)(void* Obj, E_MemoryObjectType);
+QUEX_NAME_LIB(MemoryManager_free)(void* Obj, E_MemoryObjectType);
 
 extern size_t
-QUEXED_DEF(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
+QUEX_NAME_LIB(MemoryManager_insert)(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
                                  uint8_t* source_begin_p, uint8_t* source_end_p);
 
 extern char*
-QUEXED_DEF(MemoryManager_clone_string)(const char* String);
+QUEX_NAME_LIB(MemoryManager_clone_string)(const char* String);
 
 extern bool 
-QUEXED_DEF(system_is_little_endian)(void);
+QUEX_NAME_LIB(system_is_little_endian)(void);
 
 extern void
-QUEXED_DEF(print_relative_positions)(const void* Begin,       const void* End, 
+QUEX_NAME_LIB(print_relative_positions)(const void* Begin,       const void* End, 
                                      size_t      ElementSize, const void* P);
 
 extern ptrdiff_t
-QUEXED_DEF(strlcpy)(char* Dest, const char* Src, size_t MaxN);
+QUEX_NAME_LIB(strlcpy)(char* Dest, const char* Src, size_t MaxN);
 
 QUEX_NAMESPACE_QUEX_CLOSE
  

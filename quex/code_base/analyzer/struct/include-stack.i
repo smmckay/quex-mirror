@@ -178,13 +178,13 @@ QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
     char*               new_input_name;
     QUEX_TYPE_MEMENTO* memento;
     
-    new_input_name = QUEXED(MemoryManager_clone_string)(InputNameP);
+    new_input_name = QUEX_NNAME_LIB(MemoryManager_clone_string)(InputNameP);
     if( ! new_input_name ) {
         QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_InputName_Set_Failed);
         goto ERROR_0;
     }
 
-    memento = (QUEX_TYPE_MEMENTO*)QUEXED(MemoryManager_allocate)(
+    memento = (QUEX_TYPE_MEMENTO*)QUEX_NNAME_LIB(MemoryManager_allocate)(
                       sizeof(QUEX_TYPE_MEMENTO), E_MemoryObjectType_MEMENTO);
     if( ! memento ) {
         goto ERROR_1;
@@ -216,9 +216,9 @@ QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
 ERROR_3:
     QUEX_NAME(Buffer_shallow_copy)(&me->buffer, &memento->buffer);
 ERROR_2:
-    QUEXED(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
+    QUEX_NNAME_LIB(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
 ERROR_1:
-    QUEXED(MemoryManager_free)(new_input_name, E_MemoryObjectType_MEMENTO);
+    QUEX_NNAME_LIB(MemoryManager_free)(new_input_name, E_MemoryObjectType_MEMENTO);
 ERROR_0:
     return false;
 }
@@ -304,7 +304,7 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
     /* Copy Back of content that was stored upon inclusion.                  */
 
     if( me->__input_name ) {
-        QUEXED(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
+        QUEX_NNAME_LIB(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
     }
     /* 'memento->__input_name' points to previously allocated memory.        
      * 'me->__input_name' takes ownership again over allocated memory.       */
@@ -329,7 +329,7 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
     memento->~QUEX_TYPE0_MEMENTO();
 #   endif
 
-    QUEXED(MemoryManager_free)((void*)memento, E_MemoryObjectType_MEMENTO); 
+    QUEX_NNAME_LIB(MemoryManager_free)((void*)memento, E_MemoryObjectType_MEMENTO); 
 
     /* Return to including file succesful                                    */
     return true;

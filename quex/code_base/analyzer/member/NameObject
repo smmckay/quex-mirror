@@ -45,7 +45,7 @@ QUEX_NAME(NameObject_new)(const void* Name,
     /* sizeof(NameObject) determines required memory of alligned data
      * structure, so that is is safe to add simply the size of the allocated
      * name to it.                                                           */
-    memory = (uint8_t*)QUEXED(MemoryManager_allocate)(sizeof(NameObject) + size,
+    memory = (uint8_t*)QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(NameObject) + size,
                                                       E_MemoryObjectType_INPUT_NAME_OBJECT);
     if( ! memory ) {
         return (NameObject*)0;
@@ -72,7 +72,7 @@ QUEX_INLINE void
 QUEX_NAME(NameObject_delete)(NameObject** me)
 {
     if( ! *me ) return; 
-    QUEXED(MemoryManager_free)((void*)*me, E_MemoryObjectType_INPUT_NAME_OBJECT);
+    QUEX_NNAME_LIB(MemoryManager_free)((void*)*me, E_MemoryObjectType_INPUT_NAME_OBJECT);
     *me = (NameObject*)0;
 }
 
