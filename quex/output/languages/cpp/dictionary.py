@@ -22,6 +22,7 @@ import quex.output.languages.cpp.templates               as     templates
 
 from   quex.DEFINITIONS  import QUEX_PATH
 import quex.token_db     as     token_db
+import quex.condition    as     condition
 import quex.blackboard   as     blackboard
 from   quex.blackboard   import setup as Setup, \
                                 standard_incidence_db_get_incidence_id
@@ -49,9 +50,11 @@ class Language(dict):
     Match_Lexeme              = re.compile("\\bLexeme\\b", re.UNICODE)
     Match_QUEX_NAME_lexeme    = re.compile("\\bQUEX_NAME\\(lexeme_", re.UNICODE)
     Match_QUEX_NAME           = re.compile(r"\bQUEX_NAME\(([A-Z_a-z0-9]+)\)")
+    Match_QUEX_GNAME          = re.compile(r"\bQUEX_GNAME\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_NAME_TOKEN     = re.compile(r"\bQUEX_NAME_TOKEN\(([A-Z_a-z0-9]+)\)")
+    Match_QUEX_GNAME_TOKEN    = re.compile(r"\bQUEX_GNAME_TOKEN\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_NAME_LIB       = re.compile(r"\bQUEX_NAME_LIB\(([A-Z_a-z0-9]+)\)")
-    Match_QUEX_NNAME_LIB      = re.compile(r"\bQUEX_NNAME_LIB\(([A-Z_a-z0-9]+)\)")
+    Match_QUEX_GNAME_LIB      = re.compile(r"\bQUEX_GNAME_LIB\(([A-Z_a-z0-9]+)\)")
     Match_QUEX_SETTING        = re.compile(r"\bQUEX_SETTING_([A-Z_0-9]+)\b")
     Match_QUEX_OPTION         = re.compile(r"\bQUEX_OPTION_([A-Z_0-9]+)\b")
     # Note: When the first two are replaced, the last cannot match anymore.
@@ -371,7 +374,7 @@ class Language(dict):
         elif Name:
             return Name
         else:
-            return "MissingNameDefinition"
+            return ""
 
     def COMMENT(self, Comment):
         """Eliminated Comment Terminating character sequence from 'Comment'
@@ -430,7 +433,7 @@ class Language(dict):
         return "    %s%s %s;" % (TypeStr, " " * (MaxTypeNameL - len(TypeStr)), VariableName)
 
     def VARIABLE_DECLARATION(self, variable):
-        if not blackboard.condition_holds(variable.condition):
+        if not condition.do(variable.condition):
             return ""
 
         if variable.constant_f: const_str = "const "
@@ -445,7 +448,7 @@ class Language(dict):
         return self.VARIABLE_DECLARATION(variable)
 
     def MEMBER_FUNCTION_DECLARATION(self, signature):
-        if not blackboard.condition_holds(signature.condition):
+        if not condition.do(signature.condition):
             return ""
         def argument_str(arg_type, arg_name, default):
             if default:
@@ -884,9 +887,9 @@ class Language(dict):
             return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (name, IteratorName)
 
     def INCLUDE(self, Path, Condition=None):
-        if   not Path:                                  return ""
-        elif not blackboard.condition_holds(Condition): return ""
-        else:                                           return "#include \"%s\"" % Path
+        if   not Path:                    return ""
+        elif not condition.do(Condition): return ""
+        else:                             return "#include \"%s\"" % Path
 
     def ENGINE_TEXT_EPILOG(self):
         if Setup.analyzer_derived_class_file: header = self.INCLUDE(Setup.analyzer_derived_class_file)
@@ -1373,15 +1376,6 @@ class Language(dict):
     def adapt_to_configuration(self, Txt):
         if not Txt: return Txt
 
-        acn         = Setup.analyzer_class_name
-        token_descr = token_db.token_type_definition
-        if token_descr is not None:
-            tcn              = token_descr.class_name
-            token_name_space = token_descr.name_space
-        else:
-            tcn              = ""
-            token_name_space = [""]
-
         # Types
         replacements = self.type_replacements()
 
@@ -1389,8 +1383,8 @@ class Language(dict):
         replacements.extend([
             ("QUEX_NAMESPACE_MAIN_OPEN",   self.NAMESPACE_OPEN(Setup.analyzer_name_space)),
             ("QUEX_NAMESPACE_MAIN_CLOSE",  self.NAMESPACE_CLOSE(Setup.analyzer_name_space)),
-            ("QUEX_NAMESPACE_TOKEN_OPEN",  self.NAMESPACE_OPEN(token_name_space)),
-            ("QUEX_NAMESPACE_TOKEN_CLOSE", self.NAMESPACE_CLOSE(token_name_space)),
+            ("QUEX_NAMESPACE_TOKEN_OPEN",  self.NAMESPACE_OPEN(Setup.token_class_name_space)),
+            ("QUEX_NAMESPACE_TOKEN_CLOSE", self.NAMESPACE_CLOSE(Setup.token_class_name_space)),
             ("QUEX_NAMESPACE_QUEX_OPEN",   self.NAMESPACE_OPEN(Setup._quex_lib_name_space)),
             ("QUEX_NAMESPACE_QUEX_CLOSE",  self.NAMESPACE_CLOSE(Setup._quex_lib_name_space)),
         ])
@@ -1414,17 +1408,43 @@ class Language(dict):
 
         txt = blue_print(Txt, replacements, CommonStart="QUEX_")
 
+        # txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % Setup.analyzer_class_name, txt)
+        # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % Setup.analyzer_class_name, txt)
+
         # QUEX_NAME
-        txt = self.Match_QUEX_NAME.sub(r"%s_\1" % acn, txt)
-        txt = self.Match_QUEX_NAME_TOKEN.sub(r"%s_\1" % tcn, txt)
-        txt = self.Match_QUEX_NAME_LIB.sub(r"%s_\1" % Setup._quex_lib_prefix, txt)
-        txt = self.Match_QUEX_NNAME_LIB.sub(r"%s_\1" % self.NAME_IN_NAMESPACE(Setup._quex_lib_prefix, Setup._quex_lib_name_space), txt)
+        txt = self.replace_naming(txt)
+
+        # INCLUDE GUARDS
         txt = self.Match_QUEX_INCLUDE_GUARD_TOKEN.sub(r"QUEX_INCLUDE_GUARD_%s__TOKEN__\1" % Setup.token_class_name_safe, txt)
         txt = self.Match_QUEX_INCLUDE_GUARD_QUEX.sub(r"QUEX_INCLUDE_GUARD_%s__QUEX__\1"   % Setup._quex_lib_name_safe, txt)
         txt = self.Match_QUEX_INCLUDE_GUARD.sub(r"QUEX_INCLUDE_GUARD_%s__\1"              % Setup.analyzer_name_safe, txt)
-        # txt = self.Match_QUEX_SETTING.sub(r"%s_SETTING_\1" % acn, txt)
-        # txt = self.Match_QUEX_OPTION.sub(r"%s_OPTION_\1" % acn, txt)
         return txt
+
+    def replace_naming(self, txt):
+        def _replace(txt, re0, re1, Prefix, NameSpace):
+            txt = re0.sub(r"%s\1" % self.name_spaced_prefix(Prefix), txt) 
+            txt = re1.sub(r"%s\1" % self.name_spaced_prefix(Prefix, NameSpace), txt)
+            return txt
+
+        # Analyzer
+        txt = _replace(txt, self.Match_QUEX_NAME, self.Match_QUEX_GNAME,
+                       Setup.analyzer_class_name, Setup.analyzer_name_space)
+
+        # Token
+        txt = _replace(txt, self.Match_QUEX_NAME_TOKEN, self.Match_QUEX_GNAME_TOKEN,
+                       Setup.token_class_name, Setup.token_class_name_space)
+
+        # QuexLib
+        txt = _replace(txt, self.Match_QUEX_NAME_LIB, self.Match_QUEX_GNAME_LIB,
+                       Setup._quex_lib_prefix, Setup._quex_lib_name_space)
+
+        return txt
+
+    def name_spaced_prefix(self, Prefix, NameSpace=None):
+        if Prefix: prefix = "%s_" % Prefix
+        else:      prefix = ""
+        
+        return self.NAME_IN_NAMESPACE(prefix, NameSpace)
 
     def type_replacements(self, DirectF=False):
         if DirectF:

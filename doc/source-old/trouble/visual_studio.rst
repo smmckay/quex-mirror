@@ -78,7 +78,7 @@ must be defined for the file ``example.cpp``. In order to let the
 lexical analyzer run at full speed, asserts must be disabled, so that
 at least the following options must added::
 
-    -DENCODING_NAME=\"UTF8\" -DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT
+    -DENCODING_NAME=\"UTF8\" -DQUEX_OPTION_ASSERTS_DISABLED_EXT
 
 The ``-D`` flag is used to define the macros. A directly following '='
 allows to define a value for the macro.

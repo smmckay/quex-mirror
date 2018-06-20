@@ -43,7 +43,9 @@ typedef enum {
     QUEX_BOM_SCSU_W5_TO_FE80 = 0x107, 
     QUEX_BOM_SCSU_W6_TO_FE80 = 0x108, 
     QUEX_BOM_SCSU_W7_TO_FE80 = 0x109 
-} QUEX_TYPE_BOM;
+} E_ByteOrderMark;
+
+QUEX_NAMESPACE_QUEX_OPEN
 
 /* Table of (known) BOMs _____________________________________________________
  *
@@ -73,24 +75,22 @@ typedef enum {
  *         GB_18030         { 0x84, 0x31, 0x95, 0x33 }                         
  *_____________________________________________________________________________*/
 
-QUEX_NAMESPACE_QUEX_OPEN
-
-extern QUEX_TYPE_BOM
+extern E_ByteOrderMark
 QUEX_NAME_LIB(bom_snap)(__QUEX_STD_FILE* InputHandle);
 
 #if defined(__cplusplus) && ! defined (QUEX_OPTION_PLAIN_C_EXT)
-template <class InputStream> QUEX_INLINE QUEX_TYPE_BOM
+template <class InputStream> QUEX_INLINE E_ByteOrderMark
 QUEX_NAME_LIB(bom_snap)(InputStream* p_input_stream);
 #endif
 
-extern QUEX_TYPE_BOM
+extern E_ByteOrderMark
 QUEX_NAME_LIB(__bom_snap_core)(uint8_t buffer[4], size_t read_n, size_t* byte_n);
 
-extern QUEX_TYPE_BOM
+extern E_ByteOrderMark
 QUEX_NAME_LIB(bom_identify)(const uint8_t* const Buffer, size_t* n);
 
 extern const char*
-QUEX_NAME_LIB(bom_name)(QUEX_TYPE_BOM BOM);
+QUEX_NAME_LIB(bom_name)(E_ByteOrderMark BOM);
 
 QUEX_NAMESPACE_QUEX_CLOSE
 

@@ -1,5 +1,5 @@
 #include "../../minimum-definitions.h"
-#include "ut/lib/extra/strange_stream/StrangeStream"
+#include "test_cpp/lib/extra/strange_stream/StrangeStream"
 #include <sstream>
 #include <iostream>
 #include <cstdlib>

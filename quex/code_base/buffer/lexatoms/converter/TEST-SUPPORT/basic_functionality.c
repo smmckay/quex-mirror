@@ -234,6 +234,11 @@ file_get_reference(const char* Codec)
  * endian and 'be' for big endian. 
  */
 {
+#   ifdef __cplusplus
+    const char*  endian_str = quex::system_is_little_endian() ? "le" : "be";
+#   else
+    const char*  endian_str = quex_system_is_little_endian() ? "le" : "be";
+#   endif
     static char  file_name[1024];
     const char*  file_stem = file_get_name_stem(Codec);
 
@@ -242,8 +247,7 @@ file_get_reference(const char* Codec)
     }
     else {
         snprintf(&file_name[0], 1023, "%s-%i-%s.dat", file_stem, 
-                 (int)sizeof(QUEX_TYPE_LEXATOM_EXT)*8, 
-                 QUEX_NAME_LIB(system_is_little_endian)() ? "le" : "be");
+                 (int)sizeof(QUEX_TYPE_LEXATOM_EXT)*8, endian_str);
     }
     self.reference_file = &file_name[0];
     return &file_name[0];

@@ -26,7 +26,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Dictiona
 
 } QUEX_NAME(DictionaryNode);
 
-#ifdef QUEX_OPTION_PLAIN_C_EXT
+#if ! defined(__cplusplus) ||  defined(QUEX_OPTION_PLAIN_C_EXT)
     typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Dictionary_tag) {
         QUEX_NAME(DictionaryNode)*  root;
 

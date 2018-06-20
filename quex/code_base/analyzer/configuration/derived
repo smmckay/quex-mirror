@@ -1,22 +1,16 @@
 #ifdef    QUEX_OPTION_COMPUTED_GOTOS_DISABLED
 #   undef QUEX_OPTION_COMPUTED_GOTOS
 #endif
-#ifdef    QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT_DISABLED
-#   undef QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT
-#endif
-#ifdef    QUEX_OPTION_ON_EXIT_HANDLER_PRESENT_DISABLED
-#   undef QUEX_OPTION_ON_EXIT_HANDLER_PRESENT
-#endif
 #ifdef     QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION_DISABLED
 #   undef  QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
 #endif
 #ifdef    QUEX_OPTION_DEBUG_SHOW_MODES_DISABLED
-#   undef QUEX_OPTION_DEBUG_SHOW_MODES
+#   undef QUEX_OPTION_DEBUG_SHOW_MODES_EXT
 #endif
 #ifdef    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_DISABLED
 #   undef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #endif
-#if           defined(QUEX_OPTION_ASSERTS_EXT_DISABLED_EXT) || defined(NDEBUG)
+#if           defined(QUEX_OPTION_ASSERTS_DISABLED_EXT) || defined(NDEBUG)
 #   ifdef     QUEX_OPTION_ASSERTS_EXT
 #      undef  QUEX_OPTION_ASSERTS_EXT
 #   endif
@@ -71,13 +65,13 @@
 #    endif
 #endif
 
-#ifdef  QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+$$<token-repetition>-----------------------------------------------------------
 #   define __QUEX_IF_TOKEN_REPETITION_SUPPORT(EXPRESSION)          EXPRESSION
 #   define __QUEX_IF_TOKEN_REPETITION_SUPPORT_DISABLED(EXPRESSION) /* empty */
 #else
 #   define __QUEX_IF_TOKEN_REPETITION_SUPPORT(EXPRESSION)          /* empty */
 #   define __QUEX_IF_TOKEN_REPETITION_SUPPORT_DISABLED(EXPRESSION) EXPRESSION
-#endif
+$$-----------------------------------------------------------------------------
 
 #define __QUEX_RETURN                                return
 

@@ -102,14 +102,14 @@ QUEX_NAME(MF_input_name_set)(QUEX_TYPE_ANALYZER* me, const char* InputNameP)
  * RETURNS: true, for success. false, else.                                   */
 { 
     if( me->__input_name ) {
-        QUEX_NNAME_LIB(MemoryManager_free)(me->__input_name, E_MemoryObjectType_INPUT_NAME);
+        QUEX_GNAME_LIB(MemoryManager_free)(me->__input_name, E_MemoryObjectType_INPUT_NAME);
     }
     if(  ! InputNameP ) {
         me->__input_name = (char*)0;
         return true;
     }
     else {
-        me->__input_name = QUEX_NNAME_LIB(MemoryManager_clone_string)(InputNameP);
+        me->__input_name = QUEX_GNAME_LIB(MemoryManager_clone_string)(InputNameP);
         return me->__input_name ? true : false;
     }
 }

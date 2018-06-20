@@ -68,7 +68,7 @@ QUEX_NAME(PostCategorizer__allocate_node)(const QUEX_TYPE_LEXATOM* Remainder)
     const size_t   RemainderSize = sizeof(QUEX_TYPE_LEXATOM) * (RemainderL + 1);
     uint8_t*       base          = 
                       (uint8_t*)
-                      QUEX_NNAME_LIB(MemoryManager_allocate)(BaseSize + RemainderSize, 
+                      QUEX_GNAME_LIB(MemoryManager_allocate)(BaseSize + RemainderSize, 
                                                      E_MemoryObjectType_POST_CATEGORIZER_NODE);
     ((QUEX_NAME(DictionaryNode)*)base)->name_remainder = (const QUEX_TYPE_LEXATOM*)(base + BaseSize);
     return (QUEX_NAME(DictionaryNode)*)base;
@@ -79,7 +79,7 @@ QUEX_NAME(PostCategorizer__free_node)(QUEX_NAME(DictionaryNode)* node)
 { 
     if( ! node ) return;
     
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)node, 
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)node, 
                                E_MemoryObjectType_POST_CATEGORIZER_NODE); 
 }
 
@@ -103,7 +103,7 @@ QUEX_INLINE bool
 QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me)
 {
     me->root = 0x0;
-#   ifdef QUEX_OPTION_PLAIN_C_EXT
+#   if ! defined(__cplusplus) || defined(QUEX_OPTION_PLAIN_C_EXT)
     me->enter         = QUEX_NAME(PostCategorizer__enter);
     me->remove        = QUEX_NAME(PostCategorizer__remove);
     me->get_token_id  = QUEX_NAME(PostCategorizer__get_token_id);
@@ -366,7 +366,7 @@ QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me)
 }
 
 
-#ifndef QUEX_OPTION_PLAIN_C_EXT
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 QUEX_INLINE 
 QUEX_NAME(Dictionary)::QUEX_NAME(Dictionary)()
 { /* C/C++ Compability: Constructors/Destructors do nothing. */ }

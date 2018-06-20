@@ -17,7 +17,7 @@ lexical analyzer engine. The compile options split into the following groups
    been set by quex. To disable asserts for example the compiler is called
    like this::
 
-      $CC ... -DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT
+      $CC ... -DQUEX_OPTION_ASSERTS_DISABLED_EXT
 
    The disablement of asserts is, by the way, essential to high performance
    lexical analysis.

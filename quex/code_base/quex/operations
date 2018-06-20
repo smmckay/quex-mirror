@@ -1,0 +1,52 @@
+#ifndef QUEX_INCLUDE_GUARD__QUEX__OPERATIONS
+#define QUEX_INCLUDE_GUARD__QUEX__OPERATIONS
+
+
+#define QUEX_MIN(X, Y)  ((X) < (Y) ? (X) : (Y))
+#define QUEX_MAX(X, Y)  ((X) > (Y) ? (X) : (Y))
+
+/* Hash Function:
+ *
+ * Using Dan Bernstein's 'dbj2' (published in comp.lang.c) which is extremely
+ * fast but still behaves well. See Linear Congruential Generators for further
+ * reading.                                                                  */
+#define QUEX_HASH_INIT_VALUE  5381
+#define QUEX_HASH_NEXT(H, C)  ((((H) << 5) + (H)) + (C))
+
+/* Support of computed goto */
+#ifdef QUEX_OPTION_COMPUTED_GOTOS
+    typedef  void*     QUEX_TYPE_GOTO_LABEL;
+#   define QUEX_GOTO_LABEL_VOID       (QUEX_TYPE_GOTO_LABEL)(0x0)
+#   define QUEX_LABEL(StateIndex)     &&_##StateIndex 
+
+#   define QUEX_GOTO_TERMINAL(LABEL)  do { goto *LABEL; } while(0)
+#   define QUEX_GOTO_STATE(LABEL)     do { goto *LABEL; } while(0)
+
+#else
+    typedef  int32_t  QUEX_TYPE_GOTO_LABEL;          /* > 0: DFA_State index
+                                                      * < 0: Drop Out of a state abs(Label). */
+#   define QUEX_GOTO_LABEL_VOID       (QUEX_TYPE_GOTO_LABEL)(-1)
+#   define QUEX_LABEL(StateIndex)     StateIndex 
+
+#   define QUEX_GOTO_TERMINAL(LABEL)  do { last_acceptance    = LABEL; goto QUEX_TERMINAL_ROUTER; } while(0)
+#   define QUEX_GOTO_STATE(LABEL)     do { target_state_index = LABEL; goto QUEX_LABEL_STATE_ROUTER; } while(0)
+#endif
+
+#define QUEX_LEXEME_TERMINATING_ZERO_SET(BUFFER)                \
+     (BUFFER)->_lexatom_at_lexeme_start = (BUFFER)->_read_p[0]; \
+     (BUFFER)->_read_p[0]               = (QUEX_TYPE_LEXATOM)0;
+
+#define QUEX_LEXEME_TERMINATING_ZERO_UNDO(BUFFER)                                 \
+     /* only need to reset, in case that the terminating zero was set*/           \
+     if( (BUFFER)->_lexatom_at_lexeme_start != (QUEX_TYPE_LEXATOM)0 ) {           \
+         /* NOTE:                                                              */ \
+         /*                                                                    */ \
+         /*    __quex_assert(*((BUFFER)->_read_p) == (QUEX_TYPE_LEXATOM)0);    */ \
+         /*                                                                    */ \
+         /* CANNOT hold, since by 'seeking' during backward lexing the read_p  */ \
+         /* might actually be loaded out and in again without setting zero.    */ \
+         (BUFFER)->_read_p[0]               = (BUFFER)->_lexatom_at_lexeme_start; \
+         (BUFFER)->_lexatom_at_lexeme_start = (QUEX_TYPE_LEXATOM)0;               \
+     }
+
+#endif /* QUEX_INCLUDE_GUARD__QUEX__OPERATIONS */

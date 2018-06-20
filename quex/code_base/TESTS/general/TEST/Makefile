@@ -13,27 +13,24 @@ all: $(TEST_FILES)
 hwut-info:
 	@echo $(TEST_FILES)
 
-bom.exe: bom.c ut
+bom.exe: bom.c 
 	gcc -DQUEX_OPTION_PLAIN_C_EXT \
 		-DQUEX_NAMESPACE_MAIN_OPEN="" \
 		-DQUEX_NAMESPACE_MAIN_CLOSE="" \
 		$< -o $@ $(DEFS)
 
-bom-istream.exe: bom.cpp ut
+bom-istream.exe: bom.cpp 
 	g++ \
 		-DQUEX_NAMESPACE_MAIN_OPEN="" \
 		-DQUEX_NAMESPACE_MAIN_CLOSE="" \
 		-DQUEX_INLINE= \
 		$(DEFS) $< -o $@
 
-strange_stream.exe: strange_stream.cpp ut
+strange_stream.exe: strange_stream.cpp 
 	g++ -DQUEX_TYPE_LEXATOM_EXT=uint8_t $(DEFS) $< -o $@
 
-strange_wstream.exe: strange_wstream.cpp ut
+strange_wstream.exe: strange_wstream.cpp 
 	g++ -DQUEX_TYPE_LEXATOM_EXT=wchar_t $(DEFS) $< -o $@
-
-ut:
-	python ../../code_base_instatiation.py ut
 
 clean: 
 	rm -rf $(TEST_FILES) ut

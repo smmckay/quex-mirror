@@ -22,7 +22,7 @@ QUEX_NAME(Buffer_fill)(QUEX_NAME(Buffer)*  me,
     /* Copy as much as possible of the new content into the designated
      * region in memory. This may be the engine's buffer or a 'raw' buffer
      * whose content still needs to be converted.                            */
-    copy_n = (ptrdiff_t)QUEX_NNAME_LIB(MemoryManager_insert)((uint8_t*)begin_p,  
+    copy_n = (ptrdiff_t)QUEX_GNAME_LIB(MemoryManager_insert)((uint8_t*)begin_p,  
                                                      (uint8_t*)end_p,
                                                      (uint8_t*)ContentBegin, 
                                                      (uint8_t*)ContentEnd);

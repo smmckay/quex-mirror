@@ -71,7 +71,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Converte
      * failed, a default 'FromCodingName' may be applied.                     */
 
     bool    (*initialize_by_bom_id)(struct QUEX_NAME(Converter_tag)* me,
-                                    QUEX_TYPE_BOM                    BomId);
+                                    E_ByteOrderMark                    BomId);
     /* Initializes the converter according the given BomId. An error during is 
      * reported as 'false'.                                                   */
 
@@ -104,7 +104,7 @@ QUEX_INLINE bool QUEX_NAME(Converter_construct)(QUEX_NAME(Converter)* me,
                                                                            const char* FromCodingName, 
                                                                            const char* ToCodingName),  
                                                 bool         (*initialize_by_bom_id)(QUEX_NAME(Converter)*, 
-                                                                                     QUEX_TYPE_BOM),
+                                                                                     E_ByteOrderMark),
                                                 E_LoadResult (*convert)(QUEX_NAME(Converter)*, 
                                                                         uint8_t**           source, 
                                                                         const uint8_t*      SourceEnd, 

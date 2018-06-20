@@ -26,21 +26,21 @@ case $1 in
     CONTINUE)
     echo "The sequence of tokens is supposed to be messed up!"
     make EXT_MODE_FILE=CONTINUE.qx                  \
-         EXT_CFLAGS=-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT  >& /dev/null
+         EXT_CFLAGS=-DQUEX_OPTION_ASSERTS_DISABLED_EXT  >& /dev/null
     ;;
     RETURN_w_Asserts)
     make EXT_MODE_FILE=RETURN.qx                    >& /dev/null
     ;;
     RETURN)
     make EXT_MODE_FILE=RETURN.qx                    \
-         EXT_CFLAGS=-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT  >& /dev/null
+         EXT_CFLAGS=-DQUEX_OPTION_ASSERTS_DISABLED_EXT  >& /dev/null
     ;;
     DEFAULT_w_Asserts)
     make EXT_MODE_FILE=DEFAULT.qx                   >& /dev/null
     ;;
     DEFAULT)
     make EXT_MODE_FILE=DEFAULT.qx                   \
-         EXT_CFLAGS=-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT  >& /dev/null
+         EXT_CFLAGS=-DQUEX_OPTION_ASSERTS_DISABLED_EXT  >& /dev/null
     ;;
 esac
 

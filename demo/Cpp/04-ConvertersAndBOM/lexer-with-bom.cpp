@@ -20,7 +20,7 @@ main(int argc, char** argv)
     /* The lexer must be constructed AFTER the BOM-cut                        */
     Easy_ByteLoader*    byte_loader = Easy_ByteLoader_FILE_new(fh, true);
     Easy_Converter*     converter   = Easy_Converter_IConv_new(NULL, NULL);
-    QUEX_TYPE_BOM       bom_id      = quex::bom_snap(fh);
+    E_ByteOrderMark       bom_id    = quex::bom_snap(fh);
 
     printf("Found BOM: %s\n", quex::bom_name(bom_id));
 

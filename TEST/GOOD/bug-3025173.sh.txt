@@ -5,10 +5,10 @@ quex -i scan.qx -o br_scan \
 	 --debug-exception 
 g++ -Wall -Werror br_scan/br_scan.cpp example.cpp \
 	-I. \
-	-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT \
+	-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT \
 	-o check 
 ## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT'
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.
@@ -16,7 +16,7 @@ g++ -Wall -Werror br_scan/br_scan.cpp example.cpp \
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT'
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'
 ##
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112

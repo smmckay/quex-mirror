@@ -41,7 +41,7 @@ token_type {
 
    destructor {
        if( self.text != LexemeNull ) {
-           QUEXED(MemoryManager_free)((EasyLexer_lexatom_t*)self.text, 
+           quex_MemoryManager_free((EasyLexer_lexatom_t*)self.text, 
                                       E_MemoryObjectType_TEXT);
            self.text = LexemeNull;
        }
@@ -51,11 +51,11 @@ token_type {
         self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((EasyLexer_lexatom_t*)self.text, 
+            quex_MemoryManager_free((EasyLexer_lexatom_t*)self.text, 
                                        E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
-            self.text = QUEXED(MemoryManager_allocate)(
+            self.text = quex_MemoryManager_allocate(
                                     sizeof(EasyLexer_lexatom_t) 
                                   * (QUEX_NAME(lexeme_length)(Other.text) + 1), 
                                   E_MemoryObjectType_TEXT);
@@ -90,11 +90,11 @@ token_type {
 #       endif
 
         if( self.text != LexemeNull ) {
-            QUEXED(MemoryManager_free)((EasyLexer_lexatom_t*)self.text, 
+            quex_MemoryManager_free((EasyLexer_lexatom_t*)self.text, 
                                        E_MemoryObjectType_TEXT);
         }
         if( Begin != LexemeNull ) {
-            self.text = QUEXED(MemoryManager_allocate)(
+            self.text = quex_MemoryManager_allocate(
                               sizeof(EasyLexer_lexatom_t) * (size_t)(End - Begin + 1), 
                               E_MemoryObjectType_TEXT);
             __QUEX_STD_memcpy((void*)self.text, (void*)Begin, 

@@ -3,7 +3,7 @@ src/bad-default.qx:8:warning: ('--suppress 12' to avoid this message)
 src/bad-default.qx:8:warning: Setup does not define 'newline'.
 src/bad-default.qx:8:warning: ('--suppress 11' to avoid this message)
 ## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED'
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.

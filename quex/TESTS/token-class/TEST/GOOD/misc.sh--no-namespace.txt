@@ -1,33 +1,38 @@
+#ifndef QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED
+#define QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED
 class QToken;
 inline void         QToken_construct(QToken*);
 inline void         QToken_copy(QToken*, const QToken*);
 inline void         QToken_destruct(QToken*);
-inline void         QToken_set(QToken*            me,
-inline bool         QToken_take_text(QToken*            me,
+inline void         QToken_set(QToken*            me, 
+inline bool         QToken_take_text(QToken*            me, 
 inline size_t       QToken_repetition_n_get(QToken*);
 inline void         QToken_repetition_n_set(QToken*, size_t);
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QToken {
-QToken();
-QToken(const QToken& That);
-QToken& operator=(const QToken& That);
-~QToken();
-friend void QToken_copy(QToken*       __this,
-const QToken* That);
-friend bool QToken_take_text(QToken*             __this,
+    QToken();
+    QToken(const QToken& That);
+    QToken& operator=(const QToken& That);
+    ~QToken();
+        friend void QToken_copy(QToken*       __this, 
+                                         const QToken* That);
+        friend bool QToken_take_text(QToken*             __this, 
+#endif /* QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED */
+#ifndef QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED_I
+#define QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED_I
 QToken::QToken()
 QToken::QToken(const QToken& Other)
-QToken_copy(this, &Other);
+   QToken_copy(this, &Other);
 QToken::~QToken()
-inline QToken&
-QToken::operator=(const QToken& That)
+inline QToken& 
+QToken::operator=(const QToken& That) 
 { if( this != &That ) { QToken_copy(this, &That); } return *this; }
 QToken_construct(QToken* __this)
-new ((void*)__this) QToken;
+    new ((void*)__this) QToken;
 QToken_destruct(QToken* __this)
-__this->QToken::~QToken();
+    __this->QToken::~QToken();  
 QToken_copy(QToken* __this, const QToken* __That)
-__QUEX_STD_memcpy((void*)__this, (void*)__That, sizeof(::QToken));
-QToken_take_text(QToken*              __this,
+__QUEX_STD_memcpy((void*)__this, (void*)__That, sizeof(QToken));
+QToken_take_text(QToken*              __this, 
 QToken_repetition_n_get(QToken* __this)
 QToken_repetition_n_set(QToken* __this, size_t N)
-
+#endif /* QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED_I */

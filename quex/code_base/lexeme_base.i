@@ -26,7 +26,7 @@ QUEX_NAME(lexeme_clone)(const QUEX_TYPE_LEXATOM* BeginP,
         return &QUEX_NAME(LexemeNull);
     }
     
-    result = (QUEX_TYPE_LEXATOM*)QUEX_NNAME_LIB(MemoryManager_allocate)(
+    result = (QUEX_TYPE_LEXATOM*)QUEX_GNAME_LIB(MemoryManager_allocate)(
                    sizeof(QUEX_TYPE_LEXATOM) * (Length + 1),
                    E_MemoryObjectType_TEXT);
 

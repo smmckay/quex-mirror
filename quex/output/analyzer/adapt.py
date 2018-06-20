@@ -1,11 +1,13 @@
 from   quex.engine.misc.tools import typed
 from   quex.blackboard        import Lng, setup as Setup
+import quex.condition         as     condition
 import os
 
 def do(Txt, OutputDir, OriginalPath=None):
     if not Txt: return Txt
-    ## txt = declare_member_functions(txt)
-    txt = produce_include_statements(OutputDir, Txt)
+    txt = Txt
+    txt = implement_conditional_code(txt)
+    txt = produce_include_statements(OutputDir, txt)
     txt = Lng.adapt_to_configuration(txt)
     if OriginalPath and Setup._debug_reference_original_paths_f:
         txt = "%s\n%s" % (Lng.LINE_PRAGMA(OriginalPath, 1), txt)
@@ -29,11 +31,16 @@ class Symbol:
         return type_str, name_str, default_str
 
     @classmethod
-    def condition_str(cls, SubString):
-        begin_i = SubString.find("<")
-        if begin_i == -1: return None, SubString
+    def condition_str(cls, SubString, OpenBracketF=True):
+        if OpenBracketF: 
+            begin_i = SubString.find("<")
+            if begin_i == -1: return None, SubString
+            begin_i += 1
+        else:            
+            begin_i = 0
+
         end_i     = SubString.find(">")
-        condition = SubString[begin_i+1: end_i].strip()
+        condition = SubString[begin_i: end_i].strip()
         return condition, SubString[end_i+1:]
 
 class Variable(Symbol):
@@ -102,53 +109,55 @@ class Signature(Symbol):
 
         return cls(return_type, function_name, argument_list, condition, constant_f)
 
-def member_functions(Txt):
-    """YIELDS: [0] begin index of letter in 'Txt'
-               [1] end index of letter in 'Txt'
-               [2] signature of function
-    """
-    for begin_i, end_i, content in _marked_tags(Txt, "$$MF:", "$$"):
-        yield begin_i, end_i, Signature.from_String(content)
-    return 
+class ConditionalCode(Symbol):
+    @typed(ConstantF=bool)
+    def __init__(self, Condition, Code):
+        self.condition = Condition
+        self.content   = Code
 
-def _marked_tags(Txt, Begin, End):
+    @classmethod
+    def from_String(cls, String):
+        """SYNTAX: condition '>' '-' content 
+        """
+        condition, remainder = cls.condition_str(String, OpenBracketF=False)
+
+        return ConditionalCode(condition, remainder.lstrip("-"))
+
+def _marked_tags(Txt, Begin, End, Skip=None):
     """YIELDS: [0] begin index of letter in 'Txt'
                [1] end index of letter in 'Txt'
                [2] signature of function
     """
+    L       = len(Txt)
     BeginL  = len(Begin)
+    EndL    = len(End)
     start_i = -1
     while 1 + 1 == 2:
         begin_i = Txt.find(Begin, start_i+1)
         if begin_i == -1: break
         end_i   = Txt.find(End, begin_i+1)
         if end_i == -1: break
-        yield begin_i, end_i+2, Txt[begin_i+BeginL:end_i]
-        start_i = end_i + 2
-    return 
 
-def declare_member_variables(Txt):
-    """RETURNS: 'Txt' with member variables declarations replaced.
-    """
-    txt = []
-    last_i = 0
-    for begin_i, end_i, signature in declare_member_variables(Txt):
-        if signature is None: continue
-        txt.append(Txt[last_i:begin_i])
-        decl_txt = Lng.MEMBER_FUNCTION_DECLARATION(signature)
-        decl_txt = decl_txt.replace("QUEX_NAME_Mode_", "QUEX_NAME(Mode)")
-        decl_txt = decl_txt.replace("QUEX_NAME_Converter_", "QUEX_NAME(Converter)")
-        decl_txt = decl_txt.replace("QUEX_NAME_ByteLoader_", "QUEX_NAME(ByteLoader)")
-        decl_txt = decl_txt.replace("QUEX_NAME_callback_on_token_type_", "QUEX_NAME(callback_on_token_type)")
-        txt.append(decl_txt)
-        last_i = end_i
-    txt.append(Txt[last_i:])
-    return "".join(txt)
+        content = Txt[begin_i+BeginL:end_i]
+
+        end_i  += EndL
+        if Skip: 
+            while end_i < L and Txt[end_i] == Skip: 
+                end_i += 1
+
+        yield begin_i, end_i, content
+        start_i = end_i
+    return 
 
 def declare_member_functions(Txt):
     """RETURNS: [0] 'Txt' with member function declarations replaced.
                 [1] list of function signatures in the sequence of their appearance.
     """
+    def member_functions(Txt):
+        for begin_i, end_i, content in _marked_tags(Txt, "$$MF:", "$$"):
+            yield begin_i, end_i, Signature.from_String(content)
+        return 
+
     txt = []
     signature_list = []
     last_i = 0
@@ -165,6 +174,22 @@ def declare_member_functions(Txt):
         signature_list.append(signature)
     txt.append(Txt[last_i:])
     return "".join(txt), signature_list
+
+def implement_conditional_code(Txt):
+    def conditional_code(Txt):
+        for begin_i, end_i, content in _marked_tags(Txt, "$$<", "$$", Skip="-"):
+            yield begin_i, end_i, ConditionalCode.from_String(content)
+
+    txt    = []
+    last_i = 0
+    for begin_i, end_i, code in conditional_code(Txt):
+        if begin_i != last_i: 
+            txt.append(Txt[last_i:begin_i])
+        if condition.do(code.condition):
+            txt.append(code.content)
+        last_i = end_i
+    txt.append(Txt[last_i:])
+    return "".join(txt)
 
 def produce_include_statements(OutputDir, Txt):
     assert OutputDir != "--"

@@ -25,7 +25,7 @@ main(int argc, char** argv)
     qlex = UTF16Lex::from_ByteLoader(byte_loader, NULL);
     /* System's endianness is 'little' => reversion if 'big'
      *                     is 'big'    => reversion if 'little' (not 'big'). */
-    qlex->byte_order_reversion_set(Quex::QuexLib_system_is_little_endian() ? 
+    qlex->byte_order_reversion_set(quex::system_is_little_endian() ? 
                                    BigEndianF : ! BigEndianF);
 
     printf("## input file           = %s\n", file_name);

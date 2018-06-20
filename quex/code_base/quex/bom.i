@@ -22,14 +22,14 @@ $$INC: quex/bom$$
 
 QUEX_NAMESPACE_QUEX_OPEN
 
-extern QUEX_TYPE_BOM
+extern E_ByteOrderMark
 QUEX_NAME_LIB(bom_snap)(__QUEX_STD_FILE* InputHandle)
 /* This function can **only** be used with **normally** behaving streams
  * where the position increases by one with every character being read. If
  * this is not the case then use the **binary** option of your stream.       */
 {
     uint8_t        buffer[4] = { 0, 0, 0, 0};
-    QUEX_TYPE_BOM  result    = QUEX_BOM_NONE;
+    E_ByteOrderMark  result    = QUEX_BOM_NONE;
     size_t         byte_n    = 0;
     size_t         read_n    = 0;
     long           p0        = __QUEX_STD_ftell(InputHandle);
@@ -45,14 +45,14 @@ QUEX_NAME_LIB(bom_snap)(__QUEX_STD_FILE* InputHandle)
 }
 
 #if ! defined(QUEX_OPTION_PLAIN_C_EXT)
-template <class InputStream> extern QUEX_TYPE_BOM
+template <class InputStream> extern E_ByteOrderMark
 QUEX_NAME_LIB(bom_snap)(InputStream* p_input_stream)
 /* This function can **only** be used with **normally** behaving streams
  * where the position increases by one with every character being read. If
  * this is not the case then use the **binary** option of your stream.     */
 {
     uint8_t               buffer[4] = { 0, 0, 0, 0};
-    QUEX_TYPE_BOM         result    = QUEX_BOM_NONE;
+    E_ByteOrderMark         result    = QUEX_BOM_NONE;
     size_t                byte_n    = 0;
     size_t                read_n    = 0;
     /**/
@@ -71,7 +71,7 @@ QUEX_NAME_LIB(bom_snap)(InputStream* p_input_stream)
 }
 #endif
 
-extern QUEX_TYPE_BOM
+extern E_ByteOrderMark
 QUEX_NAME_LIB(__bom_snap_core)(uint8_t buffer[4], size_t read_n, size_t* byte_n)
 {
     /* For non-existing bytes fill 0x77, because it does not occur
@@ -86,7 +86,7 @@ QUEX_NAME_LIB(__bom_snap_core)(uint8_t buffer[4], size_t read_n, size_t* byte_n)
     return QUEX_NAME_LIB(bom_identify)(buffer, byte_n);
 }
 
-extern QUEX_TYPE_BOM
+extern E_ByteOrderMark
 QUEX_NAME_LIB(bom_identify)(const uint8_t* const Buffer, size_t* n)
     /* Assume, that the buffer contains at least 4 elements!                  */
 {
@@ -95,7 +95,7 @@ QUEX_NAME_LIB(bom_identify)(const uint8_t* const Buffer, size_t* n)
     const uint8_t B1 = Buffer[1];
     const uint8_t B2 = Buffer[2];
     const uint8_t B3 = Buffer[3];
-    QUEX_TYPE_BOM  x = QUEX_BOM_NONE;
+    E_ByteOrderMark  x = QUEX_BOM_NONE;
 
     switch( B0 ) {
     case 0x00: if( B1 == 0x00 && B2 == 0xFE && B3 == 0xFF ) { *n = 4; x = QUEX_BOM_UTF_32_BE;        } break; 
@@ -145,7 +145,7 @@ QUEX_NAME_LIB(bom_identify)(const uint8_t* const Buffer, size_t* n)
 }           
 
 extern const char*
-QUEX_NAME_LIB(bom_name)(QUEX_TYPE_BOM BOM)
+QUEX_NAME_LIB(bom_name)(E_ByteOrderMark BOM)
 {
     switch( BOM ) {
     case QUEX_BOM_UTF_8:           return "UTF_8";                      

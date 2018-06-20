@@ -63,18 +63,6 @@ $$SWITCH$$ QUEX_OPTION_ENGINE_RUNNING_ON_CODEC
 $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 $$SWITCH$$ QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
 
-/* Mode Transitions:
- *    If the engine was created without the flag '--no-mode-transition-check'
- *    then code for mode transition control is inserted. It can be deactivated
- *    by commenting the following option out.                                 */
-#if defined(QUEX_OPTION_DEBUG_SHOW_EXT)
-#   define QUEX_OPTION_DEBUG_SHOW
-#endif
-
-#if defined(QUEX_OPTION_DEBUG_SHOW_MODES_EXT)
-#   define QUEX_OPTION_DEBUG_SHOW_MODES
-#endif
-
 #if defined(QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_EXT)
 #   define QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
 #else

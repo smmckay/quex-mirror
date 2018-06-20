@@ -18,11 +18,11 @@
  * A LexatomLoader's seek has NO direct influence on the content or the pointers
  * of the Buffer object that it fills.
  *
- * The difference between the QUEX_NAME(ByteLoader)'s seeking (stream seeking) and the
- * LexatomLoader's seeking is that the QUEX_NAME(ByteLoader )understands the position 
- * independently of its meaning. The LexatomLoader already interprets the stream
- * as 'lexatoms'. A QUEX_NAME(ByteLoader )sets the stream to a particular byte position.
- * A LexatomLoader prepare the input of a lexatom.
+ * The difference between the QUEX_NAME(ByteLoader)'s seeking (stream seeking) 
+ * and the LexatomLoader's seeking is that the QUEX_NAME(ByteLoader) understands 
+ * the position independently of its meaning. The LexatomLoader already 
+ * interprets the stream as 'lexatoms'. A QUEX_NAME(ByteLoader) sets the stream 
+ * to a particular byte position. A LexatomLoader prepare the input of a lexatom.
  *
  * (C) Frank-Rene Schaefer                                                   */
 
@@ -133,9 +133,9 @@ QUEX_NAME(LexatomLoader_lexatom_index_reset)(QUEX_NAME(LexatomLoader)* me)
 
 QUEX_INLINE void
 QUEX_NAME(LexatomLoader_lexatom_index_reset_backup)(QUEX_NAME(LexatomLoader)* me, 
-                                                     QUEX_TYPE_STREAM_POSITION Backup_lexatom_index_next_to_fill, 
-                                                     ptrdiff_t                 BackupStomachByteN, 
-                                                     QUEX_TYPE_STREAM_POSITION BackupByteLoaderPosition)
+                                                    QUEX_TYPE_STREAM_POSITION Backup_lexatom_index_next_to_fill, 
+                                                    ptrdiff_t                 BackupStomachByteN, 
+                                                    QUEX_TYPE_STREAM_POSITION BackupByteLoaderPosition)
 /* Reset a previous state of the LexatomLoader and its QUEX_NAME(ByteLoader).            */
 {
     QUEX_TYPE_STREAM_POSITION backup_byte_pos;

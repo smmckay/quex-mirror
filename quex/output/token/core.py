@@ -312,7 +312,7 @@ $$SWITCH$$ QUEX_OPTION_TOKEN_REPETITION_SUPPORT
 #endif
 
 #ifdef QUEX_OPTION_ASSERTS_EXT
-#   if ! defined (QUEX_OPTION_PLAIN_C_EXT)
+#   if defined(__cplusplus) && ! defined (QUEX_OPTION_PLAIN_C_EXT)
 #       include <cassert>
 #   else
 #       include <assert.h>

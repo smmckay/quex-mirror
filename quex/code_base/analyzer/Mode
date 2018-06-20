@@ -10,7 +10,7 @@ $$INC: buffer/Buffer$$
 
 QUEX_NAMESPACE_MAIN_OPEN
     
-#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 class QUEX_TYPE0_ANALYZER;
 #else
 QUEX_TYPE0_ANALYZER;   

@@ -11,16 +11,16 @@ CC    := gcc -ggdb -Wall -Werror \
 
 all: $(TESTS)
 
-construct_destruct_included.exe: construct_destruct_included.c ut
+construct_destruct_included.exe: construct_destruct_included.c 
 	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=1 $< -o $@
 
-extend_and_migrate.exe: extend_and_migrate.c common.c ut
+extend_and_migrate.exe: extend_and_migrate.c common.c 
 	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $< common.c -o $@
 
-extend_and_migrate-nested.exe: extend_and_migrate-nested.c common.c ut
+extend_and_migrate-nested.exe: extend_and_migrate-nested.c common.c 
 	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $< common.c -o $@
 
-negotiate_extend.exe: negotiate_extend.c common.c ut
+negotiate_extend.exe: negotiate_extend.c common.c 
 	$(CC) -DQUEX_SETTING_BUFFER_MIN_FALLBACK_N_EXT=0 $< common.c -o $@
 	    
 %.E: %.c
@@ -28,9 +28,6 @@ negotiate_extend.exe: negotiate_extend.c common.c ut
 
 hwut-info:
 	@echo $(TESTS)
-
-ut:
-	python ../../../../TESTS/code_base_instatiation.py ut buffer quex --lang-C
 
 clean: 
 	rm -rf *.exe *.o *.E ut tmp.*

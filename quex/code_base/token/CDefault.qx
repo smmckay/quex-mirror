@@ -12,8 +12,13 @@ token_type {
 
 struct $$TOKEN_CLASS$$_tag;
 
+QUEX_NAMESPACE_MAIN_OPEN
+
 extern QUEX_TYPE_LEXATOM QUEX_NAME(LexemeNull);
 extern const char*       QUEX_NAME(map_token_id_to_name)(const QUEX_TYPE_TOKEN_ID);
+
+QUEX_NAMESPACE_MAIN_CLOSE
+
 extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* me,  
                                                     char*                       buffer, 
                                                     size_t                      BufferSize); 
@@ -38,7 +43,7 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
 
    destructor {
        if( self.text != LexemeNull ) {
-           QUEX_NNAME_LIB(MemoryManager_free)((void*)self.text,
+           QUEX_GNAME_LIB(MemoryManager_free)((void*)self.text,
                                       E_MemoryObjectType_TEXT);
            self.text = LexemeNull;
        }
@@ -48,11 +53,11 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
         self.id  = Other.id;
 
         if( self.text != LexemeNull ) {
-            QUEX_NNAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+            QUEX_GNAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Other.text != LexemeNull ) {
-            self.text = QUEX_NAME(lexeme_clone)(self.text, 
-                                                      QUEX_NAME(lexeme_length)(Other.text));
+            self.text = QUEX_GNAME(lexeme_clone)(self.text, 
+                                                 QUEX_GNAME(lexeme_length)(Other.text));
             if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
@@ -82,11 +87,11 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
 #       endif
 
         if( self.text != LexemeNull ) {
-            QUEX_NNAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
+            QUEX_GNAME_LIB(MemoryManager_free)((void*)self.text, E_MemoryObjectType_TEXT);
         }
         if( Begin != LexemeNull ) {
             __quex_assert(End >= Begin);
-            self.text = QUEX_NAME(lexeme_clone)(Begin, (size_t)(End - Begin));
+            self.text = QUEX_GNAME(lexeme_clone)(Begin, (size_t)(End - Begin));
             if( ! self.text ) self.text = LexemeNull;
             *((QUEX_TYPE_LEXATOM*)(self.text + (End - Begin))) = (QUEX_TYPE_LEXATOM)0;
         } else {
@@ -127,7 +132,7 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
         const char* 
         $$TOKEN_CLASS$$_get_string($$TOKEN_CLASS$$* me, char*   buffer, size_t  BufferSize) 
         {
-            const char*  token_id_str = QUEX_NAME(map_token_id_to_name)(me->id);
+            const char*  token_id_str = QUEX_GNAME(map_token_id_to_name)(me->id);
             const char*  BufferEnd    = buffer + BufferSize;
             char*        writerator   = 0;
 
@@ -145,7 +150,7 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
             }
 
             /* The String */
-            writerator = QUEX_NAME(lexeme_to_pretty_char)(me->text, writerator, BufferEnd);
+            writerator = QUEX_GNAME(lexeme_to_pretty_char)(me->text, writerator, BufferEnd);
 
             /* Closing Quote */
             if( BufferEnd - writerator > 1 ) {

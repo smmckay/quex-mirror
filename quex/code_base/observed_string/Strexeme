@@ -67,7 +67,7 @@ StrexemoHabitat_emigrate() {
         sum += (it->end - it->begin);
     }
 
-    drain_p = QUEX_NNAME_LIB(MemoryManager_allocate)(sum, E_Habitat);
+    drain_p = QUEX_GNAME_LIB(MemoryManager_allocate)(sum, E_Habitat);
     if( ! drain_p ) {
         return false;
     }
@@ -84,7 +84,7 @@ StrexemoHabitat_new_Strexeme(const QUEX_TYPE_LEXATOM* Begin,
                              const QUEX_TYPE_LEXATOM* End)
 {
     if( ! me->__first_free ) {
-        me->__first_free = QUEX_NNAME_LIB(MemoryManager_allocate)(some);
+        me->__first_free = QUEX_GNAME_LIB(MemoryManager_allocate)(some);
         if( ! me->__first_free ) {
             return (QUEX_NAME_TOKEN(Strexeme)*)0;
         }

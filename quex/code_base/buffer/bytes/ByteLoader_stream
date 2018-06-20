@@ -2,7 +2,6 @@
 #define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_STREAM
 #ifdef __cplusplus
 
-
 $$INC: buffer/bytes/ByteLoader$$
 
 QUEX_NAMESPACE_MAIN_OPEN

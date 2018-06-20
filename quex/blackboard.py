@@ -275,24 +275,3 @@ class DefaultCounterFunctionDB:
         del DefaultCounterFunctionDB.__db[:]
  
 
-#______________________________________________________________________________
-# Determine wether a source code generation condition holds.
-#
-def condition_holds(Condition):
-    global setup
-    if   not Condition:                                                        
-        return True
-    elif Condition == "count-line":
-        return bool(setup.count_line_number_f)
-    elif Condition == "count-column":
-        return bool(setup.count_column_number_f)
-    elif Condition == "count":
-        return setup.count_line_number_f or setup.count_column_number_f
-    elif Condition == "indentation":
-        return bool(required_support_indentation_count())
-    elif Condition == "lib-quex":
-        return bool(setup.implement_lib_quex_f)
-    else:                                                                      
-        error.log("Code generation: found unknown condition '<%s>'." % Condition)
-
-

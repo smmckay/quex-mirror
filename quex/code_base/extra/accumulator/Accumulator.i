@@ -58,7 +58,7 @@ QUEX_INLINE void
 QUEX_NAME(Accumulator_destruct)(QUEX_NAME(Accumulator)* me)
 {
     if( me->text.begin ) {
-        QUEX_NNAME_LIB(MemoryManager_free)((void*)me->text.begin,
+        QUEX_GNAME_LIB(MemoryManager_free)((void*)me->text.begin,
                                    E_MemoryObjectType_TEXT);
     }
     QUEX_NAME(Accumulator_resources_absent_mark)(me);
@@ -88,7 +88,7 @@ QUEX_NAME(Accumulator__memory_resources_allocate)(QUEX_NAME(Accumulator)*   me)
 
     if( QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE ) {
         chunk = (QUEX_TYPE_LEXATOM*)
-                QUEX_NNAME_LIB(MemoryManager_allocate)(
+                QUEX_GNAME_LIB(MemoryManager_allocate)(
                            QUEX_SETTING_ACCUMULATOR_INITIAL_SIZE * sizeof(QUEX_TYPE_LEXATOM),
                            E_MemoryObjectType_TEXT);
         if( ! chunk ) return false;
@@ -109,7 +109,7 @@ QUEX_NAME(Accumulator__extend)(QUEX_NAME(Accumulator)* me, size_t MinAddSize)
 
     QUEX_TYPE_LEXATOM*  chunk = \
           (QUEX_TYPE_LEXATOM*)
-          QUEX_NNAME_LIB(MemoryManager_allocate)(NewSize*sizeof(QUEX_TYPE_LEXATOM),
+          QUEX_GNAME_LIB(MemoryManager_allocate)(NewSize*sizeof(QUEX_TYPE_LEXATOM),
                                          E_MemoryObjectType_TEXT);
 
     if( chunk == 0x0 ) return false;
@@ -119,7 +119,7 @@ QUEX_NAME(Accumulator__extend)(QUEX_NAME(Accumulator)* me, size_t MinAddSize)
 
     __QUEX_STD_memcpy(chunk, me->text.begin, sizeof(QUEX_TYPE_LEXATOM) * Size);
 
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)me->text.begin, E_MemoryObjectType_TEXT);
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)me->text.begin, E_MemoryObjectType_TEXT);
 
     me->text.begin      = chunk;
     me->text.end        = chunk + OldContentSize;
@@ -256,7 +256,7 @@ QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
     }
 }
 
-#ifndef QUEX_OPTION_PLAIN_C_EXT
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 QUEX_INLINE 
 QUEX_NAME(Accumulator)::QUEX_NAME(Accumulator)()
 { /* C/C++ Compability: Constructors/Destructors do nothing. */ }

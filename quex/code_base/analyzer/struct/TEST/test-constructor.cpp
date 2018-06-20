@@ -36,9 +36,7 @@
 #include "MemoryManager_UnitTest.i"
 #include <hwut_unit.h>
 
-namespace quex {
 MemoryManager_UnitTest_t MemoryManager_UnitTest;
-}
 
 
 
@@ -59,13 +57,13 @@ main(int argc, char** argv)
     hwut_info("Constructor;\n"
               "CHOICES: file-name, byte-loader, memory;\n");
 
-    memset(&quex::MemoryManager_UnitTest, 0, sizeof(quex::MemoryManager_UnitTest_t));
+    memset(&MemoryManager_UnitTest, 0, sizeof(MemoryManager_UnitTest));
 
-    quex::MemoryManager_UnitTest.allocation_addmissible_f = true;
-    quex::MemoryManager_UnitTest.forbid_ByteLoader_f      = false;
-    quex::MemoryManager_UnitTest.forbid_LexatomLoader_f   = false;
-    quex::MemoryManager_UnitTest.forbid_BufferMemory_f    = false;
-    quex::MemoryManager_UnitTest.forbid_InputName_f       = false;
+    MemoryManager_UnitTest.allocation_addmissible_f = true;
+    MemoryManager_UnitTest.forbid_ByteLoader_f      = false;
+    MemoryManager_UnitTest.forbid_LexatomLoader_f   = false;
+    MemoryManager_UnitTest.forbid_BufferMemory_f    = false;
+    MemoryManager_UnitTest.forbid_InputName_f       = false;
     UserConstructor_UnitTest_return_value           = true;
     UserReset_UnitTest_return_value                 = false;
     UserMementoPack_UnitTest_return_value           = false;
@@ -105,29 +103,29 @@ self_file_name()
 
     ++lx;
     {
-        quex::MemoryManager_UnitTest.forbid_ByteLoader_f = true;
+        MemoryManager_UnitTest.forbid_ByteLoader_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_File_OpenFailed); 
         lx->TestAnalyzer::~TestAnalyzer();
-        quex::MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
+        MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
     }
 
     ++lx;
     {
-        quex::MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
+        MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_LexatomLoader_Failed); 
         lx->TestAnalyzer::~TestAnalyzer();
-        quex::MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
+        MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
     }
 
     ++lx;
     {
-        quex::MemoryManager_UnitTest.forbid_BufferMemory_f = true;
+        MemoryManager_UnitTest.forbid_BufferMemory_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_Allocation_BufferMemory_Failed); 
         lx->TestAnalyzer::~TestAnalyzer();
-        quex::MemoryManager_UnitTest.forbid_BufferMemory_f = false;
+        MemoryManager_UnitTest.forbid_BufferMemory_f = false;
     }
 
     ++lx;
@@ -141,11 +139,11 @@ self_file_name()
 
     ++lx;
     {
-        quex::MemoryManager_UnitTest.forbid_InputName_f = true;
+        MemoryManager_UnitTest.forbid_InputName_f = true;
         new (lx) TestAnalyzer("file-that-exists.txt", NULL);
         self_assert(lx, E_Error_InputName_Set_Failed); 
         lx->TestAnalyzer::~TestAnalyzer();
-        quex::MemoryManager_UnitTest.forbid_InputName_f = false;
+        MemoryManager_UnitTest.forbid_InputName_f = false;
     }
 }
 
@@ -173,13 +171,13 @@ self_byte_loader_core(E_Error ExpectedError)
         assert(false); /* Not subject to test, here. */
         break;
     case E_Error_Allocation_LexatomLoader_Failed:
-        quex::MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
+        MemoryManager_UnitTest.forbid_LexatomLoader_f = true;
         break;
     case E_Error_Allocation_BufferMemory_Failed:
-        quex::MemoryManager_UnitTest.forbid_BufferMemory_f = true;
+        MemoryManager_UnitTest.forbid_BufferMemory_f = true;
         break;
     case E_Error_InputName_Set_Failed:
-        quex::MemoryManager_UnitTest.forbid_InputName_f = true;
+        MemoryManager_UnitTest.forbid_InputName_f = true;
         ExpectedError = E_Error_None;
         break;
     case E_Error_UserConstructor_Failed:
@@ -224,10 +222,10 @@ self_byte_loader_core(E_Error ExpectedError)
     }
     ++lx;
 
-    quex::MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
-    quex::MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
-    quex::MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
-    quex::MemoryManager_UnitTest.forbid_InputName_f     = false;
+    MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
+    MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
+    MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
+    MemoryManager_UnitTest.forbid_InputName_f     = false;
     UserConstructor_UnitTest_return_value         = true;
 }
 
@@ -249,9 +247,9 @@ self_memory()
     {
         /* Forbidding Allocation: ByteLoader, LexatomLoader, Memory
          * => No Error!                                                       */
-        quex::MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
-        quex::MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
-        quex::MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
+        MemoryManager_UnitTest.forbid_ByteLoader_f    = false;
+        MemoryManager_UnitTest.forbid_LexatomLoader_f = false;
+        MemoryManager_UnitTest.forbid_BufferMemory_f  = false;
 
         new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         self_assert(lx, E_Error_None);
@@ -267,14 +265,14 @@ self_memory()
     }
     ++lx;
     {
-        quex::MemoryManager_UnitTest.forbid_InputName_f = true;
+        MemoryManager_UnitTest.forbid_InputName_f = true;
         new (lx) TestAnalyzer(&memory[0], 65536, &memory[65536-1]);
         /* Input name is not set upon construction from memory. */
         hwut_verify(lx->__input_name == (char*)0);
         self_assert(lx, E_Error_None);
         lx->TestAnalyzer::~TestAnalyzer();
 
-        quex::MemoryManager_UnitTest.forbid_InputName_f = false;
+        MemoryManager_UnitTest.forbid_InputName_f = false;
     }
     ++lx;
 

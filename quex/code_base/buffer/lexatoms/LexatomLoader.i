@@ -84,7 +84,7 @@ QUEX_NAME(LexatomLoader_delete_self)(QUEX_NAME(LexatomLoader)* me)
         me->derived.destruct_self(me);
     }
 
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_BUFFER_FILLER);
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_BUFFER_FILLER);
 }
 
 QUEX_INLINE void    
@@ -163,7 +163,7 @@ QUEX_NAME(LexatomLoader_load)(QUEX_NAME(LexatomLoader)*  me,
      *                                                                       */
     loaded_n = (ptrdiff_t)me->derived.load_lexatoms(me, LoadP, (size_t)LoadN,
                                                     end_of_stream_f, encoding_error_f);
-#   ifdef QUEX_OPTION_ON_LOAD_DETECT_BUFFER_LIMIT_CODE_IN_CONTENT
+#   ifdef QUEX_OPTION_ASSERTS_EXT
     {
         const QUEX_TYPE_LEXATOM* p;
         /* The buffer limit code is not to appear inside the loaded content. */

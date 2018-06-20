@@ -3,7 +3,7 @@
 #ifndef QUEX_INCLUDE_GUARD__ANALYZER__COUNTER
 #define QUEX_INCLUDE_GUARD__ANALYZER__COUNTER
 
-#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 #   include <cstddef> 
 #else
 #   include <stddef.h>

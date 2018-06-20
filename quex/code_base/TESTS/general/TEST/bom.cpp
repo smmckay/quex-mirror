@@ -2,8 +2,8 @@
 #include <iostream>
 #include <fstream>
 #define QUEX_NAME(X) (X)
-#include "ut/lib/quex/bom"
-#include "ut/lib/quex/bom.i"
+#include "test_cpp/lib/quex/bom"
+#include "test_cpp/lib/quex/bom.i"
 #include <support/C/hwut_unit.h>
 
 
@@ -22,7 +22,7 @@ main(int argc, char** argv)
                                  0x0,
     };
     const char**   iterator;
-    QUEX_TYPE_BOM  bom = QUEX_BOM_NONE;
+    quex::E_ByteOrderMark bom = quex::QUEX_BOM_NONE;
 
     hwut_info("BOM Snap: ifstream\n");
 

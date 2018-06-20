@@ -159,8 +159,8 @@ def __setup_analyzer_class(Setup):
     __check_namespace_admissibility("derived class", Setup.analyzer_derived_class_name_space)
 
     if not Setup.quex_lib:
-        if Setup.language == "C": quex_lib = "QuexLib"
-        else:                     quex_lib = "Quex::QuexLib"
+        if Setup.language == "C": quex_lib = "quex"
+        else:                     quex_lib = "quex::"
 
     Setup._quex_lib_prefix,     \
     Setup._quex_lib_name_space, \

@@ -27,16 +27,16 @@ QUEX_INLINE void         $$TOKEN_CLASS$$_destruct(struct $$TOKEN_CLASS$$_tag*);
 QUEX_INLINE void         $$TOKEN_CLASS$$_set(struct $$TOKEN_CLASS$$_tag* me, 
                                              const QUEX_TYPE_TOKEN_ID    ID);
 
-#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+$$<token-take-text>------------------------------------------------------------
 QUEX_INLINE bool         $$TOKEN_CLASS$$_take_text(struct $$TOKEN_CLASS$$_tag* me, 
                                                    const QUEX_TYPE_LEXATOM*    Begin, 
                                                    const QUEX_TYPE_LEXATOM*    End);
-#endif
+$$-----------------------------------------------------------------------------
 
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+$$<token-repetition>-----------------------------------------------------------
 QUEX_INLINE size_t       $$TOKEN_CLASS$$_repetition_n_get(struct $$TOKEN_CLASS$$_tag*);
 QUEX_INLINE void         $$TOKEN_CLASS$$_repetition_n_set(struct $$TOKEN_CLASS$$_tag*, size_t);
-#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+$$-----------------------------------------------------------------------------
 
  
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT $$TOKEN_CLASS$$_tag {

@@ -68,7 +68,7 @@ QUEX_NAME_LIB(system_is_little_endian)(void);
 
 extern void
 QUEX_NAME_LIB(print_relative_positions)(const void* Begin,       const void* End, 
-                                     size_t      ElementSize, const void* P);
+                                        size_t      ElementSize, const void* P);
 
 extern ptrdiff_t
 QUEX_NAME_LIB(strlcpy)(char* Dest, const char* Src, size_t MaxN);

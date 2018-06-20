@@ -81,7 +81,7 @@ QUEX_NAME(Buffer_nested_construct)(QUEX_NAME(Buffer)*        me,
         /* (2) AVAILABLE SIZE still too SMALL
          *     => Allocate new memory for new buffer.                         */                    
         memory_size = (size_t)(QUEX_SETTING_BUFFER_SIZE);
-        memory      = (QUEX_TYPE_LEXATOM*)QUEX_NNAME_LIB(MemoryManager_allocate)(
+        memory      = (QUEX_TYPE_LEXATOM*)QUEX_GNAME_LIB(MemoryManager_allocate)(
                                 memory_size * sizeof(QUEX_TYPE_LEXATOM), 
                                 E_MemoryObjectType_BUFFER_MEMORY);
         if( ! memory ) {
@@ -185,7 +185,7 @@ QUEX_NAME(Buffer_nested_extend)(QUEX_NAME(Buffer)*  me, ptrdiff_t  SizeAdd)
         return false;
     }
 
-    new_memory_root_p = (QUEX_TYPE_LEXATOM*)QUEX_NNAME_LIB(MemoryManager_reallocate)(
+    new_memory_root_p = (QUEX_TYPE_LEXATOM*)QUEX_GNAME_LIB(MemoryManager_reallocate)(
                                                 (void*)root->begin(root),
                                                 sizeof(QUEX_TYPE_LEXATOM) * (size_t)new_size,
                                                 E_MemoryObjectType_BUFFER_MEMORY);
@@ -263,7 +263,7 @@ QUEX_NAME(Buffer_nested_migrate)(QUEX_NAME(Buffer)*  me,
                                                             &memory[0], MemoryLexatomN);
 
         if( root->_memory.ownership == E_Ownership_LEXICAL_ANALYZER ) {
-            QUEX_NNAME_LIB(MemoryManager_free)(old_memory_root_p, E_MemoryObjectType_BUFFER_MEMORY);
+            QUEX_GNAME_LIB(MemoryManager_free)(old_memory_root_p, E_MemoryObjectType_BUFFER_MEMORY);
         }
         root->_memory.ownership = Ownership;
         /* Limit codes for '_front' and '_end' have been set during 'memcpy'. */

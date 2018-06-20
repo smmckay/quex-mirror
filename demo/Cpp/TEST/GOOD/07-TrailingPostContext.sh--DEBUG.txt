@@ -5,7 +5,7 @@ tiny_lexer-core-engine.cpp:42: warning: ‘__QuexLexemeNullObject’ defined but
 executing ...
 ###############################################################################
 ## NOTE: In order to disable this message, you can do two things. Either, 
-## define 'QUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED' which only disables
+## define 'QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT' which only disables
 ## this particular message, but leaves the asserts intact. Or, define the macro
 ## 'QUEX_OPTION_ASSERTS_EXT_DISABLED' which also disarms all internal asserts.
 ##-----------------------------------------------------------------------------

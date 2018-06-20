@@ -1,8 +1,8 @@
 quex -i GOTO-2.qx -o Simple --language C --debug-exception --no-count-lines --no-count-columns 
-gcc -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT     -Wno-deprecated  -DQUEX_OPTION_CONVERTER_ICONV  -DPRINT_TOKEN -DQUEX_OPTION_DEBUG_SHOW_MODES_EXT  ../lexer.c Simple/Simple.c -o lexer
+gcc -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT     -Wno-deprecated  -DQUEX_OPTION_CONVERTER_ICONV  -DPRINT_TOKEN -DQUEX_OPTION_DEBUG_SHOW_MODES_EXT  ../lexer.c Simple/Simple.c -o lexer
 | Mode change to ONE
 ## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT'
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.
@@ -10,7 +10,7 @@ gcc -Wall -Werror -I. -I<<QUEX_PATH>> -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_
 ##
 ## Note however: the paranoia is a heavy load on performance!
 ##
-## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT'
+## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'
 ##
 ## Report any bug at
 ##        http://sourceforge.net/tracker/?group_id=168259&atid=846112

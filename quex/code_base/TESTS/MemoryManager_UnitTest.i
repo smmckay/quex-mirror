@@ -18,10 +18,6 @@
 #include "test_c/lib/quex/MemoryManager" 
 #endif
 
-#ifdef __cplusplus
-namespace Quex {
-#endif
-
 typedef struct {
     int allocation_n;
     int allocated_byte_n;
@@ -46,8 +42,8 @@ typedef struct {
 extern MemoryManager_UnitTest_t MemoryManager_UnitTest;
 
 uint8_t*
-QuexLib_MemoryManager_allocate(const size_t       ByteN, 
-                                     E_MemoryObjectType Type)
+quex_MemoryManager_allocate(const size_t       ByteN, 
+                            E_MemoryObjectType Type)
 {
     uint8_t*  me;
 
@@ -94,7 +90,7 @@ QuexLib_MemoryManager_allocate(const size_t       ByteN,
 }
 
 uint8_t*
-QuexLib_MemoryManager_reallocate(void*              old_memory,
+quex_MemoryManager_reallocate(void*              old_memory,
                                        const size_t       NewByteN, 
                                        E_MemoryObjectType Type)
 {
@@ -118,7 +114,7 @@ QuexLib_MemoryManager_reallocate(void*              old_memory,
 }
        
 void 
-QuexLib_MemoryManager_free(void*              alter_ego, 
+quex_MemoryManager_free(void*              alter_ego, 
                                  E_MemoryObjectType Type)  
 { 
     void* me = (void*)alter_ego;
@@ -136,7 +132,7 @@ QuexLib_MemoryManager_free(void*              alter_ego,
 }
 
 size_t
-QuexLib_MemoryManager_insert(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
+quex_MemoryManager_insert(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
                                    uint8_t* source_begin_p, uint8_t* source_end_p)
 /* Inserts as many bytes as possible into the array from 'drain_begin_p'
  * to 'drain_end_p'. The source of bytes starts at 'source_begin_p' and
@@ -163,7 +159,7 @@ QuexLib_MemoryManager_insert(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
 }
 
 char*
-QuexLib_MemoryManager_clone_string(const char* String)
+quex_MemoryManager_clone_string(const char* String)
 { 
     char* result;
    
@@ -174,7 +170,7 @@ QuexLib_MemoryManager_clone_string(const char* String)
         return (char*)0;
     }
    
-    result = (char*)QuexLib_MemoryManager_allocate(
+    result = (char*)quex_MemoryManager_allocate(
                                  sizeof(char)*(__QUEX_STD_strlen(String)+1),
                                  E_MemoryObjectType_INPUT_NAME);
     if( ! result ) {
@@ -185,7 +181,7 @@ QuexLib_MemoryManager_clone_string(const char* String)
 }
 
 bool 
-QuexLib_system_is_little_endian(void)
+quex_system_is_little_endian(void)
 {
     union {
         long int multi_bytes;
@@ -196,7 +192,7 @@ QuexLib_system_is_little_endian(void)
 }
 
 void
-QuexLib_print_relative_positions(const void*  Begin,       const void* End, 
+quex_print_relative_positions(const void*  Begin,       const void* End, 
                                      size_t       ElementSize, const void* P)
 /* Begin       = pointer to first element of buffer.
  * End         = pointer behind last element of buffer.
@@ -226,7 +222,7 @@ QuexLib_print_relative_positions(const void*  Begin,       const void* End,
 }
 
 ptrdiff_t
-QuexLib_strlcpy(char* dst, const char* src, size_t siz)
+quex_strlcpy(char* dst, const char* src, size_t siz)
 {
     /* Copy src to string dst of size siz.  At most siz-1 characters
      * will be copied.  Always NUL terminates (unless siz == 0).
@@ -268,6 +264,36 @@ QuexLib_strlcpy(char* dst, const char* src, size_t siz)
 }
 
 #ifdef __cplusplus
+namespace quex {
+
+    uint8_t* MemoryManager_allocate(const size_t ByteN, E_MemoryObjectType MT)
+    { return quex_MemoryManager_allocate(ByteN, MT); }
+
+    uint8_t* MemoryManager_reallocate(void*              old_memory,
+                                      const size_t       NewByteN, 
+                                      E_MemoryObjectType Type)
+    { return quex_MemoryManager_reallocate(old_memory, NewByteN, Type); }
+
+    void   MemoryManager_free(void* Obj, E_MemoryObjectType MT)
+    { return quex_MemoryManager_free(Obj, MT); }
+
+    size_t MemoryManager_insert(uint8_t* drain_begin_p,  uint8_t* drain_end_p,
+                                     uint8_t* source_begin_p, uint8_t* source_end_p)
+    { return quex_MemoryManager_insert(drain_begin_p, drain_end_p, source_begin_p, source_end_p); }
+
+    char*  MemoryManager_clone_string(const char* String)
+    { return quex_MemoryManager_clone_string(String); }
+
+    bool   system_is_little_endian(void)
+    { return quex_system_is_little_endian(); }
+
+    void   print_relative_positions(const void* Begin,       const void* End, 
+                                            size_t      ElementSize, const void* P)
+    { return quex_print_relative_positions(Begin, End, ElementSize, P); }
+
+    ptrdiff_t strlcpy(char* Dest, const char* Src, size_t MaxN)
+    { return quex_strlcpy(Dest, Src, MaxN); }
+
 } /* namespace Quex */
 #endif
  

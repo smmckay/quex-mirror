@@ -1,5 +1,6 @@
 from   quex.output.languages.cpp.dictionary import Language as LanguageCpp
 from   quex.constants                       import E_Files
+import quex.condition                       as     condition  
 import quex.blackboard                      as     blackboard
 from   quex.blackboard                      import setup as Setup
 
@@ -40,7 +41,7 @@ class Language(LanguageCpp):
         return "self.send_n(&self, %s, (size_t)%s);\n" % (TokenName, N)
 
     def MEMBER_FUNCTION_DECLARATION(self, signature):
-        if not blackboard.condition_holds(signature.condition):
+        if not condition.do(signature.condition):
             return ""
         argument_list_str = ", ".join("%s %s" % (arg_type, arg_name) 
                                       for arg_type, arg_name, default in signature.argument_list)
@@ -57,7 +58,7 @@ class Language(LanguageCpp):
         txt = [
             "    me->%s = QUEX_NAME(MF_%s);" % (signature.function_name, signature.function_name)
             for signature in MemberFunctionSignatureList
-            if blackboard.condition_holds(signature.condition)
+            if condition.do(signature.condition)
         ]
         return "\n".join(txt)
         

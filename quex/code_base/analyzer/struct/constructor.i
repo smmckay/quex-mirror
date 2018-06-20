@@ -107,7 +107,7 @@ QUEX_NAME(from_ByteLoader)(QUEX_TYPE_ANALYZER*     me,
     }
 
     /* NEW: Memory.                                                           */
-    new_memory = (QUEX_TYPE_LEXATOM*)QUEX_NNAME_LIB(MemoryManager_allocate)(
+    new_memory = (QUEX_TYPE_LEXATOM*)QUEX_GNAME_LIB(MemoryManager_allocate)(
                        QUEX_SETTING_BUFFER_SIZE * sizeof(QUEX_TYPE_LEXATOM), 
                        E_MemoryObjectType_BUFFER_MEMORY);
     if( ! new_memory ) {
@@ -269,7 +269,7 @@ QUEX_NAME(destruct_all_but_buffer)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(ModeStack_destruct)(&me->_mode_stack);
 
     if( me->__input_name ) {
-        QUEX_NNAME_LIB(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
+        QUEX_GNAME_LIB(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
     }
 
     QUEX_NAME(all_but_buffer_resources_absent_mark)(me);
@@ -411,7 +411,7 @@ QUEX_INLINE void
 QUEX_NAME(Asserts_construct)()
 {
 #   if      defined(QUEX_OPTION_ASSERTS_EXT) \
-       && ! defined(QUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED)
+       && ! defined(QUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT)
     __QUEX_STD_printf(__QUEX_MESSAGE_ASSERTS_INFO);
 #   endif
 

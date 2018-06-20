@@ -34,7 +34,7 @@ QUEX_NAME(TokenQueue_construct)(QUEX_NAME(TokenQueue)* me,
  * N:      Number of token objects that the array can carry.                  */
 {
     QUEX_TYPE_TOKEN*   iterator   = 0x0;
-    QUEX_TYPE_TOKEN*   memory     = (QUEX_TYPE_TOKEN*)QUEX_NNAME_LIB(MemoryManager_allocate)(
+    QUEX_TYPE_TOKEN*   memory     = (QUEX_TYPE_TOKEN*)QUEX_GNAME_LIB(MemoryManager_allocate)(
                                              N * sizeof(QUEX_TYPE_TOKEN),
                                              E_MemoryObjectType_TOKEN_ARRAY);
     QUEX_TYPE_TOKEN*   memory_end = &memory[N];
@@ -48,7 +48,7 @@ QUEX_NAME(TokenQueue_construct)(QUEX_NAME(TokenQueue)* me,
 
     /* Call placement new (plain constructor) for all tokens in chunk.        */
     for(iterator = memory; iterator != memory_end; ++iterator) {
-        QUEX_NAME_TOKEN(construct)(iterator);
+        QUEX_GNAME_TOKEN(construct)(iterator);
     }
     QUEX_NAME(TokenQueue_init)(me, memory, memory_end); 
     me->the_lexer = lexer;
@@ -98,10 +98,10 @@ QUEX_NAME(TokenQueue_destruct)(QUEX_NAME(TokenQueue)* me)
     QUEX_TYPE_TOKEN* iterator = 0x0;
     /* Call explicit destructors for all tokens in array                      */
     for(iterator = me->begin; iterator != me->end; ++iterator) {
-        QUEX_NAME_TOKEN(destruct)(iterator);
+        QUEX_GNAME_TOKEN(destruct)(iterator);
     }
 
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)&me->begin[0],
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)&me->begin[0],
                                E_MemoryObjectType_TOKEN_ARRAY);
 
     /* The memory chunk for the token queue itself is located inside the
@@ -140,11 +140,11 @@ QUEX_NAME(TokenQueue_is_empty)(QUEX_NAME(TokenQueue)* me)
 QUEX_INLINE void             
 QUEX_NAME(TokenQueue_push)(QUEX_NAME(TokenQueue)* me,
                            QUEX_TYPE_TOKEN_ID     Id)
-/* Push a token and set only its token identifier.                            */
+/* Push a token and set only its token identifier.                           */
 {
-#   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
-    QUEX_NAME_TOKEN(repetition_n_set)(me->write_iterator, 1);
-#   endif
+$$<token-repetition>-----------------------------------------------------------
+    QUEX_GNAME_TOKEN(repetition_n_set)(me->write_iterator, 1);
+$$-----------------------------------------------------------------------------
     QUEX_NAME(TokenQueue_push_core)(me, Id);
 }
 
@@ -170,6 +170,7 @@ QUEX_NAME(TokenQueue_push_core)(QUEX_NAME(TokenQueue)* me,
     ++(me->write_iterator);       
 }
 
+$$<token-take-text>------------------------------------------------------------
 QUEX_INLINE bool             
 QUEX_NAME(TokenQueue_push_text)(QUEX_NAME(TokenQueue)* me,
                                 QUEX_TYPE_TOKEN_ID     Id,
@@ -179,18 +180,32 @@ QUEX_NAME(TokenQueue_push_text)(QUEX_NAME(TokenQueue)* me,
 {
     bool ownership_transferred_to_token_f = false;
     QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);
-#   if defined(QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT)
-    ownership_transferred_to_token_f = QUEX_NAME_TOKEN(take_text)(me->write_iterator, BeginP, EndP);
+    ownership_transferred_to_token_f = QUEX_GNAME_TOKEN(take_text)(me->write_iterator, BeginP, EndP);
     QUEX_NAME(TokenQueue_push)(me, Id);
-    return ownership_transferred_to_token_f;
-#   else
-    (void)me; (void)Id; (void)BeginP; (void)EndP;
-    __quex_assert((const char*)0 == "Token type does not support 'take text'.");
-    QUEX_NAME(TokenQueue_set_token_TERMINATION)(me);
-#   endif
     return ownership_transferred_to_token_f;
 }
 
+$$-----------------------------------------------------------------------------
+$$<not-token-take-text>--------------------------------------------------------
+
+QUEX_INLINE bool             
+QUEX_NAME(TokenQueue_push_text)(QUEX_NAME(TokenQueue)* me,
+                                QUEX_TYPE_TOKEN_ID     Id,
+                                QUEX_TYPE_LEXATOM*     BeginP,
+                                QUEX_TYPE_LEXATOM*     EndP)
+/* Push a token and set its 'text' member.                                    */
+{
+    bool ownership_transferred_to_token_f = false;
+    (void)me; (void)Id; (void)BeginP; (void)EndP;
+    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);
+    __quex_assert((const char*)0 == "Token type does not support 'take text'.");
+
+    QUEX_NAME(TokenQueue_set_token_TERMINATION)(me);
+    return ownership_transferred_to_token_f;
+}
+$$-----------------------------------------------------------------------------
+
+$$<token-repetition>-----------------------------------------------------------
 QUEX_INLINE void             
 QUEX_NAME(TokenQueue_push_repeated)(QUEX_NAME(TokenQueue)* me,
                                     QUEX_TYPE_TOKEN_ID     Id,
@@ -200,32 +215,25 @@ QUEX_NAME(TokenQueue_push_repeated)(QUEX_NAME(TokenQueue)* me,
 {
     QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
     __quex_assert(RepetitionN != 0);        
-#   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
     __quex_assert(QUEX_SETTING_TOKEN_ID_REPETITION_TEST(Id));
-    QUEX_NAME_TOKEN(repetition_n_set)(me->write_iterator, RepetitionN);
+
+    QUEX_GNAME_TOKEN(repetition_n_set)(me->write_iterator, RepetitionN);
     QUEX_NAME(TokenQueue_push_core)(me, Id);
-#   else
-    (void)me; (void)Id; (void)RepetitionN;
-    __quex_assert((const char*)0 == "Token type does not support token repetition.");
-    QUEX_NAME(TokenQueue_set_token_TERMINATION)(me);
-#   endif
 }
+
 
 QUEX_INLINE QUEX_TYPE_TOKEN* 
 QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
 {
-#   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
     size_t    repetition_count;
-#   endif
 
     __quex_assert(QUEX_NAME(TokenQueue_begin)(me) != 0x0);
 
     if( QUEX_NAME(TokenQueue_is_empty)(me) ) {        
         return (QUEX_TYPE_TOKEN*)0;
     }
-#   if defined(QUEX_OPTION_TOKEN_REPETITION_SUPPORT)
     else if( QUEX_SETTING_TOKEN_ID_REPETITION_TEST(me->read_iterator->id) ) {
-        repetition_count = QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator);
+        repetition_count = QUEX_GNAME_TOKEN(repetition_n_get)(me->read_iterator);
         if( repetition_count == 0 ) { 
             /* This case should never occurr!                                 */
             /* Repetition count == 0 => pop repeated token from queue.        */
@@ -239,15 +247,45 @@ QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
             return me->read_iterator++;
         }
         else {
-            QUEX_NAME_TOKEN(repetition_n_set)(me->read_iterator, 
-                      (QUEX_NAME_TOKEN(repetition_n_get)(me->read_iterator) - 1));
+            QUEX_GNAME_TOKEN(repetition_n_set)(me->read_iterator, 
+                      (QUEX_GNAME_TOKEN(repetition_n_get)(me->read_iterator) - 1));
             return me->read_iterator;  
         } 
     }
-#   endif
     /* Tokens are in queue --> take next token from queue                    */ 
     return me->read_iterator++;
 }
+
+$$------------------------------------------------------------------------------
+$$<not-token-repetition>--------------------------------------------------------
+
+QUEX_INLINE void             
+QUEX_NAME(TokenQueue_push_repeated)(QUEX_NAME(TokenQueue)* me,
+                                    QUEX_TYPE_TOKEN_ID     Id,
+                                    size_t                 RepetitionN)
+/* Push a repeated token by 'RepetitionN' times. This is only addmissible for
+ * TokenId-s specified in the 'repeated_token' section of the '.qx' file.     */
+{
+    QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
+    (void)me; (void)Id; (void)RepetitionN;
+    __quex_assert(RepetitionN != 0);        
+
+    __quex_assert((const char*)0 == "Token type does not support token repetition.");
+    QUEX_NAME(TokenQueue_set_token_TERMINATION)(me);
+}
+
+QUEX_INLINE QUEX_TYPE_TOKEN* 
+QUEX_NAME(TokenQueue_pop)(QUEX_NAME(TokenQueue)* me)
+{
+    __quex_assert(QUEX_NAME(TokenQueue_begin)(me) != 0x0);
+
+    if( QUEX_NAME(TokenQueue_is_empty)(me) ) {        
+        return (QUEX_TYPE_TOKEN*)0;
+    }
+    /* Tokens are in queue --> take next token from queue                    */ 
+    return me->read_iterator++;
+}
+$$------------------------------------------------------------------------------
 
 QUEX_INLINE QUEX_TYPE_TOKEN* QUEX_NAME(TokenQueue_begin)(QUEX_NAME(TokenQueue)* me)
 { return me->begin; }
@@ -267,12 +305,13 @@ QUEX_NAME(TokenQueue_set_token_TERMINATION)(QUEX_NAME(TokenQueue)* me)
  * only be called in case of a detected error.                                */
 {
     QUEX_NAME(TokenQueue_reset)(me);
-#   if defined(QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT)
+$$<token-take-text>------------------------------------------------------------
     QUEX_NAME(TokenQueue_push_text)(me, QUEX_SETTING_TOKEN_ID_TERMINATION, 
                                     (QUEX_TYPE_LEXATOM*)0, (QUEX_TYPE_LEXATOM*)0);
-#   else
+$$-----------------------------------------------------------------------------
+$$<not-token-take-text>--------------------------------------------------------
     QUEX_NAME(TokenQueue_push)(me, QUEX_SETTING_TOKEN_ID_TERMINATION); 
-#   endif
+$$-----------------------------------------------------------------------------
 }
 
 QUEX_NAMESPACE_MAIN_CLOSE

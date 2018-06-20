@@ -15,7 +15,7 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 #define QUEX_TYPE_GAVAGER QUEX_NAME(Gavager) 
 
-#ifndef QUEX_OPTION_PLAIN_C_EXT
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_TYPE_GAVAGER {
 #else
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Gavager_tag) {
@@ -23,7 +23,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Gavager_
 
     QUEX_NAME(FeederBase)  base;
 
-#ifndef QUEX_OPTION_PLAIN_C_EXT
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 public:
     QUEX_TYPE_GAVAGER(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
     void              access(void**       begin_p, 

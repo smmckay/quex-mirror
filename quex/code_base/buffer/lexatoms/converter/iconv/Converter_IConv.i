@@ -3,11 +3,11 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__CONVERTER_ICONV_I
 #define  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__CONVERTER_ICONV_I
 
-#ifndef QUEX_OPTION_PLAIN_C_EXT
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 extern "C" { 
 #endif
 #include <errno.h>
-#ifndef QUEX_OPTION_PLAIN_C_EXT
+#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 }
 #endif
 $$INC: definitions$$
@@ -26,7 +26,7 @@ QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* me,
 
 QUEX_INLINE bool    
 QUEX_NAME(Converter_IConv_initialize_by_bom_id)(struct QUEX_NAME(Converter_tag)* me,
-                                                QUEX_TYPE_BOM                    BomId);
+                                                E_ByteOrderMark                    BomId);
 
 QUEX_INLINE E_LoadResult 
 QUEX_NAME(Converter_IConv_convert)(QUEX_NAME(Converter)*     me, 
@@ -51,7 +51,7 @@ QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
 {
     QUEX_NAME(Converter_IConv)*  me = \
        (QUEX_NAME(Converter_IConv)*)
-       QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(Converter_IConv)),
+       QUEX_GNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(Converter_IConv)),
                                       E_MemoryObjectType_CONVERTER);
     if( ! me ) {
         return (QUEX_NAME(Converter)*)0;
@@ -67,7 +67,7 @@ QUEX_NAME(Converter_IConv_new)(const char* FromCodec, const char* ToCodec)
                                          QUEX_NAME(Converter_IConv_stomach_byte_n),
                                          QUEX_NAME(Converter_IConv_stomach_clear),
                                          QUEX_NAME(Converter_IConv_print_this)) ) {
-        QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
+        QUEX_GNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
         return (QUEX_NAME(Converter)*)0;
     }
 
@@ -95,7 +95,7 @@ QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* alter_ego,
 #   elif defined(QUEX_OPTION_ENDIAN_BIG)
     const bool little_endian_f = false;
 #   elif defined(QUEX_OPTION_ENDIAN_SYSTEM) 
-    const bool little_endian_f = QUEX_NNAME_LIB(system_is_little_endian)();
+    const bool little_endian_f = QUEX_GNAME_LIB(system_is_little_endian)();
 #   endif
 
     /* Setup conversion handle */
@@ -139,7 +139,7 @@ QUEX_NAME(Converter_IConv_initialize)(QUEX_NAME(Converter)* alter_ego,
 
 QUEX_INLINE bool    
 QUEX_NAME(Converter_IConv_initialize_by_bom_id)(QUEX_NAME(Converter)* alter_ego,
-                                                QUEX_TYPE_BOM         BomId)
+                                                E_ByteOrderMark         BomId)
 {
     QUEX_NAME(Converter_IConv)* me = (QUEX_NAME(Converter_IConv)*)alter_ego;
     const char* name;
@@ -254,7 +254,7 @@ QUEX_NAME(Converter_IConv_delete_self)(QUEX_NAME(Converter)* alter_ego)
     QUEX_NAME(Converter_IConv)* me = (QUEX_NAME(Converter_IConv)*)alter_ego;
 
     iconv_close(me->handle); 
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
 }
 
 QUEX_INLINE void 

@@ -22,20 +22,20 @@ C++ is
 .. code-block:: cpp
 
     namespace quex {
-        QUEX_TYPE_BOM      bom_snap(FILE* fh);
+        E_ByteOrderMark      bom_snap(FILE* fh);
         template <class InStream> 
-        QUEX_TYPE_BOM      QUEX_NAME(bom_snap)(InStream* is_p);
-        QUEX_TYPE_BOM      bom_identify(const uint8_t* const Buffer, size_t* n);
-        const char*        bom_name(QUEX_TYPE_BOM BOM);
+        E_ByteOrderMark      QUEX_NAME(bom_snap)(InStream* is_p);
+        E_ByteOrderMark      bom_identify(const uint8_t* const Buffer, size_t* n);
+        const char*        bom_name(E_ByteOrderMark BOM);
     } 
 
 and in C
 
 .. code-block:: cpp
 
-    QUEX_TYPE_BOM  quex_bom_snap(FILE* fh);
-    QUEX_TYPE_BOM  quex_bom_identify(const uint8_t* const Buffer, size_t* n);
-    const char*    quex_bom_name(QUEX_TYPE_BOM BOM);
+    E_ByteOrderMark  quex_bom_snap(FILE* fh);
+    E_ByteOrderMark  quex_bom_identify(const uint8_t* const Buffer, size_t* n);
+    const char*    quex_bom_name(E_ByteOrderMark BOM);
 
 In the further discussion the functions will be referred to without their name
 or namespace prefix. The function ``bom_snap(...)`` checks whether the stream
@@ -43,7 +43,7 @@ starts with a byte sequence that is identified as a byte order mark. If so, it
 steps over it so that the lexical analysis can start immediately after it. An
 exception is the BOM for UTF7; this coding is identified, but the stream does
 not step over it. If UTF7 is detected, it has to be considered with care
-because it may actually a normal character sequence. The type ``QUEX_TYPE_BOM``
+because it may actually a normal character sequence. The type ``E_ByteOrderMark``
 defines constants that identify BOMs. It is defined as follows:
 
 .. code-block::cpp
@@ -72,7 +72,7 @@ defines constants that identify BOMs. It is defined as follows:
         QUEX_BOM_SCSU_W5_TO_FE80 = 0x107, 
         QUEX_BOM_SCSU_W6_TO_FE80 = 0x108, 
         QUEX_BOM_SCSU_W7_TO_FE80 = 0x109, 
-    } QUEX_TYPE_BOM;
+    } E_ByteOrderMark;
 
 .. note:: The BOM for UTF7 consists of the three bytes 0x2B, 0x2F, 0x76 
           plus one of 0x2B, 0x2F, 0x38, or 0x39. This corresponds to the
@@ -123,14 +123,14 @@ a BOM identifier to a human readable string
 
 .. code-block:: cpp
  
-    const char*     bom_name(QUEX_TYPE_BOM BOM);
+    const char*     bom_name(E_ByteOrderMark BOM);
 
 If the user wishes to identify on some chunk of arbitrary memory the following
 function may be used
 
 .. code-block:: cpp
  
-    QUEX_TYPE_BOM   bom_identify(const uint8_t* const Buffer, size_t* n);
+    E_ByteOrderMark   bom_identify(const uint8_t* const Buffer, size_t* n);
 
 It receives a byte array in ``Buffer`` which must at least be of size four.  It
 reports the found BOM as a return value and fills the number of bytes that the
@@ -159,12 +159,12 @@ fragment shows an initialization in C language:
 
     FILE*           fh = NULL; 
     EasyLexer       qlex;
-    QUEX_TYPE_BOM   bom_type = QUEX_BOM_NONE;
+    E_ByteOrderMark   bom_type = QUEX_BOM_NONE;
 
     fh = fopen(file_name, "rb");
 
     /* Either there is no BOM, or if there is one, then it must be UTF8 */
-    QUEX_TYPE_BOM   bom_type = quex_bom_snap(fh);
+    E_ByteOrderMark   bom_type = quex_bom_snap(fh);
     if( (bom_type & (QUEX_BOM_UTF_8 | QUEX_BOM_NONE)) == 0 ) {
         printf("Found a non-UTF8 BOM. Exit\n");
         fclose(fh);

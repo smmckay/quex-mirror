@@ -34,7 +34,7 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_NAME(ModeStack_construct)(QUEX_NAME(ModeStack)* me,
                                    const size_t          N)
     {
-        me->begin = (const QUEX_NAME(Mode)**)QUEX_NNAME_LIB(MemoryManager_allocate)(
+        me->begin = (const QUEX_NAME(Mode)**)QUEX_GNAME_LIB(MemoryManager_allocate)(
                                     N * sizeof(QUEX_NAME(Mode)*),
                                     E_MemoryObjectType_MODE_STACK);
         if( ! me->begin ) {
@@ -52,7 +52,7 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_NAME(ModeStack_destruct)(QUEX_NAME(ModeStack)* me)
     {
         if( me->begin ) {
-            QUEX_NNAME_LIB(MemoryManager_free)((void*)&me->begin[0],
+            QUEX_GNAME_LIB(MemoryManager_free)((void*)&me->begin[0],
                                        E_MemoryObjectType_MODE_STACK);
         }
         QUEX_NAME(ModeStack_resources_absent_mark)(me);

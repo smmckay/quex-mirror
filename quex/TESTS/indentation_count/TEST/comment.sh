@@ -17,7 +17,7 @@ if [ "$2" == "FIRST" ] || [ -z "$2"  ]; then
         Simple/Simple.c                                  \
         lexer2nd.c -o lexer -DPRINT_TOKEN                \
         -DQUEX_SETTING_BUFFER_SIZE_EXT=$buffer_size          \
-        -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT
+        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT
 fi
 
 

@@ -244,9 +244,14 @@ find_reference(const char* file_stem)
  * endian and 'be' for big endian. 
  */
 {
+    const char* endian_str = 
 #   ifdef __cplusplus
-    using namespace Quex;
+    quex::system_is_little_endian() ?
+#   else
+    quex_system_is_little_endian() ?
 #   endif
+    "le" : "be";
+
     static char file_name[256];
 
     if( sizeof(QUEX_TYPE_LEXATOM_EXT) == 1 ) {
@@ -254,7 +259,7 @@ find_reference(const char* file_stem)
     }
     else {
         snprintf(&file_name[0], 255, "%s-%i-%s.dat", file_stem, (int)sizeof(QUEX_TYPE_LEXATOM_EXT)*8, 
-                 QuexLib_system_is_little_endian() ? "le" : "be");
+                 endian_str);
     }
     return &file_name[0];
 }

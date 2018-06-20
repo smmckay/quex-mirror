@@ -26,7 +26,7 @@
            } while(0)
 #endif
 
-#if defined(QUEX_OPTION_DEBUG_SHOW)
+#if defined(QUEX_OPTION_DEBUG_SHOW_EXT)
 
 #   define __quex_debug(Str)                                        \
            __QUEX_PRINT_SOURCE_POSITION();                          \
@@ -129,7 +129,7 @@
 #   define __quex_debug_counter()                        \
            QUEX_NAME(Counter_print_this)(&self.counter)
 
-#else /* not defined(QUEX_OPTION_DEBUG_SHOW) */
+#else /* not defined(QUEX_OPTION_DEBUG_SHOW_EXT) */
 
 #   define __quex_debug(FormatStr)                /* empty */
 #   define __quex_debug1(Str)                     /* empty */
@@ -153,7 +153,7 @@
 #   define __quex_debug_reload_after(LR)          /* empty */
 #   define __quex_debug_counter()                 /* empty */
 
-#endif /* ! QUEX_OPTION_DEBUG_SHOW */
+#endif /* ! QUEX_OPTION_DEBUG_SHOW_EXT */
 
 #if  defined(QUEX_OPTION_DEBUG_SHOW_LOADS)
 
@@ -184,7 +184,7 @@ $$INC: buffer/Buffer_print$$
 #    define __quex_optional_statistics(StateIdx) /* empty */
 #endif
 
-#ifdef     QUEX_OPTION_DEBUG_SHOW_MODES
+#ifdef     QUEX_OPTION_DEBUG_SHOW_MODES_EXT
 #    define __quex_debug_show_mode_transition(me, ModeP)                                       \
         if( me->__current_mode_p != 0x0 ) {                                                    \
             __QUEX_STD_fprintf(stderr, "| Mode change from %s\n", me->__current_mode_p->name); \
@@ -199,7 +199,7 @@ $$INC: buffer/Buffer_print$$
 
 #define __QUEX_MESSAGE_ASSERTS_INFO \
         "## Disable this message by compile option\n"                               \
-        "##        '-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT'\n"              \
+        "##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT'\n"              \
         "##\n"                                                                      \
         "## Asserts activated! Lexical analyzer is 'paranoid'!\n"                   \
         "## => Even smallest misbehavior causes program exit.\n"                    \
@@ -207,7 +207,7 @@ $$INC: buffer/Buffer_print$$
         "##\n"                                                                      \
         "## Note however: the paranoia is a heavy load on performance!\n"           \
         "##\n"                                                                      \
-        "## Disable asserts by '-DQUEX_OPTION_ASSERTS_EXT_DISABLED_EXT'\n"                  \
+        "## Disable asserts by '-DQUEX_OPTION_ASSERTS_DISABLED_EXT'\n"                  \
         "##\n"                                                                      \
         "## Report any bug at\n"                                                    \
         "##        http://sourceforge.net/tracker/?group_id=168259&atid=846112\n" 

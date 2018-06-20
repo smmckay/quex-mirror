@@ -80,7 +80,7 @@ $$COPY$$
 #endif
 }
 
-#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+$$<token-take-text>------------------------------------------------------------
 QUEX_INLINE bool 
 $$TOKEN_CLASS$$_take_text($$TOKEN_CLASS$$*              __this, 
                           const QUEX_TYPE_LEXATOM* Begin, 
@@ -97,9 +97,9 @@ $$FUNC_TAKE_TEXT$$
     /* Default: no ownership.                                                */
     return false;
 }
-#endif
+$$-----------------------------------------------------------------------------
 
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+$$<token-repetition>-----------------------------------------------------------
 QUEX_INLINE size_t 
 $$TOKEN_CLASS$$_repetition_n_get($$TOKEN_CLASS$$* __this)
 {
@@ -117,7 +117,7 @@ $$TOKEN_CLASS$$_repetition_n_set($$TOKEN_CLASS$$* __this, size_t N)
 $$TOKEN_REPETITION_N_SET$$
 #   undef  self
 }
-#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+$$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

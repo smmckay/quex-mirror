@@ -1,0 +1,96 @@
+___ Prefix: None; Namespace: None; __________________________________
+    
+    QUEX_NAME()       --> Something;  QUEX_GNAME()       --> Something;
+    QUEX_NAME_TOKEN() --> Something;  QUEX_GNAME_TOKEN() --> Something;
+    QUEX_NAME_LIB()   --> Something;  QUEX_GNAME_LIB()   --> Something;
+
+___ Prefix: None; Namespace: Empty List; __________________________________
+    
+    QUEX_NAME()       --> Something;  QUEX_GNAME()       --> Something;
+    QUEX_NAME_TOKEN() --> Something;  QUEX_GNAME_TOKEN() --> Something;
+    QUEX_NAME_LIB()   --> Something;  QUEX_GNAME_LIB()   --> Something;
+
+___ Prefix: None; Namespace: List Size 1; __________________________________
+    
+    QUEX_NAME()       --> Something;  QUEX_GNAME()       --> LN0::Something;
+    QUEX_NAME_TOKEN() --> Something;  QUEX_GNAME_TOKEN() --> TN0::Something;
+    QUEX_NAME_LIB()   --> Something;  QUEX_GNAME_LIB()   --> QN0::Something;
+
+___ Prefix: None; Namespace: List Size > 1; __________________________________
+    
+    QUEX_NAME()       --> Something;  QUEX_GNAME()       --> LN0::LN1::Something;
+    QUEX_NAME_TOKEN() --> Something;  QUEX_GNAME_TOKEN() --> TN0::TN1::Something;
+    QUEX_NAME_LIB()   --> Something;  QUEX_GNAME_LIB()   --> QN0::QN1::Something;
+
+___ Prefix: Empty String; Namespace: None; __________________________________
+    
+    QUEX_NAME()       --> Something;  QUEX_GNAME()       --> Something;
+    QUEX_NAME_TOKEN() --> Something;  QUEX_GNAME_TOKEN() --> Something;
+    QUEX_NAME_LIB()   --> Something;  QUEX_GNAME_LIB()   --> Something;
+
+___ Prefix: Empty String; Namespace: Empty List; __________________________________
+    
+    QUEX_NAME()       --> Something;  QUEX_GNAME()       --> Something;
+    QUEX_NAME_TOKEN() --> Something;  QUEX_GNAME_TOKEN() --> Something;
+    QUEX_NAME_LIB()   --> Something;  QUEX_GNAME_LIB()   --> Something;
+
+___ Prefix: Empty String; Namespace: List Size 1; __________________________________
+    
+    QUEX_NAME()       --> Something;  QUEX_GNAME()       --> LN0::Something;
+    QUEX_NAME_TOKEN() --> Something;  QUEX_GNAME_TOKEN() --> TN0::Something;
+    QUEX_NAME_LIB()   --> Something;  QUEX_GNAME_LIB()   --> QN0::Something;
+
+___ Prefix: Empty String; Namespace: List Size > 1; __________________________________
+    
+    QUEX_NAME()       --> Something;  QUEX_GNAME()       --> LN0::LN1::Something;
+    QUEX_NAME_TOKEN() --> Something;  QUEX_GNAME_TOKEN() --> TN0::TN1::Something;
+    QUEX_NAME_LIB()   --> Something;  QUEX_GNAME_LIB()   --> QN0::QN1::Something;
+
+___ Prefix: String Size 1; Namespace: None; __________________________________
+    
+    QUEX_NAME()       --> L_Something;  QUEX_GNAME()       --> L_Something;
+    QUEX_NAME_TOKEN() --> T_Something;  QUEX_GNAME_TOKEN() --> T_Something;
+    QUEX_NAME_LIB()   --> Q_Something;  QUEX_GNAME_LIB()   --> Q_Something;
+
+___ Prefix: String Size 1; Namespace: Empty List; __________________________________
+    
+    QUEX_NAME()       --> L_Something;  QUEX_GNAME()       --> L_Something;
+    QUEX_NAME_TOKEN() --> T_Something;  QUEX_GNAME_TOKEN() --> T_Something;
+    QUEX_NAME_LIB()   --> Q_Something;  QUEX_GNAME_LIB()   --> Q_Something;
+
+___ Prefix: String Size 1; Namespace: List Size 1; __________________________________
+    
+    QUEX_NAME()       --> L_Something;  QUEX_GNAME()       --> LN0::L_Something;
+    QUEX_NAME_TOKEN() --> T_Something;  QUEX_GNAME_TOKEN() --> TN0::T_Something;
+    QUEX_NAME_LIB()   --> Q_Something;  QUEX_GNAME_LIB()   --> QN0::Q_Something;
+
+___ Prefix: String Size 1; Namespace: List Size > 1; __________________________________
+    
+    QUEX_NAME()       --> L_Something;  QUEX_GNAME()       --> LN0::LN1::L_Something;
+    QUEX_NAME_TOKEN() --> T_Something;  QUEX_GNAME_TOKEN() --> TN0::TN1::T_Something;
+    QUEX_NAME_LIB()   --> Q_Something;  QUEX_GNAME_LIB()   --> QN0::QN1::Q_Something;
+
+___ Prefix: String Size > 1; Namespace: None; __________________________________
+    
+    QUEX_NAME()       --> Lexy_Something;  QUEX_GNAME()       --> Lexy_Something;
+    QUEX_NAME_TOKEN() --> Toky_Something;  QUEX_GNAME_TOKEN() --> Toky_Something;
+    QUEX_NAME_LIB()   --> Quex_Something;  QUEX_GNAME_LIB()   --> Quex_Something;
+
+___ Prefix: String Size > 1; Namespace: Empty List; __________________________________
+    
+    QUEX_NAME()       --> Lexy_Something;  QUEX_GNAME()       --> Lexy_Something;
+    QUEX_NAME_TOKEN() --> Toky_Something;  QUEX_GNAME_TOKEN() --> Toky_Something;
+    QUEX_NAME_LIB()   --> Quex_Something;  QUEX_GNAME_LIB()   --> Quex_Something;
+
+___ Prefix: String Size > 1; Namespace: List Size 1; __________________________________
+    
+    QUEX_NAME()       --> Lexy_Something;  QUEX_GNAME()       --> LN0::Lexy_Something;
+    QUEX_NAME_TOKEN() --> Toky_Something;  QUEX_GNAME_TOKEN() --> TN0::Toky_Something;
+    QUEX_NAME_LIB()   --> Quex_Something;  QUEX_GNAME_LIB()   --> QN0::Quex_Something;
+
+___ Prefix: String Size > 1; Namespace: List Size > 1; __________________________________
+    
+    QUEX_NAME()       --> Lexy_Something;  QUEX_GNAME()       --> LN0::LN1::Lexy_Something;
+    QUEX_NAME_TOKEN() --> Toky_Something;  QUEX_GNAME_TOKEN() --> TN0::TN1::Toky_Something;
+    QUEX_NAME_LIB()   --> Quex_Something;  QUEX_GNAME_LIB()   --> QN0::QN1::Quex_Something;
+

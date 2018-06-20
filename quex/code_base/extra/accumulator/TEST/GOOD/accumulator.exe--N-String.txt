@@ -1,5 +1,5 @@
 ## Disable this message by compile option
-##        '-DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED'
+##        '-DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_TXT'
 ##
 ## Asserts activated! Lexical analyzer is 'paranoid'!
 ## => Even smallest misbehavior causes program exit.

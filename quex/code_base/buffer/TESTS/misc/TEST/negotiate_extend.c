@@ -152,7 +152,7 @@ self_construct_setup(QUEX_NAME(Buffer)* array, size_t TotalSize, size_t* depth)
     *depth      = QUEX_MIN(TotalSize / 4, *depth);
     single_size = TotalSize / *depth;
 
-    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)QuexLib_MemoryManager_allocate(
+    QUEX_TYPE_LEXATOM_EXT* memory = (QUEX_TYPE_LEXATOM_EXT*)quex_MemoryManager_allocate(
                                       TotalSize * sizeof(QUEX_TYPE_LEXATOM_EXT), 
                                       E_MemoryObjectType_BUFFER_MEMORY);
 

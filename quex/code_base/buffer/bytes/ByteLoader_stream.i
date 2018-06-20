@@ -2,11 +2,11 @@
  * (C) Frank-Rene Schaefer */
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_STREAM_I
 #define  QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_STREAM_I
-
-#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
+#ifdef __cplusplus
 
 #include <fstream>
 #include <sstream>
+$$INC: buffer/bytes/ByteLoader_stream$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
@@ -26,7 +26,7 @@ QUEX_NAME(ByteLoader_stream_new)(StreamType* sh)
 
     if( ! sh ) return (QUEX_NAME(ByteLoader)*)0;
 
-    me = (QUEX_NAME(ByteLoader_stream)<StreamType>*)QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_stream)<StreamType>),
+    me = (QUEX_NAME(ByteLoader_stream)<StreamType>*)QUEX_GNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(ByteLoader_stream)<StreamType>),
                                                                         E_MemoryObjectType_BYTE_LOADER);
 
     if( ! me ) return (QUEX_NAME(ByteLoader)*)0;
@@ -80,7 +80,7 @@ QUEX_NAME(ByteLoader_stream_delete_self)(QUEX_NAME(ByteLoader)* alter_ego)
     if( me->input_handle && me->base.handle_ownership == E_Ownership_LEXICAL_ANALYZER ) {
         delete me->input_handle;
     }
-    QUEX_NNAME_LIB(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
+    QUEX_GNAME_LIB(MemoryManager_free)(me, E_MemoryObjectType_BYTE_LOADER);
 }
 
 /* The 'char_type' of a stream determines the atomic size of elements which are
@@ -163,6 +163,6 @@ QUEX_NAME(ByteLoader_stream_print_this)(QUEX_NAME(ByteLoader)* alter_ego)
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
-#endif /* QUEX_OPTION_PLAIN_C_EXT                                     */
+#endif /* __cplusplus                                             */
 #endif /* QUEX_INCLUDE_GUARD__BUFFER__BYTES__BYTE_LOADER_STREAM_I */
 

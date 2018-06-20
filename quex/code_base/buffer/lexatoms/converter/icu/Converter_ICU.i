@@ -18,7 +18,7 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* me,
                                     const char*           ToCoding);
 QUEX_INLINE bool    
 QUEX_NAME(Converter_ICU_initialize_by_bom_id)(QUEX_NAME(Converter)* me,
-                                              QUEX_TYPE_BOM         BomId);
+                                              E_ByteOrderMark         BomId);
 
 QUEX_INLINE E_LoadResult
 QUEX_NAME(Converter_ICU_convert)(QUEX_NAME(Converter)*       me, 
@@ -42,7 +42,7 @@ QUEX_INLINE QUEX_NAME(Converter)*
 QUEX_NAME(Converter_ICU_new)(const char* FromCoding, const char* ToCoding)
 {
     QUEX_NAME(Converter_ICU)*  me = \
-         (QUEX_NAME(Converter_ICU)*)QUEX_NNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(Converter_ICU)),
+         (QUEX_NAME(Converter_ICU)*)QUEX_GNAME_LIB(MemoryManager_allocate)(sizeof(QUEX_NAME(Converter_ICU)),
                                                                    E_MemoryObjectType_CONVERTER);
 
     me->to_handle   = 0x0;
@@ -62,7 +62,7 @@ QUEX_NAME(Converter_ICU_new)(const char* FromCoding, const char* ToCoding)
                                          QUEX_NAME(Converter_ICU_stomach_byte_n),
                                          QUEX_NAME(Converter_ICU_stomach_clear),
                                          QUEX_NAME(Converter_ICU_print_this)) ) {
-        QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
+        QUEX_GNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
         return (QUEX_NAME(Converter)*)0;
     }
 
@@ -85,7 +85,7 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego,
 #   elif defined(QUEX_OPTION_ENDIAN_BIG)
     const bool little_endian_f = false;
 #   elif defined(QUEX_OPTION_ENDIAN_SYSTEM) 
-    const bool little_endian_f = QUEX_NNAME_LIB(system_is_little_endian)();
+    const bool little_endian_f = QUEX_GNAME_LIB(system_is_little_endian)();
 #   endif
     me->from_handle = 0x0;
     me->to_handle   = 0x0; 
@@ -157,7 +157,7 @@ QUEX_NAME(Converter_ICU_initialize)(QUEX_NAME(Converter)* alter_ego,
 
 QUEX_INLINE bool    
 QUEX_NAME(Converter_ICU_initialize_by_bom_id)(QUEX_NAME(Converter)* alter_ego,
-                                              QUEX_TYPE_BOM         BomId)
+                                              E_ByteOrderMark         BomId)
 {
     QUEX_NAME(Converter_ICU)* me = (QUEX_NAME(Converter_ICU)*)alter_ego;
     const char* name;
@@ -309,7 +309,7 @@ QUEX_NAME(Converter_ICU_delete_self)(QUEX_NAME(Converter)* alter_ego)
     if( me->from_handle ) ucnv_close(me->from_handle);
     if( me->to_handle )   ucnv_close(me->to_handle);
 
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_CONVERTER);
 
     /* There should be a way to call 'ucnv_flushCache()' as soon as all converters
      * are freed automatically.                                                       */
@@ -334,11 +334,11 @@ QUEX_NAME(Converter_ICU_print_this)(QUEX_NAME(Converter)* alter_ego)
     __QUEX_STD_printf("           buffer: { begin: ((%p)) end: ((%p)) size: %i; }\n",
                       PivotBegin, PivotEnd, (int)QUEX_SETTING_ICU_PIVOT_BUFFER_SIZE);
     __QUEX_STD_printf("           source: ");
-    QUEX_NNAME_LIB(print_relative_positions)(PivotBegin, PivotEnd, sizeof(UChar),
+    QUEX_GNAME_LIB(print_relative_positions)(PivotBegin, PivotEnd, sizeof(UChar),
                                      (void*)me->pivot.source);
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("           target: ");
-    QUEX_NNAME_LIB(print_relative_positions)(PivotBegin, PivotEnd, sizeof(UChar),
+    QUEX_GNAME_LIB(print_relative_positions)(PivotBegin, PivotEnd, sizeof(UChar),
                                      me->pivot.target);
     __QUEX_STD_printf("\n");
     __QUEX_STD_printf("        }\n");

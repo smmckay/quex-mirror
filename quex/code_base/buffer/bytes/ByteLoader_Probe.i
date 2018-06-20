@@ -31,7 +31,7 @@ QUEX_NAME(ByteLoader_Probe_new)(QUEX_NAME(ByteLoader)* source,
 {
     QUEX_NAME(ByteLoader_Probe)* me;
    
-    me = (QUEX_NAME(ByteLoader_Probe)*)QUEX_NNAME_LIB(MemoryManager_allocate)(
+    me = (QUEX_NAME(ByteLoader_Probe)*)QUEX_GNAME_LIB(MemoryManager_allocate)(
                    sizeof(QUEX_NAME(ByteLoader_Probe)),
                    E_MemoryObjectType_BYTE_LOADER);
 
@@ -69,8 +69,8 @@ QUEX_NAME(ByteLoader_Probe_delete_self)(QUEX_NAME(ByteLoader)* alter_ego)
     }
     me->source->delete_self(me->source);
 
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)me->source, E_MemoryObjectType_BYTE_LOADER);
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_BYTE_LOADER);
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)me->source, E_MemoryObjectType_BYTE_LOADER);
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)me, E_MemoryObjectType_BYTE_LOADER);
 
 }
 

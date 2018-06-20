@@ -5,7 +5,7 @@ if [[ $1 == "--hwut-info" ]]; then
 fi
 quex -i data/derived-before-base.qx -o Simple --token-id-prefix T_  --debug-exception
 g++ -I$QUEX_PATH -I. \
-    -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT \
+    -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT \
     $QUEX_PATH/TEST/lexer-simply.cpp Simple/Simple.cpp -o lexer  \
     -DQUEX_TKN_TERMINATION=T_TERMINATION
 ./lexer data/derived-before-base.txt 2> tmp.txt

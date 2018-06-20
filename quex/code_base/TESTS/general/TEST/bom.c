@@ -1,7 +1,7 @@
 #include <stdio.h>
 #define QUEX_NAME(X) (X)
-#include "ut/lib/quex/bom"
-#include "ut/lib/quex/bom.i"
+#include "test_c/lib/quex/bom"
+#include "test_c/lib/quex/bom.i"
 #include <support/C/hwut_unit.h>
 
 
@@ -21,16 +21,16 @@ main(int argc, char** argv)
     };
     const char**   iterator;
     FILE*          fh = 0x0;
-    QUEX_TYPE_BOM  bom = QUEX_BOM_NONE;
+    E_ByteOrderMark  bom = QUEX_BOM_NONE;
 
     hwut_info("BOM Snap: FILE\n");
 
     for(iterator = file_names; *iterator != 0x0; ++iterator ) {
-        fh = fopen(*iterator, "rb");
-        bom = QuexLib_bom_snap(fh);
+        fh  = fopen(*iterator, "rb");
+        bom = quex_bom_snap(fh);
 
         printf("%s\n", *iterator);
-        printf("   CODEC: %s\n", QuexLib_bom_name(bom));
+        printf("   CODEC: %s\n", quex_bom_name(bom));
         printf("   BYTES: ");
         while( ! feof(fh) )
         {

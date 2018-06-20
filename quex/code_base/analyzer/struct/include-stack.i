@@ -178,13 +178,13 @@ QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
     char*               new_input_name;
     QUEX_TYPE_MEMENTO* memento;
     
-    new_input_name = QUEX_NNAME_LIB(MemoryManager_clone_string)(InputNameP);
+    new_input_name = QUEX_GNAME_LIB(MemoryManager_clone_string)(InputNameP);
     if( ! new_input_name ) {
         QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_InputName_Set_Failed);
         goto ERROR_0;
     }
 
-    memento = (QUEX_TYPE_MEMENTO*)QUEX_NNAME_LIB(MemoryManager_allocate)(
+    memento = (QUEX_TYPE_MEMENTO*)QUEX_GNAME_LIB(MemoryManager_allocate)(
                       sizeof(QUEX_TYPE_MEMENTO), E_MemoryObjectType_MEMENTO);
     if( ! memento ) {
         goto ERROR_1;
@@ -216,9 +216,9 @@ QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
 ERROR_3:
     QUEX_NAME(Buffer_shallow_copy)(&me->buffer, &memento->buffer);
 ERROR_2:
-    QUEX_NNAME_LIB(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
+    QUEX_GNAME_LIB(MemoryManager_free)(memento, E_MemoryObjectType_MEMENTO);
 ERROR_1:
-    QUEX_NNAME_LIB(MemoryManager_free)(new_input_name, E_MemoryObjectType_MEMENTO);
+    QUEX_GNAME_LIB(MemoryManager_free)(new_input_name, E_MemoryObjectType_MEMENTO);
 ERROR_0:
     return false;
 }
@@ -233,7 +233,7 @@ QUEX_NAME(Memento_construct)(QUEX_TYPE_MEMENTO* memento,
      * to the memento first.                                                  */
     QUEX_NAME(Buffer_shallow_copy)(&memento->buffer, &me->buffer);
 
-#   ifndef QUEX_OPTION_PLAIN_C_EXT
+#   if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
     /* Use placement 'new' for explicit call of constructor. 
      * Necessary in C++: Call to constructor for user defined members.        */
     new ((void*)memento) QUEX_TYPE_MEMENTO;
@@ -304,7 +304,7 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
     /* Copy Back of content that was stored upon inclusion.                  */
 
     if( me->__input_name ) {
-        QUEX_NNAME_LIB(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
+        QUEX_GNAME_LIB(MemoryManager_free)(me->__input_name, E_MemoryObjectType_BUFFER_MEMORY);
     }
     /* 'memento->__input_name' points to previously allocated memory.        
      * 'me->__input_name' takes ownership again over allocated memory.       */
@@ -323,13 +323,13 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 
     QUEX_NAME(user_memento_unpack)(me, memento);
 
-#   ifndef QUEX_OPTION_PLAIN_C_EXT
+#   if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
     /* Counterpart to placement new: Explicit destructor call.
      * Necessary in C++: Trigger call to destructor for user defined members.*/
     memento->~QUEX_TYPE0_MEMENTO();
 #   endif
 
-    QUEX_NNAME_LIB(MemoryManager_free)((void*)memento, E_MemoryObjectType_MEMENTO); 
+    QUEX_GNAME_LIB(MemoryManager_free)((void*)memento, E_MemoryObjectType_MEMENTO); 
 
     /* Return to including file succesful                                    */
     return true;

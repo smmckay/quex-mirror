@@ -33,13 +33,13 @@ Setup.token_id_type           = "int"
 Setup.extern_token_class_file = "no-name"
 
 if "--lang-C" in sys.argv:
-    Setup._quex_lib_prefix        = "QuexLib"
+    Setup._quex_lib_prefix        = "quex_"
     Setup._quex_lib_name_space    = []
-    Setup._quex_lib_name_safe     = "QuexLib"
+    Setup._quex_lib_name_safe     = "quex"
 else:
-    Setup._quex_lib_prefix        = "QuexLib"
-    Setup._quex_lib_name_space    = ["Quex"]
-    Setup._quex_lib_name_safe     = "Quex_QuexLib"
+    Setup._quex_lib_prefix        = ""
+    Setup._quex_lib_name_space    = ["quex"]
+    Setup._quex_lib_name_safe     = "quex"
 
 token_db.token_type_definition = \
         TokenTypeDescriptorManual(Setup.extern_token_class_file,

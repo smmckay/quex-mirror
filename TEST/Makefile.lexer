@@ -3,7 +3,7 @@ GENERAL_WARNINGS := -Wall -Werror
 GENERAL_INCLUDES := -I. -I$(QUEX_PATH)
 GENERAL_FLAGS    := $(GENERAL_WARNINGS) \
 	                $(GENERAL_INCLUDES) \
-			        -DQUEX_OPTION_ASSERTS_EXT_WARNING_MESSAGE_DISABLED_EXT 
+			        -DQUEX_OPTION_ASSERTS_WARNING_MESSAGE_DISABLED_EXT 
 
 CC          := gcc -c $(GENERAL_FLAGS) -Wno-deprecated # -ggdb
 CPP         := g++ -c $(GENERAL_FLAGS) -pedantic       # -ggdb
