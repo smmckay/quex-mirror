@@ -30,10 +30,8 @@ def do(Mode_PrepPrepDB):
 
     # token_repetition_token_id_list empty => token_repetition_support_txt = ""
     token_descr = token_db.token_type_definition
-    token_repetition_support_f =    token_db.support_repetition() \
-                                 or Setup.token_class_support_repetition_f
-    token_take_text_support_f  =    token_db.support_take_text() \
-                                 or Setup.token_class_support_take_text_f 
+    token_repetition_support_f =    token_db.support_repetition() 
+    token_take_text_support_f  =    token_db.support_take_text() 
 
     token_repetition_support_txt = (" %s " % Lng.OR).join(
         Lng.EQUAL("TokenID", token_id_str)

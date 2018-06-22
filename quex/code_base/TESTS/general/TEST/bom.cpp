@@ -21,8 +21,8 @@ main(int argc, char** argv)
                                  "data/utf8.txt",
                                  0x0,
     };
-    const char**   iterator;
-    quex::E_ByteOrderMark bom = quex::QUEX_BOM_NONE;
+    const char**    iterator;
+    E_ByteOrderMark bom = QUEX_BOM_NONE;
 
     hwut_info("BOM Snap: ifstream\n");
 

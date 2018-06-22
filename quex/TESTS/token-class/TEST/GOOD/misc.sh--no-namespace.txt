@@ -4,10 +4,8 @@ class QToken;
 inline void         QToken_construct(QToken*);
 inline void         QToken_copy(QToken*, const QToken*);
 inline void         QToken_destruct(QToken*);
-inline void         QToken_set(QToken*            me, 
+inline void         QToken_set(QToken*         me, 
 inline bool         QToken_take_text(QToken*            me, 
-inline size_t       QToken_repetition_n_get(QToken*);
-inline void         QToken_repetition_n_set(QToken*, size_t);
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QToken {
     QToken();
     QToken(const QToken& That);
@@ -32,7 +30,5 @@ QToken_destruct(QToken* __this)
     __this->QToken::~QToken();  
 QToken_copy(QToken* __this, const QToken* __That)
 __QUEX_STD_memcpy((void*)__this, (void*)__That, sizeof(QToken));
-QToken_take_text(QToken*              __this, 
-QToken_repetition_n_get(QToken* __this)
-QToken_repetition_n_set(QToken* __this, size_t N)
+QToken_take_text(QToken*         __this, 
 #endif /* QUEX_INCLUDE_GUARD_QToken__TOKEN__GENERATED_I */

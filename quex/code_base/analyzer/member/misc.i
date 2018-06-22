@@ -141,11 +141,11 @@ QUEX_NAME(MF_print_this)(QUEX_TYPE_ANALYZER* me)
         }
     }
 
-    __QUEX_IF_COUNT(QUEX_NAME(Counter_print_this)(&me->counter));
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
+    $$<count> QUEX_NAME(Counter_print_this)(&me->counter);$$
+    $$<indentation>------------------------------------------------------------
     __QUEX_STD_printf("  _indentation_handler_active_f: %s;\n" , 
                       me->_indentation_handler_active_f ? "true" : "false");
-#   endif
+    $$-------------------------------------------------------------------------
 
     __QUEX_STD_printf("  _mode_stack: ");
     QUEX_NAME(ModeStack_print)(&me->_mode_stack);

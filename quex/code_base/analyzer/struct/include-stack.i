@@ -208,7 +208,8 @@ QUEX_NAME(MF_include_push_core)(QUEX_TYPE_ANALYZER*       me,
     QUEX_BUFFER_ASSERT_CONSISTENCY(&memento->buffer);
     QUEX_BUFFER_ASSERT_CONSISTENCY(&me->buffer);
 
-    __QUEX_IF_COUNT((void)QUEX_NAME(Counter_construct)(&me->counter));
+    $$<count> (void)QUEX_NAME(Counter_construct)(&me->counter);$$
+
     me->__input_name    = new_input_name;
     me->_parent_memento = memento; 
     return true;
@@ -247,10 +248,8 @@ QUEX_NAME(Memento_construct)(QUEX_TYPE_MEMENTO* memento,
 #   if defined(QUEX_OPTION_ASSERTS_EXT)
     memento->DEBUG_analyzer_function_at_entry = me->DEBUG_analyzer_function_at_entry;
 #   endif
-    __QUEX_IF_COUNT(memento->counter   = me->counter); /* Plain copy is ok.   */ 
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    memento->_indentation_handler_active_f = me->_indentation_handler_active_f;
-#   endif
+    $$<count>       memento->counter                       = me->counter;$$ /* Plain copy is ok.  */ 
+    $$<indentation> memento->_indentation_handler_active_f = me->_indentation_handler_active_f;$$
 
     /* Deriberately not subject to include handling:
      *    -- Mode stack.
@@ -316,10 +315,8 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 #   if defined(QUEX_OPTION_ASSERTS_EXT)
     me->DEBUG_analyzer_function_at_entry = memento->DEBUG_analyzer_function_at_entry;
 #   endif
-    __QUEX_IF_COUNT(me->counter          = memento->counter);
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    me->_indentation_handler_active_f    = memento->_indentation_handler_active_f;
-#   endif
+    $$<count>       me->counter                       = memento->counter;$$
+    $$<indentation> me->_indentation_handler_active_f = memento->_indentation_handler_active_f;$$
 
     QUEX_NAME(user_memento_unpack)(me, memento);
 

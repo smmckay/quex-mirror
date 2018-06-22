@@ -39,8 +39,8 @@ QUEX_NAME(MF_seek_backward)(QUEX_TYPE_ANALYZER* me, const size_t CharacterN)
 QUEX_INLINE void  
 QUEX_NAME(MF_undo)(QUEX_TYPE_ANALYZER* me)
 {
-    __QUEX_IF_COUNT_LINES(me->counter._line_number_at_end     = me->counter._line_number_at_begin);
-    __QUEX_IF_COUNT_COLUMNS(me->counter._column_number_at_end = me->counter._column_number_at_begin);
+    $$<count-line>   me->counter._line_number_at_end   = me->counter._line_number_at_begin;$$
+    $$<count-column> me->counter._column_number_at_end = me->counter._column_number_at_begin;$$
 
     QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);
 
@@ -52,8 +52,8 @@ QUEX_NAME(MF_undo)(QUEX_TYPE_ANALYZER* me)
 QUEX_INLINE void  
 QUEX_NAME(MF_undo_n)(QUEX_TYPE_ANALYZER* me, size_t DeltaN_Backward)
 {
-    __QUEX_IF_COUNT_LINES(me->counter._line_number_at_end     = me->counter._line_number_at_begin);
-    __QUEX_IF_COUNT_COLUMNS(me->counter._column_number_at_end = me->counter._column_number_at_begin);
+    $$<count-line>   me->counter._line_number_at_end   = me->counter._line_number_at_begin;$$
+    $$<count-column> me->counter._column_number_at_end = me->counter._column_number_at_begin;$$
 
     QUEX_LEXEME_TERMINATING_ZERO_UNDO(&me->buffer);
 

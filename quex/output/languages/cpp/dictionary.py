@@ -564,7 +564,7 @@ class Language(dict):
         elif Op.id == E_Op.Assign:
             txt = "%s = %s" % (self.REGISTER_NAME(Op.content[0]), self.REGISTER_NAME(Op.content[1]))
             if Op.content.condition == "COLUMN":
-                txt = "__QUEX_IF_COUNT_COLUMNS(%s)" % txt
+                txt = "$$<count-column> %s$$" % txt
             return "    %s;\n" % txt
 
         elif Op.id == E_Op.AssignConstant:
@@ -573,10 +573,10 @@ class Language(dict):
 
             if  register == E_R.Column:
                 assignment = "%s = (size_t)%s" % (self.REGISTER_NAME(register), value)
-                return "    __QUEX_IF_COUNT_COLUMNS(%s);\n" % assignment
+                return "    $$<count-column> %s;$$\n" % assignment
             elif register == E_R.Line:
                 assignment = "%s = (size_t)%s" % (self.REGISTER_NAME(register), value)
-                return "    __QUEX_IF_COUNT_LINES(%s);\n" % assignment
+                return "    $$<count-line> %s;$$\n" % assignment
             else:
                 assignment = "%s = %s" % (self.REGISTER_NAME(register), value)
                 return "    %s;\n" % assignment
@@ -593,7 +593,7 @@ class Language(dict):
                                               self.REGISTER_NAME(Op.content.a),
                                               self.REGISTER_NAME(Op.content.b))
             if Op.content.condition == "COLUMN":
-                txt = "__QUEX_IF_COUNT_COLUMNS(%s)" % txt
+                txt = "$$<count-column> %s$$" % txt
             return "    %s;\n" % txt
 
         elif Op.id == E_Op.PointerAdd:
@@ -601,7 +601,7 @@ class Language(dict):
                                     self.REGISTER_NAME(Op.content.pointer),
                                     self.REGISTER_NAME(Op.content.offset))
             if Op.content.condition == "COLUMN":
-                txt = "__QUEX_IF_COUNT_COLUMNS(%s)" % txt
+                txt = "$$<count-column> %s$$" % txt
             return "    %s;\n" % txt
 
         elif Op.id == E_Op.ColumnCountAdd:
@@ -777,7 +777,10 @@ class Language(dict):
         return "goto %s;" % self.LABEL_STR_BY_ADR(Address)
 
     def COUNTER_SHIFT_VALUES(self):
-        return "__QUEX_IF_COUNT_SHIFT_VALUES();\n" 
+        shift_counter_values_txt = ""
+        if condition.do("count-line"):   shift_counter_values_txt += "    __QUEX_COUNTER_SHIFT_COLUMNS();\n"
+        if condition.do("count-column"): shift_counter_values_txt += "    __QUEX_COUNTER_SHIFT_LINES();\n"
+        return shift_counter_values_txt 
 
     def COUNTER_LINE_ADD(self, Arg):
         return "__QUEX_IF_COUNT_LINES_ADD(%s);\n" % Arg
@@ -802,7 +805,6 @@ class Language(dict):
         assert GridWidth > 0
         TypeName     = "size_t"
         VariableName = "self.counter._column_number_at_end"
-        IfMacro      = "__QUEX_IF_COUNT_COLUMNS"
 
         grid_with_str = self.VALUE_STRING(GridWidth)
         log2          = self._get_log2_if_power_of_2(GridWidth)
@@ -818,14 +820,11 @@ class Language(dict):
         add_str = "%s += %s + 1" % (VariableName, self.MULTIPLY_WITH(grid_with_str, StepN))
 
         result = []
-        if IfMacro is None: 
-            result.append("%s -= 1;\n" % VariableName)
-            if cut_str: result.append("%s;" % cut_str)
-            result.append("%s;\n" % add_str)
-        else:               
-            result.append("%s(%s -= 1);\n" % (IfMacro, VariableName))
-            if cut_str: result.append("%s(%s);\n" % (IfMacro, cut_str))
-            result.append("%s(%s);\n" % (IfMacro, add_str))
+        result.append("$$<count-column>--------------------------------------------\n")
+        result.append("%s -= 1;\n"        % VariableName)
+        if cut_str: result.append("%s;\n" % cut_str)
+        result.append("%s;\n"             % add_str)
+        result.append("$$----------------------------------------------------------\n")
 
         return result
 
@@ -880,11 +879,11 @@ class Language(dict):
     def REFERENCE_P_RESET(self, IteratorName, Offset=0):
         name = self.REGISTER_NAME(E_R.CountReferenceP)
         if   Offset > 0:
-            return "__QUEX_IF_COUNT_COLUMNS(%s = %s + %i);\n" % (name, IteratorName, Offset) 
+            return "$$<count-column> %s = %s + %i;$$\n" % (name, IteratorName, Offset) 
         elif Offset < 0:
-            return "__QUEX_IF_COUNT_COLUMNS(%s = %s - %i);\n" % (name, IteratorName, - Offset) 
+            return "$$<count-column> %s = %s - %i;$$\n" % (name, IteratorName, - Offset) 
         else:
-            return "__QUEX_IF_COUNT_COLUMNS(%s = %s);\n" % (name, IteratorName)
+            return "$$<count-column> %s = %s;$$\n" % (name, IteratorName)
 
     def INCLUDE(self, Path, Condition=None):
         if   not Path:                    return ""

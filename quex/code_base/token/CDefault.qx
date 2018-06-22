@@ -61,10 +61,9 @@ extern const char*       $$TOKEN_CLASS$$_get_string(struct $$TOKEN_CLASS$$_tag* 
             if( ! self.text ) self.text = LexemeNull;
         }
         self.number = Other.number;
-    #   ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-        __QUEX_IF_COUNT_LINES(self._line_n     = Other._line_n);
-        __QUEX_IF_COUNT_COLUMNS(self._column_n = Other._column_n);
-    #   endif
+
+        $$<token-stamp-line>   self._line_n   = Other._line_n;$$
+        $$<token-stamp-column> self._column_n = Other._column_n;$$
    }
 
    take_text {

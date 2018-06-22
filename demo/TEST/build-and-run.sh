@@ -10,7 +10,7 @@ function bar_build {
     if [ "$asserts_f" == "no-asserts" ]; then 
         add_flags="-DQUEX_OPTION_ASSERTS_DISABLED_EXT"
     elif [ "$asserts_f" == "asserts" ]; then  
-        add_flags=""
+        add_flags="-DQUEX_OPTION_ASSERTS_EXT"
     fi
 
     ## echo "#build: [$target] [$add_flags] [$make_flags]"

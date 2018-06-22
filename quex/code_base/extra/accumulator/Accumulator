@@ -31,8 +31,8 @@ QUEX_NAMESPACE_MAIN_OPEN
     QUEX_TYPE0_ANALYZER;   
 
     typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Accumulator_tag) {
-        __QUEX_IF_COUNT_LINES(size_t    _begin_line;)
-        __QUEX_IF_COUNT_COLUMNS(size_t  _begin_column;)
+        $$<count-line>   size_t    _begin_line;$$
+        $$<count-column> size_t  _begin_column;$$
 
         struct { 
             QUEX_TYPE_LEXATOM* begin;
@@ -61,8 +61,8 @@ QUEX_NAMESPACE_MAIN_OPEN
 
     class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Accumulator) {
     public:
-        __QUEX_IF_COUNT_LINES(size_t    _begin_line;)
-        __QUEX_IF_COUNT_COLUMNS(size_t  _begin_column;)
+        $$<count-line>   size_t    _begin_line;$$
+        $$<count-column> size_t  _begin_column;$$
 
         struct { 
             QUEX_TYPE_LEXATOM* begin;

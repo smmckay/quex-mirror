@@ -1,22 +1,8 @@
-#ifdef    QUEX_OPTION_COMPUTED_GOTOS_DISABLED
-#   undef QUEX_OPTION_COMPUTED_GOTOS
-#endif
-#ifdef     QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION_DISABLED
-#   undef  QUEX_OPTION_SUPPORT_BEGIN_OF_LINE_PRE_CONDITION
-#endif
-#ifdef    QUEX_OPTION_DEBUG_SHOW_MODES_DISABLED
-#   undef QUEX_OPTION_DEBUG_SHOW_MODES_EXT
-#endif
-#ifdef    QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK_DISABLED
-#   undef QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK
-#endif
-#if           defined(QUEX_OPTION_ASSERTS_DISABLED_EXT) || defined(NDEBUG)
+#if defined(NDEBUG) 
+/* Standard 'asserts.h' disables asserts upon definition of 'NDEBUG'.
+ * Deactivating 'QUEX_OPTION_ASSERTS_EXT' avoids surprises                    */
 #   ifdef     QUEX_OPTION_ASSERTS_EXT
 #      undef  QUEX_OPTION_ASSERTS_EXT
-#   endif
-#else
-#   ifndef    QUEX_OPTION_ASSERTS_EXT
-#      define QUEX_OPTION_ASSERTS_EXT
 #   endif
 #endif
 
@@ -65,14 +51,6 @@
 #    endif
 #endif
 
-$$<token-repetition>-----------------------------------------------------------
-#   define __QUEX_IF_TOKEN_REPETITION_SUPPORT(EXPRESSION)          EXPRESSION
-#   define __QUEX_IF_TOKEN_REPETITION_SUPPORT_DISABLED(EXPRESSION) /* empty */
-#else
-#   define __QUEX_IF_TOKEN_REPETITION_SUPPORT(EXPRESSION)          /* empty */
-#   define __QUEX_IF_TOKEN_REPETITION_SUPPORT_DISABLED(EXPRESSION) EXPRESSION
-$$-----------------------------------------------------------------------------
-
 #define __QUEX_RETURN                                return
 
 #if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \
@@ -84,23 +62,13 @@ $$-----------------------------------------------------------------------------
     || defined(QUEX_OPTION_COUNTER_COLUMN) \
     || defined(QUEX_OPTION_INDENTATION_TRIGGER)       
 #     define  QUEX_OPTION_COUNTER
-#     define  __QUEX_IF_COUNT(EXPRESSION)             EXPRESSION
-#     define  __QUEX_IF_COUNT_IF(EXPRESSION)          if( EXPRESSION )
-#     define  __QUEX_IF_COUNT_SHIFT_VALUES()  \
-              __QUEX_COUNTER_SHIFT_COLUMNS(); \
-              __QUEX_COUNTER_SHIFT_LINES();
 #else
 #     if defined(QUEX_OPTION_COUNTER)  
 #        undef   QUEX_OPTION_COUNTER
 #     endif
-#     define  __QUEX_IF_COUNT(EXPRESSION)             /* empty */
-#     define  __QUEX_IF_COUNT_IF(EXPRESSION)          /* empty */
-#     define  __QUEX_IF_COUNT_SHIFT_VALUES()          /* empty */
 #endif
 
 #if defined(QUEX_OPTION_COUNTER_LINE)   
-#   define     __QUEX_IF_COUNT_LINES(EXPRESSION)      EXPRESSION
-#   define     __QUEX_IF_COUNT_LINES_IF(EXPRESSION)   if( EXPRESSION )
 #   define     __QUEX_IF_COUNT_LINES_ADD(X)                      \
                do {                                              \
                    me->counter._line_number_at_end   += (X);     \
@@ -110,14 +78,11 @@ $$-----------------------------------------------------------------------------
                me->counter._line_number_at_begin = me->counter._line_number_at_end; 
 
 #else
-#   define     __QUEX_IF_COUNT_LINES(EXPRESSION)      /* empty */
-#   define     __QUEX_IF_COUNT_LINES_IF(EXPRESSION)   /* empty */
 #   define     __QUEX_IF_COUNT_LINES_ADD(X)           /* empty */
 #   define     __QUEX_COUNTER_SHIFT_LINES()           /* empty */
 #endif
 
 #if defined(QUEX_OPTION_COUNTER_COLUMN)   
-#   define     __QUEX_IF_COUNT_COLUMNS(EXPRESSION)    EXPRESSION
 #   define     __QUEX_IF_COUNT_COLUMNS_SET(X) \
                do {                                              \
                    me->counter._column_number_at_end   = (X);    \
@@ -132,7 +97,6 @@ $$-----------------------------------------------------------------------------
                me->counter._column_number_at_begin = me->counter._column_number_at_end; 
 
 #else
-#   define     __QUEX_IF_COUNT_COLUMNS(EXPRESSION)     /* empty */
 #   define     __QUEX_IF_COUNT_COLUMNS_SET(X)          /* empty */
 #   define     __QUEX_IF_COUNT_COLUMNS_ADD(X)          /* empty */
 #   define     __QUEX_COUNTER_SHIFT_COLUMNS()          /* empty */

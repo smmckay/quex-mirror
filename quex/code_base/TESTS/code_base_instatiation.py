@@ -31,6 +31,8 @@ Setup.token_class_name        = "TestAnalyzer_Token"
 Setup.token_class_name_safe   = "TestAnalyzer_Token"
 Setup.token_id_type           = "int"
 Setup.extern_token_class_file = "no-name"
+token_db.support_take_text    = lambda : True
+token_db.support_repetition   = lambda : True
 
 if "--lang-C" in sys.argv:
     Setup._quex_lib_prefix        = "quex_"

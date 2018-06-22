@@ -44,21 +44,21 @@ $$TOKEN_CLASS$$::operator=(const $$TOKEN_CLASS$$& That)
 { if( this != &That ) { $$TOKEN_CLASS$$_copy(this, &That); } return *this; }
 
 QUEX_INLINE void
-$$TOKEN_CLASS$$_construct($$TOKEN_CLASS$$* __this)
+QUEX_NAME_TOKEN(construct)($$TOKEN_CLASS$$* __this)
 {
     /* Explicit constructor call by 'placement new' */
     new ((void*)__this) $$TOKEN_CLASS$$;
 }
 
 QUEX_INLINE void
-$$TOKEN_CLASS$$_destruct($$TOKEN_CLASS$$* __this)
+QUEX_NAME_TOKEN(destruct)($$TOKEN_CLASS$$* __this)
 {
     if( ! __this ) return;
     __this->$$TOKEN_CLASS$$::~$$TOKEN_CLASS$$();  
 }
 
 QUEX_INLINE void
-$$TOKEN_CLASS$$_copy($$TOKEN_CLASS$$* __this, const $$TOKEN_CLASS$$* __That)
+QUEX_NAME_TOKEN(copy)($$TOKEN_CLASS$$* __this, const $$TOKEN_CLASS$$* __That)
 {
 #   define self  (*__this)
 #   define Other (*__That)
@@ -72,19 +72,15 @@ $$COPY$$
    /* If the user even misses to copy the token id, then there's
     * something seriously wrong.                                 */
    __quex_assert(__this->id == __That->id);
-#ifdef     QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-#   ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-    __QUEX_IF_COUNT_LINES(__quex_assert(__this->_line_n == __That->_line_n));
-    __QUEX_IF_COUNT_COLUMNS(__quex_assert(__this->_column_n == __That->_column_n));
-#   endif
-#endif
+   $$<token-stamp-line>   __quex_assert(__this->_line_n == __That->_line_n);$$
+   $$<token-stamp-column> __quex_assert(__this->_column_n == __That->_column_n);$$
 }
 
 $$<token-take-text>------------------------------------------------------------
 QUEX_INLINE bool 
-$$TOKEN_CLASS$$_take_text($$TOKEN_CLASS$$*              __this, 
-                          const QUEX_TYPE_LEXATOM* Begin, 
-                          const QUEX_TYPE_LEXATOM* End)
+QUEX_NAME_TOKEN(take_text)($$TOKEN_CLASS$$*         __this, 
+                           const QUEX_TYPE_LEXATOM* Begin, 
+                           const QUEX_TYPE_LEXATOM* End)
 /* RETURNS: true -- if the token claims ownership over the given memory.
  *          false -- if no ownership is claimed.                             */
 {
@@ -101,7 +97,7 @@ $$-----------------------------------------------------------------------------
 
 $$<token-repetition>-----------------------------------------------------------
 QUEX_INLINE size_t 
-$$TOKEN_CLASS$$_repetition_n_get($$TOKEN_CLASS$$* __this)
+QUEX_NAME_TOKEN(repetition_n_get)($$TOKEN_CLASS$$* __this)
 {
 #   define self (*__this)
     (void)__this;
@@ -110,7 +106,7 @@ $$TOKEN_REPETITION_N_GET$$
 }
 
 QUEX_INLINE void 
-$$TOKEN_CLASS$$_repetition_n_set($$TOKEN_CLASS$$* __this, size_t N)
+QUEX_NAME_TOKEN(repetition_n_set)($$TOKEN_CLASS$$* __this, size_t N)
 {
 #   define self (*__this)
     (void)__this; (void)N;

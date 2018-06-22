@@ -38,6 +38,7 @@ import quex.input.regular_expression.engine           as     core
 import quex.input.files.specifier.counter             as     counter
 import quex.engine.state_machine.transformation.core  as     bc_factory
 import quex.output.languages.core                     as     languages
+import quex.output.analyzer.adapt                     as     adapt
 import quex.output.counter.run_time                   as     run_time_counter
 
 from   quex.blackboard  import setup as Setup, Lng
@@ -199,7 +200,7 @@ def get_test_application(encoding, ca_map):
                                                 expect_reference_p_f)
 
     open("./data/test.c", "wb").write("#include <data/check.h>\n\n" 
-                                      + counter_str)
+                                      + adapt.do(counter_str, "data", ""))
 
     # (*) Compile _____________________________________________________________
     #

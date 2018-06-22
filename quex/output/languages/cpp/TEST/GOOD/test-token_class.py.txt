@@ -23,16 +23,16 @@ QUEX_INLINE void         MeinToken_destruct(MeinToken*);
 QUEX_INLINE void         MeinToken_set(MeinToken*            me, 
                                           const QUEX_TYPE_TOKEN_ID ID);
 
-#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+$$<token-take-text>------------------------------------------------------------
 QUEX_INLINE bool         MeinToken_take_text(MeinToken*            me, 
-                                                const QUEX_TYPE_LEXATOM* Begin, 
-                                                const QUEX_TYPE_LEXATOM* End);
-#endif
+                                                   const QUEX_TYPE_LEXATOM* Begin, 
+                                                   const QUEX_TYPE_LEXATOM* End);
+$$-----------------------------------------------------------------------------
 
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+$$<token-repetition>-----------------------------------------------------------
 QUEX_INLINE size_t       MeinToken_repetition_n_get(MeinToken*);
 QUEX_INLINE void         MeinToken_repetition_n_set(MeinToken*, size_t);
-#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+$$-----------------------------------------------------------------------------
 
 
 class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT MeinToken {
@@ -285,7 +285,7 @@ MeinToken_copy(MeinToken* __this, const MeinToken* __That)
 #endif
 }
 
-#ifdef QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT
+$$<token-take-text>------------------------------------------------------------
 QUEX_INLINE bool 
 MeinToken_take_text(MeinToken*              __this, 
                           const QUEX_TYPE_LEXATOM* Begin, 
@@ -308,9 +308,9 @@ MeinToken_take_text(MeinToken*              __this,
     /* Default: no ownership.                                                */
     return false;
 }
-#endif
+$$-----------------------------------------------------------------------------
 
-#ifdef QUEX_OPTION_TOKEN_REPETITION_SUPPORT
+$$<token-repetition>-----------------------------------------------------------
 QUEX_INLINE size_t 
 MeinToken_repetition_n_get(MeinToken* __this)
 {
@@ -328,7 +328,7 @@ MeinToken_repetition_n_set(MeinToken* __this, size_t N)
 
 #   undef  self
 }
-#endif /* QUEX_OPTION_TOKEN_REPETITION_SUPPORT */
+$$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_TOKEN_CLOSE
 

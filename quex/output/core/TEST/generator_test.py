@@ -551,11 +551,13 @@ $$QUEX_OPTION_INDENTATION_TRIGGER$$
 #endif
 
 #ifdef __cplusplus
+#include <cassert>
 namespace quex {
 typedef int TestAnalyzer_indentation_t;
 }
 #include "$$TEST_ANALYZER_DIR$$/TestAnalyzer"
 #else
+#include <assert.h>
 typedef int TestAnalyzer_indentation_t;
 #include "$$TEST_ANALYZER_DIR$$/TestAnalyzer.h"
 #endif

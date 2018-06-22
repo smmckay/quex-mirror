@@ -16,26 +16,26 @@ $$HELPER_DEFINITIONS$$
 
 struct $$TOKEN_CLASS$$_tag;
 
-QUEX_INLINE void         $$TOKEN_CLASS$$_construct(struct $$TOKEN_CLASS$$_tag*);
-QUEX_INLINE void         $$TOKEN_CLASS$$_copy(struct $$TOKEN_CLASS$$_tag*, 
-                                              const struct $$TOKEN_CLASS$$_tag*);
-QUEX_INLINE void         $$TOKEN_CLASS$$_destruct(struct $$TOKEN_CLASS$$_tag*);
+QUEX_INLINE void     QUEX_NAME_TOKEN(construct)(struct $$TOKEN_CLASS$$_tag*);
+QUEX_INLINE void     QUEX_NAME_TOKEN(copy)(struct $$TOKEN_CLASS$$_tag*, 
+                                           const struct $$TOKEN_CLASS$$_tag*);
+QUEX_INLINE void     QUEX_NAME_TOKEN(destruct)(struct $$TOKEN_CLASS$$_tag*);
 
 /* NOTE: Setters and getters as in the C++ version of the token class are not
  *       necessary, since the members are accessed directly.                   */
 
-QUEX_INLINE void         $$TOKEN_CLASS$$_set(struct $$TOKEN_CLASS$$_tag* me, 
-                                             const QUEX_TYPE_TOKEN_ID    ID);
+QUEX_INLINE void     QUEX_NAME_TOKEN(set)(struct $$TOKEN_CLASS$$_tag* me, 
+                                          const QUEX_TYPE_TOKEN_ID    ID);
 
 $$<token-take-text>------------------------------------------------------------
-QUEX_INLINE bool         $$TOKEN_CLASS$$_take_text(struct $$TOKEN_CLASS$$_tag* me, 
-                                                   const QUEX_TYPE_LEXATOM*    Begin, 
-                                                   const QUEX_TYPE_LEXATOM*    End);
+QUEX_INLINE bool     QUEX_NAME_TOKEN(take_text)(struct $$TOKEN_CLASS$$_tag* me, 
+                                                const QUEX_TYPE_LEXATOM*    Begin, 
+                                                const QUEX_TYPE_LEXATOM*    End);
 $$-----------------------------------------------------------------------------
 
 $$<token-repetition>-----------------------------------------------------------
-QUEX_INLINE size_t       $$TOKEN_CLASS$$_repetition_n_get(struct $$TOKEN_CLASS$$_tag*);
-QUEX_INLINE void         $$TOKEN_CLASS$$_repetition_n_set(struct $$TOKEN_CLASS$$_tag*, size_t);
+QUEX_INLINE size_t   QUEX_NAME_TOKEN(repetition_n_get)(struct $$TOKEN_CLASS$$_tag*);
+QUEX_INLINE void     QUEX_NAME_TOKEN(repetition_n_set)(struct $$TOKEN_CLASS$$_tag*, size_t);
 $$-----------------------------------------------------------------------------
 
  

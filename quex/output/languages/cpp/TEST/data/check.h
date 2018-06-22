@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <assert.h>
 
-typedef DEF_CHARACTER_TYPE   QUEX_TYPE_LEXATOM;
-typedef QUEX_TYPE_LEXATOM* QUEX_TYPE_LEXATOM_POSITION;
+typedef DEF_CHARACTER_TYPE   None_lexatom_t;
+typedef None_lexatom_t*      QUEX_TYPE_LEXATOM_POSITION;
 typedef long                 QUEX_TYPE_GOTO_LABEL;
 
 typedef struct {

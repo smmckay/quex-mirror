@@ -94,9 +94,10 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, dial_db):
 
     # Following function refers to the global 'variable_db'
     txt.append(Lng.VARIABLE_DEFINITIONS(variable_db))
+
     txt.extend([
         "    (void)me;\n",
-        "    __QUEX_IF_COUNT_SHIFT_VALUES();\n",
+         Lng.COUNTER_SHIFT_VALUES(),
         "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
                               "=> Caller does not need to check\n"
                               "BUT, if so quit immediately after 'shift values'."),

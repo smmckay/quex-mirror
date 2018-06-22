@@ -29,7 +29,7 @@ test_cpp/TestAnalyzer-dummy.cpp: test_cpp
 
 	# Generate a 'TestAnalyzer-token' class just for the experiment
 	# => print out on 'take_text'
-	quex -i UT_Token.qx --token-class-only -o TestAnalyzer --odir test_cpp
+	quex -i UT_Token.qx --token-class-only -o TestAnalyzer --odir test_cpp --token-class-support-repetition
 
 accumulator.exe: accumulator.cpp test_cpp/TestAnalyzer-dummy.cpp
 	$(CC) $^ -o $@ 

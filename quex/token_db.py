@@ -1,5 +1,6 @@
 from   quex.input.code.base import SourceRef, \
                                    SourceRef_VOID
+from   quex.blackboard import setup as Setup
 
 class TokenInfo:
     def __init__(self, Name, ID, TypeName=None, SourceReference=SourceRef_VOID):
@@ -71,11 +72,12 @@ token_type_definition = None
 
 def support_take_text():
     global token_type_definition
-    if not token_type_definition: 
-        return False
+    if Setup.token_class_support_take_text_f:
+        return True
     else:
         return token_type_definition.take_text is not None 
 
 def support_repetition():
     global token_repetition_token_id_list
-    return len(token_repetition_token_id_list) != 0
+    return    token_repetition_token_id_list \
+           or Setup.token_class_support_repetition_f
