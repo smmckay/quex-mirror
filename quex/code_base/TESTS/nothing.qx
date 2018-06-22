@@ -1,5 +1,5 @@
 token { X; }
-repeated_token { X; }
+repeated_token { X; DEDENT; }
 start = M;
 mode M { X => QUEX_TKN_X; }
-mode M2 { ^X => QUEX_TKN_X; }  /* enfore begin of line pre-context */
+mode M2 : <indentation:> { ^X => QUEX_TKN_X; }  /* enfore begin of line pre-context */

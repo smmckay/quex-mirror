@@ -1,5 +1,5 @@
 ## (2) compiling generated engine code and test
-gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -I./. -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
+gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function -Wno-missing-braces   ./tmp.c -I./. -I../../../code_base/TESTS -I/home/fschaef/prj/quex/trunk -o ./tmp.c.exe  ##
 (*) test string: 
 '語'
 (*) result:
@@ -8,6 +8,7 @@ gcc -ansi -Wvariadic-macros -Wall -Werror -Wno-error=unused-function   ./tmp.c -
     _line_number_at_end:     1;
     _column_number_at_begin: 1;
     _column_number_at_end:   1;
+    _indentation_stack: [1, ]
   }
 next letter: <0xE8>
 end
@@ -19,6 +20,7 @@ end
     _line_number_at_end:     1;
     _column_number_at_begin: 1;
     _column_number_at_end:   2;
+    _indentation_stack: [1, ]
   }
 next letter: <0xCE>
 end
@@ -30,6 +32,7 @@ end
     _line_number_at_end:     1;
     _column_number_at_begin: 1;
     _column_number_at_end:   3;
+    _indentation_stack: [1, ]
   }
 next letter: <0xE8>
 end
@@ -41,6 +44,7 @@ end
     _line_number_at_end:     1;
     _column_number_at_begin: 1;
     _column_number_at_end:   4;
+    _indentation_stack: [1, ]
   }
 next letter: <->
 end
@@ -53,7 +57,13 @@ end
     _line_number_at_end:     1;
     _column_number_at_begin: 1;
     _column_number_at_end:   5;
+    _indentation_stack: [1, ]
   }
 next letter: <
 >
 end
+
+
+
+
+
