@@ -156,12 +156,6 @@
 #ifdef    __QUEX_COUNTER_RULES
 #   undef __QUEX_COUNTER_RULES
 #endif
-#ifdef    __QUEX_COUNTER_SHIFT_COLUMNS
-#   undef __QUEX_COUNTER_SHIFT_COLUMNS
-#endif
-#ifdef    __QUEX_COUNTER_SHIFT_LINES
-#   undef __QUEX_COUNTER_SHIFT_LINES
-#endif
 #ifdef    __QUEX_IF_ASSERT
 #   undef __QUEX_IF_ASSERT
 #endif

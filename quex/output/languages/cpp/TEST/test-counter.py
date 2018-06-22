@@ -188,6 +188,7 @@ def get_test_application(encoding, ca_map):
     Setup.buffer_setup("", byte_n_per_code_unit, 
                        encoding.replace("_le", "").replace("_",""))
 
+    Setup.analyzer_class_name = "Lexer"
     # (*) Generate Code _______________________________________________________
     #
     counter_function_name, \
@@ -199,8 +200,8 @@ def get_test_application(encoding, ca_map):
     assert_reference_delta_count_implementation(counter_str, 
                                                 expect_reference_p_f)
 
-    open("./data/test.c", "wb").write("#include <data/check.h>\n\n" 
-                                      + adapt.do(counter_str, "data", ""))
+    counter_str = adapt.do(counter_str, "data", "")
+    open("./data/test.c", "wb").write("#include <data/check.h>\n\n" + counter_str)
 
     # (*) Compile _____________________________________________________________
     #

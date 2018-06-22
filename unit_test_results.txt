@@ -2767,24 +2767,24 @@ quex/output/languages/cpp/TEST                                       <no date>
  * Character Counter:
 
     Default Implementation
-        test-counter.py ascii-1 ....................................[FAIL]
-                        ascii-1-wo-ReferenceP ......................[FAIL]
-                        cp737-1 ....................................[FAIL]
-                        cp737-1-wo-ReferenceP ......................[FAIL]
-                        utf_16_le-1 ................................[FAIL]
-                        utf_16_le-1-wo-ReferenceP ..................[FAIL]
-                        utf_16_le-2 ................................[FAIL]
-                        utf_16_le-2-wo-ReferenceP ..................[FAIL]
-                        utf_32_le-1 ................................[FAIL]
-                        utf_32_le-1-wo-ReferenceP ..................[FAIL]
-                        utf_8-1 ....................................[FAIL]
-                        utf_8-1-wo-ReferenceP ......................[FAIL]
-                        utf_8-2 ....................................[FAIL]
-                        utf_8-2-wo-ReferenceP ......................[FAIL]
-                        utf_8-3 ....................................[FAIL]
-                        utf_8-3-wo-ReferenceP ......................[FAIL]
-                        utf_8-4 ....................................[FAIL]
-                        utf_8-4-wo-ReferenceP ......................[FAIL]
+        test-counter.py ascii-1 ......................................[OK]
+                        ascii-1-wo-ReferenceP ........................[OK]
+                        cp737-1 ......................................[OK]
+                        cp737-1-wo-ReferenceP ........................[OK]
+                        utf_16_le-1 ..................................[OK]
+                        utf_16_le-1-wo-ReferenceP ....................[OK]
+                        utf_16_le-2 ..................................[OK]
+                        utf_16_le-2-wo-ReferenceP ....................[OK]
+                        utf_32_le-1 ..................................[OK]
+                        utf_32_le-1-wo-ReferenceP ....................[OK]
+                        utf_8-1 ......................................[OK]
+                        utf_8-1-wo-ReferenceP ........................[OK]
+                        utf_8-2 ......................................[OK]
+                        utf_8-2-wo-ReferenceP ........................[OK]
+                        utf_8-3 ......................................[OK]
+                        utf_8-3-wo-ReferenceP ........................[OK]
+                        utf_8-4 ......................................[OK]
+                        utf_8-4-wo-ReferenceP ........................[OK]
 
  * Converter:
 
@@ -2809,24 +2809,6 @@ quex/output/languages/cpp/TEST                                       <no date>
 -------------------------------------------------------------------------------
     [FAIL] package-file-db.py
     [FAIL] test-token_class.py
-    [FAIL] test-counter.py _ ascii-1
-                         \__ ascii-1-wo-ReferenceP
-                         \__ cp737-1
-                         \__ cp737-1-wo-ReferenceP
-                         \__ utf_16_le-1
-                         \__ utf_16_le-1-wo-ReferenceP
-                         \__ utf_16_le-2
-                         \__ utf_16_le-2-wo-ReferenceP
-                         \__ utf_32_le-1
-                         \__ utf_32_le-1-wo-ReferenceP
-                         \__ utf_8-1
-                         \__ utf_8-1-wo-ReferenceP
-                         \__ utf_8-2
-                         \__ utf_8-2-wo-ReferenceP
-                         \__ utf_8-3
-                         \__ utf_8-3-wo-ReferenceP
-                         \__ utf_8-4
-                         \__ utf_8-4-wo-ReferenceP
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3491,15 +3473,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-       20  33    [FAIL] .........../languages/cpp/TEST                                
+        2  33    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _           __    _           
-    |  ___|_ _(_) |___      / /_  / |    __  __
-    | |_ / _` | | / __|    | '_ \ | |    \ \/ /
-    |  _| (_| | | \__ \    | (_) || |     >  < 
-    |_|  \__,_|_|_|___/     \___/ |_|    /_/\_\
+     _____     _ _          _  _   _____           
+    |  ___|_ _(_) |___     | || | |___ /     __  __
+    | |_ / _` | | / __|    | || |_  |_ \     \ \/ /
+    |  _| (_| | | \__ \    |__   _ ___) |     >  < 
+    |_|  \__,_|_|_|___/       |_| |____/     /_/\_\
                                                                    (1702 tests)
 
 ===============================================================================

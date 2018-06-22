@@ -2,11 +2,11 @@
 #include <stdint.h>
 #include <assert.h>
 
-typedef DEF_CHARACTER_TYPE   None_lexatom_t;
-typedef None_lexatom_t*      QUEX_TYPE_LEXATOM_POSITION;
+typedef DEF_CHARACTER_TYPE   Lexer_lexatom_t;
+typedef Lexer_lexatom_t*   QUEX_TYPE_LEXATOM_POSITION;
 typedef long                 QUEX_TYPE_GOTO_LABEL;
 
-typedef struct {
+typedef struct Lexer_tag {
     struct {
         size_t  _line_number_at_begin;
         size_t  _column_number_at_begin;
@@ -17,7 +17,7 @@ typedef struct {
         QUEX_TYPE_LEXATOM_POSITION _read_p;
         QUEX_TYPE_LEXATOM_POSITION _lexeme_start_p;
     } buffer;
-} QUEX_TYPE_ANALYZER;
+} Lexer;
 
 #define QUEX_GOTO_LABEL_VOID    ((QUEX_TYPE_GOTO_LABEL)(-1))
 
@@ -37,7 +37,7 @@ typedef struct {
 #define __quex_assert(X)   assert(X)
 #define __quex_assert_no_passage()    assert(0)
 #define QUEX_ERROR_EXIT(X) assert(0)
-#define QUEX_NAME(X)       quex_unit_test_ ## X
+#define QUEX_NAME(X)       Lexer_ ## X
 
 #define __QUEX_IF_COUNT_LINES(X)       X
 #define __QUEX_IF_COUNT_LINES_ADD(X)   (me->counter._line_number_at_end += X)
@@ -52,7 +52,7 @@ typedef struct {
 #define QUEX_OPTION_COUNTER_LINE
 
 void
-DEF_COUNTER_FUNCTION(QUEX_TYPE_ANALYZER*  me, 
-                     QUEX_TYPE_LEXATOM* LexemeBegin, 
-                     QUEX_TYPE_LEXATOM* LexemeEnd);
+DEF_COUNTER_FUNCTION(struct Lexer_tag*  me, 
+                     Lexer_lexatom_t* LexemeBegin, 
+                     Lexer_lexatom_t* LexemeEnd);
 
