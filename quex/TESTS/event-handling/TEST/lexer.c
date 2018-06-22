@@ -42,13 +42,15 @@ main(int argc, char** argv)
     MemoryManager_UnitTest.reallocate_limit_byte_n  = 0;
 #   endif
 
-    do {
-        qlex.receive(&qlex, &token_p);
-        token_id = token_p->id;
-        FLUSH();
-        printf("TOKEN: %s\n", EHLexer_Token_get_string(token_p, buffer, BufferSize));
-        FLUSH();
-    } while( token_id != TK_TERMINATION );
+    if( qlex.error_code == E_Error_None ) {
+        do {
+            qlex.receive(&qlex, &token_p);
+            token_id = token_p->id;
+            FLUSH();
+            printf("TOKEN: %s\n", EHLexer_Token_get_string(token_p, buffer, BufferSize));
+            FLUSH();
+        } while( token_id != TK_TERMINATION );
+    }
 
     fprintf(stderr, "| [END]\n");
     FLUSH();

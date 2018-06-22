@@ -778,8 +778,8 @@ class Language(dict):
 
     def COUNTER_SHIFT_VALUES(self):
         result = ""
-        if condition.do("count-line"):   result += "    me->counter._column_number_at_begin = me->counter._column_number_at_end;\n"
-        if condition.do("count-column"): result += "    me->counter._line_number_at_begin = me->counter._line_number_at_end;\n"
+        if condition.do("count-column"): result += "    me->counter._column_number_at_begin = me->counter._column_number_at_end;\n"
+        if condition.do("count-line"):   result += "    me->counter._line_number_at_begin = me->counter._line_number_at_end;\n"
         return result 
 
     def COUNTER_LINE_ADD(self, Arg):

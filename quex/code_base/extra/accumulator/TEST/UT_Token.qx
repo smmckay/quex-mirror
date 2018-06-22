@@ -21,10 +21,8 @@ token_type {
         self.id    = Other.id;
         self.text   = Other.text;
         self.number = Other.number;
-#       ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-        __QUEX_IF_COUNT_LINES(self._line_n     = Other._line_n);
-        __QUEX_IF_COUNT_COLUMNS(self._column_n = Other._column_n);
-#       endif
+        self._line_n   = Other._line_n;
+        self._column_n = Other._column_n;
    }
 
    body {
