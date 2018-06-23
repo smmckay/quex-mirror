@@ -12,7 +12,6 @@ from   quex.input.setup       import QuexSetup, \
                                      SETUP_INFO
 from   quex.constants         import E_IncidenceIDs, \
                                      E_TerminalType
-import quex.engine.misc.error as     error
 
 import quex.engine.state_machine.transformation.core as     bc_factory
 

@@ -3,10 +3,10 @@ Accepter
    Registers:    AcceptanceRegister(w),  PreContextFlags(r), 
    Cost:         1
    C-code: {
-           if( pre_context_55_fulfilled_f ) {
-               last_acceptance = 66; __quex_debug("last_acceptance = 66\n");
+       if( pre_context_55_fulfilled_f ) {
+       last_acceptance = 66; __quex_debug("last_acceptance = 66\n");
        
-           }
+       }
    }
 
 Assign
@@ -38,7 +38,7 @@ AssignConstant
    Registers:    Column(w), 
    Cost:         1
    C-code: {
-           __QUEX_IF_COUNT_COLUMNS((me->counter._column_number_at_end) = (size_t)2);
+           $$<count-column> (me->counter._column_number_at_end) = (size_t)2;$$
    }
 
 AssignPointerDifference
@@ -62,8 +62,10 @@ ColumnCountGridAdd
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end -= 1);
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end += 1 + 1);
+       $$<count-column>--------------------------------------------
+       self.counter._column_number_at_end -= 1;
+       self.counter._column_number_at_end += 1 + 1;
+       $$----------------------------------------------------------
    }
 
 ColumnCountGridAdd
@@ -71,9 +73,11 @@ ColumnCountGridAdd
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end -= 1);
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end &= ~ ((size_t)0x1));
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end += 2 + 1);
+       $$<count-column>--------------------------------------------
+       self.counter._column_number_at_end -= 1;
+       self.counter._column_number_at_end &= ~ ((size_t)0x1);
+       self.counter._column_number_at_end += 2 + 1;
+       $$----------------------------------------------------------
    }
 
 ColumnCountGridAdd
@@ -81,9 +85,11 @@ ColumnCountGridAdd
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end -= 1);
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end -= (self.counter._column_number_at_end % (3)));
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end += 3 + 1);
+       $$<count-column>--------------------------------------------
+       self.counter._column_number_at_end -= 1;
+       self.counter._column_number_at_end -= (self.counter._column_number_at_end % (3));
+       self.counter._column_number_at_end += 3 + 1;
+       $$----------------------------------------------------------
    }
 
 ColumnCountGridAdd
@@ -91,9 +97,11 @@ ColumnCountGridAdd
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end -= 1);
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end &= ~ ((size_t)0x3));
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end += 4 + 1);
+       $$<count-column>--------------------------------------------
+       self.counter._column_number_at_end -= 1;
+       self.counter._column_number_at_end &= ~ ((size_t)0x3);
+       self.counter._column_number_at_end += 4 + 1;
+       $$----------------------------------------------------------
    }
 
 ColumnCountGridAdd
@@ -101,9 +109,11 @@ ColumnCountGridAdd
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end -= 1);
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end -= (self.counter._column_number_at_end % (5)));
-       __QUEX_IF_COUNT_COLUMNS(self.counter._column_number_at_end += 5 + 1);
+       $$<count-column>--------------------------------------------
+       self.counter._column_number_at_end -= 1;
+       self.counter._column_number_at_end -= (self.counter._column_number_at_end % (5));
+       self.counter._column_number_at_end += 5 + 1;
+       $$----------------------------------------------------------
    }
 
 ColumnCountReferencePDeltaAdd
@@ -119,7 +129,7 @@ ColumnCountReferencePSet
    Registers:    LoopRestartP(r),  CountReferenceP(w), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS(count_reference_p = loop_restart_p + 1000);
+       $$<count-column> count_reference_p = loop_restart_p + 1000;$$
    }
 
 Decrement
@@ -164,7 +174,7 @@ IfPreContextSetPositionAndGoto
    Cost:         1
    C-code: {
        if( pre_context_24_fulfilled_f ) {
-               me->buffer._read_p -= 1;
+           me->buffer._read_p -= 1;
        goto _0;
        }
    }

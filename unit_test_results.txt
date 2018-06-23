@@ -29,8 +29,8 @@ TEST                                                                 <no date>
                        iconv .........................................[OK]
                        icu ...........................................[OK]
     2001787 RE Problem with inverted whitespace
-        bug-2001787.sh iconv .......................................[FAIL]
-                       icu .........................................[FAIL]
+        bug-2001787.sh iconv .........................................[OK]
+                       icu ...........................................[OK]
     2002070 Output buffer overflow
         bug-2002070.sh iconv .........................................[OK]
                        icu ...........................................[OK]
@@ -125,8 +125,8 @@ TEST                                                                 <no date>
     1952747 TKN_TERMINATION
         bug-1952747.sh ...............................................[OK]
     2078087 (feature) Mode transition shortcuts GOTO, GOSUB, GOUP
-        feature-2078087.sh GOSUB ...................................[FAIL]
-                           GOSUB-2 .................................[FAIL]
+        feature-2078087.sh GOSUB .....................................[OK]
+                           GOSUB-2 ...................................[OK]
                            GOTO ......................................[OK]
                            GOTO-2 ....................................[OK]
     2161098 0.32.1 Nested-Range Skipper Line Number Counter
@@ -138,7 +138,7 @@ TEST                                                                 <no date>
                        funny_comments ................................[OK]
                        shell_comments ................................[OK]
     2209142 0.33.1-pre-release: RE not suited for comment elimination
-        bug-2209142.sh error .......................................[FAIL]
+        bug-2209142.sh error .........................................[OK]
                        good ..........................................[OK]
     2277660 character count pre-determination
         bug-2277660.sh ...............................................[OK]
@@ -154,9 +154,9 @@ TEST                                                                 <no date>
     3038088 token_id = numeric value
         feature-3038088.sh ...........................................[OK]
     3039173 On Mismatch: abort()
-        feature-3039173.sh .........................................[FAIL]
+        feature-3039173.sh ...........................................[OK]
     3082041 0.52.4 Buffer Memory Size not Accepted
-        bug-3082041.sh .............................................[FAIL]
+        bug-3082041.sh ...............................................[OK]
     3102035 0.55.1 Weird Setup causes Duplicate State Label
         bug-3102035.sh 1 .............................................[OK]
                        2 .............................................[OK]
@@ -176,7 +176,7 @@ TEST                                                                 <no date>
  * jdavidberger:
 
     264 0.64.6 Incorrect column numbering with post conditions
-        bug-264.sh .................................................[FAIL]
+        bug-264.sh ...................................................[OK]
 
  * jmarsik:
 
@@ -371,7 +371,7 @@ TEST                                                                 <no date>
     1892227 accepted as identifiers in def
         bug-1892227.sh ...............................................[OK]
     1892809 0.20.4 \x, \X, \U accept too many digits
-        bug-1892809.sh .............................................[FAIL]
+        bug-1892809.sh ...............................................[OK]
     1893849 0.20.5 allows engine names that are not valid identifiers
         bug-1893849.sh ...............................................[OK]
     1893874 Missing colon in mode definition crashes 0.20.5
@@ -412,7 +412,7 @@ TEST                                                                 <no date>
         bug-2087087.sh ...............................................[OK]
     2095970 0.31.3 Mode change without immediate return
         bug-2095970.sh CONTINUE ......................................[OK]
-                       CONTINUE_w_Asserts ..........................[FAIL]
+                       CONTINUE_w_Asserts ............................[OK]
                        DEFAULT .......................................[OK]
                        DEFAULT_w_Asserts .............................[OK]
                        RETURN ........................................[OK]
@@ -496,17 +496,7 @@ TEST                                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] bug-293.sh _ bad
                     \__ good
-    [FAIL] bug-2001787.sh _ iconv
-                        \__ icu
     [FAIL] bug-3486388.sh
-    [FAIL] feature-2078087.sh _ GOSUB
-                            \__ GOSUB-2
-    [FAIL] bug-2209142.sh _ error
-    [FAIL] feature-3039173.sh
-    [FAIL] bug-3082041.sh
-    [FAIL] bug-264.sh
-    [FAIL] bug-1892809.sh
-    [FAIL] bug-2095970.sh _ CONTINUE_w_Asserts
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -1008,7 +998,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1034,7 +1024,6 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] svn-status.sh
-    [FAIL] pyflakes-check.sh
     [FAIL] include_guard.py _ convention
                           \__ undefinition
     [FAIL] imposing-plain-c.sh
@@ -1146,8 +1135,8 @@ quex/TESTS/event-handling/TEST                                       <no date>
     With N x DEDENT
         on_indentation-2.qx n-dedent .................................[OK]
     Without N x DEDENT
-        on_indentation-1.qx ind-bad ................................[FAIL]
-                            ind-bad-dedent .........................[FAIL]
+        on_indentation-1.qx ind-bad ..................................[OK]
+                            ind-bad-dedent ...........................[OK]
                             ind-good .................................[OK]
 
  * Matching:
@@ -1162,22 +1151,18 @@ quex/TESTS/event-handling/TEST                                       <no date>
         transition-x.qx 1 ............................................[OK]
                         2 ............................................[OK]
                         3 ............................................[OK]
-                        error ......................................[FAIL]
+                        error ........................................[OK]
     on_entry, on_exit
         transition.qx 1 ..............................................[OK]
                       2 ..............................................[OK]
                       3 ..............................................[OK]
-                      error ........................................[FAIL]
+                      error ..........................................[OK]
                                                            ___   _    _   _    
                                                           |  _| / \  | | | |   
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] on_bad_lexatom.qx _ bad-utf16
-    [FAIL] on_indentation-1.qx _ ind-bad
-                             \__ ind-bad-dedent
-    [FAIL] transition-x.qx _ error
-    [FAIL] transition.qx _ error
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1454,7 +1439,7 @@ quex/TESTS/source-package/TEST                                       <no date>
         test-c.sh codec ..............................................[OK]
                   codec-utf16 ........................................[OK]
                   codec-utf8 .........................................[OK]
-                  customized-token-class ...........................[FAIL]
+                  customized-token-class .............................[OK]
                   manual-token-class .................................[OK]
                   no-counter .........................................[OK]
                   plain ..............................................[OK]
@@ -1462,17 +1447,14 @@ quex/TESTS/source-package/TEST                                       <no date>
         test-cpp.sh codec ............................................[OK]
                     codec-utf16 ......................................[OK]
                     codec-utf8 .......................................[OK]
-                    customized-token-class .........................[FAIL]
+                    customized-token-class ...........................[OK]
                     manual-token-class ...............................[OK]
                     no-counter .......................................[OK]
                     plain ............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] test-c.sh _ customized-token-class
-    [FAIL] test-cpp.sh _ customized-token-class
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                   Token Class                                  
@@ -1838,7 +1820,7 @@ quex/engine/operations/TEST                                          <no date>
  * Command:
 
     Basic
-        basic.py ...................................................[FAIL]
+        basic.py .....................................................[OK]
 
  * Op:
 
@@ -1862,12 +1844,10 @@ quex/engine/operations/TEST                                          <no date>
                             one-or-none ..............................[OK]
                             two ......................................[OK]
                             two-bad ..................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] basic.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    DFA Tests                                   
@@ -2756,7 +2736,7 @@ quex/output/languages/cpp/TEST                                       <no date>
         name_replacement.py C ........................................[OK]
                             C++ ......................................[OK]
  * Token Class Template
-        test-token_class.py ........................................[FAIL]
+        test-token_class.py ..........................................[OK]
 
  * Character Counter:
 
@@ -2802,7 +2782,6 @@ quex/output/languages/cpp/TEST                                       <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] package-file-db.py
-    [FAIL] test-token_class.py
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3410,25 +3389,25 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-       13  238   [FAIL] TEST                                                          
+        3  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        6  15    [FAIL] ........../code/TEST                                          
+        5  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        5  23    [FAIL] ........../event-handling/TEST                                
+        1  23    [FAIL] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
            32      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
-        2  14    [FAIL] ........../source-package/TEST                                
+           14      [OK] ........../source-package/TEST                                
            5       [OK] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TESTS/general/TEST                             
@@ -3451,7 +3430,7 @@ SUMMARY:
            27      [OK] .............................../template/TEST                 
            38      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
-        1  17    [FAIL] .........../operations/TEST                                   
+           17      [OK] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
@@ -3467,15 +3446,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        2  33    [FAIL] .........../languages/cpp/TEST                                
+        1  33    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _____   ___            
-    |  ___|_ _(_) |___     |___ /  ( _ )     __  __
-    | |_ / _` | | / __|      |_ \  / _ \     \ \/ /
-    |  _| (_| | | \__ \     ___) || (_) |     >  < 
-    |_|  \__,_|_|_|___/    |____/  \___/     /_/\_\
+     _____     _ _          _   ___            
+    |  ___|_ _(_) |___     / | / _ \     __  __
+    | |_ / _` | | / __|    | || (_) |    \ \/ /
+    |  _| (_| | | \__ \    | | \__, |     >  < 
+    |_|  \__,_|_|_|___/    |_|   /_/     /_/\_\
                                                                    (1702 tests)
 
 ===============================================================================

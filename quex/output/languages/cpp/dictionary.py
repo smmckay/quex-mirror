@@ -242,9 +242,9 @@ class Language(dict):
             return [ condition_list[0] ]
         else:
             result = [ "(%s)" % condition_list[0] ]
-            for condition in condition_list[1:]:
+            for cnd in condition_list[1:]:
                 result.append(" %s " % Operator)
-                result.append("(%s)" % condition)
+                result.append("(%s)" % cnd)
             return result
 
     @property

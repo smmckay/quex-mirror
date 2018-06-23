@@ -1,3 +1,11 @@
+/* Assert Strategy:
+ *
+ * Asserts are enabled by default. The lexer emits a warning message and tells
+ * how to deactivate them. Asserts can be deactivated as follows.
+ *
+ *  'NDEBUG' (from Standard 'assert.h') => avoid surprises.
+ *  'QUEX_OPTION_ASSERTS_DISABLED_EXT'  => solely prevent quex's asserts.     
+ *                                                                            */
 -- token class generation: Name of *lexer* must be specified, i.e. the
    token class must know the lexer for which lexer it is generated.
 
