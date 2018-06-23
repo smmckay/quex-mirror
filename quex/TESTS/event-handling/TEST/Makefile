@@ -52,7 +52,7 @@ on_load_failure.exe: on_load_failure.qx
 
 on_bad_lexatom.exe: on_bad_lexatom.qx 
 	$(QUEX) -i $< -o EHLexer --encoding utf16
-	$(LD65536) ./lexer.c EHLexer/EHLexer.c -o $@ 
+	$(LD65536) -DQUEX_OPTION_ASSERTS_DISABLED_EXT ./lexer.c EHLexer/EHLexer.c -o $@ 
 
 on_buffer_overflow.exe: on_buffer_overflow.qx 
 	$(QUEX) -i $< -o EHLexer --odir ut 
