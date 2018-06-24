@@ -30,39 +30,26 @@
 #   undef self_accumulator_flush
 #   undef self_accumulator_is_empty
 /* Indentation/Counter _____________________________________________________*/
-#   ifdef QUEX_OPTION_COUNTER_LINE
 #   undef self_line_number            
 #   undef self_line_number_at_begin 
 #   undef self_line_number_at_begin_set
 #   undef self_line_number_at_end   
-#   endif
-#   ifdef QUEX_OPTION_COUNTER_COLUMN
 #   undef self_column_number          
 #   undef self_column_number_at_begin 
 #   undef self_column_number_at_begin_set
 #   undef self_column_number_at_end   
-#   endif
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
 #   undef self_indentation                    
-#   undef self_disable_next_indentation_event 
-#   endif
 #endif
 
-#ifdef      QUEX_OPTION_COUNTER_LINE     
 #   define  self_line_number_at_begin()          (self.counter._line_number_at_begin)
 #   define  self_line_number_at_begin_set(X)     do { self.counter._line_number_at_begin = (X); } while(0)
 #   define  self_line_number_at_end()            (self.counter._line_number_at_end)
 #   define  self_line_number()                   (self_line_number_at_begin())
-#endif                                           
-#ifdef      QUEX_OPTION_COUNTER_COLUMN  
 #   define  self_column_number_at_begin()        (self.counter._column_number_at_begin)
 #   define  self_column_number_at_begin_set(X)   do { self.counter._column_number_at_begin = (X); } while(0)
 #   define  self_column_number_at_end()          (self.counter._column_number_at_end)
 #   define  self_column_number()                 (self_column_number_at_begin())
-#endif                                           
-#ifdef      QUEX_OPTION_INDENTATION_TRIGGER      
 #   define  self_indentation()                   (counter._indentation_stack.back - counter._indentation_stack.front + 1)
-#endif
 
 /* Accumulator ______________________________________________________________*/
 #   define self_accumulator_add(Begin, End)      QUEX_NAME(Accumulator__add)(&self.accumulator, Begin, End)

@@ -408,25 +408,10 @@ class Language(dict):
         return "self.send_text(%s, %s, %s);" % (TokenName, Begin, End)
 
     def DEFAULT_COUNTER_FUNCTION_NAME(self, ModeName):
-        return self.NAME_IN_NAMESPACE_MAIN("%s_counter" % ModeName)
+        return self.NAME_IN_NAMESPACE_MAIN("%s_counter_on_arbitrary_lexeme" % ModeName)
 
     def DEFAULT_COUNTER_CALL(self):
-        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
-
-    def RUN_TIME_COUNTER_PROLOG(self, FunctionName):
-        return "#ifdef      QUEX_FUNCTION_COUNT_ARBITRARY\n"                             \
-               "#   undef   QUEX_FUNCTION_COUNT_ARBITRARY\n"                             \
-               "#endif\n"                                                    \
-               "#ifdef      QUEX_OPTION_COUNTER\n"                         \
-               "#    define QUEX_FUNCTION_COUNT_ARBITRARY(ME, BEGIN, END) \\\n"          \
-               "            do {                              \\\n"          \
-               "                %s((ME), (BEGIN), (END));     \\\n"          \
-               "                __quex_debug_counter();       \\\n"          \
-               "            } while(0)\n"                                    \
-               "#else\n"                                                     \
-               "#    define QUEX_FUNCTION_COUNT_ARBITRARY(ME, BEGIN, END) /* empty */\n" \
-               "#endif\n"                                                    \
-               % FunctionName
+        return "QUEX_MODE_DEFAULT_COUNTER_CALL(&self, LexemeBegin, LexemeEnd);\n"
 
     @typed(TypeStr=(str,unicode), MaxTypeNameL=(int,long), VariableName=(str,unicode))
     def CLASS_MEMBER_DEFINITION(self, TypeStr, MaxTypeNameL, VariableName):
@@ -605,8 +590,8 @@ class Language(dict):
             return "    %s;\n" % txt
 
         elif Op.id == E_Op.ColumnCountAdd:
-            if "%s" % Op.content.value == "LoopRestartP": print_callstack()
-            return "__QUEX_IF_COUNT_COLUMNS_ADD((size_t)%s);\n" % self.VALUE_STRING(Op.content.value) 
+            # if "%s" % Op.content.value == "LoopRestartP": print_callstack()
+            return "%s\n" % self.COUNTER_COLUM_ADD("(size_t)%s" % self.VALUE_STRING(Op.content.value))
 
         elif Op.id == E_Op.ColumnCountGridAdd:
             return "".join(self.COUNTER_COLUMN_GRID_STEP(Op.content.grid_size))
@@ -620,12 +605,9 @@ class Language(dict):
             return self.REFERENCE_P_COLUMN_ADD(self.REGISTER_NAME(Op.content.pointer), 
                                                Op.content.column_n_per_chunk, 
                                                Op.content.subtract_one_f) 
-
         elif Op.id == E_Op.LineCountAdd:
-            txt = []
-            if Op.content.value != 0:
-                txt.append("__QUEX_IF_COUNT_LINES_ADD((size_t)%s);\n" % self.VALUE_STRING(Op.content.value))
-            return "".join(txt)
+            if not Op.content.value: return ""
+            else:                    return "%s\n" % self.COUNTER_LINE_ADD("(size_t)%s" % self.VALUE_STRING(Op.content.value))
 
         elif Op.id == E_Op.StoreInputPosition:
             # Assume that checking for the pre-context is just overhead that 
@@ -783,13 +765,16 @@ class Language(dict):
         return result 
 
     def COUNTER_LINE_ADD(self, Arg):
-        return "__QUEX_IF_COUNT_LINES_ADD(%s);\n" % Arg
+        if condition.do("count-line"): return "me->counter._line_number_at_end += (%s); __quex_debug_counter();" % Arg
+        else:                          return ""
 
     def COUNTER_COLUM_ADD(self, Arg):
-        return "__QUEX_IF_COUNT_COLUMNS_ADD(%s);\n" % Arg
+        if condition.do("count-column"): return "me->counter._column_number_at_end += (%s); __quex_debug_counter();" % Arg
+        else:                            return ""
 
-    def COUNTER_COLUM_SET(self, Value):
-        return "__QUEX_IF_COUNT_COLUMNS_SET(%i);\n" % Value
+    def COUNTER_COLUM_SET(self, Arg):
+        if condition.do("count-column"): return "me->counter._column_number_at_end = (%s); __quex_debug_counter();" % Arg
+        else:                            return ""
 
     def COUNTER_COLUMN_GRID_STEP(self, GridWidth, StepN=1):
         """A grid step is an addition which depends on the current value 
@@ -873,8 +858,7 @@ class Language(dict):
         """
         minus_one = { True: " - 1", False: "" }[SubtractOneF]
         delta_str = "(%s - %s%s)" % (IteratorName, self.REGISTER_NAME(E_R.CountReferenceP), minus_one)
-        return "__QUEX_IF_COUNT_COLUMNS_ADD((size_t)(%s));\n" \
-               % self.MULTIPLY_WITH(delta_str, ColumnCountPerChunk)
+        return "%s\n" % self.COUNTER_COLUM_ADD("(size_t)(%s)" % self.MULTIPLY_WITH(delta_str, ColumnCountPerChunk))
 
     def REFERENCE_P_RESET(self, IteratorName, Offset=0):
         name = self.REGISTER_NAME(E_R.CountReferenceP)
@@ -1223,6 +1207,30 @@ class Language(dict):
         self.REPLACE_INDENT(txt_list)
         return get_plain_strings(txt_list, dial_db)
 
+    def VARIABLE_DEFINITION(self, variable, LT, LN):
+        variable_type = variable.variable_type
+        variable_init = variable.initial_value
+        variable_name = variable.name
+
+        if variable.element_n is not None: 
+            if variable.element_n != 0:
+                variable_name += "[%s]" % repr(variable.element_n)
+                if variable_type.find("QUEX_TYPE_GOTO_LABEL") != -1: 
+                    variable_name = "(" + variable_name + ")"
+            else:
+                variable_type += "*"
+                variable_init  = ["0x0"]
+
+        if variable_init is None: 
+            value = "/* un-initilized */"
+        else:
+            if type(variable_init) != list: variable_init = [ variable_init ]
+            value = " = " + "".join(variable_init)
+
+        return "    %s%s %s%s%s;" % (variable_type, " " * (LT - len(variable_type)), 
+                                     variable_name, " " * (LN - len(variable_name)),
+                                     value)
+
     def VARIABLE_DEFINITIONS(self, VariableDB):
         # ROBUSTNESS: Require 'target_state_index' and 'target_state_else_index'
         #             ALWAYS. Later, they are referenced in dead code to avoid
@@ -1232,8 +1240,19 @@ class Language(dict):
         VariableDB.require("target_state_index")
         VariableDB.require("target_state_else_index")
 
-        assert type(VariableDB) != dict
-        return templates._local_variable_definitions(VariableDB.get()) 
+        if not VariableDB: return ""
+
+        variable_list = VariableDB.get().values()
+
+        LN = max(len(v.name) for v in variable_list)
+        LT = max(len(v.variable_type) for v in variable_list)
+
+        return "\n".join(
+            self.VARIABLE_DEFINITION(variable, LT, LN)
+            for variable in sorted(variable_list, key=lambda v: not v.priority_f)
+            if condition.do(variable.condition)
+        ) + "\n"
+         
 
     def RAISE_ERROR_FLAG(self, Name):
         return "self.error_code_set_if_first(%s);\n" % Name

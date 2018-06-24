@@ -4,16 +4,14 @@
 #ifndef QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC_I
 #define QUEX_INCLUDE_GUARD__ANALYZER__MEMBER__MISC_I
 
-#if defined(QUEX_OPTION_COUNTER)
-$$INC: analyzer/Counter$$
-#endif
+$$INC: <count> analyzer/Counter$$
 $$INC: buffer/Buffer_print$$
 $$INC: buffer/lexatoms/LexatomLoader$$
 $$INC: lexeme_base$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#ifdef QUEX_OPTION_INDENTATION_TRIGGER
+$$<indentation>----------------------------------------------------------------
 QUEX_INLINE void 
 QUEX_NAME(indentation_handler_switch)(QUEX_TYPE_ANALYZER* me, bool ActiveF)
 { me->_indentation_handler_active_f = ActiveF; }
@@ -21,7 +19,7 @@ QUEX_NAME(indentation_handler_switch)(QUEX_TYPE_ANALYZER* me, bool ActiveF)
 QUEX_INLINE bool 
 QUEX_NAME(indentation_handler_is_active)(QUEX_TYPE_ANALYZER* me)
 { return me->_indentation_handler_active_f; }
-#endif
+$$-----------------------------------------------------------------------------
 
 QUEX_INLINE void 
 QUEX_NAME(MF_error_code_clear)(QUEX_TYPE_ANALYZER* me)
@@ -160,22 +158,22 @@ QUEX_NAME(MF_print_this)(QUEX_TYPE_ANALYZER* me)
     }
 }
 
-#ifdef  QUEX_OPTION_COUNTER_LINE
+$$<count-line>-----------------------------------------------------------------
 QUEX_INLINE size_t QUEX_NAME(MF_line_number)(const QUEX_TYPE_ANALYZER* me)            { return QUEX_NAME(MF_line_number_at_begin)(me); }
 QUEX_INLINE size_t QUEX_NAME(MF_line_number_at_begin)(const QUEX_TYPE_ANALYZER* me)   { return me->counter._line_number_at_begin; }
 QUEX_INLINE size_t QUEX_NAME(MF_line_number_at_end)(const QUEX_TYPE_ANALYZER* me)     { return me->counter._line_number_at_end; }
 QUEX_INLINE void   QUEX_NAME(MF_line_number_set)(QUEX_TYPE_ANALYZER* me, size_t Value) { me->counter._line_number_at_end = Value; }
-#endif
-#ifdef  QUEX_OPTION_COUNTER_COLUMN
+$$-----------------------------------------------------------------------------
+$$<count-column>---------------------------------------------------------------
 QUEX_INLINE size_t QUEX_NAME(MF_column_number)(const QUEX_TYPE_ANALYZER* me)          { return QUEX_NAME(MF_column_number_at_begin)(me); }
 QUEX_INLINE size_t QUEX_NAME(MF_column_number_at_begin)(const QUEX_TYPE_ANALYZER* me) { return me->counter._column_number_at_begin; }
 QUEX_INLINE size_t QUEX_NAME(MF_column_number_at_end)(const QUEX_TYPE_ANALYZER* me)   { return me->counter._column_number_at_end; }
 QUEX_INLINE void   QUEX_NAME(MF_column_number_set)(QUEX_TYPE_ANALYZER* me, size_t Value) { me->counter._column_number_at_end = Value; }
-#endif
-#ifdef   QUEX_OPTION_INDENTATION_TRIGGER
+$$-----------------------------------------------------------------------------
+$$<indentation>----------------------------------------------------------------
 QUEX_INLINE size_t  QUEX_NAME(MF_indentation)(const QUEX_TYPE_ANALYZER* me)           
 { return (size_t)(me->counter._indentation_stack.back - me->counter._indentation_stack.front) + (size_t)1; }
-#endif
+$$-----------------------------------------------------------------------------
 
 
 QUEX_NAMESPACE_MAIN_CLOSE

@@ -490,7 +490,7 @@ class LoopEventHandlers:
     def __get_required_register_set(self, AppendixSmExistF):
         result = set()
         if self.column_number_per_code_unit is not None:
-            result.add((E_R.CountReferenceP, "QUEX_OPTION_COUNTER_COLUMN"))
+            result.add((E_R.CountReferenceP, "count-column"))
         if AppendixSmExistF:
             result.add(E_R.LoopRestartP)
         if Setup.buffer_encoding.variable_character_sizes_f():

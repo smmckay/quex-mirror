@@ -289,9 +289,9 @@ def __get_function_declaration(Modes, FriendF=False):
             new_txt += "#endif\n"
             return new_txt
         elif name == "on_indentation":
-            new_txt  = "#ifdef QUEX_OPTION_INDENTATION_TRIGGER\n"
+            new_txt  = "$$<indentation>----------------------------------------------------------------\n"
             new_txt += txt
-            new_txt += "#endif\n"
+            new_txt += "$$-----------------------------------------------------------------------------\n"
             return new_txt
         else:
             return txt
@@ -355,10 +355,9 @@ def __replace_function_names(txt, mode, NullFunctionsF=True):
 mode_setup_str = \
 """QUEX_NAME(Mode) QUEX_NAME($$MN$$) = {
     /* name              */ "$$MN$$",
-#   if      defined(QUEX_OPTION_INDENTATION_TRIGGER) \\
-       && ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
+$$<indentation>----------------------------------------------------------------
     /* on_indentation    */ $on_indentation,
-#   endif
+$$-----------------------------------------------------------------------------
     /* on_entry          */ $on_entry,
     /* on_exit           */ $on_exit,
 #   if      defined(QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK)

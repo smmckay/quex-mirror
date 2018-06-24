@@ -11,6 +11,7 @@ from   quex.engine.analyzer.door_id_address_label   import DoorID, DialDB
 from   quex.engine.misc.tools                       import typed
 from   quex.engine.counter                          import CountActionMap
 
+import quex.condition  as     condition
 from   quex.blackboard import Lng, \
                               DefaultCounterFunctionDB, \
                               E_IncidenceIDs
@@ -78,17 +79,16 @@ def get(CaMap, Name):
     return function_name, implementation
 
 def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, dial_db):
-    
+
     state_router_adr   = DoorID.global_state_router(dial_db).related_address
     state_router_label = Lng.LABEL_STR_BY_ADR(state_router_adr)
     txt = [  \
-          "#ifdef QUEX_OPTION_COUNTER\n" \
-        + "static void\n" \
+          "static void\n" \
         + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" \
           % FunctionName \
         + "{\n" \
         + "#   define self (*me)\n" \
-        + "/*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */\n"
+        + "/*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */\n" \
         + "#   define QUEX_LABEL_STATE_ROUTER %s\n" % state_router_label
     ]
 
@@ -141,7 +141,6 @@ def __frame(FunctionName, IteratorName, CodeTxt, DoorIdReturn, dial_db):
        + "    (void)target_state_index;\n"
        + "    (void)target_state_else_index;\n"
        + "}\n" \
-       + "#endif /* QUEX_OPTION_COUNTER */\n" 
     )
 
     return "".join(Lng.GET_PLAIN_STRINGS(txt, dial_db))

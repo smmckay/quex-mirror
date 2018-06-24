@@ -1,23 +1,6 @@
+from quex.output.syntax_elements import Variable
 from quex.blackboard import Lng
 from copy import copy
-
-class Variable:
-    def __init__(self, Name, Type, ElementN, InitialValue, Condition=None, ConditionNegatedF=False, PriorityF=False):
-        """ElementN is None --> scalar value
-                    is int  --> array of dimension ElementN
-        """
-        assert type(ElementN) in [int, long] or None == ElementN, \
-               "ElementN is of type '%s'" % repr(type(ElementN))
-
-        self.name                = Name
-        self.variable_type       = Type
-        self.initial_value       = InitialValue
-        self.element_n           = ElementN
-        self.condition           = Condition
-        self.condition_negated_f = ConditionNegatedF
-        # Some variables need to be defined before others --> Set some to 'prior'
-        self.priority_f          = PriorityF
-
 
 candidate_db = {
 # Name                             Type(0),                         InitialValue(2),               PriorityF(3)

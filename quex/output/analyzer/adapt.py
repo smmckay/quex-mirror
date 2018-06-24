@@ -1,6 +1,7 @@
-from   quex.engine.misc.tools import typed
-from   quex.blackboard        import Lng, setup as Setup
-import quex.condition         as     condition
+from   quex.engine.misc.tools      import typed
+from   quex.output.syntax_elements import Symbol, Variable, Signature, ConditionalCode
+from   quex.blackboard             import Lng, setup as Setup
+import quex.condition              as     condition
 import os
 
 def do(Txt, OutputDir, OriginalPath=None):
@@ -13,63 +14,6 @@ def do(Txt, OutputDir, OriginalPath=None):
         txt = "%s\n%s" % (Lng.LINE_PRAGMA(OriginalPath, 1), txt)
     return txt
 
-class Symbol:
-    @classmethod
-    def type_and_name(cls, SubString):
-        idx = SubString.find("=")
-        if idx != -1:
-            core_str    = SubString[:idx]
-            default_str = SubString[idx+1:].strip()
-        else:
-            core_str    = SubString
-            default_str = ""
-
-        fields   = [x.strip() for x in core_str.split()]
-        type_str = " ".join(fields[:-1])
-        name_str = fields[-1]
-
-        return type_str, name_str, default_str
-
-    @classmethod
-    def condition_str(cls, SubString, OpenBracketF=True):
-        if OpenBracketF: 
-            begin_i = SubString.find("<")
-            if begin_i == -1: return None, SubString
-            begin_i += 1
-        else:            
-            begin_i = 0
-
-        end_i     = SubString.find(">")
-        condition = SubString[begin_i: end_i].strip()
-        return condition, SubString[end_i+1:]
-
-class Variable(Symbol):
-    @typed(ConstantF=bool)
-    def __init__(self, Type, Name, Size, Condition, ConstantF):
-        self.type          = Type
-        self.name          = Name
-        self.size          = Size # None => scalar, else array.
-        self.condition     = Condition
-        self.constant_f    = ConstantF    # Does not change object's state
-
-    @classmethod
-    def from_String(cls, String):
-        """SYNTAX: return-type; function-name; argument-list [const];
-
-        argument-list:   type name [ '=' default ]','
-        """
-        condition,         \
-        remainder          = cls.condition_str(String)
-        variable_type,     \
-        variable_name,     \
-        initial_assignment = cls.type_and_name(remainder)
-
-        remainder  = String.strip()
-        constant_f = (remainder == "const")
-
-        return cls(variable_type, variable_name, initial_assignment, 
-                   condition, constant_f)
-
 def member_variables(Txt):
     """YIELDS: [0] begin index of letter in 'Txt'
                [1] end index of letter in 'Txt'
@@ -78,50 +22,6 @@ def member_variables(Txt):
     for begin_i, end_i, content in _marked_tags(Txt, "$$M:", "$$"):
         yield begin_i, end_i, Variable.from_String(content)
     return 
-
-class Signature(Symbol):
-    @typed(ConstantF=bool)
-    def __init__(self, ReturnType, FunctionName, ArgumentList, Condition, ConstantF):
-        self.return_type   = ReturnType
-        self.function_name = FunctionName
-        self.argument_list = ArgumentList # (type, name, default)
-        self.condition     = Condition
-        self.constant_f    = ConstantF    # Does not change object's state
-
-    @classmethod
-    def from_String(cls, String):
-        """SYNTAX: return-type; function-name; argument-list [const];
-
-        argument-list:   type name [ '=' default ]','
-        """
-        condition, string = cls.condition_str(String)
-
-        open_i  = string.find("(")
-        close_i = string.rfind(")")
-        return_type, function_name, default_str = cls.type_and_name(string[:open_i])
-        argument_list = [ 
-            cls.type_and_name(x) 
-            for x in string[open_i+1:close_i].split(",") if x.strip()
-        ]
-
-        remainder  = string[close_i+1:].strip()
-        constant_f = (remainder == "const")
-
-        return cls(return_type, function_name, argument_list, condition, constant_f)
-
-class ConditionalCode(Symbol):
-    @typed(ConstantF=bool)
-    def __init__(self, Condition, Code):
-        self.condition = Condition
-        self.content   = Code
-
-    @classmethod
-    def from_String(cls, String):
-        """SYNTAX: condition '>' '-' content 
-        """
-        condition, remainder = cls.condition_str(String, OpenBracketF=False)
-
-        return ConditionalCode(condition, remainder.lstrip("-"))
 
 def _marked_tags(Txt, Begin, End, Skip=None):
     """YIELDS: [0] begin index of letter in 'Txt'

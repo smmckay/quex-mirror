@@ -1,16 +1,15 @@
 #include <data/check.h>
 
-#ifdef QUEX_OPTION_COUNTER
 void
-Lexer_TEST_MODE_counter(struct Lexer_tag* me, Lexer_lexatom_t* LexemeBegin, Lexer_lexatom_t* LexemeEnd)
+Lexer_TEST_MODE_counter_on_arbitrary_lexeme(struct Lexer_tag* me, Lexer_lexatom_t* LexemeBegin, Lexer_lexatom_t* LexemeEnd)
 {
 #   define self (*me)
 /*  'QUEX_GOTO_STATE' requires 'QUEX_LABEL_STATE_ROUTER' */
 #   define QUEX_LABEL_STATE_ROUTER _51
-    Lexer_lexatom_t              input                          = (Lexer_lexatom_t)(0x00);
-    QUEX_TYPE_GOTO_LABEL           target_state_else_index        = QUEX_GOTO_LABEL_VOID;
-    QUEX_TYPE_GOTO_LABEL           target_state_index             = QUEX_GOTO_LABEL_VOID;
-    Lexer_lexatom_t*             loop_restart_p                 = (Lexer_lexatom_t*)0x0;
+    Lexer_lexatom_t    input                   = (Lexer_lexatom_t)(0x00);
+    QUEX_TYPE_GOTO_LABEL target_state_else_index = QUEX_GOTO_LABEL_VOID;
+    QUEX_TYPE_GOTO_LABEL target_state_index      = QUEX_GOTO_LABEL_VOID;
+    Lexer_lexatom_t*   loop_restart_p          = (Lexer_lexatom_t*)0x0;
     (void)me;
     me->counter._column_number_at_begin = me->counter._column_number_at_end;
     me->counter._line_number_at_begin = me->counter._line_number_at_end;
@@ -317,7 +316,7 @@ goto _0;
 
 _23:
     __quex_debug("* TERMINAL <LOOP 10>\n");
-__QUEX_IF_COUNT_LINES_ADD((size_t)1);
+me->counter._line_number_at_end += ((size_t)1); __quex_debug_counter();
 
      (me->counter._column_number_at_end) = (size_t)1;
 
@@ -339,7 +338,7 @@ goto _0;
 
 _25:
     __quex_debug("* TERMINAL <LOOP 12>\n");
-__QUEX_IF_COUNT_COLUMNS_ADD((size_t)1);
+me->counter._column_number_at_end += ((size_t)1); __quex_debug_counter();
 
 if( me->buffer._read_p != LexemeEnd ) goto _21;
 
@@ -347,7 +346,7 @@ goto _0;
 
 _26:
     __quex_debug("* TERMINAL <LOOP 13>\n");
-__QUEX_IF_COUNT_COLUMNS_ADD((size_t)4711);
+me->counter._column_number_at_end += ((size_t)4711); __quex_debug_counter();
 
 if( me->buffer._read_p != LexemeEnd ) goto _21;
 
@@ -390,4 +389,3 @@ _51:
     (void)target_state_index;
     (void)target_state_else_index;
 }
-#endif /* QUEX_OPTION_COUNTER */

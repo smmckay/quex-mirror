@@ -8,10 +8,10 @@ $$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#ifdef QUEX_OPTION_INDENTATION_TRIGGER
+$$<indentation>----------------------------------------------------------------
 QUEX_INLINE void        QUEX_NAME(indentation_handler_switch)(QUEX_TYPE_ANALYZER* me, bool ActiveF);
 QUEX_INLINE bool        QUEX_NAME(indentation_handler_is_active)(QUEX_TYPE_ANALYZER* me);
-#endif
+$$-----------------------------------------------------------------------------
 
 QUEX_INLINE void        QUEX_NAME(MF_error_code_clear)(QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE bool        QUEX_NAME(MF_error_code_is_void)(QUEX_TYPE_ANALYZER* me);
@@ -47,21 +47,21 @@ QUEX_INLINE bool QUEX_NAME(MF_input_name_set)(QUEX_TYPE_ANALYZER* me,
 QUEX_INLINE void    QUEX_NAME(MF_print_this)(QUEX_TYPE_ANALYZER* me);
 extern      void    QUEX_NAME(user_print)(QUEX_TYPE_ANALYZER* me);
 
-#ifdef  QUEX_OPTION_COUNTER_LINE
+$$<count-line>----------------------------------------------------------------
 QUEX_INLINE size_t QUEX_NAME(MF_line_number)(const QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE size_t QUEX_NAME(MF_line_number_at_begin)(const QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE size_t QUEX_NAME(MF_line_number_at_end)(const QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(MF_line_number_set)(QUEX_TYPE_ANALYZER* me, size_t Y);
-#endif
-#ifdef  QUEX_OPTION_COUNTER_COLUMN
+$$-----------------------------------------------------------------------------
+$$<count-column>---------------------------------------------------------------
 QUEX_INLINE size_t QUEX_NAME(MF_column_number)(const QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE size_t QUEX_NAME(MF_column_number_at_begin)(const QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE size_t QUEX_NAME(MF_column_number_at_end)(const QUEX_TYPE_ANALYZER* me);
 QUEX_INLINE void   QUEX_NAME(MF_column_number_set)(QUEX_TYPE_ANALYZER* me, size_t X);
-#endif
-#ifdef   QUEX_OPTION_INDENTATION_TRIGGER
+$$-----------------------------------------------------------------------------
+$$<indentation>----------------------------------------------------------------
 QUEX_INLINE size_t  QUEX_NAME(MF_indentation)(const QUEX_TYPE_ANALYZER* me);
-#endif
+$$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

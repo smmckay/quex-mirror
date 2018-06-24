@@ -68,12 +68,8 @@ public:
 
     const struct QUEX_NAME(Mode_tag)* __current_mode_p; 
     QUEX_NAME(AnalyzerFunctionP)      current_analyzer_function;
-#   if defined(QUEX_OPTION_COUNTER)
-    QUEX_NAME(Counter)                counter;
-#   endif
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    bool                              _indentation_handler_active_f;
-#   endif
+    $$<count>       QUEX_NAME(Counter)  counter;$$
+    $$<indentation> bool              _indentation_handler_active_f;$$
     QUEX_NAME(Memento)*               _parent_memento;
 
 /* START: User's memento extentions __________________________________________*/
@@ -103,13 +99,9 @@ public:
     /* Backup of analyzer's function pointer => mode change detection.        */
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif
-#   if defined(QUEX_OPTION_COUNTER)
-    QUEX_NAME(Counter)              counter;
-#   endif
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    bool                            _indentation_handler_active_f;
-#   endif
-    QUEX_NAME(Memento)*             _parent_memento;
+    $$<count>       QUEX_NAME(Counter)  counter;$$
+    $$<indentation> bool                _indentation_handler_active_f;$$
+    QUEX_NAME(Memento)*                 _parent_memento;
 
 public:
     typedef QUEX_TYPE_TOKEN      token_type;

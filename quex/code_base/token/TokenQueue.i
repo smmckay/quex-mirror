@@ -158,14 +158,9 @@ QUEX_NAME(TokenQueue_push_core)(QUEX_NAME(TokenQueue)* me,
     }
     QUEX_ASSERT_TOKEN_QUEUE_BEFORE_SENDING(me);  
 
-#if    defined(QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN) 
-#   if defined(QUEX_OPTION_COUNTER_LINE)
-    me->write_iterator->_line_n   = me->the_lexer->counter._line_number_at_begin; 
-#   endif
-#   if defined(QUEX_OPTION_COUNTER_COLUMN)
-    me->write_iterator->_column_n = me->the_lexer->counter._column_number_at_begin; 
-#   endif
-#endif
+    $$<token-stamp-line>   me->write_iterator->_line_n   = me->the_lexer->counter._line_number_at_begin;$$
+    $$<token-stamp-column> me->write_iterator->_column_n = me->the_lexer->counter._column_number_at_begin;$$
+
     me->write_iterator->id = Id;              
     ++(me->write_iterator);       
 }

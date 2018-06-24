@@ -141,12 +141,10 @@ QUEX_NAME(Accumulator__add)(QUEX_NAME(Accumulator)* me,
     __quex_assert(End > Begin);
 
     /* If it is the first string to be appended, the store the location */
-#   ifdef QUEX_OPTION_COUNTER
     if( me->text.begin == me->text.end ) {
         $$<count-line>   me->_begin_line   = me->the_lexer->counter._line_number_at_begin;$$
         $$<count-column> me->_begin_column = me->the_lexer->counter._column_number_at_begin;$$
     }
-#   endif
 
     /* Ensure, that there is one more cell between end and .memory_end to store
      * the terminating zero for flushing or printing.                           */
@@ -171,12 +169,10 @@ QUEX_NAME(Accumulator__add_character)(QUEX_NAME(Accumulator)*     me,
                                       const QUEX_TYPE_LEXATOM  Character)
 { 
     /* If it is the first string to be appended, the store the location */
-#   ifdef QUEX_OPTION_COUNTER
     if( me->text.begin == me->text.end ) {
         $$<count-line>   me->_begin_line   = me->the_lexer->counter._line_number_at_begin;$$
         $$<count-column> me->_begin_column = me->the_lexer->counter._column_number_at_begin;$$
     }
-#   endif
 
     /* Ensure, that there is one more cell between end and .memory_end to store
      * the terminating zero for flushing or printing.                           */

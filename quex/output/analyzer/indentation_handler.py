@@ -50,7 +50,7 @@ def do(Mode, ModeNameList):
     ])
 
 on_indentation_str = """
-#if defined(QUEX_OPTION_INDENTATION_TRIGGER) 
+$$<indentation>----------------------------------------------------------------
 void
 $on_indentation(QUEX_TYPE_ANALYZER*    me, 
                 QUEX_TYPE_INDENTATION  Indentation, 
@@ -129,6 +129,6 @@ $$INDENTATION-ERROR-PROCEDURE$$
 #   undef LexemeEnd 
 $$MODE_UNDEFINITION$$
 }
-#endif
+$$-----------------------------------------------------------------------------
 """
 

@@ -137,12 +137,7 @@ def do_run_time_counter(Mode):
     code           = run_time_counter.get(Mode.run_time_counter_db, 
                                           Mode.name)
 
-    txt = [ Lng.RUN_TIME_COUNTER_PROLOG(function_name) ]
-
-    if code is not None:
-        txt.append(code)
-
-    return txt
+    return function_name, code
 
 def comment_match_behavior(ModeIterable):
     """Generate comment that documents the matching behavior of the

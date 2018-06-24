@@ -66,12 +66,29 @@ def analyzer_functions_get(ModeDB):
     mode_name_list = ModeDB.keys()  
 
     def code_for_mode(mode):
-        if mode.run_time_counter_db is not None:
-            txt = engine_generator.do_run_time_counter(mode) 
-        else:
-            txt = []
 
-        txt.extend(engine_generator.do(mode, mode_name_list))
+        if mode.run_time_counter_db is not None:
+            function_name, txt = engine_generator.do_run_time_counter(mode) 
+            if not txt:  txt   = []
+            else:        txt   = [txt]
+        else:
+            function_name, txt = "", []
+
+        def aux(line, DefaultCounterFunctionName):
+            if "QUEX_MODE_DEFAULT_COUNTER_CALL" in line:
+                return line.replace("QUEX_MODE_DEFAULT_COUNTER_CALL", DefaultCounterFunctionName)
+            else:
+                return line
+            
+        analyzer_txt = engine_generator.do(mode, mode_name_list)
+        assert isinstance(analyzer_txt, list)
+
+        if not function_name:
+            txt = analyzer_txt
+        else:
+            txt.extend(
+                aux(line, function_name) for line in analyzer_txt
+            )
         return txt
 
     code = flatten_list_of_lists( 

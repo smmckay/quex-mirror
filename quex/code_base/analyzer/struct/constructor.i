@@ -193,7 +193,6 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 #   endif
 
     me->__input_name = (char*)0;
-
     me->_parent_memento = (QUEX_TYPE_MEMENTO*)0;
 
     if( ! QUEX_NAME(TokenQueue_construct)(&me->_token_queue, me,
@@ -204,15 +203,13 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
                                               QUEX_SETTING_MODE_STACK_SIZE) ) {
         goto ERROR_1;
     }
-#   ifdef QUEX_OPTION_COUNTER
+    $$<count>----------------------------------------------------------------------
     else if( ! QUEX_NAME(Counter_construct)(&me->counter) ) {
         QUEX_NAME(MF_error_code_set_if_first)(me, E_Error_Constructor_Counter_Failed);
         goto ERROR_2;
     }
-#   endif
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    me->_indentation_handler_active_f = true;
-#   endif
+    $$-----------------------------------------------------------------------------
+    $$<indentation> me->_indentation_handler_active_f = true;$$
 
     /* A user's mode change callbacks may be called as a consequence of the 
      * call to 'set_mode_brutally_by_id()'. The current mode must be set to '0'
@@ -231,9 +228,9 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
     /* ERROR CASES: Free Resources ___________________________________________*/
 ERROR_3:
     /* NO ALLOCATED RESOURCES IN: 'me->counter'                               */
-#   ifdef QUEX_OPTION_COUNTER
+$$<count>----------------------------------------------------------------------
 ERROR_2:
-#   endif
+$$-----------------------------------------------------------------------------
     QUEX_NAME(ModeStack_destruct)(&me->_mode_stack);
 ERROR_1:
     QUEX_NAME(TokenQueue_destruct)(&me->_token_queue);
@@ -297,9 +294,7 @@ QUEX_NAME(MF_resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
     QUEX_NAME(member_functions_assign)(me);
 #   endif
 
-#   ifdef QUEX_OPTION_COUNTER
-    QUEX_NAME(Counter_resources_absent_mark)(&me->counter);
-#   endif
+    $$<count> QUEX_NAME(Counter_resources_absent_mark)(&me->counter);$$
 
     QUEX_NAME(Buffer_resources_absent_mark)(&me->buffer);
 

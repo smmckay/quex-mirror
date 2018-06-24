@@ -46,7 +46,7 @@ TEST                                                                 <no date>
                        iconv .........................................[OK]
                        icu ...........................................[OK]
     2619679 QUEX_BUFFER_ASSERT_CONTENT_CONSISTENCY redefined
-        bug-2619679.sh ...............................................[OK]
+        bug-2619679.sh .............................................[FAIL]
     286 Maintaining character index during manual buffer filling.
         bug-286.sh ...................................................[OK]
     2937342 0.47.3 Regular expression parsing -- closing bracket.
@@ -176,7 +176,7 @@ TEST                                                                 <no date>
  * jdavidberger:
 
     264 0.64.6 Incorrect column numbering with post conditions
-        bug-264.sh ...................................................[OK]
+        bug-264.sh .................................................[FAIL]
 
  * jmarsik:
 
@@ -229,7 +229,7 @@ TEST                                                                 <no date>
                            4 .........................................[OK]
                            5 .........................................[OK]
                            6 .........................................[OK]
-                           good ......................................[OK]
+                           good ....................................[FAIL]
     2257908 Quex does not terminate lexer generation
         bug-2257908.sh ...............................................[OK]
     2262537 (feature) Allow Nothing is fine in define section
@@ -238,12 +238,12 @@ TEST                                                                 <no date>
  * nazim-can-bedir:
 
     2896732 0.46.2 - Memory leak
-        bug-2896732.sh ...............................................[OK]
+        bug-2896732.sh .............................................[FAIL]
 
  * nobody:
 
     2395200 assert  in QuexLexatomLoader_load_forward (The StrangeStream Issue)
-        bug-2395200.sh lexer .........................................[OK]
+        bug-2395200.sh lexer .......................................[FAIL]
     2841726 0.44.2 Unknown exception on unicode properties
         bug-2841726.sh ...............................................[OK]
     2891125 0.45.1 bug in -- version
@@ -266,8 +266,8 @@ TEST                                                                 <no date>
                        utf8-error ....................................[OK]
                        utf8-with-bom .................................[OK]
     3512806 0.62.2 build error
-        bug-3512806.sh C .............................................[OK]
-                       Cpp ...........................................[OK]
+        bug-3512806.sh C ...........................................[FAIL]
+                       Cpp .........................................[FAIL]
 
  * otsakiridis:
 
@@ -312,15 +312,15 @@ TEST                                                                 <no date>
  * remcobloemen1:
 
     3295781 Duplicate label with Template and Path Compression
-        bug-3295781.sh ...............................................[OK]
+        bug-3295781.sh .............................................[FAIL]
 
  * rmanoj-oss:
 
     3079986 Allow namespace delimiter in --token-id-prefix for C++
-        feature-3079986.sh ccc .......................................[OK]
-                           ncc .......................................[OK]
-                           nnc .......................................[OK]
-                           nnn .......................................[OK]
+        feature-3079986.sh ccc .....................................[FAIL]
+                           ncc .....................................[FAIL]
+                           nnc .....................................[FAIL]
+                           nnn .....................................[FAIL]
 
  * rofr3:
 
@@ -411,11 +411,11 @@ TEST                                                                 <no date>
     2087087 0.31.1 --set-by switches suppress command error diagnostics
         bug-2087087.sh ...............................................[OK]
     2095970 0.31.3 Mode change without immediate return
-        bug-2095970.sh CONTINUE ......................................[OK]
+        bug-2095970.sh CONTINUE ....................................[FAIL]
                        CONTINUE_w_Asserts ............................[OK]
-                       DEFAULT .......................................[OK]
+                       DEFAULT .....................................[FAIL]
                        DEFAULT_w_Asserts .............................[OK]
-                       RETURN ........................................[OK]
+                       RETURN ......................................[FAIL]
                        RETURN_w_Asserts ..............................[OK]
     2796383 0.39.3 does not handle token_type without distinct section
         bug-2796383.sh case-1 ........................................[OK]
@@ -496,7 +496,22 @@ TEST                                                                 <no date>
 -------------------------------------------------------------------------------
     [FAIL] bug-293.sh _ bad
                     \__ good
+    [FAIL] bug-2619679.sh
     [FAIL] bug-3486388.sh
+    [FAIL] bug-264.sh
+    [FAIL] feature-2251359.sh _ good
+    [FAIL] bug-2896732.sh
+    [FAIL] bug-2395200.sh _ lexer
+    [FAIL] bug-3512806.sh _ C
+                        \__ Cpp
+    [FAIL] bug-3295781.sh
+    [FAIL] feature-3079986.sh _ ccc
+                            \__ ncc
+                            \__ nnc
+                            \__ nnn
+    [FAIL] bug-2095970.sh _ CONTINUE
+                        \__ DEFAULT
+                        \__ RETURN
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -531,22 +546,22 @@ demo/C/TEST                                                          <no date>
 
     Single Mode Example
         01-Trivial.sh asserts ........................................[OK]
-                      no-asserts .....................................[OK]
+                      no-asserts ...................................[FAIL]
 
  * 02-ModesAndStuff:
 
     Multiple Modes, Mode Transitions
         02-ModesAndStuff.sh asserts ..................................[OK]
-                            no-asserts ...............................[OK]
+                            no-asserts .............................[FAIL]
 
  * 03-Indentation:
 
     Off-side rule
-        03-Indentation.sh asserts ....................................[OK]
-                          no-asserts .................................[OK]
+        03-Indentation.sh asserts ..................................[FAIL]
+                          no-asserts ...............................[FAIL]
     Off-side rule (second case)
-        03-Indentation-2.sh asserts ..................................[OK]
-                            no-asserts ...............................[OK]
+        03-Indentation-2.sh asserts ................................[FAIL]
+                            no-asserts .............................[FAIL]
 
  * 04-ConvertersAndBOM:
 
@@ -555,9 +570,9 @@ demo/C/TEST                                                          <no date>
                                BPC=4 .................................[OK]
                                BPC=wchar_t ...........................[OK]
     Analysis with GNU IConv Converter (no asserts)
-        04-ConvertersAndBOM-no-asserts.sh BPC=2 ......................[OK]
-                                          BPC=4 ......................[OK]
-                                          BPC=wchar_t ................[OK]
+        04-ConvertersAndBOM-no-asserts.sh BPC=2 ....................[FAIL]
+                                          BPC=4 ....................[FAIL]
+                                          BPC=wchar_t ..............[FAIL]
     Analysis with IBM's ICU Converter (asserts)
         04-ConvertersAndBOM-icu.sh BPC=2 .............................[OK]
                                    BPC=4 .............................[OK]
@@ -566,11 +581,11 @@ demo/C/TEST                                                          <no date>
  * 04-ConvertersAndBOM-bom:
 
     Lexer with converter that detects BOM
-        04-ConvertersAndBOM-bom.sh EBCDIC ............................[OK]
-                                   UTF16BE ...........................[OK]
-                                   UTF7 ..............................[OK]
-                                   UTF8 ..............................[OK]
-                                   Without ...........................[OK]
+        04-ConvertersAndBOM-bom.sh EBCDIC ..........................[FAIL]
+                                   UTF16BE .........................[FAIL]
+                                   UTF7 ............................[FAIL]
+                                   UTF8 ............................[FAIL]
+                                   Without .........................[FAIL]
 
  * 05-LexerForC:
 
@@ -581,11 +596,11 @@ demo/C/TEST                                                          <no date>
  * 06-Include:
 
     From within reception lexer (very simple)
-        06-Include-2.sh deep .........................................[OK]
-                        shallow ......................................[OK]
+        06-Include-2.sh deep .......................................[FAIL]
+                        shallow ....................................[FAIL]
     From within reception loop (complicated)
-        06-Include.sh deep ...........................................[OK]
-                      shallow ........................................[OK]
+        06-Include.sh deep .........................................[FAIL]
+                      shallow ......................................[FAIL]
 
  * 08-DeletionAndPriorityMark:
 
@@ -596,7 +611,7 @@ demo/C/TEST                                                          <no date>
 
     Linking Lexical Analysis to Bison Parser
         09-WithBisonParser.sh asserts ................................[OK]
-                              no-asserts .............................[OK]
+                              no-asserts ...........................[FAIL]
 
  * 10-SocketsAndTerminal:
 
@@ -641,7 +656,7 @@ demo/C/TEST                                                          <no date>
 
     Pseudo Ambiguous Post Conditions
         07-TrailingPostContext.sh asserts ............................[OK]
-                                  no-asserts .........................[OK]
+                                  no-asserts .......................[FAIL]
 
  * demo/011b:
 
@@ -653,10 +668,30 @@ demo/C/TEST                                                          <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] 01-Trivial.sh _ no-asserts
+    [FAIL] 02-ModesAndStuff.sh _ no-asserts
+    [FAIL] 03-Indentation.sh _ asserts
+                           \__ no-asserts
+    [FAIL] 03-Indentation-2.sh _ asserts
+                             \__ no-asserts
+    [FAIL] 04-ConvertersAndBOM-no-asserts.sh _ BPC=2
+                                           \__ BPC=4
+                                           \__ BPC=wchar_t
+    [FAIL] 04-ConvertersAndBOM-bom.sh _ EBCDIC
+                                    \__ UTF16BE
+                                    \__ UTF7
+                                    \__ UTF8
+                                    \__ Without
+    [FAIL] 06-Include-2.sh _ deep
+                         \__ shallow
+    [FAIL] 06-Include.sh _ deep
+                       \__ shallow
+    [FAIL] 09-WithBisonParser.sh _ no-asserts
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
                                        \__ no-asserts
+    [FAIL] 07-TrailingPostContext.sh _ no-asserts
 ===============================================================================
                                                                                
                                  Demos for Cpp                                 
@@ -672,22 +707,22 @@ demo/Cpp/TEST                                                        <no date>
 
     Single Mode Example
         01-Trivial.sh asserts ........................................[OK]
-                      no-asserts .....................................[OK]
+                      no-asserts ...................................[FAIL]
 
  * 02-ModesAndStuff:
 
     Multiple Modes, Mode Transitions
         02-ModesAndStuff.sh asserts ..................................[OK]
-                            no-asserts ...............................[OK]
+                            no-asserts .............................[FAIL]
 
  * 03-Indentation:
 
     Off-side rule
-        03-Indentation.sh asserts ....................................[OK]
-                          no-asserts .................................[OK]
+        03-Indentation.sh asserts ..................................[FAIL]
+                          no-asserts ...............................[FAIL]
     Off-side rule (second case)
-        03-Indentation-2.sh asserts ..................................[OK]
-                            no-asserts ...............................[OK]
+        03-Indentation-2.sh asserts ................................[FAIL]
+                            no-asserts .............................[FAIL]
 
  * 04-ConvertersAndBOM:
 
@@ -696,9 +731,9 @@ demo/Cpp/TEST                                                        <no date>
                                BPC=4 .................................[OK]
                                BPC=wchar_t ...........................[OK]
     Analysis with GNU IConv Converter (no asserts)
-        04-ConvertersAndBOM-no-asserts.sh BPC=2 ......................[OK]
-                                          BPC=4 ......................[OK]
-                                          BPC=wchar_t ................[OK]
+        04-ConvertersAndBOM-no-asserts.sh BPC=2 ....................[FAIL]
+                                          BPC=4 ....................[FAIL]
+                                          BPC=wchar_t ..............[FAIL]
     Analysis with IBM's ICU Converter (asserts)
         04-ConvertersAndBOM-icu.sh BPC=2 .............................[OK]
                                    BPC=4 .............................[OK]
@@ -707,11 +742,11 @@ demo/Cpp/TEST                                                        <no date>
  * 04-ConvertersAndBOM-bom:
 
     Lexer with converter that detects BOM
-        04-ConvertersAndBOM-bom.sh EBCDIC ............................[OK]
-                                   UTF16BE ...........................[OK]
-                                   UTF7 ..............................[OK]
-                                   UTF8 ..............................[OK]
-                                   Without ...........................[OK]
+        04-ConvertersAndBOM-bom.sh EBCDIC ..........................[FAIL]
+                                   UTF16BE .........................[FAIL]
+                                   UTF7 ............................[FAIL]
+                                   UTF8 ............................[FAIL]
+                                   Without .........................[FAIL]
 
  * 05-LexerForC:
 
@@ -722,11 +757,11 @@ demo/Cpp/TEST                                                        <no date>
  * 06-Include:
 
     From within reception lexer (very simple)
-        06-Include-2.sh deep .........................................[OK]
-                        shallow ......................................[OK]
+        06-Include-2.sh deep .......................................[FAIL]
+                        shallow ....................................[FAIL]
     From within reception loop (complicated)
-        06-Include.sh deep ...........................................[OK]
-                      shallow ........................................[OK]
+        06-Include.sh deep .........................................[FAIL]
+                      shallow ......................................[FAIL]
 
  * 08-DeletionAndPriorityMark:
 
@@ -737,7 +772,7 @@ demo/Cpp/TEST                                                        <no date>
 
     Linking Lexical Analysis to Bison Parser
         09-WithBisonParser.sh asserts ................................[OK]
-                              no-asserts .............................[OK]
+                              no-asserts ...........................[FAIL]
 
  * 10-SocketsAndTerminal:
 
@@ -782,7 +817,7 @@ demo/Cpp/TEST                                                        <no date>
 
     Pseudo Ambiguous Post Conditions
         07-TrailingPostContext.sh asserts ............................[OK]
-                                  no-asserts .........................[OK]
+                                  no-asserts .......................[FAIL]
 
  * demo/011b:
 
@@ -794,10 +829,30 @@ demo/Cpp/TEST                                                        <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] 01-Trivial.sh _ no-asserts
+    [FAIL] 02-ModesAndStuff.sh _ no-asserts
+    [FAIL] 03-Indentation.sh _ asserts
+                           \__ no-asserts
+    [FAIL] 03-Indentation-2.sh _ asserts
+                             \__ no-asserts
+    [FAIL] 04-ConvertersAndBOM-no-asserts.sh _ BPC=2
+                                           \__ BPC=4
+                                           \__ BPC=wchar_t
+    [FAIL] 04-ConvertersAndBOM-bom.sh _ EBCDIC
+                                    \__ UTF16BE
+                                    \__ UTF7
+                                    \__ UTF8
+                                    \__ Without
+    [FAIL] 06-Include-2.sh _ deep
+                         \__ shallow
+    [FAIL] 06-Include.sh _ deep
+                       \__ shallow
+    [FAIL] 09-WithBisonParser.sh _ no-asserts
     [FAIL] 13-MultipleLexers.sh _ asserts
                               \__ no-asserts
     [FAIL] 14-MultipleLexersSameToken.sh _ asserts
                                        \__ no-asserts
+    [FAIL] 07-TrailingPostContext.sh _ no-asserts
 ===============================================================================
                                                                                
                                   Core Engine                                  
@@ -989,7 +1044,7 @@ quex/TESTS/bof-eos-context/TEST                                      <no date>
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ....................................[OK]
+        no-use-of-lexeme-macro.sh ..................................[FAIL]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -998,7 +1053,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ............................................[OK]
+        pyflakes-check.sh ..........................................[FAIL]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1023,7 +1078,9 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
+    [FAIL] no-use-of-lexeme-macro.sh
     [FAIL] svn-status.sh
+    [FAIL] pyflakes-check.sh
     [FAIL] include_guard.py _ convention
                           \__ undefinition
     [FAIL] imposing-plain-c.sh
@@ -1133,11 +1190,11 @@ quex/TESTS/event-handling/TEST                                       <no date>
  * Indentation:
 
     With N x DEDENT
-        on_indentation-2.qx n-dedent .................................[OK]
+        on_indentation-2.qx n-dedent ...............................[FAIL]
     Without N x DEDENT
-        on_indentation-1.qx ind-bad ..................................[OK]
-                            ind-bad-dedent ...........................[OK]
-                            ind-good .................................[OK]
+        on_indentation-1.qx ind-bad ................................[FAIL]
+                            ind-bad-dedent .........................[FAIL]
+                            ind-good ...............................[FAIL]
 
  * Matching:
 
@@ -1163,6 +1220,10 @@ quex/TESTS/event-handling/TEST                                       <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] on_bad_lexatom.qx _ bad-utf16
+    [FAIL] on_indentation-2.qx _ n-dedent
+    [FAIL] on_indentation-1.qx _ ind-bad
+                             \__ ind-bad-dedent
+                             \__ ind-good
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1173,17 +1234,24 @@ quex/TESTS/include-stack/TEST                                        <no date>
  * Include Stack:
 
     Misc Scenarios
-        queue.exe 1 ..................................................[OK]
-                  2 ..................................................[OK]
-                  20 .................................................[OK]
-                  3 ..................................................[OK]
-                  4 ..................................................[OK]
-                  5 ..................................................[OK]
+        queue.exe 1 .........................................[MAKE FAILED]
+                  2 .........................................[MAKE FAILED]
+                  20 ........................................[MAKE FAILED]
+                  3 .........................................[MAKE FAILED]
+                  4 .........................................[MAKE FAILED]
+                  5 .........................................[MAKE FAILED]
                   empty ..............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] queue.exe _ 1
+                   \__ 2
+                   \__ 20
+                   \__ 3
+                   \__ 4
+                   \__ 5
 ===============================================================================
                                                                                
                        Indentation Counter / Birds View                        
@@ -1191,9 +1259,9 @@ quex/TESTS/include-stack/TEST                                        <no date>
 quex/TESTS/indentation_count/TEST                                    <no date>
 -------------------------------------------------------------------------------
  * Bad character detection.
-        bad.sh customized ............................................[OK]
-               customized-2 ..........................................[OK]
-               default ...............................................[OK]
+        bad.sh customized ..........................................[FAIL]
+               customized-2 ........................................[FAIL]
+               default .............................................[FAIL]
  * Commonalities of Indentation Counter vs. Patterns
         commonalities.sh 1 ...........................................[OK]
                          2 ...........................................[OK]
@@ -1216,10 +1284,14 @@ quex/TESTS/indentation_count/TEST                                    <no date>
         with-skip-range.sh nested_range ..............................[OK]
                            range .....................................[OK]
                            range-2 ...................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] bad.sh _ customized
+                \__ customized-2
+                \__ default
 ===============================================================================
                                                                                
                     Testing general patterns for 'loopers'                     
@@ -1535,14 +1607,18 @@ quex/code_base/token/TEST                                            <no date>
  * TokenQueue:
 
     Push and Pop
-        push-pop.exe plain ...........................................[OK]
-                     text ............................................[OK]
+        push-pop.exe plain ..................................[MAKE FAILED]
+                     text ...................................[MAKE FAILED]
     Push and Pop with Repetition
-        push-pop-repetition.exe ......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        push-pop-repetition.exe .............................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] push-pop.exe _ plain
+                      \__ text
+    [FAIL] push-pop-repetition.exe
 ===============================================================================
                                                                                
                                 Track Analysis                                 
@@ -1706,20 +1782,20 @@ quex/engine/loop/TEST                                                <no date>
  * Indentation Counting:
 
     With Comments
-        indentation-w-comments.py Mixed ..............................[OK]
-                                  NewlineTerminated ..................[OK]
-                                  NotNewlineTerminated ...............[OK]
+        indentation-w-comments.py Mixed ............................[FAIL]
+                                  NewlineTerminated ...........[NO OUTPUT]
+                                  NotNewlineTerminated ........[NO OUTPUT]
     With Tabulators
-        indentation-w-tabs.py Back ...................................[OK]
-                              Front ..................................[OK]
-                              InComment ..............................[OK]
-                              Potpourri ..............................[OK]
+        indentation-w-tabs.py Back .................................[FAIL]
+                              Front ...........................[NO OUTPUT]
+                              InComment .......................[NO OUTPUT]
+                              Potpourri .......................[NO OUTPUT]
     Without Tabulators
-        indentation.py CloseMultiple .................................[OK]
-                       EmptyLines ....................................[OK]
-                       InAndOut ......................................[OK]
-                       NoDents .......................................[OK]
-                       SuppressedNewline .............................[OK]
+        indentation.py CloseMultiple ...............................[FAIL]
+                       EmptyLines .............................[NO OUTPUT]
+                       InAndOut ...............................[NO OUTPUT]
+                       NoDents ................................[NO OUTPUT]
+                       SuppressedNewline ......................[NO OUTPUT]
 
  * Loop:
 
@@ -1764,10 +1840,23 @@ quex/engine/loop/TEST                                                <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       4 ..............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] indentation-w-comments.py _ Mixed
+                                   \__ NewlineTerminated
+                                   \__ NotNewlineTerminated
+    [FAIL] indentation-w-tabs.py _ Back
+                               \__ Front
+                               \__ InComment
+                               \__ Potpourri
+    [FAIL] indentation.py _ CloseMultiple
+                        \__ EmptyLines
+                        \__ InAndOut
+                        \__ NoDents
+                        \__ SuppressedNewline
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -1820,7 +1909,7 @@ quex/engine/operations/TEST                                          <no date>
  * Command:
 
     Basic
-        basic.py .....................................................[OK]
+        basic.py ...................................................[FAIL]
 
  * Op:
 
@@ -1844,10 +1933,12 @@ quex/engine/operations/TEST                                          <no date>
                             one-or-none ..............................[OK]
                             two ......................................[OK]
                             two-bad ..................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] basic.py
 ===============================================================================
                                                                                
                                    DFA Tests                                   
@@ -2407,15 +2498,21 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ....................................[OK]
-                        Mix ..........................................[OK]
-                        N-Character ..................................[OK]
-                        N-String .....................................[OK]
-                        String .......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        accumulator.exe Character ...........................[MAKE FAILED]
+                        Mix .................................[MAKE FAILED]
+                        N-Character .........................[MAKE FAILED]
+                        N-String ............................[MAKE FAILED]
+                        String ..............................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] accumulator.exe _ Character
+                         \__ Mix
+                         \__ N-Character
+                         \__ N-String
+                         \__ String
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -2736,7 +2833,7 @@ quex/output/languages/cpp/TEST                                       <no date>
         name_replacement.py C ........................................[OK]
                             C++ ......................................[OK]
  * Token Class Template
-        test-token_class.py ..........................................[OK]
+        test-token_class.py ........................................[FAIL]
 
  * Character Counter:
 
@@ -2782,6 +2879,7 @@ quex/output/languages/cpp/TEST                                       <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] package-file-db.py
+    [FAIL] test-token_class.py
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3389,20 +3487,20 @@ SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        3  238   [FAIL] TEST                                                          
-        4  56    [FAIL] demo/C/TEST                                                   
-        4  56    [FAIL] ..../Cpp/TEST                                                 
+       18  238   [FAIL] TEST                                                          
+       24  56    [FAIL] demo/C/TEST                                                   
+       24  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        5  15    [FAIL] ........../code/TEST                                          
+        7  15    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        1  23    [FAIL] ........../event-handling/TEST                                
-           7       [OK] ........../include-stack/TEST                                 
-           21      [OK] ........../indentation_count/TEST                             
+        5  23    [FAIL] ........../event-handling/TEST                                
+        6  7     [FAIL] ........../include-stack/TEST                                 
+        3  21    [FAIL] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
            45      [OK] ........../match-precedence/TEST                              
            32      [OK] ........../misc/TEST                                          
@@ -3420,17 +3518,17 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-           5       [OK] ............../extra/accumulator/TEST                         
+        5  5     [FAIL] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
-           3       [OK] ............../token/TEST                                     
+        3  3     [FAIL] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-           38      [OK] .........../loop/TEST                                         
+       12  38    [FAIL] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
-           17      [OK] .........../operations/TEST                                   
+        1  17    [FAIL] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
@@ -3446,15 +3544,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        1  33    [FAIL] .........../languages/cpp/TEST                                
+        2  33    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _   ___            
-    |  ___|_ _(_) |___     / | / _ \     __  __
-    | |_ / _` | | / __|    | || (_) |    \ \/ /
-    |  _| (_| | | \__ \    | | \__, |     >  < 
-    |_|  \__,_|_|_|___/    |_|   /_/     /_/\_\
+     _____     _ _          _  _  _           
+    |  ___|_ _(_) |___     / |/ |/ |    __  __
+    | |_ / _` | | / __|    | || || |    \ \/ /
+    |  _| (_| | | \__ \    | || || |     >  < 
+    |_|  \__,_|_|_|___/    |_||_||_|    /_/\_\
                                                                    (1702 tests)
 
 ===============================================================================

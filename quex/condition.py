@@ -41,6 +41,10 @@ def do(Condition):
             mode.incidence_db.has_key(E_IncidenceIDs.MODE_EXIT)
             for mode in mode_prep_prep_db.values()
         )
+    elif "&&" in Condition:
+        return all(x.strip() for x in Condition.split("&&"))
+    elif "||" in Condition:
+        return any(x.strip() for x in Condition.split("||"))
     else:                                                                      
         error.log("Code generation: found unknown condition '<%s>'." % Condition)
 

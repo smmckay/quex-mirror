@@ -11,7 +11,6 @@ from   quex.DEFINITIONS import QUEX_VERSION
 import time
 
 def do(Mode_PrepPrepDB):
-    IndentationSupportF = blackboard.required_support_indentation_count()
     BeginOfLineSupportF = blackboard.required_support_begin_of_line()
 
     LexerClassName = Setup.analyzer_class_name
@@ -47,13 +46,10 @@ def do(Mode_PrepPrepDB):
     # Is there a 'standard type' correspondent the lexatom type.
     # (Relevant only if a user defined lexatom type has been specified)
 
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_COLUMN",                Setup.count_column_number_f)        
     txt = Lng.SWITCH(txt, "QUEX_OPTION_COMPUTED_GOTOS",                False)
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_COUNTER_LINE",                  Setup.count_line_number_f)      
     txt = Lng.SWITCH(txt, "QUEX_OPTION_RUNTIME_MODE_TRANSITION_CHECK", Setup.mode_transition_check_f)
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_REPETITION_SUPPORT",      token_repetition_support_f) 
     txt = Lng.SWITCH(txt, "QUEX_OPTION_TOKEN_TAKE_TEXT_SUPPORT",       token_take_text_support_f) 
-    txt = Lng.SWITCH(txt, "QUEX_OPTION_INDENTATION_TRIGGER",           IndentationSupportF)     
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_BIG",                    Setup.buffer_byte_order == "big")
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ENDIAN_LITTLE",                 Setup.buffer_byte_order == "little")
     txt = Lng.SWITCH(txt, "QUEX_OPTION_ON_ENTRY_HANDLER_PRESENT",    entry_handler_active_f)

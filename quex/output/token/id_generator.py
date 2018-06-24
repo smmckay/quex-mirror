@@ -173,11 +173,11 @@ map_id_to_name_cases = \
 """
    case $$TOKEN_PREFIX$$TERMINATION:    return "<TERMINATION>";
    case $$TOKEN_PREFIX$$UNINITIALIZED:  return "<UNINITIALIZED>";
-#  if defined(QUEX_OPTION_INDENTATION_TRIGGER)
+$$<indentation>----------------------------------------------------------------
    case $$TOKEN_PREFIX$$INDENT:         return "<INDENT>";
    case $$TOKEN_PREFIX$$DEDENT:         return "<DEDENT>";
    case $$TOKEN_PREFIX$$NODENT:         return "<NODENT>";
-#  endif
+$$-----------------------------------------------------------------------------
 $$TOKEN_ID_CASES$$
 """
 

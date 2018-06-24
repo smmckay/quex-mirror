@@ -34,6 +34,7 @@ typedef struct Lexer_tag {
 #   define __quex_debug_init_state(X)
 #   define __quex_debug_drop_out(X)
 #endif
+#define __quex_debug_counter(X) 
 #define __quex_assert(X)   assert(X)
 #define __quex_assert_no_passage()    assert(0)
 #define QUEX_ERROR_EXIT(X) assert(0)

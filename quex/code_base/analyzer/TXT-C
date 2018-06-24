@@ -59,21 +59,17 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Memento_
     /* In contrary to C++ implementation, constructors and destructors 
      * are called explicitly.                                                 */
 
-    char*                           __input_name;
-    QUEX_NAME(Buffer)               buffer;
+    char*                               __input_name;
+    QUEX_NAME(Buffer)                   buffer;
 
-    const struct QUEX_NAME(Mode_tag)* __current_mode_p; 
-    QUEX_NAME(AnalyzerFunctionP)    current_analyzer_function;
+    const struct QUEX_NAME(Mode_tag)*   __current_mode_p; 
+    QUEX_NAME(AnalyzerFunctionP)        current_analyzer_function;
 #   if defined(QUEX_OPTION_ASSERTS_EXT)
-    QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
+    QUEX_NAME(AnalyzerFunctionP)        DEBUG_analyzer_function_at_entry;
 #   endif
-#   if defined(QUEX_OPTION_COUNTER)
-    QUEX_NAME(Counter)              counter;
-#   endif
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    bool                            _indentation_handler_active_f;
-#   endif
-    struct QUEX_NAME(Memento_tag)*  _parent_memento;
+    $$<count>       QUEX_NAME(Counter)  counter;$$
+    $$<indentation> bool                _indentation_handler_active_f;$$
+    struct QUEX_NAME(Memento_tag)*      _parent_memento;
 
 /* START: User's memento extentions __________________________________________*/
 $$MEMENTO_EXTENSIONS$$
@@ -97,13 +93,9 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT $$LEXER_CLASS_NAME
     /* Backup of analyzer's function pointer => mode change detection.        */
     QUEX_NAME(AnalyzerFunctionP)    DEBUG_analyzer_function_at_entry;
 #   endif
-#   if defined(QUEX_OPTION_COUNTER)
-    QUEX_NAME(Counter)              counter;
-#   endif
-#   ifdef QUEX_OPTION_INDENTATION_TRIGGER
-    bool                            _indentation_handler_active_f;
-#   endif
-    QUEX_NAME(Memento)*             _parent_memento;
+    $$<count>       QUEX_NAME(Counter) counter;$$
+    $$<indentation> bool               _indentation_handler_active_f;$$
+    QUEX_NAME(Memento)*                _parent_memento;
     /*__( Reset )_______________________________________________________________
      *                                                                        */
     $$MF: bool reset()$$

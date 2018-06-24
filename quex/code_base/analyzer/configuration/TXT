@@ -29,22 +29,6 @@ $$SWITCH$$ QUEX_OPTION_ENDIAN_BIG
 $$SWITCH$$ QUEX_OPTION_ENDIAN_SYSTEM
 #endif
 
-/* OPTIONS: ___________________________________________________________________
- *
- * Activate/Deactivate Options via comment/uncomment. Options without a 
- * double underline '__' at the beginning can be turned off in the created 
- * engine. Options that do start with '__' configure the machine for the
- * specified behavior. Such options are better not touched.
- *
- * -- Line Number / Column Number Counting:
- *    Turning counting off may result in engine speed-up.                     */
-$$SWITCH$$ QUEX_OPTION_COUNTER_LINE         
-$$SWITCH$$ QUEX_OPTION_COUNTER_COLUMN       
-#if defined(QUEX_OPTION_INDENTATION_TRIGGER_EXT)
-#   define  QUEX_OPTION_INDENTATION_TRIGGER
-#else
-$$SWITCH$$ QUEX_OPTION_INDENTATION_TRIGGER
-#endif
 /* Quex can determine whether certain handlers are not used at all.  If so,
  * computation time can be spared and quex comments the following options out.
  *                                                                           */
@@ -138,12 +122,10 @@ $$TYPE_DEFINITIONS$$
 /* If one mode requires indentation support, then the lexical analyser class
  * must be setup for indentation counting. The following flag is defined or
  * undefined by the lexical analyser generator quex.                         */
-#if    defined(QUEX_OPTION_INDENTATION_TRIGGER)
-#   if defined(QUEX_SETTING_INDENTATION_STACK_SIZE_EXT)
-#      define QUEX_SETTING_INDENTATION_STACK_SIZE   QUEX_SETTING_INDENTATION_STACK_SIZE_EXT
-#   else
-#      define QUEX_SETTING_INDENTATION_STACK_SIZE   (64)
-#   endif
+#if defined(QUEX_SETTING_INDENTATION_STACK_SIZE_EXT)
+#   define QUEX_SETTING_INDENTATION_STACK_SIZE   QUEX_SETTING_INDENTATION_STACK_SIZE_EXT
+#else
+#   define QUEX_SETTING_INDENTATION_STACK_SIZE   (64)
 #endif
   
 /* PTC -- Path Termination code:

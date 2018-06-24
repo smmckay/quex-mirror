@@ -17,13 +17,13 @@ QUEX_NAMESPACE_MAIN_OPEN
         return; 
     }
 
-#   if ! defined(QUEX_OPTION_INDENTATION_DEFAULT_HANDLER)
+$$<indentation>----------------------------------------------------------------
     QUEX_INLINE void
     QUEX_NAME(Mode_on_indentation_null_function)(QUEX_TYPE_ANALYZER*  me, 
                                                  QUEX_TYPE_LEXATOM* LexemeBegin, 
                                                  QUEX_TYPE_LEXATOM* LexemeEnd)
     { (void)me; (void)LexemeBegin; (void)LexemeEnd; }
-#   endif
+$$-----------------------------------------------------------------------------
 
     QUEX_INLINE void
     QUEX_NAME(Mode_on_entry_exit_null_function)(QUEX_TYPE_ANALYZER* me, 
