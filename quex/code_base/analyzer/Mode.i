@@ -19,10 +19,10 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 $$<indentation>----------------------------------------------------------------
     QUEX_INLINE void
-    QUEX_NAME(Mode_on_indentation_null_function)(QUEX_TYPE_ANALYZER*  me, 
-                                                 QUEX_TYPE_LEXATOM* LexemeBegin, 
-                                                 QUEX_TYPE_LEXATOM* LexemeEnd)
-    { (void)me; (void)LexemeBegin; (void)LexemeEnd; }
+    QUEX_NAME(Mode_on_indentation_null_function)(QUEX_TYPE_ANALYZER*    lexer, 
+                                                 QUEX_TYPE_INDENTATION  Indentation, 
+                                                 QUEX_TYPE_LEXATOM*     Begin)
+    { (void)lexer; (void)Indentation; (void)Begin; }
 $$-----------------------------------------------------------------------------
 
     QUEX_INLINE void

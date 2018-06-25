@@ -1,10 +1,5 @@
 (0) quexify -- no output is good output
 (1) check out generated sources
-self.send(scope1::scope2::scope3::TKN_INDENT);
-self.send(scope1::scope2::scope3::TKN_NODENT);
-self.send(scope1::scope2::scope3::TKN_DEDENT);
-self.send(scope1::scope2::scope3::TKN_DEDENT);
-self.send_n(scope1::scope2::scope3::TKN_DEDENT, (size_t)ClosedN);
 self.send(scope1::scope2::scope3::TKN_TERMINATION);
 self.send(scope1::scope2::scope3::TKN_TERMINATION);
 self.send(scope1::scope2::scope3::TKN_TERMINATION);
@@ -21,9 +16,6 @@ self.send(scope1::scope2::scope3::TKN_INT);
 self.send(scope1::scope2::scope3::TKN_VAR);
    case scope1::scope2::scope3::TKN_TERMINATION:    return "<TERMINATION>";
    case scope1::scope2::scope3::TKN_UNINITIALIZED:  return "<UNINITIALIZED>";
-   case scope1::scope2::scope3::TKN_INDENT:         return "<INDENT>";
-   case scope1::scope2::scope3::TKN_DEDENT:         return "<DEDENT>";
-   case scope1::scope2::scope3::TKN_NODENT:         return "<NODENT>";
    case scope1::scope2::scope3::TKN_INT:           return "INT";
    case scope1::scope2::scope3::TKN_LPAREN:        return "LPAREN";
    case scope1::scope2::scope3::TKN_OP_EQUAL:      return "OP_EQUAL";

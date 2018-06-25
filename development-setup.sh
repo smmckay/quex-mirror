@@ -13,10 +13,10 @@ quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint32_t --encoding 
 quex --co -o TestAnalyzer --odir ut --debug-exception --bet uint8_t --encoding utf8 --language C
 popd
 
-pushd quex/engine/loop/TEST
-rm -rf ut
-python ../../../code_base/TESTS/code_base_instatiation.py ut
-popd
+#pushd quex/engine/loop/TEST
+#rm -rf ut
+#python ../../../code_base/TESTS/code_base_instatiation.py ut
+#popd
 
 pushd quex/output/languages/cpp/TEST
 rm -rf ut

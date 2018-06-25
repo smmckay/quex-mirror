@@ -129,6 +129,7 @@ QUEX_NAME(IndentationStack_init)(QUEX_NAME(IndentationStack)* me)
 }
 $$-----------------------------------------------------------------------------
 
+#ifdef QUEX_OPTION_ASSERTS_EXT
 QUEX_INLINE void
 QUEX_NAME(Counter_assert_consistency)(QUEX_NAME(Counter)* me)
 {
@@ -148,6 +149,7 @@ $$-----------------------------------------------------------------------------
      * about increase or decrease. If a newline appears, for example, the 
      * column number may decrease.                                            */
 }
+#endif
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

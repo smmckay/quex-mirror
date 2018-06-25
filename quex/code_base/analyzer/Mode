@@ -20,7 +20,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Mode_tag
     const char* name;
 
 $$<indentation>----------------------------------------------------------------
-    void (*on_indentation)(QUEX_TYPE_ANALYZER*    me, 
+    void (*on_indentation)(QUEX_TYPE_ANALYZER*    lexer, 
                            QUEX_TYPE_INDENTATION  Indentation, 
                            QUEX_TYPE_LEXATOM*     Begin);
 $$-----------------------------------------------------------------------------
@@ -47,9 +47,9 @@ QUEX_NAME(Mode_uncallable_analyzer_function)(QUEX_TYPE_ANALYZER*);
 
 $$<indentation>----------------------------------------------------------------
 QUEX_INLINE void
-QUEX_NAME(Mode_on_indentation_null_function)(QUEX_TYPE_ANALYZER*, 
-                                             QUEX_TYPE_LEXATOM* LexemeBegin, 
-                                             QUEX_TYPE_LEXATOM* LexemeEnd);
+QUEX_NAME(Mode_on_indentation_null_function)(QUEX_TYPE_ANALYZER*    lexer, 
+                                             QUEX_TYPE_INDENTATION  Indenation, 
+                                             QUEX_TYPE_LEXATOM*     Begin);
 $$-----------------------------------------------------------------------------
 
 QUEX_INLINE void

@@ -210,7 +210,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
     code = []
     if run_time_counter_f:
         function_name, \
-        counter_code   = run_time_counter.get(ca_map, "UNIT_TEST")
+        counter_code   = run_time_counter.get(ca_map, "M")
         code.append("#define QUEX_FUNCTION_COUNT_ARBITRARY %s\n" % function_name)
         code.extend(counter_code)                       
 
@@ -248,7 +248,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
     ca_map = LineColumnCount_Default()
     
     function_name, \
-    counter_code   = run_time_counter.get(ca_map, "UNIT_TEST")
+    counter_code   = run_time_counter.get(ca_map, "M")
     counter_code   = "#define QUEX_FUNCTION_COUNT_ARBITRARY %s\n" % function_name \
                      + counter_code
 

@@ -42,9 +42,10 @@ def do(Condition):
             for mode in mode_prep_prep_db.values()
         )
     elif "&&" in Condition:
-        return all(x.strip() for x in Condition.split("&&"))
+        return all(do(x.strip()) for x in Condition.split("&&"))
+
     elif "||" in Condition:
-        return any(x.strip() for x in Condition.split("||"))
+        return any(do(x.strip()) for x in Condition.split("||"))
     else:                                                                      
         error.log("Code generation: found unknown condition '<%s>'." % Condition)
 

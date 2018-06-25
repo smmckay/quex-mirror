@@ -68,6 +68,10 @@ from   quex.blackboard import setup as Setup, \
 
 from   copy import deepcopy
 
+# Must be set in any case, because 'TestAnalyzer' is generated with the according pointers
+blackboard.required_support_indentation_count_set()
+
+
 dial_db = DialDB()
 
 choices_list = ["ANSI-C-PlainMemory", "ANSI-C", "ANSI-C-CG", 
@@ -502,28 +506,10 @@ def create_state_machine_function(PatternActionPairList, PatternDictionary,
 
     print "## (1) code generation"    
 
-    function_body, \
-    variable_definitions = engine_generator.do_core(mode)
-    function_body += "if(0) { QUEX_FUNCTION_COUNT_ARBITRARY((QUEX_TYPE_ANALYZER*)0, (TestAnalyzer_lexatom_t*)0, (TestAnalyzer_lexatom_t*)0); }\n"
-    function_txt  = engine_generator.wrap_up(sm_name, function_body, 
-                                             variable_definitions, 
-                                             ModeNameList=[], dial_db=dial_db)
+    txt = engine_generator.do_with_counter(mode, ["M", "M2"])
+    assert all_isinstance(txt, str)
 
-    assert all_isinstance(function_txt, str)
-
-    result =  "#define  QUEX_OPTION_UNIT_TEST_EXT\n" \
-            + Lng.FRAME_IN_NAMESPACE_MAIN(
-              nonsense_default_counter(not SecondModeF) \
-            + "".join(function_txt))
-
-    return result
-
-def nonsense_default_counter(FirstModeF):
-    if FirstModeF:
-        return   "static void\n" \
-               + "QUEX_FUNCTION_COUNT_ARBITRARY(QUEX_TYPE_ANALYZER* me, TestAnalyzer_lexatom_t* LexemeBegin, TestAnalyzer_lexatom_t* LexemeEnd) {}\n" 
-    else:
-        return "" # Definition done before
+    return "#define  QUEX_OPTION_UNIT_TEST_EXT\n" + "".join(txt)
 
 language_defines = """
 #ifdef __cplusplus
