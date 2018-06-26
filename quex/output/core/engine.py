@@ -29,28 +29,15 @@ def do(Mode, ModeNameList):
     return function_txt
 
 def do_with_counter(Mode, ModeNameList):
+    txt = []
     if Mode.run_time_counter_db is not None:
-        function_name, txt = do_run_time_counter(Mode) 
-        if not txt:  txt   = []
-        else:        txt   = [txt]
-    else:
-        function_name, txt = "", []
+        counter_txt = do_run_time_counter(Mode) 
+        assert isinstance(counter_txt, (str, unicode))
+        if counter_txt:  txt.append(counter_txt)
 
-    def aux(line, DefaultCounterFunctionName):
-        if "QUEX_MODE_DEFAULT_COUNTER_CALL" in line:
-            return line.replace("QUEX_MODE_DEFAULT_COUNTER_CALL", DefaultCounterFunctionName)
-        else:
-            return line
-        
     analyzer_txt = do(Mode, ModeNameList)
     assert isinstance(analyzer_txt, list)
-
-    if not function_name:
-        txt = analyzer_txt
-    else:
-        txt.extend(
-            aux(line, function_name) for line in analyzer_txt
-        )
+    txt.extend(analyzer_txt)
     return txt
 
 
@@ -159,11 +146,7 @@ def do_run_time_counter(Mode):
     # May be, the default counter is the same as for another mode. In that
     # case call the default counter of the other mode with the same one and
     # only macro.
-    function_name, \
-    code           = run_time_counter.get(Mode.run_time_counter_db, 
-                                          Mode.name)
-
-    return function_name, code
+    return run_time_counter.get(Mode.run_time_counter_db, Mode.name)
 
 def comment_match_behavior(ModeIterable):
     """Generate comment that documents the matching behavior of the

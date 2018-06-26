@@ -79,7 +79,8 @@ def test(LoopMap, ColumnNPerCodeUnit):
                                               UserOnLoopExitDoorId  = dial_db.new_door_id(), 
                                               AppendixSmExistF      = len(appendix_sm_list) != 0,
                                               dial_db               = dial_db, 
-                                              OnReloadFailureDoorId = None) 
+                                              OnReloadFailureDoorId = None, 
+                                              ModeName              = "M") 
 
     loop_sm = DFA.from_IncidenceIdMap(
          (lei.character_set, lei.incidence_id) for lei in LoopMap

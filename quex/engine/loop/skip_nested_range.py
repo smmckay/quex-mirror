@@ -64,7 +64,8 @@ def do(ModeName, CaMap, OpenerPattern, CloserPattern, DoorIdExit, ReloadState, d
                                      EngineType                 = engine_type,
                                      ReloadStateExtern          = ReloadState,
                                      ParallelSmTerminalPairList = psml,
-                                     dial_db                    = dial_db) 
+                                     dial_db                    = dial_db,
+                                     ModeName                   = ModeName) 
 
     reentry_op_list = [
         Op.GotoDoorId(door_id_loop)

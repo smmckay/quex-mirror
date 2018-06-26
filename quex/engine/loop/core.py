@@ -181,10 +181,11 @@ class LoopEventHandlers:
            OnReloadFailureDoorId=(None, DoorID))
     def __init__(self, ColumnNPerCodeUnit, LexemeEndCheckF, 
                  EngineType, ReloadStateExtern, UserBeforeEntryOpList, 
-                 UserOnLoopExitDoorId, AppendixSmExistF, dial_db, OnReloadFailureDoorId): 
+                 UserOnLoopExitDoorId, AppendixSmExistF, dial_db, OnReloadFailureDoorId, ModeName): 
         """ColumnNPerCodeUnit is None => no constant relationship between 
                                          column number and code unit.
         """
+        self.mode_name                   = ModeName
         self.column_number_per_code_unit = ColumnNPerCodeUnit
         self.lexeme_end_check_f          = LexemeEndCheckF
         self.reload_state_extern         = ReloadStateExtern
@@ -433,7 +434,7 @@ class LoopEventHandlers:
     def get_Terminal_from_mini_terminal(self, LCCI, mini_terminal):
         if LCCI is not None:
             run_time_counter_required_f, \
-            count_code                   = map_SmLineColumnCountInfo_to_code(LCCI) 
+            count_code                   = map_SmLineColumnCountInfo_to_code(LCCI, ModeName=self.mode_name) 
             if run_time_counter_required_f:
                 # The content to be counted starts where the appendix started.
                 # * Begin of counting at 'loop restart pointer'.
@@ -507,7 +508,7 @@ class LoopEventHandlers:
        LoopCharacterSet=(None, NumberSet))
 def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, EngineType=None, 
        ReloadStateExtern=None, ParallelSmTerminalPairList=None, dial_db=None,
-       LoopCharacterSet=None, OnReloadFailureDoorId=None):
+       LoopCharacterSet=None, OnReloadFailureDoorId=None, ModeName=None):
     """Generates a structure that 'loops' quickly over incoming characters.
 
                                                              Loop continues           
@@ -571,11 +572,12 @@ def do(CaMap, OnLoopExitDoorId, BeforeEntryOpList=None, LexemeEndCheckF=False, E
     event_handler = LoopEventHandlers(CaMap.get_column_number_per_code_unit(), 
                                       LexemeEndCheckF, 
                                       EngineType, ReloadStateExtern, 
-                                      UserOnLoopExitDoorId=OnLoopExitDoorId,
-                                      UserBeforeEntryOpList=BeforeEntryOpList,
-                                      AppendixSmExistF=len(appendix_sm_list) != 0,
-                                      dial_db=dial_db,
-                                      OnReloadFailureDoorId=OnReloadFailureDoorId) 
+                                      UserOnLoopExitDoorId  = OnLoopExitDoorId,
+                                      UserBeforeEntryOpList = BeforeEntryOpList,
+                                      AppendixSmExistF      = len(appendix_sm_list) != 0,
+                                      dial_db               = dial_db,
+                                      OnReloadFailureDoorId = OnReloadFailureDoorId, 
+                                      ModeName              = ModeName) 
 
     # Loop represented by FSM-s and Terminal-s ___________________________
     #
@@ -812,9 +814,8 @@ def _get_LoopMapEntry_list_parallel_state_machines(CaMap, SmList, dial_db):
         result = {} # map: appendix state machine id --> LCCI
         for character_set, appendix_sm in first_vs_appendix_sm:
             if not appendix_sm.get_init_state().has_transitions(): continue
-            lcci = SmLineColumnCountInfo.from_DFA(CaMap, appendix_sm, 
-                                                           False,
-                                                           Setup.buffer_encoding)
+            lcci = SmLineColumnCountInfo.from_DFA(CaMap, appendix_sm, False,
+                                                  Setup.buffer_encoding)
             result[appendix_sm.get_id()] = lcci
         return result
 

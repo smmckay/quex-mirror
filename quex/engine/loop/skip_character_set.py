@@ -3,7 +3,7 @@ from   quex.engine.analyzer.door_id_address_label import DoorID
 from   quex.engine.counter                        import CountActionMap
 from   quex.engine.misc.interval_handling         import NumberSet
 
-def do(CaMap, CharacterSet, ReloadState, dial_db):
+def do(ModeName, CaMap, CharacterSet, ReloadState, dial_db):
     """Fast implementation of character set skipping machine.
     ________________________________________________________________________
     As long as characters of a given character set appears it iterates: 
@@ -73,7 +73,8 @@ def do(CaMap, CharacterSet, ReloadState, dial_db):
                                      OnLoopExitDoorId  = on_loop_exit_door_id,
                                      EngineType        = engine_type,
                                      ReloadStateExtern = ReloadState, 
-                                     dial_db           = dial_db)
+                                     dial_db           = dial_db,
+                                     ModeName          = ModeName)
     assert not run_time_counter_f
 
     return analyzer_list, \

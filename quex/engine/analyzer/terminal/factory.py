@@ -217,7 +217,7 @@ class TerminalFactory:
         No database or anything is required as this point.
         """
         run_time_counter_f, \
-        text               = map_SmLineColumnCountInfo_to_code(LCCI)
+        text                = map_SmLineColumnCountInfo_to_code(LCCI, ModeName=self.mode_name)
 
         self.run_time_counter_required_f |= run_time_counter_f
         return "".join(Lng.REPLACE_INDENT(text))
@@ -259,7 +259,7 @@ class TerminalFactory:
         
         # No indentation handler => Empty string.
         text = [ 
-            Lng.DEFAULT_COUNTER_CALL(),
+            Lng.DEFAULT_COUNTER_CALL(self.mode_name),
             self.txt_indentation_handler_call,
             #
             adorned_code,

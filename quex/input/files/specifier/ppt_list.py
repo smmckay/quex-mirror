@@ -386,7 +386,8 @@ class PPT_List(list):
         new_analyzer_list,        \
         new_terminal_list,    \
         loop_map,             \
-        required_register_set = skip_character_set.do(CaMap, skipped_character_set, 
+        required_register_set = skip_character_set.do(self.terminal_factory.mode_name,
+                                                      CaMap, skipped_character_set, 
                                                       ReloadState, 
                                                       self.terminal_factory.dial_db)
 

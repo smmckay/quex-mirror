@@ -55,7 +55,8 @@ def do(ModeName, CaMap, CloserPattern, DoorIdExit, ReloadState, dial_db):
                                      ReloadStateExtern          = ReloadState,
                                      ParallelSmTerminalPairList = psml, 
                                      dial_db                    = dial_db,
-                                     OnReloadFailureDoorId      = door_id_on_reload_failure) 
+                                     OnReloadFailureDoorId      = door_id_on_reload_failure,
+                                     ModeName                   = ModeName) 
 
     return analyzer_list, terminal_list, \
            required_register_set,        \

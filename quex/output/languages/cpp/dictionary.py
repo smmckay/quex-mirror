@@ -410,8 +410,8 @@ class Language(dict):
     def DEFAULT_COUNTER_FUNCTION_NAME(self, ModeName):
         return self.NAME_IN_NAMESPACE_MAIN("%s_counter_on_arbitrary_lexeme" % ModeName)
 
-    def DEFAULT_COUNTER_CALL(self):
-        return "QUEX_MODE_DEFAULT_COUNTER_CALL(&self, LexemeBegin, LexemeEnd);\n"
+    def DEFAULT_COUNTER_CALL(self, ModeName):
+        return "%s((QUEX_TYPE_ANALYZER*)me, LexemeBegin, LexemeEnd);\n" % self.DEFAULT_COUNTER_FUNCTION_NAME(ModeName)
 
     @typed(TypeStr=(str,unicode), MaxTypeNameL=(int,long), VariableName=(str,unicode))
     def CLASS_MEMBER_DEFINITION(self, TypeStr, MaxTypeNameL, VariableName):

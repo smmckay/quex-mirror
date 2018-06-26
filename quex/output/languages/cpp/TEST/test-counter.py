@@ -191,9 +191,8 @@ def get_test_application(encoding, ca_map):
     Setup.analyzer_class_name = "Lexer"
     # (*) Generate Code _______________________________________________________
     #
-    counter_function_name, \
-    counter_str            = run_time_counter.get(ca_map, "TEST_MODE")
-    counter_str            = counter_str.replace("static void", "void")
+    counter_str = run_time_counter.get(ca_map, "TEST_MODE")
+    counter_str = counter_str.replace("static void", "void")
 
     # Double check if reference delta counting has been implemented as expected.
     expect_reference_p_f   = ca_map.get_column_number_per_code_unit() is not None
@@ -205,6 +204,7 @@ def get_test_application(encoding, ca_map):
 
     # (*) Compile _____________________________________________________________
     #
+    counter_function_name = Lng.DEFAULT_COUNTER_FUNCTION_NAME("TEST_MODE")
     os.system("rm -f test")
     compile_str =   "gcc -Wall -Werror -I. -ggdb ./data/check.c ./data/test.c "     \
                   + " -DQUEX_OPTION_COUNTER"                                \

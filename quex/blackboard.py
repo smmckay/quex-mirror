@@ -248,26 +248,19 @@ class DefaultCounterFunctionDB:
     """
     __db = []
     @staticmethod
-    def get_function_name(CCFactory):
+    def get_mode_name(CCFactory):
         """Returns name of function which already implemented the 'CounterDb'.
         Otherwise, it returns 'None' if no such function exists.
         """
-        for factory, function_name in DefaultCounterFunctionDB.__db:
+        for factory, mode_name in DefaultCounterFunctionDB.__db:
             if factory.is_equal(CCFactory): 
-                return function_name
+                return mode_name
         return None
 
-    @staticmethod
-    def function_name_iterable():
-        for counter_db, function_name in DefaultCounterFunctionDB.__db:
-            yield function_name
-
-
-    @staticmethod
-    def enter(CCFactory, FunctionName):
-        for function_name in DefaultCounterFunctionDB.function_name_iterable():
-            assert function_name != FunctionName
-        DefaultCounterFunctionDB.__db.append((CCFactory, FunctionName))
+    @classmethod
+    def enter(cls, CCFactory, ModeName):
+        assert not any(ModeName == mode_name for ccfactory, mode_name in cls.__db)
+        DefaultCounterFunctionDB.__db.append((CCFactory, ModeName))
 
     @staticmethod
     def clear():

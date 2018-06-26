@@ -98,7 +98,7 @@ def create_character_set_skipper_code(Language, TestStr, TriggerSet, QuexBufferS
     analyzer_list,  \
     terminal_list, \
     loop_map,      \
-    required_register_set = character_set_skipper.do(LineColumnCount_Default(), 
+    required_register_set = character_set_skipper.do("M", LineColumnCount_Default(), 
                                                      TriggerSet, FSM.reload_state,
                                                      dial_db)
     loop_code = generator.do_analyzer_list(analyzer_list)
@@ -209,9 +209,7 @@ def create_nested_range_skipper_code(Language, TestStr, OpenerSequence, CloserSe
 
     code = []
     if run_time_counter_f:
-        function_name, \
-        counter_code   = run_time_counter.get(ca_map, "M")
-        code.append("#define QUEX_FUNCTION_COUNT_ARBITRARY %s\n" % function_name)
+        counter_code = run_time_counter.get(ca_map, "M")
         code.extend(counter_code)                       
 
     code.extend(
@@ -247,10 +245,7 @@ def create_indentation_handler_code(Language, TestStr, ISetup, BufferSize):
 
     ca_map = LineColumnCount_Default()
     
-    function_name, \
     counter_code   = run_time_counter.get(ca_map, "M")
-    counter_code   = "#define QUEX_FUNCTION_COUNT_ARBITRARY %s\n" % function_name \
-                     + counter_code
 
     code = [] # [ "%s\n" % Lng.LABEL(DoorID.incidence(E_IncidenceIDs.INDENTATION_HANDLER, dial_db)) ]
 

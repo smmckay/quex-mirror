@@ -1715,14 +1715,14 @@ quex/engine/loop/TEST                                                <no date>
  * Indentation Counting:
 
     With Comments
-        indentation-w-comments.py Mixed ............................[FAIL]
-                                  NewlineTerminated ...........[NO OUTPUT]
-                                  NotNewlineTerminated ........[NO OUTPUT]
+        indentation-w-comments.py Mixed ..............................[OK]
+                                  NewlineTerminated ..................[OK]
+                                  NotNewlineTerminated ...............[OK]
     With Tabulators
-        indentation-w-tabs.py Back .................................[FAIL]
-                              Front ...........................[NO OUTPUT]
-                              InComment .......................[NO OUTPUT]
-                              Potpourri .......................[NO OUTPUT]
+        indentation-w-tabs.py Back ...................................[OK]
+                              Front ..................................[OK]
+                              InComment ..............................[OK]
+                              Potpourri ..............................[OK]
     Without Tabulators
         indentation.py CloseMultiple .................................[OK]
                        EmptyLines ....................................[OK]
@@ -1773,18 +1773,10 @@ quex/engine/loop/TEST                                                <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       4 ..............................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] indentation-w-comments.py _ Mixed
-                                   \__ NewlineTerminated
-                                   \__ NotNewlineTerminated
-    [FAIL] indentation-w-tabs.py _ Back
-                               \__ Front
-                               \__ InComment
-                               \__ Potpourri
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                     Miscellaneous Support Functions/Modules                    
@@ -2426,21 +2418,15 @@ quex/code_base/buffer/bytes/TEST                                     <no date>
 quex/code_base/extra/accumulator/TEST                                <no date>
 -------------------------------------------------------------------------------
  * Accumulator
-        accumulator.exe Character ...........................[MAKE FAILED]
-                        Mix .................................[MAKE FAILED]
-                        N-Character .........................[MAKE FAILED]
-                        N-String ............................[MAKE FAILED]
-                        String ..............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] accumulator.exe _ Character
-                         \__ Mix
-                         \__ N-Character
-                         \__ N-String
-                         \__ String
+        accumulator.exe Character ....................................[OK]
+                        Mix ..........................................[OK]
+                        N-Character ..................................[OK]
+                        N-String .....................................[OK]
+                        String .......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                       <no file 'hwut-info.dat', no title>                      
@@ -3446,7 +3432,7 @@ SUMMARY:
            12      [OK] ...................../bytes/TEST                              
            12      [OK] ...................../lexatoms/converter/iconv/TEST           
            12      [OK] ......................................../icu/TEST             
-        5  5     [FAIL] ............../extra/accumulator/TEST                         
+           5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
         3  3     [FAIL] ............../token/TEST                                     
@@ -3454,7 +3440,7 @@ SUMMARY:
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
-        7  38    [FAIL] .........../loop/TEST                                         
+           38      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
         1  17    [FAIL] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
@@ -3476,11 +3462,11 @@ SUMMARY:
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _   _           
-    |  ___|_ _(_) |___     | || | / |    __  __
-    | |_ / _` | | / __|    | || |_| |    \ \/ /
-    |  _| (_| | | \__ \    |__   _| |     >  < 
-    |_|  \__,_|_|_|___/       |_| |_|    /_/\_\
+     _____     _ _          ____    ___            
+    |  ___|_ _(_) |___     |___ \  / _ \     __  __
+    | |_ / _` | | / __|      __) || (_) |    \ \/ /
+    |  _| (_| | | \__ \     / __/  \__, |     >  < 
+    |_|  \__,_|_|_|___/    |_____|   /_/     /_/\_\
                                                                    (1702 tests)
 
 ===============================================================================

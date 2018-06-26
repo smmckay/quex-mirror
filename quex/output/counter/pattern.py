@@ -8,7 +8,7 @@ from   quex.constants         import E_Count
 from   quex.blackboard        import Lng
 
 @typed(lcci=(None, character_counter.SmLineColumnCountInfo))
-def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):
+def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True, ModeName=None):
     """RETURN: [0] Verdict
                [1] CounterCode
 
@@ -21,14 +21,14 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True):
                              
     """
     if lcci is None:
-        return  True, Lng.DEFAULT_COUNTER_CALL()
+        return  True, Lng.DEFAULT_COUNTER_CALL(ModeName)
 
     # (*) Default Character Counter ___________________________________________
     #
     #     Used when the increments and/or setting cannot be derived from the 
     #     pattern itself. That is, if one of the following is VOID:
     if lcci.run_time_counter_required_f:
-        return True, [ Lng.DEFAULT_COUNTER_CALL() ]
+        return True, [ Lng.DEFAULT_COUNTER_CALL(ModeName) ]
 
     # (*) Determine Line and Column Number Count ______________________________
     #    

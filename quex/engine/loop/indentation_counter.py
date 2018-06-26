@@ -109,7 +109,8 @@ def do(ModeName, CaMap, IndentationSetup, IncidenceDb, ReloadState, dial_db):
                                      ReloadStateExtern          = ReloadState,
                                      ParallelSmTerminalPairList = sm_terminal_list, 
                                      dial_db                    = dial_db,
-                                     LoopCharacterSet           = whitespace_set) 
+                                     LoopCharacterSet           = whitespace_set,
+                                     ModeName                   = ModeName) 
 
     terminal_list.append(ih_call_terminal)
 
