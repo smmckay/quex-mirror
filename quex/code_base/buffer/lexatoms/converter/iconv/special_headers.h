@@ -20,12 +20,13 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__SPECIAL_HEADERS_H
 #define  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__SPECIAL_HEADERS_H
 
-#if ! defined (QUEX_OPTION_PLAIN_C_EXT)
-    extern "C" { 
-#   include <iconv.h>
-    }
-#else
-#   include <iconv.h>
-#endif
+$$<Cpp>------------------------------------------------------------------------
+extern "C" { 
+#include <iconv.h>
+}
+$$-----------------------------------------------------------------------------
+$$<C>--------------------------------------------------------------------------
+#include <iconv.h>
+$$-----------------------------------------------------------------------------
 
 #endif /*  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__SPECIAL_HEADERS_H */

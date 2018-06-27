@@ -103,14 +103,14 @@ QUEX_INLINE bool
 QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me)
 {
     me->root = 0x0;
-#   if ! defined(__cplusplus) || defined(QUEX_OPTION_PLAIN_C_EXT)
+$$<C>--------------------------------------------------------------------------
     me->enter         = QUEX_NAME(PostCategorizer__enter);
     me->remove        = QUEX_NAME(PostCategorizer__remove);
     me->get_token_id  = QUEX_NAME(PostCategorizer__get_token_id);
     me->clear         = QUEX_NAME(PostCategorizer__clear);
     me->print_this    = QUEX_NAME(PostCategorizer_print_this);
     me->destruct_self = QUEX_NAME(PostCategorizer__clear);
-#   endif
+$$-----------------------------------------------------------------------------
     return true;
 }
 
@@ -366,7 +366,7 @@ QUEX_NAME(PostCategorizer_print_this)(QUEX_NAME(Dictionary)* me)
 }
 
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
+$$<Cpp>------------------------------------------------------------------------
 QUEX_INLINE 
 QUEX_NAME(Dictionary)::QUEX_NAME(Dictionary)()
 { /* C/C++ Compability: Constructors/Destructors do nothing. */ }
@@ -396,7 +396,7 @@ QUEX_INLINE void
 QUEX_NAME(Dictionary)::print_this()
 { QUEX_NAME(PostCategorizer_print_this)(this); }
 
-#endif 
+$$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

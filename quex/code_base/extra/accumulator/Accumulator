@@ -27,62 +27,53 @@ $$INC: definitions$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#if ! defined(__cplusplus) || defined(QUEX_OPTION_PLAIN_C_EXT)
-    QUEX_TYPE0_ANALYZER;   
+$$<C>--------------------------------------------------------------------------
+QUEX_TYPE0_ANALYZER;   
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Accumulator_tag) {
+$$-----------------------------------------------------------------------------
+$$<Cpp>--------------------------------------------------------------------------
+class QUEX_TYPE0_ANALYZER;
+class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Accumulator) {
+public:
+$$-----------------------------------------------------------------------------
+    $$<count-line>   size_t  _begin_line;$$
+    $$<count-column> size_t  _begin_column;$$
 
-    typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Accumulator_tag) {
-        $$<count-line>   size_t    _begin_line;$$
-        $$<count-column> size_t  _begin_column;$$
+    struct { 
+        QUEX_TYPE_LEXATOM* begin;
+        QUEX_TYPE_LEXATOM* end;
+        QUEX_TYPE_LEXATOM* memory_end;
+    }                   text;
+    QUEX_TYPE_ANALYZER* the_lexer;     
 
-        struct { 
-            QUEX_TYPE_LEXATOM* begin;
-            QUEX_TYPE_LEXATOM* end;
-            QUEX_TYPE_LEXATOM* memory_end;
-        }                   text;
-        QUEX_TYPE_ANALYZER* the_lexer;     
+$$<Cpp>------------------------------------------------------------------------
+    QUEX_NAME(Accumulator)();
+    ~QUEX_NAME(Accumulator)();
 
-        void   (*destruct)(struct QUEX_NAME(Accumulator_tag)* me);
-        void   (*clear)(struct QUEX_NAME(Accumulator_tag)* me);
-        void   (*add)(struct QUEX_NAME(Accumulator_tag)*  me,
-                      const QUEX_TYPE_LEXATOM*            Begin, 
-                      const QUEX_TYPE_LEXATOM*            End);
-        void   (*add_character)(struct QUEX_NAME(Accumulator_tag)* me,
-                                const QUEX_TYPE_LEXATOM            Character);
+    void   clear();
+    void   add(const QUEX_TYPE_LEXATOM* Begin, 
+               const QUEX_TYPE_LEXATOM* End);
+    void   add_character(const QUEX_TYPE_LEXATOM Character);
+    bool   extend(size_t MinAddSize);
+    bool   flush(QUEX_TYPE_TOKEN_ID);
+    void   print_this();
+$$-----------------------------------------------------------------------------
+$$<C>--------------------------------------------------------------------------
+    void   (*destruct)(struct QUEX_NAME(Accumulator_tag)* me);
+    void   (*clear)(struct QUEX_NAME(Accumulator_tag)* me);
+    void   (*add)(struct QUEX_NAME(Accumulator_tag)*  me,
+                  const QUEX_TYPE_LEXATOM*            Begin, 
+                  const QUEX_TYPE_LEXATOM*            End);
+    void   (*add_character)(struct QUEX_NAME(Accumulator_tag)* me,
+                            const QUEX_TYPE_LEXATOM            Character);
 
-        bool   (*extend)(struct QUEX_NAME(Accumulator_tag)* me, 
-                         size_t                             MinAddSize);
-        bool   (*flush)(struct QUEX_NAME(Accumulator_tag)* me, 
-                        QUEX_TYPE_TOKEN_ID                 TokenID);
-        void   (*print_this)(struct QUEX_NAME(Accumulator_tag)* me);
-    } QUEX_NAME(Accumulator);
-
-#else
-    class QUEX_TYPE0_ANALYZER;
-
-    class QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Accumulator) {
-    public:
-        $$<count-line>   size_t    _begin_line;$$
-        $$<count-column> size_t  _begin_column;$$
-
-        struct { 
-            QUEX_TYPE_LEXATOM* begin;
-            QUEX_TYPE_LEXATOM* end;
-            QUEX_TYPE_LEXATOM* memory_end;
-        }                   text;
-        QUEX_TYPE_ANALYZER* the_lexer;     
-
-        QUEX_NAME(Accumulator)();
-        ~QUEX_NAME(Accumulator)();
-
-        void   clear();
-        void   add(const QUEX_TYPE_LEXATOM* Begin, 
-                   const QUEX_TYPE_LEXATOM* End);
-        void   add_character(const QUEX_TYPE_LEXATOM Character);
-        bool   extend(size_t MinAddSize);
-        bool   flush(QUEX_TYPE_TOKEN_ID);
-        void   print_this();
-    };
-#endif
+    bool   (*extend)(struct QUEX_NAME(Accumulator_tag)* me, 
+                     size_t                             MinAddSize);
+    bool   (*flush)(struct QUEX_NAME(Accumulator_tag)* me, 
+                    QUEX_TYPE_TOKEN_ID                 TokenID);
+    void   (*print_this)(struct QUEX_NAME(Accumulator_tag)* me);
+$$-----------------------------------------------------------------------------
+}$$<C> QUEX_NAME(Accumulator)$$;
 
 QUEX_INLINE bool
 QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*, QUEX_TYPE_ANALYZER*);

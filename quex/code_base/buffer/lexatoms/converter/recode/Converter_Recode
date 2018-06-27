@@ -12,16 +12,20 @@ $$INC: buffer/converter/Converter$$
 
 $$INC: quex/compatibility/stdbool-pseudo.h$$
  
-#if ! defined (QUEX_OPTION_PLAIN_C_EXT)
-    extern "C" { 
-#endif
+$$<Cpp>------------------------------------------------------------------------
+extern "C" {
 #   include <stdio.h>
 #   include <assert.h>
 #   include <string.h>
 #   include <recode.h>   /* Pinard's recode.h */
-#if ! defined (QUEX_OPTION_PLAIN_C_EXT)
-    } // extern "C" { 
-#endif
+}
+$$-----------------------------------------------------------------------------
+$$<C>--------------------------------------------------------------------------
+#   include <stdio.h>
+#   include <assert.h>
+#   include <string.h>
+#   include <recode.h>   /* Pinard's recode.h */
+$$-----------------------------------------------------------------------------
 
 
 QUEX_NAMESPACE_MAIN_OPEN

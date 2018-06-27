@@ -26,7 +26,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Dictiona
 
 } QUEX_NAME(DictionaryNode);
 
-#if ! defined(__cplusplus) ||  defined(QUEX_OPTION_PLAIN_C_EXT)
+$$<C>--------------------------------------------------------------------------
     typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Dictionary_tag) {
         QUEX_NAME(DictionaryNode)*  root;
 
@@ -42,7 +42,8 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Dictiona
         void                (*destruct_self)(struct QUEX_NAME(Dictionary_tag)* me);
 
     } QUEX_NAME(Dictionary);
-#else
+$$-----------------------------------------------------------------------------
+$$<Cpp>--------------------------------------------------------------------------
     class QUEX_NAME(Dictionary) {
     public:
         QUEX_NAME(Dictionary)();
@@ -58,7 +59,7 @@ typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Dictiona
         void                print_this();
         void                (*destruct_self)(QUEX_NAME(Dictionary)* me);
     };
-#endif
+$$-----------------------------------------------------------------------------
 
 QUEX_INLINE bool
 QUEX_NAME(PostCategorizer_construct)(QUEX_NAME(Dictionary)* me);

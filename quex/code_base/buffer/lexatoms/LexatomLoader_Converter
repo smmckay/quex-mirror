@@ -87,14 +87,15 @@
  *  NOTE: The 'raw_buffer.iterator' remains between calls to "read_lexatoms()".
  *        This is equivalent to having some bytes in the pipeline.
  **********************************************************************************/
-#if defined(__cplusplus) && ! defined (QUEX_OPTION_PLAIN_C_EXT)
-#   include <iostream> 
-#   include <cerrno>
-#   include <stdexcept>
-#   include <cstddef>
-#else
-#   include <stddef.h>     /* gets: ptrdiff_t */
-#endif
+$$<Cpp>------------------------------------------------------------------------
+#include <iostream> 
+#include <cerrno>
+#include <stdexcept>
+#include <cstddef>
+$$-----------------------------------------------------------------------------
+$$<C>--------------------------------------------------------------------------
+#include <stddef.h>     /* gets: ptrdiff_t */
+$$-----------------------------------------------------------------------------
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
 $$INC: buffer/lexatoms/LexatomLoader$$

@@ -2,13 +2,13 @@ $$INCLUDE_TOKEN_ID_HEADER$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#if defined(QUEX_OPTION_PLAIN_C_EXT)
+$$<C>--------------------------------------------------------------------------
 void
 QUEX_NAME(member_functions_assign)(QUEX_TYPE_ANALYZER* me)
 {
 $$MEMBER_FUNCTION_ASSIGNMENT$$
 }
-#endif
+$$-----------------------------------------------------------------------------
 
 bool
 QUEX_NAME(user_constructor)(QUEX_TYPE_ANALYZER* me)

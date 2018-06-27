@@ -1459,14 +1459,16 @@ quex/TESTS/token-class/TEST                                          <no date>
  * Miscellaneous Sample Runs
         misc.sh double-colon .........................................[OK]
                 empty ................................................[OK]
-                no-namespace .........................................[OK]
+                no-namespace .......................................[FAIL]
                 token ................................................[OK]
  * With token policy 'queue'.
         simple-queue.exe .............................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] misc.sh _ no-namespace
 ===============================================================================
                                                                                
                    Token Passing Policies (Queue vs. Single)                   
@@ -1530,14 +1532,18 @@ quex/code_base/token/TEST                                            <no date>
  * TokenQueue:
 
     Push and Pop
-        push-pop.exe plain ...........................................[OK]
-                     text ............................................[OK]
+        push-pop.exe plain ..................................[MAKE FAILED]
+                     text ...................................[MAKE FAILED]
     Push and Pop with Repetition
-        push-pop-repetition.exe ......................................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        push-pop-repetition.exe .............................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] push-pop.exe _ plain
+                      \__ text
+    [FAIL] push-pop-repetition.exe
 ===============================================================================
                                                                                
                                 Track Analysis                                 
@@ -2731,7 +2737,7 @@ quex/output/languages/cpp/TEST                                       <no date>
         name_replacement.py C ........................................[OK]
                             C++ ......................................[OK]
  * Token Class Template
-        test-token_class.py ..........................................[OK]
+        test-token_class.py ........................................[FAIL]
 
  * Character Counter:
 
@@ -2777,6 +2783,7 @@ quex/output/languages/cpp/TEST                                       <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] package-file-db.py
+    [FAIL] test-token_class.py
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -2806,42 +2813,61 @@ quex/code_base/buffer/TESTS/load/TEST                                <no date>
  * API:
 
     load_forward
-        forward-api.exe BAD_LEXATOM ..................................[OK]
-                        DONE .........................................[OK]
-                        NO_MORE_DATA .................................[OK]
-                        NO_SPACE_FOR_LOAD ............................[OK]
+        forward-api.exe BAD_LEXATOM .........................[MAKE FAILED]
+                        DONE ................................[MAKE FAILED]
+                        NO_MORE_DATA ........................[MAKE FAILED]
+                        NO_SPACE_FOR_LOAD ...................[MAKE FAILED]
 
  * Buffer_load_backward:
 
     (BPC=1, FB=0)
-        backward-fb0.exe BufferSize-3 ................................[OK]
-                         BufferSize-4 ................................[OK]
-                         BufferSize-5 ................................[OK]
+        backward-fb0.exe BufferSize-3 .......................[MAKE FAILED]
+                         BufferSize-4 .......................[MAKE FAILED]
+                         BufferSize-5 .......................[MAKE FAILED]
     (BPC=1, FB=1)
-        backward-fb1.exe BufferSize-4 ................................[OK]
-                         BufferSize-5 ................................[OK]
+        backward-fb1.exe BufferSize-4 .......................[MAKE FAILED]
+                         BufferSize-5 .......................[MAKE FAILED]
     (BPC=1, FB=2)
-        backward-fb2.exe BufferSize-5 ................................[OK]
+        backward-fb2.exe BufferSize-5 .......................[MAKE FAILED]
     (BPC=4, FB=2)
-        backward-fb2-32.exe BufferSize-5 .............................[OK]
+        backward-fb2-32.exe BufferSize-5 ....................[MAKE FAILED]
 
  * Buffer_load_forward:
 
     (BPC=1, FB=0)
-        forward-fb0.exe BufferSize-3 .................................[OK]
-                        BufferSize-4 .................................[OK]
-                        BufferSize-5 .................................[OK]
+        forward-fb0.exe BufferSize-3 ........................[MAKE FAILED]
+                        BufferSize-4 ........................[MAKE FAILED]
+                        BufferSize-5 ........................[MAKE FAILED]
     (BPC=1, FB=1)
-        forward-fb1.exe BufferSize-4 .................................[OK]
-                        BufferSize-5 .................................[OK]
+        forward-fb1.exe BufferSize-4 ........................[MAKE FAILED]
+                        BufferSize-5 ........................[MAKE FAILED]
     (BPC=1, FB=2)
-        forward-fb2.exe BufferSize-5 .................................[OK]
+        forward-fb2.exe BufferSize-5 ........................[MAKE FAILED]
     (BPC=4, FB=2)
-        forward-fb2-32.exe BufferSize-5 ..............................[OK]
-                                                                    ___  _  _  
-                                                                   / _ \| |/ ) 
-                                                                  ( (_) | _ <  
-                                                                   \___/|_|\_) 
+        forward-fb2-32.exe BufferSize-5 .....................[MAKE FAILED]
+                                                           ___   _    _   _    
+                                                          |  _| / \  | | | |   
+                                                          | |_|/ - \ | | | |_  
+                                                          |_|  |_|_| |_| |___| 
+-------------------------------------------------------------------------------
+    [FAIL] forward-api.exe _ BAD_LEXATOM
+                         \__ DONE
+                         \__ NO_MORE_DATA
+                         \__ NO_SPACE_FOR_LOAD
+    [FAIL] backward-fb0.exe _ BufferSize-3
+                          \__ BufferSize-4
+                          \__ BufferSize-5
+    [FAIL] backward-fb1.exe _ BufferSize-4
+                          \__ BufferSize-5
+    [FAIL] backward-fb2.exe _ BufferSize-5
+    [FAIL] backward-fb2-32.exe _ BufferSize-5
+    [FAIL] forward-fb0.exe _ BufferSize-3
+                         \__ BufferSize-4
+                         \__ BufferSize-5
+    [FAIL] forward-fb1.exe _ BufferSize-4
+                         \__ BufferSize-5
+    [FAIL] forward-fb2.exe _ BufferSize-5
+    [FAIL] forward-fb2-32.exe _ BufferSize-5
 ===============================================================================
                                                                                
                      Include and buffer nesting scenarios                      
@@ -3402,12 +3428,12 @@ SUMMARY:
            32      [OK] ........../misc/TEST                                          
            55      [OK] ........../reset/TEST                                         
            14      [OK] ........../source-package/TEST                                
-           5       [OK] ........../token-class/TEST                                   
+        1  5     [FAIL] ........../token-class/TEST                                   
            2       [OK] ........../token-policies/TEST                                
            10      [OK] ..../code_base/TESTS/general/TEST                             
            1       [OK] ............../analyzer/TEST                                  
            11      [OK] ......................./struct/TEST                           
-           18      [OK] ............../buffer/TESTS/load/TEST                         
+       18  18    [FAIL] ............../buffer/TESTS/load/TEST                         
            11      [OK] .........................../misc/TEST                         
            26      [OK] .........................../move/TEST                         
            96      [OK] .........................../navigation/TEST                   
@@ -3417,7 +3443,7 @@ SUMMARY:
            5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
-           3       [OK] ............../token/TEST                                     
+        3  3     [FAIL] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
@@ -3440,15 +3466,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        1  33    [FAIL] .........../languages/cpp/TEST                                
+        2  33    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          _  _____           
-    |  ___|_ _(_) |___     / ||___  |    __  __
-    | |_ / _` | | / __|    | |   / /     \ \/ /
-    |  _| (_| | | \__ \    | |  / /       >  < 
-    |_|  \__,_|_|_|___/    |_| /_/       /_/\_\
+     _____     _ _          _  _    ___            
+    |  ___|_ _(_) |___     | || |  / _ \     __  __
+    | |_ / _` | | / __|    | || |_| | | |    \ \/ /
+    |  _| (_| | | \__ \    |__   _| |_| |     >  < 
+    |_|  \__,_|_|_|___/       |_|  \___/     /_/\_\
                                                                    (1701 tests)
 
 ===============================================================================

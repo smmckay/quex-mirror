@@ -4,11 +4,11 @@
 #define  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__LEXATOM_LOADER_PLAIN_I
 /**/
 
-#if defined(__cplusplus) && ! defined (QUEX_OPTION_PLAIN_C_EXT)
-#   include <iostream> 
-#   include <cerrno>
-#   include <stdexcept>
-#endif
+$$<Cpp>------------------------------------------------------------------------
+#include <iostream> 
+#include <cerrno>
+#include <stdexcept>
+$$-----------------------------------------------------------------------------
 $$INC: definitions$$
 $$INC: buffer/Buffer$$
 $$INC: buffer/lexatoms/LexatomLoader$$

@@ -48,7 +48,7 @@ $$INC: analyzer/adaptors/Gavager$$
 
 QUEX_NAMESPACE_MAIN_OPEN
 
-#if ! defined( QUEX_OPTION_PLAIN_C_EXT)
+$$<Cpp>------------------------------------------------------------------------
 
 QUEX_INLINE
 QUEX_NAME(Gavager)::QUEX_NAME(Gavager)(QUEX_TYPE_ANALYZER* lexer,
@@ -67,10 +67,10 @@ QUEX_INLINE QUEX_TYPE_TOKEN*
 QUEX_NAME(Gavager)::deliver()
 { return QUEX_NAME(Gavager_deliver)(this); }
 
-#endif
+$$-----------------------------------------------------------------------------
 
 QUEX_INLINE void
-QUEX_NAME(Gavager_construct)(QUEX_TYPE_GAVAGER*  me, 
+QUEX_NAME(Gavager_construct)(QUEX_NAME(Gavager)*  me, 
                              QUEX_TYPE_ANALYZER*     lexer,
                              QUEX_TYPE_TOKEN_ID      StreamTerminatingTokenId)
 {
@@ -79,15 +79,15 @@ QUEX_NAME(Gavager_construct)(QUEX_TYPE_GAVAGER*  me,
     me->base.last_incomplete_lexeme_p    = (QUEX_TYPE_LEXATOM*)0;
     me->base.stream_terminating_token_id = StreamTerminatingTokenId;
 
-#   ifdef QUEX_OPTION_PLAIN_C_EXT
+$$<C>--------------------------------------------------------------------------
     me->access  = QUEX_NAME(Gavager_access);
     me->gavage  = QUEX_NAME(Gavager_gavage);
     me->deliver = QUEX_NAME(Gavager_deliver);
-#   endif
+$$-----------------------------------------------------------------------------
 }
 
 QUEX_INLINE void
-QUEX_NAME(Gavager_access)(QUEX_TYPE_GAVAGER* me,
+QUEX_NAME(Gavager_access)(QUEX_NAME(Gavager)* me,
                           void** begin_p, const void** end_p)
 /* Provides access to internal buffer to be filled. 
  *
@@ -101,7 +101,7 @@ QUEX_NAME(Gavager_access)(QUEX_TYPE_GAVAGER* me,
 }
 
 QUEX_INLINE bool
-QUEX_NAME(Gavager_gavage)(QUEX_TYPE_GAVAGER* me, ptrdiff_t ReceivedN)
+QUEX_NAME(Gavager_gavage)(QUEX_NAME(Gavager)* me, ptrdiff_t ReceivedN)
 {
     void*              begin_p;
     const void*        end_p;
@@ -117,7 +117,7 @@ QUEX_NAME(Gavager_gavage)(QUEX_TYPE_GAVAGER* me, ptrdiff_t ReceivedN)
 }
 
 QUEX_INLINE QUEX_TYPE_TOKEN*
-QUEX_NAME(Gavager_deliver)(QUEX_TYPE_GAVAGER* me)
+QUEX_NAME(Gavager_deliver)(QUEX_NAME(Gavager)* me)
 {
     return QUEX_NAME(receive_from_chunk)(me->base.lexer, true, 
                                          me->base.stream_terminating_token_id);

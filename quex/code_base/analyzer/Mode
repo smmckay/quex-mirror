@@ -10,11 +10,8 @@ $$INC: buffer/Buffer$$
 
 QUEX_NAMESPACE_MAIN_OPEN
     
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
-class QUEX_TYPE0_ANALYZER;
-#else
-QUEX_TYPE0_ANALYZER;   
-#endif
+$$<Cpp> class QUEX_TYPE0_ANALYZER;$$
+$$<C>   QUEX_TYPE0_ANALYZER;$$
 
 typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Mode_tag) {  
     const char* name;

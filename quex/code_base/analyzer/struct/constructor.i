@@ -188,9 +188,7 @@ QUEX_NAME(construct_all_but_buffer)(QUEX_TYPE_ANALYZER* me,
 {
     QUEX_NAME(Asserts_construct)();
 
-#   if defined(QUEX_OPTION_PLAIN_C_EXT)
-    QUEX_NAME(member_functions_assign)(me);
-#   endif
+    $$<C> QUEX_NAME(member_functions_assign)(me);$$
 
     me->__input_name = (char*)0;
     me->_parent_memento = (QUEX_TYPE_MEMENTO*)0;
@@ -290,9 +288,7 @@ QUEX_NAME(MF_resources_absent_mark)(QUEX_TYPE_ANALYZER* me)
      *       is a c++ class object.                                           */
     QUEX_NAME(TokenQueue_resources_absent_mark)(&me->_token_queue);
 
-#   if defined(QUEX_OPTION_PLAIN_C_EXT)
-    QUEX_NAME(member_functions_assign)(me);
-#   endif
+    $$<C> QUEX_NAME(member_functions_assign)(me);$$
 
     $$<count> QUEX_NAME(Counter_resources_absent_mark)(&me->counter);$$
 

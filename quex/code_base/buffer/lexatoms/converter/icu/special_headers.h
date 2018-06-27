@@ -22,23 +22,24 @@
    
 $$INC: buffer/lexatoms/converter/Converter$$
 
-#if ! defined (QUEX_OPTION_PLAIN_C_EXT)
-extern "C" { 
-#endif
-#   include <stdio.h>
-#   include <assert.h>
-#   include <string.h>
-#if ! defined (QUEX_OPTION_PLAIN_C_EXT)
-} /* extern "C" */
-#endif
+$$<Cpp>------------------------------------------------------------------------
+extern "C" {
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
+}
+$$-----------------------------------------------------------------------------
+$$<C>--------------------------------------------------------------------------
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
+$$-----------------------------------------------------------------------------
+
 #include "unicode/utypes.h"   /* Basic ICU data types */
 #include "unicode/ucnv.h"     /* C   Converter API    */
 #include "unicode/ustring.h"  /* some more string fcns*/
 #include "unicode/uchar.h"    /* char names           */
 #include "unicode/uloc.h"
 #include "unicode/uclean.h"
-#if 0
-#include "unicode/unistr.h"
-#endif
 
 #endif /*  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICU__SPECIAL_HEADERS_H */

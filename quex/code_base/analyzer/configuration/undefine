@@ -6,9 +6,6 @@
 #ifdef    QUEX_OPTION_ASSERTS_EXT
 #   undef QUEX_OPTION_ASSERTS_EXT
 #endif
-#ifdef     QUEX_OPTION_PLAIN_C_EXT
-#   undef  QUEX_OPTION_PLAIN_C_EXT
-#endif
 #ifdef     QUEX_OPTION_COMPUTED_GOTOS
 #   undef  QUEX_OPTION_COMPUTED_GOTOS
 #endif

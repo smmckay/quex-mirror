@@ -15,42 +15,44 @@ QUEX_NAMESPACE_MAIN_OPEN
 
 #define QUEX_TYPE_GAVAGER QUEX_NAME(Gavager) 
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
-struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_TYPE_GAVAGER {
-#else
-typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Gavager_tag) {
-#endif
-
+$$<Cpp>------------------------------------------------------------------------
+struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Gavager) {
     QUEX_NAME(FeederBase)  base;
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
 public:
-    QUEX_TYPE_GAVAGER(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
+    QUEX_NAME(Gavager)(QUEX_TYPE_ANALYZER*, QUEX_TYPE_TOKEN_ID);
     void              access(void**       begin_p, 
                              const void** end_p);
     bool              gavage(ptrdiff_t    ReceivedN);
     QUEX_TYPE_TOKEN*  deliver();
 };
-#else
+$$-----------------------------------------------------------------------------
+
+$$<C>--------------------------------------------------------------------------
+typedef struct QUEX_SETTING_USER_CLASS_DECLARATION_EPILOG_EXT QUEX_NAME(Gavager_tag) {
+    QUEX_NAME(FeederBase)  base;
+
     void              (*access)(struct QUEX_NAME(Gavager_tag)* me,
                                 void**                         begin_p, 
                                 const void**                   end_p);
     bool              (*gavage)(struct QUEX_NAME(Gavager_tag)* me, 
                                 ptrdiff_t                      ReceivedN);
     QUEX_TYPE_TOKEN*  (*deliver)(struct QUEX_NAME(Gavager_tag)* me);
-} QUEX_TYPE_GAVAGER;
-#endif
 
-QUEX_INLINE void  QUEX_NAME(Gavager_construct)(QUEX_TYPE_GAVAGER*   me, 
+} QUEX_NAME(Gavager);
+
+$$-----------------------------------------------------------------------------
+
+QUEX_INLINE void  QUEX_NAME(Gavager_construct)(QUEX_NAME(Gavager)*  me, 
                                                QUEX_TYPE_ANALYZER*  lexer,
                                                QUEX_TYPE_TOKEN_ID   StreamTerminatingTokenId);
-QUEX_INLINE void  QUEX_NAME(Gavager_access)(QUEX_TYPE_GAVAGER* me,
-                                            void**       begin_p, 
-                                            const void** end_p);
-QUEX_INLINE bool  QUEX_NAME(Gavager_gavage)(QUEX_TYPE_GAVAGER* me, 
-                                            ptrdiff_t          ReceivedN);
+QUEX_INLINE void  QUEX_NAME(Gavager_access)(QUEX_NAME(Gavager)* me,
+                                            void**              begin_p, 
+                                            const void**        end_p);
+QUEX_INLINE bool  QUEX_NAME(Gavager_gavage)(QUEX_NAME(Gavager)* me, 
+                                            ptrdiff_t           ReceivedN);
 QUEX_INLINE QUEX_TYPE_TOKEN*  
-                  QUEX_NAME(Gavager_deliver)(QUEX_TYPE_GAVAGER* me);
+                  QUEX_NAME(Gavager_deliver)(QUEX_NAME(Gavager)* me);
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

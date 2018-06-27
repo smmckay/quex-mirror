@@ -234,11 +234,9 @@ QUEX_NAME(Memento_construct)(QUEX_TYPE_MEMENTO* memento,
      * to the memento first.                                                  */
     QUEX_NAME(Buffer_shallow_copy)(&memento->buffer, &me->buffer);
 
-#   if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
     /* Use placement 'new' for explicit call of constructor. 
      * Necessary in C++: Call to constructor for user defined members.        */
-    new ((void*)memento) QUEX_TYPE_MEMENTO;
-#   endif
+    $$<Cpp> new ((void*)memento) QUEX_TYPE_MEMENTO;$$
 
     /* 'memento->__input_name' points to previously allocated memory.         */
     memento->__input_name              = me->__input_name;
@@ -320,11 +318,9 @@ QUEX_NAME(MF_include_pop)(QUEX_TYPE_ANALYZER* me)
 
     QUEX_NAME(user_memento_unpack)(me, memento);
 
-#   if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
     /* Counterpart to placement new: Explicit destructor call.
      * Necessary in C++: Trigger call to destructor for user defined members.*/
-    memento->~QUEX_TYPE0_MEMENTO();
-#   endif
+    $$<Cpp> memento->~QUEX_TYPE0_MEMENTO();$$
 
     QUEX_GNAME_LIB(MemoryManager_free)((void*)memento, E_MemoryObjectType_MEMENTO); 
 

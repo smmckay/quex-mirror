@@ -8,11 +8,12 @@
 #endif
 
 #ifdef QUEX_OPTION_ASSERTS_EXT
-#   if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
-#       include <cassert>
-#   else
-#       include <assert.h>
-#   endif
+$$<Cpp>--------------------------------------------------------------------------
+#   include <cassert>
+$$-----------------------------------------------------------------------------
+$$<C>--------------------------------------------------------------------------
+#   include <assert.h>
+$$-----------------------------------------------------------------------------
 #   define  __quex_assert(X)              assert(X)
 #   ifndef  __quex_assert_no_passage
 #   define  __quex_assert_no_passage()    do { QUEX_NAME(MF_error_code_set_if_first)(&self, E_Error_DFA_DropIntoOtherState); return; } while ( 0 )

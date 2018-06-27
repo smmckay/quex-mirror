@@ -3,13 +3,13 @@
 #ifndef  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__CONVERTER_ICONV_I
 #define  QUEX_INCLUDE_GUARD__BUFFER__LEXATOMS__CONVERTER__ICONV__CONVERTER_ICONV_I
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
-extern "C" { 
-#endif
+$$<Cpp>--------------------------------------------------------------------------
+#include <cerrno>
+$$-----------------------------------------------------------------------------
+$$<C>--------------------------------------------------------------------------
 #include <errno.h>
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
-}
-#endif
+$$-----------------------------------------------------------------------------
+
 $$INC: definitions$$
 $$INC: analyzer/configuration/validation$$
 

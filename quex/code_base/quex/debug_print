@@ -12,19 +12,20 @@
 #define __QUEX_PRINT_SOURCE_POSITION()                             \
         __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s:%i:\t", __FILE__, (int)__LINE__) 
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
-#   define QUEX_ERROR_EXIT(Msg) \
-           do { \
-               __QUEX_PRINT_SOURCE_POSITION(); \
-               throw std::runtime_error(Msg); \
-           } while(0)
-#else
-#   define QUEX_ERROR_EXIT(Msg) \
-           do { \
-               __QUEX_PRINT_SOURCE_POSITION(); \
-               __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s", Msg); exit(-1); \
-           } while(0)
-#endif
+$$<Cpp>--------------------------------------------------------------------------
+#define QUEX_ERROR_EXIT(Msg) \
+        do { \
+            __QUEX_PRINT_SOURCE_POSITION(); \
+            throw std::runtime_error(Msg); \
+        } while(0)
+$$-----------------------------------------------------------------------------
+$$<C>--------------------------------------------------------------------------
+#define QUEX_ERROR_EXIT(Msg) \
+        do { \
+            __QUEX_PRINT_SOURCE_POSITION(); \
+            __QUEX_STD_fprintf(QUEX_SETTING_DEBUG_OUTPUT_CHANNEL, "%s", Msg); exit(-1); \
+        } while(0)
+$$-----------------------------------------------------------------------------
 
 #if defined(QUEX_OPTION_DEBUG_SHOW_EXT)
 

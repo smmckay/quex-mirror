@@ -95,22 +95,22 @@ QUEX_NAME(lexeme_to_wchar)(const QUEX_TYPE_LEXATOM* SourceBegin,
                            const wchar_t*           DrainEnd);
 #endif
 
-#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
-    QUEX_INLINE std::basic_string<uint8_t>
-    QUEX_NAME(lexeme_to_utf8)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
-    QUEX_INLINE std::basic_string<uint16_t>
-    QUEX_NAME(lexeme_to_utf16)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
-    QUEX_INLINE std::basic_string<uint32_t>
-    QUEX_NAME(lexeme_to_utf32)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
-    QUEX_INLINE std::basic_string<char>
-    QUEX_NAME(lexeme_to_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
-    QUEX_INLINE std::basic_string<char>
-    QUEX_NAME(lexeme_to_pretty_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
-#   if ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
-    QUEX_INLINE std::basic_string<wchar_t>
-    QUEX_NAME(lexeme_to_wchar)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
-#   endif
+$$<Cpp>------------------------------------------------------------------------
+QUEX_INLINE std::basic_string<uint8_t>
+QUEX_NAME(lexeme_to_utf8)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+QUEX_INLINE std::basic_string<uint16_t>
+QUEX_NAME(lexeme_to_utf16)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+QUEX_INLINE std::basic_string<uint32_t>
+QUEX_NAME(lexeme_to_utf32)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+QUEX_INLINE std::basic_string<char>
+QUEX_NAME(lexeme_to_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+QUEX_INLINE std::basic_string<char>
+QUEX_NAME(lexeme_to_pretty_char)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
+#if ! defined(QUEX_OPTION_WCHAR_T_DISABLED)
+QUEX_INLINE std::basic_string<wchar_t>
+QUEX_NAME(lexeme_to_wchar)(const std::basic_string<QUEX_TYPE_LEXATOM>& Source);
 #endif
+$$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_MAIN_CLOSE
 

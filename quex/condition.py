@@ -46,6 +46,10 @@ def do(Condition):
 
     elif "||" in Condition:
         return any(do(x.strip()) for x in Condition.split("||"))
+    elif Condition == "C":
+        return Setup.language == "C"
+    elif Condition == "Cpp":
+        return Setup.language == "C++"
     else:                                                                      
         error.log("Code generation: found unknown condition '<%s>'." % Condition)
 

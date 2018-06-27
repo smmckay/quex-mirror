@@ -44,7 +44,8 @@ QUEX_NAME_LIB(bom_snap)(__QUEX_STD_FILE* InputHandle)
     return result;
 }
 
-#if ! defined(QUEX_OPTION_PLAIN_C_EXT)
+$$<Cpp>------------------------------------------------------------------------
+#if defined(__cplusplus)
 template <class InputStream> extern E_ByteOrderMark
 QUEX_NAME_LIB(bom_snap)(InputStream* p_input_stream)
 /* This function can **only** be used with **normally** behaving streams
@@ -70,6 +71,7 @@ QUEX_NAME_LIB(bom_snap)(InputStream* p_input_stream)
     return result;
 }
 #endif
+$$-----------------------------------------------------------------------------
 
 extern E_ByteOrderMark
 QUEX_NAME_LIB(__bom_snap_core)(uint8_t buffer[4], size_t read_n, size_t* byte_n)

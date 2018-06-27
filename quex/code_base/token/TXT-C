@@ -7,9 +7,6 @@
 
 /* For '--token-class-only' the following option may not come directly
  * from the configuration file.                                        */
-#ifndef    QUEX_OPTION_PLAIN_C_EXT
-#   define QUEX_OPTION_PLAIN_C_EXT
-#endif
 $$HEADER$$
 
 $$HELPER_DEFINITIONS$$

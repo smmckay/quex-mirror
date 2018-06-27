@@ -40,7 +40,7 @@ QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me,
     $$<count-line>   me->_begin_line   = 0;$$
     $$<count-column> me->_begin_column = 0;$$
 
-#   ifdef QUEX_OPTION_PLAIN_C_EXT
+$$<C>--------------------------------------------------------------------------
     me->destruct      = QUEX_NAME(Accumulator_destruct);
     me->clear         = QUEX_NAME(Accumulator__clear);
     me->add           = QUEX_NAME(Accumulator__add);
@@ -48,7 +48,7 @@ QUEX_NAME(Accumulator_construct)(QUEX_NAME(Accumulator)*   me,
     me->extend        = QUEX_NAME(Accumulator__extend);
     me->flush         = QUEX_NAME(Accumulator__flush);
     me->print_this    = QUEX_NAME(Accumulator_print_this);
-#   endif
+$$-----------------------------------------------------------------------------
 
     return true;
 }
@@ -252,7 +252,7 @@ QUEX_NAME(Accumulator_print_this)(QUEX_NAME(Accumulator)* me)
     }
 }
 
-#if defined(__cplusplus) && ! defined(QUEX_OPTION_PLAIN_C_EXT)
+$$<Cpp>--------------------------------------------------------------------------
 QUEX_INLINE 
 QUEX_NAME(Accumulator)::QUEX_NAME(Accumulator)()
 { /* C/C++ Compability: Constructors/Destructors do nothing. */ }
@@ -285,8 +285,7 @@ QUEX_NAME(Accumulator)::flush(const QUEX_TYPE_TOKEN_ID TokenID)
 QUEX_INLINE void      
 QUEX_NAME(Accumulator)::print_this()
 { QUEX_NAME(Accumulator_print_this)(this); }
-
-#endif
+$$-----------------------------------------------------------------------------
 
 QUEX_NAMESPACE_MAIN_CLOSE
 
