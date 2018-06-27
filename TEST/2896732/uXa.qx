@@ -161,15 +161,8 @@ token_type {
 		self.content = Other.content;
 */
 
-#ifdef QUEX_OPTION_TOKEN_STAMPING_WITH_LINE_AND_COLUMN
-#	ifdef QUEX_OPTION_COUNTER_LINE
 		self._line_n = Other._line_n;
-#	endif
-
-#	ifdef QUEX_OPTION_COUNTER_COLUMN
 		self._column_n = Other._column_n;
-#	endif
-#endif
 
 		self.integerValue = Other.integerValue;
 		self.stringValue  = Other.stringValue;

@@ -5,6 +5,7 @@ choice=$2
 
 if [[ $choice == "--hwut-info" ]]; then
     head -n2 $qx_file | cut -b4-
+    echo "HAPPY: 0x0000|0xFFFF;"
     exit
 fi
 

@@ -43,7 +43,7 @@ def map_SmLineColumnCountInfo_to_code(lcci, ShiftF=True, ModeName=None):
         else:
             arg = Lng.MULTIPLY_WITH(Lng.LEXEME_LENGTH(), IncrementByLexemeLength)
 
-        txt.append(AddFunction(arg))
+        txt.append("%s\n" % AddFunction(arg))
 
     # Column and line counts must be shifted (begin=end) even if only
     # columns are counted. For example, even if only columns are modified

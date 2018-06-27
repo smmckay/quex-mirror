@@ -21,7 +21,7 @@ $$CONSTRUCTOR$$
 QUEX_INLINE
 $$TOKEN_CLASS$$::$$TOKEN_CLASS$$(const $$TOKEN_CLASS$$& Other)
 {
-   $$TOKEN_CLASS$$_copy(this, &Other);
+   QUEX_NAME_TOKEN(copy)(this, &Other);
 #   define self (*this)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
 $$CONSTRUCTOR$$
@@ -41,7 +41,7 @@ $$DESTRUCTOR$$
 
 QUEX_INLINE $$TOKEN_CLASS$$& 
 $$TOKEN_CLASS$$::operator=(const $$TOKEN_CLASS$$& That) 
-{ if( this != &That ) { $$TOKEN_CLASS$$_copy(this, &That); } return *this; }
+{ /* 'this != &That' checked in 'copy' */ QUEX_NAME_TOKEN(copy)(this, &That); return *this; }
 
 QUEX_INLINE void
 QUEX_NAME_TOKEN(construct)($$TOKEN_CLASS$$* __this)
@@ -63,8 +63,7 @@ QUEX_NAME_TOKEN(copy)($$TOKEN_CLASS$$* __this, const $$TOKEN_CLASS$$* __That)
 #   define self  (*__this)
 #   define Other (*__That)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
-    (void)__this;
-    (void)__That;
+    if( __this == __That ) { return; }
 $$COPY$$
 #   undef LexemeNull
 #   undef Other

@@ -1,7 +1,10 @@
 #ifndef INCLUDE_GUARD_COMMON_TOKEN_H
 #define INCLUDE_GUARD_COMMON_TOKEN_H
 
-#include "ut/lib/definitions"
+#include "test_c/lib/definitions"
+typedef  int TestAnalyzer_indentation_t;
+#define  QUEX_SETTING_INDENTATION_STACK_SIZE 64
+#include "test_c/lib/analyzer/Counter"
 
 #ifdef __cplusplus
 #   define QUEX_INLINE inline
@@ -23,10 +26,13 @@ typedef struct TestAnalyzer_Token_tag {
     int     id;
     char*   text;
     size_t  repetition_n;
+    size_t  _line_n;
+    size_t  _column_n;
 } TestAnalyzer_Token;
 
 typedef struct TestAnalyzer_tag {
     E_Error  error_code;
+    TestAnalyzer_Counter  counter;
 } TestAnalyzer;
 
 #define QUEX_TYPE_LEXATOM    uint8_t

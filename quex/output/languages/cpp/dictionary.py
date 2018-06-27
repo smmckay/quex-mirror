@@ -14,7 +14,6 @@ from   quex.engine.misc.file_operations                  import open_file_or_die
                                                                 write_safely_and_close
 import quex.engine.misc.error                            as     error
 from   quex.engine.misc.tools                            import typed, \
-                                                                print_callstack, \
                                                                 do_and_delete_if, \
                                                                 none_isinstance, \
                                                                 flatten_list_of_lists

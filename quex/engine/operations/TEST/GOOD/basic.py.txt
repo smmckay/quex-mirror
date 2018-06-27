@@ -54,7 +54,7 @@ ColumnCountAdd
    Registers:    Column(wr), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS_ADD((size_t)1);
+       me->counter._column_number_at_end += ((size_t)1); __quex_debug_counter();
    }
 
 ColumnCountGridAdd
@@ -121,7 +121,7 @@ ColumnCountReferencePDeltaAdd
    Registers:    Column(wr),  LoopRestartP(r),  CountReferenceP(r), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_COLUMNS_ADD((size_t)((loop_restart_p - count_reference_p) * 5555));
+       me->counter._column_number_at_end += ((size_t)((loop_restart_p - count_reference_p) * 5555)); __quex_debug_counter();
    }
 
 ColumnCountReferencePSet
@@ -228,7 +228,7 @@ LineCountAdd
    Registers:    Line(wr), 
    Cost:         1
    C-code: {
-       __QUEX_IF_COUNT_LINES_ADD((size_t)1);
+       me->counter._line_number_at_end += ((size_t)1); __quex_debug_counter();
    }
 
 PathIteratorSet

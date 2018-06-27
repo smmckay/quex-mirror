@@ -11,7 +11,6 @@ from   quex.engine.analyzer.door_id_address_label   import DoorID, DialDB
 from   quex.engine.misc.tools                       import typed
 from   quex.engine.counter                          import CountActionMap
 
-import quex.condition  as     condition
 from   quex.blackboard import Lng, \
                               DefaultCounterFunctionDB, \
                               E_IncidenceIDs

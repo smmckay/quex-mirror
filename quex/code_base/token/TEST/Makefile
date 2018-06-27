@@ -4,16 +4,17 @@ PROGRAMS := push-pop.exe \
 all:       $(PROGRAMS) 
 
 MYFLAGS   := -ggdb -Wall -Werror  \
-		     -I. \
+		     -I. -I../../TESTS -I$(HWUT_PATH) \
 		     -DQUEX_OPTION_COUNTER_LINE_EXT  \
 		     -DQUEX_OPTION_UNIT_TEST_NO_IMPLEMENTATION_IN_HEADER_EXT \
 		     -DQUEX_SETTING_ACCUMULATOR_INITIAL_SIZE_EXT=0 \
 		     -DQUEX_SETTING_ACCUMULATOR_GRANULARITY_FACTOR_EXT=1 \
 		     -DQUEX_OPTION_COUNTER_COLUMN_EXT \
 			 -DQUEX_OPTION_ASSERTS_EXT \
-			 -DQUEX_TKN_TERMINATION
+			 -DQUEX_TKN_TERMINATION \
+			 -DQUEX_OPTION_PLAIN_C_EXT 
 
-CC        := gcc  -I../ -I. -DQUEX_OPTION_PLAIN_C_EXT -I$(HWUT_PATH) -ggdb $(MYFLAGS)
+CC        := gcc  -ggdb $(MYFLAGS)
 
 %.exe: %.c common_token.c ut
 	$(CC) $< common_token.c -o $@ 

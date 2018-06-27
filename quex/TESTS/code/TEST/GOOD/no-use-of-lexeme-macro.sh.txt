@@ -32,12 +32,12 @@ Following lines are suppossed to be accepted:
 ./output/analyzer/modes.py:104:    (void)me; (void)LexemeBegin; (void)LexemeEnd; (void)BufferSize;
 ./output/analyzer/modes.py:263:                                      ("QUEX_TYPE_LEXATOM*",    "Lexeme")]],
 ./output/analyzer/modes.py:99:    const QUEX_TYPE_LEXATOM* LexemeBegin = self.buffer._lexeme_start_p;
-./output/counter/run_time.py:100:        "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
-./output/counter/run_time.py:103:        "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
-./output/counter/run_time.py:104:        "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
-./output/counter/run_time.py:107:        "    %s = LexemeBegin;\n" % IteratorName
-./output/counter/run_time.py:126:       + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
-./output/counter/run_time.py:87:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" \
-./output/languages/cpp/dictionary.py:407:        return "QUEX_FUNCTION_COUNT_ARBITRARY(&self, LexemeBegin, LexemeEnd);\n"
-./output/languages/cpp/templates.py:224:    /* Lexeme setup: 
+./output/counter/run_time.py:106:            "%s" % Lng.ML_COMMENT("Allow LexemeBegin == LexemeEnd (e.g. END_OF_STREAM)\n"
+./output/counter/run_time.py:109:            "    __quex_assert(LexemeBegin <= LexemeEnd);\n",
+./output/counter/run_time.py:110:            "    %s" % Lng.IF("LexemeBegin", "==", "LexemeEnd"), 
+./output/counter/run_time.py:113:            "    %s = LexemeBegin;\n" % IteratorName
+./output/counter/run_time.py:133:           + "     __quex_assert(%s == LexemeEnd);\n" % IteratorName \
+./output/counter/run_time.py:87:        + "%s(QUEX_TYPE_ANALYZER* me, QUEX_TYPE_LEXATOM* LexemeBegin, QUEX_TYPE_LEXATOM* LexemeEnd)\n" % FunctionName \
+./output/languages/cpp/dictionary.py:414:        return "%s((QUEX_TYPE_ANALYZER*)me, LexemeBegin, LexemeEnd);\n" % self.DEFAULT_COUNTER_FUNCTION_NAME(ModeName)
+./output/languages/cpp/templates.py:116:    /* Lexeme setup: 
 ~/prj/quex/trunk/quex/TESTS/code/TEST

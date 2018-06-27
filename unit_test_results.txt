@@ -176,7 +176,7 @@ TEST                                                                 <no date>
  * jdavidberger:
 
     264 0.64.6 Incorrect column numbering with post conditions
-        bug-264.sh .................................................[FAIL]
+        bug-264.sh ...................................................[OK]
 
  * jmarsik:
 
@@ -229,7 +229,7 @@ TEST                                                                 <no date>
                            4 .........................................[OK]
                            5 .........................................[OK]
                            6 .........................................[OK]
-                           good ....................................[FAIL]
+                           good ......................................[OK]
     2257908 Quex does not terminate lexer generation
         bug-2257908.sh ...............................................[OK]
     2262537 (feature) Allow Nothing is fine in define section
@@ -238,7 +238,7 @@ TEST                                                                 <no date>
  * nazim-can-bedir:
 
     2896732 0.46.2 - Memory leak
-        bug-2896732.sh .............................................[FAIL]
+        bug-2896732.sh ...............................................[OK]
 
  * nobody:
 
@@ -497,9 +497,6 @@ TEST                                                                 <no date>
     [FAIL] bug-293.sh _ bad
                     \__ good
     [FAIL] bug-3486388.sh
-    [FAIL] bug-264.sh
-    [FAIL] feature-2251359.sh _ good
-    [FAIL] bug-2896732.sh
 ===============================================================================
                                                                                
                    Testing the Consistency of the Demo-Tests                   
@@ -992,7 +989,7 @@ quex/TESTS/bof-eos-context/TEST                                      <no date>
 quex/TESTS/code/TEST                                                 <no date>
 -------------------------------------------------------------------------------
  * Check that 'Lexeme' macro is not used.
-        no-use-of-lexeme-macro.sh ..................................[FAIL]
+        no-use-of-lexeme-macro.sh ....................................[OK]
  * Check that there are no trailing unused Enum Values
         no-unused-enum-values.py .....................................[OK]
  * Checking SVN status
@@ -1001,7 +998,7 @@ quex/TESTS/code/TEST                                                 <no date>
         function-check.sh example ....................................[OK]
                           real .......................................[OK]
  * Code Check with pyflakes
-        pyflakes-check.sh ..........................................[FAIL]
+        pyflakes-check.sh ............................................[OK]
  * Command Line Option Documentation
         command_line_options-verify-doc.py man .......................[OK]
                                            sphinx ....................[OK]
@@ -1012,8 +1009,6 @@ quex/TESTS/code/TEST                                                 <no date>
                          undefinition ..............................[FAIL]
  * Main data member consistency for C and C++
         class-data-member-consistency.sh .............................[OK]
- * Main data member consistency for C and C++
-        imposing-plain-c.sh ................................[NO GOOD FILE]
  * Propper undefinition of configuration parameters.
         macro-check.py .............................................[FAIL]
 
@@ -1026,12 +1021,9 @@ quex/TESTS/code/TEST                                                 <no date>
                                                           | |_|/ - \ | | | |_  
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
-    [FAIL] no-use-of-lexeme-macro.sh
     [FAIL] svn-status.sh
-    [FAIL] pyflakes-check.sh
     [FAIL] include_guard.py _ convention
                           \__ undefinition
-    [FAIL] imposing-plain-c.sh
     [FAIL] macro-check.py
 ===============================================================================
                                                                                
@@ -1132,7 +1124,7 @@ quex/TESTS/event-handling/TEST                                       <no date>
     Default 'on_skip_range_open' event
         on_skip_range_open.qx default ................................[OK]
     on_bad_lexatom
-        on_bad_lexatom.qx bad-utf16 ................................[FAIL]
+        on_bad_lexatom.qx bad-utf16 ..................................[OK]
                           good-utf16 .................................[OK]
 
  * Indentation:
@@ -1162,12 +1154,10 @@ quex/TESTS/event-handling/TEST                                       <no date>
                       2 ..............................................[OK]
                       3 ..............................................[OK]
                       error ..........................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] on_bad_lexatom.qx _ bad-utf16
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                  Include Stack                                 
@@ -1540,18 +1530,14 @@ quex/code_base/token/TEST                                            <no date>
  * TokenQueue:
 
     Push and Pop
-        push-pop.exe plain ..................................[MAKE FAILED]
-                     text ...................................[MAKE FAILED]
+        push-pop.exe plain ...........................................[OK]
+                     text ............................................[OK]
     Push and Pop with Repetition
-        push-pop-repetition.exe .............................[MAKE FAILED]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] push-pop.exe _ plain
-                      \__ text
-    [FAIL] push-pop-repetition.exe
+        push-pop-repetition.exe ......................................[OK]
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                 Track Analysis                                 
@@ -1829,7 +1815,7 @@ quex/engine/operations/TEST                                          <no date>
  * Command:
 
     Basic
-        basic.py ...................................................[FAIL]
+        basic.py .....................................................[OK]
 
  * Op:
 
@@ -1853,12 +1839,10 @@ quex/engine/operations/TEST                                          <no date>
                             one-or-none ..............................[OK]
                             two ......................................[OK]
                             two-bad ..................................[OK]
-                                                           ___   _    _   _    
-                                                          |  _| / \  | | | |   
-                                                          | |_|/ - \ | | | |_  
-                                                          |_|  |_|_| |_| |___| 
--------------------------------------------------------------------------------
-    [FAIL] basic.py
+                                                                    ___  _  _  
+                                                                   / _ \| |/ ) 
+                                                                  ( (_) | _ <  
+                                                                   \___/|_|\_) 
 ===============================================================================
                                                                                
                                    DFA Tests                                   
@@ -2747,7 +2731,7 @@ quex/output/languages/cpp/TEST                                       <no date>
         name_replacement.py C ........................................[OK]
                             C++ ......................................[OK]
  * Token Class Template
-        test-token_class.py ........................................[FAIL]
+        test-token_class.py ..........................................[OK]
 
  * Character Counter:
 
@@ -2793,7 +2777,6 @@ quex/output/languages/cpp/TEST                                       <no date>
                                                           |_|  |_|_| |_| |___| 
 -------------------------------------------------------------------------------
     [FAIL] package-file-db.py
-    [FAIL] test-token_class.py
 ===============================================================================
                                                                                
                        Code Generation for Graphviz/Dot                        
@@ -3394,25 +3377,24 @@ quex/engine/state_machine/algebra/TESTS/subset/TEST                  <no date>
                                                                    / _ \| |/ ) 
                                                                   ( (_) | _ <  
                                                                    \___/|_|\_) 
-    [NO GOOD FILE] imposing-plain-c.sh
 ===============================================================================
 
 SUMMARY:
 
     Fails: N:  Verdict: Directory:                                                    
 
-        6  238   [FAIL] TEST                                                          
+        3  238   [FAIL] TEST                                                          
         4  56    [FAIL] demo/C/TEST                                                   
         4  56    [FAIL] ..../Cpp/TEST                                                 
         1  2     [FAIL] ..../TEST                                                     
            8       [OK] quex/TESTS/bof-eos-context/TEST                               
-        7  15    [FAIL] ........../code/TEST                                          
+        4  14    [FAIL] ........../code/TEST                                          
            2       [OK] ........../command-line/TEST                                  
            4       [OK] ........../did-you-mean/TEST                                  
            6       [OK] ........../drop-outs/TEST                                     
            2       [OK] ........../entry-exit/TEST                                    
            1       [OK] ........../errors-warnings/TEST                               
-        1  23    [FAIL] ........../event-handling/TEST                                
+           23      [OK] ........../event-handling/TEST                                
            7       [OK] ........../include-stack/TEST                                 
            21      [OK] ........../indentation_count/TEST                             
            2       [OK] ........../loop/TEST                                          
@@ -3435,14 +3417,14 @@ SUMMARY:
            5       [OK] ............../extra/accumulator/TEST                         
            36      [OK] ..................../post_categorizer/TEST                    
            10      [OK] ............../lexeme_converter/TEST                          
-        3  3     [FAIL] ............../token/TEST                                     
+           3       [OK] ............../token/TEST                                     
            42      [OK] ..../engine/TEST                                              
            112     [OK] .........../analyzer/TEST                                     
            29      [OK] ..................../mega_state/path_walker/TEST              
            27      [OK] .............................../template/TEST                 
            38      [OK] .........../loop/TEST                                         
            12      [OK] .........../misc/TEST                                         
-        1  17    [FAIL] .........../operations/TEST                                   
+           17      [OK] .........../operations/TEST                                   
            51      [OK] .........../state_machine/TEST                                
            9       [OK] ........................./algebra/TESTS/additional_laws/TEST  
            21      [OK] ......................................./basics/TEST           
@@ -3458,15 +3440,15 @@ SUMMARY:
            27      [OK] ........../regular_expression/TEST                            
            205     [OK] ..../output/core/TEST                                         
            22      [OK] ................/state/transition_map/TEST                    
-        2  33    [FAIL] .........../languages/cpp/TEST                                
+        1  33    [FAIL] .........../languages/cpp/TEST                                
            3       [OK] ...................../graphviz/TEST                           
 
 -------------------------------------------------------------------------------
-     _____     _ _          ____    ___            
-    |  ___|_ _(_) |___     |___ \  / _ \     __  __
-    | |_ / _` | | / __|      __) || (_) |    \ \/ /
-    |  _| (_| | | \__ \     / __/  \__, |     >  < 
-    |_|  \__,_|_|_|___/    |_____|   /_/     /_/\_\
-                                                                   (1702 tests)
+     _____     _ _          _  _____           
+    |  ___|_ _(_) |___     / ||___  |    __  __
+    | |_ / _` | | / __|    | |   / /     \ \/ /
+    |  _| (_| | | \__ \    | |  / /       >  < 
+    |_|  \__,_|_|_|___/    |_| /_/       /_/\_\
+                                                                   (1701 tests)
 
 ===============================================================================

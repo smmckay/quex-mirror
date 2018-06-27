@@ -2,4 +2,6 @@ test.qx:2:warning: Detected implicit token identifier definitions. Proposal:
 test.qx:2:warning:    token {
 test.qx:2:warning:      OPEN;
 test.qx:2:warning:    }
-__QUEX_IF_COUNT_COLUMNS_ADD(1);
+    me->counter._column_number_at_begin = me->counter._column_number_at_end;
+    me->counter._line_number_at_begin = me->counter._line_number_at_end;
+me->counter._column_number_at_end += (1); __quex_debug_counter();

@@ -1,9 +1,6 @@
 (*) Core Engine
 case QUEX_TKN_TERMINATION:    return "<TERMINATION>";
 case QUEX_TKN_UNINITIALIZED:  return "<UNINITIALIZED>";
-case QUEX_TKN_INDENT:         return "<INDENT>";
-case QUEX_TKN_DEDENT:         return "<DEDENT>";
-case QUEX_TKN_NODENT:         return "<NODENT>";
 case 0x00000C: return "UCS_0x00000C";
 case 0x00001B: return "UCS_0x00001B";
 case 0x000058: return "UCS_0x000058";

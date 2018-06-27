@@ -31,8 +31,8 @@ QUEX_INLINE void
 QUEX_NAME_TOKEN(copy_construct)($$TOKEN_CLASS$$*       __this, 
                                 const $$TOKEN_CLASS$$* __That)
 {
-    $$TOKEN_CLASS$$_construct(__this);
-    $$TOKEN_CLASS$$_copy(__this, __That);
+    QUEX_NAME_TOKEN(construct)(__this);
+    QUEX_NAME_TOKEN(copy)(__this, __That);
 }
 
 QUEX_INLINE void 
@@ -54,8 +54,7 @@ QUEX_NAME_TOKEN(copy)($$TOKEN_CLASS$$*       __this,
 #   define self  (*__this)
 #   define Other (*__That)
 #   define LexemeNull  (&QUEX_NAME(LexemeNull))
-    (void)__this;
-    (void)__That;
+    if( __this == __That ) { return; }
 $$COPY$$
 #   undef  LexemeNull
 #   undef  Other

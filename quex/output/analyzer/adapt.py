@@ -1,4 +1,3 @@
-from   quex.engine.misc.tools      import typed
 from   quex.output.syntax_elements import Symbol, Variable, Signature, ConditionalCode
 from   quex.blackboard             import Lng, setup as Setup
 import quex.condition              as     condition
